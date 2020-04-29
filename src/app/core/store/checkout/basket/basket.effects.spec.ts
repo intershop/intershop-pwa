@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
@@ -61,10 +60,9 @@ describe('Basket Effects', () => {
       ],
     });
 
-    effects = TestBed.get(BasketEffects);
-    store$ = TestBed.get(Store);
-    location = TestBed.get(Location);
-    router = TestBed.get(Router);
+    effects = TestBed.inject(BasketEffects);
+    store$ = TestBed.inject(Store);
+    router = TestBed.inject(Router);
   });
 
   describe('loadBasket$', () => {

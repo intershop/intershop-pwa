@@ -32,7 +32,7 @@ describe('Product Quantity Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductQuantityComponent);
     component = fixture.componentInstance;
-    translate = TestBed.get(TranslateService);
+    translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');
     product = { sku: 'sku' } as Product;

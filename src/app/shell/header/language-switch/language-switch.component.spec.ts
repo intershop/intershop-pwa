@@ -37,7 +37,7 @@ describe('Language Switch Component', () => {
         fixture = TestBed.createComponent(LanguageSwitchComponent);
         component = fixture.componentInstance;
         element = fixture.nativeElement;
-        const router: Router = TestBed.get(Router);
+        const router = TestBed.inject(Router);
         router.initialNavigation();
       });
   }));

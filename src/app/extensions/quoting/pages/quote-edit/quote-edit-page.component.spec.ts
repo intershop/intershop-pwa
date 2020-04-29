@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, combineReducers } from '@ngrx/store';
@@ -42,8 +41,7 @@ describe('Quote Edit Page Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    store$ = TestBed.get(Store);
-    location = TestBed.get(Location);
+    store$ = TestBed.inject(Store);
   });
 
   it('should be created', () => {

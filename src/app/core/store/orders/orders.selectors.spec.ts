@@ -53,7 +53,7 @@ describe('Orders Selectors', () => {
       }),
     });
 
-    store$ = TestBed.get(TestStore);
+    store$ = TestBed.inject(TestStore);
   });
 
   describe('with empty state', () => {

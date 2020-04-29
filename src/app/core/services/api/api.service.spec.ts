@@ -41,9 +41,9 @@ describe('Api Service', () => {
         providers: [ApiServiceErrorHandler, ApiService],
       });
 
-      apiService = TestBed.get(ApiService);
-      httpTestingController = TestBed.get(HttpTestingController);
-      storeSpy$ = spy(TestBed.get(Store));
+      apiService = TestBed.inject(ApiService);
+      httpTestingController = TestBed.inject(HttpTestingController);
+      storeSpy$ = spy(TestBed.inject(Store));
     });
 
     afterEach(() => {
@@ -243,8 +243,8 @@ describe('Api Service', () => {
         ],
         providers: [ApiServiceErrorHandler, ApiService],
       });
-      apiService = TestBed.get(ApiService);
-      httpTestingController = TestBed.get(HttpTestingController);
+      apiService = TestBed.inject(ApiService);
+      httpTestingController = TestBed.inject(HttpTestingController);
     });
 
     afterEach(() => {
@@ -415,9 +415,9 @@ describe('Api Service', () => {
         providers: [ApiServiceErrorHandler, ApiService],
       });
 
-      apiService = TestBed.get(ApiService);
-      httpTestingController = TestBed.get(HttpTestingController);
-      store$ = TestBed.get(Store);
+      apiService = TestBed.inject(ApiService);
+      httpTestingController = TestBed.inject(HttpTestingController);
+      store$ = TestBed.inject(Store);
     });
 
     afterEach(() => {

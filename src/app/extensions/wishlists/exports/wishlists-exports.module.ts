@@ -12,7 +12,7 @@ import { LazyWishlistLinkComponent } from './wishlists/lazy-wishlist-link/lazy-w
     FeatureToggleModule,
     ReactiveComponentLoaderModule.withModule({
       moduleId: 'ish-extensions-wishlists',
-      loadChildren: '../wishlists.module#WishlistsModule',
+      loadChildren: () => import('../wishlists.module').then(m => m.WishlistsModule),
     }),
   ],
   declarations: [LazyProductAddToWishlistComponent, LazyWishlistLinkComponent, LazyWishlistWidgetComponent],

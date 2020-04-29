@@ -34,7 +34,7 @@ describe('Mock Interceptor', () => {
         { provide: MUST_MOCK_PATHS, useValue: [] },
       ],
     });
-    mockInterceptor = TestBed.get(MockInterceptor);
+    mockInterceptor = TestBed.inject(MockInterceptor);
   });
 
   describe('REST Path Extraction', () => {

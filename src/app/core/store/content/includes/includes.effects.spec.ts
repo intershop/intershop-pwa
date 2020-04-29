@@ -33,7 +33,7 @@ describe('Includes Effects', () => {
         { provide: CMSService, useFactory: () => instance(cmsServiceMock) },
       ],
     });
-    effects = TestBed.get(IncludesEffects);
+    effects = TestBed.inject(IncludesEffects);
   });
 
   describe('loadContentInclude$', () => {

@@ -43,8 +43,8 @@ describe('Product Listing Effects', () => {
       ],
     });
 
-    router = TestBed.get(Router);
-    store$ = TestBed.get(TestStore);
+    router = TestBed.inject(Router);
+    store$ = TestBed.inject(TestStore);
   });
 
   describe('initializePageSize$', () => {

@@ -36,7 +36,7 @@ describe('Product Add To Basket Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductAddToBasketComponent);
     component = fixture.componentInstance;
-    translate = TestBed.get(TranslateService);
+    translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');
     product = { sku: 'sku' } as Product;

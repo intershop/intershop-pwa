@@ -34,7 +34,7 @@ describe('Categories Service', () => {
       ],
       providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }],
     });
-    categoriesService = TestBed.get(CategoriesService);
+    categoriesService = TestBed.inject(CategoriesService);
   });
 
   describe('getTopLevelCategories()', () => {
