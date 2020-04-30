@@ -102,17 +102,20 @@ export class ProductVariationHelper {
   // TODO: Refactor this to a more functional style
   static findPossibleVariationForSelection(
     selection: VariationSelection,
-    product: VariationProductView
+    product: VariationProductView,
+    changedAttribute?: string
   ): VariationProductView {
-    const valueArray = objectToArray(selection);
+    const selectionArray = objectToArray(selection);
+    const variations = product.variations();
     let possibleVariation: VariationProductView;
+    let matchedVariation: VariationProductView;
 
-    for (const variation of product.variations()) {
+    for (const variation of variations) {
       let quality = 0;
 
       for (const variationAttribute of variation.variableVariationAttributes || []) {
         // selected variant object loop
-        for (const item of valueArray) {
+        for (const item of selectionArray) {
           if (variationAttribute.variationAttributeId === item.key && variationAttribute.value === item.value) {
             quality += 1;
           }
@@ -120,19 +123,31 @@ export class ProductVariationHelper {
       }
 
       // redirect to perfect match
-      if (quality === valueArray.length) {
-        return variation;
+      if (quality === selectionArray.length) {
+        matchedVariation = variation;
+        break;
       }
+
       // store possible redirect uri (quality > 0)
-      if (quality > 0 && !possibleVariation) {
-        possibleVariation = variation;
+      if (quality > 0 && variation.sku !== product.sku) {
+        if (!possibleVariation) {
+          possibleVariation = variation;
+        } else if (changedAttribute) {
+          const filteredVariableVariationAttributes = variation.variableVariationAttributes.filter(
+            x => x.variationAttributeId === changedAttribute
+          );
+          if (
+            filteredVariableVariationAttributes.length === 1 &&
+            filteredVariableVariationAttributes[0].value === selection[changedAttribute]
+          ) {
+            possibleVariation = variation;
+          }
+        }
       }
     }
 
     // redirect if match quality > 0
-    if (possibleVariation) {
-      return possibleVariation;
-    }
+    return matchedVariation || possibleVariation || product;
   }
 
   static hasDefaultVariation(product: VariationProductMasterView): boolean {

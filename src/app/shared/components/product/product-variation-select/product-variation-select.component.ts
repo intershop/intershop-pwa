@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
+import { isEqual } from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -17,11 +18,12 @@ export class ProductVariationSelectComponent implements OnChanges, OnDestroy {
   @Input() readOnly = false;
   @Input() variationOptions: VariationOptionGroup[] = [];
   @Input() productMasterSKU: string;
-  @Output() selectVariation = new EventEmitter<VariationSelection>();
+  @Output() selectVariation = new EventEmitter<{ selection: VariationSelection; changedAttribute?: string }>();
 
   form: FormGroup;
   advancedVariationHandling: boolean;
   uuid = UUID.UUID();
+  initialSelection: VariationSelection;
 
   private destroy$ = new Subject();
 
@@ -36,8 +38,19 @@ export class ProductVariationSelectComponent implements OnChanges, OnDestroy {
   initForm() {
     if (this.variationOptions) {
       this.form = this.buildSelectForm(this.variationOptions);
-      this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(this.selectVariation);
+      this.initialSelection = this.form.getRawValue();
+      this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(selection => {
+        this.selectVariation.emit({ selection, changedAttribute: this.getChangedAttribute(selection) });
+      });
     }
+  }
+
+  getChangedAttribute(selection) {
+    const diff = Object.keys(selection).reduce(
+      (acc, k) => (isEqual(selection[k], this.initialSelection[k]) ? acc : acc.concat(k)),
+      []
+    );
+    return diff && diff.length === 1 ? diff[0] : undefined;
   }
 
   getActiveOption(group: VariationOptionGroup) {
