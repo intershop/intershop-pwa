@@ -23,7 +23,7 @@ describe('Checkbox Dynamic Component', () => {
         component.field = {
           key: 'test',
           templateOptions: {},
-          fieldGroupClassName: 'offset',
+          fieldGroupClassName: undefined,
         };
       });
   }));
@@ -35,16 +35,16 @@ describe('Checkbox Dynamic Component', () => {
   });
 
   it('should render a checkbox form component if field is provided', () => {
+    component.field = {
+      key: 'test',
+      templateOptions: {},
+      fieldGroupClassName: 'offset',
+    };
     fixture.detectChanges();
     expect(element.querySelector('ish-checkbox')).toBeTruthy();
   });
 
   it('should not render an checkbox form component if field is missing', () => {
-    component.field = {
-      key: 'test',
-      templateOptions: {},
-      fieldGroupClassName: undefined,
-    };
     fixture.detectChanges();
     expect(element.querySelector('ish-checkbox')).toBeFalsy();
   });
