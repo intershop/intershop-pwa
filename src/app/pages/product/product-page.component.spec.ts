@@ -165,7 +165,7 @@ describe('Product Page Component', () => {
 
     fixture.detectChanges();
 
-    component.variationSelected(selection, product);
+    component.variationSelected({ selection }, product);
     tick(500);
 
     expect(location.path()).toMatchInlineSnapshot(`"/sku333"`);

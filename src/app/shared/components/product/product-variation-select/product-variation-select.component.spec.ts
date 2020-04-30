@@ -105,8 +105,11 @@ describe('Product Variation Select Component', () => {
 
     component.selectVariation.subscribe(selection => {
       expect(selection).toEqual({
-        a1: 'A',
-        a2: 'D',
+        changedAttribute: 'a1',
+        selection: {
+          a1: 'A',
+          a2: 'D',
+        },
       });
       done();
     });

@@ -110,9 +110,13 @@ export class LineItemEditDialogComponent implements OnInit, OnDestroy, OnChanges
   /**
    * handle form-change for variations
    */
-  variationSelected(selection: VariationSelection) {
+  variationSelected(event: { selection: VariationSelection; changedAttribute?: string }) {
     this.variation$.pipe(take(1)).subscribe((product: VariationProductView) => {
-      const { sku } = ProductVariationHelper.findPossibleVariationForSelection(selection, product);
+      const { sku } = ProductVariationHelper.findPossibleVariationForSelection(
+        event.selection,
+        product,
+        event.changedAttribute
+      );
       this.sku$.next(sku);
     });
   }

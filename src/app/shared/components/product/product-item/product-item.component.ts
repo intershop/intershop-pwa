@@ -126,14 +126,18 @@ export class ProductItemComponent implements OnInit, OnChanges, OnDestroy {
     this.sku$.pipe(take(1)).subscribe(sku => this.shoppingFacade.addProductToBasket(sku, quantity));
   }
 
-  replaceVariation(selection: VariationSelection) {
+  replaceVariation(event: { selection: VariationSelection; changedAttribute?: string }) {
     this.product$
       .pipe(
         take(1),
         filter<VariationProductView>(product => ProductHelper.isVariationProduct(product))
       )
       .subscribe(product => {
-        const { sku } = ProductVariationHelper.findPossibleVariationForSelection(selection, product);
+        const { sku } = ProductVariationHelper.findPossibleVariationForSelection(
+          event.selection,
+          product,
+          event.changedAttribute
+        );
         this.productSkuChange.emit(sku);
       });
   }

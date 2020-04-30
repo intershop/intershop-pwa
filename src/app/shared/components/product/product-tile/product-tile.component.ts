@@ -36,7 +36,7 @@ export class ProductTileComponent {
   @Input() isInCompareList: boolean;
   @Output() compareToggle = new EventEmitter<void>();
   @Output() productToBasket = new EventEmitter<number>();
-  @Output() selectVariation = new EventEmitter<VariationSelection>();
+  @Output() selectVariation = new EventEmitter<{ selection: VariationSelection; changedAttribute?: string }>();
 
   isMasterProduct = ProductHelper.isMasterProduct;
 
@@ -48,8 +48,8 @@ export class ProductTileComponent {
     this.compareToggle.emit();
   }
 
-  variationSelected(selection: VariationSelection) {
-    this.selectVariation.emit(selection);
+  variationSelected(event: { selection: VariationSelection; changedAttribute?: string }) {
+    this.selectVariation.emit(event);
   }
 
   get variationCount() {
