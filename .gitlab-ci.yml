@@ -141,7 +141,7 @@ compile:
     - npm ci --prefer-offline
     - npx tsc -p tsconfig.all.json
     - cd e2e
-    - npm ci
+    - npm i
     - npx tsc -p cypress/tsconfig.json
     - echo "build complete"
 

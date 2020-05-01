@@ -27,6 +27,7 @@ jobs:
         uses: bahmutov/npm-install@v1
         with:
           working-directory: e2e
+          useLockFile: false
 
       - name: Install schematics dependencies
         uses: bahmutov/npm-install@v1
@@ -44,7 +45,7 @@ jobs:
 
       - name: Possible npm Updates
         if: always()
-        run: npm outdated --long
+        run: npm outdated --long || true
 
       - name: Must Have Updates for PWA
         run: npm audit --production
@@ -61,7 +62,7 @@ jobs:
       - name: npm audit -- e2e
         if: always()
         run: |
-          npm --prefix e2e outdated --long
+          npm --prefix e2e outdated --long || true
           npm --prefix e2e audit || true
 
       - name: npm audit -- schematics

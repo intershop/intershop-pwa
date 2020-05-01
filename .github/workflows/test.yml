@@ -36,6 +36,7 @@ jobs:
         uses: bahmutov/npm-install@v1
         with:
           working-directory: e2e
+          useLockFile: false
 
       - name: Code Formatting
         run: |
@@ -216,6 +217,12 @@ jobs:
         if: matrix.test == 'mock'
         uses: bahmutov/npm-install@v1
 
+      - name: Install e2e dependencies
+        uses: bahmutov/npm-install@v1
+        with:
+          working-directory: e2e
+          useLockFile: false
+
       - name: Download Build Output
         if: matrix.test != 'mock'
         uses: actions/download-artifact@v1
@@ -252,6 +259,7 @@ jobs:
       - name: Cypress
         uses: cypress-io/github-action@v1.24.0
         with:
+          install: false
           wait-on: 'http://localhost:4200'
           wait-on-timeout: 180
           working-directory: e2e
