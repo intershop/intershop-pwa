@@ -6,4 +6,5 @@ import { FieldType } from '@ngx-formly/core';
   templateUrl: './input-dynamic.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
+// tslint:disable-next-line: component-creation-test
 export class InputDynamicComponent extends FieldType {}

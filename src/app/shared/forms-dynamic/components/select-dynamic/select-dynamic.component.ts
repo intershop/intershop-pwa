@@ -6,4 +6,5 @@ import { FieldType } from '@ngx-formly/core';
   templateUrl: './select-dynamic.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
+// tslint:disable-next-line: component-creation-test
 export class SelectDynamicComponent extends FieldType {}

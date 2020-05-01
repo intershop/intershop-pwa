@@ -6,4 +6,5 @@ import { FieldType } from '@ngx-formly/core';
   templateUrl: './checkbox-dynamic.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
+// tslint:disable-next-line: component-creation-test
 export class CheckboxDynamicComponent extends FieldType {}
