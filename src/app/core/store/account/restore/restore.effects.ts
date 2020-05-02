@@ -18,7 +18,7 @@ import {
 } from 'rxjs/operators';
 
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
-import { LoadBasket, LoadBasketByAPIToken, ResetBasket, getCurrentBasket } from 'ish-core/store/account/basket';
+import { LoadBasket, LoadBasketByAPIToken, getCurrentBasket } from 'ish-core/store/account/basket';
 import { LoadOrderByAPIToken, getSelectedOrderId } from 'ish-core/store/account/orders';
 import {
   LoadUserByAPIToken,
@@ -136,7 +136,7 @@ export class RestoreEffects {
         withLatestFrom(this.store$.pipe(select(getLoggedInUser)), this.store$.pipe(select(getCurrentBasket))),
         map(([, user, basket]) => ({ user, basket, apiToken: this.cookieService.get('apiToken') })),
         filter(({ user, basket, apiToken }) => !user && basket && !apiToken),
-        mapTo(new ResetBasket())
+        mapTo(new LogoutUser())
       )
     )
   );

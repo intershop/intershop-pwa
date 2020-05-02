@@ -10,9 +10,7 @@ import { getLoggedInCustomer } from 'ish-core/store/account/user';
 import { getCategoryTree } from 'ish-core/store/shopping/categories';
 import { getProductEntities } from 'ish-core/store/shopping/products';
 
-import { initialState } from './basket.reducer';
-
-const getBasketState = createSelector(getAccountState, state => (state && state.basket) || initialState);
+const getBasketState = createSelector(getAccountState, state => state.basket);
 
 export const getBasketValidationResults = createSelector(
   getBasketState,

@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { identity } from 'rxjs';
-import { groupBy, map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
+import { groupBy, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { CMSService } from 'ish-core/services/cms/cms.service';
-import { UserActionTypes } from 'ish-core/store/account/user';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 
 import * as includesActions from './includes.actions';
@@ -28,11 +27,5 @@ export class IncludesEffects {
         )
       )
     )
-  );
-
-  @Effect()
-  resetContentIncludesAfterLogout$ = this.actions$.pipe(
-    ofType(UserActionTypes.LogoutUser),
-    mapTo(new includesActions.ResetContentIncludes())
   );
 }

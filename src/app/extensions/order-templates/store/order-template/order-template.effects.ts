@@ -5,7 +5,7 @@ import { concat } from 'rxjs';
 import { concatMap, filter, last, map, mapTo, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { getCurrentBasket } from 'ish-core/store/account/basket';
-import { UserActionTypes, getUserAuthorized } from 'ish-core/store/account/user';
+import { getUserAuthorized } from 'ish-core/store/account/user';
 import { SuccessMessage } from 'ish-core/store/core/messages';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { SetBreadcrumbData } from 'ish-core/store/core/viewconf';
@@ -252,16 +252,6 @@ export class OrderTemplateEffects {
     select(getUserAuthorized),
     whenTruthy(),
     mapTo(new orderTemplateActions.LoadOrderTemplates())
-  );
-
-  /**
-   * Trigger ResetOrderTemplateState action after LogoutUser.
-   */
-  @Effect()
-  resetOrderTemplateStateAfterLogout$ = this.actions$.pipe(
-    ofType(UserActionTypes.LogoutUser),
-
-    mapTo(new orderTemplateActions.ResetOrderTemplateState())
   );
 
   @Effect()

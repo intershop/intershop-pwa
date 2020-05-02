@@ -20,7 +20,7 @@ import {
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { ContinueCheckoutWithIssues, LoadBasket } from 'ish-core/store/account/basket';
-import { UserActionTypes, getLoggedInUser } from 'ish-core/store/account/user';
+import { getLoggedInUser } from 'ish-core/store/account/user';
 import { ofUrl, selectQueryParams, selectRouteParam } from 'ish-core/store/core/router';
 import { SetBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
@@ -223,15 +223,6 @@ export class OrdersEffects {
       })
     ),
     mapTo(new LoadBasket())
-  );
-
-  /**
-   * Trigger ResetOrders action after LogoutUser.
-   */
-  @Effect()
-  resetOrdersAfterLogout$ = this.actions$.pipe(
-    ofType(UserActionTypes.LogoutUser),
-    mapTo(new ordersActions.ResetOrders())
   );
 
   @Effect()

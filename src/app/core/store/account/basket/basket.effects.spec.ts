@@ -17,7 +17,7 @@ import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { AccountStoreModule } from 'ish-core/store/account/account-store.module';
-import { LoginUser, LoginUserSuccess, LogoutUser, SetAPIToken } from 'ish-core/store/account/user';
+import { LoginUser, LoginUserSuccess, SetAPIToken } from 'ish-core/store/account/user';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { LoadProductIfNotLoaded, LoadProductSuccess } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
@@ -407,17 +407,6 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c', { c: completion });
 
       expect(effects.loadBasketAfterLogin$).toBeObservable(expected$);
-    });
-  });
-
-  describe('resetBasketAfterLogout$', () => {
-    it('should map to action of type ResetBasket if LogoutUser action triggered', () => {
-      const action = new LogoutUser();
-      const completion = new basketActions.ResetBasket();
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.resetBasketAfterLogout$).toBeObservable(expected$);
     });
   });
 

@@ -17,8 +17,8 @@ export const getUserAuthorized = createSelector(getUserState, state => state.aut
 export const getUserPaymentMethods = createSelector(getUserState, state => state.paymentMethods);
 export const getUserLoading = createSelector(getUserState, state => state.loading);
 export const getUserError = createSelector(getUserState, state => state.error);
-export const getAPIToken = createSelector(getUserState, state => state._authToken);
-export const getLastAPITokenBeforeLogin = createSelector(getUserState, state => state._lastAuthTokenBeforeLogin);
+export const getAPIToken = createSelector(getUserState, state => state.authToken);
+export const getLastAPITokenBeforeLogin = createSelector(getUserState, state => state.lastAuthTokenBeforeLogin);
 export const getPGID = createSelector(getUserState, state => state.pgid);
 
 export const getPasswordReminderSuccess = createSelector(getUserState, state => state.passwordReminderSuccess);

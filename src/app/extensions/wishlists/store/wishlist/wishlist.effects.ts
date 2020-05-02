@@ -3,7 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { debounceTime, filter, map, mapTo, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { UserActionTypes, getUserAuthorized } from 'ish-core/store/account/user';
+import { getUserAuthorized } from 'ish-core/store/account/user';
 import { SuccessMessage } from 'ish-core/store/core/messages';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { SetBreadcrumbData } from 'ish-core/store/core/viewconf';
@@ -190,16 +190,6 @@ export class WishlistEffects {
     whenTruthy(),
     debounceTime(1000),
     mapTo(new wishlistsActions.LoadWishlists())
-  );
-
-  /**
-   * Trigger ResetWishlistState action after LogoutUser.
-   */
-  @Effect()
-  resetWishlistStateAfterLogout$ = this.actions$.pipe(
-    ofType(UserActionTypes.LogoutUser),
-
-    mapTo(new wishlistsActions.ResetWishlistState())
   );
 
   @Effect()

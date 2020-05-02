@@ -15,7 +15,6 @@ export enum AddressActionTypes {
   DeleteCustomerAddress = '[Address] Delete Customer Address',
   DeleteCustomerAddressFail = '[Address API] Delete Customer Address Fail',
   DeleteCustomerAddressSuccess = '[Address API] Delete Customer Address Success',
-  ResetAddresses = '[Address Internal] Reset Addresses',
 }
 
 export class LoadAddresses implements Action {
@@ -71,9 +70,6 @@ export class DeleteCustomerAddressSuccess implements Action {
   readonly type = AddressActionTypes.DeleteCustomerAddressSuccess;
   constructor(public payload: { addressId: string }) {}
 }
-export class ResetAddresses implements Action {
-  readonly type = AddressActionTypes.ResetAddresses;
-}
 
 export type AddressAction =
   | LoadAddresses
@@ -86,5 +82,4 @@ export type AddressAction =
   | UpdateCustomerAddressSuccess
   | DeleteCustomerAddress
   | DeleteCustomerAddressFail
-  | DeleteCustomerAddressSuccess
-  | ResetAddresses;
+  | DeleteCustomerAddressSuccess;

@@ -145,16 +145,6 @@ export class BasketEffects {
   );
 
   /**
-   * Trigger ResetBasket action after LogoutUser.
-   */
-  @Effect()
-  resetBasketAfterLogout$ = this.actions$.pipe(
-    ofType(UserActionTypes.LogoutUser),
-
-    mapTo(new basketActions.ResetBasket())
-  );
-
-  /**
    * Trigger ResetBasketErrors after the user navigated to another basket/checkout route
    * Add queryParam error=true to the route to prevent resetting errors.
    *

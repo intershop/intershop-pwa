@@ -18,7 +18,6 @@ export enum OrdersActionTypes {
   LoadOrderSuccess = '[Order API] Load Order Success',
   SelectOrderAfterRedirect = '[Order Internal] Select Order After Checkout Redirect',
   SelectOrderAfterRedirectFail = '[Order API] Select Order Fail After Checkout Redirect',
-  ResetOrders = '[Order API] Reset Orders',
 }
 
 export class CreateOrder implements Action {
@@ -85,10 +84,6 @@ export class SelectOrderAfterRedirectFail implements Action {
   constructor(public payload: { error: HttpError }) {}
 }
 
-export class ResetOrders implements Action {
-  readonly type = OrdersActionTypes.ResetOrders;
-}
-
 export type OrdersAction =
   | CreateOrder
   | CreateOrderFail
@@ -102,5 +97,4 @@ export type OrdersAction =
   | LoadOrderSuccess
   | SelectOrder
   | SelectOrderAfterRedirect
-  | SelectOrderAfterRedirectFail
-  | ResetOrders;
+  | SelectOrderAfterRedirectFail;

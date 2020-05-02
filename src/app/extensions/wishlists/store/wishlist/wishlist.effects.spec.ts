@@ -12,7 +12,7 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { AccountStoreModule } from 'ish-core/store/account/account-store.module';
-import { LoginUserSuccess, LogoutUser } from 'ish-core/store/account/user';
+import { LoginUserSuccess } from 'ish-core/store/account/user';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { SuccessMessage } from 'ish-core/store/core/messages';
 
@@ -38,7 +38,6 @@ import {
   RemoveItemFromWishlist,
   RemoveItemFromWishlistFail,
   RemoveItemFromWishlistSuccess,
-  ResetWishlistState,
   SelectWishlist,
   UpdateWishlist,
   UpdateWishlistFail,
@@ -519,17 +518,6 @@ describe('Wishlist Effects', () => {
       });
 
       store$.dispatch(new LoginUserSuccess({ customer }));
-    });
-  });
-
-  describe('resetWishlistStateAfterLogout$', () => {
-    it('should map to action of type ResetWishlistState if LogoutUser action triggered', () => {
-      const action = new LogoutUser();
-      const completion = new ResetWishlistState();
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.resetWishlistStateAfterLogout$).toBeObservable(expected$);
     });
   });
 

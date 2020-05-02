@@ -145,18 +145,4 @@ describe('Orders Reducer', () => {
       expect(state.selected).toEqual(order.id);
     });
   });
-
-  describe('ResetOrders action', () => {
-    it('should reset to initial state', () => {
-      const oldState = {
-        ...initialState,
-        loading: true,
-        orders: [{ ids: ['test'] }],
-      };
-      const action = new fromActions.ResetOrders();
-      const state = ordersReducer(oldState, action);
-
-      expect(state).toEqual(initialState);
-    });
-  });
 });

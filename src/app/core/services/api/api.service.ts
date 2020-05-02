@@ -9,6 +9,7 @@ import { Link } from 'ish-core/models/link/link.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { getAPIToken, getPGID } from 'ish-core/store/account/user';
 import { getCurrentLocale, getICMServerURL, getRestEndpoint } from 'ish-core/store/core/configuration';
+import { waitForFeatureStore } from 'ish-core/utils/operators';
 
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 
@@ -126,8 +127,8 @@ export class ApiService {
     store.pipe(select(getCurrentLocale)).subscribe(locale => (this.currentLocale = locale));
     store.pipe(select(getICMServerURL)).subscribe(url => (this.icmServerURL = url));
     store.pipe(select(getRestEndpoint)).subscribe(url => (this.restEndpoint = url));
-    store.pipe(select(getAPIToken)).subscribe(token => (this.apiToken = token));
-    store.pipe(select(getPGID)).subscribe(pgid => (this.pgid = pgid));
+    store.pipe(waitForFeatureStore('_account'), select(getAPIToken)).subscribe(token => (this.apiToken = token));
+    store.pipe(waitForFeatureStore('_account'), select(getPGID)).subscribe(pgid => (this.pgid = pgid));
   }
 
   /**

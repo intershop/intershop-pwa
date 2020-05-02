@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concatMap, filter, map, mapTo, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { AddressService } from 'ish-core/services/address/address.service';
-import { UserActionTypes, getLoggedInCustomer } from 'ish-core/store/account/user';
+import { getLoggedInCustomer } from 'ish-core/store/account/user';
 import { SuccessMessage } from 'ish-core/store/core/messages';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 
@@ -66,14 +66,5 @@ export class AddressesEffects {
         mapErrorToAction(addressActions.DeleteCustomerAddressFail)
       )
     )
-  );
-
-  /**
-   * Trigger ResetAddresses action after LogoutUser.
-   */
-  @Effect()
-  resetAddressesAfterLogout$ = this.actions$.pipe(
-    ofType(UserActionTypes.LogoutUser),
-    mapTo(new addressActions.ResetAddresses())
   );
 }

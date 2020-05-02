@@ -10,7 +10,7 @@ import { Order } from 'ish-core/models/order/order.model';
 import { User } from 'ish-core/models/user/user.model';
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
 import { AccountStoreModule } from 'ish-core/store/account/account-store.module';
-import { BasketActionTypes, LoadBasketSuccess, ResetBasket } from 'ish-core/store/account/basket';
+import { BasketActionTypes, LoadBasketSuccess } from 'ish-core/store/account/basket';
 import { LoadOrderSuccess, OrdersActionTypes } from 'ish-core/store/account/orders';
 import { LoginUserSuccess, LogoutUser, SetAPIToken, UserActionTypes } from 'ish-core/store/account/user';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -201,7 +201,7 @@ describe('Restore Effects', () => {
 
       restoreEffects.removeAnonymousBasketIfTokenVanishes$.subscribe({
         next: action => {
-          expect(action.type).toEqual(BasketActionTypes.ResetBasket);
+          expect(action.type).toEqual(UserActionTypes.LogoutUser);
           done();
         },
         complete: fail,
@@ -242,7 +242,7 @@ describe('Restore Effects', () => {
 
       jest.advanceTimersByTime(RestoreEffects.SESSION_KEEP_ALIVE / 2);
 
-      store$.dispatch(new ResetBasket());
+      store$.dispatch(new LogoutUser());
 
       jest.advanceTimersByTime(RestoreEffects.SESSION_KEEP_ALIVE + 100);
 
