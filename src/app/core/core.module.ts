@@ -1,85 +1,51 @@
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
+import { ServiceWorkerModule } from '@angular/service-worker';
 import { FormlyModule } from '@ngx-formly/core';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateModule } from '@ngx-translate/core';
 import { NgxCookieBannerModule } from 'ngx-cookie-banner';
-import { SWIPER_CONFIG, SwiperConfigInterface } from 'ngx-swiper-wrapper';
-import { ToastrModule } from 'ngx-toastr';
 import { BrowserCookiesModule } from 'ngx-utils-cookies-port';
 
+import { environment } from '../../environments/environment';
+
+import { AppearanceModule } from './appearance.module';
 import { ConfigurationModule } from './configuration.module';
 import { ExtrasModule } from './extras.module';
-import { IconModule } from './icon.module';
+import { FeatureToggleModule } from './feature-toggle.module';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { MockInterceptor } from './interceptors/mock.interceptor';
+import { InternationalizationModule } from './internationalization.module';
 import { StateManagementModule } from './state-management.module';
 import { ModuleLoaderService } from './utils/module-loader/module-loader.service';
 
-export function translateFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
-}
-
-const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
-  direction: 'horizontal',
-  keyboard: true,
-  mousewheel: false,
-  navigation: true,
-  scrollbar: false,
-};
 @NgModule({
   imports: [
+    AppearanceModule,
     BrowserCookiesModule.forRoot(),
     ConfigurationModule,
     ExtrasModule,
+    FeatureToggleModule,
     FormlyModule.forRoot(),
     HttpClientModule,
-    IconModule,
+    InternationalizationModule,
     NgxCookieBannerModule.forRoot({
       cookieName: 'cookieLawSeen',
     }),
-    RouterModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.serviceWorker }),
     StateManagementModule,
-    ToastrModule.forRoot({
-      closeButton: true,
-      timeOut: 3000,
-      positionClass: 'toast-top-full-width', // toast-top-center
-      preventDuplicates: true,
-    }),
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: translateFactory,
-        deps: [HttpClient],
-      },
-    }),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
-    { provide: SWIPER_CONFIG, useValue: DEFAULT_SWIPER_CONFIG },
   ],
   // exports needed to use the cookie banner in the AppComponent
   exports: [NgxCookieBannerModule, TranslateModule],
 })
 export class CoreModule {
-  constructor(
-    @Optional()
-    @SkipSelf()
-    parentModule: CoreModule,
-    popoverConfig: NgbPopoverConfig,
-    moduleLoader: ModuleLoaderService
-  ) {
+  constructor(@Optional() @SkipSelf() parentModule: CoreModule, moduleLoader: ModuleLoaderService) {
     if (parentModule) {
       throw new Error('CoreModule is already loaded. Import it in the AppModule only');
     }
-
-    popoverConfig.placement = 'top';
-    popoverConfig.triggers = 'hover';
-    popoverConfig.container = 'body';
-
     moduleLoader.init();
   }
 }

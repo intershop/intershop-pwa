@@ -1,6 +1,5 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserTransferStateModule, TransferState } from '@angular/platform-browser';
-import { ServiceWorkerModule } from '@angular/service-worker';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -17,7 +16,6 @@ import { ShoppingStoreModule } from './store/shopping/shopping-store.module';
 
 @NgModule({
   imports: [
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.serviceWorker }),
     BrowserTransferStateModule,
     CoreStoreModule,
     StoreDevtoolsModule.instrument({
