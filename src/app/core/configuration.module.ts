@@ -1,17 +1,10 @@
-import { registerLocaleData } from '@angular/common';
-import localeDe from '@angular/common/locales/de';
-import localeFr from '@angular/common/locales/fr';
-import { Inject, LOCALE_ID, NgModule } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { NgModule } from '@angular/core';
 
 import { environment } from '../../environments/environment';
 
 import * as injectionKeys from './configurations/injection-keys';
-import { FeatureToggleModule } from './feature-toggle.module';
-import { ThemeService } from './utils/theme/theme.service';
 
 @NgModule({
-  imports: [FeatureToggleModule],
   providers: [
     // tslint:disable-next-line:no-string-literal
     { provide: injectionKeys.MOCK_SERVER_API, useValue: environment['mockServerAPI'] },
@@ -32,12 +25,4 @@ import { ThemeService } from './utils/theme/theme.service';
     { provide: injectionKeys.THEME, useValue: environment.theme },
   ],
 })
-export class ConfigurationModule {
-  constructor(@Inject(LOCALE_ID) lang: string, translateService: TranslateService, themeService: ThemeService) {
-    themeService.init();
-    registerLocaleData(localeDe);
-    registerLocaleData(localeFr);
-
-    translateService.setDefaultLang(lang.replace(/\-/, '_'));
-  }
-}
+export class ConfigurationModule {}
