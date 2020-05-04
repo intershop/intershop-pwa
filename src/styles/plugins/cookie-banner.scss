@@ -1,6 +1,6 @@
 // CookieLaw plugin theme customizations
 
-.cookie-law-wrapper {
+.banner {
   background: $color-primary !important;
   opacity: 0.9;
 
@@ -37,7 +37,11 @@
   }
 
   .copy {
-    padding-right: 16px !important;
+    padding: 20px 16px 20px 20px;
+    @media (min-width: $screen-md-min) {
+      font-size: $font-size-lg;
+      line-height: 24px;
+    }
   }
 
   .button-container {

@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { CookieLawModule } from 'angular2-cookie-law';
 import { MockComponent, MockDirective } from 'ng-mocks';
+import { NgxCookieBannerModule } from 'ngx-cookie-banner';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { coreReducers } from 'ish-core/store/core-store.module';
@@ -30,7 +30,9 @@ describe('App Component', () => {
         MockDirective(ServerHtmlDirective),
       ],
       imports: [
-        CookieLawModule,
+        NgxCookieBannerModule.forRoot({
+          cookieName: 'cookieLawSeen',
+        }),
         NoopAnimationsModule,
         RouterTestingModule,
         TranslateModule.forRoot(),
