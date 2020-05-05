@@ -20,7 +20,7 @@ import { ProductVariationSelectComponent } from 'ish-shared/components/product/p
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
 
 import { LazyProductAddToQuoteComponent } from '../../../../extensions/quoting/exports/product/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
-import { LazyProductAddToWishlistComponent } from '../../../../extensions/wishlists/exports/products/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
+import { LazyProductAddToWishlistComponent } from '../../../../extensions/wishlists/exports/product/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
 import { ProductAddToWishlistComponent } from '../../../../extensions/wishlists/shared/product/product-add-to-wishlist/product-add-to-wishlist.component';
 
 import { ProductTileComponent } from './product-tile.component';

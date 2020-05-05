@@ -1,17 +1,18 @@
 import { NgModule } from '@angular/core';
-import { ReactiveComponentLoaderModule } from '@wishtack/reactive-component-loader';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
 
-import { LazyHeaderQuickorderComponent } from './quickorder/lazy-header-quickorder/lazy-header-quickorder.component';
+import { LazyHeaderQuickorderComponent } from './header/lazy-header-quickorder/lazy-header-quickorder.component';
 
 @NgModule({
-  imports: [
-    FeatureToggleModule,
-    ReactiveComponentLoaderModule.withModule({
-      moduleId: 'ish-extensions-quickorder',
-      loadChildren: () => import('../quickorder.module').then(m => m.QuickorderModule),
-    }),
+  imports: [FeatureToggleModule],
+  providers: [
+    {
+      provide: LAZY_FEATURE_MODULE,
+      useValue: { feature: 'quickorder', location: import('../quickorder.module') },
+      multi: true,
+    },
   ],
   declarations: [LazyHeaderQuickorderComponent],
   exports: [LazyHeaderQuickorderComponent],

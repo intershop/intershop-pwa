@@ -3,6 +3,8 @@ import { countBy } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
+
 import { QuotingFacade } from '../../../facades/quoting.facade';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../models/quote/quote.model';
@@ -14,6 +16,7 @@ type DisplayState = 'New' | 'Submitted' | 'Accepted' | 'Rejected';
   templateUrl: './quote-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+@GenerateLazyComponent()
 // tslint:disable-next-line:ccp-no-markup-in-containers
 export class QuoteWidgetComponent implements OnInit {
   loading$: Observable<boolean>;

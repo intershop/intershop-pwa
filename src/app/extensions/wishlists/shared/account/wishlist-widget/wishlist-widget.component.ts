@@ -3,6 +3,7 @@ import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { Observable } from 'rxjs';
 
 import { LARGE_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
+import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 import {
   DEFAULT_CONFIGURATION,
   ProductItemContainerConfiguration,
@@ -18,6 +19,7 @@ import { WishlistsFacade } from '../../../facades/wishlists.facade';
   templateUrl: './wishlist-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+@GenerateLazyComponent()
 export class WishlistWidgetComponent implements OnInit {
   allWishlistsItemsSkus$: Observable<string[]>;
   itemsPerSlide = 4;
