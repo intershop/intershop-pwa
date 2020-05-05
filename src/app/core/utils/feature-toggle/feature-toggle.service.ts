@@ -8,7 +8,7 @@ export class FeatureToggleService {
   private featureToggles: string[];
 
   constructor(store: Store<{}>) {
-    store.pipe(select(getFeatures)).subscribe(features => (this.featureToggles = features));
+    store.pipe(select(getFeatures)).subscribe(features => (this.featureToggles = features || []));
   }
 
   enabled(feature: string): boolean {
