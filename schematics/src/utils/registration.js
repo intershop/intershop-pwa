@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular-devkit/core");
+const tsquery_1 = require("@phenomnomnominal/tsquery");
 const ast_utils_1 = require("@schematics/angular/utility/ast-utils");
 const change_1 = require("@schematics/angular/utility/change");
 const find_module_1 = require("@schematics/angular/utility/find-module");
@@ -118,3 +119,19 @@ function addImportToFile(options) {
     };
 }
 exports.addImportToFile = addImportToFile;
+function addDecoratorToClass(file, className, decoratorName, decoratorImport) {
+    return host => {
+        const source = filesystem_1.readIntoSourceFile(host, file);
+        tsquery_1.tsquery(source, `ClassDeclaration:has(Identifier[name=${className}])`).forEach((classDeclaration) => {
+            const exists = classDeclaration.decorators.find(decorator => tsquery_1.tsquery(decorator, 'Identifier').find(id => id.getText() === decoratorName));
+            if (!exists) {
+                const recorder = host.beginUpdate(file);
+                const exportKeyword = tsquery_1.tsquery(source, `ClassDeclaration:has(Identifier[name=${className}]) > ExportKeyword`)[0];
+                recorder.insertLeft(exportKeyword.getStart(), `@${decoratorName}()\n`);
+                insertImport(source, recorder, decoratorName, decoratorImport);
+                host.commitUpdate(recorder);
+            }
+        });
+    };
+}
+exports.addDecoratorToClass = addDecoratorToClass;
