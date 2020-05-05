@@ -1,5 +1,6 @@
 import { strings } from '@angular-devkit/core';
 import { Rule, UpdateRecorder } from '@angular-devkit/schematics';
+import { tsquery } from '@phenomnomnominal/tsquery';
 import {
   addDeclarationToModule,
   addExportToModule,
@@ -176,5 +177,36 @@ export function addImportToFile(options: { module?: string; artifactName?: strin
     insertImport(source, importRecorder, options.artifactName, relativePath);
 
     host.commitUpdate(importRecorder);
+  };
+}
+
+export function addDecoratorToClass(
+  file: string,
+  className: string,
+  decoratorName: string,
+  decoratorImport: string
+): Rule {
+  return host => {
+    const source = readIntoSourceFile(host, file);
+    tsquery(source, `ClassDeclaration:has(Identifier[name=${className}])`).forEach(
+      (classDeclaration: ts.ClassDeclaration) => {
+        const exists = classDeclaration.decorators.find(decorator =>
+          tsquery(decorator, 'Identifier').find(id => id.getText() === decoratorName)
+        );
+        if (!exists) {
+          const recorder = host.beginUpdate(file);
+
+          const exportKeyword = tsquery(
+            source,
+            `ClassDeclaration:has(Identifier[name=${className}]) > ExportKeyword`
+          )[0];
+          recorder.insertLeft(exportKeyword.getStart(), `@${decoratorName}()\n`);
+
+          insertImport(source, recorder, decoratorName, decoratorImport);
+
+          host.commitUpdate(recorder);
+        }
+      }
+    );
   };
 }

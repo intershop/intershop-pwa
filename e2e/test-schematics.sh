@@ -48,6 +48,15 @@ stat src/app/extensions/awesome/pages/awesome-routing.module.ts
 stat src/app/extensions/awesome/store/awesome-store.module.ts
 stat src/app/extensions/awesome/exports/awesome-exports.module.ts
 
+npx ng g c extensions/awesome/shared/group/dummy
+stat src/app/extensions/awesome/shared/group/dummy/dummy.component.ts
+
+npx ng g lazy-component extensions/awesome/shared/group/dummy/dummy.component.ts
+stat src/app/extensions/awesome/exports/group/lazy-dummy/lazy-dummy.component.ts
+npm run lint -- --format stylish --fix --files src/app/extensions/awesome/exports/group/lazy-dummy/lazy-dummy.component.ts
+grep "LazyDummyComponent" src/app/extensions/awesome/exports/awesome-exports.module.ts
+
+
 npx ng g s super -e awesome
 stat src/app/extensions/awesome/services/super/super.service.ts
 
