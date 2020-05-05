@@ -17,6 +17,7 @@ import { IconModule } from './icon.module';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { MockInterceptor } from './interceptors/mock.interceptor';
 import { StateManagementModule } from './state-management.module';
+import { ModuleLoaderService } from './utils/module-loader/module-loader.service';
 
 export function translateFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -68,7 +69,8 @@ export class CoreModule {
     @Optional()
     @SkipSelf()
     parentModule: CoreModule,
-    popoverConfig: NgbPopoverConfig
+    popoverConfig: NgbPopoverConfig,
+    moduleLoader: ModuleLoaderService
   ) {
     if (parentModule) {
       throw new Error('CoreModule is already loaded. Import it in the AppModule only');
@@ -77,5 +79,7 @@ export class CoreModule {
     popoverConfig.placement = 'top';
     popoverConfig.triggers = 'hover';
     popoverConfig.container = 'body';
+
+    moduleLoader.init();
   }
 }

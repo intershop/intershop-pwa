@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
-import { ReactiveComponentLoaderModule } from '@wishtack/reactive-component-loader';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
 
 @NgModule({
-  imports: [
-    FeatureToggleModule,
-    ReactiveComponentLoaderModule.withModule({
-      moduleId: 'ish-extensions-<%= dasherize(name) %>',
-      loadChildren: '../<%= dasherize(name) %>.module#<%= classify(name) %>Module',
-    }),
+  imports: [FeatureToggleModule],
+  providers: [
+    {
+      provide: LAZY_FEATURE_MODULE,
+      useValue: { feature: '<%= dasherize(name) %>', location: import('../<%= dasherize(name) %>.module') },
+      multi: true,
+    },
   ],
   declarations: [],
   exports: [],
