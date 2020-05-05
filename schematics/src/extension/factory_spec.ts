@@ -36,6 +36,7 @@ describe('Extension Schematic', () => {
     expect(files).toMatchInlineSnapshot(`
       Array [
         "/projects/bar/src/app/extensions/foo/foo.module.ts",
+        "/projects/bar/src/app/extensions/foo/exports/.gitignore",
         "/projects/bar/src/app/extensions/foo/exports/foo-exports.module.ts",
         "/projects/bar/src/app/extensions/foo/facades/foo.facade.ts",
         "/projects/bar/src/app/extensions/foo/pages/foo-routing.module.ts",

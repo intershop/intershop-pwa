@@ -12,7 +12,7 @@
   },
   "private": true,
   "scripts": {
-    "postinstall": "postinstall",
+    "postinstall": "postinstall && npm run synchronize-lazy-components",
     "ng": "ng",
     "test": "jest --ci",
     "test:watch": "jest --watch",
@@ -28,6 +28,7 @@
     "docs": "npx @compodoc/compodoc -p tsconfig.app.json -d docs/compodoc -y docs/theme --hideGenerator",
     "docs:serve": "npm run docs -- -s",
     "docs:watch": "npm run docs -- -s -w",
+    "synchronize-lazy-components": "ng g lazy-components",
     "build:watch": "ng build --aot --watch",
     "build": "ng build -c production && ng run intershop-pwa:server:production --bundleDependencies",
     "serve": "node dist/server/main.js",
