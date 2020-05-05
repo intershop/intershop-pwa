@@ -28,7 +28,7 @@ const initialState: ConfigurationState = {
   serverStatic: undefined,
   channel: undefined,
   application: undefined,
-  features: [],
+  features: undefined,
   gtmToken: undefined,
   theme: undefined,
   locales: environment.locales,
