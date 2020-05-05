@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
+
 import { WishlistsFacade } from '../../../facades/wishlists.facade';
 import { Wishlist } from '../../../models/wishlist/wishlist.model';
 
@@ -10,6 +12,7 @@ import { Wishlist } from '../../../models/wishlist/wishlist.model';
   templateUrl: './wishlists-link.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+@GenerateLazyComponent()
 export class WishlistsLinkComponent implements OnInit {
   @Input() view: 'auto' | 'small' | 'full' = 'auto';
   preferredWishlist$: Observable<Wishlist>;
