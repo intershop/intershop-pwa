@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
+
 import { QuotingFacade } from '../../../facades/quoting.facade';
 
 /**
@@ -11,6 +13,7 @@ import { QuotingFacade } from '../../../facades/quoting.facade';
   templateUrl: './basket-add-to-quote.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+@GenerateLazyComponent()
 export class BasketAddToQuoteComponent {
   constructor(private quotingFacade: QuotingFacade) {}
 

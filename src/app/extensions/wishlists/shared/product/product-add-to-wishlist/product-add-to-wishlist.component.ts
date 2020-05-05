@@ -4,6 +4,7 @@ import { take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Product } from 'ish-core/models/product/product.model';
+import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { WishlistsFacade } from '../../../facades/wishlists.facade';
 import { SelectWishlistModalComponent } from '../../wishlists/select-wishlist-modal/select-wishlist-modal.component';
@@ -22,6 +23,7 @@ import { SelectWishlistModalComponent } from '../../wishlists/select-wishlist-mo
  *               displayType="icon"
  * ></ish-product-add-to-wishlist>
  */
+@GenerateLazyComponent()
 export class ProductAddToWishlistComponent {
   @Input() product: Product;
   @Input() displayType?: 'icon' | 'link' | 'animated' = 'link';
