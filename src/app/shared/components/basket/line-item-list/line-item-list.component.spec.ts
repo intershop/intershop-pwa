@@ -17,7 +17,7 @@ import { PromotionDetailsComponent } from 'ish-shared/components/promotion/promo
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
 
-import { LazyProductAddToWishlistComponent } from '../../../../extensions/wishlists/exports/products/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
+import { LazyProductAddToWishlistComponent } from '../../../../extensions/wishlists/exports/product/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
 import { ProductAddToWishlistComponent } from '../../../../extensions/wishlists/shared/product/product-add-to-wishlist/product-add-to-wishlist.component';
 
 import { LineItemListComponent } from './line-item-list.component';

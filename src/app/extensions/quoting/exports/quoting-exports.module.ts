@@ -1,19 +1,20 @@
 import { NgModule } from '@angular/core';
-import { ReactiveComponentLoaderModule } from '@wishtack/reactive-component-loader';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
 
 import { LazyQuoteWidgetComponent } from './account/lazy-quote-widget/lazy-quote-widget.component';
 import { LazyBasketAddToQuoteComponent } from './basket/lazy-basket-add-to-quote/lazy-basket-add-to-quote.component';
 import { LazyProductAddToQuoteComponent } from './product/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
 
 @NgModule({
-  imports: [
-    FeatureToggleModule,
-    ReactiveComponentLoaderModule.withModule({
-      moduleId: 'ish-extensions-quoting',
-      loadChildren: () => import('../quoting.module').then(m => m.QuotingModule),
-    }),
+  imports: [FeatureToggleModule],
+  providers: [
+    {
+      provide: LAZY_FEATURE_MODULE,
+      useValue: { feature: 'quoting', location: import('../quoting.module') },
+      multi: true,
+    },
   ],
   declarations: [LazyBasketAddToQuoteComponent, LazyProductAddToQuoteComponent, LazyQuoteWidgetComponent],
   exports: [LazyBasketAddToQuoteComponent, LazyProductAddToQuoteComponent, LazyQuoteWidgetComponent],

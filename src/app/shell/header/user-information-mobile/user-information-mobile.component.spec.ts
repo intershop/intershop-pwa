@@ -10,7 +10,7 @@ import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status
 import { MiniBasketComponent } from 'ish-shell/header/mini-basket/mini-basket.component';
 import { ProductCompareStatusComponent } from 'ish-shell/header/product-compare-status/product-compare-status.component';
 
-import { LazyWishlistLinkComponent } from '../../../extensions/wishlists/exports/wishlists/lazy-wishlist-link/lazy-wishlist-link.component';
+import { LazyWishlistsLinkComponent } from '../../../extensions/wishlists/exports/wishlists/lazy-wishlists-link/lazy-wishlists-link.component';
 
 import { UserInformationMobileComponent } from './user-information-mobile.component';
 
@@ -33,7 +33,7 @@ describe('User Information Mobile Component', () => {
       ],
       declarations: [
         MockComponent(LanguageSwitchComponent),
-        MockComponent(LazyWishlistLinkComponent),
+        MockComponent(LazyWishlistsLinkComponent),
         MockComponent(LoginStatusComponent),
         MockComponent(MiniBasketComponent),
         MockComponent(ProductCompareStatusComponent),

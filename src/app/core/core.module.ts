@@ -5,7 +5,6 @@ import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { ReactiveComponentLoaderModule } from '@wishtack/reactive-component-loader';
 import { NgxCookieBannerModule } from 'ngx-cookie-banner';
 import { SWIPER_CONFIG, SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { ToastrModule } from 'ngx-toastr';
@@ -41,7 +40,6 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     NgxCookieBannerModule.forRoot({
       cookieName: 'cookieLawSeen',
     }),
-    ReactiveComponentLoaderModule.forRoot(),
     RouterModule,
     StateManagementModule,
     ToastrModule.forRoot({
