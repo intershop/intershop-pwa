@@ -40,8 +40,8 @@ export class WishlistWidgetComponent implements OnInit {
     this.swiperConfig = {
       breakpoints: {
         [largeBreakpointWidth]: {
-          slidesPerView: 2,
-          slidesPerGroup: 2,
+          slidesPerView: 4,
+          slidesPerGroup: 4,
         },
       },
       pagination: {
@@ -49,8 +49,8 @@ export class WishlistWidgetComponent implements OnInit {
         clickable: true,
         clickableClass: 'swiper-pagination-clickable',
       },
-      slidesPerView: 4,
-      slidesPerGroup: 4,
+      slidesPerView: 2,
+      slidesPerGroup: 2,
     };
   }
 

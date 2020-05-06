@@ -77,7 +77,7 @@
     "ng-recaptcha": "^5.0.0",
     "ng2-validation": "^4.2.0",
     "ngx-infinite-scroll": "^8.0.2",
-    "ngx-swiper-wrapper": "^8.0.2",
+    "ngx-swiper-wrapper": "^9.0.1",
     "ngx-toastr": "^12.0.1",
     "ngx-utils-cookies-port": "^1.0.0",
     "rxjs": "~6.5.5",

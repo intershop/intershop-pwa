@@ -39,8 +39,8 @@ export class ProductLinksComponent implements OnChanges {
     this.swiperConfig = {
       breakpoints: {
         [largeBreakpointWidth]: {
-          slidesPerView: 2,
-          slidesPerGroup: 2,
+          slidesPerView: 4,
+          slidesPerGroup: 4,
         },
       },
       pagination: {
@@ -48,8 +48,8 @@ export class ProductLinksComponent implements OnChanges {
         clickable: true,
         clickableClass: 'swiper-pagination-clickable',
       },
-      slidesPerView: 4,
-      slidesPerGroup: 4,
+      slidesPerView: 2,
+      slidesPerGroup: 2,
     };
   }
 
