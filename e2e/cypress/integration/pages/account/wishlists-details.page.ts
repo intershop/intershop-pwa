@@ -11,12 +11,12 @@ export class WishlistsDetailsPage {
       .click();
   }
 
-  get listItem() {
+  get listItems() {
     return cy.get('ish-account-wishlist-detail-line-item');
   }
 
-  get listItemLink() {
-    return cy.get('ish-account-wishlist-detail-line-item').find('a[data-testing-id="wishlist-product-link"]');
+  get listItemLinks() {
+    return this.listItems.find('a[data-testing-id="wishlist-product-link"]');
   }
 
   get wishlistTitle() {

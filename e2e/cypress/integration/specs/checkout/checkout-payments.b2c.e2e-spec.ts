@@ -1,11 +1,13 @@
 import { at } from '../../framework';
 import { createBasketViaREST, createUserViaREST } from '../../framework/users';
 import { LoginPage } from '../../pages/account/login.page';
+import { MyAccountPage } from '../../pages/account/my-account.page';
 import { PaymentPage } from '../../pages/account/payment.page';
 import { sensibleDefaults } from '../../pages/account/registration.page';
 import { CheckoutAddressesPage } from '../../pages/checkout/checkout-addresses.page';
 import { CheckoutPaymentPage } from '../../pages/checkout/checkout-payment.page';
 import { CheckoutShippingPage } from '../../pages/checkout/checkout-shipping.page';
+import { HomePage } from '../../pages/home.page';
 
 const _ = {
   user: {
@@ -157,7 +159,11 @@ describe('Checkout Payment', () => {
     });
   });
   describe('Within the MyAccount', () => {
-    before(() => PaymentPage.navigateTo());
+    before(() => {
+      at(CheckoutPaymentPage, page => page.header.gotoHomePage());
+      at(HomePage, page => page.header.goToMyAccount());
+      at(MyAccountPage, page => page.navigateToPayments());
+    });
 
     it('should display saved credit cards on myAccount page', () => {
       at(PaymentPage, page => {
