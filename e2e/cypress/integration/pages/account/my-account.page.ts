@@ -36,4 +36,8 @@ export class MyAccountPage {
   navigateToWishlists() {
     cy.get('a[data-testing-id="wishlists-link"]').click();
   }
+
+  navigateToPayments() {
+    cy.get('a[data-testing-id="payments-link"]').click();
+  }
 }

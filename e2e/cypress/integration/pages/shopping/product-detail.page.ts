@@ -1,3 +1,4 @@
+import { waitLoadingEnd } from '../../framework';
 import { AddToWishlistModule } from '../account/add-to-wishlist.module';
 import { BreadcrumbModule } from '../breadcrumb.module';
 import { HeaderModule } from '../header.module';
@@ -73,6 +74,7 @@ export class ProductDetailPage {
   }
 
   addProductToQuoteRequest() {
+    waitLoadingEnd(1000);
     this.addToQuoteRequestButton().click();
   }
 
