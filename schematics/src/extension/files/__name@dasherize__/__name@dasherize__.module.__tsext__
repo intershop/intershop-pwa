@@ -2,10 +2,8 @@ import { NgModule } from '@angular/core';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { <%= classify(name) %>StoreModule } from './store/<%= dasherize(name) %>-store.module';
-
 @NgModule({
-  imports: [<%= classify(name) %>StoreModule, SharedModule],
+  imports: [SharedModule],
   declarations: [],
   exports: [SharedModule],
 })

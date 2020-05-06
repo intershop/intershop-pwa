@@ -430,6 +430,12 @@
           "from": "@ngx-meta.*",
           "filePattern": "^(?!.*/extensions/seo/.*$).*$",
           "message": "Imports from @ngx-meta are only allowed in SEO extension."
+        },
+        {
+          "import": ".*ExportsModule",
+          "from": ".*.*",
+          "filePattern": ".*/shared/shared.module.ts$",
+          "message": "Importing and exporting extension modules should be done in ShellModule."
         }
       ]
     },

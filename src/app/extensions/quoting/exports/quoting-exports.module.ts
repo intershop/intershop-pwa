@@ -12,7 +12,7 @@ import { LazyProductAddToQuoteComponent } from './product/lazy-product-add-to-qu
   providers: [
     {
       provide: LAZY_FEATURE_MODULE,
-      useValue: { feature: 'quoting', location: import('../quoting.module') },
+      useValue: { feature: 'quoting', location: import('../store/quoting-store.module') },
       multi: true,
     },
   ],

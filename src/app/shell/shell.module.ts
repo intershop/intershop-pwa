@@ -30,6 +30,8 @@ import { SearchBoxComponent } from './header/search-box/search-box.component';
 import { SubCategoryNavigationComponent } from './header/sub-category-navigation/sub-category-navigation.component';
 import { UserInformationMobileComponent } from './header/user-information-mobile/user-information-mobile.component';
 
+const importExportModules = [QuickorderExportsModule, QuotingExportsModule, WishlistsExportsModule];
+
 const exportedComponents = [
   FooterComponent,
   HeaderComponent,
@@ -40,6 +42,7 @@ const exportedComponents = [
 
 @NgModule({
   imports: [
+    ...importExportModules,
     CommonModule,
     DeferLoadModule,
     FeatureToggleModule,
@@ -48,11 +51,8 @@ const exportedComponents = [
     NgbDropdownModule,
     NgbModalModule,
     PipesModule.forRoot(),
-    QuickorderExportsModule,
-    QuotingExportsModule,
     RouterModule,
     TranslateModule,
-    WishlistsExportsModule,
   ],
   declarations: [
     ...exportedComponents,
@@ -68,6 +68,6 @@ const exportedComponents = [
     SubCategoryNavigationComponent,
     UserInformationMobileComponent,
   ],
-  exports: [...exportedComponents],
+  exports: [...exportedComponents, ...importExportModules],
 })
 export class ShellModule {}

@@ -39,17 +39,11 @@ export function createExtension(options: Options): Rule {
       )}-exports.module`,
     };
 
-    const sharedModuleOptions = {
-      module: `${projectRoot}/shared/shared.module.ts`,
-      ...moduleImportOptions,
-    };
-    operations.push(addExportToNgModule(sharedModuleOptions));
-    operations.push(addImportToNgModule(sharedModuleOptions));
-
     const shellModuleOptions = {
       module: `${projectRoot}/shell/shell.module.ts`,
       ...moduleImportOptions,
     };
+    operations.push(addExportToNgModule(shellModuleOptions));
     operations.push(addImportToNgModule(shellModuleOptions));
 
     const appModuleOptions = {

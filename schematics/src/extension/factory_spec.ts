@@ -21,7 +21,6 @@ describe('Extension Schematic', () => {
   beforeEach(async () => {
     appTree = await createApplication(schematicRunner)
       .pipe(
-        createModule(schematicRunner, { name: 'shared' }),
         createModule(schematicRunner, { name: 'shell' }),
         createAppLastRoutingModule(schematicRunner)
       )
@@ -46,7 +45,7 @@ describe('Extension Schematic', () => {
     `);
   });
 
-  it('should import extension exports in app module, before NotFoundRouting module', async () => {
+  it('should import extension routing in app module, before NotFoundRouting module', async () => {
     const options = { ...defaultOptions };
 
     const tree = await schematicRunner.runSchematicAsync('extension', options, appTree).toPromise();
@@ -77,26 +76,7 @@ describe('Extension Schematic', () => {
     `);
   });
 
-  it('should import extension exports in shared module', async () => {
-    const options = { ...defaultOptions };
-
-    const tree = await schematicRunner.runSchematicAsync('extension', options, appTree).toPromise();
-    const sharedModuleContent = tree.readContent('/projects/bar/src/app/shared/shared.module.ts');
-    expect(sharedModuleContent).toMatchInlineSnapshot(`
-      "import { NgModule } from '@angular/core';
-      import { FooExportsModule } from '../extensions/foo/exports/foo-exports.module';
-
-      @NgModule({
-        imports: [FooExportsModule],
-        declarations: [],
-        exports: [FooExportsModule]
-      })
-      export class SharedModule { }
-      "
-    `);
-  });
-
-  it('should import extension exports in shell module', async () => {
+  it('should import and export extension exports in shell module', async () => {
     const options = { ...defaultOptions };
 
     const tree = await schematicRunner.runSchematicAsync('extension', options, appTree).toPromise();
@@ -108,7 +88,7 @@ describe('Extension Schematic', () => {
       @NgModule({
         imports: [FooExportsModule],
         declarations: [],
-        exports: []
+        exports: [FooExportsModule]
       })
       export class ShellModule { }
       "
