@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, ReducerManager, Store, combineReducers } from '@ngrx/store';
-import { take } from 'rxjs/operators';
+import { ActionReducerMap, StoreModule } from '@ngrx/store';
 
 import { SentryConfigEffects } from './sentry-config/sentry-config.effects';
 import { sentryConfigReducer } from './sentry-config/sentry-config.reducer';
@@ -13,16 +12,7 @@ const sentryReducers: ActionReducerMap<SentryState> = {
 
 const sentryEffects = [SentryConfigEffects];
 
-const sentryFeature = 'sentry';
 @NgModule({
-  imports: [EffectsModule.forFeature(sentryEffects)],
+  imports: [EffectsModule.forFeature(sentryEffects), StoreModule.forFeature('sentry', sentryReducers)],
 })
-export class SentryStoreModule {
-  constructor(manager: ReducerManager, store: Store<{}>) {
-    store.pipe(take(1)).subscribe(x => {
-      if (!x[sentryFeature]) {
-        manager.addReducers({ [sentryFeature]: combineReducers(sentryReducers) });
-      }
-    });
-  }
-}
+export class SentryStoreModule {}

@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
@@ -11,6 +12,7 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { WishlistPreferencesDialogComponent } from '../../shared/wishlists/wishlist-preferences-dialog/wishlist-preferences-dialog.component';
+import { wishlistsReducers } from '../../store/wishlists-store.module';
 
 import { AccountWishlistDetailLineItemComponent } from './account-wishlist-detail-line-item/account-wishlist-detail-line-item.component';
 import { AccountWishlistDetailPageComponent } from './account-wishlist-detail-page.component';
@@ -26,7 +28,7 @@ describe('Account Wishlist Detail Page Component', () => {
         NgbPopoverModule,
         RouterTestingModule,
         TranslateModule.forRoot(),
-        ngrxTesting({ reducers: coreReducers }),
+        ngrxTesting({ reducers: { ...coreReducers, wishlists: combineReducers(wishlistsReducers) } }),
       ],
       declarations: [
         AccountWishlistDetailPageComponent,
