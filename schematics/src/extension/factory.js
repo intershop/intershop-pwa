@@ -24,10 +24,8 @@ function createExtension(options) {
             artifactName: core_1.strings.classify(options.name) + 'ExportsModule',
             moduleImportPath: `${projectRoot}/extensions/${core_1.strings.dasherize(options.name)}/exports/${core_1.strings.dasherize(options.name)}-exports.module`,
         };
-        const sharedModuleOptions = Object.assign({ module: `${projectRoot}/shared/shared.module.ts` }, moduleImportOptions);
-        operations.push(registration_1.addExportToNgModule(sharedModuleOptions));
-        operations.push(registration_1.addImportToNgModule(sharedModuleOptions));
         const shellModuleOptions = Object.assign({ module: `${projectRoot}/shell/shell.module.ts` }, moduleImportOptions);
+        operations.push(registration_1.addExportToNgModule(shellModuleOptions));
         operations.push(registration_1.addImportToNgModule(shellModuleOptions));
         const appModuleOptions = {
             module: `${projectRoot}/app.module.ts`,

@@ -20,10 +20,6 @@ import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
 import { ShellModule } from 'ish-shell/shell.module';
 
-import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
-import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
-import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
-
 import { AddressFormsSharedModule } from './address-forms/address-forms.module';
 import { CMSModule } from './cms/cms.module';
 import { CMSCarouselComponent } from './cms/components/cms-carousel/cms-carousel.component';
@@ -122,14 +118,11 @@ const importExportModules = [
   NgbModalModule,
   NgbPopoverModule,
   PipesModule,
-  QuickorderExportsModule,
-  QuotingExportsModule,
   ReactiveFormsModule,
   RouterModule,
   ShellModule,
   SwiperModule,
   TranslateModule,
-  WishlistsExportsModule,
 ];
 
 const declaredComponents = [
