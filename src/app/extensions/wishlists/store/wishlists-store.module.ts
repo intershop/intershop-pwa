@@ -12,6 +12,7 @@ export const wishlistsReducers: ActionReducerMap<WishlistsState> = {
 
 const wishlistsEffects = [WishlistEffects];
 
+// not-dead-code
 @NgModule({
   imports: [EffectsModule.forFeature(wishlistsEffects), StoreModule.forFeature('wishlists', wishlistsReducers)],
 })
