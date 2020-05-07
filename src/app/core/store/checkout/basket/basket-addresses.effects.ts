@@ -21,7 +21,7 @@ import * as basketActions from './basket.actions';
 export class BasketAddressesEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<{}>,
+    private store: Store,
     private basketService: BasketService,
     private addressService: AddressService
   ) {}

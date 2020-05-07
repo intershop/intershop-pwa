@@ -37,7 +37,7 @@ export function filterState(store) {
  * Sets state on server-side, re-hydrates on client side.
  * inspired by https://github.com/ngrx/platform/issues/101#issuecomment-351998548
  */
-export function ngrxStateTransfer(transferState: TransferState, store: Store<{}>, actions: Actions) {
+export function ngrxStateTransfer(transferState: TransferState, store: Store, actions: Actions) {
   return () => {
     if (transferState.hasKey<any>(NGRX_STATE_SK)) {
       // browser

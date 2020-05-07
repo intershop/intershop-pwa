@@ -20,7 +20,7 @@ describe('Basket Promotion Code Effects', () => {
   let actions$: Observable<Action>;
   let basketServiceMock: BasketService;
   let effects: BasketPromotionCodeEffects;
-  let store$: Store<{}>;
+  let store$: Store;
 
   beforeEach(() => {
     basketServiceMock = mock(BasketService);

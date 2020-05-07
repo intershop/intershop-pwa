@@ -52,7 +52,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
 export class AccountFacade {
-  constructor(private store: Store<{}>) {}
+  constructor(private store: Store) {}
 
   // USER
   user$ = this.store.pipe(select(getLoggedInUser));

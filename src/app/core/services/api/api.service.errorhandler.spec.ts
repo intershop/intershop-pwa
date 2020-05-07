@@ -14,7 +14,7 @@ import { ApiServiceErrorHandler } from './api.service.errorhandler';
 describe('Api Service Errorhandler', () => {
   let apiServiceErrorHandler: ApiServiceErrorHandler;
 
-  let store$: Store<{}>;
+  let store$: Store;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

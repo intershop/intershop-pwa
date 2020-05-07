@@ -11,7 +11,7 @@ import { getGeneralError } from './error.selectors';
 
 @Injectable()
 export class ErrorEffects {
-  constructor(private store: Store<{}>, private httpStatusCodeService: HttpStatusCodeService) {}
+  constructor(private store: Store, private httpStatusCodeService: HttpStatusCodeService) {}
 
   @Effect({ dispatch: false })
   gotoErrorPageInCaseOfError$ = this.store.pipe(

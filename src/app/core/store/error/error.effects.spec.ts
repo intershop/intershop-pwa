@@ -14,7 +14,7 @@ import { ErrorEffects } from './error.effects';
 
 describe('Error Effects', () => {
   let effects: ErrorEffects;
-  let store$: Store<{}>;
+  let store$: Store;
   let location: Location;
 
   @Component({ template: 'dummy' })

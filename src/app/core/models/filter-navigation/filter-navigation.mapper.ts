@@ -15,7 +15,7 @@ import { FilterNavigation } from './filter-navigation.model';
 export class FilterNavigationMapper {
   private icmStaticURL: string;
 
-  constructor(store: Store<{}>) {
+  constructor(store: Store) {
     store.pipe(select(getICMStaticURL)).subscribe(url => (this.icmStaticURL = url));
   }
 

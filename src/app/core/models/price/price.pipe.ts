@@ -22,7 +22,7 @@ export class PricePipe implements PipeTransform, OnDestroy {
 
   private destroy$ = new Subject();
 
-  constructor(private translateService: TranslateService, private store: Store<{}>, private cdRef: ChangeDetectorRef) {}
+  constructor(private translateService: TranslateService, private store: Store, private cdRef: ChangeDetectorRef) {}
 
   ngOnDestroy() {
     this.destroy$.next();

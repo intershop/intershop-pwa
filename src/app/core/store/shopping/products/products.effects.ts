@@ -43,7 +43,7 @@ import * as productsSelectors from './products.selectors';
 export class ProductsEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<{}>,
+    private store: Store,
     private productsService: ProductsService,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,

@@ -21,7 +21,7 @@ describe('Product Listing Component', () => {
   let component: ProductListingComponent;
   let fixture: ComponentFixture<ProductListingComponent>;
   let element: HTMLElement;
-  let store$: Store<{}>;
+  let store$: Store;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

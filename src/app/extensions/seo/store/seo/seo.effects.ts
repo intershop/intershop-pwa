@@ -39,7 +39,7 @@ export class SeoEffects {
 
   constructor(
     private actions$: Actions,
-    private store: Store<{}>,
+    private store: Store,
     private meta: MetaService,
     private translate: TranslateService,
     @Inject(DOCUMENT) private doc: Document,

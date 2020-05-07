@@ -14,7 +14,7 @@ export class LoginGuard implements CanActivate {
   private currentDialog: NgbModalRef;
   private isMobile: boolean;
 
-  constructor(private modalService: NgbModal, private router: Router, private store: Store<{}>) {
+  constructor(private modalService: NgbModal, private router: Router, private store: Store) {
     store
       .pipe(
         select(getDeviceType),

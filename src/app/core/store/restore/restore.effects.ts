@@ -35,7 +35,7 @@ export class RestoreEffects {
   static readonly SESSION_KEEP_ALIVE = 600000;
   constructor(
     private actions$: Actions,
-    private store$: Store<{}>,
+    private store$: Store,
     private cookieService: CookiesService,
     @Inject(PLATFORM_ID) private platformId: string,
     private appRef: ApplicationRef,

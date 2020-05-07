@@ -31,7 +31,7 @@ describe('Basket Effects', () => {
   let actions$: Observable<Action>;
   let basketServiceMock: BasketService;
   let effects: BasketEffects;
-  let store$: Store<{}>;
+  let store$: Store;
   let router: Router;
 
   beforeEach(() => {

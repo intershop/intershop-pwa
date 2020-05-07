@@ -15,7 +15,7 @@ const defaults: SeoAttributes = {
 
 @Injectable({ providedIn: 'root' })
 export class MetaGuard implements CanActivate, CanActivateChild {
-  constructor(private store: Store<{}>) {}
+  constructor(private store: Store) {}
 
   canActivate(route: ActivatedRouteSnapshot, _: RouterStateSnapshot): boolean {
     const metaSettings = route.hasOwnProperty('data') ? route.data.meta : undefined;

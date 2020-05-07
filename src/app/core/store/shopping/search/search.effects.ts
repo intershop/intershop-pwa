@@ -27,7 +27,7 @@ import {
 export class SearchEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<{}>,
+    private store: Store,
     private productsService: ProductsService,
     private suggestService: SuggestService,
     private httpStatusCodeService: HttpStatusCodeService,

@@ -213,7 +213,7 @@ describe('Router Integration', () => {
   });
 
   describe('ofUrl operator', () => {
-    let store$: Store<{}>;
+    let store$: Store;
 
     beforeEach(() => {
       store$ = TestBed.inject(Store);

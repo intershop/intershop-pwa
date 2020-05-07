@@ -43,7 +43,7 @@ describe('Quote Request Effects', () => {
   let actions$;
   let quoteRequestServiceMock: QuoteRequestService;
   let effects: QuoteRequestEffects;
-  let store$: Store<{}>;
+  let store$: Store;
   let location: Location;
   let router: Router;
 

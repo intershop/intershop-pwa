@@ -149,7 +149,7 @@ describe('Category Route', () => {
 
 describe('Category Route', () => {
   let router: Router;
-  let store$: Store<{}>;
+  let store$: Store;
 
   beforeEach(() => {
     @Component({ template: 'dummy' })

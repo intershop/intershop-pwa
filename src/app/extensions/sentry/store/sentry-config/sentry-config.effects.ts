@@ -25,7 +25,7 @@ export class SentryConfigEffects {
     private featureToggleService: FeatureToggleService,
     private stateProperties: StatePropertiesService,
     private transferState: TransferState,
-    private store: Store<{}>,
+    private store: Store,
     @Inject(PLATFORM_ID) private platformId: string,
     private cookiesService: CookiesService
   ) {}

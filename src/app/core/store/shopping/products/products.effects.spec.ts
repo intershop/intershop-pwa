@@ -27,7 +27,7 @@ import { ProductsEffects } from './products.effects';
 describe('Products Effects', () => {
   let actions$: Observable<Action>;
   let effects: ProductsEffects;
-  let store$: Store<{}>;
+  let store$: Store;
   let productsServiceMock: ProductsService;
   let router: Router;
   let location: Location;

@@ -18,7 +18,7 @@ import { Image } from './image.model';
 export class ImageMapper {
   private icmBaseURL: string;
 
-  constructor(store: Store<{}>) {
+  constructor(store: Store) {
     store.pipe(select(getICMBaseURL)).subscribe(url => (this.icmBaseURL = url));
   }
 

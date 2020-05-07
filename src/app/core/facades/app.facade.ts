@@ -12,7 +12,7 @@ import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } fro
 
 @Injectable({ providedIn: 'root' })
 export class AppFacade {
-  constructor(private store: Store<{}>, private router: Router) {
+  constructor(private store: Store, private router: Router) {
     // tslint:disable-next-line: rxjs-no-ignored-subscribe
     this.routingInProgress$.subscribe();
   }

@@ -29,7 +29,7 @@ export class TrackingModule {
   constructor(
     angulartics2GoogleTagManager: Angulartics2GoogleTagManager,
     featureToggleService: FeatureToggleService,
-    store: Store<{}>,
+    store: Store,
     cookiesService: CookiesService
   ) {
     cookiesService.cookieLawSeen$

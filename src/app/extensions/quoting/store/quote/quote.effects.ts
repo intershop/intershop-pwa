@@ -30,7 +30,7 @@ export class QuoteEffects {
     private quoteService: QuoteService,
     private basketService: BasketService,
     private router: Router,
-    private store: Store<{}>,
+    private store: Store,
     private translateService: TranslateService
   ) {}
 

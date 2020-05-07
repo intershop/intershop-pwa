@@ -28,7 +28,7 @@ export class ThemeService {
   constructor(
     private rendererFactory: RendererFactory2,
     @Inject(DOCUMENT) private document: Document,
-    private store: Store<{}>
+    private store: Store
   ) {
     this.head = this.document.head;
     this.renderer = this.rendererFactory.createRenderer(undefined, undefined);

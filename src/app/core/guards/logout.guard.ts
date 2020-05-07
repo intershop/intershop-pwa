@@ -9,7 +9,7 @@ import { LogoutUser } from 'ish-core/store/user';
  */
 @Injectable({ providedIn: 'root' })
 export class LogoutGuard implements CanActivate {
-  constructor(private store: Store<{}>, private router: Router) {}
+  constructor(private store: Store, private router: Router) {}
 
   canActivate() {
     this.store.dispatch(new LogoutUser());

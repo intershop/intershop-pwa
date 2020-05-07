@@ -39,7 +39,7 @@ export class SfeAdapterService {
 
   constructor(
     private router: Router,
-    private store: Store<{}>,
+    private store: Store,
     private appRef: ApplicationRef,
     @Inject(PLATFORM_ID) private platformId: string
   ) {}

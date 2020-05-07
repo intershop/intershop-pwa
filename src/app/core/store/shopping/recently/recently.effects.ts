@@ -12,7 +12,7 @@ import * as recentlyActions from './recently.actions';
 
 @Injectable()
 export class RecentlyEffects {
-  constructor(private store: Store<{}>, private featureToggleService: FeatureToggleService) {}
+  constructor(private store: Store, private featureToggleService: FeatureToggleService) {}
 
   @Effect()
   viewedProduct$ = this.store.pipe(

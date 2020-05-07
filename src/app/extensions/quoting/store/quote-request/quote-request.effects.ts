@@ -59,7 +59,7 @@ export class QuoteRequestEffects {
     private featureToggleService: FeatureToggleService,
     private quoteRequestService: QuoteRequestService,
     private router: Router,
-    private store: Store<{}>,
+    private store: Store,
     private translateService: TranslateService
   ) {}
 

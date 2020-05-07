@@ -13,7 +13,7 @@ import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
 
 @Injectable()
 export class BasketPaymentEffects {
-  constructor(private actions$: Actions, private store: Store<{}>, private paymentService: PaymentService) {}
+  constructor(private actions$: Actions, private store: Store, private paymentService: PaymentService) {}
 
   /**
    * The load basket eligible payment methods effect.

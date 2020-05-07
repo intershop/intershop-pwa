@@ -29,7 +29,7 @@ describe('Basket Items Effects', () => {
   let orderServiceMock: OrderService;
   let addressServiceMock: AddressService;
   let effects: BasketItemsEffects;
-  let store$: Store<{}>;
+  let store$: Store;
 
   beforeEach(() => {
     basketServiceMock = mock(BasketService);

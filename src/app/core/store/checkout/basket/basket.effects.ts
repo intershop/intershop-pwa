@@ -15,7 +15,7 @@ import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
 
 @Injectable()
 export class BasketEffects {
-  constructor(private actions$: Actions, private store: Store<{}>, private basketService: BasketService) {}
+  constructor(private actions$: Actions, private store: Store, private basketService: BasketService) {}
 
   /**
    * The load basket effect.

@@ -21,7 +21,7 @@ export class ModuleLoaderService {
     private compiler: Compiler,
     private injector: Injector,
     private featureToggleService: FeatureToggleService,
-    private store: Store<{}>
+    private store: Store
   ) {}
 
   init() {

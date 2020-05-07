@@ -52,7 +52,7 @@ function mapUserErrorToActionIfPossible<T>(specific) {
 export class UserEffects {
   constructor(
     private actions$: Actions,
-    private store$: Store<{}>,
+    private store$: Store,
     private userService: UserService,
     private paymentService: PaymentService,
     private personalizationService: PersonalizationService,

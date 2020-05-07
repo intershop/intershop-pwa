@@ -39,7 +39,7 @@ import { getCurrentLocale, getDeviceType, isServerConfigurationLoaded } from './
 export class ConfigurationEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<{}>,
+    private store: Store,
     private configService: ConfigurationService,
     private translateService: TranslateService,
     private stateProperties: StatePropertiesService,

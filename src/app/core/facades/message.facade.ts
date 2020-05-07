@@ -12,7 +12,7 @@ import {
 // not-dead-code
 @Injectable({ providedIn: 'root' })
 export class MessageFacade {
-  constructor(private store: Store<{}>) {}
+  constructor(private store: Store) {}
 
   info(data: MessagesPayloadType) {
     this.store.dispatch(new InfoMessage(data));

@@ -20,7 +20,7 @@ describe('Basket Page Component', () => {
   let component: BasketPageComponent;
   let fixture: ComponentFixture<BasketPageComponent>;
   let element: HTMLElement;
-  let store$: Store<{}>;
+  let store$: Store;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

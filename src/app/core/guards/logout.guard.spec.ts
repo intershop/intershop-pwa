@@ -11,7 +11,7 @@ import { LogoutGuard } from './logout.guard';
 describe('Logout Guard', () => {
   describe('canActivate()', () => {
     let logoutGuard: LogoutGuard;
-    let store$: Store<{}>;
+    let store$: Store;
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
