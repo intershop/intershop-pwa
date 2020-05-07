@@ -25,7 +25,7 @@ describe('Line Item Description Component', () => {
   let component: LineItemDescriptionComponent;
   let fixture: ComponentFixture<LineItemDescriptionComponent>;
   let element: HTMLElement;
-  let store$: Store<{}>;
+  let store$: Store;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

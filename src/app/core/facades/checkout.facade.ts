@@ -45,7 +45,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
 export class CheckoutFacade {
-  constructor(private store: Store<{}>) {}
+  constructor(private store: Store) {}
 
   checkoutStep$ = this.store.pipe(select(selectRouteData<number>('checkoutStep')));
 

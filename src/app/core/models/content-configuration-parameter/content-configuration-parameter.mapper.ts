@@ -15,7 +15,7 @@ export class ContentConfigurationParameterMapper {
   private staticURL: string;
   private lang = '-';
 
-  constructor(store: Store<{}>) {
+  constructor(store: Store) {
     store.pipe(select(getICMStaticURL)).subscribe(url => (this.staticURL = url));
     store
       .pipe(

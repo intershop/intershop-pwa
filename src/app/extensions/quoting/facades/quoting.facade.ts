@@ -47,7 +47,7 @@ const getQuotesAndQuoteRequests = createSelector(
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
 export class QuotingFacade {
-  constructor(private store: Store<{}>) {}
+  constructor(private store: Store) {}
 
   // QUOTE
   quote$ = this.store.pipe(select(getSelectedQuoteWithProducts));

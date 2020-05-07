@@ -21,7 +21,7 @@ describe('Category Page Component', () => {
   let component: CategoryPageComponent;
   let fixture: ComponentFixture<CategoryPageComponent>;
   let element: HTMLElement;
-  let store$: Store<{}>;
+  let store$: Store;
   let router: Router;
 
   beforeEach(async(() => {

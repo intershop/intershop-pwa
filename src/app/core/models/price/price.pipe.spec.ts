@@ -111,7 +111,7 @@ describe('Price Pipe', () => {
   let component: DummyComponent;
   let element: HTMLElement;
   let translateService: TranslateService;
-  let store$: Store<{}>;
+  let store$: Store;
 
   @Component({
     template: `

@@ -9,7 +9,7 @@ import { ApiService } from 'ish-core/services/api/api.service';
 import { AuthInterceptor } from './auth.interceptor';
 
 describe('Auth Interceptor', () => {
-  let store$: Store<{}>;
+  let store$: Store;
   let httpTestingController: HttpTestingController;
   let httpClient: HttpClient;
 

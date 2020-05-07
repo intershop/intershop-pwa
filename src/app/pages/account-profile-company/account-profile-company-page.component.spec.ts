@@ -17,7 +17,7 @@ describe('Account Profile Company Page Component', () => {
   let component: AccountProfileCompanyPageComponent;
   let fixture: ComponentFixture<AccountProfileCompanyPageComponent>;
   let element: HTMLElement;
-  let store$: Store<{}>;
+  let store$: Store;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

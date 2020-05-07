@@ -18,7 +18,7 @@ describe('Quote Edit Page Component', () => {
   let component: QuoteEditPageComponent;
   let fixture: ComponentFixture<QuoteEditPageComponent>;
   let element: HTMLElement;
-  let store$: Store<{}>;
+  let store$: Store;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

@@ -27,7 +27,7 @@ import { configurationReducer } from './configuration.reducer';
 describe('Configuration Effects', () => {
   let actions$: Observable<Action>;
   let effects: ConfigurationEffects;
-  let store$: Store<{}>;
+  let store$: Store;
   let configurationServiceMock: ConfigurationService;
   let translateServiceMock: TranslateService;
 

@@ -25,7 +25,7 @@ import { getCurrentLocale } from 'ish-core/store/configuration';
  */
 @Injectable({ providedIn: 'root' })
 export class PaymentService {
-  constructor(private apiService: ApiService, private store: Store<{}>) {}
+  constructor(private apiService: ApiService, private store: Store) {}
 
   // http header for Basket API v1
   private basketHeaders = new HttpHeaders({

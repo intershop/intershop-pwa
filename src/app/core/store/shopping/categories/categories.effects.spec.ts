@@ -25,7 +25,7 @@ import { CategoriesEffects } from './categories.effects';
 describe('Categories Effects', () => {
   let actions$: Observable<Action>;
   let effects: CategoriesEffects;
-  let store$: Store<{}>;
+  let store$: Store;
   let location: Location;
   let router: Router;
 

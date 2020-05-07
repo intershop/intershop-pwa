@@ -120,11 +120,7 @@ export class ApiService {
 
   private executionBarrier$: Observable<void> | Subject<void> = of(undefined);
 
-  constructor(
-    private httpClient: HttpClient,
-    private apiServiceErrorHandler: ApiServiceErrorHandler,
-    store: Store<{}>
-  ) {
+  constructor(private httpClient: HttpClient, private apiServiceErrorHandler: ApiServiceErrorHandler, store: Store) {
     store.pipe(select(getCurrentLocale)).subscribe(locale => (this.currentLocale = locale));
     store.pipe(select(getICMServerURL)).subscribe(url => (this.icmServerURL = url));
     store.pipe(select(getRestEndpoint)).subscribe(url => (this.restEndpoint = url));

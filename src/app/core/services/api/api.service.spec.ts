@@ -21,7 +21,7 @@ describe('Api Service', () => {
   describe('API Service Methods', () => {
     const REST_URL = 'http://www.example.org/WFS/site/-';
     let apiService: ApiService;
-    let storeSpy$: Store<{}>;
+    let storeSpy$: Store;
     let httpTestingController: HttpTestingController;
 
     beforeEach(() => {
@@ -395,7 +395,7 @@ describe('Api Service', () => {
   describe('API Service Headers', () => {
     const REST_URL = 'http://www.example.org/WFS/site/-';
     let apiService: ApiService;
-    let store$: Store<{}>;
+    let store$: Store;
     let httpTestingController: HttpTestingController;
 
     beforeEach(() => {

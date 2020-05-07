@@ -40,7 +40,7 @@ describe('Quote Effects', () => {
   let quoteServiceMock: QuoteService;
   let basketServiceMock: BasketService;
   let effects: QuoteEffects;
-  let store$: Store<{}>;
+  let store$: Store;
   let location: Location;
 
   const customer = { customerNo: 'CID', type: 'SMBCustomer' } as Customer;

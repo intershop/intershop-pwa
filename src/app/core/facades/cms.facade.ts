@@ -16,7 +16,7 @@ export class CMSFacade {
   contentPage$ = this.store.pipe(select(getSelectedContentPage));
   contentPageLoading$ = this.store.pipe(select(getContentPageLoading));
 
-  constructor(private store: Store<{}>, private sfeAdapter: SfeAdapterService) {}
+  constructor(private store: Store, private sfeAdapter: SfeAdapterService) {}
 
   contentInclude$(includeId$: Observable<string>) {
     return this.store.pipe(select(getPGID)).pipe(

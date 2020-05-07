@@ -30,7 +30,7 @@ import { UserEffects } from './user.effects';
 describe('User Effects', () => {
   let actions$: Observable<Action>;
   let effects: UserEffects;
-  let store$: Store<{}>;
+  let store$: Store;
   let userServiceMock: UserService;
   let paymentServiceMock: PaymentService;
   let router: Router;

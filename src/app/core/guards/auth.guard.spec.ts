@@ -16,7 +16,7 @@ import { AuthGuard } from './auth.guard';
 describe('Auth Guard', () => {
   describe('canActivate()', () => {
     let authGuard: AuthGuard;
-    let store$: Store<{}>;
+    let store$: Store;
 
     beforeEach(async(() => {
       @Component({ template: 'dummy' })

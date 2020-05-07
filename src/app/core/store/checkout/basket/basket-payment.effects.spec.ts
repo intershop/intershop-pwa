@@ -29,7 +29,7 @@ describe('Basket Payment Effects', () => {
   let actions$: Observable<Action>;
   let paymentServiceMock: PaymentService;
   let effects: BasketPaymentEffects;
-  let store$: Store<{}>;
+  let store$: Store;
   let router: Router;
 
   beforeEach(() => {

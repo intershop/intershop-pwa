@@ -29,7 +29,7 @@ describe('Basket Validation Effects', () => {
   let basketServiceMock: BasketService;
   let orderServiceMock: OrderService;
   let effects: BasketValidationEffects;
-  let store$: Store<{}>;
+  let store$: Store;
   let location: Location;
 
   @Component({ template: 'dummy' })

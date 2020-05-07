@@ -15,7 +15,6 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var tsquery_1 = require("@phenomnomnominal/tsquery");
 var Lint = require("tslint");
-var ts = require("typescript");
 var Rule = (function (_super) {
     __extends(Rule, _super);
     function Rule() {
@@ -23,11 +22,10 @@ var Rule = (function (_super) {
     }
     Rule.prototype.apply = function (sourceFile) {
         return this.applyWithFunction(sourceFile, function (ctx) {
-            tsquery_1.tsquery(sourceFile, 'Identifier[name="Store"]').forEach(function (node) {
-                var storeType = node.parent;
-                if (storeType.kind === ts.SyntaxKind.TypeReference && storeType.getText() !== 'Store<{}>') {
-                    var fix = new Lint.Replacement(storeType.getStart(), storeType.getWidth(), 'Store<{}>');
-                    ctx.addFailureAtNode(storeType, 'use empty store type (Store<{}>) and use selectors to access the store.', fix);
+            tsquery_1.tsquery(sourceFile, 'TypeReference:has(Identifier[name="Store"])').forEach(function (typeReference) {
+                if (typeReference.getText() !== 'Store') {
+                    var fix = new Lint.Replacement(typeReference.getStart(), typeReference.getWidth(), 'Store');
+                    ctx.addFailureAtNode(typeReference, 'do not use generic store type, use selectors to access the store.', fix);
                 }
             });
         });

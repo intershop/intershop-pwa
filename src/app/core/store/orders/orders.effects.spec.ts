@@ -30,7 +30,7 @@ describe('Orders Effects', () => {
   let actions$: Observable<Action>;
   let effects: OrdersEffects;
   let orderServiceMock: OrderService;
-  let store$: Store<{}>;
+  let store$: Store;
   let location: Location;
   let router: Router;
 

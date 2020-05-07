@@ -28,7 +28,7 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnD
   private destroy$ = new Subject();
   private icmBaseUrl: string;
 
-  constructor(private router: Router, private elementRef: ElementRef, store: Store<{}>) {
+  constructor(private router: Router, private elementRef: ElementRef, store: Store) {
     store
       .pipe(
         select(getICMBaseURL),

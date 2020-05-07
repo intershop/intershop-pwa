@@ -24,7 +24,7 @@ import { QuoteRequestService } from './quote-request.service';
 describe('Quote Request Service', () => {
   let quoteRequestService: QuoteRequestService;
   let apiService: ApiService;
-  let store$: Store<{}>;
+  let store$: Store;
 
   const customer = { customerNo: 'CID', type: 'SMBCustomer' } as Customer;
   const user = { email: 'UID' } as User;

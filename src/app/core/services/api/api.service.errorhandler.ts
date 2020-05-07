@@ -8,7 +8,7 @@ import { CommunicationTimeoutError, ServerError } from 'ish-core/store/error';
 
 @Injectable({ providedIn: 'root' })
 export class ApiServiceErrorHandler {
-  constructor(private store: Store<{}>) {}
+  constructor(private store: Store) {}
 
   // tslint:disable-next-line:ban-types
   dispatchCommunicationErrors<T>(error: HttpErrorResponse): Observable<T> {

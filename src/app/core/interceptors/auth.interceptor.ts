@@ -20,7 +20,7 @@ import { ResetAPIToken, SetAPIToken } from 'ish-core/store/user';
  */
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private store: Store<{}>, @Inject(PLATFORM_ID) private platformId: string) {}
+  constructor(private store: Store, @Inject(PLATFORM_ID) private platformId: string) {}
 
   private static isAuthTokenError(err: unknown) {
     return (

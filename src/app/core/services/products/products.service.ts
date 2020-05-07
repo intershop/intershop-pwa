@@ -29,7 +29,7 @@ export class ProductsService {
   constructor(
     private apiService: ApiService,
     private productMapper: ProductMapper,
-    store: Store<{}>,
+    store: Store,
     private featureToggleService: FeatureToggleService
   ) {
     store.pipe(select(getProductListingItemsPerPage)).subscribe(itemsPerPage => (this.itemsPerPage = itemsPerPage));

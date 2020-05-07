@@ -35,7 +35,7 @@ export class OrdersEffects {
     private actions$: Actions,
     private orderService: OrderService,
     private router: Router,
-    private store: Store<{}>,
+    private store: Store,
     private translateService: TranslateService
   ) {}
 

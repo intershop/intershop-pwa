@@ -46,7 +46,7 @@ import { whenFalsy } from 'ish-core/utils/operators';
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
 export class ShoppingFacade {
-  constructor(private store: Store<{}>) {}
+  constructor(private store: Store) {}
 
   // CATEGORY
   topLevelCategories$ = this.store.pipe(select(getTopLevelCategories));

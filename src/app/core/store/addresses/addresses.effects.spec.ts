@@ -22,7 +22,7 @@ describe('Addresses Effects', () => {
   let actions$: Observable<Action>;
   let addressServiceMock: AddressService;
   let effects: AddressesEffects;
-  let store$: Store<{}>;
+  let store$: Store;
 
   beforeEach(() => {
     addressServiceMock = mock(AddressService);

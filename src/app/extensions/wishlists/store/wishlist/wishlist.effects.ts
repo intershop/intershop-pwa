@@ -23,7 +23,7 @@ import { getSelectedWishlistDetails, getSelectedWishlistId, getWishlistDetails }
 
 @Injectable()
 export class WishlistEffects {
-  constructor(private actions$: Actions, private wishlistService: WishlistService, private store: Store<{}>) {}
+  constructor(private actions$: Actions, private wishlistService: WishlistService, private store: Store) {}
 
   @Effect()
   loadWishlists$ = this.actions$.pipe(

@@ -24,7 +24,7 @@ import {
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
 export class WishlistsFacade {
-  constructor(private store: Store<{}>) {}
+  constructor(private store: Store) {}
 
   wishlists$: Observable<Wishlist[]> = this.store.pipe(select(getAllWishlists));
   currentWishlist$: Observable<Wishlist> = this.store.pipe(select(getSelectedWishlistDetails));

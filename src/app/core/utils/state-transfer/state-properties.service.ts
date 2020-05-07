@@ -16,7 +16,7 @@ import { Environment } from '../../../../environments/environment.model';
  */
 @Injectable({ providedIn: 'root' })
 export class StatePropertiesService {
-  constructor(private store: Store<{}>, @Inject(PLATFORM_ID) private platformId: string) {}
+  constructor(private store: Store, @Inject(PLATFORM_ID) private platformId: string) {}
 
   /**
    * Retrieve property from first set property of server state, system environment or environment.ts

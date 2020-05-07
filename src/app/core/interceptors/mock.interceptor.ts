@@ -27,7 +27,7 @@ export class MockInterceptor implements HttpInterceptor {
   constructor(
     @Inject(MOCK_SERVER_API) private mockServerAPI: boolean,
     @Inject(MUST_MOCK_PATHS) private mustMockPaths: string[],
-    store: Store<{}>
+    store: Store
   ) {
     store.pipe(select(getRestEndpoint)).subscribe(data => (this.restEndpoint = data));
   }

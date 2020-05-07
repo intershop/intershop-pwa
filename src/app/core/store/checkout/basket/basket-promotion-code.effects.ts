@@ -11,7 +11,7 @@ import { getCurrentBasketId } from './basket.selectors';
 
 @Injectable()
 export class BasketPromotionCodeEffects {
-  constructor(private actions$: Actions, private store: Store<{}>, private basketService: BasketService) {}
+  constructor(private actions$: Actions, private store: Store, private basketService: BasketService) {}
 
   /**
    * Add promotion code to the current basket.

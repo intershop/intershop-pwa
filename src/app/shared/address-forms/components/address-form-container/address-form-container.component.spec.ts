@@ -26,7 +26,7 @@ describe('Address Form Container Component', () => {
   let component: AddressFormContainerComponent;
   let fixture: ComponentFixture<AddressFormContainerComponent>;
   let element: HTMLElement;
-  let store$: Store<{}>;
+  let store$: Store;
 
   beforeEach(async(() => {
     const addressFormFactoryMock = mock(AddressFormFactory);
