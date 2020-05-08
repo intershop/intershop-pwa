@@ -11,14 +11,10 @@ export class ProfileEditPasswordPage {
   }
 
   submit() {
-    cy.server()
-      .route('PUT', '**/password')
-      .as('passwordChange');
+    cy.server().route('PUT', '**/password').as('passwordChange');
     cy.wait(500);
 
-    cy.get(this.tag)
-      .find('button[type="submit"]')
-      .click();
+    cy.get(this.tag).find('button[type="submit"]').click();
 
     return cy.wait('@passwordChange');
   }

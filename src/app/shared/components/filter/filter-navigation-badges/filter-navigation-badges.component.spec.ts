@@ -37,7 +37,10 @@ describe('Filter Navigation Badges Component', () => {
         },
         {
           name: 'HDD',
-          facets: [{ name: '123', searchParameter: '123' }, { name: '456', searchParameter: '456', selected: true }],
+          facets: [
+            { name: '123', searchParameter: '123' },
+            { name: '456', searchParameter: '456', selected: true },
+          ],
         },
       ] as Filter[],
     } as FilterNavigation;

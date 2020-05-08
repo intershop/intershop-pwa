@@ -228,7 +228,11 @@ describe('Product Page Component', () => {
 
     fixture.detectChanges();
 
-    component.retailSetParts$.next([{ sku: 'A', quantity: 1 }, { sku: 'B', quantity: 0 }, { sku: 'C', quantity: 1 }]);
+    component.retailSetParts$.next([
+      { sku: 'A', quantity: 1 },
+      { sku: 'B', quantity: 0 },
+      { sku: 'C', quantity: 1 },
+    ]);
 
     store$.reset();
     component.addToBasket();

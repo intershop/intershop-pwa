@@ -46,11 +46,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       of(defaultRedirect),
       race(
         // wait till authorization can be acquired through cookie
-        this.store.pipe(
-          select(getUserAuthorized),
-          whenTruthy(),
-          take(1)
-        ),
+        this.store.pipe(select(getUserAuthorized), whenTruthy(), take(1)),
         // send to login after timeout
         // send right away if no user can be re-hydrated
         timer(!this.router.navigated && this.cookieService.get('apiToken') ? 4000 : 0).pipe(mapTo(defaultRedirect))

@@ -25,7 +25,7 @@ exec('npx tslint -p tsconfig.json --format json', (err1, stdout, stderr) => {
       },
     }));
 
-  fs.writeFile('gl-code-quality-report.json', JSON.stringify(mapped), function(err2) {
+  fs.writeFile('gl-code-quality-report.json', JSON.stringify(mapped), function (err2) {
     if (err1 || err2) {
       process.exit(1);
     }

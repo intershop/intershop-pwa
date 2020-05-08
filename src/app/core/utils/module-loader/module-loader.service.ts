@@ -25,21 +25,16 @@ export class ModuleLoaderService {
   ) {}
 
   init() {
-    this.store
-      .pipe(
-        select(getFeatures),
-        whenTruthy()
-      )
-      .subscribe(() => {
-        const lazyModules = this.injector.get<LazyModuleType[]>(LAZY_FEATURE_MODULE, []);
-        lazyModules
-          .filter(mod => !this.loadedModules.includes(mod.feature))
-          .filter(mod => this.featureToggleService.enabled(mod.feature))
-          .forEach(async mod => {
-            await this.loadModule(mod.location);
-            this.loadedModules.push(mod.feature);
-          });
-      });
+    this.store.pipe(select(getFeatures), whenTruthy()).subscribe(() => {
+      const lazyModules = this.injector.get<LazyModuleType[]>(LAZY_FEATURE_MODULE, []);
+      lazyModules
+        .filter(mod => !this.loadedModules.includes(mod.feature))
+        .filter(mod => this.featureToggleService.enabled(mod.feature))
+        .forEach(async mod => {
+          await this.loadModule(mod.location);
+          this.loadedModules.push(mod.feature);
+        });
+    });
   }
 
   private async loadModule(loc) {

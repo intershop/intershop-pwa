@@ -46,7 +46,9 @@ export class UserService {
       ApiService.AUTHORIZATION_HEADER_KEY,
       'BASIC ' + b64u.toBase64(b64u.encode(`${loginCredentials.login}:${loginCredentials.password}`))
     );
-    return this.apiService.get<CustomerData>('customers/-', { headers }).pipe(map(CustomerMapper.mapLoginData));
+    return this.apiService
+      .get<CustomerData>('customers/-', { headers })
+      .pipe(map(CustomerMapper.mapLoginData));
   }
 
   signinUserByToken(apiToken: string): Observable<CustomerUserType> {

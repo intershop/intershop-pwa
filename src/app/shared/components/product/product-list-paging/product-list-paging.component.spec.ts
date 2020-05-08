@@ -19,7 +19,11 @@ describe('Product List Paging Component', () => {
     fixture = TestBed.createComponent(ProductListPagingComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.pageIndices = [{ value: 1, display: '1' }, { value: 2, display: '2' }, { value: 3, display: '3' }];
+    component.pageIndices = [
+      { value: 1, display: '1' },
+      { value: 2, display: '2' },
+      { value: 3, display: '3' },
+    ];
   });
 
   it('should be created', () => {

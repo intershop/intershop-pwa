@@ -53,7 +53,10 @@ describe('Breadcrumb Component', () => {
     });
 
     it('should render trail from home and with link if set', () => {
-      component.trail = [{ link: '/LINK', text: 'L1' }, { link: '/LINK', text: 'L2' }];
+      component.trail = [
+        { link: '/LINK', text: 'L1' },
+        { link: '/LINK', text: 'L2' },
+      ];
       fixture.detectChanges();
       expect(element.textContent).toMatchInlineSnapshot(`"Home/L1/L2"`);
     });

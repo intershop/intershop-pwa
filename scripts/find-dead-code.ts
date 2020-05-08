@@ -30,10 +30,7 @@ function isExported(node: Node) {
 }
 
 function inTest(node: Node) {
-  return node
-    .getSourceFile()
-    .getFilePath()
-    .endsWith('spec.ts');
+  return node.getSourceFile().getFilePath().endsWith('spec.ts');
 }
 
 function isDev(node: Node) {

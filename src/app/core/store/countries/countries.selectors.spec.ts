@@ -11,7 +11,10 @@ import { getAllCountries, getCountriesLoading } from './countries.selectors';
 describe('Countries Selectors', () => {
   let store$: TestStore;
 
-  const countries = [{ countryCode: 'BG', name: 'Bulgaria' }, { countryCode: 'DE', name: 'Germany' }] as Country[];
+  const countries = [
+    { countryCode: 'BG', name: 'Bulgaria' },
+    { countryCode: 'DE', name: 'Germany' },
+  ] as Country[];
 
   beforeEach(() => {
     TestBed.configureTestingModule({

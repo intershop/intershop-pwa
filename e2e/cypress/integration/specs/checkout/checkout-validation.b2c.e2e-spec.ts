@@ -30,10 +30,7 @@ describe('Shopping User', () => {
     LoginPage.navigateTo('/checkout/address');
     at(LoginPage, page => {
       page.fillForm(_.user.login, _.user.password);
-      page
-        .submit()
-        .its('status')
-        .should('equal', 200);
+      page.submit().its('status').should('equal', 200);
     });
   });
 

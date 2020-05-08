@@ -41,10 +41,7 @@ export class CategoriesService {
   getTopLevelCategories(limit: number): Observable<CategoryTree> {
     let params = new HttpParams().set('imageView', 'NO-IMAGE');
     if (limit > 0) {
-      params = params
-        .set('view', 'tree')
-        .set('limit', limit.toString())
-        .set('omitHasOnlineProducts', 'true');
+      params = params.set('view', 'tree').set('limit', limit.toString()).set('omitHasOnlineProducts', 'true');
     }
 
     return this.apiService.get('categories', { params }).pipe(

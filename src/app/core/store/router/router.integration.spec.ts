@@ -224,36 +224,21 @@ describe('Router Integration', () => {
     }));
 
     it('should pass through any matcher when used', done => {
-      store$
-        .pipe(
-          ofUrl(/.*/),
-          select(selectUrl)
-        )
-        .subscribe(url => {
-          expect(url).toMatchInlineSnapshot(`"/any?view=list"`);
-          done();
-        });
+      store$.pipe(ofUrl(/.*/), select(selectUrl)).subscribe(url => {
+        expect(url).toMatchInlineSnapshot(`"/any?view=list"`);
+        done();
+      });
     });
 
     it('should pass through specific matcher when used', done => {
-      store$
-        .pipe(
-          ofUrl(/view/),
-          select(selectUrl)
-        )
-        .subscribe(url => {
-          expect(url).toMatchInlineSnapshot(`"/any?view=list"`);
-          done();
-        });
+      store$.pipe(ofUrl(/view/), select(selectUrl)).subscribe(url => {
+        expect(url).toMatchInlineSnapshot(`"/any?view=list"`);
+        done();
+      });
     });
 
     it('should not pass through exact matcher when used', done => {
-      store$
-        .pipe(
-          ofUrl(/^\/any$/),
-          select(selectUrl)
-        )
-        .subscribe(fail);
+      store$.pipe(ofUrl(/^\/any$/), select(selectUrl)).subscribe(fail);
 
       setTimeout(done, 1000);
     });

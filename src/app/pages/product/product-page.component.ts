@@ -58,27 +58,22 @@ export class ProductPageComponent implements OnInit, OnDestroy {
     this.category$ = this.shoppingFacade.selectedCategory$;
     this.productLoading$ = this.shoppingFacade.productDetailLoading$;
 
-    this.product$
-      .pipe(
-        whenTruthy(),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(product => {
-        this.quantity = product.minOrderQuantity;
-        if (
-          ProductHelper.isMasterProduct(product) &&
-          ProductVariationHelper.hasDefaultVariation(product) &&
-          !this.featureToggleService.enabled('advancedVariationHandling')
-        ) {
-          this.redirectToVariation(product.defaultVariation(), true);
-        }
-        if (ProductHelper.isMasterProduct(product) && this.featureToggleService.enabled('advancedVariationHandling')) {
-          this.shoppingFacade.loadMoreProducts({ type: 'master', value: product.sku }, 1);
-        }
-        if (ProductHelper.isRetailSet(product)) {
-          this.retailSetParts$.next(product.partSKUs.map(sku => ({ sku, quantity: 1 })));
-        }
-      });
+    this.product$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(product => {
+      this.quantity = product.minOrderQuantity;
+      if (
+        ProductHelper.isMasterProduct(product) &&
+        ProductVariationHelper.hasDefaultVariation(product) &&
+        !this.featureToggleService.enabled('advancedVariationHandling')
+      ) {
+        this.redirectToVariation(product.defaultVariation(), true);
+      }
+      if (ProductHelper.isMasterProduct(product) && this.featureToggleService.enabled('advancedVariationHandling')) {
+        this.shoppingFacade.loadMoreProducts({ type: 'master', value: product.sku }, 1);
+      }
+      if (ProductHelper.isRetailSet(product)) {
+        this.retailSetParts$.next(product.partSKUs.map(sku => ({ sku, quantity: 1 })));
+      }
+    });
 
     this.price$ = this.product$.pipe(
       switchMap(product => {
@@ -102,24 +97,19 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   }
 
   addToBasket() {
-    this.product$
-      .pipe(
-        take(1),
-        whenTruthy()
-      )
-      .subscribe(product => {
-        if (ProductHelper.isRetailSet(product)) {
-          this.retailSetParts$.pipe(take(1)).subscribe(parts =>
-            parts
-              .filter(({ quantity }) => !!quantity)
-              .forEach(({ sku, quantity }) => {
-                this.shoppingFacade.addProductToBasket(sku, quantity);
-              })
-          );
-        } else {
-          this.shoppingFacade.addProductToBasket(product.sku, this.quantity);
-        }
-      });
+    this.product$.pipe(take(1), whenTruthy()).subscribe(product => {
+      if (ProductHelper.isRetailSet(product)) {
+        this.retailSetParts$.pipe(take(1)).subscribe(parts =>
+          parts
+            .filter(({ quantity }) => !!quantity)
+            .forEach(({ sku, quantity }) => {
+              this.shoppingFacade.addProductToBasket(sku, quantity);
+            })
+        );
+      } else {
+        this.shoppingFacade.addProductToBasket(product.sku, this.quantity);
+      }
+    });
   }
 
   addToCompare(sku: string) {

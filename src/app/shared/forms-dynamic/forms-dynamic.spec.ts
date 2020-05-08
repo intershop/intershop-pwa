@@ -12,9 +12,7 @@ describe('Forms Dynamic', () => {
   let element: HTMLElement;
 
   @Component({
-    template: `
-      <formly-form [form]="form" [options]="options" [model]="model" [fields]="fields"></formly-form>
-    `,
+    template: ` <formly-form [form]="form" [options]="options" [model]="model" [fields]="fields"></formly-form> `,
   })
   class DummyComponent {
     @Input() form = new FormGroup({});

@@ -32,10 +32,7 @@ var RuleHelpers = (function () {
         }
     };
     RuleHelpers.extractVariableNameInDeclaration = function (statement) {
-        return statement
-            .getChildAt(1)
-            .getFirstToken()
-            .getText();
+        return statement.getChildAt(1).getFirstToken().getText();
     };
     RuleHelpers.getNextChildTokenOfKind = function (node, kind) {
         var pointer = node.getFirstToken();
@@ -51,10 +48,7 @@ var RuleHelpers = (function () {
         var statements = sourceFile.statements.filter(function (stmt) { return stmt.kind === ts.SyntaxKind.ExpressionStatement && stmt.getFirstToken().getText() === 'describe'; });
         if (statements.length && statements[0].getChildAt(0)) {
             var describeStatement = statements[0].getChildAt(0).getChildAt(2);
-            return describeStatement
-                .getChildAt(2)
-                .getChildAt(4)
-                .getChildAt(1);
+            return describeStatement.getChildAt(2).getChildAt(4).getChildAt(1);
         }
         return;
     };

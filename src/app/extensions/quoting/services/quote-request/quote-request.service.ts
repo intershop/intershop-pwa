@@ -46,10 +46,7 @@ export class QuoteRequestService {
 
     // rebuild the stream everytime the selected id switches back to undefined
     store
-      .pipe(
-        select(getActiveQuoteRequestWithProducts),
-        whenFalsy()
-      )
+      .pipe(select(getActiveQuoteRequestWithProducts), whenFalsy())
       .subscribe(() => this.buildActiveQuoteRequestStream());
 
     this.buildActiveQuoteRequestStream();
@@ -62,10 +59,9 @@ export class QuoteRequestService {
   getQuoteRequests(): Observable<QuoteRequestData[]> {
     return this.ids$.pipe(
       concatMap(({ userId, customerId }) =>
-        this.apiService.get(`customers/${customerId}/users/${userId}/quoterequests`).pipe(
-          unpackEnvelope(),
-          resolveLinks<QuoteRequestData>(this.apiService)
-        )
+        this.apiService
+          .get(`customers/${customerId}/users/${userId}/quoterequests`)
+          .pipe(unpackEnvelope(), resolveLinks<QuoteRequestData>(this.apiService))
       )
     );
   }

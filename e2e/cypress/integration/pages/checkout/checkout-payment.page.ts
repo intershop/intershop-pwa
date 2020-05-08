@@ -14,17 +14,13 @@ export class CheckoutPaymentPage {
   }
 
   selectPayment(payment: 'INVOICE' | 'CASH_ON_DELIVERY' | 'CASH_IN_ADVANCE') {
-    cy.get(this.tag)
-      .find(`#paymentOption_ISH_${payment}`)
-      .check();
+    cy.get(this.tag).find(`#paymentOption_ISH_${payment}`).check();
     cy.wait(3000);
     waitLoadingEnd();
   }
 
   continueCheckout() {
-    cy.get('button')
-      .contains('Continue Checkout')
-      .click();
+    cy.get('button').contains('Continue Checkout').click();
   }
 
   addPaymentInstrument(method: string) {
@@ -40,15 +36,11 @@ export class CheckoutPaymentPage {
       },
 
       uncheckSaveForLater() {
-        cy.get(`[data-testing-id=payment-parameter-form-${method}]`)
-          .find('[data-testing-id=saveForLater]')
-          .uncheck();
+        cy.get(`[data-testing-id=payment-parameter-form-${method}]`).find('[data-testing-id=saveForLater]').uncheck();
       },
 
       submit() {
-        cy.get(`[data-testing-id=payment-parameter-form-${method}]`)
-          .find('[type="submit"]')
-          .click();
+        cy.get(`[data-testing-id=payment-parameter-form-${method}]`).find('[type="submit"]').click();
       },
 
       delete() {
@@ -59,10 +51,7 @@ export class CheckoutPaymentPage {
       },
 
       formError(key: string) {
-        return cy
-          .get(`[data-testing-id=payment-parameter-form-${method}]`)
-          .find(`[data-testing-id='${key}']`)
-          .next();
+        return cy.get(`[data-testing-id=payment-parameter-form-${method}]`).find(`[data-testing-id='${key}']`).next();
       },
     };
   }

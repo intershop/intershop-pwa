@@ -20,10 +20,7 @@ describe('Extension Schematic', () => {
   let appTree: UnitTestTree;
   beforeEach(async () => {
     appTree = await createApplication(schematicRunner)
-      .pipe(
-        createModule(schematicRunner, { name: 'shell' }),
-        createAppLastRoutingModule(schematicRunner)
-      )
+      .pipe(createModule(schematicRunner, { name: 'shell' }), createAppLastRoutingModule(schematicRunner))
       .toPromise();
   });
 

@@ -44,21 +44,13 @@ export class ProductAddToQuoteDialogComponent implements OnInit, OnDestroy {
     this.selectedQuoteRequest$ = this.quotingFacade.quoteRequest$;
     this.quoteRequestLoading$ = this.quotingFacade.quoteRequestLoading$;
 
-    this.selectedQuoteRequest$
-      .pipe(
-        whenTruthy(),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(quote => {
-        this.patchForm(quote);
-      });
+    this.selectedQuoteRequest$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(quote => {
+      this.patchForm(quote);
+    });
 
     // make active quote request to selected
     this.quotingFacade.activeQuoteRequest$
-      .pipe(
-        whenTruthy(),
-        take(1)
-      )
+      .pipe(whenTruthy(), take(1))
       .subscribe(quoteRequest => this.quotingFacade.selectQuoteRequest(quoteRequest.id));
   }
 
@@ -81,19 +73,14 @@ export class ProductAddToQuoteDialogComponent implements OnInit, OnDestroy {
    * @param item Item id and quantity pair that should be changed
    */
   onUpdateItem(item: LineItemUpdate) {
-    this.selectedQuoteRequest$
-      .pipe(
-        take(1),
-        whenTruthy()
-      )
-      .subscribe(quote => {
-        if (quote.items.length === 1 && item.quantity === 0) {
-          this.quotingFacade.deleteQuoteRequest(quote.id);
-          this.hide();
-        } else {
-          this.quotingFacade.updateQuoteRequestItem(item);
-        }
-      });
+    this.selectedQuoteRequest$.pipe(take(1), whenTruthy()).subscribe(quote => {
+      if (quote.items.length === 1 && item.quantity === 0) {
+        this.quotingFacade.deleteQuoteRequest(quote.id);
+        this.hide();
+      } else {
+        this.quotingFacade.updateQuoteRequestItem(item);
+      }
+    });
   }
 
   /**
@@ -101,19 +88,14 @@ export class ProductAddToQuoteDialogComponent implements OnInit, OnDestroy {
    * Throws deleteQuoteRequest event when last item will be deleted.
    */
   onDeleteItem(itemId: string) {
-    this.selectedQuoteRequest$
-      .pipe(
-        take(1),
-        whenTruthy()
-      )
-      .subscribe(quote => {
-        if (quote.items.length === 1) {
-          this.quotingFacade.deleteQuoteRequest(quote.id);
-          this.hide();
-        } else {
-          this.quotingFacade.deleteQuoteRequestItem(itemId);
-        }
-      });
+    this.selectedQuoteRequest$.pipe(take(1), whenTruthy()).subscribe(quote => {
+      if (quote.items.length === 1) {
+        this.quotingFacade.deleteQuoteRequest(quote.id);
+        this.hide();
+      } else {
+        this.quotingFacade.deleteQuoteRequestItem(itemId);
+      }
+    });
   }
 
   /**
