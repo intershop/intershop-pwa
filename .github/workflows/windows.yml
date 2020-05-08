@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - develop
+      - 'chore/**'
+      - 'refactor/**'
+      - 'build/**'
 
 jobs:
-
   Check:
     runs-on: windows-latest
 
