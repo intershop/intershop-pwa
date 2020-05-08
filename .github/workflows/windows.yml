@@ -1,0 +1,30 @@
+name: Windows
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+
+  Check:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install root dependencies
+        uses: bahmutov/npm-install@v1
+
+      - run: npm run check
+
+      - name: Check No Changes
+        run: git diff-files --quiet
+
+      - name: Display Changes
+        if: failure()
+        run: git diff
