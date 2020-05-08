@@ -77,11 +77,11 @@ Within the PWA project we supply configuration files for VS Code that suggest do
 If your editor or IDE provides no support for the formatting and linting, make sure the rules are applied otherwise.
 E.g. the project provides npm tasks that perform code style checks as well.
 Use `npm run lint` to run a static code analysis.
-Use `npm run format` to perform a formatting run on the code base with Prettier. `npm run stylelint` will apply a common code style to the projects styling definitions.
+Use `npm run format` to perform a formatting run on the code base.
 
 ### Pre-Commit Check
 
-`npm run check` is a combination task of `lint`, `format`, `stylelint` and `test` that runs some of the checks that will also be performed by the continuous integration system checks on the whole code base.
+`npm run check` is a combination task of `lint`, `format`, and `test` that runs some of the checks that will also be performed by the continuous integration system checks on the whole code base.
 Do not overuse it as the run might take some time on your local development environments.
 
 Prefer using `npx lint-staged` to perform a manual quick evaluation of staged files.
