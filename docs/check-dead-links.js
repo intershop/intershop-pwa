@@ -98,6 +98,7 @@ glob('**/*.md')
           !link.includes('github.com') &&
           !link.includes('repository.intershop.de') &&
           !link.includes('support.intershop.com') &&
+          !link.includes('azurewebsites.net') &&
           !link.includes('github.com/intershop/intershop-pwa/commit')
       )
       .sort();
