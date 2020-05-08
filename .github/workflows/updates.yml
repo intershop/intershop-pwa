@@ -1,0 +1,77 @@
+name: Updates
+
+on:
+  push:
+    branches:
+      - develop
+  schedule:
+    - cron:  '0 0 * * *'
+
+jobs:
+
+  Updates:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install root dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: Install e2e dependencies
+        uses: bahmutov/npm-install@v1
+        with:
+          working-directory: e2e
+
+      - name: Install schematics dependencies
+        uses: bahmutov/npm-install@v1
+        with:
+          working-directory: schematics
+
+      - name: Install tslint-rules dependencies
+        uses: bahmutov/npm-install@v1
+        with:
+          working-directory: tslint-rules
+
+      - name: Possible Angular Updates
+        if: always()
+        run: npm run ng -- update
+
+      - name: Possible npm Updates
+        if: always()
+        run: npm outdated --long
+
+      - name: Must Have Updates for PWA
+        run: npm audit --production
+        if: always()
+
+      - name: Peer Dependency Incompatibilities
+        if: always()
+        run: npm ls >/dev/null || true
+
+      - name: npm audit -- PWA
+        if: always()
+        run: npm audit || true
+
+      - name: npm audit -- e2e
+        if: always()
+        run: |
+          npm --prefix e2e outdated --long
+          npm --prefix e2e audit || true
+
+      - name: npm audit -- schematics
+        if: always()
+        run: |
+          npm --prefix schematics outdated --long
+          npm --prefix schematics audit || true
+
+      - name: npm audit -- tslint-rules
+        if: always()
+        run: |
+          npm --prefix tslint-rules outdated --long
+          npm --prefix tslint-rules audit || true
