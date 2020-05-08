@@ -70,11 +70,7 @@ var Rule = (function (_super) {
                 var testBedStatement = statement.getChildAt(0);
                 var possibleThenStatement = testBedStatement.getChildAt(testBedStatement.getChildCount() - 1);
                 if (possibleThenStatement && possibleThenStatement.getText() === 'then') {
-                    _this.checkVariableStatementsInBeforeEach(statement
-                        .getChildAt(2)
-                        .getChildAt(0)
-                        .getChildAt(4)
-                        .getChildAt(1));
+                    _this.checkVariableStatementsInBeforeEach(statement.getChildAt(2).getChildAt(0).getChildAt(4).getChildAt(1));
                 }
             }
         });

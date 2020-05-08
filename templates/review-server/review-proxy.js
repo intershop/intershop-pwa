@@ -23,7 +23,7 @@ app.get('/*', function (req, res) {
         return res.status(500).send({ error: 'no data from inspect' });
       }
 
-      const ports = inspect[0].NetworkSettings.Ports
+      const ports = inspect[0].NetworkSettings.Ports;
       const bindings = Object.keys(ports)
         .filter(val => !!val && !!ports[val])
         .filter(val => !val.includes('443'))
@@ -44,7 +44,6 @@ app.get('/*', function (req, res) {
       return res.redirect(to);
     });
   } else {
-
     exec(`docker ps --format "{{.Names}}"`, (err, stdout) => {
       if (err) {
         // node couldn't execute the command
@@ -60,7 +59,8 @@ app.get('/*', function (req, res) {
       if (!names) {
         return res.status(500).send({ error: 'no data from inspect' });
       }
-      const list = names.filter(name => !!name && !!name.trim())
+      const list = names
+        .filter(name => !!name && !!name.trim())
         .sort()
         .map(name => '<li><a href="http://' + req.headers.host + '/' + name + '">' + name + '</a></li>')
         .join('');

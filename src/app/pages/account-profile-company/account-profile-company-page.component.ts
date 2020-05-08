@@ -29,16 +29,11 @@ export class AccountProfileCompanyPageComponent implements OnInit {
     this.userLoading$ = this.accountFacade.userLoading$;
 
     // check if the current customer is a business customer, otherwise the profile page is displayed
-    this.currentCustomer$
-      .pipe(
-        whenTruthy(),
-        take(1)
-      )
-      .subscribe(customer => {
-        if (!customer.isBusinessCustomer) {
-          this.router.navigate(['/account/profile']);
-        }
-      });
+    this.currentCustomer$.pipe(whenTruthy(), take(1)).subscribe(customer => {
+      if (!customer.isBusinessCustomer) {
+        this.router.navigate(['/account/profile']);
+      }
+    });
   }
 
   updateCompanyProfile(customer: Customer) {

@@ -12,7 +12,12 @@ exports[`Product Links Carousel Component should be created 1`] = `
       >
         <div
           class="swiper-wrapper"
-          style="webkit-transition-duration: 0ms; transition-duration: 0ms; webkit-transform: translate3d(NaNpx, 0px, 0px); transform: translate3d(NaNpx, 0px, 0px);"
+          style="
+            webkit-transition-duration: 0ms;
+            transition-duration: 0ms;
+            webkit-transform: translate3d(NaNpx, 0px, 0px);
+            transform: translate3d(NaNpx, 0px, 0px);
+          "
         >
           <div class="swiper-slide">
             <ish-product-item ng-reflect-product-sku="sku"></ish-product-item>

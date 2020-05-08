@@ -44,10 +44,7 @@ var Rule = (function (_super) {
                 statements
                     .filter(function (statement) { return statement.getChildAt(0); })
                     .forEach(function (statement) {
-                    var describeText = statement
-                        .getChildAt(0)
-                        .getChildAt(2)
-                        .getChildAt(0);
+                    var describeText = statement.getChildAt(0).getChildAt(2).getChildAt(0);
                     var interpolated = Rule.interpolatedName(sourceFile.fileName);
                     if (describeText.text !== interpolated) {
                         var fix = new Lint.Replacement(describeText.getStart(), describeText.getWidth(), "'" + interpolated + "'");

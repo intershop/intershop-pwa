@@ -384,7 +384,10 @@ describe('Products Effects', () => {
       when(productsServiceMock.getProductBundles('ABC')).thenReturn(
         of({
           stubs: [{ sku: 'A' }, { sku: 'B' }],
-          bundledProducts: [{ sku: 'A', quantity: 1 }, { sku: 'B', quantity: 1 }],
+          bundledProducts: [
+            { sku: 'A', quantity: 1 },
+            { sku: 'B', quantity: 1 },
+          ],
         })
       );
 

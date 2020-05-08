@@ -20,11 +20,11 @@ var parserOpts = {
 };
 
 var writerOpts = {
-  transform: function(commit) {
+  transform: function (commit) {
     var discard = true;
     var issues = [];
 
-    commit.notes.forEach(function(note) {
+    commit.notes.forEach(function (note) {
       note.title = 'BREAKING CHANGES';
       discard = false;
     });
@@ -60,7 +60,7 @@ var writerOpts = {
     }
 
     // remove references that already appear in the subject
-    commit.references = commit.references.filter(function(reference) {
+    commit.references = commit.references.filter(function (reference) {
       if (issues.indexOf(reference.issue) === -1) {
         return true;
       }
@@ -71,7 +71,7 @@ var writerOpts = {
     return commit;
   },
   groupBy: 'type',
-  commitGroupsSort: function(arg1, arg2) {
+  commitGroupsSort: function (arg1, arg2) {
     var order = ['Features', 'Bug Fixes', 'Performance Improvements', 'Documentation', 'Code Refactoring'];
     if (order.indexOf(arg1.title) < order.indexOf(arg2.title)) {
       return -1;
@@ -91,7 +91,7 @@ module.exports = Q.all([
   readFile(resolve(__dirname, 'templates/header.hbs'), 'utf-8'),
   readFile(resolve(__dirname, 'templates/commit.hbs'), 'utf-8'),
   readFile(resolve(__dirname, 'templates/footer.hbs'), 'utf-8'),
-]).spread(function(template, header, commit, footer) {
+]).spread(function (template, header, commit, footer) {
   writerOpts.mainTemplate = template;
   writerOpts.headerPartial = header;
   writerOpts.commitPartial = commit;

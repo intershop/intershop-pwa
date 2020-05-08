@@ -19,7 +19,10 @@ describe('Countries Effects', () => {
   let effects: CountriesEffects;
   let countryServiceMock: CountryService;
 
-  const countries = [{ countryCode: 'BG', name: 'Bulgaria' }, { countryCode: 'DE', name: 'Germany' }] as Country[];
+  const countries = [
+    { countryCode: 'BG', name: 'Bulgaria' },
+    { countryCode: 'DE', name: 'Germany' },
+  ] as Country[];
 
   beforeEach(() => {
     countryServiceMock = mock(CountryService);

@@ -22,10 +22,12 @@ export class BasketPromotionCodeEffects {
     mapToPayloadProperty('code'),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     concatMap(([code, basketId]) =>
-      this.basketService.addPromotionCodeToBasket(basketId, code).pipe(
-        mapTo(new basketActions.AddPromotionCodeToBasketSuccess()),
-        mapErrorToAction(basketActions.AddPromotionCodeToBasketFail)
-      )
+      this.basketService
+        .addPromotionCodeToBasket(basketId, code)
+        .pipe(
+          mapTo(new basketActions.AddPromotionCodeToBasketSuccess()),
+          mapErrorToAction(basketActions.AddPromotionCodeToBasketFail)
+        )
     )
   );
 
@@ -47,10 +49,12 @@ export class BasketPromotionCodeEffects {
     mapToPayloadProperty('code'),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     concatMap(([code, basketId]) =>
-      this.basketService.removePromotionCodeFromBasket(basketId, code).pipe(
-        mapTo(new basketActions.RemovePromotionCodeFromBasketSuccess()),
-        mapErrorToAction(basketActions.RemovePromotionCodeFromBasketFail)
-      )
+      this.basketService
+        .removePromotionCodeFromBasket(basketId, code)
+        .pipe(
+          mapTo(new basketActions.RemovePromotionCodeFromBasketSuccess()),
+          mapErrorToAction(basketActions.RemovePromotionCodeFromBasketFail)
+        )
     )
   );
 

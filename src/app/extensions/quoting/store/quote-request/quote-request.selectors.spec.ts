@@ -57,7 +57,10 @@ describe('Quote Request Selectors', () => {
     beforeEach(() => {
       store$.dispatch(
         new LoadQuoteRequestsSuccess({
-          quoteRequests: [{ id: 'test', items: [] }, { id: 'test2', editable: true, items: [] }] as QuoteRequestData[],
+          quoteRequests: [
+            { id: 'test', items: [] },
+            { id: 'test2', editable: true, items: [] },
+          ] as QuoteRequestData[],
         })
       );
       store$.dispatch(new LoadProductSuccess({ product: { sku: 'test' } as Product }));

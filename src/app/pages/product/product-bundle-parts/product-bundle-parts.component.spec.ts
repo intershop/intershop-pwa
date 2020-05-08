@@ -31,7 +31,10 @@ describe('Product Bundle Parts Component', () => {
     element = fixture.nativeElement;
 
     component.product = {
-      bundledProducts: [{ sku: '1', quantity: 3 }, { sku: '2', quantity: 1 }],
+      bundledProducts: [
+        { sku: '1', quantity: 3 },
+        { sku: '2', quantity: 1 },
+      ],
     } as ProductBundle;
   });
 

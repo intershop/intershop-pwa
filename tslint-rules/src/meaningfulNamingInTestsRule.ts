@@ -31,10 +31,7 @@ export class Rule extends Lint.Rules.AbstractRule {
         statements
           .filter(statement => statement.getChildAt(0))
           .forEach(statement => {
-            const describeText = statement
-              .getChildAt(0)
-              .getChildAt(2)
-              .getChildAt(0) as StringLiteral;
+            const describeText = statement.getChildAt(0).getChildAt(2).getChildAt(0) as StringLiteral;
             const interpolated = Rule.interpolatedName(sourceFile.fileName);
             if (describeText.text !== interpolated) {
               const fix = new Lint.Replacement(describeText.getStart(), describeText.getWidth(), `'${interpolated}'`);

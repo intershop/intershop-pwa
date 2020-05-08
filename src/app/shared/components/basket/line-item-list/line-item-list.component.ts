@@ -79,17 +79,12 @@ export class LineItemListComponent implements OnChanges, OnDestroy {
         });
 
         // Subscribe on form value changes
-        formGroup.valueChanges
-          .pipe(
-            debounceTime(800),
-            takeUntil(this.destroy$)
-          )
-          .subscribe(item => {
-            if (formGroup.valid) {
-              // TODO: figure out why quantity is returned as string by the valueChanges instead of number (the '+item.quantity' fixes that for now) - see ISREST-755
-              this.onUpdateItem({ ...item, quantity: +item.quantity });
-            }
-          });
+        formGroup.valueChanges.pipe(debounceTime(800), takeUntil(this.destroy$)).subscribe(item => {
+          if (formGroup.valid) {
+            // TODO: figure out why quantity is returned as string by the valueChanges instead of number (the '+item.quantity' fixes that for now) - see ISREST-755
+            this.onUpdateItem({ ...item, quantity: +item.quantity });
+          }
+        });
 
         itemsForm.push(formGroup);
         this.formLength = itemsForm.length;

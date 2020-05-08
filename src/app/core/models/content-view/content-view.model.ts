@@ -75,7 +75,10 @@ export const createContentPageletView = (pagelet: ContentPagelet): ContentPagele
     slot: !pagelet.slots
       ? () => undefined
       : memoize(qualifiedName =>
-          createContentSlotView(pagelet, pagelet.slots.find(slot => slot.definitionQualifiedName === qualifiedName))
+          createContentSlotView(
+            pagelet,
+            pagelet.slots.find(slot => slot.definitionQualifiedName === qualifiedName)
+          )
         ),
     ...createContentConfigurationParameterView(pagelet.configurationParameters || {}),
   };

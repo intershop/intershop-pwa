@@ -34,10 +34,7 @@ describe('Quote Handling as Anonymous User', () => {
     it('user should log in and land at product detail page', () => {
       at(LoginPage, page => {
         page.fillForm(_.user.login, _.user.password);
-        page
-          .submit()
-          .its('status')
-          .should('equal', 200);
+        page.submit().its('status').should('equal', 200);
       });
       at(ProductDetailPage, page => page.sku.should('have.text', _.product.sku));
     });
@@ -73,10 +70,7 @@ describe('Quote Handling as Anonymous User', () => {
     it('user should log in and land at basket page', () => {
       at(LoginPage, page => {
         page.fillForm(_.user.login, _.user.password);
-        page
-          .submit()
-          .its('status')
-          .should('equal', 200);
+        page.submit().its('status').should('equal', 200);
       });
       at(CartPage);
     });

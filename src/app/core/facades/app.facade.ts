@@ -56,10 +56,7 @@ export class AppFacade {
       filter(event => event instanceof NavigationCancel),
       mapTo(false)
     )
-  ).pipe(
-    startWith(true),
-    shareReplay(1)
-  );
+  ).pipe(startWith(true), shareReplay(1));
 
   countries$() {
     this.store.dispatch(new LoadCountries());
