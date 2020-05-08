@@ -18,10 +18,9 @@
     "test:watch": "jest --watch",
     "e2e": "cd e2e && npm install && node open-cypress",
     "lint": "ng lint",
-    "stylelint": "stylelint \"src/**/*.scss\" --fix",
-    "format": "node docs/check-sentence-newline && prettier --loglevel warn --write \"**/*.*\"",
+    "format": "node docs/check-sentence-newline && stylelint \"**/*.{css,scss}\" --fix && prettier --loglevel warn --write \"**/*.*\"",
     "dead-code": "npx ts-node scripts/find-dead-code.ts",
-    "check": "npm run lint -- --fix --format stylish && npm run format && npm run stylelint && tsc --project tsconfig.all.json && npm run build && npm run dead-code && npm run test",
+    "check": "npm run lint -- --fix --format stylish && npm run format && tsc --project tsconfig.all.json && npm run build && npm run dead-code && npm run test",
     "changelog": "npx -p conventional-changelog-cli conventional-changelog -n intershop-changelog.js -i CHANGELOG.md -s",
     "3rd-party-licenses": "npm ci && npx license-checker --csv --out 3rd-party-licenses.txt --customPath templates/3rd-party-licenses_format.json",
     "3rd-party-licenses:summary": "npx license-checker --summary",
@@ -119,7 +118,7 @@
     "lint-staged": "^10.2.2",
     "ng-mocks": "^9.2.0",
     "postinstall": "^0.7.0",
-    "prettier": "^1.18.2",
+    "prettier": "^2.0.5",
     "rxjs-tslint-rules": "^4.31.0",
     "stylelint": "^13.3.3",
     "stylelint-config-prettier": "^8.0.1",
@@ -143,24 +142,26 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
+      "pre-commit": "lint-staged --concurrent false",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {
-    "!(*.ts|docs/**/*.md)": [
-      "npx prettier --loglevel warn --write"
-    ],
     "docs/**/*.md": [
       "node docs/check-kb-labels",
       "node docs/check-dead-links fast",
       "node docs/check-documentation-overview",
-      "node docs/check-sentence-newline",
-      "npx prettier --loglevel warn --write"
+      "node docs/check-sentence-newline"
+    ],
+    "*.{scss,css}": [
+      "stylelint --fix"
+    ],
+    "*": [
+      "prettier --loglevel warn --write"
     ],
     "*.ts": [
-      "npx tslint --project tsconfig.json --fix",
-      "npx jest --ci --bail --findRelatedTests"
+      "tslint --project tsconfig.json --fix",
+      "jest --ci --bail --findRelatedTests"
     ]
   },
   "commitlint": {
