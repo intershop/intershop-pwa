@@ -13,6 +13,7 @@ import {
 } from '@angular-devkit/schematics';
 
 import { applyNameAndPath, determineArtifactName, findDeclaringModule, generateSelector } from '../utils/common';
+import { applyLintFix } from '../utils/lint-fix';
 import { addDeclarationToNgModule, addEntryComponentToNgModule, addExportToNgModule } from '../utils/registration';
 
 import { PwaComponentOptionsSchema as Options } from './schema';
@@ -51,6 +52,8 @@ export function createComponent(options: Options): Rule {
         ])
       )
     );
+
+    operations.push(applyLintFix());
 
     return chain(operations);
   };

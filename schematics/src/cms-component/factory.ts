@@ -19,6 +19,7 @@ import {
   findDeclaringModule,
   generateSelector,
 } from '../utils/common';
+import { applyLintFix } from '../utils/lint-fix';
 import {
   addDeclarationToNgModule,
   addEntryComponentToNgModule,
@@ -83,6 +84,8 @@ export function createCMSComponent(options: Options): Rule {
         ])
       )
     );
+
+    operations.push(applyLintFix());
 
     return chain(operations);
   };

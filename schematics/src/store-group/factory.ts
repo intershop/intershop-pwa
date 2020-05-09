@@ -13,6 +13,7 @@ import {
 import { buildDefaultPath, getProject } from '@schematics/angular/utility/project';
 
 import { applyNameAndPath, determineArtifactName } from '../utils/common';
+import { applyLintFix } from '../utils/lint-fix';
 import { addImportToNgModule } from '../utils/registration';
 
 import { PwaStoreGroupOptionsSchema as Options } from './schema';
@@ -67,6 +68,9 @@ export function createStoreGroup(options: Options): Rule {
     );
 
     operations.push(addImportToNgModule(options));
+
+    operations.push(applyLintFix());
+
     return chain(operations);
   };
 }

@@ -1,7 +1,7 @@
 <% if(entity) { %>import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { <%= classify(entity) %> } from '<% if(feature) { %>../<% } %>../../models/<%= dasherize(entity) %>/<%= dasherize(entity) %>.model';
+import { <%= classify(entity) %> } from '<% if(!extension) { %>ish-core<% } else { %>../..<% } %>/models/<%= dasherize(entity) %>/<%= dasherize(entity) %>.model';
 
 <% } %>import { <%= classify(name) %>Action, <%= classify(name) %>ActionTypes } from './<%= dasherize(name) %>.actions';
 <% if(entity) { %>

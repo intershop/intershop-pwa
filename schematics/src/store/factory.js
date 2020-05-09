@@ -7,6 +7,7 @@ const tsutils_1 = require("tsutils");
 const ts = require("typescript");
 const common_1 = require("../utils/common");
 const filesystem_1 = require("../utils/filesystem");
+const lint_fix_1 = require("../utils/lint-fix");
 const registration_1 = require("../utils/registration");
 function determineStoreLocation(host, options) {
     const project = project_1.getProject(host, options.project);
@@ -138,6 +139,7 @@ function createStore(options) {
         operations.push(registerStateInStore(options));
         operations.push(registerEffectsInStoreModule(options));
         operations.push(registerReducerInStoreModule(options));
+        operations.push(lint_fix_1.applyLintFix());
         return schematics_1.chain(operations);
     };
 }

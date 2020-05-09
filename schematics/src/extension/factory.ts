@@ -3,6 +3,7 @@ import { Rule, SchematicsException, apply, chain, mergeWith, move, template, url
 import { buildDefaultPath, getProject } from '@schematics/angular/utility/project';
 
 import { applyNameAndPath, detectExtension, determineArtifactName } from '../utils/common';
+import { applyLintFix } from '../utils/lint-fix';
 import { addExportToNgModule, addImportToNgModule, addImportToNgModuleBefore } from '../utils/registration';
 
 import { PwaExtensionOptionsSchema as Options } from './schema';
@@ -59,6 +60,8 @@ export function createExtension(options: Options): Rule {
       )}-routing.module`,
     };
     operations.push(addImportToNgModuleBefore(appModuleOptions, 'AppLastRoutingModule'));
+
+    operations.push(applyLintFix());
 
     return chain(operations);
   };

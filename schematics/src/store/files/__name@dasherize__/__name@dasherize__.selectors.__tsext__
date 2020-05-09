@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import { get<%= classify(parent) %>State } from '../<%= dasherize(parent) %>-store';
+import { get<%= classify(parent) %>State } from '<% if (extension) { %>..<% } else { %>ish-core/store<% } %>/<% if (feature) { %><%= dasherize(parent) %>/<% } %><%= dasherize(parent) %>-store';
 <% if(entity) { %>
 import { <%= camelize(name) %>Adapter } from './<%= dasherize(name) %>.reducer';
 <% } %>

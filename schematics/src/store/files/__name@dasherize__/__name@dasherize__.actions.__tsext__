@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';<% if(entity) { %>
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { <%= classify(entity) %> } from '<% if(feature) { %>../<% } %>../../models/<%= dasherize(entity) %>/<%= dasherize(entity) %>.model';<% } %>
+import { <%= classify(entity) %> } from '<% if(!extension) { %>ish-core<% } else { %>../..<% } %>/models/<%= dasherize(entity) %>/<%= dasherize(entity) %>.model';<% } %>
 
 export enum <%= classify(name) %>ActionTypes {
   Load<%= classify(name) %> = '[<%= classify(name) %>] Load <%= classify(name) %>'<% if(entity) { %>,

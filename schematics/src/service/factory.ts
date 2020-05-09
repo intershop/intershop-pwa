@@ -1,7 +1,8 @@
 import { strings } from '@angular-devkit/core';
-import { Rule, SchematicsException, apply, mergeWith, move, template, url } from '@angular-devkit/schematics';
+import { Rule, SchematicsException, apply, chain, mergeWith, move, template, url } from '@angular-devkit/schematics';
 
 import { applyNameAndPath, detectExtension, determineArtifactName } from '../utils/common';
+import { applyLintFix } from '../utils/lint-fix';
 
 import { PwaServiceOptionsSchema as Options } from './schema';
 
@@ -15,14 +16,22 @@ export function createService(options: Options): Rule {
     options = applyNameAndPath('service', host, options);
     options = determineArtifactName('service', host, options);
 
-    return mergeWith(
-      apply(url('./files'), [
-        template({
-          ...strings,
-          ...options,
-        }),
-        move(options.path),
-      ])
+    const operations: Rule[] = [];
+
+    operations.push(
+      mergeWith(
+        apply(url('./files'), [
+          template({
+            ...strings,
+            ...options,
+          }),
+          move(options.path),
+        ])
+      )
     );
+
+    operations.push(applyLintFix());
+
+    return chain(operations);
   };
 }

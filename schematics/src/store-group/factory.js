@@ -4,6 +4,7 @@ const core_1 = require("@angular-devkit/core");
 const schematics_1 = require("@angular-devkit/schematics");
 const project_1 = require("@schematics/angular/utility/project");
 const common_1 = require("../utils/common");
+const lint_fix_1 = require("../utils/lint-fix");
 const registration_1 = require("../utils/registration");
 function determineStoreGroupLocation(host, options) {
     const project = project_1.getProject(host, options.project);
@@ -32,6 +33,7 @@ function createStoreGroup(options) {
             schematics_1.move(options.path),
         ])));
         operations.push(registration_1.addImportToNgModule(options));
+        operations.push(lint_fix_1.applyLintFix());
         return schematics_1.chain(operations);
     };
 }

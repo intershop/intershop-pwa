@@ -4,6 +4,7 @@ const core_1 = require("@angular-devkit/core");
 const schematics_1 = require("@angular-devkit/schematics");
 const project_1 = require("@schematics/angular/utility/project");
 const common_1 = require("../utils/common");
+const lint_fix_1 = require("../utils/lint-fix");
 const registration_1 = require("../utils/registration");
 function createExtension(options) {
     return host => {
@@ -35,6 +36,7 @@ function createExtension(options) {
             moduleImportPath: `${projectRoot}/extensions/${core_1.strings.dasherize(options.name)}/pages/${core_1.strings.dasherize(options.name)}-routing.module`,
         };
         operations.push(registration_1.addImportToNgModuleBefore(appModuleOptions, 'AppLastRoutingModule'));
+        operations.push(lint_fix_1.applyLintFix());
         return schematics_1.chain(operations);
     };
 }
