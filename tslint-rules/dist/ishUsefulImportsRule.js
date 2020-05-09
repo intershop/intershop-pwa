@@ -82,7 +82,7 @@ var Rule = (function (_super) {
                 _this.shortImports.forEach(function (_a) {
                     var pattern = _a.pattern, replacement = _a.replacement;
                     if (new RegExp(pattern).test(absPath)) {
-                        ctx.addFailureAtNode(stringLiteral, 'Import path should rely on ish-core.', new Lint.Replacement(stringLiteral.getStart(), stringLiteral.getEnd() - stringLiteral.getStart(), "'" + absPath.replace(new RegExp(pattern), replacement) + "'"));
+                        ctx.addFailureAtNode(stringLiteral, "Import path should rely on " + replacement.replace(/\/.*/g, '') + ".", new Lint.Replacement(stringLiteral.getStart(), stringLiteral.getEnd() - stringLiteral.getStart(), "'" + absPath.replace(new RegExp(pattern), replacement) + "'"));
                         failureFound = true;
                     }
                 });
