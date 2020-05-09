@@ -74,7 +74,7 @@ export class Rule extends Lint.Rules.AbstractRule {
           if (new RegExp(pattern).test(absPath)) {
             ctx.addFailureAtNode(
               stringLiteral,
-              'Import path should rely on ish-core.',
+              `Import path should rely on ${replacement.replace(/\/.*/g, '')}.`,
               new Lint.Replacement(
                 stringLiteral.getStart(),
                 stringLiteral.getEnd() - stringLiteral.getStart(),
