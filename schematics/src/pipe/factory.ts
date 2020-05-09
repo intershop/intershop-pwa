@@ -2,6 +2,7 @@ import { strings } from '@angular-devkit/core';
 import { Rule, SchematicsException, apply, chain, mergeWith, move, template, url } from '@angular-devkit/schematics';
 
 import { applyNameAndPath, detectExtension, determineArtifactName, findDeclaringModule } from '../utils/common';
+import { applyLintFix } from '../utils/lint-fix';
 import { addDeclarationToNgModule, addExportToNgModule, addProviderToNgModule } from '../utils/registration';
 
 import { PwaPipeOptionsSchema as Options } from './schema';
@@ -40,6 +41,8 @@ export function createPipe(options: Options): Rule {
         ])
       )
     );
+
+    operations.push(applyLintFix());
 
     return chain(operations);
   };

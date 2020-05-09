@@ -16,6 +16,7 @@ import * as ts from 'typescript';
 
 import { applyNameAndPath, determineArtifactName } from '../utils/common';
 import { readIntoSourceFile } from '../utils/filesystem';
+import { applyLintFix } from '../utils/lint-fix';
 import { insertImport } from '../utils/registration';
 
 import { PwaStoreOptionsSchema as Options } from './schema';
@@ -205,6 +206,9 @@ export function createStore(options: Options): Rule {
     operations.push(registerStateInStore(options));
     operations.push(registerEffectsInStoreModule(options));
     operations.push(registerReducerInStoreModule(options));
+
+    operations.push(applyLintFix());
+
     return chain(operations);
   };
 }

@@ -17,6 +17,7 @@ import * as ts from 'typescript';
 
 import { applyNameAndPath, detectExtension, determineArtifactName } from '../utils/common';
 import { readIntoSourceFile } from '../utils/filesystem';
+import { applyLintFix } from '../utils/lint-fix';
 
 import { PwaPageOptionsSchema as Options } from './schema';
 
@@ -123,6 +124,8 @@ export function createPage(options: Options): Rule {
       })
     );
     operations.push(addRouteToRoutingModule(options));
+
+    operations.push(applyLintFix());
 
     return chain(operations);
   };

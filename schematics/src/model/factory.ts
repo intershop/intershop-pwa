@@ -3,6 +3,7 @@ import {
   Rule,
   SchematicsException,
   apply,
+  chain,
   filter,
   mergeWith,
   move,
@@ -12,6 +13,7 @@ import {
 } from '@angular-devkit/schematics';
 
 import { applyNameAndPath, detectExtension, determineArtifactName } from '../utils/common';
+import { applyLintFix } from '../utils/lint-fix';
 
 import { PwaModelOptionsSchema as Options } from './schema';
 
@@ -25,12 +27,20 @@ export function createModel(options: Options): Rule {
     options = applyNameAndPath('model', host, options);
     options = determineArtifactName('model', host, options);
 
-    return mergeWith(
-      apply(url('./files'), [
-        !options.simple ? noop() : filter(path => path.endsWith('model.__tsext__')),
-        template({ ...strings, ...options }),
-        move(options.path),
-      ])
+    const operations: Rule[] = [];
+
+    operations.push(
+      mergeWith(
+        apply(url('./files'), [
+          !options.simple ? noop() : filter(path => path.endsWith('model.__tsext__')),
+          template({ ...strings, ...options }),
+          move(options.path),
+        ])
+      )
     );
+
+    operations.push(applyLintFix());
+
+    return chain(operations);
   };
 }

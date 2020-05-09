@@ -7,6 +7,7 @@ const tsutils_1 = require("tsutils");
 const ts = require("typescript");
 const common_1 = require("../utils/common");
 const filesystem_1 = require("../utils/filesystem");
+const lint_fix_1 = require("../utils/lint-fix");
 function addRouteToArray(options, host, position, insertComma) {
     const dasherizedName = core_1.strings.dasherize(options.name);
     const loadChildren = `() => import('${options.child ? '..' : '.'}/${dasherizedName}/${dasherizedName}-page.module').then(m => m.${core_1.strings.classify(dasherizedName)}PageModule)`;
@@ -80,6 +81,7 @@ function createPage(options) {
         ])));
         operations.push(schematics_1.schematic('component', Object.assign({}, options, { name: `${options.name}-page`, path: `${options.path}${options.name}`, flat: true })));
         operations.push(addRouteToRoutingModule(options));
+        operations.push(lint_fix_1.applyLintFix());
         return schematics_1.chain(operations);
     };
 }

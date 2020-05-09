@@ -80,7 +80,7 @@ describe('Page Schematic', () => {
       "import { NgModule } from '@angular/core';
       import { RouterModule, Routes } from '@angular/router';
 
-      import { SharedModule } from '../../shared/shared.module';
+      import { SharedModule } from 'ish-shared/shared.module';
       import { FooPageComponent } from './foo-page.component';
 
       const fooPageRoutes: Routes = [{ path: '', component: FooPageComponent }];

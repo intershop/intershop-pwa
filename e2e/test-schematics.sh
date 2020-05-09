@@ -15,6 +15,13 @@ stat src/app/core/models/stock/stock.model.ts
 npx ng g s warehouses
 stat src/app/core/services/warehouses/warehouses.service.ts
 
+npx ng g store dummy
+stat src/app/core/store/dummy/dummy.actions.ts
+stat src/app/core/store/dummy/dummy.effects.ts
+stat src/app/core/store/dummy/dummy.reducer.ts
+stat src/app/core/store/dummy/dummy.selectors.ts
+grep "DummyState" src/app/core/store/core-store.ts
+
 npx ng g store-group training
 stat src/app/core/store/training/training-store.ts
 grep "TrainingStoreModule" src/app/core/store/core-store.module.ts
@@ -54,9 +61,6 @@ stat src/app/extensions/awesome/services/super/super.service.ts
 npx ng g s src/app/extensions/awesome/duper
 stat src/app/extensions/awesome/services/duper/duper.service.ts
 
-(cd src/app/extensions/awesome && npx ng g s hyper)
-stat src/app/extensions/awesome/services/hyper/hyper.service.ts
-
 npx ng g store -e awesome super
 stat src/app/extensions/awesome/store/super/super.actions.ts
 stat src/app/extensions/awesome/store/super/super.effects.ts
@@ -74,6 +78,7 @@ stat src/app/shared/cms/components/audio/audio.component.ts
 grep "AudioComponent" src/app/shared/cms/cms.module.ts
 grep "AudioComponent" src/app/shared/shared.module.ts
 
+npx tslint -p tsconfig.json
 
 node schematics/customization/add custom
 npx ng g customized-copy shell/footer/footer

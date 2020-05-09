@@ -5,7 +5,7 @@ import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { coreReducers } from 'ish-core/store/core-store.module';
 <% if (feature) { %>import { <%= camelize(feature) %>Reducers } from 'ish-core/store/<%= dasherize(feature) %>/<%= dasherize(feature) %>-store.module';<% } else if (extension) { %>import { <%= camelize(extension) %>Reducers } from '../<%= dasherize(extension) %>-store.module';<% } %>
 <% if(entity) { %>import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { <%= classify(entity) %> } from '<% if(feature) { %>../<% } %>../../models/<%= dasherize(entity) %>/<%= dasherize(entity) %>.model';<% } %>
+import { <%= classify(entity) %> } from '<% if(!extension) { %>ish-core<% } else { %>../..<% } %>/models/<%= dasherize(entity) %>/<%= dasherize(entity) %>.model';<% } %>
 
 import * as actions from './<%= dasherize(name) %>.actions';
 import { <% if (entity) { %>getNumberOf<%= classify(name) %>, get<%= classify(name) %>, get<%= classify(name) %>Entities, get<%= classify(name) %>Error, <% } %>get<%= classify(name) %>Loading } from './<%= dasherize(name) %>.selectors';
