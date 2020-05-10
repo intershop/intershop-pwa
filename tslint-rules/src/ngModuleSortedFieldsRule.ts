@@ -1,111 +1,203 @@
-import { NgWalker } from 'codelyzer/angular/ngWalker';
+import { tsquery } from '@phenomnomnominal/tsquery';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 
-class NgModulesSortedFieldsWalker extends NgWalker {
-  ignoreTokens: string[] = [];
+function getInitializer(property: ts.Node & { initializer?: ts.Node }) {
+  return property && ts.isArrayLiteralExpression(property.initializer) ? property.initializer : undefined;
+}
 
-  constructor(sourceFile: ts.SourceFile, options: Lint.IOptions) {
-    super(sourceFile, options);
-
-    if (options.ruleArguments && options.ruleArguments[0] && options.ruleArguments[0]['ignore-tokens']) {
-      this.ignoreTokens = options.ruleArguments[0]['ignore-tokens'];
-    }
-  }
-
-  visitCallExpression(node: ts.CallExpression) {
-    if (node.getChildAt(0).getText() === 'TestBed.configureTestingModule') {
-      const ngModuleDeclarationList = node.getChildAt(2).getChildAt(0).getChildAt(1) as ts.SyntaxList;
-      this.visitNgModuleDeclarationList(ngModuleDeclarationList);
-    }
-    super.visitCallExpression(node);
-  }
-
-  visitClassDecorator(decorator: ts.Decorator) {
-    if (decorator.getChildAt(1).getChildAt(0).getText() !== 'NgModule') {
-      return;
-    }
-
-    decorator
-      .getSourceFile()
-      .getChildAt(0)
-      .getChildren()
-      .filter(node => node.kind === ts.SyntaxKind.VariableStatement)
-      .map(node => node.getChildAt(0))
-      .filter(node => node.kind === ts.SyntaxKind.VariableDeclarationList)
-      .map(node => node.getChildAt(1).getChildAt(0))
-      // .filter(node => this.assertList(node))
-      .forEach(node => this.sortList(node.getChildAt(2).getChildAt(1) as ts.SyntaxList));
-
-    const ngModuleDeclarationList = decorator.getChildAt(1).getChildAt(2).getChildAt(0).getChildAt(1) as ts.SyntaxList;
-    this.visitNgModuleDeclarationList(ngModuleDeclarationList);
-
-    super.visitClassDecorator(decorator);
-  }
-
-  private visitNgModuleDeclarationList(ngModuleDeclarationList: ts.SyntaxList) {
-    ngModuleDeclarationList
-      .getChildren()
-      .filter(node => node.kind !== ts.SyntaxKind.CommaToken)
-      .filter(node => /^(exports|imports|declarations)$/.test(node.getChildAt(0).getText()))
-      .filter(node => this.assertList(node))
-      .forEach(node => {
-        this.sortList(node.getChildAt(2).getChildAt(1) as ts.SyntaxList);
-      });
-  }
-
-  private assertList(node: ts.Node): boolean {
-    if (node.getSourceFile().fileName.endsWith('.spec.ts')) {
-      return true;
-    }
-    if (node.getChildCount() < 3 || node.getChildAt(2).kind !== ts.SyntaxKind.ArrayLiteralExpression) {
-      this.addFailureAtNode(
-        node,
-        'Right-hand side is not an array, but it should be for schematics to function properly.'
-      );
-      return false;
-    }
-    return true;
-  }
-
-  private sortList(list: ts.SyntaxList) {
-    const possibleSorted = this.getSortedIfNot(list);
-    if (possibleSorted) {
-      this.addFailureAtNode(list, 'list is not sorted', Lint.Replacement.replaceNode(list, possibleSorted));
-    }
-  }
-
-  private getSortedIfNot(list: ts.SyntaxList): string {
-    if (!list) {
-      return;
-    }
-
-    for (const token of this.ignoreTokens) {
-      if (list.getFullText().search(token) >= 0) {
-        return;
-      }
-    }
-
-    const sorted = list
-      .getChildren()
-      .filter(node => node.kind !== ts.SyntaxKind.CommaToken)
-      .map(node => node.getFullText())
-      .sort((a, b) => (a.trim() > b.trim() ? 1 : a.trim() < b.trim() ? -1 : 0))
-      .filter((val, idx, arr) => idx === arr.indexOf(val))
-      .join(',');
-
-    if (sorted !== list.getFullText().replace(/,$/, '')) {
-      return sorted.replace(/^\n\r?/, '').replace(/^\ */g, '') + (list.getFullText().endsWith(',') ? ',' : '');
-    }
-    return;
-  }
+function selectSpreadArray(node: ts.Node) {
+  return ts.isSpreadElement(node) && ts.isIdentifier(node.expression);
 }
 
 /**
  * Implementation of the ng-module-sorted-fields rule.
  */
 export class Rule extends Lint.Rules.AbstractRule {
+  ignoreTokens: string[] = [];
+  arrayDeclarations: string[] = [];
+
+  constructor(options: Lint.IOptions) {
+    super(options);
+
+    if (options.ruleArguments && options.ruleArguments[0] && options.ruleArguments[0]['ignore-tokens']) {
+      this.ignoreTokens = options.ruleArguments[0]['ignore-tokens'];
+    }
+  }
+
+  private sortSpreadArrayDeclaration(ctx: Lint.WalkContext, arrName: string, moving: { [clazz: string]: string }) {
+    tsquery(ctx.sourceFile, `VariableDeclaration:has(Identifier[name=${arrName}])`).forEach(
+      (decl: ts.VariableDeclaration) => {
+        this.sortList(ctx, getInitializer(decl), moving, false);
+      }
+    );
+  }
+
+  private sortList(
+    ctx: Lint.WalkContext,
+    array: ts.ArrayLiteralExpression,
+    moving: { [clazz: string]: string },
+    remove: boolean
+  ): string {
+    if (!array) {
+      return;
+    }
+
+    const list = array.getChildAt(1) as ts.SyntaxList;
+
+    if (this.ignoreTokens.some(token => array.elements.find(node => new RegExp(token).test(node.getText())))) {
+      return;
+    }
+
+    let elements;
+    if (remove) {
+      const movingClasses = Object.keys(moving);
+      elements = array.elements
+        // remove elements that are moved away
+        .filter(node => !(remove && movingClasses.includes(node.getText())));
+    } else {
+      const name = (array.parent as ts.VariableDeclaration).name.getText();
+      // add dummy elements for adding
+      const adding = Object.keys(moving)
+        .filter(key => moving[key] === name)
+        .reduce((acc, val) => [...acc, val], []);
+      elements = [...array.elements, ...adding.map(val => ({ getText: () => val }))];
+    }
+
+    const whiteSpace =
+      array.elements.length === 0
+        ? ''
+        : array.elements.length === 1
+        ? // single space if array has only one element
+          ' '
+        : // fetch whitespace from last element in current array
+          array.elements
+            .filter((_, idx, arr) => idx === arr.length - 1)
+            .map(el => el.getFullText().replace(/[^\s].*$/s, ''))[0];
+
+    const isMultiLineArray = array.elements.some(el => /\n/.test(el.getFullText()));
+
+    let sorted = elements
+      .map(node => node.getText())
+      .sort()
+      // filter duplicates
+      .filter((val, idx, arr) => idx === arr.indexOf(val))
+      // add whitespace to element if it was the first in a collapsed array
+      .map((val, idx) => (idx === 0 ? val : /^\s/.test(val) ? val : whiteSpace + val))
+      .join(',');
+
+    if (isMultiLineArray) {
+      sorted += ',';
+    }
+
+    if (!remove && !/\n/.test(sorted)) {
+      const name = (array.parent as ts.VariableDeclaration).name.getText();
+      const declaration = `const ${name} = [${sorted}];`;
+      if (declaration.length >= 120) {
+        sorted = `\n  ${sorted.split(', ').join(',\n  ')},\n`;
+      }
+    }
+
+    // compare ignoring leading whitespace
+    const original = list.getFullText().replace(/^\s*/, '');
+
+    if (sorted !== original) {
+      ctx.addFailureAtNode(list, 'list is not sorted', Lint.Replacement.replaceNode(list, sorted));
+    }
+
+    array.elements.filter(selectSpreadArray).forEach((node: ts.SpreadElement) => {
+      const arrName = node.expression.getText();
+      this.arrayDeclarations.push(arrName);
+    });
+  }
+
+  private checkForSpreadArrayInclusion(
+    arr: ts.Expression[] | ts.NodeArray<ts.Expression>
+  ): { [clazz: string]: string } {
+    if (!arr) {
+      return {};
+    }
+    const spreadArray = arr.find(selectSpreadArray);
+    if (spreadArray) {
+      return arr
+        .filter(node => !selectSpreadArray(node))
+        .reduce((acc, node) => ({ ...acc, [node.getText()]: spreadArray.getText().substr(3) }), {});
+    }
+  }
+
+  private checkForPairedSpreadArrayInclusion(
+    arr1: ts.ArrayLiteralExpression,
+    arr2: ts.ArrayLiteralExpression
+  ): { [clazz: string]: string } {
+    if (arr1 && arr2) {
+      const intersection = arr1.elements.filter(node => arr2.elements.find(n => n.getText() === node.getText()));
+
+      return [arr1, arr2].reduce(
+        (acc, list) => ({
+          ...acc,
+          ...this.checkForSpreadArrayInclusion(
+            list.elements.filter(node => intersection.find(n => n.getText() === node.getText()))
+          ),
+          ...this.checkForSpreadArrayInclusion(
+            list.elements.filter(node => !intersection.find(n => n.getText() === node.getText()))
+          ),
+        }),
+        {}
+      );
+    }
+    return {};
+  }
+
+  private checkModuleDefinition(ctx: Lint.WalkContext, objectLiteralExpression: ts.ObjectLiteralExpression) {
+    const exportsInitializer = getInitializer(
+      objectLiteralExpression.properties.find(
+        el => ts.isPropertyAssignment(el) && el.name.getText() === 'exports'
+      ) as ts.PropertyAssignment
+    );
+    const declarationsInitializer = getInitializer(
+      objectLiteralExpression.properties.find(
+        el => ts.isPropertyAssignment(el) && el.name.getText() === 'declarations'
+      ) as ts.PropertyAssignment
+    );
+    const importsInitializer = getInitializer(
+      objectLiteralExpression.properties.find(
+        el => ts.isPropertyAssignment(el) && el.name.getText() === 'imports'
+      ) as ts.PropertyAssignment
+    );
+
+    const moving = {
+      ...(exportsInitializer ? {} : this.checkForSpreadArrayInclusion(declarationsInitializer?.elements)),
+      ...(exportsInitializer ? {} : this.checkForSpreadArrayInclusion(importsInitializer?.elements)),
+      ...this.checkForPairedSpreadArrayInclusion(exportsInitializer, importsInitializer),
+      ...this.checkForPairedSpreadArrayInclusion(exportsInitializer, declarationsInitializer),
+    };
+
+    this.sortList(ctx, exportsInitializer, moving, true);
+    this.sortList(ctx, declarationsInitializer, moving, true);
+    this.sortList(ctx, importsInitializer, moving, true);
+
+    this.arrayDeclarations
+      .filter((val, idx, arr) => arr.indexOf(val) === idx)
+      .forEach(arrName => {
+        this.sortSpreadArrayDeclaration(ctx, arrName, moving);
+      });
+  }
+
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(new NgModulesSortedFieldsWalker(sourceFile, this.getOptions()));
+    return this.applyWithFunction(sourceFile, ctx => {
+      if (ctx.sourceFile.fileName.endsWith('module.ts')) {
+        tsquery(
+          ctx.sourceFile,
+          'Decorator:has(Identifier[name=NgModule]) ObjectLiteralExpression'
+        ).forEach((el: ts.ObjectLiteralExpression) => this.checkModuleDefinition(ctx, el));
+      }
+
+      if (ctx.sourceFile.fileName.endsWith('spec.ts')) {
+        tsquery(
+          ctx.sourceFile,
+          'CallExpression:has(Identifier[name=TestBed]):has(Identifier[name=configureTestingModule]) > ObjectLiteralExpression'
+        ).forEach((el: ts.ObjectLiteralExpression) => this.checkModuleDefinition(ctx, el));
+      }
+    });
   }
 }
