@@ -1,4 +1,4 @@
-FROM node:12-stretch as reporting
+FROM node:12 as reporting
 COPY package.json package-lock.json tsconfig.json /workspace/
 COPY tslint-rules /workspace/tslint-rules/
 WORKDIR /workspace

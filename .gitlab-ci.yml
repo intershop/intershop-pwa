@@ -10,6 +10,7 @@ stages:
 
 variables:
   npm_config_cache: '$CI_PROJECT_DIR/cache/.npm'
+  DISABLE_V8_COMPILE_CACHE: 1
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
@@ -44,23 +45,17 @@ setup:
     - performance
   script:
     - node --version && npm --version
-    - bash -c "cd tslint-rules ; npm --silent run build"
-    - bash scripts/ci-test-no-changes.sh 'you probably did not commit compiled binaries in tslint-rules'
-    - bash -c "cd schematics ; npm --silent run build"
-    - bash scripts/ci-test-no-changes.sh 'you probably did not commit compiled binaries in schematics'
-    - npm i && npm i
-    - bash scripts/ci-test-no-changes.sh 'you probably did not commit package-lock.json correctly after installing packages, run npm i again'
+    - npm ci
     - echo "setup complete"
 
 migration:
-  image: node:10
+  image: node:12
   stage: setup
   allow_failure: true
   timeout: 3h
   only:
-    - merge_requests
-  except:
     refs:
+      - develop
       - github-develop
       - master
   tags:
@@ -191,7 +186,7 @@ deploy_review_mock:
       --name "${CI_COMMIT_REF_SLUG}-mock"
       ${CI_REGISTRY_IMAGE}:mock-${CI_BUILD_REF}
     - DEMO_SERVER_IP=$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
-    - docker run --rm --add-host $DEMO_SERVER_NAME:$DEMO_SERVER_IP mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock"
+    - docker run --rm --add-host $DEMO_SERVER_NAME:$DEMO_SERVER_IP mwendler/wget --wait 60 --tries 20 --retry-connrefused "http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock"
   environment:
     name: review/mock-$CI_COMMIT_REF_SLUG
     url: http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock
@@ -726,10 +721,10 @@ schematics:
     - performance
   dependencies: []
   script:
-    - npm install
+    - git config user.email gitlab@intershop.de
+    - git config user.name "GitLab Runner for PWA"
+    - npm ci
     - bash e2e/test-schematics.sh
-    - node scripts/tslint-hard
-    - npm run lint
     - echo "schematics complete"
 
 .universal_template: &universal_definition
