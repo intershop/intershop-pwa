@@ -26,8 +26,8 @@ describe('Api Service', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
+        // https://angular.io/guide/http#testing-http-requests
         imports: [
-          // https://angular.io/guide/http#testing-http-requests
           HttpClientTestingModule,
           ngrxTesting({
             reducers: { configuration: configurationReducer },
@@ -394,8 +394,8 @@ describe('Api Service', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
+        // https://angular.io/guide/http#testing-http-requests
         imports: [
-          // https://angular.io/guide/http#testing-http-requests
           HttpClientTestingModule,
           ngrxTesting({
             reducers: { configuration: configurationReducer, user: userReducer },
