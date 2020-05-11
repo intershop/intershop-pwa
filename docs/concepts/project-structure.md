@@ -55,7 +55,7 @@ The `src/app` folder contains all TypeScript code (sources and tests) and HTML t
 
 The `src/assets` folder contains files which are statically served (pictures, mock-data, fonts, localization, ...).
 
-The `src/environments` folder contains environment properties which are switched by Angular CLI, also see [Angular 2: Application Settings using the CLI Environment Option](http://tattoocoder.com/angular-cli-using-the-environment-option/).
+The `src/environments` folder contains environment properties which are switched by Angular CLI, also see [Configuring application environments](https://angular.io/guide/build#configure-environment-specific-defaults).
 
 The `src/theme` contains styling files.
 
