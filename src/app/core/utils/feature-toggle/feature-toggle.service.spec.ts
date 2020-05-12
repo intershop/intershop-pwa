@@ -41,6 +41,8 @@ describe('Feature Toggle Service', () => {
 
     using(
       () => [
+        { feature: 'always', expected: true },
+        { feature: 'never', expected: false },
         { feature: 'feature1', expected: true },
         { feature: 'feature2', expected: false },
       ],
