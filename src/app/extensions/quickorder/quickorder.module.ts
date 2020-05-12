@@ -8,6 +8,5 @@ import { HeaderQuickorderComponent } from './shared/header/header-quickorder/hea
   imports: [SharedModule],
   declarations: [HeaderQuickorderComponent],
   exports: [SharedModule],
-  entryComponents: [HeaderQuickorderComponent],
 })
 export class QuickorderModule {}
