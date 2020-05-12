@@ -17,14 +17,6 @@ export class ThemeService {
   private head: HTMLElement;
   private themeLinks: HTMLElement[] = [];
 
-  private iconLink: HTMLLinkElement;
-  private webmanifestLink: HTMLLinkElement;
-  private appleTouchIconLink: HTMLLinkElement;
-  private appleTouchIcon152x152Link: HTMLLinkElement;
-  private appleTouchIcon167x167Link: HTMLLinkElement;
-  private appleTouchIcon180x180Link: HTMLLinkElement;
-  private themeColor: HTMLMetaElement;
-
   constructor(
     private rendererFactory: RendererFactory2,
     @Inject(DOCUMENT) private document: Document,
@@ -32,14 +24,13 @@ export class ThemeService {
   ) {
     this.head = this.document.head;
     this.renderer = this.rendererFactory.createRenderer(undefined, undefined);
+  }
 
-    this.iconLink = this.document.querySelector('link[rel="icon"]');
-    this.webmanifestLink = this.document.querySelector('link[rel="manifest"]');
-    this.appleTouchIconLink = this.document.querySelector('link[rel="apple-touch-icon"]:not([sizes])');
-    this.appleTouchIcon152x152Link = this.document.querySelector('link[rel="apple-touch-icon"][sizes="152x152"]');
-    this.appleTouchIcon167x167Link = this.document.querySelector('link[rel="apple-touch-icon"][sizes="167x167"]');
-    this.appleTouchIcon180x180Link = this.document.querySelector('link[rel="apple-touch-icon"][sizes="180x180"]');
-    this.themeColor = this.document.querySelector('meta[name="theme-color"]');
+  private trySetAttribute(selector: string, attribute: string, value: string) {
+    const el = this.document.querySelector(selector);
+    if (el) {
+      el.setAttribute(attribute, value);
+    }
   }
 
   init() {
@@ -54,16 +45,29 @@ export class ThemeService {
         const themeName = themeData[0];
         const themeColor = themeData[1];
 
-        this.iconLink.setAttribute('href', `assets/themes/${themeName}/img/favicon.ico`);
-        this.webmanifestLink.setAttribute('href', `assets/themes/${themeName}/manifest.webmanifest`);
-        this.appleTouchIconLink.setAttribute('href', `assets/themes/${themeName}/img/logo_apple_120x120.png`);
-        this.appleTouchIcon152x152Link.setAttribute('href', `assets/themes/${themeName}/img/logo_apple_152x152.png`);
-        this.appleTouchIcon167x167Link.setAttribute('href', `assets/themes/${themeName}/img/logo_apple_167x167.png`);
-        this.appleTouchIcon180x180Link.setAttribute('href', `assets/themes/${themeName}/img/logo_apple_180x180.png`);
-
-        if (themeColor) {
-          this.themeColor.setAttribute('content', `#${themeColor}`);
-        }
+        this.trySetAttribute('link[rel="icon"]', 'href', `assets/themes/${themeName}/img/favicon.ico`);
+        this.trySetAttribute('link[rel="manifest"]', 'href', `assets/themes/${themeName}/manifest.webmanifest`);
+        this.trySetAttribute(
+          'link[rel="apple-touch-icon"]:not([sizes])',
+          'href',
+          `assets/themes/${themeName}/img/logo_apple_120x120.png`
+        );
+        this.trySetAttribute(
+          'link[rel="apple-touch-icon"][sizes="152x152"]',
+          'href',
+          `assets/themes/${themeName}/img/logo_apple_152x152.png`
+        );
+        this.trySetAttribute(
+          'link[rel="apple-touch-icon"][sizes="167x167"]',
+          'href',
+          `assets/themes/${themeName}/img/logo_apple_167x167.png`
+        );
+        this.trySetAttribute(
+          'link[rel="apple-touch-icon"][sizes="180x180"]',
+          'href',
+          `assets/themes/${themeName}/img/logo_apple_180x180.png`
+        );
+        this.trySetAttribute('meta[name="theme-color"]', 'content', `#${themeColor}`);
 
         await this.loadCss(`${themeName}.css`);
       });
