@@ -13,7 +13,7 @@
     >
 
     <li *ngIf="account" class="breadcrumbs-list">
-      <ng-container *ngIf="trail.length; else AccountOverview">
+      <ng-container *ngIf="trail?.length; else AccountOverview">
         <a class="breadcrumbs-list-link" routerLink="/account">{{ 'account.my_account.link' | translate }}</a
         ><span class="breadcrumb-list-separator">{{ separator }}</span>
       </ng-container>
