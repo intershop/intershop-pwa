@@ -18,6 +18,5 @@ import { WishlistsLinkComponent } from './shared/wishlists/wishlists-link/wishli
     WishlistsLinkComponent,
   ],
   exports: [SelectWishlistModalComponent, WishlistPreferencesDialogComponent],
-  entryComponents: [ProductAddToWishlistComponent, WishlistWidgetComponent, WishlistsLinkComponent],
 })
 export class WishlistsModule {}

@@ -47,7 +47,7 @@ class NgModulesSortedFieldsWalker extends NgWalker {
     ngModuleDeclarationList
       .getChildren()
       .filter(node => node.kind !== ts.SyntaxKind.CommaToken)
-      .filter(node => /^(exports|imports|declarations|entryComponents)$/.test(node.getChildAt(0).getText()))
+      .filter(node => /^(exports|imports|declarations)$/.test(node.getChildAt(0).getText()))
       .filter(node => this.assertList(node))
       .forEach(node => {
         this.sortList(node.getChildAt(2).getChildAt(1) as ts.SyntaxList);

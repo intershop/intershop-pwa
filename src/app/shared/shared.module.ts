@@ -213,20 +213,5 @@ const exportedComponents = [
   imports: [...importExportModules],
   declarations: [...declaredComponents, ...exportedComponents],
   exports: [...exportedComponents, ...importExportModules],
-  entryComponents: [
-    CMSCarouselComponent,
-    CMSContainerComponent,
-    CMSDialogComponent,
-    CMSFreestyleComponent,
-    CMSImageComponent,
-    CMSImageEnhancedComponent,
-    CMSLandingPageComponent,
-    CMSProductListComponent,
-    CMSStandardPageComponent,
-    CMSStaticPageComponent,
-    CMSTextComponent,
-    CMSVideoComponent,
-    LoginModalComponent,
-  ],
 })
 export class SharedModule {}

@@ -20,11 +20,5 @@ import { QuoteStateComponent } from './shared/quote/quote-state/quote-state.comp
     QuoteWidgetComponent,
   ],
   exports: [QuoteEditComponent, QuoteStateComponent, SharedModule],
-  entryComponents: [
-    BasketAddToQuoteComponent,
-    ProductAddToQuoteComponent,
-    ProductAddToQuoteDialogComponent,
-    QuoteWidgetComponent,
-  ],
 })
 export class QuotingModule {}
