@@ -3,6 +3,7 @@ const path = require('path');
 const async = require('async');
 const { promisify } = require('util');
 const glob = promisify(require('glob'));
+const { spawnSync } = require('child_process');
 
 async function checkExternalLinkError(link) {
   console.log('check', link);
@@ -39,6 +40,14 @@ function getLineInfoOfString(data, str) {
   return '';
 }
 
+let gitChanged =
+  process.argv[2] &&
+  process.argv[2] !== 'fast' &&
+  spawnSync('git', ['--no-pager', 'diff', process.argv[2], '--name-only'])
+    .stdout.toString('utf-8')
+    .split('\n')
+    .filter(path => path.endsWith('.md'));
+
 glob('**/*.md')
   .then(files => {
     const externalLinks = [];
@@ -56,7 +65,9 @@ glob('**/*.md')
             if (linkTo) {
               // link is not document-internal
               if (linkTo.startsWith('http')) {
-                externalLinks.push(linkTo);
+                if (!gitChanged || gitChanged.includes(file)) {
+                  externalLinks.push(linkTo);
+                }
               } else {
                 const normalized = path.normalize(path.join(path.dirname(file), linkTo));
                 if (!fs.existsSync(normalized)) {

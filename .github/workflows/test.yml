@@ -139,8 +139,13 @@ jobs:
           npx prettier --write docs/**/*.*
           bash ./scripts/ci-test-no-changes.sh 'you probably committed unformatted documentation'
 
-      - name: Check Dead Links
+      - name: Check Dead Links For All Files
+        if: github.ref == 'refs/heads/develop'
         run: node docs/check-dead-links
+
+      - name: Check Dead Links For Changed Files
+        if: github.ref != 'refs/heads/develop'
+        run: node docs/check-dead-links origin/develop
 
   Docker:
     needs: [Build]
