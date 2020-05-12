@@ -12,6 +12,12 @@ export class FeatureToggleService {
   }
 
   enabled(feature: string): boolean {
-    return this.featureToggles.includes(feature);
+    if (feature === 'always') {
+      return true;
+    } else if (feature === 'never') {
+      return false;
+    } else {
+      return this.featureToggles.includes(feature);
+    }
   }
 }
