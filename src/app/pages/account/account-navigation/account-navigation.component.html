@@ -10,6 +10,18 @@
           item.value.localizationKey | translate
         }}</a>
       </li>
+      <ul *ngIf="item.value.children">
+        <ng-container *ngFor="let subItem of item.value.children | keyvalue: unsorted">
+          <li>
+            <a
+              *ishFeature="subItem.value.feature || 'always'"
+              [routerLink]="item.key + subItem.key"
+              [attr.data-testing-id]="subItem.value.dataTestingId"
+              >{{ subItem.value.localizationKey | translate }}</a
+            >
+          </li>
+        </ng-container>
+      </ul>
     </ng-container>
   </ul>
 </ng-container>

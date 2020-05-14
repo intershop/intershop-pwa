@@ -1,0 +1,9 @@
+<pre *ngIf="error$ | async as error">{{ error }}</pre>
+
+<ul>
+  <li *ngFor="let user of users$ | async">
+    <a [routerLink]="[user.businessPartnerNo]">{{ user.firstName }} {{ user.lastName }} -- {{ user.email }}</a>
+  </li>
+</ul>
+
+<ish-loading *ngIf="loading$ | async"></ish-loading>

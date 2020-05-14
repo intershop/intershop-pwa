@@ -14,7 +14,7 @@ module.exports = {
     },
   },
   preset: 'jest-preset-angular',
-  roots: ['src'],
+  roots: ['src', 'projects'],
   setupFilesAfterEnv: ['<rootDir>/src/setupJest.ts'],
   transformIgnorePatterns: [`node_modules/(?!${esModules.join('|')})`],
   moduleNameMapper: {

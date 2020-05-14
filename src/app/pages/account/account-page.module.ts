@@ -56,6 +56,13 @@ const accountPageRoutes: Routes = [
         loadChildren: () =>
           import('../../extensions/wishlists/pages/wishlists-routing.module').then(m => m.WishlistsRoutingModule),
       },
+      {
+        path: 'organization',
+        loadChildren: () =>
+          import('../../../../projects/organization-management/src/app/organization-management.module').then(
+            m => m.OrganizationManagementModule
+          ),
+      },
     ],
   },
 ];
