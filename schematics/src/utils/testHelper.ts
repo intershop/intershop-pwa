@@ -28,6 +28,7 @@ export function createApplication(schematicRunner: SchematicTestRunner): Observa
             skipTests: false,
             skipPackageJson: false,
             prefix: 'ish',
+            projectRoot: '',
           },
           workspace
         )

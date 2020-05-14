@@ -23,12 +23,12 @@ describe('Model Schematic', () => {
     const tree = await schematicRunner.runSchematicAsync('model', options, appTree).toPromise();
     expect(tree.files.filter(x => x.search('foo') >= 0)).toMatchInlineSnapshot(`
 Array [
-  "/projects/bar/src/app/core/models/foo/foo.helper.ts",
-  "/projects/bar/src/app/core/models/foo/foo.helper.spec.ts",
-  "/projects/bar/src/app/core/models/foo/foo.interface.ts",
-  "/projects/bar/src/app/core/models/foo/foo.mapper.ts",
-  "/projects/bar/src/app/core/models/foo/foo.mapper.spec.ts",
-  "/projects/bar/src/app/core/models/foo/foo.model.ts",
+  "/src/app/core/models/foo/foo.helper.ts",
+  "/src/app/core/models/foo/foo.helper.spec.ts",
+  "/src/app/core/models/foo/foo.interface.ts",
+  "/src/app/core/models/foo/foo.mapper.ts",
+  "/src/app/core/models/foo/foo.mapper.spec.ts",
+  "/src/app/core/models/foo/foo.model.ts",
 ]
 `);
   });
@@ -39,7 +39,7 @@ Array [
     const tree = await schematicRunner.runSchematicAsync('model', options, appTree).toPromise();
     expect(tree.files.filter(x => x.search('foo') >= 0)).toMatchInlineSnapshot(`
 Array [
-  "/projects/bar/src/app/core/models/foo/foo.model.ts",
+  "/src/app/core/models/foo/foo.model.ts",
 ]
 `);
   });
@@ -50,12 +50,12 @@ Array [
     const tree = await schematicRunner.runSchematicAsync('model', options, appTree).toPromise();
     expect(tree.files.filter(x => x.search('foo') >= 0)).toMatchInlineSnapshot(`
 Array [
-  "/projects/bar/src/app/extensions/feature/models/foo/foo.helper.ts",
-  "/projects/bar/src/app/extensions/feature/models/foo/foo.helper.spec.ts",
-  "/projects/bar/src/app/extensions/feature/models/foo/foo.interface.ts",
-  "/projects/bar/src/app/extensions/feature/models/foo/foo.mapper.ts",
-  "/projects/bar/src/app/extensions/feature/models/foo/foo.mapper.spec.ts",
-  "/projects/bar/src/app/extensions/feature/models/foo/foo.model.ts",
+  "/src/app/extensions/feature/models/foo/foo.helper.ts",
+  "/src/app/extensions/feature/models/foo/foo.helper.spec.ts",
+  "/src/app/extensions/feature/models/foo/foo.interface.ts",
+  "/src/app/extensions/feature/models/foo/foo.mapper.ts",
+  "/src/app/extensions/feature/models/foo/foo.mapper.spec.ts",
+  "/src/app/extensions/feature/models/foo/foo.model.ts",
 ]
 `);
   });

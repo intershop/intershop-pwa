@@ -24,8 +24,7 @@
       "type": "string",
       "$default": {
         "$source": "projectName"
-      },
-      "visible": false
+      }
     },
     "prefix": {
       "type": "string",

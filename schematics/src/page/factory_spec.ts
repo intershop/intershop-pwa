@@ -16,7 +16,7 @@ describe('Page Schematic', () => {
     appTree = await createApplication(schematicRunner).toPromise();
 
     appTree.create(
-      '/projects/bar/src/app/pages/app-routing.module.ts',
+      '/src/app/pages/app-routing.module.ts',
       `
       import { NgModule } from '@angular/core';
 
@@ -34,7 +34,7 @@ describe('Page Schematic', () => {
     `
     );
     appTree.create(
-      '/projects/bar/src/app/extensions/feature/pages/feature-routing.module.ts',
+      '/src/app/extensions/feature/pages/feature-routing.module.ts',
       `
       import { NgModule } from '@angular/core';
 
@@ -48,7 +48,7 @@ describe('Page Schematic', () => {
     `
     );
     appTree.create(
-      '/projects/bar/src/app/extensions/feature2/pages/feature2-routing.module.ts',
+      '/src/app/extensions/feature2/pages/feature2-routing.module.ts',
       `
       import { NgModule } from '@angular/core';
 
@@ -70,13 +70,13 @@ describe('Page Schematic', () => {
     const files = tree.files.filter(x => x.search('foo-page') >= 0);
     expect(files).toMatchInlineSnapshot(`
       Array [
-        "/projects/bar/src/app/pages/foo/foo-page.module.ts",
-        "/projects/bar/src/app/pages/foo/foo-page.component.ts",
-        "/projects/bar/src/app/pages/foo/foo-page.component.html",
-        "/projects/bar/src/app/pages/foo/foo-page.component.spec.ts",
+        "/src/app/pages/foo/foo-page.module.ts",
+        "/src/app/pages/foo/foo-page.component.ts",
+        "/src/app/pages/foo/foo-page.component.html",
+        "/src/app/pages/foo/foo-page.component.spec.ts",
       ]
     `);
-    expect(tree.readContent('/projects/bar/src/app/pages/foo/foo-page.module.ts')).toMatchInlineSnapshot(`
+    expect(tree.readContent('/src/app/pages/foo/foo-page.module.ts')).toMatchInlineSnapshot(`
       "import { NgModule } from '@angular/core';
       import { RouterModule, Routes } from '@angular/router';
 
@@ -92,7 +92,7 @@ describe('Page Schematic', () => {
       export class FooPageModule { }
       "
     `);
-    expect(tree.readContent('/projects/bar/src/app/pages/foo/foo-page.component.html')).toMatchInlineSnapshot(`
+    expect(tree.readContent('/src/app/pages/foo/foo-page.component.html')).toMatchInlineSnapshot(`
       "<p>
         foo-page works!
       </p>
@@ -104,7 +104,7 @@ describe('Page Schematic', () => {
     const options = { ...defaultOptions };
 
     const tree = await schematicRunner.runSchematicAsync('page', options, appTree).toPromise();
-    const componentSpecContent = tree.readContent('/projects/bar/src/app/pages/foo/foo-page.component.spec.ts');
+    const componentSpecContent = tree.readContent('/src/app/pages/foo/foo-page.component.spec.ts');
     expect(componentSpecContent).toContain(`import { FooPageComponent } from './foo-page.component'`);
   });
 
@@ -112,7 +112,7 @@ describe('Page Schematic', () => {
     const options = { ...defaultOptions };
 
     const tree = await schematicRunner.runSchematicAsync('page', options, appTree).toPromise();
-    const appRoutingModule = tree.readContent('/projects/bar/src/app/pages/app-routing.module.ts');
+    const appRoutingModule = tree.readContent('/src/app/pages/app-routing.module.ts');
     expect(appRoutingModule).toContain(`path: 'foo'`);
     expect(appRoutingModule).toContain('foo-page.module');
     expect(appRoutingModule).toContain('FooPageModule');
@@ -125,14 +125,13 @@ describe('Page Schematic', () => {
     const files = tree.files.filter(x => x.search('foo-page') >= 0);
     expect(files).toMatchInlineSnapshot(`
       Array [
-        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.module.ts",
-        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.component.ts",
-        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.component.html",
-        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.component.spec.ts",
+        "/src/app/extensions/feature/pages/foo/foo-page.module.ts",
+        "/src/app/extensions/feature/pages/foo/foo-page.component.ts",
+        "/src/app/extensions/feature/pages/foo/foo-page.component.html",
+        "/src/app/extensions/feature/pages/foo/foo-page.component.spec.ts",
       ]
     `);
-    expect(tree.readContent('/projects/bar/src/app/extensions/feature/pages/foo/foo-page.module.ts'))
-      .toMatchInlineSnapshot(`
+    expect(tree.readContent('/src/app/extensions/feature/pages/foo/foo-page.module.ts')).toMatchInlineSnapshot(`
       "import { NgModule } from '@angular/core';
       import { RouterModule, Routes } from '@angular/router';
 
@@ -148,8 +147,7 @@ describe('Page Schematic', () => {
       export class FooPageModule { }
       "
     `);
-    expect(tree.readContent('/projects/bar/src/app/extensions/feature/pages/foo/foo-page.component.html'))
-      .toMatchInlineSnapshot(`
+    expect(tree.readContent('/src/app/extensions/feature/pages/foo/foo-page.component.html')).toMatchInlineSnapshot(`
       "<p>
         foo-page works!
       </p>
@@ -164,10 +162,10 @@ describe('Page Schematic', () => {
     const files = tree.files.filter(x => x.search('foo-page') >= 0);
     expect(files).toMatchInlineSnapshot(`
       Array [
-        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.module.ts",
-        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.component.ts",
-        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.component.html",
-        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.component.spec.ts",
+        "/src/app/extensions/feature/pages/foo/foo-page.module.ts",
+        "/src/app/extensions/feature/pages/foo/foo-page.component.ts",
+        "/src/app/extensions/feature/pages/foo/foo-page.component.html",
+        "/src/app/extensions/feature/pages/foo/foo-page.component.spec.ts",
       ]
     `);
   });
@@ -176,9 +174,7 @@ describe('Page Schematic', () => {
     const options = { ...defaultOptions, extension: 'feature' };
 
     const tree = await schematicRunner.runSchematicAsync('page', options, appTree).toPromise();
-    const appRoutingModule = tree.readContent(
-      '/projects/bar/src/app/extensions/feature/pages/feature-routing.module.ts'
-    );
+    const appRoutingModule = tree.readContent('/src/app/extensions/feature/pages/feature-routing.module.ts');
     expect(appRoutingModule).toContain(`path: 'foo'`);
     expect(appRoutingModule).toContain('foo-page.module');
     expect(appRoutingModule).toContain('FooPageModule');
@@ -188,9 +184,7 @@ describe('Page Schematic', () => {
     const options = { ...defaultOptions, extension: 'feature2' };
 
     const tree = await schematicRunner.runSchematicAsync('page', options, appTree).toPromise();
-    const appRoutingModule = tree.readContent(
-      '/projects/bar/src/app/extensions/feature2/pages/feature2-routing.module.ts'
-    );
+    const appRoutingModule = tree.readContent('/src/app/extensions/feature2/pages/feature2-routing.module.ts');
     expect(appRoutingModule).toContain(`path: 'foo'`);
     expect(appRoutingModule).toContain('foo-page.module');
     expect(appRoutingModule).toContain('FooPageModule');
@@ -201,13 +195,13 @@ describe('Page Schematic', () => {
 
     appTree = await schematicRunner.runSchematicAsync('page', options, appTree).toPromise();
     const tree = await schematicRunner.runSchematicAsync('page', { ...options, name: 'foo-bar' }, appTree).toPromise();
-    const appRoutingModule = tree.readContent('/projects/bar/src/app/pages/app-routing.module.ts');
+    const appRoutingModule = tree.readContent('/src/app/pages/app-routing.module.ts');
     expect(appRoutingModule).toContain(`path: 'foo'`);
     expect(appRoutingModule).toContain('foo-page.module');
     expect(appRoutingModule).toContain('FooPageModule');
     expect(appRoutingModule).not.toContain('FooBar');
 
-    const fooRoutingModule = tree.readContent('/projects/bar/src/app/pages/foo/foo-page.module.ts');
+    const fooRoutingModule = tree.readContent('/src/app/pages/foo/foo-page.module.ts');
     expect(fooRoutingModule).toContain(`path: 'bar'`);
     expect(fooRoutingModule).toContain('foo-bar-page.module');
     expect(fooRoutingModule).toContain('FooBarPageModule');

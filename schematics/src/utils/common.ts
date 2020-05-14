@@ -99,7 +99,7 @@ export function detectExtension(
       let rootLocation: string;
       if (artifact === 'cms') {
         rootLocation = 'shared/';
-      } else if (['page', 'extension'].includes(artifact)) {
+      } else if (['page', 'extension'].includes(artifact) || project.root) {
         rootLocation = '';
       } else {
         rootLocation = 'core/';

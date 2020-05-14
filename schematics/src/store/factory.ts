@@ -50,10 +50,15 @@ export function determineStoreLocation(
     }
   }
 
+  const projectName = project.root.replace(/^.*?\//g, '');
+
   let parent: string;
 
   let path = options.path;
-  if (!extension && !feature) {
+  if (project.root) {
+    parent = projectName;
+    path = `${project.sourceRoot}/app/store/`;
+  } else if (!extension && !feature) {
     path = `${project.sourceRoot}/app/core/store/`;
     parent = 'core';
   } else if (!extension && feature) {
@@ -66,6 +71,11 @@ export function determineStoreLocation(
     throw new Error('cannot add feature store in extension');
   }
   const name = options.name.split('/').pop();
+
+  if (projectName) {
+    // override so it behaves like extension
+    extension = projectName;
+  }
 
   if (name === feature) {
     throw new Error('name of feature and store cannot be equal');

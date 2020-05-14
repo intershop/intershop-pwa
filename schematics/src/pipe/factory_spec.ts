@@ -18,7 +18,7 @@ describe('Pipe Schematic', () => {
       .toPromise();
 
     appTree.create(
-      '/projects/bar/src/app/core/pipes.module.ts',
+      '/src/app/core/pipes.module.ts',
       `
 import { NgModule } from '@angular/core';
 
@@ -39,15 +39,15 @@ export class PipesModule { }
 
     const tree = await schematicRunner.runSchematicAsync('pipe', options, appTree).toPromise();
     const files = tree.files.filter(x => x.search('foo.pipe') >= 0);
-    expect(files).toContain('/projects/bar/src/app/core/pipes/foo.pipe.spec.ts');
-    expect(files).toContain('/projects/bar/src/app/core/pipes/foo.pipe.ts');
+    expect(files).toContain('/src/app/core/pipes/foo.pipe.spec.ts');
+    expect(files).toContain('/src/app/core/pipes/foo.pipe.ts');
   });
 
   it('should register pipe in pipes module', async () => {
     const options = { ...defaultOptions };
 
     const tree = await schematicRunner.runSchematicAsync('pipe', options, appTree).toPromise();
-    const content = tree.readContent('/projects/bar/src/app/core/pipes.module.ts');
+    const content = tree.readContent('/src/app/core/pipes.module.ts');
     expect(content).toContain('FooPipe');
     expect(content).toContain('./pipes/foo.pipe');
     expect(content).toMatchInlineSnapshot(`
@@ -72,8 +72,8 @@ export class PipesModule { }
 
     const tree = await schematicRunner.runSchematicAsync('pipe', options, appTree).toPromise();
     const files = tree.files.filter(x => x.search('foo.pipe') >= 0);
-    expect(files).toContain('/projects/bar/src/app/core/pipes/foo.pipe.spec.ts');
-    expect(files).toContain('/projects/bar/src/app/core/pipes/foo.pipe.ts');
+    expect(files).toContain('/src/app/core/pipes/foo.pipe.spec.ts');
+    expect(files).toContain('/src/app/core/pipes/foo.pipe.ts');
   });
 
   it('should create a pipe in extension if supplied', async () => {
@@ -81,8 +81,8 @@ export class PipesModule { }
 
     const tree = await schematicRunner.runSchematicAsync('pipe', options, appTree).toPromise();
     const files = tree.files.filter(x => x.search('foo.pipe') >= 0);
-    expect(files).toContain('/projects/bar/src/app/extensions/feature/pipes/foo.pipe.spec.ts');
-    expect(files).toContain('/projects/bar/src/app/extensions/feature/pipes/foo.pipe.ts');
+    expect(files).toContain('/src/app/extensions/feature/pipes/foo.pipe.spec.ts');
+    expect(files).toContain('/src/app/extensions/feature/pipes/foo.pipe.ts');
   });
 
   it('should create a pipe in extension if detected via input', async () => {
@@ -90,15 +90,15 @@ export class PipesModule { }
 
     const tree = await schematicRunner.runSchematicAsync('pipe', options, appTree).toPromise();
     const files = tree.files.filter(x => x.search('foo.pipe') >= 0);
-    expect(files).toContain('/projects/bar/src/app/extensions/feature/pipes/foo.pipe.spec.ts');
-    expect(files).toContain('/projects/bar/src/app/extensions/feature/pipes/foo.pipe.ts');
+    expect(files).toContain('/src/app/extensions/feature/pipes/foo.pipe.spec.ts');
+    expect(files).toContain('/src/app/extensions/feature/pipes/foo.pipe.ts');
   });
 
   it('should register pipe in extension module', async () => {
     const options = { ...defaultOptions, extension: 'feature' };
 
     const tree = await schematicRunner.runSchematicAsync('pipe', options, appTree).toPromise();
-    const content = tree.readContent('/projects/bar/src/app/extensions/feature/feature.module.ts');
+    const content = tree.readContent('/src/app/extensions/feature/feature.module.ts');
     expect(content).toContain('FooPipe');
   });
 });

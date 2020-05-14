@@ -31,13 +31,13 @@ describe('Extension Schematic', () => {
     const files = tree.files.filter(x => x.search('foo') >= 0);
     expect(files).toMatchInlineSnapshot(`
       Array [
-        "/projects/bar/src/app/extensions/foo/foo.module.ts",
-        "/projects/bar/src/app/extensions/foo/exports/.gitignore",
-        "/projects/bar/src/app/extensions/foo/exports/foo-exports.module.ts",
-        "/projects/bar/src/app/extensions/foo/facades/foo.facade.ts",
-        "/projects/bar/src/app/extensions/foo/pages/foo-routing.module.ts",
-        "/projects/bar/src/app/extensions/foo/store/foo-store.ts",
-        "/projects/bar/src/app/extensions/foo/store/foo-store.module.ts",
+        "/src/app/extensions/foo/foo.module.ts",
+        "/src/app/extensions/foo/exports/.gitignore",
+        "/src/app/extensions/foo/exports/foo-exports.module.ts",
+        "/src/app/extensions/foo/facades/foo.facade.ts",
+        "/src/app/extensions/foo/pages/foo-routing.module.ts",
+        "/src/app/extensions/foo/store/foo-store.ts",
+        "/src/app/extensions/foo/store/foo-store.module.ts",
       ]
     `);
   });
@@ -46,7 +46,7 @@ describe('Extension Schematic', () => {
     const options = { ...defaultOptions };
 
     const tree = await schematicRunner.runSchematicAsync('extension', options, appTree).toPromise();
-    const appModuleContent = tree.readContent('/projects/bar/src/app/app.module.ts');
+    const appModuleContent = tree.readContent('/src/app/app.module.ts');
     expect(appModuleContent).toMatchInlineSnapshot(`
       "import { BrowserModule } from '@angular/platform-browser';
       import { NgModule } from '@angular/core';
@@ -77,7 +77,7 @@ describe('Extension Schematic', () => {
     const options = { ...defaultOptions };
 
     const tree = await schematicRunner.runSchematicAsync('extension', options, appTree).toPromise();
-    const shellModuleContent = tree.readContent('/projects/bar/src/app/shell/shell.module.ts');
+    const shellModuleContent = tree.readContent('/src/app/shell/shell.module.ts');
     expect(shellModuleContent).toMatchInlineSnapshot(`
       "import { NgModule } from '@angular/core';
       import { FooExportsModule } from '../extensions/foo/exports/foo-exports.module';
@@ -94,7 +94,7 @@ describe('Extension Schematic', () => {
 
   it('should throw if app module does not contain AppLastRoutingModule', done => {
     appTree.overwrite(
-      '/projects/bar/src/app/app.module.ts',
+      '/src/app/app.module.ts',
       `import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -119,9 +119,7 @@ export class AppModule { }
     const options = { ...defaultOptions };
 
     schematicRunner.runSchematicAsync('extension', options, appTree).subscribe(noop, err => {
-      expect(err).toMatchInlineSnapshot(
-        `[Error: did not find 'AppLastRoutingModule' in /projects/bar/src/app/app.module.ts]`
-      );
+      expect(err).toMatchInlineSnapshot(`[Error: did not find 'AppLastRoutingModule' in /src/app/app.module.ts]`);
       done();
     });
   });
