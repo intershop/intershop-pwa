@@ -29,13 +29,13 @@ describe('CMS Component Schematic', () => {
     const tree = await schematicRunner.runSchematicAsync('cms-component', options, appTree).toPromise();
     expect(tree.files.filter(x => x.search('cms') >= 0)).toMatchInlineSnapshot(`
       Array [
-        "/projects/bar/src/app/shared/cms/cms.module.ts",
-        "/projects/bar/src/app/shared/cms/components/cms-foo/cms-foo.component.ts",
-        "/projects/bar/src/app/shared/cms/components/cms-foo/cms-foo.component.html",
-        "/projects/bar/src/app/shared/cms/components/cms-foo/cms-foo.component.spec.ts",
+        "/src/app/shared/cms/cms.module.ts",
+        "/src/app/shared/cms/components/cms-foo/cms-foo.component.ts",
+        "/src/app/shared/cms/components/cms-foo/cms-foo.component.html",
+        "/src/app/shared/cms/components/cms-foo/cms-foo.component.spec.ts",
       ]
     `);
-    expect(tree.readContent('/projects/bar/src/app/shared/cms/cms.module.ts')).toMatchInlineSnapshot(`
+    expect(tree.readContent('/src/app/shared/cms/cms.module.ts')).toMatchInlineSnapshot(`
       "import { NgModule } from '@angular/core';
       import { CMSFooComponent } from './components/cms-foo/cms-foo.component';
 
@@ -55,7 +55,7 @@ describe('CMS Component Schematic', () => {
       export class CmsModule { }
       "
     `);
-    expect(tree.readContent('/projects/bar/src/app/shared/shared.module.ts')).toMatchInlineSnapshot(`
+    expect(tree.readContent('/src/app/shared/shared.module.ts')).toMatchInlineSnapshot(`
       "import { NgModule } from '@angular/core';
       import { CMSFooComponent } from './cms/components/cms-foo/cms-foo.component';
 
@@ -74,13 +74,13 @@ describe('CMS Component Schematic', () => {
     const tree = await schematicRunner.runSchematicAsync('cms-component', options, appTree).toPromise();
     expect(tree.files.filter(x => x.search('cms') >= 0)).toMatchInlineSnapshot(`
       Array [
-        "/projects/bar/src/app/shared/cms/cms.module.ts",
-        "/projects/bar/src/app/shared/cms/components/foo/foo.component.ts",
-        "/projects/bar/src/app/shared/cms/components/foo/foo.component.html",
-        "/projects/bar/src/app/shared/cms/components/foo/foo.component.spec.ts",
+        "/src/app/shared/cms/cms.module.ts",
+        "/src/app/shared/cms/components/foo/foo.component.ts",
+        "/src/app/shared/cms/components/foo/foo.component.html",
+        "/src/app/shared/cms/components/foo/foo.component.spec.ts",
       ]
     `);
-    expect(tree.readContent('/projects/bar/src/app/shared/cms/cms.module.ts')).toMatchInlineSnapshot(`
+    expect(tree.readContent('/src/app/shared/cms/cms.module.ts')).toMatchInlineSnapshot(`
       "import { NgModule } from '@angular/core';
       import { FooComponent } from './components/foo/foo.component';
 
@@ -100,7 +100,7 @@ describe('CMS Component Schematic', () => {
       export class CmsModule { }
       "
     `);
-    expect(tree.readContent('/projects/bar/src/app/shared/shared.module.ts')).toMatchInlineSnapshot(`
+    expect(tree.readContent('/src/app/shared/shared.module.ts')).toMatchInlineSnapshot(`
       "import { NgModule } from '@angular/core';
       import { FooComponent } from './cms/components/foo/foo.component';
 

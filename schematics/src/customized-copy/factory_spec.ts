@@ -10,7 +10,7 @@ describe('customized-copy Schematic', () => {
     appTree = await createApplication(schematicRunner)
       .pipe(createModule(schematicRunner, { name: 'shared' }))
       .toPromise();
-    appTree.overwrite('/projects/bar/src/app/app.component.html', '<ish-dummy></ish-dummy>');
+    appTree.overwrite('/src/app/app.component.html', '<ish-dummy></ish-dummy>');
     appTree = await schematicRunner
       .runSchematicAsync('component', { project: 'bar', name: 'foo/dummy' }, appTree)
       .toPromise();
@@ -19,7 +19,7 @@ describe('customized-copy Schematic', () => {
       .toPromise();
 
     appTree.overwrite(
-      '/projects/bar/src/app/shared/dummy-two/dummy-two.component.ts',
+      '/src/app/shared/dummy-two/dummy-two.component.ts',
       `import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { DummyComponent } from '../../../foo/dummy/dummy.component';
 
@@ -40,12 +40,12 @@ export class DummyTwoComponent {}
   it('should be created', () => {
     expect(appTree.files.filter(f => f.endsWith('component.ts'))).toMatchInlineSnapshot(`
       Array [
-        "/projects/bar/src/app/app.component.ts",
-        "/projects/bar/src/app/shared/dummy-two/dummy-two.component.ts",
-        "/projects/bar/src/app/foo/dummy/dummy.component.ts",
+        "/src/app/app.component.ts",
+        "/src/app/shared/dummy-two/dummy-two.component.ts",
+        "/src/app/foo/dummy/dummy.component.ts",
       ]
     `);
-    expect(appTree.readContent('/projects/bar/src/app/shared/dummy-two/dummy-two.component.ts')).toMatchInlineSnapshot(`
+    expect(appTree.readContent('/src/app/shared/dummy-two/dummy-two.component.ts')).toMatchInlineSnapshot(`
       "import { ChangeDetectionStrategy, Component } from '@angular/core';
       import { DummyComponent } from '../../../foo/dummy/dummy.component';
 
@@ -60,7 +60,7 @@ export class DummyTwoComponent {}
 
     expect(JSON.parse(appTree.readContent('/angular.json')).projects.bar.prefix).toMatchInlineSnapshot(`"custom"`);
 
-    expect(appTree.readContent('/projects/bar/src/app/app.module.ts')).toMatchInlineSnapshot(`
+    expect(appTree.readContent('/src/app/app.module.ts')).toMatchInlineSnapshot(`
       "import { BrowserModule } from '@angular/platform-browser';
       import { NgModule } from '@angular/core';
 
@@ -83,7 +83,7 @@ export class DummyTwoComponent {}
       export class AppModule { }
       "
     `);
-    expect(appTree.readContent('/projects/bar/src/app/shared/shared.module.ts')).toMatchInlineSnapshot(`
+    expect(appTree.readContent('/src/app/shared/shared.module.ts')).toMatchInlineSnapshot(`
       "import { NgModule } from '@angular/core';
       import { DummyTwoComponent } from './dummy-two/dummy-two.component';
 
@@ -104,26 +104,26 @@ export class DummyTwoComponent {}
 
     expect(appTree.files.filter(x => x.includes('/src/app/'))).toMatchInlineSnapshot(`
       Array [
-        "/projects/bar/src/app/app-routing.module.ts",
-        "/projects/bar/src/app/app.module.ts",
-        "/projects/bar/src/app/app.component.css",
-        "/projects/bar/src/app/app.component.html",
-        "/projects/bar/src/app/app.component.spec.ts",
-        "/projects/bar/src/app/app.component.ts",
-        "/projects/bar/src/app/shared/shared.module.ts",
-        "/projects/bar/src/app/shared/dummy-two/dummy-two.component.ts",
-        "/projects/bar/src/app/shared/dummy-two/dummy-two.component.html",
-        "/projects/bar/src/app/shared/dummy-two/dummy-two.component.spec.ts",
-        "/projects/bar/src/app/foo/dummy/dummy.component.ts",
-        "/projects/bar/src/app/foo/dummy/dummy.component.html",
-        "/projects/bar/src/app/foo/dummy/dummy.component.spec.ts",
-        "/projects/bar/src/app/foo/custom-dummy/custom-dummy.component.ts",
-        "/projects/bar/src/app/foo/custom-dummy/custom-dummy.component.html",
-        "/projects/bar/src/app/foo/custom-dummy/custom-dummy.component.spec.ts",
+        "/src/app/app-routing.module.ts",
+        "/src/app/app.module.ts",
+        "/src/app/app.component.css",
+        "/src/app/app.component.html",
+        "/src/app/app.component.spec.ts",
+        "/src/app/app.component.ts",
+        "/src/app/shared/shared.module.ts",
+        "/src/app/shared/dummy-two/dummy-two.component.ts",
+        "/src/app/shared/dummy-two/dummy-two.component.html",
+        "/src/app/shared/dummy-two/dummy-two.component.spec.ts",
+        "/src/app/foo/dummy/dummy.component.ts",
+        "/src/app/foo/dummy/dummy.component.html",
+        "/src/app/foo/dummy/dummy.component.spec.ts",
+        "/src/app/foo/custom-dummy/custom-dummy.component.ts",
+        "/src/app/foo/custom-dummy/custom-dummy.component.html",
+        "/src/app/foo/custom-dummy/custom-dummy.component.spec.ts",
       ]
     `);
 
-    expect(appTree.readContent('/projects/bar/src/app/app.module.ts')).toMatchInlineSnapshot(`
+    expect(appTree.readContent('/src/app/app.module.ts')).toMatchInlineSnapshot(`
       "import { BrowserModule } from '@angular/platform-browser';
       import { NgModule } from '@angular/core';
 
@@ -149,8 +149,7 @@ export class DummyTwoComponent {}
       "
     `);
 
-    expect(appTree.readContent('/projects/bar/src/app/foo/custom-dummy/custom-dummy.component.ts'))
-      .toMatchInlineSnapshot(`
+    expect(appTree.readContent('/src/app/foo/custom-dummy/custom-dummy.component.ts')).toMatchInlineSnapshot(`
       "import { ChangeDetectionStrategy, Component } from '@angular/core';
 
       @Component({
@@ -162,7 +161,7 @@ export class DummyTwoComponent {}
       "
     `);
 
-    const specFile = appTree.readContent('/projects/bar/src/app/foo/custom-dummy/custom-dummy.component.spec.ts');
+    const specFile = appTree.readContent('/src/app/foo/custom-dummy/custom-dummy.component.spec.ts');
     expect(specFile).toContain("import { CustomDummyComponent } from './custom-dummy.component'");
     expect(specFile).toContain('let fixture: ComponentFixture<CustomDummyComponent>');
   });
@@ -174,30 +173,28 @@ export class DummyTwoComponent {}
 
     expect(appTree.files.filter(x => x.includes('/src/app/'))).toMatchInlineSnapshot(`
       Array [
-        "/projects/bar/src/app/app-routing.module.ts",
-        "/projects/bar/src/app/app.module.ts",
-        "/projects/bar/src/app/app.component.css",
-        "/projects/bar/src/app/app.component.html",
-        "/projects/bar/src/app/app.component.spec.ts",
-        "/projects/bar/src/app/app.component.ts",
-        "/projects/bar/src/app/shared/shared.module.ts",
-        "/projects/bar/src/app/shared/dummy-two/dummy-two.component.ts",
-        "/projects/bar/src/app/shared/dummy-two/dummy-two.component.html",
-        "/projects/bar/src/app/shared/dummy-two/dummy-two.component.spec.ts",
-        "/projects/bar/src/app/shared/custom-dummy-two/custom-dummy-two.component.ts",
-        "/projects/bar/src/app/shared/custom-dummy-two/custom-dummy-two.component.html",
-        "/projects/bar/src/app/shared/custom-dummy-two/custom-dummy-two.component.spec.ts",
-        "/projects/bar/src/app/foo/dummy/dummy.component.ts",
-        "/projects/bar/src/app/foo/dummy/dummy.component.html",
-        "/projects/bar/src/app/foo/dummy/dummy.component.spec.ts",
+        "/src/app/app-routing.module.ts",
+        "/src/app/app.module.ts",
+        "/src/app/app.component.css",
+        "/src/app/app.component.html",
+        "/src/app/app.component.spec.ts",
+        "/src/app/app.component.ts",
+        "/src/app/shared/shared.module.ts",
+        "/src/app/shared/dummy-two/dummy-two.component.ts",
+        "/src/app/shared/dummy-two/dummy-two.component.html",
+        "/src/app/shared/dummy-two/dummy-two.component.spec.ts",
+        "/src/app/shared/custom-dummy-two/custom-dummy-two.component.ts",
+        "/src/app/shared/custom-dummy-two/custom-dummy-two.component.html",
+        "/src/app/shared/custom-dummy-two/custom-dummy-two.component.spec.ts",
+        "/src/app/foo/dummy/dummy.component.ts",
+        "/src/app/foo/dummy/dummy.component.html",
+        "/src/app/foo/dummy/dummy.component.spec.ts",
       ]
     `);
 
-    expect(appTree.readContent('/projects/bar/src/app/app.module.ts')).not.toContain(
-      'import { CustomDummyTwoComponent }'
-    );
+    expect(appTree.readContent('/src/app/app.module.ts')).not.toContain('import { CustomDummyTwoComponent }');
 
-    expect(appTree.readContent('/projects/bar/src/app/shared/shared.module.ts')).toMatchInlineSnapshot(`
+    expect(appTree.readContent('/src/app/shared/shared.module.ts')).toMatchInlineSnapshot(`
       "import { NgModule } from '@angular/core';
       import { CustomDummyTwoComponent } from './custom-dummy-two/custom-dummy-two.component';
       import { DummyTwoComponent } from './dummy-two/dummy-two.component';
@@ -211,7 +208,7 @@ export class DummyTwoComponent {}
       "
     `);
 
-    expect(appTree.readContent('/projects/bar/src/app/shared/custom-dummy-two/custom-dummy-two.component.ts'))
+    expect(appTree.readContent('/src/app/shared/custom-dummy-two/custom-dummy-two.component.ts'))
       .toMatchInlineSnapshot(`
       "import { ChangeDetectionStrategy, Component } from '@angular/core';
       import { DummyComponent } from '../../../foo/dummy/dummy.component';
@@ -225,9 +222,7 @@ export class DummyTwoComponent {}
       "
     `);
 
-    const specFile = appTree.readContent(
-      '/projects/bar/src/app/shared/custom-dummy-two/custom-dummy-two.component.spec.ts'
-    );
+    const specFile = appTree.readContent('/src/app/shared/custom-dummy-two/custom-dummy-two.component.spec.ts');
     expect(specFile).toContain("import { CustomDummyTwoComponent } from './custom-dummy-two.component'");
     expect(specFile).toContain('let fixture: ComponentFixture<CustomDummyTwoComponent>');
   });

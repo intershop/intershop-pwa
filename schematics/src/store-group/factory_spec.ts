@@ -15,7 +15,7 @@ describe('Store Group Schematic', () => {
   beforeEach(async () => {
     appTree = await createApplication(schematicRunner).toPromise();
     appTree.create(
-      '/projects/bar/src/app/core/store/core-store.module.ts',
+      '/src/app/core/store/core-store.module.ts',
       `import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreModule } from '@ngrx/store';
@@ -40,7 +40,7 @@ export class CoreStoreModule {}
 `
     );
     appTree.create(
-      '/projects/bar/src/app/core/store/core-store.ts',
+      '/src/app/core/store/core-store.ts',
       `import { Selector } from '@ngrx/store';
 
 import { CountriesState } from './countries/countries.reducer';
@@ -61,8 +61,8 @@ export const getCoreState: Selector<CoreState, CoreState> = state => state;
     const files = tree.files.filter(x => x.search('foo') >= 0);
     expect(files).toMatchInlineSnapshot(`
 Array [
-  "/projects/bar/src/app/core/store/foo/foo-store.ts",
-  "/projects/bar/src/app/core/store/foo/foo-store.module.ts",
+  "/src/app/core/store/foo/foo-store.ts",
+  "/src/app/core/store/foo/foo-store.module.ts",
 ]
 `);
   });
@@ -71,7 +71,7 @@ Array [
     const options = { ...defaultOptions };
 
     const tree = await schematicRunner.runSchematicAsync('store-group', options, appTree).toPromise();
-    const storeModuleContent = tree.readContent('/projects/bar/src/app/core/store/core-store.module.ts');
+    const storeModuleContent = tree.readContent('/src/app/core/store/core-store.module.ts');
     expect(storeModuleContent).toContain('import { FooStoreModule }');
   });
 });

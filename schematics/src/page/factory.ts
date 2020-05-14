@@ -57,7 +57,7 @@ function determineRoutingModule(host: Tree, options: { name?: string; project?: 
   } else {
     routingModuleLocation = options.extension
       ? `extensions/${options.extension}/pages/${options.extension}-routing.module.ts`
-      : 'pages/app-routing.module.ts';
+      : (project.root ? 'pages/' + project.root.replace(/^.*?\//g, '') : 'pages/app') + '-routing.module.ts';
   }
 
   const routingModule = normalize(`${buildDefaultPath(project)}/${routingModuleLocation}`);

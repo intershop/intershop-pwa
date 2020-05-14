@@ -21,10 +21,10 @@ describe('Service Schematic', () => {
 
     const tree = await schematicRunner.runSchematicAsync('service', options, appTree).toPromise();
     const files = tree.files.filter(x => x.search('foo.service') >= 0);
-    expect(files).toContain('/projects/bar/src/app/core/services/foo/foo.service.spec.ts');
-    expect(files).toContain('/projects/bar/src/app/core/services/foo/foo.service.ts');
+    expect(files).toContain('/src/app/core/services/foo/foo.service.spec.ts');
+    expect(files).toContain('/src/app/core/services/foo/foo.service.ts');
 
-    expect(tree.readContent('/projects/bar/src/app/core/services/foo/foo.service.ts')).toContain(
+    expect(tree.readContent('/src/app/core/services/foo/foo.service.ts')).toContain(
       'ish-core/services/api/api.service'
     );
   });
@@ -34,8 +34,8 @@ describe('Service Schematic', () => {
 
     const tree = await schematicRunner.runSchematicAsync('service', options, appTree).toPromise();
     const files = tree.files.filter(x => x.search('foo.service') >= 0);
-    expect(files).toContain('/projects/bar/src/app/core/services/foo/foo.service.spec.ts');
-    expect(files).toContain('/projects/bar/src/app/core/services/foo/foo.service.ts');
+    expect(files).toContain('/src/app/core/services/foo/foo.service.spec.ts');
+    expect(files).toContain('/src/app/core/services/foo/foo.service.ts');
   });
 
   it('should create a service in extension if supplied', async () => {
@@ -43,10 +43,10 @@ describe('Service Schematic', () => {
 
     const tree = await schematicRunner.runSchematicAsync('service', options, appTree).toPromise();
     const files = tree.files.filter(x => x.search('foo.service') >= 0);
-    expect(files).toContain('/projects/bar/src/app/extensions/feature/services/foo/foo.service.spec.ts');
-    expect(files).toContain('/projects/bar/src/app/extensions/feature/services/foo/foo.service.ts');
+    expect(files).toContain('/src/app/extensions/feature/services/foo/foo.service.spec.ts');
+    expect(files).toContain('/src/app/extensions/feature/services/foo/foo.service.ts');
 
-    expect(tree.readContent('/projects/bar/src/app/extensions/feature/services/foo/foo.service.ts')).toContain(
+    expect(tree.readContent('/src/app/extensions/feature/services/foo/foo.service.ts')).toContain(
       'ish-core/services/api/api.service'
     );
   });
@@ -56,10 +56,10 @@ describe('Service Schematic', () => {
 
     const tree = await schematicRunner.runSchematicAsync('service', options, appTree).toPromise();
     const files = tree.files.filter(x => x.search('foo.service') >= 0);
-    expect(files).toContain('/projects/bar/src/app/extensions/feature/services/foo/foo.service.spec.ts');
-    expect(files).toContain('/projects/bar/src/app/extensions/feature/services/foo/foo.service.ts');
+    expect(files).toContain('/src/app/extensions/feature/services/foo/foo.service.spec.ts');
+    expect(files).toContain('/src/app/extensions/feature/services/foo/foo.service.ts');
 
-    expect(tree.readContent('/projects/bar/src/app/extensions/feature/services/foo/foo.service.ts')).toContain(
+    expect(tree.readContent('/src/app/extensions/feature/services/foo/foo.service.ts')).toContain(
       'ish-core/services/api/api.service'
     );
   });
@@ -68,7 +68,7 @@ describe('Service Schematic', () => {
     const options = { ...defaultOptions };
 
     const tree = await schematicRunner.runSchematicAsync('service', options, appTree).toPromise();
-    const content = tree.readContent('/projects/bar/src/app/core/services/foo/foo.service.ts');
+    const content = tree.readContent('/src/app/core/services/foo/foo.service.ts');
     expect(content).toMatch(/providedIn: 'root'/);
   });
 });

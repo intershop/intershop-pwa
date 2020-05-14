@@ -18,8 +18,7 @@
       "type": "string",
       "$default": {
         "$source": "projectName"
-      },
-      "visible": false
+      }
     },
     "name": {
       "type": "string",
