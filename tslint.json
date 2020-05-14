@@ -86,8 +86,12 @@
     "no-construct": true,
     "no-debugger": true,
     "no-duplicate-super": true,
-    "no-empty": true,
-    "no-empty-interface": true,
+    "no-empty": {
+      "severity": "warning"
+    },
+    "no-empty-interface": {
+      "severity": "warning"
+    },
     "no-eval": true,
     "no-inferrable-types": [true, "ignore-params"],
     "no-angle-bracket-type-assertion": true,
