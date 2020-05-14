@@ -8,6 +8,7 @@ interface NavigationItems {
     localizationKey: string;
     dataTestingId?: string;
     feature?: string;
+    children?: NavigationItems;
   };
 }
 
@@ -41,6 +42,12 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
     '/account/addresses': { localizationKey: 'account.saved_addresses.link', dataTestingId: 'addresses-link' },
     '/account/profile': { localizationKey: 'account.profile.link' },
     '/account/quotes': { localizationKey: 'account.navigation.quotes.link', feature: 'quoting' },
+    '/account/organization': {
+      localizationKey: 'My Organization',
+      children: {
+        '/users': { localizationKey: 'Users' },
+      },
+    },
     '/logout': { localizationKey: 'account.navigation.logout.link' },
   };
 
