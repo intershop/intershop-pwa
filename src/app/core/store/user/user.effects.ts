@@ -10,6 +10,7 @@ import {
   concatMapTo,
   debounce,
   debounceTime,
+  exhaustMap,
   filter,
   first,
   map,
@@ -63,7 +64,7 @@ export class UserEffects {
   loginUser$ = this.actions$.pipe(
     ofType<userActions.LoginUser>(userActions.UserActionTypes.LoginUser),
     mapToPayloadProperty('credentials'),
-    mergeMap(credentials =>
+    exhaustMap(credentials =>
       this.userService.signinUser(credentials).pipe(
         map(data => new userActions.LoginUserSuccess(data)),
         mapUserErrorToActionIfPossible(userActions.LoginUserFail)
