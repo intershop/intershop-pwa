@@ -63,4 +63,8 @@ export class CheckoutAddressesPage {
   get validationMessage() {
     return cy.get('ish-basket-validation-results').find('.alert-box');
   }
+
+  get infoMessage() {
+    return cy.get('ish-basket-validation-results').find('.alert-info');
+  }
 }

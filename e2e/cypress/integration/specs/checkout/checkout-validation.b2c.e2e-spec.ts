@@ -1,4 +1,4 @@
-import { at } from '../../framework';
+import { at, waitLoadingEnd } from '../../framework';
 import { createBasketViaREST, createUserViaREST } from '../../framework/users';
 import { LoginPage } from '../../pages/account/login.page';
 import { sensibleDefaults } from '../../pages/account/registration.page';
@@ -36,9 +36,9 @@ describe('Shopping User', () => {
 
   it('should display invalid items if the invoice/shipping address is invalid', () => {
     at(CheckoutAddressesPage, page => {
-      cy.wait(1000);
+      waitLoadingEnd(1000);
       page.continueCheckout();
-      cy.wait(1000);
+      waitLoadingEnd(1000);
     });
     at(CheckoutAddressesPage, page => {
       page.validationMessage.should('contain', 'There is no shipping method available for this location');
@@ -48,7 +48,7 @@ describe('Shopping User', () => {
   it('should remove validation messages after customer address changed', () => {
     at(CheckoutAddressesPage, page => {
       page.changeInvoiceAddressRegion('CA');
-      cy.wait(1000);
+      waitLoadingEnd(1000);
       page.validationMessage.should('not.exist');
     });
   });
@@ -56,7 +56,10 @@ describe('Shopping User', () => {
   it('should continue checkout if validation problem has been solved', () => {
     at(CheckoutAddressesPage, page => {
       page.continueCheckout();
-      cy.wait(1000);
+      waitLoadingEnd(1000);
+      page.infoMessage.should('exist');
+      page.continueCheckout();
+      waitLoadingEnd(1000);
     });
     at(CheckoutShippingPage, () => {
       cy.contains('Select a Shipping Method');
