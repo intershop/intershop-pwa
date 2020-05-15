@@ -3,10 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 
 <% if (!extension) { %>import { SharedModule } from 'ish-shared/shared.module';<% } else { %>import { <%= classify(extension) %>Module } from '../../<%= dasherize(extension) %>.module';<% } %>
 
-const <%= camelize(artifactName) %>Routes: Routes = [{ path: '', component: <%= artifactName %>Component }];
+const <%= camelize(name) %>PageRoutes: Routes = [{ path: '', component: <%= artifactName %> }];
 
 @NgModule({
-  imports: [RouterModule.forChild(<%= camelize(artifactName) %>Routes), <% if (!extension) { %>SharedModule<% } else { %><%= classify(extension) %>Module<% } %>],
+  imports: [RouterModule.forChild(<%= camelize(name) %>PageRoutes), <% if (!extension) { %>SharedModule<% } else { %><%= classify(extension) %>Module<% } %>],
   declarations: [],
 })
-export class <%= artifactName %>Module { }
+export class <%= classify(name) %>PageModule { }
