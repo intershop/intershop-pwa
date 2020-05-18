@@ -106,17 +106,10 @@ jest_test:
   tags:
     - docker-executor
     - performance
-  artifacts:
-    paths:
-      - reports/coverage
-    expire_in: 1 day
-    reports:
-      junit: junit.xml
   dependencies: []
-  coverage: '/^Statements\s*:\s*([^%]+)/'
   script:
     - npm ci --prefer-offline
-    - npx jest --collectCoverage --coverageReporters text-summary  --reporters=default --reporters=jest-junit --ci -w 3
+    - npm run test -- -w 3
     - echo "build complete"
 
 compile:
@@ -305,7 +298,6 @@ push_reports:
     - performance
   script:
     - docker build -t ${CI_REGISTRY_IMAGE}:reports
-      --build-arg ICM_BASE_URL=${ICM_BASE_URL}
       --label revision="${CI_BUILD_REF}"
       --label project="${CI_PROJECT_URL}"
       --file Dockerfile_reports

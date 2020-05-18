@@ -4,6 +4,7 @@
     "experimentalDecorators": true,
     "lib": ["dom", "es2015", "es6"],
     "module": "commonjs",
+    "moduleResolution": "node",
     "noImplicitAny": false,
     "noLib": false,
     "outDir": "../node_modules/intershop-tslint-rules",
