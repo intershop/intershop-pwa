@@ -13,12 +13,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@cypress/webpack-preprocessor": "^5.0.0",
     "@types/node": "^12.12.37",
     "cypress": "^4.0.0",
     "cypress-failed-log": "^2.0.0",
-    "ts-loader": "^7.0.0",
-    "typescript": "~3.8.3",
-    "webpack": "^4.0.0"
+    "typescript": "~3.8.3"
   }
 }
