@@ -5,10 +5,11 @@ import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, spy, verify } from 'ts-mockito';
 
 import { FeatureToggleModule, FeatureToggleService } from 'ish-core/feature-toggle.module';
-import { CaptchaComponent } from 'ish-shared/forms/components/captcha/captcha.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { SelectComponent, SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { TextareaComponent } from 'ish-shared/forms/components/textarea/textarea.component';
+
+import { LazyCaptchaComponent } from '../../../extensions/captcha/exports/captcha/lazy-captcha/lazy-captcha.component';
 
 import { ContactFormComponent } from './contact-form.component';
 
@@ -21,8 +22,8 @@ describe('Contact Form Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         ContactFormComponent,
-        MockComponent(CaptchaComponent),
         MockComponent(InputComponent),
+        MockComponent(LazyCaptchaComponent),
         MockComponent(SelectComponent),
         MockComponent(TextareaComponent),
       ],

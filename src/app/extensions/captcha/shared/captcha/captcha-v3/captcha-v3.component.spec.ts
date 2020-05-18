@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { FormControl, FormGroup } from '@angular/forms';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 
 import { CaptchaV3Component } from './captcha-v3.component';
@@ -21,6 +22,10 @@ describe('Captcha V3 Component', () => {
     fixture = TestBed.createComponent(CaptchaV3Component);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+    component.parentForm = new FormGroup({
+      captcha: new FormControl(''),
+      captchaAction: new FormControl(''),
+    });
   });
 
   it('should be created', () => {

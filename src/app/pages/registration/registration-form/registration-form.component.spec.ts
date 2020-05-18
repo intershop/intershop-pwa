@@ -15,9 +15,9 @@ import { AddressFormFactory } from 'ish-shared/address-forms/components/address-
 import { AddressFormFactoryProvider } from 'ish-shared/address-forms/configurations/address-form-factory.provider';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
-import { CaptchaComponent } from 'ish-shared/forms/components/captcha/captcha.component';
 import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
 
+import { LazyCaptchaComponent } from '../../../extensions/captcha/exports/captcha/lazy-captcha/lazy-captcha.component';
 import { RegistrationCompanyFormComponent } from '../registration-company-form/registration-company-form.component';
 import { RegistrationCredentialsFormComponent } from '../registration-credentials-form/registration-credentials-form.component';
 
@@ -39,9 +39,9 @@ describe('Registration Form Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         MockComponent(AddressFormContainerComponent),
-        MockComponent(CaptchaComponent),
         MockComponent(CheckboxComponent),
         MockComponent(ContentIncludeComponent),
+        MockComponent(LazyCaptchaComponent),
         MockComponent(ModalDialogComponent),
         MockComponent(RegistrationCompanyFormComponent),
         MockComponent(RegistrationCredentialsFormComponent),

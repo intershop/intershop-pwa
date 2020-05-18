@@ -655,6 +655,10 @@
             "file": ".*/(<kebab>|store)/<kebab>-store\\.module\\.ts$"
           },
           {
+            "name": "^([A-Z].*)ComponentModule$",
+            "file": ".*/<kebab>\\.component\\.ts$"
+          },
+          {
             "name": "^(.*)Module$",
             "file": ".*(cypress.*|/<kebab>/<kebab>|/projects/<kebab>/src/app/<kebab>|/core/[a-z][a-z0-9-]+)\\.module\\.ts$"
           },

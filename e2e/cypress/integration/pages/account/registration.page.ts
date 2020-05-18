@@ -74,6 +74,15 @@ export class RegistrationPage {
       .forEach((key: keyof Registration) => {
         fillFormField(this.tag, key, register[key]);
       });
+
+    // special handling as captcha component steals focus
+    if (register.login) {
+      fillFormField(this.tag, 'login', register.login);
+    }
+    if (register.password) {
+      fillFormField(this.tag, 'password', register.password);
+    }
+
     return this;
   }
 
