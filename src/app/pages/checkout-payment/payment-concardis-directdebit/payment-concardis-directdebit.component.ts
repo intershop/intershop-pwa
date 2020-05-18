@@ -76,7 +76,7 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
    * hide fields without labels and enrich mandate reference and mandate text with corresponding values from hosted payment page parameters
    */
   getFieldConfig(): FormlyFieldConfig[] {
-    return this.paymentMethod.parameters.map(param => (!param.templateOptions.label ? this.modifyParam(param) : param));
+    return this.paymentMethod.parameters.map(param => (param.hide ? this.modifyParam(param) : param));
   }
 
   private modifyParam(p: FormlyFieldConfig): FormlyFieldConfig {
@@ -85,7 +85,7 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
     if (param.key === 'mandateReference') {
       param.defaultValue = this.getParamValue('mandateId', '');
     }
-    param.hide = true;
+
     if (param.key === 'mandateText') {
       param.type = 'checkbox';
       param.fieldGroupClassName = 'offset-md-4 col-md-8';

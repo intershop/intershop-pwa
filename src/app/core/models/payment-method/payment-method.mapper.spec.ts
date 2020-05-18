@@ -88,6 +88,12 @@ describe('Payment Method Mapper', () => {
         name: 'BIC',
         type: 'string',
       },
+      {
+        displayName: 'paymentMethodId',
+        hidden: true,
+        name: 'paymentMethodId',
+        type: 'string',
+      },
     ];
 
     it(`should return PaymentMethod when getting a PaymentMethodData`, () => {
@@ -119,9 +125,10 @@ describe('Payment Method Mapper', () => {
       const paymentMethod = PaymentMethodMapper.fromData(paymentMethodData)[0];
 
       expect(paymentMethod.saveAllowed).toBeTrue();
-      expect(paymentMethod.parameters).toHaveLength(3);
+      expect(paymentMethod.parameters).toHaveLength(4);
       expect(paymentMethod.parameters[0].type).toEqual('input');
       expect(paymentMethod.parameters[0].key).toEqual('holder');
+      expect(paymentMethod.parameters[0].hide).toBeFalse();
       expect(paymentMethod.parameters[0].templateOptions.type).toEqual('text');
       expect(paymentMethod.parameters[0].templateOptions.required).toBeTrue();
 
@@ -129,10 +136,12 @@ describe('Payment Method Mapper', () => {
       expect(paymentMethod.parameters[1].templateOptions.minLength).toBe(15);
       expect(paymentMethod.parameters[1].templateOptions.maxLength).toBe(34);
       expect(paymentMethod.parameters[1].templateOptions.attributes).toBeObject();
+
+      expect(paymentMethod.parameters[3].hide).toBeTrue();
     });
   });
 
-  describe('fromOptions', () => {
+  describe('Payment Method Mapper', () => {
     const paymentMethodsData = {
       payments: [
         {
