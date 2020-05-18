@@ -60,7 +60,6 @@ stat src/app/extensions/awesome/shared/group/dummy/dummy.component.ts
 
 npx ng g lazy-component extensions/awesome/shared/group/dummy/dummy.component.ts
 stat src/app/extensions/awesome/exports/group/lazy-dummy/lazy-dummy.component.ts
-npm run lint -- --format stylish --fix --files src/app/extensions/awesome/exports/group/lazy-dummy/lazy-dummy.component.ts
 grep "LazyDummyComponent" src/app/extensions/awesome/exports/awesome-exports.module.ts
 
 
@@ -87,7 +86,7 @@ stat src/app/shared/cms/components/audio/audio.component.ts
 grep "AudioComponent" src/app/shared/cms/cms.module.ts
 grep "AudioComponent" src/app/shared/shared.module.ts
 
-npx tslint -p tsconfig.all.json
+npm run lint
 
 node schematics/customization/add custom
 npx ng g customized-copy shell/footer/footer

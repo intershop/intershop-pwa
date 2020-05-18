@@ -52,15 +52,10 @@ jobs:
       - name: Compile Cypress Tests
         run: (cd e2e && npx tsc -p cypress/tsconfig.json)
 
-      - name: Escalate TSLint Rules
+      - name: Run Escalated TSLint Rules
         run: |
           node scripts/tslint-hard
-
-      - name: Lint by action
-        uses: mooyoul/tslint-actions@v1.1.1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          project: 'tsconfig.json'
+          npm run lint
 
       - name: Find Dead Code
         run: npx ts-node scripts/find-dead-code
