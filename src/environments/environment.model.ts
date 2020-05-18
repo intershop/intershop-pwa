@@ -21,8 +21,6 @@ export interface Environment {
 
   /* FEATURE TOOGLES */
   features: (
-    | 'captchaV2'
-    | 'captchaV3'
     | 'compare'
     | 'rating'
     | 'recently'
@@ -46,16 +44,6 @@ export interface Environment {
 
   // log client-side javascript errors to sentry.io (to be used with 'sentry' feature, works with server side rendering only)
   sentryDSN?: string;
-
-  // protect form submission with captchas (to be used with 'captcha' feature)
-  /** For production systems the captcha site key needs to match the one configured in the ICM ReCaptcha service configuration.
-   * For development we use the development keys provided by Google (https://developers.google.com/recaptcha/docs/faq)
-   * that don't require real verification and are used in the ICM as well.
-     Site key: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
-     Secret key: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
-   */
-  // TODO: get captcha site key, when Configuration Response in REST API is available
-  captchaSiteKey?: string;
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
 

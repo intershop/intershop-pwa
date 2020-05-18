@@ -1,4 +1,4 @@
-<div class="row form-group">
+<div *ngIf="captchaSiteKey$ | async as captchaSiteKey" class="row form-group">
   <div [ngClass]="cssClass">
     <div [ngClass]="{ 'has-error': hasError }">
       <re-captcha [siteKey]="captchaSiteKey" (resolved)="resolved($event)" class="captcha"></re-captcha>

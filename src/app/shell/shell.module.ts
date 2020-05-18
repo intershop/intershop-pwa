@@ -11,6 +11,7 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
 
+import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
 import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
 import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
@@ -30,7 +31,12 @@ import { SearchBoxComponent } from './header/search-box/search-box.component';
 import { SubCategoryNavigationComponent } from './header/sub-category-navigation/sub-category-navigation.component';
 import { UserInformationMobileComponent } from './header/user-information-mobile/user-information-mobile.component';
 
-const importExportModules = [QuickorderExportsModule, QuotingExportsModule, WishlistsExportsModule];
+const importExportModules = [
+  CaptchaExportsModule,
+  QuickorderExportsModule,
+  QuotingExportsModule,
+  WishlistsExportsModule,
+];
 
 const exportedComponents = [
   FooterComponent,

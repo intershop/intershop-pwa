@@ -39,9 +39,8 @@ export function fillFormField(parent: string, key: string, value: number | strin
         const inputField = cy.get(`[data-testing-id="${key}"]`);
         inputField.clear();
         if (value) {
-          inputField.type(value.toString());
+          inputField.focus().type(value.toString());
         }
-        inputField.blur();
       } else if (tagName === 'SELECT') {
         if (typeof value === 'number') {
           cy.get(`[data-testing-id="${key}"]`)
