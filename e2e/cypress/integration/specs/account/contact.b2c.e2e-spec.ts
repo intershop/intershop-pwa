@@ -7,13 +7,18 @@ const _ = {
   email: 'patricia@test.intershop.de',
   password: '!InterShop00!',
   fullName: 'Patricia Miller',
+  formContent: {
+    phone: '12345',
+    subject: 'Returns',
+    comment: "Don't fit.",
+  },
 };
 
 describe('Contact', () => {
   it('anonymous user should send the contact successfully', () => {
     ContactPage.navigateTo();
     at(ContactPage, page => {
-      page.fillForm(_.fullName, _.email, '12345', 'Returns', "Don't fit.");
+      page.fillForm({ ..._.formContent, email: _.email, name: _.fullName });
       page.submit();
     });
     at(ContactConfirmationPage, page => {
