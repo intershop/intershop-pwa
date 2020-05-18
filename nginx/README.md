@@ -1,8 +1,6 @@
 # nginx Docker Image for Intershop Progressive Web App
 
-![nginx](https://www.nginx.com/wp-content/themes/nginx-new/assets/img/logo.svg)
-
-This subproject provides a docker image of [nginx](https://www.nginx.com/) supplying the following capabilities:
+This sub project provides a docker image of [nginx](https://www.nginx.com/) supplying the following capabilities:
 
 - [PageSpeed Module](https://www.modpagespeed.com/) for browser optimization
 - Enabled compression for downstream services
