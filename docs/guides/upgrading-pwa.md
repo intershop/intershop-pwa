@@ -12,7 +12,7 @@ This guide gives a short overview on how to proceed with upgrading PWA dependenc
 ## Customer Projects
 
 In most cases, customer projects should never do upgrades of dependencies themselves.
-Whenever a new PWA version is released the project should consume it completely following the recommended [importing instructions](./customizations.md#import-changes-from-new-release).
+Whenever a new PWA version is released, the project should consume it completely, following the recommended [importing instructions](./customizations.md#import-changes-from-new-release).
 Especially the [`package-lock.json`](./customizations.md#dependencies) should be reset to Intershop's version and then (if customized) rewritten using `npm install`.
 
 ## PWA Development
@@ -40,7 +40,7 @@ This is especially important while doing a major Angular version upgrade.
 
 If a new major Angular version should be consumed, follow the steps in the [official update guide](https://update.angular.io) for advanced app complexity.
 
-`ng update` gives an overview of available angular specific package updates:
+`ng update` gives an overview of available Angular-specific package updates:
 
 ```text
 $ ng update
@@ -57,7 +57,7 @@ Found 99 dependencies.
 
 ### 2. Updating Third-Party Project Dependencies
 
-After updating the Angular specific dependencies, update project libraries (everything you use on the PWA).
+After updating the Angular-specific dependencies, update project libraries (everything you use on the PWA).
 
 `npm outdated` gives an overview of all upgradable packages in `package.json`:
 
@@ -78,20 +78,20 @@ You can upgrade to specific versions with `ng update @types/node@12`.
 
 ### 3. Update Project Utilities for Testing, Reporting and Linting
 
-Usually utility dependencies can be upgraded individually as they don't interfere with production code directly.
+Usually utility dependencies can be upgraded individually as they do not interfere with production code directly.
 In most cases you can also postpone these updates for a longer time.
 
 ### 4. Cleanup Dependencies
 
 Sometimes build processes and libraries require you to install peer dependencies yourself.
-This can however change after version upgrades and those dependencies become obsolete.
+However, this can change after version upgrades and those dependencies become obsolete.
 You can check with `npm ls <package-name>` if a package is used or required.
 
 After removing potential candidates check `npm install` for peer dependency requirements and also run the responsible process to assure continued functionality.
 
 ### 5. Update Utilities for Formatting
 
-Especially `prettier` upgrades and applying formatting should be done in individual commits (one for the upgrade and a single one only applying the formatting) so customer projects can ignore the second one and run the formatting independently.
+Especially `prettier` upgrades and applying formatting should be done in individual commits (one for the upgrade and a single one only applying the formatting), so customer projects can ignore the second one and run the formatting independently.
 
 ### 6. Refactoring and Deprecations
 
@@ -103,7 +103,7 @@ For customer projects it is most important that the process of upgrading is tran
 The commits leading to this point should be partially merged and restructured, so that they are importable via cherry-picking.
 
 One recommendation would be to combine all manipulations to `package-lock.json` in one single commit if no major refactorings or library replacement took place while upgrading.
-Further commits should be focused on descriptive commit messages so the upgrading project can follow them easily.
+Further commits should be focused on descriptive commit messages, so the upgrading project can follow them easily.
 At the end code re-formatting and optional refactorings should reside in individual commits.
 
 :warning: Every commit along the way must be consistent. `npm run check` must be runnable without errors, so the customer project can use it to assure consistency.
@@ -123,7 +123,7 @@ found 11 vulnerabilities (8 low, 3 high)
 
 Do not pay too much attention to this.
 By doing a complete install on the project, all dependencies (production and development) are audited, but only production dependencies will end up in the production code.
-You should however pay attention to the production audit:
+You should, however, pay attention to the production audit:
 
 ```text
 $ npm audit --production
