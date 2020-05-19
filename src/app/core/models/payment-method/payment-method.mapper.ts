@@ -172,6 +172,7 @@ export class PaymentMethodMapper {
               : undefined,
           attributes: {},
         },
+        hide: p.hidden,
       };
 
       if (p.constraints) {

@@ -60,6 +60,22 @@ describe('Forms Dynamic', () => {
     expect(element.querySelector('ish-input')).toBeTruthy();
   });
 
+  it('should not display dynamic input when supplied as field but hide option is true', () => {
+    component.fields = [
+      {
+        key: 'text',
+        type: 'input',
+        hide: true,
+        templateOptions: {
+          type: 'text',
+        },
+      },
+    ];
+
+    fixture.detectChanges();
+    expect(element.querySelector('ish-input')).toBeFalsy();
+  });
+
   it('should display dynamic select when supplied as field', () => {
     component.fields = [
       {
@@ -71,6 +87,20 @@ describe('Forms Dynamic', () => {
 
     fixture.detectChanges();
     expect(element.querySelector('ish-select')).toBeTruthy();
+  });
+
+  it('should display dynamic select when supplied as field but hide option is true', () => {
+    component.fields = [
+      {
+        key: 'text',
+        type: 'select',
+        hide: true,
+        templateOptions: {},
+      },
+    ];
+
+    fixture.detectChanges();
+    expect(element.querySelector('ish-select')).toBeFalsy();
   });
 
   it('should display dynamic checkbox when supplied as field', () => {

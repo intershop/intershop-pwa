@@ -1,5 +1,5 @@
 <ish-input
-  *ngIf="field && field.templateOptions"
+  *ngIf="field && field.templateOptions && !field.hide"
   [form]="form"
   [controlName]="field.key"
   [type]="field.templateOptions.type"
