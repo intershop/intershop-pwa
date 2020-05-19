@@ -44,6 +44,10 @@ kb_sync_latest_only
 - [Concept - URL Rewriting](./concepts/url-rewriting.md)
 - [Guide - Mocking REST API Calls](./guides/mocking-rest-calls.md)
 
+### Maintenance
+
+- [Guide - Upgrading Dependencies](./guides/upgrading-pwa.md)
+
 ## Operations
 
 ### Setup
