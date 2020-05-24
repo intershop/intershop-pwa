@@ -17,10 +17,16 @@ server {
         proxy_pass $UPSTREAM_PWA;
     }
 
+    location ~* ^/ngx_pagespeed_beacon.* {
+    }
+
     # respect cache entries of static assets
-    location ~* ^/(ngx_pagespeed_beacon|assets|.*\.(js|css|ico|json|txt|webmanifest|woff|woff2))(.*)$ {
+    location ~* ^/(assets|.*\.(js|css|ico|json|txt|webmanifest|woff|woff2))(.*)$ {
         proxy_cache my_cache;
-        proxy_cache_use_stale error timeout http_404 http_500 http_502 http_503 http_504;
+        proxy_cache_use_stale error timeout invalid_header updating http_404 http_500 http_502 http_503 http_504;
+        proxy_cache_valid 60m; // keeps in cache for specified time if Cache-Control is not set
+        proxy_cache_revalidate on;
+        proxy_cache_background_update on;
 
         proxy_set_header Host $http_host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -34,7 +40,9 @@ server {
     # cache and rewriting for rendered pages
     location / {
         proxy_cache my_cache;
-        proxy_cache_use_stale error timeout http_404 http_500 http_502 http_503 http_504;
+        proxy_cache_use_stale error timeout invalid_header updating http_404 http_500 http_502 http_503 http_504;
+        proxy_cache_revalidate on;
+        proxy_cache_background_update on;
 
         proxy_set_header Host $http_host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -43,8 +51,8 @@ server {
         add_header X-Cache-Status $upstream_cache_status;
 
         proxy_ignore_headers Cache-Control;
-        proxy_cache_valid 200 302 10m;
-        proxy_cache_valid 404      1m;
+        proxy_cache_valid 10m;
+        proxy_cache_valid 404 1m;
 
         add_header X-icm-domain $DOMAIN always;
         add_header X-icm-channel $CHANNEL always;
