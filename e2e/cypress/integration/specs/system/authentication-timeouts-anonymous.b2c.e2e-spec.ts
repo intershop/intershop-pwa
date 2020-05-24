@@ -25,8 +25,7 @@ describe('Anonymous Sleeping User', () => {
         })
         .as('invalid');
       at(FamilyPage, page => {
-        page.productList.gotoProductDetailPageBySku(_.product);
-        cy.wait('@invalid');
+        page.productList.gotoProductDetailPageBySku(_.product, () => cy.wait('@invalid'));
         cy.route({
           method: 'GET',
           url: `**/products/${_.product}*`,
@@ -44,7 +43,7 @@ describe('Anonymous Sleeping User', () => {
       ProductDetailPage.navigateTo(_.product);
       at(ProductDetailPage, page => {
         page.addProductToCart();
-        cy.wait(1000);
+        waitLoadingEnd(1000);
         page.header.miniCart.text.should('contain', '1 item');
       });
     });
@@ -59,8 +58,7 @@ describe('Anonymous Sleeping User', () => {
         })
         .as('invalid');
       at(ProductDetailPage, page => {
-        page.header.gotoHomePage();
-        cy.wait('@invalid');
+        page.header.gotoHomePage(() => cy.wait('@invalid'));
         cy.route({
           method: 'GET',
           url: `**/cms/**`,

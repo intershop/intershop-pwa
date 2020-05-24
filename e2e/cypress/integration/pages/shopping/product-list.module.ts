@@ -34,9 +34,9 @@ export class ProductListModule {
     return cy.get(this.contextSelector).find(`ish-product-item div[data-testing-sku="${sku}"]`);
   }
 
-  gotoProductDetailPageBySku(sku: string) {
-    cy.get(this.contextSelector).find(`ish-product-item div[data-testing-sku="${sku}"]`).click();
-    waitLoadingEnd();
+  gotoProductDetailPageBySku(sku: string, wait: () => unknown = waitLoadingEnd) {
+    this.productTile(sku).scrollIntoView().find('a.product-title').wait(500).click();
+    wait();
   }
 
   addProductToCompareBySku(sku: string) {
