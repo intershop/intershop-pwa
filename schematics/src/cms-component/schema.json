@@ -10,11 +10,6 @@
       "format": "path",
       "visible": false
     },
-    "tsext": {
-      "type": "string",
-      "default": "ts",
-      "visible": false
-    },
     "artifactFolder": {
       "type": "boolean",
       "default": true,
@@ -34,11 +29,6 @@
     },
     "prefix": {
       "type": "string",
-      "visible": false
-    },
-    "styleext": {
-      "type": "string",
-      "default": "scss",
       "visible": false
     },
     "selector": {

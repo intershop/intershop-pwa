@@ -1,5 +1,15 @@
 import { strings } from '@angular-devkit/core';
-import { Rule, SchematicsException, apply, chain, mergeWith, move, template, url } from '@angular-devkit/schematics';
+import {
+  Rule,
+  SchematicsException,
+  apply,
+  chain,
+  mergeWith,
+  move,
+  renameTemplateFiles,
+  template,
+  url,
+} from '@angular-devkit/schematics';
 import { buildDefaultPath, getProject } from '@schematics/angular/utility/project';
 
 import { applyNameAndPath, detectExtension, determineArtifactName } from '../utils/common';
@@ -26,6 +36,7 @@ export function createExtension(options: Options): Rule {
             ...strings,
             ...options,
           }),
+          renameTemplateFiles(),
           move(options.path),
         ])
       )

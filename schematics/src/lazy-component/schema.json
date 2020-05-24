@@ -5,11 +5,6 @@
   "type": "object",
   "description": "Creates a new lazy component for an existing one in an extension.",
   "properties": {
-    "tsext": {
-      "type": "string",
-      "default": "ts",
-      "visible": false
-    },
     "project": {
       "type": "string",
       "$default": {

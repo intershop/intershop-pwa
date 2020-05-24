@@ -4,11 +4,11 @@ import {
   SchematicsException,
   Tree,
   apply,
+  applyTemplates,
   chain,
   mergeWith,
   move,
   schematic,
-  template,
   url,
 } from '@angular-devkit/schematics';
 import { buildDefaultPath, getProject } from '@schematics/angular/utility/project';
@@ -126,7 +126,7 @@ export function createPage(options: Options): Rule {
       operations.push(
         mergeWith(
           apply(url('./files'), [
-            template({
+            applyTemplates({
               ...strings,
               ...options,
             }),

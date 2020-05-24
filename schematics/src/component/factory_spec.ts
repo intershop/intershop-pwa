@@ -10,7 +10,6 @@ describe('Component Schematic', () => {
   const defaultOptions: Options = {
     name: 'foo',
     styleFile: false,
-    styleext: 'scss',
     module: undefined,
     export: false,
     project: 'bar',
@@ -26,9 +25,9 @@ describe('Component Schematic', () => {
     const tree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
     expect(tree.files.filter(x => x.search('foo.component') >= 0)).toMatchInlineSnapshot(`
       Array [
-        "/src/app/foo/foo.component.ts",
         "/src/app/foo/foo.component.html",
         "/src/app/foo/foo.component.spec.ts",
+        "/src/app/foo/foo.component.ts",
       ]
     `);
     const moduleContent = tree.readContent('/src/app/app.module.ts');
@@ -71,9 +70,9 @@ describe('Component Schematic', () => {
     const tree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
     expect(tree.files.filter(x => x.search('foo.component') >= 0)).toMatchInlineSnapshot(`
       Array [
-        "/src/app/foo.component.ts",
         "/src/app/foo.component.html",
         "/src/app/foo.component.spec.ts",
+        "/src/app/foo.component.ts",
       ]
     `);
     const tsContent = tree.readContent('/src/app/foo.component.ts');
@@ -96,10 +95,10 @@ describe('Component Schematic', () => {
     const tree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
     expect(tree.files.filter(x => x.search('foo.component') >= 0)).toMatchInlineSnapshot(`
       Array [
-        "/src/app/foo/foo.component.scss",
-        "/src/app/foo/foo.component.ts",
         "/src/app/foo/foo.component.html",
+        "/src/app/foo/foo.component.scss",
         "/src/app/foo/foo.component.spec.ts",
+        "/src/app/foo/foo.component.ts",
       ]
     `);
     const componentSource = tree.readContent('/src/app/foo/foo.component.ts');

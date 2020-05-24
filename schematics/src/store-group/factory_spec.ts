@@ -60,11 +60,11 @@ export const getCoreState: Selector<CoreState, CoreState> = state => state;
     const tree = await schematicRunner.runSchematicAsync('store-group', options, appTree).toPromise();
     const files = tree.files.filter(x => x.search('foo') >= 0);
     expect(files).toMatchInlineSnapshot(`
-Array [
-  "/src/app/core/store/foo/foo-store.ts",
-  "/src/app/core/store/foo/foo-store.module.ts",
-]
-`);
+      Array [
+        "/src/app/core/store/foo/foo-store.module.ts",
+        "/src/app/core/store/foo/foo-store.ts",
+      ]
+    `);
   });
 
   it('should register a store group in core store by default', async () => {

@@ -15,11 +15,6 @@
       "visible": false,
       "default": true
     },
-    "tsext": {
-      "type": "string",
-      "default": "ts",
-      "visible": false
-    },
     "routingModule": {
       "type": "string",
       "visible": false

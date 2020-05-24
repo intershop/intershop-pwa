@@ -3,11 +3,11 @@ import {
   Rule,
   SchematicsException,
   apply,
+  applyTemplates,
   chain,
   forEach,
   mergeWith,
   move,
-  template,
   url,
 } from '@angular-devkit/schematics';
 import { tsquery } from '@phenomnomnominal/tsquery';
@@ -122,7 +122,7 @@ export function createLazyComponent(options: Options): Rule {
     operations.push(
       mergeWith(
         apply(url('./files'), [
-          template({
+          applyTemplates({
             ...strings,
             ...options,
             bindings,

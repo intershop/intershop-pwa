@@ -3,12 +3,12 @@ import {
   Rule,
   SchematicsException,
   apply,
+  applyTemplates,
   chain,
   filter,
   mergeWith,
   move,
   noop,
-  template,
   url,
 } from '@angular-devkit/schematics';
 
@@ -68,8 +68,8 @@ export function createCMSComponent(options: Options): Rule {
     operations.push(
       mergeWith(
         apply(url('./files'), [
-          options.styleFile ? noop() : filter(path => !path.endsWith('.__styleext__')),
-          template({
+          options.styleFile ? noop() : filter(path => !path.includes('.scss')),
+          applyTemplates({
             ...strings,
             ...options,
             'if-flat': s => (options.flat ? '' : s),

@@ -69,12 +69,12 @@ export class DummyTwoComponent {}
         "/src/app/app.component.spec.ts",
         "/src/app/app.component.ts",
         "/src/app/shared/shared.module.ts",
-        "/src/app/shared/dummy-two/dummy-two.component.ts",
         "/src/app/shared/dummy-two/dummy-two.component.html",
         "/src/app/shared/dummy-two/dummy-two.component.spec.ts",
-        "/src/app/foo/foo.component.ts",
+        "/src/app/shared/dummy-two/dummy-two.component.ts",
         "/src/app/foo/foo.component.html",
         "/src/app/foo/foo.component.spec.ts",
+        "/src/app/foo/foo.component.ts",
       ]
     `);
   });

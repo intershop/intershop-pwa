@@ -79,11 +79,11 @@ export const getCoreState: Selector<CoreState, CoreState> = state => state;
     expect(files).toMatchInlineSnapshot(`
       Array [
         "/src/app/core/store/foo/foo.actions.ts",
-        "/src/app/core/store/foo/foo.effects.ts",
         "/src/app/core/store/foo/foo.effects.spec.ts",
+        "/src/app/core/store/foo/foo.effects.ts",
         "/src/app/core/store/foo/foo.reducer.ts",
-        "/src/app/core/store/foo/foo.selectors.ts",
         "/src/app/core/store/foo/foo.selectors.spec.ts",
+        "/src/app/core/store/foo/foo.selectors.ts",
         "/src/app/core/store/foo/index.ts",
       ]
     `);
@@ -111,11 +111,11 @@ export const getCoreState: Selector<CoreState, CoreState> = state => state;
     expect(files).toMatchInlineSnapshot(`
       Array [
         "/src/app/core/store/bar/foo/foo.actions.ts",
-        "/src/app/core/store/bar/foo/foo.effects.ts",
         "/src/app/core/store/bar/foo/foo.effects.spec.ts",
+        "/src/app/core/store/bar/foo/foo.effects.ts",
         "/src/app/core/store/bar/foo/foo.reducer.ts",
-        "/src/app/core/store/bar/foo/foo.selectors.ts",
         "/src/app/core/store/bar/foo/foo.selectors.spec.ts",
+        "/src/app/core/store/bar/foo/foo.selectors.ts",
         "/src/app/core/store/bar/foo/index.ts",
       ]
     `);
@@ -143,11 +143,11 @@ export const getCoreState: Selector<CoreState, CoreState> = state => state;
     expect(files).toMatchInlineSnapshot(`
       Array [
         "/src/app/extensions/feature/store/foo/foo.actions.ts",
-        "/src/app/extensions/feature/store/foo/foo.effects.ts",
         "/src/app/extensions/feature/store/foo/foo.effects.spec.ts",
+        "/src/app/extensions/feature/store/foo/foo.effects.ts",
         "/src/app/extensions/feature/store/foo/foo.reducer.ts",
-        "/src/app/extensions/feature/store/foo/foo.selectors.ts",
         "/src/app/extensions/feature/store/foo/foo.selectors.spec.ts",
+        "/src/app/extensions/feature/store/foo/foo.selectors.ts",
         "/src/app/extensions/feature/store/foo/index.ts",
       ]
     `);
