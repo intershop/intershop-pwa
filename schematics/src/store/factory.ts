@@ -4,10 +4,10 @@ import {
   SchematicsException,
   Tree,
   apply,
+  applyTemplates,
   chain,
   mergeWith,
   move,
-  template,
   url,
 } from '@angular-devkit/schematics';
 import { getProject } from '@schematics/angular/utility/project';
@@ -205,7 +205,7 @@ export function createStore(options: Options): Rule {
     operations.push(
       mergeWith(
         apply(url('./files'), [
-          template({
+          applyTemplates({
             ...strings,
             ...options,
           }),

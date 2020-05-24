@@ -11,7 +11,6 @@ describe('CMS Component Schematic', () => {
     name: 'foo',
     definitionQualifiedName: 'app_sf_responsive_cm:component.common.foo.pagelet2-Component',
     styleFile: false,
-    styleext: 'scss',
     module: undefined,
     export: false,
     project: 'bar',
@@ -30,9 +29,9 @@ describe('CMS Component Schematic', () => {
     expect(tree.files.filter(x => x.search('cms') >= 0)).toMatchInlineSnapshot(`
       Array [
         "/src/app/shared/cms/cms.module.ts",
-        "/src/app/shared/cms/components/cms-foo/cms-foo.component.ts",
         "/src/app/shared/cms/components/cms-foo/cms-foo.component.html",
         "/src/app/shared/cms/components/cms-foo/cms-foo.component.spec.ts",
+        "/src/app/shared/cms/components/cms-foo/cms-foo.component.ts",
       ]
     `);
     expect(tree.readContent('/src/app/shared/cms/cms.module.ts')).toMatchInlineSnapshot(`
@@ -75,9 +74,9 @@ describe('CMS Component Schematic', () => {
     expect(tree.files.filter(x => x.search('cms') >= 0)).toMatchInlineSnapshot(`
       Array [
         "/src/app/shared/cms/cms.module.ts",
-        "/src/app/shared/cms/components/foo/foo.component.ts",
         "/src/app/shared/cms/components/foo/foo.component.html",
         "/src/app/shared/cms/components/foo/foo.component.spec.ts",
+        "/src/app/shared/cms/components/foo/foo.component.ts",
       ]
     `);
     expect(tree.readContent('/src/app/shared/cms/cms.module.ts')).toMatchInlineSnapshot(`

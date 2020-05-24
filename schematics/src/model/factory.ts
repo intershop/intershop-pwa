@@ -3,12 +3,12 @@ import {
   Rule,
   SchematicsException,
   apply,
+  applyTemplates,
   chain,
   filter,
   mergeWith,
   move,
   noop,
-  template,
   url,
 } from '@angular-devkit/schematics';
 
@@ -32,8 +32,8 @@ export function createModel(options: Options): Rule {
     operations.push(
       mergeWith(
         apply(url('./files'), [
-          !options.simple ? noop() : filter(path => path.endsWith('model.__tsext__')),
-          template({ ...strings, ...options }),
+          !options.simple ? noop() : filter(path => path.includes('model.ts')),
+          applyTemplates({ ...strings, ...options }),
           move(options.path),
         ])
       )

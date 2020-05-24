@@ -1,5 +1,14 @@
 import { strings } from '@angular-devkit/core';
-import { Rule, SchematicsException, apply, chain, mergeWith, move, template, url } from '@angular-devkit/schematics';
+import {
+  Rule,
+  SchematicsException,
+  apply,
+  applyTemplates,
+  chain,
+  mergeWith,
+  move,
+  url,
+} from '@angular-devkit/schematics';
 
 import { applyNameAndPath, determineArtifactName } from '../utils/common';
 import { applyLintFix } from '../utils/lint-fix';
@@ -20,7 +29,7 @@ export function createModule(options: Options): Rule {
     operations.push(
       mergeWith(
         apply(url('./files'), [
-          template({
+          applyTemplates({
             ...strings,
             ...options,
             'if-flat': s => (options.flat ? '' : s),

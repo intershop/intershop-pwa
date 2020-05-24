@@ -36,8 +36,8 @@ describe('Extension Schematic', () => {
         "/src/app/extensions/foo/exports/foo-exports.module.ts",
         "/src/app/extensions/foo/facades/foo.facade.ts",
         "/src/app/extensions/foo/pages/foo-routing.module.ts",
-        "/src/app/extensions/foo/store/foo-store.ts",
         "/src/app/extensions/foo/store/foo-store.module.ts",
+        "/src/app/extensions/foo/store/foo-store.ts",
       ]
     `);
   });
