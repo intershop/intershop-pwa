@@ -5,10 +5,10 @@ import { getProject } from '@schematics/angular/utility/project';
 import { basename, join } from 'path';
 import * as ts from 'typescript';
 
+import { applyNameAndPath, determineArtifactName, findDeclaringModule } from '../../utils/common';
+import { readIntoSourceFile } from '../../utils/filesystem';
+import { addDeclarationToNgModule } from '../../utils/registration';
 import { updateComponentClassName, updateComponentDecorator, updateComponentSelector } from '../move-component/factory';
-import { applyNameAndPath, determineArtifactName, findDeclaringModule } from '../utils/common';
-import { readIntoSourceFile } from '../utils/filesystem';
-import { addDeclarationToNgModule } from '../utils/registration';
 
 import { CustomizedCopyOptionsSchema as Options } from './schema';
 

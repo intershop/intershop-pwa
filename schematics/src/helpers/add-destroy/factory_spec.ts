@@ -1,8 +1,8 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
 import { switchMap } from 'rxjs/operators';
 
-import { PWAComponentOptionsSchema } from '../component/schema';
-import { createApplication, createSchematicRunner } from '../utils/testHelper';
+import { PWAComponentOptionsSchema } from '../../component/schema';
+import { createApplication, createSchematicRunner } from '../../utils/testHelper';
 
 describe('Lazy Component Schematic', () => {
   const schematicRunner = createSchematicRunner();
@@ -32,7 +32,7 @@ describe('Lazy Component Schematic', () => {
   it('should be runnable on a component', async () => {
     await schematicRunner
       .runSchematicAsync(
-        'add-destroy-subject-to-component',
+        'add-destroy',
         {
           project: 'bar',
           name: 'src/app/foo/foo.component.ts',
@@ -74,7 +74,7 @@ describe('Lazy Component Schematic', () => {
     beforeEach(async () => {
       appTree = await schematicRunner
         .runSchematicAsync(
-          'add-destroy-subject-to-component',
+          'add-destroy',
           {
             project: 'bar',
             name: 'src/app/foo/foo.component.ts',

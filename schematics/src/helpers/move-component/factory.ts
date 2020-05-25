@@ -4,7 +4,7 @@ import { tsquery } from '@phenomnomnominal/tsquery';
 import { getProject } from '@schematics/angular/utility/project';
 import * as ts from 'typescript';
 
-import { readIntoSourceFile } from '../utils/filesystem';
+import { readIntoSourceFile } from '../../utils/filesystem';
 
 import { MoveComponentOptionsSchema as Options } from './schema';
 

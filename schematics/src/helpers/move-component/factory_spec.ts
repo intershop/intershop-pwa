@@ -1,6 +1,6 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
 
-import { createApplication, createModule, createSchematicRunner } from '../utils/testHelper';
+import { createApplication, createModule, createSchematicRunner } from '../../utils/testHelper';
 
 describe('move-component Schematic', () => {
   const schematicRunner = createSchematicRunner();
