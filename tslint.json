@@ -121,7 +121,6 @@
     "prefer-const": true,
     "use-shorthand-property-in-object-creation": true,
     "radix": true,
-    "rxjs-no-internal": true,
     "rxjs-finnish": {
       "options": [
         {
@@ -135,31 +134,32 @@
       "severity": "error"
     },
     "rxjs-no-create": true,
-    "rxjs-no-ignored-subscribe": true,
-    "rxjs-no-unsafe-switchmap": true,
-    "rxjs-no-unsafe-catch": true,
-    "rxjs-no-unsafe-first": {
-      "severity": "off"
-    },
-    "rxjs-no-unsafe-scope": {
-      "severity": "off"
-    },
-    "rxjs-no-unsafe-takeuntil": true,
-    "rxjs-no-subject-value": true,
-    "rxjs-no-subject-unsubscribe": true,
-    "rxjs-no-exposed-subjects": {
-      "severity": "off"
-    },
-    "rxjs-no-explicit-generics": {
-      "severity": "off"
-    },
     "rxjs-no-ignored-replay-buffer": true,
-    "rxjs-prefer-async-pipe": {
-      "severity": "off"
+    "rxjs-no-ignored-subscribe": true,
+    "rxjs-no-internal": true,
+    "rxjs-no-nested-subscribe": { "severity": "warning" },
+    "rxjs-no-subclass": true,
+    "rxjs-no-subject-unsubscribe": true,
+    "rxjs-no-subject-value": true,
+    "rxjs-no-unsafe-catch": true,
+    "rxjs-no-unsafe-subject-next": true,
+    "rxjs-no-unsafe-switchmap": true,
+    "rxjs-no-unsafe-takeuntil": true,
+    "rxjs-prefer-angular-takeuntil": {
+      "severity": "warning",
+      "options": {
+        "checkDestroy": true,
+        "checkDecorators": ["Component", "Pipe", "Directive"]
+      }
     },
-    "rxjs-throw-error": {
-      "severity": "off"
-    },
+    "rxjs-no-explicit-generics": { "severity": "off" },
+    "rxjs-no-ignored-observable": { "severity": "off" },
+    "rxjs-no-exposed-subjects": { "severity": "off" },
+    "rxjs-no-ignored-subscription": { "severity": "off" },
+    "rxjs-no-unsafe-first": { "severity": "off" },
+    "rxjs-no-unsafe-scope": { "severity": "off" },
+    "rxjs-prefer-angular-async-pipe": { "severity": "off" },
+    "rxjs-throw-error": { "severity": "off" },
     "private-destroy-field": true,
     "ngrx-use-empty-store-type": true,
     "ngrx-use-oftype-with-type": true,
