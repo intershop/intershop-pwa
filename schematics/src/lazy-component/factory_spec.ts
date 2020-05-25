@@ -188,8 +188,11 @@ describe('Lazy Component Schematic', () => {
       appTree.overwrite(
         '/src/app/extensions/ext/shared/group/dummy/dummy.component.ts',
         `import { ChangeDetectionStrategy, Component, Input, Output } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
+import { User } from 'ish-core/models/user/user.model';
+import { Customer } from 'ish-core/models/customer/customer.model';
 
 @Component({
   selector: 'ish-dummy',
@@ -202,6 +205,8 @@ export class DummyComponent {
   @Input() complexTyped: 'a' | 'b';
   @Input() complexTypedInitialized: 'a' | 'b' = 'a';
   @Input() importTyped: Product;
+  @Input() importComplexTyped: User[];
+  @Input() importGenericTyped: Observable<Customer[]>;
 }
 `
       );
@@ -222,6 +227,8 @@ export class DummyComponent {
       expect(componentContent).toContain("@Input() complexTyped: 'a' | 'b';");
       expect(componentContent).toContain("@Input() complexTypedInitialized: 'a' | 'b' = 'a';");
       expect(componentContent).toContain('@Input() importTyped: Product;');
+      expect(componentContent).toContain('@Input() importComplexTyped: User[];');
+      expect(componentContent).toContain('@Input() importGenericTyped: Observable<Customer[]>;');
     });
 
     it('should transfer inputs', () => {
@@ -230,10 +237,15 @@ export class DummyComponent {
       expect(componentContent).toContain('component.instance.complexTyped = this.complexTyped');
       expect(componentContent).toContain('component.instance.complexTypedInitialized = this.complexTypedInitialized');
       expect(componentContent).toContain('component.instance.importTyped = this.importTyped');
+      expect(componentContent).toContain('component.instance.importComplexTyped = this.importComplexTyped');
+      expect(componentContent).toContain('component.instance.importGenericTyped = this.importGenericTyped');
     });
 
     it('should copy imports', () => {
       expect(componentContent).toContain("import { Product } from 'ish-core/models/product/product.model';");
+      expect(componentContent).toContain("import { User } from 'ish-core/models/user/user.model';");
+      expect(componentContent).toContain("import { Observable } from 'rxjs';");
+      expect(componentContent).toContain("import { Customer } from 'ish-core/models/customer/customer.model';");
     });
   });
 

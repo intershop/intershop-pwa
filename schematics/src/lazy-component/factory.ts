@@ -66,9 +66,8 @@ export function createLazyComponent(options: Options): Rule {
       }));
 
       const importTypes = bindingNodes
-        .map(node => node.getChildAt(3))
-        .filter(node => ts.isTypeReferenceNode(node))
-        .map(node => node.getText());
+        .map(node => tsquery(node, 'TypeReference > Identifier').map(identifier => identifier.getText()))
+        .reduce((acc, val) => acc.concat(...val), []);
 
       if (importTypes.length) {
         const importDeclarations = tsquery(componentSource, 'ImportDeclaration') as ts.ImportDeclaration[];
@@ -82,7 +81,6 @@ export function createLazyComponent(options: Options): Rule {
               : [],
           }))
           .filter(decl => decl.types.length);
-        // .forEach(t => console.log(t));
       }
     }
 
