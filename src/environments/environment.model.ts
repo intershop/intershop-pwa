@@ -24,7 +24,6 @@ export interface Environment {
     | 'compare'
     | 'rating'
     | 'recently'
-    | 'securityQuestion'
     /* B2B features */
     | 'advancedVariationHandling'
     | 'businessCustomerRegistration'

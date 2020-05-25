@@ -15,7 +15,7 @@ import {
   PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
+import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
@@ -315,7 +315,7 @@ describe('Checkout Store', () => {
     describe('and with basket', () => {
       it('should merge basket on user login.', fakeAsync(() => {
         store.reset();
-        store.dispatch(new LoginUser({ credentials: {} as LoginCredentials }));
+        store.dispatch(new LoginUser({ credentials: {} as Credentials }));
 
         expect(store.actionsArray()).toMatchInlineSnapshot(`
           [Account] Login User:

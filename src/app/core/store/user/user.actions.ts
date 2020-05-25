@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
+import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
@@ -48,7 +48,7 @@ export enum UserActionTypes {
 
 export class LoginUser implements Action {
   readonly type = UserActionTypes.LoginUser;
-  constructor(public payload: { credentials: LoginCredentials }) {}
+  constructor(public payload: { credentials: Credentials }) {}
 }
 
 export class LoginUserFail implements Action {
