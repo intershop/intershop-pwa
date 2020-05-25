@@ -58,5 +58,6 @@ export class TextareaComponent extends FormElementComponent implements OnInit, O
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 }

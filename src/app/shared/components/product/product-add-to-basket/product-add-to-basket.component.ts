@@ -77,5 +77,6 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 }

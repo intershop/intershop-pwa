@@ -47,6 +47,7 @@ export class UpdatePasswordComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 
   requestPasswordChange(data: { password: string }) {

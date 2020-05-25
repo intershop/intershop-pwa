@@ -75,5 +75,6 @@ export class ProductVariationSelectComponent implements OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 }

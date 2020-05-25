@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { take } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Product } from 'ish-core/models/product/product.model';
@@ -24,9 +25,11 @@ import { SelectWishlistModalComponent } from '../../wishlists/select-wishlist-mo
  * ></ish-product-add-to-wishlist>
  */
 @GenerateLazyComponent()
-export class ProductAddToWishlistComponent {
+export class ProductAddToWishlistComponent implements OnDestroy {
   @Input() product: Product;
   @Input() displayType?: 'icon' | 'link' | 'animated' = 'link';
+
+  private destroy$ = new Subject();
 
   constructor(private wishlistsFacade: WishlistsFacade, private accountFacade: AccountFacade, private router: Router) {}
 
@@ -34,7 +37,7 @@ export class ProductAddToWishlistComponent {
    * if the user is not logged in display login dialog, else open select wishlist dialog
    */
   openModal(modal: SelectWishlistModalComponent) {
-    this.accountFacade.isLoggedIn$.pipe(take(1)).subscribe(isLoggedIn => {
+    this.accountFacade.isLoggedIn$.pipe(take(1), takeUntil(this.destroy$)).subscribe(isLoggedIn => {
       if (isLoggedIn) {
         modal.show();
       } else {
@@ -51,5 +54,10 @@ export class ProductAddToWishlistComponent {
     } else {
       this.wishlistsFacade.addProductToWishlist(wishlist.id, this.product.sku);
     }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -1,6 +1,15 @@
-import { ApplicationRef, ChangeDetectionStrategy, Component, Input, OnChanges, ViewChild } from '@angular/core';
+import {
+  ApplicationRef,
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
 import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
-import { mapTo, take } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { mapTo, take, takeUntil } from 'rxjs/operators';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { arraySlices } from 'ish-core/utils/functions';
@@ -12,7 +21,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   templateUrl: './cms-carousel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CMSCarouselComponent implements CMSComponent, OnChanges {
+export class CMSCarouselComponent implements CMSComponent, OnChanges, OnDestroy {
   @Input() pagelet: ContentPageletView;
 
   @ViewChild('ngbCarousel') carousel: NgbCarousel;
@@ -22,6 +31,8 @@ export class CMSCarouselComponent implements CMSComponent, OnChanges {
   pageletSlides: string[][] = [];
 
   constructor(private appRef: ApplicationRef) {}
+
+  private destroy$ = new Subject();
 
   ngOnChanges() {
     if (this.pagelet.hasParam('SlideItems')) {
@@ -35,8 +46,9 @@ export class CMSCarouselComponent implements CMSComponent, OnChanges {
     this.appRef.isStable
       .pipe(
         whenTruthy(),
+        mapTo(this.pagelet.booleanParam('StartCycling') ? this.pagelet.numberParam('SlideInterval', 5000) : 0),
         take(1),
-        mapTo(this.pagelet.booleanParam('StartCycling') ? this.pagelet.numberParam('SlideInterval', 5000) : 0)
+        takeUntil(this.destroy$)
       )
       .subscribe(val => {
         if (val) {
@@ -44,5 +56,10 @@ export class CMSCarouselComponent implements CMSComponent, OnChanges {
           this.carousel.cycle();
         }
       });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

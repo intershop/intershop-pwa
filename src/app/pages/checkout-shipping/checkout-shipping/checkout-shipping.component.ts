@@ -95,5 +95,6 @@ export class CheckoutShippingComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 }

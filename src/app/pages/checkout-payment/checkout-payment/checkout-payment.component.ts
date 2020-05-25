@@ -85,7 +85,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
       });
 
     // if page is shown after cancelled/faulty redirect determine error message variable
-    this.route.queryParamMap.pipe(take(1)).subscribe(params => {
+    this.route.queryParamMap.pipe(take(1), takeUntil(this.destroy$)).subscribe(params => {
       const redirect = params.get('redirect');
       this.redirectStatus = redirect;
     });
@@ -256,5 +256,6 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -50,12 +50,13 @@ export class ProductAddToQuoteDialogComponent implements OnInit, OnDestroy {
 
     // make active quote request to selected
     this.quotingFacade.activeQuoteRequest$
-      .pipe(whenTruthy(), take(1))
+      .pipe(whenTruthy(), take(1), takeUntil(this.destroy$))
       .subscribe(quoteRequest => this.quotingFacade.selectQuoteRequest(quoteRequest.id));
   }
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private patchForm(quote: QuoteRequest) {
@@ -73,7 +74,7 @@ export class ProductAddToQuoteDialogComponent implements OnInit, OnDestroy {
    * @param item Item id and quantity pair that should be changed
    */
   onUpdateItem(item: LineItemUpdate) {
-    this.selectedQuoteRequest$.pipe(take(1), whenTruthy()).subscribe(quote => {
+    this.selectedQuoteRequest$.pipe(take(1), whenTruthy(), takeUntil(this.destroy$)).subscribe(quote => {
       if (quote.items.length === 1 && item.quantity === 0) {
         this.quotingFacade.deleteQuoteRequest(quote.id);
         this.hide();
@@ -88,7 +89,7 @@ export class ProductAddToQuoteDialogComponent implements OnInit, OnDestroy {
    * Throws deleteQuoteRequest event when last item will be deleted.
    */
   onDeleteItem(itemId: string) {
-    this.selectedQuoteRequest$.pipe(take(1), whenTruthy()).subscribe(quote => {
+    this.selectedQuoteRequest$.pipe(take(1), whenTruthy(), takeUntil(this.destroy$)).subscribe(quote => {
       if (quote.items.length === 1) {
         this.quotingFacade.deleteQuoteRequest(quote.id);
         this.hide();

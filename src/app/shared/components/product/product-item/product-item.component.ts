@@ -92,9 +92,9 @@ export class ProductItemComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  // tslint:disable:initialize-observables-in-declaration
   ngOnInit() {
     this.productSkuChange.pipe(startWith(this.productSku), takeUntil(this.destroy$)).subscribe(this.sku$);
 
@@ -120,18 +120,21 @@ export class ProductItemComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   toggleCompare() {
-    this.sku$.pipe(take(1)).subscribe(sku => this.shoppingFacade.toggleProductCompare(sku));
+    this.sku$.pipe(take(1), takeUntil(this.destroy$)).subscribe(sku => this.shoppingFacade.toggleProductCompare(sku));
   }
 
   addToBasket(quantity: number) {
-    this.sku$.pipe(take(1)).subscribe(sku => this.shoppingFacade.addProductToBasket(sku, quantity));
+    this.sku$
+      .pipe(take(1), takeUntil(this.destroy$))
+      .subscribe(sku => this.shoppingFacade.addProductToBasket(sku, quantity));
   }
 
   replaceVariation(event: { selection: VariationSelection; changedAttribute?: string }) {
     this.product$
       .pipe(
         take(1),
-        filter<VariationProductView>(product => ProductHelper.isVariationProduct(product))
+        filter<VariationProductView>(product => ProductHelper.isVariationProduct(product)),
+        takeUntil(this.destroy$)
       )
       .subscribe(product => {
         const { sku } = ProductVariationHelper.findPossibleVariationForSelection(

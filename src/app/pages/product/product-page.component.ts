@@ -70,9 +70,9 @@ export class ProductPageComponent implements OnInit, OnDestroy {
       if (ProductHelper.isMasterProduct(product) && this.featureToggleService.enabled('advancedVariationHandling')) {
         this.shoppingFacade.loadMoreProducts({ type: 'master', value: product.sku }, 1);
       }
-      if (ProductHelper.isRetailSet(product)) {
-        this.retailSetParts$.next(product.partSKUs.map(sku => ({ sku, quantity: 1 })));
-      }
+      this.retailSetParts$.next(
+        ProductHelper.isRetailSet(product) ? product.partSKUs.map(sku => ({ sku, quantity: 1 })) : []
+      );
     });
 
     this.price$ = this.product$.pipe(
@@ -97,19 +97,19 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   }
 
   addToBasket() {
-    this.product$.pipe(take(1), whenTruthy()).subscribe(product => {
-      if (ProductHelper.isRetailSet(product)) {
-        this.retailSetParts$.pipe(take(1)).subscribe(parts =>
+    this.product$
+      .pipe(take(1), whenTruthy(), withLatestFrom(this.retailSetParts$), takeUntil(this.destroy$))
+      .subscribe(([product, parts]) => {
+        if (ProductHelper.isRetailSet(product)) {
           parts
             .filter(({ quantity }) => !!quantity)
             .forEach(({ sku, quantity }) => {
               this.shoppingFacade.addProductToBasket(sku, quantity);
-            })
-        );
-      } else {
-        this.shoppingFacade.addProductToBasket(product.sku, this.quantity);
-      }
-    });
+            });
+        } else {
+          this.shoppingFacade.addProductToBasket(product.sku, this.quantity);
+        }
+      });
   }
 
   addToCompare(sku: string) {
@@ -135,7 +135,8 @@ export class ProductPageComponent implements OnInit, OnDestroy {
         whenTruthy(),
         take(1),
         map(() => variation),
-        withLatestFrom(this.category$)
+        withLatestFrom(this.category$),
+        takeUntil(this.destroy$)
       )
       .subscribe(([product, category]) => {
         this.ngZone.run(() => {
@@ -146,5 +147,6 @@ export class ProductPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 }

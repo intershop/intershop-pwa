@@ -28,6 +28,7 @@ declare var PayEngine: any;
   templateUrl: './payment-concardis-directdebit.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
+// tslint:disable-next-line: rxjs-prefer-angular-takeuntil
 export class PaymentConcardisDirectdebitComponent extends PaymentConcardisComponent {
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
     super(scriptLoader, cd);

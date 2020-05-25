@@ -34,6 +34,7 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnD
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 
   @Input() set ishServerHtml(val: string) {

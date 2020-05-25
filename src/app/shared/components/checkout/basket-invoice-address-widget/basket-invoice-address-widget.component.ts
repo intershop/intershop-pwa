@@ -43,6 +43,7 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngOnInit() {
@@ -79,7 +80,8 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit, OnDestroy {
             filter(([addresses]) => addresses && !!addresses.length),
             take(1)
           )
-        )
+        ),
+        takeUntil(this.destroy$)
       )
       .subscribe(([addresses, invoiceAddress]) => {
         if (!invoiceAddress && addresses.length === 1) {

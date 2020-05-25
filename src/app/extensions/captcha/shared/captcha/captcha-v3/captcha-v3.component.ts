@@ -41,6 +41,7 @@ export class CaptchaV3Component implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 }
 
