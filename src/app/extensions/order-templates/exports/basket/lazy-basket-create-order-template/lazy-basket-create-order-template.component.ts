@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 
 import { BasketCreateOrderTemplateComponent } from '../../../shared/basket/basket-create-order-template/basket-create-order-template.component';
 
