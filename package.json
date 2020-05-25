@@ -119,7 +119,7 @@
     "ng-mocks": "^9.2.0",
     "postinstall": "^0.7.0",
     "prettier": "^2.0.5",
-    "rxjs-tslint-rules": "^4.31.0",
+    "rxjs-tslint-rules": "^4.32.0",
     "stylelint": "^13.3.3",
     "stylelint-config-prettier": "^8.0.1",
     "stylelint-config-recess-order": "^2.0.4",
