@@ -2,8 +2,8 @@ import { Rule, SchematicsException, chain } from '@angular-devkit/schematics';
 import { buildDefaultPath, getProject } from '@schematics/angular/utility/project';
 import { Scope } from 'ts-morph';
 
-import { applyLintFix } from '../utils/lint-fix';
-import { createTsMorphProject } from '../utils/ts-morph';
+import { applyLintFix } from '../../utils/lint-fix';
+import { createTsMorphProject } from '../../utils/ts-morph';
 
 import { PWAAddDestroySubjectToComponentOptionsSchema as Options } from './schema';
 
