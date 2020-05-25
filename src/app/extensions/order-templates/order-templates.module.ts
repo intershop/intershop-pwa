@@ -6,10 +6,9 @@ import { BasketCreateOrderTemplateComponent } from './shared/basket/basket-creat
 import { OrderTemplatePreferencesDialogComponent } from './shared/order-templates/order-template-preferences-dialog/order-template-preferences-dialog.component';
 import { SelectOrderTemplateModalComponent } from './shared/order-templates/select-order-template-modal/select-order-template-modal.component';
 import { ProductAddToOrderTemplateComponent } from './shared/product/product-add-to-order-template/product-add-to-order-template.component';
-import { OrderTemplatesStoreModule } from './store/order-templates-store.module';
 
 @NgModule({
-  imports: [OrderTemplatesStoreModule, SharedModule],
+  imports: [SharedModule],
   declarations: [
     BasketCreateOrderTemplateComponent,
     OrderTemplatePreferencesDialogComponent,

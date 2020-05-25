@@ -18,7 +18,7 @@ describe('Order Template Service', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }],
     });
-    orderTemplateService = TestBed.get(OrderTemplateService);
+    orderTemplateService = TestBed.inject(OrderTemplateService);
   });
 
   it('should be created', () => {

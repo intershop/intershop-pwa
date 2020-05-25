@@ -32,27 +32,17 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
       feature: 'wishlists',
       dataTestingId: 'wishlists-link',
     },
-<<<<<<< HEAD
+    '/account/order-templates': {
+      localizationKey: 'account.ordertemplates.link',
+      feature: 'orderTemplates',
+      dataTestingId: 'order-templates-link',
+    },
     '/account/payment': { localizationKey: 'account.payment.link', dataTestingId: 'payments-link' },
     '/account/addresses': { localizationKey: 'account.saved_addresses.link', dataTestingId: 'addresses-link' },
     '/account/profile': { localizationKey: 'account.profile.link' },
     '/account/quotes': { localizationKey: 'account.navigation.quotes.link', feature: 'quoting' },
     '/logout': { localizationKey: 'account.navigation.logout.link' },
   };
-=======
-    {
-      link: '/account/order-templates',
-      localizationKey: 'account.ordertemplates.link',
-      feature: 'orderTemplates',
-      dataTestingId: 'order-templates-link',
-    },
-    { link: '/account/payment', localizationKey: 'account.payment.link', dataTestingId: 'payments-link' },
-    { link: '/account/addresses', localizationKey: 'account.saved_addresses.link', dataTestingId: 'addresses-link' },
-    { link: '/account/profile', localizationKey: 'account.profile.link' },
-    { link: '/account/quotes', localizationKey: 'account.navigation.quotes.link', feature: 'quoting' },
-    { link: '/logout', localizationKey: 'account.navigation.logout.link' },
-  ];
->>>>>>> feat: add order templates functionality as configurable feature
 
   constructor(private router: Router) {}
 

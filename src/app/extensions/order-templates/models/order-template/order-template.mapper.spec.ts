@@ -9,7 +9,7 @@ describe('Order Template Mapper', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    orderTemplateMapper = TestBed.get(OrderTemplateMapper);
+    orderTemplateMapper = TestBed.inject(OrderTemplateMapper);
   });
 
   describe('fromData', () => {

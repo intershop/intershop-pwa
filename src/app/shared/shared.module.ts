@@ -20,14 +20,6 @@ import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
 import { ShellModule } from 'ish-shell/shell.module';
 
-<<<<<<< HEAD
-=======
-import { OrderTemplatesExportsModule } from '../extensions/order-templates/exports/order-templates-exports.module';
-import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
-import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
-import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
-
->>>>>>> feat: add order templates functionality as configurable feature
 import { AddressFormsSharedModule } from './address-forms/address-forms.module';
 import { CMSModule } from './cms/cms.module';
 import { CMSCarouselComponent } from './cms/components/cms-carousel/cms-carousel.component';
@@ -125,7 +117,6 @@ const importExportModules = [
   NgbDropdownModule,
   NgbModalModule,
   NgbPopoverModule,
-  OrderTemplatesExportsModule,
   PipesModule,
   ReactiveFormsModule,
   RouterModule,

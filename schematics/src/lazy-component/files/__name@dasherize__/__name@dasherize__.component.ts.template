@@ -40,7 +40,7 @@ export class <%= classify(name) %>Component implements OnInit <% if (bindings.le
   ) {}
 
   ngOnInit() {
-    if (this.featureToggleService.enabled('<%= dasherize(extension) %>')) {
+    if (this.featureToggleService.enabled('<%= camelize(extension) %>')) {
       const factory = this.componentFactoryResolver.resolveComponentFactory(<%= classify(originalName) %>Component);
       <% if (bindings.length) { %>this.component = <% } %>this.anchor.createComponent(factory);
       <% if (bindings.length) { %>this.ngOnChanges(<% if (onChanges === 'complex') { %>{

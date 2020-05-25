@@ -1,3 +1,5 @@
+import { createFeatureSelector } from '@ngrx/store';
+
 import { OrderTemplateState } from './order-template/order-template.reducer';
 
 export interface OrderTemplatesState {
@@ -6,4 +8,4 @@ export interface OrderTemplatesState {
 
 // TODO: use createFeatureSelector after ivy dynamic loading
 // tslint:disable-next-line: no-any
-export const getOrderTemplatesState: (state: any) => OrderTemplatesState = state => state.orderTemplates;
+export const getOrderTemplatesState = createFeatureSelector<OrderTemplatesState>('orderTemplates');

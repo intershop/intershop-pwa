@@ -44,7 +44,7 @@ describe('Order Template Selectors', () => {
       }),
     });
 
-    store$ = TestBed.get(TestStore);
+    store$ = TestBed.inject(TestStore);
   });
 
   const orderTemplates = [
@@ -91,7 +91,7 @@ describe('Order Template Selectors', () => {
       const loadOrderTemplateSuccessAction = new LoadOrderTemplatesSuccess({ orderTemplates });
 
       beforeEach(() => {
-        store$ = TestBed.get(TestStore);
+        store$ = TestBed.inject(TestStore);
         store$.dispatch(loadOrderTemplateSuccessAction);
       });
 
@@ -108,7 +108,7 @@ describe('Order Template Selectors', () => {
       const loadOrderTemplatesFailAction = new LoadOrderTemplatesFail({ error: { message: 'invalid' } as HttpError });
 
       beforeEach(() => {
-        store$ = TestBed.get(TestStore);
+        store$ = TestBed.inject(TestStore);
         store$.dispatch(loadOrderTemplatesFailAction);
       });
 
@@ -143,7 +143,7 @@ describe('Order Template Selectors', () => {
       const createOrderTemplateSuccessAction = new CreateOrderTemplateSuccess({ orderTemplate: orderTemplates[0] });
 
       beforeEach(() => {
-        store$ = TestBed.get(TestStore);
+        store$ = TestBed.inject(TestStore);
         store$.dispatch(createOrderTemplateSuccessAction);
       });
 
@@ -160,7 +160,7 @@ describe('Order Template Selectors', () => {
       const createOrderTemplateFailAction = new CreateOrderTemplateFail({ error: { message: 'invalid' } as HttpError });
 
       beforeEach(() => {
-        store$ = TestBed.get(TestStore);
+        store$ = TestBed.inject(TestStore);
         store$.dispatch(createOrderTemplateFailAction);
       });
 
@@ -194,7 +194,7 @@ describe('Order Template Selectors', () => {
       });
 
       beforeEach(() => {
-        store$ = TestBed.get(TestStore);
+        store$ = TestBed.inject(TestStore);
       });
 
       it('should set loading to false', () => {
@@ -215,7 +215,7 @@ describe('Order Template Selectors', () => {
       const deleteOrderTemplateFailAction = new DeleteOrderTemplateFail({ error: { message: 'invalid' } as HttpError });
 
       beforeEach(() => {
-        store$ = TestBed.get(TestStore);
+        store$ = TestBed.inject(TestStore);
         store$.dispatch(deleteOrderTemplateFailAction);
       });
 
@@ -253,7 +253,7 @@ describe('Order Template Selectors', () => {
       const loadOrderTemplateSuccess = new LoadOrderTemplatesSuccess({ orderTemplates });
 
       beforeEach(() => {
-        store$ = TestBed.get(TestStore);
+        store$ = TestBed.inject(TestStore);
       });
 
       it('should set loading to false', () => {
@@ -274,7 +274,7 @@ describe('Order Template Selectors', () => {
       const updateOrderTemplateFailAction = new UpdateOrderTemplateFail({ error: { message: 'invalid' } as HttpError });
 
       beforeEach(() => {
-        store$ = TestBed.get(TestStore);
+        store$ = TestBed.inject(TestStore);
         store$.dispatch(updateOrderTemplateFailAction);
       });
 

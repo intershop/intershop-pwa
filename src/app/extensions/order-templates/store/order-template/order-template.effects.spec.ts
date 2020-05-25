@@ -55,7 +55,7 @@ describe('Order Template Effects', () => {
   let actions$;
   let orderTemplateServiceMock: OrderTemplateService;
   let effects: OrderTemplateEffects;
-  let store$: Store<{}>;
+  let store$: Store;
   let router: Router;
 
   const customer = { customerNo: 'CID', type: 'SMBCustomer' } as Customer;
@@ -105,9 +105,9 @@ describe('Order Template Effects', () => {
       ],
     });
 
-    effects = TestBed.get(OrderTemplateEffects);
-    store$ = TestBed.get(Store);
-    router = TestBed.get(Router);
+    effects = TestBed.inject(OrderTemplateEffects);
+    store$ = TestBed.inject(Store);
+    router = TestBed.inject(Router);
 
     store$.dispatch(new ApplyConfiguration({ features: ['orderTemplates'] }));
   });

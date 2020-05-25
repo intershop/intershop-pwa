@@ -4,6 +4,7 @@ import { take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Product } from 'ish-core/models/product/product.model';
+import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 import { SelectOrderTemplateModalComponent } from '../../order-templates/select-order-template-modal/select-order-template-modal.component';
@@ -22,6 +23,7 @@ import { SelectOrderTemplateModalComponent } from '../../order-templates/select-
  *               displayType="icon"
  * ></ish-product-add-to-order-template>
  */
+@GenerateLazyComponent()
 export class ProductAddToOrderTemplateComponent {
   @Input() product: Product;
   @Input() quantity: number;

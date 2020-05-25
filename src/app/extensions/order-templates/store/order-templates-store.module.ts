@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, ReducerManager, Store, combineReducers } from '@ngrx/store';
-import { take } from 'rxjs/operators';
+import { ActionReducerMap, StoreModule } from '@ngrx/store';
 
 import { OrderTemplateEffects } from './order-template/order-template.effects';
 import { orderTemplateReducer } from './order-template/order-template.reducer';
@@ -13,17 +12,10 @@ export const orderTemplatesReducers: ActionReducerMap<OrderTemplatesState> = {
 
 const orderTemplatesEffects = [OrderTemplateEffects];
 
-const orderTemplatesFeature = 'orderTemplates';
-
 @NgModule({
-  imports: [EffectsModule.forFeature(orderTemplatesEffects)],
+  imports: [
+    EffectsModule.forFeature(orderTemplatesEffects),
+    StoreModule.forFeature('orderTemplates', orderTemplatesReducers),
+  ],
 })
-export class OrderTemplatesStoreModule {
-  constructor(manager: ReducerManager, store: Store<{}>) {
-    store.pipe(take(1)).subscribe(x => {
-      if (!x[orderTemplatesFeature]) {
-        manager.addReducers({ [orderTemplatesFeature]: combineReducers(orderTemplatesReducers) });
-      }
-    });
-  }
-}
+export class OrderTemplatesStoreModule {}

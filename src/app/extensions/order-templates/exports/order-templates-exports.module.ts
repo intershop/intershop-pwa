@@ -1,20 +1,21 @@
 import { NgModule } from '@angular/core';
-import { ReactiveComponentLoaderModule } from '@wishtack/reactive-component-loader';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
 
-import { LazyCreateOrderTemplateComponent } from './basket/lazy-create-order-template/lazy-create-order-template.component';
-import { LazyProductAddToOrderTemplateComponent } from './products/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
+import { LazyBasketCreateOrderTemplateComponent } from './basket/lazy-basket-create-order-template/lazy-basket-create-order-template.component';
+import { LazyProductAddToOrderTemplateComponent } from './product/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
 
 @NgModule({
-  imports: [
-    FeatureToggleModule,
-    ReactiveComponentLoaderModule.withModule({
-      moduleId: 'ish-extensions-order-templates',
-      loadChildren: '../order-templates.module#OrderTemplatesModule',
-    }),
+  imports: [FeatureToggleModule],
+  providers: [
+    {
+      provide: LAZY_FEATURE_MODULE,
+      useValue: { feature: 'orderTemplates', location: import('../store/order-templates-store.module') },
+      multi: true,
+    },
   ],
-  declarations: [LazyCreateOrderTemplateComponent, LazyProductAddToOrderTemplateComponent],
-  exports: [LazyCreateOrderTemplateComponent, LazyProductAddToOrderTemplateComponent],
+  declarations: [LazyBasketCreateOrderTemplateComponent, LazyProductAddToOrderTemplateComponent],
+  exports: [LazyBasketCreateOrderTemplateComponent, LazyProductAddToOrderTemplateComponent],
 })
 export class OrderTemplatesExportsModule {}

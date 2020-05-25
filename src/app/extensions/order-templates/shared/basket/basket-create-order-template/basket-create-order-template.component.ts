@@ -4,6 +4,7 @@ import { take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
+import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 import { OrderTemplate } from '../../../models/order-template/order-template.model';
@@ -14,10 +15,11 @@ import { OrderTemplatePreferencesDialogComponent } from '../../order-templates/o
   templateUrl: './basket-create-order-template.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 /**
  * The Basket Create Order Template displays a button which adds the current cart to to a new order template.
  */
+
+@GenerateLazyComponent()
 export class BasketCreateOrderTemplateComponent {
   @Input() products: LineItemView[];
   @Input() class?: string;
