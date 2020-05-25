@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { take } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
@@ -12,7 +13,7 @@ import { OrderTemplate } from '../../../models/order-template/order-template.mod
   templateUrl: './account-order-template-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountOrderTemplateListComponent {
+export class AccountOrderTemplateListComponent implements OnDestroy {
   /**
    * The list of order templates of the customer.
    */
@@ -23,6 +24,7 @@ export class AccountOrderTemplateListComponent {
   @Output() deleteOrderTemplate = new EventEmitter<string>();
 
   dummyProduct = { sku: 'dummy', inStock: true, availability: true };
+  private destroy$ = new Subject();
 
   constructor(private translate: TranslateService, private productFacade: ShoppingFacade) {}
 
@@ -47,9 +49,14 @@ export class AccountOrderTemplateListComponent {
   openDeleteConfirmationDialog(orderTemplate: OrderTemplate, modal: ModalDialogComponent) {
     this.translate
       .get('account.order_templates.delete_dialog.header', { 0: orderTemplate.title })
-      .pipe(take(1))
+      .pipe(take(1), takeUntil(this.destroy$))
       .subscribe(res => (modal.options.titleText = res));
 
     modal.show(orderTemplate.id);
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { take } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Product } from 'ish-core/models/product/product.model';
@@ -24,11 +25,13 @@ import { SelectOrderTemplateModalComponent } from '../../order-templates/select-
  * ></ish-product-add-to-order-template>
  */
 @GenerateLazyComponent()
-export class ProductAddToOrderTemplateComponent {
+export class ProductAddToOrderTemplateComponent implements OnDestroy {
   @Input() product: Product;
   @Input() quantity: number;
   @Input() displayType?: 'icon' | 'link' | 'animated' = 'link';
   @Input() class?: string;
+  private destroy$ = new Subject();
+
   constructor(
     private orderTemplatesFacade: OrderTemplatesFacade,
     private accountFacade: AccountFacade,
@@ -39,7 +42,7 @@ export class ProductAddToOrderTemplateComponent {
    * if the user is not logged in display login dialog, else open select order template dialog
    */
   openModal(modal: SelectOrderTemplateModalComponent) {
-    this.accountFacade.isLoggedIn$.pipe(take(1)).subscribe(isLoggedIn => {
+    this.accountFacade.isLoggedIn$.pipe(take(1), takeUntil(this.destroy$)).subscribe(isLoggedIn => {
       if (isLoggedIn) {
         modal.show();
       } else {
@@ -56,5 +59,10 @@ export class ProductAddToOrderTemplateComponent {
     } else {
       this.orderTemplatesFacade.addProductToOrderTemplate(orderTemplate.id, this.product.sku, this.quantity);
     }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

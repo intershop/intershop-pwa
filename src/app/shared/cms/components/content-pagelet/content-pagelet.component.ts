@@ -61,6 +61,7 @@ export class ContentPageletComponent extends SfeMetadataWrapper implements OnCha
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngOnInit() {

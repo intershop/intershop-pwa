@@ -66,7 +66,9 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.wishlistsFacade.preferredWishlist$.pipe(take(1)).subscribe(wishlist => (this.preferredWishlist = wishlist));
+    this.wishlistsFacade.preferredWishlist$
+      .pipe(take(1), takeUntil(this.destroy$))
+      .subscribe(wishlist => (this.preferredWishlist = wishlist));
     this.determineSelectOptions();
     this.formInit();
     this.wishlistsFacade.currentWishlist$
@@ -75,7 +77,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
 
     this.translate
       .get('account.wishlists.choose_wishlist.new_wishlist_name.initial_value')
-      .pipe(take(1))
+      .pipe(take(1), takeUntil(this.destroy$))
       .subscribe(res => {
         this.newWishlistInitValue = res;
         this.setDefaultFormValues();
@@ -92,6 +94,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private formInit() {
@@ -106,7 +109,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
 
   private determineSelectOptions() {
     let currentWishlist: Wishlist;
-    this.wishlistsFacade.currentWishlist$.pipe(take(1)).subscribe(w => (currentWishlist = w));
+    this.wishlistsFacade.currentWishlist$.pipe(take(1), takeUntil(this.destroy$)).subscribe(w => (currentWishlist = w));
     this.wishlistsFacade.wishlists$.pipe(takeUntil(this.destroy$)).subscribe(wishlists => {
       if (wishlists && wishlists.length > 0) {
         this.wishlistOptions = wishlists.map(wishlist => ({

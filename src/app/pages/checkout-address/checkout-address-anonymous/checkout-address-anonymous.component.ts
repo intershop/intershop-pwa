@@ -144,5 +144,6 @@ export class CheckoutAddressAnonymousComponent implements OnChanges, OnInit, OnD
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 }

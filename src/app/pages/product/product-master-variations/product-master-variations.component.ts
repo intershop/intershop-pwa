@@ -29,6 +29,7 @@ export class ProductMasterVariationsComponent implements OnInit {
         // take until routing away
         takeUntil(this.router.events.pipe(filter(event => event instanceof ActivationStart)))
       )
+      // tslint:disable-next-line: rxjs-prefer-angular-takeuntil
       .subscribe(position => {
         this.scroller.scrollToPosition(position);
       });

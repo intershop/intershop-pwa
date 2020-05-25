@@ -41,6 +41,7 @@ export class AccountOrderTemplateDetailLineItemComponent implements OnChanges, O
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 
   updateQuantities() {

@@ -27,6 +27,7 @@ export class CounterComponent extends FormElementComponent implements OnInit, On
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private get value(): number {

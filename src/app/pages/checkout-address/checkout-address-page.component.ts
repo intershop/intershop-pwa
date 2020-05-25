@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { filter, first, map, take } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { filter, first, map, take, takeUntil } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -19,7 +19,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
   templateUrl: './checkout-address-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckoutAddressPageComponent implements OnInit {
+export class CheckoutAddressPageComponent implements OnInit, OnDestroy {
   basket$: Observable<BasketView>;
   basketError$: Observable<HttpError>;
   basketLoading$: Observable<boolean>;
@@ -31,6 +31,8 @@ export class CheckoutAddressPageComponent implements OnInit {
 
   // initial basket's valid addresses in order to decide which address component should be displayed
   validBasketAddresses$: Observable<boolean>;
+
+  private destroy$ = new Subject();
 
   constructor(private checkoutFacade: CheckoutFacade, private accountFacade: AccountFacade, private router: Router) {}
 
@@ -53,7 +55,8 @@ export class CheckoutAddressPageComponent implements OnInit {
       .pipe(
         whenTruthy(),
         filter(basket => !basket.lineItems || !basket.lineItems.length),
-        take(1)
+        take(1),
+        takeUntil(this.destroy$)
       )
       .subscribe(() => this.router.navigate(['/basket']));
   }
@@ -65,5 +68,10 @@ export class CheckoutAddressPageComponent implements OnInit {
   nextStep() {
     this.nextStepRequested = true;
     this.checkoutFacade.continue(2);
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

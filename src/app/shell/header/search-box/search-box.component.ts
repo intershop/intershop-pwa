@@ -78,6 +78,7 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 
   blur() {
@@ -103,7 +104,7 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
 
     if (this.activeIndex !== -1) {
       // something was selected via keyboard
-      this.searchResults$.pipe(take(1)).subscribe(results => {
+      this.searchResults$.pipe(take(1), takeUntil(this.destroy$)).subscribe(results => {
         this.router.navigate(['/search', results[this.activeIndex].term]);
       });
     } else {
@@ -115,7 +116,7 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
   }
 
   selectSuggestedTerm(index: number) {
-    this.searchResults$.pipe(take(1)).subscribe(results => {
+    this.searchResults$.pipe(take(1), takeUntil(this.destroy$)).subscribe(results => {
       if (
         (this.configuration && this.configuration.maxAutoSuggests && index > this.configuration.maxAutoSuggests - 1) ||
         index < -1 ||

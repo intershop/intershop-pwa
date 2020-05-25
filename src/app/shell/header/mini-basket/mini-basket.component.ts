@@ -31,6 +31,7 @@ export class MiniBasketComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngOnInit() {

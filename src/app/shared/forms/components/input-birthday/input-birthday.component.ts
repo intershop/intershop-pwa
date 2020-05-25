@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { FormElementComponent } from 'ish-shared/forms/components/form-element/form-element.component';
 
@@ -9,7 +11,7 @@ import { FormElementComponent } from 'ish-shared/forms/components/form-element/f
   templateUrl: './input-birthday.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class InputBirthdayComponent extends FormElementComponent implements OnInit {
+export class InputBirthdayComponent extends FormElementComponent implements OnInit, OnDestroy {
   @Input() minYear = 0;
   @Input() maxYear = 9999;
   dateForm: FormGroup;
@@ -17,6 +19,8 @@ export class InputBirthdayComponent extends FormElementComponent implements OnIn
   maxDay = 31;
   minMonth = 1;
   maxMonth = 12;
+
+  private destroy$ = new Subject();
 
   /*
     constructor
@@ -34,7 +38,7 @@ export class InputBirthdayComponent extends FormElementComponent implements OnIn
     this.createForm();
 
     // FM: this is temporary (if any subscribe is kept, unsubscribe will be necessary)
-    this.dateForm.valueChanges.subscribe(() => this.writeBirthday());
+    this.dateForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => this.writeBirthday());
   }
 
   /*
@@ -94,5 +98,10 @@ export class InputBirthdayComponent extends FormElementComponent implements OnIn
     }
 
     this.form.get(this.controlName).setValue(birthday);
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

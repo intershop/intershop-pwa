@@ -26,7 +26,9 @@ export class PricePipe implements PipeTransform, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
+
   transform(data: Price | PriceItem, priceType?: 'gross' | 'net'): string {
     if (!data) {
       return this.translateService.instant('product.price.na.text');

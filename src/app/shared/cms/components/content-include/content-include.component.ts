@@ -61,5 +61,6 @@ export class ContentIncludeComponent extends SfeMetadataWrapper implements OnIni
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 }

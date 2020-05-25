@@ -27,7 +27,7 @@ declare var PayEngine: any;
   templateUrl: './payment-concardis-creditcard.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-// tslint:disable-next-line:ccp-no-intelligence-in-components
+// tslint:disable-next-line:ccp-no-intelligence-in-components rxjs-prefer-angular-takeuntil
 export class PaymentConcardisCreditcardComponent extends PaymentConcardisComponent implements OnInit {
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
     super(scriptLoader, cd);
