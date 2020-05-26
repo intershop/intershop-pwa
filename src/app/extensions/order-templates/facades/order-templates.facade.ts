@@ -21,7 +21,7 @@ import {
 } from '../store/order-template';
 @Injectable({ providedIn: 'root' })
 export class OrderTemplatesFacade {
-  constructor(private store: Store<{}>) {}
+  constructor(private store: Store) {}
 
   orderTemplates$: Observable<OrderTemplate[]> = this.store.pipe(select(getAllOrderTemplates));
   currentOrderTemplate$: Observable<OrderTemplate> = this.store.pipe(select(getSelectedOrderTemplateDetails));

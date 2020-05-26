@@ -7,10 +7,7 @@ export class OrderTemplatesOverviewPage {
 
   addOrderTemplate(name: string) {
     cy.get('a[data-testing-id="add-order-template"').click();
-    cy.get('[data-testing-id="order-template-dialog-name"]')
-      .find('[data-testing-id="title"]')
-      .clear()
-      .type(name);
+    cy.get('[data-testing-id="order-template-dialog-name"]').find('[data-testing-id="title"]').clear().type(name);
     cy.get('[data-testing-id="order-template-dialog-submit"]').click();
   }
 
@@ -34,9 +31,7 @@ export class OrderTemplatesOverviewPage {
   }
 
   goToOrderTemplateDetailLink(name: string) {
-    cy.get('a')
-      .contains(name)
-      .click();
+    cy.get('a').contains(name).click();
   }
 
   get orderTemplatesArray() {

@@ -12,6 +12,7 @@ export const orderTemplatesReducers: ActionReducerMap<OrderTemplatesState> = {
 
 const orderTemplatesEffects = [OrderTemplateEffects];
 
+// not-dead-code
 @NgModule({
   imports: [
     EffectsModule.forFeature(orderTemplatesEffects),
