@@ -23,7 +23,7 @@ export class CartPage {
   private addToWishlistButton = () => cy.get('ish-shopping-basket').find('[data-testing-id="addToWishlistButton"]');
 
   private addToOrderTemplateButton() {
-    return cy.get('ish-shopping-basket').find('[data-testing-id="addToOrderTemplateButton"]');
+    return cy.get('ish-shopping-basket').find('[data-testing-id="addToOrderTemplateButton"]').first();
   }
 
   private addBasketToOrderTemplateButton() {

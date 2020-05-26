@@ -8,6 +8,7 @@ import { sensibleDefaults } from '../../pages/account/registration.page';
 import { CartPage } from '../../pages/checkout/cart.page';
 import { CategoryPage } from '../../pages/shopping/category.page';
 import { FamilyPage } from '../../pages/shopping/family.page';
+import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
 
 const _ = {
   user: {
@@ -23,7 +24,8 @@ const _ = {
 
 describe('Order Template Shopping Experience Functionality', () => {
   const accountOrderTemplate = 'account order template';
-  const basketOrderTemplate = 'basket order template';
+  const basketOrderTemplate1 = 'basket order template1';
+  const basketOrderTemplate2 = 'basket order template2';
   before(() => {
     createB2BUserViaREST(_.user);
     LoginPage.navigateTo('/account/order-templates');
@@ -33,10 +35,11 @@ describe('Order Template Shopping Experience Functionality', () => {
     });
     at(OrderTemplatesOverviewPage, page => {
       page.addOrderTemplate(accountOrderTemplate);
+      page.addOrderTemplate(basketOrderTemplate1);
     });
   });
 
-  it('user adds a product from the product tile to order template (with selecting a order template)', () => {
+  it('user adds a product from the product tile to order template', () => {
     at(OrderTemplatesOverviewPage, page => {
       page.header.gotoCategoryPage(_.category);
     });
@@ -48,10 +51,25 @@ describe('Order Template Shopping Experience Functionality', () => {
     at(OrderTemplatesDetailsPage, page => page.listItemLink.invoke('attr', 'href').should('contain', _.product1));
   });
 
-  it('user adds a order template product to cart', () => {
+  it('user adds a product from the product detail to order template', () => {
     at(OrderTemplatesDetailsPage, page => {
-      page.addProductToBasket(_.product1, 4);
-      cy.wait(500);
+      page.header.gotoCategoryPage(_.category);
+    });
+
+    at(CategoryPage, page => page.gotoSubCategory(_.subcategory));
+    at(FamilyPage, page => page.productList.gotoProductDetailPageBySku(_.product2));
+
+    at(ProductDetailPage, page => {
+      page.addProductToOrderTemplate();
+      page.addToOrderTemplate.addProductToOrderTemplateFromPage(accountOrderTemplate, true);
+    });
+    at(OrderTemplatesDetailsPage, page => page.getOrderTemplateItemById(_.product2).should('exist'));
+  });
+
+  it('user adds an order template from order template detail page to cart', () => {
+    at(OrderTemplatesDetailsPage, page => {
+      page.addOrderTemplateToBasket(_.product1, 4);
+      cy.wait(1500);
       page.header.miniCart.goToCart();
     });
     at(CartPage, page => {
@@ -61,13 +79,19 @@ describe('Order Template Shopping Experience Functionality', () => {
         .closest('[data-testing-id="product-list-item"]')
         .find('[data-testing-id="quantity"]')
         .should('have.value', '4');
+
+      page.lineItems
+        .contains(_.product2)
+        .closest('[data-testing-id="product-list-item"]')
+        .find('[data-testing-id="quantity"]')
+        .should('have.value', '1');
     });
   });
 
-  it('user adds a product to order template from shopping cart (with order template selection)', () => {
+  it('user adds a cart product to order template from shopping cart', () => {
     at(CartPage, page => {
       page.addProductToOrderTemplate();
-      page.addToOrderTemplate.addProductToOrderTemplateFromPage(accountOrderTemplate, true);
+      page.addToOrderTemplate.addProductToOrderTemplateFromPage(basketOrderTemplate1, true);
     });
     at(OrderTemplatesDetailsPage, page => {
       page.listItemLink.invoke('attr', 'href').should('contain', _.product1);
@@ -75,7 +99,7 @@ describe('Order Template Shopping Experience Functionality', () => {
     });
   });
 
-  it('user adds a order template to the cart from order templates overview page', () => {
+  it('user adds an order template to the cart from order templates overview page', () => {
     at(OrderTemplatesOverviewPage, page => {
       page.header.gotoCategoryPage(_.category);
     });
@@ -90,10 +114,18 @@ describe('Order Template Shopping Experience Functionality', () => {
     at(OrderTemplatesOverviewPage, page => {
       page.addOrderTemplateToCart(accountOrderTemplate);
       cy.wait(1500);
-      page.header.miniCart.text.should('contain', '13 items');
+      page.header.miniCart.text.should('contain', '11 items');
+      page.header.miniCart.goToCart();
+    });
+    at(CartPage, page => {
+      page.lineItems.contains(_.product1).should('exist');
+      page.lineItems
+        .contains(_.product3)
+        .closest('[data-testing-id="product-list-item"]')
+        .find('[data-testing-id="quantity"]')
+        .should('have.value', '1');
     });
   });
-
   it('user adds only the selected product in order template details', () => {
     at(CartPage, page => {
       page.lineItem(0).remove();
@@ -103,9 +135,13 @@ describe('Order Template Shopping Experience Functionality', () => {
     });
     at(OrderTemplatesDetailsPage, page => {
       page.toggleCheckbox(_.product1);
-      page.addProductToBasket();
+      page.addOrderTemplateToBasket();
       cy.wait(1500);
-      page.header.miniCart.text.should('contain', '3 items');
+      page.header.miniCart.text.should('contain', '7 items');
+      page.header.miniCart.goToCart();
+    });
+    at(CartPage, page => {
+      page.lineItems.contains(_.product1).should('not.exist');
     });
   });
 
@@ -121,7 +157,7 @@ describe('Order Template Shopping Experience Functionality', () => {
     });
     at(CartPage, page => {
       page.addBasketToOrderTemplate();
-      page.addToOrderTemplate.addNewOrderTemplate(basketOrderTemplate);
+      page.addToOrderTemplate.addNewOrderTemplate(basketOrderTemplate2);
       page.header.goToMyAccount();
     });
 
@@ -130,7 +166,7 @@ describe('Order Template Shopping Experience Functionality', () => {
     });
 
     at(OrderTemplatesOverviewPage, page => {
-      page.orderTemplatesTitlesArray.should('contain', basketOrderTemplate);
+      page.orderTemplatesTitlesArray.should('contain', basketOrderTemplate2);
     });
   });
 });

@@ -46,7 +46,7 @@ export class OrderTemplatesDetailsPage {
     cy.get('[data-testing-id="order-template-success-link"] a').click();
   }
 
-  addProductToBasket(productId?: string, quantity?: number) {
+  addOrderTemplateToBasket(productId?: string, quantity?: number) {
     if (productId && quantity) {
       this.getOrderTemplateItemById(productId).find('[data-testing-id="quantity"]').clear().type(quantity.toString());
     }
