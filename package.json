@@ -67,7 +67,7 @@
     "angular2-uuid": "^1.1.1",
     "angulartics2": "^9.0.0",
     "b64u": "^3.0.0",
-    "bootstrap": "^4.4.1",
+    "bootstrap": "^4.5.0",
     "core-js": "^3.6.5",
     "express": "^4.17.1",
     "express-http-proxy": "^1.6.0",
