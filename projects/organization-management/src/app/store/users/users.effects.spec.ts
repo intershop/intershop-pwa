@@ -22,6 +22,7 @@ import {
   addUser,
   addUserFail,
   addUserSuccess,
+  deleteUser,
   loadUsers,
   loadUsersFail,
   updateUser,
@@ -50,6 +51,8 @@ describe('Users Effects', () => {
     when(usersService.getUser(anything())).thenReturn(of(users[0]));
     when(usersService.addUser(anything())).thenReturn(of(users[0]));
     when(usersService.updateUser(anything())).thenReturn(of(users[0]));
+    when(usersService.getUsers()).thenReturn(of(users));
+    when(usersService.deleteUser(anything())).thenReturn(of(true));
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -208,6 +211,31 @@ describe('Users Effects', () => {
         const expected$ = cold('-b', { b: completion });
 
         expect(effects.updateUser$).toBeObservable(expected$);
+      });
+    });
+  });
+
+  describe('deleteUser$', () => {
+    const login = 'pmiller@test.intershop.de';
+
+    it('should call the service for delete user', done => {
+      actions$ = of(deleteUser({ login }));
+
+      effects.deleteUser$.subscribe(() => {
+        verify(usersService.deleteUser(anything())).once();
+        done();
+      });
+    });
+
+    it('should delete user when triggered', done => {
+      actions$ = of(deleteUser({ login }));
+
+      effects.deleteUser$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Users API] Delete User Success:
+            login: "pmiller@test.intershop.de"
+        `);
+        done();
       });
     });
   });
