@@ -17,6 +17,7 @@ describe('Users Service', () => {
     apiService = mock(ApiService);
     when(apiService.get(anything())).thenReturn(of(true));
     when(apiService.resolveLinks()).thenReturn(() => of([]));
+    when(apiService.delete(anything())).thenReturn(of(true));
 
     TestBed.configureTestingModule({
       providers: [{ provide: ApiService, useFactory: () => instance(apiService) }],
@@ -44,6 +45,18 @@ describe('Users Service', () => {
     usersService.getUser('pmiller@test.intershop.de').subscribe(() => {
       verify(apiService.get(anything())).once();
       expect(capture(apiService.get).last()).toMatchInlineSnapshot(`
+      Array [
+        "customers/-/users/pmiller@test.intershop.de",
+      ]
+    `);
+      done();
+    });
+  });
+
+  it('should call delete method of customer API when delete user', done => {
+    usersService.deleteUser('pmiller@test.intershop.de').subscribe(() => {
+      verify(apiService.delete(anything())).once();
+      expect(capture(apiService.delete).last()).toMatchInlineSnapshot(`
         Array [
           "customers/-/users/pmiller@test.intershop.de",
         ]

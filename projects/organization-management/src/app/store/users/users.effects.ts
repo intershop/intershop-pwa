@@ -8,7 +8,7 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { getLoggedInCustomer, logoutUser } from 'ish-core/store/customer/user';
-import { mapErrorToAction, mapToPayload, whenTruthy } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { UsersService } from '../../services/users/users.service';
 
@@ -16,6 +16,9 @@ import {
   addUser,
   addUserFail,
   addUserSuccess,
+  deleteUser,
+  deleteUserFail,
+  deleteUserSuccess,
   loadUserFail,
   loadUserSuccess,
   loadUsers,
@@ -109,6 +112,18 @@ export class UsersEffects {
   );
 
   resetUsersAfterLogout$ = createEffect(() => this.actions$.pipe(ofType(logoutUser), mapTo(resetUsers())));
+
+  deleteUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteUser),
+      mapToPayloadProperty('login'),
+      exhaustMap(login =>
+        this.usersService
+          .deleteUser(login)
+          .pipe(map(() => deleteUserSuccess({ login }), mapErrorToAction(deleteUserFail)))
+      )
+    )
+  );
 
   private navigateToParent(): void {
     // find current ActivatedRoute by following first activated children

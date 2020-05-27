@@ -4,6 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { B2bUser } from '../models/b2b-user/b2b-user.model';
 import {
   addUser,
+  deleteUser,
   getSelectedUser,
   getUsers,
   getUsersError,
@@ -40,5 +41,9 @@ export class OrganizationManagementFacade {
         user,
       })
     );
+  }
+
+  deleteUser(login: string) {
+    this.store.dispatch(deleteUser({ login }));
   }
 }

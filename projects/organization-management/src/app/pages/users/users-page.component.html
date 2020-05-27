@@ -15,7 +15,30 @@
           <a [routerLink]="[user.login]">{{ user.name }}</a>
         </div>
         <div class="col-3 list-item text-right">
-          <!---TODO: Delete user-->
+          <div class="float-right">
+            <a
+              class="btn-tool"
+              title="{{
+                'account.user.delete_user_dialog.header' | translate: { '0': user.firstName, '1': user.lastName }
+              }}"
+              (click)="modalDialog.show(user)"
+            >
+              <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+            </a>
+
+            <ish-modal-dialog
+              #modalDialog
+              [options]="{
+                titleText:
+                  'account.user.delete_user_dialog.header' | translate: { '0': user.firstName, '1': user.lastName },
+                confirmText: 'account.user.delete_user_dialog.delete_button.text' | translate,
+                rejectText: 'account.user.delete_user_dialog.cancel_button.text' | translate
+              }"
+              (confirmed)="deleteUser($event)"
+            >
+              <p>{{ 'account.user.delete_user_dialog.are_you_sure_paragraph' | translate }}</p>
+            </ish-modal-dialog>
+          </div>
         </div>
       </div>
     </ng-container>
