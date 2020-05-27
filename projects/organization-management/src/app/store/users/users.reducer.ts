@@ -10,6 +10,9 @@ import {
   addUser,
   addUserFail,
   addUserSuccess,
+  deleteUser,
+  deleteUserFail,
+  deleteUserSuccess,
   loadUserFail,
   loadUserSuccess,
   loadUsers,
@@ -37,8 +40,8 @@ const initialState: UsersState = usersAdapter.getInitialState({
 
 export const usersReducer = createReducer(
   initialState,
-  setLoadingOn(loadUsers, addUser, updateUser),
-  setErrorOn(loadUsersFail, loadUserFail, addUserFail, updateUserFail),
+  setLoadingOn(loadUsers, addUser, updateUser, deleteUser),
+  setErrorOn(loadUsersFail, loadUserFail, addUserFail, updateUserFail, deleteUserFail),
   on(loadUsersSuccess, (state: UsersState, action) => {
     const { users } = action.payload;
 
@@ -71,6 +74,15 @@ export const usersReducer = createReducer(
 
     return {
       ...usersAdapter.upsertOne(user, state),
+      loading: false,
+      error: undefined,
+    };
+  }),
+  on(deleteUserSuccess, (state: UsersState, action) => {
+    const { login } = action.payload;
+
+    return {
+      ...usersAdapter.removeOne(login, state),
       loading: false,
       error: undefined,
     };

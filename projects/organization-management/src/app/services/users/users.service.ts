@@ -81,4 +81,17 @@ export class UsersService {
       })
       .pipe(map(B2bUserMapper.fromData));
   }
+
+  /**
+   * Deletes the data of a b2b user. The current user is expected to have user management permission.
+   * @param login  The login of the user.
+   * @returns      The user.
+   */
+  deleteUser(login: string) {
+    if (!login) {
+      return throwError('deleteUser() called without customerItemUserKey/login');
+    }
+
+    return this.apiService.delete(`customers/-/users/${login}`);
+  }
 }
