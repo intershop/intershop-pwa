@@ -10,7 +10,7 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
+import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
@@ -356,7 +356,7 @@ describe('Basket Effects', () => {
       );
       store$.dispatch(new LoadProductSuccess({ product: { sku: 'SKU' } as Product }));
       store$.dispatch(new SetAPIToken({ apiToken: sourceAuthToken }));
-      store$.dispatch(new LoginUser({ credentials: {} as LoginCredentials }));
+      store$.dispatch(new LoginUser({ credentials: {} as Credentials }));
     });
 
     it('should call the basketService for mergeBasket', done => {

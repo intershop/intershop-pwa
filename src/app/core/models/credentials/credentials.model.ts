@@ -1,9 +1,4 @@
-export interface LoginCredentials {
+export interface Credentials {
   login: string;
   password: string;
-}
-
-export interface Credentials extends LoginCredentials {
-  securityQuestion: string;
-  securityQuestionAnswer: string;
 }

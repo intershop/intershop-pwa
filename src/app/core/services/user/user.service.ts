@@ -6,7 +6,7 @@ import { EMPTY, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
-import { Credentials, LoginCredentials } from 'ish-core/models/credentials/credentials.model';
+import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { CustomerData } from 'ish-core/models/customer/customer.interface';
 import { CustomerMapper } from 'ish-core/models/customer/customer.mapper';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
@@ -42,7 +42,7 @@ export class UserService {
    *                          For private customers user data are also returned.
    *                          For business customers user data are returned by a separate call (getCompanyUserData).
    */
-  signinUser(loginCredentials: LoginCredentials): Observable<CustomerUserType> {
+  signinUser(loginCredentials: Credentials): Observable<CustomerUserType> {
     const headers = new HttpHeaders().set(
       ApiService.AUTHORIZATION_HEADER_KEY,
       'BASIC ' + b64u.toBase64(b64u.encode(`${loginCredentials.login}:${loginCredentials.password}`))
