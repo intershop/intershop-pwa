@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
@@ -12,7 +15,8 @@ describe('Users Detail Page Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [UsersDetailPageComponent],
+      imports: [TranslateModule.forRoot()],
+      declarations: [MockComponent(FaIconComponent), UsersDetailPageComponent],
       providers: [
         { provide: OrganizationManagementFacade, useFactory: () => instance(mock(OrganizationManagementFacade)) },
       ],

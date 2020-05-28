@@ -2815,7 +2815,12 @@
   "account.user.new.budget.period.value.yearly": "jährlich",
   "account.user.details.heading": "Benutzerdaten",
   "account.user.details.profile.heading": "Profil",
+  "account.user.details.profile.name": "Name",
+  "account.user.details.profile.email": "Email",
+  "account.user.details.profile.prefered_language": "Bevorzugte Sprache",
   "account.user.details.profile.role_and_budget_limits.heading": "Rollen- und Budgetlimits",
+  "account.user.details.profile.role_limits.heading": "Rollen Limits",
+  "account.user.details.profile.budget_limits.heading": "Budget Limits",
   "account.user.breadcrumbs.new_user.text": "Neuer Benutzer",
   "account.user.breadcrumbs.users.text": "Benutzer",
   "account.user.update_role_and_budget_limits.heading": "Rollen und Budgetlimit des Benutzers bearbeiten -",
@@ -2854,5 +2859,6 @@
   "account.user.new.OrderLimit.error.valid": "Geben Sie einen gültigen Geldbetrag ein (Limit pro Bestellung).",
   "account.user.new.Budget.error.valid": "Geben Sie einen gültigen Geldbetrag ein (Budget).",
   "account.user.new.roles.dialog.title": "Rollen",
-  "account.user.new.roles.dialog.action.ok": "OK"
+  "account.user.new.roles.dialog.action.ok": "OK",
+  "account.user.user_management": "Benutzerverwaltung"
 }
