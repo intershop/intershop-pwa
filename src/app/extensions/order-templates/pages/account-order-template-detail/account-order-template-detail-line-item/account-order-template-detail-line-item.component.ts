@@ -45,7 +45,7 @@ export class AccountOrderTemplateDetailLineItemComponent implements OnChanges, O
 
   updateQuantities() {
     this.addToCartForm.valueChanges
-      .pipe(debounceTime(800), takeUntil(this.destroy$))
+      .pipe(debounceTime(500), takeUntil(this.destroy$))
       .subscribe(val => this.updateProductQuantity(this.orderTemplateItemData.sku, val.quantity));
   }
 

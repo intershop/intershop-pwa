@@ -29,7 +29,8 @@
       <a class="btn-tool d-inline-flex align-top">
         <ish-product-add-to-basket
           displayType="icon"
-          [products]="orderTemplate.items"
+          [product]="dummyProduct"
+          [disabled]="!orderTemplate.items?.length"
           class="text-primary p-0"
           (productToBasket)="addTemplateToCart(orderTemplate.id)"
         ></ish-product-add-to-basket>

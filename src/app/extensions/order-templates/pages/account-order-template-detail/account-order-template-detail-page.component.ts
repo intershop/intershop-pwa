@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
-import { OrderTemplate } from '../../models/order-template/order-template.model';
+import { OrderTemplate, OrderTemplateItem } from '../../models/order-template/order-template.model';
 
 @Component({
   selector: 'ish-account-order-template-detail-page',
@@ -20,6 +20,8 @@ export class AccountOrderTemplateDetailPageComponent implements OnInit, OnDestro
   orderTemplateLoading$: Observable<boolean>;
 
   selectedItemsForm: FormArray;
+  selectedItems: OrderTemplateItem[];
+  dummyProduct = { sku: 'dummy', inStock: true, availability: true };
 
   private destroy$ = new Subject();
 
@@ -30,6 +32,12 @@ export class AccountOrderTemplateDetailPageComponent implements OnInit, OnDestro
     this.orderTemplateLoading$ = this.orderTemplatesFacade.orderTemplateLoading$;
     this.orderTemplateError$ = this.orderTemplatesFacade.orderTemplateError$;
     this.initForm();
+
+    this.selectedItemsForm.valueChanges
+      .pipe(withLatestFrom(this.orderTemplate$), takeUntil(this.destroy$))
+      .subscribe(([, orderTemplate]) => {
+        this.selectedItems = this.filterItems(orderTemplate);
+      });
   }
 
   private initForm() {
@@ -58,11 +66,15 @@ export class AccountOrderTemplateDetailPageComponent implements OnInit, OnDestro
     });
   }
 
+  filterItems(orderTemplate): OrderTemplateItem[] {
+    return orderTemplate.items.filter(item =>
+      this.selectedItemsForm.value.find(p => p.sku === item.sku && p.productCheckbox === true)
+    );
+  }
+
   addSelectedItemsToCart(orderTemplate: OrderTemplate) {
-    orderTemplate.items.forEach(item => {
-      if (this.selectedItemsForm.value.find(p => p.sku === item.sku && p.productCheckbox === true)) {
-        this.shoppingFacade.addProductToBasket(item.sku, item.desiredQuantity.value);
-      }
+    this.filterItems(orderTemplate).forEach(item => {
+      this.shoppingFacade.addProductToBasket(item.sku, item.desiredQuantity.value);
     });
   }
 }

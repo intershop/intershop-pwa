@@ -69,11 +69,12 @@ describe('Order Template Shopping Experience Functionality', () => {
   it('user adds an order template from order template detail page to cart', () => {
     at(OrderTemplatesDetailsPage, page => {
       page.addOrderTemplateToBasket(_.product1, 4);
-      cy.wait(1500);
+      cy.wait(2000);
       page.header.miniCart.goToCart();
     });
     at(CartPage, page => {
       page.lineItems.contains(_.product1).should('exist');
+      page.lineItems.contains(_.product2).should('exist');
       page.lineItems
         .contains(_.product1)
         .closest('[data-testing-id="product-list-item"]')
@@ -113,7 +114,7 @@ describe('Order Template Shopping Experience Functionality', () => {
     });
     at(OrderTemplatesOverviewPage, page => {
       page.addOrderTemplateToCart(accountOrderTemplate);
-      cy.wait(1500);
+      cy.wait(2000);
       page.header.miniCart.text.should('contain', '11 items');
       page.header.miniCart.goToCart();
     });
@@ -129,7 +130,7 @@ describe('Order Template Shopping Experience Functionality', () => {
   it('user adds only the selected product in order template details', () => {
     at(CartPage, page => {
       page.lineItem(0).remove();
-      cy.wait(1500);
+      cy.wait(2000);
       page.addProductToOrderTemplate();
       page.addToOrderTemplate.addProductToOrderTemplateFromPage(accountOrderTemplate, true);
     });

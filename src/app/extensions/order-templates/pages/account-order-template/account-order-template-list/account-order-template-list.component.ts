@@ -22,6 +22,8 @@ export class AccountOrderTemplateListComponent {
    */
   @Output() deleteOrderTemplate = new EventEmitter<string>();
 
+  dummyProduct = { sku: 'dummy', inStock: true, availability: true };
+
   constructor(private translate: TranslateService, private productFacade: ShoppingFacade) {}
 
   addTemplateToCart(orderTemplateId: string) {
@@ -44,7 +46,7 @@ export class AccountOrderTemplateListComponent {
   /** Determine the heading of the delete modal and opens the modal. */
   openDeleteConfirmationDialog(orderTemplate: OrderTemplate, modal: ModalDialogComponent) {
     this.translate
-      .get('modal.heading.remove.order.template', { 0: orderTemplate.title })
+      .get('account.order_templates.delete_dialog.header', { 0: orderTemplate.title })
       .pipe(take(1))
       .subscribe(res => (modal.options.titleText = res));
 

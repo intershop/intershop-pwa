@@ -58,7 +58,6 @@ const exportedComponents = [
     NgbCollapseModule,
     NgbDropdownModule,
     NgbModalModule,
-    OrderTemplatesExportsModule,
     PipesModule.forRoot(),
     RouterModule,
     TranslateModule,

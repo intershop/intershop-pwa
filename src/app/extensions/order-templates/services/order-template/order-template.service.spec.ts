@@ -49,12 +49,25 @@ describe('Order Template Service', () => {
     });
   });
 
+  it("should get an order template when 'getOrderTemplate' is called", done => {
+    when(apiServiceMock.get(`customers/-/users/-/wishlists/1234`)).thenReturn(of({ id: '1234' }));
+
+    orderTemplateService.getOrderTemplate('1234').subscribe(() => {
+      verify(apiServiceMock.get(`customers/-/users/-/wishlists/1234`)).once();
+      done();
+    });
+  });
+
   it("should create an order template when 'createOrderTemplate' is called", done => {
     const orderTemplateId = '1234';
     const orderTemplateHeader: OrderTemplateHeader = { title: 'order template title' };
     when(apiServiceMock.post(`customers/-/users/-/wishlists`, anything())).thenReturn(
       of({ title: orderTemplateId } as OrderTemplateData)
     );
+    when(apiServiceMock.post(`customers/-/users/-/wishlists`, anything())).thenReturn(
+      of({ title: orderTemplateId } as OrderTemplateData)
+    );
+    when(apiServiceMock.get(`customers/-/users/-/wishlists/1234`)).thenReturn(of({ id: '1234' }));
 
     orderTemplateService.createOrderTemplate(orderTemplateHeader).subscribe(data => {
       expect(orderTemplateId).toEqual(data.id);

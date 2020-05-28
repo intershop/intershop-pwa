@@ -39,7 +39,7 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
   @Input() addMoveProduct: 'add' | 'move' = 'add';
 
   /**
-   * submit successfull event
+   * submit success event
    */
   @Output() submitEmitter = new EventEmitter<{ id: string; title: string }>();
 

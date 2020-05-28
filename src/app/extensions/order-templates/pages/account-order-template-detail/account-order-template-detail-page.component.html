@@ -2,14 +2,16 @@
 <ish-error-message [error]="orderTemplateError$ | async"></ish-error-message>
 
 <ng-container *ngIf="orderTemplate$ | async as orderTemplate">
-  <a
-    (click)="editOrderTemplateDialog.show()"
-    class="btn btn-default btn-tool float-right"
-    [title]="'account.order_template.edit.heading' | translate"
-    data-testing-id="order-template-details-edit"
-    >{{ 'account.order_template.order_template.edit.rename' | translate }}</a
-  >
-  <h1>{{ orderTemplate?.title }}</h1>
+  <h1>
+    {{ orderTemplate?.title }}
+    <a
+      (click)="editOrderTemplateDialog.show()"
+      class="btn btn-default btn-tool float-right"
+      [title]="'account.order_template.edit.heading' | translate"
+      data-testing-id="order-template-details-edit"
+      >{{ 'account.order_template.order_template.edit.rename' | translate }}</a
+    >
+  </h1>
 
   <div class="section">
     <ng-container *ngIf="orderTemplate.itemsCount && orderTemplate.itemsCount > 0; else noItems" class="section">
@@ -40,7 +42,8 @@
   </div>
   <ish-product-add-to-basket
     displayType="button"
-    [products]="orderTemplate.items"
+    [product]="dummyProduct"
+    [disabled]="!selectedItems?.length"
     [class]="'btn btn-primary float-right'"
     (productToBasket)="addSelectedItemsToCart(orderTemplate)"
   ></ish-product-add-to-basket>

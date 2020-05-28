@@ -1,9 +1,8 @@
 <ng-container *ngIf="product$ | async as product">
   <div class="d-flex">
-    <div class="col-2 list-item d-none d-md-block">
+    <div class="col-1 col-md-2 list-item d-flex">
       <ish-checkbox [form]="selectItemForm" controlName="productCheckbox"> </ish-checkbox>
-
-      <a [routerLink]="product | ishProductRoute">
+      <a class="d-none d-md-inline" [routerLink]="product | ishProductRoute">
         <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
       </a>
     </div>
@@ -53,7 +52,7 @@
     <div class="col-2 list-item d-none d-md-block text-right">
       {{ orderTemplateItemData?.creationDate | ishDate: 'shortDate' }}
     </div>
-    <div class="col-4 col-md-2 list-item text-right pr-0">
+    <div class="col-4 col-md-2 list-item column-price">
       <ish-product-price [product]="product"></ish-product-price>
     </div>
   </div>

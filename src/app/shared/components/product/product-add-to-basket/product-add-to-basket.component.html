@@ -1,7 +1,4 @@
-<div
-  *ngIf="(product && product.inStock && product.availability) || (products && products.length > 0)"
-  class="add-to-cart"
->
+<div *ngIf="product?.inStock && product?.availability" class="add-to-cart">
   <button
     type="submit"
     name="addProduct"

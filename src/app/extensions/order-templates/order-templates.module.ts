@@ -16,6 +16,5 @@ import { ProductAddToOrderTemplateComponent } from './shared/product/product-add
     SelectOrderTemplateModalComponent,
   ],
   exports: [OrderTemplatePreferencesDialogComponent, SelectOrderTemplateModalComponent],
-  entryComponents: [BasketCreateOrderTemplateComponent, ProductAddToOrderTemplateComponent],
 })
 export class OrderTemplatesModule {}

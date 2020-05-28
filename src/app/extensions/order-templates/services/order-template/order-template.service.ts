@@ -32,7 +32,7 @@ export class OrderTemplateService {
    * @param orderTemplateId  The order template id.
    * @returns           The order template.
    */
-  private getOrderTemplate(orderTemplateId): Observable<OrderTemplate> {
+  getOrderTemplate(orderTemplateId: string): Observable<OrderTemplate> {
     if (!orderTemplateId) {
       return throwError('getOrderTemplate() called without orderTemplateId');
     }
@@ -46,12 +46,10 @@ export class OrderTemplateService {
    * @param OrderTemplateDetails   The order template data.
    * @returns                 The created order template.
    */
-  createOrderTemplate(orderTemplatetData: OrderTemplateHeader): Observable<OrderTemplate> {
+  createOrderTemplate(orderTemplateData: OrderTemplateHeader): Observable<OrderTemplate> {
     return this.apiService
-      .post('customers/-/users/-/wishlists', orderTemplatetData)
-      .pipe(
-        map((response: OrderTemplateData) => this.orderTemplateMapper.fromData(orderTemplatetData, response.title))
-      );
+      .post('customers/-/users/-/wishlists', orderTemplateData)
+      .pipe(concatMap((response: OrderTemplateData) => this.getOrderTemplate(response.title)));
   }
 
   /**

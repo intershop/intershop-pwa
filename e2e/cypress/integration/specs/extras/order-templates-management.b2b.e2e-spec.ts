@@ -107,7 +107,7 @@ describe('Order Template MyAccount Functionality', () => {
     at(OrderTemplatesDetailsPage, page => {
       page.moveProductToOrderTemplate(_.product1, anotherOrderTemplate);
       cy.wait(500);
-      page.OrderTemplateTitle.should('equal', anotherOrderTemplate);
+      page.OrderTemplateTitle.should('contain', anotherOrderTemplate);
       page.getOrderTemplateItemById(_.product1).should('exist');
       OrderTemplatesDetailsPage.navigateToOverviewPage();
     });

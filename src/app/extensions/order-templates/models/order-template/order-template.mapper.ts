@@ -5,7 +5,7 @@ import { OrderTemplate, OrderTemplateItem } from './order-template.model';
 
 @Injectable({ providedIn: 'root' })
 export class OrderTemplateMapper {
-  private static parseIDfromURI(uri: string): string {
+  private static parseIdFromURI(uri: string): string {
     const match = /wishlists[^\/]*\/([^\?]*)/.exec(uri);
     if (match) {
       return match[1];
@@ -32,13 +32,14 @@ export class OrderTemplateMapper {
             creationDate: Number(item.creationDate),
             desiredQuantity: {
               value: item.desiredQuantity.value,
-              // TBD: is the unit necessarry?
+              // TBD: is the unit necessary?
               // unit: item.desiredQuantity.unit,
             },
           }));
       } else {
         items = [];
       }
+
       return {
         id: orderTemplateId,
         title: orderTemplateData.title,
@@ -65,7 +66,7 @@ export class OrderTemplateMapper {
   fromDataToIds(orderTemplateData: OrderTemplateData): OrderTemplate {
     if (orderTemplateData) {
       return {
-        id: OrderTemplateMapper.parseIDfromURI(orderTemplateData.uri),
+        id: OrderTemplateMapper.parseIdFromURI(orderTemplateData.uri),
         title: orderTemplateData.title,
       };
     }
