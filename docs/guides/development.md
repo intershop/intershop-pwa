@@ -88,6 +88,14 @@ Prefer using `npx lint-staged` to perform a manual quick evaluation of staged fi
 This also happens automatically when committing files with the configured pre-commit hooks for Git.
 It is possible to bypass the verification on commit with the Git option `--no-verify`.
 
+### Clean Working Copy
+
+You can use `npm run clean` to remove all unversioned files and folders from your local git checkout.
+This command uses `git clean` but preserves your `environment.local.ts`.
+Afterwards a clean `npm install` is performed.
+
+:warning: All unstaged files will be deleted!
+
 ## Debugging
 
 Tips and tools for debugging Angular applications can be found on the Internet.
