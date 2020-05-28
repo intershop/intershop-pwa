@@ -105,8 +105,18 @@ export class AnyComponent implements OnInit, OnDestroy {
   ...
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 }
+```
+
+The TSLint rule `rxjs-prefer-angular-takeuntil` enforces the usage of a `destroy$` Subject with `takeUntil` when subscribing in an Angular artifact.
+You can use the schematic `add-destroy` to automatically generate the required logic:
+
+```
+$ ng g add-destroy shared/components/common/accordion
+
+UPDATE src/app/shared/components/common/accordion/accordion.component.ts (425 bytes)
 ```
 
 ## Use `OnPush` Change Detection if Possible
