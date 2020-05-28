@@ -39,3 +39,25 @@ jobs:
       - name: Display Changes
         if: failure()
         run: git diff
+
+  Local:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Set Environment
+        uses: allenevans/set-env@v1.0.0
+        with:
+          overwrite: true
+          CI: ''
+
+      - name: Install Clean Repository
+        run: npm run clean
+
+      - name: Build with local environment
+        run: npm run ng -- build -c local

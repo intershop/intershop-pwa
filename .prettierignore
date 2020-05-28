@@ -39,3 +39,4 @@ browserslist
 /.idea/
 /charts/**/templates/*
 *~
+/src/environments/environment.local.ts
