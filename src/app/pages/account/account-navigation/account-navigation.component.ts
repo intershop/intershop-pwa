@@ -32,6 +32,11 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
       feature: 'wishlists',
       dataTestingId: 'wishlists-link',
     },
+    '/account/order-templates': {
+      localizationKey: 'account.ordertemplates.link',
+      feature: 'orderTemplates',
+      dataTestingId: 'order-templates-link',
+    },
     '/account/payment': { localizationKey: 'account.payment.link', dataTestingId: 'payments-link' },
     '/account/addresses': { localizationKey: 'account.saved_addresses.link', dataTestingId: 'addresses-link' },
     '/account/profile': { localizationKey: 'account.profile.link' },

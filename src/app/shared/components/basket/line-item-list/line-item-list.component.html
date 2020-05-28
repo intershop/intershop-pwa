@@ -47,9 +47,16 @@
               </ng-container>
             </div>
             <div class="d-flex align-items-center">
+              <ish-lazy-product-add-to-order-template
+                *ngIf="editable"
+                [class]="'btn btn-link btn-tool add-to-order-template'"
+                [product]="pli.product"
+                displayType="icon"
+                [quantity]="form.get(['items', i]).value.quantity"
+              ></ish-lazy-product-add-to-order-template>
               <ish-lazy-product-add-to-wishlist
                 *ngIf="editable"
-                class="btn-tool"
+                class="btn-tool ml-0"
                 [product]="pli.product"
                 displayType="icon"
               ></ish-lazy-product-add-to-wishlist>

@@ -29,6 +29,7 @@ export interface Environment {
     | 'businessCustomerRegistration'
     | 'quoting'
     | 'quickorder'
+    | 'orderTemplates'
     /* Third-party Integrations */
     | 'sentry'
     | 'tracking'

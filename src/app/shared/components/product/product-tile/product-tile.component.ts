@@ -18,6 +18,7 @@ export interface ProductTileComponentConfiguration {
   displayPromotions: boolean;
   displayAddToBasket: boolean;
   displayAddToWishlist: boolean;
+  displayAddToOrderTemplate: boolean;
   displayAddToCompare: boolean;
   displayAddToQuote: boolean;
 }

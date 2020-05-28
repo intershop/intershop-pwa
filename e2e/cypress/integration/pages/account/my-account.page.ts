@@ -37,6 +37,10 @@ export class MyAccountPage {
     cy.get('a[data-testing-id="wishlists-link"]').click();
   }
 
+  navigateToOrderTemplates() {
+    cy.get('a[href="/account/order-templates"]').click();
+  }
+
   navigateToPayments() {
     cy.get('a[data-testing-id="payments-link"]').click();
   }

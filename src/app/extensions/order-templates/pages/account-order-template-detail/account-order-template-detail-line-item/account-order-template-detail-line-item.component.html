@@ -1,0 +1,66 @@
+<ng-container *ngIf="product$ | async as product">
+  <div class="d-flex">
+    <div class="col-1 col-md-2 list-item d-flex">
+      <ish-checkbox [form]="selectItemForm" controlName="productCheckbox"> </ish-checkbox>
+      <a class="d-none d-md-inline" [routerLink]="product | ishProductRoute">
+        <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
+      </a>
+    </div>
+    <div class="col-8 col-md-6 list-item d-block d-md-flex">
+      <div class="col-12 col-md-9 pli-description">
+        <a [routerLink]="product | ishProductRoute" class="product-title" data-testing-id="order-template-product-link">
+          {{ product.name }}
+        </a>
+        <ish-product-id [product]="product"></ish-product-id>
+        <ish-product-variation-display [product]="product"></ish-product-variation-display>
+        <ish-product-bundle-display
+          *ngIf="product.type === 'Bundle'"
+          [productBundleSKU]="product.sku"
+        ></ish-product-bundle-display>
+        <ish-product-inventory [product]="product"></ish-product-inventory>
+        <div class="btn-group mb-2">
+          <a class="btn-tool" (click)="moveDialog.show()" data-testing-id="move-order-template">
+            <fa-icon
+              [icon]="['fas', 'arrows-alt']"
+              [title]="'account.order_template.table.options.move_to_template' | translate"
+            ></fa-icon>
+          </a>
+          <a
+            class="btn-tool"
+            (click)="removeProductFromOrderTemplate(product?.sku)"
+            data-testing-id="delete-order-template"
+          >
+            <fa-icon
+              [icon]="['fas', 'trash-alt']"
+              [title]="'modal.heading.remove.order.template' | translate"
+            ></fa-icon>
+          </a>
+        </div>
+      </div>
+      <div class="col-6 col-md-3 p-md-0 text-right">
+        <form [formGroup]="addToCartForm">
+          <ish-product-quantity
+            [allowZeroQuantity]="false"
+            [quantityLabel]="''"
+            [product]="product"
+            [parentForm]="addToCartForm"
+            controlName="quantity"
+          ></ish-product-quantity>
+        </form>
+      </div>
+    </div>
+    <div class="col-2 list-item d-none d-md-block text-right">
+      {{ orderTemplateItemData?.creationDate | ishDate: 'shortDate' }}
+    </div>
+    <div class="col-4 col-md-2 list-item column-price">
+      <ish-product-price [product]="product"></ish-product-price>
+    </div>
+  </div>
+
+  <ish-select-order-template-modal
+    #moveDialog
+    addMoveProduct="move"
+    [product]="product"
+    (submitEmitter)="moveItemToOtherOrderTemplate(product.sku, $event)"
+  ></ish-select-order-template-modal>
+</ng-container>

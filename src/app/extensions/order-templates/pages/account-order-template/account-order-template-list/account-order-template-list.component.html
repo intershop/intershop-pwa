@@ -1,0 +1,65 @@
+<div *ngIf="orderTemplates && orderTemplates.length > 0; else noOrderTemplate" class="section">
+  <div class="list-header d-none d-md-flex">
+    <div class="list-header-item col-5">{{ 'account.order_template.list.table.template' | translate }}</div>
+    <div class="list-header-item col-3">{{ 'account.order_template.list.table.created' | translate }}</div>
+    <div class="list-header-item col-2">{{ 'account.order_template.list.table.item' | translate }}</div>
+  </div>
+  <div class="list-body">
+    <ng-container *ngTemplateOutlet="orderTemplateRow"></ng-container>
+    <ng-container *ngFor="let orderTemplate of orderTemplates">
+      <ng-container *ngTemplateOutlet="orderTemplateRow; context: { orderTemplate: orderTemplate }"></ng-container>
+    </ng-container>
+  </div>
+</div>
+<ng-template #noOrderTemplate>
+  <p>{{ 'account.order_template.list.no_templates.text' | translate }}</p>
+</ng-template>
+<ng-template #orderTemplateRow let-orderTemplate="orderTemplate">
+  <div *ngIf="orderTemplate" class="list-item-row row mx-0" data-testing-id="order-template-list-item-container">
+    <div class="col-5 list-item" data-testing-id="order-template-list-item">
+      <a [routerLink]="'/account/order-templates/' + orderTemplate.id" data-testing-id="order-template-list-title">{{
+        orderTemplate.title
+      }}</a>
+    </div>
+    <div class="col-3 list-item d-none d-md-block">{{ orderTemplate.creationDate | ishDate: 'shortDate' }}</div>
+    <div class="col-2 list-item">
+      {{ orderTemplate.itemsCount | i18nPlural: ('account.order_template.items' | translate) || { other: '#' } }}
+    </div>
+    <div class="col-5 col-md-2 list-item text-right">
+      <a class="btn-tool d-inline-flex align-top">
+        <ish-product-add-to-basket
+          displayType="icon"
+          [product]="dummyProduct"
+          [disabled]="!orderTemplate.items?.length"
+          class="text-primary p-0"
+          (productToBasket)="addTemplateToCart(orderTemplate.id)"
+        ></ish-product-add-to-basket>
+      </a>
+      <a
+        class="btn-tool"
+        [title]="'account.order_template.edit.heading' | translate"
+        data-testing-id="order-template-details-edit"
+        [routerLink]="'/account/order-templates/' + orderTemplate.id"
+        data-testing-id="order-template-list-title"
+        ><fa-icon icon="pencil-alt"></fa-icon
+      ></a>
+      <a
+        class="btn-tool"
+        title="{{ 'account.order_template.list.link.remove' | translate }}"
+        (click)="openDeleteConfirmationDialog(orderTemplate, deleteDialog)"
+        data-testing-id="delete-order-template"
+        ><fa-icon [icon]="['fas', 'trash-alt']"></fa-icon
+      ></a>
+    </div>
+  </div>
+</ng-template>
+
+<ish-modal-dialog
+  #deleteDialog
+  (confirmed)="delete($event)"
+  [options]="{
+    confirmText: 'account.order_template.delete.button.text' | translate,
+    rejectText: 'account.cancel.button.label' | translate
+  }"
+  >{{ 'account.order_template.delete.do_you_really.text' | translate }}</ish-modal-dialog
+>

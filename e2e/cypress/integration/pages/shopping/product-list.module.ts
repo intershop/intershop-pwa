@@ -1,8 +1,10 @@
 import { waitLoadingEnd } from '../../framework';
+import { AddToOrderTemplateModule } from '../account/add-to-order-template.module';
 import { AddToWishlistModule } from '../account/add-to-wishlist.module';
 
 export class ProductListModule {
   readonly addToWishlist = new AddToWishlistModule();
+  readonly addToOrderTemplate = new AddToOrderTemplateModule();
   constructor(private contextSelector: string) {}
 
   get visibleProducts() {

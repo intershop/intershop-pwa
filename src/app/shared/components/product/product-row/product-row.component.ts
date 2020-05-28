@@ -28,6 +28,7 @@ export interface ProductRowComponentConfiguration {
   displayShipment: boolean;
   displayAddToBasket: boolean;
   displayAddToWishlist: boolean;
+  displayAddToOrderTemplate: boolean;
   displayAddToCompare: boolean;
   displayAddToQuote: boolean;
 }

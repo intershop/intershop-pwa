@@ -1,4 +1,5 @@
 import { waitLoadingEnd } from '../../framework';
+import { AddToOrderTemplateModule } from '../account/add-to-order-template.module';
 import { AddToWishlistModule } from '../account/add-to-wishlist.module';
 import { BreadcrumbModule } from '../breadcrumb.module';
 import { HeaderModule } from '../header.module';
@@ -18,6 +19,7 @@ export class ProductDetailPage {
   readonly variations = new ProductListModule('ish-product-master-variations');
 
   readonly addToWishlist = new AddToWishlistModule();
+  readonly addToOrderTemplate = new AddToOrderTemplateModule();
 
   static navigateTo(sku: string, categoryUniqueId?: string) {
     if (categoryUniqueId) {
@@ -35,7 +37,12 @@ export class ProductDetailPage {
     return cy.get('ish-product-detail').find('ish-product-detail-actions [data-testing-id*="wishlist"] .share-label');
   }
 
+  private addToOrderTemplateButton() {
+    return cy.get('ish-product-detail').find('[data-testing-id="addToOrderTemplateButton"]');
+  }
+
   private addToQuoteRequestButton = () => cy.get('ish-product-detail').find('[data-testing-id="addToQuoteButton"]');
+
   private quantityInput = () => cy.get('ish-product-detail').find('[data-testing-id="quantity"]');
 
   isComplete() {
@@ -52,6 +59,10 @@ export class ProductDetailPage {
 
   addProductToCompare() {
     this.addToCompareButton().click();
+  }
+
+  addProductToOrderTemplate() {
+    this.addToOrderTemplateButton().click();
   }
 
   addProductToCart(): Cypress.Chainable<Cypress.WaitXHR> {

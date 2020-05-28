@@ -1,0 +1,23 @@
+<div class="order-template">
+  <h1>
+    {{ 'account.ordertemplates.heading' | translate
+    }}<a class="btn btn-secondary" data-testing-id="add-order-template" (click)="addOrderTemplateDialog.show()">{{
+      'account.order_template.list.button.add_template.label' | translate
+    }}</a>
+  </h1>
+
+  <!-- Error message -->
+  <ish-error-message [error]="orderTemplateError$ | async"></ish-error-message>
+
+  <ish-account-order-template-list
+    [orderTemplates]="orderTemplates$ | async"
+    (deleteOrderTemplate)="deleteOrderTemplate($event)"
+  ></ish-account-order-template-list>
+</div>
+
+<ish-order-template-preferences-dialog
+  #addOrderTemplateDialog
+  (submit)="addOrderTemplate($event)"
+></ish-order-template-preferences-dialog>
+
+<ish-loading *ngIf="orderTemplateLoading$ | async"></ish-loading>

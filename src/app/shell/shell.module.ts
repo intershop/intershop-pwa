@@ -12,6 +12,7 @@ import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
 
 import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
+import { OrderTemplatesExportsModule } from '../extensions/order-templates/exports/order-templates-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
 import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
 import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
@@ -33,6 +34,7 @@ import { UserInformationMobileComponent } from './header/user-information-mobile
 
 const importExportModules = [
   CaptchaExportsModule,
+  OrderTemplatesExportsModule,
   QuickorderExportsModule,
   QuotingExportsModule,
   WishlistsExportsModule,
