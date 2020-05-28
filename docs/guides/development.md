@@ -33,14 +33,7 @@ Running `ng serve --configuration production` or `ng s -c production` starts a d
 
 The project is also configured to support the usage of an own local environment file `environment.local.ts` that can be configured according to your local development environment needs, e.g. with a different icmBaseURL or different configuration options (see the `environment.model.ts` for the available configuration options).
 This file will be ignored by Git so the developer specific settings will not be committed and accidentally shared.
-
-To create such a development specific `environment.local.ts` file just copy one of the two existing environment files and make the necessary configuration adaptions, e.g.
-
-- Set your `icmBaseURL: 'http://<YOUR_ICM_SERVER>',`
-- Set `production: false,`
-- Remove `mockServerAPI: true,`
-- Configure the wanted `features: ['compare', 'recently', ...],`
-- Maybe disable the service worker for development `serviceWorker: false,`
+It is initially created when running `npm install`.
 
 To use this local environment configuration, the server should be started with
 

@@ -12,7 +12,7 @@
   },
   "private": true,
   "scripts": {
-    "postinstall": "postinstall && npm --silent run build:tslint-rules && npm --silent run build:schematics && npm run synchronize-lazy-components",
+    "postinstall": "postinstall && npm --silent run build:tslint-rules && npm --silent run build:schematics && npm run synchronize-lazy-components && node scripts/init-local-environment",
     "build:tslint-rules": "cd tslint-rules && npm run build",
     "build:schematics": "cd schematics && npm run build",
     "ng": "ng",
