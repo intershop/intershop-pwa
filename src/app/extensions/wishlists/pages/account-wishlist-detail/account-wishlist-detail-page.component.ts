@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
@@ -11,12 +11,10 @@ import { Wishlist } from '../../models/wishlist/wishlist.model';
   templateUrl: './account-wishlist-detail-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountWishlistDetailPageComponent implements OnInit, OnDestroy {
+export class AccountWishlistDetailPageComponent implements OnInit {
   wishlist$: Observable<Wishlist>;
   wishlistError$: Observable<HttpError>;
   wishlistLoading$: Observable<boolean>;
-
-  private destroy$ = new Subject();
 
   constructor(private wishlistsFacade: WishlistsFacade) {}
 
@@ -24,10 +22,6 @@ export class AccountWishlistDetailPageComponent implements OnInit, OnDestroy {
     this.wishlist$ = this.wishlistsFacade.currentWishlist$;
     this.wishlistLoading$ = this.wishlistsFacade.wishlistLoading$;
     this.wishlistError$ = this.wishlistsFacade.wishlistError$;
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
   }
 
   editPreferences(wishlist: Wishlist, wishlistName: string) {
