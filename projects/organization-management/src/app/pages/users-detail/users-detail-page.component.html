@@ -1,3 +1,66 @@
-<pre>{{ user$ | async | json }}</pre>
+<h1>
+  {{ 'account.user.details.heading' | translate }}
+</h1>
+
+<div class="row section" *ngIf="user$ | async as user">
+  <div class="col-10 col-lg-8">
+    <h3>{{ 'account.user.details.profile.heading' | translate }}</h3>
+    <div class="row">
+      <div class="col-md-12">
+        <dl class="row dl-horizontal dl-separator">
+          <dt class="col-md-4">{{ 'account.user.details.profile.name' | translate }}</dt>
+          <dd data-testing-id="email-field" class="col-md-8">{{ user.firstName }} {{ user.lastName }}</dd>
+          <dt class="col-md-4">{{ 'account.user.details.profile.email' | translate }}</dt>
+          <dd data-testing-id="email-field" class="col-md-8">{{ user.email }}</dd>
+          <dt class="col-md-4">{{ 'account.user.details.profile.prefered_language' | translate }}</dt>
+          <dd data-testing-id="email-field" class="col-md-8">{{ user.preferredLanguage }}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="col-2 col-lg-4">
+    <a class="btn-tool" [title]="'account.profile.update.link' | translate">
+      <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
+    </a>
+  </div>
+</div>
+
+<div class="row section">
+  <div class="col-10 col-lg-8">
+    <h3>{{ 'account.user.details.profile.role_limits.heading' | translate }}</h3>
+    <div class="row">
+      <div class="col-md-12">
+        <dl class="row dl-horizontal dl-separator">
+          <dt class="col-md-4">foo</dt>
+          <dd data-testing-id="email-field" class="col-md-8">bar</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="col-2 col-lg-4">
+    <a class="btn-tool" [title]="'account.profile.update.link' | translate">
+      <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
+    </a>
+  </div>
+</div>
+
+<div class="row section">
+  <div class="col-10 col-lg-8">
+    <h3>{{ 'account.user.details.profile.budget_limits.heading' | translate }}s</h3>
+    <div class="row">
+      <div class="col-md-12">
+        <dl class="row dl-horizontal dl-separator">
+          <dt class="col-md-4">foo</dt>
+          <dd data-testing-id="email-field" class="col-md-8">bar</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="col-2 col-lg-4">
+    <a class="btn-tool" [title]="'account.profile.update.link' | translate">
+      <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
+    </a>
+  </div>
+</div>
 
 <a routerLink="..">Back to list</a>

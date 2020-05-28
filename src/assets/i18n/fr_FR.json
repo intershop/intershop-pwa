@@ -2817,7 +2817,12 @@
   "account.user.new.budget.period.value.yearly": "annuel",
   "account.user.details.heading": "Détails de l’utilisateur",
   "account.user.details.profile.heading": "Profil",
+  "account.user.details.profile.name": "Nom",
+  "account.user.details.profile.email": "Courriel",
+  "account.user.details.profile.prefered_language": "Langue préférée",
   "account.user.details.profile.role_and_budget_limits.heading": "Rôle et limites budgétaires",
+  "account.user.details.profile.role_limits.heading": "Rôle",
+  "account.user.details.profile.budget_limits.heading": "limites budgétaires",
   "account.user.breadcrumbs.new_user.text": "Nouvel utilisateur",
   "account.user.breadcrumbs.users.text": "Utilisateurs",
   "account.user.update_role_and_budget_limits.heading": "Modifier le rôle de l’utilisateur et les limites budgétaires\u00A0-",
@@ -2856,5 +2861,6 @@
   "account.user.new.OrderLimit.error.valid": "Veuillez entrer une valeur monétaire valide (limite par commande).",
   "account.user.new.Budget.error.valid": "Veuillez entrer une valeur monétaire valide (Budget).",
   "account.user.new.roles.dialog.title": "Rôles",
-  "account.user.new.roles.dialog.action.ok": "OK"
+  "account.user.new.roles.dialog.action.ok": "OK",
+  "account.user.user_management": "Gestion des utilisateurs"
 }

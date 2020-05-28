@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
 import { User } from 'ish-core/models/user/user.model';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { UsersService } from '../../services/users/users.service';
 
@@ -21,6 +22,7 @@ describe('Users Effects', () => {
     when(usersService.getUsers()).thenReturn(of([{ businessPartnerNo: '1' }, { businessPartnerNo: '2' }] as User[]));
 
     TestBed.configureTestingModule({
+      imports: [ngrxTesting()],
       providers: [
         UsersEffects,
         provideMockActions(() => actions$),
