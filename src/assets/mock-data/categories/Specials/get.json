@@ -1,4 +1,11 @@
 {
+  "attributes": [
+    {
+      "name": "ShowInMenu",
+      "type": "String",
+      "value": "True"
+    }
+  ],
   "categoryPath": [
     {
       "id": "Specials",
@@ -7,6 +14,7 @@
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials"
     }
   ],
+  "categoryRef": "Specials@inSPIRED-inTRONICS-Specials",
   "description": "Special products and services.",
   "hasOnlineProducts": false,
   "hasOnlineSubCategories": true,
@@ -14,8 +22,7 @@
   "name": "Specials",
   "online": "1",
   "seoAttributes": {
-    "metaDescription": "Specials, New Products, Gift Cards & Certificates, Hot Deals, Top Sellers always special prices for Specials",
-    "metaKeywords": [],
+    "metaDescription": "Specials, Top Sellers, Gift Cards & Certificates, New Products, Hot Deals always special prices for Specials",
     "metaTitle": "Specials favorable buying at our shop",
     "robots": ["index", "follow"]
   },
@@ -35,6 +42,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/GiftCardsCertificates"
         }
       ],
+      "categoryRef": "GiftCardsCertificates@inSPIRED-inTRONICS-Specials",
       "description": "Gift Cards & Certificates",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
@@ -72,6 +80,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/HotDeals"
         }
       ],
+      "categoryRef": "HotDeals@inSPIRED-inTRONICS-Specials",
       "description": "Hot Deals",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
@@ -109,6 +118,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/NewProducts"
         }
       ],
+      "categoryRef": "NewProducts@inSPIRED-inTRONICS-Specials",
       "description": "Neue Produkte",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
@@ -146,6 +156,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/TopSellers"
         }
       ],
+      "categoryRef": "TopSellers@inSPIRED-inTRONICS-Specials",
       "description": "Top Sellers",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,

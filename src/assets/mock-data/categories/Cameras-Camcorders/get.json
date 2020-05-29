@@ -1,4 +1,11 @@
 {
+  "attributes": [
+    {
+      "name": "ShowInMenu",
+      "type": "String",
+      "value": "True"
+    }
+  ],
   "categoryPath": [
     {
       "id": "Cameras-Camcorders",
@@ -7,6 +14,7 @@
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders"
     }
   ],
+  "categoryRef": "Cameras-Camcorders@inSPIRED-inTRONICS-Cameras-Camcorders",
   "description": "The cameras and camcorders products catalog.",
   "hasOnlineProducts": false,
   "hasOnlineSubCategories": true,
@@ -14,8 +22,7 @@
   "name": "Cameras",
   "online": "1",
   "seoAttributes": {
-    "metaDescription": "Cameras, Camera Accessories, Camcorders, Digital Cameras, Action Cameras, Bags & Cases, Webcams always special prices for Cameras",
-    "metaKeywords": [],
+    "metaDescription": "Cameras, Webcams, Action Cameras, Bags & Cases, Camcorders, Camera Accessories, Digital Cameras always special prices for Cameras",
     "metaTitle": "Cameras favorable buying at our shop",
     "robots": ["index", "follow"]
   },
@@ -35,6 +42,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/832"
         }
       ],
+      "categoryRef": "832@inSPIRED-inTRONICS-Cameras-Camcorders",
       "description": "The cameras and camcorders products catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
@@ -72,6 +80,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/1290"
         }
       ],
+      "categoryRef": "1290@inSPIRED-inTRONICS-Cameras-Camcorders",
       "description": "The cameras and camcorders products catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
@@ -109,6 +118,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/584"
         }
       ],
+      "categoryRef": "584@inSPIRED-inTRONICS-Cameras-Camcorders",
       "description": "The cameras and camcorders products catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
@@ -146,6 +156,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/585"
         }
       ],
+      "categoryRef": "585@inSPIRED-inTRONICS-Cameras-Camcorders",
       "description": "The cameras and camcorders products catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
@@ -183,6 +194,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/575"
         }
       ],
+      "categoryRef": "575@inSPIRED-inTRONICS-Cameras-Camcorders",
       "description": "The cameras and camcorders products catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
@@ -221,6 +233,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/577"
         }
       ],
+      "categoryRef": "577@inSPIRED-inTRONICS-Cameras-Camcorders",
       "description": "The cameras and camcorders products catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,

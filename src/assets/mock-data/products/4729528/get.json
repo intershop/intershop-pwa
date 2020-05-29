@@ -37,6 +37,11 @@
       "value": "2/10 s"
     },
     {
+      "name": "Video formats supported",
+      "type": "String",
+      "value": "MPEG4"
+    },
+    {
       "name": "Depth",
       "type": "ResourceAttribute",
       "value": {
@@ -46,14 +51,9 @@
       }
     },
     {
-      "name": "Video formats supported",
+      "name": "Light exposure control",
       "type": "String",
-      "value": "MPEG4"
-    },
-    {
-      "name": "Minimum processor",
-      "type": "String",
-      "value": "CPU Intel Core Duo E440 2.0GHz"
+      "value": "Y"
     },
     {
       "name": "Battery technology",
@@ -61,7 +61,12 @@
       "value": "Lithium-Ion"
     },
     {
-      "name": "Light exposure control",
+      "name": "Minimum processor",
+      "type": "String",
+      "value": "CPU Intel Core Duo E440 2.0GHz"
+    },
+    {
+      "name": "Manual focus",
       "type": "String",
       "value": "Y"
     },
@@ -69,11 +74,6 @@
       "name": "Media types supported",
       "type": "String",
       "value": "MPEG4"
-    },
-    {
-      "name": "Manual focus",
-      "type": "String",
-      "value": "Y"
     },
     {
       "name": "USB 2.0 ports quantity",
@@ -105,6 +105,11 @@
       "value": "LED on/off"
     },
     {
+      "name": "Battery life (max)",
+      "type": "String",
+      "value": "0.6 h"
+    },
+    {
       "name": "Width",
       "type": "ResourceAttribute",
       "value": {
@@ -112,11 +117,6 @@
         "unit": "mm",
         "value": 33
       }
-    },
-    {
-      "name": "Battery life (max)",
-      "type": "String",
-      "value": "0.6 h"
     },
     {
       "name": "Normal focusing range",
@@ -149,6 +149,11 @@
       "value": "f = 3.2 – 28.8"
     },
     {
+      "name": "Built-in flash",
+      "type": "String",
+      "value": "Y"
+    },
+    {
       "name": "Weight",
       "type": "ResourceAttribute",
       "value": {
@@ -156,11 +161,6 @@
         "unit": "g",
         "value": 151.5
       }
-    },
-    {
-      "name": "Built-in flash",
-      "type": "String",
-      "value": "Y"
     },
     {
       "name": "HDMI ports quantity",
@@ -203,19 +203,14 @@
       "value": "14 MP"
     },
     {
-      "name": "Display",
+      "name": "Image stabilizer",
       "type": "String",
-      "value": "LCD"
+      "value": "Y"
     },
     {
       "name": "Camcorder tape type",
       "type": "String",
       "value": "Flash memory"
-    },
-    {
-      "name": "Image stabilizer",
-      "type": "String",
-      "value": "Y"
     },
     {
       "name": "Colour_of_product",
@@ -226,6 +221,11 @@
       "name": "Compatible operating systems",
       "type": "String",
       "value": "Windows XP SP3, Vista, 7"
+    },
+    {
+      "name": "Display",
+      "type": "String",
+      "value": "LCD"
     }
   ],
   "availability": true,
@@ -395,6 +395,7 @@
   "maxOrderQuantity": 0,
   "minOrderQuantity": 1,
   "name": "Toshiba Camileo SX900",
+  "numberOfReviews": 0,
   "packingUnit": "",
   "productBundle": false,
   "productMaster": false,
@@ -412,7 +413,6 @@
   },
   "seoAttributes": {
     "metaDescription": "Toshiba Camileo SX900 - Camileo SX900 Full HD, 14MPixel CMOS sensor, 6.858 cm (2.7 \") LCD, Black",
-    "metaKeywords": [],
     "metaTitle": "Toshiba Camileo SX900 - Camcorders favorable buying at our shop",
     "robots": ["index", "follow"]
   },

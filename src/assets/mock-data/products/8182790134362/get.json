@@ -2,6 +2,11 @@
   "attachments": [
     {
       "key": "AC_Manual_2_",
+      "link": {
+        "title": "Quick Start Guide",
+        "type": "Link",
+        "uri": "/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/-/inSPIRED/en_US/manuals/QSG_H4Silver_ENG_REVF_WEB.pdf"
+      },
       "name": "Quick Start Guide",
       "type": "Manual",
       "uri": false,
@@ -9,6 +14,11 @@
     },
     {
       "key": "AC_Manual_1_",
+      "link": {
+        "title": "User Manual",
+        "type": "Link",
+        "uri": "/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/-/inSPIRED/en_US/manuals/UM_H4Silver_ENG_REVF_WEB.pdf"
+      },
       "name": "User Manual",
       "type": "Manual",
       "uri": false,
@@ -47,6 +57,11 @@
       "value": "3840 x 2160 pixels"
     },
     {
+      "name": "Bundled software",
+      "type": "String",
+      "value": "GoPro App|GoPro Studio"
+    },
+    {
       "name": "Video formats supported",
       "type": "String",
       "value": "H.264|MP4"
@@ -59,11 +74,6 @@
         "unit": "g",
         "value": 83
       }
-    },
-    {
-      "name": "Bundled software",
-      "type": "String",
-      "value": "GoPro App|GoPro Studio"
     },
     {
       "name": "Supported video modes",
@@ -101,21 +111,21 @@
       "value": "MicroSD (TransFlash)"
     },
     {
-      "name": "Maximum frame rate",
-      "type": "ResourceAttribute",
-      "value": {
-        "type": "Quantity",
-        "unit": "fps",
-        "value": 240
-      }
-    },
-    {
       "name": "Battery life (max)",
       "type": "ResourceAttribute",
       "value": {
         "type": "Quantity",
         "unit": "h",
         "value": 2
+      }
+    },
+    {
+      "name": "Maximum frame rate",
+      "type": "ResourceAttribute",
+      "value": {
+        "type": "Quantity",
+        "unit": "fps",
+        "value": 240
       }
     },
     {
@@ -128,14 +138,14 @@
       }
     },
     {
-      "name": "Display",
-      "type": "String",
-      "value": "LCD"
-    },
-    {
       "name": "Colour_of_product",
       "type": "String",
       "value": "Silver"
+    },
+    {
+      "name": "Display",
+      "type": "String",
+      "value": "LCD"
     }
   ],
   "availability": true,
@@ -306,6 +316,7 @@
   "maxOrderQuantity": 0,
   "minOrderQuantity": 1,
   "name": "GoPro HERO4 Silver",
+  "numberOfReviews": 2,
   "packingUnit": "",
   "productBundle": false,
   "productMaster": false,
@@ -332,7 +343,6 @@
   },
   "seoAttributes": {
     "metaDescription": "GoPro HERO4 Silver - High-performance capture. Touch-display convenience. - Features 1080p60 and",
-    "metaKeywords": [],
     "metaTitle": "GoPro HERO4 Silver - Action Cameras favorable buying at our shop",
     "robots": ["index", "follow"]
   },

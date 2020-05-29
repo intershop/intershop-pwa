@@ -19,6 +19,7 @@
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/236"
     }
   ],
+  "categoryRef": "236@inSPIRED-Computers",
   "description": "The Computers products and services catalog.",
   "hasOnlineProducts": false,
   "hasOnlineSubCategories": true,
@@ -38,8 +39,7 @@
   "name": "Chassis Components",
   "online": "1",
   "seoAttributes": {
-    "metaDescription": "Chassis Components, Mounting Kits, Storage Enclosures, Fans, coolers & radiators, Rack Consoles always special prices for Chassis Components and Hardware Components",
-    "metaKeywords": [],
+    "metaDescription": "Chassis Components, Fans, coolers & radiators, Rack Consoles, Mounting Kits, Storage Enclosures always special prices for Chassis Components and Hardware Components",
     "metaTitle": "Chassis Components - Hardware Components favorable buying at our shop",
     "robots": ["index", "follow"]
   },
@@ -71,6 +71,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/236/921"
         }
       ],
+      "categoryRef": "921@inSPIRED-Computers",
       "description": "The Computers products and services catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
@@ -120,6 +121,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/236/1007"
         }
       ],
+      "categoryRef": "1007@inSPIRED-Computers",
       "description": "The Computers products and services catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
@@ -169,6 +171,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/236/1500"
         }
       ],
+      "categoryRef": "1500@inSPIRED-Computers",
       "description": "The Computers products and services catalog.",
       "hasOnlineProducts": false,
       "hasOnlineSubCategories": false,
@@ -205,6 +208,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/236/862"
         }
       ],
+      "categoryRef": "862@inSPIRED-Computers",
       "description": "The Computers products and services catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
