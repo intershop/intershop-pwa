@@ -57,14 +57,14 @@
       "value": "720p HD camera (front-facing)"
     },
     {
-      "name": "Display",
-      "type": "String",
-      "value": "13.5 in PixelSense Display, 2256*1504 (201 PPI)"
-    },
-    {
       "name": "Colour_of_product",
       "type": "String",
       "value": "Platinum"
+    },
+    {
+      "name": "Display",
+      "type": "String",
+      "value": "13.5 in PixelSense Display, 2256*1504 (201 PPI)"
     }
   ],
   "availability": true,
@@ -170,6 +170,7 @@
   "maxOrderQuantity": 0,
   "minOrderQuantity": 1,
   "name": "Microsoft Surface Laptop",
+  "numberOfReviews": 0,
   "packingUnit": "",
   "productBundle": false,
   "productMaster": false,
@@ -188,7 +189,6 @@
   },
   "seoAttributes": {
     "metaDescription": "Microsoft Surface Laptop - Style and speed: Power through your day beautifully with up to 14.5 hours of battery life, Intel Core processor, and stunning touchscreen in a thin, light design and rich colors.",
-    "metaKeywords": [],
     "metaTitle": "Microsoft Surface Laptop - Notebooks favorable buying at our shop",
     "robots": ["index", "follow"]
   },

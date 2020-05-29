@@ -84,6 +84,7 @@
   "maxOrderQuantity": 0,
   "minOrderQuantity": 1,
   "name": "Philips Hue Dimmer switch",
+  "numberOfReviews": 0,
   "packingUnit": "",
   "productBundle": false,
   "productMaster": false,
@@ -101,7 +102,6 @@
   },
   "seoAttributes": {
     "metaDescription": "Philips Hue Dimmer switch - Control your lights anywhere in your house",
-    "metaKeywords": [],
     "metaTitle": "Philips Hue Dimmer switch - Smart Home favorable buying at our shop",
     "robots": ["index", "follow"]
   },

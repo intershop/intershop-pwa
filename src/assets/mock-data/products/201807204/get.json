@@ -179,6 +179,7 @@
     "value": 1376.94
   },
   "name": "Microsoft Surface Laptop",
+  "numberOfReviews": 0,
   "packingUnit": "",
   "productBundle": false,
   "productMaster": true,
@@ -196,7 +197,6 @@
   },
   "seoAttributes": {
     "metaDescription": "Microsoft Surface Laptop - Style and speed: Power through your day beautifully with up to 14.5 hours of battery life, Intel Core processor, and stunning touchscreen in a thin, light design and rich colors.",
-    "metaKeywords": [],
     "metaTitle": "Microsoft Surface Laptop - Notebooks favorable buying at our shop",
     "robots": ["index", "follow"]
   },
@@ -238,13 +238,13 @@
     {
       "name": "Color",
       "type": "VariationAttribute",
-      "value": "Burgundy",
+      "value": "Platinum",
       "variationAttributeId": "Colour_of_product"
     },
     {
       "name": "Color",
       "type": "VariationAttribute",
-      "value": "Cobalt Blue",
+      "value": "Burgundy",
       "variationAttributeId": "Colour_of_product"
     },
     {
@@ -256,13 +256,13 @@
     {
       "name": "Color",
       "type": "VariationAttribute",
-      "value": "Platinum",
+      "value": "Cobalt Blue",
       "variationAttributeId": "Colour_of_product"
     },
     {
       "name": "Hard drive size",
       "type": "VariationAttribute",
-      "value": "1TB",
+      "value": "512GB",
       "variationAttributeId": "Hard_disk_drive_capacity"
     },
     {
@@ -274,7 +274,7 @@
     {
       "name": "Hard drive size",
       "type": "VariationAttribute",
-      "value": "512GB",
+      "value": "1TB",
       "variationAttributeId": "Hard_disk_drive_capacity"
     }
   ],

@@ -1,6 +1,13 @@
 {
   "elements": [
     {
+      "attributes": [
+        {
+          "name": "ShowInMenu",
+          "type": "String",
+          "value": "True"
+        }
+      ],
       "categoryPath": [
         {
           "id": "Cameras-Camcorders",
@@ -9,6 +16,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders"
         }
       ],
+      "categoryRef": "Cameras-Camcorders@inSPIRED-inTRONICS-Cameras-Camcorders",
       "description": "The cameras and camcorders products catalog.",
       "hasOnlineProducts": false,
       "hasOnlineSubCategories": true,
@@ -32,6 +40,7 @@
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/832"
             }
           ],
+          "categoryRef": "832@inSPIRED-inTRONICS-Cameras-Camcorders",
           "description": "The cameras and camcorders products catalog.",
           "hasOnlineProducts": true,
           "hasOnlineSubCategories": false,
@@ -57,6 +66,7 @@
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/1290"
             }
           ],
+          "categoryRef": "1290@inSPIRED-inTRONICS-Cameras-Camcorders",
           "description": "The cameras and camcorders products catalog.",
           "hasOnlineProducts": true,
           "hasOnlineSubCategories": false,
@@ -82,6 +92,7 @@
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/584"
             }
           ],
+          "categoryRef": "584@inSPIRED-inTRONICS-Cameras-Camcorders",
           "description": "The cameras and camcorders products catalog.",
           "hasOnlineProducts": true,
           "hasOnlineSubCategories": false,
@@ -107,6 +118,7 @@
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/585"
             }
           ],
+          "categoryRef": "585@inSPIRED-inTRONICS-Cameras-Camcorders",
           "description": "The cameras and camcorders products catalog.",
           "hasOnlineProducts": true,
           "hasOnlineSubCategories": false,
@@ -132,6 +144,7 @@
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/575"
             }
           ],
+          "categoryRef": "575@inSPIRED-inTRONICS-Cameras-Camcorders",
           "description": "The cameras and camcorders products catalog.",
           "hasOnlineProducts": true,
           "hasOnlineSubCategories": false,
@@ -158,6 +171,7 @@
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/577"
             }
           ],
+          "categoryRef": "577@inSPIRED-inTRONICS-Cameras-Camcorders",
           "description": "The cameras and camcorders products catalog.",
           "hasOnlineProducts": true,
           "hasOnlineSubCategories": false,
@@ -174,6 +188,13 @@
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders"
     },
     {
+      "attributes": [
+        {
+          "name": "ShowInMenu",
+          "type": "String",
+          "value": "True"
+        }
+      ],
       "categoryPath": [
         {
           "id": "Computers",
@@ -182,6 +203,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers"
         }
       ],
+      "categoryRef": "Computers@inSPIRED-Computers",
       "description": "The Computers products and services catalog.",
       "hasOnlineProducts": false,
       "hasOnlineSubCategories": true,
@@ -205,6 +227,7 @@
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897"
             }
           ],
+          "categoryRef": "897@inSPIRED-Computers",
           "description": "The Computers products and services catalog.",
           "hasOnlineProducts": false,
           "hasOnlineSubCategories": true,
@@ -235,6 +258,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/897_Acer"
                 }
               ],
+              "categoryRef": "897_Acer@inSPIRED-Computers",
               "description": "Acer",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -266,6 +290,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/897_Asus"
                 }
               ],
+              "categoryRef": "897_Asus@inSPIRED-Computers",
               "description": "Asus",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -297,6 +322,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/897_Fujitsu"
                 }
               ],
+              "categoryRef": "897_Fujitsu@inSPIRED-Computers",
               "description": "Fujitsu",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -328,6 +354,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/897_Hanvon"
                 }
               ],
+              "categoryRef": "897_Hanvon@inSPIRED-Computers",
               "description": "Hanvon",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -359,6 +386,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/897_Lenovo"
                 }
               ],
+              "categoryRef": "897_Lenovo@inSPIRED-Computers",
               "description": "Lenovo",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -390,6 +418,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/897_MSI"
                 }
               ],
+              "categoryRef": "897_MSI@inSPIRED-Computers",
               "description": "MSI",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -421,6 +450,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/897_Microsoft"
                 }
               ],
+              "categoryRef": "897_Microsoft@inSPIRED-Computers",
               "description": "Microsoft",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -452,6 +482,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/897_Samsung"
                 }
               ],
+              "categoryRef": "897_Samsung@inSPIRED-Computers",
               "description": "Samsung",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -482,6 +513,7 @@
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/1835"
             }
           ],
+          "categoryRef": "1835@inSPIRED-Computers",
           "description": "Desktop PCs, Notebooks and Accessories",
           "hasOnlineProducts": false,
           "hasOnlineSubCategories": true,
@@ -511,6 +543,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/1835/151"
                 }
               ],
+              "categoryRef": "151@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -542,6 +575,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/1835/153"
                 }
               ],
+              "categoryRef": "153@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -573,6 +607,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/1835/3003"
                 }
               ],
+              "categoryRef": "3003@inSPIRED-Computers",
               "description": "Backpacks, Notebook Bags & Cases",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -604,6 +639,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/1835/152"
                 }
               ],
+              "categoryRef": "152@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -635,6 +671,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/1835/9851"
                 }
               ],
+              "categoryRef": "9851@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -666,6 +703,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/1835/1284"
                 }
               ],
+              "categoryRef": "1284@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -696,6 +734,7 @@
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/3001"
             }
           ],
+          "categoryRef": "3001@inSPIRED-Computers",
           "description": "Monitors",
           "hasOnlineProducts": false,
           "hasOnlineSubCategories": true,
@@ -725,6 +764,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/3001/222"
                 }
               ],
+              "categoryRef": "222@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -756,6 +796,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/3001/3002"
                 }
               ],
+              "categoryRef": "3002@inSPIRED-Computers",
               "description": "Flat Panel Mounts",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -787,6 +828,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/3001/943"
                 }
               ],
+              "categoryRef": "943@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -818,6 +860,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/3001/903"
                 }
               ],
+              "categoryRef": "903@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -849,6 +892,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/3001/223"
                 }
               ],
+              "categoryRef": "223@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -879,6 +923,7 @@
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/191"
             }
           ],
+          "categoryRef": "191@inSPIRED-Computers",
           "description": "The Computers products and services catalog.",
           "hasOnlineProducts": false,
           "hasOnlineSubCategories": true,
@@ -908,6 +953,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/191/194"
                 }
               ],
+              "categoryRef": "194@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -939,6 +985,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/191/195"
                 }
               ],
+              "categoryRef": "195@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -970,6 +1017,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/191/1637"
                 }
               ],
+              "categoryRef": "1637@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -1001,6 +1049,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/191/3652"
                 }
               ],
+              "categoryRef": "3652@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -1032,6 +1081,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/191/8547"
                 }
               ],
+              "categoryRef": "8547@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -1062,6 +1112,7 @@
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/206"
             }
           ],
+          "categoryRef": "206@inSPIRED-Computers",
           "description": "The Computers products and services catalog.",
           "hasOnlineProducts": false,
           "hasOnlineSubCategories": true,
@@ -1091,6 +1142,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/206/1622"
                 }
               ],
+              "categoryRef": "1622@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -1122,6 +1174,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/206/214"
                 }
               ],
+              "categoryRef": "214@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -1153,6 +1206,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/206/858"
                 }
               ],
+              "categoryRef": "858@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -1184,6 +1238,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/206/1823"
                 }
               ],
+              "categoryRef": "1823@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -1215,6 +1270,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/206/902"
                 }
               ],
+              "categoryRef": "902@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -1246,6 +1302,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/206/219"
                 }
               ],
+              "categoryRef": "219@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -1277,6 +1334,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/206/1563"
                 }
               ],
+              "categoryRef": "1563@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -1308,6 +1366,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/206/298"
                 }
               ],
+              "categoryRef": "298@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -1339,6 +1398,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/206/1554"
                 }
               ],
+              "categoryRef": "1554@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -1369,6 +1429,7 @@
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106"
             }
           ],
+          "categoryRef": "106@inSPIRED-Computers",
           "description": "Hardware components of computers.",
           "hasOnlineProducts": false,
           "hasOnlineSubCategories": true,
@@ -1398,6 +1459,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/173"
                 }
               ],
+              "categoryRef": "173@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -1429,6 +1491,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830"
                 }
               ],
+              "categoryRef": "830@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": true,
@@ -1460,6 +1523,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/236"
                 }
               ],
+              "categoryRef": "236@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": false,
               "hasOnlineSubCategories": true,
@@ -1491,6 +1555,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/911"
                 }
               ],
+              "categoryRef": "911@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -1522,6 +1587,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/897_HP"
                 }
               ],
+              "categoryRef": "897_HP@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": false,
               "hasOnlineSubCategories": false,
@@ -1552,6 +1618,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/816"
                 }
               ],
+              "categoryRef": "816@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": false,
               "hasOnlineSubCategories": true,
@@ -1583,6 +1650,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/989"
                 }
               ],
+              "categoryRef": "989@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -1614,6 +1682,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/170"
                 }
               ],
+              "categoryRef": "170@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -1644,6 +1713,7 @@
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/225"
             }
           ],
+          "categoryRef": "225@inSPIRED-Computers",
           "description": "The Computers products and services catalog.",
           "hasOnlineProducts": false,
           "hasOnlineSubCategories": true,
@@ -1673,6 +1743,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/225/234"
                 }
               ],
+              "categoryRef": "234@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -1704,6 +1775,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/225/235"
                 }
               ],
+              "categoryRef": "235@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -1735,6 +1807,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/225/304"
                 }
               ],
+              "categoryRef": "304@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -1766,6 +1839,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/225/922"
                 }
               ],
+              "categoryRef": "922@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -1797,6 +1871,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/225/373"
                 }
               ],
+              "categoryRef": "373@inSPIRED-Computers",
               "description": "The Computers products and services catalog.",
               "hasOnlineProducts": false,
               "hasOnlineSubCategories": true,
@@ -1818,6 +1893,13 @@
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers"
     },
     {
+      "attributes": [
+        {
+          "name": "ShowInMenu",
+          "type": "String",
+          "value": "True"
+        }
+      ],
       "categoryPath": [
         {
           "id": "Home-Entertainment",
@@ -1826,6 +1908,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment"
         }
       ],
+      "categoryRef": "Home-Entertainment@inSPIRED-Home-Entertainment",
       "description": "The TV & Home Entertainment products and services catalog.",
       "hasOnlineProducts": false,
       "hasOnlineSubCategories": true,
@@ -1849,6 +1932,7 @@
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/1058"
             }
           ],
+          "categoryRef": "1058@inSPIRED-Home-Entertainment",
           "description": "The TV & Home Entertainment products and services catalog.",
           "hasOnlineProducts": false,
           "hasOnlineSubCategories": true,
@@ -1878,6 +1962,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/1058/1296"
                 }
               ],
+              "categoryRef": "1296@inSPIRED-Home-Entertainment",
               "description": "The TV & Home Entertainment products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -1909,6 +1994,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/1058/1001"
                 }
               ],
+              "categoryRef": "1001@inSPIRED-Home-Entertainment",
               "description": "The TV & Home Entertainment products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -1940,6 +2026,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/1058/1020"
                 }
               ],
+              "categoryRef": "1020@inSPIRED-Home-Entertainment",
               "description": "The TV & Home Entertainment products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -1971,6 +2058,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/1058/1082"
                 }
               ],
+              "categoryRef": "1082@inSPIRED-Home-Entertainment",
               "description": "The TV & Home Entertainment products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -2002,6 +2090,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/1058/1081"
                 }
               ],
+              "categoryRef": "1081@inSPIRED-Home-Entertainment",
               "description": "The TV & Home Entertainment products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -2033,6 +2122,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/1058/1373"
                 }
               ],
+              "categoryRef": "1373@inSPIRED-Home-Entertainment",
               "description": "The TV & Home Entertainment products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -2064,6 +2154,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/1058/1344"
                 }
               ],
+              "categoryRef": "1344@inSPIRED-Home-Entertainment",
               "description": "The TV & Home Entertainment products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -2095,6 +2186,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/1058/857"
                 }
               ],
+              "categoryRef": "857@inSPIRED-Home-Entertainment",
               "description": "The TV & Home Entertainment products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -2125,6 +2217,7 @@
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/84214"
             }
           ],
+          "categoryRef": "84214@inSPIRED-Home-Entertainment",
           "description": "The TV & Home Entertainment products and services catalog.",
           "hasOnlineProducts": false,
           "hasOnlineSubCategories": true,
@@ -2154,6 +2247,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/84214/71515"
                 }
               ],
+              "categoryRef": "71515@inSPIRED-Home-Entertainment",
               "description": "The TV & Home Entertainment products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -2185,6 +2279,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/84214/8429"
                 }
               ],
+              "categoryRef": "8429@inSPIRED-Home-Entertainment",
               "description": "The TV & Home Entertainment products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -2215,6 +2310,7 @@
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/SmartHome"
             }
           ],
+          "categoryRef": "SmartHome@inSPIRED-Home-Entertainment",
           "description": "Smart home solutions for light, doors and windows or heating",
           "hasOnlineProducts": true,
           "hasOnlineSubCategories": false,
@@ -2240,6 +2336,7 @@
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/220"
             }
           ],
+          "categoryRef": "220@inSPIRED-Home-Entertainment",
           "description": "The TV & Home Entertainment products and services catalog.",
           "hasOnlineProducts": false,
           "hasOnlineSubCategories": true,
@@ -2269,6 +2366,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/220/558"
                 }
               ],
+              "categoryRef": "558@inSPIRED-Home-Entertainment",
               "description": "The TV & Home Entertainment products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -2300,6 +2398,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/220/1078"
                 }
               ],
+              "categoryRef": "1078@inSPIRED-Home-Entertainment",
               "description": "The TV & Home Entertainment products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -2331,6 +2430,7 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/220/1584"
                 }
               ],
+              "categoryRef": "1584@inSPIRED-Home-Entertainment",
               "description": "The TV & Home Entertainment products and services catalog.",
               "hasOnlineProducts": true,
               "hasOnlineSubCategories": false,
@@ -2352,6 +2452,13 @@
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment"
     },
     {
+      "attributes": [
+        {
+          "name": "ShowInMenu",
+          "type": "String",
+          "value": "True"
+        }
+      ],
       "categoryPath": [
         {
           "id": "Specials",
@@ -2360,6 +2467,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials"
         }
       ],
+      "categoryRef": "Specials@inSPIRED-inTRONICS-Specials",
       "description": "Special products and services.",
       "hasOnlineProducts": false,
       "hasOnlineSubCategories": true,
@@ -2383,6 +2491,7 @@
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/GiftCardsCertificates"
             }
           ],
+          "categoryRef": "GiftCardsCertificates@inSPIRED-inTRONICS-Specials",
           "description": "Gift Cards & Certificates",
           "hasOnlineProducts": true,
           "hasOnlineSubCategories": false,
@@ -2408,6 +2517,7 @@
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/HotDeals"
             }
           ],
+          "categoryRef": "HotDeals@inSPIRED-inTRONICS-Specials",
           "description": "Hot Deals",
           "hasOnlineProducts": true,
           "hasOnlineSubCategories": false,
@@ -2433,6 +2543,7 @@
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/NewProducts"
             }
           ],
+          "categoryRef": "NewProducts@inSPIRED-inTRONICS-Specials",
           "description": "Neue Produkte",
           "hasOnlineProducts": true,
           "hasOnlineSubCategories": false,
@@ -2458,6 +2569,7 @@
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/TopSellers"
             }
           ],
+          "categoryRef": "TopSellers@inSPIRED-inTRONICS-Specials",
           "description": "Top Sellers",
           "hasOnlineProducts": true,
           "hasOnlineSubCategories": false,
@@ -2474,5 +2586,5 @@
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials"
     }
   ],
-  "type": "ResourceCollection"
+  "type": "Categories"
 }

@@ -6,7 +6,7 @@
         {
           "name": "sku",
           "type": "String",
-          "value": "3957277"
+          "value": "2936350"
         },
         {
           "name": "minOrderQuantity",
@@ -49,7 +49,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 130.33
+            "value": 317.95
           }
         },
         {
@@ -59,7 +59,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 130.33
+            "value": 317.95
           }
         },
         {
@@ -78,16 +78,16 @@
           "value": "Kodak"
         }
       ],
-      "description": "EasyShare M575 14 MP, 5X optical, Brown",
-      "title": "Kodak M series EasyShare M575",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/3957277"
+      "description": "EasyShare Z 950 12 MP, 10x, 7.62 cm (3.0 \") LCD, HD Video",
+      "title": "Kodak Z series EasyShare Z 950",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/2936350"
     },
     {
       "attributes": [
         {
           "name": "sku",
           "type": "String",
-          "value": "603562"
+          "value": "5920589"
         },
         {
           "name": "minOrderQuantity",
@@ -130,7 +130,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 1432.33
+            "value": 154.23
           }
         },
         {
@@ -140,7 +140,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 1432.33
+            "value": 154.23
           }
         },
         {
@@ -156,19 +156,19 @@
         {
           "name": "manufacturer",
           "type": "String",
-          "value": "Canon"
+          "value": "Pentax"
         }
       ],
-      "description": "EF 135 mm f/2.0L USM",
-      "title": "Canon EF 135 mm f/2.0L USM",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/603562"
+      "description": "Optio RZ10, 14.1MP, 10x Superzoom, HDTV Video, CCD, ISO 80 - 6400, TTL, Orange",
+      "title": "Pentax Optio RZ10",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/5920589"
     },
     {
       "attributes": [
         {
           "name": "sku",
           "type": "String",
-          "value": "9780321934161"
+          "value": "4319050"
         },
         {
           "name": "minOrderQuantity",
@@ -211,7 +211,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 26.98
+            "value": 518.29
           }
         },
         {
@@ -221,7 +221,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 26.98
+            "value": 518.29
           }
         },
         {
@@ -237,27 +237,93 @@
         {
           "name": "manufacturer",
           "type": "String",
-          "value": "GoPro"
-        },
-        {
-          "name": "promotions",
-          "type": "LinkResourceCollectionRO",
-          "value": {
-            "elements": [
-              {
-                "itemId": "5PercentOnActionCams",
-                "title": "5 % discount on action cameras and accessories",
-                "type": "Link",
-                "uri": "inSPIRED-inTRONICS-Site/-/promotions/5PercentOnActionCams"
-              }
-            ],
-            "type": "ResourceCollection"
-          }
+          "value": "Fujifilm"
         }
       ],
-      "description": "This 296-page book features everything you need to know about how to shoot, edit",
-      "title": "GoPro: Professional Guide to Filmmaking",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/9780321934161"
+      "description": "FinePix HS10 - 10.3MP, 30x, 7.62 cm (3 \") LCD, black",
+      "title": "Fujifilm FinePix HS10",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/4319050"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "5920586"
+        },
+        {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "image",
+          "type": "String",
+          "value": "assets/img/not_available.png"
+        },
+        {
+          "name": "productMaster",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "mastered",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "listPrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 153.7
+          }
+        },
+        {
+          "name": "salePrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 153.7
+          }
+        },
+        {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "0.0"
+        },
+        {
+          "name": "availability",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "manufacturer",
+          "type": "String",
+          "value": "Pentax"
+        }
+      ],
+      "description": "Optio RZ10, 14.1MP, 10x Superzoom, HDTV Video, CCD, ISO 80 - 6400, TTL, Black",
+      "title": "Pentax Optio RZ10",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/5920586"
     },
     {
       "attributes": [
@@ -345,7 +411,7 @@
         {
           "name": "sku",
           "type": "String",
-          "value": "3795168"
+          "value": "4144132"
         },
         {
           "name": "minOrderQuantity",
@@ -388,7 +454,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 70.97
+            "value": 409.43
           }
         },
         {
@@ -398,331 +464,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 70.97
-          }
-        },
-        {
-          "name": "roundedAverageRating",
-          "type": "String",
-          "value": "0.0"
-        },
-        {
-          "name": "availability",
-          "type": "Boolean",
-          "value": true
-        },
-        {
-          "name": "manufacturer",
-          "type": "String",
-          "value": "Creative Labs"
-        }
-      ],
-      "description": "Live! Cam Socialize HD",
-      "title": "Creative Labs Live! Cam Socialize HD",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/3795168"
-    },
-    {
-      "attributes": [
-        {
-          "name": "sku",
-          "type": "String",
-          "value": "1980694"
-        },
-        {
-          "name": "minOrderQuantity",
-          "type": "ResourceAttribute",
-          "value": {
-            "type": "Quantity",
-            "unit": "",
-            "value": 1
-          }
-        },
-        {
-          "name": "packingUnit",
-          "type": "String",
-          "value": ""
-        },
-        {
-          "name": "inStock",
-          "type": "Boolean",
-          "value": true
-        },
-        {
-          "name": "image",
-          "type": "String",
-          "value": "assets/img/not_available.png"
-        },
-        {
-          "name": "productMaster",
-          "type": "Boolean",
-          "value": false
-        },
-        {
-          "name": "mastered",
-          "type": "Boolean",
-          "value": false
-        },
-        {
-          "name": "listPrice",
-          "type": "ResourceAttribute",
-          "value": {
-            "currency": "USD",
-            "currencyMnemonic": "USD",
-            "type": "Money",
-            "value": 99.11
-          }
-        },
-        {
-          "name": "salePrice",
-          "type": "ResourceAttribute",
-          "value": {
-            "currency": "USD",
-            "currencyMnemonic": "USD",
-            "type": "Money",
-            "value": 99.11
-          }
-        },
-        {
-          "name": "roundedAverageRating",
-          "type": "String",
-          "value": "0.0"
-        },
-        {
-          "name": "availability",
-          "type": "Boolean",
-          "value": true
-        },
-        {
-          "name": "manufacturer",
-          "type": "String",
-          "value": "Kodak"
-        }
-      ],
-      "description": "Zx1 3MP, 1/4.5: CMOS, 5.08 cm (2.0 \") LCD, 128MB, 90g",
-      "title": "Kodak Zx1",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/1980694"
-    },
-    {
-      "attributes": [
-        {
-          "name": "sku",
-          "type": "String",
-          "value": "7912064"
-        },
-        {
-          "name": "minOrderQuantity",
-          "type": "ResourceAttribute",
-          "value": {
-            "type": "Quantity",
-            "unit": "",
-            "value": 1
-          }
-        },
-        {
-          "name": "packingUnit",
-          "type": "String",
-          "value": ""
-        },
-        {
-          "name": "inStock",
-          "type": "Boolean",
-          "value": true
-        },
-        {
-          "name": "image",
-          "type": "String",
-          "value": "assets/img/not_available.png"
-        },
-        {
-          "name": "productMaster",
-          "type": "Boolean",
-          "value": false
-        },
-        {
-          "name": "mastered",
-          "type": "Boolean",
-          "value": false
-        },
-        {
-          "name": "listPrice",
-          "type": "ResourceAttribute",
-          "value": {
-            "currency": "USD",
-            "currencyMnemonic": "USD",
-            "type": "Money",
-            "value": 126.67
-          }
-        },
-        {
-          "name": "salePrice",
-          "type": "ResourceAttribute",
-          "value": {
-            "currency": "USD",
-            "currencyMnemonic": "USD",
-            "type": "Money",
-            "value": 126.67
-          }
-        },
-        {
-          "name": "roundedAverageRating",
-          "type": "String",
-          "value": "0.0"
-        },
-        {
-          "name": "availability",
-          "type": "Boolean",
-          "value": true
-        },
-        {
-          "name": "manufacturer",
-          "type": "String",
-          "value": "Kodak"
-        }
-      ],
-      "description": "PlayFull Ze1, 5MP, 4x, 3.81 cm (1.5 \") LCD, 128Mb, USB 2.0, HDMI, Blue/Silver",
-      "title": "Kodak PlayFull Ze1",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/7912064"
-    },
-    {
-      "attributes": [
-        {
-          "name": "sku",
-          "type": "String",
-          "value": "9438726"
-        },
-        {
-          "name": "minOrderQuantity",
-          "type": "ResourceAttribute",
-          "value": {
-            "type": "Quantity",
-            "unit": "",
-            "value": 1
-          }
-        },
-        {
-          "name": "packingUnit",
-          "type": "String",
-          "value": ""
-        },
-        {
-          "name": "inStock",
-          "type": "Boolean",
-          "value": true
-        },
-        {
-          "name": "image",
-          "type": "String",
-          "value": "assets/img/not_available.png"
-        },
-        {
-          "name": "productMaster",
-          "type": "Boolean",
-          "value": false
-        },
-        {
-          "name": "mastered",
-          "type": "Boolean",
-          "value": false
-        },
-        {
-          "name": "listPrice",
-          "type": "ResourceAttribute",
-          "value": {
-            "currency": "USD",
-            "currencyMnemonic": "USD",
-            "type": "Money",
-            "value": 190.79
-          }
-        },
-        {
-          "name": "salePrice",
-          "type": "ResourceAttribute",
-          "value": {
-            "currency": "USD",
-            "currencyMnemonic": "USD",
-            "type": "Money",
-            "value": 190.79
-          }
-        },
-        {
-          "name": "roundedAverageRating",
-          "type": "String",
-          "value": "0.0"
-        },
-        {
-          "name": "availability",
-          "type": "Boolean",
-          "value": true
-        },
-        {
-          "name": "manufacturer",
-          "type": "String",
-          "value": "Creative Labs"
-        }
-      ],
-      "description": "12MP, 1920 x 1080, 30fps, USB 2.0, Black",
-      "title": "Creative Labs Live Cam inPerson HD",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/9438726"
-    },
-    {
-      "attributes": [
-        {
-          "name": "sku",
-          "type": "String",
-          "value": "5920587"
-        },
-        {
-          "name": "minOrderQuantity",
-          "type": "ResourceAttribute",
-          "value": {
-            "type": "Quantity",
-            "unit": "",
-            "value": 1
-          }
-        },
-        {
-          "name": "packingUnit",
-          "type": "String",
-          "value": ""
-        },
-        {
-          "name": "inStock",
-          "type": "Boolean",
-          "value": true
-        },
-        {
-          "name": "image",
-          "type": "String",
-          "value": "assets/img/not_available.png"
-        },
-        {
-          "name": "productMaster",
-          "type": "Boolean",
-          "value": false
-        },
-        {
-          "name": "mastered",
-          "type": "Boolean",
-          "value": false
-        },
-        {
-          "name": "listPrice",
-          "type": "ResourceAttribute",
-          "value": {
-            "currency": "USD",
-            "currencyMnemonic": "USD",
-            "type": "Money",
-            "value": 154.23
-          }
-        },
-        {
-          "name": "salePrice",
-          "type": "ResourceAttribute",
-          "value": {
-            "currency": "USD",
-            "currencyMnemonic": "USD",
-            "type": "Money",
-            "value": 154.23
+            "value": 409.43
           }
         },
         {
@@ -741,9 +483,267 @@
           "value": "Pentax"
         }
       ],
-      "description": "Optio RZ10, 14.1MP, 10x Superzoom, HDTV Video, CCD, ISO 80 - 6400, TTL, White",
-      "title": "Pentax Optio RZ10",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/5920587"
+      "description": "Optio W90 digital cameras 12.1 Mp",
+      "title": "Pentax Optio W90",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/4144132"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "4554679"
+        },
+        {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "image",
+          "type": "String",
+          "value": "assets/img/not_available.png"
+        },
+        {
+          "name": "productMaster",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "mastered",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "listPrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 11.61
+          }
+        },
+        {
+          "name": "salePrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 11.61
+          }
+        },
+        {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "0.0"
+        },
+        {
+          "name": "availability",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "manufacturer",
+          "type": "String",
+          "value": "Fujifilm"
+        }
+      ],
+      "description": "SC-Z70 - Soft Case for FinePix Z70, silver",
+      "title": "Fujifilm SC-Z70",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/4554679"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "0027242882539"
+        },
+        {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "image",
+          "type": "String",
+          "value": "assets/img/not_available.png"
+        },
+        {
+          "name": "productMaster",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "mastered",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "listPrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 22.82
+          }
+        },
+        {
+          "name": "salePrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 22.82
+          }
+        },
+        {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "0.0"
+        },
+        {
+          "name": "availability",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "manufacturer",
+          "type": "String",
+          "value": "Sony"
+        }
+      ],
+      "description": "Sony NP-BY1, 640 mAh, Digital camera, Lithium-Ion, 15g",
+      "title": "Sony NP-BY1",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/0027242882539"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "0818279012576"
+        },
+        {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "image",
+          "type": "String",
+          "value": "assets/img/not_available.png"
+        },
+        {
+          "name": "productMaster",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "mastered",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "listPrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 22.34
+          }
+        },
+        {
+          "name": "salePrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 22.34
+          }
+        },
+        {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "0.0"
+        },
+        {
+          "name": "availability",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "manufacturer",
+          "type": "String",
+          "value": "GoPro"
+        },
+        {
+          "name": "promotions",
+          "type": "LinkResourceCollectionRO",
+          "value": {
+            "elements": [
+              {
+                "itemId": "5PercentOnActionCams",
+                "title": "5 % discount on action cameras and accessories",
+                "type": "Link",
+                "uri": "inSPIRED-inTRONICS-Site/-/promotions/5PercentOnActionCams"
+              }
+            ],
+            "type": "ResourceCollection"
+          }
+        }
+      ],
+      "description": "Floating GoPro hand grip for stable shooting in and out of the water.",
+      "title": "GoPro The Handler",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/0818279012576"
     }
   ],
   "name": "products",
