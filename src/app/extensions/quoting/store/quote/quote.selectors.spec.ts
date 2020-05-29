@@ -33,7 +33,7 @@ describe('Quote Selectors', () => {
       }),
     });
 
-    store$ = TestBed.get(TestStore);
+    store$ = TestBed.inject(TestStore);
   });
 
   describe('with empty state', () => {
@@ -46,7 +46,10 @@ describe('Quote Selectors', () => {
     beforeEach(() => {
       store$.dispatch(
         new LoadQuotesSuccess({
-          quotes: [{ id: 'test', items: [{ productSKU: 'test' }] }, { id: 'test2', items: [] }] as QuoteData[],
+          quotes: [
+            { id: 'test', items: [{ productSKU: 'test' }] },
+            { id: 'test2', items: [] },
+          ] as QuoteData[],
         })
       );
       store$.dispatch(new LoadProductSuccess({ product: { sku: 'test' } as Product }));

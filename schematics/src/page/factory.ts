@@ -4,11 +4,11 @@ import {
   SchematicsException,
   Tree,
   apply,
+  applyTemplates,
   chain,
   mergeWith,
   move,
   schematic,
-  template,
   url,
 } from '@angular-devkit/schematics';
 import { buildDefaultPath, getProject } from '@schematics/angular/utility/project';
@@ -17,35 +17,48 @@ import * as ts from 'typescript';
 
 import { applyNameAndPath, detectExtension, determineArtifactName } from '../utils/common';
 import { readIntoSourceFile } from '../utils/filesystem';
+import { applyLintFix } from '../utils/lint-fix';
+import { addImportToFile } from '../utils/registration';
 
-import { PwaPageOptionsSchema as Options } from './schema';
+import { PWAPageOptionsSchema as Options } from './schema';
 
 function addRouteToArray(
-  options: { name?: string; routingModule?: string; child?: string },
+  options: { name?: string; routingModule?: string; child?: string; lazy?: boolean },
   host: Tree,
   position: number,
   insertComma: boolean
 ) {
   const dasherizedName = strings.dasherize(options.name);
+  const path = options.child ? options.child : dasherizedName.replace(/-/, '/');
+  if (options.lazy) {
+    const loadChildren = `() => import('${
+      options.child ? '..' : '.'
+    }/${dasherizedName}/${dasherizedName}-page.module').then(m => m.${strings.classify(dasherizedName)}PageModule)`;
 
-  const loadChildren = `() => import('${
-    options.child ? '..' : '.'
-  }/${dasherizedName}/${dasherizedName}-page.module').then(m => m.${strings.classify(dasherizedName)}PageModule)`;
-  const path = options.child ? options.child : dasherizedName;
-
-  const recorder = host.beginUpdate(options.routingModule);
-  recorder.insertRight(position, `${insertComma ? ', ' : ''}{ path: '${path}', loadChildren: ${loadChildren} }`);
-  host.commitUpdate(recorder);
+    const recorder = host.beginUpdate(options.routingModule);
+    recorder.insertRight(position, `${insertComma ? ', ' : ''}{ path: '${path}', loadChildren: ${loadChildren} }`);
+    host.commitUpdate(recorder);
+  } else {
+    const recorder = host.beginUpdate(options.routingModule);
+    recorder.insertRight(
+      position,
+      `${insertComma ? ', ' : ''}{ path: '${path}', component: ${strings.classify(options.name)}PageComponent }`
+    );
+    host.commitUpdate(recorder);
+  }
 }
 
-function determineRoutingModule(host: Tree, options: { name?: string; project?: string; extension?: string }) {
+function determineRoutingModule(
+  host: Tree,
+  options: { name?: string; project?: string; extension?: string; lazy?: boolean }
+) {
   const project = getProject(host, options.project);
 
   let routingModuleLocation: string;
   let child: string;
 
   const match = options.name.match(/(.*)\-([a-z0-9]+)/);
-  if (match && match[1] && match[2]) {
+  if (options.lazy && match && match[1] && match[2]) {
     const parent = match[1];
     child = match[2];
     // tslint:disable-next-line:no-console
@@ -56,7 +69,7 @@ function determineRoutingModule(host: Tree, options: { name?: string; project?: 
   } else {
     routingModuleLocation = options.extension
       ? `extensions/${options.extension}/pages/${options.extension}-routing.module.ts`
-      : 'pages/app-routing.module.ts';
+      : (project.root ? 'pages/' + project.root.replace(/^.*?\//g, '') : 'pages/app') + '-routing.module.ts';
   }
 
   const routingModule = normalize(`${buildDefaultPath(project)}/${routingModuleLocation}`);
@@ -67,10 +80,14 @@ function determineRoutingModule(host: Tree, options: { name?: string; project?: 
   };
 }
 
-export function addRouteToRoutingModule(options: { extension?: string; project?: string; name?: string }): Rule {
+export function addRouteToRoutingModule(options: {
+  extension?: string;
+  project?: string;
+  name?: string;
+  routingModule?: string;
+}): Rule {
   return host => {
-    const newOptions = determineRoutingModule(host, options);
-    const source = readIntoSourceFile(host, newOptions.routingModule);
+    const source = readIntoSourceFile(host, options.routingModule);
     forEachToken(source, node => {
       if (node.kind === ts.SyntaxKind.Identifier && /^[a-zA-Z0-9]*(R|r)outes$/.test(node.getText())) {
         const parent = node.parent;
@@ -81,9 +98,9 @@ export function addRouteToRoutingModule(options: { extension?: string; project?:
             if (routes.getChildCount() > 0) {
               const lastChild = routes.getChildren()[routes.getChildCount() - 1];
               const insertComma = lastChild.kind !== ts.SyntaxKind.CommaToken;
-              addRouteToArray(newOptions, host, lastChild.end, insertComma);
+              addRouteToArray(options, host, lastChild.end, insertComma);
             } else {
-              addRouteToArray(newOptions, host, routes.end, false);
+              addRouteToArray(options, host, routes.end, false);
             }
           }
         }
@@ -101,19 +118,26 @@ export function createPage(options: Options): Rule {
     options = detectExtension('page', host, options);
     options = applyNameAndPath('page', host, options);
     options = determineArtifactName('page', host, options);
+    options = determineRoutingModule(host, options);
 
     const operations: Rule[] = [];
-    operations.push(
-      mergeWith(
-        apply(url('./files'), [
-          template({
-            ...strings,
-            ...options,
-          }),
-          move(options.path),
-        ])
-      )
-    );
+
+    if (options.lazy) {
+      operations.push(
+        mergeWith(
+          apply(url('./files'), [
+            applyTemplates({
+              ...strings,
+              ...options,
+            }),
+            move(options.path),
+          ])
+        )
+      );
+    } else {
+      operations.push(addImportToFile({ ...options, module: options.routingModule }));
+    }
+
     operations.push(
       schematic('component', {
         ...options,
@@ -122,7 +146,9 @@ export function createPage(options: Options): Rule {
         flat: true,
       })
     );
+
     operations.push(addRouteToRoutingModule(options));
+    operations.push(applyLintFix());
 
     return chain(operations);
   };

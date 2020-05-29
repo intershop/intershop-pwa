@@ -41,15 +41,9 @@ import { getRecentlyViewedProducts } from './recently';
 import { SuggestSearch } from './search';
 import { shoppingEffects, shoppingReducers } from './shopping-store.module';
 
-const getCategoryIds = createSelector(
-  getCategoryTree,
-  tree => Object.keys(tree.nodes)
-);
+const getCategoryIds = createSelector(getCategoryTree, tree => Object.keys(tree.nodes));
 
-const getProductIds = createSelector(
-  getProductEntities,
-  entities => Object.keys(entities)
-);
+const getProductIds = createSelector(getProductEntities, entities => Object.keys(entities));
 
 describe('Shopping Store', () => {
   let store: TestStore;
@@ -216,8 +210,8 @@ describe('Shopping Store', () => {
       ],
     });
 
-    store = TestBed.get(TestStore);
-    router = TestBed.get(Router);
+    store = TestBed.inject(TestStore);
+    router = TestBed.inject(Router);
     store.reset();
   });
 

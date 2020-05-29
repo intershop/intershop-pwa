@@ -8,10 +8,9 @@ import { ProductAddToQuoteDialogComponent } from './shared/product/product-add-t
 import { ProductAddToQuoteComponent } from './shared/product/product-add-to-quote/product-add-to-quote.component';
 import { QuoteEditComponent } from './shared/quote/quote-edit/quote-edit.component';
 import { QuoteStateComponent } from './shared/quote/quote-state/quote-state.component';
-import { QuotingStoreModule } from './store/quoting-store.module';
 
 @NgModule({
-  imports: [QuotingStoreModule, SharedModule],
+  imports: [SharedModule],
   declarations: [
     BasketAddToQuoteComponent,
     ProductAddToQuoteComponent,
@@ -21,11 +20,5 @@ import { QuotingStoreModule } from './store/quoting-store.module';
     QuoteWidgetComponent,
   ],
   exports: [QuoteEditComponent, QuoteStateComponent, SharedModule],
-  entryComponents: [
-    BasketAddToQuoteComponent,
-    ProductAddToQuoteComponent,
-    ProductAddToQuoteDialogComponent,
-    QuoteWidgetComponent,
-  ],
 })
 export class QuotingModule {}

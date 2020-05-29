@@ -11,7 +11,7 @@ describe('Make Href Pipe', () => {
     TestBed.configureTestingModule({
       providers: [MakeHrefPipe],
     });
-    makeHrefPipe = TestBed.get(MakeHrefPipe);
+    makeHrefPipe = TestBed.inject(MakeHrefPipe);
   });
 
   it('should be created', () => {

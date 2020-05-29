@@ -25,7 +25,7 @@ describe('Line Item Description Component', () => {
   let component: LineItemDescriptionComponent;
   let fixture: ComponentFixture<LineItemDescriptionComponent>;
   let element: HTMLElement;
-  let store$: Store<{}>;
+  let store$: Store;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -50,7 +50,7 @@ describe('Line Item Description Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.pli = BasketMockData.getBasketItem();
-    store$ = TestBed.get(Store);
+    store$ = TestBed.inject(Store);
   });
 
   it('should be created', () => {

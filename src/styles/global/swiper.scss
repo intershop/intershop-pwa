@@ -24,10 +24,18 @@
 
   .swiper-button-next {
     background-image: escape-svg($carousel-control-next-icon-bg);
+
+    &::after {
+      content: '';
+    }
   }
 
   .swiper-button-prev {
     background-image: escape-svg($carousel-control-prev-icon-bg);
+
+    &::after {
+      content: '';
+    }
   }
 
   .swiper-pagination {

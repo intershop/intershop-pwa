@@ -14,7 +14,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 @Component({
   selector: 'ish-basket-invoice-address-widget',
   templateUrl: './basket-invoice-address-widget.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class BasketInvoiceAddressWidgetComponent implements OnInit, OnDestroy {
   @Input() showErrors = true;

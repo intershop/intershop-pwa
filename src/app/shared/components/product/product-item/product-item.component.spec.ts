@@ -78,7 +78,7 @@ describe('Product Item Component', () => {
 
         const emitter = spy(component.productSkuChange);
 
-        component.replaceVariation({ HDD: '256' });
+        component.replaceVariation({ selection: { HDD: '256' } });
 
         verify(emitter.emit(anything())).once();
         const [sku] = capture(emitter.emit).last();
@@ -88,7 +88,7 @@ describe('Product Item Component', () => {
       it('should trigger add product to cart with right sku', () => {
         expect(() => fixture.detectChanges()).not.toThrow();
 
-        component.replaceVariation({ HDD: '256' });
+        component.replaceVariation({ selection: { HDD: '256' } });
         component.addToBasket(4);
 
         verify(shoppingFacade.addProductToBasket(anything(), anything())).once();

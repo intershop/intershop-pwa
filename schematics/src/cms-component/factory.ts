@@ -3,12 +3,12 @@ import {
   Rule,
   SchematicsException,
   apply,
+  applyTemplates,
   chain,
   filter,
   mergeWith,
   move,
   noop,
-  template,
   url,
 } from '@angular-devkit/schematics';
 
@@ -19,14 +19,10 @@ import {
   findDeclaringModule,
   generateSelector,
 } from '../utils/common';
-import {
-  addDeclarationToNgModule,
-  addEntryComponentToNgModule,
-  addImportToFile,
-  addProviderToNgModule,
-} from '../utils/registration';
+import { applyLintFix } from '../utils/lint-fix';
+import { addDeclarationToNgModule, addImportToFile, addProviderToNgModule } from '../utils/registration';
 
-import { PwaCmsComponentOptionsSchema as Options } from './schema';
+import { PWACMSComponentOptionsSchema as Options } from './schema';
 
 export function createCMSComponent(options: Options): Rule {
   return host => {
@@ -51,7 +47,6 @@ export function createCMSComponent(options: Options): Rule {
 
     const operations = [];
     operations.push(addDeclarationToNgModule(options));
-    operations.push(addEntryComponentToNgModule(options));
 
     let cmModuleOptions = { ...options, module: 'shared/cms/cms.module' };
     cmModuleOptions = findDeclaringModule(host, cmModuleOptions);
@@ -73,8 +68,8 @@ export function createCMSComponent(options: Options): Rule {
     operations.push(
       mergeWith(
         apply(url('./files'), [
-          options.styleFile ? noop() : filter(path => !path.endsWith('.__styleext__')),
-          template({
+          options.styleFile ? noop() : filter(path => !path.includes('.scss')),
+          applyTemplates({
             ...strings,
             ...options,
             'if-flat': s => (options.flat ? '' : s),
@@ -83,6 +78,8 @@ export function createCMSComponent(options: Options): Rule {
         ])
       )
     );
+
+    operations.push(applyLintFix());
 
     return chain(operations);
   };

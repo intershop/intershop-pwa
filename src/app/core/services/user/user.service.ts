@@ -1,11 +1,12 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import b64u from 'b64u';
+import { pick } from 'lodash-es';
 import { EMPTY, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
-import { Credentials, LoginCredentials } from 'ish-core/models/credentials/credentials.model';
+import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { CustomerData } from 'ish-core/models/customer/customer.interface';
 import { CustomerMapper } from 'ish-core/models/customer/customer.mapper';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
@@ -41,12 +42,14 @@ export class UserService {
    *                          For private customers user data are also returned.
    *                          For business customers user data are returned by a separate call (getCompanyUserData).
    */
-  signinUser(loginCredentials: LoginCredentials): Observable<CustomerUserType> {
+  signinUser(loginCredentials: Credentials): Observable<CustomerUserType> {
     const headers = new HttpHeaders().set(
       ApiService.AUTHORIZATION_HEADER_KEY,
       'BASIC ' + b64u.toBase64(b64u.encode(`${loginCredentials.login}:${loginCredentials.password}`))
     );
-    return this.apiService.get<CustomerData>('customers/-', { headers }).pipe(map(CustomerMapper.mapLoginData));
+    return this.apiService
+      .get<CustomerData>('customers/-', { headers })
+      .pipe(map(CustomerMapper.mapLoginData));
   }
 
   signinUserByToken(apiToken: string): Observable<CustomerUserType> {
@@ -95,14 +98,9 @@ export class UserService {
       };
     }
 
-    if (body.captchaResponse) {
-      return this.apiService.post<void>('customers', newCustomer, {
-        headers: this.appendCaptchaHeaders(body.captchaResponse, body.captchaAction),
-      });
-      // without captcha
-    } else {
-      return this.apiService.post<void>('customers', newCustomer);
-    }
+    return this.apiService.post('customers', newCustomer, {
+      captcha: pick(body, ['captcha', 'captchaAction']),
+    });
   }
 
   /**
@@ -195,11 +193,8 @@ export class UserService {
   requestPasswordReminder(data: PasswordReminder) {
     const options: AvailableOptions = {
       skipApiErrorHandling: true,
+      captcha: pick(data, ['captcha', 'captchaAction']),
     };
-
-    if (data.captcha) {
-      options.headers = this.appendCaptchaHeaders(data.captcha, data.captchaAction);
-    }
 
     return this.apiService.post('security/reminder', { answer: '', ...data }, options);
   }
@@ -213,22 +208,5 @@ export class UserService {
       skipApiErrorHandling: true,
     };
     return this.apiService.post('security/password', data, options);
-  }
-
-  // provides the request header for the appropriate captcha service
-  private appendCaptchaHeaders(captcha: string, captchaAction: string): HttpHeaders {
-    let headers = new HttpHeaders();
-    // captcha V3
-    if (captchaAction) {
-      headers = headers.set(
-        ApiService.AUTHORIZATION_HEADER_KEY,
-        `CAPTCHA recaptcha_token=${captcha} action=${captchaAction}`
-      );
-      // captcha V2
-    } else {
-      // TODO: remove second parameter 'foo=bar' that currently only resolves a shortcoming of the server side implemenation that still requires two parameters
-      headers = headers.set(ApiService.AUTHORIZATION_HEADER_KEY, `CAPTCHA g-recaptcha-response=${captcha} foo=bar`);
-    }
-    return headers;
   }
 }

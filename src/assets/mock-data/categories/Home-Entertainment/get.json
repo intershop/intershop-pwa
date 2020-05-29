@@ -1,4 +1,11 @@
 {
+  "attributes": [
+    {
+      "name": "ShowInMenu",
+      "type": "String",
+      "value": "True"
+    }
+  ],
   "categoryPath": [
     {
       "id": "Home-Entertainment",
@@ -7,6 +14,7 @@
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment"
     }
   ],
+  "categoryRef": "Home-Entertainment@inSPIRED-Home-Entertainment",
   "description": "The TV & Home Entertainment products and services catalog.",
   "hasOnlineProducts": false,
   "hasOnlineSubCategories": true,
@@ -14,8 +22,7 @@
   "name": "Home Entertainment",
   "online": "1",
   "seoAttributes": {
-    "metaDescription": "Home Entertainment, Gaming, Smart Home, TVs & Projectors, Audio & Video always special prices for Home Entertainment",
-    "metaKeywords": [],
+    "metaDescription": "Home Entertainment, TVs & Projectors, Gaming, Audio & Video, Smart Home always special prices for Home Entertainment",
     "metaTitle": "Home Entertainment favorable buying at our shop",
     "robots": ["index", "follow"]
   },
@@ -35,6 +42,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/1058"
         }
       ],
+      "categoryRef": "1058@inSPIRED-Home-Entertainment",
       "description": "The TV & Home Entertainment products and services catalog.",
       "hasOnlineProducts": false,
       "hasOnlineSubCategories": true,
@@ -72,6 +80,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/84214"
         }
       ],
+      "categoryRef": "84214@inSPIRED-Home-Entertainment",
       "description": "The TV & Home Entertainment products and services catalog.",
       "hasOnlineProducts": false,
       "hasOnlineSubCategories": true,
@@ -109,6 +118,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/SmartHome"
         }
       ],
+      "categoryRef": "SmartHome@inSPIRED-Home-Entertainment",
       "description": "Smart home solutions for light, doors and windows or heating",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
@@ -146,6 +156,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/220"
         }
       ],
+      "categoryRef": "220@inSPIRED-Home-Entertainment",
       "description": "The TV & Home Entertainment products and services catalog.",
       "hasOnlineProducts": false,
       "hasOnlineSubCategories": true,

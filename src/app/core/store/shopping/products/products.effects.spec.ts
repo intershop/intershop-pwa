@@ -27,7 +27,7 @@ import { ProductsEffects } from './products.effects';
 describe('Products Effects', () => {
   let actions$: Observable<Action>;
   let effects: ProductsEffects;
-  let store$: Store<{}>;
+  let store$: Store;
   let productsServiceMock: ProductsService;
   let router: Router;
   let location: Location;
@@ -84,11 +84,11 @@ describe('Products Effects', () => {
       ],
     });
 
-    effects = TestBed.get(ProductsEffects);
-    store$ = TestBed.get(Store);
-    router = TestBed.get(Router);
-    location = TestBed.get(Location);
-    store$.dispatch(new SetProductListingPageSize({ itemsPerPage: TestBed.get(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
+    effects = TestBed.inject(ProductsEffects);
+    store$ = TestBed.inject(Store);
+    router = TestBed.inject(Router);
+    location = TestBed.inject(Location);
+    store$.dispatch(new SetProductListingPageSize({ itemsPerPage: TestBed.inject(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
   });
 
   describe('loadProductBundles$', () => {
@@ -384,7 +384,10 @@ describe('Products Effects', () => {
       when(productsServiceMock.getProductBundles('ABC')).thenReturn(
         of({
           stubs: [{ sku: 'A' }, { sku: 'B' }],
-          bundledProducts: [{ sku: 'A', quantity: 1 }, { sku: 'B', quantity: 1 }],
+          bundledProducts: [
+            { sku: 'A', quantity: 1 },
+            { sku: 'B', quantity: 1 },
+          ],
         })
       );
 

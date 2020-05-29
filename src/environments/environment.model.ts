@@ -21,22 +21,21 @@ export interface Environment {
 
   /* FEATURE TOOGLES */
   features: (
-    | 'captchaV2'
-    | 'captchaV3'
     | 'compare'
     | 'rating'
     | 'recently'
-    | 'securityQuestion'
     /* B2B features */
     | 'advancedVariationHandling'
     | 'businessCustomerRegistration'
     | 'quoting'
     | 'quickorder'
+    | 'orderTemplates'
     /* Third-party Integrations */
     | 'sentry'
     | 'tracking'
     /* B2C features */
-    | 'wishlists')[];
+    | 'wishlists'
+  )[];
 
   /* ADDITIONAL FEATURE CONFIGURATIONS */
 
@@ -45,16 +44,6 @@ export interface Environment {
 
   // log client-side javascript errors to sentry.io (to be used with 'sentry' feature, works with server side rendering only)
   sentryDSN?: string;
-
-  // protect form submission with captchas (to be used with 'captcha' feature)
-  /** For production systems the captcha site key needs to match the one configured in the ICM ReCaptcha service configuration.
-   * For development we use the development keys provided by Google (https://developers.google.com/recaptcha/docs/faq)
-   * that don't require real verification and are used in the ICM as well.
-     Site key: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
-     Secret key: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
-   */
-  // TODO: get captcha site key, when Configuration Response in REST API is available
-  captchaSiteKey?: string;
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
 
@@ -86,3 +75,33 @@ export interface Environment {
   // format: 'themeName|themeColor' e.g. theme: 'blue|688dc3',
   theme?: string;
 }
+
+export const ENVIRONMENT_DEFAULTS: Environment = {
+  /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
+  icmBaseURL: 'NOT SET',
+  icmChannel: 'inSPIRED-inTRONICS-Site',
+  icmServer: 'INTERSHOP/rest/WFS',
+  icmServerStatic: 'INTERSHOP/static/WFS',
+
+  production: false,
+  mockServerAPI: false,
+
+  /* FEATURE TOOGLES */
+  features: ['compare', 'recently', 'rating', 'wishlists'],
+
+  /* PROGRESSIVE WEB APP CONFIGURATIONS */
+  serviceWorker: false,
+  smallBreakpointWidth: 576,
+  mediumBreakpointWidth: 768,
+  largeBreakpointWidth: 992,
+  extralargeBreakpointWidth: 1200,
+  mainNavigationMaxSubCategoriesDepth: 2,
+  productListingItemsPerPage: 9,
+  defaultProductListingViewType: 'grid',
+  defaultDeviceType: 'mobile',
+  locales: [
+    { lang: 'en_US', currency: 'USD', value: 'en', displayName: 'English', displayLong: 'English (United States)' },
+    { lang: 'de_DE', currency: 'EUR', value: 'de', displayName: 'German', displayLong: 'German (Germany)' },
+    { lang: 'fr_FR', currency: 'EUR', value: 'fr', displayName: 'French', displayLong: 'French (France)' },
+  ],
+};

@@ -13,7 +13,7 @@ describe('Feature Toggle Service', () => {
       TestBed.configureTestingModule({
         imports: [FeatureToggleModule, ngrxTesting({ reducers: { configuration: configurationReducer } })],
       });
-      featureToggle = TestBed.get(FeatureToggleService);
+      featureToggle = TestBed.inject(FeatureToggleService);
     });
 
     it('should report feature as deactivated, when no settings are defined', () => {
@@ -36,11 +36,16 @@ describe('Feature Toggle Service', () => {
           }),
         ],
       });
-      featureToggle = TestBed.get(FeatureToggleService);
+      featureToggle = TestBed.inject(FeatureToggleService);
     });
 
     using(
-      () => [{ feature: 'feature1', expected: true }, { feature: 'feature2', expected: false }],
+      () => [
+        { feature: 'always', expected: true },
+        { feature: 'never', expected: false },
+        { feature: 'feature1', expected: true },
+        { feature: 'feature2', expected: false },
+      ],
       slice => {
         it(`should have ${slice.feature} == ${slice.expected} when asked`, () => {
           expect(featureToggle.enabled(slice.feature)).toBe(slice.expected);

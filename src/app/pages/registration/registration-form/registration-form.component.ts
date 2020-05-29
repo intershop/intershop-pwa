@@ -35,7 +35,6 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
 
   /* switch for business customer registration */
   businessCustomerRegistration: boolean;
-  securityQuestionEnabled: boolean;
 
   form: FormGroup;
   submitted = false;
@@ -49,7 +48,6 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
   ngOnInit() {
     // toggles business / private customer registration
     this.businessCustomerRegistration = this.featureToggle.enabled('businessCustomerRegistration');
-    this.securityQuestionEnabled = this.featureToggle.enabled('securityQuestion');
 
     this.createRegistrationForm();
   }
@@ -66,15 +64,13 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
         loginConfirmation: ['', [Validators.required, CustomValidators.email]],
         password: ['', [Validators.required, SpecialValidators.password]],
         passwordConfirmation: ['', [Validators.required, SpecialValidators.password]],
-        securityQuestion: this.securityQuestionEnabled ? ['', [Validators.required]] : [''],
-        securityQuestionAnswer: this.securityQuestionEnabled ? ['', [Validators.required]] : [''],
       }),
       countryCodeSwitch: ['', [Validators.required]],
       preferredLanguage: ['en_US', [Validators.required]],
       birthday: [''],
       termsAndConditions: [false, [Validators.required, Validators.pattern('true')]],
       captcha: [''],
-      captchaAction: ['create_account'],
+      captchaAction: ['register'],
       address: this.afs.getFactory('default').getGroup({ isBusinessAddress: this.businessCustomerRegistration }), // filled dynamically when country code changes
     });
 
@@ -134,8 +130,6 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
     const credentials: Credentials = {
       login: formValue.credentials.login,
       password: formValue.credentials.password,
-      securityQuestion: formValue.credentials.securityQuestion,
-      securityQuestionAnswer: formValue.credentials.securityQuestionAnswer,
     };
 
     if (this.businessCustomerRegistration) {
@@ -147,7 +141,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
     }
 
     const registration: CustomerRegistrationType = { customer, user, credentials, address };
-    registration.captchaResponse = this.form.get('captcha').value;
+    registration.captcha = this.form.get('captcha').value;
     registration.captchaAction = this.form.get('captchaAction').value;
 
     this.create.emit(registration);

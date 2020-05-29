@@ -18,7 +18,7 @@ describe('Wishlist Service', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }],
     });
-    wishlistService = TestBed.get(WishlistService);
+    wishlistService = TestBed.inject(WishlistService);
   });
 
   it('should be created', () => {

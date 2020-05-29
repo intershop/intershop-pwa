@@ -8,7 +8,7 @@ import {
   createSchematicRunner,
 } from '../utils/testHelper';
 
-import { PwaExtensionOptionsSchema as Options } from './schema';
+import { PWAExtensionOptionsSchema as Options } from './schema';
 
 describe('Extension Schematic', () => {
   const schematicRunner = createSchematicRunner();
@@ -20,11 +20,7 @@ describe('Extension Schematic', () => {
   let appTree: UnitTestTree;
   beforeEach(async () => {
     appTree = await createApplication(schematicRunner)
-      .pipe(
-        createModule(schematicRunner, { name: 'shared' }),
-        createModule(schematicRunner, { name: 'shell' }),
-        createAppLastRoutingModule(schematicRunner)
-      )
+      .pipe(createModule(schematicRunner, { name: 'shell' }), createAppLastRoutingModule(schematicRunner))
       .toPromise();
   });
 
@@ -35,21 +31,22 @@ describe('Extension Schematic', () => {
     const files = tree.files.filter(x => x.search('foo') >= 0);
     expect(files).toMatchInlineSnapshot(`
       Array [
-        "/projects/bar/src/app/extensions/foo/foo.module.ts",
-        "/projects/bar/src/app/extensions/foo/exports/foo-exports.module.ts",
-        "/projects/bar/src/app/extensions/foo/facades/foo.facade.ts",
-        "/projects/bar/src/app/extensions/foo/pages/foo-routing.module.ts",
-        "/projects/bar/src/app/extensions/foo/store/foo-store.ts",
-        "/projects/bar/src/app/extensions/foo/store/foo-store.module.ts",
+        "/src/app/extensions/foo/foo.module.ts",
+        "/src/app/extensions/foo/exports/.gitignore",
+        "/src/app/extensions/foo/exports/foo-exports.module.ts",
+        "/src/app/extensions/foo/facades/foo.facade.ts",
+        "/src/app/extensions/foo/pages/foo-routing.module.ts",
+        "/src/app/extensions/foo/store/foo-store.module.ts",
+        "/src/app/extensions/foo/store/foo-store.ts",
       ]
     `);
   });
 
-  it('should import extension exports in app module, before NotFoundRouting module', async () => {
+  it('should import extension routing in app module, before NotFoundRouting module', async () => {
     const options = { ...defaultOptions };
 
     const tree = await schematicRunner.runSchematicAsync('extension', options, appTree).toPromise();
-    const appModuleContent = tree.readContent('/projects/bar/src/app/app.module.ts');
+    const appModuleContent = tree.readContent('/src/app/app.module.ts');
     expect(appModuleContent).toMatchInlineSnapshot(`
       "import { BrowserModule } from '@angular/platform-browser';
       import { NgModule } from '@angular/core';
@@ -76,31 +73,11 @@ describe('Extension Schematic', () => {
     `);
   });
 
-  it('should import extension exports in shared module', async () => {
+  it('should import and export extension exports in shell module', async () => {
     const options = { ...defaultOptions };
 
     const tree = await schematicRunner.runSchematicAsync('extension', options, appTree).toPromise();
-    const sharedModuleContent = tree.readContent('/projects/bar/src/app/shared/shared.module.ts');
-    expect(sharedModuleContent).toMatchInlineSnapshot(`
-      "import { NgModule } from '@angular/core';
-      import { FooExportsModule } from '../extensions/foo/exports/foo-exports.module';
-
-      @NgModule({
-        imports: [FooExportsModule],
-        declarations: [],
-        exports: [FooExportsModule],
-        entryComponents: []
-      })
-      export class SharedModule { }
-      "
-    `);
-  });
-
-  it('should import extension exports in shell module', async () => {
-    const options = { ...defaultOptions };
-
-    const tree = await schematicRunner.runSchematicAsync('extension', options, appTree).toPromise();
-    const shellModuleContent = tree.readContent('/projects/bar/src/app/shell/shell.module.ts');
+    const shellModuleContent = tree.readContent('/src/app/shell/shell.module.ts');
     expect(shellModuleContent).toMatchInlineSnapshot(`
       "import { NgModule } from '@angular/core';
       import { FooExportsModule } from '../extensions/foo/exports/foo-exports.module';
@@ -108,8 +85,7 @@ describe('Extension Schematic', () => {
       @NgModule({
         imports: [FooExportsModule],
         declarations: [],
-        exports: [],
-        entryComponents: []
+        exports: [FooExportsModule]
       })
       export class ShellModule { }
       "
@@ -118,7 +94,7 @@ describe('Extension Schematic', () => {
 
   it('should throw if app module does not contain AppLastRoutingModule', done => {
     appTree.overwrite(
-      '/projects/bar/src/app/app.module.ts',
+      '/src/app/app.module.ts',
       `import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -143,9 +119,7 @@ export class AppModule { }
     const options = { ...defaultOptions };
 
     schematicRunner.runSchematicAsync('extension', options, appTree).subscribe(noop, err => {
-      expect(err).toMatchInlineSnapshot(
-        `[Error: did not find 'AppLastRoutingModule' in /projects/bar/src/app/app.module.ts]`
-      );
+      expect(err).toMatchInlineSnapshot(`[Error: did not find 'AppLastRoutingModule' in /src/app/app.module.ts]`);
       done();
     });
   });

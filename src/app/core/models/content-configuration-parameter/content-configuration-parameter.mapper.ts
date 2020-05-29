@@ -15,14 +15,9 @@ export class ContentConfigurationParameterMapper {
   private staticURL: string;
   private lang = '-';
 
-  constructor(store: Store<{}>) {
+  constructor(store: Store) {
     store.pipe(select(getICMStaticURL)).subscribe(url => (this.staticURL = url));
-    store
-      .pipe(
-        select(getCurrentLocale),
-        mapToProperty('lang')
-      )
-      .subscribe(lang => (this.lang = lang || '-'));
+    store.pipe(select(getCurrentLocale), mapToProperty('lang')).subscribe(lang => (this.lang = lang || '-'));
   }
 
   fromData(data: { [name: string]: ContentConfigurationParameterData }): ContentConfigurationParameters {

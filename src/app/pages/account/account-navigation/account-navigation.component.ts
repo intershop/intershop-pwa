@@ -3,6 +3,14 @@ import { Router } from '@angular/router';
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
+interface NavigationItems {
+  [link: string]: {
+    localizationKey: string;
+    dataTestingId?: string;
+    feature?: string;
+  };
+}
+
 @Component({
   selector: 'ish-account-navigation',
   templateUrl: './account-navigation.component.html',
@@ -16,21 +24,25 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
   /**
    * Manages the Account Navigation items.
    */
-  navigationItems: { link: string; localizationKey: string; dataTestingId?: string; feature?: string }[] = [
-    { link: '/account', localizationKey: 'account.my_account.link' },
-    { link: '/account/orders', localizationKey: 'account.order_history.link' },
-    {
-      link: '/account/wishlists',
+  navigationItems: NavigationItems = {
+    '/account': { localizationKey: 'account.my_account.link' },
+    '/account/orders': { localizationKey: 'account.order_history.link' },
+    '/account/wishlists': {
       localizationKey: 'account.wishlists.link',
       feature: 'wishlists',
       dataTestingId: 'wishlists-link',
     },
-    { link: '/account/payment', localizationKey: 'account.payment.link' },
-    { link: '/account/addresses', localizationKey: 'account.saved_addresses.link', dataTestingId: 'addresses-link' },
-    { link: '/account/profile', localizationKey: 'account.profile.link' },
-    { link: '/account/quotes', localizationKey: 'account.navigation.quotes.link', feature: 'quoting' },
-    { link: '/logout', localizationKey: 'account.navigation.logout.link' },
-  ];
+    '/account/order-templates': {
+      localizationKey: 'account.ordertemplates.link',
+      feature: 'orderTemplates',
+      dataTestingId: 'order-templates-link',
+    },
+    '/account/payment': { localizationKey: 'account.payment.link', dataTestingId: 'payments-link' },
+    '/account/addresses': { localizationKey: 'account.saved_addresses.link', dataTestingId: 'addresses-link' },
+    '/account/profile': { localizationKey: 'account.profile.link' },
+    '/account/quotes': { localizationKey: 'account.navigation.quotes.link', feature: 'quoting' },
+    '/logout': { localizationKey: 'account.navigation.logout.link' },
+  };
 
   constructor(private router: Router) {}
 
@@ -50,5 +62,9 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
     if (link) {
       this.router.navigate([link]);
     }
+  }
+
+  get unsorted() {
+    return () => 0;
   }
 }

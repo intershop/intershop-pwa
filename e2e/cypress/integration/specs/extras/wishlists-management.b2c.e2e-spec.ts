@@ -1,4 +1,4 @@
-import { at } from '../../framework';
+import { at, waitLoadingEnd } from '../../framework';
 import { createUserViaREST } from '../../framework/users';
 import { LoginPage } from '../../pages/account/login.page';
 import { sensibleDefaults } from '../../pages/account/registration.page';
@@ -31,10 +31,7 @@ describe('Wishlist MyAccount Functionality', () => {
     LoginPage.navigateTo('/account/wishlists');
     at(LoginPage, page => {
       page.fillForm(_.user.login, _.user.password);
-      page
-        .submit()
-        .its('status')
-        .should('equal', 200);
+      page.submit().its('status').should('equal', 200);
     });
     at(WishlistsOverviewPage);
   });
@@ -81,7 +78,7 @@ describe('Wishlist MyAccount Functionality', () => {
       page.addToWishlist.addProductToWishlistFromPage();
     });
     at(WishlistsDetailsPage, page => {
-      page.listItemLink.invoke('attr', 'href').should('contain', _.product2);
+      page.listItemLinks.invoke('attr', 'href').should('contain', _.product2);
       page.header.gotoCategoryPage(_.category);
     });
 
@@ -92,7 +89,7 @@ describe('Wishlist MyAccount Functionality', () => {
       page.addToWishlist.addProductToWishlistFromPage();
     });
     at(WishlistsDetailsPage, page => {
-      page.listItemLink.should('have.length', 2);
+      page.listItemLinks.should('have.length', 2);
     });
   });
 
@@ -106,20 +103,17 @@ describe('Wishlist MyAccount Functionality', () => {
 
   it('user deletes a product from wishlist', () => {
     at(WishlistsDetailsPage, page => {
-      page.listItemLink.then($listItems => {
-        const initLength = $listItems.length;
-        page.deleteWishlist(_.product2);
-        cy.wait(500);
-        page.listItemLink.invoke('attr', 'href').should('not.contain', _.product2);
-        page.listItemLink.should('have.length', initLength - 1);
-      });
+      page.deleteWishlist(_.product2);
+      waitLoadingEnd();
+      page.listItemLinks.invoke('attr', 'href').should('not.contain', _.product2);
+      page.listItemLinks.should('have.length', 1);
     });
   });
 
   it('user moves a product to another wishlist', () => {
     at(WishlistsDetailsPage, page => {
       page.moveProductToWishlist(_.product1, anotherWishlist);
-      cy.wait(500);
+      waitLoadingEnd();
       page.wishlistTitle.should('equal', anotherWishlist);
       page.getWishlistItemById(_.product1).should('exist');
       page.header.gotoWishlists();
@@ -129,7 +123,7 @@ describe('Wishlist MyAccount Functionality', () => {
     });
 
     at(WishlistsDetailsPage, page => {
-      page.listItem.should('not.exist');
+      page.listItems.should('not.exist');
     });
   });
 });

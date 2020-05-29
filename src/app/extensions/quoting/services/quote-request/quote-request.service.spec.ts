@@ -24,7 +24,7 @@ import { QuoteRequestService } from './quote-request.service';
 describe('Quote Request Service', () => {
   let quoteRequestService: QuoteRequestService;
   let apiService: ApiService;
-  let store$: Store<{}>;
+  let store$: Store;
 
   const customer = { customerNo: 'CID', type: 'SMBCustomer' } as Customer;
   const user = { email: 'UID' } as User;
@@ -46,8 +46,8 @@ describe('Quote Request Service', () => {
       providers: [QuoteRequestService, { provide: ApiService, useFactory: () => instance(apiService) }],
     });
 
-    quoteRequestService = TestBed.get(QuoteRequestService);
-    store$ = TestBed.get(Store);
+    quoteRequestService = TestBed.inject(QuoteRequestService);
+    store$ = TestBed.inject(Store);
   });
 
   describe('when not logged in', () => {

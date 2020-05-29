@@ -19,7 +19,7 @@ In addition, the PWA, when run with Angular Universal, consists of a server-side
 
 The standard way of configuring an Angular Application can be done by managing multiple environment files that are part of the project's source tree, usually located in _src/environments._ To choose one configuration, you have to supply the parameter when building the Angular Application.
 The file _angular.json_ defines how the correct environment file is swapped in for the corresponding environment.
-See [Angular 2: Application Settings using the CLI Environment Option](http://tattoocoder.com/angular-cli-using-the-environment-option/) for further information.
+See [Configuring application environments](https://angular.io/guide/build#configure-environment-specific-defaults) for further information.
 
 Properties supplied with environment files should not be accessed directly in artifacts other than modules.
 Instead, you need to provide them via `InjectionToken`s to be used in components, pipes or services.

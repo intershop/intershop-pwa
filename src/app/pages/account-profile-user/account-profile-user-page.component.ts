@@ -36,15 +36,10 @@ export class AccountProfileUserPageComponent implements OnInit {
     this.currentLocale$ = this.appFacade.currentLocale$;
 
     // determine default language from session and available locales
-    this.currentLocale$
-      .pipe(
-        whenTruthy(),
-        take(1)
-      )
-      .subscribe(locale => {
-        this.currentCountryCode = locale.lang.slice(3);
-        this.titles = locale.lang ? determineSalutations(this.currentCountryCode) : undefined;
-      });
+    this.currentLocale$.pipe(whenTruthy(), take(1)).subscribe(locale => {
+      this.currentCountryCode = locale.lang.slice(3);
+      this.titles = locale.lang ? determineSalutations(this.currentCountryCode) : undefined;
+    });
   }
 
   updateUserProfile(user: User) {

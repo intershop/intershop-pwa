@@ -7,7 +7,7 @@ import { mergeDeep } from 'ish-core/utils/functions';
 
 // tslint:disable:no-any
 
-const NGRX_STATE_SK = makeStateKey('ngrxState');
+export const NGRX_STATE_SK = makeStateKey('ngrxState');
 const STATE_ACTION_TYPE = '[Internal] Import NgRx State';
 
 /**
@@ -37,7 +37,7 @@ export function filterState(store) {
  * Sets state on server-side, re-hydrates on client side.
  * inspired by https://github.com/ngrx/platform/issues/101#issuecomment-351998548
  */
-export function ngrxStateTransfer(transferState: TransferState, store: Store<{}>, actions: Actions) {
+export function ngrxStateTransfer(transferState: TransferState, store: Store, actions: Actions) {
   return () => {
     if (transferState.hasKey<any>(NGRX_STATE_SK)) {
       // browser
@@ -50,14 +50,9 @@ export function ngrxStateTransfer(transferState: TransferState, store: Store<{}>
       // server
       transferState.onSerialize(NGRX_STATE_SK, () => {
         let state;
-        store
-          .pipe(
-            take(1),
-            map(filterState)
-          )
-          .subscribe((saveState: any) => {
-            state = saveState;
-          });
+        store.pipe(take(1), map(filterState)).subscribe((saveState: any) => {
+          state = saveState;
+        });
 
         return state;
       });

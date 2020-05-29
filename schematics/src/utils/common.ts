@@ -68,9 +68,16 @@ export function determineArtifactName(
   }
 ) {
   const kebab = strings.dasherize(options.name);
-  const moduleImportPath = `/${options.path}${options.flat ? '' : `/${kebab}`}/${kebab}.${artifact}`;
+  let moduleImportPath;
+  let artifactName;
 
-  const artifactName = strings.classify(`${options.name}-${artifact}`);
+  if (artifact === 'page') {
+    moduleImportPath = `/${options.path}${kebab}/${kebab}-page.component`;
+    artifactName = strings.classify(`${options.name}PageComponent`);
+  } else {
+    moduleImportPath = `/${options.path}${options.flat ? '' : `/${kebab}`}/${kebab}.${artifact}`;
+    artifactName = strings.classify(`${options.name}-${artifact}`);
+  }
 
   return {
     ...options,
@@ -99,7 +106,7 @@ export function detectExtension(
       let rootLocation: string;
       if (artifact === 'cms') {
         rootLocation = 'shared/';
-      } else if (['page', 'extension'].includes(artifact)) {
+      } else if (['page', 'extension'].includes(artifact) || project.root) {
         rootLocation = '';
       } else {
         rootLocation = 'core/';

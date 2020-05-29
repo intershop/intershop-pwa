@@ -10,11 +10,6 @@
       "format": "path",
       "visible": false
     },
-    "tsext": {
-      "type": "string",
-      "default": "ts",
-      "visible": false
-    },
     "artifactFolder": {
       "type": "boolean",
       "default": false,
@@ -24,16 +19,10 @@
       "type": "string",
       "$default": {
         "$source": "projectName"
-      },
-      "visible": false
+      }
     },
     "prefix": {
       "type": "string",
-      "visible": false
-    },
-    "styleext": {
-      "type": "string",
-      "default": "scss",
       "visible": false
     },
     "selector": {
@@ -75,11 +64,6 @@
       "type": "boolean",
       "default": false,
       "description": "When true, the declaring NgModule exports this component."
-    },
-    "entryComponent": {
-      "type": "boolean",
-      "default": false,
-      "description": "When true, the new component is the entry component of the declaring NgModule."
     }
   }
 }

@@ -43,7 +43,7 @@ import * as productsSelectors from './products.selectors';
 export class ProductsEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<{}>,
+    private store: Store,
     private productsService: ProductsService,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,
@@ -90,12 +90,17 @@ export class ProductsEffects {
         concatMap(({ total, products, sortKeys }) => [
           ...products.map(product => new productsActions.LoadProductSuccess({ product })),
           new SetProductListingPages(
-            this.productListingMapper.createPages(products.map(p => p.sku), 'category', categoryId, {
-              startPage: page,
-              sortKeys,
-              sorting,
-              itemCount: total,
-            })
+            this.productListingMapper.createPages(
+              products.map(p => p.sku),
+              'category',
+              categoryId,
+              {
+                startPage: page,
+                sortKeys,
+                sorting,
+                itemCount: total,
+              }
+            )
           ),
         ]),
         mapErrorToAction(productsActions.LoadProductsForCategoryFail, { categoryId })

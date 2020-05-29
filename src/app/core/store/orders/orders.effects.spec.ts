@@ -30,7 +30,7 @@ describe('Orders Effects', () => {
   let actions$: Observable<Action>;
   let effects: OrdersEffects;
   let orderServiceMock: OrderService;
-  let store$: Store<{}>;
+  let store$: Store;
   let location: Location;
   let router: Router;
 
@@ -52,7 +52,10 @@ describe('Orders Effects', () => {
         RouterTestingModule.withRoutes([
           {
             path: 'checkout',
-            children: [{ path: 'receipt', component: DummyComponent }, { path: 'payment', component: DummyComponent }],
+            children: [
+              { path: 'receipt', component: DummyComponent },
+              { path: 'payment', component: DummyComponent },
+            ],
           },
           { path: 'account/orders/:orderId', component: DummyComponent },
           { path: '**', component: DummyComponent },
@@ -73,10 +76,10 @@ describe('Orders Effects', () => {
       ],
     });
 
-    effects = TestBed.get(OrdersEffects);
-    store$ = TestBed.get(Store);
-    location = TestBed.get(Location);
-    router = TestBed.get(Router);
+    effects = TestBed.inject(OrdersEffects);
+    store$ = TestBed.inject(Store);
+    location = TestBed.inject(Location);
+    router = TestBed.inject(Router);
   });
 
   describe('createOrder$', () => {

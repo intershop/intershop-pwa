@@ -30,13 +30,13 @@
             "assets": ["src/assets"],
             "styles": [
               {
+                "inject": false,
                 "input": "src/styles/themes/default/style.scss",
-                "lazy": true,
                 "bundleName": "default"
               },
               {
+                "inject": false,
                 "input": "src/styles/themes/blue/style.scss",
-                "lazy": true,
                 "bundleName": "blue"
               }
             ],
@@ -55,7 +55,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -75,6 +74,12 @@
               "ngswConfigPath": "ngsw-config.json"
             },
             "local": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -85,6 +90,12 @@
               "serviceWorker": false
             },
             "es5": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "tsConfig": "./tsconfig-es5.app.json"
             }
           }
@@ -116,19 +127,21 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["tsconfig.app.json", "tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
+            "tsConfig": ["tsconfig.json"],
+            "exclude": ["**/node_modules/**"],
+            "format": "stylish"
           }
         },
         "server": {
           "builder": "@angular-devkit/build-angular:server",
           "options": {
             "outputPath": "dist/server",
-            "main": "src/main.server.ts",
+            "main": "server.ts",
             "tsConfig": "tsconfig.server.json"
           },
           "configurations": {
             "production": {
+              "outputHashing": "media",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -136,10 +149,7 @@
                 }
               ],
               "sourceMap": false,
-              "optimization": {
-                "scripts": false,
-                "styles": true
-              }
+              "optimization": true
             },
             "local": {
               "fileReplacements": [
@@ -148,12 +158,29 @@
                   "with": "src/environments/environment.local.ts"
                 }
               ],
+              "optimization": true,
               "sourceMap": true
+            }
+          }
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "options": {
+            "browserTarget": "intershop-pwa:build",
+            "serverTarget": "intershop-pwa:server"
+          },
+          "configurations": {
+            "local": {
+              "browserTarget": "intershop-pwa:build:local",
+              "serverTarget": "intershop-pwa:server:local"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "intershop-pwa"
+  "defaultProject": "intershop-pwa",
+  "cli": {
+    "analytics": false
+  }
 }

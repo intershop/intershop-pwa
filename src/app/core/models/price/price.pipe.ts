@@ -22,7 +22,7 @@ export class PricePipe implements PipeTransform, OnDestroy {
 
   private destroy$ = new Subject();
 
-  constructor(private translateService: TranslateService, private store: Store<{}>, private cdRef: ChangeDetectorRef) {}
+  constructor(private translateService: TranslateService, private store: Store, private cdRef: ChangeDetectorRef) {}
 
   ngOnDestroy() {
     this.destroy$.next();
@@ -41,15 +41,10 @@ export class PricePipe implements PipeTransform, OnDestroy {
         if (priceType) {
           return formatPrice(PriceItemHelper.selectType(data, priceType), this.translateService.currentLang);
         }
-        this.store
-          .pipe(
-            select(getPriceDisplayType),
-            takeUntil(this.destroy$)
-          )
-          .subscribe(type => {
-            this.displayText = formatPrice(PriceItemHelper.selectType(data, type), this.translateService.currentLang);
-            this.cdRef.markForCheck();
-          });
+        this.store.pipe(select(getPriceDisplayType), takeUntil(this.destroy$)).subscribe(type => {
+          this.displayText = formatPrice(PriceItemHelper.selectType(data, type), this.translateService.currentLang);
+          this.cdRef.markForCheck();
+        });
         return this.displayText;
       default:
         return formatPrice(data as Price, this.translateService.currentLang);

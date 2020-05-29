@@ -5,10 +5,11 @@ import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, spy, verify } from 'ts-mockito';
 
 import { FeatureToggleModule, FeatureToggleService } from 'ish-core/feature-toggle.module';
-import { CaptchaComponent } from 'ish-shared/forms/components/captcha/captcha.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { SelectComponent, SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { TextareaComponent } from 'ish-shared/forms/components/textarea/textarea.component';
+
+import { LazyCaptchaComponent } from '../../../extensions/captcha/exports/captcha/lazy-captcha/lazy-captcha.component';
 
 import { ContactFormComponent } from './contact-form.component';
 
@@ -21,8 +22,8 @@ describe('Contact Form Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         ContactFormComponent,
-        MockComponent(CaptchaComponent),
         MockComponent(InputComponent),
+        MockComponent(LazyCaptchaComponent),
         MockComponent(SelectComponent),
         MockComponent(TextareaComponent),
       ],
@@ -69,7 +70,7 @@ describe('Contact Form Component', () => {
     component.contactForm.get('phone').setValue('123456');
     component.contactForm.get('order').setValue('456789');
     component.contactForm.get('subject').setValue('Return');
-    component.contactForm.get('comments').setValue('want to return stuff');
+    component.contactForm.get('comment').setValue('want to return stuff');
     component.submitForm();
     verify(emitter.emit(anything())).once();
   });

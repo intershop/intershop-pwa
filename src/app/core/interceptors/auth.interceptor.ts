@@ -1,3 +1,4 @@
+import { isPlatformServer } from '@angular/common';
 import {
   HttpErrorResponse,
   HttpEvent,
@@ -6,7 +7,7 @@ import {
   HttpRequest,
   HttpResponse,
 } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, throwError, timer } from 'rxjs';
 import { catchError, switchMapTo, tap } from 'rxjs/operators';
@@ -19,7 +20,7 @@ import { ResetAPIToken, SetAPIToken } from 'ish-core/store/user';
  */
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private store: Store<{}>) {}
+  constructor(private store: Store, @Inject(PLATFORM_ID) private platformId: string) {}
 
   private static isAuthTokenError(err: unknown) {
     return (
@@ -41,6 +42,9 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    if (isPlatformServer(this.platformId)) {
+      return next.handle(req);
+    }
     return next.handle(req).pipe(
       // tslint:disable-next-line:ban
       catchError(err => {

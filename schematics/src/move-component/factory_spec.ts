@@ -10,7 +10,7 @@ describe('move-component Schematic', () => {
     appTree = await createApplication(schematicRunner)
       .pipe(createModule(schematicRunner, { name: 'shared' }))
       .toPromise();
-    appTree.overwrite('/projects/bar/src/app/app.component.html', '<ish-dummy></ish-dummy>');
+    appTree.overwrite('/src/app/app.component.html', '<ish-dummy></ish-dummy>');
     appTree = await schematicRunner
       .runSchematicAsync('component', { project: 'bar', name: 'foo/dummy' }, appTree)
       .toPromise();
@@ -19,7 +19,7 @@ describe('move-component Schematic', () => {
       .toPromise();
 
     appTree.overwrite(
-      '/projects/bar/src/app/shared/dummy-two/dummy-two.component.ts',
+      '/src/app/shared/dummy-two/dummy-two.component.ts',
       `import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { DummyComponent } from '../../../foo/dummy/dummy.component';
 
@@ -36,12 +36,12 @@ export class DummyTwoComponent {}
   it('should be created', () => {
     expect(appTree.files.filter(f => f.endsWith('component.ts'))).toMatchInlineSnapshot(`
       Array [
-        "/projects/bar/src/app/app.component.ts",
-        "/projects/bar/src/app/shared/dummy-two/dummy-two.component.ts",
-        "/projects/bar/src/app/foo/dummy/dummy.component.ts",
+        "/src/app/app.component.ts",
+        "/src/app/shared/dummy-two/dummy-two.component.ts",
+        "/src/app/foo/dummy/dummy.component.ts",
       ]
     `);
-    expect(appTree.readContent('/projects/bar/src/app/shared/dummy-two/dummy-two.component.ts')).toMatchInlineSnapshot(`
+    expect(appTree.readContent('/src/app/shared/dummy-two/dummy-two.component.ts')).toMatchInlineSnapshot(`
       "import { ChangeDetectionStrategy, Component } from '@angular/core';
       import { DummyComponent } from '../../../foo/dummy/dummy.component';
 
@@ -62,19 +62,19 @@ export class DummyTwoComponent {}
 
     expect(appTree.files.filter(x => x.includes('/src/app/'))).toMatchInlineSnapshot(`
       Array [
-        "/projects/bar/src/app/app-routing.module.ts",
-        "/projects/bar/src/app/app.module.ts",
-        "/projects/bar/src/app/app.component.css",
-        "/projects/bar/src/app/app.component.html",
-        "/projects/bar/src/app/app.component.spec.ts",
-        "/projects/bar/src/app/app.component.ts",
-        "/projects/bar/src/app/shared/shared.module.ts",
-        "/projects/bar/src/app/shared/dummy-two/dummy-two.component.ts",
-        "/projects/bar/src/app/shared/dummy-two/dummy-two.component.html",
-        "/projects/bar/src/app/shared/dummy-two/dummy-two.component.spec.ts",
-        "/projects/bar/src/app/foo/foo.component.ts",
-        "/projects/bar/src/app/foo/foo.component.html",
-        "/projects/bar/src/app/foo/foo.component.spec.ts",
+        "/src/app/app-routing.module.ts",
+        "/src/app/app.module.ts",
+        "/src/app/app.component.css",
+        "/src/app/app.component.html",
+        "/src/app/app.component.spec.ts",
+        "/src/app/app.component.ts",
+        "/src/app/shared/shared.module.ts",
+        "/src/app/shared/dummy-two/dummy-two.component.html",
+        "/src/app/shared/dummy-two/dummy-two.component.spec.ts",
+        "/src/app/shared/dummy-two/dummy-two.component.ts",
+        "/src/app/foo/foo.component.html",
+        "/src/app/foo/foo.component.spec.ts",
+        "/src/app/foo/foo.component.ts",
       ]
     `);
   });
@@ -84,7 +84,7 @@ export class DummyTwoComponent {}
       .runSchematicAsync('move-component', { project: 'bar', from: 'foo/dummy', to: 'foo' }, appTree)
       .toPromise();
 
-    expect(appTree.readContent('/projects/bar/src/app/app.module.ts')).toMatchInlineSnapshot(`
+    expect(appTree.readContent('/src/app/app.module.ts')).toMatchInlineSnapshot(`
       "import { BrowserModule } from '@angular/platform-browser';
       import { NgModule } from '@angular/core';
 
@@ -108,11 +108,9 @@ export class DummyTwoComponent {}
       "
     `);
 
-    expect(appTree.readContent('/projects/bar/src/app/app.component.html')).toMatchInlineSnapshot(
-      `"<ish-foo></ish-foo>"`
-    );
+    expect(appTree.readContent('/src/app/app.component.html')).toMatchInlineSnapshot(`"<ish-foo></ish-foo>"`);
 
-    expect(appTree.readContent('/projects/bar/src/app/foo/foo.component.spec.ts')).toMatchInlineSnapshot(`
+    expect(appTree.readContent('/src/app/foo/foo.component.spec.ts')).toMatchInlineSnapshot(`
       "import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
       import { FooComponent } from './foo.component';
@@ -143,7 +141,7 @@ export class DummyTwoComponent {}
       "
     `);
 
-    expect(appTree.readContent('/projects/bar/src/app/foo/foo.component.ts')).toMatchInlineSnapshot(`
+    expect(appTree.readContent('/src/app/foo/foo.component.ts')).toMatchInlineSnapshot(`
       "import { ChangeDetectionStrategy, Component } from '@angular/core';
 
       @Component({
@@ -164,15 +162,14 @@ export class DummyTwoComponent {}
       .runSchematicAsync('move-component', { project: 'bar', from, to }, appTree)
       .toPromise();
 
-    expect(appTree.readContent('/projects/bar/src/app/shared/shared.module.ts')).toMatchInlineSnapshot(`
+    expect(appTree.readContent('/src/app/shared/shared.module.ts')).toMatchInlineSnapshot(`
       "import { NgModule } from '@angular/core';
       import { FooComponent } from './foo/foo.component';
 
       @NgModule({
         imports: [],
         declarations: [FooComponent],
-        exports: [],
-        entryComponents: []
+        exports: []
       })
       export class SharedModule { }
       "
@@ -180,13 +177,13 @@ export class DummyTwoComponent {}
 
     expect(appTree.files.filter(f => f.endsWith('component.ts'))).toMatchInlineSnapshot(`
       Array [
-        "/projects/bar/src/app/app.component.ts",
-        "/projects/bar/src/app/shared/foo/foo.component.ts",
-        "/projects/bar/src/app/foo/dummy/dummy.component.ts",
+        "/src/app/app.component.ts",
+        "/src/app/shared/foo/foo.component.ts",
+        "/src/app/foo/dummy/dummy.component.ts",
       ]
     `);
 
-    expect(appTree.readContent('/projects/bar/src/app/shared/foo/foo.component.ts')).toMatchInlineSnapshot(`
+    expect(appTree.readContent('/src/app/shared/foo/foo.component.ts')).toMatchInlineSnapshot(`
       "import { ChangeDetectionStrategy, Component } from '@angular/core';
       import { DummyComponent } from '../../../foo/dummy/dummy.component';
 
@@ -199,11 +196,11 @@ export class DummyTwoComponent {}
       "
     `);
 
-    expect(appTree.readContent('/projects/bar/src/app/shared/foo/foo.component.spec.ts')).toContain(
+    expect(appTree.readContent('/src/app/shared/foo/foo.component.spec.ts')).toContain(
       `import { FooComponent } from './foo.component';`
     );
 
-    expect(appTree.readContent('/projects/bar/src/app/foo/dummy/dummy.component.spec.ts')).toContain(
+    expect(appTree.readContent('/src/app/foo/dummy/dummy.component.spec.ts')).toContain(
       `import { DummyComponent } from './dummy.component';`
     );
   });

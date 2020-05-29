@@ -11,7 +11,7 @@ import { getAllRegions } from './regions.selectors';
 
 @Injectable()
 export class RegionsEffects {
-  constructor(private actions$: Actions, private store: Store<{}>, private countryService: CountryService) {}
+  constructor(private actions$: Actions, private store: Store, private countryService: CountryService) {}
 
   @Effect()
   loadRegions$ = this.actions$.pipe(

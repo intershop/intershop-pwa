@@ -4,7 +4,7 @@ import { switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Contact } from 'ish-core/models/contact/contact.model';
-import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
+import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update/password-reminder-update.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
@@ -52,7 +52,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
 export class AccountFacade {
-  constructor(private store: Store<{}>) {}
+  constructor(private store: Store) {}
 
   // USER
   user$ = this.store.pipe(select(getLoggedInUser));
@@ -60,7 +60,7 @@ export class AccountFacade {
   userLoading$ = this.store.pipe(select(getUserLoading));
   isLoggedIn$ = this.store.pipe(select(getUserAuthorized));
 
-  loginUser(credentials: LoginCredentials) {
+  loginUser(credentials: Credentials) {
     this.store.dispatch(new LoginUser({ credentials }));
   }
 

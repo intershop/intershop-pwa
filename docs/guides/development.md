@@ -32,15 +32,8 @@ Run `ng serve` or `ng s` for a development server that is configured by default 
 Running `ng serve --configuration production` or `ng s -c production` starts a development server that will communicate by default with the Intershop Commerce Management server of our public demo via REST API (see the used `environment.prod.ts` for the configuration).
 
 The project is also configured to support the usage of an own local environment file `environment.local.ts` that can be configured according to your local development environment needs, e.g. with a different icmBaseURL or different configuration options (see the `environment.model.ts` for the available configuration options).
-This file will be ignored by Git so the developer specific settings will not be commited and accidentally shared.
-
-To create such a development specific `environment.local.ts` file just copy one of the two existing environment files and make the necessary configuration adaptions, e.g.
-
-- Set your `icmBaseURL: 'http://<YOUR_ICM_SERVER>',`
-- Set `production: false,`
-- Remove `mockServerAPI: true,`
-- Configure the wanted `features: ['compare', 'recently', ...],`
-- Maybe disable the service worker for development `serviceWorker: false,`
+This file will be ignored by Git so the developer specific settings will not be committed and accidentally shared.
+It is initially created when running `npm install`.
 
 To use this local environment configuration, the server should be started with
 
@@ -51,7 +44,7 @@ ng s -c local
 Once the server is running, navigate to http://localhost:4200 in your browser to see the application.
 The app will automatically reload if you change any of the source files.
 
-Running `ng serve --port 4300` will start the server on a different port than the default 4200 port, e.g. if one wants to run multiple instances in paralell for comparison.
+Running `ng serve --port 4300` will start the server on a different port than the default 4200 port, e.g. if one wants to run multiple instances in parallel for comparison.
 
 Running `ng serve --open` will automatically open a new browser tab with the started application.
 The different start options can be combined.
@@ -66,27 +59,35 @@ The used IDE or editor should support the [Prettier - Code formatter](https://pr
 In addition, especially for the file types that are not handled by Prettier, the editor needs to follow the [EditorConfig](http://editorconfig.org) configuration of the project to help maintain consistent coding styles.
 Besides that the project has [TSLint](https://palantir.github.io/tslint) and [Stylelint](https://stylelint.io) rules configured to unify the coding style even further.
 
-The recommende IDE for the Intershop PWA development is
+The recommended IDE for the Intershop PWA development is
 
 [**Visual Studio Code** ](https://code.visualstudio.com) = VS Code = VSC
 
-It is a free IDE built on Open Source and available for the different plattforms with good TypeScript support maintained by Microsoft.
+It is a free IDE built on Open Source and available for the different platforms with good TypeScript support maintained by Microsoft.
 
 Within the PWA project we supply configuration files for VS Code that suggest downloading recommended plugins and apply best-practice settings (see the `.vscode` folder of the project).
 
 If your editor or IDE provides no support for the formatting and linting, make sure the rules are applied otherwise.
 E.g. the project provides npm tasks that perform code style checks as well.
 Use `npm run lint` to run a static code analysis.
-Use `npm run format` to perform a formatting run on the code base with Prettier. `npm run stylelint` will apply a common code style to the projects styling definitions.
+Use `npm run format` to perform a formatting run on the code base.
 
 ### Pre-Commit Check
 
-`npm run check` is a combination task of `lint`, `format`, `stylelint` and `test` that runs some of the checks that will also be performed by the continuous integration system checks on the whole code base.
+`npm run check` is a combination task of `lint`, `format`, and `test` that runs some of the checks that will also be performed by the continuous integration system checks on the whole code base.
 Do not overuse it as the run might take some time on your local development environments.
 
 Prefer using `npx lint-staged` to perform a manual quick evaluation of staged files.
 This also happens automatically when committing files with the configured pre-commit hooks for Git.
 It is possible to bypass the verification on commit with the Git option `--no-verify`.
+
+### Clean Working Copy
+
+You can use `npm run clean` to remove all unversioned files and folders from your local git checkout.
+This command uses `git clean` but preserves your `environment.local.ts`.
+Afterwards a clean `npm install` is performed.
+
+:warning: All unstaged files will be deleted!
 
 ## Debugging
 
@@ -99,11 +100,16 @@ As Angular runs in the browser, all the development tool functionality provided 
 
 - [Angular Augury](https://augury.angular.io) for debugging and profiling Angular applications
 
+### Tackling Memory Problems
+
+If you encounter problems with `JavaScript heap out of memory`, you will have to increase the heap space size.
+THis can be done by setting the environment variable `NODE_OPTIONS=--max_old_space_size=8192`.
+
 ### Recommend Articles
 
 [Debugging Angular CLI Applications in Visual Studio Code](https://scotch.io/tutorials/debugging-angular-cli-applications-in-visual-studio-code)
 
-- How to configure Visual Studio Code for debugging an Agular application.
+- How to configure Visual Studio Code for debugging an Angular application.
 
 [A Guide To Debugging Angular Applications](https://medium.com/front-end-weekly/a-guide-to-debugging-angular-applications-5a36bd88b4cf)
 

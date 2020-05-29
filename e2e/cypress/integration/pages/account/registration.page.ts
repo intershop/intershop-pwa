@@ -74,20 +74,24 @@ export class RegistrationPage {
       .forEach((key: keyof Registration) => {
         fillFormField(this.tag, key, register[key]);
       });
+
+    // special handling as captcha component steals focus
+    if (register.login) {
+      fillFormField(this.tag, 'login', register.login);
+    }
+    if (register.password) {
+      fillFormField(this.tag, 'password', register.password);
+    }
+
     return this;
   }
 
   submit() {
-    return cy
-      .get(`${this.tag} form`)
-      .first()
-      .submit();
+    return cy.get(`${this.tag} form`).first().submit();
   }
 
   submitAndObserve() {
-    cy.server()
-      .route('POST', '**/customers')
-      .as('customers');
+    cy.server().route('POST', '**/customers').as('customers');
     cy.wait(500);
 
     this.submit();
@@ -95,9 +99,7 @@ export class RegistrationPage {
   }
 
   cancel() {
-    cy.get(this.tag)
-      .find('input[value="Cancel"]')
-      .click();
+    cy.get(this.tag).find('input[value="Cancel"]').click();
   }
 
   get errorText() {

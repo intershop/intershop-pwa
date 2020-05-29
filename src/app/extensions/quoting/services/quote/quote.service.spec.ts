@@ -22,7 +22,7 @@ describe('Quote Service', () => {
   let quoteService: QuoteService;
   let apiService: ApiService;
   let quoteRequestService: QuoteRequestService;
-  let store$: Store<{}>;
+  let store$: Store;
 
   const customer = { customerNo: 'CID', type: 'SMBCustomer' } as Customer;
   const user = { email: 'UID' } as User;
@@ -41,8 +41,8 @@ describe('Quote Service', () => {
       ],
     });
 
-    quoteService = TestBed.get(QuoteService);
-    store$ = TestBed.get(Store);
+    quoteService = TestBed.inject(QuoteService);
+    store$ = TestBed.inject(Store);
   });
 
   describe('when not logged in', () => {

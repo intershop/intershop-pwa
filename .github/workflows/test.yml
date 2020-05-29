@@ -36,6 +36,7 @@ jobs:
         uses: bahmutov/npm-install@v1
         with:
           working-directory: e2e
+          useLockFile: false
 
       - name: Code Formatting
         run: |
@@ -46,30 +47,15 @@ jobs:
         run: npm run ng -- build --aot
 
       - name: Compile Unit Tests
-        run: npx tsc -p tsconfig.spec.json
+        run: npx tsc -p tsconfig.all.json
 
       - name: Compile Cypress Tests
         run: (cd e2e && npx tsc -p cypress/tsconfig.json)
 
-      - name: Compile Schematics
-        run: |
-          (cd schematics && npm run build)
-          bash ./scripts/ci-test-no-changes.sh 'you probably did not commit compiled binaries in schematics'
-
-      - name: Compile TSLint Rules
-        run: |
-          (cd tslint-rules && npm run build)
-          bash ./scripts/ci-test-no-changes.sh 'you probably did not commit compiled binaries in tslint-rules'
-
-      - name: Escalate TSLint Rules
+      - name: Run Escalated TSLint Rules
         run: |
           node scripts/tslint-hard
-
-      - name: Lint by action
-        uses: mooyoul/tslint-actions@v1.1.1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          project: 'tsconfig.json'
+          npm run lint
 
       - name: Find Dead Code
         run: npx ts-node scripts/find-dead-code
@@ -87,9 +73,14 @@ jobs:
       - name: Install root dependencies
         uses: bahmutov/npm-install@v1
 
-      - name: Test Jest
-        run: |
-          npm test
+      - name: PWA Jest
+        run: npm test
+
+      - name: tslint-rules Jest
+        run: cd tslint-rules && npm run test -- --ci
+
+      - name: schematics Jest
+        run: cd schematics && npm run test -- --ci
 
   Build:
     runs-on: ubuntu-latest
@@ -143,8 +134,23 @@ jobs:
           npx prettier --write docs/**/*.*
           bash ./scripts/ci-test-no-changes.sh 'you probably committed unformatted documentation'
 
-      - name: Check Dead Links
+      - name: Check Dead Links For All Files
+        if: github.ref == 'refs/heads/develop'
         run: node docs/check-dead-links
+
+      - name: Check Dead Links For Changed Files
+        if: github.ref != 'refs/heads/develop'
+        run: node docs/check-dead-links origin/develop
+
+  Docker:
+    needs: [Build]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Build PWA Docker Image
+        run: docker build .
 
   Universal:
     needs: [Build]
@@ -181,7 +187,7 @@ jobs:
           overwrite: true
           THEME: blue
           ICM_CHANNEL: inSPIRED-inTRONICS_Business-Site
-          FEATURES: quoting,quickorder,compare,recently,businessCustomerRegistration,advancedVariationHandling
+          FEATURES: quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,advancedVariationHandling
 
       - name: Start SSR
         run: npm run serve &
@@ -194,7 +200,6 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      fail-fast: true
       max-parallel: 2
       matrix:
         test: ['mock', 'b2c', 'b2b']
@@ -206,6 +211,12 @@ jobs:
       - name: Install root dependencies
         if: matrix.test == 'mock'
         uses: bahmutov/npm-install@v1
+
+      - name: Install e2e dependencies
+        uses: bahmutov/npm-install@v1
+        with:
+          working-directory: e2e
+          useLockFile: false
 
       - name: Download Build Output
         if: matrix.test != 'mock'
@@ -230,7 +241,7 @@ jobs:
           overwrite: true
           THEME: blue
           ICM_CHANNEL: inSPIRED-inTRONICS_Business-Site
-          FEATURES: quoting,quickorder,compare,recently,businessCustomerRegistration,advancedVariationHandling
+          FEATURES: quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,advancedVariationHandling
 
       - name: Start SSR
         if: matrix.test != 'mock'
@@ -243,6 +254,7 @@ jobs:
       - name: Cypress
         uses: cypress-io/github-action@v1.24.0
         with:
+          install: false
           wait-on: 'http://localhost:4200'
           wait-on-timeout: 180
           working-directory: e2e

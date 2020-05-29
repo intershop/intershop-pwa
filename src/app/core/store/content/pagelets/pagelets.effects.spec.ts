@@ -26,7 +26,7 @@ describe('Pagelets Effects', () => {
         { provide: CMSService, useFactory: () => instance(cmsServiceMock) },
       ],
     });
-    effects = TestBed.get(PageletsEffects);
+    effects = TestBed.inject(PageletsEffects);
   });
 
   describe('resetPageletsAfterLogout$', () => {

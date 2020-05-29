@@ -39,7 +39,7 @@ describe('Regions Effects', () => {
       ],
     });
 
-    effects = TestBed.get(RegionsEffects);
+    effects = TestBed.inject(RegionsEffects);
   });
 
   describe('loadRegions$', () => {

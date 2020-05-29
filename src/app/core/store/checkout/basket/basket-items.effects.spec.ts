@@ -29,7 +29,7 @@ describe('Basket Items Effects', () => {
   let orderServiceMock: OrderService;
   let addressServiceMock: AddressService;
   let effects: BasketItemsEffects;
-  let store$: Store<{}>;
+  let store$: Store;
 
   beforeEach(() => {
     basketServiceMock = mock(BasketService);
@@ -56,8 +56,8 @@ describe('Basket Items Effects', () => {
       ],
     });
 
-    effects = TestBed.get(BasketItemsEffects);
-    store$ = TestBed.get(Store);
+    effects = TestBed.inject(BasketItemsEffects);
+    store$ = TestBed.inject(Store);
   });
 
   describe('addProductToBasket$', () => {
@@ -67,7 +67,10 @@ describe('Basket Items Effects', () => {
       const action1 = new basketActions.AddProductToBasket({ sku: 'SKU1', quantity: 1 });
       const action2 = new basketActions.AddProductToBasket({ sku: 'SKU2', quantity: 1 });
       const completion = new basketActions.AddItemsToBasket({
-        items: [{ sku: 'SKU2', quantity: 2, unit: 'pcs.' }, { sku: 'SKU1', quantity: 2, unit: 'pcs.' }],
+        items: [
+          { sku: 'SKU2', quantity: 2, unit: 'pcs.' },
+          { sku: 'SKU1', quantity: 2, unit: 'pcs.' },
+        ],
       });
       actions$ = hot('        -b-a-b-a--|', { a: action1, b: action2 });
       const expected$ = cold('----------(c|)', { c: completion });

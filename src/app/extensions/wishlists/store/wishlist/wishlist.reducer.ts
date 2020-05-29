@@ -27,7 +27,9 @@ export function wishlistReducer(state = initialState, action: WishlistsAction): 
     case WishlistsActionTypes.LoadWishlists:
     case WishlistsActionTypes.CreateWishlist:
     case WishlistsActionTypes.DeleteWishlist:
-    case WishlistsActionTypes.UpdateWishlist: {
+    case WishlistsActionTypes.UpdateWishlist:
+    case WishlistsActionTypes.RemoveItemFromWishlist:
+    case WishlistsActionTypes.MoveItemToWishlist: {
       return {
         ...state,
         loading: true,

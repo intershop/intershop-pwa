@@ -107,6 +107,10 @@ a.product-title {
     padding-left: 0;
   }
 
+  .btn.btn-block {
+    margin-bottom: $space-default / 2;
+  }
+
   .secondary-actions {
     button {
       &:first-child {

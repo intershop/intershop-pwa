@@ -4,10 +4,10 @@ import {
   SchematicsException,
   Tree,
   apply,
+  applyTemplates,
   chain,
   mergeWith,
   move,
-  template,
   url,
 } from '@angular-devkit/schematics';
 import { getProject } from '@schematics/angular/utility/project';
@@ -16,9 +16,10 @@ import * as ts from 'typescript';
 
 import { applyNameAndPath, determineArtifactName } from '../utils/common';
 import { readIntoSourceFile } from '../utils/filesystem';
+import { applyLintFix } from '../utils/lint-fix';
 import { insertImport } from '../utils/registration';
 
-import { PwaStoreOptionsSchema as Options } from './schema';
+import { PWAStoreOptionsSchema as Options } from './schema';
 
 export function determineStoreLocation(
   host: Tree,
@@ -49,10 +50,15 @@ export function determineStoreLocation(
     }
   }
 
+  const projectName = project.root.replace(/^.*?\//g, '');
+
   let parent: string;
 
   let path = options.path;
-  if (!extension && !feature) {
+  if (project.root) {
+    parent = projectName;
+    path = `${project.sourceRoot}/app/store/`;
+  } else if (!extension && !feature) {
     path = `${project.sourceRoot}/app/core/store/`;
     parent = 'core';
   } else if (!extension && feature) {
@@ -65,6 +71,11 @@ export function determineStoreLocation(
     throw new Error('cannot add feature store in extension');
   }
   const name = options.name.split('/').pop();
+
+  if (projectName) {
+    // override so it behaves like extension
+    extension = projectName;
+  }
 
   if (name === feature) {
     throw new Error('name of feature and store cannot be equal');
@@ -194,7 +205,7 @@ export function createStore(options: Options): Rule {
     operations.push(
       mergeWith(
         apply(url('./files'), [
-          template({
+          applyTemplates({
             ...strings,
             ...options,
           }),
@@ -205,6 +216,9 @@ export function createStore(options: Options): Rule {
     operations.push(registerStateInStore(options));
     operations.push(registerEffectsInStoreModule(options));
     operations.push(registerReducerInStoreModule(options));
+
+    operations.push(applyLintFix());
+
     return chain(operations);
   };
 }

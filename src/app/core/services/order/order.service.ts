@@ -27,7 +27,7 @@ type OrderIncludeType =
  */
 @Injectable({ providedIn: 'root' })
 export class OrderService {
-  constructor(private apiService: ApiService, private store: Store<{}>) {}
+  constructor(private apiService: ApiService, private store: Store) {}
 
   // http header for Order API v1
   private orderHeaders = new HttpHeaders({

@@ -56,7 +56,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   // tslint:disable-next-line:no-any
-  @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<any>;
+  @ViewChild('modal') modalTemplate: TemplateRef<any>;
 
   constructor(
     private ngbModal: NgbModal,
@@ -80,7 +80,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
         this.newWishlistInitValue = res;
         this.setDefaultFormValues();
       });
-    this.updateWishlistForm.valueChanges.subscribe(changes => {
+    this.updateWishlistForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(changes => {
       if (changes.wishlist !== 'newList') {
         this.updateWishlistForm.get('newWishlist').clearValidators();
       } else {

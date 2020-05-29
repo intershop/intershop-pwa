@@ -13,7 +13,8 @@
       {{
         (isListPriceGreaterThanSalePrice
           ? 'product.price.salePricePrefix.text'
-          : 'product.price.salePriceFallback.text') | translate: { '0': product.salePrice | ishPrice }
+          : 'product.price.salePriceFallback.text'
+        ) | translate: { '0': product.salePrice | ishPrice }
       }}
       <meta itemprop="price" [attr.content]="product.salePrice.value | number: '1.2-2':'en_US'" />
       <meta itemprop="priceCurrency" [attr.content]="product.salePrice.currency" />

@@ -4,6 +4,7 @@ import { take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Product } from 'ish-core/models/product/product.model';
+import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { QuotingFacade } from '../../../facades/quoting.facade';
@@ -18,6 +19,7 @@ import { ProductAddToQuoteDialogComponent } from '../product-add-to-quote-dialog
   templateUrl: './product-add-to-quote.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+@GenerateLazyComponent()
 export class ProductAddToQuoteComponent {
   @Input() product: Product;
   @Input() disabled?: boolean;
@@ -31,13 +33,8 @@ export class ProductAddToQuoteComponent {
     const quantity = this.quantity ? this.quantity : this.product.minOrderQuantity;
     this.quotingFacade.addProductToQuoteRequest(this.product.sku, quantity);
 
-    this.accountFacade.isLoggedIn$
-      .pipe(
-        take(1),
-        whenTruthy()
-      )
-      .subscribe(() => {
-        this.ngbModal.open(ProductAddToQuoteDialogComponent, { size: 'lg' });
-      });
+    this.accountFacade.isLoggedIn$.pipe(take(1), whenTruthy()).subscribe(() => {
+      this.ngbModal.open(ProductAddToQuoteDialogComponent, { size: 'lg' });
+    });
   }
 }

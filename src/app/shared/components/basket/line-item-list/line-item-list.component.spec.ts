@@ -17,8 +17,8 @@ import { PromotionDetailsComponent } from 'ish-shared/components/promotion/promo
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
 
-import { LazyProductAddToWishlistComponent } from '../../../../extensions/wishlists/exports/products/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
-import { ProductAddToWishlistComponent } from '../../../../extensions/wishlists/shared/product/product-add-to-wishlist/product-add-to-wishlist.component';
+import { LazyProductAddToOrderTemplateComponent } from '../../../../extensions/order-templates/exports/product/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
+import { LazyProductAddToWishlistComponent } from '../../../../extensions/wishlists/exports/product/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
 
 import { LineItemListComponent } from './line-item-list.component';
 
@@ -35,9 +35,9 @@ describe('Line Item List Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(InputComponent),
         MockComponent(LineItemDescriptionComponent),
-        MockComponent(ProductAddToWishlistComponent),
         MockComponent(ProductImageComponent),
         MockComponent(PromotionDetailsComponent),
+        MockComponents(LazyProductAddToOrderTemplateComponent),
         MockComponents(LazyProductAddToWishlistComponent),
         MockPipe(PricePipe),
         MockPipe(ProductRoutePipe),
@@ -138,14 +138,14 @@ describe('Line Item List Component', () => {
     it('should render item delete button if editable === true', () => {
       component.ngOnChanges();
       fixture.detectChanges();
-      expect(element.querySelector('fa-icon[ng-reflect-icon-prop="fas,trash-alt"]')).toBeTruthy();
+      expect(element.querySelector('fa-icon[ng-reflect-icon="fas,trash-alt"]')).toBeTruthy();
     });
 
     it('should not render item delete button if editable === false', () => {
       component.editable = false;
       component.ngOnChanges();
       fixture.detectChanges();
-      expect(element.querySelector('fa-icon[ng-reflect-icon-prop="fas,trash-alt"]')).toBeFalsy();
+      expect(element.querySelector('fa-icon[ng-reflect-icon="fas,trash-alt"]')).toBeFalsy();
     });
   });
 

@@ -34,7 +34,7 @@ export class ProductListingEffects {
     @Inject(PRODUCT_LISTING_ITEMS_PER_PAGE) private itemsPerPage: number,
     @Inject(DEFAULT_PRODUCT_LISTING_VIEW_TYPE) private defaultViewType: ViewType,
     private actions$: Actions,
-    private store: Store<{}>,
+    private store: Store,
     private productListingMapper: ProductListingMapper,
     private productMasterVariationsService: ProductMasterVariationsService
   ) {}

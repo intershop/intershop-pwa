@@ -23,7 +23,7 @@ describe('Search No Result Component', () => {
     fixture = TestBed.createComponent(SearchNoResultComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    translate = TestBed.get(TranslateService);
+    translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');
   });

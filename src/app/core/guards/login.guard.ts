@@ -7,23 +7,18 @@ import { filter, first } from 'rxjs/operators';
 import { getDeviceType } from 'ish-core/store/configuration';
 import { getUserAuthorized } from 'ish-core/store/user';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { LazyLoginModalComponent } from 'ish-shell/header/lazy-login-modal/lazy-login-modal.component';
+import { LoginModalComponent } from 'ish-shared/components/login/login-modal/login-modal.component';
 
 @Injectable({ providedIn: 'root' })
 export class LoginGuard implements CanActivate {
-  private currentDialog: NgbModalRef<typeof LazyLoginModalComponent>;
+  private currentDialog: NgbModalRef;
   private isMobile: boolean;
 
-  constructor(private modalService: NgbModal, private router: Router, private store: Store<{}>) {
-    store
-      .pipe(
-        select(getDeviceType),
-        first()
-      )
-      .subscribe(type => (this.isMobile = type === 'mobile'));
+  constructor(private modalService: NgbModal, private router: Router, private store: Store) {
+    store.pipe(select(getDeviceType), first()).subscribe(type => (this.isMobile = type === 'mobile'));
   }
 
-  canActivate(route: ActivatedRouteSnapshot, _: RouterStateSnapshot) {
+  async canActivate(route: ActivatedRouteSnapshot, _: RouterStateSnapshot) {
     // first request should go to page
     if (!this.router.navigated) {
       return true;
@@ -41,11 +36,16 @@ export class LoginGuard implements CanActivate {
 
     const returnUrl = route.queryParams.returnUrl || '/home';
 
-    this.currentDialog = this.modalService.open(LazyLoginModalComponent, { centered: true, size: 'sm' });
-    this.currentDialog.componentInstance.loginMessageKey = route.queryParamMap.get('messageKey');
+    const component = await (await import('../../shared/components/login/login-modal/login-modal.component'))
+      .LoginModalComponent;
+
+    this.currentDialog = this.modalService.open(component, { centered: true, size: 'sm' });
+
+    const loginModalComponent = this.currentDialog.componentInstance as LoginModalComponent;
+    loginModalComponent.loginMessageKey = route.queryParamMap.get('messageKey');
 
     // dialog closed
-    this.currentDialog.componentInstance.close.pipe(first()).subscribe(() => {
+    loginModalComponent.close.pipe(first()).subscribe(() => {
       this.currentDialog.dismiss();
     });
 
@@ -60,16 +60,10 @@ export class LoginGuard implements CanActivate {
       });
 
     // login successful
-    this.store
-      .pipe(
-        select(getUserAuthorized),
-        whenTruthy(),
-        first()
-      )
-      .subscribe(() => {
-        this.currentDialog.dismiss();
-        this.router.navigateByUrl(returnUrl);
-      });
+    this.store.pipe(select(getUserAuthorized), whenTruthy(), first()).subscribe(() => {
+      this.currentDialog.dismiss();
+      this.router.navigateByUrl(returnUrl);
+    });
 
     return false;
   }

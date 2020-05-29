@@ -18,6 +18,11 @@
     "noUnusedParameters": true
     // "noUnusedLocals": true,
   },
-  "include": ["src/**/*"],
-  "exclude": ["src/*/files/**/*", "src/*/other-files/**/*"]
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "src/**/*_spec.ts",
+    "src/**/test*.ts",
+    "src/*/files/**/*",
+    "src/*/other-files/**/*"
+  ]
 }

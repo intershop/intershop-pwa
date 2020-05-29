@@ -9,14 +9,14 @@ universalTest() {
   echo "\n\nTEST $NUM: searching '$GREP' in '$URL'"
   timeout 5m sh -c "[ ! -z \"\$(wget -O - -q $URL | grep \"$GREP\")\" ]"
   res=$?
-  [ "$res" -ne "0" ] && wget -O - -q "$URL"
+  [ "$res" -ne "0" ] && curl -v "$URL"
   [ "$res" -eq "0" ] && echo "TEST $NUM: SUCCESS" || echo "\n\nTEST $NUM: searching '$GREP' in '$URL': FAILURE\n"
   [ "$res" -ne "0" ] && exit 1
 }
 
 universalTest 1 "${PWA_BASE_URL}/" "router-outlet><ish-home-page"
 universalTest 2 "${PWA_BASE_URL}/catComputers.1835.151" "router-outlet><ish-category-page"
-universalTest 3 "${PWA_BASE_URL}/login" "Forgot your password?"
+universalTest 3 "${PWA_BASE_URL}/login" "<ish-loading"
 universalTest 4 "${PWA_BASE_URL}/register" "Create Account"
 universalTest 5 "${PWA_BASE_URL}/catComputers.1835" "<h1>Notebooks and PCs</h1>"
 universalTest 6 "${PWA_BASE_URL}/catComputers.1835" "<h3>PCs</h3>"

@@ -33,7 +33,7 @@ export class RequestReminderFormComponent implements OnInit {
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
       captcha: new FormControl(''),
-      captchaAction: new FormControl('forgot_password'),
+      captchaAction: new FormControl('forgotPassword'),
     });
   }
 

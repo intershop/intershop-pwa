@@ -10,7 +10,7 @@ describe('Sanitize Pipe', () => {
     TestBed.configureTestingModule({
       providers: [SanitizePipe],
     });
-    sanitizePipe = TestBed.get(SanitizePipe);
+    sanitizePipe = TestBed.inject(SanitizePipe);
   });
 
   it('should be created', () => {

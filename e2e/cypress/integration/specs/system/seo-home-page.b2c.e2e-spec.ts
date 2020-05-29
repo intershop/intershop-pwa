@@ -1,4 +1,4 @@
-import { at } from '../../framework';
+import { at, waitLoadingEnd } from '../../framework';
 import { HomePage } from '../../pages/home.page';
 import { NotFoundPage } from '../../pages/shopping/not-found.page';
 
@@ -7,6 +7,7 @@ describe('Home Page Meta', () => {
 
   it('should have all metadata set on home page', () => {
     at(HomePage, page => {
+      waitLoadingEnd(1000);
       page.metaData.check({
         title: 'inTRONICS Home | Intershop PWA',
         url: /.*\/home/,
@@ -18,6 +19,7 @@ describe('Home Page Meta', () => {
   it('should switch to error page meta when navigating there', () => {
     at(HomePage, page => {
       page.footer.gotoErrorPage();
+      waitLoadingEnd(1000);
     });
     at(NotFoundPage, page => {
       page.metaData.check({

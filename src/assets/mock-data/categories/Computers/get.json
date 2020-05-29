@@ -1,4 +1,11 @@
 {
+  "attributes": [
+    {
+      "name": "ShowInMenu",
+      "type": "String",
+      "value": "True"
+    }
+  ],
   "categoryPath": [
     {
       "id": "Computers",
@@ -7,6 +14,7 @@
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers"
     }
   ],
+  "categoryRef": "Computers@inSPIRED-Computers",
   "description": "The Computers products and services catalog.",
   "hasOnlineProducts": false,
   "hasOnlineSubCategories": true,
@@ -14,8 +22,7 @@
   "name": "Computers",
   "online": "1",
   "seoAttributes": {
-    "metaDescription": "Computers, Hardware Components, Monitors, Input Devices, Tablets, Data Storage, Notebooks and PCs, Printers always special prices for Computers",
-    "metaKeywords": [],
+    "metaDescription": "Computers, Notebooks and PCs, Input Devices, Tablets, Monitors, Printers, Hardware Components, Data Storage always special prices for Computers",
     "metaTitle": "Computers favorable buying at our shop",
     "robots": ["noindex", "nofollow"]
   },
@@ -35,6 +42,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897"
         }
       ],
+      "categoryRef": "897@inSPIRED-Computers",
       "description": "The Computers products and services catalog.",
       "hasOnlineProducts": false,
       "hasOnlineSubCategories": true,
@@ -73,6 +81,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/1835"
         }
       ],
+      "categoryRef": "1835@inSPIRED-Computers",
       "description": "Desktop PCs, Notebooks and Accessories",
       "hasOnlineProducts": false,
       "hasOnlineSubCategories": true,
@@ -110,6 +119,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/3001"
         }
       ],
+      "categoryRef": "3001@inSPIRED-Computers",
       "description": "Monitors",
       "hasOnlineProducts": false,
       "hasOnlineSubCategories": true,
@@ -147,6 +157,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/191"
         }
       ],
+      "categoryRef": "191@inSPIRED-Computers",
       "description": "The Computers products and services catalog.",
       "hasOnlineProducts": false,
       "hasOnlineSubCategories": true,
@@ -184,6 +195,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/206"
         }
       ],
+      "categoryRef": "206@inSPIRED-Computers",
       "description": "The Computers products and services catalog.",
       "hasOnlineProducts": false,
       "hasOnlineSubCategories": true,
@@ -221,6 +233,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106"
         }
       ],
+      "categoryRef": "106@inSPIRED-Computers",
       "description": "Hardware components of computers.",
       "hasOnlineProducts": false,
       "hasOnlineSubCategories": true,
@@ -258,6 +271,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/225"
         }
       ],
+      "categoryRef": "225@inSPIRED-Computers",
       "description": "The Computers products and services catalog.",
       "hasOnlineProducts": false,
       "hasOnlineSubCategories": true,

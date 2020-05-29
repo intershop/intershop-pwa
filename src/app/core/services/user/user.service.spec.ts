@@ -80,7 +80,7 @@ describe('User Service', () => {
     });
 
     it("should create a new private user when 'createUser' is called with type 'PrivateCustomer'", done => {
-      when(apiServiceMock.post(anyString(), anything())).thenReturn(of({}));
+      when(apiServiceMock.post(anyString(), anything(), anything())).thenReturn(of({}));
 
       const payload = {
         customer: { customerNo: '4711', type: 'PrivateCustomer' } as Customer,
@@ -90,7 +90,7 @@ describe('User Service', () => {
       } as CustomerRegistrationType;
 
       userService.createUser(payload).subscribe(() => {
-        verify(apiServiceMock.post('customers', anything())).once();
+        verify(apiServiceMock.post('customers', anything(), anything())).once();
         done();
       });
     });

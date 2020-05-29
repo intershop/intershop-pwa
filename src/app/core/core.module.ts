@@ -5,11 +5,10 @@ import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { BrowserCookiesModule } from '@ngx-utils/cookies/browser';
-import { ReactiveComponentLoaderModule } from '@wishtack/reactive-component-loader';
-import { CookieLawModule } from 'angular2-cookie-law';
+import { NgxCookieBannerModule } from 'ngx-cookie-banner';
 import { SWIPER_CONFIG, SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { ToastrModule } from 'ngx-toastr';
+import { BrowserCookiesModule } from 'ngx-utils-cookies-port';
 
 import { ConfigurationModule } from './configuration.module';
 import { ExtrasModule } from './extras.module';
@@ -17,6 +16,7 @@ import { IconModule } from './icon.module';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { MockInterceptor } from './interceptors/mock.interceptor';
 import { StateManagementModule } from './state-management.module';
+import { ModuleLoaderService } from './utils/module-loader/module-loader.service';
 
 export function translateFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -33,11 +33,13 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   imports: [
     BrowserCookiesModule.forRoot(),
     ConfigurationModule,
-    CookieLawModule,
     ExtrasModule,
     FormlyModule.forRoot(),
     HttpClientModule,
-    ReactiveComponentLoaderModule.forRoot(),
+    IconModule,
+    NgxCookieBannerModule.forRoot({
+      cookieName: 'cookieLawSeen',
+    }),
     RouterModule,
     StateManagementModule,
     ToastrModule.forRoot({
@@ -59,15 +61,16 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
     { provide: SWIPER_CONFIG, useValue: DEFAULT_SWIPER_CONFIG },
   ],
-  // exports needed to use the CookieLaw module in the AppComponent
-  exports: [CookieLawModule, TranslateModule],
+  // exports needed to use the cookie banner in the AppComponent
+  exports: [NgxCookieBannerModule, TranslateModule],
 })
 export class CoreModule {
   constructor(
     @Optional()
     @SkipSelf()
     parentModule: CoreModule,
-    popoverConfig: NgbPopoverConfig
+    popoverConfig: NgbPopoverConfig,
+    moduleLoader: ModuleLoaderService
   ) {
     if (parentModule) {
       throw new Error('CoreModule is already loaded. Import it in the AppModule only');
@@ -77,6 +80,6 @@ export class CoreModule {
     popoverConfig.triggers = 'hover';
     popoverConfig.container = 'body';
 
-    IconModule.init();
+    moduleLoader.init();
   }
 }

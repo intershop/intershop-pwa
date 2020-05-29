@@ -19,6 +19,7 @@
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830"
     }
   ],
+  "categoryRef": "830@inSPIRED-Computers",
   "description": "The Computers products and services catalog.",
   "hasOnlineProducts": true,
   "hasOnlineSubCategories": true,
@@ -38,8 +39,7 @@
   "name": "Cables",
   "online": "1",
   "seoAttributes": {
-    "metaDescription": "Cables, High Performance Category 6 UTP Patch Cable 15m, SATA Cables, Cable Interface/Gender Adapters, Audio/Video Cables, Firewire Cables, Usb Cables always special prices for Cables and Hardware Components",
-    "metaKeywords": [],
+    "metaDescription": "Cables, High Performance Category 6 UTP Patch Cable 15m, Audio/Video Cables, Cable Interface/Gender Adapters, SATA Cables, Firewire Cables, Usb Cables always special prices for Cables and Hardware Components",
     "metaTitle": "Cables - Hardware Components favorable buying at our shop",
     "robots": ["index", "follow"]
   },
@@ -71,6 +71,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1307"
         }
       ],
+      "categoryRef": "1307@inSPIRED-Computers",
       "description": "The Computers products and services catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
@@ -120,6 +121,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1501"
         }
       ],
+      "categoryRef": "1501@inSPIRED-Computers",
       "description": "The Computers products and services catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
@@ -169,6 +171,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1306"
         }
       ],
+      "categoryRef": "1306@inSPIRED-Computers",
       "description": "The Computers products and services catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
@@ -218,6 +221,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1303"
         }
       ],
+      "categoryRef": "1303@inSPIRED-Computers",
       "description": "The Computers products and services catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
@@ -267,6 +271,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1158"
         }
       ],
+      "categoryRef": "1158@inSPIRED-Computers",
       "description": "The Computers products and services catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,

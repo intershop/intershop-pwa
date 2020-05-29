@@ -1,10 +1,20 @@
 import { strings } from '@angular-devkit/core';
-import { Rule, SchematicsException, apply, chain, mergeWith, move, template, url } from '@angular-devkit/schematics';
+import {
+  Rule,
+  SchematicsException,
+  apply,
+  applyTemplates,
+  chain,
+  mergeWith,
+  move,
+  url,
+} from '@angular-devkit/schematics';
 
 import { applyNameAndPath, detectExtension, determineArtifactName, findDeclaringModule } from '../utils/common';
+import { applyLintFix } from '../utils/lint-fix';
 import { addDeclarationToNgModule, addExportToNgModule, addProviderToNgModule } from '../utils/registration';
 
-import { PwaPipeOptionsSchema as Options } from './schema';
+import { PWAPipeOptionsSchema as Options } from './schema';
 
 export function createPipe(options: Options): Rule {
   return host => {
@@ -32,7 +42,7 @@ export function createPipe(options: Options): Rule {
     operations.push(
       mergeWith(
         apply(url('./files'), [
-          template({
+          applyTemplates({
             ...strings,
             ...options,
           }),
@@ -40,6 +50,8 @@ export function createPipe(options: Options): Rule {
         ])
       )
     );
+
+    operations.push(applyLintFix());
 
     return chain(operations);
   };

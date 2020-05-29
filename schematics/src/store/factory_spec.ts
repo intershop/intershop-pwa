@@ -9,7 +9,7 @@ import {
 } from '../utils/testHelper';
 
 import { determineStoreLocation } from './factory';
-import { PwaStoreOptionsSchema as Options } from './schema';
+import { PWAStoreOptionsSchema as Options } from './schema';
 
 describe('Store Schematic', () => {
   const schematicRunner = createSchematicRunner();
@@ -22,7 +22,6 @@ describe('Store Schematic', () => {
   beforeEach(async () => {
     appTree = await createApplication(schematicRunner)
       .pipe(
-        createModule(schematicRunner, { name: 'shared' }),
         createModule(schematicRunner, { name: 'shell' }),
         createAppLastRoutingModule(schematicRunner),
         mergeMap(tree => schematicRunner.runSchematicAsync('extension', { name: 'feature', project: 'bar' }, tree))
@@ -30,7 +29,7 @@ describe('Store Schematic', () => {
       .toPromise();
 
     appTree.create(
-      '/projects/bar/src/app/core/store/core-store.module.ts',
+      '/src/app/core/store/core-store.module.ts',
       `import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreModule } from '@ngrx/store';
@@ -55,7 +54,7 @@ export class CoreStoreModule {}
 `
     );
     appTree.create(
-      '/projects/bar/src/app/core/store/core-store.ts',
+      '/src/app/core/store/core-store.ts',
       `import { Selector } from '@ngrx/store';
 
 import { CountriesState } from './countries/countries.reducer';
@@ -79,13 +78,13 @@ export const getCoreState: Selector<CoreState, CoreState> = state => state;
     const files = tree.files.filter(x => x.search('foo') >= 0);
     expect(files).toMatchInlineSnapshot(`
       Array [
-        "/projects/bar/src/app/core/store/foo/foo.actions.ts",
-        "/projects/bar/src/app/core/store/foo/foo.effects.ts",
-        "/projects/bar/src/app/core/store/foo/foo.effects.spec.ts",
-        "/projects/bar/src/app/core/store/foo/foo.reducer.ts",
-        "/projects/bar/src/app/core/store/foo/foo.selectors.ts",
-        "/projects/bar/src/app/core/store/foo/foo.selectors.spec.ts",
-        "/projects/bar/src/app/core/store/foo/index.ts",
+        "/src/app/core/store/foo/foo.actions.ts",
+        "/src/app/core/store/foo/foo.effects.spec.ts",
+        "/src/app/core/store/foo/foo.effects.ts",
+        "/src/app/core/store/foo/foo.reducer.ts",
+        "/src/app/core/store/foo/foo.selectors.spec.ts",
+        "/src/app/core/store/foo/foo.selectors.ts",
+        "/src/app/core/store/foo/index.ts",
       ]
     `);
   });
@@ -94,10 +93,10 @@ export const getCoreState: Selector<CoreState, CoreState> = state => state;
     const options = { ...defaultOptions };
 
     const tree = await schematicRunner.runSchematicAsync('store', options, appTree).toPromise();
-    const storeContent = tree.readContent('/projects/bar/src/app/core/store/core-store.ts');
+    const storeContent = tree.readContent('/src/app/core/store/core-store.ts');
     expect(storeContent).toContain('import { FooState }');
     expect(storeContent).toContain('foo: FooState');
-    const storeModuleContent = tree.readContent('/projects/bar/src/app/core/store/core-store.module.ts');
+    const storeModuleContent = tree.readContent('/src/app/core/store/core-store.module.ts');
     expect(storeModuleContent).toContain('import { fooReducer }');
     expect(storeModuleContent).toContain('foo: fooReducer');
     expect(storeModuleContent).toContain('import { FooEffects }');
@@ -111,13 +110,13 @@ export const getCoreState: Selector<CoreState, CoreState> = state => state;
     const files = tree.files.filter(x => x.search('foo') >= 0);
     expect(files).toMatchInlineSnapshot(`
       Array [
-        "/projects/bar/src/app/core/store/bar/foo/foo.actions.ts",
-        "/projects/bar/src/app/core/store/bar/foo/foo.effects.ts",
-        "/projects/bar/src/app/core/store/bar/foo/foo.effects.spec.ts",
-        "/projects/bar/src/app/core/store/bar/foo/foo.reducer.ts",
-        "/projects/bar/src/app/core/store/bar/foo/foo.selectors.ts",
-        "/projects/bar/src/app/core/store/bar/foo/foo.selectors.spec.ts",
-        "/projects/bar/src/app/core/store/bar/foo/index.ts",
+        "/src/app/core/store/bar/foo/foo.actions.ts",
+        "/src/app/core/store/bar/foo/foo.effects.spec.ts",
+        "/src/app/core/store/bar/foo/foo.effects.ts",
+        "/src/app/core/store/bar/foo/foo.reducer.ts",
+        "/src/app/core/store/bar/foo/foo.selectors.spec.ts",
+        "/src/app/core/store/bar/foo/foo.selectors.ts",
+        "/src/app/core/store/bar/foo/index.ts",
       ]
     `);
   });
@@ -126,10 +125,10 @@ export const getCoreState: Selector<CoreState, CoreState> = state => state;
     const options = { ...defaultOptions, feature: 'bar' };
 
     const tree = await schematicRunner.runSchematicAsync('store', options, appTree).toPromise();
-    const storeContent = tree.readContent('/projects/bar/src/app/core/store/bar/bar-store.ts');
+    const storeContent = tree.readContent('/src/app/core/store/bar/bar-store.ts');
     expect(storeContent).toContain('import { FooState }');
     expect(storeContent).toContain('foo: FooState');
-    const storeModuleContent = tree.readContent('/projects/bar/src/app/core/store/bar/bar-store.module.ts');
+    const storeModuleContent = tree.readContent('/src/app/core/store/bar/bar-store.module.ts');
     expect(storeModuleContent).toContain('import { fooReducer }');
     expect(storeModuleContent).toContain('foo: fooReducer');
     expect(storeModuleContent).toContain('import { FooEffects }');
@@ -143,13 +142,13 @@ export const getCoreState: Selector<CoreState, CoreState> = state => state;
     const files = tree.files.filter(x => x.search('foo') >= 0);
     expect(files).toMatchInlineSnapshot(`
       Array [
-        "/projects/bar/src/app/extensions/feature/store/foo/foo.actions.ts",
-        "/projects/bar/src/app/extensions/feature/store/foo/foo.effects.ts",
-        "/projects/bar/src/app/extensions/feature/store/foo/foo.effects.spec.ts",
-        "/projects/bar/src/app/extensions/feature/store/foo/foo.reducer.ts",
-        "/projects/bar/src/app/extensions/feature/store/foo/foo.selectors.ts",
-        "/projects/bar/src/app/extensions/feature/store/foo/foo.selectors.spec.ts",
-        "/projects/bar/src/app/extensions/feature/store/foo/index.ts",
+        "/src/app/extensions/feature/store/foo/foo.actions.ts",
+        "/src/app/extensions/feature/store/foo/foo.effects.spec.ts",
+        "/src/app/extensions/feature/store/foo/foo.effects.ts",
+        "/src/app/extensions/feature/store/foo/foo.reducer.ts",
+        "/src/app/extensions/feature/store/foo/foo.selectors.spec.ts",
+        "/src/app/extensions/feature/store/foo/foo.selectors.ts",
+        "/src/app/extensions/feature/store/foo/index.ts",
       ]
     `);
   });
@@ -158,12 +157,10 @@ export const getCoreState: Selector<CoreState, CoreState> = state => state;
     const options = { ...defaultOptions, extension: 'feature' };
 
     const tree = await schematicRunner.runSchematicAsync('store', options, appTree).toPromise();
-    const storeContent = tree.readContent('/projects/bar/src/app/extensions/feature/store/feature-store.ts');
+    const storeContent = tree.readContent('/src/app/extensions/feature/store/feature-store.ts');
     expect(storeContent).toContain('import { FooState }');
     expect(storeContent).toContain('foo: FooState');
-    const storeModuleContent = tree.readContent(
-      '/projects/bar/src/app/extensions/feature/store/feature-store.module.ts'
-    );
+    const storeModuleContent = tree.readContent('/src/app/extensions/feature/store/feature-store.module.ts');
     expect(storeModuleContent).toContain('import { fooReducer }');
     expect(storeModuleContent).toContain('foo: fooReducer');
     expect(storeModuleContent).toContain('import { FooEffects }');
@@ -186,8 +183,8 @@ export const getCoreState: Selector<CoreState, CoreState> = state => state;
         feature: undefined,
         name: 'foobar',
         parent: 'core',
-        parentStorePath: 'projects/bar/src/app/core/store/core',
-        path: 'projects/bar/src/app/core/store/',
+        parentStorePath: 'src/app/core/store/core',
+        path: 'src/app/core/store/',
         project: 'bar',
       };
 
@@ -201,8 +198,8 @@ export const getCoreState: Selector<CoreState, CoreState> = state => state;
         feature: 'bar',
         name: 'foobar',
         parent: 'bar',
-        parentStorePath: 'projects/bar/src/app/core/store/bar/bar',
-        path: 'projects/bar/src/app/core/store/bar/',
+        parentStorePath: 'src/app/core/store/bar/bar',
+        path: 'src/app/core/store/bar/',
         project: 'bar',
       };
 
@@ -217,8 +214,8 @@ export const getCoreState: Selector<CoreState, CoreState> = state => state;
         feature: undefined,
         name: 'foobar',
         parent: 'bar',
-        parentStorePath: 'projects/bar/src/app/extensions/bar/store/bar',
-        path: 'projects/bar/src/app/extensions/bar/store/',
+        parentStorePath: 'src/app/extensions/bar/store/bar',
+        path: 'src/app/extensions/bar/store/',
         project: 'bar',
       };
 

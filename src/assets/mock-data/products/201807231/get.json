@@ -3,6 +3,11 @@
     {
       "description": "Get to know Surface Book, the ultra-thin, high-performance laptop with exceptional power and versatility. Use this guide to get started with your Surface Book. For more details and how-to info, go online to Surface.com.",
       "key": "AC_Information_1_",
+      "link": {
+        "title": "Surface Book User Guide",
+        "type": "Link",
+        "uri": "/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/-/inSPIRED/en_US/manuals/surface-book-user-guide-EN.pdf"
+      },
       "name": "Surface Book User Guide",
       "type": "Information",
       "uri": false,
@@ -17,14 +22,14 @@
       "value": "8th Gen Intel Core i7-8650U quad-core processor, 4.2GHz Max Turbo"
     },
     {
-      "name": "Battery Life",
-      "type": "String",
-      "value": "Up to 17 hours of video playback"
-    },
-    {
       "name": "Warranty",
       "type": "String",
       "value": "1-year limited hardware warranty"
+    },
+    {
+      "name": "Battery Life",
+      "type": "String",
+      "value": "Up to 17 hours of video playback"
     },
     {
       "name": "Memory",
@@ -204,6 +209,7 @@
     "value": 2118.94
   },
   "name": "Microsoft Surface Book 2",
+  "numberOfReviews": 0,
   "packingUnit": "",
   "productBundle": false,
   "productMaster": true,
@@ -221,7 +227,6 @@
   },
   "seoAttributes": {
     "metaDescription": "Microsoft Surface Book 2 - The most powerful Surface ever",
-    "metaKeywords": [],
     "metaTitle": "Microsoft Surface Book 2 - Microsoft favorable buying at our shop",
     "robots": ["index", "follow"]
   },
@@ -263,12 +268,6 @@
     {
       "name": "Hard drive size",
       "type": "VariationAttribute",
-      "value": "1TB",
-      "variationAttributeId": "Hard_disk_drive_capacity"
-    },
-    {
-      "name": "Hard drive size",
-      "type": "VariationAttribute",
       "value": "256GB",
       "variationAttributeId": "Hard_disk_drive_capacity"
     },
@@ -276,6 +275,12 @@
       "name": "Hard drive size",
       "type": "VariationAttribute",
       "value": "512GB",
+      "variationAttributeId": "Hard_disk_drive_capacity"
+    },
+    {
+      "name": "Hard drive size",
+      "type": "VariationAttribute",
+      "value": "1TB",
       "variationAttributeId": "Hard_disk_drive_capacity"
     },
     {

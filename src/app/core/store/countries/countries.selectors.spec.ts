@@ -11,14 +11,17 @@ import { getAllCountries, getCountriesLoading } from './countries.selectors';
 describe('Countries Selectors', () => {
   let store$: TestStore;
 
-  const countries = [{ countryCode: 'BG', name: 'Bulgaria' }, { countryCode: 'DE', name: 'Germany' }] as Country[];
+  const countries = [
+    { countryCode: 'BG', name: 'Bulgaria' },
+    { countryCode: 'DE', name: 'Germany' },
+  ] as Country[];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: ngrxTesting({ reducers: coreReducers }),
     });
 
-    store$ = TestBed.get(TestStore);
+    store$ = TestBed.inject(TestStore);
   });
 
   describe('with empty state', () => {

@@ -22,7 +22,7 @@ describe('Addresses Effects', () => {
   let actions$: Observable<Action>;
   let addressServiceMock: AddressService;
   let effects: AddressesEffects;
-  let store$: Store<{}>;
+  let store$: Store;
 
   beforeEach(() => {
     addressServiceMock = mock(AddressService);
@@ -47,8 +47,8 @@ describe('Addresses Effects', () => {
       ],
     });
 
-    effects = TestBed.get(AddressesEffects);
-    store$ = TestBed.get(Store);
+    effects = TestBed.inject(AddressesEffects);
+    store$ = TestBed.inject(Store);
     const customer = { customerNo: 'patricia' } as Customer;
     store$.dispatch(new LoginUserSuccess({ customer }));
   });

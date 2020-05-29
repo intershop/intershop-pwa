@@ -17,7 +17,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
 export class CMSVideoComponent implements CMSComponent, OnInit {
   @Input() pagelet: ContentPageletView;
 
-  @ViewChild('videoPlayer', { static: false }) videoPlayer: ElementRef;
+  @ViewChild('videoPlayer') videoPlayer: ElementRef;
 
   video: string;
   nativeVideoUrl: SafeUrl;

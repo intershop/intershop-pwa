@@ -36,7 +36,9 @@
     "class-name": true,
     "comment-format": [true, "check-space"],
     "curly": true,
-    "deprecation": true,
+    "deprecation": {
+      "severity": "warning"
+    },
     "eofline": true,
     "forin": true,
     "import-blacklist": [true, "rxjs/Rx", "lodash", "."],
@@ -84,8 +86,12 @@
     "no-construct": true,
     "no-debugger": true,
     "no-duplicate-super": true,
-    "no-empty": true,
-    "no-empty-interface": true,
+    "no-empty": {
+      "severity": "warning"
+    },
+    "no-empty-interface": {
+      "severity": "warning"
+    },
     "no-eval": true,
     "no-inferrable-types": [true, "ignore-params"],
     "no-angle-bracket-type-assertion": true,
@@ -331,7 +337,7 @@
           "from": "lodash.*"
         },
         {
-          "import": "^(?!(range|uniq|memoize|once|groupBy|countBy|flatten|isEqual|intersection|omit)$).*",
+          "import": "^(?!(range|uniq|memoize|once|groupBy|countBy|flatten|isEqual|intersection|omit|pick|mapValues)$).*",
           "from": "lodash.*"
         },
         {
@@ -341,7 +347,7 @@
         },
         {
           "import": "CookiesService",
-          "from": "@ngx-utils/cookies",
+          "from": "ngx-utils-cookies-port",
           "filePattern": "^((?!src/app/core/services/cookies/cookies\\.service(\\.spec|)\\.ts).)*$",
           "message": "Use CookiesService from ish-core instead."
         },
@@ -367,6 +373,11 @@
           "message": "Imports from (other) extensions are not allowed here."
         },
         {
+          "from": ".*/projects/.*",
+          "filePattern": "^((?!(module|spec)\\.ts).)*$",
+          "message": "Imports from (other) projects are not allowed here."
+        },
+        {
           "from": ".*/pages/[a-z][a-z0-9-]+/.*",
           "filePattern": "^((?!(cypress|\\.module\\.ts$)).)*$",
           "message": "Imports from pages are not allowed."
@@ -374,8 +385,8 @@
         {
           "import": "^SharedModule$",
           "from": "\\..*",
-          "filePattern": "^(?!.+(page|extensions/[a-z][a-z0-9-]+/[a-z][a-z0-9-]+\\.module)).+\\.module\\.ts$",
-          "message": "SharedModule must only be imported in page or extension modules."
+          "filePattern": "^(?!.+(page|extensions/[a-z][a-z0-9-]+/[a-z][a-z0-9-]+\\.module|projects/[a-z][a-z0-9-]+/src/app/[a-z][a-z0-9-]+\\.module)).+\\.module\\.ts$",
+          "message": "SharedModule must only be imported in page, extension or project modules."
         },
         {
           "import": "pluck",
@@ -428,6 +439,12 @@
           "from": "@ngx-meta.*",
           "filePattern": "^(?!.*/extensions/seo/.*$).*$",
           "message": "Imports from @ngx-meta are only allowed in SEO extension."
+        },
+        {
+          "import": ".*ExportsModule",
+          "from": ".*.*",
+          "filePattern": ".*/shared/shared.module.ts$",
+          "message": "Importing and exporting extension modules should be done in ShellModule."
         }
       ]
     },
@@ -501,19 +518,19 @@
           "^.*/src/app/core/routing/([a-z0-9-]+)/\\1\\.route\\.ts",
           "^.*/src/app/core/routing/([a-z0-9-]+)/\\1\\-route\\.pipe\\.ts",
           // extra artifacts
-          "^.*/src/app/(core|extensions/[a-z][a-z0-9-]+)/(service)s/([a-z][a-z0-9-]+)/\\3(\\-[a-z0-9-]+|)\\.\\2[a-z0-9-\\.]*\\.ts",
-          "^.*/src/app/(core|extensions/[a-z][a-z0-9-]+)/(interceptor|guard|directive|pipe)s/[a-z][a-z0-9-]+.\\2\\.ts",
+          "^.*(/src/app/core|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/(service)s/([a-z][a-z0-9-]+)/\\3(\\-[a-z0-9-]+|)\\.\\2[a-z0-9-\\.]*\\.ts",
+          "^.*(/src/app/core|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/(interceptor|guard|directive|pipe)s/[a-z][a-z0-9-]+.\\2\\.ts",
           // models
-          "^.*/src/app/(core|extensions/[a-z][a-z0-9-]+)/models/([a-z][a-z0-9-]+)/\\2\\.(pipe|helper|interface|mapper|types)\\.ts$",
+          "^.*(/src/app/core|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/models/([a-z][a-z0-9-]+)/\\2\\.(pipe|helper|interface|mapper|types)\\.ts$",
           // cms
           "^.*/src/app/shared/cms/sfe-adapter/.*\\.ts$",
           // facades
-          "^.*/src/app/(core|extensions/[a-z][a-z0-9-]+)/facades/(index|[a-z][a-z0-9-]+\\.facade)\\.ts$",
+          "^.*(/src/app/core|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/facades/(index|[a-z][a-z0-9-]+\\.facade)\\.ts$",
           // ngrx
-          "^.*/src/app/.*/store/([a-z][a-z0-9-]+/|)([a-z][a-z0-9-]+)/\\2(\\-[a-z][a-z0-9-]+|)\\.(action|effects|reducer|selectors)\\.ts",
-          "^.*/src/app/.*/store/([a-z][a-z0-9-]+/|)([a-z][a-z0-9-]+)/index\\.ts",
-          "^.*/src/app/.*/store/([a-z][a-z0-9-]+)/\\1-store(\\.module|)\\.ts",
-          "^.*/([a-z][a-z0-9-]+)/store/\\1-store(\\.module|)\\.ts",
+          "^.*/store/([a-z][a-z0-9-]+/|)([a-z][a-z0-9-]+)/\\2(\\-[a-z][a-z0-9-]+|)\\.(actions|effects|reducer|selectors)\\.ts",
+          "^.*/store/([a-z][a-z0-9-]+/|)([a-z][a-z0-9-]+)/index\\.ts",
+          "^.*/store/([a-z][a-z0-9-]+)/\\1-store(\\.module|)\\.ts",
+          "^.*/([a-z][a-z0-9-]+)(/src/app|)/store/\\1-store(\\.module|)\\.ts",
           // ngrx router-store
           "^.*/src/app/core/store/router/router\\.(operators|serializer)\\.ts",
           // allow only app related content directly in src/app
@@ -522,9 +539,10 @@
           "^.*/src/app/shell/(header|footer)/([a-z][a-z0-9-]+)/\\2\\.component\\.ts$",
           "^.*/src/app/shell/[a-z][a-z0-9-]+/configurations/.*\\.ts$",
           // specific (lazy loaded) page modules
-          "^.*/src/app/(|extensions/[a-z][a-z0-9-]+/)pages/([a-z][a-z0-9-]+)/\\2-page\\.(module|component)\\.ts$",
-          "^.*/src/app/(|extensions/[a-z][a-z0-9-]+/)pages/[a-z][a-z0-9-]+/([a-z][a-z0-9-]+)/\\2\\.component\\.ts$",
+          "^.*(/src/app|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/pages/([a-z][a-z0-9-]+)/\\2-page\\.(module|component)\\.ts$",
+          "^.*(/src/app|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/pages/[a-z][a-z0-9-]+/([a-z][a-z0-9-]+)/\\2\\.component\\.ts$",
           "^.*/src/app/extensions/([a-z][a-z0-9-]+)/pages/\\1-routing\\.module\\.ts$",
+          "^.*/projects/([a-z][a-z0-9-]+)/src/app/pages/\\1-routing\\.module\\.ts$",
           "^.*/src/app/pages/app[a-z0-9-]*-routing\\.module\\.ts$",
           // enforce folder structure for shared components
           "^.*/src/app/extensions/[a-z][a-z0-9-]+/shared/[a-z][a-z0-9-]+/([a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
@@ -536,6 +554,7 @@
           // aggregation modules
           "^.*/src/app/(shell|shared)/\\1\\.module\\.ts$",
           "^.*/src/app/extensions/([a-z][a-z0-9-]+)/\\1\\.module\\.ts$",
+          "^.*/projects/([a-z][a-z0-9-]+)/src/app/\\1\\.module\\.ts$",
           // extension exports
           "^.*/src/app/extensions/[a-z][a-z0-9-]+/exports/[a-z][a-z0-9-]+/(lazy-[a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
           "^.*/src/app/extensions/([a-z][a-z0-9-]+)/exports/\\1-exports\\.module\\.ts$"
@@ -636,8 +655,12 @@
             "file": ".*/(<kebab>|store)/<kebab>-store\\.module\\.ts$"
           },
           {
+            "name": "^([A-Z].*)ComponentModule$",
+            "file": ".*/<kebab>\\.component\\.ts$"
+          },
+          {
             "name": "^(.*)Module$",
-            "file": ".*(cypress.*|/<kebab>/<kebab>|/core/[a-z][a-z0-9-]+)\\.module\\.ts$"
+            "file": ".*(cypress.*|/<kebab>/<kebab>|/projects/<kebab>/src/app/<kebab>|/core/[a-z][a-z0-9-]+)\\.module\\.ts$"
           },
           {
             "name": "^(.*)Routes$",
@@ -663,7 +686,7 @@
           // facades
           {
             "name": "^([A-Z].*)Facade$",
-            "file": ".*/app/(core|extensions/[a-z][a-z0-9-]+)/facades/<kebab>\\.facade\\.ts$"
+            "file": ".*(/src/app/core|/src/app/extensions/[a-z][a-z0-9-]+|/projects/[a-z][a-z0-9-]+/src/app)/facades/<kebab>\\.facade\\.ts$"
           },
           // ngrx
           {

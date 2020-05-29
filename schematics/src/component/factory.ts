@@ -3,19 +3,20 @@ import {
   Rule,
   SchematicsException,
   apply,
+  applyTemplates,
   chain,
   filter,
   mergeWith,
   move,
   noop,
-  template,
   url,
 } from '@angular-devkit/schematics';
 
 import { applyNameAndPath, determineArtifactName, findDeclaringModule, generateSelector } from '../utils/common';
-import { addDeclarationToNgModule, addEntryComponentToNgModule, addExportToNgModule } from '../utils/registration';
+import { applyLintFix } from '../utils/lint-fix';
+import { addDeclarationToNgModule, addExportToNgModule } from '../utils/registration';
 
-import { PwaComponentOptionsSchema as Options } from './schema';
+import { PWAComponentOptionsSchema as Options } from './schema';
 
 export function createComponent(options: Options): Rule {
   return host => {
@@ -31,9 +32,6 @@ export function createComponent(options: Options): Rule {
     const operations = [];
     if (!options.skipImport) {
       operations.push(addDeclarationToNgModule(options));
-      if (options.entryComponent) {
-        operations.push(addEntryComponentToNgModule(options));
-      }
       if (options.export) {
         operations.push(addExportToNgModule(options));
       }
@@ -41,8 +39,8 @@ export function createComponent(options: Options): Rule {
     operations.push(
       mergeWith(
         apply(url('./files'), [
-          options.styleFile ? noop() : filter(path => !path.endsWith('.__styleext__')),
-          template({
+          options.styleFile ? noop() : filter(path => !path.includes('.scss')),
+          applyTemplates({
             ...strings,
             ...options,
             'if-flat': s => (options.flat ? '' : s),
@@ -51,6 +49,8 @@ export function createComponent(options: Options): Rule {
         ])
       )
     );
+
+    operations.push(applyLintFix());
 
     return chain(operations);
   };

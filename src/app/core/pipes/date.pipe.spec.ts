@@ -17,9 +17,9 @@ describe('Date Pipe', () => {
       imports: [TranslateModule.forRoot()],
       providers: [DatePipe],
     });
-    datePipe = TestBed.get(DatePipe);
+    datePipe = TestBed.inject(DatePipe);
 
-    translateService = TestBed.get(TranslateService);
+    translateService = TestBed.inject(TranslateService);
     translateService.setDefaultLang('en');
   });
 

@@ -14,11 +14,6 @@
       "visible": false,
       "default": true
     },
-    "tsext": {
-      "type": "string",
-      "default": "ts",
-      "visible": false
-    },
     "flat": {
       "type": "boolean",
       "default": true,

@@ -7,8 +7,9 @@ import { MockComponent } from 'ng-mocks';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { CaptchaComponent } from 'ish-shared/forms/components/captcha/captcha.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
+
+import { LazyCaptchaComponent } from '../../../extensions/captcha/exports/captcha/lazy-captcha/lazy-captcha.component';
 
 import { RequestReminderFormComponent } from './request-reminder-form.component';
 
@@ -19,7 +20,7 @@ describe('Request Reminder Form Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [MockComponent(CaptchaComponent), MockComponent(InputComponent), RequestReminderFormComponent],
+      declarations: [MockComponent(InputComponent), MockComponent(LazyCaptchaComponent), RequestReminderFormComponent],
       imports: [
         FeatureToggleModule,
         ReactiveFormsModule,

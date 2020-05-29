@@ -13,6 +13,7 @@
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/SmartHome"
     }
   ],
+  "categoryRef": "SmartHome@inSPIRED-Home-Entertainment",
   "description": "Smart home solutions for light, doors and windows or heating",
   "hasOnlineProducts": true,
   "hasOnlineSubCategories": false,
@@ -33,7 +34,6 @@
   "online": "1",
   "seoAttributes": {
     "metaDescription": "Smart Home, Hands-free help from the Google Assistant always special prices for Smart Home and Home Entertainment",
-    "metaKeywords": [],
     "metaTitle": "Smart Home - Home Entertainment favorable buying at our shop",
     "robots": ["index", "follow"]
   },

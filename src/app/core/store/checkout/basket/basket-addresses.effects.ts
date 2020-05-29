@@ -21,7 +21,7 @@ import * as basketActions from './basket.actions';
 export class BasketAddressesEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<{}>,
+    private store: Store,
     private basketService: BasketService,
     private addressService: AddressService
   ) {}
@@ -113,24 +113,28 @@ export class BasketAddressesEffects {
     mergeMap(([address, customer]) => {
       // create address at customer for logged in user
       if (customer) {
-        return this.addressService.updateCustomerAddress('-', address).pipe(
-          concatMapTo([
-            new UpdateCustomerAddressSuccess({ address }),
-            new basketActions.LoadBasket(),
-            new basketActions.ResetBasketErrors(),
-          ]),
-          mapErrorToAction(UpdateCustomerAddressFail)
-        );
+        return this.addressService
+          .updateCustomerAddress('-', address)
+          .pipe(
+            concatMapTo([
+              new UpdateCustomerAddressSuccess({ address }),
+              new basketActions.LoadBasket(),
+              new basketActions.ResetBasketErrors(),
+            ]),
+            mapErrorToAction(UpdateCustomerAddressFail)
+          );
         // create address at basket for anonymous user
       } else {
-        return this.basketService.updateBasketAddress('current', address).pipe(
-          concatMapTo([
-            new UpdateCustomerAddressSuccess({ address }),
-            new basketActions.LoadBasket(),
-            new basketActions.ResetBasketErrors(),
-          ]),
-          mapErrorToAction(UpdateCustomerAddressFail)
-        );
+        return this.basketService
+          .updateBasketAddress('current', address)
+          .pipe(
+            concatMapTo([
+              new UpdateCustomerAddressSuccess({ address }),
+              new basketActions.LoadBasket(),
+              new basketActions.ResetBasketErrors(),
+            ]),
+            mapErrorToAction(UpdateCustomerAddressFail)
+          );
       }
     })
   );
@@ -143,10 +147,12 @@ export class BasketAddressesEffects {
     ofType<basketActions.DeleteBasketShippingAddress>(basketActions.BasketActionTypes.DeleteBasketShippingAddress),
     mapToPayloadProperty('addressId'),
     mergeMap(addressId =>
-      this.addressService.deleteCustomerAddress('-', addressId).pipe(
-        concatMapTo([new DeleteCustomerAddressSuccess({ addressId }), new basketActions.LoadBasket()]),
-        mapErrorToAction(DeleteCustomerAddressFail)
-      )
+      this.addressService
+        .deleteCustomerAddress('-', addressId)
+        .pipe(
+          concatMapTo([new DeleteCustomerAddressSuccess({ addressId }), new basketActions.LoadBasket()]),
+          mapErrorToAction(DeleteCustomerAddressFail)
+        )
     )
   );
 }

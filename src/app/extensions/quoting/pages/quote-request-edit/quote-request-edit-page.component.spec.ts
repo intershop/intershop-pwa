@@ -18,7 +18,7 @@ describe('Quote Request Edit Page Component', () => {
   let component: QuoteRequestEditPageComponent;
   let fixture: ComponentFixture<QuoteRequestEditPageComponent>;
   let element: HTMLElement;
-  let store$: Store<{}>;
+  let store$: Store;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -41,7 +41,7 @@ describe('Quote Request Edit Page Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    store$ = TestBed.get(Store);
+    store$ = TestBed.inject(Store);
   });
 
   it('should be created', () => {

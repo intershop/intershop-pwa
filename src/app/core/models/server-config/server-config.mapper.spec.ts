@@ -13,8 +13,8 @@ describe('Server Config Mapper', () => {
             id: 'services',
             elements: [
               { id: 'captcha', siteKey: 'ASDF' },
-              { id: 'gtm', token: 'QWERTY', monitor: true },
-              { id: 'deeper', elements: [{ id: 'hidden', foo: 'bar' }] },
+              { id: 'gtm', token: 'QWERTY', monitor: 'true' },
+              { id: 'deeper', elements: [{ id: 'hidden', foo: 'bar', num: 123, alt: '123' }] },
             ],
           },
         ],
@@ -41,7 +41,9 @@ describe('Server Config Mapper', () => {
             },
             "deeper": Object {
               "hidden": Object {
+                "alt": 123,
                 "foo": "bar",
+                "num": 123,
               },
             },
             "gtm": Object {

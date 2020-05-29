@@ -44,7 +44,7 @@ describe('Category Route', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({ imports: [RouterTestingModule] });
-    const router: Router = TestBed.get(Router);
+    const router = TestBed.inject(Router);
     wrap = url => {
       const primary = router.parseUrl(url).root.children.primary;
       return primary ? primary.segments : [];
@@ -149,7 +149,7 @@ describe('Category Route', () => {
 
 describe('Category Route', () => {
   let router: Router;
-  let store$: Store<{}>;
+  let store$: Store;
 
   beforeEach(() => {
     @Component({ template: 'dummy' })
@@ -163,27 +163,22 @@ describe('Category Route', () => {
       ],
     });
 
-    router = TestBed.get(Router);
-    store$ = TestBed.get(Store);
+    router = TestBed.inject(Router);
+    store$ = TestBed.inject(Store);
   });
 
   describe('ofCategoryRoute', () => {
     it('should detect category route when categoryUniqueId is a param', done => {
       router.navigateByUrl('/category;categoryUniqueId=ABC');
 
-      store$
-        .pipe(
-          ofCategoryUrl(),
-          select(selectRouter)
-        )
-        .subscribe(data => {
-          expect(data.state.params).toMatchInlineSnapshot(`
+      store$.pipe(ofCategoryUrl(), select(selectRouter)).subscribe(data => {
+        expect(data.state.params).toMatchInlineSnapshot(`
             Object {
               "categoryUniqueId": "ABC",
             }
           `);
-          done();
-        });
+        done();
+      });
     });
 
     it('should not detect category route when sku and categoryUniqueId are params', done => {

@@ -59,7 +59,7 @@ export class QuoteRequestEffects {
     private featureToggleService: FeatureToggleService,
     private quoteRequestService: QuoteRequestService,
     private router: Router,
-    private store: Store<{}>,
+    private store: Store,
     private translateService: TranslateService
   ) {}
 
@@ -319,12 +319,7 @@ export class QuoteRequestEffects {
       actions.QuoteRequestActionTypes.AddProductToQuoteRequest,
       actions.QuoteRequestActionTypes.AddBasketToQuoteRequest
     ),
-    mergeMap(() =>
-      this.store.pipe(
-        select(getUserAuthorized),
-        first()
-      )
-    ),
+    mergeMap(() => this.store.pipe(select(getUserAuthorized), first())),
     whenFalsy(),
     tap(() => {
       const queryParams = { returnUrl: this.router.routerState.snapshot.url, messageKey: 'quotes' };

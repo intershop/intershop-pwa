@@ -17,7 +17,7 @@ describe('Product Listing Selectors', () => {
   beforeEach(() => {
     expect.addSnapshotSerializer({
       test: val => val && typeof val.products === 'function',
-      print: (val, serialize) =>
+      print: (val: ProductListingView, serialize) =>
         serialize({
           'pageIndices()': val.pageIndices(),
           'products()': val.products(),
@@ -46,7 +46,7 @@ describe('Product Listing Selectors', () => {
       }),
     });
 
-    store$ = TestBed.get(TestStore);
+    store$ = TestBed.inject(TestStore);
   });
 
   describe('initial state', () => {

@@ -11,7 +11,7 @@ import { cold, hot } from 'jest-marbles';
 import { EMPTY, Observable, from, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
+import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { HttpErrorMapper } from 'ish-core/models/http-error/http-error.mapper';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -30,7 +30,7 @@ import { UserEffects } from './user.effects';
 describe('User Effects', () => {
   let actions$: Observable<Action>;
   let effects: UserEffects;
-  let store$: Store<{}>;
+  let store$: Store;
   let userServiceMock: UserService;
   let paymentServiceMock: PaymentService;
   let router: Router;
@@ -86,10 +86,10 @@ describe('User Effects', () => {
       ],
     });
 
-    effects = TestBed.get(UserEffects);
-    store$ = TestBed.get(Store);
-    router = TestBed.get(Router);
-    location = TestBed.get(Location);
+    effects = TestBed.inject(UserEffects);
+    store$ = TestBed.inject(Store);
+    router = TestBed.inject(Router);
+    location = TestBed.inject(Location);
   });
 
   describe('loginUser$', () => {
@@ -258,7 +258,7 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a CreateUserLogin action on successful user creation', () => {
-      const credentials: LoginCredentials = { login: '1234', password: 'xxx' };
+      const credentials: Credentials = { login: '1234', password: 'xxx' };
 
       const action = new ua.CreateUser({ credentials } as CustomerRegistrationType);
       const completion = new ua.LoginUser({ credentials });

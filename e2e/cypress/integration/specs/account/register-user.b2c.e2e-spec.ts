@@ -26,10 +26,7 @@ describe('New User', () => {
       at(RegistrationPage, page => {
         page.fillForm(_.user);
         page.acceptTAC();
-        page
-          .submitAndObserve()
-          .its('statusMessage')
-          .should('equal', '201 (Created)');
+        page.submitAndObserve().its('statusMessage').should('equal', '201 (Created)');
       });
     });
 
@@ -48,10 +45,7 @@ describe('New User', () => {
       });
       at(LoginPage, page => {
         page.fillForm(_.user.login, _.user.password);
-        page
-          .submit()
-          .its('status')
-          .should('equal', 200);
+        page.submit().its('status').should('equal', 200);
       });
       at(MyAccountPage, page => {
         page.header.myAccountLink.should('have.text', `${_.user.firstName} ${_.user.lastName}`);
@@ -75,10 +69,7 @@ describe('New User', () => {
 
     it('should get an error when submitting', () => {
       at(RegistrationPage, page => {
-        page
-          .submitAndObserve()
-          .its('statusMessage')
-          .should('equal', '409 (Conflict)');
+        page.submitAndObserve().its('statusMessage').should('equal', '409 (Conflict)');
         page.errorText.should('be.visible').and('contain', 'e-mail address already exists');
       });
     });

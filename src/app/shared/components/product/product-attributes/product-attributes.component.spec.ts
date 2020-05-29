@@ -13,7 +13,10 @@ describe('Product Attributes Component', () => {
   let product: Product;
   beforeEach(async(() => {
     product = { sku: 'sku' } as Product;
-    product.attributes = [{ name: 'A', type: 'String', value: 'A' }, { name: 'B', type: 'String', value: 'B' }];
+    product.attributes = [
+      { name: 'A', type: 'String', value: 'A' },
+      { name: 'B', type: 'String', value: 'B' },
+    ];
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [AttributeToStringPipe, ProductAttributesComponent],
@@ -26,7 +29,7 @@ describe('Product Attributes Component', () => {
     element = fixture.nativeElement;
     component.product = product;
 
-    const translate = TestBed.get(TranslateService);
+    const translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');
   });

@@ -38,16 +38,15 @@ import {
   getSelectedQuoteRequestWithProducts,
 } from '../store/quote-request';
 
-const getQuotesAndQuoteRequests = createSelector(
-  getCurrentQuotes,
-  getCurrentQuoteRequests,
-  (quotes, quoteRequests): (Quote | QuoteRequest)[] => [...quotes, ...quoteRequests]
-);
+const getQuotesAndQuoteRequests = createSelector(getCurrentQuotes, getCurrentQuoteRequests, (quotes, quoteRequests): (
+  | Quote
+  | QuoteRequest
+)[] => [...quotes, ...quoteRequests]);
 
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
 export class QuotingFacade {
-  constructor(private store: Store<{}>) {}
+  constructor(private store: Store) {}
 
   // QUOTE
   quote$ = this.store.pipe(select(getSelectedQuoteWithProducts));

@@ -47,6 +47,12 @@
             class="btn-link"
             [product]="product"
           ></ish-lazy-product-add-to-wishlist>
+          <ish-lazy-product-add-to-order-template
+            *ngIf="configuration.displayAddToOrderTemplate"
+            displayType="icon"
+            class="btn-link"
+            [product]="product"
+          ></ish-lazy-product-add-to-order-template>
         </div>
       </div>
 

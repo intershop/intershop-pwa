@@ -14,7 +14,7 @@ import { ErrorEffects } from './error.effects';
 
 describe('Error Effects', () => {
   let effects: ErrorEffects;
-  let store$: Store<{}>;
+  let store$: Store;
   let location: Location;
 
   @Component({ template: 'dummy' })
@@ -30,9 +30,9 @@ describe('Error Effects', () => {
       providers: [ErrorEffects],
     });
 
-    store$ = TestBed.get(Store);
-    effects = TestBed.get(ErrorEffects);
-    location = TestBed.get(Location);
+    store$ = TestBed.inject(Store);
+    effects = TestBed.inject(ErrorEffects);
+    location = TestBed.inject(Location);
   });
 
   describe('gotoErrorPageInCaseOfError$', () => {

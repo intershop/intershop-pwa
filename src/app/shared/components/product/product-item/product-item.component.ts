@@ -40,6 +40,7 @@ export const DEFAULT_CONFIGURATION: Readonly<ProductItemContainerConfiguration> 
   displayShipment: false,
   displayAddToBasket: true,
   displayAddToWishlist: true,
+  displayAddToOrderTemplate: true,
   displayAddToCompare: true,
   displayAddToQuote: true,
   displayType: 'tile',
@@ -95,12 +96,7 @@ export class ProductItemComponent implements OnInit, OnChanges, OnDestroy {
 
   // tslint:disable:initialize-observables-in-declaration
   ngOnInit() {
-    this.productSkuChange
-      .pipe(
-        startWith(this.productSku),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(this.sku$);
+    this.productSkuChange.pipe(startWith(this.productSku), takeUntil(this.destroy$)).subscribe(this.sku$);
 
     this.product$ = this.shoppingFacade.product$(this.sku$, ProductItemComponent.REQUIRED_COMPLETENESS_LEVEL);
 
@@ -131,14 +127,18 @@ export class ProductItemComponent implements OnInit, OnChanges, OnDestroy {
     this.sku$.pipe(take(1)).subscribe(sku => this.shoppingFacade.addProductToBasket(sku, quantity));
   }
 
-  replaceVariation(selection: VariationSelection) {
+  replaceVariation(event: { selection: VariationSelection; changedAttribute?: string }) {
     this.product$
       .pipe(
         take(1),
         filter<VariationProductView>(product => ProductHelper.isVariationProduct(product))
       )
       .subscribe(product => {
-        const { sku } = ProductVariationHelper.findPossibleVariationForSelection(selection, product);
+        const { sku } = ProductVariationHelper.findPossibleVariationForSelection(
+          event.selection,
+          product,
+          event.changedAttribute
+        );
         this.productSkuChange.emit(sku);
       });
   }

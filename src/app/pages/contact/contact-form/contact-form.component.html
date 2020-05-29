@@ -29,7 +29,7 @@
     [translateOptionLabels]="true"
   ></ish-select>
   <ish-textarea
-    controlName="comments"
+    controlName="comment"
     [errorMessages]="{ required: 'helpdesk.contactus.comments.error' }"
     [form]="contactForm"
     label="helpdesk.contactus.comments.label"
@@ -37,7 +37,7 @@
     rows="10"
   ></ish-textarea>
 
-  <ish-captcha [form]="contactForm"></ish-captcha>
+  <ish-lazy-captcha topic="contactUs" [form]="contactForm"></ish-lazy-captcha>
 
   <div class="row form-group">
     <div class="offset-md-4 col-md-8">

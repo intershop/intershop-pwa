@@ -1,0 +1,63 @@
+name: Windows
+
+on:
+  push:
+    branches:
+      - develop
+      - 'chore/**'
+      - 'refactor/**'
+      - 'build/**'
+
+jobs:
+  CancelPrevious:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Cancel Old Pipeline
+        uses: rokroskar/workflow-run-cleanup-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  Check:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install root dependencies
+        uses: bahmutov/npm-install@v1
+
+      - run: npm run check
+
+      - name: Check No Changes
+        run: git diff-files --quiet
+
+      - name: Display Changes
+        if: failure()
+        run: git diff
+
+  Local:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Set Environment
+        uses: allenevans/set-env@v1.0.0
+        with:
+          overwrite: true
+          CI: ''
+
+      - name: Install Clean Repository
+        run: npm run clean
+
+      - name: Build with local environment
+        run: npm run ng -- build -c local

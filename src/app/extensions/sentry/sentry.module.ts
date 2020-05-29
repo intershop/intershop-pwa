@@ -11,6 +11,7 @@ export class SentryErrorHandler implements ErrorHandler {
   }
 }
 
+// not-dead-code
 @NgModule({
   imports: [SentryStoreModule],
   providers: [{ provide: ErrorHandler, useClass: SentryErrorHandler }],

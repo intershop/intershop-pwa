@@ -53,9 +53,9 @@ describe('Configuration Integration', () => {
       ],
     });
 
-    router = TestBed.get(Router);
-    location = TestBed.get(Location);
-    store$ = TestBed.get(TestStore);
+    router = TestBed.inject(Router);
+    location = TestBed.inject(Location);
+    store$ = TestBed.inject(TestStore);
     store$.dispatch(
       new ApplyConfiguration({
         baseURL: 'http://example.org',

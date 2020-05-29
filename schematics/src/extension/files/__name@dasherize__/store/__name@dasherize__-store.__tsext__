@@ -1,5 +1,0 @@
-export interface <%= classify(name) %>State {}
-
-// TODO: use createFeatureSelector after ivy dynamic loading
-// tslint:disable-next-line: no-any
-export const get<%= classify(name) %>State: (state: any) => <%= classify(name) %>State = state => state.<%= camelize(name) %>;

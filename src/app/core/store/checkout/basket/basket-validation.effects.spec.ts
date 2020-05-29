@@ -29,7 +29,7 @@ describe('Basket Validation Effects', () => {
   let basketServiceMock: BasketService;
   let orderServiceMock: OrderService;
   let effects: BasketValidationEffects;
-  let store$: Store<{}>;
+  let store$: Store;
   let location: Location;
 
   @Component({ template: 'dummy' })
@@ -61,9 +61,9 @@ describe('Basket Validation Effects', () => {
       ],
     });
 
-    effects = TestBed.get(BasketValidationEffects);
-    store$ = TestBed.get(Store);
-    location = TestBed.get(Location);
+    effects = TestBed.inject(BasketValidationEffects);
+    store$ = TestBed.inject(Store);
+    location = TestBed.inject(Location);
   });
 
   describe('validateBasket$', () => {
@@ -177,9 +177,10 @@ describe('Basket Validation Effects', () => {
 
     it('should map to action of type CreateOrder if targetStep is 5 (order creation)', () => {
       const action = new basketActions.ContinueCheckout({ targetStep: 5 });
-      const completion = new CreateOrder({ basketId: BasketMockData.getBasket().id });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      const completion1 = new CreateOrder({ basketId: BasketMockData.getBasket().id });
+      const completion2 = new basketActions.ContinueCheckoutSuccess({ targetRoute: undefined, basketValidation });
+      actions$ = hot('-a----a----a', { a: action });
+      const expected$ = cold('-(cd)-(cd)-(cd)', { c: completion1, d: completion2 });
 
       expect(effects.validateBasketAndContinueCheckout$).toBeObservable(expected$);
     });

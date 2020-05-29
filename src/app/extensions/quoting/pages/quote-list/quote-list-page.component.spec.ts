@@ -18,7 +18,7 @@ describe('Quote List Page Component', () => {
   let component: QuoteListPageComponent;
   let fixture: ComponentFixture<QuoteListPageComponent>;
   let element: HTMLElement;
-  let store$: Store<{}>;
+  let store$: Store;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -39,7 +39,7 @@ describe('Quote List Page Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    store$ = TestBed.get(Store);
+    store$ = TestBed.inject(Store);
   });
 
   it('should be created', () => {

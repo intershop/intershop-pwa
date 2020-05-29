@@ -47,8 +47,8 @@ describe('Products Selectors', () => {
       ],
     });
 
-    store$ = TestBed.get(TestStore);
-    router = TestBed.get(Router);
+    store$ = TestBed.inject(TestStore);
+    router = TestBed.inject(Router);
   });
 
   describe('with empty state', () => {
@@ -128,7 +128,10 @@ describe('Products Selectors', () => {
       store$.dispatch(
         new LoadProductBundlesSuccess({
           sku: 'ABC',
-          bundledProducts: [{ sku: 'A', quantity: 1 }, { sku: 'B', quantity: 2 }],
+          bundledProducts: [
+            { sku: 'A', quantity: 1 },
+            { sku: 'B', quantity: 2 },
+          ],
         })
       );
 

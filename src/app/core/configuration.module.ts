@@ -3,7 +3,6 @@ import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
 import { Inject, LOCALE_ID, NgModule } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
 
 import { environment } from '../../environments/environment';
 
@@ -14,8 +13,6 @@ import { ThemeService } from './utils/theme/theme.service';
 @NgModule({
   imports: [FeatureToggleModule],
   providers: [
-    // tslint:disable-next-line:no-string-literal
-    { provide: RECAPTCHA_V3_SITE_KEY, useValue: environment['captchaSiteKey'] },
     // tslint:disable-next-line:no-string-literal
     { provide: injectionKeys.MOCK_SERVER_API, useValue: environment['mockServerAPI'] },
     // tslint:disable-next-line:no-string-literal
@@ -28,8 +25,6 @@ import { ThemeService } from './utils/theme/theme.service';
     { provide: injectionKeys.DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: environment.defaultProductListingViewType },
     // TODO: get from REST call
     { provide: injectionKeys.USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
-    // tslint:disable-next-line:no-string-literal
-    { provide: injectionKeys.CAPTCHA_SITE_KEY, useValue: environment['captchaSiteKey'] },
     { provide: injectionKeys.SMALL_BREAKPOINT_WIDTH, useValue: environment.smallBreakpointWidth },
     { provide: injectionKeys.MEDIUM_BREAKPOINT_WIDTH, useValue: environment.mediumBreakpointWidth },
     { provide: injectionKeys.LARGE_BREAKPOINT_WIDTH, useValue: environment.largeBreakpointWidth },

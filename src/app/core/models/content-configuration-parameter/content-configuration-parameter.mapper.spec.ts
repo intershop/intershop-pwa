@@ -30,7 +30,7 @@ describe('Content Configuration Parameter Mapper', () => {
       ],
     });
 
-    contentConfigurationParameterMapper = TestBed.get(ContentConfigurationParameterMapper);
+    contentConfigurationParameterMapper = TestBed.inject(ContentConfigurationParameterMapper);
   });
 
   it('should return a value for undefined input', () => {

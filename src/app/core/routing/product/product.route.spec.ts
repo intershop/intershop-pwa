@@ -42,7 +42,7 @@ describe('Product Route', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({ imports: [RouterTestingModule] });
-    const router: Router = TestBed.get(Router);
+    const router = TestBed.inject(Router);
     wrap = url => {
       const primary = router.parseUrl(url).root.children.primary;
       return primary ? primary.segments : [];
@@ -320,7 +320,7 @@ describe('Product Route', () => {
 
 describe('Product Route', () => {
   let router: Router;
-  let store$: Store<{}>;
+  let store$: Store;
 
   beforeEach(() => {
     @Component({ template: 'dummy' })
@@ -334,46 +334,36 @@ describe('Product Route', () => {
       ],
     });
 
-    router = TestBed.get(Router);
-    store$ = TestBed.get(Store);
+    router = TestBed.inject(Router);
+    store$ = TestBed.inject(Store);
   });
 
   describe('ofProductRoute', () => {
     it('should detect product route when sku is a param', done => {
       router.navigateByUrl('/product;sku=123');
 
-      store$
-        .pipe(
-          ofProductUrl(),
-          select(selectRouter)
-        )
-        .subscribe(data => {
-          expect(data.state.params).toMatchInlineSnapshot(`
+      store$.pipe(ofProductUrl(), select(selectRouter)).subscribe(data => {
+        expect(data.state.params).toMatchInlineSnapshot(`
             Object {
               "sku": "123",
             }
           `);
-          done();
-        });
+        done();
+      });
     });
 
     it('should detect product route when sku and categoryUniqueId are params', done => {
       router.navigateByUrl('/product;sku=123;categoryUniqueId=ABC');
 
-      store$
-        .pipe(
-          ofProductUrl(),
-          select(selectRouter)
-        )
-        .subscribe(data => {
-          expect(data.state.params).toMatchInlineSnapshot(`
+      store$.pipe(ofProductUrl(), select(selectRouter)).subscribe(data => {
+        expect(data.state.params).toMatchInlineSnapshot(`
             Object {
               "categoryUniqueId": "ABC",
               "sku": "123",
             }
           `);
-          done();
-        });
+        done();
+      });
     });
 
     it('should not detect product route when sku is missing', done => {

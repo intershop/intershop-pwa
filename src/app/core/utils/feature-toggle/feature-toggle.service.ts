@@ -7,11 +7,17 @@ import { getFeatures } from 'ish-core/store/configuration';
 export class FeatureToggleService {
   private featureToggles: string[];
 
-  constructor(store: Store<{}>) {
-    store.pipe(select(getFeatures)).subscribe(features => (this.featureToggles = features));
+  constructor(store: Store) {
+    store.pipe(select(getFeatures)).subscribe(features => (this.featureToggles = features || []));
   }
 
   enabled(feature: string): boolean {
-    return this.featureToggles.includes(feature);
+    if (feature === 'always') {
+      return true;
+    } else if (feature === 'never') {
+      return false;
+    } else {
+      return this.featureToggles.includes(feature);
+    }
   }
 }

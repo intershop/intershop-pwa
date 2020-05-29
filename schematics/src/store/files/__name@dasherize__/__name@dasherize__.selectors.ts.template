@@ -1,0 +1,26 @@
+import { createSelector } from '@ngrx/store';
+
+import { get<%= classify(parent) %>State } from '<% if (extension) { %>..<% } else { %>ish-core/store<% } %>/<% if (feature) { %><%= dasherize(parent) %>/<% } %><%= dasherize(parent) %>-store';
+<% if(entity) { %>
+import { <%= camelize(name) %>Adapter } from './<%= dasherize(name) %>.reducer';
+<% } %>
+const get<%= classify(name) %>State = createSelector(
+  get<%= classify(parent) %>State,
+  state => state.<%= camelize(name) %>
+);
+
+export const get<%= classify(name) %>Loading = createSelector(
+  get<%= classify(name) %>State,
+  state => state.loading
+);
+<% if(entity) { %>
+export const get<%= classify(name) %>Error = createSelector(
+  get<%= classify(name) %>State,
+  state => state.error
+);
+
+export const {
+  selectEntities: get<%= classify(name) %>Entities,
+  selectAll: get<%= classify(name) %>,
+  selectTotal: getNumberOf<%= classify(name) %>,
+} = <%= camelize(name) %>Adapter.getSelectors(get<%= classify(name) %>State);<% } %>

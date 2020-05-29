@@ -21,7 +21,7 @@ export class BasketValidationEffects {
   constructor(
     private actions$: Actions,
     private router: Router,
-    private store: Store<{}>,
+    private store: Store,
     private basketService: BasketService
   ) {}
 
@@ -85,12 +85,15 @@ export class BasketValidationEffects {
         }
       }
       return this.basketService.validateBasket(basketId, scopes).pipe(
-        map(basketValidation =>
+        concatMap(basketValidation =>
           basketValidation.results.valid
             ? targetStep === 5 && !basketValidation.results.adjusted
-              ? new CreateOrder({ basketId })
-              : new basketActions.ContinueCheckoutSuccess({ targetRoute, basketValidation })
-            : new basketActions.ContinueCheckoutWithIssues({ targetRoute, basketValidation })
+              ? [
+                  new CreateOrder({ basketId }),
+                  new basketActions.ContinueCheckoutSuccess({ targetRoute: undefined, basketValidation }),
+                ]
+              : [new basketActions.ContinueCheckoutSuccess({ targetRoute, basketValidation })]
+            : [new basketActions.ContinueCheckoutWithIssues({ targetRoute, basketValidation })]
         ),
         mapErrorToAction(basketActions.ContinueCheckoutFail)
       );

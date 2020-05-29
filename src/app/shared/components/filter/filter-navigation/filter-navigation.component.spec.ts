@@ -19,7 +19,7 @@ describe('Filter Navigation Component', () => {
   let component: FilterNavigationComponent;
   let fixture: ComponentFixture<FilterNavigationComponent>;
   let element: HTMLElement;
-  let store$: Store<{}>;
+  let store$: Store;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -45,7 +45,7 @@ describe('Filter Navigation Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    store$ = TestBed.get(Store);
+    store$ = TestBed.inject(Store);
   });
 
   it('should be created', () => {

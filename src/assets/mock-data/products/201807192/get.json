@@ -2,14 +2,14 @@
   "attributeGroups": {},
   "attributes": [
     {
-      "name": "Lifetime",
-      "type": "String",
-      "value": "25000 hours"
-    },
-    {
       "name": "Input voltage",
       "type": "String",
       "value": "220-240 V"
+    },
+    {
+      "name": "Lifetime",
+      "type": "String",
+      "value": "25000 hours"
     },
     {
       "name": "Fitting",
@@ -27,14 +27,14 @@
       "value": "9 W"
     },
     {
-      "name": "Diameter",
-      "type": "String",
-      "value": "62mm"
-    },
-    {
       "name": "Color temperature",
       "type": "String",
       "value": "2700K"
+    },
+    {
+      "name": "Diameter",
+      "type": "String",
+      "value": "62mm"
     }
   ],
   "availability": true,
@@ -104,6 +104,7 @@
   "maxOrderQuantity": 0,
   "minOrderQuantity": 1,
   "name": "Philips Hue 3x White LED",
+  "numberOfReviews": 0,
   "packingUnit": "",
   "productBundle": false,
   "productMaster": false,
@@ -121,7 +122,6 @@
   },
   "seoAttributes": {
     "metaDescription": "Philips Hue 3x White LED - Automate your lights",
-    "metaKeywords": [],
     "metaTitle": "Philips Hue 3x White LED - Smart Home favorable buying at our shop",
     "robots": ["index", "follow"]
   },

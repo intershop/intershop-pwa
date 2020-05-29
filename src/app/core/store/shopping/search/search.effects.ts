@@ -27,7 +27,7 @@ import {
 export class SearchEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<{}>,
+    private store: Store,
     private productsService: ProductsService,
     private suggestService: SuggestService,
     private httpStatusCodeService: HttpStatusCodeService,
@@ -57,12 +57,17 @@ export class SearchEffects {
         concatMap(({ total, products, sortKeys }) => [
           ...products.map(product => new LoadProductSuccess({ product })),
           new SetProductListingPages(
-            this.productListingMapper.createPages(products.map(p => p.sku), 'search', searchTerm, {
-              startPage: page,
-              sorting,
-              sortKeys,
-              itemCount: total,
-            })
+            this.productListingMapper.createPages(
+              products.map(p => p.sku),
+              'search',
+              searchTerm,
+              {
+                startPage: page,
+                sorting,
+                sortKeys,
+                itemCount: total,
+              }
+            )
           ),
         ]),
         mapErrorToAction(SearchProductsFail)

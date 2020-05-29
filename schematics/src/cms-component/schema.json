@@ -10,11 +10,6 @@
       "format": "path",
       "visible": false
     },
-    "tsext": {
-      "type": "string",
-      "default": "ts",
-      "visible": false
-    },
     "artifactFolder": {
       "type": "boolean",
       "default": true,
@@ -36,11 +31,6 @@
       "type": "string",
       "visible": false
     },
-    "styleext": {
-      "type": "string",
-      "default": "scss",
-      "visible": false
-    },
     "selector": {
       "type": "string",
       "format": "html-selector",
@@ -59,11 +49,6 @@
     "export": {
       "type": "boolean",
       "default": false,
-      "visible": false
-    },
-    "entryComponent": {
-      "type": "boolean",
-      "default": true,
       "visible": false
     },
     "restricted": {

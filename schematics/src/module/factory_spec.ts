@@ -2,7 +2,7 @@ import { UnitTestTree } from '@angular-devkit/schematics/testing';
 
 import { createApplication, createSchematicRunner } from '../utils/testHelper';
 
-import { PwaModuleOptionsSchema as Options } from './schema';
+import { PWAModuleOptionsSchema as Options } from './schema';
 
 describe('Module Schematic', () => {
   const schematicRunner = createSchematicRunner();
@@ -20,28 +20,28 @@ describe('Module Schematic', () => {
     const options = { ...defaultOptions };
 
     const tree = await schematicRunner.runSchematicAsync('module', options, appTree).toPromise();
-    expect(tree.files).toInclude('/projects/bar/src/app/foo/foo.module.ts');
+    expect(tree.files).toInclude('/src/app/foo/foo.module.ts');
   });
 
   it('should create a module in a sub folder', async () => {
     const options = { ...defaultOptions, name: 'foo/bar/foobar' };
 
     const tree = await schematicRunner.runSchematicAsync('module', options, appTree).toPromise();
-    expect(tree.files).toInclude('/projects/bar/src/app/foo/bar/foobar/foobar.module.ts');
+    expect(tree.files).toInclude('/src/app/foo/bar/foobar/foobar.module.ts');
   });
 
   it('should create a flat module', async () => {
     const options = { ...defaultOptions, flat: true };
 
     const tree = await schematicRunner.runSchematicAsync('module', options, appTree).toPromise();
-    expect(tree.files).toInclude('/projects/bar/src/app/foo.module.ts');
+    expect(tree.files).toInclude('/src/app/foo.module.ts');
   });
 
   it('should dasherize a name', async () => {
     const options = { ...defaultOptions, name: 'TwoWord' };
 
     const tree = await schematicRunner.runSchematicAsync('module', options, appTree).toPromise();
-    expect(tree.files).toContain('/projects/bar/src/app/two-word/two-word.module.ts');
+    expect(tree.files).toContain('/src/app/two-word/two-word.module.ts');
   });
 
   it('should respect the sourceRoot value', async () => {

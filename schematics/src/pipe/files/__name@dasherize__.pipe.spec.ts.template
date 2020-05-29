@@ -1,0 +1,26 @@
+import { TestBed } from '@angular/core/testing';
+
+import { <%= classify(name) %>Pipe } from './<%= dasherize(name) %>.pipe';
+
+describe('<%= classify(name) %> Pipe', () => {
+  let <%= camelize(name) %>Pipe: <%= classify(name) %>Pipe;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [<%= classify(name) %>Pipe],
+    });
+    <%= camelize(name) %>Pipe = TestBed.inject(<%= classify(name) %>Pipe);
+  });
+
+  it('should be created', () => {
+    expect(<%= camelize(name) %>Pipe).toBeTruthy();
+  });
+
+  it('should transform true to okay', () => {
+    expect(<%= camelize(name) %>Pipe.transform(true)).toEqual('test: okay');
+  });
+
+  it('should transform false to failed', () => {
+    expect(<%= camelize(name) %>Pipe.transform(false)).toEqual('test: failed');
+  });
+});

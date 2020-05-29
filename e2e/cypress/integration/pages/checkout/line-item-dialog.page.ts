@@ -4,9 +4,7 @@ export class LineItemDialogPage {
   changeVariationSelection(values: { attr: string; value: string }[]) {
     for (const x of values) {
       // tslint:disable-next-line:ban
-      cy.get('ngb-modal-window')
-        .find(x.attr)
-        .select(x.value);
+      cy.get('ngb-modal-window').find(x.attr).select(x.value);
     }
   }
 

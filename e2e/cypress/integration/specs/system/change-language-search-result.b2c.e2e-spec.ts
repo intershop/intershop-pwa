@@ -21,10 +21,7 @@ describe('Language Changing User', () => {
 
     it('should see dollar prices', () => {
       at(SearchResultPage, page => {
-        page.productList
-          .productTile(_.product.sku)
-          .should('contain', _.product.dollarPrice)
-          .should('contain', '$');
+        page.productList.productTile(_.product.sku).should('contain', _.product.dollarPrice).should('contain', '$');
       });
     });
 
@@ -42,10 +39,7 @@ describe('Language Changing User', () => {
 
     it('should see euro prices', () => {
       at(SearchResultPage, page => {
-        page.productList
-          .productTile(_.product.sku)
-          .should('contain', _.product.euroPrice)
-          .should('contain', '€');
+        page.productList.productTile(_.product.sku).should('contain', _.product.euroPrice).should('contain', '€');
       });
     });
 

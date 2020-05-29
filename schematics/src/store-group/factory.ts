@@ -4,18 +4,19 @@ import {
   SchematicsException,
   Tree,
   apply,
+  applyTemplates,
   chain,
   mergeWith,
   move,
-  template,
   url,
 } from '@angular-devkit/schematics';
 import { buildDefaultPath, getProject } from '@schematics/angular/utility/project';
 
 import { applyNameAndPath, determineArtifactName } from '../utils/common';
+import { applyLintFix } from '../utils/lint-fix';
 import { addImportToNgModule } from '../utils/registration';
 
-import { PwaStoreGroupOptionsSchema as Options } from './schema';
+import { PWAStoreGroupOptionsSchema as Options } from './schema';
 
 export function determineStoreGroupLocation(
   host: Tree,
@@ -57,7 +58,7 @@ export function createStoreGroup(options: Options): Rule {
     operations.push(
       mergeWith(
         apply(url('./files'), [
-          template({
+          applyTemplates({
             ...strings,
             ...options,
           }),
@@ -67,6 +68,9 @@ export function createStoreGroup(options: Options): Rule {
     );
 
     operations.push(addImportToNgModule(options));
+
+    operations.push(applyLintFix());
+
     return chain(operations);
   };
 }

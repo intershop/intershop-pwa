@@ -20,8 +20,8 @@ describe('Recently Effects', () => {
       providers: [RecentlyEffects, provideMockStore({ selectors: [{ selector: getFeatures, value: [] }] })],
     });
 
-    effects = TestBed.get(RecentlyEffects);
-    store$ = TestBed.get(MockStore);
+    effects = TestBed.inject(RecentlyEffects);
+    store$ = TestBed.inject(MockStore);
   });
 
   describe('viewedProduct$', () => {

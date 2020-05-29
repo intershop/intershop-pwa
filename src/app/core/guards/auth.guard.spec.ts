@@ -3,8 +3,10 @@ import { TestBed, async } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
+import { instance, mock } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
+import { CookiesService } from 'ish-core/services/cookies/cookies.service';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoginUserSuccess } from 'ish-core/store/user';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
@@ -14,7 +16,7 @@ import { AuthGuard } from './auth.guard';
 describe('Auth Guard', () => {
   describe('canActivate()', () => {
     let authGuard: AuthGuard;
-    let store$: Store<{}>;
+    let store$: Store;
 
     beforeEach(async(() => {
       @Component({ template: 'dummy' })
@@ -26,12 +28,13 @@ describe('Auth Guard', () => {
           ngrxTesting({ reducers: coreReducers }),
         ],
         declarations: [DummyComponent],
+        providers: [{ provide: CookiesService, useFactory: () => instance(mock(CookiesService)) }],
       }).compileComponents();
     }));
 
     beforeEach(() => {
-      authGuard = TestBed.get(AuthGuard);
-      store$ = TestBed.get(Store);
+      authGuard = TestBed.inject(AuthGuard);
+      store$ = TestBed.inject(Store);
     });
 
     it('should return true when user is authorized', done => {

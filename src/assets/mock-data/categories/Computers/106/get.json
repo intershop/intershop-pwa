@@ -13,6 +13,7 @@
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106"
     }
   ],
+  "categoryRef": "106@inSPIRED-Computers",
   "description": "Hardware components of computers.",
   "hasOnlineProducts": false,
   "hasOnlineSubCategories": true,
@@ -32,8 +33,7 @@
   "name": "Hardware Components",
   "online": "1",
   "seoAttributes": {
-    "metaDescription": "Hardware Components, Audio Cards, Memory Modules, Video Cards, Processors, Chassis Components, Motherboards, Power Supplies, Cables always special prices for Hardware Components and Computers",
-    "metaKeywords": [],
+    "metaDescription": "Hardware Components, Memory Modules, Processors, Cables, Video Cards, Chassis Components, Motherboards, Power Supplies, Audio Cards always special prices for Hardware Components and Computers",
     "metaTitle": "Hardware Components - Computers favorable buying at our shop",
     "robots": ["index", "follow"]
   },
@@ -59,6 +59,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/173"
         }
       ],
+      "categoryRef": "173@inSPIRED-Computers",
       "description": "The Computers products and services catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
@@ -102,6 +103,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830"
         }
       ],
+      "categoryRef": "830@inSPIRED-Computers",
       "description": "The Computers products and services catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": true,
@@ -145,6 +147,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/236"
         }
       ],
+      "categoryRef": "236@inSPIRED-Computers",
       "description": "The Computers products and services catalog.",
       "hasOnlineProducts": false,
       "hasOnlineSubCategories": true,
@@ -188,6 +191,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/911"
         }
       ],
+      "categoryRef": "911@inSPIRED-Computers",
       "description": "The Computers products and services catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
@@ -231,6 +235,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/897_HP"
         }
       ],
+      "categoryRef": "897_HP@inSPIRED-Computers",
       "description": "The Computers products and services catalog.",
       "hasOnlineProducts": false,
       "hasOnlineSubCategories": false,
@@ -273,6 +278,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/816"
         }
       ],
+      "categoryRef": "816@inSPIRED-Computers",
       "description": "The Computers products and services catalog.",
       "hasOnlineProducts": false,
       "hasOnlineSubCategories": true,
@@ -316,6 +322,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/989"
         }
       ],
+      "categoryRef": "989@inSPIRED-Computers",
       "description": "The Computers products and services catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
@@ -359,6 +366,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/170"
         }
       ],
+      "categoryRef": "170@inSPIRED-Computers",
       "description": "The Computers products and services catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,

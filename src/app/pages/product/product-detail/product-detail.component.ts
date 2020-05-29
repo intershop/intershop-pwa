@@ -24,7 +24,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   @Input() variationOptions: VariationOptionGroup[];
   @Output() productToBasket = new EventEmitter<{ sku: string; quantity: number }>();
   @Output() productToCompare = new EventEmitter<string>();
-  @Output() selectVariation = new EventEmitter<VariationSelection>();
+  @Output() selectVariation = new EventEmitter<{ selection: VariationSelection; changedAttribute?: string }>();
   @Output() quantityChange = new EventEmitter<number>();
 
   productDetailForm: FormGroup;
@@ -61,7 +61,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     this.productToCompare.emit(this.product.sku);
   }
 
-  variationSelected(selection: VariationSelection) {
-    this.selectVariation.emit(selection);
+  variationSelected(event: { selection: VariationSelection; changedAttribute?: string }) {
+    this.selectVariation.emit(event);
   }
 }

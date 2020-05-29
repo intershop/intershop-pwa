@@ -10,6 +10,8 @@ import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
     <div>unrelated</div>
     <div *ishFeature="'feature1'">content1</div>
     <div *ishFeature="'feature2'">content2</div>
+    <div *ishFeature="'always'">contentAlways</div>
+    <div *ishFeature="'never'">contentNever</div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -50,5 +52,13 @@ describe('Feature Toggle Directive', () => {
 
   it('should not render content of disabled features', () => {
     expect(element.textContent).not.toContain('content2');
+  });
+
+  it("should always render content for 'always'", () => {
+    expect(element.textContent).toContain('contentAlways');
+  });
+
+  it("should never render content for 'never'", () => {
+    expect(element.textContent).not.toContain('contentNever');
   });
 });

@@ -25,7 +25,7 @@ import { CategoriesEffects } from './categories.effects';
 describe('Categories Effects', () => {
   let actions$: Observable<Action>;
   let effects: CategoriesEffects;
-  let store$: Store<{}>;
+  let store$: Store;
   let location: Location;
   let router: Router;
 
@@ -70,10 +70,10 @@ describe('Categories Effects', () => {
       ],
     });
 
-    effects = TestBed.get(CategoriesEffects);
-    store$ = TestBed.get(Store);
-    location = TestBed.get(Location);
-    router = TestBed.get(Router);
+    effects = TestBed.inject(CategoriesEffects);
+    store$ = TestBed.inject(Store);
+    location = TestBed.inject(Location);
+    router = TestBed.inject(Router);
   });
 
   describe('selectedCategory$', () => {
@@ -200,7 +200,7 @@ describe('Categories Effects', () => {
     let depth: number;
 
     beforeEach(() => {
-      depth = TestBed.get(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH);
+      depth = TestBed.inject(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH);
     });
 
     it('should load top level categories retrying for every routing action', () => {

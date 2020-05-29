@@ -21,13 +21,13 @@ describe('Api Service', () => {
   describe('API Service Methods', () => {
     const REST_URL = 'http://www.example.org/WFS/site/-';
     let apiService: ApiService;
-    let storeSpy$: Store<{}>;
+    let storeSpy$: Store;
     let httpTestingController: HttpTestingController;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
+        // https://angular.io/guide/http#testing-http-requests
         imports: [
-          // https://angular.io/guide/http#testing-http-requests
           HttpClientTestingModule,
           ngrxTesting({
             reducers: { configuration: configurationReducer },
@@ -41,9 +41,9 @@ describe('Api Service', () => {
         providers: [ApiServiceErrorHandler, ApiService],
       });
 
-      apiService = TestBed.get(ApiService);
-      httpTestingController = TestBed.get(HttpTestingController);
-      storeSpy$ = spy(TestBed.get(Store));
+      apiService = TestBed.inject(ApiService);
+      httpTestingController = TestBed.inject(HttpTestingController);
+      storeSpy$ = spy(TestBed.inject(Store));
     });
 
     afterEach(() => {
@@ -243,8 +243,8 @@ describe('Api Service', () => {
         ],
         providers: [ApiServiceErrorHandler, ApiService],
       });
-      apiService = TestBed.get(ApiService);
-      httpTestingController = TestBed.get(HttpTestingController);
+      apiService = TestBed.inject(ApiService);
+      httpTestingController = TestBed.inject(HttpTestingController);
     });
 
     afterEach(() => {
@@ -297,10 +297,7 @@ describe('Api Service', () => {
     it('should perform both operations when requested', done => {
       apiService
         .get('categories')
-        .pipe(
-          unpackEnvelope(),
-          resolveLinks(apiService)
-        )
+        .pipe(unpackEnvelope(), resolveLinks(apiService))
         .subscribe(data => {
           expect(data).toEqual([webcamResponse]);
           done();
@@ -346,10 +343,7 @@ describe('Api Service', () => {
     it('should return empty array on element and link translation when source is empty', done => {
       apiService
         .get('categories')
-        .pipe(
-          unpackEnvelope(),
-          resolveLinks(apiService)
-        )
+        .pipe(unpackEnvelope(), resolveLinks(apiService))
         .subscribe(data => {
           expect(data).toBeEmpty();
           done();
@@ -395,13 +389,13 @@ describe('Api Service', () => {
   describe('API Service Headers', () => {
     const REST_URL = 'http://www.example.org/WFS/site/-';
     let apiService: ApiService;
-    let store$: Store<{}>;
+    let store$: Store;
     let httpTestingController: HttpTestingController;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
+        // https://angular.io/guide/http#testing-http-requests
         imports: [
-          // https://angular.io/guide/http#testing-http-requests
           HttpClientTestingModule,
           ngrxTesting({
             reducers: { configuration: configurationReducer, user: userReducer },
@@ -415,9 +409,9 @@ describe('Api Service', () => {
         providers: [ApiServiceErrorHandler, ApiService],
       });
 
-      apiService = TestBed.get(ApiService);
-      httpTestingController = TestBed.get(HttpTestingController);
-      store$ = TestBed.get(Store);
+      apiService = TestBed.inject(ApiService);
+      httpTestingController = TestBed.inject(HttpTestingController);
+      store$ = TestBed.inject(Store);
     });
 
     afterEach(() => {
@@ -492,6 +486,33 @@ describe('Api Service', () => {
 
       const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
       expect(req.request.headers.has(ApiService.TOKEN_HEADER_KEY)).toBeFalse();
+    });
+
+    it('should set Captcha V2 authorization header key when captcha is supplied without captchaAction', () => {
+      apiService.get('dummy', { captcha: { captcha: 'captchatoken' } }).subscribe(fail, fail, fail);
+
+      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
+      expect(req.request.headers.get(ApiService.AUTHORIZATION_HEADER_KEY)).toMatchInlineSnapshot(
+        `"CAPTCHA g-recaptcha-response=captchatoken foo=bar"`
+      );
+    });
+
+    it('should set Captcha V3 authorization header key when captcha is supplied', () => {
+      apiService
+        .get('dummy', { captcha: { captcha: 'captchatoken', captchaAction: 'create_account' } })
+        .subscribe(fail, fail, fail);
+
+      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
+      expect(req.request.headers.get(ApiService.AUTHORIZATION_HEADER_KEY)).toMatchInlineSnapshot(
+        `"CAPTCHA recaptcha_token=captchatoken action=create_account"`
+      );
+    });
+
+    it('should not set header when captcha config object is empty', () => {
+      apiService.get('dummy', { captcha: {} }).subscribe(fail, fail, fail);
+
+      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
+      expect(req.request.headers.get(ApiService.AUTHORIZATION_HEADER_KEY)).toBeFalsy();
     });
   });
 });

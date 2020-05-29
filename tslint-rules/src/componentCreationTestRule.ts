@@ -18,12 +18,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   }
 
   private static checkCreationTestContent(ctx: Lint.WalkContext<void>, node: ts.ExpressionStatement) {
-    const shouldBeCreatedBlock = node
-      .getChildAt(0)
-      .getChildAt(2)
-      .getChildAt(2)
-      .getChildAt(4)
-      .getChildAt(1);
+    const shouldBeCreatedBlock = node.getChildAt(0).getChildAt(2).getChildAt(2).getChildAt(4).getChildAt(1);
 
     if (!shouldBeCreatedBlock.getChildren().some(Rule.findComponentTruthy)) {
       ctx.addFailureAtNode(node, `'${SHOULD_BE_CREATED_NAME}' block does not test if component is truthy`);

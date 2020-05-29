@@ -31,7 +31,7 @@ import * as selectors from './categories.selectors';
 export class CategoriesEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<{}>,
+    private store: Store,
     private categoryService: CategoriesService,
     @Inject(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH) private mainNavigationMaxSubCategoriesDepth: number,
     private httpStatusCodeService: HttpStatusCodeService

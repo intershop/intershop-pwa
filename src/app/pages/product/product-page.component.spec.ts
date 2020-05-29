@@ -79,9 +79,9 @@ describe('Product Page Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    location = TestBed.get(Location);
-    router = TestBed.get(Router);
-    store$ = TestBed.get(TestStore);
+    location = TestBed.inject(Location);
+    router = TestBed.inject(Router);
+    store$ = TestBed.inject(TestStore);
     store$.dispatch(new ApplyConfiguration({ features: ['recently'] }));
 
     store$.dispatch(
@@ -165,7 +165,7 @@ describe('Product Page Component', () => {
 
     fixture.detectChanges();
 
-    component.variationSelected(selection, product);
+    component.variationSelected({ selection }, product);
     tick(500);
 
     expect(location.path()).toMatchInlineSnapshot(`"/sku333"`);
@@ -228,7 +228,11 @@ describe('Product Page Component', () => {
 
     fixture.detectChanges();
 
-    component.retailSetParts$.next([{ sku: 'A', quantity: 1 }, { sku: 'B', quantity: 0 }, { sku: 'C', quantity: 1 }]);
+    component.retailSetParts$.next([
+      { sku: 'A', quantity: 1 },
+      { sku: 'B', quantity: 0 },
+      { sku: 'C', quantity: 1 },
+    ]);
 
     store$.reset();
     component.addToBasket();

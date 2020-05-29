@@ -13,7 +13,7 @@ import { getBreadcrumbData } from './viewconf.selectors';
 
 @Injectable()
 export class ViewconfEffects {
-  constructor(private store: Store<{}>, @Inject(PLATFORM_ID) private platformId: string) {}
+  constructor(private store: Store, @Inject(PLATFORM_ID) private platformId: string) {}
 
   @Effect()
   toggleStickyHeader$ = iif(

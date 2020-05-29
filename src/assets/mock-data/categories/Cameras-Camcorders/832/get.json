@@ -13,6 +13,7 @@
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/832"
     }
   ],
+  "categoryRef": "832@inSPIRED-inTRONICS-Cameras-Camcorders",
   "description": "The cameras and camcorders products catalog.",
   "hasOnlineProducts": true,
   "hasOnlineSubCategories": false,
@@ -33,7 +34,6 @@
   "online": "1",
   "seoAttributes": {
     "metaDescription": "Action Cameras, High-performance capture. Touch-display convenience. - Features 1080p60 and always special prices for Action Cameras and Cameras",
-    "metaKeywords": [],
     "metaTitle": "Action Cameras - Cameras favorable buying at our shop",
     "robots": ["index", "follow"]
   },

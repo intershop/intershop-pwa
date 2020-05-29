@@ -17,7 +17,7 @@ describe('Suggest Service', () => {
     TestBed.configureTestingModule({
       providers: [SuggestService, { provide: ApiService, useFactory: () => instance(apiService) }],
     });
-    suggestService = TestBed.get(SuggestService);
+    suggestService = TestBed.inject(SuggestService);
   }));
 
   it('should always delegate to api service when called', () => {

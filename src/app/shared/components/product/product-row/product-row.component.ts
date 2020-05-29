@@ -28,6 +28,7 @@ export interface ProductRowComponentConfiguration {
   displayShipment: boolean;
   displayAddToBasket: boolean;
   displayAddToWishlist: boolean;
+  displayAddToOrderTemplate: boolean;
   displayAddToCompare: boolean;
   displayAddToQuote: boolean;
 }
@@ -47,7 +48,7 @@ export class ProductRowComponent implements OnInit, OnDestroy {
   @Input() isInCompareList: boolean;
   @Output() compareToggle = new EventEmitter<void>();
   @Output() productToBasket = new EventEmitter<number>();
-  @Output() selectVariation = new EventEmitter<VariationSelection>();
+  @Output() selectVariation = new EventEmitter<{ selection: VariationSelection; changedAttribute?: string }>();
 
   isMasterProduct = ProductHelper.isMasterProduct;
 
@@ -81,9 +82,9 @@ export class ProductRowComponent implements OnInit, OnDestroy {
     this.compareToggle.emit();
   }
 
-  variationSelected(selection: VariationSelection) {
+  variationSelected(event: { selection: VariationSelection; changedAttribute?: string }) {
     if (ProductHelper.isVariationProduct(this.product)) {
-      this.selectVariation.emit(selection);
+      this.selectVariation.emit(event);
     }
   }
 }

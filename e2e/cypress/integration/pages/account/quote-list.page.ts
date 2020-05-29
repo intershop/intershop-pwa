@@ -10,8 +10,6 @@ export class QuoteListPage {
   }
 
   goToQuoteDetailLink(id: string) {
-    cy.get(`a[href="/account/quotes/request/${id}"], a[href="/account/quotes/${id}"]`)
-      .first()
-      .click();
+    cy.get(`a[href="/account/quotes/request/${id}"], a[href="/account/quotes/${id}"]`).first().click();
   }
 }

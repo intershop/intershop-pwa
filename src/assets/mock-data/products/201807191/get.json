@@ -2,14 +2,14 @@
   "attributeGroups": {},
   "attributes": [
     {
-      "name": "Max. number of bulbs",
-      "type": "String",
-      "value": "50"
-    },
-    {
       "name": "Power consumption",
       "type": "String",
       "value": "250 mA max"
+    },
+    {
+      "name": "Max. number of bulbs",
+      "type": "String",
+      "value": "50"
     },
     {
       "name": "Frequency band",
@@ -129,6 +129,7 @@
   "maxOrderQuantity": 0,
   "minOrderQuantity": 1,
   "name": "Philips Hue Bridge",
+  "numberOfReviews": 0,
   "packingUnit": "",
   "productBundle": false,
   "productMaster": false,
@@ -146,7 +147,6 @@
   },
   "seoAttributes": {
     "metaDescription": "Philips Hue Bridge - The heart of your Philips Hue system",
-    "metaKeywords": [],
     "metaTitle": "Philips Hue Bridge - Smart Home favorable buying at our shop",
     "robots": ["index", "follow"]
   },

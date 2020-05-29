@@ -1,8 +1,10 @@
 {
   "printWidth": 120,
+  "arrowParens": "avoid",
   "singleQuote": true,
   "trailingComma": "es5",
   "parser": "flow",
+  "endOfLine": "auto",
   "overrides": [
     {
       "files": "*.ts",
@@ -18,7 +20,7 @@
       }
     },
     {
-      "files": "*.md",
+      "files": ["*.md", "LICENSE"],
       "options": {
         "parser": "markdown"
       }
@@ -30,9 +32,9 @@
       }
     },
     {
-      "files": "*.html",
+      "files": "*.css",
       "options": {
-        "parser": "html"
+        "parser": "css"
       }
     },
     {

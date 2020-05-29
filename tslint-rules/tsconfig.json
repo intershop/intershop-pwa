@@ -4,14 +4,14 @@
     "experimentalDecorators": true,
     "lib": ["dom", "es2015", "es6"],
     "module": "commonjs",
+    "moduleResolution": "node",
     "noImplicitAny": false,
     "noLib": false,
-    "outDir": "./dist",
+    "outDir": "../node_modules/intershop-tslint-rules",
     "removeComments": true,
     "target": "es5",
-    "typeRoots": ["node_modules/@types"],
     "types": ["node", "jest"]
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["scr/**/*.spec.ts"]
+  "exclude": ["src/**/*.spec.ts", "src/**/test*.ts"]
 }

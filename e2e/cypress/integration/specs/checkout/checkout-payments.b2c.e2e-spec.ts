@@ -1,11 +1,13 @@
 import { at } from '../../framework';
 import { createBasketViaREST, createUserViaREST } from '../../framework/users';
 import { LoginPage } from '../../pages/account/login.page';
+import { MyAccountPage } from '../../pages/account/my-account.page';
 import { PaymentPage } from '../../pages/account/payment.page';
 import { sensibleDefaults } from '../../pages/account/registration.page';
 import { CheckoutAddressesPage } from '../../pages/checkout/checkout-addresses.page';
 import { CheckoutPaymentPage } from '../../pages/checkout/checkout-payment.page';
 import { CheckoutShippingPage } from '../../pages/checkout/checkout-shipping.page';
+import { HomePage } from '../../pages/home.page';
 
 const _ = {
   user: {
@@ -31,10 +33,7 @@ describe('Checkout Payment', () => {
       LoginPage.navigateTo('/checkout/address');
       at(LoginPage, page => {
         page.fillForm(_.user.login, _.user.password);
-        page
-          .submit()
-          .its('status')
-          .should('equal', 200);
+        page.submit().its('status').should('equal', 200);
       });
     });
 
@@ -67,10 +66,7 @@ describe('Checkout Payment', () => {
           BIC: 'A',
         });
         page.paymentInstrument('ISH_DEBIT_TRANSFER').submit();
-        page
-          .paymentInstrument('ISH_DEBIT_TRANSFER')
-          .formError('holder')
-          .should('contain', 'missing');
+        page.paymentInstrument('ISH_DEBIT_TRANSFER').formError('holder').should('contain', 'missing');
         /* TODO: size validator does not display message correctly
       page
         .paymentInstrument('ISH_DEBIT_TRANSFER')
@@ -86,18 +82,9 @@ describe('Checkout Payment', () => {
           IBAN: 'DE000000000000000001',
           BIC: '12345678',
         });
-        page
-          .paymentInstrument('ISH_DEBIT_TRANSFER')
-          .formError('holder')
-          .should('not.be.visible');
-        page
-          .paymentInstrument('ISH_DEBIT_TRANSFER')
-          .formError('IBAN')
-          .should('not.be.visible');
-        page
-          .paymentInstrument('ISH_DEBIT_TRANSFER')
-          .formError('BIC')
-          .should('not.be.visible');
+        page.paymentInstrument('ISH_DEBIT_TRANSFER').formError('holder').should('not.be.visible');
+        page.paymentInstrument('ISH_DEBIT_TRANSFER').formError('IBAN').should('not.be.visible');
+        page.paymentInstrument('ISH_DEBIT_TRANSFER').formError('BIC').should('not.be.visible');
         page.paymentInstrument('ISH_DEBIT_TRANSFER').submit();
       });
       cy.wait(500);
@@ -157,7 +144,11 @@ describe('Checkout Payment', () => {
     });
   });
   describe('Within the MyAccount', () => {
-    before(() => PaymentPage.navigateTo());
+    before(() => {
+      at(CheckoutPaymentPage, page => page.header.gotoHomePage());
+      at(HomePage, page => page.header.goToMyAccount());
+      at(MyAccountPage, page => page.navigateToPayments());
+    });
 
     it('should display saved credit cards on myAccount page', () => {
       at(PaymentPage, page => {

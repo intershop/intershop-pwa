@@ -56,6 +56,14 @@ const accountPageRoutes: Routes = [
         loadChildren: () =>
           import('../../extensions/wishlists/pages/wishlists-routing.module').then(m => m.WishlistsRoutingModule),
       },
+      {
+        path: 'order-templates',
+        data: { breadcrumbData: [{ key: 'account.ordertemplates.link' }] },
+        loadChildren: () =>
+          import('../../extensions/order-templates/pages/order-templates-routing.module').then(
+            m => m.OrderTemplatesRoutingModule
+          ),
+      },
     ],
   },
 ];

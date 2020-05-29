@@ -12,7 +12,7 @@ import * as pagesActions from './pages.actions';
 
 @Injectable()
 export class PagesEffects {
-  constructor(private actions$: Actions, private store: Store<{}>, private cmsService: CMSService) {}
+  constructor(private actions$: Actions, private store: Store, private cmsService: CMSService) {}
 
   @Effect()
   loadContentPage$ = this.actions$.pipe(

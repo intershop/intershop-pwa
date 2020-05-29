@@ -10,6 +10,7 @@ stages:
 
 variables:
   npm_config_cache: '$CI_PROJECT_DIR/cache/.npm'
+  DISABLE_V8_COMPILE_CACHE: 1
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
@@ -44,23 +45,17 @@ setup:
     - performance
   script:
     - node --version && npm --version
-    - bash -c "cd tslint-rules ; npm --silent run build"
-    - bash scripts/ci-test-no-changes.sh 'you probably did not commit compiled binaries in tslint-rules'
-    - bash -c "cd schematics ; npm --silent run build"
-    - bash scripts/ci-test-no-changes.sh 'you probably did not commit compiled binaries in schematics'
-    - npm i && npm i
-    - bash scripts/ci-test-no-changes.sh 'you probably did not commit package-lock.json correctly after installing packages, run npm i again'
+    - npm ci
     - echo "setup complete"
 
 migration:
-  image: node:10
+  image: node:12
   stage: setup
   allow_failure: true
   timeout: 3h
   only:
-    - merge_requests
-  except:
     refs:
+      - develop
       - github-develop
       - master
   tags:
@@ -111,17 +106,10 @@ jest_test:
   tags:
     - docker-executor
     - performance
-  artifacts:
-    paths:
-      - reports/coverage
-    expire_in: 1 day
-    reports:
-      junit: junit.xml
   dependencies: []
-  coverage: '/^Statements\s*:\s*([^%]+)/'
   script:
     - npm ci --prefer-offline
-    - npx jest --collectCoverage --coverageReporters text-summary  --reporters=default --reporters=jest-junit --ci -w 3
+    - npm run test -- -w 3
     - echo "build complete"
 
 compile:
@@ -139,9 +127,9 @@ compile:
   dependencies: []
   script:
     - npm ci --prefer-offline
-    - npx tsc -p tsconfig.spec.json
+    - npx tsc -p tsconfig.all.json
     - cd e2e
-    - npm ci
+    - npm i
     - npx tsc -p cypress/tsconfig.json
     - echo "build complete"
 
@@ -191,7 +179,7 @@ deploy_review_mock:
       --name "${CI_COMMIT_REF_SLUG}-mock"
       ${CI_REGISTRY_IMAGE}:mock-${CI_BUILD_REF}
     - DEMO_SERVER_IP=$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
-    - docker run --rm --add-host $DEMO_SERVER_NAME:$DEMO_SERVER_IP mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock"
+    - docker run --rm --add-host $DEMO_SERVER_NAME:$DEMO_SERVER_IP mwendler/wget --wait 60 --tries 20 --retry-connrefused "http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock"
   environment:
     name: review/mock-$CI_COMMIT_REF_SLUG
     url: http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock
@@ -310,7 +298,6 @@ push_reports:
     - performance
   script:
     - docker build -t ${CI_REGISTRY_IMAGE}:reports
-      --build-arg ICM_BASE_URL=${ICM_BASE_URL}
       --label revision="${CI_BUILD_REF}"
       --label project="${CI_PROJECT_URL}"
       --file Dockerfile_reports
@@ -385,7 +372,7 @@ deploy_demo_b2b:
       --env LOGGING=true
       --env PROXY_ICM=true
       --env THEME="blue|688dc3"
-      --env FEATURES=quoting,quickorder,compare,recently,businessCustomerRegistration,advancedVariationHandling,sentry
+      --env FEATURES=quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,advancedVariationHandling,sentry
       --env ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site
       --env SENTRY_DSN=${SENTRY_DSN}
       ${IMAGE}
@@ -425,7 +412,7 @@ deploy_demo_nginx:
       -e PWA_2_LANG=de_DE
       -e PWA_3_TOPLEVELDOMAIN=com
       -e PWA_3_CHANNEL=inSPIRED-inTRONICS_Business-Site
-      -e PWA_3_FEATURES=quoting,quickorder,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry
+      -e PWA_3_FEATURES=quoting,quickorder,orderTemplates,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry
       -e PWA_3_THEME="blue|688dc3"
       -e PWA_4_TOPLEVELDOMAIN=fr
       -e PWA_4_LANG=fr_FR
@@ -559,7 +546,7 @@ deploy_review_b2c:
       -e PWA_2_LANG=de_DE
       -e PWA_3_TOPLEVELDOMAIN=com
       -e PWA_3_CHANNEL=inSPIRED-inTRONICS_Business-Site
-      -e PWA_3_FEATURES=quoting,quickorder,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry
+      -e PWA_3_FEATURES=quoting,quickorder,orderTemplates,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry
       -e PWA_3_THEME="blue|688dc3"
       -e PWA_4_TOPLEVELDOMAIN=fr
       -e PWA_4_LANG=fr_FR
@@ -627,7 +614,7 @@ deploy_review_b2b:
       -e ICM_BASE_URL=${ICM_BASE_URL}
       -e THEME="blue|688dc3"
       -e ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site
-      -e FEATURES=quoting,quickorder,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry
+      -e FEATURES=quoting,quickorder,orderTemplates,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry
       --add-host $ICM_HOST:$ICM_IP
       --add-host $DEMO_SERVER_NAME:$DEMO_SERVER_IP
       ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
@@ -726,10 +713,10 @@ schematics:
     - performance
   dependencies: []
   script:
-    - npm install
+    - git config user.email gitlab@intershop.de
+    - git config user.name "GitLab Runner for PWA"
+    - npm ci
     - bash e2e/test-schematics.sh
-    - node scripts/tslint-hard
-    - npm run lint
     - echo "schematics complete"
 
 .universal_template: &universal_definition

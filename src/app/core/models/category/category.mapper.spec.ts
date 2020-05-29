@@ -17,8 +17,8 @@ describe('Category Mapper', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({ imports: [ngrxTesting({ reducers: { configuration: configurationReducer } })] });
-    categoryMapper = TestBed.get(CategoryMapper);
-    imageMapper = spy(TestBed.get(ImageMapper));
+    categoryMapper = TestBed.inject(CategoryMapper);
+    imageMapper = spy(TestBed.inject(ImageMapper));
   }));
 
   describe('mapCategoryPath()', () => {
@@ -60,9 +60,20 @@ describe('Category Mapper', () => {
     using(
       [
         { path: [{ id: '1', name: 'n1' }], result: categoryTree() },
-        { path: [{ id: '1', name: 'n1' }, { id: '2', name: 'n2' }], result: categoryTree([cat1]) },
         {
-          path: [{ id: '1', name: 'n1' }, { id: '2', name: 'n2' }, { id: '3', name: 'n3' }, { id: '4', name: 'n4' }],
+          path: [
+            { id: '1', name: 'n1' },
+            { id: '2', name: 'n2' },
+          ],
+          result: categoryTree([cat1]),
+        },
+        {
+          path: [
+            { id: '1', name: 'n1' },
+            { id: '2', name: 'n2' },
+            { id: '3', name: 'n3' },
+            { id: '4', name: 'n4' },
+          ],
           result: categoryTree([cat1, cat2, cat3]),
         },
       ],

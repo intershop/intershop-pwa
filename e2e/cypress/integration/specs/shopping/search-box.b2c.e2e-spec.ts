@@ -50,12 +50,7 @@ describe('Search Box', () => {
       page.header.searchBox.type('k');
       page.header.searchBox.suggestions.should('deep.equal', ['Kensington', 'Keyboards', 'Kingston', 'Kodak']);
 
-      page.header.searchBox
-        .down()
-        .down()
-        .down()
-        .down()
-        .enter();
+      page.header.searchBox.down().down().down().down().enter();
     });
   });
 

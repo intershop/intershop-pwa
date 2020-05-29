@@ -45,7 +45,7 @@ describe('Wishlist Selectors', () => {
       }),
     });
 
-    store$ = TestBed.get(TestStore);
+    store$ = TestBed.inject(TestStore);
   });
 
   const wishlists = [
@@ -96,7 +96,7 @@ describe('Wishlist Selectors', () => {
       const loadWishlistSuccessAction = new LoadWishlistsSuccess({ wishlists });
 
       beforeEach(() => {
-        store$ = TestBed.get(TestStore);
+        store$ = TestBed.inject(TestStore);
         store$.dispatch(loadWishlistSuccessAction);
       });
 
@@ -113,7 +113,7 @@ describe('Wishlist Selectors', () => {
       const loadWishlistFailAction = new LoadWishlistsFail({ error: { message: 'invalid' } as HttpError });
 
       beforeEach(() => {
-        store$ = TestBed.get(TestStore);
+        store$ = TestBed.inject(TestStore);
         store$.dispatch(loadWishlistFailAction);
       });
 
@@ -149,7 +149,7 @@ describe('Wishlist Selectors', () => {
       const createWishistSuccessAction = new CreateWishlistSuccess({ wishlist: wishlists[0] });
 
       beforeEach(() => {
-        store$ = TestBed.get(TestStore);
+        store$ = TestBed.inject(TestStore);
         store$.dispatch(createWishistSuccessAction);
       });
 
@@ -166,7 +166,7 @@ describe('Wishlist Selectors', () => {
       const createWishlistFailAction = new CreateWishlistFail({ error: { message: 'invalid' } as HttpError });
 
       beforeEach(() => {
-        store$ = TestBed.get(TestStore);
+        store$ = TestBed.inject(TestStore);
         store$.dispatch(createWishlistFailAction);
       });
 
@@ -198,7 +198,7 @@ describe('Wishlist Selectors', () => {
       const deleteWishlistSuccessAction = new DeleteWishlistSuccess({ wishlistId: wishlists[0].id });
 
       beforeEach(() => {
-        store$ = TestBed.get(TestStore);
+        store$ = TestBed.inject(TestStore);
       });
 
       it('should set loading to false', () => {
@@ -219,7 +219,7 @@ describe('Wishlist Selectors', () => {
       const deleteWishlistFailAction = new DeleteWishlistFail({ error: { message: 'invalid' } as HttpError });
 
       beforeEach(() => {
-        store$ = TestBed.get(TestStore);
+        store$ = TestBed.inject(TestStore);
         store$.dispatch(deleteWishlistFailAction);
       });
 
@@ -257,7 +257,7 @@ describe('Wishlist Selectors', () => {
       const loadWishlistSuccess = new LoadWishlistsSuccess({ wishlists });
 
       beforeEach(() => {
-        store$ = TestBed.get(TestStore);
+        store$ = TestBed.inject(TestStore);
       });
 
       it('should set loading to false', () => {
@@ -278,7 +278,7 @@ describe('Wishlist Selectors', () => {
       const updateWishlistFailAction = new UpdateWishlistFail({ error: { message: 'invalid' } as HttpError });
 
       beforeEach(() => {
-        store$ = TestBed.get(TestStore);
+        store$ = TestBed.inject(TestStore);
         store$.dispatch(updateWishlistFailAction);
       });
 

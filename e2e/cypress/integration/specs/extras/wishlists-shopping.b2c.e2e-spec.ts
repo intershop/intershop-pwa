@@ -29,10 +29,7 @@ describe('Wishlist Shopping Experience Functionality', () => {
     LoginPage.navigateTo('/account/wishlists');
     at(LoginPage, page => {
       page.fillForm(_.user.login, _.user.password);
-      page
-        .submit()
-        .its('status')
-        .should('equal', 200);
+      page.submit().its('status').should('equal', 200);
     });
     at(WishlistsOverviewPage, page => {
       page.addWishlist(unpreferredWishlist, false);
@@ -49,7 +46,7 @@ describe('Wishlist Shopping Experience Functionality', () => {
     at(FamilyPage, page =>
       page.productList.addToWishlist.addProductToWishlistFromList(_.product1, unpreferredWishlist)
     );
-    at(WishlistsDetailsPage, page => page.listItemLink.invoke('attr', 'href').should('contain', _.product1));
+    at(WishlistsDetailsPage, page => page.listItemLinks.invoke('attr', 'href').should('contain', _.product1));
   });
 
   it('user adds a wishlist product to cart', () => {
@@ -73,7 +70,7 @@ describe('Wishlist Shopping Experience Functionality', () => {
       page.addToWishlist.addProductToWishlistFromPage(shoppingUnpreferred, true);
     });
     at(WishlistsDetailsPage, page => {
-      page.listItemLink.invoke('attr', 'href').should('contain', _.product1);
+      page.listItemLinks.invoke('attr', 'href').should('contain', _.product1);
     });
   });
 
@@ -87,6 +84,6 @@ describe('Wishlist Shopping Experience Functionality', () => {
       page.addProductToWishlist();
       page.addToWishlist.addProductToWishlistFromPage(shoppingPreferred, false);
     });
-    at(WishlistsDetailsPage, page => page.listItemLink.invoke('attr', 'href').should('contain', _.product1));
+    at(WishlistsDetailsPage, page => page.listItemLinks.invoke('attr', 'href').should('contain', _.product1));
   });
 });

@@ -26,7 +26,7 @@ describe('Address Form Container Component', () => {
   let component: AddressFormContainerComponent;
   let fixture: ComponentFixture<AddressFormContainerComponent>;
   let element: HTMLElement;
-  let store$: Store<{}>;
+  let store$: Store;
 
   beforeEach(async(() => {
     const addressFormFactoryMock = mock(AddressFormFactory);
@@ -48,7 +48,7 @@ describe('Address Form Container Component', () => {
     fixture = TestBed.createComponent(AddressFormContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    store$ = TestBed.get(Store);
+    store$ = TestBed.inject(Store);
     const customer: Customer = { customerNo: '1', type: 'SMBCustomer' };
     const region: Region[] = [{ countryCode: 'BG', id: 'BGS', name: 'Sofia', regionCode: 'S' }];
     store$.dispatch(new LoginUserSuccess({ customer }));

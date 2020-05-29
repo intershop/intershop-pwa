@@ -3,7 +3,7 @@ import { noop } from 'rxjs';
 
 import { createApplication, createModule, createSchematicRunner } from '../utils/testHelper';
 
-import { PwaCmsComponentOptionsSchema as Options } from './schema';
+import { PWACMSComponentOptionsSchema as Options } from './schema';
 
 describe('CMS Component Schematic', () => {
   const schematicRunner = createSchematicRunner();
@@ -11,7 +11,6 @@ describe('CMS Component Schematic', () => {
     name: 'foo',
     definitionQualifiedName: 'app_sf_responsive_cm:component.common.foo.pagelet2-Component',
     styleFile: false,
-    styleext: 'scss',
     module: undefined,
     export: false,
     project: 'bar',
@@ -20,10 +19,7 @@ describe('CMS Component Schematic', () => {
   let appTree: UnitTestTree;
   beforeEach(async () => {
     appTree = await createApplication(schematicRunner)
-      .pipe(
-        createModule(schematicRunner, { name: 'shared' }),
-        createModule(schematicRunner, { name: 'shared/cms' })
-      )
+      .pipe(createModule(schematicRunner, { name: 'shared' }), createModule(schematicRunner, { name: 'shared/cms' }))
       .toPromise();
   });
 
@@ -32,13 +28,13 @@ describe('CMS Component Schematic', () => {
     const tree = await schematicRunner.runSchematicAsync('cms-component', options, appTree).toPromise();
     expect(tree.files.filter(x => x.search('cms') >= 0)).toMatchInlineSnapshot(`
       Array [
-        "/projects/bar/src/app/shared/cms/cms.module.ts",
-        "/projects/bar/src/app/shared/cms/components/cms-foo/cms-foo.component.ts",
-        "/projects/bar/src/app/shared/cms/components/cms-foo/cms-foo.component.html",
-        "/projects/bar/src/app/shared/cms/components/cms-foo/cms-foo.component.spec.ts",
+        "/src/app/shared/cms/cms.module.ts",
+        "/src/app/shared/cms/components/cms-foo/cms-foo.component.html",
+        "/src/app/shared/cms/components/cms-foo/cms-foo.component.spec.ts",
+        "/src/app/shared/cms/components/cms-foo/cms-foo.component.ts",
       ]
     `);
-    expect(tree.readContent('/projects/bar/src/app/shared/cms/cms.module.ts')).toMatchInlineSnapshot(`
+    expect(tree.readContent('/src/app/shared/cms/cms.module.ts')).toMatchInlineSnapshot(`
       "import { NgModule } from '@angular/core';
       import { CMSFooComponent } from './components/cms-foo/cms-foo.component';
 
@@ -46,7 +42,6 @@ describe('CMS Component Schematic', () => {
         imports: [],
         declarations: [],
         exports: [],
-        entryComponents: [],
         providers: [{
             provide: CMS_COMPONENT,
             useValue: {
@@ -59,15 +54,14 @@ describe('CMS Component Schematic', () => {
       export class CmsModule { }
       "
     `);
-    expect(tree.readContent('/projects/bar/src/app/shared/shared.module.ts')).toMatchInlineSnapshot(`
+    expect(tree.readContent('/src/app/shared/shared.module.ts')).toMatchInlineSnapshot(`
       "import { NgModule } from '@angular/core';
       import { CMSFooComponent } from './cms/components/cms-foo/cms-foo.component';
 
       @NgModule({
         imports: [],
         declarations: [CMSFooComponent],
-        exports: [],
-        entryComponents: [CMSFooComponent]
+        exports: []
       })
       export class SharedModule { }
       "
@@ -79,13 +73,13 @@ describe('CMS Component Schematic', () => {
     const tree = await schematicRunner.runSchematicAsync('cms-component', options, appTree).toPromise();
     expect(tree.files.filter(x => x.search('cms') >= 0)).toMatchInlineSnapshot(`
       Array [
-        "/projects/bar/src/app/shared/cms/cms.module.ts",
-        "/projects/bar/src/app/shared/cms/components/foo/foo.component.ts",
-        "/projects/bar/src/app/shared/cms/components/foo/foo.component.html",
-        "/projects/bar/src/app/shared/cms/components/foo/foo.component.spec.ts",
+        "/src/app/shared/cms/cms.module.ts",
+        "/src/app/shared/cms/components/foo/foo.component.html",
+        "/src/app/shared/cms/components/foo/foo.component.spec.ts",
+        "/src/app/shared/cms/components/foo/foo.component.ts",
       ]
     `);
-    expect(tree.readContent('/projects/bar/src/app/shared/cms/cms.module.ts')).toMatchInlineSnapshot(`
+    expect(tree.readContent('/src/app/shared/cms/cms.module.ts')).toMatchInlineSnapshot(`
       "import { NgModule } from '@angular/core';
       import { FooComponent } from './components/foo/foo.component';
 
@@ -93,7 +87,6 @@ describe('CMS Component Schematic', () => {
         imports: [],
         declarations: [],
         exports: [],
-        entryComponents: [],
         providers: [{
             provide: CMS_COMPONENT,
             useValue: {
@@ -106,15 +99,14 @@ describe('CMS Component Schematic', () => {
       export class CmsModule { }
       "
     `);
-    expect(tree.readContent('/projects/bar/src/app/shared/shared.module.ts')).toMatchInlineSnapshot(`
+    expect(tree.readContent('/src/app/shared/shared.module.ts')).toMatchInlineSnapshot(`
       "import { NgModule } from '@angular/core';
       import { FooComponent } from './cms/components/foo/foo.component';
 
       @NgModule({
         imports: [],
         declarations: [FooComponent],
-        exports: [],
-        entryComponents: [FooComponent]
+        exports: []
       })
       export class SharedModule { }
       "

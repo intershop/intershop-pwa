@@ -26,7 +26,7 @@ describe('Configuration Selectors', () => {
       imports: ngrxTesting({ reducers: coreReducers }),
     });
 
-    store$ = TestBed.get(TestStore);
+    store$ = TestBed.inject(TestStore);
   });
 
   describe('initial state', () => {
@@ -35,7 +35,7 @@ describe('Configuration Selectors', () => {
       expect(getICMBaseURL(store$.state)).toBeUndefined();
       expect(getICMServerURL(store$.state)).toBeUndefined();
       expect(getICMStaticURL(store$.state)).toBeUndefined();
-      expect(getFeatures(store$.state)).toBeEmpty();
+      expect(getFeatures(store$.state)).toBeUndefined();
       expect(getGTMToken(store$.state)).toBeUndefined();
       expect(isServerConfigurationLoaded(store$.state)).toBeFalsy();
       expect(getServerConfigParameter('application.applicationType')(store$.state)).toMatchInlineSnapshot(`undefined`);

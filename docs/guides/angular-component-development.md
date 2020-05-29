@@ -35,7 +35,7 @@ See also [Angular Style Guide](https://angular.io/guide/styleguide#style-05-15).
 
 ## Put as Little Logic Into `constructor` as Possible - Use `ngOnInit`
 
-See [The essential difference between Constructor and ngOnInit in Angular](https://blog.angularindepth.com/the-essential-difference-between-constructor-and-ngoninit-in-angular-c9930c209a42) and [Angular constructor versus ngOnInit](https://ultimatecourses.com/blog/angular-constructor-ngoninit-lifecycle-hook).
+See [The essential difference between Constructor and ngOnInit in Angular](https://indepth.dev/the-essential-difference-between-constructor-and-ngoninit-in-angular/) and [Angular constructor versus ngOnInit](https://ultimatecourses.com/blog/angular-constructor-ngoninit-lifecycle-hook).
 
 ## Use Property Binding to Bind Dynamic Values to Attributes or Properties
 

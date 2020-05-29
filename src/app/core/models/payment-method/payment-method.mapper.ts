@@ -41,7 +41,7 @@ export class PaymentMethodMapper {
             : undefined,
         parameters: data.parameterDefinitions ? PaymentMethodMapper.mapParameter(data.parameterDefinitions) : undefined,
         hostedPaymentPageParameters:
-          data.id === 'Concardis_DirectDebit'
+          data.serviceID === 'Concardis_DirectDebit'
             ? PaymentMethodMapper.mapSEPAMandateInformation(data.hostedPaymentPageParameters)
             : data.hostedPaymentPageParameters,
       }));
@@ -148,6 +148,7 @@ export class PaymentMethodMapper {
     if (!paymentData.capabilities || !paymentData.capabilities.length) {
       return true;
     }
+
     // excluded by the invalidCapabilities list
     return !paymentData.capabilities.some(data => invalidCapabilities.includes(data));
   }
@@ -171,6 +172,7 @@ export class PaymentMethodMapper {
               : undefined,
           attributes: {},
         },
+        hide: p.hidden,
       };
 
       if (p.constraints) {

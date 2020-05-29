@@ -32,7 +32,7 @@ describe('Basket Addresses Effects', () => {
   let orderServiceMock: OrderService;
   let addressServiceMock: AddressService;
   let effects: BasketAddressesEffects;
-  let store$: Store<{}>;
+  let store$: Store;
 
   beforeEach(() => {
     basketServiceMock = mock(BasketService);
@@ -58,8 +58,8 @@ describe('Basket Addresses Effects', () => {
       ],
     });
 
-    effects = TestBed.get(BasketAddressesEffects);
-    store$ = TestBed.get(Store);
+    effects = TestBed.inject(BasketAddressesEffects);
+    store$ = TestBed.inject(Store);
   });
 
   describe('createAddressForBasket$ for a logged in user', () => {

@@ -1,4 +1,4 @@
-import { HostBinding } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 
 import { SfeMetadata } from './sfe.types';
 
@@ -13,6 +13,8 @@ import { SfeMetadata } from './sfe.types';
  *              }
  * }
  */
+@Component({ template: '' })
+// tslint:disable-next-line: component-class-suffix
 export class SfeMetadataWrapper {
   @HostBinding('attr.data-sfe') sfeMetadataAttribute: string;
 

@@ -1,3 +1,4 @@
+import { parse } from 'comment-json';
 import * as fs from 'fs';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
@@ -42,9 +43,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   constructor(options: Lint.IOptions) {
     super(options);
     try {
-      const data = fs.readFileSync('./tsconfig.json');
-      // tslint:disable-next-line:no-any
-      const config = JSON.parse(data as any);
+      const config = parse(fs.readFileSync('./tsconfig.json', { encoding: 'UTF-8' }));
       if (config && config.compilerOptions && config.compilerOptions.paths) {
         const paths = config.compilerOptions.paths;
         this.shortImports = Object.keys(paths).map(key => ({
@@ -74,7 +73,7 @@ export class Rule extends Lint.Rules.AbstractRule {
           if (new RegExp(pattern).test(absPath)) {
             ctx.addFailureAtNode(
               stringLiteral,
-              'Import path should rely on ish-core.',
+              `Import path should rely on ${replacement.replace(/\/.*/g, '')}.`,
               new Lint.Replacement(
                 stringLiteral.getStart(),
                 stringLiteral.getEnd() - stringLiteral.getStart(),

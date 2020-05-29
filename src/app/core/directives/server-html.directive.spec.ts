@@ -14,9 +14,7 @@ describe('Server Html Directive', () => {
 
     beforeEach(() => {
       @Component({
-        template: `
-          <div [ishServerHtml]="html"></div>
-        `,
+        template: ` <div [ishServerHtml]="html"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
       class TestComponent {
@@ -51,9 +49,7 @@ describe('Server Html Directive', () => {
 
     beforeEach(() => {
       @Component({
-        template: `
-          <div [ishServerHtml]="html"></div>
-        `,
+        template: ` <div [ishServerHtml]="html"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
       class TestComponent {
@@ -98,9 +94,7 @@ describe('Server Html Directive', () => {
 
     beforeEach(() => {
       @Component({
-        template: `
-          <div [ishServerHtml]="html"></div>
-        `,
+        template: ` <div [ishServerHtml]="html"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
       class TestComponent {
@@ -127,9 +121,7 @@ describe('Server Html Directive', () => {
 
     beforeEach(() => {
       @Component({
-        template: `
-          <div [ishServerHtml]="'get.help.at' | translate: { '0': 'page://systempage.helpdesk' }"></div>
-        `,
+        template: ` <div [ishServerHtml]="'get.help.at' | translate: { '0': 'page://systempage.helpdesk' }"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
       class TestComponent {}
@@ -143,7 +135,7 @@ describe('Server Html Directive', () => {
         ],
       }).compileComponents();
 
-      const translate: TranslateService = TestBed.get(TranslateService);
+      const translate = TestBed.inject(TranslateService);
       translate.use('en');
       translate.set('get.help.at', 'Get help at <a href="{{0}}">our HelpDesk</a>. We are there for you!');
 

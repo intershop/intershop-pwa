@@ -1,0 +1,60 @@
+import {
+  ChangeDetectionStrategy, Component, ComponentFactoryResolver,
+  <% if (bindings.length) { %>ComponentRef, Input, OnChanges, <% } %>
+  OnInit,
+  <% if (onChanges === 'complex') { %>SimpleChange, SimpleChanges, <% } %>
+  ViewChild, ViewContainerRef,
+} from '@angular/core';
+
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+
+<% if (imports.length) { %><%= imports.map(i => `import { ${i.types.join(', ')} } from ${i.from};`).join('\n') %><% } %>
+
+import { <%= classify(originalName) %>Component } from '../../../shared/<%= group %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component';
+
+@Component({
+  selector: '<%= selector %>',
+  templateUrl: './<%= dasherize(name) %>.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+// tslint:disable-next-line:component-creation-test
+export class <%= classify(name) %>Component implements OnInit <% if (bindings.length) { %>, OnChanges <% } %>{
+  /*
+   * WARNING!
+   *
+   * This file was automatically generated!
+   * It should be updated using:
+   *
+   * ng g lazy-component <%= originalPath %>
+   *
+   */
+
+  @ViewChild('anchor', { read: ViewContainerRef, static: true }) anchor: ViewContainerRef;
+  <% if (bindings.length) { %><%= bindings.map(b => b.declaration).join('\n  ') %><% } %>
+
+  <% if (bindings.length) { %>private component: ComponentRef<<%= classify(originalName) %>Component>;<% } %>
+
+  constructor(
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private featureToggleService: FeatureToggleService
+  ) {}
+
+  ngOnInit() {
+    if (this.featureToggleService.enabled('<%= camelize(extension) %>')) {
+      const factory = this.componentFactoryResolver.resolveComponentFactory(<%= classify(originalName) %>Component);
+      <% if (bindings.length) { %>this.component = <% } %>this.anchor.createComponent(factory);
+      <% if (bindings.length) { %>this.ngOnChanges(<% if (onChanges === 'complex') { %>{
+          <%= bindings.map(b => `${b.name}: new SimpleChange(undefined, this.${b.name}, true),`).join('\n        ') %>
+        }<% } %>);<% } %>
+    }
+  }
+
+<% if (bindings.length) { %>
+  ngOnChanges(<% if (onChanges === 'complex') { %>changes: SimpleChanges<% } %>) {
+    if (this.component) {
+      <%= bindings.map(b => `this.component.instance.${b.name} = this.${b.name};`).join('\n    ') %>
+      <% if (onChanges === 'simple') { %>this.component.instance.ngOnChanges();<% } else if (onChanges === 'complex') { %>this.component.instance.ngOnChanges(changes);<% } %>
+    }
+  }
+<% } %>
+}

@@ -9,7 +9,7 @@ import { ApiService } from 'ish-core/services/api/api.service';
 import { AuthInterceptor } from './auth.interceptor';
 
 describe('Auth Interceptor', () => {
-  let store$: Store<{}>;
+  let store$: Store;
   let httpTestingController: HttpTestingController;
   let httpClient: HttpClient;
 
@@ -24,9 +24,9 @@ describe('Auth Interceptor', () => {
       ],
     });
 
-    store$ = spy(TestBed.get(Store));
-    httpTestingController = TestBed.get(HttpTestingController);
-    httpClient = TestBed.get(HttpClient);
+    store$ = spy(TestBed.inject(Store));
+    httpTestingController = TestBed.inject(HttpTestingController);
+    httpClient = TestBed.inject(HttpClient);
   });
 
   afterEach(() => {

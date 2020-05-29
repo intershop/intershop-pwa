@@ -35,7 +35,7 @@ export class OrdersEffects {
     private actions$: Actions,
     private orderService: OrderService,
     private router: Router,
-    private store: Store<{}>,
+    private store: Store,
     private translateService: TranslateService
   ) {}
 
@@ -186,16 +186,8 @@ export class OrdersEffects {
     switchMap(queryParams =>
       // SelectOrderAfterRedirect will be triggered either after a user is logged in or after the paid order is loaded (anonymous user)
       race([
-        this.store.pipe(
-          select(getLoggedInUser),
-          whenTruthy(),
-          take(1)
-        ),
-        this.store.pipe(
-          select(getOrder, { orderId: queryParams.orderId }),
-          whenTruthy(),
-          take(1)
-        ),
+        this.store.pipe(select(getLoggedInUser), whenTruthy(), take(1)),
+        this.store.pipe(select(getOrder, { orderId: queryParams.orderId }), whenTruthy(), take(1)),
       ]).pipe(mapTo(new ordersActions.SelectOrderAfterRedirect({ params: queryParams })))
     )
   );

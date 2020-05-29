@@ -1,0 +1,23 @@
+import { TestBed } from '@angular/core/testing';
+import { instance, mock } from 'ts-mockito';
+
+import { ApiService } from 'ish-core/services/api/api.service';
+
+import { <%= classify(name) %>Service } from './<%= dasherize(name) %>.service';
+
+describe('<%= classify(name) %> Service', () => {
+  let apiServiceMock: ApiService;
+  let <%= camelize(name) %>Service: <%= classify(name) %>Service;
+
+  beforeEach(() => {
+    apiServiceMock = mock(ApiService);
+    TestBed.configureTestingModule({
+      providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }]
+    });
+    <%= camelize(name) %>Service = TestBed.inject(<%= classify(name) %>Service);
+  });
+
+  it('should be created', () => {
+    expect(<%= camelize(name) %>Service).toBeTruthy();
+  });
+});

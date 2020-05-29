@@ -39,7 +39,7 @@ export class SfeAdapterService {
 
   constructor(
     private router: Router,
-    private store: Store<{}>,
+    private store: Store,
     private appRef: ApplicationRef,
     @Inject(PLATFORM_ID) private platformId: string
   ) {}
@@ -65,14 +65,9 @@ export class SfeAdapterService {
     this.listenToApplication();
 
     // Initial startup message to the host
-    this.store
-      .pipe(
-        select(getICMBaseURL),
-        take(1)
-      )
-      .subscribe(icmBaseUrl => {
-        this.messageToHost({ type: 'dv-pwaready' }, icmBaseUrl);
-      });
+    this.store.pipe(select(getICMBaseURL), take(1)).subscribe(icmBaseUrl => {
+      this.messageToHost({ type: 'dv-pwaready' }, icmBaseUrl);
+    });
   }
 
   /**
@@ -136,12 +131,7 @@ export class SfeAdapterService {
   private listenToApplication() {
     const navigation$ = this.router.events.pipe(filter(e => e instanceof NavigationEnd));
 
-    const stable$ = this.appRef.isStable.pipe(
-      debounceTime(10),
-      distinctUntilChanged(),
-      whenTruthy(),
-      take(1)
-    );
+    const stable$ = this.appRef.isStable.pipe(debounceTime(10), distinctUntilChanged(), whenTruthy(), take(1));
 
     const navigationStable$ = navigation$.pipe(switchMapTo(stable$));
 

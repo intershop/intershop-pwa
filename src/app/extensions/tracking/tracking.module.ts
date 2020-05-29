@@ -10,9 +10,6 @@ import { getGTMToken } from 'ish-core/store/configuration';
 
 @NgModule({
   imports: [Angulartics2Module.forRoot(), FeatureToggleModule],
-  declarations: [],
-  exports: [],
-  entryComponents: [],
 })
 export class TrackingModule {
   private gtm(w, l: string, i: string) {
@@ -29,7 +26,7 @@ export class TrackingModule {
   constructor(
     angulartics2GoogleTagManager: Angulartics2GoogleTagManager,
     featureToggleService: FeatureToggleService,
-    store: Store<{}>,
+    store: Store,
     cookiesService: CookiesService
   ) {
     cookiesService.cookieLawSeen$

@@ -1,8 +1,10 @@
 import { waitLoadingEnd } from '../../framework';
+import { AddToOrderTemplateModule } from '../account/add-to-order-template.module';
 import { AddToWishlistModule } from '../account/add-to-wishlist.module';
 
 export class ProductListModule {
   readonly addToWishlist = new AddToWishlistModule();
+  readonly addToOrderTemplate = new AddToOrderTemplateModule();
   constructor(private contextSelector: string) {}
 
   get visibleProducts() {
@@ -34,17 +36,13 @@ export class ProductListModule {
     return cy.get(this.contextSelector).find(`ish-product-item div[data-testing-sku="${sku}"]`);
   }
 
-  gotoProductDetailPageBySku(sku: string) {
-    cy.get(this.contextSelector)
-      .find(`ish-product-item div[data-testing-sku="${sku}"]`)
-      .click();
-    waitLoadingEnd();
+  gotoProductDetailPageBySku(sku: string, wait: () => unknown = waitLoadingEnd) {
+    this.productTile(sku).scrollIntoView().find('a.product-title').wait(500).click();
+    wait();
   }
 
   addProductToCompareBySku(sku: string) {
-    cy.get(this.contextSelector)
-      .find(`ish-product-item div[data-testing-sku="${sku}"] button.add-to-compare`)
-      .click();
+    cy.get(this.contextSelector).find(`ish-product-item div[data-testing-sku="${sku}"] button.add-to-compare`).click();
   }
 
   addProductToQuoteRequest(sku: string) {

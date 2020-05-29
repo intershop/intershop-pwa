@@ -29,7 +29,7 @@ describe('Basket Payment Effects', () => {
   let actions$: Observable<Action>;
   let paymentServiceMock: PaymentService;
   let effects: BasketPaymentEffects;
-  let store$: Store<{}>;
+  let store$: Store;
   let router: Router;
 
   beforeEach(() => {
@@ -58,9 +58,9 @@ describe('Basket Payment Effects', () => {
       ],
     });
 
-    effects = TestBed.get(BasketPaymentEffects);
-    store$ = TestBed.get(Store);
-    router = TestBed.get(Router);
+    effects = TestBed.inject(BasketPaymentEffects);
+    store$ = TestBed.inject(Store);
+    router = TestBed.inject(Router);
   });
 
   describe('loadBasketEligiblePaymentMethods$', () => {

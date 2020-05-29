@@ -56,7 +56,7 @@ describe('Router Integration', () => {
       ],
     });
 
-    router = TestBed.get(Router);
+    router = TestBed.inject(Router);
   });
 
   it('should be created', () => {
@@ -66,7 +66,7 @@ describe('Router Integration', () => {
   describe('selectors', () => {
     let store$: TestStore;
     beforeEach(() => {
-      store$ = TestBed.get(TestStore);
+      store$ = TestBed.inject(TestStore);
     });
 
     it('should be undefined on start', () => {
@@ -213,10 +213,10 @@ describe('Router Integration', () => {
   });
 
   describe('ofUrl operator', () => {
-    let store$: Store<{}>;
+    let store$: Store;
 
     beforeEach(() => {
-      store$ = TestBed.get(Store);
+      store$ = TestBed.inject(Store);
     });
 
     beforeEach(fakeAsync(() => {
@@ -224,36 +224,21 @@ describe('Router Integration', () => {
     }));
 
     it('should pass through any matcher when used', done => {
-      store$
-        .pipe(
-          ofUrl(/.*/),
-          select(selectUrl)
-        )
-        .subscribe(url => {
-          expect(url).toMatchInlineSnapshot(`"/any?view=list"`);
-          done();
-        });
+      store$.pipe(ofUrl(/.*/), select(selectUrl)).subscribe(url => {
+        expect(url).toMatchInlineSnapshot(`"/any?view=list"`);
+        done();
+      });
     });
 
     it('should pass through specific matcher when used', done => {
-      store$
-        .pipe(
-          ofUrl(/view/),
-          select(selectUrl)
-        )
-        .subscribe(url => {
-          expect(url).toMatchInlineSnapshot(`"/any?view=list"`);
-          done();
-        });
+      store$.pipe(ofUrl(/view/), select(selectUrl)).subscribe(url => {
+        expect(url).toMatchInlineSnapshot(`"/any?view=list"`);
+        done();
+      });
     });
 
     it('should not pass through exact matcher when used', done => {
-      store$
-        .pipe(
-          ofUrl(/^\/any$/),
-          select(selectUrl)
-        )
-        .subscribe(fail);
+      store$.pipe(ofUrl(/^\/any$/), select(selectUrl)).subscribe(fail);
 
       setTimeout(done, 1000);
     });

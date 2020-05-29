@@ -13,7 +13,7 @@ import { CompareEffects } from './compare.effects';
 describe('Compare Effects', () => {
   let actions$: Observable<Action>;
   let effects: CompareEffects;
-  let store$: Store<{}>;
+  let store$: Store;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -27,8 +27,8 @@ describe('Compare Effects', () => {
       providers: [CompareEffects, provideMockActions(() => actions$)],
     });
 
-    effects = TestBed.get(CompareEffects);
-    store$ = TestBed.get(Store);
+    effects = TestBed.inject(CompareEffects);
+    store$ = TestBed.inject(Store);
   });
 
   describe('toggleCompare$', () => {

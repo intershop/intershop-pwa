@@ -15,10 +15,7 @@
           <p class="indicates-required">
             <span class="required">*</span>{{ 'account.required_field.message' | translate }}
           </p>
-          <ish-registration-credentials-form
-            [parentForm]="form"
-            [securityQuestionEnabled]="securityQuestionEnabled"
-          ></ish-registration-credentials-form>
+          <ish-registration-credentials-form [parentForm]="form"></ish-registration-credentials-form>
         </div>
       </div>
     </div>
@@ -48,7 +45,7 @@
             [customerForm]="form"
           ></ish-registration-company-form>
 
-          <ish-captcha [form]="form"></ish-captcha>
+          <ish-lazy-captcha topic="register" [form]="form"></ish-lazy-captcha>
 
           <div class="row form-group form-group-tc">
             <div class="offset-md-4 col-md-8">

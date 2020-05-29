@@ -1,6 +1,6 @@
 import { PLATFORM_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { CookiesService as ForeignCookiesService } from '@ngx-utils/cookies';
+import { CookiesService as ForeignCookiesService } from 'ngx-utils-cookies-port';
 import { anything, instance, mock, verify } from 'ts-mockito';
 
 import { CookiesService } from './cookies.service';
@@ -17,7 +17,7 @@ describe('Cookies Service', () => {
         { provide: ForeignCookiesService, useFactory: () => instance(foreignCookiesServiceMock) },
       ],
     });
-    cookiesService = TestBed.get(CookiesService);
+    cookiesService = TestBed.inject(CookiesService);
   });
 
   it('should be created', () => {

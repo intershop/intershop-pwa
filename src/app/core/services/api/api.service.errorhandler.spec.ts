@@ -14,15 +14,15 @@ import { ApiServiceErrorHandler } from './api.service.errorhandler';
 describe('Api Service Errorhandler', () => {
   let apiServiceErrorHandler: ApiServiceErrorHandler;
 
-  let store$: Store<{}>;
+  let store$: Store;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ngrxTesting()],
     }).compileComponents();
 
-    apiServiceErrorHandler = TestBed.get(ApiServiceErrorHandler);
-    store$ = spy(TestBed.get(Store));
+    apiServiceErrorHandler = TestBed.inject(ApiServiceErrorHandler);
+    store$ = spy(TestBed.inject(Store));
   }));
 
   function dataProviderKnown() {

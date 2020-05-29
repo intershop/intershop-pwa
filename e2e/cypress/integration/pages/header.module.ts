@@ -19,36 +19,34 @@ export class HeaderModule {
       .then(el => parseInt(el.text(), 10));
   }
 
-  gotoHomePage() {
+  gotoHomePage(wait: () => unknown = waitLoadingEnd) {
     cy.get('[data-testing-id="header-home-link-desktop"]').click();
-    waitLoadingEnd();
+    wait();
   }
 
-  gotoLoginPage() {
+  gotoLoginPage(wait: () => unknown = waitLoadingEnd) {
     cy.get('[data-testing-id="user-status-desktop"] .my-account-login').click();
-    waitLoadingEnd();
+    wait();
   }
 
-  gotoRegistrationPage() {
+  gotoRegistrationPage(wait: () => unknown = waitLoadingEnd) {
     cy.get('[data-testing-id="user-status-desktop"] .my-account-register').click();
-    waitLoadingEnd();
+    wait();
   }
 
-  gotoCategoryPage(categoryUniqueId: string) {
+  gotoCategoryPage(categoryUniqueId: string, wait: () => unknown = waitLoadingEnd) {
     cy.get(`[data-testing-id="${categoryUniqueId}-link"]`).click();
-    waitLoadingEnd();
+    wait();
   }
 
-  gotoWishlists() {
-    cy.get('ish-wishlists-link a')
-      .eq(0)
-      .click({ force: true });
-    waitLoadingEnd();
+  gotoWishlists(wait: () => unknown = waitLoadingEnd) {
+    cy.get('ish-wishlists-link a').eq(0).click({ force: true });
+    wait();
   }
 
-  gotoQuickorder() {
+  gotoQuickorder(wait: () => unknown = waitLoadingEnd) {
     cy.get('a[rel="quick-order"]').click();
-    waitLoadingEnd();
+    wait();
   }
 
   logout() {

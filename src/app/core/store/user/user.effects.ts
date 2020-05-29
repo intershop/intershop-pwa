@@ -10,6 +10,7 @@ import {
   concatMapTo,
   debounce,
   debounceTime,
+  exhaustMap,
   filter,
   first,
   map,
@@ -52,7 +53,7 @@ function mapUserErrorToActionIfPossible<T>(specific) {
 export class UserEffects {
   constructor(
     private actions$: Actions,
-    private store$: Store<{}>,
+    private store$: Store,
     private userService: UserService,
     private paymentService: PaymentService,
     private personalizationService: PersonalizationService,
@@ -63,7 +64,7 @@ export class UserEffects {
   loginUser$ = this.actions$.pipe(
     ofType<userActions.LoginUser>(userActions.UserActionTypes.LoginUser),
     mapToPayloadProperty('credentials'),
-    mergeMap(credentials =>
+    exhaustMap(credentials =>
       this.userService.signinUser(credentials).pipe(
         map(data => new userActions.LoginUserSuccess(data)),
         mapUserErrorToActionIfPossible(userActions.LoginUserFail)
@@ -93,12 +94,7 @@ export class UserEffects {
         timer(1000).pipe(switchMapTo(EMPTY))
       )
     ),
-    debounce(() =>
-      this.actions$.pipe(
-        debounceTime(2000),
-        first()
-      )
-    ),
+    debounce(() => this.actions$.pipe(debounceTime(2000), first())),
     tap(() => {
       this.router.navigate(['/login'], {
         queryParams: { returnUrl: this.router.url, messageKey: 'session_timeout' },
@@ -114,25 +110,14 @@ export class UserEffects {
   redirectAfterLogin$ = merge(
     this.actions$.pipe(
       ofType(userActions.UserActionTypes.LoginUserSuccess),
-      switchMapTo(
-        this.store$.pipe(
-          select(selectQueryParam('returnUrl')),
-          first()
-        )
-      ),
+      switchMapTo(this.store$.pipe(select(selectQueryParam('returnUrl')), first())),
       whenTruthy()
     ),
     this.store$.pipe(
       ofUrl(/^\/login.*/),
       select(selectQueryParam('returnUrl')),
       map(returnUrl => returnUrl || '/account'),
-      switchMap(returnUrl =>
-        this.store$.pipe(
-          select(getLoggedInUser),
-          whenTruthy(),
-          mapTo(returnUrl)
-        )
-      )
+      switchMap(returnUrl => this.store$.pipe(select(getLoggedInUser), whenTruthy(), mapTo(returnUrl)))
     )
   ).pipe(
     whenTruthy(),

@@ -37,10 +37,7 @@ export class SearchBoxModule {
   }
 
   search(searchTerm: string) {
-    this.inputField()
-      .clear()
-      .type(searchTerm)
-      .type('{enter}');
+    this.inputField().clear().type(searchTerm).type('{enter}');
   }
 
   assertNoSuggestions() {
@@ -48,10 +45,7 @@ export class SearchBoxModule {
   }
 
   clickSuggestion(text: string) {
-    return this.suggestionsOverlay()
-      .find('li button')
-      .contains(text)
-      .click({ force: true });
+    return this.suggestionsOverlay().find('li button').contains(text).click({ force: true });
   }
 
   focus() {

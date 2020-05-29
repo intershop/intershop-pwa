@@ -15,7 +15,7 @@ describe('Configuration Service', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }],
     });
-    configurationService = TestBed.get(ConfigurationService);
+    configurationService = TestBed.inject(ConfigurationService);
   }));
 
   it('should be created', () => {

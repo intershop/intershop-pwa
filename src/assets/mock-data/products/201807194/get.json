@@ -105,6 +105,7 @@
   "maxOrderQuantity": 0,
   "minOrderQuantity": 1,
   "name": "Philips Hue White Starter Kit",
+  "numberOfReviews": 2,
   "packingUnit": "",
   "productBundle": true,
   "productMaster": false,
@@ -123,7 +124,6 @@
   },
   "seoAttributes": {
     "metaDescription": "Philips Hue White Starter Kit - Automate your lamps for easy control and convenience",
-    "metaKeywords": [],
     "metaTitle": "Philips Hue White Starter Kit - Smart Home favorable buying at our shop",
     "robots": ["index", "follow"]
   },

@@ -36,7 +36,7 @@ describe('Product Add To Basket Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductAddToBasketComponent);
     component = fixture.componentInstance;
-    translate = TestBed.get(TranslateService);
+    translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');
     product = { sku: 'sku' } as Product;
@@ -55,11 +55,13 @@ describe('Product Add To Basket Component', () => {
 
   it('should throw an error if input parameter product is not set', () => {
     component.product = undefined;
-    expect(() => fixture.detectChanges()).toThrow();
+    fixture.detectChanges();
+    expect(element.querySelector('button')).toBeFalsy();
   });
 
   it('should not render when inStock = false', () => {
     product.inStock = false;
+
     fixture.detectChanges();
     expect(element.querySelector('button')).toBeFalsy();
   });

@@ -21,12 +21,8 @@ export class QuickorderPage {
 
   addToCart(): Cypress.Chainable<Cypress.WaitXHR> {
     cy.wait(3000);
-    cy.server()
-      .route('POST', '**/baskets/*/items')
-      .as('basket');
-    cy.server()
-      .route('GET', '**/baskets/current*')
-      .as('basketCurrent');
+    cy.server().route('POST', '**/baskets/*/items').as('basket');
+    cy.server().route('GET', '**/baskets/current*').as('basketCurrent');
     cy.wait(3000);
     this.addToCartButton().click();
 
