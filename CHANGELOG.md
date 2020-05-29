@@ -7,6 +7,55 @@ kb_everyone
 
 # Changelog
 
+## [0.20.0](https://github.com/intershop/intershop-pwa/releases/tag/0.20.0) (2020-05-29)
+
+**required Intershop Commerce Management version: 7.10.18.1**
+
+### Features
+
+- add order templates functionality as configurable feature (#230) ([75683ce](https://github.com/intershop/intershop-pwa/commit/75683ce))
+- remove (feature toggle) security question on forgot password and registration page (#255, #253) ([9b5d10d](https://github.com/intershop/intershop-pwa/commit/9b5d10d))
+- display captcha component according to the related ICM captcha service (#200) ([447317b](https://github.com/intershop/intershop-pwa/commit/447317b))
+- **tslint-rules:** tslint rule ng-module-sorted-fields respects bundle arrays in modules ([09f4295](https://github.com/intershop/intershop-pwa/commit/09f4295))
+- **tslint-rules:** add testing capabilities for tslint-rules ([c0fc9c8](https://github.com/intershop/intershop-pwa/commit/c0fc9c8))
+- add a link to order details page for registered users on checkout receipt page (#216) ([64b0056](https://github.com/intershop/intershop-pwa/commit/64b0056))
+- **schematics:** add lazy option to page schematic ([d07a378](https://github.com/intershop/intershop-pwa/commit/d07a378))
+- **schematics:** adapt schematics for creating files in projects ([3e08d4b](https://github.com/intershop/intershop-pwa/commit/3e08d4b))
+- **tslint-rules:** adapt folder structure rules for projects ([187a485](https://github.com/intershop/intershop-pwa/commit/187a485))
+- respect returnUrl query parameter when logout guard is triggered ([c7d49c2](https://github.com/intershop/intershop-pwa/commit/c7d49c2))
+- accept 'always' and 'never' as input for feature-toggle artifacts ([e2372a9](https://github.com/intershop/intershop-pwa/commit/e2372a9))
+- **schematics:** add schematic for generating lazy component (#215) ([0468e73](https://github.com/intershop/intershop-pwa/commit/0468e73))
+- introduce module-loader for lazy loading extension modules depending on feature toggles (#215) ([fc6e504](https://github.com/intershop/intershop-pwa/commit/fc6e504))
+- **schematics:** add linting to files generated or touched by schematics ([bf21771](https://github.com/intershop/intershop-pwa/commit/bf21771))
+- display loading animation while restoring user on first navigation (#211) ([337d9d3](https://github.com/intershop/intershop-pwa/commit/337d9d3))
+
+### Bug Fixes
+
+- PWA container healthcheck now supports ICM https (#261) ([8ce42be](https://github.com/intershop/intershop-pwa/commit/8ce42be))
+- **schematics:** handle imports of complex typings for input decorated fields in lazy-component schematic (#254) ([b1b4ec3](https://github.com/intershop/intershop-pwa/commit/b1b4ec3))
+- set captcha authorization key for 'contact us' REST requests (#200) ([a838a8a](https://github.com/intershop/intershop-pwa/commit/a838a8a))
+- display concardis direct debit form on checkout payment page (#240) ([30444ef](https://github.com/intershop/intershop-pwa/commit/30444ef))
+- find possible variation for selection based on changed attribute ([a951e27](https://github.com/intershop/intershop-pwa/commit/a951e27))
+- variation select "Not Available" flag in case of one variation attribute ([0229788](https://github.com/intershop/intershop-pwa/commit/0229788))
+- display the region in the address form on the checkout address page (#241) ([7b8e1bf](https://github.com/intershop/intershop-pwa/commit/7b8e1bf))
+- hide loading spinner after order creation failed (#217) ([9d48c50](https://github.com/intershop/intershop-pwa/commit/9d48c50))
+- use exhaustMap for user login to prevent creating multiple sessions (#236) ([b144f47](https://github.com/intershop/intershop-pwa/commit/b144f47))
+- add a concardis direct debit payment instrument on checkout payment page (#234) ([b778b00](https://github.com/intershop/intershop-pwa/commit/b778b00))
+- prevent mixed locale due to race condition using ngx-translate service use method (#207, #222) ([7750993](https://github.com/intershop/intershop-pwa/commit/7750993))
+- debounce loading wishlists to prevent picking up wrong token ([cf35e52](https://github.com/intershop/intershop-pwa/commit/cf35e52))
+
+### Documentation
+
+- replace dead link ([df996e4](https://github.com/intershop/intershop-pwa/commit/df996e4))
+- guide for upgrading dependencies (#243) ([663a361](https://github.com/intershop/intershop-pwa/commit/663a361))
+- notes on migrating to PWA with Angular 9 (#215) ([4d1e806](https://github.com/intershop/intershop-pwa/commit/4d1e806))
+
+### BREAKING CHANGES
+
+- Upgrade to Angular 9, follow the recommendations in the migration guide.
+- The feature toggle 'securityQuestion' and the related functionality has been removed.
+- The feature toggles 'captchaV2' and 'captchaV3' are obsolete. This is now configured via ICM Backoffice and fetched via 'configurations' REST call. The component 'ish-captcha' is replaced by 'ish-lazy-captcha' with a mandatory topic input for the captcha context to check whether it is activated or not.
+
 ## [0.19.1](https://github.com/intershop/intershop-pwa/releases/tag/0.19.1) (2020-04-28)
 
 **required Intershop Commerce Management version: 7.10.17.0**
