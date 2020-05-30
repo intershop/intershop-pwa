@@ -17,7 +17,6 @@ import { Filter } from 'ish-core/models/filter/filter.model';
   templateUrl: './filter-swatch-images.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable-next-line:ccp-no-intelligence-in-components
 export class FilterSwatchImagesComponent {
   /**
    * The filter group.

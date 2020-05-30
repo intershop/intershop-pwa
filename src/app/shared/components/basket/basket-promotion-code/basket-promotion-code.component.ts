@@ -20,7 +20,6 @@ import { whenTruthy } from 'ish-core/utils/operators';
   templateUrl: './basket-promotion-code.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable-next-line:ccp-no-intelligence-in-components
 export class BasketPromotionCodeComponent implements OnInit, OnDestroy {
   basket$: Observable<BasketView>;
   promotionError$: Observable<HttpError>;

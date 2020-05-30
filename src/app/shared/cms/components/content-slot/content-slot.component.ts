@@ -27,7 +27,6 @@ import { SfeMapper } from 'ish-shared/cms/sfe-adapter/sfe.mapper';
   templateUrl: './content-slot.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable-next-line:ccp-no-intelligence-in-components
 export class ContentSlotComponent extends SfeMetadataWrapper implements OnChanges {
   /**
    * The DefinitionQualifiedName of the slot that should be rendered.

@@ -23,7 +23,6 @@ import { whenFalsy } from 'ish-core/utils/operators';
   templateUrl: './product-add-to-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable-next-line:ccp-no-intelligence-in-components
 export class ProductAddToBasketComponent implements OnInit, OnDestroy {
   basketLoading$: Observable<boolean>;
 

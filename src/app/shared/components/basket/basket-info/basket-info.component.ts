@@ -11,7 +11,6 @@ import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
  * @example
  * <ish-basket-info></ish-basket-info>
  */
-// tslint:disable:ccp-no-intelligence-in-components
 @Component({
   selector: 'ish-basket-info',
   templateUrl: './basket-info.component.html',

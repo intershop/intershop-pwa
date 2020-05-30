@@ -19,7 +19,6 @@ import {
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable-next-line: no-intelligence-in-artifacts
 export class CaptchaV3Component implements OnInit, OnDestroy {
   @Input() parentForm: FormGroup;
 
