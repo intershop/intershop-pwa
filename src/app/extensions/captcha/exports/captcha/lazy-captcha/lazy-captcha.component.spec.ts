@@ -1,15 +1,10 @@
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaComponent } from 'ng-recaptcha';
 import { EMPTY, of } from 'rxjs';
 import { anyString, instance, mock, when } from 'ts-mockito';
-
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { CaptchaFacade } from '../../../facades/captcha.facade';
 import { CaptchaV2Component, CaptchaV2ComponentModule } from '../../../shared/captcha/captcha-v2/captcha-v2.component';
@@ -30,23 +25,17 @@ describe('Lazy Captcha Component', () => {
     when(captchaFacade.captchaActive$(anyString())).thenReturn(of(true));
 
     TestBed.configureTestingModule({
-      declarations: [MockComponent(RecaptchaComponent)],
-      imports: [
-        CaptchaV2ComponentModule,
-        CaptchaV3ComponentModule,
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: { configuration: configurationReducer },
-        }),
-      ],
-      providers: [
-        { provide: CaptchaFacade, useFactory: () => instance(captchaFacade) },
-        { provide: RECAPTCHA_V3_SITE_KEY, useValue: 'captchaSiteKeyQWERTY' },
-      ],
+      declarations: [LazyCaptchaComponent, MockComponent(RecaptchaComponent)],
+      imports: [CaptchaV2ComponentModule, CaptchaV3ComponentModule],
+      providers: [{ provide: CaptchaFacade, useFactory: () => instance(captchaFacade) }],
     })
       .overrideModule(CaptchaV2ComponentModule, { set: { entryComponents: [CaptchaV2Component] } })
-      .overrideModule(CaptchaV3ComponentModule, { set: { entryComponents: [CaptchaV3Component] } })
+      .overrideModule(CaptchaV3ComponentModule, {
+        set: {
+          entryComponents: [CaptchaV3Component],
+          providers: [{ provide: RECAPTCHA_V3_SITE_KEY, useValue: 'captchaSiteKeyQWERTY' }],
+        },
+      })
       .compileComponents();
   }));
 
