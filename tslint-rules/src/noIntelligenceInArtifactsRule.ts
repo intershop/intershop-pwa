@@ -2,13 +2,30 @@ import { tsquery } from '@phenomnomnominal/tsquery';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 
-import { RuleHelpers } from './ruleHelpers';
-
 interface RuleSetting {
-  ngrx: boolean;
-  service: boolean;
-  router: boolean;
-  facade: boolean;
+  ngrx: string;
+  service: string;
+  router: string;
+  facade: string;
+}
+
+function markErrorsForImportDeclaration(
+  ctx: Lint.WalkContext,
+  importDeclaration: ts.ImportDeclaration,
+  message: string
+) {
+  if (ts.isNamedImports(importDeclaration.importClause.namedBindings)) {
+    importDeclaration.importClause.namedBindings.elements.forEach(el => {
+      tsquery(
+        ctx.sourceFile,
+        ['NewExpression', 'TypeReference', 'CallExpression']
+          .map(q => q + ` > Identifier[text=${el.getText()}]`)
+          .join(',')
+      ).forEach(ele => ctx.addFailureAtNode(ele, message));
+    });
+  } else {
+    ctx.addFailureAtNode(importDeclaration, message);
+  }
 }
 
 export class Rule extends Lint.Rules.AbstractRule {
@@ -17,50 +34,38 @@ export class Rule extends Lint.Rules.AbstractRule {
   constructor(options: Lint.IOptions) {
     super(options);
 
-    this.ruleSettings = options.ruleArguments[0];
+    this.ruleSettings = options.ruleArguments[0] || {};
   }
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    const regex = /\.([\w-]+)\.ts$/;
-    if (!regex.test(sourceFile.fileName)) {
+    const ruleMatch = Object.keys(this.ruleSettings).find(key => new RegExp(key).test(sourceFile.fileName));
+
+    if (!ruleMatch) {
       return [];
     }
 
-    const artifact = regex.exec(sourceFile.fileName)[1];
-    if (!this.ruleSettings[artifact]) {
-      return [];
-    }
+    const rules = this.ruleSettings[ruleMatch];
 
     return this.applyWithFunction(sourceFile, ctx => {
-      ctx.sourceFile.statements.filter(ts.isImportDeclaration).forEach((importStatement: ts.ImportDeclaration) => {
-        const fromStringToken = RuleHelpers.getNextChildTokenOfKind(importStatement, ts.SyntaxKind.StringLiteral);
-        const fromStringText = fromStringToken.getText().substring(1, fromStringToken.getText().length - 1);
+      tsquery(ctx.sourceFile, 'ImportDeclaration').forEach((importDeclaration: ts.ImportDeclaration) => {
+        const imp = importDeclaration.moduleSpecifier
+          .getText()
+          .substr(1, importDeclaration.moduleSpecifier.getText().length - 2);
 
-        const failuteToken = tsquery(ctx.sourceFile, 'ClassDeclaration > Identifier')[0];
+        if (rules.service && /\/services(\/|$)/.test(imp)) {
+          markErrorsForImportDeclaration(ctx, importDeclaration, rules.service);
+        }
 
-        if (fromStringText.search(/\/store(\/|$)/) >= 0 && !this.ruleSettings[artifact].ngrx) {
-          ctx.addFailureAtNode(
-            failuteToken,
-            `ngrx handling is not allowed in ${artifact}s. (found ${importStatement.getText()})`
-          );
+        if (rules.ngrx && (/\/store\//.test(imp) || imp.startsWith('@ngrx') || imp.endsWith('/ngrx-testing'))) {
+          markErrorsForImportDeclaration(ctx, importDeclaration, rules.ngrx);
         }
-        if (/\/services\/.*\.service$/.test(fromStringText) && !this.ruleSettings[artifact].service) {
-          ctx.addFailureAtNode(
-            failuteToken,
-            `service usage is not allowed in ${artifact}s. (found ${importStatement.getText()})`
-          );
+
+        if (rules.facade && (/\/facades\//.test(imp) || imp.endsWith('.facade'))) {
+          markErrorsForImportDeclaration(ctx, importDeclaration, rules.facade);
         }
-        if (fromStringText.search(/angular\/router/) >= 0 && !this.ruleSettings[artifact].router) {
-          ctx.addFailureAtNode(
-            failuteToken,
-            `router usage is not allowed in ${artifact}s. (found ${importStatement.getText()})`
-          );
-        }
-        if (fromStringText.search(/\/facades(\/|$)/) >= 0 && !this.ruleSettings[artifact].facade) {
-          ctx.addFailureAtNode(
-            failuteToken,
-            `using facades is not allowed in ${artifact}s. (found ${importStatement.getText()})`
-          );
+
+        if (rules.router && imp.startsWith('@angular/router')) {
+          markErrorsForImportDeclaration(ctx, importDeclaration, rules.router);
         }
       });
     });

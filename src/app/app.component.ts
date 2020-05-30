@@ -26,7 +26,6 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable-next-line:ccp-no-intelligence-in-components
 export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('cookie', { static: true })
   banner: NgxCookieBannerComponent;

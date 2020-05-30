@@ -488,17 +488,17 @@
     "no-intelligence-in-artifacts": {
       "severity": "warning",
       "options": {
-        "component": {
-          "ngrx": false,
-          "service": false,
-          "router": true,
-          "facade": true
+        "(component|pipe|directive)(\\.spec)?\\.ts$": {
+          // "router": "Angular artifacts should rely use the Router directly.",
+          "ngrx": "Angular artifacts should rely on facades only.",
+          "service": "Angular artifacts should rely on facades only."
         },
-        "effects": {
-          "ngrx": true,
-          "service": true,
-          "router": true,
-          "facade": false
+        "effects.ts$": {
+          "facade": "Effects should not use facades."
+        },
+        "^(?!.*/(utils|sfe-adapter)/.*$).*service.ts$": {
+          // "ngrx": "Services should not use NgRx.",
+          "router": "Services should not use the Angular Router."
         }
       }
     },

@@ -9,7 +9,6 @@ import { BasketView } from 'ish-core/models/basket/basket.model';
   templateUrl: './promotion-remove.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable-next-line: ccp-no-intelligence-in-components
 export class PromotionRemoveComponent implements OnInit {
   basket$: Observable<BasketView>;
 
