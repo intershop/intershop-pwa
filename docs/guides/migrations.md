@@ -15,6 +15,27 @@ The old testing mechanism will be removed in version 0.23.
 
 We introduced a way to do [shallow testing with feature toggles](../concepts/configuration.md#unit-testing-with-feature-toggles) and used it in the tests.
 
+We [reorganized the core store](../concepts/state-management.md#core-store-structure):
+
+- new `customer`
+  - store/addresses => store/**customer**/addresses
+  - store/checkout/basket => store/**customer**/basket
+  - store/orders => store/**customer**/orders
+  - store/restore => store/**customer**/restore
+  - store/user => store/**customer**/user
+- new `core`
+  - store/configuration => store/**core**/configuration
+  - store/error => store/**core**/error
+  - store/messages => store/**core**/messages
+  - store/router => store/**core**/router
+  - store/viewconf => store/**core**/viewconf
+- new `general`
+  - store/contact => store/**general**/contact
+  - store/countries => store/**general**/countries
+  - store/regions => store/**general**/regions
+
+TSLint rules are set up to automatically fix imports, so run `npm run check` after upgrading.
+
 ## 0.19.1 to 0.20
 
 We upgraded from Angular 8 to version 9 and activated the new rendering engine Ivy with this (following the [official upgrade guide](https://update.angular.io/#8.0:9.0l3)).
