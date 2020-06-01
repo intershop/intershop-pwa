@@ -9,8 +9,8 @@ import { Category } from 'ish-core/models/category/category.model';
 import { createProductView } from 'ish-core/models/product-view/product-view.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product } from 'ish-core/models/product/product.model';
-import { CoreStoreModule } from 'ish-core/store/core-store.module';
-import { selectRouter } from 'ish-core/store/router';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { selectRouter } from 'ish-core/store/core/router';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { generateProductUrl, matchProductRoute, ofProductUrl } from './product.route';

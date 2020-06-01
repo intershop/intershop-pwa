@@ -3,10 +3,10 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { debounceTime, filter, map, mapTo, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { SuccessMessage } from 'ish-core/store/messages';
-import { selectRouteParam } from 'ish-core/store/router';
-import { UserActionTypes, getUserAuthorized } from 'ish-core/store/user';
-import { SetBreadcrumbData } from 'ish-core/store/viewconf';
+import { UserActionTypes, getUserAuthorized } from 'ish-core/store/account/user';
+import { SuccessMessage } from 'ish-core/store/core/messages';
+import { selectRouteParam } from 'ish-core/store/core/router';
+import { SetBreadcrumbData } from 'ish-core/store/core/viewconf';
 import {
   distinctCompareWith,
   mapErrorToAction,

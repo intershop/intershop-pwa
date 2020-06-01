@@ -6,7 +6,7 @@ import { map, switchMap, take, tap } from 'rxjs/operators';
 import { Address } from 'ish-core/models/address/address.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
-import { getAllAddresses } from 'ish-core/store/addresses';
+import { getAllAddresses } from 'ish-core/store/account/addresses';
 import {
   AddPromotionCodeToBasket,
   AssignBasketAddress,
@@ -35,11 +35,11 @@ import {
   getBasketValidationResults,
   getCurrentBasket,
   isBasketInvoiceAndShippingAddressEqual,
-} from 'ish-core/store/checkout/basket';
-import { getServerConfigParameter } from 'ish-core/store/configuration';
-import { getOrdersError, getSelectedOrder } from 'ish-core/store/orders';
-import { selectRouteData } from 'ish-core/store/router';
-import { getLoggedInUser } from 'ish-core/store/user';
+} from 'ish-core/store/account/basket';
+import { getOrdersError, getSelectedOrder } from 'ish-core/store/account/orders';
+import { getLoggedInUser } from 'ish-core/store/account/user';
+import { getServerConfigParameter } from 'ish-core/store/core/configuration';
+import { selectRouteData } from 'ish-core/store/core/router';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 // tslint:disable:member-ordering

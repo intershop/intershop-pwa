@@ -9,9 +9,9 @@ import { distinctUntilChanged, filter, map, switchMapTo, take, takeWhile, tap, w
 import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
-import { getGeneralError } from 'ish-core/store/error';
-import { ofUrl, selectRouter } from 'ish-core/store/router';
-import { getLoggedInUser } from 'ish-core/store/user';
+import { getLoggedInUser } from 'ish-core/store/account/user';
+import { getGeneralError } from 'ish-core/store/core/error';
+import { ofUrl, selectRouter } from 'ish-core/store/core/router';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 

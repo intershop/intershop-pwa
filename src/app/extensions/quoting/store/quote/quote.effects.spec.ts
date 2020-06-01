@@ -16,11 +16,11 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { User } from 'ish-core/models/user/user.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { LoadBasketSuccess } from 'ish-core/store/checkout/basket/basket.actions';
-import { CheckoutStoreModule } from 'ish-core/store/checkout/checkout-store.module';
-import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { AccountStoreModule } from 'ish-core/store/account/account-store.module';
+import { LoadBasketSuccess } from 'ish-core/store/account/basket';
+import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/account/user';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
-import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
 
 import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
@@ -52,7 +52,7 @@ describe('Quote Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        CheckoutStoreModule.forTesting('basket'),
+        AccountStoreModule.forTesting('basket'),
         CoreStoreModule.forTesting(),
         FeatureToggleModule.forTesting('quoting'),
         QuotingStoreModule.forTesting('quote'),

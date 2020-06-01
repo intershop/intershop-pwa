@@ -2,6 +2,7 @@ import { UnitTestTree } from '@angular-devkit/schematics/testing';
 import { mergeMap } from 'rxjs/operators';
 
 import {
+  copyFileFromPWA,
   createAppLastRoutingModule,
   createApplication,
   createModule,
@@ -24,50 +25,12 @@ describe('Store Schematic', () => {
       .pipe(
         createModule(schematicRunner, { name: 'shell' }),
         createAppLastRoutingModule(schematicRunner),
-        mergeMap(tree => schematicRunner.runSchematicAsync('extension', { name: 'feature', project: 'bar' }, tree))
+        mergeMap(tree => schematicRunner.runSchematicAsync('extension', { name: 'feature', project: 'bar' }, tree)),
+        copyFileFromPWA('src/app/core/store/core/core-store.module.ts'),
+        copyFileFromPWA('src/app/core/store/core/core-store.ts'),
+        copyFileFromPWA('src/app/core/state-management.module.ts'),
+        mergeMap(tree => schematicRunner.runSchematicAsync('store-group', { ...defaultOptions, name: 'bar' }, tree))
       )
-      .toPromise();
-
-    appTree.create(
-      '/src/app/core/store/core-store.module.ts',
-      `import { NgModule } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreModule } from '@ngrx/store';
-
-import { CoreState } from './core-store';
-import { CountriesEffects } from './countries/countries.effects';
-import { countriesReducer } from './countries/countries.reducer';
-
-export const coreReducers: ActionReducerMap<CoreState> = {countries: countriesReducer};
-
-export const coreEffects = [
-  CountriesEffects,
-];
-
-@NgModule({
-  imports: [
-    EffectsModule.forRoot(coreEffects),
-    StoreModule.forRoot(coreReducers),
-  ],
-})
-export class CoreStoreModule {}
-`
-    );
-    appTree.create(
-      '/src/app/core/store/core-store.ts',
-      `import { Selector } from '@ngrx/store';
-
-import { CountriesState } from './countries/countries.reducer';
-
-export interface CoreState {
-  countries: CountriesState;
-}
-
-export const getCoreState: Selector<CoreState, CoreState> = state => state;
-`
-    );
-    appTree = await schematicRunner
-      .runSchematicAsync('store-group', { ...defaultOptions, name: 'bar' }, appTree)
       .toPromise();
   });
 
@@ -78,13 +41,13 @@ export const getCoreState: Selector<CoreState, CoreState> = state => state;
     const files = tree.files.filter(x => x.search('foo') >= 0);
     expect(files).toMatchInlineSnapshot(`
       Array [
-        "/src/app/core/store/foo/foo.actions.ts",
-        "/src/app/core/store/foo/foo.effects.spec.ts",
-        "/src/app/core/store/foo/foo.effects.ts",
-        "/src/app/core/store/foo/foo.reducer.ts",
-        "/src/app/core/store/foo/foo.selectors.spec.ts",
-        "/src/app/core/store/foo/foo.selectors.ts",
-        "/src/app/core/store/foo/index.ts",
+        "/src/app/core/store/core/foo/foo.actions.ts",
+        "/src/app/core/store/core/foo/foo.effects.spec.ts",
+        "/src/app/core/store/core/foo/foo.effects.ts",
+        "/src/app/core/store/core/foo/foo.reducer.ts",
+        "/src/app/core/store/core/foo/foo.selectors.spec.ts",
+        "/src/app/core/store/core/foo/foo.selectors.ts",
+        "/src/app/core/store/core/foo/index.ts",
       ]
     `);
   });
@@ -93,10 +56,10 @@ export const getCoreState: Selector<CoreState, CoreState> = state => state;
     const options = { ...defaultOptions };
 
     const tree = await schematicRunner.runSchematicAsync('store', options, appTree).toPromise();
-    const storeContent = tree.readContent('/src/app/core/store/core-store.ts');
+    const storeContent = tree.readContent('/src/app/core/store/core/core-store.ts');
     expect(storeContent).toContain('import { FooState }');
     expect(storeContent).toContain('foo: FooState');
-    const storeModuleContent = tree.readContent('/src/app/core/store/core-store.module.ts');
+    const storeModuleContent = tree.readContent('/src/app/core/store/core/core-store.module.ts');
     expect(storeModuleContent).toContain('import { fooReducer }');
     expect(storeModuleContent).toContain('foo: fooReducer');
     expect(storeModuleContent).toContain('import { FooEffects }');
@@ -180,16 +143,16 @@ export const getCoreState: Selector<CoreState, CoreState> = state => state;
     it('should handle simple stores', () => {
       const config = {
         extension: undefined,
-        feature: undefined,
+        feature: 'core',
         name: 'foobar',
         parent: 'core',
-        parentStorePath: 'src/app/core/store/core',
-        path: 'src/app/core/store/',
+        parentStorePath: 'src/app/core/store/core/core',
+        path: 'src/app/core/store/core/',
         project: 'bar',
       };
 
       expect(determineStoreLocation(appTree, { ...defaultOptions, name: 'foobar' })).toEqual(config);
-      expect(determineStoreLocation(appTree, { ...defaultOptions, name: 'core/store/foobar' })).toEqual(config);
+      expect(determineStoreLocation(appTree, { ...defaultOptions, name: 'core/store/core/foobar' })).toEqual(config);
     });
 
     it('should handle feature stores', () => {

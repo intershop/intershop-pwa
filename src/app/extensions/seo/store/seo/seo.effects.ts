@@ -23,9 +23,9 @@ import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product
 import { SeoAttributes } from 'ish-core/models/seo-attributes/seo-attributes.model';
 import { ofCategoryUrl } from 'ish-core/routing/category/category.route';
 import { generateProductUrl, ofProductUrl } from 'ish-core/routing/product/product.route';
-import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/configuration';
 import { getSelectedContentPage } from 'ish-core/store/content/pages';
-import { ofUrl, selectRouteParam } from 'ish-core/store/router';
+import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/core/configuration';
+import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { getSelectedCategory } from 'ish-core/store/shopping/categories/categories.selectors';
 import { getSelectedProduct } from 'ish-core/store/shopping/products';
 import { mapToPayload, mapToProperty, whenTruthy } from 'ish-core/utils/operators';

@@ -6,7 +6,7 @@ import { concatMap, map, mapTo, shareReplay, take } from 'rxjs/operators';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/user';
+import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/account/user';
 import { whenFalsy } from 'ish-core/utils/operators';
 
 import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';

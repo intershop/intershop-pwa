@@ -3,7 +3,7 @@ import { Inject, Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
 
-import { getTheme } from 'ish-core/store/configuration';
+import { getTheme } from 'ish-core/store/core/configuration';
 
 /**
  * Service to add the configured/selected theme’s CSS file in the HTML’s head.

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { getFeatures } from 'ish-core/store/configuration';
+import { getFeatures } from 'ish-core/store/core/configuration';
 
 export function checkFeature(features: string[], feature: string): boolean {
   if (feature === 'always') {

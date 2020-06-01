@@ -9,10 +9,11 @@ import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { Link } from 'ish-core/models/link/link.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
-import { ApplyConfiguration, getICMServerURL, getRestEndpoint } from 'ish-core/store/configuration';
-import { CoreStoreModule } from 'ish-core/store/core-store.module';
-import { ErrorActionTypes, ServerError } from 'ish-core/store/error';
-import { SetAPIToken } from 'ish-core/store/user';
+import { AccountStoreModule } from 'ish-core/store/account/account-store.module';
+import { SetAPIToken } from 'ish-core/store/account/user';
+import { ApplyConfiguration, getICMServerURL, getRestEndpoint } from 'ish-core/store/core/configuration';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { ErrorActionTypes, ServerError } from 'ish-core/store/core/error';
 
 import { ApiService, constructUrlForPath, resolveLink, resolveLinks, unpackEnvelope } from './api.service';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
@@ -388,7 +389,11 @@ describe('Api Service', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         // https://angular.io/guide/http#testing-http-requests
-        imports: [CoreStoreModule.forTesting(['configuration', 'user']), HttpClientTestingModule],
+        imports: [
+          AccountStoreModule.forTesting('user'),
+          CoreStoreModule.forTesting(['configuration']),
+          HttpClientTestingModule,
+        ],
         providers: [ApiServiceErrorHandler, ApiService],
       });
 

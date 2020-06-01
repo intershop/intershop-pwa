@@ -18,13 +18,13 @@ import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { User } from 'ish-core/models/user/user.model';
-import { LoadBasketSuccess } from 'ish-core/store/checkout/basket';
-import { CheckoutStoreModule } from 'ish-core/store/checkout/checkout-store.module';
-import { CoreStoreModule } from 'ish-core/store/core-store.module';
-import { SuccessMessage } from 'ish-core/store/messages';
+import { AccountStoreModule } from 'ish-core/store/account/account-store.module';
+import { LoadBasketSuccess } from 'ish-core/store/account/basket';
+import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/account/user';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { SuccessMessage } from 'ish-core/store/core/messages';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
-import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
 
 import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
@@ -55,8 +55,8 @@ describe('Quote Request Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        CheckoutStoreModule.forTesting('basket'),
-        CoreStoreModule.forTesting(['router', 'user']),
+        AccountStoreModule.forTesting('user', 'basket'),
+        CoreStoreModule.forTesting(['router']),
         FeatureToggleModule.forTesting('quoting'),
         QuotingStoreModule.forTesting('quoteRequest'),
         RouterTestingModule.withRoutes([

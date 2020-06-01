@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { getICMBaseURL } from 'ish-core/store/configuration';
+import { getICMBaseURL } from 'ish-core/store/core/configuration';
 
 import { Image } from './image.model';
 

@@ -6,8 +6,8 @@ import { CategoryView } from 'ish-core/models/category-view/category-view.model'
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductHelper } from 'ish-core/models/product/product.model';
 import { generateLocalizedCategorySlug } from 'ish-core/routing/category/category.route';
-import { CoreState } from 'ish-core/store/core-store';
-import { selectRouteParam } from 'ish-core/store/router';
+import { CoreState } from 'ish-core/store/core/core-store';
+import { selectRouteParam } from 'ish-core/store/core/router';
 
 function generateProductSlug(product: ProductView) {
   if (!product || !product.name) {

@@ -10,8 +10,8 @@ import { instance, mock, verify, when } from 'ts-mockito';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CMSService } from 'ish-core/services/cms/cms.service';
-import { CoreStoreModule } from 'ish-core/store/core-store.module';
-import { LogoutUser } from 'ish-core/store/user';
+import { LogoutUser } from 'ish-core/store/account/user';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 
 import { LoadContentPage, LoadContentPageFail, ResetContentPages } from './pages.actions';
 import { PagesEffects } from './pages.effects';

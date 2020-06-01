@@ -7,8 +7,8 @@ import { catchError, concatMap, defaultIfEmpty, filter, map, switchMap, tap, thr
 import { Captcha } from 'ish-core/models/captcha/captcha.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
-import { getCurrentLocale, getICMServerURL, getRestEndpoint } from 'ish-core/store/configuration';
-import { getAPIToken, getPGID } from 'ish-core/store/user';
+import { getAPIToken, getPGID } from 'ish-core/store/account/user';
+import { getCurrentLocale, getICMServerURL, getRestEndpoint } from 'ish-core/store/core/configuration';
 
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 

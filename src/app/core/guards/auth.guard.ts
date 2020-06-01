@@ -14,7 +14,7 @@ import { Observable, iif, of, race, timer } from 'rxjs';
 import { mapTo, take } from 'rxjs/operators';
 
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
-import { getUserAuthorized } from 'ish-core/store/user';
+import { getUserAuthorized } from 'ish-core/store/account/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 /**

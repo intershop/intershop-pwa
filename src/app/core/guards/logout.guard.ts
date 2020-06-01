@@ -3,8 +3,8 @@ import { CanActivate, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 
-import { selectQueryParam } from 'ish-core/store/router';
-import { LogoutUser } from 'ish-core/store/user';
+import { LogoutUser } from 'ish-core/store/account/user';
+import { selectQueryParam } from 'ish-core/store/core/router';
 
 /**
  * triggers logging out the user if the guarded route is visited

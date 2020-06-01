@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { mapTo } from 'rxjs/operators';
 
-import { UserActionTypes } from 'ish-core/store/user';
+import { UserActionTypes } from 'ish-core/store/account/user';
 
 import * as pageletsActions from './pagelets.actions';
 

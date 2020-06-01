@@ -7,8 +7,9 @@ import { instance, mock } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
-import { CoreStoreModule } from 'ish-core/store/core-store.module';
-import { LoginUserSuccess } from 'ish-core/store/user';
+import { AccountStoreModule } from 'ish-core/store/account/account-store.module';
+import { LoginUserSuccess } from 'ish-core/store/account/user';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 
 import { AuthGuard } from './auth.guard';
 
@@ -23,7 +24,8 @@ describe('Auth Guard', () => {
 
       TestBed.configureTestingModule({
         imports: [
-          CoreStoreModule.forTesting(['user']),
+          AccountStoreModule.forTesting('user'),
+          CoreStoreModule.forTesting(),
           RouterTestingModule.withRoutes([{ path: 'login', component: DummyComponent }]),
         ],
         declarations: [DummyComponent],

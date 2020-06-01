@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import { selectRouteParam } from 'ish-core/store/router';
+import { selectRouteParam } from 'ish-core/store/core/router';
 import { ShoppingState, getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
 import { searchAdapter } from './search.reducer';

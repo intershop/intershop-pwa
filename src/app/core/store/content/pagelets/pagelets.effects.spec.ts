@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { instance, mock } from 'ts-mockito';
 
 import { CMSService } from 'ish-core/services/cms/cms.service';
-import { LogoutUser } from 'ish-core/store/user';
+import { LogoutUser } from 'ish-core/store/account/user';
 
 import { ResetPagelets } from './pagelets.actions';
 import { PageletsEffects } from './pagelets.effects';

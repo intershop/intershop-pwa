@@ -9,7 +9,7 @@ import {
 } from 'ish-core/configurations/injection-keys';
 import { Product } from 'ish-core/models/product/product.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
-import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { ProductListingEffects } from 'ish-core/store/shopping/product-listing/product-listing.effects';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 

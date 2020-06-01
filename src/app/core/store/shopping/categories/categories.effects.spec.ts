@@ -15,7 +15,7 @@ import { CategoryView } from 'ish-core/models/category-view/category-view.model'
 import { Category, CategoryCompletenessLevel, CategoryHelper } from 'ish-core/models/category/category.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
-import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 

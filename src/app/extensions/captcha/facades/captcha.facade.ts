@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter, map, switchMap, switchMapTo } from 'rxjs/operators';
 
-import { getServerConfigParameter } from 'ish-core/store/configuration';
+import { getServerConfigParameter } from 'ish-core/store/core/configuration';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 export type CaptchaTopic =

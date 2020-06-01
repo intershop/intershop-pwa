@@ -4,11 +4,11 @@ import { Store, select } from '@ngrx/store';
 import { combineLatest, merge } from 'rxjs';
 import { filter, map, mapTo, shareReplay, startWith } from 'rxjs/operators';
 
-import { getAvailableLocales, getCurrentLocale, getDeviceType, getICMBaseURL } from 'ish-core/store/configuration';
-import { LoadCountries, getAllCountries, getCountriesLoading } from 'ish-core/store/countries';
-import { getGeneralError, getGeneralErrorType } from 'ish-core/store/error';
-import { LoadRegions, getRegionsByCountryCode } from 'ish-core/store/regions';
-import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } from 'ish-core/store/viewconf';
+import { getAvailableLocales, getCurrentLocale, getDeviceType, getICMBaseURL } from 'ish-core/store/core/configuration';
+import { getGeneralError, getGeneralErrorType } from 'ish-core/store/core/error';
+import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } from 'ish-core/store/core/viewconf';
+import { LoadCountries, getAllCountries, getCountriesLoading } from 'ish-core/store/general/countries';
+import { LoadRegions, getRegionsByCountryCode } from 'ish-core/store/general/regions';
 
 @Injectable({ providedIn: 'root' })
 export class AppFacade {

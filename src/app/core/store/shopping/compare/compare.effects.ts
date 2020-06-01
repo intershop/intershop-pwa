@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { map, mergeMap, withLatestFrom } from 'rxjs/operators';
 
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
-import { ofUrl } from 'ish-core/store/router';
+import { ofUrl } from 'ish-core/store/core/router';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { mapToPayloadProperty } from 'ish-core/utils/operators';
 

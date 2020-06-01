@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { EMPTY, Observable, throwError } from 'rxjs';
 
 import { HttpErrorMapper } from 'ish-core/models/http-error/http-error.mapper';
-import { CommunicationTimeoutError, ServerError } from 'ish-core/store/error';
+import { CommunicationTimeoutError, ServerError } from 'ish-core/store/core/error';
 
 @Injectable({ providedIn: 'root' })
 export class ApiServiceErrorHandler {

@@ -9,7 +9,7 @@ import { catchError, concatMap, debounceTime, distinctUntilChanged, map, sample,
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
-import { ofUrl, selectRouteParam } from 'ish-core/store/router';
+import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { LoadMoreProducts, SetProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { LoadProductSuccess } from 'ish-core/store/shopping/products';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';

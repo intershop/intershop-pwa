@@ -13,7 +13,7 @@ import { Observable, throwError, timer } from 'rxjs';
 import { catchError, switchMapTo, tap } from 'rxjs/operators';
 
 import { ApiService } from 'ish-core/services/api/api.service';
-import { ResetAPIToken, SetAPIToken } from 'ish-core/store/user';
+import { ResetAPIToken, SetAPIToken } from 'ish-core/store/account/user';
 
 /**
  * Intercepts incoming HTTP response and updates authentication-token.

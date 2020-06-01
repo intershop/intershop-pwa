@@ -3,10 +3,10 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter, map, switchMap, switchMapTo, tap } from 'rxjs/operators';
 
+import { getPGID } from 'ish-core/store/account/user';
 import { LoadContentInclude, getContentInclude } from 'ish-core/store/content/includes';
 import { getContentPagelet } from 'ish-core/store/content/pagelets';
 import { getContentPageLoading, getSelectedContentPage } from 'ish-core/store/content/pages';
-import { getPGID } from 'ish-core/store/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { SfeAdapterService } from 'ish-shared/cms/sfe-adapter/sfe-adapter.service';
 import { SfeMapper } from 'ish-shared/cms/sfe-adapter/sfe.mapper';

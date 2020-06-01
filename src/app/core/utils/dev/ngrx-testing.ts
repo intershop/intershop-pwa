@@ -4,8 +4,8 @@ import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
 import { Action, ActionReducer, ActionReducerMap, RootStoreConfig, Store, StoreModule } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
 
-import { CoreState } from 'ish-core/store/core-store';
-import { CustomRouterSerializer } from 'ish-core/store/router/router.serializer';
+import { CoreState } from 'ish-core/store/core/core-store';
+import { CustomRouterSerializer } from 'ish-core/store/core/router/router.serializer';
 
 // tslint:disable:no-any no-console
 

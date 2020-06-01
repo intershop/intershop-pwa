@@ -4,8 +4,8 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Store, select } from '@ngrx/store';
 import { filter, first } from 'rxjs/operators';
 
-import { getDeviceType } from 'ish-core/store/configuration';
-import { getUserAuthorized } from 'ish-core/store/user';
+import { getUserAuthorized } from 'ish-core/store/account/user';
+import { getDeviceType } from 'ish-core/store/core/configuration';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { LoginModalComponent } from 'ish-shared/components/login/login-modal/login-modal.component';
 

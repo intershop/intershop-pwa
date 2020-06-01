@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 
-import { getICMStaticURL } from 'ish-core/store/configuration';
+import { getICMStaticURL } from 'ish-core/store/core/configuration';
 
 import { ContentPageletData } from './content-pagelet.interface';
 import { ContentPageletMapper } from './content-pagelet.mapper';

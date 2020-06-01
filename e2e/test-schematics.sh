@@ -16,15 +16,15 @@ npx ng g s warehouses
 stat src/app/core/services/warehouses/warehouses.service.ts
 
 npx ng g store dummy
-stat src/app/core/store/dummy/dummy.actions.ts
-stat src/app/core/store/dummy/dummy.effects.ts
-stat src/app/core/store/dummy/dummy.reducer.ts
-stat src/app/core/store/dummy/dummy.selectors.ts
-grep "DummyState" src/app/core/store/core-store.ts
+stat src/app/core/store/core/dummy/dummy.actions.ts
+stat src/app/core/store/core/dummy/dummy.effects.ts
+stat src/app/core/store/core/dummy/dummy.reducer.ts
+stat src/app/core/store/core/dummy/dummy.selectors.ts
+grep "DummyState" src/app/core/store/core/core-store.ts
 
 npx ng g store-group training
 stat src/app/core/store/training/training-store.ts
-grep "TrainingStoreModule" src/app/core/store/core-store.module.ts
+grep "TrainingStoreModule" src/app/core/state-management.module.ts
 
 npx ng g store training/warehouses --entity warehouse
 stat src/app/core/store/training/warehouses/warehouses.actions.ts

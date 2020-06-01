@@ -14,7 +14,7 @@ import {
   createVariationProductView,
 } from 'ish-core/models/product-view/product-view.model';
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
-import { selectRouteParam } from 'ish-core/store/router';
+import { selectRouteParam } from 'ish-core/store/core/router';
 import { getCategoryTree } from 'ish-core/store/shopping/categories';
 import { getShoppingState } from 'ish-core/store/shopping/shopping-store';
 

@@ -3,7 +3,7 @@ import * as using from 'jasmine-data-provider';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { ImageMapper } from 'ish-core/models/image/image.mapper';
-import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { CategoryData } from './category.interface';
