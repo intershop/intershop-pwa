@@ -36,3 +36,37 @@ See [RxJS: Avoiding switchMap-Related Bugs](https://medium.com/angular-in-depth/
 ### Should I put XYZ into the Store or the Component?
 
 Follow the [SHARI-Principle](https://ngrx.io/docs#when-should-i-use-ngrx-for-state-management).
+
+## Testing NgRx Artifacts
+
+### Using the State Management in Tests
+
+With version 0.21 we introduced a new format for instantiating reducers and effects in `TestBed` for unit tests.
+Each store module now has a `forTesting` method which provides a selective subset of reducers to be instantiated for testing.
+The implementation is type safe and VSCode IntelliSense can be used:
+
+![Type safe forTesting](./state-management-fortesting-typesafe.png)
+
+If reducers for feature store modules are instantiated, the [CoreStoreModule][core-store-module] also has to be added to the `imports`.
+It takes care of initializing the [`StoreModule.forRoot`](https://ngrx.io/api/store/StoreModule#forroot).
+For more specific information consult the JSDoc of [CoreStoreModule][core-store-module].
+
+[core-store-module]: ../../src/app/core/store/core-store.module.ts
+
+### Reducers and Actions
+
+Actions are simple data structures that require no testing.
+Reducers are not part of the public API of the state management, so testing involves managing internals and should be kept to a minimum if not omitted at all.
+
+### Selectors
+
+Selectors in combination with Actions are part of the public API of the state management.
+The test should be composed as an integration test.
+A good model is to look at the store as a state machine, where actions trigger state transitions and selectors provide access to the new state.
+
+### Effects
+
+Effects implement business logic and should be tested individually.
+If they do not depend on the NgRx Store, no reducers have to be instantiated.
+For query interaction the new testing mechanism for [mocked stores](https://ngrx.io/guide/store/testing) can be used.
+If the Effect heavily interacts with the state management, store modules have to be instantiated with the `forTesting` approach.
