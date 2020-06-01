@@ -1,7 +1,7 @@
 import { TestBed, async } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 
-import { getICMStaticURL } from 'ish-core/store/configuration';
+import { getICMStaticURL } from 'ish-core/store/core/configuration';
 
 import { FilterNavigationData } from './filter-navigation.interface';
 import { FilterNavigationMapper } from './filter-navigation.mapper';

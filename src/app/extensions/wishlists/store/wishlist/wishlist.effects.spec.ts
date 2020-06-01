@@ -11,9 +11,10 @@ import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { CoreStoreModule } from 'ish-core/store/core-store.module';
-import { SuccessMessage } from 'ish-core/store/messages';
-import { LoginUserSuccess, LogoutUser } from 'ish-core/store/user';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { SuccessMessage } from 'ish-core/store/core/messages';
+import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { LoginUserSuccess, LogoutUser } from 'ish-core/store/customer/user';
 
 import { Wishlist } from '../../models/wishlist/wishlist.model';
 import { WishlistService } from '../../services/wishlist/wishlist.service';
@@ -82,7 +83,8 @@ describe('Wishlist Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        CoreStoreModule.forTesting(['router', 'user']),
+        CoreStoreModule.forTesting(['router']),
+        CustomerStoreModule.forTesting('user'),
         FeatureToggleModule.forTesting('wishlists'),
         RouterTestingModule.withRoutes([{ path: 'account/wishlist/:wishlistName', component: DummyComponent }]),
         WishlistsStoreModule.forTesting('wishlists'),

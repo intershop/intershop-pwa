@@ -6,7 +6,7 @@ import { filter, map, take, withLatestFrom } from 'rxjs/operators';
 
 import { FeatureToggleModule, FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
-import { getGTMToken } from 'ish-core/store/configuration';
+import { getGTMToken } from 'ish-core/store/core/configuration';
 
 @NgModule({
   imports: [Angulartics2Module.forRoot(), FeatureToggleModule],

@@ -3,8 +3,8 @@ import { provideMockStore } from '@ngrx/store/testing';
 import * as using from 'jasmine-data-provider';
 
 import { FeatureToggleModule, FeatureToggleService } from 'ish-core/feature-toggle.module';
-import { getFeatures } from 'ish-core/store/configuration';
-import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { getFeatures } from 'ish-core/store/core/configuration';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 
 describe('Feature Toggle Service', () => {
   describe('without features defined', () => {

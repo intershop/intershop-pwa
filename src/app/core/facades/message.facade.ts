@@ -7,7 +7,7 @@ import {
   MessagesPayloadType,
   SuccessMessage,
   WarningMessage,
-} from 'ish-core/store/messages';
+} from 'ish-core/store/core/messages';
 
 // not-dead-code
 @Injectable({ providedIn: 'root' })

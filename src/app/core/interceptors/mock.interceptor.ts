@@ -13,7 +13,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
 import { MOCK_SERVER_API, MUST_MOCK_PATHS } from 'ish-core/configurations/injection-keys';
-import { getRestEndpoint } from 'ish-core/store/configuration';
+import { getRestEndpoint } from 'ish-core/store/core/configuration';
 
 const MOCK_DATA_ROOT = './assets/mock-data';
 

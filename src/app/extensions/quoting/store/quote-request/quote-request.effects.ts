@@ -25,12 +25,12 @@ import {
 } from 'ish-core/models/line-item-update/line-item-update.helper';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
-import { getCurrentBasket } from 'ish-core/store/checkout/basket';
-import { SuccessMessage } from 'ish-core/store/messages';
-import { selectRouteParam } from 'ish-core/store/router';
+import { SuccessMessage } from 'ish-core/store/core/messages';
+import { selectRouteParam } from 'ish-core/store/core/router';
+import { SetBreadcrumbData } from 'ish-core/store/core/viewconf';
+import { getCurrentBasket } from 'ish-core/store/customer/basket';
+import { UserActionTypes, getUserAuthorized } from 'ish-core/store/customer/user';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
-import { UserActionTypes, getUserAuthorized } from 'ish-core/store/user';
-import { SetBreadcrumbData } from 'ish-core/store/viewconf';
 import {
   distinctCompareWith,
   mapErrorToAction,

@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { getConfigurationState } from 'ish-core/store/configuration';
+import { getConfigurationState } from 'ish-core/store/core/configuration';
 import { mapToProperty } from 'ish-core/utils/operators';
 
 import { environment } from '../../../../environments/environment';

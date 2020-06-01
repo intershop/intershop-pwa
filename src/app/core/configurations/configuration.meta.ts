@@ -2,10 +2,10 @@ import { Params } from '@angular/router';
 import { RouterNavigationPayload, routerNavigationAction } from '@ngrx/router-store';
 import { ActionReducer } from '@ngrx/store';
 
-import { ApplyConfiguration } from 'ish-core/store/configuration';
-import { ConfigurationState, configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { CoreState } from 'ish-core/store/core-store';
-import { RouterState } from 'ish-core/store/router/router.reducer';
+import { ApplyConfiguration } from 'ish-core/store/core/configuration';
+import { ConfigurationState, configurationReducer } from 'ish-core/store/core/configuration/configuration.reducer';
+import { CoreState } from 'ish-core/store/core/core-store';
+import { RouterState } from 'ish-core/store/core/router/router.reducer';
 import { mergeDeep } from 'ish-core/utils/functions';
 
 class SimpleParamMap {
