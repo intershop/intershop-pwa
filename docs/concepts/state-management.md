@@ -73,8 +73,8 @@ src/app/core
               |  └─ index.ts
               ├─ bar
               |  └─ ...
-              ├─ foobar.state.ts
-              └─ foobar.system.ts
+              ├─ foobar-store.ts
+              └─ foobar-store.module.ts
 ```
 
 An application module named `foobar` with substates named `foo` and `bar` serves as an example.
@@ -93,11 +93,24 @@ Each substate should aggregate its store components in separate subfolders corre
 
 Furthermore, the state of foobar is aggregated in two files:
 
-- _foobar.state.ts_: Contains the `FoobarState` as an aggregate of the `foo` and `bar` states.
+- _foobar-store.ts_: Contains the `FoobarState` as an aggregate of the `foo` and `bar` states.
 
-- _foobar.system.ts_: Contains aggregations for `foobarReducers` and `foobarEffects` of the corresponding substates to be used in modules and `TestBed` declarations.
+- _foobar-store.module.ts_: Contains aggregations for `foobarReducers` and `foobarEffects` of the corresponding substates as well as the store module.
 
 Access to the state slice of `foobar` is provided with the `FoobarFacade` located in _foobar.facade.ts_
+
+## Core Store Structure
+
+The PWA has a core state initializing the [StoreModule.forRoot](https://ngrx.io/api/store/StoreModule#forroot) and multiple feature modules using [StoreModule.forFeature](https://ngrx.io/api/store/StoreModule#forfeature).
+
+- `core`: PWA runtime independent of the ICM like configuration, global error handling or [@ngrx/router-store](https://ngrx.io/guide/router-store) integration.
+- `shopping`: Logic and data for browsing the PWA independent of the current user.
+- `customer`: Everything user-related (anonymous or logged in) like the current basket or the user profile.
+- `content`: Everything related to the CMS.
+- `general`: Minor features that don't require a fully fledged feature store.
+- ...
+
+All store modules are aggregated and imported in the [`StateManagementModule`](../../src/app/core/state-management.module.ts).
 
 ## Naming
 
