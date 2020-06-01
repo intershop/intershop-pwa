@@ -16,7 +16,7 @@ import { VariationProductMaster } from 'ish-core/models/product/product-variatio
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
-import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { LoadCategory } from 'ish-core/store/shopping/categories';
 import { SetProductListingPageSize, SetProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';

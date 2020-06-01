@@ -51,7 +51,7 @@ If reducers for feature store modules are instantiated, the [CoreStoreModule][co
 It takes care of initializing the [`StoreModule.forRoot`](https://ngrx.io/api/store/StoreModule#forroot).
 For more specific information consult the JSDoc of [CoreStoreModule][core-store-module].
 
-[core-store-module]: ../../src/app/core/store/core-store.module.ts
+[core-store-module]: ../../src/app/core/store/core/core-store.module.ts
 
 ### Reducers and Actions
 

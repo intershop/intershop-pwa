@@ -4,7 +4,7 @@ import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable } from 'rxjs';
 
-import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 
 import * as fromActions from './compare.actions';

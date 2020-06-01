@@ -4,8 +4,8 @@ import { Store, select } from '@ngrx/store';
 import { map, mapTo, mergeMap } from 'rxjs/operators';
 
 import { CMSService } from 'ish-core/services/cms/cms.service';
-import { selectRouteParam } from 'ish-core/store/router';
-import { UserActionTypes } from 'ish-core/store/user';
+import { selectRouteParam } from 'ish-core/store/core/router';
+import { UserActionTypes } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import * as pagesActions from './pages.actions';

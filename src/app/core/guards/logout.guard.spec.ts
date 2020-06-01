@@ -4,8 +4,8 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { CoreStoreModule } from 'ish-core/store/core-store.module';
-import { UserActionTypes } from 'ish-core/store/user';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { UserActionTypes } from 'ish-core/store/customer/user';
 import { StoreWithSnapshots, containsActionWithType, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { LogoutGuard } from './logout.guard';

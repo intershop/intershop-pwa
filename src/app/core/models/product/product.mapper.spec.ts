@@ -6,7 +6,7 @@ import { anything, spy, verify } from 'ts-mockito';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { ImageMapper } from 'ish-core/models/image/image.mapper';
 import { Link } from 'ish-core/models/link/link.model';
-import { getICMBaseURL } from 'ish-core/store/configuration';
+import { getICMBaseURL } from 'ish-core/store/core/configuration';
 
 import { VariationProductMaster } from './product-variation-master.model';
 import { ProductData, ProductDataStub } from './product.interface';

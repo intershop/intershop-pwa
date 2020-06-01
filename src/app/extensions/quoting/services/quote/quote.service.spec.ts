@@ -7,8 +7,9 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { CoreStoreModule } from 'ish-core/store/core-store.module';
-import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/customer/user';
 
 import { QuoteRequestItemData } from '../../models/quote-request-item/quote-request-item.interface';
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
@@ -32,7 +33,7 @@ describe('Quote Service', () => {
     when(apiService.icmServerURL).thenReturn('BASE');
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['user'])],
+      imports: [CoreStoreModule.forTesting(), CustomerStoreModule.forTesting('user')],
       providers: [
         QuoteService,
         { provide: ApiService, useFactory: () => instance(apiService) },

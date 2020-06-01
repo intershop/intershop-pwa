@@ -13,7 +13,7 @@ import { ProductListingMapper } from 'ish-core/models/product-listing/product-li
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { ProductMasterVariationsService } from 'ish-core/services/product-master-variations/product-master-variations.service';
-import { selectQueryParam, selectQueryParams } from 'ish-core/store/router';
+import { selectQueryParam, selectQueryParams } from 'ish-core/store/core/router';
 import {
   ApplyFilter,
   LoadFilterForCategory,

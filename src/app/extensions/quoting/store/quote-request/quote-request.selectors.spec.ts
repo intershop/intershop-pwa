@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Product } from 'ish-core/models/product/product.model';
-import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { LoadProductSuccess } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';

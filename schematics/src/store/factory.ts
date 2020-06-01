@@ -47,6 +47,8 @@ export function determineStoreLocation(
     if (nameWOStore.includes('/')) {
       const pathFragments = nameWOStore.split('/');
       feature = pathFragments[pathFragments.length - 2];
+    } else {
+      feature = 'core';
     }
   }
 
@@ -59,7 +61,7 @@ export function determineStoreLocation(
     parent = projectName;
     path = `${project.sourceRoot}/app/store/`;
   } else if (!extension && !feature) {
-    path = `${project.sourceRoot}/app/core/store/`;
+    path = `${project.sourceRoot}/app/core/store/core/`;
     parent = 'core';
   } else if (!extension && feature) {
     path = `${project.sourceRoot}/app/core/store/${feature}/`;

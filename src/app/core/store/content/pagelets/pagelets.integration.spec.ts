@@ -4,7 +4,7 @@ import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { ContentStoreModule } from 'ish-core/store/content/content-store.module';
 import { LoadContentIncludeSuccess } from 'ish-core/store/content/includes';
-import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { getContentPagelet, getContentPageletEntities } from './pagelets.selectors';

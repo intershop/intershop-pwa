@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { ContentStoreModule } from 'ish-core/store/content/content-store.module';
-import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { LoadContentIncludeSuccess } from './includes.actions';

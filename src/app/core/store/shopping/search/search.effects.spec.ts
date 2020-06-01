@@ -15,7 +15,7 @@ import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
-import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { LoadMoreProducts, SetProductListingPageSize } from 'ish-core/store/shopping/product-listing';
 import { ProductListingEffects } from 'ish-core/store/shopping/product-listing/product-listing.effects';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';

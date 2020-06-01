@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { range } from 'lodash-es';
 
 import { ProductListingView } from 'ish-core/models/product-listing/product-listing.model';
-import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 

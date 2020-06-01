@@ -13,16 +13,16 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { CountryService } from 'ish-core/services/country/country.service';
-import { CheckoutStoreModule } from 'ish-core/store/checkout/checkout-store.module';
-import { CoreStoreModule } from 'ish-core/store/core-store.module';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import {
   LoadCompanyUserSuccess,
   LoginUserSuccess,
   LogoutUser,
   getLoggedInCustomer,
   getLoggedInUser,
-} from 'ish-core/store/user';
+} from 'ish-core/store/customer/user';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import {
   StoreWithSnapshots,
   containsActionWithType,
@@ -68,8 +68,8 @@ describe('Quoting Store', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        CheckoutStoreModule.forTesting('basket'),
-        CoreStoreModule.forTesting(['user'], true),
+        CoreStoreModule.forTesting([], true),
+        CustomerStoreModule.forTesting('user', 'basket'),
         FeatureToggleModule.forTesting('quoting'),
         QuotingStoreModule,
         RouterTestingModule.withRoutes([

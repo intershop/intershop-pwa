@@ -1,7 +1,7 @@
 import { TestBed, async } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 
-import { getICMBaseURL } from 'ish-core/store/configuration';
+import { getICMBaseURL } from 'ish-core/store/core/configuration';
 
 import { ImageMapper } from './image.mapper';
 import { Image } from './image.model';

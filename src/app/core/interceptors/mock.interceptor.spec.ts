@@ -6,7 +6,7 @@ import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { MOCK_SERVER_API, MUST_MOCK_PATHS } from 'ish-core/configurations/injection-keys';
-import { getRestEndpoint } from 'ish-core/store/configuration';
+import { getRestEndpoint } from 'ish-core/store/core/configuration';
 
 import { MockInterceptor } from './mock.interceptor';
 

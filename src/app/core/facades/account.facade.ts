@@ -16,15 +16,8 @@ import {
   getAddressesError,
   getAddressesLoading,
   getAllAddresses,
-} from 'ish-core/store/addresses';
-import {
-  CreateContact,
-  LoadContact,
-  getContactLoading,
-  getContactSubjects,
-  getContactSuccess,
-} from 'ish-core/store/contact/contact';
-import { LoadOrders, getOrders, getOrdersLoading, getSelectedOrder } from 'ish-core/store/orders';
+} from 'ish-core/store/customer/addresses';
+import { LoadOrders, getOrders, getOrdersLoading, getSelectedOrder } from 'ish-core/store/customer/orders';
 import {
   CreateUser,
   DeleteUserPaymentInstrument,
@@ -46,7 +39,14 @@ import {
   getUserLoading,
   getUserPaymentMethods,
   isBusinessCustomer,
-} from 'ish-core/store/user';
+} from 'ish-core/store/customer/user';
+import {
+  CreateContact,
+  LoadContact,
+  getContactLoading,
+  getContactSubjects,
+  getContactSuccess,
+} from 'ish-core/store/general/contact';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 // tslint:disable:member-ordering

@@ -1,7 +1,7 @@
 import { Compiler, Injectable, InjectionToken, Injector, NgModuleFactory } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { getFeatures } from 'ish-core/store/configuration';
+import { getFeatures } from 'ish-core/store/core/configuration';
 import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 

@@ -8,7 +8,7 @@ import { OrderData } from 'ish-core/models/order/order.interface';
 import { OrderMapper } from 'ish-core/models/order/order.mapper';
 import { Order } from 'ish-core/models/order/order.model';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { getCurrentLocale } from 'ish-core/store/configuration';
+import { getCurrentLocale } from 'ish-core/store/core/configuration';
 
 type OrderIncludeType =
   | 'invoiceToAddress'

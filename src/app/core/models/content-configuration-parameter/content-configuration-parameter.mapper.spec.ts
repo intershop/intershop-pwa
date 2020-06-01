@@ -3,7 +3,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import * as using from 'jasmine-data-provider';
 
 import { Locale } from 'ish-core/models/locale/locale.model';
-import { getCurrentLocale, getICMStaticURL } from 'ish-core/store/configuration';
+import { getCurrentLocale, getICMStaticURL } from 'ish-core/store/core/configuration';
 
 import { ContentConfigurationParameterData } from './content-configuration-parameter.interface';
 import { ContentConfigurationParameterMapper } from './content-configuration-parameter.mapper';
