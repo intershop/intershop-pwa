@@ -328,7 +328,7 @@ Unused variables, classes and imports reduce the readability of unit tests.
 
 This way less code needs to be implemented which again increases readability of unit tests.
 Also mocks can be stubbed on time, depending on the current method.
-We decided to use _ts-mockito_ as the Test Mocking Framework.
+We decided to use [ts-mockito](https://github.com/NagRock/ts-mockito) as the Test Mocking Framework.
 
 ## Do not Change Implementation to Satisfy Tests
 
@@ -504,7 +504,7 @@ describe('Emitter', () => {
 ```
 
 As `EventEmitter` is `Observable`, subscribing to it might be the most logical way of testing it.
-We, however, would recommend using `ts-mockito` to increase readability.
+We, however, would recommend using [ts-mockito](https://github.com/NagRock/ts-mockito) to increase readability.
 The ways 1 and 2 portrait two options, we would recommend using the first one.
 
 |                                | 1 (preferred)                                                                                                                     | 2                                                                          | 3                                                                            |
