@@ -24,7 +24,7 @@ Examples for the comment styling pattern can be found here: [TypeDoc - DocCommen
 **Generate Code Documentation**
 
 ```bash
-npm run docs
+npm run compodoc
 ```
 
 The generated documentation can be called by _<project-home>/docs/compodoc/index.html_.
@@ -34,17 +34,11 @@ The generated documentation can be called by _<project-home>/docs/compodoc/index
 **Serve Generated Documentation with Compodoc**
 
 ```bash
-npm run docs:serve
+npm run compodoc:serve
 ```
 
 Documentation is generated at _<project-home>/docs/compodoc_ (output folder).
 The local HTTP server is launched at _http://localhost:8080_.
-
-**Watch Source Files After Serve and Force Documentation Rebuild**
-
-```bash
-npm run docs:watch
-```
 
 ## Comments
 
