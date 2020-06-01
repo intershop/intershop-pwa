@@ -7,6 +7,14 @@ kb_sync_latest_only
 
 # Migrations
 
+## 0.20 to 0.21
+
+We deprecated and reworked the way of testing with NgRx.
+The old format using `ngrxTesting` with `combineReducers` is now deprecated and replaced by the [new approach](./state-management.md#testing-ngrx-artifacts).
+The old testing mechanism will be removed in version 0.23.
+
+We introduced a way to do [shallow testing with feature toggles](../concepts/configuration.md#unit-testing-with-feature-toggles) and used it in the tests.
+
 ## 0.19.1 to 0.20
 
 We upgraded from Angular 8 to version 9 and activated the new rendering engine Ivy with this (following the [official upgrade guide](https://update.angular.io/#8.0:9.0l3)).
