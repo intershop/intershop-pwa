@@ -1,3 +1,5 @@
+import { UserRole } from 'ish-core/models/user-role/user-role.model';
+
 export interface User {
   title?: string;
   firstName: string;
@@ -18,4 +20,6 @@ export interface User {
   // Business User only
   businessPartnerNo?: string;
   department?: string;
+
+  roles?: UserRole[];
 }

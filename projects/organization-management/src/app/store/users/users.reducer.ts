@@ -21,6 +21,8 @@ const initialState: UsersState = usersAdapter.getInitialState({
 
 export function usersReducer(state = initialState, action: UsersAction): UsersState {
   switch (action.type) {
+    case UsersActionTypes.LoadUsersRoles:
+    case UsersActionTypes.LoadUserRoles:
     case UsersActionTypes.LoadUsers: {
       return {
         ...state,
@@ -28,6 +30,7 @@ export function usersReducer(state = initialState, action: UsersAction): UsersSt
       };
     }
 
+    case UsersActionTypes.LoadUserRolesFail:
     case UsersActionTypes.LoadUsersFail: {
       const { error } = action.payload;
       return {
@@ -42,6 +45,16 @@ export function usersReducer(state = initialState, action: UsersAction): UsersSt
 
       return {
         ...usersAdapter.upsertMany(users, state),
+        loading: false,
+        error: undefined,
+      };
+    }
+
+    case UsersActionTypes.LoadUserRolesSuccess: {
+      const { user, userRoles } = action.payload;
+
+      return {
+        ...usersAdapter.upsertOne({ ...user, roles: userRoles }, state),
         loading: false,
         error: undefined,
       };

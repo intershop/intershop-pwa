@@ -3,6 +3,10 @@
 <ul>
   <li *ngFor="let user of users$ | async">
     <a [routerLink]="[user.businessPartnerNo]">{{ user.firstName }} {{ user.lastName }} -- {{ user.email }}</a>
+
+    <ng-container *ngFor="let role of user.roles">
+      <span>{{ role.roleDisplayName }}</span>
+    </ng-container>
   </li>
 </ul>
 
