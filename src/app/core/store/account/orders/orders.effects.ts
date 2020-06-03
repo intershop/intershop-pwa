@@ -26,7 +26,21 @@ import { SetBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
-import * as ordersActions from './orders.actions';
+import {
+  CreateOrder,
+  CreateOrderFail,
+  CreateOrderSuccess,
+  LoadOrder,
+  LoadOrderByAPIToken,
+  LoadOrderFail,
+  LoadOrderSuccess,
+  LoadOrdersFail,
+  LoadOrdersSuccess,
+  OrdersActionTypes,
+  SelectOrder,
+  SelectOrderAfterRedirect,
+  SelectOrderAfterRedirectFail,
+} from './orders.actions';
 import { getOrder, getSelectedOrder, getSelectedOrderId } from './orders.selectors';
 
 @Injectable()
@@ -44,12 +58,12 @@ export class OrdersEffects {
    */
   @Effect()
   createOrder$ = this.actions$.pipe(
-    ofType<ordersActions.CreateOrder>(ordersActions.OrdersActionTypes.CreateOrder),
+    ofType<CreateOrder>(OrdersActionTypes.CreateOrder),
     mapToPayloadProperty('basketId'),
     mergeMap(basketId =>
       this.orderService.createOrder(basketId, true).pipe(
-        map(order => new ordersActions.CreateOrderSuccess({ order })),
-        mapErrorToAction(ordersActions.CreateOrderFail)
+        map(order => new CreateOrderSuccess({ order })),
+        mapErrorToAction(CreateOrderFail)
       )
     )
   );
@@ -59,7 +73,7 @@ export class OrdersEffects {
    */
   @Effect({ dispatch: false })
   continueAfterOrderCreation$ = this.actions$.pipe(
-    ofType(ordersActions.OrdersActionTypes.CreateOrderSuccess),
+    ofType(OrdersActionTypes.CreateOrderSuccess),
     mapToPayloadProperty('order'),
     filter(order => !order || !order.orderCreation || order.orderCreation.status !== 'ROLLED_BACK'),
     tap(order => {
@@ -78,7 +92,7 @@ export class OrdersEffects {
 
   @Effect()
   rollbackAfterOrderCreation$ = this.actions$.pipe(
-    ofType(ordersActions.OrdersActionTypes.CreateOrderSuccess),
+    ofType(OrdersActionTypes.CreateOrderSuccess),
     mapToPayloadProperty('order'),
     filter(order => order.orderCreation && order.orderCreation.status === 'ROLLED_BACK'),
     tap(() => this.router.navigate(['/checkout/payment'], { queryParams: { error: true } })),
@@ -100,23 +114,23 @@ export class OrdersEffects {
 
   @Effect()
   loadOrders$ = this.actions$.pipe(
-    ofType(ordersActions.OrdersActionTypes.LoadOrders),
+    ofType(OrdersActionTypes.LoadOrders),
     concatMap(() =>
       this.orderService.getOrders().pipe(
-        map(orders => new ordersActions.LoadOrdersSuccess({ orders })),
-        mapErrorToAction(ordersActions.LoadOrdersFail)
+        map(orders => new LoadOrdersSuccess({ orders })),
+        mapErrorToAction(LoadOrdersFail)
       )
     )
   );
 
   @Effect()
   loadOrder$ = this.actions$.pipe(
-    ofType(ordersActions.OrdersActionTypes.LoadOrder),
+    ofType(OrdersActionTypes.LoadOrder),
     mapToPayloadProperty('orderId'),
     concatMap(orderId =>
       this.orderService.getOrder(orderId).pipe(
-        map(order => new ordersActions.LoadOrderSuccess({ order })),
-        mapErrorToAction(ordersActions.LoadOrderFail)
+        map(order => new LoadOrderSuccess({ order })),
+        mapErrorToAction(LoadOrderFail)
       )
     )
   );
@@ -126,12 +140,12 @@ export class OrdersEffects {
    */
   @Effect()
   loadOrderByAPIToken$ = this.actions$.pipe(
-    ofType<ordersActions.LoadOrderByAPIToken>(ordersActions.OrdersActionTypes.LoadOrderByAPIToken),
+    ofType<LoadOrderByAPIToken>(OrdersActionTypes.LoadOrderByAPIToken),
     mapToPayload(),
     concatMap(payload =>
       this.orderService.getOrderByToken(payload.orderId, payload.apiToken).pipe(
-        map(order => new ordersActions.LoadOrderSuccess({ order })),
-        mapErrorToAction(ordersActions.LoadOrderFail)
+        map(order => new LoadOrderSuccess({ order })),
+        mapErrorToAction(LoadOrderFail)
       )
     )
   );
@@ -141,10 +155,10 @@ export class OrdersEffects {
    */
   @Effect()
   loadOrderForSelectedOrder$ = this.actions$.pipe(
-    ofType<ordersActions.SelectOrder>(ordersActions.OrdersActionTypes.SelectOrder),
+    ofType<SelectOrder>(OrdersActionTypes.SelectOrder),
     mapToPayloadProperty('orderId'),
     whenTruthy(),
-    map(orderId => new ordersActions.LoadOrder({ orderId }))
+    map(orderId => new LoadOrder({ orderId }))
   );
 
   /**
@@ -156,7 +170,7 @@ export class OrdersEffects {
     select(selectRouteParam('orderId')),
     withLatestFrom(this.store.pipe(select(getSelectedOrderId))),
     filter(([fromAction, selectedOrderId]) => fromAction && fromAction !== selectedOrderId),
-    map(([orderId]) => new ordersActions.SelectOrder({ orderId }))
+    map(([orderId]) => new SelectOrder({ orderId }))
   );
 
   /**
@@ -165,7 +179,7 @@ export class OrdersEffects {
    */
   @Effect()
   loadProductsForSelectedOrder$ = this.actions$.pipe(
-    ofType<ordersActions.LoadOrderSuccess>(ordersActions.OrdersActionTypes.LoadOrderSuccess),
+    ofType<LoadOrderSuccess>(OrdersActionTypes.LoadOrderSuccess),
     mapToPayloadProperty('order'),
     switchMap(order => [
       ...order.lineItems.map(
@@ -188,7 +202,7 @@ export class OrdersEffects {
       race([
         this.store.pipe(select(getLoggedInUser), whenTruthy(), take(1)),
         this.store.pipe(select(getOrder, { orderId: queryParams.orderId }), whenTruthy(), take(1)),
-      ]).pipe(mapTo(new ordersActions.SelectOrderAfterRedirect({ params: queryParams })))
+      ]).pipe(mapTo(new SelectOrderAfterRedirect({ params: queryParams })))
     )
   );
 
@@ -198,25 +212,25 @@ export class OrdersEffects {
    */
   @Effect()
   selectOrderAfterRedirect$ = this.actions$.pipe(
-    ofType(ordersActions.OrdersActionTypes.SelectOrderAfterRedirect),
+    ofType(OrdersActionTypes.SelectOrderAfterRedirect),
     mapToPayloadProperty('params'),
     concatMap(params =>
       this.orderService.updateOrderPayment(params.orderId, params).pipe(
         map(orderId => {
           if (params.redirect === 'success') {
-            return new ordersActions.SelectOrder({ orderId });
+            return new SelectOrder({ orderId });
           } else {
             return new LoadBasket();
           }
         }),
-        mapErrorToAction(ordersActions.SelectOrderAfterRedirectFail) // ToDo: display error message on receipt page
+        mapErrorToAction(SelectOrderAfterRedirectFail) // ToDo: display error message on receipt page
       )
     )
   );
 
   @Effect()
   selectOrderAfterRedirectFailed$ = this.actions$.pipe(
-    ofType(ordersActions.OrdersActionTypes.SelectOrderAfterRedirectFail),
+    ofType(OrdersActionTypes.SelectOrderAfterRedirectFail),
     tap(() =>
       this.router.navigate(['/checkout/payment'], {
         queryParams: { redirect: 'failure' },

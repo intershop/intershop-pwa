@@ -26,7 +26,21 @@ import { BasketService } from 'ish-core/services/basket/basket.service';
 import { LoadProduct, getProductEntities } from 'ish-core/store/shopping/products';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, mapToProperty } from 'ish-core/utils/operators';
 
-import * as basketActions from './basket.actions';
+import {
+  AddItemsToBasket,
+  AddItemsToBasketFail,
+  AddItemsToBasketSuccess,
+  AddProductToBasket,
+  BasketActionTypes,
+  DeleteBasketItem,
+  DeleteBasketItemFail,
+  DeleteBasketItemSuccess,
+  LoadBasket,
+  UpdateBasketItems,
+  UpdateBasketItemsFail,
+  UpdateBasketItemsSuccess,
+  ValidateBasket,
+} from './basket.actions';
 import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
 
 @Injectable()
@@ -44,15 +58,10 @@ export class BasketItemsEffects {
    */
   @Effect()
   addProductToBasket$ = this.actions$.pipe(
-    ofType<basketActions.AddProductToBasket>(basketActions.BasketActionTypes.AddProductToBasket),
+    ofType<AddProductToBasket>(BasketActionTypes.AddProductToBasket),
     mapToPayload(),
     // accumulate all actions
-    window(
-      this.actions$.pipe(
-        ofType<basketActions.AddProductToBasket>(basketActions.BasketActionTypes.AddProductToBasket),
-        debounceTime(1000)
-      )
-    ),
+    window(this.actions$.pipe(ofType<AddProductToBasket>(BasketActionTypes.AddProductToBasket), debounceTime(1000))),
     mergeMap(window$ =>
       window$.pipe(
         withLatestFrom(this.store.pipe(select(getProductEntities))),
@@ -66,7 +75,7 @@ export class BasketItemsEffects {
           }
           return acc;
         }, []),
-        map(items => new basketActions.AddItemsToBasket({ items }))
+        map(items => new AddItemsToBasket({ items }))
       )
     )
   );
@@ -77,7 +86,7 @@ export class BasketItemsEffects {
    */
   @Effect()
   addItemsToBasket$ = this.actions$.pipe(
-    ofType<basketActions.AddItemsToBasket>(basketActions.BasketActionTypes.AddItemsToBasket),
+    ofType<AddItemsToBasket>(BasketActionTypes.AddItemsToBasket),
     mapToPayload(),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     filter(([{ basketId }, currentBasketId]) => !!currentBasketId || !!basketId),
@@ -86,8 +95,8 @@ export class BasketItemsEffects {
       const basketId = payload.basketId || currentBasketId;
 
       return this.basketService.addItemsToBasket(basketId, payload.items).pipe(
-        map(info => new basketActions.AddItemsToBasketSuccess({ info })),
-        mapErrorToAction(basketActions.AddItemsToBasketFail)
+        map(info => new AddItemsToBasketSuccess({ info })),
+        mapErrorToAction(AddItemsToBasketFail)
       );
     })
   );
@@ -97,7 +106,7 @@ export class BasketItemsEffects {
    */
   @Effect()
   loadProductsForAddItemsToBasket$ = this.actions$.pipe(
-    ofType<basketActions.AddItemsToBasket>(basketActions.BasketActionTypes.AddItemsToBasket),
+    ofType<AddItemsToBasket>(BasketActionTypes.AddItemsToBasket),
     mapToPayload(),
     concatMap(payload => [...payload.items.map(item => new LoadProduct({ sku: item.sku }))])
   );
@@ -108,14 +117,14 @@ export class BasketItemsEffects {
    */
   @Effect()
   createBasketBeforeAddItemsToBasket$ = this.actions$.pipe(
-    ofType<basketActions.AddItemsToBasket>(basketActions.BasketActionTypes.AddItemsToBasket),
+    ofType<AddItemsToBasket>(BasketActionTypes.AddItemsToBasket),
     mapToPayload(),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     filter(([payload, basketId]) => !basketId && !payload.basketId),
     mergeMap(([{ items }]) =>
       this.basketService.createBasket().pipe(
         mapToProperty('id'),
-        map(basketId => new basketActions.AddItemsToBasket({ items, basketId }))
+        map(basketId => new AddItemsToBasket({ items, basketId }))
       )
     )
   );
@@ -127,7 +136,7 @@ export class BasketItemsEffects {
    */
   @Effect()
   updateBasketItems$ = this.actions$.pipe(
-    ofType<basketActions.UpdateBasketItems>(basketActions.BasketActionTypes.UpdateBasketItems),
+    ofType<UpdateBasketItems>(BasketActionTypes.UpdateBasketItems),
     mapToPayload(),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     filter(([payload, basket]) => !!basket.lineItems && !!payload.lineItemUpdates),
@@ -151,8 +160,8 @@ export class BasketItemsEffects {
       ).pipe(
         defaultIfEmpty(),
         last(),
-        map(info => new basketActions.UpdateBasketItemsSuccess({ info })),
-        mapErrorToAction(basketActions.UpdateBasketItemsFail)
+        map(info => new UpdateBasketItemsSuccess({ info })),
+        mapErrorToAction(UpdateBasketItemsFail)
       )
     )
   );
@@ -162,10 +171,10 @@ export class BasketItemsEffects {
    */
   @Effect()
   validateBasketAfterUpdateFailure$ = this.actions$.pipe(
-    ofType<basketActions.UpdateBasketItemsFail>(basketActions.BasketActionTypes.UpdateBasketItemsFail),
+    ofType<UpdateBasketItemsFail>(BasketActionTypes.UpdateBasketItemsFail),
     mapToPayload(),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    mapTo(new basketActions.ValidateBasket({ scopes: ['Products'] }))
+    mapTo(new ValidateBasket({ scopes: ['Products'] }))
   );
 
   /**
@@ -173,13 +182,13 @@ export class BasketItemsEffects {
    */
   @Effect()
   deleteBasketItem$ = this.actions$.pipe(
-    ofType<basketActions.DeleteBasketItem>(basketActions.BasketActionTypes.DeleteBasketItem),
+    ofType<DeleteBasketItem>(BasketActionTypes.DeleteBasketItem),
     mapToPayloadProperty('itemId'),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     concatMap(([itemId, basketId]) =>
       this.basketService.deleteBasketItem(basketId, itemId).pipe(
-        map(info => new basketActions.DeleteBasketItemSuccess({ info })),
-        mapErrorToAction(basketActions.DeleteBasketItemFail)
+        map(info => new DeleteBasketItemSuccess({ info })),
+        mapErrorToAction(DeleteBasketItemFail)
       )
     )
   );
@@ -189,10 +198,10 @@ export class BasketItemsEffects {
    */
   @Effect()
   loadBasketAfterBasketItemsChangeSuccess$ = this.actions$.pipe(
-    ofType<basketActions.AddItemsToBasketSuccess>(
-      basketActions.BasketActionTypes.AddItemsToBasketSuccess,
-      basketActions.BasketActionTypes.UpdateBasketItemsSuccess,
-      basketActions.BasketActionTypes.DeleteBasketItemSuccess
+    ofType<AddItemsToBasketSuccess>(
+      BasketActionTypes.AddItemsToBasketSuccess,
+      BasketActionTypes.UpdateBasketItemsSuccess,
+      BasketActionTypes.DeleteBasketItemSuccess
     ),
     mapToPayloadProperty('info'),
     tap(info =>
@@ -200,6 +209,6 @@ export class BasketItemsEffects {
         ? this.router.navigate(['/basket'], { queryParams: { error: true } })
         : undefined
     ),
-    mapTo(new basketActions.LoadBasket())
+    mapTo(new LoadBasket())
   );
 }

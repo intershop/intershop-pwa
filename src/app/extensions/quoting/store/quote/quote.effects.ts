@@ -19,7 +19,23 @@ import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from
 import { QuoteService } from '../../services/quote/quote.service';
 import { QuoteRequestActionTypes } from '../quote-request';
 
-import * as actions from './quote.actions';
+import {
+  AddQuoteToBasket,
+  AddQuoteToBasketFail,
+  AddQuoteToBasketSuccess,
+  CreateQuoteRequestFromQuoteFail,
+  CreateQuoteRequestFromQuoteSuccess,
+  DeleteQuote,
+  DeleteQuoteFail,
+  DeleteQuoteSuccess,
+  LoadQuotes,
+  LoadQuotesFail,
+  LoadQuotesSuccess,
+  QuoteActionTypes,
+  RejectQuoteFail,
+  RejectQuoteSuccess,
+  SelectQuote,
+} from './quote.actions';
 import { getSelectedQuote, getSelectedQuoteId, getSelectedQuoteWithProducts } from './quote.selectors';
 
 @Injectable()
@@ -39,11 +55,11 @@ export class QuoteEffects {
    */
   @Effect()
   loadQuotes$ = this.actions$.pipe(
-    ofType(actions.QuoteActionTypes.LoadQuotes),
+    ofType(QuoteActionTypes.LoadQuotes),
     concatMap(() =>
       this.quoteService.getQuotes().pipe(
-        map(quotes => new actions.LoadQuotesSuccess({ quotes })),
-        mapErrorToAction(actions.LoadQuotesFail)
+        map(quotes => new LoadQuotesSuccess({ quotes })),
+        mapErrorToAction(LoadQuotesFail)
       )
     )
   );
@@ -53,12 +69,12 @@ export class QuoteEffects {
    */
   @Effect()
   deleteQuote$ = this.actions$.pipe(
-    ofType<actions.DeleteQuote>(actions.QuoteActionTypes.DeleteQuote),
+    ofType<DeleteQuote>(QuoteActionTypes.DeleteQuote),
     mapToPayloadProperty('id'),
     concatMap(quoteId =>
       this.quoteService.deleteQuote(quoteId).pipe(
-        map(id => new actions.DeleteQuoteSuccess({ id })),
-        mapErrorToAction(actions.DeleteQuoteFail)
+        map(id => new DeleteQuoteSuccess({ id })),
+        mapErrorToAction(DeleteQuoteFail)
       )
     )
   );
@@ -68,12 +84,12 @@ export class QuoteEffects {
    */
   @Effect()
   rejectQuote$ = this.actions$.pipe(
-    ofType(actions.QuoteActionTypes.RejectQuote),
+    ofType(QuoteActionTypes.RejectQuote),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteId))),
     concatMap(([, quoteId]) =>
       this.quoteService.rejectQuote(quoteId).pipe(
-        map(id => new actions.RejectQuoteSuccess({ id })),
-        mapErrorToAction(actions.RejectQuoteFail)
+        map(id => new RejectQuoteSuccess({ id })),
+        mapErrorToAction(RejectQuoteFail)
       )
     )
   );
@@ -83,15 +99,15 @@ export class QuoteEffects {
    */
   @Effect()
   createQuoteRequestFromQuote$ = this.actions$.pipe(
-    ofType(actions.QuoteActionTypes.CreateQuoteRequestFromQuote),
+    ofType(QuoteActionTypes.CreateQuoteRequestFromQuote),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteWithProducts))),
     concatMap(([, currentQuoteRequest]) =>
       this.quoteService.createQuoteRequestFromQuote(currentQuoteRequest).pipe(
-        map(quoteLineItemRequest => new actions.CreateQuoteRequestFromQuoteSuccess({ quoteLineItemRequest })),
+        map(quoteLineItemRequest => new CreateQuoteRequestFromQuoteSuccess({ quoteLineItemRequest })),
         tap(quoteLineItemResult =>
           this.router.navigate([`/account/quotes/request/${quoteLineItemResult.payload.quoteLineItemRequest.title}`])
         ),
-        mapErrorToAction(actions.CreateQuoteRequestFromQuoteFail)
+        mapErrorToAction(CreateQuoteRequestFromQuoteFail)
       )
     )
   );
@@ -102,13 +118,13 @@ export class QuoteEffects {
   @Effect()
   loadQuotesAfterChangeSuccess$ = this.actions$.pipe(
     ofType(
-      actions.QuoteActionTypes.DeleteQuoteSuccess,
-      actions.QuoteActionTypes.RejectQuoteSuccess,
+      QuoteActionTypes.DeleteQuoteSuccess,
+      QuoteActionTypes.RejectQuoteSuccess,
       QuoteRequestActionTypes.SubmitQuoteRequestSuccess,
       UserActionTypes.LoadCompanyUserSuccess
     ),
     filter(() => this.featureToggleService.enabled('quoting')),
-    mapTo(new actions.LoadQuotes())
+    mapTo(new LoadQuotes())
   );
 
   /**
@@ -117,7 +133,7 @@ export class QuoteEffects {
   @Effect()
   routeListenerForSelectingQuote$ = this.store.pipe(
     select(selectRouteParam('quoteId')),
-    map(id => new actions.SelectQuote({ id }))
+    map(id => new SelectQuote({ id }))
   );
 
   /**
@@ -126,11 +142,8 @@ export class QuoteEffects {
    */
   @Effect()
   loadProductsForSelectedQuote$ = combineLatest([
-    this.actions$.pipe(ofType<actions.SelectQuote>(actions.QuoteActionTypes.SelectQuote), mapToPayloadProperty('id')),
-    this.actions$.pipe(
-      ofType<actions.LoadQuotesSuccess>(actions.QuoteActionTypes.LoadQuotesSuccess),
-      mapToPayloadProperty('quotes')
-    ),
+    this.actions$.pipe(ofType<SelectQuote>(QuoteActionTypes.SelectQuote), mapToPayloadProperty('id')),
+    this.actions$.pipe(ofType<LoadQuotesSuccess>(QuoteActionTypes.LoadQuotesSuccess), mapToPayloadProperty('quotes')),
   ]).pipe(
     map(([quoteId, quotes]) => quotes.filter(quote => quote.id === quoteId).pop()),
     whenTruthy(),
@@ -147,14 +160,14 @@ export class QuoteEffects {
    */
   @Effect()
   addQuoteToBasket$ = this.actions$.pipe(
-    ofType<actions.AddQuoteToBasket>(actions.QuoteActionTypes.AddQuoteToBasket),
+    ofType<AddQuoteToBasket>(QuoteActionTypes.AddQuoteToBasket),
     mapToPayload(),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     filter(([payload, currentBasketId]) => !!currentBasketId || !!payload.basketId),
     concatMap(([payload, currentBasketId]) =>
       this.quoteService.addQuoteToBasket(payload.quoteId, currentBasketId || payload.basketId).pipe(
-        map(link => new actions.AddQuoteToBasketSuccess({ link })),
-        mapErrorToAction(actions.AddQuoteToBasketFail)
+        map(link => new AddQuoteToBasketSuccess({ link })),
+        mapErrorToAction(AddQuoteToBasketFail)
       )
     )
   );
@@ -165,14 +178,12 @@ export class QuoteEffects {
    */
   @Effect()
   getBasketBeforeAddQuoteToBasket$ = this.actions$.pipe(
-    ofType<actions.AddQuoteToBasket>(actions.QuoteActionTypes.AddQuoteToBasket),
+    ofType<AddQuoteToBasket>(QuoteActionTypes.AddQuoteToBasket),
     mapToPayload(),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     filter(([payload, basketId]) => !basketId && !payload.basketId),
     mergeMap(([{ quoteId }]) =>
-      this.basketService
-        .createBasket()
-        .pipe(map(basket => new actions.AddQuoteToBasket({ quoteId, basketId: basket.id })))
+      this.basketService.createBasket().pipe(map(basket => new AddQuoteToBasket({ quoteId, basketId: basket.id })))
     )
   );
 
@@ -182,7 +193,7 @@ export class QuoteEffects {
    */
   @Effect()
   calculateBasketAfterAddToQuote = this.actions$.pipe(
-    ofType(actions.QuoteActionTypes.AddQuoteToBasketSuccess, actions.QuoteActionTypes.AddQuoteToBasketFail),
+    ofType(QuoteActionTypes.AddQuoteToBasketSuccess, QuoteActionTypes.AddQuoteToBasketFail),
     mapTo(new UpdateBasket({ update: { calculated: true } }))
   );
 
@@ -191,7 +202,7 @@ export class QuoteEffects {
    */
   @Effect({ dispatch: false })
   gotoBasketAfterAddQuoteToBasketSuccess$ = this.actions$.pipe(
-    ofType(actions.QuoteActionTypes.AddQuoteToBasketSuccess),
+    ofType(QuoteActionTypes.AddQuoteToBasketSuccess),
     tap(() => {
       this.router.navigate(['/basket']);
     })

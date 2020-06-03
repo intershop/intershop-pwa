@@ -14,7 +14,16 @@ import { LoginUserSuccess } from 'ish-core/store/account/user';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { SuccessMessage } from 'ish-core/store/core/messages';
 
-import * as addressesActions from './addresses.actions';
+import {
+  CreateCustomerAddress,
+  CreateCustomerAddressFail,
+  CreateCustomerAddressSuccess,
+  DeleteCustomerAddress,
+  DeleteCustomerAddressFail,
+  DeleteCustomerAddressSuccess,
+  LoadAddresses,
+  LoadAddressesSuccess,
+} from './addresses.actions';
 import { AddressesEffects } from './addresses.effects';
 
 describe('Addresses Effects', () => {
@@ -47,7 +56,7 @@ describe('Addresses Effects', () => {
 
   describe('loadAddresses$', () => {
     it('should call the addressService for loadAddresses', done => {
-      const action = new addressesActions.LoadAddresses();
+      const action = new LoadAddresses();
       actions$ = of(action);
 
       effects.loadAddresses$.subscribe(() => {
@@ -57,8 +66,8 @@ describe('Addresses Effects', () => {
     });
 
     it('should map to action of type LoadAddressesSuccess', () => {
-      const action = new addressesActions.LoadAddresses();
-      const completion = new addressesActions.LoadAddressesSuccess({ addresses: [{ urn: 'test' } as Address] });
+      const action = new LoadAddresses();
+      const completion = new LoadAddressesSuccess({ addresses: [{ urn: 'test' } as Address] });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -69,7 +78,7 @@ describe('Addresses Effects', () => {
   describe('createCustomerAddress$', () => {
     it('should call the addressService for createCustomerAddress', done => {
       const address = { urn: '123' } as Address;
-      const action = new addressesActions.CreateCustomerAddress({ address });
+      const action = new CreateCustomerAddress({ address });
       actions$ = of(action);
 
       effects.createCustomerAddress$.subscribe(() => {
@@ -80,8 +89,8 @@ describe('Addresses Effects', () => {
 
     it('should map to action of type CreateCustomerSuccess', () => {
       const address = { urn: '123' } as Address;
-      const action = new addressesActions.CreateCustomerAddress({ address });
-      const completion = new addressesActions.CreateCustomerAddressSuccess({ address: { urn: 'test' } as Address });
+      const action = new CreateCustomerAddress({ address });
+      const completion = new CreateCustomerAddressSuccess({ address: { urn: 'test' } as Address });
       const completion2 = new SuccessMessage({
         message: 'account.addresses.new_address_created.message',
       });
@@ -97,9 +106,9 @@ describe('Addresses Effects', () => {
         throwError({ message: 'invalid' })
       );
       const address = { urn: '123' } as Address;
-      const action = new addressesActions.CreateCustomerAddress({ address });
+      const action = new CreateCustomerAddress({ address });
       const error = { message: 'invalid' } as HttpError;
-      const completion = new addressesActions.CreateCustomerAddressFail({ error });
+      const completion = new CreateCustomerAddressFail({ error });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -110,7 +119,7 @@ describe('Addresses Effects', () => {
   describe('deleteCustomerAddress$', () => {
     it('should call the addressService for deleteCustomerAddress', done => {
       const addressId = '123';
-      const action = new addressesActions.DeleteCustomerAddress({ addressId });
+      const action = new DeleteCustomerAddress({ addressId });
       actions$ = of(action);
 
       effects.deleteCustomerAddress$.subscribe(() => {
@@ -121,8 +130,8 @@ describe('Addresses Effects', () => {
 
     it('should map to action of type DeleteCustomerSuccess', () => {
       const addressId = '123';
-      const action = new addressesActions.DeleteCustomerAddress({ addressId });
-      const completion = new addressesActions.DeleteCustomerAddressSuccess({ addressId });
+      const action = new DeleteCustomerAddress({ addressId });
+      const completion = new DeleteCustomerAddressSuccess({ addressId });
       const completion2 = new SuccessMessage({
         message: 'account.addresses.new_address_deleted.message',
       });
@@ -137,9 +146,9 @@ describe('Addresses Effects', () => {
         throwError({ message: 'invalid' })
       );
       const addressId = '123';
-      const action = new addressesActions.DeleteCustomerAddress({ addressId });
+      const action = new DeleteCustomerAddress({ addressId });
       const error = { message: 'invalid' } as HttpError;
-      const completion = new addressesActions.DeleteCustomerAddressFail({ error });
+      const completion = new DeleteCustomerAddressFail({ error });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

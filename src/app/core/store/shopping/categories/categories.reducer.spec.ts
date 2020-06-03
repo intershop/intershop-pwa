@@ -3,13 +3,19 @@ import { Category } from 'ish-core/models/category/category.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
-import * as fromActions from './categories.actions';
+import {
+  CategoriesAction,
+  LoadCategory,
+  LoadCategoryFail,
+  LoadCategorySuccess,
+  LoadTopLevelCategoriesSuccess,
+} from './categories.actions';
 import { categoriesReducer, initialState } from './categories.reducer';
 
 describe('Categories Reducer', () => {
   describe('undefined action', () => {
     it('should return the default state when previous state is undefined', () => {
-      const action = {} as fromActions.CategoriesAction;
+      const action = {} as CategoriesAction;
       const state = categoriesReducer(undefined, action);
 
       expect(state).toBe(initialState);
@@ -19,7 +25,7 @@ describe('Categories Reducer', () => {
   describe('LoadCategory actions', () => {
     describe('LoadCategory action', () => {
       it('should set loading to true', () => {
-        const action = new fromActions.LoadCategory({ categoryId: '123' });
+        const action = new LoadCategory({ categoryId: '123' });
         const state = categoriesReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -29,7 +35,7 @@ describe('Categories Reducer', () => {
 
     describe('LoadCategoryFail action', () => {
       it('should set loading to false', () => {
-        const action = new fromActions.LoadCategoryFail({ error: {} as HttpError });
+        const action = new LoadCategoryFail({ error: {} as HttpError });
         const state = categoriesReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -50,7 +56,7 @@ describe('Categories Reducer', () => {
       });
 
       it('should insert category if not exists', () => {
-        const action = new fromActions.LoadCategorySuccess({ categories: categoryTree([category]) });
+        const action = new LoadCategorySuccess({ categories: categoryTree([category]) });
         const state = categoriesReducer(initialState, action);
 
         expect(Object.keys(state.categories.nodes)).toHaveLength(1);
@@ -58,7 +64,7 @@ describe('Categories Reducer', () => {
       });
 
       it('should update category if already exists', () => {
-        const action1 = new fromActions.LoadCategorySuccess({ categories: categoryTree([category]) });
+        const action1 = new LoadCategorySuccess({ categories: categoryTree([category]) });
         const state1 = categoriesReducer(initialState, action1);
 
         const updatedCategory = {
@@ -68,7 +74,7 @@ describe('Categories Reducer', () => {
           completenessLevel: 2,
         };
 
-        const action2 = new fromActions.LoadCategorySuccess({ categories: categoryTree([updatedCategory]) });
+        const action2 = new LoadCategorySuccess({ categories: categoryTree([updatedCategory]) });
         const state2 = categoriesReducer(state1, action2);
 
         expect(Object.keys(state2.categories.nodes)).toHaveLength(1);
@@ -76,7 +82,7 @@ describe('Categories Reducer', () => {
       });
 
       it('should set loading to false', () => {
-        const action = new fromActions.LoadCategorySuccess({ categories: categoryTree([category]) });
+        const action = new LoadCategorySuccess({ categories: categoryTree([category]) });
         const state = categoriesReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -112,7 +118,7 @@ describe('Categories Reducer', () => {
     });
 
     it('should add all flattened categories to the entities state', () => {
-      const action = new fromActions.LoadTopLevelCategoriesSuccess({ categories });
+      const action = new LoadTopLevelCategoriesSuccess({ categories });
       const state = categoriesReducer(initialState, action);
 
       const expectedIds = ['1', '2', '1.1', '1.1.1', '2.1', '2.2'];
@@ -123,7 +129,7 @@ describe('Categories Reducer', () => {
     });
 
     it('should collect the IDs for all top level categories in the state', () => {
-      const action = new fromActions.LoadTopLevelCategoriesSuccess({ categories });
+      const action = new LoadTopLevelCategoriesSuccess({ categories });
       const state = categoriesReducer(initialState, action);
 
       const topLevelIds = ['1', '2'];
@@ -132,7 +138,7 @@ describe('Categories Reducer', () => {
     });
 
     it('should remember if top level categories were loaded', () => {
-      const action = new fromActions.LoadTopLevelCategoriesSuccess({ categories });
+      const action = new LoadTopLevelCategoriesSuccess({ categories });
       const state = categoriesReducer(initialState, action);
 
       expect(state.topLevelLoaded).toBeTrue();

@@ -32,7 +32,41 @@ import { SuccessMessage } from 'ish-core/store/core/messages';
 import { ofUrl, selectQueryParam } from 'ish-core/store/core/router';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
-import * as userActions from './user.actions';
+import {
+  CreateUser,
+  CreateUserFail,
+  DeleteUserPaymentInstrument,
+  DeleteUserPaymentInstrumentFail,
+  DeleteUserPaymentInstrumentSuccess,
+  LoadCompanyUser,
+  LoadCompanyUserFail,
+  LoadCompanyUserSuccess,
+  LoadUserByAPIToken,
+  LoadUserPaymentMethods,
+  LoadUserPaymentMethodsFail,
+  LoadUserPaymentMethodsSuccess,
+  LoginUser,
+  LoginUserFail,
+  LoginUserSuccess,
+  RequestPasswordReminder,
+  RequestPasswordReminderFail,
+  RequestPasswordReminderSuccess,
+  SetPGID,
+  UpdateCustomer,
+  UpdateCustomerFail,
+  UpdateCustomerSuccess,
+  UpdateUser,
+  UpdateUserFail,
+  UpdateUserPassword,
+  UpdateUserPasswordByPasswordReminder,
+  UpdateUserPasswordByPasswordReminderFail,
+  UpdateUserPasswordByPasswordReminderSuccess,
+  UpdateUserPasswordFail,
+  UpdateUserPasswordSuccess,
+  UpdateUserSuccess,
+  UserActionTypes,
+  UserErrorReset,
+} from './user.actions';
 import { getLoggedInCustomer, getLoggedInUser, getUserError } from './user.selectors';
 
 function mapUserErrorToActionIfPossible<T>(specific) {
@@ -62,34 +96,34 @@ export class UserEffects {
 
   @Effect()
   loginUser$ = this.actions$.pipe(
-    ofType<userActions.LoginUser>(userActions.UserActionTypes.LoginUser),
+    ofType<LoginUser>(UserActionTypes.LoginUser),
     mapToPayloadProperty('credentials'),
     exhaustMap(credentials =>
       this.userService.signinUser(credentials).pipe(
-        map(data => new userActions.LoginUserSuccess(data)),
-        mapUserErrorToActionIfPossible(userActions.LoginUserFail)
+        map(data => new LoginUserSuccess(data)),
+        mapUserErrorToActionIfPossible(LoginUserFail)
       )
     )
   );
 
   @Effect()
   loadCompanyUser$ = this.actions$.pipe(
-    ofType(userActions.UserActionTypes.LoadCompanyUser),
+    ofType(UserActionTypes.LoadCompanyUser),
     mergeMap(() =>
       this.userService.getCompanyUserData().pipe(
-        map(user => new userActions.LoadCompanyUserSuccess({ user })),
-        mapErrorToAction(userActions.LoadCompanyUserFail)
+        map(user => new LoadCompanyUserSuccess({ user })),
+        mapErrorToAction(LoadCompanyUserFail)
       )
     )
   );
 
   @Effect({ dispatch: false })
   goToLoginAfterLogoutBySessionTimeout$ = this.actions$.pipe(
-    ofType(userActions.UserActionTypes.ResetAPIToken),
+    ofType(UserActionTypes.ResetAPIToken),
     switchMapTo(
       race(
         // wait for immediate LogoutUser
-        this.actions$.pipe(ofType(userActions.UserActionTypes.LogoutUser)),
+        this.actions$.pipe(ofType(UserActionTypes.LogoutUser)),
         // or stop flow
         timer(1000).pipe(switchMapTo(EMPTY))
       )
@@ -109,7 +143,7 @@ export class UserEffects {
   @Effect({ dispatch: false })
   redirectAfterLogin$ = merge(
     this.actions$.pipe(
-      ofType(userActions.UserActionTypes.LoginUserSuccess),
+      ofType(UserActionTypes.LoginUserSuccess),
       switchMapTo(this.store$.pipe(select(selectQueryParam('returnUrl')), first())),
       whenTruthy()
     ),
@@ -126,20 +160,20 @@ export class UserEffects {
 
   @Effect()
   createUser$ = this.actions$.pipe(
-    ofType<userActions.CreateUser>(userActions.UserActionTypes.CreateUser),
+    ofType<CreateUser>(UserActionTypes.CreateUser),
     mapToPayload(),
     mergeMap((data: CustomerRegistrationType) =>
       this.userService.createUser(data).pipe(
         // TODO:see #IS-22750 - user should actually be logged in after registration
-        map(() => new userActions.LoginUser({ credentials: data.credentials })),
-        mapUserErrorToActionIfPossible(userActions.CreateUserFail)
+        map(() => new LoginUser({ credentials: data.credentials })),
+        mapUserErrorToActionIfPossible(CreateUserFail)
       )
     )
   );
 
   @Effect()
   updateUser$ = this.actions$.pipe(
-    ofType<userActions.UpdateUser>(userActions.UserActionTypes.UpdateUser),
+    ofType<UpdateUser>(UserActionTypes.UpdateUser),
     mapToPayload(),
     withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
     concatMap(([payload, customer]) =>
@@ -149,18 +183,15 @@ export class UserEffects {
             this.router.navigateByUrl(payload.successRouterLink);
           }
         }),
-        map(
-          changedUser =>
-            new userActions.UpdateUserSuccess({ user: changedUser, successMessage: payload.successMessage })
-        ),
-        mapErrorToAction(userActions.UpdateUserFail)
+        map(changedUser => new UpdateUserSuccess({ user: changedUser, successMessage: payload.successMessage })),
+        mapErrorToAction(UpdateUserFail)
       )
     )
   );
 
   @Effect()
   updateUserPassword$ = this.actions$.pipe(
-    ofType<userActions.UpdateUserPassword>(userActions.UserActionTypes.UpdateUserPassword),
+    ofType<UpdateUserPassword>(UserActionTypes.UpdateUserPassword),
     mapToPayload(),
     withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
     withLatestFrom(this.store$.pipe(select(getLoggedInUser))),
@@ -168,18 +199,18 @@ export class UserEffects {
       this.userService.updateUserPassword(customer, user, payload.password, payload.currentPassword).pipe(
         tap(() => this.router.navigateByUrl('/account/profile')),
         mapTo(
-          new userActions.UpdateUserPasswordSuccess({
+          new UpdateUserPasswordSuccess({
             successMessage: payload.successMessage || 'account.profile.update_password.message',
           })
         ),
-        mapErrorToAction(userActions.UpdateUserPasswordFail)
+        mapErrorToAction(UpdateUserPasswordFail)
       )
     )
   );
 
   @Effect()
   updateCustomer$ = this.actions$.pipe(
-    ofType<userActions.UpdateCustomer>(userActions.UserActionTypes.UpdateCustomer),
+    ofType<UpdateCustomer>(UserActionTypes.UpdateCustomer),
     mapToPayload(),
     withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
     filter(([, loggedInCustomer]) => !!loggedInCustomer && loggedInCustomer.isBusinessCustomer),
@@ -192,9 +223,9 @@ export class UserEffects {
         }),
         map(
           changedCustomer =>
-            new userActions.UpdateCustomerSuccess({ customer: changedCustomer, successMessage: payload.successMessage })
+            new UpdateCustomerSuccess({ customer: changedCustomer, successMessage: payload.successMessage })
         ),
-        mapErrorToAction(userActions.UpdateCustomerFail)
+        mapErrorToAction(UpdateCustomerFail)
       )
     )
   );
@@ -203,9 +234,9 @@ export class UserEffects {
   @Effect()
   displayUpdateUserSuccessMessage$ = this.actions$.pipe(
     ofType(
-      userActions.UserActionTypes.UpdateUserPasswordSuccess,
-      userActions.UserActionTypes.UpdateUserSuccess,
-      userActions.UserActionTypes.UpdateCustomerSuccess
+      UserActionTypes.UpdateUserPasswordSuccess,
+      UserActionTypes.UpdateUserSuccess,
+      UserActionTypes.UpdateCustomerSuccess
     ),
     mapToPayloadProperty('successMessage'),
     filter(successMessage => !!successMessage),
@@ -222,32 +253,30 @@ export class UserEffects {
     ofType(routerNavigatedAction),
     withLatestFrom(this.store$.pipe(select(getUserError))),
     filter(([, error]) => !!error),
-    mapTo(new userActions.UserErrorReset())
+    mapTo(new UserErrorReset())
   );
 
   @Effect()
   loadCompanyUserAfterLogin$ = this.actions$.pipe(
-    ofType<userActions.LoginUserSuccess>(userActions.UserActionTypes.LoginUserSuccess),
+    ofType<LoginUserSuccess>(UserActionTypes.LoginUserSuccess),
     mapToPayload(),
     filter(payload => payload.customer.isBusinessCustomer),
-    mapTo(new userActions.LoadCompanyUser())
+    mapTo(new LoadCompanyUser())
   );
 
   @Effect()
   loadUserByAPIToken$ = this.actions$.pipe(
-    ofType<userActions.LoadUserByAPIToken>(userActions.UserActionTypes.LoadUserByAPIToken),
+    ofType<LoadUserByAPIToken>(UserActionTypes.LoadUserByAPIToken),
     mapToPayloadProperty('apiToken'),
-    concatMap(apiToken =>
-      this.userService.signinUserByToken(apiToken).pipe(map(user => new userActions.LoginUserSuccess(user)))
-    )
+    concatMap(apiToken => this.userService.signinUserByToken(apiToken).pipe(map(user => new LoginUserSuccess(user))))
   );
 
   @Effect()
   fetchPGID$ = this.actions$.pipe(
-    ofType(userActions.UserActionTypes.LoginUserSuccess),
+    ofType(UserActionTypes.LoginUserSuccess),
     switchMap(() =>
       this.personalizationService.getPGID().pipe(
-        map(pgid => new userActions.SetPGID({ pgid })),
+        map(pgid => new SetPGID({ pgid })),
         // tslint:disable-next-line:ban
         catchError(() => EMPTY)
       )
@@ -256,68 +285,64 @@ export class UserEffects {
 
   @Effect()
   loadUserPaymentMethods$ = this.actions$.pipe(
-    ofType<userActions.LoadUserPaymentMethods>(userActions.UserActionTypes.LoadUserPaymentMethods),
+    ofType<LoadUserPaymentMethods>(UserActionTypes.LoadUserPaymentMethods),
     withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
     filter(([, customer]) => !!customer),
     concatMap(([, customer]) =>
       this.paymentService.getUserPaymentMethods(customer).pipe(
-        map(result => new userActions.LoadUserPaymentMethodsSuccess({ paymentMethods: result })),
-        mapErrorToAction(userActions.LoadUserPaymentMethodsFail)
+        map(result => new LoadUserPaymentMethodsSuccess({ paymentMethods: result })),
+        mapErrorToAction(LoadUserPaymentMethodsFail)
       )
     )
   );
 
   @Effect()
   deleteUserPayment$ = this.actions$.pipe(
-    ofType<userActions.DeleteUserPaymentInstrument>(userActions.UserActionTypes.DeleteUserPaymentInstrument),
+    ofType<DeleteUserPaymentInstrument>(UserActionTypes.DeleteUserPaymentInstrument),
     mapToPayloadProperty('id'),
     withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
     filter(([, customer]) => !!customer),
     concatMap(([id, customer]) =>
       this.paymentService.deleteUserPaymentInstrument(customer.customerNo, id).pipe(
         concatMapTo([
-          new userActions.DeleteUserPaymentInstrumentSuccess(),
-          new userActions.LoadUserPaymentMethods(),
+          new DeleteUserPaymentInstrumentSuccess(),
+          new LoadUserPaymentMethods(),
           new SuccessMessage({
             message: 'account.payment.payment_deleted.message',
           }),
         ]),
-        mapErrorToAction(userActions.DeleteUserPaymentInstrumentFail)
+        mapErrorToAction(DeleteUserPaymentInstrumentFail)
       )
     )
   );
 
   @Effect()
   requestPasswordReminder$ = this.actions$.pipe(
-    ofType<userActions.RequestPasswordReminder>(userActions.UserActionTypes.RequestPasswordReminder),
+    ofType<RequestPasswordReminder>(UserActionTypes.RequestPasswordReminder),
     mapToPayloadProperty('data'),
     concatMap(data =>
       this.userService.requestPasswordReminder(data).pipe(
-        map(() => new userActions.RequestPasswordReminderSuccess()),
-        mapErrorToAction(userActions.RequestPasswordReminderFail)
+        map(() => new RequestPasswordReminderSuccess()),
+        mapErrorToAction(RequestPasswordReminderFail)
       )
     )
   );
 
   @Effect()
   updateUserPasswordByPasswordReminder$ = this.actions$.pipe(
-    ofType<userActions.UpdateUserPasswordByPasswordReminder>(
-      userActions.UserActionTypes.UpdateUserPasswordByPasswordReminder
-    ),
+    ofType<UpdateUserPasswordByPasswordReminder>(UserActionTypes.UpdateUserPasswordByPasswordReminder),
     mapToPayload(),
     concatMap(data =>
       this.userService.updateUserPasswordByReminder(data).pipe(
-        map(() => new userActions.UpdateUserPasswordByPasswordReminderSuccess()),
-        mapErrorToAction(userActions.UpdateUserPasswordByPasswordReminderFail)
+        map(() => new UpdateUserPasswordByPasswordReminderSuccess()),
+        mapErrorToAction(UpdateUserPasswordByPasswordReminderFail)
       )
     )
   );
 
   @Effect()
   updateUserPasswordByPasswordReminderSuccess$ = this.actions$.pipe(
-    ofType<userActions.UpdateUserPasswordByPasswordReminderSuccess>(
-      userActions.UserActionTypes.UpdateUserPasswordByPasswordReminderSuccess
-    ),
+    ofType<UpdateUserPasswordByPasswordReminderSuccess>(UserActionTypes.UpdateUserPasswordByPasswordReminderSuccess),
     map(
       () =>
         new SuccessMessage({

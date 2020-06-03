@@ -9,7 +9,7 @@ import { Contact } from 'ish-core/models/contact/contact.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ContactService } from 'ish-core/services/contact/contact.service';
 
-import * as actions from './contact.actions';
+import { ContactActionTypes, CreateContact, LoadContactFail, LoadContactSuccess } from './contact.actions';
 import { ContactEffects } from './contact.effects';
 
 describe('Contact Effects', () => {
@@ -43,8 +43,8 @@ describe('Contact Effects', () => {
   describe('loadSubjects$', () => {
     it('should load all subjects on effects init and dispatch a LoadContactSuccess action', () => {
       when(contactServiceMock.getContactSubjects()).thenReturn(of(subjects));
-      const action = { type: actions.ContactActionTypes.LoadContact } as Action;
-      const expected = new actions.LoadContactSuccess({ subjects });
+      const action = { type: ContactActionTypes.LoadContact } as Action;
+      const expected = new LoadContactSuccess({ subjects });
 
       actions$ = hot('-a-------', { a: action });
 
@@ -54,8 +54,8 @@ describe('Contact Effects', () => {
     it('should dispatch a LoadContactFail action if a load error occurs', () => {
       when(contactServiceMock.getContactSubjects()).thenReturn(throwError({ message: 'error' }));
 
-      const action = { type: actions.ContactActionTypes.LoadContact } as Action;
-      const expected = new actions.LoadContactFail({ error: { message: 'error' } as HttpError });
+      const action = { type: ContactActionTypes.LoadContact } as Action;
+      const expected = new LoadContactFail({ error: { message: 'error' } as HttpError });
 
       actions$ = hot('-a', { a: action });
 
@@ -66,7 +66,7 @@ describe('Contact Effects', () => {
   describe('createContactRequest$', () => {
     it('should not dispatch actions when encountering LoadContactData', () => {
       when(contactServiceMock.createContactRequest(contact)).thenReturn(of());
-      const action = new actions.CreateContact({ contact });
+      const action = new CreateContact({ contact });
       hot('-a-a-a', { a: action });
       const expected$ = cold('');
 

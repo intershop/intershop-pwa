@@ -8,7 +8,7 @@ import { ofUrl } from 'ish-core/store/core/router';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { mapToPayloadProperty } from 'ish-core/utils/operators';
 
-import * as compareActions from './compare.actions';
+import { AddToCompare, CompareActionTypes, RemoveFromCompare, ToggleCompare } from './compare.actions';
 import { getCompareProductsSKUs } from './compare.selectors';
 
 @Injectable()
@@ -17,13 +17,11 @@ export class CompareEffects {
 
   @Effect()
   toggleCompare$ = this.actions$.pipe(
-    ofType<compareActions.ToggleCompare>(compareActions.CompareActionTypes.ToggleCompare),
+    ofType<ToggleCompare>(CompareActionTypes.ToggleCompare),
     mapToPayloadProperty('sku'),
     withLatestFrom(this.store.pipe(select(getCompareProductsSKUs))),
     map(([sku, skuList]) => ({ sku, isInList: skuList.includes(sku) })),
-    map(({ sku, isInList }) =>
-      isInList ? new compareActions.RemoveFromCompare({ sku }) : new compareActions.AddToCompare({ sku })
-    )
+    map(({ sku, isInList }) => (isInList ? new RemoveFromCompare({ sku }) : new AddToCompare({ sku })))
   );
 
   @Effect()

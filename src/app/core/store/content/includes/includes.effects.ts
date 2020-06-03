@@ -6,7 +6,12 @@ import { groupBy, map, mergeMap, switchMap } from 'rxjs/operators';
 import { CMSService } from 'ish-core/services/cms/cms.service';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 
-import * as includesActions from './includes.actions';
+import {
+  IncludesActionTypes,
+  LoadContentInclude,
+  LoadContentIncludeFail,
+  LoadContentIncludeSuccess,
+} from './includes.actions';
 
 @Injectable()
 export class IncludesEffects {
@@ -14,15 +19,15 @@ export class IncludesEffects {
 
   @Effect()
   loadContentInclude$ = this.actions$.pipe(
-    ofType<includesActions.LoadContentInclude>(includesActions.IncludesActionTypes.LoadContentInclude),
+    ofType<LoadContentInclude>(IncludesActionTypes.LoadContentInclude),
     mapToPayloadProperty('includeId'),
     groupBy(identity),
     mergeMap(group$ =>
       group$.pipe(
         switchMap(includeId =>
           this.cmsService.getContentInclude(includeId).pipe(
-            map(contentInclude => new includesActions.LoadContentIncludeSuccess(contentInclude)),
-            mapErrorToAction(includesActions.LoadContentIncludeFail)
+            map(contentInclude => new LoadContentIncludeSuccess(contentInclude)),
+            mapErrorToAction(LoadContentIncludeFail)
           )
         )
       )

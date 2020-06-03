@@ -24,8 +24,16 @@ import { LoadMoreProducts } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import { mapErrorToAction, mapToPayloadProperty, mapToProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
-import * as actions from './categories.actions';
-import * as selectors from './categories.selectors';
+import {
+  CategoriesActionTypes,
+  LoadCategory,
+  LoadCategoryFail,
+  LoadCategorySuccess,
+  LoadTopLevelCategories,
+  LoadTopLevelCategoriesFail,
+  LoadTopLevelCategoriesSuccess,
+} from './categories.actions';
+import { getCategoryEntities, getSelectedCategory, isTopLevelCategoriesLoaded } from './categories.selectors';
 
 @Injectable()
 export class CategoriesEffects {
@@ -45,9 +53,9 @@ export class CategoriesEffects {
   selectedCategory$ = this.store.pipe(
     select(selectRouteParam('categoryUniqueId')),
     whenTruthy(),
-    withLatestFrom(this.store.pipe(select(selectors.getCategoryEntities))),
+    withLatestFrom(this.store.pipe(select(getCategoryEntities))),
     filter(([id, entities]) => !CategoryHelper.isCategoryCompletelyLoaded(entities[id])),
-    map(([categoryId]) => new actions.LoadCategory({ categoryId }))
+    map(([categoryId]) => new LoadCategory({ categoryId }))
   );
 
   /**
@@ -55,12 +63,12 @@ export class CategoriesEffects {
    */
   @Effect()
   loadCategoriesOfCategoryPath$ = this.store.pipe(
-    select(selectors.getSelectedCategory),
+    select(getSelectedCategory),
     filter(CategoryHelper.isCategoryCompletelyLoaded),
     mapToProperty('categoryPath'),
-    withLatestFrom(this.store.pipe(select(selectors.getCategoryEntities))),
+    withLatestFrom(this.store.pipe(select(getCategoryEntities))),
     map(([ids, entities]) => ids.filter(id => !CategoryHelper.isCategoryCompletelyLoaded(entities[id]))),
-    mergeMap(ids => ids.map(categoryId => new actions.LoadCategory({ categoryId })))
+    mergeMap(ids => ids.map(categoryId => new LoadCategory({ categoryId })))
   );
 
   /**
@@ -68,12 +76,12 @@ export class CategoriesEffects {
    */
   @Effect()
   loadCategory$ = this.actions$.pipe(
-    ofType<actions.LoadCategory>(actions.CategoriesActionTypes.LoadCategory),
+    ofType<LoadCategory>(CategoriesActionTypes.LoadCategory),
     mapToPayloadProperty('categoryId'),
     mergeMap(categoryUniqueId =>
       this.categoryService.getCategory(categoryUniqueId).pipe(
-        map(categories => new actions.LoadCategorySuccess({ categories })),
-        mapErrorToAction(actions.LoadCategoryFail)
+        map(categories => new LoadCategorySuccess({ categories })),
+        mapErrorToAction(LoadCategoryFail)
       )
     )
   );
@@ -81,19 +89,19 @@ export class CategoriesEffects {
   @Effect()
   loadTopLevelWhenUnavailable$ = this.actions$.pipe(
     ofType(routerNavigatedAction),
-    switchMapTo(this.store.pipe(select(selectors.isTopLevelCategoriesLoaded))),
+    switchMapTo(this.store.pipe(select(isTopLevelCategoriesLoaded))),
     whenFalsy(),
-    mapTo(new actions.LoadTopLevelCategories({ depth: this.mainNavigationMaxSubCategoriesDepth }))
+    mapTo(new LoadTopLevelCategories({ depth: this.mainNavigationMaxSubCategoriesDepth }))
   );
 
   @Effect()
   loadTopLevelCategories$ = this.actions$.pipe(
-    ofType<actions.LoadTopLevelCategories>(actions.CategoriesActionTypes.LoadTopLevelCategories),
+    ofType<LoadTopLevelCategories>(CategoriesActionTypes.LoadTopLevelCategories),
     mapToPayloadProperty('depth'),
     switchMap(limit =>
       this.categoryService.getTopLevelCategories(limit).pipe(
-        map(categories => new actions.LoadTopLevelCategoriesSuccess({ categories })),
-        mapErrorToAction(actions.LoadTopLevelCategoriesFail)
+        map(categories => new LoadTopLevelCategoriesSuccess({ categories })),
+        mapErrorToAction(LoadTopLevelCategoriesFail)
       )
     )
   );
@@ -104,7 +112,7 @@ export class CategoriesEffects {
     switchMapTo(
       this.store.pipe(
         ofCategoryUrl(),
-        select(selectors.getSelectedCategory),
+        select(getSelectedCategory),
         whenTruthy(),
         filter(cat => cat.hasOnlineProducts),
         map(({ uniqueId }) => new LoadMoreProducts({ id: { type: 'category', value: uniqueId } }))
@@ -115,7 +123,7 @@ export class CategoriesEffects {
 
   @Effect({ dispatch: false })
   redirectIfErrorInCategories$ = this.actions$.pipe(
-    ofType(actions.CategoriesActionTypes.LoadCategoryFail),
+    ofType(CategoriesActionTypes.LoadCategoryFail),
     tap(() => this.httpStatusCodeService.setStatusAndRedirect(404))
   );
 }

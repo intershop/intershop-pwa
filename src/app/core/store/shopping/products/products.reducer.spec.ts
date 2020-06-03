@@ -1,13 +1,19 @@
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Product } from 'ish-core/models/product/product.model';
 
-import * as fromActions from './products.actions';
+import {
+  LoadProductFail,
+  LoadProductSuccess,
+  LoadProductVariationsFail,
+  LoadProductVariationsSuccess,
+  ProductsAction,
+} from './products.actions';
 import { ProductsState, initialState, productsReducer } from './products.reducer';
 
 describe('Products Reducer', () => {
   describe('undefined action', () => {
     it('should return the default state when previous state is undefined', () => {
-      const action = {} as fromActions.ProductsAction;
+      const action = {} as ProductsAction;
       const state = productsReducer(undefined, action);
 
       expect(state).toBe(initialState);
@@ -19,7 +25,7 @@ describe('Products Reducer', () => {
       let state: ProductsState;
 
       beforeEach(() => {
-        const action = new fromActions.LoadProductFail({ error: {} as HttpError, sku: 'invalid' });
+        const action = new LoadProductFail({ error: {} as HttpError, sku: 'invalid' });
         state = productsReducer(initialState, action);
       });
 
@@ -31,7 +37,7 @@ describe('Products Reducer', () => {
       describe('followed by LoadProductSuccess', () => {
         beforeEach(() => {
           const product = { sku: 'invalid' } as Product;
-          const action = new fromActions.LoadProductSuccess({ product });
+          const action = new LoadProductSuccess({ product });
           state = productsReducer(initialState, action);
         });
 
@@ -56,7 +62,7 @@ describe('Products Reducer', () => {
       });
 
       it('should insert product if not exists', () => {
-        const action = new fromActions.LoadProductSuccess({ product });
+        const action = new LoadProductSuccess({ product });
         const state = productsReducer(initialState, action);
 
         expect(state.ids).toHaveLength(1);
@@ -64,7 +70,7 @@ describe('Products Reducer', () => {
       });
 
       it('should merge product updates when new info is available', () => {
-        const action1 = new fromActions.LoadProductSuccess({ product });
+        const action1 = new LoadProductSuccess({ product });
         const state1 = productsReducer(initialState, action1);
 
         const updatedProduct = {
@@ -75,7 +81,7 @@ describe('Products Reducer', () => {
           inStock: false,
         } as Product;
 
-        const action2 = new fromActions.LoadProductSuccess({ product: updatedProduct });
+        const action2 = new LoadProductSuccess({ product: updatedProduct });
         const state2 = productsReducer(state1, action2);
 
         expect(state2.ids).toHaveLength(1);
@@ -97,11 +103,11 @@ describe('Products Reducer', () => {
     describe('LoadProductVariationsSuccess action', () => {
       it('should set product variation data when reducing', () => {
         const product = { sku: 'SKU' } as Product;
-        let state = productsReducer(initialState, new fromActions.LoadProductSuccess({ product }));
+        let state = productsReducer(initialState, new LoadProductSuccess({ product }));
 
         state = productsReducer(
           state,
-          new fromActions.LoadProductVariationsSuccess({
+          new LoadProductVariationsSuccess({
             sku: 'SKU',
             variations: ['VAR'],
             defaultVariation: 'VAR',
@@ -115,7 +121,7 @@ describe('Products Reducer', () => {
     describe('LoadProductVariationsFail action', () => {
       it('should put sku on failed list', () => {
         const error = { message: 'invalid' } as HttpError;
-        const action = new fromActions.LoadProductVariationsFail({ error, sku: 'SKU' });
+        const action = new LoadProductVariationsFail({ error, sku: 'SKU' });
         const state = productsReducer(initialState, action);
 
         expect(state.failed).toContain('SKU');

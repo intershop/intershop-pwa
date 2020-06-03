@@ -20,7 +20,14 @@ import { LoadProductSuccess } from 'ish-core/store/shopping/products';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { BasketValidationEffects } from './basket-validation.effects';
-import * as basketActions from './basket.actions';
+import {
+  ContinueCheckout,
+  ContinueCheckoutFail,
+  ContinueCheckoutSuccess,
+  ContinueCheckoutWithIssues,
+  LoadBasketSuccess,
+  ValidateBasket,
+} from './basket.actions';
 
 describe('Basket Validation Effects', () => {
   let actions$: Observable<Action>;
@@ -72,7 +79,7 @@ describe('Basket Validation Effects', () => {
       when(basketServiceMock.validateBasket(anything(), anything())).thenReturn(of(basketValidation));
 
       store$.dispatch(
-        new basketActions.LoadBasketSuccess({
+        new LoadBasketSuccess({
           basket: BasketMockData.getBasket(),
         })
       );
@@ -80,7 +87,7 @@ describe('Basket Validation Effects', () => {
     });
 
     it('should call the basketService for validateBasket', done => {
-      const action = new basketActions.ValidateBasket({ scopes: ['Products'] });
+      const action = new ValidateBasket({ scopes: ['Products'] });
       actions$ = of(action);
 
       effects.validateBasket$.subscribe(() => {
@@ -90,8 +97,8 @@ describe('Basket Validation Effects', () => {
     });
 
     it('should map to action of type ContinueCheckoutSuccess', () => {
-      const action = new basketActions.ValidateBasket({ scopes: ['Products'] });
-      const completion = new basketActions.ContinueCheckoutSuccess({
+      const action = new ValidateBasket({ scopes: ['Products'] });
+      const completion = new ContinueCheckoutSuccess({
         targetRoute: undefined,
         basketValidation,
       });
@@ -104,8 +111,8 @@ describe('Basket Validation Effects', () => {
     it('should map invalid request to action of type ContinueCheckoutFail', () => {
       when(basketServiceMock.validateBasket(anyString(), anything())).thenReturn(throwError({ message: 'invalid' }));
 
-      const action = new basketActions.ValidateBasket({ scopes: ['Products'] });
-      const completion = new basketActions.ContinueCheckoutFail({ error: { message: 'invalid' } as HttpError });
+      const action = new ValidateBasket({ scopes: ['Products'] });
+      const completion = new ContinueCheckoutFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
@@ -113,9 +120,9 @@ describe('Basket Validation Effects', () => {
     });
 
     it('should map to action of type ContinueCheckoutWithIssues if basket is not valid', () => {
-      const action = new basketActions.ValidateBasket({ scopes: ['Products'] });
+      const action = new ValidateBasket({ scopes: ['Products'] });
       basketValidation.results.valid = false;
-      const completion = new basketActions.ContinueCheckoutWithIssues({
+      const completion = new ContinueCheckoutWithIssues({
         targetRoute: undefined,
         basketValidation,
       });
@@ -139,7 +146,7 @@ describe('Basket Validation Effects', () => {
       when(basketServiceMock.validateBasket(anything(), anything())).thenReturn(of(basketValidation));
 
       store$.dispatch(
-        new basketActions.LoadBasketSuccess({
+        new LoadBasketSuccess({
           basket: BasketMockData.getBasket(),
         })
       );
@@ -147,7 +154,7 @@ describe('Basket Validation Effects', () => {
     });
 
     it('should call the basketService for validateBasketAndContinueCheckout', done => {
-      const action = new basketActions.ContinueCheckout({ targetStep: 1 });
+      const action = new ContinueCheckout({ targetStep: 1 });
       actions$ = of(action);
 
       effects.validateBasketAndContinueCheckout$.subscribe(() => {
@@ -157,8 +164,8 @@ describe('Basket Validation Effects', () => {
     });
 
     it('should map to action of type ContinueCheckoutSuccess if targetStep is not 5 (order creation)', () => {
-      const action = new basketActions.ContinueCheckout({ targetStep: 1 });
-      const completion = new basketActions.ContinueCheckoutSuccess({
+      const action = new ContinueCheckout({ targetStep: 1 });
+      const completion = new ContinueCheckoutSuccess({
         targetRoute: '/checkout/address',
         basketValidation,
       });
@@ -169,9 +176,9 @@ describe('Basket Validation Effects', () => {
     });
 
     it('should map to action of type CreateOrder if targetStep is 5 (order creation)', () => {
-      const action = new basketActions.ContinueCheckout({ targetStep: 5 });
+      const action = new ContinueCheckout({ targetStep: 5 });
       const completion1 = new CreateOrder({ basketId: BasketMockData.getBasket().id });
-      const completion2 = new basketActions.ContinueCheckoutSuccess({ targetRoute: undefined, basketValidation });
+      const completion2 = new ContinueCheckoutSuccess({ targetRoute: undefined, basketValidation });
       actions$ = hot('-a----a----a', { a: action });
       const expected$ = cold('-(cd)-(cd)-(cd)', { c: completion1, d: completion2 });
 
@@ -181,8 +188,8 @@ describe('Basket Validation Effects', () => {
     it('should map invalid request to action of type ContinueCheckoutFail', () => {
       when(basketServiceMock.validateBasket(anyString(), anything())).thenReturn(throwError({ message: 'invalid' }));
 
-      const action = new basketActions.ContinueCheckout({ targetStep: 1 });
-      const completion = new basketActions.ContinueCheckoutFail({ error: { message: 'invalid' } as HttpError });
+      const action = new ContinueCheckout({ targetStep: 1 });
+      const completion = new ContinueCheckoutFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
@@ -190,7 +197,7 @@ describe('Basket Validation Effects', () => {
     });
 
     it('should navigate to the next checkout route after ContinueCheckoutSuccess if the basket is valid', fakeAsync(() => {
-      const action = new basketActions.ContinueCheckoutSuccess({ targetRoute: '/checkout/address', basketValidation });
+      const action = new ContinueCheckoutSuccess({ targetRoute: '/checkout/address', basketValidation });
       actions$ = of(action);
 
       effects.jumpToNextCheckoutStep$.subscribe(noop, fail, noop);
@@ -209,7 +216,7 @@ describe('Basket Validation Effects', () => {
           errors: [{ code: '1234', message: 'error', parameters: { scopes: 'Addresses' } }],
         },
       };
-      const action = new basketActions.ContinueCheckoutWithIssues({
+      const action = new ContinueCheckoutWithIssues({
         targetRoute: 'auto',
         basketValidation: basketValidationWithIssue,
       });
@@ -223,9 +230,9 @@ describe('Basket Validation Effects', () => {
     }));
 
     it('should map to action of type ContinueCheckoutWithIssues if basket is not valid', () => {
-      const action = new basketActions.ContinueCheckout({ targetStep: 1 });
+      const action = new ContinueCheckout({ targetStep: 1 });
       basketValidation.results.valid = false;
-      const completion = new basketActions.ContinueCheckoutWithIssues({
+      const completion = new ContinueCheckoutWithIssues({
         targetRoute: '/checkout/address',
         basketValidation,
       });

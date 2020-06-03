@@ -6,7 +6,16 @@ import { concatMap, mapTo, withLatestFrom } from 'rxjs/operators';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 
-import * as basketActions from './basket.actions';
+import {
+  AddPromotionCodeToBasket,
+  AddPromotionCodeToBasketFail,
+  AddPromotionCodeToBasketSuccess,
+  BasketActionTypes,
+  LoadBasket,
+  RemovePromotionCodeFromBasket,
+  RemovePromotionCodeFromBasketFail,
+  RemovePromotionCodeFromBasketSuccess,
+} from './basket.actions';
 import { getCurrentBasketId } from './basket.selectors';
 
 @Injectable()
@@ -18,16 +27,13 @@ export class BasketPromotionCodeEffects {
    */
   @Effect()
   addPromotionCodeToBasket$ = this.actions$.pipe(
-    ofType<basketActions.AddPromotionCodeToBasket>(basketActions.BasketActionTypes.AddPromotionCodeToBasket),
+    ofType<AddPromotionCodeToBasket>(BasketActionTypes.AddPromotionCodeToBasket),
     mapToPayloadProperty('code'),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     concatMap(([code, basketId]) =>
       this.basketService
         .addPromotionCodeToBasket(basketId, code)
-        .pipe(
-          mapTo(new basketActions.AddPromotionCodeToBasketSuccess()),
-          mapErrorToAction(basketActions.AddPromotionCodeToBasketFail)
-        )
+        .pipe(mapTo(new AddPromotionCodeToBasketSuccess()), mapErrorToAction(AddPromotionCodeToBasketFail))
     )
   );
 
@@ -36,8 +42,8 @@ export class BasketPromotionCodeEffects {
    */
   @Effect()
   loadBasketAfterAddPromotionCodeToBasketChangeSuccess$ = this.actions$.pipe(
-    ofType(basketActions.BasketActionTypes.AddPromotionCodeToBasketSuccess),
-    mapTo(new basketActions.LoadBasket())
+    ofType(BasketActionTypes.AddPromotionCodeToBasketSuccess),
+    mapTo(new LoadBasket())
   );
 
   /**
@@ -45,16 +51,13 @@ export class BasketPromotionCodeEffects {
    */
   @Effect()
   removePromotionCodeFromBasket$ = this.actions$.pipe(
-    ofType<basketActions.RemovePromotionCodeFromBasket>(basketActions.BasketActionTypes.RemovePromotionCodeFromBasket),
+    ofType<RemovePromotionCodeFromBasket>(BasketActionTypes.RemovePromotionCodeFromBasket),
     mapToPayloadProperty('code'),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     concatMap(([code, basketId]) =>
       this.basketService
         .removePromotionCodeFromBasket(basketId, code)
-        .pipe(
-          mapTo(new basketActions.RemovePromotionCodeFromBasketSuccess()),
-          mapErrorToAction(basketActions.RemovePromotionCodeFromBasketFail)
-        )
+        .pipe(mapTo(new RemovePromotionCodeFromBasketSuccess()), mapErrorToAction(RemovePromotionCodeFromBasketFail))
     )
   );
 
@@ -63,7 +66,7 @@ export class BasketPromotionCodeEffects {
    */
   @Effect()
   loadBasketAfterRemovePromotionCodeFromBasketChangeSuccess$ = this.actions$.pipe(
-    ofType(basketActions.BasketActionTypes.RemovePromotionCodeFromBasketSuccess),
-    mapTo(new basketActions.LoadBasket())
+    ofType(BasketActionTypes.RemovePromotionCodeFromBasketSuccess),
+    mapTo(new LoadBasket())
   );
 }

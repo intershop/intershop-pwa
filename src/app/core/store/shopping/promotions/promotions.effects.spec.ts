@@ -12,7 +12,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 
-import * as fromActions from './promotions.actions';
+import { LoadPromotion, LoadPromotionFail, LoadPromotionSuccess } from './promotions.actions';
 import { PromotionsEffects } from './promotions.effects';
 
 describe('Promotions Effects', () => {
@@ -50,7 +50,7 @@ describe('Promotions Effects', () => {
   describe('loadPromotion$', () => {
     it('should call the promotionsService for LoadPromotion action', done => {
       const promoId = 'P123';
-      const action = new fromActions.LoadPromotion({ promoId });
+      const action = new LoadPromotion({ promoId });
       actions$ = of(action);
 
       effects.loadPromotion$.subscribe(() => {
@@ -62,8 +62,8 @@ describe('Promotions Effects', () => {
     it('should map to action of type LoadPromotionSuccess only once', () => {
       const id = 'P123';
       const promoId = 'P123';
-      const action = new fromActions.LoadPromotion({ promoId });
-      const completion = new fromActions.LoadPromotionSuccess({ promotion: { id } as Promotion });
+      const action = new LoadPromotion({ promoId });
+      const completion = new LoadPromotionSuccess({ promotion: { id } as Promotion });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c----', { c: completion });
 
@@ -72,8 +72,8 @@ describe('Promotions Effects', () => {
 
     it('should map invalid request to action of type LoadPromotionFail only once', () => {
       const promoId = 'invalid';
-      const action = new fromActions.LoadPromotion({ promoId });
-      const completion = new fromActions.LoadPromotionFail({ error: { message: 'invalid' } as HttpError, promoId });
+      const action = new LoadPromotion({ promoId });
+      const completion = new LoadPromotionFail({ error: { message: 'invalid' } as HttpError, promoId });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c----', { c: completion });
 
