@@ -38,9 +38,8 @@ export class BasketEffects {
   @Effect()
   loadBasket$ = this.actions$.pipe(
     ofType<LoadBasket>(BasketActionTypes.LoadBasket),
-    mapToPayloadProperty('id'),
-    mergeMap(id =>
-      this.basketService.getBasket(id).pipe(
+    mergeMap(() =>
+      this.basketService.getBasket().pipe(
         map(basket => new LoadBasketSuccess({ basket })),
         mapErrorToAction(LoadBasketFail)
       )
@@ -142,7 +141,7 @@ export class BasketEffects {
   );
 
   /**
-   * Trigger LoadBasket action after LoginUserSucces, if no pre login state basket items are present.
+   * Trigger LoadBasket action after LoginUserSuccess, if no pre login state basket items are present.
    */
   @Effect()
   loadBasketAfterLogin$ = this.actions$.pipe(
