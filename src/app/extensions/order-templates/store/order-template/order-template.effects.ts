@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { concat } from 'rxjs';
 import { concatMap, filter, last, map, mapTo, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { SuccessMessage } from 'ish-core/store/core/messages';
+import { DisplaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { SetBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { getCurrentBasket } from 'ish-core/store/customer/basket';
@@ -78,7 +78,7 @@ export class OrderTemplateEffects {
       this.orderTemplateService.createOrderTemplate(orderTemplateData).pipe(
         mergeMap(orderTemplate => [
           new CreateOrderTemplateSuccess({ orderTemplate }),
-          new SuccessMessage({
+          new DisplaySuccessMessage({
             message: 'account.order_template.new_order_template.confirmation',
             messageParams: { 0: orderTemplate.title },
           }),
@@ -113,7 +113,7 @@ export class OrderTemplateEffects {
               last(),
               concatMap(newOrderTemplate => [
                 new AddBasketToNewOrderTemplateSuccess({ orderTemplate: newOrderTemplate }),
-                new SuccessMessage({
+                new DisplaySuccessMessage({
                   message: 'account.order_template.new_from_basket_confirm.heading',
                   messageParams: { 0: orderTemplate.title },
                 }),
@@ -137,7 +137,7 @@ export class OrderTemplateEffects {
       this.orderTemplateService.deleteOrderTemplate(orderTemplateId).pipe(
         mergeMap(() => [
           new DeleteOrderTemplateSuccess({ orderTemplateId }),
-          new SuccessMessage({
+          new DisplaySuccessMessage({
             message: 'account.order_template.delete_order_template.confirmation',
             messageParams: { 0: title },
           }),
@@ -155,7 +155,7 @@ export class OrderTemplateEffects {
       this.orderTemplateService.updateOrderTemplate(newOrderTemplate).pipe(
         mergeMap(orderTemplate => [
           new UpdateOrderTemplateSuccess({ orderTemplate }),
-          new SuccessMessage({
+          new DisplaySuccessMessage({
             message: 'account.order_templates.edit.confirmation',
             messageParams: { 0: orderTemplate.title },
           }),

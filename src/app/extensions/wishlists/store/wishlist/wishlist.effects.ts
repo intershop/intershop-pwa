@@ -3,7 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { debounceTime, filter, map, mapTo, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { SuccessMessage } from 'ish-core/store/core/messages';
+import { DisplaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { SetBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { getUserAuthorized } from 'ish-core/store/customer/user';
@@ -69,7 +69,7 @@ export class WishlistEffects {
       this.wishlistService.createWishlist(wishlistData).pipe(
         mergeMap(wishlist => [
           new CreateWishlistSuccess({ wishlist }),
-          new SuccessMessage({
+          new DisplaySuccessMessage({
             message: 'account.wishlists.new_wishlist.confirmation',
             messageParams: { 0: wishlist.title },
           }),
@@ -90,7 +90,7 @@ export class WishlistEffects {
       this.wishlistService.deleteWishlist(wishlistId).pipe(
         mergeMap(() => [
           new DeleteWishlistSuccess({ wishlistId }),
-          new SuccessMessage({
+          new DisplaySuccessMessage({
             message: 'account.wishlists.delete_wishlist.confirmation',
             messageParams: { 0: title },
           }),
@@ -108,7 +108,7 @@ export class WishlistEffects {
       this.wishlistService.updateWishlist(newWishlist).pipe(
         mergeMap(wishlist => [
           new UpdateWishlistSuccess({ wishlist }),
-          new SuccessMessage({
+          new DisplaySuccessMessage({
             message: 'account.wishlists.edit_wishlist.confirmation',
             messageParams: { 0: wishlist.title },
           }),

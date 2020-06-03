@@ -10,7 +10,7 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { AddressService } from 'ish-core/services/address/address.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { SuccessMessage } from 'ish-core/store/core/messages';
+import { DisplaySuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { LoginUserSuccess } from 'ish-core/store/customer/user';
 
@@ -91,7 +91,7 @@ describe('Addresses Effects', () => {
       const address = { urn: '123' } as Address;
       const action = new CreateCustomerAddress({ address });
       const completion = new CreateCustomerAddressSuccess({ address: { urn: 'test' } as Address });
-      const completion2 = new SuccessMessage({
+      const completion2 = new DisplaySuccessMessage({
         message: 'account.addresses.new_address_created.message',
       });
 
@@ -132,7 +132,7 @@ describe('Addresses Effects', () => {
       const addressId = '123';
       const action = new DeleteCustomerAddress({ addressId });
       const completion = new DeleteCustomerAddressSuccess({ addressId });
-      const completion2 = new SuccessMessage({
+      const completion2 = new DisplaySuccessMessage({
         message: 'account.addresses.new_address_deleted.message',
       });
       actions$ = hot('-a----a----a----|', { a: action });

@@ -19,7 +19,7 @@ import { Price } from 'ish-core/models/price/price.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { User } from 'ish-core/models/user/user.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { SuccessMessage } from 'ish-core/store/core/messages';
+import { DisplaySuccessMessage } from 'ish-core/store/core/messages';
 import { LoadBasketSuccess } from 'ish-core/store/customer/basket';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/customer/user';
@@ -279,7 +279,7 @@ describe('Quote Request Effects', () => {
       const id = 'QRID';
       const action = new DeleteQuoteRequest({ id });
       const completion = new DeleteQuoteRequestSuccess({ id });
-      const completion2 = new SuccessMessage({
+      const completion2 = new DisplaySuccessMessage({
         message: 'quote.delete.message',
       });
       actions$ = hot('-a----a----a----|', { a: action });

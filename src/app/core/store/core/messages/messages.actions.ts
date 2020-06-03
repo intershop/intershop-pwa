@@ -28,31 +28,28 @@ export interface MessagesPayloadType {
 }
 
 export enum MessagesActionTypes {
-  ToastMessage = '[Message] Set Toast',
+  DisplayInfoMessage = '[Message] Info Toast',
+  DisplayErrorMessage = '[Message] Error Toast',
+  DisplayWarningMessage = '[Message] Warning Toast',
+  DisplaySuccessMessage = '[Message] Success Toast',
 }
 
-export class InfoMessage implements Action {
-  readonly type = MessagesActionTypes.ToastMessage;
-  readonly messageType = 'info';
+export class DisplayInfoMessage implements Action {
+  readonly type = MessagesActionTypes.DisplayInfoMessage;
   constructor(public payload: MessagesPayloadType) {}
 }
 
-export class ErrorMessage implements Action {
-  readonly type = MessagesActionTypes.ToastMessage;
-  readonly messageType = 'error';
+export class DisplayErrorMessage implements Action {
+  readonly type = MessagesActionTypes.DisplayErrorMessage;
   constructor(public payload: MessagesPayloadType) {}
 }
 
-export class WarningMessage implements Action {
-  readonly type = MessagesActionTypes.ToastMessage;
-  readonly messageType = 'warning';
+export class DisplayWarningMessage implements Action {
+  readonly type = MessagesActionTypes.DisplayWarningMessage;
   constructor(public payload: MessagesPayloadType) {}
 }
 
-export class SuccessMessage implements Action {
-  readonly type = MessagesActionTypes.ToastMessage;
-  readonly messageType = 'success';
+export class DisplaySuccessMessage implements Action {
+  readonly type = MessagesActionTypes.DisplaySuccessMessage;
   constructor(public payload: MessagesPayloadType) {}
 }
-
-export type MessagesActions = InfoMessage | ErrorMessage | WarningMessage | SuccessMessage;

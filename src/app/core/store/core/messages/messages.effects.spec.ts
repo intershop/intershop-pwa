@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from 'rxjs';
 import { anything, instance, mock, verify } from 'ts-mockito';
 
-import { SuccessMessage } from './messages.actions';
+import { DisplaySuccessMessage } from './messages.actions';
 import { MessagesEffects } from './messages.effects';
 
 describe('Messages Effects', () => {
@@ -34,9 +34,9 @@ describe('Messages Effects', () => {
   });
 
   it('should call ToastrService when handling messages', done => {
-    actions$ = of(new SuccessMessage({ message: 'test' }));
+    actions$ = of(new DisplaySuccessMessage({ message: 'test' }));
 
-    effects.toast$.subscribe(() => {
+    effects.successToast$.subscribe(() => {
       verify(toastrServiceMock.success(anything(), anything(), anything())).once();
       done();
     });
