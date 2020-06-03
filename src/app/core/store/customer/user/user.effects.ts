@@ -28,7 +28,7 @@ import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { GeneralError } from 'ish-core/store/core/error';
-import { SuccessMessage } from 'ish-core/store/core/messages';
+import { DisplaySuccessMessage } from 'ish-core/store/core/messages';
 import { ofUrl, selectQueryParam } from 'ish-core/store/core/router';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
@@ -241,7 +241,7 @@ export class UserEffects {
     filter(successMessage => !!successMessage),
     map(
       successMessage =>
-        new SuccessMessage({
+        new DisplaySuccessMessage({
           message: successMessage,
         })
     )
@@ -306,7 +306,7 @@ export class UserEffects {
         concatMapTo([
           new DeleteUserPaymentInstrumentSuccess(),
           new LoadUserPaymentMethods(),
-          new SuccessMessage({
+          new DisplaySuccessMessage({
             message: 'account.payment.payment_deleted.message',
           }),
         ]),
@@ -344,7 +344,7 @@ export class UserEffects {
     ofType<UpdateUserPasswordByPasswordReminderSuccess>(UserActionTypes.UpdateUserPasswordByPasswordReminderSuccess),
     map(
       () =>
-        new SuccessMessage({
+        new DisplaySuccessMessage({
           message: 'account.profile.update_password.message',
         })
     )
