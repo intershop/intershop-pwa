@@ -13,7 +13,16 @@ import { CreateOrder } from 'ish-core/store/customer/orders';
 import { LoadProduct } from 'ish-core/store/shopping/products';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
-import * as basketActions from './basket.actions';
+import {
+  BasketActionTypes,
+  ContinueCheckout,
+  ContinueCheckoutFail,
+  ContinueCheckoutSuccess,
+  ContinueCheckoutWithIssues,
+  LoadBasketEligiblePaymentMethods,
+  LoadBasketEligibleShippingMethods,
+  ValidateBasket,
+} from './basket.actions';
 import { getCurrentBasketId } from './basket.selectors';
 
 @Injectable()
@@ -28,7 +37,7 @@ export class BasketValidationEffects {
   @Effect()
   // validates the basket but doesn't change the route
   validateBasket$ = this.actions$.pipe(
-    ofType<basketActions.ValidateBasket>(basketActions.BasketActionTypes.ValidateBasket),
+    ofType<ValidateBasket>(BasketActionTypes.ValidateBasket),
     mapToPayloadProperty('scopes'),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     whenTruthy(),
@@ -36,10 +45,10 @@ export class BasketValidationEffects {
       this.basketService.validateBasket(basketId, scopes).pipe(
         map(basketValidation =>
           basketValidation.results.valid
-            ? new basketActions.ContinueCheckoutSuccess({ targetRoute: undefined, basketValidation })
-            : new basketActions.ContinueCheckoutWithIssues({ targetRoute: undefined, basketValidation })
+            ? new ContinueCheckoutSuccess({ targetRoute: undefined, basketValidation })
+            : new ContinueCheckoutWithIssues({ targetRoute: undefined, basketValidation })
         ),
-        mapErrorToAction(basketActions.ContinueCheckoutFail)
+        mapErrorToAction(ContinueCheckoutFail)
       )
     )
   );
@@ -49,7 +58,7 @@ export class BasketValidationEffects {
    */
   @Effect()
   validateBasketAndContinueCheckout$ = this.actions$.pipe(
-    ofType<basketActions.ContinueCheckout>(basketActions.BasketActionTypes.ContinueCheckout),
+    ofType<ContinueCheckout>(BasketActionTypes.ContinueCheckout),
     mapToPayloadProperty('targetStep'),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     whenTruthy(),
@@ -90,12 +99,12 @@ export class BasketValidationEffects {
             ? targetStep === 5 && !basketValidation.results.adjusted
               ? [
                   new CreateOrder({ basketId }),
-                  new basketActions.ContinueCheckoutSuccess({ targetRoute: undefined, basketValidation }),
+                  new ContinueCheckoutSuccess({ targetRoute: undefined, basketValidation }),
                 ]
-              : [new basketActions.ContinueCheckoutSuccess({ targetRoute, basketValidation })]
-            : [new basketActions.ContinueCheckoutWithIssues({ targetRoute, basketValidation })]
+              : [new ContinueCheckoutSuccess({ targetRoute, basketValidation })]
+            : [new ContinueCheckoutWithIssues({ targetRoute, basketValidation })]
         ),
-        mapErrorToAction(basketActions.ContinueCheckoutFail)
+        mapErrorToAction(ContinueCheckoutFail)
       );
     })
   );
@@ -105,9 +114,9 @@ export class BasketValidationEffects {
    */
   @Effect()
   jumpToNextCheckoutStep$ = this.actions$.pipe(
-    ofType<basketActions.ContinueCheckoutSuccess>(
-      basketActions.BasketActionTypes.ContinueCheckoutSuccess,
-      basketActions.BasketActionTypes.ContinueCheckoutWithIssues
+    ofType<ContinueCheckoutSuccess>(
+      BasketActionTypes.ContinueCheckoutSuccess,
+      BasketActionTypes.ContinueCheckoutWithIssues
     ),
     mapToPayload(),
     tap(payload => {
@@ -124,10 +133,10 @@ export class BasketValidationEffects {
     concatMap(validation => {
       // Load eligible shipping methods if shipping infos are available
       if (validation.scopes.includes('Shipping')) {
-        return [new basketActions.LoadBasketEligibleShippingMethods()];
+        return [new LoadBasketEligibleShippingMethods()];
         // Load eligible payment methods if payment infos are available
       } else if (validation.scopes.includes('Payment')) {
-        return [new basketActions.LoadBasketEligiblePaymentMethods()];
+        return [new LoadBasketEligiblePaymentMethods()];
       } else {
         // Load products if product related infos are available
         return validation.results.infos

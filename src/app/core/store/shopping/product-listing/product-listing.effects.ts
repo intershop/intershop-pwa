@@ -25,7 +25,15 @@ import { LoadProductsForCategory, getProduct } from 'ish-core/store/shopping/pro
 import { SearchProducts } from 'ish-core/store/shopping/search';
 import { mapToPayload, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
-import * as actions from './product-listing.actions';
+import {
+  LoadMoreProducts,
+  LoadMoreProductsForParams,
+  LoadPagesForMaster,
+  ProductListingActionTypes,
+  SetProductListingPageSize,
+  SetProductListingPages,
+  SetViewType,
+} from './product-listing.actions';
 import { getProductListingView, getProductListingViewType } from './product-listing.selectors';
 
 @Injectable()
@@ -42,14 +50,14 @@ export class ProductListingEffects {
   @Effect()
   initializePageSize$ = this.actions$.pipe(
     take(1),
-    mapTo(new actions.SetProductListingPageSize({ itemsPerPage: this.itemsPerPage }))
+    mapTo(new SetProductListingPageSize({ itemsPerPage: this.itemsPerPage }))
   );
 
   @Effect()
   initializeDefaultViewType$ = this.store.pipe(
     select(getProductListingViewType),
     whenFalsy(),
-    mapTo(new actions.SetViewType({ viewType: this.defaultViewType }))
+    mapTo(new SetViewType({ viewType: this.defaultViewType }))
   );
 
   @Effect()
@@ -57,12 +65,12 @@ export class ProductListingEffects {
     select(selectQueryParam('view')),
     whenTruthy(),
     distinctUntilChanged(),
-    map((viewType: ViewType) => new actions.SetViewType({ viewType }))
+    map((viewType: ViewType) => new SetViewType({ viewType }))
   );
 
   @Effect()
   determineParams$ = this.actions$.pipe(
-    ofType<actions.LoadMoreProducts>(actions.ProductListingActionTypes.LoadMoreProducts),
+    ofType<LoadMoreProducts>(ProductListingActionTypes.LoadMoreProducts),
     mapToPayload(),
     switchMap(({ id, page }) =>
       this.store.pipe(
@@ -76,12 +84,12 @@ export class ProductListingEffects {
       )
     ),
     distinctUntilChanged(isEqual),
-    map(({ id, filters, sorting, page }) => new actions.LoadMoreProductsForParams({ id, filters, sorting, page }))
+    map(({ id, filters, sorting, page }) => new LoadMoreProductsForParams({ id, filters, sorting, page }))
   );
 
   @Effect()
   loadMoreProducts$ = this.actions$.pipe(
-    ofType<actions.LoadMoreProductsForParams>(actions.ProductListingActionTypes.LoadMoreProductsForParams),
+    ofType<LoadMoreProductsForParams>(ProductListingActionTypes.LoadMoreProductsForParams),
     mapToPayload(),
     switchMap(({ id, sorting, page, filters }) =>
       this.store.pipe(
@@ -91,7 +99,7 @@ export class ProductListingEffects {
     ),
     map(({ id, sorting, page, filters, viewAvailable }) => {
       if (viewAvailable) {
-        return new actions.SetProductListingPages({ id: { sorting, filters, ...id } });
+        return new SetProductListingPages({ id: { sorting, filters, ...id } });
       }
       if (
         filters &&
@@ -109,7 +117,7 @@ export class ProductListingEffects {
           case 'search':
             return new SearchProducts({ searchTerm: id.value, page, sorting });
           case 'master':
-            return new actions.LoadPagesForMaster({ id, sorting, filters });
+            return new LoadPagesForMaster({ id, sorting, filters });
           default:
             return;
         }
@@ -121,7 +129,7 @@ export class ProductListingEffects {
 
   @Effect()
   loadFilters$ = this.actions$.pipe(
-    ofType<actions.LoadMoreProductsForParams>(actions.ProductListingActionTypes.LoadMoreProductsForParams),
+    ofType<LoadMoreProductsForParams>(ProductListingActionTypes.LoadMoreProductsForParams),
     mapToPayload(),
     map(({ id, filters }) => ({ type: id.type, value: id.value, filters })),
     distinctUntilChanged(isEqual),
@@ -142,7 +150,7 @@ export class ProductListingEffects {
           case 'search':
             return new LoadFilterForSearch({ searchTerm: value });
           case 'master':
-            return new actions.LoadPagesForMaster({ id: { type, value }, sorting: undefined, filters });
+            return new LoadPagesForMaster({ id: { type, value }, sorting: undefined, filters });
           default:
             return;
         }
@@ -154,7 +162,7 @@ export class ProductListingEffects {
   // TODO: work-around for client side computation of master variations
   @Effect()
   loadPagesForMaster$ = this.actions$.pipe(
-    ofType<actions.LoadPagesForMaster>(actions.ProductListingActionTypes.LoadPagesForMaster),
+    ofType<LoadPagesForMaster>(ProductListingActionTypes.LoadPagesForMaster),
     mapToPayload(),
     switchMap(({ id, filters }) =>
       this.store.pipe(
@@ -170,7 +178,7 @@ export class ProductListingEffects {
           } = this.productMasterVariationsService.getFiltersAndFilteredVariationsForMasterProduct(product, filters);
 
           return [
-            new actions.SetProductListingPages(
+            new SetProductListingPages(
               this.productListingMapper.createPages(products, id.type, id.value, {
                 filters: filters ? b64u.toBase64(b64u.encode(filters)) : undefined,
               })

@@ -7,7 +7,7 @@ import { CMSService } from 'ish-core/services/cms/cms.service';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
-import * as pagesActions from './pages.actions';
+import { LoadContentPage, LoadContentPageFail, LoadContentPageSuccess, PagesActionTypes } from './pages.actions';
 
 @Injectable()
 export class PagesEffects {
@@ -15,12 +15,12 @@ export class PagesEffects {
 
   @Effect()
   loadContentPage$ = this.actions$.pipe(
-    ofType<pagesActions.LoadContentPage>(pagesActions.PagesActionTypes.LoadContentPage),
+    ofType<LoadContentPage>(PagesActionTypes.LoadContentPage),
     mapToPayloadProperty('contentPageId'),
     mergeMap(contentPageId =>
       this.cmsService.getContentPage(contentPageId).pipe(
-        map(contentPage => new pagesActions.LoadContentPageSuccess(contentPage)),
-        mapErrorToAction(pagesActions.LoadContentPageFail)
+        map(contentPage => new LoadContentPageSuccess(contentPage)),
+        mapErrorToAction(LoadContentPageFail)
       )
     )
   );
@@ -29,6 +29,6 @@ export class PagesEffects {
   selectedContentPage$ = this.store.pipe(
     select(selectRouteParam('contentPageId')),
     whenTruthy(),
-    map(contentPageId => new pagesActions.LoadContentPage({ contentPageId }))
+    map(contentPageId => new LoadContentPage({ contentPageId }))
   );
 }

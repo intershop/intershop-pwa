@@ -4,7 +4,7 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { GeneralStoreModule } from 'ish-core/store/general/general-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import * as actions from './server-config.actions';
+import { LoadServerConfigSuccess } from './server-config.actions';
 import { getServerConfigParameter, isServerConfigurationLoaded } from './server-config.selectors';
 
 describe('Server Config Selectors', () => {
@@ -32,7 +32,7 @@ describe('Server Config Selectors', () => {
   describe('after setting serverConfig', () => {
     beforeEach(() => {
       store$.dispatch(
-        new actions.LoadServerConfigSuccess({
+        new LoadServerConfigSuccess({
           config: {
             application: {
               applicationType: 'intershop.B2CResponsive',

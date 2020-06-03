@@ -7,7 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
 
-import * as seoActions from './seo.actions';
+import { SetSeoAttributes } from './seo.actions';
 import { SeoEffects } from './seo.effects';
 
 describe('Seo Effects', () => {
@@ -34,7 +34,7 @@ describe('Seo Effects', () => {
 
   describe('setMetaData$', () => {
     it('should call the metaService to setup meta data', done => {
-      const action = new seoActions.SetSeoAttributes({
+      const action = new SetSeoAttributes({
         title: 'dummy',
         description: 'dummy desc',
         robots: 'index, follow',

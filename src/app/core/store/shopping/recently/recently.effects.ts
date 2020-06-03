@@ -8,7 +8,7 @@ import { getSelectedProduct } from 'ish-core/store/shopping/products/products.se
 import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
-import * as recentlyActions from './recently.actions';
+import { AddToRecently } from './recently.actions';
 
 @Injectable()
 export class RecentlyEffects {
@@ -28,6 +28,6 @@ export class RecentlyEffects {
       sku: product.sku,
       group: (ProductHelper.isVariationProduct(product) && product.productMasterSKU) || undefined,
     })),
-    map(({ sku, group }) => new recentlyActions.AddToRecently({ sku, group }))
+    map(({ sku, group }) => new AddToRecently({ sku, group }))
   );
 }

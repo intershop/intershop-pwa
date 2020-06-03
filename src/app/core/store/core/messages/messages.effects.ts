@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { forkJoin, of } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
-import * as messagesActions from './messages.actions';
+import { MessagesActionTypes, MessagesActions } from './messages.actions';
 
 @Injectable()
 export class MessagesEffects {
@@ -13,7 +13,7 @@ export class MessagesEffects {
 
   @Effect({ dispatch: false })
   toast$ = this.actions$.pipe(
-    ofType<messagesActions.MessagesActions>(messagesActions.MessagesActionTypes.ToastMessage),
+    ofType<MessagesActions>(MessagesActionTypes.ToastMessage),
     switchMap(({ payload, messageType }) =>
       forkJoin([
         // message translation
