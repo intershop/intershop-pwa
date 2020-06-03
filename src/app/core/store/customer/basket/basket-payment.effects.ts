@@ -8,7 +8,25 @@ import { ofUrl, selectQueryParams } from 'ish-core/store/core/router';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
-import * as basketActions from './basket.actions';
+import {
+  BasketActionTypes,
+  CreateBasketPayment,
+  CreateBasketPaymentFail,
+  CreateBasketPaymentSuccess,
+  DeleteBasketPayment,
+  DeleteBasketPaymentFail,
+  DeleteBasketPaymentSuccess,
+  LoadBasket,
+  LoadBasketEligiblePaymentMethods,
+  LoadBasketEligiblePaymentMethodsFail,
+  LoadBasketEligiblePaymentMethodsSuccess,
+  SetBasketPayment,
+  SetBasketPaymentFail,
+  SetBasketPaymentSuccess,
+  UpdateBasketPayment,
+  UpdateBasketPaymentFail,
+  UpdateBasketPaymentSuccess,
+} from './basket.actions';
 import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
 
 @Injectable()
@@ -20,12 +38,12 @@ export class BasketPaymentEffects {
    */
   @Effect()
   loadBasketEligiblePaymentMethods$ = this.actions$.pipe(
-    ofType(basketActions.BasketActionTypes.LoadBasketEligiblePaymentMethods),
+    ofType(BasketActionTypes.LoadBasketEligiblePaymentMethods),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     concatMap(([, basketid]) =>
       this.paymentService.getBasketEligiblePaymentMethods(basketid).pipe(
-        map(result => new basketActions.LoadBasketEligiblePaymentMethodsSuccess({ paymentMethods: result })),
-        mapErrorToAction(basketActions.LoadBasketEligiblePaymentMethodsFail)
+        map(result => new LoadBasketEligiblePaymentMethodsSuccess({ paymentMethods: result })),
+        mapErrorToAction(LoadBasketEligiblePaymentMethodsFail)
       )
     )
   );
@@ -35,13 +53,13 @@ export class BasketPaymentEffects {
    */
   @Effect()
   setPaymentAtBasket$ = this.actions$.pipe(
-    ofType<basketActions.SetBasketPayment>(basketActions.BasketActionTypes.SetBasketPayment),
+    ofType<SetBasketPayment>(BasketActionTypes.SetBasketPayment),
     mapToPayloadProperty('id'),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     concatMap(([paymentInstrumentId, basketid]) =>
       this.paymentService
         .setBasketPayment(basketid, paymentInstrumentId)
-        .pipe(mapTo(new basketActions.SetBasketPaymentSuccess()), mapErrorToAction(basketActions.SetBasketPaymentFail))
+        .pipe(mapTo(new SetBasketPaymentSuccess()), mapErrorToAction(SetBasketPaymentFail))
     )
   );
 
@@ -50,7 +68,7 @@ export class BasketPaymentEffects {
    */
   @Effect()
   createBasketPaymentInstrument$ = this.actions$.pipe(
-    ofType<basketActions.CreateBasketPayment>(basketActions.BasketActionTypes.CreateBasketPayment),
+    ofType<CreateBasketPayment>(BasketActionTypes.CreateBasketPayment),
     mapToPayload(),
     withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
     map(([payload, customer]) => ({
@@ -66,11 +84,8 @@ export class BasketPaymentEffects {
           : this.paymentService.createBasketPayment(basketid, payload.paymentInstrument);
 
       return createPayment$.pipe(
-        concatMap(pi => [
-          new basketActions.SetBasketPayment({ id: pi.id }),
-          new basketActions.CreateBasketPaymentSuccess(),
-        ]),
-        mapErrorToAction(basketActions.CreateBasketPaymentFail)
+        concatMap(pi => [new SetBasketPayment({ id: pi.id }), new CreateBasketPaymentSuccess()]),
+        mapErrorToAction(CreateBasketPaymentFail)
       );
     })
   );
@@ -89,7 +104,7 @@ export class BasketPaymentEffects {
         select(getCurrentBasketId),
         whenTruthy(),
         take(1),
-        mapTo(new basketActions.UpdateBasketPayment({ params: queryParams }))
+        mapTo(new UpdateBasketPayment({ params: queryParams }))
       )
     )
   );
@@ -99,16 +114,13 @@ export class BasketPaymentEffects {
    */
   @Effect()
   updateBasketPayment$ = this.actions$.pipe(
-    ofType<basketActions.UpdateBasketPayment>(basketActions.BasketActionTypes.UpdateBasketPayment),
+    ofType<UpdateBasketPayment>(BasketActionTypes.UpdateBasketPayment),
     mapToPayloadProperty('params'),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     concatMap(([params, basketid]) =>
       this.paymentService
         .updateBasketPayment(basketid, params)
-        .pipe(
-          mapTo(new basketActions.UpdateBasketPaymentSuccess()),
-          mapErrorToAction(basketActions.UpdateBasketPaymentFail)
-        )
+        .pipe(mapTo(new UpdateBasketPaymentSuccess()), mapErrorToAction(UpdateBasketPaymentFail))
     )
   );
 
@@ -117,16 +129,13 @@ export class BasketPaymentEffects {
    */
   @Effect()
   deleteBasketPaymentInstrument$ = this.actions$.pipe(
-    ofType<basketActions.DeleteBasketPayment>(basketActions.BasketActionTypes.DeleteBasketPayment),
+    ofType<DeleteBasketPayment>(BasketActionTypes.DeleteBasketPayment),
     mapToPayloadProperty('paymentInstrument'),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     concatMap(([paymentInstrument, basket]) =>
       this.paymentService
         .deleteBasketPaymentInstrument(basket, paymentInstrument)
-        .pipe(
-          mapTo(new basketActions.DeleteBasketPaymentSuccess()),
-          mapErrorToAction(basketActions.DeleteBasketPaymentFail)
-        )
+        .pipe(mapTo(new DeleteBasketPaymentSuccess()), mapErrorToAction(DeleteBasketPaymentFail))
     )
   );
 
@@ -136,12 +145,12 @@ export class BasketPaymentEffects {
   @Effect()
   loadBasketAfterBasketChangeSuccess$ = this.actions$.pipe(
     ofType(
-      basketActions.BasketActionTypes.SetBasketPaymentSuccess,
-      basketActions.BasketActionTypes.SetBasketPaymentFail,
-      basketActions.BasketActionTypes.UpdateBasketPaymentSuccess,
-      basketActions.BasketActionTypes.DeleteBasketPaymentSuccess
+      BasketActionTypes.SetBasketPaymentSuccess,
+      BasketActionTypes.SetBasketPaymentFail,
+      BasketActionTypes.UpdateBasketPaymentSuccess,
+      BasketActionTypes.DeleteBasketPaymentSuccess
     ),
-    mapTo(new basketActions.LoadBasket())
+    mapTo(new LoadBasket())
   );
 
   /**
@@ -149,10 +158,7 @@ export class BasketPaymentEffects {
    */
   @Effect()
   loadBasketEligiblePaymentMethodsAfterChange$ = this.actions$.pipe(
-    ofType(
-      basketActions.BasketActionTypes.DeleteBasketPaymentSuccess,
-      basketActions.BasketActionTypes.CreateBasketPaymentSuccess
-    ),
-    mapTo(new basketActions.LoadBasketEligiblePaymentMethods())
+    ofType(BasketActionTypes.DeleteBasketPaymentSuccess, BasketActionTypes.CreateBasketPaymentSuccess),
+    mapTo(new LoadBasketEligiblePaymentMethods())
   );
 }

@@ -5,7 +5,7 @@ import { distinct, map, mergeMap } from 'rxjs/operators';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 
-import * as promotionsActions from './promotions.actions';
+import { LoadPromotion, LoadPromotionFail, LoadPromotionSuccess, PromotionsActionTypes } from './promotions.actions';
 
 @Injectable()
 export class PromotionsEffects {
@@ -13,15 +13,15 @@ export class PromotionsEffects {
 
   @Effect()
   loadPromotion$ = this.actions$.pipe(
-    ofType<promotionsActions.LoadPromotion>(promotionsActions.PromotionsActionTypes.LoadPromotion),
+    ofType<LoadPromotion>(PromotionsActionTypes.LoadPromotion),
     mapToPayloadProperty('promoId'),
     // trigger the promotion REST call only once for each distinct promotion id (per application session)
     distinct(),
     mergeMap(
       promoId =>
         this.promotionsService.getPromotion(promoId).pipe(
-          map(promotion => new promotionsActions.LoadPromotionSuccess({ promotion })),
-          mapErrorToAction(promotionsActions.LoadPromotionFail, { promoId })
+          map(promotion => new LoadPromotionSuccess({ promotion })),
+          mapErrorToAction(LoadPromotionFail, { promoId })
         ),
       5
     )

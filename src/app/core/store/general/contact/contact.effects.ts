@@ -5,7 +5,13 @@ import { concatMap, map, mapTo } from 'rxjs/operators';
 import { ContactService } from 'ish-core/services/contact/contact.service';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 
-import * as ContactActions from './contact.actions';
+import {
+  ContactActionTypes,
+  CreateContactFail,
+  CreateContactSuccess,
+  LoadContactFail,
+  LoadContactSuccess,
+} from './contact.actions';
 
 @Injectable()
 export class ContactEffects {
@@ -16,11 +22,11 @@ export class ContactEffects {
    */
   @Effect()
   loadSubjects$ = this.actions$.pipe(
-    ofType(ContactActions.ContactActionTypes.LoadContact),
+    ofType(ContactActionTypes.LoadContact),
     concatMap(() =>
       this.contactService.getContactSubjects().pipe(
-        map(subjects => new ContactActions.LoadContactSuccess({ subjects })),
-        mapErrorToAction(ContactActions.LoadContactFail)
+        map(subjects => new LoadContactSuccess({ subjects })),
+        mapErrorToAction(LoadContactFail)
       )
     )
   );
@@ -30,12 +36,12 @@ export class ContactEffects {
    */
   @Effect()
   createContact$ = this.actions$.pipe(
-    ofType(ContactActions.ContactActionTypes.CreateContact),
+    ofType(ContactActionTypes.CreateContact),
     mapToPayloadProperty('contact'),
     concatMap(contact =>
       this.contactService
         .createContactRequest(contact)
-        .pipe(mapTo(new ContactActions.CreateContactSuccess()), mapErrorToAction(ContactActions.CreateContactFail))
+        .pipe(mapTo(new CreateContactSuccess()), mapErrorToAction(CreateContactFail))
     )
   );
 }

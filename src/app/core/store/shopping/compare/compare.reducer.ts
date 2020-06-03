@@ -1,4 +1,4 @@
-import * as fromCompare from './compare.actions';
+import { CompareAction, CompareActionTypes } from './compare.actions';
 
 export interface CompareState {
   products: string[];
@@ -8,16 +8,16 @@ export const initialState: CompareState = {
   products: [],
 };
 
-export function compareReducer(state = initialState, action: fromCompare.CompareAction): CompareState {
+export function compareReducer(state = initialState, action: CompareAction): CompareState {
   switch (action.type) {
-    case fromCompare.CompareActionTypes.AddToCompare: {
+    case CompareActionTypes.AddToCompare: {
       const { sku } = action.payload;
       const products = state.products.includes(sku) ? [...state.products] : [...state.products, sku];
 
       return { ...state, products };
     }
 
-    case fromCompare.CompareActionTypes.RemoveFromCompare: {
+    case CompareActionTypes.RemoveFromCompare: {
       const { sku } = action.payload;
       const products = state.products.filter(current => current !== sku);
 

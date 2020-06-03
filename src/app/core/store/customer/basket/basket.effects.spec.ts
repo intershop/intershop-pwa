@@ -23,7 +23,22 @@ import { LoadProductIfNotLoaded, LoadProductSuccess } from 'ish-core/store/shopp
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
-import * as basketActions from './basket.actions';
+import {
+  LoadBasket,
+  LoadBasketByAPIToken,
+  LoadBasketEligibleShippingMethods,
+  LoadBasketEligibleShippingMethodsFail,
+  LoadBasketEligibleShippingMethodsSuccess,
+  LoadBasketFail,
+  LoadBasketSuccess,
+  MergeBasket,
+  MergeBasketFail,
+  MergeBasketSuccess,
+  ResetBasketErrors,
+  UpdateBasket,
+  UpdateBasketFail,
+  UpdateBasketShippingMethod,
+} from './basket.actions';
 import { BasketEffects } from './basket.effects';
 
 describe('Basket Effects', () => {
@@ -66,7 +81,7 @@ describe('Basket Effects', () => {
 
     it('should call the basketService for loadBasket', done => {
       const id = 'BID';
-      const action = new basketActions.LoadBasket({ id });
+      const action = new LoadBasket({ id });
       actions$ = of(action);
 
       effects.loadBasket$.subscribe(() => {
@@ -77,8 +92,8 @@ describe('Basket Effects', () => {
 
     it('should map to action of type LoadBasketSuccess', () => {
       const id = 'BID';
-      const action = new basketActions.LoadBasket({ id });
-      const completion = new basketActions.LoadBasketSuccess({ basket: { id } as Basket });
+      const action = new LoadBasket({ id });
+      const completion = new LoadBasketSuccess({ basket: { id } as Basket });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -87,8 +102,8 @@ describe('Basket Effects', () => {
 
     it('should map invalid request to action of type LoadBasketFail', () => {
       when(basketServiceMock.getBasket(anyString())).thenReturn(throwError({ message: 'invalid' }));
-      const action = new basketActions.LoadBasket({ id: 'BID' });
-      const completion = new basketActions.LoadBasketFail({ error: { message: 'invalid' } as HttpError });
+      const action = new LoadBasket({ id: 'BID' });
+      const completion = new LoadBasketFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -100,7 +115,7 @@ describe('Basket Effects', () => {
     it('should call the basket service on LoadUserByAPIToken action and load user on success', done => {
       when(basketServiceMock.getBasketByToken('dummy')).thenReturn(of({ id: 'basket' } as Basket));
 
-      actions$ = of(new basketActions.LoadBasketByAPIToken({ apiToken: 'dummy' }));
+      actions$ = of(new LoadBasketByAPIToken({ apiToken: 'dummy' }));
 
       effects.loadBasketByAPIToken$.subscribe(action => {
         verify(basketServiceMock.getBasketByToken('dummy')).once();
@@ -115,7 +130,7 @@ describe('Basket Effects', () => {
     it('should call the basket service on LoadUserByAPIToken action and do nothing when failing', () => {
       when(basketServiceMock.getBasketByToken('dummy')).thenReturn(EMPTY);
 
-      actions$ = hot('a-a-a-', { a: new basketActions.LoadBasketByAPIToken({ apiToken: 'dummy' }) });
+      actions$ = hot('a-a-a-', { a: new LoadBasketByAPIToken({ apiToken: 'dummy' }) });
 
       expect(effects.loadBasketByAPIToken$).toBeObservable(cold('------'));
     });
@@ -125,7 +140,7 @@ describe('Basket Effects', () => {
     it('should trigger product loading actions for line items if LoadBasketSuccess action triggered', () => {
       when(basketServiceMock.getBasket(anything())).thenReturn(of());
 
-      const action = new basketActions.LoadBasketSuccess({
+      const action = new LoadBasketSuccess({
         basket: {
           id: 'BID',
           lineItems: [
@@ -151,7 +166,7 @@ describe('Basket Effects', () => {
     it('should trigger product loading actions for line items if MergeBasketSuccess action triggered', () => {
       when(basketServiceMock.getBasket(anything())).thenReturn(of());
 
-      const action = new basketActions.MergeBasketSuccess({
+      const action = new MergeBasketSuccess({
         basket: {
           id: 'BID',
           lineItems: [
@@ -183,7 +198,7 @@ describe('Basket Effects', () => {
       );
 
       store$.dispatch(
-        new basketActions.LoadBasketSuccess({
+        new LoadBasketSuccess({
           basket: {
             id: 'BID',
             lineItems: [],
@@ -193,7 +208,7 @@ describe('Basket Effects', () => {
     });
 
     it('should call the basketService for loadBasketEligibleShippingMethods', done => {
-      const action = new basketActions.LoadBasketEligibleShippingMethods();
+      const action = new LoadBasketEligibleShippingMethods();
       actions$ = of(action);
 
       effects.loadBasketEligibleShippingMethods$.subscribe(() => {
@@ -203,8 +218,8 @@ describe('Basket Effects', () => {
     });
 
     it('should map to action of type loadBasketEligibleShippingMethodsSuccess', () => {
-      const action = new basketActions.LoadBasketEligibleShippingMethods();
-      const completion = new basketActions.LoadBasketEligibleShippingMethodsSuccess({
+      const action = new LoadBasketEligibleShippingMethods();
+      const completion = new LoadBasketEligibleShippingMethodsSuccess({
         shippingMethods: [BasketMockData.getShippingMethod()],
       });
       actions$ = hot('-a-a-a', { a: action });
@@ -217,8 +232,8 @@ describe('Basket Effects', () => {
       when(basketServiceMock.getBasketEligibleShippingMethods(anyString(), anything())).thenReturn(
         throwError({ message: 'invalid' })
       );
-      const action = new basketActions.LoadBasketEligibleShippingMethods();
-      const completion = new basketActions.LoadBasketEligibleShippingMethodsFail({
+      const action = new LoadBasketEligibleShippingMethods();
+      const completion = new LoadBasketEligibleShippingMethodsFail({
         error: {
           message: 'invalid',
         } as HttpError,
@@ -235,7 +250,7 @@ describe('Basket Effects', () => {
       when(basketServiceMock.updateBasket(anyString(), anything())).thenReturn(of(BasketMockData.getBasket()));
 
       store$.dispatch(
-        new basketActions.LoadBasketSuccess({
+        new LoadBasketSuccess({
           basket: {
             id: 'BID',
             lineItems: [],
@@ -247,7 +262,7 @@ describe('Basket Effects', () => {
     it('should call the basketService for updateBasket', done => {
       const basketId = 'BID';
       const update = { invoiceToAddress: '7654' };
-      const action = new basketActions.UpdateBasket({ update });
+      const action = new UpdateBasket({ update });
       actions$ = of(action);
 
       effects.updateBasket$.subscribe(() => {
@@ -258,9 +273,9 @@ describe('Basket Effects', () => {
 
     it('should map to action of type LoadBasketSuccess and ResetBasketErrors', () => {
       const update = { commonShippingMethod: 'shippingId' };
-      const action = new basketActions.UpdateBasket({ update });
-      const completion1 = new basketActions.LoadBasketSuccess({ basket: BasketMockData.getBasket() });
-      const completion2 = new basketActions.ResetBasketErrors();
+      const action = new UpdateBasket({ update });
+      const completion1 = new LoadBasketSuccess({ basket: BasketMockData.getBasket() });
+      const completion2 = new ResetBasketErrors();
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
 
@@ -271,8 +286,8 @@ describe('Basket Effects', () => {
       const update = { commonShippingMethod: 'shippingId' };
       when(basketServiceMock.updateBasket(anyString(), anything())).thenReturn(throwError({ message: 'invalid' }));
 
-      const action = new basketActions.UpdateBasket({ update });
-      const completion = new basketActions.UpdateBasketFail({ error: { message: 'invalid' } as HttpError });
+      const action = new UpdateBasket({ update });
+      const completion = new UpdateBasketFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -283,8 +298,8 @@ describe('Basket Effects', () => {
   describe('updateBasketShippingMethod$', () => {
     it('should trigger the updateBasket action if called', () => {
       const shippingId = 'shippingId';
-      const action = new basketActions.UpdateBasketShippingMethod({ shippingId });
-      const completion = new basketActions.UpdateBasket({
+      const action = new UpdateBasketShippingMethod({ shippingId });
+      const completion = new UpdateBasket({
         update: { commonShippingMethod: shippingId },
       });
       actions$ = hot('-a-a-a', { a: action });
@@ -299,7 +314,7 @@ describe('Basket Effects', () => {
       when(basketServiceMock.getBaskets()).thenReturn(of([{ id: 'BIDNEW' } as BasketBaseData]));
 
       store$.dispatch(
-        new basketActions.LoadBasketSuccess({
+        new LoadBasketSuccess({
           basket: {
             id: 'BID',
             lineItems: [
@@ -317,7 +332,7 @@ describe('Basket Effects', () => {
       store$.dispatch(new LoadProductSuccess({ product: { sku: 'SKU' } as Product }));
 
       const action = new LoginUserSuccess({ customer: {} as Customer });
-      const completion = new basketActions.MergeBasket();
+      const completion = new MergeBasket();
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
@@ -333,7 +348,7 @@ describe('Basket Effects', () => {
       when(basketServiceMock.mergeBasket(anyString(), anyString())).thenReturn(of(BasketMockData.getBasket()));
 
       store$.dispatch(
-        new basketActions.LoadBasketSuccess({
+        new LoadBasketSuccess({
           basket: {
             id: 'BID',
             lineItems: [
@@ -354,7 +369,7 @@ describe('Basket Effects', () => {
     });
 
     it('should call the basketService for mergeBasket', done => {
-      const action = new basketActions.MergeBasket();
+      const action = new MergeBasket();
       actions$ = of(action);
 
       effects.mergeBasket$.subscribe(() => {
@@ -364,8 +379,8 @@ describe('Basket Effects', () => {
     });
 
     it('should map to action of type MergeBasketSuccess', () => {
-      const action = new basketActions.MergeBasket();
-      const completion = new basketActions.MergeBasketSuccess({ basket: BasketMockData.getBasket() });
+      const action = new MergeBasket();
+      const completion = new MergeBasketSuccess({ basket: BasketMockData.getBasket() });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
@@ -375,8 +390,8 @@ describe('Basket Effects', () => {
     it('should map invalid request to action of type MergeBasketFail', () => {
       when(basketServiceMock.mergeBasket(anyString(), anyString())).thenReturn(throwError({ message: 'invalid' }));
 
-      const action = new basketActions.MergeBasket();
-      const completion = new basketActions.MergeBasketFail({ error: { message: 'invalid' } as HttpError });
+      const action = new MergeBasket();
+      const completion = new MergeBasketFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
@@ -389,7 +404,7 @@ describe('Basket Effects', () => {
       when(basketServiceMock.getBaskets()).thenReturn(of([{ id: 'BIDNEW' } as BasketBaseData]));
 
       const action = new LoginUserSuccess({ customer: {} as Customer });
-      const completion = new basketActions.LoadBasket();
+      const completion = new LoadBasket();
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
@@ -402,7 +417,7 @@ describe('Basket Effects', () => {
       when(basketServiceMock.getBaskets()).thenReturn(of([{ id: 'BIDNEW' } as BasketBaseData]));
 
       const action = new LoginUserSuccess({ customer: {} as Customer });
-      const completion = new basketActions.LoadBasket();
+      const completion = new LoadBasket();
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 

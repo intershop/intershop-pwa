@@ -6,7 +6,7 @@ import { concatMap, filter, map, withLatestFrom } from 'rxjs/operators';
 import { CountryService } from 'ish-core/services/country/country.service';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 
-import * as regionActions from './regions.actions';
+import { LoadRegionsFail, LoadRegionsSuccess, RegionActionTypes } from './regions.actions';
 import { getAllRegions } from './regions.selectors';
 
 @Injectable()
@@ -15,14 +15,14 @@ export class RegionsEffects {
 
   @Effect()
   loadRegions$ = this.actions$.pipe(
-    ofType(regionActions.RegionActionTypes.LoadRegions),
+    ofType(RegionActionTypes.LoadRegions),
     mapToPayloadProperty('countryCode'),
     withLatestFrom(this.store.pipe(select(getAllRegions))),
     filter(([countryCode, allRegions]) => !allRegions.some(r => r.countryCode === countryCode)),
     concatMap(([countryCode]) =>
       this.countryService.getRegionsByCountry(countryCode).pipe(
-        map(regions => new regionActions.LoadRegionsSuccess({ regions })),
-        mapErrorToAction(regionActions.LoadRegionsFail)
+        map(regions => new LoadRegionsSuccess({ regions })),
+        mapErrorToAction(LoadRegionsFail)
       )
     )
   );

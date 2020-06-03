@@ -1,5 +1,5 @@
 import { CompareState } from './compare.reducer';
-import * as fromSelectors from './compare.selectors';
+import { getCompareProductsSKUs, isInCompareProducts } from './compare.selectors';
 
 describe('Compare Selectors', () => {
   describe('getCompareList', () => {
@@ -7,7 +7,7 @@ describe('Compare Selectors', () => {
       const state: CompareState = {
         products: ['123', '456'],
       };
-      const result = fromSelectors.getCompareProductsSKUs.projector(state);
+      const result = getCompareProductsSKUs.projector(state);
       const expected = state.products;
       expect(result).toBe(expected);
     });
@@ -16,13 +16,13 @@ describe('Compare Selectors', () => {
   describe('isInCompareList', () => {
     it('should say that SKU is in the list if it is', () => {
       const list = ['123', '456'];
-      const result = fromSelectors.isInCompareProducts('123').projector(list);
+      const result = isInCompareProducts('123').projector(list);
       expect(result).toBeTrue();
     });
 
     it("should say that SKU is not in the list if it isn't", () => {
       const list = ['123', '456'];
-      const result = fromSelectors.isInCompareProducts('789').projector(list);
+      const result = isInCompareProducts('789').projector(list);
       expect(result).toBeFalse();
     });
   });

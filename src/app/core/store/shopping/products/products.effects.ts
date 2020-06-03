@@ -36,8 +36,24 @@ import {
   whenTruthy,
 } from 'ish-core/utils/operators';
 
-import * as productsActions from './products.actions';
-import * as productsSelectors from './products.selectors';
+import {
+  LoadProduct,
+  LoadProductBundlesSuccess,
+  LoadProductFail,
+  LoadProductIfNotLoaded,
+  LoadProductLinks,
+  LoadProductLinksFail,
+  LoadProductLinksSuccess,
+  LoadProductSuccess,
+  LoadProductVariations,
+  LoadProductVariationsFail,
+  LoadProductVariationsSuccess,
+  LoadProductsForCategory,
+  LoadProductsForCategoryFail,
+  LoadRetailSetSuccess,
+  ProductsActionTypes,
+} from './products.actions';
+import { getProductEntities, getSelectedProduct } from './products.selectors';
 
 @Injectable()
 export class ProductsEffects {
@@ -52,27 +68,27 @@ export class ProductsEffects {
 
   @Effect()
   loadProduct$ = this.actions$.pipe(
-    ofType<productsActions.LoadProduct>(productsActions.ProductsActionTypes.LoadProduct),
+    ofType<LoadProduct>(ProductsActionTypes.LoadProduct),
     mapToPayloadProperty('sku'),
     mergeMap(sku =>
       this.productsService.getProduct(sku).pipe(
-        map(product => new productsActions.LoadProductSuccess({ product })),
-        mapErrorToAction(productsActions.LoadProductFail, { sku })
+        map(product => new LoadProductSuccess({ product })),
+        mapErrorToAction(LoadProductFail, { sku })
       )
     )
   );
 
   @Effect()
   loadProductIfNotLoaded$ = this.actions$.pipe(
-    ofType<productsActions.LoadProductIfNotLoaded>(productsActions.ProductsActionTypes.LoadProductIfNotLoaded),
+    ofType<LoadProductIfNotLoaded>(ProductsActionTypes.LoadProductIfNotLoaded),
     mapToPayload(),
-    withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
+    withLatestFrom(this.store.pipe(select(getProductEntities))),
     filter(([{ sku, level }, entities]) => !ProductHelper.isSufficientlyLoaded(entities[sku], level)),
     groupBy(([{ sku }]) => sku),
     mergeMap(group$ =>
       group$.pipe(
         this.throttleOnBrowser(),
-        map(([{ sku }]) => new productsActions.LoadProduct({ sku }))
+        map(([{ sku }]) => new LoadProduct({ sku }))
       )
     )
   );
@@ -82,13 +98,13 @@ export class ProductsEffects {
    */
   @Effect()
   loadProductsForCategory$ = this.actions$.pipe(
-    ofType<productsActions.LoadProductsForCategory>(productsActions.ProductsActionTypes.LoadProductsForCategory),
+    ofType<LoadProductsForCategory>(ProductsActionTypes.LoadProductsForCategory),
     mapToPayload(),
     map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
     concatMap(({ categoryId, page, sorting }) =>
       this.productsService.getCategoryProducts(categoryId, page, sorting).pipe(
         concatMap(({ total, products, sortKeys }) => [
-          ...products.map(product => new productsActions.LoadProductSuccess({ product })),
+          ...products.map(product => new LoadProductSuccess({ product })),
           new SetProductListingPages(
             this.productListingMapper.createPages(
               products.map(p => p.sku),
@@ -103,23 +119,23 @@ export class ProductsEffects {
             )
           ),
         ]),
-        mapErrorToAction(productsActions.LoadProductsForCategoryFail, { categoryId })
+        mapErrorToAction(LoadProductsForCategoryFail, { categoryId })
       )
     )
   );
 
   @Effect()
   loadProductBundles$ = this.actions$.pipe(
-    ofType<productsActions.LoadProductSuccess>(productsActions.ProductsActionTypes.LoadProductSuccess),
+    ofType<LoadProductSuccess>(ProductsActionTypes.LoadProductSuccess),
     mapToPayloadProperty('product'),
     filter(product => ProductHelper.isProductBundle(product)),
     mergeMap(({ sku }) =>
       this.productsService.getProductBundles(sku).pipe(
         mergeMap(({ stubs, bundledProducts }) => [
-          ...stubs.map((product: Product) => new productsActions.LoadProductSuccess({ product })),
-          new productsActions.LoadProductBundlesSuccess({ sku, bundledProducts }),
+          ...stubs.map((product: Product) => new LoadProductSuccess({ product })),
+          new LoadProductBundlesSuccess({ sku, bundledProducts }),
         ]),
-        mapErrorToAction(productsActions.LoadProductFail, { sku })
+        mapErrorToAction(LoadProductFail, { sku })
       )
     )
   );
@@ -129,19 +145,19 @@ export class ProductsEffects {
    */
   @Effect()
   loadProductVariations$ = this.actions$.pipe(
-    ofType<productsActions.LoadProductVariations>(productsActions.ProductsActionTypes.LoadProductVariations),
+    ofType<LoadProductVariations>(ProductsActionTypes.LoadProductVariations),
     mapToPayloadProperty('sku'),
     mergeMap(sku =>
       this.productsService.getProductVariations(sku).pipe(
         mergeMap(({ products: variations, defaultVariation }) => [
-          ...variations.map((product: Product) => new productsActions.LoadProductSuccess({ product })),
-          new productsActions.LoadProductVariationsSuccess({
+          ...variations.map((product: Product) => new LoadProductSuccess({ product })),
+          new LoadProductVariationsSuccess({
             sku,
             variations: variations.map(p => p.sku),
             defaultVariation,
           }),
         ]),
-        mapErrorToAction(productsActions.LoadProductVariationsFail, { sku })
+        mapErrorToAction(LoadProductVariationsFail, { sku })
       )
     )
   );
@@ -152,10 +168,10 @@ export class ProductsEffects {
    */
   @Effect()
   loadMasterProductForProduct$ = this.actions$.pipe(
-    ofType<productsActions.LoadProductSuccess>(productsActions.ProductsActionTypes.LoadProductSuccess),
+    ofType<LoadProductSuccess>(ProductsActionTypes.LoadProductSuccess),
     mapToPayloadProperty('product'),
     filter(product => ProductHelper.isVariationProduct(product)),
-    withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
+    withLatestFrom(this.store.pipe(select(getProductEntities))),
     filter(
       ([product, entities]: [VariationProduct, Dictionary<VariationProduct>]) => !entities[product.productMasterSKU]
     ),
@@ -165,7 +181,7 @@ export class ProductsEffects {
         this.throttleOnBrowser(),
         map(
           ([product]) =>
-            new productsActions.LoadProductIfNotLoaded({
+            new LoadProductIfNotLoaded({
               sku: product.productMasterSKU,
               level: ProductCompletenessLevel.List,
             })
@@ -180,10 +196,10 @@ export class ProductsEffects {
    */
   @Effect()
   loadProductVariationsForMasterProduct$ = this.actions$.pipe(
-    ofType<productsActions.LoadProductSuccess>(productsActions.ProductsActionTypes.LoadProductSuccess),
+    ofType<LoadProductSuccess>(ProductsActionTypes.LoadProductSuccess),
     mapToPayloadProperty('product'),
     filter(product => ProductHelper.isMasterProduct(product)),
-    withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
+    withLatestFrom(this.store.pipe(select(getProductEntities))),
     filter(
       ([product, entities]: [VariationProductMaster, Dictionary<VariationProductMaster>]) =>
         !entities[product.sku] || !entities[product.sku].variationSKUs
@@ -192,7 +208,7 @@ export class ProductsEffects {
     mergeMap(groups =>
       groups.pipe(
         this.throttleOnBrowser(),
-        map(([product]) => new productsActions.LoadProductVariations({ sku: product.sku }))
+        map(([product]) => new LoadProductVariations({ sku: product.sku }))
       )
     )
   );
@@ -205,13 +221,13 @@ export class ProductsEffects {
   selectedProduct$ = this.store.pipe(
     select(selectRouteParam('sku')),
     whenTruthy(),
-    map(sku => new productsActions.LoadProduct({ sku }))
+    map(sku => new LoadProduct({ sku }))
   );
 
   @Effect()
   loadDefaultCategoryContextForProduct$ = this.store.pipe(
     ofProductUrl(),
-    select(productsSelectors.getSelectedProduct),
+    select(getSelectedProduct),
     withLatestFrom(this.store.pipe(select(selectRouteParam('categoryUniqueId')))),
     map(([product, categoryUniqueId]) => !categoryUniqueId && product),
     whenTruthy(),
@@ -225,13 +241,13 @@ export class ProductsEffects {
 
   @Effect()
   loadRetailSetProductDetail$ = this.actions$.pipe(
-    ofType<productsActions.LoadProductSuccess>(productsActions.ProductsActionTypes.LoadProductSuccess),
+    ofType<LoadProductSuccess>(ProductsActionTypes.LoadProductSuccess),
     mapToPayloadProperty('product'),
     filter(ProductHelper.isRetailSet),
     mapToProperty('sku'),
     map(
       sku =>
-        new productsActions.LoadProductIfNotLoaded({
+        new LoadProductIfNotLoaded({
           sku,
           level: ProductCompletenessLevel.Detail,
         })
@@ -240,7 +256,7 @@ export class ProductsEffects {
 
   @Effect()
   loadPartsOfRetailSet$ = this.actions$.pipe(
-    ofType<productsActions.LoadProductSuccess>(productsActions.ProductsActionTypes.LoadProductSuccess),
+    ofType<LoadProductSuccess>(ProductsActionTypes.LoadProductSuccess),
     mapToPayloadProperty('product'),
     filter(ProductHelper.isRetailSet),
     mapToProperty('sku'),
@@ -249,8 +265,8 @@ export class ProductsEffects {
         .getRetailSetParts(sku)
         .pipe(
           mergeMap(stubs => [
-            ...stubs.map((product: Product) => new productsActions.LoadProductSuccess({ product })),
-            new productsActions.LoadRetailSetSuccess({ sku, parts: stubs.map(p => p.sku) }),
+            ...stubs.map((product: Product) => new LoadProductSuccess({ product })),
+            new LoadRetailSetSuccess({ sku, parts: stubs.map(p => p.sku) }),
           ])
         )
     )
@@ -259,7 +275,7 @@ export class ProductsEffects {
   @Effect({ dispatch: false })
   redirectIfErrorInProducts$ = this.store.pipe(
     ofProductUrl(),
-    select(productsSelectors.getSelectedProduct),
+    select(getSelectedProduct),
     whenTruthy(),
     distinctUntilKeyChanged('sku'),
     filter(ProductHelper.isFailedLoading),
@@ -268,26 +284,26 @@ export class ProductsEffects {
 
   @Effect({ dispatch: false })
   redirectIfErrorInCategoryProducts$ = this.actions$.pipe(
-    ofType(productsActions.ProductsActionTypes.LoadProductsForCategoryFail),
+    ofType(ProductsActionTypes.LoadProductsForCategoryFail),
     tap(() => this.httpStatusCodeService.setStatusAndRedirect(404))
   );
 
   @Effect()
   loadProductLinks$ = this.actions$.pipe(
-    ofType<productsActions.LoadProductLinks>(productsActions.ProductsActionTypes.LoadProductLinks),
+    ofType<LoadProductLinks>(ProductsActionTypes.LoadProductLinks),
     mapToPayloadProperty('sku'),
     distinct(),
     mergeMap(sku =>
       this.productsService.getProductLinks(sku).pipe(
-        map(links => new productsActions.LoadProductLinksSuccess({ sku, links })),
-        mapErrorToAction(productsActions.LoadProductLinksFail, { sku })
+        map(links => new LoadProductLinksSuccess({ sku, links })),
+        mapErrorToAction(LoadProductLinksFail, { sku })
       )
     )
   );
 
   @Effect()
   loadLinkedCategories$ = this.actions$.pipe(
-    ofType<productsActions.LoadProductLinksSuccess>(productsActions.ProductsActionTypes.LoadProductLinksSuccess),
+    ofType<LoadProductLinksSuccess>(ProductsActionTypes.LoadProductLinksSuccess),
     mapToPayloadProperty('links'),
     map(links =>
       Object.keys(links)
