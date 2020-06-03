@@ -162,8 +162,6 @@
     "rxjs-throw-error": { "severity": "off" },
     "private-destroy-field": true,
     "ngrx-use-empty-store-type": true,
-    "ngrx-use-oftype-with-type": true,
-    "ngrx-use-complex-type-with-action-payload": true,
     "semicolon": [true, "always"],
     "triple-equals": true,
     "typedef-whitespace": [
@@ -411,6 +409,30 @@
           "from": "ngrx",
           "filePattern": "^.*\\.spec\\.ts*$",
           "message": "Use the testing helpers '*StoreModule.forTesting' in tests instead."
+        },
+        {
+          "import": "^Effect$",
+          "from": "@ngrx/effects",
+          "filePattern": "^.*(\\.spec|\\.effects)\\.ts*$",
+          "message": "The old way of declaring effects is deprecated, use 'createEffect'."
+        },
+        {
+          "import": "^Action$",
+          "from": "@ngrx/store",
+          "filePattern": "^(?!.*\\.spec\\.ts$).*\\.actions\\.ts*$",
+          "message": "The old way of declaring actions is deprecated, use 'createAction'."
+        },
+        {
+          "import": "^props$",
+          "from": "@ngrx/store",
+          "filePattern": "^.*\\.actions\\.ts*$",
+          "message": "Do not use 'props' directly with 'createAction', use our helper functions 'payload' and 'httpError' from 'ish-core/utils/action-creators' instead."
+        },
+        {
+          "import": "^HttpError$",
+          "from": ".*http-error.model",
+          "filePattern": "^.*\\.actions\\.ts*$",
+          "message": "Do not use 'HttpError' explicitly, please use 'httpError' from 'ish-core/utils/action-creators' instead."
         },
         {
           "import": "^IconModule$",
