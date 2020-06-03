@@ -72,12 +72,11 @@ export enum BasketActionTypes {
 
 export class LoadBasket implements Action {
   readonly type = BasketActionTypes.LoadBasket;
-  constructor(public payload?: { id: string }) {}
 }
 
 export class LoadBasketByAPIToken implements Action {
   readonly type = BasketActionTypes.LoadBasketByAPIToken;
-  constructor(public payload?: { apiToken: string }) {}
+  constructor(public payload: { apiToken: string }) {}
 }
 
 export class LoadBasketFail implements Action {
