@@ -532,6 +532,7 @@
         }
       }
     },
+    "no-star-imports-in-store": { "severity": "warning" },
     "initialize-observables-in-ngoninit": true,
     "project-structure": {
       "severity": "warning",
