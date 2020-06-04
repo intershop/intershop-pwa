@@ -2,14 +2,16 @@ import { Injectable } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { combineLatest, merge, noop } from 'rxjs';
-import { filter, map, mapTo, shareReplay, startWith } from 'rxjs/operators';
+import { filter, map, mapTo, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
 
 import { getAvailableLocales, getCurrentLocale, getDeviceType, getICMBaseURL } from 'ish-core/store/core/configuration';
 import { getGeneralError, getGeneralErrorType } from 'ish-core/store/core/error';
 import { selectPath } from 'ish-core/store/core/router';
 import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } from 'ish-core/store/core/viewconf';
+import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { getAllCountries, getCountriesLoading, loadCountries } from 'ish-core/store/general/countries';
 import { getRegionsByCountryCode, loadRegions } from 'ish-core/store/general/regions';
+import { getServerConfigParameter } from 'ish-core/store/general/server-config';
 
 @Injectable({ providedIn: 'root' })
 export class AppFacade {
@@ -63,6 +65,30 @@ export class AppFacade {
     )
   ).pipe(startWith(true), shareReplay(1));
   path$ = this.store.pipe(select(selectPath));
+
+  /**
+   * selects whether the current application type is 'REST'. If the application type is unknown it returns true
+   */
+  isAppTypeREST$ = this.store.pipe(
+    select(
+      getServerConfigParameter<'intershop.REST' | 'intershop.B2CResponsive' | 'intershop.SMBResponsive'>(
+        'application.applicationType'
+      )
+    ),
+    map(appType => appType === 'intershop.REST' || !appType)
+  );
+
+  customerRestResource$ = this.isAppTypeREST$.pipe(
+    withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
+    map(([isRest, customer]) => AppFacade.getCustomerRestResource(!customer || customer.isBusinessCustomer, isRest))
+  );
+
+  static getCustomerRestResource(
+    isBusinessCustomer: boolean,
+    isAppTypeREST: boolean
+  ): 'customers' | 'privatecustomers' {
+    return isAppTypeREST && !isBusinessCustomer ? 'privatecustomers' : 'customers';
+  }
 
   countries$() {
     this.store.dispatch(loadCountries());

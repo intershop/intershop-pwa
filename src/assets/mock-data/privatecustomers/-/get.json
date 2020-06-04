@@ -1,5 +1,12 @@
 {
   "customerNo": "Patricia",
+  "email": "patricia@test.intershop.de",
+  "fax": "",
+  "firstName": "Patricia",
+  "lastName": "Miller",
+  "phoneBusiness": "",
+  "phoneHome": "",
+  "phoneMobile": "",
   "preferredInvoiceToAddress": {
     "addressLine1": "Potsdamer Str. 20",
     "addressName": "customeraddr-ABCDEFGPRMuMCscyXgSRVU",
@@ -22,6 +29,7 @@
     "urn": "urn:address:customer:PpWsEQASbvMAAAFz310CrZEN:zBCsEQASD4oAAAFz610CrZEN",
     "usage": [true, true]
   },
+  "preferredLanguage": "en_US",
   "preferredShipToAddress": {
     "addressLine1": "Berliner Str. 20",
     "addressName": "customeraddr-YXEwLKSprCWPRMuMCscyXgSRVU",
@@ -44,5 +52,6 @@
     "urn": "urn:address:customer:PpWsEQASbvMAAAFz310CrZEN:fbSsEQASD4kAAAFz610CrZEN",
     "usage": [true, true]
   },
-  "type": "SMBCustomer"
+  "title": "",
+  "type": "PrivateCustomer"
 }

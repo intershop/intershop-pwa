@@ -2,8 +2,9 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, of, throwError } from 'rxjs';
-import { concatMap, map, mapTo, withLatestFrom } from 'rxjs/operators';
+import { concatMap, first, map, mapTo, withLatestFrom } from 'rxjs/operators';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { Link } from 'ish-core/models/link/link.model';
@@ -24,7 +25,7 @@ import { getCurrentLocale } from 'ish-core/store/core/configuration';
  */
 @Injectable({ providedIn: 'root' })
 export class PaymentService {
-  constructor(private apiService: ApiService, private store: Store) {}
+  constructor(private apiService: ApiService, private store: Store, private appFacade: AppFacade) {}
 
   private basketHeaders = new HttpHeaders({
     'content-type': 'application/json',
@@ -248,13 +249,18 @@ export class PaymentService {
       return throwError('getUserPaymentMethods called without required body data');
     }
 
-    return this.apiService.get(`customers/${customer.customerNo}/payments`).pipe(
-      unpackEnvelope<Link>(),
-      this.apiService.resolveLinks<PaymentInstrumentData>(),
-      concatMap(instruments =>
-        this.apiService.options(`customers/${customer.customerNo}/payments`).pipe(
-          unpackEnvelope<PaymentMethodOptionsDataType>('methods'),
-          map(methods => PaymentMethodMapper.fromOptions({ methods, instruments }))
+    return this.appFacade.customerRestResource$.pipe(
+      first(),
+      concatMap(restResource =>
+        this.apiService.get(`${restResource}/${customer.customerNo}/payments`).pipe(
+          unpackEnvelope<Link>(),
+          this.apiService.resolveLinks<PaymentInstrumentData>(),
+          concatMap(instruments =>
+            this.apiService.options(`${restResource}/${customer.customerNo}/payments`).pipe(
+              unpackEnvelope<PaymentMethodOptionsDataType>('methods'),
+              map(methods => PaymentMethodMapper.fromOptions({ methods, instruments }))
+            )
+          )
         )
       )
     );
@@ -289,9 +295,14 @@ export class PaymentService {
       parameters: paymentInstrument.parameters.map(attr => ({ key: attr.name, property: attr.value })),
     };
 
-    return this.apiService
-      .post(`customers/${customerNo}/payments`, body)
-      .pipe(this.apiService.resolveLink<PaymentInstrument>());
+    return this.appFacade.customerRestResource$.pipe(
+      first(),
+      concatMap(restResource =>
+        this.apiService
+          .post(`${restResource}/${customerNo}/payments`, body)
+          .pipe(this.apiService.resolveLink<PaymentInstrument>())
+      )
+    );
   }
 
   /**
@@ -307,6 +318,11 @@ export class PaymentService {
       return throwError('deleteUserPayment() called without paymentInstrumentId');
     }
 
-    return this.apiService.delete(`customers/${customerNo}/payments/${paymentInstrumentId}`);
+    return this.appFacade.customerRestResource$.pipe(
+      first(),
+      concatMap(restResource =>
+        this.apiService.delete<void>(`${restResource}/${customerNo}/payments/${paymentInstrumentId}`)
+      )
+    );
   }
 }
