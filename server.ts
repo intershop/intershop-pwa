@@ -1,4 +1,4 @@
-// tslint:disable: no-console ish-ordered-imports
+// tslint:disable: no-console ish-ordered-imports force-jsdoc-comments
 import 'zone.js/dist/zone-node';
 
 import * as express from 'express';

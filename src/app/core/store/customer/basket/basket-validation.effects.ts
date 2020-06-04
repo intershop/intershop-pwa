@@ -34,8 +34,10 @@ export class BasketValidationEffects {
     private basketService: BasketService
   ) {}
 
+  /**
+   * validates the basket but doesn't change the route
+   */
   @Effect()
-  // validates the basket but doesn't change the route
   validateBasket$ = this.actions$.pipe(
     ofType<ValidateBasket>(BasketActionTypes.ValidateBasket),
     mapToPayloadProperty('scopes'),

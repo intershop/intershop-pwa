@@ -54,6 +54,7 @@ export class CheckoutFacade {
   }
 
   // BASKET
+
   basket$ = this.store.pipe(select(getCurrentBasket));
   basketChange$ = this.store.pipe(select(getBasketLastTimeProductAdded));
   basketError$ = this.store.pipe(select(getBasketError));
@@ -79,11 +80,13 @@ export class CheckoutFacade {
   }
 
   // ORDERS
+
   private ordersError$ = this.store.pipe(select(getOrdersError));
   basketOrOrdersError$ = merge(this.basketError$, this.ordersError$);
   selectedOrder$ = this.store.pipe(select(getSelectedOrder));
 
   // SHIPPING
+
   eligibleShippingMethods$() {
     return this.basket$.pipe(
       whenTruthy(),
@@ -94,6 +97,7 @@ export class CheckoutFacade {
   }
 
   // PAYMENT
+
   eligiblePaymentMethods$() {
     return this.basket$.pipe(
       whenTruthy(),
@@ -117,6 +121,7 @@ export class CheckoutFacade {
   }
 
   // ADDRESSES
+
   basketInvoiceAddress$ = this.store.pipe(select(getBasketInvoiceAddress));
   basketShippingAddress$ = this.store.pipe(select(getBasketShippingAddress));
   basketInvoiceAndShippingAddressEqual$ = this.store.pipe(select(isBasketInvoiceAndShippingAddressEqual));
@@ -157,6 +162,7 @@ export class CheckoutFacade {
   }
 
   // PROMOTIONS
+
   promotionError$ = this.store.pipe(select(getBasketPromotionError));
 
   addPromotionCodeToBasket(code: string) {

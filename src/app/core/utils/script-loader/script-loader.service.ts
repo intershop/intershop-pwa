@@ -8,8 +8,7 @@ interface ScriptType {
 
 @Injectable({ providedIn: 'root' })
 export class ScriptLoaderService {
-  // registered scripts
-  private scripts: ScriptType[] = [];
+  private registeredScripts: ScriptType[] = [];
 
   /**
    * load a script, if it has not already been loaded
@@ -17,10 +16,10 @@ export class ScriptLoaderService {
    */
   load(url: string): Observable<ScriptType> {
     return new Observable<ScriptType>((observer: Observer<ScriptType>) => {
-      let script = this.scripts.find(s => s.src === url);
+      let script = this.registeredScripts.find(s => s.src === url);
       if (!script) {
         script = { src: url, loaded: false };
-        this.scripts.push(script);
+        this.registeredScripts.push(script);
       }
 
       // Complete if already loaded

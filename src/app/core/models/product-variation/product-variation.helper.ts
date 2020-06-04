@@ -12,8 +12,8 @@ export class ProductVariationHelper {
    * Check specific option if perfect variant match is not existing.
    * @param option  The select option to check.
    * @returns       Indicates if no perfect match is found.
+   * TODO: Refactor this to a more functional style
    */
-  // TODO: Refactor this to a more functional style
   private static alternativeCombinationCheck(option: VariationSelectOption, product: VariationProductView): boolean {
     let quality: number;
     const perfectMatchQuality = product.variableVariationAttributes.length;
@@ -98,8 +98,8 @@ export class ProductVariationHelper {
   /**
    * Find possible variant match
    * @param selection The selected variant form values.
+   * TODO: Refactor this to a more functional style
    */
-  // TODO: Refactor this to a more functional style
   static findPossibleVariationForSelection(
     selection: VariationSelection,
     product: VariationProductView,

@@ -32,7 +32,9 @@ export class CaptchaV2Component implements OnInit {
     this.formControl.updateValueAndValidity();
   }
 
-  /* writes the captcha response token in the captcha form field */
+  /**
+   * writes the captcha response token in the captcha form field
+   */
   resolved(captchaResponse: string) {
     this.formControl.setValue(captchaResponse);
   }

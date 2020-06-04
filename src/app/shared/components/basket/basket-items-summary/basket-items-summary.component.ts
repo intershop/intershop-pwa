@@ -17,17 +17,23 @@ export class BasketItemsSummaryComponent {
     this.isCollapsed = !this.isCollapsed;
   }
 
-  // the first (collapsedItemsCount) items are always visible, the other ones only if the summary list is expanded
+  /**
+   * the first (collapsedItemsCount) items are always visible, the other ones only if the summary list is expanded
+   */
   isItemVisible(index: number): boolean {
     return index < this.collapsedItemsCount || !this.isCollapsed;
   }
 
-  // the show all link is visible if the list is collapsed and there are more items to show
+  /**
+   * the show all link is visible if the list is collapsed and there are more items to show
+   */
   isShowAllLinkVisible(): boolean {
     return this.basket.lineItems.length > this.collapsedItemsCount && this.isCollapsed;
   }
 
-  // the hide link is visible if the list is expanded and there are more items than collapsedItemsCount
+  /**
+   * the hide link is visible if the list is expanded and there are more items than collapsedItemsCount
+   */
   isHideLinkVisible(): boolean {
     return this.basket.lineItems.length > this.collapsedItemsCount && !this.isCollapsed;
   }

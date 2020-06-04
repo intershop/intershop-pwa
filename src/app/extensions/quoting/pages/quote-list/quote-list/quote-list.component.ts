@@ -21,10 +21,14 @@ export class QuoteListComponent implements OnChanges {
 
   sortedQuotes: (Quote | QuoteRequest)[] = [];
 
-  // TODO: is the API using UTC?
+  /**
+   * TODO: is the API using UTC?
+   */
   currentDateTime = new Date().getTime();
 
-  // TODO: find a better solution for specific, selection related variables in modal dialog content
+  /**
+   * TODO: find a better solution for specific, selection related variables in modal dialog content
+   */
   selectedQuoteName: string;
 
   ngOnChanges() {

@@ -37,14 +37,26 @@ export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
   @Output() cancel = new EventEmitter<void>();
   @Output() submit = new EventEmitter<{ parameters: Attribute[]; saveAllowed: boolean }>();
 
-  scriptLoaded = false; // flag to make sure that the init script is executed only once
-  formSubmitted = false; // flag for displaying error messages after form submit
+  /**
+   * flag to make sure that the init script is executed only once
+   */
+  scriptLoaded = false;
 
-  parameterForm: FormGroup; // form for parameters which doesnt come form payment host
+  /**
+   * flag for displaying error messages after form submit
+   */
+  formSubmitted = false;
+
+  /**
+   * form for parameters which don't come form payment host
+   */
+  parameterForm: FormGroup;
   model = {};
   options: FormlyFormOptions = {};
 
-  // error messages from host
+  /**
+   * error messages from host
+   */
   errorMessage = {
     general: { message: '' },
     iban: { messageKey: '', message: '', code: 0 },
@@ -104,8 +116,6 @@ export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
     }
     return parameter.value;
   }
-
-  /* ---------------------------------------- error message handling  ------------------------------------------- */
 
   /**
    * determine errorMessages on the basis of the error code

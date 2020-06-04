@@ -15,9 +15,6 @@ import { PasswordReminder } from 'ish-core/models/password-reminder/password-rem
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
-/**
- * The User Service handles the registration related interaction with the 'customers' REST API.
- */
 
 // request data type for create user
 interface CreatePrivateCustomerType extends CustomerData {
@@ -32,6 +29,9 @@ interface CreateBusinessCustomerType extends Customer {
   type: CustomerType;
 }
 
+/**
+ * The User Service handles the registration related interaction with the 'customers' REST API.
+ */
 @Injectable({ providedIn: 'root' })
 export class UserService {
   constructor(private apiService: ApiService) {}

@@ -49,9 +49,6 @@ export class SelectYearMonthComponent extends FormElementComponent implements On
 
   yearOptions: SelectOption[] = [];
 
-  /*
-    constructor
-  */
   constructor(protected translate: TranslateService) {
     super(translate);
   }
@@ -61,9 +58,6 @@ export class SelectYearMonthComponent extends FormElementComponent implements On
     super.init();
   }
 
-  /*
-   set default values for empty input parameters
-  */
   private setDefaultValues() {
     if (!this.controlName) {
       this.controlName = ['month', 'year'];

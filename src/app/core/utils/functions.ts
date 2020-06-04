@@ -27,7 +27,9 @@ function isObject(item) {
   return item && typeof item === 'object' && !Array.isArray(item);
 }
 
-// https://stackoverflow.com/a/37164538/13001898
+/**
+ * @see https://stackoverflow.com/a/37164538/13001898
+ */
 export function mergeDeep(target, source) {
   let output = { ...target };
   if (isObject(target) && isObject(source)) {

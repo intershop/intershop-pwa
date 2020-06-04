@@ -34,10 +34,12 @@ export class ContentConfigurationParameterMapper {
     return configurationParameters;
   }
 
-  // TODO: make this dependant on the type of the configuration parameter once the CMS REST API provides this information
-  // for now filter all configuration parameters that start with 'Image' or 'Video'
-  // and where the value does not start with 'http' but contains ':/'
-  // if the filter matches convert the CMS REST API value in a full server URL to the configured file
+  /**
+   * TODO: make this dependant on the type of the configuration parameter once the CMS REST API provides this information
+   * for now filter all configuration parameters that start with 'Image' or 'Video'
+   * and where the value does not start with 'http' but contains ':/'
+   + if the filter matches convert the CMS REST API value in a full server URL to the configured file
+   */
   postProcessFileReferences(data: ContentConfigurationParameters): ContentConfigurationParameters {
     Object.keys(data)
       .filter(

@@ -295,11 +295,11 @@ export class QuoteRequestEffects {
     )
   );
 
-  // TODO: currently updating more than one item at a time is not needed. We could simplify this effect.
   /**
    * Update quote request items effect.
    * Triggers update item request if item quantity has changed and is greater zero
    * Triggers delete item request if item quantity set to zero
+   * TODO: currently updating more than one item at a time is not needed. We could simplify this effect.
    */
   @Effect()
   updateQuoteRequestItems$ = this.actions$.pipe(

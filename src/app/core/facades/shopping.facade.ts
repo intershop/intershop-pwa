@@ -49,11 +49,13 @@ export class ShoppingFacade {
   constructor(private store: Store) {}
 
   // CATEGORY
+
   topLevelCategories$ = this.store.pipe(select(getTopLevelCategories));
   selectedCategory$ = this.store.pipe(select(getSelectedCategory));
   selectedCategoryLoading$ = this.store.pipe(select(getCategoryLoading), debounceTime(500));
 
   // PRODUCT
+
   selectedProduct$ = this.store.pipe(select(getSelectedProduct));
   selectedProductVariationOptions$ = this.store.pipe(select(getSelectedProductVariationOptions));
   productDetailLoading$ = this.selectedProduct$.pipe(
@@ -98,11 +100,13 @@ export class ShoppingFacade {
   }
 
   // CHECKOUT
+
   addProductToBasket(sku: string, quantity: number) {
     this.store.dispatch(new AddProductToBasket({ sku, quantity }));
   }
 
   // PRODUCT LISTING
+
   productListingView$(id: ProductListingID) {
     return this.store.pipe(select(getProductListingView, id));
   }
@@ -115,12 +119,14 @@ export class ShoppingFacade {
   }
 
   // PRODUCT LINKS
+
   productLinks$(sku: string) {
     this.store.dispatch(new LoadProductLinks({ sku }));
     return this.store.pipe(select(getProductLinks, { sku }));
   }
 
   // SEARCH
+
   searchTerm$ = this.store.pipe(select(getSearchTerm));
   searchResults$(searchTerm: Observable<string>) {
     return searchTerm.pipe(
@@ -141,9 +147,11 @@ export class ShoppingFacade {
   );
 
   // FILTER
+
   currentFilter$ = this.store.pipe(select(getAvailableFilter));
 
   // COMPARE
+
   compareProducts$ = this.store.pipe(select(getCompareProducts));
   compareProductsCount$ = this.store.pipe(select(getCompareProductsCount));
 
@@ -164,6 +172,7 @@ export class ShoppingFacade {
   }
 
   // RECENTLY
+
   recentlyViewedProducts$ = this.store.pipe(select(getRecentlyViewedProducts));
   mostRecentlyViewedProducts$ = this.store.pipe(select(getMostRecentlyViewedProducts));
 
@@ -172,6 +181,7 @@ export class ShoppingFacade {
   }
 
   // PROMOTIONS
+
   promotion$(promotionId: string) {
     this.store.dispatch(new LoadPromotion({ promoId: promotionId }));
     return this.store.pipe(select(getPromotion(), { promoId: promotionId }));

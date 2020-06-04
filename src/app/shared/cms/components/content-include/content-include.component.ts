@@ -53,7 +53,6 @@ export class ContentIncludeComponent extends SfeMetadataWrapper implements OnIni
       });
   }
 
-  // TODO: replace with @ObservableInput
   ngOnChanges() {
     this.includeIdChange.next(this.includeId);
   }

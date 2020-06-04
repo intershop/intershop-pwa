@@ -45,6 +45,7 @@ export class AppFacade {
   ]).pipe(map(classes => classes.filter(c => !!c)));
 
   // COUNTRIES AND REGIONS
+
   countriesLoading$ = this.store.pipe(select(getCountriesLoading));
 
   routingInProgress$ = merge(
