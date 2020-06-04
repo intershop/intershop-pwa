@@ -2,9 +2,10 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import b64u from 'b64u';
 import { pick } from 'lodash-es';
-import { EMPTY, Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { EMPTY, Observable, of, throwError } from 'rxjs';
+import { catchError, concatMap, map, withLatestFrom } from 'rxjs/operators';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { Address } from 'ish-core/models/address/address.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { CustomerData, CustomerType } from 'ish-core/models/customer/customer.interface';
@@ -15,6 +16,10 @@ import { PasswordReminder } from 'ish-core/models/password-reminder/password-rem
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
+
+/**
+ * The User Service handles the registration related interaction with the 'customers' REST API.
+ */
 
 // request data type for create user
 interface CreatePrivateCustomerType extends CustomerData {
@@ -34,7 +39,7 @@ interface CreateBusinessCustomerType extends Customer {
  */
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private appFacade: AppFacade) {}
 
   /**
    * Sign in an existing user with the given login credentials (login, password).
@@ -48,9 +53,19 @@ export class UserService {
       ApiService.AUTHORIZATION_HEADER_KEY,
       'BASIC ' + b64u.toBase64(b64u.encode(`${loginCredentials.login}:${loginCredentials.password}`))
     );
+
     return this.apiService
       .get<CustomerData>('customers/-', { headers })
-      .pipe(map(CustomerMapper.mapLoginData));
+      .pipe(
+        withLatestFrom(this.appFacade.isAppTypeREST$),
+        concatMap(([data, isAppTypeRest]) =>
+          // ToDo: #IS-30018 use the customer type for this decision
+          isAppTypeRest && !data.companyName
+            ? this.apiService.get<CustomerData>('privatecustomers/-', { headers })
+            : of(data)
+        ),
+        map(CustomerMapper.mapLoginData)
+      );
   }
 
   signinUserByToken(apiToken: string): Observable<CustomerUserType> {
@@ -58,6 +73,13 @@ export class UserService {
     return this.apiService
       .get<CustomerData>('customers/-', { headers, skipApiErrorHandling: true, runExclusively: true })
       .pipe(
+        withLatestFrom(this.appFacade.isAppTypeREST$),
+        concatMap(([data, isAppTypeRest]) =>
+          // ToDo: #IS-30018 use the customer type for this decision
+          isAppTypeRest && !data.companyName
+            ? this.apiService.get<CustomerData>('privatecustomers/-', { headers })
+            : of(data)
+        ),
         map(CustomerMapper.mapLoginData),
         // tslint:disable-next-line:ban
         catchError(() => EMPTY)
@@ -97,9 +119,17 @@ export class UserService {
       };
     }
 
-    return this.apiService.post('customers', newCustomer, {
-      captcha: pick(body, ['captcha', 'captchaAction']),
-    });
+    return this.appFacade.isAppTypeREST$.pipe(
+      concatMap(isAppTypeRest =>
+        this.apiService.post<void>(
+          AppFacade.getCustomerRestResource(body.customer.isBusinessCustomer, isAppTypeRest),
+          newCustomer,
+          {
+            captcha: pick(body, ['captcha', 'captchaAction']),
+          }
+        )
+      )
+    );
   }
 
   /**
@@ -123,11 +153,13 @@ export class UserService {
       preferredPaymentInstrumentId: undefined,
     };
 
-    if (!body.customer.isBusinessCustomer) {
-      return this.apiService.put<User>('customers/-', changedUser).pipe(map(UserMapper.fromData));
-    } else {
-      return this.apiService.put<User>('customers/-/users/-', changedUser).pipe(map(UserMapper.fromData));
-    }
+    return this.appFacade.customerRestResource$.pipe(
+      concatMap(restResource =>
+        body.customer.isBusinessCustomer
+          ? this.apiService.put<User>('customers/-/users/-', changedUser).pipe(map(UserMapper.fromData))
+          : this.apiService.put<User>(`${restResource}/-`, changedUser).pipe(map(UserMapper.fromData))
+      )
+    );
   }
 
   /**
@@ -151,11 +183,16 @@ export class UserService {
       return throwError('updateUserPassword() called without currentPassword');
     }
 
-    if (!customer.isBusinessCustomer) {
-      return this.apiService.put('customers/-/credentials/password', { password, currentPassword });
-    } else {
-      return this.apiService.put('customers/-/users/-/credentials/password', { password, currentPassword });
-    }
+    return this.appFacade.customerRestResource$.pipe(
+      concatMap(restResource =>
+        this.apiService.put<void>(
+          customer.isBusinessCustomer
+            ? 'customers/-/users/-/credentials/password'
+            : `${restResource}/-/credentials/password`,
+          { password, currentPassword }
+        )
+      )
+    );
   }
 
   /**

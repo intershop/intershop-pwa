@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, forkJoin, throwError } from 'rxjs';
 import { concatMap, defaultIfEmpty, map, switchMap } from 'rxjs/operators';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
 import { WishlistData } from '../../models/wishlist/wishlist.interface';
@@ -10,20 +11,24 @@ import { Wishlist, WishlistHeader } from '../../models/wishlist/wishlist.model';
 
 @Injectable({ providedIn: 'root' })
 export class WishlistService {
-  constructor(private apiService: ApiService, private wishlistMapper: WishlistMapper) {}
+  constructor(private apiService: ApiService, private wishlistMapper: WishlistMapper, private appFacade: AppFacade) {}
 
   /**
    * Gets a list of wishlists for the current user.
    * @returns           The customer's wishlists.
    */
   getWishlists(): Observable<Wishlist[]> {
-    return this.apiService.get(`customers/-/wishlists`).pipe(
-      unpackEnvelope(),
-      map(wishlistData => wishlistData.map(this.wishlistMapper.fromDataToIds)),
-      map(wishlistData => wishlistData.map(wishlist => this.getWishlist(wishlist.id))),
-      // tslint:disable-next-line:no-unnecessary-callback-wrapper
-      switchMap(obsArray => forkJoin(obsArray)),
-      defaultIfEmpty([])
+    return this.appFacade.customerRestResource$.pipe(
+      concatMap(restResource =>
+        this.apiService.get(`${restResource}/-/wishlists`).pipe(
+          unpackEnvelope(),
+          map(wishlistData => wishlistData.map(this.wishlistMapper.fromDataToIds)),
+          map(wishlistData => wishlistData.map(wishlist => this.getWishlist(wishlist.id))),
+          // tslint:disable-next-line:no-unnecessary-callback-wrapper
+          switchMap(obsArray => forkJoin(obsArray)),
+          defaultIfEmpty([])
+        )
+      )
     );
   }
 
@@ -36,9 +41,13 @@ export class WishlistService {
     if (!wishlistId) {
       return throwError('getWishlist() called without wishlistId');
     }
-    return this.apiService
-      .get<WishlistData>(`customers/-/wishlists/${wishlistId}`)
-      .pipe(map(wishlistData => this.wishlistMapper.fromData(wishlistData, wishlistId)));
+    return this.appFacade.customerRestResource$.pipe(
+      concatMap(restResource =>
+        this.apiService
+          .get<WishlistData>(`${restResource}/-/wishlists/${wishlistId}`)
+          .pipe(map(wishlistData => this.wishlistMapper.fromData(wishlistData, wishlistId)))
+      )
+    );
   }
 
   /**
@@ -47,9 +56,13 @@ export class WishlistService {
    * @returns                 The created wishlist.
    */
   createWishlist(wishlistData: WishlistHeader): Observable<Wishlist> {
-    return this.apiService
-      .post('customers/-/wishlists', wishlistData)
-      .pipe(map((response: WishlistData) => this.wishlistMapper.fromData(wishlistData, response.title)));
+    return this.appFacade.customerRestResource$.pipe(
+      concatMap(restResource =>
+        this.apiService
+          .post(`${restResource}/-/wishlists`, wishlistData)
+          .pipe(map((response: WishlistData) => this.wishlistMapper.fromData(wishlistData, response.title)))
+      )
+    );
   }
 
   /**
@@ -61,7 +74,9 @@ export class WishlistService {
     if (!wishlistId) {
       return throwError('deleteWishlist() called without wishlistId');
     }
-    return this.apiService.delete(`customers/-/wishlists/${wishlistId}`);
+    return this.appFacade.customerRestResource$.pipe(
+      concatMap(restResource => this.apiService.delete<void>(`${restResource}/-/wishlists/${wishlistId}`))
+    );
   }
 
   /**
@@ -70,9 +85,13 @@ export class WishlistService {
    * @returns          The updated wishlist.
    */
   updateWishlist(wishlist: Wishlist): Observable<Wishlist> {
-    return this.apiService
-      .put(`customers/-/wishlists/${wishlist.id}`, wishlist)
-      .pipe(map((response: Wishlist) => this.wishlistMapper.fromUpdate(response, wishlist.id)));
+    return this.appFacade.customerRestResource$.pipe(
+      concatMap(restResource =>
+        this.apiService
+          .put(`${restResource}/-/wishlists/${wishlist.id}`, wishlist)
+          .pipe(map((response: Wishlist) => this.wishlistMapper.fromUpdate(response, wishlist.id)))
+      )
+    );
   }
 
   /**
@@ -89,9 +108,13 @@ export class WishlistService {
     if (!sku) {
       return throwError('addProductToWishlist() called without sku');
     }
-    return this.apiService
-      .post(`customers/-/wishlists/${wishlistId}/products/${sku}`, { quantity })
-      .pipe(concatMap(() => this.getWishlist(wishlistId)));
+    return this.appFacade.customerRestResource$.pipe(
+      concatMap(restResource =>
+        this.apiService
+          .post(`${restResource}/-/wishlists/${wishlistId}/products/${sku}`, { quantity })
+          .pipe(concatMap(() => this.getWishlist(wishlistId)))
+      )
+    );
   }
 
   /**
@@ -107,8 +130,12 @@ export class WishlistService {
     if (!sku) {
       return throwError('removeProductFromWishlist() called without sku');
     }
-    return this.apiService
-      .delete(`customers/-/wishlists/${wishlistId}/products/${sku}`)
-      .pipe(concatMap(() => this.getWishlist(wishlistId)));
+    return this.appFacade.customerRestResource$.pipe(
+      concatMap(restResource =>
+        this.apiService
+          .delete(`${restResource}/-/wishlists/${wishlistId}/products/${sku}`)
+          .pipe(concatMap(() => this.getWishlist(wishlistId)))
+      )
+    );
   }
 }

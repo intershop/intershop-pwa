@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, mapTo } from 'rxjs/operators';
+import { concatMap, map, mapTo } from 'rxjs/operators';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { Address } from 'ish-core/models/address/address.model';
 import { Link } from 'ish-core/models/link/link.model';
@@ -12,7 +13,7 @@ import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
  */
 @Injectable({ providedIn: 'root' })
 export class AddressService {
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private appFacade: AppFacade) {}
 
   /**
    * Gets the addresses for the given customer id. Falls back to '-' as customer id to get the addresses for the current user.
@@ -20,10 +21,14 @@ export class AddressService {
    * @returns           The customer's addresses.
    */
   getCustomerAddresses(customerId: string = '-'): Observable<Address[]> {
-    return this.apiService.get(`customers/${customerId}/addresses`).pipe(
-      unpackEnvelope<Link>(),
-      this.apiService.resolveLinks<Address>(),
-      map(addressesData => addressesData.map(AddressMapper.fromData))
+    return this.appFacade.customerRestResource$.pipe(
+      concatMap(restResource =>
+        this.apiService.get(`${restResource}/${customerId}/addresses`).pipe(
+          unpackEnvelope<Link>(),
+          this.apiService.resolveLinks<Address>(),
+          map(addressesData => addressesData.map(AddressMapper.fromData))
+        )
+      )
     );
   }
 
@@ -39,9 +44,13 @@ export class AddressService {
       mainDivision: address.mainDivisionCode,
     };
 
-    return this.apiService
-      .post(`customers/${customerId}/addresses`, customerAddress)
-      .pipe(this.apiService.resolveLink<Address>(), map(AddressMapper.fromData));
+    return this.appFacade.customerRestResource$.pipe(
+      concatMap(restResource =>
+        this.apiService
+          .post(`${restResource}/${customerId}/addresses`, customerAddress)
+          .pipe(this.apiService.resolveLink<Address>(), map(AddressMapper.fromData))
+      )
+    );
   }
 
   /**
@@ -55,9 +64,13 @@ export class AddressService {
       mainDivision: address.mainDivisionCode,
     };
 
-    return this.apiService
-      .put(`customers/${customerId}/addresses/${address.id}`, customerAddress)
-      .pipe(map(AddressMapper.fromData));
+    return this.appFacade.customerRestResource$.pipe(
+      concatMap(restResource =>
+        this.apiService
+          .put(`${restResource}/${customerId}/addresses/${address.id}`, customerAddress)
+          .pipe(map(AddressMapper.fromData))
+      )
+    );
   }
 
   /**
@@ -67,6 +80,10 @@ export class AddressService {
    * @returns           The id of the deleted address.
    */
   deleteCustomerAddress(customerId: string = '-', addressId: string): Observable<string> {
-    return this.apiService.delete(`customers/${customerId}/addresses/${addressId}`).pipe(mapTo(addressId));
+    return this.appFacade.customerRestResource$.pipe(
+      concatMap(restResource =>
+        this.apiService.delete(`${restResource}/${customerId}/addresses/${addressId}`).pipe(mapTo(addressId))
+      )
+    );
   }
 }
