@@ -47,7 +47,9 @@ export class PaymentMethodMapper {
       }));
   }
 
-  // is needed for getting a user's eligible payment methods
+  /**
+   * get a user's eligible payment methods
+   */
   static fromOptions(options: {
     methods: PaymentMethodOptionsDataType[];
     instruments: PaymentInstrumentData[];

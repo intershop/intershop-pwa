@@ -22,16 +22,10 @@ export class InputBirthdayComponent extends FormElementComponent implements OnIn
 
   private destroy$ = new Subject();
 
-  /*
-    constructor
-  */
   constructor(private fb: FormBuilder, protected translate: TranslateService) {
     super(translate);
   }
 
-  /*
-    on Init
-  */
   ngOnInit() {
     this.setDefaultValues(); // call this method before parent init
     super.init();
@@ -41,9 +35,6 @@ export class InputBirthdayComponent extends FormElementComponent implements OnIn
     this.dateForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => this.writeBirthday());
   }
 
-  /*
-   set default values for empty input parameters
-  */
   private setDefaultValues() {
     this.controlName = this.controlName || 'birthday';
     this.label = this.label || 'Birthday'; // ToDo: Translation key
@@ -60,9 +51,6 @@ export class InputBirthdayComponent extends FormElementComponent implements OnIn
     this.maxYear = this.maxYear || currentDate.getFullYear() - 16;
   }
 
-  /*
-    create internal form as a base format
-  */
   private createForm() {
     this.dateForm = this.fb.group({
       day: ['', [Validators.min(this.minDay), Validators.max(this.maxDay)]],
@@ -75,10 +63,10 @@ export class InputBirthdayComponent extends FormElementComponent implements OnIn
     this.form.addControl('birthday-form', this.dateForm); */
   }
 
-  /*
-    calculates the birthday in form 'yyyy-mm-dd' on base of the input fields
-    writes the result to the given parent form control (controlName)
-  */
+  /**
+   *  calculates the birthday in form 'yyyy-mm-dd' on base of the input fields
+   * writes the result to the given parent form control (controlName)
+   */
   writeBirthday() {
     let day = this.dateForm.get('day').value;
     let month = this.dateForm.get('month').value;

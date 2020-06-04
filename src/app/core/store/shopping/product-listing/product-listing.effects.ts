@@ -159,7 +159,10 @@ export class ProductListingEffects {
     whenTruthy()
   );
 
-  // TODO: work-around for client side computation of master variations
+  /**
+   * client side computation of master variations
+   * TODO: this is a work-around
+   */
   @Effect()
   loadPagesForMaster$ = this.actions$.pipe(
     ofType<LoadPagesForMaster>(ProductListingActionTypes.LoadPagesForMaster),

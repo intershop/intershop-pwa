@@ -40,7 +40,9 @@ export class ProductImageComponent implements OnChanges {
 
   productImage: Image;
 
-  // defered loading flag
+  /**
+   * deferred loading flag
+   */
   showImage = false;
 
   constructor(private translateService: TranslateService) {}

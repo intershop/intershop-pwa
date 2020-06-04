@@ -45,9 +45,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.wrapperClasses$ = this.appFacade.appWrapperClasses$;
   }
 
-  // It is currently necessary to manually subscribe at this
-  // point to initialize the banner component.
   ngAfterViewInit() {
+    // It is currently necessary to manually subscribe at this
+    // point to initialize the banner component.
     // tslint:disable-next-line:rxjs-no-ignored-subscribe
     this.banner.isSeen.pipe(takeUntil(this.destroy$)).subscribe();
   }

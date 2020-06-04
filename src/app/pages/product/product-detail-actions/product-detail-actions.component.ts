@@ -12,7 +12,9 @@ export class ProductDetailActionsComponent {
   @Input() product: Product;
   @Output() productToCompare = new EventEmitter<void>();
 
-  // TODO: to be removed once channelName inforamtion available in system
+  /**
+   * TODO: to be removed once channelName inforamtion available in system
+   */
   channelName = 'inTRONICS';
 
   isMasterProduct = ProductHelper.isMasterProduct;

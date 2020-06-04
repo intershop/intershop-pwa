@@ -41,7 +41,9 @@ export interface PaymentMethodData {
   };
 }
 
-// user payment interface
+/**
+ * user payment interface
+ */
 export interface PaymentMethodOptionsDataType {
   payments: PaymentMethodBaseData[];
 }

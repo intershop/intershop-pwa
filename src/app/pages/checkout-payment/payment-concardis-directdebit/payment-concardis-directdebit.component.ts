@@ -98,8 +98,6 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
     return param;
   }
 
-  /* ---------------------------------------- concardis callback functions  ------------------------------------------- */
-
   /**
    * call back function to submit data, get a response token from provider and send data in case of success
    */
@@ -181,8 +179,6 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
     }
     this.cd.detectChanges();
   }
-
-  /* ---------------------------------------- submit form  ------------------------------------------- */
 
   /**
    * submit concardis payment form

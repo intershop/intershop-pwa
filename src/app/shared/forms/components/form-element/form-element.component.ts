@@ -84,12 +84,11 @@ export abstract class FormElementComponent {
     return formControls;
   }
 
-  /*
-   decides whether to show a required sign after the label in dependence of the markRequiredLabel
-     returns true, if markRequiredLabel= 'on'
-     returns false, if markRequiredLabel= 'off',
-     returns whether the control is a required field and markRequiredLabel = 'auto'
-  */
+  /** decides whether to show a required sign after the label in dependence of the markRequiredLabel
+   * @returns true, if markRequiredLabel= 'on'
+   * @returns false, if markRequiredLabel= 'off',
+   * @returns whether the control is a required field and markRequiredLabel = 'auto'
+   */
   get required(): boolean {
     switch (this.markRequiredLabel) {
       case 'on': {
@@ -111,7 +110,9 @@ export abstract class FormElementComponent {
     }
   }
 
-  // get the form control according to the controlName or first element of the controlName array
+  /**
+   * get the form control according to the controlName or first element of the controlName array
+   */
   getControlName(): string {
     return Array.isArray(this.controlName)
       ? this.controlName.length

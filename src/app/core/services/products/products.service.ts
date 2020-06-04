@@ -133,7 +133,10 @@ export class ProductsService {
       );
   }
 
-  // TODO: work-around to exchange single-return variation products to master products for B2B
+  /**
+   * exchange single-return variation products to master products for B2B
+   * TODO: this is a work-around
+   */
   private postProcessMasters(products: Partial<Product>[]): Product[] {
     if (this.featureToggleService.enabled('advancedVariationHandling')) {
       return products.map(p =>

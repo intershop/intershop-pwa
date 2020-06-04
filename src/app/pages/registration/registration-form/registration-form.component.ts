@@ -33,7 +33,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
   @Output() create = new EventEmitter<CustomerRegistrationType>();
   @Output() cancel = new EventEmitter<void>();
 
-  /* switch for business customer registration */
+  /** switch for business customer registration */
   businessCustomerRegistration: boolean;
 
   form: FormGroup;
@@ -56,7 +56,6 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
     this.applyError(c.error);
   }
 
-  // generates the registration form depending on the registration type (business/private)
   private createRegistrationForm(): void {
     this.form = this.fb.group({
       credentials: this.fb.group({

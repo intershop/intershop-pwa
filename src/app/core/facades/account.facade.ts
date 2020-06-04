@@ -55,6 +55,7 @@ export class AccountFacade {
   constructor(private store: Store) {}
 
   // USER
+
   user$ = this.store.pipe(select(getLoggedInUser));
   userError$ = this.store.pipe(select(getUserError));
   userLoading$ = this.store.pipe(select(getUserLoading));
@@ -97,6 +98,7 @@ export class AccountFacade {
   }
 
   // CUSTOMER
+
   customer$ = this.store.pipe(select(getLoggedInCustomer));
   isBusinessCustomer$ = this.store.pipe(select(isBusinessCustomer));
   userPriceDisplayType$ = this.store.pipe(select(getPriceDisplayType));
@@ -112,6 +114,7 @@ export class AccountFacade {
   }
 
   // PASSWORD
+
   passwordReminderSuccess$ = this.store.pipe(select(getPasswordReminderSuccess));
   passwordReminderError$ = this.store.pipe(select(getPasswordReminderError));
 
@@ -128,6 +131,7 @@ export class AccountFacade {
   }
 
   // ORDERS
+
   orders$() {
     this.store.dispatch(new LoadOrders());
     return this.store.pipe(select(getOrders));
@@ -137,6 +141,7 @@ export class AccountFacade {
   ordersLoading$ = this.store.pipe(select(getOrdersLoading));
 
   // PAYMENT
+
   private eligiblePaymentMethods$ = this.store.pipe(select(getUserPaymentMethods));
 
   paymentMethods$() {
@@ -149,6 +154,7 @@ export class AccountFacade {
   }
 
   // ADDRESSES
+
   addresses$() {
     return this.user$.pipe(
       whenTruthy(),
@@ -169,6 +175,7 @@ export class AccountFacade {
   }
 
   // CONTACT US
+
   contactSubjects$() {
     this.store.dispatch(new LoadContact());
     return this.store.pipe(select(getContactSubjects));

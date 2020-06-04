@@ -14,7 +14,7 @@ import { User } from 'ish-core/models/user/user.model';
 export class CheckoutReceiptPageComponent implements OnInit {
   order$: Observable<OrderView>;
   loading$: Observable<boolean>;
-  /* ToDo: User data should be available by the Order, see #IS-17616 */
+  /** ToDo: User data should be available by the Order, see #IS-17616 */
   user$: Observable<User>;
 
   constructor(private checkoutFacade: CheckoutFacade, private accountFacade: AccountFacade) {}

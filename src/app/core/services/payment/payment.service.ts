@@ -26,7 +26,6 @@ import { getCurrentLocale } from 'ish-core/store/core/configuration';
 export class PaymentService {
   constructor(private apiService: ApiService, private store: Store) {}
 
-  // http header for Basket API v1
   private basketHeaders = new HttpHeaders({
     'content-type': 'application/json',
     Accept: 'application/vnd.intershop.basket.v1+json',

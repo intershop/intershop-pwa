@@ -136,7 +136,7 @@ export class UserEffects {
     })
   );
 
-  /*
+  /**
    * redirects to the returnUrl after successful login
    * does not redirect at all, if no returnUrl is defined
    */
@@ -230,7 +230,6 @@ export class UserEffects {
     )
   );
 
-  /* Displays a success message after an user/customer update action */
   @Effect()
   displayUpdateUserSuccessMessage$ = this.actions$.pipe(
     ofType(

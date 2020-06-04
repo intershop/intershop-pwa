@@ -28,7 +28,6 @@ type OrderIncludeType =
 export class OrderService {
   constructor(private apiService: ApiService, private store: Store) {}
 
-  // http header for Order API v1
   private orderHeaders = new HttpHeaders({
     'content-type': 'application/json',
     Accept: 'application/vnd.intershop.order.v1+json',

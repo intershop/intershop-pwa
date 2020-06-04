@@ -49,6 +49,7 @@ export class QuotingFacade {
   constructor(private store: Store) {}
 
   // QUOTE
+
   quote$ = this.store.pipe(select(getSelectedQuoteWithProducts));
   quoteLoading$ = this.store.pipe(select(getQuoteLoading));
   quoteError$ = this.store.pipe(select(getQuoteError));
@@ -74,6 +75,7 @@ export class QuotingFacade {
   }
 
   // QUOTE REQUEST
+
   quoteRequest$ = this.store.pipe(select(getSelectedQuoteRequestWithProducts));
   quoteRequestLoading$ = this.store.pipe(select(getQuoteRequestLoading));
   quoteRequestError$ = this.store.pipe(select(getQuoteRequestError));
@@ -124,6 +126,7 @@ export class QuotingFacade {
   }
 
   // QUOTE AND QUOTE REQUEST
+
   quotesAndQuoteRequests$() {
     this.loadQuotes();
     this.loadQuoteRequests();

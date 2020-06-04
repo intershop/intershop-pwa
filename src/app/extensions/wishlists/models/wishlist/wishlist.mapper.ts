@@ -63,7 +63,9 @@ export class WishlistMapper {
     }
   }
 
-  // extract ID from URI
+  /**
+   * extract ID from URI
+   */
   fromDataToIds(wishlistData: WishlistData): Wishlist {
     if (wishlistData) {
       return {

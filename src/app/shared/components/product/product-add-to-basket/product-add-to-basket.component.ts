@@ -53,7 +53,9 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
 
   constructor(private checkoutFacade: CheckoutFacade) {}
 
-  // fires 'true' after add To Cart is clicked and basket is loading
+  /**
+   * fires 'true' after add To Cart is clicked and basket is loading
+   */
   displaySpinner$ = new BehaviorSubject(false);
 
   private destroy$ = new Subject();

@@ -22,18 +22,18 @@ export class SelectTitleComponent extends SelectComponent implements OnChanges, 
     this.translateOptionValues = true;
   }
 
-  /*
-    refresh titles if they changed
-  */
+  /**
+   * refresh titles if they changed
+   */
   ngOnChanges(c: SimpleChanges) {
     if (c.titles) {
       this.options = this.mapToOptions(this.titles);
     }
   }
 
-  /*
-    set default values for empty input parameters
-  */
+  /**
+   * set default values for empty input parameters
+   */
   private setDefaultValues() {
     this.controlName = this.controlName || 'title';
     this.label = this.label || 'account.default_address.title.label';

@@ -4,7 +4,9 @@ import * as ts from 'typescript';
 import { RuleHelpers } from './ruleHelpers';
 
 export class Rule extends Lint.Rules.AbstractRule {
-  // TODO: excludes currently only supported for 'variable X is not re-initialized in beforeEach'
+  /**
+   * TODO: excludes currently only supported for 'variable X is not re-initialized in beforeEach'
+   */
   excludes: string[] = [];
   interestingVariables: ts.Node[];
   correctlyReinitializedVariables: string[];

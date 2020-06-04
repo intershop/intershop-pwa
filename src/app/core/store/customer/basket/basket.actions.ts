@@ -110,7 +110,6 @@ export class UpdateBasketAddress implements Action {
   constructor(public payload: { address: Address }) {}
 }
 
-/* payload: Shipping Method Id */
 export class UpdateBasketShippingMethod implements Action {
   readonly type = BasketActionTypes.UpdateBasketShippingMethod;
   constructor(public payload: { shippingId: string }) {}

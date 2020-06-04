@@ -3,9 +3,9 @@ import b64u from 'b64u';
 import { SearchParameter } from './search-parameter.model';
 
 export class SearchParameterMapper {
-  /*
-    Converts the searchParameter to a base64 encoded string
-  */
+  /**
+   * Converts the searchParameter to a base64 encoded string
+   */
   static toData(searchParameter: SearchParameter): string {
     let data = '';
 

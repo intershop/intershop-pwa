@@ -29,7 +29,9 @@ export class CheckoutAddressPageComponent implements OnInit, OnDestroy {
 
   nextStepRequested = false;
 
-  // initial basket's valid addresses in order to decide which address component should be displayed
+  /**
+   * initial basket's valid addresses in order to decide which address component should be displayed
+   */
   validBasketAddresses$: Observable<boolean>;
 
   private destroy$ = new Subject();
