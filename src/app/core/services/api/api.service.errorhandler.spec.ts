@@ -27,7 +27,7 @@ describe('Api Service Errorhandler', () => {
 
   function dataProviderKnown() {
     return [
-      { error: { status: 0 }, expectedType: ErrorActionTypes.TimeoutError },
+      { error: { status: 0 }, expectedType: ErrorActionTypes.CommunicationTimeoutError },
       { error: { status: 500 }, expectedType: ErrorActionTypes.ServerError },
     ];
   }
