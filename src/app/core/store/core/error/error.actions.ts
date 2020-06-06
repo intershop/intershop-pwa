@@ -4,7 +4,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 export enum ErrorActionTypes {
   GeneralError = '[Error] Communication Error',
-  TimeoutError = '[Error] Communication Timeout Error',
+  CommunicationTimeoutError = '[Error] Communication Timeout Error',
   ServerError = '[Error] Server Error (5xx)',
 }
 
@@ -14,7 +14,7 @@ export class GeneralError implements Action {
 }
 
 export class CommunicationTimeoutError implements Action {
-  readonly type = ErrorActionTypes.TimeoutError;
+  readonly type = ErrorActionTypes.CommunicationTimeoutError;
   constructor(public payload: { error: HttpError }) {}
 }
 

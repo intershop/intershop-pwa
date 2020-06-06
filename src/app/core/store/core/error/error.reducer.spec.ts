@@ -36,7 +36,7 @@ describe('Error Reducer', () => {
       {
         state: initialState,
         action: new CommunicationTimeoutError({ error: {} as HttpError }),
-        expected: { current: {}, type: ErrorActionTypes.TimeoutError },
+        expected: { current: {}, type: ErrorActionTypes.CommunicationTimeoutError },
       },
       {
         state: initialState,

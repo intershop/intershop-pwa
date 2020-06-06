@@ -16,7 +16,7 @@ export function errorReducer(state = initialState, action: HttpErrorAction): Err
   switch (action.type) {
     case ErrorActionTypes.GeneralError:
     case ErrorActionTypes.ServerError:
-    case ErrorActionTypes.TimeoutError: {
+    case ErrorActionTypes.CommunicationTimeoutError: {
       return { ...state, current: action.payload.error, type: action.type };
     }
   }
