@@ -3,7 +3,11 @@
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { <%= classify(entity) %> } from '<% if(!extension) { %>ish-core<% } else { %>../..<% } %>/models/<%= dasherize(entity) %>/<%= dasherize(entity) %>.model';
 
-<% } %>import { <%= classify(name) %>Action, <%= classify(name) %>ActionTypes } from './<%= dasherize(name) %>.actions';
+<% } %>
+import { createReducer<% if(entity) { %>, on<% } %> } from '@ngrx/store';
+import { <% if(entity) { %>setErrorOn, <% } %>setLoadingOn } from 'ish-core/utils/ngrx-creators';
+
+import { load<%= classify(name) %><% if(entity) { %>, load<%= classify(name) %>Fail, load<%= classify(name) %>Success<% } %> } from './<%= dasherize(name) %>.actions';
 <% if(entity) { %>
 export const <%= camelize(name) %>Adapter = createEntityAdapter<<%= classify(entity) %>>();
 
@@ -25,34 +29,16 @@ const initialState: <%= classify(name) %>State = {
   loading: false,
 };
 <% } %>
-export function <%= camelize(name) %>Reducer(state = initialState, action: <%= classify(name) %>Action): <%= classify(name) %>State {
-  switch (action.type) {
-    case <%= classify(name) %>ActionTypes.Load<%= classify(name) %>: {
-      return {
-        ...state,
-        loading: true,
-      };
-    }<% if(entity) { %>
-
-    case <%= classify(name) %>ActionTypes.Load<%= classify(name) %>Fail: {
-      const { error } = action.payload;
-      return {
-        ...state,
-        loading: false,
-        error,
-      };
-    }
-
-    case <%= classify(name) %>ActionTypes.Load<%= classify(name) %>Success: {
-      const { <%= camelize(name) %> } = action.payload;
-
-      return {
-        ...<%= camelize(name) %>Adapter.upsertMany(<%= camelize(name) %>, state),
-        loading: false,
-        error: undefined,
-      };
-    }<% } %>
-  }
-
-  return state;
-}
+export const <%= camelize(name) %>Reducer = createReducer(
+  initialState,
+  setLoadingOn(load<%= classify(name) %>)<% if(entity) { %>,
+  setErrorOn(load<%= classify(name) %>Fail),
+  on(load<%= classify(name) %>Success, (state: <%= classify(name) %>State, action) => {
+    const { <%= camelize(name) %> } = action.payload;
+    return {
+      ...<%= camelize(name) %>Adapter.upsertMany(<%= camelize(name) %>, state),
+      loading: false,
+      error: undefined,
+    };
+  })<% } %>
+);

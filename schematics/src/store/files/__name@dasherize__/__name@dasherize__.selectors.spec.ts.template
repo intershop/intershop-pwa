@@ -6,7 +6,7 @@ import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ng
 <% if(entity) { %>import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { <%= classify(entity) %> } from '<% if(!extension) { %>ish-core<% } else { %>../..<% } %>/models/<%= dasherize(entity) %>/<%= dasherize(entity) %>.model';<% } %>
 
-import { Load<%= classify(name) %><% if (entity) { %>, Load<%= classify(name) %>Fail, Load<%= classify(name) %>Success<% } %> } from './<%= dasherize(name) %>.actions';
+import { load<%= classify(name) %><% if (entity) { %>, load<%= classify(name) %>Fail, load<%= classify(name) %>Success<% } %> } from './<%= dasherize(name) %>.actions';
 import { <% if (entity) { %>getNumberOf<%= classify(name) %>, get<%= classify(name) %>, get<%= classify(name) %>Entities, get<%= classify(name) %>Error, <% } %>get<%= classify(name) %>Loading } from './<%= dasherize(name) %>.selectors';
 
 describe('<%= classify(name) %> Selectors', () => {
@@ -41,7 +41,7 @@ describe('<%= classify(name) %> Selectors', () => {
 <% } %>  });
 
   describe('Load<%= classify(name) %>', () =>{
-    const action = new Load<%= classify(name) %>();
+    const action = load<%= classify(name) %>();
 
     beforeEach(() => {
       store$.dispatch(action);
@@ -51,9 +51,9 @@ describe('<%= classify(name) %> Selectors', () => {
       expect(get<%= classify(name) %>Loading(store$.state)).toBeTrue();
     });
 <% if (entity) { %>
-    describe('Load<%= classify(name) %>Success', () => {
+    describe('load<%= classify(name) %>Success', () => {
       const <%= camelize(name) %> = [{ id: '1' }, { id: '2' }] as <%= classify(entity) %>[];
-      const successAction = new Load<%= classify(name) %>Success({ <%= camelize(name) %> });
+      const successAction = load<%= classify(name) %>Success({ <%= camelize(name) %> });
 
       beforeEach(() => {
         store$.dispatch(successAction);
@@ -74,9 +74,9 @@ describe('<%= classify(name) %> Selectors', () => {
       });
     });
 
-    describe('Load<%= classify(name) %>Fail', () => {
+    describe('load<%= classify(name) %>Fail', () => {
       const error = { error: 'ERROR' } as HttpError;
-      const failAction = new Load<%= classify(name) %>Fail({ error });
+      const failAction = load<%= classify(name) %>Fail({ error });
 
       beforeEach(() => {
         store$.dispatch(failAction);
