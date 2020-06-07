@@ -9,7 +9,7 @@ import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CMSService } from 'ish-core/services/cms/cms.service';
 
-import { LoadContentInclude, LoadContentIncludeFail, LoadContentIncludeSuccess } from './includes.actions';
+import { LoadContentInclude, LoadContentIncludeFail } from './includes.actions';
 import { IncludesEffects } from './includes.effects';
 
 describe('Includes Effects', () => {
@@ -38,7 +38,7 @@ describe('Includes Effects', () => {
 
       actions$ = of(new LoadContentInclude({ includeId: 'dummy' }));
 
-      effects.loadContentInclude$.subscribe((action: LoadContentIncludeSuccess) => {
+      effects.loadContentInclude$.subscribe(action => {
         verify(cmsServiceMock.getContentInclude('dummy')).once();
         expect(action).toMatchInlineSnapshot(`
           [Content Include API] Load Content Include Success:
@@ -54,7 +54,7 @@ describe('Includes Effects', () => {
 
       actions$ = of(new LoadContentInclude({ includeId: 'dummy' }));
 
-      effects.loadContentInclude$.subscribe((action: LoadContentIncludeFail) => {
+      effects.loadContentInclude$.subscribe(action => {
         verify(cmsServiceMock.getContentInclude('dummy')).once();
         expect(action).toMatchInlineSnapshot(`
           [Content Include API] Load Content Include Fail:

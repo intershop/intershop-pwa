@@ -49,7 +49,7 @@ describe('Pages Effects', () => {
 
       actions$ = of(new LoadContentPage({ contentPageId: 'dummy' }));
 
-      effects.loadContentPage$.subscribe((action: LoadContentPageFail) => {
+      effects.loadContentPage$.subscribe(action => {
         verify(cmsServiceMock.getContentPage('dummy')).once();
         expect(action).toMatchInlineSnapshot(`
           [Content Page API] Load Content Page Fail:
