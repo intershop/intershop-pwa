@@ -84,7 +84,7 @@ export class ConfigurationEffects {
   );
 
   @Effect()
-  setDeviceType$ = iif<ApplyConfiguration, ApplyConfiguration>(
+  setDeviceType$ = iif(
     () => isPlatformBrowser(this.platformId),
     defer(() =>
       merge(this.actions$.pipe(ofType(ROOT_EFFECTS_INIT)), fromEvent(window, 'resize')).pipe(
