@@ -1,6 +1,7 @@
 export interface OrderTemplateHeader {
   title: string;
 }
+
 export interface OrderTemplate extends OrderTemplateHeader {
   id: string;
   items?: OrderTemplateItem[];

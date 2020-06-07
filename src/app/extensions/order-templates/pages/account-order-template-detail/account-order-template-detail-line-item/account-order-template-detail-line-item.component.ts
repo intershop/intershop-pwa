@@ -9,6 +9,7 @@ import { ProductCompletenessLevel } from 'ish-core/models/product/product.model'
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 import { OrderTemplate, OrderTemplateItem } from '../../../models/order-template/order-template.model';
+
 @Component({
   selector: 'ish-account-order-template-detail-line-item',
   templateUrl: './account-order-template-detail-line-item.component.html',

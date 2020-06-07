@@ -19,6 +19,7 @@ import {
   getOrderTemplateLoading,
   getSelectedOrderTemplateDetails,
 } from '../store/order-template';
+
 @Injectable({ providedIn: 'root' })
 export class OrderTemplatesFacade {
   constructor(private store: Store) {}

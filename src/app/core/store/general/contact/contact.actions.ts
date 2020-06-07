@@ -25,6 +25,7 @@ export class LoadContactFail implements Action {
   readonly type = ContactActionTypes.LoadContactFail;
   constructor(public payload: { error: HttpError }) {}
 }
+
 export class CreateContact implements Action {
   readonly type = ContactActionTypes.CreateContact;
   constructor(public payload: { contact: Contact }) {}

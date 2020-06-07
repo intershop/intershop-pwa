@@ -8,6 +8,7 @@ import { mergeDeep } from 'ish-core/utils/functions';
 // tslint:disable:no-any
 
 export const NGRX_STATE_SK = makeStateKey('ngrxState');
+
 const STATE_ACTION_TYPE = '[Internal] Import NgRx State';
 
 /**

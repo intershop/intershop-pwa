@@ -15,6 +15,7 @@ const routes: Routes = [
     loadChildren: () => import('../account-order/account-order-page.module').then(m => m.AccountOrderPageModule),
   },
 ];
+
 @NgModule({
   imports: [RouterModule.forChild(routes), SharedModule],
   exports: [RouterModule],

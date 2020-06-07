@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { HeaderQuickorderComponent } from './header-quickorder.component';
+
 describe('Header Quickorder Component', () => {
   let component: HeaderQuickorderComponent;
   let fixture: ComponentFixture<HeaderQuickorderComponent>;

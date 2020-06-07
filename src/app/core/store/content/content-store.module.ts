@@ -18,6 +18,7 @@ export const contentReducers: ActionReducerMap<ContentState> = {
   pagelets: pageletsReducer,
   pages: pagesReducer,
 };
+
 // tslint:disable: deprecation
 
 const contentEffects = [IncludesEffects, PagesEffects];

@@ -44,6 +44,7 @@ export const shoppingEffects = [
   PromotionsEffects,
   ProductListingEffects,
 ];
+
 // tslint:disable: deprecation
 
 @NgModule({

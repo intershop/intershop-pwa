@@ -216,6 +216,7 @@ export class UpdateUserPasswordByPasswordReminderFail implements Action {
   readonly type = UserActionTypes.UpdateUserPasswordByPasswordReminderFail;
   constructor(public payload: { error: HttpError }) {}
 }
+
 export type UserAction =
   | LoginUser
   | LoginUserFail
