@@ -4,7 +4,7 @@ import { Action } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable } from 'rxjs';
 
-import { Load<%= classify(name) %> } from './<%= dasherize(name) %>.actions';
+import { load<%= classify(name) %> } from './<%= dasherize(name) %>.actions';
 import { <%= classify(name) %>Effects } from './<%= dasherize(name) %>.effects';
 
 describe('<%= classify(name) %> Effects', () => {
@@ -23,8 +23,8 @@ describe('<%= classify(name) %> Effects', () => {
   });
 
   describe('load<%= classify(name) %>$', () => {
-    it('should not dispatch actions when encountering Load<%= classify(name) %>', () => {
-      const action = new Load<%= classify(name) %>();
+    it('should not dispatch actions when encountering load<%= classify(name) %>', () => {
+      const action = load<%= classify(name) %>();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('------');
 
