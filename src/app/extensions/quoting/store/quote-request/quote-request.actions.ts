@@ -129,7 +129,7 @@ export class UpdateSubmitQuoteRequest implements Action {
 
 export class CreateQuoteRequestFromQuoteRequest implements Action {
   readonly type = QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequest;
-  constructor(public payload?: { redirect?: boolean }) {}
+  constructor(public payload: { redirect?: boolean }) {}
 }
 
 export class CreateQuoteRequestFromQuoteRequestFail implements Action {
