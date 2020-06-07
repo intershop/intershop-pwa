@@ -220,7 +220,7 @@ describe('Quote Request Effects', () => {
       actions$ = of(action);
 
       effects.updateQuoteRequest$.subscribe(() => {
-        verify(quoteRequestServiceMock.updateQuoteRequest('QRID', payload)).once();
+        verify(quoteRequestServiceMock.updateQuoteRequest('QRID', deepEqual(payload))).once();
         done();
       });
     });
