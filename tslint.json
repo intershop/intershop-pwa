@@ -222,6 +222,7 @@
     "ish-ordered-imports": true,
     "ish-useful-imports": true,
     "force-jsdoc-comments": { "severity": "warning" },
+    "newline-before-root-members": true,
     "no-duplicate-imports": true,
     "ban": [
       true,
