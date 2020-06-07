@@ -223,7 +223,7 @@ describe('Quote Request Reducer', () => {
   describe('CreateQuoteRequestFromQuoteRequest actions', () => {
     describe('CreateQuoteRequestFromQuoteRequest action', () => {
       it('should set loading to true', () => {
-        const action = new CreateQuoteRequestFromQuoteRequest();
+        const action = new CreateQuoteRequestFromQuoteRequest({});
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeTrue();

@@ -428,7 +428,7 @@ describe('Quote Request Effects', () => {
     });
 
     it('should call the quoteService for createQuoteRequestFromQuoteRequest', done => {
-      const action = new CreateQuoteRequestFromQuoteRequest();
+      const action = new CreateQuoteRequestFromQuoteRequest({});
       actions$ = of(action);
 
       effects.createQuoteRequestFromQuoteRequest$.subscribe(() => {
@@ -438,7 +438,7 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map to action of type CreateQuoteRequestFromQuoteRequestSuccess', () => {
-      const action = new CreateQuoteRequestFromQuoteRequest();
+      const action = new CreateQuoteRequestFromQuoteRequest({});
       const completion = new CreateQuoteRequestFromQuoteRequestSuccess({
         quoteLineItemResult: {
           type: 'test',
@@ -455,7 +455,7 @@ describe('Quote Request Effects', () => {
         throwError({ message: 'invalid' })
       );
 
-      const action = new CreateQuoteRequestFromQuoteRequest();
+      const action = new CreateQuoteRequestFromQuoteRequest({});
       const completion = new CreateQuoteRequestFromQuoteRequestFail({
         error: {
           message: 'invalid',
