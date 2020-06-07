@@ -19,6 +19,7 @@ export const quotingReducers: ActionReducerMap<QuotingState> = {
 
 /** @deprecated will be made private in version 0.23 */
 export const quotingEffects = [QuoteEffects, QuoteRequestEffects];
+
 // tslint:disable: deprecation
 
 const metaReducers = [resetOnLogoutMeta];

@@ -32,6 +32,7 @@ export const coreReducers: ActionReducerMap<CoreState> = {
 
 /** @deprecated will be made private in version 0.23 */
 export const coreEffects = [ErrorEffects, ViewconfEffects, ConfigurationEffects, MessagesEffects];
+
 // tslint:disable: deprecation
 
 // tslint:disable-next-line: no-any

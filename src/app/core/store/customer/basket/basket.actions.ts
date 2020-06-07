@@ -274,6 +274,7 @@ export class LoadBasketEligiblePaymentMethodsSuccess implements Action {
   readonly type = BasketActionTypes.LoadBasketEligiblePaymentMethodsSuccess;
   constructor(public payload: { paymentMethods: PaymentMethod[] }) {}
 }
+
 export class SetBasketPayment implements Action {
   readonly type = BasketActionTypes.SetBasketPayment;
   constructor(public payload: { id: string }) {}

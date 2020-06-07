@@ -9,11 +9,13 @@ import { initialState, wishlistsAdapter } from './wishlist.reducer';
 const getWishlistState = createSelector(getWishlistsState, state => (state ? state.wishlists : initialState));
 
 const { selectEntities, selectAll } = wishlistsAdapter.getSelectors(getWishlistState);
+
 export const getAllWishlists = selectAll;
 
 export const getWishlistsLoading = createSelector(getWishlistState, state => state.loading);
 
 export const getWishlistsError = createSelector(getWishlistState, state => state.error);
+
 export const getSelectedWishlistId = createSelector(getWishlistState, state => state.selected);
 
 export const getSelectedWishlistDetails = createSelector(

@@ -13,6 +13,7 @@ import { WishlistsState } from './wishlists-store';
 export const wishlistsReducers: ActionReducerMap<WishlistsState> = {
   wishlists: wishlistReducer,
 };
+
 // tslint:disable: deprecation
 
 const wishlistsEffects = [WishlistEffects];

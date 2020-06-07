@@ -38,6 +38,7 @@ const exportedComponents = [
   ShowFormFeedbackDirective,
   TextareaComponent,
 ];
+
 @NgModule({
   imports: [CommonModule, FeatureToggleModule, IconModule, ReactiveFormsModule, RouterModule, TranslateModule],
   declarations: [...exportedComponents],

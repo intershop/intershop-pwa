@@ -17,6 +17,7 @@ export class CommunicationTimeoutError implements Action {
   readonly type = ErrorActionTypes.TimeoutError;
   constructor(public payload: { error: HttpError }) {}
 }
+
 /**
  * Internal Server Error - 500
  */
