@@ -1,3 +1,5 @@
+import { UserBudgets } from 'ish-core/models/user-budgets/user-budgets.model';
+
 export interface User {
   title?: string;
   firstName: string;
@@ -18,4 +20,6 @@ export interface User {
   // Business User only
   businessPartnerNo?: string;
   department?: string;
+
+  budgets?: UserBudgets;
 }
