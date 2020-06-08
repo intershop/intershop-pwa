@@ -14,4 +14,16 @@ export const loadUserFail = createAction('[Users API] Load User Fail', httpError
 
 export const loadUserSuccess = createAction('[Users API] Load User Success', payload<{ user: B2bUser }>());
 
+export const addUser = createAction('[Users] Add User', payload<{ user: B2bUser }>());
+
+export const addUserFail = createAction('[Users API] Add User Fail', httpError());
+
+export const addUserSuccess = createAction('[Users API] Add User Success', payload<{ user: B2bUser }>());
+
+export const updateUser = createAction('[Users] Update User', payload<{ user: B2bUser }>());
+
+export const updateUserFail = createAction('[Users API] Update User Fail', httpError());
+
+export const updateUserSuccess = createAction('[Users API] Update User Success', payload<{ user: B2bUser }>());
+
 export const resetUsers = createAction('[Users] Reset Users');
