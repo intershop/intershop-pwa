@@ -1,8 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
+import { Customer } from 'ish-core/models/customer/customer.model';
 import { ApiService } from 'ish-core/services/api/api.service';
+
+import { B2bUser, CustomerB2bUserType } from '../../models/b2b-user/b2b-user.model';
 
 import { UsersService } from './users.service';
 
@@ -25,7 +28,7 @@ describe('Users Service', () => {
     expect(usersService).toBeTruthy();
   });
 
-  it('should call the users of customer API when fetching users', done => {
+  it('should call the getUsers of customer API when fetching users', done => {
     usersService.getUsers().subscribe(() => {
       verify(apiService.get(anything())).once();
       expect(capture(apiService.get).last()).toMatchInlineSnapshot(`
@@ -37,7 +40,7 @@ describe('Users Service', () => {
     });
   });
 
-  it('should call the user of customer API when fetching user', done => {
+  it('should call the getUser of customer API when fetching user', done => {
     usersService.getUser('pmiller@test.intershop.de').subscribe(() => {
       verify(apiService.get(anything())).once();
       expect(capture(apiService.get).last()).toMatchInlineSnapshot(`
@@ -45,6 +48,34 @@ describe('Users Service', () => {
           "customers/-/users/pmiller@test.intershop.de",
         ]
       `);
+      done();
+    });
+  });
+
+  it('should call the addUser for creating a new b2b user', done => {
+    when(apiService.post(anyString(), anything())).thenReturn(of({}));
+
+    const payload = {
+      customer: { customerNo: '4711', isBusinessCustomer: true } as Customer,
+      user: { login: 'pmiller@test.intershop.de' } as B2bUser,
+    } as CustomerB2bUserType;
+
+    usersService.addUser(payload).subscribe(() => {
+      verify(apiService.post(`customers/${payload.customer.customerNo}/users`, anything())).once();
+      done();
+    });
+  });
+
+  it('should call the opdateUser for updating a b2b user', done => {
+    when(apiService.put(anyString(), anything())).thenReturn(of({}));
+
+    const payload = {
+      customer: { customerNo: '4711', isBusinessCustomer: true } as Customer,
+      user: { login: 'pmiller@test.intershop.de' } as B2bUser,
+    } as CustomerB2bUserType;
+
+    usersService.updateUser(payload).subscribe(() => {
+      verify(apiService.put(`customers/${payload.customer.customerNo}/users/${payload.user.login}`, anything())).once();
       done();
     });
   });

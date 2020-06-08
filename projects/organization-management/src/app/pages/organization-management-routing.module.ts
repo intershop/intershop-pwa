@@ -1,20 +1,33 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { UsersDetailPageComponent } from './users-detail/users-detail-page.component';
+import { UserCreatePageComponent } from './user-create/user-create-page.component';
+import { UserDetailPageComponent } from './user-detail/user-detail-page.component';
+import { UserEditProfilePageComponent } from './user-edit-profile/user-edit-profile-page.component';
 import { UsersPageComponent } from './users/users-page.component';
 
-const routes: Routes = [
+/**
+ * routes for the organization management
+ *
+ * visible for testing
+ */
+export const routes: Routes = [
   { path: '', redirectTo: 'users', pathMatch: 'full' },
   {
     path: 'users',
     component: UsersPageComponent,
-    data: { breadcrumbData: [{ key: 'account.organization.user_management' }] },
+  },
+  {
+    path: 'users/create',
+    component: UserCreatePageComponent,
   },
   {
     path: 'users/:B2BCustomerLogin',
-    component: UsersDetailPageComponent,
-    data: { breadcrumbData: [{ key: 'account.organization.user_management.user_detail' }] },
+    component: UserDetailPageComponent,
+  },
+  {
+    path: 'users/:B2BCustomerLogin/profile',
+    component: UserEditProfilePageComponent,
   },
 ];
 
