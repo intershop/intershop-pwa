@@ -2788,6 +2788,7 @@
   "account.user.widget.monthly_spend_limit.label": "Monthly spend limit",
   "account.user.widget.order_spend_limit.label": "Order spend limit",
   "account.user.widget.view_all_users.link": "View all Users",
+  "account.user.update_profile.heading": "Edit User Profile",
   "account.user.new.heading": "Create New User",
   "account.user.new.active.label": "Active",
   "account.user.new.active.yes.text": "yes",
@@ -2868,6 +2869,8 @@
   "account.organization.user_management.user_detail": "User Details",
   "account.organization.user_management.user_detail.breadcrumb": "User Details",
   "account.organization.user_management.back_to_list": "Back to User Management",
+  "account.organization.user_management.new_user.confirmation": "The user \"{{0}}\" has been created.",
+  "account.organization.user_management.update_user.confirmation": "The user \"{{0}}\" has been updated.",
   "subject.has.no.permission.assigned": "You do not have the required permission to perform this action.",
   "user.not.authenticated": "You are not authenticated to access this page."
 }

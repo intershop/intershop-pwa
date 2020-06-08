@@ -1,4 +1,7 @@
-import { TestBed } from '@angular/core/testing';
+import { Component } from '@angular/core';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
@@ -8,18 +11,28 @@ import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ng
 import { OrganizationManagementStoreModule } from '../organization-management-store.module';
 
 import { loadUsers, loadUsersFail, loadUsersSuccess } from './users.actions';
-import { getUsers, getUsersError, getUsersLoading } from './users.selectors';
+import { getSelectedUser, getUsers, getUsersError, getUsersLoading } from './users.selectors';
+
+@Component({ template: 'dummy' })
+class DummyComponent {}
 
 describe('Users Selectors', () => {
   let store$: StoreWithSnapshots;
+  let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), OrganizationManagementStoreModule.forTesting('users')],
+      declarations: [DummyComponent],
+      imports: [
+        CoreStoreModule.forTesting(['router']),
+        OrganizationManagementStoreModule.forTesting('users'),
+        RouterTestingModule.withRoutes([{ path: 'users/:B2BCustomerLogin', component: DummyComponent }]),
+      ],
       providers: [provideStoreSnapshots()],
     });
 
     store$ = TestBed.inject(StoreWithSnapshots);
+    router = TestBed.inject(Router);
   });
 
   describe('initial state', () => {
@@ -86,6 +99,30 @@ describe('Users Selectors', () => {
 
       it('should not have entites when reducing error', () => {
         expect(getUsers(store$.state)).toBeEmpty();
+      });
+    });
+  });
+
+  describe('SelectedUser', () => {
+    beforeEach(() => {
+      const users = [{ login: '1' }, { login: '2' }] as User[];
+      const successAction = loadUsersSuccess({ users });
+      store$.dispatch(successAction);
+    });
+
+    describe('with category route', () => {
+      beforeEach(fakeAsync(() => {
+        router.navigate(['users', '1']);
+        tick(500);
+      }));
+
+      it('should return the category information when used', () => {
+        expect(getUsers(store$.state)).not.toBeEmpty();
+        expect(getUsersLoading(store$.state)).toBeFalse();
+      });
+
+      it('should return the selected user when the customer login is given as query param', () => {
+        expect(getSelectedUser(store$.state)).toBeTruthy();
       });
     });
   });

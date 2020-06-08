@@ -34,7 +34,7 @@ describe('User Management', () => {
       page.goToUserDetailLink(_.selectedUser.email);
     });
     at(UsersDetailPage, page => {
-      page.name.should('have.text', `${_.selectedUser.name}`);
+      page.name.should('contain', `${_.selectedUser.name}`);
       page.email.should('have.text', `${_.selectedUser.email}`);
     });
   });

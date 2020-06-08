@@ -6,7 +6,20 @@ import { setErrorOn, setLoadingOn } from 'ish-core/utils/ngrx-creators';
 
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
-import { loadUserFail, loadUserSuccess, loadUsers, loadUsersFail, loadUsersSuccess, resetUsers } from './users.actions';
+import {
+  addUser,
+  addUserFail,
+  addUserSuccess,
+  loadUserFail,
+  loadUserSuccess,
+  loadUsers,
+  loadUsersFail,
+  loadUsersSuccess,
+  resetUsers,
+  updateUser,
+  updateUserFail,
+  updateUserSuccess,
+} from './users.actions';
 
 export const usersAdapter = createEntityAdapter<B2bUser>({
   selectId: user => user.login,
@@ -24,8 +37,8 @@ const initialState: UsersState = usersAdapter.getInitialState({
 
 export const usersReducer = createReducer(
   initialState,
-  setLoadingOn(loadUsers),
-  setErrorOn(loadUsersFail, loadUserFail),
+  setLoadingOn(loadUsers, addUser, updateUser),
+  setErrorOn(loadUsersFail, loadUserFail, addUserFail, updateUserFail),
   on(loadUsersSuccess, (state: UsersState, action) => {
     const { users } = action.payload;
 
@@ -36,6 +49,24 @@ export const usersReducer = createReducer(
     };
   }),
   on(loadUserSuccess, (state: UsersState, action) => {
+    const { user } = action.payload;
+
+    return {
+      ...usersAdapter.upsertOne(user, state),
+      loading: false,
+      error: undefined,
+    };
+  }),
+  on(addUserSuccess, (state: UsersState, action) => {
+    const { user } = action.payload;
+
+    return {
+      ...usersAdapter.addOne(user, state),
+      loading: false,
+      error: undefined,
+    };
+  }),
+  on(updateUserSuccess, (state: UsersState, action) => {
     const { user } = action.payload;
 
     return {
