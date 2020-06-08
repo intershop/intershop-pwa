@@ -17,6 +17,7 @@ import { basketReducer } from './basket/basket.reducer';
 import { CustomerState } from './customer-store';
 import { OrdersEffects } from './orders/orders.effects';
 import { ordersReducer } from './orders/orders.reducer';
+import { OrganizationManagementEffects } from './organization-management/organization-management.effects';
 import { RestoreEffects } from './restore/restore.effects';
 import { UserEffects } from './user/user.effects';
 import { userReducer } from './user/user.reducer';
@@ -39,6 +40,7 @@ const customerEffects = [
   OrdersEffects,
   RestoreEffects,
   UserEffects,
+  OrganizationManagementEffects,
 ];
 
 const metaReducers = [resetOnLogoutMeta];

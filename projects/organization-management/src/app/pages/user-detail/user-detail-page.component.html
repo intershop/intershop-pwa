@@ -9,7 +9,9 @@
       <div class="col-md-12">
         <dl class="row dl-horizontal dl-separator">
           <dt class="col-md-4">{{ 'account.user.details.profile.name' | translate }}</dt>
-          <dd data-testing-id="name-field" class="col-md-8">{{ user.firstName }} {{ user.lastName }}</dd>
+          <dd data-testing-id="name-field" class="col-md-8">
+            <ng-container *ngIf="user.title">{{ user.title }} </ng-container> {{ user.firstName }} {{ user.lastName }}
+          </dd>
           <dt class="col-md-4">{{ 'account.user.details.profile.email' | translate }}</dt>
           <dd data-testing-id="email-field" class="col-md-8">{{ user.email }}</dd>
           <dt class="col-md-4" data-testing-id="phone-label">{{ 'account.user.details.profile.phone' | translate }}</dt>
@@ -17,6 +19,17 @@
         </dl>
       </div>
     </div>
+  </div>
+
+  <div class="col-2 col-lg-4">
+    <a
+      routerLink="profile"
+      class="btn-tool"
+      [title]="'account.profile.update.link' | translate"
+      data-testing-id="edit-user"
+    >
+      <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
+    </a>
   </div>
 </div>
 
