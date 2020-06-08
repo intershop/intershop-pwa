@@ -119,7 +119,7 @@ describe('Server Html Directive', () => {
 
     beforeEach(() => {
       @Component({
-        template: ` <div [ishServerHtml]="'get.help.at' | translate: { '0': 'page://systempage.helpdesk' }"></div> `,
+        template: ` <div [ishServerHtml]="'get.help.at' | translate: { '0': 'page://page.helpdesk' }"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
       class TestComponent {}
@@ -141,7 +141,7 @@ describe('Server Html Directive', () => {
 
     it('should transform the links within translated input to routing links', () => {
       expect(element).toMatchInlineSnapshot(
-        `<div>Get help at <a href="/page/systempage.helpdesk">our HelpDesk</a>. We are there for you!</div>`
+        `<div>Get help at <a href="/page/page.helpdesk">our HelpDesk</a>. We are there for you!</div>`
       );
     });
   });
