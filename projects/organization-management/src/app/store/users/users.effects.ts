@@ -33,7 +33,7 @@ export class UsersEffects {
       user =>
         new SetBreadcrumbData({
           breadcrumbData: [
-            { key: 'account.user.user_management', link: '/account/organization/users' },
+            { key: 'account.organization.user_management', link: '/account/organization/users' },
             { text: `${user.firstName} ${user.lastName}` },
           ],
         })

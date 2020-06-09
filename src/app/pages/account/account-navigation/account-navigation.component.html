@@ -10,7 +10,7 @@
           item.value.localizationKey | translate
         }}</a>
       </li>
-      <ul *ngIf="item.value.children">
+      <ul class="account-navigation list-unstyled" *ngIf="item.value.children">
         <ng-container *ngFor="let subItem of item.value.children | keyvalue: unsorted">
           <li>
             <a
