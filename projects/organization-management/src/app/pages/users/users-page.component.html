@@ -1,39 +1,21 @@
 <h1>
-  {{ 'account.user.user_management' | translate }}
-  <a class="btn btn-secondary float-right">{{ 'account.user.list.link.add_user' | translate }}</a>
+  {{ 'account.organization.user_management' | translate }}
 </h1>
 
 <pre *ngIf="error$ | async as error">{{ error }}</pre>
 
-<div class="container">
-  <div class="row" *ngFor="let user of users$ | async">
-    <div class="col">
-      <a [routerLink]="[user.businessPartnerNo]">{{ user.firstName }} {{ user.lastName }}</a>
-    </div>
-    <div class="col">roles...</div>
-    <div class="col">
-      budgets...
-
-      <a
-        class="btn-tool float-right"
-        title="{{ 'account.user.delete_user_dialog.header' | translate: { '0': user.firstName, '1': user.lastName } }}"
-        (click)="modalDialog.show(user)"
-      >
-        <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
-      </a>
-
-      <ish-modal-dialog
-        #modalDialog
-        [options]="{
-          titleText: 'account.user.delete_user_dialog.header' | translate: { '0': user.firstName, '1': user.lastName },
-          confirmText: 'account.user.delete_user_dialog.delete_button.text' | translate,
-          rejectText: 'account.user.delete_user_dialog.cancel_button.text' | translate
-        }"
-        (confirmed)="deleteUser($event)"
-      >
-        <p>{{ 'account.user.delete_user_dialog.are_you_sure_paragraph' | translate }}</p>
-      </ish-modal-dialog>
-    </div>
+<div class="section">
+  <div class="list-body">
+    <ng-container *ngFor="let user of users$ | async">
+      <div *ngIf="user" class="list-item-row row mx-0">
+        <div class="col-9 list-item">
+          <a [routerLink]="[user.businessPartnerNo]">{{ user.firstName }} {{ user.lastName }}</a>
+        </div>
+        <div class="col-3 list-item text-right">
+          <!---TODO: Delete user-->
+        </div>
+      </div>
+    </ng-container>
   </div>
 </div>
 
