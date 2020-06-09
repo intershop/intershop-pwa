@@ -37,12 +37,12 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
     '/account/addresses': { localizationKey: 'account.saved_addresses.link', dataTestingId: 'addresses-link' },
     '/account/profile': { localizationKey: 'account.profile.link' },
     '/account/quotes': { localizationKey: 'account.navigation.quotes.link', feature: 'quoting' },
-    '/account/organization': {
+    /* TODO: organize as sub menu
+      '/account/organization': {
       localizationKey: 'My Organization',
-      children: {
-        '/users': { localizationKey: 'Users' },
-      },
-    },
+      children: { '/users': { localizationKey: 'account.organization.user_management' } },
+    },*/
+    '/account/organization': { localizationKey: 'account.organization.user_management' },
     '/logout': { localizationKey: 'account.navigation.logout.link' },
   };
 

@@ -10,13 +10,6 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
   selector: 'ish-users-page',
   templateUrl: './users-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: [
-    `
-      .container {
-        padding: 0;
-      }
-    `,
-  ],
 })
 export class UsersPageComponent implements OnInit {
   users$: Observable<User[]>;
@@ -29,10 +22,5 @@ export class UsersPageComponent implements OnInit {
     this.users$ = this.organizationManagementFacade.users$();
     this.error$ = this.organizationManagementFacade.usersError$;
     this.loading$ = this.organizationManagementFacade.usersLoading$;
-  }
-
-  deleteUser(user) {
-    // tslint:disable-next-line:no-console
-    console.log('### deleteUser', user);
   }
 }

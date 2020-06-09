@@ -6,11 +6,15 @@ import { UsersPageComponent } from './users/users-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'users', pathMatch: 'full' },
-  { path: 'users', component: UsersPageComponent, data: { breadcrumbData: [{ key: 'account.user.user_management' }] } },
+  {
+    path: 'users',
+    component: UsersPageComponent,
+    data: { breadcrumbData: [{ key: 'account.organization.user_management' }] },
+  },
   {
     path: 'users/:businessPartnerNo',
     component: UsersDetailPageComponent,
-    data: { breadcrumbData: [{ key: 'USER DETAIL' }] },
+    data: { breadcrumbData: [{ key: 'account.organization.user_management.user_detail' }] },
   },
 ];
 
