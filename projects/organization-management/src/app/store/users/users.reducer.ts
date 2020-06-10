@@ -6,7 +6,7 @@ import { User } from 'ish-core/models/user/user.model';
 import { UsersAction, UsersActionTypes } from './users.actions';
 
 export const usersAdapter = createEntityAdapter<User>({
-  selectId: user => user.businessPartnerNo,
+  selectId: user => user.login,
 });
 
 export interface UsersState extends EntityState<User> {

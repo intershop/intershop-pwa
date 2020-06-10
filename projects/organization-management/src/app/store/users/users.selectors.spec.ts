@@ -46,7 +46,7 @@ describe('Users Selectors', () => {
     });
 
     describe('LoadUsersSuccess', () => {
-      const users = [{ businessPartnerNo: '1' }, { businessPartnerNo: '2' }] as User[];
+      const users = [{ login: '1' }, { login: '2' }] as User[];
       const successAction = new actions.LoadUsersSuccess({ users });
 
       beforeEach(() => {
