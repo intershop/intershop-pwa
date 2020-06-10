@@ -25,10 +25,12 @@ export class CMSService {
       return throwError('getContentInclude() called without an includeId');
     }
 
-    return this.apiService.get<ContentPageletEntryPointData>(`cms/includes/${includeId}`).pipe(
-      map(x => this.contentPageletEntryPointMapper.fromData(x)),
-      map(({ pageletEntryPoint, pagelets }) => ({ include: pageletEntryPoint, pagelets }))
-    );
+    return this.apiService
+      .get<ContentPageletEntryPointData>(`cms/includes/${includeId}`, { sendPGID: true })
+      .pipe(
+        map(x => this.contentPageletEntryPointMapper.fromData(x)),
+        map(({ pageletEntryPoint, pagelets }) => ({ include: pageletEntryPoint, pagelets }))
+      );
   }
 
   /**
@@ -41,9 +43,11 @@ export class CMSService {
       return throwError('getContentPage() called without an pageId');
     }
 
-    return this.apiService.get<ContentPageletEntryPointData>(`cms/pages/${pageId}`).pipe(
-      map(x => this.contentPageletEntryPointMapper.fromData(x)),
-      map(({ pageletEntryPoint, pagelets }) => ({ page: pageletEntryPoint, pagelets }))
-    );
+    return this.apiService
+      .get<ContentPageletEntryPointData>(`cms/pages/${pageId}`, { sendPGID: true })
+      .pipe(
+        map(x => this.contentPageletEntryPointMapper.fromData(x)),
+        map(({ pageletEntryPoint, pagelets }) => ({ page: pageletEntryPoint, pagelets }))
+      );
   }
 }
