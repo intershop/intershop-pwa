@@ -12,12 +12,12 @@ describe('Address Service', () => {
 
   beforeEach(() => {
     apiService = mock(ApiService);
-    when(apiService.icmServerURL).thenReturn('http://server');
     addressService = new AddressService(instance(apiService));
   });
 
   it("should get addresses data when 'getCustomerAddresses' is called", done => {
     when(apiService.get(`customers/-/addresses`)).thenReturn(of([]));
+    when(apiService.resolveLinks()).thenReturn(() => of([]));
 
     addressService.getCustomerAddresses().subscribe(() => {
       verify(apiService.get(`customers/-/addresses`)).once();
@@ -29,11 +29,11 @@ describe('Address Service', () => {
     when(apiService.post(`customers/-/addresses`, anything())).thenReturn(
       of({ type: 'Link', uri: 'site/-/customers/-/addresses/addressid' })
     );
-    when(apiService.get(anything())).thenReturn(of(BasketMockData.getAddress()));
+    when(apiService.resolveLink()).thenReturn(() => of(BasketMockData.getAddress()));
 
     addressService.createCustomerAddress('-', BasketMockData.getAddress()).subscribe(data => {
       verify(apiService.post(`customers/-/addresses`, anything())).once();
-      verify(apiService.get('http://server/site/-/customers/-/addresses/addressid')).once();
+      verify(apiService.resolveLink()).once();
       expect(data).toHaveProperty('firstName', 'Patricia');
       done();
     });

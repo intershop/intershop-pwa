@@ -31,7 +31,6 @@ describe('Quote Request Service', () => {
 
   beforeEach(() => {
     apiService = mock(ApiService);
-    when(apiService.icmServerURL).thenReturn('BASE');
 
     TestBed.configureTestingModule({
       imports: [
@@ -163,13 +162,12 @@ describe('Quote Request Service', () => {
           elements: [{ type: 'Link', uri: 'customers/CID/users/UID/quoterequests/QRID' }],
         })
       );
-      when(apiService.get(`BASE/customers/CID/users/UID/quoterequests/QRID`)).thenReturn(of({ id: 'QRID' }));
+      when(apiService.resolveLinks()).thenReturn(() => of([{ id: 'QRID' }]));
 
       quoteRequestService.getQuoteRequests().subscribe(data => {
         expect(data).toHaveLength(1);
         expect(data[0].id).toEqual('QRID');
         verify(apiService.get(`customers/CID/users/UID/quoterequests`)).once();
-        verify(apiService.get(`BASE/customers/CID/users/UID/quoterequests/QRID`)).once();
         done();
       });
     });

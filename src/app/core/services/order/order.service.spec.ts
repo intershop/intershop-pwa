@@ -28,7 +28,6 @@ describe('Order Service', () => {
 
   beforeEach(() => {
     apiService = mock(ApiService);
-    when(apiService.icmServerURL).thenReturn('http://server');
 
     TestBed.configureTestingModule({
       providers: [
