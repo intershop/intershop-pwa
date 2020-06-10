@@ -13,6 +13,7 @@ export interface UserData {
   phoneMobile?: string;
   fax?: string;
   email: string;
+  login: string;
 
   preferredLanguage: string;
   preferredInvoiceToAddress?: Address;
