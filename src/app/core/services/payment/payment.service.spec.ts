@@ -189,6 +189,7 @@ describe('Payment Service', () => {
   describe('user payment service', () => {
     it("should get a user's payment method data when 'getUserPaymentMethods' is called", done => {
       when(apiService.get(anyString())).thenReturn(of([]));
+      when(apiService.resolveLinks()).thenReturn(() => of([]));
       when(apiService.options(anyString())).thenReturn(of([]));
       const customer = {
         customerNo: '4711',
@@ -208,7 +209,7 @@ describe('Payment Service', () => {
       when(apiService.post(`customers/${customerNo}/payments`, anything())).thenReturn(
         of({ type: 'Link', uri: 'site/-/customers/-/payments/paymentid' })
       );
-      when(apiService.get(anything())).thenReturn(of(undefined));
+      when(apiService.resolveLink()).thenReturn(() => of(undefined));
 
       paymentService.createUserPayment(customerNo, newPaymentInstrument).subscribe(() => {
         verify(apiService.post(`customers/${customerNo}/payments`, anything())).once();

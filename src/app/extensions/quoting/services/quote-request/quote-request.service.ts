@@ -5,7 +5,7 @@ import { concatMap, map, mapTo, shareReplay, take } from 'rxjs/operators';
 
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { Link } from 'ish-core/models/link/link.model';
-import { ApiService, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
 import { waitForFeatureStore, whenFalsy } from 'ish-core/utils/operators';
 
@@ -61,7 +61,7 @@ export class QuoteRequestService {
       concatMap(({ userId, customerId }) =>
         this.apiService
           .get(`customers/${customerId}/users/${userId}/quoterequests`)
-          .pipe(unpackEnvelope(), resolveLinks<QuoteRequestData>(this.apiService))
+          .pipe(unpackEnvelope(), this.apiService.resolveLinks<QuoteRequestData>())
       )
     );
   }

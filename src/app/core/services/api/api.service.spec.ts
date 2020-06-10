@@ -19,7 +19,7 @@ import { serverError } from 'ish-core/store/core/error';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { getAPIToken, getPGID, setAPIToken } from 'ish-core/store/customer/user';
 
-import { ApiService, resolveLink, resolveLinks, unpackEnvelope } from './api.service';
+import { ApiService, unpackEnvelope } from './api.service';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 
 describe('Api Service', () => {
@@ -171,7 +171,7 @@ describe('Api Service', () => {
     });
   });
 
-  describe('API Service Pipable Operators', () => {
+  describe('API Service Pipeable Operators', () => {
     let httpTestingController: HttpTestingController;
     let apiService: ApiService;
 
@@ -263,7 +263,7 @@ describe('Api Service', () => {
     it('should perform both operations when requested', done => {
       apiService
         .get('categories')
-        .pipe(unpackEnvelope(), resolveLinks(apiService))
+        .pipe(unpackEnvelope(), apiService.resolveLinks())
         .subscribe(data => {
           expect(data).toEqual([webcamResponse]);
           done();
@@ -279,7 +279,7 @@ describe('Api Service', () => {
     it('should filter out elements that are not links when doing link translation', done => {
       apiService
         .get('something')
-        .pipe(resolveLinks(apiService))
+        .pipe(apiService.resolveLinks())
         .subscribe(data => {
           expect(data).toHaveLength(1);
           done();
@@ -296,7 +296,7 @@ describe('Api Service', () => {
     it('should return empty array on link translation when no links are available', done => {
       apiService
         .get('something')
-        .pipe(resolveLinks(apiService))
+        .pipe(apiService.resolveLinks())
         .subscribe(data => {
           expect(data).toBeEmpty();
           done();
@@ -309,7 +309,7 @@ describe('Api Service', () => {
     it('should return empty array on element and link translation when source is empty', done => {
       apiService
         .get('categories')
-        .pipe(unpackEnvelope(), resolveLinks(apiService))
+        .pipe(unpackEnvelope(), apiService.resolveLinks())
         .subscribe(data => {
           expect(data).toBeEmpty();
           done();
@@ -322,7 +322,7 @@ describe('Api Service', () => {
     it('should resolve data when resolveLink is used', done => {
       apiService
         .get('something')
-        .pipe(resolveLink(apiService))
+        .pipe(apiService.resolveLink())
         .subscribe(data => {
           expect(data).toHaveProperty('data', 'dummy');
           done();
@@ -336,7 +336,7 @@ describe('Api Service', () => {
     it('should not resolve data when resolveLink is used and an invalid link is supplied', done => {
       apiService
         .get('something')
-        .pipe(resolveLink(apiService))
+        .pipe(apiService.resolveLink())
         .subscribe(
           fail,
           err => {

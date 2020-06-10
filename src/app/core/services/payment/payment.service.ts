@@ -16,7 +16,7 @@ import {
 import { PaymentMethodMapper } from 'ish-core/models/payment-method/payment-method.mapper';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
-import { ApiService, resolveLink, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 
 /**
@@ -250,7 +250,7 @@ export class PaymentService {
 
     return this.apiService.get(`customers/${customer.customerNo}/payments`).pipe(
       unpackEnvelope<Link>(),
-      resolveLinks<PaymentInstrumentData>(this.apiService),
+      this.apiService.resolveLinks<PaymentInstrumentData>(),
       concatMap(instruments =>
         this.apiService.options(`customers/${customer.customerNo}/payments`).pipe(
           unpackEnvelope<PaymentMethodOptionsDataType>('methods'),
@@ -291,7 +291,7 @@ export class PaymentService {
 
     return this.apiService
       .post(`customers/${customerNo}/payments`, body)
-      .pipe(resolveLink<PaymentInstrument>(this.apiService));
+      .pipe(this.apiService.resolveLink<PaymentInstrument>());
   }
 
   /**

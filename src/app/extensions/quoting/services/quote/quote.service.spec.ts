@@ -30,7 +30,6 @@ describe('Quote Service', () => {
   beforeEach(() => {
     apiService = mock(ApiService);
     quoteRequestService = mock(QuoteRequestService);
-    when(apiService.icmServerURL).thenReturn('BASE');
 
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting(), CustomerStoreModule.forTesting('user')],
@@ -77,24 +76,26 @@ describe('Quote Service', () => {
           elements: [{ type: 'Link', uri: 'customers/CID/users/UID/quotes/QID' }],
         })
       );
-      when(apiService.get(`BASE/customers/CID/users/UID/quotes/QID`)).thenReturn(
-        of({
-          id: 'QID',
-          items: [
-            {
-              singlePrice: {
-                type: 'Money',
-                value: 1,
-                currency: 'EUR',
-              },
-              totalPrice: {
-                type: 'Money',
-                value: 1,
-                currency: 'EUR',
-              },
-            } as QuoteRequestItemData,
-          ],
-        })
+      when(apiService.resolveLinks()).thenReturn(() =>
+        of([
+          {
+            id: 'QID',
+            items: [
+              {
+                singlePrice: {
+                  type: 'Money',
+                  value: 1,
+                  currency: 'EUR',
+                },
+                totalPrice: {
+                  type: 'Money',
+                  value: 1,
+                  currency: 'EUR',
+                },
+              } as QuoteRequestItemData,
+            ],
+          },
+        ])
       );
 
       quoteService.getQuotes().subscribe(data => {
@@ -106,7 +107,6 @@ describe('Quote Service', () => {
         expect(quoteRequestItem.totals.total.value).toBe(1);
 
         verify(apiService.get(`customers/CID/users/UID/quotes`)).once();
-        verify(apiService.get(`BASE/customers/CID/users/UID/quotes/QID`)).once();
         done();
       });
     });

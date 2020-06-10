@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ToastrModule } from 'ngx-toastr';
 import { EMPTY, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
+import { anything, instance, mock, when } from 'ts-mockito';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
@@ -20,7 +20,6 @@ import {
   getLoggedInUser,
   loadCompanyUserSuccess,
   loginUserSuccess,
-  logoutUser,
 } from 'ish-core/store/customer/user';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import {
@@ -36,7 +35,6 @@ import { QuoteService } from '../services/quote/quote.service';
 
 import { getCurrentQuotes, loadQuotes, loadQuotesSuccess } from './quote';
 import {
-  addProductToQuoteRequest,
   getActiveQuoteRequest,
   getCurrentQuoteRequests,
   loadQuoteRequests,
@@ -57,7 +55,6 @@ describe('Quoting Store', () => {
     @Component({ template: 'dummy' })
     class DummyComponent {}
     apiServiceMock = mock(ApiService);
-    when(apiServiceMock.icmServerURL).thenReturn('http://example.org');
     when(apiServiceMock.get(anything())).thenReturn(EMPTY);
 
     const countryServiceMock = mock(CountryService);
@@ -111,14 +108,11 @@ describe('Quoting Store', () => {
     let quoteRequestCount;
 
     beforeEach(() => {
+      when(apiServiceMock.resolveLinks()).thenReturn(() => of([{ id: 'QRID1', submitted: true } as QuoteRequestData]));
       when(apiServiceMock.get('customers/CID/users/UID/quoterequests')).thenReturn(
         of({
           elements: [{ type: 'Link', uri: 'customers/CID/users/UID/quoterequests/QRID1' }],
         })
-      );
-      // initial submitted quote request
-      when(apiServiceMock.get('http://example.org/customers/CID/users/UID/quoterequests/QRID1')).thenReturn(
-        of({ id: 'QRID1', submitted: true } as QuoteRequestData)
       );
 
       // quote request creator
@@ -154,88 +148,6 @@ describe('Quoting Store', () => {
       expect(getActiveQuoteRequest(store$.state)).toBeUndefined();
       expect(getCurrentQuoteRequests(store$.state)).not.toBeEmpty();
       expect(getCurrentQuotes(store$.state)).toBeEmpty();
-    });
-
-    describe('adding products to quote request', () => {
-      // influenced by ISREST-400: Rapidly adding items to quote request behaves unexpected
-      beforeEach(() => {
-        when(apiServiceMock.get('http://example.org/customers/CID/users/UID/quoterequests/QRID2')).thenReturn(
-          of({ id: 'QRID2', editable: true } as QuoteRequestData).pipe(delay(100))
-        );
-        when(apiServiceMock.get('http://example.org/customers/CID/users/UID/quoterequests/QRID3')).thenReturn(
-          of({ id: 'QRID3' } as QuoteRequestData).pipe(delay(100))
-        );
-        when(apiServiceMock.get('http://example.org/customers/CID/users/UID/quoterequests/QRID4')).thenReturn(
-          of({ id: 'QRID4' } as QuoteRequestData).pipe(delay(100))
-        );
-        when(apiServiceMock.get('customers/CID/users/UID/quoterequests')).thenReturn(
-          of({
-            elements: [
-              { type: 'Link', uri: 'customers/CID/users/UID/quoterequests/QRID1' },
-              { type: 'Link', uri: 'customers/CID/users/UID/quoterequests/QRID2' },
-              { type: 'Link', uri: 'customers/CID/users/UID/quoterequests/QRID3' },
-              { type: 'Link', uri: 'customers/CID/users/UID/quoterequests/QRID4' },
-            ],
-          }).pipe(delay(100))
-        );
-        when(apiServiceMock.post('customers/CID/users/UID/quoterequests/QRID2/items', anything())).thenReturn(
-          of(undefined)
-        );
-        when(apiServiceMock.post('customers/CID/users/UID/quoterequests/QRID3/items', anything())).thenReturn(
-          of(undefined)
-        );
-        when(apiServiceMock.post('customers/CID/users/UID/quoterequests/QRID4/items', anything())).thenReturn(
-          of(undefined)
-        );
-
-        store$.reset();
-        resetCalls(apiServiceMock);
-        setTimeout(() => store$.dispatch(addProductToQuoteRequest({ sku: 'SKU', quantity: 1 })), 400);
-        setTimeout(() => store$.dispatch(addProductToQuoteRequest({ sku: 'SKU', quantity: 1 })), 450);
-        setTimeout(() => store$.dispatch(addProductToQuoteRequest({ sku: 'SKU', quantity: 1 })), 480);
-      });
-
-      it('should add all add requests to the same newly aquired quote request', done =>
-        setTimeout(() => {
-          expect(getActiveQuoteRequest(store$.state)).toBeTruthy();
-
-          const active = getActiveQuoteRequest(store$.state);
-          expect(active.editable).toBeTrue();
-
-          verify(apiServiceMock.post('customers/CID/users/UID/quoterequests')).once();
-          verify(apiServiceMock.post('customers/CID/users/UID/quoterequests/QRID2/items', anything())).times(3);
-
-          done();
-        }, 2000));
-
-      describe('user logs out', () => {
-        beforeEach(() => {
-          store$.reset();
-          store$.dispatch(logoutUser());
-        });
-
-        it('should no longer have any quoting related data after user logout', () => {
-          expect(getActiveQuoteRequest(store$.state)).toBeUndefined();
-          expect(getCurrentQuoteRequests(store$.state)).toBeEmpty();
-          expect(getCurrentQuotes(store$.state)).toBeEmpty();
-        });
-
-        describe('user logs in again', () => {
-          beforeEach(() => {
-            store$.reset();
-            store$.dispatch(loginUserSuccess({ customer, user }));
-            store$.dispatch(loadCompanyUserSuccess({ user }));
-          });
-
-          it('should load all the quotes when logging in again', done =>
-            setTimeout(() => {
-              expect(getActiveQuoteRequest(store$.state)).not.toBeUndefined();
-              expect(getCurrentQuoteRequests(store$.state)).toHaveLength(4);
-              expect(getCurrentQuotes(store$.state)).toBeEmpty();
-              done();
-            }, 2000));
-        });
-      });
     });
   });
 });
