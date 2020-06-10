@@ -101,7 +101,7 @@ export class ApiService {
   /**
    * appends API token to requests if available and request is not an authorization request
    */
-  private appendAPITokenToHeaders(): MonoTypeOperatorFunction<HttpHeaders> {
+  private appendAPITokenToHeaders(path: string): MonoTypeOperatorFunction<HttpHeaders> {
     return headers$ =>
       headers$.pipe(
         withLatestFrom(this.store.pipe(select(getAPIToken))),
@@ -109,6 +109,11 @@ export class ApiService {
           apiToken && !headers.has(ApiService.AUTHORIZATION_HEADER_KEY)
             ? headers.set(ApiService.TOKEN_HEADER_KEY, apiToken)
             : headers
+        ),
+        // TODO: workaround removing auth token for cms if pgid is not available
+        withLatestFrom(this.store.pipe(select(getPGID))),
+        map(([headers, pgid]) =>
+          !pgid && path.startsWith('cms') ? headers.delete(ApiService.TOKEN_HEADER_KEY) : headers
         )
       );
   }
@@ -133,7 +138,7 @@ export class ApiService {
   /**
    * merges supplied and default headers
    */
-  private constructHeaders(options?: AvailableOptions): Observable<HttpHeaders> {
+  private constructHeaders(path: string, options?: AvailableOptions): Observable<HttpHeaders> {
     const defaultHeaders = new HttpHeaders().set('content-type', 'application/json').set('Accept', 'application/json');
 
     return of(
@@ -148,7 +153,7 @@ export class ApiService {
         ? // captcha headers
           this.appendCaptchaTokenToHeaders(options.captcha.captcha, options.captcha.captchaAction)
         : // default to api token
-          this.appendAPITokenToHeaders()
+          this.appendAPITokenToHeaders(path)
     );
   }
 
@@ -215,7 +220,7 @@ export class ApiService {
   ): Observable<[string, { headers: HttpHeaders; params: HttpParams }]> {
     return forkJoin([
       this.constructUrlForPath(path, options),
-      this.constructHeaders(options).pipe(
+      this.constructHeaders(path, options).pipe(
         map(headers => ({
           params: options?.params,
           headers,
