@@ -16,7 +16,8 @@ describe('Account Profile Page Component', () => {
   let fixture: ComponentFixture<AccountProfilePageComponent>;
   let element: HTMLElement;
   const customer = {
-    type: 'PrivateCustomer',
+    customerNo: 'Patricia',
+    isBusinessCustomer: false,
   } as Customer;
 
   const user = {

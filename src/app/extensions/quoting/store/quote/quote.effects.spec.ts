@@ -40,7 +40,7 @@ describe('Quote Effects', () => {
   let store$: Store;
   let location: Location;
 
-  const customer = { customerNo: 'CID', type: 'SMBCustomer' } as Customer;
+  const customer = { customerNo: 'CID', isBusinessCustomer: true } as Customer;
 
   beforeEach(async(() => {
     quoteServiceMock = mock(QuoteService);

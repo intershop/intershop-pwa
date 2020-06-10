@@ -39,7 +39,7 @@ import { initialState, userReducer } from './user.reducer';
 describe('User Reducer', () => {
   const customer = {
     customerNo: 'dummy',
-    type: 'PrivateCustomer',
+    isBusinessCustomer: false,
   } as Customer;
   const user = {
     firstName: 'Patricia',
@@ -98,10 +98,10 @@ describe('User Reducer', () => {
       expect(newState).toEqual({ ...initialState, customer, user, authorized: true });
     });
 
-    it('should set user when LoginUserSuccess action is reduced with type = PrivateCustomer', () => {
+    it('should set user when LoginUserSuccess action is reduced for a private customer', () => {
       const newState = userReducer(initialState, new LoginUserSuccess({ customer, user }));
 
-      expect(newState.customer.type).toEqual(customer.type);
+      expect(newState.customer.isBusinessCustomer).toEqual(customer.isBusinessCustomer);
       expect(newState.user.firstName).toEqual(user.firstName);
       expect(newState.authorized).toBeTrue();
     });

@@ -23,7 +23,7 @@ describe('Quote Service', () => {
   let quoteRequestService: QuoteRequestService;
   let store$: Store;
 
-  const customer = { customerNo: 'CID', type: 'SMBCustomer' } as Customer;
+  const customer = { customerNo: 'CID', isBusinessCustomer: true } as Customer;
   const user = { email: 'UID' } as User;
 
   beforeEach(() => {

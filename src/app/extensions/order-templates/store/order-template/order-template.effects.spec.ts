@@ -53,7 +53,7 @@ describe('Order Template Effects', () => {
   let store$: Store;
   let router: Router;
 
-  const customer = { customerNo: 'CID', type: 'SMBCustomer' } as Customer;
+  const customer = { customerNo: 'CID', isBusinessCustomer: true } as Customer;
 
   const orderTemplates = [
     {

@@ -16,7 +16,7 @@ describe('Account Profile Component', () => {
   let element: HTMLElement;
 
   const user = { firstName: 'Patricia', lastName: 'Miller', email: 'patricia@test.intershop.de' } as User;
-  const customer = { type: 'PrivateCustomer' } as Customer;
+  const customer = { isBusinessCustomer: false } as Customer;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -56,7 +56,7 @@ describe('Account Profile Component', () => {
   });
 
   it('should display company section and link for a business customer ', () => {
-    component.customer = { type: 'SMBCustomer', isBusinessCustomer: true } as Customer;
+    component.customer = { isBusinessCustomer: true } as Customer;
     fixture.detectChanges();
 
     expect(element.querySelector('[data-testing-id="company-info"]')).toBeTruthy();

@@ -48,7 +48,6 @@ describe('Account Profile Company Page Component', () => {
     const businessCustomer = {
       customerNo: '4711',
       isBusinessCustomer: true,
-      type: 'SMBCustomer',
     } as Customer;
     when(accountFacade.customer$).thenReturn(of(businessCustomer));
 
@@ -60,7 +59,6 @@ describe('Account Profile Company Page Component', () => {
     const privateCustomer = {
       customerNo: '4712',
       isBusinessCustomer: false,
-      type: 'PrivateCustomer',
     } as Customer;
     when(accountFacade.customer$).thenReturn(of(privateCustomer));
 
