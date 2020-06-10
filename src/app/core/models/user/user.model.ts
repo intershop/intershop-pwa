@@ -10,6 +10,7 @@ export interface User {
   phoneMobile?: string;
   fax?: string;
   email: string;
+  login?: string;
 
   preferredInvoiceToAddressUrn?: string;
   preferredShipToAddressUrn?: string;

@@ -9,7 +9,7 @@
     <ng-container *ngFor="let user of users$ | async">
       <div *ngIf="user" class="list-item-row row mx-0">
         <div class="col-9 list-item">
-          <a [routerLink]="[user.businessPartnerNo]">{{ user.firstName }} {{ user.lastName }}</a>
+          <a [routerLink]="[user.login]">{{ user.firstName }} {{ user.lastName }}</a>
         </div>
         <div class="col-3 list-item text-right">
           <!---TODO: Delete user-->

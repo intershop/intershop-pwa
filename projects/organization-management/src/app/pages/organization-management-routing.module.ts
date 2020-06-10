@@ -12,7 +12,7 @@ const routes: Routes = [
     data: { breadcrumbData: [{ key: 'account.organization.user_management' }] },
   },
   {
-    path: 'users/:businessPartnerNo',
+    path: 'users/:B2BCustomerLogin',
     component: UsersDetailPageComponent,
     data: { breadcrumbData: [{ key: 'account.organization.user_management.user_detail' }] },
   },

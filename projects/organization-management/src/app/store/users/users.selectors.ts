@@ -16,7 +16,7 @@ const { selectAll, selectEntities } = usersAdapter.getSelectors(getUsersState);
 export const getUsers = selectAll;
 
 export const getCurrentUser = createSelector(
-  selectRouteParam('businessPartnerNo'),
+  selectRouteParam('B2BCustomerLogin'),
   selectEntities,
-  (businessPartnerNo, users) => users[businessPartnerNo]
+  (login, users) => users[login]
 );
