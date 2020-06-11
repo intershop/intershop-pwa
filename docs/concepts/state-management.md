@@ -33,8 +33,9 @@ Selectors return observables which can be held in containers and be bound to in 
 ### Actions
 
 Actions are simple objects used to alter the current state via reducers or trigger effects.
+They contain the type of the action and an optional payload.
+Action objects are not created directly but rather through action creator functions.
 Action creators are held in a separate file.
-The action class contains a type of the action and an optional payload.
 To alter the state synchronously, reducers have to be composed.
 To alter the state asynchronously, effects are used.
 
@@ -81,7 +82,7 @@ An application module named `foobar` with substates named `foo` and `bar` serves
 The files handling NgRx store should then be contained in the folder `foobar`.
 Each substate should aggregate its store components in separate subfolders correspondingly named `foo` and `bar`:
 
-- _foo.actions.ts_: This file contains all action creators for the `foo` state. Additionally, a bundle type aggregating all action creators and an enum type with all action types is contained here.
+- _foo.actions.ts_: This file contains all action creators for the `foo` state.
 
 - _foo.effects.ts_: This file defines an effect class with all its containing effect implementations for the `FooState`.
 
@@ -118,48 +119,47 @@ Related to the example in the previous paragraph, we want to establish a particu
 
 ### Actions - Types
 
-Action types should be aggregated in an enum type.
-The enum should be composed of the substate name and 'ActionTypes'.
-The key of the type should be written in PascalCase.
 The string value of the type should contain the feature in brackets and a readable action description.
 The description should give hints about the dispatcher of the said action, i.e., actions dispatched due to a HTTP service response should have 'API' in their name, actions dispatched by other actions should have 'Internal' in their description.
 
 ```typescript
-export enum FooActionTypes {
-  LoadFoo = '[Foo Internal] Load Foo',
-  InsertFoo = '[Foo] Insert Foo',
-  LoadFooSuccess = '[Foo API] Load Foo Success',
+  '[Foo Internal] Load Foo',
+  '[Foo] Insert Foo',
+  '[Foo API] Load Foo Success',
   ...
-}
 ```
 
 ### Actions - Creators
 
-The action creator is a class with an optional payload member.
-Its PascalCase name should correspond to an action type.
-The name should not contain 'Action' as the action is always dispatched via the store and it is therefore implicitly correctly named.
+The action creator is a function with a type argument and an optional payload argument.
+Its camelCase name should correspond to its type.
+The name should not contain 'Action' as the action is always dispatched via the store and is therefore implicitly correctly named.
+The action creator is defined using the [createAction](https://ngrx.io/api/store/createAction) function.
+To attach data to an action, use the payload or httpError adapters from [ngrx-creators.ts](../../src/app/core/utils/ngrx-creators.ts).
 
 ```typescript
-export class LoadFoo implements Action {
-  readonly type = FooActionTypes.LoadFoo;
-  constructor(public payload: string) {}
-}
-```
-
-### Actions - Bundle
-
-The file _actions.ts_ should also contain an action bundle type with the name of the substate + 'Action', which is to be used in the reducer and tests.
-
-```typescript
-export type FooAction = LoadFoo | SaveFoo | ...
+export const loadFoo = createAction('[Foo Internal] Load Foo');
+export const loadFooSuccess = createAction('[Foo API] Load Foo Success', payload<{ foo: Foo[] }>());
+export const loadFooFail = createAction('[Foo API] Load Foo Fail', httpError());
 ```
 
 ### Reducer
 
 The exported function for the reducer should be named like the substate + 'Reducer' in camelCase.
+The reducer function is defined using the [createReducer](https://ngrx.io/api/store/createReducer) function.
+Associations between actions and state changes are defined via callbacks in the on function.
+To easily set loading or error states, use the setLoadingOn and setErrorOn helpers from [ngrx-creators.ts](../../src/app/core/utils/ngrx-creators.ts).
 
 ```typescript
-export function fooReducer(state = initialState, action: FooAction): FooState {
+export const fooReducer = createReducer(
+  initialState,
+  setLoadingOn(loadFoo),
+  setErrorOn(loadFooFail),
+  on(loadFooSuccess, (state: FooState, action) => {
+    // state changes
+  }),
+  ...
+)
 ```
 
 ### State
