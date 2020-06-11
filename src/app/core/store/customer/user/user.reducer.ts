@@ -16,8 +16,8 @@ export interface UserState {
   passwordReminderSuccess: boolean;
   passwordReminderError: HttpError;
   // not synced via state transfer
-  _authToken: string;
-  _lastAuthTokenBeforeLogin: string;
+  authToken: string;
+  lastAuthTokenBeforeLogin: string;
 }
 
 export const initialState: UserState = {
@@ -30,8 +30,8 @@ export const initialState: UserState = {
   pgid: undefined,
   passwordReminderSuccess: undefined,
   passwordReminderError: undefined,
-  _authToken: undefined,
-  _lastAuthTokenBeforeLogin: undefined,
+  authToken: undefined,
+  lastAuthTokenBeforeLogin: undefined,
 };
 
 export function userReducer(state = initialState, action: UserAction): UserState {
@@ -46,8 +46,8 @@ export function userReducer(state = initialState, action: UserAction): UserState
     case UserActionTypes.LoginUser: {
       return {
         ...initialState,
-        _authToken: state._authToken,
-        _lastAuthTokenBeforeLogin: state._authToken,
+        authToken: state.authToken,
+        lastAuthTokenBeforeLogin: state.authToken,
       };
     }
     case UserActionTypes.LogoutUser: {
@@ -57,14 +57,14 @@ export function userReducer(state = initialState, action: UserAction): UserState
     case UserActionTypes.SetAPIToken: {
       return {
         ...state,
-        _authToken: action.payload.apiToken,
+        authToken: action.payload.apiToken,
       };
     }
 
     case UserActionTypes.ResetAPIToken: {
       return {
         ...state,
-        _authToken: undefined,
+        authToken: undefined,
       };
     }
 
@@ -90,7 +90,7 @@ export function userReducer(state = initialState, action: UserAction): UserState
         ...initialState,
         loading: false,
         error,
-        _authToken: state._authToken,
+        authToken: state.authToken,
       };
     }
 

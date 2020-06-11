@@ -12,7 +12,7 @@ import { AddressService } from 'ish-core/services/address/address.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { SuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { LoginUserSuccess, LogoutUser } from 'ish-core/store/customer/user';
+import { LoginUserSuccess } from 'ish-core/store/customer/user';
 
 import * as addressesActions from './addresses.actions';
 import { AddressesEffects } from './addresses.effects';
@@ -144,17 +144,6 @@ describe('Addresses Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.deleteCustomerAddress$).toBeObservable(expected$);
-    });
-  });
-
-  describe('resetAddressesAfterLogout$', () => {
-    it('should map to action of type ResetAddresses if LogoutUser action triggered', () => {
-      const action = new LogoutUser();
-      const completion = new addressesActions.ResetAddresses();
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.resetAddressesAfterLogout$).toBeObservable(expected$);
     });
   });
 });

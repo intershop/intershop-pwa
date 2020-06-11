@@ -186,7 +186,6 @@ export function basketReducer(state = initialState, action: BasketAction | Order
       };
     }
 
-    case BasketActionTypes.ResetBasket:
     case OrdersActionTypes.CreateOrderSuccess: {
       return initialState;
     }

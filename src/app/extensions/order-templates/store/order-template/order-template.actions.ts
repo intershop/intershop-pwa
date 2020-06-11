@@ -35,7 +35,6 @@ export enum OrderTemplatesActionTypes {
   RemoveItemFromOrderTemplateFail = '[Order Templates API] Remove Item from Order Template Fail',
 
   SelectOrderTemplate = '[Order Templates Internal] Select Order Template',
-  ResetOrderTemplateState = '[Order Templates Internal] Reset Order Template State',
 
   AddBasketToNewOrderTemplate = '[Order Templates] Add basket to New Order Template]',
   AddBasketToNewOrderTemplateSuccess = '[Order Templates] Add basket to New Order Template Success]',
@@ -149,10 +148,6 @@ export class SelectOrderTemplate implements Action {
   constructor(public payload: { id: string }) {}
 }
 
-export class ResetOrderTemplateState implements Action {
-  readonly type = OrderTemplatesActionTypes.ResetOrderTemplateState;
-}
-
 export class AddBasketToNewOrderTemplate implements Action {
   readonly type = OrderTemplatesActionTypes.AddBasketToNewOrderTemplate;
   constructor(public payload: { orderTemplate: OrderTemplateHeader }) {}
@@ -190,7 +185,6 @@ export type OrderTemplateAction =
   | RemoveItemFromOrderTemplateSuccess
   | RemoveItemFromOrderTemplateFail
   | SelectOrderTemplate
-  | ResetOrderTemplateState
   | AddBasketToNewOrderTemplate
   | AddBasketToNewOrderTemplateSuccess
   | AddBasketToNewOrderTemplateFail;

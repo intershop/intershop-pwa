@@ -3,6 +3,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
+import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
+
 import { AddressesEffects } from './addresses/addresses.effects';
 import { addressesReducer } from './addresses/addresses.reducer';
 import { BasketAddressesEffects } from './basket/basket-addresses.effects';
@@ -39,11 +41,16 @@ const customerEffects = [
   UserEffects,
 ];
 
+const metaReducers = [resetOnLogoutMeta];
+
 @NgModule({
-  imports: [EffectsModule.forFeature(customerEffects), StoreModule.forFeature('_customer', customerReducers)],
+  imports: [
+    EffectsModule.forFeature(customerEffects),
+    StoreModule.forFeature('_customer', customerReducers, { metaReducers }),
+  ],
 })
 export class CustomerStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<CustomerState>)[]) {
-    return StoreModule.forFeature('_customer', pick(customerReducers, reducers));
+    return StoreModule.forFeature('_customer', pick(customerReducers, reducers), { metaReducers });
   }
 }

@@ -1,7 +1,6 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { UserAction, UserActionTypes } from 'ish-core/store/customer/user';
 
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequestData } from '../../models/quote-request/quote-request.interface';
@@ -24,12 +23,8 @@ export const initialState: QuoteRequestState = quoteRequestAdapter.getInitialSta
   selected: undefined,
 });
 
-export function quoteRequestReducer(state = initialState, action: QuoteAction | UserAction): QuoteRequestState {
+export function quoteRequestReducer(state = initialState, action: QuoteAction): QuoteRequestState {
   switch (action.type) {
-    case UserActionTypes.LogoutUser: {
-      return initialState;
-    }
-
     case QuoteRequestActionTypes.SelectQuoteRequest: {
       return {
         ...state,

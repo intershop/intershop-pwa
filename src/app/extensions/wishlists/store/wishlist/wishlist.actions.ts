@@ -34,7 +34,6 @@ export enum WishlistsActionTypes {
   RemoveItemFromWishlistFail = '[Wishlists API] Remove Item from Wishlist Fail',
 
   SelectWishlist = '[Wishlists Internal] Select Wishlist',
-  ResetWishlistState = '[Wishlists Internal] Reset Wishlist State',
 }
 
 export class LoadWishlists implements Action {
@@ -142,10 +141,6 @@ export class SelectWishlist implements Action {
   constructor(public payload: { id: string }) {}
 }
 
-export class ResetWishlistState implements Action {
-  readonly type = WishlistsActionTypes.ResetWishlistState;
-}
-
 export type WishlistsAction =
   | LoadWishlists
   | LoadWishlistsSuccess
@@ -167,5 +162,4 @@ export type WishlistsAction =
   | RemoveItemFromWishlist
   | RemoveItemFromWishlistSuccess
   | RemoveItemFromWishlistFail
-  | SelectWishlist
-  | ResetWishlistState;
+  | SelectWishlist;

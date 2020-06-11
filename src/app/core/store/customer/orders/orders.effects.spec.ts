@@ -19,7 +19,7 @@ import { OrderService } from 'ish-core/services/order/order.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { ContinueCheckoutWithIssues, LoadBasket } from 'ish-core/store/customer/basket';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { LoginUserSuccess, LogoutUser } from 'ish-core/store/customer/user';
+import { LoginUserSuccess } from 'ish-core/store/customer/user';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
@@ -428,17 +428,6 @@ describe('Orders Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.selectOrderAfterRedirectFailed$).toBeObservable(expected$);
-    });
-  });
-
-  describe('resetOrdersAfterLogout$', () => {
-    it('should map to action of type ResetOrders if LogoutUser action triggered', () => {
-      const action = new LogoutUser();
-      const completion = new orderActions.ResetOrders();
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.resetOrdersAfterLogout$).toBeObservable(expected$);
     });
   });
 

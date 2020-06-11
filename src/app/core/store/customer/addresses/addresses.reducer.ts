@@ -85,10 +85,6 @@ export function addressesReducer(state = initialState, action: AddressAction | B
         error: undefined,
       };
     }
-
-    case AddressActionTypes.ResetAddresses: {
-      return initialState;
-    }
   }
 
   return state;

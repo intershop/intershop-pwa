@@ -201,18 +201,4 @@ describe('Addresses Reducer', () => {
       });
     });
   });
-
-  describe('ResetAddresses action', () => {
-    it('should reset to initial state', () => {
-      const oldState = {
-        ...initialState,
-        loading: true,
-        addresses: [{ ids: ['test'] }],
-      };
-      const action = new fromActions.ResetAddresses();
-      const state = addressesReducer(oldState, action);
-
-      expect(state).toEqual(initialState);
-    });
-  });
 });

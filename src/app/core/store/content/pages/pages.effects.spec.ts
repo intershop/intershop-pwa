@@ -11,9 +11,8 @@ import { instance, mock, verify, when } from 'ts-mockito';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CMSService } from 'ish-core/services/cms/cms.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { LogoutUser } from 'ish-core/store/customer/user';
 
-import { LoadContentPage, LoadContentPageFail, ResetContentPages } from './pages.actions';
+import { LoadContentPage, LoadContentPageFail } from './pages.actions';
 import { PagesEffects } from './pages.effects';
 
 describe('Pages Effects', () => {
@@ -68,17 +67,6 @@ describe('Pages Effects', () => {
       expect(effects.loadContentPage$).toBeObservable(
         cold('a-a-a-a', { a: new LoadContentPageFail({ error: { message: 'ERROR' } as HttpError }) })
       );
-    });
-  });
-
-  describe('resetContentPagesAfterLogout$', () => {
-    it('should map to action of type ResetContentPages if LogoutUser action triggered', () => {
-      const action = new LogoutUser();
-      const completion = new ResetContentPages();
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.resetContentPagesAfterLogout$).toBeObservable(expected$);
     });
   });
 

@@ -83,10 +83,6 @@ export function orderTemplateReducer(state = initialState, action: OrderTemplate
         selected: id,
       };
     }
-
-    case OrderTemplatesActionTypes.ResetOrderTemplateState: {
-      return initialState;
-    }
   }
 
   return state;
