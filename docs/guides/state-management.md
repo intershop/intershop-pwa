@@ -18,10 +18,10 @@ See: [Handling Errors in NgRx Effects](https://medium.com/city-pantry/handling-e
 ```typescript
 @Effect()
 effect = this.actions$.pipe(
-  ofType(ActionLoad),
+  ofType(actionLoad),
   switchMap(this.service.method().pipe(
-    map(x => new ActionSuccess(x)),
-    mapErrorToAction(ActionFail)
+    map(x => actionSuccess(x)),
+    mapErrorToAction(actionFail)
   ),
 )
 ```
