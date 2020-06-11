@@ -192,7 +192,7 @@ describe('Payment Service', () => {
       when(apiService.options(anyString())).thenReturn(of([]));
       const customer = {
         customerNo: '4711',
-        type: 'PrivateCustomer',
+        isBusinessCustomer: false,
       } as Customer;
 
       paymentService.getUserPaymentMethods(customer).subscribe(() => {

@@ -3,10 +3,13 @@ import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-in
 
 import { Customer } from './customer.model';
 
+export type CustomerType = 'PrivateCustomer' | 'SMBCustomer';
+
 /**
  * response data type for signIn user
  */
 export interface CustomerData extends Customer {
+  type: CustomerType;
   title?: string;
   firstName?: string;
   lastName?: string;

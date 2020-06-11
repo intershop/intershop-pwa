@@ -87,7 +87,7 @@ describe('Checkout Store', () => {
   } as Product;
 
   const customer = {
-    type: 'PrivateCustomer',
+    isBusinessCustomer: false,
     customerNo: 'test',
   } as Customer;
 
@@ -317,7 +317,7 @@ describe('Checkout Store', () => {
           [Account] Login User:
             credentials: {}
           [Account API] Login User Success:
-            customer: {"type":"PrivateCustomer","customerNo":"test"}
+            customer: {"isBusinessCustomer":false,"customerNo":"test"}
             user: {"title":"","firstName":"test","lastName":"test","phoneHome"...
           [Basket Internal] Merge two baskets
           [Basket API] Merge two baskets Success:

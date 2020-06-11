@@ -38,7 +38,6 @@ export class CustomerMapper {
     return data.type === 'SMBCustomer'
       ? {
           customerNo: data.customerNo,
-          type: data.type,
           isBusinessCustomer: true,
           companyName: data.companyName,
           companyName2: data.companyName2,
@@ -48,7 +47,6 @@ export class CustomerMapper {
         }
       : {
           customerNo: data.customerNo,
-          type: data.type,
           isBusinessCustomer: false,
         };
   }

@@ -3,10 +3,7 @@ import { Captcha } from 'ish-core/models/captcha/captcha.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { User } from 'ish-core/models/user/user.model';
 
-type CustomerType = 'PrivateCustomer' | 'SMBCustomer';
-
 export interface Customer {
-  type: CustomerType;
   customerNo: string;
   isBusinessCustomer?: boolean;
 

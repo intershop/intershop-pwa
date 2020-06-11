@@ -63,7 +63,7 @@ describe('User Selectors', () => {
     store$.dispatch(
       new LoginUserSuccess({
         customer: {
-          type: 'SMBCustomer',
+          isBusinessCustomer: true,
           customerNo,
         },
       } as CustomerUserType)
@@ -79,11 +79,10 @@ describe('User Selectors', () => {
   it('should select the user when logging in as private customer successfully', () => {
     const firstName = 'test';
     const customerNo = 'PC';
-    const type = 'PrivateCustomer';
+
     store$.dispatch(
       new LoginUserSuccess({
         customer: {
-          type,
           customerNo,
           isBusinessCustomer: false,
         },
@@ -94,7 +93,6 @@ describe('User Selectors', () => {
     );
 
     expect(getLoggedInCustomer(store$.state)).toHaveProperty('customerNo', customerNo);
-    expect(getLoggedInCustomer(store$.state)).toHaveProperty('type', type);
     expect(getLoggedInCustomer(store$.state)).toHaveProperty('isBusinessCustomer', false);
     expect(isBusinessCustomer(store$.state)).toBeFalse();
     expect(getLoggedInUser(store$.state)).toHaveProperty('firstName', firstName);
@@ -106,7 +104,6 @@ describe('User Selectors', () => {
     store$.dispatch(
       new LoginUserSuccess({
         customer: {
-          type: 'SMBCustomer',
           customerNo: 'PC',
           isBusinessCustomer: true,
         },

@@ -44,7 +44,7 @@ describe('Quote Request Effects', () => {
   let location: Location;
   let router: Router;
 
-  const customer = { customerNo: 'CID', type: 'SMBCustomer' } as Customer;
+  const customer = { customerNo: 'CID', isBusinessCustomer: true } as Customer;
 
   @Component({ template: 'dummy' })
   class DummyComponent {}

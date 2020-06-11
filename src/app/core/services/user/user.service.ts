@@ -7,7 +7,7 @@ import { catchError, map } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
-import { CustomerData } from 'ish-core/models/customer/customer.interface';
+import { CustomerData, CustomerType } from 'ish-core/models/customer/customer.interface';
 import { CustomerMapper } from 'ish-core/models/customer/customer.mapper';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update/password-reminder-update.model';
@@ -29,6 +29,7 @@ interface CreateBusinessCustomerType extends Customer {
   address: Address;
   credentials: Credentials;
   user: User;
+  type: CustomerType;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -72,18 +73,15 @@ export class UserService {
       return throwError('createUser() called without required body data');
     }
 
-    if (!body.customer.type) {
-      return throwError('createUser() called without required customer type (PrivateCustomer/SMBCustomer)');
-    }
-
     const customerAddress = {
       ...body.address,
       mainDivision: body.address.mainDivisionCode,
     };
     let newCustomer: CreatePrivateCustomerType | CreateBusinessCustomerType;
 
-    if (body.customer.type === 'PrivateCustomer') {
+    if (!body.customer.isBusinessCustomer) {
       newCustomer = {
+        type: 'PrivateCustomer',
         ...body.customer,
         ...body.user,
         address: customerAddress,
@@ -91,6 +89,7 @@ export class UserService {
       };
     } else {
       newCustomer = {
+        type: 'SMBCustomer',
         ...body.customer,
         user: { ...body.user },
         address: customerAddress,
@@ -112,11 +111,8 @@ export class UserService {
       return throwError('updateUser() called without required body data');
     }
 
-    if (!body.customer.type) {
-      return throwError('updateUser() called without required customer type (PrivateCustomer/SMBCustomer)');
-    }
-
     const changedUser = {
+      type: body.customer.isBusinessCustomer ? 'SMBCustomer' : 'PrivateCustomer',
       ...body.customer,
       ...body.user,
       preferredInvoiceToAddress: { urn: body.user.preferredInvoiceToAddressUrn },
@@ -127,7 +123,7 @@ export class UserService {
       preferredPaymentInstrumentId: undefined,
     };
 
-    if (body.customer.type === 'PrivateCustomer') {
+    if (!body.customer.isBusinessCustomer) {
       return this.apiService.put<User>('customers/-', changedUser).pipe(map(UserMapper.fromData));
     } else {
       return this.apiService.put<User>('customers/-/users/-', changedUser).pipe(map(UserMapper.fromData));
@@ -155,7 +151,7 @@ export class UserService {
       return throwError('updateUserPassword() called without currentPassword');
     }
 
-    if (customer.type === 'PrivateCustomer') {
+    if (!customer.isBusinessCustomer) {
       return this.apiService.put('customers/-/credentials/password', { password, currentPassword });
     } else {
       return this.apiService.put('customers/-/users/-/credentials/password', { password, currentPassword });
@@ -175,7 +171,7 @@ export class UserService {
       return throwError('updateCustomer() cannot be called for a private customer)');
     }
 
-    return this.apiService.put('customers/-', customer).pipe(map(CustomerMapper.fromData));
+    return this.apiService.put('customers/-', { ...customer, type: 'SMBCustomer' }).pipe(map(CustomerMapper.fromData));
   }
 
   /**
@@ -187,7 +183,7 @@ export class UserService {
   }
 
   /**
-   * Request an email for the given datas user with a link to reset the users password.
+   * Request an email for the given data user with a link to reset the users password.
    * @param data  The user data (email, firstName, lastName ) to identify the user.
    */
   requestPasswordReminder(data: PasswordReminder) {

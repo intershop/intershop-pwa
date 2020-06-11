@@ -37,7 +37,7 @@ describe('User Effects', () => {
 
   const loginResponseData = {
     customer: {
-      type: 'SMBCustomer',
+      isBusinessCustomer: true,
       customerNo: 'PC',
     },
     user: {},
@@ -47,7 +47,6 @@ describe('User Effects', () => {
   class DummyComponent {}
   const customer = {
     customerNo: '4711',
-    type: 'SMBCustomer',
     isBusinessCustomer: true,
   } as Customer;
 
@@ -243,7 +242,7 @@ describe('User Effects', () => {
     it('should call the api service when Create event is called', done => {
       const action = new ua.CreateUser({
         customer: {
-          type: 'SMBCustomer',
+          isBusinessCustomer: true,
           customerNo: 'PC',
         },
       } as CustomerRegistrationType);
@@ -289,7 +288,7 @@ describe('User Effects', () => {
         new ua.LoginUserSuccess({
           customer: {
             customerNo: '4711',
-            type: 'PrivateCustomer',
+            isBusinessCustomer: false,
           } as Customer,
           user: {} as User,
         })
@@ -355,7 +354,7 @@ describe('User Effects', () => {
         new ua.LoginUserSuccess({
           customer: {
             customerNo: '4711',
-            type: 'PrivateCustomer',
+            isBusinessCustomer: false,
           } as Customer,
           user: {} as User,
         })
@@ -456,7 +455,6 @@ describe('User Effects', () => {
       const privateCustomer = {
         customerNo: '4712',
         isBusinessCustomer: false,
-        type: 'PrivateCustomer',
       } as Customer;
       store$.dispatch(
         new ua.LoginUserSuccess({
