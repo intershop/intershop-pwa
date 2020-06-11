@@ -8,7 +8,7 @@ import { SuccessMessage } from 'ish-core/store/core/messages';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { SetBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { getCurrentBasket } from 'ish-core/store/customer/basket';
-import { UserActionTypes, getUserAuthorized } from 'ish-core/store/customer/user';
+import { getUserAuthorized } from 'ish-core/store/customer/user';
 import {
   distinctCompareWith,
   mapErrorToAction,
@@ -252,16 +252,6 @@ export class OrderTemplateEffects {
     select(getUserAuthorized),
     whenTruthy(),
     mapTo(new orderTemplateActions.LoadOrderTemplates())
-  );
-
-  /**
-   * Trigger ResetOrderTemplateState action after LogoutUser.
-   */
-  @Effect()
-  resetOrderTemplateStateAfterLogout$ = this.actions$.pipe(
-    ofType(UserActionTypes.LogoutUser),
-
-    mapTo(new orderTemplateActions.ResetOrderTemplateState())
   );
 
   @Effect()

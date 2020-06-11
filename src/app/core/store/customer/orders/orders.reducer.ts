@@ -70,10 +70,6 @@ export function ordersReducer(state = initialState, action: OrdersAction): Order
         loading: false,
       };
     }
-
-    case OrdersActionTypes.ResetOrders: {
-      return initialState;
-    }
   }
 
   return state;

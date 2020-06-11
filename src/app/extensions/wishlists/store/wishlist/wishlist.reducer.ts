@@ -83,10 +83,6 @@ export function wishlistReducer(state = initialState, action: WishlistsAction): 
         selected: id,
       };
     }
-
-    case WishlistsActionTypes.ResetWishlistState: {
-      return initialState;
-    }
   }
 
   return state;

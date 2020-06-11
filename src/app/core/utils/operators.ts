@@ -70,3 +70,13 @@ export function whenTruthy<T>(): MonoTypeOperatorFunction<T> {
 export function whenFalsy<T>(): MonoTypeOperatorFunction<T> {
   return (source$: Observable<T>) => source$.pipe(filter(x => !x));
 }
+
+/**
+ * Operator waiting for a specific feature store to be initialized.
+ *
+ * Use in services to prevent warnings like:
+ * @ngrx/store: The feature name "XXX" does not exist in the state, therefore createFeatureSelector cannot access it.
+ */
+export function waitForFeatureStore(name: string): MonoTypeOperatorFunction<{}> {
+  return (source$: Observable<{}>) => source$.pipe(filter(x => !!x && !!x[name]));
+}

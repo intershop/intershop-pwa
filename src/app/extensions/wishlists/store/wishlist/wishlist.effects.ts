@@ -6,7 +6,7 @@ import { debounceTime, filter, map, mapTo, mergeMap, switchMap, withLatestFrom }
 import { SuccessMessage } from 'ish-core/store/core/messages';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { SetBreadcrumbData } from 'ish-core/store/core/viewconf';
-import { UserActionTypes, getUserAuthorized } from 'ish-core/store/customer/user';
+import { getUserAuthorized } from 'ish-core/store/customer/user';
 import {
   distinctCompareWith,
   mapErrorToAction,
@@ -190,16 +190,6 @@ export class WishlistEffects {
     whenTruthy(),
     debounceTime(1000),
     mapTo(new wishlistsActions.LoadWishlists())
-  );
-
-  /**
-   * Trigger ResetWishlistState action after LogoutUser.
-   */
-  @Effect()
-  resetWishlistStateAfterLogout$ = this.actions$.pipe(
-    ofType(UserActionTypes.LogoutUser),
-
-    mapTo(new wishlistsActions.ResetWishlistState())
   );
 
   @Effect()

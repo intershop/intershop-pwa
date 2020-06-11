@@ -341,20 +341,6 @@ describe('Basket Reducer', () => {
         });
       });
     });
-
-    describe('ResetBasket action', () => {
-      it('should reset to initial state', () => {
-        const oldState = {
-          ...initialState,
-          loading: true,
-          lineItems: [{ id: 'test' } as LineItem],
-        };
-        const action = new fromActions.ResetBasket();
-        const state = basketReducer(oldState, action);
-
-        expect(state).toEqual(initialState);
-      });
-    });
   });
 
   describe('LoadBasketEligibleShippingMethods actions', () => {

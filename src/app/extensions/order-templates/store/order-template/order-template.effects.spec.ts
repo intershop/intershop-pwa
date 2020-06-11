@@ -14,7 +14,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { SuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { LoginUserSuccess, LogoutUser } from 'ish-core/store/customer/user';
+import { LoginUserSuccess } from 'ish-core/store/customer/user';
 
 import { OrderTemplate } from '../../models/order-template/order-template.model';
 import { OrderTemplateService } from '../../services/order-template/order-template.service';
@@ -39,7 +39,6 @@ import {
   RemoveItemFromOrderTemplate,
   RemoveItemFromOrderTemplateFail,
   RemoveItemFromOrderTemplateSuccess,
-  ResetOrderTemplateState,
   SelectOrderTemplate,
   UpdateOrderTemplate,
   UpdateOrderTemplateFail,
@@ -502,17 +501,6 @@ describe('Order Template Effects', () => {
       });
 
       store$.dispatch(new LoginUserSuccess({ customer }));
-    });
-  });
-
-  describe('resetOrderTemplateStateAfterLogout$', () => {
-    it('should map to action of type ResetOrderTemplateState if LogoutUser action triggered', () => {
-      const action = new LogoutUser();
-      const completion = new ResetOrderTemplateState();
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.resetOrderTemplateStateAfterLogout$).toBeObservable(expected$);
     });
   });
 

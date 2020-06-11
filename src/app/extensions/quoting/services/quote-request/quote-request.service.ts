@@ -7,7 +7,7 @@ import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-updat
 import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
-import { whenFalsy } from 'ish-core/utils/operators';
+import { waitForFeatureStore, whenFalsy } from 'ish-core/utils/operators';
 
 import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItemData } from '../../models/quote-request-item/quote-request-item.interface';
@@ -46,7 +46,7 @@ export class QuoteRequestService {
 
     // rebuild the stream everytime the selected id switches back to undefined
     store
-      .pipe(select(getActiveQuoteRequestWithProducts), whenFalsy())
+      .pipe(waitForFeatureStore('quoting'), select(getActiveQuoteRequestWithProducts), whenFalsy())
       .subscribe(() => this.buildActiveQuoteRequestStream());
 
     this.buildActiveQuoteRequestStream();
@@ -249,10 +249,12 @@ export class QuoteRequestService {
    * selects or creates editable quote request
    */
   private buildActiveQuoteRequestStream() {
-    this.quoteRequest$ = this.store.pipe(select(getActiveQuoteRequestWithProducts)).pipe(
-      take(1),
-      concatMap(quoteRequest => (quoteRequest ? of(quoteRequest.id) : this.addQuoteRequest())),
-      shareReplay(1)
-    );
+    this.quoteRequest$ = this.store
+      .pipe(waitForFeatureStore('quoting'), select(getActiveQuoteRequestWithProducts))
+      .pipe(
+        take(1),
+        concatMap(quoteRequest => (quoteRequest ? of(quoteRequest.id) : this.addQuoteRequest())),
+        shareReplay(1)
+      );
   }
 }

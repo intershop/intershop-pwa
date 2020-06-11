@@ -3,10 +3,11 @@ import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
+import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
+
 import { ContentState } from './content-store';
 import { IncludesEffects } from './includes/includes.effects';
 import { includesReducer } from './includes/includes.reducer';
-import { PageletsEffects } from './pagelets/pagelets.effects';
 import { pageletsReducer } from './pagelets/pagelets.reducer';
 import { PagesEffects } from './pages/pages.effects';
 import { pagesReducer } from './pages/pages.reducer';
@@ -19,13 +20,18 @@ export const contentReducers: ActionReducerMap<ContentState> = {
 };
 // tslint:disable: deprecation
 
-const contentEffects = [IncludesEffects, PageletsEffects, PagesEffects];
+const contentEffects = [IncludesEffects, PagesEffects];
+
+const metaReducers = [resetOnLogoutMeta];
 
 @NgModule({
-  imports: [EffectsModule.forFeature(contentEffects), StoreModule.forFeature('content', contentReducers)],
+  imports: [
+    EffectsModule.forFeature(contentEffects),
+    StoreModule.forFeature('content', contentReducers, { metaReducers }),
+  ],
 })
 export class ContentStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<ContentState>)[]) {
-    return StoreModule.forFeature('content', pick(contentReducers, reducers));
+    return StoreModule.forFeature('content', pick(contentReducers, reducers), { metaReducers });
   }
 }
