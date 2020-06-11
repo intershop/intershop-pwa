@@ -19,7 +19,7 @@ export function distinctCompareWith<T>(observable: Observable<T>): OperatorFunct
 }
 
 // tslint:disable-next-line:no-any
-export function mapErrorToAction<S, T>(actionType: new (error: { error: HttpError }) => T, extras?: any) {
+export function mapErrorToAction<S, T>(actionType: (props: { error: HttpError }) => T, extras?: any) {
   return (source$: Observable<S | T>) =>
     source$.pipe(
       // tslint:disable-next-line:ban ban-types
@@ -39,7 +39,7 @@ export function mapErrorToAction<S, T>(actionType: new (error: { error: HttpErro
         ) {
           console.error(err);
         }
-        const errorAction = new actionType({ error: HttpErrorMapper.fromError(err), ...extras });
+        const errorAction = actionType({ error: HttpErrorMapper.fromError(err), ...extras });
         return of(errorAction);
       })
     );

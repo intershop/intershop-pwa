@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { TranslateService } from '@ngx-translate/core';
 import { IndividualConfig, ToastrService } from 'ngx-toastr';
 import { tap } from 'rxjs/operators';
@@ -7,52 +7,63 @@ import { tap } from 'rxjs/operators';
 import { mapToPayload } from 'ish-core/utils/operators';
 
 import {
-  DisplayErrorMessage,
-  DisplayInfoMessage,
-  DisplaySuccessMessage,
-  DisplayWarningMessage,
-  MessagesActionTypes,
   MessagesPayloadType,
+  displayErrorMessage,
+  displayInfoMessage,
+  displaySuccessMessage,
+  displayWarningMessage,
 } from './messages.actions';
 
 @Injectable()
 export class MessagesEffects {
   constructor(private actions$: Actions, private translate: TranslateService, private toastr: ToastrService) {}
 
-  @Effect({ dispatch: false })
-  infoToast$ = this.actions$.pipe(
-    ofType<DisplayInfoMessage>(MessagesActionTypes.DisplayInfoMessage),
-    mapToPayload(),
-    tap(payload => {
-      this.toastr.info(...this.composeToastServiceArguments(payload));
-    })
+  infoToast$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(displayInfoMessage),
+        mapToPayload(),
+        tap(payload => {
+          this.toastr.info(...this.composeToastServiceArguments(payload));
+        })
+      ),
+    { dispatch: false }
   );
 
-  @Effect({ dispatch: false })
-  errorToast$ = this.actions$.pipe(
-    ofType<DisplayErrorMessage>(MessagesActionTypes.DisplayErrorMessage),
-    mapToPayload(),
-    tap(payload => {
-      this.toastr.error(...this.composeToastServiceArguments(payload));
-    })
+  errorToast$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(displayErrorMessage),
+        mapToPayload(),
+        tap(payload => {
+          this.toastr.error(...this.composeToastServiceArguments(payload));
+        })
+      ),
+    { dispatch: false }
   );
 
-  @Effect({ dispatch: false })
-  warningToast$ = this.actions$.pipe(
-    ofType<DisplayWarningMessage>(MessagesActionTypes.DisplayWarningMessage),
-    mapToPayload(),
-    tap(payload => {
-      this.toastr.warning(...this.composeToastServiceArguments(payload));
-    })
+  warningToast$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(displayWarningMessage),
+        mapToPayload(),
+        tap(payload => {
+          this.toastr.warning(...this.composeToastServiceArguments(payload));
+        })
+      ),
+    { dispatch: false }
   );
 
-  @Effect({ dispatch: false })
-  successToast$ = this.actions$.pipe(
-    ofType<DisplaySuccessMessage>(MessagesActionTypes.DisplaySuccessMessage),
-    mapToPayload(),
-    tap(payload => {
-      this.toastr.success(...this.composeToastServiceArguments(payload));
-    })
+  successToast$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(displaySuccessMessage),
+        mapToPayload(),
+        tap(payload => {
+          this.toastr.success(...this.composeToastServiceArguments(payload));
+        })
+      ),
+    { dispatch: false }
   );
 
   private composeToastServiceArguments(payload: MessagesPayloadType): [string, string, Partial<IndividualConfig>] {

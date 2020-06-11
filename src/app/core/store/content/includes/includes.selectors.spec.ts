@@ -5,7 +5,7 @@ import { ContentStoreModule } from 'ish-core/store/content/content-store.module'
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { LoadContentIncludeSuccess } from './includes.actions';
+import { loadContentIncludeSuccess } from './includes.actions';
 import { getContentInclude } from './includes.selectors';
 
 describe('Includes Selectors', () => {
@@ -27,7 +27,7 @@ describe('Includes Selectors', () => {
 
     it('should select include when it was successfully loaded', () => {
       store$.dispatch(
-        new LoadContentIncludeSuccess({ include: { id: 'dummy' } as ContentPageletEntryPoint, pagelets: [] })
+        loadContentIncludeSuccess({ include: { id: 'dummy' } as ContentPageletEntryPoint, pagelets: [] })
       );
 
       expect(getContentInclude(store$.state, 'dummy')).toHaveProperty('id', 'dummy');
@@ -39,7 +39,7 @@ describe('Includes Selectors', () => {
       beforeEach(() => {
         IDS.forEach(title =>
           store$.dispatch(
-            new LoadContentIncludeSuccess({ include: { id: title } as ContentPageletEntryPoint, pagelets: [] })
+            loadContentIncludeSuccess({ include: { id: title } as ContentPageletEntryPoint, pagelets: [] })
           )
         );
       });

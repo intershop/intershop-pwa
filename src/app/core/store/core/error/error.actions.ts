@@ -1,29 +1,9 @@
-import { Action } from '@ngrx/store';
+import { createAction } from '@ngrx/store';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { httpError } from 'ish-core/utils/ngrx-creators';
 
-export enum ErrorActionTypes {
-  GeneralError = '[Error] Communication Error',
-  CommunicationTimeoutError = '[Error] Communication Timeout Error',
-  ServerError = '[Error] Server Error (5xx)',
-}
+export const generalError = createAction('[Error] Communication Error', httpError());
 
-export class GeneralError implements Action {
-  readonly type = ErrorActionTypes.GeneralError;
-  constructor(public payload: { error: HttpError }) {}
-}
+export const communicationTimeoutError = createAction('[Error] Communication Timeout Error', httpError());
 
-export class CommunicationTimeoutError implements Action {
-  readonly type = ErrorActionTypes.CommunicationTimeoutError;
-  constructor(public payload: { error: HttpError }) {}
-}
-
-/**
- * Internal Server Error - 500
- */
-export class ServerError implements Action {
-  readonly type = ErrorActionTypes.ServerError;
-  constructor(public payload: { error: HttpError }) {}
-}
-
-export type HttpErrorAction = GeneralError | CommunicationTimeoutError | ServerError;
+export const serverError = createAction('[Error] Server Error (5xx)', httpError());

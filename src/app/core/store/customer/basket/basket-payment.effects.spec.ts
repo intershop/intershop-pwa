@@ -17,29 +17,29 @@ import { Payment } from 'ish-core/models/payment/payment.model';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { LoginUserSuccess } from 'ish-core/store/customer/user';
+import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { BasketPaymentEffects } from './basket-payment.effects';
 import {
-  CreateBasketPayment,
-  CreateBasketPaymentFail,
-  CreateBasketPaymentSuccess,
-  DeleteBasketPayment,
-  DeleteBasketPaymentFail,
-  DeleteBasketPaymentSuccess,
-  LoadBasket,
-  LoadBasketEligiblePaymentMethods,
-  LoadBasketEligiblePaymentMethodsFail,
-  LoadBasketEligiblePaymentMethodsSuccess,
-  LoadBasketSuccess,
-  SetBasketPayment,
-  SetBasketPaymentFail,
-  SetBasketPaymentSuccess,
-  UpdateBasketPayment,
-  UpdateBasketPaymentFail,
-  UpdateBasketPaymentSuccess,
+  createBasketPayment,
+  createBasketPaymentFail,
+  createBasketPaymentSuccess,
+  deleteBasketPayment,
+  deleteBasketPaymentFail,
+  deleteBasketPaymentSuccess,
+  loadBasket,
+  loadBasketEligiblePaymentMethods,
+  loadBasketEligiblePaymentMethodsFail,
+  loadBasketEligiblePaymentMethodsSuccess,
+  loadBasketSuccess,
+  setBasketPayment,
+  setBasketPaymentFail,
+  setBasketPaymentSuccess,
+  updateBasketPayment,
+  updateBasketPaymentFail,
+  updateBasketPaymentSuccess,
 } from './basket.actions';
 
 describe('Basket Payment Effects', () => {
@@ -82,7 +82,7 @@ describe('Basket Payment Effects', () => {
       );
 
       store$.dispatch(
-        new LoadBasketSuccess({
+        loadBasketSuccess({
           basket: {
             id: 'BID',
             lineItems: [],
@@ -92,7 +92,7 @@ describe('Basket Payment Effects', () => {
     });
 
     it('should call the paymentService for loadBasketEligiblePaymentMethods', done => {
-      const action = new LoadBasketEligiblePaymentMethods();
+      const action = loadBasketEligiblePaymentMethods();
       actions$ = of(action);
 
       effects.loadBasketEligiblePaymentMethods$.subscribe(() => {
@@ -102,8 +102,8 @@ describe('Basket Payment Effects', () => {
     });
 
     it('should map to action of type loadBasketEligiblePaymentMethodsSuccess', () => {
-      const action = new LoadBasketEligiblePaymentMethods();
-      const completion = new LoadBasketEligiblePaymentMethodsSuccess({
+      const action = loadBasketEligiblePaymentMethods();
+      const completion = loadBasketEligiblePaymentMethodsSuccess({
         paymentMethods: [BasketMockData.getPaymentMethod()],
       });
       actions$ = hot('-a-a-a', { a: action });
@@ -116,8 +116,8 @@ describe('Basket Payment Effects', () => {
       when(paymentServiceMock.getBasketEligiblePaymentMethods(anyString())).thenReturn(
         throwError({ message: 'invalid' })
       );
-      const action = new LoadBasketEligiblePaymentMethods();
-      const completion = new LoadBasketEligiblePaymentMethodsFail({
+      const action = loadBasketEligiblePaymentMethods();
+      const completion = loadBasketEligiblePaymentMethodsFail({
         error: {
           message: 'invalid',
         } as HttpError,
@@ -134,7 +134,7 @@ describe('Basket Payment Effects', () => {
       when(paymentServiceMock.setBasketPayment(anyString(), anyString())).thenReturn(of(undefined));
 
       store$.dispatch(
-        new LoadBasketSuccess({
+        loadBasketSuccess({
           basket: {
             id: 'BID',
             lineItems: [],
@@ -146,7 +146,7 @@ describe('Basket Payment Effects', () => {
 
     it('should call the paymentService for setPaymentAtBasket', done => {
       const id = 'newPayment';
-      const action = new SetBasketPayment({ id });
+      const action = setBasketPayment({ id });
       actions$ = of(action);
 
       effects.setPaymentAtBasket$.subscribe(() => {
@@ -157,8 +157,8 @@ describe('Basket Payment Effects', () => {
 
     it('should map to action of type SetBasketPaymentSuccess', () => {
       const id = 'newPayment';
-      const action = new SetBasketPayment({ id });
-      const completion = new SetBasketPaymentSuccess();
+      const action = setBasketPayment({ id });
+      const completion = setBasketPaymentSuccess();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -169,8 +169,8 @@ describe('Basket Payment Effects', () => {
       when(paymentServiceMock.setBasketPayment(anyString(), anyString())).thenReturn(
         throwError({ message: 'invalid' })
       );
-      const action = new SetBasketPayment({ id: 'newPayment' });
-      const completion = new SetBasketPaymentFail({ error: { message: 'invalid' } as HttpError });
+      const action = setBasketPayment({ id: 'newPayment' });
+      const completion = setBasketPaymentFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -182,12 +182,12 @@ describe('Basket Payment Effects', () => {
     beforeEach(() => {
       when(paymentServiceMock.setBasketPayment(anyString(), anyString())).thenReturn(of(undefined));
 
-      store$.dispatch(new LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
+      store$.dispatch(loadBasketSuccess({ basket: BasketMockData.getBasket() }));
     });
 
     it('should call the paymentService for setPaymentAtBasket', done => {
       const id = 'newPayment';
-      const action = new SetBasketPayment({ id });
+      const action = setBasketPayment({ id });
       actions$ = of(action);
 
       effects.setPaymentAtBasket$.subscribe(() => {
@@ -198,8 +198,8 @@ describe('Basket Payment Effects', () => {
 
     it('should map to action of type SetBasketPaymentSuccess', () => {
       const id = 'newPayment';
-      const action = new SetBasketPayment({ id });
-      const completion = new SetBasketPaymentSuccess();
+      const action = setBasketPayment({ id });
+      const completion = setBasketPaymentSuccess();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -210,8 +210,8 @@ describe('Basket Payment Effects', () => {
       when(paymentServiceMock.setBasketPayment(anyString(), anyString())).thenReturn(
         throwError({ message: 'invalid' })
       );
-      const action = new SetBasketPayment({ id: 'newPayment' });
-      const completion = new SetBasketPaymentFail({ error: { message: 'invalid' } as HttpError });
+      const action = setBasketPayment({ id: 'newPayment' });
+      const completion = setBasketPaymentFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -245,7 +245,7 @@ describe('Basket Payment Effects', () => {
       );
 
       store$.dispatch(
-        new LoadBasketSuccess({
+        loadBasketSuccess({
           basket: {
             id: 'BID',
             lineItems: [],
@@ -253,11 +253,11 @@ describe('Basket Payment Effects', () => {
           } as Basket,
         })
       );
-      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(loginUserSuccess({ customer }));
     });
 
     it('should call the paymentService if payment instrument is saved at basket', done => {
-      const action = new CreateBasketPayment({ paymentInstrument, saveForLater: false });
+      const action = createBasketPayment({ paymentInstrument, saveForLater: false });
       actions$ = of(action);
 
       effects.createBasketPaymentInstrument$.subscribe(() => {
@@ -267,7 +267,7 @@ describe('Basket Payment Effects', () => {
     });
 
     it('should call the paymentService if payment instrument is saved at user', done => {
-      const action = new CreateBasketPayment({ paymentInstrument, saveForLater: true });
+      const action = createBasketPayment({ paymentInstrument, saveForLater: true });
       actions$ = of(action);
 
       effects.createBasketPaymentInstrument$.subscribe(() => {
@@ -276,9 +276,9 @@ describe('Basket Payment Effects', () => {
       });
     });
     it('should map to action of type SetBasketPayment and CreateBasketPaymentSuccess', () => {
-      const action = new CreateBasketPayment({ paymentInstrument, saveForLater: false });
-      const completion1 = new SetBasketPayment({ id: 'newPaymentInstrumentId' });
-      const completion2 = new CreateBasketPaymentSuccess();
+      const action = createBasketPayment({ paymentInstrument, saveForLater: false });
+      const completion1 = setBasketPayment({ id: 'newPaymentInstrumentId' });
+      const completion2 = createBasketPaymentSuccess();
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
 
@@ -289,8 +289,8 @@ describe('Basket Payment Effects', () => {
       when(paymentServiceMock.createBasketPayment(anyString(), anything())).thenReturn(
         throwError({ message: 'invalid' })
       );
-      const action = new CreateBasketPayment({ paymentInstrument, saveForLater: false });
-      const completion = new CreateBasketPaymentFail({ error: { message: 'invalid' } as HttpError });
+      const action = createBasketPayment({ paymentInstrument, saveForLater: false });
+      const completion = createBasketPaymentFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -298,8 +298,8 @@ describe('Basket Payment Effects', () => {
     });
 
     it('should map to action of type LoadEligibleBasketMethod in case of success', () => {
-      const action = new CreateBasketPaymentSuccess();
-      const completion = new LoadBasketEligiblePaymentMethods();
+      const action = createBasketPaymentSuccess();
+      const completion = loadBasketEligiblePaymentMethods();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -310,7 +310,7 @@ describe('Basket Payment Effects', () => {
   describe('sendPaymentRedirectData$', () => {
     beforeEach(() => {
       store$.dispatch(
-        new LoadBasketSuccess({
+        loadBasketSuccess({
           basket: {
             id: 'BID',
             lineItems: [],
@@ -365,7 +365,7 @@ describe('Basket Payment Effects', () => {
       when(paymentServiceMock.updateBasketPayment(anyString(), anything())).thenReturn(of(payment));
 
       store$.dispatch(
-        new LoadBasketSuccess({
+        loadBasketSuccess({
           basket: {
             id: 'BID',
             lineItems: [],
@@ -376,7 +376,7 @@ describe('Basket Payment Effects', () => {
     });
 
     it('should call the paymentService for updateBasketPayment', done => {
-      const action = new UpdateBasketPayment({ params });
+      const action = updateBasketPayment({ params });
       actions$ = of(action);
 
       effects.updateBasketPayment$.subscribe(() => {
@@ -386,8 +386,8 @@ describe('Basket Payment Effects', () => {
     });
 
     it('should map to action of type UpdateBasketPaymentSuccess', () => {
-      const action = new UpdateBasketPayment({ params });
-      const completion = new UpdateBasketPaymentSuccess();
+      const action = updateBasketPayment({ params });
+      const completion = updateBasketPaymentSuccess();
 
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -399,8 +399,8 @@ describe('Basket Payment Effects', () => {
       when(paymentServiceMock.updateBasketPayment(anyString(), anything())).thenReturn(
         throwError({ message: 'invalid' })
       );
-      const action = new UpdateBasketPayment({ params });
-      const completion = new UpdateBasketPaymentFail({ error: { message: 'invalid' } as HttpError });
+      const action = updateBasketPayment({ params });
+      const completion = updateBasketPaymentFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -408,8 +408,8 @@ describe('Basket Payment Effects', () => {
     });
 
     it('should map to action of type LoadBasket in case of success', () => {
-      const action = new UpdateBasketPaymentSuccess();
-      const completion = new LoadBasket();
+      const action = updateBasketPaymentSuccess();
+      const completion = loadBasket();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -442,14 +442,14 @@ describe('Basket Payment Effects', () => {
       when(paymentServiceMock.deleteBasketPaymentInstrument(anything(), anything())).thenReturn(of(undefined));
 
       store$.dispatch(
-        new LoadBasketSuccess({
+        loadBasketSuccess({
           basket,
         })
       );
     });
 
     it('should call the paymentService for deleteBasketPayment', done => {
-      const action = new DeleteBasketPayment({ paymentInstrument });
+      const action = deleteBasketPayment({ paymentInstrument });
       actions$ = of(action);
 
       effects.deleteBasketPaymentInstrument$.subscribe(() => {
@@ -459,8 +459,8 @@ describe('Basket Payment Effects', () => {
     });
 
     it('should map to action of type DeleteBasketPaymentSuccess', () => {
-      const action = new DeleteBasketPayment({ paymentInstrument });
-      const completion = new DeleteBasketPaymentSuccess();
+      const action = deleteBasketPayment({ paymentInstrument });
+      const completion = deleteBasketPaymentSuccess();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -471,8 +471,8 @@ describe('Basket Payment Effects', () => {
       when(paymentServiceMock.deleteBasketPaymentInstrument(anything(), anything())).thenReturn(
         throwError({ message: 'invalid' })
       );
-      const action = new DeleteBasketPayment({ paymentInstrument });
-      const completion = new DeleteBasketPaymentFail({ error: { message: 'invalid' } as HttpError });
+      const action = deleteBasketPayment({ paymentInstrument });
+      const completion = deleteBasketPaymentFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -480,8 +480,8 @@ describe('Basket Payment Effects', () => {
     });
 
     it('should map to action of type GetEligiblePaymentMethods in case of success', () => {
-      const action = new DeleteBasketPaymentSuccess();
-      const completion = new LoadBasketEligiblePaymentMethods();
+      const action = deleteBasketPaymentSuccess();
+      const completion = loadBasketEligiblePaymentMethods();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -489,8 +489,8 @@ describe('Basket Payment Effects', () => {
     });
 
     it('should map to action of type LoadBasket in case of success', () => {
-      const action = new DeleteBasketPaymentSuccess();
-      const completion = new LoadBasket();
+      const action = deleteBasketPaymentSuccess();
+      const completion = loadBasket();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

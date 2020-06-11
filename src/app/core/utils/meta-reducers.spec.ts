@@ -1,7 +1,7 @@
 import { Action, combineReducers } from '@ngrx/store';
 import { identity } from 'rxjs';
 
-import { LogoutUser } from 'ish-core/store/customer/user';
+import { logoutUser } from 'ish-core/store/customer/user';
 
 import { resetOnLogoutMeta } from './meta-reducers';
 
@@ -20,12 +20,12 @@ describe('Meta Reducers', () => {
     });
 
     it('should reset state when reducing LogoutUser action', () => {
-      const result = resetOnLogoutMeta(identity)(state, new LogoutUser());
+      const result = resetOnLogoutMeta(identity)(state, logoutUser());
       expect(result).toBeEmpty();
     });
 
     it('should reset and delegate to reducer initial state when reducing LogoutUser action', () => {
-      const result = resetOnLogoutMeta(reducer)(state, new LogoutUser());
+      const result = resetOnLogoutMeta(reducer)(state, logoutUser());
       expect(result).toEqual({ a: 'initialA', b: 'initialB' });
     });
 

@@ -3,23 +3,40 @@ import { Order } from 'ish-core/models/order/order.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import {
-  CreateOrder,
-  CreateOrderFail,
-  CreateOrderSuccess,
-  LoadOrder,
-  LoadOrderSuccess,
-  LoadOrders,
-  LoadOrdersFail,
-  LoadOrdersSuccess,
-  OrdersAction,
-  SelectOrder,
+  createOrder,
+  createOrderFail,
+  createOrderSuccess,
+  loadOrder,
+  loadOrderByAPIToken,
+  loadOrderFail,
+  loadOrderSuccess,
+  loadOrders,
+  loadOrdersFail,
+  loadOrdersSuccess,
+  selectOrder,
+  selectOrderAfterRedirect,
+  selectOrderAfterRedirectFail,
 } from './orders.actions';
 import { initialState, ordersReducer } from './orders.reducer';
 
 describe('Orders Reducer', () => {
   describe('undefined action', () => {
     it('should return the default state when previous state is undefined', () => {
-      const action = {} as OrdersAction;
+      const action = {} as ReturnType<
+        | typeof createOrder
+        | typeof createOrderFail
+        | typeof createOrderSuccess
+        | typeof loadOrders
+        | typeof loadOrdersFail
+        | typeof loadOrdersSuccess
+        | typeof loadOrder
+        | typeof loadOrderByAPIToken
+        | typeof loadOrderFail
+        | typeof loadOrderSuccess
+        | typeof selectOrder
+        | typeof selectOrderAfterRedirect
+        | typeof selectOrderAfterRedirectFail
+      >;
       const state = ordersReducer(undefined, action);
 
       expect(state).toBe(initialState);
@@ -29,7 +46,7 @@ describe('Orders Reducer', () => {
   describe('CreateOrder actions', () => {
     describe('CreateOrder action', () => {
       it('should set loading to true', () => {
-        const action = new CreateOrder({ basketId: BasketMockData.getBasket().id });
+        const action = createOrder({ basketId: BasketMockData.getBasket().id });
         const state = ordersReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -39,7 +56,7 @@ describe('Orders Reducer', () => {
     describe('CreateOrderSuccess action', () => {
       it('should add new order to initial state and select it', () => {
         const order = { id: 'orderid' } as Order;
-        const action = new CreateOrderSuccess({ order });
+        const action = createOrderSuccess({ order });
         const state = ordersReducer(initialState, action);
 
         expect(state.entities[order.id]).toEqual(order);
@@ -50,7 +67,7 @@ describe('Orders Reducer', () => {
     describe('CreateOrderFail action', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpError;
-        const action = new CreateOrderFail({ error });
+        const action = createOrderFail({ error });
         const state = ordersReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -62,7 +79,7 @@ describe('Orders Reducer', () => {
   describe('LoadOrders actions', () => {
     describe('LoadOrders action', () => {
       it('should set loading to true', () => {
-        const action = new LoadOrders();
+        const action = loadOrders();
         const state = ordersReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -72,7 +89,7 @@ describe('Orders Reducer', () => {
 
     describe('LoadOrdersFail action', () => {
       it('should set loading to false', () => {
-        const action = new LoadOrdersFail({ error: {} as HttpError });
+        const action = loadOrdersFail({ error: {} as HttpError });
         const state = ordersReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -97,7 +114,7 @@ describe('Orders Reducer', () => {
       });
 
       it('should insert orders if not exist', () => {
-        const action = new LoadOrdersSuccess({ orders });
+        const action = loadOrdersSuccess({ orders });
         const state = ordersReducer(initialState, action);
 
         expect(state.ids).toHaveLength(2);
@@ -109,7 +126,7 @@ describe('Orders Reducer', () => {
   describe('LoadOrder actions', () => {
     describe('LoadOrder action', () => {
       it('should set loading to true', () => {
-        const action = new LoadOrder({ orderId: '12345' });
+        const action = loadOrder({ orderId: '12345' });
         const state = ordersReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -119,7 +136,7 @@ describe('Orders Reducer', () => {
 
     describe('LoadOrderFail action', () => {
       it('should set loading to false', () => {
-        const action = new LoadOrdersFail({ error: {} as HttpError });
+        const action = loadOrdersFail({ error: {} as HttpError });
         const state = ordersReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -138,7 +155,7 @@ describe('Orders Reducer', () => {
       });
 
       it('should insert order if not exist', () => {
-        const action = new LoadOrderSuccess({ order });
+        const action = loadOrderSuccess({ order });
         const state = ordersReducer(initialState, action);
 
         expect(state.ids).toHaveLength(1);
@@ -150,7 +167,7 @@ describe('Orders Reducer', () => {
   describe('SelectOrder action', () => {
     it('should write the selected order to the state', () => {
       const order = { id: 'orderid' } as Order;
-      const action = new SelectOrder({ orderId: order.id });
+      const action = selectOrder({ orderId: order.id });
       const state = ordersReducer(initialState, action);
 
       expect(state.selected).toEqual(order.id);

@@ -11,7 +11,7 @@ import { ConfigurationService } from 'ish-core/services/configuration/configurat
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { GeneralStoreModule } from 'ish-core/store/general/general-store.module';
 
-import { LoadServerConfig, LoadServerConfigFail, LoadServerConfigSuccess } from './server-config.actions';
+import { loadServerConfig, loadServerConfigFail, loadServerConfigSuccess } from './server-config.actions';
 import { ServerConfigEffects } from './server-config.effects';
 
 describe('Server Config Effects', () => {
@@ -40,7 +40,7 @@ describe('Server Config Effects', () => {
     it('should trigger the loading of config data on the first page', () => {
       // tslint:disable-next-line: no-any
       const action = routerNavigationAction({ payload: {} as any });
-      const expected = new LoadServerConfig();
+      const expected = loadServerConfig();
 
       actions$ = hot('a', { a: action });
       expect(effects.loadServerConfigOnInit$).toBeObservable(cold('a', { a: expected }));
@@ -48,7 +48,7 @@ describe('Server Config Effects', () => {
 
     it('should not trigger the loading of config data on the second page', () => {
       store$.dispatch(
-        new LoadServerConfigSuccess({
+        loadServerConfigSuccess({
           config: { application: 'intershop.B2CResponsive' },
         })
       );
@@ -68,8 +68,8 @@ describe('Server Config Effects', () => {
     });
 
     it('should map to action of type ApplyConfiguration', () => {
-      const action = new LoadServerConfig();
-      const completion = new LoadServerConfigSuccess({ config: {} });
+      const action = loadServerConfig();
+      const completion = loadServerConfigSuccess({ config: {} });
 
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -80,8 +80,8 @@ describe('Server Config Effects', () => {
     it('should map invalid request to action of type LoadServerConfigFail', () => {
       when(configurationServiceMock.getServerConfiguration()).thenReturn(throwError({ message: 'invalid' }));
 
-      const action = new LoadServerConfig();
-      const completion = new LoadServerConfigFail({ error: { message: 'invalid' } as HttpError });
+      const action = loadServerConfig();
+      const completion = loadServerConfigFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

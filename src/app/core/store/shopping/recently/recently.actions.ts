@@ -1,17 +1,10 @@
-import { Action } from '@ngrx/store';
+import { createAction } from '@ngrx/store';
 
-export enum RecentlyActionTypes {
-  AddToRecently = '[Recently Viewed] Add Product to Recently',
-  ClearRecently = '[Recently Viewed] Clear Recently',
-}
+import { payload } from 'ish-core/utils/ngrx-creators';
 
-export class AddToRecently implements Action {
-  readonly type = RecentlyActionTypes.AddToRecently;
-  constructor(public payload: { sku: string; group?: string }) {}
-}
+export const addToRecently = createAction(
+  '[Recently Viewed] Add Product to Recently',
+  payload<{ sku: string; group?: string }>()
+);
 
-export class ClearRecently implements Action {
-  readonly type = RecentlyActionTypes.ClearRecently;
-}
-
-export type RecentlyAction = AddToRecently | ClearRecently;
+export const clearRecently = createAction('[Recently Viewed] Clear Recently');

@@ -21,39 +21,39 @@ import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { DisplaySuccessMessage } from 'ish-core/store/core/messages';
+import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 
 import {
-  CreateUser,
-  CreateUserFail,
-  DeleteUserPaymentInstrument,
-  DeleteUserPaymentInstrumentFail,
-  DeleteUserPaymentInstrumentSuccess,
-  LoadCompanyUser,
-  LoadCompanyUserFail,
-  LoadCompanyUserSuccess,
-  LoadUserByAPIToken,
-  LoadUserPaymentMethods,
-  LoadUserPaymentMethodsFail,
-  LoadUserPaymentMethodsSuccess,
-  LoginUser,
-  LoginUserFail,
-  LoginUserSuccess,
-  LogoutUser,
-  RequestPasswordReminder,
-  RequestPasswordReminderFail,
-  RequestPasswordReminderSuccess,
-  ResetAPIToken,
-  UpdateCustomer,
-  UpdateCustomerFail,
-  UpdateCustomerSuccess,
-  UpdateUser,
-  UpdateUserFail,
-  UpdateUserPassword,
-  UpdateUserPasswordFail,
-  UpdateUserPasswordSuccess,
-  UpdateUserSuccess,
+  createUser,
+  createUserFail,
+  deleteUserPaymentInstrument,
+  deleteUserPaymentInstrumentFail,
+  deleteUserPaymentInstrumentSuccess,
+  loadCompanyUser,
+  loadCompanyUserFail,
+  loadCompanyUserSuccess,
+  loadUserByAPIToken,
+  loadUserPaymentMethods,
+  loadUserPaymentMethodsFail,
+  loadUserPaymentMethodsSuccess,
+  loginUser,
+  loginUserFail,
+  loginUserSuccess,
+  logoutUser,
+  requestPasswordReminder,
+  requestPasswordReminderFail,
+  requestPasswordReminderSuccess,
+  resetAPIToken,
+  updateCustomer,
+  updateCustomerFail,
+  updateCustomerSuccess,
+  updateUser,
+  updateUserFail,
+  updateUserPassword,
+  updateUserPasswordFail,
+  updateUserPasswordSuccess,
+  updateUserSuccess,
 } from './user.actions';
 import { UserEffects } from './user.effects';
 
@@ -124,7 +124,7 @@ describe('User Effects', () => {
 
   describe('loginUser$', () => {
     it('should call the api service when LoginUser event is called', done => {
-      const action = new LoginUser({ credentials: { login: 'dummy', password: 'dummy' } });
+      const action = loginUser({ credentials: { login: 'dummy', password: 'dummy' } });
 
       actions$ = of(action);
 
@@ -135,8 +135,8 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a LoginUserSuccess action on successful login', () => {
-      const action = new LoginUser({ credentials: { login: 'dummy', password: 'dummy' } });
-      const completion = new LoginUserSuccess(loginResponseData);
+      const action = loginUser({ credentials: { login: 'dummy', password: 'dummy' } });
+      const completion = loginUserSuccess(loginResponseData);
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -150,8 +150,8 @@ describe('User Effects', () => {
 
       when(userServiceMock.signinUser(anything())).thenReturn(throwError(error));
 
-      const action = new LoginUser({ credentials: { login: 'dummy', password: 'dummy' } });
-      const completion = new LoginUserFail({ error: HttpErrorMapper.fromError(error) });
+      const action = loginUser({ credentials: { login: 'dummy', password: 'dummy' } });
+      const completion = loginUserFail({ error: HttpErrorMapper.fromError(error) });
 
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -161,7 +161,7 @@ describe('User Effects', () => {
 
   describe('loadCompanyUser$', () => {
     it('should call the registationService for LoadCompanyUser', done => {
-      const action = new LoadCompanyUser();
+      const action = loadCompanyUser();
       actions$ = of(action);
 
       effects.loadCompanyUser$.subscribe(() => {
@@ -170,8 +170,8 @@ describe('User Effects', () => {
       });
     });
     it('should map to action of type LoadCompanyUserSuccess', () => {
-      const action = new LoadCompanyUser();
-      const completion = new LoadCompanyUserSuccess({ user: { firstName: 'Patricia' } as User });
+      const action = loadCompanyUser();
+      const completion = loadCompanyUserSuccess({ user: { firstName: 'Patricia' } as User });
 
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -184,8 +184,8 @@ describe('User Effects', () => {
       const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;
       when(userServiceMock.getCompanyUserData()).thenReturn(throwError(error));
 
-      const action = new LoadCompanyUser();
-      const completion = new LoadCompanyUserFail({ error: HttpErrorMapper.fromError(error) });
+      const action = loadCompanyUser();
+      const completion = loadCompanyUserFail({ error: HttpErrorMapper.fromError(error) });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -196,13 +196,13 @@ describe('User Effects', () => {
 
   describe('goToLoginAfterLogoutBySessionTimeout$', () => {
     it('should navigate to login from current route after ResetAPIToken', fakeAsync(() => {
-      store$.dispatch(new LoginUserSuccess(loginResponseData));
+      store$.dispatch(loginUserSuccess(loginResponseData));
       router.navigateByUrl('/account');
       tick(500);
 
       expect(location.path()).toMatchInlineSnapshot(`"/account"`);
 
-      actions$ = from([new ResetAPIToken(), new LogoutUser()]);
+      actions$ = from([resetAPIToken(), logoutUser()]);
 
       effects.goToLoginAfterLogoutBySessionTimeout$.subscribe(noop, fail, noop);
 
@@ -214,7 +214,7 @@ describe('User Effects', () => {
 
   describe('redirectAfterLogin$', () => {
     it('should not navigate anywhere when no returnUrl is given', fakeAsync(() => {
-      const action = new LoginUserSuccess(loginResponseData);
+      const action = loginUserSuccess(loginResponseData);
 
       actions$ = of(action);
 
@@ -230,7 +230,7 @@ describe('User Effects', () => {
       tick(500);
       expect(location.path()).toEqual('/login?returnUrl=%2Ffoobar');
 
-      const action = new LoginUserSuccess(loginResponseData);
+      const action = loginUserSuccess(loginResponseData);
 
       actions$ = of(action);
 
@@ -246,7 +246,7 @@ describe('User Effects', () => {
       tick(500);
       expect(location.path()).toEqual('/login');
 
-      store$.dispatch(new LoginUserSuccess(loginResponseData));
+      store$.dispatch(loginUserSuccess(loginResponseData));
 
       effects.redirectAfterLogin$.subscribe(noop, fail, noop);
 
@@ -260,7 +260,7 @@ describe('User Effects', () => {
       tick(500);
       expect(location.path()).toEqual('/home');
 
-      store$.dispatch(new LoginUserSuccess(loginResponseData));
+      store$.dispatch(loginUserSuccess(loginResponseData));
 
       effects.redirectAfterLogin$.subscribe(noop, fail, noop);
 
@@ -272,7 +272,7 @@ describe('User Effects', () => {
 
   describe('createUser$', () => {
     it('should call the api service when Create event is called', done => {
-      const action = new CreateUser({
+      const action = createUser({
         customer: {
           isBusinessCustomer: true,
           customerNo: 'PC',
@@ -290,8 +290,8 @@ describe('User Effects', () => {
     it('should dispatch a CreateUserLogin action on successful user creation', () => {
       const credentials: Credentials = { login: '1234', password: 'xxx' };
 
-      const action = new CreateUser({ credentials } as CustomerRegistrationType);
-      const completion = new LoginUser({ credentials });
+      const action = createUser({ credentials } as CustomerRegistrationType);
+      const completion = loginUser({ credentials });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -304,8 +304,8 @@ describe('User Effects', () => {
       const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;
       when(userServiceMock.createUser(anything())).thenReturn(throwError(error));
 
-      const action = new CreateUser({} as CustomerRegistrationType);
-      const completion = new CreateUserFail({ error: HttpErrorMapper.fromError(error) });
+      const action = createUser({} as CustomerRegistrationType);
+      const completion = createUserFail({ error: HttpErrorMapper.fromError(error) });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -317,7 +317,7 @@ describe('User Effects', () => {
   describe('updateUser$', () => {
     beforeEach(() => {
       store$.dispatch(
-        new LoginUserSuccess({
+        loginUserSuccess({
           customer: {
             customerNo: '4711',
             isBusinessCustomer: false,
@@ -327,7 +327,7 @@ describe('User Effects', () => {
       );
     });
     it('should call the api service when Update event is called', done => {
-      const action = new UpdateUser({
+      const action = updateUser({
         user: {
           firstName: 'Patricia',
         } as User,
@@ -344,8 +344,8 @@ describe('User Effects', () => {
     it('should dispatch a UpdateUserSuccess action on successful user update', () => {
       const user = { firstName: 'Patricia' } as User;
 
-      const action = new UpdateUser({ user, successMessage: 'success' });
-      const completion = new UpdateUserSuccess({ user, successMessage: 'success' });
+      const action = updateUser({ user, successMessage: 'success' });
+      const completion = updateUserSuccess({ user, successMessage: 'success' });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -356,8 +356,8 @@ describe('User Effects', () => {
     it('should dispatch a SuccessMessage action if update succeeded', () => {
       // tslint:disable-next-line:ban-types
 
-      const action = new UpdateUserSuccess({ user: {} as User, successMessage: 'success' });
-      const completion = new DisplaySuccessMessage({ message: 'success' });
+      const action = updateUserSuccess({ user: {} as User, successMessage: 'success' });
+      const completion = displaySuccessMessage({ message: 'success' });
 
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-b-b-b', { b: completion });
@@ -370,8 +370,8 @@ describe('User Effects', () => {
       const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;
       when(userServiceMock.updateUser(anything())).thenReturn(throwError(error));
 
-      const action = new UpdateUser({ user: {} as User });
-      const completion = new UpdateUserFail({ error: HttpErrorMapper.fromError(error) });
+      const action = updateUser({ user: {} as User });
+      const completion = updateUserFail({ error: HttpErrorMapper.fromError(error) });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -383,7 +383,7 @@ describe('User Effects', () => {
   describe('updateUserPassword$', () => {
     beforeEach(() => {
       store$.dispatch(
-        new LoginUserSuccess({
+        loginUserSuccess({
           customer: {
             customerNo: '4711',
             isBusinessCustomer: false,
@@ -393,7 +393,7 @@ describe('User Effects', () => {
       );
     });
     it('should call the api service when UpdateUserPassword is called', done => {
-      const action = new UpdateUserPassword({ password: '123', currentPassword: '1234' });
+      const action = updateUserPassword({ password: '123', currentPassword: '1234' });
 
       actions$ = of(action);
 
@@ -407,8 +407,8 @@ describe('User Effects', () => {
       const password = '123';
       const currentPassword = '1234';
 
-      const action = new UpdateUserPassword({ password, currentPassword });
-      const completion = new UpdateUserPasswordSuccess({
+      const action = updateUserPassword({ password, currentPassword });
+      const completion = updateUserPasswordSuccess({
         successMessage: 'account.profile.update_password.message',
       });
 
@@ -422,8 +422,8 @@ describe('User Effects', () => {
       const password = '123';
       const currentPassword = '1234';
 
-      const action = new UpdateUserPassword({ password, currentPassword, successMessage: 'success' });
-      const completion = new UpdateUserPasswordSuccess({
+      const action = updateUserPassword({ password, currentPassword, successMessage: 'success' });
+      const completion = updateUserPasswordSuccess({
         successMessage: 'success',
       });
 
@@ -440,8 +440,8 @@ describe('User Effects', () => {
 
       const password = '123';
       const currentPassword = '1234';
-      const action = new UpdateUserPassword({ password, currentPassword });
-      const completion = new UpdateUserPasswordFail({ error: { message: 'invalid' } as HttpError });
+      const action = updateUserPassword({ password, currentPassword });
+      const completion = updateUserPasswordFail({ error: { message: 'invalid' } as HttpError });
 
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -453,14 +453,14 @@ describe('User Effects', () => {
   describe('updateCustomer$', () => {
     beforeEach(() => {
       store$.dispatch(
-        new LoginUserSuccess({
+        loginUserSuccess({
           customer,
           user: {} as User,
         })
       );
     });
     it('should call the api service when UpdateCustomer is called for a business customer', done => {
-      const action = new UpdateCustomer({
+      const action = updateCustomer({
         customer: { ...customer, companyName: 'OilCorp' },
         successMessage: 'success',
       });
@@ -474,8 +474,8 @@ describe('User Effects', () => {
     });
 
     it('should dispatch an UpdateCustomerSuccess action on successful customer update', () => {
-      const action = new UpdateCustomer({ customer, successMessage: 'success' });
-      const completion = new UpdateCustomerSuccess({ customer, successMessage: 'success' });
+      const action = updateCustomer({ customer, successMessage: 'success' });
+      const completion = updateCustomerSuccess({ customer, successMessage: 'success' });
 
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -489,13 +489,13 @@ describe('User Effects', () => {
         isBusinessCustomer: false,
       } as Customer;
       store$.dispatch(
-        new LoginUserSuccess({
+        loginUserSuccess({
           customer: privateCustomer,
           user: {} as User,
         })
       );
 
-      const action = new UpdateCustomer({ customer: privateCustomer, successMessage: 'success' });
+      const action = updateCustomer({ customer: privateCustomer, successMessage: 'success' });
 
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('----');
@@ -506,8 +506,8 @@ describe('User Effects', () => {
     it('should dispatch an UpdateCustomerFail action on failed company update', () => {
       when(userServiceMock.updateCustomer(anything())).thenReturn(throwError({ message: 'invalid' }));
 
-      const action = new UpdateCustomer({ customer });
-      const completion = new UpdateCustomerFail({ error: { message: 'invalid' } as HttpError });
+      const action = updateCustomer({ customer });
+      const completion = updateCustomerFail({ error: { message: 'invalid' } as HttpError });
 
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -526,7 +526,7 @@ describe('User Effects', () => {
     });
 
     it('should dispatch UserErrorReset action on router navigation if error was set', done => {
-      store$.dispatch(new LoginUserFail({ error: { message: 'error' } as HttpError }));
+      store$.dispatch(loginUserFail({ error: { message: 'error' } as HttpError }));
 
       // tslint:disable-next-line: no-any
       actions$ = of(routerNavigatedAction({ payload: {} as any }));
@@ -544,7 +544,7 @@ describe('User Effects', () => {
         of({ user: { email: 'test@intershop.de' } } as CustomerUserType)
       );
 
-      actions$ = of(new LoadUserByAPIToken({ apiToken: 'dummy' }));
+      actions$ = of(loadUserByAPIToken({ apiToken: 'dummy' }));
 
       effects.loadUserByAPIToken$.subscribe(action => {
         verify(userServiceMock.signinUserByToken('dummy')).once();
@@ -559,7 +559,7 @@ describe('User Effects', () => {
     it('should call the user service on LoadUserByAPIToken action and do nothing when failing', () => {
       when(userServiceMock.signinUserByToken('dummy')).thenReturn(EMPTY);
 
-      actions$ = hot('a-a-a-', { a: new LoadUserByAPIToken({ apiToken: 'dummy' }) });
+      actions$ = hot('a-a-a-', { a: loadUserByAPIToken({ apiToken: 'dummy' }) });
 
       expect(effects.loadUserByAPIToken$).toBeObservable(cold('------'));
     });
@@ -568,7 +568,7 @@ describe('User Effects', () => {
   describe('loadUserPaymentMethods$', () => {
     beforeEach(() => {
       store$.dispatch(
-        new LoginUserSuccess({
+        loginUserSuccess({
           customer,
           user: {} as User,
         })
@@ -576,7 +576,7 @@ describe('User Effects', () => {
     });
 
     it('should call the api service when LoadUserPaymentMethods event is called', done => {
-      const action = new LoadUserPaymentMethods();
+      const action = loadUserPaymentMethods();
       actions$ = of(action);
       effects.loadUserPaymentMethods$.subscribe(() => {
         verify(paymentServiceMock.getUserPaymentMethods(anything())).once();
@@ -585,8 +585,8 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a LoadUserPaymentMethodsSuccess action on successful', () => {
-      const action = new LoadUserPaymentMethods();
-      const completion = new LoadUserPaymentMethodsSuccess({ paymentMethods: [] });
+      const action = loadUserPaymentMethods();
+      const completion = loadUserPaymentMethodsSuccess({ paymentMethods: [] });
 
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-b-b-b', { b: completion });
@@ -600,8 +600,8 @@ describe('User Effects', () => {
 
       when(paymentServiceMock.getUserPaymentMethods(anything())).thenReturn(throwError(error));
 
-      const action = new LoadUserPaymentMethods();
-      const completion = new LoadUserPaymentMethodsFail({
+      const action = loadUserPaymentMethods();
+      const completion = loadUserPaymentMethodsFail({
         error: HttpErrorMapper.fromError(error),
       });
 
@@ -614,7 +614,7 @@ describe('User Effects', () => {
   describe('deleteUserPayment$', () => {
     beforeEach(() => {
       store$.dispatch(
-        new LoginUserSuccess({
+        loginUserSuccess({
           customer,
           user: {} as User,
         })
@@ -622,7 +622,7 @@ describe('User Effects', () => {
     });
 
     it('should call the api service when DeleteUserPayment event is called', done => {
-      const action = new DeleteUserPaymentInstrument({ id: 'paymentInstrumentId' });
+      const action = deleteUserPaymentInstrument({ id: 'paymentInstrumentId' });
       actions$ = of(action);
       effects.deleteUserPayment$.subscribe(() => {
         verify(paymentServiceMock.deleteUserPaymentInstrument(customer.customerNo, 'paymentInstrumentId')).once();
@@ -631,10 +631,10 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a DeleteUserPaymentSuccess action on successful', () => {
-      const action = new DeleteUserPaymentInstrument({ id: 'paymentInstrumentId' });
-      const completion1 = new DeleteUserPaymentInstrumentSuccess();
-      const completion2 = new LoadUserPaymentMethods();
-      const completion3 = new DisplaySuccessMessage({
+      const action = deleteUserPaymentInstrument({ id: 'paymentInstrumentId' });
+      const completion1 = deleteUserPaymentInstrumentSuccess();
+      const completion2 = loadUserPaymentMethods();
+      const completion3 = displaySuccessMessage({
         message: 'account.payment.payment_deleted.message',
       });
 
@@ -650,8 +650,8 @@ describe('User Effects', () => {
 
       when(paymentServiceMock.deleteUserPaymentInstrument(anyString(), anyString())).thenReturn(throwError(error));
 
-      const action = new DeleteUserPaymentInstrument({ id: 'paymentInstrumentId' });
-      const completion = new DeleteUserPaymentInstrumentFail({
+      const action = deleteUserPaymentInstrument({ id: 'paymentInstrumentId' });
+      const completion = deleteUserPaymentInstrumentFail({
         error: HttpErrorMapper.fromError(error),
       });
 
@@ -668,7 +668,7 @@ describe('User Effects', () => {
     };
 
     it('should call the api service when RequestPasswordReminder event is called', done => {
-      const action = new RequestPasswordReminder({ data });
+      const action = requestPasswordReminder({ data });
       actions$ = of(action);
       effects.requestPasswordReminder$.subscribe(() => {
         verify(userServiceMock.requestPasswordReminder(anything())).once();
@@ -677,8 +677,8 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a RequestPasswordReminderSuccess action on successful', () => {
-      const action = new RequestPasswordReminder({ data });
-      const completion = new RequestPasswordReminderSuccess();
+      const action = requestPasswordReminder({ data });
+      const completion = requestPasswordReminderSuccess();
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -692,8 +692,8 @@ describe('User Effects', () => {
 
       when(userServiceMock.requestPasswordReminder(anything())).thenReturn(throwError(error));
 
-      const action = new RequestPasswordReminder({ data });
-      const completion = new RequestPasswordReminderFail({
+      const action = requestPasswordReminder({ data });
+      const completion = requestPasswordReminderFail({
         error: HttpErrorMapper.fromError(error),
       });
 

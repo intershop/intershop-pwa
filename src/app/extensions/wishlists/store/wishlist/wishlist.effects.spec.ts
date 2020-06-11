@@ -12,37 +12,36 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { DisplaySuccessMessage } from 'ish-core/store/core/messages';
+import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { LoginUserSuccess } from 'ish-core/store/customer/user';
+import { loginUserSuccess } from 'ish-core/store/customer/user';
 
 import { Wishlist } from '../../models/wishlist/wishlist.model';
 import { WishlistService } from '../../services/wishlist/wishlist.service';
 import { WishlistsStoreModule } from '../wishlists-store.module';
 
 import {
-  AddProductToNewWishlist,
-  AddProductToWishlist,
-  AddProductToWishlistFail,
-  AddProductToWishlistSuccess,
-  CreateWishlist,
-  CreateWishlistFail,
-  CreateWishlistSuccess,
-  DeleteWishlist,
-  DeleteWishlistFail,
-  DeleteWishlistSuccess,
-  LoadWishlists,
-  LoadWishlistsFail,
-  LoadWishlistsSuccess,
-  MoveItemToWishlist,
-  RemoveItemFromWishlist,
-  RemoveItemFromWishlistFail,
-  RemoveItemFromWishlistSuccess,
-  SelectWishlist,
-  UpdateWishlist,
-  UpdateWishlistFail,
-  UpdateWishlistSuccess,
-  WishlistsActionTypes,
+  addProductToNewWishlist,
+  addProductToWishlist,
+  addProductToWishlistFail,
+  addProductToWishlistSuccess,
+  createWishlist,
+  createWishlistFail,
+  createWishlistSuccess,
+  deleteWishlist,
+  deleteWishlistFail,
+  deleteWishlistSuccess,
+  loadWishlists,
+  loadWishlistsFail,
+  loadWishlistsSuccess,
+  moveItemToWishlist,
+  removeItemFromWishlist,
+  removeItemFromWishlistFail,
+  removeItemFromWishlistSuccess,
+  selectWishlist,
+  updateWishlist,
+  updateWishlistFail,
+  updateWishlistSuccess,
 } from './wishlist.actions';
 import { WishlistEffects } from './wishlist.effects';
 
@@ -102,12 +101,12 @@ describe('Wishlist Effects', () => {
 
   describe('loadWishlists$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(loginUserSuccess({ customer }));
       when(wishlistServiceMock.getWishlists()).thenReturn(of(wishlists));
     });
 
     it('should call the wishlistService for loadWishlists', done => {
-      const action = new LoadWishlists();
+      const action = loadWishlists();
       actions$ = of(action);
 
       effects.loadWishlists$.subscribe(() => {
@@ -117,8 +116,8 @@ describe('Wishlist Effects', () => {
     });
 
     it('should map to actions of type LoadWishlistsSuccess', () => {
-      const action = new LoadWishlists();
-      const completion = new LoadWishlistsSuccess({
+      const action = loadWishlists();
+      const completion = loadWishlistsSuccess({
         wishlists,
       });
       actions$ = hot('-a-a-a', { a: action });
@@ -130,8 +129,8 @@ describe('Wishlist Effects', () => {
     it('should map failed calls to actions of type LoadWishlistsFail', () => {
       const error = { message: 'invalid' } as HttpError;
       when(wishlistServiceMock.getWishlists()).thenReturn(throwError(error));
-      const action = new LoadWishlists();
-      const completion = new LoadWishlistsFail({
+      const action = loadWishlists();
+      const completion = loadWishlistsFail({
         error,
       });
       actions$ = hot('-a-a-a', { a: action });
@@ -154,12 +153,12 @@ describe('Wishlist Effects', () => {
       public: false,
     };
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(loginUserSuccess({ customer }));
       when(wishlistServiceMock.createWishlist(anything())).thenReturn(of(wishlistData[0]));
     });
 
     it('should call the wishlistService for createWishlist', done => {
-      const action = new CreateWishlist({ wishlist: createWishlistData });
+      const action = createWishlist({ wishlist: createWishlistData });
       actions$ = of(action);
 
       effects.createWishlist$.subscribe(() => {
@@ -169,11 +168,11 @@ describe('Wishlist Effects', () => {
     });
 
     it('should map to actions of type CreateWishlistSuccess and SuccessMessage', () => {
-      const action = new CreateWishlist({ wishlist: createWishlistData });
-      const completion1 = new CreateWishlistSuccess({
+      const action = createWishlist({ wishlist: createWishlistData });
+      const completion1 = createWishlistSuccess({
         wishlist: wishlistData[0],
       });
-      const completion2 = new DisplaySuccessMessage({
+      const completion2 = displaySuccessMessage({
         message: 'account.wishlists.new_wishlist.confirmation',
         messageParams: { 0: createWishlistData.title },
       });
@@ -185,8 +184,8 @@ describe('Wishlist Effects', () => {
     it('should map failed calls to actions of type CreateWishlistFail', () => {
       const error = { message: 'invalid' } as HttpError;
       when(wishlistServiceMock.createWishlist(anything())).thenReturn(throwError(error));
-      const action = new CreateWishlist({ wishlist: createWishlistData });
-      const completion = new CreateWishlistFail({
+      const action = createWishlist({ wishlist: createWishlistData });
+      const completion = createWishlistFail({
         error,
       });
       actions$ = hot('-a-a-a', { a: action });
@@ -202,8 +201,8 @@ describe('Wishlist Effects', () => {
         preferred: true,
         public: false,
       };
-      const action = new CreateWishlistSuccess({ wishlist: createdWishlist });
-      const completion = new LoadWishlists();
+      const action = createWishlistSuccess({ wishlist: createdWishlist });
+      const completion = loadWishlists();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -214,13 +213,13 @@ describe('Wishlist Effects', () => {
   describe('deleteWishlist$', () => {
     const id = wishlists[0].id;
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer }));
-      store$.dispatch(new CreateWishlistSuccess({ wishlist: wishlists[0] }));
+      store$.dispatch(loginUserSuccess({ customer }));
+      store$.dispatch(createWishlistSuccess({ wishlist: wishlists[0] }));
       when(wishlistServiceMock.deleteWishlist(anyString())).thenReturn(of(undefined));
     });
 
     it('should call the wishlistService for deleteWishlist', done => {
-      const action = new DeleteWishlist({ wishlistId: id });
+      const action = deleteWishlist({ wishlistId: id });
       actions$ = of(action);
 
       effects.deleteWishlist$.subscribe(() => {
@@ -230,9 +229,9 @@ describe('Wishlist Effects', () => {
     });
 
     it('should map to actions of type DeleteWishlistSuccess', () => {
-      const action = new DeleteWishlist({ wishlistId: id });
-      const completion1 = new DeleteWishlistSuccess({ wishlistId: id });
-      const completion2 = new DisplaySuccessMessage({
+      const action = deleteWishlist({ wishlistId: id });
+      const completion1 = deleteWishlistSuccess({ wishlistId: id });
+      const completion2 = displaySuccessMessage({
         message: 'account.wishlists.delete_wishlist.confirmation',
         messageParams: { 0: wishlists[0].title },
       });
@@ -244,8 +243,8 @@ describe('Wishlist Effects', () => {
     it('should map failed calls to actions of type DeleteWishlistFail', () => {
       const error = { message: 'invalid' } as HttpError;
       when(wishlistServiceMock.deleteWishlist(anyString())).thenReturn(throwError(error));
-      const action = new DeleteWishlist({ wishlistId: id });
-      const completion = new DeleteWishlistFail({
+      const action = deleteWishlist({ wishlistId: id });
+      const completion = deleteWishlistFail({
         error,
       });
       actions$ = hot('-a-a-a', { a: action });
@@ -266,12 +265,12 @@ describe('Wishlist Effects', () => {
       },
     ];
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(loginUserSuccess({ customer }));
       when(wishlistServiceMock.updateWishlist(anything())).thenReturn(of(wishlistDetailData[0]));
     });
 
     it('should call the wishlistService for updateWishlist', done => {
-      const action = new UpdateWishlist({ wishlist: wishlistDetailData[0] });
+      const action = updateWishlist({ wishlist: wishlistDetailData[0] });
       actions$ = of(action);
 
       effects.updateWishlist$.subscribe(() => {
@@ -281,9 +280,9 @@ describe('Wishlist Effects', () => {
     });
 
     it('should map to actions of type UpdateWishlistSuccess', () => {
-      const action = new UpdateWishlist({ wishlist: wishlistDetailData[0] });
-      const completion1 = new UpdateWishlistSuccess({ wishlist: wishlistDetailData[0] });
-      const completion2 = new DisplaySuccessMessage({
+      const action = updateWishlist({ wishlist: wishlistDetailData[0] });
+      const completion1 = updateWishlistSuccess({ wishlist: wishlistDetailData[0] });
+      const completion2 = displaySuccessMessage({
         message: 'account.wishlists.edit_wishlist.confirmation',
         messageParams: { 0: wishlistDetailData[0].title },
       });
@@ -295,8 +294,8 @@ describe('Wishlist Effects', () => {
     it('should map failed calls to actions of type UpdateWishlistFail', () => {
       const error = { message: 'invalid' } as HttpError;
       when(wishlistServiceMock.updateWishlist(anything())).thenReturn(throwError(error));
-      const action = new UpdateWishlist({ wishlist: wishlistDetailData[0] });
-      const completion = new UpdateWishlistFail({
+      const action = updateWishlist({ wishlist: wishlistDetailData[0] });
+      const completion = updateWishlistFail({
         error,
       });
       actions$ = hot('-a-a-a', { a: action });
@@ -312,8 +311,8 @@ describe('Wishlist Effects', () => {
         preferred: true,
         public: false,
       };
-      const action = new UpdateWishlistSuccess({ wishlist: updatedWishlist });
-      const completion = new LoadWishlists();
+      const action = updateWishlistSuccess({ wishlist: updatedWishlist });
+      const completion = loadWishlists();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -329,14 +328,14 @@ describe('Wishlist Effects', () => {
     };
 
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(loginUserSuccess({ customer }));
       when(wishlistServiceMock.addProductToWishlist(anyString(), anyString(), anyNumber())).thenReturn(
         of(wishlists[0])
       );
     });
 
     it('should call the wishlistService for addProductToWishlist', done => {
-      const action = new AddProductToWishlist(payload);
+      const action = addProductToWishlist(payload);
       actions$ = of(action);
 
       effects.addProductToWishlist$.subscribe(() => {
@@ -346,8 +345,8 @@ describe('Wishlist Effects', () => {
     });
 
     it('should map to actions of type AddProductToWishlistSuccess', () => {
-      const action = new AddProductToWishlist(payload);
-      const completion = new AddProductToWishlistSuccess({ wishlist: wishlists[0] });
+      const action = addProductToWishlist(payload);
+      const completion = addProductToWishlistSuccess({ wishlist: wishlists[0] });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
       expect(effects.addProductToWishlist$).toBeObservable(expected$);
@@ -358,8 +357,8 @@ describe('Wishlist Effects', () => {
       when(wishlistServiceMock.addProductToWishlist(anyString(), anyString(), anything())).thenReturn(
         throwError(error)
       );
-      const action = new AddProductToWishlist(payload);
-      const completion = new AddProductToWishlistFail({
+      const action = addProductToWishlist(payload);
+      const completion = addProductToWishlistFail({
         error,
       });
       actions$ = hot('-a-a-a', { a: action });
@@ -382,14 +381,14 @@ describe('Wishlist Effects', () => {
       public: false,
     };
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(loginUserSuccess({ customer }));
       when(wishlistServiceMock.createWishlist(anything())).thenReturn(of(wishlist));
     });
     it('should map to actions of types CreateWishlistSuccess and AddProductToWishlist', () => {
-      const action = new AddProductToNewWishlist(payload);
-      const completion1 = new CreateWishlistSuccess({ wishlist });
-      const completion2 = new AddProductToWishlist({ wishlistId: wishlist.id, sku: payload.sku });
-      const completion3 = new SelectWishlist({ id: wishlist.id });
+      const action = addProductToNewWishlist(payload);
+      const completion1 = createWishlistSuccess({ wishlist });
+      const completion2 = addProductToWishlist({ wishlistId: wishlist.id, sku: payload.sku });
+      const completion3 = selectWishlist({ id: wishlist.id });
       actions$ = hot('-a-----a-----a', { a: action });
       const expected$ = cold('-(bcd)-(bcd)-(bcd)', { b: completion1, c: completion2, d: completion3 });
       expect(effects.addProductToNewWishlist$).toBeObservable(expected$);
@@ -397,8 +396,8 @@ describe('Wishlist Effects', () => {
     it('should map failed calls to actions of type CreateWishlistFail', () => {
       const error = { message: 'invalid' } as HttpError;
       when(wishlistServiceMock.createWishlist(anything())).thenReturn(throwError(error));
-      const action = new AddProductToNewWishlist(payload);
-      const completion = new CreateWishlistFail({
+      const action = addProductToNewWishlist(payload);
+      const completion = createWishlistFail({
         error,
       });
       actions$ = hot('-a-a-a', { a: action });
@@ -425,21 +424,21 @@ describe('Wishlist Effects', () => {
       public: false,
     };
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(loginUserSuccess({ customer }));
       when(wishlistServiceMock.createWishlist(anything())).thenReturn(of(wishlist));
     });
     it('should map to actions of types AddProductToNewWishlist and RemoveItemFromWishlist if there is no target id given', () => {
-      const action = new MoveItemToWishlist(payload1);
-      const completion1 = new AddProductToNewWishlist({ title: payload1.target.title, sku: payload1.target.sku });
-      const completion2 = new RemoveItemFromWishlist({ wishlistId: payload1.source.id, sku: payload1.target.sku });
+      const action = moveItemToWishlist(payload1);
+      const completion1 = addProductToNewWishlist({ title: payload1.target.title, sku: payload1.target.sku });
+      const completion2 = removeItemFromWishlist({ wishlistId: payload1.source.id, sku: payload1.target.sku });
       actions$ = hot('-a----a----a', { a: action });
       const expected$ = cold('-(bc)-(bc)-(bc)', { b: completion1, c: completion2 });
       expect(effects.moveItemToWishlist$).toBeObservable(expected$);
     });
     it('should map to actions of types AddProductToWishlist and RemoveItemFromWishlist if there is a target id given', () => {
-      const action = new MoveItemToWishlist(payload2);
-      const completion1 = new AddProductToWishlist({ wishlistId: wishlist.id, sku: payload1.target.sku });
-      const completion2 = new RemoveItemFromWishlist({ wishlistId: payload1.source.id, sku: payload1.target.sku });
+      const action = moveItemToWishlist(payload2);
+      const completion1 = addProductToWishlist({ wishlistId: wishlist.id, sku: payload1.target.sku });
+      const completion2 = removeItemFromWishlist({ wishlistId: payload1.source.id, sku: payload1.target.sku });
       actions$ = hot('-a----a----a', { a: action });
       const expected$ = cold('-(bc)-(bc)-(bc)', { b: completion1, c: completion2 });
       expect(effects.moveItemToWishlist$).toBeObservable(expected$);
@@ -459,12 +458,12 @@ describe('Wishlist Effects', () => {
       public: false,
     };
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(loginUserSuccess({ customer }));
       when(wishlistServiceMock.removeProductFromWishlist(anyString(), anyString())).thenReturn(of(wishlist));
     });
 
     it('should call the wishlistService for removeProductFromWishlist', done => {
-      const action = new RemoveItemFromWishlist(payload);
+      const action = removeItemFromWishlist(payload);
       actions$ = of(action);
 
       effects.removeProductFromWishlist$.subscribe(() => {
@@ -473,8 +472,8 @@ describe('Wishlist Effects', () => {
       });
     });
     it('should map to actions of type RemoveItemFromWishlistSuccess', () => {
-      const action = new RemoveItemFromWishlist(payload);
-      const completion = new RemoveItemFromWishlistSuccess({ wishlist });
+      const action = removeItemFromWishlist(payload);
+      const completion = removeItemFromWishlistSuccess({ wishlist });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
       expect(effects.removeProductFromWishlist$).toBeObservable(expected$);
@@ -482,8 +481,8 @@ describe('Wishlist Effects', () => {
     it('should map failed calls to actions of type RemoveItemFromWishlistFail', () => {
       const error = { message: 'invalid' } as HttpError;
       when(wishlistServiceMock.removeProductFromWishlist(anyString(), anyString())).thenReturn(throwError(error));
-      const action = new RemoveItemFromWishlist(payload);
-      const completion = new RemoveItemFromWishlistFail({
+      const action = removeItemFromWishlist(payload);
+      const completion = removeItemFromWishlistFail({
         error,
       });
       actions$ = hot('-a-a-a', { a: action });
@@ -513,18 +512,18 @@ describe('Wishlist Effects', () => {
     });
     it('should call WishlistsService after login action was dispatched', done => {
       effects.loadWishlistsAfterLogin$.subscribe(action => {
-        expect(action.type).toEqual(WishlistsActionTypes.LoadWishlists);
+        expect(action.type).toEqual(loadWishlists.type);
         done();
       });
 
-      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(loginUserSuccess({ customer }));
     });
   });
 
   describe('setWishlistBreadcrumb$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadWishlistsSuccess({ wishlists }));
-      store$.dispatch(new SelectWishlist({ id: wishlists[0].id }));
+      store$.dispatch(loadWishlistsSuccess({ wishlists }));
+      store$.dispatch(selectWishlist({ id: wishlists[0].id }));
     });
 
     it('should set the breadcrumb of the selected wishlist', done => {

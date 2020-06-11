@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 
 import { selectQueryParam } from 'ish-core/store/core/router';
-import { LogoutUser } from 'ish-core/store/customer/user';
+import { logoutUser } from 'ish-core/store/customer/user';
 
 /**
  * triggers logging out the user if the guarded route is visited
@@ -16,7 +16,7 @@ export class LogoutGuard implements CanActivate {
   constructor(private store: Store, private router: Router) {}
 
   canActivate() {
-    this.store.dispatch(new LogoutUser());
+    this.store.dispatch(logoutUser());
     return this.store.pipe(
       select(selectQueryParam('returnUrl')),
       map(returnUrl => returnUrl || '/home'),

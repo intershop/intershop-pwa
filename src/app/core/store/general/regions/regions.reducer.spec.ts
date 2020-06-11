@@ -1,7 +1,7 @@
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Region } from 'ish-core/models/region/region.model';
 
-import { LoadRegions, LoadRegionsFail, LoadRegionsSuccess, RegionAction } from './regions.actions';
+import { loadRegions, loadRegionsFail, loadRegionsSuccess } from './regions.actions';
 import { initialState, regionsReducer } from './regions.reducer';
 
 describe('Regions Reducer', () => {
@@ -9,7 +9,7 @@ describe('Regions Reducer', () => {
 
   describe('undefined action', () => {
     it('should return the default state when previous state is undefined', () => {
-      const action = {} as RegionAction;
+      const action = {} as ReturnType<typeof loadRegions | typeof loadRegionsFail | typeof loadRegionsSuccess>;
       const state = regionsReducer(undefined, action);
 
       expect(state).toBe(initialState);
@@ -19,7 +19,7 @@ describe('Regions Reducer', () => {
   describe('LoadRegions actions', () => {
     describe('LoadRegion action', () => {
       it('should set loading to true', () => {
-        const action = new LoadRegions({ countryCode });
+        const action = loadRegions({ countryCode });
         const state = regionsReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -29,7 +29,7 @@ describe('Regions Reducer', () => {
 
     describe('LoadRegionFail action', () => {
       it('should set loading to false', () => {
-        const action = new LoadRegionsFail({ error: {} as HttpError });
+        const action = loadRegionsFail({ error: {} as HttpError });
         const state = regionsReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -50,7 +50,7 @@ describe('Regions Reducer', () => {
       });
 
       it('should insert region if not exist', () => {
-        const action = new LoadRegionsSuccess({ regions: [region] });
+        const action = loadRegionsSuccess({ regions: [region] });
         const state = regionsReducer(initialState, action);
 
         expect(state.ids).toHaveLength(1);

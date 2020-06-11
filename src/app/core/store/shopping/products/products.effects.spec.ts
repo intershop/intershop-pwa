@@ -17,23 +17,23 @@ import { VariationProduct } from 'ish-core/models/product/product-variation.mode
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { LoadCategory } from 'ish-core/store/shopping/categories';
-import { SetProductListingPageSize, SetProductListingPages } from 'ish-core/store/shopping/product-listing';
+import { loadCategory } from 'ish-core/store/shopping/categories';
+import { setProductListingPageSize, setProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 
 import {
-  LoadProduct,
-  LoadProductFail,
-  LoadProductIfNotLoaded,
-  LoadProductLinks,
-  LoadProductLinksFail,
-  LoadProductLinksSuccess,
-  LoadProductSuccess,
-  LoadProductVariations,
-  LoadProductVariationsFail,
-  LoadProductVariationsSuccess,
-  LoadProductsForCategory,
-  LoadProductsForCategoryFail,
+  loadProduct,
+  loadProductFail,
+  loadProductIfNotLoaded,
+  loadProductLinks,
+  loadProductLinksFail,
+  loadProductLinksSuccess,
+  loadProductSuccess,
+  loadProductVariations,
+  loadProductVariationsFail,
+  loadProductVariationsSuccess,
+  loadProductsForCategory,
+  loadProductsForCategoryFail,
 } from './products.actions';
 import { ProductsEffects } from './products.effects';
 
@@ -97,13 +97,13 @@ describe('Products Effects', () => {
     store$ = TestBed.inject(Store);
     router = TestBed.inject(Router);
     location = TestBed.inject(Location);
-    store$.dispatch(new SetProductListingPageSize({ itemsPerPage: TestBed.inject(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
+    store$.dispatch(setProductListingPageSize({ itemsPerPage: TestBed.inject(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
   });
 
   describe('loadProductBundles$', () => {
     it('should call the productsService for LoadProductBundles action', done => {
       const sku = 'P123';
-      const action = new LoadProductSuccess({ product: { sku, type: 'Bundle' } as Product });
+      const action = loadProductSuccess({ product: { sku, type: 'Bundle' } as Product });
       actions$ = of(action);
 
       effects.loadProductBundles$.subscribe(() => {
@@ -116,7 +116,7 @@ describe('Products Effects', () => {
   describe('loadProduct$', () => {
     it('should call the productsService for LoadProduct action', done => {
       const sku = 'P123';
-      const action = new LoadProduct({ sku });
+      const action = loadProduct({ sku });
       actions$ = of(action);
 
       effects.loadProduct$.subscribe(() => {
@@ -127,8 +127,8 @@ describe('Products Effects', () => {
 
     it('should map to action of type LoadProductSuccess', () => {
       const sku = 'P123';
-      const action = new LoadProduct({ sku });
-      const completion = new LoadProductSuccess({ product: { sku } as Product });
+      const action = loadProduct({ sku });
+      const completion = loadProductSuccess({ product: { sku } as Product });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -137,8 +137,8 @@ describe('Products Effects', () => {
 
     it('should map invalid request to action of type LoadProductFail', () => {
       const sku = 'invalid';
-      const action = new LoadProduct({ sku });
-      const completion = new LoadProductFail({ error: { message: 'invalid' } as HttpError, sku });
+      const action = loadProduct({ sku });
+      const completion = loadProductFail({ error: { message: 'invalid' } as HttpError, sku });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -148,7 +148,7 @@ describe('Products Effects', () => {
 
   describe('loadProductsForCategory$', () => {
     it('should call service for SKU list', done => {
-      actions$ = of(new LoadProductsForCategory({ categoryId: '123', sorting: 'name-asc' }));
+      actions$ = of(loadProductsForCategory({ categoryId: '123', sorting: 'name-asc' }));
 
       effects.loadProductsForCategory$.subscribe(() => {
         verify(productsServiceMock.getCategoryProducts('123', anyNumber(), 'name-asc')).once();
@@ -158,12 +158,12 @@ describe('Products Effects', () => {
 
     it('should trigger actions for loading content for the product list', () => {
       actions$ = hot('a', {
-        a: new LoadProductsForCategory({ categoryId: '123' }),
+        a: loadProductsForCategory({ categoryId: '123' }),
       });
       const expectedValues = {
-        b: new LoadProductSuccess({ product: { sku: 'P222' } as Product }),
-        c: new LoadProductSuccess({ product: { sku: 'P333' } as Product }),
-        d: new SetProductListingPages({
+        b: loadProductSuccess({ product: { sku: 'P222' } as Product }),
+        c: loadProductSuccess({ product: { sku: 'P333' } as Product }),
+        d: setProductListingPages({
           id: { type: 'category', value: '123' },
           itemCount: 2,
           sortKeys: ['name-asc', 'name-desc'],
@@ -178,11 +178,11 @@ describe('Products Effects', () => {
         throwError({ message: 'ERROR' })
       );
       actions$ = hot('-a-a-a', {
-        a: new LoadProductsForCategory({ categoryId: '123' }),
+        a: loadProductsForCategory({ categoryId: '123' }),
       });
       expect(effects.loadProductsForCategory$).toBeObservable(
         cold('-a-a-a', {
-          a: new LoadProductsForCategoryFail({
+          a: loadProductsForCategoryFail({
             error: { message: 'ERROR' } as HttpError,
             categoryId: '123',
           }),
@@ -199,7 +199,7 @@ describe('Products Effects', () => {
     });
 
     it('should call the productsService for getProductVariations', done => {
-      const action = new LoadProductVariations({ sku: 'MSKU' });
+      const action = loadProductVariations({ sku: 'MSKU' });
       actions$ = of(action);
 
       effects.loadProductVariations$.subscribe(() => {
@@ -209,8 +209,8 @@ describe('Products Effects', () => {
     });
 
     it('should map to action of type LoadProductVariationsSuccess', () => {
-      const action = new LoadProductVariations({ sku: 'MSKU' });
-      const completion = new LoadProductVariationsSuccess({
+      const action = loadProductVariations({ sku: 'MSKU' });
+      const completion = loadProductVariationsSuccess({
         sku: 'MSKU',
         variations: [],
         defaultVariation: undefined,
@@ -223,8 +223,8 @@ describe('Products Effects', () => {
 
     it('should map invalid request to action of type LoadProductVariationsFail', () => {
       when(productsServiceMock.getProductVariations(anyString())).thenCall(() => throwError({ message: 'invalid' }));
-      const action = new LoadProductVariations({ sku: 'MSKU' });
-      const completion = new LoadProductVariationsFail({
+      const action = loadProductVariations({ sku: 'MSKU' });
+      const completion = loadProductVariationsFail({
         error: { message: 'invalid' } as HttpError,
         sku: 'MSKU',
       });
@@ -237,13 +237,13 @@ describe('Products Effects', () => {
 
   describe('loadMasterProductForProduct$', () => {
     it('should trigger LoadProduct action if LoadProductSuccess contains productMasterSKU', () => {
-      const action = new LoadProductSuccess({
+      const action = loadProductSuccess({
         product: {
           productMasterSKU: 'MSKU',
           type: 'VariationProduct',
         } as VariationProduct,
       });
-      const completion = new LoadProductIfNotLoaded({ sku: 'MSKU', level: ProductCompletenessLevel.List });
+      const completion = loadProductIfNotLoaded({ sku: 'MSKU', level: ProductCompletenessLevel.List });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
@@ -251,9 +251,9 @@ describe('Products Effects', () => {
     });
 
     it('should not trigger LoadProduct action if LoadProductSuccess contains productMasterSKU of loaded product', () => {
-      store$.dispatch(new LoadProductSuccess({ product: { sku: 'MSKU' } as Product }));
+      store$.dispatch(loadProductSuccess({ product: { sku: 'MSKU' } as Product }));
 
-      const action = new LoadProductSuccess({
+      const action = loadProductSuccess({
         product: {
           productMasterSKU: 'MSKU',
           type: 'VariationProduct',
@@ -268,13 +268,13 @@ describe('Products Effects', () => {
 
   describe('loadProductVariationsForMasterProduct$', () => {
     it('should trigger LoadProductVariations action if LoadProductSuccess triggered for master product', () => {
-      const action = new LoadProductSuccess({
+      const action = loadProductSuccess({
         product: {
           sku: 'MSKU',
           type: 'VariationProductMaster',
         } as VariationProductMaster,
       });
-      const completion = new LoadProductVariations({ sku: 'MSKU' });
+      const completion = loadProductVariations({ sku: 'MSKU' });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
@@ -287,10 +287,10 @@ describe('Products Effects', () => {
         type: 'VariationProductMaster',
       } as VariationProductMaster;
 
-      store$.dispatch(new LoadProductSuccess({ product }));
-      store$.dispatch(new LoadProductVariationsSuccess({ sku: 'MSKU', variations: ['VAR'], defaultVariation: 'VAR' }));
+      store$.dispatch(loadProductSuccess({ product }));
+      store$.dispatch(loadProductVariationsSuccess({ sku: 'MSKU', variations: ['VAR'], defaultVariation: 'VAR' }));
 
-      const action = new LoadProductSuccess({ product });
+      const action = loadProductSuccess({ product });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-');
 
@@ -298,7 +298,7 @@ describe('Products Effects', () => {
     });
 
     it('should not trigger LoadProductVariants action if loaded product is not of type VariationProductMaster.', () => {
-      const action = new LoadProductSuccess({
+      const action = loadProductSuccess({
         product: {
           sku: 'SKU',
           type: 'Product',
@@ -347,7 +347,7 @@ describe('Products Effects', () => {
 
   describe('redirectIfErrorInProducts$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadProductFail({ sku: 'SKU', error: { status: 404 } as HttpError }));
+      store$.dispatch(loadProductFail({ sku: 'SKU', error: { status: 404 } as HttpError }));
     });
 
     it('should redirect if triggered on product detail page', fakeAsync(() => {
@@ -371,7 +371,7 @@ describe('Products Effects', () => {
 
   describe('redirectIfErrorInCategoryProducts$', () => {
     it('should redirect if triggered', fakeAsync(() => {
-      const action = new LoadProductsForCategoryFail({
+      const action = loadProductsForCategoryFail({
         categoryId: 'ID',
         error: { status: 404 } as HttpError,
       });
@@ -398,7 +398,7 @@ describe('Products Effects', () => {
         })
       );
 
-      actions$ = of(new LoadProductSuccess({ product: { sku: 'ABC', type: 'Bundle' } as Product }));
+      actions$ = of(loadProductSuccess({ product: { sku: 'ABC', type: 'Bundle' } as Product }));
 
       effects.loadProductBundles$.pipe(toArray()).subscribe(actions => {
         expect(actions).toMatchInlineSnapshot(`
@@ -418,7 +418,7 @@ describe('Products Effects', () => {
   describe('loadRetailSetProductDetail$', () => {
     it('should trigger loading details if it is a retail set', done => {
       actions$ = of(
-        new LoadProductSuccess({
+        loadProductSuccess({
           product: { sku: 'ABC', type: 'RetailSet' } as Product,
         })
       );
@@ -435,7 +435,7 @@ describe('Products Effects', () => {
 
     it('should do nothing if product is not a retail set', done => {
       actions$ = of(
-        new LoadProductSuccess({
+        loadProductSuccess({
           product: { sku: 'ABC', type: 'Product' } as Product,
         })
       );
@@ -451,7 +451,7 @@ describe('Products Effects', () => {
     it('should load stubs and retail set reference when queried', done => {
       when(productsServiceMock.getRetailSetParts('ABC')).thenReturn(of([{ sku: 'A' }, { sku: 'B' }]));
 
-      actions$ = of(new LoadProductSuccess({ product: { sku: 'ABC', type: 'RetailSet' } as Product }));
+      actions$ = of(loadProductSuccess({ product: { sku: 'ABC', type: 'RetailSet' } as Product }));
 
       effects.loadPartsOfRetailSet$.pipe(toArray()).subscribe(actions => {
         expect(actions).toMatchInlineSnapshot(`
@@ -474,10 +474,10 @@ describe('Products Effects', () => {
         of({ linkType: { products: ['prod'], categories: [] } })
       );
 
-      actions$ = hot('a', { a: new LoadProductLinks({ sku: 'ABC' }) });
+      actions$ = hot('a', { a: loadProductLinks({ sku: 'ABC' }) });
       expect(effects.loadProductLinks$).toBeObservable(
         cold('(a)', {
-          a: new LoadProductLinksSuccess({
+          a: loadProductLinksSuccess({
             sku: 'ABC',
             links: { linkType: { products: ['prod'], categories: [] } },
           }),
@@ -488,10 +488,10 @@ describe('Products Effects', () => {
     it('should send fail action in case of failure for load product links', () => {
       when(productsServiceMock.getProductLinks('ABC')).thenReturn(throwError({ message: 'ERROR' }));
 
-      actions$ = hot('a', { a: new LoadProductLinks({ sku: 'ABC' }) });
+      actions$ = hot('a', { a: loadProductLinks({ sku: 'ABC' }) });
       expect(effects.loadProductLinks$).toBeObservable(
         cold('(a)', {
-          a: new LoadProductLinksFail({
+          a: loadProductLinksFail({
             error: { message: 'ERROR' } as HttpError,
             sku: 'ABC',
           }),
@@ -503,7 +503,7 @@ describe('Products Effects', () => {
   describe('loadLinkedCategories$', () => {
     it('should load category links reference when queried', () => {
       actions$ = hot('(a)', {
-        a: new LoadProductLinksSuccess({
+        a: loadProductLinksSuccess({
           sku: 'ABC',
           links: {
             linkType1: { products: [], categories: ['cat1', 'cat2'] },
@@ -513,13 +513,13 @@ describe('Products Effects', () => {
       });
       expect(effects.loadLinkedCategories$).toBeObservable(
         cold('(abc)', {
-          a: new LoadCategory({
+          a: loadCategory({
             categoryId: 'cat1',
           }),
-          b: new LoadCategory({
+          b: loadCategory({
             categoryId: 'cat2',
           }),
-          c: new LoadCategory({
+          c: loadCategory({
             categoryId: 'cat3',
           }),
         })
@@ -530,7 +530,7 @@ describe('Products Effects', () => {
   describe('loadDefaultCategoryContextForProduct$', () => {
     it('should load a default category for the product if none is selected and product has one', done => {
       store$.dispatch(
-        new LoadProductSuccess({
+        loadProductSuccess({
           product: { sku: 'ABC', type: 'Product', defaultCategoryId: '123' } as Product,
         })
       );
@@ -548,7 +548,7 @@ describe('Products Effects', () => {
 
     it('should not load a default category for the product if none is selected and product has none', done => {
       store$.dispatch(
-        new LoadProductSuccess({
+        loadProductSuccess({
           product: { sku: 'ABC', type: 'Product' } as Product,
         })
       );
@@ -562,7 +562,7 @@ describe('Products Effects', () => {
 
     it('should not load a default category for the product if the product failed loading', done => {
       store$.dispatch(
-        new LoadProductFail({
+        loadProductFail({
           sku: 'ABC',
           error: { error: 'ERROR' } as HttpError,
         })
@@ -577,7 +577,7 @@ describe('Products Effects', () => {
 
     it('should not load a default category for the product if the category is taken from the context', done => {
       store$.dispatch(
-        new LoadProductSuccess({
+        loadProductSuccess({
           product: { sku: 'ABC', type: 'Product', defaultCategoryId: '123' } as Product,
         })
       );

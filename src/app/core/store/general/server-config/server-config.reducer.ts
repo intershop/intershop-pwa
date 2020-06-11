@@ -1,6 +1,8 @@
+import { createReducer, on } from '@ngrx/store';
+
 import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
 
-import { ServerConfigAction, ServerConfigActionTypes } from './server-config.actions';
+import { loadServerConfigSuccess } from './server-config.actions';
 
 export interface ServerConfigState {
   _config: ServerConfig;
@@ -10,14 +12,9 @@ const initialState: ServerConfigState = {
   _config: undefined,
 };
 
-export function serverConfigReducer(state = initialState, action: ServerConfigAction): ServerConfigState {
-  switch (action.type) {
-    case ServerConfigActionTypes.LoadServerConfigSuccess: {
-      return {
-        _config: action.payload.config,
-      };
-    }
-  }
-
-  return state;
-}
+export const serverConfigReducer = createReducer(
+  initialState,
+  on(loadServerConfigSuccess, (_, action) => ({
+    _config: action.payload.config,
+  }))
+);

@@ -38,7 +38,7 @@ import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { getCategoryTree, getSelectedCategory } from './categories';
 import { getProductEntities, getSelectedProduct } from './products';
 import { getRecentlyViewedProducts } from './recently';
-import { SuggestSearch } from './search';
+import { suggestSearch } from './search';
 import { ShoppingStoreModule } from './shopping-store.module';
 
 const getCategoryIds = createSelector(getCategoryTree, tree => Object.keys(tree.nodes));
@@ -281,7 +281,7 @@ describe('Shopping Store', () => {
     describe('and looking for suggestions', () => {
       beforeEach(fakeAsync(() => {
         store.reset();
-        store.dispatch(new SuggestSearch({ searchTerm: 'some' }));
+        store.dispatch(suggestSearch({ searchTerm: 'some' }));
         tick(5000);
       }));
 

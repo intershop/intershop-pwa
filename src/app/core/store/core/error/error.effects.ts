@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Effect } from '@ngrx/effects';
+import { createEffect } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { map, tap } from 'rxjs/operators';
 
@@ -13,12 +13,15 @@ import { getGeneralError } from './error.selectors';
 export class ErrorEffects {
   constructor(private store: Store, private httpStatusCodeService: HttpStatusCodeService) {}
 
-  @Effect({ dispatch: false })
-  gotoErrorPageInCaseOfError$ = this.store.pipe(
-    select(getGeneralError),
-    whenTruthy(),
-    map(error => this.mapStatus(error)),
-    tap(status => this.httpStatusCodeService.setStatusAndRedirect(status))
+  gotoErrorPageInCaseOfError$ = createEffect(
+    () =>
+      this.store.pipe(
+        select(getGeneralError),
+        whenTruthy(),
+        map(error => this.mapStatus(error)),
+        tap(status => this.httpStatusCodeService.setStatusAndRedirect(status))
+      ),
+    { dispatch: false }
   );
 
   private mapStatus(state: HttpError): number {

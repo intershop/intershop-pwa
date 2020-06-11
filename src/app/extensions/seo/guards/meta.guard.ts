@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 
 import { SeoAttributes } from 'ish-core/models/seo-attributes/seo-attributes.model';
 
-import { SetSeoAttributes } from '../store/seo';
+import { setSeoAttributes } from '../store/seo';
 
 const defaults: SeoAttributes = {
   title: 'seo.defaults.title',
@@ -19,7 +19,7 @@ export class MetaGuard implements CanActivate, CanActivateChild {
 
   canActivate(route: ActivatedRouteSnapshot, _: RouterStateSnapshot): boolean {
     const metaSettings = route.hasOwnProperty('data') ? route.data.meta : undefined;
-    this.store.dispatch(new SetSeoAttributes({ ...defaults, ...metaSettings }));
+    this.store.dispatch(setSeoAttributes({ ...defaults, ...metaSettings }));
 
     return true;
   }

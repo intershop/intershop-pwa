@@ -1,25 +1,25 @@
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import {
-  CreateBasketAddress,
-  CreateBasketAddressSuccess,
-  DeleteBasketShippingAddress,
-  UpdateBasketAddress,
+  createBasketAddress,
+  createBasketAddressSuccess,
+  deleteBasketShippingAddress,
+  updateBasketAddress,
 } from 'ish-core/store/customer/basket/basket.actions';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import {
-  CreateCustomerAddress,
-  CreateCustomerAddressFail,
-  CreateCustomerAddressSuccess,
-  DeleteCustomerAddress,
-  DeleteCustomerAddressFail,
-  DeleteCustomerAddressSuccess,
-  LoadAddresses,
-  LoadAddressesFail,
-  LoadAddressesSuccess,
-  UpdateCustomerAddressFail,
-  UpdateCustomerAddressSuccess,
+  createCustomerAddress,
+  createCustomerAddressFail,
+  createCustomerAddressSuccess,
+  deleteCustomerAddress,
+  deleteCustomerAddressFail,
+  deleteCustomerAddressSuccess,
+  loadAddresses,
+  loadAddressesFail,
+  loadAddressesSuccess,
+  updateCustomerAddressFail,
+  updateCustomerAddressSuccess,
 } from './addresses.actions';
 import { addressesReducer, initialState } from './addresses.reducer';
 
@@ -27,7 +27,7 @@ describe('Addresses Reducer', () => {
   describe('LoadAddresses actions', () => {
     describe('LoadAddresses action', () => {
       it('should set loading to true', () => {
-        const action = new LoadAddresses();
+        const action = loadAddresses();
         const state = addressesReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -37,7 +37,7 @@ describe('Addresses Reducer', () => {
     describe('LoadAddressesFail action', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpError;
-        const action = new LoadAddressesFail({ error });
+        const action = loadAddressesFail({ error });
         const state = addressesReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -53,7 +53,7 @@ describe('Addresses Reducer', () => {
           } as Address,
         ];
 
-        const action = new LoadAddressesSuccess({ addresses });
+        const action = loadAddressesSuccess({ addresses });
         const state = addressesReducer(initialState, action);
 
         expect(state.ids).toHaveLength(1);
@@ -66,7 +66,7 @@ describe('Addresses Reducer', () => {
   describe('CreateCustomerAddress actions', () => {
     describe('CreateCustomerAddress action', () => {
       it('should set loading to true', () => {
-        const action = new CreateCustomerAddress({ address: BasketMockData.getAddress() });
+        const action = createCustomerAddress({ address: BasketMockData.getAddress() });
         const state = addressesReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -75,7 +75,7 @@ describe('Addresses Reducer', () => {
 
     describe('CreateBasketAddress action', () => {
       it('should set loading to true', () => {
-        const action = new CreateBasketAddress({ address: BasketMockData.getAddress(), scope: 'invoice' });
+        const action = createBasketAddress({ address: BasketMockData.getAddress(), scope: 'invoice' });
         const state = addressesReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -85,7 +85,7 @@ describe('Addresses Reducer', () => {
     describe('CreateCustomerAddressFail action', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpError;
-        const action = new CreateCustomerAddressFail({ error });
+        const action = createCustomerAddressFail({ error });
         const state = addressesReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -99,7 +99,7 @@ describe('Addresses Reducer', () => {
           id: 'test',
         } as Address;
 
-        const action = new CreateCustomerAddressSuccess({ address });
+        const action = createCustomerAddressSuccess({ address });
         const state = addressesReducer(initialState, action);
 
         expect(state.ids).toHaveLength(1);
@@ -114,7 +114,7 @@ describe('Addresses Reducer', () => {
           id: 'test',
         } as Address;
 
-        const action = new CreateBasketAddressSuccess({ address, scope: 'invoice' });
+        const action = createBasketAddressSuccess({ address, scope: 'invoice' });
         const state = addressesReducer(initialState, action);
 
         expect(state.ids).toHaveLength(1);
@@ -127,7 +127,7 @@ describe('Addresses Reducer', () => {
   describe('UpdateCustomerAddress actions', () => {
     describe('UpdateBasketCustomerAddress action', () => {
       it('should set loading to true', () => {
-        const action = new UpdateBasketAddress({ address: BasketMockData.getAddress() });
+        const action = updateBasketAddress({ address: BasketMockData.getAddress() });
         const state = addressesReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -137,7 +137,7 @@ describe('Addresses Reducer', () => {
     describe('UpdateCustomerAddressFail action', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpError;
-        const action = new UpdateCustomerAddressFail({ error });
+        const action = updateCustomerAddressFail({ error });
         const state = addressesReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -152,11 +152,11 @@ describe('Addresses Reducer', () => {
           firstName: 'Patricia',
         } as Address;
 
-        const preAction = new CreateBasketAddressSuccess({ address, scope: 'shipping' });
+        const preAction = createBasketAddressSuccess({ address, scope: 'shipping' });
         let state = addressesReducer(initialState, preAction);
 
         address.firstName = 'John';
-        const action = new UpdateCustomerAddressSuccess({ address });
+        const action = updateCustomerAddressSuccess({ address });
         state = addressesReducer(state, action);
 
         expect(state.ids).toHaveLength(1);
@@ -169,7 +169,7 @@ describe('Addresses Reducer', () => {
   describe('DeleteCustomerAddress actions', () => {
     describe('DeleteBasketShippingAddress action', () => {
       it('should set loading to true', () => {
-        const action = new DeleteBasketShippingAddress({ addressId: 'addressId' });
+        const action = deleteBasketShippingAddress({ addressId: 'addressId' });
         const state = addressesReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -178,7 +178,7 @@ describe('Addresses Reducer', () => {
 
     describe('DeleteCustomerAddress action', () => {
       it('should set loading to true', () => {
-        const action = new DeleteCustomerAddress({ addressId: 'addressId' });
+        const action = deleteCustomerAddress({ addressId: 'addressId' });
         const state = addressesReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -188,7 +188,7 @@ describe('Addresses Reducer', () => {
     describe('DeleteCustomerAddressFail action', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpError;
-        const action = new DeleteCustomerAddressFail({ error });
+        const action = deleteCustomerAddressFail({ error });
         const state = addressesReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -202,10 +202,10 @@ describe('Addresses Reducer', () => {
           id: 'addressId',
         } as Address;
 
-        const preAction = new CreateBasketAddressSuccess({ address, scope: 'shipping' });
+        const preAction = createBasketAddressSuccess({ address, scope: 'shipping' });
         let state = addressesReducer(initialState, preAction);
 
-        const action = new DeleteCustomerAddressSuccess({ addressId: address.id });
+        const action = deleteCustomerAddressSuccess({ addressId: address.id });
         state = addressesReducer(state, action);
 
         expect(state.ids).toHaveLength(0);

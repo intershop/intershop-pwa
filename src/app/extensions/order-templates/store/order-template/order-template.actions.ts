@@ -1,190 +1,110 @@
-import { Action } from '@ngrx/store';
+import { createAction } from '@ngrx/store';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 import { OrderTemplate, OrderTemplateHeader } from '../../models/order-template/order-template.model';
 
-export enum OrderTemplatesActionTypes {
-  LoadOrderTemplates = '[Order Templates Internal] Load Order Templates',
-  LoadOrderTemplatesSuccess = '[Order Templates API] Load Order Templates Success',
-  LoadOrderTemplatesFail = '[Order Templates API] Load Order Templates Fail',
+export const loadOrderTemplates = createAction('[Order Templates Internal] Load Order Templates');
 
-  CreateOrderTemplate = '[Order Templates] Create Order Template',
-  CreateOrderTemplateSuccess = '[Order Templates API] Create Order Template Success',
-  CreateOrderTemplateFail = '[Order Templates API] Create Order Template Fail',
-  CreateOrderTemplateWithItems = '[Order Templates] Create Order Template with basket items',
+export const loadOrderTemplatesSuccess = createAction(
+  '[Order Templates API] Load Order Templates Success',
+  payload<{ orderTemplates: OrderTemplate[] }>()
+);
 
-  UpdateOrderTemplate = '[Order Templates] Update Order Template',
-  UpdateOrderTemplateSuccess = '[Order Templates API] Update Order Template Success',
-  UpdateOrderTemplateFail = '[Order Templates API] Update Order Template Fail',
+export const loadOrderTemplatesFail = createAction('[Order Templates API] Load Order Templates Fail', httpError());
 
-  DeleteOrderTemplate = '[Order Templates] Delete Order Template',
-  DeleteOrderTemplateSuccess = '[Order Templates API] Delete Order Template Success',
-  DeleteOrderTemplateFail = '[Order Templates API] Delete Order Template Fail',
+export const createOrderTemplate = createAction(
+  '[Order Templates] Create Order Template',
+  payload<{ orderTemplate: OrderTemplateHeader }>()
+);
 
-  AddProductToOrderTemplate = '[Order Templates] Add Item to Order Template',
-  AddProductToOrderTemplateSuccess = '[Order Templates API] Add Item to Order Template Success',
-  AddProductToOrderTemplateFail = '[Order Templates API] Add Item to Order Template Fail',
+export const createOrderTemplateSuccess = createAction(
+  '[Order Templates API] Create Order Template Success',
+  payload<{ orderTemplate: OrderTemplate }>()
+);
 
-  AddProductToNewOrderTemplate = '[Order Templates Internal] Add Product To New Order Template',
+export const createOrderTemplateFail = createAction('[Order Templates API] Create Order Template Fail', httpError());
 
-  MoveItemToOrderTemplate = '[Order Templates] Move Item to another Order Template',
+export const updateOrderTemplate = createAction(
+  '[Order Templates] Update Order Template',
+  payload<{ orderTemplate: OrderTemplate }>()
+);
 
-  RemoveItemFromOrderTemplate = '[Order Templates] Remove Item from Order Template',
-  RemoveItemFromOrderTemplateSuccess = '[Order Templates API] Remove Item from Order Template Success',
-  RemoveItemFromOrderTemplateFail = '[Order Templates API] Remove Item from Order Template Fail',
+export const updateOrderTemplateSuccess = createAction(
+  '[Order Templates API] Update Order Template Success',
+  payload<{ orderTemplate: OrderTemplate }>()
+);
 
-  SelectOrderTemplate = '[Order Templates Internal] Select Order Template',
+export const updateOrderTemplateFail = createAction('[Order Templates API] Update Order Template Fail', httpError());
 
-  AddBasketToNewOrderTemplate = '[Order Templates] Add basket to New Order Template]',
-  AddBasketToNewOrderTemplateSuccess = '[Order Templates] Add basket to New Order Template Success]',
-  AddBasketToNewOrderTemplateFail = '[Order Templates] Add basket to New Order Template Fail]',
-}
+export const deleteOrderTemplate = createAction(
+  '[Order Templates] Delete Order Template',
+  payload<{ orderTemplateId: string }>()
+);
 
-export class LoadOrderTemplates implements Action {
-  readonly type = OrderTemplatesActionTypes.LoadOrderTemplates;
-}
+export const deleteOrderTemplateSuccess = createAction(
+  '[Order Templates API] Delete Order Template Success',
+  payload<{ orderTemplateId: string }>()
+);
 
-export class LoadOrderTemplatesSuccess implements Action {
-  readonly type = OrderTemplatesActionTypes.LoadOrderTemplatesSuccess;
-  constructor(public payload: { orderTemplates: OrderTemplate[] }) {}
-}
+export const deleteOrderTemplateFail = createAction('[Order Templates API] Delete Order Template Fail', httpError());
 
-export class LoadOrderTemplatesFail implements Action {
-  readonly type = OrderTemplatesActionTypes.LoadOrderTemplatesFail;
-  constructor(public payload: { error: HttpError }) {}
-}
+export const addProductToOrderTemplate = createAction(
+  '[Order Templates] Add Item to Order Template',
+  payload<{ orderTemplateId: string; sku: string; quantity?: number }>()
+);
 
-export class CreateOrderTemplate implements Action {
-  readonly type = OrderTemplatesActionTypes.CreateOrderTemplate;
-  constructor(public payload: { orderTemplate: OrderTemplateHeader }) {}
-}
+export const addProductToOrderTemplateSuccess = createAction(
+  '[Order Templates API] Add Item to Order Template Success',
+  payload<{ orderTemplate: OrderTemplate }>()
+);
 
-export class CreateOrderTemplateSuccess implements Action {
-  readonly type = OrderTemplatesActionTypes.CreateOrderTemplateSuccess;
-  constructor(public payload: { orderTemplate: OrderTemplate }) {}
-}
+export const addProductToOrderTemplateFail = createAction(
+  '[Order Templates API] Add Item to Order Template Fail',
+  httpError()
+);
 
-export class CreateOrderTemplateFail implements Action {
-  readonly type = OrderTemplatesActionTypes.CreateOrderTemplateFail;
-  constructor(public payload: { error: HttpError }) {}
-}
+export const addProductToNewOrderTemplate = createAction(
+  '[Order Templates Internal] Add Product To New Order Template',
+  payload<{ title: string; sku: string; quantity?: number }>()
+);
 
-export class UpdateOrderTemplate implements Action {
-  readonly type = OrderTemplatesActionTypes.UpdateOrderTemplate;
-  constructor(public payload: { orderTemplate: OrderTemplate }) {}
-}
+export const moveItemToOrderTemplate = createAction(
+  '[Order Templates] Move Item to another Order Template',
+  payload<{ source: { id: string }; target: { id?: string; title?: string; sku: string; quantity: number } }>()
+);
 
-export class UpdateOrderTemplateSuccess implements Action {
-  readonly type = OrderTemplatesActionTypes.UpdateOrderTemplateSuccess;
-  constructor(public payload: { orderTemplate: OrderTemplate }) {}
-}
+export const removeItemFromOrderTemplate = createAction(
+  '[Order Templates] Remove Item from Order Template',
+  payload<{ orderTemplateId: string; sku: string }>()
+);
 
-export class UpdateOrderTemplateFail implements Action {
-  readonly type = OrderTemplatesActionTypes.UpdateOrderTemplateFail;
-  constructor(public payload: { error: HttpError }) {}
-}
+export const removeItemFromOrderTemplateSuccess = createAction(
+  '[Order Templates API] Remove Item from Order Template Success',
+  payload<{ orderTemplate: OrderTemplate }>()
+);
 
-export class DeleteOrderTemplate implements Action {
-  readonly type = OrderTemplatesActionTypes.DeleteOrderTemplate;
-  constructor(public payload: { orderTemplateId: string }) {}
-}
+export const removeItemFromOrderTemplateFail = createAction(
+  '[Order Templates API] Remove Item from Order Template Fail',
+  httpError()
+);
 
-export class DeleteOrderTemplateSuccess implements Action {
-  readonly type = OrderTemplatesActionTypes.DeleteOrderTemplateSuccess;
+export const selectOrderTemplate = createAction(
+  '[Order Templates Internal] Select Order Template',
+  payload<{ id: string }>()
+);
 
-  constructor(public payload: { orderTemplateId: string }) {}
-}
+export const addBasketToNewOrderTemplate = createAction(
+  '[Order Templates] Add basket to New Order Template]',
+  payload<{ orderTemplate: OrderTemplateHeader }>()
+);
 
-export class DeleteOrderTemplateFail implements Action {
-  readonly type = OrderTemplatesActionTypes.DeleteOrderTemplateFail;
-  constructor(public payload: { error: HttpError }) {}
-}
+export const addBasketToNewOrderTemplateFail = createAction(
+  '[Order Templates] Add basket to New Order Template Fail]',
+  httpError()
+);
 
-export class AddProductToOrderTemplate implements Action {
-  readonly type = OrderTemplatesActionTypes.AddProductToOrderTemplate;
-  constructor(public payload: { orderTemplateId: string; sku: string; quantity?: number }) {}
-}
-
-export class AddProductToOrderTemplateSuccess implements Action {
-  readonly type = OrderTemplatesActionTypes.AddProductToOrderTemplateSuccess;
-  constructor(public payload: { orderTemplate: OrderTemplate }) {}
-}
-
-export class AddProductToOrderTemplateFail implements Action {
-  readonly type = OrderTemplatesActionTypes.AddProductToOrderTemplateFail;
-  constructor(public payload: { error: HttpError }) {}
-}
-
-export class AddProductToNewOrderTemplate implements Action {
-  readonly type = OrderTemplatesActionTypes.AddProductToNewOrderTemplate;
-  constructor(public payload: { title: string; sku: string; quantity?: number }) {}
-}
-
-export class MoveItemToOrderTemplate implements Action {
-  readonly type = OrderTemplatesActionTypes.MoveItemToOrderTemplate;
-  constructor(
-    public payload: { source: { id: string }; target: { id?: string; title?: string; sku: string; quantity: number } }
-  ) {}
-}
-
-export class RemoveItemFromOrderTemplate implements Action {
-  readonly type = OrderTemplatesActionTypes.RemoveItemFromOrderTemplate;
-  constructor(public payload: { orderTemplateId: string; sku: string }) {}
-}
-
-export class RemoveItemFromOrderTemplateSuccess implements Action {
-  readonly type = OrderTemplatesActionTypes.RemoveItemFromOrderTemplateSuccess;
-  constructor(public payload: { orderTemplate: OrderTemplate }) {}
-}
-
-export class RemoveItemFromOrderTemplateFail implements Action {
-  readonly type = OrderTemplatesActionTypes.RemoveItemFromOrderTemplateFail;
-  constructor(public payload: { error: HttpError }) {}
-}
-
-export class SelectOrderTemplate implements Action {
-  readonly type = OrderTemplatesActionTypes.SelectOrderTemplate;
-  constructor(public payload: { id: string }) {}
-}
-
-export class AddBasketToNewOrderTemplate implements Action {
-  readonly type = OrderTemplatesActionTypes.AddBasketToNewOrderTemplate;
-  constructor(public payload: { orderTemplate: OrderTemplateHeader }) {}
-}
-
-export class AddBasketToNewOrderTemplateFail implements Action {
-  readonly type = OrderTemplatesActionTypes.AddBasketToNewOrderTemplateFail;
-  constructor(public payload: { error: HttpError }) {}
-}
-
-export class AddBasketToNewOrderTemplateSuccess implements Action {
-  readonly type = OrderTemplatesActionTypes.AddBasketToNewOrderTemplateSuccess;
-  constructor(public payload: { orderTemplate: OrderTemplate }) {}
-}
-
-export type OrderTemplateAction =
-  | LoadOrderTemplates
-  | LoadOrderTemplatesSuccess
-  | LoadOrderTemplatesFail
-  | CreateOrderTemplate
-  | CreateOrderTemplateSuccess
-  | CreateOrderTemplateFail
-  | UpdateOrderTemplate
-  | UpdateOrderTemplateSuccess
-  | UpdateOrderTemplateFail
-  | DeleteOrderTemplate
-  | DeleteOrderTemplateSuccess
-  | DeleteOrderTemplateFail
-  | AddProductToOrderTemplate
-  | AddProductToOrderTemplateSuccess
-  | AddProductToOrderTemplateFail
-  | AddProductToNewOrderTemplate
-  | MoveItemToOrderTemplate
-  | RemoveItemFromOrderTemplate
-  | RemoveItemFromOrderTemplateSuccess
-  | RemoveItemFromOrderTemplateFail
-  | SelectOrderTemplate
-  | AddBasketToNewOrderTemplate
-  | AddBasketToNewOrderTemplateSuccess
-  | AddBasketToNewOrderTemplateFail;
+export const addBasketToNewOrderTemplateSuccess = createAction(
+  '[Order Templates] Add basket to New Order Template Success]',
+  payload<{ orderTemplate: OrderTemplate }>()
+);

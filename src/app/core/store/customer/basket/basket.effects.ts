@@ -1,30 +1,30 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { concatMap, filter, map, mapTo, mergeMap, mergeMapTo, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { ofUrl, selectQueryParam } from 'ish-core/store/core/router';
-import { UserActionTypes, getLastAPITokenBeforeLogin } from 'ish-core/store/customer/user';
-import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
+import { getLastAPITokenBeforeLogin, loginUserSuccess } from 'ish-core/store/customer/user';
+import { loadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { mapErrorToAction, mapToPayloadProperty, whenFalsy } from 'ish-core/utils/operators';
 
 import {
-  BasketActionTypes,
-  LoadBasket,
-  LoadBasketByAPIToken,
-  LoadBasketEligibleShippingMethodsFail,
-  LoadBasketEligibleShippingMethodsSuccess,
-  LoadBasketFail,
-  LoadBasketSuccess,
-  MergeBasket,
-  MergeBasketFail,
-  MergeBasketSuccess,
-  ResetBasketErrors,
-  UpdateBasket,
-  UpdateBasketFail,
-  UpdateBasketShippingMethod,
+  loadBasket,
+  loadBasketByAPIToken,
+  loadBasketEligibleShippingMethods,
+  loadBasketEligibleShippingMethodsFail,
+  loadBasketEligibleShippingMethodsSuccess,
+  loadBasketFail,
+  loadBasketSuccess,
+  mergeBasket,
+  mergeBasketFail,
+  mergeBasketSuccess,
+  resetBasketErrors,
+  updateBasket,
+  updateBasketFail,
+  updateBasketShippingMethod,
 } from './basket.actions';
 import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
 
@@ -35,23 +35,25 @@ export class BasketEffects {
   /**
    * The load basket effect.
    */
-  @Effect()
-  loadBasket$ = this.actions$.pipe(
-    ofType<LoadBasket>(BasketActionTypes.LoadBasket),
-    mergeMap(() =>
-      this.basketService.getBasket().pipe(
-        map(basket => new LoadBasketSuccess({ basket })),
-        mapErrorToAction(LoadBasketFail)
+  loadBasket$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadBasket),
+      mergeMap(() =>
+        this.basketService.getBasket().pipe(
+          map(basket => loadBasketSuccess({ basket })),
+          mapErrorToAction(loadBasketFail)
+        )
       )
     )
   );
 
-  @Effect()
-  loadBasketByAPIToken$ = this.actions$.pipe(
-    ofType<LoadBasketByAPIToken>(BasketActionTypes.LoadBasketByAPIToken),
-    mapToPayloadProperty('apiToken'),
-    concatMap(apiToken =>
-      this.basketService.getBasketByToken(apiToken).pipe(map(basket => new LoadBasketSuccess({ basket })))
+  loadBasketByAPIToken$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadBasketByAPIToken),
+      mapToPayloadProperty('apiToken'),
+      concatMap(apiToken =>
+        this.basketService.getBasketByToken(apiToken).pipe(map(basket => loadBasketSuccess({ basket })))
+      )
     )
   );
 
@@ -59,28 +61,30 @@ export class BasketEffects {
    * After successfully loading the basket, trigger a LoadProduct action
    * for each product that is missing in the current product entities state.
    */
-  @Effect()
-  loadProductsForBasket$ = this.actions$.pipe(
-    ofType<LoadBasketSuccess>(BasketActionTypes.LoadBasketSuccess, BasketActionTypes.MergeBasketSuccess),
-    mapToPayloadProperty('basket'),
-    switchMap(basket => [
-      ...basket.lineItems.map(
-        ({ productSKU }) => new LoadProductIfNotLoaded({ sku: productSKU, level: ProductCompletenessLevel.List })
-      ),
-    ])
+  loadProductsForBasket$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadBasketSuccess, mergeBasketSuccess),
+      mapToPayloadProperty('basket'),
+      switchMap(basket => [
+        ...basket.lineItems.map(({ productSKU }) =>
+          loadProductIfNotLoaded({ sku: productSKU, level: ProductCompletenessLevel.List })
+        ),
+      ])
+    )
   );
 
   /**
    * The load basket eligible shipping methods effect.
    */
-  @Effect()
-  loadBasketEligibleShippingMethods$ = this.actions$.pipe(
-    ofType(BasketActionTypes.LoadBasketEligibleShippingMethods),
-    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    concatMap(([, basket]) =>
-      this.basketService.getBasketEligibleShippingMethods(basket.id, basket.bucketId).pipe(
-        map(result => new LoadBasketEligibleShippingMethodsSuccess({ shippingMethods: result })),
-        mapErrorToAction(LoadBasketEligibleShippingMethodsFail)
+  loadBasketEligibleShippingMethods$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadBasketEligibleShippingMethods),
+      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      concatMap(([, basket]) =>
+        this.basketService.getBasketEligibleShippingMethods(basket.id, basket.bucketId).pipe(
+          map(result => loadBasketEligibleShippingMethodsSuccess({ shippingMethods: result })),
+          mapErrorToAction(loadBasketEligibleShippingMethodsFail)
+        )
       )
     )
   );
@@ -88,15 +92,16 @@ export class BasketEffects {
   /**
    * Update basket effect.
    */
-  @Effect()
-  updateBasket$ = this.actions$.pipe(
-    ofType<UpdateBasket>(BasketActionTypes.UpdateBasket),
-    mapToPayloadProperty('update'),
-    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    concatMap(([update, currentBasketId]) =>
-      this.basketService.updateBasket(currentBasketId, update).pipe(
-        concatMap(basket => [new LoadBasketSuccess({ basket }), new ResetBasketErrors()]),
-        mapErrorToAction(UpdateBasketFail)
+  updateBasket$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateBasket),
+      mapToPayloadProperty('update'),
+      withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
+      concatMap(([update, currentBasketId]) =>
+        this.basketService.updateBasket(currentBasketId, update).pipe(
+          concatMap(basket => [loadBasketSuccess({ basket }), resetBasketErrors()]),
+          mapErrorToAction(updateBasketFail)
+        )
       )
     )
   );
@@ -105,37 +110,40 @@ export class BasketEffects {
    * Updates the common shipping method of the basket.
    * Works currently only if the basket has one bucket
    */
-  @Effect()
-  updateBasketShippingMethod$ = this.actions$.pipe(
-    ofType<UpdateBasketShippingMethod>(BasketActionTypes.UpdateBasketShippingMethod),
-    mapToPayloadProperty('shippingId'),
-    map(commonShippingMethod => new UpdateBasket({ update: { commonShippingMethod } }))
+  updateBasketShippingMethod$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateBasketShippingMethod),
+      mapToPayloadProperty('shippingId'),
+      map(commonShippingMethod => updateBasket({ update: { commonShippingMethod } }))
+    )
   );
 
   /**
    * After a user logged in a merge basket action is triggered if there are already items in the anonymous user's basket
    */
-  @Effect()
-  mergeBasketAfterLogin$ = this.actions$.pipe(
-    ofType(UserActionTypes.LoginUserSuccess),
-    mergeMapTo(this.store.pipe(select(getCurrentBasket), take(1))),
-    filter(currentBasket => currentBasket && currentBasket.lineItems && currentBasket.lineItems.length > 0),
-    mapTo(new MergeBasket())
+  mergeBasketAfterLogin$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loginUserSuccess),
+      mergeMapTo(this.store.pipe(select(getCurrentBasket), take(1))),
+      filter(currentBasket => currentBasket && currentBasket.lineItems && currentBasket.lineItems.length > 0),
+      mapTo(mergeBasket())
+    )
   );
 
   /**
    * Merge basket into current basket of a registered user.
    * If the user has not yet a basket a new basket is created before the merge
    */
-  @Effect()
-  mergeBasket$ = this.actions$.pipe(
-    ofType<MergeBasket>(BasketActionTypes.MergeBasket),
-    mergeMapTo(this.store.pipe(select(getCurrentBasket), take(1))),
-    withLatestFrom(this.store.pipe(select(getLastAPITokenBeforeLogin))),
-    concatMap(([sourceBasket, authToken]) =>
-      this.basketService.mergeBasket(sourceBasket.id, authToken).pipe(
-        map(basket => new MergeBasketSuccess({ basket })),
-        mapErrorToAction(MergeBasketFail)
+  mergeBasket$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(mergeBasket),
+      mergeMapTo(this.store.pipe(select(getCurrentBasket), take(1))),
+      withLatestFrom(this.store.pipe(select(getLastAPITokenBeforeLogin))),
+      concatMap(([sourceBasket, authToken]) =>
+        this.basketService.mergeBasket(sourceBasket.id, authToken).pipe(
+          map(basket => mergeBasketSuccess({ basket })),
+          mapErrorToAction(mergeBasketFail)
+        )
       )
     )
   );
@@ -143,16 +151,17 @@ export class BasketEffects {
   /**
    * Trigger LoadBasket action after LoginUserSuccess, if no pre login state basket items are present.
    */
-  @Effect()
-  loadBasketAfterLogin$ = this.actions$.pipe(
-    ofType(UserActionTypes.LoginUserSuccess),
-    switchMap(() => this.basketService.getBaskets()) /* prevent 404 error by checking on existing basket */,
-    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    filter(
-      ([newBaskets, currentBasket]) =>
-        (!currentBasket || !currentBasket.lineItems || currentBasket.lineItems.length === 0) && newBaskets.length > 0
-    ),
-    mapTo(new LoadBasket())
+  loadBasketAfterLogin$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loginUserSuccess),
+      switchMap(() => this.basketService.getBaskets()) /* prevent 404 error by checking on existing basket */,
+      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      filter(
+        ([newBaskets, currentBasket]) =>
+          (!currentBasket || !currentBasket.lineItems || currentBasket.lineItems.length === 0) && newBaskets.length > 0
+      ),
+      mapTo(loadBasket())
+    )
   );
 
   /**
@@ -160,11 +169,12 @@ export class BasketEffects {
    * Add queryParam error=true to the route to prevent resetting errors.
    *
    */
-  @Effect()
-  routeListenerForResettingBasketErrors$ = this.store.pipe(
-    ofUrl(/^\/(basket|checkout.*)/),
-    select(selectQueryParam('error')),
-    whenFalsy(),
-    mapTo(new ResetBasketErrors())
+  routeListenerForResettingBasketErrors$ = createEffect(() =>
+    this.store.pipe(
+      ofUrl(/^\/(basket|checkout.*)/),
+      select(selectQueryParam('error')),
+      whenFalsy(),
+      mapTo(resetBasketErrors())
+    )
   );
 }

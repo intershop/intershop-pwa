@@ -1,13 +1,6 @@
-import { Action } from '@ngrx/store';
+import { createAction } from '@ngrx/store';
 
 import { SeoAttributes } from 'ish-core/models/seo-attributes/seo-attributes.model';
+import { payload } from 'ish-core/utils/ngrx-creators';
 
-export enum SeoActionTypes {
-  SetSeoAttributes = '[SEO] Set Attributes',
-}
-
-export class SetSeoAttributes implements Action {
-  readonly type = SeoActionTypes.SetSeoAttributes;
-  // tslint:disable-next-line:ngrx-use-complex-type-with-action-payload
-  constructor(public payload: Partial<SeoAttributes>) {}
-}
+export const setSeoAttributes = createAction('[SEO] Set Attributes', payload<Partial<SeoAttributes>>());

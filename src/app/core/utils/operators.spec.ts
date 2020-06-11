@@ -1,9 +1,10 @@
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Action } from '@ngrx/store';
+import { createAction } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { of } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { httpError } from 'ish-core/utils/ngrx-creators';
 
 import { distinctCompareWith, mapErrorToAction, mapToProperty } from './operators';
 
@@ -27,10 +28,7 @@ describe('Operators', () => {
   });
 
   describe('mapErrorToAction', () => {
-    class DummyFail implements Action {
-      type = 'dummy';
-      constructor(public payload: { error: HttpError }) {}
-    }
+    const dummyFail = createAction('dummy', httpError());
 
     it('should catch HttpErrorResponses and convert them to Fail actions', () => {
       const error = new HttpErrorResponse({
@@ -59,7 +57,7 @@ describe('Operators', () => {
         },
       });
 
-      expect(input$.pipe(mapErrorToAction(DummyFail))).toBeObservable(resu$);
+      expect(input$.pipe(mapErrorToAction(dummyFail))).toBeObservable(resu$);
     });
   });
 

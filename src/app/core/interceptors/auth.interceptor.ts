@@ -13,7 +13,7 @@ import { Observable, throwError, timer } from 'rxjs';
 import { catchError, switchMapTo, tap } from 'rxjs/operators';
 
 import { ApiService } from 'ish-core/services/api/api.service';
-import { ResetAPIToken, SetAPIToken } from 'ish-core/store/customer/user';
+import { resetAPIToken, setAPIToken } from 'ish-core/store/customer/user';
 
 /**
  * Intercepts incoming HTTP response and updates authentication-token.
@@ -33,9 +33,9 @@ export class AuthInterceptor implements HttpInterceptor {
       const apiToken = event.headers.get(ApiService.TOKEN_HEADER_KEY);
       if (apiToken) {
         if (apiToken.startsWith('AuthenticationTokenOutdated') || apiToken.startsWith('AuthenticationTokenInvalid')) {
-          this.store.dispatch(new ResetAPIToken());
+          this.store.dispatch(resetAPIToken());
         } else {
-          this.store.dispatch(new SetAPIToken({ apiToken }));
+          this.store.dispatch(setAPIToken({ apiToken }));
         }
       }
     }
@@ -49,7 +49,7 @@ export class AuthInterceptor implements HttpInterceptor {
       // tslint:disable-next-line:ban
       catchError(err => {
         if (AuthInterceptor.isAuthTokenError(err)) {
-          this.store.dispatch(new ResetAPIToken());
+          this.store.dispatch(resetAPIToken());
 
           // retry request without auth token
           const retryRequest = req.clone({ headers: req.headers.delete(ApiService.TOKEN_HEADER_KEY) });

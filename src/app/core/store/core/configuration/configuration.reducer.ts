@@ -1,9 +1,11 @@
+import { createReducer, on } from '@ngrx/store';
+
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 import { environment } from '../../../../../environments/environment';
 
-import { ConfigurationAction, ConfigurationActionTypes } from './configuration.actions';
+import { applyConfiguration, setGTMToken } from './configuration.actions';
 
 export interface ConfigurationState {
   baseURL?: string;
@@ -34,17 +36,11 @@ const initialState: ConfigurationState = {
   _deviceType: environment.defaultDeviceType,
 };
 
-export function configurationReducer(state = initialState, action: ConfigurationAction): ConfigurationState {
-  switch (action.type) {
-    case ConfigurationActionTypes.ApplyConfiguration: {
-      return { ...state, ...action.payload };
-    }
-
-    case ConfigurationActionTypes.SetGTMToken: {
-      const { gtmToken } = action.payload;
-      return { ...state, gtmToken };
-    }
-  }
-
-  return state;
-}
+export const configurationReducer = createReducer(
+  initialState,
+  on(applyConfiguration, (state: ConfigurationState, action) => ({ ...state, ...action.payload })),
+  on(setGTMToken, (state: ConfigurationState, action) => {
+    const { gtmToken } = action.payload;
+    return { ...state, gtmToken };
+  })
+);

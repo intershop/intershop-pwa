@@ -9,17 +9,17 @@ import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injectio
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { FilterService } from 'ish-core/services/filter/filter.service';
-import { SetProductListingPages } from 'ish-core/store/shopping/product-listing';
+import { setProductListingPages } from 'ish-core/store/shopping/product-listing';
 
 import {
-  ApplyFilter,
-  ApplyFilterFail,
-  ApplyFilterSuccess,
-  LoadFilterFail,
-  LoadFilterForCategory,
-  LoadFilterForSearch,
-  LoadFilterSuccess,
-  LoadProductsForFilter,
+  applyFilter,
+  applyFilterFail,
+  applyFilterSuccess,
+  loadFilterFail,
+  loadFilterForCategory,
+  loadFilterForSearch,
+  loadFilterSuccess,
+  loadProductsForFilter,
 } from './filter.actions';
 import { FilterEffects } from './filter.effects';
 
@@ -80,7 +80,7 @@ describe('Filter Effects', () => {
 
   describe('loadAvailableFilterForCategories$', () => {
     it('should call the filterService for LoadFilterForCategories action', done => {
-      const action = new LoadFilterForCategory({ uniqueId: 'c' });
+      const action = loadFilterForCategory({ uniqueId: 'c' });
       actions$ = of(action);
 
       effects.loadAvailableFilterForCategories$.subscribe(() => {
@@ -90,8 +90,8 @@ describe('Filter Effects', () => {
     });
 
     it('should map to action of type LoadFilterSuccess', () => {
-      const action = new LoadFilterForCategory({ uniqueId: 'c' });
-      const completion = new LoadFilterSuccess({ filterNavigation: filterNav });
+      const action = loadFilterForCategory({ uniqueId: 'c' });
+      const completion = loadFilterSuccess({ filterNavigation: filterNav });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -99,8 +99,8 @@ describe('Filter Effects', () => {
     });
 
     it('should map invalid request to action of type LoadFilterFail', () => {
-      const action = new LoadFilterForCategory({ uniqueId: 'invalid' });
-      const completion = new LoadFilterFail({ error: { message: 'invalid' } as HttpError });
+      const action = loadFilterForCategory({ uniqueId: 'invalid' });
+      const completion = loadFilterFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -110,7 +110,7 @@ describe('Filter Effects', () => {
 
   describe('applyFilter$', () => {
     it('should call the filterService for ApplyFilter action', done => {
-      const action = new ApplyFilter({ searchParameter: 'b' });
+      const action = applyFilter({ searchParameter: 'b' });
       actions$ = of(action);
 
       effects.applyFilter$.subscribe(() => {
@@ -120,8 +120,8 @@ describe('Filter Effects', () => {
     });
 
     it('should map to action of type ApplyFilterSuccess', () => {
-      const action = new ApplyFilter({ searchParameter: 'b' });
-      const completion = new ApplyFilterSuccess({
+      const action = applyFilter({ searchParameter: 'b' });
+      const completion = applyFilterSuccess({
         availableFilter: filterNav,
         searchParameter: 'b',
       });
@@ -132,8 +132,8 @@ describe('Filter Effects', () => {
     });
 
     it('should map invalid request to action of type ApplyFilterFail', () => {
-      const action = new ApplyFilter({ searchParameter: 'invalid' });
-      const completion = new ApplyFilterFail({ error: { message: 'invalid' } as HttpError });
+      const action = applyFilter({ searchParameter: 'invalid' });
+      const completion = applyFilterFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -143,7 +143,7 @@ describe('Filter Effects', () => {
 
   describe('loadFilteredProducts$', () => {
     it('should trigger product actions for ApplyFilterSuccess action', () => {
-      const action = new LoadProductsForFilter({
+      const action = loadProductsForFilter({
         id: {
           type: 'search',
           value: 'test',
@@ -151,7 +151,7 @@ describe('Filter Effects', () => {
         },
         searchParameter: 'b',
       });
-      const completion = new SetProductListingPages({
+      const completion = setProductListingPages({
         id: {
           type: 'search',
           value: 'test',
@@ -169,7 +169,7 @@ describe('Filter Effects', () => {
 
   describe('loadFilterForSearch$', () => {
     it('should call the filterService for LoadFilterForSearch action', done => {
-      const action = new LoadFilterForSearch({ searchTerm: 'search' });
+      const action = loadFilterForSearch({ searchTerm: 'search' });
       actions$ = of(action);
 
       effects.loadFilterForSearch$.subscribe(() => {
@@ -179,8 +179,8 @@ describe('Filter Effects', () => {
     });
 
     it('should map to action of type LoadFilterSuccess', () => {
-      const action = new LoadFilterForSearch({ searchTerm: 'search' });
-      const completion = new LoadFilterSuccess({ filterNavigation: filterNav });
+      const action = loadFilterForSearch({ searchTerm: 'search' });
+      const completion = loadFilterSuccess({ filterNavigation: filterNav });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -188,8 +188,8 @@ describe('Filter Effects', () => {
     });
 
     it('should map invalid request to action of type LoadFilterFail', () => {
-      const action = new LoadFilterForSearch({ searchTerm: 'invalid' });
-      const completion = new LoadFilterFail({ error: { message: 'invalid' } as HttpError });
+      const action = loadFilterForSearch({ searchTerm: 'invalid' });
+      const completion = loadFilterFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

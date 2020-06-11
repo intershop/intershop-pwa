@@ -9,7 +9,7 @@ import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CMSService } from 'ish-core/services/cms/cms.service';
 
-import { LoadContentInclude, LoadContentIncludeFail } from './includes.actions';
+import { loadContentInclude, loadContentIncludeFail } from './includes.actions';
 import { IncludesEffects } from './includes.effects';
 
 describe('Includes Effects', () => {
@@ -36,7 +36,7 @@ describe('Includes Effects', () => {
         of({ include: { id: 'dummy' } as ContentPageletEntryPoint, pagelets: [] })
       );
 
-      actions$ = of(new LoadContentInclude({ includeId: 'dummy' }));
+      actions$ = of(loadContentInclude({ includeId: 'dummy' }));
 
       effects.loadContentInclude$.subscribe(action => {
         verify(cmsServiceMock.getContentInclude('dummy')).once();
@@ -52,7 +52,7 @@ describe('Includes Effects', () => {
     it('should send fail action when loading action via service is unsuccessful', done => {
       when(cmsServiceMock.getContentInclude('dummy')).thenReturn(throwError({ message: 'ERROR' }));
 
-      actions$ = of(new LoadContentInclude({ includeId: 'dummy' }));
+      actions$ = of(loadContentInclude({ includeId: 'dummy' }));
 
       effects.loadContentInclude$.subscribe(action => {
         verify(cmsServiceMock.getContentInclude('dummy')).once();
@@ -67,10 +67,10 @@ describe('Includes Effects', () => {
     it('should not die when encountering an error', () => {
       when(cmsServiceMock.getContentInclude('dummy')).thenReturn(throwError({ message: 'ERROR' }));
 
-      actions$ = hot('a-a-a-a', { a: new LoadContentInclude({ includeId: 'dummy' }) });
+      actions$ = hot('a-a-a-a', { a: loadContentInclude({ includeId: 'dummy' }) });
 
       expect(effects.loadContentInclude$).toBeObservable(
-        cold('a-a-a-a', { a: new LoadContentIncludeFail({ error: { message: 'ERROR' } as HttpError }) })
+        cold('a-a-a-a', { a: loadContentIncludeFail({ error: { message: 'ERROR' } as HttpError }) })
       );
     });
   });

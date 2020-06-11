@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import {
-  DisplayErrorMessage,
-  DisplayInfoMessage,
-  DisplaySuccessMessage,
-  DisplayWarningMessage,
   MessagesPayloadType,
+  displayErrorMessage,
+  displayInfoMessage,
+  displaySuccessMessage,
+  displayWarningMessage,
 } from 'ish-core/store/core/messages';
 
 // not-dead-code
@@ -15,18 +15,18 @@ export class MessageFacade {
   constructor(private store: Store) {}
 
   info(data: MessagesPayloadType) {
-    this.store.dispatch(new DisplayInfoMessage(data));
+    this.store.dispatch(displayInfoMessage(data));
   }
 
   error(data: MessagesPayloadType) {
-    this.store.dispatch(new DisplayErrorMessage(data));
+    this.store.dispatch(displayErrorMessage(data));
   }
 
   warn(data: MessagesPayloadType) {
-    this.store.dispatch(new DisplayWarningMessage(data));
+    this.store.dispatch(displayWarningMessage(data));
   }
 
   success(data: MessagesPayloadType) {
-    this.store.dispatch(new DisplaySuccessMessage(data));
+    this.store.dispatch(displaySuccessMessage(data));
   }
 }

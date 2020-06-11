@@ -2,9 +2,9 @@ import * as using from 'jasmine-data-provider';
 import { anything } from 'ts-mockito';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { LoginUserSuccess } from 'ish-core/store/customer/user';
+import { loginUserSuccess } from 'ish-core/store/customer/user';
 
-import { CommunicationTimeoutError, ErrorActionTypes, HttpErrorAction } from './error.actions';
+import { communicationTimeoutError, generalError, serverError } from './error.actions';
 import { errorReducer, initialState } from './error.reducer';
 
 describe('Error Reducer', () => {
@@ -20,7 +20,10 @@ describe('Error Reducer', () => {
 
   describe('reducer', () => {
     it('should return initial state when undefined state is supplied', () => {
-      const newState = errorReducer(undefined, {} as HttpErrorAction);
+      const newState = errorReducer(
+        undefined,
+        {} as ReturnType<typeof generalError | typeof communicationTimeoutError | typeof serverError>
+      );
 
       expect(newState).toEqual(initialState);
     });
@@ -30,17 +33,17 @@ describe('Error Reducer', () => {
     return [
       {
         state: initialState,
-        action: {} as HttpErrorAction,
+        action: {} as ReturnType<typeof generalError | typeof communicationTimeoutError | typeof serverError>,
         expected: initialState,
       },
       {
         state: initialState,
-        action: new CommunicationTimeoutError({ error: {} as HttpError }),
-        expected: { current: {}, type: ErrorActionTypes.CommunicationTimeoutError },
+        action: communicationTimeoutError({ error: {} as HttpError }),
+        expected: { current: {}, type: communicationTimeoutError.type },
       },
       {
         state: initialState,
-        action: new LoginUserSuccess(anything()),
+        action: loginUserSuccess(anything()),
         expected: initialState,
       },
     ];

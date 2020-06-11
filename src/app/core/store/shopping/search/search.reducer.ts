@@ -1,8 +1,9 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
+import { createReducer, on } from '@ngrx/store';
 
 import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 
-import { SearchAction, SearchActionTypes } from './search.actions';
+import { suggestSearchSuccess } from './search.actions';
 
 interface SuggestSearch {
   searchTerm: string;
@@ -17,12 +18,7 @@ export interface SearchState extends EntityState<SuggestSearch> {}
 
 const initialState: SearchState = searchAdapter.getInitialState({});
 
-export function searchReducer(state = initialState, action: SearchAction): SearchState {
-  switch (action.type) {
-    case SearchActionTypes.SuggestSearchSuccess: {
-      return searchAdapter.upsertOne(action.payload, state);
-    }
-  }
-
-  return state;
-}
+export const searchReducer = createReducer(
+  initialState,
+  on(suggestSearchSuccess, (state: SearchState, action) => searchAdapter.upsertOne(action.payload, state))
+);

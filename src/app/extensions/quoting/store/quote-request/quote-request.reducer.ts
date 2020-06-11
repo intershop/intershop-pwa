@@ -1,11 +1,49 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
+import { createReducer, on } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { setErrorOn, setLoadingOn } from 'ish-core/utils/ngrx-creators';
 
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequestData } from '../../models/quote-request/quote-request.interface';
 
-import { QuoteAction, QuoteRequestActionTypes } from './quote-request.actions';
+import {
+  addBasketToQuoteRequest,
+  addBasketToQuoteRequestFail,
+  addBasketToQuoteRequestSuccess,
+  addProductToQuoteRequest,
+  addProductToQuoteRequestFail,
+  addProductToQuoteRequestSuccess,
+  addQuoteRequest,
+  addQuoteRequestFail,
+  addQuoteRequestSuccess,
+  createQuoteRequestFromQuoteRequest,
+  createQuoteRequestFromQuoteRequestFail,
+  createQuoteRequestFromQuoteRequestSuccess,
+  deleteItemFromQuoteRequest,
+  deleteItemFromQuoteRequestFail,
+  deleteItemFromQuoteRequestSuccess,
+  deleteQuoteRequest,
+  deleteQuoteRequestFail,
+  deleteQuoteRequestSuccess,
+  loadQuoteRequestItems,
+  loadQuoteRequestItemsFail,
+  loadQuoteRequestItemsSuccess,
+  loadQuoteRequests,
+  loadQuoteRequestsFail,
+  loadQuoteRequestsSuccess,
+  selectQuoteRequest,
+  submitQuoteRequest,
+  submitQuoteRequestFail,
+  submitQuoteRequestSuccess,
+  updateQuoteRequest,
+  updateQuoteRequestFail,
+  updateQuoteRequestItems,
+  updateQuoteRequestItemsFail,
+  updateQuoteRequestItemsSuccess,
+  updateQuoteRequestSuccess,
+  updateSubmitQuoteRequest,
+} from './quote-request.actions';
 
 export const quoteRequestAdapter = createEntityAdapter<QuoteRequestData>();
 
@@ -23,92 +61,74 @@ export const initialState: QuoteRequestState = quoteRequestAdapter.getInitialSta
   selected: undefined,
 });
 
-export function quoteRequestReducer(state = initialState, action: QuoteAction): QuoteRequestState {
-  switch (action.type) {
-    case QuoteRequestActionTypes.SelectQuoteRequest: {
-      return {
-        ...state,
-        selected: action.payload.id,
-      };
+export const quoteRequestReducer = createReducer(
+  initialState,
+  on(selectQuoteRequest, (state: QuoteRequestState, action) => ({
+    ...state,
+    selected: action.payload.id,
+  })),
+  setLoadingOn(
+    loadQuoteRequests,
+    addQuoteRequest,
+    updateQuoteRequest,
+    deleteQuoteRequest,
+    submitQuoteRequest,
+    updateSubmitQuoteRequest,
+    createQuoteRequestFromQuoteRequest,
+    loadQuoteRequestItems,
+    addProductToQuoteRequest,
+    addBasketToQuoteRequest,
+    updateQuoteRequestItems,
+    deleteItemFromQuoteRequest
+  ),
+  setErrorOn(
+    loadQuoteRequestsFail,
+    addQuoteRequestFail,
+    updateQuoteRequestFail,
+    deleteQuoteRequestFail,
+    submitQuoteRequestFail,
+    createQuoteRequestFromQuoteRequestFail,
+    loadQuoteRequestItemsFail,
+    addProductToQuoteRequestFail,
+    addBasketToQuoteRequestFail,
+    updateQuoteRequestItemsFail,
+    deleteItemFromQuoteRequestFail
+  ),
+  on(loadQuoteRequestsSuccess, (state: QuoteRequestState, action) => {
+    const quoteRequests = action.payload.quoteRequests;
+
+    if (!state) {
+      return;
     }
 
-    case QuoteRequestActionTypes.LoadQuoteRequests:
-    case QuoteRequestActionTypes.AddQuoteRequest:
-    case QuoteRequestActionTypes.UpdateQuoteRequest:
-    case QuoteRequestActionTypes.DeleteQuoteRequest:
-    case QuoteRequestActionTypes.SubmitQuoteRequest:
-    case QuoteRequestActionTypes.UpdateSubmitQuoteRequest:
-    case QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequest:
-    case QuoteRequestActionTypes.LoadQuoteRequestItems:
-    case QuoteRequestActionTypes.AddProductToQuoteRequest:
-    case QuoteRequestActionTypes.AddBasketToQuoteRequest:
-    case QuoteRequestActionTypes.UpdateQuoteRequestItems:
-    case QuoteRequestActionTypes.DeleteItemFromQuoteRequest: {
-      return {
-        ...state,
-        loading: true,
-      };
-    }
+    return {
+      ...quoteRequestAdapter.setAll(quoteRequests, state),
+      loading: false,
+    };
+  }),
+  on(loadQuoteRequestItemsSuccess, (state: QuoteRequestState, action) => {
+    const quoteRequestItems = action.payload.quoteRequestItems;
 
-    case QuoteRequestActionTypes.LoadQuoteRequestsFail:
-    case QuoteRequestActionTypes.AddQuoteRequestFail:
-    case QuoteRequestActionTypes.UpdateQuoteRequestFail:
-    case QuoteRequestActionTypes.DeleteQuoteRequestFail:
-    case QuoteRequestActionTypes.SubmitQuoteRequestFail:
-    case QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequestFail:
-    case QuoteRequestActionTypes.LoadQuoteRequestItemsFail:
-    case QuoteRequestActionTypes.AddProductToQuoteRequestFail:
-    case QuoteRequestActionTypes.AddBasketToQuoteRequestFail:
-    case QuoteRequestActionTypes.UpdateQuoteRequestItemsFail:
-    case QuoteRequestActionTypes.DeleteItemFromQuoteRequestFail: {
-      const error = action.payload.error;
-
-      return {
-        ...state,
-        error,
-        loading: false,
-      };
-    }
-
-    case QuoteRequestActionTypes.LoadQuoteRequestsSuccess: {
-      const quoteRequests = action.payload.quoteRequests;
-
-      if (!state) {
-        return;
-      }
-
-      return {
-        ...quoteRequestAdapter.setAll(quoteRequests, state),
-        loading: false,
-      };
-    }
-
-    case QuoteRequestActionTypes.LoadQuoteRequestItemsSuccess: {
-      const quoteRequestItems = action.payload.quoteRequestItems;
-
-      return {
-        ...state,
-        quoteRequestItems,
-        loading: false,
-      };
-    }
-
-    case QuoteRequestActionTypes.AddQuoteRequestSuccess:
-    case QuoteRequestActionTypes.UpdateQuoteRequestSuccess:
-    case QuoteRequestActionTypes.DeleteQuoteRequestSuccess:
-    case QuoteRequestActionTypes.SubmitQuoteRequestSuccess:
-    case QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequestSuccess:
-    case QuoteRequestActionTypes.AddProductToQuoteRequestSuccess:
-    case QuoteRequestActionTypes.AddBasketToQuoteRequestSuccess:
-    case QuoteRequestActionTypes.UpdateQuoteRequestItemsSuccess:
-    case QuoteRequestActionTypes.DeleteItemFromQuoteRequestSuccess: {
-      return {
-        ...state,
-        loading: false,
-        error: undefined,
-      };
-    }
-  }
-
-  return state;
-}
+    return {
+      ...state,
+      quoteRequestItems,
+      loading: false,
+    };
+  }),
+  on(
+    addQuoteRequestSuccess,
+    updateQuoteRequestSuccess,
+    deleteQuoteRequestSuccess,
+    submitQuoteRequestSuccess,
+    createQuoteRequestFromQuoteRequestSuccess,
+    addProductToQuoteRequestSuccess,
+    addBasketToQuoteRequestSuccess,
+    updateQuoteRequestItemsSuccess,
+    deleteItemFromQuoteRequestSuccess,
+    (state: QuoteRequestState) => ({
+      ...state,
+      loading: false,
+      error: undefined,
+    })
+  )
+);

@@ -2,7 +2,7 @@ import { Params } from '@angular/router';
 import { RouterNavigationPayload, routerNavigationAction } from '@ngrx/router-store';
 import { ActionReducer } from '@ngrx/store';
 
-import { ApplyConfiguration } from 'ish-core/store/core/configuration';
+import { applyConfiguration } from 'ish-core/store/core/configuration';
 import { ConfigurationState, configurationReducer } from 'ish-core/store/core/configuration/configuration.reducer';
 import { CoreState } from 'ish-core/store/core/core-store';
 import { RouterState } from 'ish-core/store/core/router/router.reducer';
@@ -42,7 +42,7 @@ function extractConfigurationParameters(state: ConfigurationState, paramMap: Sim
   }
 
   if (Object.keys(properties).length) {
-    return configurationReducer(state, new ApplyConfiguration(properties));
+    return configurationReducer(state, applyConfiguration(properties));
   }
   return state;
 }

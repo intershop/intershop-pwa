@@ -37,14 +37,14 @@ import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { LoginUser } from 'ish-core/store/customer/user';
+import { loginUser } from 'ish-core/store/customer/user';
 import { UserEffects } from 'ish-core/store/customer/user/user.effects';
-import { LoadProductSuccess } from 'ish-core/store/shopping/products';
+import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
-import { AddProductToBasket, LoadBasketSuccess } from './basket';
+import { addProductToBasket, loadBasketSuccess } from './basket';
 
 describe('Customer Store', () => {
   let store: StoreWithSnapshots;
@@ -203,11 +203,11 @@ describe('Customer Store', () => {
   describe('with anonymous user', () => {
     beforeEach(() => {
       store.dispatch(
-        new LoadProductSuccess({
+        loadProductSuccess({
           product: { sku: 'test', packingUnit: 'pcs.', completenessLevel: ProductCompletenessLevel.List } as Product,
         })
       );
-      store.dispatch(new AddProductToBasket({ sku: 'test', quantity: 1 }));
+      store.dispatch(addProductToBasket({ sku: 'test', quantity: 1 }));
     });
 
     describe('and without basket', () => {
@@ -252,10 +252,10 @@ describe('Customer Store', () => {
 
     describe('and with basket', () => {
       it('should merge basket on user login.', () => {
-        store.dispatch(new LoadBasketSuccess({ basket }));
+        store.dispatch(loadBasketSuccess({ basket }));
 
         store.reset();
-        store.dispatch(new LoginUser({ credentials: {} as Credentials }));
+        store.dispatch(loginUser({ credentials: {} as Credentials }));
 
         expect(store.actionsArray()).toMatchInlineSnapshot(`
           [Account] Login User:

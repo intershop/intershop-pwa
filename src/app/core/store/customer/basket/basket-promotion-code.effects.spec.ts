@@ -14,14 +14,14 @@ import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.modu
 
 import { BasketPromotionCodeEffects } from './basket-promotion-code.effects';
 import {
-  AddPromotionCodeToBasket,
-  AddPromotionCodeToBasketFail,
-  AddPromotionCodeToBasketSuccess,
-  LoadBasket,
-  LoadBasketSuccess,
-  RemovePromotionCodeFromBasket,
-  RemovePromotionCodeFromBasketFail,
-  RemovePromotionCodeFromBasketSuccess,
+  addPromotionCodeToBasket,
+  addPromotionCodeToBasketFail,
+  addPromotionCodeToBasketSuccess,
+  loadBasket,
+  loadBasketSuccess,
+  removePromotionCodeFromBasket,
+  removePromotionCodeFromBasketFail,
+  removePromotionCodeFromBasketSuccess,
 } from './basket.actions';
 
 describe('Basket Promotion Code Effects', () => {
@@ -51,8 +51,8 @@ describe('Basket Promotion Code Effects', () => {
 
   describe('loadBasketAfterAddPromotionCodeToBasket$', () => {
     it('should map to action of type LoadBasket if AddPromotionCodeToBasketSuccess action triggered', () => {
-      const action = new AddPromotionCodeToBasketSuccess();
-      const completion = new LoadBasket();
+      const action = addPromotionCodeToBasketSuccess();
+      const completion = loadBasket();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -65,7 +65,7 @@ describe('Basket Promotion Code Effects', () => {
       when(basketServiceMock.addPromotionCodeToBasket(anyString(), anyString())).thenReturn(of(undefined));
 
       store$.dispatch(
-        new LoadBasketSuccess({
+        loadBasketSuccess({
           basket: {
             id: 'BID',
             lineItems: [],
@@ -76,7 +76,7 @@ describe('Basket Promotion Code Effects', () => {
 
     it('should call the basketService for AddPromotionCodeToBasket action', done => {
       const code = 'CODE';
-      const action = new AddPromotionCodeToBasket({ code });
+      const action = addPromotionCodeToBasket({ code });
       actions$ = of(action);
 
       effects.addPromotionCodeToBasket$.subscribe(() => {
@@ -87,8 +87,8 @@ describe('Basket Promotion Code Effects', () => {
 
     it('should map to action of type AddPromotionCodeToBasketSuccess', () => {
       const code = 'CODE';
-      const action = new AddPromotionCodeToBasket({ code });
-      const completion = new AddPromotionCodeToBasketSuccess();
+      const action = addPromotionCodeToBasket({ code });
+      const completion = addPromotionCodeToBasketSuccess();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -101,8 +101,8 @@ describe('Basket Promotion Code Effects', () => {
       );
 
       const code = 'CODE';
-      const action = new AddPromotionCodeToBasket({ code });
-      const completion = new AddPromotionCodeToBasketFail({ error: { message: 'invalid' } as HttpError });
+      const action = addPromotionCodeToBasket({ code });
+      const completion = addPromotionCodeToBasketFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -115,7 +115,7 @@ describe('Basket Promotion Code Effects', () => {
       when(basketServiceMock.removePromotionCodeFromBasket(anyString(), anyString())).thenReturn(of(undefined));
 
       store$.dispatch(
-        new LoadBasketSuccess({
+        loadBasketSuccess({
           basket: {
             id: 'BID',
             lineItems: [],
@@ -126,7 +126,7 @@ describe('Basket Promotion Code Effects', () => {
 
     it('should call the basketService for RemovePromotionCodeFromBasket action', done => {
       const code = 'CODE';
-      const action = new RemovePromotionCodeFromBasket({ code });
+      const action = removePromotionCodeFromBasket({ code });
       actions$ = of(action);
 
       effects.removePromotionCodeFromBasket$.subscribe(() => {
@@ -137,8 +137,8 @@ describe('Basket Promotion Code Effects', () => {
 
     it('should map to action of type RemovePromotionCodeFromBasketSuccess', () => {
       const code = 'CODE';
-      const action = new RemovePromotionCodeFromBasket({ code });
-      const completion = new RemovePromotionCodeFromBasketSuccess();
+      const action = removePromotionCodeFromBasket({ code });
+      const completion = removePromotionCodeFromBasketSuccess();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -151,8 +151,8 @@ describe('Basket Promotion Code Effects', () => {
       );
 
       const code = 'CODE';
-      const action = new RemovePromotionCodeFromBasket({ code });
-      const completion = new RemovePromotionCodeFromBasketFail({
+      const action = removePromotionCodeFromBasket({ code });
+      const completion = removePromotionCodeFromBasketFail({
         error: { message: 'invalid' } as HttpError,
       });
       actions$ = hot('-a-a-a', { a: action });
@@ -164,8 +164,8 @@ describe('Basket Promotion Code Effects', () => {
 
   describe('loadBasketAfterRemovePromotionCodeFromBasket$', () => {
     it('should map to action of type LoadBasket if RemovePromotionCodeFromBasketSuccess action triggered', () => {
-      const action = new RemovePromotionCodeFromBasketSuccess();
-      const completion = new LoadBasket();
+      const action = removePromotionCodeFromBasketSuccess();
+      const completion = loadBasket();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

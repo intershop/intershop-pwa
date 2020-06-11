@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { concat } from 'rxjs';
 import { concatMap, filter, last, map, mapTo, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { DisplaySuccessMessage } from 'ish-core/store/core/messages';
+import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectRouteParam } from 'ish-core/store/core/router';
-import { SetBreadcrumbData } from 'ish-core/store/core/viewconf';
+import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { getCurrentBasket } from 'ish-core/store/customer/basket';
 import { getUserAuthorized } from 'ish-core/store/customer/user';
 import {
@@ -21,31 +21,30 @@ import { OrderTemplate, OrderTemplateHeader } from '../../models/order-template/
 import { OrderTemplateService } from '../../services/order-template/order-template.service';
 
 import {
-  AddBasketToNewOrderTemplate,
-  AddBasketToNewOrderTemplateFail,
-  AddBasketToNewOrderTemplateSuccess,
-  AddProductToNewOrderTemplate,
-  AddProductToOrderTemplate,
-  AddProductToOrderTemplateFail,
-  AddProductToOrderTemplateSuccess,
-  CreateOrderTemplate,
-  CreateOrderTemplateFail,
-  CreateOrderTemplateSuccess,
-  DeleteOrderTemplate,
-  DeleteOrderTemplateFail,
-  DeleteOrderTemplateSuccess,
-  LoadOrderTemplates,
-  LoadOrderTemplatesFail,
-  LoadOrderTemplatesSuccess,
-  MoveItemToOrderTemplate,
-  OrderTemplatesActionTypes,
-  RemoveItemFromOrderTemplate,
-  RemoveItemFromOrderTemplateFail,
-  RemoveItemFromOrderTemplateSuccess,
-  SelectOrderTemplate,
-  UpdateOrderTemplate,
-  UpdateOrderTemplateFail,
-  UpdateOrderTemplateSuccess,
+  addBasketToNewOrderTemplate,
+  addBasketToNewOrderTemplateFail,
+  addBasketToNewOrderTemplateSuccess,
+  addProductToNewOrderTemplate,
+  addProductToOrderTemplate,
+  addProductToOrderTemplateFail,
+  addProductToOrderTemplateSuccess,
+  createOrderTemplate,
+  createOrderTemplateFail,
+  createOrderTemplateSuccess,
+  deleteOrderTemplate,
+  deleteOrderTemplateFail,
+  deleteOrderTemplateSuccess,
+  loadOrderTemplates,
+  loadOrderTemplatesFail,
+  loadOrderTemplatesSuccess,
+  moveItemToOrderTemplate,
+  removeItemFromOrderTemplate,
+  removeItemFromOrderTemplateFail,
+  removeItemFromOrderTemplateSuccess,
+  selectOrderTemplate,
+  updateOrderTemplate,
+  updateOrderTemplateFail,
+  updateOrderTemplateSuccess,
 } from './order-template.actions';
 import {
   getOrderTemplateDetails,
@@ -57,225 +56,234 @@ import {
 export class OrderTemplateEffects {
   constructor(private actions$: Actions, private orderTemplateService: OrderTemplateService, private store: Store) {}
 
-  @Effect()
-  loadOrderTemplates$ = this.actions$.pipe(
-    ofType<LoadOrderTemplates>(OrderTemplatesActionTypes.LoadOrderTemplates),
-    withLatestFrom(this.store.pipe(select(getUserAuthorized))),
-    filter(([, authorized]) => authorized),
-    switchMap(() =>
-      this.orderTemplateService.getOrderTemplates().pipe(
-        map(orderTemplates => new LoadOrderTemplatesSuccess({ orderTemplates })),
-        mapErrorToAction(LoadOrderTemplatesFail)
+  loadOrderTemplates$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadOrderTemplates),
+      withLatestFrom(this.store.pipe(select(getUserAuthorized))),
+      filter(([, authorized]) => authorized),
+      switchMap(() =>
+        this.orderTemplateService.getOrderTemplates().pipe(
+          map(orderTemplates => loadOrderTemplatesSuccess({ orderTemplates })),
+          mapErrorToAction(loadOrderTemplatesFail)
+        )
       )
     )
   );
 
-  @Effect()
-  createOrderTemplate$ = this.actions$.pipe(
-    ofType<CreateOrderTemplate>(OrderTemplatesActionTypes.CreateOrderTemplate),
-    mapToPayloadProperty('orderTemplate'),
-    mergeMap((orderTemplateData: OrderTemplateHeader) =>
-      this.orderTemplateService.createOrderTemplate(orderTemplateData).pipe(
-        mergeMap(orderTemplate => [
-          new CreateOrderTemplateSuccess({ orderTemplate }),
-          new DisplaySuccessMessage({
-            message: 'account.order_template.new_order_template.confirmation',
-            messageParams: { 0: orderTemplate.title },
-          }),
-        ]),
-        mapErrorToAction(CreateOrderTemplateFail)
+  createOrderTemplate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createOrderTemplate),
+      mapToPayloadProperty('orderTemplate'),
+      mergeMap((orderTemplateData: OrderTemplateHeader) =>
+        this.orderTemplateService.createOrderTemplate(orderTemplateData).pipe(
+          mergeMap(orderTemplate => [
+            createOrderTemplateSuccess({ orderTemplate }),
+            displaySuccessMessage({
+              message: 'account.order_template.new_order_template.confirmation',
+              messageParams: { 0: orderTemplate.title },
+            }),
+          ]),
+          mapErrorToAction(createOrderTemplateFail)
+        )
       )
     )
   );
 
-  @Effect()
-  addBasketToNewOrderTemplate$ = this.actions$.pipe(
-    ofType<AddBasketToNewOrderTemplate>(OrderTemplatesActionTypes.AddBasketToNewOrderTemplate),
-    mapToPayload(),
-    mergeMap(payload =>
-      this.orderTemplateService
-        .createOrderTemplate({
-          title: payload.orderTemplate.title,
-        })
-        .pipe(
-          withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-          // use created order template data to dispatch addProduct action
-          concatMap(([orderTemplate, currentBasket]) =>
-            concat(
-              ...currentBasket.lineItems.map(lineItem =>
-                this.orderTemplateService.addProductToOrderTemplate(
-                  orderTemplate.id,
-                  lineItem.productSKU,
-                  lineItem.quantity.value
+  addBasketToNewOrderTemplate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addBasketToNewOrderTemplate),
+      mapToPayload(),
+      mergeMap(payload =>
+        this.orderTemplateService
+          .createOrderTemplate({
+            title: payload.orderTemplate.title,
+          })
+          .pipe(
+            withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+            // use created order template data to dispatch addProduct action
+            concatMap(([orderTemplate, currentBasket]) =>
+              concat(
+                ...currentBasket.lineItems.map(lineItem =>
+                  this.orderTemplateService.addProductToOrderTemplate(
+                    orderTemplate.id,
+                    lineItem.productSKU,
+                    lineItem.quantity.value
+                  )
                 )
+              ).pipe(
+                last(),
+                concatMap(newOrderTemplate => [
+                  addBasketToNewOrderTemplateSuccess({ orderTemplate: newOrderTemplate }),
+                  displaySuccessMessage({
+                    message: 'account.order_template.new_from_basket_confirm.heading',
+                    messageParams: { 0: orderTemplate.title },
+                  }),
+                ]),
+                mapErrorToAction(addBasketToNewOrderTemplateFail)
               )
-            ).pipe(
-              last(),
-              concatMap(newOrderTemplate => [
-                new AddBasketToNewOrderTemplateSuccess({ orderTemplate: newOrderTemplate }),
-                new DisplaySuccessMessage({
-                  message: 'account.order_template.new_from_basket_confirm.heading',
-                  messageParams: { 0: orderTemplate.title },
-                }),
-              ]),
-              mapErrorToAction(AddBasketToNewOrderTemplateFail)
             )
           )
-        )
-    ),
-    mapErrorToAction(CreateOrderTemplateFail)
-  );
-
-  @Effect()
-  deleteOrderTemplate$ = this.actions$.pipe(
-    ofType<DeleteOrderTemplate>(OrderTemplatesActionTypes.DeleteOrderTemplate),
-    mapToPayloadProperty('orderTemplateId'),
-    mergeMap(orderTemplateId => this.store.pipe(select(getOrderTemplateDetails, { id: orderTemplateId }))),
-    whenTruthy(),
-    map(orderTemplate => ({ orderTemplateId: orderTemplate.id, title: orderTemplate.title })),
-    mergeMap(({ orderTemplateId, title }) =>
-      this.orderTemplateService.deleteOrderTemplate(orderTemplateId).pipe(
-        mergeMap(() => [
-          new DeleteOrderTemplateSuccess({ orderTemplateId }),
-          new DisplaySuccessMessage({
-            message: 'account.order_template.delete_order_template.confirmation',
-            messageParams: { 0: title },
-          }),
-        ]),
-        mapErrorToAction(DeleteOrderTemplateFail)
-      )
+      ),
+      mapErrorToAction(createOrderTemplateFail)
     )
   );
 
-  @Effect()
-  updateOrderTemplate$ = this.actions$.pipe(
-    ofType<UpdateOrderTemplate>(OrderTemplatesActionTypes.UpdateOrderTemplate),
-    mapToPayloadProperty('orderTemplate'),
-    mergeMap((newOrderTemplate: OrderTemplate) =>
-      this.orderTemplateService.updateOrderTemplate(newOrderTemplate).pipe(
-        mergeMap(orderTemplate => [
-          new UpdateOrderTemplateSuccess({ orderTemplate }),
-          new DisplaySuccessMessage({
-            message: 'account.order_templates.edit.confirmation',
-            messageParams: { 0: orderTemplate.title },
-          }),
-        ]),
-        mapErrorToAction(UpdateOrderTemplateFail)
-      )
-    )
-  );
-
-  @Effect()
-  addProductToOrderTemplate$ = this.actions$.pipe(
-    ofType<AddProductToOrderTemplate>(OrderTemplatesActionTypes.AddProductToOrderTemplate),
-    mapToPayload(),
-    mergeMap(payload =>
-      this.orderTemplateService.addProductToOrderTemplate(payload.orderTemplateId, payload.sku, payload.quantity).pipe(
-        map(orderTemplate => new AddProductToOrderTemplateSuccess({ orderTemplate })),
-        mapErrorToAction(AddProductToOrderTemplateFail)
-      )
-    )
-  );
-
-  @Effect()
-  addProductToNewOrderTemplate$ = this.actions$.pipe(
-    ofType<AddProductToNewOrderTemplate>(OrderTemplatesActionTypes.AddProductToNewOrderTemplate),
-    mapToPayload(),
-    mergeMap(payload =>
-      this.orderTemplateService
-        .createOrderTemplate({
-          title: payload.title,
-        })
-        .pipe(
-          // use created order template data to dispatch addProduct action
-          mergeMap(orderTemplate => [
-            new CreateOrderTemplateSuccess({ orderTemplate }),
-            new AddProductToOrderTemplate({
-              orderTemplateId: orderTemplate.id,
-              sku: payload.sku,
-              quantity: payload.quantity,
+  deleteOrderTemplate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteOrderTemplate),
+      mapToPayloadProperty('orderTemplateId'),
+      mergeMap(orderTemplateId => this.store.pipe(select(getOrderTemplateDetails, { id: orderTemplateId }))),
+      whenTruthy(),
+      map(orderTemplate => ({ orderTemplateId: orderTemplate.id, title: orderTemplate.title })),
+      mergeMap(({ orderTemplateId, title }) =>
+        this.orderTemplateService.deleteOrderTemplate(orderTemplateId).pipe(
+          mergeMap(() => [
+            deleteOrderTemplateSuccess({ orderTemplateId }),
+            displaySuccessMessage({
+              message: 'account.order_template.delete_order_template.confirmation',
+              messageParams: { 0: title },
             }),
-            new SelectOrderTemplate({ id: orderTemplate.id }),
           ]),
-          mapErrorToAction(CreateOrderTemplateFail)
+          mapErrorToAction(deleteOrderTemplateFail)
         )
-    )
-  );
-
-  @Effect()
-  moveItemToOrderTemplate$ = this.actions$.pipe(
-    ofType<MoveItemToOrderTemplate>(OrderTemplatesActionTypes.MoveItemToOrderTemplate),
-    mapToPayload(),
-    mergeMap(payload => {
-      if (!payload.target.id) {
-        return [
-          new AddProductToNewOrderTemplate({
-            title: payload.target.title,
-            sku: payload.target.sku,
-            quantity: payload.target.quantity,
-          }),
-          new RemoveItemFromOrderTemplate({
-            orderTemplateId: payload.source.id,
-            sku: payload.target.sku,
-          }),
-        ];
-      } else {
-        return [
-          new AddProductToOrderTemplate({
-            orderTemplateId: payload.target.id,
-            sku: payload.target.sku,
-            quantity: payload.target.quantity,
-          }),
-          new RemoveItemFromOrderTemplate({
-            orderTemplateId: payload.source.id,
-            sku: payload.target.sku,
-          }),
-        ];
-      }
-    })
-  );
-
-  @Effect()
-  removeProductFromOrderTemplate$ = this.actions$.pipe(
-    ofType<RemoveItemFromOrderTemplate>(OrderTemplatesActionTypes.RemoveItemFromOrderTemplate),
-    mapToPayload(),
-    mergeMap(payload =>
-      this.orderTemplateService.removeProductFromOrderTemplate(payload.orderTemplateId, payload.sku).pipe(
-        map(orderTemplate => new RemoveItemFromOrderTemplateSuccess({ orderTemplate })),
-        mapErrorToAction(RemoveItemFromOrderTemplateFail)
       )
     )
   );
 
-  @Effect()
-  routeListenerForSelectedOrderTemplate$ = this.store.pipe(
-    select(selectRouteParam('orderTemplateName')),
-    distinctCompareWith(this.store.pipe(select(getSelectedOrderTemplateId))),
-    map(id => new SelectOrderTemplate({ id }))
+  updateOrderTemplate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateOrderTemplate),
+      mapToPayloadProperty('orderTemplate'),
+      mergeMap((newOrderTemplate: OrderTemplate) =>
+        this.orderTemplateService.updateOrderTemplate(newOrderTemplate).pipe(
+          mergeMap(orderTemplate => [
+            updateOrderTemplateSuccess({ orderTemplate }),
+            displaySuccessMessage({
+              message: 'account.order_templates.edit.confirmation',
+              messageParams: { 0: orderTemplate.title },
+            }),
+          ]),
+          mapErrorToAction(updateOrderTemplateFail)
+        )
+      )
+    )
+  );
+
+  addProductToOrderTemplate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addProductToOrderTemplate),
+      mapToPayload(),
+      mergeMap(payload =>
+        this.orderTemplateService
+          .addProductToOrderTemplate(payload.orderTemplateId, payload.sku, payload.quantity)
+          .pipe(
+            map(orderTemplate => addProductToOrderTemplateSuccess({ orderTemplate })),
+            mapErrorToAction(addProductToOrderTemplateFail)
+          )
+      )
+    )
+  );
+
+  addProductToNewOrderTemplate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addProductToNewOrderTemplate),
+      mapToPayload(),
+      mergeMap(payload =>
+        this.orderTemplateService
+          .createOrderTemplate({
+            title: payload.title,
+          })
+          .pipe(
+            // use created order template data to dispatch addProduct action
+            mergeMap(orderTemplate => [
+              createOrderTemplateSuccess({ orderTemplate }),
+              addProductToOrderTemplate({
+                orderTemplateId: orderTemplate.id,
+                sku: payload.sku,
+                quantity: payload.quantity,
+              }),
+              selectOrderTemplate({ id: orderTemplate.id }),
+            ]),
+            mapErrorToAction(createOrderTemplateFail)
+          )
+      )
+    )
+  );
+
+  moveItemToOrderTemplate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(moveItemToOrderTemplate),
+      mapToPayload(),
+      mergeMap(payload => {
+        if (!payload.target.id) {
+          return [
+            addProductToNewOrderTemplate({
+              title: payload.target.title,
+              sku: payload.target.sku,
+              quantity: payload.target.quantity,
+            }),
+            removeItemFromOrderTemplate({
+              orderTemplateId: payload.source.id,
+              sku: payload.target.sku,
+            }),
+          ];
+        } else {
+          return [
+            addProductToOrderTemplate({
+              orderTemplateId: payload.target.id,
+              sku: payload.target.sku,
+              quantity: payload.target.quantity,
+            }),
+            removeItemFromOrderTemplate({
+              orderTemplateId: payload.source.id,
+              sku: payload.target.sku,
+            }),
+          ];
+        }
+      })
+    )
+  );
+
+  removeProductFromOrderTemplate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(removeItemFromOrderTemplate),
+      mapToPayload(),
+      mergeMap(payload =>
+        this.orderTemplateService.removeProductFromOrderTemplate(payload.orderTemplateId, payload.sku).pipe(
+          map(orderTemplate => removeItemFromOrderTemplateSuccess({ orderTemplate })),
+          mapErrorToAction(removeItemFromOrderTemplateFail)
+        )
+      )
+    )
+  );
+
+  routeListenerForSelectedOrderTemplate$ = createEffect(() =>
+    this.store.pipe(
+      select(selectRouteParam('orderTemplateName')),
+      distinctCompareWith(this.store.pipe(select(getSelectedOrderTemplateId))),
+      map(id => selectOrderTemplate({ id }))
+    )
   );
 
   /**
    * Trigger LoadOrderTemplates action after LoginUserSuccess.
    */
-  @Effect()
-  loadOrderTemplatesAfterLogin$ = this.store.pipe(
-    select(getUserAuthorized),
-    whenTruthy(),
-    mapTo(new LoadOrderTemplates())
+  loadOrderTemplatesAfterLogin$ = createEffect(() =>
+    this.store.pipe(select(getUserAuthorized), whenTruthy(), mapTo(loadOrderTemplates()))
   );
 
-  @Effect()
-  setOrderTemplateBreadcrumb$ = this.store.pipe(
-    select(getSelectedOrderTemplateDetails),
-    whenTruthy(),
-    map(
-      orderTemplate =>
-        new SetBreadcrumbData({
+  setOrderTemplateBreadcrumb$ = createEffect(() =>
+    this.store.pipe(
+      select(getSelectedOrderTemplateDetails),
+      whenTruthy(),
+      map(orderTemplate =>
+        setBreadcrumbData({
           breadcrumbData: [
             { key: 'account.ordertemplates.link', link: '/account/order-templates' },
             { text: orderTemplate.title },
           ],
         })
+      )
     )
   );
 }

@@ -12,7 +12,7 @@ import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/config
 import { ConfigurationGuard } from 'ish-core/guards/configuration.guard';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
-import { ApplyConfiguration, getFeatures, getRestEndpoint } from 'ish-core/store/core/configuration';
+import { applyConfiguration, getFeatures, getRestEndpoint } from 'ish-core/store/core/configuration';
 import { ConfigurationEffects } from 'ish-core/store/core/configuration/configuration.effects';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
@@ -53,7 +53,7 @@ describe('Configuration Integration', () => {
     location = TestBed.inject(Location);
     store$ = TestBed.inject(StoreWithSnapshots);
     store$.dispatch(
-      new ApplyConfiguration({
+      applyConfiguration({
         baseURL: 'http://example.org',
         locales: [{ lang: 'en_US' }, { lang: 'de_DE' }] as Locale[],
       })
@@ -102,7 +102,7 @@ describe('Configuration Integration', () => {
   }));
 
   it('should unset features if "none" was provided', fakeAsync(() => {
-    store$.dispatch(new ApplyConfiguration({ features: ['a', 'b', 'c'] }));
+    store$.dispatch(applyConfiguration({ features: ['a', 'b', 'c'] }));
     router.navigateByUrl('/home;features=none;redirect=1');
     tick(500);
     expect(location.path()).toMatchInlineSnapshot(`"/home"`);
@@ -110,7 +110,7 @@ describe('Configuration Integration', () => {
   }));
 
   it('should not set features if "default" was provided', fakeAsync(() => {
-    store$.dispatch(new ApplyConfiguration({ features: ['a', 'b', 'c'] }));
+    store$.dispatch(applyConfiguration({ features: ['a', 'b', 'c'] }));
     router.navigateByUrl('/home;features=default;redirect=1');
     tick(500);
     expect(location.path()).toMatchInlineSnapshot(`"/home"`);
