@@ -1,100 +1,40 @@
 import { Params } from '@angular/router';
-import { Action } from '@ngrx/store';
+import { createAction } from '@ngrx/store';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Order } from 'ish-core/models/order/order.model';
+import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
-export enum OrdersActionTypes {
-  CreateOrder = '[Order] Create Order',
-  CreateOrderFail = '[Order API] Create Order Fail',
-  CreateOrderSuccess = '[Order API] Create Order Success',
-  SelectOrder = '[Order] Select Order',
-  LoadOrders = '[Order] Load Orders',
-  LoadOrdersFail = '[Order API] Load Orders Fail',
-  LoadOrdersSuccess = '[Order API] Load Orders Success',
-  LoadOrder = '[Order] Load Order',
-  LoadOrderByAPIToken = '[Order Internal] Load Order using given API Token',
-  LoadOrderFail = '[Order API] Load Order Fail',
-  LoadOrderSuccess = '[Order API] Load Order Success',
-  SelectOrderAfterRedirect = '[Order Internal] Select Order After Checkout Redirect',
-  SelectOrderAfterRedirectFail = '[Order API] Select Order Fail After Checkout Redirect',
-}
+export const createOrder = createAction('[Order] Create Order', payload<{ basketId: string }>());
 
-export class CreateOrder implements Action {
-  readonly type = OrdersActionTypes.CreateOrder;
-  constructor(public payload: { basketId: string }) {}
-}
+export const createOrderFail = createAction('[Order API] Create Order Fail', httpError());
 
-export class CreateOrderFail implements Action {
-  readonly type = OrdersActionTypes.CreateOrderFail;
-  constructor(public payload: { error: HttpError }) {}
-}
+export const createOrderSuccess = createAction('[Order API] Create Order Success', payload<{ order: Order }>());
 
-export class CreateOrderSuccess implements Action {
-  readonly type = OrdersActionTypes.CreateOrderSuccess;
-  constructor(public payload: { order: Order }) {}
-}
+export const loadOrders = createAction('[Order] Load Orders');
 
-export class LoadOrders implements Action {
-  readonly type = OrdersActionTypes.LoadOrders;
-}
+export const loadOrdersFail = createAction('[Order API] Load Orders Fail', httpError());
 
-export class LoadOrdersFail implements Action {
-  readonly type = OrdersActionTypes.LoadOrdersFail;
-  constructor(public payload: { error: HttpError }) {}
-}
+export const loadOrdersSuccess = createAction('[Order API] Load Orders Success', payload<{ orders: Order[] }>());
 
-export class LoadOrdersSuccess implements Action {
-  readonly type = OrdersActionTypes.LoadOrdersSuccess;
-  constructor(public payload: { orders: Order[] }) {}
-}
+export const loadOrder = createAction('[Order] Load Order', payload<{ orderId: string }>());
 
-export class LoadOrder implements Action {
-  readonly type = OrdersActionTypes.LoadOrder;
-  constructor(public payload: { orderId: string }) {}
-}
+export const loadOrderByAPIToken = createAction(
+  '[Order Internal] Load Order using given API Token',
+  payload<{ apiToken: string; orderId: string }>()
+);
 
-export class LoadOrderByAPIToken implements Action {
-  readonly type = OrdersActionTypes.LoadOrderByAPIToken;
-  constructor(public payload: { apiToken: string; orderId: string }) {}
-}
+export const loadOrderFail = createAction('[Order API] Load Order Fail', httpError());
 
-export class LoadOrderFail implements Action {
-  readonly type = OrdersActionTypes.LoadOrderFail;
-  constructor(public payload: { error: HttpError }) {}
-}
+export const loadOrderSuccess = createAction('[Order API] Load Order Success', payload<{ order: Order }>());
 
-export class LoadOrderSuccess implements Action {
-  readonly type = OrdersActionTypes.LoadOrderSuccess;
-  constructor(public payload: { order: Order }) {}
-}
+export const selectOrder = createAction('[Order] Select Order', payload<{ orderId: string }>());
 
-export class SelectOrder implements Action {
-  readonly type = OrdersActionTypes.SelectOrder;
-  constructor(public payload: { orderId: string }) {}
-}
+export const selectOrderAfterRedirect = createAction(
+  '[Order Internal] Select Order After Checkout Redirect',
+  payload<{ params: Params }>()
+);
 
-export class SelectOrderAfterRedirect implements Action {
-  readonly type = OrdersActionTypes.SelectOrderAfterRedirect;
-  constructor(public payload: { params: Params }) {} // query params
-}
-
-export class SelectOrderAfterRedirectFail implements Action {
-  readonly type = OrdersActionTypes.SelectOrderAfterRedirectFail;
-  constructor(public payload: { error: HttpError }) {}
-}
-
-export type OrdersAction =
-  | CreateOrder
-  | CreateOrderFail
-  | CreateOrderSuccess
-  | LoadOrders
-  | LoadOrdersFail
-  | LoadOrdersSuccess
-  | LoadOrder
-  | LoadOrderByAPIToken
-  | LoadOrderFail
-  | LoadOrderSuccess
-  | SelectOrder
-  | SelectOrderAfterRedirect
-  | SelectOrderAfterRedirectFail;
+export const selectOrderAfterRedirectFail = createAction(
+  '[Order API] Select Order Fail After Checkout Redirect',
+  httpError()
+);

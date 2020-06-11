@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import b64u from 'b64u';
 import { isEqual } from 'lodash-es';
@@ -15,24 +15,23 @@ import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { ProductMasterVariationsService } from 'ish-core/services/product-master-variations/product-master-variations.service';
 import { selectQueryParam, selectQueryParams } from 'ish-core/store/core/router';
 import {
-  ApplyFilter,
-  LoadFilterForCategory,
-  LoadFilterForSearch,
-  LoadFilterSuccess,
-  LoadProductsForFilter,
+  applyFilter,
+  loadFilterForCategory,
+  loadFilterForSearch,
+  loadFilterSuccess,
+  loadProductsForFilter,
 } from 'ish-core/store/shopping/filter';
-import { LoadProductsForCategory, getProduct } from 'ish-core/store/shopping/products';
-import { SearchProducts } from 'ish-core/store/shopping/search';
+import { getProduct, loadProductsForCategory } from 'ish-core/store/shopping/products';
+import { searchProducts } from 'ish-core/store/shopping/search';
 import { mapToPayload, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 import {
-  LoadMoreProducts,
-  LoadMoreProductsForParams,
-  LoadPagesForMaster,
-  ProductListingActionTypes,
-  SetProductListingPageSize,
-  SetProductListingPages,
-  SetViewType,
+  loadMoreProducts,
+  loadMoreProductsForParams,
+  loadPagesForMaster,
+  setProductListingPageSize,
+  setProductListingPages,
+  setViewType,
 } from './product-listing.actions';
 import { getProductListingView, getProductListingViewType } from './product-listing.selectors';
 
@@ -47,148 +46,158 @@ export class ProductListingEffects {
     private productMasterVariationsService: ProductMasterVariationsService
   ) {}
 
-  @Effect()
-  initializePageSize$ = this.actions$.pipe(
-    take(1),
-    mapTo(new SetProductListingPageSize({ itemsPerPage: this.itemsPerPage }))
+  initializePageSize$ = createEffect(() =>
+    this.actions$.pipe(take(1), mapTo(setProductListingPageSize({ itemsPerPage: this.itemsPerPage })))
   );
 
-  @Effect()
-  initializeDefaultViewType$ = this.store.pipe(
-    select(getProductListingViewType),
-    whenFalsy(),
-    mapTo(new SetViewType({ viewType: this.defaultViewType }))
+  initializeDefaultViewType$ = createEffect(() =>
+    this.store.pipe(
+      select(getProductListingViewType),
+      whenFalsy(),
+      mapTo(setViewType({ viewType: this.defaultViewType }))
+    )
   );
 
-  @Effect()
-  setViewTypeFromQueryParam$ = this.store.pipe(
-    select(selectQueryParam('view')),
-    whenTruthy(),
-    distinctUntilChanged(),
-    map((viewType: ViewType) => new SetViewType({ viewType }))
+  setViewTypeFromQueryParam$ = createEffect(() =>
+    this.store.pipe(
+      select(selectQueryParam('view')),
+      whenTruthy(),
+      distinctUntilChanged(),
+      map((viewType: ViewType) => setViewType({ viewType }))
+    )
   );
 
-  @Effect()
-  determineParams$ = this.actions$.pipe(
-    ofType<LoadMoreProducts>(ProductListingActionTypes.LoadMoreProducts),
-    mapToPayload(),
-    switchMap(({ id, page }) =>
-      this.store.pipe(
-        select(selectQueryParams),
-        map(params => ({
-          id,
-          sorting: params.sorting || undefined,
-          page: +params.page || page || undefined,
-          filters: params.filters || undefined,
-        }))
-      )
-    ),
-    distinctUntilChanged(isEqual),
-    map(({ id, filters, sorting, page }) => new LoadMoreProductsForParams({ id, filters, sorting, page }))
+  determineParams$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadMoreProducts),
+      mapToPayload(),
+      switchMap(({ id, page }) =>
+        this.store.pipe(
+          select(selectQueryParams),
+          map(params => ({
+            id,
+            sorting: params.sorting || undefined,
+            page: +params.page || page || undefined,
+            filters: params.filters || undefined,
+          }))
+        )
+      ),
+      distinctUntilChanged(isEqual),
+      map(({ id, filters, sorting, page }) => loadMoreProductsForParams({ id, filters, sorting, page }))
+    )
   );
 
-  @Effect()
-  loadMoreProducts$ = this.actions$.pipe(
-    ofType<LoadMoreProductsForParams>(ProductListingActionTypes.LoadMoreProductsForParams),
-    mapToPayload(),
-    switchMap(({ id, sorting, page, filters }) =>
-      this.store.pipe(
-        select(getProductListingView, { ...id, sorting, filters }),
-        map(view => ({ id, sorting, page, filters, viewAvailable: !view.empty() && view.productsOfPage(page).length }))
-      )
-    ),
-    map(({ id, sorting, page, filters, viewAvailable }) => {
-      if (viewAvailable) {
-        return new SetProductListingPages({ id: { sorting, filters, ...id } });
-      }
-      if (
-        filters &&
-        // TODO: work-around for different products/hits-result without filters
-        (id.type !== 'search' || (id.type === 'search' && filters !== `&@QueryTerm=${id.value}&OnlineFlag=1`)) &&
-        // TODO: work-around for client side computation of master variations
-        ['search', 'category'].includes(id.type)
-      ) {
-        const searchParameter = b64u.toBase64(b64u.encode(filters));
-        return new LoadProductsForFilter({ id: { ...id, filters }, searchParameter });
-      } else {
-        switch (id.type) {
-          case 'category':
-            return new LoadProductsForCategory({ categoryId: id.value, page, sorting });
-          case 'search':
-            return new SearchProducts({ searchTerm: id.value, page, sorting });
-          case 'master':
-            return new LoadPagesForMaster({ id, sorting, filters });
-          default:
-            return;
+  loadMoreProducts$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadMoreProductsForParams),
+      mapToPayload(),
+      switchMap(({ id, sorting, page, filters }) =>
+        this.store.pipe(
+          select(getProductListingView, { ...id, sorting, filters }),
+          map(view => ({
+            id,
+            sorting,
+            page,
+            filters,
+            viewAvailable: !view.empty() && view.productsOfPage(page).length,
+          }))
+        )
+      ),
+      map(({ id, sorting, page, filters, viewAvailable }) => {
+        if (viewAvailable) {
+          return setProductListingPages({ id: { sorting, filters, ...id } });
         }
-      }
-    }),
-    whenTruthy(),
-    distinctUntilChanged(isEqual)
+        if (
+          filters &&
+          // TODO: work-around for different products/hits-result without filters
+          (id.type !== 'search' || (id.type === 'search' && filters !== `&@QueryTerm=${id.value}&OnlineFlag=1`)) &&
+          // TODO: work-around for client side computation of master variations
+          ['search', 'category'].includes(id.type)
+        ) {
+          const searchParameter = b64u.toBase64(b64u.encode(filters));
+          return loadProductsForFilter({ id: { ...id, filters }, searchParameter });
+        } else {
+          switch (id.type) {
+            case 'category':
+              return loadProductsForCategory({ categoryId: id.value, page, sorting });
+            case 'search':
+              return searchProducts({ searchTerm: id.value, page, sorting });
+            case 'master':
+              return loadPagesForMaster({ id, sorting, filters });
+            default:
+              return;
+          }
+        }
+      }),
+      whenTruthy(),
+      distinctUntilChanged(isEqual)
+    )
   );
 
-  @Effect()
-  loadFilters$ = this.actions$.pipe(
-    ofType<LoadMoreProductsForParams>(ProductListingActionTypes.LoadMoreProductsForParams),
-    mapToPayload(),
-    map(({ id, filters }) => ({ type: id.type, value: id.value, filters })),
-    distinctUntilChanged(isEqual),
-    map(({ type, value, filters }) => {
-      if (
-        filters &&
-        // TODO: work-around for different products/hits-result without filters
-        (type !== 'search' || (type === 'search' && filters !== `&@QueryTerm=${value}&OnlineFlag=1`)) &&
-        // TODO: work-around for client side computation of master variations
-        ['search', 'category'].includes(type)
-      ) {
-        const searchParameter = b64u.toBase64(b64u.encode(filters));
-        return new ApplyFilter({ searchParameter });
-      } else {
-        switch (type) {
-          case 'category':
-            return new LoadFilterForCategory({ uniqueId: value });
-          case 'search':
-            return new LoadFilterForSearch({ searchTerm: value });
-          case 'master':
-            return new LoadPagesForMaster({ id: { type, value }, sorting: undefined, filters });
-          default:
-            return;
+  loadFilters$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadMoreProductsForParams),
+      mapToPayload(),
+      map(({ id, filters }) => ({ type: id.type, value: id.value, filters })),
+      distinctUntilChanged(isEqual),
+      map(({ type, value, filters }) => {
+        if (
+          filters &&
+          // TODO: work-around for different products/hits-result without filters
+          (type !== 'search' || (type === 'search' && filters !== `&@QueryTerm=${value}&OnlineFlag=1`)) &&
+          // TODO: work-around for client side computation of master variations
+          ['search', 'category'].includes(type)
+        ) {
+          const searchParameter = b64u.toBase64(b64u.encode(filters));
+          return applyFilter({ searchParameter });
+        } else {
+          switch (type) {
+            case 'category':
+              return loadFilterForCategory({ uniqueId: value });
+            case 'search':
+              return loadFilterForSearch({ searchTerm: value });
+            case 'master':
+              return loadPagesForMaster({ id: { type, value }, sorting: undefined, filters });
+            default:
+              return;
+          }
         }
-      }
-    }),
-    whenTruthy()
+      }),
+      whenTruthy()
+    )
   );
 
   /**
    * client side computation of master variations
    * TODO: this is a work-around
    */
-  @Effect()
-  loadPagesForMaster$ = this.actions$.pipe(
-    ofType<LoadPagesForMaster>(ProductListingActionTypes.LoadPagesForMaster),
-    mapToPayload(),
-    switchMap(({ id, filters }) =>
-      this.store.pipe(
-        select(getProduct, { sku: id.value }),
-        filter(p => ProductHelper.isSufficientlyLoaded(p, ProductCompletenessLevel.Detail)),
-        filter(ProductHelper.hasVariations),
-        filter(ProductHelper.isMasterProduct),
-        take(1),
-        mergeMap(product => {
-          const {
-            filterNavigation,
-            products,
-          } = this.productMasterVariationsService.getFiltersAndFilteredVariationsForMasterProduct(product, filters);
+  loadPagesForMaster$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadPagesForMaster),
+      mapToPayload(),
+      switchMap(({ id, filters }) =>
+        this.store.pipe(
+          select(getProduct, { sku: id.value }),
+          filter(p => ProductHelper.isSufficientlyLoaded(p, ProductCompletenessLevel.Detail)),
+          filter(ProductHelper.hasVariations),
+          filter(ProductHelper.isMasterProduct),
+          take(1),
+          mergeMap(product => {
+            const {
+              filterNavigation,
+              products,
+            } = this.productMasterVariationsService.getFiltersAndFilteredVariationsForMasterProduct(product, filters);
 
-          return [
-            new SetProductListingPages(
-              this.productListingMapper.createPages(products, id.type, id.value, {
-                filters: filters ? b64u.toBase64(b64u.encode(filters)) : undefined,
-              })
-            ),
-            new LoadFilterSuccess({ filterNavigation }),
-          ];
-        })
+            return [
+              setProductListingPages(
+                this.productListingMapper.createPages(products, id.type, id.value, {
+                  filters: filters ? b64u.toBase64(b64u.encode(filters)) : undefined,
+                })
+              ),
+              loadFilterSuccess({ filterNavigation }),
+            ];
+          })
+        )
       )
     )
   );

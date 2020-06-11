@@ -1,9 +1,22 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
+import { createReducer, on } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Order } from 'ish-core/models/order/order.model';
+import { setErrorOn, setLoadingOn } from 'ish-core/utils/ngrx-creators';
 
-import { OrdersAction, OrdersActionTypes } from './orders.actions';
+import {
+  createOrder,
+  createOrderFail,
+  createOrderSuccess,
+  loadOrder,
+  loadOrderFail,
+  loadOrderSuccess,
+  loadOrders,
+  loadOrdersFail,
+  loadOrdersSuccess,
+  selectOrder,
+} from './orders.actions';
 
 export const orderAdapter = createEntityAdapter<Order>({
   selectId: order => order.id,
@@ -21,56 +34,30 @@ export const initialState: OrdersState = orderAdapter.getInitialState({
   error: undefined,
 });
 
-export function ordersReducer(state = initialState, action: OrdersAction): OrdersState {
-  switch (action.type) {
-    case OrdersActionTypes.SelectOrder: {
-      return {
-        ...state,
-        selected: action.payload.orderId,
-      };
-    }
+export const ordersReducer = createReducer(
+  initialState,
+  on(selectOrder, (state: OrdersState, action) => ({
+    ...state,
+    selected: action.payload.orderId,
+  })),
+  setLoadingOn(loadOrders, loadOrder, createOrder),
+  on(createOrderSuccess, loadOrderSuccess, (state: OrdersState, action) => {
+    const { order } = action.payload;
 
-    case OrdersActionTypes.LoadOrders:
-    case OrdersActionTypes.LoadOrder:
-    case OrdersActionTypes.CreateOrder: {
-      return {
-        ...state,
-        loading: true,
-      };
-    }
-
-    case OrdersActionTypes.CreateOrderSuccess:
-    case OrdersActionTypes.LoadOrderSuccess: {
-      const { order } = action.payload;
-
-      return {
-        ...orderAdapter.upsertOne(order, state),
-        selected: order.id,
-        loading: false,
-        error: undefined,
-      };
-    }
-
-    case OrdersActionTypes.LoadOrdersSuccess: {
-      const { orders } = action.payload;
-      return {
-        ...orderAdapter.setAll(orders, state),
-        loading: false,
-        error: undefined,
-      };
-    }
-
-    case OrdersActionTypes.LoadOrdersFail:
-    case OrdersActionTypes.LoadOrderFail:
-    case OrdersActionTypes.CreateOrderFail: {
-      const { error } = action.payload;
-      return {
-        ...state,
-        error,
-        loading: false,
-      };
-    }
-  }
-
-  return state;
-}
+    return {
+      ...orderAdapter.upsertOne(order, state),
+      selected: order.id,
+      loading: false,
+      error: undefined,
+    };
+  }),
+  on(loadOrdersSuccess, (state: OrdersState, action) => {
+    const { orders } = action.payload;
+    return {
+      ...orderAdapter.setAll(orders, state),
+      loading: false,
+      error: undefined,
+    };
+  }),
+  setErrorOn(loadOrdersFail, loadOrderFail, createOrderFail)
+);

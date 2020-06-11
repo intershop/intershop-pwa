@@ -7,8 +7,8 @@ import { filter, map, mapTo, shareReplay, startWith } from 'rxjs/operators';
 import { getAvailableLocales, getCurrentLocale, getDeviceType, getICMBaseURL } from 'ish-core/store/core/configuration';
 import { getGeneralError, getGeneralErrorType } from 'ish-core/store/core/error';
 import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } from 'ish-core/store/core/viewconf';
-import { LoadCountries, getAllCountries, getCountriesLoading } from 'ish-core/store/general/countries';
-import { LoadRegions, getRegionsByCountryCode } from 'ish-core/store/general/regions';
+import { getAllCountries, getCountriesLoading, loadCountries } from 'ish-core/store/general/countries';
+import { getRegionsByCountryCode, loadRegions } from 'ish-core/store/general/regions';
 
 @Injectable({ providedIn: 'root' })
 export class AppFacade {
@@ -64,12 +64,12 @@ export class AppFacade {
   ).pipe(startWith(true), shareReplay(1));
 
   countries$() {
-    this.store.dispatch(new LoadCountries());
+    this.store.dispatch(loadCountries());
     return this.store.pipe(select(getAllCountries));
   }
 
   regions$(countryCode: string) {
-    this.store.dispatch(new LoadRegions({ countryCode }));
+    this.store.dispatch(loadRegions({ countryCode }));
     return this.store.pipe(select(getRegionsByCountryCode, { countryCode }));
   }
 }

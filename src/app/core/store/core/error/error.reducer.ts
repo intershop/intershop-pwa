@@ -1,6 +1,8 @@
+import { createReducer, on } from '@ngrx/store';
+
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
-import { ErrorActionTypes, HttpErrorAction } from './error.actions';
+import { communicationTimeoutError, generalError, serverError } from './error.actions';
 
 export interface ErrorState {
   current: HttpError;
@@ -12,13 +14,11 @@ export const initialState: ErrorState = {
   type: undefined,
 };
 
-export function errorReducer(state = initialState, action: HttpErrorAction): ErrorState {
-  switch (action.type) {
-    case ErrorActionTypes.GeneralError:
-    case ErrorActionTypes.ServerError:
-    case ErrorActionTypes.CommunicationTimeoutError: {
-      return { ...state, current: action.payload.error, type: action.type };
-    }
-  }
-  return state;
-}
+export const errorReducer = createReducer(
+  initialState,
+  on(generalError, serverError, communicationTimeoutError, (state: ErrorState, action) => ({
+    ...state,
+    current: action.payload.error,
+    type: action.type,
+  }))
+);

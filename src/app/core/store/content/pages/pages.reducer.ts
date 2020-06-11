@@ -1,8 +1,10 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
+import { createReducer, on } from '@ngrx/store';
 
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
+import { setLoadingOn } from 'ish-core/utils/ngrx-creators';
 
-import { PageAction, PagesActionTypes } from './pages.actions';
+import { loadContentPage, loadContentPageFail, loadContentPageSuccess } from './pages.actions';
 
 export const pagesAdapter = createEntityAdapter<ContentPageletEntryPoint>({
   selectId: contentPage => contentPage.id,
@@ -16,31 +18,19 @@ const initialState: PagesState = pagesAdapter.getInitialState({
   loading: false,
 });
 
-export function pagesReducer(state = initialState, action: PageAction): PagesState {
-  switch (action.type) {
-    case PagesActionTypes.LoadContentPage: {
-      return {
-        ...state,
-        loading: true,
-      };
-    }
+export const pagesReducer = createReducer(
+  initialState,
+  setLoadingOn(loadContentPage),
+  on(loadContentPageFail, (state: PagesState) => ({
+    ...state,
+    loading: false,
+  })),
+  on(loadContentPageSuccess, (state: PagesState, action) => {
+    const { page } = action.payload;
 
-    case PagesActionTypes.LoadContentPageFail: {
-      return {
-        ...state,
-        loading: false,
-      };
-    }
-
-    case PagesActionTypes.LoadContentPageSuccess: {
-      const { page } = action.payload;
-
-      return {
-        ...pagesAdapter.upsertOne(page, state),
-        loading: false,
-      };
-    }
-  }
-
-  return state;
-}
+    return {
+      ...pagesAdapter.upsertOne(page, state),
+      loading: false,
+    };
+  })
+);

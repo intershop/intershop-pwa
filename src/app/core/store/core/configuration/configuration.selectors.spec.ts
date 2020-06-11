@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { ApplyConfiguration, SetGTMToken } from './configuration.actions';
+import { applyConfiguration, setGTMToken } from './configuration.actions';
 import {
   getAvailableLocales,
   getCurrentLocale,
@@ -45,7 +45,7 @@ describe('Configuration Selectors', () => {
   describe('after importing settings', () => {
     beforeEach(() => {
       store$.dispatch(
-        new ApplyConfiguration({
+        applyConfiguration({
           baseURL: 'http://example.org',
           server: 'api',
           serverStatic: 'static',
@@ -66,7 +66,7 @@ describe('Configuration Selectors', () => {
     describe('after setting application', () => {
       beforeEach(() => {
         store$.dispatch(
-          new ApplyConfiguration({
+          applyConfiguration({
             application: 'app',
           })
         );
@@ -84,7 +84,7 @@ describe('Configuration Selectors', () => {
 
   describe('after setting gtm token', () => {
     beforeEach(() => {
-      store$.dispatch(new SetGTMToken({ gtmToken: 'dummy' }));
+      store$.dispatch(setGTMToken({ gtmToken: 'dummy' }));
     });
 
     it('should set token to state', () => {

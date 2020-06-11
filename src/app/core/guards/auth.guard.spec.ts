@@ -9,7 +9,7 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { LoginUserSuccess } from 'ish-core/store/customer/user';
+import { loginUserSuccess } from 'ish-core/store/customer/user';
 
 import { AuthGuard } from './auth.guard';
 
@@ -39,7 +39,7 @@ describe('Auth Guard', () => {
     });
 
     it('should return true when user is authorized', done => {
-      store$.dispatch(new LoginUserSuccess({ customer: {} as Customer }));
+      store$.dispatch(loginUserSuccess({ customer: {} as Customer }));
 
       authGuard
         .canActivate({} as ActivatedRouteSnapshot, { url: 'home' } as RouterStateSnapshot)

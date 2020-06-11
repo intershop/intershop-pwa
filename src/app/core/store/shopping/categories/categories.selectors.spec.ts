@@ -7,16 +7,16 @@ import { Category } from 'ish-core/models/category/category.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { LoadProductSuccess } from 'ish-core/store/shopping/products';
+import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import {
-  LoadCategory,
-  LoadCategoryFail,
-  LoadCategorySuccess,
-  LoadTopLevelCategoriesSuccess,
+  loadCategory,
+  loadCategoryFail,
+  loadCategorySuccess,
+  loadTopLevelCategoriesSuccess,
 } from './categories.actions';
 import {
   getCategoryEntities,
@@ -73,7 +73,7 @@ describe('Categories Selectors', () => {
 
   describe('loading a category', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadCategory({ categoryId: '' }));
+      store$.dispatch(loadCategory({ categoryId: '' }));
     });
 
     it('should set the state to loading', () => {
@@ -82,7 +82,7 @@ describe('Categories Selectors', () => {
 
     describe('and reporting success', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadCategorySuccess({ categories: categoryTree([cat]) }));
+        store$.dispatch(loadCategorySuccess({ categories: categoryTree([cat]) }));
       });
 
       it('should set loading to false', () => {
@@ -93,7 +93,7 @@ describe('Categories Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadCategoryFail({ error: { message: 'error' } as HttpError }));
+        store$.dispatch(loadCategoryFail({ error: { message: 'error' } as HttpError }));
       });
 
       it('should not have loaded category on error', () => {
@@ -105,8 +105,8 @@ describe('Categories Selectors', () => {
 
   describe('state with a category', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadCategorySuccess({ categories: categoryTree([cat]) }));
-      store$.dispatch(new LoadProductSuccess({ product: prod }));
+      store$.dispatch(loadCategorySuccess({ categories: categoryTree([cat]) }));
+      store$.dispatch(loadProductSuccess({ product: prod }));
     });
 
     describe('but no current router state', () => {
@@ -144,7 +144,7 @@ describe('Categories Selectors', () => {
     beforeEach(() => {
       catA = { uniqueId: 'A', categoryPath: ['A'] } as Category;
       catB = { uniqueId: 'B', categoryPath: ['B'] } as Category;
-      store$.dispatch(new LoadTopLevelCategoriesSuccess({ categories: categoryTree([catA, catB]) }));
+      store$.dispatch(loadTopLevelCategoriesSuccess({ categories: categoryTree([catA, catB]) }));
     });
 
     it('should select root categories when used', () => {

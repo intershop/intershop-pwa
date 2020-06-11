@@ -11,7 +11,7 @@ import { anything, capture, instance, mock, verify } from 'ts-mockito';
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 
-import { ConfigurationActionTypes } from './configuration.actions';
+import { applyConfiguration, setGTMToken } from './configuration.actions';
 import { ConfigurationEffects } from './configuration.effects';
 
 describe('Configuration Effects', () => {
@@ -48,7 +48,7 @@ describe('Configuration Effects', () => {
 
       effects.setInitialRestEndpoint$.subscribe(
         data => {
-          expect(data.type).toEqual(ConfigurationActionTypes.ApplyConfiguration);
+          expect(data.type).toEqual(applyConfiguration.type);
           testComplete$.next();
         },
         fail,
@@ -89,7 +89,7 @@ describe('Configuration Effects', () => {
 
       effects.setGTMToken$.subscribe(
         data => {
-          expect(data.type).toEqual(ConfigurationActionTypes.SetGTMToken);
+          expect(data.type).toEqual(setGTMToken.type);
           expect(data.payload).toHaveProperty('gtmToken', 'dummy');
           testComplete$.next();
         },

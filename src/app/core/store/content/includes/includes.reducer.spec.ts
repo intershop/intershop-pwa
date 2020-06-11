@@ -1,7 +1,7 @@
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
-import { LoadContentInclude, LoadContentIncludeFail, LoadContentIncludeSuccess } from './includes.actions';
+import { loadContentInclude, loadContentIncludeFail, loadContentIncludeSuccess } from './includes.actions';
 import { includesReducer, initialState } from './includes.reducer';
 
 describe('Includes Reducer', () => {
@@ -12,7 +12,7 @@ describe('Includes Reducer', () => {
   });
 
   it('should set loading state when reducing LoadContentInclude', () => {
-    const newState = includesReducer(initialState, new LoadContentInclude({ includeId: '' }));
+    const newState = includesReducer(initialState, loadContentInclude({ includeId: '' }));
 
     expect(newState.entities).toBeEmpty();
     expect(newState.ids).toBeEmpty();
@@ -23,13 +23,13 @@ describe('Includes Reducer', () => {
     let loadingState;
 
     beforeEach(() => {
-      loadingState = includesReducer(initialState, new LoadContentInclude({ includeId: '' }));
+      loadingState = includesReducer(initialState, loadContentInclude({ includeId: '' }));
     });
 
     it('should unset loading state when reducing LoadContentIncludeFail', () => {
       const newState = includesReducer(
         loadingState,
-        new LoadContentIncludeFail({ error: { message: 'ERROR' } as HttpError })
+        loadContentIncludeFail({ error: { message: 'ERROR' } as HttpError })
       );
 
       expect(newState.entities).toBeEmpty();
@@ -40,7 +40,7 @@ describe('Includes Reducer', () => {
     it('should add include when reducing LoadContentIncludeSuccess', () => {
       const newState = includesReducer(
         loadingState,
-        new LoadContentIncludeSuccess({ include: { id: 'dummy' } as ContentPageletEntryPoint, pagelets: [] })
+        loadContentIncludeSuccess({ include: { id: 'dummy' } as ContentPageletEntryPoint, pagelets: [] })
       );
 
       expect(newState.entities).toHaveProperty('dummy');
@@ -58,7 +58,7 @@ describe('Includes Reducer', () => {
         title =>
           (state = includesReducer(
             state,
-            new LoadContentIncludeSuccess({ include: { id: title } as ContentPageletEntryPoint, pagelets: [] })
+            loadContentIncludeSuccess({ include: { id: title } as ContentPageletEntryPoint, pagelets: [] })
           ))
       );
     });

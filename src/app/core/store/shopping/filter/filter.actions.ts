@@ -1,66 +1,33 @@
-import { Action } from '@ngrx/store';
+import { createAction } from '@ngrx/store';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ProductListingID } from 'ish-core/models/product-listing/product-listing.model';
+import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
-export enum FilterActionTypes {
-  LoadFilterForCategory = '[Shopping] Load Filter For Category',
-  LoadFilterForSearch = '[Shopping] Load Filter for Search',
-  LoadFilterSuccess = '[Shopping] Load Filter Success',
-  LoadFilterFail = '[Shopping] Load Filter Fail',
-  ApplyFilter = '[Shopping] Apply Filter',
-  ApplyFilterSuccess = '[Shopping] Apply Filter Success',
-  ApplyFilterFail = '[Shopping] Apply Filter Fail',
-  LoadProductsForFilter = '[Shopping] Load Products For Filter',
-}
+export const loadFilterForCategory = createAction(
+  '[Shopping] Load Filter For Category',
+  payload<{ uniqueId: string }>()
+);
 
-export class LoadFilterForCategory implements Action {
-  readonly type = FilterActionTypes.LoadFilterForCategory;
-  constructor(public payload: { uniqueId: string }) {}
-}
+export const loadFilterSuccess = createAction(
+  '[Shopping] Load Filter Success',
+  payload<{ filterNavigation: FilterNavigation }>()
+);
 
-export class LoadFilterSuccess implements Action {
-  readonly type = FilterActionTypes.LoadFilterSuccess;
-  constructor(public payload: { filterNavigation: FilterNavigation }) {}
-}
+export const loadFilterFail = createAction('[Shopping] Load Filter Fail', httpError());
 
-export class LoadFilterFail implements Action {
-  readonly type = FilterActionTypes.LoadFilterFail;
-  constructor(public payload: { error: HttpError }) {}
-}
+export const loadFilterForSearch = createAction('[Shopping] Load Filter for Search', payload<{ searchTerm: string }>());
 
-export class LoadFilterForSearch implements Action {
-  readonly type = FilterActionTypes.LoadFilterForSearch;
-  constructor(public payload: { searchTerm: string }) {}
-}
+export const applyFilter = createAction('[Shopping] Apply Filter', payload<{ searchParameter: string }>());
 
-export class ApplyFilter implements Action {
-  readonly type = FilterActionTypes.ApplyFilter;
-  constructor(public payload: { searchParameter: string }) {}
-}
+export const applyFilterSuccess = createAction(
+  '[Shopping] Apply Filter Success',
+  payload<{ availableFilter: FilterNavigation; searchParameter: string }>()
+);
 
-export class ApplyFilterSuccess implements Action {
-  readonly type = FilterActionTypes.ApplyFilterSuccess;
-  constructor(public payload: { availableFilter: FilterNavigation; searchParameter: string }) {}
-}
+export const applyFilterFail = createAction('[Shopping] Apply Filter Fail', httpError());
 
-export class ApplyFilterFail implements Action {
-  readonly type = FilterActionTypes.ApplyFilterFail;
-  constructor(public payload: { error: HttpError }) {}
-}
-
-export class LoadProductsForFilter implements Action {
-  readonly type = FilterActionTypes.LoadProductsForFilter;
-  constructor(public payload: { id: ProductListingID; searchParameter: string }) {}
-}
-
-export type FilterActions =
-  | LoadFilterForCategory
-  | LoadFilterSuccess
-  | LoadFilterFail
-  | ApplyFilter
-  | ApplyFilterSuccess
-  | ApplyFilterFail
-  | LoadFilterForSearch
-  | LoadProductsForFilter;
+export const loadProductsForFilter = createAction(
+  '[Shopping] Load Products For Filter',
+  payload<{ id: ProductListingID; searchParameter: string }>()
+);

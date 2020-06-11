@@ -8,7 +8,7 @@ import { ContentStoreModule } from 'ish-core/store/content/content-store.module'
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { LoadContentPageSuccess } from './pages.actions';
+import { loadContentPageSuccess } from './pages.actions';
 import { getContentPageLoading, getSelectedContentPage } from './pages.selectors';
 
 describe('Pages Selectors', () => {
@@ -45,7 +45,7 @@ describe('Pages Selectors', () => {
     });
 
     it('should select include when it was successfully loaded', fakeAsync(() => {
-      store$.dispatch(new LoadContentPageSuccess({ page: { id: 'dummy' } as ContentPageletEntryPoint, pagelets: [] }));
+      store$.dispatch(loadContentPageSuccess({ page: { id: 'dummy' } as ContentPageletEntryPoint, pagelets: [] }));
       router.navigateByUrl('/any;contentPageId=dummy');
       tick(500);
 

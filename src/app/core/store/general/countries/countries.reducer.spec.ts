@@ -1,13 +1,13 @@
 import { Country } from 'ish-core/models/country/country.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
-import { CountryAction, LoadCountries, LoadCountriesFail, LoadCountriesSuccess } from './countries.actions';
+import { loadCountries, loadCountriesFail, loadCountriesSuccess } from './countries.actions';
 import { countriesReducer, initialState } from './countries.reducer';
 
 describe('Countries Reducer', () => {
   describe('undefined action', () => {
     it('should return the default state when previous state is undefined', () => {
-      const action = {} as CountryAction;
+      const action = {} as ReturnType<typeof loadCountries | typeof loadCountriesFail | typeof loadCountriesSuccess>;
       const state = countriesReducer(undefined, action);
 
       expect(state).toBe(initialState);
@@ -17,7 +17,7 @@ describe('Countries Reducer', () => {
   describe('LoadCountries actions', () => {
     describe('LoadCountry action', () => {
       it('should set loading to true', () => {
-        const action = new LoadCountries();
+        const action = loadCountries();
         const state = countriesReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -27,7 +27,7 @@ describe('Countries Reducer', () => {
 
     describe('LoadCountriesFail action', () => {
       it('should set loading to false', () => {
-        const action = new LoadCountriesFail({ error: {} as HttpError });
+        const action = loadCountriesFail({ error: {} as HttpError });
         const state = countriesReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -46,7 +46,7 @@ describe('Countries Reducer', () => {
       });
 
       it('should insert countries if not exist', () => {
-        const action = new LoadCountriesSuccess({ countries: [country] });
+        const action = loadCountriesSuccess({ countries: [country] });
         const state = countriesReducer(initialState, action);
 
         expect(state.ids).toHaveLength(1);

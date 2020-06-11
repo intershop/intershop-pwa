@@ -1,4 +1,6 @@
-import { Action } from '@ngrx/store';
+import { createAction } from '@ngrx/store';
+
+import { payload } from 'ish-core/utils/ngrx-creators';
 
 export interface MessagesPayloadType {
   /**
@@ -27,29 +29,10 @@ export interface MessagesPayloadType {
   duration?: number;
 }
 
-export enum MessagesActionTypes {
-  DisplayInfoMessage = '[Message] Info Toast',
-  DisplayErrorMessage = '[Message] Error Toast',
-  DisplayWarningMessage = '[Message] Warning Toast',
-  DisplaySuccessMessage = '[Message] Success Toast',
-}
+export const displayInfoMessage = createAction('[Message] Info Toast', payload<MessagesPayloadType>());
 
-export class DisplayInfoMessage implements Action {
-  readonly type = MessagesActionTypes.DisplayInfoMessage;
-  constructor(public payload: MessagesPayloadType) {}
-}
+export const displayErrorMessage = createAction('[Message] Error Toast', payload<MessagesPayloadType>());
 
-export class DisplayErrorMessage implements Action {
-  readonly type = MessagesActionTypes.DisplayErrorMessage;
-  constructor(public payload: MessagesPayloadType) {}
-}
+export const displayWarningMessage = createAction('[Message] Warning Toast', payload<MessagesPayloadType>());
 
-export class DisplayWarningMessage implements Action {
-  readonly type = MessagesActionTypes.DisplayWarningMessage;
-  constructor(public payload: MessagesPayloadType) {}
-}
-
-export class DisplaySuccessMessage implements Action {
-  readonly type = MessagesActionTypes.DisplaySuccessMessage;
-  constructor(public payload: MessagesPayloadType) {}
-}
+export const displaySuccessMessage = createAction('[Message] Success Toast', payload<MessagesPayloadType>());

@@ -1,108 +1,57 @@
-import { Action } from '@ngrx/store';
+import { createAction } from '@ngrx/store';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
 import { Product, ProductCompletenessLevel, SkuQuantityType } from 'ish-core/models/product/product.model';
+import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
-export enum ProductsActionTypes {
-  LoadProduct = '[Shopping] Load Product',
-  LoadProductBundlesSuccess = '[Shopping] Load Product Bundles Success',
-  LoadProductFail = '[Shopping] Load Product Fail',
-  LoadProductIfNotLoaded = '[Shopping] Load Product if not Loaded',
-  LoadProductSuccess = '[Shopping] Load Product Success',
-  LoadProductsForCategory = '[Shopping] Load Products for Category',
-  LoadProductsForCategoryFail = '[Shopping] Load Products for Category Fail',
-  LoadProductVariations = '[Shopping] Load Product Variations',
-  LoadProductVariationsFail = '[Shopping] Load Product Variations Fail',
-  LoadProductVariationsSuccess = '[Shopping] Load Product Variations Success',
-  LoadRetailSetSuccess = '[Shopping] Load Retail Set Success',
-  LoadProductLinks = '[Shopping] Load Product Links',
-  LoadProductLinksFail = '[Shopping] Load Product Links Fail',
-  LoadProductLinksSuccess = '[Shopping] Load Product Links Success',
-}
+export const loadProduct = createAction('[Shopping] Load Product', payload<{ sku: string }>());
 
-export class LoadProduct implements Action {
-  readonly type = ProductsActionTypes.LoadProduct;
-  constructor(public payload: { sku: string }) {}
-}
+export const loadProductFail = createAction('[Shopping] Load Product Fail', httpError<{ sku: string }>());
 
-export class LoadProductFail implements Action {
-  readonly type = ProductsActionTypes.LoadProductFail;
-  constructor(public payload: { error: HttpError; sku: string }) {}
-}
+export const loadProductIfNotLoaded = createAction(
+  '[Shopping] Load Product if not Loaded',
+  payload<{ sku: string; level: ProductCompletenessLevel }>()
+);
 
-export class LoadProductIfNotLoaded implements Action {
-  readonly type = ProductsActionTypes.LoadProductIfNotLoaded;
-  constructor(public payload: { sku: string; level: ProductCompletenessLevel }) {}
-}
+export const loadProductSuccess = createAction('[Shopping] Load Product Success', payload<{ product: Product }>());
 
-export class LoadProductSuccess implements Action {
-  readonly type = ProductsActionTypes.LoadProductSuccess;
-  constructor(public payload: { product: Product }) {}
-}
+export const loadProductsForCategory = createAction(
+  '[Shopping] Load Products for Category',
+  payload<{ categoryId: string; page?: number; sorting?: string }>()
+);
 
-export class LoadProductsForCategory implements Action {
-  readonly type = ProductsActionTypes.LoadProductsForCategory;
-  constructor(public payload: { categoryId: string; page?: number; sorting?: string }) {}
-}
+export const loadProductsForCategoryFail = createAction(
+  '[Shopping] Load Products for Category Fail',
+  httpError<{ categoryId: string }>()
+);
 
-export class LoadProductsForCategoryFail implements Action {
-  readonly type = ProductsActionTypes.LoadProductsForCategoryFail;
-  constructor(public payload: { error: HttpError; categoryId: string }) {}
-}
+export const loadProductVariations = createAction('[Shopping] Load Product Variations', payload<{ sku: string }>());
 
-export class LoadProductVariations implements Action {
-  readonly type = ProductsActionTypes.LoadProductVariations;
-  constructor(public payload: { sku: string }) {}
-}
+export const loadProductVariationsFail = createAction(
+  '[Shopping] Load Product Variations Fail',
+  httpError<{ sku: string }>()
+);
 
-export class LoadProductVariationsFail implements Action {
-  readonly type = ProductsActionTypes.LoadProductVariationsFail;
-  constructor(public payload: { error: HttpError; sku: string }) {}
-}
+export const loadProductVariationsSuccess = createAction(
+  '[Shopping] Load Product Variations Success',
+  payload<{ sku: string; variations: string[]; defaultVariation: string }>()
+);
 
-export class LoadProductVariationsSuccess implements Action {
-  readonly type = ProductsActionTypes.LoadProductVariationsSuccess;
-  constructor(public payload: { sku: string; variations: string[]; defaultVariation: string }) {}
-}
+export const loadProductBundlesSuccess = createAction(
+  '[Shopping] Load Product Bundles Success',
+  payload<{ sku: string; bundledProducts: SkuQuantityType[] }>()
+);
 
-export class LoadProductBundlesSuccess implements Action {
-  readonly type = ProductsActionTypes.LoadProductBundlesSuccess;
-  constructor(public payload: { sku: string; bundledProducts: SkuQuantityType[] }) {}
-}
+export const loadRetailSetSuccess = createAction(
+  '[Shopping] Load Retail Set Success',
+  payload<{ sku: string; parts: string[] }>()
+);
 
-export class LoadRetailSetSuccess implements Action {
-  readonly type = ProductsActionTypes.LoadRetailSetSuccess;
-  constructor(public payload: { sku: string; parts: string[] }) {}
-}
+export const loadProductLinks = createAction('[Shopping] Load Product Links', payload<{ sku: string }>());
 
-export class LoadProductLinks implements Action {
-  readonly type = ProductsActionTypes.LoadProductLinks;
-  constructor(public payload: { sku: string }) {}
-}
+export const loadProductLinksFail = createAction('[Shopping] Load Product Links Fail', httpError<{ sku: string }>());
 
-export class LoadProductLinksFail implements Action {
-  readonly type = ProductsActionTypes.LoadProductLinksFail;
-  constructor(public payload: { error: HttpError; sku: string }) {}
-}
-
-export class LoadProductLinksSuccess implements Action {
-  readonly type = ProductsActionTypes.LoadProductLinksSuccess;
-  constructor(public payload: { sku: string; links: ProductLinks }) {}
-}
-
-export type ProductsAction =
-  | LoadProduct
-  | LoadProductBundlesSuccess
-  | LoadProductFail
-  | LoadProductIfNotLoaded
-  | LoadProductSuccess
-  | LoadProductsForCategory
-  | LoadProductsForCategoryFail
-  | LoadProductVariations
-  | LoadProductVariationsFail
-  | LoadProductVariationsSuccess
-  | LoadRetailSetSuccess
-  | LoadProductLinks
-  | LoadProductLinksFail
-  | LoadProductLinksSuccess;
+export const loadProductLinksSuccess = createAction(
+  '[Shopping] Load Product Links Success',
+  payload<{ sku: string; links: ProductLinks }>()
+);

@@ -1,256 +1,124 @@
-import { Action } from '@ngrx/store';
+import { createAction } from '@ngrx/store';
 
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { User } from 'ish-core/models/user/user.model';
+import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
-export enum UserActionTypes {
-  LoginUser = '[Account] Login User',
-  LoginUserSuccess = '[Account API] Login User Success',
-  LoginUserFail = '[Account API] Login User Failed',
-  SetAPIToken = '[Account Internal] Set API Token',
-  ResetAPIToken = '[Account Internal] Reset API Token',
-  LoadCompanyUser = '[Account Internal] Load Company User',
-  LoadCompanyUserFail = '[Account API] Load Company User Fail',
-  LoadCompanyUserSuccess = '[Account API] Load Company User Success',
-  LogoutUser = '[Account] Logout User',
-  CreateUser = '[Account] Create User',
-  CreateUserFail = '[Account API] Create User Failed',
-  UpdateUser = '[Account] Update User',
-  UpdateUserSuccess = '[Account API] Update User Succeeded',
-  UpdateUserFail = '[Account API] Update User Failed',
-  UpdateUserPassword = '[Account] Update User Password',
-  UpdateUserPasswordSuccess = '[Account API] Update User Password Succeeded',
-  UpdateUserPasswordFail = '[Account API] Update User Password Failed',
-  UpdateCustomer = '[Account] Update Customer',
-  UpdateCustomerSuccess = '[Account API] Update Customer Succeeded',
-  UpdateCustomerFail = '[Account API] Update Customer Failed',
-  UserErrorReset = '[Account Internal] Reset User Error',
-  LoadUserByAPIToken = '[Account] Load User by API Token',
-  SetPGID = '[Personalization Internal] Set PGID',
-  LoadUserPaymentMethods = '[Account] Load User Payment Methods',
-  LoadUserPaymentMethodsFail = '[Account API] Load User Payment Methods Fail',
-  LoadUserPaymentMethodsSuccess = '[Account API] Load User Payment Methods Success',
-  DeleteUserPaymentInstrument = '[Account] Delete User Instrument Payment ',
-  DeleteUserPaymentInstrumentFail = '[Account API] Delete User Payment Instrument Fail',
-  DeleteUserPaymentInstrumentSuccess = '[Account API] Delete User Payment Instrument Success',
-  RequestPasswordReminder = '[Password Reminder] Request Password Reminder',
-  RequestPasswordReminderFail = '[Password Reminder API] Request Password Reminder Fail',
-  RequestPasswordReminderSuccess = '[Password Reminder API] Request Password Reminder Success',
-  ResetPasswordReminder = '[Password Reminder Internal] Reset Password Reminder Data',
-  UpdateUserPasswordByPasswordReminder = '[Password Reminder] Update User Password',
-  UpdateUserPasswordByPasswordReminderSuccess = '[Password Reminder] Update User Password Succeeded',
-  UpdateUserPasswordByPasswordReminderFail = '[Password Reminder] Update User Password Failed',
-}
+export const loginUser = createAction('[Account] Login User', payload<{ credentials: Credentials }>());
 
-export class LoginUser implements Action {
-  readonly type = UserActionTypes.LoginUser;
-  constructor(public payload: { credentials: Credentials }) {}
-}
+export const loginUserFail = createAction('[Account API] Login User Failed', httpError());
 
-export class LoginUserFail implements Action {
-  readonly type = UserActionTypes.LoginUserFail;
-  constructor(public payload: { error: HttpError }) {}
-}
+export const loginUserSuccess = createAction('[Account API] Login User Success', payload<CustomerUserType>());
 
-export class LoginUserSuccess implements Action {
-  readonly type = UserActionTypes.LoginUserSuccess;
-  constructor(public payload: CustomerUserType) {}
-}
+export const setAPIToken = createAction('[Account Internal] Set API Token', payload<{ apiToken: string }>());
 
-export class SetAPIToken implements Action {
-  readonly type = UserActionTypes.SetAPIToken;
-  constructor(public payload: { apiToken: string }) {}
-}
+export const resetAPIToken = createAction('[Account Internal] Reset API Token');
 
-export class ResetAPIToken implements Action {
-  readonly type = UserActionTypes.ResetAPIToken;
-}
+export const loadCompanyUser = createAction('[Account Internal] Load Company User');
 
-export class LoadCompanyUser implements Action {
-  readonly type = UserActionTypes.LoadCompanyUser;
-}
+export const loadCompanyUserFail = createAction('[Account API] Load Company User Fail', httpError());
 
-export class LoadCompanyUserFail implements Action {
-  readonly type = UserActionTypes.LoadCompanyUserFail;
-  constructor(public payload: { error: HttpError }) {}
-}
+export const loadCompanyUserSuccess = createAction(
+  '[Account API] Load Company User Success',
+  payload<{ user: User }>()
+);
 
-export class LoadCompanyUserSuccess implements Action {
-  readonly type = UserActionTypes.LoadCompanyUserSuccess;
-  constructor(public payload: { user: User }) {}
-}
+export const logoutUser = createAction('[Account] Logout User');
 
-export class LogoutUser implements Action {
-  readonly type = UserActionTypes.LogoutUser;
-}
+export const createUser = createAction('[Account] Create User', payload<CustomerRegistrationType>());
 
-export class CreateUser implements Action {
-  readonly type = UserActionTypes.CreateUser;
-  constructor(public payload: CustomerRegistrationType) {}
-}
+export const createUserFail = createAction('[Account API] Create User Failed', httpError());
 
-export class CreateUserFail implements Action {
-  readonly type = UserActionTypes.CreateUserFail;
-  constructor(public payload: { error: HttpError }) {}
-}
+export const updateUser = createAction(
+  '[Account] Update User',
+  payload<{ user: User; successMessage?: string; successRouterLink?: string }>()
+);
 
-export class UpdateUser implements Action {
-  readonly type = UserActionTypes.UpdateUser;
-  constructor(public payload: { user: User; successMessage?: string; successRouterLink?: string }) {}
-}
+export const updateUserSuccess = createAction(
+  '[Account API] Update User Succeeded',
+  payload<{ user: User; successMessage?: string }>()
+);
 
-export class UpdateUserSuccess implements Action {
-  readonly type = UserActionTypes.UpdateUserSuccess;
-  constructor(public payload: { user: User; successMessage?: string }) {}
-}
+export const updateUserFail = createAction('[Account API] Update User Failed', httpError());
 
-export class UpdateUserFail implements Action {
-  readonly type = UserActionTypes.UpdateUserFail;
-  constructor(public payload: { error: HttpError }) {}
-}
+export const updateUserPassword = createAction(
+  '[Account] Update User Password',
+  payload<{ password: string; currentPassword: string; successMessage?: string }>()
+);
 
-export class UpdateUserPassword implements Action {
-  readonly type = UserActionTypes.UpdateUserPassword;
-  constructor(public payload: { password: string; currentPassword: string; successMessage?: string }) {}
-}
+export const updateUserPasswordSuccess = createAction(
+  '[Account API] Update User Password Succeeded',
+  payload<{ successMessage?: string }>()
+);
 
-export class UpdateUserPasswordSuccess implements Action {
-  readonly type = UserActionTypes.UpdateUserPasswordSuccess;
-  constructor(public payload: { successMessage?: string }) {}
-}
+export const updateUserPasswordFail = createAction('[Account API] Update User Password Failed', httpError());
 
-export class UpdateUserPasswordFail implements Action {
-  readonly type = UserActionTypes.UpdateUserPasswordFail;
-  constructor(public payload: { error: HttpError }) {}
-}
+export const updateCustomer = createAction(
+  '[Account] Update Customer',
+  payload<{ customer: Customer; successMessage?: string; successRouterLink?: string }>()
+);
 
-export class UpdateCustomer implements Action {
-  readonly type = UserActionTypes.UpdateCustomer;
-  constructor(public payload: { customer: Customer; successMessage?: string; successRouterLink?: string }) {}
-}
+export const updateCustomerSuccess = createAction(
+  '[Account API] Update Customer Succeeded',
+  payload<{ customer: Customer; successMessage?: string }>()
+);
 
-export class UpdateCustomerSuccess implements Action {
-  readonly type = UserActionTypes.UpdateCustomerSuccess;
-  constructor(public payload: { customer: Customer; successMessage?: string }) {}
-}
+export const updateCustomerFail = createAction('[Account API] Update Customer Failed', httpError());
 
-export class UpdateCustomerFail implements Action {
-  readonly type = UserActionTypes.UpdateCustomerFail;
-  constructor(public payload: { error: HttpError }) {}
-}
+export const userErrorReset = createAction('[Account Internal] Reset User Error');
 
-export class UserErrorReset implements Action {
-  readonly type = UserActionTypes.UserErrorReset;
-}
+export const loadUserByAPIToken = createAction('[Account] Load User by API Token', payload<{ apiToken: string }>());
 
-export class LoadUserByAPIToken implements Action {
-  readonly type = UserActionTypes.LoadUserByAPIToken;
-  constructor(public payload: { apiToken: string }) {}
-}
+export const setPGID = createAction('[Personalization Internal] Set PGID', payload<{ pgid: string }>());
 
-export class SetPGID implements Action {
-  readonly type = UserActionTypes.SetPGID;
-  constructor(public payload: { pgid: string }) {}
-}
+export const loadUserPaymentMethods = createAction('[Account] Load User Payment Methods');
 
-export class LoadUserPaymentMethods implements Action {
-  readonly type = UserActionTypes.LoadUserPaymentMethods;
-}
+export const loadUserPaymentMethodsFail = createAction('[Account API] Load User Payment Methods Fail', httpError());
 
-export class LoadUserPaymentMethodsFail implements Action {
-  readonly type = UserActionTypes.LoadUserPaymentMethodsFail;
-  constructor(public payload: { error: HttpError }) {}
-}
+export const loadUserPaymentMethodsSuccess = createAction(
+  '[Account API] Load User Payment Methods Success',
+  payload<{ paymentMethods: PaymentMethod[] }>()
+);
 
-export class LoadUserPaymentMethodsSuccess implements Action {
-  readonly type = UserActionTypes.LoadUserPaymentMethodsSuccess;
-  constructor(public payload: { paymentMethods: PaymentMethod[] }) {}
-}
+export const deleteUserPaymentInstrument = createAction(
+  '[Account] Delete User Instrument Payment ',
+  payload<{ id: string }>()
+);
 
-export class DeleteUserPaymentInstrument implements Action {
-  readonly type = UserActionTypes.DeleteUserPaymentInstrument;
-  constructor(public payload: { id: string }) {}
-}
+export const deleteUserPaymentInstrumentFail = createAction(
+  '[Account API] Delete User Payment Instrument Fail',
+  httpError()
+);
 
-export class DeleteUserPaymentInstrumentFail implements Action {
-  readonly type = UserActionTypes.DeleteUserPaymentInstrumentFail;
-  constructor(public payload: { error: HttpError }) {}
-}
+export const deleteUserPaymentInstrumentSuccess = createAction('[Account API] Delete User Payment Instrument Success');
 
-export class DeleteUserPaymentInstrumentSuccess implements Action {
-  readonly type = UserActionTypes.DeleteUserPaymentInstrumentSuccess;
-}
+export const requestPasswordReminder = createAction(
+  '[Password Reminder] Request Password Reminder',
+  payload<{ data: PasswordReminder }>()
+);
 
-export class RequestPasswordReminder implements Action {
-  readonly type = UserActionTypes.RequestPasswordReminder;
-  constructor(public payload: { data: PasswordReminder }) {}
-}
+export const requestPasswordReminderSuccess = createAction('[Password Reminder API] Request Password Reminder Success');
 
-export class RequestPasswordReminderSuccess implements Action {
-  readonly type = UserActionTypes.RequestPasswordReminderSuccess;
-}
+export const requestPasswordReminderFail = createAction(
+  '[Password Reminder API] Request Password Reminder Fail',
+  httpError()
+);
 
-export class RequestPasswordReminderFail implements Action {
-  readonly type = UserActionTypes.RequestPasswordReminderFail;
-  constructor(public payload: { error: HttpError }) {}
-}
+export const resetPasswordReminder = createAction('[Password Reminder Internal] Reset Password Reminder Data');
 
-export class ResetPasswordReminder implements Action {
-  readonly type = UserActionTypes.ResetPasswordReminder;
-}
+export const updateUserPasswordByPasswordReminder = createAction(
+  '[Password Reminder] Update User Password',
+  payload<{ password: string; userID: string; secureCode: string }>()
+);
 
-export class UpdateUserPasswordByPasswordReminder implements Action {
-  readonly type = UserActionTypes.UpdateUserPasswordByPasswordReminder;
-  constructor(public payload: { password: string; userID: string; secureCode: string }) {}
-}
+export const updateUserPasswordByPasswordReminderSuccess = createAction(
+  '[Password Reminder] Update User Password Succeeded'
+);
 
-export class UpdateUserPasswordByPasswordReminderSuccess implements Action {
-  readonly type = UserActionTypes.UpdateUserPasswordByPasswordReminderSuccess;
-}
-
-export class UpdateUserPasswordByPasswordReminderFail implements Action {
-  readonly type = UserActionTypes.UpdateUserPasswordByPasswordReminderFail;
-  constructor(public payload: { error: HttpError }) {}
-}
-
-export type UserAction =
-  | LoginUser
-  | LoginUserFail
-  | LoginUserSuccess
-  | SetAPIToken
-  | ResetAPIToken
-  | LoadCompanyUser
-  | LoadCompanyUserFail
-  | LoadCompanyUserSuccess
-  | LogoutUser
-  | CreateUser
-  | CreateUserFail
-  | UpdateUser
-  | UpdateUserSuccess
-  | UpdateUserFail
-  | UpdateUserPassword
-  | UpdateUserPasswordSuccess
-  | UpdateUserPasswordFail
-  | UpdateCustomer
-  | UpdateCustomerSuccess
-  | UpdateCustomerFail
-  | UserErrorReset
-  | LoadUserByAPIToken
-  | SetPGID
-  | LoadUserPaymentMethods
-  | LoadUserPaymentMethodsFail
-  | LoadUserPaymentMethodsSuccess
-  | DeleteUserPaymentInstrument
-  | DeleteUserPaymentInstrumentFail
-  | DeleteUserPaymentInstrumentSuccess
-  | RequestPasswordReminder
-  | RequestPasswordReminderSuccess
-  | RequestPasswordReminderFail
-  | ResetPasswordReminder
-  | UpdateUserPasswordByPasswordReminder
-  | UpdateUserPasswordByPasswordReminderSuccess
-  | UpdateUserPasswordByPasswordReminderFail;
+export const updateUserPasswordByPasswordReminderFail = createAction(
+  '[Password Reminder] Update User Password Failed',
+  httpError()
+);

@@ -1,24 +1,9 @@
-import { Action } from '@ngrx/store';
+import { createAction } from '@ngrx/store';
 
-export enum CompareActionTypes {
-  AddToCompare = '[Shopping] Add Product to Compare',
-  RemoveFromCompare = '[Shopping] Remove Product from Compare',
-  ToggleCompare = '[Shopping] Toggle Product Compare',
-}
+import { payload } from 'ish-core/utils/ngrx-creators';
 
-export class AddToCompare implements Action {
-  readonly type = CompareActionTypes.AddToCompare;
-  constructor(public payload: { sku: string }) {}
-}
+export const addToCompare = createAction('[Shopping] Add Product to Compare', payload<{ sku: string }>());
 
-export class RemoveFromCompare implements Action {
-  readonly type = CompareActionTypes.RemoveFromCompare;
-  constructor(public payload: { sku: string }) {}
-}
+export const removeFromCompare = createAction('[Shopping] Remove Product from Compare', payload<{ sku: string }>());
 
-export class ToggleCompare implements Action {
-  readonly type = CompareActionTypes.ToggleCompare;
-  constructor(public payload: { sku: string }) {}
-}
-
-export type CompareAction = AddToCompare | RemoveFromCompare | ToggleCompare;
+export const toggleCompare = createAction('[Shopping] Toggle Product Compare', payload<{ sku: string }>());

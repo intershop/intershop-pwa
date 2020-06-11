@@ -6,11 +6,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { LoadProductSuccess } from 'ish-core/store/shopping/products';
+import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { ClearRecently } from './recently.actions';
+import { clearRecently } from './recently.actions';
 import { RecentlyEffects } from './recently.effects';
 import { getMostRecentlyViewedProducts, getRecentlyViewedProducts } from './recently.selectors';
 
@@ -44,7 +44,7 @@ describe('Recently Selectors', () => {
   describe('after short shopping spree', () => {
     beforeEach(fakeAsync(() => {
       ['A', 'B', 'C', 'D', 'E', 'F', 'G'].forEach(sku =>
-        store$.dispatch(new LoadProductSuccess({ product: { sku } as Product }))
+        store$.dispatch(loadProductSuccess({ product: { sku } as Product }))
       );
       ['A', 'B', 'F', 'C', 'A', 'D', 'E', 'D', 'A', 'B', 'A'].forEach(sku => {
         router.navigateByUrl('/product/' + sku);
@@ -61,7 +61,7 @@ describe('Recently Selectors', () => {
 
     describe('when clearing the state', () => {
       beforeEach(() => {
-        store$.dispatch(new ClearRecently());
+        store$.dispatch(clearRecently());
       });
 
       it('should select nothing for an empty state', () => {
@@ -73,10 +73,10 @@ describe('Recently Selectors', () => {
 
   describe('after viewing various variation', () => {
     beforeEach(fakeAsync(() => {
-      store$.dispatch(new LoadProductSuccess({ product: { sku: 'B' } as Product }));
+      store$.dispatch(loadProductSuccess({ product: { sku: 'B' } as Product }));
       ['A1', 'A2', 'A3'].forEach(sku =>
         store$.dispatch(
-          new LoadProductSuccess({
+          loadProductSuccess({
             product: { sku, type: 'VariationProduct', productMasterSKU: 'A' } as VariationProduct,
           })
         )
@@ -96,7 +96,7 @@ describe('Recently Selectors', () => {
 
     describe('when clearing the state', () => {
       beforeEach(() => {
-        store$.dispatch(new ClearRecently());
+        store$.dispatch(clearRecently());
       });
 
       it('should select nothing for an empty state', () => {

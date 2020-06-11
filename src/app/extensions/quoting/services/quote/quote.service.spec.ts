@@ -9,7 +9,7 @@ import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/customer/user';
+import { loadCompanyUserSuccess, loginUserSuccess } from 'ish-core/store/customer/user';
 
 import { QuoteRequestItemData } from '../../models/quote-request-item/quote-request-item.interface';
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
@@ -67,8 +67,8 @@ describe('Quote Service', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer, user }));
-      store$.dispatch(new LoadCompanyUserSuccess({ user }));
+      store$.dispatch(loginUserSuccess({ customer, user }));
+      store$.dispatch(loadCompanyUserSuccess({ user }));
     });
 
     it("should get quotes data when 'getQuotes' is called", done => {

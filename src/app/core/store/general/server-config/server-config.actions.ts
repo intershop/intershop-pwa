@@ -1,26 +1,13 @@
-import { Action } from '@ngrx/store';
+import { createAction } from '@ngrx/store';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
+import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
-export enum ServerConfigActionTypes {
-  LoadServerConfig = '[Configuration Internal] Get the ICM configuration',
-  LoadServerConfigSuccess = '[Configuration API] Get the ICM configuration Success',
-  LoadServerConfigFail = '[Configuration API] Get the ICM configuration Fail',
-}
+export const loadServerConfig = createAction('[Configuration Internal] Get the ICM configuration');
 
-export class LoadServerConfig implements Action {
-  readonly type = ServerConfigActionTypes.LoadServerConfig;
-}
+export const loadServerConfigSuccess = createAction(
+  '[Configuration API] Get the ICM configuration Success',
+  payload<{ config: ServerConfig }>()
+);
 
-export class LoadServerConfigSuccess implements Action {
-  readonly type = ServerConfigActionTypes.LoadServerConfigSuccess;
-  constructor(public payload: { config: ServerConfig }) {}
-}
-
-export class LoadServerConfigFail implements Action {
-  readonly type = ServerConfigActionTypes.LoadServerConfigFail;
-  constructor(public payload: { error: HttpError }) {}
-}
-
-export type ServerConfigAction = LoadServerConfig | LoadServerConfigSuccess | LoadServerConfigFail;
+export const loadServerConfigFail = createAction('[Configuration API] Get the ICM configuration Fail', httpError());

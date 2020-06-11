@@ -20,12 +20,12 @@ import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.modu
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import {
-  LoadCategory,
-  LoadCategoryFail,
-  LoadCategorySuccess,
-  LoadTopLevelCategories,
-  LoadTopLevelCategoriesFail,
-  LoadTopLevelCategoriesSuccess,
+  loadCategory,
+  loadCategoryFail,
+  loadCategorySuccess,
+  loadTopLevelCategories,
+  loadTopLevelCategoriesFail,
+  loadTopLevelCategoriesSuccess,
 } from './categories.actions';
 import { CategoriesEffects } from './categories.effects';
 
@@ -102,7 +102,7 @@ describe('Categories Effects', () => {
 
     it('should trigger LoadCategory when /category/XXX is visited and category is not completely loaded', done => {
       category.completenessLevel = 0;
-      store$.dispatch(new LoadCategorySuccess({ categories: categoryTree([category]) }));
+      store$.dispatch(loadCategorySuccess({ categories: categoryTree([category]) }));
       router.navigateByUrl('/category/dummy');
 
       effects.selectedCategory$.subscribe(action => {
@@ -116,7 +116,7 @@ describe('Categories Effects', () => {
 
     it('should do nothing if category is completely loaded', done => {
       category.completenessLevel = CategoryCompletenessLevel.Max;
-      store$.dispatch(new LoadCategorySuccess({ categories: categoryTree([category]) }));
+      store$.dispatch(loadCategorySuccess({ categories: categoryTree([category]) }));
       router.navigateByUrl('/category/dummy');
 
       effects.selectedCategory$.subscribe(fail, fail, fail);
@@ -127,7 +127,7 @@ describe('Categories Effects', () => {
       category.completenessLevel = 0;
       const subcategory = { ...category, uniqueId: `${category.uniqueId}${CategoryHelper.uniqueIdSeparator}456` };
 
-      store$.dispatch(new LoadCategorySuccess({ categories: categoryTree([category, subcategory]) }));
+      store$.dispatch(loadCategorySuccess({ categories: categoryTree([category, subcategory]) }));
       router.navigateByUrl('/category/dummy');
 
       effects.selectedCategory$.subscribe(action => {
@@ -163,7 +163,7 @@ describe('Categories Effects', () => {
   describe('loadCategory$', () => {
     it('should call the categoriesService for LoadCategory action', done => {
       const categoryId = '123';
-      const action = new LoadCategory({ categoryId });
+      const action = loadCategory({ categoryId });
       actions$ = of(action);
 
       effects.loadCategory$.subscribe(() => {
@@ -174,14 +174,14 @@ describe('Categories Effects', () => {
 
     it('should map to action of type LoadCategorySuccess', () => {
       const categoryId = '123';
-      const action = new LoadCategory({ categoryId });
+      const action = loadCategory({ categoryId });
       const response = categoryTree([
         {
           uniqueId: categoryId,
           categoryPath: ['123'],
         } as Category,
       ]);
-      const completion = new LoadCategorySuccess({ categories: response });
+      const completion = loadCategorySuccess({ categories: response });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -190,8 +190,8 @@ describe('Categories Effects', () => {
 
     it('should map invalid request to action of type LoadCategoryFail', () => {
       const categoryId = 'invalid';
-      const action = new LoadCategory({ categoryId });
-      const completion = new LoadCategoryFail({ error: { message: 'invalid category' } as HttpError });
+      const action = loadCategory({ categoryId });
+      const completion = loadCategoryFail({ error: { message: 'invalid category' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -207,7 +207,7 @@ describe('Categories Effects', () => {
     });
 
     it('should load top level categories retrying for every routing action', () => {
-      const completion = new LoadTopLevelCategories({ depth });
+      const completion = loadTopLevelCategories({ depth });
 
       // tslint:disable-next-line: no-any
       actions$ = hot('        ----a---a--a', { a: routerNavigatedAction({ payload: {} as any }) });
@@ -217,7 +217,7 @@ describe('Categories Effects', () => {
     });
 
     it('should not load top level categories when already available', () => {
-      store$.dispatch(new LoadTopLevelCategoriesSuccess({ categories: categoryTree() }));
+      store$.dispatch(loadTopLevelCategoriesSuccess({ categories: categoryTree() }));
 
       // tslint:disable-next-line: no-any
       actions$ = hot('        ----a---a--a', { a: routerNavigatedAction({ payload: {} as any }) });
@@ -230,7 +230,7 @@ describe('Categories Effects', () => {
   describe('loadTopLevelCategories$', () => {
     it('should call the categoriesService for LoadTopLevelCategories action', done => {
       const depth = 2;
-      const action = new LoadTopLevelCategories({ depth });
+      const action = loadTopLevelCategories({ depth });
       actions$ = of(action);
 
       effects.loadTopLevelCategories$.subscribe(() => {
@@ -241,8 +241,8 @@ describe('Categories Effects', () => {
 
     it('should map to action of type LoadCategorySuccess', () => {
       const depth = 2;
-      const action = new LoadTopLevelCategories({ depth });
-      const completion = new LoadTopLevelCategoriesSuccess({ categories: TOP_LEVEL_CATEGORIES });
+      const action = loadTopLevelCategories({ depth });
+      const completion = loadTopLevelCategoriesSuccess({ categories: TOP_LEVEL_CATEGORIES });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -251,8 +251,8 @@ describe('Categories Effects', () => {
 
     it('should map invalid request to action of type LoadCategoryFail', () => {
       const depth = -1;
-      const action = new LoadTopLevelCategories({ depth });
-      const completion = new LoadTopLevelCategoriesFail({
+      const action = loadTopLevelCategories({ depth });
+      const completion = loadTopLevelCategoriesFail({
         error: { message: 'invalid number' } as HttpError,
       });
       actions$ = hot('-a-a-a', { a: action });
@@ -264,7 +264,7 @@ describe('Categories Effects', () => {
 
   describe('redirectIfErrorInCategories$', () => {
     it('should redirect if triggered', fakeAsync(() => {
-      const action = new LoadCategoryFail({ error: { status: 404 } as HttpError });
+      const action = loadCategoryFail({ error: { status: 404 } as HttpError });
 
       actions$ = of(action);
 

@@ -1,6 +1,6 @@
 import { DOCUMENT, isPlatformServer } from '@angular/common';
 import { ApplicationRef, Inject, Injectable, Optional, PLATFORM_ID } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { REQUEST } from '@nguniversal/express-engine/tokens';
@@ -30,7 +30,7 @@ import { getSelectedCategory } from 'ish-core/store/shopping/categories/categori
 import { getSelectedProduct } from 'ish-core/store/shopping/products';
 import { mapToPayload, mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
-import { SeoActionTypes, SetSeoAttributes } from './seo.actions';
+import { setSeoAttributes } from './seo.actions';
 
 @Injectable()
 export class SeoEffects {
@@ -61,123 +61,139 @@ export class SeoEffects {
     this.ogImageDefault = `${this.baseURL}assets/img/og-image-default.jpg`;
   }
 
-  @Effect({ dispatch: false })
-  seoCanonicalLink$ = this.actions$.pipe(
-    ofType(routerNavigatedAction),
-    tap(() => {
-      let canonicalLink = this.doc.querySelector('link[rel="canonical"]');
-      if (!canonicalLink) {
-        canonicalLink = this.doc.createElement('link');
-        canonicalLink.setAttribute('rel', 'canonical');
-        this.doc.head.appendChild(canonicalLink);
-      }
-      canonicalLink.setAttribute('href', this.doc.URL);
-      this.meta.setTag('og:url', this.doc.URL);
-    })
-  );
-
-  @Effect({ dispatch: false })
-  setMetaData$ = this.actions$.pipe(
-    ofType(SeoActionTypes.SetSeoAttributes),
-    mapToPayload(),
-    whenTruthy(),
-    tap((seoAttributes: SeoAttributes) => {
-      if (seoAttributes) {
-        this.meta.setTitle(seoAttributes.title);
-        this.meta.setTag('og:image', seoAttributes['og:image'] || this.ogImageDefault);
-        Object.keys(seoAttributes)
-          .filter(key => key !== 'title' && key !== 'og:image')
-          .forEach(key => {
-            this.meta.setTag(key, seoAttributes[key]);
-          });
-      }
-    })
-  );
-
-  @Effect()
-  seoCategory$ = this.waitAppStable(
-    this.store.pipe(
-      ofCategoryUrl(),
-      select(getSelectedCategory),
-      filter(CategoryHelper.isCategoryCompletelyLoaded),
-      map(
-        c =>
-          c &&
-          c.seoAttributes && {
-            canonical: `category/${c.uniqueId}`,
-            ...c.seoAttributes,
+  seoCanonicalLink$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(routerNavigatedAction),
+        tap(() => {
+          let canonicalLink = this.doc.querySelector('link[rel="canonical"]');
+          if (!canonicalLink) {
+            canonicalLink = this.doc.createElement('link');
+            canonicalLink.setAttribute('rel', 'canonical');
+            this.doc.head.appendChild(canonicalLink);
           }
+          canonicalLink.setAttribute('href', this.doc.URL);
+          this.meta.setTag('og:url', this.doc.URL);
+        })
       ),
-      whenTruthy(),
-      map(x => new SetSeoAttributes(x))
+    { dispatch: false }
+  );
+
+  setMetaData$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(setSeoAttributes),
+        mapToPayload(),
+        whenTruthy(),
+        tap((seoAttributes: SeoAttributes) => {
+          if (seoAttributes) {
+            this.meta.setTitle(seoAttributes.title);
+            this.meta.setTag('og:image', seoAttributes['og:image'] || this.ogImageDefault);
+            Object.keys(seoAttributes)
+              .filter(key => key !== 'title' && key !== 'og:image')
+              .forEach(key => {
+                this.meta.setTag(key, seoAttributes[key]);
+              });
+          }
+        })
+      ),
+    { dispatch: false }
+  );
+
+  seoCategory$ = createEffect(() =>
+    this.waitAppStable(
+      this.store.pipe(
+        ofCategoryUrl(),
+        select(getSelectedCategory),
+        filter(CategoryHelper.isCategoryCompletelyLoaded),
+        map(
+          c =>
+            c &&
+            c.seoAttributes && {
+              canonical: `category/${c.uniqueId}`,
+              ...c.seoAttributes,
+            }
+        ),
+        whenTruthy(),
+        map(setSeoAttributes)
+      )
     )
   );
 
-  @Effect()
-  seoProduct$ = this.waitAppStable(
-    this.store.pipe(
-      ofProductUrl(),
-      select(getSelectedProduct),
-      filter(p => ProductHelper.isSufficientlyLoaded(p, ProductCompletenessLevel.Detail)),
-      filter(p => !ProductHelper.isFailedLoading(p)),
-      map(p => (ProductHelper.isVariationProduct(p) && p.productMaster()) || p),
-      distinctUntilKeyChanged('sku'),
-      map(p => {
-        const productImage = ProductHelper.getPrimaryImage(p, 'L');
-        const seoAttributes = {
-          canonical: generateProductUrl(p),
-          'og:image': productImage && productImage.effectiveUrl,
-        };
-        return p.seoAttributes ? { ...seoAttributes, ...p.seoAttributes } : seoAttributes;
-      }),
-      whenTruthy(),
-      map(x => new SetSeoAttributes(x))
+  seoProduct$ = createEffect(() =>
+    this.waitAppStable(
+      this.store.pipe(
+        ofProductUrl(),
+        select(getSelectedProduct),
+        filter(p => ProductHelper.isSufficientlyLoaded(p, ProductCompletenessLevel.Detail)),
+        filter(p => !ProductHelper.isFailedLoading(p)),
+        map(p => (ProductHelper.isVariationProduct(p) && p.productMaster()) || p),
+        distinctUntilKeyChanged('sku'),
+        map(p => {
+          const productImage = ProductHelper.getPrimaryImage(p, 'L');
+          const seoAttributes = {
+            canonical: generateProductUrl(p),
+            'og:image': productImage && productImage.effectiveUrl,
+          };
+          return p.seoAttributes ? { ...seoAttributes, ...p.seoAttributes } : seoAttributes;
+        }),
+        whenTruthy(),
+        map(setSeoAttributes)
+      )
     )
   );
 
-  @Effect()
-  seoSearch$ = this.waitAppStable(
-    this.store.pipe(
-      ofUrl(/^\/search.*/),
-      select(selectRouteParam('searchTerm')),
-      switchMap(searchTerm => this.translate.get('seo.title.search', { 0: searchTerm })),
-      whenTruthy(),
-      map(title => new SetSeoAttributes({ title }))
+  seoSearch$ = createEffect(() =>
+    this.waitAppStable(
+      this.store.pipe(
+        ofUrl(/^\/search.*/),
+        select(selectRouteParam('searchTerm')),
+        switchMap(searchTerm => this.translate.get('seo.title.search', { 0: searchTerm })),
+        whenTruthy(),
+        map(title => setSeoAttributes({ title }))
+      )
     )
   );
 
-  @Effect()
-  seoContentPage$ = this.waitAppStable(
-    this.store.pipe(
-      ofUrl(/^\/page.*/),
-      select(getSelectedContentPage),
-      mapToProperty('displayName'),
-      whenTruthy(),
-      distinctUntilChanged(),
-      map(title => new SetSeoAttributes({ title }))
+  seoContentPage$ = createEffect(() =>
+    this.waitAppStable(
+      this.store.pipe(
+        ofUrl(/^\/page.*/),
+        select(getSelectedContentPage),
+        mapToProperty('displayName'),
+        whenTruthy(),
+        distinctUntilChanged(),
+        map(title => setSeoAttributes({ title }))
+      )
     )
   );
 
-  @Effect({ dispatch: false })
-  seoLanguage$ = this.waitAppStable(
-    this.store.pipe(
-      select(getCurrentLocale),
-      whenTruthy(),
-      tap(current => {
-        this.meta.setTag('og:locale', current.lang);
-      })
-    )
+  seoLanguage$ = createEffect(
+    () =>
+      this.waitAppStable(
+        this.store.pipe(
+          select(getCurrentLocale),
+          whenTruthy(),
+          tap(current => {
+            this.meta.setTag('og:locale', current.lang);
+          })
+        )
+      ),
+    { dispatch: false }
   );
 
-  @Effect({ dispatch: false })
-  seoAlternateLanguages$ = this.waitAppStable(
-    this.store.pipe(
-      select(getAvailableLocales),
-      whenTruthy(),
-      tap(locales => {
-        this.meta.setTag('og:locale:alternate', locales.map(x => x.lang).join(','));
-      })
-    )
+  seoAlternateLanguages$ = createEffect(
+    () =>
+      this.waitAppStable(
+        this.store.pipe(
+          select(getAvailableLocales),
+          whenTruthy(),
+          tap(locales => {
+            this.meta.setTag('og:locale:alternate', locales.map(x => x.lang).join(','));
+          })
+        )
+      ),
+    { dispatch: false }
   );
 
   private waitAppStable<T>(obs: Observable<T>) {

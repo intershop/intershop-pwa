@@ -11,7 +11,7 @@ import { CountryService } from 'ish-core/services/country/country.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { GeneralStoreModule } from 'ish-core/store/general/general-store.module';
 
-import { LoadRegions, LoadRegionsFail, LoadRegionsSuccess } from './regions.actions';
+import { loadRegions, loadRegionsFail, loadRegionsSuccess } from './regions.actions';
 import { RegionsEffects } from './regions.effects';
 
 describe('Regions Effects', () => {
@@ -44,7 +44,7 @@ describe('Regions Effects', () => {
 
   describe('loadRegions$', () => {
     it('should call the countryService for loadRegions', done => {
-      const action = new LoadRegions({ countryCode });
+      const action = loadRegions({ countryCode });
       actions$ = of(action);
 
       effects.loadRegions$.subscribe(() => {
@@ -53,8 +53,8 @@ describe('Regions Effects', () => {
       });
     });
     it('should map to action of type LoadRegionSuccess', () => {
-      const action = new LoadRegions({ countryCode });
-      const completion = new LoadRegionsSuccess({ regions });
+      const action = loadRegions({ countryCode });
+      const completion = loadRegionsSuccess({ regions });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -62,9 +62,9 @@ describe('Regions Effects', () => {
     });
     it('should map invalid request to action of type LoadRegionsFail', () => {
       when(countryServiceMock.getRegionsByCountry(anyString())).thenReturn(throwError({ message: 'invalid' }));
-      const action = new LoadRegions({ countryCode });
+      const action = loadRegions({ countryCode });
       const error = { message: 'invalid' } as HttpError;
-      const completion = new LoadRegionsFail({ error });
+      const completion = loadRegionsFail({ error });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

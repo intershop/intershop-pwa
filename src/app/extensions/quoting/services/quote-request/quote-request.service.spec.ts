@@ -10,13 +10,13 @@ import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { LoadCompanyUserSuccess, LoginUserSuccess, LogoutUser } from 'ish-core/store/customer/user';
+import { loadCompanyUserSuccess, loginUserSuccess, logoutUser } from 'ish-core/store/customer/user';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 
 import { QuoteRequestItemData } from '../../models/quote-request-item/quote-request-item.interface';
 import { QuoteRequestData } from '../../models/quote-request/quote-request.interface';
 import { QuoteRequest } from '../../models/quote-request/quote-request.model';
-import { LoadQuoteRequestsSuccess } from '../../store/quote-request';
+import { loadQuoteRequestsSuccess } from '../../store/quote-request';
 import { QuotingStoreModule } from '../../store/quoting-store.module';
 
 import { QuoteRequestService } from './quote-request.service';
@@ -110,8 +110,8 @@ describe('Quote Request Service', () => {
 
     beforeEach(() => {
       when(apiService.get(anything())).thenReturn(of({ elements: [] }));
-      store$.dispatch(new LoginUserSuccess({ customer }));
-      store$.dispatch(new LoadCompanyUserSuccess({ user }));
+      store$.dispatch(loginUserSuccess({ customer }));
+      store$.dispatch(loadCompanyUserSuccess({ user }));
     });
 
     it('should complete after first successful result', () => {
@@ -119,7 +119,7 @@ describe('Quote Request Service', () => {
 
       verify(apiService.get(anything())).once();
 
-      store$.dispatch(new LoadCompanyUserSuccess({ user: { ...user, firstName: 'test' } as User }));
+      store$.dispatch(loadCompanyUserSuccess({ user: { ...user, firstName: 'test' } as User }));
 
       verify(apiService.get(anything())).once();
 
@@ -142,7 +142,7 @@ describe('Quote Request Service', () => {
       verify(apiService.get(anything())).thrice();
       expect(subscription3.closed).toBeTrue();
 
-      store$.dispatch(new LogoutUser());
+      store$.dispatch(logoutUser());
 
       const subscription4 = quoteRequestService.getQuoteRequests().subscribe(fail);
 
@@ -153,8 +153,8 @@ describe('Quote Request Service', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer, user }));
-      store$.dispatch(new LoadCompanyUserSuccess({ user }));
+      store$.dispatch(loginUserSuccess({ customer, user }));
+      store$.dispatch(loadCompanyUserSuccess({ user }));
     });
 
     it("should get quoteRequests data when 'getQuoteRequests' is called", done => {
@@ -243,7 +243,7 @@ describe('Quote Request Service', () => {
 
     it("should post new item to quote request when 'addProductToQuoteRequest' is called", done => {
       store$.dispatch(
-        new LoadQuoteRequestsSuccess({
+        loadQuoteRequestsSuccess({
           quoteRequests: [
             {
               id: 'QRID',

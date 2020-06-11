@@ -1,22 +1,14 @@
-import { Action } from '@ngrx/store';
+import { createAction } from '@ngrx/store';
+
+import { payload } from 'ish-core/utils/ngrx-creators';
 
 import { ConfigurationState } from './configuration.reducer';
 
-export enum ConfigurationActionTypes {
-  ApplyConfiguration = '[Configuration] Apply Configuration',
-  SetGTMToken = '[Configuration] Set Google Tag Manager Token',
-}
-
 type ConfigurationType = Partial<ConfigurationState>;
 
-export class ApplyConfiguration implements Action {
-  readonly type = ConfigurationActionTypes.ApplyConfiguration;
-  constructor(public payload: ConfigurationType) {}
-}
+export const applyConfiguration = createAction('[Configuration] Apply Configuration', payload<ConfigurationType>());
 
-export class SetGTMToken implements Action {
-  readonly type = ConfigurationActionTypes.SetGTMToken;
-  constructor(public payload: { gtmToken: string }) {}
-}
-
-export type ConfigurationAction = ApplyConfiguration | SetGTMToken;
+export const setGTMToken = createAction(
+  '[Configuration] Set Google Tag Manager Token',
+  payload<{ gtmToken: string }>()
+);

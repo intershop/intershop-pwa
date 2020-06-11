@@ -1,10 +1,10 @@
 import { Action, ActionReducer } from '@ngrx/store';
 
-import { UserActionTypes } from 'ish-core/store/customer/user';
+import { logoutUser } from 'ish-core/store/customer/user';
 
 export function resetOnLogoutMeta(reducer: ActionReducer<{}>): ActionReducer<{}> {
   return (state: {}, action: Action) => {
-    if (action.type === UserActionTypes.LogoutUser) {
+    if (action.type === logoutUser.type) {
       return reducer({}, action);
     }
     return reducer(state, action);

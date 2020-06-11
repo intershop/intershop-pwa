@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter, map, switchMap, switchMapTo, tap } from 'rxjs/operators';
 
-import { LoadContentInclude, getContentInclude } from 'ish-core/store/content/includes';
+import { getContentInclude, loadContentInclude } from 'ish-core/store/content/includes';
 import { getContentPagelet } from 'ish-core/store/content/pagelets';
 import { getContentPageLoading, getSelectedContentPage } from 'ish-core/store/content/pages';
 import { getPGID } from 'ish-core/store/customer/user';
@@ -22,7 +22,7 @@ export class CMSFacade {
     return this.store.pipe(select(getPGID)).pipe(
       switchMapTo(includeId$),
       whenTruthy(),
-      tap(includeId => this.store.dispatch(new LoadContentInclude({ includeId }))),
+      tap(includeId => this.store.dispatch(loadContentInclude({ includeId }))),
       switchMap(includeId => this.store.pipe(select(getContentInclude, includeId)))
     );
   }

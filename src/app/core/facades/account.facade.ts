@@ -10,25 +10,17 @@ import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { User } from 'ish-core/models/user/user.model';
 import {
-  CreateCustomerAddress,
-  DeleteCustomerAddress,
-  LoadAddresses,
+  createCustomerAddress,
+  deleteCustomerAddress,
   getAddressesError,
   getAddressesLoading,
   getAllAddresses,
+  loadAddresses,
 } from 'ish-core/store/customer/addresses';
-import { LoadOrders, getOrders, getOrdersLoading, getSelectedOrder } from 'ish-core/store/customer/orders';
+import { getOrders, getOrdersLoading, getSelectedOrder, loadOrders } from 'ish-core/store/customer/orders';
 import {
-  CreateUser,
-  DeleteUserPaymentInstrument,
-  LoadUserPaymentMethods,
-  LoginUser,
-  RequestPasswordReminder,
-  ResetPasswordReminder,
-  UpdateCustomer,
-  UpdateUser,
-  UpdateUserPassword,
-  UpdateUserPasswordByPasswordReminder,
+  createUser,
+  deleteUserPaymentInstrument,
   getLoggedInCustomer,
   getLoggedInUser,
   getPasswordReminderError,
@@ -39,13 +31,21 @@ import {
   getUserLoading,
   getUserPaymentMethods,
   isBusinessCustomer,
+  loadUserPaymentMethods,
+  loginUser,
+  requestPasswordReminder,
+  resetPasswordReminder,
+  updateCustomer,
+  updateUser,
+  updateUserPassword,
+  updateUserPasswordByPasswordReminder,
 } from 'ish-core/store/customer/user';
 import {
-  CreateContact,
-  LoadContact,
+  createContact,
   getContactLoading,
   getContactSubjects,
   getContactSuccess,
+  loadContact,
 } from 'ish-core/store/general/contact';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -62,20 +62,20 @@ export class AccountFacade {
   isLoggedIn$ = this.store.pipe(select(getUserAuthorized));
 
   loginUser(credentials: Credentials) {
-    this.store.dispatch(new LoginUser({ credentials }));
+    this.store.dispatch(loginUser({ credentials }));
   }
 
   createUser(body: CustomerRegistrationType) {
-    this.store.dispatch(new CreateUser(body));
+    this.store.dispatch(createUser(body));
   }
 
   updateUser(user: User, successMessage?: string, successRouterLink?: string) {
-    this.store.dispatch(new UpdateUser({ user, successMessage, successRouterLink }));
+    this.store.dispatch(updateUser({ user, successMessage, successRouterLink }));
   }
 
   updateUserEmail(user: User) {
     this.store.dispatch(
-      new UpdateUser({
+      updateUser({
         user,
         successMessage: 'account.profile.update_email.message',
         successRouterLink: '/account/profile',
@@ -84,12 +84,12 @@ export class AccountFacade {
   }
 
   updateUserPassword(data: { password: string; currentPassword: string }) {
-    this.store.dispatch(new UpdateUserPassword(data));
+    this.store.dispatch(updateUserPassword(data));
   }
 
   updateUserProfile(user: User) {
     this.store.dispatch(
-      new UpdateUser({
+      updateUser({
         user,
         successMessage: 'account.profile.update_profile.message',
         successRouterLink: '/account/profile',
@@ -105,7 +105,7 @@ export class AccountFacade {
 
   updateCustomerProfile(customer: Customer, message?: string) {
     this.store.dispatch(
-      new UpdateCustomer({
+      updateCustomer({
         customer,
         successMessage: message ? message : 'account.profile.update_profile.message',
         successRouterLink: '/account/profile',
@@ -119,21 +119,21 @@ export class AccountFacade {
   passwordReminderError$ = this.store.pipe(select(getPasswordReminderError));
 
   resetPasswordReminder() {
-    this.store.dispatch(new ResetPasswordReminder());
+    this.store.dispatch(resetPasswordReminder());
   }
 
   requestPasswordReminder(data: PasswordReminder) {
-    this.store.dispatch(new RequestPasswordReminder({ data }));
+    this.store.dispatch(requestPasswordReminder({ data }));
   }
 
   requestPasswordReminderUpdate(data: PasswordReminderUpdate) {
-    this.store.dispatch(new UpdateUserPasswordByPasswordReminder(data));
+    this.store.dispatch(updateUserPasswordByPasswordReminder(data));
   }
 
   // ORDERS
 
   orders$() {
-    this.store.dispatch(new LoadOrders());
+    this.store.dispatch(loadOrders());
     return this.store.pipe(select(getOrders));
   }
 
@@ -145,12 +145,12 @@ export class AccountFacade {
   private eligiblePaymentMethods$ = this.store.pipe(select(getUserPaymentMethods));
 
   paymentMethods$() {
-    this.store.dispatch(new LoadUserPaymentMethods());
+    this.store.dispatch(loadUserPaymentMethods());
     return this.eligiblePaymentMethods$;
   }
 
   deletePaymentInstrument(paymentInstrumentId: string) {
-    this.store.dispatch(new DeleteUserPaymentInstrument({ id: paymentInstrumentId }));
+    this.store.dispatch(deleteUserPaymentInstrument({ id: paymentInstrumentId }));
   }
 
   // ADDRESSES
@@ -159,7 +159,7 @@ export class AccountFacade {
     return this.user$.pipe(
       whenTruthy(),
       take(1),
-      tap(() => this.store.dispatch(new LoadAddresses())),
+      tap(() => this.store.dispatch(loadAddresses())),
       switchMap(() => this.store.pipe(select(getAllAddresses)))
     );
   }
@@ -167,26 +167,26 @@ export class AccountFacade {
   addressesError$ = this.store.pipe(select(getAddressesError));
 
   createCustomerAddress(address: Address) {
-    this.store.dispatch(new CreateCustomerAddress({ address }));
+    this.store.dispatch(createCustomerAddress({ address }));
   }
 
   deleteCustomerAddress(addressId: string) {
-    this.store.dispatch(new DeleteCustomerAddress({ addressId }));
+    this.store.dispatch(deleteCustomerAddress({ addressId }));
   }
 
   // CONTACT US
 
   contactSubjects$() {
-    this.store.dispatch(new LoadContact());
+    this.store.dispatch(loadContact());
     return this.store.pipe(select(getContactSubjects));
   }
   contactLoading$ = this.store.pipe(select(getContactLoading));
   contactSuccess$ = this.store.pipe(select(getContactSuccess));
 
   resetContactState() {
-    this.store.dispatch(new LoadContact());
+    this.store.dispatch(loadContact());
   }
   createContact(contact: Contact) {
-    this.store.dispatch(new CreateContact({ contact }));
+    this.store.dispatch(createContact({ contact }));
   }
 }

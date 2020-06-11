@@ -6,18 +6,18 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { OrderTemplate, OrderTemplateHeader } from '../models/order-template/order-template.model';
 import {
-  AddBasketToNewOrderTemplate,
-  AddProductToNewOrderTemplate,
-  AddProductToOrderTemplate,
-  CreateOrderTemplate,
-  DeleteOrderTemplate,
-  MoveItemToOrderTemplate,
-  RemoveItemFromOrderTemplate,
-  UpdateOrderTemplate,
+  addBasketToNewOrderTemplate,
+  addProductToNewOrderTemplate,
+  addProductToOrderTemplate,
+  createOrderTemplate,
+  deleteOrderTemplate,
   getAllOrderTemplates,
   getOrderTemplateError,
   getOrderTemplateLoading,
   getSelectedOrderTemplateDetails,
+  moveItemToOrderTemplate,
+  removeItemFromOrderTemplate,
+  updateOrderTemplate,
 } from '../store/order-template';
 
 @Injectable({ providedIn: 'root' })
@@ -30,27 +30,27 @@ export class OrderTemplatesFacade {
   orderTemplateError$: Observable<HttpError> = this.store.pipe(select(getOrderTemplateError));
 
   addOrderTemplate(orderTemplate: OrderTemplateHeader): void | HttpError {
-    this.store.dispatch(new CreateOrderTemplate({ orderTemplate }));
+    this.store.dispatch(createOrderTemplate({ orderTemplate }));
   }
 
   addBasketToNewOrderTemplate(orderTemplate: OrderTemplateHeader): void | HttpError {
-    this.store.dispatch(new AddBasketToNewOrderTemplate({ orderTemplate }));
+    this.store.dispatch(addBasketToNewOrderTemplate({ orderTemplate }));
   }
 
   deleteOrderTemplate(id: string): void {
-    this.store.dispatch(new DeleteOrderTemplate({ orderTemplateId: id }));
+    this.store.dispatch(deleteOrderTemplate({ orderTemplateId: id }));
   }
 
   updateOrderTemplate(orderTemplate: OrderTemplate): void {
-    this.store.dispatch(new UpdateOrderTemplate({ orderTemplate }));
+    this.store.dispatch(updateOrderTemplate({ orderTemplate }));
   }
 
   addProductToNewOrderTemplate(title: string, sku: string, quantity?: number): void {
-    this.store.dispatch(new AddProductToNewOrderTemplate({ title, sku, quantity }));
+    this.store.dispatch(addProductToNewOrderTemplate({ title, sku, quantity }));
   }
 
   addProductToOrderTemplate(orderTemplateId: string, sku: string, quantity?: number): void {
-    this.store.dispatch(new AddProductToOrderTemplate({ orderTemplateId, sku, quantity }));
+    this.store.dispatch(addProductToOrderTemplate({ orderTemplateId, sku, quantity }));
   }
 
   moveItemToOrderTemplate(
@@ -60,7 +60,7 @@ export class OrderTemplatesFacade {
     quantity: number
   ): void {
     this.store.dispatch(
-      new MoveItemToOrderTemplate({
+      moveItemToOrderTemplate({
         source: { id: sourceorderTemplateId },
         target: { id: targetorderTemplateId, sku, quantity },
       })
@@ -69,11 +69,11 @@ export class OrderTemplatesFacade {
 
   moveItemToNewOrderTemplate(sourceOrderTemplateId: string, title: string, sku: string, quantity: number): void {
     this.store.dispatch(
-      new MoveItemToOrderTemplate({ source: { id: sourceOrderTemplateId }, target: { title, sku, quantity } })
+      moveItemToOrderTemplate({ source: { id: sourceOrderTemplateId }, target: { title, sku, quantity } })
     );
   }
 
   removeProductFromOrderTemplate(orderTemplateId: string, sku: string): void {
-    this.store.dispatch(new RemoveItemFromOrderTemplate({ orderTemplateId, sku }));
+    this.store.dispatch(removeItemFromOrderTemplate({ orderTemplateId, sku }));
   }
 }

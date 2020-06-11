@@ -8,7 +8,7 @@ import { noop } from 'rxjs';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 
-import { CommunicationTimeoutError } from './error.actions';
+import { communicationTimeoutError } from './error.actions';
 import { ErrorEffects } from './error.effects';
 
 describe('Error Effects', () => {
@@ -36,7 +36,7 @@ describe('Error Effects', () => {
 
   describe('gotoErrorPageInCaseOfError$', () => {
     it('should call Router Navigation when Error is handled', fakeAsync(() => {
-      store$.dispatch(new CommunicationTimeoutError({ error: {} as HttpError }));
+      store$.dispatch(communicationTimeoutError({ error: {} as HttpError }));
 
       effects.gotoErrorPageInCaseOfError$.subscribe(noop, fail, fail);
 

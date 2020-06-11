@@ -1,8 +1,10 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
+import { createReducer, on } from '@ngrx/store';
 
 import { Country } from 'ish-core/models/country/country.model';
+import { setLoadingOn } from 'ish-core/utils/ngrx-creators';
 
-import { CountryAction, CountryActionTypes } from './countries.actions';
+import { loadCountries, loadCountriesFail, loadCountriesSuccess } from './countries.actions';
 
 export const countryAdapter = createEntityAdapter<Country>({
   selectId: country => country.countryCode,
@@ -16,31 +18,19 @@ export const initialState: CountriesState = countryAdapter.getInitialState({
   loading: false,
 });
 
-export function countriesReducer(state = initialState, action: CountryAction): CountriesState {
-  switch (action.type) {
-    case CountryActionTypes.LoadCountries: {
-      return {
-        ...state,
-        loading: true,
-      };
-    }
+export const countriesReducer = createReducer(
+  initialState,
+  setLoadingOn(loadCountries),
+  on(loadCountriesFail, (state: CountriesState) => ({
+    ...state,
+    loading: false,
+  })),
+  on(loadCountriesSuccess, (state: CountriesState, action) => {
+    const { countries } = action.payload;
 
-    case CountryActionTypes.LoadCountriesFail: {
-      return {
-        ...state,
-        loading: false,
-      };
-    }
-
-    case CountryActionTypes.LoadCountriesSuccess: {
-      const { countries } = action.payload;
-
-      return {
-        ...countryAdapter.setAll(countries, state),
-        loading: false,
-      };
-    }
-  }
-
-  return state;
-}
+    return {
+      ...countryAdapter.setAll(countries, state),
+      loading: false,
+    };
+  })
+);

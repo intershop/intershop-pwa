@@ -6,7 +6,7 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { LoadAddresses, LoadAddressesFail, LoadAddressesSuccess } from './addresses.actions';
+import { loadAddresses, loadAddressesFail, loadAddressesSuccess } from './addresses.actions';
 import { getAddressesError, getAddressesLoading, getAllAddresses } from './addresses.selectors';
 
 describe('Addresses Selectors', () => {
@@ -35,7 +35,7 @@ describe('Addresses Selectors', () => {
 
   describe('loading addresses', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadAddresses());
+      store$.dispatch(loadAddresses());
     });
 
     it('should set the state to loading', () => {
@@ -44,7 +44,7 @@ describe('Addresses Selectors', () => {
 
     describe('and reporting success', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadAddressesSuccess({ addresses }));
+        store$.dispatch(loadAddressesSuccess({ addresses }));
       });
 
       it('should set loading to false', () => {
@@ -55,7 +55,7 @@ describe('Addresses Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadAddressesFail({ error: { message: 'error' } as HttpError }));
+        store$.dispatch(loadAddressesFail({ error: { message: 'error' } as HttpError }));
       });
 
       it('should not have loaded addresses on error', () => {

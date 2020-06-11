@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { LoadProductSuccess } from 'ish-core/store/shopping/products';
+import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -12,13 +12,13 @@ import { QuoteRequestData } from '../../models/quote-request/quote-request.inter
 import { QuotingStoreModule } from '../quoting-store.module';
 
 import {
-  LoadQuoteRequestItems,
-  LoadQuoteRequestItemsFail,
-  LoadQuoteRequestItemsSuccess,
-  LoadQuoteRequests,
-  LoadQuoteRequestsFail,
-  LoadQuoteRequestsSuccess,
-  SelectQuoteRequest,
+  loadQuoteRequestItems,
+  loadQuoteRequestItemsFail,
+  loadQuoteRequestItemsSuccess,
+  loadQuoteRequests,
+  loadQuoteRequestsFail,
+  loadQuoteRequestsSuccess,
+  selectQuoteRequest,
 } from './quote-request.actions';
 import {
   getActiveQuoteRequest,
@@ -56,18 +56,18 @@ describe('Quote Request Selectors', () => {
   describe('selecting a quote request', () => {
     beforeEach(() => {
       store$.dispatch(
-        new LoadQuoteRequestsSuccess({
+        loadQuoteRequestsSuccess({
           quoteRequests: [
             { id: 'test', items: [] },
             { id: 'test2', editable: true, items: [] },
           ] as QuoteRequestData[],
         })
       );
-      store$.dispatch(new LoadProductSuccess({ product: { sku: 'test' } as Product }));
+      store$.dispatch(loadProductSuccess({ product: { sku: 'test' } as Product }));
       store$.dispatch(
-        new LoadQuoteRequestItemsSuccess({ quoteRequestItems: [{ productSKU: 'test' }] as QuoteRequestItem[] })
+        loadQuoteRequestItemsSuccess({ quoteRequestItems: [{ productSKU: 'test' }] as QuoteRequestItem[] })
       );
-      store$.dispatch(new SelectQuoteRequest({ id: 'test' }));
+      store$.dispatch(selectQuoteRequest({ id: 'test' }));
     });
 
     it('should set "selected" to selected quote item id and set selected quote request', () => {
@@ -93,7 +93,7 @@ describe('Quote Request Selectors', () => {
 
   describe('loading quote request list', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadQuoteRequests());
+      store$.dispatch(loadQuoteRequests());
     });
 
     it('should set the state to loading', () => {
@@ -105,14 +105,14 @@ describe('Quote Request Selectors', () => {
         { id: 'test', items: [] },
         { id: 'test2', editable: true, items: [], state: 'New' },
       ] as QuoteRequestData[];
-      store$.dispatch(new LoadQuoteRequestsSuccess({ quoteRequests }));
+      store$.dispatch(loadQuoteRequestsSuccess({ quoteRequests }));
 
       expect(getQuoteRequestLoading(store$.state)).toBeFalse();
       expect(getActiveQuoteRequest(store$.state)).toEqual(quoteRequests[1]);
     });
 
     it('should set loading to false and set error state', () => {
-      store$.dispatch(new LoadQuoteRequestsFail({ error: { message: 'invalid' } as HttpError }));
+      store$.dispatch(loadQuoteRequestsFail({ error: { message: 'invalid' } as HttpError }));
       expect(getQuoteRequestLoading(store$.state)).toBeFalse();
       expect(getQuoteRequestError(store$.state)).toEqual({ message: 'invalid' });
     });
@@ -120,7 +120,7 @@ describe('Quote Request Selectors', () => {
 
   describe('loading quote request item list', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadQuoteRequestItems({ id: 'test' }));
+      store$.dispatch(loadQuoteRequestItems({ id: 'test' }));
     });
 
     it('should set the state to loading', () => {
@@ -129,7 +129,7 @@ describe('Quote Request Selectors', () => {
 
     it('should set loading to false and set quote state', () => {
       const quoteRequestItems = [{ productSKU: 'test' }] as QuoteRequestItem[];
-      store$.dispatch(new LoadQuoteRequestItemsSuccess({ quoteRequestItems }));
+      store$.dispatch(loadQuoteRequestItemsSuccess({ quoteRequestItems }));
 
       expect(getQuoteRequestLoading(store$.state)).toBeFalse();
       expect(getQuoteRequestItemsWithProducts(store$.state)).toEqual(quoteRequestItems);
@@ -137,7 +137,7 @@ describe('Quote Request Selectors', () => {
     });
 
     it('should set loading to false and set error state', () => {
-      store$.dispatch(new LoadQuoteRequestItemsFail({ error: { message: 'invalid' } as HttpError }));
+      store$.dispatch(loadQuoteRequestItemsFail({ error: { message: 'invalid' } as HttpError }));
       expect(getQuoteRequestLoading(store$.state)).toBeFalse();
       expect(getQuoteRequestItemsWithProducts(store$.state)).toBeEmpty();
       expect(getQuoteRequestError(store$.state)).toEqual({ message: 'invalid' });
@@ -150,10 +150,10 @@ describe('Quote Request Selectors', () => {
         { id: 'test', items: [] },
         { id: 'test2', editable: true, items: [{ title: 'item1' }], state: 'New' },
       ] as QuoteRequestData[];
-      store$.dispatch(new LoadQuoteRequestsSuccess({ quoteRequests }));
+      store$.dispatch(loadQuoteRequestsSuccess({ quoteRequests }));
       const quoteRequestItems = [{ id: 'item1', productSKU: 'test' }] as QuoteRequestItem[];
-      store$.dispatch(new LoadQuoteRequestItemsSuccess({ quoteRequestItems }));
-      store$.dispatch(new LoadProductSuccess({ product: { sku: 'test' } as Product }));
+      store$.dispatch(loadQuoteRequestItemsSuccess({ quoteRequestItems }));
+      store$.dispatch(loadProductSuccess({ product: { sku: 'test' } as Product }));
     });
 
     it('should have a product on the active quote request', () => {

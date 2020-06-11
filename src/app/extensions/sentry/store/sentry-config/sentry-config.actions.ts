@@ -1,12 +1,5 @@
-import { Action } from '@ngrx/store';
+import { createAction } from '@ngrx/store';
 
-export enum SentryConfigActionTypes {
-  SetSentryConfig = '[Sentry] Set Config',
-}
+import { payload } from 'ish-core/utils/ngrx-creators';
 
-export class SetSentryConfig implements Action {
-  readonly type = SentryConfigActionTypes.SetSentryConfig;
-  constructor(public payload: { dsn: string }) {}
-}
-
-export type SentryConfigAction = SetSentryConfig;
+export const setSentryConfig = createAction('[Sentry] Set Config', payload<{ dsn: string }>());
