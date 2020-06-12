@@ -7,7 +7,7 @@ universalTest() {
   URL="$2"
   GREP="$3"
   echo "\n\nTEST $NUM: searching '$GREP' in '$URL'"
-  timeout 5m sh -c "[ ! -z \"\$(wget -O - -q $URL | grep \"$GREP\")\" ]"
+  timeout 5m sh -c "[ ! -z \"\$(wget -O - -q -t 0 --waitretry 5 $URL | grep \"$GREP\")\" ]"
   res=$?
   [ "$res" -ne "0" ] && curl -v "$URL"
   [ "$res" -eq "0" ] && echo "TEST $NUM: SUCCESS" || echo "\n\nTEST $NUM: searching '$GREP' in '$URL': FAILURE\n"
