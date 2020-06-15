@@ -19,9 +19,10 @@ export class UsersEffects {
   loadUsers$ = this.actions$.pipe(
     ofType<actions.LoadUsers>(actions.UsersActionTypes.LoadUsers),
     exhaustMap(() =>
-      this.usersService
-        .getUsers()
-        .pipe(map(users => new actions.LoadUsersSuccess({ users }), mapErrorToAction(actions.LoadUsersFail)))
+      this.usersService.getUsers().pipe(
+        map(users => new actions.LoadUsersSuccess({ users })),
+        mapErrorToAction(actions.LoadUsersFail)
+      )
     )
   );
 
