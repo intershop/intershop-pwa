@@ -46,6 +46,14 @@ export function usersReducer(state = initialState, action: UsersAction): UsersSt
         error: undefined,
       };
     }
+
+    case UsersActionTypes.ResetUsers: {
+      return {
+        ...usersAdapter.removeAll(state),
+        loading: false,
+        error: undefined,
+      };
+    }
   }
 
   return state;
