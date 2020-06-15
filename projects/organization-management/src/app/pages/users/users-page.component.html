@@ -5,7 +5,7 @@
 <pre *ngIf="error$ | async as error">{{ error }}</pre>
 
 <div class="section">
-  <div class="list-body">
+  <div class="list-body" data-testing-id="user-list">
     <ng-container *ngFor="let user of users$ | async">
       <div *ngIf="user" class="list-item-row row mx-0">
         <div class="col-9 list-item">

@@ -3,8 +3,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
+import { User } from 'ish-core/models/user/user.model';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
@@ -16,8 +18,16 @@ describe('Users Page Component', () => {
   let component: UsersPageComponent;
   let fixture: ComponentFixture<UsersPageComponent>;
   let element: HTMLElement;
+  let organizationManagementFacade: OrganizationManagementFacade;
+
+  const users = [
+    { firstName: 'Patricia', lastName: 'Miller', email: 'pmiller@test.intershop.de' },
+    { firstName: 'Jack', lastName: 'Link', email: 'jlink@test.intershop.de' },
+  ] as User[];
 
   beforeEach(async(() => {
+    organizationManagementFacade = mock(OrganizationManagementFacade);
+
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
@@ -26,9 +36,7 @@ describe('Users Page Component', () => {
         MockComponent(ModalDialogComponent),
         UsersPageComponent,
       ],
-      providers: [
-        { provide: OrganizationManagementFacade, useFactory: () => instance(mock(OrganizationManagementFacade)) },
-      ],
+      providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
     }).compileComponents();
   }));
 
@@ -42,5 +50,19 @@ describe('Users Page Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should display loading overlay if users are loading', () => {
+    when(organizationManagementFacade.usersLoading$).thenReturn(of(true));
+    fixture.detectChanges();
+    expect(element.querySelector('ish-loading')).toBeTruthy();
+  });
+
+  it('should display user list after creation ', () => {
+    when(organizationManagementFacade.users$()).thenReturn(of(users));
+    fixture.detectChanges();
+
+    expect(element.querySelector('[data-testing-id="user-list"]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id="user-list"]').innerHTML).toContain('Patricia Miller');
   });
 });
