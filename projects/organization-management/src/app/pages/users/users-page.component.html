@@ -2,7 +2,7 @@
   {{ 'account.organization.user_management' | translate }}
 </h1>
 
-<pre *ngIf="error$ | async as error">{{ error }}</pre>
+<ish-error-message [error]="error$ | async"></ish-error-message>
 
 <div class="section">
   <div class="list-body" data-testing-id="user-list">
