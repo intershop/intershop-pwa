@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { exhaustMap, map } from 'rxjs/operators';
+import { exhaustMap, map, mapTo } from 'rxjs/operators';
 
+import { UserActionTypes } from 'ish-core/store/user';
 import { SetBreadcrumbData } from 'ish-core/store/viewconf';
 import { mapErrorToAction, whenTruthy } from 'ish-core/utils/operators';
 
@@ -40,4 +41,7 @@ export class UsersEffects {
         })
     )
   );
+
+  @Effect()
+  resetUsersAfterLogout$ = this.actions$.pipe(ofType(UserActionTypes.LogoutUser), mapTo(new actions.ResetUsers()));
 }
