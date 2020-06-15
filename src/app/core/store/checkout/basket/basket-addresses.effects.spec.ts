@@ -98,7 +98,7 @@ describe('Basket Addresses Effects', () => {
 
   describe('createAddressForBasket$ for an anonymous user', () => {
     beforeEach(() => {
-      when(basketServiceMock.createBasketAddress('current', anything())).thenReturn(of(BasketMockData.getAddress()));
+      when(basketServiceMock.createBasketAddress(anything())).thenReturn(of(BasketMockData.getAddress()));
     });
     it('should call the basketService if user is not logged in', done => {
       const address = BasketMockData.getAddress();
@@ -106,7 +106,7 @@ describe('Basket Addresses Effects', () => {
       actions$ = of(action);
 
       effects.createAddressForBasket$.subscribe(() => {
-        verify(basketServiceMock.createBasketAddress('current', anything())).once();
+        verify(basketServiceMock.createBasketAddress(anything())).once();
         done();
       });
     });
@@ -241,7 +241,7 @@ describe('Basket Addresses Effects', () => {
 
   describe('updateBasketAddress$ for anonymous user', () => {
     beforeEach(() => {
-      when(basketServiceMock.updateBasketAddress(anyString(), anything())).thenReturn(of(BasketMockData.getAddress()));
+      when(basketServiceMock.updateBasketAddress(anything())).thenReturn(of(BasketMockData.getAddress()));
     });
 
     it('should call the basketService for updateBasketAddress', done => {
@@ -250,7 +250,7 @@ describe('Basket Addresses Effects', () => {
       actions$ = of(action);
 
       effects.updateBasketAddress$.subscribe(() => {
-        verify(basketServiceMock.updateBasketAddress('current', anything())).once();
+        verify(basketServiceMock.updateBasketAddress(anything())).once();
         done();
       });
     });
@@ -269,9 +269,7 @@ describe('Basket Addresses Effects', () => {
 
     it('should map invalid request to action of type UpdateCustomerAddressFail', () => {
       const address = BasketMockData.getAddress();
-      when(basketServiceMock.updateBasketAddress(anyString(), anything())).thenReturn(
-        throwError({ message: 'invalid' })
-      );
+      when(basketServiceMock.updateBasketAddress(anything())).thenReturn(throwError({ message: 'invalid' }));
 
       const action = new basketActions.UpdateBasketAddress({ address });
       const completion = new UpdateCustomerAddressFail({ error: { message: 'invalid' } as HttpError });

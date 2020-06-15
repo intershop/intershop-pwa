@@ -132,7 +132,7 @@ describe('Checkout Store', () => {
     when(countryServiceMock.getCountries()).thenReturn(of([{ countryCode: 'DE', name: 'Germany' }]));
 
     const basketServiceMock = mock(BasketService);
-    when(basketServiceMock.getBasket(anything())).thenCall(() => {
+    when(basketServiceMock.getBasket()).thenCall(() => {
       const newBasket = {
         ...basket,
       };
@@ -154,7 +154,7 @@ describe('Checkout Store', () => {
 
       return of(newBasket);
     });
-    when(basketServiceMock.getBasket(anything())).thenCall(() => {
+    when(basketServiceMock.getBasket()).thenCall(() => {
       const newBasket = {
         ...basket,
       };
@@ -198,7 +198,7 @@ describe('Checkout Store', () => {
       return of(newBasket);
     });
 
-    when(basketServiceMock.addItemsToBasket(anything(), anything())).thenReturn(of(undefined));
+    when(basketServiceMock.addItemsToBasket(anything())).thenReturn(of(undefined));
 
     const productsServiceMock = mock(ProductsService);
     when(productsServiceMock.getProduct(anything())).thenReturn(of(product));
@@ -285,13 +285,6 @@ describe('Checkout Store', () => {
             quantity: 1
           [Basket Internal] Add Items To Basket:
             items: [{"sku":"test","quantity":1,"unit":"pcs."}]
-          [Shopping] Load Product:
-            sku: "test"
-          [Basket Internal] Add Items To Basket:
-            items: [{"sku":"test","quantity":1,"unit":"pcs."}]
-            basketId: "test"
-          [Shopping] Load Product Success:
-            product: {"name":"test","shortDescription":"test","longDescription":"...
           [Basket API] Add Items To Basket Success:
             info: undefined
           [Shopping] Load Product:

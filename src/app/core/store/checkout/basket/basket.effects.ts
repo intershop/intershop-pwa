@@ -11,7 +11,7 @@ import { UserActionTypes, getLastAPITokenBeforeLogin } from 'ish-core/store/user
 import { mapErrorToAction, mapToPayloadProperty, whenFalsy } from 'ish-core/utils/operators';
 
 import * as basketActions from './basket.actions';
-import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
+import { getCurrentBasket } from './basket.selectors';
 
 @Injectable()
 export class BasketEffects {
@@ -23,9 +23,8 @@ export class BasketEffects {
   @Effect()
   loadBasket$ = this.actions$.pipe(
     ofType<basketActions.LoadBasket>(basketActions.BasketActionTypes.LoadBasket),
-    mapToPayloadProperty('id'),
-    mergeMap(id =>
-      this.basketService.getBasket(id).pipe(
+    mergeMap(() =>
+      this.basketService.getBasket().pipe(
         map(basket => new basketActions.LoadBasketSuccess({ basket })),
         mapErrorToAction(basketActions.LoadBasketFail)
       )
@@ -67,7 +66,7 @@ export class BasketEffects {
     ofType(basketActions.BasketActionTypes.LoadBasketEligibleShippingMethods),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     concatMap(([, basket]) =>
-      this.basketService.getBasketEligibleShippingMethods(basket.id, basket.bucketId).pipe(
+      this.basketService.getBasketEligibleShippingMethods(basket.bucketId).pipe(
         map(result => new basketActions.LoadBasketEligibleShippingMethodsSuccess({ shippingMethods: result })),
         mapErrorToAction(basketActions.LoadBasketEligibleShippingMethodsFail)
       )
@@ -81,9 +80,8 @@ export class BasketEffects {
   updateBasket$ = this.actions$.pipe(
     ofType<basketActions.UpdateBasket>(basketActions.BasketActionTypes.UpdateBasket),
     mapToPayloadProperty('update'),
-    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    concatMap(([update, currentBasketId]) =>
-      this.basketService.updateBasket(currentBasketId, update).pipe(
+    concatMap(update =>
+      this.basketService.updateBasket(update).pipe(
         concatMap(basket => [new basketActions.LoadBasketSuccess({ basket }), new basketActions.ResetBasketErrors()]),
         mapErrorToAction(basketActions.UpdateBasketFail)
       )

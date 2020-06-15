@@ -18,7 +18,7 @@ describe('Basket Reducer', () => {
   describe('LoadBasket actions', () => {
     describe('LoadBasket action', () => {
       it('should set loading to true', () => {
-        const action = new fromActions.LoadBasket({ id: 'test' });
+        const action = new fromActions.LoadBasket();
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toBeTrue();

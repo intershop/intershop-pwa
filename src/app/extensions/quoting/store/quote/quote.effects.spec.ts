@@ -310,7 +310,7 @@ describe('Quote Effects', () => {
 
   describe('addQuoteToBasket$', () => {
     it('should call the basketService for addQuoteToBasket', done => {
-      when(quoteServiceMock.addQuoteToBasket(anyString(), anyString())).thenReturn(of({} as Link));
+      when(quoteServiceMock.addQuoteToBasket(anyString())).thenReturn(of({} as Link));
       store$.dispatch(
         new LoadBasketSuccess({
           basket: {
@@ -325,7 +325,7 @@ describe('Quote Effects', () => {
       actions$ = of(action);
 
       effects.addQuoteToBasket$.subscribe(() => {
-        verify(quoteServiceMock.addQuoteToBasket(quoteId, 'BID')).once();
+        verify(quoteServiceMock.addQuoteToBasket(quoteId)).once();
         done();
       });
     });
@@ -344,7 +344,7 @@ describe('Quote Effects', () => {
     });
 
     it('should map to action of type AddQuoteToBasketSuccess', () => {
-      when(quoteServiceMock.addQuoteToBasket(anyString(), anyString())).thenReturn(of({} as Link));
+      when(quoteServiceMock.addQuoteToBasket(anyString())).thenReturn(of({} as Link));
 
       store$.dispatch(
         new LoadBasketSuccess({
@@ -365,7 +365,7 @@ describe('Quote Effects', () => {
     });
 
     it('should map invalid request to action of type AddQuoteToBasketFail', () => {
-      when(quoteServiceMock.addQuoteToBasket(anyString(), anyString())).thenReturn(throwError({ message: 'invalid' }));
+      when(quoteServiceMock.addQuoteToBasket(anyString())).thenReturn(throwError({ message: 'invalid' }));
 
       store$.dispatch(
         new LoadBasketSuccess({

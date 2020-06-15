@@ -122,14 +122,13 @@ export class QuoteService {
   /**
    * Add quote to basket.
    * @param quoteId   The id of the quote that should be added to basket.
-   * @param basketId  The id of the basket which the quote should be added to.
    * @returns         Link to the updated basket items.
    */
-  addQuoteToBasket(quoteId: string, basketId: string): Observable<Link> {
+  addQuoteToBasket(quoteId: string): Observable<Link> {
     const body = {
       quoteID: quoteId,
     };
 
-    return this.apiService.post(`baskets/${basketId}/items`, body);
+    return this.apiService.post(`baskets/current/items`, body);
   }
 }

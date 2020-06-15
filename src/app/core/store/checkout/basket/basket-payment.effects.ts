@@ -21,9 +21,8 @@ export class BasketPaymentEffects {
   @Effect()
   loadBasketEligiblePaymentMethods$ = this.actions$.pipe(
     ofType(basketActions.BasketActionTypes.LoadBasketEligiblePaymentMethods),
-    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    concatMap(([, basketid]) =>
-      this.paymentService.getBasketEligiblePaymentMethods(basketid).pipe(
+    concatMap(() =>
+      this.paymentService.getBasketEligiblePaymentMethods().pipe(
         map(result => new basketActions.LoadBasketEligiblePaymentMethodsSuccess({ paymentMethods: result })),
         mapErrorToAction(basketActions.LoadBasketEligiblePaymentMethodsFail)
       )
@@ -37,10 +36,9 @@ export class BasketPaymentEffects {
   setPaymentAtBasket$ = this.actions$.pipe(
     ofType<basketActions.SetBasketPayment>(basketActions.BasketActionTypes.SetBasketPayment),
     mapToPayloadProperty('id'),
-    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    concatMap(([paymentInstrumentId, basketid]) =>
+    concatMap(paymentInstrumentId =>
       this.paymentService
-        .setBasketPayment(basketid, paymentInstrumentId)
+        .setBasketPayment(paymentInstrumentId)
         .pipe(mapTo(new basketActions.SetBasketPaymentSuccess()), mapErrorToAction(basketActions.SetBasketPaymentFail))
     )
   );
@@ -58,12 +56,11 @@ export class BasketPaymentEffects {
       paymentInstrument: payload.paymentInstrument,
       customerNo: customer && customer.customerNo,
     })),
-    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    concatMap(([payload, basketid]) => {
+    concatMap(payload => {
       const createPayment$ =
         payload.customerNo && payload.saveForLater
           ? this.paymentService.createUserPayment(payload.customerNo, payload.paymentInstrument)
-          : this.paymentService.createBasketPayment(basketid, payload.paymentInstrument);
+          : this.paymentService.createBasketPayment(payload.paymentInstrument);
 
       return createPayment$.pipe(
         concatMap(pi => [
@@ -101,10 +98,9 @@ export class BasketPaymentEffects {
   updateBasketPayment$ = this.actions$.pipe(
     ofType<basketActions.UpdateBasketPayment>(basketActions.BasketActionTypes.UpdateBasketPayment),
     mapToPayloadProperty('params'),
-    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    concatMap(([params, basketid]) =>
+    concatMap(params =>
       this.paymentService
-        .updateBasketPayment(basketid, params)
+        .updateBasketPayment(params)
         .pipe(
           mapTo(new basketActions.UpdateBasketPaymentSuccess()),
           mapErrorToAction(basketActions.UpdateBasketPaymentFail)

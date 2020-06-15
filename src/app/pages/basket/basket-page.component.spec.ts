@@ -58,7 +58,7 @@ describe('Basket Page Component', () => {
   });
 
   it('should render loading component if there is no basket', () => {
-    store$.dispatch(new LoadBasket({ id: 'BASKET_ID' }));
+    store$.dispatch(new LoadBasket());
     fixture.detectChanges();
     expect(element.querySelector('ish-loading')).toBeTruthy();
   });

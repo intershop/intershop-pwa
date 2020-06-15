@@ -90,7 +90,7 @@ export class CreateQuoteRequestFromQuoteSuccess implements Action {
 
 export class AddQuoteToBasket implements Action {
   readonly type = QuoteActionTypes.AddQuoteToBasket;
-  constructor(public payload: { quoteId: string; basketId?: string }) {}
+  constructor(public payload: { quoteId: string }) {}
 }
 
 export class AddQuoteToBasketFail implements Action {

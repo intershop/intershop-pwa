@@ -73,7 +73,6 @@ export enum BasketActionTypes {
 
 export class LoadBasket implements Action {
   readonly type = BasketActionTypes.LoadBasket;
-  constructor(public payload?: { id: string }) {}
 }
 
 export class LoadBasketByAPIToken implements Action {
@@ -139,7 +138,7 @@ export class AddProductToBasket implements Action {
 
 export class AddItemsToBasket implements Action {
   readonly type = BasketActionTypes.AddItemsToBasket;
-  constructor(public payload: { items: { sku: string; quantity: number; unit: string }[]; basketId?: string }) {}
+  constructor(public payload: { items: { sku: string; quantity: number; unit: string }[] }) {}
 }
 
 export class AddItemsToBasketFail implements Action {

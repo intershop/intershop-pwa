@@ -58,7 +58,7 @@ describe('Basket Promotion Code Effects', () => {
 
   describe('addPromotionCodeToBasket$', () => {
     beforeEach(() => {
-      when(basketServiceMock.addPromotionCodeToBasket(anyString(), anyString())).thenReturn(of(undefined));
+      when(basketServiceMock.addPromotionCodeToBasket(anyString())).thenReturn(of(undefined));
 
       store$.dispatch(
         new basketActions.LoadBasketSuccess({
@@ -76,7 +76,7 @@ describe('Basket Promotion Code Effects', () => {
       actions$ = of(action);
 
       effects.addPromotionCodeToBasket$.subscribe(() => {
-        verify(basketServiceMock.addPromotionCodeToBasket('BID', 'CODE')).once();
+        verify(basketServiceMock.addPromotionCodeToBasket('CODE')).once();
         done();
       });
     });
@@ -92,9 +92,7 @@ describe('Basket Promotion Code Effects', () => {
     });
 
     it('should map invalid request to action of type AddPromotionCodeToBasketFail', () => {
-      when(basketServiceMock.addPromotionCodeToBasket(anyString(), anyString())).thenReturn(
-        throwError({ message: 'invalid' })
-      );
+      when(basketServiceMock.addPromotionCodeToBasket(anyString())).thenReturn(throwError({ message: 'invalid' }));
 
       const code = 'CODE';
       const action = new basketActions.AddPromotionCodeToBasket({ code });
@@ -108,7 +106,7 @@ describe('Basket Promotion Code Effects', () => {
 
   describe('removePromotionCodeFromBasket$', () => {
     beforeEach(() => {
-      when(basketServiceMock.removePromotionCodeFromBasket(anyString(), anyString())).thenReturn(of(undefined));
+      when(basketServiceMock.removePromotionCodeFromBasket(anyString())).thenReturn(of(undefined));
 
       store$.dispatch(
         new basketActions.LoadBasketSuccess({
@@ -126,7 +124,7 @@ describe('Basket Promotion Code Effects', () => {
       actions$ = of(action);
 
       effects.removePromotionCodeFromBasket$.subscribe(() => {
-        verify(basketServiceMock.removePromotionCodeFromBasket('BID', 'CODE')).once();
+        verify(basketServiceMock.removePromotionCodeFromBasket('CODE')).once();
         done();
       });
     });
@@ -142,9 +140,7 @@ describe('Basket Promotion Code Effects', () => {
     });
 
     it('should map invalid request to action of type RemovePromotionCodeFromBasketFail', () => {
-      when(basketServiceMock.removePromotionCodeFromBasket(anyString(), anyString())).thenReturn(
-        throwError({ message: 'invalid' })
-      );
+      when(basketServiceMock.removePromotionCodeFromBasket(anyString())).thenReturn(throwError({ message: 'invalid' }));
 
       const code = 'CODE';
       const action = new basketActions.RemovePromotionCodeFromBasket({ code });

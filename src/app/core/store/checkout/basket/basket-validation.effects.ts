@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concatMap, filter, map, tap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import {
   BasketValidationResultType,
@@ -30,10 +30,9 @@ export class BasketValidationEffects {
   validateBasket$ = this.actions$.pipe(
     ofType<basketActions.ValidateBasket>(basketActions.BasketActionTypes.ValidateBasket),
     mapToPayloadProperty('scopes'),
-    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     whenTruthy(),
-    concatMap(([scopes, basketId]) =>
-      this.basketService.validateBasket(basketId, scopes).pipe(
+    concatMap(scopes =>
+      this.basketService.validateBasket(scopes).pipe(
         map(basketValidation =>
           basketValidation.results.valid
             ? new basketActions.ContinueCheckoutSuccess({ targetRoute: undefined, basketValidation })
@@ -84,8 +83,8 @@ export class BasketValidationEffects {
           break;
         }
       }
-      return this.basketService.validateBasket(basketId, scopes).pipe(
-        concatMap(basketValidation =>
+      return this.basketService.validateBasket(scopes).pipe(
+        mergeMap(basketValidation =>
           basketValidation.results.valid
             ? targetStep === 5 && !basketValidation.results.adjusted
               ? [

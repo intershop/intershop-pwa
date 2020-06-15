@@ -81,7 +81,7 @@ describe('Basket Items Effects', () => {
 
   describe('addItemsToBasket$', () => {
     beforeEach(() => {
-      when(basketServiceMock.addItemsToBasket(anyString(), anything())).thenReturn(of(undefined));
+      when(basketServiceMock.addItemsToBasket(anything())).thenReturn(of(undefined));
     });
 
     it('should call the basketService for addItemsToBasket', done => {
@@ -99,51 +99,7 @@ describe('Basket Items Effects', () => {
       actions$ = of(action);
 
       effects.addItemsToBasket$.subscribe(() => {
-        verify(basketServiceMock.addItemsToBasket('BID', items)).once();
-        done();
-      });
-    });
-
-    it('should call the basketService for addItemsToBasket with specific basketId when basketId set', done => {
-      store$.dispatch(
-        new basketActions.LoadBasketSuccess({
-          basket: {
-            id: 'BID',
-            lineItems: [],
-          } as Basket,
-        })
-      );
-
-      const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
-      const basketId = 'BID';
-      const action = new basketActions.AddItemsToBasket({ items, basketId });
-      actions$ = of(action);
-
-      effects.addItemsToBasket$.subscribe(() => {
-        verify(basketServiceMock.addItemsToBasket('BID', items)).once();
-        done();
-      });
-    });
-
-    it('should not call the basketService for addItemsToBasket if no basket in store', () => {
-      const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
-      const action = new basketActions.AddItemsToBasket({ items });
-      actions$ = of(action);
-
-      effects.addItemsToBasket$.subscribe(fail, fail);
-
-      verify(basketServiceMock.addItemsToBasket('BID', anything())).never();
-    });
-
-    it('should call the basketService for createBasket when no basket is present', done => {
-      when(basketServiceMock.createBasket()).thenReturn(of({} as Basket));
-
-      const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
-      const action = new basketActions.AddItemsToBasket({ items });
-      actions$ = of(action);
-
-      effects.createBasketBeforeAddItemsToBasket$.subscribe(() => {
-        verify(basketServiceMock.createBasket()).once();
+        verify(basketServiceMock.addItemsToBasket(items)).once();
         done();
       });
     });
@@ -168,7 +124,7 @@ describe('Basket Items Effects', () => {
     });
 
     it('should map invalid request to action of type AddItemsToBasketFail', () => {
-      when(basketServiceMock.addItemsToBasket(anyString(), anything())).thenReturn(throwError({ message: 'invalid' }));
+      when(basketServiceMock.addItemsToBasket(anything())).thenReturn(throwError({ message: 'invalid' }));
 
       store$.dispatch(
         new basketActions.LoadBasketSuccess({
@@ -191,7 +147,7 @@ describe('Basket Items Effects', () => {
 
   describe('loadProductsForAddItemsToBasket$', () => {
     it('should trigger product loading actions for line items if AddItemsToBasket action is triggered', () => {
-      when(basketServiceMock.getBasket(anything())).thenReturn(of());
+      when(basketServiceMock.getBasket()).thenReturn(of());
 
       const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
       const action = new basketActions.AddItemsToBasket({ items });
@@ -217,7 +173,7 @@ describe('Basket Items Effects', () => {
 
   describe('updateBasketItems$', () => {
     beforeEach(() => {
-      when(basketServiceMock.updateBasketItem(anyString(), anyString(), anything())).thenReturn(of([{} as BasketInfo]));
+      when(basketServiceMock.updateBasketItem(anyString(), anything())).thenReturn(of([{} as BasketInfo]));
 
       store$.dispatch(
         new basketActions.LoadBasketSuccess({
@@ -258,10 +214,9 @@ describe('Basket Items Effects', () => {
       actions$ = of(action);
 
       effects.updateBasketItems$.subscribe(() => {
-        verify(basketServiceMock.updateBasketItem('BID', payload.lineItemUpdates[1].itemId, anything())).thrice();
+        verify(basketServiceMock.updateBasketItem(payload.lineItemUpdates[1].itemId, anything())).thrice();
         expect(capture(basketServiceMock.updateBasketItem).first()).toMatchInlineSnapshot(`
           Array [
-            "BID",
             "BIID",
             Object {
               "product": undefined,
@@ -274,7 +229,6 @@ describe('Basket Items Effects', () => {
         `);
         expect(capture(basketServiceMock.updateBasketItem).second()).toMatchInlineSnapshot(`
           Array [
-            "BID",
             "BIID",
             Object {
               "product": undefined,
@@ -287,7 +241,6 @@ describe('Basket Items Effects', () => {
         `);
         expect(capture(basketServiceMock.updateBasketItem).third()).toMatchInlineSnapshot(`
           Array [
-            "BID",
             "BIID",
             Object {
               "product": undefined,
@@ -303,7 +256,7 @@ describe('Basket Items Effects', () => {
     });
 
     it('should call the basketService for deleteBasketItem if quantity = 0', done => {
-      when(basketServiceMock.deleteBasketItem(anyString(), anyString())).thenReturn(of());
+      when(basketServiceMock.deleteBasketItem(anyString())).thenReturn(of());
 
       const payload = {
         lineItemUpdates: [
@@ -317,7 +270,7 @@ describe('Basket Items Effects', () => {
       actions$ = of(action);
 
       effects.updateBasketItems$.subscribe(() => {
-        verify(basketServiceMock.deleteBasketItem('BID', payload.lineItemUpdates[0].itemId)).once();
+        verify(basketServiceMock.deleteBasketItem(payload.lineItemUpdates[0].itemId)).once();
         done();
       });
     });
@@ -341,9 +294,7 @@ describe('Basket Items Effects', () => {
     });
 
     it('should map invalid request to action of type UpdateBasketItemsFail', () => {
-      when(basketServiceMock.updateBasketItem(anyString(), anyString(), anything())).thenReturn(
-        throwError({ message: 'invalid' })
-      );
+      when(basketServiceMock.updateBasketItem(anyString(), anything())).thenReturn(throwError({ message: 'invalid' }));
 
       const payload = {
         lineItemUpdates: [
@@ -386,7 +337,7 @@ describe('Basket Items Effects', () => {
 
   describe('deleteBasketItem$', () => {
     beforeEach(() => {
-      when(basketServiceMock.deleteBasketItem(anyString(), anyString())).thenReturn(of(undefined));
+      when(basketServiceMock.deleteBasketItem(anyString())).thenReturn(of(undefined));
 
       store$.dispatch(
         new basketActions.LoadBasketSuccess({
@@ -404,7 +355,7 @@ describe('Basket Items Effects', () => {
       actions$ = of(action);
 
       effects.deleteBasketItem$.subscribe(() => {
-        verify(basketServiceMock.deleteBasketItem('BID', 'BIID')).once();
+        verify(basketServiceMock.deleteBasketItem('BIID')).once();
         done();
       });
     });
@@ -420,7 +371,7 @@ describe('Basket Items Effects', () => {
     });
 
     it('should map invalid request to action of type DeleteBasketItemFail', () => {
-      when(basketServiceMock.deleteBasketItem(anyString(), anyString())).thenReturn(throwError({ message: 'invalid' }));
+      when(basketServiceMock.deleteBasketItem(anyString())).thenReturn(throwError({ message: 'invalid' }));
 
       const itemId = 'BIID';
       const action = new basketActions.DeleteBasketItem({ itemId });

@@ -24,10 +24,10 @@ import {
 } from 'ish-core/models/line-item-update/line-item-update.helper';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { LoadProduct, getProductEntities } from 'ish-core/store/shopping/products';
-import { mapErrorToAction, mapToPayload, mapToPayloadProperty, mapToProperty } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
 
 import * as basketActions from './basket.actions';
-import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
+import { getCurrentBasket } from './basket.selectors';
 
 @Injectable()
 export class BasketItemsEffects {
@@ -79,17 +79,12 @@ export class BasketItemsEffects {
   addItemsToBasket$ = this.actions$.pipe(
     ofType<basketActions.AddItemsToBasket>(basketActions.BasketActionTypes.AddItemsToBasket),
     mapToPayload(),
-    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    filter(([{ basketId }, currentBasketId]) => !!currentBasketId || !!basketId),
-    concatMap(([payload, currentBasketId]) => {
-      // get basket id from AddItemsToBasket action if set, otherwise use current basket id
-      const basketId = payload.basketId || currentBasketId;
-
-      return this.basketService.addItemsToBasket(basketId, payload.items).pipe(
+    concatMap(payload =>
+      this.basketService.addItemsToBasket(payload.items).pipe(
         map(info => new basketActions.AddItemsToBasketSuccess({ info })),
         mapErrorToAction(basketActions.AddItemsToBasketFail)
-      );
-    })
+      )
+    )
   );
 
   /**
@@ -100,24 +95,6 @@ export class BasketItemsEffects {
     ofType<basketActions.AddItemsToBasket>(basketActions.BasketActionTypes.AddItemsToBasket),
     mapToPayload(),
     concatMap(payload => [...payload.items.map(item => new LoadProduct({ sku: item.sku }))])
-  );
-
-  /**
-   * Creates a basket if missing and call AddItemsToBasketAction
-   * Only triggers if basket is unset set and action payload does not contain basketId.
-   */
-  @Effect()
-  createBasketBeforeAddItemsToBasket$ = this.actions$.pipe(
-    ofType<basketActions.AddItemsToBasket>(basketActions.BasketActionTypes.AddItemsToBasket),
-    mapToPayload(),
-    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    filter(([payload, basketId]) => !basketId && !payload.basketId),
-    mergeMap(([{ items }]) =>
-      this.basketService.createBasket().pipe(
-        mapToProperty('id'),
-        map(basketId => new basketActions.AddItemsToBasket({ items, basketId }))
-      )
-    )
   );
 
   /**
@@ -134,15 +111,13 @@ export class BasketItemsEffects {
     map(([{ lineItemUpdates }, { lineItems }]) =>
       LineItemUpdateHelper.filterUpdatesByItems(lineItemUpdates, lineItems as LineItemUpdateHelperItem[])
     ),
-
-    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    concatMap(([updates, basketId]) =>
+    concatMap(updates =>
       concat(
         ...updates.map(update => {
           if (update.quantity === 0) {
-            return this.basketService.deleteBasketItem(basketId, update.itemId);
+            return this.basketService.deleteBasketItem(update.itemId);
           } else {
-            return this.basketService.updateBasketItem(basketId, update.itemId, {
+            return this.basketService.updateBasketItem(update.itemId, {
               quantity: update.quantity > 0 ? { value: update.quantity, unit: update.unit } : undefined,
               product: update.sku,
             });
@@ -175,9 +150,8 @@ export class BasketItemsEffects {
   deleteBasketItem$ = this.actions$.pipe(
     ofType<basketActions.DeleteBasketItem>(basketActions.BasketActionTypes.DeleteBasketItem),
     mapToPayloadProperty('itemId'),
-    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    concatMap(([itemId, basketId]) =>
-      this.basketService.deleteBasketItem(basketId, itemId).pipe(
+    concatMap(itemId =>
+      this.basketService.deleteBasketItem(itemId).pipe(
         map(info => new basketActions.DeleteBasketItemSuccess({ info })),
         mapErrorToAction(basketActions.DeleteBasketItemFail)
       )
