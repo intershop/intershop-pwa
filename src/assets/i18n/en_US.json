@@ -2865,5 +2865,7 @@
   "account.user.new.roles.dialog.title": "Roles",
   "account.user.new.roles.dialog.action.ok": "OK",
   "account.organization.user_management": "User Management",
-  "account.organization.user_management.user_detail": "User Detail"
+  "account.organization.user_management.user_detail": "User Detail",
+  "account.organization.user_management.user_detail.breadcrumb": "User Detail",
+  "account.organization.user_management.back_to_list": "Back to User Management"
 }
