@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { exhaustMap, map, mapTo } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
+import { exhaustMap, map, mapTo, withLatestFrom } from 'rxjs/operators';
 
 import { UserActionTypes } from 'ish-core/store/user';
 import { SetBreadcrumbData } from 'ish-core/store/viewconf';
@@ -14,7 +15,12 @@ import { getCurrentUser } from './users.selectors';
 
 @Injectable()
 export class UsersEffects {
-  constructor(private actions$: Actions, private usersService: UsersService, private store: Store) {}
+  constructor(
+    private actions$: Actions,
+    private usersService: UsersService,
+    private store: Store,
+    private translateService: TranslateService
+  ) {}
 
   @Effect()
   loadUsers$ = this.actions$.pipe(
@@ -31,12 +37,13 @@ export class UsersEffects {
   setUserDetailBreadcrumb$ = this.store.pipe(
     select(getCurrentUser),
     whenTruthy(),
+    withLatestFrom(this.translateService.get('account.organization.user_management.user_detail.breadcrumb')),
     map(
-      user =>
+      ([user, prefixBreadcrumb]) =>
         new SetBreadcrumbData({
           breadcrumbData: [
             { key: 'account.organization.user_management', link: '/account/organization/users' },
-            { text: `${user.firstName} ${user.lastName}` },
+            { text: `${prefixBreadcrumb} - ${user.firstName} ${user.lastName}` },
           ],
         })
     )

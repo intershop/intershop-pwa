@@ -2813,5 +2813,7 @@
   "account.user.new.roles.dialog.title": "Rôles",
   "account.user.new.roles.dialog.action.ok": "OK",
   "account.organization.user_management": "Gestion des utilisateurs",
-  "account.organization.user_management.user_detail": "Détails de l’utilisateur"
+  "account.organization.user_management.user_detail": "Détails de l’utilisateur",
+  "account.organization.user_management.user_detail.breadcrumb": "Détails de l’utilisateur",
+  "account.organization.user_management.back_to_list": "Retourner à la gestion des utilisateurs"
 }

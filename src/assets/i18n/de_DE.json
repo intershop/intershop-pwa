@@ -2811,5 +2811,7 @@
   "account.user.new.roles.dialog.title": "Rollen",
   "account.user.new.roles.dialog.action.ok": "OK",
   "account.organization.user_management": "Benutzerverwaltung",
-  "account.organization.user_management.user_detail": "Benutzerdaten"
+  "account.organization.user_management.user_detail": "Benutzerdaten",
+  "account.organization.user_management.user_detail.breadcrumb": "Benutzerdaten",
+  "account.organization.user_management.back_to_list": "Zurück zur Benutzerverwaltung"
 }
