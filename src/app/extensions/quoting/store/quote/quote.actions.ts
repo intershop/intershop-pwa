@@ -6,7 +6,7 @@ import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteData } from '../../models/quote/quote.interface';
 
-export const selectQuote = createAction('[Quote] Select Quote', payload<{ id: string }>());
+export const selectQuote = createAction('[Quote Internal] Select Quote', payload<{ id: string }>());
 
 export const loadQuotes = createAction('[Quote Internal] Load Quotes');
 

@@ -47,7 +47,7 @@ describe('Auth Interceptor', () => {
     httpClient.get('some/url').subscribe(() => {
       verify(store$.dispatch(anything())).once();
       expect(capture(store$.dispatch).last()[0]).toMatchInlineSnapshot(`
-        [Account Internal] Set API Token:
+        [User Internal] Set API Token:
           apiToken: "dummy token"
       `);
       done();
@@ -61,7 +61,7 @@ describe('Auth Interceptor', () => {
   it('should reset api tokens when outdated returned from the server', done => {
     httpClient.get('some/url').subscribe(() => {
       verify(store$.dispatch(anything())).once();
-      expect(capture(store$.dispatch).last()[0]).toMatchInlineSnapshot(`[Account Internal] Reset API Token`);
+      expect(capture(store$.dispatch).last()[0]).toMatchInlineSnapshot(`[User Internal] Reset API Token`);
       done();
     });
 
@@ -73,7 +73,7 @@ describe('Auth Interceptor', () => {
   it('should retry request without token when token is outdated or invalid', done => {
     httpClient.get('some/url', { headers: { [ApiService.TOKEN_HEADER_KEY]: 'some token' } }).subscribe(data => {
       verify(store$.dispatch(anything())).once();
-      expect(capture(store$.dispatch).last()[0]).toMatchInlineSnapshot(`[Account Internal] Reset API Token`);
+      expect(capture(store$.dispatch).last()[0]).toMatchInlineSnapshot(`[User Internal] Reset API Token`);
       expect(data).toMatchInlineSnapshot(`"some data"`);
       done();
     });

@@ -7,93 +7,90 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { User } from 'ish-core/models/user/user.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
-export const loginUser = createAction('[Account] Login User', payload<{ credentials: Credentials }>());
+export const loginUser = createAction('[User] Login User', payload<{ credentials: Credentials }>());
 
-export const loginUserFail = createAction('[Account API] Login User Failed', httpError());
+export const loginUserFail = createAction('[User API] Login User Failed', httpError());
 
-export const loginUserSuccess = createAction('[Account API] Login User Success', payload<CustomerUserType>());
+export const loginUserSuccess = createAction('[User API] Login User Success', payload<CustomerUserType>());
 
-export const setAPIToken = createAction('[Account Internal] Set API Token', payload<{ apiToken: string }>());
+export const setAPIToken = createAction('[User Internal] Set API Token', payload<{ apiToken: string }>());
 
-export const resetAPIToken = createAction('[Account Internal] Reset API Token');
+export const resetAPIToken = createAction('[User Internal] Reset API Token');
 
-export const loadCompanyUser = createAction('[Account Internal] Load Company User');
+export const loadCompanyUser = createAction('[User Internal] Load Company User');
 
-export const loadCompanyUserFail = createAction('[Account API] Load Company User Fail', httpError());
+export const loadCompanyUserFail = createAction('[User API] Load Company User Fail', httpError());
 
-export const loadCompanyUserSuccess = createAction(
-  '[Account API] Load Company User Success',
-  payload<{ user: User }>()
-);
+export const loadCompanyUserSuccess = createAction('[User API] Load Company User Success', payload<{ user: User }>());
 
-export const logoutUser = createAction('[Account] Logout User');
+export const logoutUser = createAction('[User] Logout User');
 
-export const createUser = createAction('[Account] Create User', payload<CustomerRegistrationType>());
+export const createUser = createAction('[User] Create User', payload<CustomerRegistrationType>());
 
-export const createUserFail = createAction('[Account API] Create User Failed', httpError());
+export const createUserFail = createAction('[User API] Create User Failed', httpError());
 
 export const updateUser = createAction(
-  '[Account] Update User',
+  '[User] Update User',
   payload<{ user: User; successMessage?: string; successRouterLink?: string }>()
 );
 
 export const updateUserSuccess = createAction(
-  '[Account API] Update User Succeeded',
+  '[User API] Update User Succeeded',
   payload<{ user: User; successMessage?: string }>()
 );
 
-export const updateUserFail = createAction('[Account API] Update User Failed', httpError());
+export const updateUserFail = createAction('[User API] Update User Failed', httpError());
 
 export const updateUserPassword = createAction(
-  '[Account] Update User Password',
+  '[User] Update User Password',
   payload<{ password: string; currentPassword: string; successMessage?: string }>()
 );
 
 export const updateUserPasswordSuccess = createAction(
-  '[Account API] Update User Password Succeeded',
+  '[User API] Update User Password Succeeded',
   payload<{ successMessage?: string }>()
 );
 
-export const updateUserPasswordFail = createAction('[Account API] Update User Password Failed', httpError());
+export const updateUserPasswordFail = createAction('[User API] Update User Password Failed', httpError());
 
 export const updateCustomer = createAction(
-  '[Account] Update Customer',
+  '[User] Update Customer',
   payload<{ customer: Customer; successMessage?: string; successRouterLink?: string }>()
 );
 
 export const updateCustomerSuccess = createAction(
-  '[Account API] Update Customer Succeeded',
+  '[User API] Update Customer Succeeded',
   payload<{ customer: Customer; successMessage?: string }>()
 );
 
-export const updateCustomerFail = createAction('[Account API] Update Customer Failed', httpError());
+export const updateCustomerFail = createAction('[User API] Update Customer Failed', httpError());
 
-export const userErrorReset = createAction('[Account Internal] Reset User Error');
+export const userErrorReset = createAction('[User Internal] Reset User Error');
 
-export const loadUserByAPIToken = createAction('[Account] Load User by API Token', payload<{ apiToken: string }>());
+export const loadUserByAPIToken = createAction('[User] Load User by API Token', payload<{ apiToken: string }>());
 
-export const setPGID = createAction('[Personalization Internal] Set PGID', payload<{ pgid: string }>());
+export const setPGID = createAction('[User Internal] Set PGID', payload<{ pgid: string }>());
 
-export const loadUserPaymentMethods = createAction('[Account] Load User Payment Methods');
+export const loadUserPaymentMethods = createAction('[User] Load User Payment Methods');
 
-export const loadUserPaymentMethodsFail = createAction('[Account API] Load User Payment Methods Fail', httpError());
+export const loadUserPaymentMethodsFail = createAction('[User API] Load User Payment Methods Fail', httpError());
 
 export const loadUserPaymentMethodsSuccess = createAction(
-  '[Account API] Load User Payment Methods Success',
+  '[User API] Load User Payment Methods Success',
   payload<{ paymentMethods: PaymentMethod[] }>()
 );
 
 export const deleteUserPaymentInstrument = createAction(
-  '[Account] Delete User Instrument Payment ',
+  '[User] Delete User Instrument Payment ',
   payload<{ id: string }>()
 );
 
 export const deleteUserPaymentInstrumentFail = createAction(
-  '[Account API] Delete User Payment Instrument Fail',
+  '[User API] Delete User Payment Instrument Fail',
   httpError()
 );
 
-export const deleteUserPaymentInstrumentSuccess = createAction('[Account API] Delete User Payment Instrument Success');
+export const deleteUserPaymentInstrumentSuccess = createAction('[User API] Delete User Payment Instrument Success');
 
 export const requestPasswordReminder = createAction(
   '[Password Reminder] Request Password Reminder',

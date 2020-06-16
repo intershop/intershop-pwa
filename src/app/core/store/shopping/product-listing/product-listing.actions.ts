@@ -5,28 +5,28 @@ import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { payload } from 'ish-core/utils/ngrx-creators';
 
 export const setProductListingPages = createAction(
-  '[ProductListing] Set Product Listing Pages',
+  '[Product Listing Internal] Set Product Listing Pages',
   payload<ProductListingType>()
 );
 
 export const setProductListingPageSize = createAction(
-  '[ProductListing] Set Product Listing Page Size',
+  '[Product Listing Internal] Set Product Listing Page Size',
   payload<{ itemsPerPage: number }>()
 );
 
 export const loadMoreProducts = createAction(
-  '[ProductListing] Load More Products',
+  '[Product Listing] Load More Products',
   payload<{ id: ProductListingID; page?: number }>()
 );
 
 export const loadMoreProductsForParams = createAction(
-  '[ProductListing Internal] Load More Products For Params',
+  '[Product Listing Internal] Load More Products For Params',
   payload<{ id: ProductListingID; page: number; sorting: string; filters: string }>()
 );
 
-export const setViewType = createAction('[ProductListing] Set View Type', payload<{ viewType: ViewType }>());
+export const setViewType = createAction('[Product Listing Internal] Set View Type', payload<{ viewType: ViewType }>());
 
 export const loadPagesForMaster = createAction(
-  '[ProductListing] Load Pages For Master',
+  '[Product Listing Internal] Load Pages For Master',
   payload<{ id: ProductListingID; filters: string; sorting: string }>()
 );

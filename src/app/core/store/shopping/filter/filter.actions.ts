@@ -5,29 +5,32 @@ import { ProductListingID } from 'ish-core/models/product-listing/product-listin
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 export const loadFilterForCategory = createAction(
-  '[Shopping] Load Filter For Category',
+  '[Filter Internal] Load Filter For Category',
   payload<{ uniqueId: string }>()
 );
 
 export const loadFilterSuccess = createAction(
-  '[Shopping] Load Filter Success',
+  '[Filter API] Load Filter Success',
   payload<{ filterNavigation: FilterNavigation }>()
 );
 
-export const loadFilterFail = createAction('[Shopping] Load Filter Fail', httpError());
+export const loadFilterFail = createAction('[Filter API] Load Filter Fail', httpError());
 
-export const loadFilterForSearch = createAction('[Shopping] Load Filter for Search', payload<{ searchTerm: string }>());
+export const loadFilterForSearch = createAction(
+  '[Filter Internal] Load Filter for Search',
+  payload<{ searchTerm: string }>()
+);
 
-export const applyFilter = createAction('[Shopping] Apply Filter', payload<{ searchParameter: string }>());
+export const applyFilter = createAction('[Filter] Apply Filter', payload<{ searchParameter: string }>());
 
 export const applyFilterSuccess = createAction(
-  '[Shopping] Apply Filter Success',
+  '[Filter API] Apply Filter Success',
   payload<{ availableFilter: FilterNavigation; searchParameter: string }>()
 );
 
-export const applyFilterFail = createAction('[Shopping] Apply Filter Fail', httpError());
+export const applyFilterFail = createAction('[Filter API] Apply Filter Fail', httpError());
 
 export const loadProductsForFilter = createAction(
-  '[Shopping] Load Products For Filter',
+  '[Filter Internal] Load Products For Filter',
   payload<{ id: ProductListingID; searchParameter: string }>()
 );

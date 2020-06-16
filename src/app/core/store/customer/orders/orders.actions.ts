@@ -4,37 +4,37 @@ import { createAction } from '@ngrx/store';
 import { Order } from 'ish-core/models/order/order.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
-export const createOrder = createAction('[Order] Create Order', payload<{ basketId: string }>());
+export const createOrder = createAction('[Orders] Create Order', payload<{ basketId: string }>());
 
-export const createOrderFail = createAction('[Order API] Create Order Fail', httpError());
+export const createOrderFail = createAction('[Orders API] Create Order Fail', httpError());
 
-export const createOrderSuccess = createAction('[Order API] Create Order Success', payload<{ order: Order }>());
+export const createOrderSuccess = createAction('[Orders API] Create Order Success', payload<{ order: Order }>());
 
-export const loadOrders = createAction('[Order] Load Orders');
+export const loadOrders = createAction('[Orders Internal] Load Orders');
 
-export const loadOrdersFail = createAction('[Order API] Load Orders Fail', httpError());
+export const loadOrdersFail = createAction('[Orders API] Load Orders Fail', httpError());
 
-export const loadOrdersSuccess = createAction('[Order API] Load Orders Success', payload<{ orders: Order[] }>());
+export const loadOrdersSuccess = createAction('[Orders API] Load Orders Success', payload<{ orders: Order[] }>());
 
-export const loadOrder = createAction('[Order] Load Order', payload<{ orderId: string }>());
+export const loadOrder = createAction('[Orders Internal] Load Order', payload<{ orderId: string }>());
 
 export const loadOrderByAPIToken = createAction(
-  '[Order Internal] Load Order using given API Token',
+  '[Orders Internal] Load Order using given API Token',
   payload<{ apiToken: string; orderId: string }>()
 );
 
-export const loadOrderFail = createAction('[Order API] Load Order Fail', httpError());
+export const loadOrderFail = createAction('[Orders API] Load Order Fail', httpError());
 
-export const loadOrderSuccess = createAction('[Order API] Load Order Success', payload<{ order: Order }>());
+export const loadOrderSuccess = createAction('[Orders API] Load Order Success', payload<{ order: Order }>());
 
-export const selectOrder = createAction('[Order] Select Order', payload<{ orderId: string }>());
+export const selectOrder = createAction('[Orders] Select Order', payload<{ orderId: string }>());
 
 export const selectOrderAfterRedirect = createAction(
-  '[Order Internal] Select Order After Checkout Redirect',
+  '[Orders Internal] Select Order After Checkout Redirect',
   payload<{ params: Params }>()
 );
 
 export const selectOrderAfterRedirectFail = createAction(
-  '[Order API] Select Order Fail After Checkout Redirect',
+  '[Orders API] Select Order Fail After Checkout Redirect',
   httpError()
 );

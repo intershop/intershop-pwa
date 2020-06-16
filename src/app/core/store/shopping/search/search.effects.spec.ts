@@ -90,9 +90,9 @@ describe('Search Effects', () => {
 
       effects.triggerSearch$.subscribe(data => {
         expect(data).toMatchInlineSnapshot(`
-            [ProductListing] Load More Products:
-              id: {"type":"search","value":"dummy"}
-          `);
+          [Product Listing] Load More Products:
+            id: {"type":"search","value":"dummy"}
+        `);
         done();
       });
     });
@@ -165,49 +165,49 @@ describe('Search Effects', () => {
       store$.dispatch(suggestSearch({ searchTerm: 'good' }));
       tick(500); // debounceTime
       expect(store$.actionsArray(/\[Suggest Search/)).toMatchInlineSnapshot(`
-          [Suggest Search] Load Search Suggestions:
-            searchTerm: "good"
-          [Suggest Search Internal] Return Search Suggestions:
-            searchTerm: "good"
-            suggests: [{"term":"Goods"}]
-        `);
+        [Suggest Search Internal] Load Search Suggestions:
+          searchTerm: "good"
+        [Suggest Search API] Return Search Suggestions:
+          searchTerm: "good"
+          suggests: [{"term":"Goods"}]
+      `);
 
       // 2nd term to because distinctUntilChanged
       store$.dispatch(suggestSearch({ searchTerm: 'goo' }));
       tick(500);
       expect(store$.actionsArray(/\[Suggest Search/)).toMatchInlineSnapshot(`
-          [Suggest Search] Load Search Suggestions:
-            searchTerm: "good"
-          [Suggest Search Internal] Return Search Suggestions:
-            searchTerm: "good"
-            suggests: [{"term":"Goods"}]
-          [Suggest Search] Load Search Suggestions:
-            searchTerm: "goo"
-          [Suggest Search Internal] Return Search Suggestions:
-            searchTerm: "goo"
-            suggests: [{"term":"Goods"}]
-        `);
+        [Suggest Search Internal] Load Search Suggestions:
+          searchTerm: "good"
+        [Suggest Search API] Return Search Suggestions:
+          searchTerm: "good"
+          suggests: [{"term":"Goods"}]
+        [Suggest Search Internal] Load Search Suggestions:
+          searchTerm: "goo"
+        [Suggest Search API] Return Search Suggestions:
+          searchTerm: "goo"
+          suggests: [{"term":"Goods"}]
+      `);
 
       // test cache: search->api->success & search->success->api->success
       store$.dispatch(suggestSearch({ searchTerm: 'good' }));
       tick(500);
       expect(store$.actionsArray(/\[Suggest Search/)).toMatchInlineSnapshot(`
-          [Suggest Search] Load Search Suggestions:
-            searchTerm: "good"
-          [Suggest Search Internal] Return Search Suggestions:
-            searchTerm: "good"
-            suggests: [{"term":"Goods"}]
-          [Suggest Search] Load Search Suggestions:
-            searchTerm: "goo"
-          [Suggest Search Internal] Return Search Suggestions:
-            searchTerm: "goo"
-            suggests: [{"term":"Goods"}]
-          [Suggest Search] Load Search Suggestions:
-            searchTerm: "good"
-          [Suggest Search Internal] Return Search Suggestions:
-            searchTerm: "good"
-            suggests: [{"term":"Goods"}]
-        `);
+        [Suggest Search Internal] Load Search Suggestions:
+          searchTerm: "good"
+        [Suggest Search API] Return Search Suggestions:
+          searchTerm: "good"
+          suggests: [{"term":"Goods"}]
+        [Suggest Search Internal] Load Search Suggestions:
+          searchTerm: "goo"
+        [Suggest Search API] Return Search Suggestions:
+          searchTerm: "goo"
+          suggests: [{"term":"Goods"}]
+        [Suggest Search Internal] Load Search Suggestions:
+          searchTerm: "good"
+        [Suggest Search API] Return Search Suggestions:
+          searchTerm: "good"
+          suggests: [{"term":"Goods"}]
+      `);
     }));
   });
 

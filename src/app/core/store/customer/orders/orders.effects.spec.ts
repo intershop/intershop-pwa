@@ -310,7 +310,7 @@ describe('Orders Effects', () => {
 
       effects.routeListenerForSelectingOrder$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Order] Select Order:
+          [Orders] Select Order:
             orderId: "123"
         `);
         done();
@@ -348,7 +348,7 @@ describe('Orders Effects', () => {
 
       effects.returnFromRedirectAfterOrderCreation$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Order Internal] Select Order After Checkout Redirect:
+          [Orders Internal] Select Order After Checkout Redirect:
             params: {"redirect":"success","param1":"123","orderId":"1"}
         `);
         done();
@@ -364,7 +364,7 @@ describe('Orders Effects', () => {
 
       effects.returnFromRedirectAfterOrderCreation$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Order Internal] Select Order After Checkout Redirect:
+          [Orders Internal] Select Order After Checkout Redirect:
             params: {"redirect":"success","param1":"123","orderId":"1"}
         `);
         done();
