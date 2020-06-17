@@ -2,8 +2,10 @@ import { Dictionary } from '@ngrx/entity';
 import { createSelector, createSelectorFactory, defaultMemoize } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 
+import { CategoryTree, CategoryTreeHelper } from 'ish-core/models/category-tree/category-tree.model';
 import { CategoryView, createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category, CategoryHelper } from 'ish-core/models/category/category.model';
+import { NavigationCategory } from 'ish-core/models/navigation-category/navigation-category.model';
 import { generateCategoryUrl } from 'ish-core/routing/category/category.route';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { ShoppingState, getShoppingState } from 'ish-core/store/shopping/shopping-store';
@@ -17,20 +19,27 @@ export const getCategoryTree = createSelector(getCategoriesState, state => state
  */
 export const getCategoryEntities = createSelector(getCategoryTree, tree => tree.nodes);
 
+const getCategorySubTree = (uniqueId: string) =>
+  createSelectorFactory(projector =>
+    defaultMemoize(projector, CategoryTreeHelper.equals, CategoryTreeHelper.equals)
+  )(getCategoryTree, (tree: CategoryTree) => CategoryTreeHelper.subTree(tree, uniqueId));
+
+export const getCategory = (uniqueId: string) =>
+  createSelectorFactory(projector => defaultMemoize(projector, CategoryTreeHelper.equals, isEqual))(
+    getCategorySubTree(uniqueId),
+    (tree: CategoryTree) => createCategoryView(tree, uniqueId)
+  );
+
 /**
  * Retrieves the currently resolved selected category.
  */
-export const getSelectedCategory = createSelector(
+export const getSelectedCategory = createSelectorFactory(projector => defaultMemoize(projector, undefined, isEqual))(
   getCategoryTree,
   selectRouteParam('categoryUniqueId'),
   createCategoryView
 );
 
 export const getCategoryLoading = createSelector(getCategoriesState, categories => categories.loading);
-
-export const getTopLevelCategories = createSelector(getCategoryTree, tree =>
-  tree.rootIds.map(id => createCategoryView(tree, id))
-);
 
 export const isTopLevelCategoriesLoaded = createSelector(getCategoriesState, state => state.topLevelLoaded);
 
@@ -47,3 +56,24 @@ export const getBreadcrumbForCategoryPage = createSelectorFactory(projector =>
         }))
     : undefined
 );
+
+function mapNavigationCategoryFromId(uniqueId: string): NavigationCategory {
+  return {
+    uniqueId,
+    name: this.nodes[uniqueId].name,
+    url: generateCategoryUrl(this.nodes[uniqueId]),
+    hasChildren: !!this.edges[uniqueId]?.length,
+  };
+}
+
+export const getNavigationCategories = (uniqueId: string) =>
+  createSelectorFactory(projector => defaultMemoize(projector, CategoryTreeHelper.equals, isEqual))(
+    getCategoryTree,
+    (tree: CategoryTree): NavigationCategory[] => {
+      if (!uniqueId) {
+        return tree.rootIds.map(mapNavigationCategoryFromId.bind(tree));
+      }
+      const subTree = CategoryTreeHelper.subTree(tree, uniqueId);
+      return subTree.edges[uniqueId] ? subTree.edges[uniqueId].map(mapNavigationCategoryFromId.bind(subTree)) : [];
+    }
+  );

@@ -1,3 +1,5 @@
+import { isEqual, pick } from 'lodash-es';
+
 import { Category } from 'ish-core/models/category/category.model';
 
 import { CategoryTree } from './category-tree.model';
@@ -130,5 +132,52 @@ export class CategoryTreeHelper {
   static add(tree: CategoryTree, category: Category): CategoryTree {
     const singleCategoryTree = CategoryTreeHelper.single(category);
     return CategoryTreeHelper.merge(tree, singleCategoryTree);
+  }
+
+  /**
+   * Extract a sub tree.
+   */
+  static subTree(tree: CategoryTree, uniqueId: string): CategoryTree {
+    if (!uniqueId) {
+      return tree;
+    }
+
+    const select = (e: string) => e.startsWith(uniqueId);
+    return {
+      rootIds: tree.rootIds.filter(select),
+      edges: pick(tree.edges, ...Object.keys(tree.edges).filter(select)),
+      nodes: pick(tree.nodes, ...Object.keys(tree.nodes).filter(select)),
+    };
+  }
+
+  private static rootIdsEqual(t1: string[], t2: string[]) {
+    return t1.length === t2.length && t1.every(e => t2.includes(e));
+  }
+
+  private static edgesEqual(t1: { [id: string]: string[] }, t2: { [id: string]: string[] }) {
+    return isEqual(t1, t2);
+  }
+
+  private static categoriesEqual(t1: { [id: string]: Category }, t2: { [id: string]: Category }) {
+    const keys1 = Object.keys(t1);
+    const keys2 = Object.keys(t2);
+    return (
+      keys1.length === keys2.length &&
+      keys1.every(id => keys2.includes(id)) &&
+      keys1.every(id => isEqual(t1[id], t2[id]))
+    );
+  }
+
+  /**
+   * Perform check for equality. Order of items is ignored.
+   */
+  static equals(tree1: CategoryTree, tree2: CategoryTree): boolean {
+    return (
+      tree1 &&
+      tree2 &&
+      CategoryTreeHelper.rootIdsEqual(tree1.rootIds, tree2.rootIds) &&
+      CategoryTreeHelper.edgesEqual(tree1.edges, tree2.edges) &&
+      CategoryTreeHelper.categoriesEqual(tree1.nodes, tree2.nodes)
+    );
   }
 }
