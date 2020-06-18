@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { EMPTY } from 'rxjs';
+import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { ApiService } from 'ish-core/services/api/api.service';
@@ -12,7 +12,7 @@ describe('Users Service', () => {
 
   beforeEach(() => {
     apiService = mock(ApiService);
-    when(apiService.get(anything())).thenReturn(EMPTY);
+    when(apiService.get(anything())).thenReturn(of(true));
 
     TestBed.configureTestingModule({
       providers: [{ provide: ApiService, useFactory: () => instance(apiService) }],
@@ -30,6 +30,18 @@ describe('Users Service', () => {
       expect(capture(apiService.get).last()).toMatchInlineSnapshot(`
         Array [
           "customers/-/users",
+        ]
+      `);
+      done();
+    });
+  });
+
+  it('should call the user of customer API when fetching user', done => {
+    usersService.getUser('pmiller@test.intershop.de').subscribe(() => {
+      verify(apiService.get(anything())).once();
+      expect(capture(apiService.get).last()).toMatchInlineSnapshot(`
+        Array [
+          "customers/-/users/pmiller@test.intershop.de",
         ]
       `);
       done();
