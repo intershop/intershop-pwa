@@ -1,10 +1,3 @@
-<!--
-kb_concepts
-kb_pwa
-kb_everyone
-kb_sync_latest_only
--->
-
 # Documentation Overview
 
 ## Developers
