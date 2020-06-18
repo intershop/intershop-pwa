@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { exhaustMap, map, mapTo, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, exhaustMap, map, mapTo, withLatestFrom } from 'rxjs/operators';
 
+import { selectRouteParam } from 'ish-core/store/router';
 import { UserActionTypes } from 'ish-core/store/user';
 import { SetBreadcrumbData } from 'ish-core/store/viewconf';
 import { mapErrorToAction, whenTruthy } from 'ish-core/utils/operators';
@@ -28,6 +29,19 @@ export class UsersEffects {
     exhaustMap(() =>
       this.usersService.getUsers().pipe(
         map(users => new actions.LoadUsersSuccess({ users })),
+        mapErrorToAction(actions.LoadUsersFail)
+      )
+    )
+  );
+
+  @Effect()
+  loadDetailedUser$ = this.store.pipe(
+    select(selectRouteParam('B2BCustomerLogin')),
+    whenTruthy(),
+    debounceTime(0), // todo: refactor this race condition?
+    exhaustMap(login =>
+      this.usersService.getUser(login).pipe(
+        map(user => new actions.LoadUsersSuccess({ users: [user] })),
         mapErrorToAction(actions.LoadUsersFail)
       )
     )

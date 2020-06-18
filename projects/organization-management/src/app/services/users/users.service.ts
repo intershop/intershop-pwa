@@ -17,4 +17,8 @@ export class UsersService {
       map(users => users.map(UserMapper.fromData))
     );
   }
+
+  getUser(login: string) {
+    return this.apiService.get(`customers/-/users/${login}`).pipe(map(UserMapper.fromData));
+  }
 }
