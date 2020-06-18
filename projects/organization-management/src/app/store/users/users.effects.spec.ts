@@ -6,7 +6,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { instance, mock, verify, when } from 'ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { User } from 'ish-core/models/user/user.model';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
@@ -32,6 +32,7 @@ describe('Users Effects', () => {
   beforeEach(() => {
     usersService = mock(UsersService);
     when(usersService.getUsers()).thenReturn(of(users));
+    when(usersService.getUser(anything())).thenReturn(of(users[0]));
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -95,6 +96,29 @@ describe('Users Effects', () => {
               },
             ],
           }
+        `);
+        done();
+      });
+    });
+  });
+
+  describe('loadDetailedUser$', () => {
+    it('should call the service for retrieving user', done => {
+      router.navigate(['users', '1']);
+
+      effects.loadDetailedUser$.subscribe(() => {
+        verify(usersService.getUser(users[0].login)).once();
+        done();
+      });
+    });
+
+    it('should retrieve users when triggered', done => {
+      router.navigate(['users', '1']);
+
+      effects.loadDetailedUser$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Users API] Load Users Success:
+            users: [{"login":"1","firstName":"Patricia","lastName":"Miller"}]
         `);
         done();
       });
