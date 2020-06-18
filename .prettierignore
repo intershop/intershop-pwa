@@ -30,6 +30,7 @@ browserslist
 /dist
 /out-tsc
 /coverage
+/docs/compodoc
 /junit.xml
 /tslint-rules/dist
 /tslint-rules/test
