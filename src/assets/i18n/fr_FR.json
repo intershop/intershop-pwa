@@ -2815,5 +2815,7 @@
   "account.organization.user_management": "Gestion des utilisateurs",
   "account.organization.user_management.user_detail": "Détails de l’utilisateur",
   "account.organization.user_management.user_detail.breadcrumb": "Détails de l’utilisateur",
-  "account.organization.user_management.back_to_list": "Retourner à la gestion des utilisateurs"
+  "account.organization.user_management.back_to_list": "Retourner à la gestion des utilisateurs",
+  "subject.has.no.permission.assigned": "Vous n’avez pas l’autorisation nécessaire d’effectuer cette action.",
+  "user.not.authenticated": "Vous n’êtes pas authentifié pour accéder à cette page."
 }

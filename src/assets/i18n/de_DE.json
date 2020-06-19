@@ -2813,5 +2813,7 @@
   "account.organization.user_management": "Benutzerverwaltung",
   "account.organization.user_management.user_detail": "Benutzerdaten",
   "account.organization.user_management.user_detail.breadcrumb": "Benutzerdaten",
-  "account.organization.user_management.back_to_list": "Zurück zur Benutzerverwaltung"
+  "account.organization.user_management.back_to_list": "Zurück zur Benutzerverwaltung",
+  "subject.has.no.permission.assigned": "Sie verfügen nicht über die erforderlichen Rechte zur Durchführung dieser Aktion.",
+  "user.not.authenticated": "Sie sind für den Zugriff auf diese Seite nicht authentifiziert."
 }

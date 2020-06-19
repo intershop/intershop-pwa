@@ -2816,5 +2816,7 @@
   "account.organization.user_management": "User Management",
   "account.organization.user_management.user_detail": "User Detail",
   "account.organization.user_management.user_detail.breadcrumb": "User Detail",
-  "account.organization.user_management.back_to_list": "Back to User Management"
+  "account.organization.user_management.back_to_list": "Back to User Management",
+  "subject.has.no.permission.assigned": "You do not have the required permission to perform this action.",
+  "user.not.authenticated": "You are not authenticated to access this page."
 }
