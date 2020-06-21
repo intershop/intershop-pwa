@@ -1,6 +1,10 @@
-import { createSelector } from '@ngrx/store';
+import { Dictionary } from '@ngrx/entity';
+import { createSelector, createSelectorFactory, defaultMemoize } from '@ngrx/store';
+import { isEqual } from 'lodash-es';
 
-import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
+import { CategoryView, createCategoryView } from 'ish-core/models/category-view/category-view.model';
+import { Category, CategoryHelper } from 'ish-core/models/category/category.model';
+import { generateCategoryUrl } from 'ish-core/routing/category/category.route';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { ShoppingState, getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
@@ -29,3 +33,17 @@ export const getTopLevelCategories = createSelector(getCategoryTree, tree =>
 );
 
 export const isTopLevelCategoriesLoaded = createSelector(getCategoriesState, state => state.topLevelLoaded);
+
+export const getBreadcrumbForCategoryPage = createSelectorFactory(projector =>
+  defaultMemoize(projector, undefined, isEqual)
+)(getSelectedCategory, getCategoryEntities, (category: CategoryView, entities: Dictionary<Category>) =>
+  CategoryHelper.isCategoryCompletelyLoaded(category)
+    ? (category.categoryPath || [])
+        .map(id => entities[id])
+        .filter(x => !!x)
+        .map((cat, idx, arr) => ({
+          text: cat.name,
+          link: idx === arr.length - 1 ? undefined : generateCategoryUrl(cat),
+        }))
+    : undefined
+);

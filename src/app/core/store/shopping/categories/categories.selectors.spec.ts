@@ -3,7 +3,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { Category } from 'ish-core/models/category/category.model';
+import { Category, CategoryCompletenessLevel } from 'ish-core/models/category/category.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -19,6 +19,7 @@ import {
   loadTopLevelCategoriesSuccess,
 } from './categories.actions';
 import {
+  getBreadcrumbForCategoryPage,
   getCategoryEntities,
   getCategoryLoading,
   getSelectedCategory,
@@ -30,13 +31,24 @@ describe('Categories Selectors', () => {
   let store$: StoreWithSnapshots;
   let router: Router;
 
-  let cat: Category;
+  let catA: Category;
+  let catA1: Category;
   let prod: Product;
 
   beforeEach(() => {
     prod = { sku: 'sku' } as Product;
-    cat = { uniqueId: 'Aa', categoryPath: ['Aa'] } as Category;
-    cat.hasOnlineProducts = true;
+    catA = {
+      uniqueId: 'A',
+      categoryPath: ['A'],
+      completenessLevel: CategoryCompletenessLevel.Max,
+      name: 'nA',
+    } as Category;
+    catA1 = {
+      uniqueId: 'A.1',
+      categoryPath: ['A', 'A.1'],
+      completenessLevel: CategoryCompletenessLevel.Max,
+      name: 'nA1',
+    } as Category;
 
     @Component({ template: 'dummy' })
     class DummyComponent {}
@@ -82,12 +94,12 @@ describe('Categories Selectors', () => {
 
     describe('and reporting success', () => {
       beforeEach(() => {
-        store$.dispatch(loadCategorySuccess({ categories: categoryTree([cat]) }));
+        store$.dispatch(loadCategorySuccess({ categories: categoryTree([catA]) }));
       });
 
       it('should set loading to false', () => {
         expect(getCategoryLoading(store$.state)).toBeFalse();
-        expect(getCategoryEntities(store$.state)).toEqual({ [cat.uniqueId]: cat });
+        expect(getCategoryEntities(store$.state)).toHaveProperty(catA.uniqueId);
       });
     });
 
@@ -105,46 +117,89 @@ describe('Categories Selectors', () => {
 
   describe('state with a category', () => {
     beforeEach(() => {
-      store$.dispatch(loadCategorySuccess({ categories: categoryTree([cat]) }));
+      store$.dispatch(loadCategorySuccess({ categories: categoryTree([catA, catA1]) }));
       store$.dispatch(loadProductSuccess({ product: prod }));
     });
 
     describe('but no current router state', () => {
       it('should return the category information when used', () => {
-        expect(getCategoryEntities(store$.state)).toEqual({ [cat.uniqueId]: cat });
+        expect(getCategoryEntities(store$.state)).toHaveProperty(catA.uniqueId);
         expect(getCategoryLoading(store$.state)).toBeFalse();
       });
 
       it('should not select the irrelevant category when used', () => {
         expect(getSelectedCategory(store$.state)).toBeUndefined();
       });
+
+      it('should not generate a breadcrumb for unselected category', () => {
+        expect(getBreadcrumbForCategoryPage(store$.state)).toBeUndefined();
+      });
     });
 
     describe('with category route', () => {
       beforeEach(fakeAsync(() => {
-        router.navigate(['category', cat.uniqueId]);
+        router.navigate(['category', catA.uniqueId]);
         tick(500);
       }));
 
       it('should return the category information when used', () => {
-        expect(getCategoryEntities(store$.state)).toEqual({ [cat.uniqueId]: cat });
+        expect(getCategoryEntities(store$.state)).toHaveProperty(catA.uniqueId);
         expect(getCategoryLoading(store$.state)).toBeFalse();
       });
 
       it('should select the selected category when used', () => {
-        expect(getSelectedCategory(store$.state).uniqueId).toEqual(cat.uniqueId);
+        expect(getSelectedCategory(store$.state).uniqueId).toEqual(catA.uniqueId);
+      });
+
+      it('should set a category page breadcrumb when selected', () => {
+        expect(getBreadcrumbForCategoryPage(store$.state)).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "link": undefined,
+              "text": "nA",
+            },
+          ]
+        `);
+      });
+
+      describe('with subcategory', () => {
+        beforeEach(fakeAsync(() => {
+          router.navigate(['category', catA1.uniqueId]);
+          tick(500);
+        }));
+
+        it('should select the selected category when used', () => {
+          expect(getSelectedCategory(store$.state).uniqueId).toEqual(catA1.uniqueId);
+        });
+
+        it('should set a category page breadcrumb when selected', () => {
+          expect(getBreadcrumbForCategoryPage(store$.state)).toMatchInlineSnapshot(`
+            Array [
+              Object {
+                "link": "/nA-catA",
+                "text": "nA",
+              },
+              Object {
+                "link": undefined,
+                "text": "nA1",
+              },
+            ]
+          `);
+        });
       });
     });
   });
 
   describe('loading top level categories', () => {
-    let catA: Category;
-    let catB: Category;
-
     beforeEach(() => {
-      catA = { uniqueId: 'A', categoryPath: ['A'] } as Category;
-      catB = { uniqueId: 'B', categoryPath: ['B'] } as Category;
-      store$.dispatch(loadTopLevelCategoriesSuccess({ categories: categoryTree([catA, catB]) }));
+      store$.dispatch(
+        loadTopLevelCategoriesSuccess({
+          categories: categoryTree([
+            { uniqueId: 'A', categoryPath: ['A'] },
+            { uniqueId: 'B', categoryPath: ['B'] },
+          ] as Category[]),
+        })
+      );
     });
 
     it('should select root categories when used', () => {

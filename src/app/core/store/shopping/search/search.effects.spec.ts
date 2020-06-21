@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -65,6 +66,7 @@ describe('Search Effects', () => {
           { path: 'search/:searchTerm', component: DummyComponent },
         ]),
         ShoppingStoreModule.forTesting('productListing'),
+        TranslateModule.forRoot(),
       ],
       providers: [
         provideStoreSnapshots(),

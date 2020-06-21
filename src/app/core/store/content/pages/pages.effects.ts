@@ -5,9 +5,11 @@ import { map, mergeMap } from 'rxjs/operators';
 
 import { CMSService } from 'ish-core/services/cms/cms.service';
 import { selectRouteParam } from 'ish-core/store/core/router';
+import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { loadContentPage, loadContentPageFail, loadContentPageSuccess } from './pages.actions';
+import { getSelectedContentPage } from './pages.selectors';
 
 @Injectable()
 export class PagesEffects {
@@ -30,6 +32,14 @@ export class PagesEffects {
       select(selectRouteParam('contentPageId')),
       whenTruthy(),
       map(contentPageId => loadContentPage({ contentPageId }))
+    )
+  );
+
+  setBreadcrumbForContentPage$ = createEffect(() =>
+    this.store.pipe(
+      select(getSelectedContentPage),
+      whenTruthy(),
+      map(contentPage => setBreadcrumbData({ breadcrumbData: [{ key: contentPage.displayName }] }))
     )
   );
 }

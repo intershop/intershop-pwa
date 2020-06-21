@@ -25,6 +25,7 @@ import { Product, ProductCompletenessLevel, ProductHelper } from 'ish-core/model
 import { ofProductUrl } from 'ish-core/routing/product/product.route';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { selectRouteParam } from 'ish-core/store/core/router';
+import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { loadCategory } from 'ish-core/store/shopping/categories';
 import { setProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
@@ -52,7 +53,7 @@ import {
   loadProductsForCategoryFail,
   loadRetailSetSuccess,
 } from './products.actions';
-import { getProductEntities, getSelectedProduct } from './products.selectors';
+import { getBreadcrumbForProductPage, getProductEntities, getSelectedProduct } from './products.selectors';
 
 @Injectable()
 export class ProductsEffects {
@@ -324,6 +325,15 @@ export class ProductsEffects {
           .filter((val, idx, arr) => arr.indexOf(val) === idx)
       ),
       mergeMap(ids => ids.map(categoryId => loadCategory({ categoryId })))
+    )
+  );
+
+  setBreadcrumbForProductPage$ = createEffect(() =>
+    this.store.pipe(
+      ofProductUrl(),
+      select(getBreadcrumbForProductPage),
+      whenTruthy(),
+      map(breadcrumbData => setBreadcrumbData({ breadcrumbData }))
     )
   );
 
