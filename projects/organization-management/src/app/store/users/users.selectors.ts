@@ -15,7 +15,7 @@ export const getUsersError = createSelector(getUsersState, state => state.error)
 const { selectAll, selectEntities } = usersAdapter.getSelectors(getUsersState);
 export const getUsers = selectAll;
 
-export const getCurrentUser = createSelector(
+export const getSelectedUser = createSelector(
   selectRouteParam('B2BCustomerLogin'),
   selectEntities,
   (login, users) => users[login]

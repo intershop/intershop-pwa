@@ -28,7 +28,8 @@ export function usersReducer(state = initialState, action: UsersAction): UsersSt
       };
     }
 
-    case UsersActionTypes.LoadUsersFail: {
+    case UsersActionTypes.LoadUsersFail:
+    case UsersActionTypes.LoadUserFail: {
       const { error } = action.payload;
       return {
         ...state,
@@ -47,12 +48,18 @@ export function usersReducer(state = initialState, action: UsersAction): UsersSt
       };
     }
 
-    case UsersActionTypes.ResetUsers: {
+    case UsersActionTypes.LoadUserSuccess: {
+      const { user } = action.payload;
+
       return {
-        ...usersAdapter.removeAll(state),
+        ...usersAdapter.upsertOne(user, state),
         loading: false,
         error: undefined,
       };
+    }
+
+    case UsersActionTypes.ResetUsers: {
+      return initialState;
     }
   }
 

@@ -2,7 +2,7 @@
   {{ 'account.user.details.heading' | translate }}
 </h1>
 
-<div class="row section" *ngIf="user$ | async as user">
+<div *ngIf="user$ | async as user" class="row section">
   <div class="col-10 col-lg-8">
     <h3>{{ 'account.user.details.profile.heading' | translate }}</h3>
     <div class="row">
