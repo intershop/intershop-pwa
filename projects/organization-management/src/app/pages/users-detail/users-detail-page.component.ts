@@ -16,6 +16,6 @@ export class UsersDetailPageComponent implements OnInit {
   constructor(private organizationManagementFacade: OrganizationManagementFacade) {}
 
   ngOnInit() {
-    this.user$ = this.organizationManagementFacade.currentUser$;
+    this.user$ = this.organizationManagementFacade.selectedUser$;
   }
 }

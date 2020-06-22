@@ -79,6 +79,29 @@ describe('Users Effects', () => {
     });
   });
 
+  describe('loadDetailedUser$', () => {
+    it('should call the service for retrieving user', done => {
+      router.navigate(['users', '1']);
+
+      effects.loadDetailedUser$.subscribe(() => {
+        verify(usersService.getUser(users[0].login)).once();
+        done();
+      });
+    });
+
+    it('should retrieve the user when triggered', done => {
+      router.navigate(['users', '1']);
+
+      effects.loadDetailedUser$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Users API] Load User Success:
+            user: {"login":"1","firstName":"Patricia","lastName":"Miller"}
+        `);
+        done();
+      });
+    });
+  });
+
   describe('setUserDetailBreadcrumb$', () => {
     it('should set the breadcrumb of user detail', done => {
       store$.dispatch(new actions.LoadUsersSuccess({ users }));
@@ -96,29 +119,6 @@ describe('Users Effects', () => {
               },
             ],
           }
-        `);
-        done();
-      });
-    });
-  });
-
-  describe('loadDetailedUser$', () => {
-    it('should call the service for retrieving user', done => {
-      router.navigate(['users', '1']);
-
-      effects.loadDetailedUser$.subscribe(() => {
-        verify(usersService.getUser(users[0].login)).once();
-        done();
-      });
-    });
-
-    it('should retrieve users when triggered', done => {
-      router.navigate(['users', '1']);
-
-      effects.loadDetailedUser$.subscribe(action => {
-        expect(action).toMatchInlineSnapshot(`
-          [Users API] Load Users Success:
-            users: [{"login":"1","firstName":"Patricia","lastName":"Miller"}]
         `);
         done();
       });
