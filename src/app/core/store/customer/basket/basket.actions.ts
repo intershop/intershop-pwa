@@ -29,7 +29,7 @@ export const createBasketAddress = createAction(
 );
 
 export const createBasketAddressSuccess = createAction(
-  '[Basket Internal] Create Basket Address Success',
+  '[Basket API] Create Basket Address Success',
   payload<{ address: Address; scope: 'invoice' | 'shipping' | 'any' }>()
 );
 
@@ -78,7 +78,7 @@ export const mergeBasketFail = createAction('[Basket API] Merge two baskets Fail
 export const mergeBasketSuccess = createAction('[Basket API] Merge two baskets Success', payload<{ basket: Basket }>());
 
 export const validateBasket = createAction(
-  '[Basket] Validate Basket',
+  '[Basket Internal] Validate Basket',
   payload<{ scopes: BasketValidationScopeType[] }>()
 );
 
@@ -146,7 +146,9 @@ export const addPromotionCodeToBasketFail = createAction('[Basket API] Add Promo
 
 export const addPromotionCodeToBasketSuccess = createAction('[Basket API] Add Promotion Code To Basket Success');
 
-export const loadBasketEligibleShippingMethods = createAction('[Basket] Load Basket Eligible Shipping Methods');
+export const loadBasketEligibleShippingMethods = createAction(
+  '[Basket Internal] Load Basket Eligible Shipping Methods'
+);
 
 export const loadBasketEligibleShippingMethodsFail = createAction(
   '[Basket API] Load Basket Eligible Shipping Methods Fail',
@@ -158,7 +160,7 @@ export const loadBasketEligibleShippingMethodsSuccess = createAction(
   payload<{ shippingMethods: ShippingMethod[] }>()
 );
 
-export const loadBasketEligiblePaymentMethods = createAction('[Basket] Load Basket Eligible Payment Methods');
+export const loadBasketEligiblePaymentMethods = createAction('[Basket Internal] Load Basket Eligible Payment Methods');
 
 export const loadBasketEligiblePaymentMethodsFail = createAction(
   '[Basket API] Load Basket Eligible Payment Methods Fail',

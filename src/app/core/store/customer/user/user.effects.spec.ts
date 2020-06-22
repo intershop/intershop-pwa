@@ -532,7 +532,7 @@ describe('User Effects', () => {
       actions$ = of(routerNavigatedAction({ payload: {} as any }));
 
       effects.resetUserError$.subscribe(action => {
-        expect(action).toMatchInlineSnapshot(`[Account Internal] Reset User Error`);
+        expect(action).toMatchInlineSnapshot(`[User Internal] Reset User Error`);
         done();
       });
     });
@@ -549,7 +549,7 @@ describe('User Effects', () => {
       effects.loadUserByAPIToken$.subscribe(action => {
         verify(userServiceMock.signinUserByToken('dummy')).once();
         expect(action).toMatchInlineSnapshot(`
-          [Account API] Login User Success:
+          [User API] Login User Success:
             user: {"email":"test@intershop.de"}
         `);
         done();

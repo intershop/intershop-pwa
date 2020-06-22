@@ -498,7 +498,7 @@ describe('Wishlist Effects', () => {
 
       effects.routeListenerForSelectedWishlist$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Wishlists Internal] Select Wishlist:
+          [Wishlist Internal] Select Wishlist:
             id: ".SKsEQAE4FIAAAFuNiUBWx0d"
         `);
         done();

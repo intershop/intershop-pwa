@@ -231,9 +231,9 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigated:
           routerState: {"url":"/home","params":{},"queryParams":{},"data":{}}
           event: {"id":1,"url":"/home"}
-        [Shopping] Load top level categories:
+        [Categories Internal] Load top level categories:
           depth: 1
-        [Shopping] Load top level categories success:
+        [Categories API] Load top level categories success:
           categories: tree(A,A.123,B)
       `);
 
@@ -263,13 +263,13 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigation:
             routerState: {"url":"/category/A.123","params":{"categoryUniqueId":"A.123...
             event: {"id":2,"url":"/category/A.123"}
-          [Shopping] Load Category:
+          [Categories Internal] Load Category:
             categoryId: "A.123"
-          [Shopping] Load Category Success:
+          [Categories API] Load Category Success:
             categories: tree(A.123,A.123.456)
-          [Shopping] Load Category:
+          [Categories Internal] Load Category:
             categoryId: "A"
-          [Shopping] Load Category Success:
+          [Categories API] Load Category Success:
             categories: tree(A,A.123)
           @ngrx/router-store/navigated:
             routerState: {"url":"/category/A.123","params":{"categoryUniqueId":"A.123...
@@ -287,9 +287,9 @@ describe('Shopping Store', () => {
 
       it('should trigger suggest actions when suggest feature is used', () => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
-          [Suggest Search] Load Search Suggestions:
+          [Suggest Search Internal] Load Search Suggestions:
             searchTerm: "some"
-          [Suggest Search Internal] Return Search Suggestions:
+          [Suggest Search API] Return Search Suggestions:
             searchTerm: "some"
             suggests: [{"term":"something"}]
         `);
@@ -318,29 +318,29 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigated:
             routerState: {"url":"/search/something","params":{"searchTerm":"something...
             event: {"id":2,"url":"/search/something"}
-          [ProductListing] Load More Products:
+          [Product Listing] Load More Products:
             id: {"type":"search","value":"something"}
-          [ProductListing Internal] Load More Products For Params:
+          [Product Listing Internal] Load More Products For Params:
             id: {"type":"search","value":"something"}
             filters: undefined
             sorting: undefined
             page: undefined
-          [Shopping] Search Products:
+          [Search Internal] Search Products:
             searchTerm: "something"
             page: undefined
             sorting: undefined
-          [Shopping] Load Filter for Search:
+          [Filter Internal] Load Filter for Search:
             searchTerm: "something"
-          [Shopping] Load Product Success:
+          [Products API] Load Product Success:
             product: {"sku":"P2"}
-          [ProductListing] Set Product Listing Pages:
+          [Product Listing Internal] Set Product Listing Pages:
             1: ["P2"]
             id: {"type":"search","value":"something"}
             itemCount: 1
             sortKeys: []
-          [Shopping] Load Filter Success:
+          [Filter API] Load Filter Success:
             filterNavigation: {}
-          [ProductListing] Set Product Listing Pages:
+          [Product Listing Internal] Set Product Listing Pages:
             id: {"type":"search","value":"something"}
         `);
       }));
@@ -360,12 +360,12 @@ describe('Shopping Store', () => {
             @ngrx/router-store/navigation:
               routerState: {"url":"/product/P2","params":{"sku":"P2"},"queryParams":{},...
               event: {"id":3,"url":"/product/P2"}
-            [Shopping] Load Product:
+            [Products Internal] Load Product:
               sku: "P2"
-            [Recently Viewed] Add Product to Recently:
+            [Recently Viewed Internal] Add Product to Recently:
               sku: "P2"
               group: undefined
-            [Shopping] Load Product Success:
+            [Products API] Load Product Success:
               product: {"sku":"P2"}
             @ngrx/router-store/navigated:
               routerState: {"url":"/product/P2","params":{"sku":"P2"},"queryParams":{},...
@@ -396,20 +396,20 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigation:
           routerState: {"url":"/category/A.123","params":{"categoryUniqueId":"A.123...
           event: {"id":1,"url":"/category/A.123"}
-        [Shopping] Load Category:
+        [Categories Internal] Load Category:
           categoryId: "A.123"
-        [Shopping] Load Category Success:
+        [Categories API] Load Category Success:
           categories: tree(A.123,A.123.456)
-        [Shopping] Load Category:
+        [Categories Internal] Load Category:
           categoryId: "A"
-        [Shopping] Load Category Success:
+        [Categories API] Load Category Success:
           categories: tree(A,A.123)
         @ngrx/router-store/navigated:
           routerState: {"url":"/category/A.123","params":{"categoryUniqueId":"A.123...
           event: {"id":1,"url":"/category/A.123"}
-        [Shopping] Load top level categories:
+        [Categories Internal] Load top level categories:
           depth: 1
-        [Shopping] Load top level categories success:
+        [Categories API] Load top level categories success:
           categories: tree(A,A.123,B)
       `);
     }));
@@ -468,54 +468,54 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigation:
           routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
           event: {"id":1,"url":"/category/A.123.456"}
-        [Shopping] Load Category:
+        [Categories Internal] Load Category:
           categoryId: "A.123.456"
-        [Shopping] Load Category Success:
+        [Categories API] Load Category Success:
           categories: tree(A.123.456)
-        [Shopping] Load Category:
+        [Categories Internal] Load Category:
           categoryId: "A"
-        [Shopping] Load Category:
+        [Categories Internal] Load Category:
           categoryId: "A.123"
-        [Shopping] Load Category Success:
+        [Categories API] Load Category Success:
           categories: tree(A,A.123)
-        [Shopping] Load Category Success:
+        [Categories API] Load Category Success:
           categories: tree(A.123,A.123.456)
-        [Shopping] Load Category:
+        [Categories Internal] Load Category:
           categoryId: "A.123"
-        [Shopping] Load Category Success:
+        [Categories API] Load Category Success:
           categories: tree(A.123,A.123.456)
         @ngrx/router-store/navigated:
           routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
           event: {"id":1,"url":"/category/A.123.456"}
-        [Shopping] Load top level categories:
+        [Categories Internal] Load top level categories:
           depth: 1
-        [ProductListing] Load More Products:
+        [Product Listing] Load More Products:
           id: {"type":"category","value":"A.123.456"}
-        [Shopping] Load top level categories success:
+        [Categories API] Load top level categories success:
           categories: tree(A,A.123,B)
-        [ProductListing Internal] Load More Products For Params:
+        [Product Listing Internal] Load More Products For Params:
           id: {"type":"category","value":"A.123.456"}
           filters: undefined
           sorting: undefined
           page: undefined
-        [Shopping] Load Products for Category:
+        [Products Internal] Load Products for Category:
           categoryId: "A.123.456"
           page: undefined
           sorting: undefined
-        [Shopping] Load Filter For Category:
+        [Filter Internal] Load Filter For Category:
           uniqueId: "A.123.456"
-        [Shopping] Load Product Success:
+        [Products API] Load Product Success:
           product: {"sku":"P1"}
-        [Shopping] Load Product Success:
+        [Products API] Load Product Success:
           product: {"sku":"P2"}
-        [ProductListing] Set Product Listing Pages:
+        [Product Listing Internal] Set Product Listing Pages:
           1: ["P1","P2"]
           id: {"type":"category","value":"A.123.456"}
           itemCount: 2
           sortKeys: []
-        [Shopping] Load Filter Success:
+        [Filter API] Load Filter Success:
           filterNavigation: {}
-        [ProductListing] Set Product Listing Pages:
+        [Product Listing Internal] Set Product Listing Pages:
           id: {"type":"category","value":"A.123.456"}
       `);
     }));
@@ -539,12 +539,12 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigation:
             routerState: {"url":"/category/A.123.456/product/P1","params":{"categoryU...
             event: {"id":2,"url":"/category/A.123.456/product/P1"}
-          [Shopping] Load Product:
+          [Products Internal] Load Product:
             sku: "P1"
-          [Recently Viewed] Add Product to Recently:
+          [Recently Viewed Internal] Add Product to Recently:
             sku: "P1"
             group: undefined
-          [Shopping] Load Product Success:
+          [Products API] Load Product Success:
             product: {"sku":"P1"}
           @ngrx/router-store/navigated:
             routerState: {"url":"/category/A.123.456/product/P1","params":{"categoryU...
@@ -597,29 +597,29 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigated:
             routerState: {"url":"/search/something","params":{"searchTerm":"something...
             event: {"id":2,"url":"/search/something"}
-          [ProductListing] Load More Products:
+          [Product Listing] Load More Products:
             id: {"type":"search","value":"something"}
-          [ProductListing Internal] Load More Products For Params:
+          [Product Listing Internal] Load More Products For Params:
             id: {"type":"search","value":"something"}
             filters: undefined
             sorting: undefined
             page: undefined
-          [Shopping] Search Products:
+          [Search Internal] Search Products:
             searchTerm: "something"
             page: undefined
             sorting: undefined
-          [Shopping] Load Filter for Search:
+          [Filter Internal] Load Filter for Search:
             searchTerm: "something"
-          [Shopping] Load Product Success:
+          [Products API] Load Product Success:
             product: {"sku":"P2"}
-          [ProductListing] Set Product Listing Pages:
+          [Product Listing Internal] Set Product Listing Pages:
             1: ["P2"]
             id: {"type":"search","value":"something"}
             itemCount: 1
             sortKeys: []
-          [Shopping] Load Filter Success:
+          [Filter API] Load Filter Success:
             filterNavigation: {}
-          [ProductListing] Set Product Listing Pages:
+          [Product Listing Internal] Set Product Listing Pages:
             id: {"type":"search","value":"something"}
         `);
       }));
@@ -701,35 +701,35 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigation:
           routerState: {"url":"/category/A.123.456/product/P1","params":{"categoryU...
           event: {"id":1,"url":"/category/A.123.456/product/P1"}
-        [Shopping] Load Category:
+        [Categories Internal] Load Category:
           categoryId: "A.123.456"
-        [Shopping] Load Product:
+        [Products Internal] Load Product:
           sku: "P1"
-        [Shopping] Load Category Success:
+        [Categories API] Load Category Success:
           categories: tree(A.123.456)
-        [Shopping] Load Product Success:
+        [Products API] Load Product Success:
           product: {"sku":"P1"}
-        [Shopping] Load Category:
+        [Categories Internal] Load Category:
           categoryId: "A"
-        [Shopping] Load Category:
+        [Categories Internal] Load Category:
           categoryId: "A.123"
-        [Recently Viewed] Add Product to Recently:
+        [Recently Viewed Internal] Add Product to Recently:
           sku: "P1"
           group: undefined
-        [Shopping] Load Category Success:
+        [Categories API] Load Category Success:
           categories: tree(A,A.123)
-        [Shopping] Load Category Success:
+        [Categories API] Load Category Success:
           categories: tree(A.123,A.123.456)
-        [Shopping] Load Category:
+        [Categories Internal] Load Category:
           categoryId: "A.123"
-        [Shopping] Load Category Success:
+        [Categories API] Load Category Success:
           categories: tree(A.123,A.123.456)
         @ngrx/router-store/navigated:
           routerState: {"url":"/category/A.123.456/product/P1","params":{"categoryU...
           event: {"id":1,"url":"/category/A.123.456/product/P1"}
-        [Shopping] Load top level categories:
+        [Categories Internal] Load top level categories:
           depth: 1
-        [Shopping] Load top level categories success:
+        [Categories API] Load top level categories success:
           categories: tree(A,A.123,B)
       `);
     }));
@@ -759,31 +759,31 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigation:
             routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
             event: {"id":2,"url":"/category/A.123.456"}
-          [ProductListing] Load More Products:
+          [Product Listing] Load More Products:
             id: {"type":"category","value":"A.123.456"}
-          [ProductListing Internal] Load More Products For Params:
+          [Product Listing Internal] Load More Products For Params:
             id: {"type":"category","value":"A.123.456"}
             filters: undefined
             sorting: undefined
             page: undefined
-          [Shopping] Load Products for Category:
+          [Products Internal] Load Products for Category:
             categoryId: "A.123.456"
             page: undefined
             sorting: undefined
-          [Shopping] Load Filter For Category:
+          [Filter Internal] Load Filter For Category:
             uniqueId: "A.123.456"
-          [Shopping] Load Product Success:
+          [Products API] Load Product Success:
             product: {"sku":"P1"}
-          [Shopping] Load Product Success:
+          [Products API] Load Product Success:
             product: {"sku":"P2"}
-          [ProductListing] Set Product Listing Pages:
+          [Product Listing Internal] Set Product Listing Pages:
             1: ["P1","P2"]
             id: {"type":"category","value":"A.123.456"}
             itemCount: 2
             sortKeys: []
-          [Shopping] Load Filter Success:
+          [Filter API] Load Filter Success:
             filterNavigation: {}
-          [ProductListing] Set Product Listing Pages:
+          [Product Listing Internal] Set Product Listing Pages:
             id: {"type":"category","value":"A.123.456"}
           @ngrx/router-store/navigated:
             routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
@@ -850,19 +850,19 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigation:
           routerState: {"url":"/product/P1","params":{"sku":"P1"},"queryParams":{},...
           event: {"id":1,"url":"/product/P1"}
-        [Shopping] Load Product:
+        [Products Internal] Load Product:
           sku: "P1"
-        [Shopping] Load Product Success:
+        [Products API] Load Product Success:
           product: {"sku":"P1"}
-        [Recently Viewed] Add Product to Recently:
+        [Recently Viewed Internal] Add Product to Recently:
           sku: "P1"
           group: undefined
         @ngrx/router-store/navigated:
           routerState: {"url":"/product/P1","params":{"sku":"P1"},"queryParams":{},...
           event: {"id":1,"url":"/product/P1"}
-        [Shopping] Load top level categories:
+        [Categories Internal] Load top level categories:
           depth: 1
-        [Shopping] Load top level categories success:
+        [Categories API] Load top level categories success:
           categories: tree(A,A.123,B)
       `);
     }));
@@ -921,18 +921,18 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigation:
           routerState: {"url":"/category/A.123.456/product/P3","params":{"categoryU...
           event: {"id":1,"url":"/category/A.123.456/product/P3"}
-        [Shopping] Load Category:
+        [Categories Internal] Load Category:
           categoryId: "A.123.456"
-        [Shopping] Load Product:
+        [Products Internal] Load Product:
           sku: "P3"
-        [Shopping] Load Category Success:
+        [Categories API] Load Category Success:
           categories: tree(A.123.456)
-        [Shopping] Load Product Fail:
+        [Products API] Load Product Fail:
           error: {"message":"error loading product P3"}
           sku: "P3"
-        [Shopping] Load Category:
+        [Categories Internal] Load Category:
           categoryId: "A"
-        [Shopping] Load Category:
+        [Categories Internal] Load Category:
           categoryId: "A.123"
         @ngrx/router-store/cancel:
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}
@@ -941,9 +941,9 @@ describe('Shopping Store', () => {
         @ngrx/router-store/request:
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}
           event: {"id":2,"url":"/error"}
-        [Shopping] Load Category Success:
+        [Categories API] Load Category Success:
           categories: tree(A,A.123)
-        [Shopping] Load Category Success:
+        [Categories API] Load Category Success:
           categories: tree(A.123,A.123.456)
         @ngrx/router-store/navigation:
           routerState: {"url":"/error","params":{},"queryParams":{},"data":{}}
@@ -951,9 +951,9 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigated:
           routerState: {"url":"/error","params":{},"queryParams":{},"data":{}}
           event: {"id":2,"url":"/error"}
-        [Shopping] Load top level categories:
+        [Categories Internal] Load top level categories:
           depth: 1
-        [Shopping] Load top level categories success:
+        [Categories API] Load top level categories success:
           categories: tree(A,A.123,B)
       `);
     }));
@@ -988,9 +988,9 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigation:
           routerState: {"url":"/category/A.123.XXX","params":{"categoryUniqueId":"A...
           event: {"id":1,"url":"/category/A.123.XXX"}
-        [Shopping] Load Category:
+        [Categories Internal] Load Category:
           categoryId: "A.123.XXX"
-        [Shopping] Load Category Fail:
+        [Categories API] Load Category Fail:
           error: {"message":"error loading category A.123.XXX"}
         @ngrx/router-store/cancel:
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}
@@ -1005,9 +1005,9 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigated:
           routerState: {"url":"/error","params":{},"queryParams":{},"data":{}}
           event: {"id":2,"url":"/error"}
-        [Shopping] Load top level categories:
+        [Categories Internal] Load top level categories:
           depth: 1
-        [Shopping] Load top level categories success:
+        [Categories API] Load top level categories success:
           categories: tree(A,A.123,B)
       `);
     }));
@@ -1039,33 +1039,33 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigated:
           routerState: {"url":"/search/something","params":{"searchTerm":"something...
           event: {"id":1,"url":"/search/something"}
-        [Shopping] Load top level categories:
+        [Categories Internal] Load top level categories:
           depth: 1
-        [ProductListing] Load More Products:
+        [Product Listing] Load More Products:
           id: {"type":"search","value":"something"}
-        [Shopping] Load top level categories success:
+        [Categories API] Load top level categories success:
           categories: tree(A,A.123,B)
-        [ProductListing Internal] Load More Products For Params:
+        [Product Listing Internal] Load More Products For Params:
           id: {"type":"search","value":"something"}
           filters: undefined
           sorting: undefined
           page: undefined
-        [Shopping] Search Products:
+        [Search Internal] Search Products:
           searchTerm: "something"
           page: undefined
           sorting: undefined
-        [Shopping] Load Filter for Search:
+        [Filter Internal] Load Filter for Search:
           searchTerm: "something"
-        [Shopping] Load Product Success:
+        [Products API] Load Product Success:
           product: {"sku":"P2"}
-        [ProductListing] Set Product Listing Pages:
+        [Product Listing Internal] Set Product Listing Pages:
           1: ["P2"]
           id: {"type":"search","value":"something"}
           itemCount: 1
           sortKeys: []
-        [Shopping] Load Filter Success:
+        [Filter API] Load Filter Success:
           filterNavigation: {}
-        [ProductListing] Set Product Listing Pages:
+        [Product Listing Internal] Set Product Listing Pages:
           id: {"type":"search","value":"something"}
       `);
     }));

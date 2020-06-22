@@ -93,7 +93,7 @@ describe('Categories Effects', () => {
 
       effects.selectedCategory$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Shopping] Load Category:
+          [Categories Internal] Load Category:
             categoryId: "dummy"
         `);
         done();
@@ -107,7 +107,7 @@ describe('Categories Effects', () => {
 
       effects.selectedCategory$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Shopping] Load Category:
+          [Categories Internal] Load Category:
             categoryId: "dummy"
         `);
         done();
@@ -132,7 +132,7 @@ describe('Categories Effects', () => {
 
       effects.selectedCategory$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Shopping] Load Category:
+          [Categories Internal] Load Category:
             categoryId: "dummy"
         `);
         done();
@@ -144,7 +144,7 @@ describe('Categories Effects', () => {
 
       effects.selectedCategory$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Shopping] Load Category:
+          [Categories Internal] Load Category:
             categoryId: "dummy"
         `);
         done();

@@ -76,18 +76,18 @@ describe('Product Listing Effects', () => {
       store$.dispatch(loadMoreProducts({ id: { type: 'search', value: 'term' } }));
 
       expect(store$.actionsArray()).toMatchInlineSnapshot(`
-        [ProductListing] Load More Products:
+        [Product Listing] Load More Products:
           id: {"type":"search","value":"term"}
-        [ProductListing Internal] Load More Products For Params:
+        [Product Listing Internal] Load More Products For Params:
           id: {"type":"search","value":"term"}
           filters: undefined
           sorting: "name-asc"
           page: undefined
-        [Shopping] Search Products:
+        [Search Internal] Search Products:
           searchTerm: "term"
           page: undefined
           sorting: "name-asc"
-        [Shopping] Load Filter for Search:
+        [Filter Internal] Load Filter for Search:
           searchTerm: "term"
       `);
     }));
@@ -96,18 +96,18 @@ describe('Product Listing Effects', () => {
       store$.dispatch(loadMoreProducts({ id: { type: 'category', value: 'cat' } }));
 
       expect(store$.actionsArray()).toMatchInlineSnapshot(`
-        [ProductListing] Load More Products:
+        [Product Listing] Load More Products:
           id: {"type":"category","value":"cat"}
-        [ProductListing Internal] Load More Products For Params:
+        [Product Listing Internal] Load More Products For Params:
           id: {"type":"category","value":"cat"}
           filters: undefined
           sorting: "name-asc"
           page: undefined
-        [Shopping] Load Products for Category:
+        [Products Internal] Load Products for Category:
           categoryId: "cat"
           page: undefined
           sorting: "name-asc"
-        [Shopping] Load Filter For Category:
+        [Filter Internal] Load Filter For Category:
           uniqueId: "cat"
       `);
     }));
@@ -124,17 +124,17 @@ describe('Product Listing Effects', () => {
       store$.dispatch(loadMoreProducts({ id: { type: 'search', value: 'term' } }));
 
       expect(store$.actionsArray()).toMatchInlineSnapshot(`
-        [ProductListing] Load More Products:
+        [Product Listing] Load More Products:
           id: {"type":"search","value":"term"}
-        [ProductListing Internal] Load More Products For Params:
+        [Product Listing Internal] Load More Products For Params:
           id: {"type":"search","value":"term"}
           filters: "blablubb"
           sorting: undefined
           page: undefined
-        [Shopping] Load Products For Filter:
+        [Filter Internal] Load Products For Filter:
           id: {"type":"search","value":"term","filters":"blablubb"}
           searchParameter: "YmxhYmx1YmI="
-        [Shopping] Apply Filter:
+        [Filter] Apply Filter:
           searchParameter: "YmxhYmx1YmI="
       `);
     }));
@@ -143,17 +143,17 @@ describe('Product Listing Effects', () => {
       store$.dispatch(loadMoreProducts({ id: { type: 'category', value: 'cat' } }));
 
       expect(store$.actionsArray()).toMatchInlineSnapshot(`
-        [ProductListing] Load More Products:
+        [Product Listing] Load More Products:
           id: {"type":"category","value":"cat"}
-        [ProductListing Internal] Load More Products For Params:
+        [Product Listing Internal] Load More Products For Params:
           id: {"type":"category","value":"cat"}
           filters: "blablubb"
           sorting: undefined
           page: undefined
-        [Shopping] Load Products For Filter:
+        [Filter Internal] Load Products For Filter:
           id: {"type":"category","value":"cat","filters":"blablubb"}
           searchParameter: "YmxhYmx1YmI="
-        [Shopping] Apply Filter:
+        [Filter] Apply Filter:
           searchParameter: "YmxhYmx1YmI="
       `);
     }));

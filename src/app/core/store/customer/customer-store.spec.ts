@@ -213,36 +213,36 @@ describe('Customer Store', () => {
     describe('and without basket', () => {
       it('should initially load basket and basketItems on product add.', done => {
         setTimeout(() => {
-          expect(store.actionsArray(/Basket|Shopping/)).toMatchInlineSnapshot(`
-            [Shopping] Load Product Success:
+          expect(store.actionsArray(/Basket|Products/)).toMatchInlineSnapshot(`
+            [Products API] Load Product Success:
               product: {"sku":"test","packingUnit":"pcs.","completenessLevel":2}
             [Basket] Add Product:
               sku: "test"
               quantity: 1
             [Basket Internal] Add Items To Basket:
               items: [{"sku":"test","quantity":1,"unit":"pcs."}]
-            [Shopping] Load Product:
+            [Products Internal] Load Product:
               sku: "test"
             [Basket Internal] Add Items To Basket:
               items: [{"sku":"test","quantity":1,"unit":"pcs."}]
               basketId: "test"
-            [Shopping] Load Product Success:
+            [Products API] Load Product Success:
               product: {"name":"test","shortDescription":"test","longDescription":"...
             [Basket API] Add Items To Basket Success:
               info: undefined
-            [Shopping] Load Product:
+            [Products Internal] Load Product:
               sku: "test"
             [Basket Internal] Load Basket
-            [Shopping] Load Product Success:
+            [Products API] Load Product Success:
               product: {"name":"test","shortDescription":"test","longDescription":"...
             [Basket API] Load Basket Success:
               basket: {"id":"test","lineItems":[1]}
-            [Shopping] Load Product if not Loaded:
+            [Products Internal] Load Product if not Loaded:
               sku: "test"
               level: 2
-            [Shopping] Load Product:
+            [Products Internal] Load Product:
               sku: "test"
-            [Shopping] Load Product Success:
+            [Products API] Load Product Success:
               product: {"name":"test","shortDescription":"test","longDescription":"...
           `);
           done();
@@ -258,15 +258,15 @@ describe('Customer Store', () => {
         store.dispatch(loginUser({ credentials: {} as Credentials }));
 
         expect(store.actionsArray()).toMatchInlineSnapshot(`
-          [Account] Login User:
+          [User] Login User:
             credentials: {}
-          [Account API] Login User Success:
+          [User API] Login User Success:
             customer: {"isBusinessCustomer":false,"customerNo":"test"}
             user: {"title":"","firstName":"test","lastName":"test","phoneHome"...
           [Basket Internal] Merge two baskets
           [Basket API] Merge two baskets Success:
             basket: {"id":"test","lineItems":[1]}
-          [Shopping] Load Product if not Loaded:
+          [Products Internal] Load Product if not Loaded:
             sku: "test"
             level: 2
         `);

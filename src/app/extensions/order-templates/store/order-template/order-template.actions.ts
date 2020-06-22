@@ -100,11 +100,11 @@ export const addBasketToNewOrderTemplate = createAction(
 );
 
 export const addBasketToNewOrderTemplateFail = createAction(
-  '[Order Templates] Add basket to New Order Template Fail]',
+  '[Order Templates API] Add basket to New Order Template Fail]',
   httpError()
 );
 
 export const addBasketToNewOrderTemplateSuccess = createAction(
-  '[Order Templates] Add basket to New Order Template Success]',
+  '[Order Templates API] Add basket to New Order Template Success]',
   payload<{ orderTemplate: OrderTemplate }>()
 );

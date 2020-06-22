@@ -317,7 +317,7 @@ describe('Products Effects', () => {
 
       effects.selectedProduct$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Shopping] Load Product:
+          [Products Internal] Load Product:
             sku: "foobar"
         `);
         done();
@@ -329,7 +329,7 @@ describe('Products Effects', () => {
 
       effects.selectedProduct$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Shopping] Load Product:
+          [Products Internal] Load Product:
             sku: "foobar"
         `);
         done();
@@ -402,11 +402,11 @@ describe('Products Effects', () => {
 
       effects.loadProductBundles$.pipe(toArray()).subscribe(actions => {
         expect(actions).toMatchInlineSnapshot(`
-          [Shopping] Load Product Success:
+          [Products API] Load Product Success:
             product: {"sku":"A"}
-          [Shopping] Load Product Success:
+          [Products API] Load Product Success:
             product: {"sku":"B"}
-          [Shopping] Load Product Bundles Success:
+          [Products API] Load Product Bundles Success:
             sku: "ABC"
             bundledProducts: [{"sku":"A","quantity":1},{"sku":"B","quantity":1}]
         `);
@@ -425,7 +425,7 @@ describe('Products Effects', () => {
 
       effects.loadRetailSetProductDetail$.pipe(toArray()).subscribe(actions => {
         expect(actions).toMatchInlineSnapshot(`
-          [Shopping] Load Product if not Loaded:
+          [Products Internal] Load Product if not Loaded:
             sku: "ABC"
             level: 3
         `);
@@ -455,11 +455,11 @@ describe('Products Effects', () => {
 
       effects.loadPartsOfRetailSet$.pipe(toArray()).subscribe(actions => {
         expect(actions).toMatchInlineSnapshot(`
-          [Shopping] Load Product Success:
+          [Products API] Load Product Success:
             product: {"sku":"A"}
-          [Shopping] Load Product Success:
+          [Products API] Load Product Success:
             product: {"sku":"B"}
-          [Shopping] Load Retail Set Success:
+          [Products API] Load Retail Set Success:
             sku: "ABC"
             parts: ["A","B"]
         `);
@@ -539,7 +539,7 @@ describe('Products Effects', () => {
 
       effects.loadDefaultCategoryContextForProduct$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Shopping] Load Category:
+          [Categories Internal] Load Category:
             categoryId: "123"
         `);
         done();

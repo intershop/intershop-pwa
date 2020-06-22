@@ -74,7 +74,7 @@ export const createQuoteRequestFromQuoteRequestSuccess = createAction(
   payload<{ quoteLineItemResult: QuoteLineItemResult }>()
 );
 
-export const loadQuoteRequestItems = createAction('[Quote] Load QuoteRequestItems', payload<{ id: string }>());
+export const loadQuoteRequestItems = createAction('[Quote Internal] Load QuoteRequestItems', payload<{ id: string }>());
 
 export const loadQuoteRequestItemsFail = createAction('[Quote API] Load QuoteRequestItems Fail', httpError());
 
