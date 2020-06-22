@@ -30,7 +30,7 @@ describe('Users Detail Page Component', () => {
     fixture = TestBed.createComponent(UsersDetailPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    when(organizationManagementFacade.currentUser$).thenReturn(of(user));
+    when(organizationManagementFacade.selectedUser$).thenReturn(of(user));
   });
 
   it('should be created', () => {

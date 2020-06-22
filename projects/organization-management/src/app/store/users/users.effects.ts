@@ -12,7 +12,7 @@ import { mapErrorToAction, whenTruthy } from 'ish-core/utils/operators';
 import { UsersService } from '../../services/users/users.service';
 
 import * as actions from './users.actions';
-import { getCurrentUser } from './users.selectors';
+import { getSelectedUser } from './users.selectors';
 
 @Injectable()
 export class UsersEffects {
@@ -38,18 +38,18 @@ export class UsersEffects {
   loadDetailedUser$ = this.store.pipe(
     select(selectRouteParam('B2BCustomerLogin')),
     whenTruthy(),
-    debounceTime(0), // todo: refactor this race condition?
+    debounceTime(0), // necessary to wait for the login after refreshing the page
     exhaustMap(login =>
       this.usersService.getUser(login).pipe(
-        map(user => new actions.LoadUsersSuccess({ users: [user] })),
-        mapErrorToAction(actions.LoadUsersFail)
+        map(user => new actions.LoadUserSuccess({ user })),
+        mapErrorToAction(actions.LoadUserFail)
       )
     )
   );
 
   @Effect()
   setUserDetailBreadcrumb$ = this.store.pipe(
-    select(getCurrentUser),
+    select(getSelectedUser),
     whenTruthy(),
     withLatestFrom(this.translateService.get('account.organization.user_management.user_detail.breadcrumb')),
     map(

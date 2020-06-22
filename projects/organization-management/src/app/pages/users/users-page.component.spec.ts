@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -9,7 +8,6 @@ import { instance, mock, when } from 'ts-mockito';
 import { User } from 'ish-core/models/user/user.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
@@ -31,13 +29,7 @@ describe('Users Page Component', () => {
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [
-        MockComponent(ErrorMessageComponent),
-        MockComponent(FaIconComponent),
-        MockComponent(LoadingComponent),
-        MockComponent(ModalDialogComponent),
-        UsersPageComponent,
-      ],
+      declarations: [MockComponent(ErrorMessageComponent), MockComponent(LoadingComponent), UsersPageComponent],
       providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
     }).compileComponents();
   }));
