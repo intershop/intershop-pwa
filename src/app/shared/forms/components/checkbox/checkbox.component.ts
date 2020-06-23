@@ -9,7 +9,6 @@ import { FormElementComponent } from 'ish-shared/forms/components/form-element/f
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class CheckboxComponent extends FormElementComponent implements OnInit {
-  // inputClass and labelClass are currently not supported
   constructor(protected translate: TranslateService) {
     super(translate);
   }

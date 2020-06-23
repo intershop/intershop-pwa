@@ -1,5 +1,5 @@
 {
-  "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "$schema": "../../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
     "cms-component": {
       "aliases": ["cms"],
@@ -53,9 +53,9 @@
       "schema": "./lazy-component/schema.json"
     },
     "lazy-components": {
-      "factory": "./lazy-components/factory#createLazyComponents",
+      "factory": "./helpers/lazy-components/factory#createLazyComponents",
       "description": "Create lazy components for all annotated components in extensions.",
-      "schema": "./lazy-components/schema.json",
+      "schema": "./helpers/lazy-components/schema.json",
       "hidden": true
     },
     "store": {
@@ -81,9 +81,9 @@
       "hidden": true
     },
     "move-component": {
-      "factory": "./move-component/factory#move",
+      "factory": "./helpers/move-component/factory#move",
       "description": "Move Component.",
-      "schema": "./move-component/schema.json",
+      "schema": "./helpers/move-component/schema.json",
       "hidden": true
     },
     "decontainerize-0.16-to-0.17": {
@@ -93,9 +93,14 @@
       "hidden": true
     },
     "customized-copy": {
-      "factory": "./customized-copy/factory#customize",
+      "factory": "./helpers/customized-copy/factory#customize",
       "description": "Create a copy of Component for customization.",
-      "schema": "./customized-copy/schema.json"
+      "schema": "./helpers/customized-copy/schema.json"
+    },
+    "add-destroy": {
+      "factory": "./helpers/add-destroy/factory#add",
+      "description": "Add destroy subject to an existing Angular artifact.",
+      "schema": "./helpers/add-destroy/schema.json"
     }
   }
 }

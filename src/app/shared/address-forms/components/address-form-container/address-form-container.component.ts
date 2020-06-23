@@ -142,5 +142,6 @@ export class AddressFormContainerComponent implements OnInit, OnChanges, OnDestr
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 }

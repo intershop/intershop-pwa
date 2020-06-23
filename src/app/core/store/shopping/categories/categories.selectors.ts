@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
-import { selectRouteParam } from 'ish-core/store/router';
+import { selectRouteParam } from 'ish-core/store/core/router';
 import { ShoppingState, getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
 const getCategoriesState = createSelector(getShoppingState, (state: ShoppingState) => state.categories);

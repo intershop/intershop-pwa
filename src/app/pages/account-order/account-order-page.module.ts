@@ -18,6 +18,7 @@ const routes: Routes = [
     ],
   },
 ];
+
 @NgModule({
   imports: [RouterModule.forChild(routes), SharedModule],
   declarations: [AccountOrderComponent, AccountOrderPageComponent],

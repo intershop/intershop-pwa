@@ -11,7 +11,6 @@ import { ApiService } from 'ish-core/services/api/api.service';
 export class ConfigurationService {
   constructor(private apiService: ApiService) {}
 
-  // http header for Configuration API v1
   private configHeaders = new HttpHeaders({
     'content-type': 'application/json',
     Accept: 'application/vnd.intershop.configuration.v1+json',

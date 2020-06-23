@@ -18,7 +18,7 @@ import { addImportToNgModule } from '../utils/registration';
 
 import { PWAStoreGroupOptionsSchema as Options } from './schema';
 
-export function determineStoreGroupLocation(
+function determineStoreGroupLocation(
   host: Tree,
   options: {
     path?: string;
@@ -29,7 +29,7 @@ export function determineStoreGroupLocation(
   const project = getProject(host, options.project);
 
   const path = normalize(`${buildDefaultPath(project)}/core/store/`);
-  const module = normalize(`${path}/core-store.module.ts`);
+  const module = normalize(`${buildDefaultPath(project)}/core/state-management.module.ts`);
   const artifactName = `${strings.classify(options.name)}StoreModule`;
   const moduleImportPath = normalize(
     `${path}/${strings.dasherize(options.name)}/${strings.dasherize(options.name)}-store.module`

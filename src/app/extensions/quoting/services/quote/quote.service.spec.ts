@@ -7,9 +7,9 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { loadCompanyUserSuccess, loginUserSuccess } from 'ish-core/store/customer/user';
 
 import { QuoteRequestItemData } from '../../models/quote-request-item/quote-request-item.interface';
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
@@ -24,16 +24,15 @@ describe('Quote Service', () => {
   let quoteRequestService: QuoteRequestService;
   let store$: Store;
 
-  const customer = { customerNo: 'CID', type: 'SMBCustomer' } as Customer;
+  const customer = { customerNo: 'CID', isBusinessCustomer: true } as Customer;
   const user = { email: 'UID' } as User;
 
   beforeEach(() => {
     apiService = mock(ApiService);
     quoteRequestService = mock(QuoteRequestService);
-    when(apiService.icmServerURL).thenReturn('BASE');
 
     TestBed.configureTestingModule({
-      imports: [ngrxTesting({ reducers: coreReducers })],
+      imports: [CoreStoreModule.forTesting(), CustomerStoreModule.forTesting('user')],
       providers: [
         QuoteService,
         { provide: ApiService, useFactory: () => instance(apiService) },
@@ -67,8 +66,8 @@ describe('Quote Service', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer, user }));
-      store$.dispatch(new LoadCompanyUserSuccess({ user }));
+      store$.dispatch(loginUserSuccess({ customer, user }));
+      store$.dispatch(loadCompanyUserSuccess({ user }));
     });
 
     it("should get quotes data when 'getQuotes' is called", done => {
@@ -77,24 +76,26 @@ describe('Quote Service', () => {
           elements: [{ type: 'Link', uri: 'customers/CID/users/UID/quotes/QID' }],
         })
       );
-      when(apiService.get(`BASE/customers/CID/users/UID/quotes/QID`)).thenReturn(
-        of({
-          id: 'QID',
-          items: [
-            {
-              singlePrice: {
-                type: 'Money',
-                value: 1,
-                currency: 'EUR',
-              },
-              totalPrice: {
-                type: 'Money',
-                value: 1,
-                currency: 'EUR',
-              },
-            } as QuoteRequestItemData,
-          ],
-        })
+      when(apiService.resolveLinks()).thenReturn(() =>
+        of([
+          {
+            id: 'QID',
+            items: [
+              {
+                singlePrice: {
+                  type: 'Money',
+                  value: 1,
+                  currency: 'EUR',
+                },
+                totalPrice: {
+                  type: 'Money',
+                  value: 1,
+                  currency: 'EUR',
+                },
+              } as QuoteRequestItemData,
+            ],
+          },
+        ])
       );
 
       quoteService.getQuotes().subscribe(data => {
@@ -106,7 +107,6 @@ describe('Quote Service', () => {
         expect(quoteRequestItem.totals.total.value).toBe(1);
 
         verify(apiService.get(`customers/CID/users/UID/quotes`)).once();
-        verify(apiService.get(`BASE/customers/CID/users/UID/quotes/QID`)).once();
         done();
       });
     });

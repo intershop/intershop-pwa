@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "SchematicsPWAComponent",
+  "title": "PWA Add Destroy Subject To Component Options Schema",
+  "type": "object",
+  "description": "Adds destroy subject to an existing Angular artifact.",
+  "properties": {
+    "project": {
+      "type": "string",
+      "$default": {
+        "$source": "projectName"
+      },
+      "visible": false
+    },
+    "name": {
+      "type": "string",
+      "description": "The path of the component.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What component should the destroy be added to?"
+    }
+  }
+}

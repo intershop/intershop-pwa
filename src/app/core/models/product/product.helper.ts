@@ -22,6 +22,7 @@ export enum ProductCompletenessLevel {
 }
 
 export type AllProductTypes = Product | VariationProduct | VariationProductMaster | ProductBundle | ProductRetailSet;
+
 export type AnyProductType = Product & VariationProduct & VariationProductMaster & ProductBundle & ProductRetailSet;
 
 export type ProductPrices =

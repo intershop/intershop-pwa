@@ -46,7 +46,7 @@ describe('Account Profile Company Component', () => {
   it('should emit updateCompanyProfile event if form is valid', () => {
     const eventEmitter$ = spy(component.updateCompanyProfile);
 
-    component.currentCustomer = { customerNo: '4711', type: 'SMBCustomer', companyName: 'OilCorp' } as Customer;
+    component.currentCustomer = { customerNo: '4711', isBusinessCustomer: true, companyName: 'OilCorp' } as Customer;
     fixture.detectChanges();
 
     component.submit();

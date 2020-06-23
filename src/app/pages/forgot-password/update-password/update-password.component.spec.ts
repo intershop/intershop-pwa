@@ -2,10 +2,11 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
+import { EMPTY } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { RequestReminderFormComponent } from '../request-reminder-form/request-reminder-form.component';
@@ -19,6 +20,9 @@ describe('Update Password Component', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
+    const accountFacade = mock(AccountFacade);
+    when(accountFacade.passwordReminderSuccess$).thenReturn(EMPTY);
+
     TestBed.configureTestingModule({
       declarations: [
         MockComponent(LoadingComponent),
@@ -27,7 +31,8 @@ describe('Update Password Component', () => {
         MockDirective(ServerHtmlDirective),
         UpdatePasswordComponent,
       ],
-      imports: [RouterTestingModule, TranslateModule.forRoot(), ngrxTesting({ reducers: coreReducers })],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   }));
 

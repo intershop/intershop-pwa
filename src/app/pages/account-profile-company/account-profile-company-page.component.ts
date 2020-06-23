@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
@@ -16,10 +16,12 @@ import { whenTruthy } from 'ish-core/utils/operators';
   templateUrl: './account-profile-company-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountProfileCompanyPageComponent implements OnInit {
+export class AccountProfileCompanyPageComponent implements OnInit, OnDestroy {
   currentCustomer$: Observable<Customer>;
   userError$: Observable<HttpError>;
   userLoading$: Observable<boolean>;
+
+  private destroy$ = new Subject();
 
   constructor(private accountFacade: AccountFacade, private router: Router) {}
 
@@ -29,7 +31,7 @@ export class AccountProfileCompanyPageComponent implements OnInit {
     this.userLoading$ = this.accountFacade.userLoading$;
 
     // check if the current customer is a business customer, otherwise the profile page is displayed
-    this.currentCustomer$.pipe(whenTruthy(), take(1)).subscribe(customer => {
+    this.currentCustomer$.pipe(whenTruthy(), take(1), takeUntil(this.destroy$)).subscribe(customer => {
       if (!customer.isBusinessCustomer) {
         this.router.navigate(['/account/profile']);
       }
@@ -38,5 +40,10 @@ export class AccountProfileCompanyPageComponent implements OnInit {
 
   updateCompanyProfile(customer: Customer) {
     this.accountFacade.updateCustomerProfile(customer, 'account.profile.update_company_profile.message');
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

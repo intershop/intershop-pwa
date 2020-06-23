@@ -1,9 +1,9 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, NgModule, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { Observable } from 'rxjs';
-
-import { SharedModule } from 'ish-shared/shared.module';
 
 import { CaptchaFacade } from '../../../facades/captcha.facade';
 
@@ -32,7 +32,9 @@ export class CaptchaV2Component implements OnInit {
     this.formControl.updateValueAndValidity();
   }
 
-  /* writes the captcha response token in the captcha form field */
+  /**
+   * writes the captcha response token in the captcha form field
+   */
   resolved(captchaResponse: string) {
     this.formControl.setValue(captchaResponse);
   }
@@ -48,6 +50,6 @@ export class CaptchaV2Component implements OnInit {
 
 @NgModule({
   declarations: [CaptchaV2Component],
-  imports: [RecaptchaModule, SharedModule],
+  imports: [RecaptchaModule, CommonModule, TranslateModule],
 })
 export class CaptchaV2ComponentModule {}

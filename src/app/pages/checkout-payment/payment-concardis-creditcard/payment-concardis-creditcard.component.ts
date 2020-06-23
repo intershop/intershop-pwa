@@ -27,7 +27,7 @@ declare var PayEngine: any;
   templateUrl: './payment-concardis-creditcard.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-// tslint:disable-next-line:ccp-no-intelligence-in-components
+// tslint:disable-next-line: rxjs-prefer-angular-takeuntil
 export class PaymentConcardisCreditcardComponent extends PaymentConcardisComponent implements OnInit {
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
     super(scriptLoader, cd);
@@ -52,7 +52,9 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
     );
   }
 
-  /* ---------------------------------------- load concardis script if component is visible ------------------------------------------- */
+  /**
+   * load concardis script if component is visible
+   */
   loadScript() {
     // load script only once if component becomes visible
     if (this.activated && !this.scriptLoaded) {
@@ -97,8 +99,6 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
         );
     }
   }
-
-  /* ---------------------------------------- concardis callback functions  ------------------------------------------- */
 
   /**
    * call back function to initialize iframes for cardNumber and cvc
@@ -181,8 +181,6 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
     }
     this.cd.detectChanges();
   }
-
-  /* ---------------------------------------- submit form  ------------------------------------------- */
 
   /**
    * submit concardis payment form

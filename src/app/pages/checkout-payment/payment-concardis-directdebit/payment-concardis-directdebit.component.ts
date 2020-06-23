@@ -28,6 +28,7 @@ declare var PayEngine: any;
   templateUrl: './payment-concardis-directdebit.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
+// tslint:disable-next-line: rxjs-prefer-angular-takeuntil
 export class PaymentConcardisDirectdebitComponent extends PaymentConcardisComponent {
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
     super(scriptLoader, cd);
@@ -96,8 +97,6 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
     }
     return param;
   }
-
-  /* ---------------------------------------- concardis callback functions  ------------------------------------------- */
 
   /**
    * call back function to submit data, get a response token from provider and send data in case of success
@@ -180,8 +179,6 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
     }
     this.cd.detectChanges();
   }
-
-  /* ---------------------------------------- submit form  ------------------------------------------- */
 
   /**
    * submit concardis payment form

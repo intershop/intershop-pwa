@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
@@ -9,19 +9,13 @@ import { catchError, concatMap, debounceTime, distinctUntilChanged, map, sample,
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
-import { ofUrl, selectRouteParam } from 'ish-core/store/router';
-import { LoadMoreProducts, SetProductListingPages } from 'ish-core/store/shopping/product-listing';
-import { LoadProductSuccess } from 'ish-core/store/shopping/products';
+import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
+import { loadMoreProducts, setProductListingPages } from 'ish-core/store/shopping/product-listing';
+import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
-import {
-  SearchActionTypes,
-  SearchProducts,
-  SearchProductsFail,
-  SuggestSearch,
-  SuggestSearchSuccess,
-} from './search.actions';
+import { searchProducts, searchProductsFail, suggestSearch, suggestSearchSuccess } from './search.actions';
 
 @Injectable()
 export class SearchEffects {
@@ -37,63 +31,69 @@ export class SearchEffects {
   /**
    * Effect that listens for search route changes and triggers a search action.
    */
-  @Effect()
-  triggerSearch$ = this.store.pipe(
-    ofUrl(/^\/search.*/),
-    select(selectRouteParam('searchTerm')),
-    sample(this.actions$.pipe(ofType(routerNavigatedAction))),
-    whenTruthy(),
-    map(searchTerm => new LoadMoreProducts({ id: { type: 'search', value: searchTerm } })),
-    distinctUntilChanged(isEqual)
+  triggerSearch$ = createEffect(() =>
+    this.store.pipe(
+      ofUrl(/^\/search.*/),
+      select(selectRouteParam('searchTerm')),
+      sample(this.actions$.pipe(ofType(routerNavigatedAction))),
+      whenTruthy(),
+      map(searchTerm => loadMoreProducts({ id: { type: 'search', value: searchTerm } })),
+      distinctUntilChanged(isEqual)
+    )
   );
 
-  @Effect()
-  searchProducts$ = this.actions$.pipe(
-    ofType<SearchProducts>(SearchActionTypes.SearchProducts),
-    mapToPayload(),
-    map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
-    concatMap(({ searchTerm, page, sorting }) =>
-      this.productsService.searchProducts(searchTerm, page, sorting).pipe(
-        concatMap(({ total, products, sortKeys }) => [
-          ...products.map(product => new LoadProductSuccess({ product })),
-          new SetProductListingPages(
-            this.productListingMapper.createPages(
-              products.map(p => p.sku),
-              'search',
-              searchTerm,
-              {
-                startPage: page,
-                sorting,
-                sortKeys,
-                itemCount: total,
-              }
-            )
-          ),
-        ]),
-        mapErrorToAction(SearchProductsFail)
+  searchProducts$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(searchProducts),
+      mapToPayload(),
+      map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
+      concatMap(({ searchTerm, page, sorting }) =>
+        this.productsService.searchProducts(searchTerm, page, sorting).pipe(
+          concatMap(({ total, products, sortKeys }) => [
+            ...products.map(product => loadProductSuccess({ product })),
+            setProductListingPages(
+              this.productListingMapper.createPages(
+                products.map(p => p.sku),
+                'search',
+                searchTerm,
+                {
+                  startPage: page,
+                  sorting,
+                  sortKeys,
+                  itemCount: total,
+                }
+              )
+            ),
+          ]),
+          mapErrorToAction(searchProductsFail)
+        )
       )
     )
   );
 
-  @Effect()
-  suggestSearch$ = this.actions$.pipe(
-    ofType<SuggestSearch>(SearchActionTypes.SuggestSearch),
-    mapToPayloadProperty('searchTerm'),
-    debounceTime(400),
-    distinctUntilChanged(),
-    whenTruthy(),
-    switchMap(searchTerm =>
-      this.suggestService.search(searchTerm).pipe(
-        map(suggests => new SuggestSearchSuccess({ searchTerm, suggests })),
-        // tslint:disable-next-line:ban
-        catchError(() => EMPTY)
+  suggestSearch$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(suggestSearch),
+      mapToPayloadProperty('searchTerm'),
+      debounceTime(400),
+      distinctUntilChanged(),
+      whenTruthy(),
+      switchMap(searchTerm =>
+        this.suggestService.search(searchTerm).pipe(
+          map(suggests => suggestSearchSuccess({ searchTerm, suggests })),
+          // tslint:disable-next-line:ban
+          catchError(() => EMPTY)
+        )
       )
     )
   );
 
-  @Effect({ dispatch: false })
-  redirectIfSearchProductFail$ = this.actions$.pipe(
-    ofType(SearchActionTypes.SearchProductsFail),
-    tap(() => this.httpStatusCodeService.setStatusAndRedirect(404))
+  redirectIfSearchProductFail$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(searchProductsFail),
+        tap(() => this.httpStatusCodeService.setStatusAndRedirect(404))
+      ),
+    { dispatch: false }
   );
 }

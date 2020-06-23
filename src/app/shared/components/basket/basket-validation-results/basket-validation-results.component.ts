@@ -15,7 +15,6 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
  * @example
  * <ish-basket-validation-results></ish-basket-validation-results>
  */
-// tslint:disable:ccp-no-intelligence-in-components
 @Component({
   selector: 'ish-basket-validation-results',
   templateUrl: './basket-validation-results.component.html',
@@ -129,5 +128,6 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 }

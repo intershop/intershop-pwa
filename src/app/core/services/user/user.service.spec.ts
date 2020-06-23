@@ -79,11 +79,11 @@ describe('User Service', () => {
       verify(apiServiceMock.post(anything(), anything())).never();
     });
 
-    it("should create a new private user when 'createUser' is called with type 'PrivateCustomer'", done => {
+    it("should create a new individual user when 'createUser' is called", done => {
       when(apiServiceMock.post(anyString(), anything(), anything())).thenReturn(of({}));
 
       const payload = {
-        customer: { customerNo: '4711', type: 'PrivateCustomer' } as Customer,
+        customer: { customerNo: '4711', isBusinessCustomer: false } as Customer,
         address: {} as Address,
         credentials: {} as Credentials,
         user: {} as User,
@@ -108,11 +108,11 @@ describe('User Service', () => {
       verify(apiServiceMock.put(anything(), anything())).never();
     });
 
-    it("should update a private user when 'updateUser' is called with type 'PrivateCustomer'", done => {
+    it("should update a individual user when 'updateUser' is called", done => {
       when(apiServiceMock.put(anyString(), anything())).thenReturn(of({}));
 
       const payload = {
-        customer: { customerNo: '4711', type: 'PrivateCustomer' } as Customer,
+        customer: { customerNo: '4711', isBusinessCustomer: false } as Customer,
         user: {} as User,
       } as CustomerUserType;
 
@@ -122,11 +122,11 @@ describe('User Service', () => {
       });
     });
 
-    it("should update a business user when 'updateUser' is called with type 'SMBCustomer'", done => {
+    it("should update a business user when 'updateUser' is called", done => {
       when(apiServiceMock.put(anyString(), anything())).thenReturn(of({}));
 
       const payload = {
-        customer: { customerNo: '4711', type: 'SMBCustomer' } as Customer,
+        customer: { customerNo: '4711', isBusinessCustomer: true } as Customer,
         user: {} as User,
       } as CustomerUserType;
 
@@ -156,10 +156,10 @@ describe('User Service', () => {
       verify(apiServiceMock.put(anything(), anything())).never();
     });
 
-    it("should update a password of a private user when 'updateUserPassword' is called with type 'PrivateCustomer'", done => {
+    it("should update a password of a individual user when 'updateUserPassword' is called", done => {
       when(apiServiceMock.put(anyString(), anything())).thenReturn(of({}));
 
-      const customer = { customerNo: '4711', type: 'PrivateCustomer' } as Customer;
+      const customer = { customerNo: '4711', isBusinessCustomer: false } as Customer;
       const user = { email: 'foo@foo.bar' } as User;
 
       userService.updateUserPassword(customer, user, '123', '1234').subscribe(() => {
@@ -168,10 +168,10 @@ describe('User Service', () => {
       });
     });
 
-    it("should update a password of a business user when 'updateUser' is called with type 'SMBCustomer'", done => {
+    it("should update a password of a business user when 'updateUser' is called", done => {
       when(apiServiceMock.put(anyString(), anything())).thenReturn(of({}));
 
-      const customer = { customerNo: '4711', type: 'SMBCustomer' } as Customer;
+      const customer = { customerNo: '4711', isBusinessCustomer: true } as Customer;
       const user = { email: 'foo@foo.bar' } as User;
 
       userService.updateUserPassword(customer, user, '123', '1234').subscribe(() => {
@@ -193,7 +193,7 @@ describe('User Service', () => {
       verify(apiServiceMock.put(anything(), anything())).never();
     });
 
-    it('should return an error when called for a private customer', done => {
+    it('should return an error when called for an individual customer', done => {
       when(apiServiceMock.put(anything(), anything())).thenReturn(of({}));
 
       userService.updateCustomer({ isBusinessCustomer: false } as Customer).subscribe(fail, err => {
@@ -204,13 +204,12 @@ describe('User Service', () => {
       verify(apiServiceMock.put(anything(), anything())).never();
     });
 
-    it("should update the business customer when 'updateCustomer' is called with type 'SMBCustomer'", done => {
+    it("should update the business customer when 'updateCustomer' is called", done => {
       when(apiServiceMock.put(anyString(), anything())).thenReturn(of({}));
 
       const customer = {
         customerNo: '4711',
         companyName: 'xyz',
-        type: 'SMBCustomer',
         isBusinessCustomer: true,
       } as Customer;
 

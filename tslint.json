@@ -121,7 +121,6 @@
     "prefer-const": true,
     "use-shorthand-property-in-object-creation": true,
     "radix": true,
-    "rxjs-no-internal": true,
     "rxjs-finnish": {
       "options": [
         {
@@ -135,35 +134,34 @@
       "severity": "error"
     },
     "rxjs-no-create": true,
-    "rxjs-no-ignored-subscribe": true,
-    "rxjs-no-unsafe-switchmap": true,
-    "rxjs-no-unsafe-catch": true,
-    "rxjs-no-unsafe-first": {
-      "severity": "off"
-    },
-    "rxjs-no-unsafe-scope": {
-      "severity": "off"
-    },
-    "rxjs-no-unsafe-takeuntil": true,
-    "rxjs-no-subject-value": true,
-    "rxjs-no-subject-unsubscribe": true,
-    "rxjs-no-exposed-subjects": {
-      "severity": "off"
-    },
-    "rxjs-no-explicit-generics": {
-      "severity": "off"
-    },
     "rxjs-no-ignored-replay-buffer": true,
-    "rxjs-prefer-async-pipe": {
-      "severity": "off"
+    "rxjs-no-ignored-subscribe": true,
+    "rxjs-no-internal": true,
+    "rxjs-no-nested-subscribe": { "severity": "warning" },
+    "rxjs-no-subclass": true,
+    "rxjs-no-subject-unsubscribe": true,
+    "rxjs-no-subject-value": true,
+    "rxjs-no-unsafe-catch": true,
+    "rxjs-no-unsafe-subject-next": true,
+    "rxjs-no-unsafe-switchmap": true,
+    "rxjs-no-unsafe-takeuntil": true,
+    "rxjs-prefer-angular-takeuntil": {
+      "severity": "warning",
+      "options": {
+        "checkDestroy": true,
+        "checkDecorators": ["Component", "Pipe", "Directive"]
+      }
     },
-    "rxjs-throw-error": {
-      "severity": "off"
-    },
+    "rxjs-no-explicit-generics": { "severity": "off" },
+    "rxjs-no-ignored-observable": { "severity": "off" },
+    "rxjs-no-exposed-subjects": { "severity": "off" },
+    "rxjs-no-ignored-subscription": { "severity": "off" },
+    "rxjs-no-unsafe-first": { "severity": "off" },
+    "rxjs-no-unsafe-scope": { "severity": "off" },
+    "rxjs-prefer-angular-async-pipe": { "severity": "off" },
+    "rxjs-throw-error": { "severity": "off" },
     "private-destroy-field": true,
     "ngrx-use-empty-store-type": true,
-    "ngrx-use-oftype-with-type": true,
-    "ngrx-use-complex-type-with-action-payload": true,
     "semicolon": [true, "always"],
     "triple-equals": true,
     "typedef-whitespace": [
@@ -221,6 +219,8 @@
     },
     "ish-ordered-imports": true,
     "ish-useful-imports": true,
+    "force-jsdoc-comments": { "severity": "warning" },
+    "newline-before-root-members": true,
     "no-duplicate-imports": true,
     "ban": [
       true,
@@ -396,7 +396,7 @@
         {
           "import": ".*",
           "from": ".*environments/environment.*",
-          "filePattern": "^.*/app/((?!(module|core/store/configuration/configuration\\.reducer|core/utils/state-transfer/state-properties\\.service)\\.ts).)*$",
+          "filePattern": "^.*/app/((?!(module|core/store/core/configuration/configuration\\.reducer|core/utils/state-transfer/state-properties\\.service)\\.ts).)*$",
           "message": "Importing environment is not allowed. Inject needed properties instead."
         },
         {
@@ -408,7 +408,31 @@
           "import": "^(StoreModule|EffectsModule)$",
           "from": "ngrx",
           "filePattern": "^.*\\.spec\\.ts*$",
-          "message": "Use the testing helper 'ngrxTesting' in tests instead."
+          "message": "Use the testing helpers '*StoreModule.forTesting' in tests instead."
+        },
+        {
+          "import": "^Effect$",
+          "from": "@ngrx/effects",
+          "filePattern": "^.*(\\.spec|\\.effects)\\.ts*$",
+          "message": "The old way of declaring effects is deprecated, use 'createEffect'."
+        },
+        {
+          "import": "^Action$",
+          "from": "@ngrx/store",
+          "filePattern": "^(?!.*\\.spec\\.ts$).*\\.actions\\.ts*$",
+          "message": "The old way of declaring actions is deprecated, use 'createAction'."
+        },
+        {
+          "import": "^props$",
+          "from": "@ngrx/store",
+          "filePattern": "^.*\\.actions\\.ts*$",
+          "message": "Do not use 'props' directly with 'createAction', use our helper functions 'payload' and 'httpError' from 'ish-core/utils/action-creators' instead."
+        },
+        {
+          "import": "^HttpError$",
+          "from": ".*http-error.model",
+          "filePattern": "^.*\\.actions\\.ts*$",
+          "message": "Do not use 'HttpError' explicitly, please use 'httpError' from 'ish-core/utils/action-creators' instead."
         },
         {
           "import": "^IconModule$",
@@ -445,6 +469,36 @@
           "from": ".*.*",
           "filePattern": ".*/shared/shared.module.ts$",
           "message": "Importing and exporting extension modules should be done in ShellModule."
+        },
+        // TODO: remove after 0.22 release
+        {
+          "from": "^ish-core\\/store\\/(addresses|orders|restore|user)(.*)$",
+          "message": "Core store was restructured in version 0.21, apply auto-fix.",
+          "fix": "ish-core/store/customer/$1$2"
+        },
+        // TODO: remove after 0.22 release
+        {
+          "from": "^ish-core\\/store\\/core-store.module$",
+          "message": "Core store was restructured in version 0.21, apply auto-fix.",
+          "fix": "ish-core/store/core/core-store.module"
+        },
+        // TODO: remove after 0.22 release
+        {
+          "from": "^ish-core\\/store\\/checkout/basket(.*)$",
+          "message": "Core store was restructured in version 0.21, apply auto-fix.",
+          "fix": "ish-core/store/customer/basket$2"
+        },
+        // TODO: remove after 0.22 release
+        {
+          "from": "^ish-core\\/store\\/(configuration|error|messages|router|viewconf)(.*)$",
+          "message": "Core store was restructured in version 0.21, apply auto-fix.",
+          "fix": "ish-core/store/core/$1$2"
+        },
+        // TODO: remove after 0.22 release
+        {
+          "from": "^ish-core\\/store\\/(contact|countries|regions)(.*)$",
+          "message": "Core store was restructured in version 0.21, apply auto-fix.",
+          "fix": "ish-core/store/general/$1$2"
         }
       ]
     },
@@ -488,20 +542,21 @@
     "no-intelligence-in-artifacts": {
       "severity": "warning",
       "options": {
-        "component": {
-          "ngrx": false,
-          "service": false,
-          "router": true,
-          "facade": true
+        "(component|pipe|directive)(\\.spec)?\\.ts$": {
+          // "router": "Angular artifacts should rely use the Router directly.",
+          "ngrx": "Angular artifacts should rely on facades only.",
+          "service": "Angular artifacts should rely on facades only."
         },
-        "effects": {
-          "ngrx": true,
-          "service": true,
-          "router": true,
-          "facade": false
+        "effects.ts$": {
+          "facade": "Effects should not use facades."
+        },
+        "^(?!.*/(utils|sfe-adapter)/.*$).*service.ts$": {
+          // "ngrx": "Services should not use NgRx.",
+          "router": "Services should not use the Angular Router."
         }
       }
     },
+    "no-star-imports-in-store": { "severity": "warning" },
     "initialize-observables-in-ngoninit": true,
     "project-structure": {
       "severity": "warning",
@@ -532,7 +587,7 @@
           "^.*/store/([a-z][a-z0-9-]+)/\\1-store(\\.module|)\\.ts",
           "^.*/([a-z][a-z0-9-]+)(/src/app|)/store/\\1-store(\\.module|)\\.ts",
           // ngrx router-store
-          "^.*/src/app/core/store/router/router\\.(operators|serializer)\\.ts",
+          "^.*/src/app/core/store/core/router/router\\.(operators|serializer)\\.ts",
           // allow only app related content directly in src/app
           "^.*/src/app/app[\\w\\.\\-]+\\.ts$",
           // application shell
@@ -714,7 +769,7 @@
             "file": ".*/store/([a-z][a-z0-9-]+/|)<kebab>/<kebab>\\.reducer\\.ts$"
           },
           {
-            "name": "^(metaReducers)$",
+            "name": "^(metaReducers|[a-z]+MetaReducers)$",
             "file": ".*\\.module\\.ts$"
           },
           {

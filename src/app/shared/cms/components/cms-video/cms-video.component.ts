@@ -30,7 +30,9 @@ export class CMSVideoComponent implements CMSComponent, OnInit {
 
   constructor(private sanitizer: DomSanitizer) {}
 
-  // defered loading flag
+  /**
+   * deferred loading flag
+   */
   showVideo = false;
 
   ngOnInit() {
@@ -69,7 +71,9 @@ export class CMSVideoComponent implements CMSComponent, OnInit {
     this.nativeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.video);
   }
 
-  // process video URL with a YouTube video ID regex (https://github.com/regexhq/youtube-regex)
+  /**
+   * process video URL with a YouTube video ID regex (https://github.com/regexhq/youtube-regex)
+   */
   tryProcessYoutubeVideo(): boolean {
     const youtubeVideoRegex = /(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/i;
     if (youtubeVideoRegex.test(this.video)) {
@@ -87,7 +91,9 @@ export class CMSVideoComponent implements CMSComponent, OnInit {
     return false;
   }
 
-  // process video URL with a Vimeo video ID regex (https://github.com/regexhq/vimeo-regex)
+  /**
+   * process video URL with a Vimeo video ID regex (https://github.com/regexhq/vimeo-regex)
+   */
   tryProcessVimeoVideo(): boolean {
     const vimeoVideoRegex = /(http|https)?:\/\/(www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|)(\d+)(?:|\/\?)/i;
     if (vimeoVideoRegex.test(this.video)) {

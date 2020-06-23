@@ -7,6 +7,7 @@ import { AccountAddressesPageComponent } from './account-addresses-page.componen
 import { AccountAddressesComponent } from './account-addresses/account-addresses.component';
 
 const routes: Routes = [{ path: '', component: AccountAddressesPageComponent }];
+
 @NgModule({
   imports: [RouterModule.forChild(routes), SharedModule],
   declarations: [AccountAddressesComponent, AccountAddressesPageComponent],

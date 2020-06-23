@@ -26,7 +26,6 @@ import { SfeMetadataWrapper } from 'ish-shared/cms/sfe-adapter/sfe-metadata-wrap
   templateUrl: './content-include.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable-next-line:ccp-no-intelligence-in-components
 export class ContentIncludeComponent extends SfeMetadataWrapper implements OnInit, OnDestroy, OnChanges {
   /**
    * The ID of the Include whoes content is to be rendered.
@@ -54,12 +53,12 @@ export class ContentIncludeComponent extends SfeMetadataWrapper implements OnIni
       });
   }
 
-  // TODO: replace with @ObservableInput
   ngOnChanges() {
     this.includeIdChange.next(this.includeId);
   }
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 }

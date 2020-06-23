@@ -8,7 +8,6 @@ export type AddressDetailsTypes = Partial<
 export class CheckoutAddressesPage {
   readonly tag = 'ish-checkout-address-page';
 
-  // guest checkout
   guestCheckout() {
     cy.get('button[data-testing-id="guest-checkout-button"]').click();
   }
@@ -19,7 +18,6 @@ export class CheckoutAddressesPage {
     return this;
   }
 
-  // change address
   private selectFirst(type: string) {
     cy.get(`[data-testing-id="${type}"]`)
       .find('select')

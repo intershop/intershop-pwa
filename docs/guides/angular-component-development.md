@@ -105,8 +105,18 @@ export class AnyComponent implements OnInit, OnDestroy {
   ...
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 }
+```
+
+The TSLint rule `rxjs-prefer-angular-takeuntil` enforces the usage of a `destroy$` Subject with `takeUntil` when subscribing in an Angular artifact.
+You can use the schematic `add-destroy` to automatically generate the required logic:
+
+```
+$ ng g add-destroy shared/components/common/accordion
+
+UPDATE src/app/shared/components/common/accordion/accordion.component.ts (425 bytes)
 ```
 
 ## Use `OnPush` Change Detection if Possible
@@ -126,3 +136,13 @@ Consider splitting one into multiple components when:
 - **Async data**: Component relies on async data from the store which makes the component code unnecessarily complex. Use a container component then which resolves the observables at the outside of the child component and passes data in via property bindings. Do not do this for simple cases.
 
 Single-use dumb components are always okay if it improves readability.
+
+## Mock Facades in Tests
+
+Angular Artifacts like Components, Directives and Pipes should solely depend on facades to interact with the [State Management](../concepts/state-management.md).
+This is enforced with the TSLint rule `no-intelligence-in-artifacts` which rejects every usage of REST API Services and NgRx Artifacts.
+
+Use [ts-mockito](https://github.com/NagRock/ts-mockito) for creating and managing these mocks.
+Providers for Facades can easily be added by using the VSCode snippet `ish-provider-ts-mockito`:
+
+![ish-provider-ts-mockito](ish-provider-ts-mockito.gif 'VSCode snippet ish-provider-ts-mockito in action')

@@ -1,20 +1,25 @@
-import { HttpHeaders } from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Action, Store } from '@ngrx/store';
-import * as using from 'jasmine-data-provider';
+import { Store } from '@ngrx/store';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { noop } from 'rxjs';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { Link } from 'ish-core/models/link/link.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { ErrorActionTypes, ServerError } from 'ish-core/store/error';
-import { SetAPIToken } from 'ish-core/store/user';
-import { userReducer } from 'ish-core/store/user/user.reducer';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import {
+  applyConfiguration,
+  getCurrentLocale,
+  getICMServerURL,
+  getRestEndpoint,
+} from 'ish-core/store/core/configuration';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { serverError } from 'ish-core/store/core/error';
+import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { getAPIToken, getPGID, setAPIToken } from 'ish-core/store/customer/user';
 
-import { ApiService, constructUrlForPath, resolveLink, resolveLinks, unpackEnvelope } from './api.service';
+import { ApiService, unpackEnvelope } from './api.service';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 
 describe('Api Service', () => {
@@ -27,18 +32,20 @@ describe('Api Service', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         // https://angular.io/guide/http#testing-http-requests
-        imports: [
-          HttpClientTestingModule,
-          ngrxTesting({
-            reducers: { configuration: configurationReducer },
-            config: {
-              initialState: {
-                configuration: { baseURL: 'http://www.example.org', server: 'WFS', channel: 'site' },
-              },
-            },
+        imports: [HttpClientTestingModule],
+        providers: [
+          ApiServiceErrorHandler,
+          ApiService,
+          provideMockStore({
+            selectors: [
+              { selector: getRestEndpoint, value: 'http://www.example.org/WFS/site/-' },
+              { selector: getICMServerURL, value: undefined },
+              { selector: getAPIToken, value: undefined },
+              { selector: getCurrentLocale, value: undefined },
+              { selector: getPGID, value: undefined },
+            ],
           }),
         ],
-        providers: [ApiServiceErrorHandler, ApiService],
       });
 
       apiService = TestBed.inject(ApiService);
@@ -52,9 +59,11 @@ describe('Api Service', () => {
     });
 
     it('should call the httpClient.options method when apiService.options method is called.', done => {
-      apiService.options('data').subscribe(data => {
-        expect(data).toBeTruthy();
-        done();
+      apiService.options('data').subscribe({
+        next: data => {
+          expect(data).toBeTruthy();
+        },
+        complete: done,
       });
 
       const req = httpTestingController.expectOne(`${REST_URL}/data`);
@@ -73,15 +82,18 @@ describe('Api Service', () => {
       consoleSpy.mockRestore();
 
       verify(storeSpy$.dispatch(anything())).once();
-      const [action] = capture(storeSpy$.dispatch).last();
-      expect((action as Action).type).toEqual(ErrorActionTypes.ServerError);
-      expect((action as ServerError).payload.error).toHaveProperty('statusText', statusText);
+      // tslint:disable-next-line: no-any
+      const [action] = capture(storeSpy$.dispatch).last() as any;
+      expect(action.type).toEqual(serverError.type);
+      expect(action.payload.error).toHaveProperty('statusText', statusText);
     });
 
     it('should call the httpClient.get method when apiService.get method is called.', done => {
-      apiService.get('data').subscribe(data => {
-        expect(data).toBeTruthy();
-        done();
+      apiService.get('data').subscribe({
+        next: data => {
+          expect(data).toBeTruthy();
+        },
+        complete: done,
       });
 
       const req = httpTestingController.expectOne(`${REST_URL}/data`);
@@ -100,15 +112,18 @@ describe('Api Service', () => {
       consoleSpy.mockRestore();
 
       verify(storeSpy$.dispatch(anything())).once();
-      const [action] = capture(storeSpy$.dispatch).last();
-      expect((action as Action).type).toEqual(ErrorActionTypes.ServerError);
-      expect((action as ServerError).payload.error).toHaveProperty('statusText', statusText);
+      // tslint:disable-next-line: no-any
+      const [action] = capture(storeSpy$.dispatch).last() as any;
+      expect(action.type).toEqual(serverError.type);
+      expect(action.payload.error).toHaveProperty('statusText', statusText);
     });
 
     it('should call the httpClient.put method when apiService.put method is called.', done => {
-      apiService.put('data').subscribe(data => {
-        expect(data).toBeTruthy();
-        done();
+      apiService.put('data').subscribe({
+        next: data => {
+          expect(data).toBeTruthy();
+        },
+        complete: done,
       });
 
       const req = httpTestingController.expectOne(`${REST_URL}/data`);
@@ -117,9 +132,11 @@ describe('Api Service', () => {
     });
 
     it('should call the httpClient.patch method when apiService.patch method is called.', done => {
-      apiService.patch('data').subscribe(data => {
-        expect(data).toBeTruthy();
-        done();
+      apiService.patch('data').subscribe({
+        next: data => {
+          expect(data).toBeTruthy();
+        },
+        complete: done,
       });
 
       const req = httpTestingController.expectOne(`${REST_URL}/data`);
@@ -128,9 +145,11 @@ describe('Api Service', () => {
     });
 
     it('should call the httpClient.post method when apiService.post method is called.', done => {
-      apiService.post('data').subscribe(data => {
-        expect(data).toBeTruthy();
-        done();
+      apiService.post('data').subscribe({
+        next: data => {
+          expect(data).toBeTruthy();
+        },
+        complete: done,
       });
 
       const req = httpTestingController.expectOne(`${REST_URL}/data`);
@@ -139,9 +158,11 @@ describe('Api Service', () => {
     });
 
     it('should call the httpClient.delete method when apiService.delete method is called.', done => {
-      apiService.delete('data').subscribe(data => {
-        expect(data).toBeTruthy();
-        done();
+      apiService.delete('data').subscribe({
+        next: data => {
+          expect(data).toBeTruthy();
+        },
+        complete: done,
       });
 
       const req = httpTestingController.expectOne(`${REST_URL}/data`);
@@ -150,64 +171,7 @@ describe('Api Service', () => {
     });
   });
 
-  describe('API Service Helper Methods', () => {
-    describe('constructUrlForPath()', () => {
-      const BASE_URL = 'http://example.org/site';
-      const JP = { lang: 'jp', currency: 'YEN' } as Locale;
-
-      it('should throw when asked for an unsupported method', () => {
-        // tslint:disable-next-line:no-any
-        expect(() => constructUrlForPath('relative', 'HEAD' as any, BASE_URL, undefined, undefined)).toThrowError(
-          'unhandled'
-        );
-      });
-
-      using(
-        [
-          { path: 'http://google.de', method: 'GET', expected: 'http://google.de' },
-          { path: 'http://google.de', method: 'OPTIONS', expected: 'http://google.de' },
-          { path: 'http://google.de', method: 'POST', expected: 'http://google.de' },
-          { path: 'http://google.de', method: 'PATCH', expected: 'http://google.de' },
-          { path: 'http://google.de', method: 'PUT', expected: 'http://google.de' },
-          { path: 'http://google.de', method: 'DELETE', expected: 'http://google.de' },
-          { path: 'https://bing.de', method: 'GET', expected: 'https://bing.de' },
-          { path: 'https://bing.de', method: 'OPTIONS', expected: 'https://bing.de' },
-          { path: 'https://bing.de', method: 'POST', expected: 'https://bing.de' },
-          { path: 'https://bing.de', method: 'PATCH', expected: 'https://bing.de' },
-          { path: 'https://bing.de', method: 'PUT', expected: 'https://bing.de' },
-          { path: 'https://bing.de', method: 'DELETE', expected: 'https://bing.de' },
-          { path: 'relative', method: 'GET', expected: 'http://example.org/site/relative' },
-          { path: 'relative', method: 'OPTIONS', expected: 'http://example.org/site/relative' },
-          { path: 'relative', method: 'POST', expected: 'http://example.org/site/relative' },
-          { path: 'relative', method: 'PATCH', expected: 'http://example.org/site/relative' },
-          { path: 'relative', method: 'PUT', expected: 'http://example.org/site/relative' },
-          { path: 'relative', method: 'DELETE', expected: 'http://example.org/site/relative' },
-          { path: 'relative', method: 'GET', expected: 'http://example.org/site;loc=jp;cur=YEN/relative', lang: JP },
-          {
-            path: 'relative',
-            method: 'OPTIONS',
-            expected: 'http://example.org/site;loc=jp;cur=YEN/relative',
-            lang: JP,
-          },
-          { path: 'relative', method: 'POST', expected: 'http://example.org/site;loc=jp;cur=YEN/relative', lang: JP },
-          { path: 'relative', method: 'PATCH', expected: 'http://example.org/site;loc=jp;cur=YEN/relative', lang: JP },
-          { path: 'relative', method: 'PUT', expected: 'http://example.org/site;loc=jp;cur=YEN/relative', lang: JP },
-          { path: 'relative', method: 'DELETE', expected: 'http://example.org/site;loc=jp;cur=YEN/relative', lang: JP },
-        ],
-        slice => {
-          it(`should return '${slice.expected}' when constructing ${slice.method} request from '${slice.path}' ${
-            slice.lang ? `with locale '${slice.lang.lang}'` : 'with no locale'
-          }`, () => {
-            expect(constructUrlForPath(slice.path, slice.method, BASE_URL, slice.lang, undefined)).toEqual(
-              slice.expected
-            );
-          });
-        }
-      );
-    });
-  });
-
-  describe('API Service Pipable Operators', () => {
+  describe('API Service Pipeable Operators', () => {
     let httpTestingController: HttpTestingController;
     let apiService: ApiService;
 
@@ -230,18 +194,20 @@ describe('Api Service', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [
-          HttpClientTestingModule,
-          ngrxTesting({
-            reducers: { configuration: configurationReducer },
-            config: {
-              initialState: {
-                configuration: { baseURL: 'http://www.example.org', server: 'WFS', channel: 'site' },
-              },
-            },
+        imports: [HttpClientTestingModule],
+        providers: [
+          ApiServiceErrorHandler,
+          ApiService,
+          provideMockStore({
+            selectors: [
+              { selector: getRestEndpoint, value: 'http://www.example.org/WFS/site/-' },
+              { selector: getICMServerURL, value: 'http://www.example.org/WFS' },
+              { selector: getAPIToken, value: undefined },
+              { selector: getCurrentLocale, value: undefined },
+              { selector: getPGID, value: undefined },
+            ],
           }),
         ],
-        providers: [ApiServiceErrorHandler, ApiService],
       });
       apiService = TestBed.inject(ApiService);
       httpTestingController = TestBed.inject(HttpTestingController);
@@ -297,7 +263,7 @@ describe('Api Service', () => {
     it('should perform both operations when requested', done => {
       apiService
         .get('categories')
-        .pipe(unpackEnvelope(), resolveLinks(apiService))
+        .pipe(unpackEnvelope(), apiService.resolveLinks())
         .subscribe(data => {
           expect(data).toEqual([webcamResponse]);
           done();
@@ -313,7 +279,7 @@ describe('Api Service', () => {
     it('should filter out elements that are not links when doing link translation', done => {
       apiService
         .get('something')
-        .pipe(resolveLinks(apiService))
+        .pipe(apiService.resolveLinks())
         .subscribe(data => {
           expect(data).toHaveLength(1);
           done();
@@ -330,7 +296,7 @@ describe('Api Service', () => {
     it('should return empty array on link translation when no links are available', done => {
       apiService
         .get('something')
-        .pipe(resolveLinks(apiService))
+        .pipe(apiService.resolveLinks())
         .subscribe(data => {
           expect(data).toBeEmpty();
           done();
@@ -343,7 +309,7 @@ describe('Api Service', () => {
     it('should return empty array on element and link translation when source is empty', done => {
       apiService
         .get('categories')
-        .pipe(unpackEnvelope(), resolveLinks(apiService))
+        .pipe(unpackEnvelope(), apiService.resolveLinks())
         .subscribe(data => {
           expect(data).toBeEmpty();
           done();
@@ -356,7 +322,7 @@ describe('Api Service', () => {
     it('should resolve data when resolveLink is used', done => {
       apiService
         .get('something')
-        .pipe(resolveLink(apiService))
+        .pipe(apiService.resolveLink())
         .subscribe(data => {
           expect(data).toHaveProperty('data', 'dummy');
           done();
@@ -370,7 +336,7 @@ describe('Api Service', () => {
     it('should not resolve data when resolveLink is used and an invalid link is supplied', done => {
       apiService
         .get('something')
-        .pipe(resolveLink(apiService))
+        .pipe(apiService.resolveLink())
         .subscribe(
           fail,
           err => {
@@ -386,8 +352,147 @@ describe('Api Service', () => {
     });
   });
 
+  describe('API Service URL construction', () => {
+    let apiService: ApiService;
+    let store$: MockStore;
+    let httpTestingController: HttpTestingController;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule],
+        providers: [
+          ApiServiceErrorHandler,
+          ApiService,
+          provideMockStore({
+            selectors: [
+              { selector: getRestEndpoint, value: 'http://www.example.org/WFS/site/-' },
+              { selector: getICMServerURL, value: undefined },
+              { selector: getCurrentLocale, value: undefined },
+              { selector: getPGID, value: undefined },
+              { selector: getAPIToken, value: undefined },
+            ],
+          }),
+        ],
+      });
+
+      apiService = TestBed.inject(ApiService);
+      httpTestingController = TestBed.inject(HttpTestingController);
+      store$ = TestBed.inject(MockStore);
+    });
+
+    afterEach(() => {
+      // After every test, assert that there are no more pending requests.
+      httpTestingController.verify();
+    });
+
+    it('should bypass URL construction when path is an external link', () => {
+      apiService.get('http://google.de').subscribe(fail, fail, fail);
+
+      httpTestingController.expectOne('http://google.de');
+    });
+
+    it('should bypass URL construction when path is an external secure link', () => {
+      apiService.get('https://google.de').subscribe(fail, fail, fail);
+
+      httpTestingController.expectOne('https://google.de');
+    });
+
+    it('should construct a URL based on ICM REST API when supplying a relative URL', () => {
+      apiService.get('relative').subscribe(fail, fail, fail);
+
+      const reqs = httpTestingController.match(x => !!x);
+      expect(reqs).toHaveLength(1);
+      expect(reqs[0].request.urlWithParams).toMatchInlineSnapshot(`"http://www.example.org/WFS/site/-/relative"`);
+    });
+
+    it('should include query params when supplied', () => {
+      apiService
+        .get('relative', { params: new HttpParams().set('view', 'grid').set('depth', '3') })
+        .subscribe(fail, fail, fail);
+
+      const reqs = httpTestingController.match(x => !!x);
+      expect(reqs).toHaveLength(1);
+      expect(reqs[0].request.urlWithParams).toMatchInlineSnapshot(
+        `"http://www.example.org/WFS/site/-/relative?view=grid&depth=3"`
+      );
+    });
+
+    it('should construct a URL based on ICM REST API when supplying a deep relative URL', () => {
+      apiService.get('very/deep/relative/url').subscribe(fail, fail, fail);
+
+      const reqs = httpTestingController.match(x => !!x);
+      expect(reqs).toHaveLength(1);
+      expect(reqs[0].request.urlWithParams).toMatchInlineSnapshot(
+        `"http://www.example.org/WFS/site/-/very/deep/relative/url"`
+      );
+    });
+
+    it('should include locale and currency when available in store', () => {
+      store$.overrideSelector(getCurrentLocale, { currency: 'USD', lang: 'en_US' } as Locale);
+
+      apiService.get('relative').subscribe(fail, fail, fail);
+
+      const reqs = httpTestingController.match(x => !!x);
+      expect(reqs).toHaveLength(1);
+      expect(reqs[0].request.urlWithParams).toMatchInlineSnapshot(
+        `"http://www.example.org/WFS/site/-;loc=en_US;cur=USD/relative"`
+      );
+    });
+
+    it('should include pgid when available in store and requested', () => {
+      store$.overrideSelector(getPGID, 'ASDF');
+
+      apiService.get('relative', { sendPGID: true }).subscribe(fail, fail, fail);
+
+      const reqs = httpTestingController.match(x => !!x);
+      expect(reqs).toHaveLength(1);
+      expect(reqs[0].request.urlWithParams).toMatchInlineSnapshot(
+        `"http://www.example.org/WFS/site/-/relative;pgid=ASDF"`
+      );
+    });
+
+    it('should include spgid when available in store and requested', () => {
+      store$.overrideSelector(getPGID, 'ASDF');
+
+      apiService.get('relative', { sendSPGID: true }).subscribe(fail, fail, fail);
+
+      const reqs = httpTestingController.match(x => !!x);
+      expect(reqs).toHaveLength(1);
+      expect(reqs[0].request.urlWithParams).toMatchInlineSnapshot(
+        `"http://www.example.org/WFS/site/-/relative;spgid=ASDF"`
+      );
+    });
+
+    it('should include pgid on first path element when available in store and requested', () => {
+      store$.overrideSelector(getPGID, 'ASDF');
+
+      apiService.get('very/deep/relative', { sendPGID: true }).subscribe(fail, fail, fail);
+
+      const reqs = httpTestingController.match(x => !!x);
+      expect(reqs).toHaveLength(1);
+      expect(reqs[0].request.urlWithParams).toMatchInlineSnapshot(
+        `"http://www.example.org/WFS/site/-/very;pgid=ASDF/deep/relative"`
+      );
+    });
+
+    it('should include params, pgid and locale for complex example', () => {
+      store$.overrideSelector(getPGID, 'ASDF');
+      store$.overrideSelector(getCurrentLocale, { currency: 'USD', lang: 'en_US' } as Locale);
+
+      apiService
+        .get('very/deep/relative', { sendPGID: true, params: new HttpParams().set('view', 'grid').set('depth', '3') })
+        .subscribe(fail, fail, fail);
+
+      const reqs = httpTestingController.match(x => !!x);
+      expect(reqs).toHaveLength(1);
+      expect(reqs[0].request.urlWithParams).toMatchInlineSnapshot(
+        `"http://www.example.org/WFS/site/-;loc=en_US;cur=USD/very;pgid=ASDF/deep/relative?view=grid&depth=3"`
+      );
+    });
+  });
+
   describe('API Service Headers', () => {
-    const REST_URL = 'http://www.example.org/WFS/site/-';
+    const REST_URL = 'http://www.example.org/WFS/site/-;loc=en_US;cur=USD';
     let apiService: ApiService;
     let store$: Store;
     let httpTestingController: HttpTestingController;
@@ -396,15 +501,9 @@ describe('Api Service', () => {
       TestBed.configureTestingModule({
         // https://angular.io/guide/http#testing-http-requests
         imports: [
+          CoreStoreModule.forTesting(['configuration']),
+          CustomerStoreModule.forTesting('user'),
           HttpClientTestingModule,
-          ngrxTesting({
-            reducers: { configuration: configurationReducer, user: userReducer },
-            config: {
-              initialState: {
-                configuration: { baseURL: 'http://www.example.org', server: 'WFS', channel: 'site' },
-              },
-            },
-          }),
         ],
         providers: [ApiServiceErrorHandler, ApiService],
       });
@@ -412,6 +511,8 @@ describe('Api Service', () => {
       apiService = TestBed.inject(ApiService);
       httpTestingController = TestBed.inject(HttpTestingController);
       store$ = TestBed.inject(Store);
+
+      store$.dispatch(applyConfiguration({ baseURL: 'http://www.example.org', server: 'WFS', channel: 'site' }));
     });
 
     afterEach(() => {
@@ -469,7 +570,7 @@ describe('Api Service', () => {
 
     it('should have a token, when token is in store', () => {
       const apiToken = 'blubb';
-      store$.dispatch(new SetAPIToken({ apiToken }));
+      store$.dispatch(setAPIToken({ apiToken }));
       apiService.get('dummy').subscribe(fail, fail, fail);
 
       const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
@@ -479,7 +580,7 @@ describe('Api Service', () => {
 
     it('should not have a token, when request is authorization request', () => {
       const apiToken = 'blubb';
-      store$.dispatch(new SetAPIToken({ apiToken }));
+      store$.dispatch(setAPIToken({ apiToken }));
       apiService
         .get('dummy', { headers: new HttpHeaders().set(ApiService.AUTHORIZATION_HEADER_KEY, 'dummy') })
         .subscribe(fail, fail, fail);
@@ -513,6 +614,154 @@ describe('Api Service', () => {
 
       const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
       expect(req.request.headers.get(ApiService.AUTHORIZATION_HEADER_KEY)).toBeFalsy();
+    });
+  });
+
+  describe('API Service exclusive runs', () => {
+    let apiService: ApiService;
+    let httpTestingController: HttpTestingController;
+    let store$: MockStore;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule],
+        providers: [
+          ApiServiceErrorHandler,
+          ApiService,
+          provideMockStore({
+            selectors: [
+              { selector: getICMServerURL, value: undefined },
+              { selector: getRestEndpoint, value: 'http://www.example.org' },
+              { selector: getCurrentLocale, value: undefined },
+              { selector: getPGID, value: undefined },
+              { selector: getAPIToken, value: undefined },
+            ],
+          }),
+        ],
+      });
+
+      apiService = TestBed.inject(ApiService);
+      httpTestingController = TestBed.inject(HttpTestingController);
+      store$ = TestBed.inject(MockStore);
+    });
+
+    afterEach(() => {
+      // After every test, assert that there are no more pending requests.
+      httpTestingController.verify();
+    });
+
+    it('should run call exclusively when asked for it', done => {
+      let syncData;
+
+      // tslint:disable-next-line: use-async-synchronisation-in-tests
+      apiService.get('dummy1', { runExclusively: true }).subscribe(data => {
+        expect(data).toBeTruthy();
+        syncData = data;
+      });
+
+      const req1 = httpTestingController.expectOne(`http://www.example.org/dummy1`);
+
+      setTimeout(() => {
+        req1.flush('TEST1');
+      }, 2000);
+
+      // tslint:disable-next-line: use-async-synchronisation-in-tests
+      apiService.get('dummy2').subscribe(data => {
+        expect(data).toBeTruthy();
+        expect(syncData).toEqual('TEST1');
+      });
+
+      apiService.get('dummy3').subscribe(data => {
+        expect(data).toBeTruthy();
+        expect(syncData).toEqual('TEST1');
+        done();
+      });
+
+      httpTestingController.verify();
+      setTimeout(() => httpTestingController.verify(), 500);
+      setTimeout(() => httpTestingController.verify(), 1000);
+      setTimeout(() => httpTestingController.verify(), 1500);
+
+      setTimeout(() => {
+        const req2 = httpTestingController.expectOne(`http://www.example.org/dummy2`);
+        req2.flush('TEST2');
+      }, 2500);
+      setTimeout(() => {
+        const req3 = httpTestingController.expectOne(`http://www.example.org/dummy3`);
+        req3.flush('TEST3');
+      }, 3000);
+    });
+
+    it('should run calls in parallel if not explicitly run exclusively', done => {
+      let syncData;
+
+      // tslint:disable-next-line: use-async-synchronisation-in-tests
+      apiService.get('dummy1').subscribe(data => {
+        expect(data).toBeTruthy();
+        expect(syncData).toEqual('TEST2');
+        syncData = data;
+      });
+
+      const req1 = httpTestingController.expectOne(`http://www.example.org/dummy1`);
+
+      // tslint:disable-next-line: use-async-synchronisation-in-tests
+      apiService.get('dummy2').subscribe(data => {
+        expect(data).toBeTruthy();
+        syncData = data;
+      });
+
+      const req2 = httpTestingController.expectOne(`http://www.example.org/dummy2`);
+
+      apiService.get('dummy3').subscribe(data => {
+        expect(data).toBeTruthy();
+        expect(syncData).toEqual('TEST1');
+        done();
+      });
+
+      const req3 = httpTestingController.expectOne(`http://www.example.org/dummy3`);
+
+      setTimeout(() => {
+        req1.flush('TEST1');
+      }, 2000);
+      setTimeout(() => {
+        req2.flush('TEST2');
+      }, 1500);
+      setTimeout(() => {
+        req3.flush('TEST3');
+      }, 3000);
+    });
+
+    it('should read apiToken just in time when making actual request', done => {
+      store$.overrideSelector(getAPIToken, '0');
+
+      // tslint:disable-next-line: use-async-synchronisation-in-tests
+      apiService.get('dummy1', { runExclusively: true }).subscribe(data => {
+        expect(data).toBeTruthy();
+      });
+
+      const req1 = httpTestingController.expectOne(`http://www.example.org/dummy1`);
+      expect(req1.request.headers.get(ApiService.TOKEN_HEADER_KEY)).toEqual('0');
+
+      // tslint:disable-next-line: use-async-synchronisation-in-tests
+      apiService.get('dummy2').subscribe(data => {
+        expect(data).toBeTruthy();
+      });
+
+      httpTestingController.verify();
+
+      setTimeout(() => {
+        // set incoming api token
+        // emulates AuthInterceptor
+        store$.overrideSelector(getAPIToken, '1');
+        req1.flush('TEST1');
+      }, 1000);
+
+      setTimeout(() => {
+        const req2 = httpTestingController.expectOne(`http://www.example.org/dummy2`);
+        req2.flush('TEST2');
+        expect(req2.request.headers.get(ApiService.TOKEN_HEADER_KEY)).toEqual('1');
+        done();
+      }, 1500);
     });
   });
 });

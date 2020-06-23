@@ -1,26 +1,25 @@
 import { TestBed } from '@angular/core/testing';
-import { combineReducers } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { orderTemplatesReducers } from '../order-templates-store.module';
+import { OrderTemplatesStoreModule } from '../order-templates-store.module';
 
 import {
-  CreateOrderTemplate,
-  CreateOrderTemplateFail,
-  CreateOrderTemplateSuccess,
-  DeleteOrderTemplate,
-  DeleteOrderTemplateFail,
-  DeleteOrderTemplateSuccess,
-  LoadOrderTemplates,
-  LoadOrderTemplatesFail,
-  LoadOrderTemplatesSuccess,
-  SelectOrderTemplate,
-  UpdateOrderTemplate,
-  UpdateOrderTemplateFail,
-  UpdateOrderTemplateSuccess,
+  createOrderTemplate,
+  createOrderTemplateFail,
+  createOrderTemplateSuccess,
+  deleteOrderTemplate,
+  deleteOrderTemplateFail,
+  deleteOrderTemplateSuccess,
+  loadOrderTemplates,
+  loadOrderTemplatesFail,
+  loadOrderTemplatesSuccess,
+  selectOrderTemplate,
+  updateOrderTemplate,
+  updateOrderTemplateFail,
+  updateOrderTemplateSuccess,
 } from './order-template.actions';
 import {
   getAllOrderTemplates,
@@ -32,19 +31,15 @@ import {
 } from './order-template.selectors';
 
 describe('Order Template Selectors', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting({
-        reducers: {
-          ...coreReducers,
-          orderTemplates: combineReducers(orderTemplatesReducers),
-        },
-      }),
+      imports: [CoreStoreModule.forTesting(), OrderTemplatesStoreModule.forTesting('orderTemplates')],
+      providers: [provideStoreSnapshots()],
     });
 
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
   });
 
   const orderTemplates = [
@@ -76,7 +71,7 @@ describe('Order Template Selectors', () => {
 
   describe('loading order templates', () => {
     describe('LoadOrderTemplates', () => {
-      const loadOrderTemplateAction = new LoadOrderTemplates();
+      const loadOrderTemplateAction = loadOrderTemplates();
 
       beforeEach(() => {
         store$.dispatch(loadOrderTemplateAction);
@@ -88,10 +83,9 @@ describe('Order Template Selectors', () => {
     });
 
     describe('LoadOrderTemplatesSuccess', () => {
-      const loadOrderTemplateSuccessAction = new LoadOrderTemplatesSuccess({ orderTemplates });
+      const loadOrderTemplateSuccessAction = loadOrderTemplatesSuccess({ orderTemplates });
 
       beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
         store$.dispatch(loadOrderTemplateSuccessAction);
       });
 
@@ -105,10 +99,9 @@ describe('Order Template Selectors', () => {
     });
 
     describe('LoadOrderTemplatesFail', () => {
-      const loadOrderTemplatesFailAction = new LoadOrderTemplatesFail({ error: { message: 'invalid' } as HttpError });
+      const loadOrderTemplatesFailAction = loadOrderTemplatesFail({ error: { message: 'invalid' } as HttpError });
 
       beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
         store$.dispatch(loadOrderTemplatesFailAction);
       });
 
@@ -124,7 +117,7 @@ describe('Order Template Selectors', () => {
 
   describe('create a order template', () => {
     describe('CreateOrderTemplate', () => {
-      const createOrderTemplateAction = new CreateOrderTemplate({
+      const createOrderTemplateAction = createOrderTemplate({
         orderTemplate: {
           title: 'create title',
         },
@@ -140,10 +133,9 @@ describe('Order Template Selectors', () => {
     });
 
     describe('CreateOrderTemplateSuccess', () => {
-      const createOrderTemplateSuccessAction = new CreateOrderTemplateSuccess({ orderTemplate: orderTemplates[0] });
+      const createOrderTemplateSuccessAction = createOrderTemplateSuccess({ orderTemplate: orderTemplates[0] });
 
       beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
         store$.dispatch(createOrderTemplateSuccessAction);
       });
 
@@ -157,10 +149,9 @@ describe('Order Template Selectors', () => {
     });
 
     describe('CreateOrderTemplatetFail', () => {
-      const createOrderTemplateFailAction = new CreateOrderTemplateFail({ error: { message: 'invalid' } as HttpError });
+      const createOrderTemplateFailAction = createOrderTemplateFail({ error: { message: 'invalid' } as HttpError });
 
       beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
         store$.dispatch(createOrderTemplateFailAction);
       });
 
@@ -176,7 +167,7 @@ describe('Order Template Selectors', () => {
 
   describe('delete a order template', () => {
     describe('DeleteOrderTemplate', () => {
-      const deleteOrderTemplateAction = new DeleteOrderTemplate({ orderTemplateId: 'id' });
+      const deleteOrderTemplateAction = deleteOrderTemplate({ orderTemplateId: 'id' });
 
       beforeEach(() => {
         store$.dispatch(deleteOrderTemplateAction);
@@ -188,13 +179,9 @@ describe('Order Template Selectors', () => {
     });
 
     describe('DeleteOrderTemplateSuccess', () => {
-      const loadOrderTemplateSuccessAction = new LoadOrderTemplatesSuccess({ orderTemplates });
-      const deleteOrderTemplateSuccessAction = new DeleteOrderTemplateSuccess({
+      const loadOrderTemplateSuccessAction = loadOrderTemplatesSuccess({ orderTemplates });
+      const deleteOrderTemplateSuccessAction = deleteOrderTemplateSuccess({
         orderTemplateId: orderTemplates[0].id,
-      });
-
-      beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
       });
 
       it('should set loading to false', () => {
@@ -212,10 +199,9 @@ describe('Order Template Selectors', () => {
     });
 
     describe('DeleteOrderTemplateFail', () => {
-      const deleteOrderTemplateFailAction = new DeleteOrderTemplateFail({ error: { message: 'invalid' } as HttpError });
+      const deleteOrderTemplateFailAction = deleteOrderTemplateFail({ error: { message: 'invalid' } as HttpError });
 
       beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
         store$.dispatch(deleteOrderTemplateFailAction);
       });
 
@@ -231,7 +217,7 @@ describe('Order Template Selectors', () => {
 
   describe('updating a order template', () => {
     describe('UpdateOrderTemplate', () => {
-      const updateOrderTemplateAction = new UpdateOrderTemplate({ orderTemplate: orderTemplates[0] });
+      const updateOrderTemplateAction = updateOrderTemplate({ orderTemplate: orderTemplates[0] });
 
       beforeEach(() => {
         store$.dispatch(updateOrderTemplateAction);
@@ -247,14 +233,10 @@ describe('Order Template Selectors', () => {
         ...orderTemplates[0],
         title: 'new title',
       };
-      const updateOrderTemplateSuccessAction = new UpdateOrderTemplateSuccess({
+      const updateOrderTemplateSuccessAction = updateOrderTemplateSuccess({
         orderTemplate: updated,
       });
-      const loadOrderTemplateSuccess = new LoadOrderTemplatesSuccess({ orderTemplates });
-
-      beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
-      });
+      const loadOrderTemplateSuccess = loadOrderTemplatesSuccess({ orderTemplates });
 
       it('should set loading to false', () => {
         store$.dispatch(updateOrderTemplateSuccessAction);
@@ -271,10 +253,9 @@ describe('Order Template Selectors', () => {
     });
 
     describe('UpdateOrderTemplateFail', () => {
-      const updateOrderTemplateFailAction = new UpdateOrderTemplateFail({ error: { message: 'invalid' } as HttpError });
+      const updateOrderTemplateFailAction = updateOrderTemplateFail({ error: { message: 'invalid' } as HttpError });
 
       beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
         store$.dispatch(updateOrderTemplateFailAction);
       });
 
@@ -289,8 +270,8 @@ describe('Order Template Selectors', () => {
   });
 
   describe('Get Selected Order Template', () => {
-    const loadOrderTemplatesSuccessActions = new LoadOrderTemplatesSuccess({ orderTemplates });
-    const selectOrderTemplateAction = new SelectOrderTemplate({ id: orderTemplates[1].id });
+    const loadOrderTemplatesSuccessActions = loadOrderTemplatesSuccess({ orderTemplates });
+    const selectOrderTemplateAction = selectOrderTemplate({ id: orderTemplates[1].id });
 
     beforeEach(() => {
       store$.dispatch(loadOrderTemplatesSuccessActions);
@@ -307,7 +288,7 @@ describe('Order Template Selectors', () => {
   });
 
   describe('Get Order Template Details', () => {
-    const loadOrderTemplateSuccessActions = new LoadOrderTemplatesSuccess({ orderTemplates });
+    const loadOrderTemplateSuccessActions = loadOrderTemplatesSuccess({ orderTemplates });
 
     beforeEach(() => {
       store$.dispatch(loadOrderTemplateSuccessActions);

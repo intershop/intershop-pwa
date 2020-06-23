@@ -7,6 +7,43 @@ kb_sync_latest_only
 
 # Migrations
 
+## 0.20 to 0.21
+
+We deprecated and reworked the way of testing with NgRx.
+The old format using `ngrxTesting` with `combineReducers` is now deprecated and replaced by the [new approach](./state-management.md#testing-ngrx-artifacts).
+The old testing mechanism will be removed in version 0.23.
+
+We introduced a way to do [shallow testing with feature toggles](../concepts/configuration.md#unit-testing-with-feature-toggles) and used it in the tests.
+
+We [reorganized the core store](../concepts/state-management.md#core-store-structure):
+
+- new `customer`
+  - store/addresses => store/**customer**/addresses
+  - store/checkout/basket => store/**customer**/basket
+  - store/orders => store/**customer**/orders
+  - store/restore => store/**customer**/restore
+  - store/user => store/**customer**/user
+- new `core`
+  - store/configuration => store/**core**/configuration
+  - store/error => store/**core**/error
+  - store/messages => store/**core**/messages
+  - store/router => store/**core**/router
+  - store/viewconf => store/**core**/viewconf
+- new `general`
+  - store/contact => store/**general**/contact
+  - store/countries => store/**general**/countries
+  - store/regions => store/**general**/regions
+
+TSLint rules are set up to automatically fix imports, so run `npm run check` after upgrading.
+
+In this version, we decided to start using the ngrx creator introduced in ngrx v8: [createAction](https://ngrx.io/api/store/createAction), [createReducer](https://ngrx.io/api/store/createReducer) and [createEffect](https://ngrx.io/api/effects/createEffect).
+This means that the old way of writing action classes, reducer switch statements and @Effect() decorators is deprecated from 0.21 onwards.
+
+Using these creator functions simplifies code and removes a lot of boiler plate from store files while providing type safety out-of-the-box.
+
+You can automatically migrate your existing code by executing `node schematics/migration/0.20-to-0.21`.
+Doing this will set related ts-lint rules and update each store or notify you of work previously needed.
+
 ## 0.19.1 to 0.20
 
 We upgraded from Angular 8 to version 9 and activated the new rendering engine Ivy with this (following the [official upgrade guide](https://update.angular.io/#8.0:9.0l3)).

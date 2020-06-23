@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { debounceTime, filter, map, mapTo, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { SuccessMessage } from 'ish-core/store/messages';
-import { selectRouteParam } from 'ish-core/store/router';
-import { UserActionTypes, getUserAuthorized } from 'ish-core/store/user';
-import { SetBreadcrumbData } from 'ish-core/store/viewconf';
+import { displaySuccessMessage } from 'ish-core/store/core/messages';
+import { selectRouteParam } from 'ish-core/store/core/router';
+import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
+import { getUserAuthorized } from 'ish-core/store/customer/user';
 import {
   distinctCompareWith,
   mapErrorToAction,
@@ -18,79 +18,105 @@ import {
 import { Wishlist, WishlistHeader } from '../../models/wishlist/wishlist.model';
 import { WishlistService } from '../../services/wishlist/wishlist.service';
 
-import * as wishlistsActions from './wishlist.actions';
+import {
+  addProductToNewWishlist,
+  addProductToWishlist,
+  addProductToWishlistFail,
+  addProductToWishlistSuccess,
+  createWishlist,
+  createWishlistFail,
+  createWishlistSuccess,
+  deleteWishlist,
+  deleteWishlistFail,
+  deleteWishlistSuccess,
+  loadWishlists,
+  loadWishlistsFail,
+  loadWishlistsSuccess,
+  moveItemToWishlist,
+  removeItemFromWishlist,
+  removeItemFromWishlistFail,
+  removeItemFromWishlistSuccess,
+  selectWishlist,
+  updateWishlist,
+  updateWishlistFail,
+  updateWishlistSuccess,
+} from './wishlist.actions';
 import { getSelectedWishlistDetails, getSelectedWishlistId, getWishlistDetails } from './wishlist.selectors';
 
 @Injectable()
 export class WishlistEffects {
   constructor(private actions$: Actions, private wishlistService: WishlistService, private store: Store) {}
 
-  @Effect()
-  loadWishlists$ = this.actions$.pipe(
-    ofType<wishlistsActions.LoadWishlists>(wishlistsActions.WishlistsActionTypes.LoadWishlists),
-    withLatestFrom(this.store.pipe(select(getUserAuthorized))),
-    filter(([, authorized]) => authorized),
-    switchMap(() =>
-      this.wishlistService.getWishlists().pipe(
-        map(wishlists => new wishlistsActions.LoadWishlistsSuccess({ wishlists })),
-        mapErrorToAction(wishlistsActions.LoadWishlistsFail)
+  loadWishlists$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadWishlists),
+      withLatestFrom(this.store.pipe(select(getUserAuthorized))),
+      filter(([, authorized]) => authorized),
+      switchMap(() =>
+        this.wishlistService.getWishlists().pipe(
+          map(wishlists => loadWishlistsSuccess({ wishlists })),
+          mapErrorToAction(loadWishlistsFail)
+        )
       )
     )
   );
 
-  @Effect()
-  createWishlist$ = this.actions$.pipe(
-    ofType<wishlistsActions.CreateWishlist>(wishlistsActions.WishlistsActionTypes.CreateWishlist),
-    mapToPayloadProperty('wishlist'),
-    mergeMap((wishlistData: WishlistHeader) =>
-      this.wishlistService.createWishlist(wishlistData).pipe(
-        mergeMap(wishlist => [
-          new wishlistsActions.CreateWishlistSuccess({ wishlist }),
-          new SuccessMessage({
-            message: 'account.wishlists.new_wishlist.confirmation',
-            messageParams: { 0: wishlist.title },
-          }),
-        ]),
-        mapErrorToAction(wishlistsActions.CreateWishlistFail)
+  createWishlist$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createWishlist),
+      mapToPayloadProperty('wishlist'),
+      mergeMap((wishlistData: WishlistHeader) =>
+        this.wishlistService.createWishlist(wishlistData).pipe(
+          mergeMap(wishlist => [
+            createWishlistSuccess({ wishlist }),
+            displaySuccessMessage({
+              message: 'account.wishlists.new_wishlist.confirmation',
+              messageParams: { 0: wishlist.title },
+            }),
+          ]),
+          mapErrorToAction(createWishlistFail)
+        )
       )
     )
   );
 
-  @Effect()
-  deleteWishlist$ = this.actions$.pipe(
-    ofType<wishlistsActions.DeleteWishlist>(wishlistsActions.WishlistsActionTypes.DeleteWishlist),
-    mapToPayloadProperty('wishlistId'),
-    mergeMap(wishlistId => this.store.pipe(select(getWishlistDetails, { id: wishlistId }))),
-    whenTruthy(),
-    map(wishlist => ({ wishlistId: wishlist.id, title: wishlist.title })),
-    mergeMap(({ wishlistId, title }) =>
-      this.wishlistService.deleteWishlist(wishlistId).pipe(
-        mergeMap(() => [
-          new wishlistsActions.DeleteWishlistSuccess({ wishlistId }),
-          new SuccessMessage({
-            message: 'account.wishlists.delete_wishlist.confirmation',
-            messageParams: { 0: title },
-          }),
-        ]),
-        mapErrorToAction(wishlistsActions.DeleteWishlistFail)
+  deleteWishlist$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteWishlist),
+      mapToPayloadProperty('wishlistId'),
+      mergeMap(wishlistId => this.store.pipe(select(getWishlistDetails, { id: wishlistId }))),
+      whenTruthy(),
+      map(wishlist => ({ wishlistId: wishlist.id, title: wishlist.title })),
+      mergeMap(({ wishlistId, title }) =>
+        this.wishlistService.deleteWishlist(wishlistId).pipe(
+          mergeMap(() => [
+            deleteWishlistSuccess({ wishlistId }),
+            displaySuccessMessage({
+              message: 'account.wishlists.delete_wishlist.confirmation',
+              messageParams: { 0: title },
+            }),
+          ]),
+          mapErrorToAction(deleteWishlistFail)
+        )
       )
     )
   );
 
-  @Effect()
-  updateWishlist$ = this.actions$.pipe(
-    ofType<wishlistsActions.UpdateWishlist>(wishlistsActions.WishlistsActionTypes.UpdateWishlist),
-    mapToPayloadProperty('wishlist'),
-    mergeMap((newWishlist: Wishlist) =>
-      this.wishlistService.updateWishlist(newWishlist).pipe(
-        mergeMap(wishlist => [
-          new wishlistsActions.UpdateWishlistSuccess({ wishlist }),
-          new SuccessMessage({
-            message: 'account.wishlists.edit_wishlist.confirmation',
-            messageParams: { 0: wishlist.title },
-          }),
-        ]),
-        mapErrorToAction(wishlistsActions.UpdateWishlistFail)
+  updateWishlist$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateWishlist),
+      mapToPayloadProperty('wishlist'),
+      mergeMap((newWishlist: Wishlist) =>
+        this.wishlistService.updateWishlist(newWishlist).pipe(
+          mergeMap(wishlist => [
+            updateWishlistSuccess({ wishlist }),
+            displaySuccessMessage({
+              message: 'account.wishlists.edit_wishlist.confirmation',
+              messageParams: { 0: wishlist.title },
+            }),
+          ]),
+          mapErrorToAction(updateWishlistFail)
+        )
       )
     )
   );
@@ -98,122 +124,111 @@ export class WishlistEffects {
   /**
    * Reload Wishlists after a creation or update to ensure integrity with server concerning the preferred wishlist
    */
-  @Effect()
-  reloadWishlists$ = this.actions$.pipe(
-    ofType<wishlistsActions.UpdateWishlistSuccess | wishlistsActions.CreateWishlistSuccess>(
-      wishlistsActions.WishlistsActionTypes.UpdateWishlistSuccess,
-      wishlistsActions.WishlistsActionTypes.CreateWishlistSuccess
-    ),
-    mapToPayloadProperty('wishlist'),
-    filter(wishlist => wishlist && wishlist.preferred),
-    mapTo(new wishlistsActions.LoadWishlists())
-  );
-
-  @Effect()
-  addProductToWishlist$ = this.actions$.pipe(
-    ofType<wishlistsActions.AddProductToWishlist>(wishlistsActions.WishlistsActionTypes.AddProductToWishlist),
-    mapToPayload(),
-    mergeMap(payload =>
-      this.wishlistService.addProductToWishlist(payload.wishlistId, payload.sku, payload.quantity).pipe(
-        map(wishlist => new wishlistsActions.AddProductToWishlistSuccess({ wishlist })),
-        mapErrorToAction(wishlistsActions.AddProductToWishlistFail)
-      )
+  reloadWishlists$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateWishlistSuccess, createWishlistSuccess),
+      mapToPayloadProperty('wishlist'),
+      filter(wishlist => wishlist && wishlist.preferred),
+      mapTo(loadWishlists())
     )
   );
 
-  @Effect()
-  addProductToNewWishlist$ = this.actions$.pipe(
-    ofType<wishlistsActions.AddProductToNewWishlist>(wishlistsActions.WishlistsActionTypes.AddProductToNewWishlist),
-    mapToPayload(),
-    mergeMap(payload =>
-      this.wishlistService
-        .createWishlist({
-          title: payload.title,
-          preferred: false,
-        })
-        .pipe(
-          // use created wishlist data to dispatch addProduct action
-          mergeMap(wishlist => [
-            new wishlistsActions.CreateWishlistSuccess({ wishlist }),
-            new wishlistsActions.AddProductToWishlist({ wishlistId: wishlist.id, sku: payload.sku }),
-            new wishlistsActions.SelectWishlist({ id: wishlist.id }),
-          ]),
-          mapErrorToAction(wishlistsActions.CreateWishlistFail)
+  addProductToWishlist$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addProductToWishlist),
+      mapToPayload(),
+      mergeMap(payload =>
+        this.wishlistService.addProductToWishlist(payload.wishlistId, payload.sku, payload.quantity).pipe(
+          map(wishlist => addProductToWishlistSuccess({ wishlist })),
+          mapErrorToAction(addProductToWishlistFail)
         )
-    )
-  );
-
-  @Effect()
-  moveItemToWishlist$ = this.actions$.pipe(
-    ofType<wishlistsActions.MoveItemToWishlist>(wishlistsActions.WishlistsActionTypes.MoveItemToWishlist),
-    mapToPayload(),
-    mergeMap(payload => {
-      if (!payload.target.id) {
-        return [
-          new wishlistsActions.AddProductToNewWishlist({ title: payload.target.title, sku: payload.target.sku }),
-          new wishlistsActions.RemoveItemFromWishlist({ wishlistId: payload.source.id, sku: payload.target.sku }),
-        ];
-      } else {
-        return [
-          new wishlistsActions.AddProductToWishlist({ wishlistId: payload.target.id, sku: payload.target.sku }),
-          new wishlistsActions.RemoveItemFromWishlist({ wishlistId: payload.source.id, sku: payload.target.sku }),
-        ];
-      }
-    })
-  );
-
-  @Effect()
-  removeProductFromWishlist$ = this.actions$.pipe(
-    ofType<wishlistsActions.RemoveItemFromWishlist>(wishlistsActions.WishlistsActionTypes.RemoveItemFromWishlist),
-    mapToPayload(),
-    mergeMap(payload =>
-      this.wishlistService.removeProductFromWishlist(payload.wishlistId, payload.sku).pipe(
-        map(wishlist => new wishlistsActions.RemoveItemFromWishlistSuccess({ wishlist })),
-        mapErrorToAction(wishlistsActions.RemoveItemFromWishlistFail)
       )
     )
   );
 
-  @Effect()
-  routeListenerForSelectedWishlist$ = this.store.pipe(
-    select(selectRouteParam('wishlistName')),
-    distinctCompareWith(this.store.pipe(select(getSelectedWishlistId))),
-    map(id => new wishlistsActions.SelectWishlist({ id }))
+  addProductToNewWishlist$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addProductToNewWishlist),
+      mapToPayload(),
+      mergeMap(payload =>
+        this.wishlistService
+          .createWishlist({
+            title: payload.title,
+            preferred: false,
+          })
+          .pipe(
+            // use created wishlist data to dispatch addProduct action
+            mergeMap(wishlist => [
+              createWishlistSuccess({ wishlist }),
+              addProductToWishlist({ wishlistId: wishlist.id, sku: payload.sku }),
+              selectWishlist({ id: wishlist.id }),
+            ]),
+            mapErrorToAction(createWishlistFail)
+          )
+      )
+    )
+  );
+
+  moveItemToWishlist$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(moveItemToWishlist),
+      mapToPayload(),
+      mergeMap(payload => {
+        if (!payload.target.id) {
+          return [
+            addProductToNewWishlist({ title: payload.target.title, sku: payload.target.sku }),
+            removeItemFromWishlist({ wishlistId: payload.source.id, sku: payload.target.sku }),
+          ];
+        } else {
+          return [
+            addProductToWishlist({ wishlistId: payload.target.id, sku: payload.target.sku }),
+            removeItemFromWishlist({ wishlistId: payload.source.id, sku: payload.target.sku }),
+          ];
+        }
+      })
+    )
+  );
+
+  removeProductFromWishlist$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(removeItemFromWishlist),
+      mapToPayload(),
+      mergeMap(payload =>
+        this.wishlistService.removeProductFromWishlist(payload.wishlistId, payload.sku).pipe(
+          map(wishlist => removeItemFromWishlistSuccess({ wishlist })),
+          mapErrorToAction(removeItemFromWishlistFail)
+        )
+      )
+    )
+  );
+
+  routeListenerForSelectedWishlist$ = createEffect(() =>
+    this.store.pipe(
+      select(selectRouteParam('wishlistName')),
+      distinctCompareWith(this.store.pipe(select(getSelectedWishlistId))),
+      map(id => selectWishlist({ id }))
+    )
   );
 
   /**
    * Trigger LoadWishlists action after LoginUserSuccess.
    */
-  @Effect()
-  loadWishlistsAfterLogin$ = this.store.pipe(
-    select(getUserAuthorized),
-    whenTruthy(),
-    debounceTime(1000),
-    mapTo(new wishlistsActions.LoadWishlists())
+  loadWishlistsAfterLogin$ = createEffect(() =>
+    this.store.pipe(select(getUserAuthorized), whenTruthy(), debounceTime(1000), mapTo(loadWishlists()))
   );
 
-  /**
-   * Trigger ResetWishlistState action after LogoutUser.
-   */
-  @Effect()
-  resetWishlistStateAfterLogout$ = this.actions$.pipe(
-    ofType(UserActionTypes.LogoutUser),
-
-    mapTo(new wishlistsActions.ResetWishlistState())
-  );
-
-  @Effect()
-  setWishlistBreadcrumb$ = this.store.pipe(
-    select(getSelectedWishlistDetails),
-    whenTruthy(),
-    map(
-      wishlist =>
-        new SetBreadcrumbData({
+  setWishlistBreadcrumb$ = createEffect(() =>
+    this.store.pipe(
+      select(getSelectedWishlistDetails),
+      whenTruthy(),
+      map(wishlist =>
+        setBreadcrumbData({
           breadcrumbData: [
             { key: 'account.wishlists.breadcrumb_link', link: '/account/wishlists' },
             { text: wishlist.title },
           ],
         })
+      )
     )
   );
 }

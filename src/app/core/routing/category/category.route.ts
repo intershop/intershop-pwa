@@ -3,8 +3,8 @@ import { MonoTypeOperatorFunction } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
-import { CoreState } from 'ish-core/store/core-store';
-import { selectRouteParam } from 'ish-core/store/router';
+import { CoreState } from 'ish-core/store/core/core-store';
+import { selectRouteParam } from 'ish-core/store/core/router';
 
 export function generateLocalizedCategorySlug(category: CategoryView) {
   if (!category || !category.categoryPath.length) {

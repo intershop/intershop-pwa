@@ -1,6 +1,6 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
 
-import { createApplication, createSchematicRunner } from '../utils/testHelper';
+import { copyFileFromPWA, createApplication, createSchematicRunner } from '../utils/testHelper';
 
 import { PWAStoreGroupOptionsSchema as Options } from './schema';
 
@@ -13,45 +13,12 @@ describe('Store Group Schematic', () => {
 
   let appTree: UnitTestTree;
   beforeEach(async () => {
-    appTree = await createApplication(schematicRunner).toPromise();
-    appTree.create(
-      '/src/app/core/store/core-store.module.ts',
-      `import { NgModule } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreModule } from '@ngrx/store';
-
-import { CoreState } from './core-store';
-import { CountriesEffects } from './countries/countries.effects';
-import { countriesReducer } from './countries/countries.reducer';
-
-export const coreReducers: ActionReducerMap<CoreState> = {countries: countriesReducer};
-
-export const coreEffects = [
-  CountriesEffects,
-];
-
-@NgModule({
-  imports: [
-    EffectsModule.forRoot(coreEffects),
-    StoreModule.forRoot(coreReducers),
-  ],
-})
-export class CoreStoreModule {}
-`
-    );
-    appTree.create(
-      '/src/app/core/store/core-store.ts',
-      `import { Selector } from '@ngrx/store';
-
-import { CountriesState } from './countries/countries.reducer';
-
-export interface CoreState {
-  countries: CountriesState;
-}
-
-export const getCoreState: Selector<CoreState, CoreState> = state => state;
-`
-    );
+    appTree = await createApplication(schematicRunner)
+      .pipe(
+        copyFileFromPWA('src/app/core/state-management.module.ts'),
+        copyFileFromPWA('src/app/core/store/core/core-store.ts')
+      )
+      .toPromise();
   });
 
   it('should create a store-group in core store by default', async () => {
@@ -67,11 +34,11 @@ export const getCoreState: Selector<CoreState, CoreState> = state => state;
     `);
   });
 
-  it('should register a store group in core store by default', async () => {
+  it('should register a store group module in state management by default', async () => {
     const options = { ...defaultOptions };
 
     const tree = await schematicRunner.runSchematicAsync('store-group', options, appTree).toPromise();
-    const storeModuleContent = tree.readContent('/src/app/core/store/core-store.module.ts');
+    const storeModuleContent = tree.readContent('/src/app/core/state-management.module.ts');
     expect(storeModuleContent).toContain('import { FooStoreModule }');
   });
 });

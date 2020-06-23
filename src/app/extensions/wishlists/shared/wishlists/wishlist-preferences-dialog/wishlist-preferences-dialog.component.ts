@@ -49,6 +49,7 @@ export class WishlistPreferencesDialogComponent implements OnChanges {
   modal: NgbModalRef;
 
   // localization keys, default = for new
+
   primaryButton = 'account.wishlists.new_wishlist_form.create_button.text';
   wishlistTitle = 'account.wishlists.choose_wishlist.new_wishlist_name.initial_value';
   modalHeader = 'account.wishlists.new_wishlist_dialog.header';

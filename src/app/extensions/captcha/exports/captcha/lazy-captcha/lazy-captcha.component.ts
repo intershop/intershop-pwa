@@ -6,12 +6,14 @@ import {
   Injector,
   Input,
   NgModuleFactory,
+  OnDestroy,
   OnInit,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
 import { AbstractControl, FormGroup, Validators } from '@angular/forms';
-import { switchMapTo, take } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { switchMapTo, take, takeUntil } from 'rxjs/operators';
 
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -34,7 +36,7 @@ import { CaptchaFacade, CaptchaTopic } from '../../../facades/captcha.facade';
   templateUrl: './lazy-captcha.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class LazyCaptchaComponent implements OnInit, AfterViewInit {
+export class LazyCaptchaComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('anchor', { read: ViewContainerRef, static: true }) anchor: ViewContainerRef;
 
   /**
@@ -49,16 +51,29 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit {
 
   @Input() topic: CaptchaTopic;
 
+  private destroy$ = new Subject();
+
   constructor(private captchaFacade: CaptchaFacade, private compiler: Compiler, private injector: Injector) {}
 
   ngOnInit() {
     this.sanityCheck();
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   ngAfterViewInit() {
     this.captchaFacade
       .captchaActive$(this.topic)
-      .pipe(whenTruthy(), switchMapTo(this.captchaFacade.captchaVersion$), whenTruthy(), take(1))
+      .pipe(
+        whenTruthy(),
+        switchMapTo(this.captchaFacade.captchaVersion$),
+        whenTruthy(),
+        take(1),
+        takeUntil(this.destroy$)
+      )
       .subscribe(async version => {
         if (version === 3) {
           this.actionFormControl.setValue(this.topic);

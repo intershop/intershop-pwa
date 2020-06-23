@@ -26,7 +26,6 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable-next-line:ccp-no-intelligence-in-components
 export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('cookie', { static: true })
   banner: NgxCookieBannerComponent;
@@ -46,14 +45,15 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.wrapperClasses$ = this.appFacade.appWrapperClasses$;
   }
 
-  // It is currently necessary to manually subscribe at this
-  // point to initialize the banner component.
   ngAfterViewInit() {
+    // It is currently necessary to manually subscribe at this
+    // point to initialize the banner component.
     // tslint:disable-next-line:rxjs-no-ignored-subscribe
     this.banner.isSeen.pipe(takeUntil(this.destroy$)).subscribe();
   }
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 }

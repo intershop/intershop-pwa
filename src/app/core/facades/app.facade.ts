@@ -4,17 +4,21 @@ import { Store, select } from '@ngrx/store';
 import { combineLatest, merge } from 'rxjs';
 import { filter, map, mapTo, shareReplay, startWith } from 'rxjs/operators';
 
-import { getAvailableLocales, getCurrentLocale, getDeviceType } from 'ish-core/store/configuration';
-import { LoadCountries, getAllCountries, getCountriesLoading } from 'ish-core/store/countries';
-import { getGeneralError, getGeneralErrorType } from 'ish-core/store/error';
-import { LoadRegions, getRegionsByCountryCode } from 'ish-core/store/regions';
-import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } from 'ish-core/store/viewconf';
+import { getAvailableLocales, getCurrentLocale, getDeviceType, getICMBaseURL } from 'ish-core/store/core/configuration';
+import { getGeneralError, getGeneralErrorType } from 'ish-core/store/core/error';
+import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } from 'ish-core/store/core/viewconf';
+import { getAllCountries, getCountriesLoading, loadCountries } from 'ish-core/store/general/countries';
+import { getRegionsByCountryCode, loadRegions } from 'ish-core/store/general/regions';
 
 @Injectable({ providedIn: 'root' })
 export class AppFacade {
+  icmBaseUrl: string;
+
   constructor(private store: Store, private router: Router) {
     // tslint:disable-next-line: rxjs-no-ignored-subscribe
     this.routingInProgress$.subscribe();
+
+    store.pipe(select(getICMBaseURL)).subscribe(icmBaseUrl => (this.icmBaseUrl = icmBaseUrl));
   }
 
   headerType$ = this.store.pipe(select(getHeaderType));
@@ -41,6 +45,7 @@ export class AppFacade {
   ]).pipe(map(classes => classes.filter(c => !!c)));
 
   // COUNTRIES AND REGIONS
+
   countriesLoading$ = this.store.pipe(select(getCountriesLoading));
 
   routingInProgress$ = merge(
@@ -59,12 +64,12 @@ export class AppFacade {
   ).pipe(startWith(true), shareReplay(1));
 
   countries$() {
-    this.store.dispatch(new LoadCountries());
+    this.store.dispatch(loadCountries());
     return this.store.pipe(select(getAllCountries));
   }
 
   regions$(countryCode: string) {
-    this.store.dispatch(new LoadRegions({ countryCode }));
+    this.store.dispatch(loadRegions({ countryCode }));
     return this.store.pipe(select(getRegionsByCountryCode, { countryCode }));
   }
 }

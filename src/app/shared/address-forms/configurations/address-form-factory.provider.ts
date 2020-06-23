@@ -8,9 +8,9 @@ export const ADDRESS_FORM_FACTORY = new InjectionToken<AddressFormFactory>('Addr
 export class AddressFormFactoryProvider {
   constructor(@Inject(ADDRESS_FORM_FACTORY) private factories: AddressFormFactory[]) {}
 
-  /*
-    gets the appropriate address factory for the given countryCode
-  */
+  /**
+   * gets the appropriate address factory for the given countryCode
+   */
   getFactory(countryCode: string = 'default'): AddressFormFactory {
     let factory = this.findFactory(countryCode);
     if (!factory) {

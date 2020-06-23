@@ -25,6 +25,7 @@ export type BasketUpdateType =
   | { commonShipToAddress: string }
   | { commonShippingMethod: string }
   | { calculated: boolean };
+
 export type BasketItemUpdateType =
   | { quantity?: { value: number; unit: string }; product?: string }
   | { shippingMethod: { id: string } };
@@ -71,7 +72,9 @@ type ValidationBasketIncludeType =
 export class BasketService {
   constructor(private apiService: ApiService) {}
 
-  // http header for Basket API v1
+  /**
+   * http header for Basket API v1
+   */
   private basketHeaders = new HttpHeaders({
     'content-type': 'application/json',
     Accept: 'application/vnd.intershop.basket.v1+json',

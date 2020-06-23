@@ -62,7 +62,9 @@ export class OrderTemplateMapper {
     }
   }
 
-  // extract ID from URI
+  /**
+   * extract ID from URI
+   */
   fromDataToIds(orderTemplateData: OrderTemplateData): OrderTemplate {
     if (orderTemplateData) {
       return {

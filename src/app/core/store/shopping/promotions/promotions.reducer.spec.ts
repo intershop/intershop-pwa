@@ -1,13 +1,13 @@
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 
-import * as fromActions from './promotions.actions';
+import { loadPromotion, loadPromotionFail, loadPromotionSuccess } from './promotions.actions';
 import { PromotionsState, initialState, promotionsReducer } from './promotions.reducer';
 
 describe('Promotions Reducer', () => {
   describe('undefined action', () => {
     it('should return the default state when previous state is undefined', () => {
-      const action = {} as fromActions.PromotionsAction;
+      const action = {} as ReturnType<typeof loadPromotion | typeof loadPromotionFail | typeof loadPromotionSuccess>;
       const state = promotionsReducer(undefined, action);
 
       expect(state).toBe(initialState);
@@ -19,7 +19,7 @@ describe('Promotions Reducer', () => {
       let state: PromotionsState;
 
       beforeEach(() => {
-        const action = new fromActions.LoadPromotionFail({ error: {} as HttpError, promoId: 'erroneous_promo' });
+        const action = loadPromotionFail({ error: {} as HttpError, promoId: 'erroneous_promo' });
         state = promotionsReducer(initialState, action);
       });
 
@@ -30,7 +30,7 @@ describe('Promotions Reducer', () => {
       describe('followed by LoadPromotionSuccess', () => {
         beforeEach(() => {
           const promotion = { id: 'successfull_promo' } as Promotion;
-          const action = new fromActions.LoadPromotionSuccess({ promotion });
+          const action = loadPromotionSuccess({ promotion });
           state = promotionsReducer(initialState, action);
         });
 
@@ -52,7 +52,7 @@ describe('Promotions Reducer', () => {
       });
 
       it('should insert promotion if not exists', () => {
-        const action = new fromActions.LoadPromotionSuccess({ promotion });
+        const action = loadPromotionSuccess({ promotion });
         const state = promotionsReducer(initialState, action);
 
         expect(state.ids).toHaveLength(1);
@@ -60,14 +60,14 @@ describe('Promotions Reducer', () => {
       });
 
       it('should update promotion if already exists', () => {
-        const action1 = new fromActions.LoadPromotionSuccess({ promotion });
+        const action1 = loadPromotionSuccess({ promotion });
         const state1 = promotionsReducer(initialState, action1);
 
         const updatedPromotion = { id: '111' } as Promotion;
         updatedPromotion.name = 'Updated promotion name';
         updatedPromotion.title = 'Updated promotion title';
 
-        const action2 = new fromActions.LoadPromotionSuccess({ promotion: updatedPromotion });
+        const action2 = loadPromotionSuccess({ promotion: updatedPromotion });
         const state2 = promotionsReducer(state1, action2);
 
         expect(state2.ids).toHaveLength(1);

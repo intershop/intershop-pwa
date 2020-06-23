@@ -1,13 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
+import { EMPTY, of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { User } from 'ish-core/models/user/user.model';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { LoginUserSuccess } from 'ish-core/store/user';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { AccountProfileCompanyPageComponent } from './account-profile-company-page.component';
@@ -17,16 +15,20 @@ describe('Account Profile Company Page Component', () => {
   let component: AccountProfileCompanyPageComponent;
   let fixture: ComponentFixture<AccountProfileCompanyPageComponent>;
   let element: HTMLElement;
-  let store$: Store;
+  let accountFacade: AccountFacade;
 
   beforeEach(async(() => {
+    accountFacade = mock(AccountFacade);
+    when(accountFacade.customer$).thenReturn(EMPTY);
+
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, ngrxTesting({ reducers: coreReducers })],
+      imports: [RouterTestingModule],
       declarations: [
         AccountProfileCompanyPageComponent,
         MockComponent(AccountProfileCompanyComponent),
         MockComponent(LoadingComponent),
       ],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   }));
 
@@ -34,8 +36,6 @@ describe('Account Profile Company Page Component', () => {
     fixture = TestBed.createComponent(AccountProfileCompanyPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-
-    store$ = TestBed.inject(Store);
   });
 
   it('should be created', () => {
@@ -48,14 +48,9 @@ describe('Account Profile Company Page Component', () => {
     const businessCustomer = {
       customerNo: '4711',
       isBusinessCustomer: true,
-      type: 'SMBCustomer',
     } as Customer;
-    store$.dispatch(
-      new LoginUserSuccess({
-        customer: businessCustomer,
-        user: {} as User,
-      })
-    );
+    when(accountFacade.customer$).thenReturn(of(businessCustomer));
+
     fixture.detectChanges();
     expect(element.querySelector('ish-account-profile-company')).toBeTruthy();
   });
@@ -64,14 +59,9 @@ describe('Account Profile Company Page Component', () => {
     const privateCustomer = {
       customerNo: '4712',
       isBusinessCustomer: false,
-      type: 'PrivateCustomer',
     } as Customer;
-    store$.dispatch(
-      new LoginUserSuccess({
-        customer: privateCustomer,
-        user: {} as User,
-      })
-    );
+    when(accountFacade.customer$).thenReturn(of(privateCustomer));
+
     fixture.detectChanges();
     expect(element.querySelector('ish-account-profile-company')).toBeFalsy();
   });

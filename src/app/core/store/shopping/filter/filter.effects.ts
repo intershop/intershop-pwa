@@ -1,14 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { FilterService } from 'ish-core/services/filter/filter.service';
-import { SetProductListingPages } from 'ish-core/store/shopping/product-listing';
-import { LoadProductFail } from 'ish-core/store/shopping/products';
+import { setProductListingPages } from 'ish-core/store/shopping/product-listing';
+import { loadProductFail } from 'ish-core/store/shopping/products';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
 
-import * as filterActions from './filter.actions';
+import {
+  applyFilter,
+  applyFilterFail,
+  applyFilterSuccess,
+  loadFilterFail,
+  loadFilterForCategory,
+  loadFilterForSearch,
+  loadFilterSuccess,
+  loadProductsForFilter,
+} from './filter.actions';
 
 @Injectable()
 export class FilterEffects {
@@ -18,57 +27,61 @@ export class FilterEffects {
     private productListingMapper: ProductListingMapper
   ) {}
 
-  @Effect()
-  loadAvailableFilterForCategories$ = this.actions$.pipe(
-    ofType<filterActions.LoadFilterForCategory>(filterActions.FilterActionTypes.LoadFilterForCategory),
-    mapToPayloadProperty('uniqueId'),
-    mergeMap(uniqueId =>
-      this.filterService.getFilterForCategory(uniqueId).pipe(
-        map(filterNavigation => new filterActions.LoadFilterSuccess({ filterNavigation })),
-        mapErrorToAction(filterActions.LoadFilterFail)
+  loadAvailableFilterForCategories$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadFilterForCategory),
+      mapToPayloadProperty('uniqueId'),
+      mergeMap(uniqueId =>
+        this.filterService.getFilterForCategory(uniqueId).pipe(
+          map(filterNavigation => loadFilterSuccess({ filterNavigation })),
+          mapErrorToAction(loadFilterFail)
+        )
       )
     )
   );
 
-  @Effect()
-  loadFilterForSearch$ = this.actions$.pipe(
-    ofType<filterActions.LoadFilterForSearch>(filterActions.FilterActionTypes.LoadFilterForSearch),
-    mapToPayloadProperty('searchTerm'),
-    mergeMap(searchTerm =>
-      this.filterService.getFilterForSearch(searchTerm).pipe(
-        map(filterNavigation => new filterActions.LoadFilterSuccess({ filterNavigation })),
-        mapErrorToAction(filterActions.LoadFilterFail)
+  loadFilterForSearch$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadFilterForSearch),
+      mapToPayloadProperty('searchTerm'),
+      mergeMap(searchTerm =>
+        this.filterService.getFilterForSearch(searchTerm).pipe(
+          map(filterNavigation => loadFilterSuccess({ filterNavigation })),
+          mapErrorToAction(loadFilterFail)
+        )
       )
     )
   );
 
-  @Effect()
-  applyFilter$ = this.actions$.pipe(
-    ofType<filterActions.ApplyFilter>(filterActions.FilterActionTypes.ApplyFilter),
-    mapToPayload(),
-    mergeMap(({ searchParameter }) =>
-      this.filterService.applyFilter(searchParameter).pipe(
-        map(availableFilter => new filterActions.ApplyFilterSuccess({ availableFilter, searchParameter })),
-        mapErrorToAction(filterActions.ApplyFilterFail)
+  applyFilter$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(applyFilter),
+      mapToPayload(),
+      mergeMap(({ searchParameter }) =>
+        this.filterService.applyFilter(searchParameter).pipe(
+          map(availableFilter => applyFilterSuccess({ availableFilter, searchParameter })),
+          mapErrorToAction(applyFilterFail)
+        )
       )
     )
   );
 
-  @Effect()
-  loadFilteredProducts$ = this.actions$.pipe(
-    ofType<filterActions.LoadProductsForFilter>(filterActions.FilterActionTypes.LoadProductsForFilter),
-    mapToPayload(),
-    switchMap(({ id, searchParameter }) =>
-      this.filterService.getFilteredProducts(searchParameter).pipe(
-        mergeMap(({ productSKUs, total }) => [
-          new SetProductListingPages(
-            this.productListingMapper.createPages(productSKUs, id.type, id.value, {
-              filters: id.filters,
-              itemCount: total,
-            })
-          ),
-        ]),
-        mapErrorToAction(LoadProductFail)
+  loadFilteredProducts$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadProductsForFilter),
+      mapToPayload(),
+      switchMap(({ id, searchParameter }) =>
+        this.filterService.getFilteredProducts(searchParameter).pipe(
+          mergeMap(({ productSKUs, total }) => [
+            setProductListingPages(
+              this.productListingMapper.createPages(productSKUs, id.type, id.value, {
+                filters: id.filters,
+                itemCount: total,
+              })
+            ),
+          ]),
+          mapErrorToAction(loadProductFail)
+        )
       )
     )
   );

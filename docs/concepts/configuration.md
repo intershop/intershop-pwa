@@ -181,6 +181,14 @@ export class SomeService {
 }
 ```
 
+### Unit Testing with Feature Toggles
+
+With Version 0.21 we introduced [`FeatureToggleModule.forTesting`][feature-toggle-module] which provides a shallow implementation for testing with feature toggles not depending on the state management.
+Use it in the `imports` of the `TestBed` declaration of the unit test.
+Switching features in tests can be triggered by calling [`FeatureToggleModule.switchTestingFeatures`][feature-toggle-module] with a new set of activated feature toggles.
+
+[feature-toggle-module]: ../../src/app/core/feature-toggle.module.ts
+
 ## Setting Default Locale
 
 You can set the default locale statically by modifying the order of the provided locales in the Angular CLI environment files.

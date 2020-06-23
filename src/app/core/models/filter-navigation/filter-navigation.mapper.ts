@@ -5,7 +5,7 @@ import b64u from 'b64u';
 import { Facet } from 'ish-core/models/facet/facet.model';
 import { FilterData, FilterValueMap } from 'ish-core/models/filter/filter.interface';
 import { Filter } from 'ish-core/models/filter/filter.model';
-import { getICMStaticURL } from 'ish-core/store/configuration';
+import { getICMStaticURL } from 'ish-core/store/core/configuration';
 import { formParamsToString, stringToFormParams } from 'ish-core/utils/url-form-params';
 
 import { FilterNavigationData } from './filter-navigation.interface';

@@ -15,11 +15,6 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { OrderTemplate } from '../../../models/order-template/order-template.model';
 
-@Component({
-  selector: 'ish-order-template-preferences-dialog',
-  templateUrl: './order-template-preferences-dialog.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
 /**
  * The Order Templates Preferences Dialog shows the modal to create/edit a order template.
  *
@@ -28,6 +23,11 @@ import { OrderTemplate } from '../../../models/order-template/order-template.mod
     (submit)="createOrderTemplate($event)">
    </ish-order-template-preferences-dialog>
  */
+@Component({
+  selector: 'ish-order-template-preferences-dialog',
+  templateUrl: './order-template-preferences-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
 export class OrderTemplatePreferencesDialogComponent implements OnChanges {
   /**
    * Predefined order template to fill the form with, if there is no order template a new order template will be created
@@ -49,6 +49,7 @@ export class OrderTemplatePreferencesDialogComponent implements OnChanges {
   modal: NgbModalRef;
 
   // localization keys, default = for new
+
   primaryButton = 'account.order_template.new_from_order.button.create.label';
   orderTemplateTitle = 'account.order_template.new_order_template.text';
   modalHeader = 'account.order_template.list.button.add_template.label';

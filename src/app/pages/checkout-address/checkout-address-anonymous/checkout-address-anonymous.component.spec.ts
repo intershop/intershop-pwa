@@ -4,7 +4,6 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, verify } from 'ts-mockito';
@@ -12,9 +11,6 @@ import { anything, instance, mock, verify } from 'ts-mockito';
 import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-keys';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { AddressFormContainerComponent } from 'ish-shared/address-forms/components/address-form-container/address-form-container.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
@@ -50,12 +46,6 @@ describe('Checkout Address Anonymous Component', () => {
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([{ path: 'checkout/shipping', component: DummyComponent }]),
         TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: {
-            ...coreReducers,
-            checkout: combineReducers(checkoutReducers),
-          },
-        }),
       ],
       providers: [
         { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },

@@ -68,10 +68,11 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  // TODO: probably it's good to map this in a selector, not here
   private mapSortKeysToSelectOptions(sortKeys: string[]): SelectOption[] {
+    // TODO: probably it's good to map this in a selector, not here
     return sortKeys.map(sk => ({ value: sk, label: sk }));
   }
 

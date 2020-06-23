@@ -1,5 +1,5 @@
 import { parse } from 'path';
-import { Node, Project, ReferenceFindableNode, SyntaxKind } from 'ts-morph';
+import { ClassDeclaration, Node, Project, ReferenceFindableNode, SyntaxKind } from 'ts-morph';
 
 const classMethodCheckRegex = /.*(Mapper|Helper|Facade|Service|State)$/;
 
@@ -23,6 +23,36 @@ for (const file of args.length ? project.getSourceFiles(args) : project.getSourc
       checkNode(child);
     }
   });
+
+  if (/\.(component|pipe|directive)\.ts/.test(file.getFilePath())) {
+    file.getClasses().forEach(checkDestroyInAngularArtifacts);
+  }
+}
+
+function checkDestroyInAngularArtifacts(clazz: ClassDeclaration) {
+  const destroy = clazz.getProperty('destroy$');
+  if (destroy) {
+    const references = destroy
+      .findReferencesAsNodes()
+      .map(reference =>
+        reference.getParentWhile((_, c) => !Node.isMethodDeclaration(c) && !Node.isConstructorDeclaration(c))
+      )
+      .map(
+        reference =>
+          (Node.isMethodDeclaration(reference) && reference.getName()) ||
+          (Node.isConstructorDeclaration(reference) && 'constructor')
+      )
+      .filter(name => !!name && name !== 'ngOnDestroy');
+
+    if (!references.length) {
+      console.warn(
+        `ERROR ${destroy
+          .getSourceFile()
+          .getFilePath()}:${destroy.getStartLineNumber()}: ${destroy.getName()} is not used in class.`
+      );
+      isError = true;
+    }
+  }
 }
 
 function isExported(node: Node) {
@@ -86,6 +116,14 @@ function isUnreferenced(node: Node & ReferenceFindableNode) {
 }
 
 function checkNode(node: Node) {
+  if (
+    Node.hasName(node) &&
+    /.*(Reducers|Effects)$/.test(node.getName()) &&
+    node.getSourceFile().getBaseName().endsWith('-store.module.ts')
+  ) {
+    return;
+  }
+
   if (!Node.isReferenceFindableNode(node)) {
     return;
   }

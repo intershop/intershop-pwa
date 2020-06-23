@@ -18,7 +18,9 @@ export class CategoryImageComponent implements OnChanges {
 
   categoryImageUrl = '/assets/img/not_available.png';
 
-  // defered loading flag
+  /**
+   * deferred loading flag
+   */
   showImage = false;
 
   ngOnChanges() {

@@ -1,7 +1,7 @@
 import { TestBed, async } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { getICMStaticURL } from 'ish-core/store/core/configuration';
 
 import { FilterNavigationData } from './filter-navigation.interface';
 import { FilterNavigationMapper } from './filter-navigation.mapper';
@@ -12,16 +12,7 @@ describe('Filter Navigation Mapper', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        ngrxTesting({
-          reducers: { configuration: configurationReducer },
-          config: {
-            initialState: {
-              configuration: { baseURL: 'http://www.example.org' },
-            },
-          },
-        }),
-      ],
+      providers: [provideMockStore({ selectors: [{ selector: getICMStaticURL, value: 'http://www.example.org' }] })],
     });
     mapper = TestBed.inject(FilterNavigationMapper);
   }));

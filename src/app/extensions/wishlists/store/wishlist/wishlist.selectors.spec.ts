@@ -1,26 +1,25 @@
 import { TestBed } from '@angular/core/testing';
-import { combineReducers } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { wishlistsReducers } from '../wishlists-store.module';
+import { WishlistsStoreModule } from '../wishlists-store.module';
 
 import {
-  CreateWishlist,
-  CreateWishlistFail,
-  CreateWishlistSuccess,
-  DeleteWishlist,
-  DeleteWishlistFail,
-  DeleteWishlistSuccess,
-  LoadWishlists,
-  LoadWishlistsFail,
-  LoadWishlistsSuccess,
-  SelectWishlist,
-  UpdateWishlist,
-  UpdateWishlistFail,
-  UpdateWishlistSuccess,
+  createWishlist,
+  createWishlistFail,
+  createWishlistSuccess,
+  deleteWishlist,
+  deleteWishlistFail,
+  deleteWishlistSuccess,
+  loadWishlists,
+  loadWishlistsFail,
+  loadWishlistsSuccess,
+  selectWishlist,
+  updateWishlist,
+  updateWishlistFail,
+  updateWishlistSuccess,
 } from './wishlist.actions';
 import {
   getAllWishlists,
@@ -33,19 +32,15 @@ import {
 } from './wishlist.selectors';
 
 describe('Wishlist Selectors', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting({
-        reducers: {
-          ...coreReducers,
-          wishlists: combineReducers(wishlistsReducers),
-        },
-      }),
+      imports: [CoreStoreModule.forTesting(), WishlistsStoreModule.forTesting('wishlists')],
+      providers: [provideStoreSnapshots()],
     });
 
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
   });
 
   const wishlists = [
@@ -81,7 +76,7 @@ describe('Wishlist Selectors', () => {
 
   describe('loading wishlists', () => {
     describe('LoadWishlists', () => {
-      const loadWishlistAction = new LoadWishlists();
+      const loadWishlistAction = loadWishlists();
 
       beforeEach(() => {
         store$.dispatch(loadWishlistAction);
@@ -93,11 +88,8 @@ describe('Wishlist Selectors', () => {
     });
 
     describe('LoadWishlistsSuccess', () => {
-      const loadWishlistSuccessAction = new LoadWishlistsSuccess({ wishlists });
-
       beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
-        store$.dispatch(loadWishlistSuccessAction);
+        store$.dispatch(loadWishlistsSuccess({ wishlists }));
       });
 
       it('should set loading to false', () => {
@@ -110,11 +102,8 @@ describe('Wishlist Selectors', () => {
     });
 
     describe('LoadWishlistsFail', () => {
-      const loadWishlistFailAction = new LoadWishlistsFail({ error: { message: 'invalid' } as HttpError });
-
       beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
-        store$.dispatch(loadWishlistFailAction);
+        store$.dispatch(loadWishlistsFail({ error: { message: 'invalid' } as HttpError }));
       });
 
       it('should set loading to false', () => {
@@ -129,7 +118,7 @@ describe('Wishlist Selectors', () => {
 
   describe('create a wishlist', () => {
     describe('CreateWishlist', () => {
-      const createWishlistAction = new CreateWishlist({
+      const createWishlistAction = createWishlist({
         wishlist: {
           title: 'create title',
           preferred: true,
@@ -146,11 +135,8 @@ describe('Wishlist Selectors', () => {
     });
 
     describe('CreateWishlistSuccess', () => {
-      const createWishistSuccessAction = new CreateWishlistSuccess({ wishlist: wishlists[0] });
-
       beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
-        store$.dispatch(createWishistSuccessAction);
+        store$.dispatch(createWishlistSuccess({ wishlist: wishlists[0] }));
       });
 
       it('should set loading to false', () => {
@@ -163,11 +149,8 @@ describe('Wishlist Selectors', () => {
     });
 
     describe('CreateWishlistFail', () => {
-      const createWishlistFailAction = new CreateWishlistFail({ error: { message: 'invalid' } as HttpError });
-
       beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
-        store$.dispatch(createWishlistFailAction);
+        store$.dispatch(createWishlistFail({ error: { message: 'invalid' } as HttpError }));
       });
 
       it('should set loading to false', () => {
@@ -182,10 +165,8 @@ describe('Wishlist Selectors', () => {
 
   describe('delete a wishlist', () => {
     describe('DeleteWishlist', () => {
-      const deleteWishlistAction = new DeleteWishlist({ wishlistId: 'id' });
-
       beforeEach(() => {
-        store$.dispatch(deleteWishlistAction);
+        store$.dispatch(deleteWishlist({ wishlistId: 'id' }));
       });
 
       it('should set loading to true', () => {
@@ -194,12 +175,8 @@ describe('Wishlist Selectors', () => {
     });
 
     describe('DeleteWishlistSuccess', () => {
-      const loadWishlistSuccessAction = new LoadWishlistsSuccess({ wishlists });
-      const deleteWishlistSuccessAction = new DeleteWishlistSuccess({ wishlistId: wishlists[0].id });
-
-      beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
-      });
+      const loadWishlistSuccessAction = loadWishlistsSuccess({ wishlists });
+      const deleteWishlistSuccessAction = deleteWishlistSuccess({ wishlistId: wishlists[0].id });
 
       it('should set loading to false', () => {
         store$.dispatch(deleteWishlistSuccessAction);
@@ -216,11 +193,8 @@ describe('Wishlist Selectors', () => {
     });
 
     describe('DeleteWishlistFail', () => {
-      const deleteWishlistFailAction = new DeleteWishlistFail({ error: { message: 'invalid' } as HttpError });
-
       beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
-        store$.dispatch(deleteWishlistFailAction);
+        store$.dispatch(deleteWishlistFail({ error: { message: 'invalid' } as HttpError }));
       });
 
       it('should set loading to false', () => {
@@ -235,10 +209,8 @@ describe('Wishlist Selectors', () => {
 
   describe('updating a wishlist', () => {
     describe('UpdateWishlist', () => {
-      const updateWishlistAction = new UpdateWishlist({ wishlist: wishlists[0] });
-
       beforeEach(() => {
-        store$.dispatch(updateWishlistAction);
+        store$.dispatch(updateWishlist({ wishlist: wishlists[0] }));
       });
 
       it('should set loading to true', () => {
@@ -251,14 +223,10 @@ describe('Wishlist Selectors', () => {
         ...wishlists[0],
         title: 'new title',
       };
-      const updateWishlistSuccessAction = new UpdateWishlistSuccess({
+      const updateWishlistSuccessAction = updateWishlistSuccess({
         wishlist: updated,
       });
-      const loadWishlistSuccess = new LoadWishlistsSuccess({ wishlists });
-
-      beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
-      });
+      const loadWishlistSuccess = loadWishlistsSuccess({ wishlists });
 
       it('should set loading to false', () => {
         store$.dispatch(updateWishlistSuccessAction);
@@ -275,11 +243,8 @@ describe('Wishlist Selectors', () => {
     });
 
     describe('UpdateWishlistFail', () => {
-      const updateWishlistFailAction = new UpdateWishlistFail({ error: { message: 'invalid' } as HttpError });
-
       beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
-        store$.dispatch(updateWishlistFailAction);
+        store$.dispatch(updateWishlistFail({ error: { message: 'invalid' } as HttpError }));
       });
 
       it('should set loading to false', () => {
@@ -293,8 +258,8 @@ describe('Wishlist Selectors', () => {
   });
 
   describe('Get Selected Wishlist', () => {
-    const loadWishlistsSuccessActions = new LoadWishlistsSuccess({ wishlists });
-    const selectWishlistAction = new SelectWishlist({ id: wishlists[1].id });
+    const loadWishlistsSuccessActions = loadWishlistsSuccess({ wishlists });
+    const selectWishlistAction = selectWishlist({ id: wishlists[1].id });
 
     beforeEach(() => {
       store$.dispatch(loadWishlistsSuccessActions);
@@ -311,10 +276,8 @@ describe('Wishlist Selectors', () => {
   });
 
   describe('Get Wishlist Details', () => {
-    const loadWishlistsSuccessActions = new LoadWishlistsSuccess({ wishlists });
-
     beforeEach(() => {
-      store$.dispatch(loadWishlistsSuccessActions);
+      store$.dispatch(loadWishlistsSuccess({ wishlists }));
     });
 
     it('should return correct wishlist for given id', () => {
@@ -323,10 +286,8 @@ describe('Wishlist Selectors', () => {
   });
 
   describe('Get Preferred Wishlist', () => {
-    const loadWishlistsSuccessActions = new LoadWishlistsSuccess({ wishlists });
-
     beforeEach(() => {
-      store$.dispatch(loadWishlistsSuccessActions);
+      store$.dispatch(loadWishlistsSuccess({ wishlists }));
     });
 
     it('should return correct wishlist for given title', () => {

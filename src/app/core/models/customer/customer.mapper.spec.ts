@@ -23,7 +23,7 @@ describe('Customer Mapper', () => {
       const user = loginData.user;
 
       expect(customer).toBeTruthy();
-      expect(customer.type).toEqual(customerData.type);
+      expect(customer.isBusinessCustomer).toBeFalse();
       expect(customer.customerNo).toEqual(customerData.customerNo);
 
       expect(user.firstName).toBe(customerData.firstName);
@@ -44,7 +44,7 @@ describe('Customer Mapper', () => {
       const customer = loginData.customer;
 
       expect(customer).toBeTruthy();
-      expect(customer.type).toEqual(customerData.type);
+      expect(customer.isBusinessCustomer).toBeTrue();
       expect(customer.customerNo).toEqual(customerData.customerNo);
       expect(customer.companyName).toEqual(customerData.companyName);
       expect(customer.taxationID).toEqual(customerData.taxationID);
@@ -53,7 +53,7 @@ describe('Customer Mapper', () => {
     });
   });
 
-  describe('fromData', () => {
+  describe('Customer Mapper', () => {
     it(`should return Customer when getting CustomerData of a private Customer`, () => {
       const customerData = {
         type: 'PrivateCustomer',
@@ -62,7 +62,7 @@ describe('Customer Mapper', () => {
       const customer = CustomerMapper.fromData(customerData);
 
       expect(customer).toBeTruthy();
-      expect(customer.type).toEqual(customerData.type);
+      expect(customer.isBusinessCustomer).toBeFalse();
       expect(customer.customerNo).toEqual(customerData.customerNo);
       expect(customer.isBusinessCustomer).toBeFalse();
     });
@@ -78,7 +78,7 @@ describe('Customer Mapper', () => {
       const customer = CustomerMapper.fromData(customerData);
 
       expect(customer).toBeTruthy();
-      expect(customer.type).toEqual(customerData.type);
+      expect(customer.isBusinessCustomer).toBeTrue();
       expect(customer.customerNo).toEqual(customerData.customerNo);
       expect(customer.companyName).toEqual(customerData.companyName);
       expect(customer.taxationID).toEqual(customerData.taxationID);

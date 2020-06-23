@@ -1,4 +1,4 @@
-// tslint:disable: no-console ish-ordered-imports
+// tslint:disable: no-console ish-ordered-imports force-jsdoc-comments
 import 'zone.js/dist/zone-node';
 
 import * as express from 'express';
@@ -11,6 +11,7 @@ import { AppServerModule, ICM_WEB_URL, HYBRID_MAPPING_TABLE, environment } from 
 import { ngExpressEngine } from '@nguniversal/express-engine';
 
 const PORT = process.env.PORT || 4200;
+
 const DIST_FOLDER = join(process.cwd(), 'dist');
 
 // uncomment this block to prevent ssr issues with third-party libraries regarding window, document, HTMLElement and navigator
@@ -248,8 +249,11 @@ function run() {
 // '__non_webpack_require__' is a proxy to Node 'require'
 // The below code is to ensure that the server is run only when not requiring the bundle.
 declare const __non_webpack_require__: NodeRequire;
+
 const mainModule = __non_webpack_require__.main;
+
 const moduleFilename = (mainModule && mainModule.filename) || '';
+
 if (moduleFilename === __filename || moduleFilename.includes('iisnode')) {
   run();
 }

@@ -5,7 +5,7 @@ import { map, mapTo } from 'rxjs/operators';
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { Address } from 'ish-core/models/address/address.model';
 import { Link } from 'ish-core/models/link/link.model';
-import { ApiService, resolveLink, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
 /**
  * The Address Service handles the interaction with the REST API concerning addresses.
@@ -22,7 +22,7 @@ export class AddressService {
   getCustomerAddresses(customerId: string = '-'): Observable<Address[]> {
     return this.apiService.get(`customers/${customerId}/addresses`).pipe(
       unpackEnvelope<Link>(),
-      resolveLinks<Address>(this.apiService),
+      this.apiService.resolveLinks<Address>(),
       map(addressesData => addressesData.map(AddressMapper.fromData))
     );
   }
@@ -41,7 +41,7 @@ export class AddressService {
 
     return this.apiService
       .post(`customers/${customerId}/addresses`, customerAddress)
-      .pipe(resolveLink<Address>(this.apiService), map(AddressMapper.fromData));
+      .pipe(this.apiService.resolveLink<Address>(), map(AddressMapper.fromData));
   }
 
   /**

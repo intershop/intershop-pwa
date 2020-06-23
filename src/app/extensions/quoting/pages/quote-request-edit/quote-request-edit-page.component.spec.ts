@@ -1,16 +1,15 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
+import { QuotingFacade } from '../../facades/quoting.facade';
 import { QuoteEditComponent } from '../../shared/quote/quote-edit/quote-edit.component';
-import { LoadQuoteRequests } from '../../store/quote-request';
-import { quotingReducers } from '../../store/quoting-store.module';
 
 import { QuoteRequestEditPageComponent } from './quote-request-edit-page.component';
 
@@ -18,20 +17,16 @@ describe('Quote Request Edit Page Component', () => {
   let component: QuoteRequestEditPageComponent;
   let fixture: ComponentFixture<QuoteRequestEditPageComponent>;
   let element: HTMLElement;
-  let store$: Store;
+  let quotingFacade: QuotingFacade;
 
   beforeEach(async(() => {
+    quotingFacade = mock(QuotingFacade);
     TestBed.configureTestingModule({
       declarations: [MockComponent(LoadingComponent), MockComponent(QuoteEditComponent), QuoteRequestEditPageComponent],
-      imports: [
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: {
-            quoting: combineReducers(quotingReducers),
-            shopping: combineReducers(shoppingReducers),
-          },
-        }),
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      providers: [
+        { provide: QuotingFacade, useFactory: () => instance(quotingFacade) },
+        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
       ],
     }).compileComponents();
   }));
@@ -40,8 +35,6 @@ describe('Quote Request Edit Page Component', () => {
     fixture = TestBed.createComponent(QuoteRequestEditPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-
-    store$ = TestBed.inject(Store);
   });
 
   it('should be created', () => {
@@ -51,7 +44,8 @@ describe('Quote Request Edit Page Component', () => {
   });
 
   it('should render loading component if quote requests loading', () => {
-    store$.dispatch(new LoadQuoteRequests());
+    when(quotingFacade.quoteRequestLoading$).thenReturn(of(true));
+
     fixture.detectChanges();
     expect(element.querySelector('ish-loading')).toBeTruthy();
   });

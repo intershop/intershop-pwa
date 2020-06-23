@@ -37,7 +37,7 @@ import { SfeMapper } from 'ish-shared/cms/sfe-adapter/sfe.mapper';
   templateUrl: './content-pagelet.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable-next-line:ccp-no-markup-in-containers ccp-no-intelligence-in-components
+// tslint:disable-next-line:ccp-no-markup-in-containers
 export class ContentPageletComponent extends SfeMetadataWrapper implements OnChanges, OnInit, OnDestroy {
   /**
    * The Id of the Pagelet that is to be rendered.
@@ -61,6 +61,7 @@ export class ContentPageletComponent extends SfeMetadataWrapper implements OnCha
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngOnInit() {

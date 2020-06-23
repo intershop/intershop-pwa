@@ -1,6 +1,5 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Params } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable, of, throwError } from 'rxjs';
 import { concatMap, map, mapTo, withLatestFrom } from 'rxjs/operators';
@@ -17,8 +16,8 @@ import {
 import { PaymentMethodMapper } from 'ish-core/models/payment-method/payment-method.mapper';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
-import { ApiService, resolveLink, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { getCurrentLocale } from 'ish-core/store/configuration';
+import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { getCurrentLocale } from 'ish-core/store/core/configuration';
 
 /**
  * The Payment Service handles the interaction with the 'baskets' and 'users' REST API concerning payment functionality.
@@ -27,7 +26,6 @@ import { getCurrentLocale } from 'ish-core/store/configuration';
 export class PaymentService {
   constructor(private apiService: ApiService, private store: Store) {}
 
-  // http header for Basket API v1
   private basketHeaders = new HttpHeaders({
     'content-type': 'application/json',
     Accept: 'application/vnd.intershop.basket.v1+json',
@@ -160,7 +158,7 @@ export class PaymentService {
    * @param redirect          The payment redirect information (parameters and status).
    * @returns                 The updated payment.
    */
-  updateBasketPayment(basketId: string, params: Params): Observable<Payment> {
+  updateBasketPayment(basketId: string, params: { [key: string]: string }): Observable<Payment> {
     if (!basketId) {
       return throwError('createBasketPayment() called without basketId');
     }
@@ -252,7 +250,7 @@ export class PaymentService {
 
     return this.apiService.get(`customers/${customer.customerNo}/payments`).pipe(
       unpackEnvelope<Link>(),
-      resolveLinks<PaymentInstrumentData>(this.apiService),
+      this.apiService.resolveLinks<PaymentInstrumentData>(),
       concatMap(instruments =>
         this.apiService.options(`customers/${customer.customerNo}/payments`).pipe(
           unpackEnvelope<PaymentMethodOptionsDataType>('methods'),
@@ -293,7 +291,7 @@ export class PaymentService {
 
     return this.apiService
       .post(`customers/${customerNo}/payments`, body)
-      .pipe(resolveLink<PaymentInstrument>(this.apiService));
+      .pipe(this.apiService.resolveLink<PaymentInstrument>());
   }
 
   /**

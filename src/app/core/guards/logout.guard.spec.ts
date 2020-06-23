@@ -4,13 +4,14 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { UserActionTypes } from 'ish-core/store/user';
-import { TestStore, containsActionWithType, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { logoutUser } from 'ish-core/store/customer/user';
+import { StoreWithSnapshots, containsActionWithType, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { LogoutGuard } from './logout.guard';
 
 describe('Logout Guard', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
   let router: Router;
   let location: Location;
 
@@ -21,16 +22,17 @@ describe('Logout Guard', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
+        CoreStoreModule.forTesting(['router'], true),
         RouterTestingModule.withRoutes([
           { path: 'home', component: DummyComponent },
           { path: 'foo', component: DummyComponent },
           { path: '**', component: DummyComponent, canActivate: [LogoutGuard] },
         ]),
-        ngrxTesting({ routerStore: true }),
       ],
+      providers: [provideStoreSnapshots()],
     }).compileComponents();
 
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
     router = TestBed.inject(Router);
     location = TestBed.inject(Location);
   });
@@ -39,7 +41,7 @@ describe('Logout Guard', () => {
     router.navigateByUrl('/any');
     tick(500);
 
-    expect(store$.actionsArray()).toSatisfy(containsActionWithType(UserActionTypes.LogoutUser));
+    expect(store$.actionsArray()).toSatisfy(containsActionWithType(logoutUser.type));
   }));
 
   it('should redirect to /home when called', fakeAsync(() => {

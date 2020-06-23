@@ -6,35 +6,22 @@ import {
   HostListener,
   Input,
   OnChanges,
-  OnDestroy,
   SimpleChanges,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store, select } from '@ngrx/store';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
-import { getICMBaseURL } from 'ish-core/store/configuration';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { LinkParser } from 'ish-core/utils/link-parser';
 
 @Directive({
   selector: '[ishServerHtml]',
 })
-export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges {
+export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnChanges {
   @Input() callbacks: {
     [key: string]: () => {};
   };
 
-  private destroy$ = new Subject();
-  private icmBaseUrl: string;
-
-  constructor(private router: Router, private elementRef: ElementRef, store: Store) {
-    store.pipe(select(getICMBaseURL), takeUntil(this.destroy$)).subscribe(icmBaseUrl => (this.icmBaseUrl = icmBaseUrl));
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-  }
+  constructor(private router: Router, private elementRef: ElementRef, private appFacade: AppFacade) {}
 
   @Input() set ishServerHtml(val: string) {
     const element = this.elementRef.nativeElement;
@@ -69,7 +56,7 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnD
     if (regex.test(src)) {
       const [, ismediaobjectContent] = regex.exec(src);
       const links = ismediaobjectContent.split('|');
-      return this.icmBaseUrl + links[links.length - 1];
+      return this.appFacade.icmBaseUrl + links[links.length - 1];
     } else {
       return src;
     }

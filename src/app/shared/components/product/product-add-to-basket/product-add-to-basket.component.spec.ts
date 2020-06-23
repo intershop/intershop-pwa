@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { combineReducers } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { ToastrModule } from 'ngx-toastr';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Product } from 'ish-core/models/product/product.model';
-import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ProductAddToBasketComponent } from './product-add-to-basket.component';
 
@@ -19,17 +19,13 @@ describe('Product Add To Basket Component', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
+    const checkoutFacade = mock(CheckoutFacade);
+    when(checkoutFacade.basketLoading$).thenReturn(of(false));
+
     TestBed.configureTestingModule({
-      imports: [
-        ToastrModule.forRoot(),
-        TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: {
-            checkout: combineReducers(checkoutReducers),
-          },
-        }),
-      ],
+      imports: [ToastrModule.forRoot(), TranslateModule.forRoot()],
       declarations: [MockComponent(FaIconComponent), ProductAddToBasketComponent],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     }).compileComponents();
   }));
 

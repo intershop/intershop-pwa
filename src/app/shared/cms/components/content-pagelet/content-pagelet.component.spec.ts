@@ -1,15 +1,14 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { provideMockStore } from '@ngrx/store/testing';
 import { noop, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
-import { getICMBaseURL } from 'ish-core/store/configuration';
 import { CMSTextComponent } from 'ish-shared/cms/components/cms-text/cms-text.component';
 import { CMS_COMPONENT } from 'ish-shared/cms/configurations/injection-keys';
 import { SfeAdapterService } from 'ish-shared/cms/sfe-adapter/sfe-adapter.service';
@@ -28,6 +27,9 @@ describe('Content Pagelet Component', () => {
     sfeAdapterService = mock(SfeAdapterService);
     cmsFacade = mock(CMSFacade);
 
+    const appFacade = mock(AppFacade);
+    when(appFacade.icmBaseUrl).thenReturn('http://example.org');
+
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [CMSTextComponent, ContentPageletComponent, ServerHtmlDirective],
@@ -39,7 +41,7 @@ describe('Content Pagelet Component', () => {
         },
         { provide: SfeAdapterService, useValue: instance(sfeAdapterService) },
         { provide: CMSFacade, useFactory: () => instance(cmsFacade) },
-        provideMockStore({ selectors: [{ selector: getICMBaseURL, value: 'http://example.org' }] }),
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })

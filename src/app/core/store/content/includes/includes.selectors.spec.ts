@@ -1,26 +1,23 @@
 import { TestBed } from '@angular/core/testing';
-import { combineReducers } from '@ngrx/store';
 
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
-import { contentReducers } from 'ish-core/store/content/content-store.module';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { ContentStoreModule } from 'ish-core/store/content/content-store.module';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { LoadContentIncludeSuccess } from './includes.actions';
+import { loadContentIncludeSuccess } from './includes.actions';
 import { getContentInclude } from './includes.selectors';
 
 describe('Includes Selectors', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting({
-        reducers: {
-          content: combineReducers(contentReducers),
-        },
-      }),
+      imports: [ContentStoreModule.forTesting('includes'), CoreStoreModule.forTesting()],
+      providers: [provideStoreSnapshots()],
     });
 
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
   });
 
   describe('getContentInclude', () => {
@@ -30,7 +27,7 @@ describe('Includes Selectors', () => {
 
     it('should select include when it was successfully loaded', () => {
       store$.dispatch(
-        new LoadContentIncludeSuccess({ include: { id: 'dummy' } as ContentPageletEntryPoint, pagelets: [] })
+        loadContentIncludeSuccess({ include: { id: 'dummy' } as ContentPageletEntryPoint, pagelets: [] })
       );
 
       expect(getContentInclude(store$.state, 'dummy')).toHaveProperty('id', 'dummy');
@@ -42,7 +39,7 @@ describe('Includes Selectors', () => {
       beforeEach(() => {
         IDS.forEach(title =>
           store$.dispatch(
-            new LoadContentIncludeSuccess({ include: { id: title } as ContentPageletEntryPoint, pagelets: [] })
+            loadContentIncludeSuccess({ include: { id: title } as ContentPageletEntryPoint, pagelets: [] })
           )
         );
       });

@@ -8,14 +8,8 @@ import { instance, mock, verify, when } from 'ts-mockito';
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CMSService } from 'ish-core/services/cms/cms.service';
-import { LogoutUser } from 'ish-core/store/user';
 
-import {
-  LoadContentInclude,
-  LoadContentIncludeFail,
-  LoadContentIncludeSuccess,
-  ResetContentIncludes,
-} from './includes.actions';
+import { loadContentInclude, loadContentIncludeFail } from './includes.actions';
 import { IncludesEffects } from './includes.effects';
 
 describe('Includes Effects', () => {
@@ -42,9 +36,9 @@ describe('Includes Effects', () => {
         of({ include: { id: 'dummy' } as ContentPageletEntryPoint, pagelets: [] })
       );
 
-      actions$ = of(new LoadContentInclude({ includeId: 'dummy' }));
+      actions$ = of(loadContentInclude({ includeId: 'dummy' }));
 
-      effects.loadContentInclude$.subscribe((action: LoadContentIncludeSuccess) => {
+      effects.loadContentInclude$.subscribe(action => {
         verify(cmsServiceMock.getContentInclude('dummy')).once();
         expect(action).toMatchInlineSnapshot(`
           [Content Include API] Load Content Include Success:
@@ -58,9 +52,9 @@ describe('Includes Effects', () => {
     it('should send fail action when loading action via service is unsuccessful', done => {
       when(cmsServiceMock.getContentInclude('dummy')).thenReturn(throwError({ message: 'ERROR' }));
 
-      actions$ = of(new LoadContentInclude({ includeId: 'dummy' }));
+      actions$ = of(loadContentInclude({ includeId: 'dummy' }));
 
-      effects.loadContentInclude$.subscribe((action: LoadContentIncludeFail) => {
+      effects.loadContentInclude$.subscribe(action => {
         verify(cmsServiceMock.getContentInclude('dummy')).once();
         expect(action).toMatchInlineSnapshot(`
           [Content Include API] Load Content Include Fail:
@@ -73,22 +67,11 @@ describe('Includes Effects', () => {
     it('should not die when encountering an error', () => {
       when(cmsServiceMock.getContentInclude('dummy')).thenReturn(throwError({ message: 'ERROR' }));
 
-      actions$ = hot('a-a-a-a', { a: new LoadContentInclude({ includeId: 'dummy' }) });
+      actions$ = hot('a-a-a-a', { a: loadContentInclude({ includeId: 'dummy' }) });
 
       expect(effects.loadContentInclude$).toBeObservable(
-        cold('a-a-a-a', { a: new LoadContentIncludeFail({ error: { message: 'ERROR' } as HttpError }) })
+        cold('a-a-a-a', { a: loadContentIncludeFail({ error: { message: 'ERROR' } as HttpError }) })
       );
-    });
-  });
-
-  describe('resetContentIncludesAfterLogout$', () => {
-    it('should map to action of type ResetAddresses if LogoutUser action triggered', () => {
-      const action = new LogoutUser();
-      const completion = new ResetContentIncludes();
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.resetContentIncludesAfterLogout$).toBeObservable(expected$);
     });
   });
 });

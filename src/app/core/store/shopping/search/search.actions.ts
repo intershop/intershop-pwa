@@ -1,33 +1,21 @@
-import { Action } from '@ngrx/store';
+import { createAction } from '@ngrx/store';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
+import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
-export enum SearchActionTypes {
-  SearchProducts = '[Shopping] Search Products',
-  SearchProductsFail = '[Shopping] Search Products Fail',
-  SuggestSearch = '[Suggest Search] Load Search Suggestions',
-  SuggestSearchSuccess = '[Suggest Search Internal] Return Search Suggestions',
-}
+export const searchProducts = createAction(
+  '[Search Internal] Search Products',
+  payload<{ searchTerm: string; page?: number; sorting?: string }>()
+);
 
-export class SearchProducts implements Action {
-  readonly type = SearchActionTypes.SearchProducts;
-  constructor(public payload: { searchTerm: string; page?: number; sorting?: string }) {}
-}
+export const searchProductsFail = createAction('[Search API] Search Products Fail', httpError());
 
-export class SearchProductsFail implements Action {
-  readonly type = SearchActionTypes.SearchProductsFail;
-  constructor(public payload: { error: HttpError }) {}
-}
+export const suggestSearch = createAction(
+  '[Suggest Search Internal] Load Search Suggestions',
+  payload<{ searchTerm: string }>()
+);
 
-export class SuggestSearch implements Action {
-  readonly type = SearchActionTypes.SuggestSearch;
-  constructor(public payload: { searchTerm: string }) {}
-}
-
-export class SuggestSearchSuccess implements Action {
-  readonly type = SearchActionTypes.SuggestSearchSuccess;
-  constructor(public payload: { searchTerm: string; suggests: SuggestTerm[] }) {}
-}
-
-export type SearchAction = SearchProducts | SearchProductsFail | SuggestSearch | SuggestSearchSuccess;
+export const suggestSearchSuccess = createAction(
+  '[Suggest Search API] Return Search Suggestions',
+  payload<{ searchTerm: string; suggests: SuggestTerm[] }>()
+);

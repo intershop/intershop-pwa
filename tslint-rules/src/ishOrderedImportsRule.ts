@@ -67,7 +67,6 @@ function getOrderNumber(stm: ts.ImportDeclaration): number {
 }
 
 export class Rule extends Lint.Rules.AbstractRule {
-  // tslint:disable:object-literal-sort-keys
   static metadata: Lint.IRuleMetadata = {
     ruleName: 'ish-ordered-imports',
     description: 'Requires that import statements be alphabetized and grouped.',
@@ -89,7 +88,6 @@ export class Rule extends Lint.Rules.AbstractRule {
     type: 'style',
     typescriptOnly: false,
   };
-  // tslint:enable:object-literal-sort-keys
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     const lineEnding = generateLineEnding(sourceFile);

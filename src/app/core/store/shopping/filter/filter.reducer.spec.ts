@@ -1,13 +1,31 @@
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
-import * as fromActions from './filter.actions';
+import {
+  applyFilter,
+  applyFilterFail,
+  applyFilterSuccess,
+  loadFilterFail,
+  loadFilterForCategory,
+  loadFilterForSearch,
+  loadFilterSuccess,
+  loadProductsForFilter,
+} from './filter.actions';
 import { filterReducer, initialState } from './filter.reducer';
 
 describe('Filter Reducer', () => {
   describe('undefined action', () => {
     it('should return the default state when previous state is undefined', () => {
-      const action = {} as fromActions.FilterActions;
+      const action = {} as ReturnType<
+        | typeof loadFilterForCategory
+        | typeof loadFilterSuccess
+        | typeof loadFilterFail
+        | typeof applyFilter
+        | typeof applyFilterSuccess
+        | typeof applyFilterFail
+        | typeof loadFilterForSearch
+        | typeof loadProductsForFilter
+      >;
       const state = filterReducer(undefined, action);
 
       expect(state).toBe(initialState);
@@ -17,7 +35,7 @@ describe('Filter Reducer', () => {
   describe('LoadFilterSuccess', () => {
     it('should set filter when reduced', () => {
       const filterNavigation = { filter: [{ name: 'a' }] } as FilterNavigation;
-      const action = new fromActions.LoadFilterSuccess({ filterNavigation });
+      const action = loadFilterSuccess({ filterNavigation });
       const state = filterReducer(initialState, action);
 
       expect(state.availableFilter).toEqual(filterNavigation);
@@ -26,7 +44,7 @@ describe('Filter Reducer', () => {
 
   describe('LoadFilterFailed', () => {
     it('should set filter when reduced', () => {
-      const action = new fromActions.LoadFilterFail({ error: {} as HttpError });
+      const action = loadFilterFail({ error: {} as HttpError });
       const state = filterReducer(initialState, action);
 
       expect(state.availableFilter).toBeFalsy();
@@ -36,7 +54,7 @@ describe('Filter Reducer', () => {
   describe('LoadFilterSuccess', () => {
     it('should set filter when reduced', () => {
       const filterNavigation = { filter: [{ name: 'a' }] } as FilterNavigation;
-      const action = new fromActions.LoadFilterSuccess({ filterNavigation });
+      const action = loadFilterSuccess({ filterNavigation });
       const state = filterReducer(initialState, action);
 
       expect(state.availableFilter).toEqual(filterNavigation);
@@ -45,7 +63,7 @@ describe('Filter Reducer', () => {
 
   describe('LoadFilterFailed', () => {
     it('should set filter when reduced', () => {
-      const action = new fromActions.LoadFilterFail({ error: {} as HttpError });
+      const action = loadFilterFail({ error: {} as HttpError });
       const state = filterReducer(initialState, action);
 
       expect(state.availableFilter).toBeFalsy();
@@ -55,7 +73,7 @@ describe('Filter Reducer', () => {
   describe('ApplyFilterSuccess', () => {
     it('should set filter when reduced', () => {
       const filter = { filter: [{ name: 'a' }] } as FilterNavigation;
-      const action = new fromActions.ApplyFilterSuccess({
+      const action = applyFilterSuccess({
         availableFilter: filter,
         searchParameter: 'b',
       });

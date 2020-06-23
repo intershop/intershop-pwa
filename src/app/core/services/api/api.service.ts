@@ -1,104 +1,33 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, OperatorFunction, Subject, forkJoin, of, throwError } from 'rxjs';
-import { catchError, concatMap, defaultIfEmpty, filter, map, switchMap, tap, throwIfEmpty } from 'rxjs/operators';
+import {
+  MonoTypeOperatorFunction,
+  Observable,
+  OperatorFunction,
+  Subject,
+  combineLatest,
+  forkJoin,
+  iif,
+  of,
+  throwError,
+} from 'rxjs';
+import { catchError, concatMap, first, map, tap, withLatestFrom } from 'rxjs/operators';
 
 import { Captcha } from 'ish-core/models/captcha/captcha.model';
 import { Link } from 'ish-core/models/link/link.model';
-import { Locale } from 'ish-core/models/locale/locale.model';
-import { getCurrentLocale, getICMServerURL, getRestEndpoint } from 'ish-core/store/configuration';
-import { getAPIToken, getPGID } from 'ish-core/store/user';
+import { getCurrentLocale, getICMServerURL, getRestEndpoint } from 'ish-core/store/core/configuration';
+import { getAPIToken, getPGID } from 'ish-core/store/customer/user';
 
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 
 /**
- * Pipable operator for elements translation (removing the envelop).
+ * Pipeable operator for elements translation (removing the envelope).
+ * @param key the name of the envelope (default 'elements')
  * @returns The items of an elements array without the elements wrapper.
  */
 export function unpackEnvelope<T>(key: string = 'elements'): OperatorFunction<{}, T[]> {
-  return source$ =>
-    source$.pipe(
-      filter(data => !!data && !!data[key] && !!data[key].length),
-      map(data => data[key]),
-      defaultIfEmpty([])
-    );
-}
-
-/**
- * Pipable operator for link translation (resolving one single link).
- * @param apiService  The API service to be used for the link translation.
- * @returns           The link resolved to its actual REST response data.
- */
-export function resolveLink<T>(apiService: ApiService): OperatorFunction<Link, T> {
-  return source$ =>
-    source$.pipe(
-      // check if link data is propery formatted
-      filter(link => !!link && link.type === 'Link' && !!link.uri),
-      throwIfEmpty(() => new Error('link was not properly formatted')),
-      // flat map to API request
-      switchMap(item => apiService.get<T>(`${apiService.icmServerURL}/${item.uri}`))
-    );
-}
-
-/**
- * Pipable operator for link translation (resolving the links).
- * @param apiService  The API service to be used for the link translation.
- * @returns           The links resolved to their actual REST response data.
- */
-export function resolveLinks<T>(apiService: ApiService): OperatorFunction<Link[], T[]> {
-  return source$ =>
-    source$.pipe(
-      // filter for all real Link elements
-      map(links => links.filter(el => !!el && el.type === 'Link' && !!el.uri)),
-      // stop if empty array
-      filter(links => !!links && !!links.length),
-      // transform Link elements to API Observables
-      map(links => links.map(item => apiService.get<T>(`${apiService.icmServerURL}/${item.uri}`))),
-      // flatten O<O<T>[]> -> O<T[]>
-      // tslint:disable-next-line:no-unnecessary-callback-wrapper
-      switchMap(obsArray => forkJoin(obsArray)),
-      // return empty Array if no links were supplied to be resolved
-      defaultIfEmpty([])
-    );
-}
-
-function catchApiError<T>(handler: ApiServiceErrorHandler) {
-  return (source$: Observable<T>) =>
-    // tslint:disable-next-line:ban
-    source$.pipe(catchError(error => handler.dispatchCommunicationErrors<T>(error)));
-}
-
-/**
- * constructs a full server URL with locale and currency for given input path
- */
-export function constructUrlForPath(
-  path: string,
-  method: 'GET' | 'OPTIONS' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
-  restEndpoint: string,
-  currentLocale: Locale,
-  pgid: string
-): string {
-  if (path.startsWith('http://') || path.startsWith('https://')) {
-    return path;
-  }
-  switch (method) {
-    case 'GET':
-    case 'OPTIONS':
-    case 'POST':
-    case 'PUT':
-    case 'PATCH':
-    case 'DELETE':
-      let localeAndCurrency = '';
-      if (currentLocale) {
-        localeAndCurrency = `;loc=${currentLocale.lang};cur=${currentLocale.currency}`;
-      }
-      // restrict to calls for cms api
-      const pgidP = pgid && path.startsWith('cms/') ? `;pgid=${pgid}` : '';
-      return `${restEndpoint}${localeAndCurrency}${pgidP}/${path}`;
-    default:
-      throw new Error(`unhandled method '${method}'`);
-  }
+  return map(data => (!!data && !!data[key] && !!data[key].length ? data[key] : []));
 }
 
 export interface AvailableOptions {
@@ -107,6 +36,8 @@ export interface AvailableOptions {
   skipApiErrorHandling?: boolean;
   runExclusively?: boolean;
   captcha?: Captcha;
+  sendPGID?: boolean;
+  sendSPGID?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -114,78 +45,82 @@ export class ApiService {
   static TOKEN_HEADER_KEY = 'authentication-token';
   static AUTHORIZATION_HEADER_KEY = 'Authorization';
 
-  private currentLocale: Locale;
-  private restEndpoint: string;
-  private apiToken: string;
-  private pgid: string;
-  icmServerURL: string;
-
   private executionBarrier$: Observable<void> | Subject<void> = of(undefined);
 
-  constructor(private httpClient: HttpClient, private apiServiceErrorHandler: ApiServiceErrorHandler, store: Store) {
-    store.pipe(select(getCurrentLocale)).subscribe(locale => (this.currentLocale = locale));
-    store.pipe(select(getICMServerURL)).subscribe(url => (this.icmServerURL = url));
-    store.pipe(select(getRestEndpoint)).subscribe(url => (this.restEndpoint = url));
-    store.pipe(select(getAPIToken)).subscribe(token => (this.apiToken = token));
-    store.pipe(select(getPGID)).subscribe(pgid => (this.pgid = pgid));
-  }
+  constructor(
+    private httpClient: HttpClient,
+    private apiServiceErrorHandler: ApiServiceErrorHandler,
+    private store: Store
+  ) {}
 
   /**
    * appends API token to requests if available and request is not an authorization request
    */
-  private appendAPITokenToHeaders(headers: HttpHeaders) {
-    return this.apiToken && !headers.has(ApiService.AUTHORIZATION_HEADER_KEY)
-      ? headers.set(ApiService.TOKEN_HEADER_KEY, this.apiToken)
-      : headers;
+  private appendAPITokenToHeaders(path: string): MonoTypeOperatorFunction<HttpHeaders> {
+    return headers$ =>
+      headers$.pipe(
+        withLatestFrom(this.store.pipe(select(getAPIToken))),
+        map(([headers, apiToken]) =>
+          apiToken && !headers.has(ApiService.AUTHORIZATION_HEADER_KEY)
+            ? headers.set(ApiService.TOKEN_HEADER_KEY, apiToken)
+            : headers
+        ),
+        // TODO: workaround removing auth token for cms if pgid is not available
+        withLatestFrom(this.store.pipe(select(getPGID))),
+        map(([headers, pgid]) =>
+          !pgid && path.startsWith('cms') ? headers.delete(ApiService.TOKEN_HEADER_KEY) : headers
+        )
+      );
   }
 
   /**
--   * sets the request header for the appropriate captcha service
--   @param   captcha       captcha token for captcha V2 and V3
--   @param   captchaAction captcha action for captcha V3
--   @returns HttpHeader    http header with captcha Authorization key
--   */
-  private appendCaptchaTokenToHeaders(headers: HttpHeaders, captcha: string, captchaAction: string) {
-    // testing token gets 'null' from captcha service, so we accept it as a valid value here
-    if (captchaAction !== undefined) {
-      // captcha V3
-      return headers.set(
-        ApiService.AUTHORIZATION_HEADER_KEY,
-        `CAPTCHA recaptcha_token=${captcha} action=${captchaAction}`
-      );
-    } else {
-      // captcha V2
-      // TODO: remove second parameter 'foo=bar' that currently only resolves a shortcoming of the server side implemenation that still requires two parameters
-      return headers.set(ApiService.AUTHORIZATION_HEADER_KEY, `CAPTCHA g-recaptcha-response=${captcha} foo=bar`);
-    }
+-  * sets the request header for the appropriate captcha service
+-  * @param captcha captcha token for captcha V2 and V3
+-  * @param captchaAction captcha action for captcha V3
+-  */
+  private appendCaptchaTokenToHeaders(captcha: string, captchaAction: string): MonoTypeOperatorFunction<HttpHeaders> {
+    return map(headers =>
+      // testing token gets 'null' from captcha service, so we accept it as a valid value here
+      captchaAction !== undefined
+        ? // captcha V3
+          headers.set(ApiService.AUTHORIZATION_HEADER_KEY, `CAPTCHA recaptcha_token=${captcha} action=${captchaAction}`)
+        : // captcha V2
+          // TODO: remove second parameter 'foo=bar' that currently only resolves a shortcoming of the server side implementation that still requires two parameters
+          headers.set(ApiService.AUTHORIZATION_HEADER_KEY, `CAPTCHA g-recaptcha-response=${captcha} foo=bar`)
+    );
   }
 
   /**
    * merges supplied and default headers
    */
-  private constructHeaders(options?: AvailableOptions): HttpHeaders {
+  private constructHeaders(path: string, options?: AvailableOptions): Observable<HttpHeaders> {
     const defaultHeaders = new HttpHeaders().set('content-type', 'application/json').set('Accept', 'application/json');
 
-    let newHeaders = defaultHeaders;
-    if (options && options.headers) {
-      newHeaders = options.headers.keys().reduce((acc, key) => acc.set(key, options.headers.get(key)), defaultHeaders);
-    }
-
-    // testing token gets 'null' from captcha service, so we accept it as a valid value here
-    if (options && options.captcha && options.captcha.captcha !== undefined) {
-      return this.appendCaptchaTokenToHeaders(newHeaders, options.captcha.captcha, options.captcha.captchaAction);
-    } else {
-      return this.appendAPITokenToHeaders(newHeaders);
-    }
+    return of(
+      options?.headers
+        ? // append incoming headers to default ones
+          options.headers.keys().reduce((acc, key) => acc.set(key, options.headers.get(key)), defaultHeaders)
+        : // just use default headers
+          defaultHeaders
+    ).pipe(
+      // testing token gets 'null' from captcha service, so we accept it as a valid value here
+      options?.captcha?.captcha !== undefined
+        ? // captcha headers
+          this.appendCaptchaTokenToHeaders(options.captcha.captcha, options.captcha.captchaAction)
+        : // default to api token
+          this.appendAPITokenToHeaders(path)
+    );
   }
 
-  private wrapHttpCall<T>(httpCall: () => Observable<T>, options: AvailableOptions) {
-    const wrappedCall = () =>
-      options && options.skipApiErrorHandling
-        ? httpCall()
-        : httpCall().pipe(catchApiError(this.apiServiceErrorHandler));
+  private execute<T>(options: AvailableOptions, httpCall$: Observable<T>): Observable<T> {
+    const wrappedCall$ = options?.skipApiErrorHandling
+      ? httpCall$
+      : httpCall$.pipe(
+          // tslint:disable-next-line:ban
+          catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error))
+        );
 
-    if (options && options.runExclusively) {
+    if (options?.runExclusively) {
       // setup a barrier for other calls
       const subject$ = new Subject<void>();
       this.executionBarrier$ = subject$;
@@ -195,7 +130,7 @@ export class ApiService {
       };
 
       // release barrier on completion
-      return wrappedCall().pipe(
+      return wrappedCall$.pipe(
         tap(releaseBarrier),
         // tslint:disable-next-line:ban
         catchError(err => {
@@ -205,21 +140,62 @@ export class ApiService {
       );
     } else {
       // respect barrier
-      return this.executionBarrier$.pipe(concatMap(wrappedCall));
+      return this.executionBarrier$.pipe(concatMap(() => wrappedCall$));
     }
+  }
+
+  private constructUrlForPath(path: string, options?: AvailableOptions): Observable<string> {
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return of(path);
+    }
+    return combineLatest([
+      // base url
+      this.store.pipe(select(getRestEndpoint)),
+      // locale and currency
+      this.store.pipe(
+        select(getCurrentLocale),
+        map(l => (l ? `;loc=${l.lang};cur=${l.currency}` : ''))
+      ),
+      // first path segment
+      of('/'),
+      of(path.includes('/') ? path.split('/')[0] : path),
+      // pgid
+      this.store.pipe(
+        select(getPGID),
+        map(pgid => (options?.sendPGID && pgid ? `;pgid=${pgid}` : options?.sendSPGID ? `;spgid=${pgid}` : ''))
+      ),
+      // remaining path
+      of(path.includes('/') ? path.substr(path.indexOf('/')) : ''),
+    ]).pipe(
+      first(),
+      map(arr => arr.join(''))
+    );
+  }
+
+  private constructHttpClientParams(
+    path: string,
+    options?: AvailableOptions
+  ): Observable<[string, { headers: HttpHeaders; params: HttpParams }]> {
+    return forkJoin([
+      this.constructUrlForPath(path, options),
+      this.constructHeaders(path, options).pipe(
+        map(headers => ({
+          params: options?.params,
+          headers,
+        }))
+      ),
+    ]);
   }
 
   /**
    * http get request
    */
   get<T>(path: string, options?: AvailableOptions): Observable<T> {
-    return this.wrapHttpCall(
-      () =>
-        this.httpClient.get<T>(constructUrlForPath(path, 'GET', this.restEndpoint, this.currentLocale, this.pgid), {
-          ...options,
-          headers: this.constructHeaders(options),
-        }),
-      options
+    return this.execute(
+      options,
+      this.constructHttpClientParams(path, options).pipe(
+        concatMap(([url, httpOptions]) => this.httpClient.get<T>(url, httpOptions))
+      )
     );
   }
 
@@ -227,16 +203,11 @@ export class ApiService {
    * http options request
    */
   options<T>(path: string, options?: AvailableOptions): Observable<T> {
-    return this.wrapHttpCall(
-      () =>
-        this.httpClient.options<T>(
-          constructUrlForPath(path, 'OPTIONS', this.restEndpoint, this.currentLocale, this.pgid),
-          {
-            ...options,
-            headers: this.constructHeaders(options),
-          }
-        ),
-      options
+    return this.execute(
+      options,
+      this.constructHttpClientParams(path, options).pipe(
+        concatMap(([url, httpOptions]) => this.httpClient.options<T>(url, httpOptions))
+      )
     );
   }
 
@@ -244,17 +215,11 @@ export class ApiService {
    * http put request
    */
   put<T>(path: string, body = {}, options?: AvailableOptions): Observable<T> {
-    return this.wrapHttpCall(
-      () =>
-        this.httpClient.put<T>(
-          constructUrlForPath(path, 'PUT', this.restEndpoint, this.currentLocale, this.pgid),
-          body,
-          {
-            ...options,
-            headers: this.constructHeaders(options),
-          }
-        ),
-      options
+    return this.execute(
+      options,
+      this.constructHttpClientParams(path, options).pipe(
+        concatMap(([url, httpOptions]) => this.httpClient.put<T>(url, body, httpOptions))
+      )
     );
   }
 
@@ -262,17 +227,11 @@ export class ApiService {
    * http patch request
    */
   patch<T>(path: string, body = {}, options?: AvailableOptions): Observable<T> {
-    return this.wrapHttpCall(
-      () =>
-        this.httpClient.patch<T>(
-          constructUrlForPath(path, 'PATCH', this.restEndpoint, this.currentLocale, this.pgid),
-          body,
-          {
-            ...options,
-            headers: this.constructHeaders(options),
-          }
-        ),
-      options
+    return this.execute(
+      options,
+      this.constructHttpClientParams(path, options).pipe(
+        concatMap(([url, httpOptions]) => this.httpClient.patch<T>(url, body, httpOptions))
+      )
     );
   }
 
@@ -280,34 +239,61 @@ export class ApiService {
    * http post request
    */
   post<T>(path: string, body = {}, options?: AvailableOptions): Observable<T> {
-    return this.wrapHttpCall(
-      () =>
-        this.httpClient.post<T>(
-          constructUrlForPath(path, 'POST', this.restEndpoint, this.currentLocale, this.pgid),
-          body,
-          {
-            ...options,
-            headers: this.constructHeaders(options),
-          }
-        ),
-      options
+    return this.execute(
+      options,
+      this.constructHttpClientParams(path, options).pipe(
+        concatMap(([url, httpOptions]) => this.httpClient.post<T>(url, body, httpOptions))
+      )
     );
   }
 
   /**
    * http delete request
    */
-  delete<T>(path, options?: AvailableOptions): Observable<T> {
-    return this.wrapHttpCall(
-      () =>
-        this.httpClient.delete<T>(
-          constructUrlForPath(path, 'DELETE', this.restEndpoint, this.currentLocale, this.pgid),
-          {
-            ...options,
-            headers: this.constructHeaders(options),
-          }
-        ),
-      options
+  delete<T>(path: string, options?: AvailableOptions): Observable<T> {
+    return this.execute(
+      options,
+      this.constructHttpClientParams(path, options).pipe(
+        concatMap(([url, httpOptions]) => this.httpClient.delete<T>(url, httpOptions))
+      )
     );
+  }
+
+  /**
+   * Pipeable operator for link translation (resolving one single link).
+   * @returns The link resolved to its actual REST response data.
+   */
+  resolveLink<T>(): OperatorFunction<Link, T> {
+    return stream$ =>
+      stream$.pipe(
+        withLatestFrom(this.store.pipe(select(getICMServerURL))),
+        concatMap(([link, icmServerURL]) =>
+          iif(
+            // check if link data is properly formatted
+            () => link?.type === 'Link' && !!link.uri,
+            // flat map to API request
+            this.get<T>(`${icmServerURL}/${link.uri}`),
+            // throw if link is not properly supplied
+            throwError(new Error('link was not properly formatted'))
+          )
+        )
+      );
+  }
+
+  /**
+   * Pipeable operator for link translation (resolving multiple links).
+   * @returns The links resolved to their actual REST response data.
+   */
+  resolveLinks<T>(): OperatorFunction<Link[], T[]> {
+    return source$ =>
+      source$.pipe(
+        // filter for all real Link elements
+        map(links => links.filter(el => el?.type === 'Link' && !!el.uri)),
+        withLatestFrom(this.store.pipe(select(getICMServerURL))),
+        // transform Link elements to API Observables
+        map(([links, icmServerURL]) => links.map(item => this.get<T>(`${icmServerURL}/${item.uri}`))),
+        // flatten to API requests O<O<T>[]> -> O<T[]>
+        concatMap(obsArray => iif(() => !!obsArray.length, forkJoin(obsArray), of([])))
+      );
   }
 }

@@ -43,7 +43,8 @@ export class ProductListingComponent implements OnInit, OnChanges, OnDestroy {
         map(params => params.has('view')),
         take(1),
         whenFalsy(),
-        concatMap(() => this.viewType$.pipe(whenTruthy(), take(1)))
+        concatMap(() => this.viewType$.pipe(whenTruthy(), take(1))),
+        takeUntil(this.destroy$)
       )
       .subscribe(view => this.changeViewType(view));
   }
@@ -56,6 +57,7 @@ export class ProductListingComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 
   /**
@@ -79,7 +81,8 @@ export class ProductListingComponent implements OnInit, OnChanges, OnDestroy {
       .pipe(
         take(1),
         map(view => (direction === 'down' ? view.nextPage() : view.previousPage())),
-        whenTruthy()
+        whenTruthy(),
+        takeUntil(this.destroy$)
       )
       .subscribe(page => {
         this.shoppingFacade.loadMoreProducts(this.id, page);

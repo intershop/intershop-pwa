@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
+import { instance, mock } from 'ts-mockito';
 
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { AppFacade } from 'ish-core/facades/app.facade';
 
 import { ErrorPageComponent } from './error-page.component';
 import { ErrorComponent } from './error/error.component';
@@ -16,7 +16,7 @@ describe('Error Page Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ErrorPageComponent, MockComponent(ErrorComponent), MockComponent(ServerErrorComponent)],
-      imports: [RouterTestingModule, ngrxTesting()],
+      providers: [{ provide: AppFacade, useFactory: () => instance(mock(AppFacade)) }],
     }).compileComponents();
   }));
 

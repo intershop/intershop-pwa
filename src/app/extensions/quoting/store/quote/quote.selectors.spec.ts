@@ -1,17 +1,17 @@
 import { TestBed } from '@angular/core/testing';
-import { combineReducers } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Product } from 'ish-core/models/product/product.model';
-import { LoadProductSuccess } from 'ish-core/store/shopping/products';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { loadProductSuccess } from 'ish-core/store/shopping/products';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { QuoteData } from '../../models/quote/quote.interface';
 import { Quote } from '../../models/quote/quote.model';
-import { quotingReducers } from '../quoting-store.module';
+import { QuotingStoreModule } from '../quoting-store.module';
 
-import { LoadQuotes, LoadQuotesFail, LoadQuotesSuccess, SelectQuote } from './quote.actions';
+import { loadQuotes, loadQuotesFail, loadQuotesSuccess, selectQuote } from './quote.actions';
 import {
   getCurrentQuotes,
   getQuoteError,
@@ -21,19 +21,19 @@ import {
 } from './quote.selectors';
 
 describe('Quote Selectors', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting({
-        reducers: {
-          quoting: combineReducers(quotingReducers),
-          shopping: combineReducers(shoppingReducers),
-        },
-      }),
+      imports: [
+        CoreStoreModule.forTesting(),
+        QuotingStoreModule.forTesting('quote'),
+        ShoppingStoreModule.forTesting('products'),
+      ],
+      providers: [provideStoreSnapshots()],
     });
 
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
   });
 
   describe('with empty state', () => {
@@ -45,15 +45,15 @@ describe('Quote Selectors', () => {
   describe('selecting a quote', () => {
     beforeEach(() => {
       store$.dispatch(
-        new LoadQuotesSuccess({
+        loadQuotesSuccess({
           quotes: [
             { id: 'test', items: [{ productSKU: 'test' }] },
             { id: 'test2', items: [] },
           ] as QuoteData[],
         })
       );
-      store$.dispatch(new LoadProductSuccess({ product: { sku: 'test' } as Product }));
-      store$.dispatch(new SelectQuote({ id: 'test' }));
+      store$.dispatch(loadProductSuccess({ product: { sku: 'test' } as Product }));
+      store$.dispatch(selectQuote({ id: 'test' }));
     });
 
     it('should set "selected" to selected quote item id and set selected quote', () => {
@@ -75,7 +75,7 @@ describe('Quote Selectors', () => {
 
   describe('loading quote list', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadQuotes());
+      store$.dispatch(loadQuotes());
     });
 
     it('should set the state to loading', () => {
@@ -84,14 +84,14 @@ describe('Quote Selectors', () => {
 
     it('should set loading to false and set quote state', () => {
       const quotes = { quotes: [{ id: 'test' }] as QuoteData[] };
-      store$.dispatch(new LoadQuotesSuccess(quotes));
+      store$.dispatch(loadQuotesSuccess(quotes));
 
       expect(getQuoteLoading(store$.state)).toBeFalse();
       expect(getCurrentQuotes(store$.state)).toEqual([{ id: 'test', state: 'Responded' } as Quote]);
     });
 
     it('should set loading to false and set error state', () => {
-      store$.dispatch(new LoadQuotesFail({ error: { message: 'invalid' } as HttpError }));
+      store$.dispatch(loadQuotesFail({ error: { message: 'invalid' } as HttpError }));
       expect(getQuoteLoading(store$.state)).toBeFalse();
       expect(getCurrentQuotes(store$.state)).toBeEmpty();
       expect(getQuoteError(store$.state)).toEqual({ message: 'invalid' });

@@ -1,15 +1,14 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { provideMockStore } from '@ngrx/store/testing';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { BasketRebate } from 'ish-core/models/basket-rebate/basket-rebate.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
-import { getICMBaseURL } from 'ish-core/store/configuration';
 import { PromotionDetailsComponent } from 'ish-shared/components/promotion/promotion-details/promotion-details.component';
 import { PromotionRemoveComponent } from 'ish-shared/components/promotion/promotion-remove/promotion-remove.component';
 
@@ -24,6 +23,9 @@ describe('Basket Promotion Component', () => {
   beforeEach(async(() => {
     shoppingFacade = mock(ShoppingFacade);
 
+    const appFacade = mock(AppFacade);
+    when(appFacade.icmBaseUrl).thenReturn('example.org');
+
     TestBed.configureTestingModule({
       declarations: [
         BasketPromotionComponent,
@@ -34,7 +36,7 @@ describe('Basket Promotion Component', () => {
       imports: [RouterTestingModule],
       providers: [
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
-        provideMockStore({ selectors: [{ selector: getICMBaseURL, value: 'example.org' }] }),
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
       ],
     }).compileComponents();
   }));

@@ -4,9 +4,9 @@ import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { instance, mock } from 'ts-mockito';
 
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { AccountFacade } from 'ish-core/facades/account.facade';
 
 import { RegistrationFormComponent } from './registration-form/registration-form.component';
 import { RegistrationPageComponent } from './registration-page.component';
@@ -26,8 +26,8 @@ describe('Registration Page Component', () => {
       imports: [
         RouterTestingModule.withRoutes([{ path: 'home', component: DummyComponent }]),
         TranslateModule.forRoot(),
-        ngrxTesting({ reducers: coreReducers }),
       ],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     }).compileComponents();
 
     location = TestBed.inject(Location);

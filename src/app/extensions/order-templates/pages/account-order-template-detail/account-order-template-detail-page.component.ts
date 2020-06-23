@@ -57,6 +57,7 @@ export class AccountOrderTemplateDetailPageComponent implements OnInit, OnDestro
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 
   editPreferences(orderTemplate: OrderTemplate, orderTemplateName: string) {

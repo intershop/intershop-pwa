@@ -1,10 +1,3 @@
-<!--
-kb_concepts
-kb_pwa
-kb_everyone
-kb_sync_latest_only
--->
-
 # Documentation Overview
 
 ## Developers
@@ -27,12 +20,13 @@ kb_sync_latest_only
 ### Developing
 
 - [Guide - Development Environment](./guides/development.md)
+- [Guide - Angular Component Development](./guides/angular-component-development.md)
 - [Concept - Styling](./concepts/styling-behavior.md)
 - [Concept - Testing](./concepts/testing.md)
   - [Guide - Testing with Jest](./guides/testing-jest.md)
   - [Guide - Testing with Cypress](./guides/testing-cypress.md)
+  - [Guide - State Management > Testing](./guides/state-management.md#testing-ngrx-artifacts)
 - [Guide - Code Documentation](./guides/code-documentation.md)
-- [Guide - Angular Component Development](./guides/angular-component-development.md)
 - [Guide - Angular Change Detection](./guides/angular-change-detection.md)
 - [Guide - Data Handling with Mappers](./guides/data-handling-with-mappers.md)
 

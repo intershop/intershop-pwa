@@ -1,6 +1,5 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Params } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
 import { catchError, concatMap, map, mapTo, withLatestFrom } from 'rxjs/operators';
@@ -9,7 +8,7 @@ import { OrderData } from 'ish-core/models/order/order.interface';
 import { OrderMapper } from 'ish-core/models/order/order.mapper';
 import { Order } from 'ish-core/models/order/order.model';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { getCurrentLocale } from 'ish-core/store/configuration';
+import { getCurrentLocale } from 'ish-core/store/core/configuration';
 
 type OrderIncludeType =
   | 'invoiceToAddress'
@@ -29,7 +28,6 @@ type OrderIncludeType =
 export class OrderService {
   constructor(private apiService: ApiService, private store: Store) {}
 
-  // http header for Order API v1
   private orderHeaders = new HttpHeaders({
     'content-type': 'application/json',
     Accept: 'application/vnd.intershop.order.v1+json',
@@ -189,7 +187,7 @@ export class OrderService {
      @param queryParams  The payment redirect information (parameters and status).
    * @returns            The orderId
    */
-  updateOrderPayment(orderId: string, queryParams: Params): Observable<string> {
+  updateOrderPayment(orderId: string, queryParams: { [key: string]: string }): Observable<string> {
     const params = new HttpParams().set('include', this.allOrderIncludes.join());
 
     if (!orderId) {

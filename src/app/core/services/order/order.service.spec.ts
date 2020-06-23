@@ -8,7 +8,7 @@ import { Locale } from 'ish-core/models/locale/locale.model';
 import { OrderBaseData } from 'ish-core/models/order/order.interface';
 import { Order } from 'ish-core/models/order/order.model';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { getCurrentLocale } from 'ish-core/store/configuration';
+import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { OrderService } from './order.service';
@@ -28,7 +28,6 @@ describe('Order Service', () => {
 
   beforeEach(() => {
     apiService = mock(ApiService);
-    when(apiService.icmServerURL).thenReturn('http://server');
 
     TestBed.configureTestingModule({
       providers: [
@@ -122,7 +121,7 @@ describe('Order Service', () => {
       when(apiService.patch(anything(), anything(), anything())).thenReturn(of(undefined));
 
       const orderId = '123454';
-      const params = { redirect: 'success', param1: 123, orderId };
+      const params = { redirect: 'success', param1: '123', orderId };
 
       orderService.updateOrderPayment(orderId, params).subscribe(() => {
         verify(apiService.patch(`orders/${orderId}`, anything(), anything())).once();

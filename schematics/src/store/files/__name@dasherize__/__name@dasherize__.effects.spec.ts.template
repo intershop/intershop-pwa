@@ -1,14 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action<% if (feature || extension) { %>, combineReducers<% } %> } from '@ngrx/store';
+import { Action } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable } from 'rxjs';
 
-import { coreReducers } from 'ish-core/store/core-store.module';
-<% if (feature) { %>import { <%= camelize(feature) %>Reducers } from 'ish-core/store/<%= dasherize(feature) %>/<%= dasherize(feature) %>-store.module';<% } else if (extension) { %>import { <%= camelize(extension) %>Reducers } from '../<%= dasherize(extension) %>-store.module';<% } %>
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-
-import * as actions from './<%= dasherize(name) %>.actions';
+import { load<%= classify(name) %> } from './<%= dasherize(name) %>.actions';
 import { <%= classify(name) %>Effects } from './<%= dasherize(name) %>.effects';
 
 describe('<%= classify(name) %> Effects', () => {
@@ -17,12 +13,6 @@ describe('<%= classify(name) %> Effects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        ngrxTesting({ reducers: { ...coreReducers<% if (feature) { %>,
-          <%= camelize(feature) %>: combineReducers(<%= camelize(feature) %>Reducers),<% } else if (extension) { %>,
-          <%= camelize(extension) %>: combineReducers(<%= camelize(extension) %>Reducers),<% } %>
-        }}),
-      ],
       providers: [
         <%= classify(name) %>Effects,
         provideMockActions(() => actions$),
@@ -33,8 +23,8 @@ describe('<%= classify(name) %> Effects', () => {
   });
 
   describe('load<%= classify(name) %>$', () => {
-    it('should not dispatch actions when encountering Load<%= classify(name) %>', () => {
-      const action = new actions.Load<%= classify(name) %>();
+    it('should not dispatch actions when encountering load<%= classify(name) %>', () => {
+      const action = load<%= classify(name) %>();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('------');
 

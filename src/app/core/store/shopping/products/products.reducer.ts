@@ -1,8 +1,17 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
+import { createReducer, on } from '@ngrx/store';
 
 import { AllProductTypes } from 'ish-core/models/product/product.model';
 
-import { ProductsAction, ProductsActionTypes } from './products.actions';
+import {
+  loadProductBundlesSuccess,
+  loadProductFail,
+  loadProductLinksSuccess,
+  loadProductSuccess,
+  loadProductVariationsFail,
+  loadProductVariationsSuccess,
+  loadRetailSetSuccess,
+} from './products.actions';
 
 export const productAdapter = createEntityAdapter<AllProductTypes>({
   selectId: product => product.sku,
@@ -24,60 +33,49 @@ function removeFailed(failed: string[], sku: string): string[] {
   return failed.filter(val => val !== sku);
 }
 
-export function productsReducer(state = initialState, action: ProductsAction): ProductsState {
-  switch (action.type) {
-    case ProductsActionTypes.LoadProductFail:
-    case ProductsActionTypes.LoadProductVariationsFail: {
-      return {
-        ...state,
-        failed: addFailed(state.failed, action.payload.sku),
-      };
+export const productsReducer = createReducer(
+  initialState,
+  on(loadProductFail, loadProductVariationsFail, (state: ProductsState, action) => ({
+    ...state,
+    failed: addFailed(state.failed, action.payload.sku),
+  })),
+  on(loadProductSuccess, (state: ProductsState, action) => {
+    const product = action.payload.product;
+    const oldProduct = state.entities[product.sku] || { completenessLevel: 0 };
+
+    const newProduct = { ...product };
+    if (product.completenessLevel || (oldProduct && oldProduct.completenessLevel)) {
+      newProduct.completenessLevel = Math.max(product.completenessLevel, oldProduct.completenessLevel);
     }
 
-    case ProductsActionTypes.LoadProductSuccess: {
-      const product = action.payload.product;
-      const oldProduct = state.entities[product.sku] || { completenessLevel: 0 };
-
-      const newProduct = { ...product };
-      if (product.completenessLevel || (oldProduct && oldProduct.completenessLevel)) {
-        newProduct.completenessLevel = Math.max(product.completenessLevel, oldProduct.completenessLevel);
-      }
-
-      return productAdapter.upsertOne(newProduct, {
-        ...state,
-        loading: false,
-        failed: removeFailed(state.failed, product.sku),
-      });
-    }
-
-    case ProductsActionTypes.LoadProductVariationsSuccess: {
-      return productAdapter.updateOne(
-        {
-          id: action.payload.sku,
-          changes: { variationSKUs: action.payload.variations, defaultVariationSKU: action.payload.defaultVariation },
-        },
-        { ...state, loading: false }
-      );
-    }
-
-    case ProductsActionTypes.LoadProductBundlesSuccess: {
-      return productAdapter.updateOne(
-        { id: action.payload.sku, changes: { bundledProducts: action.payload.bundledProducts } },
-        { ...state, loading: false }
-      );
-    }
-
-    case ProductsActionTypes.LoadRetailSetSuccess: {
-      return productAdapter.updateOne({ id: action.payload.sku, changes: { partSKUs: action.payload.parts } }, state);
-    }
-
-    case ProductsActionTypes.LoadProductLinksSuccess: {
-      return productAdapter.updateOne(
-        { id: action.payload.sku, changes: { links: action.payload.links } },
-        { ...state, loading: false }
-      );
-    }
-  }
-
-  return state;
-}
+    return productAdapter.upsertOne(newProduct, {
+      ...state,
+      loading: false,
+      failed: removeFailed(state.failed, product.sku),
+    });
+  }),
+  on(loadProductVariationsSuccess, (state: ProductsState, action) =>
+    productAdapter.updateOne(
+      {
+        id: action.payload.sku,
+        changes: { variationSKUs: action.payload.variations, defaultVariationSKU: action.payload.defaultVariation },
+      },
+      { ...state, loading: false }
+    )
+  ),
+  on(loadProductBundlesSuccess, (state: ProductsState, action) =>
+    productAdapter.updateOne(
+      { id: action.payload.sku, changes: { bundledProducts: action.payload.bundledProducts } },
+      { ...state, loading: false }
+    )
+  ),
+  on(loadRetailSetSuccess, (state: ProductsState, action) =>
+    productAdapter.updateOne({ id: action.payload.sku, changes: { partSKUs: action.payload.parts } }, state)
+  ),
+  on(loadProductLinksSuccess, (state: ProductsState, action) =>
+    productAdapter.updateOne(
+      { id: action.payload.sku, changes: { links: action.payload.links } },
+      { ...state, loading: false }
+    )
+  )
+);

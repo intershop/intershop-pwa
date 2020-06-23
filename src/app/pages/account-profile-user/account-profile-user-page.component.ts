@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -18,7 +18,7 @@ import { determineSalutations } from 'ish-shared/forms/utils/form-utils';
   templateUrl: './account-profile-user-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountProfileUserPageComponent implements OnInit {
+export class AccountProfileUserPageComponent implements OnInit, OnDestroy {
   currentUser$: Observable<User>;
   userError$: Observable<HttpError>;
   userLoading$: Observable<boolean>;
@@ -26,6 +26,8 @@ export class AccountProfileUserPageComponent implements OnInit {
 
   titles: string[];
   currentCountryCode = '';
+
+  private destroy$ = new Subject();
 
   constructor(private accountFacade: AccountFacade, private appFacade: AppFacade) {}
 
@@ -36,7 +38,7 @@ export class AccountProfileUserPageComponent implements OnInit {
     this.currentLocale$ = this.appFacade.currentLocale$;
 
     // determine default language from session and available locales
-    this.currentLocale$.pipe(whenTruthy(), take(1)).subscribe(locale => {
+    this.currentLocale$.pipe(whenTruthy(), take(1), takeUntil(this.destroy$)).subscribe(locale => {
       this.currentCountryCode = locale.lang.slice(3);
       this.titles = locale.lang ? determineSalutations(this.currentCountryCode) : undefined;
     });
@@ -44,5 +46,10 @@ export class AccountProfileUserPageComponent implements OnInit {
 
   updateUserProfile(user: User) {
     this.accountFacade.updateUserProfile(user);
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

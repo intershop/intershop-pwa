@@ -9,11 +9,16 @@ import { FormElementComponent } from 'ish-shared/forms/components/form-element/f
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class InputComponent extends FormElementComponent implements OnInit {
-  @Input() type = 'text'; // values: 'text' (default), 'password', 'email'
+  /**
+   * values: 'text' (default), 'password', 'email'
+   */
+  @Input() type = 'text';
   @Input() maxlength = '60';
-  @Input()
-  autocomplete?: string; /* default = undefined  for input type 'text' and 'email' (autocomplete not set)
-                                             = 'off' for input type 'password' */
+  /**
+   * default = undefined  for input type 'text' and 'email' (autocomplete not set)
+   * 'off' for input type 'password'
+   */
+  @Input() autocomplete?: string;
   @Input() min?: number;
   @Input() max?: number;
 
@@ -45,9 +50,9 @@ export class InputComponent extends FormElementComponent implements OnInit {
     return !this.disabled ? undefined : true;
   }
 
-  /*
-    set default values for empty input parameters
-  */
+  /**
+   * set default values for empty input parameters
+   */
   protected setDefaultValues() {
     this.calculatedAutocomplete = this.autocomplete ? this.autocomplete : this.type === 'password' ? 'off' : undefined;
   }

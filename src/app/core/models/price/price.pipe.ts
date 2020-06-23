@@ -1,13 +1,12 @@
 import { formatCurrency, getCurrencySymbol } from '@angular/common';
 import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform } from '@angular/core';
-import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
 import { PriceItem } from 'ish-core/models/price-item/price-item.model';
-import { getPriceDisplayType } from 'ish-core/store/user';
 
 import { Price } from './price.model';
 
@@ -22,11 +21,17 @@ export class PricePipe implements PipeTransform, OnDestroy {
 
   private destroy$ = new Subject();
 
-  constructor(private translateService: TranslateService, private store: Store, private cdRef: ChangeDetectorRef) {}
+  constructor(
+    private translateService: TranslateService,
+    private cdRef: ChangeDetectorRef,
+    private accountFacade: AccountFacade
+  ) {}
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
+
   transform(data: Price | PriceItem, priceType?: 'gross' | 'net'): string {
     if (!data) {
       return this.translateService.instant('product.price.na.text');
@@ -41,7 +46,7 @@ export class PricePipe implements PipeTransform, OnDestroy {
         if (priceType) {
           return formatPrice(PriceItemHelper.selectType(data, priceType), this.translateService.currentLang);
         }
-        this.store.pipe(select(getPriceDisplayType), takeUntil(this.destroy$)).subscribe(type => {
+        this.accountFacade.userPriceDisplayType$.pipe(takeUntil(this.destroy$)).subscribe(type => {
           this.displayText = formatPrice(PriceItemHelper.selectType(data, type), this.translateService.currentLang);
           this.cdRef.markForCheck();
         });

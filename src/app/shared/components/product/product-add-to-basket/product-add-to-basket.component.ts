@@ -23,7 +23,6 @@ import { whenFalsy } from 'ish-core/utils/operators';
   templateUrl: './product-add-to-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable-next-line:ccp-no-intelligence-in-components
 export class ProductAddToBasketComponent implements OnInit, OnDestroy {
   basketLoading$: Observable<boolean>;
 
@@ -54,7 +53,9 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
 
   constructor(private checkoutFacade: CheckoutFacade) {}
 
-  // fires 'true' after add To Cart is clicked and basket is loading
+  /**
+   * fires 'true' after add To Cart is clicked and basket is loading
+   */
   displaySpinner$ = new BehaviorSubject(false);
 
   private destroy$ = new Subject();
@@ -77,5 +78,6 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 }

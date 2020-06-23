@@ -1,6 +1,5 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { combineReducers } from '@ngrx/store';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
@@ -10,10 +9,9 @@ import {
 } from 'ish-core/configurations/injection-keys';
 import { Product } from 'ish-core/models/product/product.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { ProductListingEffects } from 'ish-core/store/shopping/product-listing/product-listing.effects';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 
 import { ProductsService } from './products.service';
 
@@ -67,11 +65,9 @@ describe('Products Service', () => {
     apiServiceMock = mock(ApiService);
     TestBed.configureTestingModule({
       imports: [
+        CoreStoreModule.forTesting(['configuration'], [ProductListingEffects]),
         RouterTestingModule,
-        ngrxTesting({
-          reducers: { configuration: configurationReducer, shopping: combineReducers(shoppingReducers) },
-          effects: [ProductListingEffects],
-        }),
+        ShoppingStoreModule.forTesting('productListing'),
       ],
       providers: [
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },

@@ -8,6 +8,8 @@ import { get<%= classify(name) %>State } from '../store/<%= dasherize(name) %>-s
 export class <%= classify(name) %>Facade {
   constructor(private store: Store<{}>) {}
 
-  // example for debugging
+  /**
+   * example for debugging
+   */
   <%= camelize(name) %>State$ = this.store.pipe(select(get<%= classify(name) %>State));
 }

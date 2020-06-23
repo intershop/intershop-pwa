@@ -6,23 +6,17 @@ import { map, switchMap, take, tap } from 'rxjs/operators';
 import { Address } from 'ish-core/models/address/address.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
-import { getAllAddresses } from 'ish-core/store/addresses';
+import { selectRouteData } from 'ish-core/store/core/router';
+import { getAllAddresses } from 'ish-core/store/customer/addresses';
 import {
-  AddPromotionCodeToBasket,
-  AssignBasketAddress,
-  ContinueCheckout,
-  CreateBasketAddress,
-  CreateBasketPayment,
-  DeleteBasketItem,
-  DeleteBasketPayment,
-  DeleteBasketShippingAddress,
-  LoadBasketEligiblePaymentMethods,
-  LoadBasketEligibleShippingMethods,
-  RemovePromotionCodeFromBasket,
-  SetBasketPayment,
-  UpdateBasketAddress,
-  UpdateBasketItems,
-  UpdateBasketShippingMethod,
+  addPromotionCodeToBasket,
+  assignBasketAddress,
+  continueCheckout,
+  createBasketAddress,
+  createBasketPayment,
+  deleteBasketItem,
+  deleteBasketPayment,
+  deleteBasketShippingAddress,
   getBasketEligiblePaymentMethods,
   getBasketEligibleShippingMethods,
   getBasketError,
@@ -35,11 +29,17 @@ import {
   getBasketValidationResults,
   getCurrentBasket,
   isBasketInvoiceAndShippingAddressEqual,
-} from 'ish-core/store/checkout/basket';
-import { getServerConfigParameter } from 'ish-core/store/configuration';
-import { getOrdersError, getSelectedOrder } from 'ish-core/store/orders';
-import { selectRouteData } from 'ish-core/store/router';
-import { getLoggedInUser } from 'ish-core/store/user';
+  loadBasketEligiblePaymentMethods,
+  loadBasketEligibleShippingMethods,
+  removePromotionCodeFromBasket,
+  setBasketPayment,
+  updateBasketAddress,
+  updateBasketItems,
+  updateBasketShippingMethod,
+} from 'ish-core/store/customer/basket';
+import { getOrdersError, getSelectedOrder } from 'ish-core/store/customer/orders';
+import { getLoggedInUser } from 'ish-core/store/customer/user';
+import { getServerConfigParameter } from 'ish-core/store/general/server-config';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 // tslint:disable:member-ordering
@@ -50,10 +50,11 @@ export class CheckoutFacade {
   checkoutStep$ = this.store.pipe(select(selectRouteData<number>('checkoutStep')));
 
   continue(targetStep: number) {
-    this.store.dispatch(new ContinueCheckout({ targetStep }));
+    this.store.dispatch(continueCheckout({ targetStep }));
   }
 
   // BASKET
+
   basket$ = this.store.pipe(select(getCurrentBasket));
   basketChange$ = this.store.pipe(select(getBasketLastTimeProductAdded));
   basketError$ = this.store.pipe(select(getBasketError));
@@ -67,56 +68,60 @@ export class CheckoutFacade {
   );
 
   deleteBasketItem(itemId: string) {
-    this.store.dispatch(new DeleteBasketItem({ itemId }));
+    this.store.dispatch(deleteBasketItem({ itemId }));
   }
 
   updateBasketItem(update: LineItemUpdate) {
-    this.store.dispatch(new UpdateBasketItems({ lineItemUpdates: [update] }));
+    this.store.dispatch(updateBasketItems({ lineItemUpdates: [update] }));
   }
 
   updateBasketShippingMethod(shippingId: string) {
-    this.store.dispatch(new UpdateBasketShippingMethod({ shippingId }));
+    this.store.dispatch(updateBasketShippingMethod({ shippingId }));
   }
 
   // ORDERS
+
   private ordersError$ = this.store.pipe(select(getOrdersError));
   basketOrOrdersError$ = merge(this.basketError$, this.ordersError$);
   selectedOrder$ = this.store.pipe(select(getSelectedOrder));
 
   // SHIPPING
+
   eligibleShippingMethods$() {
     return this.basket$.pipe(
       whenTruthy(),
       take(1),
-      tap(() => this.store.dispatch(new LoadBasketEligibleShippingMethods())),
+      tap(() => this.store.dispatch(loadBasketEligibleShippingMethods())),
       switchMap(() => this.store.pipe(select(getBasketEligibleShippingMethods)))
     );
   }
 
   // PAYMENT
+
   eligiblePaymentMethods$() {
     return this.basket$.pipe(
       whenTruthy(),
       take(1),
-      tap(() => this.store.dispatch(new LoadBasketEligiblePaymentMethods())),
+      tap(() => this.store.dispatch(loadBasketEligiblePaymentMethods())),
       switchMap(() => this.store.pipe(select(getBasketEligiblePaymentMethods)))
     );
   }
   priceType$ = this.store.pipe(select(getServerConfigParameter<'gross' | 'net'>('pricing.priceType')));
 
   setBasketPayment(paymentName: string) {
-    this.store.dispatch(new SetBasketPayment({ id: paymentName }));
+    this.store.dispatch(setBasketPayment({ id: paymentName }));
   }
 
   createBasketPayment(paymentInstrument: PaymentInstrument, saveForLater = false) {
-    this.store.dispatch(new CreateBasketPayment({ paymentInstrument, saveForLater }));
+    this.store.dispatch(createBasketPayment({ paymentInstrument, saveForLater }));
   }
 
   deleteBasketPayment(paymentInstrument: PaymentInstrument) {
-    this.store.dispatch(new DeleteBasketPayment({ paymentInstrument }));
+    this.store.dispatch(deleteBasketPayment({ paymentInstrument }));
   }
 
   // ADDRESSES
+
   basketInvoiceAddress$ = this.store.pipe(select(getBasketInvoiceAddress));
   basketShippingAddress$ = this.store.pipe(select(getBasketShippingAddress));
   basketInvoiceAndShippingAddressEqual$ = this.store.pipe(select(isBasketInvoiceAndShippingAddressEqual));
@@ -137,7 +142,7 @@ export class CheckoutFacade {
   );
 
   assignBasketAddress(addressId: string, scope: 'invoice' | 'shipping' | 'any') {
-    this.store.dispatch(new AssignBasketAddress({ addressId, scope }));
+    this.store.dispatch(assignBasketAddress({ addressId, scope }));
   }
 
   createBasketAddress(address: Address, scope: 'invoice' | 'shipping' | 'any') {
@@ -145,25 +150,26 @@ export class CheckoutFacade {
       return;
     }
 
-    this.store.dispatch(new CreateBasketAddress({ address, scope }));
+    this.store.dispatch(createBasketAddress({ address, scope }));
   }
 
   updateBasketAddress(address: Address) {
-    this.store.dispatch(new UpdateBasketAddress({ address }));
+    this.store.dispatch(updateBasketAddress({ address }));
   }
 
   deleteBasketAddress(addressId: string) {
-    this.store.dispatch(new DeleteBasketShippingAddress({ addressId }));
+    this.store.dispatch(deleteBasketShippingAddress({ addressId }));
   }
 
   // PROMOTIONS
+
   promotionError$ = this.store.pipe(select(getBasketPromotionError));
 
   addPromotionCodeToBasket(code: string) {
-    this.store.dispatch(new AddPromotionCodeToBasket({ code }));
+    this.store.dispatch(addPromotionCodeToBasket({ code }));
   }
 
   removePromotionCodeFromBasket(code: string) {
-    this.store.dispatch(new RemovePromotionCodeFromBasket({ code }));
+    this.store.dispatch(removePromotionCodeFromBasket({ code }));
   }
 }

@@ -4,8 +4,8 @@ import { Observable, combineLatest, of, throwError } from 'rxjs';
 import { concatMap, map, mapTo, take } from 'rxjs/operators';
 
 import { Link } from 'ish-core/models/link/link.model';
-import { ApiService, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/user';
+import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
 
 import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItemData } from '../../models/quote-request-item/quote-request-item.interface';
@@ -46,7 +46,7 @@ export class QuoteService {
       concatMap(({ userId, customerId }) =>
         this.apiService.get(`customers/${customerId}/users/${userId}/quotes`).pipe(
           unpackEnvelope(),
-          resolveLinks<QuoteData>(this.apiService),
+          this.apiService.resolveLinks<QuoteData>(),
           map(quotes =>
             quotes.map<QuoteData>(quoteData => ({
               ...quoteData,

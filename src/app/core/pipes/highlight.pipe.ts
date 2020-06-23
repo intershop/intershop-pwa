@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+
 /**
  * inserts highlighting markup into the text string
  * at the occurences of the search string.

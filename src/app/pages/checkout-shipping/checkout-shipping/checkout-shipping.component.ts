@@ -55,7 +55,7 @@ export class CheckoutShippingComponent implements OnInit, OnChanges, OnDestroy {
       this.preSelectShippingMethod(c);
     }
   }
-  /*
+  /**
    * set shipping selection to the corresponding basket value (important in case of an error)
    */
   private preSelectShippingMethod(c: SimpleChanges) {
@@ -95,5 +95,6 @@ export class CheckoutShippingComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 }

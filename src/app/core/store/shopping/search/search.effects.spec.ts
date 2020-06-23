@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { combineReducers } from '@ngrx/store';
 import { of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -16,16 +15,17 @@ import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
-import { LoadMoreProducts, SetProductListingPageSize } from 'ish-core/store/shopping/product-listing';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { loadMoreProducts, setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
 import { ProductListingEffects } from 'ish-core/store/shopping/product-listing/product-listing.effects';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { SearchProductsFail, SuggestSearch } from './search.actions';
+import { searchProductsFail, suggestSearch } from './search.actions';
 import { SearchEffects } from './search.effects';
 
 describe('Search Effects', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
   let effects: SearchEffects;
   let location: Location;
   let router: Router;
@@ -59,19 +59,15 @@ describe('Search Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
+        CoreStoreModule.forTesting(['router'], [SearchEffects, ProductListingEffects]),
         RouterTestingModule.withRoutes([
           { path: 'error', component: DummyComponent },
           { path: 'search/:searchTerm', component: DummyComponent },
         ]),
-        ngrxTesting({
-          reducers: {
-            shopping: combineReducers(shoppingReducers),
-          },
-          effects: [SearchEffects, ProductListingEffects],
-          routerStore: true,
-        }),
+        ShoppingStoreModule.forTesting('productListing'),
       ],
       providers: [
+        provideStoreSnapshots(),
         { provide: ApiService, useFactory: () => instance(mock(ApiService)) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
@@ -81,11 +77,11 @@ describe('Search Effects', () => {
     });
 
     effects = TestBed.inject(SearchEffects);
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
     location = TestBed.inject(Location);
     router = TestBed.inject(Router);
 
-    store$.dispatch(new SetProductListingPageSize({ itemsPerPage: TestBed.inject(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
+    store$.dispatch(setProductListingPageSize({ itemsPerPage: TestBed.inject(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
   });
 
   describe('triggerSearch$', () => {
@@ -94,9 +90,9 @@ describe('Search Effects', () => {
 
       effects.triggerSearch$.subscribe(data => {
         expect(data).toMatchInlineSnapshot(`
-            [ProductListing] Load More Products:
-              id: {"type":"search","value":"dummy"}
-          `);
+          [Product Listing] Load More Products:
+            id: {"type":"search","value":"dummy"}
+        `);
         done();
       });
     });
@@ -104,7 +100,7 @@ describe('Search Effects', () => {
 
   describe('suggestSearch$', () => {
     it('should not fire when search term is falsy', fakeAsync(() => {
-      const action = new SuggestSearch({ searchTerm: undefined });
+      const action = suggestSearch({ searchTerm: undefined });
       store$.dispatch(action);
 
       tick(5000);
@@ -113,7 +109,7 @@ describe('Search Effects', () => {
     }));
 
     it('should not fire when search term is empty', fakeAsync(() => {
-      const action = new SuggestSearch({ searchTerm: '' });
+      const action = suggestSearch({ searchTerm: '' });
       store$.dispatch(action);
 
       tick(5000);
@@ -122,7 +118,7 @@ describe('Search Effects', () => {
     }));
 
     it('should return search terms when available', fakeAsync(() => {
-      const action = new SuggestSearch({ searchTerm: 'g' });
+      const action = suggestSearch({ searchTerm: 'g' });
       store$.dispatch(action);
 
       tick(5000);
@@ -131,11 +127,11 @@ describe('Search Effects', () => {
     }));
 
     it('should debounce correctly when search term is entered stepwise', fakeAsync(() => {
-      store$.dispatch(new SuggestSearch({ searchTerm: 'g' }));
+      store$.dispatch(suggestSearch({ searchTerm: 'g' }));
       tick(50);
-      store$.dispatch(new SuggestSearch({ searchTerm: 'goo' }));
+      store$.dispatch(suggestSearch({ searchTerm: 'goo' }));
       tick(100);
-      store$.dispatch(new SuggestSearch({ searchTerm: 'good' }));
+      store$.dispatch(suggestSearch({ searchTerm: 'good' }));
       tick(200);
 
       verify(suggestServiceMock.search(anyString())).never();
@@ -145,10 +141,10 @@ describe('Search Effects', () => {
     }));
 
     it('should send only once if search term is entered multiple times', fakeAsync(() => {
-      store$.dispatch(new SuggestSearch({ searchTerm: 'good' }));
+      store$.dispatch(suggestSearch({ searchTerm: 'good' }));
       tick(2000);
       verify(suggestServiceMock.search('good')).once();
-      store$.dispatch(new SuggestSearch({ searchTerm: 'good' }));
+      store$.dispatch(suggestSearch({ searchTerm: 'good' }));
       tick(2000);
 
       verify(suggestServiceMock.search('good')).once();
@@ -157,7 +153,7 @@ describe('Search Effects', () => {
     it('should not fire action when error is encountered at service level', fakeAsync(() => {
       when(suggestServiceMock.search(anyString())).thenReturn(throwError({ message: 'ERROR' }));
 
-      store$.dispatch(new SuggestSearch({ searchTerm: 'good' }));
+      store$.dispatch(suggestSearch({ searchTerm: 'good' }));
       tick(4000);
 
       effects.suggestSearch$.subscribe(fail, fail, fail);
@@ -166,58 +162,58 @@ describe('Search Effects', () => {
     }));
 
     it('should fire all necessary actions for suggest-search', fakeAsync(() => {
-      store$.dispatch(new SuggestSearch({ searchTerm: 'good' }));
+      store$.dispatch(suggestSearch({ searchTerm: 'good' }));
       tick(500); // debounceTime
       expect(store$.actionsArray(/\[Suggest Search/)).toMatchInlineSnapshot(`
-          [Suggest Search] Load Search Suggestions:
-            searchTerm: "good"
-          [Suggest Search Internal] Return Search Suggestions:
-            searchTerm: "good"
-            suggests: [{"term":"Goods"}]
-        `);
+        [Suggest Search Internal] Load Search Suggestions:
+          searchTerm: "good"
+        [Suggest Search API] Return Search Suggestions:
+          searchTerm: "good"
+          suggests: [{"term":"Goods"}]
+      `);
 
       // 2nd term to because distinctUntilChanged
-      store$.dispatch(new SuggestSearch({ searchTerm: 'goo' }));
+      store$.dispatch(suggestSearch({ searchTerm: 'goo' }));
       tick(500);
       expect(store$.actionsArray(/\[Suggest Search/)).toMatchInlineSnapshot(`
-          [Suggest Search] Load Search Suggestions:
-            searchTerm: "good"
-          [Suggest Search Internal] Return Search Suggestions:
-            searchTerm: "good"
-            suggests: [{"term":"Goods"}]
-          [Suggest Search] Load Search Suggestions:
-            searchTerm: "goo"
-          [Suggest Search Internal] Return Search Suggestions:
-            searchTerm: "goo"
-            suggests: [{"term":"Goods"}]
-        `);
+        [Suggest Search Internal] Load Search Suggestions:
+          searchTerm: "good"
+        [Suggest Search API] Return Search Suggestions:
+          searchTerm: "good"
+          suggests: [{"term":"Goods"}]
+        [Suggest Search Internal] Load Search Suggestions:
+          searchTerm: "goo"
+        [Suggest Search API] Return Search Suggestions:
+          searchTerm: "goo"
+          suggests: [{"term":"Goods"}]
+      `);
 
       // test cache: search->api->success & search->success->api->success
-      store$.dispatch(new SuggestSearch({ searchTerm: 'good' }));
+      store$.dispatch(suggestSearch({ searchTerm: 'good' }));
       tick(500);
       expect(store$.actionsArray(/\[Suggest Search/)).toMatchInlineSnapshot(`
-          [Suggest Search] Load Search Suggestions:
-            searchTerm: "good"
-          [Suggest Search Internal] Return Search Suggestions:
-            searchTerm: "good"
-            suggests: [{"term":"Goods"}]
-          [Suggest Search] Load Search Suggestions:
-            searchTerm: "goo"
-          [Suggest Search Internal] Return Search Suggestions:
-            searchTerm: "goo"
-            suggests: [{"term":"Goods"}]
-          [Suggest Search] Load Search Suggestions:
-            searchTerm: "good"
-          [Suggest Search Internal] Return Search Suggestions:
-            searchTerm: "good"
-            suggests: [{"term":"Goods"}]
-        `);
+        [Suggest Search Internal] Load Search Suggestions:
+          searchTerm: "good"
+        [Suggest Search API] Return Search Suggestions:
+          searchTerm: "good"
+          suggests: [{"term":"Goods"}]
+        [Suggest Search Internal] Load Search Suggestions:
+          searchTerm: "goo"
+        [Suggest Search API] Return Search Suggestions:
+          searchTerm: "goo"
+          suggests: [{"term":"Goods"}]
+        [Suggest Search Internal] Load Search Suggestions:
+          searchTerm: "good"
+        [Suggest Search API] Return Search Suggestions:
+          searchTerm: "good"
+          suggests: [{"term":"Goods"}]
+      `);
     }));
   });
 
   describe('redirectIfSearchProductFail$', () => {
     it('should redirect if triggered', fakeAsync(() => {
-      const action = new SearchProductsFail({ error: { status: 404 } as HttpError });
+      const action = searchProductsFail({ error: { status: 404 } as HttpError });
 
       store$.dispatch(action);
 
@@ -235,10 +231,10 @@ describe('Search Effects', () => {
 
       verify(productsServiceMock.searchProducts(searchTerm, 1, anything())).once();
 
-      store$.dispatch(new LoadMoreProducts({ id: { type: 'search', value: searchTerm }, page: 2 }));
+      store$.dispatch(loadMoreProducts({ id: { type: 'search', value: searchTerm }, page: 2 }));
       verify(productsServiceMock.searchProducts(searchTerm, 2, anything())).once();
 
-      store$.dispatch(new LoadMoreProducts({ id: { type: 'search', value: searchTerm }, page: 3 }));
+      store$.dispatch(loadMoreProducts({ id: { type: 'search', value: searchTerm }, page: 3 }));
       verify(productsServiceMock.searchProducts(searchTerm, 3, anything())).once();
     }));
   });

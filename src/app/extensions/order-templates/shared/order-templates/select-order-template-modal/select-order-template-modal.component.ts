@@ -22,14 +22,14 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 import { OrderTemplate } from '../../../models/order-template/order-template.model';
 
+/**
+ * The order template select modal displays a list of order templates. The user can select one order template  or enter a name for a new order template  in order to add or move an item to the selected order template .
+ */
 @Component({
   selector: 'ish-select-order-template-modal',
   templateUrl: './select-order-template-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-/**
- * The order template select modal displays a list of order templates. The user can select one order template  or enter a name for a new order template  in order to add or move an item to the selected order template .
- */
 export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
   @Input() product: Product;
 
@@ -73,7 +73,7 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
 
     this.translate
       .get('account.order_template.new_order_template.text')
-      .pipe(take(1))
+      .pipe(take(1), takeUntil(this.destroy$))
       .subscribe(res => {
         this.newOrderTemplateInitValue = res;
         this.setDefaultFormValues();
@@ -90,6 +90,7 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private formInit() {
@@ -106,7 +107,9 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
 
   private determineSelectOptions() {
     let currentOrderTemplate: OrderTemplate;
-    this.orderTemplatesFacade.currentOrderTemplate$.pipe(take(1)).subscribe(w => (currentOrderTemplate = w));
+    this.orderTemplatesFacade.currentOrderTemplate$
+      .pipe(take(1), takeUntil(this.destroy$))
+      .subscribe(w => (currentOrderTemplate = w));
     this.orderTemplatesFacade.orderTemplates$.pipe(takeUntil(this.destroy$)).subscribe(orderTemplates => {
       if (orderTemplates && orderTemplates.length > 0) {
         this.orderTemplateOptions = orderTemplates.map(orderTemplate => ({
@@ -174,7 +177,6 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
     };
   }
 
-  /* *  returns the title of the selected order template */
   get selectedOrderTemplateTitle(): string {
     const selectedValue = this.updateOrderTemplateForm.get('orderTemplate').value;
     if (selectedValue === 'newTemplate') {

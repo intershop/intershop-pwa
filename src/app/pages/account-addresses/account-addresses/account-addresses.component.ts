@@ -89,9 +89,9 @@ export class AccountAddressesComponent implements OnInit, OnChanges, OnDestroy {
       });
   }
 
-  /*
-    on changes - update the shown further addresses
-  */
+  /**
+   * on changes - update the shown further addresses
+   */
   ngOnChanges(c: SimpleChanges) {
     if (this.hasAddressOrUserChanged(c)) {
       // prepare select box label and content
@@ -113,7 +113,9 @@ export class AccountAddressesComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  // for b2b, the user data are loaded later than the customer addresses
+  /**
+   * for b2b, the user data are loaded later than the customer addresses
+   */
   private hasAddressOrUserChanged(c: SimpleChanges) {
     return (c.addresses || c.user) && this.user;
   }
@@ -174,5 +176,6 @@ export class AccountAddressesComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 }

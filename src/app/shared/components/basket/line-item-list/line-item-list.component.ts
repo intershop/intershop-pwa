@@ -110,11 +110,9 @@ export class LineItemListComponent implements OnChanges, OnDestroy {
     this.deleteItem.emit(itemId);
   }
 
-  /**
-   * Unsubscribe observabled on view destroy.
-   */
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 
   trackByFn(_, item: LineItemView) {

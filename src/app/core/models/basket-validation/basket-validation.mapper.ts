@@ -20,7 +20,6 @@ export class BasketValidationMapper {
     }
   }
 
-  // map basket from BasketValidationResult
   private static transform(basketValidationData: BasketValidationData): BasketData {
     return {
       data: basketValidationData.included

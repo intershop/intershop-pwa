@@ -4,13 +4,48 @@ import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-l
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequestData } from '../../models/quote-request/quote-request.interface';
 
-import * as fromActions from './quote-request.actions';
+import {
+  addBasketToQuoteRequest,
+  addBasketToQuoteRequestFail,
+  addBasketToQuoteRequestSuccess,
+  addProductToQuoteRequest,
+  addProductToQuoteRequestFail,
+  addProductToQuoteRequestSuccess,
+  addQuoteRequest,
+  addQuoteRequestFail,
+  addQuoteRequestSuccess,
+  createQuoteRequestFromQuoteRequest,
+  createQuoteRequestFromQuoteRequestFail,
+  createQuoteRequestFromQuoteRequestSuccess,
+  deleteItemFromQuoteRequest,
+  deleteItemFromQuoteRequestFail,
+  deleteItemFromQuoteRequestSuccess,
+  deleteQuoteRequest,
+  deleteQuoteRequestFail,
+  deleteQuoteRequestSuccess,
+  loadQuoteRequestItems,
+  loadQuoteRequestItemsFail,
+  loadQuoteRequestItemsSuccess,
+  loadQuoteRequests,
+  loadQuoteRequestsFail,
+  loadQuoteRequestsSuccess,
+  selectQuoteRequest,
+  submitQuoteRequest,
+  submitQuoteRequestFail,
+  submitQuoteRequestSuccess,
+  updateQuoteRequest,
+  updateQuoteRequestFail,
+  updateQuoteRequestItems,
+  updateQuoteRequestItemsFail,
+  updateQuoteRequestItemsSuccess,
+  updateQuoteRequestSuccess,
+} from './quote-request.actions';
 import { initialState, quoteRequestReducer } from './quote-request.reducer';
 
 describe('Quote Request Reducer', () => {
   describe('SelectQuoteRequest', () => {
     it('should select a quote request when reduced', () => {
-      const action = new fromActions.SelectQuoteRequest({ id: 'test' });
+      const action = selectQuoteRequest({ id: 'test' });
       const state = quoteRequestReducer(initialState, action);
 
       expect(state.selected).toEqual('test');
@@ -20,7 +55,7 @@ describe('Quote Request Reducer', () => {
   describe('LoadQuoteRequests actions', () => {
     describe('LoadQuoteRequests action', () => {
       it('should set loading to true', () => {
-        const action = new fromActions.LoadQuoteRequests();
+        const action = loadQuoteRequests();
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -30,7 +65,7 @@ describe('Quote Request Reducer', () => {
     describe('LoadQuoteRequestsFail action', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpError;
-        const action = new fromActions.LoadQuoteRequestsFail({ error });
+        const action = loadQuoteRequestsFail({ error });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -46,7 +81,7 @@ describe('Quote Request Reducer', () => {
           } as QuoteRequestData,
         ];
 
-        const action = new fromActions.LoadQuoteRequestsSuccess({ quoteRequests });
+        const action = loadQuoteRequestsSuccess({ quoteRequests });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.ids).toEqual(['test']);
@@ -59,7 +94,7 @@ describe('Quote Request Reducer', () => {
   describe('AddQuoteRequest actions', () => {
     describe('AddQuoteRequest action', () => {
       it('should set loading to true', () => {
-        const action = new fromActions.AddQuoteRequest();
+        const action = addQuoteRequest();
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -69,7 +104,7 @@ describe('Quote Request Reducer', () => {
     describe('AddQuoteRequestFail action', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpError;
-        const action = new fromActions.AddQuoteRequestFail({ error });
+        const action = addQuoteRequestFail({ error });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -79,7 +114,7 @@ describe('Quote Request Reducer', () => {
 
     describe('AddQuoteRequestSuccess action', () => {
       it('should set loading to false', () => {
-        const action = new fromActions.AddQuoteRequestSuccess({ id: 'test' });
+        const action = addQuoteRequestSuccess({ id: 'test' });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -91,7 +126,7 @@ describe('Quote Request Reducer', () => {
     describe('UpdateQuoteRequest action', () => {
       it('should set loading to true', () => {
         const displayName = 'test';
-        const action = new fromActions.UpdateQuoteRequest({ displayName });
+        const action = updateQuoteRequest({ displayName });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -101,7 +136,7 @@ describe('Quote Request Reducer', () => {
     describe('UpdateQuoteRequestFail action', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpError;
-        const action = new fromActions.UpdateQuoteRequestFail({ error });
+        const action = updateQuoteRequestFail({ error });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -112,7 +147,7 @@ describe('Quote Request Reducer', () => {
     describe('UpdateQuoteRequestSuccess action', () => {
       it('should set loading to false', () => {
         const quoteRequest = { id: 'test' } as QuoteRequestData;
-        const action = new fromActions.UpdateQuoteRequestSuccess({ quoteRequest });
+        const action = updateQuoteRequestSuccess({ quoteRequest });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -124,7 +159,7 @@ describe('Quote Request Reducer', () => {
     describe('DeleteQuoteRequest action', () => {
       it('should set loading to true', () => {
         const id = 'test';
-        const action = new fromActions.DeleteQuoteRequest({ id });
+        const action = deleteQuoteRequest({ id });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -134,7 +169,7 @@ describe('Quote Request Reducer', () => {
     describe('DeleteQuoteRequestFail action', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpError;
-        const action = new fromActions.DeleteQuoteRequestFail({ error });
+        const action = deleteQuoteRequestFail({ error });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -145,7 +180,7 @@ describe('Quote Request Reducer', () => {
     describe('DeleteQuoteRequestSuccess action', () => {
       it('should set loading to false', () => {
         const id = 'test';
-        const action = new fromActions.DeleteQuoteRequestSuccess({ id });
+        const action = deleteQuoteRequestSuccess({ id });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -156,7 +191,7 @@ describe('Quote Request Reducer', () => {
   describe('SubmitQuoteRequest actions', () => {
     describe('SubmitQuoteRequest action', () => {
       it('should set loading to true', () => {
-        const action = new fromActions.SubmitQuoteRequest();
+        const action = submitQuoteRequest();
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -166,7 +201,7 @@ describe('Quote Request Reducer', () => {
     describe('SubmitQuoteRequestFail action', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpError;
-        const action = new fromActions.SubmitQuoteRequestFail({ error });
+        const action = submitQuoteRequestFail({ error });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -177,7 +212,7 @@ describe('Quote Request Reducer', () => {
     describe('SubmitQuoteRequestSuccess action', () => {
       it('should set loading to false', () => {
         const id = 'test';
-        const action = new fromActions.SubmitQuoteRequestSuccess({ id });
+        const action = submitQuoteRequestSuccess({ id });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -188,7 +223,7 @@ describe('Quote Request Reducer', () => {
   describe('CreateQuoteRequestFromQuoteRequest actions', () => {
     describe('CreateQuoteRequestFromQuoteRequest action', () => {
       it('should set loading to true', () => {
-        const action = new fromActions.CreateQuoteRequestFromQuoteRequest();
+        const action = createQuoteRequestFromQuoteRequest({});
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -198,7 +233,7 @@ describe('Quote Request Reducer', () => {
     describe('CreateQuoteRequestFromQuoteRequestFail action', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpError;
-        const action = new fromActions.CreateQuoteRequestFromQuoteRequestFail({ error });
+        const action = createQuoteRequestFromQuoteRequestFail({ error });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -209,7 +244,7 @@ describe('Quote Request Reducer', () => {
     describe('CreateQuoteRequestFromQuoteRequestSuccess action', () => {
       it('should set loading to false', () => {
         const quoteLineItemResult = {} as QuoteLineItemResult;
-        const action = new fromActions.CreateQuoteRequestFromQuoteRequestSuccess({ quoteLineItemResult });
+        const action = createQuoteRequestFromQuoteRequestSuccess({ quoteLineItemResult });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -221,7 +256,7 @@ describe('Quote Request Reducer', () => {
     describe('LoadQuoteRequestItems action', () => {
       it('should set loading to true', () => {
         const id = 'test';
-        const action = new fromActions.LoadQuoteRequestItems({ id });
+        const action = loadQuoteRequestItems({ id });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -231,7 +266,7 @@ describe('Quote Request Reducer', () => {
     describe('LoadQuoteRequestItemsFail action', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpError;
-        const action = new fromActions.LoadQuoteRequestItemsFail({ error });
+        const action = loadQuoteRequestItemsFail({ error });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -249,7 +284,7 @@ describe('Quote Request Reducer', () => {
           ],
         };
 
-        const action = new fromActions.LoadQuoteRequestItemsSuccess(quoteRequestItems);
+        const action = loadQuoteRequestItemsSuccess(quoteRequestItems);
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -266,7 +301,7 @@ describe('Quote Request Reducer', () => {
           sku: 'test',
           quantity: 1,
         };
-        const action = new fromActions.AddProductToQuoteRequest(payload);
+        const action = addProductToQuoteRequest(payload);
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -276,7 +311,7 @@ describe('Quote Request Reducer', () => {
     describe('AddProductToQuoteRequestFail action', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpError;
-        const action = new fromActions.AddProductToQuoteRequestFail({ error });
+        const action = addProductToQuoteRequestFail({ error });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -287,7 +322,7 @@ describe('Quote Request Reducer', () => {
     describe('AddProductToQuoteRequestSuccess action', () => {
       it('should set loading to false', () => {
         const id = 'test';
-        const action = new fromActions.AddProductToQuoteRequestSuccess({ id });
+        const action = addProductToQuoteRequestSuccess({ id });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -298,7 +333,7 @@ describe('Quote Request Reducer', () => {
   describe('AddBasketToQuoteRequest actions', () => {
     describe('AddBasketToQuoteRequest action', () => {
       it('should set loading to true', () => {
-        const action = new fromActions.AddBasketToQuoteRequest();
+        const action = addBasketToQuoteRequest();
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -308,7 +343,7 @@ describe('Quote Request Reducer', () => {
     describe('AddBasketToQuoteRequestFail action', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpError;
-        const action = new fromActions.AddBasketToQuoteRequestFail({ error });
+        const action = addBasketToQuoteRequestFail({ error });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -318,7 +353,7 @@ describe('Quote Request Reducer', () => {
 
     describe('AddBasketToQuoteRequestSuccess action', () => {
       it('should set loading to false', () => {
-        const action = new fromActions.AddBasketToQuoteRequestSuccess({ id: 'QRID' });
+        const action = addBasketToQuoteRequestSuccess({ id: 'QRID' });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -330,7 +365,7 @@ describe('Quote Request Reducer', () => {
     describe('UpdateQuoteRequestItems action', () => {
       it('should set loading to true', () => {
         const lineItemUpdates = [{ itemId: 'test', quantity: 1 }];
-        const action = new fromActions.UpdateQuoteRequestItems({ lineItemUpdates });
+        const action = updateQuoteRequestItems({ lineItemUpdates });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -340,7 +375,7 @@ describe('Quote Request Reducer', () => {
     describe('UpdateQuoteRequestItemsFail action', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpError;
-        const action = new fromActions.UpdateQuoteRequestItemsFail({ error });
+        const action = updateQuoteRequestItemsFail({ error });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -351,7 +386,7 @@ describe('Quote Request Reducer', () => {
     describe('UpdateQuoteRequestItemsSuccess action', () => {
       it('should set loading to false', () => {
         const itemIds = ['test'];
-        const action = new fromActions.UpdateQuoteRequestItemsSuccess({ itemIds });
+        const action = updateQuoteRequestItemsSuccess({ itemIds });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -366,7 +401,7 @@ describe('Quote Request Reducer', () => {
           quoteRequestId: 'test',
           itemId: 'test',
         };
-        const action = new fromActions.DeleteItemFromQuoteRequest(payload);
+        const action = deleteItemFromQuoteRequest(payload);
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -376,7 +411,7 @@ describe('Quote Request Reducer', () => {
     describe('DeleteItemFromQuoteRequestFail action', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpError;
-        const action = new fromActions.DeleteItemFromQuoteRequestFail({ error });
+        const action = deleteItemFromQuoteRequestFail({ error });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -387,7 +422,7 @@ describe('Quote Request Reducer', () => {
     describe('DeleteItemFromQuoteRequestSuccess action', () => {
       it('should set loading to false', () => {
         const id = 'test';
-        const action = new fromActions.DeleteItemFromQuoteRequestSuccess({ id });
+        const action = deleteItemFromQuoteRequestSuccess({ id });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeFalse();

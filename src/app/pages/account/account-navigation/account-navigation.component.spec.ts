@@ -3,8 +3,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { AccountNavigationComponent } from './account-navigation.component';
 
@@ -16,17 +14,7 @@ describe('Account Navigation Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AccountNavigationComponent],
-      imports: [
-        FeatureToggleModule,
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: { configuration: configurationReducer },
-          config: {
-            initialState: { configuration: { features: ['quoting'] } },
-          },
-        }),
-      ],
+      imports: [FeatureToggleModule.forTesting('quoting'), RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

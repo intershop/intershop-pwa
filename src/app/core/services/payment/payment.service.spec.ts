@@ -7,7 +7,7 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { getCurrentLocale } from 'ish-core/store/configuration';
+import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { PaymentService } from './payment.service';
@@ -189,10 +189,11 @@ describe('Payment Service', () => {
   describe('user payment service', () => {
     it("should get a user's payment method data when 'getUserPaymentMethods' is called", done => {
       when(apiService.get(anyString())).thenReturn(of([]));
+      when(apiService.resolveLinks()).thenReturn(() => of([]));
       when(apiService.options(anyString())).thenReturn(of([]));
       const customer = {
         customerNo: '4711',
-        type: 'PrivateCustomer',
+        isBusinessCustomer: false,
       } as Customer;
 
       paymentService.getUserPaymentMethods(customer).subscribe(() => {
@@ -208,7 +209,7 @@ describe('Payment Service', () => {
       when(apiService.post(`customers/${customerNo}/payments`, anything())).thenReturn(
         of({ type: 'Link', uri: 'site/-/customers/-/payments/paymentid' })
       );
-      when(apiService.get(anything())).thenReturn(of(undefined));
+      when(apiService.resolveLink()).thenReturn(() => of(undefined));
 
       paymentService.createUserPayment(customerNo, newPaymentInstrument).subscribe(() => {
         verify(apiService.post(`customers/${customerNo}/payments`, anything())).once();

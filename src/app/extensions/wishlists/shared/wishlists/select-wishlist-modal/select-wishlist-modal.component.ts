@@ -66,7 +66,9 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.wishlistsFacade.preferredWishlist$.pipe(take(1)).subscribe(wishlist => (this.preferredWishlist = wishlist));
+    this.wishlistsFacade.preferredWishlist$
+      .pipe(take(1), takeUntil(this.destroy$))
+      .subscribe(wishlist => (this.preferredWishlist = wishlist));
     this.determineSelectOptions();
     this.formInit();
     this.wishlistsFacade.currentWishlist$
@@ -75,7 +77,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
 
     this.translate
       .get('account.wishlists.choose_wishlist.new_wishlist_name.initial_value')
-      .pipe(take(1))
+      .pipe(take(1), takeUntil(this.destroy$))
       .subscribe(res => {
         this.newWishlistInitValue = res;
         this.setDefaultFormValues();
@@ -92,6 +94,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private formInit() {
@@ -106,7 +109,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
 
   private determineSelectOptions() {
     let currentWishlist: Wishlist;
-    this.wishlistsFacade.currentWishlist$.pipe(take(1)).subscribe(w => (currentWishlist = w));
+    this.wishlistsFacade.currentWishlist$.pipe(take(1), takeUntil(this.destroy$)).subscribe(w => (currentWishlist = w));
     this.wishlistsFacade.wishlists$.pipe(takeUntil(this.destroy$)).subscribe(wishlists => {
       if (wishlists && wishlists.length > 0) {
         this.wishlistOptions = wishlists.map(wishlist => ({
@@ -139,7 +142,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  /* don't show wishlist selection form but add a product immediately if there is a preferred wishlist */
+  /** don't show wishlist selection form but add a product immediately if there is a preferred wishlist */
   private addProductToPreferredWishlist(): boolean {
     if (this.showForm && this.preferredWishlist && this.addMoveProduct === 'add') {
       this.updateWishlistForm.get('wishlist').setValue(this.preferredWishlist.id);
@@ -187,7 +190,6 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
     };
   }
 
-  /* *  returns the title of the selected wishlist */
   get selectedWishlistTitle(): string {
     const selectedValue = this.updateWishlistForm.get('wishlist').value;
     if (selectedValue === 'newList') {

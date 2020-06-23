@@ -10,11 +10,13 @@ const getOrderTemplateState = createSelector(getOrderTemplatesState, state =>
 );
 
 const { selectEntities, selectAll } = orderTemplateAdapter.getSelectors(getOrderTemplateState);
+
 export const getAllOrderTemplates = selectAll;
 
 export const getOrderTemplateLoading = createSelector(getOrderTemplateState, state => state.loading);
 
 export const getOrderTemplateError = createSelector(getOrderTemplateState, state => state.error);
+
 export const getSelectedOrderTemplateId = createSelector(getOrderTemplateState, state => state.selected);
 
 export const getSelectedOrderTemplateDetails = createSelector(

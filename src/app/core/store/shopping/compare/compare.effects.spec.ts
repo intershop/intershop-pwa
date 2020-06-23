@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store, combineReducers } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable } from 'rxjs';
 
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 
-import * as fromActions from './compare.actions';
+import { addToCompare, removeFromCompare, toggleCompare } from './compare.actions';
 import { CompareEffects } from './compare.effects';
 
 describe('Compare Effects', () => {
@@ -17,13 +17,7 @@ describe('Compare Effects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        ngrxTesting({
-          reducers: {
-            shopping: combineReducers(shoppingReducers),
-          },
-        }),
-      ],
+      imports: [CoreStoreModule.forTesting(), ShoppingStoreModule.forTesting('compare')],
       providers: [CompareEffects, provideMockActions(() => actions$)],
     });
 
@@ -35,8 +29,8 @@ describe('Compare Effects', () => {
     it('should switch to ADD action', () => {
       const sku = '123';
 
-      const action = new fromActions.ToggleCompare({ sku });
-      const completion = new fromActions.AddToCompare({ sku });
+      const action = toggleCompare({ sku });
+      const completion = addToCompare({ sku });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -46,10 +40,10 @@ describe('Compare Effects', () => {
 
     it('should switch to REMOVE action', () => {
       const sku = '123';
-      store$.dispatch(new fromActions.AddToCompare({ sku }));
+      store$.dispatch(addToCompare({ sku }));
 
-      const action = new fromActions.ToggleCompare({ sku });
-      const completion = new fromActions.RemoveFromCompare({ sku });
+      const action = toggleCompare({ sku });
+      const completion = removeFromCompare({ sku });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });

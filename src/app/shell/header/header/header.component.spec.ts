@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
+import { instance, mock } from 'ts-mockito';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { coreReducers } from 'ish-core/store/core-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { HeaderCheckoutComponent } from 'ish-shell/header/header-checkout/header-checkout.component';
 import { HeaderDefaultComponent } from 'ish-shell/header/header-default/header-default.component';
 import { HeaderSimpleComponent } from 'ish-shell/header/header-simple/header-simple.component';
@@ -19,13 +19,14 @@ describe('Header Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FeatureToggleModule, RouterTestingModule, ngrxTesting({ reducers: coreReducers })],
+      imports: [FeatureToggleModule, RouterTestingModule],
       declarations: [
         HeaderComponent,
         MockComponent(HeaderCheckoutComponent),
         MockComponent(HeaderDefaultComponent),
         MockComponent(HeaderSimpleComponent),
       ],
+      providers: [{ provide: AppFacade, useFactory: () => instance(mock(AppFacade)) }],
     }).compileComponents();
   }));
 

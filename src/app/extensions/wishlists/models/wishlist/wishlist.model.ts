@@ -2,6 +2,7 @@ export interface WishlistHeader {
   preferred: boolean;
   title: string;
 }
+
 export interface Wishlist extends WishlistHeader {
   id: string;
   items?: WishlistItem[];
