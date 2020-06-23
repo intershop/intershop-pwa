@@ -8,9 +8,6 @@ if (files.length === 0) {
   files = glob.sync('docs/**/*.md');
 }
 
-// ignore documentation overview
-files = files.filter(p => !p.endsWith(path.join('docs', 'README.md')));
-
 let isError = false;
 
 function getDefaultLabel(file) {
