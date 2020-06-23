@@ -7,6 +7,44 @@ kb_everyone
 
 # Changelog
 
+## [0.21.0](https://github.com/intershop/intershop-pwa/releases/tag/0.21.0) (2020-06-23)
+
+**required Intershop Commerce Management version: 7.10.19.2**
+
+### Features
+
+- add migration script for NgRx 8 creator functions ([5800cd2](https://github.com/intershop/intershop-pwa/commit/5800cd2))
+- **schematics:** add helper for adding destroy subject to Angular artifact ([4013ff6](https://github.com/intershop/intershop-pwa/commit/4013ff6))
+- **tslint-rules:** add rule for enforcing newline before root statements ([34c20e5](https://github.com/intershop/intershop-pwa/commit/34c20e5))
+- **tslint-rules:** add tslint rule force-jsdoc-comments for enforcing JSDoc usage ([26b25a7](https://github.com/intershop/intershop-pwa/commit/26b25a7))
+- **tslint-rules:** add rule for removing star imports in store ([3c0b528](https://github.com/intershop/intershop-pwa/commit/3c0b528))
+
+### Bug Fixes
+
+- add a product to order template on a product row (#271, #277) ([4714657](https://github.com/intershop/intershop-pwa/commit/4714657))
+
+### Documentation
+
+- update 0.20-to-0.21 migration guide ([6324ebe](https://github.com/intershop/intershop-pwa/commit/6324ebe))
+- update state management documentation regarding creator functions ([8818b16](https://github.com/intershop/intershop-pwa/commit/8818b16))
+- update for the new store structure ([2d9cafa](https://github.com/intershop/intershop-pwa/commit/2d9cafa))
+- new testing approach for NgRx ([b573e18](https://github.com/intershop/intershop-pwa/commit/b573e18))
+- update for using destroy Subject with takeUntil in Angular artifacts ([8331521](https://github.com/intershop/intershop-pwa/commit/8331521))
+
+### Code Refactoring
+
+- change sending of PGID for CMS calls according to ICM 7.10.19.2 CMS REST API changes (#192, #193) ([a5bfff5](https://github.com/intershop/intershop-pwa/commit/a5bfff5))
+- supply operators for resolving links via ApiService ([82e0de7](https://github.com/intershop/intershop-pwa/commit/82e0de7))
+- perform action creator migration ([31acf5d](https://github.com/intershop/intershop-pwa/commit/31acf5d))
+- new structure for core store ([0fe99e4](https://github.com/intershop/intershop-pwa/commit/0fe99e4))
+
+### BREAKING CHANGES
+
+- Pipable operators for resolving links are now ApiService members.
+- NgRx code artifacts are transformed to a new pattern, follow the instructions in the migration guide.
+- Core store was restructured. Follow instructions in the migration guide.
+- CMS service personalized content call adaptions to match CMS REST API changes in ICM.
+
 ## [0.20.0](https://github.com/intershop/intershop-pwa/releases/tag/0.20.0) (2020-05-29)
 
 **required Intershop Commerce Management version: 7.10.18.1**
