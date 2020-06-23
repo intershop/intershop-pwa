@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
@@ -18,11 +20,12 @@ interface NavigationItems {
   templateUrl: './account-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountNavigationComponent implements OnInit, OnChanges {
+export class AccountNavigationComponent implements OnInit, OnChanges, OnDestroy {
   @Input() deviceType: DeviceType;
 
   isMobileView = false;
   isBusinessCustomer: boolean;
+  private destroy$ = new Subject();
 
   /**
    * Manages the Account Navigation items.
@@ -57,12 +60,17 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.isMobileView = this.deviceType === 'tablet' || this.deviceType === 'mobile';
-    this.accountFacade.isBusinessCustomer$.subscribe(x => (this.isBusinessCustomer = x));
+    this.accountFacade.isBusinessCustomer$.pipe(takeUntil(this.destroy$)).subscribe(x => (this.isBusinessCustomer = x));
     this.initNavigationItems();
   }
 
   ngOnChanges() {
     this.isMobileView = this.deviceType === 'tablet' || this.deviceType === 'mobile';
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   initNavigationItems() {

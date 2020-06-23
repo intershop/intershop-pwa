@@ -13,6 +13,7 @@ describe('Users Service', () => {
   beforeEach(() => {
     apiService = mock(ApiService);
     when(apiService.get(anything())).thenReturn(of(true));
+    when(apiService.resolveLinks()).thenReturn(() => of([]));
 
     TestBed.configureTestingModule({
       providers: [{ provide: ApiService, useFactory: () => instance(apiService) }],

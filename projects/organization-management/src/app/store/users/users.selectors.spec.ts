@@ -2,22 +2,24 @@ import { TestBed } from '@angular/core/testing';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { OrganizationManagementStoreModule } from '../organization-management-store.module';
 
-import * as actions from './users.actions';
+import { loadUsers, loadUsersFail, loadUsersSuccess } from './users.actions';
 import { getUsers, getUsersError, getUsersLoading } from './users.selectors';
 
 describe('Users Selectors', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [OrganizationManagementStoreModule.forTesting('users'), ngrxTesting()],
+      imports: [CoreStoreModule.forTesting(), OrganizationManagementStoreModule.forTesting('users')],
+      providers: [provideStoreSnapshots()],
     });
 
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
   });
 
   describe('initial state', () => {
@@ -29,13 +31,13 @@ describe('Users Selectors', () => {
       expect(getUsersError(store$.state)).toBeUndefined();
     });
 
-    it('should not have entites when in initial state', () => {
+    it('should not have entities when in initial state', () => {
       expect(getUsers(store$.state)).toBeEmpty();
     });
   });
 
   describe('LoadUsers', () => {
-    const action = new actions.LoadUsers();
+    const action = loadUsers();
 
     beforeEach(() => {
       store$.dispatch(action);
@@ -47,7 +49,7 @@ describe('Users Selectors', () => {
 
     describe('LoadUsersSuccess', () => {
       const users = [{ login: '1' }, { login: '2' }] as User[];
-      const successAction = new actions.LoadUsersSuccess({ users });
+      const successAction = loadUsersSuccess({ users });
 
       beforeEach(() => {
         store$.dispatch(successAction);
@@ -68,7 +70,7 @@ describe('Users Selectors', () => {
 
     describe('LoadUsersFail', () => {
       const error = { error: 'ERROR' } as HttpError;
-      const failAction = new actions.LoadUsersFail({ error });
+      const failAction = loadUsersFail({ error });
 
       beforeEach(() => {
         store$.dispatch(failAction);

@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import { selectRouteParam } from 'ish-core/store/router';
+import { selectRouteParam } from 'ish-core/store/core/router';
 
 import { getOrganizationManagementState } from '../organization-management-store';
 
@@ -13,6 +13,7 @@ export const getUsersLoading = createSelector(getUsersState, state => state.load
 export const getUsersError = createSelector(getUsersState, state => state.error);
 
 const { selectAll, selectEntities } = usersAdapter.getSelectors(getUsersState);
+
 export const getUsers = selectAll;
 
 export const getSelectedUser = createSelector(
