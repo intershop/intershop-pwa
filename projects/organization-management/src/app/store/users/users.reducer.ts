@@ -1,9 +1,11 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
+import { createReducer, on } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
+import { setErrorOn, setLoadingOn } from 'ish-core/utils/ngrx-creators';
 
-import { UsersAction, UsersActionTypes } from './users.actions';
+import { loadUserFail, loadUserSuccess, loadUsers, loadUsersFail, loadUsersSuccess, resetUsers } from './users.actions';
 
 export const usersAdapter = createEntityAdapter<User>({
   selectId: user => user.login,
@@ -19,49 +21,27 @@ const initialState: UsersState = usersAdapter.getInitialState({
   error: undefined,
 });
 
-export function usersReducer(state = initialState, action: UsersAction): UsersState {
-  switch (action.type) {
-    case UsersActionTypes.LoadUsers: {
-      return {
-        ...state,
-        loading: true,
-      };
-    }
+export const usersReducer = createReducer(
+  initialState,
+  setLoadingOn(loadUsers),
+  setErrorOn(loadUsersFail, loadUserFail),
+  on(loadUsersSuccess, (state: UsersState, action) => {
+    const { users } = action.payload;
 
-    case UsersActionTypes.LoadUsersFail:
-    case UsersActionTypes.LoadUserFail: {
-      const { error } = action.payload;
-      return {
-        ...state,
-        loading: false,
-        error,
-      };
-    }
+    return {
+      ...usersAdapter.upsertMany(users, state),
+      loading: false,
+      error: undefined,
+    };
+  }),
+  on(loadUserSuccess, (state: UsersState, action) => {
+    const { user } = action.payload;
 
-    case UsersActionTypes.LoadUsersSuccess: {
-      const { users } = action.payload;
-
-      return {
-        ...usersAdapter.upsertMany(users, state),
-        loading: false,
-        error: undefined,
-      };
-    }
-
-    case UsersActionTypes.LoadUserSuccess: {
-      const { user } = action.payload;
-
-      return {
-        ...usersAdapter.upsertOne(user, state),
-        loading: false,
-        error: undefined,
-      };
-    }
-
-    case UsersActionTypes.ResetUsers: {
-      return initialState;
-    }
-  }
-
-  return state;
-}
+    return {
+      ...usersAdapter.upsertOne(user, state),
+      loading: false,
+      error: undefined,
+    };
+  }),
+  on(resetUsers, () => initialState)
+);

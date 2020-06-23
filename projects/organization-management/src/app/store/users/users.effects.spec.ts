@@ -3,18 +3,18 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { User } from 'ish-core/models/user/user.model';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 
 import { UsersService } from '../../services/users/users.service';
 import { OrganizationManagementStoreModule } from '../organization-management-store.module';
 
-import * as actions from './users.actions';
+import { loadUsers, loadUsersSuccess } from './users.actions';
 import { UsersEffects } from './users.effects';
 
 @Component({ template: 'dummy' })
@@ -26,7 +26,7 @@ describe('Users Effects', () => {
   let actions$: Observable<Action>;
   let effects: UsersEffects;
   let usersService: UsersService;
-  let store$: TestStore;
+  let store$: Store;
   let router: Router;
 
   beforeEach(() => {
@@ -37,12 +37,10 @@ describe('Users Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
+        CoreStoreModule.forTesting(['router']),
         OrganizationManagementStoreModule.forTesting('users'),
         RouterTestingModule.withRoutes([{ path: 'users/:B2BCustomerLogin', component: DummyComponent }]),
         TranslateModule.forRoot(),
-        ngrxTesting({
-          routerStore: true,
-        }),
       ],
       providers: [
         UsersEffects,
@@ -52,13 +50,13 @@ describe('Users Effects', () => {
     });
 
     effects = TestBed.inject(UsersEffects);
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(Store);
     router = TestBed.inject(Router);
   });
 
   describe('loadUsers$', () => {
     it('should call the service for retrieving users', done => {
-      actions$ = of(new actions.LoadUsers());
+      actions$ = of(loadUsers());
 
       effects.loadUsers$.subscribe(() => {
         verify(usersService.getUsers()).once();
@@ -67,7 +65,7 @@ describe('Users Effects', () => {
     });
 
     it('should retrieve users when triggered', done => {
-      actions$ = of(new actions.LoadUsers());
+      actions$ = of(loadUsers());
 
       effects.loadUsers$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
@@ -104,7 +102,7 @@ describe('Users Effects', () => {
 
   describe('setUserDetailBreadcrumb$', () => {
     it('should set the breadcrumb of user detail', done => {
-      store$.dispatch(new actions.LoadUsersSuccess({ users }));
+      store$.dispatch(loadUsersSuccess({ users }));
       router.navigate(['users', '1']);
       effects.setUserDetailBreadcrumb$.subscribe(action => {
         expect(action.payload).toMatchInlineSnapshot(`

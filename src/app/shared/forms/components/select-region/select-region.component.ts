@@ -12,7 +12,7 @@ export class SelectRegionComponent extends SelectComponent implements OnChanges 
   @Input() regions: Region[];
   @Input() controlName = 'state';
   @Input() label = 'account.default_address.state.label';
-  @Input() errorMessages = { required: 'Please select a region' }; // ToDo: Translation key
+  @Input() errorMessages = { required: 'account.address.state.error.default' };
 
   ngOnChanges(c: SimpleChanges) {
     if (c.regions) {

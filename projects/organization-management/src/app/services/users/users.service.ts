@@ -6,7 +6,7 @@ import { Link } from 'ish-core/models/link/link.model';
 import { UserData } from 'ish-core/models/user/user.interface';
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { User } from 'ish-core/models/user/user.model';
-import { ApiService, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
 @Injectable({ providedIn: 'root' })
 export class UsersService {
@@ -19,7 +19,7 @@ export class UsersService {
   getUsers(): Observable<User[]> {
     return this.apiService.get(`customers/-/users`).pipe(
       unpackEnvelope<Link>(),
-      resolveLinks<UserData>(this.apiService),
+      this.apiService.resolveLinks<UserData>(),
       map(users => users.map(UserMapper.fromData))
     );
   }
