@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CustomValidators } from 'ng2-validation';
+import { CustomValidators } from 'ngx-custom-validators';
 
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';

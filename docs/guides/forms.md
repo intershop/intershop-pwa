@@ -70,7 +70,7 @@ If a form is very simple (e.g. only one form input field without any special val
 
 For the validation of the form input fields you can use Angular's [Build-in Validators](https://angular.io/api/forms/Validators).
 
-Additionally, the package [ng2-validation](https://www.npmjs.com/package/ng2-validation) is available.
+Additionally, the package [ngx-custom-validators](https://www.npmjs.com/package/ngx-custom-validators) is available.
 It provides further validators.
 
 If there is a need for special custom validators, use class _app/shared/forms/validators/special-validators_ to write your own custom validators.
@@ -128,7 +128,7 @@ Use predefined form control components and directives to get general functionali
 
 ```typescript
 import  { FormBuilder, FormGroup, Validators }  from   '@angular/forms' ;
-import  { CustomValidators }  from   'ng2-validation' ;
+import  { CustomValidators }  from   'ngx-custom-validators' ;
 import { FormUtilsService } from '../../../../core/services/utils/form-utils.service';
 ...
 
