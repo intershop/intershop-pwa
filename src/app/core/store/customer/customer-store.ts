@@ -1,5 +1,7 @@
 import { createFeatureSelector } from '@ngrx/store';
 
+import { Authorization } from 'ish-core/models/authorization/authorization.model';
+
 import { AddressesState } from './addresses/addresses.reducer';
 import { BasketState } from './basket/basket.reducer';
 import { OrdersState } from './orders/orders.reducer';
@@ -10,6 +12,7 @@ export interface CustomerState {
   addresses: AddressesState;
   orders: OrdersState;
   basket: BasketState;
+  authorization: Authorization;
 }
 
 export const getCustomerState = createFeatureSelector<CustomerState>('_customer');
