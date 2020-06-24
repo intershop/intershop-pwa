@@ -2,6 +2,7 @@ export interface User {
   title?: string;
   firstName: string;
   lastName: string;
+  name?: string; // list call only
   preferredLanguage: string;
   birthday?: string;
 

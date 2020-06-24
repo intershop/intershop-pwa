@@ -20,8 +20,8 @@ describe('Users Page Component', () => {
   let organizationManagementFacade: OrganizationManagementFacade;
 
   const users = [
-    { firstName: 'Patricia', lastName: 'Miller', email: 'pmiller@test.intershop.de' },
-    { firstName: 'Jack', lastName: 'Link', email: 'jlink@test.intershop.de' },
+    { firstName: 'Patricia', lastName: 'Miller', name: 'Patricia Miller', email: 'pmiller@test.intershop.de' },
+    { firstName: 'Jack', lastName: 'Link', name: 'Jack Link', email: 'jlink@test.intershop.de' },
   ] as User[];
 
   beforeEach(async(() => {

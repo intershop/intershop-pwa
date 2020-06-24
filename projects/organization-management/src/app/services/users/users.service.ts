@@ -2,11 +2,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Link } from 'ish-core/models/link/link.model';
-import { UserData } from 'ish-core/models/user/user.interface';
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { User } from 'ish-core/models/user/user.model';
-import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { ApiService } from 'ish-core/services/api/api.service';
 
 @Injectable({ providedIn: 'root' })
 export class UsersService {
@@ -17,11 +15,7 @@ export class UsersService {
    * @returns               All users of the customer.
    */
   getUsers(): Observable<User[]> {
-    return this.apiService.get(`customers/-/users`).pipe(
-      unpackEnvelope<Link>(),
-      this.apiService.resolveLinks<UserData>(),
-      map(users => users.map(UserMapper.fromData))
-    );
+    return this.apiService.get(`customers/-/users`).pipe(map(UserMapper.fromListData));
   }
 
   /**

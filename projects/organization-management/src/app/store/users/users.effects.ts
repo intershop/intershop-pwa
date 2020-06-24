@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { debounceTime, exhaustMap, map, mapTo, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, exhaustMap, map, mapTo, mergeMap, withLatestFrom } from 'rxjs/operators';
 
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
@@ -40,7 +40,7 @@ export class UsersEffects {
       select(selectRouteParam('B2BCustomerLogin')),
       whenTruthy(),
       debounceTime(0), // necessary to wait for the login after refreshing the page
-      exhaustMap(login =>
+      mergeMap(login =>
         this.usersService.getUser(login).pipe(
           map(user => loadUserSuccess({ user })),
           mapErrorToAction(loadUserFail)
