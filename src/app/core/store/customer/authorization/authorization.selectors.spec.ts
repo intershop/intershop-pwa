@@ -22,7 +22,7 @@ describe('Authorization Selectors', () => {
   describe('initial state', () => {
     it('should not be loading when in initial state', () => {
       expect(getUserRoles(store$.state)).toBeEmpty();
-      expect(getUserPermissions(store$.state)).toBeEmpty();
+      expect(getUserPermissions(store$.state)).toBeUndefined();
     });
   });
 

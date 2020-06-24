@@ -15,6 +15,7 @@ import { DeferLoadModule } from '@trademe/ng-defer-load';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SwiperModule } from 'ngx-swiper-wrapper';
 
+import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
@@ -103,6 +104,7 @@ import { FormsSharedModule } from './forms/forms.module';
 
 const importExportModules = [
   AddressFormsSharedModule,
+  AuthorizationToggleModule,
   CMSModule,
   CommonModule,
   DeferLoadModule,
