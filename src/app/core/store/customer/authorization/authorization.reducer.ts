@@ -6,7 +6,8 @@ import { loadRolesAndPermissionsSuccess } from './authorization.actions';
 
 const initialState: Authorization = {
   roleDisplayNames: [],
-  permissionIDs: [],
+  // has to be undefined so the service can wait for retrieval
+  permissionIDs: undefined,
 };
 
 export const authorizationReducer = createReducer(
