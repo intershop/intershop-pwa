@@ -9,7 +9,7 @@ import {
   Output,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CustomValidators } from 'ng2-validation';
+import { CustomValidators } from 'ngx-custom-validators';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
