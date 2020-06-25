@@ -4,6 +4,7 @@ import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 import { B2bRole } from '../../models/b2b-role/b2b-role.model';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
+import { UserBudgets } from '../../models/user-budgets/user-budgets.model';
 
 export const loadUsers = createAction('[Users] Load Users');
 
@@ -27,7 +28,7 @@ export const updateUserFail = createAction('[Users API] Update User Fail', httpE
 
 export const updateUserSuccess = createAction('[Users API] Update User Success', payload<{ user: B2bUser }>());
 
-export const deleteUser = createAction('[Users API] Delete User', payload<{ login: string }>());
+export const deleteUser = createAction('[Users] Delete User', payload<{ login: string }>());
 
 export const deleteUserFail = createAction('[Users API] Delete User Fail', httpError());
 
@@ -41,8 +42,20 @@ export const loadSystemUserRolesSuccess = createAction(
 export const setUserRoles = createAction('[Users] Set Roles for User', payload<{ login: string; roles: string[] }>());
 
 export const setUserRolesSuccess = createAction(
-  '[Users] Set Roles for User Success',
+  '[Users API] Set Roles for User Success',
   payload<{ login: string; roles: string[] }>()
 );
 
 export const setUserRolesFail = createAction('[Users API] Set Roles for User Failed', httpError<{ login: string }>());
+
+export const setUserBudgets = createAction(
+  '[Users] Set Budgets for User',
+  payload<{ login: string; budgets: UserBudgets }>()
+);
+
+export const setUserBudgetsSuccess = createAction(
+  '[Users API] Set Budgets for User Success',
+  payload<{ login: string; budgets: UserBudgets }>()
+);
+
+export const setUserBudgetsFail = createAction('[Users API] Set Roles for User Failed', httpError<{ login: string }>());

@@ -9,6 +9,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
 import { B2bRole } from '../../models/b2b-role/b2b-role.model';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
+import { UserDetailBudgetComponent } from './user-detail-budget/user-detail-budget.component';
 import { UserDetailPageComponent } from './user-detail-page.component';
 
 describe('User Detail Page Component', () => {
@@ -38,7 +39,7 @@ describe('User Detail Page Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [MockComponent(FaIconComponent), UserDetailPageComponent],
+      declarations: [MockComponent(FaIconComponent), MockComponent(UserDetailBudgetComponent), UserDetailPageComponent],
       providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
     }).compileComponents();
   });

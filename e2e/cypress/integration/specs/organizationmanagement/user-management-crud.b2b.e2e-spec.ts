@@ -3,6 +3,7 @@ import { createB2BUserViaREST } from '../../framework/b2b-user';
 import { LoginPage } from '../../pages/account/login.page';
 import { sensibleDefaults } from '../../pages/account/registration.page';
 import { UserCreatePage } from '../../pages/organizationmanagement/user-create.page';
+import { UserEditBudgetPage } from '../../pages/organizationmanagement/user-edit-budget.page';
 import { UserEditRolesPage } from '../../pages/organizationmanagement/user-edit-roles.page';
 import { UserEditPage } from '../../pages/organizationmanagement/user-edit.page';
 import { UsersDetailPage } from '../../pages/organizationmanagement/users-detail.page';
@@ -21,10 +22,19 @@ const _ = {
     lastName: 'Doe',
     phone: '5551234',
     email: `j.joe${new Date().getTime()}@testcity.de`,
+
+    orderSpentLimit: 100,
+    budget: 800,
+    budgetPeriod: 'monthly',
   },
   roles: {
     autoRole: 'Buyer',
     assignedRole: 'Account Admin',
+  },
+  budget: {
+    orderSpentLimit: 200,
+    budget: 900,
+    budgetPeriod: 'weekly',
   },
   editUser: {
     title: 'Ms.',
@@ -57,6 +67,7 @@ describe('User Management - CRUD', () => {
     at(UsersDetailPage, page => {
       page.name.should('contain', `${_.newUser.firstName} ${_.newUser.lastName}`);
       page.rolesAndPermissions.should('contain', _.roles.autoRole);
+      page.budget.should('contain', `${_.newUser.budget}`);
     });
   });
 
@@ -81,6 +92,19 @@ describe('User Management - CRUD', () => {
     at(UsersDetailPage, page => {
       page.rolesAndPermissions.should('contain', _.roles.assignedRole);
       page.rolesAndPermissions.should('contain', _.roles.autoRole);
+    });
+  });
+
+  it('should be able to edit budget', () => {
+    at(UsersDetailPage, page => page.editBudget());
+    at(UserEditBudgetPage, page => {
+      page.fillForm(_.budget);
+      page.submit();
+    });
+    at(UsersDetailPage, page => {
+      page.budget.should('contain', `${_.budget.budget}`);
+      page.orderSpendLimit.should('contain', `${_.budget.orderSpentLimit}`);
+      page.userBudgets.should('contain', `${_.budget.budgetPeriod}`);
     });
   });
 

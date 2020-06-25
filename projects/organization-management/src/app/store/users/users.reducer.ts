@@ -20,6 +20,9 @@ import {
   loadUsers,
   loadUsersFail,
   loadUsersSuccess,
+  setUserBudgets,
+  setUserBudgetsFail,
+  setUserBudgetsSuccess,
   setUserRolesFail,
   setUserRolesSuccess,
   updateUser,
@@ -45,8 +48,16 @@ const initialState: UsersState = usersAdapter.getInitialState({
 
 export const usersReducer = createReducer(
   initialState,
-  setLoadingOn(loadUsers, addUser, updateUser, deleteUser),
-  setErrorOn(loadUsersFail, loadUserFail, addUserFail, updateUserFail, deleteUserFail, setUserRolesFail),
+  setLoadingOn(loadUsers, addUser, updateUser, deleteUser, setUserBudgets),
+  setErrorOn(
+    loadUsersFail,
+    loadUserFail,
+    addUserFail,
+    updateUserFail,
+    deleteUserFail,
+    setUserRolesFail,
+    setUserBudgetsFail
+  ),
   on(loadUsersSuccess, (state: UsersState, action) => {
     const { users } = action.payload;
 
@@ -100,5 +111,10 @@ export const usersReducer = createReducer(
   })),
   on(setUserRolesSuccess, (state, action) =>
     usersAdapter.updateOne({ id: action.payload.login, changes: { roleIDs: action.payload.roles } }, state)
-  )
+  ),
+  on(setUserBudgetsSuccess, (state, action) => ({
+    ...usersAdapter.updateOne({ id: action.payload.login, changes: { budgets: action.payload.budgets } }, state),
+    loading: false,
+    error: undefined,
+  }))
 );

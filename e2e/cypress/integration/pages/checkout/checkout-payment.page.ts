@@ -51,7 +51,11 @@ export class CheckoutPaymentPage {
       },
 
       formError(key: string) {
-        return cy.get(`[data-testing-id=payment-parameter-form-${method}]`).find(`[data-testing-id='${key}']`).next();
+        return cy
+          .get(`[data-testing-id=payment-parameter-form-${method}]`)
+          .find(`[data-testing-id='${key}']`)
+          .parent()
+          .next();
       },
     };
   }
