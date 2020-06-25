@@ -55,6 +55,10 @@ describe('B2b User Mapper', () => {
             { name: 'firstName', value: 'Patricia' },
             { name: 'lastName', value: 'Miller' },
             { name: 'active', value: true },
+            { name: 'budgetPeriod', type: 'String', value: 'monthly' },
+            { name: 'orderSpentLimit', type: 'MoneyRO', value: { currency: 'USD', value: 500 } },
+            { name: 'budget', type: 'MoneyRO', value: { currency: 'USD', value: 10000 } },
+            { name: 'remainingBudget', type: 'MoneyRO', value: { currency: 'USD', value: 10000 } },
           ],
         } as B2bUserDataLink,
       ];
@@ -64,6 +68,21 @@ describe('B2b User Mapper', () => {
         Array [
           Object {
             "active": true,
+            "budgets": Object {
+              "budget": Object {
+                "currency": "USD",
+                "value": 10000,
+              },
+              "budgetPeriod": "monthly",
+              "orderSpentLimit": Object {
+                "currency": "USD",
+                "value": 500,
+              },
+              "remainingBudget": Object {
+                "currency": "USD",
+                "value": 10000,
+              },
+            },
             "firstName": "Patricia",
             "lastName": "Miller",
             "login": "pmiller@test.intershop.de",

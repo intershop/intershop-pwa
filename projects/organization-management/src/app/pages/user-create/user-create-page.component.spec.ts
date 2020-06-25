@@ -7,6 +7,7 @@ import { instance, mock } from 'ts-mockito';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
+import { UserBudgetFormComponent } from '../../components/user-budget-form/user-budget-form.component';
 import { UserProfileFormComponent } from '../../components/user-profile-form/user-profile-form.component';
 import { UserRolesSelectionComponent } from '../../components/user-roles-selection/user-roles-selection.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
@@ -26,6 +27,7 @@ describe('User Create Page Component', () => {
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(LoadingComponent),
+        MockComponent(UserBudgetFormComponent),
         MockComponent(UserProfileFormComponent),
         MockComponent(UserRolesSelectionComponent),
         UserCreatePageComponent,
@@ -58,9 +60,35 @@ describe('User Create Page Component', () => {
         preferredLanguage: ['en_US', [Validators.required]],
         active: [true],
       }),
+      roleIDs: ['Buyer'],
+      budgets: fb.group({
+        orderSpentLimit: ['70000'],
+        budget: [10000],
+        budgetPeriod: ['monthly'],
+        currency: 'USD',
+      }),
     });
 
     expect(component.formDisabled).toBeFalse();
+    expect(component.form.value).toMatchInlineSnapshot(`
+      Object {
+        "budgets": Object {
+          "budget": 10000,
+          "budgetPeriod": "monthly",
+          "currency": "USD",
+          "orderSpentLimit": "70000",
+        },
+        "profile": Object {
+          "active": true,
+          "email": "test@gmail.com",
+          "firstName": "Bernhard",
+          "lastName": "Boldner",
+          "preferredLanguage": "en_US",
+        },
+        "roleIDs": "Buyer",
+      }
+    `);
+
     component.submitForm();
     expect(component.formDisabled).toBeFalse();
   });
