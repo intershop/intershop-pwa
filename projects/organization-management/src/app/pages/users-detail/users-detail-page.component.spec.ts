@@ -5,9 +5,8 @@ import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { User } from 'ish-core/models/user/user.model';
-
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
+import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
 import { UsersDetailPageComponent } from './users-detail-page.component';
 
@@ -17,7 +16,7 @@ describe('Users Detail Page Component', () => {
   let element: HTMLElement;
   let organizationManagementFacade: OrganizationManagementFacade;
 
-  const user = { login: '1', firstName: 'Patricia', lastName: 'Miller', email: 'pmiller@test.intershop.de' } as User;
+  const user = { login: '1', firstName: 'Patricia', lastName: 'Miller', email: 'pmiller@test.intershop.de' } as B2bUser;
 
   beforeEach(() => {
     organizationManagementFacade = mock(OrganizationManagementFacade);

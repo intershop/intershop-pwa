@@ -25,21 +25,4 @@ export class UserMapper {
         }
       : undefined;
   }
-
-  static fromListData(data: { elements: { name: string; login: string }[] }): User[] {
-    // is used for business users
-
-    const users: User[] = [];
-
-    if (data && data.elements) {
-      for (const e of data.elements) {
-        users.push({
-          name: e.name,
-          login: e.login,
-        } as User);
-      }
-    }
-
-    return users;
-  }
 }

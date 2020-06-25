@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { User } from 'ish-core/models/user/user.model';
-
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
+import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
 @Component({
   selector: 'ish-users-detail-page',
@@ -11,7 +10,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersDetailPageComponent implements OnInit {
-  user$: Observable<User>;
+  user$: Observable<B2bUser>;
 
   constructor(private organizationManagementFacade: OrganizationManagementFacade) {}
 

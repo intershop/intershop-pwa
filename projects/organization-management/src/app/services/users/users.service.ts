@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { UserMapper } from 'ish-core/models/user/user.mapper';
-import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
+
+import { B2bUserMapper } from '../../models/b2b-user/b2b-user.mapper';
+import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
 @Injectable({ providedIn: 'root' })
 export class UsersService {
@@ -14,8 +15,8 @@ export class UsersService {
    * Gets all users of a customer. The current user is supposed to have administrator rights.
    * @returns               All users of the customer.
    */
-  getUsers(): Observable<User[]> {
-    return this.apiService.get(`customers/-/users`).pipe(map(UserMapper.fromListData));
+  getUsers(): Observable<B2bUser[]> {
+    return this.apiService.get(`customers/-/users`).pipe(map(B2bUserMapper.fromListData));
   }
 
   /**
@@ -23,7 +24,7 @@ export class UsersService {
    * @param login  The login of the user.
    * @returns      The user.
    */
-  getUser(login: string): Observable<User> {
-    return this.apiService.get(`customers/-/users/${login}`).pipe(map(UserMapper.fromData));
+  getUser(login: string): Observable<B2bUser> {
+    return this.apiService.get(`customers/-/users/${login}`).pipe(map(B2bUserMapper.fromData));
   }
 }
