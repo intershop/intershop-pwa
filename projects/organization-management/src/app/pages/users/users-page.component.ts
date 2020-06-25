@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { User } from 'ish-core/models/user/user.model';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
+import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
 @Component({
   selector: 'ish-users-page',
@@ -12,7 +12,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersPageComponent implements OnInit {
-  users$: Observable<User[]>;
+  users$: Observable<B2bUser[]>;
   error$: Observable<HttpError>;
   loading$: Observable<boolean>;
 

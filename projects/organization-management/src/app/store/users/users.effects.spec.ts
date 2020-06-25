@@ -8,9 +8,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { User } from 'ish-core/models/user/user.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 
+import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 import { UsersService } from '../../services/users/users.service';
 import { OrganizationManagementStoreModule } from '../organization-management-store.module';
 
@@ -20,7 +20,7 @@ import { UsersEffects } from './users.effects';
 @Component({ template: 'dummy' })
 class DummyComponent {}
 
-const users = [{ login: '1', firstName: 'Patricia', lastName: 'Miller' }, { login: '2' }] as User[];
+const users = [{ login: '1', firstName: 'Patricia', lastName: 'Miller' }, { login: '2' }] as B2bUser[];
 
 describe('Users Effects', () => {
   let actions$: Observable<Action>;
