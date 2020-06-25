@@ -5,11 +5,11 @@ import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { User } from 'ish-core/models/user/user.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
+import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
 import { UsersPageComponent } from './users-page.component';
 
@@ -22,7 +22,7 @@ describe('Users Page Component', () => {
   const users = [
     { firstName: 'Patricia', lastName: 'Miller', name: 'Patricia Miller', email: 'pmiller@test.intershop.de' },
     { firstName: 'Jack', lastName: 'Link', name: 'Jack Link', email: 'jlink@test.intershop.de' },
-  ] as User[];
+  ] as B2bUser[];
 
   beforeEach(async(() => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
