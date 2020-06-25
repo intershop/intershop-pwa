@@ -1,11 +1,28 @@
 <pre *ngIf="error$ | async as error">{{ error }}</pre>
 
 <ul>
-  <li *ngFor="let user of users$ | async">
-    <a [routerLink]="[user.businessPartnerNo]">{{ user.firstName }} {{ user.lastName }} -- {{ user.email }}</a>
-
-    <pre>{{ user.budgets | json }}</pre>
-  </li>
+  <div class="section">
+    <div class="list-body" data-testing-id="user-list">
+      <ng-container *ngFor="let user of users$ | async">
+        <div *ngIf="user" class="list-item-row row mx-0">
+          <div class="col-3 list-item">
+            <a [routerLink]="[user.businessPartnerNo]">{{ user.firstName }} {{ user.lastName }} -- {{ user.email }}</a>
+          </div>
+          <div class="col-4 list-item">
+            <ish-user-budget *ngIf="user.budgets" [budget]="user.budgets"></ish-user-budget>
+          </div>
+          <pre>{{ user.budgets | json }}</pre>
+        </div>
+        <div class="col-3 list-item text-right">
+          <!---TODO: Delete user-->
+        </div>
+      </ng-container>
+    </div>
+  </div>
 </ul>
 
 <ish-loading *ngIf="loading$ | async"></ish-loading>
+
+<h1>
+  {{ 'account.organization.user_management' | translate }}
+</h1>

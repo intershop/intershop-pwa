@@ -1,7 +1,9 @@
+import { Price } from 'ish-core/models/price/price.model';
+
 export interface UserBudgets {
-  budget: { currency: string; value: number };
+  budget: Price;
   budgetPeriod: string;
-  orderSpentLimit: { currency: string; value: number };
-  remainingBudget: { currency: string; value: number };
+  orderSpentLimit: Price;
+  remainingBudget: Price;
   type: 'UserBudgets';
 }

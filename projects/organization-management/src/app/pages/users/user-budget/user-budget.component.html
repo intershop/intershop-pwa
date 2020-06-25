@@ -1,0 +1,39 @@
+<div *ngIf="budget.budget">
+  <dl>
+    <dt>{{ 'account.user.new.order_spend_limit.label' | translate }}</dt>
+    <dd>{{ budget.orderSpentLimit | ishPrice }}</dd>
+  </dl>
+  <dl>
+    <dt>{{ 'account.user.budget.label' | translate }} ({{ budget.budgetPeriod }})</dt>
+    <dd>{{ usedBudget | ishPrice }}</dd>
+    <dd>
+      <div [ngbPopover]="BudgetPopover" placement="top">
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" [ngStyle]="{ width: usedBudgetPercentage() }">
+            <span class="progress-display">{{ usedBudgetPercentage() }}</span>
+            <ng-template #BudgetPopover>
+              <div class="row col-md-12">
+                <div class="col-md-6"><label>Weekly spend limit</label></div>
+                <div class="col-md-6 text-right">{{ budget.budget.value }}</div>
+              </div>
+              <div class="row col-md-12">
+                <div class="col-md-6">
+                  <label>{{ 'account.user.list.spent.label' | translate }}</label>
+                </div>
+                <div class="col-md-6 text-right">{{ usedBudget.value }} ({{ usedBudgetPercentage() }})</div>
+              </div>
+              <div class="row col-md-12">
+                <div class="col-md-6">
+                  <label>{{ 'account.user.list.left.label' | translate }}</label>
+                </div>
+                <div class="col-md-6 text-right">
+                  {{ budget.remainingBudget.value }} ({{ remainingBudgetPercentage() }})
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </dd>
+  </dl>
+</div>
