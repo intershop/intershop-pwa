@@ -1,5 +1,5 @@
 <div *ngIf="selectedUser$ | async as user">
-  <h1>{{ 'account.user.update_role.heading' | translate }} - {{ user.firstName }} {{ user.lastName }}</h1>
+  <h1>{{ 'account.user.update_roles.heading' | translate }} - {{ user.firstName }} {{ user.lastName }}</h1>
 
   <ish-error-message [error]="error$ | async"></ish-error-message>
 

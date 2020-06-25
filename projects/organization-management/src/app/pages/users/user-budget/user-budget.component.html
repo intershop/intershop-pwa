@@ -1,0 +1,60 @@
+<div *ngIf="budget">
+  <dl class="row dl-horizontal dl-separator">
+    <dt class="col-12 col-sm-7">{{ 'account.user.new.order_spend_limit.label' | translate }}</dt>
+    <dd *ngIf="budget.orderSpentLimit; else noLimit" class="col-5 column-price">
+      {{ budget.orderSpentLimit | ishPrice }}
+    </dd>
+    <ng-template #noLimit>
+      <dd class="col-5 column-price">{{ 'approval.details.threshold.unlimited' | translate }}</dd>
+    </ng-template>
+  </dl>
+
+  <ng-container *ngIf="budget.budget; else noBudget">
+    <dl class="row dl-horizontal dl-separator">
+      <dt class="col-12 col-sm-7">{{ 'account.budget.common.per_type' | translate: { '0': budget.budgetPeriod } }}</dt>
+      <dd class="col-5 column-price">{{ budget.budget | ishPrice }}</dd>
+    </dl>
+    <div [ngbPopover]="BudgetPopover" placement="top" data-testing-id="user-budget-popover">
+      <div class="progress">
+        <div
+          class="progress-bar"
+          [ngClass]="{ 'bg-danger': usedBudgetPercentage * 100 > 90 }"
+          [ngStyle]="{ width: usedBudgetPercentage | percent }"
+          role="progressbar"
+        >
+          <span class="progress-display">{{ usedBudgetPercentage | percent }}</span>
+          <ng-template #BudgetPopover>
+            <div class="row col-md-12">
+              <div class="col-md-6">
+                <label>{{
+                  'orders.widget.budget.period.' + budget.budgetPeriod + '_spend_limit.label' | translate
+                }}</label>
+              </div>
+              <div class="col-md-6 text-right">{{ budget.budget | ishPrice }}</div>
+            </div>
+            <div class="row col-md-12">
+              <div class="col-md-6">
+                <label>{{ 'account.user.list.spent.label' | translate }}</label>
+              </div>
+              <div class="col-md-6 text-right">{{ usedBudget.value }} ({{ usedBudgetPercentage | percent }})</div>
+            </div>
+            <div class="row col-md-12">
+              <div class="col-md-6">
+                <label>{{ 'account.user.list.left.label' | translate }}</label>
+              </div>
+              <div class="col-md-6 text-right">
+                {{ budget.remainingBudget | ishPrice }} ({{ remainingBudgetPercentage | percent }})
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #noBudget>
+  <dl>
+    <dd>{{ 'account.budget.common.undefined' | translate }}</dd>
+  </dl>
+</ng-template>

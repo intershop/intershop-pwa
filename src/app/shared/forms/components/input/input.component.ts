@@ -23,6 +23,8 @@ export class InputComponent extends FormElementComponent implements OnInit {
   @Input() max?: number;
 
   @Input() placeholder = '';
+  /** Extend the input field by a prepend text */
+  @Input() prepend?: string;
   @Input() disabled: boolean;
 
   calculatedAutocomplete: string;
