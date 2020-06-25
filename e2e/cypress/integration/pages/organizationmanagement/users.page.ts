@@ -35,4 +35,14 @@ export class UsersPage {
   rolesOfUser(id: string) {
     return cy.get(`[data-testing-id="user-roles-${id}"]`);
   }
+
+  hoverUserBudgetProgressBar(id: string) {
+    cy.get(`[data-testing-id="user-budget-${id}"]`)
+      .find('[data-testing-id="user-budget-popover"]')
+      .trigger('mouseover');
+  }
+
+  getUserBudgetPopover(id: string) {
+    return cy.get(`[data-testing-id="user-budget-${id}"]`).find('[data-testing-id="user-budget-popover"]');
+  }
 }

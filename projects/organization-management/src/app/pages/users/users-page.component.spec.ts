@@ -14,6 +14,7 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
+import { UserBudgetComponent } from './user-budget/user-budget.component';
 import { UserRolesBadgesComponent } from './user-roles-badges/user-roles-badges.component';
 import { UsersPageComponent } from './users-page.component';
 
@@ -40,6 +41,7 @@ describe('Users Page Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(LoadingComponent),
         MockComponent(ModalDialogComponent),
+        MockComponent(UserBudgetComponent),
         MockComponent(UserRolesBadgesComponent),
         UsersPageComponent,
       ],

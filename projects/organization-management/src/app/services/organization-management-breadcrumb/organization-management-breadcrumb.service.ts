@@ -29,12 +29,12 @@ export class OrganizationManagementBreadcrumbService {
             { key: 'account.organization.user_management', link: prefix + '/users' },
             { key: 'account.user.breadcrumbs.new_user.text' },
           ]);
-        } else if (/users\/:B2BCustomerLogin(\/(profile|roles))?$/.test(path)) {
+        } else if (/users\/:B2BCustomerLogin(\/(profile|roles|budget))?$/.test(path)) {
           return this.organizationManagementFacade.selectedUser$.pipe(
             whenTruthy(),
             withLatestFrom(this.translateService.get('account.organization.user_management.user_detail.breadcrumb')),
             map(([user, translation]) =>
-              path.endsWith('profile') || path.endsWith('roles')
+              path.endsWith('profile') || path.endsWith('roles') || path.endsWith('budget')
                 ? // edit user detail
                   [
                     { key: 'account.organization.user_management', link: prefix + '/users' },
@@ -43,9 +43,7 @@ export class OrganizationManagementBreadcrumbService {
                       link: `${prefix}/users/${user.login}`,
                     },
                     {
-                      key: path.endsWith('roles')
-                        ? 'account.user.update_role.heading'
-                        : 'account.user.update_profile.heading',
+                      key: `account.user.update_${path.substr(path.lastIndexOf('/') + 1)}.heading`,
                     },
                   ]
                 : // user detail

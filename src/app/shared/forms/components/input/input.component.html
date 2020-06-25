@@ -3,19 +3,25 @@
     >{{ label | translate }}<span *ngIf="required" class="required">*</span>
   </label>
   <div [ngClass]="inputClass">
-    <input
-      [type]="type"
-      class="form-control"
-      [id]="uuid"
-      [formControlName]="controlName"
-      [attr.data-testing-id]="controlName"
-      [maxlength]="maxlength"
-      [attr.autocomplete]="calculatedAutocomplete"
-      [min]="min || (min === 0 ? 0 : '')"
-      [max]="max || ''"
-      [placeholder]="placeholder | translate"
-      [attr.disabled]="disAbled"
-    />
+    <div [ngClass]="{ 'input-group': !!prepend }">
+      <div *ngIf="!!prepend" class="input-group-prepend">
+        <span class="input-group-text">{{ prepend }}</span>
+      </div>
+
+      <input
+        [type]="type"
+        class="form-control"
+        [id]="uuid"
+        [formControlName]="controlName"
+        [attr.data-testing-id]="controlName"
+        [maxlength]="maxlength"
+        [attr.autocomplete]="calculatedAutocomplete"
+        [min]="min || (min === 0 ? 0 : '')"
+        [max]="max || ''"
+        [placeholder]="placeholder | translate"
+        [attr.disabled]="disAbled"
+      />
+    </div>
     <ng-content></ng-content>
     <ish-form-control-feedback [messages]="errorMessages" [control]="formControl"></ish-form-control-feedback>
   </div>

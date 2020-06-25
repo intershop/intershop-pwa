@@ -9,6 +9,7 @@ import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
 import { B2bRoleData } from '../../models/b2b-role/b2b-role.interface';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
+import { UserBudgets } from '../../models/user-budgets/user-budgets.model';
 
 import { UsersService } from './users.service';
 
@@ -118,5 +119,34 @@ describe('Users Service', () => {
       `);
       done();
     });
+  });
+
+  it('should put the budgets onto user when calling setUserBudgets', done => {
+    when(apiService.put(anyString(), anything())).thenReturn(of({}));
+
+    usersService
+      .setUserBudgets('pmiller@test.intershop.de', {
+        orderSpentLimit: undefined,
+        budget: { value: 2000, currency: 'USD' },
+        budgetPeriod: 'monthly',
+      } as UserBudgets)
+      .subscribe(data => {
+        expect(data).toMatchInlineSnapshot(`Object {}`);
+        verify(apiService.put(anything(), anything())).once();
+        expect(capture(apiService.put).last()).toMatchInlineSnapshot(`
+          Array [
+            "customers/4711/users/pmiller@test.intershop.de/budgets",
+            Object {
+              "budget": Object {
+                "currency": "USD",
+                "value": 2000,
+              },
+              "budgetPeriod": "monthly",
+              "orderSpentLimit": undefined,
+            },
+          ]
+        `);
+        done();
+      });
   });
 });
