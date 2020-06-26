@@ -18,8 +18,10 @@ By default the `production` configuration is built.
 
 ## Running
 
-Overwriting configurations of the PWA is entirely done by environment properties.
+Overwriting configurations of the PWA is entirely done by environment variables.
 We chose this approach to have the best compatibility with running the PWA from the command line or in an orchestrator.
+
+To [set environment variables in windows](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/set_1) just run for example `set SSR_HYBRID=true` on the command line before the `npm run` commands.
 
 If the format is _any_, then the environment variable just has to be set to any value to be active.
 Setting it to `"false"` still counts as active.
