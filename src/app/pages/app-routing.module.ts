@@ -61,6 +61,7 @@ const routes: Routes = [
         title: 'application.recentlyViewed.heading',
         robots: 'noindex, nofollow',
       },
+      breadcrumbData: [{ key: 'application.recentlyViewed.breadcrumb.label' }],
     },
   },
   {
@@ -142,6 +143,7 @@ const routes: Routes = [
         title: 'helpdesk.contact_us.heading',
         robots: 'index, nofollow',
       },
+      breadcrumbData: [{ key: 'helpdesk.contact_us.link' }],
     },
   },
 ];

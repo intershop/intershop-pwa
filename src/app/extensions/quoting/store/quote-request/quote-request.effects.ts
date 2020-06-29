@@ -26,7 +26,7 @@ import {
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
-import { selectRouteParam } from 'ish-core/store/core/router';
+import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { getCurrentBasket } from 'ish-core/store/customer/basket';
 import { getUserAuthorized, loadCompanyUserSuccess } from 'ish-core/store/customer/user';
@@ -452,6 +452,7 @@ export class QuoteRequestEffects {
 
   setQuoteRequestBreadcrumb$ = createEffect(() =>
     this.store.pipe(
+      ofUrl(/^\/account\/.*/),
       select(getSelectedQuoteRequest),
       whenTruthy(),
       withLatestFrom(this.translateService.get('quote.edit.unsubmitted.quote_request_details.text')),

@@ -3,11 +3,14 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
+import { Category } from 'ish-core/models/category/category.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { Product } from 'ish-core/models/product/product.model';
+import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { loadCategorySuccess } from 'ish-core/store/shopping/categories';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
+import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import {
   loadProduct,
@@ -20,7 +23,14 @@ import {
   loadProductVariationsSuccess,
   loadRetailSetSuccess,
 } from './products.actions';
-import { getProduct, getProductEntities, getProductLinks, getProducts, getSelectedProduct } from './products.selectors';
+import {
+  getBreadcrumbForProductPage,
+  getProduct,
+  getProductEntities,
+  getProductLinks,
+  getProducts,
+  getSelectedProduct,
+} from './products.selectors';
 
 describe('Products Selectors', () => {
   let store$: StoreWithSnapshots;
@@ -29,7 +39,7 @@ describe('Products Selectors', () => {
   let prod: Product;
 
   beforeEach(() => {
-    prod = { sku: 'sku' } as Product;
+    prod = { sku: 'sku', completenessLevel: ProductCompletenessLevel.Detail, name: 'product' } as Product;
 
     @Component({ template: 'dummy' })
     class DummyComponent {}
@@ -101,6 +111,10 @@ describe('Products Selectors', () => {
       it('should not select the irrelevant product when used', () => {
         expect(getSelectedProduct(store$.state)).toBeUndefined();
       });
+
+      it('should not have a breadcrumb when no product is selected', () => {
+        expect(getBreadcrumbForProductPage(store$.state)).toBeUndefined();
+      });
     });
 
     describe('with product route', () => {
@@ -115,6 +129,98 @@ describe('Products Selectors', () => {
 
       it('should select the selected product when used', () => {
         expect(getSelectedProduct(store$.state)).toHaveProperty('sku', prod.sku);
+      });
+
+      it('should generate a breadcrumb when product is selected', () => {
+        expect(getBreadcrumbForProductPage(store$.state)).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "link": undefined,
+              "text": "product",
+            },
+          ]
+        `);
+      });
+
+      describe('with category', () => {
+        beforeEach(() => {
+          store$.dispatch(
+            loadCategorySuccess({
+              categories: categoryTree([{ uniqueId: 'A', name: 'nA', categoryPath: ['A'] }] as Category[]),
+            })
+          );
+          store$.dispatch(
+            loadCategorySuccess({
+              categories: categoryTree([{ uniqueId: 'B', name: 'nB', categoryPath: ['B'] }] as Category[]),
+            })
+          );
+        });
+
+        describe('as default category', () => {
+          beforeEach(() => {
+            store$.dispatch(loadProductSuccess({ product: { ...prod, defaultCategoryId: 'A' } }));
+          });
+
+          it('should generate a breadcrumb with default category when product is selected', () => {
+            expect(getBreadcrumbForProductPage(store$.state)).toMatchInlineSnapshot(`
+            Array [
+              Object {
+                "link": "/nA-catA",
+                "text": "nA",
+              },
+              Object {
+                "link": undefined,
+                "text": "product",
+              },
+            ]
+          `);
+          });
+        });
+
+        describe('as selected category', () => {
+          beforeEach(fakeAsync(() => {
+            router.navigateByUrl('/product;sku=sku;categoryUniqueId=B');
+            tick(500);
+          }));
+
+          it('should generate a breadcrumb with selected category when product is selected', () => {
+            expect(getBreadcrumbForProductPage(store$.state)).toMatchInlineSnapshot(`
+            Array [
+              Object {
+                "link": "/nB-catB",
+                "text": "nB",
+              },
+              Object {
+                "link": undefined,
+                "text": "product",
+              },
+            ]
+          `);
+          });
+        });
+
+        describe('both selected and default', () => {
+          beforeEach(fakeAsync(() => {
+            store$.dispatch(loadProductSuccess({ product: { ...prod, defaultCategoryId: 'A' } }));
+            router.navigateByUrl('/product;sku=sku;categoryUniqueId=B');
+            tick(500);
+          }));
+
+          it('should generate a breadcrumb with selected category even if product has default category when product is selected', () => {
+            expect(getBreadcrumbForProductPage(store$.state)).toMatchInlineSnapshot(`
+            Array [
+              Object {
+                "link": "/nB-catB",
+                "text": "nB",
+              },
+              Object {
+                "link": undefined,
+                "text": "product",
+              },
+            ]
+          `);
+          });
+        });
       });
     });
   });
@@ -215,7 +321,7 @@ describe('Products Selectors', () => {
       store$.dispatch(loadProductSuccess({ product: { sku: 'SKU3', name: 'sku3' } as Product }));
     });
 
-    it('should select various products on entites selector', () => {
+    it('should select various products on entities selector', () => {
       expect(getProductEntities(store$.state)).toHaveProperty('SKU1');
       expect(getProductEntities(store$.state)).toHaveProperty('SKU2');
       expect(getProductEntities(store$.state)).toHaveProperty('SKU3');

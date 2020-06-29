@@ -1,8 +1,10 @@
-import { createSelector } from '@ngrx/store';
-import { memoize } from 'lodash-es';
+import { Dictionary } from '@ngrx/entity';
+import { createSelector, createSelectorFactory, defaultMemoize } from '@ngrx/store';
+import { isEqual, memoize } from 'lodash-es';
 
 import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
-import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
+import { CategoryView, createCategoryView } from 'ish-core/models/category-view/category-view.model';
+import { Category } from 'ish-core/models/category/category.model';
 import { ProductLinks, ProductLinksView } from 'ish-core/models/product-links/product-links.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import {
@@ -13,9 +15,10 @@ import {
   createVariationProductMasterView,
   createVariationProductView,
 } from 'ish-core/models/product-view/product-view.model';
-import { Product, ProductHelper } from 'ish-core/models/product/product.model';
+import { Product, ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
+import { generateCategoryUrl } from 'ish-core/routing/category/category.route';
 import { selectRouteParam } from 'ish-core/store/core/router';
-import { getCategoryTree } from 'ish-core/store/shopping/categories';
+import { getCategoryEntities, getCategoryTree, getSelectedCategory } from 'ish-core/store/shopping/categories';
 import { getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
 import { productAdapter } from './products.reducer';
@@ -136,4 +139,23 @@ export const getProductLinks = createSelector(
           };
           return acc;
         }, {})
+);
+
+export const getBreadcrumbForProductPage = createSelectorFactory(projector =>
+  defaultMemoize(projector, undefined, isEqual)
+)(
+  getSelectedProduct,
+  getSelectedCategory,
+  getCategoryEntities,
+  (product: ProductView, category: CategoryView, entities: Dictionary<Category>) =>
+    ProductHelper.isSufficientlyLoaded(product, ProductCompletenessLevel.Detail)
+      ? (category?.categoryPath || product.defaultCategory()?.categoryPath || [])
+          .map(id => entities[id])
+          .filter(x => !!x)
+          .map(cat => ({
+            text: cat.name,
+            link: generateCategoryUrl(cat),
+          }))
+          .concat([{ text: product.name, link: undefined }])
+      : undefined
 );

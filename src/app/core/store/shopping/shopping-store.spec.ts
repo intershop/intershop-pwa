@@ -58,14 +58,15 @@ describe('Shopping Store', () => {
     @Component({ template: 'dummy' })
     class DummyComponent {}
 
-    const catA = { uniqueId: 'A', categoryPath: ['A'] } as Category;
-    const catA123 = { uniqueId: 'A.123', categoryPath: ['A', 'A.123'] } as Category;
+    const catA = { uniqueId: 'A', categoryPath: ['A'], name: 'nA' } as Category;
+    const catA123 = { uniqueId: 'A.123', categoryPath: ['A', 'A.123'], name: 'nA123' } as Category;
     const catA123456 = {
       uniqueId: 'A.123.456',
       categoryPath: ['A', 'A.123', 'A.123.456'],
       hasOnlineProducts: true,
+      name: 'nA123456',
     } as Category;
-    const catB = { uniqueId: 'B', categoryPath: ['B'] } as Category;
+    const catB = { uniqueId: 'B', categoryPath: ['B'], name: 'nB' } as Category;
 
     const promotion = {
       id: 'PROMO_UUID',
@@ -119,7 +120,7 @@ describe('Shopping Store', () => {
     productsServiceMock = mock(ProductsService);
     when(productsServiceMock.getProduct(anyString())).thenCall(sku => {
       if (['P1', 'P2'].find(x => x === sku)) {
-        return of({ sku });
+        return of({ sku, name: 'n' + sku });
       } else {
         return throwError({ message: `error loading product ${sku}` });
       }
@@ -269,6 +270,8 @@ describe('Shopping Store', () => {
             categories: tree(A.123,A.123.456)
           [Categories Internal] Load Category:
             categoryId: "A"
+          [Viewconf Internal] Set Breadcrumb Data:
+            breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123"}]
           [Categories API] Load Category Success:
             categories: tree(A,A.123)
           @ngrx/router-store/navigated:
@@ -315,6 +318,8 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigation:
             routerState: {"url":"/search/something","params":{"searchTerm":"something...
             event: {"id":2,"url":"/search/something"}
+          [Viewconf Internal] Set Breadcrumb Data:
+            breadcrumbData: [{"text":"search.breadcrumbs.your_search.label something"}]
           @ngrx/router-store/navigated:
             routerState: {"url":"/search/something","params":{"searchTerm":"something...
             event: {"id":2,"url":"/search/something"}
@@ -366,7 +371,7 @@ describe('Shopping Store', () => {
               sku: "P2"
               group: undefined
             [Products API] Load Product Success:
-              product: {"sku":"P2"}
+              product: {"sku":"P2","name":"nP2"}
             @ngrx/router-store/navigated:
               routerState: {"url":"/product/P2","params":{"sku":"P2"},"queryParams":{},...
               event: {"id":3,"url":"/product/P2"}
@@ -402,8 +407,12 @@ describe('Shopping Store', () => {
           categories: tree(A.123,A.123.456)
         [Categories Internal] Load Category:
           categoryId: "A"
+        [Viewconf Internal] Set Breadcrumb Data:
+          breadcrumbData: [{"text":"nA123"}]
         [Categories API] Load Category Success:
           categories: tree(A,A.123)
+        [Viewconf Internal] Set Breadcrumb Data:
+          breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123"}]
         @ngrx/router-store/navigated:
           routerState: {"url":"/category/A.123","params":{"categoryUniqueId":"A.123...
           event: {"id":1,"url":"/category/A.123"}
@@ -476,12 +485,16 @@ describe('Shopping Store', () => {
           categoryId: "A"
         [Categories Internal] Load Category:
           categoryId: "A.123"
+        [Viewconf Internal] Set Breadcrumb Data:
+          breadcrumbData: [{"text":"nA123456"}]
         [Categories API] Load Category Success:
           categories: tree(A,A.123)
         [Categories API] Load Category Success:
           categories: tree(A.123,A.123.456)
         [Categories Internal] Load Category:
           categoryId: "A.123"
+        [Viewconf Internal] Set Breadcrumb Data:
+          breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123","link":"/nA...
         [Categories API] Load Category Success:
           categories: tree(A.123,A.123.456)
         @ngrx/router-store/navigated:
@@ -545,7 +558,7 @@ describe('Shopping Store', () => {
             sku: "P1"
             group: undefined
           [Products API] Load Product Success:
-            product: {"sku":"P1"}
+            product: {"sku":"P1","name":"nP1"}
           @ngrx/router-store/navigated:
             routerState: {"url":"/category/A.123.456/product/P1","params":{"categoryU...
             event: {"id":2,"url":"/category/A.123.456/product/P1"}
@@ -594,6 +607,8 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigation:
             routerState: {"url":"/search/something","params":{"searchTerm":"something...
             event: {"id":2,"url":"/search/something"}
+          [Viewconf Internal] Set Breadcrumb Data:
+            breadcrumbData: [{"text":"search.breadcrumbs.your_search.label something"}]
           @ngrx/router-store/navigated:
             routerState: {"url":"/search/something","params":{"searchTerm":"something...
             event: {"id":2,"url":"/search/something"}
@@ -708,7 +723,7 @@ describe('Shopping Store', () => {
         [Categories API] Load Category Success:
           categories: tree(A.123.456)
         [Products API] Load Product Success:
-          product: {"sku":"P1"}
+          product: {"sku":"P1","name":"nP1"}
         [Categories Internal] Load Category:
           categoryId: "A"
         [Categories Internal] Load Category:
@@ -759,6 +774,8 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigation:
             routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
             event: {"id":2,"url":"/category/A.123.456"}
+          [Viewconf Internal] Set Breadcrumb Data:
+            breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123","link":"/nA...
           [Product Listing] Load More Products:
             id: {"type":"category","value":"A.123.456"}
           [Product Listing Internal] Load More Products For Params:
@@ -853,7 +870,7 @@ describe('Shopping Store', () => {
         [Products Internal] Load Product:
           sku: "P1"
         [Products API] Load Product Success:
-          product: {"sku":"P1"}
+          product: {"sku":"P1","name":"nP1"}
         [Recently Viewed Internal] Add Product to Recently:
           sku: "P1"
           group: undefined
@@ -1036,6 +1053,8 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigation:
           routerState: {"url":"/search/something","params":{"searchTerm":"something...
           event: {"id":1,"url":"/search/something"}
+        [Viewconf Internal] Set Breadcrumb Data:
+          breadcrumbData: [{"text":"search.breadcrumbs.your_search.label something"}]
         @ngrx/router-store/navigated:
           routerState: {"url":"/search/something","params":{"searchTerm":"something...
           event: {"id":1,"url":"/search/something"}

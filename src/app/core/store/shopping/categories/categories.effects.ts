@@ -20,6 +20,7 @@ import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { ofCategoryUrl } from 'ish-core/routing/category/category.route';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { selectRouteParam } from 'ish-core/store/core/router';
+import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { loadMoreProducts } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import { mapErrorToAction, mapToPayloadProperty, mapToProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
@@ -32,7 +33,12 @@ import {
   loadTopLevelCategoriesFail,
   loadTopLevelCategoriesSuccess,
 } from './categories.actions';
-import { getCategoryEntities, getSelectedCategory, isTopLevelCategoriesLoaded } from './categories.selectors';
+import {
+  getBreadcrumbForCategoryPage,
+  getCategoryEntities,
+  getSelectedCategory,
+  isTopLevelCategoriesLoaded,
+} from './categories.selectors';
 
 @Injectable()
 export class CategoriesEffects {
@@ -133,5 +139,14 @@ export class CategoriesEffects {
         tap(() => this.httpStatusCodeService.setStatusAndRedirect(404))
       ),
     { dispatch: false }
+  );
+
+  setBreadcrumbForCategoryPage$ = createEffect(() =>
+    this.store.pipe(
+      ofCategoryUrl(),
+      select(getBreadcrumbForCategoryPage),
+      whenTruthy(),
+      map(breadcrumbData => setBreadcrumbData({ breadcrumbData }))
+    )
   );
 }
