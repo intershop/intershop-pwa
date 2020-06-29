@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
-import { CustomValidators } from 'ng2-validation';
+import { CustomValidators } from 'ngx-custom-validators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
