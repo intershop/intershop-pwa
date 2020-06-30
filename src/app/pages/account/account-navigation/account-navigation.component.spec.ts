@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
+import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 
@@ -20,6 +21,7 @@ describe('Account Navigation Component', () => {
     TestBed.configureTestingModule({
       declarations: [AccountNavigationComponent],
       imports: [
+        AuthorizationToggleModule.forTesting('APP_B2B_MANAGE_USERS'),
         FeatureToggleModule.forTesting('quoting', 'orderTemplates'),
         RouterTestingModule,
         TranslateModule.forRoot(),

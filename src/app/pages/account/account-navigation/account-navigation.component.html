@@ -1,25 +1,26 @@
 <ng-container *ngIf="!isMobileView; else mobileNavigation">
   <ul class="account-navigation list-unstyled" data-testing-id="myaccount-navigation">
     <ng-container *ngFor="let item of navigationItems | keyvalue: unsorted; let first = first">
-      <li
-        *ishFeature="item.value.feature || 'always'"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: first }"
-      >
-        <a [routerLink]="item.key" [attr.data-testing-id]="item.value.dataTestingId">{{
-          item.value.localizationKey | translate
-        }}</a>
-      </li>
+      <ng-container *ishIsAuthorizedTo="item.value.permission || 'always'">
+        <li
+          *ishFeature="item.value.feature || 'always'"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: first }"
+        >
+          <a [routerLink]="item.key" [attr.data-testing-id]="item.value.dataTestingId">{{
+            item.value.localizationKey | translate
+          }}</a>
+        </li>
+      </ng-container>
       <ul *ngIf="item.value.children" class="account-navigation list-unstyled">
         <ng-container *ngFor="let subItem of item.value.children | keyvalue: unsorted">
-          <li>
-            <a
-              *ishFeature="subItem.value.feature || 'always'"
-              [routerLink]="item.key + subItem.key"
-              [attr.data-testing-id]="subItem.value.dataTestingId"
-              >{{ subItem.value.localizationKey | translate }}</a
-            >
-          </li>
+          <ng-container *ishIsAuthorizedTo="item.value.permission || 'always'">
+            <li *ishFeature="subItem.value.feature || 'always'">
+              <a [routerLink]="item.key + subItem.key" [attr.data-testing-id]="subItem.value.dataTestingId">{{
+                subItem.value.localizationKey | translate
+              }}</a>
+            </li>
+          </ng-container>
         </ng-container>
       </ul>
     </ng-container>
@@ -29,13 +30,15 @@
 <ng-template #mobileNavigation>
   <select (change)="navigateTo($event.target.value)" class="form-control">
     <ng-container *ngFor="let item of navigationItems | keyvalue: unsorted">
-      <option
-        *ishFeature="item.value.feature || 'always'"
-        [value]="item.key"
-        [attr.selected]="item.value.link === currentPath ? 'selected' : undefined"
-      >
-        {{ item.value.localizationKey | translate }}
-      </option>
+      <ng-container *ishIsAuthorizedTo="item.value.permission || 'always'">
+        <option
+          *ishFeature="item.value.feature || 'always'"
+          [value]="item.key"
+          [attr.selected]="item.value.link === currentPath ? 'selected' : undefined"
+        >
+          {{ item.value.localizationKey | translate }}
+        </option>
+      </ng-container>
     </ng-container>
   </select>
 </ng-template>
