@@ -30,31 +30,7 @@ export class AccountNavigationComponent implements OnInit, OnChanges, OnDestroy 
   /**
    * Manages the Account Navigation items.
    */
-  navigationItems: NavigationItems = {
-    '/account': { localizationKey: 'account.my_account.link' },
-    '/account/orders': { localizationKey: 'account.order_history.link' },
-    '/account/wishlists': {
-      localizationKey: 'account.wishlists.link',
-      feature: 'wishlists',
-      dataTestingId: 'wishlists-link',
-    },
-    '/account/order-templates': {
-      localizationKey: 'account.ordertemplates.link',
-      feature: 'orderTemplates',
-      dataTestingId: 'order-templates-link',
-    },
-    '/account/payment': { localizationKey: 'account.payment.link', dataTestingId: 'payments-link' },
-    '/account/addresses': { localizationKey: 'account.saved_addresses.link', dataTestingId: 'addresses-link' },
-    '/account/profile': { localizationKey: 'account.profile.link' },
-    '/account/quotes': { localizationKey: 'account.navigation.quotes.link', feature: 'quoting' },
-    /* TODO: organize as sub menu
-      '/account/organization': {
-      localizationKey: 'My Organization',
-      children: { '/users': { localizationKey: 'account.organization.user_management' } },
-    },*/
-    '/account/organization': { localizationKey: 'account.organization.user_management' },
-    '/logout': { localizationKey: 'account.navigation.logout.link' },
-  };
+  navigationItems: NavigationItems;
 
   constructor(private router: Router, private accountFacade: AccountFacade) {}
 
@@ -81,6 +57,11 @@ export class AccountNavigationComponent implements OnInit, OnChanges, OnDestroy 
         localizationKey: 'account.wishlists.link',
         feature: 'wishlists',
         dataTestingId: 'wishlists-link',
+      },
+      '/account/order-templates': {
+        localizationKey: 'account.ordertemplates.link',
+        feature: 'orderTemplates',
+        dataTestingId: 'order-templates-link',
       },
       '/account/payment': { localizationKey: 'account.payment.link', dataTestingId: 'payments-link' },
       '/account/addresses': { localizationKey: 'account.saved_addresses.link', dataTestingId: 'addresses-link' },

@@ -19,7 +19,11 @@ describe('Account Navigation Component', () => {
     accountFacadeMock = mock(AccountFacade);
     TestBed.configureTestingModule({
       declarations: [AccountNavigationComponent],
-      imports: [FeatureToggleModule.forTesting('quoting'), RouterTestingModule, TranslateModule.forRoot()],
+      imports: [
+        FeatureToggleModule.forTesting('quoting', 'orderTemplates'),
+        RouterTestingModule,
+        TranslateModule.forRoot(),
+      ],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacadeMock) }],
     }).compileComponents();
 
@@ -41,5 +45,15 @@ describe('Account Navigation Component', () => {
   it('should display link to quote list', () => {
     fixture.detectChanges();
     expect(element.textContent).toContain('account.navigation.quotes.link');
+  });
+
+  it('should display link to order templates list', () => {
+    fixture.detectChanges();
+    expect(element.textContent).toContain('account.ordertemplates.link');
+  });
+
+  it('should display link to user list', () => {
+    fixture.detectChanges();
+    expect(element.textContent).toContain('account.organization.user_management');
   });
 });
