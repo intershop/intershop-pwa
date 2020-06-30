@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AuthorizationToggleGuard } from 'ish-core/authorization-toggle.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { AccountOverviewPageModule } from '../account-overview/account-overview-page.module';
@@ -67,6 +68,10 @@ const accountPageRoutes: Routes = [
       {
         path: 'organization',
         loadChildren: () => import('organization-management').then(m => m.OrganizationManagementModule),
+        canActivate: [AuthorizationToggleGuard],
+        data: {
+          permission: 'APP_B2B_MANAGE_USERS',
+        },
       },
     ],
   },
