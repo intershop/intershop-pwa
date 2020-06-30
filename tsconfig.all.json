@@ -5,5 +5,5 @@
     "outDir": "./out-tsc/all",
     "types": ["jest", "jest-extended", "node"]
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts", "projects/**/*.ts"]
 }

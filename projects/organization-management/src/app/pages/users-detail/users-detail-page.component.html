@@ -1,0 +1,23 @@
+<h1>
+  {{ 'account.user.details.heading' | translate }}
+</h1>
+
+<div *ngIf="user$ | async as user" class="row section">
+  <div class="col-10 col-lg-8">
+    <h3>{{ 'account.user.details.profile.heading' | translate }}</h3>
+    <div class="row">
+      <div class="col-md-12">
+        <dl class="row dl-horizontal dl-separator">
+          <dt class="col-md-4">{{ 'account.user.details.profile.name' | translate }}</dt>
+          <dd data-testing-id="name-field" class="col-md-8">{{ user.firstName }} {{ user.lastName }}</dd>
+          <dt class="col-md-4">{{ 'account.user.details.profile.email' | translate }}</dt>
+          <dd data-testing-id="email-field" class="col-md-8">{{ user.email }}</dd>
+          <dt class="col-md-4" data-testing-id="phone-label">{{ 'account.user.details.profile.phone' | translate }}</dt>
+          <dd *ngIf="user.phoneHome" class="col-md-8">{{ user.phoneHome }}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
+
+<a routerLink="..">{{ 'account.organization.user_management.back_to_list' | translate }}</a>

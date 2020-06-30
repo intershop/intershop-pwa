@@ -177,6 +177,52 @@
           }
         }
       }
+    },
+    "organization-management": {
+      "projectType": "application",
+      "cli": {
+        "defaultCollection": "intershop-schematics"
+      },
+      "schematics": {
+        "intershop-schematics:page": {
+          "lazy": false
+        }
+      },
+      "root": "projects/organization-management",
+      "sourceRoot": "projects/organization-management/src",
+      "prefix": "ish",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/organization-management",
+            "index": "projects/organization-management/src/index.html",
+            "main": "projects/organization-management/src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "projects/organization-management/tsconfig.app.json",
+            "aot": false,
+            "styles": ["src/styles/themes/default/style.scss"],
+            "assets": [
+              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
+            ],
+            "scripts": [],
+            "fileReplacements": [
+              {
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.local.ts"
+              }
+            ]
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "organization-management:build",
+            "disableHostCheck": true,
+            "host": "0.0.0.0"
+          }
+        }
+      }
     }
   },
   "defaultProject": "intershop-pwa",

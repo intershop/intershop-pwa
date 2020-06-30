@@ -1,5 +1,5 @@
 <ng-container *ngIf="!isMobileView; else mobileNavigation">
-  <ul id="AccountNav" class="account-navigation list-unstyled" data-testing-id="myaccount-navigation">
+  <ul class="account-navigation list-unstyled" data-testing-id="myaccount-navigation">
     <ng-container *ngFor="let item of navigationItems | keyvalue: unsorted; let first = first">
       <li
         *ishFeature="item.value.feature || 'always'"
@@ -10,6 +10,18 @@
           item.value.localizationKey | translate
         }}</a>
       </li>
+      <ul *ngIf="item.value.children" class="account-navigation list-unstyled">
+        <ng-container *ngFor="let subItem of item.value.children | keyvalue: unsorted">
+          <li>
+            <a
+              *ishFeature="subItem.value.feature || 'always'"
+              [routerLink]="item.key + subItem.key"
+              [attr.data-testing-id]="subItem.value.dataTestingId"
+              >{{ subItem.value.localizationKey | translate }}</a
+            >
+          </li>
+        </ng-container>
+      </ul>
     </ng-container>
   </ul>
 </ng-container>

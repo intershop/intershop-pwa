@@ -1,0 +1,22 @@
+<h1>
+  {{ 'account.organization.user_management' | translate }}
+</h1>
+
+<ish-error-message [error]="error$ | async"></ish-error-message>
+
+<div class="section">
+  <div class="list-body" data-testing-id="user-list">
+    <ng-container *ngFor="let user of users$ | async">
+      <div *ngIf="user" class="list-item-row row mx-0">
+        <div class="col-9 list-item">
+          <a [routerLink]="[user.login]">{{ user.name }}</a>
+        </div>
+        <div class="col-3 list-item text-right">
+          <!---TODO: Delete user-->
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<ish-loading *ngIf="loading$ | async"></ish-loading>
