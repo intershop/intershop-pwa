@@ -8,6 +8,7 @@ import { AccountOverviewPageModule } from '../account-overview/account-overview-
 
 import { AccountNavigationComponent } from './account-navigation/account-navigation.component';
 import { AccountPageComponent } from './account-page.component';
+import { AccountUserInfoComponent } from './account-user-info/account-user-info.component';
 
 const accountPageRoutes: Routes = [
   {
@@ -79,6 +80,6 @@ const accountPageRoutes: Routes = [
 
 @NgModule({
   imports: [AccountOverviewPageModule, RouterModule.forChild(accountPageRoutes), SharedModule],
-  declarations: [AccountNavigationComponent, AccountPageComponent],
+  declarations: [AccountNavigationComponent, AccountPageComponent, AccountUserInfoComponent],
 })
 export class AccountPageModule {}

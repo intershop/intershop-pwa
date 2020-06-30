@@ -1,0 +1,16 @@
+<li *ngIf="isBusinessUser$ | async" class="account-welcome">
+  <ng-container *ngIf="user$ | async as user">
+    <ng-container *ngIf="user.lastName && user.firstName; else email">
+      <h4>{{ user.lastName }}, {{ user.firstName }}</h4>
+    </ng-container>
+    <ng-template #email>
+      <h4 class="ellipsis">{{ user.login }}</h4>
+    </ng-template>
+  </ng-container>
+  <p *ngIf="customer$ | async as customer">
+    <small>{{ customer.companyName }}</small>
+  </p>
+  <p *ngIf="roles$ | async as roles">
+    <small>{{ roles }}</small>
+  </p>
+</li>
