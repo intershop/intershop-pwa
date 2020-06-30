@@ -1,4 +1,4 @@
-import { mapValues, omit } from 'lodash-es';
+import { omit } from 'lodash-es';
 
 import { ServerConfigData, ServerConfigDataEntry } from './server-config.interface';
 import { ServerConfig } from './server-config.model';
@@ -17,19 +17,19 @@ export class ServerConfigMapper {
     return val;
   }
 
-  private static mapEntries(entries: ServerConfigDataEntry[]) {
-    return entries.reduce(
+  private static mapEntries(entries: ServerConfigDataEntry): ServerConfig {
+    return Object.entries(entries).reduce(
       (acc, entry) => ({
         ...acc,
-        [entry.id]: Array.isArray(entry.elements)
-          ? // do recursion if elements array is set
-            ServerConfigMapper.mapEntries(entry.elements)
-          : mapValues(
-              // filter out unnecessary 'id' attribute
-              omit(entry, 'id'),
-              // transform string types to better values
-              ServerConfigMapper.transformType
-            ),
+        [entry[0]]:
+          typeof entry[1] === 'object' && !Array.isArray(entry[1])
+            ? // do recursion if we find an object
+              ServerConfigMapper.mapEntries(
+                // get rid of id
+                omit(entry[1], 'id')
+              )
+            : // improve data quality
+              ServerConfigMapper.transformType(entry[1]),
       }),
       {}
     );
