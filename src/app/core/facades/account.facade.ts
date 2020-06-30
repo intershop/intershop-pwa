@@ -17,6 +17,7 @@ import {
   getAllAddresses,
   loadAddresses,
 } from 'ish-core/store/customer/addresses';
+import { getUserRoles } from 'ish-core/store/customer/authorization';
 import { getOrders, getOrdersLoading, getSelectedOrder, loadOrders } from 'ish-core/store/customer/orders';
 import {
   createUser,
@@ -60,6 +61,7 @@ export class AccountFacade {
   userError$ = this.store.pipe(select(getUserError));
   userLoading$ = this.store.pipe(select(getUserLoading));
   isLoggedIn$ = this.store.pipe(select(getUserAuthorized));
+  roles$ = this.store.pipe(select(getUserRoles));
 
   loginUser(credentials: Credentials) {
     this.store.dispatch(loginUser({ credentials }));

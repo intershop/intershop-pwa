@@ -1,5 +1,6 @@
 <ng-container *ngIf="!isMobileView; else mobileNavigation">
   <ul class="account-navigation list-unstyled" data-testing-id="myaccount-navigation">
+    <ish-account-user-info></ish-account-user-info>
     <ng-container *ngFor="let item of navigationItems | keyvalue: unsorted; let first = first">
       <ng-container *ishIsAuthorizedTo="item.value.permission || 'always'">
         <li

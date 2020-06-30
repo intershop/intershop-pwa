@@ -1,12 +1,15 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+
+import { AccountUserInfoComponent } from '../account-user-info/account-user-info.component';
 
 import { AccountNavigationComponent } from './account-navigation.component';
 
@@ -19,7 +22,7 @@ describe('Account Navigation Component', () => {
   beforeEach(async(() => {
     accountFacadeMock = mock(AccountFacade);
     TestBed.configureTestingModule({
-      declarations: [AccountNavigationComponent],
+      declarations: [AccountNavigationComponent, MockComponent(AccountUserInfoComponent)],
       imports: [
         AuthorizationToggleModule.forTesting('APP_B2B_MANAGE_USERS'),
         FeatureToggleModule.forTesting('quoting', 'orderTemplates'),
