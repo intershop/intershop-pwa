@@ -2,8 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { Observable } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { CategoryView } from 'ish-core/models/category-view/category-view.model';
-import { Category } from 'ish-core/models/category/category.model';
+import { NavigationCategory } from 'ish-core/models/navigation-category/navigation-category.model';
 
 @Component({
   selector: 'ish-header-navigation',
@@ -13,14 +12,14 @@ import { Category } from 'ish-core/models/category/category.model';
 export class HeaderNavigationComponent implements OnInit {
   @Input() view: 'auto' | 'small' | 'full' = 'auto';
 
-  categories$: Observable<CategoryView[]>;
+  categories$: Observable<NavigationCategory[]>;
 
   openedCategories = [];
 
   constructor(private shoppingFacade: ShoppingFacade) {}
 
   ngOnInit() {
-    this.categories$ = this.shoppingFacade.topLevelCategories$;
+    this.categories$ = this.shoppingFacade.navigationCategories$();
   }
 
   /**
@@ -45,16 +44,16 @@ export class HeaderNavigationComponent implements OnInit {
    * Indicate if specific category is expanded.
    * @param category The category item.
    */
-  isOpened(category: Category): boolean {
-    return this.openedCategories.includes(category.uniqueId);
+  isOpened(uniqueId: string): boolean {
+    return this.openedCategories.includes(uniqueId);
   }
 
   /**
    * Toggle category open state.
    * @param category The category item.
    */
-  toggleOpen(category: Category) {
-    const index = this.openedCategories.findIndex(id => id === category.uniqueId);
-    index > -1 ? this.openedCategories.splice(index, 1) : this.openedCategories.push(category.uniqueId);
+  toggleOpen(uniqueId: string) {
+    const index = this.openedCategories.findIndex(id => id === uniqueId);
+    index > -1 ? this.openedCategories.splice(index, 1) : this.openedCategories.push(uniqueId);
   }
 }

@@ -39,8 +39,8 @@ describe('Category View Model', () => {
     ]);
 
     const view = createCategoryView(tree, '123');
-    expect(view.hasChildren()).toBeFalse();
-    expect(view.children()).toBeEmpty();
+    expect(view.hasChildren).toBeFalse();
+    expect(view.children).toBeEmpty();
   });
 
   const cat1 = {
@@ -60,34 +60,16 @@ describe('Category View Model', () => {
     const tree = categoryTree([cat1, cat11]);
 
     const view = createCategoryView(tree, '123');
-    expect(view.hasChildren()).toBeTrue();
-    expect(view.children()).toHaveLength(1);
+    expect(view.hasChildren).toBeTrue();
+    expect(view.children).toHaveLength(1);
 
-    expect(view.children()[0].uniqueId).toEqual('123.456');
+    expect(view.children[0]).toEqual('123.456');
   });
 
-  it('should provide methods to check if a node in a deep complex tree has children', () => {
-    const tree = categoryTree([cat1, cat11, cat111]);
-
-    const view = createCategoryView(tree, '123');
-    expect(view.hasChildren()).toBeTrue();
-    expect(view.children()).toHaveLength(1);
-
-    const subCategory = view.children()[0];
-    expect(subCategory.uniqueId).toEqual('123.456');
-    expect(subCategory.hasChildren()).toBeTrue();
-    expect(subCategory.children()).toHaveLength(1);
-
-    const subSubCategory = subCategory.children()[0];
-    expect(subSubCategory.uniqueId).toEqual('123.456.789');
-    expect(subSubCategory.hasChildren()).toBeFalse();
-    expect(subSubCategory.children()).toBeEmpty();
-  });
-
-  it('should provide acces to the category path of a category', () => {
+  it('should provide access to the category path of a category', () => {
     const tree = categoryTree([cat1, cat11, cat111]);
     const view = createCategoryView(tree, '123.456.789');
 
-    expect(view.pathCategories().map(v => v.uniqueId)).toEqual(['123', '123.456', '123.456.789']);
+    expect(view.categoryPath).toEqual(['123', '123.456', '123.456.789']);
   });
 });

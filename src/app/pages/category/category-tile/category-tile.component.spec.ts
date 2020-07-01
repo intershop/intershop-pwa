@@ -1,7 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent, MockPipe } from 'ng-mocks';
+import { of } from 'rxjs';
+import { anything, instance, mock, when } from 'ts-mockito';
 
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
 import { CategoryRoutePipe } from 'ish-core/routing/category/category-route.pipe';
@@ -16,10 +19,33 @@ describe('Category Tile Component', () => {
   let fixture: ComponentFixture<CategoryTileComponent>;
   let element: HTMLElement;
 
+  const category = {
+    uniqueId: 'A',
+    categoryPath: ['A'],
+    images: [
+      {
+        name: 'front S',
+        type: 'Image',
+        imageActualHeight: 110,
+        imageActualWidth: 110,
+        viewID: 'front',
+        effectiveUrl: '/assets/product_img/a.jpg',
+        typeID: 'S',
+        primaryImage: false,
+      },
+    ],
+  } as Category;
+
   beforeEach(async(() => {
+    const shoppingFacade = mock(ShoppingFacade);
+    when(shoppingFacade.category$(anything())).thenReturn(
+      of(createCategoryView(categoryTree([category]), category.uniqueId))
+    );
+
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [CategoryTileComponent, MockComponent(CategoryImageComponent), MockPipe(CategoryRoutePipe)],
+      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
   }));
 
@@ -27,24 +53,6 @@ describe('Category Tile Component', () => {
     fixture = TestBed.createComponent(CategoryTileComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    const category = {
-      uniqueId: 'A',
-      categoryPath: ['A'],
-      images: [
-        {
-          name: 'front S',
-          type: 'Image',
-          imageActualHeight: 110,
-          imageActualWidth: 110,
-          viewID: 'front',
-          effectiveUrl: '/assets/product_img/a.jpg',
-          typeID: 'S',
-          primaryImage: false,
-        },
-      ],
-    } as Category;
-    component.category = createCategoryView(categoryTree([category]), category.uniqueId);
-    fixture.detectChanges();
   });
 
   it('should be created', () => {

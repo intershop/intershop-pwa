@@ -20,10 +20,11 @@ import {
 } from './categories.actions';
 import {
   getBreadcrumbForCategoryPage,
+  getCategory,
   getCategoryEntities,
   getCategoryLoading,
+  getNavigationCategories,
   getSelectedCategory,
-  getTopLevelCategories,
   isTopLevelCategoriesLoaded,
 } from './categories.selectors';
 
@@ -75,10 +76,10 @@ describe('Categories Selectors', () => {
 
     it('should not select any selected category when used', () => {
       expect(getSelectedCategory(store$.state)).toBeUndefined();
+      expect(getCategory(catA.uniqueId)(store$.state)).toBeUndefined();
     });
 
-    it('should not select any top level categories when used', () => {
-      expect(getTopLevelCategories(store$.state)).toBeEmpty();
+    it('should not have any top level categories loaded when used', () => {
       expect(isTopLevelCategoriesLoaded(store$.state)).toBeFalse();
     });
   });
@@ -125,6 +126,7 @@ describe('Categories Selectors', () => {
       it('should return the category information when used', () => {
         expect(getCategoryEntities(store$.state)).toHaveProperty(catA.uniqueId);
         expect(getCategoryLoading(store$.state)).toBeFalse();
+        expect(getCategory(catA.uniqueId)(store$.state).uniqueId).toEqual(catA.uniqueId);
       });
 
       it('should not select the irrelevant category when used', () => {
@@ -145,6 +147,7 @@ describe('Categories Selectors', () => {
       it('should return the category information when used', () => {
         expect(getCategoryEntities(store$.state)).toHaveProperty(catA.uniqueId);
         expect(getCategoryLoading(store$.state)).toBeFalse();
+        expect(getCategory(catA.uniqueId)(store$.state).uniqueId).toEqual(catA.uniqueId);
       });
 
       it('should select the selected category when used', () => {
@@ -192,22 +195,80 @@ describe('Categories Selectors', () => {
 
   describe('loading top level categories', () => {
     beforeEach(() => {
-      store$.dispatch(
-        loadTopLevelCategoriesSuccess({
-          categories: categoryTree([
-            { uniqueId: 'A', categoryPath: ['A'] },
-            { uniqueId: 'B', categoryPath: ['B'] },
-          ] as Category[]),
-        })
-      );
-    });
-
-    it('should select root categories when used', () => {
-      expect(getTopLevelCategories(store$.state).map(x => x.uniqueId)).toEqual(['A', 'B']);
+      const cA = { name: 'name_A', uniqueId: 'A', categoryPath: ['A'] } as Category;
+      const cA1 = { name: 'name_A.1', uniqueId: 'A.1', categoryPath: ['A', 'A.1'] } as Category;
+      const cA1a = { name: 'name_A.1.a', uniqueId: 'A.1.a', categoryPath: ['A', 'A.1', 'A.1.a'] } as Category;
+      const cA1b = { name: 'name_A.1.b', uniqueId: 'A.1.b', categoryPath: ['A', 'A.1', 'A.1.b'] } as Category;
+      const cA2 = { name: 'name_A.2', uniqueId: 'A.2', categoryPath: ['A', 'A.2'] } as Category;
+      const cB = { name: 'name_B', uniqueId: 'B', categoryPath: ['B'] } as Category;
+      store$.dispatch(loadTopLevelCategoriesSuccess({ categories: categoryTree([cA, cA1, cA1a, cA1b, cA2, cB]) }));
     });
 
     it('should remember if top level categories are loaded', () => {
       expect(isTopLevelCategoriesLoaded(store$.state)).toBeTrue();
+    });
+
+    describe('selecting navigation categories', () => {
+      it('should select top level categories when no argument was supplied', () => {
+        expect(getNavigationCategories(undefined)(store$.state)).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "hasChildren": true,
+              "name": "name_A",
+              "uniqueId": "A",
+              "url": "/name_A-catA",
+            },
+            Object {
+              "hasChildren": false,
+              "name": "name_B",
+              "uniqueId": "B",
+              "url": "/name_B-catB",
+            },
+          ]
+        `);
+      });
+
+      it('should select sub categories when sub category is selected', () => {
+        expect(getNavigationCategories('A')(store$.state)).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "hasChildren": true,
+              "name": "name_A.1",
+              "uniqueId": "A.1",
+              "url": "/name_A.1-catA.1",
+            },
+            Object {
+              "hasChildren": false,
+              "name": "name_A.2",
+              "uniqueId": "A.2",
+              "url": "/name_A.2-catA.2",
+            },
+          ]
+        `);
+      });
+
+      it('should select deeper sub categories when deeper sub category is selected', () => {
+        expect(getNavigationCategories('A.1')(store$.state)).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "hasChildren": false,
+              "name": "name_A.1.a",
+              "uniqueId": "A.1.a",
+              "url": "/name_A.1.a-catA.1.a",
+            },
+            Object {
+              "hasChildren": false,
+              "name": "name_A.1.b",
+              "uniqueId": "A.1.b",
+              "url": "/name_A.1.b-catA.1.b",
+            },
+          ]
+        `);
+      });
+
+      it('should be empty when selecting leaves', () => {
+        expect(getNavigationCategories('A.1.a')(store$.state)).toBeEmpty();
+      });
     });
   });
 });

@@ -491,12 +491,8 @@ describe('Shopping Store', () => {
           categories: tree(A,A.123)
         [Categories API] Load Category Success:
           categories: tree(A.123,A.123.456)
-        [Categories Internal] Load Category:
-          categoryId: "A.123"
         [Viewconf Internal] Set Breadcrumb Data:
           breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123","link":"/nA...
-        [Categories API] Load Category Success:
-          categories: tree(A.123,A.123.456)
         @ngrx/router-store/navigated:
           routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
           event: {"id":1,"url":"/category/A.123.456"}
@@ -733,10 +729,6 @@ describe('Shopping Store', () => {
           group: undefined
         [Categories API] Load Category Success:
           categories: tree(A,A.123)
-        [Categories API] Load Category Success:
-          categories: tree(A.123,A.123.456)
-        [Categories Internal] Load Category:
-          categoryId: "A.123"
         [Categories API] Load Category Success:
           categories: tree(A.123,A.123.456)
         @ngrx/router-store/navigated:
