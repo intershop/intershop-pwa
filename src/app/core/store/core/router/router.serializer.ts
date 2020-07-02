@@ -13,10 +13,18 @@ export class CustomRouterSerializer implements RouterStateSerializer<RouterState
 
     let data = route.data;
     let params = route.params;
+    let path = route.routeConfig?.path;
     while (route.firstChild) {
       route = route.firstChild;
       data = { ...data, ...route.data };
       params = { ...params, ...route.params };
+      if (route.routeConfig?.path) {
+        if (path) {
+          path += '/' + route.routeConfig.path;
+        } else {
+          path = route.routeConfig.path;
+        }
+      }
     }
 
     const {
@@ -24,6 +32,6 @@ export class CustomRouterSerializer implements RouterStateSerializer<RouterState
       root: { queryParams },
     } = routerState;
 
-    return { url, params, queryParams, data };
+    return { url, params, queryParams, data, path };
   }
 }

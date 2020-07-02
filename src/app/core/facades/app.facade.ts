@@ -6,6 +6,7 @@ import { filter, map, mapTo, shareReplay, startWith } from 'rxjs/operators';
 
 import { getAvailableLocales, getCurrentLocale, getDeviceType, getICMBaseURL } from 'ish-core/store/core/configuration';
 import { getGeneralError, getGeneralErrorType } from 'ish-core/store/core/error';
+import { selectPath } from 'ish-core/store/core/router';
 import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } from 'ish-core/store/core/viewconf';
 import { getAllCountries, getCountriesLoading, loadCountries } from 'ish-core/store/general/countries';
 import { getRegionsByCountryCode, loadRegions } from 'ish-core/store/general/regions';
@@ -62,6 +63,7 @@ export class AppFacade {
       mapTo(false)
     )
   ).pipe(startWith(true), shareReplay(1));
+  path$ = this.store.pipe(select(selectPath));
 
   countries$() {
     this.store.dispatch(loadCountries());
