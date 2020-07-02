@@ -227,10 +227,10 @@ describe('Shopping Store', () => {
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}
           event: {"id":1,"url":"/home"}
         @ngrx/router-store/navigation:
-          routerState: {"url":"/home","params":{},"queryParams":{},"data":{}}
+          routerState: {"url":"/home","params":{},"queryParams":{},"data":{},"path"...
           event: {"id":1,"url":"/home"}
         @ngrx/router-store/navigated:
-          routerState: {"url":"/home","params":{},"queryParams":{},"data":{}}
+          routerState: {"url":"/home","params":{},"queryParams":{},"data":{},"path"...
           event: {"id":1,"url":"/home"}
         [Categories Internal] Load top level categories:
           depth: 1
@@ -259,7 +259,7 @@ describe('Shopping Store', () => {
       it('should have toplevel loading and category loading actions when going to a category page', fakeAsync(() => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
           @ngrx/router-store/request:
-            routerState: {"url":"/home","params":{},"queryParams":{},"data":{}}
+            routerState: {"url":"/home","params":{},"queryParams":{},"data":{},"path"...
             event: {"id":2,"url":"/category/A.123"}
           @ngrx/router-store/navigation:
             routerState: {"url":"/category/A.123","params":{"categoryUniqueId":"A.123...
@@ -313,7 +313,7 @@ describe('Shopping Store', () => {
       it('should trigger required actions when searching', fakeAsync(() => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
           @ngrx/router-store/request:
-            routerState: {"url":"/home","params":{},"queryParams":{},"data":{}}
+            routerState: {"url":"/home","params":{},"queryParams":{},"data":{},"path"...
             event: {"id":2,"url":"/search/something"}
           @ngrx/router-store/navigation:
             routerState: {"url":"/search/something","params":{"searchTerm":"something...
@@ -442,10 +442,10 @@ describe('Shopping Store', () => {
             routerState: {"url":"/category/A.123","params":{"categoryUniqueId":"A.123...
             event: {"id":2,"url":"/compare"}
           @ngrx/router-store/navigation:
-            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
+            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{},"pa...
             event: {"id":2,"url":"/compare"}
           @ngrx/router-store/navigated:
-            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
+            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{},"pa...
             event: {"id":2,"url":"/compare"}
         `);
       }));
@@ -681,10 +681,10 @@ describe('Shopping Store', () => {
             routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
             event: {"id":2,"url":"/compare"}
           @ngrx/router-store/navigation:
-            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
+            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{},"pa...
             event: {"id":2,"url":"/compare"}
           @ngrx/router-store/navigated:
-            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
+            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{},"pa...
             event: {"id":2,"url":"/compare"}
         `);
       }));
@@ -832,10 +832,10 @@ describe('Shopping Store', () => {
             routerState: {"url":"/category/A.123.456/product/P1","params":{"categoryU...
             event: {"id":2,"url":"/compare"}
           @ngrx/router-store/navigation:
-            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
+            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{},"pa...
             event: {"id":2,"url":"/compare"}
           @ngrx/router-store/navigated:
-            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
+            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{},"pa...
             event: {"id":2,"url":"/compare"}
         `);
       }));
@@ -903,10 +903,10 @@ describe('Shopping Store', () => {
             routerState: {"url":"/product/P1","params":{"sku":"P1"},"queryParams":{},...
             event: {"id":2,"url":"/compare"}
           @ngrx/router-store/navigation:
-            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
+            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{},"pa...
             event: {"id":2,"url":"/compare"}
           @ngrx/router-store/navigated:
-            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
+            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{},"pa...
             event: {"id":2,"url":"/compare"}
         `);
       }));
@@ -963,10 +963,10 @@ describe('Shopping Store', () => {
         [Categories API] Load Category Success:
           categories: tree(A.123,A.123.456)
         @ngrx/router-store/navigation:
-          routerState: {"url":"/error","params":{},"queryParams":{},"data":{}}
+          routerState: {"url":"/error","params":{},"queryParams":{},"data":{},"path...
           event: {"id":2,"url":"/error"}
         @ngrx/router-store/navigated:
-          routerState: {"url":"/error","params":{},"queryParams":{},"data":{}}
+          routerState: {"url":"/error","params":{},"queryParams":{},"data":{},"path...
           event: {"id":2,"url":"/error"}
         [Categories Internal] Load top level categories:
           depth: 1
@@ -1017,10 +1017,10 @@ describe('Shopping Store', () => {
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}
           event: {"id":2,"url":"/error"}
         @ngrx/router-store/navigation:
-          routerState: {"url":"/error","params":{},"queryParams":{},"data":{}}
+          routerState: {"url":"/error","params":{},"queryParams":{},"data":{},"path...
           event: {"id":2,"url":"/error"}
         @ngrx/router-store/navigated:
-          routerState: {"url":"/error","params":{},"queryParams":{},"data":{}}
+          routerState: {"url":"/error","params":{},"queryParams":{},"data":{},"path...
           event: {"id":2,"url":"/error"}
         [Categories Internal] Load top level categories:
           depth: 1
