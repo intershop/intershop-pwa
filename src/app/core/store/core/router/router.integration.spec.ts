@@ -9,6 +9,7 @@ import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ng
 
 import { ofUrl } from './router.operators';
 import {
+  selectPath,
   selectQueryParam,
   selectQueryParams,
   selectRouteData,
@@ -78,6 +79,7 @@ describe('Router Integration', () => {
       expect(selectRouteData('foo')(store$.state)).toBeUndefined();
       expect(selectRouteParam('foo')(store$.state)).toBeUndefined();
       expect(selectUrl(store$.state)).toBeUndefined();
+      expect(selectPath(store$.state)).toBeUndefined();
       expect(store$.actionsArray()).toMatchInlineSnapshot(`Array []`);
     });
 
@@ -86,30 +88,32 @@ describe('Router Integration', () => {
       tick(500);
 
       expect(selectRouter(store$.state)).toMatchInlineSnapshot(`
-              Object {
-                "navigationId": 1,
-                "state": Object {
-                  "data": Object {},
-                  "params": Object {},
-                  "queryParams": Object {},
-                  "url": "/",
-                },
-              }
-          `);
+        Object {
+          "navigationId": 1,
+          "state": Object {
+            "data": Object {},
+            "params": Object {},
+            "path": "**",
+            "queryParams": Object {},
+            "url": "/",
+          },
+        }
+      `);
       expect(selectQueryParams(store$.state)).toBeEmpty();
       expect(selectQueryParam('foo')(store$.state)).toBeUndefined();
       expect(selectRouteData('foo')(store$.state)).toBeUndefined();
       expect(selectRouteParam('foo')(store$.state)).toBeUndefined();
       expect(selectUrl(store$.state)).toMatchInlineSnapshot(`"/"`);
+      expect(selectPath(store$.state)).toMatchInlineSnapshot(`"**"`);
       expect(store$.actionsArray()).toMatchInlineSnapshot(`
         @ngrx/router-store/request:
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}
           event: {"id":1,"url":"/"}
         @ngrx/router-store/navigation:
-          routerState: {"url":"/","params":{},"queryParams":{},"data":{}}
+          routerState: {"url":"/","params":{},"queryParams":{},"data":{},"path":"**"}
           event: {"id":1,"url":"/"}
         @ngrx/router-store/navigated:
-          routerState: {"url":"/","params":{},"queryParams":{},"data":{}}
+          routerState: {"url":"/","params":{},"queryParams":{},"data":{},"path":"**"}
           event: {"id":1,"url":"/"}
       `);
     }));
@@ -119,32 +123,34 @@ describe('Router Integration', () => {
       tick(500);
 
       expect(selectRouter(store$.state)).toMatchInlineSnapshot(`
-              Object {
-                "navigationId": 1,
-                "state": Object {
-                  "data": Object {},
-                  "params": Object {
-                    "bar": "bar",
-                    "foo": "urlParam",
-                  },
-                  "queryParams": Object {
-                    "bar": "bar",
-                    "foo": "queryParam",
-                  },
-                  "url": "/any;foo=urlParam;bar=bar?bar=bar&foo=queryParam",
-                },
-              }
-          `);
+        Object {
+          "navigationId": 1,
+          "state": Object {
+            "data": Object {},
+            "params": Object {
+              "bar": "bar",
+              "foo": "urlParam",
+            },
+            "path": "**",
+            "queryParams": Object {
+              "bar": "bar",
+              "foo": "queryParam",
+            },
+            "url": "/any;foo=urlParam;bar=bar?bar=bar&foo=queryParam",
+          },
+        }
+      `);
       expect(selectQueryParams(store$.state)).toMatchInlineSnapshot(`
-              Object {
-                "bar": "bar",
-                "foo": "queryParam",
-              }
-          `);
+        Object {
+          "bar": "bar",
+          "foo": "queryParam",
+        }
+      `);
       expect(selectQueryParam('foo')(store$.state)).toMatchInlineSnapshot(`"queryParam"`);
       expect(selectRouteData('foo')(store$.state)).toBeUndefined();
       expect(selectRouteParam('foo')(store$.state)).toMatchInlineSnapshot(`"urlParam"`);
       expect(selectUrl(store$.state)).toMatchInlineSnapshot(`"/any;foo=urlParam;bar=bar?bar=bar&foo=queryParam"`);
+      expect(selectPath(store$.state)).toMatchInlineSnapshot(`"**"`);
       expect(store$.actionsArray()).toMatchInlineSnapshot(`
         @ngrx/router-store/request:
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}
@@ -163,33 +169,34 @@ describe('Router Integration', () => {
       tick(500);
 
       expect(selectRouter(store$.state)).toMatchInlineSnapshot(`
-              Object {
-                "navigationId": 1,
-                "state": Object {
-                  "data": Object {
-                    "foo": "data",
-                    "leaf": true,
-                    "level": 4,
-                    "root": true,
-                  },
-                  "params": Object {
-                    "bar": "bar",
-                    "foo": "very",
-                  },
-                  "queryParams": Object {
-                    "bar": "bar",
-                    "foo": "queryParam",
-                  },
-                  "url": "/test/very/deep/routes;bar=bar?bar=bar&foo=queryParam",
-                },
-              }
-          `);
+        Object {
+          "navigationId": 1,
+          "state": Object {
+            "data": Object {
+              "foo": "data",
+              "leaf": true,
+              "level": 4,
+              "root": true,
+            },
+            "params": Object {
+              "bar": "bar",
+              "foo": "very",
+            },
+            "path": "test/:foo/deep/routes",
+            "queryParams": Object {
+              "bar": "bar",
+              "foo": "queryParam",
+            },
+            "url": "/test/very/deep/routes;bar=bar?bar=bar&foo=queryParam",
+          },
+        }
+      `);
       expect(selectQueryParams(store$.state)).toMatchInlineSnapshot(`
-              Object {
-                "bar": "bar",
-                "foo": "queryParam",
-              }
-          `);
+        Object {
+          "bar": "bar",
+          "foo": "queryParam",
+        }
+      `);
       expect(selectQueryParam('foo')(store$.state)).toMatchInlineSnapshot(`"queryParam"`);
       expect(selectRouteData('foo')(store$.state)).toMatchInlineSnapshot(`"data"`);
       expect(selectRouteData('level')(store$.state)).toMatchInlineSnapshot(`4`);
@@ -197,6 +204,7 @@ describe('Router Integration', () => {
       expect(selectRouteData('root')(store$.state)).toMatchInlineSnapshot(`true`);
       expect(selectRouteParam('foo')(store$.state)).toMatchInlineSnapshot(`"very"`);
       expect(selectUrl(store$.state)).toMatchInlineSnapshot(`"/test/very/deep/routes;bar=bar?bar=bar&foo=queryParam"`);
+      expect(selectPath(store$.state)).toMatchInlineSnapshot(`"test/:foo/deep/routes"`);
       expect(store$.actionsArray()).toMatchInlineSnapshot(`
         @ngrx/router-store/request:
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}

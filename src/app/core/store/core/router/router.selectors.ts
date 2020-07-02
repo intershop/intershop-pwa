@@ -18,3 +18,5 @@ export const selectRouteParam = (key: string) =>
   createSelector(selectRouter, (state): string => state?.state?.params && state.state.params[key]);
 
 export const selectUrl = createSelector(selectRouter, state => state?.state?.url);
+
+export const selectPath = createSelector(selectRouter, state => state?.state?.path);
