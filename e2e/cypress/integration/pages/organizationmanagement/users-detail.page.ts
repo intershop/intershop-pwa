@@ -12,4 +12,12 @@ export class UsersDetailPage {
   get email() {
     return cy.get(this.tag).find('[data-testing-id="email-field"]');
   }
+
+  editUser() {
+    return cy.get('[data-testing-id="edit-user"]').click();
+  }
+
+  goToUserManagement() {
+    cy.get('[data-testing-id="back-to-user-management"]').click();
+  }
 }

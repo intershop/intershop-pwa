@@ -4,10 +4,12 @@
     <ish-user-profile-form [form]="profileForm"></ish-user-profile-form>
     <div class="row">
       <div class="offset-md-4 col-md-8">
-        <button type="submit" class="btn btn-primary" [disabled]="formDisabled">
+        <button type="submit" class="btn btn-primary" [disabled]="formDisabled" data-testing-id="edit-user-submit">
           {{ 'account.update.button.label' | translate }}
         </button>
-        <a routerLink="../" class="btn btn-secondary">{{ 'account.cancel.link' | translate }}</a>
+        <a routerLink="../" class="btn btn-secondary" data-testing-id="edit-user-cancel">{{
+          'account.cancel.link' | translate
+        }}</a>
       </div>
     </div>
   </form>

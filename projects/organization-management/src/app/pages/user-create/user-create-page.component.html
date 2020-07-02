@@ -5,10 +5,12 @@
       <ish-user-profile-form [form]="profile" [error]="userError$ | async"></ish-user-profile-form>
       <div class="row">
         <div class="offset-md-4 col-md-8">
-          <button type="submit" class="btn btn-primary" [disabled]="formDisabled">
+          <button type="submit" class="btn btn-primary" [disabled]="formDisabled" data-testing-id="create-user-submit">
             {{ 'account.user.new.button.create.label' | translate }}
           </button>
-          <a routerLink="../../" class="btn btn-secondary">{{ 'account.cancel.link' | translate }}</a>
+          <a routerLink="../../" class="btn btn-secondary" data-testing-id="create-user-cancel">{{
+            'account.cancel.link' | translate
+          }}</a>
         </div>
       </div>
     </form>
