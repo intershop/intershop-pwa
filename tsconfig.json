@@ -16,7 +16,10 @@
     "paths": {
       "ish-core/*": ["src/app/core/*"],
       "ish-shared/*": ["src/app/shared/*"],
-      "ish-shell/*": ["src/app/shell/*"]
+      "ish-shell/*": ["src/app/shell/*"],
+      "organization-management": [
+        "projects/organization-management/src/app/exports"
+      ]
     },
     "lib": ["es2018", "dom"],
     "noUnusedLocals": true,

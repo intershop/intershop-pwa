@@ -19,6 +19,7 @@ module.exports = {
   transformIgnorePatterns: [`node_modules/(?!${esModules.join('|')})`],
   moduleNameMapper: {
     '^ish-(.*)$': '<rootDir>/src/app/$1',
+    '^organization-management$': '<rootDir>/projects/organization-management/src/app/exports',
   },
   snapshotSerializers: [
     './src/jest-serializer/AngularHTMLSerializer.js',
