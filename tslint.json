@@ -342,7 +342,7 @@
         },
         {
           "import": "CustomFormsModule",
-          "from": "ng2-validation",
+          "from": "ngx-custom-validators",
           "message": "This module is for the template-driven approach which we don't use."
         },
         {
