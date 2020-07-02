@@ -66,10 +66,7 @@ const accountPageRoutes: Routes = [
       },
       {
         path: 'organization',
-        loadChildren: () =>
-          import('../../../../projects/organization-management/src/app/organization-management.module').then(
-            m => m.OrganizationManagementModule
-          ),
+        loadChildren: () => import('organization-management').then(m => m.OrganizationManagementModule),
       },
     ],
   },
