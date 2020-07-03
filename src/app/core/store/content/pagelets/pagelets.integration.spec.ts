@@ -40,6 +40,6 @@ describe('Pagelets Integration', () => {
     const entities = getContentPageletEntities(store$.state);
     expect(entities).not.toBeEmpty();
     expect(Object.keys(entities)).toIncludeAllMembers(['id']);
-    expect(getContentPagelet()(store$.state, 'id')).toBeTruthy();
+    expect(getContentPagelet('id')(store$.state)).toBeTruthy();
   });
 });
