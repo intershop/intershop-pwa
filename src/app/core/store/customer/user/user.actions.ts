@@ -29,10 +29,7 @@ export const createUser = createAction('[User] Create User', payload<CustomerReg
 
 export const createUserFail = createAction('[User API] Create User Failed', httpError());
 
-export const updateUser = createAction(
-  '[User] Update User',
-  payload<{ user: User; successMessage?: string; successRouterLink?: string }>()
-);
+export const updateUser = createAction('[User] Update User', payload<{ user: User; successMessage?: string }>());
 
 export const updateUserSuccess = createAction(
   '[User API] Update User Succeeded',
@@ -55,7 +52,7 @@ export const updateUserPasswordFail = createAction('[User API] Update User Passw
 
 export const updateCustomer = createAction(
   '[User] Update Customer',
-  payload<{ customer: Customer; successMessage?: string; successRouterLink?: string }>()
+  payload<{ customer: Customer; successMessage?: string }>()
 );
 
 export const updateCustomerSuccess = createAction(

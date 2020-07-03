@@ -69,18 +69,12 @@ export class AccountFacade {
     this.store.dispatch(createUser(body));
   }
 
-  updateUser(user: User, successMessage?: string, successRouterLink?: string) {
-    this.store.dispatch(updateUser({ user, successMessage, successRouterLink }));
+  updateUser(user: User, successMessage?: string) {
+    this.store.dispatch(updateUser({ user, successMessage }));
   }
 
   updateUserEmail(user: User) {
-    this.store.dispatch(
-      updateUser({
-        user,
-        successMessage: 'account.profile.update_email.message',
-        successRouterLink: '/account/profile',
-      })
-    );
+    this.store.dispatch(updateUser({ user, successMessage: 'account.profile.update_email.message' }));
   }
 
   updateUserPassword(data: { password: string; currentPassword: string }) {
@@ -88,13 +82,7 @@ export class AccountFacade {
   }
 
   updateUserProfile(user: User) {
-    this.store.dispatch(
-      updateUser({
-        user,
-        successMessage: 'account.profile.update_profile.message',
-        successRouterLink: '/account/profile',
-      })
-    );
+    this.store.dispatch(updateUser({ user, successMessage: 'account.profile.update_profile.message' }));
   }
 
   // CUSTOMER
@@ -105,11 +93,7 @@ export class AccountFacade {
 
   updateCustomerProfile(customer: Customer, message?: string) {
     this.store.dispatch(
-      updateCustomer({
-        customer,
-        successMessage: message ? message : 'account.profile.update_profile.message',
-        successRouterLink: '/account/profile',
-      })
+      updateCustomer({ customer, successMessage: message ? message : 'account.profile.update_profile.message' })
     );
   }
 
