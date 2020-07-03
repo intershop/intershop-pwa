@@ -19,7 +19,7 @@ export class UsersPageComponent implements OnInit {
   constructor(private organizationManagementFacade: OrganizationManagementFacade) {}
 
   ngOnInit() {
-    this.users$ = this.organizationManagementFacade.users$();
+    this.users$ = this.organizationManagementFacade.users$;
     this.error$ = this.organizationManagementFacade.usersError$;
     this.loading$ = this.organizationManagementFacade.usersLoading$;
   }

@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { FetchUsersGuard } from '../guards/fetch-users.guard';
+
 import { UserCreatePageComponent } from './user-create/user-create-page.component';
 import { UserDetailPageComponent } from './user-detail/user-detail-page.component';
 import { UserEditProfilePageComponent } from './user-edit-profile/user-edit-profile-page.component';
@@ -16,6 +18,7 @@ export const routes: Routes = [
   {
     path: 'users',
     component: UsersPageComponent,
+    canActivate: [FetchUsersGuard],
   },
   {
     path: 'users/create',
@@ -24,6 +27,10 @@ export const routes: Routes = [
   {
     path: 'users/:B2BCustomerLogin',
     component: UserDetailPageComponent,
+    canActivate: [FetchUsersGuard],
+    data: {
+      onlyInitialUsers: true,
+    },
   },
   {
     path: 'users/:B2BCustomerLogin/profile',

@@ -61,7 +61,7 @@ describe('Users Page Component', () => {
   });
 
   it('should display user list after creation ', () => {
-    when(organizationManagementFacade.users$()).thenReturn(of(users));
+    when(organizationManagementFacade.users$).thenReturn(of(users));
     fixture.detectChanges();
 
     expect(element.querySelector('[data-testing-id="user-list"]')).toBeTruthy();

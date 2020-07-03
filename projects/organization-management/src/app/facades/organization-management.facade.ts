@@ -9,7 +9,6 @@ import {
   getUsers,
   getUsersError,
   getUsersLoading,
-  loadUsers,
   updateUser,
 } from '../store/users';
 
@@ -21,11 +20,7 @@ export class OrganizationManagementFacade {
   usersError$ = this.store.pipe(select(getUsersError));
   usersLoading$ = this.store.pipe(select(getUsersLoading));
   selectedUser$ = this.store.pipe(select(getSelectedUser));
-
-  users$() {
-    this.store.dispatch(loadUsers());
-    return this.store.pipe(select(getUsers));
-  }
+  users$ = this.store.pipe(select(getUsers));
 
   addUser(user: B2bUser) {
     this.store.dispatch(

@@ -46,6 +46,8 @@ export const usersReducer = createReducer(
 
     return {
       ...usersAdapter.upsertMany(users, state),
+      // preserve order from API
+      ids: users.map(u => u.login),
       loading: false,
       error: undefined,
     };

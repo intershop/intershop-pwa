@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { Route, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
@@ -14,6 +14,15 @@ import { loadUserSuccess } from '../../store/users';
 
 import { OrganizationManagementBreadcrumbService } from './organization-management-breadcrumb.service';
 
+// tslint:disable-next-line: no-any
+function adaptRoutes(rts: Route[], cmp: Type<any>): Route[] {
+  return rts.map(r => ({
+    ...r,
+    component: r.component && cmp,
+    children: r.children && adaptRoutes(r.children, cmp),
+  }));
+}
+
 describe('Organization Management Breadcrumb Service', () => {
   let organizationManagementBreadcrumbService: OrganizationManagementBreadcrumbService;
   let router: Router;
@@ -22,14 +31,13 @@ describe('Organization Management Breadcrumb Service', () => {
   beforeEach(() => {
     @Component({ template: 'dummy' })
     class DummyComponent {}
-
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration']),
         OrganizationManagementStoreModule.forTesting('users'),
         RouterTestingModule.withRoutes([
-          ...routes.map(r => ({ ...r, component: r.component && DummyComponent })),
+          ...adaptRoutes(routes, DummyComponent),
           { path: '**', component: DummyComponent },
         ]),
         TranslateModule.forRoot(),
