@@ -13,7 +13,7 @@ import { ModalOptions } from 'ish-shared/components/common/modal-dialog/modal-di
     linkText="checkout.tac.link"
     [options]="{ titleText: 'checkout.termsandconditions.details.title' | translate, size: 'lg' }"
   >
-    <ish-content-include includeId="systeminclude.dialog.privacyPolicy.pagelet2-Include"></ish-content-include>
+    <ish-content-include includeId="include.dialog.privacyPolicy.pagelet2-Include"></ish-content-include>
   </ish-modal-dialog-link>
  */
 @Component({
