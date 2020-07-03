@@ -22,7 +22,7 @@ describe('Includes Selectors', () => {
 
   describe('getContentInclude', () => {
     it('should select no includes when nothing was reduced', () => {
-      expect(getContentInclude(store$.state, 'dummy')).toBeUndefined();
+      expect(getContentInclude('dummy')(store$.state)).toBeUndefined();
     });
 
     it('should select include when it was successfully loaded', () => {
@@ -30,7 +30,7 @@ describe('Includes Selectors', () => {
         loadContentIncludeSuccess({ include: { id: 'dummy' } as ContentPageletEntryPoint, pagelets: [] })
       );
 
-      expect(getContentInclude(store$.state, 'dummy')).toHaveProperty('id', 'dummy');
+      expect(getContentInclude('dummy')(store$.state)).toHaveProperty('id', 'dummy');
     });
 
     describe('loading multiple includes', () => {
@@ -45,11 +45,11 @@ describe('Includes Selectors', () => {
       });
 
       it('should contain all includes when loading multiple items', () => {
-        IDS.forEach(includeId => expect(getContentInclude(store$.state, includeId)).toHaveProperty('id', includeId));
+        IDS.forEach(includeId => expect(getContentInclude(includeId)(store$.state)).toHaveProperty('id', includeId));
       });
 
       it('should not contain includes for unrelated ids', () => {
-        expect(getContentInclude(store$.state, 'unrelated')).toBeUndefined();
+        expect(getContentInclude('unrelated')(store$.state)).toBeUndefined();
       });
     });
   });
