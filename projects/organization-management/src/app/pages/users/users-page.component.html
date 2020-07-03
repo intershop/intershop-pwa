@@ -11,8 +11,13 @@
   <div class="list-body" data-testing-id="user-list">
     <ng-container *ngFor="let user of users$ | async">
       <div *ngIf="user" class="list-item-row row mx-0">
-        <div class="col-9 list-item">
+        <div class="col-3 list-item">
           <a [routerLink]="[user.login]">{{ user.name }}</a>
+        </div>
+        <div class="col-6 list-item">
+          <dl [attr.data-testing-id]="'user-roles-' + user.login">
+            <ish-user-roles-badges [roleIDs]="user.roleIDs"></ish-user-roles-badges>
+          </dl>
         </div>
         <div class="col-3 list-item text-right">
           <div class="float-right">

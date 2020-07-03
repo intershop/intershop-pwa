@@ -10,10 +10,13 @@ const _ = {
     name: 'Bernhard Boldner',
     email: 'bboldner@test.intershop.de',
     password: '!InterShop00!',
+    role: 'Account Admin',
   },
   selectedUser: {
     name: 'Patricia Miller',
     email: 'pmiller@test.intershop.de',
+    role: 'Buyer',
+    permission: 'Manage Purchases',
   },
 };
 
@@ -26,6 +29,8 @@ describe('User Management', () => {
     });
     at(UsersPage, page => {
       page.usersList.should('contain', `${_.user.name}`);
+      page.rolesOfUser(_.user.email).should('contain', _.user.role);
+      page.rolesOfUser(_.selectedUser.email).should('contain', _.selectedUser.role);
     });
   });
 
@@ -36,6 +41,9 @@ describe('User Management', () => {
     at(UsersDetailPage, page => {
       page.name.should('contain', `${_.selectedUser.name}`);
       page.email.should('have.text', `${_.selectedUser.email}`);
+      page.rolesAndPermissions.should('not.contain', _.user.role);
+      page.rolesAndPermissions.should('contain', _.selectedUser.role);
+      page.rolesAndPermissions.should('contain', _.selectedUser.permission);
     });
   });
 });

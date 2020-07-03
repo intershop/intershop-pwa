@@ -14,7 +14,7 @@ export class FetchUsersGuard implements CanActivate {
     return this.store.pipe(
       select(getUserCount),
       tap(count => {
-        if (!count || !route.data.onlyInitialUsers) {
+        if (count <= 1 || !route.data.onlyInitialUsers) {
           this.store.dispatch(loadUsers());
         }
       }),

@@ -2,6 +2,7 @@ import { createAction } from '@ngrx/store';
 
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
+import { B2bRole } from '../../models/b2b-role/b2b-role.model';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
 export const loadUsers = createAction('[Users] Load Users');
@@ -31,3 +32,17 @@ export const deleteUser = createAction('[Users API] Delete User', payload<{ logi
 export const deleteUserFail = createAction('[Users API] Delete User Fail', httpError());
 
 export const deleteUserSuccess = createAction('[Users API] Delete User Success', payload<{ login: string }>());
+
+export const loadSystemUserRolesSuccess = createAction(
+  '[Users API] Load System User Roles Success',
+  payload<{ roles: B2bRole[] }>()
+);
+
+export const setUserRoles = createAction('[Users] Set Roles for User', payload<{ login: string; roles: string[] }>());
+
+export const setUserRolesSuccess = createAction(
+  '[Users] Set Roles for User Success',
+  payload<{ login: string; roles: string[] }>()
+);
+
+export const setUserRolesFail = createAction('[Users API] Set Roles for User Failed', httpError<{ login: string }>());

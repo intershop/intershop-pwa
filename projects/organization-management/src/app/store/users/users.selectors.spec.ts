@@ -10,8 +10,16 @@ import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ng
 
 import { OrganizationManagementStoreModule } from '../organization-management-store.module';
 
-import { loadUsers, loadUsersFail, loadUsersSuccess } from './users.actions';
-import { getSelectedUser, getUsers, getUsersError, getUsersLoading } from './users.selectors';
+import { loadSystemUserRolesSuccess, loadUsers, loadUsersFail, loadUsersSuccess } from './users.actions';
+import {
+  getRole,
+  getRoles,
+  getSelectedUser,
+  getUsers,
+  getUsersError,
+  getUsersLoading,
+  isSystemUserRolesLoaded,
+} from './users.selectors';
 
 @Component({ template: 'dummy' })
 class DummyComponent {}
@@ -123,6 +131,88 @@ describe('Users Selectors', () => {
 
       it('should return the selected user when the customer login is given as query param', () => {
         expect(getSelectedUser(store$.state)).toBeTruthy();
+      });
+    });
+  });
+
+  describe('System Roles', () => {
+    it('should be empty for initial state', () => {
+      expect(isSystemUserRolesLoaded(store$.state)).toBeFalse();
+      expect(getRoles(['A'])(store$.state)).toBeEmpty();
+      expect(getRole('A')(store$.state)).toBeUndefined();
+    });
+
+    describe('after loading', () => {
+      beforeEach(() => {
+        store$.dispatch(
+          loadSystemUserRolesSuccess({
+            roles: [
+              {
+                id: 'A',
+                fixed: true,
+                displayName: 'Name_A',
+                permissionDisplayNames: ['a1', 'a2'],
+              },
+              {
+                id: 'B',
+                fixed: false,
+                displayName: 'Name_B',
+                permissionDisplayNames: ['b3', 'b2', 'b1'],
+              },
+            ],
+          })
+        );
+      });
+
+      it('should select roles and permissions for state', () => {
+        expect(isSystemUserRolesLoaded(store$.state)).toBeTrue();
+        expect(getRoles(['B', 'A'])(store$.state)).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "displayName": "Name_A",
+              "fixed": true,
+              "id": "A",
+              "permissionDisplayNames": Array [
+                "a1",
+                "a2",
+              ],
+            },
+            Object {
+              "displayName": "Name_B",
+              "fixed": false,
+              "id": "B",
+              "permissionDisplayNames": Array [
+                "b3",
+                "b2",
+                "b1",
+              ],
+            },
+          ]
+        `);
+        expect(getRoles(['A'])(store$.state)).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "displayName": "Name_A",
+              "fixed": true,
+              "id": "A",
+              "permissionDisplayNames": Array [
+                "a1",
+                "a2",
+              ],
+            },
+          ]
+        `);
+        expect(getRole('A')(store$.state)).toMatchInlineSnapshot(`
+          Object {
+            "displayName": "Name_A",
+            "fixed": true,
+            "id": "A",
+            "permissionDisplayNames": Array [
+              "a1",
+              "a2",
+            ],
+          }
+        `);
       });
     });
   });

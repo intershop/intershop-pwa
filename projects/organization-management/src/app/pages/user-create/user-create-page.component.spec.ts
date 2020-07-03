@@ -9,6 +9,7 @@ import { instance, mock } from 'ts-mockito';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { UserProfileFormComponent } from '../../components/user/user-profile-form/user-profile-form.component';
+import { UserRolesSelectionComponent } from '../../components/user/user-roles-selection/user-roles-selection.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
 import { UserCreatePageComponent } from './user-create-page.component';
@@ -24,7 +25,12 @@ describe('User Create Page Component', () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [MockComponent(LoadingComponent), MockComponent(UserProfileFormComponent), UserCreatePageComponent],
+      declarations: [
+        MockComponent(LoadingComponent),
+        MockComponent(UserProfileFormComponent),
+        MockComponent(UserRolesSelectionComponent),
+        UserCreatePageComponent,
+      ],
       providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
     }).compileComponents();
   }));

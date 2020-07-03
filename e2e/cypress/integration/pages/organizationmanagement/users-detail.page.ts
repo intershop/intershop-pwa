@@ -17,7 +17,15 @@ export class UsersDetailPage {
     return cy.get('[data-testing-id="edit-user"]').click();
   }
 
+  editRoles() {
+    return cy.get('[data-testing-id="edit-roles"]').click();
+  }
+
   goToUserManagement() {
     cy.get('[data-testing-id="back-to-user-management"]').click();
+  }
+
+  get rolesAndPermissions() {
+    return cy.get(this.tag).find('[data-testing-id="user-roles-fields"]');
   }
 }

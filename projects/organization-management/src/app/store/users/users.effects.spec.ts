@@ -1,10 +1,11 @@
+import { Location } from '@angular/common';
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
@@ -25,6 +26,8 @@ import {
   deleteUser,
   loadUsers,
   loadUsersFail,
+  loadUsersSuccess,
+  setUserRolesSuccess,
   updateUser,
   updateUserFail,
   updateUserSuccess,
@@ -44,6 +47,8 @@ describe('Users Effects', () => {
   let effects: UsersEffects;
   let usersService: UsersService;
   let router: Router;
+  let location: Location;
+  let store$: Store;
 
   beforeEach(() => {
     usersService = mock(UsersService);
@@ -60,7 +65,11 @@ describe('Users Effects', () => {
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user'),
         OrganizationManagementStoreModule.forTesting('users'),
-        RouterTestingModule.withRoutes([{ path: 'users/:B2BCustomerLogin', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([
+          { path: 'users/:B2BCustomerLogin', component: DummyComponent },
+          { path: 'users/:B2BCustomerLogin/edit', component: DummyComponent },
+          { path: '**', component: DummyComponent },
+        ]),
       ],
       providers: [
         UsersEffects,
@@ -71,147 +80,164 @@ describe('Users Effects', () => {
 
     effects = TestBed.inject(UsersEffects);
     router = TestBed.inject(Router);
+    location = TestBed.inject(Location);
+    store$ = TestBed.inject(Store);
   });
 
-  describe('Users Effects', () => {
-    describe('loadUsers$', () => {
-      it('should call the service for retrieving users', done => {
-        actions$ = of(loadUsers());
+  describe('loadUsers$', () => {
+    it('should call the service for retrieving users', done => {
+      actions$ = of(loadUsers());
 
-        effects.loadUsers$.subscribe(() => {
-          verify(usersService.getUsers()).once();
-          done();
-        });
+      effects.loadUsers$.subscribe(() => {
+        verify(usersService.getUsers()).once();
+        done();
       });
+    });
 
-      it('should retrieve users when triggered', done => {
-        actions$ = of(loadUsers());
+    it('should retrieve users when triggered', done => {
+      actions$ = of(loadUsers());
 
-        effects.loadUsers$.subscribe(action => {
-          expect(action).toMatchInlineSnapshot(`
+      effects.loadUsers$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
             [Users API] Load Users Success:
               users: [{"login":"1","firstName":"Patricia","lastName":"Miller","na...
           `);
-          done();
-        });
-      });
-
-      it('should dispatch a loadUsersFail action on failed users load', () => {
-        // tslint:disable-next-line:ban-types
-        const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;
-        when(usersService.getUsers()).thenReturn(throwError(error));
-
-        const action = loadUsers();
-        const completion = loadUsersFail({ error: HttpErrorMapper.fromError(error) });
-
-        actions$ = hot('-a', { a: action });
-        const expected$ = cold('-b', { b: completion });
-
-        expect(effects.loadUsers$).toBeObservable(expected$);
+        done();
       });
     });
 
-    describe('loadDetailedUser$', () => {
-      it('should call the service for retrieving user', done => {
-        router.navigate(['users', '1']);
+    it('should dispatch a loadUsersFail action on failed users load', () => {
+      // tslint:disable-next-line:ban-types
+      const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;
+      when(usersService.getUsers()).thenReturn(throwError(error));
 
-        effects.loadDetailedUser$.subscribe(() => {
-          verify(usersService.getUser(users[0].login)).once();
-          done();
-        });
+      const action = loadUsers();
+      const completion = loadUsersFail({ error: HttpErrorMapper.fromError(error) });
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-b', { b: completion });
+
+      expect(effects.loadUsers$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadDetailedUser$', () => {
+    it('should call the service for retrieving user', done => {
+      router.navigate(['users', '1']);
+
+      effects.loadDetailedUser$.subscribe(() => {
+        verify(usersService.getUser(users[0].login)).once();
+        done();
       });
+    });
 
-      it('should retrieve the user when triggered', done => {
-        router.navigate(['users', '1']);
+    it('should retrieve the user when triggered', done => {
+      router.navigate(['users', '1']);
 
-        effects.loadDetailedUser$.subscribe(action => {
-          expect(action).toMatchInlineSnapshot(`
+      effects.loadDetailedUser$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
             [Users API] Load User Success:
               user: {"login":"1","firstName":"Patricia","lastName":"Miller","nam...
           `);
-          done();
-        });
+        done();
+      });
+    });
+  });
+
+  describe('addUser$', () => {
+    beforeEach(fakeAsync(() => {
+      router.navigateByUrl('/users/create');
+      tick(500);
+    }));
+
+    it('should call the service for adding a user', done => {
+      actions$ = of(addUser({ user: users[0] }));
+
+      effects.addUser$.subscribe(() => {
+        verify(usersService.addUser(anything())).once();
+        done();
       });
     });
 
-    describe('addUser$', () => {
-      it('should call the service for adding a user', done => {
-        actions$ = of(addUser({ user: users[0] }));
+    it('should create a user when triggered', () => {
+      const action = addUser({ user: users[0] });
 
-        effects.addUser$.subscribe(() => {
-          verify(usersService.addUser(anything())).once();
-          done();
-        });
+      const completion = addUserSuccess({ user: users[0] });
+      const completion2 = displaySuccessMessage({
+        message: 'account.organization.user_management.new_user.confirmation',
+        messageParams: { 0: `${users[0].firstName} ${users[0].lastName}` },
       });
 
-      it('should create a user when triggered', () => {
-        const action = addUser({ user: users[0] });
+      actions$ = hot('        -a----a----a----|', { a: action });
+      const expected$ = cold('-(cd)-(cd)-(cd)-|', { c: completion, d: completion2 });
 
-        const completion = addUserSuccess({ user: users[0] });
-        const completion2 = displaySuccessMessage({
-          message: 'account.organization.user_management.new_user.confirmation',
-          messageParams: { 0: `${users[0].firstName} ${users[0].lastName}` },
-        });
+      expect(effects.addUser$).toBeObservable(expected$);
+    });
 
-        actions$ = hot('-a----a----a----|', { a: action });
-        const expected$ = cold('-(cd)-(cd)-(cd)-|', { c: completion, d: completion2 });
+    it('should navigate to user detail on success', fakeAsync(() => {
+      const action = addUser({ user: users[0] });
 
-        expect(effects.addUser$).toBeObservable(expected$);
-      });
+      actions$ = of(action);
 
-      it('should dispatch an UpdateUserFail action on failed user update', () => {
-        // tslint:disable-next-line:ban-types
-        const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;
-        when(usersService.addUser(anything())).thenReturn(throwError(error));
+      effects.addUser$.subscribe();
 
-        const action = addUser({ user: users[0] });
-        const completion = addUserFail({ error: HttpErrorMapper.fromError(error) });
+      tick(500);
 
-        actions$ = hot('-a', { a: action });
-        const expected$ = cold('-b', { b: completion });
+      expect(location.path()).toMatchInlineSnapshot(`"/users/1"`);
+    }));
 
-        expect(effects.addUser$).toBeObservable(expected$);
+    it('should dispatch an UpdateUserFail action on failed user update', () => {
+      // tslint:disable-next-line:ban-types
+      const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;
+      when(usersService.addUser(anything())).thenReturn(throwError(error));
+
+      const action = addUser({ user: users[0] });
+      const completion = addUserFail({ error: HttpErrorMapper.fromError(error) });
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-b', { b: completion });
+
+      expect(effects.addUser$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updateUser$', () => {
+    it('should call the service for updating a user', done => {
+      actions$ = of(updateUser({ user: users[0] }));
+
+      effects.updateUser$.subscribe(() => {
+        verify(usersService.updateUser(anything())).once();
+        done();
       });
     });
 
-    describe('updateUser$', () => {
-      it('should call the service for updating a user', done => {
-        actions$ = of(updateUser({ user: users[0] }));
+    it('should update a user when triggered', () => {
+      const action = updateUser({ user: users[0] });
 
-        effects.updateUser$.subscribe(() => {
-          verify(usersService.updateUser(anything())).once();
-          done();
-        });
-      });
+      const completion = updateUserSuccess({ user: users[0] });
+      // const completion2 = displaySuccessMessage({
+      //   message: 'account.organization.user_management.update_user.confirmation',
+      //   messageParams: { 0: `${users[0].firstName} ${users[0].lastName}` },
+      // });
 
-      it('should update a user when triggered', () => {
-        const action = updateUser({ user: users[0] });
+      actions$ = hot('        -a-a-a-|', { a: action });
+      const expected$ = cold('-c-c-c-|', { c: completion });
 
-        const completion = updateUserSuccess({ user: users[0] });
-        const completion2 = displaySuccessMessage({
-          message: 'account.organization.user_management.update_user.confirmation',
-          messageParams: { 0: `${users[0].firstName} ${users[0].lastName}` },
-        });
+      expect(effects.updateUser$).toBeObservable(expected$);
+    });
 
-        actions$ = hot('-a----a----a----|', { a: action });
-        const expected$ = cold('-(cd)-(cd)-(cd)-|', { c: completion, d: completion2 });
+    it('should dispatch an UpdateUserFail action on failed user update', () => {
+      // tslint:disable-next-line:ban-types
+      const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;
+      when(usersService.updateUser(anything())).thenReturn(throwError(error));
 
-        expect(effects.updateUser$).toBeObservable(expected$);
-      });
+      const action = updateUser({ user: users[0] });
+      const completion = updateUserFail({ error: HttpErrorMapper.fromError(error) });
 
-      it('should dispatch an UpdateUserFail action on failed user update', () => {
-        // tslint:disable-next-line:ban-types
-        const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;
-        when(usersService.updateUser(anything())).thenReturn(throwError(error));
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-b', { b: completion });
 
-        const action = updateUser({ user: users[0] });
-        const completion = updateUserFail({ error: HttpErrorMapper.fromError(error) });
-
-        actions$ = hot('-a', { a: action });
-        const expected$ = cold('-b', { b: completion });
-
-        expect(effects.updateUser$).toBeObservable(expected$);
-      });
+      expect(effects.updateUser$).toBeObservable(expected$);
     });
   });
 
@@ -236,6 +262,67 @@ describe('Users Effects', () => {
             login: "pmiller@test.intershop.de"
         `);
         done();
+      });
+    });
+  });
+
+  describe('successMessageAfterUpdate$', () => {
+    beforeEach(() => {
+      store$.dispatch(loadUsersSuccess({ users }));
+    });
+
+    describe('on user edit', () => {
+      const completion = displaySuccessMessage({
+        message: 'account.organization.user_management.update_user.confirmation',
+        messageParams: { 0: `${users[0].firstName} ${users[0].lastName}` },
+      });
+
+      beforeEach(fakeAsync(() => {
+        router.navigateByUrl('/users/1/edit');
+        tick(500);
+      }));
+
+      it('should display success message after user update', () => {
+        const action = updateUserSuccess({ user: users[0] });
+
+        actions$ = hot('        -a-a-a-|', { a: action });
+        const expected$ = cold('-c-c-c-|', { c: completion });
+
+        expect(effects.successMessageAfterUpdate$).toBeObservable(expected$);
+      });
+
+      it('should display success message after role update', () => {
+        const action = setUserRolesSuccess({ login: '1', roles: [] });
+
+        actions$ = hot('        -a-a-a-|', { a: action });
+        const expected$ = cold('-c-c-c-|', { c: completion });
+
+        expect(effects.successMessageAfterUpdate$).toBeObservable(expected$);
+      });
+    });
+
+    describe('somewhere else', () => {
+      beforeEach(fakeAsync(() => {
+        router.navigateByUrl('/any');
+        tick(500);
+      }));
+
+      it('should not display success message after user update', () => {
+        const action = updateUserSuccess({ user: users[0] });
+
+        actions$ = hot('        -a-a-a-|', { a: action });
+        const expected$ = cold('-------|');
+
+        expect(effects.successMessageAfterUpdate$).toBeObservable(expected$);
+      });
+
+      it('should not display success message after role update', () => {
+        const action = setUserRolesSuccess({ login: '1', roles: [] });
+
+        actions$ = hot('        -a-a-a-|', { a: action });
+        const expected$ = cold('-------|');
+
+        expect(effects.successMessageAfterUpdate$).toBeObservable(expected$);
       });
     });
   });

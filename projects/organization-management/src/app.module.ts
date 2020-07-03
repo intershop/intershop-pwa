@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 
 import { CoreModule } from 'ish-core/core.module';
@@ -16,6 +17,7 @@ import { LoginComponent } from './login.component';
     BrowserModule,
     CoreModule,
     FormsSharedModule,
+    NoopAnimationsModule,
     RouterModule.forRoot([
       {
         path: 'login',

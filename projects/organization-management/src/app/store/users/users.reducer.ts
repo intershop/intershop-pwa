@@ -4,6 +4,7 @@ import { createReducer, on } from '@ngrx/store';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { setErrorOn, setLoadingOn } from 'ish-core/utils/ngrx-creators';
 
+import { B2bRole } from '../../models/b2b-role/b2b-role.model';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
 import {
@@ -13,11 +14,14 @@ import {
   deleteUser,
   deleteUserFail,
   deleteUserSuccess,
+  loadSystemUserRolesSuccess,
   loadUserFail,
   loadUserSuccess,
   loadUsers,
   loadUsersFail,
   loadUsersSuccess,
+  setUserRolesFail,
+  setUserRolesSuccess,
   updateUser,
   updateUserFail,
   updateUserSuccess,
@@ -30,17 +34,19 @@ export const usersAdapter = createEntityAdapter<B2bUser>({
 export interface UsersState extends EntityState<B2bUser> {
   loading: boolean;
   error: HttpError;
+  roles: B2bRole[];
 }
 
 const initialState: UsersState = usersAdapter.getInitialState({
   loading: false,
   error: undefined,
+  roles: [],
 });
 
 export const usersReducer = createReducer(
   initialState,
   setLoadingOn(loadUsers, addUser, updateUser, deleteUser),
-  setErrorOn(loadUsersFail, loadUserFail, addUserFail, updateUserFail, deleteUserFail),
+  setErrorOn(loadUsersFail, loadUserFail, addUserFail, updateUserFail, deleteUserFail, setUserRolesFail),
   on(loadUsersSuccess, (state: UsersState, action) => {
     const { users } = action.payload;
 
@@ -87,5 +93,12 @@ export const usersReducer = createReducer(
       loading: false,
       error: undefined,
     };
-  })
+  }),
+  on(loadSystemUserRolesSuccess, (state, action) => ({
+    ...state,
+    roles: action.payload.roles,
+  })),
+  on(setUserRolesSuccess, (state, action) =>
+    usersAdapter.updateOne({ id: action.payload.login, changes: { roleIDs: action.payload.roles } }, state)
+  )
 );

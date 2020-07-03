@@ -1,3 +1,4 @@
+import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { UserData } from 'ish-core/models/user/user.interface';
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 
@@ -14,6 +15,7 @@ export class B2bUserMapper {
       return data.map(e => ({
         name: e.name,
         login: e.login,
+        roleIDs: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'roles'),
       }));
     } else {
       throw new Error('data is required');
