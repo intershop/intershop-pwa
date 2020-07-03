@@ -18,7 +18,6 @@ import {
   loadUsers,
   loadUsersFail,
   loadUsersSuccess,
-  resetUsers,
   updateUser,
   updateUserFail,
   updateUserSuccess,
@@ -86,6 +85,5 @@ export const usersReducer = createReducer(
       loading: false,
       error: undefined,
     };
-  }),
-  on(resetUsers, () => initialState)
+  })
 );
