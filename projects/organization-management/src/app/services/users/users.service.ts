@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, throwError } from 'rxjs';
+import { Observable, combineLatest, forkJoin, throwError } from 'rxjs';
 import { concatMap, map, switchMap, take } from 'rxjs/operators';
 
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { getLoggedInCustomer } from 'ish-core/store/customer/user';
+import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 
+import { B2bRoleData } from '../../models/b2b-role/b2b-role.interface';
+import { B2bRoleMapper } from '../../models/b2b-role/b2b-role.mapper';
+import { B2bRole } from '../../models/b2b-role/b2b-role.model';
 import { B2bUserMapper } from '../../models/b2b-user/b2b-user.mapper';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
 @Injectable({ providedIn: 'root' })
 export class UsersService {
-  constructor(private apiService: ApiService, private store: Store) {}
+  constructor(private apiService: ApiService, private store: Store, private b2bRoleMapper: B2bRoleMapper) {}
 
   private currentCustomer$ = this.store.pipe(select(getLoggedInCustomer), whenTruthy(), take(1));
 
@@ -57,8 +60,6 @@ export class UsersService {
       switchMap(customer =>
         this.apiService
           .post<B2bUser>(`customers/${customer.customerNo}/users`, {
-            type: 'SMBCustomerUserCollection',
-            name: 'Users',
             elements: [
               {
                 ...customer,
@@ -72,7 +73,10 @@ export class UsersService {
               },
             ],
           })
-          .pipe(concatMap(() => this.getUser(user.email)))
+          .pipe(
+            concatMap(() => forkJoin([this.setUserRoles(user.email, user.roleIDs), this.getUser(user.email)])),
+            map(([roleIDs, newUser]) => ({ ...newUser, roleIDs }))
+          )
       )
     );
   }
@@ -117,6 +121,33 @@ export class UsersService {
 
     return this.currentCustomer$.pipe(
       switchMap(customer => this.apiService.delete(`customers/${customer.customerNo}/users/${login}`))
+    );
+  }
+
+  getAvailableRoles(): Observable<B2bRole[]> {
+    return combineLatest([this.currentCustomer$, this.store.pipe(select(getLoggedInUser), whenTruthy(), take(1))]).pipe(
+      switchMap(([customer, user]) =>
+        this.apiService.get(`customers/${customer.customerNo}/users/${user.login}/roles`).pipe(
+          unpackEnvelope<B2bRoleData>('userRoles'),
+          map(data => this.b2bRoleMapper.fromData(data))
+        )
+      )
+    );
+  }
+
+  /**
+   * set roles for given login
+   *
+   * @returns the set of new roles
+   */
+  setUserRoles(login: string, userRoles: string[]): Observable<string[]> {
+    return this.currentCustomer$.pipe(
+      switchMap(customer =>
+        this.apiService.put(`customers/${customer.customerNo}/users/${login}/roles`, { userRoles }).pipe(
+          unpackEnvelope<B2bRoleData>('userRoles'),
+          map(data => data.map(r => r.roleID))
+        )
+      )
     );
   }
 }

@@ -20,7 +20,7 @@ export class OrganizationManagementBreadcrumbService {
   breadcrumb$(prefix: string): Observable<BreadcrumbItem[]> {
     return this.appFacade.routingInProgress$.pipe(
       whenFalsy(),
-      withLatestFrom(this.appFacade.path$),
+      withLatestFrom(this.appFacade.path$.pipe(whenTruthy())),
       switchMap(([, path]) => {
         if (path.endsWith('users')) {
           return of([{ key: 'account.organization.user_management' }]);
@@ -29,12 +29,12 @@ export class OrganizationManagementBreadcrumbService {
             { key: 'account.organization.user_management', link: prefix + '/users' },
             { key: 'account.user.breadcrumbs.new_user.text' },
           ]);
-        } else if (/users\/:B2BCustomerLogin(\/profile)?$/.test(path)) {
+        } else if (/users\/:B2BCustomerLogin(\/(profile|roles))?$/.test(path)) {
           return this.organizationManagementFacade.selectedUser$.pipe(
             whenTruthy(),
             withLatestFrom(this.translateService.get('account.organization.user_management.user_detail.breadcrumb')),
             map(([user, translation]) =>
-              path.endsWith('profile')
+              path.endsWith('profile') || path.endsWith('roles')
                 ? // edit user detail
                   [
                     { key: 'account.organization.user_management', link: prefix + '/users' },
@@ -42,7 +42,11 @@ export class OrganizationManagementBreadcrumbService {
                       text: `${translation} - ${user.firstName} ${user.lastName}`,
                       link: `${prefix}/users/${user.login}`,
                     },
-                    { key: 'account.user.update_profile.heading' },
+                    {
+                      key: path.endsWith('roles')
+                        ? 'account.user.update_role.heading'
+                        : 'account.user.update_profile.heading',
+                    },
                   ]
                 : // user detail
                   [

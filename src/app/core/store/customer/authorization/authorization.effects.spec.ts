@@ -9,8 +9,9 @@ import { Authorization } from 'ish-core/models/authorization/authorization.model
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { AuthorizationService } from 'ish-core/services/authorization/authorization.service';
-import { getLoggedInCustomer, loadCompanyUserSuccess } from 'ish-core/store/customer/user';
+import { getLoggedInCustomer, getLoggedInUser, loadCompanyUserSuccess } from 'ish-core/store/customer/user';
 
+import { loadRolesAndPermissions } from './authorization.actions';
 import { AuthorizationEffects } from './authorization.effects';
 
 describe('Authorization Effects', () => {
@@ -27,7 +28,12 @@ describe('Authorization Effects', () => {
       providers: [
         AuthorizationEffects,
         provideMockActions(() => actions$),
-        provideMockStore(),
+        provideMockStore({
+          selectors: [
+            { selector: getLoggedInCustomer, value: {} },
+            { selector: getLoggedInUser, value: {} },
+          ],
+        }),
         { provide: AuthorizationService, useFactory: () => instance(authorizationService) },
       ],
     });
@@ -37,9 +43,20 @@ describe('Authorization Effects', () => {
     store$.overrideSelector(getLoggedInCustomer, {} as Customer);
   });
 
-  describe('loadRolesAndPermissions$', () => {
-    it('should call the authorization service when company user was loaded successfully', done => {
+  describe('triggerLoading$', () => {
+    it('should trigger loading of roles and permissions when company user was loaded successfully', done => {
       actions$ = of(loadCompanyUserSuccess({ user: {} as User }));
+
+      effects.triggerLoading$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`[Authorization API] Load Roles and Permissions`);
+        done();
+      });
+    });
+  });
+
+  describe('loadRolesAndPermissions$', () => {
+    it('should call the authorization service when triggered', done => {
+      actions$ = of(loadRolesAndPermissions());
 
       effects.loadRolesAndPermissions$.subscribe(action => {
         verify(authorizationService.getRolesAndPermissions(anything(), anything())).once();
@@ -54,7 +71,7 @@ describe('Authorization Effects', () => {
     it('should map to error action when service call fails', done => {
       when(authorizationService.getRolesAndPermissions(anything(), anything())).thenReturn(throwError('ERROR'));
 
-      actions$ = of(loadCompanyUserSuccess({ user: {} as User }));
+      actions$ = of(loadRolesAndPermissions());
 
       effects.loadRolesAndPermissions$.subscribe(action => {
         verify(authorizationService.getRolesAndPermissions(anything(), anything())).once();

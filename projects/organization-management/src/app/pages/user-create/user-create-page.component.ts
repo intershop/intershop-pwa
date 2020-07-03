@@ -19,7 +19,19 @@ export class UserCreatePageComponent implements OnInit {
   loading$: Observable<boolean>;
   userError$: Observable<HttpError>;
 
-  form: FormGroup;
+  form: FormGroup = this.fb.group({
+    profile: this.fb.group({
+      title: [''],
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      email: ['', [Validators.required, CustomValidators.email]],
+      phone: [''],
+      birthday: [''],
+      preferredLanguage: ['en_US', [Validators.required]],
+    }),
+    roleIDs: this.fb.control([]),
+  });
+
   submitted = false;
 
   constructor(private fb: FormBuilder, private organizationManagementFacade: OrganizationManagementFacade) {}
@@ -27,22 +39,6 @@ export class UserCreatePageComponent implements OnInit {
   ngOnInit() {
     this.loading$ = this.organizationManagementFacade.usersLoading$;
     this.userError$ = this.organizationManagementFacade.usersError$;
-
-    this.createAddUserForm();
-  }
-
-  createAddUserForm() {
-    this.form = this.fb.group({
-      profile: this.fb.group({
-        title: [''],
-        firstName: ['', [Validators.required]],
-        lastName: ['', [Validators.required]],
-        email: ['', [Validators.required, CustomValidators.email]],
-        phone: [''],
-        birthday: [''],
-        preferredLanguage: ['en_US', [Validators.required]],
-      }),
-    });
   }
 
   get profile() {
@@ -67,6 +63,7 @@ export class UserCreatePageComponent implements OnInit {
       birthday: formValue.profile.birthday === '' ? undefined : formValue.birthday, // TODO: see IS-22276
       preferredLanguage: formValue.profile.preferredLanguage,
       businessPartnerNo: 'U' + UUID.UUID(),
+      roleIDs: formValue.roleIDs,
     };
 
     this.organizationManagementFacade.addUser(user);

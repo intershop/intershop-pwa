@@ -47,6 +47,8 @@ describe('Organization Management Breadcrumb Service', () => {
     organizationManagementBreadcrumbService = TestBed.inject(OrganizationManagementBreadcrumbService);
     router = TestBed.inject(Router);
     store$ = TestBed.inject(Store);
+
+    router.initialNavigation();
   });
 
   it('should be created', () => {
@@ -136,6 +138,30 @@ describe('Organization Management Breadcrumb Service', () => {
               },
               Object {
                 "key": "account.user.update_profile.heading",
+              },
+            ]
+          `);
+          done();
+        });
+      });
+
+      it('should set breadcrumb for user role edit page', done => {
+        store$.dispatch(loadUserSuccess({ user: { login: '1', firstName: 'John', lastName: 'Doe' } as B2bUser }));
+        router.navigateByUrl('/users/1/roles');
+
+        organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
+          expect(breadcrumbData).toMatchInlineSnapshot(`
+            Array [
+              Object {
+                "key": "account.organization.user_management",
+                "link": "/my-account/users",
+              },
+              Object {
+                "link": "/my-account/users/1",
+                "text": "account.organization.user_management.user_detail.breadcrumb - John Doe",
+              },
+              Object {
+                "key": "account.user.update_role.heading",
               },
             ]
           `);

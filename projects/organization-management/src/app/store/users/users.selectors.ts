@@ -23,3 +23,16 @@ export const getSelectedUser = createSelector(
   selectEntities,
   (login, users) => users[login]
 );
+
+export const getSystemUserRoles = createSelector(getUsersState, state => state.roles);
+
+export const isSystemUserRolesLoaded = createSelector(getSystemUserRoles, roles => !!roles.length);
+
+export const getRole = (roleID: string) =>
+  createSelector(getSystemUserRoles, roles => roles?.find(r => r.id === roleID));
+
+export const getRoles = (roleIDs: string[]) =>
+  createSelector(getSystemUserRoles, roles =>
+    // preserve order from state
+    roles.filter(r => roleIDs?.includes(r.id))
+  );

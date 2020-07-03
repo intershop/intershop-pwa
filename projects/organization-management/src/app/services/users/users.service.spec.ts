@@ -7,6 +7,7 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
+import { B2bRoleData } from '../../models/b2b-role/b2b-role.interface';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
 import { UsersService } from './users.service';
@@ -93,6 +94,28 @@ describe('Users Service', () => {
       expect(capture(apiService.put).last()[0]).toMatchInlineSnapshot(
         `"customers/4711/users/pmiller@test.intershop.de"`
       );
+      done();
+    });
+  });
+
+  it('should put the roles onto user when calling setUserRoles', done => {
+    when(apiService.put(anyString(), anything())).thenReturn(of({ userRoles: [{ roleID: 'BUYER' }] as B2bRoleData[] }));
+
+    usersService.setUserRoles('pmiller@test.intershop.de', []).subscribe(data => {
+      expect(data).toMatchInlineSnapshot(`
+        Array [
+          "BUYER",
+        ]
+      `);
+      verify(apiService.put(anything(), anything())).once();
+      expect(capture(apiService.put).last()).toMatchInlineSnapshot(`
+        Array [
+          "customers/4711/users/pmiller@test.intershop.de/roles",
+          Object {
+            "userRoles": Array [],
+          },
+        ]
+      `);
       done();
     });
   });

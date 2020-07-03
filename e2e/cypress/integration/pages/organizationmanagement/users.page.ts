@@ -31,4 +31,8 @@ export class UsersPage {
     cy.get('[data-testing-id="confirm"]', { timeout: 2000 }).click();
     waitLoadingEnd(2000);
   }
+
+  rolesOfUser(id: string) {
+    return cy.get(`[data-testing-id="user-roles-${id}"]`);
+  }
 }
