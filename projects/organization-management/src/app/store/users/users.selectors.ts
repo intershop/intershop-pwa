@@ -12,9 +12,11 @@ export const getUsersLoading = createSelector(getUsersState, state => state.load
 
 export const getUsersError = createSelector(getUsersState, state => state.error);
 
-const { selectAll, selectEntities } = usersAdapter.getSelectors(getUsersState);
+const { selectAll, selectEntities, selectTotal } = usersAdapter.getSelectors(getUsersState);
 
 export const getUsers = selectAll;
+
+export const getUserCount = selectTotal;
 
 export const getSelectedUser = createSelector(
   selectRouteParam('B2BCustomerLogin'),
