@@ -26,8 +26,6 @@ export const updateUserFail = createAction('[Users API] Update User Fail', httpE
 
 export const updateUserSuccess = createAction('[Users API] Update User Success', payload<{ user: B2bUser }>());
 
-export const resetUsers = createAction('[Users] Reset Users');
-
 export const deleteUser = createAction('[Users API] Delete User', payload<{ login: string }>());
 
 export const deleteUserFail = createAction('[Users API] Delete User Fail', httpError());

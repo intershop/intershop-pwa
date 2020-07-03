@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concatMap, debounceTime, exhaustMap, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, debounceTime, exhaustMap, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectRouteParam } from 'ish-core/store/core/router';
-import { getLoggedInCustomer, logoutUser } from 'ish-core/store/customer/user';
+import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { UsersService } from '../../services/users/users.service';
@@ -24,7 +24,6 @@ import {
   loadUsers,
   loadUsersFail,
   loadUsersSuccess,
-  resetUsers,
   updateUser,
   updateUserFail,
   updateUserSuccess,
@@ -110,8 +109,6 @@ export class UsersEffects {
       )
     )
   );
-
-  resetUsersAfterLogout$ = createEffect(() => this.actions$.pipe(ofType(logoutUser), mapTo(resetUsers())));
 
   deleteUser$ = createEffect(() =>
     this.actions$.pipe(
