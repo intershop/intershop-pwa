@@ -2,13 +2,11 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concatMap, debounceTime, exhaustMap, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, exhaustMap, map, mergeMap, tap } from 'rxjs/operators';
 
-import { Customer } from 'ish-core/models/customer/customer.model';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectRouteParam } from 'ish-core/store/core/router';
-import { getLoggedInCustomer } from 'ish-core/store/customer/user';
-import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { UsersService } from '../../services/users/users.service';
 
@@ -54,7 +52,6 @@ export class UsersEffects {
     this.store.pipe(
       select(selectRouteParam('B2BCustomerLogin')),
       whenTruthy(),
-      debounceTime(0), // necessary to wait for the login after refreshing the page
       mergeMap(login =>
         this.usersService.getUser(login).pipe(
           map(user => loadUserSuccess({ user })),
@@ -67,10 +64,9 @@ export class UsersEffects {
   addUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(addUser),
-      mapToPayload(),
-      withLatestFrom(this.store.pipe<Customer>(select(getLoggedInCustomer))),
-      concatMap(([payload, customer]) =>
-        this.usersService.addUser({ user: payload.user, customer }).pipe(
+      mapToPayloadProperty('user'),
+      concatMap(newUser =>
+        this.usersService.addUser(newUser).pipe(
           tap(() => {
             this.navigateToParent();
           }),
@@ -90,10 +86,9 @@ export class UsersEffects {
   updateUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateUser),
-      mapToPayload(),
-      withLatestFrom(this.store.pipe<Customer>(select(getLoggedInCustomer))),
-      concatMap(([payload, customer]) =>
-        this.usersService.updateUser({ user: payload.user, customer }).pipe(
+      mapToPayloadProperty('user'),
+      concatMap(editUser =>
+        this.usersService.updateUser(editUser).pipe(
           tap(() => {
             this.navigateToParent();
           }),
