@@ -17,9 +17,10 @@ describe('Users Service', () => {
 
   beforeEach(() => {
     apiService = mock(ApiService);
-    when(apiService.get(anything())).thenReturn(of(true));
-    when(apiService.resolveLinks()).thenReturn(() => of([]));
-    when(apiService.delete(anything())).thenReturn(of(true));
+    when(apiService.get(anything())).thenReturn(of({}));
+    when(apiService.delete(anything())).thenReturn(of({}));
+    when(apiService.post(anyString(), anything())).thenReturn(of({}));
+    when(apiService.put(anyString(), anything())).thenReturn(of({}));
 
     TestBed.configureTestingModule({
       providers: [
@@ -75,8 +76,6 @@ describe('Users Service', () => {
   });
 
   it('should call the addUser for creating a new b2b user', done => {
-    when(apiService.post(anyString(), anything())).thenReturn(of({}));
-
     const user = { login: 'pmiller@test.intershop.de' } as B2bUser;
 
     usersService.addUser(user).subscribe(() => {
@@ -87,8 +86,6 @@ describe('Users Service', () => {
   });
 
   it('should call the updateUser for updating a b2b user', done => {
-    when(apiService.put(anyString(), anything())).thenReturn(of({}));
-
     const user = { login: 'pmiller@test.intershop.de' } as B2bUser;
 
     usersService.updateUser(user).subscribe(() => {
