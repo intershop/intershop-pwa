@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable, throwError } from 'rxjs';
 import { concatMap, map, switchMap, take } from 'rxjs/operators';
 
-import { ApiService } from 'ish-core/services/api/api.service';
+import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -23,7 +23,9 @@ export class UsersService {
   getUsers(): Observable<B2bUser[]> {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
-        this.apiService.get(`customers/${customer.customerNo}/users`).pipe(map(B2bUserMapper.fromListData))
+        this.apiService
+          .get(`customers/${customer.customerNo}/users`)
+          .pipe(unpackEnvelope(), map(B2bUserMapper.fromListData))
       )
     );
   }
@@ -88,7 +90,7 @@ export class UsersService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .put<B2bUser>(`customers/${customer.customerNo}/users/${user.login}`, {
+          .put(`customers/${customer.customerNo}/users/${user.login}`, {
             ...customer,
             ...user,
             preferredInvoiceToAddress: { urn: user.preferredInvoiceToAddressUrn },

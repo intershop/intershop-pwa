@@ -3,6 +3,7 @@ import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-in
 import { UserData } from 'ish-core/models/user/user.interface';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
+import { B2bUserData } from './b2b-user.interface';
 import { B2bUserMapper } from './b2b-user.mapper';
 
 describe('B2b User Mapper', () => {
@@ -42,7 +43,7 @@ describe('B2b User Mapper', () => {
 
   describe('fromListData', () => {
     it(`should return User when getting UserListData`, () => {
-      const userListData = { elements: [{ name: 'Patricia Miller', login: 'pmiller@test.intershop.de' }] };
+      const userListData = [{ name: 'Patricia Miller', login: 'pmiller@test.intershop.de' } as B2bUserData];
       const users = B2bUserMapper.fromListData(userListData);
 
       expect(users).toMatchInlineSnapshot(`
