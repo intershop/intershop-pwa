@@ -116,14 +116,8 @@ const routes: Routes = [
   },
   {
     path: 'logout',
-    loadChildren: () => import('./home/home-page.module').then(m => m.HomePageModule),
     canActivate: [LogoutGuard],
-    data: {
-      meta: {
-        title: 'account.logout.link',
-        robots: 'noindex, nofollow',
-      },
-    },
+    children: [],
   },
   {
     path: 'forgotPassword',
