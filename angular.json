@@ -203,7 +203,11 @@
             "aot": false,
             "styles": ["src/styles/themes/default/style.scss"],
             "assets": [
-              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
+              {
+                "glob": "**/*",
+                "input": "src/assets/",
+                "output": "/assets/"
+              }
             ],
             "scripts": [],
             "fileReplacements": [
