@@ -9,73 +9,12 @@ stages:
   - verify
 
 variables:
-  npm_config_cache: '$CI_PROJECT_DIR/cache/.npm'
   DISABLE_V8_COMPILE_CACHE: 1
-
-cache:
-  key: ${CI_COMMIT_REF_SLUG}
-  untracked: false
-  paths:
-    - cache
-
-cancel_old_pipelines:
-  cache: {}
-  dependencies: []
-  image: endeveit/docker-jq
-  stage: mrconfig
-  only:
-    - merge_requests
-  tags:
-    - docker-executor
-  script:
-    - sh .gitlab-ci-cancel-old-pipelines.sh
-    - echo "cancel complete"
-
-setup:
-  image: node:12
-  stage: setup
-  only:
-    - merge_requests
-  except:
-    refs:
-      - github-develop
-      - master
-  tags:
-    - docker-executor
-    - performance
-  script:
-    - node --version && npm --version
-    - npm ci
-    - echo "setup complete"
-
-migration:
-  image: node:12
-  stage: setup
-  allow_failure: true
-  timeout: 3h
-  only:
-    refs:
-      - develop
-      - github-develop
-      - master
-  tags:
-    - docker-executor
-    - performance
-  script:
-    - npm ci
-    - node schematics/migration/0.16-to-0.17
-    - node schematics/migration/0.16-to-0.17 | grep -q "Nothing to be done."
-    - npm run check
 
 start_review_server:
   cache: {}
   dependencies: []
   stage: setup
-  only:
-    refs:
-      - merge_requests
-      - github-develop
-      - master
   tags:
     - shell-executor
     - docker
@@ -94,73 +33,10 @@ start_review_server:
     name: review-server
     url: http://$DEMO_SERVER_NAME:3000
 
-jest_test:
-  image: node:12
-  stage: build
-  only:
-    - merge_requests
-  except:
-    refs:
-      - github-develop
-      - master
-  tags:
-    - docker-executor
-    - performance
-  dependencies: []
-  script:
-    - npm ci --prefer-offline
-    - npm run test -- -w 3
-    - echo "build complete"
-
-compile:
-  image: node:12
-  stage: build
-  only:
-    - merge_requests
-  except:
-    refs:
-      - github-develop
-      - master
-  tags:
-    - docker-executor
-    - performance
-  dependencies: []
-  script:
-    - npm ci --prefer-offline
-    - npx tsc -p tsconfig.all.json
-    - cd e2e
-    - npm i
-    - npx tsc -p cypress/tsconfig.json
-    - echo "build complete"
-
-code_quality:
-  image: node:12
-  stage: build
-  only:
-    refs:
-      - github-develop
-      - merge_requests
-  tags:
-    - docker-executor
-    - performance
-  artifacts:
-    reports:
-      codequality: gl-code-quality-report.json
-  dependencies: []
-  script:
-    - npm ci --prefer-offline
-    - npm run format
-    - bash scripts/ci-test-no-changes.sh 'you probably committed unformatted code'
-    - node reports/tslint-gitlab
-    - echo "build complete"
-
 deploy_review_mock:
   cache: {}
   dependencies: []
   stage: build
-  only:
-    refs:
-      - merge_requests
   tags:
     - shell-executor
     - docker
@@ -194,8 +70,6 @@ stop_review_mock:
     - shell-executor
     - docker
     - demoserver
-  only:
-    - merge_requests
   variables:
     GIT_STRATEGY: none
   script:
@@ -209,13 +83,6 @@ publish_pwa:
   dependencies: []
   image: docker:stable
   stage: build
-  only:
-    refs:
-      - github-develop
-      - master
-      - demo
-      - tags
-      - merge_requests
   tags:
     - shell-executor
     - docker
@@ -224,12 +91,14 @@ publish_pwa:
     - docker:dind
   script:
     - VERSION="$(grep "version" package.json | grep -Eo '[0-9][^"]*')"
-    - test "${CI_COMMIT_REF_SLUG}" = "demo" || SERVICE_WORKER="false"
     - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
+    # - test "${CI_COMMIT_REF_SLUG}" = "demo" && ENVIRONMENT=production || ENVIRONMENT=local
+    - ENVIRONMENT=production
     - docker build -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
-      --build-arg serviceWorker=${SERVICE_WORKER}
       --build-arg displayVersion="$VERSION ($CI_COMMIT_REF_NAME @ $CI_COMMIT_SHA)"
-      --label environment="production"
+      --build-arg configuration=$ENVIRONMENT
+      --build-arg serviceWorker=true
+      --label environment="$ENVIRONMENT"
       --label revision="${CI_BUILD_REF}"
       --label project="${CI_PROJECT_URL}"
       .
@@ -246,6 +115,7 @@ publish_pwa_latest:
   only:
     - tags
     - github-develop
+    - develop
   tags:
     - shell-executor
     - docker
@@ -263,14 +133,8 @@ publish_nginx:
   cache: {}
   dependencies: []
   image: docker:stable
-  stage: publish
+  stage: build
   only:
-    refs:
-      - github-develop
-      - master
-      - demo
-      - tags
-      - merge_requests
     changes:
       - nginx/**/*
   tags:
@@ -291,6 +155,7 @@ push_reports:
   only:
     refs:
       - github-develop
+      - develop
   allow_failure: true
   tags:
     - shell-executor
@@ -312,6 +177,7 @@ deploy_demo:
   only:
     refs:
       - github-develop
+      - develop
   tags:
     - shell-executor
     - docker
@@ -351,6 +217,7 @@ deploy_demo_b2b:
   only:
     refs:
       - github-develop
+      - develop
   tags:
     - shell-executor
     - docker
@@ -387,6 +254,7 @@ deploy_demo_nginx:
   only:
     refs:
       - github-develop
+      - develop
   tags:
     - shell-executor
     - docker
@@ -432,9 +300,6 @@ deploy_demo_BO:
   dependencies: []
   tags:
     - shell-executor
-  only:
-    - merge_requests
-    - github-develop
   variables:
     GIT_STRATEGY: none
   script:
@@ -449,9 +314,6 @@ deploy_demo_MAIL:
   dependencies: []
   tags:
     - shell-executor
-  only:
-    - merge_requests
-    - github-develop
   variables:
     GIT_STRATEGY: none
   script:
@@ -467,6 +329,7 @@ deploy_reports:
   only:
     refs:
       - github-develop
+      - develop
   allow_failure: true
   tags:
     - shell-executor
@@ -498,8 +361,6 @@ deploy_review_b2c:
     - shell-executor
     - docker
     - demoserver
-  only:
-    - merge_requests
   script:
     - set -x
     - DEMO_SERVER_IP=$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
@@ -572,8 +433,6 @@ stop_review_b2c:
     - shell-executor
     - docker
     - demoserver
-  only:
-    - merge_requests
   variables:
     GIT_STRATEGY: none
   script:
@@ -592,8 +451,6 @@ deploy_review_b2b:
     - shell-executor
     - docker
     - demoserver
-  only:
-    - merge_requests
   script:
     - set -x
     - DEMO_SERVER_IP=$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
@@ -634,8 +491,6 @@ stop_review_b2b:
     - shell-executor
     - docker
     - demoserver
-  only:
-    - merge_requests
   variables:
     GIT_STRATEGY: none
   script:
@@ -644,27 +499,6 @@ stop_review_b2b:
   environment:
     name: review/b2b-$CI_COMMIT_REF_SLUG
     action: stop
-
-build_e2e_image:
-  stage: deploy
-  cache: {}
-  dependencies: []
-  image: docker:stable
-  only:
-    refs:
-      - github-develop
-      - merge_requests
-  tags:
-    - shell-executor
-    - docker
-    - performance
-  services:
-    - docker:dind
-  script:
-    - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
-    - docker build -t ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG} e2e
-    - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
 
 deploy_public_demo:
   stage: deploy
@@ -698,142 +532,6 @@ deploy_public_BO:
     name: Public Deployment BackOffice
     url: $PUBLIC_BO_URL
 
-schematics:
-  image: node:12
-  stage: e2e
-  retry: 1
-  only:
-    - merge_requests
-  except:
-    refs:
-      - github-develop
-      - master
-  tags:
-    - docker-executor
-    - performance
-  dependencies: []
-  script:
-    - git config user.email gitlab@intershop.de
-    - git config user.name "GitLab Runner for PWA"
-    - npm ci
-    - bash e2e/test-schematics.sh
-    - echo "schematics complete"
-
-.universal_template: &universal_definition
-  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
-  stage: universal
-  retry: 1
-  only:
-    - merge_requests
-    - triggers
-  tags:
-    - docker-executor
-    - e2e
-  dependencies: []
-  cache: {}
-  script:
-    - set -x
-    - export ICM_BASE_URL=$(sh e2e/get-icmbaseurl.sh)
-    - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
-    - wget --wait 10 --tries 30 --retry-connrefused --no-check-certificate ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
-    - export PWA_BASE_URL="$(curl -Ls -o /dev/null -w %{url_effective} ${PWA_BASE_URL})"
-    - sh e2e/test-universal.sh
-
-universal_b2c:
-  <<: *universal_definition
-  variables:
-    PWA_BASE_URL: http://${DEMO_SERVER_NAME}:3000/${CI_COMMIT_REF_SLUG}-pwa-b2c
-
-universal_b2b:
-  <<: *universal_definition
-  variables:
-    PWA_BASE_URL: http://${DEMO_SERVER_NAME}:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b
-
-.cypress_template: &cypress_definition
-  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
-  stage: e2e
-  tags:
-    - docker-executor
-    - e2e
-  artifacts:
-    reports:
-      junit: e2e/reports/e2e-*.xml
-    when: on_failure
-    expire_in: 2 weeks
-    paths:
-      - e2e/cypress/screenshots
-      - e2e/cypress/videos
-  dependencies: []
-  cache: {}
-  script:
-    - set -x
-    - node --version && npm --version
-    - cd e2e
-    - npm i || npm i || npm i || npm i || npm i
-    - export DISPLAY=:5
-    - nohup bash -c "Xvfb ${DISPLAY} &"
-    - export ICM_BASE_URL=$(sh get-icmbaseurl.sh)
-    - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
-    - wget --wait 10 --tries 30 --retry-connrefused --no-check-certificate ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
-    - export PWA_BASE_URL="$(curl -Ls -o /dev/null -w %{url_effective} ${PWA_BASE_URL})"
-    - node cypress-ci-e2e **/$TESTS
-    - echo "E2E complete"
-
-cypress_remote:
-  <<: *cypress_definition
-  only:
-    - merge_requests
-    - triggers
-  variables:
-    PWA_BASE_URL: http://${DEMO_SERVER_NAME}:3000/${CI_COMMIT_REF_SLUG}-pwa-b2c
-    TESTS: '*b2c*.e2e-spec.ts'
-
-cypress_remote_b2b:
-  <<: *cypress_definition
-  only:
-    - merge_requests
-    - triggers
-  variables:
-    PWA_BASE_URL: http://${DEMO_SERVER_NAME}:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b
-    TESTS: '*b2b*.e2e-spec.ts'
-
-cypress_mocked:
-  <<: *cypress_definition
-  only:
-    - merge_requests
-  variables:
-    PWA_BASE_URL: http://${DEMO_SERVER_NAME}:3000/${CI_COMMIT_REF_SLUG}-mock
-    TESTS: '*mock*.e2e-spec.ts'
-
-check_mr_title:
-  cache: {}
-  dependencies: []
-  image: endeveit/docker-jq
-  stage: verify
-  only:
-    - merge_requests
-  tags:
-    - docker-executor
-  script:
-    - sh .gitlab-ci-check-mr-title.sh
-    - echo "check complete"
-
-check_tslint_no_warnings:
-  cache: {}
-  dependencies: []
-  image: node:12
-  stage: verify
-  only:
-    - merge_requests
-  tags:
-    - docker-executor
-    - performance
-  script:
-    - npm ci
-    - node scripts/tslint-hard
-    - npm run lint
-    - echo "check complete"
-
 housekeeping_images:
   stage: verify
   cache: {}
@@ -843,6 +541,7 @@ housekeeping_images:
   only:
     refs:
       - github-develop
+      - develop
   variables:
     GIT_STRATEGY: none
   script:
@@ -856,6 +555,7 @@ housekeeping_environments:
   stage: verify
   only:
     - github-develop
+    - develop
   tags:
     - docker-executor
   script:
