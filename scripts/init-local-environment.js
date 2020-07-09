@@ -21,7 +21,7 @@ if (!fs.existsSync(environmentLocalPath) || force) {
     environmentLocalPath,
     `import { ENVIRONMENT_DEFAULTS, Environment } from './environment.model';
 
-// tslint:disable: no-commented-out-code prettier
+// tslint:disable
 
 // running out of memory?
 // NODE_OPTIONS=--max_old_space_size=8192
