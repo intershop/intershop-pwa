@@ -2,6 +2,9 @@ name: TestCI
 
 on: [push, pull_request]
 
+env:
+  ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
+
 jobs:
   CancelPrevious:
     runs-on: ubuntu-latest
@@ -178,7 +181,6 @@ jobs:
           overwrite: true
           LOGGING: true
           PROXY_ICM: true
-          ICM_BASE_URL: ${{ secrets.ICM_BASE_URL }}
 
       - name: Set B2B Environment
         if: matrix.test == 'b2b'
@@ -231,7 +233,6 @@ jobs:
           PWA_BASE_URL: http://localhost:4200
           LOGGING: true
           PROXY_ICM: true
-          ICM_BASE_URL: ${{ secrets.ICM_BASE_URL }}
           BROWSER: chrome
 
       - name: Set B2B Environment
