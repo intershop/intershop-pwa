@@ -33,7 +33,7 @@ describe('<%= classify(name) %> Selectors', () => {
       expect(get<%= classify(name) %>Error(store$.state)).toBeUndefined();
     });
 
-    it('should not have entites when in initial state', () => {
+    it('should not have entities when in initial state', () => {
       expect(get<%= classify(name) %>Entities(store$.state)).toBeEmpty();
       expect(get<%= classify(name) %>(store$.state)).toBeEmpty();
       expect(getNumberOf<%= classify(name) %>(store$.state)).toBe(0);
@@ -67,7 +67,7 @@ describe('<%= classify(name) %> Selectors', () => {
         expect(get<%= classify(name) %>Error(store$.state)).toBeUndefined();
       });
 
-      it('should have entites when successfully loading', () => {
+      it('should have entities when successfully loading', () => {
         expect(get<%= classify(name) %>Entities(store$.state)).not.toBeEmpty();
         expect(get<%= classify(name) %>(store$.state)).not.toBeEmpty();
         expect(getNumberOf<%= classify(name) %>(store$.state)).toBe(2);
@@ -90,7 +90,7 @@ describe('<%= classify(name) %> Selectors', () => {
         expect(get<%= classify(name) %>Error(store$.state)).toBeTruthy();
       });
 
-      it('should not have entites when reducing error', () => {
+      it('should not have entities when reducing error', () => {
         expect(get<%= classify(name) %>Entities(store$.state)).toBeEmpty();
         expect(get<%= classify(name) %>(store$.state)).toBeEmpty();
         expect(getNumberOf<%= classify(name) %>(store$.state)).toBe(0);

@@ -84,7 +84,7 @@ describe('Users Selectors', () => {
         expect(getUsersError(store$.state)).toBeUndefined();
       });
 
-      it('should have entites when successfully loading', () => {
+      it('should have entities when successfully loading', () => {
         expect(getUsers(store$.state)).not.toBeEmpty();
       });
     });
@@ -105,7 +105,7 @@ describe('Users Selectors', () => {
         expect(getUsersError(store$.state)).toBeTruthy();
       });
 
-      it('should not have entites when reducing error', () => {
+      it('should not have entities when reducing error', () => {
         expect(getUsers(store$.state)).toBeEmpty();
       });
     });
