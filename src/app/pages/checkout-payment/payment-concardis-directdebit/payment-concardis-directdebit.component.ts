@@ -174,7 +174,7 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
           { name: 'mandateText', value: result.attributes.mandate.mandateText },
           { name: 'mandateCreatedDateTime', value: result.attributes.mandate.createdDateTime },
         ],
-        saveAllowed: false,
+        saveAllowed: this.paymentMethod.saveAllowed && this.parameterForm.get('saveForLater').value,
       });
     }
     this.cd.detectChanges();
