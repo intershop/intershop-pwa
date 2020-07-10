@@ -1,0 +1,21 @@
+name: DemoServerDown
+
+on:
+  pull_request:
+    types: [closed]
+
+env:
+  GROUP: 'pwa-gh-review-${{ github.event.pull_request.number }}'
+
+jobs:
+  RemoveDemoServer:
+    if: github.event.pull_request.head.repo.owner.login == 'intershop'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to Azure
+        run: |
+          az login -u ${{ secrets.AZURE_USERNAME }} -p=${{ secrets.AZURE_PASSWORD }}
+          az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION }}
+
+      - name: Remove Resource Group
+        run: test "$(az group exists --name $GROUP)" = "false" || az group delete --name $GROUP --yes
