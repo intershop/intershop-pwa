@@ -21,7 +21,7 @@ export const getProductListingViewType = createSelector(getProductListingState, 
 
 const getProductListingSettings = createSelector(getProductListingState, state => state.currentSettings);
 
-const { selectEntities: getProductListingEntites } = adapter.getSelectors(getProductListingState);
+const { selectEntities: getProductListingEntities } = adapter.getSelectors(getProductListingState);
 
 function mergeAllPages(data: ProductListingType) {
   return flatten(data.pages.map(page => data[page]));
@@ -91,7 +91,7 @@ function calculateLookUpID(id: ProductListingID, settings: Pick<ProductListingID
 }
 
 export const getProductListingView = createSelector(
-  getProductListingEntites,
+  getProductListingEntities,
   getProductListingItemsPerPage,
   getProductListingSettings,
   memoize(
