@@ -156,7 +156,7 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
           this.errorMessage.accountholder.messageKey = this.getErrorMessage(
             this.errorMessage.accountholder.code,
             'sepa',
-            'bic',
+            'accountholder',
             this.errorMessage.accountholder.message
           );
           this.handleErrors('accountHolder', this.errorMessage.accountholder.messageKey);
