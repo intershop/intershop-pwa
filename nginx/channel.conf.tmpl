@@ -59,7 +59,7 @@ server {
 
         set $default_rewrite_params ';channel=$CHANNEL;application=$APPLICATION;features=$FEATURES;theme=$THEME;device=$ua_device';
 
-        rewrite '^(.*)$' '$1$default_rewrite_params' break;
+        rewrite '^(?!.*;device=.*)(.*)$' '$1$default_rewrite_params' break;
 
         proxy_pass $UPSTREAM_PWA;
     }
