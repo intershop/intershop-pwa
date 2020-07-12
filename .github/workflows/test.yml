@@ -1,6 +1,12 @@
 name: TestCI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+    types: [opened, synchronize]
 
 env:
   ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
