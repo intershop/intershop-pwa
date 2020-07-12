@@ -3,10 +3,7 @@ name: Windows
 on:
   push:
     branches:
-      - develop
-      - 'chore/**'
-      - 'refactor/**'
-      - 'build/**'
+      - '**'
 
 jobs:
   CancelPrevious:
