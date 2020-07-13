@@ -19,6 +19,9 @@
       "ish-shell/*": ["src/app/shell/*"],
       "organization-management": [
         "projects/organization-management/src/app/exports"
+      ],
+      "requisition-management": [
+        "projects/requisition-management/src/app/exports"
       ]
     },
     "lib": ["es2018", "dom"],
