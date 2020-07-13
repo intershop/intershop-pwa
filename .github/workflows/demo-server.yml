@@ -4,7 +4,8 @@ on: [pull_request]
 
 env:
   ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
-  GROUP: 'pwa-gh-review-${{ github.event.pull_request.number }}'
+  GROUP: 'pwa-gh-review'
+  APP: 'pwa-gh-review-${{ github.event.pull_request.number }}'
 
 jobs:
   CancelPrevious:
@@ -62,26 +63,26 @@ jobs:
         run: test "$(az group exists --name $GROUP)" = "true" || az group create --name $GROUP --location "North Europe"
 
       - name: Create App Service Plan
-        run: test ! -z "$(az appservice plan show --name $GROUP-plans --resource-group $GROUP)" || az appservice plan create --name $GROUP-plan --resource-group $GROUP --sku F1 --is-linux
+        run: test ! -z "$(az appservice plan show --name $GROUP-plan --resource-group $GROUP)" || az appservice plan create --name $GROUP-plan --resource-group $GROUP --sku B1 --is-linux
 
       - name: Create or Update B2C App Service
         run: |
-          az webapp config container set --resource-group $GROUP --name $GROUP-universal-b2c --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --docker-custom-image-name $DOCKER_IMAGE_UNIVERSAL || az webapp create --resource-group $GROUP --plan $GROUP-plan --name $GROUP-universal-b2c --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --deployment-container-image-name $DOCKER_IMAGE_UNIVERSAL
-          az webapp config appsettings set -g $GROUP -n $GROUP-universal-b2c --settings LOGGING=true ICM_BASE_URL=$ICM_BASE_URL
-          az webapp deployment container config -g $GROUP -n $GROUP-universal-b2c --enable-cd true
-          echo "B2C channel: http://$GROUP-universal-b2c.azurewebsites.net"
+          az webapp config container set --resource-group $GROUP --name $APP-universal-b2c --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --docker-custom-image-name $DOCKER_IMAGE_UNIVERSAL || az webapp create --resource-group $GROUP --plan $GROUP-plan --name $APP-universal-b2c --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --deployment-container-image-name $DOCKER_IMAGE_UNIVERSAL
+          az webapp config appsettings set -g $GROUP -n $APP-universal-b2c --settings LOGGING=true ICM_BASE_URL=$ICM_BASE_URL
+          az webapp deployment container config -g $GROUP -n $APP-universal-b2c --enable-cd true
+          echo "B2C channel: http://$APP-universal-b2c.azurewebsites.net"
 
       - name: Create or Update B2B App Service
         run: |
-          az webapp config container set --resource-group $GROUP --name $GROUP-universal-b2b --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --docker-custom-image-name $DOCKER_IMAGE_UNIVERSAL || az webapp create --resource-group $GROUP --plan $GROUP-plan --name $GROUP-universal-b2b --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --deployment-container-image-name $DOCKER_IMAGE_UNIVERSAL
-          az webapp config appsettings set -g $GROUP -n $GROUP-universal-b2b --settings LOGGING=true ICM_BASE_URL=$ICM_BASE_URL ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site THEME=blue\|688dc3 FEATURES=compare,recently,tracking,sentry,advancedVariationHandling,businessCustomerRegistration,quoting,quickorder,orderTemplates
-          az webapp deployment container config -g $GROUP -n $GROUP-universal-b2b --enable-cd true
-          echo "B2B channel: http://$GROUP-universal-b2b.azurewebsites.net"
+          az webapp config container set --resource-group $GROUP --name $APP-universal-b2b --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --docker-custom-image-name $DOCKER_IMAGE_UNIVERSAL || az webapp create --resource-group $GROUP --plan $GROUP-plan --name $APP-universal-b2b --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --deployment-container-image-name $DOCKER_IMAGE_UNIVERSAL
+          az webapp config appsettings set -g $GROUP -n $APP-universal-b2b --settings LOGGING=true ICM_BASE_URL=$ICM_BASE_URL ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site THEME=blue\|688dc3 FEATURES=compare,recently,tracking,sentry,advancedVariationHandling,businessCustomerRegistration,quoting,quickorder,orderTemplates
+          az webapp deployment container config -g $GROUP -n $APP-universal-b2b --enable-cd true
+          echo "B2B channel: http://$APP-universal-b2b.azurewebsites.net"
 
       - name: Create Commit Comment
         uses: peter-evans/commit-comment@v1
         with:
           body: |
             Azure Demo Servers are available:
-            - [Universal B2C](http://${{ env.GROUP }}-universal-b2c.azurewebsites.net)
-            - [Universal B2B](http://${{ env.GROUP }}-universal-b2b.azurewebsites.net)
+            - [Universal B2C](http://${{ env.APP }}-universal-b2c.azurewebsites.net)
+            - [Universal B2B](http://${{ env.APP }}-universal-b2b.azurewebsites.net)
