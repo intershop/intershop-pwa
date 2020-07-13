@@ -47,6 +47,14 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
       localizationKey: 'account.organization.user_management',
       permission: 'APP_B2B_MANAGE_USERS',
     },
+    '/account/requisitions/buyer': {
+      localizationKey: 'account.requisitions.requisitions',
+      permission: 'APP_B2B_ORDER_APPROVAL',
+    },
+    '/account/requisitions/approver': {
+      localizationKey: 'account.requisitions.approvals',
+      permission: 'APP_B2B_ORDER_APPROVAL',
+    },
     '/logout': { localizationKey: 'account.navigation.logout.link' },
   };
 
