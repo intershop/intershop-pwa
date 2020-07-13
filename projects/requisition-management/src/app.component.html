@@ -1,0 +1,21 @@
+<div class="container main-container">
+  <div class="d-flex py-2 border-bottom">
+    <a
+      *ngIf="user$ | async as user; else notLoggedIn"
+      class="text-uppercase"
+      routerLink="/logout"
+      [queryParams]="{ returnUrl: '/login?returnUrl=/requisition-management' }"
+      >{{ 'account.logout.link' | translate }}</a
+    >
+    <ng-template #notLoggedIn>
+      <a
+        class="text-uppercase"
+        routerLink="/login"
+        [queryParams]="{ returnUrl: '/login?returnUrl=/requisition-management' }"
+        >{{ 'account.login.link' | translate }}</a
+      >
+    </ng-template>
+  </div>
+
+  <router-outlet></router-outlet>
+</div>

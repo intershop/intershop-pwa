@@ -20,6 +20,7 @@ module.exports = {
   moduleNameMapper: {
     '^ish-(.*)$': '<rootDir>/src/app/$1',
     '^organization-management$': '<rootDir>/projects/organization-management/src/app/exports',
+    '^requisition-management$': '<rootDir>/projects/requisition-management/src/app/exports',
   },
   snapshotSerializers: [
     './src/jest-serializer/AngularHTMLSerializer.js',

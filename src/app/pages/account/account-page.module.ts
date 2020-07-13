@@ -74,6 +74,14 @@ const accountPageRoutes: Routes = [
           permission: 'APP_B2B_MANAGE_USERS',
         },
       },
+      {
+        path: 'requisitions',
+        loadChildren: () => import('requisition-management').then(m => m.RequisitionManagementModule),
+        canActivate: [AuthorizationToggleGuard],
+        data: {
+          permission: 'APP_B2B_ORDER_APPROVAL',
+        },
+      },
     ],
   },
 ];

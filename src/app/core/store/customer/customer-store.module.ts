@@ -20,6 +20,7 @@ import { CustomerState } from './customer-store';
 import { OrdersEffects } from './orders/orders.effects';
 import { ordersReducer } from './orders/orders.reducer';
 import { OrganizationManagementEffects } from './organization-management/organization-management.effects';
+import { RequisitionManagementEffects } from './requisition-management/requisition-management.effects';
 import { RestoreEffects } from './restore/restore.effects';
 import { UserEffects } from './user/user.effects';
 import { userReducer } from './user/user.reducer';
@@ -45,6 +46,7 @@ const customerEffects = [
   UserEffects,
   AuthorizationEffects,
   OrganizationManagementEffects,
+  RequisitionManagementEffects,
 ];
 
 const metaReducers = [resetOnLogoutMeta];

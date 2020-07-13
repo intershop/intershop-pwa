@@ -215,6 +215,52 @@
           }
         }
       }
+    },
+    "requisition-management": {
+      "projectType": "application",
+      "cli": {
+        "defaultCollection": "intershop-schematics"
+      },
+      "schematics": {
+        "intershop-schematics:page": {
+          "lazy": false
+        }
+      },
+      "root": "projects/requisition-management",
+      "sourceRoot": "projects/requisition-management/src",
+      "prefix": "ish",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/requisition-management",
+            "index": "projects/requisition-management/src/index.html",
+            "main": "projects/requisition-management/src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "projects/requisition-management/tsconfig.app.json",
+            "aot": false,
+            "styles": ["src/styles/themes/default/style.scss"],
+            "assets": [
+              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
+            ],
+            "scripts": [],
+            "fileReplacements": [
+              {
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.local.ts"
+              }
+            ]
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "requisition-management:build",
+            "disableHostCheck": true,
+            "host": "0.0.0.0"
+          }
+        }
+      }
     }
   },
   "defaultProject": "intershop-pwa",
