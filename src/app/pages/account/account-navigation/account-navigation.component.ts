@@ -73,6 +73,11 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
       localizationKey: 'account.organization.user_management',
       permission: 'APP_B2B_MANAGE_USERS',
     },
+    '/account/organization/hierarchies': {
+      localizationKey: 'account.organization.hierarchies',
+      feature: 'organizationHierarchies',
+      permission: 'APP_B2B_MANAGE_USERS',
+    },
     '/account/punchout': {
       localizationKey: 'account.punchout.link',
       dataTestingId: 'punchout-link',

@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { FeatureToggleGuard } from 'ish-core/feature-toggle.module';
+
 import { FetchUsersGuard } from '../guards/fetch-users.guard';
 import { RedirectFirstToParentGuard } from '../guards/redirect-first-to-parent.guard';
 
+import { HierarchiesPageComponent } from './hierarchies/hierarchies-page.component';
 import { UserCreatePageComponent } from './user-create/user-create-page.component';
 import { UserDetailPageComponent } from './user-detail/user-detail-page.component';
 import { UserEditBudgetPageComponent } from './user-edit-budget/user-edit-budget-page.component';
@@ -50,6 +53,12 @@ export const routes: Routes = [
     path: 'users/:B2BCustomerLogin/budget',
     component: UserEditBudgetPageComponent,
     canActivate: [RedirectFirstToParentGuard],
+  },
+  {
+    path: 'hierarchies',
+    component: HierarchiesPageComponent,
+    canActivate: [FeatureToggleGuard],
+    data: { feature: 'organizationHierarchies' },
   },
 ];
 
