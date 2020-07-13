@@ -7,6 +7,7 @@ import { UserBudgetFormComponent } from './components/user-budget-form/user-budg
 import { UserBudgetComponent } from './components/user-budget/user-budget.component';
 import { UserProfileFormComponent } from './components/user-profile-form/user-profile-form.component';
 import { UserRolesSelectionComponent } from './components/user-roles-selection/user-roles-selection.component';
+import { HierarchiesPageComponent } from './pages/hierarchies/hierarchies-page.component';
 import { OrganizationManagementStoreModule } from './store/organization-management-store.module';
 
 const exportedComponents = [
@@ -17,7 +18,7 @@ const exportedComponents = [
 ];
 
 @NgModule({
-  declarations: [...exportedComponents, BudgetWidgetComponent],
+  declarations: [...exportedComponents, BudgetWidgetComponent, HierarchiesPageComponent],
   exports: [...exportedComponents],
   imports: [OrganizationManagementStoreModule, SharedModule],
 })
