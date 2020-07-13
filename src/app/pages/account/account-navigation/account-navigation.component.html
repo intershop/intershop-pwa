@@ -6,7 +6,7 @@
         <li
           *ishFeature="item.value.feature || 'always'"
           routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: first }"
+          [routerLinkActiveOptions]="{ exact: true }"
         >
           <a [routerLink]="item.key" [attr.data-testing-id]="item.value.dataTestingId">{{
             item.value.localizationKey | translate

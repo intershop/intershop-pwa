@@ -43,8 +43,13 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
     '/account/addresses': { localizationKey: 'account.saved_addresses.link', dataTestingId: 'addresses-link' },
     '/account/profile': { localizationKey: 'account.profile.link' },
     '/account/quotes': { localizationKey: 'account.navigation.quotes.link', feature: 'quoting' },
-    '/account/organization': {
+    '/account/organization/users': {
       localizationKey: 'account.organization.user_management',
+      permission: 'APP_B2B_MANAGE_USERS',
+    },
+    '/account/organization/hierarchies': {
+      localizationKey: 'account.organization.hierarchies',
+      feature: 'organizationHierarchies',
       permission: 'APP_B2B_MANAGE_USERS',
     },
     '/logout': { localizationKey: 'account.navigation.logout.link' },
