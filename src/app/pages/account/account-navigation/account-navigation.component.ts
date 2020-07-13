@@ -54,14 +54,19 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
     '/account/addresses': { localizationKey: 'account.saved_addresses.link', dataTestingId: 'addresses-link' },
     '/account/payment': { localizationKey: 'account.payment.link', dataTestingId: 'payments-link' },
     '/account/profile': { localizationKey: 'account.profile.link' },
-    '/account/organization': {
+    '/account/organization/users': {
       localizationKey: 'account.organization.user_management',
+      permission: 'APP_B2B_MANAGE_USERS',
+    },
+    '/account/organization/hierarchies': {
+      localizationKey: 'account.organization.hierarchies',
+      feature: 'organizationHierarchies',
       permission: 'APP_B2B_MANAGE_USERS',
     },
     '/logout': { localizationKey: 'account.navigation.logout.link' },
   };
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.isMobileView = this.deviceType === 'tablet' || this.deviceType === 'mobile';

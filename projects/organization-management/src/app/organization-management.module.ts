@@ -7,6 +7,7 @@ import { UserBudgetFormComponent } from './components/user-budget-form/user-budg
 import { UserBudgetComponent } from './components/user-budget/user-budget.component';
 import { UserProfileFormComponent } from './components/user-profile-form/user-profile-form.component';
 import { UserRolesSelectionComponent } from './components/user-roles-selection/user-roles-selection.component';
+import { HierarchiesPageComponent } from './pages/hierarchies/hierarchies-page.component';
 import { OrganizationManagementRoutingModule } from './pages/organization-management-routing.module';
 import { UserCreatePageComponent } from './pages/user-create/user-create-page.component';
 import { UserDetailBudgetComponent } from './pages/user-detail/user-detail-budget/user-detail-budget.component';
@@ -21,6 +22,7 @@ import { OrganizationManagementStoreModule } from './store/organization-manageme
 @NgModule({
   declarations: [
     BudgetWidgetComponent,
+    HierarchiesPageComponent,
     UserBudgetComponent,
     UserBudgetFormComponent,
     UserCreatePageComponent,
