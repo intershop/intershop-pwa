@@ -836,5 +836,9 @@
   "tacton.submit.error.message": "A technical error occurred while processing your request. Please try again later.",
   "tacton.submit.success.message": "Your request has been successfully submitted. We will e-mail <strong>{{0}}</strong> to keep you updated on the status of your request.",
   "tacton.undo.tooltip": "Undo",
-  "textarea.max_limit": "Your message: {{0}} characters remaining."
+  "textarea.max_limit": "Your message: {{0}} characters remaining.",
+  "account.requisitions.requisitions": "Requisitions",
+  "account.requisitions.requisitions.text": "This list shows all your order requests that need to be approved by an approver. You can also view all requests that have been approved or rejected.",
+  "account.requisitions.approvals": "Approvals",
+  "account.requisitions.approvals.text": "This list shows all order requests that need to be approved by you. You can also display all the requests that you have already approved or that you have rejected."
 }
