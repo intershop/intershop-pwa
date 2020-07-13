@@ -53,6 +53,8 @@ export class OrganizationManagementBreadcrumbService {
                   ]
             )
           );
+        } else if (path.endsWith('hierarchies')) {
+          return of([{ key: 'account.organization.hierarchies' }]);
         }
         return EMPTY;
       })
