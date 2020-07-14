@@ -1,10 +1,8 @@
+<ish-breadcrumb></ish-breadcrumb>
+
+<h1>{{ 'quickorder.page.title' | translate }}</h1>
+
 <form [formGroup]="quickOrderForm" (ngSubmit)="onAddProducts()">
-  <ish-breadcrumb></ish-breadcrumb>
-  <div class="row">
-    <div class="col-md-12">
-      <h1>{{ 'quickorder.page.title' | translate }}</h1>
-    </div>
-  </div>
   <div class="row">
     <div class="col-md-8">
       <h3>{{ 'quickorder.page.subtitle' | translate }}</h3>
