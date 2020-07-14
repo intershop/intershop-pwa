@@ -27,6 +27,7 @@ export interface Environment {
     /* B2B features */
     | 'advancedVariationHandling'
     | 'businessCustomerRegistration'
+    | 'organizationHierarchies'
     | 'quoting'
     | 'quickorder'
     | 'orderTemplates'

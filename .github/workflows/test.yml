@@ -153,7 +153,7 @@ jobs:
           overwrite: true
           THEME: blue
           ICM_CHANNEL: inSPIRED-inTRONICS_Business-Site
-          FEATURES: quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,advancedVariationHandling
+          FEATURES: quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,organizationHierarchies,advancedVariationHandling
 
       - name: Start SSR
         run: npm run serve &
@@ -206,7 +206,7 @@ jobs:
           overwrite: true
           THEME: blue
           ICM_CHANNEL: inSPIRED-inTRONICS_Business-Site
-          FEATURES: quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,advancedVariationHandling
+          FEATURES: quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,organizationHierarchies,advancedVariationHandling
 
       - name: Start SSR
         if: matrix.test != 'mock'
