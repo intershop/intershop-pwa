@@ -65,6 +65,7 @@ describe('Payment Concardis Directdebit Component', () => {
       attributes: {
         accountHolder: 'Klaus Klausen',
         iban: '123456789',
+        bic: 'BYLADEM1SKB',
         mandateReference: 'ref',
         mandate: {
           mandateReference: 'ref',
