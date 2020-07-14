@@ -240,7 +240,7 @@ deploy_demo_b2b:
       --env LOGGING=true
       --env PROXY_ICM=true
       --env THEME="blue|688dc3"
-      --env FEATURES=quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,advancedVariationHandling,sentry
+      --env FEATURES=quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,organizationHierarchies,advancedVariationHandling,sentry
       --env ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site
       --env SENTRY_DSN=${SENTRY_DSN}
       ${IMAGE}
@@ -281,7 +281,7 @@ deploy_demo_nginx:
       -e PWA_2_LANG=de_DE
       -e PWA_3_TOPLEVELDOMAIN=com
       -e PWA_3_CHANNEL=inSPIRED-inTRONICS_Business-Site
-      -e PWA_3_FEATURES=quoting,quickorder,orderTemplates,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry
+      -e PWA_3_FEATURES=quoting,quickorder,orderTemplates,recently,compare,businessCustomerRegistration,organizationHierarchies,advancedVariationHandling,sentry
       -e PWA_3_THEME="blue|688dc3"
       -e PWA_4_TOPLEVELDOMAIN=fr
       -e PWA_4_LANG=fr_FR
@@ -412,7 +412,7 @@ deploy_review_b2c:
       -e PWA_2_LANG=de_DE
       -e PWA_3_TOPLEVELDOMAIN=com
       -e PWA_3_CHANNEL=inSPIRED-inTRONICS_Business-Site
-      -e PWA_3_FEATURES=quoting,quickorder,orderTemplates,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry
+      -e PWA_3_FEATURES=quoting,quickorder,orderTemplates,recently,compare,businessCustomerRegistration,organizationHierarchies,advancedVariationHandling,sentry
       -e PWA_3_THEME="blue|688dc3"
       -e PWA_4_TOPLEVELDOMAIN=fr
       -e PWA_4_LANG=fr_FR
@@ -484,7 +484,7 @@ deploy_review_b2b:
       -e ICM_BASE_URL=${ICM_BASE_URL}
       -e THEME="blue|688dc3"
       -e ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site
-      -e FEATURES=quoting,quickorder,orderTemplates,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry
+      -e FEATURES=quoting,quickorder,orderTemplates,recently,compare,businessCustomerRegistration,organizationHierarchies,advancedVariationHandling,sentry
       --add-host $ICM_HOST:$ICM_IP
       --add-host $DEMO_SERVER_NAME:$DEMO_SERVER_IP
       ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
