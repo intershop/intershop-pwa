@@ -82,7 +82,7 @@ jobs:
         run: |
           echo "THEME=blue" >> $GITHUB_ENV
           echo "ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site" >> $GITHUB_ENV
-          echo "FEATURES=quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,punchout,advancedVariationHandling" >> $GITHUB_ENV
+          echo "FEATURES=quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,punchout,organizationHierarchies,advancedVariationHandling" >> $GITHUB_ENV
 
       - name: Start SSR
         run: npm run serve &
@@ -126,7 +126,7 @@ jobs:
         run: |
           echo "THEME=blue" >> $GITHUB_ENV
           echo "ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site" >> $GITHUB_ENV
-          echo "FEATURES=quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,punchout,advancedVariationHandling" >> $GITHUB_ENV
+          echo "FEATURES=quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,punchout,organizationHierarchies,advancedVariationHandling" >> $GITHUB_ENV
 
       - name: Start SSR
         run: npm run serve &
