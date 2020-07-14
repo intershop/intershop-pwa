@@ -39,7 +39,7 @@ describe('Configuration Effects', () => {
 
   describe('setInitialRestEndpoint$', () => {
     it('should import settings on effects init and complete', done => {
-      // tslint:disable:use-async-synchronisation-in-tests
+      // tslint:disable:use-async-synchronization-in-tests
       const testComplete$ = new Subject<void>();
 
       actions$ = of({ type: ROOT_EFFECTS_INIT });
@@ -54,7 +54,7 @@ describe('Configuration Effects', () => {
         fail,
         () => testComplete$.next()
       );
-      // tslint:enable:use-async-synchronisation-in-tests
+      // tslint:enable:use-async-synchronization-in-tests
     });
   });
 
@@ -80,7 +80,7 @@ describe('Configuration Effects', () => {
     });
 
     it('should set the token once on effects init and complete', done => {
-      // tslint:disable:use-async-synchronisation-in-tests
+      // tslint:disable:use-async-synchronization-in-tests
       const testComplete$ = new Subject<void>();
 
       actions$ = of({ type: ROOT_EFFECTS_INIT });
@@ -96,7 +96,7 @@ describe('Configuration Effects', () => {
         fail,
         () => testComplete$.next()
       );
-      // tslint:enable:use-async-synchronisation-in-tests
+      // tslint:enable:use-async-synchronization-in-tests
     });
   });
 });

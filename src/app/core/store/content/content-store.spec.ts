@@ -42,11 +42,10 @@ describe('Content Store', () => {
     expect(store$).toBeTruthy();
   });
 
-  it('should be properly memoized for content include selector', () => {
+  it('should be properly memoized for content include selector', done => {
     const callback = { m: identity };
     const callbackSpy = spy(callback);
 
-    // tslint:disable-next-line: use-async-synchronisation-in-tests
     store$.pipe(select(getContentInclude('id')), whenTruthy()).subscribe(i => callback.m(i));
 
     store$.dispatch(loadContentInclude({ includeId: 'id' }));
@@ -107,5 +106,7 @@ describe('Content Store', () => {
     `);
 
     verify(callbackSpy.m(anything())).twice();
+
+    done();
   });
 });
