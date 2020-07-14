@@ -1,0 +1,15 @@
+<ng-container *ngIf="parameter.properties?.hidden === 'no'">
+  <h4>{{ parameter.description }}</h4>
+  <div class="row">
+    <div class="col-6">
+      {{ parameter.properties.tc_info_text }}
+    </div>
+    <div class="col-6">
+      <select (change)="change($event.target.value)">
+        <option *ngFor="let opt of parameter.domain.elements" [value]="opt.name" [selected]="opt.selected">{{
+          opt.description
+        }}</option>
+      </select>
+    </div>
+  </div>
+</ng-container>
