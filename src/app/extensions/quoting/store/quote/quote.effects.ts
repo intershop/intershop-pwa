@@ -134,6 +134,7 @@ export class QuoteEffects {
   routeListenerForSelectingQuote$ = createEffect(() =>
     this.store.pipe(
       select(selectRouteParam('quoteId')),
+      whenTruthy(),
       map(id => selectQuote({ id }))
     )
   );

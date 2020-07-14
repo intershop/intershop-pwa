@@ -1,0 +1,15 @@
+<ng-container *ngIf="group?.hasVisibleParameters">
+  <h3>{{ group?.description }}</h3>
+
+  <ng-container *ngFor="let item of group?.members">
+    <ng-container [ngSwitch]="true">
+      <ish-tacton-group *ngSwitchCase="isGroup(item)" [group]="item"></ish-tacton-group>
+      <ish-tacton-number-input *ngSwitchCase="isNumberInput(item)" [parameter]="item"></ish-tacton-number-input>
+      <ish-tacton-text-input *ngSwitchCase="isTextInput(item)" [parameter]="item"></ish-tacton-text-input>
+      <ish-tacton-select-input *ngSwitchCase="isSelectInput(item)" [parameter]="item"></ish-tacton-select-input>
+      <ish-tacton-readonly *ngSwitchCase="isReadOnly(item)" [parameter]="item"></ish-tacton-readonly>
+      <ish-tacton-radio-input *ngSwitchCase="isRadioInput(item)" [parameter]="item"></ish-tacton-radio-input>
+      <pre *ngSwitchDefault class="border border-primary">{{ item | json }}</pre>
+    </ng-container>
+  </ng-container>
+</ng-container>

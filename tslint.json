@@ -360,7 +360,7 @@
         },
         {
           "from": ".*/extensions/.*",
-          "filePattern": "^((?!(module|spec)\\.ts).)*$",
+          "filePattern": "^((?!(module|spec|environment\\.model)\\.ts).)*$",
           "message": "Imports from (other) extensions are not allowed here."
         },
         {
