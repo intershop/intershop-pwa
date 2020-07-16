@@ -22,6 +22,9 @@ import { getAPIToken, getPGID, setAPIToken } from 'ish-core/store/customer/user'
 import { ApiService, unpackEnvelope } from './api.service';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 
+// testing here is handled by http testing controller
+// tslint:disable: use-async-synchronization-in-tests
+
 describe('Api Service', () => {
   describe('API Service Methods', () => {
     const REST_URL = 'http://www.example.org/WFS/site/-';
@@ -653,7 +656,6 @@ describe('Api Service', () => {
     it('should run call exclusively when asked for it', done => {
       let syncData;
 
-      // tslint:disable-next-line: use-async-synchronisation-in-tests
       apiService.get('dummy1', { runExclusively: true }).subscribe(data => {
         expect(data).toBeTruthy();
         syncData = data;
@@ -665,7 +667,6 @@ describe('Api Service', () => {
         req1.flush('TEST1');
       }, 2000);
 
-      // tslint:disable-next-line: use-async-synchronisation-in-tests
       apiService.get('dummy2').subscribe(data => {
         expect(data).toBeTruthy();
         expect(syncData).toEqual('TEST1');
@@ -695,7 +696,6 @@ describe('Api Service', () => {
     it('should run calls in parallel if not explicitly run exclusively', done => {
       let syncData;
 
-      // tslint:disable-next-line: use-async-synchronisation-in-tests
       apiService.get('dummy1').subscribe(data => {
         expect(data).toBeTruthy();
         expect(syncData).toEqual('TEST2');
@@ -704,7 +704,6 @@ describe('Api Service', () => {
 
       const req1 = httpTestingController.expectOne(`http://www.example.org/dummy1`);
 
-      // tslint:disable-next-line: use-async-synchronisation-in-tests
       apiService.get('dummy2').subscribe(data => {
         expect(data).toBeTruthy();
         syncData = data;
@@ -734,7 +733,6 @@ describe('Api Service', () => {
     it('should read apiToken just in time when making actual request', done => {
       store$.overrideSelector(getAPIToken, '0');
 
-      // tslint:disable-next-line: use-async-synchronisation-in-tests
       apiService.get('dummy1', { runExclusively: true }).subscribe(data => {
         expect(data).toBeTruthy();
       });
@@ -742,7 +740,6 @@ describe('Api Service', () => {
       const req1 = httpTestingController.expectOne(`http://www.example.org/dummy1`);
       expect(req1.request.headers.get(ApiService.TOKEN_HEADER_KEY)).toEqual('0');
 
-      // tslint:disable-next-line: use-async-synchronisation-in-tests
       apiService.get('dummy2').subscribe(data => {
         expect(data).toBeTruthy();
       });
