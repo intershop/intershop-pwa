@@ -108,6 +108,7 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
       attributes: {
         accountHolder: string;
         iban: string;
+        bic: string;
         mandateReference: string;
         mandate: {
           mandateReference: string;
@@ -170,6 +171,7 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
           { name: 'paymentInstrumentId', value: result.paymentInstrumentId },
           { name: 'accountHolder', value: result.attributes.accountHolder },
           { name: 'IBAN', value: result.attributes.iban },
+          { name: 'BIC', value: result.attributes.bic },
           { name: 'mandateReference', value: result.attributes.mandate.mandateReference },
           { name: 'mandateText', value: result.attributes.mandate.mandateText },
           { name: 'mandateCreatedDateTime', value: result.attributes.mandate.createdDateTime },
