@@ -83,7 +83,7 @@ export class PaymentMethodMapper {
 
   /**
    * determines the accountIdentifier - this temporary method will be obsolete, if #IS-29004, #IS-29006 have been fixed
-   * the general identifier returns all payment instrument attributes
+   * the general identifier returns account identifier attribute if present, else it returns all the attributes
    * a specific identifier is only returned for ISH_CREDITCARD, add further special functionality here, if needed
    */
   private static determineAccountIdentifier(pm: PaymentMethodBaseData, pi: PaymentInstrumentData): string {
@@ -97,13 +97,17 @@ export class PaymentMethodMapper {
         break;
       }
       default: {
-        identifier =
-          pi.attributes &&
-          pi.attributes.length &&
-          pi.attributes
-            .filter(attr => attr.name !== 'paymentInstrumentId')
-            .map(attr => attr.value)
-            .reduce((acc, val) => (val ? `${acc}  ${val}` : acc));
+        if (pi.accountIdentifier) {
+          identifier = pi.accountIdentifier;
+        } else {
+          identifier =
+            pi.attributes &&
+            pi.attributes.length &&
+            pi.attributes
+              .filter(attr => attr.name !== 'paymentInstrumentId')
+              .map(attr => attr.value)
+              .reduce((acc, val) => (val ? `${acc}  ${val}` : acc));
+        }
       }
     }
 

@@ -8,4 +8,5 @@ export interface PaymentInstrumentData {
   id: string;
   name: string;
   attributes: Attribute[];
+  accountIdentifier: string;
 }
