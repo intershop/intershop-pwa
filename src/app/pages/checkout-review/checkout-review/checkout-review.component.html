@@ -6,7 +6,7 @@
       <ish-modal-dialog-link
         linkText="shopping_cart.read_more.link"
         [options]="{ titleText: 'checkout.safeandsecure.details.title' | translate, size: 'lg' }"
-        [ngClass]="'text-nowrap'"
+        class="details-link"
       >
         <ish-content-include includeId="systeminclude.dialog.safeAndSecure.pagelet2-Include"></ish-content-include>
       </ish-modal-dialog-link>
@@ -28,6 +28,7 @@
         <a routerLink="/basket">{{ 'checkout.widget.return_to_cart.link' | translate }}</a>
       </p>
     </div>
+    <ish-basket-approval-info *ngIf="basket.approval" [approval]="basket.approval"></ish-basket-approval-info>
     <div class="row d-flex">
       <!-- Invoice Address -->
       <ish-info-box

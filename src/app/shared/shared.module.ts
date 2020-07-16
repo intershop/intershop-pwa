@@ -40,6 +40,7 @@ import { ContentPageletComponent } from './cms/components/content-pagelet/conten
 import { ContentSlotComponent } from './cms/components/content-slot/content-slot.component';
 import { AddressComponent } from './components/address/address/address.component';
 import { BasketAddressSummaryComponent } from './components/basket/basket-address-summary/basket-address-summary.component';
+import { BasketApprovalInfoComponent } from './components/basket/basket-approval-info/basket-approval-info.component';
 import { BasketCostSummaryComponent } from './components/basket/basket-cost-summary/basket-cost-summary.component';
 import { BasketInfoComponent } from './components/basket/basket-info/basket-info.component';
 import { BasketItemsSummaryComponent } from './components/basket/basket-items-summary/basket-items-summary.component';
@@ -170,6 +171,7 @@ const exportedComponents = [
   AccordionItemComponent,
   AddressComponent,
   BasketAddressSummaryComponent,
+  BasketApprovalInfoComponent,
   BasketCostSummaryComponent,
   BasketInfoComponent,
   BasketInvoiceAddressWidgetComponent,

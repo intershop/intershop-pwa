@@ -6,10 +6,12 @@ import { MockComponent, MockDirective } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { BasketApproval } from 'ish-core/models/basket-approval/basket-approval.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
+import { BasketApprovalInfoComponent } from 'ish-shared/components/basket/basket-approval-info/basket-approval-info.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { LineItemListComponent } from 'ish-shared/components/basket/line-item-list/line-item-list.component';
@@ -30,6 +32,7 @@ describe('Checkout Review Component', () => {
       declarations: [
         CheckoutReviewComponent,
         MockComponent(AddressComponent),
+        MockComponent(BasketApprovalInfoComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketValidationResultsComponent),
         MockComponent(CheckboxComponent),
@@ -80,5 +83,11 @@ describe('Checkout Review Component', () => {
     component.error = { status: 400, error: 'Bad request' } as HttpError;
     fixture.detectChanges();
     expect(element.querySelector('ish-error-message')).toBeTruthy();
+  });
+
+  it('should display an approval required link if necessary', () => {
+    component.basket.approval = {} as BasketApproval;
+    fixture.detectChanges();
+    expect(element.querySelector('ish-basket-approval-info')).toBeTruthy();
   });
 });

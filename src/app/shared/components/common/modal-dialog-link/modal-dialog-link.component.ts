@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
 
-import { ModalOptions } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { ModalDialogComponent, ModalOptions } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 /**
  * The Modal Dialog Link Component
@@ -31,4 +31,11 @@ export class ModalDialogLinkComponent {
    * Modal dialog options (see also @ModalDialogComponent).
    */
   @Input() options: ModalOptions;
+
+  @ViewChild('modalDialog') modal: ModalDialogComponent<unknown>;
+
+  /** enable parent components to close the modal */
+  hide() {
+    this.modal.hide();
+  }
 }

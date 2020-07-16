@@ -17,6 +17,7 @@ describe('Basket Mapper', () => {
     commonShippingMethod: 'shipping_method_123',
     customer: 'Heimroth',
     lineItems: ['YikKAE8BKC0AAAFrIW8IyLLD'],
+    approval: { approvalRequired: true },
     totals: {
       grandTotal: {
         gross: {
@@ -234,6 +235,11 @@ describe('Basket Mapper', () => {
     it('should return estimated as false if invoive address, shipping address and shipping method is set', () => {
       basket = BasketMapper.fromData(basketData);
       expect(basket.totals.isEstimated).toBeFalse();
+    });
+
+    it('should return approval data if approval data are set', () => {
+      basket = BasketMapper.fromData(basketData);
+      expect(basket.approval.approvalRequired).toBeTrue();
     });
   });
 
