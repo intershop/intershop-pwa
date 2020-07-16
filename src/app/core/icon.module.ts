@@ -40,6 +40,7 @@ import {
   faTrashAlt,
   faUndo,
   faUser,
+  faUserCheck,
 } from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
@@ -84,6 +85,7 @@ export class IconModule {
       faTrashAlt,
       faUndo,
       faUser,
+      faUserCheck,
       faStar,
       faStarHalf,
       faHeart,

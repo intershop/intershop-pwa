@@ -1,0 +1,42 @@
+<div *ngIf="approval?.approvalRequired" class="text-right pb-2">
+  <fa-icon [icon]="['fas', 'user-check']"></fa-icon>
+  <span class="pl-2" data-testing-id="approval-required">{{ 'approval.cart.approval_required' | translate }}</span>
+
+  <!-- details link and dialog -->
+  <ish-modal-dialog-link
+    linkText="approval.cart.link.details"
+    [options]="{ titleText: 'approval.details.heading' | translate }"
+    [ngClass]="'details-link'"
+  >
+    <p>
+      {{ 'approval.details.conditions' | translate }}
+    </p>
+    <ul>
+      <li>{{ 'approval.details.conditions.order_spend_limit' | translate }}</li>
+      <li>{{ 'approval.details.conditions.budget_limit' | translate }}</li>
+    </ul>
+    <p>
+      {{ 'approval.details.place_order' | translate }}
+    </p>
+    <!-- ToDo: The parameter 0 has to be set to the account approval page -->
+    <p
+      [ishServerHtml]="'approval.details.after' | translate: { '0': 'route://account', '1': 'route://account' }"
+      [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
+    ></p>
+
+    <ng-container *ngIf="approval.customerApproval?.approvers?.length">
+      <h3>{{ 'approval.details.contacts.heading' | translate }}</h3>
+
+      <p>{{ 'approval.details.customer_approvers.people_allowed' | translate }}</p>
+
+      <table class="table table-sm">
+        <tr *ngFor="let approver of approval.customerApproval.approvers">
+          <td>{{ approver.firstName }} {{ approver.lastName }}</td>
+          <td>
+            <a href="mailto:{{ approver.email }}">{{ approver.email }}</a>
+          </td>
+        </tr>
+      </table>
+    </ng-container>
+  </ish-modal-dialog-link>
+</div>
