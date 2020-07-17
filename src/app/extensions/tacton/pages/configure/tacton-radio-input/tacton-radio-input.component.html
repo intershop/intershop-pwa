@@ -1,10 +1,10 @@
 <ng-container *ngIf="parameter.properties?.hidden === 'no'">
   <h4>{{ parameter.description }}</h4>
   <div class="row">
-    <div class="col-6">
+    <div class="col-4">
       {{ parameter.properties.tc_info_text }}
     </div>
-    <div class="col-6">
+    <div class="col-8">
       <div *ngFor="let opt of parameter.domain.elements">
         <input
           type="radio"
