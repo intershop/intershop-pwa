@@ -1,0 +1,11 @@
+<div class="section loading-container">
+  <ish-error-message [error]="error$ | async"></ish-error-message>
+
+  <div class="list-body" data-testing-id="requisition-list">
+    <ng-container *ngFor="let requisition of requisitions$ | async">
+      <div>{{ requisition | json }}</div>
+    </ng-container>
+  </div>
+
+  <ish-loading *ngIf="loading$ | async"></ish-loading>
+</div>

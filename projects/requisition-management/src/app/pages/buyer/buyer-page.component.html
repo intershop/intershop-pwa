@@ -2,14 +2,4 @@
 
 <p>{{ 'account.requisitions.requisitions.text' | translate }}</p>
 
-<ish-error-message [error]="error$ | async"></ish-error-message>
-
-<div class="section">
-  <div class="list-body" data-testing-id="requisition-list">
-    <ng-container *ngFor="let requisition of requisitions$ | async">
-      <div>{{ requisition | json }}</div>
-    </ng-container>
-  </div>
-</div>
-
-<ish-loading *ngIf="loading$ | async"></ish-loading>
+<ish-requisitions-list></ish-requisitions-list>
