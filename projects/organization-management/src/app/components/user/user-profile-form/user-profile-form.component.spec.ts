@@ -3,7 +3,6 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { CustomValidators } from 'ngx-custom-validators';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -12,6 +11,7 @@ import { Locale } from 'ish-core/models/locale/locale.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { SelectTitleComponent } from 'ish-shared/forms/components/select-title/select-title.component';
+import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { UserProfileFormComponent } from './user-profile-form.component';
 
@@ -45,7 +45,7 @@ describe('User Profile Form Component', () => {
     when(appFacade.currentLocale$).thenReturn(of({ lang: 'en_US' } as Locale));
 
     component.form = fb.group({
-      email: ['', [Validators.required, CustomValidators.email]],
+      email: ['', [Validators.required, SpecialValidators.email]],
     });
   });
 

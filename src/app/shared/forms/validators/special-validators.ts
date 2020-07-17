@@ -1,4 +1,4 @@
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 export class SpecialValidators {
   /**
@@ -17,5 +17,38 @@ export class SpecialValidators {
   static integer(control: FormControl): { [error: string]: { valid: boolean } } {
     const integerPattern = /^(?:-?(?:0|[1-9][0-9]*)|)$/;
     return integerPattern.test(control.value) ? undefined : { integer: { valid: false } };
+  }
+
+  static email(control: FormControl) {
+    /*
+     * very simplified email matching
+     * - local part mustn't start or end with dot
+     * - domain mustn't start or end with dash
+     * - no IPs allowed for login emails
+     * - only some special characters allowed
+     */
+    return /^([\w\-\~]+\.)*[\w\-\~]+@(([\w][\w\-]*)?[\w]\.)+[a-zA-Z]{2,}$/.test(control.value)
+      ? undefined
+      : { email: true };
+  }
+
+  /**
+   * Compare two form controls for equality.
+   *
+   * The Validator has to be attached to the parent form group containing both controls under investigation.
+   * The first argument control name receives the error if controls do not have an equal value.
+   */
+  static equalTo(errorReceivingControlName: string, compareControlName: string): ValidatorFn {
+    return (group: FormGroup): ValidationErrors => {
+      const errorReceivingControl = group.get(errorReceivingControlName);
+      const otherErrorKeys = Object.keys(errorReceivingControl?.errors || {}).filter(x => x !== 'equalTo');
+
+      if (errorReceivingControl && !otherErrorKeys.length) {
+        errorReceivingControl.setErrors(
+          errorReceivingControl.value === group.get(compareControlName)?.value ? undefined : { equalTo: true }
+        );
+      }
+      return [];
+    };
   }
 }

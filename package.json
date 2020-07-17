@@ -79,7 +79,6 @@
     "morgan": "^1.10.0",
     "ng-recaptcha": "^5.0.0",
     "ngx-cookie-banner": "^0.1.1",
-    "ngx-custom-validators": "^9.1.0",
     "ngx-infinite-scroll": "^9.0.0",
     "ngx-swiper-wrapper": "^9.0.1",
     "ngx-toastr": "^12.1.0",
