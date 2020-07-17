@@ -1,5 +1,5 @@
 FROM node:12 as reporting
-COPY package.json package-lock.json tsconfig.json /workspace/
+COPY package.json package-lock.json tsconfig.base.json /workspace/
 COPY tslint-rules /workspace/tslint-rules/
 WORKDIR /workspace
 ENV CI=true
