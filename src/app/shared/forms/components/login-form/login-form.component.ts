@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, Inject, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CustomValidators } from 'ngx-custom-validators';
 import { Observable } from 'rxjs';
 
 import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-keys';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 /**
  * The Login Form Page Container displays a login form using the {@link LoginFormComponent} and signs the user in
@@ -42,7 +42,7 @@ export class LoginFormComponent implements OnInit {
   ngOnInit() {
     this.loginError$ = this.accountFacade.userError$;
 
-    const loginValidator = this.loginType === 'email' ? CustomValidators.email : Validators.nullValidator;
+    const loginValidator = this.loginType === 'email' ? SpecialValidators.email : Validators.nullValidator;
 
     this.form = new FormGroup({
       login: new FormControl('', [Validators.required, loginValidator]),

@@ -337,11 +337,6 @@
           "from": "lodash.*"
         },
         {
-          "import": "CustomFormsModule",
-          "from": "ngx-custom-validators",
-          "message": "This module is for the template-driven approach which we don't use."
-        },
-        {
           "import": "CookiesService",
           "from": "ngx-utils-cookies-port",
           "filePattern": "^((?!src/app/core/services/cookies/cookies\\.service(\\.spec|)\\.ts).)*$",

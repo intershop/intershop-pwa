@@ -11,7 +11,6 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
-import { CustomValidators } from 'ngx-custom-validators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
@@ -58,12 +57,20 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
 
   private createRegistrationForm(): void {
     this.form = this.fb.group({
-      credentials: this.fb.group({
-        login: ['', [Validators.required, CustomValidators.email]],
-        loginConfirmation: ['', [Validators.required, CustomValidators.email]],
-        password: ['', [Validators.required, SpecialValidators.password]],
-        passwordConfirmation: ['', [Validators.required, SpecialValidators.password]],
-      }),
+      credentials: this.fb.group(
+        {
+          login: ['', [Validators.required, SpecialValidators.email]],
+          loginConfirmation: ['', [Validators.required, SpecialValidators.email]],
+          password: ['', [Validators.required, SpecialValidators.password]],
+          passwordConfirmation: ['', [Validators.required, SpecialValidators.password]],
+        },
+        {
+          validators: [
+            SpecialValidators.equalTo('loginConfirmation', 'login'),
+            SpecialValidators.equalTo('passwordConfirmation', 'password'),
+          ],
+        }
+      ),
       countryCodeSwitch: ['', [Validators.required]],
       preferredLanguage: ['en_US', [Validators.required]],
       birthday: [''],
@@ -72,11 +79,6 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
       captchaAction: ['register'],
       address: this.afs.getFactory('default').getGroup({ isBusinessAddress: this.businessCustomerRegistration }), // filled dynamically when country code changes
     });
-
-    // set validators for credentials form
-    const credForm = this.form.get('credentials');
-    credForm.get('loginConfirmation').setValidators(CustomValidators.equalTo(credForm.get('login')));
-    credForm.get('passwordConfirmation').setValidators(CustomValidators.equalTo(credForm.get('password')));
 
     // add form control(s) for business customers
     if (this.businessCustomerRegistration) {
