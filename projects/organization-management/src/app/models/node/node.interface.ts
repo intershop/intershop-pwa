@@ -14,7 +14,11 @@ export interface NodeAttributes {
 }
 
 export interface NodeRelationships {
-  childNodes: string;
-  organization: string;
-  parentNode: string;
+  childNodes?: NodeResourceIdentifier[];
+  organization: NodeResourceIdentifier;
+  parentNode?: NodeResourceIdentifier;
+}
+
+export interface NodeResourceIdentifier {
+  id: string;
 }
