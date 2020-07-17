@@ -10,7 +10,7 @@ import {
   move,
   url,
 } from '@angular-devkit/schematics';
-import { getProject } from '@schematics/angular/utility/project';
+import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { forEachToken } from 'tsutils';
 import * as ts from 'typescript';
 
@@ -21,7 +21,7 @@ import { insertImport } from '../utils/registration';
 
 import { PWAStoreOptionsSchema as Options } from './schema';
 
-export function determineStoreLocation(
+export async function determineStoreLocation(
   host: Tree,
   options: {
     path?: string;
@@ -32,7 +32,8 @@ export function determineStoreLocation(
     feature?: string;
   }
 ) {
-  const project = getProject(host, options.project);
+  const workspace = await getWorkspace(host);
+  const project = workspace.projects.get(options.project);
 
   let extension = options.extension;
   const regex = /extensions\/([a-z][a-z0-9-]+)/;
@@ -194,12 +195,12 @@ function registerEffectsInStoreModule(options: { parentStorePath?: string; name?
 }
 
 export function createStore(options: Options): Rule {
-  return host => {
+  return async host => {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
     }
-    options = determineStoreLocation(host, options);
-    options = applyNameAndPath('store', host, options);
+    options = await determineStoreLocation(host, options);
+    options = await applyNameAndPath('store', host, options);
     options = determineArtifactName('store', host, options);
 
     const operations: Rule[] = [];

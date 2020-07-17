@@ -16,11 +16,11 @@ import { applyLintFix } from '../utils/lint-fix';
 import { PWAModuleOptionsSchema as Options } from './schema';
 
 export function createModule(options: Options): Rule {
-  return host => {
+  return async host => {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
     }
-    options = applyNameAndPath('module', host, options);
+    options = await applyNameAndPath('module', host, options);
     options = determineArtifactName('module', host, options);
 
     const operations: Rule[] = [];

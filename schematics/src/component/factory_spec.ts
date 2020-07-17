@@ -247,16 +247,19 @@ describe('Component Schematic', () => {
     config.projects.bar.sourceRoot = 'projects/bar/custom';
     appTree.overwrite('/angular.json', JSON.stringify(config, undefined, 2));
 
-    // should fail without a module in that dir
-    schematicRunner.runSchematicAsync('component', defaultOptions, appTree).subscribe(fail, err => {
-      expect(err).toMatchInlineSnapshot(
-        `[Error: Could not find an NgModule. Use the skip-import option to skip importing in NgModule.]`
-      );
-    });
+    let error: Error;
+    try {
+      await schematicRunner.runSchematicAsync('component', defaultOptions, appTree).toPromise();
+    } catch (err) {
+      error = err;
+    }
+    expect(error?.message).toMatchInlineSnapshot(
+      `"Could not find an NgModule. Use the skip-import option to skip importing in NgModule."`
+    );
 
-    // move the module
     appTree.rename('/src/app/app.module.ts', '/projects/bar/custom/app/app.module.ts');
     appTree = await schematicRunner.runSchematicAsync('component', defaultOptions, appTree).toPromise();
+
     expect(appTree.files).toContain('/projects/bar/custom/app/foo/foo.component.ts');
   });
 });

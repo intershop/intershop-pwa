@@ -1,15 +1,15 @@
 import { Rule, SchematicsException, chain, schematic } from '@angular-devkit/schematics';
-import { getProject } from '@schematics/angular/utility/project';
+import { getWorkspace } from '@schematics/angular/utility/workspace';
 
 import { PWALazyComponentsOptionsSchema as Options } from './schema';
 
 export function createLazyComponents(options: Options): Rule {
-  return host => {
+  return async host => {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
     }
-    const project = getProject(host, options.project);
-
+    const workspace = await getWorkspace(host);
+    const project = workspace.projects.get(options.project);
     const operations = [];
 
     const extensionsRoot = `/${project.sourceRoot}/app/extensions`;
