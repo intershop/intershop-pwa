@@ -1,4 +1,6 @@
 export interface RequisitionData {
-  incomingField: string;
-  otherField: boolean;
+  id: string;
+  requisitionNo: string;
+  user: string;
+  approvalStatus: { status: string };
 }
