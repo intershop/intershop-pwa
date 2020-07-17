@@ -6,10 +6,14 @@ import { pick } from 'lodash-es';
 import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
 
 import { RequisitionManagementState } from './requisition-management-store';
+import { RequisitionsEffects } from './requisitions/requisitions.effects';
+import { requisitionsReducer } from './requisitions/requisitions.reducer';
 
-const requisitionManagementReducers: ActionReducerMap<RequisitionManagementState> = {};
+const requisitionManagementReducers: ActionReducerMap<RequisitionManagementState> = {
+  requisitions: requisitionsReducer,
+};
 
-const requisitionManagementEffects = [];
+const requisitionManagementEffects = [RequisitionsEffects];
 
 const metaReducers = [resetOnLogoutMeta];
 
