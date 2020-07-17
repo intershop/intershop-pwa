@@ -5,6 +5,7 @@ import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 import { TactonFacade } from '../../facades/tacton.facade';
+import { TactonProductConfiguration } from '../../models/tacton-product-configuration/tacton-product-configuration.model';
 
 @Component({
   selector: 'ish-configure-page',
@@ -12,7 +13,7 @@ import { TactonFacade } from '../../facades/tacton.facade';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfigurePageComponent implements OnInit {
-  state$: Observable<unknown>;
+  state$: Observable<TactonProductConfiguration>;
   tree$: Observable<unknown>;
   step$: Observable<unknown>;
   loading$: Observable<boolean>;

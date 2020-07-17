@@ -1,5 +1,5 @@
 <div *ngIf="product$ | async as product" class="row">
-  <div class="col-4">
+  <div class="col-4 col-md-3">
     <ul>
       <li *ngFor="let mainItem of tree$ | async">
         {{ mainItem.description }}
@@ -18,9 +18,15 @@
       </li>
     </ul>
   </div>
-  <div class="col-8" *ngIf="state$ | async">
-    <ish-tacton-group [group]="step$ | async"></ish-tacton-group>
-  </div>
+  <ng-container *ngIf="state$ | async as state">
+    <div class="col-8 col-md-6">
+      <ish-tacton-group [group]="step$ | async"></ish-tacton-group>
+    </div>
+    <div class="col-12 col-md-3">
+      <ish-product-image [product]="product" imageType="M" class="product-image"></ish-product-image>
+      <ish-tacton-bom [bom]="state.bom"></ish-tacton-bom>
+    </div>
+  </ng-container>
 </div>
 
 <ish-loading *ngIf="loading$ | async"></ish-loading>

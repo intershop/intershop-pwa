@@ -48,8 +48,8 @@ describe('Tacton Readonly Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <h4>description</h4>
       <div class="row">
-        <div class="col-6">info</div>
-        <div class="col-6">1</div>
+        <div class="col-4">info</div>
+        <div class="col-8">1</div>
       </div>
     `);
   });

@@ -112,9 +112,9 @@ describe('Tacton Select Input Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <h4>description</h4>
       <div class="row">
-        <div class="col-6"></div>
-        <div class="col-6">
-          <select
+        <div class="col-4"></div>
+        <div class="col-8">
+          <select class="mw-100"
             ><option value="opt1">OPT1</option
             ><option value="opt2">OPT2</option
             ><option value="opt3">OPT3</option

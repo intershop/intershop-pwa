@@ -82,8 +82,8 @@ describe('Tacton Radio Input Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <h4>Terminals type</h4>
       <div class="row">
-        <div class="col-6"></div>
-        <div class="col-6">
+        <div class="col-4"></div>
+        <div class="col-8">
           <div><input type="radio" name="paramID" value="opt1" /><label>Number1</label></div>
           <div><input type="radio" name="paramID" value="opt2" /><label>Number2</label></div>
         </div>

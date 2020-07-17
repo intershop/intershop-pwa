@@ -33,6 +33,13 @@ export interface TactonProductConfigurationParameter {
   };
 }
 
+export interface TactonProductConfigurationBomItem {
+  attributes: { [attrId: string]: string };
+  description: string;
+  name: string;
+  qty: string;
+}
+
 export interface TactonProductConfiguration {
   configId?: string;
   configState?: string;
@@ -50,10 +57,5 @@ export interface TactonProductConfiguration {
       members: (TactonProductConfigurationGroup | TactonProductConfigurationParameter)[];
     };
   }[];
-  bom: {
-    attributes: { [attrId: string]: string };
-    description: string;
-    name: string;
-    qty: string;
-  }[];
+  bom: TactonProductConfigurationBomItem[];
 }
