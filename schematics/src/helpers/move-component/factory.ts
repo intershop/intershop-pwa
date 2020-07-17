@@ -1,7 +1,7 @@
 import { strings } from '@angular-devkit/core';
 import { Rule, SchematicsException } from '@angular-devkit/schematics';
 import { tsquery } from '@phenomnomnominal/tsquery';
-import { getProject } from '@schematics/angular/utility/project';
+import { getWorkspace } from '@schematics/angular/utility/workspace';
 import * as ts from 'typescript';
 
 import { readIntoSourceFile } from '../../utils/filesystem';
@@ -52,7 +52,7 @@ function getRelativePath(base: string, abs: string): string {
 }
 
 export function move(options: Options): Rule {
-  return host => {
+  return async host => {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
     }
@@ -106,7 +106,9 @@ export function move(options: Options): Rule {
     };
     console.log('moving', options.from, '\n    to', options.to);
 
-    const sourceRoot = getProject(host, options.project).sourceRoot;
+    const workspace = await getWorkspace(host);
+    const project = workspace.projects.get(options.project);
+    const sourceRoot = project.sourceRoot;
 
     host.visit(file => {
       if (file.startsWith(`/${sourceRoot}/app/`)) {

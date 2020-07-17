@@ -1,5 +1,5 @@
 import { Rule, SchematicsException, chain } from '@angular-devkit/schematics';
-import { buildDefaultPath, getProject } from '@schematics/angular/utility/project';
+import { buildDefaultPath, getWorkspace } from '@schematics/angular/utility/workspace';
 import { Scope } from 'ts-morph';
 
 import { applyLintFix } from '../../utils/lint-fix';
@@ -8,13 +8,13 @@ import { createTsMorphProject } from '../../utils/ts-morph';
 import { PWAAddDestroySubjectToComponentOptionsSchema as Options } from './schema';
 
 export function add(options: Options): Rule {
-  return host => {
+  return async host => {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
     }
-    let path = `${buildDefaultPath(getProject(host, options.project))}/${options.name
-      .replace(/.*src\/app\//, '')
-      .replace(/\/$/, '')}`;
+    const workspace = await getWorkspace(host);
+    const project = workspace.projects.get(options.project);
+    let path = `${buildDefaultPath(project)}/${options.name.replace(/.*src\/app\//, '').replace(/\/$/, '')}`;
 
     if (!path.endsWith('.ts') && host.getDir(path)) {
       const file = host.getDir(path).subfiles.find(el => /(component|pipe|directive)\.ts/.test(el));

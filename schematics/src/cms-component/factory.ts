@@ -25,14 +25,14 @@ import { addDeclarationToNgModule, addImportToFile, addProviderToNgModule } from
 import { PWACMSComponentOptionsSchema as Options } from './schema';
 
 export function createCMSComponent(options: Options): Rule {
-  return host => {
+  return async host => {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
     } else if (!options.definitionQualifiedName) {
       throw new SchematicsException('Option (definitionQualifiedName) is required.');
     }
-    options = detectExtension('cms', host, options);
-    options = applyNameAndPath('component', host, options);
+    options = await detectExtension('cms', host, options);
+    options = await applyNameAndPath('component', host, options);
     if (!options.noCMSPrefixing) {
       options.name = 'cms-' + options.name;
     }
@@ -40,7 +40,7 @@ export function createCMSComponent(options: Options): Rule {
     if (!options.noCMSPrefixing) {
       options.artifactName = 'CMS' + options.artifactName.replace('Cms', '');
     }
-    options = generateSelector(host, options);
+    options = await generateSelector(host, options);
     options.module = 'shared/shared.module';
     options = findDeclaringModule(host, options);
 

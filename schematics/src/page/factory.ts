@@ -11,7 +11,7 @@ import {
   schematic,
   url,
 } from '@angular-devkit/schematics';
-import { buildDefaultPath, getProject } from '@schematics/angular/utility/project';
+import { buildDefaultPath, getWorkspace } from '@schematics/angular/utility/workspace';
 import { forEachToken, getChildOfKind } from 'tsutils';
 import * as ts from 'typescript';
 
@@ -48,11 +48,12 @@ function addRouteToArray(
   }
 }
 
-function determineRoutingModule(
+async function determineRoutingModule(
   host: Tree,
   options: { name?: string; project?: string; extension?: string; lazy?: boolean }
 ) {
-  const project = getProject(host, options.project);
+  const workspace = await getWorkspace(host);
+  const project = workspace.projects.get(options.project);
 
   let routingModuleLocation: string;
   let child: string;
@@ -109,14 +110,14 @@ export function addRouteToRoutingModule(options: {
 }
 
 export function createPage(options: Options): Rule {
-  return host => {
+  return async host => {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
     }
-    options = detectExtension('page', host, options);
-    options = applyNameAndPath('page', host, options);
+    options = await detectExtension('page', host, options);
+    options = await applyNameAndPath('page', host, options);
     options = determineArtifactName('page', host, options);
-    options = determineRoutingModule(host, options);
+    options = await determineRoutingModule(host, options);
 
     const operations: Rule[] = [];
 
