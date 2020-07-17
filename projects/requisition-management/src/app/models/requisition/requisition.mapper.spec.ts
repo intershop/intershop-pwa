@@ -18,12 +18,16 @@ describe('Requisition Mapper', () => {
 
     it('should map incoming data to model data', () => {
       const data: RequisitionData = {
-        incomingField: 'test',
-        otherField: false,
+        id: 'testUUDI',
+        requisitionNo: '0001',
+        user: 'test@user.com',
+        approvalStatus: { status: 'pending' },
       };
       const mapped = requisitionMapper.fromData(data);
-      expect(mapped).toHaveProperty('id', 'test');
-      expect(mapped).not.toHaveProperty('otherField');
+      expect(mapped).toHaveProperty('id', 'testUUDI');
+      expect(mapped).toHaveProperty('requisitionNo', '0001');
+      expect(mapped).toHaveProperty('user', 'test@user.com');
+      expect(mapped).toHaveProperty('approvalStatus', 'pending');
     });
   });
 });
