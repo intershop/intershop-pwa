@@ -161,7 +161,7 @@
       "prettier --loglevel warn --write"
     ],
     "*.ts": [
-      "tslint --project tsconfig.json --fix",
+      "tslint --project tsconfig.base.json --fix",
       "jest --ci --bail --findRelatedTests"
     ]
   },

@@ -8,5 +8,5 @@ tslintHtmlReport({
   exclude: ['src/typings.d.ts'], // Files/patterns to exclude
   // breakOnError: false, // Should it throw an error in tslint errors are found
   typeCheck: true, // enable type checking. requires tsconfig.json
-  tsconfig: 'tsconfig.json', // path to tsconfig.json
+  tsconfig: 'tsconfig.base.json', // path to tsconfig.json
 });
