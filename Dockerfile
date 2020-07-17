@@ -5,7 +5,7 @@ COPY package.json package-lock.json /workspace/
 RUN npm i --ignore-scripts
 COPY projects/organization-management/src/app /workspace/projects/organization-management/src/app/
 COPY src /workspace/src/
-COPY tsconfig.app.json tsconfig-es5.app.json tsconfig.base.json ngsw-config.json browserslist angular.json /workspace/
+COPY tsconfig.app.json tsconfig.base.json ngsw-config.json .browserslistrc angular.json /workspace/
 RUN npm run build:schematics && npm run synchronize-lazy-components -- --ci
 ARG configuration=production
 COPY scripts /workspace/scripts/
