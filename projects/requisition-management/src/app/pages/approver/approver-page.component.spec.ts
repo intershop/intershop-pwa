@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
+
+import { RequisitionsListComponent } from '../../components/requisitions-list/requisitions-list.component';
 
 import { ApproverPageComponent } from './approver-page.component';
 
@@ -12,7 +15,7 @@ describe('Approver Page Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [ApproverPageComponent],
+      declarations: [ApproverPageComponent, MockComponent(RequisitionsListComponent)],
     }).compileComponents();
   }));
 
