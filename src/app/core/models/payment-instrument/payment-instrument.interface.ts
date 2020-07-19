@@ -7,5 +7,5 @@ import { Attribute } from 'ish-core/models/attribute/attribute.model';
 export interface PaymentInstrumentData {
   id: string;
   name: string;
-  attributes: Attribute[];
+  attributes: Attribute<string>[];
 }
