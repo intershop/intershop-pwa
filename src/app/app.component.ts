@@ -10,7 +10,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { NgxCookieBannerComponent } from 'ngx-cookie-banner';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, noop } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -48,8 +48,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     // It is currently necessary to manually subscribe at this
     // point to initialize the banner component.
-    // tslint:disable-next-line:rxjs-no-ignored-subscribe
-    this.banner.isSeen.pipe(takeUntil(this.destroy$)).subscribe();
+    this.banner.isSeen.pipe(takeUntil(this.destroy$)).subscribe(noop);
   }
 
   ngOnDestroy() {

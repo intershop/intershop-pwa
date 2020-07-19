@@ -14,8 +14,7 @@ export class AuthorizationToggleDirective implements OnDestroy {
   private destroy$ = new Subject();
 
   constructor(
-    // tslint:disable-next-line:no-any
-    private templateRef: TemplateRef<any>,
+    private templateRef: TemplateRef<unknown>,
     private viewContainer: ViewContainerRef,
     private authorizationToggle: AuthorizationToggleService
   ) {

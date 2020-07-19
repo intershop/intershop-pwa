@@ -35,13 +35,12 @@ export const coreEffects = [ErrorEffects, ViewconfEffects, ConfigurationEffects,
 
 // tslint:disable: deprecation
 
-// tslint:disable-next-line: no-any
-const coreMetaReducers: MetaReducer<any>[] = [ngrxStateTransferMeta, configurationMeta];
+const coreMetaReducers: MetaReducer<CoreState>[] = [ngrxStateTransferMeta, configurationMeta];
 
 @NgModule({
   imports: [
     // tslint:disable-next-line: ng-module-sorted-fields
-    StoreModule.forRoot(coreReducers, {
+    StoreModule.forRoot<CoreState>(coreReducers, {
       metaReducers: coreMetaReducers,
       runtimeChecks: {
         strictActionImmutability: !environment.production,
@@ -68,14 +67,13 @@ export class CoreStoreModule {
    * @param effects use 'true' to instantiate EffectsModule or use an array of effects directly
    * @param metaReducers optional array of meta reducers
    */
-  // tslint:disable: no-any
   static forTesting(
     reducers: (keyof ActionReducerMap<CoreState>)[] = [],
-    effects: Type<any>[] | boolean = false,
-    metaReducers: MetaReducer<any>[] = []
+    effects: Type<unknown>[] | boolean = false,
+    metaReducers: MetaReducer<CoreState>[] = []
   ) {
     const modules = [
-      StoreModule.forRoot(pick(coreReducers, reducers), {
+      StoreModule.forRoot<CoreState>(pick(coreReducers, reducers), {
         metaReducers,
         runtimeChecks: {
           strictActionImmutability: true,

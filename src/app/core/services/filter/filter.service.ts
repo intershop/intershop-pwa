@@ -11,7 +11,6 @@ import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navig
 import { Link } from 'ish-core/models/link/link.model';
 import { ProductMapper } from 'ish-core/models/product/product.mapper';
 import { SearchParameterMapper } from 'ish-core/models/search-parameter/search-parameter.mapper';
-import { SearchParameter } from 'ish-core/models/search-parameter/search-parameter.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { getProductListingItemsPerPage } from 'ish-core/store/shopping/product-listing';
@@ -39,8 +38,7 @@ export class FilterService {
   }
 
   getFilterForSearch(searchTerm: string): Observable<FilterNavigation> {
-    // tslint:disable-next-line:ish-no-object-literal-type-assertion
-    const searchParameter = SearchParameterMapper.toData({ queryTerm: searchTerm } as SearchParameter);
+    const searchParameter = SearchParameterMapper.toData({ queryTerm: searchTerm });
     return this.apiService
       .get<FilterNavigationData>(`productfilters?${searchParameter}`, { skipApiErrorHandling: true })
       .pipe(map(filter => this.filterNavigationMapper.fromData(filter)));

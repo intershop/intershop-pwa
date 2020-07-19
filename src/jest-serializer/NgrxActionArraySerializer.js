@@ -1,6 +1,4 @@
 const print = (val, serialize) => {
-  // tslint:disable-next-line:no-commented-out-code
-  // return 'RESET';
   return val.map(serialize).join('\n');
 };
 

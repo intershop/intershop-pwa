@@ -107,8 +107,7 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  // tslint:disable-next-line: no-any
-  private async loadModuleFactory(t: any) {
+  private async loadModuleFactory(t) {
     if (t instanceof NgModuleFactory) {
       return t;
     } else {

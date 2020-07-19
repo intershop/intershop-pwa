@@ -17,7 +17,6 @@ type DisplayState = 'New' | 'Submitted' | 'Accepted' | 'Rejected';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 @GenerateLazyComponent()
-// tslint:disable-next-line:ccp-no-markup-in-containers
 export class QuoteWidgetComponent implements OnInit {
   loading$: Observable<boolean>;
 

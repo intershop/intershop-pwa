@@ -3,8 +3,7 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 export class UniversalLogInterceptor implements HttpInterceptor {
-  // tslint:disable-next-line: no-any
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (!process.env.LOGGING) {
       return next.handle(req);
     }

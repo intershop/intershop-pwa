@@ -14,8 +14,7 @@ const serializeCategoryTree = ct => {
     .concat(ct.rootIds);
   const danglingKeys = Object.keys(ct.nodes).filter(key => !assignedKeys.includes(key));
   if (danglingKeys.length) {
-    // tslint:disable-next-line:no-string-literal
-    tree['dangling'] = arrayToObject(danglingKeys, ct.edges);
+    tree.dangling = arrayToObject(danglingKeys, ct.edges);
   }
   return asTree(tree);
 };

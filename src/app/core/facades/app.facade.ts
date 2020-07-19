@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { combineLatest, merge } from 'rxjs';
+import { combineLatest, merge, noop } from 'rxjs';
 import { filter, map, mapTo, shareReplay, startWith } from 'rxjs/operators';
 
 import { getAvailableLocales, getCurrentLocale, getDeviceType, getICMBaseURL } from 'ish-core/store/core/configuration';
@@ -16,8 +16,7 @@ export class AppFacade {
   icmBaseUrl: string;
 
   constructor(private store: Store, private router: Router) {
-    // tslint:disable-next-line: rxjs-no-ignored-subscribe
-    this.routingInProgress$.subscribe();
+    this.routingInProgress$.subscribe(noop);
 
     store.pipe(select(getICMBaseURL)).subscribe(icmBaseUrl => (this.icmBaseUrl = icmBaseUrl));
   }
