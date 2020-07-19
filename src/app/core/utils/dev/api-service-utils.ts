@@ -1,5 +1,6 @@
 import { capture } from 'ts-mockito';
 
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 
 // tslint:disable:no-console
@@ -28,4 +29,11 @@ export function logApiCalls(apiServiceMock: ApiService) {
       break;
     }
   }
+}
+
+export function makeHttpError(fields: Partial<HttpError>): HttpError {
+  return {
+    name: 'HttpErrorResponse',
+    ...fields,
+  };
 }

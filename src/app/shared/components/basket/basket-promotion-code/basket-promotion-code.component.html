@@ -3,11 +3,9 @@
     'shopping_cart.promotional_code.heading' | translate
   }}</a>
 
-  <div *ngIf="promotionError$ | async as promotionError" class="alert alert-danger ng-star-inserted" role="alert">
-    {{ promotionError.error || (promotionError.errorCode | translate) }}
-  </div>
+  <ish-error-message [error]="promotionError$ | async"></ish-error-message>
 
-  <div *ngIf="displaySuccessMessage" class="alert alert-success ng-star-inserted" role="alert">
+  <div *ngIf="displaySuccessMessage" class="alert alert-success" role="alert">
     {{ 'shopping_cart.promotion.qualified_promo.text' | translate }}
   </div>
 

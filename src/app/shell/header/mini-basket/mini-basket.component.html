@@ -17,9 +17,8 @@
 
   <div *ngIf="!isCollapsed" class="mini-cart">
     <ng-container *ngIf="basketError$ | async as error">
-      <p *ngIf="error && error.status" role="alert" class="text-danger">
-        <span *ngIf="!error.error">{{ error.status }}: {{ error.message }}</span
-        >{{ error.error }}
+      <p *ngIf="error" role="alert" class="text-danger">
+        <span>{{ error.message }}</span>
       </p>
     </ng-container>
 

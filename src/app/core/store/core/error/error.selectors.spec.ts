@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { communicationTimeoutError } from './error.actions';
@@ -25,10 +25,11 @@ describe('Error Selectors', () => {
   });
 
   it('should select a error when a HttpError action is reduced', () => {
-    store$.dispatch(communicationTimeoutError({ error: { status: 123 } as HttpError }));
+    store$.dispatch(communicationTimeoutError({ error: makeHttpError({ status: 123 }) }));
 
     expect(getGeneralError(store$.state)).toMatchInlineSnapshot(`
       Object {
+        "name": "HttpErrorResponse",
         "status": 123,
       }
     `);

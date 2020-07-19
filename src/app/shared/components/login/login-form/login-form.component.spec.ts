@@ -3,12 +3,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { instance, mock } from 'ts-mockito';
 
 import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-keys';
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
 import { LoginFormComponent } from './login-form.component';
@@ -23,7 +22,7 @@ describe('Login Form Component', () => {
     accountFacade = mock(AccountFacade);
 
     TestBed.configureTestingModule({
-      declarations: [LoginFormComponent, MockComponent(InputComponent)],
+      declarations: [LoginFormComponent, MockComponent(ErrorMessageComponent), MockComponent(InputComponent)],
       imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
       providers: [
         { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
@@ -52,31 +51,6 @@ describe('Login Form Component', () => {
     expect(element.querySelector('[controlname=login]')).toBeTruthy();
     expect(element.querySelector('[controlname=password]')).toBeTruthy();
     expect(element.querySelector('[name="login"]')).toBeTruthy();
-  });
-
-  describe('error display', () => {
-    it('should not have any error when initialized', () => {
-      fixture.detectChanges();
-      expect(element.querySelector('.alert-danger')).toBeFalsy();
-    });
-
-    describe('depending on loginType', () => {
-      beforeEach(() => {
-        when(accountFacade.userError$).thenReturn(of({ status: 401 } as HttpError));
-      });
-
-      it('should display username error when error is set', () => {
-        component.loginType = 'default';
-        fixture.detectChanges();
-        expect(element.querySelector('.alert-danger').textContent).toContain('user');
-      });
-
-      it('should display email error when error is set', () => {
-        component.loginType = 'email';
-        fixture.detectChanges();
-        expect(element.querySelector('.alert-danger').textContent).toContain('email');
-      });
-    });
   });
 
   describe('email format', () => {

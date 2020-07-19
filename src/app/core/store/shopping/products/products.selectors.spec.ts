@@ -4,11 +4,11 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { Category } from 'ish-core/models/category/category.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadCategorySuccess } from 'ish-core/store/shopping/categories';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
@@ -85,7 +85,7 @@ describe('Products Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(loadProductFail({ error: { message: 'error' } as HttpError, sku: 'invalid' }));
+        store$.dispatch(loadProductFail({ error: makeHttpError({ message: 'error' }), sku: 'invalid' }));
       });
 
       it('should not have loaded product on error', () => {
@@ -305,7 +305,7 @@ describe('Products Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(loadProductVariationsFail({ error: { message: 'error' } as HttpError, sku: 'SKU' }));
+        store$.dispatch(loadProductVariationsFail({ error: makeHttpError({ message: 'error' }), sku: 'SKU' }));
       });
 
       it('should not have loaded product variations on error', () => {

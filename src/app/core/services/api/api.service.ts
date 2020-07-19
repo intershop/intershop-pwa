@@ -12,7 +12,7 @@ import {
   of,
   throwError,
 } from 'rxjs';
-import { catchError, concatMap, first, map, tap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, first, map, tap, withLatestFrom } from 'rxjs/operators';
 
 import { Captcha } from 'ish-core/models/captcha/captcha.model';
 import { Link } from 'ish-core/models/link/link.model';
@@ -113,9 +113,7 @@ export class ApiService {
   }
 
   private execute<T>(options: AvailableOptions, httpCall$: Observable<T>): Observable<T> {
-    const wrappedCall$ = options?.skipApiErrorHandling
-      ? httpCall$
-      : httpCall$.pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error)));
+    const wrappedCall$ = httpCall$.pipe(this.apiServiceErrorHandler.handleErrors(!options?.skipApiErrorHandling));
 
     if (options?.runExclusively) {
       // setup a barrier for other calls
@@ -127,13 +125,7 @@ export class ApiService {
       };
 
       // release barrier on completion
-      return wrappedCall$.pipe(
-        tap(releaseBarrier),
-        catchError(err => {
-          releaseBarrier();
-          return throwError(err);
-        })
-      );
+      return wrappedCall$.pipe(tap({ complete: releaseBarrier, error: releaseBarrier }));
     } else {
       // respect barrier
       return this.executionBarrier$.pipe(concatMap(() => wrappedCall$));

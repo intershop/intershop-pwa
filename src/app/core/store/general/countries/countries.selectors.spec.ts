@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Country } from 'ish-core/models/country/country.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { GeneralStoreModule } from 'ish-core/store/general/general-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { loadCountries, loadCountriesFail, loadCountriesSuccess } from './countries.actions';
@@ -55,7 +55,7 @@ describe('Countries Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(loadCountriesFail({ error: { message: 'error' } as HttpError }));
+        store$.dispatch(loadCountriesFail({ error: makeHttpError({ message: 'error' }) }));
       });
 
       it('should not have loaded category on error', () => {

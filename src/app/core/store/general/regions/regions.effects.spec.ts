@@ -5,11 +5,11 @@ import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Region } from 'ish-core/models/region/region.model';
 import { CountryService } from 'ish-core/services/country/country.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { GeneralStoreModule } from 'ish-core/store/general/general-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { loadRegions, loadRegionsFail, loadRegionsSuccess } from './regions.actions';
 import { RegionsEffects } from './regions.effects';
@@ -61,9 +61,11 @@ describe('Regions Effects', () => {
       expect(effects.loadRegions$).toBeObservable(expected$);
     });
     it('should map invalid request to action of type LoadRegionsFail', () => {
-      when(countryServiceMock.getRegionsByCountry(anyString())).thenReturn(throwError({ message: 'invalid' }));
+      when(countryServiceMock.getRegionsByCountry(anyString())).thenReturn(
+        throwError(makeHttpError({ message: 'invalid' }))
+      );
       const action = loadRegions({ countryCode });
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       const completion = loadRegionsFail({ error });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });

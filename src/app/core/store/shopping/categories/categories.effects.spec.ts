@@ -12,10 +12,10 @@ import { anyNumber, capture, instance, mock, verify, when } from 'ts-mockito';
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category, CategoryCompletenessLevel, CategoryHelper } from 'ish-core/models/category/category.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import {
@@ -50,7 +50,9 @@ describe('Categories Effects', () => {
     when(categoriesServiceMock.getCategory('123')).thenReturn(
       of(categoryTree([{ uniqueId: '123', categoryPath: ['123'] } as Category]))
     );
-    when(categoriesServiceMock.getCategory('invalid')).thenReturn(throwError({ message: 'invalid category' }));
+    when(categoriesServiceMock.getCategory('invalid')).thenReturn(
+      throwError(makeHttpError({ message: 'invalid category' }))
+    );
     when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(of(TOP_LEVEL_CATEGORIES));
 
     TestBed.configureTestingModule({
@@ -190,7 +192,7 @@ describe('Categories Effects', () => {
     it('should map invalid request to action of type LoadCategoryFail', () => {
       const categoryId = 'invalid';
       const action = loadCategory({ categoryId });
-      const completion = loadCategoryFail({ error: { message: 'invalid category' } as HttpError });
+      const completion = loadCategoryFail({ error: makeHttpError({ message: 'invalid category' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -225,11 +227,11 @@ describe('Categories Effects', () => {
 
     it('should map invalid request to action of type LoadCategoryFail', () => {
       when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(
-        throwError({ message: 'invalid number' })
+        throwError(makeHttpError({ message: 'invalid number' }))
       );
       const action = loadTopLevelCategories();
       const completion = loadTopLevelCategoriesFail({
-        error: { message: 'invalid number' } as HttpError,
+        error: makeHttpError({ message: 'invalid number' }),
       });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -240,7 +242,7 @@ describe('Categories Effects', () => {
 
   describe('redirectIfErrorInCategories$', () => {
     it('should redirect if triggered', fakeAsync(() => {
-      const action = loadCategoryFail({ error: { status: 404 } as HttpError });
+      const action = loadCategoryFail({ error: makeHttpError({ status: 404 }) });
 
       actions$ = of(action);
 

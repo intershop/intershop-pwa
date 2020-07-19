@@ -21,4 +21,10 @@ export class ServerErrorComponent {
    */
   @Input() error: HttpError;
   @Input() type: string;
+
+  expanded = false;
+
+  expand() {
+    this.expanded = true;
+  }
 }

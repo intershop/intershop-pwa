@@ -10,11 +10,11 @@ import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { Wishlist } from '../../models/wishlist/wishlist.model';
 import { WishlistService } from '../../services/wishlist/wishlist.service';
@@ -127,7 +127,7 @@ describe('Wishlist Effects', () => {
     });
 
     it('should map failed calls to actions of type LoadWishlistsFail', () => {
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       when(wishlistServiceMock.getWishlists()).thenReturn(throwError(error));
       const action = loadWishlists();
       const completion = loadWishlistsFail({
@@ -182,7 +182,7 @@ describe('Wishlist Effects', () => {
       expect(effects.createWishlist$).toBeObservable(expected$);
     });
     it('should map failed calls to actions of type CreateWishlistFail', () => {
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       when(wishlistServiceMock.createWishlist(anything())).thenReturn(throwError(error));
       const action = createWishlist({ wishlist: createWishlistData });
       const completion = createWishlistFail({
@@ -241,7 +241,7 @@ describe('Wishlist Effects', () => {
       expect(effects.deleteWishlist$).toBeObservable(expected$);
     });
     it('should map failed calls to actions of type DeleteWishlistFail', () => {
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       when(wishlistServiceMock.deleteWishlist(anyString())).thenReturn(throwError(error));
       const action = deleteWishlist({ wishlistId: id });
       const completion = deleteWishlistFail({
@@ -292,7 +292,7 @@ describe('Wishlist Effects', () => {
       expect(effects.updateWishlist$).toBeObservable(expected$);
     });
     it('should map failed calls to actions of type UpdateWishlistFail', () => {
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       when(wishlistServiceMock.updateWishlist(anything())).thenReturn(throwError(error));
       const action = updateWishlist({ wishlist: wishlistDetailData[0] });
       const completion = updateWishlistFail({
@@ -353,7 +353,7 @@ describe('Wishlist Effects', () => {
     });
 
     it('should map failed calls to actions of type AddProductToWishlistFail', () => {
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       when(wishlistServiceMock.addProductToWishlist(anyString(), anyString(), anything())).thenReturn(
         throwError(error)
       );
@@ -394,7 +394,7 @@ describe('Wishlist Effects', () => {
       expect(effects.addProductToNewWishlist$).toBeObservable(expected$);
     });
     it('should map failed calls to actions of type CreateWishlistFail', () => {
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       when(wishlistServiceMock.createWishlist(anything())).thenReturn(throwError(error));
       const action = addProductToNewWishlist(payload);
       const completion = createWishlistFail({
@@ -479,7 +479,7 @@ describe('Wishlist Effects', () => {
       expect(effects.removeProductFromWishlist$).toBeObservable(expected$);
     });
     it('should map failed calls to actions of type RemoveItemFromWishlistFail', () => {
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       when(wishlistServiceMock.removeProductFromWishlist(anyString(), anyString())).thenReturn(throwError(error));
       const action = removeItemFromWishlist(payload);
       const completion = removeItemFromWishlistFail({

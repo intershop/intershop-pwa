@@ -1,11 +1,11 @@
 import { Address } from 'ish-core/models/address/address.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import {
   createBasketAddress,
   createBasketAddressSuccess,
   deleteBasketShippingAddress,
   updateBasketAddress,
 } from 'ish-core/store/customer/basket/basket.actions';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import {
@@ -36,7 +36,7 @@ describe('Addresses Reducer', () => {
 
     describe('LoadAddressesFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
+        const error = makeHttpError({ message: 'invalid' });
         const action = loadAddressesFail({ error });
         const state = addressesReducer(initialState, action);
 
@@ -84,7 +84,7 @@ describe('Addresses Reducer', () => {
 
     describe('CreateCustomerAddressFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
+        const error = makeHttpError({ message: 'invalid' });
         const action = createCustomerAddressFail({ error });
         const state = addressesReducer(initialState, action);
 
@@ -136,7 +136,7 @@ describe('Addresses Reducer', () => {
 
     describe('UpdateCustomerAddressFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
+        const error = makeHttpError({ message: 'invalid' });
         const action = updateCustomerAddressFail({ error });
         const state = addressesReducer(initialState, action);
 
@@ -187,7 +187,7 @@ describe('Addresses Reducer', () => {
 
     describe('DeleteCustomerAddressFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
+        const error = makeHttpError({ message: 'invalid' });
         const action = deleteCustomerAddressFail({ error });
         const state = addressesReducer(initialState, action);
 

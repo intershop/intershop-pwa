@@ -12,7 +12,6 @@ import { CounterComponent } from './components/counter/counter.component';
 import { FormControlFeedbackComponent } from './components/form-control-feedback/form-control-feedback.component';
 import { InputBirthdayComponent } from './components/input-birthday/input-birthday.component';
 import { InputComponent } from './components/input/input.component';
-import { LoginFormComponent } from './components/login-form/login-form.component';
 import { SelectAddressComponent } from './components/select-address/select-address.component';
 import { SelectCountryComponent } from './components/select-country/select-country.component';
 import { SelectRegionComponent } from './components/select-region/select-region.component';
@@ -28,7 +27,6 @@ const exportedComponents = [
   FormControlFeedbackComponent,
   InputBirthdayComponent,
   InputComponent,
-  LoginFormComponent,
   SelectAddressComponent,
   SelectComponent,
   SelectCountryComponent,

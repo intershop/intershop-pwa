@@ -1,6 +1,6 @@
 import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
 import { Category } from 'ish-core/models/category/category.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import {
@@ -42,7 +42,7 @@ describe('Categories Reducer', () => {
 
     describe('LoadCategoryFail action', () => {
       it('should set loading to false', () => {
-        const action = loadCategoryFail({ error: {} as HttpError });
+        const action = loadCategoryFail({ error: makeHttpError({}) });
         const state = categoriesReducer(initialState, action);
 
         expect(state.categories).toEqual(categoryTree());

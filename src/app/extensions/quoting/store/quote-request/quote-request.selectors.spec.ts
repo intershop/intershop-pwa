@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
@@ -112,9 +112,14 @@ describe('Quote Request Selectors', () => {
     });
 
     it('should set loading to false and set error state', () => {
-      store$.dispatch(loadQuoteRequestsFail({ error: { message: 'invalid' } as HttpError }));
+      store$.dispatch(loadQuoteRequestsFail({ error: makeHttpError({ message: 'invalid' }) }));
       expect(getQuoteRequestLoading(store$.state)).toBeFalse();
-      expect(getQuoteRequestError(store$.state)).toEqual({ message: 'invalid' });
+      expect(getQuoteRequestError(store$.state)).toMatchInlineSnapshot(`
+        Object {
+          "message": "invalid",
+          "name": "HttpErrorResponse",
+        }
+      `);
     });
   });
 
@@ -137,10 +142,15 @@ describe('Quote Request Selectors', () => {
     });
 
     it('should set loading to false and set error state', () => {
-      store$.dispatch(loadQuoteRequestItemsFail({ error: { message: 'invalid' } as HttpError }));
+      store$.dispatch(loadQuoteRequestItemsFail({ error: makeHttpError({ message: 'invalid' }) }));
       expect(getQuoteRequestLoading(store$.state)).toBeFalse();
       expect(getQuoteRequestItemsWithProducts(store$.state)).toBeEmpty();
-      expect(getQuoteRequestError(store$.state)).toEqual({ message: 'invalid' });
+      expect(getQuoteRequestError(store$.state)).toMatchInlineSnapshot(`
+        Object {
+          "message": "invalid",
+          "name": "HttpErrorResponse",
+        }
+      `);
     });
   });
 

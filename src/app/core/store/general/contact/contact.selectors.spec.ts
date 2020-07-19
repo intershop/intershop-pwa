@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Contact } from 'ish-core/models/contact/contact.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { GeneralStoreModule } from 'ish-core/store/general/general-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import {
@@ -72,7 +72,7 @@ describe('Contact Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(createContactFail({ error: { message: 'error' } as HttpError }));
+        store$.dispatch(createContactFail({ error: makeHttpError({ message: 'error' }) }));
       });
 
       it('should not have loaded subjects on error', () => {
@@ -102,7 +102,7 @@ describe('Contact Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(loadContactFail({ error: { message: 'error' } as HttpError }));
+        store$.dispatch(loadContactFail({ error: makeHttpError({ message: 'error' }) }));
       });
 
       it('should not have loaded subjects on error', () => {
