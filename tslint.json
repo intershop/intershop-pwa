@@ -536,7 +536,6 @@
     "no-disabled-tests": {
       "severity": "warning"
     },
-    "no-barrel-files": true,
     "use-camel-case-environment-properties": true,
     "component-creation-test": true,
     "no-intelligence-in-artifacts": {
