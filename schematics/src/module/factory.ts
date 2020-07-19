@@ -20,7 +20,6 @@ export function createModule(options: Options): Rule {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
     }
-    // tslint:disable:no-parameter-reassignment
     options = applyNameAndPath('module', host, options);
     options = determineArtifactName('module', host, options);
 

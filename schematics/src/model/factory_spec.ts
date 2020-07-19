@@ -4,7 +4,6 @@ import { createApplication, createSchematicRunner } from '../utils/testHelper';
 
 import { PWAModelOptionsSchema as Options } from './schema';
 
-// tslint:disable:max-line-length
 describe('Model Schematic', () => {
   const schematicRunner = createSchematicRunner();
   const defaultOptions: Options = {

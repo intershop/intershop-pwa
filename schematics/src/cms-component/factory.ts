@@ -31,7 +31,6 @@ export function createCMSComponent(options: Options): Rule {
     } else if (!options.definitionQualifiedName) {
       throw new SchematicsException('Option (definitionQualifiedName) is required.');
     }
-    // tslint:disable:no-parameter-reassignment
     options = detectExtension('cms', host, options);
     options = applyNameAndPath('component', host, options);
     if (!options.noCMSPrefixing) {

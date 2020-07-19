@@ -20,7 +20,6 @@ export function createService(options: Options): Rule {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
     }
-    // tslint:disable:no-parameter-reassignment
     options = detectExtension('service', host, options);
     options = applyNameAndPath('service', host, options);
     options = determineArtifactName('service', host, options);

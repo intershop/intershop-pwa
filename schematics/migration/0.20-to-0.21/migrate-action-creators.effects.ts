@@ -1,7 +1,5 @@
 import { CallExpression, SourceFile, SyntaxKind } from 'ts-morph';
 
-// tslint:disable: no-console
-
 export class ActionCreatorsEffectMorpher {
   constructor(public effectsFile: SourceFile) {}
 

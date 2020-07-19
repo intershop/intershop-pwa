@@ -21,7 +21,6 @@ export function createPipe(options: Options): Rule {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
     }
-    // tslint:disable:no-parameter-reassignment
     options = detectExtension('pipe', host, options);
     options = applyNameAndPath('pipe', host, options);
     options = determineArtifactName('pipe', host, options);

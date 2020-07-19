@@ -104,7 +104,6 @@ export function move(options: Options): Rule {
       }
       return newPath;
     };
-    // tslint:disable-next-line:no-console
     console.log('moving', options.from, '\n    to', options.to);
 
     const sourceRoot = getProject(host, options.project).sourceRoot;

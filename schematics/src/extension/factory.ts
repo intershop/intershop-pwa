@@ -23,7 +23,6 @@ export function createExtension(options: Options): Rule {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
     }
-    // tslint:disable:no-parameter-reassignment
     options = detectExtension('extension', host, options);
     options = applyNameAndPath('extension', host, options);
     options = determineArtifactName('extension', host, options);

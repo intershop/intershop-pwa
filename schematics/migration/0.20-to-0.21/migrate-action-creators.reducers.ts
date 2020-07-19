@@ -10,8 +10,6 @@ import {
   standardizeIdentifier,
 } from './morph-helpers';
 
-// tslint:disable: no-console
-
 export class ActionCreatorsReducerMorpher {
   switchStatements: {
     identifier: string;

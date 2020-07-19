@@ -23,7 +23,6 @@ export function createComponent(options: Options): Rule {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
     }
-    // tslint:disable:no-parameter-reassignment
     options = applyNameAndPath('component', host, options);
     options = determineArtifactName('component', host, options);
     options = generateSelector(host, options);

@@ -43,7 +43,6 @@ export function createLazyComponent(options: Options): Rule {
     const group = pathSplits[pathSplits.length - 3];
     const originalName = /\/([a-z0-9-]+)\.component\.ts/.exec(originalPath)[1];
     options.name = 'lazy-' + originalName;
-    // tslint:disable: no-parameter-reassignment
     options = generateSelector(host, options);
     options.path = `${project.sourceRoot}/app/extensions/${extension}/exports/${group}`;
     options = findDeclaringModule(host, options);
