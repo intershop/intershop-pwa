@@ -7,6 +7,6 @@ export interface PaymentInstrument {
   id: string;
   urn?: string;
   accountIdentifier?: string;
-  parameters?: Attribute[];
+  parameters?: Attribute<string>[];
   paymentMethod?: string;
 }
