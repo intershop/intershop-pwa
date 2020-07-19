@@ -47,17 +47,19 @@ function extractConfigurationParameters(state: ConfigurationState, paramMap: Sim
   return state;
 }
 
-// tslint:disable: no-any
 /**
  * meta reducer for overriding client side state if supplied by server
  */
-export function configurationMeta(reducer: ActionReducer<any>): ActionReducer<any> {
+export function configurationMeta(reducer: ActionReducer<CoreState>): ActionReducer<CoreState> {
   let first = false;
 
-  return (state: CoreState, action: any) => {
+  return (
+    state: CoreState,
+    action: typeof routerNavigationAction & { payload: RouterNavigationPayload<RouterState> }
+  ) => {
     let newState = state;
     if (!first && action.type === routerNavigationAction.type) {
-      const payload: RouterNavigationPayload<RouterState> = action.payload;
+      const payload = action.payload;
       const paramMap = new SimpleParamMap(payload.routerState.params);
       newState = mergeDeep(newState, {
         configuration: extractConfigurationParameters(newState.configuration, paramMap),

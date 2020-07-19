@@ -21,7 +21,6 @@ describe('Account Payment Page Component', () => {
         MockComponent(AccountPaymentComponent),
         MockComponent(LoadingComponent),
       ],
-      // tslint:disable-next-line: prettier
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   }));

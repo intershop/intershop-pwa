@@ -55,8 +55,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   idAfterCreate = '';
   private destroy$ = new Subject<void>();
 
-  // tslint:disable-next-line:no-any
-  @ViewChild('modal') modalTemplate: TemplateRef<any>;
+  @ViewChild('modal') modalTemplate: TemplateRef<unknown>;
 
   constructor(
     private ngbModal: NgbModal,

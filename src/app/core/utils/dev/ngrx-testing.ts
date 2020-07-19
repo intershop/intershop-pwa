@@ -7,14 +7,10 @@ import { tap } from 'rxjs/operators';
 import { CoreState } from 'ish-core/store/core/core-store';
 import { CustomRouterSerializer } from 'ish-core/store/core/router/router.serializer';
 
-// tslint:disable:no-any no-console
+// tslint:disable:no-console
 
 export const containsActionWithType = (type: string) => (actions: Action[]) =>
   !!actions.filter(a => a.type === type).length;
-
-export const containsActionWithTypeAndPayload = (type: string, predicate: (payload: any) => boolean) => (
-  actions: { type: string; payload: unknown }[]
-) => !!actions.filter(a => a.type === type && predicate(a.payload)).length;
 
 function includeAction(action: Action, include: string[] | RegExp) {
   const type = action.type;
@@ -24,8 +20,8 @@ function includeAction(action: Action, include: string[] | RegExp) {
 /**
  * meta reducer for logging actions to the console
  */
-export function logActionsMeta(reducer: ActionReducer<any>): ActionReducer<any> {
-  return (state: any, action: any) => {
+export function logActionsMeta<T = object>(reducer: ActionReducer<T>): ActionReducer<T> {
+  return (state: T, action: Action) => {
     if (action.type !== '@ngrx/store-devtools/recompute') {
       console.log('action', action);
     }
@@ -36,8 +32,8 @@ export function logActionsMeta(reducer: ActionReducer<any>): ActionReducer<any> 
 /**
  * meta reducer for logging the state after every modification to the console
  */
-export function logStateMeta(reducer: ActionReducer<any>): ActionReducer<any> {
-  return (state: any, action: any) => {
+export function logStateMeta<T = object>(reducer: ActionReducer<T>): ActionReducer<T> {
+  return (state: T, action: Action) => {
     const newState = reducer(state, action);
     console.log('state', newState);
     return newState;
@@ -73,19 +69,17 @@ export abstract class StoreWithSnapshots {
  */
 export function provideStoreSnapshots() {
   const actionList: Action[] = [];
-  // tslint:disable: no-string-literal
-  function saveStore(store: Store, actions: Actions) {
-    store.subscribe(state => (store['state'] = state));
+  function saveStore(store: StoreWithSnapshots & Store, actions: Actions) {
+    store.subscribe(state => (store.state = state as CoreState));
     if (actions) {
       actions.subscribe(action => {
         actionList.push(action);
       });
     }
-    store['actionsArray'] = (regex = /.*/) => actionList.filter(action => regex.test(action.type));
-    store['reset'] = () => actionList.splice(0, actionList.length);
+    store.actionsArray = (regex = /.*/) => actionList.filter(action => regex.test(action.type));
+    store.reset = () => actionList.splice(0, actionList.length);
     return store;
   }
-  // tslint:enable: no-string-literal
 
   return [
     {
@@ -96,12 +90,12 @@ export function provideStoreSnapshots() {
   ];
 }
 
-// tslint:disable: deprecation
+// tslint:disable: deprecation no-any
 
 /**
  * Service for monitoring actions and the current state.
  * ! The listening is solved as Effects so it can be managed by the EffectsModule.
- * ! Otherwise the order of the actions is interferred with.
+ * ! Otherwise the order of the actions is interfered with.
  * @deprecated will be removed in version 0.23
  */
 @Injectable()
@@ -133,7 +127,7 @@ export class TestStore {
 }
 
 /** @deprecated will be removed in version 0.23 */
-export function ngrxTesting<T>(
+export function ngrxTesting<T = object>(
   options: {
     reducers?: ActionReducerMap<T, Action>;
     effects?: Type<any>[];

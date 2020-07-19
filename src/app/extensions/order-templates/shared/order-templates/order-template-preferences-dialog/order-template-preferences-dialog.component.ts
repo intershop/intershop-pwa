@@ -54,8 +54,7 @@ export class OrderTemplatePreferencesDialogComponent implements OnChanges {
   orderTemplateTitle = 'account.order_template.new_order_template.text';
   modalHeader = 'account.order_template.list.button.add_template.label';
 
-  // tslint:disable-next-line:no-any
-  @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<any>;
+  @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<unknown>;
 
   constructor(private fb: FormBuilder, private ngbModal: NgbModal) {
     this.initForm();
