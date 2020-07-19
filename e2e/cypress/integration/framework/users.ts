@@ -52,10 +52,8 @@ export function createBasketViaREST(user: Partial<Registration>, lineItems: { [s
       /.*\/INTERSHOP/,
       Cypress.env('ICM_BASE_URL') + '/INTERSHOP'
     );
-    // tslint:disable-next-line:no-unused-expression
     expect(basketUrl).not.to.be.empty;
     const authToken = basketCreationResponse.headers['authentication-token'];
-    // tslint:disable-next-line:no-unused-expression
     expect(authToken).not.to.be.empty;
 
     const body = Object.keys(lineItems).map(product => ({ product, quantity: { value: lineItems[product] } }));

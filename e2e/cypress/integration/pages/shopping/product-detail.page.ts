@@ -72,12 +72,9 @@ export class ProductDetailPage {
     cy.wait(3000);
     this.addToCartButton().click();
 
-    return (
-      cy
-        .wait('@basket')
-        // tslint:disable-next-line: no-any
-        .then(result => (result.status >= 400 ? result : cy.wait('@basketCurrent').then(() => result))) as any
-    );
+    return cy
+      .wait('@basket')
+      .then(result => (result.status >= 400 ? result : cy.wait('@basketCurrent').then(() => result))) as any;
   }
 
   addProductToQuoteRequest() {
@@ -111,7 +108,6 @@ export class ProductDetailPage {
   }
 
   changeVariationWithSelect(id: string, value: string) {
-    // tslint:disable-next-line:ban
     cy.get(`[data-testing-id="${id}"]`).select(value);
   }
 

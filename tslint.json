@@ -379,7 +379,7 @@
         },
         {
           "from": ".*/pages/[a-z][a-z0-9-]+/.*",
-          "filePattern": "^((?!(cypress|\\.module\\.ts$)).)*$",
+          "filePattern": "^((?!\\.module\\.ts$).)*$",
           "message": "Imports from pages are not allowed."
         },
         {
@@ -562,7 +562,6 @@
       "options": {
         "warnUnmatched": false,
         "pathPatterns": [
-          "^.*/cypress/.*$",
           "^.*/src/environments/environment(\\.\\w+|)\\.ts$",
           "^.*/src/hybrid/default-url-mapping-table.ts$",
           // core
@@ -716,7 +715,7 @@
           },
           {
             "name": "^(.*)Module$",
-            "file": ".*(cypress.*|/<kebab>/<kebab>|/projects/<kebab>/src/app/<kebab>|/core/[a-z][a-z0-9-]+)\\.module\\.ts$"
+            "file": ".*(/<kebab>/<kebab>|/projects/<kebab>/src/app/<kebab>|/core/[a-z][a-z0-9-]+)\\.module\\.ts$"
           },
           {
             "name": "^(.*)Routes$",
@@ -781,11 +780,6 @@
           {
             "name": "^(environment)$",
             "file": "src/environments/environment(\\.[a-z]+|)\\.ts$"
-          },
-          // e2e
-          {
-            "name": "^([A-Z].*)Page$",
-            "file": ".*/pages(/.*|)/<kebab>\\.page\\.ts$"
           }
         ],
         "ignoredFiles": [
