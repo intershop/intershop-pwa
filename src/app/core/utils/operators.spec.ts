@@ -1,11 +1,10 @@
-import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { createAction } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { of } from 'rxjs';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { httpError } from 'ish-core/utils/ngrx-creators';
 
+import { makeHttpError } from './dev/api-service-utils';
 import { distinctCompareWith, mapErrorToAction, mapToProperty } from './operators';
 
 describe('Operators', () => {
@@ -30,32 +29,28 @@ describe('Operators', () => {
   describe('mapErrorToAction', () => {
     const dummyFail = createAction('dummy', httpError());
 
-    it('should catch HttpErrorResponses and convert them to Fail actions', () => {
-      const error = new HttpErrorResponse({
+    it('should catch HttpErrorResponse and convert them to Fail actions', () => {
+      const error = makeHttpError({
         status: 404,
-        headers: new HttpHeaders({ key: 'value' }),
-        url: 'http://example.org',
+        headers: { key: 'value' },
       });
 
       const input$ = hot('---#', undefined, error);
       const resu$ = cold('---(a|)', {
         a: {
-          payload: {
-            error: {
-              name: 'HttpErrorResponse',
-              message: 'Http failure response for http://example.org: 404 undefined',
-              error: undefined,
-              errorCode: undefined,
-              status: 404,
-              statusText: 'Unknown Error',
-              headers: {
-                key: 'value',
-              },
-            } as HttpError,
-          },
+          payload: { error },
           type: 'dummy',
         },
       });
+
+      expect(input$.pipe(mapErrorToAction(dummyFail))).toBeObservable(resu$);
+    });
+
+    it('should rethrow other errors when encountering them', () => {
+      const error = new Error('other error');
+
+      const input$ = hot('---#', undefined, error);
+      const resu$ = cold('---#');
 
       expect(input$.pipe(mapErrorToAction(dummyFail))).toBeObservable(resu$);
     });

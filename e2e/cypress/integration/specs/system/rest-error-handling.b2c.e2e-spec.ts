@@ -22,7 +22,7 @@ describe('Missing Data', () => {
         method: 'GET',
         url: '**/cms/**',
         status: 500,
-        response: {},
+        response: '',
       });
     });
 
@@ -43,7 +43,7 @@ describe('Missing Data', () => {
         method: 'GET',
         url: '**/cms/**',
         status: 404,
-        response: {},
+        response: '',
       });
     });
 
@@ -64,7 +64,7 @@ describe('Missing Data', () => {
         method: 'GET',
         url: '**/products/201807194*',
         status: 404,
-        response: {},
+        response: '',
       });
     });
 
@@ -85,7 +85,7 @@ describe('Missing Data', () => {
         method: 'GET',
         url: '**/products/3957279*',
         status: 404,
-        response: {},
+        response: '',
       });
     });
 
@@ -119,7 +119,7 @@ describe('Missing Data', () => {
         method: 'GET',
         url: '**/products*',
         status: 404,
-        response: {},
+        response: '',
       });
     });
 

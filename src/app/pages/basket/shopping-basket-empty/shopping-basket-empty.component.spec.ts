@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketInfoComponent } from 'ish-shared/components/basket/basket-info/basket-info.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
@@ -44,7 +44,7 @@ describe('Shopping Basket Empty Component', () => {
   });
 
   it('should render an error if an error occurs', () => {
-    component.error = { status: 404 } as HttpError;
+    component.error = makeHttpError({ status: 404 });
 
     fixture.detectChanges();
     expect(element.querySelector('ish-error-message')).toBeTruthy();

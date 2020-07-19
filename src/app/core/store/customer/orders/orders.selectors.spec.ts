@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { OrderView } from 'ish-core/models/order/order.model';
 import { Product } from 'ish-core/models/product/product.model';
@@ -8,6 +7,7 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import {
@@ -113,7 +113,7 @@ describe('Orders Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(loadOrdersFail({ error: { message: 'error', error: 'errorMessage' } as HttpError }));
+        store$.dispatch(loadOrdersFail({ error: makeHttpError({ message: 'error', error: 'errorMessage' }) }));
       });
 
       it('should not have loaded orders on error', () => {
@@ -152,7 +152,7 @@ describe('Orders Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(loadOrdersFail({ error: { message: 'error' } as HttpError }));
+        store$.dispatch(loadOrdersFail({ error: makeHttpError({ message: 'error' }) }));
       });
 
       it('should not have loaded orders on error', () => {

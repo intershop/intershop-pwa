@@ -8,7 +8,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-keys';
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
 import { LoginFormComponent } from './login-form.component';
@@ -62,7 +62,7 @@ describe('Login Form Component', () => {
 
     describe('depending on loginType', () => {
       beforeEach(() => {
-        when(accountFacade.userError$).thenReturn(of({ status: 401 } as HttpError));
+        when(accountFacade.userError$).thenReturn(of(makeHttpError({ status: 401 })));
       });
 
       it('should display username error when error is set', () => {

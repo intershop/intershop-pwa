@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
@@ -13,8 +12,6 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
-import { HttpErrorMapper } from 'ish-core/models/http-error/http-error.mapper';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { User } from 'ish-core/models/user/user.model';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
@@ -23,6 +20,7 @@ import { UserService } from 'ish-core/services/user/user.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import {
   createUser,
@@ -139,13 +137,12 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a LoginUserFail action on failed login', () => {
-      // tslint:disable-next-line:ban-types
-      const error = { status: 401, headers: new HttpHeaders().set('error-key', 'error') } as HttpErrorResponse;
+      const error = makeHttpError({ status: 401, headers: { 'error-key': 'error' } });
 
       when(userServiceMock.signinUser(anything())).thenReturn(throwError(error));
 
       const action = loginUser({ credentials: { login: 'dummy', password: 'dummy' } });
-      const completion = loginUserFail({ error: HttpErrorMapper.fromError(error) });
+      const completion = loginUserFail({ error });
 
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -174,12 +171,11 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a LoadCompanyUserFail action on failed for LoadCompanyUser', () => {
-      // tslint:disable-next-line:ban-types
-      const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;
+      const error = makeHttpError({ status: 401, headers: { 'error-key': 'feld' } });
       when(userServiceMock.getCompanyUserData()).thenReturn(throwError(error));
 
       const action = loadCompanyUser();
-      const completion = loadCompanyUserFail({ error: HttpErrorMapper.fromError(error) });
+      const completion = loadCompanyUserFail({ error });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -294,12 +290,11 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a CreateUserFail action on failed user creation', () => {
-      // tslint:disable-next-line:ban-types
-      const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;
+      const error = makeHttpError({ status: 401, headers: { 'error-key': 'feld' } });
       when(userServiceMock.createUser(anything())).thenReturn(throwError(error));
 
       const action = createUser({} as CustomerRegistrationType);
-      const completion = createUserFail({ error: HttpErrorMapper.fromError(error) });
+      const completion = createUserFail({ error });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -348,8 +343,6 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a SuccessMessage action if update succeeded', () => {
-      // tslint:disable-next-line:ban-types
-
       const action = updateUserSuccess({ user: {} as User, successMessage: 'success' });
       const completion = displaySuccessMessage({ message: 'success' });
 
@@ -360,12 +353,11 @@ describe('User Effects', () => {
     });
 
     it('should dispatch an UpdateUserFail action on failed user update', () => {
-      // tslint:disable-next-line:ban-types
-      const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;
+      const error = makeHttpError({ status: 401, headers: { 'error-key': 'feld' } });
       when(userServiceMock.updateUser(anything())).thenReturn(throwError(error));
 
       const action = updateUser({ user: {} as User });
-      const completion = updateUserFail({ error: HttpErrorMapper.fromError(error) });
+      const completion = updateUserFail({ error });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -429,13 +421,13 @@ describe('User Effects', () => {
 
     it('should dispatch an UpdateUserPasswordFail action on failed user password update', () => {
       when(userServiceMock.updateUserPassword(anything(), anything(), anything(), anyString())).thenReturn(
-        throwError({ message: 'invalid' })
+        throwError(makeHttpError({ message: 'invalid' }))
       );
 
       const password = '123';
       const currentPassword = '1234';
       const action = updateUserPassword({ password, currentPassword });
-      const completion = updateUserPasswordFail({ error: { message: 'invalid' } as HttpError });
+      const completion = updateUserPasswordFail({ error: makeHttpError({ message: 'invalid' }) });
 
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -498,10 +490,10 @@ describe('User Effects', () => {
     });
 
     it('should dispatch an UpdateCustomerFail action on failed company update', () => {
-      when(userServiceMock.updateCustomer(anything())).thenReturn(throwError({ message: 'invalid' }));
+      when(userServiceMock.updateCustomer(anything())).thenReturn(throwError(makeHttpError({ message: 'invalid' })));
 
       const action = updateCustomer({ customer });
-      const completion = updateCustomerFail({ error: { message: 'invalid' } as HttpError });
+      const completion = updateCustomerFail({ error: makeHttpError({ message: 'invalid' }) });
 
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -520,7 +512,7 @@ describe('User Effects', () => {
     });
 
     it('should dispatch UserErrorReset action on router navigation if error was set', done => {
-      store$.dispatch(loginUserFail({ error: { message: 'error' } as HttpError }));
+      store$.dispatch(loginUserFail({ error: makeHttpError({ message: 'error' }) }));
 
       // tslint:disable-next-line: no-any
       actions$ = of(routerNavigatedAction({ payload: {} as any }));
@@ -589,14 +581,12 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a LoadUserPaymentMethodsFail action on failed', () => {
-      // tslint:disable-next-line:ban-types
-      const error = { status: 400, headers: new HttpHeaders().set('error-key', 'error') } as HttpErrorResponse;
-
+      const error = makeHttpError({ status: 401, headers: { 'error-key': 'error' } });
       when(paymentServiceMock.getUserPaymentMethods(anything())).thenReturn(throwError(error));
 
       const action = loadUserPaymentMethods();
       const completion = loadUserPaymentMethodsFail({
-        error: HttpErrorMapper.fromError(error),
+        error,
       });
 
       actions$ = hot('-a-a-a', { a: action });
@@ -639,14 +629,12 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a DeleteUserPaymentFail action on failed', () => {
-      // tslint:disable-next-line:ban-types
-      const error = { status: 400, headers: new HttpHeaders().set('error-key', 'error') } as HttpErrorResponse;
-
+      const error = makeHttpError({ status: 401, headers: { 'error-key': 'error' } });
       when(paymentServiceMock.deleteUserPaymentInstrument(anyString(), anyString())).thenReturn(throwError(error));
 
       const action = deleteUserPaymentInstrument({ id: 'paymentInstrumentId' });
       const completion = deleteUserPaymentInstrumentFail({
-        error: HttpErrorMapper.fromError(error),
+        error,
       });
 
       actions$ = hot('-a-a-a', { a: action });
@@ -681,14 +669,12 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a RequestPasswordReminderFail action on failed', () => {
-      // tslint:disable-next-line:ban-types
-      const error = { status: 400, headers: new HttpHeaders().set('error-key', 'error') } as HttpErrorResponse;
-
+      const error = makeHttpError({ status: 401, headers: { 'error-key': 'error' } });
       when(userServiceMock.requestPasswordReminder(anything())).thenReturn(throwError(error));
 
       const action = requestPasswordReminder({ data });
       const completion = requestPasswordReminderFail({
-        error: HttpErrorMapper.fromError(error),
+        error,
       });
 
       actions$ = hot('-a-a-a', { a: action });

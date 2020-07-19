@@ -3,7 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { ErrorMessageComponent } from './error-message.component';
 
@@ -37,7 +37,7 @@ describe('Error Message Component', () => {
   });
 
   it('should render an error if an error occurs', () => {
-    component.error = { error: 'Test Error' } as HttpError;
+    component.error = makeHttpError({ error: 'Test Error' });
     fixture.detectChanges();
     expect(element.querySelector('[role="alert"]')).toBeTruthy();
   });

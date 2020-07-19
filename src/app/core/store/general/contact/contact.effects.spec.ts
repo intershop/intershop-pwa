@@ -6,8 +6,8 @@ import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { Contact } from 'ish-core/models/contact/contact.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ContactService } from 'ish-core/services/contact/contact.service';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { createContact, loadContact, loadContactFail, loadContactSuccess } from './contact.actions';
 import { ContactEffects } from './contact.effects';
@@ -52,10 +52,10 @@ describe('Contact Effects', () => {
     });
 
     it('should dispatch a LoadContactFail action if a load error occurs', () => {
-      when(contactServiceMock.getContactSubjects()).thenReturn(throwError({ message: 'error' }));
+      when(contactServiceMock.getContactSubjects()).thenReturn(throwError(makeHttpError({ message: 'error' })));
 
       const action = { type: loadContact.type } as Action;
-      const expected = loadContactFail({ error: { message: 'error' } as HttpError });
+      const expected = loadContactFail({ error: makeHttpError({ message: 'error' }) });
 
       actions$ = hot('-a', { a: action });
 

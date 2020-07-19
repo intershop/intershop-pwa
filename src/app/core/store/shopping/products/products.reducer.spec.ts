@@ -1,5 +1,5 @@
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Product } from 'ish-core/models/product/product.model';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import {
   loadProduct,
@@ -49,7 +49,7 @@ describe('Products Reducer', () => {
       let state: ProductsState;
 
       beforeEach(() => {
-        const action = loadProductFail({ error: {} as HttpError, sku: 'invalid' });
+        const action = loadProductFail({ error: makeHttpError({}), sku: 'invalid' });
         state = productsReducer(initialState, action);
       });
 
@@ -144,7 +144,7 @@ describe('Products Reducer', () => {
 
     describe('LoadProductVariationsFail action', () => {
       it('should put sku on failed list', () => {
-        const error = { message: 'invalid' } as HttpError;
+        const error = makeHttpError({ message: 'invalid' });
         const action = loadProductVariationsFail({ error, sku: 'SKU' });
         const state = productsReducer(initialState, action);
 

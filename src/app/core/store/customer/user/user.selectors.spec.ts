@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Customer, CustomerUserType } from 'ish-core/models/customer/customer.model';
-import { HttpError, HttpHeader } from 'ish-core/models/http-error/http-error.model';
+import { HttpHeader } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Product } from 'ish-core/models/product/product.model';
@@ -11,6 +11,7 @@ import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.modu
 import { GeneralStoreModule } from 'ish-core/store/general/general-store.module';
 import { loadServerConfigSuccess } from 'ish-core/store/general/server-config';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import {
@@ -134,7 +135,7 @@ describe('User Selectors', () => {
   });
 
   it('should select no customer and an error when an error event was sent', () => {
-    const error = { status: 401, headers: { 'error-key': 'dummy' } as HttpHeader } as HttpError;
+    const error = makeHttpError({ status: 401, headers: { 'error-key': 'dummy' } as HttpHeader });
     store$.dispatch(loginUserFail({ error }));
 
     expect(getLoggedInCustomer(store$.state)).toBeUndefined();
@@ -193,7 +194,7 @@ describe('User Selectors', () => {
   });
 
   it('should have error on PasswordReminderFail action', () => {
-    const error = { message: 'invalid' } as HttpError;
+    const error = makeHttpError({ message: 'invalid' });
     store$.dispatch(requestPasswordReminderFail({ error }));
     expect(getPasswordReminderError(store$.state)).toMatchObject(error);
     expect(getPasswordReminderSuccess(store$.state)).toBeFalse();

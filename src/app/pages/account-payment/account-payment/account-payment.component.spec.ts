@@ -3,8 +3,8 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
@@ -94,7 +94,7 @@ describe('Account Payment Component', () => {
     });
 
     it('should render an error if an error occurs', () => {
-      component.error = { status: 404 } as HttpError;
+      component.error = makeHttpError({ status: 404 });
       fixture.detectChanges();
       expect(element.querySelector('ish-error-message')).toBeTruthy();
     });

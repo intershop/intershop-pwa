@@ -11,7 +11,6 @@ import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
   PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
@@ -20,6 +19,7 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadMoreProducts, setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
 import { ProductListingEffects } from 'ish-core/store/shopping/product-listing/product-listing.effects';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { searchProductsFail, suggestSearch } from './search.actions';
@@ -42,7 +42,7 @@ describe('Search Effects', () => {
     when(productsServiceMock.searchProducts(anyString(), anyNumber(), anything())).thenCall(
       (searchTerm: string, page: number, itemsPerPage: number) => {
         if (!searchTerm) {
-          return throwError({ message: 'ERROR' });
+          return throwError(makeHttpError({ message: 'ERROR' }));
         } else {
           const currentSlice = skus.slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage);
           return of({
@@ -153,7 +153,7 @@ describe('Search Effects', () => {
     }));
 
     it('should not fire action when error is encountered at service level', fakeAsync(() => {
-      when(suggestServiceMock.search(anyString())).thenReturn(throwError({ message: 'ERROR' }));
+      when(suggestServiceMock.search(anyString())).thenReturn(throwError(makeHttpError({ message: 'ERROR' })));
 
       store$.dispatch(suggestSearch({ searchTerm: 'good' }));
       tick(4000);
@@ -215,7 +215,7 @@ describe('Search Effects', () => {
 
   describe('redirectIfSearchProductFail$', () => {
     it('should redirect if triggered', fakeAsync(() => {
-      const action = searchProductsFail({ error: { status: 404 } as HttpError });
+      const action = searchProductsFail({ error: makeHttpError({ status: 404 }) });
 
       store$.dispatch(action);
 

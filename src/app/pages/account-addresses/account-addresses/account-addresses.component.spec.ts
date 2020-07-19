@@ -8,8 +8,8 @@ import { instance, mock, spy, verify } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Address } from 'ish-core/models/address/address.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { CustomerAddressFormComponent } from 'ish-shared/address-forms/components/customer-address-form/customer-address-form.component';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
@@ -230,7 +230,7 @@ describe('Account Addresses Component', () => {
   });
 
   it('should render an error if an error occurs', () => {
-    component.error = { status: 404 } as HttpError;
+    component.error = makeHttpError({ status: 404 });
     fixture.detectChanges();
     expect(element.querySelector('ish-error-message')).toBeTruthy();
   });

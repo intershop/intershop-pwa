@@ -1,8 +1,9 @@
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { HttpError, HttpHeader } from 'ish-core/models/http-error/http-error.model';
+import { HttpHeader } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { User } from 'ish-core/models/user/user.model';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import {
   createUser,
@@ -195,14 +196,14 @@ describe('User Reducer', () => {
     });
 
     it('should set error when LoginUserFail action is reduced', () => {
-      const error = { status: 500, headers: { 'error-key': 'error' } as HttpHeader } as HttpError;
+      const error = makeHttpError({ status: 500, headers: { 'error-key': 'error' } as HttpHeader });
       const newState = userReducer(initialState, loginUserFail({ error }));
 
       expect(newState).toEqual({ ...initialState, error });
     });
 
     it('should set error when LoginUserFail action is reduced and error is resetted after reset action', () => {
-      const error = { status: 500, headers: { 'error-key': 'error' } as HttpHeader } as HttpError;
+      const error = makeHttpError({ status: 500, headers: { 'error-key': 'error' } as HttpHeader });
       let newState = userReducer(initialState, loginUserFail({ error }));
 
       expect(newState).toEqual({ ...initialState, error });
@@ -238,7 +239,7 @@ describe('User Reducer', () => {
     });
 
     it('should set error when LoadCompanyUserFail action is reduced', () => {
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       const action = loadCompanyUserFail({ error });
       const state = userReducer(initialState, action);
 
@@ -248,7 +249,7 @@ describe('User Reducer', () => {
 
   describe('Create user actions', () => {
     it('should set error when CreateUserFail action is reduced', () => {
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       const action = createUserFail({ error });
       const state = userReducer(initialState, action);
 
@@ -277,7 +278,7 @@ describe('User Reducer', () => {
     });
 
     it('should set error and set loading to false when UpdateUserFail is reduced', () => {
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       const action = updateUserFail({ error });
       const state = userReducer(initialState, action);
 
@@ -302,7 +303,7 @@ describe('User Reducer', () => {
     });
 
     it('should set error and set loading to false when UpdateUserPasswordFail is reduced', () => {
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       const action = updateUserPasswordFail({ error });
       const state = userReducer(initialState, action);
 
@@ -332,7 +333,7 @@ describe('User Reducer', () => {
     });
 
     it('should set error and set loading to false when UpdateCustomerFail is reduced', () => {
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       const action = updateCustomerFail({ error });
       const state = userReducer(initialState, action);
 
@@ -362,7 +363,7 @@ describe('User Reducer', () => {
 
   describe('LoadUserPaymentMethodsFail action', () => {
     it('should set error when reduced', () => {
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       const action = loadUserPaymentMethodsFail({ error });
       const response = userReducer(initialState, action);
 
@@ -391,7 +392,7 @@ describe('User Reducer', () => {
 
   describe('DeleteUserPaymentFail action', () => {
     it('should set error when reduced', () => {
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       const action = deleteUserPaymentInstrumentFail({ error });
       const response = userReducer(initialState, action);
 
@@ -421,7 +422,7 @@ describe('User Reducer', () => {
 
   describe('RequestPasswordReminderFail action', () => {
     it('should set error when reduced', () => {
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       const action = requestPasswordReminderFail({ error });
       const response = userReducer(initialState, action);
 

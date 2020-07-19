@@ -1,5 +1,5 @@
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Region } from 'ish-core/models/region/region.model';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { loadRegions, loadRegionsFail, loadRegionsSuccess } from './regions.actions';
 import { initialState, regionsReducer } from './regions.reducer';
@@ -29,7 +29,7 @@ describe('Regions Reducer', () => {
 
     describe('LoadRegionFail action', () => {
       it('should set loading to false', () => {
-        const action = loadRegionsFail({ error: {} as HttpError });
+        const action = loadRegionsFail({ error: makeHttpError({}) });
         const state = regionsReducer(initialState, action);
 
         expect(state.loading).toBeFalse();

@@ -3,9 +3,9 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { OrganizationManagementStoreModule } from '../organization-management-store.module';
@@ -90,7 +90,7 @@ describe('Users Selectors', () => {
     });
 
     describe('LoadUsersFail', () => {
-      const error = { error: 'ERROR' } as HttpError;
+      const error = makeHttpError({ error: 'ERROR' });
       const failAction = loadUsersFail({ error });
 
       beforeEach(() => {

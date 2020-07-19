@@ -12,7 +12,6 @@ import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
@@ -21,6 +20,7 @@ import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.modu
 import { loginUser, loginUserSuccess, setAPIToken } from 'ish-core/store/customer/user';
 import { loadProductIfNotLoaded, loadProductSuccess } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import {
@@ -100,9 +100,9 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type LoadBasketFail', () => {
-      when(basketServiceMock.getBasket()).thenReturn(throwError({ message: 'invalid' }));
+      when(basketServiceMock.getBasket()).thenReturn(throwError(makeHttpError({ message: 'invalid' })));
       const action = loadBasket();
-      const completion = loadBasketFail({ error: { message: 'invalid' } as HttpError });
+      const completion = loadBasketFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -229,13 +229,11 @@ describe('Basket Effects', () => {
 
     it('should map invalid request to action of type LoadBasketEligibleShippingMethodsFail', () => {
       when(basketServiceMock.getBasketEligibleShippingMethods(anyString(), anything())).thenReturn(
-        throwError({ message: 'invalid' })
+        throwError(makeHttpError({ message: 'invalid' }))
       );
       const action = loadBasketEligibleShippingMethods();
       const completion = loadBasketEligibleShippingMethodsFail({
-        error: {
-          message: 'invalid',
-        } as HttpError,
+        error: makeHttpError({ message: 'invalid' }),
       });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -283,10 +281,12 @@ describe('Basket Effects', () => {
 
     it('should map invalid request to action of type UpdateBasketFail', () => {
       const update = { commonShippingMethod: 'shippingId' };
-      when(basketServiceMock.updateBasket(anyString(), anything())).thenReturn(throwError({ message: 'invalid' }));
+      when(basketServiceMock.updateBasket(anyString(), anything())).thenReturn(
+        throwError(makeHttpError({ message: 'invalid' }))
+      );
 
       const action = updateBasket({ update });
-      const completion = updateBasketFail({ error: { message: 'invalid' } as HttpError });
+      const completion = updateBasketFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -387,10 +387,12 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type MergeBasketFail', () => {
-      when(basketServiceMock.mergeBasket(anyString(), anyString())).thenReturn(throwError({ message: 'invalid' }));
+      when(basketServiceMock.mergeBasket(anyString(), anyString())).thenReturn(
+        throwError(makeHttpError({ message: 'invalid' }))
+      );
 
       const action = mergeBasket();
-      const completion = mergeBasketFail({ error: { message: 'invalid' } as HttpError });
+      const completion = mergeBasketFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 

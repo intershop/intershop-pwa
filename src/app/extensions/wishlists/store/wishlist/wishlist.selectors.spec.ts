@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { WishlistsStoreModule } from '../wishlists-store.module';
@@ -103,7 +103,7 @@ describe('Wishlist Selectors', () => {
 
     describe('LoadWishlistsFail', () => {
       beforeEach(() => {
-        store$.dispatch(loadWishlistsFail({ error: { message: 'invalid' } as HttpError }));
+        store$.dispatch(loadWishlistsFail({ error: makeHttpError({ message: 'invalid' }) }));
       });
 
       it('should set loading to false', () => {
@@ -111,7 +111,12 @@ describe('Wishlist Selectors', () => {
       });
 
       it('should add the error to state', () => {
-        expect(getWishlistsError(store$.state)).toEqual({ message: 'invalid' });
+        expect(getWishlistsError(store$.state)).toMatchInlineSnapshot(`
+          Object {
+            "message": "invalid",
+            "name": "HttpErrorResponse",
+          }
+        `);
       });
     });
   });
@@ -150,7 +155,7 @@ describe('Wishlist Selectors', () => {
 
     describe('CreateWishlistFail', () => {
       beforeEach(() => {
-        store$.dispatch(createWishlistFail({ error: { message: 'invalid' } as HttpError }));
+        store$.dispatch(createWishlistFail({ error: makeHttpError({ message: 'invalid' }) }));
       });
 
       it('should set loading to false', () => {
@@ -158,7 +163,12 @@ describe('Wishlist Selectors', () => {
       });
 
       it('should add the error to state', () => {
-        expect(getWishlistsError(store$.state)).toEqual({ message: 'invalid' });
+        expect(getWishlistsError(store$.state)).toMatchInlineSnapshot(`
+          Object {
+            "message": "invalid",
+            "name": "HttpErrorResponse",
+          }
+        `);
       });
     });
   });
@@ -194,7 +204,7 @@ describe('Wishlist Selectors', () => {
 
     describe('DeleteWishlistFail', () => {
       beforeEach(() => {
-        store$.dispatch(deleteWishlistFail({ error: { message: 'invalid' } as HttpError }));
+        store$.dispatch(deleteWishlistFail({ error: makeHttpError({ message: 'invalid' }) }));
       });
 
       it('should set loading to false', () => {
@@ -202,7 +212,12 @@ describe('Wishlist Selectors', () => {
       });
 
       it('should add the error to state', () => {
-        expect(getWishlistsError(store$.state)).toEqual({ message: 'invalid' });
+        expect(getWishlistsError(store$.state)).toMatchInlineSnapshot(`
+          Object {
+            "message": "invalid",
+            "name": "HttpErrorResponse",
+          }
+        `);
       });
     });
   });
@@ -244,7 +259,7 @@ describe('Wishlist Selectors', () => {
 
     describe('UpdateWishlistFail', () => {
       beforeEach(() => {
-        store$.dispatch(updateWishlistFail({ error: { message: 'invalid' } as HttpError }));
+        store$.dispatch(updateWishlistFail({ error: makeHttpError({ message: 'invalid' }) }));
       });
 
       it('should set loading to false', () => {
@@ -252,7 +267,12 @@ describe('Wishlist Selectors', () => {
       });
 
       it('should add the error to state', () => {
-        expect(getWishlistsError(store$.state)).toEqual({ message: 'invalid' });
+        expect(getWishlistsError(store$.state)).toMatchInlineSnapshot(`
+          Object {
+            "message": "invalid",
+            "name": "HttpErrorResponse",
+          }
+        `);
       });
     });
   });

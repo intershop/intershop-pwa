@@ -11,7 +11,6 @@ import { toArray } from 'rxjs/operators';
 import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
@@ -20,6 +19,7 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadCategory } from 'ish-core/store/shopping/categories';
 import { setProductListingPageSize, setProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import {
   loadProduct,
@@ -52,7 +52,7 @@ describe('Products Effects', () => {
     productsServiceMock = mock(ProductsService);
     when(productsServiceMock.getProduct(anyString())).thenCall((sku: string) => {
       if (sku === 'invalid') {
-        return throwError({ message: 'invalid' });
+        return throwError(makeHttpError({ message: 'invalid' }));
       } else {
         return of({ sku } as Product);
       }
@@ -60,7 +60,7 @@ describe('Products Effects', () => {
 
     when(productsServiceMock.getProductBundles(anything())).thenCall((sku: string) => {
       if (!sku) {
-        return throwError({ message: 'invalid' });
+        return throwError(makeHttpError({ message: 'invalid' }));
       } else {
         return of({ product: { sku }, stubs: [] });
       }
@@ -138,7 +138,7 @@ describe('Products Effects', () => {
     it('should map invalid request to action of type LoadProductFail', () => {
       const sku = 'invalid';
       const action = loadProduct({ sku });
-      const completion = loadProductFail({ error: { message: 'invalid' } as HttpError, sku });
+      const completion = loadProductFail({ error: makeHttpError({ message: 'invalid' }), sku });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -175,7 +175,7 @@ describe('Products Effects', () => {
 
     it('should not die if repeating errors are encountered', () => {
       when(productsServiceMock.getCategoryProducts(anything(), anyNumber(), anything())).thenReturn(
-        throwError({ message: 'ERROR' })
+        throwError(makeHttpError({ message: 'ERROR' }))
       );
       actions$ = hot('-a-a-a', {
         a: loadProductsForCategory({ categoryId: '123' }),
@@ -183,7 +183,7 @@ describe('Products Effects', () => {
       expect(effects.loadProductsForCategory$).toBeObservable(
         cold('-a-a-a', {
           a: loadProductsForCategoryFail({
-            error: { message: 'ERROR' } as HttpError,
+            error: makeHttpError({ message: 'ERROR' }),
             categoryId: '123',
           }),
         })
@@ -222,10 +222,12 @@ describe('Products Effects', () => {
     });
 
     it('should map invalid request to action of type LoadProductVariationsFail', () => {
-      when(productsServiceMock.getProductVariations(anyString())).thenCall(() => throwError({ message: 'invalid' }));
+      when(productsServiceMock.getProductVariations(anyString())).thenCall(() =>
+        throwError(makeHttpError({ message: 'invalid' }))
+      );
       const action = loadProductVariations({ sku: 'MSKU' });
       const completion = loadProductVariationsFail({
-        error: { message: 'invalid' } as HttpError,
+        error: makeHttpError({ message: 'invalid' }),
         sku: 'MSKU',
       });
       actions$ = hot('-a-a-a', { a: action });
@@ -347,7 +349,7 @@ describe('Products Effects', () => {
 
   describe('redirectIfErrorInProducts$', () => {
     beforeEach(() => {
-      store$.dispatch(loadProductFail({ sku: 'SKU', error: { status: 404 } as HttpError }));
+      store$.dispatch(loadProductFail({ sku: 'SKU', error: makeHttpError({ status: 404 }) }));
     });
 
     it('should redirect if triggered on product detail page', fakeAsync(() => {
@@ -373,7 +375,7 @@ describe('Products Effects', () => {
     it('should redirect if triggered', fakeAsync(() => {
       const action = loadProductsForCategoryFail({
         categoryId: 'ID',
-        error: { status: 404 } as HttpError,
+        error: makeHttpError({ status: 404 }),
       });
 
       actions$ = of(action);
@@ -486,13 +488,13 @@ describe('Products Effects', () => {
     });
 
     it('should send fail action in case of failure for load product links', () => {
-      when(productsServiceMock.getProductLinks('ABC')).thenReturn(throwError({ message: 'ERROR' }));
+      when(productsServiceMock.getProductLinks('ABC')).thenReturn(throwError(makeHttpError({ message: 'ERROR' })));
 
       actions$ = hot('a', { a: loadProductLinks({ sku: 'ABC' }) });
       expect(effects.loadProductLinks$).toBeObservable(
         cold('(a)', {
           a: loadProductLinksFail({
-            error: { message: 'ERROR' } as HttpError,
+            error: makeHttpError({ message: 'ERROR' }),
             sku: 'ABC',
           }),
         })
@@ -564,7 +566,7 @@ describe('Products Effects', () => {
       store$.dispatch(
         loadProductFail({
           sku: 'ABC',
-          error: { error: 'ERROR' } as HttpError,
+          error: makeHttpError({ error: 'ERROR' }),
         })
       );
 

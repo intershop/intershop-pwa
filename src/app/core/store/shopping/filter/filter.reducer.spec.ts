@@ -1,5 +1,5 @@
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import {
   applyFilter,
@@ -44,7 +44,7 @@ describe('Filter Reducer', () => {
 
   describe('LoadFilterFailed', () => {
     it('should set filter when reduced', () => {
-      const action = loadFilterFail({ error: {} as HttpError });
+      const action = loadFilterFail({ error: makeHttpError({}) });
       const state = filterReducer(initialState, action);
 
       expect(state.availableFilter).toBeFalsy();
@@ -63,7 +63,7 @@ describe('Filter Reducer', () => {
 
   describe('LoadFilterFailed', () => {
     it('should set filter when reduced', () => {
-      const action = loadFilterFail({ error: {} as HttpError });
+      const action = loadFilterFail({ error: makeHttpError({}) });
       const state = filterReducer(initialState, action);
 
       expect(state.availableFilter).toBeFalsy();

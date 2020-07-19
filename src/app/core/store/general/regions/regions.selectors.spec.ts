@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Region } from 'ish-core/models/region/region.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { GeneralStoreModule } from 'ish-core/store/general/general-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { loadRegions, loadRegionsFail, loadRegionsSuccess } from './regions.actions';
@@ -59,7 +59,7 @@ describe('Regions Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(loadRegionsFail({ error: { message: 'error' } as HttpError }));
+        store$.dispatch(loadRegionsFail({ error: makeHttpError({ message: 'error' }) }));
       });
 
       it('should not have loaded category on error', () => {

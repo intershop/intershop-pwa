@@ -6,7 +6,7 @@ import { MockComponent, MockDirective } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
@@ -77,7 +77,7 @@ describe('Checkout Review Component', () => {
   });
 
   it('should display a message if an error occurs', () => {
-    component.error = { status: 400, error: 'Bad request' } as HttpError;
+    component.error = makeHttpError({ status: 400, error: 'Bad request' });
     fixture.detectChanges();
     expect(element.querySelector('ish-error-message')).toBeTruthy();
   });

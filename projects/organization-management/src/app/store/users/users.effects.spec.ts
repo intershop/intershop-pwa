@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
@@ -10,10 +9,10 @@ import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { HttpErrorMapper } from 'ish-core/models/http-error/http-error.mapper';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 import { UsersService } from '../../services/users/users.service';
@@ -108,12 +107,11 @@ describe('Users Effects', () => {
     });
 
     it('should dispatch a loadUsersFail action on failed users load', () => {
-      // tslint:disable-next-line:ban-types
-      const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;
+      const error = makeHttpError({ status: 401, headers: { 'error-key': 'feld' } });
       when(usersService.getUsers()).thenReturn(throwError(error));
 
       const action = loadUsers();
-      const completion = loadUsersFail({ error: HttpErrorMapper.fromError(error) });
+      const completion = loadUsersFail({ error });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -188,12 +186,11 @@ describe('Users Effects', () => {
     }));
 
     it('should dispatch an UpdateUserFail action on failed user update', () => {
-      // tslint:disable-next-line:ban-types
-      const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;
+      const error = makeHttpError({ status: 401, headers: { 'error-key': 'feld' } });
       when(usersService.addUser(anything())).thenReturn(throwError(error));
 
       const action = addUser({ user: users[0] });
-      const completion = addUserFail({ error: HttpErrorMapper.fromError(error) });
+      const completion = addUserFail({ error });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -228,12 +225,11 @@ describe('Users Effects', () => {
     });
 
     it('should dispatch an UpdateUserFail action on failed user update', () => {
-      // tslint:disable-next-line:ban-types
-      const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;
+      const error = makeHttpError({ status: 401, headers: { 'error-key': 'feld' } });
       when(usersService.updateUser(anything())).thenReturn(throwError(error));
 
       const action = updateUser({ user: users[0] });
-      const completion = updateUserFail({ error: HttpErrorMapper.fromError(error) });
+      const completion = updateUserFail({ error });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });

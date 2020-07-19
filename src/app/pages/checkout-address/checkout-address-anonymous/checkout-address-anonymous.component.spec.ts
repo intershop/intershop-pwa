@@ -10,7 +10,7 @@ import { anything, instance, mock, verify } from 'ts-mockito';
 
 import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-keys';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { AddressFormContainerComponent } from 'ish-shared/address-forms/components/address-form-container/address-form-container.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
@@ -102,7 +102,7 @@ describe('Checkout Address Anonymous Component', () => {
   });
 
   it('should render an error when supplied', () => {
-    const error = { status: 404 } as HttpError;
+    const error = makeHttpError({ status: 404 });
     component.error = error;
     component.ngOnChanges();
     fixture.detectChanges();

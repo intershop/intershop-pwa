@@ -7,7 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
@@ -94,7 +94,7 @@ describe('Checkout Address Component', () => {
   });
 
   it('should render an error if an error occurs', () => {
-    component.error = { status: 404 } as HttpError;
+    component.error = makeHttpError({ status: 404 });
     fixture.detectChanges();
     expect(element.querySelector('ish-error-message')).toBeTruthy();
   });

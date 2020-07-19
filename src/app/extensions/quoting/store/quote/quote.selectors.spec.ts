@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { QuoteData } from '../../models/quote/quote.interface';
@@ -91,10 +91,15 @@ describe('Quote Selectors', () => {
     });
 
     it('should set loading to false and set error state', () => {
-      store$.dispatch(loadQuotesFail({ error: { message: 'invalid' } as HttpError }));
+      store$.dispatch(loadQuotesFail({ error: makeHttpError({ message: 'invalid' }) }));
       expect(getQuoteLoading(store$.state)).toBeFalse();
       expect(getCurrentQuotes(store$.state)).toBeEmpty();
-      expect(getQuoteError(store$.state)).toEqual({ message: 'invalid' });
+      expect(getQuoteError(store$.state)).toMatchInlineSnapshot(`
+        Object {
+          "message": "invalid",
+          "name": "HttpErrorResponse",
+        }
+      `);
     });
   });
 });

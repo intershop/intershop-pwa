@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 <% if (feature && feature !== 'core') { %>import { <%= classify(feature) %>StoreModule } from 'ish-core/store/<%= dasherize(feature) %>/<%= dasherize(feature) %>-store.module';<% } else if (extension) { %>import { <%= classify(extension) %>StoreModule } from '../<%= dasherize(extension) %>-store.module';<% } %>
-<% if(entity) { %>import { HttpError } from 'ish-core/models/http-error/http-error.model';
+<% if(entity) { %>import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { <%= classify(entity) %> } from '<% if(!extension) { %>ish-core<% } else { %>../..<% } %>/models/<%= dasherize(entity) %>/<%= dasherize(entity) %>.model';<% } %>
 
 import { load<%= classify(name) %><% if (entity) { %>, load<%= classify(name) %>Fail, load<%= classify(name) %>Success<% } %> } from './<%= dasherize(name) %>.actions';
@@ -75,7 +75,7 @@ describe('<%= classify(name) %> Selectors', () => {
     });
 
     describe('load<%= classify(name) %>Fail', () => {
-      const error = { error: 'ERROR' } as HttpError;
+      const error = makeHttpError({ error: 'ERROR' });
       const failAction = load<%= classify(name) %>Fail({ error });
 
       beforeEach(() => {

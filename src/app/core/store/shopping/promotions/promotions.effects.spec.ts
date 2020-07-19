@@ -8,9 +8,9 @@ import { Observable, of, throwError } from 'rxjs';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
 
 import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { loadPromotion, loadPromotionFail, loadPromotionSuccess } from './promotions.actions';
 import { PromotionsEffects } from './promotions.effects';
@@ -27,7 +27,7 @@ describe('Promotions Effects', () => {
     promotionsServiceMock = mock(PromotionsService);
     when(promotionsServiceMock.getPromotion(anyString())).thenCall((id: string) => {
       if (id === 'invalid') {
-        return throwError({ message: 'invalid' });
+        return throwError(makeHttpError({ message: 'invalid' }));
       } else {
         return of({ id } as Promotion);
       }
@@ -73,7 +73,7 @@ describe('Promotions Effects', () => {
     it('should map invalid request to action of type LoadPromotionFail only once', () => {
       const promoId = 'invalid';
       const action = loadPromotion({ promoId });
-      const completion = loadPromotionFail({ error: { message: 'invalid' } as HttpError, promoId });
+      const completion = loadPromotionFail({ error: makeHttpError({ message: 'invalid' }), promoId });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c----', { c: completion });
 

@@ -12,7 +12,6 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { BasketFeedback } from 'ish-core/models/basket-feedback/basket-feedback.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Order } from 'ish-core/models/order/order.model';
 import { User } from 'ish-core/models/user/user.model';
 import { OrderService } from 'ish-core/services/order/order.service';
@@ -21,6 +20,7 @@ import { continueCheckoutWithIssues, loadBasket } from 'ish-core/store/customer/
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import {
@@ -120,10 +120,12 @@ describe('Orders Effects', () => {
     });
 
     it('should map an invalid request to action of type CreateOrderFail', () => {
-      when(orderServiceMock.createOrder(anything(), anything())).thenReturn(throwError({ message: 'invalid' }));
+      when(orderServiceMock.createOrder(anything(), anything())).thenReturn(
+        throwError(makeHttpError({ message: 'invalid' }))
+      );
       const basketId = BasketMockData.getBasket().id;
       const action = createOrder({ basketId });
-      const completion = createOrderFail({ error: { message: 'invalid' } as HttpError });
+      const completion = createOrderFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -217,10 +219,10 @@ describe('Orders Effects', () => {
     });
 
     it('should dispatch a LoadOrdersFail action if a load error occurs', () => {
-      when(orderServiceMock.getOrders()).thenReturn(throwError({ message: 'error' }));
+      when(orderServiceMock.getOrders()).thenReturn(throwError(makeHttpError({ message: 'error' })));
 
       const action = loadOrders();
-      const completion = loadOrdersFail({ error: { message: 'error' } as HttpError });
+      const completion = loadOrdersFail({ error: makeHttpError({ message: 'error' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -249,10 +251,10 @@ describe('Orders Effects', () => {
     });
 
     it('should dispatch a LoadOrderFail action if a load error occurs', () => {
-      when(orderServiceMock.getOrder(anyString())).thenReturn(throwError({ message: 'error' }));
+      when(orderServiceMock.getOrder(anyString())).thenReturn(throwError(makeHttpError({ message: 'error' })));
 
       const action = loadOrder({ orderId: order.id });
-      const completion = loadOrderFail({ error: { message: 'error' } as HttpError });
+      const completion = loadOrderFail({ error: makeHttpError({ message: 'error' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -281,10 +283,12 @@ describe('Orders Effects', () => {
     });
 
     it('should dispatch a LoadOrderFail action if a load error occurs', () => {
-      when(orderServiceMock.getOrderByToken(anyString(), anyString())).thenReturn(throwError({ message: 'error' }));
+      when(orderServiceMock.getOrderByToken(anyString(), anyString())).thenReturn(
+        throwError(makeHttpError({ message: 'error' }))
+      );
 
       const action = loadOrderByAPIToken({ apiToken: 'dummy', orderId: order.id });
-      const completion = loadOrderFail({ error: { message: 'error' } as HttpError });
+      const completion = loadOrderFail({ error: makeHttpError({ message: 'error' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -411,11 +415,13 @@ describe('Orders Effects', () => {
     });
 
     it('should map an failing request to action of type SelectOrderAfterRedirectFail', () => {
-      when(orderServiceMock.updateOrderPayment(order.id, anything())).thenReturn(throwError({ message: 'invalid' }));
+      when(orderServiceMock.updateOrderPayment(order.id, anything())).thenReturn(
+        throwError(makeHttpError({ message: 'invalid' }))
+      );
       const params = { redirect: 'success', param1: 123, orderId: order.id };
 
       const action = selectOrderAfterRedirect({ params });
-      const completion = selectOrderAfterRedirectFail({ error: { message: 'invalid' } as HttpError });
+      const completion = selectOrderAfterRedirectFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

@@ -1,5 +1,5 @@
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { loadPromotion, loadPromotionFail, loadPromotionSuccess } from './promotions.actions';
 import { PromotionsState, initialState, promotionsReducer } from './promotions.reducer';
@@ -19,7 +19,7 @@ describe('Promotions Reducer', () => {
       let state: PromotionsState;
 
       beforeEach(() => {
-        const action = loadPromotionFail({ error: {} as HttpError, promoId: 'erroneous_promo' });
+        const action = loadPromotionFail({ error: makeHttpError({}), promoId: 'erroneous_promo' });
         state = promotionsReducer(initialState, action);
       });
 
