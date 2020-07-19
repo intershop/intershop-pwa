@@ -5,8 +5,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ModalDialogComponent } from './modal-dialog.component';
 
 describe('Modal Dialog Component', () => {
-  let component: ModalDialogComponent;
-  let fixture: ComponentFixture<ModalDialogComponent>;
+  let component: ModalDialogComponent<string>;
+  let fixture: ComponentFixture<ModalDialogComponent<string>>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
@@ -17,7 +17,7 @@ describe('Modal Dialog Component', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ModalDialogComponent);
+    fixture = TestBed.createComponent<typeof component>(ModalDialogComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.options = {
