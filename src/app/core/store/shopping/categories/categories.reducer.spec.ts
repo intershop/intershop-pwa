@@ -36,7 +36,6 @@ describe('Categories Reducer', () => {
         const action = loadCategory({ categoryId: '123' });
         const state = categoriesReducer(initialState, action);
 
-        expect(state.loading).toBeTrue();
         expect(state.categories).toEqual(categoryTree());
       });
     });
@@ -46,7 +45,6 @@ describe('Categories Reducer', () => {
         const action = loadCategoryFail({ error: {} as HttpError });
         const state = categoriesReducer(initialState, action);
 
-        expect(state.loading).toBeFalse();
         expect(state.categories).toEqual(categoryTree());
       });
     });
@@ -87,13 +85,6 @@ describe('Categories Reducer', () => {
 
         expect(Object.keys(state2.categories.nodes)).toHaveLength(1);
         expect(state2.categories.nodes[category.uniqueId]).toEqual(updatedCategory);
-      });
-
-      it('should set loading to false', () => {
-        const action = loadCategorySuccess({ categories: categoryTree([category]) });
-        const state = categoriesReducer(initialState, action);
-
-        expect(state.loading).toBeFalse();
       });
     });
   });

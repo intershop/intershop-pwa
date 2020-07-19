@@ -7,11 +7,12 @@ import { loadProductsForFilter } from 'ish-core/store/shopping/filter';
 import { loadProductsForCategory, loadProductsForCategoryFail } from 'ish-core/store/shopping/products';
 import { searchProducts, searchProductsFail } from 'ish-core/store/shopping/search';
 import { setLoadingOn } from 'ish-core/utils/ngrx-creators';
+import { formParamsToString } from 'ish-core/utils/url-form-params';
 
 import { setProductListingPageSize, setProductListingPages, setViewType } from './product-listing.actions';
 
 export function serializeProductListingID(id: ProductListingID) {
-  return `${id.type}@${id.value}@${id.filters || id.sorting}`;
+  return `${id.type}@${id.value}@${formParamsToString(id.filters)}@${id.sorting}`;
 }
 
 export const adapter = createEntityAdapter<ProductListingType>({

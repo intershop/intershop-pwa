@@ -39,6 +39,9 @@ describe('Filter Navigation Component', () => {
     fixture = TestBed.createComponent(FilterNavigationComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+
+    const filterNavigation = { filter: [{ displayType: 'dropdown' } as Filter] } as FilterNavigation;
+    when(shoppingFacade.currentFilter$(true)).thenReturn(of(filterNavigation));
   });
 
   it('should be created', () => {
@@ -49,13 +52,14 @@ describe('Filter Navigation Component', () => {
 
   it('should not display anything when filter is not set', () => {
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toBeEmpty();
+    expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+      Array [
+        "ish-filter-navigation-sidebar",
+      ]
+    `);
   });
 
   it('should display sidebar component for default mode', () => {
-    const filterNavigation = { filter: [{ displayType: 'dropdown' } as Filter] } as FilterNavigation;
-    when(shoppingFacade.currentFilter$).thenReturn(of(filterNavigation));
-
     fixture.detectChanges();
 
     expect(findAllIshElements(element)).toMatchInlineSnapshot(`
@@ -66,9 +70,6 @@ describe('Filter Navigation Component', () => {
   });
 
   it('should display horizontal components if set', () => {
-    const filterNavigation = { filter: [{ displayType: 'dropdown' } as Filter] } as FilterNavigation;
-    when(shoppingFacade.currentFilter$).thenReturn(of(filterNavigation));
-
     component.orientation = 'horizontal';
     fixture.detectChanges();
 

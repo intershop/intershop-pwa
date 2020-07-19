@@ -22,7 +22,6 @@ import {
   getBreadcrumbForCategoryPage,
   getCategory,
   getCategoryEntities,
-  getCategoryLoading,
   getNavigationCategories,
   getSelectedCategory,
 } from './categories.selectors';
@@ -70,7 +69,6 @@ describe('Categories Selectors', () => {
   describe('with empty state', () => {
     it('should not select any categories when used', () => {
       expect(getCategoryEntities(store$.state)).toBeEmpty();
-      expect(getCategoryLoading(store$.state)).toBeFalse();
     });
 
     it('should not select any selected category when used', () => {
@@ -84,17 +82,12 @@ describe('Categories Selectors', () => {
       store$.dispatch(loadCategory({ categoryId: '' }));
     });
 
-    it('should set the state to loading', () => {
-      expect(getCategoryLoading(store$.state)).toBeTrue();
-    });
-
     describe('and reporting success', () => {
       beforeEach(() => {
         store$.dispatch(loadCategorySuccess({ categories: categoryTree([catA]) }));
       });
 
       it('should set loading to false', () => {
-        expect(getCategoryLoading(store$.state)).toBeFalse();
         expect(getCategoryEntities(store$.state)).toHaveProperty(catA.uniqueId);
       });
     });
@@ -105,7 +98,6 @@ describe('Categories Selectors', () => {
       });
 
       it('should not have loaded category on error', () => {
-        expect(getCategoryLoading(store$.state)).toBeFalse();
         expect(getCategoryEntities(store$.state)).toBeEmpty();
       });
     });
@@ -120,7 +112,6 @@ describe('Categories Selectors', () => {
     describe('but no current router state', () => {
       it('should return the category information when used', () => {
         expect(getCategoryEntities(store$.state)).toHaveProperty(catA.uniqueId);
-        expect(getCategoryLoading(store$.state)).toBeFalse();
         expect(getCategory(catA.uniqueId)(store$.state).uniqueId).toEqual(catA.uniqueId);
       });
 
@@ -141,7 +132,6 @@ describe('Categories Selectors', () => {
 
       it('should return the category information when used', () => {
         expect(getCategoryEntities(store$.state)).toHaveProperty(catA.uniqueId);
-        expect(getCategoryLoading(store$.state)).toBeFalse();
         expect(getCategory(catA.uniqueId)(store$.state).uniqueId).toEqual(catA.uniqueId);
       });
 

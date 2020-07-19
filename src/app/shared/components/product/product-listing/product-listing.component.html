@@ -22,7 +22,6 @@
       [viewType]="viewType$ | async"
     ></ish-product-list>
 
-    <ish-loading *ngIf="listingLoading$ | async" [standalone]="true"></ish-loading>
     <div class="row justify-content-center">
       <ish-product-list-paging
         *ngIf="!listing.allPagesAvailable()"

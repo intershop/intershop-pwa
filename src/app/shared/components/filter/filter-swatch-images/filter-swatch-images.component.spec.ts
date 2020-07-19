@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
-import { FilterValueMap } from 'ish-core/models/filter/filter.interface';
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { SanitizePipe } from 'ish-core/pipes/sanitize.pipe';
 
@@ -21,13 +20,9 @@ describe('Filter Swatch Images Component', () => {
     const filterElement = {
       name: 'Color',
       facets: [
-        { name: 'Black', count: 4, displayName: 'Black' },
-        { name: 'Red', count: 5, displayName: 'Red', selected: true },
+        { name: 'Black', count: 4, displayName: 'Black', mappedValue: 'black', mappedType: 'colorcode' },
+        { name: 'Red', count: 5, displayName: 'Red', mappedValue: 'red', mappedType: 'colorcode', selected: true },
       ],
-      filterValueMap: {
-        Black: { type: 'colorcode', mapping: 'black' },
-        Red: { type: 'colorcode', mapping: 'red' },
-      } as FilterValueMap,
     } as Filter;
     fixture = TestBed.createComponent(FilterSwatchImagesComponent);
     component = fixture.componentInstance;

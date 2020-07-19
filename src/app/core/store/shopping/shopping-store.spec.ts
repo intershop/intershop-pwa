@@ -348,8 +348,6 @@ describe('Shopping Store', () => {
             sortKeys: []
           [Filter API] Load Filter Success:
             filterNavigation: {}
-          [Product Listing Internal] Set Product Listing Pages:
-            id: {"type":"search","value":"something"}
         `);
       }));
 
@@ -534,8 +532,6 @@ describe('Shopping Store', () => {
           sortKeys: []
         [Filter API] Load Filter Success:
           filterNavigation: {}
-        [Product Listing Internal] Set Product Listing Pages:
-          id: {"type":"category","value":"A.123.456"}
       `);
     }));
 
@@ -590,9 +586,13 @@ describe('Shopping Store', () => {
             @ngrx/router-store/navigation:
               routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
               event: {"id":3,"url":"/category/A.123.456"}
+            [Product Listing] Load More Products:
+              id: {"type":"category","value":"A.123.456"}
             @ngrx/router-store/navigated:
               routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
               event: {"id":3,"url":"/category/A.123.456"}
+            [Product Listing] Load More Products:
+              id: {"type":"category","value":"A.123.456"}
           `);
         }));
       });
@@ -640,8 +640,6 @@ describe('Shopping Store', () => {
             sortKeys: []
           [Filter API] Load Filter Success:
             filterNavigation: {}
-          [Product Listing Internal] Set Product Listing Pages:
-            id: {"type":"search","value":"something"}
         `);
       }));
 
@@ -660,9 +658,24 @@ describe('Shopping Store', () => {
             @ngrx/router-store/navigation:
               routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
               event: {"id":3,"url":"/category/A.123.456"}
+            [Product Listing] Load More Products:
+              id: {"type":"category","value":"A.123.456"}
+            [Product Listing Internal] Load More Products For Params:
+              id: {"type":"category","value":"A.123.456"}
+              filters: undefined
+              sorting: undefined
+              page: undefined
+            [Product Listing Internal] Set Product Listing Pages:
+              id: {"type":"category","value":"A.123.456"}
+            [Filter Internal] Load Filter For Category:
+              uniqueId: "A.123.456"
+            [Filter API] Load Filter Success:
+              filterNavigation: {}
             @ngrx/router-store/navigated:
               routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
               event: {"id":3,"url":"/category/A.123.456"}
+            [Product Listing] Load More Products:
+              id: {"type":"category","value":"A.123.456"}
           `);
         }));
       });
@@ -813,11 +826,11 @@ describe('Shopping Store', () => {
             sortKeys: []
           [Filter API] Load Filter Success:
             filterNavigation: {}
-          [Product Listing Internal] Set Product Listing Pages:
-            id: {"type":"category","value":"A.123.456"}
           @ngrx/router-store/navigated:
             routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
             event: {"id":2,"url":"/category/A.123.456"}
+          [Product Listing] Load More Products:
+            id: {"type":"category","value":"A.123.456"}
         `);
       }));
 
@@ -1088,8 +1101,6 @@ describe('Shopping Store', () => {
           sortKeys: []
         [Filter API] Load Filter Success:
           filterNavigation: {}
-        [Product Listing Internal] Set Product Listing Pages:
-          id: {"type":"search","value":"something"}
       `);
     }));
   });

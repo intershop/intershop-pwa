@@ -1,4 +1,14 @@
 <div class="product-list row">
+  <div *ngIf="!products.length">
+    <ng-container *ngIf="!(listingLoading$ | async)">
+      {{ 'search.noresult.filtered_products.message' | translate }}
+    </ng-container>
+  </div>
+
+  <div *ngIf="listingLoading$ | async" class="product-list-loading">
+    <ish-loading [standalone]="true"></ish-loading>
+  </div>
+
   <ng-container *ngFor="let sku of products">
     <div *ngIf="isGrid" class="col-6 col-lg-4 product-list-item grid-view">
       <ish-product-item [configuration]="{ displayType: 'tile' }" [productSku]="sku" [category]="category">
@@ -10,4 +20,8 @@
       </ish-product-item>
     </div>
   </ng-container>
+
+  <div *ngIf="listingLoading$ | async" class="col-12">
+    <ish-loading [standalone]="true"></ish-loading>
+  </div>
 </div>

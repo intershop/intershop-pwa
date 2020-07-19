@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { range } from 'lodash-es';
 
 import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
+import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 import { ProductListingType } from './product-listing.model';
 
@@ -18,7 +19,7 @@ export class ProductListingMapper {
       sortKeys?: string[];
       itemCount?: number;
       sorting?: string;
-      filters?: string;
+      filters?: URLFormParams;
     }
   ): ProductListingType {
     const pages = range(0, Math.ceil(skus.length / this.itemsPerPage)).map(n =>

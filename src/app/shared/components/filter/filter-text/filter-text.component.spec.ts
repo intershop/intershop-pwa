@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { Filter } from 'ish-core/models/filter/filter.model';
@@ -14,6 +15,7 @@ describe('Filter Text Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       declarations: [FilterTextComponent, MockComponent(FaIconComponent), SanitizePipe],
     }).compileComponents();
   }));
@@ -21,6 +23,7 @@ describe('Filter Text Component', () => {
   beforeEach(() => {
     const filterElement = {
       name: 'Brands',
+      limitCount: -1,
       facets: [
         { name: 'AsusName', level: 0, count: 4, displayName: 'Asus' },
         { name: 'LogitechName', level: 0, count: 5, displayName: 'Logitech', selected: true },
@@ -39,10 +42,12 @@ describe('Filter Text Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul class="filter-list">
         <li class="filter-item filter-layer0">
-          <a class="filter-item-name" data-testing-id="filter-link-Asus"> Asus (4) </a>
+          <a class="filter-item-name" data-testing-id="filter-link-AsusName"> Asus (4) </a>
         </li>
         <li class="filter-item filter-layer0 filter-selected">
-          <a><span class="filter-item-name"> Logitech </span><span class="count"> (5) </span></a>
+          <a data-testing-id="filter-link-LogitechName"
+            ><span class="filter-item-name"> Logitech </span><span class="count"> (5) </span></a
+          >
         </li>
       </ul>
     `);
