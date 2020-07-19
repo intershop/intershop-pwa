@@ -53,7 +53,7 @@ export class AccountWishlistListComponent implements OnChanges, OnDestroy {
   }
 
   /** Determine the heading of the delete modal and opens the modal. */
-  openDeleteConfirmationDialog(wishlist: Wishlist, modal: ModalDialogComponent) {
+  openDeleteConfirmationDialog(wishlist: Wishlist, modal: ModalDialogComponent<string>) {
     this.translate
       .get('account.wishlists.delete_wishlist_dialog.header', { 0: wishlist.title })
       .pipe(take(1), takeUntil(this.destroy$))

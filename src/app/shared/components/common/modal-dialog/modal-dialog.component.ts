@@ -41,26 +41,25 @@ export interface ModalOptions {
   templateUrl: './modal-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable:no-any
-export class ModalDialogComponent {
+export class ModalDialogComponent<T> {
   @Input() options: ModalOptions;
 
-  @Output() confirmed = new EventEmitter<any>();
+  @Output() confirmed = new EventEmitter<T>();
 
-  @Output() onClosed = new EventEmitter<any>();
+  @Output() onClosed = new EventEmitter<T>();
 
-  @ViewChild('template') modalDialogTemplate: TemplateRef<any>;
+  @ViewChild('template') modalDialogTemplate: TemplateRef<unknown>;
 
   ngbModalRef: NgbModalRef;
 
-  data: any;
+  data: T;
 
   constructor(private ngbModal: NgbModal) {}
 
   /**
    * Configure and show modal dialog.
    */
-  show(data?: any) {
+  show(data?: T) {
     if (data) {
       this.data = data;
     }
