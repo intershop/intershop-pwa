@@ -1,0 +1,21 @@
+{
+  "extends": "../../tslint.json",
+  "rules": {
+    "ban": false,
+    "no-any": false,
+    "no-unused-expression": false,
+    "no-null-keyword": false,
+    "ban-specific-imports": false,
+    "project-structure": {
+      "severity": "warning",
+      "options": {
+        "warnUnmatched": false,
+        "pathPatterns": [
+          ".*/integration/framework/.*/*\\.ts",
+          ".*/integration/pages/.*\\.(module|page|dialog)\\.ts",
+          ".*/integration/specs/\\w+/[^/]*\\.e2e-spec\\.ts"
+        ]
+      }
+    }
+  }
+}

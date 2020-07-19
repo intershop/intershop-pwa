@@ -2,11 +2,7 @@ export class MiniCartModule {
   private readonly selector = 'ish-mini-basket[data-testing-id="mini-basket-desktop"]';
 
   private miniBasketLink = () => cy.get(this.selector).find('.quick-cart-link.d-md-block');
-  private viewCartButton = () =>
-    this.miniBasketLink()
-      .find('.view-cart')
-      // tslint:disable-next-line: semicolon
-      .should('be.visible');
+  private viewCartButton = () => this.miniBasketLink().find('.view-cart').should('be.visible');
 
   get total() {
     return this.miniBasketLink()

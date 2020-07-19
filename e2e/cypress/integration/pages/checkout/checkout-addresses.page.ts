@@ -25,7 +25,6 @@ export class CheckoutAddressesPage {
       .then(select => {
         const option = select.find('option').eq(1);
         const val = option.attr('value');
-        // tslint:disable-next-line:ban
         cy.get(`[data-testing-id="${type}"]`).find('select').first().select(val);
       });
   }
@@ -53,7 +52,6 @@ export class CheckoutAddressesPage {
     cy.get(`[data-testing-id="invoice-address-form"]`)
       .find('select[data-testing-id="mainDivisionCode"]')
       .first()
-      // tslint:disable-next-line:ban
       .select(regionCode);
     cy.get(`[data-testing-id="invoice-address-form"]`).find('button.btn-primary').first().click();
   }
