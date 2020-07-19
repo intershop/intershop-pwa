@@ -5,8 +5,6 @@ import { ActionCreatorsEffectMorpher } from './migrate-action-creators.effects';
 import { ActionCreatorsReducerMorpher } from './migrate-action-creators.reducers';
 import { createPayloadAdapter, rewriteMapErrorToAction } from './morph-helpers';
 
-// tslint:disable: no-console
-
 const project = new Project({ tsConfigFilePath: 'tsconfig.all.json' });
 
 rewriteMapErrorToAction(project);

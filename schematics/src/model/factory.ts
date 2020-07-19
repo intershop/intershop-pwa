@@ -22,7 +22,6 @@ export function createModel(options: Options): Rule {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
     }
-    // tslint:disable:no-parameter-reassignment
     options = detectExtension('model', host, options);
     options = applyNameAndPath('model', host, options);
     options = determineArtifactName('model', host, options);

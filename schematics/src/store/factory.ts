@@ -198,7 +198,6 @@ export function createStore(options: Options): Rule {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
     }
-    // tslint:disable:no-parameter-reassignment
     options = determineStoreLocation(host, options);
     options = applyNameAndPath('store', host, options);
     options = determineArtifactName('store', host, options);
