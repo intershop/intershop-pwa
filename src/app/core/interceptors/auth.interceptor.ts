@@ -46,7 +46,6 @@ export class AuthInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
     return next.handle(req).pipe(
-      // tslint:disable-next-line:ban
       catchError(err => {
         if (AuthInterceptor.isAuthTokenError(err)) {
           this.store.dispatch(resetAPIToken());

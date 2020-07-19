@@ -88,7 +88,6 @@ export class UserEffects {
       exhaustMap(credentials =>
         this.userService.signinUser(credentials).pipe(
           map(loginUserSuccess),
-          // tslint:disable-next-line:ban
           catchError(error =>
             of(
               error.headers.has('error-key')
@@ -168,7 +167,6 @@ export class UserEffects {
         this.userService.createUser(data).pipe(
           // TODO:see #IS-22750 - user should actually be logged in after registration
           map(() => loginUser({ credentials: data.credentials })),
-          // tslint:disable-next-line:ban
           catchError(error =>
             of(
               error.headers.has('error-key')
@@ -287,7 +285,6 @@ export class UserEffects {
       switchMap(() =>
         this.personalizationService.getPGID().pipe(
           map(pgid => setPGID({ pgid })),
-          // tslint:disable-next-line:ban
           catchError(() => EMPTY)
         )
       )

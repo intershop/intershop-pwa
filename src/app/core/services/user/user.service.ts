@@ -59,7 +59,6 @@ export class UserService {
       .get<CustomerData>('customers/-', { headers, skipApiErrorHandling: true, runExclusively: true })
       .pipe(
         map(CustomerMapper.mapLoginData),
-        // tslint:disable-next-line:ban
         catchError(() => EMPTY)
       );
   }

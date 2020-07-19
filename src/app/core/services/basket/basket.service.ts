@@ -146,7 +146,6 @@ export class BasketService {
       })
       .pipe(
         map(BasketMapper.fromData),
-        // tslint:disable-next-line:ban
         catchError(() => EMPTY)
       );
   }

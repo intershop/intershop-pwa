@@ -93,7 +93,6 @@ export class SearchEffects {
       switchMap(searchTerm =>
         this.suggestService.search(searchTerm).pipe(
           map(suggests => suggestSearchSuccess({ searchTerm, suggests })),
-          // tslint:disable-next-line:ban
           catchError(() => EMPTY)
         )
       )
