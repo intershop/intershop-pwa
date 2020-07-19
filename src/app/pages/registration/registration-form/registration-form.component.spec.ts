@@ -1,4 +1,3 @@
-import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -7,11 +6,11 @@ import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { HttpError, HttpHeader } from 'ish-core/models/http-error/http-error.model';
 import { AddressFormContainerComponent } from 'ish-shared/address-forms/components/address-form-container/address-form-container.component';
 import { AddressFormFactory } from 'ish-shared/address-forms/components/address-form/address-form.factory';
 import { AddressFormFactoryProvider } from 'ish-shared/address-forms/configurations/address-form-factory.provider';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
 
@@ -39,6 +38,7 @@ describe('Registration Form Component', () => {
         MockComponent(AddressFormContainerComponent),
         MockComponent(CheckboxComponent),
         MockComponent(ContentIncludeComponent),
+        MockComponent(ErrorMessageComponent),
         MockComponent(LazyCaptchaComponent),
         MockComponent(ModalDialogComponent),
         MockComponent(RegistrationCompanyFormComponent),
@@ -131,21 +131,6 @@ describe('Registration Form Component', () => {
 
     component.submitForm();
     fixture.detectChanges();
-  });
-
-  it('should display error when supplied', () => {
-    const error = {
-      headers: { 'error-key': 'customer.credentials.login.not_unique.error' } as HttpHeader,
-    } as HttpError;
-
-    component.error = error;
-    component.ngOnChanges({ error: new SimpleChange(undefined, component.error, false) });
-    fixture.detectChanges();
-
-    expect(element.querySelector('[role="alert"]')).toBeTruthy();
-    expect(element.querySelector('[role="alert"]').textContent).toContain(
-      'customer.credentials.login.not_unique.error'
-    );
   });
 
   it('should throw create event if t&c checkbox is checked', done => {

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { OrderTemplatesStoreModule } from '../order-templates-store.module';
@@ -99,7 +99,7 @@ describe('Order Template Selectors', () => {
     });
 
     describe('LoadOrderTemplatesFail', () => {
-      const loadOrderTemplatesFailAction = loadOrderTemplatesFail({ error: { message: 'invalid' } as HttpError });
+      const loadOrderTemplatesFailAction = loadOrderTemplatesFail({ error: makeHttpError({ message: 'invalid' }) });
 
       beforeEach(() => {
         store$.dispatch(loadOrderTemplatesFailAction);
@@ -110,7 +110,12 @@ describe('Order Template Selectors', () => {
       });
 
       it('should add the error to state', () => {
-        expect(getOrderTemplateError(store$.state)).toEqual({ message: 'invalid' });
+        expect(getOrderTemplateError(store$.state)).toMatchInlineSnapshot(`
+          Object {
+            "message": "invalid",
+            "name": "HttpErrorResponse",
+          }
+        `);
       });
     });
   });
@@ -149,7 +154,7 @@ describe('Order Template Selectors', () => {
     });
 
     describe('CreateOrderTemplatetFail', () => {
-      const createOrderTemplateFailAction = createOrderTemplateFail({ error: { message: 'invalid' } as HttpError });
+      const createOrderTemplateFailAction = createOrderTemplateFail({ error: makeHttpError({ message: 'invalid' }) });
 
       beforeEach(() => {
         store$.dispatch(createOrderTemplateFailAction);
@@ -160,7 +165,12 @@ describe('Order Template Selectors', () => {
       });
 
       it('should add the error to state', () => {
-        expect(getOrderTemplateError(store$.state)).toEqual({ message: 'invalid' });
+        expect(getOrderTemplateError(store$.state)).toMatchInlineSnapshot(`
+          Object {
+            "message": "invalid",
+            "name": "HttpErrorResponse",
+          }
+        `);
       });
     });
   });
@@ -199,7 +209,7 @@ describe('Order Template Selectors', () => {
     });
 
     describe('DeleteOrderTemplateFail', () => {
-      const deleteOrderTemplateFailAction = deleteOrderTemplateFail({ error: { message: 'invalid' } as HttpError });
+      const deleteOrderTemplateFailAction = deleteOrderTemplateFail({ error: makeHttpError({ message: 'invalid' }) });
 
       beforeEach(() => {
         store$.dispatch(deleteOrderTemplateFailAction);
@@ -210,7 +220,12 @@ describe('Order Template Selectors', () => {
       });
 
       it('should add the error to state', () => {
-        expect(getOrderTemplateError(store$.state)).toEqual({ message: 'invalid' });
+        expect(getOrderTemplateError(store$.state)).toMatchInlineSnapshot(`
+          Object {
+            "message": "invalid",
+            "name": "HttpErrorResponse",
+          }
+        `);
       });
     });
   });
@@ -253,7 +268,7 @@ describe('Order Template Selectors', () => {
     });
 
     describe('UpdateOrderTemplateFail', () => {
-      const updateOrderTemplateFailAction = updateOrderTemplateFail({ error: { message: 'invalid' } as HttpError });
+      const updateOrderTemplateFailAction = updateOrderTemplateFail({ error: makeHttpError({ message: 'invalid' }) });
 
       beforeEach(() => {
         store$.dispatch(updateOrderTemplateFailAction);
@@ -264,7 +279,12 @@ describe('Order Template Selectors', () => {
       });
 
       it('should add the error to state', () => {
-        expect(getOrderTemplateError(store$.state)).toEqual({ message: 'invalid' });
+        expect(getOrderTemplateError(store$.state)).toMatchInlineSnapshot(`
+          Object {
+            "message": "invalid",
+            "name": "HttpErrorResponse",
+          }
+        `);
       });
     });
   });

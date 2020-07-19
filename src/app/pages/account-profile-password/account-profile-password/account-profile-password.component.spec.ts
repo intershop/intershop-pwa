@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
 import { AccountProfilePasswordComponent } from './account-profile-password.component';
@@ -15,7 +16,11 @@ describe('Account Profile Password Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AccountProfilePasswordComponent, MockComponent(InputComponent)],
+      declarations: [
+        AccountProfilePasswordComponent,
+        MockComponent(ErrorMessageComponent),
+        MockComponent(InputComponent),
+      ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));

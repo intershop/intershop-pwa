@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { EMPTY, merge, of, race, timer } from 'rxjs';
+import { EMPTY, merge, race, timer } from 'rxjs';
 import {
   catchError,
   concatMap,
@@ -23,11 +23,9 @@ import {
 } from 'rxjs/operators';
 
 import { CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
-import { HttpErrorMapper } from 'ish-core/models/http-error/http-error.mapper';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { UserService } from 'ish-core/services/user/user.service';
-import { generalError } from 'ish-core/store/core/error';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { ofUrl, selectQueryParam, selectUrl } from 'ish-core/store/core/router';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
@@ -86,16 +84,7 @@ export class UserEffects {
       ofType(loginUser),
       mapToPayloadProperty('credentials'),
       exhaustMap(credentials =>
-        this.userService.signinUser(credentials).pipe(
-          map(loginUserSuccess),
-          catchError(error =>
-            of(
-              error.headers.has('error-key')
-                ? loginUserFail({ error: HttpErrorMapper.fromError(error) })
-                : generalError({ error: HttpErrorMapper.fromError(error) })
-            )
-          )
-        )
+        this.userService.signinUser(credentials).pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
       )
     )
   );
@@ -167,13 +156,7 @@ export class UserEffects {
         this.userService.createUser(data).pipe(
           // TODO:see #IS-22750 - user should actually be logged in after registration
           map(() => loginUser({ credentials: data.credentials })),
-          catchError(error =>
-            of(
-              error.headers.has('error-key')
-                ? createUserFail({ error: HttpErrorMapper.fromError(error) })
-                : generalError({ error: HttpErrorMapper.fromError(error) })
-            )
-          )
+          mapErrorToAction(createUserFail)
         )
       )
     )

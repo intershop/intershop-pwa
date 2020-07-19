@@ -1,5 +1,5 @@
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Link } from 'ish-core/models/link/link.model';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteData } from '../../models/quote/quote.interface';
@@ -46,7 +46,7 @@ describe('Quote Reducer', () => {
 
     describe('LoadQuotesFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
+        const error = makeHttpError({ message: 'invalid' });
         const action = loadQuotesFail({ error });
         const state = quoteReducer(initialState, action);
 
@@ -88,7 +88,7 @@ describe('Quote Reducer', () => {
 
     describe('DeleteQuoteFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
+        const error = makeHttpError({ message: 'invalid' });
         const action = deleteQuoteFail({ error });
         const state = quoteReducer(initialState, action);
 
@@ -120,7 +120,7 @@ describe('Quote Reducer', () => {
 
     describe('RejectQuoteFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
+        const error = makeHttpError({ message: 'invalid' });
         const action = rejectQuoteFail({ error });
         const state = quoteReducer(initialState, action);
 
@@ -152,7 +152,7 @@ describe('Quote Reducer', () => {
 
     describe('CreateQuoteRequestFromQuoteFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
+        const error = makeHttpError({ message: 'invalid' });
         const action = createQuoteRequestFromQuoteFail({ error });
         const state = quoteReducer(initialState, action);
 
@@ -184,7 +184,7 @@ describe('Quote Reducer', () => {
 
     describe('AddQuoteToBasketFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
+        const error = makeHttpError({ message: 'invalid' });
         const action = addQuoteToBasketFail({ error });
         const state = quoteReducer(initialState, action);
 

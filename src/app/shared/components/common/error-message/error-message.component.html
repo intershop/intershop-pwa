@@ -1,20 +1,6 @@
-<div *ngIf="error as error" role="alert" class="alert alert-danger">
-  <ng-container *ngIf="error.status === 406; else generalError">
-    {{ error.statusText }}: {{ error.error.errorMessage }} <br />{{ error.error.failures }}
-  </ng-container>
-  <ng-template #generalError>
-    <!-- handle HttpErrorResponse with error keys in the response header (old style) -->
-    <ng-container *ngIf="error.headers && error.headers['error-key']">
-      <span [ishServerHtml]="error.headers['error-key'] | translate"></span>
-    </ng-container>
-    <!-- handle HttpErrorResponse with JSON error response and no error keys (new style) -->
-    <ng-container *ngIf="!(error.headers && error.headers['error-key']) && error.error">
-      {{ error.error }}
-    </ng-container>
-    <!-- handle HttpErrorResponse with no error keys and no error response (fallback) -->
-    <ng-container *ngIf="!(error.headers && error.headers['error-key']) && !error.error">
-      {{ error.status }}: {{ error.message }}
-    </ng-container>
+<div *ngIf="error" role="alert" class="alert alert-danger">
+  <span *ngIf="error.message; else translationMissing" [ishServerHtml]="error.message"></span>
+  <ng-template #translationMissing>
+    <span [ishServerHtml]="error.code | translate"></span>
   </ng-template>
-  <ng-content></ng-content>
 </div>

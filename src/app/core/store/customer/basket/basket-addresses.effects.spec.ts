@@ -6,7 +6,6 @@ import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { AddressService } from 'ish-core/services/address/address.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { OrderService } from 'ish-core/services/order/order.service';
@@ -19,6 +18,7 @@ import {
 } from 'ish-core/store/customer/addresses';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { BasketAddressesEffects } from './basket-addresses.effects';
@@ -226,11 +226,11 @@ describe('Basket Addresses Effects', () => {
     it('should map invalid request to action of type UpdateCustomerAddressFail', () => {
       const address = BasketMockData.getAddress();
       when(addressServiceMock.updateCustomerAddress(anyString(), anything())).thenReturn(
-        throwError({ message: 'invalid' })
+        throwError(makeHttpError({ message: 'invalid' }))
       );
 
       const action = updateBasketAddress({ address });
-      const completion = updateCustomerAddressFail({ error: { message: 'invalid' } as HttpError });
+      const completion = updateCustomerAddressFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -269,11 +269,11 @@ describe('Basket Addresses Effects', () => {
     it('should map invalid request to action of type UpdateCustomerAddressFail', () => {
       const address = BasketMockData.getAddress();
       when(basketServiceMock.updateBasketAddress(anyString(), anything())).thenReturn(
-        throwError({ message: 'invalid' })
+        throwError(makeHttpError({ message: 'invalid' }))
       );
 
       const action = updateBasketAddress({ address });
-      const completion = updateCustomerAddressFail({ error: { message: 'invalid' } as HttpError });
+      const completion = updateCustomerAddressFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -311,11 +311,11 @@ describe('Basket Addresses Effects', () => {
     it('should map invalid request to action of type DeleteCustomerAddressFail', () => {
       const addressId = 'addressId';
       when(addressServiceMock.deleteCustomerAddress(anyString(), anyString())).thenReturn(
-        throwError({ message: 'invalid' })
+        throwError(makeHttpError({ message: 'invalid' }))
       );
 
       const action = deleteBasketShippingAddress({ addressId });
-      const completion = deleteCustomerAddressFail({ error: { message: 'invalid' } as HttpError });
+      const completion = deleteCustomerAddressFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

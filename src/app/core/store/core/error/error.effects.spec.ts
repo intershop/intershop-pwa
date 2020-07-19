@@ -5,8 +5,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 import { noop } from 'rxjs';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { communicationTimeoutError } from './error.actions';
 import { ErrorEffects } from './error.effects';
@@ -36,7 +36,7 @@ describe('Error Effects', () => {
 
   describe('gotoErrorPageInCaseOfError$', () => {
     it('should call Router Navigation when Error is handled', fakeAsync(() => {
-      store$.dispatch(communicationTimeoutError({ error: {} as HttpError }));
+      store$.dispatch(communicationTimeoutError({ error: makeHttpError({}) }));
 
       effects.gotoErrorPageInCaseOfError$.subscribe(noop, fail, fail);
 

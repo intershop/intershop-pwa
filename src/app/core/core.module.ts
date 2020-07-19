@@ -13,6 +13,7 @@ import { ConfigurationModule } from './configuration.module';
 import { ExtrasModule } from './extras.module';
 import { FeatureToggleModule } from './feature-toggle.module';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { ICMErrorMapperInterceptor } from './interceptors/icm-error-mapper.interceptor';
 import { MockInterceptor } from './interceptors/mock.interceptor';
 import { InternationalizationModule } from './internationalization.module';
 import { StateManagementModule } from './state-management.module';
@@ -35,6 +36,7 @@ import { ModuleLoaderService } from './utils/module-loader/module-loader.service
     StateManagementModule,
   ],
   providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: ICMErrorMapperInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
   ],

@@ -12,7 +12,6 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { User } from 'ish-core/models/user/user.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
@@ -21,6 +20,7 @@ import { loadBasketSuccess } from 'ish-core/store/customer/basket';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loadCompanyUserSuccess, loginUserSuccess } from 'ish-core/store/customer/user';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
@@ -121,10 +121,10 @@ describe('Quote Effects', () => {
     });
 
     it('should map invalid request to action of type LoadQuotesFail', () => {
-      when(quoteServiceMock.getQuotes()).thenReturn(throwError({ message: 'invalid' }));
+      when(quoteServiceMock.getQuotes()).thenReturn(throwError(makeHttpError({ message: 'invalid' })));
 
       const action = loadQuotes();
-      const completion = loadQuotesFail({ error: { message: 'invalid' } as HttpError });
+      const completion = loadQuotesFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -159,10 +159,10 @@ describe('Quote Effects', () => {
     });
 
     it('should map invalid request to action of type DeleteQuoteFail', () => {
-      when(quoteServiceMock.deleteQuote(anyString())).thenReturn(throwError({ message: 'invalid' }));
+      when(quoteServiceMock.deleteQuote(anyString())).thenReturn(throwError(makeHttpError({ message: 'invalid' })));
 
       const action = deleteQuote({ id: 'QID' });
-      const completion = deleteQuoteFail({ error: { message: 'invalid' } as HttpError });
+      const completion = deleteQuoteFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -207,10 +207,10 @@ describe('Quote Effects', () => {
     });
 
     it('should map invalid request to action of type RejectQuoteFail', () => {
-      when(quoteServiceMock.rejectQuote(anyString())).thenCall(() => throwError({ message: 'invalid' }));
+      when(quoteServiceMock.rejectQuote(anyString())).thenCall(() => throwError(makeHttpError({ message: 'invalid' })));
 
       const action = rejectQuote();
-      const completion = rejectQuoteFail({ error: { message: 'invalid' } as HttpError });
+      const completion = rejectQuoteFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -263,13 +263,13 @@ describe('Quote Effects', () => {
     });
 
     it('should map invalid request to action of type CreateQuoteRequestFromQuoteFail', () => {
-      when(quoteServiceMock.createQuoteRequestFromQuote(anything())).thenReturn(throwError({ message: 'invalid' }));
+      when(quoteServiceMock.createQuoteRequestFromQuote(anything())).thenReturn(
+        throwError(makeHttpError({ message: 'invalid' }))
+      );
 
       const action = createQuoteRequestFromQuote();
       const completion = createQuoteRequestFromQuoteFail({
-        error: {
-          message: 'invalid',
-        } as HttpError,
+        error: makeHttpError({ message: 'invalid' }),
       });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -373,7 +373,9 @@ describe('Quote Effects', () => {
     });
 
     it('should map invalid request to action of type AddQuoteToBasketFail', () => {
-      when(quoteServiceMock.addQuoteToBasket(anyString(), anyString())).thenReturn(throwError({ message: 'invalid' }));
+      when(quoteServiceMock.addQuoteToBasket(anyString(), anyString())).thenReturn(
+        throwError(makeHttpError({ message: 'invalid' }))
+      );
 
       store$.dispatch(
         loadBasketSuccess({
@@ -386,7 +388,7 @@ describe('Quote Effects', () => {
 
       const quoteId = 'QID';
       const action = addQuoteToBasket({ quoteId });
-      const completion = addQuoteToBasketFail({ error: { message: 'invalid' } as HttpError });
+      const completion = addQuoteToBasketFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

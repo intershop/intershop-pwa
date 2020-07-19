@@ -7,7 +7,7 @@ import { instance, mock } from 'ts-mockito';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
-import { LoginFormComponent } from 'ish-shared/forms/components/login-form/login-form.component';
+import { LoginFormComponent } from 'ish-shared/components/login/login-form/login-form.component';
 
 import { LoginPageComponent } from './login-page.component';
 

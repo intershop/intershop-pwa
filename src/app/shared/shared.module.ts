@@ -71,6 +71,7 @@ import { FilterSwatchImagesComponent } from './components/filter/filter-swatch-i
 import { FilterTextComponent } from './components/filter/filter-text/filter-text.component';
 import { LineItemEditDialogComponent } from './components/line-item/line-item-edit-dialog/line-item-edit-dialog.component';
 import { LineItemEditComponent } from './components/line-item/line-item-edit/line-item-edit.component';
+import { LoginFormComponent } from './components/login/login-form/login-form.component';
 import { LoginModalComponent } from './components/login/login-modal/login-modal.component';
 import { OrderListComponent } from './components/order/order-list/order-list.component';
 import { OrderWidgetComponent } from './components/order/order-widget/order-widget.component';
@@ -186,6 +187,7 @@ const exportedComponents = [
   InfoBoxComponent,
   LineItemListComponent,
   LoadingComponent,
+  LoginFormComponent,
   ModalDialogComponent,
   ModalDialogLinkComponent,
   OrderListComponent,

@@ -9,7 +9,6 @@ import { Observable, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { BasketValidation } from 'ish-core/models/basket-validation/basket-validation.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { OrderService } from 'ish-core/services/order/order.service';
@@ -17,6 +16,7 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { createOrder } from 'ish-core/store/customer/orders';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { BasketValidationEffects } from './basket-validation.effects';
@@ -109,10 +109,12 @@ describe('Basket Validation Effects', () => {
     });
 
     it('should map invalid request to action of type ContinueCheckoutFail', () => {
-      when(basketServiceMock.validateBasket(anyString(), anything())).thenReturn(throwError({ message: 'invalid' }));
+      when(basketServiceMock.validateBasket(anyString(), anything())).thenReturn(
+        throwError(makeHttpError({ message: 'invalid' }))
+      );
 
       const action = validateBasket({ scopes: ['Products'] });
-      const completion = continueCheckoutFail({ error: { message: 'invalid' } as HttpError });
+      const completion = continueCheckoutFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
@@ -186,10 +188,12 @@ describe('Basket Validation Effects', () => {
     });
 
     it('should map invalid request to action of type ContinueCheckoutFail', () => {
-      when(basketServiceMock.validateBasket(anyString(), anything())).thenReturn(throwError({ message: 'invalid' }));
+      when(basketServiceMock.validateBasket(anyString(), anything())).thenReturn(
+        throwError(makeHttpError({ message: 'invalid' }))
+      );
 
       const action = continueCheckout({ targetStep: 1 });
-      const completion = continueCheckoutFail({ error: { message: 'invalid' } as HttpError });
+      const completion = continueCheckoutFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
