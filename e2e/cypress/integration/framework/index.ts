@@ -1,4 +1,3 @@
-// tslint:disable no-barrel-files
 interface Page {
   tag: string;
 }

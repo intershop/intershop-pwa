@@ -1,4 +1,3 @@
-// tslint:disable no-barrel-files
 // API to access ngrx <%= camelize(name) %> state
 export * from './<%= dasherize(name) %>.actions';
 export * from './<%= dasherize(name) %>.selectors';
