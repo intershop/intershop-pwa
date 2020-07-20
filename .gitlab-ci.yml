@@ -358,6 +358,10 @@ deploy_review_b2c:
   retry: 2
   cache: {}
   dependencies: []
+  except:
+    refs:
+      - github-develop
+      - develop
   tags:
     - shell-executor
     - docker
@@ -429,6 +433,10 @@ stop_review_b2c:
   stage: deploy
   cache: {}
   dependencies: []
+  except:
+    refs:
+      - github-develop
+      - develop
   when: manual
   tags:
     - shell-executor
@@ -448,6 +456,10 @@ deploy_review_b2b:
   retry: 2
   cache: {}
   dependencies: []
+  except:
+    refs:
+      - github-develop
+      - develop
   tags:
     - shell-executor
     - docker
@@ -487,6 +499,10 @@ stop_review_b2b:
   stage: deploy
   cache: {}
   dependencies: []
+  except:
+    refs:
+      - github-develop
+      - develop
   when: manual
   tags:
     - shell-executor
