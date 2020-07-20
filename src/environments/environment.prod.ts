@@ -7,4 +7,6 @@ export const environment: Environment = {
 
   /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
   icmBaseURL: 'https://intershoppwa.azurewebsites.net',
+  features: ['compare', 'recently', 'rating', 'wishlists', 'tracking'],
+  gtmToken: 'GTM-WW6PGFW',
 };
