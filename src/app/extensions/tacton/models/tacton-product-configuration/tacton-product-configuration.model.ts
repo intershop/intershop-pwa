@@ -44,6 +44,7 @@ export interface TactonProductConfigurationBomItem {
 }
 
 export interface TactonProductConfiguration {
+  externalId?: string; // added by PWA
   configId?: string;
   configState?: string;
   tab?: string;
