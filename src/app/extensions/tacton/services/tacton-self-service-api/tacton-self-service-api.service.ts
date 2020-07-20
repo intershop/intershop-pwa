@@ -9,7 +9,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 import { TactonProductConfiguration } from '../../models/tacton-product-configuration/tacton-product-configuration.model';
 import { TactonSelfServiceApiConfiguration } from '../../models/tacton-self-service-api-configuration/tacton-self-service-api-configuration.model';
 import { getCurrentProductConfiguration } from '../../store/product-configuration';
-import { getExternalId, getSelfServiceApiConfiguration } from '../../store/tacton-config';
+import { getNewExternalId, getSelfServiceApiConfiguration } from '../../store/tacton-config';
 
 @Injectable({ providedIn: 'root' })
 export class TactonSelfServiceApiService {
@@ -31,7 +31,7 @@ export class TactonSelfServiceApiService {
       select(getSelfServiceApiConfiguration),
       whenTruthy(),
       first(),
-      withLatestFrom(this.store.pipe(select(getExternalId))),
+      withLatestFrom(this.store.pipe(select(getNewExternalId))),
       switchMap(([config, externalId]) =>
         this.http
           .post<TactonProductConfiguration>(
@@ -41,7 +41,7 @@ export class TactonSelfServiceApiService {
               headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
             }
           )
-          .pipe(switchMap(result => this.getBOM(result).pipe(map(bom => ({ ...result, bom: bom.bom })))))
+          .pipe(switchMap(result => this.getBOM(result).pipe(map(bom => ({ ...result, bom: bom.bom, externalId })))))
       )
     );
   }
@@ -51,17 +51,21 @@ export class TactonSelfServiceApiService {
       select(getCurrentProductConfiguration),
       whenTruthy(),
       first(),
-      withLatestFrom(this.store.pipe(select(getSelfServiceApiConfiguration)), this.store.pipe(select(getExternalId))),
-      switchMap(([config, selfService, externalId]) =>
+      withLatestFrom(this.store.pipe(select(getSelfServiceApiConfiguration))),
+      switchMap(([config, selfService]) =>
         this.http
           .post<TactonProductConfiguration>(
             `${selfService.endPoint}/config/commit/${valueId}/${value}`,
-            this.constructAPIAuth(selfService, externalId) + this.addConfigReference(config),
+            this.constructAPIAuth(selfService, config.externalId) + this.addConfigReference(config),
             {
               headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
             }
           )
-          .pipe(switchMap(result => this.getBOM(result).pipe(map(bom => ({ ...result, bom: bom.bom })))))
+          .pipe(
+            switchMap(result =>
+              this.getBOM(result).pipe(map(bom => ({ ...result, bom: bom.bom, externalId: config.externalId })))
+            )
+          )
       )
     );
   }
@@ -90,19 +94,23 @@ export class TactonSelfServiceApiService {
       select(getCurrentProductConfiguration),
       whenTruthy(),
       first(),
-      withLatestFrom(this.store.pipe(select(getSelfServiceApiConfiguration)), this.store.pipe(select(getExternalId))),
-      switchMap(([config, selfService, externalId]) =>
+      withLatestFrom(this.store.pipe(select(getSelfServiceApiConfiguration))),
+      switchMap(([config, selfService]) =>
         this.http
           .post<TactonProductConfiguration>(
             `${selfService.endPoint}/config/step`,
             // TODO: refactor
             // tslint:disable-next-line: prefer-template
-            this.constructAPIAuth(selfService, externalId) + this.addConfigReference(config) + `&step=${step}`,
+            this.constructAPIAuth(selfService, config.externalId) + this.addConfigReference(config) + `&step=${step}`,
             {
               headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
             }
           )
-          .pipe(switchMap(result => this.getBOM(result).pipe(map(bom => ({ ...result, bom: bom.bom })))))
+          .pipe(
+            switchMap(result =>
+              this.getBOM(result).pipe(map(bom => ({ ...result, bom: bom.bom, externalId: config.externalId })))
+            )
+          )
       )
     );
   }
