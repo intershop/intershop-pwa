@@ -18,6 +18,15 @@ describe('Filter Dropdown Component', () => {
     }).compileComponents();
   }));
 
+  const facet = (n, value) => ({
+    name: value,
+    searchParameter: { [n]: value },
+    displayName: value,
+    count: 0,
+    selected: false,
+    level: 0,
+  });
+
   beforeEach(() => {
     fixture = TestBed.createComponent(FilterDropdownComponent);
     component = fixture.componentInstance;
@@ -25,15 +34,7 @@ describe('Filter Dropdown Component', () => {
     component.filterElement = {
       name: 'Color',
       id: 'Color_of_Product',
-      facets: [
-        { displayName: 'Red', name: 'Red', selected: false, searchParameter: 'red' },
-        {
-          displayName: 'Blue',
-          name: 'Blue',
-          selected: true,
-          searchParameter: 'blue',
-        },
-      ] as Facet[],
+      facets: [facet('Color_of_Product', 'red'), { ...facet('Color_of_Product', 'blue'), selected: true }] as Facet[],
     } as Filter;
   });
 
@@ -58,9 +59,9 @@ describe('Filter Dropdown Component', () => {
           ><span>Color</span></a
         >
         <div aria-labelledby="dropdownMenuLink" ngbdropdownmenu="">
-          <a class="dropdown-item"> Red </a
+          <a class="dropdown-item"> red </a
           ><a class="dropdown-item selected">
-            Blue <fa-icon class="icon-checked" ng-reflect-icon="fas,check"></fa-icon
+            blue <fa-icon class="icon-checked" ng-reflect-icon="fas,check"></fa-icon
           ></a>
         </div>
       </div>

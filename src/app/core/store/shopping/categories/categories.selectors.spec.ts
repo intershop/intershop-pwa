@@ -22,10 +22,8 @@ import {
   getBreadcrumbForCategoryPage,
   getCategory,
   getCategoryEntities,
-  getCategoryLoading,
   getNavigationCategories,
   getSelectedCategory,
-  isTopLevelCategoriesLoaded,
 } from './categories.selectors';
 
 describe('Categories Selectors', () => {
@@ -71,16 +69,11 @@ describe('Categories Selectors', () => {
   describe('with empty state', () => {
     it('should not select any categories when used', () => {
       expect(getCategoryEntities(store$.state)).toBeEmpty();
-      expect(getCategoryLoading(store$.state)).toBeFalse();
     });
 
     it('should not select any selected category when used', () => {
       expect(getSelectedCategory(store$.state)).toBeUndefined();
       expect(getCategory(catA.uniqueId)(store$.state)).toBeUndefined();
-    });
-
-    it('should not have any top level categories loaded when used', () => {
-      expect(isTopLevelCategoriesLoaded(store$.state)).toBeFalse();
     });
   });
 
@@ -89,17 +82,12 @@ describe('Categories Selectors', () => {
       store$.dispatch(loadCategory({ categoryId: '' }));
     });
 
-    it('should set the state to loading', () => {
-      expect(getCategoryLoading(store$.state)).toBeTrue();
-    });
-
     describe('and reporting success', () => {
       beforeEach(() => {
         store$.dispatch(loadCategorySuccess({ categories: categoryTree([catA]) }));
       });
 
       it('should set loading to false', () => {
-        expect(getCategoryLoading(store$.state)).toBeFalse();
         expect(getCategoryEntities(store$.state)).toHaveProperty(catA.uniqueId);
       });
     });
@@ -110,7 +98,6 @@ describe('Categories Selectors', () => {
       });
 
       it('should not have loaded category on error', () => {
-        expect(getCategoryLoading(store$.state)).toBeFalse();
         expect(getCategoryEntities(store$.state)).toBeEmpty();
       });
     });
@@ -125,7 +112,6 @@ describe('Categories Selectors', () => {
     describe('but no current router state', () => {
       it('should return the category information when used', () => {
         expect(getCategoryEntities(store$.state)).toHaveProperty(catA.uniqueId);
-        expect(getCategoryLoading(store$.state)).toBeFalse();
         expect(getCategory(catA.uniqueId)(store$.state).uniqueId).toEqual(catA.uniqueId);
       });
 
@@ -146,7 +132,6 @@ describe('Categories Selectors', () => {
 
       it('should return the category information when used', () => {
         expect(getCategoryEntities(store$.state)).toHaveProperty(catA.uniqueId);
-        expect(getCategoryLoading(store$.state)).toBeFalse();
         expect(getCategory(catA.uniqueId)(store$.state).uniqueId).toEqual(catA.uniqueId);
       });
 
@@ -202,10 +187,6 @@ describe('Categories Selectors', () => {
       const cA2 = { name: 'name_A.2', uniqueId: 'A.2', categoryPath: ['A', 'A.2'] } as Category;
       const cB = { name: 'name_B', uniqueId: 'B', categoryPath: ['B'] } as Category;
       store$.dispatch(loadTopLevelCategoriesSuccess({ categories: categoryTree([cA, cA1, cA1a, cA1b, cA2, cB]) }));
-    });
-
-    it('should remember if top level categories are loaded', () => {
-      expect(isTopLevelCategoriesLoaded(store$.state)).toBeTrue();
     });
 
     describe('selecting navigation categories', () => {

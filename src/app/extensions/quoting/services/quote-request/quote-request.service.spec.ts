@@ -113,7 +113,7 @@ describe('Quote Request Service', () => {
       store$.dispatch(loadCompanyUserSuccess({ user }));
     });
 
-    it('should complete after first successful result', () => {
+    it('should complete after first successful result', done => {
       const subscription = quoteRequestService.getQuoteRequests().subscribe(expectEmptyArray);
 
       verify(apiService.get(anything())).once();
@@ -123,9 +123,11 @@ describe('Quote Request Service', () => {
       verify(apiService.get(anything())).once();
 
       expect(subscription.closed).toBeTrue();
+
+      done();
     });
 
-    it('should execute for every subscription', () => {
+    it('should execute for every subscription', done => {
       const subscription1 = quoteRequestService.getQuoteRequests().subscribe(expectEmptyArray);
 
       verify(apiService.get(anything())).once();
@@ -147,6 +149,8 @@ describe('Quote Request Service', () => {
 
       verify(apiService.get(anything())).thrice();
       expect(subscription4.closed).toBeTrue();
+
+      done();
     });
   });
 

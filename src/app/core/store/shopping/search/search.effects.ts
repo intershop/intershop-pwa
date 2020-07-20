@@ -3,9 +3,18 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { isEqual } from 'lodash-es';
 import { EMPTY } from 'rxjs';
-import { catchError, concatMap, debounceTime, distinctUntilChanged, map, sample, switchMap, tap } from 'rxjs/operators';
+import {
+  catchError,
+  concatMap,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  sample,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { ProductsService } from 'ish-core/services/products/products.service';
@@ -36,12 +45,12 @@ export class SearchEffects {
    */
   triggerSearch$ = createEffect(() =>
     this.store.pipe(
-      ofUrl(/^\/search.*/),
-      select(selectRouteParam('searchTerm')),
       sample(this.actions$.pipe(ofType(routerNavigatedAction))),
+      ofUrl(/^\/search.*/),
+      withLatestFrom(this.store.pipe(select(selectRouteParam('searchTerm')))),
+      map(([, searchTerm]) => searchTerm),
       whenTruthy(),
-      map(searchTerm => loadMoreProducts({ id: { type: 'search', value: searchTerm } })),
-      distinctUntilChanged(isEqual)
+      map(searchTerm => loadMoreProducts({ id: { type: 'search', value: searchTerm } }))
     )
   );
 
@@ -84,7 +93,6 @@ export class SearchEffects {
       switchMap(searchTerm =>
         this.suggestService.search(searchTerm).pipe(
           map(suggests => suggestSearchSuccess({ searchTerm, suggests })),
-          // tslint:disable-next-line:ban
           catchError(() => EMPTY)
         )
       )

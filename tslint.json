@@ -249,10 +249,6 @@
         "message": "Use store.pipe(select()) instead!"
       },
       {
-        "name": ["catchError"],
-        "message": "If you are trying to handle an http error, use mapErrorToAction instead."
-      },
-      {
         "name": ["atob"],
         "message": "This is not available in universal mode. Use https://github.com/jacobwgillespie/b64u"
       },
@@ -341,11 +337,6 @@
           "from": "lodash.*"
         },
         {
-          "import": "CustomFormsModule",
-          "from": "ngx-custom-validators",
-          "message": "This module is for the template-driven approach which we don't use."
-        },
-        {
           "import": "CookiesService",
           "from": "ngx-utils-cookies-port",
           "filePattern": "^((?!src/app/core/services/cookies/cookies\\.service(\\.spec|)\\.ts).)*$",
@@ -379,7 +370,7 @@
         },
         {
           "from": ".*/pages/[a-z][a-z0-9-]+/.*",
-          "filePattern": "^((?!(cypress|\\.module\\.ts$)).)*$",
+          "filePattern": "^((?!\\.module\\.ts$).)*$",
           "message": "Imports from pages are not allowed."
         },
         {
@@ -526,7 +517,7 @@
       "severity": "warning",
       "options": ["allow-single-concat"]
     },
-    "use-async-synchronisation-in-tests": true,
+    "use-async-synchronization-in-tests": true,
     "use-jest-extended-matchers-in-tests": true,
     "no-any": {
       "severity": "warning"
@@ -536,7 +527,6 @@
     "no-disabled-tests": {
       "severity": "warning"
     },
-    "no-barrel-files": true,
     "use-camel-case-environment-properties": true,
     "component-creation-test": true,
     "no-intelligence-in-artifacts": {
@@ -563,7 +553,6 @@
       "options": {
         "warnUnmatched": false,
         "pathPatterns": [
-          "^.*/cypress/.*$",
           "^.*/src/environments/environment(\\.\\w+|)\\.ts$",
           "^.*/src/hybrid/default-url-mapping-table.ts$",
           // core
@@ -717,7 +706,7 @@
           },
           {
             "name": "^(.*)Module$",
-            "file": ".*(cypress.*|/<kebab>/<kebab>|/projects/<kebab>/src/app/<kebab>|/core/[a-z][a-z0-9-]+)\\.module\\.ts$"
+            "file": ".*(/<kebab>/<kebab>|/projects/<kebab>/src/app/<kebab>|/core/[a-z][a-z0-9-]+)\\.module\\.ts$"
           },
           {
             "name": "^(.*)Routes$",
@@ -782,11 +771,6 @@
           {
             "name": "^(environment)$",
             "file": "src/environments/environment(\\.[a-z]+|)\\.ts$"
-          },
-          // e2e
-          {
-            "name": "^([A-Z].*)Page$",
-            "file": ".*/pages(/.*|)/<kebab>\\.page\\.ts$"
           }
         ],
         "ignoredFiles": [
@@ -795,7 +779,6 @@
           ".*.spec.ts$",
           "tslint-rules/",
           "scripts/",
-          "schematics/",
           "utils/dev/",
           "core/utils/",
           ".*.actions.ts$",

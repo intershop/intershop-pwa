@@ -61,7 +61,7 @@ describe('Product Listing Mapper', () => {
         sortKeys: ['name-desc'],
         itemCount: 200,
         sorting: 'name-asc',
-        filters: 'bla=blubb',
+        filters: { bla: ['blubb'] },
         startPage: 4,
       })
     ).toMatchInlineSnapshot(`
@@ -75,7 +75,11 @@ describe('Product Listing Mapper', () => {
           "D",
         ],
         "id": Object {
-          "filters": "bla=blubb",
+          "filters": Object {
+            "bla": Array [
+              "blubb",
+            ],
+          },
           "sorting": "name-asc",
           "type": "test",
           "value": "dummy",

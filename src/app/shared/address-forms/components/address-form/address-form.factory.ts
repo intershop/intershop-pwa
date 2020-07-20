@@ -10,8 +10,7 @@ export abstract class AddressFormFactory {
     return new FormGroup({});
   }
 
-  // tslint:disable-next-line:no-any
-  getGroup(param: { isBusinessAddress?: boolean; value?: { [key: string]: any } }): FormGroup {
+  getGroup(param: { isBusinessAddress?: boolean; value? }): FormGroup {
     // get formGroup according to the country specific factory
     const newGroup = this.group();
 

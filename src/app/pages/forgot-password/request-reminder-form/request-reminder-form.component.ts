@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CustomValidators } from 'ngx-custom-validators';
 
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 /**
  * The Request Reminder Form Component displays a Forgot Password Request Reminder form and triggers the submit.
@@ -29,7 +29,7 @@ export class RequestReminderFormComponent implements OnInit {
 
   ngOnInit() {
     this.form = new FormGroup({
-      email: new FormControl('', [Validators.required, CustomValidators.email]),
+      email: new FormControl('', [Validators.required, SpecialValidators.email]),
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
       captcha: new FormControl(''),

@@ -2,7 +2,7 @@ const { exec } = require('child_process');
 const MD5 = require('md5.js');
 const fs = require('fs');
 
-exec('npx tslint -p tsconfig.json --format json', (err1, stdout, stderr) => {
+exec('npx tslint -p tsconfig.base.json --format json', (err1, stdout, stderr) => {
   const errors = JSON.parse(stdout);
 
   const mapped = errors

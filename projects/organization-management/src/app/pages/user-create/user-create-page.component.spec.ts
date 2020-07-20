@@ -3,10 +3,10 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { CustomValidators } from 'ngx-custom-validators';
 import { instance, mock } from 'ts-mockito';
 
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { UserProfileFormComponent } from '../../components/user/user-profile-form/user-profile-form.component';
 import { UserRolesSelectionComponent } from '../../components/user/user-roles-selection/user-roles-selection.component';
@@ -55,7 +55,7 @@ describe('User Create Page Component', () => {
       profile: fb.group({
         firstName: ['Bernhard', [Validators.required]],
         lastName: ['Boldner', [Validators.required]],
-        email: ['test@gmail.com', [Validators.required, CustomValidators.email]],
+        email: ['test@gmail.com', [Validators.required, SpecialValidators.email]],
         preferredLanguage: ['en_US', [Validators.required]],
       }),
     });

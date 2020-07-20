@@ -2,18 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { isEqual } from 'lodash-es';
-import {
-  distinctUntilChanged,
-  filter,
-  map,
-  mapTo,
-  mergeMap,
-  switchMap,
-  switchMapTo,
-  tap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { filter, map, mergeMap, switchMap, switchMapTo, tap, withLatestFrom } from 'rxjs/operators';
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
@@ -23,7 +12,7 @@ import { selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { loadMoreProducts } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
-import { mapErrorToAction, mapToPayloadProperty, mapToProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty, mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import {
   loadCategory,
@@ -33,12 +22,7 @@ import {
   loadTopLevelCategoriesFail,
   loadTopLevelCategoriesSuccess,
 } from './categories.actions';
-import {
-  getBreadcrumbForCategoryPage,
-  getCategoryEntities,
-  getSelectedCategory,
-  isTopLevelCategoriesLoaded,
-} from './categories.selectors';
+import { getBreadcrumbForCategoryPage, getCategoryEntities, getSelectedCategory } from './categories.selectors';
 
 @Injectable()
 export class CategoriesEffects {
@@ -94,21 +78,11 @@ export class CategoriesEffects {
     )
   );
 
-  loadTopLevelWhenUnavailable$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(routerNavigatedAction),
-      switchMapTo(this.store.pipe(select(isTopLevelCategoriesLoaded))),
-      whenFalsy(),
-      mapTo(loadTopLevelCategories({ depth: this.mainNavigationMaxSubCategoriesDepth }))
-    )
-  );
-
   loadTopLevelCategories$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadTopLevelCategories),
-      mapToPayloadProperty('depth'),
-      switchMap(limit =>
-        this.categoryService.getTopLevelCategories(limit).pipe(
+      switchMap(() =>
+        this.categoryService.getTopLevelCategories(this.mainNavigationMaxSubCategoriesDepth).pipe(
           map(categories => loadTopLevelCategoriesSuccess({ categories })),
           mapErrorToAction(loadTopLevelCategoriesFail)
         )
@@ -127,8 +101,7 @@ export class CategoriesEffects {
           filter(cat => cat.hasOnlineProducts),
           map(({ uniqueId }) => loadMoreProducts({ id: { type: 'category', value: uniqueId } }))
         )
-      ),
-      distinctUntilChanged(isEqual)
+      )
     )
   );
 

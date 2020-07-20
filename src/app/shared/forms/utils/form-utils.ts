@@ -27,8 +27,7 @@ export function markAsDirtyRecursive(formGroup: FormGroup) {
  */
 export function updateValidatorsByDataLength(
   control: AbstractControl,
-  // tslint:disable-next-line:no-any
-  array: any[],
+  array: unknown[],
   validators: ValidatorFn | ValidatorFn[] = Validators.required,
   async = false
 ) {

@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import b64u from 'b64u';
 import { Observable } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
+import { URLFormParams, formParamsToString } from 'ish-core/utils/url-form-params';
 
 @Component({
   selector: 'ish-filter-navigation',
@@ -14,20 +14,22 @@ import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navig
 export class FilterNavigationComponent implements OnInit {
   @Input() fragmentOnRouting: string;
   @Input() orientation: 'sidebar' | 'horizontal' = 'sidebar';
+  @Input() showCategoryFilter = true;
 
   filter$: Observable<FilterNavigation>;
 
   constructor(private shoppingFacade: ShoppingFacade, private router: Router, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
-    this.filter$ = this.shoppingFacade.currentFilter$;
+    this.filter$ = this.shoppingFacade.currentFilter$(this.showCategoryFilter);
   }
 
-  applyFilter(event: { searchParameter: string }) {
+  applyFilter(event: { searchParameter: URLFormParams }) {
+    const params = formParamsToString(event.searchParameter);
     this.router.navigate([], {
       queryParamsHandling: 'merge',
       relativeTo: this.activatedRoute,
-      queryParams: { filters: b64u.decode(b64u.fromBase64(event.searchParameter)), page: 1 },
+      queryParams: { filters: params, page: 1 },
       fragment: this.fragmentOnRouting,
     });
   }

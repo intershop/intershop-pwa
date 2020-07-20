@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { debounce, debounceTime, filter, map, switchMap, tap } from 'rxjs/operators';
+import { debounce, filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { ProductListingID } from 'ish-core/models/product-listing/product-listing.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { addProductToBasket } from 'ish-core/store/customer/basket';
 import {
   getCategory,
-  getCategoryLoading,
   getNavigationCategories,
   getSelectedCategory,
+  loadTopLevelCategories,
 } from 'ish-core/store/shopping/categories';
 import {
   addToCompare,
@@ -46,7 +46,7 @@ import {
 } from 'ish-core/store/shopping/recently';
 import { getSearchTerm, getSuggestSearchResults, suggestSearch } from 'ish-core/store/shopping/search';
 import { toObservable } from 'ish-core/utils/functions';
-import { whenFalsy } from 'ish-core/utils/operators';
+import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
@@ -56,13 +56,15 @@ export class ShoppingFacade {
   // CATEGORY
 
   selectedCategory$ = this.store.pipe(select(getSelectedCategory));
-  selectedCategoryLoading$ = this.store.pipe(select(getCategoryLoading), debounceTime(500));
 
   category$(uniqueId: string) {
     return this.store.pipe(select(getCategory(uniqueId)));
   }
 
   navigationCategories$(uniqueId?: string) {
+    if (!uniqueId) {
+      this.store.dispatch(loadTopLevelCategories());
+    }
     return this.store.pipe(select(getNavigationCategories(uniqueId)));
   }
 
@@ -160,7 +162,13 @@ export class ShoppingFacade {
 
   // FILTER
 
-  currentFilter$ = this.store.pipe(select(getAvailableFilter));
+  currentFilter$(withCategoryFilter: boolean) {
+    return this.store.pipe(
+      select(getAvailableFilter),
+      whenTruthy(),
+      map(x => (withCategoryFilter ? x : { ...x, filter: x.filter.filter(f => f.id !== 'CategoryUUIDLevelMulti') }))
+    );
+  }
 
   // COMPARE
 

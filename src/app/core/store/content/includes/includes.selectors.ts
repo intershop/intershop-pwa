@@ -1,11 +1,9 @@
 import { Dictionary } from '@ngrx/entity';
-import { createSelector } from '@ngrx/store';
+import { createSelector, createSelectorFactory, defaultMemoize } from '@ngrx/store';
+import { isEqual } from 'lodash-es';
 
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
-import {
-  ContentPageletEntryPointView,
-  createContentPageletEntryPointView,
-} from 'ish-core/models/content-view/content-view.model';
+import { createContentPageletEntryPointView } from 'ish-core/models/content-view/content-view.model';
 import { getContentState } from 'ish-core/store/content/content-store';
 
 import { includesAdapter } from './includes.reducer';
@@ -16,8 +14,11 @@ const { selectEntities: getContentIncludeEntities } = includesAdapter.getSelecto
 
 export const getContentIncludeLoading = createSelector(getIncludesState, includes => includes.loading);
 
-export const getContentInclude = createSelector(
-  getContentIncludeEntities,
-  (contentIncludes: Dictionary<ContentPageletEntryPoint>, includeId: string): ContentPageletEntryPointView =>
-    createContentPageletEntryPointView(contentIncludes[includeId])
-);
+const getContentIncludeMemoized = (includeId: string) =>
+  createSelectorFactory(projector => defaultMemoize(projector, undefined, isEqual))(
+    getContentIncludeEntities,
+    (contentIncludes: Dictionary<ContentPageletEntryPoint>) => contentIncludes[includeId]
+  );
+
+export const getContentInclude = (includeId: string) =>
+  createSelector(getContentIncludeMemoized(includeId), createContentPageletEntryPointView);

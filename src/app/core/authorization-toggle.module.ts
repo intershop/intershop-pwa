@@ -13,7 +13,7 @@ import { whenTruthy } from './utils/operators';
 export class AuthorizationToggleModule {
   private static permissions = new ReplaySubject<string[]>(1);
 
-  static forTesting(...permissions: string[]): ModuleWithProviders {
+  static forTesting(...permissions: string[]): ModuleWithProviders<AuthorizationToggleModule> {
     AuthorizationToggleModule.switchTestingPermissions(...permissions);
     return {
       ngModule: AuthorizationToggleModule,

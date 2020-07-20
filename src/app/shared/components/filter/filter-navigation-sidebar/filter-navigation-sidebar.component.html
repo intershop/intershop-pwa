@@ -1,12 +1,13 @@
 <div *ngIf="filterNavigation" class="filter-panel">
   <div *ngFor="let element of filterNavigation.filter" [ngSwitch]="element.displayType">
-    <ish-filter-collapsable
-      [title]="element.name"
-      [collapsed]="collapsedElements[element.name]"
-      (collapsedChanged)="collapsedElements[element.name] = $event"
-    >
+    <ish-filter-collapsable [title]="element.name" [(collapsed)]="collapsedElements[element.name]">
       <!-- default: text & text_clear -->
-      <ish-filter-text *ngSwitchDefault [filterElement]="element" (applyFilter)="applyFilter.emit($event)">
+      <ish-filter-text
+        *ngSwitchDefault
+        [filterElement]="element"
+        (applyFilter)="applyFilter.emit($event)"
+        [(showAll)]="showAllElements[element.name]"
+      >
       </ish-filter-text>
 
       <!-- checkbox -->
@@ -14,6 +15,7 @@
         *ngSwitchCase="'checkbox'"
         [filterElement]="element"
         (applyFilter)="applyFilter.emit($event)"
+        [(showAll)]="showAllElements[element.name]"
       >
       </ish-filter-checkbox>
 

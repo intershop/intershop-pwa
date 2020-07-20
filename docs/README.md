@@ -39,6 +39,7 @@ kb_sync_latest_only
 
 ### Customization
 
+- [Concept - Progressive Web App](./concepts/progressive-web-app.md)
 - [Guide - Customizations](./guides/customizations.md)
   - [Guide - Multiple Themes](./guides/multiple-themes.md)
 - [Guide - Migration](./guides/migrations.md)

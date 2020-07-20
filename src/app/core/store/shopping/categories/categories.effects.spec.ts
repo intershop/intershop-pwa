@@ -4,11 +4,10 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { routerNavigatedAction } from '@ngrx/router-store';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, noop, of, throwError } from 'rxjs';
-import { instance, mock, verify, when } from 'ts-mockito';
+import { anyNumber, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
@@ -52,8 +51,8 @@ describe('Categories Effects', () => {
       of(categoryTree([{ uniqueId: '123', categoryPath: ['123'] } as Category]))
     );
     when(categoriesServiceMock.getCategory('invalid')).thenReturn(throwError({ message: 'invalid category' }));
-    when(categoriesServiceMock.getTopLevelCategories(2)).thenReturn(of(TOP_LEVEL_CATEGORIES));
-    when(categoriesServiceMock.getTopLevelCategories(-1)).thenReturn(throwError({ message: 'invalid number' }));
+    when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(of(TOP_LEVEL_CATEGORIES));
+
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
@@ -199,49 +198,24 @@ describe('Categories Effects', () => {
     });
   });
 
-  describe('loadTopLevelWhenUnavailable$', () => {
-    let depth: number;
-
-    beforeEach(() => {
-      depth = TestBed.inject(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH);
-    });
-
-    it('should load top level categories retrying for every routing action', () => {
-      const completion = loadTopLevelCategories({ depth });
-
-      // tslint:disable-next-line: no-any
-      actions$ = hot('        ----a---a--a', { a: routerNavigatedAction({ payload: {} as any }) });
-      const expected$ = cold('----a---a--a', { a: completion });
-
-      expect(effects.loadTopLevelWhenUnavailable$).toBeObservable(expected$);
-    });
-
-    it('should not load top level categories when already available', () => {
-      store$.dispatch(loadTopLevelCategoriesSuccess({ categories: categoryTree() }));
-
-      // tslint:disable-next-line: no-any
-      actions$ = hot('        ----a---a--a', { a: routerNavigatedAction({ payload: {} as any }) });
-      const expected$ = cold('------------');
-
-      expect(effects.loadTopLevelWhenUnavailable$).toBeObservable(expected$);
-    });
-  });
-
   describe('loadTopLevelCategories$', () => {
     it('should call the categoriesService for LoadTopLevelCategories action', done => {
-      const depth = 2;
-      const action = loadTopLevelCategories({ depth });
+      const action = loadTopLevelCategories();
       actions$ = of(action);
 
       effects.loadTopLevelCategories$.subscribe(() => {
-        verify(categoriesServiceMock.getTopLevelCategories(depth)).once();
+        verify(categoriesServiceMock.getTopLevelCategories(anyNumber())).once();
+        expect(capture(categoriesServiceMock.getTopLevelCategories).last()).toMatchInlineSnapshot(`
+          Array [
+            1,
+          ]
+        `);
         done();
       });
     });
 
     it('should map to action of type LoadCategorySuccess', () => {
-      const depth = 2;
-      const action = loadTopLevelCategories({ depth });
+      const action = loadTopLevelCategories();
       const completion = loadTopLevelCategoriesSuccess({ categories: TOP_LEVEL_CATEGORIES });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -250,8 +224,10 @@ describe('Categories Effects', () => {
     });
 
     it('should map invalid request to action of type LoadCategoryFail', () => {
-      const depth = -1;
-      const action = loadTopLevelCategories({ depth });
+      when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(
+        throwError({ message: 'invalid number' })
+      );
+      const action = loadTopLevelCategories();
       const completion = loadTopLevelCategoriesFail({
         error: { message: 'invalid number' } as HttpError,
       });

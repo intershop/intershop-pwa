@@ -2872,5 +2872,6 @@
   "account.organization.user_management.new_user.confirmation": "Der Benutzer \"{{0}}\" wurde erstellt.",
   "account.organization.user_management.update_user.confirmation": "Der Benutzer \"{{0}}\" wurde geändert.",
   "subject.has.no.permission.assigned": "Sie verfügen nicht über die erforderlichen Rechte zur Durchführung dieser Aktion.",
-  "user.not.authenticated": "Sie sind für den Zugriff auf diese Seite nicht authentifiziert."
+  "user.not.authenticated": "Sie sind für den Zugriff auf diese Seite nicht authentifiziert.",
+  "search.noresult.filtered_products.message": "Leider konnten wir keine Produkte finden, die Ihrer Filterauswahl entsprechen."
 }

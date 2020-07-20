@@ -64,3 +64,21 @@ describe('Google Page Crawler', () => {
     });
   });
 });
+
+describe('Pagination & endless scroll', () => {
+  it('should be able to follow different pages started at page 2', () => {
+    FamilyPage.navigateTo(_.category, 2);
+
+    at(FamilyPage, page => {
+      page.productList.currentPage.should('equal', 2);
+
+      cy.scrollTo('bottom');
+      waitLoadingEnd();
+      page.productList.currentPage.should('equal', 3);
+
+      cy.scrollTo('bottom');
+      waitLoadingEnd();
+      page.productList.currentPage.should('equal', 4);
+    });
+  });
+});

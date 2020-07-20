@@ -2876,5 +2876,6 @@
   "account.organization.user_management.new_user.confirmation": "The user \"{{0}}\" has been created.",
   "account.organization.user_management.update_user.confirmation": "The user \"{{0}}\" has been updated.",
   "subject.has.no.permission.assigned": "You do not have the required permission to perform this action.",
-  "user.not.authenticated": "You are not authenticated to access this page."
+  "user.not.authenticated": "You are not authenticated to access this page.",
+  "search.noresult.filtered_products.message": "We are sorry, we could not find any products that match your filter choice."
 }

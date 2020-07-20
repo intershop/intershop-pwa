@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { filter, map, switchMap, switchMapTo, tap } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
+import { filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { getContentInclude, loadContentInclude } from 'ish-core/store/content/includes';
 import { getContentPagelet } from 'ish-core/store/content/pagelets';
@@ -19,16 +19,14 @@ export class CMSFacade {
   constructor(private store: Store, private sfeAdapter: SfeAdapterService) {}
 
   contentInclude$(includeId$: Observable<string>) {
-    return this.store.pipe(select(getPGID)).pipe(
-      switchMapTo(includeId$),
-      whenTruthy(),
-      tap(includeId => this.store.dispatch(loadContentInclude({ includeId }))),
-      switchMap(includeId => this.store.pipe(select(getContentInclude, includeId)))
+    return combineLatest([includeId$.pipe(whenTruthy()), this.store.pipe(select(getPGID))]).pipe(
+      tap(([includeId]) => this.store.dispatch(loadContentInclude({ includeId }))),
+      switchMap(([includeId]) => this.store.pipe(select(getContentInclude(includeId), whenTruthy())))
     );
   }
 
   contentIncludeSfeMetadata$(includeId: string) {
-    return this.store.pipe(select(getContentInclude, includeId)).pipe(
+    return this.store.pipe(select(getContentInclude(includeId))).pipe(
       filter(() => this.sfeAdapter.isInitialized()),
       whenTruthy(),
       map(include => SfeMapper.mapIncludeViewToSfeMetadata(include))
@@ -36,6 +34,6 @@ export class CMSFacade {
   }
 
   pagelet$(id: string) {
-    return this.store.pipe(select(getContentPagelet(), id));
+    return this.store.pipe(select(getContentPagelet(id)));
   }
 }

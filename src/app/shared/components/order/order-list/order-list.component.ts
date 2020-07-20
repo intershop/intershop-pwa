@@ -16,7 +16,6 @@ import { Order } from 'ish-core/models/order/order.model';
   templateUrl: './order-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable-next-line:ccp-no-markup-in-containers
 export class OrderListComponent implements OnInit {
   /**
    * The maximum number of items to be displayed.

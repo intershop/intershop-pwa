@@ -70,7 +70,7 @@
                   "maximumError": "10kb"
                 }
               ],
-              "serviceWorker": true,
+              "serviceWorker": false,
               "ngswConfigPath": "ngsw-config.json"
             },
             "local": {
@@ -88,15 +88,6 @@
               ],
               "sourceMap": true,
               "serviceWorker": false
-            },
-            "es5": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ],
-              "tsConfig": "./tsconfig-es5.app.json"
             }
           }
         },
@@ -112,9 +103,6 @@
             },
             "local": {
               "browserTarget": "intershop-pwa:build:local"
-            },
-            "es5": {
-              "browserTarget": "intershop-pwa:build:es5"
             }
           }
         },
@@ -127,7 +115,7 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["tsconfig.json"],
+            "tsConfig": ["tsconfig.base.json"],
             "exclude": ["**/node_modules/**"],
             "format": "stylish"
           }

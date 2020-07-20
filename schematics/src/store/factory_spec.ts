@@ -140,7 +140,7 @@ describe('Store Schematic', () => {
   });
 
   describe('determineStoreLocation', () => {
-    it('should handle simple stores', () => {
+    it('should handle simple stores', async () => {
       const config = {
         extension: undefined,
         feature: 'core',
@@ -151,11 +151,13 @@ describe('Store Schematic', () => {
         project: 'bar',
       };
 
-      expect(determineStoreLocation(appTree, { ...defaultOptions, name: 'foobar' })).toEqual(config);
-      expect(determineStoreLocation(appTree, { ...defaultOptions, name: 'core/store/core/foobar' })).toEqual(config);
+      expect(await determineStoreLocation(appTree, { ...defaultOptions, name: 'foobar' })).toEqual(config);
+      expect(await determineStoreLocation(appTree, { ...defaultOptions, name: 'core/store/core/foobar' })).toEqual(
+        config
+      );
     });
 
-    it('should handle feature stores', () => {
+    it('should handle feature stores', async () => {
       const config = {
         extension: undefined,
         feature: 'bar',
@@ -166,12 +168,16 @@ describe('Store Schematic', () => {
         project: 'bar',
       };
 
-      expect(determineStoreLocation(appTree, { ...defaultOptions, name: 'foobar', feature: 'bar' })).toEqual(config);
-      expect(determineStoreLocation(appTree, { ...defaultOptions, name: 'bar/foobar' })).toEqual(config);
-      expect(determineStoreLocation(appTree, { ...defaultOptions, name: 'core/store/bar/foobar' })).toEqual(config);
+      expect(await determineStoreLocation(appTree, { ...defaultOptions, name: 'foobar', feature: 'bar' })).toEqual(
+        config
+      );
+      expect(await determineStoreLocation(appTree, { ...defaultOptions, name: 'bar/foobar' })).toEqual(config);
+      expect(await determineStoreLocation(appTree, { ...defaultOptions, name: 'core/store/bar/foobar' })).toEqual(
+        config
+      );
     });
 
-    it('should handle extension stores', () => {
+    it('should handle extension stores', async () => {
       const config = {
         extension: 'bar',
         feature: undefined,
@@ -182,20 +188,36 @@ describe('Store Schematic', () => {
         project: 'bar',
       };
 
-      expect(determineStoreLocation(appTree, { ...defaultOptions, name: 'foobar', extension: 'bar' })).toEqual(config);
-      expect(determineStoreLocation(appTree, { ...defaultOptions, name: 'extensions/bar/foobar' })).toEqual(config);
+      expect(await determineStoreLocation(appTree, { ...defaultOptions, name: 'foobar', extension: 'bar' })).toEqual(
+        config
+      );
+      expect(await determineStoreLocation(appTree, { ...defaultOptions, name: 'extensions/bar/foobar' })).toEqual(
+        config
+      );
     });
 
-    it('should throw if feature equals store name', () => {
-      expect(() =>
-        determineStoreLocation(appTree, { ...defaultOptions, feature: defaultOptions.name })
-      ).toThrowErrorMatchingInlineSnapshot(`"name of feature and store cannot be equal"`);
+    it('should throw if feature equals store name', async () => {
+      let error: Error;
+
+      try {
+        await determineStoreLocation(appTree, { ...defaultOptions, feature: defaultOptions.name });
+      } catch (err) {
+        error = err;
+      }
+
+      expect(error?.message).toMatchInlineSnapshot(`"name of feature and store cannot be equal"`);
     });
 
-    it('should throw if extension equals store name', () => {
-      expect(() =>
-        determineStoreLocation(appTree, { ...defaultOptions, extension: defaultOptions.name })
-      ).toThrowErrorMatchingInlineSnapshot(`"name of extension and store cannot be equal"`);
+    it('should throw if extension equals store name', async () => {
+      let error: Error;
+
+      try {
+        await determineStoreLocation(appTree, { ...defaultOptions, extension: defaultOptions.name });
+      } catch (err) {
+        error = err;
+      }
+
+      expect(error?.message).toMatchInlineSnapshot(`"name of extension and store cannot be equal"`);
     });
   });
 });

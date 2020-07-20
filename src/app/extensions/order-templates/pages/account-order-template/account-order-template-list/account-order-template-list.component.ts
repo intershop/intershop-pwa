@@ -46,7 +46,7 @@ export class AccountOrderTemplateListComponent implements OnDestroy {
   }
 
   /** Determine the heading of the delete modal and opens the modal. */
-  openDeleteConfirmationDialog(orderTemplate: OrderTemplate, modal: ModalDialogComponent) {
+  openDeleteConfirmationDialog(orderTemplate: OrderTemplate, modal: ModalDialogComponent<string>) {
     this.translate
       .get('account.order_templates.delete_dialog.header', { 0: orderTemplate.title })
       .pipe(take(1), takeUntil(this.destroy$))

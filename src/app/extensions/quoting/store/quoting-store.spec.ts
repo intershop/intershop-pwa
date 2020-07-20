@@ -22,24 +22,14 @@ import {
   loginUserSuccess,
 } from 'ish-core/store/customer/user';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
-import {
-  StoreWithSnapshots,
-  containsActionWithType,
-  containsActionWithTypeAndPayload,
-  provideStoreSnapshots,
-} from 'ish-core/utils/dev/ngrx-testing';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { QuoteRequestData } from '../models/quote-request/quote-request.interface';
 import { QuoteRequestService } from '../services/quote-request/quote-request.service';
 import { QuoteService } from '../services/quote/quote.service';
 
-import { getCurrentQuotes, loadQuotes, loadQuotesSuccess } from './quote';
-import {
-  getActiveQuoteRequest,
-  getCurrentQuoteRequests,
-  loadQuoteRequests,
-  loadQuoteRequestsSuccess,
-} from './quote-request';
+import { getCurrentQuotes } from './quote';
+import { getActiveQuoteRequest, getCurrentQuoteRequests } from './quote-request';
 import { QuotingStoreModule } from './quoting-store.module';
 
 describe('Quoting Store', () => {
@@ -133,15 +123,17 @@ describe('Quoting Store', () => {
     });
 
     it('should load the quotes and quote requests after user login', () => {
-      const firedActions = store$.actionsArray(/Quote/);
-
-      expect(firedActions).toSatisfy(containsActionWithType(loadQuotes.type));
-      expect(firedActions).toSatisfy(containsActionWithType(loadQuoteRequests.type));
-
-      expect(firedActions).toSatisfy(containsActionWithTypeAndPayload(loadQuotesSuccess.type, p => !p.length));
-      expect(firedActions).toSatisfy(
-        containsActionWithTypeAndPayload(loadQuoteRequestsSuccess.type, p => !!p.quoteRequests.length)
-      );
+      expect(store$.actionsArray(/Quote/)).toMatchInlineSnapshot(`
+        [Quote Internal] Load QuoteRequests
+        [Quote API] Load QuoteRequests Success:
+          quoteRequests: [{"id":"QRID1","submitted":true}]
+        [Quote Internal] Load Quotes
+        [Quote Internal] Load QuoteRequests
+        [Quote API] Load Quotes Success:
+          quotes: []
+        [Quote API] Load QuoteRequests Success:
+          quoteRequests: [{"id":"QRID1","submitted":true}]
+      `);
     });
 
     it('should have the quotes and quote requests but no active quote request after user login', () => {

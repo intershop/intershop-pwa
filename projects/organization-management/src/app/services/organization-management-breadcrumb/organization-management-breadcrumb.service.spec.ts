@@ -14,8 +14,7 @@ import { loadUserSuccess } from '../../store/users';
 
 import { OrganizationManagementBreadcrumbService } from './organization-management-breadcrumb.service';
 
-// tslint:disable-next-line: no-any
-function adaptRoutes(rts: Route[], cmp: Type<any>): Route[] {
+function adaptRoutes(rts: Route[], cmp: Type<unknown>): Route[] {
   return rts.map(r => ({
     ...r,
     component: r.component && cmp,

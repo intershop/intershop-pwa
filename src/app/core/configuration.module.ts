@@ -6,10 +6,8 @@ import * as injectionKeys from './configurations/injection-keys';
 
 @NgModule({
   providers: [
-    // tslint:disable-next-line:no-string-literal
-    { provide: injectionKeys.MOCK_SERVER_API, useValue: environment['mockServerAPI'] },
-    // tslint:disable-next-line:no-string-literal
-    { provide: injectionKeys.MUST_MOCK_PATHS, useValue: environment['mustMockPaths'] },
+    { provide: injectionKeys.MOCK_SERVER_API, useValue: environment.mockServerAPI },
+    { provide: injectionKeys.MUST_MOCK_PATHS, useValue: environment.mustMockPaths },
     {
       provide: injectionKeys.MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
       useValue: environment.mainNavigationMaxSubCategoriesDepth,

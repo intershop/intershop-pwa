@@ -19,14 +19,13 @@ import { addDeclarationToNgModule, addExportToNgModule } from '../utils/registra
 import { PWAComponentOptionsSchema as Options } from './schema';
 
 export function createComponent(options: Options): Rule {
-  return host => {
+  return async host => {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
     }
-    // tslint:disable:no-parameter-reassignment
-    options = applyNameAndPath('component', host, options);
+    options = await applyNameAndPath('component', host, options);
     options = determineArtifactName('component', host, options);
-    options = generateSelector(host, options);
+    options = await generateSelector(host, options);
     options = findDeclaringModule(host, options);
 
     const operations = [];

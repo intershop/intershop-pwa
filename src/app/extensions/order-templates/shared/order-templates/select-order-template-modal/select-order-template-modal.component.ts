@@ -54,8 +54,7 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
   idAfterCreate = '';
   private destroy$ = new Subject<void>();
 
-  // tslint:disable-next-line:no-any
-  @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<any>;
+  @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<unknown>;
 
   constructor(
     private ngbModal: NgbModal,

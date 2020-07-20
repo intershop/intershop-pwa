@@ -26,17 +26,13 @@ export class Rule extends Lint.Rules.AbstractRule {
   ignoredFiles: string[];
   pathPatterns: string[];
 
-  fileName: string;
-
   constructor(options: Lint.IOptions) {
     super(options);
     if (options.ruleArguments[0]) {
       this.warnUnmatched = !!options.ruleArguments[0].warnUnmatched;
-      this.patterns = options.ruleArguments[0].patterns;
+      this.patterns = options.ruleArguments[0].patterns || [];
       this.ignoredFiles = options.ruleArguments[0].ignoredFiles || [];
-      if (options.ruleArguments[0].pathPatterns) {
-        this.pathPatterns = options.ruleArguments[0].pathPatterns;
-      }
+      this.pathPatterns = options.ruleArguments[0].pathPatterns || [];
     }
   }
 
@@ -84,7 +80,7 @@ export class Rule extends Lint.Rules.AbstractRule {
         ctx.addFailureAtNode(node.name, `'${name}' is not in the correct file (expected '${pathPattern}')`);
       }
     } else if (matchingPatterns.length === 0 && this.warnUnmatched) {
-      console.warn(`no pattern match for ${name} in file ${this.fileName}`);
+      console.warn(`no pattern match for ${name} in file ${ctx.sourceFile.fileName}`);
     }
   }
 }

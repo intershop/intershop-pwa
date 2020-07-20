@@ -10,7 +10,7 @@ import {
 import { Inject, Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, of, throwError } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 
 import { MOCK_SERVER_API, MUST_MOCK_PATHS } from 'ish-core/configurations/injection-keys';
 import { getRestEndpoint } from 'ish-core/store/core/configuration';
@@ -49,7 +49,7 @@ export class MockInterceptor implements HttpInterceptor {
     console.log(`redirecting '${req.url}' to '${newUrl}'`);
 
     return next.handle(req.clone({ url: newUrl, method: 'GET' })).pipe(
-      flatMap(event => {
+      mergeMap(event => {
         if (event instanceof HttpResponse) {
           if (this.isLoginAttempt(req) && !this.isMockUserLoggingInSuccessfully(req)) {
             return throwError(

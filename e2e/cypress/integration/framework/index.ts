@@ -1,4 +1,3 @@
-// tslint:disable no-barrel-files
 interface Page {
   tag: string;
 }
@@ -47,10 +46,8 @@ export function fillFormField(parent: string, key: string, value: number | strin
             .find('option')
             .eq(value as number)
             .then(option => option.attr('value'))
-            // tslint:disable-next-line:ban
             .then(val => cy.get(`[data-testing-id="${key}"]`).select(val));
         } else {
-          // tslint:disable-next-line:ban
           cy.get(`[data-testing-id="${key}"]`).select(value);
         }
       }

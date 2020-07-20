@@ -7,8 +7,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 declare interface LazyModuleType {
   feature: string;
-  // tslint:disable-next-line: no-any
-  location: any;
+  location: unknown;
 }
 
 export const LAZY_FEATURE_MODULE = new InjectionToken<LazyModuleType>('lazyModule');

@@ -21,7 +21,7 @@ import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-togg
  */
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
-  private static STUB_ATTRS =
+  static STUB_ATTRS =
     'sku,salePrice,listPrice,availability,manufacturer,image,minOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating,retailSet';
 
   private itemsPerPage: number;
@@ -103,7 +103,7 @@ export class ProductsService {
    */
   searchProducts(
     searchTerm: string,
-    page: number,
+    page: number = 1,
     sortKey?: string
   ): Observable<{ products: Product[]; sortKeys: string[]; total: number }> {
     if (!searchTerm) {

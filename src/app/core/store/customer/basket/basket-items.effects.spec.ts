@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
@@ -134,15 +134,17 @@ describe('Basket Items Effects', () => {
       });
     });
 
-    it('should not call the basketService for addItemsToBasket if no basket in store', () => {
+    it('should not call the basketService for addItemsToBasket if no basket in store', fakeAsync(() => {
       const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
       const action = addItemsToBasket({ items });
       actions$ = of(action);
 
       effects.addItemsToBasket$.subscribe(fail, fail);
 
+      tick(5000);
+
       verify(basketServiceMock.addItemsToBasket('BID', anything())).never();
-    });
+    }));
 
     it('should call the basketService for createBasket when no basket is present', done => {
       when(basketServiceMock.createBasket()).thenReturn(of({} as Basket));

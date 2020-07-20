@@ -1,5 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Dictionary } from '@ngrx/entity';
 import { Store, select } from '@ngrx/store';
@@ -63,7 +64,8 @@ export class ProductsEffects {
     private productsService: ProductsService,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,
-    @Inject(PLATFORM_ID) private platformId: string
+    @Inject(PLATFORM_ID) private platformId: string,
+    private router: Router
   ) {}
 
   loadProduct$ = createEffect(() =>
@@ -337,5 +339,7 @@ export class ProductsEffects {
     )
   );
 
-  private throttleOnBrowser = () => (isPlatformBrowser(this.platformId) ? throttleTime(3000) : map(identity));
+  private throttleOnBrowser() {
+    return isPlatformBrowser(this.platformId) && this.router.navigated ? throttleTime(100) : map(identity);
+  }
 }

@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
-import { CustomValidators } from 'ngx-custom-validators';
 import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
@@ -24,7 +24,7 @@ export class UserCreatePageComponent implements OnInit {
       title: [''],
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
-      email: ['', [Validators.required, CustomValidators.email]],
+      email: ['', [Validators.required, SpecialValidators.email]],
       phone: [''],
       birthday: [''],
       preferredLanguage: ['en_US', [Validators.required]],

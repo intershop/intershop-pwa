@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CustomValidators } from 'ngx-custom-validators';
 
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
@@ -30,13 +29,13 @@ export class UpdatePasswordFormComponent implements OnInit {
   submitted = false;
 
   ngOnInit() {
-    this.form = new FormGroup({
-      password: new FormControl('', [Validators.required, SpecialValidators.password]),
-      passwordConfirmation: new FormControl('', [Validators.required, SpecialValidators.password]),
-    });
-
-    // set additional validator
-    this.form.get('passwordConfirmation').setValidators(CustomValidators.equalTo(this.form.get('password')));
+    this.form = new FormGroup(
+      {
+        password: new FormControl('', [Validators.required, SpecialValidators.password]),
+        passwordConfirmation: new FormControl('', [Validators.required, SpecialValidators.password]),
+      },
+      SpecialValidators.equalTo('passwordConfirmation', 'password')
+    );
   }
 
   submitPasswordForm() {
