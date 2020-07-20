@@ -5,6 +5,7 @@ import { setLoadingOn } from 'ish-core/utils/ngrx-creators';
 import { TactonProductConfiguration } from '../../models/tacton-product-configuration/tacton-product-configuration.model';
 
 import {
+  changeTactonConfigurationStep,
   commitTactonConfigurationValue,
   setCurrentConfiguration,
   startConfigureTactonProduct,
@@ -22,7 +23,7 @@ const initialState: ProductConfigurationState = {
 
 export const productConfigurationReducer = createReducer(
   initialState,
-  setLoadingOn(startConfigureTactonProduct, commitTactonConfigurationValue),
+  setLoadingOn(startConfigureTactonProduct, commitTactonConfigurationValue, changeTactonConfigurationStep),
   on(setCurrentConfiguration, (state, action) => ({
     ...state,
     loading: false,

@@ -3,4 +3,5 @@ import { TactonSelfServiceApiConfiguration } from '../tacton-self-service-api-co
 export interface TactonConfig {
   selfService: TactonSelfServiceApiConfiguration;
   productMappings?: { [sku: string]: string };
+  groupLevelNavigation?: boolean;
 }

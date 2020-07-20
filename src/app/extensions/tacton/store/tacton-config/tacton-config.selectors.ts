@@ -19,10 +19,12 @@ export const getExternalId = createSelector(
   (customer: Customer, user: User) => customer && user && `${customer.companyName}(${user.login}) - ${UUID.UUID()}`
 );
 
-const productMappings = createSelector(getTactonConfig, state => state.productMappings);
+const productMappings = createSelector(getTactonConfig, state => state?.productMappings || {});
 
 export const getTactonProductForSKU = (sku: string) => createSelector(productMappings, mappings => mappings[sku]);
 
 export const getTactonProductForSelectedProduct = createSelector(identity, getSelectedProduct, (state, product) =>
   getTactonProductForSKU(product?.sku)(state)
 );
+
+export const isGroupLevelNavigationEnabled = createSelector(getTactonConfig, config => config?.groupLevelNavigation);

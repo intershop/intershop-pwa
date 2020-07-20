@@ -35,20 +35,23 @@ describe('Tacton Group Component', () => {
     component.group = {
       isGroup: true,
       description: 'g1',
+      name: 'root',
       hasVisibleParameters: true,
       members: [
         { isParameter: true, properties: { guitype: 'text' } },
         {
           isGroup: true,
+          name: 'G11',
           description: 'g11',
           hasVisibleParameters: true,
           members: [{ isParameter: true, properties: { guitype: 'readonly' } }],
         },
-        { isGroup: true, description: 'g12', hasVisibleParameters: false },
+        { isGroup: true, description: 'g12', name: 'G12', hasVisibleParameters: false },
         { isParameter: true, properties: { guitype: 'text' }, domain: { min: '1', max: 2 } },
         {
           isGroup: true,
           description: 'g13',
+          name: 'G13',
           hasVisibleParameters: true,
           members: [{ isParameter: true, properties: { guitype: 'dropdown' } }],
         },
@@ -66,14 +69,14 @@ describe('Tacton Group Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-      <h3>g1</h3>
+      <h3 id="root">g1</h3>
       <ish-tacton-text-input></ish-tacton-text-input
       ><ish-tacton-group
-        ><h3>g11</h3>
+        ><h3 id="G11">g11</h3>
         <ish-tacton-readonly></ish-tacton-readonly></ish-tacton-group
       ><ish-tacton-group></ish-tacton-group><ish-tacton-number-input></ish-tacton-number-input
       ><ish-tacton-group
-        ><h3>g13</h3>
+        ><h3 id="G13">g13</h3>
         <ish-tacton-select-input></ish-tacton-select-input
       ></ish-tacton-group>
     `);

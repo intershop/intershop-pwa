@@ -11,6 +11,7 @@ import { TactonFacade } from '../../facades/tacton.facade';
 
 import { ConfigurePageComponent } from './configure-page.component';
 import { TactonBomComponent } from './tacton-bom/tacton-bom.component';
+import { TactonConfigureNavigationComponent } from './tacton-configure-navigation/tacton-configure-navigation.component';
 import { TactonGroupComponent } from './tacton-group/tacton-group.component';
 
 describe('Configure Page Component', () => {
@@ -26,6 +27,7 @@ describe('Configure Page Component', () => {
         MockComponent(LoadingComponent),
         MockComponent(ProductImageComponent),
         MockComponent(TactonBomComponent),
+        MockComponent(TactonConfigureNavigationComponent),
         MockComponent(TactonGroupComponent),
       ],
       providers: [

@@ -2,6 +2,7 @@ import { createSelector } from '@ngrx/store';
 
 import { selectRouteParam } from 'ish-core/store/core/router';
 
+import { TactonNavigationTree } from '../../models/tacton-navigation-tree/tacton-navigation-tree.model';
 import { TactonProductConfigurationHelper } from '../../models/tacton-product-configuration/tacton-product-configuration.helper';
 import {
   TactonProductConfigurationGroup,
@@ -26,17 +27,27 @@ function mapMembers(members: (TactonProductConfigurationGroup | TactonProductCon
     }));
 }
 
-export const getConfigurationStepTree = createSelector(getCurrentProductConfiguration, config =>
-  config?.steps.map(step => ({
-    description: step.description,
-    name: step.name,
-    children: mapMembers(step.rootGroup?.members),
-  }))
+export const getConfigurationStepTree = createSelector(
+  getCurrentProductConfiguration,
+  (config): TactonNavigationTree =>
+    config?.steps.map(step => ({
+      description: step.description,
+      name: step.name,
+      children: mapMembers(step.rootGroup?.members),
+    }))
 );
 
 export const getCurrentStepConfig = createSelector(
   selectRouteParam('mainStep'),
-  selectRouteParam('firstStep'),
+  selectRouteParam('groupStep'),
   getCurrentProductConfiguration,
-  (main, first, config) => config?.steps.find(m => m.name === main)?.rootGroup?.members.find(m => m.name === first)
+  (mainStep, groupStep, config) => {
+    const rootGroup = config?.steps.find(m => m.name === mainStep)?.rootGroup;
+    return groupStep ? rootGroup?.members.find(m => m.name === groupStep) : rootGroup;
+  }
+);
+
+export const getCurrentProductConfigurationStepName = createSelector(
+  getCurrentProductConfiguration,
+  config => config?.steps.find(step => step.current)?.name
 );

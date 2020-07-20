@@ -81,4 +81,29 @@ export class TactonSelfServiceApiService {
       )
     );
   }
+
+  changeStep(step: string): Observable<TactonProductConfiguration> {
+    if (!step) {
+      return EMPTY;
+    }
+    return this.store.pipe(
+      select(getCurrentProductConfiguration),
+      whenTruthy(),
+      first(),
+      withLatestFrom(this.store.pipe(select(getSelfServiceApiConfiguration)), this.store.pipe(select(getExternalId))),
+      switchMap(([config, selfService, externalId]) =>
+        this.http
+          .post<TactonProductConfiguration>(
+            `${selfService.endPoint}/config/step`,
+            // TODO: refactor
+            // tslint:disable-next-line: prefer-template
+            this.constructAPIAuth(selfService, externalId) + this.addConfigReference(config) + `&step=${step}`,
+            {
+              headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
+            }
+          )
+          .pipe(switchMap(result => this.getBOM(result).pipe(map(bom => ({ ...result, bom: bom.bom })))))
+      )
+    );
+  }
 }
