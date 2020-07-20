@@ -14,7 +14,6 @@ import { TactonProductConfiguration } from '../../models/tacton-product-configur
 })
 export class ConfigurePageComponent implements OnInit {
   state$: Observable<TactonProductConfiguration>;
-  tree$: Observable<unknown>;
   step$: Observable<unknown>;
   loading$: Observable<boolean>;
   product$: Observable<ProductView>;
@@ -23,8 +22,7 @@ export class ConfigurePageComponent implements OnInit {
 
   ngOnInit() {
     this.product$ = this.shoppingFacade.selectedProduct$;
-    this.state$ = this.tactonFacade.configureProduct$();
-    this.tree$ = this.tactonFacade.configurationTree$;
+    this.state$ = this.tactonFacade.configureProduct$;
     this.step$ = this.tactonFacade.currentStep$;
     this.loading$ = this.tactonFacade.loading$;
   }

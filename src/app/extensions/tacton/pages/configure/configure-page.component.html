@@ -1,22 +1,6 @@
 <div *ngIf="product$ | async as product" class="row">
   <div class="col-4 col-md-3">
-    <ul>
-      <li *ngFor="let mainItem of tree$ | async">
-        {{ mainItem.description }}
-        <ng-container *ngIf="mainItem.children">
-          <ul>
-            <li *ngFor="let subItem of mainItem.children">
-              <a
-                [routerLink]="['/configure', product.sku, mainItem.name, subItem.name]"
-                routerLinkActive="font-weight-bold"
-              >
-                {{ subItem.description }}
-              </a>
-            </li>
-          </ul>
-        </ng-container>
-      </li>
-    </ul>
+    <ish-tacton-configure-navigation></ish-tacton-configure-navigation>
   </div>
   <ng-container *ngIf="state$ | async as state">
     <div class="col-8 col-md-6">

@@ -18,3 +18,8 @@ export const commitTactonConfigurationValue = createAction(
   '[Tacton Self-Service API] Commit Configuration Value',
   payload<{ valueId: string; value: string }>()
 );
+
+export const changeTactonConfigurationStep = createAction(
+  '[Tacton Self-Service API] Change Configuration Step',
+  payload<{ step: string }>()
+);

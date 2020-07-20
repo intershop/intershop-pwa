@@ -5,6 +5,7 @@ import { TactonModule } from '../../tacton.module';
 
 import { ConfigurePageComponent } from './configure-page.component';
 import { TactonBomComponent } from './tacton-bom/tacton-bom.component';
+import { TactonConfigureNavigationComponent } from './tacton-configure-navigation/tacton-configure-navigation.component';
 import { TactonGroupComponent } from './tacton-group/tacton-group.component';
 import { TactonNumberInputComponent } from './tacton-number-input/tacton-number-input.component';
 import { TactonRadioInputComponent } from './tacton-radio-input/tacton-radio-input.component';
@@ -13,7 +14,8 @@ import { TactonSelectInputComponent } from './tacton-select-input/tacton-select-
 import { TactonTextInputComponent } from './tacton-text-input/tacton-text-input.component';
 
 const configurePageRoutes: Routes = [
-  { path: ':sku/:mainStep/:firstStep', component: ConfigurePageComponent },
+  { path: ':sku/:mainStep/:groupStep', component: ConfigurePageComponent },
+  { path: ':sku/:mainStep', component: ConfigurePageComponent },
   { path: ':sku', component: ConfigurePageComponent },
 ];
 
@@ -22,6 +24,7 @@ const configurePageRoutes: Routes = [
   declarations: [
     ConfigurePageComponent,
     TactonBomComponent,
+    TactonConfigureNavigationComponent,
     TactonGroupComponent,
     TactonNumberInputComponent,
     TactonRadioInputComponent,

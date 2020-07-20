@@ -1,5 +1,5 @@
 <ng-container *ngIf="group?.hasVisibleParameters">
-  <h3>{{ group?.description }}</h3>
+  <h3 [id]="group?.name">{{ group?.description }}</h3>
 
   <ng-container *ngFor="let item of group?.members">
     <ng-container [ngSwitch]="true">
