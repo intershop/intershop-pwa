@@ -34,6 +34,10 @@ export class TactonProductConfigurationHelper {
     );
   }
 
+  static isImageTextButtons(el: TactonProductConfigurationGroup | TactonProductConfigurationParameter): boolean {
+    return TactonProductConfigurationHelper.isParameter(el) && el.properties.guitype === 'imagetext_buttons';
+  }
+
   static isSelectInput(el: TactonProductConfigurationGroup | TactonProductConfigurationParameter): boolean {
     return TactonProductConfigurationHelper.isParameter(el) && el.properties.guitype === 'dropdown';
   }
