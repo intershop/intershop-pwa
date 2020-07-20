@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 
 import { TactonProductConfigurationGroup } from '../../../models/tacton-product-configuration/tacton-product-configuration.model';
+import { TactonImageTextButtonsComponent } from '../tacton-image-text-buttons/tacton-image-text-buttons.component';
 import { TactonNumberInputComponent } from '../tacton-number-input/tacton-number-input.component';
 import { TactonRadioInputComponent } from '../tacton-radio-input/tacton-radio-input.component';
 import { TactonReadonlyComponent } from '../tacton-readonly/tacton-readonly.component';
@@ -18,6 +19,7 @@ describe('Tacton Group Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
+        MockComponent(TactonImageTextButtonsComponent),
         MockComponent(TactonNumberInputComponent),
         MockComponent(TactonRadioInputComponent),
         MockComponent(TactonReadonlyComponent),
@@ -55,6 +57,13 @@ describe('Tacton Group Component', () => {
           hasVisibleParameters: true,
           members: [{ isParameter: true, properties: { guitype: 'dropdown' } }],
         },
+        {
+          isGroup: true,
+          description: 'g14',
+          name: 'G14',
+          hasVisibleParameters: true,
+          members: [{ isParameter: true, properties: { guitype: 'imagetext_buttons' } }],
+        },
       ],
     } as TactonProductConfigurationGroup;
   });
@@ -77,7 +86,10 @@ describe('Tacton Group Component', () => {
       ><ish-tacton-group></ish-tacton-group><ish-tacton-number-input></ish-tacton-number-input
       ><ish-tacton-group
         ><h3 id="G13">g13</h3>
-        <ish-tacton-select-input></ish-tacton-select-input
+        <ish-tacton-select-input></ish-tacton-select-input></ish-tacton-group
+      ><ish-tacton-group
+        ><h3 id="G14">g14</h3>
+        <ish-tacton-image-text-buttons></ish-tacton-image-text-buttons
       ></ish-tacton-group>
     `);
   });

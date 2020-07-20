@@ -4,6 +4,10 @@
   <ng-container *ngFor="let item of group?.members">
     <ng-container [ngSwitch]="true">
       <ish-tacton-group *ngSwitchCase="isGroup(item)" [group]="item"></ish-tacton-group>
+      <ish-tacton-image-text-buttons
+        *ngSwitchCase="isImageTextButtons(item)"
+        [parameter]="item"
+      ></ish-tacton-image-text-buttons>
       <ish-tacton-number-input *ngSwitchCase="isNumberInput(item)" [parameter]="item"></ish-tacton-number-input>
       <ish-tacton-text-input *ngSwitchCase="isTextInput(item)" [parameter]="item"></ish-tacton-text-input>
       <ish-tacton-select-input *ngSwitchCase="isSelectInput(item)" [parameter]="item"></ish-tacton-select-input>

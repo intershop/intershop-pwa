@@ -11,7 +11,11 @@ import {
   getCurrentStepConfig,
   getProductConfigurationLoading,
 } from '../store/product-configuration';
-import { getTactonProductForSKU, isGroupLevelNavigationEnabled } from '../store/tacton-config';
+import {
+  getSelfServiceApiConfiguration,
+  getTactonProductForSKU,
+  isGroupLevelNavigationEnabled,
+} from '../store/tacton-config';
 
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
@@ -19,6 +23,7 @@ export class TactonFacade {
   constructor(private store: Store) {}
 
   loading$ = this.store.pipe(select(getProductConfigurationLoading));
+  selfServiceApiConfiguration$ = this.store.pipe(select(getSelfServiceApiConfiguration));
 
   getTactonProductForSKU$(sku$: Observable<string>) {
     return sku$.pipe(switchMap(sku => this.store.pipe(select(getTactonProductForSKU(sku)))));
