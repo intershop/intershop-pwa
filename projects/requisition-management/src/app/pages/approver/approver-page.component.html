@@ -2,6 +2,10 @@
 
 <p>{{ 'account.requisitions.approvals.text' | translate }}</p>
 
+<a routerLink="../pending" routerLinkActive="btn-default" class="btn">Waiting for my Approval</a>
+<a routerLink="../approved" routerLinkActive="btn-default" class="btn">Approved by me</a>
+<a routerLink="../rejected" routerLinkActive="btn-default" class="btn">Rejected by me</a>
+
 <div class="section loading-container">
   <ish-error-message [error]="error$ | async"></ish-error-message>
 
