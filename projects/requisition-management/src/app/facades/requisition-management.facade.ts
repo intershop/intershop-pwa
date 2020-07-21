@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { combineLatest } from 'rxjs';
+import { map, switchMapTo, tap } from 'rxjs/operators';
+
+import { selectRouteParam, selectUrl } from 'ish-core/store/core/router';
 
 import { getRequisitions, getRequisitionsError, getRequisitionsLoading, loadRequisitions } from '../store/requisitions';
 
@@ -11,8 +15,14 @@ export class RequisitionManagementFacade {
   requisitionsError$ = this.store.pipe(select(getRequisitionsError));
   requisitionsLoading$ = this.store.pipe(select(getRequisitionsLoading));
 
-  requisitions$() {
-    this.store.dispatch(loadRequisitions());
-    return this.store.pipe(select(getRequisitions));
-  }
+  requisitions$ = combineLatest([
+    this.store.pipe(select(selectRouteParam('state'))),
+    this.store.pipe(
+      select(selectUrl),
+      map(url => (url.includes('/buyer/') ? 'buyer' : 'approver'))
+    ),
+  ]).pipe(
+    tap(([status, view]) => this.store.dispatch(loadRequisitions({ view, status }))),
+    switchMapTo(this.store.pipe(select(getRequisitions)))
+  );
 }

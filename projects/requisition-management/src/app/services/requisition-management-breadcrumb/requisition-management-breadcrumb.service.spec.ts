@@ -57,7 +57,7 @@ describe('Requisition Management Breadcrumb Service', () => {
 
     describe('requisition management routes', () => {
       it('should set breadcrumb for requisitions list view', done => {
-        router.navigateByUrl('/buyer');
+        router.navigateByUrl('/buyer/pending');
         requisitionManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
           expect(breadcrumbData).toMatchInlineSnapshot(`
             Array [
@@ -71,7 +71,7 @@ describe('Requisition Management Breadcrumb Service', () => {
       });
 
       it('should set breadcrumb for requisitions list view', done => {
-        router.navigateByUrl('/approver');
+        router.navigateByUrl('/approver/pending');
         requisitionManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
           expect(breadcrumbData).toMatchInlineSnapshot(`
             Array [
