@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap } from 'rxjs/operators';
 
-import { mapErrorToAction } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayload } from 'ish-core/utils/operators';
 
 import { RequisitionsService } from '../../services/requisitions/requisitions.service';
 
@@ -15,8 +15,9 @@ export class RequisitionsEffects {
   loadRequisitions$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadRequisitions),
-      switchMap(() =>
-        this.requisitionsService.getRequisitions().pipe(
+      mapToPayload(),
+      switchMap(({ view, status }) =>
+        this.requisitionsService.getRequisitions(view, status).pipe(
           map(requisitions => loadRequisitionsSuccess({ requisitions })),
           mapErrorToAction(loadRequisitionsFail)
         )

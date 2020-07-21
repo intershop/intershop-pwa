@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, combineLatest } from 'rxjs';
@@ -17,10 +18,18 @@ export class RequisitionsService {
 
   private currentCustomer$ = this.store.pipe(select(getLoggedInCustomer), whenTruthy(), take(1));
 
-  getRequisitions(): Observable<Requisition[]> {
+  getRequisitions(view?: string, status?: string): Observable<Requisition[]> {
+    let params = new HttpParams();
+    if (view) {
+      params = params.set('view', view);
+    }
+    if (status) {
+      params = params.set('status', status);
+    }
+
     return combineLatest([this.currentCustomer$, this.store.pipe(select(getLoggedInUser), whenTruthy(), take(1))]).pipe(
       switchMap(([customer, user]) =>
-        this.apiService.get(`customers/${customer.customerNo}/users/${user.login}/requisitions`).pipe(
+        this.apiService.get(`customers/${customer.customerNo}/users/${user.login}/requisitions`, { params }).pipe(
           unpackEnvelope<RequisitionData>('data'),
           map(data => data.map(requisitionData => this.requisitionMapper.fromData(requisitionData)))
         )
