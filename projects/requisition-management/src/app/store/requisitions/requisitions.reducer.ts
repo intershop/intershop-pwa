@@ -24,12 +24,7 @@ export const requisitionsReducer = createReducer(
   initialState,
   setLoadingOn(loadRequisitions),
   setErrorOn(loadRequisitionsFail),
-  on(loadRequisitionsSuccess, (state: RequisitionsState, action) => {
-    const { requisitions } = action.payload;
-    return {
-      ...requisitionsAdapter.upsertMany(requisitions, state),
-      loading: false,
-      error: undefined,
-    };
-  })
+  on(loadRequisitionsSuccess, (state: RequisitionsState, action) =>
+    requisitionsAdapter.setAll(action.payload.requisitions, { ...state, loading: false, error: undefined })
+  )
 );

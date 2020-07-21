@@ -15,9 +15,9 @@ export class RequisitionManagementBreadcrumbService {
       whenFalsy(),
       withLatestFrom(this.appFacade.path$.pipe(whenTruthy())),
       switchMap(([, path]) => {
-        if (path.endsWith('buyer')) {
+        if (path.includes('/buyer/')) {
           return of([{ key: 'account.requisitions.requisitions' }]);
-        } else if (path.endsWith('approver')) {
+        } else if (path.includes('/approver/')) {
           return of([{ key: 'account.requisitions.approvals' }]);
         }
         // tslint:disable-next-line: no-console
