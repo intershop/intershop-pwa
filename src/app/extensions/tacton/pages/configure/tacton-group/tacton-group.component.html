@@ -8,6 +8,7 @@
         *ngSwitchCase="isImageTextButtons(item)"
         [parameter]="item"
       ></ish-tacton-image-text-buttons>
+      <ish-tacton-text-buttons *ngSwitchCase="isTextButtons(item)" [parameter]="item"></ish-tacton-text-buttons>
       <ish-tacton-number-input *ngSwitchCase="isNumberInput(item)" [parameter]="item"></ish-tacton-number-input>
       <ish-tacton-text-input *ngSwitchCase="isTextInput(item)" [parameter]="item"></ish-tacton-text-input>
       <ish-tacton-select-input *ngSwitchCase="isSelectInput(item)" [parameter]="item"></ish-tacton-select-input>

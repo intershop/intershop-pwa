@@ -38,6 +38,10 @@ export class TactonProductConfigurationHelper {
     return TactonProductConfigurationHelper.isParameter(el) && el.properties.guitype === 'imagetext_buttons';
   }
 
+  static isTextButtons(el: TactonProductConfigurationGroup | TactonProductConfigurationParameter): boolean {
+    return TactonProductConfigurationHelper.isParameter(el) && el.properties.guitype === 'text_buttons';
+  }
+
   static isSelectInput(el: TactonProductConfigurationGroup | TactonProductConfigurationParameter): boolean {
     return TactonProductConfigurationHelper.isParameter(el) && el.properties.guitype === 'dropdown';
   }

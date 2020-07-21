@@ -12,6 +12,7 @@ import { TactonNumberInputComponent } from './tacton-number-input/tacton-number-
 import { TactonRadioInputComponent } from './tacton-radio-input/tacton-radio-input.component';
 import { TactonReadonlyComponent } from './tacton-readonly/tacton-readonly.component';
 import { TactonSelectInputComponent } from './tacton-select-input/tacton-select-input.component';
+import { TactonTextButtonsComponent } from './tacton-text-buttons/tacton-text-buttons.component';
 import { TactonTextInputComponent } from './tacton-text-input/tacton-text-input.component';
 
 const configurePageRoutes: Routes = [
@@ -32,6 +33,7 @@ const configurePageRoutes: Routes = [
     TactonRadioInputComponent,
     TactonReadonlyComponent,
     TactonSelectInputComponent,
+    TactonTextButtonsComponent,
     TactonTextInputComponent,
   ],
 })
