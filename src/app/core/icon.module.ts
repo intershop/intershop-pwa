@@ -36,6 +36,7 @@ import {
   faTimes,
   faTimesCircle,
   faTrashAlt,
+  faUndo,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -77,6 +78,7 @@ export class IconModule {
       faTimes,
       faTimesCircle,
       faTrashAlt,
+      faUndo,
       faUser,
       faStar,
       faStarHalf,
