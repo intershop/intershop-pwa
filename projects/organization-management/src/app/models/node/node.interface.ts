@@ -2,8 +2,7 @@ export interface NodeDocument {
   data: NodeData[];
 }
 
-export interface NodeData {
-  id: string;
+export interface NodeData extends NodeResourceIdentifier {
   attributes: NodeAttributes;
   relationships: NodeRelationships;
 }
@@ -14,9 +13,9 @@ export interface NodeAttributes {
 }
 
 export interface NodeRelationships {
-  childNodes?: NodeResourceIdentifier[];
-  organization: NodeResourceIdentifier;
-  parentNode?: NodeResourceIdentifier;
+  childNodes?: { data: NodeResourceIdentifier[] };
+  organization: { data: NodeResourceIdentifier };
+  parentNode?: { data: NodeResourceIdentifier };
 }
 
 export interface NodeResourceIdentifier {

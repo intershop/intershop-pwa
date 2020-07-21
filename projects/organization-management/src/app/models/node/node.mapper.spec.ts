@@ -11,9 +11,14 @@ const OILCORP_GERMANY: NodeData = {
   },
   relationships: {
     organization: {
-      id: 'oilcorp.example.org',
+      data: {
+        id: 'oilcorp.example.org',
+      },
     },
-    childNodes: [{ id: 'OilCorp_Berlin' }, { id: 'OilCorp_Jena' }],
+    childNodes: {
+      data: [{ id: 'OilCorp_Berlin' }, { id: 'OilCorp_Jena' }],
+    },
+    parentNode: { data: undefined },
   },
 };
 
@@ -25,10 +30,15 @@ const OILCORP_BERLIN: NodeData = {
   },
   relationships: {
     organization: {
-      id: 'oilcorp.example.org',
+      data: {
+        id: 'oilcorp.example.org',
+      },
     },
+    childNodes: undefined,
     parentNode: {
-      id: 'OilCorp_Germany',
+      data: {
+        id: 'OilCorp_Germany',
+      },
     },
   },
 };
@@ -49,18 +59,21 @@ describe('Node Mapper', () => {
     it('should map incoming data to model data', () => {
       const data = OILCORP_BERLIN;
       const mapped = nodeMapper.fromData(data);
-      expect(mapped).toHaveProperty('id', 'OilCorp_Berlin');
-      expect(mapped).toHaveProperty('name', 'Oil Corp Berlin');
-      expect(mapped).toHaveProperty('description', 'The Berlin headquarter of Oil Corp.');
-      expect(mapped).toHaveProperty('organization', 'oilcorp.example.org');
-      expect(mapped).not.toHaveProperty('childNodes');
-      expect(mapped).toHaveProperty('parentNode', 'OilCorp_Germany');
+
+      expect(mapped).toHaveProperty('nodes.OilCorp_Berlin');
+      const mappedElement = mapped.nodes.OilCorp_Berlin;
+      expect(mappedElement).toHaveProperty('id', 'OilCorp_Berlin');
+      expect(mappedElement).toHaveProperty('name', 'Oil Corp Berlin');
+      expect(mappedElement).toHaveProperty('description', 'The Berlin headquarter of Oil Corp.');
+      expect(mappedElement).toHaveProperty('organization', 'oilcorp.example.org');
+      expect(mappedElement).not.toHaveProperty('childNodes');
+      expect(mappedElement).not.toHaveProperty('parentNode');
     });
 
     it('should map incoming data with childnodes to model data', () => {
       const data = OILCORP_GERMANY;
       const mapped = nodeMapper.fromData(data);
-      expect(mapped).toHaveProperty('childNodes', ['OilCorp_Berlin', 'OilCorp_Jena']);
+      expect(mapped).toHaveProperty('edges.OilCorp_Germany', ['OilCorp_Berlin', 'OilCorp_Jena']);
     });
   });
 });
