@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { instance, mock, verify, when } from 'ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
@@ -26,7 +26,7 @@ describe('Requisitions Effects', () => {
 
   beforeEach(() => {
     requisitionsService = mock(RequisitionsService);
-    when(requisitionsService.getRequisitions()).thenReturn(of(requisitions));
+    when(requisitionsService.getRequisitions(anything(), anything())).thenReturn(of(requisitions));
 
     TestBed.configureTestingModule({
       imports: [
@@ -46,16 +46,16 @@ describe('Requisitions Effects', () => {
 
   describe('loadRequisitions$', () => {
     it('should call the service for retrieving requisitions', done => {
-      actions$ = of(loadRequisitions());
+      actions$ = of(loadRequisitions({ view: 'buyer', status: 'pending' }));
 
       effects.loadRequisitions$.subscribe(() => {
-        verify(requisitionsService.getRequisitions()).once();
+        verify(requisitionsService.getRequisitions(anything(), anything())).once();
         done();
       });
     });
 
     it('should retrieve users when triggered', done => {
-      actions$ = of(loadRequisitions());
+      actions$ = of(loadRequisitions({ view: 'buyer', status: 'pending' }));
 
       effects.loadRequisitions$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
