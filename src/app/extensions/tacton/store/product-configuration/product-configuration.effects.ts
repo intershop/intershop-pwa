@@ -28,6 +28,7 @@ import {
   commitTactonConfigurationValue,
   setCurrentConfiguration,
   startConfigureTactonProduct,
+  uncommitTactonConfigurationValue,
 } from './product-configuration.actions';
 import {
   getCurrentProductConfiguration,
@@ -125,6 +126,19 @@ export class ProductConfigurationEffects {
       concatMap(({ valueId, value }) =>
         this.tactonSelfServiceApiService
           .commitValue(valueId, value)
+          .pipe(map(configuration => setCurrentConfiguration({ configuration })))
+      )
+    )
+  );
+
+  uncommitTactonConfigurationValue$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(uncommitTactonConfigurationValue),
+      throttleTime(1000),
+      mapToPayload(),
+      concatMap(({ valueId }) =>
+        this.tactonSelfServiceApiService
+          .uncommitValue(valueId)
           .pipe(map(configuration => setCurrentConfiguration({ configuration })))
       )
     )

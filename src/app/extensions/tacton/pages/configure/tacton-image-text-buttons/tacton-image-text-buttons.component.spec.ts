@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
@@ -17,7 +18,7 @@ describe('Tacton Image Text Buttons Component', () => {
   beforeEach(async(() => {
     tactonFacade = mock(TactonFacade);
     TestBed.configureTestingModule({
-      declarations: [TactonImageTextButtonsComponent],
+      declarations: [FaIconComponent, TactonImageTextButtonsComponent],
       providers: [{ provide: TactonFacade, useFactory: () => instance(tactonFacade) }],
     }).compileComponents();
   }));

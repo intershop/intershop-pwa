@@ -19,6 +19,11 @@ export const commitTactonConfigurationValue = createAction(
   payload<{ valueId: string; value: string }>()
 );
 
+export const uncommitTactonConfigurationValue = createAction(
+  '[Tacton Self-Service API] Uncommit Configuration Value',
+  payload<{ valueId: string }>()
+);
+
 export const changeTactonConfigurationStep = createAction(
   '[Tacton Self-Service API] Change Configuration Step',
   payload<{ step: string }>()

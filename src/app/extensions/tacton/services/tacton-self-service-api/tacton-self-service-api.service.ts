@@ -70,6 +70,30 @@ export class TactonSelfServiceApiService {
     );
   }
 
+  uncommitValue(valueId: string): Observable<TactonProductConfiguration> {
+    return this.store.pipe(
+      select(getCurrentProductConfiguration),
+      whenTruthy(),
+      first(),
+      withLatestFrom(this.store.pipe(select(getSelfServiceApiConfiguration))),
+      switchMap(([config, selfService]) =>
+        this.http
+          .post<TactonProductConfiguration>(
+            `${selfService.endPoint}/config/uncommit/${valueId}`,
+            this.constructAPIAuth(selfService, config.externalId) + this.addConfigReference(config),
+            {
+              headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
+            }
+          )
+          .pipe(
+            switchMap(result =>
+              this.getBOM(result).pipe(map(bom => ({ ...result, bom: bom.bom, externalId: config.externalId })))
+            )
+          )
+      )
+    );
+  }
+
   private getBOM(config: TactonProductConfiguration): Observable<TactonProductConfiguration> {
     if (config.bom) {
       return of(config);

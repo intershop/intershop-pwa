@@ -10,6 +10,7 @@ import {
   getCurrentProductConfiguration,
   getCurrentStepConfig,
   getProductConfigurationLoading,
+  uncommitTactonConfigurationValue,
 } from '../store/product-configuration';
 import {
   getSelfServiceApiConfiguration,
@@ -39,5 +40,8 @@ export class TactonFacade {
 
   commitValue(parameter: TactonProductConfigurationParameter, value: string) {
     this.store.dispatch(commitTactonConfigurationValue({ valueId: parameter.name, value }));
+  }
+  uncommitValue(parameter: TactonProductConfigurationParameter) {
+    this.store.dispatch(uncommitTactonConfigurationValue({ valueId: parameter.name }));
   }
 }

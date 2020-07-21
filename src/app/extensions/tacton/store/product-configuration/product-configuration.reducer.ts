@@ -9,6 +9,7 @@ import {
   commitTactonConfigurationValue,
   setCurrentConfiguration,
   startConfigureTactonProduct,
+  uncommitTactonConfigurationValue,
 } from './product-configuration.actions';
 
 export interface ProductConfigurationState {
@@ -23,7 +24,12 @@ const initialState: ProductConfigurationState = {
 
 export const productConfigurationReducer = createReducer(
   initialState,
-  setLoadingOn(startConfigureTactonProduct, commitTactonConfigurationValue, changeTactonConfigurationStep),
+  setLoadingOn(
+    startConfigureTactonProduct,
+    commitTactonConfigurationValue,
+    uncommitTactonConfigurationValue,
+    changeTactonConfigurationStep
+  ),
   on(setCurrentConfiguration, (state, action) => ({
     ...state,
     loading: false,
