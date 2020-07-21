@@ -7,6 +7,7 @@ import { TactonNumberInputComponent } from '../tacton-number-input/tacton-number
 import { TactonRadioInputComponent } from '../tacton-radio-input/tacton-radio-input.component';
 import { TactonReadonlyComponent } from '../tacton-readonly/tacton-readonly.component';
 import { TactonSelectInputComponent } from '../tacton-select-input/tacton-select-input.component';
+import { TactonTextButtonsComponent } from '../tacton-text-buttons/tacton-text-buttons.component';
 import { TactonTextInputComponent } from '../tacton-text-input/tacton-text-input.component';
 
 import { TactonGroupComponent } from './tacton-group.component';
@@ -24,6 +25,7 @@ describe('Tacton Group Component', () => {
         MockComponent(TactonRadioInputComponent),
         MockComponent(TactonReadonlyComponent),
         MockComponent(TactonSelectInputComponent),
+        MockComponent(TactonTextButtonsComponent),
         MockComponent(TactonTextInputComponent),
         TactonGroupComponent,
       ],
@@ -64,6 +66,13 @@ describe('Tacton Group Component', () => {
           hasVisibleParameters: true,
           members: [{ isParameter: true, properties: { guitype: 'imagetext_buttons' } }],
         },
+        {
+          isGroup: true,
+          description: 'g15',
+          name: 'G15',
+          hasVisibleParameters: true,
+          members: [{ isParameter: true, properties: { guitype: 'text_buttons' } }],
+        },
       ],
     } as TactonProductConfigurationGroup;
   });
@@ -89,7 +98,10 @@ describe('Tacton Group Component', () => {
         <ish-tacton-select-input></ish-tacton-select-input></ish-tacton-group
       ><ish-tacton-group
         ><h3 id="G14">g14</h3>
-        <ish-tacton-image-text-buttons></ish-tacton-image-text-buttons
+        <ish-tacton-image-text-buttons></ish-tacton-image-text-buttons></ish-tacton-group
+      ><ish-tacton-group
+        ><h3 id="G15">g15</h3>
+        <ish-tacton-text-buttons></ish-tacton-text-buttons
       ></ish-tacton-group>
     `);
   });

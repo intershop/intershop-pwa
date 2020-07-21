@@ -1,0 +1,20 @@
+<ng-container *ngIf="parameter.properties?.hidden === 'no'">
+  <h4>{{ parameter.description }}</h4>
+  <div class="row">
+    <div class="col-4">
+      {{ parameter.properties.tc_info_text }}
+    </div>
+    <div class="col-8">
+      <div class="btn-group" role="group">
+        <button
+          *ngFor="let opt of parameter.domain?.elements"
+          class="btn"
+          [ngClass]="{ 'btn-primary': opt.selected, 'btn-secondary': !opt.selected }"
+          (click)="change(opt.name)"
+        >
+          {{ opt.description }}
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-container>
