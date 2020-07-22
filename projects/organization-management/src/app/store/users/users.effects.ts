@@ -162,9 +162,15 @@ export class UsersEffects {
       ofType(deleteUser),
       mapToPayloadProperty('login'),
       exhaustMap(login =>
-        this.usersService
-          .deleteUser(login)
-          .pipe(map(() => deleteUserSuccess({ login }), mapErrorToAction(deleteUserFail)))
+        this.usersService.deleteUser(login).pipe(
+          mergeMap(() => [
+            deleteUserSuccess({ login }),
+            displaySuccessMessage({
+              message: 'account.user.delete_user.confirmation',
+            }),
+          ]),
+          mapErrorToAction(deleteUserFail)
+        )
       )
     )
   );

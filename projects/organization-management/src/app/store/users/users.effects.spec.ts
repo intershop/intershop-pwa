@@ -24,6 +24,7 @@ import {
   addUserFail,
   addUserSuccess,
   deleteUser,
+  deleteUserSuccess,
   loadUsers,
   loadUsersFail,
   loadUsersSuccess,
@@ -253,16 +254,18 @@ describe('Users Effects', () => {
       });
     });
 
-    it('should delete user when triggered', done => {
-      actions$ = of(deleteUser({ login }));
-
-      effects.deleteUser$.subscribe(action => {
-        expect(action).toMatchInlineSnapshot(`
-          [Users API] Delete User Success:
-            login: "pmiller@test.intershop.de"
-        `);
-        done();
+    it('should delete user when triggered', () => {
+      const action = deleteUser({ login });
+      const completion1 = deleteUserSuccess({
+        login,
       });
+      const completion2 = displaySuccessMessage({
+        message: 'account.user.delete_user.confirmation',
+      });
+
+      actions$ = hot('-a----a----a', { a: action });
+      const expected$ = cold('-(cd)-(cd)-(cd)', { c: completion1, d: completion2 });
+      expect(effects.deleteUser$).toBeObservable(expected$);
     });
   });
 

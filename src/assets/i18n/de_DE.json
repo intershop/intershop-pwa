@@ -2775,7 +2775,7 @@
   "account.user.delete_user_dialog.are_you_sure_paragraph": "Wollen Sie diesen Benutzer wirklich entfernen?",
   "account.user.delete_user_dialog.delete_button.text": "Entfernen",
   "account.user.delete_user_dialog.cancel_button.text": "Abbrechen",
-  "account.user.delete_user.confirmation": "Benutzer {{0}} {{1}} wurde gelöscht.",
+  "account.user.delete_user.confirmation": "Der Benutzer wurde gelöscht.",
   "account.user.delete_user.confirmation.ok_button.text": "OK",
   "account.user.delete_user.loggedInUser": "Der angemeldete Benutzer kann nicht gelöscht werden.",
   "account.user.widget.user_budgets.heading": "Benutzerbudgets",
