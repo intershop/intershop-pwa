@@ -1,5 +1,5 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { ErrorHandler, NgModule, Optional, SkipSelf } from '@angular/core';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
@@ -16,6 +16,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { MockInterceptor } from './interceptors/mock.interceptor';
 import { InternationalizationModule } from './internationalization.module';
 import { StateManagementModule } from './state-management.module';
+import { DefaultErrorhandler } from './utils/default-error-handler';
 import { ModuleLoaderService } from './utils/module-loader/module-loader.service';
 
 @NgModule({
@@ -37,6 +38,7 @@ import { ModuleLoaderService } from './utils/module-loader/module-loader.service
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
+    { provide: ErrorHandler, useClass: DefaultErrorhandler },
   ],
   // exports needed to use the cookie banner in the AppComponent
   exports: [NgxCookieBannerModule, TranslateModule],

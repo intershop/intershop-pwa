@@ -1,8 +1,8 @@
 import { isPlatformServer } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Action, Store, UPDATE, select } from '@ngrx/store';
+import { Actions, createEffect } from '@ngrx/effects';
+import { Action, Store, select } from '@ngrx/store';
 import * as Sentry from '@sentry/browser';
 import { distinctUntilChanged, filter, map, switchMapTo, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 
@@ -33,8 +33,6 @@ export class SentryConfigEffects {
   setSentryConfig$ = createEffect(() =>
     this.actions$.pipe(
       takeWhile(() => isPlatformServer(this.platformId) && this.featureToggleService.enabled('sentry')),
-      ofType<{ features: string[] } & Action>(UPDATE),
-      filter(action => action.features.includes('sentry')),
       take(1),
       withLatestFrom(this.stateProperties.getStateOrEnvOrDefault<string>('SENTRY_DSN', 'sentryDSN')),
       map(([, sentryDSN]) => sentryDSN),
@@ -48,11 +46,8 @@ export class SentryConfigEffects {
       this.cookiesService.cookieLawSeen$.pipe(
         whenTruthy(),
         switchMapTo(
-          this.actions$.pipe(
-            ofType(setSentryConfig),
-            filter(() => this.featureToggleService.enabled('sentry')),
-            withLatestFrom(this.store.pipe(select(getSentryDSN))),
-            map(([, sentryDSN]) => sentryDSN),
+          this.store.pipe(
+            select(getSentryDSN),
             whenTruthy(),
             tap(dsn => {
               const release = this.transferState.get<string>(DISPLAY_VERSION, 'development');
