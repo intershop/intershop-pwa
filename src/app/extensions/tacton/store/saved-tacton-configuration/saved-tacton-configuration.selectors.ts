@@ -6,6 +6,6 @@ import { tactonSavedConfigurationAdapter } from './saved-tacton-configuration.re
 
 const getSavedTactonConfigurationState = createSelector(getTactonState, state => state._savedTactonConfiguration);
 
-export const { selectEntities: getSavedTactonConfigurationEntities } = tactonSavedConfigurationAdapter.getSelectors(
-  getSavedTactonConfigurationState
-);
+const { selectEntities } = tactonSavedConfigurationAdapter.getSelectors(getSavedTactonConfigurationState);
+
+export const getSavedTactonConfiguration = (id: string) => createSelector(selectEntities, entities => entities[id]);
