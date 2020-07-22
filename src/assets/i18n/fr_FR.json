@@ -2773,7 +2773,7 @@
   "account.user.login.invalid.error": "Veuillez entrer un nom d’utilisateur valide",
   "account.user.login.error.required": "Veuillez entrer un nom d’utilisateur",
   "account.user.active.label": "Actif",
-  "account.user.delete_user_dialog.header": "Supprimer {{0}} {{1}}",
+  "account.user.delete_user_dialog.header": "Supprimer {{0}}",
   "account.user.delete_user_dialog.are_you_sure_paragraph": "Voulez-vous vraiment supprimer cet utilisateur?",
   "account.user.delete_user_dialog.delete_button.text": "Supprimer",
   "account.user.delete_user_dialog.cancel_button.text": "Annuler",

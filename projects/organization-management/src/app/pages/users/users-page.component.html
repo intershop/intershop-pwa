@@ -24,9 +24,7 @@
             <a
               data-testing-id="remove-user"
               class="btn-tool"
-              title="{{
-                'account.user.delete_user_dialog.header' | translate: { '0': user.firstName, '1': user.lastName }
-              }}"
+              title="{{ 'account.user.delete_user_dialog.header' | translate: { '0': user.name } }}"
               (click)="modalDialog.show(user)"
             >
               <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
@@ -35,8 +33,7 @@
             <ish-modal-dialog
               #modalDialog
               [options]="{
-                titleText:
-                  'account.user.delete_user_dialog.header' | translate: { '0': user.firstName, '1': user.lastName },
+                titleText: 'account.user.delete_user_dialog.header' | translate: { '0': user.name },
                 confirmText: 'account.user.delete_user_dialog.delete_button.text' | translate,
                 rejectText: 'account.user.delete_user_dialog.cancel_button.text' | translate
               }"
