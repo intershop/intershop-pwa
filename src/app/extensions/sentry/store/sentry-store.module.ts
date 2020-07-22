@@ -12,6 +12,7 @@ const sentryReducers: ActionReducerMap<SentryState> = {
 
 const sentryEffects = [SentryConfigEffects];
 
+// not-dead-code
 @NgModule({
   imports: [EffectsModule.forFeature(sentryEffects), StoreModule.forFeature('sentry', sentryReducers)],
 })
