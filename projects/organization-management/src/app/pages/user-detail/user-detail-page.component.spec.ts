@@ -65,7 +65,6 @@ describe('User Detail Page Component', () => {
     expect(element.querySelector('[data-testing-id="email-field"]').textContent).toMatchInlineSnapshot(
       `"pmiller@test.intershop.de"`
     );
-    expect(element.querySelector('[data-testing-id="phone-label"]')).toBeTruthy();
     expect(element.querySelector('[data-testing-id="user-roles-fields"]').textContent).toMatchInlineSnapshot(
       `"BuyerbuyshopApproverapprove"`
     );
