@@ -7,7 +7,7 @@ import { TactonProductConfiguration } from '../../models/tacton-product-configur
 import { TactonStoreModule } from '../tacton-store.module';
 
 import { saveTactonConfigurationReference } from './saved-tacton-configuration.actions';
-import { getSavedTactonConfigurationEntities } from './saved-tacton-configuration.selectors';
+import { getSavedTactonConfiguration } from './saved-tacton-configuration.selectors';
 
 describe('Saved Tacton Configuration Selectors', () => {
   let store$: StoreWithSnapshots;
@@ -23,14 +23,18 @@ describe('Saved Tacton Configuration Selectors', () => {
 
   describe('initial state', () => {
     it('should be empty when in initial state', () => {
-      expect(getSavedTactonConfigurationEntities(store$.state)).toBeEmpty();
+      expect(getSavedTactonConfiguration('tab/product')(store$.state)).toBeUndefined();
     });
   });
 
   describe('after saving reference', () => {
     const action = saveTactonConfigurationReference({
       tactonProduct: 'tab/product',
-      configuration: { configId: 'ABC', externalId: 'some' } as TactonProductConfiguration,
+      configuration: {
+        configId: 'ABC',
+        externalId: 'some',
+        steps: [{ name: 'A', current: true }],
+      } as TactonProductConfiguration,
     });
 
     beforeEach(() => {
@@ -38,12 +42,12 @@ describe('Saved Tacton Configuration Selectors', () => {
     });
 
     it('should save entity to state', () => {
-      expect(getSavedTactonConfigurationEntities(store$.state)).not.toBeEmpty();
-      expect(getSavedTactonConfigurationEntities(store$.state)['tab/product']).toMatchInlineSnapshot(`
+      expect(getSavedTactonConfiguration('tab/product')(store$.state)).toMatchInlineSnapshot(`
         Object {
           "configId": "ABC",
           "externalId": "some",
           "id": "tab/product",
+          "step": "A",
         }
       `);
     });

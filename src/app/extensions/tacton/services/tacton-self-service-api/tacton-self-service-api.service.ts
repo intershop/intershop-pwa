@@ -7,6 +7,7 @@ import { first, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { TactonProductConfiguration } from '../../models/tacton-product-configuration/tacton-product-configuration.model';
+import { TactonSavedConfiguration } from '../../models/tacton-saved-configuration/tacton-saved-configuration.model';
 import { TactonSelfServiceApiConfiguration } from '../../models/tacton-self-service-api-configuration/tacton-self-service-api-configuration.model';
 import { getCurrentProductConfiguration } from '../../store/product-configuration';
 import { getNewExternalId, getSelfServiceApiConfiguration } from '../../store/tacton-config';
@@ -19,7 +20,7 @@ export class TactonSelfServiceApiService {
     return `_key=${config.apiKey}` + (externalId ? `&_externalId=` + externalId : '');
   }
 
-  private addConfigReference(config: TactonProductConfiguration): string {
+  private addConfigReference(config: Partial<TactonProductConfiguration>): string {
     return config.configId ? `&configId=${config.configId}` : `&configState=${encodeURIComponent(config.configState)}`;
   }
 
@@ -42,6 +43,40 @@ export class TactonSelfServiceApiService {
             }
           )
           .pipe(switchMap(result => this.getBOM(result).pipe(map(bom => ({ ...result, bom: bom.bom, externalId })))))
+      )
+    );
+  }
+
+  continueConfiguration(savedConfiguration: TactonSavedConfiguration): Observable<TactonProductConfiguration> {
+    if (!savedConfiguration) {
+      return EMPTY;
+    }
+    if (!savedConfiguration.step) {
+      return this.startConfiguration(savedConfiguration.id);
+    }
+    return this.store.pipe(
+      select(getSelfServiceApiConfiguration),
+      whenTruthy(),
+      first(),
+      switchMap(config =>
+        this.http
+          .post<TactonProductConfiguration>(
+            `${config.endPoint}/config/step`,
+            // tslint:disable-next-line: prefer-template
+            this.constructAPIAuth(config, savedConfiguration.externalId) +
+              this.addConfigReference(savedConfiguration) +
+              `&step=${savedConfiguration.step}`,
+            {
+              headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
+            }
+          )
+          .pipe(
+            switchMap(result =>
+              this.getBOM(result).pipe(
+                map(bom => ({ ...result, bom: bom.bom, externalId: savedConfiguration.externalId }))
+              )
+            )
+          )
       )
     );
   }

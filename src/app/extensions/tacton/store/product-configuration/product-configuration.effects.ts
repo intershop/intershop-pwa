@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
+import { combineLatest, of } from 'rxjs';
 import {
   concatMap,
   distinctUntilChanged,
@@ -21,11 +21,13 @@ import { ofPath, selectRouteParam } from 'ish-core/store/core/router';
 import { mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { TactonSelfServiceApiService } from '../../services/tacton-self-service-api/tacton-self-service-api.service';
+import { getSavedTactonConfiguration } from '../saved-tacton-configuration';
 import { getTactonProductForSelectedProduct, isGroupLevelNavigationEnabled } from '../tacton-config';
 
 import {
   changeTactonConfigurationStep,
   commitTactonConfigurationValue,
+  continueConfigureTactonProduct,
   setCurrentConfiguration,
   startConfigureTactonProduct,
   uncommitTactonConfigurationValue,
@@ -50,7 +52,12 @@ export class ProductConfigurationEffects {
       ofPath(['configure/:sku/:mainStep/:groupStep', 'configure/:sku/:mainStep', 'configure/:sku']),
       switchMapTo(this.store.pipe(select(getTactonProductForSelectedProduct), whenTruthy(), take(1))),
       distinctUntilChanged(),
-      map(productPath => startConfigureTactonProduct({ productPath }))
+      switchMap(productPath =>
+        of(productPath).pipe(withLatestFrom(this.store.pipe(select(getSavedTactonConfiguration(productPath)))))
+      ),
+      map(([productPath, savedConfig]) =>
+        savedConfig ? continueConfigureTactonProduct({ savedConfig }) : startConfigureTactonProduct({ productPath })
+      )
     )
   );
 
@@ -61,6 +68,18 @@ export class ProductConfigurationEffects {
       switchMap(productPath =>
         this.tactonSelfServiceApiService
           .startConfiguration(productPath)
+          .pipe(map(configuration => setCurrentConfiguration({ configuration })))
+      )
+    )
+  );
+
+  continueTactonProductConfiguration$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(continueConfigureTactonProduct),
+      mapToPayloadProperty('savedConfig'),
+      switchMap(savedConfig =>
+        this.tactonSelfServiceApiService
+          .continueConfiguration(savedConfig)
           .pipe(map(configuration => setCurrentConfiguration({ configuration })))
       )
     )
