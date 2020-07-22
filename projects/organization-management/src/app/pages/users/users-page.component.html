@@ -20,7 +20,7 @@
           </dl>
         </div>
         <div class="col-3 list-item text-right">
-          <div class="float-right">
+          <div *ngIf="user.login !== (currentUser$ | async)?.login" class="float-right">
             <a
               data-testing-id="remove-user"
               class="btn-tool"
