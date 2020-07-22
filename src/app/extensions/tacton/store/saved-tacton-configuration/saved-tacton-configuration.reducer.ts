@@ -9,7 +9,13 @@ import { saveTactonConfigurationReference } from './saved-tacton-configuration.a
 
 export interface SavedTactonConfigurationState extends EntityState<TactonSavedConfiguration> {}
 
-export const tactonSavedConfigurationAdapter = createEntityAdapter<TactonSavedConfiguration>();
+export function makeTactonSavedConfigurationReference(user: string, productId: string): string {
+  return `${user || 'anonymous'}:${productId}`;
+}
+
+export const tactonSavedConfigurationAdapter = createEntityAdapter<TactonSavedConfiguration>({
+  selectId: e => makeTactonSavedConfigurationReference(e.user, e.productId),
+});
 
 const initialState: SavedTactonConfigurationState = tactonSavedConfigurationAdapter.getInitialState({});
 
@@ -22,7 +28,8 @@ export const savedTactonConfigurationReducer = createReducer(
   on(saveTactonConfigurationReference, (state, action) =>
     tactonSavedConfigurationAdapter.upsertOne(
       {
-        id: action.payload.tactonProduct,
+        productId: action.payload.tactonProduct,
+        user: action.payload.user || 'anonymous',
         step: getActiveStep(action.payload.configuration),
         ...pick(action.payload.configuration, 'configId', 'configState', 'externalId'),
       },
