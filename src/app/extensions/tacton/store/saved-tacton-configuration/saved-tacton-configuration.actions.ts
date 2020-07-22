@@ -6,5 +6,5 @@ import { TactonProductConfiguration } from '../../models/tacton-product-configur
 
 export const saveTactonConfigurationReference = createAction(
   '[Tacton Internal] Save Configuration Reference',
-  payload<{ tactonProduct: string; configuration: TactonProductConfiguration }>()
+  payload<{ tactonProduct: string; configuration: TactonProductConfiguration; user: string }>()
 );

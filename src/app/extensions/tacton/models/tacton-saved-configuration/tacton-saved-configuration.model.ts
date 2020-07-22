@@ -1,5 +1,6 @@
 export interface TactonSavedConfiguration {
-  id: string;
+  productId: string;
+  user: string;
   step: string;
   externalId?: string;
   configState?: string;

@@ -52,7 +52,7 @@ export class TactonSelfServiceApiService {
       return EMPTY;
     }
     if (!savedConfiguration.step) {
-      return this.startConfiguration(savedConfiguration.id);
+      return this.startConfiguration(savedConfiguration.productId);
     }
     return this.store.pipe(
       select(getSelfServiceApiConfiguration),

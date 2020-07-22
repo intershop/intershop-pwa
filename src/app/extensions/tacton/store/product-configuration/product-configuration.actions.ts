@@ -20,6 +20,8 @@ export const setCurrentConfiguration = createAction(
   payload<{ configuration: TactonProductConfiguration }>()
 );
 
+export const clearTactonConfiguration = createAction('[Tacton Self-Service API] Clear Configuration');
+
 export const commitTactonConfigurationValue = createAction(
   '[Tacton Self-Service API] Commit Configuration Value',
   payload<{ valueId: string; value: string }>()

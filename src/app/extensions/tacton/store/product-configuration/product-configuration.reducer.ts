@@ -6,7 +6,9 @@ import { TactonProductConfiguration } from '../../models/tacton-product-configur
 
 import {
   changeTactonConfigurationStep,
+  clearTactonConfiguration,
   commitTactonConfigurationValue,
+  continueConfigureTactonProduct,
   setCurrentConfiguration,
   startConfigureTactonProduct,
   uncommitTactonConfigurationValue,
@@ -26,6 +28,7 @@ export const productConfigurationReducer = createReducer(
   initialState,
   setLoadingOn(
     startConfigureTactonProduct,
+    continueConfigureTactonProduct,
     commitTactonConfigurationValue,
     uncommitTactonConfigurationValue,
     changeTactonConfigurationStep
@@ -34,5 +37,6 @@ export const productConfigurationReducer = createReducer(
     ...state,
     loading: false,
     current: action.payload.configuration,
-  }))
+  })),
+  on(clearTactonConfiguration, () => initialState)
 );

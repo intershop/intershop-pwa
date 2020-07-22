@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { routerNavigationAction } from '@ngrx/router-store';
+import { routerNavigatedAction, routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { combineLatest, of } from 'rxjs';
 import {
@@ -9,6 +9,7 @@ import {
   distinctUntilChanged,
   filter,
   map,
+  mapTo,
   switchMap,
   switchMapTo,
   take,
@@ -17,7 +18,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { ofPath, selectRouteParam } from 'ish-core/store/core/router';
+import { ofPath, ofUrl, selectRouteParam, selectUrl } from 'ish-core/store/core/router';
 import { mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { TactonSelfServiceApiService } from '../../services/tacton-self-service-api/tacton-self-service-api.service';
@@ -26,6 +27,7 @@ import { getTactonProductForSelectedProduct, isGroupLevelNavigationEnabled } fro
 
 import {
   changeTactonConfigurationStep,
+  clearTactonConfiguration,
   commitTactonConfigurationValue,
   continueConfigureTactonProduct,
   setCurrentConfiguration,
@@ -47,11 +49,12 @@ export class ProductConfigurationEffects {
   ) {}
 
   startOrContinueTactonProductConfiguration$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(routerNavigationAction),
-      ofPath(['configure/:sku/:mainStep/:groupStep', 'configure/:sku/:mainStep', 'configure/:sku']),
-      switchMapTo(this.store.pipe(select(getTactonProductForSelectedProduct), whenTruthy(), take(1))),
+    this.store.pipe(
+      ofUrl(/^\/configure\/.*/),
+      select(selectUrl),
+      switchMapTo(this.store.pipe(select(getTactonProductForSelectedProduct))),
       distinctUntilChanged(),
+      whenTruthy(),
       switchMap(productPath =>
         of(productPath).pipe(withLatestFrom(this.store.pipe(select(getSavedTactonConfiguration(productPath)))))
       ),
@@ -88,6 +91,7 @@ export class ProductConfigurationEffects {
   selectFirstConfigurationStepIfUnset$ = createEffect(
     () =>
       this.store.pipe(
+        ofUrl(/^\/configure\/.*/),
         select(getCurrentProductConfiguration),
         whenTruthy(),
         withLatestFrom(
@@ -108,6 +112,14 @@ export class ProductConfigurationEffects {
         })
       ),
     { dispatch: false }
+  );
+
+  clearConfigurationWhenRoutingAway$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(routerNavigatedAction),
+      filter(action => !action.payload.routerState.url.startsWith('/configure')),
+      mapTo(clearTactonConfiguration())
+    )
   );
 
   switchConfigurationStepViaRouting$ = createEffect(() =>
