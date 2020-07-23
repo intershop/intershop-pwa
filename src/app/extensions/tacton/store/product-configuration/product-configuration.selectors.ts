@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import { selectRouteParam } from 'ish-core/store/core/router';
+import { selectRouteParam, selectUrl } from 'ish-core/store/core/router';
 
 import { TactonNavigationTree } from '../../models/tacton-navigation-tree/tacton-navigation-tree.model';
 import { TactonProductConfigurationHelper } from '../../models/tacton-product-configuration/tacton-product-configuration.helper';
@@ -14,7 +14,11 @@ const getProductConfigurationState = createSelector(getTactonState, state => sta
 
 export const getProductConfigurationLoading = createSelector(getProductConfigurationState, state => state?.loading);
 
-export const getCurrentProductConfiguration = createSelector(getProductConfigurationState, state => state?.current);
+export const getCurrentProductConfiguration = createSelector(
+  getProductConfigurationState,
+  selectUrl,
+  (state, url) => url?.startsWith('/configure') && state?.current
+);
 
 function mapMembers(members: (TactonProductConfigurationGroup | TactonProductConfigurationParameter)[] = []) {
   return members
@@ -30,24 +34,21 @@ function mapMembers(members: (TactonProductConfigurationGroup | TactonProductCon
 export const getConfigurationStepTree = createSelector(
   getCurrentProductConfiguration,
   (config): TactonNavigationTree =>
-    config?.steps.map(step => ({
+    config?.steps?.map(step => ({
       description: step.description,
       name: step.name,
+      active: step.current,
       children: mapMembers(step.rootGroup?.members),
     }))
 );
 
 export const getCurrentStepConfig = createSelector(
   selectRouteParam('mainStep'),
-  selectRouteParam('groupStep'),
   getCurrentProductConfiguration,
-  (mainStep, groupStep, config) => {
-    const rootGroup = config?.steps.find(m => m.name === mainStep)?.rootGroup;
-    return groupStep ? rootGroup?.members.find(m => m.name === groupStep) : rootGroup;
-  }
+  (mainStep, config) => config?.steps?.find(m => m.name === mainStep)?.rootGroup
 );
 
 export const getCurrentProductConfigurationStepName = createSelector(
   getCurrentProductConfiguration,
-  config => config?.steps.find(step => step.current)?.name
+  config => config?.steps?.find(step => step.current)?.name
 );

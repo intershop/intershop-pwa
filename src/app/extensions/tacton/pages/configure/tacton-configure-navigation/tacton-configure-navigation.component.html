@@ -1,23 +1,12 @@
-<ul *ngIf="product$ | async as product">
+<ul>
   <li *ngFor="let mainItem of tree$ | async">
-    <a [routerLink]="['/configure', product.sku, mainItem.name]" routerLinkActive="font-weight-bold">{{
+    <a (click)="changeStep(mainItem.name)" [ngClass]="{ 'font-weight-bold': mainItem.active }">{{
       mainItem.description
     }}</a>
     <ng-container *ngIf="mainItem.children">
       <ul>
         <li *ngFor="let subItem of mainItem.children">
-          <a
-            *ngIf="groupLevelNavigationEnabled$ | async; else stepLevelNavigation"
-            [routerLink]="['/configure', product.sku, mainItem.name, subItem.name]"
-            routerLinkActive="font-weight-bold"
-            [routerLinkActiveOptions]="{ exact: true }"
-            >{{ subItem.description }}</a
-          >
-          <ng-template #stepLevelNavigation>
-            <a [routerLink]="['/configure', product.sku, mainItem.name]" [fragment]="subItem.name">{{
-              subItem.description
-            }}</a>
-          </ng-template>
+          <a [routerLink]="[]" [fragment]="subItem.name">{{ subItem.description }}</a>
         </li>
       </ul>
     </ng-container>
