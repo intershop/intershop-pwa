@@ -16,7 +16,7 @@ export class RequisitionManagementFacade {
   requisitionsLoading$ = this.store.pipe(select(getRequisitionsLoading));
 
   requisitions$ = combineLatest([
-    this.store.pipe(select(selectRouteParam('state'))),
+    this.store.pipe(select(selectRouteParam('status'))),
     this.store.pipe(
       select(selectUrl),
       map(url => (url.includes('/buyer/') ? 'buyer' : 'approver'))
