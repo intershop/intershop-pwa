@@ -1,0 +1,14 @@
+<ng-container *ngIf="parameter.properties?.hidden === 'no'">
+  <div *ngIf="parameter.committed" class="float-right">
+    <a class="btn-tool" (click)="uncommit()" title="Undo"> <fa-icon [icon]="['fas', 'undo']"></fa-icon></a>
+  </div>
+  <h4>{{ parameter.description }}</h4>
+  <div class="row">
+    <div class="col-4">
+      {{ parameter.properties.tc_info_text }}
+    </div>
+    <div class="col-8" class="d-flex align-items-end">
+      Selected Image: {{ parameter.description || parameter.value }}
+    </div>
+  </div>
+</ng-container>

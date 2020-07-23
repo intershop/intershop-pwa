@@ -18,5 +18,6 @@ export class TactonGroupComponent {
   isReadOnly = TactonProductConfigurationHelper.isReadOnly;
   isRadioInput = TactonProductConfigurationHelper.isRadioInput;
   isImageTextButtons = TactonProductConfigurationHelper.isImageTextButtons;
+  isSelectedImage = TactonProductConfigurationHelper.isSelectedImage;
   isTextButtons = TactonProductConfigurationHelper.isTextButtons;
 }

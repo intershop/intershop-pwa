@@ -14,6 +14,7 @@
       <ish-tacton-select-input *ngSwitchCase="isSelectInput(item)" [parameter]="item"></ish-tacton-select-input>
       <ish-tacton-readonly *ngSwitchCase="isReadOnly(item)" [parameter]="item"></ish-tacton-readonly>
       <ish-tacton-radio-input *ngSwitchCase="isRadioInput(item)" [parameter]="item"></ish-tacton-radio-input>
+      <ish-tacton-selected-image *ngSwitchCase="isSelectedImage(item)" [parameter]="item"></ish-tacton-selected-image>
       <pre *ngSwitchDefault class="border border-primary">{{ item | json }}</pre>
     </ng-container>
   </ng-container>

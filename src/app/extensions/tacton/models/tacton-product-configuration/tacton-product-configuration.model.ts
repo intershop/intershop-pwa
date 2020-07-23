@@ -18,8 +18,9 @@ export interface TactonProductConfigurationParameter {
   alwaysCommitted: boolean;
   properties: {
     hidden: 'no' | 'yes';
-    guitype: 'text' | 'dropdown' | 'radio' | 'readonly' | 'imagetext_buttons' | 'text_buttons';
+    guitype: 'text' | 'dropdown' | 'radio' | 'readonly' | 'imagetext_buttons' | 'text_buttons' | 'selected_image';
     tc_info_text: string;
+    tc_component_picture?: string;
   };
   domain: {
     name: string;
