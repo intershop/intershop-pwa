@@ -36,4 +36,21 @@ export class RequisitionsService {
       )
     );
   }
+
+  getRequisition(requisitionId: string): Observable<Requisition> {
+    // let params = new HttpParams().set(
+    //   'include',
+    //   'invoiceToAddress,discounts,discounts_promotion,lineItems,lineItems_discounts_promotion,lineItems_shippingMethod,payments'
+    // );
+
+    return combineLatest([this.currentCustomer$, this.store.pipe(select(getLoggedInUser), whenTruthy(), take(1))]).pipe(
+      switchMap(([customer, user]) =>
+        this.apiService
+          .get<{ data: RequisitionData }>(
+            `customers/${customer.customerNo}/users/${user.login}/requisitions/${requisitionId}`
+          )
+          .pipe(map(requisitionData => this.requisitionMapper.fromData(requisitionData.data)))
+      )
+    );
+  }
 }
