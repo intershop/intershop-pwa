@@ -76,18 +76,16 @@ describe('Tacton Image Text Buttons Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-      <h4>description</h4>
-      <div class="row">
-        <div class="col-4">info</div>
-        <div class="d-flex align-items-end">
-          <div class="m-3">
-            <div class="border border-primary"><img src="http://xxximage1?_key=xyz" /></div>
-            <label><input type="radio" name="ID" value="i1" /> 3 </label>
-          </div>
-          <div class="m-3">
-            <div class="border border-info"><img src="http://xxximage2?_key=xyz" /></div>
-            <label><input type="radio" name="ID" value="i2" /> 0 </label>
-          </div>
+      <h4 class="font-weight-bold">description</h4>
+      <div>info</div>
+      <div class="d-flex flex-wrap align-items-end pb-2">
+        <div class="m-3">
+          <div class="border border-primary"><img src="http://xxximage1?_key=xyz" /></div>
+          <label><input type="radio" name="ID" value="i1" /> 3 </label>
+        </div>
+        <div class="m-3">
+          <div class="border border-info"><img src="http://xxximage2?_key=xyz" /></div>
+          <label><input type="radio" name="ID" value="i2" /> 0 </label>
         </div>
       </div>
     `);

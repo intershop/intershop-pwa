@@ -46,11 +46,9 @@ describe('Tacton Readonly Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-      <h4>description</h4>
-      <div class="row">
-        <div class="col-4">info</div>
-        <div class="col-8">1</div>
-      </div>
+      <h4 class="font-weight-bold">description</h4>
+      <div>info</div>
+      <p>1</p>
     `);
   });
 

@@ -53,11 +53,8 @@ describe('Tacton Text Input Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-      <h4>description</h4>
-      <div class="row">
-        <div class="col-4"></div>
-        <div class="col-8"><textarea></textarea></div>
-      </div>
+      <h4 class="font-weight-bold">description</h4>
+      <div class="form-group"><textarea class="form-control"></textarea></div>
     `);
   });
 

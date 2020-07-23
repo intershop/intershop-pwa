@@ -2,15 +2,16 @@
   <div *ngIf="parameter.committed" class="float-right">
     <a class="btn-tool" (click)="uncommit()" title="Undo"> <fa-icon [icon]="['fas', 'undo']"></fa-icon></a>
   </div>
-  <h4>{{ parameter.description }}</h4>
+  <h4 class="font-weight-bold">{{ parameter.description }}</h4>
 
   <div class="row">
     <div class="col-4">
       {{ parameter.properties.tc_info_text }}
     </div>
-    <div class="col-8">
+    <div class="col-4 form-group">
       <input
         type="number"
+        class="form-control"
         [min]="parameter.domain.min"
         [max]="parameter.domain.max"
         [value]="parameter.value"

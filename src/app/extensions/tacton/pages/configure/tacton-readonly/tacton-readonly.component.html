@@ -1,7 +1,5 @@
 <ng-container *ngIf="parameter.properties?.hidden === 'no'">
-  <h4>{{ parameter.description }}</h4>
-  <div class="row">
-    <div class="col-4">{{ parameter.properties.tc_info_text }}</div>
-    <div class="col-8">{{ parameter.value }}</div>
-  </div>
+  <h4 class="font-weight-bold">{{ parameter.description }}</h4>
+  <div *ngIf="parameter.properties.tc_info_text">{{ parameter.properties.tc_info_text }}</div>
+  <p>{{ parameter.value }}</p>
 </ng-container>

@@ -71,14 +71,10 @@ describe('Tacton Text Buttons Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-      <h4>description</h4>
-      <div class="row">
-        <div class="col-4">info</div>
-        <div class="col-8">
-          <div class="btn-group" role="group">
-            <button class="btn btn-primary">yes</button><button class="btn btn-secondary">no</button>
-          </div>
-        </div>
+      <h4 class="font-weight-bold">description</h4>
+      <div>info</div>
+      <div class="btn-group form-group" role="group">
+        <button class="btn btn-primary">yes</button><button class="btn btn-secondary">no</button>
       </div>
     `);
   });

@@ -2,27 +2,23 @@
   <div *ngIf="parameter.committed" class="float-right">
     <a class="btn-tool" (click)="uncommit()" title="Undo"> <fa-icon [icon]="['fas', 'undo']"></fa-icon></a>
   </div>
-  <h4>{{ parameter.description }}</h4>
-  <div class="row">
-    <div class="col-4">
-      {{ parameter.properties.tc_info_text }}
-    </div>
-    <div class="col-8" class="d-flex align-items-end">
-      <div *ngFor="let opt of parameter.domain?.elements" class="m-3">
-        <div class="border" [ngClass]="{ 'border-primary': opt.selected, 'border-info': !opt.selected }">
-          <img [src]="getImageUrl(opt.properties.tc_component_picture) | async" />
-        </div>
-        <label>
-          <input
-            type="radio"
-            [name]="parameter.name"
-            [value]="opt.name"
-            [checked]="opt.selected"
-            (change)="change($event.target.value)"
-          />
-          {{ opt.description }}
-        </label>
+  <h4 class="font-weight-bold">{{ parameter.description || 'Please Select' }}</h4>
+  <div *ngIf="parameter.properties.tc_info_text">{{ parameter.properties.tc_info_text }}</div>
+  <div class="d-flex flex-wrap align-items-end pb-2">
+    <div *ngFor="let opt of parameter.domain?.elements" class="m-3">
+      <div class="border" [ngClass]="{ 'border-primary': opt.selected, 'border-info': !opt.selected }">
+        <img [src]="getImageUrl(opt.properties.tc_component_picture) | async" />
       </div>
+      <label>
+        <input
+          type="radio"
+          [name]="parameter.name"
+          [value]="opt.name"
+          [checked]="opt.selected"
+          (change)="change($event.target.value)"
+        />
+        {{ opt.description }}
+      </label>
     </div>
   </div>
 </ng-container>

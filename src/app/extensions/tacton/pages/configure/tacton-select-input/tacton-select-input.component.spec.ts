@@ -111,18 +111,15 @@ describe('Tacton Select Input Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-      <h4>description</h4>
-      <div class="row">
-        <div class="col-4"></div>
-        <div class="col-8">
-          <select class="mw-100"
-            ><option value="opt1">OPT1</option
-            ><option value="opt2">OPT2</option
-            ><option value="opt3">OPT3</option
-            ><option value="opt4">OPT4</option
-            ><option value="opt5">OPT5</option></select
-          >
-        </div>
+      <h4 class="font-weight-bold">description</h4>
+      <div class="form-group">
+        <select class="form-control mw-100"
+          ><option value="opt1">OPT1</option
+          ><option value="opt2">OPT2</option
+          ><option value="opt3">OPT3</option
+          ><option value="opt4">OPT4</option
+          ><option value="opt5">OPT5</option></select
+        >
       </div>
     `);
   });
