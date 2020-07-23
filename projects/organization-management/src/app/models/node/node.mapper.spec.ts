@@ -102,4 +102,24 @@ describe('Node Mapper', () => {
       expect(mapped.rootIds).toBeEmpty();
     });
   });
+
+  describe('toNodeTree()', () => {
+    it('should throw if given node is falsy', () => {
+      expect(() => nodeMapper.toNodeTree(undefined)).toThrowError('falsy');
+    });
+    it('should create a tree if a root node is put in', () => {
+      const node = {
+        id: 'test',
+        relationships: {
+          organization: { data: { id: 'test-org' } },
+        },
+        attributes: { name: 'test node' },
+      } as NodeData;
+      const tree = nodeMapper.toNodeTree(node);
+      expect(tree).toBeTruthy();
+      expect(tree.rootIds).toEqual([node.id]);
+      expect(tree.nodes.test).toEqual(nodeMapper.fromSingleData(node));
+      expect(tree.edges).toBeEmpty();
+    });
+  });
 });

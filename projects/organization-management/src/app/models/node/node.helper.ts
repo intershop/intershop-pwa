@@ -1,4 +1,4 @@
-import { NodeData, NodeResourceIdentifier } from './node.interface';
+import { NodeData } from './node.interface';
 import { Node, NodeTree } from './node.model';
 
 export class NodeHelper {
@@ -17,37 +17,6 @@ export class NodeHelper {
     }
   }
 
-  static fromSingleData(nodeData: NodeData): Node {
-    if (nodeData) {
-      return {
-        id: nodeData.id,
-        name: nodeData.attributes.name,
-        description: nodeData.attributes.description,
-        organization: nodeData.relationships.organization.data.id,
-      };
-    } else {
-      throw new Error(`nodeData is required`);
-    }
-  }
-
-  static single(node: NodeData): NodeTree {
-    if (node) {
-      const parent = node.relationships.parentNode ?? { data: undefined };
-      const edges = {};
-      if (node.relationships.childNodes && Array.isArray(node.relationships.childNodes.data)) {
-        edges[node.id] = node.relationships.childNodes.data.map((value: NodeResourceIdentifier) => value.id);
-      }
-      const nodes = { [node.id]: { ...NodeHelper.fromSingleData(node) } };
-      const rootIds = !parent.data ? [node.id] : [];
-      return {
-        edges,
-        nodes,
-        rootIds,
-      };
-    } else {
-      throw new Error('falsy input');
-    }
-  }
   /**
    * Create a new empty tree with no nodes.
    */
