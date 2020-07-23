@@ -13,6 +13,7 @@ import { ConfigurePageComponent } from './configure-page.component';
 import { TactonBomComponent } from './tacton-bom/tacton-bom.component';
 import { TactonConfigureNavigationComponent } from './tacton-configure-navigation/tacton-configure-navigation.component';
 import { TactonGroupComponent } from './tacton-group/tacton-group.component';
+import { TactonStepButtonsComponent } from './tacton-step-buttons/tacton-step-buttons.component';
 
 describe('Configure Page Component', () => {
   let component: ConfigurePageComponent;
@@ -29,6 +30,7 @@ describe('Configure Page Component', () => {
         MockComponent(TactonBomComponent),
         MockComponent(TactonConfigureNavigationComponent),
         MockComponent(TactonGroupComponent),
+        MockComponent(TactonStepButtonsComponent),
       ],
       providers: [
         { provide: TactonFacade, useFactory: () => instance(mock(TactonFacade)) },

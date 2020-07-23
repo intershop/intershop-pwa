@@ -8,6 +8,7 @@ import {
   TactonProductConfigurationGroup,
   TactonProductConfigurationParameter,
 } from '../../models/tacton-product-configuration/tacton-product-configuration.model';
+import { TactonStepConfig } from '../../models/tacton-step-config/tacton-step-config.model';
 import { getTactonState } from '../tacton-store';
 
 const getProductConfigurationState = createSelector(getTactonState, state => state?.productConfiguration);
@@ -51,4 +52,15 @@ export const getCurrentStepConfig = createSelector(
 export const getCurrentProductConfigurationStepName = createSelector(
   getCurrentProductConfiguration,
   config => config?.steps?.find(step => step.current)?.name
+);
+
+export const getConfigurationStepConfig = createSelector(
+  getCurrentProductConfiguration,
+  (config): TactonStepConfig =>
+    config?.steps && {
+      length: config?.steps?.length,
+      previousStep: config?.steps?.find((_, idx, arr) => idx < arr.length && arr[idx + 1]?.current)?.name,
+      currentStep: config?.steps?.find(s => s.current)?.name,
+      nextStep: config?.steps?.find((_, idx, arr) => idx > 0 && arr[idx - 1]?.current)?.name,
+    }
 );
