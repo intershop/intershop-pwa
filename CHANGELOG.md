@@ -7,6 +7,56 @@ kb_everyone
 
 # Changelog
 
+## [0.22.0](https://github.com/intershop/intershop-pwa/releases/tag/0.22.0) (2020-07-23)
+
+**required Intershop Commerce Management version: 7.10.20.1**
+
+### Features
+
+- show account identifier attribute of payment instrument ([75e4a31](https://github.com/intershop/intershop-pwa/commit/75e4a31))
+- use new filter REST API for product filter display and navigation (#148) ([3f493c5](https://github.com/intershop/intershop-pwa/commit/3f493c5))
+- display loading page when service worker is booting up ([9f89684](https://github.com/intershop/intershop-pwa/commit/9f89684))
+- manage B2B user roles in organization-management ([5ac6577](https://github.com/intershop/intershop-pwa/commit/5ac6577))
+- display information for B2B users above my account navigation (#298) ([ee5e1cb](https://github.com/intershop/intershop-pwa/commit/ee5e1cb))
+- add guard, directive and service for toggling depending on user permissions (#298) ([af9ce44](https://github.com/intershop/intershop-pwa/commit/af9ce44))
+- retrieve roles and permissions for B2B users (#298) ([e4ba676](https://github.com/intershop/intershop-pwa/commit/e4ba676))
+- delete B2B users in organization-management (#258, #310) ([d8d8523](https://github.com/intershop/intershop-pwa/commit/d8d8523))
+- add and edit B2B users in organization-management (#260, #310) ([3185084](https://github.com/intershop/intershop-pwa/commit/3185084))
+- serialize currently matched path in router state ([d83068c](https://github.com/intershop/intershop-pwa/commit/d83068c))
+- add B2B users management base version as part of organization management in my account (#295, #246, #247, #305) ([9c46eec](https://github.com/intershop/intershop-pwa/commit/9c46eec))
+
+### Bug Fixes
+
+- inconsistent breadcrumb updates on category, search & product page ([83ac5f9](https://github.com/intershop/intershop-pwa/commit/83ac5f9))
+- Minor user management issues (#338) ([caaa600](https://github.com/intershop/intershop-pwa/commit/caaa600))
+- **tslint-rules:** repair use-async-synchronization-in-tests rule (#330) ([e83437d](https://github.com/intershop/intershop-pwa/commit/e83437d))
+- save bic for concardis direct debit payment method (#323) ([b5d26dd](https://github.com/intershop/intershop-pwa/commit/b5d26dd))
+- set 404 status when route is not found ([29570b4](https://github.com/intershop/intershop-pwa/commit/29570b4))
+- Correcting field type for Concardis directdebit payment error message key (#317) ([a762d12](https://github.com/intershop/intershop-pwa/commit/a762d12))
+- delay routing and only route after profile edit (#314) ([9c08b52](https://github.com/intershop/intershop-pwa/commit/9c08b52))
+
+### Performance Improvements
+
+- correctly memoize cms selectors ([fa910d4](https://github.com/intershop/intershop-pwa/commit/fa910d4))
+- correctly memoize category selectors (#284) ([afc69ed](https://github.com/intershop/intershop-pwa/commit/afc69ed))
+
+### Documentation
+
+- add documentation for progressive web app features ([8d96718](https://github.com/intershop/intershop-pwa/commit/8d96718))
+- add KB labels and adjust title for documentation overview (#301) ([5f5ca9a](https://github.com/intershop/intershop-pwa/commit/5f5ca9a))
+
+### Code Refactoring
+
+- remove ngx-custom-validators dependency and custom implement the two validators we use (#332) ([7a3fb0a](https://github.com/intershop/intershop-pwa/commit/7a3fb0a))
+- adapt parsing for changed configurations REST call (#307) ([3d82674](https://github.com/intershop/intershop-pwa/commit/3d82674))
+- set breadcrumb trail consistently via store (#289) ([8282584](https://github.com/intershop/intershop-pwa/commit/8282584))
+
+### BREAKING CHANGES
+
+- Dependency ngx-custom-validators was removed from the project.
+- Adapted parsing for changed configurations REST call in Intershop Commerce Management version 7.10.20.1.
+- Setting the breadcrumb trail can now only be done consistently by using route data or by dispatching the appropriate action.
+
 ## [0.21.0](https://github.com/intershop/intershop-pwa/releases/tag/0.21.0) (2020-06-23)
 
 **required Intershop Commerce Management version: 7.10.19.2**
