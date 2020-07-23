@@ -15,3 +15,5 @@ export const {
   selectAll: getRequisitions,
   selectTotal: getNumberOfRequisitions,
 } = requisitionsAdapter.getSelectors(getRequisitionsState);
+
+export const getRequisition = createSelector(getRequisitionsState, state => state.requisition);

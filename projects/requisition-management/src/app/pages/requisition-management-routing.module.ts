@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { ApproverPageComponent } from './approver/approver-page.component';
 import { BuyerPageComponent } from './buyer/buyer-page.component';
+import { RequisitionDetailPageComponent } from './requisition-detail/requisition-detail-page.component';
 
 /**
  * routes for the requisition management
@@ -14,6 +15,7 @@ export const routes: Routes = [
   { path: 'approver/:status', component: ApproverPageComponent },
   { path: 'buyer', redirectTo: 'buyer/pending', pathMatch: 'full' },
   { path: 'buyer/:status', component: BuyerPageComponent },
+  { path: ':requisitionId', component: RequisitionDetailPageComponent },
 ];
 
 @NgModule({
