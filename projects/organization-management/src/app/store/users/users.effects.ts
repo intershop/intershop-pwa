@@ -7,7 +7,7 @@ import { concatMap, exhaustMap, filter, map, mapTo, mergeMap, switchMap, tap, wi
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectPath, selectRouteParam } from 'ish-core/store/core/router';
 import { loadRolesAndPermissions } from 'ish-core/store/customer/authorization';
-import { getLoggedInUser } from 'ish-core/store/customer/user';
+import { getLoggedInUser, loadCompanyUser } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { UsersService } from '../../services/users/users.service';
@@ -105,14 +105,22 @@ export class UsersEffects {
       mapToPayloadProperty('user'),
       concatMap(editUser =>
         this.usersService.updateUser(editUser).pipe(
-          tap(() => {
-            this.navigateTo('../');
-          }),
           map(user => updateUserSuccess({ user })),
           mapErrorToAction(updateUserFail)
         )
       )
     )
+  );
+
+  redirectAfterUpdateUser$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(updateUserSuccess),
+        tap(() => {
+          this.navigateTo('../');
+        })
+      ),
+    { dispatch: false }
   );
 
   setUserRoles$ = createEffect(() =>
@@ -147,6 +155,16 @@ export class UsersEffects {
     )
   );
 
+  refreshLoggedInUserAfterUpdate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateUserSuccess),
+      mapToPayloadProperty('user'),
+      withLatestFrom(this.store.pipe(select(getLoggedInUser), whenTruthy())),
+      filter(([updatedUser, currentUser]) => updatedUser.login === currentUser.login),
+      mapTo(loadCompanyUser())
+    )
+  );
+
   updateCurrentUserRoles$ = createEffect(() =>
     this.actions$.pipe(
       ofType(setUserRolesSuccess),
@@ -162,9 +180,15 @@ export class UsersEffects {
       ofType(deleteUser),
       mapToPayloadProperty('login'),
       exhaustMap(login =>
-        this.usersService
-          .deleteUser(login)
-          .pipe(map(() => deleteUserSuccess({ login }), mapErrorToAction(deleteUserFail)))
+        this.usersService.deleteUser(login).pipe(
+          mergeMap(() => [
+            deleteUserSuccess({ login }),
+            displaySuccessMessage({
+              message: 'account.user.delete_user.confirmation',
+            }),
+          ]),
+          mapErrorToAction(deleteUserFail)
+        )
       )
     )
   );

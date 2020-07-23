@@ -6,6 +6,7 @@ import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
@@ -21,6 +22,7 @@ describe('Users Page Component', () => {
   let fixture: ComponentFixture<UsersPageComponent>;
   let element: HTMLElement;
   let organizationManagementFacade: OrganizationManagementFacade;
+  let accountFacade: AccountFacade;
 
   const users = [
     { firstName: 'Patricia', lastName: 'Miller', name: 'Patricia Miller', email: 'pmiller@test.intershop.de' },
@@ -29,6 +31,7 @@ describe('Users Page Component', () => {
 
   beforeEach(async(() => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
+    accountFacade = mock(AccountFacade);
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
@@ -40,7 +43,10 @@ describe('Users Page Component', () => {
         MockComponent(UserRolesBadgesComponent),
         UsersPageComponent,
       ],
-      providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
+      providers: [
+        { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+      ],
     }).compileComponents();
   }));
 

@@ -15,9 +15,7 @@
             </dd>
             <dt class="col-md-4">{{ 'account.user.details.profile.email' | translate }}</dt>
             <dd data-testing-id="email-field" class="col-md-8">{{ user.email }}</dd>
-            <dt class="col-md-4" data-testing-id="phone-label">
-              {{ 'account.user.details.profile.phone' | translate }}
-            </dt>
+            <dt class="col-md-4">{{ 'account.user.details.profile.phone' | translate }}</dt>
             <dd *ngIf="user.phoneHome" class="col-md-8">{{ user.phoneHome }}</dd>
           </dl>
         </div>
