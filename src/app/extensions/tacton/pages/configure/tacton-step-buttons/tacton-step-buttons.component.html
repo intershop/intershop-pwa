@@ -1,0 +1,14 @@
+<div class="row" *ngIf="stepConfig$ | async as config">
+  <div class="col">
+    <button class="btn btn-link btn-secondary" (click)="reset()">Reset Configuration</button>
+  </div>
+  <div class="col" *ngIf="config.previousStep">
+    <button class="btn btn-link btn-secondary" (click)="changeStep(config.previousStep)">Previous</button>
+  </div>
+  <div class="col" *ngIf="config.nextStep">
+    <button class="btn btn-link btn-secondary" (click)="changeStep(config.nextStep)">Next</button>
+  </div>
+  <div class="col" *ngIf="!config.nextStep">
+    <button class="btn btn-link btn-secondary" (click)="submit()">Submit</button>
+  </div>
+</div>
