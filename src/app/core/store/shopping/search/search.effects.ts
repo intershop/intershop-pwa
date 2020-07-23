@@ -12,6 +12,7 @@ import {
   map,
   sample,
   switchMap,
+  switchMapTo,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -109,14 +110,21 @@ export class SearchEffects {
   );
 
   setSearchBreadcrumb$ = createEffect(() =>
-    this.store.pipe(
-      ofUrl(/^\/search.*/),
-      select(selectRouteParam('searchTerm')),
-      whenTruthy(),
-      switchMap(searchTerm =>
-        this.translateService
-          .get('search.breadcrumbs.your_search.label')
-          .pipe(map(translation => setBreadcrumbData({ breadcrumbData: [{ text: `${translation} ${searchTerm}` }] })))
+    this.actions$.pipe(
+      ofType(routerNavigatedAction),
+      switchMapTo(
+        this.store.pipe(
+          ofUrl(/^\/search.*/),
+          select(selectRouteParam('searchTerm')),
+          whenTruthy(),
+          switchMap(searchTerm =>
+            this.translateService
+              .get('search.breadcrumbs.your_search.label')
+              .pipe(
+                map(translation => setBreadcrumbData({ breadcrumbData: [{ text: `${translation} ${searchTerm}` }] }))
+              )
+          )
+        )
       )
     )
   );

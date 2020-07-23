@@ -115,11 +115,16 @@ export class CategoriesEffects {
   );
 
   setBreadcrumbForCategoryPage$ = createEffect(() =>
-    this.store.pipe(
-      ofCategoryUrl(),
-      select(getBreadcrumbForCategoryPage),
-      whenTruthy(),
-      map(breadcrumbData => setBreadcrumbData({ breadcrumbData }))
+    this.actions$.pipe(
+      ofType(routerNavigatedAction),
+      switchMapTo(
+        this.store.pipe(
+          ofCategoryUrl(),
+          select(getBreadcrumbForCategoryPage),
+          whenTruthy(),
+          map(breadcrumbData => setBreadcrumbData({ breadcrumbData }))
+        )
+      )
     )
   );
 }

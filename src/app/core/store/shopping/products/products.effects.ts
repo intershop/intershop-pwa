@@ -3,6 +3,7 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Dictionary } from '@ngrx/entity';
+import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { identity } from 'rxjs';
 import {
@@ -14,6 +15,7 @@ import {
   groupBy,
   map,
   mergeMap,
+  switchMapTo,
   tap,
   throttleTime,
   withLatestFrom,
@@ -331,11 +333,16 @@ export class ProductsEffects {
   );
 
   setBreadcrumbForProductPage$ = createEffect(() =>
-    this.store.pipe(
-      ofProductUrl(),
-      select(getBreadcrumbForProductPage),
-      whenTruthy(),
-      map(breadcrumbData => setBreadcrumbData({ breadcrumbData }))
+    this.actions$.pipe(
+      ofType(routerNavigatedAction),
+      switchMapTo(
+        this.store.pipe(
+          ofProductUrl(),
+          select(getBreadcrumbForProductPage),
+          whenTruthy(),
+          map(breadcrumbData => setBreadcrumbData({ breadcrumbData }))
+        )
+      )
     )
   );
 
