@@ -26,5 +26,3 @@ export const getTactonProductForSKU = (sku: string) => createSelector(productMap
 export const getTactonProductForSelectedProduct = createSelector(identity, getSelectedProduct, (state, product) =>
   getTactonProductForSKU(product?.sku)(state)
 );
-
-export const isGroupLevelNavigationEnabled = createSelector(getTactonConfig, config => config?.groupLevelNavigation);

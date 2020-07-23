@@ -5,6 +5,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { TactonProductConfigurationParameter } from '../models/tacton-product-configuration/tacton-product-configuration.model';
 import {
+  changeTactonConfigurationStep,
   commitTactonConfigurationValue,
   getConfigurationStepTree,
   getCurrentProductConfiguration,
@@ -12,11 +13,7 @@ import {
   getProductConfigurationLoading,
   uncommitTactonConfigurationValue,
 } from '../store/product-configuration';
-import {
-  getSelfServiceApiConfiguration,
-  getTactonProductForSKU,
-  isGroupLevelNavigationEnabled,
-} from '../store/tacton-config';
+import { getSelfServiceApiConfiguration, getTactonProductForSKU } from '../store/tacton-config';
 
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
@@ -36,7 +33,9 @@ export class TactonFacade {
 
   currentStep$ = this.store.pipe(select(getCurrentStepConfig));
 
-  groupLevelNavigationEnabled$ = this.store.pipe(select(isGroupLevelNavigationEnabled));
+  changeConfigurationStep(step: string) {
+    this.store.dispatch(changeTactonConfigurationStep({ step }));
+  }
 
   commitValue(parameter: TactonProductConfigurationParameter, value: string) {
     this.store.dispatch(commitTactonConfigurationValue({ valueId: parameter.name, value }));
