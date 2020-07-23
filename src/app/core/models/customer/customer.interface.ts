@@ -20,6 +20,7 @@ export interface CustomerData extends Customer {
   phoneMobile?: string;
   fax?: string;
   email?: string;
+  login?: string;
 
   preferredLanguage?: string;
   preferredInvoiceToAddress?: Address;

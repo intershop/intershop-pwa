@@ -18,13 +18,12 @@ import { applyLintFix } from '../utils/lint-fix';
 import { PWAModelOptionsSchema as Options } from './schema';
 
 export function createModel(options: Options): Rule {
-  return host => {
+  return async host => {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
     }
-    // tslint:disable:no-parameter-reassignment
-    options = detectExtension('model', host, options);
-    options = applyNameAndPath('model', host, options);
+    options = await detectExtension('model', host, options);
+    options = await applyNameAndPath('model', host, options);
     options = determineArtifactName('model', host, options);
 
     const operations: Rule[] = [];

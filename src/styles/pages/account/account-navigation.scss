@@ -59,6 +59,12 @@
         color: $text-color-primary;
       }
     }
+
+    &.account-welcome {
+      &:hover {
+        background: $color-tertiary;
+      }
+    }
   }
 }
 

@@ -1,0 +1,51 @@
+<h1>
+  {{ 'account.organization.user_management' | translate }}
+  <a *ngIf="!(error$ | async)" routerLink="create" class="btn btn-secondary" data-testing-id="add-user-link">{{
+    'account.user.list.link.add_user' | translate
+  }}</a>
+</h1>
+
+<ish-error-message [error]="error$ | async"></ish-error-message>
+
+<div class="section">
+  <div class="list-body" data-testing-id="user-list">
+    <ng-container *ngFor="let user of users$ | async">
+      <div *ngIf="user" class="list-item-row row mx-0">
+        <div class="col-3 list-item">
+          <a [routerLink]="[user.login]">{{ user.name }}</a>
+        </div>
+        <div class="col-6 list-item">
+          <dl [attr.data-testing-id]="'user-roles-' + user.login">
+            <ish-user-roles-badges [roleIDs]="user.roleIDs"></ish-user-roles-badges>
+          </dl>
+        </div>
+        <div class="col-3 list-item text-right">
+          <div *ngIf="user.login !== (currentUser$ | async)?.login" class="float-right">
+            <a
+              data-testing-id="remove-user"
+              class="btn-tool"
+              title="{{ 'account.user.delete_user_dialog.header' | translate: { '0': user.name } }}"
+              (click)="modalDialog.show(user)"
+            >
+              <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+            </a>
+
+            <ish-modal-dialog
+              #modalDialog
+              [options]="{
+                titleText: 'account.user.delete_user_dialog.header' | translate: { '0': user.name },
+                confirmText: 'account.user.delete_user_dialog.delete_button.text' | translate,
+                rejectText: 'account.user.delete_user_dialog.cancel_button.text' | translate
+              }"
+              (confirmed)="deleteUser($event)"
+            >
+              <p>{{ 'account.user.delete_user_dialog.are_you_sure_paragraph' | translate }}</p>
+            </ish-modal-dialog>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<ish-loading *ngIf="loading$ | async"></ish-loading>

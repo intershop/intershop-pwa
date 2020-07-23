@@ -9,7 +9,6 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CustomValidators } from 'ng2-validation';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
@@ -33,14 +32,14 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
   submitted = false;
 
   ngOnInit() {
-    this.form = new FormGroup({
-      currentPassword: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required, SpecialValidators.password]),
-      passwordConfirmation: new FormControl('', [Validators.required, SpecialValidators.password]),
-    });
-
-    // set additional validator
-    this.form.get('passwordConfirmation').setValidators(CustomValidators.equalTo(this.form.get('password')));
+    this.form = new FormGroup(
+      {
+        currentPassword: new FormControl('', [Validators.required]),
+        password: new FormControl('', [Validators.required, SpecialValidators.password]),
+        passwordConfirmation: new FormControl('', [Validators.required, SpecialValidators.password]),
+      },
+      SpecialValidators.equalTo('passwordConfirmation', 'password')
+    );
   }
 
   ngOnChanges(c: SimpleChanges) {

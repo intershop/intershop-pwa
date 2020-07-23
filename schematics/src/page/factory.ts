@@ -11,7 +11,7 @@ import {
   schematic,
   url,
 } from '@angular-devkit/schematics';
-import { buildDefaultPath, getProject } from '@schematics/angular/utility/project';
+import { buildDefaultPath, getWorkspace } from '@schematics/angular/utility/workspace';
 import { forEachToken, getChildOfKind } from 'tsutils';
 import * as ts from 'typescript';
 
@@ -48,11 +48,12 @@ function addRouteToArray(
   }
 }
 
-function determineRoutingModule(
+async function determineRoutingModule(
   host: Tree,
   options: { name?: string; project?: string; extension?: string; lazy?: boolean }
 ) {
-  const project = getProject(host, options.project);
+  const workspace = await getWorkspace(host);
+  const project = workspace.projects.get(options.project);
 
   let routingModuleLocation: string;
   let child: string;
@@ -61,7 +62,6 @@ function determineRoutingModule(
   if (options.lazy && match && match[1] && match[2]) {
     const parent = match[1];
     child = match[2];
-    // tslint:disable-next-line:no-console
     console.log(`detected subpage, will insert '${child}' as sub page of '${parent}'`);
     routingModuleLocation = options.extension
       ? `extensions/${options.extension}/pages/${parent}/${parent}-page.module.ts`
@@ -110,15 +110,14 @@ export function addRouteToRoutingModule(options: {
 }
 
 export function createPage(options: Options): Rule {
-  return host => {
+  return async host => {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
     }
-    // tslint:disable:no-parameter-reassignment
-    options = detectExtension('page', host, options);
-    options = applyNameAndPath('page', host, options);
+    options = await detectExtension('page', host, options);
+    options = await applyNameAndPath('page', host, options);
     options = determineArtifactName('page', host, options);
-    options = determineRoutingModule(host, options);
+    options = await determineRoutingModule(host, options);
 
     const operations: Rule[] = [];
 

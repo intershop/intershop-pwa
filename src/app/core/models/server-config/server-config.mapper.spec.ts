@@ -5,19 +5,17 @@ describe('Server Config Mapper', () => {
   describe('fromData', () => {
     it(`should return the ServerConfig when getting ServerConfigData`, () => {
       const config = ServerConfigMapper.fromData({
-        data: [
-          { applicationType: 'intershop.B2CResponsive', id: 'application', urlIdentifier: '-' },
-          { acceleration: true, id: 'basket' },
-          { id: 'general', locales: ['en_US', 'de_DE'] },
-          {
+        data: {
+          application: { applicationType: 'intershop.B2CResponsive', id: 'application', urlIdentifier: '-' },
+          basket: { acceleration: true, id: 'basket' },
+          general: { id: 'general', locales: ['en_US', 'de_DE'] },
+          services: {
             id: 'services',
-            elements: [
-              { id: 'captcha', siteKey: 'ASDF' },
-              { id: 'gtm', token: 'QWERTY', monitor: 'true' },
-              { id: 'deeper', elements: [{ id: 'hidden', foo: 'bar', num: 123, alt: '123' }] },
-            ],
+            captcha: { id: 'captcha', siteKey: 'ASDF' },
+            gtm: { id: 'gtm', token: 'QWERTY', monitor: 'true' },
+            deeper: { id: 'deeper', hidden: { id: 'hidden', foo: 'bar', num: 123, alt: '123' } },
           },
-        ],
+        },
       });
 
       expect(config).toMatchInlineSnapshot(`

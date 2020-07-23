@@ -7,6 +7,8 @@ import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
 
 import { AddressesEffects } from './addresses/addresses.effects';
 import { addressesReducer } from './addresses/addresses.reducer';
+import { AuthorizationEffects } from './authorization/authorization.effects';
+import { authorizationReducer } from './authorization/authorization.reducer';
 import { BasketAddressesEffects } from './basket/basket-addresses.effects';
 import { BasketItemsEffects } from './basket/basket-items.effects';
 import { BasketPaymentEffects } from './basket/basket-payment.effects';
@@ -17,6 +19,7 @@ import { basketReducer } from './basket/basket.reducer';
 import { CustomerState } from './customer-store';
 import { OrdersEffects } from './orders/orders.effects';
 import { ordersReducer } from './orders/orders.reducer';
+import { OrganizationManagementEffects } from './organization-management/organization-management.effects';
 import { RestoreEffects } from './restore/restore.effects';
 import { UserEffects } from './user/user.effects';
 import { userReducer } from './user/user.reducer';
@@ -26,6 +29,7 @@ const customerReducers: ActionReducerMap<CustomerState> = {
   addresses: addressesReducer,
   orders: ordersReducer,
   basket: basketReducer,
+  authorization: authorizationReducer,
 };
 
 const customerEffects = [
@@ -39,6 +43,8 @@ const customerEffects = [
   OrdersEffects,
   RestoreEffects,
   UserEffects,
+  AuthorizationEffects,
+  OrganizationManagementEffects,
 ];
 
 const metaReducers = [resetOnLogoutMeta];

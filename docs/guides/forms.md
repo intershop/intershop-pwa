@@ -70,9 +70,6 @@ If a form is very simple (e.g. only one form input field without any special val
 
 For the validation of the form input fields you can use Angular's [Build-in Validators](https://angular.io/api/forms/Validators).
 
-Additionally, the package [ng2-validation](https://www.npmjs.com/package/ng2-validation) is available.
-It provides further validators.
-
 If there is a need for special custom validators, use class _app/shared/forms/validators/special-validators_ to write your own custom validators.
 
 ### Keep Templates and Type Script Code Simple
@@ -127,8 +124,7 @@ Use predefined form control components and directives to get general functionali
 **login-form.ts**
 
 ```typescript
-import  { FormBuilder, FormGroup, Validators }  from   '@angular/forms' ;
-import  { CustomValidators }  from   'ng2-validation' ;
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormUtilsService } from '../../../../core/services/utils/form-utils.service';
 ...
 
@@ -139,7 +135,7 @@ constructor  (
 
 ngOnInit() {
    this .loginForm  =   this .formBuilder.group({
-       userName: [ '' , [Validators.required, CustomValidators.email]],
+       userName: [ '' , [Validators.required, SpecialValidators.email]],
        password: [ '' , Validators.required]
     });
 }

@@ -1,0 +1,25 @@
+name: DemoServerDown
+
+on:
+  pull_request:
+    types: [closed]
+
+env:
+  GROUP: 'pwa-gh-review'
+  APP: 'pwa-gh-review-${{ github.event.pull_request.number }}'
+
+jobs:
+  RemoveDemoServer:
+    if: github.event.pull_request.head.repo.owner.login == 'intershop'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to Azure
+        run: |
+          az login -u ${{ secrets.AZURE_USERNAME }} -p=${{ secrets.AZURE_PASSWORD }}
+          az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION }}
+
+      - name: Remove Universal B2C App
+        run: test -z "$(az webapp show -g $GROUP -n $APP-universal-b2c)" || az webapp delete -g $GROUP --name $APP-universal-b2c
+
+      - name: Remove Universal B2B App
+        run: test -z "$(az webapp show -g $GROUP -n $APP-universal-b2b)" || az webapp delete -g $GROUP --name $APP-universal-b2b

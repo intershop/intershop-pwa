@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 
 /**
@@ -7,16 +9,24 @@ import { CategoryView } from 'ish-core/models/category-view/category-view.model'
  * category using {@link CategoryImageComponent}.
  *
  * @example
- * <ish-category-tile [category]="category"></ish-category-tile>
+ * <ish-category-tile [categoryUniqueId]="category"></ish-category-tile>
  */
 @Component({
   selector: 'ish-category-tile',
   templateUrl: './category-tile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CategoryTileComponent {
+export class CategoryTileComponent implements OnInit {
   /**
    * The Category to render a tile for
    */
-  @Input() category: CategoryView;
+  @Input() categoryUniqueId: string;
+
+  category$: Observable<CategoryView>;
+
+  constructor(private shoppingFacade: ShoppingFacade) {}
+
+  ngOnInit() {
+    this.category$ = this.shoppingFacade.category$(this.categoryUniqueId);
+  }
 }

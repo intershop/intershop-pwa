@@ -1,7 +1,7 @@
 import { strings } from '@angular-devkit/core';
 import { Rule, SchematicsException } from '@angular-devkit/schematics';
 import { tsquery } from '@phenomnomnominal/tsquery';
-import { getProject } from '@schematics/angular/utility/project';
+import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { basename, join } from 'path';
 import * as ts from 'typescript';
 
@@ -13,7 +13,7 @@ import { updateComponentClassName, updateComponentDecorator, updateComponentSele
 import { CustomizedCopyOptionsSchema as Options } from './schema';
 
 export function customize(options: Options): Rule {
-  return host => {
+  return async host => {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
     }
@@ -22,8 +22,8 @@ export function customize(options: Options): Rule {
       throw new SchematicsException('Option (from) is required.');
     }
 
-    const project = getProject(host, options.project);
-
+    const workspace = await getWorkspace(host);
+    const project = workspace.projects.get(options.project);
     const from = options.from.replace(/\/$/, '');
     const sourceRoot = project.sourceRoot;
     const dir = host.getDir(`${sourceRoot}/app/${from}`);
@@ -87,7 +87,7 @@ export function customize(options: Options): Rule {
     });
 
     let options2: unknown = { name: from, project: options.project };
-    options2 = applyNameAndPath('component', host, options2);
+    options2 = await applyNameAndPath('component', host, options2);
     options2 = determineArtifactName('component', host, options2);
     options2 = findDeclaringModule(host, options2);
 

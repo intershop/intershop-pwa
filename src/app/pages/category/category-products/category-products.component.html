@@ -6,7 +6,9 @@
   <div class="row">
     <div class="col-md-3">
       <div class="navigation-panel" [ngbCollapse]="isCollapsed">
-        <ish-filter-navigation></ish-filter-navigation>
+        <ish-category-navigation [uniqueId]="category.categoryPath[0]"></ish-category-navigation>
+        <br />
+        <ish-filter-navigation [showCategoryFilter]="false"></ish-filter-navigation>
       </div>
       <a class="d-md-none mobile-filter-toggle" (click)="toggle()">
         {{ 'search.mobile.filter.trigger' | translate }}
@@ -14,7 +16,7 @@
       </a>
     </div>
     <div class="col-md-9">
-      <ish-breadcrumb [category]="category"></ish-breadcrumb>
+      <ish-breadcrumb></ish-breadcrumb>
       <h1>{{ category.name }}</h1>
       <ish-product-listing
         [category]="category"

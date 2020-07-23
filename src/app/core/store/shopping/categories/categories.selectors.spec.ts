@@ -3,7 +3,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { Category } from 'ish-core/models/category/category.model';
+import { Category, CategoryCompletenessLevel } from 'ish-core/models/category/category.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -19,24 +19,35 @@ import {
   loadTopLevelCategoriesSuccess,
 } from './categories.actions';
 import {
+  getBreadcrumbForCategoryPage,
+  getCategory,
   getCategoryEntities,
-  getCategoryLoading,
+  getNavigationCategories,
   getSelectedCategory,
-  getTopLevelCategories,
-  isTopLevelCategoriesLoaded,
 } from './categories.selectors';
 
 describe('Categories Selectors', () => {
   let store$: StoreWithSnapshots;
   let router: Router;
 
-  let cat: Category;
+  let catA: Category;
+  let catA1: Category;
   let prod: Product;
 
   beforeEach(() => {
     prod = { sku: 'sku' } as Product;
-    cat = { uniqueId: 'Aa', categoryPath: ['Aa'] } as Category;
-    cat.hasOnlineProducts = true;
+    catA = {
+      uniqueId: 'A',
+      categoryPath: ['A'],
+      completenessLevel: CategoryCompletenessLevel.Max,
+      name: 'nA',
+    } as Category;
+    catA1 = {
+      uniqueId: 'A.1',
+      categoryPath: ['A', 'A.1'],
+      completenessLevel: CategoryCompletenessLevel.Max,
+      name: 'nA1',
+    } as Category;
 
     @Component({ template: 'dummy' })
     class DummyComponent {}
@@ -58,16 +69,11 @@ describe('Categories Selectors', () => {
   describe('with empty state', () => {
     it('should not select any categories when used', () => {
       expect(getCategoryEntities(store$.state)).toBeEmpty();
-      expect(getCategoryLoading(store$.state)).toBeFalse();
     });
 
     it('should not select any selected category when used', () => {
       expect(getSelectedCategory(store$.state)).toBeUndefined();
-    });
-
-    it('should not select any top level categories when used', () => {
-      expect(getTopLevelCategories(store$.state)).toBeEmpty();
-      expect(isTopLevelCategoriesLoaded(store$.state)).toBeFalse();
+      expect(getCategory(catA.uniqueId)(store$.state)).toBeUndefined();
     });
   });
 
@@ -76,18 +82,13 @@ describe('Categories Selectors', () => {
       store$.dispatch(loadCategory({ categoryId: '' }));
     });
 
-    it('should set the state to loading', () => {
-      expect(getCategoryLoading(store$.state)).toBeTrue();
-    });
-
     describe('and reporting success', () => {
       beforeEach(() => {
-        store$.dispatch(loadCategorySuccess({ categories: categoryTree([cat]) }));
+        store$.dispatch(loadCategorySuccess({ categories: categoryTree([catA]) }));
       });
 
       it('should set loading to false', () => {
-        expect(getCategoryLoading(store$.state)).toBeFalse();
-        expect(getCategoryEntities(store$.state)).toEqual({ [cat.uniqueId]: cat });
+        expect(getCategoryEntities(store$.state)).toHaveProperty(catA.uniqueId);
       });
     });
 
@@ -97,7 +98,6 @@ describe('Categories Selectors', () => {
       });
 
       it('should not have loaded category on error', () => {
-        expect(getCategoryLoading(store$.state)).toBeFalse();
         expect(getCategoryEntities(store$.state)).toBeEmpty();
       });
     });
@@ -105,54 +105,151 @@ describe('Categories Selectors', () => {
 
   describe('state with a category', () => {
     beforeEach(() => {
-      store$.dispatch(loadCategorySuccess({ categories: categoryTree([cat]) }));
+      store$.dispatch(loadCategorySuccess({ categories: categoryTree([catA, catA1]) }));
       store$.dispatch(loadProductSuccess({ product: prod }));
     });
 
     describe('but no current router state', () => {
       it('should return the category information when used', () => {
-        expect(getCategoryEntities(store$.state)).toEqual({ [cat.uniqueId]: cat });
-        expect(getCategoryLoading(store$.state)).toBeFalse();
+        expect(getCategoryEntities(store$.state)).toHaveProperty(catA.uniqueId);
+        expect(getCategory(catA.uniqueId)(store$.state).uniqueId).toEqual(catA.uniqueId);
       });
 
       it('should not select the irrelevant category when used', () => {
         expect(getSelectedCategory(store$.state)).toBeUndefined();
       });
+
+      it('should not generate a breadcrumb for unselected category', () => {
+        expect(getBreadcrumbForCategoryPage(store$.state)).toBeUndefined();
+      });
     });
 
     describe('with category route', () => {
       beforeEach(fakeAsync(() => {
-        router.navigate(['category', cat.uniqueId]);
+        router.navigate(['category', catA.uniqueId]);
         tick(500);
       }));
 
       it('should return the category information when used', () => {
-        expect(getCategoryEntities(store$.state)).toEqual({ [cat.uniqueId]: cat });
-        expect(getCategoryLoading(store$.state)).toBeFalse();
+        expect(getCategoryEntities(store$.state)).toHaveProperty(catA.uniqueId);
+        expect(getCategory(catA.uniqueId)(store$.state).uniqueId).toEqual(catA.uniqueId);
       });
 
       it('should select the selected category when used', () => {
-        expect(getSelectedCategory(store$.state).uniqueId).toEqual(cat.uniqueId);
+        expect(getSelectedCategory(store$.state).uniqueId).toEqual(catA.uniqueId);
+      });
+
+      it('should set a category page breadcrumb when selected', () => {
+        expect(getBreadcrumbForCategoryPage(store$.state)).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "link": undefined,
+              "text": "nA",
+            },
+          ]
+        `);
+      });
+
+      describe('with subcategory', () => {
+        beforeEach(fakeAsync(() => {
+          router.navigate(['category', catA1.uniqueId]);
+          tick(500);
+        }));
+
+        it('should select the selected category when used', () => {
+          expect(getSelectedCategory(store$.state).uniqueId).toEqual(catA1.uniqueId);
+        });
+
+        it('should set a category page breadcrumb when selected', () => {
+          expect(getBreadcrumbForCategoryPage(store$.state)).toMatchInlineSnapshot(`
+            Array [
+              Object {
+                "link": "/nA-catA",
+                "text": "nA",
+              },
+              Object {
+                "link": undefined,
+                "text": "nA1",
+              },
+            ]
+          `);
+        });
       });
     });
   });
 
   describe('loading top level categories', () => {
-    let catA: Category;
-    let catB: Category;
-
     beforeEach(() => {
-      catA = { uniqueId: 'A', categoryPath: ['A'] } as Category;
-      catB = { uniqueId: 'B', categoryPath: ['B'] } as Category;
-      store$.dispatch(loadTopLevelCategoriesSuccess({ categories: categoryTree([catA, catB]) }));
+      const cA = { name: 'name_A', uniqueId: 'A', categoryPath: ['A'] } as Category;
+      const cA1 = { name: 'name_A.1', uniqueId: 'A.1', categoryPath: ['A', 'A.1'] } as Category;
+      const cA1a = { name: 'name_A.1.a', uniqueId: 'A.1.a', categoryPath: ['A', 'A.1', 'A.1.a'] } as Category;
+      const cA1b = { name: 'name_A.1.b', uniqueId: 'A.1.b', categoryPath: ['A', 'A.1', 'A.1.b'] } as Category;
+      const cA2 = { name: 'name_A.2', uniqueId: 'A.2', categoryPath: ['A', 'A.2'] } as Category;
+      const cB = { name: 'name_B', uniqueId: 'B', categoryPath: ['B'] } as Category;
+      store$.dispatch(loadTopLevelCategoriesSuccess({ categories: categoryTree([cA, cA1, cA1a, cA1b, cA2, cB]) }));
     });
 
-    it('should select root categories when used', () => {
-      expect(getTopLevelCategories(store$.state).map(x => x.uniqueId)).toEqual(['A', 'B']);
-    });
+    describe('selecting navigation categories', () => {
+      it('should select top level categories when no argument was supplied', () => {
+        expect(getNavigationCategories(undefined)(store$.state)).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "hasChildren": true,
+              "name": "name_A",
+              "uniqueId": "A",
+              "url": "/name_A-catA",
+            },
+            Object {
+              "hasChildren": false,
+              "name": "name_B",
+              "uniqueId": "B",
+              "url": "/name_B-catB",
+            },
+          ]
+        `);
+      });
 
-    it('should remember if top level categories are loaded', () => {
-      expect(isTopLevelCategoriesLoaded(store$.state)).toBeTrue();
+      it('should select sub categories when sub category is selected', () => {
+        expect(getNavigationCategories('A')(store$.state)).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "hasChildren": true,
+              "name": "name_A.1",
+              "uniqueId": "A.1",
+              "url": "/name_A.1-catA.1",
+            },
+            Object {
+              "hasChildren": false,
+              "name": "name_A.2",
+              "uniqueId": "A.2",
+              "url": "/name_A.2-catA.2",
+            },
+          ]
+        `);
+      });
+
+      it('should select deeper sub categories when deeper sub category is selected', () => {
+        expect(getNavigationCategories('A.1')(store$.state)).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "hasChildren": false,
+              "name": "name_A.1.a",
+              "uniqueId": "A.1.a",
+              "url": "/name_A.1.a-catA.1.a",
+            },
+            Object {
+              "hasChildren": false,
+              "name": "name_A.1.b",
+              "uniqueId": "A.1.b",
+              "url": "/name_A.1.b-catA.1.b",
+            },
+          ]
+        `);
+      });
+
+      it('should be empty when selecting leaves', () => {
+        expect(getNavigationCategories('A.1.a')(store$.state)).toBeEmpty();
+      });
     });
   });
 });

@@ -1,47 +1,48 @@
-import { ChangeDetectionStrategy, Component, Inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
-import { CategoryView } from 'ish-core/models/category-view/category-view.model';
-import { Category } from 'ish-core/models/category/category.model';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { NavigationCategory } from 'ish-core/models/navigation-category/navigation-category.model';
 
 /**
  * The Sub Category Navigation Component displays second level category navigation.
- *
- * @example
- * <ish-sub-category-navigation
- *   [category]="category"
- *   [subCategoriesDepth]="1"
- * >
- * </ish-sub-category-navigation>
  */
 @Component({
   selector: 'ish-sub-category-navigation',
   templateUrl: './sub-category-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SubCategoryNavigationComponent {
+export class SubCategoryNavigationComponent implements OnInit {
   @Input() view = 'auto';
-  @Input() category: CategoryView;
+  @Input() categoryUniqueId: string;
   @Input() subCategoriesDepth: number;
 
-  openedCategories = [];
+  openedCategories: string[] = [];
 
-  constructor(@Inject(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH) public mainNavigationMaxSubCategoriesDepth: number) {}
+  navigationCategories$: Observable<NavigationCategory[]>;
+
+  constructor(
+    private shoppingFacade: ShoppingFacade,
+    @Inject(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH) public mainNavigationMaxSubCategoriesDepth: number
+  ) {}
+
+  ngOnInit() {
+    this.navigationCategories$ = this.shoppingFacade.navigationCategories$(this.categoryUniqueId);
+  }
 
   /**
    * Indicate if specific category is expanded.
-   * @param category The category item.
    */
-  isOpened(category: Category): boolean {
-    return this.openedCategories.includes(category.uniqueId);
+  isOpened(uniqueId: string): boolean {
+    return this.openedCategories.includes(uniqueId);
   }
 
   /**
    * Toggle category open state.
-   * @param category The category item.
    */
-  toggleOpen(category: Category) {
-    const index = this.openedCategories.findIndex(id => id === category.uniqueId);
-    index > -1 ? this.openedCategories.splice(index, 1) : this.openedCategories.push(category.uniqueId);
+  toggleOpen(uniqueId: string) {
+    const index = this.openedCategories.findIndex(id => id === uniqueId);
+    index > -1 ? this.openedCategories.splice(index, 1) : this.openedCategories.push(uniqueId);
   }
 }

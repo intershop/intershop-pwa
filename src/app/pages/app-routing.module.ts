@@ -8,6 +8,7 @@ import { LogoutGuard } from 'ish-core/guards/logout.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'loading', loadChildren: () => import('./loading/loading-page.module').then(m => m.LoadingPageModule) },
   {
     path: 'home',
     loadChildren: () => import('./home/home-page.module').then(m => m.HomePageModule),
@@ -61,6 +62,7 @@ const routes: Routes = [
         title: 'application.recentlyViewed.heading',
         robots: 'noindex, nofollow',
       },
+      breadcrumbData: [{ key: 'application.recentlyViewed.breadcrumb.label' }],
     },
   },
   {
@@ -115,14 +117,8 @@ const routes: Routes = [
   },
   {
     path: 'logout',
-    loadChildren: () => import('./home/home-page.module').then(m => m.HomePageModule),
     canActivate: [LogoutGuard],
-    data: {
-      meta: {
-        title: 'account.logout.link',
-        robots: 'noindex, nofollow',
-      },
-    },
+    children: [],
   },
   {
     path: 'forgotPassword',
@@ -142,6 +138,7 @@ const routes: Routes = [
         title: 'helpdesk.contact_us.heading',
         robots: 'index, nofollow',
       },
+      breadcrumbData: [{ key: 'helpdesk.contact_us.link' }],
     },
   },
 ];

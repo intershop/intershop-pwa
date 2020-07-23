@@ -2,14 +2,26 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { isEqual } from 'lodash-es';
+import { TranslateService } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
-import { catchError, concatMap, debounceTime, distinctUntilChanged, map, sample, switchMap, tap } from 'rxjs/operators';
+import {
+  catchError,
+  concatMap,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  sample,
+  switchMap,
+  switchMapTo,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
+import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { loadMoreProducts, setProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
@@ -25,7 +37,8 @@ export class SearchEffects {
     private productsService: ProductsService,
     private suggestService: SuggestService,
     private httpStatusCodeService: HttpStatusCodeService,
-    private productListingMapper: ProductListingMapper
+    private productListingMapper: ProductListingMapper,
+    private translateService: TranslateService
   ) {}
 
   /**
@@ -33,12 +46,12 @@ export class SearchEffects {
    */
   triggerSearch$ = createEffect(() =>
     this.store.pipe(
-      ofUrl(/^\/search.*/),
-      select(selectRouteParam('searchTerm')),
       sample(this.actions$.pipe(ofType(routerNavigatedAction))),
+      ofUrl(/^\/search.*/),
+      withLatestFrom(this.store.pipe(select(selectRouteParam('searchTerm')))),
+      map(([, searchTerm]) => searchTerm),
       whenTruthy(),
-      map(searchTerm => loadMoreProducts({ id: { type: 'search', value: searchTerm } })),
-      distinctUntilChanged(isEqual)
+      map(searchTerm => loadMoreProducts({ id: { type: 'search', value: searchTerm } }))
     )
   );
 
@@ -81,7 +94,6 @@ export class SearchEffects {
       switchMap(searchTerm =>
         this.suggestService.search(searchTerm).pipe(
           map(suggests => suggestSearchSuccess({ searchTerm, suggests })),
-          // tslint:disable-next-line:ban
           catchError(() => EMPTY)
         )
       )
@@ -95,5 +107,25 @@ export class SearchEffects {
         tap(() => this.httpStatusCodeService.setStatusAndRedirect(404))
       ),
     { dispatch: false }
+  );
+
+  setSearchBreadcrumb$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(routerNavigatedAction),
+      switchMapTo(
+        this.store.pipe(
+          ofUrl(/^\/search.*/),
+          select(selectRouteParam('searchTerm')),
+          whenTruthy(),
+          switchMap(searchTerm =>
+            this.translateService
+              .get('search.breadcrumbs.your_search.label')
+              .pipe(
+                map(translation => setBreadcrumbData({ breadcrumbData: [{ text: `${translation} ${searchTerm}` }] }))
+              )
+          )
+        )
+      )
+    )
   );
 }

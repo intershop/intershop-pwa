@@ -18,8 +18,7 @@ import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-togg
 })
 export class NotFeatureToggleDirective {
   constructor(
-    // tslint:disable-next-line:no-any
-    private templateRef: TemplateRef<any>,
+    private templateRef: TemplateRef<unknown>,
     private viewContainer: ViewContainerRef,
     private featureToggle: FeatureToggleService
   ) {}

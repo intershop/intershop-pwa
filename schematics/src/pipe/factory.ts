@@ -17,13 +17,12 @@ import { addDeclarationToNgModule, addExportToNgModule, addProviderToNgModule } 
 import { PWAPipeOptionsSchema as Options } from './schema';
 
 export function createPipe(options: Options): Rule {
-  return host => {
+  return async host => {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
     }
-    // tslint:disable:no-parameter-reassignment
-    options = detectExtension('pipe', host, options);
-    options = applyNameAndPath('pipe', host, options);
+    options = await detectExtension('pipe', host, options);
+    options = await applyNameAndPath('pipe', host, options);
     options = determineArtifactName('pipe', host, options);
 
     if (!options.extension) {

@@ -2,16 +2,12 @@ import { UrlMatchResult, UrlSegment } from '@angular/router';
 import { MonoTypeOperatorFunction } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { CategoryView } from 'ish-core/models/category-view/category-view.model';
+import { Category } from 'ish-core/models/category/category.model';
 import { CoreState } from 'ish-core/store/core/core-store';
 import { selectRouteParam } from 'ish-core/store/core/router';
 
-export function generateLocalizedCategorySlug(category: CategoryView) {
-  if (!category || !category.categoryPath.length) {
-    return '';
-  }
-  const lastCat = category.pathCategories()[category.categoryPath.length - 1].name;
-  return lastCat ? lastCat.replace(/ /g, '-') : '';
+export function generateLocalizedCategorySlug(category: Category) {
+  return category?.name?.replace(/ /g, '-') || '';
 }
 
 const categoryRouteFormat = /^\/(?!category\/.*$)(.*-)?cat(.*)$/;
@@ -37,7 +33,7 @@ export function matchCategoryRoute(segments: UrlSegment[]): UrlMatchResult {
   return;
 }
 
-export function generateCategoryUrl(category: CategoryView): string {
+export function generateCategoryUrl(category: Category): string {
   if (!category) {
     return '/';
   }

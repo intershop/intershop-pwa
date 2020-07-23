@@ -2,12 +2,12 @@ import { normalize, strings } from '@angular-devkit/core';
 import { Tree } from '@angular-devkit/schematics';
 import { findModuleFromOptions } from '@schematics/angular/utility/find-module';
 import { parseName } from '@schematics/angular/utility/parse-name';
-import { buildDefaultPath, getProject } from '@schematics/angular/utility/project';
 import { validateHtmlSelector, validateName } from '@schematics/angular/utility/validation';
+import { buildDefaultPath, getWorkspace } from '@schematics/angular/utility/workspace';
 
 import { buildSelector } from './selector';
 
-export function applyNameAndPath(
+export async function applyNameAndPath(
   artifact: string,
   host: Tree,
   options: {
@@ -22,7 +22,8 @@ export function applyNameAndPath(
   let path = options.path;
   let name = options.name;
 
-  const project = getProject(host, options.project);
+  const workspace = await getWorkspace(host);
+  const project = workspace.projects.get(options.project);
 
   // remove possible added path from root
   if (name && name.startsWith('src/app/')) {
@@ -86,13 +87,13 @@ export function determineArtifactName(
   };
 }
 
-export function detectExtension(
+export async function detectExtension(
   artifact: string,
   host: Tree,
   options: { path?: string; name?: string; restricted?: boolean; project?: string; extension?: string }
 ) {
-  const project = getProject(host, options.project);
-
+  const workspace = await getWorkspace(host);
+  const project = workspace.projects.get(options.project);
   let extension = options.extension;
   const regex = /extensions\/([a-z][a-z0-9-]+)/;
   const requestDestination = normalize(`${options.path}/${options.name}`);
@@ -132,11 +133,12 @@ export function findDeclaringModule(host: Tree, options: { name?: string }) {
   };
 }
 
-export function generateSelector(
+export async function generateSelector(
   host: Tree,
   options: { project?: string; selector?: string; name?: string; prefix?: string }
 ) {
-  const project = getProject(host, options.project);
+  const workspace = await getWorkspace(host);
+  const project = workspace.projects.get(options.project);
   const selector = options.selector || buildSelector(options, project.prefix);
   validateHtmlSelector(selector);
 

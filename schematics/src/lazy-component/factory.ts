@@ -11,7 +11,7 @@ import {
   url,
 } from '@angular-devkit/schematics';
 import { tsquery } from '@phenomnomnominal/tsquery';
-import { getProject } from '@schematics/angular/utility/project';
+import { getWorkspace } from '@schematics/angular/utility/workspace';
 import * as ts from 'typescript';
 
 import { determineArtifactName, findDeclaringModule, generateSelector } from '../utils/common';
@@ -21,11 +21,12 @@ import { addDeclarationToNgModule, addDecoratorToClass, addExportToNgModule } fr
 import { PWALazyComponentOptionsSchema as Options } from './schema';
 
 export function createLazyComponent(options: Options): Rule {
-  return host => {
+  return async host => {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
     }
-    const project = getProject(host, options.project);
+    const workspace = await getWorkspace(host);
+    const project = workspace.projects.get(options.project);
 
     const originalPath = options.path.replace(/.*src\/app\//, '');
     const componentPath = `/${project.sourceRoot}/app/${originalPath}`;
@@ -43,8 +44,7 @@ export function createLazyComponent(options: Options): Rule {
     const group = pathSplits[pathSplits.length - 3];
     const originalName = /\/([a-z0-9-]+)\.component\.ts/.exec(originalPath)[1];
     options.name = 'lazy-' + originalName;
-    // tslint:disable: no-parameter-reassignment
-    options = generateSelector(host, options);
+    options = await generateSelector(host, options);
     options.path = `${project.sourceRoot}/app/extensions/${extension}/exports/${group}`;
     options = findDeclaringModule(host, options);
     options = determineArtifactName('component', host, options);

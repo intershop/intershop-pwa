@@ -1,11 +1,10 @@
-import { HttpParams } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { CategoryData } from 'ish-core/models/category/category.interface';
-import { ApiService } from 'ish-core/services/api/api.service';
+import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { CategoriesService } from './categories.service';
@@ -39,12 +38,9 @@ describe('Categories Service', () => {
       categoriesService.getTopLevelCategories(1);
       verify(apiServiceMock.get('categories', anything())).once();
 
-      const args = capture(apiServiceMock.get).last();
-      expect(args[0]).toBe('categories');
-      // tslint:disable-next-line:no-any
-      const params = (args[1] as any).params as HttpParams;
-      expect(params).toBeTruthy();
-      expect(params.toString()).toMatchInlineSnapshot(
+      expect(capture(apiServiceMock.get).last()[0].toString()).toMatchInlineSnapshot(`"categories"`);
+      const options: AvailableOptions = capture(apiServiceMock.get).last()[1];
+      expect(options.params.toString()).toMatchInlineSnapshot(
         `"imageView=NO-IMAGE&view=tree&limit=1&omitHasOnlineProducts=true"`
       );
     });

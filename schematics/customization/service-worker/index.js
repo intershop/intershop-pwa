@@ -20,14 +20,12 @@ if (build.options.serviceWorker !== undefined) {
   build.options.serviceWorker = enable;
 }
 
-Object.keys(build.configurations)
-  .filter(key => key !== 'local')
-  .forEach(key => {
-    const configuration = build.configurations[key];
-    if (configuration.serviceWorker !== undefined) {
-      configuration.serviceWorker = enable;
-    }
-  });
+Object.keys(build.configurations).forEach(key => {
+  const configuration = build.configurations[key];
+  if (configuration.serviceWorker !== undefined) {
+    configuration.serviceWorker = enable;
+  }
+});
 
 fs.writeFileSync('./angular.json', stringify(angularJson, null, 2));
 execSync('npx prettier --write angular.json');
@@ -38,12 +36,7 @@ tsMorphProject.addSourceFilesAtPaths('src/environments/environment*.ts');
 
 tsMorphProject
   .getSourceFiles()
-  .filter(
-    file =>
-      !file.getBaseName().endsWith('.model.ts') &&
-      !file.getBaseName().endsWith('.local.ts') &&
-      file.getBaseName() !== 'environment.ts'
-  )
+  .filter(file => !file.getBaseName().endsWith('.model.ts') && file.getBaseName() !== 'environment.ts')
   .forEach(file => {
     file
       .forEachDescendantAsArray()

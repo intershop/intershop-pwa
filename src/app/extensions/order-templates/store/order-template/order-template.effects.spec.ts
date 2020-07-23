@@ -509,7 +509,9 @@ describe('Order Template Effects', () => {
       store$.dispatch(selectOrderTemplate({ id: orderTemplates[0].id }));
     });
 
-    it('should set the breadcrumb of the selected Order Template', done => {
+    it('should set the breadcrumb of the selected Order Template when on account url', done => {
+      router.navigateByUrl('/account/order-templates/' + orderTemplates[0].id);
+
       effects.setOrderTemplateBreadcrumb$.subscribe(action => {
         expect(action.payload).toMatchInlineSnapshot(`
           Object {
@@ -526,6 +528,12 @@ describe('Order Template Effects', () => {
         `);
         done();
       });
+    });
+
+    it('should not set the breadcrumb of the selected Order Template when on another url', done => {
+      effects.setOrderTemplateBreadcrumb$.subscribe(fail, fail, fail);
+
+      setTimeout(done, 1000);
     });
   });
 });

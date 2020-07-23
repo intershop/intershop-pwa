@@ -10,7 +10,7 @@ import {
   template,
   url,
 } from '@angular-devkit/schematics';
-import { buildDefaultPath, getProject } from '@schematics/angular/utility/project';
+import { buildDefaultPath, getWorkspace } from '@schematics/angular/utility/workspace';
 
 import { applyNameAndPath, detectExtension, determineArtifactName } from '../utils/common';
 import { applyLintFix } from '../utils/lint-fix';
@@ -19,13 +19,12 @@ import { addExportToNgModule, addImportToNgModule, addImportToNgModuleBefore } f
 import { PWAExtensionOptionsSchema as Options } from './schema';
 
 export function createExtension(options: Options): Rule {
-  return host => {
+  return async host => {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
     }
-    // tslint:disable:no-parameter-reassignment
-    options = detectExtension('extension', host, options);
-    options = applyNameAndPath('extension', host, options);
+    options = await detectExtension('extension', host, options);
+    options = await applyNameAndPath('extension', host, options);
     options = determineArtifactName('extension', host, options);
 
     const operations: Rule[] = [];
@@ -41,7 +40,10 @@ export function createExtension(options: Options): Rule {
         ])
       )
     );
-    const projectRoot = buildDefaultPath(getProject(host, options.project));
+
+    const workspace = await getWorkspace(host);
+    const project = workspace.projects.get(options.project);
+    const projectRoot = buildDefaultPath(project);
 
     const moduleImportOptions = {
       artifactName: strings.classify(options.name) + 'ExportsModule',

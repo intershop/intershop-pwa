@@ -31,7 +31,7 @@ export class AttributeToStringPipe implements PipeTransform {
 
     switch (data.type) {
       case 'String':
-        return data.value;
+        return data.value as string;
       case 'Integer':
       case 'Double':
       case 'Long':
@@ -45,16 +45,18 @@ export class AttributeToStringPipe implements PipeTransform {
       case 'MultipleDouble':
       case 'MultipleLong':
       case 'MultipleBigDecimal':
-        return data.value.map(v => this.toDecimal(v)).join(valuesSeparator);
+        return Array.isArray(data.value) && data.value.map(v => this.toDecimal(v)).join(valuesSeparator);
       case 'MultipleString':
       case 'MultipleBoolean':
-        return data.value.join(valuesSeparator);
+        return Array.isArray(data.value) && data.value.join(valuesSeparator);
       case 'MultipleDate':
-        return data.value.map(v => this.toDate(v)).join(valuesSeparator);
+        return Array.isArray(data.value) && data.value.map(v => this.toDate(v)).join(valuesSeparator);
       case 'ResourceAttribute':
-        switch (data.value.type) {
+        const resourceAttribute = data as Attribute<{ type: string }>;
+        switch (resourceAttribute.value.type) {
           case 'Quantity':
-            return `${this.toDecimal(data.value.value)}\xA0${data.value.unit}`;
+            const quantityAttribute = data as Attribute<{ value: unknown; unit: string }>;
+            return `${this.toDecimal(quantityAttribute.value.value)}\xA0${quantityAttribute.value.unit}`;
           case 'Money':
             return this.toCurrency(data.value as Price);
           default:

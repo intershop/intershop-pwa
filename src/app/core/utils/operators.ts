@@ -18,8 +18,7 @@ export function distinctCompareWith<T>(observable: Observable<T>): OperatorFunct
     );
 }
 
-// tslint:disable-next-line:no-any
-export function mapErrorToAction<S, T>(actionType: (props: { error: HttpError }) => T, extras?: any) {
+export function mapErrorToAction<S, T>(actionType: (props: { error: HttpError }) => T, extras?: object) {
   return (source$: Observable<S | T>) =>
     source$.pipe(
       // tslint:disable-next-line:ban ban-types
@@ -49,13 +48,11 @@ export function mapToProperty<T, K extends keyof T>(property: K) {
   return (source$: Observable<T>) => source$.pipe<T[K]>(map(x => (x ? x[property] : undefined)));
 }
 
-// tslint:disable-next-line:no-any
-export function mapToPayload<T>(): OperatorFunction<{ payload: T; type: any }, T> {
+export function mapToPayload<T>(): OperatorFunction<{ payload: T; type: unknown }, T> {
   return (source$: Observable<{ payload: T }>) => source$.pipe(map(action => action.payload));
 }
 
-// tslint:disable-next-line:no-any
-export function mapToPayloadProperty<T>(key: keyof T): OperatorFunction<{ payload: T; type: any }, T[keyof T]> {
+export function mapToPayloadProperty<T>(key: keyof T): OperatorFunction<{ payload: T; type: unknown }, T[keyof T]> {
   return (source$: Observable<{ payload: T }>) =>
     source$.pipe(
       map(action => action.payload),

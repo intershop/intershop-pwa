@@ -5,6 +5,7 @@ import * as using from 'jasmine-data-provider';
 import { CategoryData } from 'ish-core/models/category/category.interface';
 import { CategoryMapper } from 'ish-core/models/category/category.mapper';
 import { Category } from 'ish-core/models/category/category.model';
+import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { CategoryTreeHelper } from './category-tree.helper';
 import { CategoryTree } from './category-tree.model';
@@ -457,5 +458,189 @@ describe('Category Tree Helper', () => {
         });
       }
     );
+  });
+
+  describe('subTree', () => {
+    let combined: CategoryTree;
+
+    beforeEach(() => {
+      combined = categoryTree([
+        { uniqueId: 'A', categoryPath: ['A'] },
+        { uniqueId: 'A.1', categoryPath: ['A', 'A.1'] },
+        { uniqueId: 'A.1.a', categoryPath: ['A', 'A.1', 'A.1.a'] },
+        { uniqueId: 'A.2', categoryPath: ['A', 'A.2'] },
+        { uniqueId: 'A.1.b', categoryPath: ['A', 'A.1', 'A.1.b'] },
+        { uniqueId: 'B', categoryPath: ['B'] },
+        { uniqueId: 'B.1', categoryPath: ['B', 'B.1'] },
+        { uniqueId: 'B.1.a', categoryPath: ['B', 'B.1', 'B.1.a'] },
+        { uniqueId: 'B.2', categoryPath: ['B', 'B.2'] },
+      ] as Category[]);
+    });
+
+    it('should be created', () => {
+      expect(combined).toMatchInlineSnapshot(`
+        ├─ A
+        │  ├─ A.1
+        │  │  ├─ A.1.a
+        │  │  └─ A.1.b
+        │  └─ A.2
+        └─ B
+           ├─ B.1
+           │  └─ B.1.a
+           └─ B.2
+
+      `);
+
+      expect(combined.rootIds).toMatchInlineSnapshot(`
+        Array [
+          "A",
+          "B",
+        ]
+      `);
+      expect(Object.keys(combined.nodes)).toMatchInlineSnapshot(`
+        Array [
+          "A",
+          "A.1",
+          "A.1.a",
+          "A.2",
+          "A.1.b",
+          "B",
+          "B.1",
+          "B.1.a",
+          "B.2",
+        ]
+      `);
+      expect(Object.keys(combined.edges)).toMatchInlineSnapshot(`
+        Array [
+          "A",
+          "A.1",
+          "B",
+          "B.1",
+        ]
+      `);
+    });
+
+    it('should return an empty tree if selected uniqueId is not part of the tree', () => {
+      const tree = CategoryTreeHelper.subTree(combined, 'C');
+      expect(tree.rootIds).toBeEmpty();
+      expect(tree.edges).toBeEmpty();
+      expect(tree.nodes).toBeEmpty();
+    });
+
+    it('should return copy of tree if selector is undefined', () => {
+      const tree = CategoryTreeHelper.subTree(combined, undefined);
+      expect(CategoryTreeHelper.equals(tree, combined)).toBeTrue();
+    });
+
+    it('should extract sub tree for A', () => {
+      const tree = CategoryTreeHelper.subTree(combined, 'A');
+
+      expect(tree).toMatchInlineSnapshot(`
+        └─ A
+           ├─ A.1
+           │  ├─ A.1.a
+           │  └─ A.1.b
+           └─ A.2
+
+      `);
+
+      expect(tree.rootIds).toMatchInlineSnapshot(`
+        Array [
+          "A",
+        ]
+      `);
+      expect(Object.keys(tree.nodes)).toMatchInlineSnapshot(`
+        Array [
+          "A",
+          "A.1",
+          "A.1.a",
+          "A.2",
+          "A.1.b",
+        ]
+      `);
+      expect(Object.keys(tree.edges)).toMatchInlineSnapshot(`
+        Array [
+          "A",
+          "A.1",
+        ]
+      `);
+    });
+
+    it('should extract sub tree for A.1', () => {
+      const tree = CategoryTreeHelper.subTree(combined, 'A.1');
+
+      expect(tree).toMatchInlineSnapshot(`
+        └─ dangling
+           └─ A.1
+              ├─ A.1.a
+              └─ A.1.b
+
+      `);
+
+      expect(tree.rootIds).toBeEmpty();
+      expect(Object.keys(tree.nodes)).toMatchInlineSnapshot(`
+        Array [
+          "A.1",
+          "A.1.a",
+          "A.1.b",
+        ]
+      `);
+      expect(Object.keys(tree.edges)).toMatchInlineSnapshot(`
+        Array [
+          "A.1",
+        ]
+      `);
+    });
+
+    it('should extract sub tree for A.1.a', () => {
+      const tree = CategoryTreeHelper.subTree(combined, 'A.1.a');
+
+      expect(tree).toMatchInlineSnapshot(`
+        └─ dangling
+           └─ A.1.a
+
+      `);
+
+      expect(tree.rootIds).toBeEmpty();
+      expect(Object.keys(tree.nodes)).toMatchInlineSnapshot(`
+        Array [
+          "A.1.a",
+        ]
+      `);
+      expect(Object.keys(tree.edges)).toBeEmpty();
+    });
+  });
+
+  describe('equals', () => {
+    const catA = { uniqueId: 'A', categoryPath: ['A'] } as Category;
+    const catB = { uniqueId: 'B', categoryPath: ['B'] } as Category;
+
+    it('should return true for simple equal trees', () => {
+      const tree1 = categoryTree([catA]);
+      const tree2 = categoryTree([catA]);
+
+      expect(CategoryTreeHelper.equals(tree1, tree2)).toBeTrue();
+    });
+
+    it('should return true if category was copied', () => {
+      const tree1 = categoryTree([catA]);
+      const tree2 = categoryTree([{ ...catA }]);
+
+      expect(CategoryTreeHelper.equals(tree1, tree2)).toBeTrue();
+    });
+
+    it('should return false for simple unequal trees', () => {
+      const tree1 = categoryTree([catA]);
+      const tree2 = categoryTree([catB]);
+
+      expect(CategoryTreeHelper.equals(tree1, tree2)).toBeFalse();
+    });
+
+    it('should return true for simple unordered trees', () => {
+      const tree1 = categoryTree([catA, catB]);
+      const tree2 = categoryTree([catB, catA]);
+
+      expect(CategoryTreeHelper.equals(tree1, tree2)).toBeTrue();
+    });
   });
 });

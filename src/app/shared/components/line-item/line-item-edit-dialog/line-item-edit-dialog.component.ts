@@ -49,7 +49,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
 })
 export class LineItemEditDialogComponent implements OnInit, OnDestroy, OnChanges {
   @Input() lineItem: LineItemView;
-  @Input() modalDialogRef?: ModalDialogComponent;
+  @Input() modalDialogRef?: ModalDialogComponent<unknown>;
   @Input() editable = true;
   @Output() updateItem = new EventEmitter<LineItemUpdate>();
 

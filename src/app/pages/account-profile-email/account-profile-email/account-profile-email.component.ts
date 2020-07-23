@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CustomValidators } from 'ng2-validation';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 /**
  * The Account Profile Email Page Component displays a form for changing the user's email address
@@ -25,13 +25,13 @@ export class AccountProfileEmailComponent implements OnInit {
   submitted = false;
 
   ngOnInit() {
-    this.form = new FormGroup({
-      email: new FormControl('', [Validators.required, CustomValidators.email]),
-      emailConfirmation: new FormControl('', [Validators.required, CustomValidators.email]),
-    });
-
-    // set additional validator
-    this.form.get('emailConfirmation').setValidators(CustomValidators.equalTo(this.form.get('email')));
+    this.form = new FormGroup(
+      {
+        email: new FormControl('', [Validators.required, SpecialValidators.email]),
+        emailConfirmation: new FormControl('', [Validators.required, SpecialValidators.email]),
+      },
+      SpecialValidators.equalTo('emailConfirmation', 'email')
+    );
   }
 
   /**

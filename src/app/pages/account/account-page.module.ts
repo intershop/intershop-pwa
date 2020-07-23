@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AuthorizationToggleGuard } from 'ish-core/authorization-toggle.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { AccountOverviewPageModule } from '../account-overview/account-overview-page.module';
 
 import { AccountNavigationComponent } from './account-navigation/account-navigation.component';
 import { AccountPageComponent } from './account-page.component';
+import { AccountUserInfoComponent } from './account-user-info/account-user-info.component';
 
 const accountPageRoutes: Routes = [
   {
@@ -64,12 +66,20 @@ const accountPageRoutes: Routes = [
             m => m.OrderTemplatesRoutingModule
           ),
       },
+      {
+        path: 'organization',
+        loadChildren: () => import('organization-management').then(m => m.OrganizationManagementModule),
+        canActivate: [AuthorizationToggleGuard],
+        data: {
+          permission: 'APP_B2B_MANAGE_USERS',
+        },
+      },
     ],
   },
 ];
 
 @NgModule({
   imports: [AccountOverviewPageModule, RouterModule.forChild(accountPageRoutes), SharedModule],
-  declarations: [AccountNavigationComponent, AccountPageComponent],
+  declarations: [AccountNavigationComponent, AccountPageComponent, AccountUserInfoComponent],
 })
 export class AccountPageModule {}

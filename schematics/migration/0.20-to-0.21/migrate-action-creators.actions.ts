@@ -11,7 +11,6 @@ import {
   VariableDeclarationKind,
 } from 'ts-morph';
 
-// tslint:disable:no-console
 export class ActionCreatorsActionsMorpher {
   constructor(public actionsFile: SourceFile) {}
   actionTypes: { [typeName: string]: string };

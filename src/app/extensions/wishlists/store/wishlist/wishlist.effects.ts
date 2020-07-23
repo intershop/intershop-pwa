@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { debounceTime, filter, map, mapTo, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
-import { selectRouteParam } from 'ish-core/store/core/router';
+import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { getUserAuthorized } from 'ish-core/store/customer/user';
 import {
@@ -219,6 +219,7 @@ export class WishlistEffects {
 
   setWishlistBreadcrumb$ = createEffect(() =>
     this.store.pipe(
+      ofUrl(/^\/account\/.*/),
       select(getSelectedWishlistDetails),
       whenTruthy(),
       map(wishlist =>

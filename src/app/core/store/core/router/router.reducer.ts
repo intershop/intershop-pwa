@@ -5,4 +5,5 @@ export interface RouterState {
   params: Params;
   queryParams: Params;
   data: Data;
+  path: string;
 }

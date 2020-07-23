@@ -5,6 +5,7 @@ import { NgbCollapseModule, NgbDropdownModule, NgbModalModule } from '@ng-bootst
 import { TranslateModule } from '@ngx-translate/core';
 import { DeferLoadModule } from '@trademe/ng-defer-load';
 
+import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { ClickOutsideDirective } from 'ish-core/directives/click-outside.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
@@ -51,6 +52,7 @@ const exportedComponents = [
 @NgModule({
   imports: [
     ...importExportModules,
+    AuthorizationToggleModule,
     CommonModule,
     DeferLoadModule,
     FeatureToggleModule,

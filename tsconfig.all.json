@@ -1,9 +1,9 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "outDir": "./out-tsc/all",
     "types": ["jest", "jest-extended", "node"]
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts", "projects/**/*.ts"]
 }

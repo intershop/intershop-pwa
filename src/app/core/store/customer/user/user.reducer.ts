@@ -4,6 +4,7 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { User } from 'ish-core/models/user/user.model';
+import { loadRolesAndPermissionsFail } from 'ish-core/store/customer/authorization';
 import { setErrorOn, setLoadingOn } from 'ish-core/utils/ngrx-creators';
 
 import {
@@ -117,7 +118,8 @@ export const userReducer = createReducer(
     updateUserPasswordFail,
     updateCustomerFail,
     loadUserPaymentMethodsFail,
-    deleteUserPaymentInstrumentFail
+    deleteUserPaymentInstrumentFail,
+    loadRolesAndPermissionsFail
   ),
   on(loginUserSuccess, (state: UserState, action) => {
     const customer = action.payload.customer;

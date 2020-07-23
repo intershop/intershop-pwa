@@ -1,4 +1,8 @@
-<div class="category-name" [attr.data-testing-id]="'category-' + category.uniqueId">
+<div
+  *ngIf="category$ | async as category"
+  class="category-name"
+  [attr.data-testing-id]="'category-' + category.uniqueId"
+>
   <a [routerLink]="category | ishCategoryRoute">
     <ish-category-image [category]="category"></ish-category-image>
     <h3>{{ category.name }}</h3>

@@ -1,6 +1,5 @@
-export interface Attribute {
+export interface Attribute<T = unknown> {
   name: string;
   type?: string;
-  // tslint:disable-next-line:no-any
-  value: any;
+  value: T;
 }

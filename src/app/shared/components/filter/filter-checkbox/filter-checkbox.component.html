@@ -1,6 +1,6 @@
 <!--- TODO: implement Show All-->
 <ul class="filter-list">
-  <ng-container *ngFor="let facet of filterElement.facets">
+  <ng-container *ngFor="let facet of getFacets()">
     <li class="filter-item filter-layer{{ facet.level }}" [ngClass]="{ 'filter-selected': facet.selected }">
       <div>
         <label class="filter-item-checkbox-label-native">
@@ -11,4 +11,12 @@
       </div>
     </li>
   </ng-container>
+  <li
+    class="filter-item"
+    *ngIf="filterElement.limitCount !== -1 && filterElement.facets.length > filterElement.limitCount"
+  >
+    <a class="btn-link" (click)="showAll = !showAll">{{
+      (showAll ? 'search.filter.show_less.link' : 'search.filter.show_all.link') | translate
+    }}</a>
+  </li>
 </ul>

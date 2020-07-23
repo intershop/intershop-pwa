@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+      - upgrade/**
   schedule:
     - cron: '0 0 * * *'
 
@@ -53,3 +54,7 @@ jobs:
         run: |
           npm --prefix e2e outdated --long || true
           npm --prefix e2e audit || true
+
+      - name: browserslist
+        if: always()
+        run: npx browserslist || true

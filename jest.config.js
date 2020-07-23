@@ -14,11 +14,12 @@ module.exports = {
     },
   },
   preset: 'jest-preset-angular',
-  roots: ['src'],
+  roots: ['src', 'projects'],
   setupFilesAfterEnv: ['<rootDir>/src/setupJest.ts'],
   transformIgnorePatterns: [`node_modules/(?!${esModules.join('|')})`],
   moduleNameMapper: {
     '^ish-(.*)$': '<rootDir>/src/app/$1',
+    '^organization-management$': '<rootDir>/projects/organization-management/src/app/exports',
   },
   snapshotSerializers: [
     './src/jest-serializer/AngularHTMLSerializer.js',

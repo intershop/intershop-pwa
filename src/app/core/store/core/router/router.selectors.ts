@@ -3,8 +3,7 @@ import { createSelector } from '@ngrx/store';
 
 import { RouterState } from './router.reducer';
 
-// tslint:disable-next-line: no-any
-export const selectRouter: (state: any) => RouterReducerState<RouterState> = state => state.router;
+export const selectRouter: (state) => RouterReducerState<RouterState> = state => state.router;
 
 export const selectRouteData = <T>(key: string) =>
   createSelector(selectRouter, (state): T => state?.state?.data && state.state.data[key]);
@@ -18,3 +17,5 @@ export const selectRouteParam = (key: string) =>
   createSelector(selectRouter, (state): string => state?.state?.params && state.state.params[key]);
 
 export const selectUrl = createSelector(selectRouter, state => state?.state?.url);
+
+export const selectPath = createSelector(selectRouter, state => state?.state?.path);

@@ -3,7 +3,7 @@
 
   <ng-template #productDetail>
     <ng-container *ngIf="product$ | async as product">
-      <ish-breadcrumb [product]="product" [category]="category$ | async"></ish-breadcrumb>
+      <ish-breadcrumb></ish-breadcrumb>
 
       <ish-product-detail
         [product]="product"

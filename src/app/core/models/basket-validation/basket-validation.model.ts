@@ -11,7 +11,8 @@ export type BasketValidationScopeType =
   | 'Payment'
   | 'Promotion'
   | 'All'
-  | ''; // no scope: a minimum is validated
+  /* no scope: a minimum is validated */
+  | '';
 
 export interface BasketValidationResultType {
   valid: boolean;

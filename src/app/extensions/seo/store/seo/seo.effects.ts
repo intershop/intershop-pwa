@@ -6,6 +6,7 @@ import { Store, select } from '@ngrx/store';
 import { REQUEST } from '@nguniversal/express-engine/tokens';
 import { MetaService } from '@ngx-meta/core';
 import { TranslateService } from '@ngx-translate/core';
+import { Request } from 'express';
 import { Observable } from 'rxjs';
 import {
   distinctUntilChanged,
@@ -44,8 +45,7 @@ export class SeoEffects {
     private translate: TranslateService,
     @Inject(DOCUMENT) private doc: Document,
     @Inject(PLATFORM_ID) private platformId: string,
-    // tslint:disable-next-line:no-any
-    @Optional() @Inject(REQUEST) private request: any,
+    @Optional() @Inject(REQUEST) private request: Request,
     private appRef: ApplicationRef
   ) {
     // get baseURL

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
+import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 @Component({
   selector: 'ish-filter-navigation-badges',
@@ -9,7 +10,7 @@ import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navig
 })
 export class FilterNavigationBadgesComponent implements OnChanges {
   @Input() filterNavigation: FilterNavigation;
-  @Output() applyFilter = new EventEmitter<{ searchParameter: string }>();
+  @Output() applyFilter = new EventEmitter<{ searchParameter: URLFormParams }>();
   @Output() clearFilters = new EventEmitter<void>();
   selected: { searchParameter: string; facetName: string; filterName: string }[];
 
@@ -32,7 +33,7 @@ export class FilterNavigationBadgesComponent implements OnChanges {
           );
   }
 
-  apply(select: { searchParameter: string; facetName: string; filterName: string }) {
+  apply(select: { searchParameter: URLFormParams; facetName: string; filterName: string }) {
     this.applyFilter.emit({ searchParameter: select.searchParameter });
   }
 

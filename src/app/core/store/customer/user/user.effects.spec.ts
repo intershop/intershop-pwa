@@ -99,13 +99,7 @@ describe('User Effects', () => {
       imports: [
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user'),
-        RouterTestingModule.withRoutes([
-          { path: 'login', component: DummyComponent },
-          { path: 'home', component: DummyComponent },
-          { path: 'account', component: DummyComponent },
-          { path: 'account/profile', component: DummyComponent },
-          { path: '**', component: DummyComponent },
-        ]),
+        RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
       ],
       providers: [
         UserEffects,
@@ -700,6 +694,44 @@ describe('User Effects', () => {
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
       expect(effects.requestPasswordReminder$).toBeObservable(expected$);
+    });
+  });
+
+  describe('redirectAfterUpdateOnProfileSettings$', () => {
+    describe('on profile edit', () => {
+      beforeEach(fakeAsync(() => {
+        router.navigateByUrl('/account/profile/edit');
+        tick(500);
+      }));
+
+      it.each([updateUserSuccess.type, updateUserPasswordSuccess.type, updateCustomerSuccess.type])(
+        'should navigate to profile page after %s',
+        fakeAsync((type: string) => {
+          actions$ = of({ type });
+          effects.redirectAfterUpdateOnProfileSettings$.subscribe();
+          tick(500);
+
+          expect(location.path()).toEqual('/account/profile');
+        })
+      );
+    });
+
+    describe('on different page', () => {
+      beforeEach(fakeAsync(() => {
+        router.navigateByUrl('/any');
+        tick(500);
+      }));
+
+      it.each([updateUserSuccess.type, updateUserPasswordSuccess.type, updateCustomerSuccess.type])(
+        'should not navigate to profile page after %s',
+        fakeAsync((type: string) => {
+          actions$ = of({ type });
+          effects.redirectAfterUpdateOnProfileSettings$.subscribe();
+          tick(500);
+
+          expect(location.path()).toEqual('/any');
+        })
+      );
     });
   });
 });

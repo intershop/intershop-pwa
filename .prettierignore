@@ -24,7 +24,7 @@
 .createMockdata.table
 package*.json
 Dockerfile*
-browserslist
+.browserslistrc
 /node_modules
 /cache
 /dist

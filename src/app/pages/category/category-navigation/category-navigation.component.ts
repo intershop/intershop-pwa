@@ -1,16 +1,28 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { CategoryView } from 'ish-core/models/category-view/category-view.model';
-import { CategoryHelper } from 'ish-core/models/category/category.model';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { NavigationCategory } from 'ish-core/models/navigation-category/navigation-category.model';
 
 @Component({
   selector: 'ish-category-navigation',
   templateUrl: './category-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CategoryNavigationComponent {
-  @Input() category: CategoryView;
-  @Input() categoryNavigationLevel: number;
+export class CategoryNavigationComponent implements OnInit, OnChanges {
+  @Input() uniqueId: string;
 
-  categoryEquals = CategoryHelper.equals;
+  navigationCategories$: Observable<NavigationCategory[]>;
+  currentCategoryId$: Observable<string>;
+
+  constructor(private shoppingFacade: ShoppingFacade) {}
+
+  ngOnInit() {
+    this.currentCategoryId$ = this.shoppingFacade.selectedCategory$.pipe(map(c => c?.uniqueId));
+  }
+
+  ngOnChanges() {
+    this.navigationCategories$ = this.shoppingFacade.navigationCategories$(this.uniqueId);
+  }
 }

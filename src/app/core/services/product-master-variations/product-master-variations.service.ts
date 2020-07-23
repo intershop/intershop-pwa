@@ -1,20 +1,18 @@
 import { Injectable } from '@angular/core';
-import b64u from 'b64u';
 import { groupBy } from 'lodash-es';
 
 import { Facet } from 'ish-core/models/facet/facet.model';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { VariationAttribute } from 'ish-core/models/product-variation/variation-attribute.model';
 import { VariationProductMasterView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
-import { URLFormParams, formParamsToString, stringToFormParams } from 'ish-core/utils/url-form-params';
+import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 @Injectable({ providedIn: 'root' })
 export class ProductMasterVariationsService {
   getFiltersAndFilteredVariationsForMasterProduct(
     product: VariationProductMasterView,
-    filterString: string
+    filters: URLFormParams
   ): { filterNavigation: FilterNavigation; products: string[] } {
-    const filters = stringToFormParams(filterString);
     return {
       filterNavigation: this.createFilterNavigation(product, filters),
       products: this.filterVariations(product, filters),
@@ -64,9 +62,10 @@ export class ProductMasterVariationsService {
   private createFacet(
     filterName: string,
     attribute: VariationAttribute,
-    filters: URLFormParams,
+    filtersURLFormParams: URLFormParams,
     variations: VariationProductView[]
   ): Facet {
+    const filters = filtersURLFormParams || {};
     const selected = !!filters[filterName] && filters[filterName].includes(attribute.value);
     const newFilters = {
       ...filters,
@@ -76,7 +75,7 @@ export class ProductMasterVariationsService {
     };
     return {
       name: attribute.value,
-      searchParameter: b64u.toBase64(b64u.encode(formParamsToString(newFilters))),
+      searchParameter: newFilters,
       count:
         this.potentialMatches(newFilters, variations).length &&
         variations.filter(variation =>

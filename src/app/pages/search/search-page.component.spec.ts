@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -23,6 +24,7 @@ describe('Search Page Component', () => {
     when(shoppingFacade.searchTerm$).thenReturn(of('search'));
 
     TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
       declarations: [
         MockComponent(BreadcrumbComponent),
         MockComponent(SearchNoResultComponent),
@@ -45,6 +47,7 @@ describe('Search Page Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
+    when(shoppingFacade.searchItemsCount$).thenReturn(of(0));
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 

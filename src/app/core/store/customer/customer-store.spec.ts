@@ -22,6 +22,7 @@ import { Product, ProductCompletenessLevel } from 'ish-core/models/product/produ
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { User } from 'ish-core/models/user/user.model';
 import { AddressService } from 'ish-core/services/address/address.service';
+import { AuthorizationService } from 'ish-core/services/authorization/authorization.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
@@ -153,6 +154,7 @@ describe('Customer Store', () => {
 
     const filterServiceMock = mock(FilterService);
     const orderServiceMock = mock(OrderService);
+    const authorizationServiceMock = mock(AuthorizationService);
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -183,6 +185,7 @@ describe('Customer Store', () => {
         { provide: UserService, useFactory: () => instance(userServiceMock) },
         { provide: PersonalizationService, useFactory: () => instance(personalizationServiceMock) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
+        { provide: AuthorizationService, useFactory: () => instance(authorizationServiceMock) },
         { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
         { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },

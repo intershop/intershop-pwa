@@ -12,6 +12,8 @@ import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/bre
 import { FilterNavigationComponent } from 'ish-shared/components/filter/filter-navigation/filter-navigation.component';
 import { ProductListingComponent } from 'ish-shared/components/product/product-listing/product-listing.component';
 
+import { CategoryNavigationComponent } from '../category-navigation/category-navigation.component';
+
 import { CategoryProductsComponent } from './category-products.component';
 
 describe('Category Products Component', () => {
@@ -25,6 +27,7 @@ describe('Category Products Component', () => {
       declarations: [
         CategoryProductsComponent,
         MockComponent(BreadcrumbComponent),
+        MockComponent(CategoryNavigationComponent),
         MockComponent(FaIconComponent),
         MockComponent(FilterNavigationComponent),
         MockComponent(NgbCollapse),

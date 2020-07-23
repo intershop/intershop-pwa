@@ -1,7 +1,9 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Dictionary } from '@ngrx/entity';
+import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { identity } from 'rxjs';
 import {
@@ -13,6 +15,7 @@ import {
   groupBy,
   map,
   mergeMap,
+  switchMapTo,
   tap,
   throttleTime,
   withLatestFrom,
@@ -25,6 +28,7 @@ import { Product, ProductCompletenessLevel, ProductHelper } from 'ish-core/model
 import { ofProductUrl } from 'ish-core/routing/product/product.route';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { selectRouteParam } from 'ish-core/store/core/router';
+import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { loadCategory } from 'ish-core/store/shopping/categories';
 import { setProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
@@ -52,7 +56,7 @@ import {
   loadProductsForCategoryFail,
   loadRetailSetSuccess,
 } from './products.actions';
-import { getProductEntities, getSelectedProduct } from './products.selectors';
+import { getBreadcrumbForProductPage, getProductEntities, getSelectedProduct } from './products.selectors';
 
 @Injectable()
 export class ProductsEffects {
@@ -62,7 +66,8 @@ export class ProductsEffects {
     private productsService: ProductsService,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,
-    @Inject(PLATFORM_ID) private platformId: string
+    @Inject(PLATFORM_ID) private platformId: string,
+    private router: Router
   ) {}
 
   loadProduct$ = createEffect(() =>
@@ -327,5 +332,21 @@ export class ProductsEffects {
     )
   );
 
-  private throttleOnBrowser = () => (isPlatformBrowser(this.platformId) ? throttleTime(3000) : map(identity));
+  setBreadcrumbForProductPage$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(routerNavigatedAction),
+      switchMapTo(
+        this.store.pipe(
+          ofProductUrl(),
+          select(getBreadcrumbForProductPage),
+          whenTruthy(),
+          map(breadcrumbData => setBreadcrumbData({ breadcrumbData }))
+        )
+      )
+    )
+  );
+
+  private throttleOnBrowser() {
+    return isPlatformBrowser(this.platformId) && this.router.navigated ? throttleTime(100) : map(identity);
+  }
 }

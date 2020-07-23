@@ -175,7 +175,6 @@ export class OrderService {
       })
       .pipe(
         map(OrderMapper.fromData),
-        // tslint:disable-next-line:ban
         catchError(() => EMPTY)
       );
   }

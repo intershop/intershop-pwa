@@ -48,7 +48,6 @@ describe('Returning User', () => {
     it('should log out and loose the cookie', () => {
       at(MyAccountPage, page => page.header.logout());
       at(HomePage);
-      // tslint:disable-next-line:no-null-keyword
       cy.getCookie('apiToken').should('equal', null);
     });
   });

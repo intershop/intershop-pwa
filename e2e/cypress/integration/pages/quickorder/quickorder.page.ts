@@ -26,11 +26,8 @@ export class QuickorderPage {
     cy.wait(3000);
     this.addToCartButton().click();
 
-    return (
-      cy
-        .wait('@basket')
-        // tslint:disable-next-line: no-any
-        .then(result => (result.status >= 400 ? result : cy.wait('@basketCurrent').then(() => result))) as any
-    );
+    return cy
+      .wait('@basket')
+      .then(result => (result.status >= 400 ? result : cy.wait('@basketCurrent').then(() => result))) as any;
   }
 }

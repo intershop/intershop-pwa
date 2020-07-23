@@ -21,7 +21,7 @@ export const getProductListingViewType = createSelector(getProductListingState, 
 
 const getProductListingSettings = createSelector(getProductListingState, state => state.currentSettings);
 
-const { selectEntities: getProductListingEntites } = adapter.getSelectors(getProductListingState);
+const { selectEntities: getProductListingEntities } = adapter.getSelectors(getProductListingState);
 
 function mergeAllPages(data: ProductListingType) {
   return flatten(data.pages.map(page => data[page]));
@@ -86,21 +86,18 @@ const createView = (data, itemsPerPage): ProductListingView => {
 };
 
 function calculateLookUpID(id: ProductListingID, settings: Pick<ProductListingID, 'filters' | 'sorting'>) {
-  const currentSettings = settings[serializeProductListingID({ type: id.type, value: id.value })] || {};
+  const currentSettings = settings[serializeProductListingID(id)] || {};
   return serializeProductListingID({ ...currentSettings, ...id });
 }
 
 export const getProductListingView = createSelector(
-  getProductListingEntites,
+  getProductListingEntities,
   getProductListingItemsPerPage,
   getProductListingSettings,
   memoize(
     (entities, itemsPerPage, settings, id) =>
       entities && createView(entities[calculateLookUpID(id, settings)], itemsPerPage),
     (entities, _, settings, id: ProductListingID) =>
-      JSON.stringify([
-        entities[calculateLookUpID(id, settings)],
-        settings[serializeProductListingID({ type: id.type, value: id.value })],
-      ])
+      JSON.stringify([entities[calculateLookUpID(id, settings)], settings[serializeProductListingID(id)]])
   )
 );

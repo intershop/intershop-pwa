@@ -11,7 +11,7 @@ import { FeatureToggleService, checkFeature } from './utils/feature-toggle/featu
 export class FeatureToggleModule {
   private static features: string[];
 
-  static forTesting(...features: string[]): ModuleWithProviders {
+  static forTesting(...features: string[]): ModuleWithProviders<FeatureToggleModule> {
     FeatureToggleModule.switchTestingFeatures(...features);
     return {
       ngModule: FeatureToggleModule,

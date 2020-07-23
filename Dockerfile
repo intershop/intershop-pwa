@@ -3,15 +3,21 @@ WORKDIR /workspace
 COPY schematics /workspace/schematics/
 COPY package.json package-lock.json /workspace/
 RUN npm i --ignore-scripts
+COPY projects/organization-management/src/app /workspace/projects/organization-management/src/app/
 COPY src /workspace/src/
-COPY tsconfig.app.json tsconfig-es5.app.json tsconfig.json ngsw-config.json browserslist angular.json /workspace/
+COPY tsconfig.app.json tsconfig.base.json ngsw-config.json .browserslistrc angular.json /workspace/
 RUN npm run build:schematics && npm run synchronize-lazy-components -- --ci
+ARG configuration=production
+COPY scripts /workspace/scripts/
+RUN test "${configuration}" = 'local' && node scripts/init-local-environment.js || true
 ARG serviceWorker
 RUN node schematics/customization/service-worker ${serviceWorker} || true
-ARG configuration=production
 RUN npm run ng -- build -c ${configuration}
 COPY tsconfig.server.json server.ts /workspace/
 RUN npm run ng -- run intershop-pwa:server:${configuration} --bundleDependencies
+# remove cache check for resources (especially index.html)
+# https://github.com/angular/angular/issues/23613#issuecomment-415886919
+RUN test "${serviceWorker}" = "true" && sed -i 's/canonicalHash !== cacheBustedHash/false/g' /workspace/dist/browser/ngsw-worker.js || true
 RUN egrep -o '^\s*(mockServerAPI: true|mustMockPaths)' src/environments/environment.prod.ts || rm -Rf dist/browser/assets/mock*
 COPY dist/entrypoint.sh dist/healthcheck.js dist/server.crt dist/server.key dist/robots.txt* /workspace/dist/
 

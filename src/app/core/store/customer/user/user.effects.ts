@@ -29,7 +29,7 @@ import { PersonalizationService } from 'ish-core/services/personalization/person
 import { UserService } from 'ish-core/services/user/user.service';
 import { generalError } from 'ish-core/store/core/error';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
-import { ofUrl, selectQueryParam } from 'ish-core/store/core/router';
+import { ofUrl, selectQueryParam, selectUrl } from 'ish-core/store/core/router';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import {
@@ -88,7 +88,6 @@ export class UserEffects {
       exhaustMap(credentials =>
         this.userService.signinUser(credentials).pipe(
           map(loginUserSuccess),
-          // tslint:disable-next-line:ban
           catchError(error =>
             of(
               error.headers.has('error-key')
@@ -168,7 +167,6 @@ export class UserEffects {
         this.userService.createUser(data).pipe(
           // TODO:see #IS-22750 - user should actually be logged in after registration
           map(() => loginUser({ credentials: data.credentials })),
-          // tslint:disable-next-line:ban
           catchError(error =>
             of(
               error.headers.has('error-key')
@@ -186,14 +184,9 @@ export class UserEffects {
       ofType(updateUser),
       mapToPayload(),
       withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
-      concatMap(([payload, customer]) =>
-        this.userService.updateUser({ user: payload.user, customer }).pipe(
-          tap(() => {
-            if (payload.successRouterLink) {
-              this.router.navigateByUrl(payload.successRouterLink);
-            }
-          }),
-          map(changedUser => updateUserSuccess({ user: changedUser, successMessage: payload.successMessage })),
+      concatMap(([{ user, successMessage }, customer]) =>
+        this.userService.updateUser({ user, customer }).pipe(
+          map(changedUser => updateUserSuccess({ user: changedUser, successMessage })),
           mapErrorToAction(updateUserFail)
         )
       )
@@ -208,7 +201,6 @@ export class UserEffects {
       withLatestFrom(this.store$.pipe(select(getLoggedInUser))),
       concatMap(([[payload, customer], user]) =>
         this.userService.updateUserPassword(customer, user, payload.password, payload.currentPassword).pipe(
-          tap(() => this.router.navigateByUrl('/account/profile')),
           mapTo(
             updateUserPasswordSuccess({
               successMessage: payload.successMessage || 'account.profile.update_password.message',
@@ -226,20 +218,26 @@ export class UserEffects {
       mapToPayload(),
       withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
       filter(([, loggedInCustomer]) => !!loggedInCustomer && loggedInCustomer.isBusinessCustomer),
-      concatMap(([payload]) =>
-        this.userService.updateCustomer(payload.customer).pipe(
-          tap(() => {
-            if (payload.successRouterLink) {
-              this.router.navigateByUrl(payload.successRouterLink);
-            }
-          }),
-          map(changedCustomer =>
-            updateCustomerSuccess({ customer: changedCustomer, successMessage: payload.successMessage })
-          ),
+      concatMap(([{ customer, successMessage }]) =>
+        this.userService.updateCustomer(customer).pipe(
+          map(changedCustomer => updateCustomerSuccess({ customer: changedCustomer, successMessage })),
           mapErrorToAction(updateCustomerFail)
         )
       )
     )
+  );
+
+  redirectAfterUpdateOnProfileSettings$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(updateUserSuccess, updateCustomerSuccess, updateUserPasswordSuccess),
+        withLatestFrom(this.store$.pipe(select(selectUrl))),
+        filter(([, url]) => url.includes('/account/profile')),
+        tap(() => {
+          this.router.navigateByUrl('/account/profile');
+        })
+      ),
+    { dispatch: false }
   );
 
   displayUpdateUserSuccessMessage$ = createEffect(() =>
@@ -287,7 +285,6 @@ export class UserEffects {
       switchMap(() =>
         this.personalizationService.getPGID().pipe(
           map(pgid => setPGID({ pgid })),
-          // tslint:disable-next-line:ban
           catchError(() => EMPTY)
         )
       )

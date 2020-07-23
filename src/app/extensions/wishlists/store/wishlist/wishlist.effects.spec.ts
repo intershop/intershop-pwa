@@ -84,7 +84,7 @@ describe('Wishlist Effects', () => {
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user'),
         FeatureToggleModule.forTesting('wishlists'),
-        RouterTestingModule.withRoutes([{ path: 'account/wishlist/:wishlistName', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: 'account/wishlists/:wishlistName', component: DummyComponent }]),
         WishlistsStoreModule.forTesting('wishlists'),
       ],
       providers: [
@@ -494,7 +494,7 @@ describe('Wishlist Effects', () => {
 
   describe('routeListenerForSelectedWishlist$', () => {
     it('should map to action of type SelectWishlist', done => {
-      router.navigateByUrl('/account/wishlist/.SKsEQAE4FIAAAFuNiUBWx0d');
+      router.navigateByUrl('/account/wishlists/.SKsEQAE4FIAAAFuNiUBWx0d');
 
       effects.routeListenerForSelectedWishlist$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
@@ -526,7 +526,9 @@ describe('Wishlist Effects', () => {
       store$.dispatch(selectWishlist({ id: wishlists[0].id }));
     });
 
-    it('should set the breadcrumb of the selected wishlist', done => {
+    it('should set the breadcrumb of the selected wishlist in my account area', done => {
+      router.navigateByUrl('/account/wishlists/' + wishlists[0].id);
+
       effects.setWishlistBreadcrumb$.subscribe(action => {
         expect(action.payload).toMatchInlineSnapshot(`
           Object {
@@ -543,6 +545,12 @@ describe('Wishlist Effects', () => {
         `);
         done();
       });
+    });
+
+    it('should not set the breadcrumb of the selected wishlist when on another url', done => {
+      effects.setWishlistBreadcrumb$.subscribe(fail, fail, fail);
+
+      setTimeout(done, 1000);
     });
   });
 });

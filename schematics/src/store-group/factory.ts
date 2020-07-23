@@ -10,7 +10,7 @@ import {
   move,
   url,
 } from '@angular-devkit/schematics';
-import { buildDefaultPath, getProject } from '@schematics/angular/utility/project';
+import { buildDefaultPath, getWorkspace } from '@schematics/angular/utility/workspace';
 
 import { applyNameAndPath, determineArtifactName } from '../utils/common';
 import { applyLintFix } from '../utils/lint-fix';
@@ -18,7 +18,7 @@ import { addImportToNgModule } from '../utils/registration';
 
 import { PWAStoreGroupOptionsSchema as Options } from './schema';
 
-function determineStoreGroupLocation(
+async function determineStoreGroupLocation(
   host: Tree,
   options: {
     path?: string;
@@ -26,7 +26,8 @@ function determineStoreGroupLocation(
     project?: string;
   }
 ) {
-  const project = getProject(host, options.project);
+  const workspace = await getWorkspace(host);
+  const project = workspace.projects.get(options.project);
 
   const path = normalize(`${buildDefaultPath(project)}/core/store/`);
   const module = normalize(`${buildDefaultPath(project)}/core/state-management.module.ts`);
@@ -45,14 +46,13 @@ function determineStoreGroupLocation(
 }
 
 export function createStoreGroup(options: Options): Rule {
-  return host => {
+  return async host => {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
     }
-    // tslint:disable:no-parameter-reassignment
-    options = applyNameAndPath('store', host, options);
+    options = await applyNameAndPath('store', host, options);
     options = determineArtifactName('store', host, options);
-    options = determineStoreGroupLocation(host, options);
+    options = await determineStoreGroupLocation(host, options);
 
     const operations: Rule[] = [];
     operations.push(
