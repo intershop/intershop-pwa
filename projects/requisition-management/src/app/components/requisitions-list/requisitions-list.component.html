@@ -1,5 +1,8 @@
 <div class="list-body" data-testing-id="requisition-list">
   <ng-container *ngFor="let requisition of requisitions">
-    <div>{{ requisition | json }}</div>
+    <div>
+      <!-- TODO: routing must work for standalone usage, needs to be more relative without the 'account' part -->
+      <a [routerLink]="['/account/requisitions', requisition.id]">{{ requisition | json }}</a>
+    </div>
   </ng-container>
 </div>

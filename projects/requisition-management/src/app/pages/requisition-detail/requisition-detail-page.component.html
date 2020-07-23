@@ -1,0 +1,9 @@
+<h1>Requisition Details</h1>
+
+<div class="section loading-container">
+  <ish-error-message [error]="error$ | async"></ish-error-message>
+
+  {{ requisition$ | async | json }}
+
+  <ish-loading *ngIf="loading$ | async"></ish-loading>
+</div>
