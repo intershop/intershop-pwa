@@ -1,11 +1,11 @@
-<ul>
-  <li *ngFor="let mainItem of tree$ | async">
+<ul class="list-unstyled bg-light p-3">
+  <li *ngFor="let mainItem of tree$ | async" class="pt-1 pb-1">
     <a (click)="changeStep(mainItem.name)" [ngClass]="{ 'font-weight-bold': mainItem.active }">{{
       mainItem.description
     }}</a>
     <ng-container *ngIf="mainItem.children">
-      <ul>
-        <li *ngFor="let subItem of mainItem.children">
+      <ul class="list-unstyled pl-3">
+        <li *ngFor="let subItem of mainItem.children" class="pt-1 pb-1">
           <a [routerLink]="[]" [fragment]="subItem.name">{{ subItem.description }}</a>
         </li>
       </ul>

@@ -73,10 +73,10 @@ describe('Tacton Number Input Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-      <h4>description</h4>
+      <h4 class="font-weight-bold">description</h4>
       <div class="row">
         <div class="col-4">info</div>
-        <div class="col-8"><input type="number" min="0" max="3" /></div>
+        <div class="col-4 form-group"><input class="form-control" type="number" min="0" max="3" /></div>
       </div>
     `);
   });

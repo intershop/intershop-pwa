@@ -1,14 +1,14 @@
-<div class="row" *ngIf="stepConfig$ | async as config">
-  <div class="col">
-    <button class="btn btn-link btn-secondary" (click)="reset()">Reset Configuration</button>
+<div class="d-flex justify-content-between" *ngIf="stepConfig$ | async as config">
+  <div>
+    <button class="btn btn-secondary no-wrap" (click)="reset()">Reset Configuration</button>
   </div>
-  <div class="col" *ngIf="config.previousStep">
-    <button class="btn btn-link btn-secondary" (click)="changeStep(config.previousStep)">Previous</button>
+  <div *ngIf="config.previousStep">
+    <button class="btn btn-secondary" (click)="changeStep(config.previousStep)">Previous</button>
   </div>
-  <div class="col" *ngIf="config.nextStep">
-    <button class="btn btn-link btn-secondary" (click)="changeStep(config.nextStep)">Next</button>
+  <div *ngIf="config.nextStep">
+    <button class="btn btn-primary" (click)="changeStep(config.nextStep)">Next</button>
   </div>
-  <div class="col" *ngIf="!config.nextStep">
-    <button class="btn btn-link btn-secondary" (click)="submit()">Submit</button>
+  <div *ngIf="!config.nextStep">
+    <button class="btn btn-primary" (click)="submit()">Submit</button>
   </div>
 </div>

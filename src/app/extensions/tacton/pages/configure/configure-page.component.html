@@ -1,11 +1,13 @@
-<ish-tacton-step-buttons></ish-tacton-step-buttons>
 <div *ngIf="product$ | async as product" class="row">
   <div class="col-4 col-md-3">
     <ish-tacton-configure-navigation></ish-tacton-configure-navigation>
   </div>
   <ng-container *ngIf="state$ | async as state">
     <div class="col-8 col-md-6">
-      <ish-tacton-group [group]="step$ | async"></ish-tacton-group>
+      <div>
+        <ish-tacton-group [group]="step$ | async"></ish-tacton-group>
+        <ish-tacton-step-buttons></ish-tacton-step-buttons>
+      </div>
     </div>
     <div class="col-12 col-md-3">
       <ish-product-image [product]="product" imageType="M" class="product-image"></ish-product-image>
