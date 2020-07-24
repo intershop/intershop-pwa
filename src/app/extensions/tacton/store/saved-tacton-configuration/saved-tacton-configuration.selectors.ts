@@ -14,8 +14,7 @@ const getSavedTactonConfigurationState = createSelector(getTactonState, state =>
 const { selectEntities } = tactonSavedConfigurationAdapter.getSelectors(getSavedTactonConfigurationState);
 
 export const getSavedTactonConfiguration = (id: string) =>
-  createSelector(
-    selectEntities,
-    getLoggedInUser,
-    (entities, user) => entities[makeTactonSavedConfigurationReference(user?.login, id)]
-  );
+  createSelector(selectEntities, getLoggedInUser, (entities, user) => {
+    const savedConfig = entities[makeTactonSavedConfigurationReference(user?.login, id)];
+    return savedConfig?.externalId && savedConfig;
+  });
