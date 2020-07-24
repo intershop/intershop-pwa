@@ -11,6 +11,8 @@ import {
   continueConfigureTactonProduct,
   setCurrentConfiguration,
   startConfigureTactonProduct,
+  submitTactonConfiguration,
+  submitTactonConfigurationSuccess,
   uncommitTactonConfigurationValue,
 } from './product-configuration.actions';
 
@@ -31,12 +33,13 @@ export const productConfigurationReducer = createReducer(
     continueConfigureTactonProduct,
     commitTactonConfigurationValue,
     uncommitTactonConfigurationValue,
-    changeTactonConfigurationStep
+    changeTactonConfigurationStep,
+    submitTactonConfiguration
   ),
   on(setCurrentConfiguration, (state, action) => ({
     ...state,
     loading: false,
     current: action.payload.configuration,
   })),
-  on(clearTactonConfiguration, () => initialState)
+  on(clearTactonConfiguration, submitTactonConfigurationSuccess, () => initialState)
 );

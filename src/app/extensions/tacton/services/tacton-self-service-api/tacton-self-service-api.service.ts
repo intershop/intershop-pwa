@@ -4,6 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { EMPTY, Observable, of } from 'rxjs';
 import { first, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
+import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { TactonProductConfiguration } from '../../models/tacton-product-configuration/tacton-product-configuration.model';
@@ -172,5 +173,58 @@ export class TactonSelfServiceApiService {
           )
       )
     );
+  }
+
+  submitConfiguration(savedConfiguration: TactonSavedConfiguration) {
+    if (!savedConfiguration) {
+      return EMPTY;
+    } else {
+      return this.store.pipe(
+        select(getSelfServiceApiConfiguration),
+        whenTruthy(),
+        first(),
+        switchMap(config =>
+          this.http
+            .post(
+              `${config.endPoint}/cart/items`,
+              // tslint:disable-next-line: prefer-template
+              this.constructAPIAuth(config, savedConfiguration.externalId) +
+                this.addConfigReference(savedConfiguration) +
+                `&qty=1`,
+              {
+                headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
+              }
+            )
+            .pipe(
+              withLatestFrom(this.store.pipe(select(getLoggedInUser)), this.store.pipe(select(getLoggedInCustomer))),
+              switchMap(([, user, customer]) =>
+                this.http
+                  .put(
+                    `${config.endPoint}/cart`,
+                    // tslint:disable-next-line: prefer-template
+                    this.constructAPIAuth(config, savedConfiguration.externalId) +
+                      `&customerEmail=${user.login}&customerPhoneNumber=${user.phoneHome || 'N/A'}&customerName=${
+                        customer.companyName
+                      } - ${user.firstName} ${user.lastName}`,
+                    {
+                      headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
+                    }
+                  )
+                  .pipe(
+                    switchMap(() =>
+                      this.http.post(
+                        `${config.endPoint}/proposal/firm-requests`,
+                        this.constructAPIAuth(config, savedConfiguration.externalId),
+                        {
+                          headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
+                        }
+                      )
+                    )
+                  )
+              )
+            )
+        )
+      );
+    }
   }
 }
