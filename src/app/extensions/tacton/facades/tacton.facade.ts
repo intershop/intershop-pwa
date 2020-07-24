@@ -5,11 +5,13 @@ import { switchMap, take } from 'rxjs/operators';
 
 import { TactonProductConfigurationParameter } from '../models/tacton-product-configuration/tacton-product-configuration.model';
 import {
+  acceptTactonConfigurationConflictResolution,
   changeTactonConfigurationStep,
   commitTactonConfigurationValue,
   getConfigurationStepConfig,
   getConfigurationStepTree,
   getCurrentProductConfiguration,
+  getCurrentProductConfigurationConflicts,
   getCurrentStepConfig,
   getProductConfigurationLoading,
   startConfigureTactonProduct,
@@ -41,6 +43,8 @@ export class TactonFacade {
   currentStep$ = this.store.pipe(select(getCurrentStepConfig));
   stepConfig$ = this.store.pipe(select(getConfigurationStepConfig));
 
+  conflicts$ = this.store.pipe(select(getCurrentProductConfigurationConflicts));
+
   changeConfigurationStep(step: string) {
     this.store.dispatch(changeTactonConfigurationStep({ step }));
   }
@@ -50,6 +54,9 @@ export class TactonFacade {
   }
   uncommitValue(parameter: TactonProductConfigurationParameter) {
     this.store.dispatch(uncommitTactonConfigurationValue({ valueId: parameter.name }));
+  }
+  acceptConflictResolution() {
+    this.store.dispatch(acceptTactonConfigurationConflictResolution());
   }
 
   resetConfiguration() {

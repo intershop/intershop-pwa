@@ -31,6 +31,7 @@ import { getSavedTactonConfiguration } from '../saved-tacton-configuration';
 import { getTactonProductForSelectedProduct } from '../tacton-config';
 
 import {
+  acceptTactonConfigurationConflictResolution,
   changeTactonConfigurationStep,
   clearTactonConfiguration,
   commitTactonConfigurationValue,
@@ -152,6 +153,23 @@ export class ProductConfigurationEffects {
         this.tactonSelfServiceApiService
           .uncommitValue(valueId)
           .pipe(map(configuration => setCurrentConfiguration({ configuration })))
+      )
+    )
+  );
+
+  acceptTactonConfigurationConflictResolution$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(commitTactonConfigurationValue),
+      mapToPayload(),
+      switchMap(({ valueId, value }) =>
+        this.actions$.pipe(
+          ofType(acceptTactonConfigurationConflictResolution),
+          switchMap(() =>
+            this.tactonSelfServiceApiService
+              .acceptConflictResolution(valueId, value)
+              .pipe(map(configuration => setCurrentConfiguration({ configuration })))
+          )
+        )
       )
     )
   );

@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
+import { EMPTY } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
 
 import { TactonFacade } from '../../facades/tacton.facade';
@@ -21,11 +23,15 @@ describe('Configure Page Component', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
+    const tactonFacade = mock(TactonFacade);
+    when(tactonFacade.conflicts$).thenReturn(EMPTY);
+
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [
         ConfigurePageComponent,
         MockComponent(LoadingComponent),
+        MockComponent(ModalDialogComponent),
         MockComponent(ProductImageComponent),
         MockComponent(TactonBomComponent),
         MockComponent(TactonConfigureNavigationComponent),
@@ -33,7 +39,7 @@ describe('Configure Page Component', () => {
         MockComponent(TactonStepButtonsComponent),
       ],
       providers: [
-        { provide: TactonFacade, useFactory: () => instance(mock(TactonFacade)) },
+        { provide: TactonFacade, useFactory: () => instance(tactonFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) },
       ],
     }).compileComponents();

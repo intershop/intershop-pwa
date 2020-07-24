@@ -130,6 +130,44 @@ export class TactonSelfServiceApiService {
     );
   }
 
+  acceptConflictResolution(valueId: string, value: string): Observable<TactonProductConfiguration> {
+    if (!valueId) {
+      return EMPTY;
+    }
+    return this.store.pipe(
+      select(getCurrentProductConfiguration),
+      whenTruthy(),
+      first(),
+      withLatestFrom(this.store.pipe(select(getSelfServiceApiConfiguration))),
+      switchMap(([config, selfService]) =>
+        this.http
+          .post<TactonProductConfiguration>(
+            `${selfService.endPoint}/config/accept`,
+            // tslint:disable-next-line: prefer-template
+            this.constructAPIAuth(selfService, config.externalId) +
+              this.addConfigReference(config) +
+              `&parameter=${valueId}&value=${value}`,
+            {
+              headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
+            }
+          )
+          .pipe(
+            switchMap(result =>
+              this.getBOM(result).pipe(
+                map(bom => ({
+                  ...result,
+                  bom: bom.bom,
+                  externalId: config.externalId,
+                  // override faulty API response
+                  response: { status: 'OK' as 'OK' },
+                }))
+              )
+            )
+          )
+      )
+    );
+  }
+
   private getBOM(config: TactonProductConfiguration): Observable<TactonProductConfiguration> {
     if (config.bom) {
       return of(config);
