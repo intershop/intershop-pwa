@@ -44,6 +44,15 @@ export interface TactonProductConfigurationBomItem {
   qty: string;
 }
 
+export interface TactonProductConfigurationConflictItem {
+  description: string;
+  name: string;
+  newValue: string;
+  newValueDescription: string;
+  oldValue: string;
+  oldValueDescription: string;
+}
+
 export interface TactonProductConfiguration {
   externalId?: string; // added by PWA
   configId?: string;
@@ -63,4 +72,8 @@ export interface TactonProductConfiguration {
     };
   }[];
   bom: TactonProductConfigurationBomItem[];
+  response: {
+    status: 'OK' | 'RESOLVABLE';
+    changed?: TactonProductConfigurationConflictItem[];
+  };
 }

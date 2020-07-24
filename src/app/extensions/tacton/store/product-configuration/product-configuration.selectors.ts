@@ -64,3 +64,8 @@ export const getConfigurationStepConfig = createSelector(
       nextStep: config?.steps?.find((_, idx, arr) => idx > 0 && arr[idx - 1]?.current)?.name,
     }
 );
+
+export const getCurrentProductConfigurationConflicts = createSelector(
+  getCurrentProductConfiguration,
+  config => config?.response?.status !== 'OK' && config?.response?.changed
+);

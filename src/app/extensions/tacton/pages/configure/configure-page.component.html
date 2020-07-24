@@ -1,3 +1,21 @@
+<ish-modal-dialog
+  #conflictResolutionDialog
+  [options]="{
+    titleText: 'CONFLICT_TRANSLATE_ME',
+    confirmText: 'Accept New',
+    rejectText: 'Keep Current'
+  }"
+  (confirmed)="acceptResolution()"
+>
+  <p class="text-center">{{ 'To resolve your selection, the following parameters must be changed' }}</p>
+  <div class="row" *ngFor="let conflict of conflictResolutionDialog.data">
+    <div class="col-12 text-center">{{ conflict.description }}</div>
+    <div class="col-5 text-right">{{ conflict.oldValueDescription }}</div>
+    <div class="col-2 text-center">=></div>
+    <div class="col-5 text-left">{{ conflict.newValueDescription }}</div>
+  </div>
+</ish-modal-dialog>
+
 <div *ngIf="product$ | async as product" class="row">
   <div class="col-4 col-md-3">
     <ish-tacton-configure-navigation></ish-tacton-configure-navigation>

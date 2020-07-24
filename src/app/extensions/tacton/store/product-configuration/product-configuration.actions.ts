@@ -32,6 +32,10 @@ export const uncommitTactonConfigurationValue = createAction(
   payload<{ valueId: string }>()
 );
 
+export const acceptTactonConfigurationConflictResolution = createAction(
+  '[Tacton Self-Service API] Accept ConflictResolution'
+);
+
 export const changeTactonConfigurationStep = createAction(
   '[Tacton Self-Service API] Change Configuration Step',
   payload<{ step: string }>()
