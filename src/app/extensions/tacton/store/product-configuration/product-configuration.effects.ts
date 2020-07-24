@@ -17,8 +17,12 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { ofUrl, selectRouteParam, selectUrl } from 'ish-core/store/core/router';
-import { mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
+import { generateProductUrl } from 'ish-core/routing/product/product.route';
+import { displayErrorMessage, displaySuccessMessage } from 'ish-core/store/core/messages';
+import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
+import { getLoggedInUser } from 'ish-core/store/customer/user';
+import { getSelectedProduct } from 'ish-core/store/shopping/products';
+import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { TactonSelfServiceApiService } from '../../services/tacton-self-service-api/tacton-self-service-api.service';
 import { getSavedTactonConfiguration } from '../saved-tacton-configuration';
@@ -31,6 +35,9 @@ import {
   continueConfigureTactonProduct,
   setCurrentConfiguration,
   startConfigureTactonProduct,
+  submitTactonConfiguration,
+  submitTactonConfigurationFail,
+  submitTactonConfigurationSuccess,
   uncommitTactonConfigurationValue,
 } from './product-configuration.actions';
 import { getCurrentProductConfigurationStepName } from './product-configuration.selectors';
@@ -47,7 +54,7 @@ export class ProductConfigurationEffects {
   startOrContinueTactonProductConfiguration$ = createEffect(() =>
     this.store.pipe(
       ofUrl(/^\/configure\/.*/),
-      select(selectUrl),
+      select(getLoggedInUser),
       switchMapTo(this.store.pipe(select(getTactonProductForSelectedProduct))),
       distinctUntilChanged(),
       whenTruthy(),
@@ -145,5 +152,62 @@ export class ProductConfigurationEffects {
           .pipe(map(configuration => setCurrentConfiguration({ configuration })))
       )
     )
+  );
+
+  submitTactonConfiguration$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(submitTactonConfiguration),
+      switchMapTo(this.store.pipe(select(getTactonProductForSelectedProduct))),
+      distinctUntilChanged(),
+      whenTruthy(),
+      switchMap(productPath =>
+        of(productPath).pipe(withLatestFrom(this.store.pipe(select(getSavedTactonConfiguration(productPath)))))
+      ),
+      switchMap(([, savedConfiguration]) =>
+        this.tactonSelfServiceApiService.submitConfiguration(savedConfiguration).pipe(
+          mapTo(
+            submitTactonConfigurationSuccess({ productId: savedConfiguration.productId, user: savedConfiguration.user })
+          ),
+          mapErrorToAction(submitTactonConfigurationFail, {
+            productId: savedConfiguration.productId,
+            user: savedConfiguration.user,
+          })
+        )
+      )
+    )
+  );
+
+  submitTactonConfigurationSuccessToast$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(submitTactonConfigurationSuccess),
+      mapTo(
+        displaySuccessMessage({
+          message: 'Your request was submitted successfully! TRANSLATE_ME',
+        })
+      )
+    )
+  );
+
+  submitTactonConfigurationErrorToast$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(submitTactonConfigurationFail),
+      mapTo(
+        displayErrorMessage({
+          message: 'There was an error processing your request! TRANSLATE_ME',
+        })
+      )
+    )
+  );
+
+  submitTactonConfigurationRedirect$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(submitTactonConfigurationSuccess, submitTactonConfigurationFail),
+        withLatestFrom(this.store.pipe(select(getSelectedProduct))),
+        tap(([, product]) => {
+          this.router.navigateByUrl(generateProductUrl(product));
+        })
+      ),
+    { dispatch: false }
   );
 }

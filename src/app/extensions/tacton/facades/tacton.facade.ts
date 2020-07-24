@@ -13,6 +13,7 @@ import {
   getCurrentStepConfig,
   getProductConfigurationLoading,
   startConfigureTactonProduct,
+  submitTactonConfiguration,
   uncommitTactonConfigurationValue,
 } from '../store/product-configuration';
 import {
@@ -58,7 +59,6 @@ export class TactonFacade {
   }
 
   submitConfiguration() {
-    // tslint:disable-next-line: no-console
-    console.log('submitting current tacton configuration');
+    this.store.dispatch(submitTactonConfiguration());
   }
 }

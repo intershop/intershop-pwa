@@ -1,6 +1,6 @@
 import { createAction } from '@ngrx/store';
 
-import { payload } from 'ish-core/utils/ngrx-creators';
+import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 import { TactonProductConfiguration } from '../../models/tacton-product-configuration/tacton-product-configuration.model';
 import { TactonSavedConfiguration } from '../../models/tacton-saved-configuration/tacton-saved-configuration.model';
@@ -35,4 +35,16 @@ export const uncommitTactonConfigurationValue = createAction(
 export const changeTactonConfigurationStep = createAction(
   '[Tacton Self-Service API] Change Configuration Step',
   payload<{ step: string }>()
+);
+
+export const submitTactonConfiguration = createAction('[Tacton Self-Service API] Submit Configuration');
+
+export const submitTactonConfigurationSuccess = createAction(
+  '[Tacton Self-Service API] Submit Configuration Success',
+  payload<{ productId: string; user: string }>()
+);
+
+export const submitTactonConfigurationFail = createAction(
+  '[Tacton Self-Service API] Submit Configuration Failed',
+  httpError<{ productId: string; user: string }>()
 );
