@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { of } from 'rxjs';
+import { combineLatest, of } from 'rxjs';
 import {
   catchError,
   concatMap,
@@ -21,7 +21,7 @@ import {
 import { HttpErrorMapper } from 'ish-core/models/http-error/http-error.mapper';
 import { generateProductUrl } from 'ish-core/routing/product/product.route';
 import { displayErrorMessage, displaySuccessMessage } from 'ish-core/store/core/messages';
-import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
+import { selectRouteParam, selectUrl } from 'ish-core/store/core/router';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
 import { getSelectedProduct } from 'ish-core/store/shopping/products';
 import { mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
@@ -55,13 +55,17 @@ export class ProductConfigurationEffects {
   ) {}
 
   startOrContinueTactonProductConfiguration$ = createEffect(() =>
-    this.store.pipe(
-      ofUrl(/^\/configure\/.*/),
-      select(getLoggedInUser),
-      switchMapTo(this.store.pipe(select(getTactonProductForSelectedProduct))),
-      distinctUntilChanged(),
-      whenTruthy(),
-      switchMap(productPath =>
+    combineLatest([
+      this.store.pipe(select(getTactonProductForSelectedProduct), whenTruthy()),
+      this.store.pipe(
+        select(selectUrl),
+        map(url => url?.startsWith('/configure')),
+        distinctUntilChanged()
+      ),
+      this.store.pipe(select(getLoggedInUser), whenTruthy()),
+    ]).pipe(
+      filter(([, url]) => !!url),
+      switchMap(([productPath]) =>
         of(productPath).pipe(withLatestFrom(this.store.pipe(select(getSavedTactonConfiguration(productPath)))))
       ),
       map(([productPath, savedConfig]) =>
@@ -178,7 +182,6 @@ export class ProductConfigurationEffects {
     this.actions$.pipe(
       ofType(submitTactonConfiguration),
       switchMapTo(this.store.pipe(select(getTactonProductForSelectedProduct))),
-      distinctUntilChanged(),
       whenTruthy(),
       switchMap(productPath =>
         of(productPath).pipe(withLatestFrom(this.store.pipe(select(getSavedTactonConfiguration(productPath)))))
