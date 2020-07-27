@@ -94,6 +94,18 @@
                     >{{ 'checkout.payment.method.delete.link' | translate }}</a
                   >
                 </div>
+                <ng-container [ngSwitch]="paymentMethod.serviceId">
+                  <ng-template [ngSwitchCase]="'Concardis_CreditCard'">
+                    <div *ngIf="paymentInstrument.id === basket.payment.paymentInstrument.id">
+                      <ish-payment-concardis-creditcard-cvc-detail
+                        [paymentInstrument]="paymentInstrument"
+                        [paymentMethod]="paymentMethod"
+                        [basket]="basket"
+                      >
+                      </ish-payment-concardis-creditcard-cvc-detail>
+                    </div>
+                  </ng-template>
+                </ng-container>
               </li>
 
               <li class="panel">
