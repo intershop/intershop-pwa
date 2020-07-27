@@ -38,7 +38,10 @@ export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit
       map(([roles, staticRoles]) =>
         this.fb.group(
           roles.reduce(
-            (acc, role) => ({ ...acc, [role.id]: this.createFormControl(staticRoles.includes(role.id)) }),
+            (acc, role) => ({
+              ...acc,
+              [role.id]: this.createFormControl(staticRoles.includes(role.id), role.id === 'APP_B2B_OCI_USER'),
+            }),
             {}
           )
         )
@@ -47,9 +50,9 @@ export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit
     );
   }
 
-  private createFormControl(isStatic: boolean) {
+  private createFormControl(isStatic: boolean, disable: boolean) {
     const control = new FormControl(isStatic);
-    if (isStatic) {
+    if (isStatic || disable) {
       control.disable();
     }
     this.isExpanded.push(false);

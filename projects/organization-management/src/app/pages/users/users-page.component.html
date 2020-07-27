@@ -12,7 +12,7 @@
     <ng-container *ngFor="let user of users$ | async">
       <div *ngIf="user" class="list-item-row row mx-0">
         <div class="col-3 list-item">
-          <a [routerLink]="[user.login]">{{ user.name }}</a>
+          <a [routerLink]="[user.login]">{{ user.firstName }} {{ user.lastName }}</a>
         </div>
         <div class="col-6 list-item">
           <dl [attr.data-testing-id]="'user-roles-' + user.login">
@@ -24,7 +24,9 @@
             <a
               data-testing-id="remove-user"
               class="btn-tool"
-              title="{{ 'account.user.delete_user_dialog.header' | translate: { '0': user.name } }}"
+              title="{{
+                'account.user.delete_user_dialog.header' | translate: { '0': user.firstName + ' ' + user.lastName }
+              }}"
               (click)="modalDialog.show(user)"
             >
               <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
@@ -33,7 +35,8 @@
             <ish-modal-dialog
               #modalDialog
               [options]="{
-                titleText: 'account.user.delete_user_dialog.header' | translate: { '0': user.name },
+                titleText:
+                  'account.user.delete_user_dialog.header' | translate: { '0': user.firstName + ' ' + user.lastName },
                 confirmText: 'account.user.delete_user_dialog.delete_button.text' | translate,
                 rejectText: 'account.user.delete_user_dialog.cancel_button.text' | translate
               }"
