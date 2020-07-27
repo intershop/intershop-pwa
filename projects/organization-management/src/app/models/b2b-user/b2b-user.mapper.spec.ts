@@ -45,13 +45,14 @@ describe('B2b User Mapper', () => {
     it(`should return User when getting UserListData`, () => {
       const userListData = [
         {
-          name: 'Patricia Miller',
           login: 'pmiller@test.intershop.de',
           attributes: [
             {
-              name: 'roles',
+              name: 'roleIDs',
               value: ['APP_B2B_COSTCENTER_OWNER', 'APP_B2B_BUYER'],
             },
+            { name: 'firstName', value: 'Patricia' },
+            { name: 'lastName', value: 'Miller' },
           ],
         } as B2bUserData,
       ];
@@ -60,8 +61,9 @@ describe('B2b User Mapper', () => {
       expect(users).toMatchInlineSnapshot(`
         Array [
           Object {
+            "firstName": "Patricia",
+            "lastName": "Miller",
             "login": "pmiller@test.intershop.de",
-            "name": "Patricia Miller",
             "roleIDs": Array [
               "APP_B2B_COSTCENTER_OWNER",
               "APP_B2B_BUYER",

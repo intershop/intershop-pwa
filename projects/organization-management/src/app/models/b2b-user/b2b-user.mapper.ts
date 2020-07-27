@@ -13,9 +13,10 @@ export class B2bUserMapper {
   static fromListData(data: B2bUserData[]): B2bUser[] {
     if (data) {
       return data.map(e => ({
-        name: e.name,
         login: e.login,
-        roleIDs: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'roles'),
+        firstName: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'firstName'),
+        lastName: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'lastName'),
+        roleIDs: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'roleIDs'),
       }));
     } else {
       throw new Error('data is required');

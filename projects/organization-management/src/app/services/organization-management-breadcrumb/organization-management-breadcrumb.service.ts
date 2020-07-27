@@ -51,7 +51,7 @@ export class OrganizationManagementBreadcrumbService {
                 : // user detail
                   [
                     { key: 'account.organization.user_management', link: prefix + '/users' },
-                    { text: translation + (user.firstName ? ` - ${user.firstName} ${user.lastName}` : '') },
+                    { text: translation + ` - ${user.firstName} ${user.lastName}` },
                   ]
             )
           );

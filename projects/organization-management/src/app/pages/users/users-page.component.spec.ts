@@ -25,7 +25,7 @@ describe('Users Page Component', () => {
   let accountFacade: AccountFacade;
 
   const users = [
-    { firstName: 'Patricia', lastName: 'Miller', name: 'Patricia Miller', email: 'pmiller@test.intershop.de' },
+    { firstName: 'Patricia', lastName: 'Miller', email: 'pmiller@test.intershop.de' },
     { firstName: 'Jack', lastName: 'Link', name: 'Jack Link', email: 'jlink@test.intershop.de' },
   ] as B2bUser[];
 
