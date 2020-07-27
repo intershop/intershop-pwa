@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { NodeData, NodeResourceIdentifier } from './node.interface';
+import { NodeData, NodeDocument, NodeResourceIdentifier } from './node.interface';
 import { NodeMapper } from './node.mapper';
 
 const OILCORP_GERMANY: NodeData = {
@@ -49,6 +49,19 @@ describe('Node Mapper', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({});
     nodeMapper = TestBed.inject(NodeMapper);
+  });
+
+  describe('fromDocument', () => {
+    it('should throw when input is falsy', () => {
+      expect(() => nodeMapper.fromDocument(undefined)).toThrow();
+    });
+
+    it('should map incoming data to model data', () => {
+      const data = { data: [OILCORP_GERMANY, OILCORP_BERLIN] } as NodeDocument;
+      const mapped = nodeMapper.fromDocument(data);
+      expect(mapped.rootIds).toEqual(['OilCorp_Germany']);
+      expect(mapped.edges.OilCorp_Germany).toEqual(['OilCorp_Berlin', 'OilCorp_Jena']);
+    });
   });
 
   describe('fromData', () => {

@@ -40,7 +40,7 @@ export class NodeHelper {
     };
   }
 
-  static mergeRootIDs(current: string[], incoming: string[]): string[] {
+  private static mergeRootIDs(current: string[], incoming: string[]): string[] {
     if (incoming && incoming.length > current.length) {
       return NodeHelper.removeDuplicates([...incoming, ...current]);
     } else {
@@ -48,13 +48,14 @@ export class NodeHelper {
     }
   }
 
-  static mergeNodes(current: { [id: string]: Node }, incoming: { [id: string]: Node }): { [id: string]: Node } {
+  private static mergeNodes(current: { [id: string]: Node }, incoming: { [id: string]: Node }): { [id: string]: Node } {
     const nodes = { ...current };
     Object.keys(incoming).forEach(key => {
       nodes[key] = current[key] ?? incoming[key];
     });
     return nodes;
   }
+
   private static mergeEdges(
     current: { [id: string]: string[] },
     incoming: { [id: string]: string[] }

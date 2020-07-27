@@ -7,12 +7,12 @@ export interface NodeData extends NodeResourceIdentifier {
   relationships: NodeRelationships;
 }
 
-export interface NodeAttributes {
+interface NodeAttributes {
   name: string;
   description?: string;
 }
 
-export interface NodeRelationships {
+interface NodeRelationships {
   childNodes?: { data: NodeResourceIdentifier[] };
   organization: { data: NodeResourceIdentifier };
   parentNode?: { data: NodeResourceIdentifier };
