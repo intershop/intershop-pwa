@@ -1,11 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 
-import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { Basket } from 'ish-core/models/basket/basket.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { PaymentConcardisComponent } from '../payment-concardis/payment-concardis.component';
 
@@ -18,21 +16,16 @@ declare var PayEngine: any;
   templateUrl: './payment-concardis-creditcard-cvc-detail.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable-next-line: rxjs-prefer-angular-takeuntil
 export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcardisComponent implements OnInit {
   @Input() paymentInstrument: PaymentInstrument;
-  validityTimeInMinutes: string;
-  cvcDetailForm: FormGroup;
+  @Input() basket: Basket;
 
-  constructor(
-    protected scriptLoader: ScriptLoaderService,
-    protected cd: ChangeDetectorRef,
-    private checkoutFacade: CheckoutFacade
-  ) {
+  constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
     super(scriptLoader, cd);
-    this.cvcDetailForm = new FormGroup({
-      cvcDetail: new FormControl(undefined, [Validators.required]),
-    });
+  }
+
+  ngOnInit() {
+    super.formInit();
   }
 
   /**
@@ -45,10 +38,7 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
         'ConcardisPaymentService.MerchantID',
         'checkout.credit_card.merchantId.error.notFound'
       );
-      this.validityTimeInMinutes = this.getParamValue(
-        'intershop.payment.Concardis_CreditCard.cvcmaxage',
-        'checkout.credit_card.validityTime.error.notFound'
-      );
+
       // if config params are missing - don't load script
       if (!merchantId) {
         return;
@@ -72,7 +62,7 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
   }
 
   isCvcExpired() {
-    // if cvc last updated timestamp is less than maximum validity in minutes then return false
+    // if cvc last updated timestamp is less than 25 minutes then return false
     if (this.paymentInstrument.parameters) {
       const cvcLastUpdatedAttr =
         this.paymentInstrument.parameters &&
@@ -82,8 +72,11 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
         const cvcLastUpdatedValue = cvcLastUpdatedAttr.value ? cvcLastUpdatedAttr.value.toString() : undefined;
         if (cvcLastUpdatedValue) {
           const cvcDate = new Date(cvcLastUpdatedValue);
-          const diffAsMinutes = (Date.now() - cvcDate.getTime()) / (1000 * 60);
-          if (diffAsMinutes <= parseInt(this.validityTimeInMinutes, 10)) {
+          const currentDate = new Date();
+
+          const diffAsMinutes = (currentDate.getTime() - cvcDate.getTime()) / (1000 * 60);
+
+          if (diffAsMinutes <= 25) {
             return false;
           }
         }
@@ -97,6 +90,7 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
    */
   submitCallback(error) {
     if (error) {
+      console.log(error);
       // map error messages
       if (typeof error.message !== 'string' && error.message.properties) {
         this.errorMessage.cvc =
@@ -108,49 +102,25 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
             'cvc',
             this.errorMessage.cvc.message
           );
-          this.cvcDetailForm.get('cvcDetail').setErrors({
-            customError: this.errorMessage.cvc.message,
-          });
         }
       }
     } else {
       // update cvcLastUpdated to current timestamp
-      const param =
-        this.paymentInstrument.parameters &&
-        this.paymentInstrument.parameters.map(attr => ({ name: attr.name, value: attr.value }));
-      if (param.find(attribute => attribute.name === 'cvcLastUpdated')) {
-        param.find(attribute => attribute.name === 'cvcLastUpdated').value = new Date().toISOString();
-      } else {
-        param.push({ name: 'cvcLastUpdated', value: new Date().toISOString() });
-      }
-      // TODO: Replacing encoded paymentInstrumentId with Token for put request
-      param.find(attribute => attribute.name === 'paymentInstrumentId').value = this.paymentInstrument.parameters.find(
-        attribute => attribute.name === 'token'
-      ).value;
-      const pi: PaymentInstrument = {
-        id: this.paymentInstrument.id,
-        urn: this.paymentInstrument.urn,
-        accountIdentifier: this.paymentInstrument.accountIdentifier,
-        parameters: param,
-        paymentMethod: this.paymentInstrument.paymentMethod,
-      };
-
-      this.checkoutFacade.updateConcardisCvcLastUpdated(pi);
     }
   }
 
   renewCVCDetails() {
-    if (this.paymentInstrument.parameters?.find(attribute => attribute.name === 'token')) {
-      const tokenAttr = this.paymentInstrument.parameters.find(attribute => attribute.name === 'token');
+    if (this.paymentInstrument.parameters) {
+      const tokenAttr =
+        this.paymentInstrument.parameters &&
+        this.paymentInstrument.parameters.find(attribute => attribute.name === 'token');
 
-      const tokenValue = tokenAttr.value ? tokenAttr.value.toString() : undefined;
-      if (tokenValue) {
-        const cvcValue = this.cvcDetailForm.get('cvcDetail').value;
-        if (cvcValue) {
+      if (tokenAttr) {
+        const tokenValue = tokenAttr.value ? tokenAttr.value.toString() : undefined;
+        if (tokenValue) {
+          const cvcValue = (document.getElementById('cvcDetails_' + this.paymentInstrument.id) as HTMLInputElement)
+            .value;
           PayEngine.verifyPaymentInstrument(tokenValue, cvcValue, err => this.submitCallback(err));
-        } else {
-          this.cvcDetailForm.get('cvcDetail').setErrors({ required: true });
-          markAsDirtyRecursive(this.cvcDetailForm);
         }
       }
     }
