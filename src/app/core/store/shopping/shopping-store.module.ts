@@ -21,8 +21,7 @@ import { SearchEffects } from './search/search.effects';
 import { searchReducer } from './search/search.reducer';
 import { ShoppingState } from './shopping-store';
 
-/** @deprecated will be made private in version 0.23 */
-export const shoppingReducers: ActionReducerMap<ShoppingState> = {
+const shoppingReducers: ActionReducerMap<ShoppingState> = {
   categories: categoriesReducer,
   products: productsReducer,
   compare: compareReducer,
@@ -33,8 +32,7 @@ export const shoppingReducers: ActionReducerMap<ShoppingState> = {
   productListing: productListingReducer,
 };
 
-/** @deprecated will be made private in version 0.23 */
-export const shoppingEffects = [
+const shoppingEffects = [
   CategoriesEffects,
   ProductsEffects,
   CompareEffects,
@@ -44,8 +42,6 @@ export const shoppingEffects = [
   PromotionsEffects,
   ProductListingEffects,
 ];
-
-// tslint:disable: deprecation
 
 @NgModule({
   imports: [EffectsModule.forFeature(shoppingEffects), StoreModule.forFeature('shopping', shoppingReducers)],

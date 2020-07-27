@@ -22,18 +22,14 @@ import { CustomRouterSerializer } from './router/router.serializer';
 import { ViewconfEffects } from './viewconf/viewconf.effects';
 import { viewconfReducer } from './viewconf/viewconf.reducer';
 
-/** @deprecated will be made private in version 0.23 */
-export const coreReducers: ActionReducerMap<CoreState> = {
+const coreReducers: ActionReducerMap<CoreState> = {
   router: routerReducer,
   error: errorReducer,
   viewconf: viewconfReducer,
   configuration: configurationReducer,
 };
 
-/** @deprecated will be made private in version 0.23 */
-export const coreEffects = [ErrorEffects, ViewconfEffects, ConfigurationEffects, MessagesEffects];
-
-// tslint:disable: deprecation
+const coreEffects = [ErrorEffects, ViewconfEffects, ConfigurationEffects, MessagesEffects];
 
 const coreMetaReducers: MetaReducer<CoreState>[] = [ngrxStateTransferMeta, configurationMeta];
 

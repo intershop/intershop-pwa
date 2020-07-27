@@ -12,14 +12,11 @@ import { pageletsReducer } from './pagelets/pagelets.reducer';
 import { PagesEffects } from './pages/pages.effects';
 import { pagesReducer } from './pages/pages.reducer';
 
-/** @deprecated will be made private in version 0.23 */
-export const contentReducers: ActionReducerMap<ContentState> = {
+const contentReducers: ActionReducerMap<ContentState> = {
   includes: includesReducer,
   pagelets: pageletsReducer,
   pages: pagesReducer,
 };
-
-// tslint:disable: deprecation
 
 const contentEffects = [IncludesEffects, PagesEffects];
 

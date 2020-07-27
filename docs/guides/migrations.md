@@ -7,6 +7,10 @@ kb_sync_latest_only
 
 # Migrations
 
+## 0.22 to 0.23
+
+We removed deprecated exports concerning the NgRx testing refactorings introduced in version 0.21.
+
 ## 0.20 to 0.21
 
 We deprecated and reworked the way of testing with NgRx.
