@@ -460,36 +460,6 @@
           "from": ".*.*",
           "filePattern": ".*/shared/shared.module.ts$",
           "message": "Importing and exporting extension modules should be done in ShellModule."
-        },
-        // TODO: remove after 0.22 release
-        {
-          "from": "^ish-core\\/store\\/(addresses|orders|restore|user)(.*)$",
-          "message": "Core store was restructured in version 0.21, apply auto-fix.",
-          "fix": "ish-core/store/customer/$1$2"
-        },
-        // TODO: remove after 0.22 release
-        {
-          "from": "^ish-core\\/store\\/core-store.module$",
-          "message": "Core store was restructured in version 0.21, apply auto-fix.",
-          "fix": "ish-core/store/core/core-store.module"
-        },
-        // TODO: remove after 0.22 release
-        {
-          "from": "^ish-core\\/store\\/checkout/basket(.*)$",
-          "message": "Core store was restructured in version 0.21, apply auto-fix.",
-          "fix": "ish-core/store/customer/basket$2"
-        },
-        // TODO: remove after 0.22 release
-        {
-          "from": "^ish-core\\/store\\/(configuration|error|messages|router|viewconf)(.*)$",
-          "message": "Core store was restructured in version 0.21, apply auto-fix.",
-          "fix": "ish-core/store/core/$1$2"
-        },
-        // TODO: remove after 0.22 release
-        {
-          "from": "^ish-core\\/store\\/(contact|countries|regions)(.*)$",
-          "message": "Core store was restructured in version 0.21, apply auto-fix.",
-          "fix": "ish-core/store/general/$1$2"
         }
       ]
     },

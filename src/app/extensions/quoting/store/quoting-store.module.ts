@@ -11,16 +11,12 @@ import { QuoteEffects } from './quote/quote.effects';
 import { quoteReducer } from './quote/quote.reducer';
 import { QuotingState } from './quoting-store';
 
-/** @deprecated will be made private in version 0.23 */
-export const quotingReducers: ActionReducerMap<QuotingState> = {
+const quotingReducers: ActionReducerMap<QuotingState> = {
   quote: quoteReducer,
   quoteRequest: quoteRequestReducer,
 };
 
-/** @deprecated will be made private in version 0.23 */
-export const quotingEffects = [QuoteEffects, QuoteRequestEffects];
-
-// tslint:disable: deprecation
+const quotingEffects = [QuoteEffects, QuoteRequestEffects];
 
 const metaReducers = [resetOnLogoutMeta];
 
