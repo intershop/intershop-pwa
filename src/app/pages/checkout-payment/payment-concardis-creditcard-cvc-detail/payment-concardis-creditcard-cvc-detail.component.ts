@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
-import { Basket } from 'ish-core/models/basket/basket.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
@@ -18,6 +17,7 @@ declare var PayEngine: any;
 })
 export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcardisComponent implements OnInit {
   @Input() paymentInstrument: PaymentInstrument;
+  validityTimeInMinutes: string;
 
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
     super(scriptLoader, cd);
@@ -26,7 +26,6 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
   ngOnInit() {
     super.formInit();
   }
-
   /**
    * load concardis script if component is visible
    */
@@ -37,7 +36,10 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
         'ConcardisPaymentService.MerchantID',
         'checkout.credit_card.merchantId.error.notFound'
       );
-
+      this.validityTimeInMinutes = this.getParamValue(
+        'intershop.payment.Concardis_CreditCard.cvcmaxage',
+        'checkout.credit_card.validityTime.error.notFound'
+      );
       // if config params are missing - don't load script
       if (!merchantId) {
         return;
@@ -72,10 +74,8 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
         if (cvcLastUpdatedValue) {
           const cvcDate = new Date(cvcLastUpdatedValue);
           const currentDate = new Date();
-
           const diffAsMinutes = (currentDate.getTime() - cvcDate.getTime()) / (1000 * 60);
-
-          if (diffAsMinutes <= 25) {
+          if (diffAsMinutes <= parseInt(this.validityTimeInMinutes)) {
             return false;
           }
         }
