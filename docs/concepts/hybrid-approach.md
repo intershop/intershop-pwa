@@ -53,7 +53,7 @@ The server-side rendering process must be started with `SSR_HYBRID=1`.
 In addition, the PWA must be run with secure URLs as well.
 This can be achieved with `SSL=1`.
 
-**Only for development environments** it might be necessary to set `TRUST_ICM=1` if the used development ICM is deployed with an insecure certificate.
+**Only for development environments**: It might be necessary to set `TRUST_ICM=1` if the used development ICM is deployed with an insecure certificate.
 
 Also, the **Service Worker must be disabled** for the PWA, as it installs itself into the browser of the client device and takes over the routing process, making it impossible to break out of the PWA and delegate to the ICM.
 
@@ -84,23 +84,23 @@ However, `pwa` and `icmBuild` are used in the client application where [named ca
 ## PWA Adaptions
 
 With version 0.23.0 the PWA was changed to no longer reuse the Responsive Starter Store application types but rather be based upon the newly introduced headless application type for REST Clients - `intershop.REST`.
-This application type would be completely independent of the Responsive Starter Store and is not suited for storefront setups with the Hybrid approach.
-For this reason the PWA needs to be adapted to work together with the Responsive Starter Store again.
+This application type is completely independent of the Responsive Starter Store and is not suitable for storefront setups using the hybrid approach.
+For this reason, the PWA must be adapted to work with the Responsive Starter Store again.
 
-**Migration Steps to prepare the PWA for the Hybrid Approach with the Responsive Starter Store**
+**Migration Steps to prepare the PWA for the hybrid approach with the Responsive Starter Store**
 
-- use a current PWA version
-- revert the following Git commits:
+- Use a current PWA version
+- Revert the following Git commits:
 
 | commit                                                                                                  | comment                                                                                 |
 | ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
 | [50dc72ef0](https://github.com/intershop/intershop-pwa/commit/50dc72ef083d6bee3c33edebef275b85762db618) | feat: switch to the new headless REST application type CMS content model (#302)         |
 | [741454c8c](https://github.com/intershop/intershop-pwa/commit/741454c8c839dd001a3943236172d75ffd05541d) | feat: switch to the new headless REST application type applications demo content (#302) |
 
-- configure the correct `icmApplication` setting
-- add needed PWA specific Content Includes in the Responsive Starter Store
-  - via `componentEntryPointDefinitions` in the ICM project source code
-- follow the Hybrid configuration setup
+- Configure the correct `icmApplication` setting
+- Add needed PWA specific Content Includes in the Responsive Starter Store
+  - Via `componentEntryPointDefinitions` in the ICM project source code
+- Follow the Hybrid configuration setup
 
 # Further References
 

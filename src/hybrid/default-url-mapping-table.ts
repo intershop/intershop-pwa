@@ -34,7 +34,7 @@ export const ICM_WEB_URL = '/INTERSHOP/web/WFS/$<channel>/$<lang>/$<application>
  * NOTE:
  * THIS MAPPING TABLE IS JUST AN EXAMPLE IMPLEMENTATION.
  * It does not define mappings for all routes that could be handled in the PWA or the ICM.
- * It needs to be adapted to the needs of the particular project.
+ * It needs to be adapted according to the requirements of the particular project.
  */
 export const HYBRID_MAPPING_TABLE: HybridMappingEntry[] = [
   {

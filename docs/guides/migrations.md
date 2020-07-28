@@ -9,9 +9,9 @@ kb_sync_latest_only
 
 ## 0.22 to 0.23
 
-We removed deprecated exports concerning the NgRx testing refactorings introduced in version 0.21.
+We removed deprecated exports related to the NgRx testing refactorings introduced in version 0.21.
 
-We switched our main development to the new headless REST application type provided by the ICM in version 7.10.21.0.
+We switched our main development to the new headless REST application type provided by ICM 7.10.21.0.
 If you are upgrading and want to continue using the Responsive Starter Store application types, do not cherry-pick the [commits that switch application types](https://github.com/intershop/intershop-pwa/compare/a63d2a2fc1ffdb404e6b1fe8ffb79310fa2ef60f...741454c8c839dd001a3943236172d75ffd05541d).
 
 ## 0.20 to 0.21
