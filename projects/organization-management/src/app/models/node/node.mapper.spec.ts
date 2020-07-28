@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
-import { NodeData, NodeDocument, NodeResourceIdentifier } from './node.interface';
+import { ResourceIdentifierData } from '../resource-identifier/resource-identifier.interface';
+
+import { NodeData, NodeDocument } from './node.interface';
 import { NodeMapper } from './node.mapper';
 
 const OILCORP_GERMANY: NodeData = {
@@ -95,8 +97,8 @@ describe('Node Mapper', () => {
       expect(() => nodeMapper.fromResourceId(undefined)).toThrow();
     });
 
-    it('should map node resource identifier with no parent', () => {
-      const data = { id: 'some-id' } as NodeResourceIdentifier;
+    it('should map node resource identifier when node has no parent', () => {
+      const data = { id: 'some-id' } as ResourceIdentifierData;
       const mapped = nodeMapper.fromData(nodeMapper.fromResourceId(data));
       expect(mapped.nodes['some-id']).toHaveProperty('id', 'some-id');
       expect(mapped.nodes['some-id']).toHaveProperty('name', 'unknown');
@@ -105,8 +107,8 @@ describe('Node Mapper', () => {
       expect(mapped.rootIds).toEqual(['some-id']);
     });
 
-    it('should map node resource identifier with a parent', () => {
-      const data = { id: 'some-id' } as NodeResourceIdentifier;
+    it('should map node resource identifier when node has a parent', () => {
+      const data = { id: 'some-id' } as ResourceIdentifierData;
       const mapped = nodeMapper.fromData(nodeMapper.fromResourceId(data, OILCORP_GERMANY));
       expect(mapped.nodes['some-id']).toHaveProperty('id', 'some-id');
       expect(mapped.nodes['some-id']).toHaveProperty('name', 'unknown');

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 
+import { ResourceIdentifierData } from '../resource-identifier/resource-identifier.interface';
+
 import { NodeHelper } from './node.helper';
-import { NodeData, NodeDocument, NodeResourceIdentifier } from './node.interface';
+import { NodeData, NodeDocument } from './node.interface';
 import { Node, NodeTree } from './node.model';
 
 @Injectable({ providedIn: 'root' })
@@ -35,7 +37,7 @@ export class NodeMapper {
     }
   }
 
-  fromResourceId(nodeResource: NodeResourceIdentifier, parent?: NodeData): NodeData {
+  fromResourceId(nodeResource: ResourceIdentifierData, parent?: NodeData): NodeData {
     if (nodeResource?.id) {
       return {
         id: nodeResource.id,
@@ -70,7 +72,7 @@ export class NodeMapper {
       const edges = !childNodes.length
         ? {}
         : {
-            [node.id]: childNodes.map((value: NodeResourceIdentifier) => value.id),
+            [node.id]: childNodes.map((value: ResourceIdentifierData) => value.id),
           };
       const nodes = {
         [node.id]: { ...this.fromSingleData(node) },

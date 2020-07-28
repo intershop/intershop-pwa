@@ -1,12 +1,24 @@
-import { OrganizationAttributeData } from '../organization-attribute/organization-attribute.interface';
-import { OrganizationRelationshipData } from '../organization-relationship/organization-relationship.interface';
+import { ResourceAttributeData } from '../resource-attribute/resource-attribute.interface';
+import {
+  ResourceIdentifierData,
+  ResourceIdentifierListDocument,
+} from '../resource-identifier/resource-identifier.interface';
 
-export interface OrganizationBaseData {
-  id: string;
-  attributes?: OrganizationAttributeData;
-  relationships?: OrganizationRelationshipData;
+export interface OrganizationData extends ResourceIdentifierData {
+  attributes?: OrganizationAttributes;
+  relationships?: OrganizationRelationships;
 }
 
-export interface OrganizationData {
-  data: OrganizationBaseData;
+export interface OrganizationDocument {
+  data: OrganizationData;
+}
+
+interface OrganizationAttributes extends ResourceAttributeData {
+  authenticationUrl?: string;
+}
+
+interface OrganizationRelationships {
+  customers?: ResourceIdentifierListDocument;
+  nodes?: ResourceIdentifierListDocument;
+  users?: ResourceIdentifierListDocument;
 }

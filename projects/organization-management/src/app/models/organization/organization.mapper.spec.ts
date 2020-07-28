@@ -1,7 +1,4 @@
-import { OrganizationAttributeBaseData } from '../organization-attribute/organization-attribute.interface';
-import { OrganizationRelationshipBaseData } from '../organization-relationship/organization-relationship.interface';
-
-import { OrganizationData } from './organization.interface';
+import { OrganizationDocument } from './organization.interface';
 import { OrganizationMapper } from './organization.mapper';
 import { Organization } from './organization.model';
 
@@ -12,16 +9,16 @@ describe('Organization Mapper', () => {
     authenticationUrl: 'testURL',
     description: 'testDescription',
     name: 'testName',
-  } as OrganizationAttributeBaseData;
+  };
 
   const organizationRelationshipBaseData = {
     customers: { data: [{ id: 'testCustomerID' }] },
     nodes: { data: [{ id: 'testNodeID' }] },
     users: { data: [{ id: 'testUserID' }] },
-  } as OrganizationRelationshipBaseData;
+  };
 
   describe('fromData', () => {
-    let organizationData: OrganizationData;
+    let organizationData: OrganizationDocument;
     let organization: Organization;
 
     beforeEach(() => {
@@ -31,7 +28,7 @@ describe('Organization Mapper', () => {
           attributes: { ...organizationAttributeBaseData },
           relationships: { ...organizationRelationshipBaseData },
         },
-      } as OrganizationData;
+      } as OrganizationDocument;
     });
 
     it(`should return organization when getting OrganizationData`, () => {

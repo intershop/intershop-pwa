@@ -1,12 +1,12 @@
-import { OrganizationData } from './organization.interface';
+import { OrganizationDocument } from './organization.interface';
 import { Organization } from './organization.model';
 
 export class OrganizationMapper {
-  static fromData(payload: OrganizationData): Organization {
+  static fromData(payload: OrganizationDocument): Organization {
     const data = payload.data;
 
     if (!data) {
-      throw new Error(`'organizationData' is required`);
+      throw new Error(`'organizationDocument' is required`);
     }
 
     return {
