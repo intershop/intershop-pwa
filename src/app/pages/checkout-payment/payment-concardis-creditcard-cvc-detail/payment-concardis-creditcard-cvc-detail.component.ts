@@ -18,7 +18,6 @@ declare var PayEngine: any;
 })
 export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcardisComponent implements OnInit {
   @Input() paymentInstrument: PaymentInstrument;
-  @Input() basket: Basket;
 
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
     super(scriptLoader, cd);
