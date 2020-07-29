@@ -53,6 +53,67 @@ Further options of the development server can be found running `ng serve --help`
 
 > **Warning:** DO NOT USE webpack-dev-server IN PRODUCTION environments!
 
+## Development with Docker (community support only)
+
+This project provides a simple Dockerfile for developers who wish to stay on Docker.
+
+### 1 Create a basic generic angular docker image
+
+Execute the following command:
+
+```shell script
+docker build -f templates/Dockerfile_dev -t ish_pwa_image  .
+```
+
+> **Note:** This image is as lightweight as possible and do not contain the PWA code or the npm dependencies. This construction allow you to use the sames image for multiple PWA docker with different version.
+
+### 2 Install the dependencies
+
+Using the image, we need to install npm dependencies of the PWA application.
+The following command will create a temporary container to execute all the project dependant commands.
+
+```shell script
+docker run -it --rm -v $(PWD):/workspace/ -w /workspace --entrypoint /usr/local/bin/npm ish_pwa_image -c "ci"
+docker run -it --rm -v $(PWD):/workspace/ -w /workspace --entrypoint /workspace/node_modules/.bin/ngcc ish_pwa_image
+docker run -it --rm -v $(PWD):/workspace/ -w /workspace --entrypoint /usr/local/bin/npm ish_pwa_image -c run build:schematics
+docker run -it --rm -v $(PWD):/workspace/ -w /workspace --entrypoint /bin/sh ish_pwa_image -c "/usr/local/bin/npm run synchronize-lazy-components -- --ci"
+```
+
+### 3 Create your local environement
+
+Create the file `src/environments/environment.local.ts`
+
+```javascript
+// src/environments/environment.local.ts
+
+import { ENVIRONMENT_DEFAULTS, Environment } from './environment.model';
+
+export const environment: Environment = {
+  ...ENVIRONMENT_DEFAULTS,
+};
+```
+
+### 4 Launch your development docker container
+
+```shell script
+ISH_ICM_ADDRESS=my.icm.address.com
+ISH_ICM_ORGANISATION=inSPIRED
+ISH_ICM_CHANNEL=inTRONICS_Business
+ISH_ICM_APPLICATION=smb-responsive
+ISH_PWA_LOCAL_PORT=4444
+ISH_PWA_FEATURES==compare,recently,tracking,sentry,advancedVariationHandling,businessCustomerRegistration,quoting,quickorder,orderTemplates
+
+docker run -e "ICM_BASE_URL=https://${ISH_ICM_ADDRESS}" -d --name "ish_my_pwa_container" \
+       -v $(PWD):/workspace/ \
+       -p "$ISH_PWA_LOCAL_PORT":4200 \
+       -e NODE_OPTIONS=--max_old_space_size=8192 \
+       -e ICM_CHANNEL="${ISH_ICM_ORGANISATION}-${ISH_ICM_CHANNEL}-Site" \
+       -e APPLICATION="$ISH_ICM_APPLICATION" \
+       -e FEATURES="$ISH_PWA_FEATURES" \
+       -e THEME="blue|688dc3" \
+       ish_pwa_image
+```
+
 ## Development Tools
 
 The used IDE or editor should support the [Prettier - Code formatter](https://prettier.io) that is configured to apply a common formatting style on all TypeScript, Javascript, JSON, HTML, SCSS and other files.

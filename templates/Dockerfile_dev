@@ -1,9 +1,7 @@
-FROM node:12 as buildstep
-COPY . /workspace/
+ARG NODE_VERSION=12
+
+FROM node:${NODE_VERSION}
 WORKDIR /workspace
-RUN npm ci
-RUN ./node_modules/.bin/ngcc
-RUN npm run build:schematics
-RUN npm run synchronize-lazy-components -- --ci
-EXPOSE 8080
-CMD npx ng serve --host 0.0.0.0 --disableHostCheck true --aot --port 8080
+RUN npm install -g @angular/cli
+
+CMD /usr/local/bin/npm run start:local
