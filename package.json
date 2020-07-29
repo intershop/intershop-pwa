@@ -82,6 +82,7 @@
     "ngx-infinite-scroll": "^9.0.0",
     "ngx-swiper-wrapper": "^9.0.1",
     "ngx-toastr": "^13.0.0",
+    "ngx-treeview": "^10.0.2",
     "ngx-utils-cookies-port": "^1.0.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

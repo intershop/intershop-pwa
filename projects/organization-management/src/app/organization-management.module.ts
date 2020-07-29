@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { TreeviewModule } from 'ngx-treeview';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
@@ -26,6 +27,11 @@ import { OrganizationManagementStoreModule } from './store/organization-manageme
     UserRolesSelectionComponent,
     UsersPageComponent,
   ],
-  imports: [OrganizationManagementRoutingModule, OrganizationManagementStoreModule, SharedModule],
+  imports: [
+    OrganizationManagementRoutingModule,
+    OrganizationManagementStoreModule,
+    SharedModule,
+    TreeviewModule.forRoot(),
+  ],
 })
 export class OrganizationManagementModule {}

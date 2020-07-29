@@ -41,7 +41,7 @@ export class NodeMapper {
     if (nodeResource?.id) {
       return {
         id: nodeResource.id,
-        attributes: { name: 'unknown' },
+        attributes: { name: undefined },
         relationships: {
           organization: parent?.relationships?.organization ?? { data: { id: 'unknown' } },
           parentNode: parent ? { data: { id: parent.id } } : undefined,

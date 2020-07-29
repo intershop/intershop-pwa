@@ -51,9 +51,20 @@ export class NodeHelper {
   private static mergeNodes(current: { [id: string]: Node }, incoming: { [id: string]: Node }): { [id: string]: Node } {
     const nodes = { ...current };
     Object.keys(incoming).forEach(key => {
-      nodes[key] = current[key] ?? incoming[key];
+      nodes[key] = NodeHelper.mergeNode(current[key], incoming[key]);
     });
     return nodes;
+  }
+
+  static mergeNode(old: Node, newNode: Node): Node {
+    if (!old) {
+      return newNode;
+    }
+    const node = { ...old };
+    Object.keys(old).forEach(key => {
+      node[key] = old[key] ?? newNode[key];
+    });
+    return node;
   }
 
   private static mergeEdges(
