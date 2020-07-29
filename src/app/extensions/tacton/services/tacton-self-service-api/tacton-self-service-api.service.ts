@@ -37,7 +37,7 @@ export class TactonSelfServiceApiService {
       switchMap(([config, externalId]) =>
         this.http
           .post<TactonProductConfiguration>(
-            `${config.endPoint}/config/start/${productPath}`,
+            `${config.endPoint}/self-service-api/config/start/${productPath}`,
             this.constructAPIAuth(config, externalId),
             {
               headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
@@ -62,7 +62,7 @@ export class TactonSelfServiceApiService {
       switchMap(config =>
         this.http
           .post<TactonProductConfiguration>(
-            `${config.endPoint}/config/step`,
+            `${config.endPoint}/self-service-api/config/step`,
             // tslint:disable-next-line: prefer-template
             this.constructAPIAuth(config, savedConfiguration.externalId) +
               this.addConfigReference(savedConfiguration) +
@@ -91,7 +91,7 @@ export class TactonSelfServiceApiService {
       switchMap(([config, selfService]) =>
         this.http
           .post<TactonProductConfiguration>(
-            `${selfService.endPoint}/config/commit/${valueId}/${value}`,
+            `${selfService.endPoint}/self-service-api/config/commit/${valueId}/${value}`,
             this.constructAPIAuth(selfService, config.externalId) + this.addConfigReference(config),
             {
               headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
@@ -115,7 +115,7 @@ export class TactonSelfServiceApiService {
       switchMap(([config, selfService]) =>
         this.http
           .post<TactonProductConfiguration>(
-            `${selfService.endPoint}/config/uncommit/${valueId}`,
+            `${selfService.endPoint}/self-service-api/config/uncommit/${valueId}`,
             this.constructAPIAuth(selfService, config.externalId) + this.addConfigReference(config),
             {
               headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
@@ -142,7 +142,7 @@ export class TactonSelfServiceApiService {
       switchMap(([config, selfService]) =>
         this.http
           .post<TactonProductConfiguration>(
-            `${selfService.endPoint}/config/accept`,
+            `${selfService.endPoint}/self-service-api/config/accept`,
             // tslint:disable-next-line: prefer-template
             this.constructAPIAuth(selfService, config.externalId) +
               this.addConfigReference(config) +
@@ -178,7 +178,8 @@ export class TactonSelfServiceApiService {
       first(),
       switchMap(selfService =>
         this.http.get<TactonProductConfiguration>(
-          `${selfService.endPoint}/config/bom?_key=${selfService.apiKey}` + this.addConfigReference(config)
+          `${selfService.endPoint}/self-service-api/config/bom?_key=${selfService.apiKey}` +
+            this.addConfigReference(config)
         )
       )
     );
@@ -196,7 +197,7 @@ export class TactonSelfServiceApiService {
       switchMap(([config, selfService]) =>
         this.http
           .post<TactonProductConfiguration>(
-            `${selfService.endPoint}/config/step`,
+            `${selfService.endPoint}/self-service-api/config/step`,
             // TODO: refactor
             // tslint:disable-next-line: prefer-template
             this.constructAPIAuth(selfService, config.externalId) + this.addConfigReference(config) + `&step=${step}`,
@@ -224,7 +225,7 @@ export class TactonSelfServiceApiService {
         switchMap(config =>
           this.http
             .post(
-              `${config.endPoint}/cart/items`,
+              `${config.endPoint}/self-service-api/cart/items`,
               // tslint:disable-next-line: prefer-template
               this.constructAPIAuth(config, savedConfiguration.externalId) +
                 this.addConfigReference(savedConfiguration) +
@@ -238,7 +239,7 @@ export class TactonSelfServiceApiService {
               switchMap(([, user, customer]) =>
                 this.http
                   .put(
-                    `${config.endPoint}/cart`,
+                    `${config.endPoint}/self-service-api/cart`,
                     // tslint:disable-next-line: prefer-template
                     this.constructAPIAuth(config, savedConfiguration.externalId) +
                       `&customerEmail=${user.login}&customerPhoneNumber=${user.phoneHome || 'N/A'}&customerName=${
@@ -251,7 +252,7 @@ export class TactonSelfServiceApiService {
                   .pipe(
                     switchMap(() =>
                       this.http.post(
-                        `${config.endPoint}/proposal/firm-requests`,
+                        `${config.endPoint}/self-service-api/proposal/firm-requests`,
                         this.constructAPIAuth(config, savedConfiguration.externalId),
                         {
                           headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
