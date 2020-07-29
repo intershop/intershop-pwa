@@ -9,6 +9,7 @@ import { TactonConfigureNavigationComponent } from './tacton-configure-navigatio
 import { TactonGroupComponent } from './tacton-group/tacton-group.component';
 import { TactonImageTextButtonsComponent } from './tacton-image-text-buttons/tacton-image-text-buttons.component';
 import { TactonNumberInputComponent } from './tacton-number-input/tacton-number-input.component';
+import { TactonParameterComponent } from './tacton-parameter/tacton-parameter.component';
 import { TactonRadioInputComponent } from './tacton-radio-input/tacton-radio-input.component';
 import { TactonReadonlyComponent } from './tacton-readonly/tacton-readonly.component';
 import { TactonSelectInputComponent } from './tacton-select-input/tacton-select-input.component';
@@ -31,6 +32,7 @@ const configurePageRoutes: Routes = [
     TactonGroupComponent,
     TactonImageTextButtonsComponent,
     TactonNumberInputComponent,
+    TactonParameterComponent,
     TactonRadioInputComponent,
     TactonReadonlyComponent,
     TactonSelectInputComponent,

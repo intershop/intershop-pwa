@@ -3,7 +3,10 @@ export interface TactonProductConfigurationGroup {
   isParameter: false;
   name: string;
   description: string;
-  hasVisibleParameters: boolean;
+  hasVisibleParameters?: boolean;
+  properties?: {
+    tc_group_picture?: string;
+  };
   members: (TactonProductConfigurationGroup | TactonProductConfigurationParameter)[];
 }
 
@@ -62,6 +65,7 @@ export interface TactonProductConfiguration {
   steps: {
     name: string;
     description: string;
+    hasVisibleParameters?: boolean;
     current: boolean;
     available: boolean;
     rootGroup?: {

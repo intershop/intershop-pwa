@@ -14,8 +14,4 @@ export abstract class TactonConfigParameterComponent {
   change(value) {
     this.facade.commitValue(this.parameter, value);
   }
-
-  uncommit() {
-    this.facade.uncommitValue(this.parameter);
-  }
 }

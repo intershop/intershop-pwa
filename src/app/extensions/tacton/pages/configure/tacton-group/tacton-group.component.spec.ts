@@ -1,15 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
+import { instance, mock } from 'ts-mockito';
 
+import { TactonFacade } from '../../../facades/tacton.facade';
 import { TactonProductConfigurationGroup } from '../../../models/tacton-product-configuration/tacton-product-configuration.model';
-import { TactonImageTextButtonsComponent } from '../tacton-image-text-buttons/tacton-image-text-buttons.component';
-import { TactonNumberInputComponent } from '../tacton-number-input/tacton-number-input.component';
-import { TactonRadioInputComponent } from '../tacton-radio-input/tacton-radio-input.component';
-import { TactonReadonlyComponent } from '../tacton-readonly/tacton-readonly.component';
-import { TactonSelectInputComponent } from '../tacton-select-input/tacton-select-input.component';
-import { TactonSelectedImageComponent } from '../tacton-selected-image/tacton-selected-image.component';
-import { TactonTextButtonsComponent } from '../tacton-text-buttons/tacton-text-buttons.component';
-import { TactonTextInputComponent } from '../tacton-text-input/tacton-text-input.component';
+import { TactonParameterComponent } from '../tacton-parameter/tacton-parameter.component';
 
 import { TactonGroupComponent } from './tacton-group.component';
 
@@ -17,20 +12,13 @@ describe('Tacton Group Component', () => {
   let component: TactonGroupComponent;
   let fixture: ComponentFixture<TactonGroupComponent>;
   let element: HTMLElement;
+  let tactonFacade: TactonFacade;
 
   beforeEach(async(() => {
+    tactonFacade = mock(TactonFacade);
     TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(TactonImageTextButtonsComponent),
-        MockComponent(TactonNumberInputComponent),
-        MockComponent(TactonRadioInputComponent),
-        MockComponent(TactonReadonlyComponent),
-        MockComponent(TactonSelectInputComponent),
-        MockComponent(TactonSelectedImageComponent),
-        MockComponent(TactonTextButtonsComponent),
-        MockComponent(TactonTextInputComponent),
-        TactonGroupComponent,
-      ],
+      declarations: [MockComponent(TactonParameterComponent), TactonGroupComponent],
+      providers: [{ provide: TactonFacade, useFactory: () => instance(tactonFacade) }],
     }).compileComponents();
   }));
 
@@ -40,40 +28,50 @@ describe('Tacton Group Component', () => {
     element = fixture.nativeElement;
     component.group = {
       isGroup: true,
+      isParameter: false,
       description: 'g1',
       name: 'root',
       hasVisibleParameters: true,
       members: [
-        { isParameter: true, properties: { guitype: 'text' } },
+        { isParameter: true, isGroup: false, properties: { guitype: 'text' } },
         {
           isGroup: true,
+          isParameter: false,
           name: 'G11',
           description: 'g11',
           hasVisibleParameters: true,
           members: [{ isParameter: true, properties: { guitype: 'readonly' } }],
         },
-        { isGroup: true, description: 'g12', name: 'G12', hasVisibleParameters: false },
-        { isParameter: true, properties: { guitype: 'text' }, domain: { min: '1', max: 2 } },
+        { isGroup: true, isParameter: false, description: 'g12', name: 'G12', hasVisibleParameters: false },
+        {
+          isParameter: true,
+          isGroup: false,
+          properties: { guitype: 'text' },
+          domain: { min: '1', max: '2' },
+        },
         {
           isGroup: true,
+          isParameter: false,
           description: 'g13',
           name: 'G13',
           hasVisibleParameters: true,
-          members: [{ isParameter: true, properties: { guitype: 'dropdown' } }],
+          members: [{ isParameter: true, isGroup: false, properties: { guitype: 'dropdown' } }],
         },
         {
           isGroup: true,
+          isParameter: false,
           description: 'g14',
           name: 'G14',
           hasVisibleParameters: true,
-          members: [{ isParameter: true, properties: { guitype: 'imagetext_buttons' } }],
+          members: [{ isParameter: true, isGroup: false, properties: { guitype: 'imagetext_buttons' } }],
         },
         {
           isGroup: true,
+          isParameter: false,
           description: 'g15',
           name: 'G15',
           hasVisibleParameters: true,
-          members: [{ isParameter: true, properties: { guitype: 'text_buttons' } }],
+          members: [{ isParameter: true, isGroup: false, properties: { guitype: 'text_buttons' } }],
         },
       ],
     } as TactonProductConfigurationGroup;
@@ -89,21 +87,26 @@ describe('Tacton Group Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-      <h3 id="root">g1</h3>
-      <ish-tacton-text-input></ish-tacton-text-input
-      ><ish-tacton-group
-        ><h3 id="G11">g11</h3>
-        <ish-tacton-readonly></ish-tacton-readonly></ish-tacton-group
-      ><ish-tacton-group></ish-tacton-group><ish-tacton-number-input></ish-tacton-number-input
-      ><ish-tacton-group
-        ><h3 id="G13">g13</h3>
-        <ish-tacton-select-input></ish-tacton-select-input></ish-tacton-group
-      ><ish-tacton-group
-        ><h3 id="G14">g14</h3>
-        <ish-tacton-image-text-buttons></ish-tacton-image-text-buttons></ish-tacton-group
-      ><ish-tacton-group
-        ><h3 id="G15">g15</h3>
-        <ish-tacton-text-buttons></ish-tacton-text-buttons
+      <h2 id="root">g1</h2>
+      <ish-tacton-parameter></ish-tacton-parameter
+      ><ish-tacton-group ng-reflect-is-sub-group="true"
+        ><span class="anchor" id="G11"></span>
+        <h3>g11</h3>
+        <ish-tacton-parameter></ish-tacton-parameter></ish-tacton-group
+      ><ish-tacton-group ng-reflect-is-sub-group="true"></ish-tacton-group
+      ><ish-tacton-parameter></ish-tacton-parameter
+      ><ish-tacton-group ng-reflect-is-sub-group="true"
+        ><span class="anchor" id="G13"></span>
+        <h3>g13</h3>
+        <ish-tacton-parameter></ish-tacton-parameter></ish-tacton-group
+      ><ish-tacton-group ng-reflect-is-sub-group="true"
+        ><span class="anchor" id="G14"></span>
+        <h3>g14</h3>
+        <ish-tacton-parameter></ish-tacton-parameter></ish-tacton-group
+      ><ish-tacton-group ng-reflect-is-sub-group="true"
+        ><span class="anchor" id="G15"></span>
+        <h3>g15</h3>
+        <ish-tacton-parameter></ish-tacton-parameter
       ></ish-tacton-group>
     `);
   });

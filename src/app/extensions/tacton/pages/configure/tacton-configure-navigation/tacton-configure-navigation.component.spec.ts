@@ -19,11 +19,11 @@ describe('Tacton Configure Navigation Component', () => {
       description: 'step 1 description',
       active: true,
       children: [
-        { name: 'step11', description: 'step 1.1 description', active: false },
-        { name: 'step12', description: 'step 1.2 description', active: false },
+        { name: 'step11', description: 'step 1.1 description', active: false, hasVisibleParameters: true },
+        { name: 'step12', description: 'step 1.2 description', active: false, hasVisibleParameters: true },
       ],
     },
-    { name: 'step2', description: 'step 2 description', active: false },
+    { name: 'step2', description: 'step 2 description', active: false, hasVisibleParameters: true },
   ];
 
   beforeEach(async(() => {

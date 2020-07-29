@@ -51,11 +51,4 @@ describe('Tacton Selected Image Component', () => {
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
-
-  it('should not render input if hidden', () => {
-    component.parameter.properties.hidden = 'yes';
-    fixture.detectChanges();
-
-    expect(element).toMatchInlineSnapshot(`N/A`);
-  });
 });

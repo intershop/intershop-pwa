@@ -45,17 +45,6 @@ describe('Tacton Readonly Component', () => {
   it('should render text if not hidden', () => {
     fixture.detectChanges();
 
-    expect(element).toMatchInlineSnapshot(`
-      <h4 class="font-weight-bold">description</h4>
-      <div>info</div>
-      <p>1</p>
-    `);
-  });
-
-  it('should not render if hidden', () => {
-    component.parameter.properties.hidden = 'yes';
-    fixture.detectChanges();
-
-    expect(element).toMatchInlineSnapshot(`N/A`);
+    expect(element).toMatchInlineSnapshot(`<p>1</p>`);
   });
 });

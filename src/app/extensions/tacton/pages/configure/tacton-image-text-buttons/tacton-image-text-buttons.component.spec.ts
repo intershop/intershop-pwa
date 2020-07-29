@@ -63,7 +63,8 @@ describe('Tacton Image Text Buttons Component', () => {
       },
     } as unknown) as TactonProductConfigurationParameter;
 
-    when(tactonFacade.selfServiceApiConfiguration$).thenReturn(of({ endPoint: 'http://xxx', apiKey: 'xyz' }));
+    when(tactonFacade.getImageUrl$('image1')).thenReturn(of('http://xxximage1_key=xyz'));
+    when(tactonFacade.getImageUrl$('image2')).thenReturn(of('http://xxximage2_key=xyz'));
   });
 
   it('should be created', () => {
@@ -76,26 +77,17 @@ describe('Tacton Image Text Buttons Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-      <h4 class="font-weight-bold">description</h4>
-      <div>info</div>
       <div class="d-flex flex-wrap align-items-end pb-2">
-        <div class="m-3">
-          <div class="border border-primary"><img src="http://xxximage1?_key=xyz" /></div>
+        <div class="mr-3">
+          <div class="border border-primary"><img src="http://xxximage1_key=xyz" /></div>
           <label><input type="radio" name="ID" value="i1" /> 3 </label>
         </div>
-        <div class="m-3">
-          <div class="border border-info"><img src="http://xxximage2?_key=xyz" /></div>
+        <div class="mr-3">
+          <div class="border"><img src="http://xxximage2_key=xyz" /></div>
           <label><input type="radio" name="ID" value="i2" /> 0 </label>
         </div>
       </div>
     `);
-  });
-
-  it('should not render input if hidden', () => {
-    component.parameter.properties.hidden = 'yes';
-    fixture.detectChanges();
-
-    expect(element).toMatchInlineSnapshot(`N/A`);
   });
 
   it('should trigger value commit if value changes', () => {

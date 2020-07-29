@@ -1,10 +1,4 @@
-<ng-container *ngIf="parameter.properties?.hidden === 'no'">
-  <div *ngIf="parameter.committed" class="float-right">
-    <a class="btn-tool" (click)="uncommit()" title="Undo"> <fa-icon [icon]="['fas', 'undo']"></fa-icon></a>
-  </div>
-  <h4 class="font-weight-bold">{{ parameter.description }}</h4>
-  <div *ngIf="parameter.properties.tc_info_text">{{ parameter.properties.tc_info_text }}</div>
-  <div class="form-group">
-    <textarea class="form-control" [value]="parameter.value" (change)="change($event.target.value)"></textarea>
-  </div>
-</ng-container>
+<div *ngIf="parameter.properties.tc_info_text">{{ parameter.properties.tc_info_text }}</div>
+<div class="form-group">
+  <textarea class="form-control" [value]="parameter.value" (change)="change($event.target.value)"></textarea>
+</div>
