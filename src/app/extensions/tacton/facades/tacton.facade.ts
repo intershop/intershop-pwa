@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { switchMap, take } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
+
+import { whenTruthy } from 'ish-core/utils/operators';
 
 import { TactonProductConfigurationParameter } from '../models/tacton-product-configuration/tacton-product-configuration.model';
 import {
@@ -45,6 +47,15 @@ export class TactonFacade {
 
   conflicts$ = this.store.pipe(select(getCurrentProductConfigurationConflicts));
 
+  getImageUrl$(imgName): Observable<string> {
+    return this.selfServiceApiConfiguration$.pipe(
+      whenTruthy(),
+      map(
+        ({ apiKey, endPoint }) =>
+          `${endPoint.replace('/self-service-api', '')}${imgName}${imgName.includes('?') ? '&' : '?'}_key=${apiKey}`
+      )
+    );
+  }
   changeConfigurationStep(step: string) {
     this.store.dispatch(changeTactonConfigurationStep({ step }));
   }

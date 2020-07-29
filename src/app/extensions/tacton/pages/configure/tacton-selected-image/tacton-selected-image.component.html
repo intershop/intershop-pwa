@@ -1,10 +1,5 @@
-<ng-container *ngIf="parameter.properties?.hidden === 'no'">
-  <div *ngIf="parameter.committed" class="float-right">
-    <a class="btn-tool" (click)="uncommit()" title="Undo"> <fa-icon [icon]="['fas', 'undo']"></fa-icon></a>
-  </div>
-  <h4 class="font-weight-bold">{{ parameter.description || 'Selected Image' }}</h4>
-  <div class="form-group">
-    <div *ngIf="parameter.properties.tc_info_text">{{ parameter.properties.tc_info_text }}</div>
-    Selected Image: {{ parameter.value }}
-  </div>
-</ng-container>
+<!-- ToDo: display the selected image -->
+<h3>Selected Image</h3>
+<div>
+  {{ parameter.value }}
+</div>

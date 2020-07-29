@@ -81,7 +81,6 @@ describe('Tacton Radio Input Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-      <h4 class="font-weight-bold">Terminals type</h4>
       <div class="form-group pl-2">
         <div>
           <label><input type="radio" name="paramID" value="opt1" /> Number1 </label>
@@ -91,13 +90,6 @@ describe('Tacton Radio Input Component', () => {
         </div>
       </div>
     `);
-  });
-
-  it('should not render input if hidden', () => {
-    component.parameter.properties.hidden = 'yes';
-    fixture.detectChanges();
-
-    expect(element).toMatchInlineSnapshot(`N/A`);
   });
 
   it('should trigger value commit if value changes', () => {

@@ -5,9 +5,11 @@
     }}</a>
     <ng-container *ngIf="mainItem.children">
       <ul class="list-unstyled pl-3">
-        <li *ngFor="let subItem of mainItem.children" class="pt-1 pb-1">
-          <a [routerLink]="[]" [fragment]="subItem.name">{{ subItem.description }}</a>
-        </li>
+        <ng-container *ngFor="let subItem of mainItem.children">
+          <li *ngIf="subItem.hasVisibleParameters" class="pt-1 pb-1">
+            <a [routerLink]="[]" [fragment]="subItem.name">{{ subItem.description }}</a>
+          </li>
+        </ng-container>
       </ul>
     </ng-container>
   </li>

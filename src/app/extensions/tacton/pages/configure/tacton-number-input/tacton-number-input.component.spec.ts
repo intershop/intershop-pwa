@@ -73,19 +73,10 @@ describe('Tacton Number Input Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-      <h4 class="font-weight-bold">description</h4>
       <div class="row">
-        <div class="col-4">info</div>
-        <div class="col-4 form-group"><input class="form-control" type="number" min="0" max="3" /></div>
+        <div class="col-4"><input class="form-control" type="number" min="0" max="3" /></div>
       </div>
     `);
-  });
-
-  it('should not render input if hidden', () => {
-    component.parameter.properties.hidden = 'yes';
-    fixture.detectChanges();
-
-    expect(element).toMatchInlineSnapshot(`N/A`);
   });
 
   it('should trigger value commit if value changes', () => {
@@ -97,13 +88,5 @@ describe('Tacton Number Input Component', () => {
 
     verify(tactonFacade.commitValue(anything(), anything())).once();
     expect(capture(tactonFacade.commitValue).last()[1]).toMatchInlineSnapshot(`"3"`);
-  });
-
-  it('should trigger value uncommit if undo icon is called', () => {
-    fixture.detectChanges();
-
-    component.uncommit();
-
-    verify(tactonFacade.uncommitValue(anything())).once();
   });
 });

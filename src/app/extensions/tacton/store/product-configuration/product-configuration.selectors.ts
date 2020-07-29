@@ -28,6 +28,7 @@ function mapMembers(members: (TactonProductConfigurationGroup | TactonProductCon
     .map(group => ({
       description: group.description,
       name: group.name,
+      hasVisibleParameters: group.hasVisibleParameters,
       children: mapMembers(group.members),
     }));
 }
@@ -39,6 +40,7 @@ export const getConfigurationStepTree = createSelector(
       description: step.description,
       name: step.name,
       active: step.current,
+      hasVisibleParameters: step.hasVisibleParameters,
       children: mapMembers(step.rootGroup?.members),
     }))
 );

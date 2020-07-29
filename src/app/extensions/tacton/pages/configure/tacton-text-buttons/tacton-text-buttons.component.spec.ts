@@ -71,19 +71,11 @@ describe('Tacton Text Buttons Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-      <h4 class="font-weight-bold">description</h4>
       <div>info</div>
       <div class="btn-group form-group" role="group">
         <button class="btn btn-primary">yes</button><button class="btn btn-secondary">no</button>
       </div>
     `);
-  });
-
-  it('should not render buttons if hidden', () => {
-    component.parameter.properties.hidden = 'yes';
-    fixture.detectChanges();
-
-    expect(element).toMatchInlineSnapshot(`N/A`);
   });
 
   it('should trigger value commit if button clicked', () => {

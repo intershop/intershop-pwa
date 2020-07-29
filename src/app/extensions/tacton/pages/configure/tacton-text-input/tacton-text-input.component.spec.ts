@@ -52,17 +52,7 @@ describe('Tacton Text Input Component', () => {
   it('should render input with min and max if not hidden', () => {
     fixture.detectChanges();
 
-    expect(element).toMatchInlineSnapshot(`
-      <h4 class="font-weight-bold">description</h4>
-      <div class="form-group"><textarea class="form-control"></textarea></div>
-    `);
-  });
-
-  it('should not render input if hidden', () => {
-    component.parameter.properties.hidden = 'yes';
-    fixture.detectChanges();
-
-    expect(element).toMatchInlineSnapshot(`N/A`);
+    expect(element).toMatchInlineSnapshot(`<div class="form-group"><textarea class="form-control"></textarea></div>`);
   });
 
   it('should trigger value commit if value changes', () => {
