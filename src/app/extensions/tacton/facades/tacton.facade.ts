@@ -32,7 +32,6 @@ export class TactonFacade {
   constructor(private store: Store) {}
 
   loading$ = this.store.pipe(select(getProductConfigurationLoading));
-  selfServiceApiConfiguration$ = this.store.pipe(select(getSelfServiceApiConfiguration));
 
   getTactonProductForSKU$(sku$: Observable<string>) {
     return sku$.pipe(switchMap(sku => this.store.pipe(select(getTactonProductForSKU(sku)))));
@@ -48,12 +47,10 @@ export class TactonFacade {
   conflicts$ = this.store.pipe(select(getCurrentProductConfigurationConflicts));
 
   getImageUrl$(imgName): Observable<string> {
-    return this.selfServiceApiConfiguration$.pipe(
+    return this.store.pipe(
+      select(getSelfServiceApiConfiguration),
       whenTruthy(),
-      map(
-        ({ apiKey, endPoint }) =>
-          `${endPoint.replace('/self-service-api', '')}${imgName}${imgName.includes('?') ? '&' : '?'}_key=${apiKey}`
-      )
+      map(({ apiKey, endPoint }) => `${endPoint}${imgName}${imgName.includes('?') ? '&' : '?'}_key=${apiKey}`)
     );
   }
   changeConfigurationStep(step: string) {

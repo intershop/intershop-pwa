@@ -28,7 +28,7 @@ describe('Tacton Config Selectors', () => {
 
   describe('after loading', () => {
     const action = setTactonConfig({
-      config: { selfService: { endPoint: 'http://example.com/self-service-api', apiKey: 'ASDF' } },
+      config: { selfService: { endPoint: 'http://example.com', apiKey: 'ASDF' } },
     });
 
     beforeEach(() => {
