@@ -57,9 +57,8 @@ export interface TactonProductConfigurationConflictItem {
 }
 
 export interface TactonProductConfiguration {
-  externalId?: string; // added by PWA
-  configId?: string;
-  configState?: string;
+  externalId: string; // added by PWA
+  configId: string;
   tab?: string;
   productId?: string;
   steps: {

@@ -32,7 +32,7 @@ export const savedTactonConfigurationReducer = createReducer(
         productId: action.payload.tactonProduct,
         user: action.payload.user || 'anonymous',
         step: getActiveStep(action.payload.configuration),
-        ...pick(action.payload.configuration, 'configId', 'configState', 'externalId'),
+        ...pick(action.payload.configuration, 'configId', 'externalId'),
       },
       state
     )
