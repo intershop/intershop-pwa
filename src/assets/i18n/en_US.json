@@ -840,5 +840,15 @@
   "account.requisitions.requisitions": "Requisitions",
   "account.requisitions.requisitions.text": "This list shows all your order requests that need to be approved by an approver. You can also view all requests that have been approved or rejected.",
   "account.requisitions.approvals": "Approvals",
-  "account.requisitions.approvals.text": "This list shows all order requests that need to be approved by you. You can also display all the requests that you have already approved or that you have rejected."
+  "account.requisitions.approvals.text": "This list shows all order requests that need to be approved by you. You can also display all the requests that you have already approved or that you have rejected.",
+  "account.approvallist.table.id_of_order": "Requisition No.",
+  "account.approvallist.table.no_of_order": "Order No.",
+  "account.approvallist.table.purchaser": "Buyer",
+  "account.approvallist.table.date_of_order": "Creation Date",
+  "account.approvallist.table.line_items": "Line Items",
+  "account.approvallist.table.line_item_total": "Order Total",
+  "account.approvallist.table.approval_date": "Approval Date",
+  "account.approvallist.table.reject_date": "Rejection Date",
+  "account.approvallist.table.approver": "Approver",
+  "account.approvallist.no_items_message": "Currently no orders to display."
 }

@@ -20,14 +20,41 @@ describe('Requisition Mapper', () => {
       const data: RequisitionData = {
         id: 'testUUDI',
         requisitionNo: '0001',
-        user: 'test@user.com',
+        creationDate: 12345678,
+        lineItemCount: 2,
         approvalStatus: { status: 'pending' },
+        userInformation: { firstName: 'Patricia', lastName: 'Miller', email: 'pmiller@test.intershop.de' },
+        totalGross: { currency: 'USD', value: 2000 },
+        totalNet: { currency: 'USD', value: 1890 },
       };
       const mapped = requisitionMapper.fromData(data);
-      expect(mapped).toHaveProperty('id', 'testUUDI');
-      expect(mapped).toHaveProperty('requisitionNo', '0001');
-      expect(mapped).toHaveProperty('user', 'test@user.com');
-      expect(mapped).toHaveProperty('approvalStatus', 'pending');
+      expect(mapped).toMatchInlineSnapshot(`
+        Object {
+          "approval": Object {
+            "status": "pending",
+          },
+          "creationDate": 12345678,
+          "id": "testUUDI",
+          "lineItemCount": 2,
+          "orderNo": undefined,
+          "requisitionNo": "0001",
+          "totals": Object {
+            "isEstimated": false,
+            "itemTotal": undefined,
+            "total": Object {
+              "currency": "USD",
+              "gross": 2000,
+              "net": 1890,
+              "type": "PriceItem",
+            },
+          },
+          "user": Object {
+            "email": "pmiller@test.intershop.de",
+            "firstName": "Patricia",
+            "lastName": "Miller",
+          },
+        }
+      `);
     });
   });
 });

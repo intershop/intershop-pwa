@@ -15,6 +15,7 @@ export class ApproverPageComponent implements OnInit {
   requisitions$: Observable<Requisition[]>;
   error$: Observable<HttpError>;
   loading$: Observable<boolean>;
+  status$: Observable<string>;
 
   constructor(private requisitionManagementFacade: RequisitionManagementFacade) {}
 
@@ -22,5 +23,6 @@ export class ApproverPageComponent implements OnInit {
     this.requisitions$ = this.requisitionManagementFacade.requisitions$;
     this.error$ = this.requisitionManagementFacade.requisitionsError$;
     this.loading$ = this.requisitionManagementFacade.requisitionsLoading$;
+    this.status$ = this.requisitionManagementFacade.requisitionsStatus$;
   }
 }

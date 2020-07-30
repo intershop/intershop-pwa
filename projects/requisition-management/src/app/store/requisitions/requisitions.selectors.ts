@@ -8,6 +8,8 @@ const getRequisitionsState = createSelector(getRequisitionManagementState, state
 
 export const getRequisitionsLoading = createSelector(getRequisitionsState, state => state.loading);
 
+export const getRequisitionsStatus = createSelector(getRequisitionsState, state => state.status);
+
 export const getRequisitionsError = createSelector(getRequisitionsState, state => state.error);
 
 export const {
