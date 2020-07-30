@@ -49,7 +49,7 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
     },
     '/account/requisitions/buyer': {
       localizationKey: 'account.requisitions.requisitions',
-      permission: 'APP_B2B_ORDER_APPROVAL',
+      permission: 'APP_B2B_PURCHASE',
     },
     '/account/requisitions/approver': {
       localizationKey: 'account.requisitions.approvals',

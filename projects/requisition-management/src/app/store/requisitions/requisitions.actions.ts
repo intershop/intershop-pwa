@@ -13,7 +13,7 @@ export const loadRequisitionsFail = createAction('[Requisitions API] Load Requis
 
 export const loadRequisitionsSuccess = createAction(
   '[Requisitions API] Load Requisitions Success',
-  payload<{ requisitions: Requisition[] }>()
+  payload<{ requisitions: Requisition[]; status?: string }>()
 );
 
 export const loadRequisition = createAction('[Requisitions] Load Requisition', payload<{ requisitionId: string }>());

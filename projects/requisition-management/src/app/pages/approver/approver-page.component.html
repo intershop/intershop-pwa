@@ -2,14 +2,14 @@
 
 <p>{{ 'account.requisitions.approvals.text' | translate }}</p>
 
-<a routerLink="../pending" routerLinkActive="btn-default" class="btn">Waiting for my Approval</a>
-<a routerLink="../approved" routerLinkActive="btn-default" class="btn">Approved by me</a>
-<a routerLink="../rejected" routerLinkActive="btn-default" class="btn">Rejected by me</a>
+<a routerLink="../pending" routerLinkActive="btn-default" class="btn">Waiting for your Approval</a>
+<a routerLink="../approved" routerLinkActive="btn-default" class="btn">Approved by you</a>
+<a routerLink="../rejected" routerLinkActive="btn-default" class="btn">Rejected by you</a>
 
 <div class="section loading-container">
   <ish-error-message [error]="error$ | async"></ish-error-message>
 
-  <ish-requisitions-list [requisitions]="requisitions$ | async"></ish-requisitions-list>
+  <ish-requisitions-list [requisitions]="requisitions$ | async" [requisitionStatus]="status$ | async" view="approver"></ish-requisitions-list>
 
   <ish-loading *ngIf="loading$ | async"></ish-loading>
 </div>

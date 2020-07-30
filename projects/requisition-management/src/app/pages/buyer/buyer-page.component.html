@@ -9,7 +9,7 @@
 <div class="section loading-container">
   <ish-error-message [error]="error$ | async"></ish-error-message>
 
-  <ish-requisitions-list [requisitions]="requisitions$ | async"></ish-requisitions-list>
+  <ish-requisitions-list [requisitions]="requisitions$ | async" [requisitionStatus]="status$ | async" view="buyer"></ish-requisitions-list>
 
   <ish-loading *ngIf="loading$ | async"></ish-loading>
 </div>
