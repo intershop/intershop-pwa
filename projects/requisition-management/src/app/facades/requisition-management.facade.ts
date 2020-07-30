@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
-import { map, switchMapTo, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMapTo, tap, withLatestFrom } from 'rxjs/operators';
 
 import { selectRouteParam, selectUrl } from 'ish-core/store/core/router';
 import { log } from 'ish-core/utils/dev/operators';
@@ -11,6 +10,7 @@ import {
   getRequisitions,
   getRequisitionsError,
   getRequisitionsLoading,
+  getRequisitionsStatus,
   loadRequisition,
   loadRequisitions,
 } from '../store/requisitions';
@@ -22,14 +22,17 @@ export class RequisitionManagementFacade {
 
   requisitionsError$ = this.store.pipe(select(getRequisitionsError));
   requisitionsLoading$ = this.store.pipe(select(getRequisitionsLoading));
+  requisitionsStatus$ = this.store.pipe(select(getRequisitionsStatus));
 
-  requisitions$ = combineLatest([
-    this.store.pipe(select(selectRouteParam('status'))),
-    this.store.pipe(
-      select(selectUrl),
-      map(url => (url.includes('/buyer/') ? 'buyer' : 'approver'))
+  requisitions$ = this.store.pipe(
+    select(selectRouteParam('status')),
+    withLatestFrom(
+      this.store.pipe(
+        select(selectUrl),
+        map(url => (url.includes('/buyer/') ? 'buyer' : 'approver'))
+      )
     ),
-  ]).pipe(
+    distinctUntilChanged(),
     log('facade requisitions'),
     tap(([status, view]) => this.store.dispatch(loadRequisitions({ view, status }))),
     switchMapTo(this.store.pipe(select(getRequisitions)))
