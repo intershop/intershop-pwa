@@ -823,5 +823,19 @@
   "tacton.submit.error.message": "Beim Verarbeiten Ihrer Anfrage ist ein technischer Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
   "tacton.submit.success.message": "Ihre Anfrage wurde erfolgreich versendet. Wir werden <strong>{{0}}</strong> per E-Mail über den Status Ihrer Anfrage informieren.",
   "tacton.undo.tooltip": "Wiederherstellen",
-  "textarea.max_limit": "Ihre Nachricht: {{0}} Zeichen verbleibend."
+  "textarea.max_limit": "Ihre Nachricht: {{0}} Zeichen verbleibend.",
+  "account.requisitions.requisitions": "Requisitions",
+  "account.requisitions.requisitions.text": "This list shows all your order requests that need to be approved by an approver. You can also view all requests that have been approved or rejected.",
+  "account.requisitions.approvals": "Approvals",
+  "account.requisitions.approvals.text": "This list shows all order requests that need to be approved by you. You can also display all the requests that you have already approved or that you have rejected.",
+  "account.approvallist.table.id_of_order": "Bestellanfrage-Nr.",
+  "account.approvallist.table.no_of_order": "Bestellungsnummer",
+  "account.approvallist.table.purchaser": "Einkäufer",
+  "account.approvallist.table.date_of_order": "Erstellungsdatum",
+  "account.approvallist.table.line_items": "Artikel",
+  "account.approvallist.table.line_item_total": "Gesamt",
+  "account.approvallist.table.approval_date": "Genehmigungsdatum",
+  "account.approvallist.table.reject_date": "Ablehnungsdatum",
+  "account.approvallist.table.approver": "Genehmiger",
+  "account.approvallist.no_items_message": "Sie haben derzeit keine Bestellungen."
 }

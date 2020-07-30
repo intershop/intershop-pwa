@@ -1,8 +1,84 @@
-<div class="list-body" data-testing-id="requisition-list">
-  <ng-container *ngFor="let requisition of requisitions">
-    <div>
-      <!-- TODO: routing must work for standalone usage, needs to be more relative without the 'account' part -->
-      <a [routerLink]="['/account/requisitions', requisition.id]">{{ requisition | json }}</a>
-    </div>
-  </ng-container>
-</div>
+<ng-container *ngIf="requisitions?.length > 0; else emptyList">
+  <div class="list-body" data-testing-id="requisition-list">
+
+      <div class="list-header d-md-flex">
+        <div class="list-header-item col-sm-2 list-header-item-descr">
+          {{ 'account.approvallist.table.id_of_order' | translate }}
+        </div>
+        <div *ngIf="requisitionStatus === 'approved'" class="list-header-item col-sm-2 list-header-item-descr">
+          {{ 'account.approvallist.table.no_of_order' | translate }}
+        </div>
+        <div class="list-header-item col-sm-2 list-header-item-descr">
+          {{ 'account.approvallist.table.date_of_order' | translate }}
+        </div>
+        <div *ngIf="view === 'buyer' && requisitionStatus !== 'pending'" class="list-header-item col-sm-2 list-header-item-descr">
+          {{ 'account.approvallist.table.approver' | translate }}
+        </div>
+        <div *ngIf="view === 'approver'" class="list-header-item col-sm-2 list-header-item-descr">
+          {{ 'account.approvallist.table.purchaser' | translate }}
+        </div>
+        <div *ngIf="requisitionStatus !== 'pending'" class="list-header-item col-sm-2 list-header-item-descr">
+          <ng-container *ngIf="requisitionStatus === 'approved'; else tableHeaderItemRejected">
+            {{ 'account.approvallist.table.approval_date' | translate }}
+          </ng-container>
+          <ng-template #tableHeaderItemRejected> {{ 'account.approvallist.table.reject_date' | translate }}</ng-template>
+        </div>
+        <div *ngIf="requisitionStatus !== 'approved'" class="list-header-item col-sm-2 list-header-item-descr">
+          {{ 'account.approvallist.table.line_items' | translate }}
+        </div>
+        <div class="list-header-item col-sm-2 list-header-item-descr text-right">
+          {{ 'account.approvallist.table.line_item_total' | translate }}
+        </div>
+      </div>
+      <div class="list-body">
+        <ng-container *ngFor="let requisition of requisitions">
+          <div class="list-item-row-big list-item-row d-flex flex-row flex-wrap">
+             <!--Requisition No -->
+             <div class="col-12 col-md-2 list-item">
+              <label class="d-xl-none d-lg-none d-md-none control-label">
+                {{ 'account.approvallist.table.id_of_order' | translate }}</label
+              >
+               <!-- TODO: routing must work for standalone usage, needs to be more relative without the 'account' part -->
+              <a [routerLink]="['/account/requisitions', requisition.id]">{{ requisition.requisitionNo }}</a>
+            </div>
+
+             <!--Order No -->
+             <div *ngIf="requisitionStatus === 'approved'" class="col-12 col-md-2 list-item">
+              {{ requisition.orderNo }}
+              </div>
+
+             <!-- Creation Date -->
+             <div class="col-7 col-md-2 list-item">{{ requisition.creationDate | ishDate }}</div>
+
+             <!-- Approver -->
+             <div *ngIf="view === 'buyer' && requisitionStatus !== 'pending'" class="col-7 col-md-2 list-item">
+              {{ requisition.approval?.approver?.firstName }} {{ requisition.approval?.approver?.lastName }}
+            </div>
+
+            <!-- Buyer -->
+            <div *ngIf="view === 'approver'" class="col-7 col-md-2 list-item">
+              {{ requisition.user.firstName }} {{ requisition.user.lastName }}
+            </div>
+
+             <!-- Approval/Rejection Date -->
+             <div *ngIf="requisitionStatus !== 'pending'" class="col-7 col-md-2 list-item">
+               {{ requisition.approval.approvalDate | ishDate }}
+              </div>
+
+             <!-- Items count -->
+             <div *ngIf="requisitionStatus !== 'approved'" class="col-7 col-md-2 list-item">
+               {{ requisition.lineItemCount }}
+             </div>
+
+              <!-- Total -->
+              <div class="col-7 col-md-2 list-item text-right">{{ requisition.totals.total | ishPrice: 'gross' }}</div>
+          </div>
+        </ng-container>
+      </div>
+
+  </div>
+</ng-container>
+<ng-template #emptyList>
+  <p data-testing-id="emptyList">{{ 'account.approvallist.no_items_message' | translate }}</p>
+</ng-template>
+

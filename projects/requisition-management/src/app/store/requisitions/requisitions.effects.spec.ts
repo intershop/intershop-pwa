@@ -61,6 +61,7 @@ describe('Requisitions Effects', () => {
         expect(action).toMatchInlineSnapshot(`
           [Requisitions API] Load Requisitions Success:
             requisitions: [{"id":"testUUID","requisitionNo":"0001","user":"test@user.c...
+            status: "pending"
         `);
         done();
       });
