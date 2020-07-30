@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
 
 import { TactonFacade } from '../../../facades/tacton.facade';
@@ -16,6 +17,7 @@ describe('Tacton Selected Image Component', () => {
   beforeEach(async(() => {
     tactonFacade = mock(TactonFacade);
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       declarations: [FaIconComponent, TactonSelectedImageComponent],
       providers: [{ provide: TactonFacade, useFactory: () => instance(tactonFacade) }],
     }).compileComponents();
