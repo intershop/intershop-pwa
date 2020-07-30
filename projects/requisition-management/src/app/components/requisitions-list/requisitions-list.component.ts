@@ -12,4 +12,6 @@ export class RequisitionsListComponent {
    * The requisitions to be listed
    */
   @Input() requisitions: Requisition[];
+  @Input() requisitionStatus = 'pending';
+  @Input() view: 'buyer' | 'approver' = 'buyer';
 }

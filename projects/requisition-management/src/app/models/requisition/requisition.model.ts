@@ -1,6 +1,21 @@
+import { User } from '@sentry/browser';
+
+import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
+
+export interface RequisitionApproval {
+  status: string;
+  approvalDate?: number;
+  approver?: { firstName: string; lastName: string };
+}
+
 export interface Requisition {
   id: string;
   requisitionNo: string;
-  user: string;
-  approvalStatus: string;
+  orderNo?: string;
+  creationDate: number;
+  lineItemCount: number;
+  totals: BasketTotal;
+
+  user: User;
+  approval: RequisitionApproval;
 }
