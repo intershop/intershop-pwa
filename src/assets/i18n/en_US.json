@@ -2877,5 +2877,19 @@
   "account.organization.user_management.update_user.confirmation": "The user \"{{0}}\" has been updated.",
   "subject.has.no.permission.assigned": "You do not have the required permission to perform this action.",
   "user.not.authenticated": "You are not authenticated to access this page.",
-  "search.noresult.filtered_products.message": "We are sorry, we could not find any products that match your filter choice."
+  "search.noresult.filtered_products.message": "We are sorry, we could not find any products that match your filter choice.",
+  "tacton.configure_page.description": "To resolve your selection, the following parameters must be changed.",
+  "tacton.configure_page.title": "Conflict",
+  "tacton.configure_page.button.confirm.label": "Accept New",
+  "tacton.configure_page.button.reject.label": "Keep Current",
+  "tacton.bom.title": "Bill of Material",
+  "tacton.bom.name.label": "No.:",
+  "tacton.bom.quantity.label": "Qty:",
+  "tacton.selected_image.selected.label": "Selected Image",
+  "tacton.configure_product.product.label": "Configure",
+  "tacton.step_buttons.reset.label": "Reset Configuration",
+  "tacton.step_buttons.next.label": "Next",
+  "tacton.step_buttons.previous.label": "Previous",
+  "tacton.step_buttons.submit.label": "Submit",
+  "tacton.undo.tooltip": "Undo"
 }

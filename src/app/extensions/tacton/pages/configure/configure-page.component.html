@@ -1,13 +1,13 @@
 <ish-modal-dialog
   #conflictResolutionDialog
   [options]="{
-    titleText: 'CONFLICT_TRANSLATE_ME',
-    confirmText: 'Accept New',
-    rejectText: 'Keep Current'
+    titleText: 'tacton.configure_page.title' | translate,
+    confirmText: 'tacton.configure_page.button.confirm.label' | translate,
+    rejectText: 'tacton.configure_page.button.reject.label' | translate
   }"
   (confirmed)="acceptResolution()"
 >
-  <p class="text-center">{{ 'To resolve your selection, the following parameters must be changed' }}</p>
+  <p class="text-center">{{ 'tacton.configure_page.description' | translate }}</p>
   <div class="row" *ngFor="let conflict of conflictResolutionDialog.data">
     <div class="col-12 text-center">{{ conflict.description }}</div>
     <div class="col-5 text-right">{{ conflict.oldValueDescription }}</div>

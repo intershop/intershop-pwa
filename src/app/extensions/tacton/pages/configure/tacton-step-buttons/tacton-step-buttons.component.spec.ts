@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
@@ -16,6 +17,7 @@ describe('Tacton Step Buttons Component', () => {
   beforeEach(async(() => {
     tactonFacade = mock(TactonFacade);
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       declarations: [TactonStepButtonsComponent],
       providers: [{ provide: TactonFacade, useFactory: () => instance(tactonFacade) }],
     }).compileComponents();
@@ -41,14 +43,18 @@ describe('Tacton Step Buttons Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <div class="d-flex flex-nowrap justify-content-between">
         <button class="btn btn-secondary no-wrap" data-testing-id="reset-configuration-button">
-          Reset Configuration
+          tacton.step_buttons.reset.label
         </button>
         <div>
           <div class="d-inline-block">
-            <button class="btn btn-secondary" data-testing-id="previous-button">Previous</button>
+            <button class="btn btn-secondary" data-testing-id="previous-button">
+              tacton.step_buttons.previous.label
+            </button>
           </div>
           <div class="d-inline-block ml-2">
-            <button class="btn btn-primary" data-testing-id="next-button">Next</button>
+            <button class="btn btn-primary" data-testing-id="next-button">
+              tacton.step_buttons.next.label
+            </button>
           </div>
         </div>
       </div>

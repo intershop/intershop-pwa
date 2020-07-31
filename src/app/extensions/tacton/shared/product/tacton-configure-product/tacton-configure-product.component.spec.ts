@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
@@ -12,7 +13,7 @@ describe('Tacton Configure Product Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [TactonConfigureProductComponent],
     }).compileComponents();
   }));
@@ -45,7 +46,7 @@ describe('Tacton Configure Product Component', () => {
         class="btn btn-primary btn-lg btn-block"
         ng-reflect-router-link="/configure,CONFIGURABLE_PRODUC"
         href="/configure/CONFIGURABLE_PRODUCT"
-        >Configure</a
+        >tacton.configure_product.product.label</a
       >
     `);
   });
