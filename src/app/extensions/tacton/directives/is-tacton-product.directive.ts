@@ -1,6 +1,6 @@
-import { Directive, Input, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
+import { ChangeDetectorRef, Directive, Input, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
 import { ReplaySubject, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { map, switchMap, takeUntil } from 'rxjs/operators';
 
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
@@ -10,22 +10,21 @@ import { TactonFacade } from '../facades/tacton.facade';
   selector: '[ishIsTactonProduct]',
 })
 export class IsTactonProductDirective implements OnDestroy {
-  // tslint:disable-next-line: no-any
-  private otherTemplateRef: TemplateRef<any>;
+  private otherTemplateRef: TemplateRef<unknown>;
   private sku$ = new ReplaySubject<string>(1);
+  private trigger$ = new Subject<void>();
 
   private destroy$ = new Subject();
 
   constructor(
-    // tslint:disable-next-line:no-any
-    private templateRef: TemplateRef<any>,
+    private templateRef: TemplateRef<unknown>,
     private viewContainer: ViewContainerRef,
+    private cdRef: ChangeDetectorRef,
     tactonFacade: TactonFacade
   ) {
-    tactonFacade
-      .getTactonProductForSKU$(this.sku$)
+    this.trigger$
       .pipe(
-        map(x => !!x),
+        switchMap(() => tactonFacade.getTactonProductForSKU$(this.sku$).pipe(map(x => !!x))),
         takeUntil(this.destroy$)
       )
       .subscribe(exists => this.updateView(exists));
@@ -33,11 +32,12 @@ export class IsTactonProductDirective implements OnDestroy {
 
   @Input() set ishIsTactonProduct(product: ProductView) {
     this.sku$.next(product?.sku);
+    this.trigger$.next();
   }
 
-  // tslint:disable-next-line: no-any
-  @Input() set ishIsTactonProductElse(otherTemplateRef: TemplateRef<any>) {
+  @Input() set ishIsTactonProductElse(otherTemplateRef: TemplateRef<unknown>) {
     this.otherTemplateRef = otherTemplateRef;
+    this.trigger$.next();
   }
 
   private updateView(exists: boolean) {
@@ -47,6 +47,7 @@ export class IsTactonProductDirective implements OnDestroy {
     } else if (this.otherTemplateRef) {
       this.viewContainer.createEmbeddedView(this.otherTemplateRef);
     }
+    this.cdRef.markForCheck();
   }
 
   ngOnDestroy() {

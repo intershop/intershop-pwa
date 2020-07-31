@@ -80,44 +80,54 @@
         ></ish-product-variation-select>
 
         <div class="product-list-actions-container">
-          <ng-container *ngIf="!isMasterProduct(product); else masterProductAtions">
-            <form [formGroup]="productItemForm" class="product-form form-horizontal row">
-              <div
-                class="action-container"
-                [ngClass]="
-                  configuration.quantityLabel === ' ' ? 'col-6 offset-md-6 col-lg-5 offset-lg-0' : 'col-12 col-xl-7'
-                "
-              >
-                <ish-product-quantity
-                  *ngIf="configuration.displayQuantity"
-                  [readOnly]="configuration.readOnly"
-                  [allowZeroQuantity]="configuration.allowZeroQuantity"
-                  [quantityLabel]="configuration.quantityLabel"
-                  [product]="product"
-                  [parentForm]="productItemForm"
-                  [controlName]="quantityControlName"
-                ></ish-product-quantity>
-              </div>
-
-              <div
-                class="action-container addtocart-container"
-                [ngClass]="configuration.quantityLabel === ' ' ? 'col-12 col-lg-7' : 'col-12 col-xl-5'"
-              >
-                <ish-product-add-to-basket
-                  *ngIf="configuration.displayAddToBasket"
-                  [product]="product"
-                  (productToBasket)="addToBasket()"
-                ></ish-product-add-to-basket>
-              </div>
-            </form>
+          <ng-container *ishFeature="'tacton'; else standardInteractions">
+            <ish-lazy-tacton-configure-product
+              *ishIsTactonProduct="product; else standardInteractions"
+              [product]="product"
+              displayType="list-button"
+            ></ish-lazy-tacton-configure-product>
           </ng-container>
 
-          <ng-template #masterProductAtions>
-            <div class="action-container">
-              <a [routerLink]="product | ishProductRoute: category" class="btn btn-primary" role="button">
-                {{ 'product.choose_variation.link' | translate }}
-              </a>
-            </div>
+          <ng-template #standardInteractions>
+            <ng-container *ngIf="!isMasterProduct(product); else masterProductActions">
+              <form [formGroup]="productItemForm" class="product-form form-horizontal row">
+                <div
+                  class="action-container"
+                  [ngClass]="
+                    configuration.quantityLabel === ' ' ? 'col-6 offset-md-6 col-lg-5 offset-lg-0' : 'col-12 col-xl-7'
+                  "
+                >
+                  <ish-product-quantity
+                    *ngIf="configuration.displayQuantity"
+                    [readOnly]="configuration.readOnly"
+                    [allowZeroQuantity]="configuration.allowZeroQuantity"
+                    [quantityLabel]="configuration.quantityLabel"
+                    [product]="product"
+                    [parentForm]="productItemForm"
+                    [controlName]="quantityControlName"
+                  ></ish-product-quantity>
+                </div>
+
+                <div
+                  class="action-container addtocart-container"
+                  [ngClass]="configuration.quantityLabel === ' ' ? 'col-12 col-lg-7' : 'col-12 col-xl-5'"
+                >
+                  <ish-product-add-to-basket
+                    *ngIf="configuration.displayAddToBasket"
+                    [product]="product"
+                    (productToBasket)="addToBasket()"
+                  ></ish-product-add-to-basket>
+                </div>
+              </form>
+            </ng-container>
+
+            <ng-template #masterProductActions>
+              <div class="action-container">
+                <a [routerLink]="product | ishProductRoute: category" class="btn btn-primary" role="button">
+                  {{ 'product.choose_variation.link' | translate }}
+                </a>
+              </div>
+            </ng-template>
           </ng-template>
         </div>
       </div>

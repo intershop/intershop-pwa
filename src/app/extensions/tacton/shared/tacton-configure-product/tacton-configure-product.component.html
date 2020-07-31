@@ -1,3 +1,30 @@
-<a *ngIf="product" class="btn btn-primary btn-lg btn-block" [routerLink]="['/configure', product.sku]">{{
-  'tacton.configure_product.product.label' | translate
-}}</a>
+<ng-container *ngIf="product">
+  <ng-container [ngSwitch]="displayType">
+    <a
+      *ngSwitchCase="'icon'"
+      [routerLink]="['/configure', product.sku]"
+      [title]="'tacton.configure_product.product.label' | translate"
+    >
+      <fa-icon [icon]="['fas', 'cogs']"></fa-icon>
+    </a>
+    <div *ngSwitchCase="'list-button'" class="action-container row justify-content-end no-gutters">
+      <div class="col-12 col-lg-7">
+        <a
+          role="button"
+          class="btn btn-primary btn-block"
+          [routerLink]="['/configure', product.sku]"
+          [title]="'tacton.configure_product.product.label' | translate"
+          >{{ 'tacton.configure_product.product.label' | translate }}</a
+        >
+      </div>
+    </div>
+    <a
+      *ngSwitchDefault
+      role="button"
+      class="btn btn-primary btn-lg btn-block"
+      [routerLink]="['/configure', product.sku]"
+      [title]="'tacton.configure_product.product.label' | translate"
+      >{{ 'tacton.configure_product.product.label' | translate }}</a
+    >
+  </ng-container>
+</ng-container>

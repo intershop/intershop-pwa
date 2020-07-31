@@ -11,4 +11,5 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
 @GenerateLazyComponent()
 export class TactonConfigureProductComponent {
   @Input() product: ProductView;
+  @Input() displayType?: 'icon' | 'link' | 'list-button' = 'link';
 }

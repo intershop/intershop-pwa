@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
@@ -14,7 +16,7 @@ describe('Tacton Configure Product Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [TactonConfigureProductComponent],
+      declarations: [MockComponent(FaIconComponent), TactonConfigureProductComponent],
     }).compileComponents();
   }));
 
@@ -36,18 +38,39 @@ describe('Tacton Configure Product Component', () => {
     expect(element).toMatchInlineSnapshot(`N/A`);
   });
 
-  it('should display link to product configuration when rendered', () => {
-    component.product = { sku: 'CONFIGURABLE_PRODUCT' } as ProductView;
+  describe('with product', () => {
+    beforeEach(() => {
+      component.product = { sku: 'CONFIGURABLE_PRODUCT' } as ProductView;
+    });
 
-    fixture.detectChanges();
+    it('should display link to product configuration when rendered', () => {
+      fixture.detectChanges();
 
-    expect(element).toMatchInlineSnapshot(`
-      <a
-        class="btn btn-primary btn-lg btn-block"
-        ng-reflect-router-link="/configure,CONFIGURABLE_PRODUC"
-        href="/configure/CONFIGURABLE_PRODUCT"
-        >tacton.configure_product.product.label</a
-      >
-    `);
+      expect(element).toMatchInlineSnapshot(`
+        <a
+          class="btn btn-primary btn-lg btn-block"
+          role="button"
+          ng-reflect-router-link="/configure,CONFIGURABLE_PRODUC"
+          title="tacton.configure_product.product.label"
+          href="/configure/CONFIGURABLE_PRODUCT"
+          >tacton.configure_product.product.label</a
+        >
+      `);
+    });
+
+    it('should display icon for product configuration when rendered in icon mode', () => {
+      component.displayType = 'icon';
+
+      fixture.detectChanges();
+
+      expect(element).toMatchInlineSnapshot(`
+        <a
+          ng-reflect-router-link="/configure,CONFIGURABLE_PRODUC"
+          title="tacton.configure_product.product.label"
+          href="/configure/CONFIGURABLE_PRODUCT"
+          ><fa-icon ng-reflect-icon="fas,cogs"></fa-icon
+        ></a>
+      `);
+    });
   });
 });
