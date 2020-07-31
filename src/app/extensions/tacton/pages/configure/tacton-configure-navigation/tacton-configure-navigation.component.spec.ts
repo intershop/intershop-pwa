@@ -57,16 +57,8 @@ describe('Tacton Configure Navigation Component', () => {
         <li class="pt-1 pb-1">
           <a class="font-weight-bold">step 1 description</a>
           <ul class="list-unstyled pl-3">
-            <li class="pt-1 pb-1">
-              <a ng-reflect-fragment="step11" ng-reflect-router-link="" href="/#step11"
-                >step 1.1 description</a
-              >
-            </li>
-            <li class="pt-1 pb-1">
-              <a ng-reflect-fragment="step12" ng-reflect-router-link="" href="/#step12"
-                >step 1.2 description</a
-              >
-            </li>
+            <li class="pt-1 pb-1"><a>step 1.1 description</a></li>
+            <li class="pt-1 pb-1"><a>step 1.2 description</a></li>
           </ul>
         </li>
         <li class="pt-1 pb-1"><a>step 2 description</a></li>
