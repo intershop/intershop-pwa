@@ -2871,5 +2871,19 @@
   "account.organization.user_management.update_user.confirmation": "Der Benutzer \"{{0}}\" wurde geändert.",
   "subject.has.no.permission.assigned": "Sie verfügen nicht über die erforderlichen Rechte zur Durchführung dieser Aktion.",
   "user.not.authenticated": "Sie sind für den Zugriff auf diese Seite nicht authentifiziert.",
-  "search.noresult.filtered_products.message": "Leider konnten wir keine Produkte finden, die Ihrer Filterauswahl entsprechen."
+  "search.noresult.filtered_products.message": "Leider konnten wir keine Produkte finden, die Ihrer Filterauswahl entsprechen.",
+  "tacton.configure_page.description": "Um Ihre Auswahl aufzulösen, müssen die folgenden Parameter geändert werden.",
+  "tacton.configure_page.title": "Konflikt",
+  "tacton.configure_page.button.confirm.label": "Neuerungen akzeptieren",
+  "tacton.configure_page.button.reject.label": "Aktuellen Stand beibehalten",
+  "tacton.bom.title": "Stückliste",
+  "tacton.bom.name.label": "Nr.:",
+  "tacton.bom.quantity.label": "Menge:",
+  "tacton.selected_image.selected.label": "Ausgewähltes Bild",
+  "tacton.configure_product.product.label": "Konfigurieren",
+  "tacton.step_buttons.reset.label": "Konfiguration zurücksetzen",
+  "tacton.step_buttons.next.label": "Weiter",
+  "tacton.step_buttons.previous.label": "Zurück",
+  "tacton.step_buttons.submit.label": "Senden",
+  "tacton.undo.tooltip": "Wiederherstellen"
 }

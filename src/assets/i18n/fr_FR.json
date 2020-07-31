@@ -2873,5 +2873,19 @@
   "account.organization.user_management.update_user.confirmation": "L’utilisateur \"{{0}}\" a été mise à jour.",
   "subject.has.no.permission.assigned": "Vous n’avez pas l’autorisation nécessaire d’effectuer cette action.",
   "user.not.authenticated": "Vous n’êtes pas authentifié pour accéder à cette page.",
-  "search.noresult.filtered_products.message": "Nous sommes désolés, nous n’avons pu trouver aucun produit correspondant à votre choix de filtre."
+  "search.noresult.filtered_products.message": "Nous sommes désolés, nous n’avons pu trouver aucun produit correspondant à votre choix de filtre.",
+  "tacton.configure_page.description": "Pour résoudre votre sélection, les paramètres suivants doivent être modifiés.",
+  "tacton.configure_page.title": "Conflit",
+  "tacton.configure_page.button.confirm.label": "Accepter de nouveaux",
+  "tacton.configure_page.button.reject.label": "Conserver l’état actuel",
+  "tacton.bom.title": "Nomenclature",
+  "tacton.bom.name.label": "No.:",
+  "tacton.bom.quantity.label": "Qté :",
+  "tacton.selected_image.selected.label": "Image sélectionnée",
+  "tacton.configure_product.product.label": "Configurer",
+  "tacton.step_buttons.reset.label": "Réinitialiser la configuration",
+  "tacton.step_buttons.next.label": "Suivant",
+  "tacton.step_buttons.previous.label": "Précédent",
+  "tacton.step_buttons.submit.label": "Soumettre",
+  "tacton.undo.tooltip": "Annuler"
 }
