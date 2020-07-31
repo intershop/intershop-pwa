@@ -7,12 +7,14 @@
   }"
   (confirmed)="acceptResolution()"
 >
-  <p class="text-center">{{ 'tacton.configure_page.description' | translate }}</p>
-  <div class="row" *ngFor="let conflict of conflictResolutionDialog.data">
-    <div class="col-12 text-center">{{ conflict.description }}</div>
-    <div class="col-5 text-right">{{ conflict.oldValueDescription }}</div>
-    <div class="col-2 text-center">=></div>
-    <div class="col-5 text-left">{{ conflict.newValueDescription }}</div>
+  <p class="pb-3">{{ 'tacton.configure_page.description' | translate }}</p>
+  <div class="row pb-2" *ngFor="let conflict of conflictResolutionDialog.data">
+    <div class="col-12 font-weight-bold">{{ conflict.description }}</div>
+    <div class="row w-100 border m-1 mx-3 p-1">
+      <div class="col-5 text-right">{{ conflict.oldValueDescription }}</div>
+      <div class="col-2 text-center"><fa-icon [icon]="['fas', 'arrow-alt-circle-right']"></fa-icon></div>
+      <div class="col-5 text-left">{{ conflict.newValueDescription }}</div>
+    </div>
   </div>
 </ish-modal-dialog>
 
