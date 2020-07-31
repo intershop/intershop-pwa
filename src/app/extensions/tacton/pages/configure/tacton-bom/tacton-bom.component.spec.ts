@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { TactonProductConfigurationBomItem } from '../../../models/tacton-product-configuration/tacton-product-configuration.model';
 
@@ -12,7 +13,7 @@ describe('Tacton Bom Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [TactonBomComponent],
     }).compileComponents();
   }));
@@ -35,13 +36,13 @@ describe('Tacton Bom Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-      <h3>Bill of Material</h3>
+      <h3>tacton.bom.title</h3>
       <table class="table table-sm">
         <tr>
           <td>
             product descr<br />
-            No.: xyz<br />
-            Qty: 1
+            tacton.bom.name.label xyz<br />
+            tacton.bom.quantity.label 1
           </td>
         </tr>
       </table>
