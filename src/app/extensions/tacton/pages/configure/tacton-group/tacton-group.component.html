@@ -1,7 +1,7 @@
 <ng-container *ngIf="group && group.hasVisibleParameters">
-  <h2 [id]="group.name" *ngIf="!isSubGroup; else subGroup">{{ group?.description }}</h2>
+  <h2 [id]="'anchor-' + group.name" *ngIf="!isSubGroup; else subGroup">{{ group?.description }}</h2>
   <ng-template #subGroup>
-    <span class="anchor" [id]="group.name"></span>
+    <span class="anchor" [id]="'anchor-' + group.name"></span>
     <h3>{{ group.description }}</h3>
   </ng-template>
   <img *ngIf="group.properties?.tc_group_picture" [src]="getImageUrl(group.properties?.tc_group_picture) | async" />

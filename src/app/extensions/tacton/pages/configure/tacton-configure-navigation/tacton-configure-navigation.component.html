@@ -7,7 +7,7 @@
       <ul class="list-unstyled pl-3">
         <ng-container *ngFor="let subItem of mainItem.children">
           <li *ngIf="subItem.hasVisibleParameters" class="pt-1 pb-1">
-            <a [routerLink]="[]" [fragment]="subItem.name">{{ subItem.description }}</a>
+            <a (click)="scrollIntoView(subItem.name)">{{ subItem.description }}</a>
           </li>
         </ng-container>
       </ul>
