@@ -1,5 +1,4 @@
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { HttpHeader } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { User } from 'ish-core/models/user/user.model';
@@ -196,14 +195,14 @@ describe('User Reducer', () => {
     });
 
     it('should set error when LoginUserFail action is reduced', () => {
-      const error = makeHttpError({ status: 500, headers: { 'error-key': 'error' } as HttpHeader });
+      const error = makeHttpError({ status: 500, code: 'error' });
       const newState = userReducer(initialState, loginUserFail({ error }));
 
       expect(newState).toEqual({ ...initialState, error });
     });
 
     it('should set error when LoginUserFail action is reduced and error is resetted after reset action', () => {
-      const error = makeHttpError({ status: 500, headers: { 'error-key': 'error' } as HttpHeader });
+      const error = makeHttpError({ status: 500, code: 'error' });
       let newState = userReducer(initialState, loginUserFail({ error }));
 
       expect(newState).toEqual({ ...initialState, error });

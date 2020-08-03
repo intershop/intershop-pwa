@@ -113,12 +113,12 @@ describe('Orders Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(loadOrdersFail({ error: makeHttpError({ message: 'error', error: 'errorMessage' }) }));
+        store$.dispatch(loadOrdersFail({ error: makeHttpError({ message: 'error' }) }));
       });
 
       it('should not have loaded orders on error', () => {
         expect(getOrdersLoading(store$.state)).toBeFalse();
-        expect(getOrdersError(store$.state).error).toBe('errorMessage');
+        expect(getOrdersError(store$.state).message).toBe('error');
         expect(getOrders(store$.state)).toBeEmpty();
       });
     });

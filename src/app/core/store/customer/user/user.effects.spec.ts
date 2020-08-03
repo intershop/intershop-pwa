@@ -137,7 +137,7 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a LoginUserFail action on failed login', () => {
-      const error = makeHttpError({ status: 401, headers: { 'error-key': 'error' } });
+      const error = makeHttpError({ status: 401, code: 'error' });
 
       when(userServiceMock.signinUser(anything())).thenReturn(throwError(error));
 
@@ -171,7 +171,7 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a LoadCompanyUserFail action on failed for LoadCompanyUser', () => {
-      const error = makeHttpError({ status: 401, headers: { 'error-key': 'feld' } });
+      const error = makeHttpError({ status: 401, code: 'feld' });
       when(userServiceMock.getCompanyUserData()).thenReturn(throwError(error));
 
       const action = loadCompanyUser();
@@ -290,7 +290,7 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a CreateUserFail action on failed user creation', () => {
-      const error = makeHttpError({ status: 401, headers: { 'error-key': 'feld' } });
+      const error = makeHttpError({ status: 401, code: 'feld' });
       when(userServiceMock.createUser(anything())).thenReturn(throwError(error));
 
       const action = createUser({} as CustomerRegistrationType);
@@ -353,7 +353,7 @@ describe('User Effects', () => {
     });
 
     it('should dispatch an UpdateUserFail action on failed user update', () => {
-      const error = makeHttpError({ status: 401, headers: { 'error-key': 'feld' } });
+      const error = makeHttpError({ status: 401, code: 'feld' });
       when(userServiceMock.updateUser(anything())).thenReturn(throwError(error));
 
       const action = updateUser({ user: {} as User });
@@ -581,7 +581,7 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a LoadUserPaymentMethodsFail action on failed', () => {
-      const error = makeHttpError({ status: 401, headers: { 'error-key': 'error' } });
+      const error = makeHttpError({ status: 401, code: 'error' });
       when(paymentServiceMock.getUserPaymentMethods(anything())).thenReturn(throwError(error));
 
       const action = loadUserPaymentMethods();
@@ -629,7 +629,7 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a DeleteUserPaymentFail action on failed', () => {
-      const error = makeHttpError({ status: 401, headers: { 'error-key': 'error' } });
+      const error = makeHttpError({ status: 401, code: 'error' });
       when(paymentServiceMock.deleteUserPaymentInstrument(anyString(), anyString())).thenReturn(throwError(error));
 
       const action = deleteUserPaymentInstrument({ id: 'paymentInstrumentId' });
@@ -669,7 +669,7 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a RequestPasswordReminderFail action on failed', () => {
-      const error = makeHttpError({ status: 401, headers: { 'error-key': 'error' } });
+      const error = makeHttpError({ status: 401, code: 'error' });
       when(userServiceMock.requestPasswordReminder(anything())).thenReturn(throwError(error));
 
       const action = requestPasswordReminder({ data });

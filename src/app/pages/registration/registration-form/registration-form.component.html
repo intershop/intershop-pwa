@@ -1,9 +1,7 @@
 <h1>{{ 'account.register.heading' | translate }}</h1>
 <p>{{ 'account.register.message' | translate }}</p>
 
-<div *ngIf="error" role="alert" class="alert alert-danger">
-  <span>{{ error.headers['error-key'] | translate }}</span>
-</div>
+<ish-error-message [error]="error"></ish-error-message>
 
 <div class="registration-form section" data-testing-id="account-create-full-page">
   <form [formGroup]="form" (ngSubmit)="submitForm()" class="form-horizontal" novalidate="novalidate">

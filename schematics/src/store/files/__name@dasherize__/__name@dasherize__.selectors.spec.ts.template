@@ -75,7 +75,7 @@ describe('<%= classify(name) %> Selectors', () => {
     });
 
     describe('load<%= classify(name) %>Fail', () => {
-      const error = makeHttpError({ error: 'ERROR' });
+      const error = makeHttpError({ message: 'ERROR' });
       const failAction = load<%= classify(name) %>Fail({ error });
 
       beforeEach(() => {

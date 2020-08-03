@@ -1,7 +1,5 @@
 <div>
-  <div *ngIf="error" role="alert" class="alert alert-danger">
-    <span>{{ error.headers['error-key'] | translate }}</span>
-  </div>
+  <ish-error-message [error]="error"></ish-error-message>
   <p class="indicates-required"><span class="required">*</span>{{ 'account.required_field.message' | translate }}</p>
   <fieldset>
     <ish-select-title [form]="form" controlName="title" [titles]="titles"></ish-select-title>

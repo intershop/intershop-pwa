@@ -77,7 +77,7 @@ describe('Checkout Review Component', () => {
   });
 
   it('should display a message if an error occurs', () => {
-    component.error = makeHttpError({ status: 400, error: 'Bad request' });
+    component.error = makeHttpError({ status: 400, message: 'Bad request' });
     fixture.detectChanges();
     expect(element.querySelector('ish-error-message')).toBeTruthy();
   });

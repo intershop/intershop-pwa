@@ -13,8 +13,8 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { AddressFormContainerComponent } from 'ish-shared/address-forms/components/address-form-container/address-form-container.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoginFormComponent } from 'ish-shared/components/login/login-form/login-form.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
-import { LoginFormComponent } from 'ish-shared/forms/components/login-form/login-form.component';
 
 import { CheckoutAddressAnonymousComponent } from './checkout-address-anonymous.component';
 

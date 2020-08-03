@@ -37,7 +37,7 @@ describe('Error Message Component', () => {
   });
 
   it('should render an error if an error occurs', () => {
-    component.error = makeHttpError({ error: 'Test Error' });
+    component.error = makeHttpError({ message: 'Test Error' });
     fixture.detectChanges();
     expect(element.querySelector('[role="alert"]')).toBeTruthy();
   });

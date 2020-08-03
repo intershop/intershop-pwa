@@ -4,7 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { LoginFormComponent } from 'ish-shared/forms/components/login-form/login-form.component';
+import { LoginFormComponent } from 'ish-shared/components/login/login-form/login-form.component';
 
 import { LoginModalComponent } from './login-modal.component';
 

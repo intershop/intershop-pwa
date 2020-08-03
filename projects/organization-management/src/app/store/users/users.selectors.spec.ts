@@ -90,7 +90,7 @@ describe('Users Selectors', () => {
     });
 
     describe('LoadUsersFail', () => {
-      const error = makeHttpError({ error: 'ERROR' });
+      const error = makeHttpError({ message: 'ERROR' });
       const failAction = loadUsersFail({ error });
 
       beforeEach(() => {

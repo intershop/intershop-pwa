@@ -50,30 +50,6 @@ export function updateValidatorsByDataLength(
 }
 
 /**
- * This method will mark all listed @param fields in the @param form as invalid.
- * These @param fields must be comma separated and
- * (if embedded in FormGroups other than the @param form) specified by their paths.
- * This means the email field in the credentials subform is qualified by 'credentials.email'.
- * @param form the root to start search with
- * @param fields comma separated, fully qualified paths to the field.
- */
-export function markFormControlsAsInvalid(form: FormGroup, fields: string[]) {
-  fields
-    .map(attr => {
-      let obj: AbstractControl = form;
-      attr.split('.').forEach(sub => {
-        obj = obj.get(sub);
-      });
-      return obj;
-    })
-    .filter(control => !!control)
-    .forEach(control => {
-      control.markAsDirty();
-      control.setErrors({ incorrect: true });
-    });
-}
-
-/**
  * Gets all possible salutations for a certain country.
  * @param countryCode country code of the country for which the salutations should be determined.
  * @returns translation keys of the salutations

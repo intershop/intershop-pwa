@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 import { EMPTY, MonoTypeOperatorFunction, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { HttpErrorMapper } from 'ish-core/models/http-error/http-error.mapper';
 import { communicationTimeoutError, serverError } from 'ish-core/store/core/error';
 
 @Injectable({ providedIn: 'root' })
@@ -20,18 +19,16 @@ export class ApiServiceErrorHandler {
       if (!isPlatformBrowser(this.platformId)) {
         this.errorHandler.handleError(error);
       }
-      const mappedError = HttpErrorMapper.fromError(error);
-
       if (dispatch) {
         if (error.status === 0) {
-          this.store.dispatch(communicationTimeoutError({ error: mappedError }));
+          this.store.dispatch(communicationTimeoutError({ error }));
           return EMPTY;
         } else if (error.status >= 500 && error.status < 600) {
-          this.store.dispatch(serverError({ error: mappedError }));
+          this.store.dispatch(serverError({ error }));
           return EMPTY;
         }
       }
-      return throwError(mappedError);
+      return throwError(error);
     });
   }
 }

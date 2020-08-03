@@ -107,7 +107,7 @@ describe('Users Effects', () => {
     });
 
     it('should dispatch a loadUsersFail action on failed users load', () => {
-      const error = makeHttpError({ status: 401, headers: { 'error-key': 'feld' } });
+      const error = makeHttpError({ status: 401, code: 'feld' });
       when(usersService.getUsers()).thenReturn(throwError(error));
 
       const action = loadUsers();
@@ -186,7 +186,7 @@ describe('Users Effects', () => {
     }));
 
     it('should dispatch an UpdateUserFail action on failed user update', () => {
-      const error = makeHttpError({ status: 401, headers: { 'error-key': 'feld' } });
+      const error = makeHttpError({ status: 401, code: 'feld' });
       when(usersService.addUser(anything())).thenReturn(throwError(error));
 
       const action = addUser({ user: users[0] });
@@ -225,7 +225,7 @@ describe('Users Effects', () => {
     });
 
     it('should dispatch an UpdateUserFail action on failed user update', () => {
-      const error = makeHttpError({ status: 401, headers: { 'error-key': 'feld' } });
+      const error = makeHttpError({ status: 401, code: 'feld' });
       when(usersService.updateUser(anything())).thenReturn(throwError(error));
 
       const action = updateUser({ user: users[0] });

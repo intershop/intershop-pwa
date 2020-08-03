@@ -1,13 +1,13 @@
-export interface HttpHeader {
-  [key: string]: string;
-}
-
 export interface HttpError {
+  /** name for distinguishing with other errors */
   name: 'HttpErrorResponse';
-  message?: string;
-  error?: string;
-  errorCode?: string;
+
+  /** unique reference for identifying the problem - in our case the error translation key */
+  code?: string;
+
+  /** HTTP status code */
   status?: number;
-  statusText?: string;
-  headers?: HttpHeader;
+
+  /** human readable (and localized) error message */
+  message?: string;
 }

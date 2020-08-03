@@ -566,7 +566,7 @@ describe('Products Effects', () => {
       store$.dispatch(
         loadProductFail({
           sku: 'ABC',
-          error: makeHttpError({ error: 'ERROR' }),
+          error: makeHttpError({ message: 'ERROR' }),
         })
       );
 

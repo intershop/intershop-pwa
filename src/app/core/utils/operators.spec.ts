@@ -32,7 +32,7 @@ describe('Operators', () => {
     it('should catch HttpErrorResponse and convert them to Fail actions', () => {
       const error = makeHttpError({
         status: 404,
-        headers: { key: 'value' },
+        message: 'ERROR',
       });
 
       const input$ = hot('---#', undefined, error);

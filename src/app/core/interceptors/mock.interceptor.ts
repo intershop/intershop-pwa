@@ -54,6 +54,8 @@ export class MockInterceptor implements HttpInterceptor {
           if (this.isLoginAttempt(req) && !this.isMockUserLoggingInSuccessfully(req)) {
             return throwError(
               new HttpErrorResponse({
+                url: req.url,
+                statusText: 'Unauthorized',
                 status: 401,
                 error: 'wrong credentials',
                 headers: new HttpHeaders({ 'error-key': 'account.login.email_password.error.invalid' }),

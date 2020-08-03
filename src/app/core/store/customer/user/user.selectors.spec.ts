@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Customer, CustomerUserType } from 'ish-core/models/customer/customer.model';
-import { HttpHeader } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Product } from 'ish-core/models/product/product.model';
@@ -135,7 +134,7 @@ describe('User Selectors', () => {
   });
 
   it('should select no customer and an error when an error event was sent', () => {
-    const error = makeHttpError({ status: 401, headers: { 'error-key': 'dummy' } as HttpHeader });
+    const error = makeHttpError({ status: 401, code: 'dummy' });
     store$.dispatch(loginUserFail({ error }));
 
     expect(getLoggedInCustomer(store$.state)).toBeUndefined();

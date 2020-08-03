@@ -6,6 +6,7 @@ import { instance, mock } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { RequestReminderFormComponent } from '../request-reminder-form/request-reminder-form.component';
@@ -21,6 +22,7 @@ describe('Request Reminder Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
+        MockComponent(ErrorMessageComponent),
         MockComponent(LoadingComponent),
         MockComponent(RequestReminderFormComponent),
         MockComponent(UpdatePasswordFormComponent),

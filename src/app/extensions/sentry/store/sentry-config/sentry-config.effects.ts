@@ -90,7 +90,7 @@ export class SentryConfigEffects {
         tap(error => {
           Sentry.captureEvent({
             level: Sentry.Severity.Error,
-            message: error.message,
+            message: `${error.code} - ${error.message}`,
             extra: { error },
             tags: { origin: 'Error Page' },
           });
