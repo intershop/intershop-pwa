@@ -105,6 +105,6 @@ export class RegistrationPage {
   }
 
   get errorText() {
-    return cy.get('div.alert');
+    return cy.get('.toast-container .toast-error');
   }
 }
