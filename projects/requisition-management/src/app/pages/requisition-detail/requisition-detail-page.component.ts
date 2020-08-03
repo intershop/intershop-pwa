@@ -20,11 +20,17 @@ export class RequisitionDetailPageComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject();
 
+  view = 'approver';
+
   constructor(private requisitionManagementFacade: RequisitionManagementFacade, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params: { requisitionId: string }) => {
       this.requisition$ = this.requisitionManagementFacade.requisition$(params.requisitionId);
+    });
+
+    this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe((params: { view: string }) => {
+      this.view = params.view;
     });
 
     this.error$ = this.requisitionManagementFacade.requisitionsError$;

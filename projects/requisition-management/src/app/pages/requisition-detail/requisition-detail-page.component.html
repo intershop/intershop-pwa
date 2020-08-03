@@ -1,7 +1,20 @@
-<h1>Requisition Details</h1>
 
-<div class="section loading-container">
-  <ish-error-message [error]="error$ | async"></ish-error-message>
+<div class="float-right">
+  <ul class="share-tools">
+    <li class="d-none d-md-block">
+      <a href="javascript:window.print();" class="link-print pull-right" rel="nofollow">
+        <fa-icon [icon]="['fas', 'print']"></fa-icon>
+        <span class="share-label">{{ 'account.orderdetails.print_link.text' | translate }}</span>
+      </a>
+    </li>
+  </ul>
+</div>
+<h1>{{'approval.detailspage.heading' | translate}}</h1>
+<ish-error-message [error]="error$ | async"></ish-error-message>
+
+  <div *ngIf="requisition$ | async as requisition" class="section loading-container" data-testing-id="order-summary-info">
+
+    <ish-requisition-summary [requisition]="requisition" [view]="view"></ish-requisition-summary>
 
   {{ requisition$ | async | json }}
 
