@@ -839,5 +839,16 @@
   "account.approvallist.table.approval_date": "Approval Date",
   "account.approvallist.table.reject_date": "Rejection Date",
   "account.approvallist.table.approver": "Approver",
-  "account.approvallist.no_items_message": "Currently no orders to display."
+  "account.approvallist.no_items_message": "Currently no orders to display.",
+  "approval.detailspage.heading": "Approval Details",
+  "approval.detailspage.order.request_id": "Requisition No.",
+  "approval.detailspage.order_reference_id.label": "Order No.",
+  "approval.detailspage.order_date.label": "Creation Date",
+  "approval.detailspage.purchaser.label": "Buyer",
+  "approval.detailspage.approver.label": "Approver",
+  "approval.detailspage.approval_date.label": "Date of Approval",
+  "approval.detailspage.rejection_date.label": "Date of Rejection",
+  "approval.detailspage.order_total.label": "Order Total",
+  "approval.detailspage.approval_status.label": "Approval Status",
+  "approval.detailspage.comment.label=Comment": "Comment"
 }

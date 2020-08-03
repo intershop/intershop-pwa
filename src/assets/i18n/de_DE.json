@@ -837,5 +837,16 @@
   "account.approvallist.table.approval_date": "Genehmigungsdatum",
   "account.approvallist.table.reject_date": "Ablehnungsdatum",
   "account.approvallist.table.approver": "Genehmiger",
-  "account.approvallist.no_items_message": "Sie haben derzeit keine Bestellungen."
+  "account.approvallist.no_items_message": "Sie haben derzeit keine Bestellungen.",
+  "approval.detailspage.heading": "Genehmigungsdetails",
+  "approval.detailspage.order.request_id": "Bestellanfrage-Nr.",
+  "approval.detailspage.order_reference_id.label": "Bestellungsnummer",
+  "approval.detailspage.order_date.label": "Erstellungsdatum",
+  "approval.detailspage.purchaser.label": "Einkäufer",
+  "approval.detailspage.approver.label": "Genehmiger",
+  "approval.detailspage.approval_date.label": "Datum der Genehmigung",
+  "approval.detailspage.rejection_date.label": "Datum der Ablehnung",
+  "approval.detailspage.order_total.label": "Gesamtsumme",
+  "approval.detailspage.approval_status.label": "Genehmigungsstatus",
+  "approval.detailspage.comment.label=Comment": "Kommentar"
 }
