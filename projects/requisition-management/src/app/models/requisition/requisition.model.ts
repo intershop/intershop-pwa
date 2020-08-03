@@ -6,6 +6,7 @@ export interface RequisitionApproval {
   status: string;
   approvalDate?: number;
   approver?: { firstName: string; lastName: string };
+  approvalComment?: string;
 }
 
 export interface Requisition {
