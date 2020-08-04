@@ -205,17 +205,16 @@ export const deleteBasketPaymentSuccess = createAction('[Basket API] Delete Bask
 
 export const resetBasketErrors = createAction('[Basket Internal] Reset Basket and Basket Promotion Errors');
 
-export const updateConcardisCvcLastUpdated = createAction(
+export const updateCvcLastUpdated = createAction(
   '[Basket] Update CvcLastUpdated for Concardis Credit Card ',
   payload<{ paymentInstrument: PaymentInstrument }>()
 );
 
-export const updateConcardisCvcLastUpdatedFail = createAction(
+export const updateCvcLastUpdatedFail = createAction(
   '[Basket API] Update CvcLastUpdated for Concardis Credit Card Fail',
   httpError()
 );
 
-export const updateConcardisCvcLastUpdatedSuccess = createAction(
-  '[Basket API] Update CvcLastUpdated for Concardis Credit Card Success',
-  payload<{ paymentInstrument: PaymentInstrument }>()
+export const updateCvcLastUpdatedSuccess = createAction(
+  '[Basket API] Update CvcLastUpdated for Concardis Credit Card Success'
 );

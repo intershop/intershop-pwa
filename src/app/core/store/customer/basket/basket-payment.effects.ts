@@ -25,9 +25,9 @@ import {
   updateBasketPayment,
   updateBasketPaymentFail,
   updateBasketPaymentSuccess,
-  updateConcardisCvcLastUpdated,
-  updateConcardisCvcLastUpdatedFail,
-  updateConcardisCvcLastUpdatedSuccess,
+  updateCvcLastUpdated,
+  updateCvcLastUpdatedFail,
+  updateCvcLastUpdatedSuccess,
 } from './basket.actions';
 import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
 
@@ -169,16 +169,15 @@ export class BasketPaymentEffects {
   /**
    * Update CvcLastUpdated for Concardis Credit Card.
    */
-  updateConcardisCvcLastUpdated$ = createEffect(() =>
+  updateCvcLastUpdated$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(updateConcardisCvcLastUpdated),
+      ofType(updateCvcLastUpdated),
       mapToPayloadProperty('paymentInstrument'),
       withLatestFrom(this.store.pipe(select(getCurrentBasket))),
       concatMap(([paymentInstrument, basket]) =>
-        this.paymentService.updateConcardisCvcLastUpdated(basket, paymentInstrument).pipe(
-          map(pi => updateConcardisCvcLastUpdatedSuccess({ paymentInstrument: pi })),
-          mapErrorToAction(updateConcardisCvcLastUpdatedFail)
-        )
+        this.paymentService
+          .updateBasketPaymentInstrument(basket, paymentInstrument)
+          .pipe(mapTo(updateCvcLastUpdatedSuccess()), mapErrorToAction(updateCvcLastUpdatedFail))
       )
     )
   );

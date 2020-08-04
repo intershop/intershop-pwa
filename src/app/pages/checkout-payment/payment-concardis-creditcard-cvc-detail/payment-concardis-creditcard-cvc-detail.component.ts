@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
@@ -19,7 +19,11 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
   @Input() paymentInstrument: PaymentInstrument;
   validityTimeInMinutes: string;
 
-  constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
+  constructor(
+    protected scriptLoader: ScriptLoaderService,
+    protected cd: ChangeDetectorRef,
+    private checkoutFacade: CheckoutFacade
+  ) {
     super(scriptLoader, cd);
   }
 
@@ -103,8 +107,15 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
           );
         }
       }
-    } else {
+    } else if (
+      this.paymentInstrument.parameters &&
+      this.paymentInstrument.parameters.find(attribute => attribute.name === 'cvcLastUpdated')
+    ) {
       // update cvcLastUpdated to current timestamp
+      this.paymentInstrument.parameters.find(
+        attribute => attribute.name === 'cvcLastUpdated'
+      ).value = new Date().toISOString();
+      this.checkoutFacade.updateCvcLastUpdated(this.paymentInstrument);
     }
   }
 

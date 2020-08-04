@@ -58,9 +58,9 @@ import {
   updateBasketPaymentFail,
   updateBasketPaymentSuccess,
   updateBasketShippingMethod,
-  updateConcardisCvcLastUpdated,
-  updateConcardisCvcLastUpdatedFail,
-  updateConcardisCvcLastUpdatedSuccess,
+  updateCvcLastUpdated,
+  updateCvcLastUpdatedFail,
+  updateCvcLastUpdatedSuccess,
 } from './basket.actions';
 
 export interface BasketState {
@@ -113,7 +113,7 @@ export const basketReducer = createReducer(
     createBasketPayment,
     updateBasketPayment,
     deleteBasketPayment,
-    updateConcardisCvcLastUpdated
+    updateCvcLastUpdated
   ),
   setErrorOn(
     mergeBasketFail,
@@ -130,7 +130,7 @@ export const basketReducer = createReducer(
     createBasketPaymentFail,
     updateBasketPaymentFail,
     deleteBasketPaymentFail,
-    updateConcardisCvcLastUpdatedFail
+    updateCvcLastUpdatedFail
   ),
   on(addPromotionCodeToBasketFail, (state: BasketState, action) => {
     const { error } = action.payload;
@@ -159,6 +159,7 @@ export const basketReducer = createReducer(
     createBasketPaymentSuccess,
     updateBasketPaymentSuccess,
     deleteBasketPaymentSuccess,
+    updateCvcLastUpdatedSuccess,
     (state: BasketState) => ({
       ...state,
       loading: false,
