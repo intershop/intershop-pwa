@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { distinctUntilChanged, map, switchMapTo, tap, withLatestFrom } from 'rxjs/operators';
+import { map, switchMapTo, tap, withLatestFrom } from 'rxjs/operators';
 
 import { selectRouteParam, selectUrl } from 'ish-core/store/core/router';
 import { log } from 'ish-core/utils/dev/operators';
@@ -25,6 +25,7 @@ export class RequisitionManagementFacade {
   requisitionsStatus$ = this.store.pipe(select(getRequisitionsStatus));
 
   requisitions$ = this.store.pipe(
+    /* ToDo: maybe it is necessary to change this logic */
     select(selectRouteParam('status')),
     withLatestFrom(
       this.store.pipe(
@@ -32,11 +33,23 @@ export class RequisitionManagementFacade {
         map(url => (url.includes('/buyer/') ? 'buyer' : 'approver'))
       )
     ),
-    distinctUntilChanged(),
     log('facade requisitions'),
     tap(([status, view]) => this.store.dispatch(loadRequisitions({ view, status }))),
     switchMapTo(this.store.pipe(select(getRequisitions)))
   );
+
+  /* requisitions$ = combineLatest([
+    this.store.pipe(select(selectRouteParam('status'))),
+    this.store.pipe(
+      select(selectUrl),
+      map(url => (url.includes('/buyer/') ? 'buyer' : 'approver'))
+    ),
+  ]).pipe(
+    log('facade requisitions'),
+    tap(([status, view]) => this.store.dispatch(loadRequisitions({ view, status }))),
+
+    switchMapTo(this.store.pipe(select(getRequisitions)))
+  );*/
 
   requisition$(requisitionId: string) {
     // TODO: did not work with route selection

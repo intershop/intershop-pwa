@@ -15,8 +15,18 @@ import { loadRequisitions } from './requisitions.actions';
 import { RequisitionsEffects } from './requisitions.effects';
 
 const requisitions = [
-  { id: 'testUUID', requisitionNo: '0001', user: 'test@user.com', approvalStatus: 'pending' },
-  { id: 'testUUID2', requisitionNo: '0002', user: 'test@user.com', approvalStatus: 'pending' },
+  {
+    id: 'testUUID',
+    requisitionNo: '0001',
+    user: { firstName: 'Patricia', lastName: 'Miller' },
+    approval: { status: 'pending' },
+  },
+  {
+    id: 'testUUID2',
+    requisitionNo: '0002',
+    user: { firstName: 'Jack', lastName: 'Miller' },
+    approval: { status: 'pending' },
+  },
 ] as Requisition[];
 
 describe('Requisitions Effects', () => {
@@ -60,7 +70,7 @@ describe('Requisitions Effects', () => {
       effects.loadRequisitions$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
           [Requisitions API] Load Requisitions Success:
-            requisitions: [{"id":"testUUID","requisitionNo":"0001","user":"test@user.c...
+            requisitions: [{"id":"testUUID","requisitionNo":"0001","user":{"firstName"...
             status: "pending"
         `);
         done();
