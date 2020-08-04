@@ -848,5 +848,15 @@
   "approval.detailspage.rejection_date.label": "Datum der Ablehnung",
   "approval.detailspage.order_total.label": "Gesamtsumme",
   "approval.detailspage.approval_status.label": "Genehmigungsstatus",
-  "approval.detailspage.comment.label=Comment": "Kommentar"
+  "approval.detailspage.comment.label=Comment": "Kommentar",
+  "approval.detailspage.buyer_budget.heading": "Einkäufer-Genehmigung",
+  "approval.detailspage.order_spend_limit.label": "Ausgabelimit pro Bestellung:",
+  "approval.details.threshold.unlimited": "Unbegrenzt",
+  "approval.detailspage.budget.type.weekly.label": "Wochenbudget:",
+  "approval.detailspage.budget.type.monthly.label": "Monatsbudget:",
+  "approval.detailspage.budget.type.quarterly.label": "Quartalsbudget:",
+  "approval.detailspage.budget.type.half-yearly.label": "Halbjährliches Budget:",
+  "approval.detailspage.budget.type.yearly.label": "Jahresbudget:",
+  "approval.detailspage.budget.already_spent.label": "Bereits verbraucht:",
+  "approval.detailspage.order_details.heading": "Bestell-Details"
 }
