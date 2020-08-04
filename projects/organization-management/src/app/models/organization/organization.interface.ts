@@ -5,16 +5,12 @@ import {
 } from '../resource-identifier/resource-identifier.interface';
 
 export interface OrganizationData extends ResourceIdentifierData {
-  attributes?: OrganizationAttributes;
+  attributes?: ResourceAttributeData;
   relationships?: OrganizationRelationships;
 }
 
 export interface OrganizationDocument {
   data: OrganizationData;
-}
-
-interface OrganizationAttributes extends ResourceAttributeData {
-  authenticationUrl?: string;
 }
 
 interface OrganizationRelationships {

@@ -6,7 +6,6 @@ describe('Organization Mapper', () => {
   const ORGANIZATION_ID = 'testIdentifier';
 
   const organizationAttributeBaseData = {
-    authenticationUrl: 'testURL',
     description: 'testDescription',
     name: 'testName',
   };
@@ -37,7 +36,6 @@ describe('Organization Mapper', () => {
       expect(organization.id).toBe(ORGANIZATION_ID);
       expect(organization.name).toBe(organizationAttributeBaseData.name);
       expect(organization.description).toBe(organizationAttributeBaseData.description);
-      expect(organization.authenticationUrl).toBe(organizationAttributeBaseData.authenticationUrl);
       expect(organization.customers).toContain(organizationRelationshipBaseData.customers.data[0].id);
       expect(organization.users).toContain(organizationRelationshipBaseData.users.data[0].id);
       expect(organization.nodes).toContain(organizationRelationshipBaseData.nodes.data[0].id);
