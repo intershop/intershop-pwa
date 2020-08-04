@@ -33,6 +33,7 @@ kb_sync_latest_only
   - [Guide - Testing with Jest](./guides/testing-jest.md)
   - [Guide - Testing with Cypress](./guides/testing-cypress.md)
   - [Guide - State Management > Testing](./guides/state-management.md#testing-ngrx-artifacts)
+- [Guide - ICM HTTP Error Mapping](./guides/icm-http-error-mapping.md)
 - [Guide - Code Documentation](./guides/code-documentation.md)
 - [Guide - Angular Change Detection](./guides/angular-change-detection.md)
 - [Guide - Data Handling with Mappers](./guides/data-handling-with-mappers.md)
