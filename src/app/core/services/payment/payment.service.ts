@@ -325,4 +325,49 @@ export class PaymentService {
       )
     );
   }
+
+  /**
+   * Updates a (user/basket) payment instrument.
+   * @param basket            The basket.
+   * @param paymentInstrument The payment instrument, that is to be updated
+   */
+  updateBasketPaymentInstrument(basket: Basket, paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
+    if (!basket) {
+      return throwError('updateBasketPaymentInstrument() called without basket');
+    }
+    if (!paymentInstrument) {
+      return throwError('updateBasketPaymentInstrument() called without paymentInstrument');
+    }
+
+    if (paymentInstrument.urn && paymentInstrument.urn.includes('basket')) {
+      // update basket payment instrument
+      const body: {
+        parameters?: {
+          key: string;
+          property: string;
+        }[];
+      } = {
+        parameters: paymentInstrument.parameters
+          .filter(attr => attr.name === 'cvcLastUpdated')
+          .map(attr => ({ key: attr.name, property: attr.value })),
+      };
+
+      return this.apiService.patch(`baskets/${basket.id}/payment-instruments/${paymentInstrument.id}`, body);
+    } else {
+      // update user payment instrument
+      const body: {
+        name: string;
+        parameters?: {
+          key: string;
+          property: string;
+        }[];
+      } = {
+        name: paymentInstrument.paymentMethod,
+        parameters: paymentInstrument.parameters.map(attr => ({ key: attr.name, property: attr.value })),
+      };
+
+      // Replace this PUT request with PATCH request once it is fixed in ICM
+      return this.apiService.put(`customers/-/payments/${paymentInstrument.id}`, body);
+    }
+  }
 }

@@ -25,6 +25,9 @@ import {
   updateBasketPayment,
   updateBasketPaymentFail,
   updateBasketPaymentSuccess,
+  updateCvcLastUpdated,
+  updateCvcLastUpdatedFail,
+  updateCvcLastUpdatedSuccess,
 } from './basket.actions';
 import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
 
@@ -161,6 +164,21 @@ export class BasketPaymentEffects {
     this.actions$.pipe(
       ofType(deleteBasketPaymentSuccess, createBasketPaymentSuccess),
       mapTo(loadBasketEligiblePaymentMethods())
+    )
+  );
+  /**
+   * Update CvcLastUpdated for Concardis Credit Card.
+   */
+  updateCvcLastUpdated$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateCvcLastUpdated),
+      mapToPayloadProperty('paymentInstrument'),
+      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      concatMap(([paymentInstrument, basket]) =>
+        this.paymentService
+          .updateBasketPaymentInstrument(basket, paymentInstrument)
+          .pipe(mapTo(updateCvcLastUpdatedSuccess()), mapErrorToAction(updateCvcLastUpdatedFail))
+      )
     )
   );
 }

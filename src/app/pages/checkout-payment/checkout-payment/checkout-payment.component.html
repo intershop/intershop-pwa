@@ -96,7 +96,7 @@
                 </div>
                 <ng-container [ngSwitch]="paymentMethod.serviceId">
                   <ng-template [ngSwitchCase]="'Concardis_CreditCard'">
-                    <div *ngIf="paymentInstrument.id === basket.payment.paymentInstrument.id">
+                    <div *ngIf="basket.payment && paymentInstrument.id === basket.payment.paymentInstrument.id">
                       <ish-payment-concardis-creditcard-cvc-detail
                         [paymentInstrument]="paymentInstrument"
                         [paymentMethod]="paymentMethod"

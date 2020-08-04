@@ -36,6 +36,7 @@ import {
   updateBasketAddress,
   updateBasketItems,
   updateBasketShippingMethod,
+  updateCvcLastUpdated,
 } from 'ish-core/store/customer/basket';
 import { getOrdersError, getSelectedOrder } from 'ish-core/store/customer/orders';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
@@ -171,5 +172,9 @@ export class CheckoutFacade {
 
   removePromotionCodeFromBasket(code: string) {
     this.store.dispatch(removePromotionCodeFromBasket({ code }));
+  }
+
+  updateCvcLastUpdated(paymentInstrument: PaymentInstrument) {
+    this.store.dispatch(updateCvcLastUpdated({ paymentInstrument }));
   }
 }
