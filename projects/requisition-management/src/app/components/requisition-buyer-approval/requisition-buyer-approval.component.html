@@ -1,0 +1,61 @@
+<div *ngIf="requisition" class="row">
+  <ish-info-box heading="approval.detailspage.buyer_budget.heading" class="infobox-wrapper col-12">
+    <div class="row">
+      <div class="col-md-6">
+        <p class="row">
+          <strong class="col-sm-6">
+            {{ 'approval.detailspage.purchaser.label' | translate }}:
+          </strong>
+          <span class="col-sm-6">
+            {{ requisition.user.firstName }} {{ requisition.user.lastName }}
+          </span>
+        </p>
+      </div>
+    </div>
+    <div class="row section">
+      <div class="col-md-6">
+        <p class="row">
+          <strong class="col-sm-6">
+            {{ 'approval.detailspage.order_spend_limit.label' | translate }}
+          </strong>
+          <span class="col-sm-6">
+            <ng-container *ngIf="requisition.userBudgets.orderSpentLimit; else noLimit">
+              {{ requisition.userBudgets.orderSpentLimit | ishPrice }}
+            </ng-container>
+            <ng-template #noLimit>
+              {{ 'approval.details.threshold.unlimited' | translate }}
+            </ng-template>
+          </span>
+        </p>
+      </div>
+      <div class="col-sm-6">
+        <div class="progress">
+          <!-- ToDo: add progress bar here -->
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <p *ngIf="requisition.userBudgets.budgetPeriod !== 'none'" class="row">
+          <strong class="col-sm-6">
+            {{ 'approval.detailspage.budget.type.' + requisition.userBudgets.budgetPeriod + '.label'| translate }}
+          </strong>
+          <span class="col-sm-6">
+            <ng-container *ngIf="requisition.userBudgets.budget; else noLimit">
+              {{ requisition.userBudgets.budget | ishPrice }}
+            </ng-container>
+          </span>
+        </p>
+        <p *ngIf="requisition.userBudgets.spentBudget" class="row">
+          <strong class="col-sm-6">
+            {{ 'approval.detailspage.budget.already_spent.label'| translate }}
+          </strong>
+          <span class="col-sm-6">
+            {{ requisition.userBudgets.spentBudget | ishPrice }}
+          </span>
+        </p>
+      </div>
+    </div>
+
+  </ish-info-box>
+</div>
