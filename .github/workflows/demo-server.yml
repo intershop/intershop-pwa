@@ -1,6 +1,9 @@
 name: DemoServerUp
 
-on: [pull_request]
+on:
+  pull_request:
+    paths-ignore:
+      - 'docs/**'
 
 env:
   ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081

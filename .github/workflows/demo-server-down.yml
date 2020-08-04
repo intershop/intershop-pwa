@@ -3,6 +3,8 @@ name: DemoServerDown
 on:
   pull_request:
     types: [closed]
+    paths-ignore:
+      - 'docs/**'
 
 env:
   B2C_APP_SUFFIX: universal-b2c
