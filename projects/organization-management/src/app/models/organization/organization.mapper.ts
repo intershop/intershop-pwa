@@ -11,11 +11,11 @@ export class OrganizationMapper {
 
     return {
       id: data.id,
-      name: data.attributes ? data.attributes.name : undefined,
-      description: data.attributes ? data.attributes.description : undefined,
-      nodes: data.relationships.nodes.data.map(identifier => identifier.id),
-      customers: data.relationships.customers.data.map(identifier => identifier.id),
-      users: data.relationships.users.data.map(identifier => identifier.id),
+      name: data.attributes?.name,
+      description: data.attributes?.description,
+      nodes: data.relationships?.nodes?.data?.map(identifier => identifier.id),
+      customers: data.relationships?.customers?.data?.map(identifier => identifier.id),
+      users: data.relationships?.users?.data?.map(identifier => identifier.id),
     };
   }
 }
