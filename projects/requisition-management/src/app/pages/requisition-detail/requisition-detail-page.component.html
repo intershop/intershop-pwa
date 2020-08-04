@@ -12,11 +12,58 @@
 <h1>{{'approval.detailspage.heading' | translate}}</h1>
 <ish-error-message [error]="error$ | async"></ish-error-message>
 
-  <div *ngIf="requisition$ | async as requisition" class="section loading-container" data-testing-id="order-summary-info">
+<div *ngIf="requisition$ | async as requisition" class="section loading-container" data-testing-id="order-summary-info">
 
-    <ish-requisition-summary [requisition]="requisition" [view]="view"></ish-requisition-summary>
+  <ish-requisition-summary [requisition]="requisition" [view]="view"></ish-requisition-summary>
 
-  {{ requisition$ | async | json }}
+  <ish-requisition-buyer-approval  [requisition]="requisition"></ish-requisition-buyer-approval>
+
+  <h2>{{ 'approval.detailspage.order_details.heading' | translate}}</h2>
+
+  <div class="row d-flex">
+    <!-- Invoice Address -->
+    <ish-info-box heading="checkout.widget.billing-address.heading" class="infobox-wrapper col-md-6">
+      <ish-address [address]="requisition.invoiceToAddress"></ish-address>
+    </ish-info-box>
+
+    <!-- Payment Method -->
+    <ish-info-box heading="checkout.widget.payment_method.heading" class="infobox-wrapper col-md-6">
+      <p>
+        {{ requisition.payment.displayName }}<br />{{ requisition.payment.paymentInstrument.accountIdentifier }}
+        <ng-container *ngIf="!requisition.payment.displayName && !requisition.payment.paymentInstrument.accountIdentifier">
+          {{ requisition.payment.paymentInstrument }}
+        </ng-container>
+      </p>
+    </ish-info-box>
+  </div>
+
+  <div class="row d-flex">
+     <!-- Shipping Address -->
+     <ish-info-box heading="checkout.widget.shipping-address.heading" class="infobox-wrapper col-md-6">
+      <ish-address [address]="requisition.commonShipToAddress"></ish-address>
+    </ish-info-box>
+
+    <!-- Shipping Method -->
+    <ish-info-box heading="checkout.widget.shipping_method.heading" class="infobox-wrapper col-md-6">
+      <p>{{ requisition.commonShippingMethod.name }}</p>
+    </ish-info-box>
+  </div>
+
+  <!-- Line Items -->
+   <ish-line-item-list
+   *ngIf="requisition.lineItems?.length > 0"
+   [lineItems]="requisition.lineItems"
+   [editable]="false"
+   lineItemViewType="simple"
+  ></ish-line-item-list>
+
+  <!-- order summary -->
+  <div class="section row">
+    <div class="col-12 col-md-6 offset-md-6 cost-summary">
+       <h3>{{ 'checkout.order_summary.heading' | translate }}</h3>
+      <ish-basket-cost-summary [totals]="requisition.totals"></ish-basket-cost-summary>
+    </div>
+  </div>
 
   <ish-loading *ngIf="loading$ | async"></ish-loading>
 </div>

@@ -36,6 +36,7 @@ export class RequisitionDetailPageComponent implements OnInit, OnDestroy {
     this.error$ = this.requisitionManagementFacade.requisitionsError$;
     this.loading$ = this.requisitionManagementFacade.requisitionsLoading$;
   }
+
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
