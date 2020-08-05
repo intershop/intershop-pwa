@@ -32,7 +32,6 @@ describe('Anonymous Sleeping User', () => {
         });
 
         waitLoadingEnd(5000);
-        cy.window().screenshot();
       });
       at(ProductDetailPage, page => page.sku.should('have.text', _.product));
     });
@@ -65,7 +64,6 @@ describe('Anonymous Sleeping User', () => {
         });
 
         waitLoadingEnd(5000);
-        cy.window().screenshot();
       });
       at(HomePage, page => page.header.miniCart.text.should('contain', '0 items'));
     });

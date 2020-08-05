@@ -30,7 +30,7 @@ export class MyAccountPage {
   }
 
   navigateToAddresses() {
-    cy.get('a[data-testing-id="addresses-link"]').click();
+    cy.get('a[data-testing-id="addresses-link"]').click({ force: true });
   }
 
   navigateToWishlists() {

@@ -7,7 +7,9 @@ import {
   OperatorFunction,
   Subject,
   combineLatest,
+  defer,
   forkJoin,
+  identity,
   iif,
   of,
   throwError,
@@ -17,7 +19,7 @@ import { concatMap, filter, first, map, take, tap, withLatestFrom } from 'rxjs/o
 import { Captcha } from 'ish-core/models/captcha/captcha.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { getCurrentLocale, getICMServerURL, getRestEndpoint } from 'ish-core/store/core/configuration';
-import { getAPIToken, getLoggedInCustomer, getLoggedInUser, getPGID } from 'ish-core/store/customer/user';
+import { getLoggedInCustomer, getLoggedInUser, getPGID } from 'ish-core/store/customer/user';
 
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 
@@ -54,26 +56,6 @@ export class ApiService {
   ) {}
 
   /**
-   * appends API token to requests if available and request is not an authorization request
-   */
-  private appendAPITokenToHeaders(path: string): MonoTypeOperatorFunction<HttpHeaders> {
-    return headers$ =>
-      headers$.pipe(
-        withLatestFrom(this.store.pipe(select(getAPIToken))),
-        map(([headers, apiToken]) =>
-          apiToken && !headers.has(ApiService.AUTHORIZATION_HEADER_KEY)
-            ? headers.set(ApiService.TOKEN_HEADER_KEY, apiToken)
-            : headers
-        ),
-        // TODO: workaround removing auth token for cms if pgid is not available
-        withLatestFrom(this.store.pipe(select(getPGID))),
-        map(([headers, pgid]) =>
-          !pgid && path.startsWith('cms') ? headers.delete(ApiService.TOKEN_HEADER_KEY) : headers
-        )
-      );
-  }
-
-  /**
 -  * sets the request header for the appropriate captcha service
 -  * @param captcha captcha token for captcha V2 and V3
 -  * @param captchaAction captcha action for captcha V3
@@ -93,7 +75,7 @@ export class ApiService {
   /**
    * merges supplied and default headers
    */
-  private constructHeaders(path: string, options?: AvailableOptions): Observable<HttpHeaders> {
+  private constructHeaders(options?: AvailableOptions): Observable<HttpHeaders> {
     const defaultHeaders = new HttpHeaders().set('content-type', 'application/json').set('Accept', 'application/json');
 
     return of(
@@ -107,8 +89,7 @@ export class ApiService {
       options?.captcha?.captcha !== undefined
         ? // captcha headers
           this.appendCaptchaTokenToHeaders(options.captcha.captcha, options.captcha.captchaAction)
-        : // default to api token
-          this.appendAPITokenToHeaders(path)
+        : identity
     );
   }
 
@@ -166,11 +147,13 @@ export class ApiService {
   ): Observable<[string, { headers: HttpHeaders; params: HttpParams }]> {
     return forkJoin([
       this.constructUrlForPath(path, options),
-      this.constructHeaders(path, options).pipe(
-        map(headers => ({
-          params: options?.params,
-          headers,
-        }))
+      defer(() =>
+        this.constructHeaders(options).pipe(
+          map(headers => ({
+            params: options?.params,
+            headers,
+          }))
+        )
       ),
     ]);
   }

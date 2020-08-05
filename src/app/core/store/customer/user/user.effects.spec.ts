@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { EMPTY, Observable, from, noop, of, throwError } from 'rxjs';
+import { EMPTY, Observable, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
@@ -38,11 +38,9 @@ import {
   loginUser,
   loginUserFail,
   loginUserSuccess,
-  logoutUser,
   requestPasswordReminder,
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
-  resetAPIToken,
   updateCustomer,
   updateCustomerFail,
   updateCustomerSuccess,
@@ -182,24 +180,6 @@ describe('User Effects', () => {
 
       expect(effects.loadCompanyUser$).toBeObservable(expected$);
     });
-  });
-
-  describe('goToLoginAfterLogoutBySessionTimeout$', () => {
-    it('should navigate to login from current route after ResetAPIToken', fakeAsync(() => {
-      store$.dispatch(loginUserSuccess(loginResponseData));
-      router.navigateByUrl('/account');
-      tick(500);
-
-      expect(location.path()).toMatchInlineSnapshot(`"/account"`);
-
-      actions$ = from([resetAPIToken(), logoutUser()]);
-
-      effects.goToLoginAfterLogoutBySessionTimeout$.subscribe(noop, fail, noop);
-
-      tick(5000);
-
-      expect(location.path()).toMatchInlineSnapshot(`"/login?returnUrl=%2Faccount&messageKey=session_timeout"`);
-    }));
   });
 
   describe('redirectAfterLogin$', () => {
@@ -511,14 +491,14 @@ describe('User Effects', () => {
 
   describe('loadUserByAPIToken$', () => {
     it('should call the user service on LoadUserByAPIToken action and load user on success', done => {
-      when(userServiceMock.signinUserByToken('dummy')).thenReturn(
+      when(userServiceMock.signinUserByToken()).thenReturn(
         of({ user: { email: 'test@intershop.de' } } as CustomerUserType)
       );
 
-      actions$ = of(loadUserByAPIToken({ apiToken: 'dummy' }));
+      actions$ = of(loadUserByAPIToken());
 
       effects.loadUserByAPIToken$.subscribe(action => {
-        verify(userServiceMock.signinUserByToken('dummy')).once();
+        verify(userServiceMock.signinUserByToken()).once();
         expect(action).toMatchInlineSnapshot(`
           [User API] Login User Success:
             user: {"email":"test@intershop.de"}
@@ -528,9 +508,9 @@ describe('User Effects', () => {
     });
 
     it('should call the user service on LoadUserByAPIToken action and do nothing when failing', () => {
-      when(userServiceMock.signinUserByToken('dummy')).thenReturn(EMPTY);
+      when(userServiceMock.signinUserByToken()).thenReturn(EMPTY);
 
-      actions$ = hot('a-a-a-', { a: loadUserByAPIToken({ apiToken: 'dummy' }) });
+      actions$ = hot('a-a-a-', { a: loadUserByAPIToken() });
 
       expect(effects.loadUserByAPIToken$).toBeObservable(cold('------'));
     });

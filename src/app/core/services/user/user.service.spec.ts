@@ -89,12 +89,11 @@ describe('User Service', () => {
         of({ customerNo: '4711', type: 'SMBCustomer', companyName: 'xyz' } as CustomerData)
       );
 
-      userService.signinUserByToken('dummy').subscribe(() => {
+      userService.signinUserByToken().subscribe(() => {
         verify(apiServiceMock.get('customers/-', anything())).once();
         verify(apiServiceMock.get('privatecustomers/-', anything())).never();
-        const [path, options] = capture<string, { headers: HttpHeaders }>(apiServiceMock.get).last();
+        const [path] = capture<string>(apiServiceMock.get).last();
         expect(path).toEqual('customers/-');
-        expect(options.headers.get(ApiService.TOKEN_HEADER_KEY)).toEqual('dummy');
         done();
       });
     });
@@ -102,7 +101,7 @@ describe('User Service', () => {
     it('should not throw errors when logging in a user by token is unsuccessful', done => {
       when(apiServiceMock.get(anything(), anything())).thenReturn(throwError(new Error()));
 
-      userService.signinUserByToken('dummy').subscribe(fail, fail, done);
+      userService.signinUserByToken().subscribe(fail, fail, done);
     });
   });
 

@@ -19,16 +19,12 @@ import {
   loadUserPaymentMethods,
   loadUserPaymentMethodsFail,
   loadUserPaymentMethodsSuccess,
-  loginUser,
   loginUserFail,
   loginUserSuccess,
-  logoutUser,
   requestPasswordReminder,
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
-  resetAPIToken,
   resetPasswordReminder,
-  setAPIToken,
   setPGID,
   updateCustomer,
   updateCustomerFail,
@@ -55,9 +51,6 @@ export interface UserState {
   pgid: string;
   passwordReminderSuccess: boolean;
   passwordReminderError: HttpError;
-  // not synced via state transfer
-  authToken: string;
-  lastAuthTokenBeforeLogin: string;
 }
 
 export const initialState: UserState = {
@@ -70,8 +63,6 @@ export const initialState: UserState = {
   pgid: undefined,
   passwordReminderSuccess: undefined,
   passwordReminderError: undefined,
-  authToken: undefined,
-  lastAuthTokenBeforeLogin: undefined,
 };
 
 export const userReducer = createReducer(
@@ -79,20 +70,6 @@ export const userReducer = createReducer(
   on(userErrorReset, (state: UserState) => ({
     ...state,
     error: undefined,
-  })),
-  on(loginUser, (state: UserState) => ({
-    ...initialState,
-    authToken: state.authToken,
-    lastAuthTokenBeforeLogin: state.authToken,
-  })),
-  on(logoutUser, () => initialState),
-  on(setAPIToken, (state: UserState, action) => ({
-    ...state,
-    authToken: action.payload.apiToken,
-  })),
-  on(resetAPIToken, (state: UserState) => ({
-    ...state,
-    authToken: undefined,
   })),
   setLoadingOn(
     loadCompanyUser,
@@ -103,14 +80,13 @@ export const userReducer = createReducer(
     loadUserPaymentMethods,
     deleteUserPaymentInstrument
   ),
-  on(loginUserFail, loadCompanyUserFail, createUserFail, (state: UserState, action) => {
+  on(loginUserFail, loadCompanyUserFail, createUserFail, (_, action) => {
     const error = action.payload.error;
 
     return {
       ...initialState,
       loading: false,
       error,
-      authToken: state.authToken,
     };
   }),
   setErrorOn(
