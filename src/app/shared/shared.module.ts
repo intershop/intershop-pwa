@@ -7,6 +7,7 @@ import {
   NgbCollapseModule,
   NgbDropdownModule,
   NgbModalModule,
+  NgbNavModule,
   NgbPopoverModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyModule } from '@ngx-formly/core';
@@ -120,6 +121,7 @@ const importExportModules = [
   NgbCollapseModule,
   NgbDropdownModule,
   NgbModalModule,
+  NgbNavModule,
   NgbPopoverModule,
   PipesModule,
   ReactiveFormsModule,

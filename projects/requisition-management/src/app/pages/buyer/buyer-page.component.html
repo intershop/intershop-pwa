@@ -2,14 +2,26 @@
 
 <p>{{ 'account.requisitions.requisitions.text' | translate }}</p>
 
-<a routerLink="../pending" routerLinkActive="btn-default" class="btn">Pending</a>
-<a routerLink="../approved" routerLinkActive="btn-default" class="btn">Approved</a>
-<a routerLink="../rejected" routerLinkActive="btn-default" class="btn">Rejected</a>
+<ul ngbNav class="nav-tabs">
+  <li ngbNavItem>
+    <a ngbNavLink routerLink="../pending">{{ 'account.requisitions.requisitions.navtab.pending' | translate }}</a>
+  </li>
+  <li ngbNavItem>
+    <a ngbNavLink routerLink="../approved">{{ 'account.requisitions.requisitions.navtab.approved' | translate }}</a>
+  </li>
+  <li ngbNavItem>
+    <a ngbNavLink routerLink="../rejected">{{ 'account.requisitions.requisitions.navtab.rejected' | translate }}</a>
+  </li>
+</ul>
 
 <div class="section loading-container">
   <ish-error-message [error]="error$ | async"></ish-error-message>
 
-  <ish-requisitions-list [requisitions]="requisitions$ | async" [requisitionStatus]="status$ | async" view="buyer"></ish-requisitions-list>
+  <ish-requisitions-list
+    [requisitions]="requisitions$ | async"
+    [requisitionStatus]="status$ | async"
+    view="buyer"
+  ></ish-requisitions-list>
 
   <ish-loading *ngIf="loading$ | async"></ish-loading>
 </div>
