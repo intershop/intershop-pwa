@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NgbCollapseModule, NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapseModule, NgbDropdownModule, NgbModalModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { DeferLoadModule } from '@trademe/ng-defer-load';
 
@@ -56,6 +56,7 @@ const exportedComponents = [FooterComponent, HeaderComponent, ProductImageCompon
     NgbCollapseModule,
     NgbDropdownModule,
     NgbModalModule,
+    NgbNavModule,
     PipesModule.forRoot(),
     RouterModule,
     TranslateModule,

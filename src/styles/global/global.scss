@@ -112,6 +112,31 @@ img {
   background: $color-tertiary;
 }
 
+// Navbar
+.nav-tabs {
+  display: block;
+  margin-bottom: $space-default;
+  overflow-x: auto;
+  white-space: nowrap;
+
+  .nav-item {
+    display: inline-block;
+    margin-bottom: 0;
+  }
+
+  .nav-link:hover,
+  .nav-link:focus {
+    border-color: transparent;
+  }
+
+  .nav-link.active,
+  .nav-link.active:hover,
+  .nav-link.active:focus {
+    border-color: transparent;
+    border-bottom: 2px solid $CORPORATE-PRIMARY;
+  }
+}
+
 // Help Text
 .form-text {
   margin: $space-default / 3 0 $space-default / 2;
