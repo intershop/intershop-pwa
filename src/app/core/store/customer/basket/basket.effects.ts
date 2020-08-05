@@ -7,7 +7,7 @@ import { concatMap, filter, map, mapTo, mergeMap, sample, startWith, switchMap, 
 
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { RouterState } from 'ish-core/store/core/router/router.reducer';
-import { loginUser, loginUserSuccess } from 'ish-core/store/customer/user';
+import { loadUserByAPIToken, loginUser, loginUserSuccess } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 
@@ -112,7 +112,7 @@ export class BasketEffects {
   private anonymousBasket$ = createEffect(
     () =>
       combineLatest([this.store.pipe(select(getCurrentBasketId)), this.apiTokenService.apiToken$]).pipe(
-        sample(this.actions$.pipe(ofType(loginUser))),
+        sample(this.actions$.pipe(ofType(loginUser, loadUserByAPIToken))),
         startWith([undefined, undefined])
       ),
     { dispatch: false }

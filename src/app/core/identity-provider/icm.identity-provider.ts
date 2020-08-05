@@ -19,6 +19,7 @@ export class ICMIdentityProvider implements IdentityProvider {
     return {
       editPassword: true,
       editEmail: true,
+      editProfile: true,
     };
   }
 

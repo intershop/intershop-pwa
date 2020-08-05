@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 export interface IdentityProviderCapabilities {
   editPassword?: boolean;
   editEmail?: boolean;
+  editProfile?: boolean;
 }
 
 export type TriggerReturnType = Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree;

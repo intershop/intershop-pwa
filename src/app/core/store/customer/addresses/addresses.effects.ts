@@ -27,9 +27,8 @@ export class AddressesEffects {
   loadAddresses$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadAddresses),
-      withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
-      switchMap(([, customer]) =>
-        this.addressService.getCustomerAddresses(customer.customerNo).pipe(
+      switchMap(() =>
+        this.addressService.getCustomerAddresses().pipe(
           map(addresses => loadAddressesSuccess({ addresses })),
           mapErrorToAction(loadAddressesFail)
         )

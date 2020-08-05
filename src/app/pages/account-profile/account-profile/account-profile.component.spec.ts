@@ -32,7 +32,9 @@ describe('Account Profile Component', () => {
         {
           provide: IdentityProviderFactory,
           useValue: {
-            getInstance: () => ({ getCapabilities: () => ({ editEmail: true, editPassword: true }) }),
+            getInstance: () => ({
+              getCapabilities: () => ({ editEmail: true, editPassword: true, editProfile: true }),
+            }),
           } as IdentityProviderFactory,
         },
       ],
