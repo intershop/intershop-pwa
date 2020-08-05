@@ -7,7 +7,8 @@ import { concatMap, filter, map, mapTo, mergeMap, sample, startWith, switchMap, 
 
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { RouterState } from 'ish-core/store/core/router/router.reducer';
-import { getLastAPITokenBeforeLogin, loginUser, loginUserSuccess } from 'ish-core/store/customer/user';
+import { loginUser, loginUserSuccess } from 'ish-core/store/customer/user';
+import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 
 import {
@@ -29,7 +30,12 @@ import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
 
 @Injectable()
 export class BasketEffects {
-  constructor(private actions$: Actions, private store: Store, private basketService: BasketService) {}
+  constructor(
+    private actions$: Actions,
+    private store: Store,
+    private basketService: BasketService,
+    private apiTokenService: ApiTokenService
+  ) {}
 
   /**
    * The load basket effect.
@@ -105,10 +111,10 @@ export class BasketEffects {
    */
   private anonymousBasket$ = createEffect(
     () =>
-      combineLatest([
-        this.store.pipe(select(getCurrentBasketId)),
-        this.store.pipe(select(getLastAPITokenBeforeLogin)),
-      ]).pipe(sample(this.actions$.pipe(ofType(loginUser))), startWith([undefined, undefined])),
+      combineLatest([this.store.pipe(select(getCurrentBasketId)), this.apiTokenService.apiToken$]).pipe(
+        sample(this.actions$.pipe(ofType(loginUser))),
+        startWith([undefined, undefined])
+      ),
     { dispatch: false }
   );
 

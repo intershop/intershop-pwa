@@ -1,3 +1,5 @@
+import { Action } from '@ngrx/store';
+
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
@@ -5,38 +7,27 @@ import { User } from 'ish-core/models/user/user.model';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import {
-  createUser,
   createUserFail,
   deleteUserPaymentInstrument,
   deleteUserPaymentInstrumentFail,
   deleteUserPaymentInstrumentSuccess,
-  loadCompanyUser,
   loadCompanyUserFail,
   loadCompanyUserSuccess,
-  loadUserByAPIToken,
   loadUserPaymentMethods,
   loadUserPaymentMethodsFail,
   loadUserPaymentMethodsSuccess,
-  loginUser,
   loginUserFail,
   loginUserSuccess,
-  logoutUser,
   requestPasswordReminder,
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
-  resetAPIToken,
   resetPasswordReminder,
-  setAPIToken,
-  setPGID,
   updateCustomer,
   updateCustomerFail,
   updateCustomerSuccess,
   updateUser,
   updateUserFail,
   updateUserPassword,
-  updateUserPasswordByPasswordReminder,
-  updateUserPasswordByPasswordReminderFail,
-  updateUserPasswordByPasswordReminderSuccess,
   updateUserPasswordFail,
   updateUserPasswordSuccess,
   updateUserSuccess,
@@ -81,105 +72,19 @@ describe('User Reducer', () => {
 
   describe('reducer', () => {
     it('should return initial state when undefined state is supplied', () => {
-      const newState = userReducer(
-        undefined,
-        {} as ReturnType<
-          | typeof loginUser
-          | typeof loginUserFail
-          | typeof loginUserSuccess
-          | typeof setAPIToken
-          | typeof resetAPIToken
-          | typeof loadCompanyUser
-          | typeof loadCompanyUserFail
-          | typeof loadCompanyUserSuccess
-          | typeof logoutUser
-          | typeof createUser
-          | typeof createUserFail
-          | typeof updateUser
-          | typeof updateUserSuccess
-          | typeof updateUserFail
-          | typeof updateUserPassword
-          | typeof updateUserPasswordSuccess
-          | typeof updateUserPasswordFail
-          | typeof updateCustomer
-          | typeof updateCustomerSuccess
-          | typeof updateCustomerFail
-          | typeof userErrorReset
-          | typeof loadUserByAPIToken
-          | typeof setPGID
-          | typeof loadUserPaymentMethods
-          | typeof loadUserPaymentMethodsFail
-          | typeof loadUserPaymentMethodsSuccess
-          | typeof deleteUserPaymentInstrument
-          | typeof deleteUserPaymentInstrumentFail
-          | typeof deleteUserPaymentInstrumentSuccess
-          | typeof requestPasswordReminder
-          | typeof requestPasswordReminderSuccess
-          | typeof requestPasswordReminderFail
-          | typeof resetPasswordReminder
-          | typeof updateUserPasswordByPasswordReminder
-          | typeof updateUserPasswordByPasswordReminderSuccess
-          | typeof updateUserPasswordByPasswordReminderFail
-        >
-      );
+      const newState = userReducer(undefined, {} as Action);
 
       expect(newState).toEqual(initialState);
     });
 
     it('should return initial state when undefined action is supplied', () => {
-      const newState = userReducer(
-        initialState,
-        {} as ReturnType<
-          | typeof loginUser
-          | typeof loginUserFail
-          | typeof loginUserSuccess
-          | typeof setAPIToken
-          | typeof resetAPIToken
-          | typeof loadCompanyUser
-          | typeof loadCompanyUserFail
-          | typeof loadCompanyUserSuccess
-          | typeof logoutUser
-          | typeof createUser
-          | typeof createUserFail
-          | typeof updateUser
-          | typeof updateUserSuccess
-          | typeof updateUserFail
-          | typeof updateUserPassword
-          | typeof updateUserPasswordSuccess
-          | typeof updateUserPasswordFail
-          | typeof updateCustomer
-          | typeof updateCustomerSuccess
-          | typeof updateCustomerFail
-          | typeof userErrorReset
-          | typeof loadUserByAPIToken
-          | typeof setPGID
-          | typeof loadUserPaymentMethods
-          | typeof loadUserPaymentMethodsFail
-          | typeof loadUserPaymentMethodsSuccess
-          | typeof deleteUserPaymentInstrument
-          | typeof deleteUserPaymentInstrumentFail
-          | typeof deleteUserPaymentInstrumentSuccess
-          | typeof requestPasswordReminder
-          | typeof requestPasswordReminderSuccess
-          | typeof requestPasswordReminderFail
-          | typeof resetPasswordReminder
-          | typeof updateUserPasswordByPasswordReminder
-          | typeof updateUserPasswordByPasswordReminderSuccess
-          | typeof updateUserPasswordByPasswordReminderFail
-        >
-      );
+      const newState = userReducer(initialState, {} as Action);
 
       expect(newState).toEqual(initialState);
     });
   });
 
   describe('LoginUser actions', () => {
-    it('should set initial when LoginUser action is reduced', () => {
-      const newState = userReducer(initialState, loginUser({ credentials: { login: 'dummy', password: 'dummy' } }));
-
-      expect(newState).toEqual(initialState);
-    });
-
     it('should set customer and authorized when LoginUserSuccess action is reduced', () => {
       const newState = userReducer(initialState, loginUserSuccess({ customer, user }));
 
@@ -201,7 +106,7 @@ describe('User Reducer', () => {
       expect(newState).toEqual({ ...initialState, error });
     });
 
-    it('should set error when LoginUserFail action is reduced and error is resetted after reset action', () => {
+    it('should set error when LoginUserFail action is reduced and error is reset after reset action', () => {
       const error = makeHttpError({ status: 500, code: 'error' });
       let newState = userReducer(initialState, loginUserFail({ error }));
 
@@ -209,24 +114,6 @@ describe('User Reducer', () => {
 
       newState = userReducer(newState, userErrorReset());
       expect(newState.error).toBeUndefined();
-    });
-
-    it('should unset authorized and customer when reducing LoginUser', () => {
-      const oldState = { ...initialState, customer, user, authorized: true };
-
-      const newState = userReducer(oldState, loginUser({ credentials: { login: 'dummy', password: 'dummy' } }));
-
-      expect(newState).toEqual({ ...initialState, customer: undefined, user: undefined, authorized: false });
-    });
-  });
-
-  describe('Logout actions', () => {
-    it('should unset authorized and customer when reducing LogoutUser', () => {
-      const oldState = { ...initialState, customer, authorized: true };
-
-      const newState = userReducer(oldState, logoutUser());
-
-      expect(newState).toEqual({ ...initialState, customer: undefined, user: undefined, authorized: false });
     });
   });
 

@@ -55,10 +55,38 @@ export class ConfigurationEffects {
           this.stateProperties
             .getStateOrEnvOrDefault<string | string[]>('FEATURES', 'features')
             .pipe(map(x => (typeof x === 'string' ? x.split(/,/g) : x))),
-          this.stateProperties.getStateOrEnvOrDefault<string>('THEME', 'theme').pipe(map(x => x || 'default'))
+          this.stateProperties.getStateOrEnvOrDefault<string>('THEME', 'theme').pipe(map(x => x || 'default')),
+          this.stateProperties
+            .getStateOrEnvOrDefault<string>('ICM_IDENTITY_PROVIDER', 'identityProvider')
+            .pipe(map(x => x || 'ICM')),
+          this.stateProperties
+            .getStateOrEnvOrDefault<string | object>('IDENTITY_PROVIDERS', 'identityProviders')
+            .pipe(map(config => (typeof config === 'string' ? JSON.parse(config) : config)))
         ),
-        map(([, baseURL, server, serverStatic, channel, application, features, theme]) =>
-          applyConfiguration({ baseURL, server, serverStatic, channel, application, features, theme })
+        map(
+          ([
+            ,
+            baseURL,
+            server,
+            serverStatic,
+            channel,
+            application,
+            features,
+            theme,
+            identityProvider,
+            identityProviders,
+          ]) =>
+            applyConfiguration({
+              baseURL,
+              server,
+              serverStatic,
+              channel,
+              application,
+              features,
+              theme,
+              identityProvider,
+              identityProviders,
+            })
         )
       )
     )

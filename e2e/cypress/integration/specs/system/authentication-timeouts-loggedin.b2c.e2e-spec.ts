@@ -42,7 +42,6 @@ describe('Logged in Sleeping User', () => {
         });
 
         cy.wait(5000);
-        cy.window().screenshot();
       });
       at(LoginPage, page => {
         page.header.myAccountLink.should('not.have.text', `${_.user.firstName} ${_.user.lastName}`);
@@ -77,7 +76,6 @@ describe('Logged in Sleeping User', () => {
           url: `**`,
         });
         cy.wait(5000);
-        cy.window().screenshot();
       });
       at(LoginPage, page => {
         page.header.myAccountLink.should('not.have.text', `${_.user.firstName} ${_.user.lastName}`);
