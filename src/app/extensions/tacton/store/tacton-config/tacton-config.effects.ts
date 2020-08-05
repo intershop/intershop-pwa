@@ -1,9 +1,9 @@
-import { ApplicationRef, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { first, map, mapTo, switchMap, switchMapTo } from 'rxjs/operators';
+import { map, mapTo, switchMap } from 'rxjs/operators';
 
-import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
+import { whenFalsy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
 import { loadTactonConfig, setTactonConfig } from './tacton-config.actions';
@@ -14,8 +14,7 @@ export class TactonConfigEffects {
   constructor(
     private actions$: Actions,
     private store: Store,
-    private statePropertiesService: StatePropertiesService,
-    private appRef: ApplicationRef
+    private statePropertiesService: StatePropertiesService
   ) {}
 
   loadTactonConfiguration$ = createEffect(() =>
@@ -31,12 +30,6 @@ export class TactonConfigEffects {
   );
 
   loadConfigOnInit$ = createEffect(() =>
-    this.appRef.isStable.pipe(
-      whenTruthy(),
-      first(),
-      switchMapTo(this.store.pipe(select(getTactonConfig))),
-      whenFalsy(),
-      mapTo(loadTactonConfig())
-    )
+    this.store.pipe(select(getTactonConfig), whenFalsy(), mapTo(loadTactonConfig()))
   );
 }
