@@ -2876,6 +2876,7 @@
   "subject.has.no.permission.assigned": "You do not have the required permission to perform this action.",
   "user.not.authenticated": "You are not authenticated to access this page.",
   "search.noresult.filtered_products.message": "We are sorry, we could not find any products that match your filter choice.",
+  "account.login.tacton.message": "Please login to your account to configure products.",
   "tacton.configure_page.description": "To resolve your selection, the following parameters must be changed.",
   "tacton.configure_page.title": "Conflict",
   "tacton.configure_page.button.confirm.label": "Accept New",

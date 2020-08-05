@@ -8,6 +8,11 @@ const routes: Routes = [
     path: 'configure',
     loadChildren: () => import('./configure/configure-page.module').then(m => m.ConfigurePageModule),
     canActivate: [AuthGuard],
+    data: {
+      queryParams: {
+        messageKey: 'tacton',
+      },
+    },
   },
 ];
 

@@ -2872,6 +2872,7 @@
   "subject.has.no.permission.assigned": "Sie verfügen nicht über die erforderlichen Rechte zur Durchführung dieser Aktion.",
   "user.not.authenticated": "Sie sind für den Zugriff auf diese Seite nicht authentifiziert.",
   "search.noresult.filtered_products.message": "Leider konnten wir keine Produkte finden, die Ihrer Filterauswahl entsprechen.",
+  "account.login.tacton.message": "Melden Sie sich mit Ihrem Benutzernamen an, um Produkte zu konfigurieren.",
   "tacton.configure_page.description": "Um Ihre Auswahl aufzulösen, müssen die folgenden Parameter geändert werden.",
   "tacton.configure_page.title": "Konflikt",
   "tacton.configure_page.button.confirm.label": "Neuerungen akzeptieren",
