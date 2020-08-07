@@ -4,7 +4,6 @@ import { map, switchMap } from 'rxjs/operators';
 
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { loadProductIfNotLoaded } from 'ish-core/store/shopping/products';
-import { log } from 'ish-core/utils/dev/operators';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
 
 import { RequisitionsService } from '../../services/requisitions/requisitions.service';
@@ -26,10 +25,9 @@ export class RequisitionsEffects {
     this.actions$.pipe(
       ofType(loadRequisitions),
       mapToPayload(),
-      log('loadRequisitionS Effekt'),
       switchMap(({ view, status }) =>
         this.requisitionsService.getRequisitions(view, status).pipe(
-          map(requisitions => loadRequisitionsSuccess({ requisitions, status })),
+          map(requisitions => loadRequisitionsSuccess({ requisitions })),
           mapErrorToAction(loadRequisitionsFail)
         )
       )
@@ -40,7 +38,6 @@ export class RequisitionsEffects {
     this.actions$.pipe(
       ofType(loadRequisition),
       mapToPayload(),
-      log('loadRequisition Effekt'),
       switchMap(({ requisitionId }) =>
         this.requisitionsService.getRequisition(requisitionId).pipe(
           map(requisition => loadRequisitionSuccess({ requisition })),

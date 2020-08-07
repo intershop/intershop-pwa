@@ -1134,6 +1134,7 @@
   "account.approvallist.table.reject_date": "Rejection Date",
   "account.approvallist.table.approver": "Approver",
   "account.approvallist.no_items_message": "Currently no orders to display.",
+  "approval.details.breadcrumb.order.label": "Requisition ",
   "approval.detailspage.heading": "Approval Details",
   "approval.detailspage.order.request_id": "Requisition No.",
   "approval.detailspage.order_reference_id.label": "Order No.",

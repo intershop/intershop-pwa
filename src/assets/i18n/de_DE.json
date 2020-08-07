@@ -1126,6 +1126,7 @@
   "account.approvallist.table.reject_date": "Ablehnungsdatum",
   "account.approvallist.table.approver": "Genehmiger",
   "account.approvallist.no_items_message": "Sie haben derzeit keine Bestellungen.",
+  "approval.details.breadcrumb.order.label": "Bestellanfrage ",
   "approval.detailspage.heading": "Genehmigungsdetails",
   "approval.detailspage.order.request_id": "Bestellanfrage-Nr.",
   "approval.detailspage.order_reference_id.label": "Bestellungsnummer",

@@ -20,14 +20,24 @@ describe('Requisition Mapper', () => {
       const data = {
         id: 'testUUDI',
         requisitionNo: '0001',
+        orderNo: '10001',
         invoiceToAddress: 'urn_invoiceToAddress_123',
         commonShipToAddress: 'urn_commonShipToAddress_123',
         commonShippingMethod: 'shipping_method_123',
         customer: 'Heimroth',
         creationDate: 12345678,
         lineItemCount: 2,
-        approvalStatus: { status: 'pending' },
+        approvalStatus: {
+          status: 'approved',
+          approver: { firstName: 'Bernhard', lastName: 'Boldner' },
+          approvalDate: 76543627,
+        },
         userInformation: { firstName: 'Patricia', lastName: 'Miller', email: 'pmiller@test.intershop.de' },
+        userBudgets: {
+          budgetPeriod: 'weekly',
+          orderSpentLimit: { currency: 'USD', value: 500, type: 'Money' },
+          budget: { currency: 'USD', value: 3000, type: 'Money' },
+        },
         totals: {},
         totalGross: { currency: 'USD', value: 2000 },
         totalNet: { currency: 'USD', value: 1890 },
@@ -37,7 +47,12 @@ describe('Requisition Mapper', () => {
       expect(mapped).toMatchInlineSnapshot(`
         Object {
           "approval": Object {
-            "status": "pending",
+            "approvalDate": 76543627,
+            "approver": Object {
+              "firstName": "Bernhard",
+              "lastName": "Boldner",
+            },
+            "status": "approved",
           },
           "bucketId": undefined,
           "commonShipToAddress": undefined,
@@ -50,7 +65,7 @@ describe('Requisition Mapper', () => {
           "invoiceToAddress": undefined,
           "lineItemCount": 2,
           "lineItems": Array [],
-          "orderNo": undefined,
+          "orderNo": "10001",
           "payment": undefined,
           "promotionCodes": undefined,
           "purchaseCurrency": undefined,
@@ -81,11 +96,18 @@ describe('Requisition Mapper', () => {
             "lastName": "Miller",
           },
           "userBudgets": Object {
-            "spentBudgetIncludingThisOrder": Object {
-              "currency": undefined,
+            "budget": Object {
+              "currency": "USD",
               "type": "Money",
-              "value": undefined,
+              "value": 3000,
             },
+            "budgetPeriod": "weekly",
+            "orderSpentLimit": Object {
+              "currency": "USD",
+              "type": "Money",
+              "value": 500,
+            },
+            "spentBudgetIncludingThisOrder": undefined,
           },
         }
       `);
