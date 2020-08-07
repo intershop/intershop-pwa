@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { Requisition } from '../../models/requisition/requisition.model';
+import { Requisition, RequisitionStatus, RequisitionViewer } from '../../../models/requisition/requisition.model';
 
 @Component({
   selector: 'ish-requisitions-list',
@@ -12,6 +12,6 @@ export class RequisitionsListComponent {
    * The requisitions to be listed
    */
   @Input() requisitions: Requisition[];
-  @Input() requisitionStatus = 'pending';
-  @Input() view: 'buyer' | 'approver' = 'buyer';
+  @Input() requisitionStatus: RequisitionStatus = 'pending';
+  @Input() view: RequisitionViewer = 'buyer';
 }

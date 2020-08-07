@@ -20,7 +20,7 @@ export class RequisitionDetailPageComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject();
 
-  view = 'approver';
+  view: string;
 
   constructor(private requisitionManagementFacade: RequisitionManagementFacade, private route: ActivatedRoute) {}
 
@@ -29,8 +29,9 @@ export class RequisitionDetailPageComponent implements OnInit, OnDestroy {
       this.requisition$ = this.requisitionManagementFacade.requisition$(params.requisitionId);
     });
 
-    this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe((params: { view: string }) => {
-      this.view = params.view;
+    this.route.url.pipe(takeUntil(this.destroy$)).subscribe(url => {
+      const urlSegment = url.find(entry => entry.path === 'buyer' || 'approver');
+      this.view = urlSegment ? urlSegment.path : 'approver';
     });
 
     this.error$ = this.requisitionManagementFacade.requisitionsError$;
