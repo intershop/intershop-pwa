@@ -11,7 +11,6 @@ import { RequisitionManagementStoreModule } from '../requisition-management-stor
 
 import {
   loadRequisition,
-  loadRequisitionFail,
   loadRequisitionSuccess,
   loadRequisitions,
   loadRequisitionsFail,
@@ -87,11 +86,8 @@ describe('Requisitions Selectors', () => {
     });
 
     describe('loadRequisitionsFail', () => {
-      const error = makeHttpError({ message: 'ERROR' });
-      const failAction = loadRequisitionsFail({ error });
-
       beforeEach(() => {
-        store$.dispatch(failAction);
+        store$.dispatch(loadRequisitionsFail({ error: makeHttpError({ message: 'error' }) }));
       });
 
       it('should set loading to false', () => {
@@ -144,11 +140,8 @@ describe('Requisitions Selectors', () => {
     });
 
     describe('loadRequisitionFail', () => {
-      const error = makeHttpError({ message: 'ERROR' });
-      const failAction = loadRequisitionFail({ error });
-
       beforeEach(() => {
-        store$.dispatch(failAction);
+        store$.dispatch(loadRequisitionsFail({ error: makeHttpError({ message: 'error' }) }));
       });
 
       it('should set loading to false', () => {

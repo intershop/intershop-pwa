@@ -46,4 +46,27 @@ describe('Buyer Page Component', () => {
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
+
+  it('should display loading overlay if requisitions are loading', () => {
+    when(reqFacade.requisitionsLoading$).thenReturn(of(true));
+    fixture.detectChanges();
+    expect(element.querySelector('ish-loading')).toBeTruthy();
+  });
+
+  it('should display pending tab as active if status is pending', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('[data-testing-id=tab-link-pending]').getAttribute('class')).toContain('active');
+  });
+
+  it('should display approved tab as active if status is approved', () => {
+    when(reqFacade.requisitionsStatus$).thenReturn(of('approved'));
+    fixture.detectChanges();
+    expect(element.querySelector('[data-testing-id=tab-link-approved]').getAttribute('class')).toContain('active');
+  });
+
+  it('should display rejected tab as active if status is rejected', () => {
+    when(reqFacade.requisitionsStatus$).thenReturn(of('rejected'));
+    fixture.detectChanges();
+    expect(element.querySelector('[data-testing-id=tab-link-rejected]').getAttribute('class')).toContain('active');
+  });
 });

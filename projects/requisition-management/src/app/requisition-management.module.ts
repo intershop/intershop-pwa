@@ -1,3 +1,4 @@
+import { CdkTableModule } from '@angular/cdk/table';
 import { NgModule } from '@angular/core';
 
 import { SharedModule } from 'ish-shared/shared.module';
@@ -24,6 +25,6 @@ import { RequisitionManagementStoreModule } from './store/requisition-management
     RequisitionSummaryComponent,
     RequisitionsListComponent,
   ],
-  imports: [RequisitionManagementRoutingModule, RequisitionManagementStoreModule, SharedModule],
+  imports: [CdkTableModule, RequisitionManagementRoutingModule, RequisitionManagementStoreModule, SharedModule],
 })
 export class RequisitionManagementModule {}

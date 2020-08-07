@@ -21,6 +21,7 @@ export class ApproverPageComponent implements OnInit, OnDestroy {
   constructor(private requisitionManagementFacade: RequisitionManagementFacade) {}
 
   status: string;
+  columnsToDisplay: string[];
   private destroy$ = new Subject();
 
   ngOnInit() {
@@ -29,7 +30,27 @@ export class ApproverPageComponent implements OnInit, OnDestroy {
     this.loading$ = this.requisitionManagementFacade.requisitionsLoading$;
     this.status$ = this.requisitionManagementFacade.requisitionsStatus$;
 
-    this.status$.pipe(takeUntil(this.destroy$)).subscribe(status => (this.status = status));
+    this.status$.pipe(takeUntil(this.destroy$)).subscribe(status => {
+      this.status = status;
+      switch (status) {
+        case 'approved':
+          this.columnsToDisplay = ['requisitionNo', 'orderNo', 'creationDate', 'buyer', 'approvalDate', 'orderTotal'];
+          break;
+        case 'rejected':
+          this.columnsToDisplay = [
+            'requisitionNo',
+            'creationDate',
+            'buyer',
+            'rejectionDate',
+            'lineItems',
+            'orderTotal',
+          ];
+          break;
+        default:
+          this.columnsToDisplay = ['requisitionNo', 'creationDate', 'buyer', 'lineItems', 'orderTotal'];
+          break;
+      }
+    });
   }
 
   ngOnDestroy() {
