@@ -21,14 +21,12 @@ export interface RequisitionsState extends EntityState<Requisition> {
   loading: boolean;
   error: HttpError;
   requisition: Requisition;
-  status: string;
 }
 
 const initialState: RequisitionsState = requisitionsAdapter.getInitialState({
   loading: false,
   error: undefined,
   requisition: undefined,
-  status: undefined,
 });
 
 export const requisitionsReducer = createReducer(
@@ -38,7 +36,6 @@ export const requisitionsReducer = createReducer(
   on(loadRequisitionsSuccess, (state: RequisitionsState, action) =>
     requisitionsAdapter.setAll(action.payload.requisitions, {
       ...state,
-      status: action.payload.status,
       loading: false,
       error: undefined,
     })

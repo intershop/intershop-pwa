@@ -1,5 +1,6 @@
 export interface BreadcrumbItem {
   key?: string;
   text?: string;
-  link?: string;
+  // tslint:disable-next-line:no-any
+  link?: string | any[];
 }

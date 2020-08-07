@@ -3,12 +3,8 @@
     <div class="row">
       <div class="col-md-6">
         <p class="row">
-          <strong class="col-sm-6">
-            {{ 'approval.detailspage.purchaser.label' | translate }}:
-          </strong>
-          <span class="col-sm-6">
-            {{ requisition.user.firstName }} {{ requisition.user.lastName }}
-          </span>
+          <strong class="col-sm-6"> {{ 'approval.detailspage.purchaser.label' | translate }}: </strong>
+          <span class="col-sm-6"> {{ requisition.user.firstName }} {{ requisition.user.lastName }} </span>
         </p>
       </div>
     </div>
@@ -38,7 +34,7 @@
       <div class="col-md-6">
         <p *ngIf="requisition.userBudgets.budgetPeriod !== 'none'" class="row">
           <strong class="col-sm-6">
-            {{ 'approval.detailspage.budget.type.' + requisition.userBudgets.budgetPeriod + '.label'| translate }}
+            {{ 'approval.detailspage.budget.type.' + requisition.userBudgets.budgetPeriod + '.label' | translate }}
           </strong>
           <span class="col-sm-6">
             <ng-container *ngIf="requisition.userBudgets.budget; else noLimit">
@@ -48,7 +44,7 @@
         </p>
         <p *ngIf="requisition.userBudgets.spentBudget" class="row">
           <strong class="col-sm-6">
-            {{ 'approval.detailspage.budget.already_spent.label'| translate }}
+            {{ 'approval.detailspage.budget.already_spent.label' | translate }}
           </strong>
           <span class="col-sm-6">
             {{ requisition.userBudgets.spentBudget | ishPrice }}
@@ -56,6 +52,5 @@
         </p>
       </div>
     </div>
-
   </ish-info-box>
 </div>

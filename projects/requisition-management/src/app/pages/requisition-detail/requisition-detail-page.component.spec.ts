@@ -12,8 +12,8 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
-import { RequisitionBuyerApprovalComponent } from '../../components/requisition-buyer-approval/requisition-buyer-approval.component';
-import { RequisitionSummaryComponent } from '../../components/requisition-summary/requisition-summary.component';
+import { RequisitionBuyerApprovalComponent } from '../../components/requisition/requisition-buyer-approval/requisition-buyer-approval.component';
+import { RequisitionSummaryComponent } from '../../components/requisition/requisition-summary/requisition-summary.component';
 import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
 
 import { RequisitionDetailPageComponent } from './requisition-detail-page.component';
