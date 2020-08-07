@@ -19,6 +19,7 @@ export class BuyerPageComponent implements OnInit, OnDestroy {
   status$: Observable<string>;
 
   status: string;
+  columnsToDisplay: string[];
   private destroy$ = new Subject();
 
   constructor(private requisitionManagementFacade: RequisitionManagementFacade) {}
@@ -29,7 +30,34 @@ export class BuyerPageComponent implements OnInit, OnDestroy {
     this.loading$ = this.requisitionManagementFacade.requisitionsLoading$;
     this.status$ = this.requisitionManagementFacade.requisitionsStatus$;
 
-    this.status$.pipe(takeUntil(this.destroy$)).subscribe(status => (this.status = status));
+    this.status$.pipe(takeUntil(this.destroy$)).subscribe(status => {
+      this.status = status;
+      switch (status) {
+        case 'approved':
+          this.columnsToDisplay = [
+            'requisitionNo',
+            'orderNo',
+            'creationDate',
+            'approver',
+            'approvalDate',
+            'orderTotal',
+          ];
+          break;
+        case 'rejected':
+          this.columnsToDisplay = [
+            'requisitionNo',
+            'creationDate',
+            'approver',
+            'rejectionDate',
+            'lineItems',
+            'orderTotal',
+          ];
+          break;
+        default:
+          this.columnsToDisplay = ['requisitionNo', 'creationDate', 'lineItems', 'orderTotal'];
+          break;
+      }
+    });
   }
 
   ngOnDestroy() {
