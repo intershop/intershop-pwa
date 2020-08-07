@@ -4,17 +4,17 @@
 
 <ul ngbNav class="nav-tabs" [(activeId)]="status">
   <li ngbNavItem="pending">
-    <a ngbNavLink [routerLink]="['../buyer', { requisitionStatus: 'pending' }]">{{
+    <a ngbNavLink [routerLink]="['../buyer', { requisitionStatus: 'pending' }]" data-testing-id="tab-link-pending">{{
       'account.requisitions.requisitions.navtab.pending' | translate
     }}</a>
   </li>
   <li ngbNavItem="approved">
-    <a ngbNavLink [routerLink]="['../buyer', { requisitionStatus: 'approved' }]">{{
+    <a ngbNavLink [routerLink]="['../buyer', { requisitionStatus: 'approved' }]" data-testing-id="tab-link-approved">{{
       'account.requisitions.requisitions.navtab.approved' | translate
     }}</a>
   </li>
   <li ngbNavItem="rejected">
-    <a ngbNavLink [routerLink]="['../buyer', { requisitionStatus: 'rejected' }]">{{
+    <a ngbNavLink [routerLink]="['../buyer', { requisitionStatus: 'rejected' }]" data-testing-id="tab-link-rejected">{{
       'account.requisitions.requisitions.navtab.rejected' | translate
     }}</a>
   </li>
@@ -26,7 +26,7 @@
   <ish-requisitions-list
     [requisitions]="requisitions$ | async"
     [requisitionStatus]="status$ | async"
-    view="buyer"
+    [columnsToDisplay]="columnsToDisplay"
   ></ish-requisitions-list>
 
   <ish-loading *ngIf="loading$ | async"></ish-loading>

@@ -67,6 +67,14 @@
     }
   }
 
+  &.table-lg {
+    td {
+      padding-top: $table-cell-padding * 1.4;
+      padding-bottom: $table-cell-padding * 1.4;
+      border-bottom: 1px solid $border-color-lighter;
+    }
+  }
+
   // legacy col- styles that where used in tables
   .legacy-col-6 {
     width: 25%;
@@ -271,5 +279,46 @@
 @media (max-width: $screen-xs-max) {
   .table-compare th {
     display: none;
+  }
+}
+
+// RESPONSIVE TABLE
+// switch to card view for mobile
+table.mobile-optimized,
+table.mobile-optimized.table-lg {
+  @include media-breakpoint-only(xs) {
+    margin-bottom: $space-default/3;
+
+    thead {
+      display: none;
+    }
+
+    tr {
+      float: left;
+      width: 100%;
+      padding-bottom: $space-default * 2/3;
+      margin-bottom: $space-default;
+      border-bottom: 1px solid $border-color-lighter;
+
+      td {
+        display: block;
+        float: left;
+        width: 100%;
+        padding: 0;
+        clear: both;
+        border: none;
+
+        &::before {
+          float: left;
+          width: 40%;
+          margin-bottom: $space-default/3;
+          content: attr(data-th);
+        }
+      }
+
+      &:last-child td {
+        border-bottom: none;
+      }
+    }
   }
 }
