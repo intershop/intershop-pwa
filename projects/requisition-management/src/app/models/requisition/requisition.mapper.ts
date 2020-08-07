@@ -13,13 +13,10 @@ export class RequisitionMapper {
   fromData(payload: RequisitionData, orderPayload?: OrderData): Requisition {
     if (!Array.isArray(payload.data)) {
       const { data } = payload;
-      // TODO: remove debug code
-      // tslint:disable-next-line: no-console
-      console.log('RequisitionData', payload);
 
       /* determine spentBudgetInclusive this order, ToDo: see #IS-30622 */
       let spentBudgetIncludingThisOrder = data.userBudgets?.spentBudget;
-      if (data.approvalStatus.status === 'pending') {
+      if (data.approvalStatus?.status === 'pending') {
         if (spentBudgetIncludingThisOrder) {
           spentBudgetIncludingThisOrder.value = spentBudgetIncludingThisOrder.value = +data.totals.grandTotal.gross
             .value;

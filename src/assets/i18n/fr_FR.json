@@ -840,6 +840,7 @@
   "account.approvallist.table.reject_date": "Date de refus",
   "account.approvallist.table.approver": "Approbateur",
   "account.approvallist.no_items_message": "Aucune commande à afficher.",
+  "approval.details.breadcrumb.order.label": "Demande d’achats\u00A0}",
   "approval.detailspage.heading": "Détails de l’approbation",
   "approval.detailspage.order.request_id": "ID de la demande d’achat",
   "approval.detailspage.order_reference_id.label": "ID de référence de la commande",

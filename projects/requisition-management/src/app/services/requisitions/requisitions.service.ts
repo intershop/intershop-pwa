@@ -1,7 +1,7 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, combineLatest, of } from 'rxjs';
+import { Observable, combineLatest, of, throwError } from 'rxjs';
 import { concatMap, map, switchMap, take } from 'rxjs/operators';
 
 import { OrderData } from 'ish-core/models/order/order.interface';
@@ -11,7 +11,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 import { RequisitionData } from '../../models/requisition/requisition.interface';
 import { RequisitionMapper } from '../../models/requisition/requisition.mapper';
-import { Requisition } from '../../models/requisition/requisition.model';
+import { Requisition, RequisitionStatus, RequisitionViewer } from '../../models/requisition/requisition.model';
 
 type BasketIncludeType =
   | 'invoiceToAddress'
@@ -47,7 +47,13 @@ export class RequisitionsService {
     Accept: 'application/vnd.intershop.order.v1+json',
   });
 
-  getRequisitions(view?: string, status?: string): Observable<Requisition[]> {
+  /**
+   * Get all customer requisitions of a certain status and view. The current user is expected to have the approver permission.
+   * @param  view    Defines whether the 'buyer' or 'approver' view is returned. Default: 'buyer'
+   * @param  status  Approval status filter ('pending', 'approved', 'rejected'). Default: All requisitions are returned
+   * @returns        Requisitions of the customer with their main attributes. To get all properties the getRequisition call is needed.
+   */
+  getRequisitions(view?: RequisitionViewer, status?: RequisitionStatus): Observable<Requisition[]> {
     let params = new HttpParams();
     if (view) {
       params = params.set('view', view);
@@ -65,7 +71,16 @@ export class RequisitionsService {
     );
   }
 
+  /**
+   * Get a customer requisitions of a certain id. The current user is expected to have the approver permission.
+   * @param  id      Requisition id.
+   * @returns        Requisition with all attributes. If the requisition is approved and the order is placed, also order data are returned as part of the requisition.
+   */
   getRequisition(requisitionId: string): Observable<Requisition> {
+    if (!requisitionId) {
+      return throwError('getRequisition() called without required id');
+    }
+
     const params = new HttpParams().set('include', this.allIncludes.join());
 
     return combineLatest([this.currentCustomer$, this.store.pipe(select(getLoggedInUser), whenTruthy(), take(1))]).pipe(

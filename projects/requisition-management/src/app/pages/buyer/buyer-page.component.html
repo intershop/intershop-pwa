@@ -2,15 +2,21 @@
 
 <p>{{ 'account.requisitions.requisitions.text' | translate }}</p>
 
-<ul ngbNav class="nav-tabs">
-  <li ngbNavItem>
-    <a ngbNavLink routerLink="../pending">{{ 'account.requisitions.requisitions.navtab.pending' | translate }}</a>
+<ul ngbNav class="nav-tabs" [(activeId)]="status">
+  <li ngbNavItem="pending">
+    <a ngbNavLink [routerLink]="['../buyer', { requisitionStatus: 'pending' }]">{{
+      'account.requisitions.requisitions.navtab.pending' | translate
+    }}</a>
   </li>
-  <li ngbNavItem>
-    <a ngbNavLink routerLink="../approved">{{ 'account.requisitions.requisitions.navtab.approved' | translate }}</a>
+  <li ngbNavItem="approved">
+    <a ngbNavLink [routerLink]="['../buyer', { requisitionStatus: 'approved' }]">{{
+      'account.requisitions.requisitions.navtab.approved' | translate
+    }}</a>
   </li>
-  <li ngbNavItem>
-    <a ngbNavLink routerLink="../rejected">{{ 'account.requisitions.requisitions.navtab.rejected' | translate }}</a>
+  <li ngbNavItem="rejected">
+    <a ngbNavLink [routerLink]="['../buyer', { requisitionStatus: 'rejected' }]">{{
+      'account.requisitions.requisitions.navtab.rejected' | translate
+    }}</a>
   </li>
 </ul>
 
