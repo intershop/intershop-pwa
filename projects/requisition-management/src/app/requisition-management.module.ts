@@ -1,3 +1,4 @@
+import { CdkTableModule } from '@angular/cdk/table';
 import { NgModule } from '@angular/core';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -26,6 +27,7 @@ import { RequisitionManagementStoreModule } from './store/requisition-management
     RequisitionsListComponent,
   ],
   imports: [
+    CdkTableModule,
     NgbNavModule,
     RequisitionManagementRoutingModule,
     RequisitionManagementStoreModule,
