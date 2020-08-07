@@ -11,11 +11,10 @@ import { RequisitionDetailPageComponent } from './requisition-detail/requisition
  * visible for testing
  */
 export const routes: Routes = [
-  { path: 'approver', redirectTo: 'approver/pending', pathMatch: 'full' },
-  { path: 'approver/:status', component: ApproverPageComponent },
-  { path: 'buyer', redirectTo: 'buyer/pending', pathMatch: 'full' },
-  { path: 'buyer/:status', component: BuyerPageComponent },
-  { path: ':requisitionId', component: RequisitionDetailPageComponent },
+  { path: 'approver', component: ApproverPageComponent },
+  { path: 'buyer', component: BuyerPageComponent },
+  { path: 'approver/:requisitionId', component: RequisitionDetailPageComponent },
+  { path: 'buyer/:requisitionId', component: RequisitionDetailPageComponent },
 ];
 
 @NgModule({

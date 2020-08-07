@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { Requisition } from '../../models/requisition/requisition.model';
+import { Requisition, RequisitionViewer } from '../../../models/requisition/requisition.model';
 
 @Component({
   selector: 'ish-requisition-summary',
@@ -9,5 +9,5 @@ import { Requisition } from '../../models/requisition/requisition.model';
 })
 export class RequisitionSummaryComponent {
   @Input() requisition: Requisition;
-  @Input() view: 'buyer' | 'approver' = 'buyer';
+  @Input() view: RequisitionViewer = 'buyer';
 }

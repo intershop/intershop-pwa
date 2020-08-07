@@ -2,15 +2,21 @@
 
 <p>{{ 'account.requisitions.approvals.text' | translate }}</p>
 
-<ul ngbNav class="nav-tabs">
-  <li ngbNavItem>
-    <a ngbNavLink routerLink="../pending">{{ 'account.requisitions.approvals.navtab.waiting' | translate }}</a>
+<ul ngbNav class="nav-tabs" [(activeId)]="status">
+  <li ngbNavItem="pending">
+    <a ngbNavLink [routerLink]="['../approver', { requisitionStatus: 'pending' }]">{{
+      'account.requisitions.approvals.navtab.waiting' | translate
+    }}</a>
   </li>
-  <li ngbNavItem>
-    <a ngbNavLink routerLink="../approved">{{ 'account.requisitions.approvals.navtab.approvved' | translate }}</a>
+  <li ngbNavItem="approved">
+    <a ngbNavLink [routerLink]="['../approver', { requisitionStatus: 'approved' }]">{{
+      'account.requisitions.approvals.navtab.approvved' | translate
+    }}</a>
   </li>
-  <li ngbNavItem>
-    <a ngbNavLink routerLink="../rejected">{{ 'account.requisitions.approvals.navtab.rejected' | translate }}</a>
+  <li ngbNavItem="rejected">
+    <a ngbNavLink [routerLink]="['../approver', { requisitionStatus: 'rejected' }]">{{
+      'account.requisitions.approvals.navtab.rejected' | translate
+    }}</a>
   </li>
 </ul>
 
@@ -19,7 +25,7 @@
 
   <ish-requisitions-list
     [requisitions]="requisitions$ | async"
-    [requisitionStatus]="status$ | async"
+    [requisitionStatus]="status"
     view="approver"
   ></ish-requisitions-list>
 

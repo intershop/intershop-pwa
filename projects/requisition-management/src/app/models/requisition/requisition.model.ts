@@ -9,6 +9,10 @@ import { VariationProduct } from 'ish-core/models/product/product-variation.mode
 import { Product } from 'ish-core/models/product/product.model';
 import { User } from 'ish-core/models/user/user.model';
 
+export type RequisitionStatus = 'pending' | 'approved' | 'rejected';
+
+export type RequisitionViewer = 'buyer' | 'approver';
+
 export interface RequisitionApproval {
   status: string;
   approvalDate?: number;
@@ -41,15 +45,15 @@ export interface Requisition extends Basket, AbstractRequisition {}
 export interface RequisitionView extends BasketView, AbstractRequisition {}
 
 export const createRequisitionView = memoize(
-  (order, products, categoryTree): RequisitionView => {
-    if (!order) {
+  (requisition, products, categoryTree): RequisitionView => {
+    if (!requisition) {
       return;
     }
 
     return {
-      ...order,
-      lineItems: order.lineItems
-        ? order.lineItems.map(li => ({
+      ...requisition,
+      lineItems: requisition.lineItems
+        ? requisition.lineItems.map(li => ({
             ...li,
             product: products ? createProductView(products[li.productSKU], categoryTree) : undefined,
           }))

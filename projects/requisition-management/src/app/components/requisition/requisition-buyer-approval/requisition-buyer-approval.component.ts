@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { Requisition } from '../../models/requisition/requisition.model';
+import { Requisition } from '../../../models/requisition/requisition.model';
 
 @Component({
   selector: 'ish-requisition-buyer-approval',

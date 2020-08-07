@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { map, switchMapTo, tap, withLatestFrom } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { distinctUntilChanged, map, switchMapTo, tap } from 'rxjs/operators';
 
 import { selectRouteParam, selectUrl } from 'ish-core/store/core/router';
 import { log } from 'ish-core/utils/dev/operators';
 
+import { RequisitionStatus, RequisitionViewer } from '../models/requisition/requisition.model';
 import {
   getRequisition,
   getRequisitions,
   getRequisitionsError,
   getRequisitionsLoading,
-  getRequisitionsStatus,
   loadRequisition,
   loadRequisitions,
 } from '../store/requisitions';
@@ -22,34 +23,30 @@ export class RequisitionManagementFacade {
 
   requisitionsError$ = this.store.pipe(select(getRequisitionsError));
   requisitionsLoading$ = this.store.pipe(select(getRequisitionsLoading));
-  requisitionsStatus$ = this.store.pipe(select(getRequisitionsStatus));
 
-  requisitions$ = this.store.pipe(
-    /* ToDo: maybe it is necessary to change this logic */
-    select(selectRouteParam('status')),
-    withLatestFrom(
-      this.store.pipe(
-        select(selectUrl),
-        map(url => (url.includes('/buyer/') ? 'buyer' : 'approver'))
-      )
-    ),
-    log('facade requisitions'),
-    tap(([status, view]) => this.store.dispatch(loadRequisitions({ view, status }))),
-    switchMapTo(this.store.pipe(select(getRequisitions)))
+  requisitionsStatus$ = this.store.pipe(
+    select(selectRouteParam('requisitionStatus')),
+    map(status => status || 'pending')
   );
+  selectedRequisition$ = this.store.pipe(select(getRequisition));
 
-  /* requisitions$ = combineLatest([
-    this.store.pipe(select(selectRouteParam('status'))),
+  requisitions$ = combineLatest([
+    this.store.pipe(select(selectRouteParam('requisitionStatus')), distinctUntilChanged()),
     this.store.pipe(
       select(selectUrl),
-      map(url => (url.includes('/buyer/') ? 'buyer' : 'approver'))
+      map(url => (url.includes('/buyer') ? 'buyer' : 'approver')),
+      distinctUntilChanged()
     ),
   ]).pipe(
     log('facade requisitions'),
-    tap(([status, view]) => this.store.dispatch(loadRequisitions({ view, status }))),
+    tap(([istatus, iview]) => {
+      const status = (istatus as RequisitionStatus) || 'pending';
+      const view = iview as RequisitionViewer;
 
+      this.store.dispatch(loadRequisitions({ view, status }));
+    }),
     switchMapTo(this.store.pipe(select(getRequisitions)))
-  );*/
+  );
 
   requisition$(requisitionId: string) {
     // TODO: did not work with route selection

@@ -2,18 +2,18 @@ import { createAction } from '@ngrx/store';
 
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
-import { Requisition } from '../../models/requisition/requisition.model';
+import { Requisition, RequisitionStatus, RequisitionViewer } from '../../models/requisition/requisition.model';
 
 export const loadRequisitions = createAction(
   '[Requisitions] Load Requisitions',
-  payload<{ view?: string; status?: string }>()
+  payload<{ view?: RequisitionViewer; status?: RequisitionStatus }>()
 );
 
 export const loadRequisitionsFail = createAction('[Requisitions API] Load Requisitions Fail', httpError());
 
 export const loadRequisitionsSuccess = createAction(
   '[Requisitions API] Load Requisitions Success',
-  payload<{ requisitions: Requisition[]; status?: string }>()
+  payload<{ requisitions: Requisition[] }>()
 );
 
 export const loadRequisition = createAction('[Requisitions] Load Requisition', payload<{ requisitionId: string }>());
