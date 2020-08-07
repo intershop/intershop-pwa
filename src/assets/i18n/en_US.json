@@ -1133,6 +1133,11 @@
   "account.approvallist.table.approval_date": "Approval Date",
   "account.approvallist.table.reject_date": "Rejection Date",
   "account.approvallist.table.approver": "Approver",
+  "account.approvallist.items": {
+    "=0": "0 Items",
+    "=1": "1 Item",
+    "other": "# Items"
+  },
   "account.approvallist.no_items_message": "Currently no orders to display.",
   "approval.details.breadcrumb.order.label": "Requisition ",
   "approval.detailspage.heading": "Approval Details",
