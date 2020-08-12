@@ -1122,7 +1122,7 @@
   "account.requisitions.approvals": "Approvals",
   "account.requisitions.approvals.text": "This list shows all order requests that need to be approved by you. You can also display all the requests that you have already approved or that you have rejected.",
   "account.requisitions.approvals.navtab.waiting": "Waiting for your Approval",
-  "account.requisitions.approvals.navtab.approvved": "Approved by you",
+  "account.requisitions.approvals.navtab.approved": "Approved by you",
   "account.requisitions.approvals.navtab.rejected": "Rejected by you",
   "account.approvallist.table.id_of_order": "Requisition No.",
   "account.approvallist.table.no_of_order": "Order No.",
@@ -1140,7 +1140,7 @@
   "approval.detailspage.order_reference_id.label": "Order No.",
   "approval.detailspage.order_date.label": "Creation Date",
   "approval.detailspage.purchaser.label": "Buyer",
-  "approval.detailspage.approver.label": "Approver",
+  "approval.detailspage.approver.label": "Approver(s)",
   "approval.detailspage.approval_date.label": "Date of Approval",
   "approval.detailspage.rejection_date.label": "Date of Rejection",
   "approval.detailspage.order_total.label": "Order Total",
@@ -1155,5 +1155,7 @@
   "approval.detailspage.budget.type.half-yearly.label": "Half-yearly budget:",
   "approval.detailspage.budget.type.yearly.label": "Yearly budget:",
   "approval.detailspage.budget.already_spent.label": "Already spent:",
-  "approval.detailspage.order_details.heading": "Order Details"
+  "approval.detailspage.order_details.heading": "Order Details",
+  "approval.detailspage.links.return_to_approvals": "Back to Approvals",
+  "approval.detailspage.links.return_to_requisitions": "Back to Requisitions"
 }

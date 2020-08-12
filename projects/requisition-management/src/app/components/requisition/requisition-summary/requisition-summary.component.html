@@ -3,46 +3,59 @@
     <dt class="col-6 col-sm-4 col-md-2">{{ 'approval.detailspage.order.request_id' | translate }}</dt>
     <dd class="col-6 col-sm-8 col-md-10">{{ requisition.requisitionNo }}</dd>
 
-    <ng-container *ngIf="requisition.approval?.status === 'approved'">
+    <ng-container *ngIf="requisition.approval?.statusCode === 'approved'">
       <dt class="col-6 col-sm-4 col-md-2">{{ 'approval.detailspage.order_reference_id.label' | translate }}</dt>
-      <dd class="col-6 col-sm-8 col-md-10">{{ requisition.orderNo }}</dd>
+      <dd class="col-6 col-sm-8 col-md-10">
+        <a [routerLink]="'/account/orders/' + requisition.id">{{ requisition.orderNo }}</a>
+      </dd>
     </ng-container>
 
     <dt class="col-6 col-sm-4 col-md-2">{{ 'approval.detailspage.order_date.label' | translate }}</dt>
     <dd class="col-6 col-sm-8 col-md-10">{{ requisition.creationDate | ishDate }}</dd>
 
-    <ng-container *ngIf="view === 'buyer' && requisition.approval?.status !== 'pending'">
+    <ng-container *ngIf="view === 'buyer'">
       <dt class="col-6 col-sm-4 col-md-2">{{ 'approval.detailspage.approver.label' | translate }}</dt>
       <dd class="col-6 col-sm-8 col-md-10">
-        {{ requisition.approval?.approver?.firstName }} {{ requisition.approval?.approver?.lastName }}
+        <ng-container *ngIf="requisition.approval?.statusCode !== 'pending'; else pendingCustomerApprovers">
+          {{ requisition.approval?.approver?.firstName }} {{ requisition.approval?.approver?.lastName }}
+        </ng-container>
+        <ng-template #pendingCustomerApprovers>
+          <ng-container *ngFor="let approver of requisition.approval?.customerApprovers; let i = index">
+            <ng-container *ngIf="i > 0">, </ng-container>{{ approver.firstName }} {{ approver.lastName }}
+          </ng-container>
+          ({{ requisition.approval.status }})
+        </ng-template>
       </dd>
     </ng-container>
 
     <ng-container *ngIf="view === 'approver'">
       <dt class="col-6 col-sm-4 col-md-2">{{ 'approval.detailspage.purchaser.label' | translate }}</dt>
-      <dd class="col-6 col-sm-8 col-md-10">{{ requisition.user.firstName }} {{ requisition.user.lastName }}</dd>
+      <dd class="col-6 col-sm-8 col-md-10">{{ requisition.user?.firstName }} {{ requisition.user?.lastName }}</dd>
     </ng-container>
 
-    <ng-container *ngIf="requisition.approval?.status !== 'pending'">
-      <dt *ngIf="requisition.approval?.status === 'approved'; else labelDateRejected" class="col-6 col-sm-4 col-md-2">
+    <ng-container *ngIf="requisition.approval?.statusCode !== 'pending'">
+      <dt
+        *ngIf="requisition.approval?.statusCode === 'approved'; else labelDateRejected"
+        class="col-6 col-sm-4 col-md-2"
+      >
         {{ 'approval.detailspage.approval_date.label' | translate }}
       </dt>
       <ng-template #labelDateRejected>
-        <dt class="col-6 col-sm-4 col-md-2">{{ 'approval.detailspage.purchaser.label' | translate }}</dt>
+        <dt class="col-6 col-sm-4 col-md-2">{{ 'account.approvallist.table.reject_date' | translate }}</dt>
       </ng-template>
       <dd class="col-6 col-sm-8 col-md-10">{{ requisition.approval.approvalDate | ishDate }}</dd>
     </ng-container>
 
     <dt class="col-6 col-sm-4 col-md-2">{{ 'approval.detailspage.order_total.label' | translate }}</dt>
-    <dd class="col-6 col-sm-8 col-md-10">{{ requisition.totals.total | ishPrice: 'gross' }}</dd>
+    <dd class="col-6 col-sm-8 col-md-10">{{ requisition.totals?.total | ishPrice: 'gross' }}</dd>
 
     <dt class="col-6 col-sm-4 col-md-2">{{ 'approval.detailspage.approval_status.label' | translate }}</dt>
     <dd class="col-6 col-sm-8 col-md-10">
       <span
-        class="border border-secondary badge badge-secondary"
+        class="border border-secondary badge badge-secondary text-capitalize"
         [ngClass]="{
-          'border-primary badge-primary': requisition.approval.status === 'approved',
-          'border-danger badge-danger': requisition.approval.status === 'rejected'
+          'border-primary badge-primary': requisition.approval.statusCode === 'approved',
+          'border-danger badge-danger': requisition.approval.statusCode === 'rejected'
         }"
       >
         {{ requisition.approval.status }}</span
