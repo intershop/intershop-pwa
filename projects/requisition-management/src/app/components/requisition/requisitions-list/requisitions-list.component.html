@@ -49,7 +49,7 @@
 
           <!--Order No -->
           <div *ngIf="requisitionStatus === 'approved'" class="col-12 col-md-2 list-item">
-            {{ requisition.orderNo }}
+            <a [routerLink]="'/account/orders/' + requisition.id">{{ requisition.orderNo }}</a>
           </div>
 
           <!-- Creation Date -->

@@ -826,7 +826,7 @@
   "tacton.submit.success.message": "Votre demande de devis a été soumise avec succès. Nous vous enverrons un courriel à <strong>{{0}}</strong> pour vous tenir au courant de l’état de votre demande.",
   "tacton.undo.tooltip": "Annuler",
   "textarea.max_limit": "Votre message : {{0}} caractères restants.",
-  "account.requisitions.requisitions": "Requisitions",
+  "account.requisitions.requisitions": "Réquisitions",
   "account.requisitions.requisitions.text": "This list shows all your order requests that need to be approved by an approver. You can also view all requests that have been approved or rejected.",
   "account.requisitions.approvals": "Approvals",
   "account.requisitions.approvals.text": "This list shows all order requests that need to be approved by you. You can also display all the requests that you have already approved or that you have rejected.",
@@ -846,7 +846,7 @@
   "approval.detailspage.order_reference_id.label": "ID de référence de la commande",
   "approval.detailspage.order_date.label": "Date de création",
   "approval.detailspage.purchaser.label": "Acheteur",
-  "approval.detailspage.approver.label": "Approbateur",
+  "approval.detailspage.approver.label": "Approbateur(s)",
   "approval.detailspage.approval_date.label": "Date d’approbation",
   "approval.detailspage.rejection_date.label": "Date de rejet",
   "approval.detailspage.order_total.label": "Total",
@@ -861,5 +861,7 @@
   "approval.detailspage.budget.type.half-yearly.label": "Budget semestriel\u00A0:",
   "approval.detailspage.budget.type.yearly.label": "Budget annuel\u00A0:",
   "approval.detailspage.budget.already_spent.label": "Déjà dépensé\u00A0:",
-  "approval.detailspage.order_details.heading": "Détails de la Commande"
+  "approval.detailspage.order_details.heading": "Détails de la Commande",
+  "approval.detailspage.links.return_to_approvals": "Retour aux approbations",
+  "approval.detailspage.links.return_to_requisitions": "Retour aux réquisitions"
 }
