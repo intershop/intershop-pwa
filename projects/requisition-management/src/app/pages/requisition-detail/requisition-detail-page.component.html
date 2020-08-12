@@ -1,6 +1,6 @@
 <div class="float-right">
   <ul class="share-tools">
-    <li class="d-none d-md-block">
+    <li>
       <a href="javascript:window.print();" class="link-print pull-right" rel="nofollow">
         <fa-icon [icon]="['fas', 'print']"></fa-icon>
         <span class="share-label">{{ 'account.orderdetails.print_link.text' | translate }}</span>
@@ -63,6 +63,18 @@
       <h3>{{ 'checkout.order_summary.heading' | translate }}</h3>
       <ish-basket-cost-summary [totals]="requisition.totals"></ish-basket-cost-summary>
     </div>
+  </div>
+
+  <div class="section d-flex d-flex justify-content-between">
+    <a [routerLink]="['../', { requisitionStatus: requisition.approval.statusCode }]">
+      <ng-container *ngIf="view === 'buyer'; else backToApprovals">
+        {{ 'approval.detailspage.links.return_to_requisitions' | translate }}
+      </ng-container>
+      <ng-template #backToApprovals>{{ 'approval.detailspage.links.return_to_approvals' | translate }}</ng-template>
+    </a>
+    <a routerLink="/home" data-testing-id="home-link">{{
+      'account.orderdetails.links.continue_shopping' | translate
+    }}</a>
   </div>
 
   <ish-loading *ngIf="loading$ | async"></ish-loading>
