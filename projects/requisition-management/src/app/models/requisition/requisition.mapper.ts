@@ -41,7 +41,12 @@ export class RequisitionMapper {
           userBudgets: { ...data.userBudgets, spentBudgetIncludingThisOrder },
           lineItemCount: data.lineItemCount,
           user: data.userInformation,
-          approval: data.approvalStatus,
+          approval: {
+            ...data.approvalStatus,
+            customerApprovers: data.approval?.customerApproval?.approvers,
+            /* ToDo: IS-30670: get the status and the statusCode from server */
+            statusCode: data.approvalStatus?.status,
+          },
         };
       } else {
         throw new Error(`requisitionData is required`);

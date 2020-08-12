@@ -15,9 +15,11 @@ export type RequisitionViewer = 'buyer' | 'approver';
 
 export interface RequisitionApproval {
   status: string;
+  statusCode: string;
   approvalDate?: number;
   approver?: { firstName: string; lastName: string };
   approvalComment?: string;
+  customerApprovers?: { firstName: string; lastName: string; email: string }[];
 }
 
 export interface RequisitionUserBudgets {

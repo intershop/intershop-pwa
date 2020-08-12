@@ -27,6 +27,7 @@ export interface RequisitionBaseData extends BasketBaseData {
   userBudgets: RequisitionUserBudgets;
 
   approvalStatus: RequisitionApproval;
+  approval?: { customerApproval?: { approvers: { firstName: string; lastName: string; email: string }[] } };
 }
 
 export interface RequisitionData {
