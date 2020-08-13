@@ -46,6 +46,27 @@
       </a>
     </div>
     <p>{{ pi.accountIdentifier }}</p>
-    <a *ngIf="!isPreferred" (click)="setAsDefaultPayment(pi.id)">{{ 'account.payment.preferred.link' | translate }}</a>
+    <a *ngIf="!isPreferred" (click)="setAsDefaultPayment(pi.id)">{{ 'account.payment.preferred.link' | translate }}</a
+    >&nbsp;&nbsp;&nbsp;
+    <ish-modal-dialog-link
+      *ngIf="pi.paymentMethod === 'Concardis_DirectDebit'"
+      (click)="showSepaMandateText(pi)"
+      linkText="account.payment.view_sepa_mandate.link"
+      [options]="{ titleText: 'account.payment.view_sepa_mandate_text.link' | translate }"
+    >
+      <div class="col-md-12">
+        <dl class="row dl-horizontal dl-separator">
+          <dt class="col-md-4">{{ 'account.payment.sepa_mandate_Reference' | translate }}</dt>
+          <dd class="col-md-8">{{ mandateReference }}</dd>
+        </dl>
+        <dl>
+          <dd>{{ mandateText }}</dd>
+        </dl>
+        <dl class="row dl-horizontal dl-separator">
+          <dt class="col-md-4">{{ 'account.payment.sepa_accepted_on' | translate }}</dt>
+          <dd class="col-md-8">{{ mandateCreatedDateTime | date: 'MMM dd, yyyy' }}</dd>
+        </dl>
+      </div>
+    </ish-modal-dialog-link>
   </div>
 </ng-template>
