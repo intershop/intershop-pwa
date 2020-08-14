@@ -14,6 +14,7 @@ import {
   getRequisitionsLoading,
   loadRequisition,
   loadRequisitions,
+  updateRequisitionStatus,
 } from '../store/requisitions';
 
 // tslint:disable:member-ordering
@@ -53,6 +54,16 @@ export class RequisitionManagementFacade {
     // select(selectRouteParam('requisitionId')),
 
     this.store.dispatch(loadRequisition({ requisitionId }));
+    return this.store.pipe(select(getRequisition));
+  }
+
+  approveRequisition$(requisitionId: string) {
+    this.store.dispatch(updateRequisitionStatus({ requisitionId, status: 'approved' }));
+    return this.store.pipe(select(getRequisition));
+  }
+
+  rejectRequisition$(requisitionId: string, comment?: string) {
+    this.store.dispatch(updateRequisitionStatus({ requisitionId, status: 'rejected', approvalComment: comment }));
     return this.store.pipe(select(getRequisition));
   }
 }

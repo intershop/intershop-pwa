@@ -13,6 +13,9 @@ import {
   loadRequisitions,
   loadRequisitionsFail,
   loadRequisitionsSuccess,
+  updateRequisitionStatus,
+  updateRequisitionStatusFail,
+  updateRequisitionStatusSuccess,
 } from './requisitions.actions';
 
 export const requisitionsAdapter = createEntityAdapter<Requisition>();
@@ -31,8 +34,8 @@ const initialState: RequisitionsState = requisitionsAdapter.getInitialState({
 
 export const requisitionsReducer = createReducer(
   initialState,
-  setLoadingOn(loadRequisitions, loadRequisition),
-  setErrorOn(loadRequisitionsFail, loadRequisitionFail),
+  setLoadingOn(loadRequisitions, loadRequisition, updateRequisitionStatus),
+  setErrorOn(loadRequisitionsFail, loadRequisitionFail, updateRequisitionStatusFail),
   on(loadRequisitionsSuccess, (state: RequisitionsState, action) =>
     requisitionsAdapter.setAll(action.payload.requisitions, {
       ...state,
@@ -40,7 +43,7 @@ export const requisitionsReducer = createReducer(
       error: undefined,
     })
   ),
-  on(loadRequisitionSuccess, (state: RequisitionsState, action) => ({
+  on(loadRequisitionSuccess, updateRequisitionStatusSuccess, (state: RequisitionsState, action) => ({
     ...state,
     requisition: action.payload.requisition,
     loading: false,
