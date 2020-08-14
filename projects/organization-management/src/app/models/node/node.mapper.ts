@@ -13,7 +13,7 @@ export class NodeMapper {
       return nodeDocument.data
         .sort((a, b) => NodeHelper.rootsFirst(a, b))
         .map(nodeData => this.fromData(nodeData))
-        .reduce((a, b) => NodeHelper.merge(a, b));
+        .reduce((a, b) => NodeHelper.merge(a, b), NodeHelper.empty());
     } else {
       throw new Error(`nodeDocument is required`);
     }

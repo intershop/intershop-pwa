@@ -58,6 +58,15 @@ describe('Node Mapper', () => {
       expect(() => nodeMapper.fromDocument(undefined)).toThrow();
     });
 
+    it('should map incoming no data to empty object', () => {
+      const data = { data: [] } as NodeDocument;
+      const mapped = nodeMapper.fromDocument(data);
+      expect(mapped).toBeTruthy();
+      expect(mapped.edges).toBeEmpty();
+      expect(mapped.rootIds).toBeEmpty();
+      expect(mapped.nodes).toBeEmpty();
+    });
+
     it('should map incoming data to model data', () => {
       const data = { data: [OILCORP_GERMANY, OILCORP_BERLIN] } as NodeDocument;
       const mapped = nodeMapper.fromDocument(data);
