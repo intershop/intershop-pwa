@@ -24,3 +24,18 @@ export const loadRequisitionSuccess = createAction(
   '[Requisitions API] Load Requisition Success',
   payload<{ requisition: Requisition }>()
 );
+
+export const updateRequisitionStatus = createAction(
+  '[Requisitions] Update Requisition Status',
+  payload<{ requisitionId: string; status: RequisitionStatus; approvalComment?: string }>()
+);
+
+export const updateRequisitionStatusFail = createAction(
+  '[Requisitions API] Update Requisition Status Fail',
+  httpError()
+);
+
+export const updateRequisitionStatusSuccess = createAction(
+  '[Requisitions API] Update Requisition Status Success',
+  payload<{ requisition: Requisition }>()
+);

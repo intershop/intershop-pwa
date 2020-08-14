@@ -56,21 +56,26 @@ export class RequisitionMapper {
 
   fromListData(payload: RequisitionData): Requisition[] {
     if (Array.isArray(payload.data)) {
-      return payload.data.map(data => ({
-        ...this.fromData({ ...payload, data }),
-        totals: {
-          itemTotal: data.totals ? PriceItemMapper.fromPriceItem(data.totals.itemTotal) : undefined,
-          total: data.totals
-            ? PriceItemMapper.fromPriceItem(data.totals.grandTotal)
-            : {
-                type: 'PriceItem',
-                gross: data.totalGross.value,
-                net: data.totalNet.value,
-                currency: data.totalGross.currency,
-              },
-          isEstimated: false,
-        },
-      }));
+      return (
+        payload.data
+          /* filter requisitions that didn't need an approval */
+          .filter(data => data.requisitionNo)
+          .map(data => ({
+            ...this.fromData({ ...payload, data }),
+            totals: {
+              itemTotal: data.totals ? PriceItemMapper.fromPriceItem(data.totals.itemTotal) : undefined,
+              total: data.totals
+                ? PriceItemMapper.fromPriceItem(data.totals.grandTotal)
+                : {
+                    type: 'PriceItem',
+                    gross: data.totalGross.value,
+                    net: data.totalNet.value,
+                    currency: data.totalGross.currency,
+                  },
+              isEstimated: false,
+            },
+          }))
+      );
     }
   }
 }

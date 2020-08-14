@@ -30,6 +30,7 @@ describe('Requisitions Service', () => {
     requisitionsService = TestBed.inject(RequisitionsService);
 
     when(apiServiceMock.get(anything(), anything())).thenReturn(of({ data: {} }));
+    when(apiServiceMock.patch(anything(), anything(), anything())).thenReturn(of({ data: {} }));
   });
 
   it('should be created', () => {
@@ -46,6 +47,15 @@ describe('Requisitions Service', () => {
   it('should call getRequisition of customer API when fetching a requisition', done => {
     requisitionsService.getRequisition('4712').subscribe(() => {
       verify(apiServiceMock.get('customers/4711/users/pmiller@test.intershop.de/requisitions/4712', anything())).once();
+      done();
+    });
+  });
+
+  it('should call updateRequisitionStatus of customer API when patching a requisition status', done => {
+    requisitionsService.updateRequisitionStatus('4712', 'approved').subscribe(() => {
+      verify(
+        apiServiceMock.patch('customers/4711/users/pmiller@test.intershop.de/requisitions/4712', anything(), anything())
+      ).once();
       done();
     });
   });

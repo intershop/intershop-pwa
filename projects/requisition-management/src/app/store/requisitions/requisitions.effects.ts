@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, switchMap } from 'rxjs/operators';
+import { concatMap, map, switchMap, tap } from 'rxjs/operators';
 
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { loadProductIfNotLoaded } from 'ish-core/store/shopping/products';
@@ -15,11 +16,14 @@ import {
   loadRequisitions,
   loadRequisitionsFail,
   loadRequisitionsSuccess,
+  updateRequisitionStatus,
+  updateRequisitionStatusFail,
+  updateRequisitionStatusSuccess,
 } from './requisitions.actions';
 
 @Injectable()
 export class RequisitionsEffects {
-  constructor(private actions$: Actions, private requisitionsService: RequisitionsService) {}
+  constructor(private actions$: Actions, private requisitionsService: RequisitionsService, private router: Router) {}
 
   loadRequisitions$ = createEffect(() =>
     this.actions$.pipe(
@@ -60,6 +64,28 @@ export class RequisitionsEffects {
           loadProductIfNotLoaded({ sku: productSKU, level: ProductCompletenessLevel.List })
         ),
       ])
+    )
+  );
+
+  updateRequisitionStatus$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateRequisitionStatus),
+      mapToPayload(),
+      concatMap(payload =>
+        this.requisitionsService
+          .updateRequisitionStatus(payload.requisitionId, payload.status, payload.approvalComment)
+          .pipe(
+            tap(requisition =>
+              /* ToDo: use only relative routes */
+              this.router.navigate([
+                `/account/requisitions/approver/${requisition.id}`,
+                { requisitionStatus: requisition.approval?.statusCode },
+              ])
+            ),
+            map(requisition => updateRequisitionStatusSuccess({ requisition })),
+            mapErrorToAction(updateRequisitionStatusFail)
+          )
+      )
     )
   );
 }

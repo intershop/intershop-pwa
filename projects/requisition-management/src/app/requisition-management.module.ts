@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { RequisitionBuyerApprovalComponent } from './components/requisition/requisition-buyer-approval/requisition-buyer-approval.component';
+import { RequisitionRejectDialogComponent } from './components/requisition/requisition-reject-dialog/requisition-reject-dialog.component';
 import { RequisitionSummaryComponent } from './components/requisition/requisition-summary/requisition-summary.component';
 import { RequisitionsListComponent } from './components/requisition/requisitions-list/requisitions-list.component';
 import { ApproverPageComponent } from './pages/approver/approver-page.component';
@@ -17,6 +18,7 @@ import { RequisitionManagementStoreModule } from './store/requisition-management
     BuyerPageComponent,
     RequisitionBuyerApprovalComponent,
     RequisitionDetailPageComponent,
+    RequisitionRejectDialogComponent,
     RequisitionSummaryComponent,
     RequisitionsListComponent,
   ],

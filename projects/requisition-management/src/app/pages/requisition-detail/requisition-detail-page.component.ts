@@ -38,6 +38,15 @@ export class RequisitionDetailPageComponent implements OnInit, OnDestroy {
     this.loading$ = this.requisitionManagementFacade.requisitionsLoading$;
   }
 
+  approveRequisition(requisitionId: string) {
+    this.requisitionManagementFacade.approveRequisition$(requisitionId);
+  }
+
+  rejectRequisition(requisitionId: string, comment: string) {
+    this.requisitionManagementFacade.rejectRequisition$(requisitionId, comment);
+    return false;
+  }
+
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();

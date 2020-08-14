@@ -1,4 +1,6 @@
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
@@ -12,8 +14,16 @@ import { Requisition } from '../../models/requisition/requisition.model';
 import { RequisitionsService } from '../../services/requisitions/requisitions.service';
 import { RequisitionManagementStoreModule } from '../requisition-management-store.module';
 
-import { loadRequisition, loadRequisitionSuccess, loadRequisitions } from './requisitions.actions';
+import {
+  loadRequisition,
+  loadRequisitionSuccess,
+  loadRequisitions,
+  updateRequisitionStatus,
+} from './requisitions.actions';
 import { RequisitionsEffects } from './requisitions.effects';
+
+@Component({ template: 'dummy' })
+class DummyComponent {}
 
 const requisitions = [
   {
@@ -49,12 +59,17 @@ describe('Requisitions Effects', () => {
     requisitionsService = mock(RequisitionsService);
     when(requisitionsService.getRequisitions(anything(), anything())).thenReturn(of(requisitions));
     when(requisitionsService.getRequisition(anyString())).thenReturn(of(requisitions[0]));
+    when(requisitionsService.updateRequisitionStatus(anyString(), anyString(), anyString())).thenReturn(
+      of(requisitions[0])
+    );
 
     TestBed.configureTestingModule({
+      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(),
         CustomerStoreModule.forTesting('user'),
         RequisitionManagementStoreModule.forTesting('requisitions'),
+        RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
       ],
       providers: [
         RequisitionsEffects,
@@ -119,6 +134,33 @@ describe('Requisitions Effects', () => {
           [Products Internal] Load Product if not Loaded:
             sku: "SKU"
             level: 2
+        `);
+        done();
+      });
+    });
+  });
+
+  describe('updateRequisitionStatus$', () => {
+    it('should call the service for updating the status of a requisition', done => {
+      actions$ = of(
+        updateRequisitionStatus({ requisitionId: '4711', status: 'approved', approvalComment: 'test comment' })
+      );
+
+      effects.updateRequisitionStatus$.subscribe(() => {
+        verify(requisitionsService.updateRequisitionStatus('4711', 'approved', 'test comment')).once();
+        done();
+      });
+    });
+
+    it('should retrieve the requisition after updating the status', done => {
+      actions$ = of(
+        updateRequisitionStatus({ requisitionId: '4711', status: 'approved', approvalComment: 'test comment' })
+      );
+
+      effects.updateRequisitionStatus$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Requisitions API] Update Requisition Status Success:
+            requisition: {"id":"testUUID","requisitionNo":"0001","user":{"firstName":...
         `);
         done();
       });
