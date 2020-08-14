@@ -1,13 +1,14 @@
 <div class="float-right">
   <ul class="share-tools">
     <li>
-      <a href="javascript:window.print();" class="link-print pull-right" rel="nofollow">
+      <a href="javascript:window.print();" class="link-print" rel="nofollow">
         <fa-icon [icon]="['fas', 'print']"></fa-icon>
         <span class="share-label">{{ 'account.orderdetails.print_link.text' | translate }}</span>
       </a>
     </li>
   </ul>
 </div>
+
 <h1>{{ 'approval.detailspage.heading' | translate }}</h1>
 <ish-error-message [error]="error$ | async"></ish-error-message>
 
@@ -15,6 +16,8 @@
   <ish-requisition-summary [requisition]="requisition" [view]="view"></ish-requisition-summary>
 
   <ish-requisition-buyer-approval [requisition]="requisition"></ish-requisition-buyer-approval>
+
+  <ng-container *ngTemplateOutlet="approvalButtonBar; context: { requisition: requisition }"></ng-container>
 
   <h2>{{ 'approval.detailspage.order_details.heading' | translate }}</h2>
 
@@ -64,6 +67,23 @@
       <ish-basket-cost-summary [totals]="requisition.totals"></ish-basket-cost-summary>
     </div>
   </div>
+
+  <ng-container *ngTemplateOutlet="approvalButtonBar; context: { requisition: requisition }"></ng-container>
+
+  <ng-template #approvalButtonBar let-requisition="requisition">
+    <div *ngIf="requisition.approval?.statusCode === 'pending' && view === 'approver'" class="section text-right">
+      <button (click)="rejectDialog.show()" type="button" class="btn btn-secondary">
+        {{ 'approval.detailspage.reject.button.label' | translate }}
+      </button>
+      <button (click)="approveRequisition(requisition.id)" type="button" class="btn btn-primary">
+        {{ 'approval.detailspage.approve.button.label' | translate }}
+      </button>
+    </div>
+  </ng-template>
+  <ish-requisition-reject-dialog
+    #rejectDialog
+    (submit)="rejectRequisition(requisition.id, $event)"
+  ></ish-requisition-reject-dialog>
 
   <div class="section d-flex d-flex justify-content-between">
     <a [routerLink]="['../', { requisitionStatus: requisition.approval.statusCode }]">
