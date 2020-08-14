@@ -46,35 +46,6 @@ describe('Basket Service', () => {
     unit: 'pcs.',
   };
 
-  const sourceBasket = '012345';
-
-  const basketMergeResponseData = {
-    data: {
-      sourceBasket,
-      targetBasket: '345678abc',
-    },
-    included: {
-      targetBasket: {
-        '345678abc': {
-          id: 'test',
-          calculationState: 'UNCALCULATED',
-          buckets: [
-            {
-              lineItems: [],
-              shippingMethod: {},
-              shipToAddress: {},
-            },
-          ],
-          payment: {
-            name: 'testPayment',
-            id: 'paymentId',
-          },
-          totals: {},
-        },
-      },
-    },
-  };
-
   beforeEach(() => {
     apiService = mock(ApiService);
     basketService = new BasketService(instance(apiService));
@@ -157,13 +128,36 @@ describe('Basket Service', () => {
   });
 
   it("should post source basket to basket when 'mergeBasket' is called", done => {
-    when(apiService.get(anything(), anything())).thenReturn(of({}));
-    when(apiService.post(`baskets`, anything(), anything())).thenReturn(of(basketMockData));
     when(apiService.post(`baskets/${basketMockData.data.id}/merges`, anything(), anything())).thenReturn(
-      of(basketMergeResponseData)
+      of({
+        data: {
+          sourceBasket: '012345',
+          targetBasket: basketMockData.data.id,
+        },
+        included: {
+          targetBasket: {
+            [basketMockData.data.id]: {
+              id: 'test',
+              calculationState: 'UNCALCULATED',
+              buckets: [
+                {
+                  lineItems: [],
+                  shippingMethod: {},
+                  shipToAddress: {},
+                },
+              ],
+              payment: {
+                name: 'testPayment',
+                id: 'paymentId',
+              },
+              totals: {},
+            },
+          },
+        },
+      })
     );
 
-    basketService.mergeBasket(sourceBasket, anyString()).subscribe(() => {
+    basketService.mergeBasket('012345', 'TOKEN', basketMockData.data.id).subscribe(() => {
       verify(apiService.post(`baskets/${basketMockData.data.id}/merges`, anything(), anything())).once();
       done();
     });
