@@ -40,7 +40,6 @@ import {
   loadBasketEligibleShippingMethodsSuccess,
   loadBasketFail,
   loadBasketSuccess,
-  mergeBasket,
   mergeBasketFail,
   mergeBasketSuccess,
   removePromotionCodeFromBasket,
@@ -100,15 +99,6 @@ describe('Basket Reducer', () => {
   });
 
   describe('MergeBasket actions', () => {
-    describe('MergeBasket action', () => {
-      it('should set loading to true', () => {
-        const action = mergeBasket();
-        const state = basketReducer(initialState, action);
-
-        expect(state.loading).toBeTrue();
-      });
-    });
-
     describe('MergeBasketSuccess action', () => {
       it('should set loading to false', () => {
         const basket = {

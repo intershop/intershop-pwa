@@ -71,8 +71,6 @@ export const addItemsToBasketSuccess = createAction(
   payload<{ info: BasketInfo[] }>()
 );
 
-export const mergeBasket = createAction('[Basket Internal] Merge two baskets');
-
 export const mergeBasketFail = createAction('[Basket API] Merge two baskets Fail', httpError());
 
 export const mergeBasketSuccess = createAction('[Basket API] Merge two baskets Success', payload<{ basket: Basket }>());
