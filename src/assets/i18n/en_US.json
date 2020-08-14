@@ -880,5 +880,12 @@
   "approval.detailspage.budget.already_spent.label": "Already spent:",
   "approval.detailspage.order_details.heading": "Order Details",
   "approval.detailspage.links.return_to_approvals": "Back to Approvals",
-  "approval.detailspage.links.return_to_requisitions": "Back to Requisitions"
+  "approval.detailspage.links.return_to_requisitions": "Back to Requisitions",
+  "approval.detailspage.approve.button.label": "Approve",
+  "approval.detailspage.reject.button.label": "Reject",
+  "approval.rejectform.reject_order.heading": "Reject Requisition",
+  "approval.rejectform.add_a_comment.label": "Add a Comment",
+  "approval.rejectform.invalid_comment.error": "Comment is required and cannot be empty",
+  "approval.rejectform.button.reject.label": "Reject",
+  "approval.rejectform.button.cancel.label": "Cancel"
 }

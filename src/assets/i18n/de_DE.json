@@ -872,5 +872,12 @@
   "approval.detailspage.budget.already_spent.label": "Bereits verbraucht:",
   "approval.detailspage.order_details.heading": "Bestell-Details",
   "approval.detailspage.links.return_to_approvals": "Zurück zu Genehmigungen",
-  "approval.detailspage.links.return_to_requisitions": "Return to Bestellanfragen"
+  "approval.detailspage.links.return_to_requisitions": "Return to Bestellanfragen",
+  "approval.detailspage.approve.button.label": "Genehmigen",
+  "approval.detailspage.reject.button.label": "Ablehnen",
+  "approval.rejectform.reject_order.heading": "Bestellanfrage ablehnen",
+  "approval.rejectform.add_a_comment.label": "Kommentar hinzufügen",
+  "approval.rejectform.invalid_comment.error": "Ein Kommentar muss angegeben werden.",
+  "approval.rejectform.button.reject.label": "Ablehnen",
+  "approval.rejectform.button.cancel.label": "Abbrechen"
 }

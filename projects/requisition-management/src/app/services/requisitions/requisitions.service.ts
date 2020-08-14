@@ -13,7 +13,7 @@ import { RequisitionData } from '../../models/requisition/requisition.interface'
 import { RequisitionMapper } from '../../models/requisition/requisition.mapper';
 import { Requisition, RequisitionStatus, RequisitionViewer } from '../../models/requisition/requisition.model';
 
-type BasketIncludeType =
+type RequisitionIncludeType =
   | 'invoiceToAddress'
   | 'commonShipToAddress'
   | 'commonShippingMethod'
@@ -28,7 +28,7 @@ type BasketIncludeType =
 export class RequisitionsService {
   constructor(private apiService: ApiService, private store: Store, private requisitionMapper: RequisitionMapper) {}
 
-  private allIncludes: BasketIncludeType[] = [
+  private allIncludes: RequisitionIncludeType[] = [
     'invoiceToAddress',
     'commonShipToAddress',
     'commonShippingMethod',
@@ -72,7 +72,7 @@ export class RequisitionsService {
   }
 
   /**
-   * Get a customer requisitions of a certain id. The current user is expected to have the approver permission.
+   * Get a customer requisition of a certain id. The current user is expected to have the approver permission.
    * @param  id      Requisition id.
    * @returns        Requisition with all attributes. If the requisition is approved and the order is placed, also order data are returned as part of the requisition.
    */
@@ -89,25 +89,74 @@ export class RequisitionsService {
           .get<RequisitionData>(`customers/${customer.customerNo}/users/${user.login}/requisitions/${requisitionId}`, {
             params,
           })
-          .pipe(
-            concatMap(payload => {
-              if (!Array.isArray(payload.data)) {
-                const requisitionData = payload.data;
-
-                if (requisitionData.order?.itemId) {
-                  return this.apiService
-                    .get<OrderData>(`orders/${requisitionData.order.itemId}`, {
-                      headers: this.orderHeaders,
-                      params,
-                    })
-                    .pipe(map(data => this.requisitionMapper.fromData(payload, data)));
-                }
-              }
-
-              return of(this.requisitionMapper.fromData(payload));
-            })
-          )
+          .pipe(concatMap(payload => this.processRequisitionData(payload)))
       )
     );
+  }
+
+  /**
+   * Updates the requisition status. The current user is expected to have the approver permission.
+   * @param id      Requisition id.
+   * @param status  The requisition approval status
+   * @param comment The approval comment
+   * @returns       The updated requisition with all attributes. If the requisition is approved and the order is placed, also order data are returned as part of the requisition.
+   */
+  updateRequisitionStatus(
+    requisitionId: string,
+    status: RequisitionStatus,
+    approvalComment?: string
+  ): Observable<Requisition> {
+    if (!requisitionId) {
+      return throwError('updateRequisitionStatus() called without required id');
+    }
+    if (!status) {
+      return throwError('updateRequisitionStatus() called without required requisitionstatus');
+    }
+
+    const params = new HttpParams().set('include', this.allIncludes.join());
+    const body = {
+      name: 'string',
+      type: 'ApprovalStatusChange',
+      status,
+      approvalComment,
+    };
+
+    return combineLatest([this.currentCustomer$, this.store.pipe(select(getLoggedInUser), whenTruthy(), take(1))]).pipe(
+      switchMap(([customer, user]) =>
+        this.apiService
+          .patch<RequisitionData>(
+            `customers/${customer.customerNo}/users/${user.login}/requisitions/${requisitionId}`,
+            body,
+            {
+              params,
+            }
+          )
+          .pipe(concatMap(payload => this.processRequisitionData(payload)))
+      )
+    );
+  }
+
+  /**
+   *  Gets the order data, if needed and maps the requisition/order data.
+   * @param payload  The requisition row data returnedby the REST interface.
+   * @returns        The requisition.
+   */
+  private processRequisitionData(payload: RequisitionData): Observable<Requisition> {
+    const params = new HttpParams().set('include', this.allIncludes.join());
+
+    if (!Array.isArray(payload.data)) {
+      const requisitionData = payload.data;
+
+      if (requisitionData.order?.itemId) {
+        return this.apiService
+          .get<OrderData>(`orders/${requisitionData.order.itemId}`, {
+            headers: this.orderHeaders,
+            params,
+          })
+          .pipe(map(data => this.requisitionMapper.fromData(payload, data)));
+      }
+    }
+
+    return of(this.requisitionMapper.fromData(payload));
   }
 }
