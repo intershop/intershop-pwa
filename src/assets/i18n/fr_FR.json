@@ -863,5 +863,12 @@
   "approval.detailspage.budget.already_spent.label": "Déjà dépensé\u00A0:",
   "approval.detailspage.order_details.heading": "Détails de la Commande",
   "approval.detailspage.links.return_to_approvals": "Retour aux approbations",
-  "approval.detailspage.links.return_to_requisitions": "Retour aux réquisitions"
+  "approval.detailspage.links.return_to_requisitions": "Retour aux réquisitions",
+  "approval.detailspage.approve.button.label": "Approuver",
+  "approval.detailspage.reject.button.label": "Rejeter",
+  "approval.rejectform.reject_order.heading": "Rejeter la demande d’achat",
+  "approval.rejectform.add_a_comment.label": "Ajouter un commentaire",
+  "approval.rejectform.invalid_comment.error": "Le commentaire est obligatoire et ne peut pas être vide",
+  "approval.rejectform.button.reject.label": "Rejeter",
+  "approval.rejectform.button.cancel.label": "Annuler"
 }
