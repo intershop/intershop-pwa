@@ -5,7 +5,7 @@ import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ng
 
 import { OrganizationManagementStoreModule } from '../organization-management-store.module';
 
-import { loadOrganizationHierarchies } from './organization-hierarchies.actions';
+import { loadGroups } from './organization-hierarchies.actions';
 import { getOrganizationHierarchiesLoading } from './organization-hierarchies.selectors';
 
 describe('Organization Hierarchies Selectors', () => {
@@ -30,7 +30,7 @@ describe('Organization Hierarchies Selectors', () => {
   });
 
   describe('LoadOrganizationHierarchies', () => {
-    const action = loadOrganizationHierarchies();
+    const action = loadGroups();
 
     beforeEach(() => {
       store$.dispatch(action);

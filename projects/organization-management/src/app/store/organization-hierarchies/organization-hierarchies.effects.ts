@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { switchMap, map, withLatestFrom } from 'rxjs/operators';
-import { getLoggedInCustomer } from 'ish-core/store/customer/user';
-import { loadGroups, loadGroupsSuccess, loadGroupsFail } from './organization-hierarchies.actions';
-import { OrganizationHierarchiesService } from '../../services/organization-hierarchies/organization-hierarchies.service';
-import { mapErrorToAction } from 'ish-core/utils/operators';
 import { Store, select } from '@ngrx/store';
+import { map, switchMap, withLatestFrom } from 'rxjs/operators';
+
+import { getLoggedInCustomer } from 'ish-core/store/customer/user';
+import { mapErrorToAction } from 'ish-core/utils/operators';
+
+import { OrganizationHierarchiesService } from '../../services/organization-hierarchies/organization-hierarchies.service';
+
+import { loadGroups, loadGroupsFail, loadGroupsSuccess } from './organization-hierarchies.actions';
 
 @Injectable()
 export class OrganizationHierarchiesEffects {
@@ -13,7 +16,7 @@ export class OrganizationHierarchiesEffects {
     private actions$: Actions,
     private organizationService: OrganizationHierarchiesService,
     private store: Store
-  ) { }
+  ) {}
 
   loadOrganizationHierarchies$ = createEffect(() =>
     this.actions$.pipe(
