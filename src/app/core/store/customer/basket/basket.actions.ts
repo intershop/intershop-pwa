@@ -216,5 +216,6 @@ export const updateCvcLastUpdatedFail = createAction(
 );
 
 export const updateCvcLastUpdatedSuccess = createAction(
-  '[Basket API] Update CvcLastUpdated for Concardis Credit Card Success'
+  '[Basket API] Update CvcLastUpdated for Concardis Credit Card Success',
+  payload<{ paymentInstrument: PaymentInstrument }>()
 );

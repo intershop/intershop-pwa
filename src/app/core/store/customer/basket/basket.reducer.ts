@@ -159,7 +159,6 @@ export const basketReducer = createReducer(
     createBasketPaymentSuccess,
     updateBasketPaymentSuccess,
     deleteBasketPaymentSuccess,
-    updateCvcLastUpdatedSuccess,
     (state: BasketState) => ({
       ...state,
       loading: false,
@@ -219,7 +218,8 @@ export const basketReducer = createReducer(
     promotionError: undefined,
     validationResults: initialValidationResults,
   })),
-  on(updateConcardisCvcLastUpdatedSuccess, (state: BasketState, action) => ({
+
+  on(updateCvcLastUpdatedSuccess, (state: BasketState, action) => ({
     ...state,
     basket: {
       ...state.basket,

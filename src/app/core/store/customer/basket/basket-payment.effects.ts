@@ -175,9 +175,10 @@ export class BasketPaymentEffects {
       mapToPayloadProperty('paymentInstrument'),
       withLatestFrom(this.store.pipe(select(getCurrentBasket))),
       concatMap(([paymentInstrument, basket]) =>
-        this.paymentService
-          .updateBasketPaymentInstrument(basket, paymentInstrument)
-          .pipe(mapTo(updateCvcLastUpdatedSuccess()), mapErrorToAction(updateCvcLastUpdatedFail))
+        this.paymentService.updateBasketPaymentInstrument(basket, paymentInstrument).pipe(
+          map(pi => updateCvcLastUpdatedSuccess({ paymentInstrument: pi })),
+          mapErrorToAction(updateCvcLastUpdatedFail)
+        )
       )
     )
   );

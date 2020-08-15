@@ -7,6 +7,7 @@ import { User } from 'ish-core/models/user/user.model';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 
 import { AccountPaymentConcardisDirectdebitComponent } from '../account-payment-concardis-directdebit/account-payment-concardis-directdebit.component';
 
@@ -22,9 +23,10 @@ describe('Account Payment Component', () => {
       imports: [TranslateModule.forRoot()],
       declarations: [
         AccountPaymentComponent,
-        MockComponent(AccountPaymentConcardisDirectdebitComponent),
+
         MockComponent(ErrorMessageComponent),
         MockComponent(FaIconComponent),
+        MockComponent(ModalDialogLinkComponent),
       ],
     }).compileComponents();
   });

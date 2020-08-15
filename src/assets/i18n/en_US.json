@@ -1177,5 +1177,6 @@
   "account.payment.view_sepa_mandate.link": "View SEPA mandate",
   "account.payment.view_sepa_mandate_text.link": "SEPA Direct Debit Mandate",
   "account.payment.sepa_mandate_Reference": "Mandate Reference",
-  "account.payment.sepa_accepted_on": "Accepted on"
+  "account.payment.sepa_accepted_on": "Accepted on",
+  "checkout.credit_card.validityTime.error.notFound": "max validity time For CVC not found."
 }

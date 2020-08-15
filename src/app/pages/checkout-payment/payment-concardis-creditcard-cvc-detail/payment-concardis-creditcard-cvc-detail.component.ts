@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
+
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
@@ -15,6 +16,7 @@ declare var PayEngine: any;
   templateUrl: './payment-concardis-creditcard-cvc-detail.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+// tslint:disable-next-line: rxjs-prefer-angular-takeuntil
 export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcardisComponent implements OnInit {
   @Input() paymentInstrument: PaymentInstrument;
   validityTimeInMinutes: string;
@@ -79,7 +81,7 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
           const cvcDate = new Date(cvcLastUpdatedValue);
           const currentDate = new Date();
           const diffAsMinutes = (currentDate.getTime() - cvcDate.getTime()) / (1000 * 60);
-          if (diffAsMinutes <= parseInt(this.validityTimeInMinutes)) {
+          if (diffAsMinutes <= parseInt(this.validityTimeInMinutes, 10)) {
             return false;
           }
         }
@@ -93,7 +95,6 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
    */
   submitCallback(error) {
     if (error) {
-      console.log(error);
       // map error messages
       if (typeof error.message !== 'string' && error.message.properties) {
         this.errorMessage.cvc =
@@ -107,15 +108,29 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
           );
         }
       }
-    } else if (
-      this.paymentInstrument.parameters &&
-      this.paymentInstrument.parameters.find(attribute => attribute.name === 'cvcLastUpdated')
-    ) {
+    } else {
       // update cvcLastUpdated to current timestamp
-      this.paymentInstrument.parameters.find(
-        attribute => attribute.name === 'cvcLastUpdated'
-      ).value = new Date().toISOString();
-      this.checkoutFacade.updateCvcLastUpdated(this.paymentInstrument);
+      const param =
+        this.paymentInstrument.parameters &&
+        this.paymentInstrument.parameters.map(attr => ({ name: attr.name, value: attr.value }));
+      if (param.find(attribute => attribute.name === 'cvcLastUpdated')) {
+        param.find(attribute => attribute.name === 'cvcLastUpdated').value = new Date().toISOString();
+      } else {
+        param.push({ name: 'cvcLastUpdated', value: new Date().toISOString() });
+      }
+      // Replacing encoded paymentInstrumentId with Token for put request
+      param.find(attribute => attribute.name === 'paymentInstrumentId').value = this.paymentInstrument.parameters.find(
+        attribute => attribute.name === 'token'
+      ).value;
+      const pi: PaymentInstrument = {
+        id: this.paymentInstrument.id,
+        urn: this.paymentInstrument.urn,
+        accountIdentifier: this.paymentInstrument.accountIdentifier,
+        parameters: param,
+        paymentMethod: this.paymentInstrument.paymentMethod,
+      };
+
+      this.checkoutFacade.updateCvcLastUpdated(pi);
     }
   }
 
