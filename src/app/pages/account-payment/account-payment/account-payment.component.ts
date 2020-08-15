@@ -27,9 +27,6 @@ export class AccountPaymentComponent implements OnChanges {
   preferredPaymentInstrument: PaymentInstrument;
   preferredPaymentMethod: PaymentMethod;
   savedPaymentMethods: PaymentMethod[];
-  mandateReference: string;
-  mandateText: string;
-  mandateCreatedDateTime: string;
 
   /**
    * refresh the display of the preferred payment instrument and the shown further addresses.
@@ -86,14 +83,5 @@ export class AccountPaymentComponent implements OnChanges {
         preferredPaymentInstrumentId: paymentInstrumentId,
       });
     }
-  }
-
-  /**
-   * Show SEPA mandate information
-   */
-  showSepaMandateText(pi: PaymentInstrument) {
-    this.mandateReference = pi.parameters.find(param => param.name === 'mandateReference').value.toString();
-    this.mandateText = pi.parameters.find(param => param.name === 'mandateText').value.toString();
-    this.mandateCreatedDateTime = pi.parameters.find(param => param.name === 'mandateCreatedDateTime').value.toString();
   }
 }
