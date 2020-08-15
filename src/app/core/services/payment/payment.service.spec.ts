@@ -67,6 +67,26 @@ describe('Payment Service', () => {
     ],
   };
 
+  const creditCardPaymentInstrument = {
+    id: 'UZUKgzzAppcAAAFzK9FDCMcG',
+    parameters: [
+      {
+        name: 'paymentInstrumentId',
+        value: '****************************',
+      },
+      {
+        name: 'cvcLastUpdated',
+        value: '2020-04-30T13:41:45Z',
+      },
+      {
+        name: 'token',
+        value: 'payment_instrument_123',
+      },
+    ],
+    paymentMethod: 'Concardis_CreditCard',
+    urn: 'urn:payment-instrument:basket:_3oKgzzAfGgAAAFzuFpDCMcE:UZUKgzzAppcAAAFzK9FDCMcG',
+  };
+
   beforeEach(() => {
     apiService = mock(ApiService);
     appFacade = mock(AppFacade);
@@ -193,6 +213,23 @@ describe('Payment Service', () => {
         done();
       });
     });
+
+    it("should update payment instrument from basket when 'updateBasketPaymentInstrument' is called", done => {
+      when(apiService.patch(anyString(), anything(), anything())).thenReturn(of({}));
+
+      paymentService
+        .updateBasketPaymentInstrument(BasketMockData.getBasket(), creditCardPaymentInstrument)
+        .subscribe(() => {
+          verify(
+            apiService.patch(
+              `baskets/${BasketMockData.getBasket().id}/payment-instruments/${creditCardPaymentInstrument.id}`,
+              anything(),
+              anything()
+            )
+          ).once();
+          done();
+        });
+    });
   });
 
   describe('user payment service', () => {
@@ -250,6 +287,22 @@ describe('Payment Service', () => {
         verify(apiService.delete(`customers/-/payments/${paymentInstrument.id}`)).once();
         done();
       });
+    });
+
+    it("should update payment instrument from customer when 'updateBasketPaymentInstrument' is called", done => {
+      const userCreditCardPaymentInstrument: PaymentInstrument = {
+        ...creditCardPaymentInstrument,
+        urn: 'urn:payment-instrument:user:fIQKAE8B4tYAAAFu7tuO4P6T:ug8KAE8B1dcAAAFvNQqSJBQg',
+      };
+
+      when(apiService.put(anyString(), anything())).thenReturn(of({}));
+
+      paymentService
+        .updateBasketPaymentInstrument(BasketMockData.getBasket(), userCreditCardPaymentInstrument)
+        .subscribe(() => {
+          verify(apiService.put(`customers/-/payments/${userCreditCardPaymentInstrument.id}`, anything())).once();
+          done();
+        });
     });
   });
 });

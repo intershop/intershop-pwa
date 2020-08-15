@@ -21,6 +21,7 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
 
+import { PaymentConcardisCreditcardCvcDetailComponent } from '../payment-concardis-creditcard-cvc-detail/payment-concardis-creditcard-cvc-detail.component';
 import { PaymentConcardisCreditcardComponent } from '../payment-concardis-creditcard/payment-concardis-creditcard.component';
 import { PaymentConcardisDirectdebitComponent } from '../payment-concardis-directdebit/payment-concardis-directdebit.component';
 
@@ -52,6 +53,7 @@ describe('Checkout Payment Component', () => {
         MockComponent(ModalDialogLinkComponent),
         MockComponent(NgbCollapse),
         MockComponent(PaymentConcardisCreditcardComponent),
+        MockComponent(PaymentConcardisCreditcardCvcDetailComponent),
         MockComponent(PaymentConcardisDirectdebitComponent),
         MockDirective(ServerHtmlDirective),
         MockPipe(PricePipe),

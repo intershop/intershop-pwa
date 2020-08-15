@@ -7,6 +7,7 @@ import { User } from 'ish-core/models/user/user.model';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 
 import { AccountPaymentComponent } from './account-payment.component';
 
@@ -18,7 +19,12 @@ describe('Account Payment Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [AccountPaymentComponent, MockComponent(ErrorMessageComponent), MockComponent(FaIconComponent)],
+      declarations: [
+        AccountPaymentComponent,
+        MockComponent(ErrorMessageComponent),
+        MockComponent(FaIconComponent),
+        MockComponent(ModalDialogLinkComponent),
+      ],
     }).compileComponents();
   });
 

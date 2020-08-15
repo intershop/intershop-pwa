@@ -343,16 +343,20 @@ export class PaymentService {
       // update basket payment instrument
       const body: {
         parameters?: {
-          key: string;
-          property: string;
+          name: string;
+          value: string;
         }[];
       } = {
         parameters: paymentInstrument.parameters
           .filter(attr => attr.name === 'cvcLastUpdated')
-          .map(attr => ({ key: attr.name, property: attr.value })),
+          .map(attr => ({ name: attr.name, value: attr.value })),
       };
 
-      return this.apiService.patch(`baskets/${basket.id}/payment-instruments/${paymentInstrument.id}`, body);
+      return this.apiService
+        .patch(`baskets/${basket.id}/payment-instruments/${paymentInstrument.id}`, body, {
+          headers: this.basketHeaders,
+        })
+        .pipe(map(({ data }) => data));
     } else {
       // update user payment instrument
       const body: {
@@ -367,7 +371,7 @@ export class PaymentService {
       };
 
       // Replace this PUT request with PATCH request once it is fixed in ICM
-      return this.apiService.put(`customers/-/payments/${paymentInstrument.id}`, body);
+      return this.apiService.put(`customers/-/payments/${paymentInstrument.id}`, body).pipe(mapTo(paymentInstrument));
     }
   }
 }

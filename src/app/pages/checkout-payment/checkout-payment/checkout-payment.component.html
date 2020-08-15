@@ -98,7 +98,7 @@
                   <ng-template [ngSwitchCase]="'Concardis_CreditCard'">
                     <div *ngIf="basket.payment && paymentInstrument.id === basket.payment.paymentInstrument.id">
                       <ish-payment-concardis-creditcard-cvc-detail
-                        [paymentInstrument]="paymentInstrument"
+                        [paymentInstrument]="basket.payment.paymentInstrument"
                         [paymentMethod]="paymentMethod"
                       >
                       </ish-payment-concardis-creditcard-cvc-detail>
