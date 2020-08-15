@@ -12,19 +12,18 @@ export class AccountPaymentConcardisDirectdebitComponent {
 
   mandateReference: string;
   mandateText: string;
-  mandateCreatedDateTime: number;
+  mandateCreatedDateTime: string;
 
   /**
    * Show SEPA mandate information
    */
-  showSepaMandateText() {
-    this.mandateReference = this.paymentInstrument.parameters
+  showSepaMandateText(paymentInstrument: PaymentInstrument) {
+    this.mandateReference = paymentInstrument.parameters
       .find(param => param.name === 'mandateReference')
       .value.toString();
-    this.mandateText = this.paymentInstrument.parameters.find(param => param.name === 'mandateText').value.toString();
-    const mandateCreatedDatetimeStr = this.paymentInstrument.parameters
+    this.mandateText = paymentInstrument.parameters.find(param => param.name === 'mandateText').value.toString();
+    this.mandateCreatedDateTime = paymentInstrument.parameters
       .find(param => param.name === 'mandateCreatedDateTime')
       .value.toString();
-    this.mandateCreatedDateTime = Number(mandateCreatedDatetimeStr) || 0;
   }
 }

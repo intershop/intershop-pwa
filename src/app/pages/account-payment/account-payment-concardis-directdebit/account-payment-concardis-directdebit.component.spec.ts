@@ -1,10 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
-
-import { DatePipe } from 'ish-core/pipes/date.pipe';
+import { MockComponent } from 'ng-mocks';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
-
 import { AccountPaymentConcardisDirectdebitComponent } from './account-payment-concardis-directdebit.component';
 
 describe('Account Payment Concardis Directdebit Component', () => {
@@ -12,17 +9,11 @@ describe('Account Payment Concardis Directdebit Component', () => {
   let fixture: ComponentFixture<AccountPaymentConcardisDirectdebitComponent>;
   let element: HTMLElement;
 
-  const mandateTextValue = 'mandate_text';
-  const mandateCreatedDateTimeValue = '1597644563000';
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [
-        AccountPaymentConcardisDirectdebitComponent,
-        MockComponent(ModalDialogLinkComponent),
-        MockPipe(DatePipe),
-      ],
+      declarations: [AccountPaymentConcardisDirectdebitComponent, MockComponent(ModalDialogLinkComponent)],
+>>>>>>> feat:adding component for sepa mandate text.
     }).compileComponents();
   }));
 
@@ -41,11 +32,11 @@ describe('Account Payment Concardis Directdebit Component', () => {
         },
         {
           name: 'mandateText',
-          value: mandateTextValue,
+          value: 'mandate text',
         },
         {
           name: 'mandateCreatedDateTime',
-          value: mandateCreatedDateTimeValue,
+          value: 'Aug 15, 2020',
         },
       ],
     };
@@ -55,13 +46,5 @@ describe('Account Payment Concardis Directdebit Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-  });
-
-  it('should show sepa mandate text on executing showSepaMandateText()', () => {
-    fixture.detectChanges();
-    component.showSepaMandateText();
-    expect(element.querySelector('[data-testing-id="mandate-text"]')).toBeTruthy();
-    expect(component.mandateText).toEqual(mandateTextValue);
-    expect(component.mandateCreatedDateTime.toString()).toEqual(mandateCreatedDateTimeValue);
   });
 });
