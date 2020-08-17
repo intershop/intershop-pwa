@@ -167,14 +167,24 @@ describe('Page Schematic', () => {
         .toPromise();
       const appRoutingModule = tree.readContent('/src/app/pages/app-routing.module.ts');
       expect(appRoutingModule).toContain(`path: 'foo'`);
-      expect(appRoutingModule).toContain('foo-page.module');
+      expect(appRoutingModule).toContain("import('./foo/foo-page.module')");
       expect(appRoutingModule).toContain('FooPageModule');
       expect(appRoutingModule).not.toContain('FooBar');
 
       const fooRoutingModule = tree.readContent('/src/app/pages/foo/foo-page.module.ts');
       expect(fooRoutingModule).toContain(`path: 'bar'`);
-      expect(fooRoutingModule).toContain('foo-bar-page.module');
+      expect(fooRoutingModule).toContain("import('../foo-bar/foo-bar-page.module')");
       expect(fooRoutingModule).toContain('FooBarPageModule');
+    });
+
+    it('should not register route in not existing page routing module even when subpaging is detected', async () => {
+      const tree = await schematicRunner
+        .runSchematicAsync('page', { ...defaultOptions, name: 'foo-bar' }, appTree)
+        .toPromise();
+      const appRoutingModule = tree.readContent('/src/app/pages/app-routing.module.ts');
+      expect(appRoutingModule).toContain(`path: 'foo-bar'`);
+      expect(appRoutingModule).toContain("import('./foo-bar/foo-bar-page.module')");
+      expect(appRoutingModule).toContain('FooBarPageModule');
     });
   });
 
