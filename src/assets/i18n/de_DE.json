@@ -859,6 +859,8 @@
   "approval.detailspage.budget.type.half-yearly.label": "Halbjährliches Budget:",
   "approval.detailspage.budget.type.yearly.label": "Jahresbudget:",
   "approval.detailspage.budget.already_spent.label": "Bereits verbraucht:",
+  "approval.detailspage.budget.left.label": "Left:",
+  "approval.detailspage.budget.including_order.label": "Einschließlich dieser Bestellung:",
   "approval.detailspage.order_details.heading": "Bestell-Details",
   "approval.detailspage.links.return_to_approvals": "Zurück zu Genehmigungen",
   "approval.detailspage.links.return_to_requisitions": "Return to Bestellanfragen",

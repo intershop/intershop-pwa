@@ -861,6 +861,8 @@
   "approval.detailspage.budget.type.half-yearly.label": "Budget semestriel\u00A0:",
   "approval.detailspage.budget.type.yearly.label": "Budget annuel\u00A0:",
   "approval.detailspage.budget.already_spent.label": "Déjà dépensé\u00A0:",
+  "approval.detailspage.budget.left.label": "Left:",
+  "approval.detailspage.budget.including_order.label": "Comprenant cette commande\u00A0:",
   "approval.detailspage.order_details.heading": "Détails de la Commande",
   "approval.detailspage.links.return_to_approvals": "Retour aux approbations",
   "approval.detailspage.links.return_to_requisitions": "Retour aux réquisitions",
