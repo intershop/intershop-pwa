@@ -28,7 +28,6 @@ export interface RequisitionUserBudgets {
   orderSpentLimit: Price;
   remainingBudget?: Price;
   spentBudget?: Price;
-  spentBudgetIncludingThisOrder?: Price;
 }
 
 interface AbstractRequisition {

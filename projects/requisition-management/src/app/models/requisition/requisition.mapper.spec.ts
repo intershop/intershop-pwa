@@ -109,7 +109,11 @@ describe('Requisition Mapper', () => {
               "type": "Money",
               "value": 500,
             },
-            "spentBudgetIncludingThisOrder": undefined,
+            "spentBudget": Object {
+              "currency": "USD",
+              "type": "Money",
+              "value": 0,
+            },
           },
         }
       `);

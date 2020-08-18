@@ -4,6 +4,7 @@ import { BasketData } from 'ish-core/models/basket/basket.interface';
 import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
 import { OrderData } from 'ish-core/models/order/order.interface';
 import { PriceItemMapper } from 'ish-core/models/price-item/price-item.mapper';
+import { Price } from 'ish-core/models/price/price.model';
 
 import { RequisitionData } from './requisition.interface';
 import { Requisition } from './requisition.model';
@@ -13,32 +14,23 @@ export class RequisitionMapper {
   fromData(payload: RequisitionData, orderPayload?: OrderData): Requisition {
     if (!Array.isArray(payload.data)) {
       const { data } = payload;
-
-      /* determine spentBudgetInclusive this order, ToDo: see #IS-30622 */
-      let spentBudgetIncludingThisOrder = data.userBudgets?.spentBudget;
-      if (data.approvalStatus?.status === 'pending') {
-        if (spentBudgetIncludingThisOrder) {
-          spentBudgetIncludingThisOrder.value = spentBudgetIncludingThisOrder.value = +data.totals.grandTotal.gross
-            .value;
-        } else {
-          spentBudgetIncludingThisOrder = {
-            value: data.totals?.grandTotal?.gross.value,
-            currency: data.totals?.grandTotal?.gross.currency,
-            type: 'Money',
-          };
-        }
-      }
+      const emptyPrice: Price = {
+        type: 'Money',
+        value: 0,
+        currency: data.userBudgets?.budget?.currency,
+      };
 
       if (data) {
         const payloadData = (orderPayload ? orderPayload : payload) as BasketData;
         payloadData.data.calculated = true;
+
         return {
           ...BasketMapper.fromData(payloadData),
           id: data.id,
           requisitionNo: data.requisitionNo,
           orderNo: data.orderNo,
           creationDate: data.creationDate,
-          userBudgets: { ...data.userBudgets, spentBudgetIncludingThisOrder },
+          userBudgets: { ...data.userBudgets, spentBudget: data.userBudgets?.spentBudget || emptyPrice },
           lineItemCount: data.lineItemCount,
           user: data.userInformation,
           approval: {

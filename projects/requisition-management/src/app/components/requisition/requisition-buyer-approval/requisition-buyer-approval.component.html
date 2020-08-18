@@ -3,53 +3,75 @@
     <div class="row">
       <div class="col-md-6">
         <p class="row">
-          <strong class="col-sm-6"> {{ 'approval.detailspage.purchaser.label' | translate }}: </strong>
-          <span class="col-sm-6"> {{ requisition.user.firstName }} {{ requisition.user.lastName }} </span>
+          <span class="col-6"> {{ 'approval.detailspage.purchaser.label' | translate }}: </span>
+          <span class="col-6"> {{ requisition.user.firstName }} {{ requisition.user.lastName }} </span>
         </p>
       </div>
     </div>
     <div class="row section">
       <div class="col-md-6">
         <p class="row">
-          <strong class="col-sm-6">
+          <span class="col-6">
             {{ 'approval.detailspage.order_spend_limit.label' | translate }}
-          </strong>
-          <span class="col-sm-6">
-            <ng-container *ngIf="requisition.userBudgets.orderSpentLimit; else noLimit">
+          </span>
+          <strong class="col-6">
+            <ng-container *ngIf="requisition.userBudgets?.orderSpentLimit; else noLimit">
               {{ requisition.userBudgets.orderSpentLimit | ishPrice }}
             </ng-container>
             <ng-template #noLimit>
               {{ 'approval.details.threshold.unlimited' | translate }}
             </ng-template>
-          </span>
+          </strong>
         </p>
       </div>
-      <div class="col-sm-6">
-        <div class="progress">
-          <!-- ToDo: add progress bar here -->
-        </div>
+      <div *ngIf="requisition.userBudgets?.orderSpentLimit" class="col-md-6">
+        <ish-budget-bar [budget]="requisition.userBudgets?.orderSpentLimit" [spentBudget]="orderTotal">
+        </ish-budget-bar>
       </div>
     </div>
     <div class="row">
       <div class="col-md-6">
         <p *ngIf="requisition.userBudgets.budgetPeriod !== 'none'" class="row">
-          <strong class="col-sm-6">
+          <span class="col-6">
             {{ 'approval.detailspage.budget.type.' + requisition.userBudgets.budgetPeriod + '.label' | translate }}
-          </strong>
-          <span class="col-sm-6">
+          </span>
+          <strong class="col-6">
             <ng-container *ngIf="requisition.userBudgets.budget; else noLimit">
               {{ requisition.userBudgets.budget | ishPrice }}
             </ng-container>
-          </span>
-        </p>
-        <p *ngIf="requisition.userBudgets.spentBudget" class="row">
-          <strong class="col-sm-6">
-            {{ 'approval.detailspage.budget.already_spent.label' | translate }}
           </strong>
-          <span class="col-sm-6">
-            {{ requisition.userBudgets.spentBudget | ishPrice }}
+        </p>
+        <p *ngIf="requisition.userBudgets?.spentBudget" class="row">
+          <span class="col-6">
+            {{ 'approval.detailspage.budget.already_spent.label' | translate }}
+          </span>
+          <span class="col-6">
+            {{ requisition.userBudgets.spentBudget | ishPrice }} ({{ spentPercentage | percent }})
           </span>
         </p>
+        <p *ngIf="requisition.approval.statusCode !== 'approved'; else leftBudgetDisplay" class="row">
+          <span class="col-6">
+            {{ 'approval.detailspage.budget.including_order.label' | translate }}
+          </span>
+          <span class="col-6" [ngClass]="{ 'text-danger': spentPercentageIncludingThisOrder > 1 }">
+            {{ spentBudgetIncludingThisOrder | ishPrice }} ({{ spentPercentageIncludingThisOrder | percent }})
+          </span>
+        </p>
+        <ng-template #leftBudgetDisplay>
+          <p class="row">
+            <span class="col-6">
+              {{ 'approval.detailspage.budget.left.label' | translate }}
+            </span>
+            <span class="col-6"> {{ leftBudget | ishPrice }} ({{ leftPercentage | percent }}) </span>
+          </p>
+        </ng-template>
+      </div>
+      <div *ngIf="requisition.userBudgets?.budget" class="col-md-6 mb-3">
+        <ish-budget-bar
+          [budget]="requisition.userBudgets?.budget"
+          [spentBudget]="requisition.userBudgets?.spentBudget"
+          [additionalAmount]="orderTotal"
+        ></ish-budget-bar>
       </div>
     </div>
   </ish-info-box>
