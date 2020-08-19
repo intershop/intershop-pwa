@@ -6,8 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DeferLoadModule } from '@trademe/ng-defer-load';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
-import { ClickOutsideDirective } from 'ish-core/directives/click-outside.directive';
-import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { DirectivesModule } from 'ish-core/directives.module';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
@@ -35,19 +34,14 @@ import { UserInformationMobileComponent } from './header/user-information-mobile
 
 const importExportModules = [
   CaptchaExportsModule,
+  DirectivesModule,
   OrderTemplatesExportsModule,
   QuickorderExportsModule,
   QuotingExportsModule,
   WishlistsExportsModule,
 ];
 
-const exportedComponents = [
-  FooterComponent,
-  HeaderComponent,
-  ProductImageComponent,
-  SearchBoxComponent,
-  ServerHtmlDirective,
-];
+const exportedComponents = [FooterComponent, HeaderComponent, ProductImageComponent, SearchBoxComponent];
 
 @NgModule({
   imports: [
@@ -66,7 +60,6 @@ const exportedComponents = [
   ],
   declarations: [
     ...exportedComponents,
-    ClickOutsideDirective,
     HeaderCheckoutComponent,
     HeaderDefaultComponent,
     HeaderNavigationComponent,
