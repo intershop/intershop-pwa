@@ -32,6 +32,24 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
       return { name: 'HttpErrorResponse', status: httpError.status, ...specialHandler.map(httpError, request) };
     }
 
+    if (httpError.headers?.get('error-type') === 'error-missing-attributes') {
+      return {
+        name: 'HttpErrorResponse',
+        status: httpError.status,
+        message: httpError.error,
+      };
+    }
+    if (httpError.headers?.get('error-type') === 'error-invalid-attributes') {
+      let message = httpError.error;
+      if (typeof request.body === 'object') {
+        message += JSON.stringify(pick(request.body, httpError.headers?.get('error-invalid-attributes').split(',')));
+      }
+      return {
+        name: 'HttpErrorResponse',
+        status: httpError.status,
+        message,
+      };
+    }
     if (httpError.headers?.get('error-key')) {
       return {
         name: 'HttpErrorResponse',

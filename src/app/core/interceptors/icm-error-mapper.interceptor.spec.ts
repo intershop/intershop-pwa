@@ -146,6 +146,62 @@ describe('Icm Error Mapper Interceptor', () => {
     });
   });
 
+  it('should convert error-missing-attributes header responses to debug format', done => {
+    http.get('some').subscribe(fail, error => {
+      expect(error).toMatchInlineSnapshot(`
+        Object {
+          "message": "Bad Request (The following attributes are missing: email,preferredLanguage)",
+          "name": "HttpErrorResponse",
+          "status": 400,
+        }
+      `);
+      done();
+    });
+
+    httpController
+      .expectOne('some')
+      .flush('Bad Request (The following attributes are missing: email,preferredLanguage)', {
+        status: 400,
+        statusText: 'Bad Request',
+        headers: {
+          'error-key': 'customer.missing_fields.error',
+          'error-missing-attributes': 'email,preferredLanguage',
+          'error-type': 'error-missing-attributes',
+        },
+      });
+  });
+
+  it('should convert error-invalid-attributes header responses to debug format', done => {
+    http
+      .post('some', {
+        email: 'asdf@.',
+        preferredLanguage: 'ASDF',
+        some: { other: 'field' },
+      })
+      .subscribe(fail, error => {
+        expect(error).toMatchInlineSnapshot(`
+          Object {
+            "message": "Bad Request (The following attributes are invalid: email,preferredLanguage){\\"email\\":\\"asdf@.\\",\\"preferredLanguage\\":\\"ASDF\\"}",
+            "name": "HttpErrorResponse",
+            "status": 400,
+          }
+        `);
+        done();
+      });
+
+    httpController
+      .expectOne('some')
+      .flush('Bad Request (The following attributes are invalid: email,preferredLanguage)', {
+        status: 400,
+        statusText: 'Bad Request',
+        headers: {
+          'error-key': 'customer.invalid_fields.error',
+          'error-invalid-attributes': 'email,preferredLanguage',
+          'error-type': 'error-invalid-attributes',
+        },
+      });
+  });
+
   it('should convert other error responses directly for a fallback', done => {
     http.get('some').subscribe(fail, error => {
       expect(error).toMatchInlineSnapshot(`
