@@ -42,9 +42,18 @@ describe('Tacton Readonly Component', () => {
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
+
   it('should render text if not hidden', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`<p>1</p>`);
+  });
+
+  it('should render link if pattern matches', () => {
+    component.parameter.value = 'https://example.org';
+    component.parameter.valueDescription = 'LINK';
+    fixture.detectChanges();
+
+    expect(element).toMatchInlineSnapshot(`<a target="_blank" href="https://example.org">LINK</a>`);
   });
 });
