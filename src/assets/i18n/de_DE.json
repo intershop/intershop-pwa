@@ -2886,5 +2886,7 @@
   "tacton.step_buttons.next.label": "Weiter",
   "tacton.step_buttons.previous.label": "Zurück",
   "tacton.step_buttons.submit.label": "Senden",
-  "tacton.undo.tooltip": "Wiederherstellen"
+  "tacton.undo.tooltip": "Wiederherstellen",
+  "tacton.submit.success.message": "Ihre Anfrage wurde erfolgreich versendet.",
+  "tacton.submit.error.message": "Beim Verarbeiten Ihrer Anfrage ist ein technischer Fehler aufgetreten. Bitte versuchen Sie es später erneut."
 }

@@ -203,7 +203,7 @@ export class ProductConfigurationEffects {
       ofType(submitTactonConfigurationSuccess),
       mapTo(
         displaySuccessMessage({
-          message: 'Your request was submitted successfully! TRANSLATE_ME',
+          message: 'tacton.submit.success.message',
         })
       )
     )
@@ -214,7 +214,7 @@ export class ProductConfigurationEffects {
       ofType(submitTactonConfigurationFail),
       mapTo(
         displayErrorMessage({
-          message: 'There was an error processing your request! TRANSLATE_ME',
+          message: 'tacton.submit.error.message',
         })
       )
     )

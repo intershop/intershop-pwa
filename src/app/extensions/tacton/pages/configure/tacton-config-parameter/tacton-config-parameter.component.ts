@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { TactonFacade } from '../../../facades/tacton.facade';
 import { TactonProductConfigurationParameter } from '../../../models/tacton-product-configuration/tacton-product-configuration.model';
@@ -13,5 +14,9 @@ export abstract class TactonConfigParameterComponent {
 
   change(value) {
     this.facade.commitValue(this.parameter, value);
+  }
+
+  getImageUrl(picture: string): Observable<string> {
+    return this.facade.getImageUrl$(picture);
   }
 }

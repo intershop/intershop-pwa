@@ -2888,5 +2888,7 @@
   "tacton.step_buttons.next.label": "Suivant",
   "tacton.step_buttons.previous.label": "Précédent",
   "tacton.step_buttons.submit.label": "Soumettre",
-  "tacton.undo.tooltip": "Annuler"
+  "tacton.undo.tooltip": "Annuler",
+  "tacton.submit.success.message": "Votre demande de devis a été soumise avec succès.",
+  "tacton.submit.error.message": "Une erreur technique s’est produite lors du traitement de votre demande. Veuillez réessayer plus tard."
 }

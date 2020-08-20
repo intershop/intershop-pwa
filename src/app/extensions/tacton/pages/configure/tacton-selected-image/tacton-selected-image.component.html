@@ -1,5 +1,4 @@
-<!-- ToDo: display the selected image -->
-<h3>{{ 'tacton.selected_image.selected.label' | translate }}</h3>
-<div>
-  {{ parameter.value }}
-</div>
+<!-- display the selected image -->
+<p *ngIf="parameter?.properties?.tc_component_picture">
+  <img [src]="getImageUrl(parameter.properties?.tc_component_picture) | async" />
+</p>
