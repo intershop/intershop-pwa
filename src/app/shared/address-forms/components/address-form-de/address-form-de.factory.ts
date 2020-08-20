@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 
 import { AddressFormFactory } from 'ish-shared/address-forms/components/address-form/address-form.factory';
+import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 @Injectable()
 export class AddressFormDEFactory extends AddressFormFactory {
@@ -14,8 +15,8 @@ export class AddressFormDEFactory extends AddressFormFactory {
   group() {
     return this.fb.group({
       title: [''],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      firstName: ['', [Validators.required, SpecialValidators.noSpecialChars]],
+      lastName: ['', [Validators.required, SpecialValidators.noSpecialChars]],
       addressLine1: ['', Validators.required],
       addressLine2: [],
       addressLine3: [],
