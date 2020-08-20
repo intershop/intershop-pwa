@@ -12,6 +12,7 @@ import {
   mapTo,
   switchMap,
   switchMapTo,
+  take,
   tap,
   throttleTime,
   withLatestFrom,
@@ -179,8 +180,7 @@ export class ProductConfigurationEffects {
   submitTactonConfiguration$ = createEffect(() =>
     this.actions$.pipe(
       ofType(submitTactonConfiguration),
-      switchMapTo(this.store.pipe(select(getTactonProductForSelectedProduct))),
-      whenTruthy(),
+      switchMapTo(this.store.pipe(select(getTactonProductForSelectedProduct), whenTruthy(), take(1))),
       switchMap(productPath =>
         of(productPath).pipe(withLatestFrom(this.store.pipe(select(getSavedTactonConfiguration(productPath)))))
       ),
