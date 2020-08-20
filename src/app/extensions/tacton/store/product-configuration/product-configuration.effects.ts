@@ -5,6 +5,7 @@ import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { combineLatest, of } from 'rxjs';
 import {
+  catchError,
   concatMap,
   distinctUntilChanged,
   filter,
@@ -90,9 +91,10 @@ export class ProductConfigurationEffects {
       ofType(continueConfigureTactonProduct),
       mapToPayloadProperty('savedConfig'),
       switchMap(savedConfig =>
-        this.tactonSelfServiceApiService
-          .continueConfiguration(savedConfig)
-          .pipe(map(configuration => setCurrentConfiguration({ configuration })))
+        this.tactonSelfServiceApiService.continueConfiguration(savedConfig).pipe(
+          map(configuration => setCurrentConfiguration({ configuration })),
+          catchError(() => of(startConfigureTactonProduct({ productPath: savedConfig.productId })))
+        )
       )
     )
   );
