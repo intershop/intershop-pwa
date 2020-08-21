@@ -5,7 +5,7 @@ import { MockComponent } from 'ng-mocks';
 
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
-import { LazyCaptchaComponent } from '../../../extensions/captcha/exports/captcha/lazy-captcha/lazy-captcha.component';
+import { LazyCaptchaComponent } from '../../../extensions/captcha/exports/lazy-captcha/lazy-captcha.component';
 
 import { RequestReminderFormComponent } from './request-reminder-form.component';
 

@@ -15,8 +15,8 @@ import { ProductCompareStatusComponent } from 'ish-shell/header/product-compare-
 import { SearchBoxComponent } from 'ish-shell/header/search-box/search-box.component';
 import { UserInformationMobileComponent } from 'ish-shell/header/user-information-mobile/user-information-mobile.component';
 
-import { LazyHeaderQuickorderComponent } from '../../../extensions/quickorder/exports/header/lazy-header-quickorder/lazy-header-quickorder.component';
-import { LazyWishlistsLinkComponent } from '../../../extensions/wishlists/exports/wishlists/lazy-wishlists-link/lazy-wishlists-link.component';
+import { LazyHeaderQuickorderComponent } from '../../../extensions/quickorder/exports/lazy-header-quickorder/lazy-header-quickorder.component';
+import { LazyWishlistsLinkComponent } from '../../../extensions/wishlists/exports/lazy-wishlists-link/lazy-wishlists-link.component';
 
 import { HeaderDefaultComponent } from './header-default.component';
 

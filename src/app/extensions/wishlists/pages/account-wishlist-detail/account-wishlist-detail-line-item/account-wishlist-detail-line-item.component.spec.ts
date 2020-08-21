@@ -19,7 +19,7 @@ import { InputComponent } from 'ish-shared/forms/components/input/input.componen
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
 
 import { WishlistsFacade } from '../../../facades/wishlists.facade';
-import { SelectWishlistModalComponent } from '../../../shared/wishlists/select-wishlist-modal/select-wishlist-modal.component';
+import { SelectWishlistModalComponent } from '../../../shared/select-wishlist-modal/select-wishlist-modal.component';
 
 import { AccountWishlistDetailLineItemComponent } from './account-wishlist-detail-line-item.component';
 

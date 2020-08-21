@@ -15,8 +15,8 @@ import { LineItemListComponent } from 'ish-shared/components/basket/line-item-li
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 
-import { LazyBasketCreateOrderTemplateComponent } from '../../../extensions/order-templates/exports/basket/lazy-basket-create-order-template/lazy-basket-create-order-template.component';
-import { LazyBasketAddToQuoteComponent } from '../../../extensions/quoting/exports/basket/lazy-basket-add-to-quote/lazy-basket-add-to-quote.component';
+import { LazyBasketCreateOrderTemplateComponent } from '../../../extensions/order-templates/exports/lazy-basket-create-order-template/lazy-basket-create-order-template.component';
+import { LazyBasketAddToQuoteComponent } from '../../../extensions/quoting/exports/lazy-basket-add-to-quote/lazy-basket-add-to-quote.component';
 
 import { ShoppingBasketComponent } from './shopping-basket.component';
 

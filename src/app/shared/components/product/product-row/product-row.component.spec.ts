@@ -22,9 +22,9 @@ import { ProductShipmentComponent } from 'ish-shared/components/product/product-
 import { ProductVariationSelectComponent } from 'ish-shared/components/product/product-variation-select/product-variation-select.component';
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
 
-import { LazyProductAddToOrderTemplateComponent } from '../../../../extensions/order-templates/exports/product/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
-import { LazyProductAddToQuoteComponent } from '../../../../extensions/quoting/exports/product/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
-import { LazyProductAddToWishlistComponent } from '../../../../extensions/wishlists/exports/product/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
+import { LazyProductAddToOrderTemplateComponent } from '../../../../extensions/order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
+import { LazyProductAddToQuoteComponent } from '../../../../extensions/quoting/exports/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
+import { LazyProductAddToWishlistComponent } from '../../../../extensions/wishlists/exports/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
 
 import { ProductRowComponent } from './product-row.component';
 

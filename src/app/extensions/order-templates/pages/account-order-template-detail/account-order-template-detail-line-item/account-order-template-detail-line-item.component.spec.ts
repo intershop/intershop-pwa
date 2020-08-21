@@ -21,7 +21,7 @@ import { InputComponent } from 'ish-shared/forms/components/input/input.componen
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
-import { SelectOrderTemplateModalComponent } from '../../../shared/order-templates/select-order-template-modal/select-order-template-modal.component';
+import { SelectOrderTemplateModalComponent } from '../../../shared/select-order-template-modal/select-order-template-modal.component';
 
 import { AccountOrderTemplateDetailLineItemComponent } from './account-order-template-detail-line-item.component';
 

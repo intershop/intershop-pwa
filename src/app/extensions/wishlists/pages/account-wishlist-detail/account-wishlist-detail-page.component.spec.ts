@@ -10,7 +10,7 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
-import { WishlistPreferencesDialogComponent } from '../../shared/wishlists/wishlist-preferences-dialog/wishlist-preferences-dialog.component';
+import { WishlistPreferencesDialogComponent } from '../../shared/wishlist-preferences-dialog/wishlist-preferences-dialog.component';
 
 import { AccountWishlistDetailLineItemComponent } from './account-wishlist-detail-line-item/account-wishlist-detail-line-item.component';
 import { AccountWishlistDetailPageComponent } from './account-wishlist-detail-page.component';
