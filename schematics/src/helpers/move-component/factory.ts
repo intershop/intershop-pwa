@@ -79,7 +79,7 @@ export function move(options: Options): Rule {
 
     const toClassName = strings.classify(toName) + 'Component';
 
-    const similarIndex = similarIdx(from, to);
+    const similarIndex = Math.min(similarIdx(from, to), from.lastIndexOf('/') + 1, to.lastIndexOf('/') + 1);
 
     const replacePath = (path: string) =>
       path
