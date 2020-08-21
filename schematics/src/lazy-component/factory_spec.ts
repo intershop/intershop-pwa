@@ -27,7 +27,7 @@ describe('Lazy Component Schematic', () => {
         switchMap(tree =>
           schematicRunner.runSchematicAsync(
             'component',
-            { ...defaultOptions, name: 'extensions/ext/shared/group/dummy' },
+            { ...defaultOptions, name: 'extensions/ext/shared/dummy' },
             tree
           )
         )
@@ -36,13 +36,13 @@ describe('Lazy Component Schematic', () => {
   });
 
   it('should be created', () => {
-    expect(appTree.files).toContain('/src/app/extensions/ext/shared/group/dummy/dummy.component.ts');
+    expect(appTree.files).toContain('/src/app/extensions/ext/shared/dummy/dummy.component.ts');
   });
 
   it.each([
-    'extensions/ext/shared/group',
-    'extensions/ext/shared/group/other/other.component.ts',
-    'src/app/extensions/ext/shared/group/other/other.component.ts',
+    'extensions/ext/shared',
+    'extensions/ext/shared/other/other.component.ts',
+    'src/app/extensions/ext/shared/other/other.component.ts',
     'src/app/shared/other/other.component.ts',
   ])('should fail for path %s', async path => {
     const err = await schematicRunner
@@ -53,19 +53,19 @@ describe('Lazy Component Schematic', () => {
     expect(err.message).toEqual('path does not point to an existing component in an extension');
   });
 
-  it.each([
-    'extensions/ext/shared/group/dummy/dummy.component.ts',
-    'src/app/extensions/ext/shared/group/dummy/dummy.component.ts',
-  ])('should generate a lazy component for %s', async path => {
-    const tree = await schematicRunner
-      .runSchematicAsync('lazy-component', { ...defaultOptions, path }, appTree)
-      .toPromise();
+  it.each(['extensions/ext/shared/dummy/dummy.component.ts', 'src/app/extensions/ext/shared/dummy/dummy.component.ts'])(
+    'should generate a lazy component for %s',
+    async path => {
+      const tree = await schematicRunner
+        .runSchematicAsync('lazy-component', { ...defaultOptions, path }, appTree)
+        .toPromise();
 
-    expect(tree.files).toIncludeAllMembers([
-      '/src/app/extensions/ext/exports/group/lazy-dummy/lazy-dummy.component.ts',
-      '/src/app/extensions/ext/exports/group/lazy-dummy/lazy-dummy.component.html',
-    ]);
-  });
+      expect(tree.files).toIncludeAllMembers([
+        '/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts',
+        '/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.html',
+      ]);
+    }
+  );
 
   describe('empty component', () => {
     let tree: UnitTestTree;
@@ -77,22 +77,22 @@ describe('Lazy Component Schematic', () => {
       tree = await schematicRunner
         .runSchematicAsync(
           'lazy-component',
-          { ...defaultOptions, path: 'extensions/ext/shared/group/dummy/dummy.component.ts' },
+          { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts' },
           appTree
         )
         .toPromise();
 
-      htmlContent = tree.readContent('/src/app/extensions/ext/exports/group/lazy-dummy/lazy-dummy.component.html');
-      componentContent = tree.readContent('/src/app/extensions/ext/exports/group/lazy-dummy/lazy-dummy.component.ts');
+      htmlContent = tree.readContent('/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.html');
+      componentContent = tree.readContent('/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts');
       exportsModuleContent = tree.readContent('/src/app/extensions/ext/exports/ext-exports.module.ts');
     });
 
     it('should generate a template with generating warning', async () => {
-      expect(htmlContent).toContain('ng g lazy-component extensions/ext/shared/group/dummy/dummy.component.ts');
+      expect(htmlContent).toContain('ng g lazy-component extensions/ext/shared/dummy/dummy.component.ts');
     });
 
     it('should generate a component with generating warning', async () => {
-      expect(componentContent).toContain('ng g lazy-component extensions/ext/shared/group/dummy/dummy.component.ts');
+      expect(componentContent).toContain('ng g lazy-component extensions/ext/shared/dummy/dummy.component.ts');
     });
 
     it('should have anchor reference and use it in component', async () => {
@@ -101,7 +101,7 @@ describe('Lazy Component Schematic', () => {
     });
 
     it('should import component which is lazy loaded', async () => {
-      expect(componentContent).toMatch(/import.*from '.*\/shared\/group\/dummy\/dummy.component'/);
+      expect(componentContent).toMatch(/import.*from '.*\/shared\/dummy\/dummy.component'/);
     });
 
     it('should load component using ivy', async () => {
@@ -125,9 +125,7 @@ describe('Lazy Component Schematic', () => {
     });
 
     it('should import lazy component in exports module', async () => {
-      expect(exportsModuleContent).toMatch(
-        "import { LazyDummyComponent } from './group/lazy-dummy/lazy-dummy.component';"
-      );
+      expect(exportsModuleContent).toMatch("import { LazyDummyComponent } from './lazy-dummy/lazy-dummy.component';");
     });
 
     it('should declare lazy component in exports module', async () => {
@@ -139,7 +137,7 @@ describe('Lazy Component Schematic', () => {
     });
 
     it('should add decorator to original component', () => {
-      expect(tree.readContent('/src/app/extensions/ext/shared/group/dummy/dummy.component.ts')).toContain(
+      expect(tree.readContent('/src/app/extensions/ext/shared/dummy/dummy.component.ts')).toContain(
         '@GenerateLazyComponent()'
       );
     });
@@ -154,20 +152,20 @@ describe('Lazy Component Schematic', () => {
       tree = await schematicRunner
         .runSchematicAsync(
           'lazy-component',
-          { ...defaultOptions, path: 'extensions/ext/shared/group/dummy/dummy.component.ts', ci: true },
+          { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts', ci: true },
           appTree
         )
         .toPromise();
 
       exportsModuleContent = tree.readContent('/src/app/extensions/ext/exports/ext-exports.module.ts');
 
-      originalComponent = tree.readContent('/src/app/extensions/ext/shared/group/dummy/dummy.component.ts');
+      originalComponent = tree.readContent('/src/app/extensions/ext/shared/dummy/dummy.component.ts');
     });
 
     it('should generate the lazy component', async () => {
       expect(tree.files).toIncludeAllMembers([
-        '/src/app/extensions/ext/exports/group/lazy-dummy/lazy-dummy.component.html',
-        '/src/app/extensions/ext/exports/group/lazy-dummy/lazy-dummy.component.ts',
+        '/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.html',
+        '/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts',
       ]);
     });
 
@@ -186,7 +184,7 @@ describe('Lazy Component Schematic', () => {
 
     beforeEach(async () => {
       appTree.overwrite(
-        '/src/app/extensions/ext/shared/group/dummy/dummy.component.ts',
+        '/src/app/extensions/ext/shared/dummy/dummy.component.ts',
         `import { ChangeDetectionStrategy, Component, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -213,12 +211,12 @@ export class DummyComponent {
       tree = await schematicRunner
         .runSchematicAsync(
           'lazy-component',
-          { ...defaultOptions, path: 'extensions/ext/shared/group/dummy/dummy.component.ts' },
+          { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts' },
           appTree
         )
         .toPromise();
 
-      componentContent = tree.readContent('/src/app/extensions/ext/exports/group/lazy-dummy/lazy-dummy.component.ts');
+      componentContent = tree.readContent('/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts');
     });
 
     it('should copy inputs', () => {
@@ -251,24 +249,24 @@ export class DummyComponent {
 
   describe('overwriting', () => {
     beforeEach(() => {
-      appTree.create('/src/app/extensions/ext/exports/group/lazy-dummy/lazy-dummy.component.ts', 'ORIGINAL');
+      appTree.create('/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts', 'ORIGINAL');
     });
 
     it('should overwrite existing lazy component', async () => {
       const tree = await schematicRunner
         .runSchematicAsync(
           'lazy-component',
-          { ...defaultOptions, path: 'extensions/ext/shared/group/dummy/dummy.component.ts' },
+          { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts' },
           appTree
         )
         .toPromise();
 
       expect(tree.files).toIncludeAllMembers([
-        '/src/app/extensions/ext/exports/group/lazy-dummy/lazy-dummy.component.ts',
-        '/src/app/extensions/ext/exports/group/lazy-dummy/lazy-dummy.component.html',
+        '/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts',
+        '/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.html',
       ]);
 
-      expect(tree.readContent('/src/app/extensions/ext/exports/group/lazy-dummy/lazy-dummy.component.ts')).toContain(
+      expect(tree.readContent('/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts')).toContain(
         'export class LazyDummyComponent'
       );
     });
@@ -280,7 +278,7 @@ export class DummyComponent {
 
     beforeEach(async () => {
       appTree.overwrite(
-        '/src/app/extensions/ext/shared/group/dummy/dummy.component.ts',
+        '/src/app/extensions/ext/shared/dummy/dummy.component.ts',
         `import { ChangeDetectionStrategy, Component, Input, OnChanges, Output } from '@angular/core';
 
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
@@ -302,12 +300,12 @@ export class DummyComponent implements OnChanges {
       tree = await schematicRunner
         .runSchematicAsync(
           'lazy-component',
-          { ...defaultOptions, path: 'extensions/ext/shared/group/dummy/dummy.component.ts' },
+          { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts' },
           appTree
         )
         .toPromise();
 
-      componentContent = tree.readContent('/src/app/extensions/ext/exports/group/lazy-dummy/lazy-dummy.component.ts');
+      componentContent = tree.readContent('/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts');
     });
 
     it('should call ngOnChanges', () => {
@@ -325,7 +323,7 @@ export class DummyComponent implements OnChanges {
 
     beforeEach(async () => {
       appTree.overwrite(
-        '/src/app/extensions/ext/shared/group/dummy/dummy.component.ts',
+        '/src/app/extensions/ext/shared/dummy/dummy.component.ts',
         `import { ChangeDetectionStrategy, Component, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
@@ -347,12 +345,12 @@ export class DummyComponent implements OnChanges {
       tree = await schematicRunner
         .runSchematicAsync(
           'lazy-component',
-          { ...defaultOptions, path: 'extensions/ext/shared/group/dummy/dummy.component.ts' },
+          { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts' },
           appTree
         )
         .toPromise();
 
-      componentContent = tree.readContent('/src/app/extensions/ext/exports/group/lazy-dummy/lazy-dummy.component.ts');
+      componentContent = tree.readContent('/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts');
     });
 
     it('should call ngOnChanges with parameter', () => {
