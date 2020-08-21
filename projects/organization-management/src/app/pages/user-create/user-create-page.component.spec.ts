@@ -8,8 +8,8 @@ import { instance, mock } from 'ts-mockito';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
-import { UserProfileFormComponent } from '../../components/user/user-profile-form/user-profile-form.component';
-import { UserRolesSelectionComponent } from '../../components/user/user-roles-selection/user-roles-selection.component';
+import { UserProfileFormComponent } from '../../components/user-profile-form/user-profile-form.component';
+import { UserRolesSelectionComponent } from '../../components/user-roles-selection/user-roles-selection.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
 import { UserCreatePageComponent } from './user-create-page.component';

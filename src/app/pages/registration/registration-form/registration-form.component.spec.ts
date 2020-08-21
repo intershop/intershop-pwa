@@ -14,7 +14,7 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
 import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
 import { TacCheckboxComponent } from 'ish-shared/forms/components/tac-checkbox/tac-checkbox.component';
 
-import { LazyCaptchaComponent } from '../../../extensions/captcha/exports/captcha/lazy-captcha/lazy-captcha.component';
+import { LazyCaptchaComponent } from '../../../extensions/captcha/exports/lazy-captcha/lazy-captcha.component';
 import { RegistrationCompanyFormComponent } from '../registration-company-form/registration-company-form.component';
 import { RegistrationCredentialsFormComponent } from '../registration-credentials-form/registration-credentials-form.component';
 

@@ -8,7 +8,7 @@ import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status
 import { MiniBasketComponent } from 'ish-shell/header/mini-basket/mini-basket.component';
 import { ProductCompareStatusComponent } from 'ish-shell/header/product-compare-status/product-compare-status.component';
 
-import { LazyWishlistsLinkComponent } from '../../../extensions/wishlists/exports/wishlists/lazy-wishlists-link/lazy-wishlists-link.component';
+import { LazyWishlistsLinkComponent } from '../../../extensions/wishlists/exports/lazy-wishlists-link/lazy-wishlists-link.component';
 
 import { UserInformationMobileComponent } from './user-information-mobile.component';
 

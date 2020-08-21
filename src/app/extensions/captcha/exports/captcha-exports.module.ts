@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { SitekeyProviderService } from '../services/sitekey-provider/sitekey-provider.service';
 
-import { LazyCaptchaComponent } from './captcha/lazy-captcha/lazy-captcha.component';
+import { LazyCaptchaComponent } from './lazy-captcha/lazy-captcha.component';
 
 @NgModule({
   imports: [CommonModule],

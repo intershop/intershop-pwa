@@ -13,7 +13,7 @@ import { LoadingComponent } from 'ish-shared/components/common/loading/loading.c
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
-import { OrderTemplatePreferencesDialogComponent } from '../../shared/order-templates/order-template-preferences-dialog/order-template-preferences-dialog.component';
+import { OrderTemplatePreferencesDialogComponent } from '../../shared/order-template-preferences-dialog/order-template-preferences-dialog.component';
 
 import { AccountOrderTemplateDetailLineItemComponent } from './account-order-template-detail-line-item/account-order-template-detail-line-item.component';
 import { AccountOrderTemplateDetailPageComponent } from './account-order-template-detail-page.component';

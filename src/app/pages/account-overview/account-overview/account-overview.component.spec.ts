@@ -9,8 +9,8 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { OrderWidgetComponent } from 'ish-shared/components/order/order-widget/order-widget.component';
 
-import { LazyQuoteWidgetComponent } from '../../../extensions/quoting/exports/account/lazy-quote-widget/lazy-quote-widget.component';
-import { LazyWishlistWidgetComponent } from '../../../extensions/wishlists/exports/account/lazy-wishlist-widget/lazy-wishlist-widget.component';
+import { LazyQuoteWidgetComponent } from '../../../extensions/quoting/exports/lazy-quote-widget/lazy-quote-widget.component';
+import { LazyWishlistWidgetComponent } from '../../../extensions/wishlists/exports/lazy-wishlist-widget/lazy-wishlist-widget.component';
 
 import { AccountOverviewComponent } from './account-overview.component';
 

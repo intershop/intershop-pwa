@@ -8,7 +8,7 @@ import { spy, verify } from 'ts-mockito';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Product } from 'ish-core/models/product/product.model';
 
-import { LazyProductAddToWishlistComponent } from '../../../extensions/wishlists/exports/product/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
+import { LazyProductAddToWishlistComponent } from '../../../extensions/wishlists/exports/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
 
 import { ProductDetailActionsComponent } from './product-detail-actions.component';
 

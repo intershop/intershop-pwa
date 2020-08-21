@@ -9,7 +9,7 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { QuotingFacade } from '../../facades/quoting.facade';
-import { QuoteEditComponent } from '../../shared/quote/quote-edit/quote-edit.component';
+import { QuoteEditComponent } from '../../shared/quote-edit/quote-edit.component';
 
 import { QuoteRequestEditPageComponent } from './quote-request-edit-page.component';
 
