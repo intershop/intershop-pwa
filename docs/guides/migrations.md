@@ -18,6 +18,9 @@ We refactored the way ICM Http Errors are handled in the PWA.
 You can read about it [here](./icm-http-error-mapping.md).
 Tests emulating HTTP errors now have to use the helper function `makeHttpError` from [`ish-core/utils/dev/api-service-utils`](../../src/app/core/utils/dev/api-service-utils.ts).
 
+We removed grouping folders of shared components in extensions and sub projects for a better overview.
+You can migrate using the script `node schematics/migration/0.22-to-0.23`.
+
 ## 0.20 to 0.21
 
 We deprecated and reworked the way of testing with NgRx.

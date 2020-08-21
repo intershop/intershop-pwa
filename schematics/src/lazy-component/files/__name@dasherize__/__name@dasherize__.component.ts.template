@@ -10,7 +10,7 @@ import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 
 <% if (imports.length) { %><%= imports.map(i => `import { ${i.types.join(', ')} } from ${i.from};`).join('\n') %><% } %>
 
-import { <%= classify(originalName) %>Component } from '../../../shared/<%= group %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component';
+import { <%= classify(originalName) %>Component } from '../../shared/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component';
 
 @Component({
   selector: '<%= selector %>',

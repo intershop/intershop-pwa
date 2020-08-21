@@ -41,11 +41,10 @@ export function createLazyComponent(options: Options): Rule {
 
     const pathSplits = originalPath.split('/');
     const extension = pathSplits[1];
-    const group = pathSplits[pathSplits.length - 3];
     const originalName = /\/([a-z0-9-]+)\.component\.ts/.exec(originalPath)[1];
     options.name = 'lazy-' + originalName;
     options = await generateSelector(host, options);
-    options.path = `${project.sourceRoot}/app/extensions/${extension}/exports/${group}`;
+    options.path = `${project.sourceRoot}/app/extensions/${extension}/exports`;
     options = findDeclaringModule(host, options);
     options = determineArtifactName('component', host, options);
 
@@ -126,12 +125,11 @@ export function createLazyComponent(options: Options): Rule {
             bindings,
             imports,
             originalPath,
-            group,
             extension,
             originalName,
             onChanges,
           }),
-          move(`/${project.sourceRoot}/app/extensions/${extension}/exports/${group}`),
+          move(`/${project.sourceRoot}/app/extensions/${extension}/exports`),
           forEach(fileEntry => {
             if (host.exists(fileEntry.path)) {
               host.overwrite(fileEntry.path, fileEntry.content);
