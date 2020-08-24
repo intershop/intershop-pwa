@@ -1,0 +1,14 @@
+<div class="form-group pl-2">
+  <div *ngFor="let opt of parameter.domain.elements">
+    <label>
+      <input
+        type="radio"
+        [name]="parameter.name"
+        [checked]="opt.selected"
+        (change)="change($event.target.value)"
+        [value]="opt.name"
+      />
+      {{ opt.description }}
+    </label>
+  </div>
+</div>

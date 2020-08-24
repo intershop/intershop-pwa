@@ -19,6 +19,8 @@ import { ProductImageComponent } from 'ish-shell/header/product-image/product-im
 
 import { LazyProductAddToOrderTemplateComponent } from '../../../../extensions/order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
 import { LazyProductAddToQuoteComponent } from '../../../../extensions/quoting/exports/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
+import { IsTactonProductDirective } from '../../../../extensions/tacton/directives/is-tacton-product.directive';
+import { LazyTactonConfigureProductComponent } from '../../../../extensions/tacton/exports/lazy-tacton-configure-product/lazy-tacton-configure-product.component';
 import { LazyProductAddToWishlistComponent } from '../../../../extensions/wishlists/exports/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
 import { ProductAddToWishlistComponent } from '../../../../extensions/wishlists/shared/product-add-to-wishlist/product-add-to-wishlist.component';
 
@@ -36,6 +38,7 @@ describe('Product Tile Component', () => {
         MockComponent(LazyProductAddToOrderTemplateComponent),
         MockComponent(LazyProductAddToQuoteComponent),
         MockComponent(LazyProductAddToWishlistComponent),
+        MockComponent(LazyTactonConfigureProductComponent),
         MockComponent(ProductAddToBasketComponent),
         MockComponent(ProductAddToCompareComponent),
         MockComponent(ProductAddToWishlistComponent),
@@ -46,6 +49,7 @@ describe('Product Tile Component', () => {
         MockComponent(ProductRatingComponent),
         MockComponent(ProductVariationSelectComponent),
         MockDirective(FeatureToggleDirective),
+        MockDirective(IsTactonProductDirective),
         MockPipe(ProductRoutePipe),
         ProductTileComponent,
       ],
@@ -70,11 +74,6 @@ describe('Product Tile Component', () => {
     fixture.detectChanges();
     expect(findAllIshElements(element)).toMatchInlineSnapshot(`
       Array [
-        "ish-lazy-product-add-to-order-template",
-        "ish-lazy-product-add-to-quote",
-        "ish-lazy-product-add-to-wishlist",
-        "ish-product-add-to-basket",
-        "ish-product-add-to-compare",
         "ish-product-image",
         "ish-product-label",
         "ish-product-price",

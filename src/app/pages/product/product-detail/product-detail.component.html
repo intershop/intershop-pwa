@@ -45,40 +45,49 @@
         (selectVariation)="variationSelected($event)"
       ></ish-product-variation-select>
 
-      <form *ngIf="!isMasterProduct(product)" [formGroup]="productDetailForm" class="product-form form-horizontal">
-        <div class="row">
-          <div class="w-100">
-            <ish-product-quantity
-              *ngIf="!isRetailSet(product)"
-              [product]="product"
-              [parentForm]="productDetailForm"
-              [controlName]="quantityControlName"
-              [type]="'input'"
-            ></ish-product-quantity>
+      <ng-container *ishFeature="'tacton'; else standardInteractions">
+        <ish-lazy-tacton-configure-product
+          *ishIsTactonProduct="product; else standardInteractions"
+          [product]="product"
+        ></ish-lazy-tacton-configure-product>
+      </ng-container>
+
+      <ng-template #standardInteractions>
+        <form *ngIf="!isMasterProduct(product)" [formGroup]="productDetailForm" class="product-form form-horizontal">
+          <div class="row">
+            <div class="w-100">
+              <ish-product-quantity
+                *ngIf="!isRetailSet(product)"
+                [product]="product"
+                [parentForm]="productDetailForm"
+                [controlName]="quantityControlName"
+                [type]="'input'"
+              ></ish-product-quantity>
+            </div>
           </div>
-        </div>
 
-        <ish-product-add-to-basket
-          [product]="product"
-          [class]="'btn-lg btn-block'"
-          [disabled]="productDetailForm.invalid"
-          [translationKey]="isRetailSet(product) ? 'product.add_to_cart.retailset.link' : 'product.add_to_cart.link'"
-          (productToBasket)="addToBasket()"
-        ></ish-product-add-to-basket>
+          <ish-product-add-to-basket
+            [product]="product"
+            [class]="'btn-lg btn-block'"
+            [disabled]="productDetailForm.invalid"
+            [translationKey]="isRetailSet(product) ? 'product.add_to_cart.retailset.link' : 'product.add_to_cart.link'"
+            (productToBasket)="addToBasket()"
+          ></ish-product-add-to-basket>
 
-        <ish-lazy-product-add-to-order-template
-          [class]="'btn btn-default btn-block'"
-          [product]="product"
-          [quantity]="quantity"
-        ></ish-lazy-product-add-to-order-template>
+          <ish-lazy-product-add-to-order-template
+            [class]="'btn btn-default btn-block'"
+            [product]="product"
+            [quantity]="quantity"
+          ></ish-lazy-product-add-to-order-template>
 
-        <ish-lazy-product-add-to-quote
-          [product]="product"
-          [disabled]="productDetailForm.invalid"
-          [quantity]="quantity"
-          [class]="'btn-block'"
-        ></ish-lazy-product-add-to-quote>
-      </form>
+          <ish-lazy-product-add-to-quote
+            [product]="product"
+            [disabled]="productDetailForm.invalid"
+            [quantity]="quantity"
+            [class]="'btn-block'"
+          ></ish-lazy-product-add-to-quote>
+        </form>
+      </ng-template>
     </div>
 
     <ish-accordion>

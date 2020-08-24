@@ -30,11 +30,11 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   ) {}
 
   canActivate(snapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.guardAccess({ ...snapshot.queryParams, returnUrl: state.url });
+    return this.guardAccess({ ...snapshot.data?.queryParams, ...snapshot.queryParams, returnUrl: state.url });
   }
 
   canActivateChild(snapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.guardAccess({ ...snapshot.queryParams, returnUrl: state.url });
+    return this.guardAccess({ ...snapshot.data?.queryParams, ...snapshot.queryParams, returnUrl: state.url });
   }
 
   private guardAccess(queryParams: Params): Observable<boolean | UrlTree> {

@@ -24,6 +24,8 @@ import { ProductImageComponent } from 'ish-shell/header/product-image/product-im
 
 import { LazyProductAddToOrderTemplateComponent } from '../../../../extensions/order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
 import { LazyProductAddToQuoteComponent } from '../../../../extensions/quoting/exports/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
+import { IsTactonProductDirective } from '../../../../extensions/tacton/directives/is-tacton-product.directive';
+import { LazyTactonConfigureProductComponent } from '../../../../extensions/tacton/exports/lazy-tacton-configure-product/lazy-tacton-configure-product.component';
 import { LazyProductAddToWishlistComponent } from '../../../../extensions/wishlists/exports/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
 
 import { ProductRowComponent } from './product-row.component';
@@ -40,6 +42,7 @@ describe('Product Row Component', () => {
         MockComponent(LazyProductAddToOrderTemplateComponent),
         MockComponent(LazyProductAddToQuoteComponent),
         MockComponent(LazyProductAddToWishlistComponent),
+        MockComponent(LazyTactonConfigureProductComponent),
         MockComponent(ProductAddToBasketComponent),
         MockComponent(ProductAddToCompareComponent),
         MockComponent(ProductIdComponent),
@@ -53,6 +56,7 @@ describe('Product Row Component', () => {
         MockComponent(ProductShipmentComponent),
         MockComponent(ProductVariationSelectComponent),
         MockDirective(FeatureToggleDirective),
+        MockDirective(IsTactonProductDirective),
         MockPipe(ProductRoutePipe),
         ProductRowComponent,
       ],
@@ -80,7 +84,6 @@ describe('Product Row Component', () => {
         "ish-lazy-product-add-to-order-template",
         "ish-lazy-product-add-to-quote",
         "ish-lazy-product-add-to-wishlist",
-        "ish-product-add-to-basket",
         "ish-product-add-to-compare",
         "ish-product-id",
         "ish-product-image",
@@ -88,7 +91,6 @@ describe('Product Row Component', () => {
         "ish-product-label",
         "ish-product-price",
         "ish-product-promotion",
-        "ish-product-quantity",
       ]
     `);
   });

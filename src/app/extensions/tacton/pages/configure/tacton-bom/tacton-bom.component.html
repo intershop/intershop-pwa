@@ -1,0 +1,11 @@
+<h3>{{ 'tacton.bom.title' | translate }}</h3>
+
+<table *ngIf="bom?.length" class="table table-sm">
+  <tr *ngFor="let item of bom">
+    <td>
+      {{ item.description }}<br />
+      {{ 'tacton.bom.name.label' | translate }} {{ item.name }}<br />
+      {{ 'tacton.bom.quantity.label' | translate }} {{ item.qty }}
+    </td>
+  </tr>
+</table>

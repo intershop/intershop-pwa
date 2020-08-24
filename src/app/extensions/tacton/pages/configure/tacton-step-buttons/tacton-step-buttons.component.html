@@ -1,0 +1,22 @@
+<div *ngIf="stepConfig$ | async as config" class="d-flex flex-nowrap justify-content-between">
+  <button class="btn btn-secondary no-wrap" (click)="reset()" data-testing-id="reset-configuration-button">
+    {{ 'tacton.step_buttons.reset.label' | translate }}
+  </button>
+  <div>
+    <div *ngIf="config.previousStep" class="d-inline-block">
+      <button class="btn btn-secondary" (click)="changeStep(config.previousStep)" data-testing-id="previous-button">
+        {{ 'tacton.step_buttons.previous.label' | translate }}
+      </button>
+    </div>
+    <div *ngIf="config.nextStep" class="d-inline-block ml-2">
+      <button class="btn btn-primary" (click)="changeStep(config.nextStep)" data-testing-id="next-button">
+        {{ 'tacton.step_buttons.next.label' | translate }}
+      </button>
+    </div>
+    <div *ngIf="!config.nextStep" class="d-inline-block ml-2">
+      <button class="btn btn-primary" (click)="submit()" data-testing-id="submit-button">
+        {{ 'tacton.step_buttons.submit.label' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

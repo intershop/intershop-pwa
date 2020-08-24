@@ -1,0 +1,12 @@
+<div class="row">
+  <div class="col-4">
+    <input
+      type="number"
+      class="form-control"
+      [min]="parameter.domain.min"
+      [max]="parameter.domain.max"
+      [value]="parameter.value"
+      (change)="change($event.target.value)"
+    />
+  </div>
+</div>

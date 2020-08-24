@@ -1,0 +1,11 @@
+<div *ngIf="parameter.properties.tc_info_text">{{ parameter.properties.tc_info_text }}</div>
+<div class="btn-group form-group" role="group">
+  <button
+    *ngFor="let opt of parameter.domain?.elements"
+    class="btn"
+    [ngClass]="{ 'btn-primary': opt.selected, 'btn-secondary': !opt.selected }"
+    (click)="change(opt.name)"
+  >
+    {{ opt.description }}
+  </button>
+</div>
