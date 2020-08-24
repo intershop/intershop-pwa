@@ -6,7 +6,7 @@ import { MockPipe } from 'ng-mocks';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 
-import { Requisition } from '../../../models/requisition/requisition.model';
+import { Requisition } from '../../models/requisition/requisition.model';
 
 import { RequisitionSummaryComponent } from './requisition-summary.component';
 

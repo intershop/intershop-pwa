@@ -9,7 +9,7 @@ import { instance, mock, when } from 'ts-mockito';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
-import { RequisitionsListComponent } from '../../components/requisition/requisitions-list/requisitions-list.component';
+import { RequisitionsListComponent } from '../../components/requisitions-list/requisitions-list.component';
 import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
 
 import { ApproverPageComponent } from './approver-page.component';

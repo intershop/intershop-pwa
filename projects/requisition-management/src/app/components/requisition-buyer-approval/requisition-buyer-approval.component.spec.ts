@@ -9,7 +9,7 @@ import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 
-import { Requisition } from '../../../models/requisition/requisition.model';
+import { Requisition } from '../../models/requisition/requisition.model';
 import { BudgetBarComponent } from '../budget-bar/budget-bar.component';
 
 import { RequisitionBuyerApprovalComponent } from './requisition-buyer-approval.component';
