@@ -14,11 +14,7 @@ export const getRequisitionsLoading = createSelector(getRequisitionsState, state
 
 export const getRequisitionsError = createSelector(getRequisitionsState, state => state.error);
 
-export const {
-  selectEntities: getRequisitionsEntities,
-  selectAll: getRequisitions,
-  selectTotal: getNumberOfRequisitions,
-} = requisitionsAdapter.getSelectors(getRequisitionsState);
+export const { selectAll: getRequisitions } = requisitionsAdapter.getSelectors(getRequisitionsState);
 
 const getRequisitionInternal = createSelector(getRequisitionsState, state => state.requisition);
 

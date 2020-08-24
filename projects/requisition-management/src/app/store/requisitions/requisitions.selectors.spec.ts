@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { Requisition } from '../../models/requisition/requisition.model';
@@ -18,10 +18,8 @@ import {
   loadRequisitionsSuccess,
 } from './requisitions.actions';
 import {
-  getNumberOfRequisitions,
   getRequisition,
   getRequisitions,
-  getRequisitionsEntities,
   getRequisitionsError,
   getRequisitionsLoading,
 } from './requisitions.selectors';
@@ -52,9 +50,7 @@ describe('Requisitions Selectors', () => {
     });
 
     it('should not have entities when in initial state', () => {
-      expect(getRequisitionsEntities(store$.state)).toBeEmpty();
       expect(getRequisitions(store$.state)).toBeEmpty();
-      expect(getNumberOfRequisitions(store$.state)).toBe(0);
     });
   });
 
@@ -86,14 +82,12 @@ describe('Requisitions Selectors', () => {
       });
 
       it('should have entities when successfully loading', () => {
-        expect(getRequisitionsEntities(store$.state)).not.toBeEmpty();
         expect(getRequisitions(store$.state)).not.toBeEmpty();
-        expect(getNumberOfRequisitions(store$.state)).toBe(2);
       });
     });
 
     describe('loadRequisitionsFail', () => {
-      const error = { error: 'ERROR' } as HttpError;
+      const error = makeHttpError({ message: 'ERROR' });
       const failAction = loadRequisitionsFail({ error });
 
       beforeEach(() => {
@@ -109,9 +103,7 @@ describe('Requisitions Selectors', () => {
       });
 
       it('should not have entities when reducing error', () => {
-        expect(getRequisitionsEntities(store$.state)).toBeEmpty();
         expect(getRequisitions(store$.state)).toBeEmpty();
-        expect(getNumberOfRequisitions(store$.state)).toBe(0);
       });
     });
   });
@@ -152,7 +144,7 @@ describe('Requisitions Selectors', () => {
     });
 
     describe('loadRequisitionFail', () => {
-      const error = { error: 'ERROR' } as HttpError;
+      const error = makeHttpError({ message: 'ERROR' });
       const failAction = loadRequisitionFail({ error });
 
       beforeEach(() => {
