@@ -28,13 +28,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Use Node.js 12
         uses: actions/setup-node@v1
         with:
           node-version: 12
 
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         with:
           path: ~/.cache
           key: ${{ runner.os }}-cache-${{ hashFiles('**/package-lock.json') }}
@@ -76,7 +76,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Use Node.js 12
         uses: actions/setup-node@v1
         with:
@@ -99,7 +99,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Use Node.js 12
         uses: actions/setup-node@v1
         with:
