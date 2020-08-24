@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/c
 
 import { Price } from 'ish-core/models/price/price.model';
 
-import { Requisition } from '../../../models/requisition/requisition.model';
+import { Requisition } from '../../models/requisition/requisition.model';
 
 /**
  * The buyer approval info box
