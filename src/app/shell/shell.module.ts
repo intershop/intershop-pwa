@@ -15,6 +15,7 @@ import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-expo
 import { OrderTemplatesExportsModule } from '../extensions/order-templates/exports/order-templates-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
 import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
+import { Quoting2ExportsModule } from '../extensions/quoting2/exports/quoting2-exports.module';
 import { TactonExportsModule } from '../extensions/tacton/exports/tacton-exports.module';
 import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
 
@@ -38,6 +39,7 @@ const importExportModules = [
   DirectivesModule,
   OrderTemplatesExportsModule,
   QuickorderExportsModule,
+  Quoting2ExportsModule,
   QuotingExportsModule,
   TactonExportsModule,
   WishlistsExportsModule,
