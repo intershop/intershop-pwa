@@ -51,7 +51,7 @@ jobs:
       #     workdir: nginx
 
       - name: Set Environment
-        uses: allenevans/set-env@v1.0.0
+        uses: allenevans/set-env@master
         with:
           overwrite: true
           DOCKER_IMAGE_UNIVERSAL: ${{ steps.universal.outputs.digest }}
