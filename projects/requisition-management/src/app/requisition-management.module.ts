@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { BudgetBarComponent } from './components/requisition/budget-bar/budget-bar.component';
-import { RequisitionBuyerApprovalComponent } from './components/requisition/requisition-buyer-approval/requisition-buyer-approval.component';
-import { RequisitionRejectDialogComponent } from './components/requisition/requisition-reject-dialog/requisition-reject-dialog.component';
-import { RequisitionSummaryComponent } from './components/requisition/requisition-summary/requisition-summary.component';
-import { RequisitionsListComponent } from './components/requisition/requisitions-list/requisitions-list.component';
+import { BudgetBarComponent } from './components/budget-bar/budget-bar.component';
+import { RequisitionBuyerApprovalComponent } from './components/requisition-buyer-approval/requisition-buyer-approval.component';
+import { RequisitionRejectDialogComponent } from './components/requisition-reject-dialog/requisition-reject-dialog.component';
+import { RequisitionSummaryComponent } from './components/requisition-summary/requisition-summary.component';
+import { RequisitionsListComponent } from './components/requisitions-list/requisitions-list.component';
 import { ApproverPageComponent } from './pages/approver/approver-page.component';
 import { BuyerPageComponent } from './pages/buyer/buyer-page.component';
 import { RequisitionDetailPageComponent } from './pages/requisition-detail/requisition-detail-page.component';
