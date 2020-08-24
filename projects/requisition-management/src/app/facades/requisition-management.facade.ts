@@ -4,7 +4,6 @@ import { combineLatest } from 'rxjs';
 import { distinctUntilChanged, map, switchMapTo, tap } from 'rxjs/operators';
 
 import { selectRouteParam, selectUrl } from 'ish-core/store/core/router';
-import { log } from 'ish-core/utils/dev/operators';
 
 import { RequisitionStatus, RequisitionViewer } from '../models/requisition/requisition.model';
 import {
@@ -39,7 +38,6 @@ export class RequisitionManagementFacade {
       distinctUntilChanged()
     ),
   ]).pipe(
-    log('facade requisitions'),
     tap(([istatus, iview]) => {
       const status = (istatus as RequisitionStatus) || 'pending';
       const view = iview as RequisitionViewer;
