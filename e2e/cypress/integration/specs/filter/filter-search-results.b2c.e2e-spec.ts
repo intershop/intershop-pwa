@@ -3,15 +3,14 @@ import { HomePage } from '../../pages/home.page';
 import { SearchResultPage } from '../../pages/shopping/search-result.page';
 
 const _ = {
-  suggestTerm: 'k',
-  searchTerm: 'kodak',
-  suggestItemText: 'Kodak',
-  product: '7912057',
-  results: 23,
+  suggestTerm: 'g',
+  searchTerm: 'gopro',
+  suggestItemText: 'Gopro',
+  results: 6,
   filter: {
     name: 'Price',
-    entryName: 'ProductSalePriceGross_100_0_TO_249_99',
-    results: 16,
+    entryName: 'ProductSalePriceGross_250_0_TO_499_99',
+    results: 3,
   },
 };
 
@@ -33,7 +32,7 @@ describe('Searching User', () => {
 
   it('should see the correct filter', () => {
     at(SearchResultPage, page => {
-      page.filterNavigation.filter('Color').getFilter('Red').should('be.visible');
+      page.filterNavigation.filter('Color').getFilter('Silver').should('be.visible');
 
       page.filterNavigation
         .filter(_.filter.name)
