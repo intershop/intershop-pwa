@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
-import { Node, NodeTree } from '../../models/node/node.model';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { TreeItem, TreeviewComponent, TreeviewConfig, TreeviewItem } from 'ngx-treeview';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
+import { Node, NodeTree } from '../../models/node/node.model';
 
 @Component({
   selector: 'ish-hierarchies-page',
@@ -60,7 +61,7 @@ export class HierarchiesPageComponent implements OnInit {
     nodeTree.edges[parent.id]
       .map(id => nodeTree.nodes[id])
       .map(node => {
-        let bla = this.mapTreeViewItem(node);
+        const bla = this.mapTreeViewItem(node);
         this.traverse(nodeTree, node, bla);
         return bla;
       })
@@ -68,7 +69,7 @@ export class HierarchiesPageComponent implements OnInit {
   }
 
   merge(prev: TreeItem, current: TreeItem): TreeItem {
-    let children = prev.children ?? new Array<TreeviewItem>(1);
+    const children = prev.children ?? new Array<TreeviewItem>(1);
     children.push(current);
     return prev;
   }

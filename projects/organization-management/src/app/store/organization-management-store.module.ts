@@ -5,11 +5,11 @@ import { pick } from 'lodash-es';
 
 import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
 
+import { OrganizationHierarchiesEffects } from './organization-hierarchies/organization-hierarchies.effects';
 import { organizationHierarchiesReducer } from './organization-hierarchies/organization-hierarchies.reducer';
 import { OrganizationManagementState } from './organization-management-store';
 import { UsersEffects } from './users/users.effects';
 import { usersReducer } from './users/users.reducer';
-import { OrganizationHierarchiesEffects } from './organization-hierarchies/organization-hierarchies.effects';
 
 const organizationManagementReducers: ActionReducerMap<OrganizationManagementState> = {
   users: usersReducer,

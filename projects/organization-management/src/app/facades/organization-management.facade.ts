@@ -3,10 +3,12 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
+import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { toObservable } from 'ish-core/utils/functions';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { B2bUser } from '../models/b2b-user/b2b-user.model';
+import { getOrganizationGroups, loadGroups } from '../store/organization-hierarchies';
 import {
   addUser,
   deleteUser,
@@ -20,13 +22,11 @@ import {
   setUserRoles,
   updateUser,
 } from '../store/users';
-import { getLoggedInCustomer } from 'ish-core/store/customer/user';
-import { loadGroups, getOrganizationGroups } from '../store/organization-hierarchies';
 
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
 export class OrganizationManagementFacade {
-  constructor(private store: Store) { }
+  constructor(private store: Store) {}
 
   customer$ = this.store.pipe(select(getLoggedInCustomer));
   usersError$ = this.store.pipe(select(getUsersError));
@@ -78,5 +78,4 @@ export class OrganizationManagementFacade {
       switchMap(() => this.store.pipe(select(getOrganizationGroups)))
     );
   }
-
 }

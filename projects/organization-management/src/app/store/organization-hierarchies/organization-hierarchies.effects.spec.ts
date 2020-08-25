@@ -4,7 +4,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { OrganizationHierarchiesStoreModule } from 'src/app/extensions/organization-hierarchies/store/organization-hierarchies-store.module';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
@@ -14,6 +13,7 @@ import { loginUserSuccess } from 'ish-core/store/customer/user';
 
 import { NodeHelper } from '../../models/node/node.helper';
 import { OrganizationHierarchiesService } from '../../services/organization-hierarchies/organization-hierarchies.service';
+import { OrganizationManagementStoreModule } from '../organization-management-store.module';
 
 import { loadGroups } from './organization-hierarchies.actions';
 import { OrganizationHierarchiesEffects } from './organization-hierarchies.effects';
@@ -36,7 +36,7 @@ describe('Organization Hierarchies Effects', () => {
       imports: [
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user'),
-        OrganizationHierarchiesStoreModule.forTesting('organizationHierarchies'),
+        OrganizationManagementStoreModule.forTesting('organizationHierarchies'),
         RouterTestingModule.withRoutes([
           { path: 'users/:B2BCustomerLogin', component: DummyComponent },
           { path: 'users/:B2BCustomerLogin/edit', component: DummyComponent },
