@@ -2889,6 +2889,6 @@
   "tacton.step_buttons.previous.label": "Précédent",
   "tacton.step_buttons.submit.label": "Demander une proposition",
   "tacton.undo.tooltip": "Annuler",
-  "tacton.submit.success.message": "Votre demande de devis a été soumise avec succès.",
+  "tacton.submit.success.message": "Votre demande de devis a été soumise avec succès. Nous vous enverrons un courriel à <strong>{{0}}</strong> pour vous tenir au courant de l’état de votre demande.",
   "tacton.submit.error.message": "Une erreur technique s’est produite lors du traitement de votre demande. Veuillez réessayer plus tard."
 }

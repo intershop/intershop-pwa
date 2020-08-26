@@ -2891,6 +2891,6 @@
   "tacton.step_buttons.previous.label": "Previous",
   "tacton.step_buttons.submit.label": "Request Proposal",
   "tacton.undo.tooltip": "Undo",
-  "tacton.submit.success.message": "Your request has been successfully submitted.",
+  "tacton.submit.success.message": "Your request has been successfully submitted. We will e-mail <strong>{{0}}</strong> to keep you updated on the status of your request.",
   "tacton.submit.error.message": "A technical error occurred while processing your request. Please try again later."
 }

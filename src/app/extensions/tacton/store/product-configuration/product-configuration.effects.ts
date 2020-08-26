@@ -203,9 +203,11 @@ export class ProductConfigurationEffects {
   submitTactonConfigurationSuccessToast$ = createEffect(() =>
     this.actions$.pipe(
       ofType(submitTactonConfigurationSuccess),
-      mapTo(
+      withLatestFrom(this.store.pipe(select(getLoggedInUser))),
+      map(([, user]) =>
         displaySuccessMessage({
           message: 'tacton.submit.success.message',
+          messageParams: { 0: user.email },
         })
       )
     )

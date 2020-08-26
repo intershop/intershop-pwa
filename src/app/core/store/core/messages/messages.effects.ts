@@ -79,6 +79,7 @@ export class MessagesEffects {
         progressBar: false,
         closeButton: false,
         positionClass: 'toast-top-right',
+        enableHtml: true,
         // defaults
         // toastClass: 'ngx-toastr',
         // titleClass: 'toast-title',
