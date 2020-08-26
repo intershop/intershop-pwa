@@ -2884,7 +2884,7 @@
   "tacton.bom.quantity.label": "Qté :",
   "tacton.selected_image.selected.label": "Image sélectionnée",
   "tacton.configure_product.product.label": "Configurer",
-  "tacton.step_buttons.reset.label": "Réinitialiser la configuration",
+  "tacton.step_buttons.reset.label": "Réinitialiser",
   "tacton.step_buttons.next.label": "Suivant",
   "tacton.step_buttons.previous.label": "Précédent",
   "tacton.step_buttons.submit.label": "Demander une proposition",
