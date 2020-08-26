@@ -1,16 +1,28 @@
-<!-- error messages -->
 <div *ngIf="isCvcExpired()">
-  <div>
-    Please enter the CVC:
-    <input type="text" [id]="'cvcDetails_' + paymentInstrument.id" size="10" placeholder="enter cvc" required />
-    <small *ngIf="errorMessage.cvc?.message" class="form-text">{{ errorMessage.cvc.messageKey | translate }}</small>
-  </div>
-  <div class="form-group">
-    <input
-      type="button"
-      (click)="renewCVCDetails()"
-      class="btn btn-primary"
-      value="{{ 'checkout.account.submit.button.label' | translate }}"
-    />
-  </div>
+  <form
+    [formGroup]="cvcDetailForm"
+    (ngSubmit)="renewCVCDetails()"
+    [ngClass]="{ 'has-error': errorMessage.cvc?.message }"
+  >
+    <div class="clearfix row">
+      <div class="col-6">
+        <ish-input
+          [form]="cvcDetailForm"
+          controlName="cvcDetail"
+          inputClass="col-xs-4 col-sm-4 col-md-5"
+          label="checkout.credit_card.user.cvc.label"
+          labelClass="col-md-7"
+          markRequiredLabel="on"
+          [errorMessages]="{
+            required: 'checkout.credit_card.cvc.missing.error'
+          }"
+        ></ish-input>
+      </div>
+      <div class="col-6">
+        <button type="submit" class="btn btn-primary" (click)="renewCVCDetails()">
+          {{ 'checkout.account.confirm.button.label' | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
 </div>

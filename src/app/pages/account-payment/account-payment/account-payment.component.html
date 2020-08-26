@@ -47,7 +47,7 @@
     </div>
     <p>{{ pi.accountIdentifier }}</p>
     <a *ngIf="!isPreferred" (click)="setAsDefaultPayment(pi.id)">{{ 'account.payment.preferred.link' | translate }}</a
-    >&nbsp;&nbsp;&nbsp;
+    ><br />
     <ish-account-payment-concardis-directdebit [paymentInstrument]="pi"></ish-account-payment-concardis-directdebit>
   </div>
 </ng-template>

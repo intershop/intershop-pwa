@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
+import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { PaymentConcardisComponent } from '../payment-concardis/payment-concardis.component';
 
@@ -20,6 +22,7 @@ declare var PayEngine: any;
 export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcardisComponent implements OnInit {
   @Input() paymentInstrument: PaymentInstrument;
   validityTimeInMinutes: string;
+  cvcDetailForm: FormGroup;
 
   constructor(
     protected scriptLoader: ScriptLoaderService,
@@ -27,11 +30,11 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
     private checkoutFacade: CheckoutFacade
   ) {
     super(scriptLoader, cd);
+    this.cvcDetailForm = new FormGroup({
+      cvcDetail: new FormControl(undefined, [Validators.required]),
+    });
   }
 
-  ngOnInit() {
-    super.formInit();
-  }
   /**
    * load concardis script if component is visible
    */
@@ -69,7 +72,7 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
   }
 
   isCvcExpired() {
-    // if cvc last updated timestamp is less than 25 minutes then return false
+    // if cvc last updated timestamp is less than maximum validity in minutes then return false
     if (this.paymentInstrument.parameters) {
       const cvcLastUpdatedAttr =
         this.paymentInstrument.parameters &&
@@ -79,8 +82,7 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
         const cvcLastUpdatedValue = cvcLastUpdatedAttr.value ? cvcLastUpdatedAttr.value.toString() : undefined;
         if (cvcLastUpdatedValue) {
           const cvcDate = new Date(cvcLastUpdatedValue);
-          const currentDate = new Date();
-          const diffAsMinutes = (currentDate.getTime() - cvcDate.getTime()) / (1000 * 60);
+          const diffAsMinutes = (Date.now() - cvcDate.getTime()) / (1000 * 60);
           if (diffAsMinutes <= parseInt(this.validityTimeInMinutes, 10)) {
             return false;
           }
@@ -106,6 +108,9 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
             'cvc',
             this.errorMessage.cvc.message
           );
+          this.cvcDetailForm.get('cvcDetail').setErrors({
+            customError: this.errorMessage.cvc.message,
+          });
         }
       }
     } else {
@@ -118,7 +123,7 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
       } else {
         param.push({ name: 'cvcLastUpdated', value: new Date().toISOString() });
       }
-      // Replacing encoded paymentInstrumentId with Token for put request
+      // TODO: Replacing encoded paymentInstrumentId with Token for put request
       param.find(attribute => attribute.name === 'paymentInstrumentId').value = this.paymentInstrument.parameters.find(
         attribute => attribute.name === 'token'
       ).value;
@@ -130,22 +135,22 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
         paymentMethod: this.paymentInstrument.paymentMethod,
       };
 
-      this.checkoutFacade.updateCvcLastUpdated(pi);
+      this.checkoutFacade.updateConcardisCvcLastUpdated(pi);
     }
   }
 
   renewCVCDetails() {
-    if (this.paymentInstrument.parameters) {
-      const tokenAttr =
-        this.paymentInstrument.parameters &&
-        this.paymentInstrument.parameters.find(attribute => attribute.name === 'token');
+    if (this.paymentInstrument.parameters?.find(attribute => attribute.name === 'token')) {
+      const tokenAttr = this.paymentInstrument.parameters.find(attribute => attribute.name === 'token');
 
-      if (tokenAttr) {
-        const tokenValue = tokenAttr.value ? tokenAttr.value.toString() : undefined;
-        if (tokenValue) {
-          const cvcValue = (document.getElementById('cvcDetails_' + this.paymentInstrument.id) as HTMLInputElement)
-            .value;
+      const tokenValue = tokenAttr.value ? tokenAttr.value.toString() : undefined;
+      if (tokenValue) {
+        const cvcValue = this.cvcDetailForm.get('cvcDetail').value;
+        if (cvcValue) {
           PayEngine.verifyPaymentInstrument(tokenValue, cvcValue, err => this.submitCallback(err));
+        } else {
+          this.cvcDetailForm.get('cvcDetail').setErrors({ required: true });
+          markAsDirtyRecursive(this.cvcDetailForm);
         }
       }
     }

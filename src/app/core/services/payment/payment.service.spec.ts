@@ -217,7 +217,7 @@ describe('Payment Service', () => {
     it("should update payment instrument from basket when 'updateBasketPaymentInstrument' is called", done => {
       when(apiService.patch(anyString(), anything(), anything())).thenReturn(of({}));
       paymentService
-        .updateBasketPaymentInstrument(BasketMockData.getBasket(), creditCardPaymentInstrument)
+        .updateConcardisCvcLastUpdated(BasketMockData.getBasket(), creditCardPaymentInstrument)
         .subscribe(() => {
           verify(
             apiService.patch(
@@ -296,7 +296,7 @@ describe('Payment Service', () => {
 
       when(apiService.put(anyString(), anything())).thenReturn(of({}));
       paymentService
-        .updateBasketPaymentInstrument(BasketMockData.getBasket(), userCreditCardPaymentInstrument)
+        .updateConcardisCvcLastUpdated(BasketMockData.getBasket(), userCreditCardPaymentInstrument)
         .subscribe(() => {
           verify(apiService.put(`customers/-/payments/${userCreditCardPaymentInstrument.id}`, anything())).once();
           done();

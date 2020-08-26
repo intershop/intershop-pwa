@@ -1,10 +1,13 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
 import { PaymentConcardisCreditcardCvcDetailComponent } from './payment-concardis-creditcard-cvc-detail.component';
 
@@ -15,10 +18,16 @@ describe('Payment Concardis Creditcard Cvc Detail Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [PaymentConcardisCreditcardCvcDetailComponent],
-      imports: [TranslateModule.forRoot()],
+      declarations: [MockComponent(InputComponent), PaymentConcardisCreditcardCvcDetailComponent],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) }],
     }).compileComponents();
+    // .then(() => {
+    //   fixture = TestBed.createComponent(PaymentConcardisCreditcardCvcDetailComponent);
+    //   component = fixture.componentInstance;
+    //   element = fixture.nativeElement;
+    //   component.cvcDetailForm = component.cvcDetailForm.get('cvcDetail').value;
+    // });
   }));
 
   beforeEach(() => {
@@ -63,6 +72,7 @@ describe('Payment Concardis Creditcard Cvc Detail Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+    expect(component.cvcDetailForm.get('cvcDetail')).toBeTruthy();
   });
 
   it('should return true when cvc is expired', () => {
