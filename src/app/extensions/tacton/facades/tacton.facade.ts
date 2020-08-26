@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
+import { Observable, ReplaySubject } from 'rxjs';
+import { distinctUntilChanged, map, switchMap, take } from 'rxjs/operators';
 
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -75,5 +75,11 @@ export class TactonFacade {
 
   submitConfiguration() {
     this.store.dispatch(submitTactonConfiguration());
+  }
+
+  private internalCurrentGroup$ = new ReplaySubject<string>(1);
+  currentGroup$ = this.internalCurrentGroup$.pipe(distinctUntilChanged());
+  setCurrentGroup(name: string) {
+    this.internalCurrentGroup$.next(name);
   }
 }

@@ -49,6 +49,7 @@ describe('Tacton Configure Navigation Component', () => {
   });
   it('should render for group-level navigation', () => {
     when(tactonFacade.configurationTree$).thenReturn(of(tree));
+    when(tactonFacade.currentGroup$).thenReturn(of('step12'));
 
     fixture.detectChanges();
 
@@ -58,7 +59,7 @@ describe('Tacton Configure Navigation Component', () => {
           <a class="font-weight-bold">step 1 description</a>
           <ul class="list-unstyled pl-3">
             <li class="pt-1 pb-1"><a>step 1.1 description</a></li>
-            <li class="pt-1 pb-1"><a>step 1.2 description</a></li>
+            <li class="pt-1 pb-1"><a class="font-weight-bold">step 1.2 description</a></li>
           </ul>
         </li>
         <li class="pt-1 pb-1"><a>step 2 description</a></li>

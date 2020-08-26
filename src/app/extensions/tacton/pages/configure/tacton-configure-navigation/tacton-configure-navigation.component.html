@@ -7,7 +7,11 @@
       <ul class="list-unstyled pl-3">
         <ng-container *ngFor="let subItem of mainItem.children">
           <li *ngIf="subItem.hasVisibleParameters" class="pt-1 pb-1">
-            <a (click)="scrollIntoView(subItem.name)">{{ subItem.description }}</a>
+            <a
+              (click)="scrollIntoView(subItem.name)"
+              [ngClass]="{ 'font-weight-bold': isActive$(subItem.name) | async }"
+              >{{ subItem.description }}</a
+            >
           </li>
         </ng-container>
       </ul>
