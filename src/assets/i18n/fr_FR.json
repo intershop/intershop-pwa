@@ -2880,7 +2880,7 @@
   "tacton.configure_page.button.confirm.label": "Accepter de nouveaux",
   "tacton.configure_page.button.reject.label": "Conserver l’état actuel",
   "tacton.bom.title": "Nomenclature",
-  "tacton.bom.name.label": "No.:",
+  "tacton.bom.name.label": "ID produit :",
   "tacton.bom.quantity.label": "Qté :",
   "tacton.selected_image.selected.label": "Image sélectionnée",
   "tacton.configure_product.product.label": "Configurer",
