@@ -7,6 +7,7 @@ import { TactonConfigParameterComponent } from '../tacton-config-parameter/tacto
   selector: 'ish-tacton-text-buttons',
   templateUrl: './tacton-text-buttons.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: ['.btn { margin-right: 0px !important }'],
 })
 export class TactonTextButtonsComponent extends TactonConfigParameterComponent {
   constructor(protected facade: TactonFacade) {
