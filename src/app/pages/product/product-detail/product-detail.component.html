@@ -18,25 +18,31 @@
 
       <ish-product-id [product]="product"></ish-product-id>
 
-      <ish-product-promotion [product]="product"></ish-product-promotion>
+      <ng-container *ishFeature="'tacton'; else standardInformation">
+        <ng-container *ishIsTactonProduct="product; else standardInformation"></ng-container>
+      </ng-container>
 
-      <div class="price-container" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-        <ish-product-price
-          [product]="price || product"
-          [showInformationalPrice]="true"
-          [showPriceSavings]="true"
-        ></ish-product-price>
+      <ng-template #standardInformation>
+        <ish-product-promotion [product]="product"></ish-product-promotion>
 
-        <ish-product-inventory
+        <div class="price-container" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+          <ish-product-price
+            [product]="price || product"
+            [showInformationalPrice]="true"
+            [showPriceSavings]="true"
+          ></ish-product-price>
+
+          <ish-product-inventory
+            *ngIf="!isRetailSet(product) && !isMasterProduct(product)"
+            [product]="product"
+          ></ish-product-inventory>
+        </div>
+
+        <ish-product-shipment
           *ngIf="!isRetailSet(product) && !isMasterProduct(product)"
           [product]="product"
-        ></ish-product-inventory>
-      </div>
-
-      <ish-product-shipment
-        *ngIf="!isRetailSet(product) && !isMasterProduct(product)"
-        [product]="product"
-      ></ish-product-shipment>
+        ></ish-product-shipment>
+      </ng-template>
 
       <ish-product-variation-select
         *ngIf="isVariationProduct(product)"
@@ -100,13 +106,20 @@
       >
         <ish-product-attributes [product]="product"></ish-product-attributes>
       </ish-accordion-item>
-      <ish-accordion-item
-        *ngIf="!isMasterProduct(product)"
-        [heading]="'product.shipping.heading' | translate"
-        dataTestingId="section-shipping-tab"
-      >
-        <ish-product-shipment [product]="product"></ish-product-shipment>
-      </ish-accordion-item>
+
+      <ng-container *ishFeature="'tacton'; else shippingInformation">
+        <ng-container *ishIsTactonProduct="product; else shippingInformation"></ng-container>
+      </ng-container>
+
+      <ng-template #shippingInformation>
+        <ish-accordion-item
+          *ngIf="!isMasterProduct(product)"
+          [heading]="'product.shipping.heading' | translate"
+          dataTestingId="section-shipping-tab"
+        >
+          <ish-product-shipment [product]="product"></ish-product-shipment>
+        </ish-accordion-item>
+      </ng-template>
     </ish-accordion>
   </div>
 </div>

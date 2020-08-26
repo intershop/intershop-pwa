@@ -2,12 +2,13 @@ import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Product } from 'ish-core/models/product/product.model';
 
+import { IsTactonProductDirective } from '../../../extensions/tacton/directives/is-tacton-product.directive';
 import { LazyProductAddToWishlistComponent } from '../../../extensions/wishlists/exports/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
 
 import { ProductDetailActionsComponent } from './product-detail-actions.component';
@@ -25,6 +26,7 @@ describe('Product Detail Actions Component', () => {
       declarations: [
         MockComponent(FaIconComponent),
         MockComponent(LazyProductAddToWishlistComponent),
+        MockDirective(IsTactonProductDirective),
         ProductDetailActionsComponent,
       ],
     }).compileComponents();
@@ -49,7 +51,7 @@ describe('Product Detail Actions Component', () => {
   });
 
   describe('link rendering', () => {
-    it(`should show "email to friend" link when product inforamtion is available`, () => {
+    it(`should show "email to friend" link when product information is available`, () => {
       translate.set('product.email_a_friend.link', 'Email a friend');
       fixture.detectChanges();
       expect(
@@ -57,7 +59,7 @@ describe('Product Detail Actions Component', () => {
       ).toContain('Email a friend');
     });
 
-    it(`should show "print page" link when product inforamtion is available`, () => {
+    it(`should show "print page" link when product information is available`, () => {
       translate.set('product.print_page.link', 'Print Page');
       fixture.detectChanges();
       expect(element.querySelector('fa-icon[ng-reflect-icon="fas,print"]').nextElementSibling.textContent).toContain(
@@ -65,7 +67,7 @@ describe('Product Detail Actions Component', () => {
       );
     });
 
-    it(`should show "compare" link when product inforamtion is available`, () => {
+    it(`should show "compare" link when product information is available`, () => {
       translate.set('product.compare.link', 'Compare');
       fixture.detectChanges();
       expect(element.querySelector('fa-icon[ng-reflect-icon="fas,columns"]').nextElementSibling.textContent).toContain(
@@ -73,7 +75,7 @@ describe('Product Detail Actions Component', () => {
       );
     });
 
-    it('should not show "compare" link when product inforamtion is available and productMaster = true', () => {
+    it('should not show "compare" link when product information is available and productMaster = true', () => {
       component.product.type = 'VariationProductMaster';
       fixture.detectChanges();
       expect(element.querySelector("[data-testing-id='compare-sku']")).toBeFalsy();
