@@ -1,0 +1,4 @@
+<p>Quotes</p>
+<div *ngFor="let q of quotes$ | async; trackBy: trackByFn">
+  <pre>{{ q | json }}</pre>
+</div>
