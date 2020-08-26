@@ -26,11 +26,9 @@
     <ish-product-image [product]="product" imageType="M" class="product-image"></ish-product-image>
     <ish-tacton-bom [bom]="state.bom"></ish-tacton-bom>
   </div>
-  <div class="tacton-main-panel col-md-6">
-    <ish-tacton-group [group]="step$ | async"></ish-tacton-group>
-    <div class="tacton-buttonbar">
-      <ish-tacton-step-buttons></ish-tacton-step-buttons>
-    </div>
+  <div class="tacton-main-panel col-lg-6" *ngIf="step$ | async as step">
+    <ish-tacton-group [group]="step"></ish-tacton-group>
+    <ish-tacton-step-buttons></ish-tacton-step-buttons>
   </div>
 </div>
 

@@ -28,7 +28,7 @@
 .tacton-buttonbar {
   position: sticky;
   bottom: 0;
-  z-index: 2000;
+  z-index: 10;
   height: 35px + 4 * $space-default;
   padding: $space-default;
   background-color: $text-color-quinary;
