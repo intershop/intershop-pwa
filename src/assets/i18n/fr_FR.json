@@ -2887,7 +2887,7 @@
   "tacton.step_buttons.reset.label": "Réinitialiser la configuration",
   "tacton.step_buttons.next.label": "Suivant",
   "tacton.step_buttons.previous.label": "Précédent",
-  "tacton.step_buttons.submit.label": "Soumettre",
+  "tacton.step_buttons.submit.label": "Demander une proposition",
   "tacton.undo.tooltip": "Annuler",
   "tacton.submit.success.message": "Votre demande de devis a été soumise avec succès.",
   "tacton.submit.error.message": "Une erreur technique s’est produite lors du traitement de votre demande. Veuillez réessayer plus tard."
