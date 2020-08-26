@@ -3,11 +3,15 @@ import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
+import { GroupEffects } from './group/group.effects';
+import { groupReducer } from './group/group.reducer';
 import { OrganizationHierarchiesState } from './organization-hierarchies-store';
 
-const organizationHierarchiesReducers: ActionReducerMap<OrganizationHierarchiesState> = {};
+const organizationHierarchiesReducers: ActionReducerMap<OrganizationHierarchiesState> = {
+  group: groupReducer,
+};
 
-const organizationHierarchiesEffects = [];
+const organizationHierarchiesEffects = [GroupEffects, GroupEffects];
 
 // not-dead-code
 @NgModule({
