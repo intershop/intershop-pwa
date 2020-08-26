@@ -77,7 +77,7 @@
               [attr.data-testing-id]="'payment-parameter-form-' + paymentMethod.id"
             >
               <li *ngFor="let paymentInstrument of paymentMethod.paymentInstruments" class="panel section">
-                <div class="form-check col-xl-4 col-md-5 col-sm-6 col-8" role="tab">
+                <div class="form-check col-xl-6 col-md-5 col-sm-6 col-8" role="tab">
                   <input
                     type="radio"
                     formControlName="name"
@@ -94,16 +94,14 @@
                     >{{ 'checkout.payment.method.delete.link' | translate }}</a
                   >
                 </div>
-                <ng-container [ngSwitch]="paymentMethod.serviceId">
-                  <ng-template [ngSwitchCase]="'Concardis_CreditCard'">
-                    <div *ngIf="basket.payment && paymentInstrument.id === basket.payment.paymentInstrument.id">
-                      <ish-payment-concardis-creditcard-cvc-detail
-                        [paymentInstrument]="basket.payment.paymentInstrument"
-                        [paymentMethod]="paymentMethod"
-                      >
-                      </ish-payment-concardis-creditcard-cvc-detail>
-                    </div>
-                  </ng-template>
+                <ng-container *ngIf="paymentMethod.serviceId === 'Concardis_CreditCard'">
+                  <div *ngIf="basket.payment && paymentInstrument.id === basket.payment.paymentInstrument.id">
+                    <ish-payment-concardis-creditcard-cvc-detail
+                      [paymentInstrument]="basket.payment.paymentInstrument"
+                      [paymentMethod]="paymentMethod"
+                    >
+                    </ish-payment-concardis-creditcard-cvc-detail>
+                  </div>
                 </ng-container>
               </li>
 

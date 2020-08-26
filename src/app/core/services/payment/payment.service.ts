@@ -327,19 +327,19 @@ export class PaymentService {
   }
 
   /**
-   * Updates a (user/basket) payment instrument.
+   * Update CvcLastUpdated in concardis credit card (user/basket) payment instrument.
    * @param basket            The basket.
    * @param paymentInstrument The payment instrument, that is to be updated
    */
-  updateBasketPaymentInstrument(basket: Basket, paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
+  updateConcardisCvcLastUpdated(basket: Basket, paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
     if (!basket) {
-      return throwError('updateBasketPaymentInstrument() called without basket');
+      return throwError('updateConcardisCvcLastUpdated() called without basket');
     }
     if (!paymentInstrument) {
-      return throwError('updateBasketPaymentInstrument() called without paymentInstrument');
+      return throwError('updateConcardisCvcLastUpdated() called without paymentInstrument');
     }
 
-    if (paymentInstrument.urn && paymentInstrument.urn.includes('basket')) {
+    if (paymentInstrument.urn?.includes('basket')) {
       // update basket payment instrument
       const body: {
         parameters?: {
@@ -370,7 +370,7 @@ export class PaymentService {
         parameters: paymentInstrument.parameters.map(attr => ({ key: attr.name, property: attr.value })),
       };
 
-      // Replace this PUT request with PATCH request once it is fixed in ICM
+      // TODO: Replace this PUT request with PATCH request once it is fixed in ICM
       return this.apiService.put(`customers/-/payments/${paymentInstrument.id}`, body).pipe(mapTo(paymentInstrument));
     }
   }

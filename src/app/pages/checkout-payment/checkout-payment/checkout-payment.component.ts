@@ -155,6 +155,13 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
    * opens the payment parameter form for a payment method to create a new payment instrument
    */
   openPaymentParameterForm(index: number) {
+    // unselecting the payment instrument
+    if (this.basket.payment && this.basket.payment.paymentInstrument.id) {
+      (document.getElementById(
+        'paymentOption_' + this.basket.payment.paymentInstrument.id
+      ) as HTMLInputElement).checked = false;
+    }
+    this.basket.payment = undefined;
     this.formSubmitted = false;
     this.openFormIndex = index;
 
