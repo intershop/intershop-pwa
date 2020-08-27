@@ -8,7 +8,7 @@ kb_sync_latest_only
 # Client-Side Error Monitoring with Sentry
 
 We recommend using [Sentry](https://sentry.io/) for browser-side error tracking.
-It is integrated with the [official Angular support dependency](https://sentry.io/for/angular2/).
+It is integrated with the [official Angular support dependency](https://sentry.io/for/angular/).
 
 To activate Sentry in the PWA, set the Sentry DSN URL (_Settings_ | _Projects_ | _Your Project_ | _Client Keys (DSN)_ | _DSN_) either via Angular CLI environment file with the property `sentryDSN` or via the environment variable `SENTRY_DSN`.
 Additionally, the feature toggle `sentry` has to be added to the enabled feature list.

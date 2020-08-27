@@ -7,6 +7,45 @@ kb_everyone
 
 # Changelog
 
+## [0.23.0](https://github.com/intershop/intershop-pwa/releases/tag/0.23.0) (2020-08-27)
+
+**required Intershop Commerce Management version: 7.10.21.0**
+
+### Features
+
+- support for configurable products via Tacton CPQ integration (#329) ([2a60f9d](https://github.com/intershop/intershop-pwa/commit/2a60f9d))
+- switch customer REST resource depending on application and customer type (#302) ([04abd41](https://github.com/intershop/intershop-pwa/commit/04abd41))
+- switch to the new headless REST application type applications demo content (#302) ([741454c](https://github.com/intershop/intershop-pwa/commit/741454c))
+- switch to the new headless REST application type CMS content model (#302) ([50dc72e](https://github.com/intershop/intershop-pwa/commit/50dc72e))
+- switch from the Responsive Starter Store applications to the new headless REST application type applications (#302) ([0a356cc](https://github.com/intershop/intershop-pwa/commit/0a356cc))
+
+### Bug Fixes
+
+- tacton improvements (#368) ([84ed633](https://github.com/intershop/intershop-pwa/commit/84ed633))
+- **schematics:** reduce greedy path replacement ([1235287](https://github.com/intershop/intershop-pwa/commit/1235287))
+- **schematics:** enable move-component helper for projects ([d8299ea](https://github.com/intershop/intershop-pwa/commit/d8299ea))
+- enforce noSpecialChars for firstName and lastName ([f01c2de](https://github.com/intershop/intershop-pwa/commit/f01c2de))
+- **schematics:** disable subpaging for page schematic if parent page cannot be found ([f01c0ce](https://github.com/intershop/intershop-pwa/commit/f01c0ce))
+- adapt localized texts for user management (#346, #358) ([29dc79d](https://github.com/intershop/intershop-pwa/commit/29dc79d))
+- repair sentry error reporting (#339) ([6b41035](https://github.com/intershop/intershop-pwa/commit/6b41035))
+
+### Documentation
+
+- document HTTP error mapping for ICM errors (#339) ([9e3b6d7](https://github.com/intershop/intershop-pwa/commit/9e3b6d7))
+- add headless app type migration information (#303) ([2c13f44](https://github.com/intershop/intershop-pwa/commit/2c13f44))
+
+### Code Refactoring
+
+- adapt to REST API changes for user management ([d814cc0](https://github.com/intershop/intershop-pwa/commit/d814cc0))
+- remove deprecated exports (#347) ([7ef505a](https://github.com/intershop/intershop-pwa/commit/7ef505a))
+- remove groups from shared components (#362)
+
+### BREAKING CHANGES
+
+- With the introduction of a new headless Application Type (intershop.REST) in ICM 7.10.21.0 the PWA default environment configuration was switched to the new headless 'rest' application in the ICM demo content. Because of this change the PWA now uses the ICM CMS content model and demo content of the new headless 'rest' application.
+- User management calls were adapted to match CMS REST API changes in ICM.
+- Deprecated exports were removed concerning the NgRx testing refactorings introduced in version 0.21.
+
 ## [0.22.0](https://github.com/intershop/intershop-pwa/releases/tag/0.22.0) (2020-07-23)
 
 **required Intershop Commerce Management version: 7.10.20.1**
