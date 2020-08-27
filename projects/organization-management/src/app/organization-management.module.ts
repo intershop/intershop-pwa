@@ -3,6 +3,7 @@ import { TreeviewModule } from 'ngx-treeview';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
+import { GroupFormComponent } from './components/hierarchies/group-form/group-form.component';
 import { UserProfileFormComponent } from './components/user/user-profile-form/user-profile-form.component';
 import { UserRolesSelectionComponent } from './components/user/user-roles-selection/user-roles-selection.component';
 import { HierarchiesCreateGroupPageComponent } from './pages/hierarchies-create-group/hierarchies-create-group-page.component';
@@ -18,6 +19,7 @@ import { OrganizationManagementStoreModule } from './store/organization-manageme
 
 @NgModule({
   declarations: [
+    GroupFormComponent,
     HierarchiesCreateGroupPageComponent,
     HierarchiesPageComponent,
     UserCreatePageComponent,

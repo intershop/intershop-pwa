@@ -7,6 +7,7 @@ import { instance, mock } from 'ts-mockito';
 
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
+import { GroupFormComponent } from '../../components/hierarchies/group-form/group-form.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
 import { HierarchiesCreateGroupPageComponent } from './hierarchies-create-group-page.component';
@@ -22,7 +23,11 @@ describe('Hierarchies Create Group Page Component', () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [HierarchiesCreateGroupPageComponent, MockComponent(LoadingComponent)],
+      declarations: [
+        HierarchiesCreateGroupPageComponent,
+        MockComponent(GroupFormComponent),
+        MockComponent(LoadingComponent),
+      ],
       providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
     }).compileComponents();
   }));

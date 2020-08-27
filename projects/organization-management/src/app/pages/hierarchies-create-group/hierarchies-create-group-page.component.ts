@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
@@ -21,11 +22,13 @@ export class HierarchiesCreateGroupPageComponent implements OnInit {
   });
   submitted = false;
   loading$: Observable<boolean>;
+  error$: Observable<HttpError>;
 
   constructor(private fb: FormBuilder, private organizationManagementFacade: OrganizationManagementFacade) {}
 
   ngOnInit(): void {
     this.loading$ = this.organizationManagementFacade.groupsLoading$;
+    this.error$ = this.organizationManagementFacade.groupsError$;
   }
 
   submitForm() {
@@ -38,5 +41,9 @@ export class HierarchiesCreateGroupPageComponent implements OnInit {
 
   get formDisabled() {
     return this.form.invalid && this.submitted;
+  }
+
+  get group() {
+    return this.form.get('group');
   }
 }

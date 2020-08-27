@@ -2,6 +2,7 @@
   <div class="col-md-12">
     <h1>{{ 'account.organization.hierarchies.groups.new.heading' | translate }}</h1>
     <form [formGroup]="form" (ngSubmit)="submitForm()" class="form-horizontal" novalidate="novalidate">
+      <ish-group-form [form]="group" [error]="error$ | async"></ish-group-form>
       <div class="row">
         <div class="offset-md-4 col-md-8">
           <button type="submit" class="btn btn-primary" [disabled]="formDisabled" data-testing-id="create-group-submit">

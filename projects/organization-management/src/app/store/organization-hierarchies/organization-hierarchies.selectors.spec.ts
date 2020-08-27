@@ -9,8 +9,8 @@ import { OrganizationManagementStoreModule } from '../organization-management-st
 import { loadGroups } from './organization-hierarchies.actions';
 import {
   getOrganizationGroups,
+  getOrganizationGroupsError,
   getOrganizationGroupsLoading,
-  getOrganizationHierarchiesError,
 } from './organization-hierarchies.selectors';
 
 describe('Organization Hierarchies Selectors', () => {
@@ -34,7 +34,7 @@ describe('Organization Hierarchies Selectors', () => {
     });
 
     it('should not have an error when in initial state', () => {
-      expect(getOrganizationHierarchiesError(store$.state)).toBeUndefined();
+      expect(getOrganizationGroupsError(store$.state)).toBeUndefined();
     });
 
     it('should not have entities when in initial state', () => {

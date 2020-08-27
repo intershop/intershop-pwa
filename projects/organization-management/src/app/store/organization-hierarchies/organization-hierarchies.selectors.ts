@@ -11,4 +11,4 @@ export const getOrganizationGroups = createSelector(getOrganizationHierarchiesSt
 
 export const getOrganizationGroupsLoading = createSelector(getOrganizationHierarchiesState, state => state.loading);
 
-export const getOrganizationHierarchiesError = createSelector(getOrganizationHierarchiesState, state => state.error);
+export const getOrganizationGroupsError = createSelector(getOrganizationHierarchiesState, state => state.error);

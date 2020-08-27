@@ -1872,6 +1872,11 @@
   "order.wrong_ordernumber_zipcode.message": "Please check to see that you have entered the correct Order Number and Invoice Address ZIP Code.",
   "order.yes_account.text": "Sign in to track your orders by date and view your entire order history.",
   "order.zipcode.label": "Zip Code:",
+  "organization.groups.name.label": "Name",
+  "organization.groups.new.name.error.required": "bla",
+  "organization.groups.parent.label": "Parent Group",
+  "organization.groups.new.parent.error.required": "bla",
+  "organization.groups.description.label": "Description",
   "product.accordion.productname": "Product 1",
   "product.add_to_cart.link": "Add to Cart",
   "product.add_to_cart.retailset.link": "Add item(s) to Cart",
@@ -2881,5 +2886,6 @@
   "account.organization.hierarchies": "Company Structure",
   "account.organization.hierarchies.groups.add": "Add Group",
   "account.organization.hierarchies.groups.new.heading": "Add Group",
+  "account.organization.hierarchies.groups.new.message": "Creating a new group to track your company structure. You can assign users, addresses and payment instruments to it.",
   "account.organization.hierarchies.groups.new.button.label": "Create"
 }

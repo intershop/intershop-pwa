@@ -8,7 +8,12 @@ import { toObservable } from 'ish-core/utils/functions';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { B2bUser } from '../models/b2b-user/b2b-user.model';
-import { getOrganizationGroups, getOrganizationGroupsLoading, loadGroups } from '../store/organization-hierarchies';
+import {
+  getOrganizationGroups,
+  getOrganizationGroupsError,
+  getOrganizationGroupsLoading,
+  loadGroups,
+} from '../store/organization-hierarchies';
 import {
   addUser,
   deleteUser,
@@ -35,6 +40,7 @@ export class OrganizationManagementFacade {
   users$ = this.store.pipe(select(getUsers));
 
   groupsLoading$ = this.store.pipe(select(getOrganizationGroupsLoading));
+  groupsError$ = this.store.pipe(select(getOrganizationGroupsError));
 
   addUser(user: B2bUser) {
     this.store.dispatch(
