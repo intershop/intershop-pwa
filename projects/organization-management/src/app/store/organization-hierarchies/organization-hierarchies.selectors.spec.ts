@@ -9,8 +9,8 @@ import { OrganizationManagementStoreModule } from '../organization-management-st
 import { loadGroups } from './organization-hierarchies.actions';
 import {
   getOrganizationGroups,
+  getOrganizationGroupsLoading,
   getOrganizationHierarchiesError,
-  getOrganizationHierarchiesLoading,
 } from './organization-hierarchies.selectors';
 
 describe('Organization Hierarchies Selectors', () => {
@@ -30,7 +30,7 @@ describe('Organization Hierarchies Selectors', () => {
 
   describe('initial state', () => {
     it('should not be loading when in initial state', () => {
-      expect(getOrganizationHierarchiesLoading(store$.state)).toBeFalse();
+      expect(getOrganizationGroupsLoading(store$.state)).toBeFalse();
     });
 
     it('should not have an error when in initial state', () => {
@@ -50,7 +50,7 @@ describe('Organization Hierarchies Selectors', () => {
     });
 
     it('should set loading to true', () => {
-      expect(getOrganizationHierarchiesLoading(store$.state)).toBeTrue();
+      expect(getOrganizationGroupsLoading(store$.state)).toBeTrue();
     });
   });
 });
