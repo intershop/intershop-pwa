@@ -137,7 +137,7 @@ describe('Customer Store', () => {
     when(basketServiceMock.getBasket(anything())).thenReturn(of(basket));
     when(basketServiceMock.createBasket()).thenReturn(of(basket));
     when(basketServiceMock.getBaskets()).thenReturn(of([]));
-    when(basketServiceMock.mergeBasket(anything(), anything())).thenReturn(of(basket));
+    when(basketServiceMock.mergeBasket(anything(), anything(), anything())).thenReturn(of(basket));
     when(basketServiceMock.addItemsToBasket(anything(), anything())).thenReturn(of(undefined));
 
     const productsServiceMock = mock(ProductsService);
@@ -266,7 +266,6 @@ describe('Customer Store', () => {
           [User API] Login User Success:
             customer: {"isBusinessCustomer":false,"customerNo":"test"}
             user: {"title":"","firstName":"test","lastName":"test","phoneHome"...
-          [Basket Internal] Merge two baskets
           [Basket API] Merge two baskets Success:
             basket: {"id":"test","lineItems":[1]}
           [Products Internal] Load Product if not Loaded:

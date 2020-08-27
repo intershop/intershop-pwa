@@ -4,7 +4,6 @@ import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketValidation } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket, BasketView } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -12,6 +11,7 @@ import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.modu
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -161,11 +161,16 @@ describe('Basket Selectors', () => {
     });
 
     it('should set loading to false and set error state', () => {
-      store$.dispatch(loadBasketFail({ error: { message: 'invalid' } as HttpError }));
+      store$.dispatch(loadBasketFail({ error: makeHttpError({ message: 'invalid' }) }));
       expect(getBasketLoading(store$.state)).toBeFalse();
       expect(getCurrentBasket(store$.state)).toBeUndefined();
       expect(getCurrentBasketId(store$.state)).toBeUndefined();
-      expect(getBasketError(store$.state)).toEqual({ message: 'invalid' });
+      expect(getBasketError(store$.state)).toMatchInlineSnapshot(`
+        Object {
+          "message": "invalid",
+          "name": "HttpErrorResponse",
+        }
+      `);
     });
   });
 
@@ -193,13 +198,18 @@ describe('Basket Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(loadBasketEligibleShippingMethodsFail({ error: { message: 'error' } as HttpError }));
+        store$.dispatch(loadBasketEligibleShippingMethodsFail({ error: makeHttpError({ message: 'error' }) }));
       });
 
       it('should not have loaded shipping methods on error', () => {
         expect(getBasketLoading(store$.state)).toBeFalse();
         expect(getBasketEligibleShippingMethods(store$.state)).toBeUndefined();
-        expect(getBasketError(store$.state)).toEqual({ message: 'error' });
+        expect(getBasketError(store$.state)).toMatchInlineSnapshot(`
+          Object {
+            "message": "error",
+            "name": "HttpErrorResponse",
+          }
+        `);
       });
     });
   });
@@ -236,13 +246,18 @@ describe('Basket Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(loadBasketEligiblePaymentMethodsFail({ error: { message: 'error' } as HttpError }));
+        store$.dispatch(loadBasketEligiblePaymentMethodsFail({ error: makeHttpError({ message: 'error' }) }));
       });
 
       it('should not have loaded payment methods on error', () => {
         expect(getBasketLoading(store$.state)).toBeFalse();
         expect(getBasketEligiblePaymentMethods(store$.state)).toBeUndefined();
-        expect(getBasketError(store$.state)).toEqual({ message: 'error' });
+        expect(getBasketError(store$.state)).toMatchInlineSnapshot(`
+          Object {
+            "message": "error",
+            "name": "HttpErrorResponse",
+          }
+        `);
       });
     });
   });
@@ -267,11 +282,16 @@ describe('Basket Selectors', () => {
 
   describe('loading promotion error after adding a wrong promotion code', () => {
     beforeEach(() => {
-      store$.dispatch(addPromotionCodeToBasketFail({ error: { message: 'error' } as HttpError }));
+      store$.dispatch(addPromotionCodeToBasketFail({ error: makeHttpError({ message: 'error' }) }));
     });
 
     it('should reporting the failure in case of an error', () => {
-      expect(getBasketPromotionError(store$.state)).toEqual({ message: 'error' });
+      expect(getBasketPromotionError(store$.state)).toMatchInlineSnapshot(`
+        Object {
+          "message": "error",
+          "name": "HttpErrorResponse",
+        }
+      `);
     });
   });
 

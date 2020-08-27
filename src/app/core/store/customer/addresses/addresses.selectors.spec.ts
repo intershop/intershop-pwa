@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Address } from 'ish-core/models/address/address.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { loadAddresses, loadAddressesFail, loadAddressesSuccess } from './addresses.actions';
@@ -55,13 +55,18 @@ describe('Addresses Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(loadAddressesFail({ error: { message: 'error' } as HttpError }));
+        store$.dispatch(loadAddressesFail({ error: makeHttpError({ message: 'error' }) }));
       });
 
       it('should not have loaded addresses on error', () => {
         expect(getAddressesLoading(store$.state)).toBeFalse();
         expect(getAllAddresses(store$.state)).toBeEmpty();
-        expect(getAddressesError(store$.state)).toEqual({ message: 'error' });
+        expect(getAddressesError(store$.state)).toMatchInlineSnapshot(`
+          Object {
+            "message": "error",
+            "name": "HttpErrorResponse",
+          }
+        `);
       });
     });
   });

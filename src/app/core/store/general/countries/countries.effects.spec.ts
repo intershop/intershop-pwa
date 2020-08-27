@@ -6,10 +6,10 @@ import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { Country } from 'ish-core/models/country/country.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CountryService } from 'ish-core/services/country/country.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { GeneralStoreModule } from 'ish-core/store/general/general-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { loadCountries, loadCountriesFail, loadCountriesSuccess } from './countries.actions';
 import { CountriesEffects } from './countries.effects';
@@ -51,10 +51,10 @@ describe('Countries Effects', () => {
     });
 
     it('should dispatch a LoadCountriesFail action if a load error occurs', () => {
-      when(countryServiceMock.getCountries()).thenReturn(throwError({ message: 'error' }));
+      when(countryServiceMock.getCountries()).thenReturn(throwError(makeHttpError({ message: 'error' })));
 
       const action = { type: loadCountries.type } as Action;
-      const expected = loadCountriesFail({ error: { message: 'error' } as HttpError });
+      const expected = loadCountriesFail({ error: makeHttpError({ message: 'error' }) });
 
       actions$ = hot('-a', { a: action });
 

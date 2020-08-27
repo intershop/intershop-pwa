@@ -8,7 +8,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
-import { UserProfileFormComponent } from '../../components/user/user-profile-form/user-profile-form.component';
+import { UserProfileFormComponent } from '../../components/user-profile-form/user-profile-form.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 

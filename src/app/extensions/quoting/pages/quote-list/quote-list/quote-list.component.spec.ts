@@ -8,7 +8,7 @@ import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { Quote } from '../../../models/quote/quote.model';
-import { QuoteStateComponent } from '../../../shared/quote/quote-state/quote-state.component';
+import { QuoteStateComponent } from '../../../shared/quote-state/quote-state.component';
 
 import { QuoteListComponent } from './quote-list.component';
 

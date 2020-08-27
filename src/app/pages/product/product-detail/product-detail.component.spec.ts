@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
-import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { AccordionItemComponent } from 'ish-shared/components/common/accordion-item/accordion-item.component';
 import { AccordionComponent } from 'ish-shared/components/common/accordion/accordion.component';
@@ -19,8 +19,10 @@ import { ProductRatingComponent } from 'ish-shared/components/product/product-ra
 import { ProductShipmentComponent } from 'ish-shared/components/product/product-shipment/product-shipment.component';
 import { ProductVariationSelectComponent } from 'ish-shared/components/product/product-variation-select/product-variation-select.component';
 
-import { LazyProductAddToOrderTemplateComponent } from '../../../extensions/order-templates/exports/product/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
-import { LazyProductAddToQuoteComponent } from '../../../extensions/quoting/exports/product/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
+import { LazyProductAddToOrderTemplateComponent } from '../../../extensions/order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
+import { LazyProductAddToQuoteComponent } from '../../../extensions/quoting/exports/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
+import { IsTactonProductDirective } from '../../../extensions/tacton/directives/is-tacton-product.directive';
+import { LazyTactonConfigureProductComponent } from '../../../extensions/tacton/exports/lazy-tacton-configure-product/lazy-tacton-configure-product.component';
 import { ProductDetailActionsComponent } from '../product-detail-actions/product-detail-actions.component';
 import { ProductImagesComponent } from '../product-images/product-images.component';
 
@@ -40,6 +42,7 @@ describe('Product Detail Component', () => {
 
     TestBed.configureTestingModule({
       imports: [
+        FeatureToggleModule.forTesting(),
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([{ path: 'search', component: ProductDetailComponent }]),
         TranslateModule.forRoot(),
@@ -49,6 +52,7 @@ describe('Product Detail Component', () => {
         MockComponent(AccordionItemComponent),
         MockComponent(LazyProductAddToOrderTemplateComponent),
         MockComponent(LazyProductAddToQuoteComponent),
+        MockComponent(LazyTactonConfigureProductComponent),
         MockComponent(ProductAddToBasketComponent),
         MockComponent(ProductAttributesComponent),
         MockComponent(ProductDetailActionsComponent),
@@ -61,7 +65,7 @@ describe('Product Detail Component', () => {
         MockComponent(ProductRatingComponent),
         MockComponent(ProductShipmentComponent),
         MockComponent(ProductVariationSelectComponent),
-        MockDirective(FeatureToggleDirective),
+        MockDirective(IsTactonProductDirective),
         ProductDetailComponent,
       ],
     })

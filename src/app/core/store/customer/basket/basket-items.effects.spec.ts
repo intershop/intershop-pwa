@@ -8,7 +8,6 @@ import { anyString, anything, capture, instance, mock, verify, when } from 'ts-m
 
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { AddressService } from 'ish-core/services/address/address.service';
@@ -18,6 +17,7 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loadProduct, loadProductSuccess } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { BasketItemsEffects } from './basket-items.effects';
 import {
@@ -179,7 +179,9 @@ describe('Basket Items Effects', () => {
     });
 
     it('should map invalid request to action of type AddItemsToBasketFail', () => {
-      when(basketServiceMock.addItemsToBasket(anyString(), anything())).thenReturn(throwError({ message: 'invalid' }));
+      when(basketServiceMock.addItemsToBasket(anyString(), anything())).thenReturn(
+        throwError(makeHttpError({ message: 'invalid' }))
+      );
 
       store$.dispatch(
         loadBasketSuccess({
@@ -192,7 +194,7 @@ describe('Basket Items Effects', () => {
 
       const items = [{ sku: 'invalid', quantity: 1, unit: 'pcs.' }];
       const action = addItemsToBasket({ items });
-      const completion = addItemsToBasketFail({ error: { message: 'invalid' } as HttpError });
+      const completion = addItemsToBasketFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -353,7 +355,7 @@ describe('Basket Items Effects', () => {
 
     it('should map invalid request to action of type UpdateBasketItemsFail', () => {
       when(basketServiceMock.updateBasketItem(anyString(), anyString(), anything())).thenReturn(
-        throwError({ message: 'invalid' })
+        throwError(makeHttpError({ message: 'invalid' }))
       );
 
       const payload = {
@@ -365,7 +367,7 @@ describe('Basket Items Effects', () => {
         ],
       };
       const action = updateBasketItems(payload);
-      const completion = updateBasketItemsFail({ error: { message: 'invalid' } as HttpError });
+      const completion = updateBasketItemsFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -386,7 +388,7 @@ describe('Basket Items Effects', () => {
 
   describe('validateBasketAfterUpdateFailure$', () => {
     it('should map to action of type ValidateBasket if UpdateBasketItemFail action triggered', () => {
-      const action = updateBasketItemsFail({ error: { message: 'invalid' } as HttpError });
+      const action = updateBasketItemsFail({ error: makeHttpError({ message: 'invalid' }) });
       const completion = validateBasket({ scopes: ['Products'] });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
@@ -431,11 +433,13 @@ describe('Basket Items Effects', () => {
     });
 
     it('should map invalid request to action of type DeleteBasketItemFail', () => {
-      when(basketServiceMock.deleteBasketItem(anyString(), anyString())).thenReturn(throwError({ message: 'invalid' }));
+      when(basketServiceMock.deleteBasketItem(anyString(), anyString())).thenReturn(
+        throwError(makeHttpError({ message: 'invalid' }))
+      );
 
       const itemId = 'BIID';
       const action = deleteBasketItem({ itemId });
-      const completion = deleteBasketItemFail({ error: { message: 'invalid' } as HttpError });
+      const completion = deleteBasketItemFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

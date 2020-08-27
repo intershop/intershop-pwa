@@ -1,0 +1,20 @@
+<ul class="list-unstyled bg-light p-3">
+  <li *ngFor="let mainItem of tree$ | async" class="pt-1 pb-1">
+    <a (click)="changeStep(mainItem.name)" [ngClass]="{ 'font-weight-bold': mainItem.active }">{{
+      mainItem.description
+    }}</a>
+    <ng-container *ngIf="mainItem.children">
+      <ul class="list-unstyled pl-3">
+        <ng-container *ngFor="let subItem of mainItem.children">
+          <li *ngIf="subItem.hasVisibleParameters" class="pt-1 pb-1">
+            <a
+              (click)="scrollIntoView(subItem.name)"
+              [ngClass]="{ 'font-weight-bold': isActive$(subItem.name) | async }"
+              >{{ subItem.description }}</a
+            >
+          </li>
+        </ng-container>
+      </ul>
+    </ng-container>
+  </li>
+</ul>

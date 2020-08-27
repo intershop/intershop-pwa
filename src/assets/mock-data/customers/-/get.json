@@ -1,12 +1,5 @@
 {
   "customerNo": "Patricia",
-  "email": "patricia@test.intershop.de",
-  "fax": "",
-  "firstName": "Patricia",
-  "lastName": "Miller",
-  "phoneBusiness": "",
-  "phoneHome": "",
-  "phoneMobile": "",
   "preferredInvoiceToAddress": {
     "addressLine1": "Potsdamer Str. 20",
     "addressName": "customeraddr-ABCDEFGPRMuMCscyXgSRVU",
@@ -14,7 +7,7 @@
     "country": "Germany",
     "countryCode": "DE",
     "firstName": "Patricia",
-    "id": "oj.sEQATtcoAAAFy2rYChxOG",
+    "id": "zBCsEQASD4oAAAFz610CrZEN",
     "installToAddress": false,
     "invoiceToAddress": true,
     "lastName": "Miller",
@@ -26,10 +19,9 @@
     "street": "Potsdamer Str. 20",
     "title": "Ms.",
     "type": "Address",
-    "urn": "urn:address:customer:AlGsEQATCEgAAAFy1bYChxOG:oj.sEQATtcoAAAFy2rYChxOG",
+    "urn": "urn:address:customer:PpWsEQASbvMAAAFz310CrZEN:zBCsEQASD4oAAAFz610CrZEN",
     "usage": [true, true]
   },
-  "preferredLanguage": "en_US",
   "preferredShipToAddress": {
     "addressLine1": "Berliner Str. 20",
     "addressName": "customeraddr-YXEwLKSprCWPRMuMCscyXgSRVU",
@@ -37,7 +29,7 @@
     "country": "Germany",
     "countryCode": "DE",
     "firstName": "Patricia",
-    "id": "9_2sEQATtckAAAFy2rYChxOG",
+    "id": "fbSsEQASD4kAAAFz610CrZEN",
     "installToAddress": false,
     "invoiceToAddress": true,
     "lastName": "Miller",
@@ -49,9 +41,8 @@
     "street": "Berliner Str. 20",
     "title": "Ms.",
     "type": "Address",
-    "urn": "urn:address:customer:AlGsEQATCEgAAAFy1bYChxOG:9_2sEQATtckAAAFy2rYChxOG",
+    "urn": "urn:address:customer:PpWsEQASbvMAAAFz310CrZEN:fbSsEQASD4kAAAFz610CrZEN",
     "usage": [true, true]
   },
-  "title": "",
-  "type": "PrivateCustomer"
+  "type": "SMBCustomer"
 }

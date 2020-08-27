@@ -1,5 +1,5 @@
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { loadContentInclude, loadContentIncludeFail, loadContentIncludeSuccess } from './includes.actions';
 import { includesReducer, initialState } from './includes.reducer';
@@ -29,7 +29,7 @@ describe('Includes Reducer', () => {
     it('should unset loading state when reducing LoadContentIncludeFail', () => {
       const newState = includesReducer(
         loadingState,
-        loadContentIncludeFail({ error: { message: 'ERROR' } as HttpError })
+        loadContentIncludeFail({ error: makeHttpError({ message: 'ERROR' }) })
       );
 
       expect(newState.entities).toBeEmpty();

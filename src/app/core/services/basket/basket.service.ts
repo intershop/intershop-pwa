@@ -1,7 +1,7 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EMPTY, Observable, throwError } from 'rxjs';
-import { catchError, concatMap, map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { Address } from 'ish-core/models/address/address.model';
@@ -172,29 +172,31 @@ export class BasketService {
    * @param authToken       The token value of the source basket owner.
    * @returns               The merged basket.
    */
-  mergeBasket(sourceBasketId: string, authToken: string): Observable<Basket> {
+  mergeBasket(sourceBasketId: string, sourceBasketAuthToken: string, targetBasketId: string): Observable<Basket> {
     if (!sourceBasketId) {
       return throwError('mergeBasket() called without sourceBasketId');
     }
-    if (!authToken) {
-      return throwError('mergeBasket() called without authToken');
+    if (!sourceBasketAuthToken) {
+      return throwError('mergeBasket() called without sourceBasketAuthToken');
+    }
+    if (!targetBasketId) {
+      return throwError('mergeBasket() called without targetBasketId');
+    }
+    if (targetBasketId === sourceBasketId) {
+      return throwError('mergeBasket() cannot be called when targetBasketId === sourceBasketId');
     }
 
     const params = new HttpParams().set('include', this.allTargetBasketIncludes.join());
-    return this.createOrGetCurrentBasket().pipe(
-      concatMap(basket =>
-        this.apiService
-          .post<BasketMergeData>(
-            `baskets/${basket.id}/merges`,
-            { sourceBasket: sourceBasketId, sourceAuthenticationToken: authToken },
-            {
-              headers: this.basketHeaders,
-              params,
-            }
-          )
-          .pipe(map(mergeBasketData => BasketMapper.fromData(BasketMergeHelper.transform(mergeBasketData))))
+    return this.apiService
+      .post<BasketMergeData>(
+        `baskets/${targetBasketId}/merges`,
+        { sourceBasket: sourceBasketId, sourceAuthenticationToken: sourceBasketAuthToken },
+        {
+          headers: this.basketHeaders,
+          params,
+        }
       )
-    );
+      .pipe(map(mergeBasketData => BasketMapper.fromData(BasketMergeHelper.transform(mergeBasketData))));
   }
 
   /**
@@ -426,15 +428,5 @@ export class BasketService {
             unpackEnvelope<ShippingMethodData>('data'),
             map(data => data.map(ShippingMethodMapper.fromData))
           );
-  }
-
-  /**
-   * Build currentBasket stream
-   * gets or creates the basket of the current user
-   */
-  private createOrGetCurrentBasket(): Observable<Basket> {
-    return this.getBaskets().pipe(
-      concatMap(baskets => (baskets && baskets.length ? this.getBasket() : this.createBasket()))
-    );
   }
 }

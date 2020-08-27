@@ -6,7 +6,7 @@ export class CustomerMapper {
    * Get User data for the logged in Business Customer.
    */
   static mapLoginData(data: CustomerData): CustomerUserType {
-    return data.type === 'SMBCustomer'
+    return CustomerMapper.isBusinessCustomer(data)
       ? {
           customer: CustomerMapper.fromData(data),
           user: undefined,
@@ -36,7 +36,7 @@ export class CustomerMapper {
    * Map customer data in dependence of the customer type (PrivateCustomer/SMBCustomer)
    */
   static fromData(data: CustomerData): Customer {
-    return data.type === 'SMBCustomer'
+    return CustomerMapper.isBusinessCustomer(data)
       ? {
           customerNo: data.customerNo,
           isBusinessCustomer: true,
@@ -50,5 +50,13 @@ export class CustomerMapper {
           customerNo: data.customerNo,
           isBusinessCustomer: false,
         };
+  }
+
+  private static isBusinessCustomer(data: CustomerData): boolean {
+    // ToDo: #IS-30018 use the customer type for this decision
+    if (data.type === 'PrivateCustomer') {
+      return false;
+    }
+    return true;
   }
 }

@@ -32,6 +32,7 @@ import { PromotionsService } from 'ish-core/services/promotions/promotions.servi
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
@@ -107,7 +108,7 @@ describe('Shopping Store', () => {
         case 'A.123.456':
           return of(categoryTree([{ ...catA123456, completenessLevel: CategoryCompletenessLevel.Max }]));
         default:
-          return throwError({ message: `error loading category ${uniqueId}` });
+          return throwError(makeHttpError({ message: `error loading category ${uniqueId}` }));
       }
     });
 
@@ -122,7 +123,7 @@ describe('Shopping Store', () => {
       if (['P1', 'P2'].find(x => x === sku)) {
         return of({ sku, name: 'n' + sku });
       } else {
-        return throwError({ message: `error loading product ${sku}` });
+        return throwError(makeHttpError({ message: `error loading product ${sku}` }));
       }
     });
     when(productsServiceMock.getCategoryProducts('A.123.456', anyNumber(), anything())).thenReturn(
@@ -987,7 +988,7 @@ describe('Shopping Store', () => {
         [Categories API] Load Category Success:
           categories: tree(A.123.456)
         [Products API] Load Product Fail:
-          error: {"message":"error loading product P3"}
+          error: {"name":"HttpErrorResponse","message":"error loading product...
           sku: "P3"
         [Categories Internal] Load Category:
           categoryId: "A"
@@ -1045,7 +1046,7 @@ describe('Shopping Store', () => {
         [Categories Internal] Load Category:
           categoryId: "A.123.XXX"
         [Categories API] Load Category Fail:
-          error: {"message":"error loading category A.123.XXX"}
+          error: {"name":"HttpErrorResponse","message":"error loading categor...
         @ngrx/router-store/cancel:
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}
           storeState: {"configuration":{"locales":[3],"_deviceType":"mobile"},"sho...

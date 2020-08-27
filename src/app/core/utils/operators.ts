@@ -1,8 +1,6 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { MonoTypeOperatorFunction, Observable, OperatorFunction, of } from 'rxjs';
+import { MonoTypeOperatorFunction, Observable, OperatorFunction, of, throwError } from 'rxjs';
 import { catchError, distinctUntilChanged, filter, map, withLatestFrom } from 'rxjs/operators';
 
-import { HttpErrorMapper } from 'ish-core/models/http-error/http-error.mapper';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 /**
@@ -21,24 +19,12 @@ export function distinctCompareWith<T>(observable: Observable<T>): OperatorFunct
 export function mapErrorToAction<S, T>(actionType: (props: { error: HttpError }) => T, extras?: object) {
   return (source$: Observable<S | T>) =>
     source$.pipe(
-      // tslint:disable-next-line:ban ban-types
-      catchError((err: HttpErrorResponse) => {
-        /*
-          display error in certain circumstances:
-          typeof window === 'undefined' -- universal mode
-          !process.env.JEST_WORKER_ID -- excludes display for jest
-          process.env.DEBUG -- when environment explicitely wants it
-          err instanceof Error -- i.e. TypeErrors that would be suppressed otherwise
-         */
-        if (
-          typeof window === 'undefined' ||
-          (typeof process !== 'undefined' && !process.env.JEST_WORKER_ID) ||
-          (typeof process !== 'undefined' && process.env.DEBUG) ||
-          err instanceof Error
-        ) {
-          console.error(err);
+      catchError((error: HttpError) => {
+        if (error.name !== 'HttpErrorResponse') {
+          // rethrow runtime errors
+          return throwError(error);
         }
-        const errorAction = actionType({ error: HttpErrorMapper.fromError(err), ...extras });
+        const errorAction = actionType({ error, ...extras });
         return of(errorAction);
       })
     );

@@ -7,12 +7,12 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { AddressService } from 'ish-core/services/address/address.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import {
   createCustomerAddress,
@@ -103,11 +103,11 @@ describe('Addresses Effects', () => {
 
     it('should map invalid request to action of type CreateCustomerFail', () => {
       when(addressServiceMock.createCustomerAddress(anyString(), anything())).thenReturn(
-        throwError({ message: 'invalid' })
+        throwError(makeHttpError({ message: 'invalid' }))
       );
       const address = { urn: '123' } as Address;
       const action = createCustomerAddress({ address });
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       const completion = createCustomerAddressFail({ error });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -143,11 +143,11 @@ describe('Addresses Effects', () => {
 
     it('should map invalid request to action of type DeleteCustomerFail', () => {
       when(addressServiceMock.deleteCustomerAddress(anyString(), anyString())).thenReturn(
-        throwError({ message: 'invalid' })
+        throwError(makeHttpError({ message: 'invalid' }))
       );
       const addressId = '123';
       const action = deleteCustomerAddress({ addressId });
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       const completion = deleteCustomerAddressFail({ error });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });

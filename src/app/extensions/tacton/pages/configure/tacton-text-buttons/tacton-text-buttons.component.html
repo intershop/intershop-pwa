@@ -1,0 +1,7 @@
+<div *ngIf="parameter.properties.tc_info_text">{{ parameter.properties.tc_info_text }}</div>
+<div class="btn-group btn-group-toggle form-group" data-toggle="buttons">
+  <label *ngFor="let opt of parameter.domain?.elements" class="btn btn-primary" [ngClass]="{ active: opt.selected }">
+    <input (click)="change(opt.name)" type="radio" [name]="parameter.name" [id]="opt.name" [checked]="opt.selected" />
+    {{ opt.description }}
+  </label>
+</div>

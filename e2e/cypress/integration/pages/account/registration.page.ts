@@ -91,7 +91,9 @@ export class RegistrationPage {
   }
 
   submitAndObserve() {
-    cy.server().route('POST', '**/customers').as('customers');
+    cy.server()
+      .route('POST', /.*\/(private)?customers$/)
+      .as('customers');
     cy.wait(500);
 
     this.submit();

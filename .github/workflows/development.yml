@@ -1,0 +1,115 @@
+name: Development
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+    types: [opened, synchronize]
+    paths-ignore:
+      - 'docs/**'
+
+env:
+  ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
+
+jobs:
+  CancelPrevious:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Cancel Old Pipeline
+        uses: rokroskar/workflow-run-cleanup-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  Quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache
+          key: ${{ runner.os }}-cache-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-cache-
+
+      - name: Install root dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: Install e2e dependencies
+        uses: bahmutov/npm-install@v1
+        with:
+          working-directory: e2e
+          useLockFile: false
+
+      - name: Code Formatting
+        run: |
+          npm run format
+          bash scripts/ci-test-no-changes.sh 'you probably committed unformatted code'
+
+      - name: Compile Angular
+        run: npm run ng -- build --aot
+
+      - name: Compile Unit Tests
+        run: npx tsc -p tsconfig.all.json
+
+      - name: Compile Cypress Tests
+        run: (cd e2e && npx tsc -p cypress/tsconfig.json)
+
+      - name: Run Escalated TSLint Rules
+        run: |
+          node scripts/tslint-hard
+          npm run lint
+
+      - name: Find Dead Code
+        run: npx ts-node scripts/find-dead-code
+
+  Jest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install root dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: PWA Jest
+        run: npm test
+
+      - name: tslint-rules Jest
+        run: cd tslint-rules && npm run test -- --ci
+
+      - name: schematics Jest
+        run: cd schematics && npm run test -- --ci
+
+  Schematics:
+    needs: [Quality, Jest]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install root dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: Test Schematics
+        run: |
+          bash e2e/test-schematics.sh
+          node scripts/tslint-hard
+          npm run lint

@@ -360,7 +360,7 @@
         },
         {
           "from": ".*/extensions/.*",
-          "filePattern": "^((?!(module|spec)\\.ts).)*$",
+          "filePattern": "^((?!(module|spec|environment\\.model)\\.ts).)*$",
           "message": "Imports from (other) extensions are not allowed here."
         },
         {
@@ -460,36 +460,6 @@
           "from": ".*.*",
           "filePattern": ".*/shared/shared.module.ts$",
           "message": "Importing and exporting extension modules should be done in ShellModule."
-        },
-        // TODO: remove after 0.22 release
-        {
-          "from": "^ish-core\\/store\\/(addresses|orders|restore|user)(.*)$",
-          "message": "Core store was restructured in version 0.21, apply auto-fix.",
-          "fix": "ish-core/store/customer/$1$2"
-        },
-        // TODO: remove after 0.22 release
-        {
-          "from": "^ish-core\\/store\\/core-store.module$",
-          "message": "Core store was restructured in version 0.21, apply auto-fix.",
-          "fix": "ish-core/store/core/core-store.module"
-        },
-        // TODO: remove after 0.22 release
-        {
-          "from": "^ish-core\\/store\\/checkout/basket(.*)$",
-          "message": "Core store was restructured in version 0.21, apply auto-fix.",
-          "fix": "ish-core/store/customer/basket$2"
-        },
-        // TODO: remove after 0.22 release
-        {
-          "from": "^ish-core\\/store\\/(configuration|error|messages|router|viewconf)(.*)$",
-          "message": "Core store was restructured in version 0.21, apply auto-fix.",
-          "fix": "ish-core/store/core/$1$2"
-        },
-        // TODO: remove after 0.22 release
-        {
-          "from": "^ish-core\\/store\\/(contact|countries|regions)(.*)$",
-          "message": "Core store was restructured in version 0.21, apply auto-fix.",
-          "fix": "ish-core/store/general/$1$2"
         }
       ]
     },
@@ -590,19 +560,19 @@
           "^.*/projects/([a-z][a-z0-9-]+)/src/app/pages/\\1-routing\\.module\\.ts$",
           "^.*/src/app/pages/app[a-z0-9-]*-routing\\.module\\.ts$",
           // enforce folder structure for shared components
-          "^.*/src/app/extensions/[a-z][a-z0-9-]+/shared/[a-z][a-z0-9-]+/([a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
+          "^.*/src/app/extensions/[a-z][a-z0-9-]+/shared/([a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
           "^.*/src/app/shared/components/[a-z][a-z0-9-]+/([a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
           "^.*/src/app/shared/([a-z][a-z0-9-]+)/\\1\\.module\\.ts$",
           "^.*/src/app/shared/[a-z][a-z0-9-]+/(configurations|pipes|utils|validators|directives)/.*$",
           "^.*/src/app/shared/[a-z][a-z0-9-]+/components/([a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
-          "^.*/projects/[a-z][a-z0-9-]+/src/app/components/[a-z][a-z0-9-]+/([a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
+          "^.*/projects/[a-z][a-z0-9-]+/src/app/components/([a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
           "^.*/src/app/shared/address-forms/components/([a-z][a-z0-9-]+)/\\1\\.factory\\.ts$",
           // aggregation modules
           "^.*/src/app/(shell|shared)/\\1\\.module\\.ts$",
           "^.*/src/app/extensions/([a-z][a-z0-9-]+)/\\1\\.module\\.ts$",
           "^.*/projects/([a-z][a-z0-9-]+)/src/app/\\1\\.module\\.ts$",
           // extension exports
-          "^.*/src/app/extensions/[a-z][a-z0-9-]+/exports/[a-z][a-z0-9-]+/(lazy-[a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
+          "^.*/src/app/extensions/[a-z][a-z0-9-]+/exports/(lazy-[a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
           "^.*/src/app/extensions/([a-z][a-z0-9-]+)/exports/\\1-exports\\.module\\.ts$"
         ],
         "patterns": [

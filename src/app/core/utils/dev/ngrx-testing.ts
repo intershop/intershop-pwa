@@ -1,21 +1,13 @@
-import { Injectable, Optional, Type } from '@angular/core';
-import { Actions, Effect, EffectsModule } from '@ngrx/effects';
-import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
-import { Action, ActionReducer, ActionReducerMap, RootStoreConfig, Store, StoreModule } from '@ngrx/store';
-import { tap } from 'rxjs/operators';
+import { Optional } from '@angular/core';
+import { Actions } from '@ngrx/effects';
+import { Action, ActionReducer, Store } from '@ngrx/store';
 
 import { CoreState } from 'ish-core/store/core/core-store';
-import { CustomRouterSerializer } from 'ish-core/store/core/router/router.serializer';
 
 // tslint:disable:no-console
 
 export const containsActionWithType = (type: string) => (actions: Action[]) =>
   !!actions.filter(a => a.type === type).length;
-
-function includeAction(action: Action, include: string[] | RegExp) {
-  const type = action.type;
-  return include instanceof Array ? include.some(inc => type.indexOf(inc) >= 0) : type.search(include) >= 0;
-}
 
 /**
  * meta reducer for logging actions to the console
@@ -88,86 +80,4 @@ export function provideStoreSnapshots() {
       deps: [Store, [new Optional(), Actions]],
     },
   ];
-}
-
-// tslint:disable: deprecation no-any
-
-/**
- * Service for monitoring actions and the current state.
- * ! The listening is solved as Effects so it can be managed by the EffectsModule.
- * ! Otherwise the order of the actions is interfered with.
- * @deprecated will be removed in version 0.23
- */
-@Injectable()
-export class TestStore {
-  private actions: Action[] = [];
-  state: any;
-
-  constructor(private actions$: Actions, private store$: Store) {}
-
-  @Effect({ dispatch: false })
-  logActions$ = this.actions$.pipe(tap(action => this.actions.push(action)));
-
-  @Effect({ dispatch: false })
-  logState$ = this.store$.pipe(tap(state => (this.state = JSON.parse(JSON.stringify(state)))));
-
-  dispatch(action: Action) {
-    this.store$.dispatch(action);
-  }
-
-  reset() {
-    this.actions = [];
-  }
-
-  actionsArray(include: string[] | RegExp = /.*/) {
-    return this.actions
-      .filter(current => !!current && !!current.type)
-      .filter(current => includeAction(current, include));
-  }
-}
-
-/** @deprecated will be removed in version 0.23 */
-export function ngrxTesting<T = object>(
-  options: {
-    reducers?: ActionReducerMap<T, Action>;
-    effects?: Type<any>[];
-    config?: RootStoreConfig<T>;
-    routerStore?: boolean;
-    logActions?: boolean;
-    logState?: boolean;
-  } = {}
-) {
-  let reducers = options.reducers || ({} as ActionReducerMap<T, Action>);
-
-  if (options.routerStore) {
-    reducers = { ...reducers, router: routerReducer };
-  }
-
-  const config = options.config || {};
-  config.metaReducers = config.metaReducers || [];
-  if (options.logActions) {
-    config.metaReducers = [logActionsMeta, ...config.metaReducers];
-  }
-  if (options.logState) {
-    config.metaReducers = [logStateMeta, ...config.metaReducers];
-  }
-
-  const array = [
-    StoreModule.forRoot(reducers, {
-      ...config,
-      runtimeChecks: {
-        strictActionImmutability: true,
-        strictActionSerializability: true,
-        strictStateImmutability: true,
-        strictStateSerializability: true,
-      },
-    }),
-    EffectsModule.forRoot([TestStore, ...(options.effects || [])]),
-  ];
-
-  if (options.routerStore) {
-    array.push(StoreRouterConnectingModule.forRoot({ serializer: CustomRouterSerializer }));
-  }
-
-  return array;
 }

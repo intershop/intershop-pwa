@@ -33,6 +33,7 @@ kb_sync_latest_only
   - [Guide - Testing with Jest](./guides/testing-jest.md)
   - [Guide - Testing with Cypress](./guides/testing-cypress.md)
   - [Guide - State Management > Testing](./guides/state-management.md#testing-ngrx-artifacts)
+- [Guide - ICM HTTP Error Mapping](./guides/icm-http-error-mapping.md)
 - [Guide - Code Documentation](./guides/code-documentation.md)
 - [Guide - Angular Change Detection](./guides/angular-change-detection.md)
 - [Guide - Data Handling with Mappers](./guides/data-handling-with-mappers.md)
@@ -58,10 +59,11 @@ kb_sync_latest_only
   - [Guide - SSR Parameters](./guides/ssr-startup.md)
 - [Concept - Hybrid Approach](./concepts/hybrid-approach.md)
   - [Guide - Hybrid Approach and ICM URL Rewriting](./guides/hybrid-approach-icm-url-rewriting.md)
-- [Guide - CI](./guides/continuous-integration.md)
-- [Guide - Google Tag Manager](./guides/google-tag-manager.md)
-
-### Monitoring
-
 - [Concept - Logging](./concepts/logging.md)
+- [Guide - CI](./guides/continuous-integration.md)
+
+### Third-party Integrations
+
+- [Guide - Google Tag Manager](./guides/google-tag-manager.md)
 - [Guide - Client-Side Error Monitoring with Sentry](./guides/sentry-error-monitoring.md)
+- [Guide - Extended Product Configurations with Tacton](./guides/tacton-product-configuration.md)

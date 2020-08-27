@@ -3,6 +3,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
@@ -15,6 +16,7 @@ import { PaymentService } from './payment.service';
 describe('Payment Service', () => {
   let paymentService: PaymentService;
   let apiService: ApiService;
+  let appFacade: AppFacade;
 
   const basketMock = {
     data: {
@@ -67,12 +69,19 @@ describe('Payment Service', () => {
 
   beforeEach(() => {
     apiService = mock(ApiService);
+    appFacade = mock(AppFacade);
+
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiService, useFactory: () => instance(apiService) },
-        provideMockStore({ selectors: [{ selector: getCurrentLocale, value: { lang: 'en_US' } as Locale }] }),
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
+        provideMockStore({
+          selectors: [{ selector: getCurrentLocale, value: { lang: 'en_US' } as Locale }],
+        }),
       ],
     });
+    when(appFacade.customerRestResource$).thenReturn(of('customers'));
+
     paymentService = TestBed.inject(PaymentService);
   });
 
@@ -187,7 +196,7 @@ describe('Payment Service', () => {
   });
 
   describe('user payment service', () => {
-    it("should get a user's payment method data when 'getUserPaymentMethods' is called", done => {
+    it("should get a user's payment method data when 'getUserPaymentMethods' is called for b2c/b2x applications", done => {
       when(apiService.get(anyString())).thenReturn(of([]));
       when(apiService.resolveLinks()).thenReturn(() => of([]));
       when(apiService.options(anyString())).thenReturn(of([]));
@@ -199,6 +208,23 @@ describe('Payment Service', () => {
       paymentService.getUserPaymentMethods(customer).subscribe(() => {
         verify(apiService.get('customers/4711/payments')).once();
         verify(apiService.options('customers/4711/payments')).once();
+        done();
+      });
+    });
+
+    it("should get a user's payment method data when 'getUserPaymentMethods' is called for rest applications", done => {
+      when(apiService.get(anyString())).thenReturn(of([]));
+      when(apiService.resolveLinks()).thenReturn(() => of([]));
+      when(apiService.options(anyString())).thenReturn(of([]));
+      when(appFacade.customerRestResource$).thenReturn(of('privatecustomers'));
+      const customer = {
+        customerNo: '4711',
+        isBusinessCustomer: false,
+      } as Customer;
+
+      paymentService.getUserPaymentMethods(customer).subscribe(() => {
+        verify(apiService.get('privatecustomers/4711/payments')).once();
+        verify(apiService.options('privatecustomers/4711/payments')).once();
         done();
       });
     });

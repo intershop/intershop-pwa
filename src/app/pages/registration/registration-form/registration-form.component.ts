@@ -1,14 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChange,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
 
@@ -18,7 +8,7 @@ import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/cus
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
 import { AddressFormFactoryProvider } from 'ish-shared/address-forms/configurations/address-form-factory.provider';
-import { markAsDirtyRecursive, markFormControlsAsInvalid } from 'ish-shared/forms/utils/form-utils';
+import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 @Component({
@@ -26,7 +16,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
   templateUrl: './registration-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegistrationFormComponent implements OnInit, OnChanges {
+export class RegistrationFormComponent implements OnInit {
   @Input() error: HttpError;
 
   @Output() create = new EventEmitter<CustomerRegistrationType>();
@@ -49,10 +39,6 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
     this.businessCustomerRegistration = this.featureToggle.enabled('businessCustomerRegistration');
 
     this.createRegistrationForm();
-  }
-
-  ngOnChanges(c: SimpleChanges) {
-    this.applyError(c.error);
   }
 
   private createRegistrationForm(): void {
@@ -83,15 +69,6 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
     // add form control(s) for business customers
     if (this.businessCustomerRegistration) {
       this.form.addControl('taxationID', new FormControl(''));
-    }
-  }
-
-  private applyError(error: SimpleChange) {
-    if (error && error.currentValue && error.currentValue.headers['error-missing-attributes']) {
-      const missingAttributes = error.currentValue.headers['error-missing-attributes'];
-      // map missing 'email' response to login field
-      const list = missingAttributes.split(',').map(attr => (attr === 'email' ? 'credentials.login' : attr));
-      markFormControlsAsInvalid(this.form, list);
     }
   }
 

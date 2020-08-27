@@ -7,9 +7,9 @@ import { anything, deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
 import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { FilterService } from 'ish-core/services/filter/filter.service';
 import { setProductListingPages } from 'ish-core/store/shopping/product-listing';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import {
   applyFilter,
@@ -35,14 +35,14 @@ describe('Filter Effects', () => {
     filterServiceMock = mock(FilterService);
     when(filterServiceMock.getFilterForSearch(anything())).thenCall(a => {
       if (a === 'invalid') {
-        return throwError({ message: 'invalid' });
+        return throwError(makeHttpError({ message: 'invalid' }));
       } else {
         return of(filterNav);
       }
     });
     when(filterServiceMock.getFilterForCategory(anything())).thenCall(a => {
       if (a === 'invalid') {
-        return throwError({ message: 'invalid' });
+        return throwError(makeHttpError({ message: 'invalid' }));
       } else {
         return of(filterNav);
       }
@@ -50,7 +50,7 @@ describe('Filter Effects', () => {
 
     when(filterServiceMock.getFilteredProducts(anything(), anything(), anything())).thenCall(a => {
       if (a.name === 'invalid') {
-        return throwError({ message: 'invalid' });
+        return throwError(makeHttpError({ message: 'invalid' }));
       } else {
         return of({
           total: 2,
@@ -61,7 +61,7 @@ describe('Filter Effects', () => {
 
     when(filterServiceMock.applyFilter(anything())).thenCall(a => {
       if (a.param[0] === 'invalid') {
-        return throwError({ message: 'invalid' });
+        return throwError(makeHttpError({ message: 'invalid' }));
       } else {
         return of(filterNav);
       }
@@ -100,7 +100,7 @@ describe('Filter Effects', () => {
 
     it('should map invalid request to action of type LoadFilterFail', () => {
       const action = loadFilterForCategory({ uniqueId: 'invalid' });
-      const completion = loadFilterFail({ error: { message: 'invalid' } as HttpError });
+      const completion = loadFilterFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -133,7 +133,7 @@ describe('Filter Effects', () => {
 
     it('should map invalid request to action of type ApplyFilterFail', () => {
       const action = applyFilter({ searchParameter: { param: ['invalid'] } });
-      const completion = applyFilterFail({ error: { message: 'invalid' } as HttpError });
+      const completion = applyFilterFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -190,7 +190,7 @@ describe('Filter Effects', () => {
 
     it('should map invalid request to action of type LoadFilterFail', () => {
       const action = loadFilterForSearch({ searchTerm: 'invalid' });
-      const completion = loadFilterFail({ error: { message: 'invalid' } as HttpError });
+      const completion = loadFilterFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

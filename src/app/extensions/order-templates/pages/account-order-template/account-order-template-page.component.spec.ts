@@ -9,7 +9,7 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
-import { OrderTemplatePreferencesDialogComponent } from '../../shared/order-templates/order-template-preferences-dialog/order-template-preferences-dialog.component';
+import { OrderTemplatePreferencesDialogComponent } from '../../shared/order-template-preferences-dialog/order-template-preferences-dialog.component';
 
 import { AccountOrderTemplateListComponent } from './account-order-template-list/account-order-template-list.component';
 import { AccountOrderTemplatePageComponent } from './account-order-template-page.component';

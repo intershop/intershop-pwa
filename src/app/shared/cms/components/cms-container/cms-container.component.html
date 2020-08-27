@@ -1,9 +1,5 @@
 <div [ngClass]="containerClasses" class="content-container">
-  <ish-content-slot
-    [wrapper]="true"
-    [slot]="'app_sf_responsive_cm:slot.container.content.pagelet2-Slot'"
-    [pagelet]="pagelet"
-  >
+  <ish-content-slot [wrapper]="true" [slot]="'app_sf_base_cm:slot.container.content.pagelet2-Slot'" [pagelet]="pagelet">
     <ish-content-pagelet
       *ngFor="let slotPagelet of contentSlotPagelets"
       [pageletId]="slotPagelet"

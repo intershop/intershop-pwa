@@ -9,12 +9,9 @@ import { WishlistEffects } from './wishlist/wishlist.effects';
 import { wishlistReducer } from './wishlist/wishlist.reducer';
 import { WishlistsState } from './wishlists-store';
 
-/** @deprecated will be made private in version 0.23 */
-export const wishlistsReducers: ActionReducerMap<WishlistsState> = {
+const wishlistsReducers: ActionReducerMap<WishlistsState> = {
   wishlists: wishlistReducer,
 };
-
-// tslint:disable: deprecation
 
 const wishlistsEffects = [WishlistEffects];
 

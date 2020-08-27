@@ -1,4 +1,4 @@
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
@@ -64,7 +64,7 @@ describe('Quote Request Reducer', () => {
 
     describe('LoadQuoteRequestsFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
+        const error = makeHttpError({ message: 'invalid' });
         const action = loadQuoteRequestsFail({ error });
         const state = quoteRequestReducer(initialState, action);
 
@@ -103,7 +103,7 @@ describe('Quote Request Reducer', () => {
 
     describe('AddQuoteRequestFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
+        const error = makeHttpError({ message: 'invalid' });
         const action = addQuoteRequestFail({ error });
         const state = quoteRequestReducer(initialState, action);
 
@@ -135,7 +135,7 @@ describe('Quote Request Reducer', () => {
 
     describe('UpdateQuoteRequestFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
+        const error = makeHttpError({ message: 'invalid' });
         const action = updateQuoteRequestFail({ error });
         const state = quoteRequestReducer(initialState, action);
 
@@ -168,7 +168,7 @@ describe('Quote Request Reducer', () => {
 
     describe('DeleteQuoteRequestFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
+        const error = makeHttpError({ message: 'invalid' });
         const action = deleteQuoteRequestFail({ error });
         const state = quoteRequestReducer(initialState, action);
 
@@ -200,7 +200,7 @@ describe('Quote Request Reducer', () => {
 
     describe('SubmitQuoteRequestFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
+        const error = makeHttpError({ message: 'invalid' });
         const action = submitQuoteRequestFail({ error });
         const state = quoteRequestReducer(initialState, action);
 
@@ -232,7 +232,7 @@ describe('Quote Request Reducer', () => {
 
     describe('CreateQuoteRequestFromQuoteRequestFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
+        const error = makeHttpError({ message: 'invalid' });
         const action = createQuoteRequestFromQuoteRequestFail({ error });
         const state = quoteRequestReducer(initialState, action);
 
@@ -265,7 +265,7 @@ describe('Quote Request Reducer', () => {
 
     describe('LoadQuoteRequestItemsFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
+        const error = makeHttpError({ message: 'invalid' });
         const action = loadQuoteRequestItemsFail({ error });
         const state = quoteRequestReducer(initialState, action);
 
@@ -310,7 +310,7 @@ describe('Quote Request Reducer', () => {
 
     describe('AddProductToQuoteRequestFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
+        const error = makeHttpError({ message: 'invalid' });
         const action = addProductToQuoteRequestFail({ error });
         const state = quoteRequestReducer(initialState, action);
 
@@ -342,7 +342,7 @@ describe('Quote Request Reducer', () => {
 
     describe('AddBasketToQuoteRequestFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
+        const error = makeHttpError({ message: 'invalid' });
         const action = addBasketToQuoteRequestFail({ error });
         const state = quoteRequestReducer(initialState, action);
 
@@ -374,7 +374,7 @@ describe('Quote Request Reducer', () => {
 
     describe('UpdateQuoteRequestItemsFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
+        const error = makeHttpError({ message: 'invalid' });
         const action = updateQuoteRequestItemsFail({ error });
         const state = quoteRequestReducer(initialState, action);
 
@@ -410,7 +410,7 @@ describe('Quote Request Reducer', () => {
 
     describe('DeleteItemFromQuoteRequestFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
+        const error = makeHttpError({ message: 'invalid' });
         const action = deleteItemFromQuoteRequestFail({ error });
         const state = quoteRequestReducer(initialState, action);
 

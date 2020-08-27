@@ -1,5 +1,5 @@
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { HTTP_INTERCEPTORS, HttpErrorResponse } from '@angular/common/http';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { ServerModule, ServerTransferStateModule } from '@angular/platform-server';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -40,6 +40,16 @@ export function translateLoaderFactory() {
   return new TranslateUniversalLoader();
 }
 
+export class UniversalErrorHandler implements ErrorHandler {
+  handleError(error: Error): void {
+    if (error instanceof HttpErrorResponse) {
+      console.error('ERROR', error.message);
+    } else {
+      console.error('ERROR', error.name, error.message, error.stack?.split('\n')?.[1]?.trim());
+    }
+  }
+}
+
 @NgModule({
   imports: [
     AppModule,
@@ -56,6 +66,7 @@ export function translateLoaderFactory() {
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: UniversalLogInterceptor, multi: true },
+    { provide: ErrorHandler, useClass: UniversalErrorHandler },
   ],
   bootstrap: [AppComponent],
 })

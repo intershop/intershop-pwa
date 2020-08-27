@@ -4,11 +4,11 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { Category, CategoryCompletenessLevel } from 'ish-core/models/category/category.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
@@ -94,7 +94,7 @@ describe('Categories Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(loadCategoryFail({ error: { message: 'error' } as HttpError }));
+        store$.dispatch(loadCategoryFail({ error: makeHttpError({ message: 'error' }) }));
       });
 
       it('should not have loaded category on error', () => {

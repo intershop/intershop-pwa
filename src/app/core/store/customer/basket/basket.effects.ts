@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concatMap, filter, map, mapTo, mergeMap, mergeMapTo, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { EMPTY, combineLatest, iif, of } from 'rxjs';
+import { concatMap, map, mapTo, mergeMap, sample, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { ofUrl, selectQueryParam } from 'ish-core/store/core/router';
-import { getLastAPITokenBeforeLogin, loginUserSuccess } from 'ish-core/store/customer/user';
+import { getLastAPITokenBeforeLogin, loginUser, loginUserSuccess } from 'ish-core/store/customer/user';
 import { loadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { mapErrorToAction, mapToPayloadProperty, whenFalsy } from 'ish-core/utils/operators';
 
@@ -18,7 +19,6 @@ import {
   loadBasketEligibleShippingMethodsSuccess,
   loadBasketFail,
   loadBasketSuccess,
-  mergeBasket,
   mergeBasketFail,
   mergeBasketSuccess,
   resetBasketErrors,
@@ -119,48 +119,51 @@ export class BasketEffects {
   );
 
   /**
-   * After a user logged in a merge basket action is triggered if there are already items in the anonymous user's basket
+   * dummy effect keeping the anonymous basket with the corresponding apiToken for the basket merge call
    */
-  mergeBasketAfterLogin$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loginUserSuccess),
-      mergeMapTo(this.store.pipe(select(getCurrentBasket), take(1))),
-      filter(currentBasket => currentBasket && currentBasket.lineItems && currentBasket.lineItems.length > 0),
-      mapTo(mergeBasket())
-    )
+  private anonymousBasket$ = createEffect(
+    () =>
+      combineLatest([
+        this.store.pipe(select(getCurrentBasketId)),
+        this.store.pipe(select(getLastAPITokenBeforeLogin)),
+      ]).pipe(sample(this.actions$.pipe(ofType(loginUser))), startWith([undefined, undefined])),
+    { dispatch: false }
   );
 
   /**
-   * Merge basket into current basket of a registered user.
-   * If the user has not yet a basket a new basket is created before the merge
+   * loading and handling merges of the users baskets, when the user logs in
    */
-  mergeBasket$ = createEffect(() =>
+  loadOrMergeBasketAfterLogin$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(mergeBasket),
-      mergeMapTo(this.store.pipe(select(getCurrentBasket), take(1))),
-      withLatestFrom(this.store.pipe(select(getLastAPITokenBeforeLogin))),
-      concatMap(([sourceBasket, authToken]) =>
-        this.basketService.mergeBasket(sourceBasket.id, authToken).pipe(
-          map(basket => mergeBasketSuccess({ basket })),
-          mapErrorToAction(mergeBasketFail)
+      ofType(loginUserSuccess),
+      withLatestFrom(this.anonymousBasket$),
+      switchMap(([, [sourceBasketId, sourceApiToken]]) =>
+        this.basketService.getBaskets().pipe(
+          switchMap(baskets => {
+            if (sourceBasketId) {
+              // anonymous basket exists -> get or create user basket and merge anonymous basket into it
+              return iif(
+                () => !!baskets.length,
+                this.basketService.getBasket(),
+                this.basketService.createBasket()
+              ).pipe(
+                switchMap(newOrCurrentUserBasket =>
+                  this.basketService
+                    .mergeBasket(sourceBasketId, sourceApiToken, newOrCurrentUserBasket.id)
+                    .pipe(map(basket => mergeBasketSuccess({ basket })))
+                ),
+                mapErrorToAction(mergeBasketFail)
+              );
+            } else if (baskets.length) {
+              // no anonymous basket exists and user already has a basket -> load it
+              return of(loadBasket());
+            } else {
+              // no anonymous or user basket -> do nothing
+              return EMPTY;
+            }
+          })
         )
       )
-    )
-  );
-
-  /**
-   * Trigger LoadBasket action after LoginUserSuccess, if no pre login state basket items are present.
-   */
-  loadBasketAfterLogin$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loginUserSuccess),
-      switchMap(() => this.basketService.getBaskets()) /* prevent 404 error by checking on existing basket */,
-      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-      filter(
-        ([newBaskets, currentBasket]) =>
-          (!currentBasket || !currentBasket.lineItems || currentBasket.lineItems.length === 0) && newBaskets.length > 0
-      ),
-      mapTo(loadBasket())
     )
   );
 

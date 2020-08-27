@@ -1,5 +1,5 @@
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Order } from 'ish-core/models/order/order.model';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import {
@@ -66,7 +66,7 @@ describe('Orders Reducer', () => {
 
     describe('CreateOrderFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
+        const error = makeHttpError({ message: 'invalid' });
         const action = createOrderFail({ error });
         const state = ordersReducer(initialState, action);
 
@@ -89,7 +89,7 @@ describe('Orders Reducer', () => {
 
     describe('LoadOrdersFail action', () => {
       it('should set loading to false', () => {
-        const action = loadOrdersFail({ error: {} as HttpError });
+        const action = loadOrdersFail({ error: makeHttpError({}) });
         const state = ordersReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -136,7 +136,7 @@ describe('Orders Reducer', () => {
 
     describe('LoadOrderFail action', () => {
       it('should set loading to false', () => {
-        const action = loadOrdersFail({ error: {} as HttpError });
+        const action = loadOrdersFail({ error: makeHttpError({}) });
         const state = ordersReducer(initialState, action);
 
         expect(state.loading).toBeFalse();

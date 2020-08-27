@@ -1,7 +1,9 @@
 import { HttpHeaders } from '@angular/common/http';
+import { TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { Address } from 'ish-core/models/address/address.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { CustomerData } from 'ish-core/models/customer/customer.interface';
@@ -14,14 +16,25 @@ import { UserService } from './user.service';
 describe('User Service', () => {
   let userService: UserService;
   let apiServiceMock: ApiService;
+  let appFacade: AppFacade;
 
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
-    userService = new UserService(instance(apiServiceMock));
+    appFacade = mock(AppFacade);
+
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: ApiService, useFactory: () => instance(apiServiceMock) },
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
+      ],
+    });
+    userService = TestBed.inject(UserService);
+    when(appFacade.isAppTypeREST$).thenReturn(of(true));
+    when(appFacade.customerRestResource$).thenReturn(of('customers'));
   });
 
   describe('SignIn a user', () => {
-    it('should login the user when correct credentials are entered', done => {
+    it('should login a user when correct credentials are entered', done => {
       const loginDetail = { login: 'patricia@test.intershop.de', password: '!InterShop00!' };
       when(apiServiceMock.get(anything(), anything())).thenReturn(of({ customerNo: 'PC' } as Customer));
 
@@ -32,6 +45,30 @@ describe('User Service', () => {
         expect(headers.get('Authorization')).toEqual('BASIC cGF0cmljaWFAdGVzdC5pbnRlcnNob3AuZGU6IUludGVyU2hvcDAwIQ==');
 
         expect(data).toHaveProperty('customer.customerNo', 'PC');
+        done();
+      });
+    });
+
+    it('should login a private user when correct credentials are entered', done => {
+      const loginDetail = { login: 'patricia@test.intershop.de', password: '!InterShop00!' };
+      when(apiServiceMock.get(anything(), anything())).thenReturn(of({ customerNo: 'PC' } as Customer));
+
+      userService.signinUser(loginDetail).subscribe(() => {
+        verify(apiServiceMock.get(`customers/-`, anything())).once();
+        verify(apiServiceMock.get(`privatecustomers/-`, anything())).once();
+        done();
+      });
+    });
+
+    it('should login a business user when correct credentials are entered', done => {
+      const loginDetail = { login: 'patricia@test.intershop.de', password: '!InterShop00!' };
+      when(apiServiceMock.get(anything(), anything())).thenReturn(
+        of({ customerNo: 'PC', companyName: 'xyz' } as Customer)
+      );
+
+      userService.signinUser(loginDetail).subscribe(() => {
+        verify(apiServiceMock.get(`customers/-`, anything())).once();
+        verify(apiServiceMock.get(`privatecustomers/-`, anything())).never();
         done();
       });
     });
@@ -48,14 +85,16 @@ describe('User Service', () => {
     });
 
     it('should login a user by token when requested and successful', done => {
-      when(apiServiceMock.get(anything(), anything())).thenReturn(of({ email: 'test@intershop.de' } as CustomerData));
+      when(apiServiceMock.get(anything(), anything())).thenReturn(
+        of({ customerNo: '4711', type: 'SMBCustomer', companyName: 'xyz' } as CustomerData)
+      );
 
-      userService.signinUserByToken('dummy').subscribe(data => {
-        verify(apiServiceMock.get(anything(), anything())).once();
+      userService.signinUserByToken('dummy').subscribe(() => {
+        verify(apiServiceMock.get('customers/-', anything())).once();
+        verify(apiServiceMock.get('privatecustomers/-', anything())).never();
         const [path, options] = capture<string, { headers: HttpHeaders }>(apiServiceMock.get).last();
         expect(path).toEqual('customers/-');
         expect(options.headers.get(ApiService.TOKEN_HEADER_KEY)).toEqual('dummy');
-        expect(data).toHaveProperty('user.email', 'test@intershop.de');
         done();
       });
     });
@@ -90,7 +129,7 @@ describe('User Service', () => {
       } as CustomerRegistrationType;
 
       userService.createUser(payload).subscribe(() => {
-        verify(apiServiceMock.post('customers', anything(), anything())).once();
+        verify(apiServiceMock.post('privatecustomers', anything(), anything())).once();
         done();
       });
     });

@@ -29,7 +29,7 @@ function addRouteToArray(
   insertComma: boolean
 ) {
   const dasherizedName = strings.dasherize(options.name);
-  const path = options.child ? options.child : dasherizedName.replace(/-/, '/');
+  const path = options.child ? options.child : options.lazy ? dasherizedName : dasherizedName.replace(/-/g, '/');
   if (options.lazy) {
     const loadChildren = `() => import('${
       options.child ? '..' : '.'
@@ -57,16 +57,24 @@ async function determineRoutingModule(
 
   let routingModuleLocation: string;
   let child: string;
+  let subPaging: boolean;
 
   const match = options.name.match(/(.*)\-([a-z0-9]+)/);
   if (options.lazy && match && match[1] && match[2]) {
     const parent = match[1];
-    child = match[2];
-    console.log(`detected subpage, will insert '${child}' as sub page of '${parent}'`);
+    const possibleChild = match[2];
     routingModuleLocation = options.extension
       ? `extensions/${options.extension}/pages/${parent}/${parent}-page.module.ts`
       : `pages/${parent}/${parent}-page.module.ts`;
-  } else {
+
+    subPaging = host.exists(`${project.sourceRoot}/app/${routingModuleLocation}`);
+    if (subPaging) {
+      child = possibleChild;
+      console.log(`detected subpage, will insert '${child}' as sub page of '${parent}'`);
+    }
+  }
+
+  if (!subPaging) {
     routingModuleLocation = options.extension
       ? `extensions/${options.extension}/pages/${options.extension}-routing.module.ts`
       : (project.root ? 'pages/' + project.root.replace(/^.*?\//g, '') : 'pages/app') + '-routing.module.ts';

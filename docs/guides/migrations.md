@@ -7,6 +7,20 @@ kb_sync_latest_only
 
 # Migrations
 
+## 0.22 to 0.23
+
+We removed deprecated exports related to the NgRx testing refactorings introduced in version 0.21.
+
+We switched our main development to the new headless REST application type provided by ICM 7.10.21.0.
+If you are upgrading and want to continue using the Responsive Starter Store application types, do not cherry-pick the [commits that switch application types](https://github.com/intershop/intershop-pwa/compare/a63d2a2fc1ffdb404e6b1fe8ffb79310fa2ef60f...741454c8c839dd001a3943236172d75ffd05541d).
+
+We refactored the way ICM Http Errors are handled in the PWA.
+You can read about it [here](./icm-http-error-mapping.md).
+Tests emulating HTTP errors now have to use the helper function `makeHttpError` from [`ish-core/utils/dev/api-service-utils`](../../src/app/core/utils/dev/api-service-utils.ts).
+
+We removed grouping folders of shared components in extensions and sub projects for a better overview.
+You can migrate using the script `node schematics/migration/0.22-to-0.23` (for running this script Git version 2.28 or above is recommended since earlier versions resulted in problems).
+
 ## 0.20 to 0.21
 
 We deprecated and reworked the way of testing with NgRx.

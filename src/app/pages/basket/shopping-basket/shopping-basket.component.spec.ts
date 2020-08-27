@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
@@ -15,8 +15,8 @@ import { LineItemListComponent } from 'ish-shared/components/basket/line-item-li
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 
-import { LazyBasketCreateOrderTemplateComponent } from '../../../extensions/order-templates/exports/basket/lazy-basket-create-order-template/lazy-basket-create-order-template.component';
-import { LazyBasketAddToQuoteComponent } from '../../../extensions/quoting/exports/basket/lazy-basket-add-to-quote/lazy-basket-add-to-quote.component';
+import { LazyBasketCreateOrderTemplateComponent } from '../../../extensions/order-templates/exports/lazy-basket-create-order-template/lazy-basket-create-order-template.component';
+import { LazyBasketAddToQuoteComponent } from '../../../extensions/quoting/exports/lazy-basket-add-to-quote/lazy-basket-add-to-quote.component';
 
 import { ShoppingBasketComponent } from './shopping-basket.component';
 
@@ -83,7 +83,7 @@ describe('Shopping Basket Component', () => {
   });
 
   it('should render an error if an error occurs', () => {
-    component.error = { status: 404 } as HttpError;
+    component.error = makeHttpError({ status: 404 });
     fixture.detectChanges();
     expect(element.querySelector('ish-error-message')).toBeTruthy();
   });

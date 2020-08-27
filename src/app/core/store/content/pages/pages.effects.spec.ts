@@ -8,9 +8,9 @@ import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CMSService } from 'ish-core/services/cms/cms.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { loadContentPage, loadContentPageFail } from './pages.actions';
 import { PagesEffects } from './pages.effects';
@@ -45,7 +45,7 @@ describe('Pages Effects', () => {
 
   describe('loadPages$', () => {
     it('should send fail action when loading action via service is unsuccessful', done => {
-      when(cmsServiceMock.getContentPage('dummy')).thenReturn(throwError({ message: 'ERROR' }));
+      when(cmsServiceMock.getContentPage('dummy')).thenReturn(throwError(makeHttpError({ message: 'ERROR' })));
 
       actions$ = of(loadContentPage({ contentPageId: 'dummy' }));
 
@@ -53,19 +53,19 @@ describe('Pages Effects', () => {
         verify(cmsServiceMock.getContentPage('dummy')).once();
         expect(action).toMatchInlineSnapshot(`
           [Content Page API] Load Content Page Fail:
-            error: {"message":"ERROR"}
+            error: {"name":"HttpErrorResponse","message":"ERROR"}
         `);
         done();
       });
     });
 
     it('should not die when encountering an error', () => {
-      when(cmsServiceMock.getContentPage('dummy')).thenReturn(throwError({ message: 'ERROR' }));
+      when(cmsServiceMock.getContentPage('dummy')).thenReturn(throwError(makeHttpError({ message: 'ERROR' })));
 
       actions$ = hot('a-a-a-a', { a: loadContentPage({ contentPageId: 'dummy' }) });
 
       expect(effects.loadContentPage$).toBeObservable(
-        cold('a-a-a-a', { a: loadContentPageFail({ error: { message: 'ERROR' } as HttpError }) })
+        cold('a-a-a-a', { a: loadContentPageFail({ error: makeHttpError({ message: 'ERROR' }) }) })
       );
     });
   });

@@ -6,8 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DeferLoadModule } from '@trademe/ng-defer-load';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
-import { ClickOutsideDirective } from 'ish-core/directives/click-outside.directive';
-import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { DirectivesModule } from 'ish-core/directives.module';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
@@ -16,6 +15,7 @@ import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-expo
 import { OrderTemplatesExportsModule } from '../extensions/order-templates/exports/order-templates-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
 import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
+import { TactonExportsModule } from '../extensions/tacton/exports/tacton-exports.module';
 import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
 
 import { FooterComponent } from './footer/footer/footer.component';
@@ -35,19 +35,15 @@ import { UserInformationMobileComponent } from './header/user-information-mobile
 
 const importExportModules = [
   CaptchaExportsModule,
+  DirectivesModule,
   OrderTemplatesExportsModule,
   QuickorderExportsModule,
   QuotingExportsModule,
+  TactonExportsModule,
   WishlistsExportsModule,
 ];
 
-const exportedComponents = [
-  FooterComponent,
-  HeaderComponent,
-  ProductImageComponent,
-  SearchBoxComponent,
-  ServerHtmlDirective,
-];
+const exportedComponents = [FooterComponent, HeaderComponent, ProductImageComponent, SearchBoxComponent];
 
 @NgModule({
   imports: [
@@ -66,7 +62,6 @@ const exportedComponents = [
   ],
   declarations: [
     ...exportedComponents,
-    ClickOutsideDirective,
     HeaderCheckoutComponent,
     HeaderDefaultComponent,
     HeaderNavigationComponent,

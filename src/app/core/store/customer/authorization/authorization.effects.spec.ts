@@ -10,6 +10,7 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { AuthorizationService } from 'ish-core/services/authorization/authorization.service';
 import { getLoggedInCustomer, getLoggedInUser, loadCompanyUserSuccess } from 'ish-core/store/customer/user';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { loadRolesAndPermissions } from './authorization.actions';
 import { AuthorizationEffects } from './authorization.effects';
@@ -69,7 +70,9 @@ describe('Authorization Effects', () => {
     });
 
     it('should map to error action when service call fails', done => {
-      when(authorizationService.getRolesAndPermissions(anything(), anything())).thenReturn(throwError('ERROR'));
+      when(authorizationService.getRolesAndPermissions(anything(), anything())).thenReturn(
+        throwError(makeHttpError({ message: 'ERROR' }))
+      );
 
       actions$ = of(loadRolesAndPermissions());
 
@@ -77,7 +80,7 @@ describe('Authorization Effects', () => {
         verify(authorizationService.getRolesAndPermissions(anything(), anything())).once();
         expect(action).toMatchInlineSnapshot(`
           [Authorization API] Load Roles and Permissions Fail:
-            error: {}
+            error: {"name":"HttpErrorResponse","message":"ERROR"}
         `);
         done();
       });

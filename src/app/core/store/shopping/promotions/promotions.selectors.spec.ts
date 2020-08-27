@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { loadPromotionFail, loadPromotionSuccess } from './promotions.actions';
@@ -46,7 +46,7 @@ describe('Promotions Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(loadPromotionFail({ error: { message: 'error' } as HttpError, promoId: 'erroneous_promo' }));
+        store$.dispatch(loadPromotionFail({ error: makeHttpError({ message: 'error' }), promoId: 'erroneous_promo' }));
       });
 
       it('should not have loaded promotion on error', () => {

@@ -3,15 +3,14 @@ import { HomePage } from '../../pages/home.page';
 import { SearchResultPage } from '../../pages/shopping/search-result.page';
 
 const _ = {
-  suggestTerm: 'b',
-  searchTerm: 'belkin',
-  suggestItemText: 'Belkin',
-  product: '643941',
-  results: 161,
+  suggestTerm: 'l',
+  searchTerm: 'logitech',
+  suggestItemText: 'Logitech',
+  results: 9,
   filter: {
     name: 'Price',
     entryName: 'ProductSalePriceNet_100_0_TO_249_99',
-    results: 5,
+    results: 1,
   },
 };
 
@@ -33,7 +32,7 @@ describe('Searching B2B User', () => {
 
   it('should see the correct filter', () => {
     at(SearchResultPage, page => {
-      page.filterNavigation.filter('Color').getFilter('Red').should('be.visible');
+      page.filterNavigation.filter('Color').getFilter('White').should('be.visible');
 
       page.filterNavigation
         .filter(_.filter.name)

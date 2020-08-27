@@ -10,11 +10,11 @@ import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { OrderTemplate } from '../../models/order-template/order-template.model';
 import { OrderTemplateService } from '../../services/order-template/order-template.service';
@@ -125,7 +125,7 @@ describe('Order Template Effects', () => {
     });
 
     it('should map failed calls to actions of type LoadOrderTemplateFail', () => {
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       when(orderTemplateServiceMock.getOrderTemplates()).thenReturn(throwError(error));
       const action = loadOrderTemplates();
       const completion = loadOrderTemplatesFail({
@@ -179,7 +179,7 @@ describe('Order Template Effects', () => {
       expect(effects.createOrderTemplate$).toBeObservable(expected$);
     });
     it('should map failed calls to actions of type CreateOrderTemplateFail', () => {
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       when(orderTemplateServiceMock.createOrderTemplate(anything())).thenReturn(throwError(error));
       const action = createOrderTemplate({ orderTemplate: createOrderTemplateData });
       const completion = createOrderTemplateFail({
@@ -223,7 +223,7 @@ describe('Order Template Effects', () => {
       expect(effects.deleteOrderTemplate$).toBeObservable(expected$);
     });
     it('should map failed calls to actions of type DeleteOrderTemplateFail', () => {
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       when(orderTemplateServiceMock.deleteOrderTemplate(anyString())).thenReturn(throwError(error));
       const action = deleteOrderTemplate({ orderTemplateId: id });
       const completion = deleteOrderTemplateFail({
@@ -273,7 +273,7 @@ describe('Order Template Effects', () => {
       expect(effects.updateOrderTemplate$).toBeObservable(expected$);
     });
     it('should map failed calls to actions of type UpdateOrderTemplateFail', () => {
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       when(orderTemplateServiceMock.updateOrderTemplate(anything())).thenReturn(throwError(error));
       const action = updateOrderTemplate({ orderTemplate: orderTemplateDetailData[0] });
       const completion = updateOrderTemplateFail({
@@ -320,7 +320,7 @@ describe('Order Template Effects', () => {
     });
 
     it('should map failed calls to actions of type AddProductToOrderTemplateFail', () => {
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       when(orderTemplateServiceMock.addProductToOrderTemplate(anyString(), anyString(), anything())).thenReturn(
         throwError(error)
       );
@@ -360,7 +360,7 @@ describe('Order Template Effects', () => {
       expect(effects.addProductToNewOrderTemplate$).toBeObservable(expected$);
     });
     it('should map failed calls to actions of type CreateOrderTemplateFail', () => {
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       when(orderTemplateServiceMock.createOrderTemplate(anything())).thenReturn(throwError(error));
       const action = addProductToNewOrderTemplate(payload);
       const completion = createOrderTemplateFail({
@@ -460,7 +460,7 @@ describe('Order Template Effects', () => {
       expect(effects.removeProductFromOrderTemplate$).toBeObservable(expected$);
     });
     it('should map failed calls to actions of type RemoveItemFromOrderTemplateFail', () => {
-      const error = { message: 'invalid' } as HttpError;
+      const error = makeHttpError({ message: 'invalid' });
       when(orderTemplateServiceMock.removeProductFromOrderTemplate(anyString(), anyString())).thenReturn(
         throwError(error)
       );

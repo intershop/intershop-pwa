@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - '**'
+    paths-ignore:
+      - 'docs/**'
 
 jobs:
   CancelPrevious:
@@ -19,7 +21,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Use Node.js 12
         uses: actions/setup-node@v1
         with:
@@ -41,14 +43,14 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Use Node.js 12
         uses: actions/setup-node@v1
         with:
           node-version: 12
 
       - name: Set Environment
-        uses: allenevans/set-env@v1.0.0
+        uses: allenevans/set-env@master
         with:
           overwrite: true
           CI: ''

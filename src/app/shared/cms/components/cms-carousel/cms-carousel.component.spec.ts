@@ -36,7 +36,7 @@ describe('Cms Carousel Component', () => {
       slots: [
         {
           displayName: 'test',
-          definitionQualifiedName: 'app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot',
+          definitionQualifiedName: 'app_sf_base_cm:slot.carousel.items.pagelet2-Slot',
           pageletIDs: ['slide1', 'slide2'],
         },
       ],

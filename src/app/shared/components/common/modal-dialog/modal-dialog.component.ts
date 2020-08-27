@@ -8,9 +8,9 @@ export interface ModalOptions {
   titleText: string;
   /**
    * size attribute
-   *   'lg': large, 'sm': small, 'md': medium (default)
+   *   'sm': small, 'lg': large, 'xl': extra large, 'md': medium (default)
    */
-  size?: 'sm' | 'lg';
+  size?: 'sm' | 'lg' | 'xl';
   /**
    * Optional modal confirm button text.
    */

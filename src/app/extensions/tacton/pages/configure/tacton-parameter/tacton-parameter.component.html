@@ -1,0 +1,24 @@
+<div *ngIf="item?.properties?.hidden === 'no'" class="border-bottom mb-4">
+  <div *ngIf="item.committed" class="float-right">
+    <a class="btn-tool" (click)="uncommit()" title="{{ 'tacton.undo.tooltip' | translate }}">
+      <fa-icon [icon]="['fas', 'undo']"></fa-icon>
+    </a>
+  </div>
+  <h4 class="font-weight-bold">{{ item.description }}&nbsp;</h4>
+
+  <ng-container [ngSwitch]="true">
+    <ish-tacton-image-text-buttons
+      *ngSwitchCase="isImageTextButtons(item)"
+      [parameter]="item"
+    ></ish-tacton-image-text-buttons>
+    <ish-tacton-text-buttons *ngSwitchCase="isTextButtons(item)" [parameter]="item"></ish-tacton-text-buttons>
+    <ish-tacton-number-input *ngSwitchCase="isNumberInput(item)" [parameter]="item"></ish-tacton-number-input>
+    <ish-tacton-text-input *ngSwitchCase="isTextInput(item)" [parameter]="item"></ish-tacton-text-input>
+    <ish-tacton-select-input *ngSwitchCase="isSelectInput(item)" [parameter]="item"></ish-tacton-select-input>
+    <ish-tacton-readonly *ngSwitchCase="isReadOnly(item)" [parameter]="item"></ish-tacton-readonly>
+    <ish-tacton-radio-input *ngSwitchCase="isRadioInput(item)" [parameter]="item"></ish-tacton-radio-input>
+    <ish-tacton-selected-image *ngSwitchCase="isSelectedImage(item)" [parameter]="item"></ish-tacton-selected-image>
+    <pre *ngSwitchDefault class="border border-primary">{{ item | json }}</pre>
+  </ng-container>
+  <div *ngIf="item.properties.tc_info_text" class="form-text">{{ item.properties.tc_info_text }}</div>
+</div>

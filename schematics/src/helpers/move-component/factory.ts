@@ -1,7 +1,6 @@
 import { strings } from '@angular-devkit/core';
 import { Rule, SchematicsException } from '@angular-devkit/schematics';
 import { tsquery } from '@phenomnomnominal/tsquery';
-import { getWorkspace } from '@schematics/angular/utility/workspace';
 import * as ts from 'typescript';
 
 import { readIntoSourceFile } from '../../utils/filesystem';
@@ -80,7 +79,7 @@ export function move(options: Options): Rule {
 
     const toClassName = strings.classify(toName) + 'Component';
 
-    const similarIndex = similarIdx(from, to);
+    const similarIndex = Math.min(similarIdx(from, to), from.lastIndexOf('/') + 1, to.lastIndexOf('/') + 1);
 
     const replacePath = (path: string) =>
       path
@@ -106,12 +105,8 @@ export function move(options: Options): Rule {
     };
     console.log('moving', options.from, '\n    to', options.to);
 
-    const workspace = await getWorkspace(host);
-    const project = workspace.projects.get(options.project);
-    const sourceRoot = project.sourceRoot;
-
     host.visit(file => {
-      if (file.startsWith(`/${sourceRoot}/app/`)) {
+      if (file.startsWith(`/src/app/`) || file.startsWith(`/projects/`)) {
         if (file.includes(from + '/')) {
           renames.push([file, replacePath(file)]);
 

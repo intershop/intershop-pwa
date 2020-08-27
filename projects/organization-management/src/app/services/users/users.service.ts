@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, combineLatest, forkJoin, throwError } from 'rxjs';
+import { Observable, forkJoin, throwError } from 'rxjs';
 import { concatMap, map, switchMap, take } from 'rxjs/operators';
 
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
+import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { B2bRoleData } from '../../models/b2b-role/b2b-role.interface';
@@ -125,9 +125,9 @@ export class UsersService {
   }
 
   getAvailableRoles(): Observable<B2bRole[]> {
-    return combineLatest([this.currentCustomer$, this.store.pipe(select(getLoggedInUser), whenTruthy(), take(1))]).pipe(
-      switchMap(([customer, user]) =>
-        this.apiService.get(`customers/${customer.customerNo}/users/${user.login}/roles`).pipe(
+    return this.currentCustomer$.pipe(
+      switchMap(customer =>
+        this.apiService.get(`customers/${customer.customerNo}/roles`).pipe(
           unpackEnvelope<B2bRoleData>('userRoles'),
           map(data => this.b2bRoleMapper.fromData(data))
         )
