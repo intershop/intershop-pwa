@@ -67,13 +67,14 @@ describe('Tacton Text Buttons Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should rendertext buttons if not hidden', () => {
+  it('should render text buttons if not hidden', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
       <div>info</div>
-      <div class="btn-group form-group" role="group">
-        <button class="btn btn-primary">yes</button><button class="btn btn-secondary">no</button>
+      <div class="btn-group btn-group-toggle form-group" data-toggle="buttons">
+        <label class="btn btn-primary active"><input type="radio" name="ID" id="b1" /> yes </label
+        ><label class="btn btn-primary"><input type="radio" name="ID" id="b2" /> no </label>
       </div>
     `);
   });
@@ -81,7 +82,7 @@ describe('Tacton Text Buttons Component', () => {
   it('should trigger value commit if button clicked', () => {
     fixture.detectChanges();
 
-    const button = fixture.debugElement.query(By.css('button.btn-secondary')).nativeElement;
+    const button = fixture.debugElement.query(By.css('#b2')).nativeElement;
 
     button.dispatchEvent(new Event('click'));
 

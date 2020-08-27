@@ -1,7 +1,7 @@
 <div class="d-flex flex-wrap align-items-end pb-2">
   <div *ngFor="let opt of parameter.domain?.elements" class="mr-3">
     <div class="border" [ngClass]="{ 'border-primary': opt.selected }">
-      <img [src]="getImageUrl(opt.properties.tc_component_picture) | async" />
+      <img [src]="getImageUrl(opt.properties.tc_component_picture) | async" (click)="change(opt.name)" />
     </div>
     <label>
       <input

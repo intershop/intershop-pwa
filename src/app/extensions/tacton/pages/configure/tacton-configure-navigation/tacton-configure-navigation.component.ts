@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { TactonFacade } from '../../../facades/tacton.facade';
 import { TactonNavigationTree } from '../../../models/tacton-navigation-tree/tacton-navigation-tree.model';
@@ -28,5 +29,9 @@ export class TactonConfigureNavigationComponent implements OnInit {
    */
   scrollIntoView(id: string) {
     document.querySelector(`#anchor-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+  }
+
+  isActive$(name: string) {
+    return this.tactonFacade.currentGroup$.pipe(map(current => current === name));
   }
 }

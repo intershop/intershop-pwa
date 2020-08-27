@@ -94,10 +94,19 @@ describe('Tacton Image Text Buttons Component', () => {
     fixture.detectChanges();
 
     const input = fixture.debugElement.query(By.css('input')).nativeElement;
-    input.value = '3';
+    input.value = component.parameter.domain.elements[1].name;
     input.dispatchEvent(new Event('change'));
 
     verify(tactonFacade.commitValue(anything(), anything())).once();
-    expect(capture(tactonFacade.commitValue).last()[1]).toMatchInlineSnapshot(`"3"`);
+    expect(capture(tactonFacade.commitValue).last()[1]).toMatchInlineSnapshot(`"i2"`);
+  });
+
+  it('should trigger value commit if clicked on image', () => {
+    fixture.detectChanges();
+
+    fixture.debugElement.queryAll(By.css('img'))[1].triggerEventHandler('click', undefined);
+
+    verify(tactonFacade.commitValue(anything(), anything())).once();
+    expect(capture(tactonFacade.commitValue).last()[1]).toMatchInlineSnapshot(`"i2"`);
   });
 });

@@ -21,56 +21,68 @@
 
         <div *ngIf="configuration.displayDescription" class="product-description">{{ product.shortDescription }}</div>
 
-        <ish-product-promotion
-          *ngIf="configuration.displayPromotions"
-          [product]="product"
-          displayType="simpleWithDetail"
-        ></ish-product-promotion>
+        <ng-container *ishFeature="'tacton'; else displayInteractions">
+          <ng-container *ishIsTactonProduct="product; else displayInteractions"></ng-container>
+        </ng-container>
 
-        <div class="product-tile-actions btn-group">
-          <ish-lazy-product-add-to-quote
-            *ngIf="configuration.displayAddToQuote"
+        <ng-template #displayInteractions>
+          <ish-product-promotion
+            *ngIf="configuration.displayPromotions"
             [product]="product"
-            displayType="icon"
-            class="btn-link"
-          ></ish-lazy-product-add-to-quote>
-          <ish-product-add-to-compare
-            *ngIf="configuration.displayAddToCompare"
-            [isInCompareList]="isInCompareList"
-            displayType="icon"
-            class="btn-link"
-            (compareToggle)="toggleCompare()"
-          ></ish-product-add-to-compare>
-          <ish-lazy-product-add-to-wishlist
-            *ngIf="configuration.displayAddToWishlist"
-            displayType="icon"
-            class="btn-link"
-            [product]="product"
-          ></ish-lazy-product-add-to-wishlist>
-          <ish-lazy-product-add-to-order-template
-            *ngIf="configuration.displayAddToOrderTemplate"
-            displayType="icon"
-            [quantity]="1"
-            class="btn-link"
-            [product]="product"
-          ></ish-lazy-product-add-to-order-template>
-        </div>
+            displayType="simpleWithDetail"
+          ></ish-product-promotion>
+
+          <div class="product-tile-actions btn-group">
+            <ish-lazy-product-add-to-quote
+              *ngIf="configuration.displayAddToQuote"
+              [product]="product"
+              displayType="icon"
+              class="btn-link"
+            ></ish-lazy-product-add-to-quote>
+            <ish-product-add-to-compare
+              *ngIf="configuration.displayAddToCompare"
+              [isInCompareList]="isInCompareList"
+              displayType="icon"
+              class="btn-link"
+              (compareToggle)="toggleCompare()"
+            ></ish-product-add-to-compare>
+            <ish-lazy-product-add-to-wishlist
+              *ngIf="configuration.displayAddToWishlist"
+              displayType="icon"
+              class="btn-link"
+              [product]="product"
+            ></ish-lazy-product-add-to-wishlist>
+            <ish-lazy-product-add-to-order-template
+              *ngIf="configuration.displayAddToOrderTemplate"
+              displayType="icon"
+              [quantity]="1"
+              class="btn-link"
+              [product]="product"
+            ></ish-lazy-product-add-to-order-template>
+          </div>
+        </ng-template>
       </div>
 
       <div class="col-12 col-md-5 text-md-right">
-        <ish-product-price
-          *ngIf="configuration.displayPrice"
-          [product]="product"
-          [showInformationalPrice]="true"
-        ></ish-product-price>
-        <ish-product-inventory
-          *ngIf="configuration.displayInventory && !isMasterProduct(product)"
-          [product]="product"
-        ></ish-product-inventory>
-        <ish-product-shipment
-          *ngIf="configuration.displayShipment && !isMasterProduct(product)"
-          [product]="product"
-        ></ish-product-shipment>
+        <ng-container *ishFeature="'tacton'; else standardInformation">
+          <ng-container *ishIsTactonProduct="product; else standardInformation"></ng-container>
+        </ng-container>
+
+        <ng-template #standardInformation>
+          <ish-product-price
+            *ngIf="configuration.displayPrice"
+            [product]="product"
+            [showInformationalPrice]="true"
+          ></ish-product-price>
+          <ish-product-inventory
+            *ngIf="configuration.displayInventory && !isMasterProduct(product)"
+            [product]="product"
+          ></ish-product-inventory>
+          <ish-product-shipment
+            *ngIf="configuration.displayShipment && !isMasterProduct(product)"
+            [product]="product"
+          ></ish-product-shipment>
+        </ng-template>
 
         <ish-product-variation-select
           *ngIf="variationOptions && configuration.displayVariations"

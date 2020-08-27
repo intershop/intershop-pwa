@@ -88,24 +88,27 @@ describe('Tacton Group Component', () => {
 
     expect(element).toMatchInlineSnapshot(`
       <h2 id="anchor-root">g1</h2>
-      <ish-tacton-parameter></ish-tacton-parameter
-      ><ish-tacton-group ng-reflect-is-sub-group="true"
+      <ish-tacton-parameter></ish-tacton-parameter><span ishintersectionobserver=""></span
+      ><ish-tacton-group ng-reflect-level="1"
         ><span class="anchor" id="anchor-G11"></span>
-        <h3>g11</h3>
+        <h3 ishintersectionobserver="">g11</h3>
         <ish-tacton-parameter></ish-tacton-parameter></ish-tacton-group
-      ><ish-tacton-group ng-reflect-is-sub-group="true"></ish-tacton-group
-      ><ish-tacton-parameter></ish-tacton-parameter
-      ><ish-tacton-group ng-reflect-is-sub-group="true"
+      ><span ishintersectionobserver=""></span><ish-tacton-group ng-reflect-level="1"></ish-tacton-group
+      ><span ishintersectionobserver=""></span><ish-tacton-parameter></ish-tacton-parameter
+      ><span ishintersectionobserver=""></span
+      ><ish-tacton-group ng-reflect-level="1"
         ><span class="anchor" id="anchor-G13"></span>
-        <h3>g13</h3>
+        <h3 ishintersectionobserver="">g13</h3>
         <ish-tacton-parameter></ish-tacton-parameter></ish-tacton-group
-      ><ish-tacton-group ng-reflect-is-sub-group="true"
+      ><span ishintersectionobserver=""></span
+      ><ish-tacton-group ng-reflect-level="1"
         ><span class="anchor" id="anchor-G14"></span>
-        <h3>g14</h3>
+        <h3 ishintersectionobserver="">g14</h3>
         <ish-tacton-parameter></ish-tacton-parameter></ish-tacton-group
-      ><ish-tacton-group ng-reflect-is-sub-group="true"
+      ><span ishintersectionobserver=""></span
+      ><ish-tacton-group ng-reflect-level="1"
         ><span class="anchor" id="anchor-G15"></span>
-        <h3>g15</h3>
+        <h3 ishintersectionobserver="">g15</h3>
         <ish-tacton-parameter></ish-tacton-parameter
       ></ish-tacton-group>
     `);
