@@ -22,12 +22,6 @@ describe('Payment Concardis Creditcard Cvc Detail Component', () => {
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) }],
     }).compileComponents();
-    // .then(() => {
-    //   fixture = TestBed.createComponent(PaymentConcardisCreditcardCvcDetailComponent);
-    //   component = fixture.componentInstance;
-    //   element = fixture.nativeElement;
-    //   component.cvcDetailForm = component.cvcDetailForm.get('cvcDetail').value;
-    // });
   }));
 
   beforeEach(() => {
