@@ -12,3 +12,5 @@ export const loadGroupsSuccess = createAction(
   '[Organization Hierarchies API] Load Groups Success',
   payload<{ nodeTree: NodeTree }>()
 );
+
+export const createGroup = createAction('[Organization Hierarchies API] Add Group', payload<{ node: NodeTree }>());

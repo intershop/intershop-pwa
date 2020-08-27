@@ -37,6 +37,8 @@ export class HierarchiesCreateGroupPageComponent implements OnInit {
       markAsDirtyRecursive(this.form);
       return;
     }
+
+    this.organizationManagementFacade.addGroup(undefined);
   }
 
   get formDisabled() {
