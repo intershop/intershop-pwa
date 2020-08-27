@@ -98,7 +98,7 @@ describe('Requisition Management Breadcrumb Service', () => {
     });
 
     it('should set breadcrumb for requisitions buyer detail view', done => {
-      router.navigateByUrl('/requisitions/buyer/12345;requisitionStatus=pending');
+      router.navigateByUrl('/requisitions/buyer/12345;status=pending');
       requisitionManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
         expect(breadcrumbData).toMatchInlineSnapshot(`
           Array [
@@ -107,7 +107,7 @@ describe('Requisition Management Breadcrumb Service', () => {
               "link": Array [
                 "/my-account/buyer",
                 Object {
-                  "requisitionStatus": "pending",
+                  "status": "pending",
                 },
               ],
             },
@@ -121,7 +121,7 @@ describe('Requisition Management Breadcrumb Service', () => {
     });
 
     it('should set breadcrumb for requisitions buyer detail view', done => {
-      router.navigateByUrl('/requisitions/approver/12345;requisitionStatus=rejected');
+      router.navigateByUrl('/requisitions/approver/12345;status=rejected');
       requisitionManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
         expect(breadcrumbData).toMatchInlineSnapshot(`
           Array [
@@ -130,7 +130,7 @@ describe('Requisition Management Breadcrumb Service', () => {
               "link": Array [
                 "/my-account/approver",
                 Object {
-                  "requisitionStatus": "rejected",
+                  "status": "rejected",
                 },
               ],
             },

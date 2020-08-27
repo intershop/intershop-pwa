@@ -12,6 +12,6 @@ export class RequisitionsListComponent {
    * The requisitions to be listed
    */
   @Input() requisitions: Requisition[];
-  @Input() requisitionStatus: RequisitionStatus = 'pending';
+  @Input() status: RequisitionStatus = 'pending';
   @Input() columnsToDisplay: string[];
 }

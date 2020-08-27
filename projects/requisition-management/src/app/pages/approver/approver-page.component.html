@@ -4,25 +4,19 @@
 
 <ul ngbNav class="nav-tabs" [(activeId)]="status">
   <li ngbNavItem="pending">
-    <a ngbNavLink [routerLink]="['../approver', { requisitionStatus: 'pending' }]" data-testing-id="tab-link-pending">{{
+    <a ngbNavLink [routerLink]="['../approver', { status: 'pending' }]" data-testing-id="tab-link-pending">{{
       'account.requisitions.approvals.navtab.waiting' | translate
     }}</a>
   </li>
   <li ngbNavItem="approved">
-    <a
-      ngbNavLink
-      [routerLink]="['../approver', { requisitionStatus: 'approved' }]"
-      data-testing-id="tab-link-approved"
-      >{{ 'account.requisitions.approvals.navtab.approved' | translate }}</a
-    >
+    <a ngbNavLink [routerLink]="['../approver', { status: 'approved' }]" data-testing-id="tab-link-approved">{{
+      'account.requisitions.approvals.navtab.approved' | translate
+    }}</a>
   </li>
   <li ngbNavItem="rejected">
-    <a
-      ngbNavLink
-      [routerLink]="['../approver', { requisitionStatus: 'rejected' }]"
-      data-testing-id="tab-link-rejected"
-      >{{ 'account.requisitions.approvals.navtab.rejected' | translate }}</a
-    >
+    <a ngbNavLink [routerLink]="['../approver', { status: 'rejected' }]" data-testing-id="tab-link-rejected">{{
+      'account.requisitions.approvals.navtab.rejected' | translate
+    }}</a>
   </li>
 </ul>
 
@@ -31,7 +25,7 @@
 
   <ish-requisitions-list
     [requisitions]="requisitions$ | async"
-    [requisitionStatus]="status"
+    [status]="status"
     [columnsToDisplay]="columnsToDisplay"
   ></ish-requisitions-list>
 

@@ -12,7 +12,7 @@
       </th>
       <td cdk-cell *cdkCellDef="let requisition" [attr.data-th]="'account.approvallist.table.id_of_order' | translate">
         <!-- TODO: routing must work for standalone usage, needs to be more relative without the 'account' part -->
-        <a [routerLink]="[requisition.id, { requisitionStatus: requisitionStatus }]">{{ requisition.requisitionNo }}</a>
+        <a [routerLink]="[requisition.id, { status: status }]">{{ requisition.requisitionNo }}</a>
       </td>
     </ng-container>
 

@@ -36,14 +36,14 @@ export class RequisitionManagementBreadcrumbService {
             whenTruthy(),
             withLatestFrom(
               this.translateService.get('approval.details.breadcrumb.order.label'),
-              this.store.pipe(select(selectRouteParam('requisitionStatus')))
+              this.store.pipe(select(selectRouteParam('status')))
             ),
             map(([req, translation, status]) =>
               path.includes('/approver/')
                 ? [
                     {
                       key: 'account.requisitions.approvals',
-                      link: [prefix + '/approver', { requisitionStatus: status }],
+                      link: [prefix + '/approver', { status }],
                     },
                     {
                       text: `${translation} - ${req.requisitionNo}`,
@@ -52,7 +52,7 @@ export class RequisitionManagementBreadcrumbService {
                 : [
                     {
                       key: 'account.requisitions.requisitions',
-                      link: [prefix + '/buyer', { requisitionStatus: status }],
+                      link: [prefix + '/buyer', { status }],
                     },
                     {
                       text: `${translation} - ${req.requisitionNo}`,

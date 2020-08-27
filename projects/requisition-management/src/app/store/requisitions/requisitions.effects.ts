@@ -79,7 +79,7 @@ export class RequisitionsEffects {
               /* ToDo: use only relative routes */
               this.router.navigate([
                 `/account/requisitions/approver/${requisition.id}`,
-                { requisitionStatus: requisition.approval?.statusCode },
+                { status: requisition.approval?.statusCode },
               ])
             ),
             map(requisition => updateRequisitionStatusSuccess({ requisition })),

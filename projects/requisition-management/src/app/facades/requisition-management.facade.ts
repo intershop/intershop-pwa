@@ -25,13 +25,13 @@ export class RequisitionManagementFacade {
   requisitionsLoading$ = this.store.pipe(select(getRequisitionsLoading));
 
   requisitionsStatus$ = this.store.pipe(
-    select(selectRouteParam('requisitionStatus')),
+    select(selectRouteParam('status')),
     map(status => status || 'pending')
   );
   selectedRequisition$ = this.store.pipe(select(getRequisition));
 
   requisitions$ = combineLatest([
-    this.store.pipe(select(selectRouteParam('requisitionStatus')), distinctUntilChanged()),
+    this.store.pipe(select(selectRouteParam('status')), distinctUntilChanged()),
     this.store.pipe(
       select(selectUrl),
       map(url => (url.includes('/buyer') ? 'buyer' : 'approver')),
