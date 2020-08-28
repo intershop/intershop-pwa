@@ -1,4 +1,7 @@
-<p>Quotes</p>
-<div *ngFor="let q of quotes$ | async; trackBy: trackByFn">
-  <pre>{{ q | json }}</pre>
-</div>
+<p>Quoting State</p>
+
+<ish-error-message [error]="error$ | async"></ish-error-message>
+
+<pre>{{ state$ | async | json }}</pre>
+
+<ish-loading *ngIf="loading$ | async"></ish-loading>

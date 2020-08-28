@@ -53,3 +53,5 @@ export interface QuoteRequest extends QuoteBase<QuoteRequestItem | QuoteItemStub
 
   submittedDate?: number;
 }
+
+export type QuotingEntity = QuoteStub | Quote | QuoteRequest;

@@ -3,11 +3,13 @@ import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
+import { QuotingEffects } from './quoting/quoting.effects';
+import { quotingReducer } from './quoting/quoting.reducer';
 import { Quoting2State } from './quoting2-store';
 
-const quoting2Reducers: ActionReducerMap<Quoting2State> = {};
+const quoting2Reducers: ActionReducerMap<Quoting2State> = { quoting: quotingReducer };
 
-const quoting2Effects = [];
+const quoting2Effects = [QuotingEffects];
 
 // not-dead-code
 @NgModule({
