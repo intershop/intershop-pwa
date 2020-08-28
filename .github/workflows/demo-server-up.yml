@@ -67,7 +67,7 @@ jobs:
         run: |
           set -ex
           pip install -r ./.github/scripts/requirements.txt
-          python ./.github/scripts/docker-compose.py $ICM_BASE_URL "$DOCKER_IMAGE_SSR" "$DOCKER_IMAGE_NGINX"
+          python ./.github/scripts/docker-compose.py $ICM_BASE_URL "$DOCKER_IMAGE_SSR" "$DOCKER_IMAGE_NGINX" ${{ secrets.TACTON }}
           az webapp config container set --resource-group $GROUP --name $APP --multicontainer-config-type compose --multicontainer-config-file dist/docker-compose.yml  || az webapp create --resource-group $GROUP --plan ${{ secrets.AZURE_DEMO_APPSERVICEPLAN }} --name $APP --multicontainer-config-type compose --multicontainer-config-file dist/docker-compose.yml
           az webapp config container set --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --docker-registry-server-url ${{ secrets.DOCKER_REGISTRY }} --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --name $APP --resource-group $GROUP
       - name: Find Pull Request
@@ -83,5 +83,4 @@ jobs:
           issue-number: ${{ steps.find-pull-request.outputs.number }}
           body: |
             Azure Demo Servers are available:
-            - [Universal B2B](http://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/en/home)
-            - [Universal B2C](http://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/b2c/home)
+            - [Universal B2B with Tacton Integration](http://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/en/home)

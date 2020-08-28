@@ -24,9 +24,22 @@ services:
       #   en_US: /en
       #   de_DE: /de
       #   fr_FR: /fr
-      # FEATURES: |
-      #   - compare
-      #   - rating
+      FEATURES: |
+        - compare
+        - contactUs
+        - rating
+        - recently
+        - storeLocator
+        - businessCustomerRegistration
+        - costCenters
+        - messageToMerchant
+        - maps
+        - productNotifications
+        - punchout
+        - quickorder
+        - quoting
+        - orderTemplates
+        - tacton
       # IDENTITY_PROVIDER: 'Auth0'
       # IDENTITY_PROVIDERS: |
       #   Auth0:
