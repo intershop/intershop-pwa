@@ -8,6 +8,9 @@ import { QuotingHelper } from '../../models/quoting/quoting.helper';
 import { QuotingEntity } from '../../models/quoting/quoting.model';
 
 import {
+  deleteQuotingEntity,
+  deleteQuotingEntityFail,
+  deleteQuotingEntitySuccess,
   loadQuoting,
   loadQuotingDetail,
   loadQuotingDetailSuccess,
@@ -31,9 +34,10 @@ const initialState: QuotingState = quotingAdapter.getInitialState({
 
 export const quotingReducer = createReducer(
   initialState,
-  setLoadingOn(loadQuoting, loadQuotingDetail),
-  unsetLoadingAndErrorOn(loadQuotingSuccess, loadQuotingDetailSuccess),
-  setErrorOn(loadQuotingFail),
+  setLoadingOn(loadQuoting, loadQuotingDetail, deleteQuotingEntity),
+  unsetLoadingAndErrorOn(loadQuotingSuccess, loadQuotingDetailSuccess, deleteQuotingEntitySuccess),
+  setErrorOn(loadQuotingFail, deleteQuotingEntityFail),
   on(loadQuotingSuccess, (state, action) => quotingAdapter.upsertMany(action.payload.quoting, state)),
-  on(loadQuotingDetailSuccess, (state, action) => quotingAdapter.upsertOne(action.payload.quote, state))
+  on(loadQuotingDetailSuccess, (state, action) => quotingAdapter.upsertOne(action.payload.quote, state)),
+  on(deleteQuotingEntitySuccess, (state, action) => quotingAdapter.removeOne(action.payload.id, state))
 );

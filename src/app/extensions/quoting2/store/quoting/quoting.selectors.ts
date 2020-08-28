@@ -10,4 +10,8 @@ export const getQuotingLoading = createSelector(getQuotingState, state => !!stat
 
 export const getQuotingError = createSelector(getQuotingState, state => state.error);
 
-export const { selectAll: getQuotingEntities } = quotingAdapter.getSelectors(getQuotingState);
+const { selectAll, selectEntities } = quotingAdapter.getSelectors(getQuotingState);
+
+export const getQuotingEntities = selectAll;
+
+export const getQuotingEntity = (id: string) => createSelector(selectEntities, entities => entities[id]);

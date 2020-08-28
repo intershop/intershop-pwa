@@ -4,11 +4,17 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { QuotingEntity } from '../../models/quoting/quoting.model';
+import { QuoteStub, QuotingEntity } from '../../models/quoting/quoting.model';
 import { Quoting2StoreModule } from '../quoting2-store.module';
 
-import { loadQuoting, loadQuotingFail, loadQuotingSuccess } from './quoting.actions';
-import { getQuotingEntities, getQuotingError, getQuotingLoading } from './quoting.selectors';
+import {
+  deleteQuotingEntity,
+  deleteQuotingEntitySuccess,
+  loadQuoting,
+  loadQuotingFail,
+  loadQuotingSuccess,
+} from './quoting.actions';
+import { getQuotingEntities, getQuotingEntity, getQuotingError, getQuotingLoading } from './quoting.selectors';
 
 describe('Quoting Selectors', () => {
   let store$: StoreWithSnapshots;
@@ -33,10 +39,11 @@ describe('Quoting Selectors', () => {
 
     it('should not have entities when in initial state', () => {
       expect(getQuotingEntities(store$.state)).toBeEmpty();
+      expect(getQuotingEntity('1')(store$.state)).toBeUndefined();
     });
   });
 
-  describe('LoadQuoting', () => {
+  describe('loadQuoting', () => {
     const action = loadQuoting();
 
     beforeEach(() => {
@@ -65,6 +72,32 @@ describe('Quoting Selectors', () => {
 
       it('should have entities when successfully loading', () => {
         expect(getQuotingEntities(store$.state)).not.toBeEmpty();
+        expect(getQuotingEntity('1')(store$.state)).toBeTruthy();
+      });
+
+      describe('deleteQuotingEntity', () => {
+        beforeEach(() => {
+          store$.dispatch(deleteQuotingEntity({ entity: { id: '1' } as QuoteStub }));
+        });
+
+        it('should set loading to true', () => {
+          expect(getQuotingLoading(store$.state)).toBeTrue();
+        });
+
+        describe('deleteQuotingEntitySuccess', () => {
+          beforeEach(() => {
+            store$.dispatch(deleteQuotingEntitySuccess({ id: '1' }));
+          });
+
+          it('should set loading to false', () => {
+            expect(getQuotingLoading(store$.state)).toBeFalse();
+          });
+
+          it('should remove entity when reducing success message', () => {
+            expect(getQuotingEntities(store$.state)).not.toBeEmpty();
+            expect(getQuotingEntity('1')(store$.state)).toBeUndefined();
+          });
+        });
       });
     });
 
@@ -86,6 +119,7 @@ describe('Quoting Selectors', () => {
 
       it('should not have entities when reducing error', () => {
         expect(getQuotingEntities(store$.state)).toBeEmpty();
+        expect(getQuotingEntity('1')(store$.state)).toBeUndefined();
       });
     });
   });

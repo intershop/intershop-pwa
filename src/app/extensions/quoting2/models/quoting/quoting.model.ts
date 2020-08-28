@@ -42,6 +42,7 @@ interface QuoteBase<ItemType> extends QuoteStub {
 export interface Quote extends QuoteBase<QuoteItem> {
   type: 'Quote';
 
+  rejected: boolean;
   validFromDate: number;
   validToDate: number;
   sellerComment: string;
@@ -55,3 +56,5 @@ export interface QuoteRequest extends QuoteBase<QuoteRequestItem | QuoteItemStub
 }
 
 export type QuotingEntity = QuoteStub | Quote | QuoteRequest;
+
+export type QuoteStatus = 'Rejected' | 'Expired' | 'Responded' | 'Submitted' | 'New' | 'Unknown';

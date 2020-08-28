@@ -35,6 +35,8 @@ interface QuoteLineItemResponse extends LineItemBaseData {
 
 export interface QuoteResponse extends QuoteBaseData<QuoteLineItemResponse> {
   type: 'Quote';
+
+  rejected?: boolean;
   sellerComment: string;
 
   validFromDate: number;

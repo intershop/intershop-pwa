@@ -8,7 +8,7 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { QuoteStub } from '../../models/quoting/quoting.model';
 import { QuotingService } from '../../services/quoting/quoting.service';
 
-import { loadQuoting, loadQuotingDetail } from './quoting.actions';
+import { deleteQuotingEntity, loadQuoting, loadQuotingDetail } from './quoting.actions';
 import { QuotingEffects } from './quoting.effects';
 
 describe('Quoting Effects', () => {
@@ -51,6 +51,18 @@ describe('Quoting Effects', () => {
 
       effects.loadQuotingDetail$.subscribe(() => {
         verify(quotingService.getQuoteDetails(anything(), 'Detail')).once();
+        done();
+      });
+    });
+  });
+
+  describe('deleteQuoting$', () => {
+    it('should delete quote via quoting service when triggered', done => {
+      when(quotingService.deleteQuote(anything())).thenCall(({ id }) => of(id));
+      actions$ = of(deleteQuotingEntity({ entity: { id: 'ID' } as QuoteStub }));
+
+      effects.deleteQuoting$.subscribe(() => {
+        verify(quotingService.deleteQuote(anything())).once();
         done();
       });
     });

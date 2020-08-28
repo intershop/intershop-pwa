@@ -1,0 +1,56 @@
+<h1>{{ 'quote.list.heading' | translate }}</h1>
+
+<ng-container *ngIf="quotes.length > 0; else emptyBlock">
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>{{ 'quote.list.table.quote_no' | translate }}</th>
+          <th>{{ 'quote.list.table.name' | translate }}</th>
+          <th>{{ 'quote.list.table.line_items' | translate }}</th>
+          <th>{{ 'quote.list.table.creation_date' | translate }}</th>
+          <th>{{ 'quote.list.table.expiration_date' | translate }}</th>
+          <th>{{ 'quote.list.table.status' | translate }}</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tr *ngFor="let quote of quotes">
+        <td>
+          <a [routerLink]="[quote.id]">{{ quote.number }}</a>
+        </td>
+        <td>
+          <a [routerLink]="[quote.id]">{{ quote.displayName }}</a>
+        </td>
+        <td>{{ quote.items?.length }}</td>
+        <td>{{ quote.creationDate | ishDate: 'shortDate' }}</td>
+        <td><ish-quote-expiration-date [quote]="quote"></ish-quote-expiration-date></td>
+        <td align="left" nowrap="nowrap"><ish-quote-state [quoteId]="quote.id"></ish-quote-state></td>
+        <td class="text-right">
+          <a
+            class="btn-tool"
+            [title]="'quote.list.delete.button.delete.label' | translate"
+            (click)="modalDialog.show(quote)"
+          >
+            <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+          </a>
+        </td>
+      </tr>
+
+      <ish-modal-dialog
+        #modalDialog
+        [options]="{
+          titleText: 'quote.list.modaldialog.title' | translate,
+          confirmText: 'quote.list.delete.button.yes.label' | translate,
+          rejectText: 'quote.list.delete.button.no.label' | translate
+        }"
+        (confirmed)="onDeleteItem($event)"
+      >
+        <p>{{ 'quote.list.delete.heading' | translate: { '0': asQuote(modalDialog.data)?.displayName } }}</p>
+        <p>{{ 'quote.list.delete.do_you_really_want_to_delete.text' | translate }}</p>
+      </ish-modal-dialog>
+    </table>
+  </div>
+</ng-container>
+
+<ng-template #emptyBlock>{{ 'quote.list.empty' | translate }}</ng-template>

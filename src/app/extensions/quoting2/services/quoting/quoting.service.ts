@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { flatten } from 'lodash-es';
 import { combineLatest, defer, forkJoin, iif, of } from 'rxjs';
-import { concatMap, filter, map, switchMap, take } from 'rxjs/operators';
+import { concatMap, filter, map, mapTo, switchMap, take } from 'rxjs/operators';
 
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
 
 import { QuoteData } from '../../models/quoting/quoting.interface';
 import { QuotingMapper } from '../../models/quoting/quoting.mapper';
-import { QuoteCompletenessLevel, QuoteStub } from '../../models/quoting/quoting.model';
+import { QuoteCompletenessLevel, QuoteStub, QuotingEntity } from '../../models/quoting/quoting.model';
 
 @Injectable({ providedIn: 'root' })
 export class QuotingService {
@@ -66,6 +66,22 @@ export class QuotingService {
                 ),
                 map((res: QuoteData) => this.quoteMapper.fromData(res, 'QuoteRequest'))
               )
+      )
+    );
+  }
+
+  deleteQuote(entity: QuotingEntity) {
+    return combineLatest([this.store.pipe(select(getLoggedInUser)), this.store.pipe(select(getLoggedInCustomer))]).pipe(
+      filter(([user, customer]) => !!user && !!customer),
+      take(1),
+      concatMap(([user, customer]) =>
+        this.apiService
+          .delete(
+            `customers/${customer.customerNo}/users/${user.login}/${
+              entity.type === 'Quote' ? 'quotes' : 'quoterequests'
+            }/${entity.id}`
+          )
+          .pipe(mapTo(entity.id))
       )
     );
   }

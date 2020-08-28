@@ -19,6 +19,21 @@ export const loadQuotingDetail = createAction(
 );
 
 export const loadQuotingDetailSuccess = createAction(
-  '[Quoting] Load Quoting Detail Success',
+  '[Quoting API] Load Quoting Detail Success',
   payload<{ quote: QuotingEntity }>()
+);
+
+export const deleteQuotingEntity = createAction(
+  '[Quoting] Delete Quoting Entity',
+  payload<{ entity: QuotingEntity }>()
+);
+
+export const deleteQuotingEntityFail = createAction(
+  '[Quoting API] Delete Quoting Entity Fail',
+  httpError<{ id: string }>()
+);
+
+export const deleteQuotingEntitySuccess = createAction(
+  '[Quoting API] Delete Quoting Entity Success',
+  payload<{ id: string }>()
 );

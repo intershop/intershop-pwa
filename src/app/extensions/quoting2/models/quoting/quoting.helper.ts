@@ -1,4 +1,4 @@
-import { Quote, QuoteRequest, QuoteStub, QuotingEntity } from './quoting.model';
+import { Quote, QuoteRequest, QuoteStatus, QuoteStub, QuotingEntity } from './quoting.model';
 
 export class QuotingHelper {
   static isStub(entity: QuotingEntity): entity is QuoteStub {
@@ -9,15 +9,30 @@ export class QuotingHelper {
     return !QuotingHelper.isStub(entity);
   }
 
+  private static isQuote(entity: QuotingEntity): entity is Quote {
+    return QuotingHelper.isNotStub(entity) && entity.type === 'Quote';
+  }
+
   /**
-   * sorts entity stubs to the bottom and all other quotes and quote requests descending by number
+   * sorts entity stubs to the bottom and all other quotes and quote requests descending by creationDate
    */
   static sort(a: QuotingEntity, b: QuotingEntity): number {
     if (QuotingHelper.isStub(a) !== QuotingHelper.isStub(b)) {
       return QuotingHelper.isStub(a) ? 1 : -1;
     } else if (QuotingHelper.isNotStub(a) && QuotingHelper.isNotStub(b)) {
-      return b.number.localeCompare(a.number);
+      return b.creationDate - a.creationDate;
     }
     return 0;
+  }
+
+  static state(entity: QuotingEntity): QuoteStatus {
+    if (QuotingHelper.isNotStub(entity)) {
+      if (QuotingHelper.isQuote(entity)) {
+        return entity.rejected ? 'Rejected' : entity.validToDate < new Date().getTime() ? 'Expired' : 'Responded';
+      } else {
+        return entity.submittedDate ? 'Submitted' : 'New';
+      }
+    }
+    return 'Unknown';
   }
 }

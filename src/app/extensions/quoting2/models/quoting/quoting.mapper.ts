@@ -32,6 +32,7 @@ export class QuotingMapper {
           creationDate: data.creationDate,
           total: PriceMapper.fromData(data.total),
 
+          rejected: data.rejected,
           validFromDate: data.validFromDate,
           validToDate: data.validToDate,
           sellerComment: data.sellerComment,

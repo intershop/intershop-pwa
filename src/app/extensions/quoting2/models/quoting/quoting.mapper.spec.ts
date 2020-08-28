@@ -165,6 +165,7 @@ describe('Quoting Mapper', () => {
             "type": "Money",
             "value": 1054.95,
           },
+          "rejected": undefined,
           "sellerComment": "",
           "total": Object {
             "currency": "USD",

@@ -9,6 +9,7 @@ import { ApiService } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
 
 import { QuoteData } from '../../models/quoting/quoting.interface';
+import { QuoteStub } from '../../models/quoting/quoting.model';
 
 import { QuotingService } from './quoting.service';
 
@@ -45,15 +46,15 @@ describe('Quoting Service', () => {
           verify(apiService.get(anything())).twice();
 
           expect(capture(apiService.get).beforeLast()).toMatchInlineSnapshot(`
-                      Array [
-                        "customers/company/users/user@company/quoterequests",
-                      ]
-                  `);
+            Array [
+              "customers/company/users/user@company/quoterequests",
+            ]
+          `);
           expect(capture(apiService.get).last()).toMatchInlineSnapshot(`
-                      Array [
-                        "customers/company/users/user@company/quotes",
-                      ]
-                  `);
+            Array [
+              "customers/company/users/user@company/quotes",
+            ]
+          `);
         },
         fail,
         done
@@ -116,14 +117,50 @@ describe('Quoting Service', () => {
           () => {
             verify(apiService.get(anything())).once();
             expect(capture(apiService.get).last()).toMatchInlineSnapshot(`
-            Array [
-              "customers/company/users/user@company/quoterequests/123",
-            ]
-          `);
+              Array [
+                "customers/company/users/user@company/quoterequests/123",
+              ]
+            `);
           },
           fail,
           done
         );
+    });
+  });
+
+  describe('deleteQuote', () => {
+    beforeEach(() => {
+      when(apiService.delete(anything())).thenReturn(of({ id: 'ID' } as QuoteData));
+    });
+
+    it('should use quote API for deleting quotes', done => {
+      quotingService.deleteQuote({ type: 'Quote', id: 'ID' } as QuoteStub).subscribe(
+        () => {
+          verify(apiService.delete(anything())).once();
+          expect(capture(apiService.delete).last()).toMatchInlineSnapshot(`
+            Array [
+              "customers/company/users/user@company/quotes/ID",
+            ]
+          `);
+        },
+        fail,
+        done
+      );
+    });
+
+    it('should use quote request API for deleting quote requests', done => {
+      quotingService.deleteQuote({ type: 'QuoteRequest', id: 'ID' } as QuoteStub).subscribe(
+        () => {
+          verify(apiService.delete(anything())).once();
+          expect(capture(apiService.delete).last()).toMatchInlineSnapshot(`
+            Array [
+              "customers/company/users/user@company/quoterequests/ID",
+            ]
+          `);
+        },
+        fail,
+        done
+      );
     });
   });
 });

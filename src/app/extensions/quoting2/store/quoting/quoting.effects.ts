@@ -4,11 +4,14 @@ import { Store } from '@ngrx/store';
 import { map, mapTo, mergeMap, switchMap, take } from 'rxjs/operators';
 
 import { ofUrl } from 'ish-core/store/core/router';
-import { mapErrorToAction, mapToPayload } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
 
 import { QuotingService } from '../../services/quoting/quoting.service';
 
 import {
+  deleteQuotingEntity,
+  deleteQuotingEntityFail,
+  deleteQuotingEntitySuccess,
   loadQuoting,
   loadQuotingDetail,
   loadQuotingDetailSuccess,
@@ -45,5 +48,20 @@ export class QuotingEffects {
     )
   );
 
-  loadQuotesOnListPage$ = createEffect(() => this.store.pipe(ofUrl(/\/quote-debug$/), take(1), mapTo(loadQuoting())));
+  deleteQuoting$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteQuotingEntity),
+      mapToPayloadProperty('entity'),
+      mergeMap(entity =>
+        this.quotingService.deleteQuote(entity).pipe(
+          map(id => deleteQuotingEntitySuccess({ id })),
+          mapErrorToAction(deleteQuotingEntityFail, { id: entity.id })
+        )
+      )
+    )
+  );
+
+  loadQuotesOnListPage$ = createEffect(() =>
+    this.store.pipe(ofUrl(/\/quote-(debug|list)$/), take(1), mapTo(loadQuoting()))
+  );
 }
