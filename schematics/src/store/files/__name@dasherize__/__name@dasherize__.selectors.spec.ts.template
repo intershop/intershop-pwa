@@ -40,7 +40,7 @@ describe('<%= classify(name) %> Selectors', () => {
     });
 <% } %>  });
 
-  describe('Load<%= classify(name) %>', () =>{
+  describe('load<%= classify(name) %>', () =>{
     const action = load<%= classify(name) %>();
 
     beforeEach(() => {
