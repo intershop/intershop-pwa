@@ -38,16 +38,19 @@ export class QuotingMapper {
           sellerComment: data.sellerComment,
           originTotal: PriceMapper.fromData(data.originTotal),
 
-          items: data.items.map(item => ({
+          items: data.items?.map(item => ({
             id: undefined,
             productSKU: item.productSKU,
-            quantity: item.quantity.value,
-            singlePrice: PriceMapper.fromData(item.singlePrice),
-            totalPrice: PriceMapper.fromData(item.totalPrice),
+            quantity: item.quantity,
 
-            originQuantity: item.originQuantity.value,
-            originSinglePrice: PriceMapper.fromData(item.originSinglePrice),
-            originTotalPrice: PriceMapper.fromData(item.originTotalPrice),
+            originQuantity: item.originQuantity,
+
+            singleBasePrice: PriceMapper.fromData(item.singlePrice),
+            originSingleBasePrice: PriceMapper.fromData(item.originSinglePrice),
+            totals: {
+              total: PriceMapper.fromData(item.totalPrice),
+              originTotal: PriceMapper.fromData(item.originTotalPrice),
+            },
           })),
         };
         return mapped;
@@ -65,8 +68,9 @@ export class QuotingMapper {
           total: PriceMapper.fromData(data.total),
 
           submittedDate: data.submittedDate,
+          editable: !!data.editable,
 
-          items: data.items.map(item => {
+          items: data.items?.map(item => {
             if (item.type === 'Link') {
               return { id: item.title };
             } else {
@@ -74,9 +78,9 @@ export class QuotingMapper {
               return {
                 id: itemData.id,
                 productSKU: itemData.productSKU,
-                quantity: itemData.quantity.value,
-                singlePrice: PriceMapper.fromData(itemData.singlePrice),
-                totalPrice: PriceMapper.fromData(itemData.totalPrice),
+                quantity: itemData.quantity,
+                singleBasePrice: PriceMapper.fromData(itemData.singlePrice),
+                totals: { total: PriceMapper.fromData(itemData.totalPrice) },
               };
             }
           }),

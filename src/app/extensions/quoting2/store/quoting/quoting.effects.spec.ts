@@ -1,23 +1,30 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { Observable, of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
+
+import { Basket } from 'ish-core/models/basket/basket.model';
+import { BasketService } from 'ish-core/services/basket/basket.service';
+import { getCurrentBasketId } from 'ish-core/store/customer/basket';
 
 import { QuoteStub } from '../../models/quoting/quoting.model';
 import { QuotingService } from '../../services/quoting/quoting.service';
 
-import { deleteQuotingEntity, loadQuoting, loadQuotingDetail } from './quoting.actions';
+import { addQuoteToBasket, deleteQuotingEntity, loadQuoting, loadQuotingDetail, rejectQuote } from './quoting.actions';
 import { QuotingEffects } from './quoting.effects';
 
 describe('Quoting Effects', () => {
   let actions$: Observable<Action>;
+  let store$: MockStore;
   let effects: QuotingEffects;
   let quotingService: QuotingService;
+  let basketService: BasketService;
 
   beforeEach(() => {
     quotingService = mock(QuotingService);
+    basketService = mock(BasketService);
 
     TestBed.configureTestingModule({
       providers: [
@@ -25,10 +32,12 @@ describe('Quoting Effects', () => {
         provideMockActions(() => actions$),
         provideMockStore(),
         { provide: QuotingService, useFactory: () => instance(quotingService) },
+        { provide: BasketService, useFactory: () => instance(basketService) },
       ],
     });
 
     effects = TestBed.inject(QuotingEffects);
+    store$ = TestBed.inject(MockStore);
   });
 
   describe('loadQuoting$', () => {
@@ -64,6 +73,57 @@ describe('Quoting Effects', () => {
       effects.deleteQuoting$.subscribe(() => {
         verify(quotingService.deleteQuote(anything())).once();
         done();
+      });
+    });
+  });
+
+  describe('rejectQuote$', () => {
+    it('should reject quote via quoting service when triggered', done => {
+      when(quotingService.rejectQuote(anything())).thenCall(({ id }) => of(id));
+      actions$ = of(rejectQuote({ quoteId: 'ID' }));
+
+      effects.rejectQuote$.subscribe(() => {
+        verify(quotingService.rejectQuote(anything())).once();
+        done();
+      });
+    });
+  });
+
+  describe('addQuoteToBasket$', () => {
+    beforeEach(() => {
+      when(quotingService.addQuoteToBasket(anything(), anything())).thenReturn(of(''));
+    });
+
+    describe('with basket', () => {
+      beforeEach(() => {
+        store$.overrideSelector(getCurrentBasketId, 'basketID');
+      });
+
+      it('should directly add quote to basket via quoting service', done => {
+        actions$ = of(addQuoteToBasket({ quoteId: 'quoteID' }));
+
+        effects.addQuoteToBasket$.subscribe(() => {
+          verify(quotingService.addQuoteToBasket('quoteID', 'basketID')).once();
+          verify(basketService.createBasket()).never();
+          done();
+        });
+      });
+    });
+
+    describe('without basket', () => {
+      beforeEach(() => {
+        store$.overrideSelector(getCurrentBasketId, undefined);
+        when(basketService.createBasket()).thenReturn(of({ id: 'basketID' } as Basket));
+      });
+
+      it('should create basket and add quote to basket via quoting service', done => {
+        actions$ = of(addQuoteToBasket({ quoteId: 'quoteID' }));
+
+        effects.addQuoteToBasket$.subscribe(() => {
+          verify(quotingService.addQuoteToBasket('quoteID', 'basketID')).once();
+          verify(basketService.createBasket()).once();
+          done();
+        });
       });
     });
   });

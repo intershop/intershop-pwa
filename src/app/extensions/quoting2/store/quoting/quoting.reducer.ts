@@ -8,6 +8,8 @@ import { QuotingHelper } from '../../models/quoting/quoting.helper';
 import { QuotingEntity } from '../../models/quoting/quoting.model';
 
 import {
+  addQuoteToBasket,
+  addQuoteToBasketSuccess,
   deleteQuotingEntity,
   deleteQuotingEntityFail,
   deleteQuotingEntitySuccess,
@@ -16,6 +18,8 @@ import {
   loadQuotingDetailSuccess,
   loadQuotingFail,
   loadQuotingSuccess,
+  rejectQuote,
+  rejectQuoteFail,
 } from './quoting.actions';
 
 export const quotingAdapter = createEntityAdapter<QuotingEntity>({
@@ -34,9 +38,14 @@ const initialState: QuotingState = quotingAdapter.getInitialState({
 
 export const quotingReducer = createReducer(
   initialState,
-  setLoadingOn(loadQuoting, loadQuotingDetail, deleteQuotingEntity),
-  unsetLoadingAndErrorOn(loadQuotingSuccess, loadQuotingDetailSuccess, deleteQuotingEntitySuccess),
-  setErrorOn(loadQuotingFail, deleteQuotingEntityFail),
+  setLoadingOn(loadQuoting, loadQuotingDetail, deleteQuotingEntity, rejectQuote, addQuoteToBasket),
+  unsetLoadingAndErrorOn(
+    loadQuotingSuccess,
+    loadQuotingDetailSuccess,
+    deleteQuotingEntitySuccess,
+    addQuoteToBasketSuccess
+  ),
+  setErrorOn(loadQuotingFail, deleteQuotingEntityFail, rejectQuoteFail),
   on(loadQuotingSuccess, (state, action) => quotingAdapter.upsertMany(action.payload.quoting, state)),
   on(loadQuotingDetailSuccess, (state, action) => quotingAdapter.upsertOne(action.payload.quote, state)),
   on(deleteQuotingEntitySuccess, (state, action) => quotingAdapter.removeOne(action.payload.id, state))

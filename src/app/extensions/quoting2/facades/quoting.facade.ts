@@ -1,19 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { once } from 'lodash-es';
 import { ObservableInput, timer } from 'rxjs';
-import { first, map, sample, switchMapTo, tap } from 'rxjs/operators';
+import { filter, first, map, sample, switchMap, switchMapTo, tap } from 'rxjs/operators';
 
-import { waitForFeatureStore, whenFalsy } from 'ish-core/utils/operators';
+import { selectRouteParam } from 'ish-core/store/core/router';
+import { waitForFeatureStore, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 import { QuotingHelper } from '../models/quoting/quoting.helper';
-import { QuotingEntity } from '../models/quoting/quoting.model';
+import { Quote, QuoteRequest, QuotingEntity } from '../models/quoting/quoting.model';
 import {
+  addQuoteToBasket,
   deleteQuotingEntity,
   getQuotingEntities,
   getQuotingEntity,
   getQuotingError,
   getQuotingLoading,
+  loadQuoting,
   loadQuotingDetail,
+  rejectQuote,
 } from '../store/quoting';
 
 // tslint:disable:member-ordering
@@ -27,10 +32,13 @@ export class QuotingFacade {
 
   loading$ = this.awaitQuoting(this.store.pipe(select(getQuotingLoading)));
 
+  private loadQuotesAndQuoteRequests = once(() => this.store.dispatch(loadQuoting()));
+
   quotingEntities$ = this.awaitQuoting(
     this.store.pipe(
       select(getQuotingEntities),
       sample(this.loading$.pipe(whenFalsy())),
+      tap(this.loadQuotesAndQuoteRequests),
       tap(entities => {
         entities.filter(QuotingHelper.isStub).forEach(entity => {
           this.store.dispatch(loadQuotingDetail({ entity, level: 'List' }));
@@ -51,4 +59,35 @@ export class QuotingFacade {
   delete(entity: QuotingEntity) {
     this.store.dispatch(deleteQuotingEntity({ entity }));
   }
+
+  reject(quote: Quote) {
+    this.store.dispatch(rejectQuote({ quoteId: quote.id }));
+  }
+
+  copy(quote: Quote | QuoteRequest) {
+    console.log('TODO', 'copy', quote);
+  }
+
+  addToBasket(quote: Quote) {
+    this.store.dispatch(addQuoteToBasket({ quoteId: quote.id }));
+  }
+
+  selected$ = this.store.pipe(
+    select(selectRouteParam('quoteId')),
+    switchMap(quoteId =>
+      this.store.pipe(
+        select(getQuotingEntity(quoteId)),
+        whenTruthy(),
+        tap(entity => {
+          if (entity?.completenessLevel !== 'Detail') {
+            this.store.dispatch(loadQuotingDetail({ entity, level: 'Detail' }));
+          }
+        }),
+        filter(entity => entity?.completenessLevel === 'Detail'),
+        map(quote => quote as Quote | QuoteRequest)
+      )
+    )
+  );
+
+  selectedState$ = this.selected$.pipe(map(QuotingHelper.state));
 }

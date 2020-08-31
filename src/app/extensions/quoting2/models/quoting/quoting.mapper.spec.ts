@@ -134,28 +134,38 @@ describe('Quoting Mapper', () => {
           "items": Array [
             Object {
               "id": undefined,
-              "originQuantity": 1,
-              "originSinglePrice": Object {
-                "currency": "USD",
-                "type": "Money",
-                "value": 1002.95,
+              "originQuantity": Object {
+                "type": "Quantity",
+                "unit": "",
+                "value": 1,
               },
-              "originTotalPrice": Object {
+              "originSingleBasePrice": Object {
                 "currency": "USD",
                 "type": "Money",
                 "value": 1002.95,
               },
               "productSKU": "10696946",
-              "quantity": 2,
-              "singlePrice": Object {
+              "quantity": Object {
+                "type": "Quantity",
+                "unit": "",
+                "value": 2,
+              },
+              "singleBasePrice": Object {
                 "currency": "USD",
                 "type": "Money",
                 "value": 10.95,
               },
-              "totalPrice": Object {
-                "currency": "USD",
-                "type": "Money",
-                "value": 10.95,
+              "totals": Object {
+                "originTotal": Object {
+                  "currency": "USD",
+                  "type": "Money",
+                  "value": 1002.95,
+                },
+                "total": Object {
+                  "currency": "USD",
+                  "type": "Money",
+                  "value": 10.95,
+                },
               },
             },
           ],
@@ -210,6 +220,7 @@ describe('Quoting Mapper', () => {
           "creationDate": 1598333702038,
           "description": undefined,
           "displayName": "0000008",
+          "editable": true,
           "id": "Of4KCgoEGrcAAAF0kM8GFSQc",
           "items": Array [
             Object {
@@ -276,21 +287,28 @@ describe('Quoting Mapper', () => {
           "creationDate": 1598333702038,
           "description": undefined,
           "displayName": "0000008",
+          "editable": false,
           "id": "Of4KCgoEGrcAAAF0kM8GFSQc",
           "items": Array [
             Object {
               "id": "yMUKCgoEgGkAAAF0AdEGFSQc",
               "productSKU": "8899566",
-              "quantity": 1,
-              "singlePrice": Object {
+              "quantity": Object {
+                "type": "Quantity",
+                "unit": "",
+                "value": 1,
+              },
+              "singleBasePrice": Object {
                 "currency": "USD",
                 "type": "Money",
                 "value": 964.5,
               },
-              "totalPrice": Object {
-                "currency": "USD",
-                "type": "Money",
-                "value": 964.5,
+              "totals": Object {
+                "total": Object {
+                  "currency": "USD",
+                  "type": "Money",
+                  "value": 964.5,
+                },
               },
             },
           ],

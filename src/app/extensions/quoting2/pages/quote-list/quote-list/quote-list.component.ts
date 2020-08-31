@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
+import { QuotingHelper } from '../../../models/quoting/quoting.helper';
 import { Quote, QuoteRequest } from '../../../models/quoting/quoting.model';
 
 /**
@@ -18,15 +19,13 @@ export class QuoteListComponent {
 
   @Output() deleteItem = new EventEmitter<Quote | QuoteRequest>();
 
+  asQuote = QuotingHelper.asQuote;
+
   /**
    * Throws deleteItem event.
    * @param item  The Quote item that should be deleted
    */
   onDeleteItem(item: Quote | QuoteRequest): void {
     this.deleteItem.emit(item);
-  }
-
-  asQuote(entity): Quote {
-    return entity as Quote;
   }
 }

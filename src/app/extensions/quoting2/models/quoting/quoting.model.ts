@@ -1,3 +1,4 @@
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Price } from 'ish-core/models/price/price.model';
 
 export type QuoteCompletenessLevel = 'Stub' | 'List' | 'Detail';
@@ -14,17 +15,20 @@ interface QuoteItemStub {
 
 interface QuoteRequestItem extends QuoteItemStub {
   productSKU: string;
-  quantity: number;
+  quantity: Attribute<number>;
 
-  singlePrice: Price;
-  totalPrice: Price;
+  singleBasePrice: Price;
+  totals: { total: Price };
 }
 
 interface QuoteItem extends QuoteRequestItem {
-  originQuantity: number;
+  originQuantity: Attribute<number>;
 
-  originSinglePrice: Price;
-  originTotalPrice: Price;
+  originSingleBasePrice: Price;
+  totals: {
+    total: Price;
+    originTotal: Price;
+  };
 }
 
 interface QuoteBase<ItemType> extends QuoteStub {
@@ -53,6 +57,7 @@ export interface QuoteRequest extends QuoteBase<QuoteRequestItem | QuoteItemStub
   type: 'QuoteRequest';
 
   submittedDate?: number;
+  editable: boolean;
 }
 
 export type QuotingEntity = QuoteStub | Quote | QuoteRequest;

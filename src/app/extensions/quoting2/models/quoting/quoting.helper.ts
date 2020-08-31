@@ -2,7 +2,7 @@ import { Quote, QuoteRequest, QuoteStatus, QuoteStub, QuotingEntity } from './qu
 
 export class QuotingHelper {
   static isStub(entity: QuotingEntity): entity is QuoteStub {
-    return !entity.completenessLevel || entity.completenessLevel === 'Stub';
+    return !entity?.completenessLevel || entity.completenessLevel === 'Stub';
   }
 
   static isNotStub(entity: QuotingEntity): entity is Quote | QuoteRequest {
@@ -34,5 +34,13 @@ export class QuotingHelper {
       }
     }
     return 'Unknown';
+  }
+
+  static asQuote(entity: QuotingEntity): Quote {
+    return entity as Quote;
+  }
+
+  static asQuoteRequest(entity: QuotingEntity): QuoteRequest {
+    return entity as QuoteRequest;
   }
 }

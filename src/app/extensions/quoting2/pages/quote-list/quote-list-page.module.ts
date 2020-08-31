@@ -6,7 +6,10 @@ import { Quoting2Module } from '../../quoting2.module';
 import { QuoteListPageComponent } from './quote-list-page.component';
 import { QuoteListComponent } from './quote-list/quote-list.component';
 
-const quoteListPageRoutes: Routes = [{ path: '', component: QuoteListPageComponent }];
+const quoteListPageRoutes: Routes = [
+  { path: '', component: QuoteListPageComponent },
+  { path: ':quoteId', loadChildren: () => import('../quote/quote-page.module').then(m => m.QuotePageModule) },
+];
 
 @NgModule({
   declarations: [QuoteListComponent, QuoteListPageComponent],

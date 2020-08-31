@@ -37,3 +37,14 @@ export const deleteQuotingEntitySuccess = createAction(
   '[Quoting API] Delete Quoting Entity Success',
   payload<{ id: string }>()
 );
+
+export const rejectQuote = createAction('[Quoting] Reject Quote', payload<{ quoteId: string }>());
+
+export const rejectQuoteFail = createAction('[Quoting API] Reject Quote Fail', httpError<{ id: string }>());
+
+export const addQuoteToBasket = createAction('[Quoting] Add Quote To Basket', payload<{ quoteId: string }>());
+
+export const addQuoteToBasketSuccess = createAction(
+  '[Quoting API] Add Quote To Basket Success',
+  payload<{ quoteId: string }>()
+);

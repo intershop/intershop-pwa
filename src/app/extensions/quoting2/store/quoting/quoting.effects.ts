@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import { map, mapTo, mergeMap, switchMap, take } from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
+import { of } from 'rxjs';
+import { concatMap, first, map, mergeMap, mergeMapTo, switchMap } from 'rxjs/operators';
 
-import { ofUrl } from 'ish-core/store/core/router';
+import { BasketService } from 'ish-core/services/basket/basket.service';
+import { getCurrentBasketId, loadBasket } from 'ish-core/store/customer/basket';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
 
 import { QuotingService } from '../../services/quoting/quoting.service';
 
 import {
+  addQuoteToBasket,
+  addQuoteToBasketSuccess,
   deleteQuotingEntity,
   deleteQuotingEntityFail,
   deleteQuotingEntitySuccess,
@@ -17,11 +21,18 @@ import {
   loadQuotingDetailSuccess,
   loadQuotingFail,
   loadQuotingSuccess,
+  rejectQuote,
+  rejectQuoteFail,
 } from './quoting.actions';
 
 @Injectable()
 export class QuotingEffects {
-  constructor(private actions$: Actions, private store: Store, private quotingService: QuotingService) {}
+  constructor(
+    private actions$: Actions,
+    private store: Store,
+    private quotingService: QuotingService,
+    private basketService: BasketService
+  ) {}
 
   loadQuoting$ = createEffect(() =>
     this.actions$.pipe(
@@ -61,7 +72,35 @@ export class QuotingEffects {
     )
   );
 
-  loadQuotesOnListPage$ = createEffect(() =>
-    this.store.pipe(ofUrl(/\/quote-(debug|list)$/), take(1), mapTo(loadQuoting()))
+  rejectQuote$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(rejectQuote),
+      mapToPayloadProperty('quoteId'),
+      concatMap(id =>
+        this.quotingService.rejectQuote(id).pipe(
+          map(quote => loadQuotingDetailSuccess({ quote })),
+          mapErrorToAction(rejectQuoteFail, { id })
+        )
+      )
+    )
+  );
+
+  addQuoteToBasket$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addQuoteToBasket),
+      mapToPayloadProperty('quoteId'),
+      concatMap(quoteId =>
+        this.store.pipe(
+          select(getCurrentBasketId),
+          first(),
+          switchMap(basketId =>
+            !basketId ? this.basketService.createBasket().pipe(map(basket => basket.id)) : of(basketId)
+          ),
+          concatMap(basketId => this.quotingService.addQuoteToBasket(quoteId, basketId)),
+          mergeMapTo([loadBasket(), addQuoteToBasketSuccess({ quoteId })]),
+          mapErrorToAction(loadQuotingFail)
+        )
+      )
+    )
   );
 }

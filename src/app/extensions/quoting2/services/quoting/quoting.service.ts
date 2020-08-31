@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Store, select } from '@ngrx/store';
 import { flatten } from 'lodash-es';
-import { combineLatest, defer, forkJoin, iif, of } from 'rxjs';
-import { concatMap, filter, map, mapTo, switchMap, take } from 'rxjs/operators';
+import { defer, forkJoin, iif, of } from 'rxjs';
+import { concatMap, map, mapTo } from 'rxjs/operators';
 
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
 
 import { QuoteData } from '../../models/quoting/quoting.interface';
 import { QuotingMapper } from '../../models/quoting/quoting.mapper';
@@ -13,76 +11,74 @@ import { QuoteCompletenessLevel, QuoteStub, QuotingEntity } from '../../models/q
 
 @Injectable({ providedIn: 'root' })
 export class QuotingService {
-  constructor(private apiService: ApiService, private store: Store, private quoteMapper: QuotingMapper) {}
+  constructor(private apiService: ApiService, private quoteMapper: QuotingMapper) {}
 
   getQuotes() {
-    return combineLatest([this.store.pipe(select(getLoggedInUser)), this.store.pipe(select(getLoggedInCustomer))]).pipe(
-      filter(([user, customer]) => !!user && !!customer),
-      take(1),
-      switchMap(([user, customer]) =>
-        forkJoin([
-          this.apiService.get(`customers/${customer.customerNo}/users/${user.login}/quoterequests`).pipe(
-            unpackEnvelope(),
-            map(qrs => qrs.reverse()),
-            map((quotes: QuoteData[]) => quotes.map(data => this.quoteMapper.fromData(data, 'QuoteRequest')))
-          ),
-          this.apiService.get(`customers/${customer.customerNo}/users/${user.login}/quotes`).pipe(
-            unpackEnvelope(),
-            map(qrs => qrs.reverse()),
-            map((quotes: QuoteData[]) => quotes.map(data => this.quoteMapper.fromData(data, 'Quote')))
-          ),
-        ]).pipe(map(flatten))
-      )
-    );
+    return forkJoin([
+      this.apiService
+        .b2bUserEndpoint()
+        .get('quoterequests')
+        .pipe(
+          unpackEnvelope(),
+          map(qrs => qrs.reverse()),
+          map((quotes: QuoteData[]) => quotes.map(data => this.quoteMapper.fromData(data, 'QuoteRequest')))
+        ),
+      this.apiService
+        .b2bUserEndpoint()
+        .get('quotes')
+        .pipe(
+          unpackEnvelope(),
+          map(qrs => qrs.reverse()),
+          map((quotes: QuoteData[]) => quotes.map(data => this.quoteMapper.fromData(data, 'Quote')))
+        ),
+    ]).pipe(map(flatten));
   }
 
   getQuoteDetails(quoteStub: QuoteStub, level: QuoteCompletenessLevel) {
     if (level === 'Stub') {
       return of(quoteStub);
     }
-    return combineLatest([this.store.pipe(select(getLoggedInUser)), this.store.pipe(select(getLoggedInCustomer))]).pipe(
-      filter(([user, customer]) => !!user && !!customer),
-      take(1),
-      concatMap(([user, customer]) =>
-        quoteStub.type === 'Quote'
-          ? this.apiService
-              .get<QuoteData>(`customers/${customer.customerNo}/users/${user.login}/quotes/${quoteStub.id}`)
-              .pipe(map(res => this.quoteMapper.fromData(res, 'Quote')))
-          : this.apiService
-              .get<QuoteData>(`customers/${customer.customerNo}/users/${user.login}/quoterequests/${quoteStub.id}`)
-              .pipe(
-                concatMap(data =>
-                  iif(
-                    () => level === 'Detail',
-                    defer(() =>
-                      of(data).pipe(
-                        unpackEnvelope('items'),
-                        this.apiService.resolveLinks(),
-                        map(items => ({ ...data, items }))
-                      )
-                    ),
-                    of(data)
+    return quoteStub.type === 'Quote'
+      ? this.apiService
+          .b2bUserEndpoint()
+          .get<QuoteData>(`quotes/${quoteStub.id}`)
+          .pipe(map(res => this.quoteMapper.fromData(res, 'Quote')))
+      : this.apiService
+          .b2bUserEndpoint()
+          .get<QuoteData>(`quoterequests/${quoteStub.id}`)
+          .pipe(
+            concatMap(data =>
+              iif(
+                () => level === 'Detail',
+                defer(() =>
+                  of(data).pipe(
+                    unpackEnvelope('items'),
+                    this.apiService.resolveLinks(),
+                    map(items => ({ ...data, items }))
                   )
                 ),
-                map((res: QuoteData) => this.quoteMapper.fromData(res, 'QuoteRequest'))
+                of(data)
               )
-      )
-    );
+            ),
+            map((res: QuoteData) => this.quoteMapper.fromData(res, 'QuoteRequest'))
+          );
   }
 
   deleteQuote(entity: QuotingEntity) {
-    return combineLatest([this.store.pipe(select(getLoggedInUser)), this.store.pipe(select(getLoggedInCustomer))]).pipe(
-      filter(([user, customer]) => !!user && !!customer),
-      take(1),
-      concatMap(([user, customer]) =>
-        this.apiService
-          .delete(
-            `customers/${customer.customerNo}/users/${user.login}/${
-              entity.type === 'Quote' ? 'quotes' : 'quoterequests'
-            }/${entity.id}`
-          )
-          .pipe(mapTo(entity.id))
-      )
-    );
+    return this.apiService
+      .b2bUserEndpoint()
+      .delete(`${entity.type === 'Quote' ? 'quotes' : 'quoterequests'}/${entity.id}`)
+      .pipe(mapTo(entity.id));
+  }
+
+  rejectQuote(quoteId: string) {
+    return this.apiService
+      .b2bUserEndpoint()
+      .put<QuoteData>(`quotes/${quoteId}`, { rejected: true })
+      .pipe(map(data => this.quoteMapper.fromData(data, 'Quote')));
+  }
+
+  addQuoteToBasket(quoteID: string, basketId: string) {
+    return this.apiService.post(`baskets/${basketId}/items`, { quoteID }).pipe(mapTo(quoteID));
   }
 }
