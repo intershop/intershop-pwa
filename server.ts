@@ -140,7 +140,10 @@ export function app() {
         if (html) {
           let newHtml: string;
           if (process.env.PROXY_ICM && req.get('host')) {
-            newHtml = html.replace(new RegExp(ICM_BASE_URL, 'g'), `${req.protocol}://${req.get('host')}`);
+            newHtml = html.replace(
+              new RegExp(ICM_BASE_URL, 'g'),
+              process.env.PROXY_ICM.startsWith('http') ? process.env.PROXY_ICM : `${req.protocol}://${req.get('host')}`
+            );
           }
           res.status(res.statusCode).send(newHtml || html);
         } else {
