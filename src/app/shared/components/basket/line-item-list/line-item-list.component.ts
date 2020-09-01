@@ -1,11 +1,13 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { memoize } from 'lodash-es';
+import { debounceTime } from 'rxjs/operators';
 
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
+import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 /**
@@ -29,7 +31,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
   templateUrl: './line-item-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LineItemListComponent implements OnChanges, OnDestroy {
+export class LineItemListComponent {
   @Input() lineItems: LineItemView[];
   @Input() editable = true;
   @Input() total: Price;
@@ -38,60 +40,38 @@ export class LineItemListComponent implements OnChanges, OnDestroy {
   @Output() updateItem = new EventEmitter<LineItemUpdate>();
   @Output() deleteItem = new EventEmitter<string>();
 
-  form: FormGroup;
-  formLength = 0;
+  constructor(private shoppingFacade: ShoppingFacade) {}
 
-  private destroy$ = new Subject();
-
-  constructor(private formBuilder: FormBuilder) {
-    this.form = new FormGroup({});
-  }
-
-  /**
-   * If the basket changes a new form is created for basket quantities update.
-   */
-  ngOnChanges() {
-    if (this.lineItems.length > 0 && this.lineItems[0].product) {
-      this.form = new FormGroup({
-        items: new FormArray(this.createItemForm(this.lineItems)),
+  createDummyForm: (pli: LineItemView, maxOrderQuantity: number) => FormGroup = memoize(
+    (pli, maxOrderQuantity) => {
+      const group = new FormGroup({
+        quantity: new FormControl(pli.quantity.value, [
+          Validators.required,
+          Validators.max(maxOrderQuantity),
+          SpecialValidators.integer,
+        ]),
       });
-    }
-  }
-
-  /**
-   * Returns an array of formgroups (itemId and quantity) according to the given line items.
-   * @param lineItems An array of line items.
-   * @returns         An array of formgroups.
-   */
-  createItemForm(lineItems: LineItemView[]): FormGroup[] {
-    const itemsForm: FormGroup[] = [];
-    this.destroy$.next();
-
-    for (const lineItem of lineItems) {
-      if (lineItem.product) {
-        const formGroup = this.formBuilder.group({
-          itemId: lineItem.id,
-          unit: lineItem.product.packingUnit,
-          quantity: [
-            lineItem.quantity.value,
-            [Validators.required, Validators.max(lineItem.product.maxOrderQuantity), SpecialValidators.integer],
-          ],
-        });
-
-        // Subscribe on form value changes
-        formGroup.valueChanges.pipe(debounceTime(800), takeUntil(this.destroy$)).subscribe(item => {
-          if (formGroup.valid) {
-            // TODO: figure out why quantity is returned as string by the valueChanges instead of number (the '+item.quantity' fixes that for now) - see ISREST-755
-            this.onUpdateItem({ ...item, quantity: +item.quantity });
+      group
+        .get('quantity')
+        .valueChanges.pipe(debounceTime(800))
+        // tslint:disable-next-line: rxjs-prefer-angular-takeuntil
+        .subscribe(item => {
+          if (group.valid) {
+            // TODO: figure out why quantity is returned as string by the valueChanges instead of number (the '+item' fixes that for now) - see ISREST-755
+            this.onUpdateItem({
+              quantity: +item,
+              itemId: pli.id,
+            });
           }
         });
 
-        itemsForm.push(formGroup);
-        this.formLength = itemsForm.length;
-      }
-    }
+      return group;
+    },
+    pli => JSON.stringify(pli)
+  );
 
-    return itemsForm;
+  product$(sku: string) {
+    return this.shoppingFacade.product$(sku, ProductCompletenessLevel.List);
   }
 
   /**
@@ -108,11 +88,6 @@ export class LineItemListComponent implements OnChanges, OnDestroy {
    */
   onDeleteItem(itemId: string) {
     this.deleteItem.emit(itemId);
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   trackByFn(_, item: LineItemView) {

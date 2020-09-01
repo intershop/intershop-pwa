@@ -240,13 +240,6 @@ describe('Customer Store', () => {
               product: {"name":"test","shortDescription":"test","longDescription":"...
             [Basket API] Load Basket Success:
               basket: {"id":"test","lineItems":[1]}
-            [Products Internal] Load Product if not Loaded:
-              sku: "test"
-              level: 2
-            [Products Internal] Load Product:
-              sku: "test"
-            [Products API] Load Product Success:
-              product: {"name":"test","shortDescription":"test","longDescription":"...
           `);
           done();
         }, 1000);
@@ -268,9 +261,6 @@ describe('Customer Store', () => {
             user: {"title":"","firstName":"test","lastName":"test","phoneHome"...
           [Basket API] Merge two baskets Success:
             basket: {"id":"test","lineItems":[1]}
-          [Products Internal] Load Product if not Loaded:
-            sku: "test"
-            level: 2
         `);
       });
     });

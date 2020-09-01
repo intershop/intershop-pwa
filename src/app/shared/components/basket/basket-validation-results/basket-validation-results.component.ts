@@ -7,7 +7,6 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketFeedback } from 'ish-core/models/basket-feedback/basket-feedback.model';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
-import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 /**
  * Displays the basket validation result messages. In case of basket adjustments removed or undeliverable items are
@@ -27,7 +26,7 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
   errorMessages$: Observable<string[]>;
   infoMessages$: Observable<string[]>;
   undeliverableItems$: Observable<LineItemView[]>;
-  removedItems$: Observable<{ message: string; product: ProductView }[]>;
+  removedItems$: Observable<{ message: string; productSKU: string }[]>;
 
   itemHasBeenRemoved = false;
 
@@ -78,13 +77,8 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
           results &&
           results.errors &&
           results.errors
-            .filter(
-              error =>
-                error.code === 'basket.validation.line_item_shipping_restrictions.error' &&
-                error.lineItem &&
-                error.product
-            )
-            .map(error => ({ ...error.lineItem, product: error.product }))
+            .filter(error => error.code === 'basket.validation.line_item_shipping_restrictions.error' && error.lineItem)
+            .map(error => ({ ...error.lineItem }))
       )
     );
 
@@ -96,17 +90,15 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
           results.infos
             .map(info => ({
               message: info.message,
-              product: info.product,
+              productSKU: info.parameters?.productSku,
             }))
-            .filter(info => info.product)
+            .filter(info => !!info.productSKU)
       )
     );
 
     this.infoMessages$ = this.validationResults$.pipe(
       map(results =>
-        uniq(results && results.infos && results.infos.filter(info => !info.product).map(info => info.message)).filter(
-          message => !!message
-        )
+        uniq(results && results.infos && results.infos.map(info => info.message)).filter(message => !!message)
       )
     );
   }

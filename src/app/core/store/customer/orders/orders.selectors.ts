@@ -1,45 +1,27 @@
 import { createSelector } from '@ngrx/store';
 
-import { OrderView, createOrderView } from 'ish-core/models/order/order.model';
+import { Order } from 'ish-core/models/order/order.model';
 import { getCustomerState } from 'ish-core/store/customer/customer-store';
-import { getCategoryTree } from 'ish-core/store/shopping/categories';
-import { getProductEntities } from 'ish-core/store/shopping/products';
 
 import { orderAdapter } from './orders.reducer';
 
 const getOrdersState = createSelector(getCustomerState, state => state.orders);
 
-const { selectEntities: getOrderEntities, selectAll: getOrdersInternal } = orderAdapter.getSelectors(getOrdersState);
+const { selectEntities, selectAll } = orderAdapter.getSelectors(getOrdersState);
 
 export const getSelectedOrderId = createSelector(getOrdersState, state => state.selected);
 
 export const getSelectedOrder = createSelector(
-  getOrderEntities,
+  selectEntities,
   getSelectedOrderId,
-  getProductEntities,
-  getCategoryTree,
-  (entities, id, products, categoryTree): OrderView =>
-    id && entities[id] ? createOrderView(entities[id], products, categoryTree) : undefined
+  (entities, id): Order => id && entities[id]
 );
 
-export const getOrders = createSelector(
-  getOrdersInternal,
-  getProductEntities,
-  getCategoryTree,
-  (orders, products, categoryTree): OrderView[] =>
-    !orders ? [] : orders.map(e => createOrderView(e, products, categoryTree))
-);
+export const getOrders = selectAll;
 
 export const getOrder = createSelector(
-  getOrdersInternal,
-  getProductEntities,
-  getCategoryTree,
-  (entities, products, categoryTree, props: { orderId: string }): OrderView =>
-    createOrderView(
-      entities.find(e => e.id === props.orderId),
-      products,
-      categoryTree
-    )
+  selectAll,
+  (entities, props: { orderId: string }): Order => entities.find(e => e.id === props.orderId)
 );
 
 export const getOrdersLoading = createSelector(getOrdersState, orders => orders.loading);

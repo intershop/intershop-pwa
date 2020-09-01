@@ -17,13 +17,11 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { ofUrl, selectQueryParams, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { continueCheckoutWithIssues, loadBasket } from 'ish-core/store/customer/basket';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
-import { loadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import {
@@ -180,22 +178,6 @@ export class OrdersEffects {
       withLatestFrom(this.store.pipe(select(getSelectedOrderId))),
       filter(([fromAction, selectedOrderId]) => fromAction && fromAction !== selectedOrderId),
       map(([orderId]) => selectOrder({ orderId }))
-    )
-  );
-
-  /**
-   * After selecting and successfully loading an order, triggers a LoadProduct action
-   * for each product that is missing in the current product entities state.
-   */
-  loadProductsForSelectedOrder$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loadOrderSuccess),
-      mapToPayloadProperty('order'),
-      switchMap(order => [
-        ...order.lineItems.map(({ productSKU }) =>
-          loadProductIfNotLoaded({ sku: productSKU, level: ProductCompletenessLevel.List })
-        ),
-      ])
     )
   );
 

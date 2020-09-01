@@ -6,7 +6,7 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { OrderView } from 'ish-core/models/order/order.model';
+import { Order } from 'ish-core/models/order/order.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
@@ -22,7 +22,7 @@ describe('Order List Component', () => {
   const orders = [
     { id: '00123', documentNo: '123', totals: {} },
     { id: '00124', documentNo: '124', totals: {} },
-  ] as OrderView[];
+  ] as Order[];
 
   beforeEach(async(() => {
     accountFacade = mock(AccountFacade);
