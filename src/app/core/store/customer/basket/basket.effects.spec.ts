@@ -9,12 +9,9 @@ import { EMPTY, Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { LineItem } from 'ish-core/models/line-item/line-item.model';
-import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { loadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -27,7 +24,6 @@ import {
   loadBasketEligibleShippingMethodsSuccess,
   loadBasketFail,
   loadBasketSuccess,
-  mergeBasketSuccess,
   resetBasketErrors,
   updateBasket,
   updateBasketFail,
@@ -126,61 +122,6 @@ describe('Basket Effects', () => {
       actions$ = hot('a-a-a-', { a: loadBasketByAPIToken({ apiToken: 'dummy' }) });
 
       expect(effects.loadBasketByAPIToken$).toBeObservable(cold('------'));
-    });
-  });
-
-  describe('loadProductsForBasket$', () => {
-    it('should trigger product loading actions for line items if LoadBasketSuccess action triggered', () => {
-      when(basketServiceMock.getBasket()).thenReturn(of());
-
-      const action = loadBasketSuccess({
-        basket: {
-          id: 'BID',
-          lineItems: [
-            {
-              id: 'BIID',
-              name: 'NAME',
-              position: 1,
-              quantity: { value: 1 },
-              price: undefined,
-              productSKU: 'SKU',
-            } as LineItem,
-          ],
-          payment: undefined,
-        } as Basket,
-      });
-
-      const completion = loadProductIfNotLoaded({ sku: 'SKU', level: ProductCompletenessLevel.List });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.loadProductsForBasket$).toBeObservable(expected$);
-    });
-    it('should trigger product loading actions for line items if MergeBasketSuccess action triggered', () => {
-      when(basketServiceMock.getBasket()).thenReturn(of());
-
-      const action = mergeBasketSuccess({
-        basket: {
-          id: 'BID',
-          lineItems: [
-            {
-              id: 'BIID',
-              name: 'NAME',
-              position: 1,
-              quantity: { value: 1 },
-              price: undefined,
-              productSKU: 'SKU',
-            } as LineItem,
-          ],
-          payment: undefined,
-        } as Basket,
-      });
-
-      const completion = loadProductIfNotLoaded({ sku: 'SKU', level: ProductCompletenessLevel.List });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.loadProductsForBasket$).toBeObservable(expected$);
     });
   });
 

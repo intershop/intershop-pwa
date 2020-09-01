@@ -460,6 +460,13 @@
           "from": ".*.*",
           "filePattern": ".*/shared/shared.module.ts$",
           "message": "Importing and exporting extension modules should be done in ShellModule."
+        },
+        {
+          "import": "^createProductView$",
+          "from": ".*/product-view.model",
+          // TODO: remove quote-request selectors after rework
+          "filePattern": "^(?!.*/(.*\\.spec|products\\.selectors|quote-request\\.selectors)\\.ts$).*$",
+          "message": "Product views should not be attached to other entities. Use ShoppingFacade.product$ in components."
         }
       ]
     },

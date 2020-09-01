@@ -6,6 +6,7 @@ import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { LineItemEditComponent } from 'ish-shared/components/line-item/line-item-edit/line-item-edit.component';
@@ -45,6 +46,7 @@ describe('Line Item Description Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.pli = BasketMockData.getBasketItem();
+    component.product = {} as ProductView;
   });
 
   it('should be created', () => {
@@ -82,13 +84,13 @@ describe('Line Item Description Component', () => {
   });
 
   it('should display bundle parts for bundle products', () => {
-    component.pli.product.type = 'Bundle';
+    component.product.type = 'Bundle';
     fixture.detectChanges();
     expect(findAllIshElements(element)).toContain('ish-product-bundle-display');
   });
 
   it('should not display edit component for variation products with advanced variation handling', () => {
-    component.pli.product.type = 'VariationProduct';
+    component.product.type = 'VariationProduct';
     FeatureToggleModule.switchTestingFeatures('advancedVariationHandling');
     fixture.detectChanges();
     expect(findAllIshElements(element)).not.toContain('ish-line-item-edit');

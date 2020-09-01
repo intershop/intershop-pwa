@@ -4,11 +4,9 @@ import { Store, select } from '@ngrx/store';
 import { EMPTY, combineLatest, iif, of } from 'rxjs';
 import { concatMap, map, mapTo, mergeMap, sample, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { ofUrl, selectQueryParam } from 'ish-core/store/core/router';
 import { getLastAPITokenBeforeLogin, loginUser, loginUserSuccess } from 'ish-core/store/customer/user';
-import { loadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { mapErrorToAction, mapToPayloadProperty, whenFalsy } from 'ish-core/utils/operators';
 
 import {
@@ -54,22 +52,6 @@ export class BasketEffects {
       concatMap(apiToken =>
         this.basketService.getBasketByToken(apiToken).pipe(map(basket => loadBasketSuccess({ basket })))
       )
-    )
-  );
-
-  /**
-   * After successfully loading the basket, trigger a LoadProduct action
-   * for each product that is missing in the current product entities state.
-   */
-  loadProductsForBasket$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loadBasketSuccess, mergeBasketSuccess),
-      mapToPayloadProperty('basket'),
-      switchMap(basket => [
-        ...basket.lineItems.map(({ productSKU }) =>
-          loadProductIfNotLoaded({ sku: productSKU, level: ProductCompletenessLevel.List })
-        ),
-      ])
     )
   );
 

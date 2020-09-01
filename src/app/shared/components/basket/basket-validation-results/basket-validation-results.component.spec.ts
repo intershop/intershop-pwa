@@ -98,7 +98,7 @@ describe('Basket Validation Results Component', () => {
 
   it('should display a removed item message if there is a removed item', () => {
     const validationMessage = {
-      infos: [{ message: 'info message', product: { sku: '43242' } }],
+      infos: [{ message: 'info message', parameters: { productSku: '43242' } }],
     } as BasketValidationResultType;
 
     when(checkoutFacadeMock.basketValidationResults$).thenReturn(of(validationMessage));
@@ -115,7 +115,6 @@ describe('Basket Validation Results Component', () => {
           message: 'undeliverable items message',
           code: 'basket.validation.line_item_shipping_restrictions.error',
           lineItem: {},
-          product: {},
         },
       ],
     } as BasketValidationResultType;

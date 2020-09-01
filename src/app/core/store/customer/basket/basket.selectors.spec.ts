@@ -111,29 +111,10 @@ describe('Basket Selectors', () => {
       expect(currentBasket.id).toEqual('test');
       expect(currentBasket.lineItems).toHaveLength(1);
       expect(currentBasket.lineItems[0].id).toEqual('test');
-      expect(currentBasket.lineItems[0].product).toHaveProperty('sku', 'sku');
+      expect(currentBasket.lineItems[0].productSKU).toEqual('sku');
       expect(currentBasket.payment.paymentInstrument.id).toEqual('ISH_INVOICE');
 
       expect(getCurrentBasketId(store$.state)).toEqual('test');
-    });
-
-    it('should change the product of the basket line item if the product is changing', () => {
-      store$.dispatch(
-        loadBasketSuccess({
-          basket: { id: 'test', lineItems: [{ id: 'test', productSKU: 'sku' } as LineItem] } as Basket,
-        })
-      );
-      let currentBasket = getCurrentBasket(store$.state);
-      expect(currentBasket.lineItems[0].product).toHaveProperty('sku', 'sku');
-
-      store$.dispatch(
-        loadProductSuccess({
-          product: { sku: 'sku', name: 'new name', completenessLevel: ProductCompletenessLevel.Detail } as Product,
-        })
-      );
-
-      currentBasket = getCurrentBasket(store$.state);
-      expect(currentBasket.lineItems[0].product).toHaveProperty('name', 'new name');
     });
 
     it('should set validation results to the lineitem if basket is not valid', () => {

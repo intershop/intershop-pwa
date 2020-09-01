@@ -1,4 +1,4 @@
-<form [formGroup]="form" class="container">
+<div class="container">
   <!-- Line Items Overview -->
   <div class="row list-header d-none d-md-flex">
     <div class="col-md-8 col-xl-6 list-header-item list-header-item-descr">
@@ -10,9 +10,13 @@
     <div class="col-md-2 list-header-item column-price">{{ 'shopping_cart.price.heading' | translate }}</div>
     <div class="col-md-2 list-header-item column-price">{{ 'shopping_cart.total.heading' | translate }}</div>
   </div>
-  <div *ngIf="form.get('items')" class="list-body" formArrayName="items">
+  <div class="list-body">
     <ng-container *ngFor="let pli of lineItems; index as i; trackBy: trackByFn">
-      <div *ngIf="pli.product" class="row list-item-row list-item-row-big" data-testing-id="product-list-item">
+      <div
+        *ngIf="product$(pli.productSKU) | async as product"
+        class="row list-item-row list-item-row-big"
+        data-testing-id="product-list-item"
+      >
         <!-- Errors and Infos -->
         <div *ngIf="pli.validationError?.message" class="alert alert-inline alert-danger col-12">
           {{ pli.validationError.message }}
@@ -23,18 +27,19 @@
 
         <!-- Product Image -->
         <div class="col-2 list-item">
-          <a [routerLink]="pli.product | ishProductRoute">
-            <ish-product-image [product]="pli.product" imageType="S" class="product-image"></ish-product-image>
+          <a [routerLink]="product | ishProductRoute">
+            <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
           </a>
         </div>
 
-        <div *ngIf="form.get(['items', i])" class="col-7 col-md-6 col-xl-4 list-item">
+        <div class="col-7 col-md-6 col-xl-4 list-item">
           <!--Product Description -->
           <div class="pli-description">
-            <a class="product-title" [routerLink]="pli.product | ishProductRoute">{{ pli.name || pli.product.name }}</a>
+            <a class="product-title" [routerLink]="product | ishProductRoute">{{ pli.name || product.name }}</a>
 
             <ish-line-item-description
               [pli]="pli"
+              [product]="product"
               [editable]="editable"
               [lineItemViewType]="lineItemViewType"
               (updateItem)="onUpdateItem($event)"
@@ -50,14 +55,14 @@
               <ish-lazy-product-add-to-order-template
                 *ngIf="editable"
                 [class]="'btn btn-link btn-tool add-to-order-template'"
-                [product]="pli.product"
+                [product]="product"
                 displayType="icon"
-                [quantity]="form.get(['items', i]).value.quantity"
+                [quantity]="pli.quantity.value"
               ></ish-lazy-product-add-to-order-template>
               <ish-lazy-product-add-to-wishlist
                 *ngIf="editable"
                 class="btn-tool ml-0"
-                [product]="pli.product"
+                [product]="product"
                 displayType="icon"
               ></ish-lazy-product-add-to-wishlist>
               <a
@@ -74,7 +79,7 @@
           </div>
 
           <!-- mobile quantity -->
-          <div *ngIf="formLength > i" class="quantity d-xl-none" [formGroupName]="i">
+          <div class="quantity d-xl-none">
             <div class="form-group">
               <ng-container
                 *ngTemplateOutlet="
@@ -82,8 +87,7 @@
                   context: {
                     pli: pli,
                     editable: editable,
-                    form: form,
-                    i: i
+                    maxOrderQuantity: product.maxOrderQuantity
                   }
                 "
               ></ng-container>
@@ -92,7 +96,7 @@
         </div>
 
         <!-- desktop quantity -->
-        <div *ngIf="formLength > i" class="quantity col-xl-2 list-item d-none d-xl-flex" [formGroupName]="i">
+        <div class="quantity col-xl-2 list-item d-none d-xl-flex">
           <div class="form-group w-100" [ngClass]="{ 'text-right': editable }">
             <ng-container
               *ngTemplateOutlet="
@@ -100,8 +104,7 @@
                 context: {
                   pli: pli,
                   editable: editable,
-                  form: form,
-                  i: i
+                  maxOrderQuantity: product.maxOrderQuantity
                 }
               "
             ></ng-container>
@@ -143,7 +146,7 @@
     </ng-container>
   </div>
 
-  <div *ngIf="total && total.value && form.get('items') && lineItems.length > 0" class="clearfix section">
+  <div *ngIf="total && total.value && lineItems.length > 0" class="clearfix section">
     <div class="row justify-content-end list-body">
       <!-- TODO: remove style attribute -->
       <div class="col-sm-4 col-md-3 col-lg-2 text-right pr-0">{{ 'quote.items.total.label' | translate }}</div>
@@ -153,13 +156,13 @@
       </div>
     </div>
   </div>
-</form>
+</div>
 
 <!-- template (ngTemplateOutlet) for quantity-input -->
-<ng-template #quantityInputTemplate let-pli="pli" let-editable="editable" let-form="form" let-i="i">
+<ng-template #quantityInputTemplate let-pli="pli" let-editable="editable" let-maxOrderQuantity="maxOrderQuantity">
   <ng-container *ngIf="!pli.isQuantityFixed && editable; else readonlyQuantity">
     <ish-input
-      [form]="form.get(['items', i])"
+      [form]="createDummyForm(pli, maxOrderQuantity)"
       controlName="quantity"
       type="number"
       label="shopping_cart.pli.qty.label"
@@ -167,7 +170,7 @@
       inputClass="w-100"
       min="0"
       markRequiredLabel="off"
-      [max]="pli.product.maxOrderQuantity"
+      [max]="maxOrderQuantity"
       [errorMessages]="{
         required: 'shopping_cart.quantity.invalid.error',
         max: 'shopping_cart.quantity.invalid.error.maxvalue',

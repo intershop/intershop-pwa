@@ -3,17 +3,14 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { combineLatest } from 'rxjs';
 import { concatMap, filter, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
-import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { getCurrentBasketId, updateBasket } from 'ish-core/store/customer/basket';
 import { loadCompanyUserSuccess } from 'ish-core/store/customer/user';
-import { loadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { QuoteService } from '../../services/quote/quote.service';
@@ -136,25 +133,6 @@ export class QuoteEffects {
       select(selectRouteParam('quoteId')),
       whenTruthy(),
       map(id => selectQuote({ id }))
-    )
-  );
-
-  /**
-   * After selecting and successfully loading quote, trigger a LoadProduct action
-   * for each product that is missing in the current product entities state.
-   */
-  loadProductsForSelectedQuote$ = createEffect(() =>
-    combineLatest([
-      this.actions$.pipe(ofType(selectQuote), mapToPayloadProperty('id')),
-      this.actions$.pipe(ofType(loadQuotesSuccess), mapToPayloadProperty('quotes')),
-    ]).pipe(
-      map(([quoteId, quotes]) => quotes.filter(quote => quote.id === quoteId).pop()),
-      whenTruthy(),
-      concatMap(quote => [
-        ...quote.items.map(({ productSKU }) =>
-          loadProductIfNotLoaded({ sku: productSKU, level: ProductCompletenessLevel.List })
-        ),
-      ])
     )
   );
 

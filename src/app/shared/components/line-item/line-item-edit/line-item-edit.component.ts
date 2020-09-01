@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductHelper } from 'ish-core/models/product/product.model';
 
 /**
@@ -22,6 +23,7 @@ import { ProductHelper } from 'ish-core/models/product/product.model';
 })
 export class LineItemEditComponent {
   @Input() lineItem: LineItemView;
+  @Input() product: ProductView;
   @Input() editable = true;
   @Output() updateItem = new EventEmitter<LineItemUpdate>();
   isVariationProduct = ProductHelper.isVariationProduct;

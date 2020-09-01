@@ -3,7 +3,7 @@ import { BasketRebate } from 'ish-core/models/basket-rebate/basket-rebate.model'
 import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
-import { OrderView } from 'ish-core/models/order/order.model';
+import { Order } from 'ish-core/models/order/order.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
@@ -27,7 +27,6 @@ export class BasketMockData {
       name: 'pli name',
       quantity: { value: 10 },
       productSKU: '4713',
-      product: { sku: '4713', availability: true, inStock: true },
       singleBasePrice: { gross: 3, net: 2, currency: 'USD', type: 'PriceItem' },
       price: { gross: 3, net: 2, currency: 'USD', type: 'PriceItem' },
       itemSurcharges: [
@@ -41,7 +40,7 @@ export class BasketMockData {
     } as LineItemView;
   }
 
-  static getOrder(): OrderView {
+  static getOrder() {
     return {
       id: '4711',
       documentNo: '12345678',
@@ -51,7 +50,7 @@ export class BasketMockData {
       commonShippingMethod: BasketMockData.getShippingMethod(),
       payment: BasketMockData.getPayment(),
       totals: BasketMockData.getTotals(),
-    } as OrderView;
+    } as Order;
   }
 
   static getAddress(): Address {

@@ -1,15 +1,18 @@
-import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
-import { FormArray, ReactiveFormsModule } from '@angular/forms';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockComponents, MockPipe } from 'ng-mocks';
-import { anything, spy, verify } from 'ts-mockito';
+import { of } from 'rxjs';
+import { anything, instance, mock, when } from 'ts-mockito';
 
-import { LineItemView } from 'ish-core/models/line-item/line-item.model';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { Price } from 'ish-core/models/price/price.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
+import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { BasketPromotionComponent } from 'ish-shared/components/basket/basket-promotion/basket-promotion.component';
 import { LineItemDescriptionComponent } from 'ish-shared/components/basket/line-item-description/line-item-description.component';
@@ -28,6 +31,9 @@ describe('Line Item List Component', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
+    const shoppingFacade = mock(ShoppingFacade);
+    when(shoppingFacade.product$(anything(), anything())).thenReturn(of({} as ProductView));
+
     TestBed.configureTestingModule({
       declarations: [
         LineItemListComponent,
@@ -43,6 +49,7 @@ describe('Line Item List Component', () => {
         MockPipe(ProductRoutePipe),
       ],
       imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
+      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
   }));
 
@@ -50,61 +57,19 @@ describe('Line Item List Component', () => {
     fixture = TestBed.createComponent(LineItemListComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.lineItems = [
-      {
-        id: '4712',
-        name: 'pli name',
-        quantity: { value: 10 },
-        product: { sku: '4713', availability: true, inStock: true },
-        productSKU: '4713',
-        singleBasePrice: { gross: 3, net: 2, currency: 'USD' },
-        price: { gross: 3, net: 2, currency: 'USD' },
-        totals: {},
-      } as LineItemView,
-    ];
+    component.lineItems = [BasketMockData.getBasketItem()];
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    component.ngOnChanges();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should create a basket quantities form on basket change', () => {
-    component.ngOnChanges();
-    fixture.detectChanges();
-    expect(component.form.get('items')).toBeTruthy();
-    expect(component.form.get('items').value).toHaveLength(1);
-  });
-
   it('should render sub components if basket changes', () => {
-    component.ngOnChanges();
     fixture.detectChanges();
     expect(findAllIshElements(element)).toIncludeAllMembers(['ish-line-item-description', 'ish-product-image']);
   });
-
-  it('should throw updateItem event when form group item changes', fakeAsync(() => {
-    component.lineItems = [
-      {
-        id: 'IID',
-        quantity: { value: 1, type: 'quantity' },
-        product: { maxOrderQuantity: 2 },
-      } as LineItemView,
-    ];
-
-    fixture.detectChanges();
-    const emitter = spy(component.updateItem);
-
-    // init form
-    component.ngOnChanges();
-
-    // change value
-    (component.form.controls.items as FormArray).controls[0].patchValue({ quantity: 2 });
-    tick(1500);
-
-    verify(emitter.emit(anything())).once();
-  }));
 
   it('should throw deleteItem event when delete item is clicked', done => {
     let firedItem = '';
@@ -123,27 +88,23 @@ describe('Line Item List Component', () => {
     });
 
     it('should render item quantity change input field if editable === true', () => {
-      component.ngOnChanges();
       fixture.detectChanges();
       expect(element.querySelector('ish-input[controlname=quantity]')).toBeTruthy();
     });
 
     it('should not render item quantity change input field if editable === false', () => {
       component.editable = false;
-      component.ngOnChanges();
       fixture.detectChanges();
       expect(element.querySelector('ish-input[controlname=quantity]')).not.toBeTruthy();
     });
 
     it('should render item delete button if editable === true', () => {
-      component.ngOnChanges();
       fixture.detectChanges();
       expect(element.querySelector('fa-icon[ng-reflect-icon="fas,trash-alt"]')).toBeTruthy();
     });
 
     it('should not render item delete button if editable === false', () => {
       component.editable = false;
-      component.ngOnChanges();
       fixture.detectChanges();
       expect(element.querySelector('fa-icon[ng-reflect-icon="fas,trash-alt"]')).toBeFalsy();
     });
@@ -152,7 +113,6 @@ describe('Line Item List Component', () => {
   describe('totals', () => {
     it('should render totals if set', () => {
       component.total = { value: 1 } as Price;
-      component.ngOnChanges();
       fixture.detectChanges();
       expect(element.textContent).toContain('quote.items.total.label');
     });
@@ -160,7 +120,6 @@ describe('Line Item List Component', () => {
     it('should not render totals if no line items present', () => {
       component.total = { value: 1 } as Price;
       component.lineItems = [];
-      component.ngOnChanges();
       fixture.detectChanges();
       expect(element.textContent).not.toContain('quote.items.total.label');
     });

@@ -15,14 +15,12 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
-import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { User } from 'ish-core/models/user/user.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { loadBasketSuccess } from 'ish-core/store/customer/basket';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loadCompanyUserSuccess, loginUserSuccess } from 'ish-core/store/customer/user';
-import { loadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
@@ -506,19 +504,13 @@ describe('Quote Request Effects', () => {
       const id = 'QRID';
       const action = loadQuoteRequestItems({ id });
 
-      const completionLoadProductIfNotLoaded = loadProductIfNotLoaded({
-        sku: 'SKU',
-        level: ProductCompletenessLevel.List,
-      });
-
       const completionLoadQuoteRequestItemsSuccess = loadQuoteRequestItemsSuccess({
         quoteRequestItems: [{ productSKU: 'SKU' } as QuoteRequestItem],
       });
 
-      actions$ = hot('-a----a----a----|', { a: action });
-      const expected$ = cold('-(dc)-(dc)-(dc)-|', {
+      actions$ = hot('        -a-a-a-|', { a: action });
+      const expected$ = cold('-c-c-c-|', {
         c: completionLoadQuoteRequestItemsSuccess,
-        d: completionLoadProductIfNotLoaded,
       });
 
       expect(effects.loadQuoteRequestItems$).toBeObservable(expected$);
@@ -538,19 +530,6 @@ describe('Quote Request Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadQuoteRequestItems$).toBeObservable(expected$);
-    });
-  });
-
-  describe('loadProductsForQuoteRequest$', () => {
-    it('should trigger LoadProduct actions for line items if LoadQuoteRequestItemsSuccess action triggered', () => {
-      const action = loadQuoteRequestItemsSuccess({
-        quoteRequestItems: [{ productSKU: 'SKU' } as QuoteRequestItem],
-      });
-      const completion = loadProductIfNotLoaded({ sku: 'SKU', level: ProductCompletenessLevel.List });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.loadProductsForQuoteRequest$).toBeObservable(expected$);
     });
   });
 

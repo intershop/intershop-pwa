@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -56,22 +56,20 @@ describe('Line Item Edit Dialog Component', () => {
     element = fixture.nativeElement;
 
     component.lineItem = ({
-      product: {
-        type: 'VariationProduct',
-        sku: 'SKU',
-        variableVariationAttributes: [],
-        availability: true,
-        inStock: true,
-        completenessLevel: ProductCompletenessLevel.List,
-      },
-
       quantity: {
         value: 5,
       },
     } as unknown) as LineItemView;
 
     when(shoppingFacade.product$(anything(), anything())).thenReturn(
-      of(component.lineItem.product) as Observable<VariationProductView>
+      of({
+        type: 'VariationProduct',
+        sku: 'SKU',
+        variableVariationAttributes: [],
+        availability: true,
+        inStock: true,
+        completenessLevel: ProductCompletenessLevel.List,
+      } as VariationProductView)
     );
 
     when(shoppingFacade.productNotReady$(anything(), anything())).thenReturn(of(false));

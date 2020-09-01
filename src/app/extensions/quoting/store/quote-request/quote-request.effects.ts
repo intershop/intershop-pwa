@@ -24,13 +24,11 @@ import {
   LineItemUpdateHelperItem,
 } from 'ish-core/models/line-item-update/line-item-update.helper';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
-import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { getCurrentBasket } from 'ish-core/store/customer/basket';
 import { getUserAuthorized, loadCompanyUserSuccess } from 'ish-core/store/customer/user';
-import { loadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import {
   distinctCompareWith,
   mapErrorToAction,
@@ -244,34 +242,12 @@ export class QuoteRequestEffects {
           quoteRequest.items.map(item => this.quoteRequestService.getQuoteRequestItem(quoteRequest.id, item['title']))
         ).pipe(
           defaultIfEmpty([]),
-          mergeMap(quoteRequestItems => [
-            ...quoteRequestItems.map(item =>
-              loadProductIfNotLoaded({ sku: item.productSKU, level: ProductCompletenessLevel.List })
-            ),
-            loadQuoteRequestItemsSuccess({ quoteRequestItems }),
-          ]),
+          mergeMap(quoteRequestItems => [loadQuoteRequestItemsSuccess({ quoteRequestItems })]),
           mapErrorToAction(loadQuoteRequestItemsFail)
         )
       )
     )
   );
-
-  /**
-   * After successfully loading quote request, trigger a LoadProduct action
-   * for each product that is missing in the current product entities state.
-   */
-  loadProductsForQuoteRequest$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loadQuoteRequestItemsSuccess),
-      mapToPayloadProperty('quoteRequestItems'),
-      concatMap(lineItems => [
-        ...lineItems.map(({ productSKU }) =>
-          loadProductIfNotLoaded({ sku: productSKU, level: ProductCompletenessLevel.List })
-        ),
-      ])
-    )
-  );
-
   /**
    * Add an item to the current editable quote request from a specific user of a specific customer.
    */

@@ -1,16 +1,16 @@
-<ng-container *ngIf="pli && pli.product">
+<ng-container *ngIf="pli && product">
   <!-- Product ID -->
-  <ish-product-id [product]="pli.product"></ish-product-id>
+  <ish-product-id [product]="product"></ish-product-id>
 
   <!-- Product Variations -->
   <ish-product-variation-display
-    *ngIf="isVariationProduct(pli.product)"
-    [product]="pli.product"
+    *ngIf="isVariationProduct(product)"
+    [product]="product"
   ></ish-product-variation-display>
   <!-- Product Bundles -->
   <ish-product-bundle-display
-    *ngIf="isBundleProduct(pli.product)"
-    [productBundleSKU]="pli.product.sku"
+    *ngIf="isBundleProduct(product)"
+    [productBundleSKU]="product.sku"
   ></ish-product-bundle-display>
 
   <!-- switch by lineItemViewType -->
@@ -20,7 +20,7 @@
 
     <!-- lineItemViewType = 'availability' -->
     <ng-container *ngSwitchCase="'availability'">
-      <ish-product-inventory [product]="pli.product"></ish-product-inventory>
+      <ish-product-inventory [product]="product"></ish-product-inventory>
     </ng-container>
 
     <!-- default lineItemViewType -->
@@ -29,15 +29,16 @@
       <ish-line-item-edit
         *ishNotFeature="'advancedVariationHandling'"
         [lineItem]="pli"
+        [product]="product"
         [editable]="editable"
         (updateItem)="onUpdateItem($event)"
       ></ish-line-item-edit>
 
       <!-- availability -->
-      <ish-product-inventory [product]="pli.product"></ish-product-inventory>
+      <ish-product-inventory [product]="product"></ish-product-inventory>
 
       <!-- ship window message -->
-      <ish-product-shipment [product]="pli.product"></ish-product-shipment>
+      <ish-product-shipment [product]="product"></ish-product-shipment>
 
       <!-- surcharges -->
       <div *ngFor="let surcharge of pli.itemSurcharges">
