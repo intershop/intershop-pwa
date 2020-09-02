@@ -90,6 +90,7 @@
     "ng-recaptcha": "^7.0.1",
     "ngx-infinite-scroll": "^10.0.1",
     "ngx-toastr": "^13.2.1",
+    "ngx-treeview": "^10.0.2",
     "prom-client": "^13.1.0",
     "rxjs": "~6.6.7",
     "swiper": "^6.7.0",
