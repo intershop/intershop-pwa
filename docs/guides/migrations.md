@@ -7,6 +7,11 @@ kb_sync_latest_only
 
 # Migrations
 
+## 0.23 to 0.24
+
+We introduced a [localization file clean up script](../concepts/localization.md#localization-file-clean-up-process) that removes all unused localization keys from the localization files and sorts the remaining keys.
+The clean up result is contained in a separate commit that should probably not be applied during a migration and instead a `npm run clean-localizations` should be performed on the project sources.
+
 ## 0.22 to 0.23
 
 We removed deprecated exports related to the NgRx testing refactorings introduced in version 0.21.

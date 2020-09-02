@@ -269,6 +269,29 @@ For this purpose a [Gradle plugin](https://gitlab.intershop.de/ISPWA/ngx-transla
 
 In the current state of the Intershop Progressive Web App, the converted localization properties from _a_responsive_ (without _app_sf_responsive_b2b_ and _app_sf_responsive_costcenter_) were added and should be used within the HTML templates.
 
+## Localization File Clean Up Process
+
+Localization files require constant maintenance to keep them up to date.
+They should not contain any localizations that are no longer required by the project sources or functionality.
+The PWA project provides a script that helps to keep the localization files clean.
+It can be run with `npm run clean-localizations`.
+
+The script removes all unused localization keys from the default localization file `src/assets/i18n/en_US.json` and sorts the remaining keys.
+In a second step it generates localization files for the other available language files under `src/assets/i18n` by using the localization keys found for the default language.
+Localization keys that are not available in these files - meaning they have no translation - are logged.
+
+Not explicitly used localization keys, such as dynamic created keys or error keys from REST calls, are handled separately.
+Their patterns are searched in all the localization keys of the default localization file and all matches will be included in the new cleaned up file.
+Therefore additional patterns have to be added for additional keys used in this way.
+
+```javascript
+// regular expression for patterns of not explicitly used localization keys (dynamic created keys, error keys from REST calls)
+// ADDITIONAL PATTERNS HAVE TO BE ADDED HERE
+const regEx = /account\.login\..*\.message|.*\.error\..*/i;
+```
+
+The clean up script is integrated in the full check run (`npm run check`) and will also be performed in continuous integration on the whole code base.
+
 ## Extend Locales
 
 To learn how languages other than English, German and French can be used in the progressive web app, see [Configuration - Extend Localization](./configuration.md#extend-locales).
