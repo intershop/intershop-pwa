@@ -58,6 +58,15 @@ describe('Node Mapper', () => {
       expect(() => nodeMapper.fromDocument(undefined)).toThrow();
     });
 
+    it('should map incoming no data to empty object', () => {
+      const data = { data: [] } as NodeDocument;
+      const mapped = nodeMapper.fromDocument(data);
+      expect(mapped).toBeTruthy();
+      expect(mapped.edges).toBeEmpty();
+      expect(mapped.rootIds).toBeEmpty();
+      expect(mapped.nodes).toBeEmpty();
+    });
+
     it('should map incoming data to model data', () => {
       const data = { data: [OILCORP_GERMANY, OILCORP_BERLIN] } as NodeDocument;
       const mapped = nodeMapper.fromDocument(data);
@@ -97,21 +106,21 @@ describe('Node Mapper', () => {
       expect(() => nodeMapper.fromResourceId(undefined)).toThrow();
     });
 
-    it('should map node resource identifier when node has no parent', () => {
+    it('should map node resource identifier with no parent to model data', () => {
       const data = { id: 'some-id' } as ResourceIdentifierData;
       const mapped = nodeMapper.fromData(nodeMapper.fromResourceId(data));
       expect(mapped.nodes['some-id']).toHaveProperty('id', 'some-id');
-      expect(mapped.nodes['some-id']).toHaveProperty('name', 'unknown');
+      expect(mapped.nodes['some-id']).toHaveProperty('name', undefined);
       expect(mapped.nodes['some-id']).toHaveProperty('organization', 'unknown');
       expect(mapped.edges).toBeEmpty();
       expect(mapped.rootIds).toEqual(['some-id']);
     });
 
-    it('should map node resource identifier when node has a parent', () => {
+    it('should map node resource identifier with a parent to model data', () => {
       const data = { id: 'some-id' } as ResourceIdentifierData;
       const mapped = nodeMapper.fromData(nodeMapper.fromResourceId(data, OILCORP_GERMANY));
       expect(mapped.nodes['some-id']).toHaveProperty('id', 'some-id');
-      expect(mapped.nodes['some-id']).toHaveProperty('name', 'unknown');
+      expect(mapped.nodes['some-id']).toHaveProperty('name', undefined);
       expect(mapped.nodes['some-id']).toHaveProperty('organization', 'oilcorp.example.org');
       expect(mapped.edges).toBeEmpty();
       expect(mapped.rootIds).toBeEmpty();
