@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { TreeviewModule } from 'ngx-treeview';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
@@ -20,6 +21,6 @@ const exportedComponents = [
 @NgModule({
   declarations: [...exportedComponents, BudgetWidgetComponent, HierarchiesPageComponent],
   exports: [...exportedComponents],
-  imports: [OrganizationManagementStoreModule, SharedModule],
+  imports: [OrganizationManagementStoreModule, SharedModule, TreeviewModule.forRoot()],
 })
 export class OrganizationManagementModule {}

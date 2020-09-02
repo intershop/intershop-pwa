@@ -1,6 +1,10 @@
 import { createFeatureSelector } from '@ngrx/store';
 
-export interface OrganizationHierarchiesState {}
+import { GroupState } from './group/group.reducer';
+
+export interface OrganizationHierarchiesState {
+  group: GroupState;
+}
 
 export const getOrganizationHierarchiesState = createFeatureSelector<OrganizationHierarchiesState>(
   'organizationHierarchies'

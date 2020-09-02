@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { switchMap, take } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 
+import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { toObservable } from 'ish-core/utils/functions';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
@@ -14,6 +15,7 @@ import {
   getCurrentUserBudgetLoading,
   loadBudget,
 } from '../store/budget';
+import { getOrganizationGroups, loadGroups } from '../store/organization-hierarchies';
 import {
   addUser,
   deleteUser,
@@ -34,6 +36,7 @@ import {
 export class OrganizationManagementFacade {
   constructor(private store: Store) {}
 
+  customer$ = this.store.pipe(select(getLoggedInCustomer));
   usersError$ = this.store.pipe(select(getUsersError));
   usersLoading$ = this.store.pipe(select(getUsersLoading));
   selectedUser$ = this.store.pipe(select(getSelectedUser));
@@ -87,5 +90,14 @@ export class OrganizationManagementFacade {
     this.selectedUser$
       .pipe(take(1), whenTruthy(), mapToProperty('login'))
       .subscribe(login => this.store.dispatch(setUserBudget({ login, budget })));
+  }
+
+  groups$() {
+    return this.customer$.pipe(
+      whenTruthy(),
+      take(1),
+      tap(() => this.store.dispatch(loadGroups())),
+      switchMap(() => this.store.pipe(select(getOrganizationGroups)))
+    );
   }
 }
