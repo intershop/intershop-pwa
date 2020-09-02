@@ -5,22 +5,16 @@
   <p>{{ 'account.organization.hierarchies.groups.new.message' | translate }}</p>
   <p class="indicates-required"><span class="required">*</span>{{ 'account.required_field.message' | translate }}</p>
   <fieldset>
-    <ish-input
-      [form]="form"
-      controlName="name"
-      label="organization.groups.name.label"
-      [errorMessages]="{
+    <ish-input [form]="form" controlName="id" label="organization.groups.id.label" [errorMessages]="{
         required: 'organization.groups.new.name.error.required'
-      }"
-    ></ish-input>
-    <ish-input
-      [form]="form"
-      controlName="parent"
-      label="organization.groups.parent.label"
-      [errorMessages]="{
+      }"></ish-input>
+    <ish-input [form]="form" controlName="name" label="organization.groups.name.label" [errorMessages]="{
+        required: 'organization.groups.new.name.error.required'
+      }"></ish-input>
+    <ish-input [form]="form" controlName="parent" label="organization.groups.parent.label" [errorMessages]="{
         required: 'organization.groups.new.parent.error.required'
-      }"
-    ></ish-input>
-    <ish-textarea [form]="form" controlName="description" label="organization.groups.description.label"></ish-textarea>
+      }"></ish-input>
+    <ish-textarea [form]="form" controlName="description" label="organization.groups.description.label">
+    </ish-textarea>
   </fieldset>
 </div>

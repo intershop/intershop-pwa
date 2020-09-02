@@ -5,8 +5,12 @@ import {
   ResourceIdentifierListDocument,
 } from '../resource-identifier/resource-identifier.interface';
 
-export interface NodeDocument {
+export interface NodeListDocument {
   data: NodeData[];
+}
+
+export interface NodeDocument {
+  data: NodeData;
 }
 
 export interface NodeData extends ResourceIdentifierData {

@@ -1,21 +1,30 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
-import { mapErrorToAction } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayload } from 'ish-core/utils/operators';
 
 import { OrganizationHierarchiesService } from '../../services/organization-hierarchies/organization-hierarchies.service';
 
-import { loadGroups, loadGroupsFail, loadGroupsSuccess } from './organization-hierarchies.actions';
+import {
+  createGroup,
+  createGroupFail,
+  createGroupSuccess,
+  loadGroups,
+  loadGroupsFail,
+  loadGroupsSuccess,
+} from './organization-hierarchies.actions';
 
 @Injectable()
 export class OrganizationHierarchiesEffects {
   constructor(
     private actions$: Actions,
     private organizationService: OrganizationHierarchiesService,
-    private store: Store
+    private store: Store,
+    private router: Router
   ) {}
 
   loadOrganizationHierarchies$ = createEffect(() =>
@@ -30,4 +39,37 @@ export class OrganizationHierarchiesEffects {
       )
     )
   );
+
+  createNewGroup$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createGroup),
+      mapToPayload(),
+      concatMap(newGroup =>
+        this.organizationService.createNode(newGroup.parent, newGroup.child).pipe(
+          map(nodeTree => createGroupSuccess({ nodeTree })),
+          mapErrorToAction(createGroupFail)
+        )
+      )
+    )
+  );
+
+  redirectAfterCreateNewGroup$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(createGroupSuccess),
+        tap(() => {
+          this.navigateTo('../');
+        })
+      ),
+    { dispatch: false }
+  );
+
+  private navigateTo(path: string): void {
+    // find current ActivatedRoute by following first activated children
+    let currentRoute = this.router.routerState.root;
+    while (currentRoute.firstChild) {
+      currentRoute = currentRoute.firstChild;
+    }
+    this.router.navigate([path], { relativeTo: currentRoute });
+  }
 }

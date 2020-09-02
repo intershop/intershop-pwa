@@ -3,14 +3,14 @@ import { Injectable } from '@angular/core';
 import { ResourceIdentifierData } from '../resource-identifier/resource-identifier.interface';
 
 import { NodeHelper } from './node.helper';
-import { NodeData, NodeDocument } from './node.interface';
+import { NodeData, NodeListDocument } from './node.interface';
 import { Node, NodeTree } from './node.model';
 
 @Injectable({ providedIn: 'root' })
 export class NodeMapper {
-  fromDocument(nodeDocument: NodeDocument): NodeTree {
-    if (nodeDocument) {
-      return nodeDocument.data
+  fromDocument(nodeList: NodeListDocument): NodeTree {
+    if (nodeList) {
+      return nodeList.data
         .sort((a, b) => NodeHelper.rootsFirst(a, b))
         .map(nodeData => this.fromData(nodeData))
         .reduce((a, b) => NodeHelper.merge(a, b), NodeHelper.empty());

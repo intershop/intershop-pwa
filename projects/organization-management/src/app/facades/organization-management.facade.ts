@@ -8,7 +8,7 @@ import { toObservable } from 'ish-core/utils/functions';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { B2bUser } from '../models/b2b-user/b2b-user.model';
-import { NodeTree } from '../models/node/node.model';
+import { Node } from '../models/node/node.model';
 import {
   createGroup,
   getOrganizationGroups,
@@ -89,10 +89,11 @@ export class OrganizationManagementFacade {
     );
   }
 
-  addGroup(node: NodeTree) {
+  createAndAddGroup(parent: Node, child: Node) {
     this.store.dispatch(
       createGroup({
-        node,
+        parent,
+        child,
       })
     );
   }

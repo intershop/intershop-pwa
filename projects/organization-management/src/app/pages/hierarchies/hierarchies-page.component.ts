@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { Node, NodeTree } from '../../models/node/node.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 @Component({
   selector: 'ish-hierarchies-page',
@@ -14,6 +15,7 @@ import { Node, NodeTree } from '../../models/node/node.model';
 export class HierarchiesPageComponent implements OnInit {
   @ViewChild('ngx-treeview') treeViewComponent: TreeviewComponent;
   items$: Observable<TreeviewItem[]>;
+  error$: Observable<HttpError>;
   config: TreeviewConfig = TreeviewConfig.create({
     hasAllCheckBox: false,
     hasFilter: false,
@@ -29,6 +31,7 @@ export class HierarchiesPageComponent implements OnInit {
       map(nodeTree => this.mapToTreeItems(nodeTree, nodeTree.rootIds)),
       map(items => items.map(item => new TreeviewItem(item)))
     );
+    this.error$ = this.organizationManagement.groupsError$;
   }
 
   mapTreeViewItem(orgNode: Node): TreeItem {

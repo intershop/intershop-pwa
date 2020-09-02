@@ -6,6 +6,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
+import { Node } from '../../models/node/node.model';
 
 @Component({
   selector: 'ish-hierarchies-create-group-page',
@@ -14,9 +15,10 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
 })
 export class HierarchiesCreateGroupPageComponent implements OnInit {
   form: FormGroup = this.fb.group({
-    group: this.fb.group({
+    org_group: this.fb.group({
+      id: ['', [Validators.required]],
       name: ['', [Validators.required]],
-      parent: ['', [Validators.required]],
+      parent: ['OilCorp_Germany', [Validators.required]],
       description: [''],
     }),
   });
@@ -38,7 +40,20 @@ export class HierarchiesCreateGroupPageComponent implements OnInit {
       return;
     }
 
-    this.organizationManagementFacade.addGroup(undefined);
+    const formValue = this.form.value;
+
+    const child: Node = {
+      id: formValue.org_group.id,
+      name: formValue.org_group.name,
+      description: formValue.org_group.description === '' ? undefined : formValue.org_group.description,
+    };
+
+    const parent: Node = {
+      id: formValue.org_group.parent,
+      name: formValue.org_group.parent,
+    };
+
+    this.organizationManagementFacade.createAndAddGroup(parent, child);
   }
 
   get formDisabled() {
@@ -46,6 +61,6 @@ export class HierarchiesCreateGroupPageComponent implements OnInit {
   }
 
   get group() {
-    return this.form.get('group');
+    return this.form.get('org_group');
   }
 }

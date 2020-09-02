@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ResourceIdentifierData } from '../resource-identifier/resource-identifier.interface';
 
-import { NodeData, NodeDocument } from './node.interface';
+import { NodeData, NodeListDocument } from './node.interface';
 import { NodeMapper } from './node.mapper';
 
 const OILCORP_GERMANY: NodeData = {
@@ -59,7 +59,7 @@ describe('Node Mapper', () => {
     });
 
     it('should map incoming no data to empty object', () => {
-      const data = { data: [] } as NodeDocument;
+      const data = { data: [] } as NodeListDocument;
       const mapped = nodeMapper.fromDocument(data);
       expect(mapped).toBeTruthy();
       expect(mapped.edges).toBeEmpty();
@@ -68,7 +68,7 @@ describe('Node Mapper', () => {
     });
 
     it('should map incoming data to model data', () => {
-      const data = { data: [OILCORP_GERMANY, OILCORP_BERLIN] } as NodeDocument;
+      const data = { data: [OILCORP_GERMANY, OILCORP_BERLIN] } as NodeListDocument;
       const mapped = nodeMapper.fromDocument(data);
       expect(mapped.rootIds).toEqual(['OilCorp_Germany']);
       expect(mapped.edges.OilCorp_Germany).toEqual(['OilCorp_Berlin', 'OilCorp_Jena']);
