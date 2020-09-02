@@ -7,7 +7,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
-import { Node } from '../../models/node/node.model';
+import { Node, NodeTree } from '../../models/node/node.model';
 
 @Component({
   selector: 'ish-hierarchies-create-group-page',
@@ -18,19 +18,21 @@ export class HierarchiesCreateGroupPageComponent implements OnInit {
   form: FormGroup = this.fb.group({
     org_group: this.fb.group({
       name: ['', [Validators.required]],
-      parent: ['OilCorp_Germany', [Validators.required]],
+      parent: ['', [Validators.required]],
       description: [''],
     }),
   });
   submitted = false;
   loading$: Observable<boolean>;
   error$: Observable<HttpError>;
+  items$: Observable<NodeTree>;
 
   constructor(private fb: FormBuilder, private organizationManagementFacade: OrganizationManagementFacade) {}
 
   ngOnInit(): void {
     this.loading$ = this.organizationManagementFacade.groupsLoading$;
     this.error$ = this.organizationManagementFacade.groupsError$;
+    this.items$ = this.organizationManagementFacade.groups$();
   }
 
   submitForm() {

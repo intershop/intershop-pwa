@@ -55,7 +55,7 @@ export class OrganizationHierarchiesService {
           )
           .pipe(
             mapToProperty('data'),
-            map(nodeData => this.nodeMapper.fromData(nodeData))
+            map(nodeData => this.nodeMapper.fromDataReversed(nodeData))
           )
       )
     );

@@ -40,7 +40,11 @@ export const organizationHierarchiesReducer = createReducer(
   on(createGroupSuccess, (state: OrganizationHierarchiesState, action) => {
     const node = action.payload.nodeTree;
     return {
-      groups: NodeHelper.merge(state.groups, node),
+      groups: NodeHelper.merge(state.groups, {
+        edges: { ...node.edges },
+        nodes: { ...node.nodes },
+        rootIds: [],
+      }),
       loading: false,
       error: undefined,
     };

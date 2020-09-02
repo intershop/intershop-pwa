@@ -19,6 +19,19 @@ export class NodeMapper {
     }
   }
 
+  fromDataReversed(nodeData: NodeData): NodeTree {
+    if (nodeData) {
+      const parent = nodeData.relationships.parentNode;
+      const parentTree = this.toNodeTree(this.fromResourceId(parent.data));
+      parentTree.edges = { ...this.fromData(nodeData).edges };
+      parentTree.edges[parent.data.id] = [nodeData.id];
+      parentTree.nodes[nodeData.id] = this.fromSingleData(nodeData);
+      return parentTree;
+    } else {
+      throw new Error('nodeData is required');
+    }
+  }
+
   fromData(nodeData: NodeData): NodeTree {
     if (nodeData) {
       let subTree: NodeTree;
