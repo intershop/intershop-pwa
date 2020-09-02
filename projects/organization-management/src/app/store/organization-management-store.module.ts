@@ -7,6 +7,8 @@ import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
 
 import { BudgetEffects } from './budget/budget.effects';
 import { budgetReducer } from './budget/budget.reducer';
+import { OrganizationHierarchiesEffects } from './organization-hierarchies/organization-hierarchies.effects';
+import { organizationHierarchiesReducer } from './organization-hierarchies/organization-hierarchies.reducer';
 import { OrganizationManagementState } from './organization-management-store';
 import { UsersEffects } from './users/users.effects';
 import { usersReducer } from './users/users.reducer';
@@ -14,9 +16,10 @@ import { usersReducer } from './users/users.reducer';
 const organizationManagementReducers: ActionReducerMap<OrganizationManagementState> = {
   users: usersReducer,
   budget: budgetReducer,
+  organizationHierarchies: organizationHierarchiesReducer,
 };
 
-const organizationManagementEffects = [UsersEffects, BudgetEffects];
+const organizationManagementEffects = [UsersEffects, BudgetEffects, OrganizationHierarchiesEffects];
 
 const metaReducers = [resetOnLogoutMeta];
 
