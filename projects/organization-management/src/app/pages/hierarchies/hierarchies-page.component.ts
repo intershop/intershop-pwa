@@ -3,9 +3,10 @@ import { TreeItem, TreeviewComponent, TreeviewConfig, TreeviewItem } from 'ngx-t
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { Node, NodeTree } from '../../models/node/node.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 @Component({
   selector: 'ish-hierarchies-page',
@@ -46,7 +47,7 @@ export class HierarchiesPageComponent implements OnInit {
   }
 
   mapToTreeItems(nodeTree: NodeTree, rootIds: string[]): TreeItem[] {
-    const ret = new Array<TreeItem>(nodeTree.rootIds.length);
+    const ret = new Array<TreeItem>();
     rootIds
       .map(rootId => nodeTree.nodes[rootId])
       .forEach(root => {
