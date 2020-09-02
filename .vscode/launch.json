@@ -12,6 +12,16 @@
       "internalConsoleOptions": "neverOpen"
     },
     {
+      "type": "node",
+      "name": "clean-up-localizations",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/clean-up-localizations",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
       "type": "chrome",
       "request": "launch",
       "name": "Launch Chrome with ng serve",
