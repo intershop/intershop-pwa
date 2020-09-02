@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UUID } from 'angular2-uuid';
 import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -16,7 +17,6 @@ import { Node } from '../../models/node/node.model';
 export class HierarchiesCreateGroupPageComponent implements OnInit {
   form: FormGroup = this.fb.group({
     org_group: this.fb.group({
-      id: ['', [Validators.required]],
       name: ['', [Validators.required]],
       parent: ['OilCorp_Germany', [Validators.required]],
       description: [''],
@@ -43,7 +43,7 @@ export class HierarchiesCreateGroupPageComponent implements OnInit {
     const formValue = this.form.value;
 
     const child: Node = {
-      id: formValue.org_group.id,
+      id: UUID.UUID(),
       name: formValue.org_group.name,
       description: formValue.org_group.description === '' ? undefined : formValue.org_group.description,
     };

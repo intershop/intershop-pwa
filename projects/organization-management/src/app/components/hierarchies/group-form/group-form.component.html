@@ -5,9 +5,6 @@
   <p>{{ 'account.organization.hierarchies.groups.new.message' | translate }}</p>
   <p class="indicates-required"><span class="required">*</span>{{ 'account.required_field.message' | translate }}</p>
   <fieldset>
-    <ish-input [form]="form" controlName="id" label="organization.groups.id.label" [errorMessages]="{
-        required: 'organization.groups.new.name.error.required'
-      }"></ish-input>
     <ish-input [form]="form" controlName="name" label="organization.groups.name.label" [errorMessages]="{
         required: 'organization.groups.new.name.error.required'
       }"></ish-input>

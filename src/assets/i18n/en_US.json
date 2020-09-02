@@ -1874,7 +1874,6 @@
   "order.zipcode.label": "Zip Code:",
   "organization.groups.name.label": "Name",
   "organization.groups.new.name.error.required": "Please enter a name.",
-  "organization.groups.id.label": "ID",
   "organization.groups.parent.label": "Parent Group",
   "organization.groups.new.parent.error.required": "Please select a parent group.",
   "organization.groups.description.label": "Description",
