@@ -89,10 +89,21 @@ grep "AudioComponent" src/app/shared/shared.module.ts
 npm run lint
 
 node schematics/customization/add custom
+# format without source folder prefix from project root
 npx ng g customized-copy shell/footer/footer
 
 stat src/app/shell/footer/custom-footer/custom-footer.component.ts
 grep 'custom-footer' src/app/app.component.html
+
+# format with source folder prefix from project root
+npx ng g customized-copy src/app/shared/components/basket/basket-promotion
+stat src/app/shared/components/basket/custom-basket-promotion/custom-basket-promotion.component.html
+grep 'custom-basket-promotion' src/app/shared/components/basket/basket-cost-summary/basket-cost-summary.component.html
+
+# from subfolder
+(cd src/app/pages/checkout-review && npx ng g customized-copy checkout-review)
+stat src/app/pages/checkout-review/custom-checkout-review/custom-checkout-review.component.html
+grep 'custom-checkout-review' src/app/pages/checkout-review/checkout-review-page.component.html
 
 sed -i -e "s%icmBaseURL.*%icmBaseURL: 'http://localhost:4200',%g" src/environments/environment.prod.ts
 

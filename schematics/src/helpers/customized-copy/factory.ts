@@ -24,9 +24,11 @@ export function customize(options: Options): Rule {
 
     const workspace = await getWorkspace(host);
     const project = workspace.projects.get(options.project);
-    const from = options.from.replace(/\/$/, '');
     const sourceRoot = project.sourceRoot;
-    const dir = host.getDir(`${sourceRoot}/app/${from}`);
+    const from = `${
+      options.path ? options.path + '/' : !options.from?.startsWith(sourceRoot + '/app/') ? sourceRoot + '/app/' : ''
+    }${options.from.replace(/\/$/, '')}`;
+    const dir = host.getDir(from);
 
     const fromName = basename(dir.path);
 
