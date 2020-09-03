@@ -11,8 +11,8 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { MessageFacade } from 'ish-core/facades/message.facade';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
-import { LineItemListComponent } from 'ish-shared/components/basket/line-item-list/line-item-list.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
 import { QuotingFacade } from '../../facades/quoting.facade';
