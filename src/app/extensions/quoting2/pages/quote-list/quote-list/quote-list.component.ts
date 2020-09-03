@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { QuotingHelper } from '../../../models/quoting/quoting.helper';
-import { Quote, QuoteRequest } from '../../../models/quoting/quoting.model';
+import { Quote, QuoteRequest, QuoteStubFromAttributes } from '../../../models/quoting/quoting.model';
 
 /**
  * The Quote List Component displays a list of quotes.
@@ -15,11 +15,12 @@ import { Quote, QuoteRequest } from '../../../models/quoting/quoting.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuoteListComponent {
-  @Input() quotes: (Quote | QuoteRequest)[] = [];
+  @Input() quotes: (Quote | QuoteRequest | QuoteStubFromAttributes)[] = [];
 
   @Output() deleteItem = new EventEmitter<Quote | QuoteRequest>();
 
   asQuote = QuotingHelper.asQuote;
+  itemCount = QuotingHelper.itemCount;
 
   /**
    * Throws deleteItem event.

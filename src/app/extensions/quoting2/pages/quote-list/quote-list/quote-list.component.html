@@ -22,7 +22,7 @@
         <td>
           <a [routerLink]="[quote.id]">{{ quote.displayName }}</a>
         </td>
-        <td>{{ quote.items?.length }}</td>
+        <td>{{ itemCount(quote) }}</td>
         <td>{{ quote.creationDate | ishDate: 'shortDate' }}</td>
         <td><ish-quote-expiration-date [quote]="quote"></ish-quote-expiration-date></td>
         <td align="left" nowrap="nowrap"><ish-quote-state [quoteId]="quote.id"></ish-quote-state></td>

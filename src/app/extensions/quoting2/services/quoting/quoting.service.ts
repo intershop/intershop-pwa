@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { flatten } from 'lodash-es';
 import { defer, forkJoin, iif, of } from 'rxjs';
@@ -13,11 +14,15 @@ import { QuoteCompletenessLevel, QuoteStub, QuotingEntity } from '../../models/q
 export class QuotingService {
   constructor(private apiService: ApiService, private quoteMapper: QuotingMapper) {}
 
+  private static ATTRS = 'number,name,lineItems,creationDate,validFromDate,validToDate';
+
   getQuotes() {
     return forkJoin([
       this.apiService
         .b2bUserEndpoint()
-        .get('quoterequests')
+        .get('quoterequests', {
+          params: new HttpParams().set('attrs', QuotingService.ATTRS),
+        })
         .pipe(
           unpackEnvelope(),
           map(qrs => qrs.reverse()),
@@ -25,7 +30,7 @@ export class QuotingService {
         ),
       this.apiService
         .b2bUserEndpoint()
-        .get('quotes')
+        .get('quotes', { params: new HttpParams().set('attrs', QuotingService.ATTRS) })
         .pipe(
           unpackEnvelope(),
           map(qrs => qrs.reverse()),

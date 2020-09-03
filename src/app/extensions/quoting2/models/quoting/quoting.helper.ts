@@ -36,6 +36,10 @@ export class QuotingHelper {
     return 'Unknown';
   }
 
+  static itemCount(entity: { items?: unknown[]; itemCount?: number }): number {
+    return entity.items?.length ?? entity?.itemCount;
+  }
+
   static asQuote(entity: QuotingEntity): Quote {
     return entity as Quote;
   }

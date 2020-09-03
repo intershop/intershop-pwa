@@ -9,6 +9,16 @@ export interface QuoteStub {
   completenessLevel: QuoteCompletenessLevel;
 }
 
+export interface QuoteStubFromAttributes extends QuoteStub {
+  completenessLevel: 'List';
+  number: string;
+  displayName: string;
+  itemCount: number;
+  creationDate: number;
+  validFromDate: number;
+  validToDate: number;
+}
+
 interface QuoteItemStub {
   id: string;
 }
@@ -60,6 +70,6 @@ export interface QuoteRequest extends QuoteBase<QuoteRequestItem | QuoteItemStub
   editable: boolean;
 }
 
-export type QuotingEntity = QuoteStub | Quote | QuoteRequest;
+export type QuotingEntity = QuoteStub | Quote | QuoteRequest | QuoteStubFromAttributes;
 
 export type QuoteStatus = 'Rejected' | 'Expired' | 'Responded' | 'Submitted' | 'New' | 'Unknown';

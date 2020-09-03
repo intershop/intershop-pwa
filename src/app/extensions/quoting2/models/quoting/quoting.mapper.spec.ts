@@ -53,6 +53,68 @@ describe('Quoting Mapper', () => {
       `);
     });
 
+    it('should map incoming quote request link with attributes to model data', () => {
+      const data: QuoteData = {
+        type: 'Link',
+        uri:
+          'inSPIRED-inTRONICS_Business-Site/-;loc=en_US;cur=USD/customers/OilCorp/users/jlink@test.intershop.de/quoterequests/ioMKCgoEcC4AAAF0BEAGFSQ5',
+        title: 'ioMKCgoEcC4AAAF0BEAGFSQ5',
+        attributes: [
+          { name: 'number', type: 'String', value: '0000003' },
+          { name: 'name', type: 'String', value: '0000003' },
+          { name: 'lineItems', type: 'Integer', value: 3 },
+          { name: 'creationDate', type: 'Date', value: 1598872290353 },
+          { name: 'validFromDate', type: 'Date', value: 1599390660000 },
+          { name: 'validToDate', type: 'Date', value: 1599477060000 },
+        ],
+      };
+      const mapped = quoteMapper.fromData(data, 'QuoteRequest');
+      expect(mapped).toMatchInlineSnapshot(`
+        Object {
+          "completenessLevel": "List",
+          "creationDate": 1598872290353,
+          "displayName": "0000003",
+          "id": "ioMKCgoEcC4AAAF0BEAGFSQ5",
+          "itemCount": 3,
+          "number": "0000003",
+          "type": "QuoteRequest",
+          "validFromDate": 1599390660000,
+          "validToDate": 1599477060000,
+        }
+      `);
+    });
+
+    it('should map incoming quote link with attributes to model data', () => {
+      const data: QuoteData = {
+        type: 'Link',
+        uri:
+          'inSPIRED-inTRONICS_Business-Site/-;loc=en_US;cur=USD/customers/OilCorp/users/jlink@test.intershop.de/quotes/IpMKCgoEYBcAAAF0TgwGFSQd',
+        title: 'IpMKCgoEYBcAAAF0TgwGFSQd',
+        attributes: [
+          { name: 'number', type: 'String', value: '0000003' },
+          { name: 'name', type: 'String', value: '0000003' },
+          { name: 'lineItems', type: 'Integer', value: 3 },
+          { name: 'creationDate', type: 'Date', value: 1598872290353 },
+          { name: 'validFromDate', type: 'Date', value: 1599390660000 },
+          { name: 'validToDate', type: 'Date', value: 1599477060000 },
+        ],
+      };
+      const mapped = quoteMapper.fromData(data, 'Quote');
+      expect(mapped).toMatchInlineSnapshot(`
+        Object {
+          "completenessLevel": "List",
+          "creationDate": 1598872290353,
+          "displayName": "0000003",
+          "id": "IpMKCgoEYBcAAAF0TgwGFSQd",
+          "itemCount": 3,
+          "number": "0000003",
+          "type": "Quote",
+          "validFromDate": 1599390660000,
+          "validToDate": 1599477060000,
+        }
+      `);
+    });
+
     it('should throw when types do not match', () => {
       expect(() =>
         quoteMapper.fromData({ type: 'QuoteRequest' } as QuoteData, 'Quote')

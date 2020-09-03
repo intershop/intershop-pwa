@@ -29,11 +29,11 @@ describe('Quoting Service', () => {
 
   describe('getQuotes', () => {
     it('should retrieve quote and quote request stubs when called', done => {
-      when(apiService.get(anything())).thenReturn(of({}));
+      when(apiService.get(anything(), anything())).thenReturn(of({}));
 
       quotingService.getQuotes().subscribe(
         () => {
-          verify(apiService.get(anything())).twice();
+          verify(apiService.get(anything(), anything())).twice();
 
           expect(capture(apiService.get).beforeLast()?.[0]).toMatchInlineSnapshot(`"quoterequests"`);
           expect(capture(apiService.get).last()?.[0]).toMatchInlineSnapshot(`"quotes"`);

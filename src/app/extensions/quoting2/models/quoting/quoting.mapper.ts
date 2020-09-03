@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 
+import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { PriceMapper } from 'ish-core/models/price/price.mapper';
 
 import { QuoteData, QuoteRequestLineItemResponse, QuoteRequestResponse, QuoteResponse } from './quoting.interface';
-import { Quote, QuoteRequest, QuoteStub } from './quoting.model';
+import { Quote, QuoteRequest, QuoteStub, QuoteStubFromAttributes } from './quoting.model';
 
 @Injectable({ providedIn: 'root' })
 export class QuotingMapper {
@@ -11,12 +12,33 @@ export class QuotingMapper {
   fromData(quoteData: QuoteData, type: 'Quote' | 'QuoteRequest'): QuoteStub | Quote | QuoteRequest {
     if (quoteData) {
       if (quoteData.type === 'Link') {
-        const mapped: QuoteStub = {
-          type,
-          id: quoteData.title,
-          completenessLevel: 'Stub',
-        };
-        return mapped;
+        if (quoteData.attributes) {
+          const mapped: QuoteStubFromAttributes = {
+            type,
+            id: quoteData.title,
+            completenessLevel: 'List',
+            number: AttributeHelper.getAttributeValueByAttributeName<string>(quoteData.attributes, 'number'),
+            displayName: AttributeHelper.getAttributeValueByAttributeName<string>(quoteData.attributes, 'name'),
+            creationDate: AttributeHelper.getAttributeValueByAttributeName<number>(
+              quoteData.attributes,
+              'creationDate'
+            ),
+            validFromDate: AttributeHelper.getAttributeValueByAttributeName<number>(
+              quoteData.attributes,
+              'validFromDate'
+            ),
+            validToDate: AttributeHelper.getAttributeValueByAttributeName<number>(quoteData.attributes, 'validToDate'),
+            itemCount: AttributeHelper.getAttributeValueByAttributeName<number>(quoteData.attributes, 'lineItems'),
+          };
+          return mapped;
+        } else {
+          const mapped: QuoteStub = {
+            type,
+            id: quoteData.title,
+            completenessLevel: 'Stub',
+          };
+          return mapped;
+        }
       } else if (quoteData.type !== type) {
         throw new Error(`expected type '${type}' but received '${quoteData.type}'`);
       } else if (quoteData?.type === 'Quote') {
