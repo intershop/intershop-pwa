@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { once } from 'lodash-es';
 import { ObservableInput, timer } from 'rxjs';
 import { filter, first, map, sample, switchMap, switchMapTo, tap } from 'rxjs/operators';
 
@@ -17,7 +16,6 @@ import {
   getQuotingEntity,
   getQuotingError,
   getQuotingLoading,
-  loadQuoting,
   loadQuotingDetail,
   rejectQuote,
 } from '../store/quoting';
@@ -33,13 +31,10 @@ export class QuotingFacade {
 
   loading$ = this.awaitQuoting(this.store.pipe(select(getQuotingLoading)));
 
-  private loadQuotesAndQuoteRequests = once(() => this.store.dispatch(loadQuoting()));
-
   quotingEntities$ = this.awaitQuoting(
     this.store.pipe(
       select(getQuotingEntities),
       sample(this.loading$.pipe(whenFalsy())),
-      tap(this.loadQuotesAndQuoteRequests),
       tap(entities => {
         entities.filter(QuotingHelper.isStub).forEach(entity => {
           this.store.dispatch(loadQuotingDetail({ entity, level: 'List' }));
