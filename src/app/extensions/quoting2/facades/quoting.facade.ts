@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { once } from 'lodash-es';
 import { ObservableInput, timer } from 'rxjs';
 import { filter, first, map, sample, switchMap, switchMapTo, tap } from 'rxjs/operators';
 
 import { selectRouteParam } from 'ish-core/store/core/router';
+import { getUserAuthorized } from 'ish-core/store/customer/user';
 import { waitForFeatureStore, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 import { QuotingHelper } from '../models/quoting/quoting.helper';
@@ -16,14 +18,22 @@ import {
   getQuotingEntity,
   getQuotingError,
   getQuotingLoading,
+  loadQuoting,
   loadQuotingDetail,
   rejectQuote,
+  submitQuoteRequest,
 } from '../store/quoting';
 
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
 export class QuotingFacade {
-  constructor(private store: Store) {}
+  loadInitial: () => void;
+
+  constructor(private store: Store) {
+    store.pipe(select(getUserAuthorized), whenFalsy()).subscribe(() => {
+      this.loadInitial = once(() => store.dispatch(loadQuoting()));
+    });
+  }
 
   private awaitQuoting<T>(obs: ObservableInput<T>) {
     return this.store.pipe(waitForFeatureStore('quoting2'), first(), switchMapTo(obs));
@@ -35,6 +45,7 @@ export class QuotingFacade {
     this.store.pipe(
       select(getQuotingEntities),
       sample(this.loading$.pipe(whenFalsy())),
+      tap(this.loadInitial),
       tap(entities => {
         entities.filter(QuotingHelper.isStub).forEach(entity => {
           this.store.dispatch(loadQuotingDetail({ entity, level: 'List' }));
@@ -66,6 +77,10 @@ export class QuotingFacade {
 
   addQuoteToBasket(quote: Quote) {
     this.store.dispatch(addQuoteToBasket({ quoteId: quote.id }));
+  }
+
+  submitQuoteRequest(quoteRequestId: string) {
+    this.store.dispatch(submitQuoteRequest({ quoteRequestId }));
   }
 
   selected$ = this.store.pipe(

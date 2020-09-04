@@ -94,4 +94,11 @@ export class QuotingService {
       .post<Link>('quoterequests', { quoteID })
       .pipe(map(data => this.quoteMapper.fromData(data, 'QuoteRequest')));
   }
+
+  submitQuoteRequest(quoteRequestID: string) {
+    return this.apiService
+      .b2bUserEndpoint()
+      .post<Link>('quotes', { quoteRequestID })
+      .pipe(mapTo(quoteRequestID));
+  }
 }

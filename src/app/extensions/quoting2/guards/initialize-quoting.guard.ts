@@ -1,29 +1,18 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanActivateChild } from '@angular/router';
-import { Store, select } from '@ngrx/store';
-import { once } from 'lodash-es';
 
-import { getUserAuthorized } from 'ish-core/store/customer/user';
-import { whenFalsy } from 'ish-core/utils/operators';
-
-import { loadQuoting } from '../store/quoting';
+import { QuotingFacade } from '../facades/quoting.facade';
 
 @Injectable({ providedIn: 'root' })
 export class InitializeQuotingGuard implements CanActivate, CanActivateChild {
-  private init: () => void;
-
-  constructor(store: Store) {
-    store.pipe(select(getUserAuthorized), whenFalsy()).subscribe(() => {
-      this.init = once(() => store.dispatch(loadQuoting()));
-    });
-  }
+  constructor(private quotingFacade: QuotingFacade) {}
 
   canActivate(): boolean {
-    this.init();
+    this.quotingFacade.loadInitial();
     return true;
   }
   canActivateChild(): boolean {
-    this.init();
+    this.quotingFacade.loadInitial();
     return true;
   }
 }

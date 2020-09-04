@@ -22,6 +22,7 @@ import {
   loadQuotingSuccess,
   rejectQuote,
   rejectQuoteFail,
+  submitQuoteRequest,
 } from './quoting.actions';
 
 export const quotingAdapter = createEntityAdapter<QuotingEntity>({
@@ -46,7 +47,8 @@ export const quotingReducer = createReducer(
     deleteQuotingEntity,
     rejectQuote,
     addQuoteToBasket,
-    createQuoteRequestFromQuote
+    createQuoteRequestFromQuote,
+    submitQuoteRequest
   ),
   unsetLoadingAndErrorOn(
     loadQuotingSuccess,

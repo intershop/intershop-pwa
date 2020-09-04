@@ -26,6 +26,7 @@ import {
   loadQuotingSuccess,
   rejectQuote,
   rejectQuoteFail,
+  submitQuoteRequest,
 } from './quoting.actions';
 
 @Injectable()
@@ -132,5 +133,18 @@ export class QuotingEffects {
         })
       ),
     { dispatch: false }
+  );
+
+  submitQuoteRequest$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(submitQuoteRequest),
+      mapToPayloadProperty('quoteRequestId'),
+      concatMap(quoteRequestId =>
+        this.quotingService.submitQuoteRequest(quoteRequestId).pipe(
+          map(id => loadQuotingDetailSuccess({ quote: { id, completenessLevel: 'Stub', type: 'QuoteRequest' } })),
+          mapErrorToAction(loadQuotingFail)
+        )
+      )
+    )
   );
 }

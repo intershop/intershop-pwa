@@ -194,4 +194,27 @@ describe('Quoting Service', () => {
       );
     });
   });
+
+  describe('submitQuoteRequest', () => {
+    beforeEach(() => {
+      when(apiService.post(anything(), anything())).thenReturn(of({}));
+    });
+
+    it('should use quote API for submitting quote requests', done => {
+      quotingService.submitQuoteRequest('quoteRequestID').subscribe(
+        () => {
+          verify(apiService.post(anything(), anything())).once();
+          const args = capture(apiService.post).last();
+          expect(args?.[0]).toMatchInlineSnapshot(`"quotes"`);
+          expect(args?.[1]).toMatchInlineSnapshot(`
+            Object {
+              "quoteRequestID": "quoteRequestID",
+            }
+          `);
+        },
+        fail,
+        done
+      );
+    });
+  });
 });

@@ -58,3 +58,5 @@ export const createQuoteRequestFromQuoteSuccess = createAction(
   '[Quoting API] Create Quote Request From Quote Success',
   payload<{ quote: QuotingEntity }>()
 );
+
+export const submitQuoteRequest = createAction('[Quoting] Submit Quote Request', payload<{ quoteRequestId: string }>());

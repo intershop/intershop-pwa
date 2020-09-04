@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 
+import { QuotingFacade } from '../../facades/quoting.facade';
 import { QuoteRequest } from '../../models/quoting/quoting.model';
 
 /**
@@ -15,19 +16,17 @@ import { QuoteRequest } from '../../models/quoting/quoting.model';
   templateUrl: './quote-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class QuoteEditComponent implements OnChanges, OnInit {
+export class QuoteEditComponent implements OnChanges {
   @Input() quote: QuoteRequest;
 
   form: FormGroup;
 
-  constructor() {
+  constructor(private quotingFacade: QuotingFacade) {
     this.form = new FormGroup({
       displayName: new FormControl(undefined, [Validators.maxLength(255)]),
       description: new FormControl(undefined, []),
     });
   }
-
-  ngOnInit() {}
 
   ngOnChanges(c: SimpleChanges) {
     if (c.quote) {
@@ -54,9 +53,9 @@ export class QuoteEditComponent implements OnChanges, OnInit {
 
   submit() {
     if (this.form && this.form.dirty) {
-      console.log('TODO', 'submit', this.form.value);
+      console.log('TODO', 'save & submit', this.form.value);
     } else {
-      console.log('TODO', 'submit');
+      this.quotingFacade.submitQuoteRequest(this.quote.id);
     }
   }
 

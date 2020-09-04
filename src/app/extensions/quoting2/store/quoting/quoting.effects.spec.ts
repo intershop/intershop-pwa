@@ -20,6 +20,7 @@ import {
   loadQuoting,
   loadQuotingDetail,
   rejectQuote,
+  submitQuoteRequest,
 } from './quoting.actions';
 import { QuotingEffects } from './quoting.effects';
 
@@ -144,6 +145,34 @@ describe('Quoting Effects', () => {
 
       effects.createQuoteRequestFromQuote$.subscribe(() => {
         verify(quotingService.createQuoteRequestFromQuote(anything())).once();
+        done();
+      });
+    });
+  });
+
+  describe('submitQuoteRequest$', () => {
+    beforeEach(() => {
+      // tslint:disable-next-line: no-unnecessary-callback-wrapper
+      when(quotingService.submitQuoteRequest(anything())).thenCall(id => of(id));
+    });
+
+    it('should submit quote request via quoting service when triggered', done => {
+      actions$ = of(submitQuoteRequest({ quoteRequestId: 'ID' }));
+
+      effects.submitQuoteRequest$.subscribe(() => {
+        verify(quotingService.submitQuoteRequest(anything())).once();
+        done();
+      });
+    });
+
+    it('should reset quote request to stub when triggered successfully', done => {
+      actions$ = of(submitQuoteRequest({ quoteRequestId: 'ID' }));
+
+      effects.submitQuoteRequest$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Quoting API] Load Quoting Detail Success:
+            quote: {"id":"ID","completenessLevel":"Stub","type":"QuoteRequest"}
+        `);
         done();
       });
     });
