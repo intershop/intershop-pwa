@@ -11,6 +11,7 @@ import { QuotingHelper } from '../models/quoting/quoting.helper';
 import { Quote, QuoteRequest, QuotingEntity } from '../models/quoting/quoting.model';
 import {
   addQuoteToBasket,
+  createQuoteRequestFromQuote,
   deleteQuotingEntity,
   getQuotingEntities,
   getQuotingEntity,
@@ -60,15 +61,15 @@ export class QuotingFacade {
     this.store.dispatch(deleteQuotingEntity({ entity }));
   }
 
-  reject(quote: Quote) {
+  rejectQuote(quote: Quote) {
     this.store.dispatch(rejectQuote({ quoteId: quote.id }));
   }
 
-  copy(quote: Quote | QuoteRequest) {
-    console.log('TODO', 'copy', quote);
+  createQuoteRequestFromQuote(quote: Quote) {
+    this.store.dispatch(createQuoteRequestFromQuote({ quoteId: quote.id }));
   }
 
-  addToBasket(quote: Quote) {
+  addQuoteToBasket(quote: Quote) {
     this.store.dispatch(addQuoteToBasket({ quoteId: quote.id }));
   }
 

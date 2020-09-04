@@ -35,14 +35,14 @@ export class QuoteViewComponent implements OnInit {
   }
 
   reject() {
-    this.quotingFacade.reject(this.asQuote(this.quote));
+    this.quotingFacade.rejectQuote(this.asQuote(this.quote));
   }
 
   copy() {
-    this.quotingFacade.copy(this.quote);
+    this.quotingFacade.createQuoteRequestFromQuote(this.asQuote(this.quote));
   }
 
   addToBasket() {
-    this.quotingFacade.addToBasket(this.asQuote(this.quote));
+    this.quotingFacade.addQuoteToBasket(this.asQuote(this.quote));
   }
 }

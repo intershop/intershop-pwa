@@ -149,7 +149,7 @@ describe('Quoting Service', () => {
     });
   });
 
-  describe('rejectQuote', () => {
+  describe('addQuoteToBasket', () => {
     beforeEach(() => {
       when(apiService.post(anything(), anything())).thenReturn(of({}));
     });
@@ -160,6 +160,29 @@ describe('Quoting Service', () => {
           verify(apiService.post(anything(), anything())).once();
           const args = capture(apiService.post).last();
           expect(args?.[0]).toMatchInlineSnapshot(`"baskets/basketID/items"`);
+          expect(args?.[1]).toMatchInlineSnapshot(`
+            Object {
+              "quoteID": "quoteID",
+            }
+          `);
+        },
+        fail,
+        done
+      );
+    });
+  });
+
+  describe('createQuoteRequestFromQuote', () => {
+    beforeEach(() => {
+      when(apiService.post(anything(), anything())).thenReturn(of({ type: 'QuoteRequest' }));
+    });
+
+    it('should use quote request API for creating quote from quote request', done => {
+      quotingService.createQuoteRequestFromQuote('quoteID').subscribe(
+        () => {
+          verify(apiService.post(anything(), anything())).once();
+          const args = capture(apiService.post).last();
+          expect(args?.[0]).toMatchInlineSnapshot(`"quoterequests"`);
           expect(args?.[1]).toMatchInlineSnapshot(`
             Object {
               "quoteID": "quoteID",

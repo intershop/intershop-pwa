@@ -81,7 +81,7 @@ export class QuotingMapper {
         const mapped: QuoteRequest = {
           type: 'QuoteRequest',
           id: data.id,
-          completenessLevel: data.items.some(i => i.type === 'Link') ? 'List' : 'Detail',
+          completenessLevel: data.items?.some(i => i.type === 'Link') ? 'List' : 'Detail',
 
           number: data.number,
           displayName: data.displayName,

@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -12,7 +13,14 @@ import { getCurrentBasketId } from 'ish-core/store/customer/basket';
 import { QuoteStub } from '../../models/quoting/quoting.model';
 import { QuotingService } from '../../services/quoting/quoting.service';
 
-import { addQuoteToBasket, deleteQuotingEntity, loadQuoting, loadQuotingDetail, rejectQuote } from './quoting.actions';
+import {
+  addQuoteToBasket,
+  createQuoteRequestFromQuote,
+  deleteQuotingEntity,
+  loadQuoting,
+  loadQuotingDetail,
+  rejectQuote,
+} from './quoting.actions';
 import { QuotingEffects } from './quoting.effects';
 
 describe('Quoting Effects', () => {
@@ -27,6 +35,7 @@ describe('Quoting Effects', () => {
     basketService = mock(BasketService);
 
     TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
       providers: [
         QuotingEffects,
         provideMockActions(() => actions$),
@@ -124,6 +133,18 @@ describe('Quoting Effects', () => {
           verify(basketService.createBasket()).once();
           done();
         });
+      });
+    });
+  });
+
+  describe('createQuoteRequestFromQuote$', () => {
+    it('should create quote request from quote via quoting service when triggered', done => {
+      when(quotingService.createQuoteRequestFromQuote(anything())).thenCall(({ id }) => of(id));
+      actions$ = of(createQuoteRequestFromQuote({ quoteId: 'ID' }));
+
+      effects.createQuoteRequestFromQuote$.subscribe(() => {
+        verify(quotingService.createQuoteRequestFromQuote(anything())).once();
+        done();
       });
     });
   });

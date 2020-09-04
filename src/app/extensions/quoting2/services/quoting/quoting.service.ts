@@ -4,6 +4,7 @@ import { flatten } from 'lodash-es';
 import { defer, forkJoin, iif, of } from 'rxjs';
 import { concatMap, map, mapTo } from 'rxjs/operators';
 
+import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
 import { QuoteData } from '../../models/quoting/quoting.interface';
@@ -85,5 +86,12 @@ export class QuotingService {
 
   addQuoteToBasket(quoteID: string, basketId: string) {
     return this.apiService.post(`baskets/${basketId}/items`, { quoteID }).pipe(mapTo(quoteID));
+  }
+
+  createQuoteRequestFromQuote(quoteID: string) {
+    return this.apiService
+      .b2bUserEndpoint()
+      .post<Link>('quoterequests', { quoteID })
+      .pipe(map(data => this.quoteMapper.fromData(data, 'QuoteRequest')));
   }
 }
