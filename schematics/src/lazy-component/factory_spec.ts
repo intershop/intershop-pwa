@@ -100,12 +100,21 @@ describe('Lazy Component Schematic', () => {
       expect(componentContent).toContain("@ViewChild('anchor'");
     });
 
-    it('should import component which is lazy loaded', async () => {
-      expect(componentContent).toMatch(/import.*from '.*\/shared\/dummy\/dummy.component'/);
+    it('should dynamically import component which is lazy loaded', async () => {
+      expect(componentContent).toContain("await import('../../shared/dummy/dummy.component');");
+    });
+
+    it('should load component via module', async () => {
+      // tslint:disable-next-line: no-invalid-template-strings
+      expect(componentContent).toContain('import(`../../${extension}.module`)');
     });
 
     it('should load component using ivy', async () => {
       expect(componentContent).toContain('.resolveComponentFactory(DummyComponent)');
+    });
+
+    it('should have extension in variable to fool cyclic dependency detection', async () => {
+      expect(componentContent).toContain("const extension = 'ext';");
     });
 
     it('should check if extension is enabled', async () => {
