@@ -11,14 +11,11 @@ import { noop, of, throwError } from 'rxjs';
 import { anyString, anything, deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { User } from 'ish-core/models/user/user.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
-import { loadBasketSuccess } from 'ish-core/store/customer/basket';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loadCompanyUserSuccess, loginUserSuccess } from 'ish-core/store/customer/user';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
@@ -32,8 +29,6 @@ import { QuoteRequestService } from '../../services/quote-request/quote-request.
 import { QuotingStoreModule } from '../quoting-store.module';
 
 import {
-  addBasketToQuoteRequest,
-  addBasketToQuoteRequestFail,
   addBasketToQuoteRequestSuccess,
   addProductToQuoteRequest,
   addProductToQuoteRequestFail,
@@ -604,81 +599,6 @@ describe('Quote Request Effects', () => {
     });
   });
 
-  describe('addBasketToQuoteRequest$', () => {
-    beforeEach(() => {
-      store$.dispatch(loginUserSuccess({ customer }));
-      store$.dispatch(loadCompanyUserSuccess({ user: { email: 'test' } as User }));
-      store$.dispatch(
-        loadQuoteRequestsSuccess({
-          quoteRequests: [
-            {
-              id: 'QRID',
-              type: 'QuoteRequest',
-              displayName: 'DNAME',
-              number: 'NUM',
-              editable: true,
-              creationDate: 1,
-              total: {} as Price,
-              items: [],
-            } as QuoteRequestData,
-          ],
-        })
-      );
-      store$.dispatch(
-        loadBasketSuccess({
-          basket: {
-            id: 'BID',
-            lineItems: [
-              {
-                id: 'BIID',
-                name: 'NAME',
-                position: 1,
-                quantity: { value: 1 },
-                productSKU: 'SKU',
-              } as LineItem,
-            ],
-            payment: undefined,
-          } as Basket,
-        })
-      );
-      when(quoteRequestServiceMock.addProductToQuoteRequest(anyString(), anything())).thenReturn(of('QRID'));
-    });
-
-    it('should call the quoteService for addProductToQuoteRequest', done => {
-      const action = addBasketToQuoteRequest();
-      actions$ = of(action);
-
-      effects.addBasketToQuoteRequest$.subscribe(() => {
-        verify(quoteRequestServiceMock.addProductToQuoteRequest('SKU', 1)).once();
-        done();
-      });
-    });
-
-    it('should map to action of type AddBasketToQuoteRequestSuccess', () => {
-      const action = addBasketToQuoteRequest();
-      const completion = addBasketToQuoteRequestSuccess({ id: 'QRID' });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.addBasketToQuoteRequest$).toBeObservable(expected$);
-    });
-
-    it('should map invalid request to action of type AddBasketToQuoteRequestFail', () => {
-      when(quoteRequestServiceMock.addProductToQuoteRequest(anyString(), anything())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
-      );
-
-      const action = addBasketToQuoteRequest();
-      const completion = addBasketToQuoteRequestFail({
-        error: makeHttpError({ message: 'invalid' }),
-      });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.addBasketToQuoteRequest$).toBeObservable(expected$);
-    });
-  });
-
   describe('updateQuoteRequestItems$', () => {
     beforeEach(() => {
       store$.dispatch(loginUserSuccess({ customer }));
@@ -877,17 +797,6 @@ describe('Quote Request Effects', () => {
         quantity: 1,
       };
       const action = addProductToQuoteRequest(payload);
-      actions$ = of(action);
-
-      effects.goToLoginOnAddQuoteRequest$.subscribe(noop, fail, noop);
-
-      tick(500);
-
-      expect(location.path()).toEqual('/login?returnUrl=%2Ffoobar&messageKey=quotes');
-    }));
-
-    it('should navigate to /login with returnUrl set if AddBasketToQuoteRequest called without proper login.', fakeAsync(() => {
-      const action = addBasketToQuoteRequest();
       actions$ = of(action);
 
       effects.goToLoginOnAddQuoteRequest$.subscribe(noop, fail, noop);

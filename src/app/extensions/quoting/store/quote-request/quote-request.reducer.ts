@@ -8,7 +8,6 @@ import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-
 import { QuoteRequestData } from '../../models/quote-request/quote-request.interface';
 
 import {
-  addBasketToQuoteRequest,
   addBasketToQuoteRequestFail,
   addBasketToQuoteRequestSuccess,
   addProductToQuoteRequest,
@@ -77,7 +76,6 @@ export const quoteRequestReducer = createReducer(
     createQuoteRequestFromQuoteRequest,
     loadQuoteRequestItems,
     addProductToQuoteRequest,
-    addBasketToQuoteRequest,
     updateQuoteRequestItems,
     deleteItemFromQuoteRequest
   ),

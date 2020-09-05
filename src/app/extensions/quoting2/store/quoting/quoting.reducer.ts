@@ -10,6 +10,8 @@ import { QuotingEntity } from '../../models/quoting/quoting.model';
 import {
   addQuoteToBasket,
   addQuoteToBasketSuccess,
+  createQuoteRequestFromBasket,
+  createQuoteRequestFromBasketSuccess,
   createQuoteRequestFromQuote,
   createQuoteRequestFromQuoteSuccess,
   deleteQuotingEntity,
@@ -48,6 +50,7 @@ export const quotingReducer = createReducer(
     rejectQuote,
     addQuoteToBasket,
     createQuoteRequestFromQuote,
+    createQuoteRequestFromBasket,
     submitQuoteRequest
   ),
   unsetLoadingAndErrorOn(
@@ -55,12 +58,16 @@ export const quotingReducer = createReducer(
     loadQuotingDetailSuccess,
     deleteQuotingEntitySuccess,
     addQuoteToBasketSuccess,
-    createQuoteRequestFromQuoteSuccess
+    createQuoteRequestFromQuoteSuccess,
+    createQuoteRequestFromBasketSuccess
   ),
   setErrorOn(loadQuotingFail, deleteQuotingEntityFail, rejectQuoteFail),
   on(loadQuotingSuccess, (state, action) => quotingAdapter.upsertMany(action.payload.quoting, state)),
-  on(loadQuotingDetailSuccess, createQuoteRequestFromQuoteSuccess, (state, action) =>
-    quotingAdapter.upsertOne(action.payload.quote, state)
+  on(
+    loadQuotingDetailSuccess,
+    createQuoteRequestFromQuoteSuccess,
+    createQuoteRequestFromBasketSuccess,
+    (state, action) => quotingAdapter.upsertOne(action.payload.quote, state)
   ),
   on(deleteQuotingEntitySuccess, (state, action) => quotingAdapter.removeOne(action.payload.id, state))
 );

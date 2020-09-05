@@ -95,6 +95,13 @@ export class QuotingService {
       .pipe(map(data => this.quoteMapper.fromData(data, 'QuoteRequest')));
   }
 
+  createQuoteRequestFromBasket(basketID: string) {
+    return this.apiService
+      .b2bUserEndpoint()
+      .post<Link>('quoterequests', { basketID })
+      .pipe(map(data => this.quoteMapper.fromData(data, 'QuoteRequest')));
+  }
+
   submitQuoteRequest(quoteRequestID: string) {
     return this.apiService
       .b2bUserEndpoint()

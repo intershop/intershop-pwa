@@ -20,7 +20,6 @@ import {
   resetQuoteError,
 } from '../store/quote';
 import {
-  addBasketToQuoteRequest,
   addProductToQuoteRequest,
   createQuoteRequestFromQuoteRequest,
   deleteItemFromQuoteRequest,
@@ -115,10 +114,6 @@ export class QuotingFacade {
 
   deleteQuoteRequestItem(itemId: string) {
     this.store.dispatch(deleteItemFromQuoteRequest({ itemId }));
-  }
-
-  addBasketToQuoteRequest() {
-    this.store.dispatch(addBasketToQuoteRequest());
   }
 
   addProductToQuoteRequest(sku: string, quantity: number) {

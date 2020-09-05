@@ -12,6 +12,7 @@ import { QuotingHelper } from '../models/quoting/quoting.helper';
 import { Quote, QuoteRequest, QuotingEntity } from '../models/quoting/quoting.model';
 import {
   addQuoteToBasket,
+  createQuoteRequestFromBasket,
   createQuoteRequestFromQuote,
   deleteQuotingEntity,
   getQuotingEntities,
@@ -27,11 +28,12 @@ import {
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
 export class QuotingFacade {
-  loadInitial: () => void;
+  private loadInitial: () => void;
 
   constructor(private store: Store) {
+    const initializer = once(() => store.dispatch(loadQuoting()));
     store.pipe(select(getUserAuthorized), whenFalsy()).subscribe(() => {
-      this.loadInitial = once(() => store.dispatch(loadQuoting()));
+      this.loadInitial = initializer;
     });
   }
 
@@ -75,6 +77,10 @@ export class QuotingFacade {
     this.store.dispatch(createQuoteRequestFromQuote({ quoteId: quote.id }));
   }
 
+  createQuoteRequestFromBasket() {
+    this.store.dispatch(createQuoteRequestFromBasket());
+  }
+
   addQuoteToBasket(quote: Quote) {
     this.store.dispatch(addQuoteToBasket({ quoteId: quote.id }));
   }
@@ -88,6 +94,7 @@ export class QuotingFacade {
     switchMap(quoteId =>
       this.store.pipe(
         select(getQuotingEntity(quoteId)),
+        tap(this.loadInitial),
         whenTruthy(),
         tap(entity => {
           if (entity?.completenessLevel !== 'Detail') {

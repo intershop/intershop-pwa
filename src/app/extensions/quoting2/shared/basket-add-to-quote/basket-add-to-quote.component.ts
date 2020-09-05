@@ -18,6 +18,6 @@ export class BasketAddToQuoteComponent {
   constructor(private quotingFacade: QuotingFacade) {}
 
   addToQuote() {
-    this.quotingFacade.addBasketToQuoteRequest();
+    this.quotingFacade.createQuoteRequestFromBasket();
   }
 }

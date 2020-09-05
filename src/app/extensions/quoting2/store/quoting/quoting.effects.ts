@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { of } from 'rxjs';
-import { concatMap, first, map, mergeMap, mergeMapTo, switchMap, tap } from 'rxjs/operators';
+import { concatMap, first, map, mergeMap, mergeMapTo, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { getCurrentBasketId, loadBasket } from 'ish-core/store/customer/basket';
@@ -14,6 +14,8 @@ import { QuotingService } from '../../services/quoting/quoting.service';
 import {
   addQuoteToBasket,
   addQuoteToBasketSuccess,
+  createQuoteRequestFromBasket,
+  createQuoteRequestFromBasketSuccess,
   createQuoteRequestFromQuote,
   createQuoteRequestFromQuoteSuccess,
   deleteQuotingEntity,
@@ -122,10 +124,23 @@ export class QuotingEffects {
     )
   );
 
+  createQuoteRequestFromBasket$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createQuoteRequestFromBasket),
+      withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
+      concatMap(([, basketID]) =>
+        this.quotingService.createQuoteRequestFromBasket(basketID).pipe(
+          map(quote => createQuoteRequestFromBasketSuccess({ quote })),
+          mapErrorToAction(loadQuotingFail)
+        )
+      )
+    )
+  );
+
   redirectToNewQuote$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(createQuoteRequestFromQuoteSuccess),
+        ofType(createQuoteRequestFromQuoteSuccess, createQuoteRequestFromBasketSuccess),
         mapToPayloadProperty('quote'),
         mapToProperty('id'),
         tap(id => {

@@ -95,8 +95,6 @@ export const addProductToQuoteRequestSuccess = createAction(
   payload<{ id: string }>()
 );
 
-export const addBasketToQuoteRequest = createAction('[Quote] Add Basket to Quote Request');
-
 export const addBasketToQuoteRequestFail = createAction('[Quote API] Add Basket to Quote Request Fail', httpError());
 
 export const addBasketToQuoteRequestSuccess = createAction(

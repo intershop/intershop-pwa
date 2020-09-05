@@ -3,13 +3,12 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { combineLatest, concat, forkJoin } from 'rxjs';
+import { combineLatest, forkJoin } from 'rxjs';
 import {
   concatMap,
   defaultIfEmpty,
   filter,
   first,
-  last,
   map,
   mapTo,
   mergeMap,
@@ -27,7 +26,6 @@ import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-updat
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
-import { getCurrentBasket } from 'ish-core/store/customer/basket';
 import { getUserAuthorized, loadCompanyUserSuccess } from 'ish-core/store/customer/user';
 import {
   distinctCompareWith,
@@ -43,8 +41,6 @@ import { QuoteRequestService } from '../../services/quote-request/quote-request.
 import { createQuoteRequestFromQuoteSuccess } from '../quote/quote.actions';
 
 import {
-  addBasketToQuoteRequest,
-  addBasketToQuoteRequestFail,
   addBasketToQuoteRequestSuccess,
   addProductToQuoteRequest,
   addProductToQuoteRequestFail,
@@ -267,27 +263,6 @@ export class QuoteRequestEffects {
   );
 
   /**
-   * Trigger an AddProductToQuoteRequest action for each line item thats in the current basket.
-   */
-  addBasketToQuoteRequest$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(addBasketToQuoteRequest),
-      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-      concatMap(([, currentBasket]) =>
-        concat(
-          ...currentBasket.lineItems.map(lineItem =>
-            this.quoteRequestService.addProductToQuoteRequest(lineItem.productSKU, lineItem.quantity.value)
-          )
-        ).pipe(
-          last(),
-          map(id => addBasketToQuoteRequestSuccess({ id })),
-          mapErrorToAction(addBasketToQuoteRequestFail)
-        )
-      )
-    )
-  );
-
-  /**
    * Update quote request items effect.
    * Triggers update item request if item quantity has changed and is greater zero
    * Triggers delete item request if item quantity set to zero
@@ -341,7 +316,7 @@ export class QuoteRequestEffects {
   goToLoginOnAddQuoteRequest$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(addProductToQuoteRequest, addBasketToQuoteRequest),
+        ofType(addProductToQuoteRequest),
         mergeMap(() => this.store.pipe(select(getUserAuthorized), first())),
         whenFalsy(),
         tap(() => {

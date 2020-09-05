@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
 
+import { LazyBasketAddToQuoteComponent } from './lazy-basket-add-to-quote/lazy-basket-add-to-quote.component';
+
 @NgModule({
   imports: [FeatureToggleModule],
   providers: [
@@ -12,7 +14,7 @@ import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.
       multi: true,
     },
   ],
-  declarations: [],
-  exports: [],
+  declarations: [LazyBasketAddToQuoteComponent],
+  exports: [LazyBasketAddToQuoteComponent],
 })
 export class Quoting2ExportsModule {}

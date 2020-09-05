@@ -5,9 +5,6 @@ import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-
 import { QuoteRequestData } from '../../models/quote-request/quote-request.interface';
 
 import {
-  addBasketToQuoteRequest,
-  addBasketToQuoteRequestFail,
-  addBasketToQuoteRequestSuccess,
   addProductToQuoteRequest,
   addProductToQuoteRequestFail,
   addProductToQuoteRequestSuccess,
@@ -323,37 +320,6 @@ describe('Quote Request Reducer', () => {
       it('should set loading to false', () => {
         const id = 'test';
         const action = addProductToQuoteRequestSuccess({ id });
-        const state = quoteRequestReducer(initialState, action);
-
-        expect(state.loading).toBeFalse();
-      });
-    });
-  });
-
-  describe('AddBasketToQuoteRequest actions', () => {
-    describe('AddBasketToQuoteRequest action', () => {
-      it('should set loading to true', () => {
-        const action = addBasketToQuoteRequest();
-        const state = quoteRequestReducer(initialState, action);
-
-        expect(state.loading).toBeTrue();
-      });
-    });
-
-    describe('AddBasketToQuoteRequestFail action', () => {
-      it('should set loading to false', () => {
-        const error = makeHttpError({ message: 'invalid' });
-        const action = addBasketToQuoteRequestFail({ error });
-        const state = quoteRequestReducer(initialState, action);
-
-        expect(state.loading).toBeFalse();
-        expect(state.error).toEqual(error);
-      });
-    });
-
-    describe('AddBasketToQuoteRequestSuccess action', () => {
-      it('should set loading to false', () => {
-        const action = addBasketToQuoteRequestSuccess({ id: 'QRID' });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeFalse();

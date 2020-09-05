@@ -60,3 +60,10 @@ export const createQuoteRequestFromQuoteSuccess = createAction(
 );
 
 export const submitQuoteRequest = createAction('[Quoting] Submit Quote Request', payload<{ quoteRequestId: string }>());
+
+export const createQuoteRequestFromBasket = createAction('[Quoting] Create Quote Request From Basket');
+
+export const createQuoteRequestFromBasketSuccess = createAction(
+  '[Quoting API] Create Quote Request From Basket Success',
+  payload<{ quote: QuotingEntity }>()
+);

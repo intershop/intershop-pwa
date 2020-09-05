@@ -34,9 +34,9 @@ describe('Basket Add To Quote Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should dispatch action when addToQuote is triggered.', () => {
+  it('should call facade when triggered.', () => {
     component.addToQuote();
 
-    verify(quotingFacade.addBasketToQuoteRequest()).once();
+    verify(quotingFacade.createQuoteRequestFromBasket()).once();
   });
 });
