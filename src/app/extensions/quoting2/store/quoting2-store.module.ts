@@ -11,7 +11,6 @@ const quoting2Reducers: ActionReducerMap<Quoting2State> = { quoting: quotingRedu
 
 const quoting2Effects = [QuotingEffects];
 
-// not-dead-code
 @NgModule({
   imports: [EffectsModule.forFeature(quoting2Effects), StoreModule.forFeature('quoting2', quoting2Reducers)],
 })
