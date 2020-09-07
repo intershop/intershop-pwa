@@ -28,6 +28,14 @@ export class NodeHelper {
     };
   }
 
+  static setParent(root: Node, childs: NodeTree): NodeTree {
+    return {
+      edges: { ...childs.edges, [root.id]: childs.rootIds },
+      nodes: { ...childs.nodes, [root.id]: root },
+      rootIds: [root.id],
+    };
+  }
+
   static merge(current: NodeTree, incoming: NodeTree): NodeTree {
     if (!current || !incoming) {
       throw new Error('falsy input');

@@ -32,7 +32,7 @@ export class OrganizationHierarchiesEffects {
       ofType(loadGroups),
       withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
       switchMap(([, customer]) =>
-        this.organizationService.getNodes(customer.customerNo).pipe(
+        this.organizationService.getNodes(customer).pipe(
           map(nodeTree => loadGroupsSuccess({ nodeTree })),
           mapErrorToAction(loadGroupsFail)
         )

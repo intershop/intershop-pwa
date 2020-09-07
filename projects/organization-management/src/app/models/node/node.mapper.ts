@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 
+import { Customer } from 'ish-core/models/customer/customer.model';
+
 import { ResourceIdentifierData } from '../resource-identifier/resource-identifier.interface';
 
 import { NodeHelper } from './node.helper';
@@ -8,6 +10,15 @@ import { Node, NodeTree } from './node.model';
 
 @Injectable({ providedIn: 'root' })
 export class NodeMapper {
+  fromCustomerData(customer: Customer): Node {
+    return {
+      id: customer.customerNo,
+      name: customer.companyName ?? customer.customerNo,
+      organization: customer.customerNo,
+      description: customer.description,
+    };
+  }
+
   fromDocument(nodeList: NodeListDocument): NodeTree {
     if (nodeList) {
       return nodeList.data
