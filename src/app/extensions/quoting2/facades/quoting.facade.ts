@@ -32,6 +32,7 @@ export class QuotingFacade {
 
   constructor(private store: Store) {
     const initializer = once(() => store.dispatch(loadQuoting()));
+    this.loadInitial = initializer;
     store.pipe(select(getUserAuthorized), whenFalsy()).subscribe(() => {
       this.loadInitial = initializer;
     });
@@ -47,7 +48,7 @@ export class QuotingFacade {
     this.store.pipe(
       select(getQuotingEntities),
       sample(this.loading$.pipe(whenFalsy())),
-      tap(this.loadInitial),
+      tap(() => this.loadInitial()),
       tap(entities => {
         entities.filter(QuotingHelper.isStub).forEach(entity => {
           this.store.dispatch(loadQuotingDetail({ entity, level: 'List' }));
@@ -94,7 +95,7 @@ export class QuotingFacade {
     switchMap(quoteId =>
       this.store.pipe(
         select(getQuotingEntity(quoteId)),
-        tap(this.loadInitial),
+        tap(() => this.loadInitial()),
         whenTruthy(),
         tap(entity => {
           if (entity?.completenessLevel !== 'Detail') {

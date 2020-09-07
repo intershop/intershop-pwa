@@ -7,10 +7,9 @@ import { QuoteEditComponent } from './shared/quote-edit/quote-edit.component';
 import { QuoteExpirationDateComponent } from './shared/quote-expiration-date/quote-expiration-date.component';
 import { QuoteStateComponent } from './shared/quote-state/quote-state.component';
 import { QuoteViewComponent } from './shared/quote-view/quote-view.component';
-import { Quoting2StoreModule } from './store/quoting2-store.module';
 
 @NgModule({
-  imports: [Quoting2StoreModule, SharedModule],
+  imports: [SharedModule],
   declarations: [
     BasketAddToQuoteComponent,
     QuoteEditComponent,
