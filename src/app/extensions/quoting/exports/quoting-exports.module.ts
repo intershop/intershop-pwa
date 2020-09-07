@@ -4,7 +4,6 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
 
 import { LazyProductAddToQuoteComponent } from './lazy-product-add-to-quote/lazy-product-add-to-quote.component';
-import { LazyQuoteWidgetComponent } from './lazy-quote-widget/lazy-quote-widget.component';
 
 @NgModule({
   imports: [FeatureToggleModule],
@@ -15,7 +14,7 @@ import { LazyQuoteWidgetComponent } from './lazy-quote-widget/lazy-quote-widget.
       multi: true,
     },
   ],
-  declarations: [LazyProductAddToQuoteComponent, LazyQuoteWidgetComponent],
-  exports: [LazyProductAddToQuoteComponent, LazyQuoteWidgetComponent],
+  declarations: [LazyProductAddToQuoteComponent],
+  exports: [LazyProductAddToQuoteComponent],
 })
 export class QuotingExportsModule {}

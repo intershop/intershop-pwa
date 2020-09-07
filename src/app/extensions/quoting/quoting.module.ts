@@ -6,17 +6,10 @@ import { ProductAddToQuoteDialogComponent } from './shared/product-add-to-quote-
 import { ProductAddToQuoteComponent } from './shared/product-add-to-quote/product-add-to-quote.component';
 import { QuoteEditComponent } from './shared/quote-edit/quote-edit.component';
 import { QuoteStateComponent } from './shared/quote-state/quote-state.component';
-import { QuoteWidgetComponent } from './shared/quote-widget/quote-widget.component';
 
 @NgModule({
   imports: [SharedModule],
-  declarations: [
-    ProductAddToQuoteComponent,
-    ProductAddToQuoteDialogComponent,
-    QuoteEditComponent,
-    QuoteStateComponent,
-    QuoteWidgetComponent,
-  ],
+  declarations: [ProductAddToQuoteComponent, ProductAddToQuoteDialogComponent, QuoteEditComponent, QuoteStateComponent],
   exports: [QuoteEditComponent, QuoteStateComponent, SharedModule],
 })
 export class QuotingModule {}
