@@ -20,7 +20,6 @@ import {
   resetQuoteError,
 } from '../store/quote';
 import {
-  addProductToQuoteRequest,
   createQuoteRequestFromQuoteRequest,
   deleteItemFromQuoteRequest,
   deleteQuoteRequest,
@@ -114,10 +113,6 @@ export class QuotingFacade {
 
   deleteQuoteRequestItem(itemId: string) {
     this.store.dispatch(deleteItemFromQuoteRequest({ itemId }));
-  }
-
-  addProductToQuoteRequest(sku: string, quantity: number) {
-    this.store.dispatch(addProductToQuoteRequest({ sku, quantity }));
   }
 
   // QUOTE AND QUOTE REQUEST

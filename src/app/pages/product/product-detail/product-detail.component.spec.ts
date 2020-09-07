@@ -20,7 +20,7 @@ import { ProductShipmentComponent } from 'ish-shared/components/product/product-
 import { ProductVariationSelectComponent } from 'ish-shared/components/product/product-variation-select/product-variation-select.component';
 
 import { LazyProductAddToOrderTemplateComponent } from '../../../extensions/order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
-import { LazyProductAddToQuoteComponent } from '../../../extensions/quoting/exports/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
+import { LazyProductAddToQuoteComponent } from '../../../extensions/quoting2/exports/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
 import { IsTactonProductDirective } from '../../../extensions/tacton/directives/is-tacton-product.directive';
 import { LazyTactonConfigureProductComponent } from '../../../extensions/tacton/exports/lazy-tacton-configure-product/lazy-tacton-configure-product.component';
 import { ProductDetailActionsComponent } from '../product-detail-actions/product-detail-actions.component';
