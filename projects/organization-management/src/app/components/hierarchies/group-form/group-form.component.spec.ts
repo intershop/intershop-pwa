@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
+import { SelectComponent } from 'ish-shared/forms/components/select/select.component';
 import { TextareaComponent } from 'ish-shared/forms/components/textarea/textarea.component';
 
 import { GroupFormComponent } from './group-form.component';
@@ -18,7 +19,12 @@ describe('Group Form Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [GroupFormComponent, MockComponent(InputComponent), MockComponent(TextareaComponent)],
+      declarations: [
+        GroupFormComponent,
+        MockComponent(InputComponent),
+        MockComponent(SelectComponent),
+        MockComponent(TextareaComponent),
+      ],
     }).compileComponents();
   }));
 

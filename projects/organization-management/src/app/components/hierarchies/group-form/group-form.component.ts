@@ -4,7 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 
-import { NodeTree, Node } from '../../../models/node/node.model';
+import { Node, NodeTree } from '../../../models/node/node.model';
 
 @Component({
   selector: 'ish-group-form',
@@ -21,7 +21,7 @@ export class GroupFormComponent implements OnChanges {
     this.parentOptions = this.mapParentOptions(this.parents.nodes);
   }
 
-  private mapParentOptions(bla: { [id: string]: Node }): SelectOption[] {
-    return Object.keys(bla).map(node => ({ value: node, label: this.parents.nodes[node].name }));
+  private mapParentOptions(nodeMap: { [id: string]: Node }): SelectOption[] {
+    return Object.keys(nodeMap).map(nodeId => ({ value: nodeId, label: nodeMap[nodeId].name }));
   }
 }
