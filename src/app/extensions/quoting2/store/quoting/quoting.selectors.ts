@@ -15,3 +15,5 @@ const { selectAll, selectEntities } = quotingAdapter.getSelectors(getQuotingStat
 export const getQuotingEntities = selectAll;
 
 export const getQuotingEntity = (id: string) => createSelector(selectEntities, entities => entities[id]);
+
+export const getActiveQuoteRequestId = createSelector(getQuotingState, state => state.activeQuoteRequest);

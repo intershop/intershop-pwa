@@ -1,4 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Location } from '@angular/common';
+import { Component } from '@angular/core';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -17,15 +20,19 @@ describe('Product Add To Quote Component', () => {
   let fixture: ComponentFixture<ProductAddToQuoteComponent>;
   let element: HTMLElement;
   let quotingFacade: QuotingFacade;
+  let location: Location;
 
   beforeEach(async () => {
+    @Component({ template: 'dummy' })
+    class DummyComponent {}
+
     quotingFacade = mock(QuotingFacade);
     const accountFacade = mock(AccountFacade);
     when(accountFacade.isLoggedIn$).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [MockComponent(FaIconComponent), ProductAddToQuoteComponent],
+      imports: [RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]), TranslateModule.forRoot()],
+      declarations: [DummyComponent, MockComponent(FaIconComponent), ProductAddToQuoteComponent],
       providers: [
         { provide: QuotingFacade, useFactory: () => instance(quotingFacade) },
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
@@ -38,6 +45,14 @@ describe('Product Add To Quote Component', () => {
     component = fixture.componentInstance;
     component.product = { sku: 'dummy', minOrderQuantity: 5 } as Product;
     element = fixture.nativeElement;
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ProductAddToQuoteComponent);
+    component = fixture.componentInstance;
+    component.product = { sku: 'dummy', minOrderQuantity: 5 } as Product;
+    element = fixture.nativeElement;
+    location = TestBed.inject(Location);
   });
 
   it('should be created', () => {
@@ -63,9 +78,11 @@ describe('Product Add To Quote Component', () => {
     expect(element.querySelector('button').disabled).toBeTruthy();
   });
 
-  it('should use facade when addToQuote is triggered.', () => {
+  it('should route to addToQuote URL when triggered.', fakeAsync(() => {
     component.addToQuote();
 
-    // verify(quotingFacade.addProductToQuoteRequest('dummy', 5)).once();
-  });
+    tick(500);
+
+    expect(location.path()).toMatchInlineSnapshot(`"/quote-list/addProductToQuoteRequest?sku=dummy&quantity=5"`);
+  }));
 });

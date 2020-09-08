@@ -67,3 +67,13 @@ export const createQuoteRequestFromBasketSuccess = createAction(
   '[Quoting API] Create Quote Request From Basket Success',
   payload<{ quote: QuotingEntity }>()
 );
+
+export const addProductToQuoteRequest = createAction(
+  '[Quoting] Add Product To Quote Request',
+  payload<{ sku: string; quantity: number }>()
+);
+
+export const addProductToQuoteRequestSuccess = createAction(
+  '[Quoting] Add Product To Quote Request Success',
+  payload<{ quote: QuotingEntity }>()
+);

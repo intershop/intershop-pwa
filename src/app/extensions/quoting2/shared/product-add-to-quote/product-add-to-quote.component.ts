@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Product } from 'ish-core/models/product/product.model';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
@@ -20,9 +21,11 @@ export class ProductAddToQuoteComponent {
   @Input() class?: string;
   @Input() quantity?: number;
 
+  constructor(private router: Router) {}
+
   addToQuote() {
     const quantity = this.quantity ? this.quantity : this.product.minOrderQuantity;
     const sku = this.product.sku;
-    console.log('TODO', 'addToQuoteRequest', { sku, quantity });
+    this.router.navigate(['/quote-list/addProductToQuoteRequest'], { queryParams: { sku, quantity } });
   }
 }

@@ -1,15 +1,16 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { flatten } from 'lodash-es';
-import { defer, forkJoin, iif, of } from 'rxjs';
-import { concatMap, map, mapTo } from 'rxjs/operators';
+import { EMPTY, defer, forkJoin, iif, of } from 'rxjs';
+import { concatMap, defaultIfEmpty, expand, filter, map, mapTo, take } from 'rxjs/operators';
 
 import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
+import { QuotingHelper } from '../../models/quoting/quoting.helper';
 import { QuoteData } from '../../models/quoting/quoting.interface';
 import { QuotingMapper } from '../../models/quoting/quoting.mapper';
-import { QuoteCompletenessLevel, QuoteStub, QuotingEntity } from '../../models/quoting/quoting.model';
+import { QuoteCompletenessLevel, QuoteRequest, QuoteStub, QuotingEntity } from '../../models/quoting/quoting.model';
 
 @Injectable({ providedIn: 'root' })
 export class QuotingService {
@@ -107,5 +108,63 @@ export class QuotingService {
       .b2bUserEndpoint()
       .post<Link>('quotes', { quoteRequestID })
       .pipe(mapTo(quoteRequestID));
+  }
+
+  private createQuoteRequest() {
+    return this.apiService
+      .b2bUserEndpoint()
+      .post<Link>('quoterequests')
+      .pipe(map(link => this.quoteMapper.fromData(link, 'QuoteRequest')));
+  }
+
+  private expansion(stubs: QuoteStub[]) {
+    return stubs?.length
+      ? this.getQuoteDetails(stubs[0], 'List').pipe(
+          map(quoteRequest => ({
+            quoteRequest,
+            next: stubs.slice(1),
+          }))
+        )
+      : EMPTY;
+  }
+
+  private getOrCreateActiveQuoteRequest() {
+    return this.apiService
+      .b2bUserEndpoint()
+      .get('quoterequests', {
+        params: new HttpParams().set('attrs', QuotingService.ATTRS),
+      })
+      .pipe(
+        unpackEnvelope<Link>(),
+        map(qrs => qrs.reverse()),
+        map(links => links.map(link => this.quoteMapper.fromData(link, 'QuoteRequest'))),
+        concatMap(stubs => this.expansion(stubs)),
+        expand(({ next }) => this.expansion(next)),
+        map(({ quoteRequest }) => quoteRequest),
+        filter((quoteRequest: QuoteRequest) => quoteRequest.editable),
+        take(1),
+        defaultIfEmpty(undefined as QuoteRequest)
+      )
+      .pipe(
+        concatMap(active => (active ? of(active) : this.createQuoteRequest())),
+        concatMap(activeOrNew => this.getQuoteDetails(activeOrNew, 'Detail')),
+        map(QuotingHelper.asQuoteRequest)
+      );
+  }
+
+  addProductToQuoteRequest(sku: string, quantity: number) {
+    return this.getOrCreateActiveQuoteRequest().pipe(
+      concatMap(quoteRequest =>
+        this.apiService
+          .b2bUserEndpoint()
+          .post(`quoterequests/${quoteRequest.id}/items`, {
+            productSKU: sku,
+            quantity: {
+              value: quantity,
+            },
+          })
+          .pipe(mapTo(quoteRequest.id))
+      )
+    );
   }
 }

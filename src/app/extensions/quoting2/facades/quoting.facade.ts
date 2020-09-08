@@ -15,6 +15,7 @@ import {
   createQuoteRequestFromBasket,
   createQuoteRequestFromQuote,
   deleteQuotingEntity,
+  getActiveQuoteRequestId,
   getQuotingEntities,
   getQuotingEntity,
   getQuotingError,
@@ -90,23 +91,31 @@ export class QuotingFacade {
     this.store.dispatch(submitQuoteRequest({ quoteRequestId }));
   }
 
+  private fetchDetail(quoteId: string) {
+    return this.store.pipe(
+      select(getQuotingEntity(quoteId)),
+      tap(() => this.loadInitial()),
+      whenTruthy(),
+      tap(entity => {
+        if (entity?.completenessLevel !== 'Detail') {
+          this.store.dispatch(loadQuotingDetail({ entity, level: 'Detail' }));
+        }
+      }),
+      filter(entity => entity?.completenessLevel === 'Detail'),
+      map(quote => quote as Quote | QuoteRequest)
+    );
+  }
+
   selected$ = this.store.pipe(
     select(selectRouteParam('quoteId')),
-    switchMap(quoteId =>
-      this.store.pipe(
-        select(getQuotingEntity(quoteId)),
-        tap(() => this.loadInitial()),
-        whenTruthy(),
-        tap(entity => {
-          if (entity?.completenessLevel !== 'Detail') {
-            this.store.dispatch(loadQuotingDetail({ entity, level: 'Detail' }));
-          }
-        }),
-        filter(entity => entity?.completenessLevel === 'Detail'),
-        map(quote => quote as Quote | QuoteRequest)
-      )
-    )
+    switchMap(quoteId => this.fetchDetail(quoteId))
   );
 
   selectedState$ = this.selected$.pipe(map(QuotingHelper.state));
+
+  activeQuoteRequest$ = this.store.pipe(
+    select(getActiveQuoteRequestId),
+    switchMap(quoteRequestId => this.fetchDetail(quoteRequestId)),
+    map(QuotingHelper.asQuoteRequest)
+  );
 }

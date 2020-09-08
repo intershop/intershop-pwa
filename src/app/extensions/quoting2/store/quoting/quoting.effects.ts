@@ -12,6 +12,8 @@ import { mapErrorToAction, mapToPayload, mapToPayloadProperty, mapToProperty } f
 import { QuotingService } from '../../services/quoting/quoting.service';
 
 import {
+  addProductToQuoteRequest,
+  addProductToQuoteRequestSuccess,
   addQuoteToBasket,
   addQuoteToBasketSuccess,
   createQuoteRequestFromBasket,
@@ -157,6 +159,21 @@ export class QuotingEffects {
       concatMap(quoteRequestId =>
         this.quotingService.submitQuoteRequest(quoteRequestId).pipe(
           map(id => loadQuotingDetailSuccess({ quote: { id, completenessLevel: 'Stub', type: 'QuoteRequest' } })),
+          mapErrorToAction(loadQuotingFail)
+        )
+      )
+    )
+  );
+
+  addProductToQuoteRequest$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addProductToQuoteRequest),
+      mapToPayload(),
+      concatMap(({ sku, quantity }) =>
+        this.quotingService.addProductToQuoteRequest(sku, quantity).pipe(
+          map(id =>
+            addProductToQuoteRequestSuccess({ quote: { id, completenessLevel: 'Stub', type: 'QuoteRequest' } })
+          ),
           mapErrorToAction(loadQuotingFail)
         )
       )

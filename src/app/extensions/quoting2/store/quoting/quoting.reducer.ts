@@ -8,6 +8,8 @@ import { QuotingHelper } from '../../models/quoting/quoting.helper';
 import { QuotingEntity } from '../../models/quoting/quoting.model';
 
 import {
+  addProductToQuoteRequest,
+  addProductToQuoteRequestSuccess,
   addQuoteToBasket,
   addQuoteToBasketSuccess,
   createQuoteRequestFromBasket,
@@ -34,15 +36,18 @@ export const quotingAdapter = createEntityAdapter<QuotingEntity>({
 export interface QuotingState extends EntityState<QuotingEntity> {
   loading: number;
   error: HttpError;
+  activeQuoteRequest: string;
 }
 
 const initialState: QuotingState = quotingAdapter.getInitialState({
   loading: 0,
   error: undefined,
+  activeQuoteRequest: undefined,
 });
 
 export const quotingReducer = createReducer(
   initialState,
+  // loading and error status
   setLoadingOn(
     loadQuoting,
     loadQuotingDetail,
@@ -51,7 +56,8 @@ export const quotingReducer = createReducer(
     addQuoteToBasket,
     createQuoteRequestFromQuote,
     createQuoteRequestFromBasket,
-    submitQuoteRequest
+    submitQuoteRequest,
+    addProductToQuoteRequest
   ),
   unsetLoadingAndErrorOn(
     loadQuotingSuccess,
@@ -59,15 +65,21 @@ export const quotingReducer = createReducer(
     deleteQuotingEntitySuccess,
     addQuoteToBasketSuccess,
     createQuoteRequestFromQuoteSuccess,
-    createQuoteRequestFromBasketSuccess
+    createQuoteRequestFromBasketSuccess,
+    addProductToQuoteRequestSuccess
   ),
   setErrorOn(loadQuotingFail, deleteQuotingEntityFail, rejectQuoteFail),
+  // entities
   on(loadQuotingSuccess, (state, action) => quotingAdapter.upsertMany(action.payload.quoting, state)),
   on(
     loadQuotingDetailSuccess,
     createQuoteRequestFromQuoteSuccess,
     createQuoteRequestFromBasketSuccess,
+    addProductToQuoteRequestSuccess,
     (state, action) => quotingAdapter.upsertOne(action.payload.quote, state)
   ),
-  on(deleteQuotingEntitySuccess, (state, action) => quotingAdapter.removeOne(action.payload.id, state))
+  on(deleteQuotingEntitySuccess, (state, action) => quotingAdapter.removeOne(action.payload.id, state)),
+  // active quote request
+  on(addProductToQuoteRequest, state => ({ ...state, activeQuoteRequest: undefined })),
+  on(addProductToQuoteRequestSuccess, (state, action) => ({ ...state, activeQuoteRequest: action.payload.quote.id }))
 );
