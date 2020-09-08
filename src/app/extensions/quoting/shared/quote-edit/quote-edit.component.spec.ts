@@ -9,7 +9,7 @@ import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
-import { QuotingFacade } from '../../facades/quoting.facade';
+import { QuoteContextFacade } from '../../facades/quote-context.facade';
 import { QuoteRequest } from '../../models/quoting/quoting.model';
 import { QuoteStateComponent } from '../quote-state/quote-state.component';
 
@@ -19,10 +19,8 @@ describe('Quote Edit Component', () => {
   let fixture: ComponentFixture<QuoteEditComponent>;
   let component: QuoteEditComponent;
   let element: HTMLElement;
-  let quotingFacade: QuotingFacade;
 
   beforeEach(async () => {
-    quotingFacade = mock(QuotingFacade);
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
@@ -32,7 +30,7 @@ describe('Quote Edit Component', () => {
         MockComponent(QuoteStateComponent),
         QuoteEditComponent,
       ],
-      providers: [{ provide: QuotingFacade, useFactory: () => instance(quotingFacade) }],
+      providers: [{ provide: QuoteContextFacade, useFactory: () => instance(mock(QuoteContextFacade)) }],
     }).compileComponents();
   });
 

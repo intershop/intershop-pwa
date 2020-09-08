@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
@@ -9,8 +9,7 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 
-import { QuotingFacade } from '../../facades/quoting.facade';
-import { Quote } from '../../models/quoting/quoting.model';
+import { QuoteContextFacade } from '../../facades/quote-context.facade';
 import { QuoteStateComponent } from '../quote-state/quote-state.component';
 
 import { QuoteViewComponent } from './quote-view.component';
@@ -20,8 +19,8 @@ describe('Quote View Component', () => {
   let fixture: ComponentFixture<QuoteViewComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(LineItemListComponent),
@@ -32,17 +31,15 @@ describe('Quote View Component', () => {
       ],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
-        { provide: QuotingFacade, useFactory: () => instance(mock(QuotingFacade)) },
+        { provide: QuoteContextFacade, useFactory: () => instance(mock(QuoteContextFacade)) },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(QuoteViewComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-
-    component.quote = {} as Quote;
   });
 
   it('should be created', () => {

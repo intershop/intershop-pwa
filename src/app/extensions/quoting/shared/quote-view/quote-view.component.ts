@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 
-import { QuotingFacade } from '../../facades/quoting.facade';
+import { QuoteContextFacade } from '../../facades/quote-context.facade';
 import { QuotingHelper } from '../../models/quoting/quoting.helper';
-import { Quote, QuoteRequest } from '../../models/quoting/quoting.model';
+import { Quote, QuoteRequest, QuoteStatus } from '../../models/quoting/quoting.model';
 
 @Component({
   selector: 'ish-quote-view',
@@ -13,36 +13,25 @@ import { Quote, QuoteRequest } from '../../models/quoting/quoting.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuoteViewComponent implements OnInit {
-  @Input() quote: Quote | QuoteRequest;
-
+  quote$: Observable<Quote | QuoteRequest>;
+  state$: Observable<QuoteStatus>;
   userEmail$: Observable<string>;
 
-  state = QuotingHelper.state;
-  asQuote = QuotingHelper.asQuote;
+  isQuoteStarted$: Observable<boolean>;
+  isQuoteValid$: Observable<boolean>;
 
-  constructor(private accountFacade: AccountFacade, private quotingFacade: QuotingFacade) {}
+  asQuote = QuotingHelper.asQuote;
+  reject = this.context.reject;
+  copy = this.context.copy;
+  addToBasket = this.context.addToBasket;
+
+  constructor(private accountFacade: AccountFacade, private context: QuoteContextFacade) {}
 
   ngOnInit() {
+    this.quote$ = this.context.entity$;
+    this.state$ = this.context.state$;
     this.userEmail$ = this.accountFacade.userEmail$;
-  }
-
-  get isQuoteStarted(): boolean {
-    return Date.now() > this.asQuote(this.quote)?.validFromDate;
-  }
-
-  get isQuoteValid(): boolean {
-    return Date.now() < this.asQuote(this.quote)?.validToDate && Date.now() > this.asQuote(this.quote)?.validFromDate;
-  }
-
-  reject() {
-    this.quotingFacade.rejectQuote(this.asQuote(this.quote));
-  }
-
-  copy() {
-    this.quotingFacade.createQuoteRequestFromQuote(this.asQuote(this.quote));
-  }
-
-  addToBasket() {
-    this.quotingFacade.addQuoteToBasket(this.asQuote(this.quote));
+    this.isQuoteStarted$ = this.context.isQuoteStarted$;
+    this.isQuoteValid$ = this.context.isQuoteValid$;
   }
 }

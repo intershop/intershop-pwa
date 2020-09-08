@@ -7,7 +7,7 @@ import { instance, mock } from 'ts-mockito';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
-import { QuotingFacade } from '../../facades/quoting.facade';
+import { QuoteContextFacade } from '../../facades/quote-context.facade';
 import { QuoteEditComponent } from '../quote-edit/quote-edit.component';
 import { QuoteViewComponent } from '../quote-view/quote-view.component';
 
@@ -19,7 +19,7 @@ describe('Product Add To Quote Dialog Component', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(ErrorMessageComponent),
@@ -28,8 +28,11 @@ describe('Product Add To Quote Dialog Component', () => {
         MockComponent(QuoteViewComponent),
         ProductAddToQuoteDialogComponent,
       ],
-      providers: [{ provide: QuotingFacade, useFactory: () => instance(mock(QuotingFacade)) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductAddToQuoteDialogComponent, {
+        set: { providers: [{ provide: QuoteContextFacade, useFactory: () => instance(mock(QuoteContextFacade)) }] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

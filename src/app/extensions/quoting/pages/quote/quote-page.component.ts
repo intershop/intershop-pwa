@@ -3,7 +3,8 @@ import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
-import { QuotingFacade } from '../../facades/quoting.facade';
+import { QuoteContextFacade } from '../../facades/quote-context.facade';
+import { SelectedQuoteContextFacade } from '../../facades/selected-quote-context.facade';
 import { QuotingHelper } from '../../models/quoting/quoting.helper';
 import { Quote, QuoteRequest, QuoteStatus } from '../../models/quoting/quoting.model';
 
@@ -11,21 +12,24 @@ import { Quote, QuoteRequest, QuoteStatus } from '../../models/quoting/quoting.m
   selector: 'ish-quote-page',
   templateUrl: './quote-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{ provide: QuoteContextFacade, useClass: SelectedQuoteContextFacade }],
 })
 export class QuotePageComponent implements OnInit {
   selectedQuote$: Observable<Quote | QuoteRequest>;
   loading$: Observable<boolean>;
   state$: Observable<QuoteStatus>;
   error$: Observable<HttpError>;
+  editable$: Observable<boolean>;
 
   asQuoteRequest = QuotingHelper.asQuoteRequest;
 
-  constructor(private quotingFacade: QuotingFacade) {}
+  constructor(private context: QuoteContextFacade) {}
 
   ngOnInit() {
-    this.selectedQuote$ = this.quotingFacade.selected$;
-    this.loading$ = this.quotingFacade.loading$;
-    this.state$ = this.quotingFacade.selectedState$;
-    this.error$ = this.quotingFacade.error$;
+    this.selectedQuote$ = this.context.entity$;
+    this.loading$ = this.context.loading$;
+    this.state$ = this.context.state$;
+    this.error$ = this.context.error$;
+    this.editable$ = this.context.isQuoteRequestEditable$;
   }
 }

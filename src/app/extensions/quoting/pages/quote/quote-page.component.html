@@ -12,11 +12,11 @@
 
   <ish-error-message [error]="error$ | async"></ish-error-message>
 
-  <ng-container *ngIf="asQuoteRequest(quote).editable; else elseTemplate">
-    <ish-quote-edit [quote]="asQuoteRequest(quote)"></ish-quote-edit>
+  <ng-container *ngIf="editable$ | async; else elseTemplate">
+    <ish-quote-edit [quote]="quote"></ish-quote-edit>
   </ng-container>
   <ng-template #elseTemplate>
-    <ish-quote-view [quote]="quote"></ish-quote-view>
+    <ish-quote-view></ish-quote-view>
   </ng-template>
 </ng-container>
 

@@ -7,7 +7,7 @@ import { instance, mock } from 'ts-mockito';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
-import { QuotingFacade } from '../../facades/quoting.facade';
+import { QuoteContextFacade } from '../../facades/quote-context.facade';
 import { QuoteEditComponent } from '../../shared/quote-edit/quote-edit.component';
 import { QuoteViewComponent } from '../../shared/quote-view/quote-view.component';
 
@@ -28,8 +28,11 @@ describe('Quote Page Component', () => {
         MockComponent(QuoteViewComponent),
         QuotePageComponent,
       ],
-      providers: [{ provide: QuotingFacade, useFactory: () => instance(mock(QuotingFacade)) }],
-    }).compileComponents();
+    })
+      .overrideComponent(QuotePageComponent, {
+        set: { providers: [{ provide: QuoteContextFacade, useFactory: () => instance(mock(QuoteContextFacade)) }] },
+      })
+      .compileComponents();
   }));
 
   beforeEach(() => {
