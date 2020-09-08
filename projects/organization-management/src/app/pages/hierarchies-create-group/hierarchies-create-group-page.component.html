@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1>{{ 'account.organization.hierarchies.groups.new.heading' | translate }}</h1>
+    <form [formGroup]="form" (ngSubmit)="submitForm()" class="form-horizontal" novalidate="novalidate">
+      <ish-group-form [form]="group" [parents]="items$ | async" [error]="error$ | async"></ish-group-form>
+      <div class="row">
+        <div class="offset-md-4 col-md-8">
+          <button type="submit" class="btn btn-primary" [disabled]="formDisabled" data-testing-id="create-group-submit">
+            {{ 'account.organization.hierarchies.groups.new.button.label' | translate }}
+          </button>
+          <a routerLink="../" class="btn btn-secondary" data-testing-id="create-group-cancel">{{
+            'account.cancel.link' | translate
+          }}</a>
+        </div>
+      </div>
+    </form>
+  </div>
+  <ish-loading *ngIf="loading$ | async"></ish-loading>
+</div>

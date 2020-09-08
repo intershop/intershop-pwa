@@ -9,9 +9,6 @@ const getOrganizationHierarchiesState = createSelector(
 
 export const getOrganizationGroups = createSelector(getOrganizationHierarchiesState, state => state.groups);
 
-export const getOrganizationHierarchiesLoading = createSelector(
-  getOrganizationHierarchiesState,
-  state => state.loading
-);
+export const getOrganizationGroupsLoading = createSelector(getOrganizationHierarchiesState, state => state.loading);
 
-export const getOrganizationHierarchiesError = createSelector(getOrganizationHierarchiesState, state => state.error);
+export const getOrganizationGroupsError = createSelector(getOrganizationHierarchiesState, state => state.error);

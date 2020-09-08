@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { once } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
@@ -8,6 +9,7 @@ import { toObservable } from 'ish-core/utils/functions';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { B2bUser } from '../models/b2b-user/b2b-user.model';
+import { Node, NodeTree } from '../models/node/node.model';
 import { UserBudget } from '../models/user-budget/user-budget.model';
 import {
   getCurrentUserBudget,
@@ -15,7 +17,13 @@ import {
   getCurrentUserBudgetLoading,
   loadBudget,
 } from '../store/budget';
-import { getOrganizationGroups, loadGroups } from '../store/organization-hierarchies';
+import {
+  createGroup,
+  getOrganizationGroups,
+  getOrganizationGroupsError,
+  getOrganizationGroupsLoading,
+  loadGroups,
+} from '../store/organization-hierarchies';
 import {
   addUser,
   deleteUser,
@@ -49,6 +57,9 @@ export class OrganizationManagementFacade {
 
   loggedInUserBudgetLoading$ = this.store.pipe(select(getCurrentUserBudgetLoading));
   loggedInUserBudgetError$ = this.store.pipe(select(getCurrentUserBudgetError));
+
+  groupsLoading$ = this.store.pipe(select(getOrganizationGroupsLoading));
+  groupsError$ = this.store.pipe(select(getOrganizationGroupsError));
 
   addUser(user: B2bUser) {
     this.store.dispatch(
@@ -92,12 +103,22 @@ export class OrganizationManagementFacade {
       .subscribe(login => this.store.dispatch(setUserBudget({ login, budget })));
   }
 
-  groups$() {
+  private initialize = once(() => this.store.dispatch(loadGroups()));
+  groups$(): Observable<NodeTree> {
     return this.customer$.pipe(
       whenTruthy(),
       take(1),
-      tap(() => this.store.dispatch(loadGroups())),
+      tap(this.initialize),
       switchMap(() => this.store.pipe(select(getOrganizationGroups)))
+    );
+  }
+
+  createAndAddGroup(parent: Node, child: Node) {
+    this.store.dispatch(
+      createGroup({
+        parent,
+        child,
+      })
     );
   }
 }
