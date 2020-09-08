@@ -6,7 +6,6 @@ import { CoreModule } from 'ish-core/core.module';
 
 import { AppComponent } from './app.component';
 import { QuickorderRoutingModule } from './extensions/quickorder/pages/quickorder-routing.module';
-import { Quoting2RoutingModule } from './extensions/quoting2/pages/quoting2-routing.module';
 import { TactonRoutingModule } from './extensions/tacton/pages/tacton-routing.module';
 import { AppLastRoutingModule } from './pages/app-last-routing.module';
 import { AppRoutingModule } from './pages/app-routing.module';
@@ -22,7 +21,6 @@ import { ShellModule } from './shell/shell.module';
     AppRoutingModule,
     QuickorderRoutingModule,
     TactonRoutingModule,
-    Quoting2RoutingModule,
     AppLastRoutingModule,
   ],
   bootstrap: [AppComponent],

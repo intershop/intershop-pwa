@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
-import { Observable, timer } from 'rxjs';
-import { mapTo } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { QuoteRequest } from '../../models/quote-request/quote-request.model';
-import { Quote } from '../../models/quote/quote.model';
+import { QuotingFacade } from '../../facades/quoting.facade';
+import { QuoteStatus } from '../../models/quoting/quoting.model';
 
 /**
  * The Quote State Component displays the current state of a quote.
@@ -16,24 +15,14 @@ import { Quote } from '../../models/quote/quote.model';
   templateUrl: './quote-state.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class QuoteStateComponent implements OnChanges, OnInit {
-  @Input() quote: Quote | QuoteRequest;
+export class QuoteStateComponent implements OnChanges {
+  @Input() quoteId: string;
 
-  validToDate: number;
+  state$: Observable<QuoteStatus>;
 
-  currentDateTime$: Observable<number>;
-
-  ngOnInit() {
-    this.currentDateTime$ = timer(0, 1000).pipe(mapTo(Date.now()));
-  }
+  constructor(private quotingFacade: QuotingFacade) {}
 
   ngOnChanges() {
-    this.validToDate = undefined;
-
-    const quote = this.quote as Quote;
-
-    if (quote.validToDate) {
-      this.validToDate = quote.validToDate;
-    }
+    this.state$ = this.quotingFacade.state$(this.quoteId);
   }
 }

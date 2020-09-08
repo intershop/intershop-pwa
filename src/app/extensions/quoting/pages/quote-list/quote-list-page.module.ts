@@ -1,12 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { ProductAddToQuoteRequestGuard } from '../../guards/product-add-to-quote-request.guard';
 import { QuotingModule } from '../../quoting.module';
 
 import { QuoteListPageComponent } from './quote-list-page.component';
 import { QuoteListComponent } from './quote-list/quote-list.component';
 
-const quoteListPageRoutes: Routes = [{ path: '', component: QuoteListPageComponent }];
+const quoteListPageRoutes: Routes = [
+  { path: '', component: QuoteListPageComponent },
+  {
+    path: 'addProductToQuoteRequest',
+    canActivate: [ProductAddToQuoteRequestGuard],
+    children: [],
+  },
+  { path: ':quoteId', loadChildren: () => import('../quote/quote-page.module').then(m => m.QuotePageModule) },
+];
 
 @NgModule({
   declarations: [QuoteListComponent, QuoteListPageComponent],
