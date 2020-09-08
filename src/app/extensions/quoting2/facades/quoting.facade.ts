@@ -118,4 +118,6 @@ export class QuotingFacade {
     switchMap(quoteRequestId => this.fetchDetail(quoteRequestId)),
     map(QuotingHelper.asQuoteRequest)
   );
+
+  activeQuoteRequestState$ = this.activeQuoteRequest$.pipe(map(QuotingHelper.state));
 }
