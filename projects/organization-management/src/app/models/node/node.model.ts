@@ -2,7 +2,7 @@ export interface Node {
   id: string;
   name: string;
   description?: string;
-  organization: string;
+  organization?: string;
 }
 
 export interface NodeTree {
