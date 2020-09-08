@@ -14,7 +14,7 @@ import { tsquery } from '@phenomnomnominal/tsquery';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 import * as ts from 'typescript';
 
-import { determineArtifactName, findDeclaringModule, generateSelector } from '../utils/common';
+import { determineArtifactName, findDeclaringModule } from '../utils/common';
 import { applyLintFix } from '../utils/lint-fix';
 import { addDeclarationToNgModule, addDecoratorToClass, addExportToNgModule } from '../utils/registration';
 
@@ -43,7 +43,6 @@ export function createLazyComponent(options: Options): Rule {
     const extension = pathSplits[1];
     const originalName = /\/([a-z0-9-]+)\.component\.ts/.exec(originalPath)[1];
     options.name = 'lazy-' + originalName;
-    options = await generateSelector(host, options);
     options.path = `${project.sourceRoot}/app/extensions/${extension}/exports`;
     options = findDeclaringModule(host, options);
     options = determineArtifactName('component', host, options);
@@ -52,8 +51,18 @@ export function createLazyComponent(options: Options): Rule {
     let imports: { types: string[]; from: string }[] = [];
 
     const componentContent = host.read(componentPath).toString('utf-8');
+    const componentSource = ts.createSourceFile(componentPath, componentContent, ts.ScriptTarget.Latest, true);
+
+    const selectorPropertyAssignment = tsquery(
+      componentSource,
+      'CallExpression:has(Identifier[name=Component]) PropertyAssignment:has(Identifier[name=selector])'
+    )[0] as ts.PropertyAssignment;
+    options.selector = selectorPropertyAssignment.initializer
+      .getText()
+      .replace(/'/g, '')
+      .replace(originalName.replace(project.prefix + '-', ''), options.name.replace(project.prefix + '-', ''));
+
     if (componentContent.includes('@Input(')) {
-      const componentSource = ts.createSourceFile(componentPath, componentContent, ts.ScriptTarget.Latest, true);
       const bindingNodes = tsquery(
         componentSource,
         'PropertyDeclaration:has(Decorator Identifier[text=Input])'
@@ -86,7 +95,6 @@ export function createLazyComponent(options: Options): Rule {
     let onChanges: 'simple' | 'complex';
 
     if (componentContent.includes('ngOnChanges')) {
-      const componentSource = ts.createSourceFile(componentPath, componentContent, ts.ScriptTarget.Latest, true);
       const ngOnChangesDeclaration = tsquery(
         componentSource,
         'MethodDeclaration:has(Identifier[name=ngOnChanges])'
