@@ -37,12 +37,14 @@ export interface QuotingInternalState extends EntityState<QuotingEntity> {
   loading: number;
   error: HttpError;
   activeQuoteRequest: string;
+  initialized: boolean;
 }
 
 const initialState: QuotingInternalState = quotingAdapter.getInitialState({
   loading: 0,
   error: undefined,
   activeQuoteRequest: undefined,
+  initialized: false,
 });
 
 export const quotingReducer = createReducer(
@@ -69,6 +71,8 @@ export const quotingReducer = createReducer(
     addProductToQuoteRequestSuccess
   ),
   setErrorOn(loadQuotingFail, deleteQuotingEntityFail, rejectQuoteFail),
+  // initialized
+  on(loadQuotingSuccess, state => ({ ...state, initialized: true })),
   // entities
   on(loadQuotingSuccess, (state, action) => quotingAdapter.upsertMany(action.payload.quoting, state)),
   on(

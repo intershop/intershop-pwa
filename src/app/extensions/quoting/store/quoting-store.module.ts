@@ -3,6 +3,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
+import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
+
 import { QuotingState } from './quoting-store';
 import { QuotingEffects } from './quoting/quoting.effects';
 import { quotingReducer } from './quoting/quoting.reducer';
@@ -13,7 +15,10 @@ const quotingEffects = [QuotingEffects];
 
 // not-dead-code
 @NgModule({
-  imports: [EffectsModule.forFeature(quotingEffects), StoreModule.forFeature('quoting', quotingReducers)],
+  imports: [
+    EffectsModule.forFeature(quotingEffects),
+    StoreModule.forFeature('quoting', quotingReducers, { metaReducers: [resetOnLogoutMeta] }),
+  ],
 })
 export class QuotingStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<QuotingState>)[]) {

@@ -17,3 +17,5 @@ export const getQuotingEntities = selectAll;
 export const getQuotingEntity = (id: string) => createSelector(selectEntities, entities => entities[id]);
 
 export const getActiveQuoteRequestId = createSelector(getQuotingInternalState, state => state.activeQuoteRequest);
+
+export const isQuotingInitialized = createSelector(getQuotingInternalState, state => state.initialized);

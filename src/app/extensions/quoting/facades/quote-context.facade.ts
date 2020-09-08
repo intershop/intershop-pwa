@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { once } from 'lodash-es';
 import { Observable, defer, timer } from 'rxjs';
 import { filter, first, map, shareReplay, switchMapTo, tap } from 'rxjs/operators';
 
@@ -13,6 +14,8 @@ import {
   getQuotingEntity,
   getQuotingError,
   getQuotingLoading,
+  isQuotingInitialized,
+  loadQuoting,
   loadQuotingDetail,
   rejectQuote,
   submitQuoteRequest,
@@ -73,13 +76,22 @@ export abstract class QuoteContextFacade {
 
   protected fetchDetail(quoteId: string) {
     return this.store.pipe(
+      tap(
+        once(state => {
+          if (!isQuotingInitialized(state)) {
+            this.store.dispatch(loadQuoting());
+          }
+        })
+      ),
       select(getQuotingEntity(quoteId)),
       whenTruthy(),
-      tap(entity => {
-        if (entity?.completenessLevel !== 'Detail') {
-          this.store.dispatch(loadQuotingDetail({ entity, level: 'Detail' }));
-        }
-      }),
+      tap(
+        once(entity => {
+          if (entity?.completenessLevel !== 'Detail') {
+            this.store.dispatch(loadQuotingDetail({ entity, level: 'Detail' }));
+          }
+        })
+      ),
       filter(entity => entity?.completenessLevel === 'Detail'),
       map(quote => quote as Quote | QuoteRequest),
       shareReplay(1)
