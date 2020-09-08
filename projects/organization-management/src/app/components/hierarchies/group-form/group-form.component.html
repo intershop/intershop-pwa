@@ -1,0 +1,19 @@
+<div>
+  <div *ngIf="error" role="alert" class="alert alert-danger">
+    <span>{{ error.headers['error-key'] | translate }}</span>
+  </div>
+  <p>{{ 'account.organization.hierarchies.groups.new.message' | translate }}</p>
+  <p class="indicates-required"><span class="required">*</span>{{ 'account.required_field.message' | translate }}</p>
+  <fieldset>
+    <ish-input [form]="form" controlName="name" label="organization.groups.name.label" [errorMessages]="{
+        required: 'organization.groups.new.name.error.required'
+      }"></ish-input>
+    <ish-select controlName="parent" [errorMessages]="{
+        required: 'organization.groups.new.parent.error.required'
+      }" [form]="form" label="organization.groups.parent.label" [options]="parentOptions"
+      [translateOptionLabels]="false">
+    </ish-select>
+    <ish-textarea [form]="form" controlName="description" label="organization.groups.description.label">
+    </ish-textarea>
+  </fieldset>
+</div>

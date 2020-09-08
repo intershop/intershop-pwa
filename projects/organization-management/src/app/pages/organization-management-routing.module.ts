@@ -6,6 +6,7 @@ import { FeatureToggleGuard } from 'ish-core/feature-toggle.module';
 import { FetchUsersGuard } from '../guards/fetch-users.guard';
 import { RedirectFirstToParentGuard } from '../guards/redirect-first-to-parent.guard';
 
+import { HierarchiesCreateGroupPageComponent } from './hierarchies-create-group/hierarchies-create-group-page.component';
 import { HierarchiesPageComponent } from './hierarchies/hierarchies-page.component';
 import { UserCreatePageComponent } from './user-create/user-create-page.component';
 import { UserDetailPageComponent } from './user-detail/user-detail-page.component';
@@ -57,6 +58,12 @@ export const routes: Routes = [
   {
     path: 'hierarchies',
     component: HierarchiesPageComponent,
+    canActivate: [FeatureToggleGuard],
+    data: { feature: 'organizationHierarchies' },
+  },
+  {
+    path: 'hierarchies/create-group',
+    component: HierarchiesCreateGroupPageComponent,
     canActivate: [FeatureToggleGuard],
     data: { feature: 'organizationHierarchies' },
   },
