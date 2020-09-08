@@ -3,6 +3,8 @@ import { TreeItem, TreeviewComponent, TreeviewConfig, TreeviewItem } from 'ngx-t
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { Node, NodeTree } from '../../models/node/node.model';
 
@@ -14,6 +16,7 @@ import { Node, NodeTree } from '../../models/node/node.model';
 export class HierarchiesPageComponent implements OnInit {
   @ViewChild('ngx-treeview') treeViewComponent: TreeviewComponent;
   items$: Observable<TreeviewItem[]>;
+  error$: Observable<HttpError>;
   config: TreeviewConfig = TreeviewConfig.create({
     hasAllCheckBox: false,
     hasFilter: false,
@@ -29,6 +32,7 @@ export class HierarchiesPageComponent implements OnInit {
       map(nodeTree => this.mapToTreeItems(nodeTree, nodeTree.rootIds)),
       map(items => items.map(item => new TreeviewItem(item)))
     );
+    this.error$ = this.organizationManagement.groupsError$;
   }
 
   mapTreeViewItem(orgNode: Node): TreeItem {
@@ -43,7 +47,7 @@ export class HierarchiesPageComponent implements OnInit {
   }
 
   mapToTreeItems(nodeTree: NodeTree, rootIds: string[]): TreeItem[] {
-    const ret = new Array<TreeItem>(nodeTree.rootIds.length);
+    const ret = new Array<TreeItem>();
     rootIds
       .map(rootId => nodeTree.nodes[rootId])
       .forEach(root => {
