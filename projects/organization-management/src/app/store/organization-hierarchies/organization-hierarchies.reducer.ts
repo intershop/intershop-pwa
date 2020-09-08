@@ -6,7 +6,14 @@ import { setErrorOn, setLoadingOn } from 'ish-core/utils/ngrx-creators';
 import { NodeHelper } from '../../models/node/node.helper';
 import { NodeTree } from '../../models/node/node.model';
 
-import { loadGroups, loadGroupsFail, loadGroupsSuccess } from './organization-hierarchies.actions';
+import {
+  createGroup,
+  createGroupFail,
+  createGroupSuccess,
+  loadGroups,
+  loadGroupsFail,
+  loadGroupsSuccess,
+} from './organization-hierarchies.actions';
 
 export interface OrganizationHierarchiesState {
   loading: boolean;
@@ -22,12 +29,24 @@ export const initialState: OrganizationHierarchiesState = {
 
 export const organizationHierarchiesReducer = createReducer(
   initialState,
-  setLoadingOn(loadGroups),
-  setErrorOn(loadGroupsFail),
+  setLoadingOn(loadGroups, createGroup),
+  setErrorOn(loadGroupsFail, createGroupFail),
   on(loadGroupsSuccess, (state: OrganizationHierarchiesState, action) => ({
     ...state,
     groups: action.payload.nodeTree,
     error: undefined,
     loading: false,
-  }))
+  })),
+  on(createGroupSuccess, (state: OrganizationHierarchiesState, action) => {
+    const node = action.payload.nodeTree;
+    return {
+      groups: NodeHelper.merge(state.groups, {
+        edges: { ...node.edges },
+        nodes: { ...node.nodes },
+        rootIds: [],
+      }),
+      loading: false,
+      error: undefined,
+    };
+  })
 );

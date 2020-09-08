@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ResourceIdentifierData } from '../resource-identifier/resource-identifier.interface';
 
-import { NodeData, NodeDocument } from './node.interface';
+import { NodeData, NodeListDocument } from './node.interface';
 import { NodeMapper } from './node.mapper';
 
 const OILCORP_GERMANY: NodeData = {
@@ -59,7 +59,7 @@ describe('Node Mapper', () => {
     });
 
     it('should map incoming no data to empty object', () => {
-      const data = { data: [] } as NodeDocument;
+      const data = { data: [] } as NodeListDocument;
       const mapped = nodeMapper.fromDocument(data);
       expect(mapped).toBeTruthy();
       expect(mapped.edges).toBeEmpty();
@@ -68,7 +68,7 @@ describe('Node Mapper', () => {
     });
 
     it('should map incoming data to model data', () => {
-      const data = { data: [OILCORP_GERMANY, OILCORP_BERLIN] } as NodeDocument;
+      const data = { data: [OILCORP_GERMANY, OILCORP_BERLIN] } as NodeListDocument;
       const mapped = nodeMapper.fromDocument(data);
       expect(mapped.rootIds).toEqual(['OilCorp_Germany']);
       expect(mapped.edges.OilCorp_Germany).toEqual(['OilCorp_Berlin', 'OilCorp_Jena']);
@@ -90,14 +90,36 @@ describe('Node Mapper', () => {
       expect(mappedElement).toHaveProperty('name', 'Oil Corp Berlin');
       expect(mappedElement).toHaveProperty('description', 'The Berlin headquarter of Oil Corp.');
       expect(mappedElement).toHaveProperty('organization', 'oilcorp.example.org');
-      expect(mappedElement).not.toHaveProperty('childNodes');
-      expect(mappedElement).not.toHaveProperty('parentNode');
+      expect(mapped.edges).toBeEmpty();
+      expect(mapped.rootIds).toBeEmpty();
     });
 
     it('should map incoming data with childnodes to model data', () => {
       const data = OILCORP_GERMANY;
       const mapped = nodeMapper.fromData(data);
       expect(mapped).toHaveProperty('edges.OilCorp_Germany', ['OilCorp_Berlin', 'OilCorp_Jena']);
+    });
+  });
+
+  describe('fromDataReversed', () => {
+    it('should throw when input is falsy', () => {
+      expect(() => nodeMapper.fromDataReversed(undefined)).toThrow();
+    });
+    it('should map incoming data with bottom to top manner', () => {
+      const data = OILCORP_BERLIN;
+      const mapped = nodeMapper.fromDataReversed(data);
+
+      expect(mapped.edges).toHaveProperty('OilCorp_Germany', ['OilCorp_Berlin']);
+      expect(mapped.rootIds).toContain('OilCorp_Germany');
+      expect(mapped).toHaveProperty('nodes.OilCorp_Berlin');
+      expect(mapped).toHaveProperty('nodes.OilCorp_Germany');
+      const berlinElement = mapped.nodes.OilCorp_Berlin;
+      expect(berlinElement).toHaveProperty('id', 'OilCorp_Berlin');
+      expect(berlinElement).toHaveProperty('name', 'Oil Corp Berlin');
+      expect(berlinElement).toHaveProperty('description', 'The Berlin headquarter of Oil Corp.');
+      expect(berlinElement).toHaveProperty('organization', 'oilcorp.example.org');
+      const germanyElement = mapped.nodes.OilCorp_Germany;
+      expect(germanyElement).toHaveProperty('id', 'OilCorp_Germany');
     });
   });
 
