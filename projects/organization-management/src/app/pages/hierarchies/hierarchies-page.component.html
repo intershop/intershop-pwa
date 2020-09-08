@@ -1,3 +1,9 @@
-<h1>{{ 'account.organization.hierarchies' | translate }}</h1>
+<h1>
+  {{ 'account.organization.hierarchies' | translate }}
+  <a *ngIf="!(error$ | async)" routerLink="create-group" class="btn btn-secondary" data-testing-id="add-group-link">{{
+    'account.organization.hierarchies.groups.add' | translate
+  }}</a>
+
+</h1>
 
 <ngx-treeview [config]="config" [items]="items$ | async"> </ngx-treeview>
