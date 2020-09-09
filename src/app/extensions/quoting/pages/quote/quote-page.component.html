@@ -18,8 +18,10 @@
   <ng-template #elseTemplate>
     <ish-quote-view></ish-quote-view>
   </ng-template>
-</ng-container>
 
-<a class="btn btn-link" [routerLink]="['/account/quotes']">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
+  <ish-quote-interactions></ish-quote-interactions>
+
+  <a class="btn btn-link" [routerLink]="['/account/quotes']">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
+</ng-container>
 
 <ish-loading *ngIf="loading$ | async"></ish-loading>

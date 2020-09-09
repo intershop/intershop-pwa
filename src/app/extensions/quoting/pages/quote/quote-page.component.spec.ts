@@ -9,6 +9,7 @@ import { LoadingComponent } from 'ish-shared/components/common/loading/loading.c
 
 import { QuoteContextFacade } from '../../facades/quote-context.facade';
 import { QuoteEditComponent } from '../../shared/quote-edit/quote-edit.component';
+import { QuoteInteractionsComponent } from '../../shared/quote-interactions/quote-interactions.component';
 import { QuoteViewComponent } from '../../shared/quote-view/quote-view.component';
 
 import { QuotePageComponent } from './quote-page.component';
@@ -25,6 +26,7 @@ describe('Quote Page Component', () => {
         MockComponent(ErrorMessageComponent),
         MockComponent(LoadingComponent),
         MockComponent(QuoteEditComponent),
+        MockComponent(QuoteInteractionsComponent),
         MockComponent(QuoteViewComponent),
         QuotePageComponent,
       ],

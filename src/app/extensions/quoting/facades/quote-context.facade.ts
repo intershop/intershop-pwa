@@ -70,6 +70,10 @@ export abstract class QuoteContextFacade {
     this.idOnce$.subscribe(quoteId => this.store.dispatch(addQuoteToBasket({ quoteId })));
   }
 
+  update() {
+    console.log('TODO', 'update');
+  }
+
   submit() {
     this.idOnce$.subscribe(quoteRequestId => this.store.dispatch(submitQuoteRequest({ quoteRequestId })));
   }

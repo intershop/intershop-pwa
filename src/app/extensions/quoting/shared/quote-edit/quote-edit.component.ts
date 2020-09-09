@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 
-import { QuoteContextFacade } from '../../facades/quote-context.facade';
 import { QuoteRequest } from '../../models/quoting/quoting.model';
 
 /**
@@ -21,7 +20,7 @@ export class QuoteEditComponent implements OnChanges {
 
   form: FormGroup;
 
-  constructor(private context: QuoteContextFacade) {
+  constructor() {
     this.form = new FormGroup({
       displayName: new FormControl(undefined, [Validators.maxLength(255)]),
       description: new FormControl(undefined, []),
@@ -49,17 +48,5 @@ export class QuoteEditComponent implements OnChanges {
 
   onDeleteItem(itemId: string) {
     console.log('TODO', 'onDeleteItem', itemId);
-  }
-
-  submit() {
-    if (this.form && this.form.dirty) {
-      console.log('TODO', 'save & submit', this.form.value);
-    } else {
-      this.context.submit();
-    }
-  }
-
-  update() {
-    console.log('TODO', 'update');
   }
 }

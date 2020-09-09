@@ -57,20 +57,4 @@
       (deleteItem)="onDeleteItem($event)"
     ></ish-line-item-list>
   </div>
-
-  <div *ngIf="quote.items" class="form-btn-group clearfix">
-    <button
-      data-testing-id="submit-quote-request"
-      type="submit"
-      class="btn btn-primary float-right"
-      [disabled]="quote.items.length === 0"
-      (click)="submit()"
-    >
-      {{ 'quote.edit.button.submit.label' | translate }}
-    </button>
-
-    <button data-testing-id="save-quote-request" type="submit" class="btn btn-secondary float-right" (click)="update()">
-      {{ 'quote.edit.button.save.label' | translate }}
-    </button>
-  </div>
 </form>

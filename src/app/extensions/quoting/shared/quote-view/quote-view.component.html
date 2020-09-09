@@ -92,28 +92,5 @@
         [total]="quote.total"
       ></ish-line-item-list>
     </div>
-
-    <div *ngIf="quote.items && quote.type === 'Quote'" class="form-btn-group clearfix">
-      <ng-container *ngIf="state === 'Responded' && (isQuoteValid$ | async)">
-        <button type="submit" class="btn btn-primary float-right" name="add2cart" (click)="addToBasket()">
-          {{ 'quote.edit.button.add_quote_to_cart.label' | translate }}
-        </button>
-      </ng-container>
-
-      <button class="btn btn-secondary" name="copy" type="submit" (click)="copy()">
-        {{ 'quote.edit.button.create_new_from_quote.label' | translate }}
-      </button>
-
-      <button
-        *ngIf="state === 'Responded'"
-        type="submit"
-        id="button-reject"
-        class="btn btn-secondary float-right"
-        name="refuse"
-        (click)="reject()"
-      >
-        {{ 'quote.edit.reject.button.reject.label' | translate }}
-      </button>
-    </div>
   </ng-container>
 </ng-container>

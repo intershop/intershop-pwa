@@ -18,12 +18,8 @@ export class QuoteViewComponent implements OnInit {
   userEmail$: Observable<string>;
 
   isQuoteStarted$: Observable<boolean>;
-  isQuoteValid$: Observable<boolean>;
 
   asQuote = QuotingHelper.asQuote;
-  reject = this.context.reject;
-  copy = this.context.copy;
-  addToBasket = this.context.addToBasket;
 
   constructor(private accountFacade: AccountFacade, private context: QuoteContextFacade) {}
 
@@ -32,6 +28,5 @@ export class QuoteViewComponent implements OnInit {
     this.state$ = this.context.state$;
     this.userEmail$ = this.accountFacade.userEmail$;
     this.isQuoteStarted$ = this.context.isQuoteStarted$;
-    this.isQuoteValid$ = this.context.isQuoteValid$;
   }
 }
