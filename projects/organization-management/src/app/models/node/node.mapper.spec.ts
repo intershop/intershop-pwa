@@ -4,6 +4,7 @@ import { ResourceIdentifierData } from '../resource-identifier/resource-identifi
 
 import { NodeData, NodeListDocument } from './node.interface';
 import { NodeMapper } from './node.mapper';
+import { Node } from './node.model';
 
 const OILCORP_GERMANY: NodeData = {
   id: 'OilCorp_Germany',
@@ -121,6 +122,20 @@ describe('Node Mapper', () => {
       const germanyElement = mapped.nodes.OilCorp_Germany;
       expect(germanyElement).toHaveProperty('id', 'OilCorp_Germany');
     });
+
+    it('should map incoming data with bottom to top manner where incoming data has no parent', () => {
+      const data = OILCORP_GERMANY;
+      const mapped = nodeMapper.fromDataReversed(data);
+
+      expect(mapped.edges).toHaveProperty('OilCorp_Germany', ['OilCorp_Berlin', 'OilCorp_Jena']);
+      expect(mapped.rootIds).toContain('OilCorp_Germany');
+      expect(mapped).toHaveProperty('nodes.OilCorp_Germany');
+      const germanyElement = mapped.nodes.OilCorp_Germany;
+      expect(germanyElement).toHaveProperty('id', 'OilCorp_Germany');
+      expect(germanyElement).toHaveProperty('name', 'Oil Corp Germany');
+      expect(germanyElement).toHaveProperty('description', 'The German division of Oil Corp.');
+      expect(germanyElement).toHaveProperty('organization', 'oilcorp.example.org');
+    });
   });
 
   describe('fromResourceId', () => {
@@ -166,6 +181,90 @@ describe('Node Mapper', () => {
       expect(tree.rootIds).toEqual([node.id]);
       expect(tree.nodes.test).toEqual(nodeMapper.fromSingleData(node));
       expect(tree.edges).toBeEmpty();
+    });
+  });
+
+  describe('toNodeData()', () => {
+    it('should throw if given node is falsy', () => {
+      expect(() => nodeMapper.toNodeData(undefined)).toThrowError('Node data is mandatory');
+    });
+    it('should map Node model data to Node interface data', () => {
+      const data: Node = {
+        id: 'test',
+        name: 'Test Name',
+        description: 'Test description',
+        organization: 'Test org',
+      };
+      const mapped = nodeMapper.toNodeData(data);
+      expect(mapped).toBeTruthy();
+      expect(mapped).toHaveProperty('attributes.description', 'Test description');
+      expect(mapped).toHaveProperty('attributes.name', 'Test Name');
+      expect(mapped).toHaveProperty('id', 'test');
+      expect(mapped).toHaveProperty('relationships.organization.data.id', 'Test org');
+      expect(mapped).not.toHaveProperty('relationships.parentNode');
+      expect(mapped).not.toHaveProperty('relationships.childNodes');
+    });
+    it('should map Node model data to Node interface data with parent info', () => {
+      const data: Node = {
+        id: 'test',
+        name: 'Test Name',
+        description: 'Test description',
+        organization: 'Test org',
+      };
+      const parentData: Node = {
+        id: 'parent',
+        name: 'Parent Name',
+      };
+      const mapped = nodeMapper.toNodeData(data, parentData);
+      expect(mapped).toBeTruthy();
+      expect(mapped).toHaveProperty('attributes.description', 'Test description');
+      expect(mapped).toHaveProperty('attributes.name', 'Test Name');
+      expect(mapped).toHaveProperty('id', 'test');
+      expect(mapped).toHaveProperty('relationships.organization.data.id', 'Test org');
+      expect(mapped).toHaveProperty('relationships.parentNode', { data: { id: 'parent' } });
+      expect(mapped).not.toHaveProperty('relationships.childNodes');
+    });
+  });
+
+  describe('toNodeDocument()', () => {
+    it('should throw if given node is falsy', () => {
+      expect(() => nodeMapper.toNodeDocument(undefined)).toThrowError('Node data is mandatory');
+    });
+    it('should map Node model data to Node interface data', () => {
+      const data: Node = {
+        id: 'test',
+        name: 'Test Name',
+        description: 'Test description',
+        organization: 'Test org',
+      };
+      const mapped = nodeMapper.toNodeDocument(data);
+      expect(mapped).toBeTruthy();
+      expect(mapped).toHaveProperty('data.attributes.description', 'Test description');
+      expect(mapped).toHaveProperty('data.attributes.name', 'Test Name');
+      expect(mapped).toHaveProperty('data.id', 'test');
+      expect(mapped).toHaveProperty('data.relationships.organization.data.id', 'Test org');
+      expect(mapped).not.toHaveProperty('data.relationships.parentNode');
+      expect(mapped).not.toHaveProperty('data.relationships.childNodes');
+    });
+    it('should map Node model data to Node interface data with parent info', () => {
+      const data: Node = {
+        id: 'test',
+        name: 'Test Name',
+        description: 'Test description',
+        organization: 'Test org',
+      };
+      const parentData: Node = {
+        id: 'parent',
+        name: 'Parent Name',
+      };
+      const mapped = nodeMapper.toNodeDocument(data, parentData);
+      expect(mapped).toBeTruthy();
+      expect(mapped).toHaveProperty('data.attributes.description', 'Test description');
+      expect(mapped).toHaveProperty('data.attributes.name', 'Test Name');
+      expect(mapped).toHaveProperty('data.id', 'test');
+      expect(mapped).toHaveProperty('data.relationships.organization.data.id', 'Test org');
+      expect(mapped).toHaveProperty('data.relationships.parentNode', { data: { id: 'parent' } });
+      expect(mapped).not.toHaveProperty('data.relationships.childNodes');
     });
   });
 });

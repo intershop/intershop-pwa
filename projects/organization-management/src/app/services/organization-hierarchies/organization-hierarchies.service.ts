@@ -40,23 +40,7 @@ export class OrganizationHierarchiesService {
         this.apiService
           .post<NodeDocument>(
             `http://localhost:8080/organizations/${customer.customerNo}/nodes`,
-            {
-              data: {
-                type: 'node',
-                id: child.id,
-                attributes: {
-                  name: child.name,
-                  description: child.description,
-                },
-                relationships: {
-                  parentNode: {
-                    data: {
-                      id: parent.id,
-                    },
-                  },
-                },
-              },
-            },
+            this.nodeMapper.toNodeDocument(child, parent.id === customer.customerNo ? undefined : parent),
             this.contentTypeHeader
           )
           .pipe(
