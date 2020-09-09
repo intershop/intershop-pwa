@@ -2,6 +2,7 @@ import { createAction } from '@ngrx/store';
 
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
+import { QuoteRequestUpdate } from '../../models/quote-request-update/quote-request-update.model';
 import { QuoteCompletenessLevel, QuotingEntity } from '../../models/quoting/quoting.model';
 
 export const loadQuoting = createAction('[Quoting] Load Quoting');
@@ -75,5 +76,15 @@ export const addProductToQuoteRequest = createAction(
 
 export const addProductToQuoteRequestSuccess = createAction(
   '[Quoting] Add Product To Quote Request Success',
+  payload<{ quote: QuotingEntity }>()
+);
+
+export const updateQuoteRequest = createAction(
+  '[Quoting] Update Quote Request',
+  payload<{ quoteRequestId: string; changes: QuoteRequestUpdate[] }>()
+);
+
+export const updateQuoteRequestSuccess = createAction(
+  '[Quoting] Update Quote Request Success',
   payload<{ quote: QuotingEntity }>()
 );

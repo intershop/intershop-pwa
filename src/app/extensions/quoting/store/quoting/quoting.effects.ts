@@ -50,6 +50,8 @@ import {
   rejectQuote,
   rejectQuoteFail,
   submitQuoteRequest,
+  updateQuoteRequest,
+  updateQuoteRequestSuccess,
 } from './quoting.actions';
 import { getQuotingEntity } from './quoting.selectors';
 
@@ -211,6 +213,19 @@ export class QuotingEffects {
         { key: state === 'New' ? 'quote.edit.unsubmitted.quote_request_details.text' : 'quote.quote_details.link' },
       ]),
       map(breadcrumbData => setBreadcrumbData({ breadcrumbData }))
+    )
+  );
+
+  updateQuoteRequest$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateQuoteRequest),
+      mapToPayload(),
+      concatMap(({ quoteRequestId, changes }) =>
+        this.quotingService.updateQuoteRequest(quoteRequestId, changes).pipe(
+          map(quote => updateQuoteRequestSuccess({ quote })),
+          mapErrorToAction(loadQuotingFail)
+        )
+      )
     )
   );
 }

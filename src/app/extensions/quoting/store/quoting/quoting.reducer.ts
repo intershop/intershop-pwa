@@ -27,6 +27,8 @@ import {
   rejectQuote,
   rejectQuoteFail,
   submitQuoteRequest,
+  updateQuoteRequest,
+  updateQuoteRequestSuccess,
 } from './quoting.actions';
 
 export const quotingAdapter = createEntityAdapter<QuotingEntity>({
@@ -59,7 +61,8 @@ export const quotingReducer = createReducer(
     createQuoteRequestFromQuote,
     createQuoteRequestFromBasket,
     submitQuoteRequest,
-    addProductToQuoteRequest
+    addProductToQuoteRequest,
+    updateQuoteRequest
   ),
   unsetLoadingAndErrorOn(
     loadQuotingSuccess,
@@ -68,7 +71,8 @@ export const quotingReducer = createReducer(
     addQuoteToBasketSuccess,
     createQuoteRequestFromQuoteSuccess,
     createQuoteRequestFromBasketSuccess,
-    addProductToQuoteRequestSuccess
+    addProductToQuoteRequestSuccess,
+    updateQuoteRequestSuccess
   ),
   setErrorOn(loadQuotingFail, deleteQuotingEntityFail, rejectQuoteFail),
   // initialized
@@ -80,6 +84,7 @@ export const quotingReducer = createReducer(
     createQuoteRequestFromQuoteSuccess,
     createQuoteRequestFromBasketSuccess,
     addProductToQuoteRequestSuccess,
+    updateQuoteRequestSuccess,
     (state, action) => quotingAdapter.upsertOne(action.payload.quote, state)
   ),
   on(deleteQuotingEntitySuccess, (state, action) => quotingAdapter.removeOne(action.payload.id, state)),

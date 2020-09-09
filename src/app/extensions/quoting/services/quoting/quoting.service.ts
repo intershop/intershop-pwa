@@ -1,12 +1,13 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { flatten } from 'lodash-es';
-import { EMPTY, defer, forkJoin, iif, of } from 'rxjs';
+import { flatten, pick } from 'lodash-es';
+import { EMPTY, concat, defer, forkJoin, iif, of, throwError } from 'rxjs';
 import { concatMap, defaultIfEmpty, expand, filter, map, mapTo, take } from 'rxjs/operators';
 
 import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
+import { QuoteRequestUpdate } from '../../models/quote-request-update/quote-request-update.model';
 import { QuotingHelper } from '../../models/quoting/quoting.helper';
 import { QuoteData } from '../../models/quoting/quoting.interface';
 import { QuotingMapper } from '../../models/quoting/quoting.mapper';
@@ -164,6 +165,29 @@ export class QuotingService {
             },
           })
           .pipe(mapTo(quoteRequest.id))
+      )
+    );
+  }
+
+  updateQuoteRequest(quoteRequestId: string, changes: QuoteRequestUpdate[]) {
+    if (!changes?.length) {
+      return throwError(new Error('updateQuoteRequest called without changes'));
+    }
+    return concat(
+      ...changes.map(change =>
+        change.type === 'meta-data'
+          ? this.apiService
+              .b2bUserEndpoint()
+              .put(`quoterequests/${quoteRequestId}`, pick(change, 'description', 'displayName'))
+          : change.type === 'change-item'
+          ? this.apiService
+              .b2bUserEndpoint()
+              .put(`quoterequests/${quoteRequestId}/items/${change.itemId}`, { quantity: { value: change.quantity } })
+          : this.apiService.b2bUserEndpoint().delete(`quoterequests/${quoteRequestId}/items/${change.itemId}`)
+      )
+    ).pipe(
+      concatMap(() =>
+        this.getQuoteDetails({ id: quoteRequestId, completenessLevel: 'Stub', type: 'QuoteRequest' }, 'Detail')
       )
     );
   }

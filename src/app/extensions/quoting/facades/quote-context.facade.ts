@@ -4,6 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { once, pick } from 'lodash-es';
 import { Observable, defer, timer } from 'rxjs';
 import {
+  distinctUntilChanged,
   filter,
   first,
   map,
@@ -19,6 +20,7 @@ import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-updat
 import { PriceHelper } from 'ish-core/models/price/price.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 
+import { QuoteRequestUpdate } from '../models/quote-request-update/quote-request-update.model';
 import { QuotingHelper } from '../models/quoting/quoting.helper';
 import { Quote, QuoteRequest, QuoteRequestItem } from '../models/quoting/quoting.model';
 import {
@@ -32,6 +34,7 @@ import {
   loadQuotingDetail,
   rejectQuote,
   submitQuoteRequest,
+  updateQuoteRequest,
 } from '../store/quoting';
 
 @Injectable()
@@ -88,23 +91,19 @@ export abstract class QuoteContextFacade {
     )
   ).pipe(shareReplay(1));
 
-  formHasChanges$ = this.form$.pipe(
+  private formChanges$ = this.form$.pipe(
     switchMap(form =>
       form.valueChanges.pipe(
+        startWith(form),
         withLatestFrom(this.entityAsQuoteRequest$),
-        map(([, entity]) => {
-          const displayNameChange = () => form.get('displayName').value !== entity.displayName;
-          const descriptionChange = () => form.get('description').value !== (entity.description || '');
-          const itemsChange = () =>
-            entity.items.some(
-              (item: QuoteRequestItem) =>
-                (form.get('items') as FormArray).controls.find(control => control.value.itemId === item.id)?.value
-                  .quantity !== item.quantity.value
-            );
-          return displayNameChange() || descriptionChange() || itemsChange();
-        })
+        map(([, entity]) => this.calculateChanges(form, entity))
       )
     )
+  );
+
+  formHasChanges$ = this.formChanges$.pipe(
+    map(changes => !!changes?.length),
+    distinctUntilChanged()
   );
 
   formBackedLineItems$ = this.form$.pipe(
@@ -121,6 +120,32 @@ export abstract class QuoteContextFacade {
   formBackedTotal$ = this.formBackedLineItems$.pipe(
     map(items => items.map(item => item.totals.total).reduce((a, b) => PriceHelper.sum(a, b)))
   );
+
+  private calculateChanges(form: FormGroup, entity: QuoteRequest): QuoteRequestUpdate[] {
+    const updates: QuoteRequestUpdate[] = [];
+
+    const displayNameChange = () => form.get('displayName').value !== entity.displayName;
+    const descriptionChange = () => form.get('description').value !== (entity.description || '');
+
+    if (displayNameChange() || descriptionChange()) {
+      updates.push({
+        type: 'meta-data',
+        description: form.get('description').value,
+        displayName: form.get('displayName').value,
+      });
+    }
+
+    entity.items.forEach((item: QuoteRequestItem) => {
+      const control = (form.get('items') as FormArray).controls.find(c => c.value.itemId === item.id);
+      if (!control) {
+        updates.push({ type: 'remove-item', itemId: item.id });
+      } else if (control.value.quantity !== item.quantity.value) {
+        updates.push({ type: 'change-item', itemId: item.id, quantity: control.value.quantity });
+      }
+    });
+
+    return updates;
+  }
 
   private convertFormItemsToModel(form: FormGroup, originalItems: QuoteRequestItem[]): QuoteRequestItem[] {
     return (form.get('items') as FormArray).controls
@@ -165,7 +190,9 @@ export abstract class QuoteContextFacade {
   }
 
   update() {
-    console.log('TODO', 'update');
+    this.idOnce$
+      .pipe(withLatestFrom(this.formChanges$))
+      .subscribe(([quoteRequestId, changes]) => this.store.dispatch(updateQuoteRequest({ quoteRequestId, changes })));
   }
 
   submit() {
