@@ -2884,6 +2884,7 @@
   "user.not.authenticated": "You are not authenticated to access this page.",
   "search.noresult.filtered_products.message": "We are sorry, we could not find any products that match your filter choice.",
   "account.organization.hierarchies": "Company Structure",
+  "account.organization.hierarchies.description": "Manage the structure of \"{{0}}\"",
   "account.organization.hierarchies.groups.add": "Add Group",
   "account.organization.hierarchies.groups.new.heading": "Add Group",
   "account.organization.hierarchies.groups.new.message": "Creating a new group to track your company structure. You can assign users, addresses and payment instruments to it.",
