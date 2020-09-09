@@ -8,7 +8,7 @@ import { QuoteListPageComponent } from './quote-list-page.component';
 import { QuoteListComponent } from './quote-list/quote-list.component';
 
 const quoteListPageRoutes: Routes = [
-  { path: '', component: QuoteListPageComponent },
+  { path: '', component: QuoteListPageComponent, data: { breadcrumbData: [{ key: 'quote.quotes.link' }] } },
   {
     path: 'addProductToQuoteRequest',
     canActivate: [ProductAddToQuoteRequestGuard],
