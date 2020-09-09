@@ -88,3 +88,8 @@ export const updateQuoteRequestSuccess = createAction(
   '[Quoting] Update Quote Request Success',
   payload<{ quote: QuotingEntity }>()
 );
+
+export const updateAndSubmitQuoteRequest = createAction(
+  '[Quoting] Update and Submit Quote Request',
+  payload<{ quoteRequestId: string; changes: QuoteRequestUpdate[] }>()
+);

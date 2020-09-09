@@ -34,6 +34,7 @@ import {
   loadQuotingDetail,
   rejectQuote,
   submitQuoteRequest,
+  updateAndSubmitQuoteRequest,
   updateQuoteRequest,
 } from '../store/quoting';
 
@@ -166,7 +167,7 @@ export abstract class QuoteContextFacade {
     this.form$.subscribe(form => {
       const items = form.get('items') as FormArray;
       const itemControl = items.controls.find(control => control.value.itemId === item.itemId);
-      itemControl.setValue(pick(item, 'itemId', 'quantity'));
+      itemControl?.setValue(pick(item, 'itemId', 'quantity'));
     });
   }
 
@@ -196,7 +197,15 @@ export abstract class QuoteContextFacade {
   }
 
   submit() {
-    this.idOnce$.subscribe(quoteRequestId => this.store.dispatch(submitQuoteRequest({ quoteRequestId })));
+    this.idOnce$
+      .pipe(withLatestFrom(this.formChanges$))
+      .subscribe(([quoteRequestId, changes]) =>
+        this.store.dispatch(
+          changes?.length
+            ? updateAndSubmitQuoteRequest({ quoteRequestId, changes })
+            : submitQuoteRequest({ quoteRequestId })
+        )
+      );
   }
 
   protected fetchDetail(quoteId: string) {

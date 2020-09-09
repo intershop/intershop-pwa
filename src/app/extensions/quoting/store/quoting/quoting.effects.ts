@@ -5,6 +5,7 @@ import { Store, select } from '@ngrx/store';
 import { of } from 'rxjs';
 import {
   concatMap,
+  delay,
   distinctUntilChanged,
   first,
   map,
@@ -50,6 +51,7 @@ import {
   rejectQuote,
   rejectQuoteFail,
   submitQuoteRequest,
+  updateAndSubmitQuoteRequest,
   updateQuoteRequest,
   updateQuoteRequestSuccess,
 } from './quoting.actions';
@@ -222,6 +224,27 @@ export class QuotingEffects {
       mapToPayload(),
       concatMap(({ quoteRequestId, changes }) =>
         this.quotingService.updateQuoteRequest(quoteRequestId, changes).pipe(
+          concatMap(id =>
+            this.quotingService.getQuoteDetails({ id, completenessLevel: 'Stub', type: 'QuoteRequest' }, 'Detail')
+          ),
+          map(quote => updateQuoteRequestSuccess({ quote })),
+          mapErrorToAction(loadQuotingFail)
+        )
+      )
+    )
+  );
+
+  updateAndSubmitQuoteRequest$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateAndSubmitQuoteRequest),
+      mapToPayload(),
+      concatMap(({ quoteRequestId, changes }) =>
+        this.quotingService.updateQuoteRequest(quoteRequestId, changes).pipe(
+          delay(1000),
+          concatMap(id => this.quotingService.submitQuoteRequest(id)),
+          concatMap(id =>
+            this.quotingService.getQuoteDetails({ id, completenessLevel: 'Stub', type: 'QuoteRequest' }, 'Detail')
+          ),
           map(quote => updateQuoteRequestSuccess({ quote })),
           mapErrorToAction(loadQuotingFail)
         )

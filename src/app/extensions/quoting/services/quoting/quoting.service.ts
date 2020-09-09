@@ -185,10 +185,6 @@ export class QuotingService {
               .put(`quoterequests/${quoteRequestId}/items/${change.itemId}`, { quantity: { value: change.quantity } })
           : this.apiService.b2bUserEndpoint().delete(`quoterequests/${quoteRequestId}/items/${change.itemId}`)
       )
-    ).pipe(
-      concatMap(() =>
-        this.getQuoteDetails({ id: quoteRequestId, completenessLevel: 'Stub', type: 'QuoteRequest' }, 'Detail')
-      )
-    );
+    ).pipe(mapTo(quoteRequestId));
   }
 }

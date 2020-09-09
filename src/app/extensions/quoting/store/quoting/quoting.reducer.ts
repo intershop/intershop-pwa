@@ -27,6 +27,7 @@ import {
   rejectQuote,
   rejectQuoteFail,
   submitQuoteRequest,
+  updateAndSubmitQuoteRequest,
   updateQuoteRequest,
   updateQuoteRequestSuccess,
 } from './quoting.actions';
@@ -62,7 +63,8 @@ export const quotingReducer = createReducer(
     createQuoteRequestFromBasket,
     submitQuoteRequest,
     addProductToQuoteRequest,
-    updateQuoteRequest
+    updateQuoteRequest,
+    updateAndSubmitQuoteRequest
   ),
   unsetLoadingAndErrorOn(
     loadQuotingSuccess,
@@ -90,5 +92,8 @@ export const quotingReducer = createReducer(
   on(deleteQuotingEntitySuccess, (state, action) => quotingAdapter.removeOne(action.payload.id, state)),
   // active quote request
   on(addProductToQuoteRequest, state => ({ ...state, activeQuoteRequest: undefined })),
-  on(addProductToQuoteRequestSuccess, (state, action) => ({ ...state, activeQuoteRequest: action.payload.quote.id }))
+  on(addProductToQuoteRequestSuccess, (state, action) => ({
+    ...state,
+    activeQuoteRequest: action.payload.quote.id,
+  }))
 );
