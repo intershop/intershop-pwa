@@ -13,7 +13,7 @@
   <ish-error-message [error]="error$ | async"></ish-error-message>
 
   <ng-container *ngIf="editable$ | async; else elseTemplate">
-    <ish-quote-edit [quote]="quote"></ish-quote-edit>
+    <ish-quote-edit></ish-quote-edit>
   </ng-container>
   <ng-template #elseTemplate>
     <ish-quote-view></ish-quote-view>

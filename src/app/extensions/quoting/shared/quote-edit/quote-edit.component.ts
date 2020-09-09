@@ -1,9 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
+import { Price } from 'ish-core/models/price/price.model';
 
-import { QuoteRequest } from '../../models/quoting/quoting.model';
+import { QuoteContextFacade } from '../../facades/quote-context.facade';
+import { QuoteRequest, QuoteRequestItem } from '../../models/quoting/quoting.model';
 
 /**
  * The Quote Edit Component displays and updates quote or quote request data.
@@ -15,38 +18,26 @@ import { QuoteRequest } from '../../models/quoting/quoting.model';
   templateUrl: './quote-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class QuoteEditComponent implements OnChanges {
-  @Input() quote: QuoteRequest;
+export class QuoteEditComponent implements OnInit {
+  quote$: Observable<QuoteRequest>;
+  form$: Observable<FormGroup>;
+  formBackedLineItems$: Observable<QuoteRequestItem[]>;
+  formBackedTotal$: Observable<Price>;
 
-  form: FormGroup;
+  constructor(private context: QuoteContextFacade) {}
 
-  constructor() {
-    this.form = new FormGroup({
-      displayName: new FormControl(undefined, [Validators.maxLength(255)]),
-      description: new FormControl(undefined, []),
-    });
-  }
-
-  ngOnChanges(c: SimpleChanges) {
-    if (c.quote) {
-      this.patchForm();
-    }
-  }
-
-  private patchForm() {
-    if (this.quote.displayName) {
-      this.form.patchValue({ displayName: this.quote.displayName });
-    }
-    if (this.quote.description) {
-      this.form.patchValue({ description: this.quote.description });
-    }
+  ngOnInit() {
+    this.quote$ = this.context.entityAsQuoteRequest$;
+    this.form$ = this.context.form$;
+    this.formBackedLineItems$ = this.context.formBackedLineItems$;
+    this.formBackedTotal$ = this.context.formBackedTotal$;
   }
 
   onUpdateItem(item: LineItemUpdate) {
-    console.log('TODO', 'onUpdateItem', item);
+    this.context.updateItem(item);
   }
 
   onDeleteItem(itemId: string) {
-    console.log('TODO', 'onDeleteItem', itemId);
+    this.context.deleteItem(itemId);
   }
 }

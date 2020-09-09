@@ -1,13 +1,26 @@
 import { Injectable } from '@angular/core';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
-import { once } from 'lodash-es';
+import { once, pick } from 'lodash-es';
 import { Observable, defer, timer } from 'rxjs';
-import { filter, first, map, shareReplay, switchMapTo, tap } from 'rxjs/operators';
+import {
+  filter,
+  first,
+  map,
+  shareReplay,
+  startWith,
+  switchMap,
+  switchMapTo,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
+import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
+import { PriceHelper } from 'ish-core/models/price/price.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { QuotingHelper } from '../models/quoting/quoting.helper';
-import { Quote, QuoteRequest } from '../models/quoting/quoting.model';
+import { Quote, QuoteRequest, QuoteRequestItem } from '../models/quoting/quoting.model';
 import {
   addQuoteToBasket,
   createQuoteRequestFromQuote,
@@ -23,10 +36,12 @@ import {
 
 @Injectable()
 export abstract class QuoteContextFacade {
+  constructor(private store: Store) {}
   loading$ = this.store.pipe(select(getQuotingLoading));
   error$ = this.store.pipe(select(getQuotingError));
 
   entity$: Observable<Quote | QuoteRequest>;
+  entityAsQuoteRequest$ = defer(() => this.entity$.pipe(map(QuotingHelper.asQuoteRequest)));
 
   state$ = defer(() => timer(0, 2000).pipe(switchMapTo(this.entity$.pipe(map(QuotingHelper.state)))));
 
@@ -48,8 +63,6 @@ export abstract class QuoteContextFacade {
     )
   );
 
-  constructor(private store: Store) {}
-
   private idOnce$ = defer(() =>
     this.entity$.pipe(
       map(q => q?.id),
@@ -57,6 +70,87 @@ export abstract class QuoteContextFacade {
       first()
     )
   );
+
+  form$ = defer(() =>
+    this.entityAsQuoteRequest$.pipe(
+      map(
+        quote =>
+          new FormGroup({
+            displayName: new FormControl(quote.displayName, [Validators.maxLength(255)]),
+            description: new FormControl(quote.description || '', []),
+            items: new FormArray(
+              quote.items.map(
+                (item: QuoteRequestItem) => new FormControl({ itemId: item.id, quantity: item.quantity.value })
+              )
+            ),
+          })
+      )
+    )
+  ).pipe(shareReplay(1));
+
+  formHasChanges$ = this.form$.pipe(
+    switchMap(form =>
+      form.valueChanges.pipe(
+        withLatestFrom(this.entityAsQuoteRequest$),
+        map(([, entity]) => {
+          const displayNameChange = () => form.get('displayName').value !== entity.displayName;
+          const descriptionChange = () => form.get('description').value !== (entity.description || '');
+          const itemsChange = () =>
+            entity.items.some(
+              (item: QuoteRequestItem) =>
+                (form.get('items') as FormArray).controls.find(control => control.value.itemId === item.id)?.value
+                  .quantity !== item.quantity.value
+            );
+          return displayNameChange() || descriptionChange() || itemsChange();
+        })
+      )
+    )
+  );
+
+  formBackedLineItems$ = this.form$.pipe(
+    switchMap(form =>
+      form.valueChanges.pipe(
+        startWith(form),
+        withLatestFrom(this.entityAsQuoteRequest$.pipe(map(q => q.items as QuoteRequestItem[]))),
+        map(([, items]) => this.convertFormItemsToModel(form, items))
+      )
+    ),
+    shareReplay(1)
+  );
+
+  formBackedTotal$ = this.formBackedLineItems$.pipe(
+    map(items => items.map(item => item.totals.total).reduce((a, b) => PriceHelper.sum(a, b)))
+  );
+
+  private convertFormItemsToModel(form: FormGroup, originalItems: QuoteRequestItem[]): QuoteRequestItem[] {
+    return (form.get('items') as FormArray).controls
+      .map(c => c.value as { itemId: string; quantity: number })
+      .map(formItem => {
+        const originalItem = originalItems.find(item => formItem.itemId === item.id);
+        return {
+          ...originalItem,
+          quantity: { ...originalItem.quantity, value: formItem.quantity },
+          totals: {
+            total: { ...originalItem.totals.total, value: formItem.quantity * originalItem.singleBasePrice.value },
+          },
+        };
+      });
+  }
+
+  updateItem(item: LineItemUpdate) {
+    this.form$.subscribe(form => {
+      const items = form.get('items') as FormArray;
+      const itemControl = items.controls.find(control => control.value.itemId === item.itemId);
+      itemControl.setValue(pick(item, 'itemId', 'quantity'));
+    });
+  }
+
+  deleteItem(itemId: string) {
+    this.form$.subscribe(form => {
+      const items = form.get('items') as FormArray;
+      items.removeAt(items.controls.findIndex(control => control.value.itemId === itemId));
+    });
+  }
 
   reject() {
     this.idOnce$.subscribe(quoteId => this.store.dispatch(rejectQuote({ quoteId })));

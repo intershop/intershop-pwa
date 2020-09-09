@@ -17,6 +17,7 @@
         data-testing-id="save-quote-request"
         type="submit"
         class="btn btn-secondary float-right"
+        [disabled]="!(formHasChanges$ | async)"
         (click)="update()"
       >
         {{ 'quote.edit.button.save.label' | translate }}

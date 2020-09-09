@@ -10,7 +10,6 @@ import { LineItemListComponent } from 'ish-shared/components/line-item/line-item
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
 import { QuoteContextFacade } from '../../facades/quote-context.facade';
-import { QuoteRequest } from '../../models/quoting/quoting.model';
 import { QuoteStateComponent } from '../quote-state/quote-state.component';
 
 import { QuoteEditComponent } from './quote-edit.component';
@@ -38,8 +37,6 @@ describe('Quote Edit Component', () => {
     fixture = TestBed.createComponent(QuoteEditComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-
-    component.quote = {} as QuoteRequest;
   });
 
   it('should be created', () => {

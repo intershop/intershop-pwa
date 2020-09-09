@@ -13,6 +13,7 @@ export class QuoteInteractionsComponent implements OnInit {
   quote$: Observable<Quote | QuoteRequest>;
   state$: Observable<QuoteStatus>;
   isQuoteValid$: Observable<boolean>;
+  formHasChanges$: Observable<boolean>;
 
   constructor(private context: QuoteContextFacade) {}
 
@@ -20,6 +21,7 @@ export class QuoteInteractionsComponent implements OnInit {
     this.quote$ = this.context.entity$;
     this.state$ = this.context.state$;
     this.isQuoteValid$ = this.context.isQuoteValid$;
+    this.formHasChanges$ = this.context.formHasChanges$;
   }
 
   reject() {
