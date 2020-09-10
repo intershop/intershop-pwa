@@ -22,7 +22,7 @@ export class HierarchiesPageComponent implements OnInit {
     hasFilter: false,
     hasCollapseExpand: true,
     decoupleChildFromParent: false,
-    maxHeight: 500,
+    maxHeight: 250,
   });
 
   constructor(private organizationManagement: OrganizationManagementFacade) {}
