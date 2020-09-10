@@ -1,24 +1,26 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
-import { once, pick } from 'lodash-es';
-import { Observable, defer, timer } from 'rxjs';
+import { pick } from 'lodash-es';
+import { Observable, ReplaySubject, Subject, timer } from 'rxjs';
 import {
   distinctUntilChanged,
   filter,
   first,
   map,
+  sample,
   shareReplay,
   startWith,
   switchMap,
   switchMapTo,
+  takeUntil,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
 
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PriceHelper } from 'ish-core/models/price/price.model';
-import { whenTruthy } from 'ish-core/utils/operators';
+import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 import { QuoteRequestUpdate } from '../models/quote-request-update/quote-request-update.model';
 import { QuotingHelper } from '../models/quoting/quoting.helper';
@@ -39,44 +41,45 @@ import {
 } from '../store/quoting';
 
 @Injectable()
-export abstract class QuoteContextFacade {
-  constructor(private store: Store) {}
+export abstract class QuoteContextFacade implements OnDestroy {
+  constructor(private store: Store) {
+    store.pipe(first()).subscribe(state => {
+      if (!isQuotingInitialized(state)) {
+        this.store.dispatch(loadQuoting());
+      }
+    });
+  }
+
+  private destroy$ = new Subject();
+
   loading$ = this.store.pipe(select(getQuotingLoading));
   error$ = this.store.pipe(select(getQuotingError));
 
-  entity$: Observable<Quote | QuoteRequest>;
-  entityAsQuoteRequest$ = defer(() => this.entity$.pipe(map(QuotingHelper.asQuoteRequest)));
+  entity$ = new ReplaySubject<Quote | QuoteRequest>(1);
+  entityAsQuoteRequest$ = this.entity$.pipe(map(QuotingHelper.asQuoteRequest));
 
-  state$ = defer(() => timer(0, 2000).pipe(switchMapTo(this.entity$.pipe(map(QuotingHelper.state)))));
+  state$ = timer(0, 2000).pipe(switchMapTo(this.entity$.pipe(map(QuotingHelper.state))));
 
-  isQuoteStarted$ = defer(() =>
-    this.entity$.pipe(map(quote => Date.now() > QuotingHelper.asQuote(quote)?.validFromDate))
+  isQuoteStarted$ = this.entity$.pipe(map(quote => Date.now() > QuotingHelper.asQuote(quote)?.validFromDate));
+
+  isQuoteValid$ = this.entity$.pipe(
+    map(QuotingHelper.asQuote),
+    map(quote => Date.now() < quote?.validToDate && Date.now() > quote?.validFromDate)
   );
 
-  isQuoteValid$ = defer(() =>
-    this.entity$.pipe(
-      map(QuotingHelper.asQuote),
-      map(quote => Date.now() < quote?.validToDate && Date.now() > quote?.validFromDate)
-    )
+  isQuoteRequestEditable$ = this.entity$.pipe(
+    map(QuotingHelper.asQuoteRequest),
+    map(quoteRequest => !!quoteRequest.editable)
   );
 
-  isQuoteRequestEditable$ = defer(() =>
-    this.entity$.pipe(
-      map(QuotingHelper.asQuoteRequest),
-      map(quoteRequest => !!quoteRequest.editable)
-    )
+  private idOnce$ = this.entity$.pipe(
+    map(q => q?.id),
+    whenTruthy(),
+    first()
   );
 
-  private idOnce$ = defer(() =>
-    this.entity$.pipe(
-      map(q => q?.id),
-      whenTruthy(),
-      first()
-    )
-  );
-
-  form$ = defer(() =>
-    this.entityAsQuoteRequest$.pipe(
+  form$ = this.entityAsQuoteRequest$
+    .pipe(
       map(
         quote =>
           new FormGroup({
@@ -90,7 +93,7 @@ export abstract class QuoteContextFacade {
           })
       )
     )
-  ).pipe(shareReplay(1));
+    .pipe(shareReplay(1));
 
   private formChanges$ = this.form$.pipe(
     switchMap(form =>
@@ -121,6 +124,29 @@ export abstract class QuoteContextFacade {
   formBackedTotal$ = this.formBackedLineItems$.pipe(
     map(items => items.map(item => item.totals.total).reduce((a, b) => PriceHelper.sum(a, b)))
   );
+
+  protected connect(quoteId$: Observable<string>) {
+    this.destroy$.next();
+    quoteId$
+      .pipe(
+        switchMap(quoteId =>
+          this.store.pipe(
+            select(getQuotingEntity(quoteId)),
+            whenTruthy(),
+            tap(entity => {
+              if (entity?.completenessLevel !== 'Detail') {
+                this.store.dispatch(loadQuotingDetail({ entity, level: 'Detail' }));
+              }
+            }),
+            sample(this.loading$.pipe(whenFalsy())),
+            filter(entity => entity?.completenessLevel === 'Detail'),
+            map(entity => entity as Quote | QuoteRequest)
+          )
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(entity => this.entity$.next(entity));
+  }
 
   private calculateChanges(form: FormGroup, entity: QuoteRequest): QuoteRequestUpdate[] {
     const updates: QuoteRequestUpdate[] = [];
@@ -208,27 +234,8 @@ export abstract class QuoteContextFacade {
       );
   }
 
-  protected fetchDetail(quoteId: string) {
-    return this.store.pipe(
-      tap(
-        once(state => {
-          if (!isQuotingInitialized(state)) {
-            this.store.dispatch(loadQuoting());
-          }
-        })
-      ),
-      select(getQuotingEntity(quoteId)),
-      whenTruthy(),
-      tap(
-        once(entity => {
-          if (entity?.completenessLevel !== 'Detail') {
-            this.store.dispatch(loadQuotingDetail({ entity, level: 'Detail' }));
-          }
-        })
-      ),
-      filter(entity => entity?.completenessLevel === 'Detail'),
-      map(quote => quote as Quote | QuoteRequest),
-      shareReplay(1)
-    );
+  // not-dead-code
+  ngOnDestroy() {
+    this.destroy$.next();
   }
 }

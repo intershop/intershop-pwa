@@ -2,7 +2,7 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { flatten, pick } from 'lodash-es';
 import { EMPTY, concat, defer, forkJoin, iif, of, throwError } from 'rxjs';
-import { concatMap, defaultIfEmpty, expand, filter, map, mapTo, take } from 'rxjs/operators';
+import { concatMap, defaultIfEmpty, expand, filter, last, map, mapTo, take } from 'rxjs/operators';
 
 import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
@@ -185,6 +185,6 @@ export class QuotingService {
               .put(`quoterequests/${quoteRequestId}/items/${change.itemId}`, { quantity: { value: change.quantity } })
           : this.apiService.b2bUserEndpoint().delete(`quoterequests/${quoteRequestId}/items/${change.itemId}`)
       )
-    ).pipe(mapTo(quoteRequestId));
+    ).pipe(last(), mapTo(quoteRequestId));
   }
 }
