@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { once } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
@@ -81,12 +80,12 @@ export class OrganizationManagementFacade {
       .subscribe(login => this.store.dispatch(setUserRoles({ login, roles: roleIDs })));
   }
 
-  private initialize = once(() => this.store.dispatch(loadGroups()));
+  // private initialize = once(() => this.store.dispatch(loadGroups()));
   groups$(): Observable<NodeTree> {
     return this.customer$.pipe(
       whenTruthy(),
       take(1),
-      tap(this.initialize),
+      tap(() => this.store.dispatch(loadGroups())),
       switchMap(() => this.store.pipe(select(getOrganizationGroups)))
     );
   }

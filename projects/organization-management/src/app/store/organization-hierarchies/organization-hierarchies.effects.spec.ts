@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { anyString, instance, mock, verify, when } from 'ts-mockito';
+import { instance, mock, verify, when } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -21,6 +21,8 @@ import { OrganizationHierarchiesEffects } from './organization-hierarchies.effec
 @Component({ template: 'dummy' })
 class DummyComponent {}
 
+const customer = { customerNo: 'patricia' } as Customer;
+
 describe('Organization Hierarchies Effects', () => {
   let actions$: Observable<Action>;
   let effects: OrganizationHierarchiesEffects;
@@ -29,7 +31,7 @@ describe('Organization Hierarchies Effects', () => {
 
   beforeEach(() => {
     orgServiceMock = mock(OrganizationHierarchiesService);
-    when(orgServiceMock.getNodes(anyString())).thenReturn(of(NodeHelper.empty()));
+    when(orgServiceMock.getNodes(customer)).thenReturn(of(NodeHelper.empty()));
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -52,7 +54,6 @@ describe('Organization Hierarchies Effects', () => {
 
     effects = TestBed.inject(OrganizationHierarchiesEffects);
     store$ = TestBed.inject(Store);
-    const customer = { customerNo: 'patricia' } as Customer;
     store$.dispatch(loginUserSuccess({ customer }));
   });
 
@@ -61,7 +62,7 @@ describe('Organization Hierarchies Effects', () => {
       actions$ = of(loadGroups());
 
       effects.loadOrganizationHierarchies$.subscribe(() => {
-        verify(orgServiceMock.getNodes('patricia')).once();
+        verify(orgServiceMock.getNodes(customer)).once();
         done();
       });
     });
