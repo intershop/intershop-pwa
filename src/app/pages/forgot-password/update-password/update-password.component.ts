@@ -41,7 +41,7 @@ export class UpdatePasswordComponent implements OnInit, OnDestroy {
     });
 
     this.accountFacade.passwordReminderSuccess$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(() => {
-      this.router.navigate(['/login'], { queryParams: { forcePageView: true } });
+      this.router.navigate(['/login'], { queryParams: { forcePageView: true, returnUrl: '/account' } });
     });
   }
 

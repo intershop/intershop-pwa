@@ -231,20 +231,6 @@ describe('User Effects', () => {
       expect(location.path()).toEqual('/foobar');
     }));
 
-    it('should navigate to /account after LoginUserSuccess when no returnUrl is set and user is at login', fakeAsync(() => {
-      router.navigate(['/login']);
-      tick(500);
-      expect(location.path()).toEqual('/login');
-
-      store$.dispatch(loginUserSuccess(loginResponseData));
-
-      effects.redirectAfterLogin$.subscribe(noop, fail, noop);
-
-      tick(500);
-
-      expect(location.path()).toEqual('/account');
-    }));
-
     it('should not navigate after LoginUserSuccess when user is logged in and somewhere else', fakeAsync(() => {
       router.navigate(['/home']);
       tick(500);
