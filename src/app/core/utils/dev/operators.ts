@@ -5,7 +5,7 @@ export function randomDelay<T>(min = 1000, max = 10000): OperatorFunction<T, T> 
   return source$ => source$.pipe(delay(Math.floor(Math.random() * (max - min + 1)) + min));
 }
 
-export function log<T>(message?: string, stringify?: boolean): OperatorFunction<T, T> {
+export function log<T>(message?: unknown, stringify?: boolean): OperatorFunction<T, T> {
   // tslint:disable-next-line:no-console
   return source$ => source$.pipe(tap(e => console.log(message || '', stringify ? JSON.stringify(e) : e)));
 }
