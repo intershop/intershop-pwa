@@ -1005,6 +1005,7 @@
   "tacton.undo.tooltip": "Undo",
   "textarea.max_limit": "Your message: {{0}} characters remaining.",
   "account.organization.hierarchies": "Company Structure",
+  "account.organization.hierarchies.description": "Manage the structure of \"{{0}}\"",
   "account.organization.hierarchies.groups.add": "Add Group",
   "account.organization.hierarchies.groups.new.heading": "Add Group",
   "account.organization.hierarchies.groups.new.message": "Creating a new group to track your company structure. You can assign users, addresses and payment instruments to it.",
