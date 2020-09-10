@@ -2,10 +2,11 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
+import { map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { getICMBaseURL } from 'ish-core/store/core/configuration';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
@@ -19,27 +20,33 @@ export class OrganizationHierarchiesService {
   constructor(private apiService: ApiService, private nodeMapper: NodeMapper, private store: Store) {}
 
   private currentCustomer$ = this.store.pipe(select(getLoggedInCustomer), whenTruthy(), take(1));
+  private icmBaseURL$ = this.store.pipe(select(getICMBaseURL), whenTruthy(), take(1));
 
   private contentTypeHeader = {
     headers: new HttpHeaders({ ['Accept']: 'application/vnd.api+json', ['content-type']: 'application/vnd.api+json' }),
   };
 
   getNodes(customer: Customer): Observable<NodeTree> {
-    return this.apiService
-      .get<NodeListDocument>(`http://localhost:8080/organizations/${customer.customerNo}/nodes`, this.contentTypeHeader)
-      .pipe(
-        map(data =>
-          NodeHelper.setParent(this.nodeMapper.fromCustomerData(customer), this.nodeMapper.fromDocument(data))
-        )
-      );
+    return this.icmBaseURL$.pipe(
+      switchMap(icmBaseURL =>
+        this.apiService
+          .get<NodeListDocument>(`${icmBaseURL}/organizations/${customer.customerNo}/nodes`, this.contentTypeHeader)
+          .pipe(
+            map(data =>
+              NodeHelper.setParent(this.nodeMapper.fromCustomerData(customer), this.nodeMapper.fromDocument(data))
+            )
+          )
+      )
+    );
   }
 
   createNode(parent: Node, child: Node): Observable<NodeTree> {
     return this.currentCustomer$.pipe(
-      switchMap(customer =>
+      withLatestFrom(this.icmBaseURL$),
+      switchMap(([customer, icmBaseURL]) =>
         this.apiService
           .post<NodeDocument>(
-            `http://localhost:8080/organizations/${customer.customerNo}/nodes`,
+            `${icmBaseURL}/organizations/${customer.customerNo}/nodes`,
             this.nodeMapper.toNodeDocument(child, parent.id === customer.customerNo ? undefined : parent),
             this.contentTypeHeader
           )
