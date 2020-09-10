@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
-import { NgxCookieBannerModule } from 'ngx-cookie-banner';
 import { instance, mock } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -28,7 +27,7 @@ describe('App Component', () => {
         MockComponent(HeaderComponent),
         MockDirective(ServerHtmlDirective),
       ],
-      imports: [NgxCookieBannerModule.forRoot(), RouterTestingModule, TranslateModule.forRoot()],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: AppFacade, useFactory: () => instance(mock(AppFacade)) }],
     }).compileComponents();
   });

@@ -554,8 +554,6 @@
   "common.button.spinning.label": "En train d’ajouter...",
   "common.home.link": "Accueil",
   "common.view_all.link": "Tout afficher",
-  "cookie_law.button": "Accepter",
-  "cookie_law.text": "Ce site Web utilise des cookies pour améliorer votre expérience sur notre site. Vous trouverez des informations plus détaillées dans notre <a href=\"{{0}}\">politique de confidentialité</a>.",
   "customer.credentials.login.not_unique.error": "Un utilisateur avec cette adresse courriel existe déjà. Veuillez vérifier l’exactitude des informations ou entrer une adresse courriel différente.",
   "customer.credentials.passwordreset.invalid_password.error.PasswordExpressionViolation": "Le mot de passe doit comporter un minimum de 7 caractères, comprenant des chiffres et des lettres, sans espaces.",
   "customer.missing_fields.error": "Champs manquants",

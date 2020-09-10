@@ -4,7 +4,6 @@ import { ErrorHandler, NgModule, Optional, SkipSelf } from '@angular/core';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgxCookieBannerModule } from 'ngx-cookie-banner';
 import { BrowserCookiesModule } from 'ngx-utils-cookies-port';
 
 import { environment } from '../../environments/environment';
@@ -33,9 +32,6 @@ import { ModuleLoaderService } from './utils/module-loader/module-loader.service
     HttpClientModule,
     IdentityProviderModule,
     InternationalizationModule,
-    NgxCookieBannerModule.forRoot({
-      cookieName: 'cookieLawSeen',
-    }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.serviceWorker }),
     StateManagementModule,
   ],
@@ -55,7 +51,7 @@ import { ModuleLoaderService } from './utils/module-loader/module-loader.service
     },
   ],
   // exports needed to use the cookie banner in the AppComponent
-  exports: [NgxCookieBannerModule, TranslateModule],
+  exports: [TranslateModule],
 })
 export class CoreModule {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule, moduleLoader: ModuleLoaderService) {

@@ -1,17 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  Inject,
-  OnDestroy,
-  OnInit,
-  PLATFORM_ID,
-  ViewChild,
-} from '@angular/core';
-import { NgxCookieBannerComponent } from 'ngx-cookie-banner';
-import { Observable, Subject, noop } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
@@ -26,15 +15,11 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AppComponent implements OnInit {
   @ViewChild('cookie', { static: true })
-  banner: NgxCookieBannerComponent;
-
   isBrowser: boolean;
   wrapperClasses$: Observable<string[]>;
   deviceType$: Observable<DeviceType>;
-
-  private destroy$ = new Subject();
 
   constructor(private appFacade: AppFacade, @Inject(PLATFORM_ID) platformId: string) {
     this.isBrowser = isPlatformBrowser(platformId);
@@ -43,16 +28,5 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.deviceType$ = this.appFacade.deviceType$;
     this.wrapperClasses$ = this.appFacade.appWrapperClasses$;
-  }
-
-  ngAfterViewInit() {
-    // It is currently necessary to manually subscribe at this
-    // point to initialize the banner component.
-    this.banner.isSeen.pipe(takeUntil(this.destroy$)).subscribe(noop);
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

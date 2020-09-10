@@ -81,7 +81,6 @@
     "lodash-es": "^4.17.15",
     "morgan": "^1.10.0",
     "ng-recaptcha": "^6.0.2",
-    "ngx-cookie-banner": "^0.1.1",
     "ngx-infinite-scroll": "^9.1.0",
     "ngx-swiper-wrapper": "^10.0.0",
     "ngx-toastr": "^13.1.0",
