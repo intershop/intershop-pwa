@@ -2,31 +2,14 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { of } from 'rxjs';
-import {
-  concatMap,
-  delay,
-  distinctUntilChanged,
-  first,
-  map,
-  mergeMap,
-  mergeMapTo,
-  switchMap,
-  tap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { iif, of } from 'rxjs';
+import { concatMap, delay, first, map, mergeMap, mergeMapTo, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { getCurrentBasketId, loadBasket } from 'ish-core/store/customer/basket';
-import {
-  mapErrorToAction,
-  mapToPayload,
-  mapToPayloadProperty,
-  mapToProperty,
-  whenTruthy,
-} from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayload, mapToPayloadProperty, mapToProperty } from 'ish-core/utils/operators';
 
 import { QuotingHelper } from '../../models/quoting/quoting.helper';
 import { QuotingService } from '../../services/quoting/quoting.service';
@@ -208,17 +191,31 @@ export class QuotingEffects {
   );
 
   setQuotingBreadcrumb$ = createEffect(() =>
-    this.store.pipe(
-      select(selectRouteParam('quoteId')),
-      switchMap(quoteId => this.store.pipe(select(getQuotingEntity(quoteId)), whenTruthy())),
-      map(QuotingHelper.state),
-      distinctUntilChanged(),
-      map(state => [
-        { key: 'quote.quotes.link', link: '/account/quotes' },
-        { key: state === 'New' ? 'quote.edit.unsubmitted.quote_request_details.text' : 'quote.quote_details.link' },
-      ]),
-      map(breadcrumbData => setBreadcrumbData({ breadcrumbData }))
-    )
+    this.store
+      .pipe(
+        select(selectRouteParam('quoteId')),
+        switchMap(quoteId => this.store.pipe(select(getQuotingEntity(quoteId))))
+      )
+      .pipe(
+        switchMap(quote =>
+          iif(
+            () => !!quote,
+            of(quote).pipe(
+              map(QuotingHelper.state),
+              map(state => [
+                { key: 'quote.quotes.link', link: '/account/quotes' },
+                {
+                  key:
+                    state === 'New' ? 'quote.edit.unsubmitted.quote_request_details.text' : 'quote.quote_details.link',
+                },
+              ]),
+              // short delay to override parent breadcrumb
+              delay(100),
+              map(breadcrumbData => setBreadcrumbData({ breadcrumbData }))
+            )
+          )
+        )
+      )
   );
 
   updateQuoteRequest$ = createEffect(() =>
