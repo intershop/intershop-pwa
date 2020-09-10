@@ -22,6 +22,16 @@ export class GroupFormComponent implements OnChanges {
   }
 
   private mapParentOptions(nodeMap: { [id: string]: Node }): SelectOption[] {
-    return Object.keys(nodeMap).map(nodeId => ({ value: nodeId, label: nodeMap[nodeId].name }));
+    return Object.keys(nodeMap)
+      .map(nodeId => ({ value: nodeId, label: nodeMap[nodeId].name }))
+      .sort((a: SelectOption, b: SelectOption) => {
+        if (a.label < b.label) {
+          return -1;
+        }
+        if (a.label > b.label) {
+          return 1;
+        }
+        return 0;
+      });
   }
 }
