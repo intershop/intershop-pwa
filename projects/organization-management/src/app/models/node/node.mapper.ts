@@ -1,13 +1,24 @@
 import { Injectable } from '@angular/core';
 
+import { Customer } from 'ish-core/models/customer/customer.model';
+
 import { ResourceIdentifierData } from '../resource-identifier/resource-identifier.interface';
 
 import { NodeHelper } from './node.helper';
-import { NodeData, NodeListDocument } from './node.interface';
+import { NodeData, NodeDocument, NodeListDocument } from './node.interface';
 import { Node, NodeTree } from './node.model';
 
 @Injectable({ providedIn: 'root' })
 export class NodeMapper {
+  fromCustomerData(customer: Customer): Node {
+    return {
+      id: customer.customerNo,
+      name: customer.companyName ?? customer.customerNo,
+      organization: customer.customerNo,
+      description: customer.description,
+    };
+  }
+
   fromDocument(nodeList: NodeListDocument): NodeTree {
     if (nodeList) {
       return nodeList.data
@@ -20,13 +31,15 @@ export class NodeMapper {
   }
 
   fromDataReversed(nodeData: NodeData): NodeTree {
-    if (nodeData) {
+    if (nodeData && nodeData.relationships?.parentNode?.data) {
       const parent = nodeData.relationships.parentNode;
       const parentTree = this.toNodeTree(this.fromResourceId(parent.data));
       parentTree.edges = { ...this.fromData(nodeData).edges };
       parentTree.edges[parent.data.id] = [nodeData.id];
       parentTree.nodes[nodeData.id] = this.fromSingleData(nodeData);
       return parentTree;
+    } else if (nodeData) {
+      return this.toNodeTree(nodeData);
     } else {
       throw new Error('nodeData is required');
     }
@@ -99,5 +112,42 @@ export class NodeMapper {
     } else {
       throw new Error('falsy input');
     }
+  }
+
+  toNodeDocument(child: Node, parent?: Node): NodeDocument {
+    const childNodeData = this.toNodeData(child, parent);
+    return {
+      data: childNodeData,
+    };
+  }
+
+  toNodeData(data: Node, parentData?: Node): NodeData {
+    if (!data) {
+      throw new Error('Node data is mandatory');
+    }
+
+    const nodeData: NodeData = {
+      attributes: {
+        name: data.name,
+        description: data.description,
+      },
+      id: data.id,
+      relationships: {
+        organization: {
+          data: {
+            id: data.organization,
+          },
+        },
+      },
+    };
+    if (parentData) {
+      nodeData.relationships.parentNode = {
+        data: {
+          id: parentData.id,
+        },
+      };
+    }
+
+    return nodeData;
   }
 }
