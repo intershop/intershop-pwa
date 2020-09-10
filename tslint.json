@@ -721,11 +721,11 @@
             "file": ".*/store/(<kebab>/|)<kebab>-store\\.module\\.ts$"
           },
           {
-            "name": "^get(.*)State$",
+            "name": "^get(.*?)(Internal)?State$",
             "file": ".*/store/([a-z][a-z0-9-]+/|)(<kebab>/<kebab>\\.selectors|<kebab>-store)\\.ts$"
           },
           {
-            "name": "^([A-Z].*)State$",
+            "name": "^([A-Z].*?)(Internal)?State$",
             "file": ".*/store/([a-z][a-z0-9-]+/|)(<kebab>/<kebab>\\.reducer|(<kebab>/|)<kebab>-store)\\.ts$"
           },
           {
