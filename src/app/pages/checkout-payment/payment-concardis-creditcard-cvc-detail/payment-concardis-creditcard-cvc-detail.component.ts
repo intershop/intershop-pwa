@@ -72,6 +72,7 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
   }
 
   isCvcExpired() {
+    (document.getElementById('checkoutBtn') as HTMLInputElement).disabled = true;
     // if cvc last updated timestamp is less than maximum validity in minutes then return false
     if (this.paymentInstrument.parameters) {
       const cvcLastUpdatedAttr =
@@ -84,6 +85,7 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
           const cvcDate = new Date(cvcLastUpdatedValue);
           const diffAsMinutes = (Date.now() - cvcDate.getTime()) / (1000 * 60);
           if (diffAsMinutes <= parseInt(this.validityTimeInMinutes, 10)) {
+            (document.getElementById('checkoutBtn') as HTMLInputElement).disabled = false;
             return false;
           }
         }
@@ -109,7 +111,7 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
             this.errorMessage.cvc.message
           );
           this.cvcDetailForm.get('cvcDetail').setErrors({
-            customError: this.errorMessage.cvc.message,
+            customError: this.errorMessage.cvc.messageKey,
           });
         }
       }

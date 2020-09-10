@@ -66,6 +66,10 @@ describe('Payment Concardis Creditcard Cvc Detail Component', () => {
       paymentMethod: 'Concardis_CreditCard',
       urn: 'urn:payment-instrument:basket:_3oKgzzAfGgAAAFzuFpDCMcE:UZUKgzzAppcAAAFzK9FDCMcG',
     } as PaymentInstrument;
+    // tslint:disable-next-line: ban
+    spyOn(document, 'getElementById').and.callFake(() => ({
+      value: 'test',
+    }));
   });
 
   it('should be created', () => {

@@ -103,6 +103,8 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
     this.setPaymentSelectionFromBasket(c);
 
     if (c.paymentMethods) {
+      // Enabling checkout submit button
+      (document.getElementById('checkoutBtn') as HTMLInputElement).disabled = false;
       // copy objects for runtime checks because formly modifies them, TODO: refactor
       this.filteredPaymentMethods = this.paymentMethods && this.paymentMethods.map(x => JSON.parse(JSON.stringify(x)));
     }
@@ -164,7 +166,8 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
     this.basket.payment = undefined;
     this.formSubmitted = false;
     this.openFormIndex = index;
-
+    // Enabling checkout submit button
+    (document.getElementById('checkoutBtn') as HTMLInputElement).disabled = false;
     // enable / disable the appropriate parameter form controls
     Object.keys(this.parameterForm.controls).forEach(key => {
       this.filteredPaymentMethods[index].parameters.find(param => param.key === key)
