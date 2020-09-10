@@ -154,6 +154,9 @@ describe('Quoting Effects', () => {
     beforeEach(() => {
       // tslint:disable-next-line: no-unnecessary-callback-wrapper
       when(quotingService.submitQuoteRequest(anything())).thenCall(id => of(id));
+      when(quotingService.getQuoteDetails(anything(), anything())).thenCall(quote =>
+        of({ ...quote, completenessLevel: 'Detail' } as QuoteStub)
+      );
     });
 
     it('should submit quote request via quoting service when triggered', done => {
@@ -171,7 +174,7 @@ describe('Quoting Effects', () => {
       effects.submitQuoteRequest$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
           [Quoting API] Load Quoting Detail Success:
-            quote: {"id":"ID","completenessLevel":"Stub","type":"QuoteRequest"}
+            quote: {"id":"ID","completenessLevel":"Detail","type":"QuoteRequest"}
         `);
         done();
       });

@@ -182,7 +182,10 @@ export class QuotingEffects {
       mapToPayloadProperty('quoteRequestId'),
       concatMap(quoteRequestId =>
         this.quotingService.submitQuoteRequest(quoteRequestId).pipe(
-          map(id => loadQuotingDetailSuccess({ quote: { id, completenessLevel: 'Stub', type: 'QuoteRequest' } })),
+          concatMap(id =>
+            this.quotingService.getQuoteDetails({ id, completenessLevel: 'Stub', type: 'QuoteRequest' }, 'Detail')
+          ),
+          map(quote => loadQuotingDetailSuccess({ quote })),
           mapErrorToAction(loadQuotingFail)
         )
       )
@@ -245,7 +248,7 @@ export class QuotingEffects {
           concatMap(id =>
             this.quotingService.getQuoteDetails({ id, completenessLevel: 'Stub', type: 'QuoteRequest' }, 'Detail')
           ),
-          map(quote => updateQuoteRequestSuccess({ quote })),
+          map(quote => loadQuotingDetailSuccess({ quote })),
           mapErrorToAction(loadQuotingFail)
         )
       )
