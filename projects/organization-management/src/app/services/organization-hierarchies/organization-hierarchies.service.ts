@@ -4,10 +4,12 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
+import { Customer } from 'ish-core/models/customer/customer.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
+import { NodeHelper } from '../../models/node/node.helper';
 import { NodeDocument, NodeListDocument } from '../../models/node/node.interface';
 import { NodeMapper } from '../../models/node/node.mapper';
 import { Node, NodeTree } from '../../models/node/node.model';
@@ -22,10 +24,14 @@ export class OrganizationHierarchiesService {
     headers: new HttpHeaders({ ['Accept']: 'application/vnd.api+json', ['content-type']: 'application/vnd.api+json' }),
   };
 
-  getNodes(organizationId: string): Observable<NodeTree> {
+  getNodes(customer: Customer): Observable<NodeTree> {
     return this.apiService
-      .get<NodeListDocument>(`http://localhost:8080/organizations/${organizationId}/nodes`, this.contentTypeHeader)
-      .pipe(map(data => this.nodeMapper.fromDocument(data)));
+      .get<NodeListDocument>(`http://localhost:8080/organizations/${customer.customerNo}/nodes`, this.contentTypeHeader)
+      .pipe(
+        map(data =>
+          NodeHelper.setParent(this.nodeMapper.fromCustomerData(customer), this.nodeMapper.fromDocument(data))
+        )
+      );
   }
 
   createNode(parent: Node, child: Node): Observable<NodeTree> {
@@ -34,23 +40,7 @@ export class OrganizationHierarchiesService {
         this.apiService
           .post<NodeDocument>(
             `http://localhost:8080/organizations/${customer.customerNo}/nodes`,
-            {
-              data: {
-                type: 'node',
-                id: child.id,
-                attributes: {
-                  name: child.name,
-                  description: child.description,
-                },
-                relationships: {
-                  parentNode: {
-                    data: {
-                      id: parent.id,
-                    },
-                  },
-                },
-              },
-            },
+            this.nodeMapper.toNodeDocument(child, parent.id === customer.customerNo ? undefined : parent),
             this.contentTypeHeader
           )
           .pipe(
