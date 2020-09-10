@@ -552,8 +552,6 @@
   "common.button.spinning.label": "Wird hinzugefügt...",
   "common.home.link": "Home",
   "common.view_all.link": "Alle anzeigen",
-  "cookie_law.button": "Akzeptieren",
-  "cookie_law.text": "Diese Website verwendet Cookies, um Ihre Nutzung unserer Website zu verbessern. Detailliertere Informationen finden Sie in unserer <a href=\"{{0}}\">Datenschutzerklärung</a>.",
   "customer.credentials.login.not_unique.error": "Die angegebene E-Mail-Adresse wird bereits verwendet. Prüfen Sie die Richtigkeit der Eingabe oder geben Sie eine andere E-Mail-Adresse an.",
   "customer.credentials.passwordreset.invalid_password.error.PasswordExpressionViolation": "Das Kennwort muss mindestens 7 Zeichen enthalten, bestehend aus Zahlen und Buchstaben, keine Leerzeichen.",
   "customer.missing_fields.error": "Fehlende Felder",

@@ -9,17 +9,3 @@
 
   <footer data-testing-id="section-footer"><ish-footer [deviceType]="deviceType$ | async"></ish-footer></footer>
 </div>
-
-<!-- component that provides a banner to inform users about cookie usage -->
-<ngx-cookie-banner #cookie>
-  <div class="copy" *ngIf="isBrowser">
-    <div class="row">
-      <div class="col-12 col-md-10">
-        <span [ishServerHtml]="'cookie_law.text' | translate: { '0': 'page://privacy.policy' }"></span>
-      </div>
-      <div class="col-12 col-md-2 button-container">
-        <button class="btn" type="button" (click)="cookie.dismiss()">{{ 'cookie_law.button' | translate }}</button>
-      </div>
-    </div>
-  </div>
-</ngx-cookie-banner>
