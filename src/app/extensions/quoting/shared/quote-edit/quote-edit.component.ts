@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { Price } from 'ish-core/models/price/price.model';
 
@@ -24,13 +25,14 @@ export class QuoteEditComponent implements OnInit {
   formBackedLineItems$: Observable<QuoteRequestItem[]>;
   formBackedTotal$: Observable<Price>;
 
-  constructor(private context: QuoteContextFacade) {}
+  constructor(private context: QuoteContextFacade, private appFacade: AppFacade) {}
 
   ngOnInit() {
     this.quote$ = this.context.entityAsQuoteRequest$;
     this.form$ = this.context.form$;
     this.formBackedLineItems$ = this.context.formBackedLineItems$;
     this.formBackedTotal$ = this.context.formBackedTotal$;
+    this.appFacade.connectEditable(this.context.formHasChanges$);
   }
 
   onUpdateItem(item: LineItemUpdate) {

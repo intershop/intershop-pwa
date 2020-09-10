@@ -107,7 +107,8 @@ export abstract class QuoteContextFacade implements OnDestroy {
 
   formHasChanges$ = this.formChanges$.pipe(
     map(changes => !!changes?.length),
-    distinctUntilChanged()
+    distinctUntilChanged(),
+    takeUntil(this.destroy$)
   );
 
   formBackedLineItems$ = this.form$.pipe(
@@ -129,6 +130,8 @@ export abstract class QuoteContextFacade implements OnDestroy {
     this.destroy$.next();
     quoteId$
       .pipe(
+        whenTruthy(),
+        distinctUntilChanged(),
         switchMap(quoteId =>
           this.store.pipe(
             select(getQuotingEntity(quoteId)),

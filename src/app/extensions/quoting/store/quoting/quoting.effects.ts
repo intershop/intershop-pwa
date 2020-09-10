@@ -3,11 +3,22 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { iif, of } from 'rxjs';
-import { concatMap, delay, first, map, mergeMap, mergeMapTo, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import {
+  concatMap,
+  delay,
+  first,
+  map,
+  mapTo,
+  mergeMap,
+  mergeMapTo,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { selectRouteParam } from 'ish-core/store/core/router';
-import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
+import { setBreadcrumbData, setPageEdited } from 'ish-core/store/core/viewconf';
 import { getCurrentBasketId, loadBasket } from 'ish-core/store/customer/basket';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, mapToProperty } from 'ish-core/utils/operators';
 
@@ -34,6 +45,7 @@ import {
   rejectQuote,
   rejectQuoteFail,
   submitQuoteRequest,
+  submitQuoteRequestSuccess,
   updateAndSubmitQuoteRequest,
   updateQuoteRequest,
   updateQuoteRequestSuccess,
@@ -168,7 +180,7 @@ export class QuotingEffects {
           concatMap(id =>
             this.quotingService.getQuoteDetails({ id, completenessLevel: 'Stub', type: 'QuoteRequest' }, 'Detail')
           ),
-          map(quote => loadQuotingDetailSuccess({ quote })),
+          map(quote => submitQuoteRequestSuccess({ quote })),
           mapErrorToAction(loadQuotingFail)
         )
       )
@@ -245,10 +257,17 @@ export class QuotingEffects {
           concatMap(id =>
             this.quotingService.getQuoteDetails({ id, completenessLevel: 'Stub', type: 'QuoteRequest' }, 'Detail')
           ),
-          map(quote => loadQuotingDetailSuccess({ quote })),
+          map(quote => submitQuoteRequestSuccess({ quote })),
           mapErrorToAction(loadQuotingFail)
         )
       )
+    )
+  );
+
+  resetPageEditedState$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateQuoteRequestSuccess, submitQuoteRequestSuccess),
+      mapTo(setPageEdited({ edited: false }))
     )
   );
 }

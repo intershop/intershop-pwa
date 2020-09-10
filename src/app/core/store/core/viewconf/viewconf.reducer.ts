@@ -2,16 +2,18 @@ import { createReducer, on } from '@ngrx/store';
 
 import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.interface';
 
-import { setBreadcrumbData, setStickyHeader } from './viewconf.actions';
+import { setBreadcrumbData, setPageEdited, setStickyHeader } from './viewconf.actions';
 
 export interface ViewconfState {
   breadcrumbData: BreadcrumbItem[];
   stickyHeader: boolean;
+  pageHasChanges: boolean;
 }
 
 export const initialState: ViewconfState = {
   breadcrumbData: [],
   stickyHeader: false,
+  pageHasChanges: false,
 };
 
 export const viewconfReducer = createReducer(
@@ -23,5 +25,6 @@ export const viewconfReducer = createReducer(
   on(setStickyHeader, (state: ViewconfState, action) => ({
     ...state,
     stickyHeader: action.payload.sticky,
-  }))
+  })),
+  on(setPageEdited, (state, action) => ({ ...state, pageHasChanges: action.payload.edited }))
 );

@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { DiscardChangesGuard } from 'ish-core/guards/discard-changes.guard';
+
 import { ProductAddToQuoteRequestGuard } from '../../guards/product-add-to-quote-request.guard';
 import { QuotingModule } from '../../quoting.module';
 
@@ -14,7 +16,11 @@ const quoteListPageRoutes: Routes = [
     canActivate: [ProductAddToQuoteRequestGuard],
     children: [],
   },
-  { path: ':quoteId', loadChildren: () => import('../quote/quote-page.module').then(m => m.QuotePageModule) },
+  {
+    path: ':quoteId',
+    loadChildren: () => import('../quote/quote-page.module').then(m => m.QuotePageModule),
+    canDeactivate: [DiscardChangesGuard],
+  },
 ];
 
 @NgModule({

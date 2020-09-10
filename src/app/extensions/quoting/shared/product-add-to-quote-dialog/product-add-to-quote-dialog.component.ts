@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -20,6 +21,8 @@ export class ProductAddToQuoteDialogComponent implements OnInit {
   error$: Observable<HttpError>;
   editable$: Observable<boolean>;
 
+  modalRef: NgbModalRef;
+
   constructor(private context: QuoteContextFacade) {}
 
   ngOnInit() {
@@ -31,6 +34,6 @@ export class ProductAddToQuoteDialogComponent implements OnInit {
   }
 
   hide() {
-    console.log('TODO', 'hide dialog');
+    this.modalRef.dismiss();
   }
 }

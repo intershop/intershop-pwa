@@ -27,6 +27,7 @@ import {
   rejectQuote,
   rejectQuoteFail,
   submitQuoteRequest,
+  submitQuoteRequestSuccess,
   updateAndSubmitQuoteRequest,
   updateQuoteRequest,
   updateQuoteRequestSuccess,
@@ -73,6 +74,7 @@ export const quotingReducer = createReducer(
     addQuoteToBasketSuccess,
     createQuoteRequestFromQuoteSuccess,
     createQuoteRequestFromBasketSuccess,
+    submitQuoteRequestSuccess,
     addProductToQuoteRequestSuccess,
     updateQuoteRequestSuccess
   ),
@@ -85,6 +87,7 @@ export const quotingReducer = createReducer(
     loadQuotingDetailSuccess,
     createQuoteRequestFromQuoteSuccess,
     createQuoteRequestFromBasketSuccess,
+    submitQuoteRequestSuccess,
     addProductToQuoteRequestSuccess,
     updateQuoteRequestSuccess,
     (state, action) => quotingAdapter.upsertOne(action.payload.quote, state)

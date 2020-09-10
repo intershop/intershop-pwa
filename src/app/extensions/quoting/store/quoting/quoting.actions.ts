@@ -62,6 +62,11 @@ export const createQuoteRequestFromQuoteSuccess = createAction(
 
 export const submitQuoteRequest = createAction('[Quoting] Submit Quote Request', payload<{ quoteRequestId: string }>());
 
+export const submitQuoteRequestSuccess = createAction(
+  '[Quoting] Submit Quote Request Success',
+  payload<{ quote: QuotingEntity }>()
+);
+
 export const createQuoteRequestFromBasket = createAction('[Quoting] Create Quote Request From Basket');
 
 export const createQuoteRequestFromBasketSuccess = createAction(

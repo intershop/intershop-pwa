@@ -173,7 +173,7 @@ describe('Quoting Effects', () => {
 
       effects.submitQuoteRequest$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Quoting API] Load Quoting Detail Success:
+          [Quoting] Submit Quote Request Success:
             quote: {"id":"ID","completenessLevel":"Detail","type":"QuoteRequest"}
         `);
         done();

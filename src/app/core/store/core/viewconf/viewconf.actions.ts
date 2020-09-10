@@ -9,3 +9,5 @@ export const setBreadcrumbData = createAction(
 );
 
 export const setStickyHeader = createAction('[Viewconf Internal] Set Sticky Header', payload<{ sticky: boolean }>());
+
+export const setPageEdited = createAction('[Viewconf] Set Page Edited', payload<{ edited: boolean }>());

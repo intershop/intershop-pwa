@@ -1,20 +1,26 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { defer, fromEvent, iif } from 'rxjs';
-import { distinctUntilChanged, map, sample } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, mapTo, sample } from 'rxjs/operators';
 
 import { selectRouteData } from 'ish-core/store/core/router';
 import { distinctCompareWith } from 'ish-core/utils/operators';
 
-import { setBreadcrumbData, setStickyHeader } from './viewconf.actions';
-import { getBreadcrumbData } from './viewconf.selectors';
+import { setBreadcrumbData, setPageEdited, setStickyHeader } from './viewconf.actions';
+import { getBreadcrumbData, getPageHasChanges } from './viewconf.selectors';
 
 @Injectable()
 export class ViewconfEffects {
-  constructor(private store: Store, private actions$: Actions, @Inject(PLATFORM_ID) private platformId: string) {}
+  constructor(
+    private store: Store,
+    private actions$: Actions,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: string
+  ) {}
 
   toggleStickyHeader$ = createEffect(() =>
     iif(
@@ -35,6 +41,15 @@ export class ViewconfEffects {
       sample(this.actions$.pipe(ofType(routerNavigatedAction))),
       distinctCompareWith(this.store.pipe(select(getBreadcrumbData))),
       map(breadcrumbData => setBreadcrumbData({ breadcrumbData }))
+    )
+  );
+
+  resetPageEdited$ = createEffect(() =>
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      mapTo(false),
+      distinctCompareWith(this.store.pipe(select(getPageHasChanges))),
+      map(edited => setPageEdited({ edited }))
     )
   );
 }
