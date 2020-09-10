@@ -4,6 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { SelectComponent } from 'ish-shared/forms/components/select/select.component';
 import { TextareaComponent } from 'ish-shared/forms/components/textarea/textarea.component';
@@ -21,6 +22,7 @@ describe('Group Form Component', () => {
       imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         GroupFormComponent,
+        MockComponent(ErrorMessageComponent),
         MockComponent(InputComponent),
         MockComponent(SelectComponent),
         MockComponent(TextareaComponent),
