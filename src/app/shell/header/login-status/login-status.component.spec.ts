@@ -10,7 +10,7 @@ import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.direc
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { User } from 'ish-core/models/user/user.model';
 
-import { LazyHierarchySwitchComponent } from '../../../extensions/organization-hierarchies/exports/hierarchies/lazy-hierarchy-switch/lazy-hierarchy-switch.component';
+import { LazyHierarchySwitchComponent } from '../../../extensions/organization-hierarchies/exports/lazy-hierarchy-switch/lazy-hierarchy-switch.component';
 
 import { LoginStatusComponent } from './login-status.component';
 
