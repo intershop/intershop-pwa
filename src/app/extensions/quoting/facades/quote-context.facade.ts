@@ -8,8 +8,10 @@ import {
   filter,
   first,
   map,
+  mapTo,
   sample,
   shareReplay,
+  skipWhile,
   startWith,
   switchMap,
   switchMapTo,
@@ -126,6 +128,12 @@ export abstract class QuoteContextFacade implements OnDestroy {
     map(items => items.map(item => item.totals.total).reduce((a, b) => PriceHelper.sum(a, b)))
   );
 
+  waitForSuccessfulUpdate$ = this.formHasChanges$.pipe(
+    skipWhile(x => !x),
+    whenFalsy(),
+    mapTo(undefined)
+  );
+
   protected connect(quoteId$: Observable<string>) {
     this.destroy$.next();
     quoteId$
@@ -146,6 +154,7 @@ export abstract class QuoteContextFacade implements OnDestroy {
             map(entity => entity as Quote | QuoteRequest)
           )
         ),
+        whenTruthy(),
         takeUntil(this.destroy$)
       )
       .subscribe(entity => this.entity$.next(entity));

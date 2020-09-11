@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { NavigationEnd, Router } from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { delay, filter, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
@@ -38,6 +38,15 @@ export class ProductAddToQuoteDialogComponent implements OnInit, OnDestroy {
     this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => this.hide());
+
+    this.context.waitForSuccessfulUpdate$
+      .pipe(
+        delay(100),
+        withLatestFrom(this.state$),
+        filter(([, state]) => state === 'New'),
         takeUntil(this.destroy$)
       )
       .subscribe(() => this.hide());
