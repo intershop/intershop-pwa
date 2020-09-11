@@ -31,16 +31,16 @@ describe('Quote Handling as Anonymous User', () => {
       at(LoginPage);
     });
 
-    it('user should log in and land at product detail page', () => {
+    it('user should log in and land at product detail page with open dialog', () => {
       at(LoginPage, page => {
         page.fillForm(_.user.login, _.user.password);
         page.submit().its('status').should('equal', 200);
       });
       at(ProductDetailPage, page => page.sku.should('have.text', _.product.sku));
+      at(QuoteRequestDialog);
     });
 
     it('user should be able to submit quote request', () => {
-      at(ProductDetailPage, page => page.addProductToQuoteRequest());
       at(QuoteRequestDialog, dialog => {
         dialog.submitQuoteRequest();
         dialog.productId.eq(0).should('contain', _.product.sku);

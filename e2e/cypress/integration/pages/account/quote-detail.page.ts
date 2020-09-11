@@ -1,7 +1,7 @@
 import { HeaderModule } from '../header.module';
 
 export class QuoteDetailPage {
-  readonly tag = 'ish-quote-edit';
+  readonly tag = 'ish-quote-page';
 
   readonly header = new HeaderModule();
 

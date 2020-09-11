@@ -46,7 +46,7 @@ describe('Quote Handling', () => {
     });
     at(QuoteRequestDialog, dialog => {
       dialog.totalPrice.should('contain', _.product.price * quantity);
-      dialog.deleteItemFromQuoteRequest();
+      dialog.hide();
       dialog.assertClosed();
     });
   });
@@ -55,8 +55,8 @@ describe('Quote Handling', () => {
     at(ProductDetailPage, page => page.breadcrumb.items.eq(2).click());
     at(FamilyPage, page => page.productList.addProductToQuoteRequest(_.product.sku));
     at(QuoteRequestDialog, dialog => {
-      dialog.totalPrice.should('contain', _.product.price);
-      dialog.deleteItemFromQuoteRequest();
+      dialog.totalPrice.should('contain', _.product.price * 3);
+      dialog.hide();
       dialog.assertClosed();
     });
   });
