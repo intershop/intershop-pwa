@@ -125,7 +125,7 @@ export abstract class QuoteContextFacade implements OnDestroy {
   );
 
   formBackedTotal$ = this.formBackedLineItems$.pipe(
-    map(items => items.map(item => item.totals.total).reduce((a, b) => PriceHelper.sum(a, b)))
+    map(items => items?.length && items.map(item => item.totals.total).reduce((a, b) => PriceHelper.sum(a, b)))
   );
 
   waitForSuccessfulUpdate$ = this.formHasChanges$.pipe(

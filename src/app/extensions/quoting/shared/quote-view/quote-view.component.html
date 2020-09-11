@@ -27,7 +27,9 @@
         'quote.edit.unsubmitted.quote_no.label' | translate
       }}</label>
       <div class="col-8 col-md-9 col-xl-10">
-        <p class="form-control-plaintext">{{ quote.number }}</p>
+        <p class="form-control-plaintext" data-testing-id="quoteId" [attr.data-quote-id]="quote.id">
+          {{ quote.number }}
+        </p>
       </div>
     </div>
     <div class="row">
