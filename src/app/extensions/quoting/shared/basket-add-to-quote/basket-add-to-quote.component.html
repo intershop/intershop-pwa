@@ -1,3 +1,10 @@
-<a class="btn btn-secondary" id="createQuote" name="createQuote" (click)="addToQuote()">
-  {{ 'shopping_cart.quote.create.button' | translate }}
-</a>
+<ng-container *ngIf="isLoggedIn$ | async; else elseTemplate">
+  <a class="btn btn-secondary" id="createQuote" name="createQuote" (click)="addToQuote()">
+    {{ 'shopping_cart.quote.create.button' | translate }}
+  </a>
+</ng-container>
+<ng-template #elseTemplate>
+  <button class="btn btn-secondary" [title]="'account.login.quotes.message' | translate" disabled>
+    {{ 'shopping_cart.quote.create.button' | translate }}
+  </button>
+</ng-template>
