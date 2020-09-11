@@ -63,7 +63,7 @@ jobs:
 
       - name: Create or Update B2C App Service
         env:
-          APP: "${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.number }}-${{ env.B2C_APP_SUFFIX }}"
+          APP: '${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.number }}-${{ env.B2C_APP_SUFFIX }}'
           GROUP: ${{ secrets.AZURE_DEMO_RESOURCEGROUP }}
         run: |
           az webapp config container set --resource-group $GROUP --name $APP --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --docker-custom-image-name $DOCKER_IMAGE_UNIVERSAL || az webapp create --resource-group $GROUP --plan ${{ secrets.AZURE_DEMO_APPSERVICEPLAN }} --name $APP --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --deployment-container-image-name $DOCKER_IMAGE_UNIVERSAL
@@ -73,7 +73,7 @@ jobs:
 
       - name: Create or Update B2B App Service
         env:
-          APP: "${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.number }}-${{ env.B2B_APP_SUFFIX }}"
+          APP: '${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.number }}-${{ env.B2B_APP_SUFFIX }}'
           GROUP: ${{ secrets.AZURE_DEMO_RESOURCEGROUP }}
         run: |
           az webapp config container set --resource-group $GROUP --name $APP --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --docker-custom-image-name $DOCKER_IMAGE_UNIVERSAL || az webapp create --resource-group $GROUP --plan ${{ secrets.AZURE_DEMO_APPSERVICEPLAN }} --name $APP --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --deployment-container-image-name $DOCKER_IMAGE_UNIVERSAL
@@ -83,7 +83,7 @@ jobs:
 
       - name: Create Commit Comment
         env:
-          APP: "${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.number }}"
+          APP: '${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.number }}'
         uses: peter-evans/commit-comment@v1
         with:
           body: |
