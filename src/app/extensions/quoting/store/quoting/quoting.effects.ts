@@ -17,12 +17,14 @@ import {
 } from 'rxjs/operators';
 
 import { BasketService } from 'ish-core/services/basket/basket.service';
+import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData, setPageEdited } from 'ish-core/store/core/viewconf';
 import { getCurrentBasketId, loadBasket } from 'ish-core/store/customer/basket';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, mapToProperty } from 'ish-core/utils/operators';
 
 import { QuotingHelper } from '../../models/quoting/quoting.helper';
+import { QuoteRequest } from '../../models/quoting/quoting.model';
 import { QuotingService } from '../../services/quoting/quoting.service';
 
 import {
@@ -242,6 +244,19 @@ export class QuotingEffects {
           map(quote => updateQuoteRequestSuccess({ quote })),
           mapErrorToAction(loadQuotingFail)
         )
+      )
+    )
+  );
+
+  updateQuoteRequestSuccessMessage$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateQuoteRequestSuccess),
+      mapToPayloadProperty('quote'),
+      map((quote: QuoteRequest) =>
+        displaySuccessMessage({
+          message: 'quote.edit.saved.your_quote_request_has_been_saved.text',
+          messageParams: { 0: quote.displayName },
+        })
       )
     )
   );
