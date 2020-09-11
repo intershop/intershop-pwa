@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanDeactivate } from '@angular/router';
-import { first, map } from 'rxjs/operators';
+import { first, map, tap } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ConfirmDialog } from 'ish-core/utils/confirm-dialog/confirm-dialog';
@@ -14,7 +14,12 @@ export class DiscardChangesGuard implements CanDeactivate<unknown> {
       first(),
       map(hasChange =>
         hasChange ? ConfirmDialog.confirm('You have unsaved changes. Do you really want to leave this page?') : true
-      )
+      ),
+      tap(routeAway => {
+        if (routeAway) {
+          this.appFacade.resetPageHasChanges();
+        }
+      })
     );
   }
 }

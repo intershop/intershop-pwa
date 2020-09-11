@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
-import { first, map } from 'rxjs/operators';
+import { first, map, tap } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ConfirmDialog } from 'ish-core/utils/confirm-dialog/confirm-dialog';
@@ -25,7 +25,12 @@ export class ProductAddToQuoteRequestGuard implements CanActivate {
           first(),
           map(hasChange =>
             hasChange ? ConfirmDialog.confirm('You have unsaved changes. Do you really want to leave this page?') : true
-          )
+          ),
+          tap(close => {
+            if (close) {
+              this.appFacade.resetPageHasChanges();
+            }
+          })
         )
         .toPromise();
 

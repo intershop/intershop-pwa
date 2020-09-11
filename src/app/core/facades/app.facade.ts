@@ -114,4 +114,7 @@ export class AppFacade {
   connectEditable(pageHasChanges: Observable<boolean>) {
     pageHasChanges.subscribe(edited => this.store.dispatch(setPageEdited({ edited })));
   }
+  resetPageHasChanges() {
+    this.store.dispatch(setPageEdited({ edited: false }));
+  }
 }
