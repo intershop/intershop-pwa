@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -17,8 +17,10 @@ export class GroupFormComponent implements OnChanges {
   @Input() parents: NodeTree;
   parentOptions: SelectOption[];
 
-  ngOnChanges() {
-    this.parentOptions = this.mapParentOptions(this.parents.nodes);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.form || changes.parents) {
+      this.parentOptions = this.mapParentOptions(this.parents.nodes);
+    }
   }
 
   private mapParentOptions(nodeMap: { [id: string]: Node }): SelectOption[] {
