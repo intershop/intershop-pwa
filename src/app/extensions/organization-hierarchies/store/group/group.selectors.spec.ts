@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
@@ -38,7 +38,7 @@ describe('Group Selectors', () => {
     });
   });
 
-  describe('LoadGroup', () => {
+  describe('loading groups', () => {
     const action = loadGroup();
 
     beforeEach(() => {
@@ -49,50 +49,24 @@ describe('Group Selectors', () => {
       expect(getGroupLoading(store$.state)).toBeTrue();
     });
 
-    describe('loadGroupSuccess', () => {
+    it('should set loading to false and set group state', () => {
       const group = [{ id: '1' }, { id: '2' }] as OrganizationGroup[];
-      const successAction = loadGroupSuccess({ group });
-
-      beforeEach(() => {
-        store$.dispatch(successAction);
-      });
-
-      it('should set loading to false', () => {
-        expect(getGroupLoading(store$.state)).toBeFalse();
-      });
-
-      it('should not have an error when successfully loaded entities', () => {
-        expect(getGroupError(store$.state)).toBeUndefined();
-      });
-
-      it('should have entities when successfully loading', () => {
-        expect(getGroupEntities(store$.state)).not.toBeEmpty();
-        expect(getGroup(store$.state)).not.toBeEmpty();
-        expect(getNumberOfGroup(store$.state)).toBe(2);
-      });
+      store$.dispatch(loadGroupSuccess({ group }));
+      expect(getGroupLoading(store$.state)).toBeFalse();
+      expect(getGroupError(store$.state)).toBeUndefined();
+      expect(getGroupEntities(store$.state)).not.toBeEmpty();
+      expect(getGroup(store$.state)).not.toBeEmpty();
+      expect(getNumberOfGroup(store$.state)).toBe(2);
     });
 
-    describe('loadGroupFail', () => {
-      const error = { error: 'ERROR' } as HttpError;
-      const failAction = loadGroupFail({ error });
+    it('should set loading to false and set error state', () => {
+      store$.dispatch(loadGroupFail({ error: makeHttpError({}) }));
 
-      beforeEach(() => {
-        store$.dispatch(failAction);
-      });
-
-      it('should set loading to false', () => {
-        expect(getGroupLoading(store$.state)).toBeFalse();
-      });
-
-      it('should have an error when reducing', () => {
-        expect(getGroupError(store$.state)).toBeTruthy();
-      });
-
-      it('should not have entities when reducing error', () => {
-        expect(getGroupEntities(store$.state)).toBeEmpty();
-        expect(getGroup(store$.state)).toBeEmpty();
-        expect(getNumberOfGroup(store$.state)).toBe(0);
-      });
+      expect(getGroupLoading(store$.state)).toBeFalse();
+      expect(getGroupError(store$.state)).toBeTruthy();
+      expect(getGroupEntities(store$.state)).toBeEmpty();
+      expect(getGroup(store$.state)).toBeEmpty();
+      expect(getNumberOfGroup(store$.state)).toBe(0);
     });
   });
 });
