@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { DiscardChangesGuard } from 'ish-core/guards/discard-changes.guard';
 
-import { ProductAddToQuoteRequestGuard } from '../../guards/product-add-to-quote-request.guard';
 import { QuotingModule } from '../../quoting.module';
 
 import { QuoteListPageComponent } from './quote-list-page.component';
@@ -11,11 +10,6 @@ import { QuoteListComponent } from './quote-list/quote-list.component';
 
 const quoteListPageRoutes: Routes = [
   { path: '', component: QuoteListPageComponent, data: { breadcrumbData: [{ key: 'quote.quotes.link' }] } },
-  {
-    path: 'addProductToQuoteRequest',
-    canActivate: [ProductAddToQuoteRequestGuard],
-    children: [],
-  },
   {
     path: ':quoteId',
     loadChildren: () => import('../quote/quote-page.module').then(m => m.QuotePageModule),

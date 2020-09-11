@@ -6,10 +6,18 @@ import { AuthGuard } from 'ish-core/guards/auth.guard';
 
 const routes: Routes = [
   {
-    path: '',
-    loadChildren: () => import('./quote-list/quote-list-page.module').then(m => m.QuoteListPageModule),
+    path: 'addProductToQuoteRequest',
     canActivate: [FeatureToggleGuard, AuthGuard],
-    data: { feature: 'quoting' },
+    loadChildren: () =>
+      import('./quoting-product-add-to-quote-request-routing.module').then(
+        m => m.QuotingProductAddToQuoteRequestRoutingModule
+      ),
+    data: {
+      feature: 'quoting',
+      queryParams: {
+        messageKey: 'quotes',
+      },
+    },
   },
 ];
 

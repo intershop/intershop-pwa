@@ -10,7 +10,7 @@ import { ConfirmDialog } from 'ish-core/utils/confirm-dialog/confirm-dialog';
 import { ProductAddToQuoteDialogComponent } from '../shared/product-add-to-quote-dialog/product-add-to-quote-dialog.component';
 import { addProductToQuoteRequest } from '../store/quoting';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ProductAddToQuoteRequestGuard implements CanActivate {
   constructor(private modalService: NgbModal, private store: Store, private appFacade: AppFacade) {}
 

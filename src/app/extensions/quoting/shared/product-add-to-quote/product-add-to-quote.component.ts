@@ -33,6 +33,6 @@ export class ProductAddToQuoteComponent implements OnInit {
   addToQuote() {
     const quantity = this.quantity ? this.quantity : this.product.minOrderQuantity;
     const sku = this.product.sku;
-    this.router.navigate(['/account/quotes/addProductToQuoteRequest'], { queryParams: { sku, quantity } });
+    this.router.navigate(['/addProductToQuoteRequest'], { queryParams: { sku, quantity } });
   }
 }

@@ -83,6 +83,6 @@ describe('Product Add To Quote Component', () => {
 
     tick(500);
 
-    expect(location.path()).toMatchInlineSnapshot(`"/account/quotes/addProductToQuoteRequest?sku=dummy&quantity=5"`);
+    expect(location.path()).toMatchInlineSnapshot(`"/addProductToQuoteRequest?sku=dummy&quantity=5"`);
   }));
 });
