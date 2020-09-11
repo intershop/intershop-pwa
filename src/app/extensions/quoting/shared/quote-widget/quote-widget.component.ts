@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { countBy } from 'lodash-es';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, combineLatest, iif, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
@@ -27,7 +27,9 @@ export class QuoteWidgetComponent implements OnInit {
     this.loading$ = this.quotingFacade.loading$;
 
     this.counts$ = this.quotingFacade.quotingEntities$.pipe(
-      switchMap(quotes => combineLatest(quotes.map(quote => this.quotingFacade.state$(quote.id)))),
+      switchMap(quotes =>
+        iif(() => !quotes?.length, of([]), combineLatest(quotes.map(quote => this.quotingFacade.state$(quote.id))))
+      ),
       map(quotes => countBy(quotes, quote => this.mapState(quote)))
     );
   }
