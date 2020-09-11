@@ -217,32 +217,28 @@ export abstract class QuoteContextFacade implements OnDestroy {
   }
 
   reject() {
-    this.idOnce$.subscribe(quoteId => this.store.dispatch(rejectQuote({ quoteId })));
+    this.idOnce$.subscribe(id => this.store.dispatch(rejectQuote({ id })));
   }
 
   copy() {
-    this.idOnce$.subscribe(quoteId => this.store.dispatch(createQuoteRequestFromQuote({ quoteId })));
+    this.idOnce$.subscribe(id => this.store.dispatch(createQuoteRequestFromQuote({ id })));
   }
 
   addToBasket() {
-    this.idOnce$.subscribe(quoteId => this.store.dispatch(addQuoteToBasket({ quoteId })));
+    this.idOnce$.subscribe(id => this.store.dispatch(addQuoteToBasket({ id })));
   }
 
   update() {
     this.idOnce$
       .pipe(withLatestFrom(this.formChanges$))
-      .subscribe(([quoteRequestId, changes]) => this.store.dispatch(updateQuoteRequest({ quoteRequestId, changes })));
+      .subscribe(([id, changes]) => this.store.dispatch(updateQuoteRequest({ id, changes })));
   }
 
   submit() {
     this.idOnce$
       .pipe(withLatestFrom(this.formChanges$))
-      .subscribe(([quoteRequestId, changes]) =>
-        this.store.dispatch(
-          changes?.length
-            ? updateAndSubmitQuoteRequest({ quoteRequestId, changes })
-            : submitQuoteRequest({ quoteRequestId })
-        )
+      .subscribe(([id, changes]) =>
+        this.store.dispatch(changes?.length ? updateAndSubmitQuoteRequest({ id, changes }) : submitQuoteRequest({ id }))
       );
   }
 

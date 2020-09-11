@@ -90,13 +90,13 @@ export const quotingReducer = createReducer(
     submitQuoteRequestSuccess,
     addProductToQuoteRequestSuccess,
     updateQuoteRequestSuccess,
-    (state, action) => quotingAdapter.upsertOne(action.payload.quote, state)
+    (state, action) => quotingAdapter.upsertOne(action.payload.entity, state)
   ),
   on(deleteQuotingEntitySuccess, (state, action) => quotingAdapter.removeOne(action.payload.id, state)),
   // active quote request
   on(addProductToQuoteRequest, state => ({ ...state, activeQuoteRequest: undefined })),
   on(addProductToQuoteRequestSuccess, (state, action) => ({
     ...state,
-    activeQuoteRequest: action.payload.quote.id,
+    activeQuoteRequest: action.payload.entity.id,
   }))
 );

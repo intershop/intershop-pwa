@@ -90,7 +90,7 @@ describe('Quoting Effects', () => {
   describe('rejectQuote$', () => {
     it('should reject quote via quoting service when triggered', done => {
       when(quotingService.rejectQuote(anything())).thenCall(({ id }) => of(id));
-      actions$ = of(rejectQuote({ quoteId: 'ID' }));
+      actions$ = of(rejectQuote({ id: 'ID' }));
 
       effects.rejectQuote$.subscribe(() => {
         verify(quotingService.rejectQuote(anything())).once();
@@ -110,7 +110,7 @@ describe('Quoting Effects', () => {
       });
 
       it('should directly add quote to basket via quoting service', done => {
-        actions$ = of(addQuoteToBasket({ quoteId: 'quoteID' }));
+        actions$ = of(addQuoteToBasket({ id: 'quoteID' }));
 
         effects.addQuoteToBasket$.subscribe(() => {
           verify(quotingService.addQuoteToBasket('quoteID', 'basketID')).once();
@@ -127,7 +127,7 @@ describe('Quoting Effects', () => {
       });
 
       it('should create basket and add quote to basket via quoting service', done => {
-        actions$ = of(addQuoteToBasket({ quoteId: 'quoteID' }));
+        actions$ = of(addQuoteToBasket({ id: 'quoteID' }));
 
         effects.addQuoteToBasket$.subscribe(() => {
           verify(quotingService.addQuoteToBasket('quoteID', 'basketID')).once();
@@ -141,7 +141,7 @@ describe('Quoting Effects', () => {
   describe('createQuoteRequestFromQuote$', () => {
     it('should create quote request from quote via quoting service when triggered', done => {
       when(quotingService.createQuoteRequestFromQuote(anything())).thenCall(({ id }) => of(id));
-      actions$ = of(createQuoteRequestFromQuote({ quoteId: 'ID' }));
+      actions$ = of(createQuoteRequestFromQuote({ id: 'ID' }));
 
       effects.createQuoteRequestFromQuote$.subscribe(() => {
         verify(quotingService.createQuoteRequestFromQuote(anything())).once();
@@ -160,7 +160,7 @@ describe('Quoting Effects', () => {
     });
 
     it('should submit quote request via quoting service when triggered', done => {
-      actions$ = of(submitQuoteRequest({ quoteRequestId: 'ID' }));
+      actions$ = of(submitQuoteRequest({ id: 'ID' }));
 
       effects.submitQuoteRequest$.subscribe(() => {
         verify(quotingService.submitQuoteRequest(anything())).once();
@@ -169,12 +169,12 @@ describe('Quoting Effects', () => {
     });
 
     it('should load quote request details when triggered successfully', done => {
-      actions$ = of(submitQuoteRequest({ quoteRequestId: 'ID' }));
+      actions$ = of(submitQuoteRequest({ id: 'ID' }));
 
       effects.submitQuoteRequest$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Quoting] Submit Quote Request Success:
-            quote: {"id":"ID","type":"QuoteRequest","completenessLevel":"Detail"}
+          [Quoting API] Submit Quote Request Success:
+            entity: {"id":"ID","type":"QuoteRequest","completenessLevel":"Detail"}
         `);
         done();
       });

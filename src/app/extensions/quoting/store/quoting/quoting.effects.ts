@@ -80,9 +80,9 @@ export class QuotingEffects {
     this.actions$.pipe(
       ofType(loadQuotingDetail),
       mapToPayload(),
-      mergeMap(({ entity, level }) =>
-        this.quotingService.getQuoteDetails(entity.id, entity.type, level).pipe(
-          map(quote => loadQuotingDetailSuccess({ quote })),
+      mergeMap(({ entity: { id, type }, level }) =>
+        this.quotingService.getQuoteDetails(id, type, level).pipe(
+          map(entity => loadQuotingDetailSuccess({ entity })),
           mapErrorToAction(loadQuotingFail)
         )
       )
@@ -105,10 +105,10 @@ export class QuotingEffects {
   rejectQuote$ = createEffect(() =>
     this.actions$.pipe(
       ofType(rejectQuote),
-      mapToPayloadProperty('quoteId'),
+      mapToPayloadProperty('id'),
       concatMap(id =>
         this.quotingService.rejectQuote(id).pipe(
-          map(quote => loadQuotingDetailSuccess({ quote })),
+          map(entity => loadQuotingDetailSuccess({ entity })),
           mapErrorToAction(rejectQuoteFail, { id })
         )
       )
@@ -118,16 +118,16 @@ export class QuotingEffects {
   addQuoteToBasket$ = createEffect(() =>
     this.actions$.pipe(
       ofType(addQuoteToBasket),
-      mapToPayloadProperty('quoteId'),
-      concatMap(quoteId =>
+      mapToPayloadProperty('id'),
+      concatMap(id =>
         this.store.pipe(
           select(getCurrentBasketId),
           first(),
           switchMap(basketId =>
             !basketId ? this.basketService.createBasket().pipe(map(basket => basket.id)) : of(basketId)
           ),
-          concatMap(basketId => this.quotingService.addQuoteToBasket(quoteId, basketId)),
-          mergeMapTo([loadBasket(), addQuoteToBasketSuccess({ quoteId })]),
+          concatMap(basketId => this.quotingService.addQuoteToBasket(id, basketId)),
+          mergeMapTo([loadBasket(), addQuoteToBasketSuccess({ id })]),
           mapErrorToAction(loadQuotingFail)
         )
       )
@@ -137,10 +137,10 @@ export class QuotingEffects {
   createQuoteRequestFromQuote$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createQuoteRequestFromQuote),
-      mapToPayloadProperty('quoteId'),
+      mapToPayloadProperty('id'),
       concatMap(quoteId =>
         this.quotingService.createQuoteRequestFromQuote(quoteId).pipe(
-          map(quote => createQuoteRequestFromQuoteSuccess({ quote })),
+          map(entity => createQuoteRequestFromQuoteSuccess({ entity })),
           mapErrorToAction(loadQuotingFail)
         )
       )
@@ -153,7 +153,7 @@ export class QuotingEffects {
       withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
       concatMap(([, basketID]) =>
         this.quotingService.createQuoteRequestFromBasket(basketID).pipe(
-          map(quote => createQuoteRequestFromBasketSuccess({ quote })),
+          map(entity => createQuoteRequestFromBasketSuccess({ entity })),
           mapErrorToAction(loadQuotingFail)
         )
       )
@@ -164,7 +164,7 @@ export class QuotingEffects {
     () =>
       this.actions$.pipe(
         ofType(createQuoteRequestFromQuoteSuccess, createQuoteRequestFromBasketSuccess),
-        mapToPayloadProperty('quote'),
+        mapToPayloadProperty('entity'),
         mapToProperty('id'),
         tap(id => {
           this.router.navigateByUrl('/account/quotes/' + id);
@@ -176,11 +176,11 @@ export class QuotingEffects {
   submitQuoteRequest$ = createEffect(() =>
     this.actions$.pipe(
       ofType(submitQuoteRequest),
-      mapToPayloadProperty('quoteRequestId'),
+      mapToPayloadProperty('id'),
       concatMap(quoteRequestId =>
         this.quotingService.submitQuoteRequest(quoteRequestId).pipe(
           concatMap(id => this.quotingService.getQuoteDetails(id, 'QuoteRequest', 'Detail')),
-          map(quote => submitQuoteRequestSuccess({ quote })),
+          map(entity => submitQuoteRequestSuccess({ entity })),
           mapErrorToAction(loadQuotingFail)
         )
       )
@@ -194,7 +194,7 @@ export class QuotingEffects {
       concatMap(({ sku, quantity }) =>
         this.quotingService.addProductToQuoteRequest(sku, quantity).pipe(
           concatMap(id => this.quotingService.getQuoteDetails(id, 'QuoteRequest', 'Detail')),
-          map(quote => addProductToQuoteRequestSuccess({ quote })),
+          map(entity => addProductToQuoteRequestSuccess({ entity })),
           mapErrorToAction(loadQuotingFail)
         )
       )
@@ -208,10 +208,10 @@ export class QuotingEffects {
         switchMap(quoteId => this.store.pipe(select(getQuotingEntity(quoteId))))
       )
       .pipe(
-        switchMap(quote =>
+        switchMap(entity =>
           iif(
-            () => !!quote,
-            of(quote).pipe(
+            () => !!entity,
+            of(entity).pipe(
               map(QuotingHelper.state),
               map(state => [
                 { key: 'quote.quotes.link', link: '/account/quotes' },
@@ -233,10 +233,10 @@ export class QuotingEffects {
     this.actions$.pipe(
       ofType(updateQuoteRequest),
       mapToPayload(),
-      concatMap(({ quoteRequestId, changes }) =>
-        this.quotingService.updateQuoteRequest(quoteRequestId, changes).pipe(
-          concatMap(id => this.quotingService.getQuoteDetails(id, 'QuoteRequest', 'Detail')),
-          map(quote => updateQuoteRequestSuccess({ quote })),
+      concatMap(({ id, changes }) =>
+        this.quotingService.updateQuoteRequest(id, changes).pipe(
+          concatMap(quoteRequestId => this.quotingService.getQuoteDetails(quoteRequestId, 'QuoteRequest', 'Detail')),
+          map(entity => updateQuoteRequestSuccess({ entity })),
           mapErrorToAction(loadQuotingFail)
         )
       )
@@ -246,11 +246,11 @@ export class QuotingEffects {
   updateQuoteRequestSuccessMessage$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateQuoteRequestSuccess),
-      mapToPayloadProperty('quote'),
-      map((quote: QuoteRequest) =>
+      mapToPayloadProperty('entity'),
+      map((entity: QuoteRequest) =>
         displaySuccessMessage({
-          message: 'quote.edit.saved.your_quote_request_has_been_saved.text',
-          messageParams: { 0: quote.displayName },
+          message: 'entity.edit.saved.your_quote_request_has_been_saved.text',
+          messageParams: { 0: entity.displayName },
         })
       )
     )
@@ -260,12 +260,12 @@ export class QuotingEffects {
     this.actions$.pipe(
       ofType(updateAndSubmitQuoteRequest),
       mapToPayload(),
-      concatMap(({ quoteRequestId, changes }) =>
-        this.quotingService.updateQuoteRequest(quoteRequestId, changes).pipe(
+      concatMap(({ id, changes }) =>
+        this.quotingService.updateQuoteRequest(id, changes).pipe(
           delay(1000),
-          concatMap(id => this.quotingService.submitQuoteRequest(id)),
-          concatMap(id => this.quotingService.getQuoteDetails(id, 'QuoteRequest', 'Detail')),
-          map(quote => submitQuoteRequestSuccess({ quote })),
+          concatMap(quoteRequestId => this.quotingService.submitQuoteRequest(quoteRequestId)),
+          concatMap(quoteRequestId => this.quotingService.getQuoteDetails(quoteRequestId, 'QuoteRequest', 'Detail')),
+          map(entity => submitQuoteRequestSuccess({ entity })),
           mapErrorToAction(loadQuotingFail)
         )
       )
