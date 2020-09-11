@@ -65,11 +65,11 @@ describe('Quoting Effects', () => {
   describe('loadQuotingDetail$', () => {
     it('should load quote details via quoting service when triggered', done => {
       const entity = { type: 'Quote', completenessLevel: 'Detail', id: 'q1' } as QuoteStub;
-      when(quotingService.getQuoteDetails(anything(), 'Detail')).thenReturn(of(entity));
+      when(quotingService.getQuoteDetails(anything(), 'Quote', 'Detail')).thenReturn(of(entity));
       actions$ = of(loadQuotingDetail({ entity, level: 'Detail' }));
 
       effects.loadQuotingDetail$.subscribe(() => {
-        verify(quotingService.getQuoteDetails(anything(), 'Detail')).once();
+        verify(quotingService.getQuoteDetails('q1', 'Quote', 'Detail')).once();
         done();
       });
     });
@@ -154,8 +154,8 @@ describe('Quoting Effects', () => {
     beforeEach(() => {
       // tslint:disable-next-line: no-unnecessary-callback-wrapper
       when(quotingService.submitQuoteRequest(anything())).thenCall(id => of(id));
-      when(quotingService.getQuoteDetails(anything(), anything())).thenCall(quote =>
-        of({ ...quote, completenessLevel: 'Detail' } as QuoteStub)
+      when(quotingService.getQuoteDetails(anything(), anything(), anything())).thenCall((id, type) =>
+        of({ id, type, completenessLevel: 'Detail' } as QuoteStub)
       );
     });
 
@@ -168,13 +168,13 @@ describe('Quoting Effects', () => {
       });
     });
 
-    it('should reset quote request to stub when triggered successfully', done => {
+    it('should load quote request details when triggered successfully', done => {
       actions$ = of(submitQuoteRequest({ quoteRequestId: 'ID' }));
 
       effects.submitQuoteRequest$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
           [Quoting] Submit Quote Request Success:
-            quote: {"id":"ID","completenessLevel":"Detail","type":"QuoteRequest"}
+            quote: {"id":"ID","type":"QuoteRequest","completenessLevel":"Detail"}
         `);
         done();
       });

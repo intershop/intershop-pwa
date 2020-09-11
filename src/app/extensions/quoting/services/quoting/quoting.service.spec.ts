@@ -46,7 +46,7 @@ describe('Quoting Service', () => {
 
   describe('getQuoteDetails', () => {
     it('should not call anything when Stub level is requested', done => {
-      quotingService.getQuoteDetails({ type: 'Quote', id: '123', completenessLevel: 'Stub' }, 'Stub').subscribe(
+      quotingService.getQuoteDetails('123', 'Quote', 'Stub').subscribe(
         () => {
           verify(apiService.get(anything())).never();
         },
@@ -58,7 +58,7 @@ describe('Quoting Service', () => {
     it('should call quote API when List level is requested for quote', done => {
       when(apiService.get(anything())).thenReturn(of({ type: 'Quote', items: [] } as QuoteData));
 
-      quotingService.getQuoteDetails({ type: 'Quote', id: '123', completenessLevel: 'Stub' }, 'List').subscribe(
+      quotingService.getQuoteDetails('123', 'Quote', 'List').subscribe(
         () => {
           verify(apiService.get(anything())).once();
           expect(capture(apiService.get).last()?.[0]).toMatchInlineSnapshot(`"quotes/123"`);
@@ -71,7 +71,7 @@ describe('Quoting Service', () => {
     it('should call quote request API when List level is requested for quote request', done => {
       when(apiService.get(anything())).thenReturn(of({ type: 'QuoteRequest', items: [] } as QuoteData));
 
-      quotingService.getQuoteDetails({ type: 'QuoteRequest', id: '123', completenessLevel: 'Stub' }, 'List').subscribe(
+      quotingService.getQuoteDetails('123', 'QuoteRequest', 'List').subscribe(
         () => {
           verify(apiService.get(anything())).once();
           expect(capture(apiService.get).last()?.[0]).toMatchInlineSnapshot(`"quoterequests/123"`);
@@ -85,16 +85,14 @@ describe('Quoting Service', () => {
       when(apiService.get(anything())).thenReturn(of({ type: 'QuoteRequest', items: [] } as QuoteData));
       when(apiService.resolveLinks()).thenReturn(() => of([]));
 
-      quotingService
-        .getQuoteDetails({ type: 'QuoteRequest', id: '123', completenessLevel: 'Stub' }, 'Detail')
-        .subscribe(
-          () => {
-            verify(apiService.get(anything())).once();
-            expect(capture(apiService.get).last()?.[0]).toMatchInlineSnapshot(`"quoterequests/123"`);
-          },
-          fail,
-          done
-        );
+      quotingService.getQuoteDetails('123', 'QuoteRequest', 'Detail').subscribe(
+        () => {
+          verify(apiService.get(anything())).once();
+          expect(capture(apiService.get).last()?.[0]).toMatchInlineSnapshot(`"quoterequests/123"`);
+        },
+        fail,
+        done
+      );
     });
   });
 

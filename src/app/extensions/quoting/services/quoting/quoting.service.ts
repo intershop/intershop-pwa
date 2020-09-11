@@ -42,22 +42,22 @@ export class QuotingService {
     ]).pipe(map(flatten));
   }
 
-  getQuoteDetails(quoteStub: QuoteStub, level: QuoteCompletenessLevel) {
-    if (level === 'Stub') {
-      return of(quoteStub);
+  getQuoteDetails(id: string, type: 'Quote' | 'QuoteRequest', completenessLevel: QuoteCompletenessLevel) {
+    if (completenessLevel === 'Stub') {
+      return of({ id, type, completenessLevel });
     }
-    return quoteStub.type === 'Quote'
+    return type === 'Quote'
       ? this.apiService
           .b2bUserEndpoint()
-          .get<QuoteData>(`quotes/${quoteStub.id}`)
+          .get<QuoteData>(`quotes/${id}`)
           .pipe(map(res => this.quoteMapper.fromData(res, 'Quote')))
       : this.apiService
           .b2bUserEndpoint()
-          .get<QuoteData>(`quoterequests/${quoteStub.id}`)
+          .get<QuoteData>(`quoterequests/${id}`)
           .pipe(
             concatMap(data =>
               iif(
-                () => level === 'Detail',
+                () => completenessLevel === 'Detail',
                 defer(() =>
                   of(data).pipe(
                     unpackEnvelope('items'),
@@ -120,7 +120,7 @@ export class QuotingService {
 
   private expansion(stubs: QuoteStub[]) {
     return stubs?.length
-      ? this.getQuoteDetails(stubs[0], 'List').pipe(
+      ? this.getQuoteDetails(stubs[0].id, stubs[0].type, 'List').pipe(
           map(quoteRequest => ({
             quoteRequest,
             next: stubs.slice(1),
@@ -148,7 +148,7 @@ export class QuotingService {
       )
       .pipe(
         concatMap(active => (active ? of(active) : this.createQuoteRequest())),
-        concatMap(activeOrNew => this.getQuoteDetails(activeOrNew, 'Detail')),
+        concatMap(activeOrNew => this.getQuoteDetails(activeOrNew.id, activeOrNew.type, 'Detail')),
         map(QuotingHelper.asQuoteRequest)
       );
   }

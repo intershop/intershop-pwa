@@ -81,7 +81,7 @@ export class QuotingEffects {
       ofType(loadQuotingDetail),
       mapToPayload(),
       mergeMap(({ entity, level }) =>
-        this.quotingService.getQuoteDetails(entity, level).pipe(
+        this.quotingService.getQuoteDetails(entity.id, entity.type, level).pipe(
           map(quote => loadQuotingDetailSuccess({ quote })),
           mapErrorToAction(loadQuotingFail)
         )
@@ -179,9 +179,7 @@ export class QuotingEffects {
       mapToPayloadProperty('quoteRequestId'),
       concatMap(quoteRequestId =>
         this.quotingService.submitQuoteRequest(quoteRequestId).pipe(
-          concatMap(id =>
-            this.quotingService.getQuoteDetails({ id, completenessLevel: 'Stub', type: 'QuoteRequest' }, 'Detail')
-          ),
+          concatMap(id => this.quotingService.getQuoteDetails(id, 'QuoteRequest', 'Detail')),
           map(quote => submitQuoteRequestSuccess({ quote })),
           mapErrorToAction(loadQuotingFail)
         )
@@ -195,9 +193,8 @@ export class QuotingEffects {
       mapToPayload(),
       concatMap(({ sku, quantity }) =>
         this.quotingService.addProductToQuoteRequest(sku, quantity).pipe(
-          map(id =>
-            addProductToQuoteRequestSuccess({ quote: { id, completenessLevel: 'Stub', type: 'QuoteRequest' } })
-          ),
+          concatMap(id => this.quotingService.getQuoteDetails(id, 'QuoteRequest', 'Detail')),
+          map(quote => addProductToQuoteRequestSuccess({ quote })),
           mapErrorToAction(loadQuotingFail)
         )
       )
@@ -238,9 +235,7 @@ export class QuotingEffects {
       mapToPayload(),
       concatMap(({ quoteRequestId, changes }) =>
         this.quotingService.updateQuoteRequest(quoteRequestId, changes).pipe(
-          concatMap(id =>
-            this.quotingService.getQuoteDetails({ id, completenessLevel: 'Stub', type: 'QuoteRequest' }, 'Detail')
-          ),
+          concatMap(id => this.quotingService.getQuoteDetails(id, 'QuoteRequest', 'Detail')),
           map(quote => updateQuoteRequestSuccess({ quote })),
           mapErrorToAction(loadQuotingFail)
         )
@@ -269,9 +264,7 @@ export class QuotingEffects {
         this.quotingService.updateQuoteRequest(quoteRequestId, changes).pipe(
           delay(1000),
           concatMap(id => this.quotingService.submitQuoteRequest(id)),
-          concatMap(id =>
-            this.quotingService.getQuoteDetails({ id, completenessLevel: 'Stub', type: 'QuoteRequest' }, 'Detail')
-          ),
+          concatMap(id => this.quotingService.getQuoteDetails(id, 'QuoteRequest', 'Detail')),
           map(quote => submitQuoteRequestSuccess({ quote })),
           mapErrorToAction(loadQuotingFail)
         )
