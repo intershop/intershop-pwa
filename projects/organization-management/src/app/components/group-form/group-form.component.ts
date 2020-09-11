@@ -4,7 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 
-import { Node, NodeTree } from '../../../models/node/node.model';
+import { Node, NodeTree } from '../../models/node/node.model';
 
 @Component({
   selector: 'ish-group-form',

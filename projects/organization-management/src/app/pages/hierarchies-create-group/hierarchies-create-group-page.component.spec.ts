@@ -7,7 +7,7 @@ import { instance, mock } from 'ts-mockito';
 
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
-import { GroupFormComponent } from '../../components/hierarchies/group-form/group-form.component';
+import { GroupFormComponent } from '../../components/group-form/group-form.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
 import { HierarchiesCreateGroupPageComponent } from './hierarchies-create-group-page.component';
