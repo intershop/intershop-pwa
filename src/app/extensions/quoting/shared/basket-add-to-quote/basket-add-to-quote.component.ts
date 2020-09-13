@@ -1,4 +1,6 @@
+import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -19,7 +21,12 @@ import { QuotingFacade } from '../../facades/quoting.facade';
 export class BasketAddToQuoteComponent implements OnInit {
   isLoggedIn$: Observable<boolean>;
 
-  constructor(private quotingFacade: QuotingFacade, private accountFacade: AccountFacade) {}
+  constructor(
+    private quotingFacade: QuotingFacade,
+    private accountFacade: AccountFacade,
+    private location: Location,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.isLoggedIn$ = this.accountFacade.isLoggedIn$;
@@ -27,5 +34,9 @@ export class BasketAddToQuoteComponent implements OnInit {
 
   addToQuote() {
     this.quotingFacade.createQuoteRequestFromBasket();
+  }
+
+  login() {
+    this.router.navigate(['/login'], { queryParams: { messageKey: 'quotes', returnUrl: this.location.path() } });
   }
 }
