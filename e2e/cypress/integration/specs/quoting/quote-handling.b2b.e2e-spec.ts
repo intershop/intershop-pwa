@@ -95,7 +95,7 @@ describe('Quote Handling', () => {
     });
   });
 
-  it('user copy quote from account quote request detail page and logs out', () => {
+  it('user submits quote from account quote request detail page and logs out', () => {
     at(MyAccountPage, page => page.header.gotoCategoryPage(_.catalog));
     at(CategoryPage, page => page.gotoSubCategory(_.categoryId));
     at(FamilyPage, page => page.productList.addProductToQuoteRequest(_.product.sku));
@@ -108,8 +108,6 @@ describe('Quote Handling', () => {
       });
     });
     at(QuoteDetailPage, page => {
-      page.copyQuoteRequest();
-      page.quoteState.should('have.text', 'New');
       page.header.logout();
     });
     at(HomePage);
