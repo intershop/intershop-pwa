@@ -104,7 +104,9 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
     if (c.paymentMethods) {
       // Enabling checkout submit button
-      (document.getElementById('checkoutBtn') as HTMLInputElement).disabled = false;
+      if (document.getElementById('checkoutBtn') as HTMLInputElement) {
+        (document.getElementById('checkoutBtn') as HTMLInputElement).disabled = false;
+      }
       // copy objects for runtime checks because formly modifies them, TODO: refactor
       this.filteredPaymentMethods = this.paymentMethods && this.paymentMethods.map(x => JSON.parse(JSON.stringify(x)));
     }
