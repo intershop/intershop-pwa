@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
+import { anything, instance, mock, verify } from 'ts-mockito';
 
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
@@ -44,5 +44,43 @@ describe('Hierarchies Create Group Page Component', () => {
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(fb).toBeTruthy();
+  });
+
+  it('should display form interactions after creation', () => {
+    fixture.detectChanges();
+
+    expect(element.querySelector('ish-loading')).toBeFalsy();
+    expect(element.querySelector('[data-testing-id="create-group-cancel"]').textContent).toMatchInlineSnapshot(
+      `" account.cancel.link "`
+    );
+    expect(element.querySelector('[data-testing-id="create-group-submit"]').textContent).toMatchInlineSnapshot(
+      `" account.organization.hierarchies.groups.new.button.label "`
+    );
+  });
+
+  it('should submit a valid form when the user fills all required fields', () => {
+    fixture.detectChanges();
+
+    component.form = fb.group({
+      org_group: fb.group({
+        name: ['Test', [Validators.required]],
+        parent: ['Organization', [Validators.required]],
+        description: [''],
+      }),
+    });
+
+    expect(component.formDisabled).toBeFalse();
+    component.submitForm();
+    expect(component.formDisabled).toBeFalse();
+
+    verify(organizationManagementFacade.createAndAddGroup(anything(), anything())).once();
+  });
+
+  it('should disable submit button when the user submits an invalid form', () => {
+    fixture.detectChanges();
+
+    expect(component.formDisabled).toBeFalse();
+    component.submitForm();
+    expect(component.formDisabled).toBeTrue();
   });
 });
