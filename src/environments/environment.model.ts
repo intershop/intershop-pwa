@@ -1,3 +1,4 @@
+import { CookieConsentOptions } from 'ish-core/models/cookies/cookies.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
 
@@ -84,6 +85,10 @@ export interface Environment {
   // format: 'themeName|themeColor' e.g. theme: 'blue|688dc3',
   theme?: string;
 
+  // cookie consent options
+  cookieConsentOptions?: CookieConsentOptions;
+  cookieConsentVersion?: number;
+
   // client-side configuration for identity providers
   identityProviders?: {
     [name: string]: {
@@ -123,4 +128,23 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
     { lang: 'de_DE', currency: 'EUR', value: 'de', displayName: 'German', displayLong: 'German (Germany)' },
     { lang: 'fr_FR', currency: 'EUR', value: 'fr', displayName: 'French', displayLong: 'French (France)' },
   ],
+  cookieConsentOptions: {
+    options: {
+      required: {
+        name: 'cookie.consent.option.required.name',
+        description: 'cookie.consent.option.required.description',
+        required: true,
+      },
+      functional: {
+        name: 'cookie.consent.option.functional.name',
+        description: 'cookie.consent.option.functional.description',
+      },
+      tracking: {
+        name: 'cookie.consent.option.tracking.name',
+        description: 'cookie.consent.option.tracking.description',
+      },
+    },
+    allowedCookies: ['cookieConsent', 'apiToken'],
+  },
+  cookieConsentVersion: 1,
 };

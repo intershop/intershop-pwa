@@ -1,0 +1,41 @@
+<div class="cookies-modal">
+  <div class="modal-header">
+    <h2>{{ 'cookie.preferences.heading' | translate }}</h2>
+    <button
+      type="button"
+      class="close"
+      [title]="'dialog.close.text' | translate"
+      [attr.aria-label]="'dialog.close.text' | translate"
+      (click)="hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div *ngFor="let option of cookieConsentOptions?.options | keyvalue: unsorted" class="cookie-option">
+      <label>
+        <input
+          type="checkbox"
+          [checked]="option.value.required || cookieConsentSettings?.enabledOptions.includes(option.key)"
+          [disabled]="option.value.required"
+          (change)="selectedIds[option.key] = !selectedIds[option.key]"
+        />
+        <span>{{ option.value.name | translate }}</span>
+      </label>
+      <p>{{ option.value.description | translate }}</p>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="acceptAll()">
+      {{ 'cookies.modal.accept_all' | translate }}
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="submit()">
+      {{ 'cookies.modal.save' | translate }}
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="hide()">
+      {{ 'cookies.modal.cancel' | translate }}
+    </button>
+  </div>
+</div>

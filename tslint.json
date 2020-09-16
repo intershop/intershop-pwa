@@ -335,7 +335,7 @@
         {
           "import": "CookiesService",
           "from": "ngx-utils-cookies-port",
-          "filePattern": "^((?!src/app/core/services/cookies/cookies\\.service(\\.spec|)\\.ts).)*$",
+          "filePattern": "^((?!src/app/core/utils/cookies/cookies\\.service(\\.spec|)\\.ts).)*$",
           "message": "Use CookiesService from ish-core instead."
         },
         {
@@ -542,7 +542,7 @@
           "^.*/src/app/core/routing/([a-z0-9-]+)/\\1\\-route\\.pipe\\.ts",
           // extra artifacts
           "^.*(/src/app/core|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/(service)s/([a-z][a-z0-9-]+)/\\3(\\-[a-z0-9-]+|)\\.\\2[a-z0-9-\\.]*\\.ts",
-          "^.*(/src/app/core|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/(interceptor|guard|directive|pipe)s/[a-z][a-z0-9-]+.\\2\\.ts",
+          "^.*(/src/app/core|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/(interceptor|guard|directive|pipe|animation)s/[a-z][a-z0-9-]+.\\2\\.ts",
           "^.*projects/[a-z][a-z0-9-]+/src/app/exports/index.ts",
           // models
           "^.*(/src/app/core|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/models/([a-z][a-z0-9-]+)/\\2\\.(pipe|helper|interface|mapper|types)\\.ts$",
@@ -560,10 +560,10 @@
           // allow only app related content directly in src/app
           "^.*/src/app/app[\\w\\.\\-]+\\.ts$",
           // application shell
-          "^.*/src/app/shell/(header|footer)/([a-z][a-z0-9-]+)/\\2\\.component\\.ts$",
+          "^.*/src/app/shell/(header|footer|application)/([a-z][a-z0-9-]+)/\\2\\.component\\.ts$",
           "^.*/src/app/shell/[a-z][a-z0-9-]+/configurations/.*\\.ts$",
           // specific (lazy loaded) page modules
-          "^.*(/src/app|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/pages/([a-z][a-z0-9-]+)/\\2-page\\.(module|component)\\.ts$",
+          "^.*(/src/app|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/pages/([a-z][a-z0-9-]+)/\\2-page\\.(module|component|guard)\\.ts$",
           "^.*(/src/app|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/pages/[a-z][a-z0-9-]+/([a-z][a-z0-9-]+)/\\2\\.component\\.ts$",
           "^.*/src/app/extensions/([a-z][a-z0-9-]+)/pages/\\1(.*)-routing\\.module\\.ts$",
           "^.*/projects/([a-z][a-z0-9-]+)/src/app/pages/\\1-routing\\.module\\.ts$",
@@ -642,6 +642,10 @@
           {
             "name": "^([A-Z].*)Directive$",
             "file": ".*/directives/<kebab>\\.directive\\.ts$"
+          },
+          {
+            "name": "^([A-Z].*)PageGuard$",
+            "file": ".*/pages/<kebab>/<kebab>-page\\.guard\\.ts$"
           },
           {
             "name": "^([A-Z].*)Guard$",

@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, TransferState } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
 import { CoreModule } from 'ish-core/core.module';
+
+import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
 import { QuickorderRoutingModule } from './extensions/quickorder/pages/quickorder-routing.module';
@@ -27,4 +30,10 @@ import { ShellModule } from './shell/shell.module';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(transferState: TransferState) {
+    if (!transferState.hasKey<number>(COOKIE_CONSENT_VERSION)) {
+      transferState.set(COOKIE_CONSENT_VERSION, environment.cookieConsentVersion);
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import { InjectionToken } from '@angular/core';
 
+import { CookieConsentOptions } from 'ish-core/models/cookies/cookies.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 
 /**
@@ -49,3 +50,8 @@ export const EXTRALARGE_BREAKPOINT_WIDTH = new InjectionToken<number>('extralarg
  * The configured theme for the application (or 'default' if not configured)
  */
 export const THEME = new InjectionToken<string>('theme');
+
+/**
+ * the configured cookie consent options for the application
+ */
+export const COOKIE_CONSENT_OPTIONS = new InjectionToken<CookieConsentOptions>('cookieConsentOptions');

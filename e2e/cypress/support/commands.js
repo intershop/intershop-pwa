@@ -45,7 +45,6 @@ Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
 // reset cookies for each spec
 before(() => {
   cy.clearCookie('apiToken');
-  cy.setCookie('cookieLawSeen', 'true');
 });
 
 beforeEach(() => {
@@ -64,7 +63,7 @@ beforeEach(() => {
 
 // keep certain cookies
 Cypress.Cookies.defaults({
-  whitelist: ['cookieLawSeen', 'apiToken'],
+  whitelist: ['apiToken'],
 });
 
 Cypress.on('uncaught:exception', (err, runnable) => {
