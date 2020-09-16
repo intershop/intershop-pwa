@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Angulartics2Module } from 'angulartics2';
 import { Angulartics2GoogleTagManager } from 'angulartics2/gtm';
-import { filter, map, take, withLatestFrom } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 
 import { FeatureToggleModule, FeatureToggleService } from 'ish-core/feature-toggle.module';
-import { CookiesService } from 'ish-core/services/cookies/cookies.service';
 import { getGTMToken } from 'ish-core/store/core/configuration';
+import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 
 @NgModule({
   imports: [Angulartics2Module.forRoot(), FeatureToggleModule],
@@ -29,16 +29,17 @@ export class TrackingModule {
     store: Store,
     cookiesService: CookiesService
   ) {
-    cookiesService.cookieLawSeen$
-      .pipe(
-        withLatestFrom(store.pipe(select(getGTMToken))),
-        filter(([accepted, gtmToken]) => accepted && !!gtmToken && featureToggleService.enabled('tracking')),
-        take(1),
-        map(([, gtmToken]) => gtmToken)
-      )
-      .subscribe(gtmToken => {
-        this.gtm(window, 'dataLayer', gtmToken);
-        angulartics2GoogleTagManager.startTracking();
-      });
+    if (cookiesService.cookieConsentFor('tracking')) {
+      store
+        .pipe(
+          select(getGTMToken),
+          filter(gtmToken => gtmToken && featureToggleService.enabled('tracking')),
+          take(1)
+        )
+        .subscribe(gtmToken => {
+          this.gtm(window, 'dataLayer', gtmToken);
+          angulartics2GoogleTagManager.startTracking();
+        });
+    }
   }
 }

@@ -137,6 +137,7 @@ const routes: Routes = [
       breadcrumbData: [{ key: 'helpdesk.contact_us.link' }],
     },
   },
+  { path: 'cookies', loadChildren: () => import('./cookies/cookies-page.module').then(m => m.CookiesPageModule) },
 ];
 
 @NgModule({

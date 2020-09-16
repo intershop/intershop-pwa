@@ -18,6 +18,7 @@ import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-expo
 import { TactonExportsModule } from '../extensions/tacton/exports/tacton-exports.module';
 import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
 
+import { CookiesBannerComponent } from './application/cookies-banner/cookies-banner.component';
 import { FooterComponent } from './footer/footer/footer.component';
 import { HeaderCheckoutComponent } from './header/header-checkout/header-checkout.component';
 import { HeaderDefaultComponent } from './header/header-default/header-default.component';
@@ -43,7 +44,13 @@ const importExportModules = [
   WishlistsExportsModule,
 ];
 
-const exportedComponents = [FooterComponent, HeaderComponent, ProductImageComponent, SearchBoxComponent];
+const exportedComponents = [
+  CookiesBannerComponent,
+  FooterComponent,
+  HeaderComponent,
+  ProductImageComponent,
+  SearchBoxComponent,
+];
 
 @NgModule({
   imports: [
@@ -61,6 +68,7 @@ const exportedComponents = [FooterComponent, HeaderComponent, ProductImageCompon
   ],
   declarations: [
     ...exportedComponents,
+    CookiesBannerComponent,
     HeaderCheckoutComponent,
     HeaderDefaultComponent,
     HeaderNavigationComponent,

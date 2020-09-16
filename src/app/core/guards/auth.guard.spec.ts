@@ -6,10 +6,10 @@ import { Store } from '@ngrx/store';
 import { instance, mock } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { CookiesService } from 'ish-core/services/cookies/cookies.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
+import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 
 import { AuthGuard } from './auth.guard';
 

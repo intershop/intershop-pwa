@@ -27,6 +27,7 @@ import { updatePasswordErrorHandler } from './utils/http-error/update-password.e
     { provide: injectionKeys.LARGE_BREAKPOINT_WIDTH, useValue: environment.largeBreakpointWidth },
     { provide: injectionKeys.EXTRALARGE_BREAKPOINT_WIDTH, useValue: environment.extralargeBreakpointWidth },
     { provide: injectionKeys.THEME, useValue: environment.theme },
+    { provide: injectionKeys.COOKIE_CONSENT_OPTIONS, useValue: environment.cookieConsentOptions },
     { provide: SPECIAL_HTTP_ERROR_HANDLER, useValue: updatePasswordErrorHandler, multi: true },
     { provide: SPECIAL_HTTP_ERROR_HANDLER, useClass: LoginUserErrorHandler, multi: true },
     { provide: SPECIAL_HTTP_ERROR_HANDLER, useValue: requestReminderErrorHandler, multi: true },

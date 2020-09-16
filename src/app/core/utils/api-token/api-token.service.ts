@@ -24,10 +24,10 @@ import {
 } from 'rxjs/operators';
 
 import { ApiService } from 'ish-core/services/api/api.service';
-import { CookiesService } from 'ish-core/services/cookies/cookies.service';
 import { getCurrentBasket, getCurrentBasketId, loadBasket, loadBasketByAPIToken } from 'ish-core/store/customer/basket';
 import { getOrder, getSelectedOrderId, loadOrderByAPIToken } from 'ish-core/store/customer/orders';
 import { getLoggedInUser, getUserAuthorized, loadUserByAPIToken } from 'ish-core/store/customer/user';
+import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
 type ApiTokenCookieType = 'user' | 'basket' | 'order';

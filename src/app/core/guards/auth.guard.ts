@@ -13,8 +13,8 @@ import { Store, select } from '@ngrx/store';
 import { Observable, iif, of, race, timer } from 'rxjs';
 import { mapTo, take } from 'rxjs/operators';
 
-import { CookiesService } from 'ish-core/services/cookies/cookies.service';
 import { getUserAuthorized } from 'ish-core/store/customer/user';
+import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 /**

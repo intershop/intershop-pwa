@@ -7,6 +7,13 @@ kb_sync_latest_only
 
 # Migrations
 
+## 0.24 to 0.25
+
+We replaced the simple [ngx-cookie-banner](https://github.com/exportarts/ngx-cookie-banner) cookie banner with an own implementation that provides the means to configure and set more fine grained cookie consent options.
+A basic configuration is already provided.
+The cookie consent configuration and usage is documented in our [Cookie Consent Guide](./cookie-consent.md).
+With this change it is necessary to adapt all uses of the `cookiesService.cookieLawSeen$` observable with the new synchronous method - `cookiesService.cookieConsentFor('tracking')` - provided to check for the required cookie consent.
+
 ## 0.23 to 0.24
 
 We introduced a [localization file clean up script](../concepts/localization.md#localization-file-clean-up-process) that removes all unused localization keys from the localization files and sorts the remaining keys.
