@@ -33,11 +33,7 @@ jobs:
       - run: npm run check
 
       - name: Check No Changes
-        run: git diff-files --quiet
-
-      - name: Display Changes
-        if: failure()
-        run: git diff
+        run: git diff --exit-code --raw -p --stat
 
   Local:
     runs-on: windows-latest
