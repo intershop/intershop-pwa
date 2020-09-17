@@ -47,34 +47,21 @@ export class HierarchiesPageComponent implements OnInit {
   }
 
   mapToTreeItems(nodeTree: NodeTree, rootIds: string[]): TreeItem[] {
-    const ret = new Array<TreeItem>();
-    rootIds
+    return rootIds
       .map(rootId => nodeTree.nodes[rootId])
-      .forEach(root => {
-        const bla = this.mapTreeViewItem(root);
-        this.traverse(nodeTree, root, bla);
-        ret.push(bla);
-      });
-    return ret;
+      .map(root => this.traverse(nodeTree, root, this.mapTreeViewItem(root)));
   }
 
-  traverse(nodeTree: NodeTree, parent: Node, viewItem: TreeItem) {
+  traverse(nodeTree: NodeTree, parent: Node, viewItem: TreeItem): TreeItem {
     if (!nodeTree.edges[parent.id]) {
-      return;
+      return viewItem;
     }
-    nodeTree.edges[parent.id]
+    return nodeTree.edges[parent.id]
       .map(id => nodeTree.nodes[id])
-      .map(node => {
-        const bla = this.mapTreeViewItem(node);
-        this.traverse(nodeTree, node, bla);
-        return bla;
-      })
-      .reduce((prev, current) => this.merge(prev, current), viewItem);
-  }
-
-  merge(prev: TreeItem, current: TreeItem): TreeItem {
-    const children = prev.children ?? new Array<TreeviewItem>(1);
-    children.push(current);
-    return prev;
+      .map(node => this.traverse(nodeTree, node, this.mapTreeViewItem(node)))
+      .reduce((prev, current) => {
+        prev.children.push(current);
+        return prev;
+      }, viewItem);
   }
 }
