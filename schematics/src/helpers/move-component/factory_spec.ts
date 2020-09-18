@@ -111,7 +111,7 @@ export class DummyTwoComponent {}
     expect(appTree.readContent('/src/app/app.component.html')).toMatchInlineSnapshot(`"<ish-foo></ish-foo>"`);
 
     expect(appTree.readContent('/src/app/foo/foo.component.spec.ts')).toMatchInlineSnapshot(`
-      "import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+      "import { ComponentFixture, TestBed } from '@angular/core/testing';
 
       import { FooComponent } from './foo.component';
 
@@ -120,11 +120,11 @@ export class DummyTwoComponent {}
         let fixture: ComponentFixture<FooComponent>;
         let element: HTMLElement;
 
-        beforeEach(async(() => {
-          TestBed.configureTestingModule({
+        beforeEach(async () => {
+          await TestBed.configureTestingModule({
             declarations: [FooComponent]
           }).compileComponents();
-        }));
+        });
 
         beforeEach(() => {
           fixture = TestBed.createComponent(FooComponent);
