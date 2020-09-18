@@ -4,7 +4,7 @@ import {
   ResourceIdentifierListDocument,
 } from '../resource-identifier/resource-identifier.interface';
 
-export interface OrganizationData extends ResourceIdentifierData {
+interface OrganizationData extends ResourceIdentifierData {
   attributes?: ResourceAttributeData;
   relationships?: OrganizationRelationships;
 }
