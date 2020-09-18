@@ -21,7 +21,7 @@ export interface OrganizationHierarchiesState {
   groups: NodeTree;
 }
 
-export const initialState: OrganizationHierarchiesState = {
+const initialState: OrganizationHierarchiesState = {
   loading: false,
   error: undefined,
   groups: NodeHelper.empty(),

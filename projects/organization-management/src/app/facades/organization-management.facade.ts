@@ -43,7 +43,6 @@ import {
 export class OrganizationManagementFacade {
   constructor(private store: Store) {}
 
-  customer$ = this.store.pipe(select(getLoggedInCustomer));
   usersError$ = this.store.pipe(select(getUsersError));
   usersLoading$ = this.store.pipe(select(getUsersLoading));
   selectedUser$ = this.store.pipe(select(getSelectedUser));
@@ -104,7 +103,8 @@ export class OrganizationManagementFacade {
 
   // private initialize = once(() => this.store.dispatch(loadGroups()));
   groups$(): Observable<NodeTree> {
-    return this.customer$.pipe(
+    const customer$ = this.store.pipe(select(getLoggedInCustomer));
+    return customer$.pipe(
       whenTruthy(),
       take(1),
       tap(() => this.store.dispatch(loadGroups())),
