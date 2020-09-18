@@ -9,7 +9,7 @@
   },
   "scripts": {
     "prebuild": "npm i --no-save json-schema-to-typescript && npm run generate:schemas",
-    "build": "tsc",
+    "build": "npm i --no-save typescript-transpile-only && tsc-transpile-only",
     "test": "../node_modules/.bin/jest -i",
     "generate:schemas": "node scripts/generate-schema-defs.js"
   },
