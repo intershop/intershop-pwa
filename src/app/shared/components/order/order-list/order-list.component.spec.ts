@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
@@ -24,10 +24,10 @@ describe('Order List Component', () => {
     { id: '00124', documentNo: '124', totals: {} },
   ] as Order[];
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     accountFacade = mock(AccountFacade);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         MockComponent(AddressComponent),
         MockComponent(LoadingComponent),
@@ -38,7 +38,7 @@ describe('Order List Component', () => {
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
       imports: [RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(OrderListComponent);

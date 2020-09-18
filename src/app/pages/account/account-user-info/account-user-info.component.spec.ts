@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -14,16 +14,16 @@ describe('Account User Info Component', () => {
   let element: HTMLElement;
   let accountFacade: AccountFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     accountFacade = mock(AccountFacade);
     when(accountFacade.customer$).thenReturn(EMPTY);
     when(accountFacade.roles$).thenReturn(EMPTY);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [AccountUserInfoComponent],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountUserInfoComponent);

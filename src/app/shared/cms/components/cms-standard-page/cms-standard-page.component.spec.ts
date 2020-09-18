@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
@@ -14,11 +14,11 @@ describe('Cms Standard Page Component', () => {
   let pageletView: ContentPageletView;
   let pagelet: ContentPagelet;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [CMSStandardPageComponent, MockComponent(ContentSlotComponent)],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CMSStandardPageComponent);

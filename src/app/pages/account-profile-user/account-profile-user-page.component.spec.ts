@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -15,11 +15,11 @@ describe('Account Profile User Page Component', () => {
   let fixture: ComponentFixture<AccountProfileUserPageComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const appFacade = mock(AppFacade);
     when(appFacade.currentLocale$).thenReturn(EMPTY);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         AccountProfileUserPageComponent,
         MockComponent(AccountProfileUserComponent),
@@ -30,7 +30,7 @@ describe('Account Profile User Page Component', () => {
         { provide: AppFacade, useFactory: () => instance(appFacade) },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountProfileUserPageComponent);

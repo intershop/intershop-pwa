@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
@@ -26,13 +26,13 @@ describe('Promotions Service', () => {
     disableMessages: false,
   } as Promotion;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     apiServiceMock = mock(ApiService);
     TestBed.configureTestingModule({
       providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }],
     });
     promotionsService = TestBed.inject(PromotionsService);
-  }));
+  });
 
   it('should be created', () => {
     expect(promotionsService).toBeTruthy();

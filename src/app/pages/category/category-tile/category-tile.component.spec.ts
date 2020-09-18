@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -36,18 +36,18 @@ describe('Category Tile Component', () => {
     ],
   } as Category;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const shoppingFacade = mock(ShoppingFacade);
     when(shoppingFacade.category$(anything())).thenReturn(
       of(createCategoryView(categoryTree([category]), category.uniqueId))
     );
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [CategoryTileComponent, MockComponent(CategoryImageComponent), MockPipe(CategoryRoutePipe)],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CategoryTileComponent);

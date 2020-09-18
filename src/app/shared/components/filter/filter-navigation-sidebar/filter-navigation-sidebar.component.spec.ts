@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
@@ -17,8 +17,8 @@ describe('Filter Navigation Sidebar Component', () => {
   let fixture: ComponentFixture<FilterNavigationSidebarComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         FilterNavigationSidebarComponent,
         MockComponent(FilterCheckboxComponent),
@@ -28,7 +28,7 @@ describe('Filter Navigation Sidebar Component', () => {
         MockComponent(FilterTextComponent),
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FilterNavigationSidebarComponent);

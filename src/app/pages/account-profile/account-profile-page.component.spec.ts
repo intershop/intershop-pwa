@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -26,17 +26,17 @@ describe('Account Profile Page Component', () => {
     title: '',
   } as User;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const accountFacade = mock(AccountFacade);
     when(accountFacade.user$).thenReturn(of(user));
     when(accountFacade.customer$).thenReturn(of(customer));
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [AccountProfilePageComponent, MockComponent(AccountProfileComponent)],
       imports: [TranslateModule.forRoot()],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountProfilePageComponent);

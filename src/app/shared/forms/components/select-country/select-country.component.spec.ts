@@ -1,5 +1,5 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -14,33 +14,33 @@ describe('Select Country Component', () => {
   let fixture: ComponentFixture<SelectCountryComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         MockComponent(FormControlFeedbackComponent),
         MockDirective(ShowFormFeedbackDirective),
         SelectCountryComponent,
       ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(SelectCountryComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
+    }).compileComponents();
+  });
 
-        const form = new FormGroup({
-          countryCode: new FormControl(),
-          state: new FormControl('Region1', [Validators.required]),
-        });
-        component.form = form;
-        component.countries = [
-          { countryCode: 'BG', name: 'Bulgaria' },
-          { countryCode: 'DE', name: 'Germany' },
-          { countryCode: 'FR', name: 'France' },
-        ];
-      });
-  }));
+  beforeEach(() => {
+    fixture = TestBed.createComponent(SelectCountryComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+
+    const form = new FormGroup({
+      countryCode: new FormControl(),
+      state: new FormControl('Region1', [Validators.required]),
+    });
+    component.form = form;
+    component.countries = [
+      { countryCode: 'BG', name: 'Bulgaria' },
+      { countryCode: 'DE', name: 'Germany' },
+      { countryCode: 'FR', name: 'France' },
+    ];
+  });
 
   it('should be created', () => {
     expect(component).toBeTruthy();

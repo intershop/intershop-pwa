@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { Product } from 'ish-core/models/product/product.model';
@@ -11,7 +11,7 @@ describe('Product Image Component', () => {
   let fixture: ComponentFixture<ProductImageComponent>;
   let product: Product;
   let translate: TranslateService;
-  beforeEach(async(() => {
+  beforeEach(async () => {
     product = { sku: 'sku' } as Product;
     product.name = 'Lenco';
     product.images = [
@@ -46,11 +46,11 @@ describe('Product Image Component', () => {
         primaryImage: true,
       },
     ];
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [ProductImageComponent],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     translate = TestBed.inject(TranslateService);

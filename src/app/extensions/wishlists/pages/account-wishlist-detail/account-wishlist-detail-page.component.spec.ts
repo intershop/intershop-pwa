@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -20,8 +20,8 @@ describe('Account Wishlist Detail Page Component', () => {
   let fixture: ComponentFixture<AccountWishlistDetailPageComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [NgbPopoverModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         AccountWishlistDetailPageComponent,
@@ -33,7 +33,7 @@ describe('Account Wishlist Detail Page Component', () => {
       ],
       providers: [{ provide: WishlistsFacade, useFactory: () => instance(mock(WishlistsFacade)) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountWishlistDetailPageComponent);

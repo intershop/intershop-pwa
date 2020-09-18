@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
@@ -12,8 +12,8 @@ describe('Promotion Details Component', () => {
   let fixture: ComponentFixture<PromotionDetailsComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         MockComponent(ModalDialogLinkComponent),
         MockDirective(ServerHtmlDirective),
@@ -21,7 +21,7 @@ describe('Promotion Details Component', () => {
       ],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PromotionDetailsComponent);

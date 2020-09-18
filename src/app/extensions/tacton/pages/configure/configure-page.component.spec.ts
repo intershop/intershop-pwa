@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
@@ -24,11 +24,11 @@ describe('Configure Page Component', () => {
   let fixture: ComponentFixture<ConfigurePageComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const tactonFacade = mock(TactonFacade);
     when(tactonFacade.conflicts$).thenReturn(EMPTY);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         ConfigurePageComponent,
@@ -46,7 +46,7 @@ describe('Configure Page Component', () => {
         { provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ConfigurePageComponent);

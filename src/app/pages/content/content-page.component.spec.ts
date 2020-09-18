@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
@@ -29,12 +29,12 @@ describe('Content Page Component', () => {
     pageletIDs: ['pid', 'cmp'],
   };
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     cmsFacade = mock(cmsFacade);
     when(cmsFacade.contentPage$).thenReturn(EMPTY);
     when(cmsFacade.contentPageLoading$).thenReturn(EMPTY);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         ContentPageComponent,
         MockComponent(BreadcrumbComponent),
@@ -44,7 +44,7 @@ describe('Content Page Component', () => {
       imports: [RouterTestingModule],
       providers: [ContentPageComponent, { provide: CMSFacade, useFactory: () => instance(cmsFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ContentPageComponent);

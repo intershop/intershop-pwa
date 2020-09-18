@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
@@ -25,11 +25,11 @@ describe('Checkout Address Component', () => {
   let fixture: ComponentFixture<CheckoutAddressComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     @Component({ template: 'dummy' })
     class DummyComponent {}
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         CheckoutAddressComponent,
         DummyComponent,
@@ -50,7 +50,7 @@ describe('Checkout Address Component', () => {
         TranslateModule.forRoot(),
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutAddressComponent);

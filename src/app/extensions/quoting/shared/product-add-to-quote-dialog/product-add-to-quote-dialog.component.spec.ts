@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -28,12 +28,12 @@ describe('Product Add To Quote Dialog Component', () => {
   let messageFacade: MessageFacade;
   let accountFacade: AccountFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     quotingFacade = mock(QuotingFacade);
     messageFacade = mock(MessageFacade);
     accountFacade = mock(AccountFacade);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(InputComponent),
@@ -51,7 +51,7 @@ describe('Product Add To Quote Dialog Component', () => {
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductAddToQuoteDialogComponent);

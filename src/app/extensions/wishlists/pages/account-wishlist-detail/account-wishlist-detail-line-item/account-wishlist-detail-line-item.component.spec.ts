@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
@@ -28,8 +28,8 @@ describe('Account Wishlist Detail Line Item Component', () => {
   let fixture: ComponentFixture<AccountWishlistDetailLineItemComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         AccountWishlistDetailLineItemComponent,
         MockComponent(FaIconComponent),
@@ -51,7 +51,7 @@ describe('Account Wishlist Detail Line Item Component', () => {
         { provide: WishlistsFacade, useFactory: () => instance(mock(WishlistsFacade)) },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountWishlistDetailLineItemComponent);

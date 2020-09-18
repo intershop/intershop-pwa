@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -18,11 +18,11 @@ describe('Wishlist Widget Component', () => {
   let fixture: ComponentFixture<WishlistWidgetComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const wishlistFacadeMock = mock(WishlistsFacade);
     when(wishlistFacadeMock.allWishlistsItemsSkus$).thenReturn(EMPTY);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [MockComponent(ProductItemComponent), WishlistWidgetComponent],
       imports: [RouterTestingModule, SwiperModule, TranslateModule.forRoot()],
       providers: [
@@ -30,7 +30,7 @@ describe('Wishlist Widget Component', () => {
         { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WishlistWidgetComponent);

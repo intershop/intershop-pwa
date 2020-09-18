@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -15,14 +15,14 @@ describe('Content Slot Component', () => {
   let element: HTMLElement;
   let sfeAdapterMock: SfeAdapterService;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     sfeAdapterMock = mock(SfeAdapterService);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [ContentSlotComponent, MockComponent(ContentPageletComponent)],
       providers: [{ provide: SfeAdapterService, useValue: instance(sfeAdapterMock) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ContentSlotComponent);

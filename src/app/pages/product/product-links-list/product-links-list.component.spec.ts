@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
@@ -12,12 +12,12 @@ describe('Product Links List Component', () => {
   let fixture: ComponentFixture<ProductLinksListComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [MockComponent(ProductItemComponent), ProductLinksListComponent],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     const productLink = { productSKUs: ['sku'], categoryIds: ['catID'] } as ProductLinkView;

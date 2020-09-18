@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
@@ -25,13 +25,13 @@ describe('Checkout Address Anonymous Component', () => {
   let fb: FormBuilder;
   let checkoutFacade: CheckoutFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     @Component({ template: 'dummy' })
     class DummyComponent {}
 
     checkoutFacade = mock(CheckoutFacade);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         CheckoutAddressAnonymousComponent,
         DummyComponent,
@@ -52,7 +52,7 @@ describe('Checkout Address Anonymous Component', () => {
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutAddressAnonymousComponent);
@@ -110,16 +110,16 @@ describe('Checkout Address Anonymous Component', () => {
     expect(element.querySelector('ish-error-message')).toBeTruthy();
   });
 
-  it('should set submitted flag if submit is clicked and form is not valid', async(() => {
+  it('should set submitted flag if submit is clicked and form is not valid', async () => {
     component.form = new FormGroup({
       email: new FormControl('', Validators.required),
     });
     expect(component.submitted).toBeFalsy();
     component.submitAddressForm();
-    fixture.whenStable().then(() => {
-      expect(component.submitted).toBeTruthy();
-    });
-  }));
+    await fixture.whenStable();
+
+    expect(component.submitted).toBeTruthy();
+  });
 
   it('should NOT create address for invalid form', () => {
     component.form = new FormGroup({

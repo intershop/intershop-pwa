@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
@@ -28,15 +28,15 @@ describe('Select Wishlist Modal Component', () => {
     public: false,
   };
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     wishlistFacadeMock = mock(WishlistsFacade);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [MockComponent(InputComponent), MockDirective(ServerHtmlDirective), SelectWishlistModalComponent],
       imports: [NgbModalModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SelectWishlistModalComponent);

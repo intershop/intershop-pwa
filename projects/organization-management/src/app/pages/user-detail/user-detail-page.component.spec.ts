@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
@@ -18,7 +18,7 @@ describe('User Detail Page Component', () => {
   let element: HTMLElement;
   let organizationManagementFacade: OrganizationManagementFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const user = {
       login: '1',
       firstName: 'Patricia',
@@ -37,12 +37,12 @@ describe('User Detail Page Component', () => {
       ] as B2bRole[])
     );
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [MockComponent(FaIconComponent), UserDetailPageComponent],
       providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UserDetailPageComponent);

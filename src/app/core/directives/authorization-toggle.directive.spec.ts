@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 
@@ -21,12 +21,12 @@ describe('Authorization Toggle Directive', () => {
   let fixture: ComponentFixture<TestComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [TestComponent],
       imports: [AuthorizationToggleModule.forTesting('DO_THIS')],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestComponent);

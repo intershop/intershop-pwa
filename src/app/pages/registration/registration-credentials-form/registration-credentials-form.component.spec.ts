@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -12,29 +12,29 @@ describe('Registration Credentials Form Component', () => {
   let fixture: ComponentFixture<RegistrationCredentialsFormComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [MockComponent(InputComponent), RegistrationCredentialsFormComponent],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(RegistrationCredentialsFormComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
+    }).compileComponents();
+  });
 
-        const parentForm = new FormGroup({});
-        const credentialsForm = new FormGroup({
-          login: new FormControl(''),
-          loginConfirmation: new FormControl(''),
-          password: new FormControl(''),
-          passwordConfirmation: new FormControl(''),
-          newsletter: new FormControl(''),
-        });
-        parentForm.addControl('credentials', credentialsForm);
-        component.parentForm = parentForm;
-      });
-  }));
+  beforeEach(() => {
+    fixture = TestBed.createComponent(RegistrationCredentialsFormComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+
+    const parentForm = new FormGroup({});
+    const credentialsForm = new FormGroup({
+      login: new FormControl(''),
+      loginConfirmation: new FormControl(''),
+      password: new FormControl(''),
+      passwordConfirmation: new FormControl(''),
+      newsletter: new FormControl(''),
+    });
+    parentForm.addControl('credentials', credentialsForm);
+    component.parentForm = parentForm;
+  });
 
   it('should be created', () => {
     expect(component).toBeTruthy();

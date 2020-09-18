@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
@@ -49,9 +49,9 @@ describe('Account Order Template List Component', () => {
     },
   ];
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     shoppingFacadeMock = mock(ShoppingFacade);
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         AccountOrderTemplateListComponent,
         MockComponent(FaIconComponent),
@@ -62,7 +62,7 @@ describe('Account Order Template List Component', () => {
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacadeMock) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountOrderTemplateListComponent);

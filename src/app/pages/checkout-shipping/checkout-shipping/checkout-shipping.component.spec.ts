@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
@@ -26,11 +26,11 @@ describe('Checkout Shipping Component', () => {
   let fixture: ComponentFixture<CheckoutShippingComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     @Component({ template: 'dummy' })
     class DummyComponent {}
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         CheckoutShippingComponent,
         DummyComponent,
@@ -52,7 +52,7 @@ describe('Checkout Shipping Component', () => {
         TranslateModule.forRoot(),
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutShippingComponent);

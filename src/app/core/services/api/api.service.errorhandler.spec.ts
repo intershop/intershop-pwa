@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Action, Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import * as using from 'jasmine-data-provider';
@@ -16,14 +16,14 @@ describe('Api Service Errorhandler', () => {
 
   let store$: Store;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       providers: [provideMockStore()],
     }).compileComponents();
 
     apiServiceErrorHandler = TestBed.inject(ApiServiceErrorHandler);
     store$ = spy(TestBed.inject(Store));
-  }));
+  });
 
   function dataProviderKnown() {
     return [

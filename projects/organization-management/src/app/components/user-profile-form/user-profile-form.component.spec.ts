@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -22,10 +22,10 @@ describe('User Profile Form Component', () => {
   let fb: FormBuilder;
   let appFacade: AppFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     appFacade = mock(AppFacade);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(ErrorMessageComponent),
@@ -35,7 +35,7 @@ describe('User Profile Form Component', () => {
       ],
       providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UserProfileFormComponent);

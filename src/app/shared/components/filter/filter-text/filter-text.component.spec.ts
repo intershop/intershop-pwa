@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -13,12 +13,12 @@ describe('Filter Text Component', () => {
   let fixture: ComponentFixture<FilterTextComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [FilterTextComponent, MockComponent(FaIconComponent), SanitizePipe],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     const filterElement = {

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -14,21 +14,21 @@ describe('Address Form Default Component', () => {
   let fixture: ComponentFixture<AddressFormDefaultComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [AddressFormDefaultComponent, MockComponent(InputComponent), MockComponent(SelectRegionComponent)],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(AddressFormDefaultComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
+    }).compileComponents();
+  });
 
-        const addressForm = AddressMockData.getAddressForm('BG');
-        component.addressForm = addressForm;
-      });
-  }));
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AddressFormDefaultComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+
+    const addressForm = AddressMockData.getAddressForm('BG');
+    component.addressForm = addressForm;
+  });
 
   it('should be created', () => {
     expect(component).toBeTruthy();

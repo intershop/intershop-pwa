@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Component } from '@angular/core';
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
@@ -27,12 +27,12 @@ describe('Inplace Edit Component', () => {
   let mousedown: (args: { target: unknown }) => void;
   let inplaceEdit: () => InplaceEditComponent;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [DummyComponent, InplaceEditComponent, MockComponent(FaIconComponent)],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DummyComponent);

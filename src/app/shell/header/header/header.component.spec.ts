@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -19,11 +19,11 @@ describe('Header Component', () => {
   let element: HTMLElement;
   let appFacade: AppFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     appFacade = mock(AppFacade);
     when(appFacade.headerType$).thenReturn(of(undefined));
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [FeatureToggleModule, RouterTestingModule],
       declarations: [
         HeaderComponent,
@@ -33,7 +33,7 @@ describe('Header Component', () => {
       ],
       providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderComponent);

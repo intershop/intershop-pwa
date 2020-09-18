@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
@@ -17,11 +17,11 @@ describe('Account Profile Company Page Component', () => {
   let element: HTMLElement;
   let accountFacade: AccountFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     accountFacade = mock(AccountFacade);
     when(accountFacade.customer$).thenReturn(EMPTY);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [
         AccountProfileCompanyPageComponent,
@@ -30,7 +30,7 @@ describe('Account Profile Company Page Component', () => {
       ],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountProfileCompanyPageComponent);

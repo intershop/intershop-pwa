@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -20,9 +20,9 @@ describe('Product List Component', () => {
   let element: HTMLElement;
   let shoppingFacade: ShoppingFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     shoppingFacade = mock(ShoppingFacade);
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(),
         ShoppingStoreModule.forTesting('productListing'),
@@ -31,7 +31,7 @@ describe('Product List Component', () => {
       declarations: [MockComponent(LoadingComponent), MockComponent(ProductItemComponent), ProductListComponent],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductListComponent);

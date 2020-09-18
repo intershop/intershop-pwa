@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -10,13 +10,13 @@ describe('Configuration Service', () => {
   let apiServiceMock: ApiService;
   let configurationService: ConfigurationService;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     apiServiceMock = mock(ApiService);
     TestBed.configureTestingModule({
       providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }],
     });
     configurationService = TestBed.inject(ConfigurationService);
-  }));
+  });
 
   it('should be created', () => {
     expect(configurationService).toBeTruthy();
