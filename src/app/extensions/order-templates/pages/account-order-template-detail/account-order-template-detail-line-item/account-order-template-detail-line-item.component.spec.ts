@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
@@ -30,8 +30,8 @@ describe('Account Order Template Detail Line Item Component', () => {
   let fixture: ComponentFixture<AccountOrderTemplateDetailLineItemComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         AccountOrderTemplateDetailLineItemComponent,
         MockComponent(CheckboxComponent),
@@ -55,7 +55,7 @@ describe('Account Order Template Detail Line Item Component', () => {
         { provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountOrderTemplateDetailLineItemComponent);

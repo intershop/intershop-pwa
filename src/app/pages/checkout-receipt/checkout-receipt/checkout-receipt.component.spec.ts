@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -19,8 +19,8 @@ describe('Checkout Receipt Component', () => {
   let fixture: ComponentFixture<CheckoutReceiptComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         CheckoutReceiptComponent,
         MockComponent(AddressComponent),
@@ -32,7 +32,7 @@ describe('Checkout Receipt Component', () => {
       ],
       imports: [RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutReceiptComponent);

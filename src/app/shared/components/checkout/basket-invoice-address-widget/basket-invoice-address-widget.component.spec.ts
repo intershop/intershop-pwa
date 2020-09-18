@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
@@ -25,7 +25,7 @@ describe('Basket Invoice Address Widget Component', () => {
   let checkoutFacade: CheckoutFacade;
   let accountFacade: AccountFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     checkoutFacade = mock(CheckoutFacade);
     when(checkoutFacade.basket$).thenReturn(EMPTY);
     when(checkoutFacade.basketInvoiceAddress$).thenReturn(EMPTY);
@@ -33,7 +33,7 @@ describe('Basket Invoice Address Widget Component', () => {
     accountFacade = mock(AccountFacade);
     when(accountFacade.addresses$()).thenReturn(EMPTY);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
         BasketInvoiceAddressWidgetComponent,
@@ -48,7 +48,7 @@ describe('Basket Invoice Address Widget Component', () => {
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BasketInvoiceAddressWidgetComponent);

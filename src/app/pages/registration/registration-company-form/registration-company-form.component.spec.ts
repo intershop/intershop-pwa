@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
@@ -10,11 +10,11 @@ describe('Registration Company Form Component', () => {
   let fixture: ComponentFixture<RegistrationCompanyFormComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [MockComponent(InputComponent), RegistrationCompanyFormComponent],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RegistrationCompanyFormComponent);

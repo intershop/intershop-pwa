@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -19,8 +19,8 @@ describe('Request Reminder Component', () => {
   let fixture: ComponentFixture<RequestReminderComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         MockComponent(ErrorMessageComponent),
         MockComponent(LoadingComponent),
@@ -32,7 +32,7 @@ describe('Request Reminder Component', () => {
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RequestReminderComponent);
@@ -46,8 +46,8 @@ describe('Request Reminder Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should render request reminder form on forgot-password request reminder page', async(() => {
+  it('should render request reminder form on forgot-password request reminder page', () => {
     fixture.detectChanges();
     expect(element.querySelector('ish-request-reminder-form')).toBeTruthy();
-  }));
+  });
 });

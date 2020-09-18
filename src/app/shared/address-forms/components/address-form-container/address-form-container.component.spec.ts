@@ -1,5 +1,5 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -26,7 +26,7 @@ describe('Address Form Container Component', () => {
   let accountFacade: AccountFacade;
   let appFacade: AppFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const addressFormFactoryMock = mock(AddressFormFactory);
     when(addressFormFactoryMock.getGroup(anything())).thenReturn(AddressMockData.getAddressForm('BG'));
 
@@ -35,7 +35,7 @@ describe('Address Form Container Component', () => {
     accountFacade = mock(AccountFacade);
     appFacade = mock(AppFacade);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [FeatureToggleModule.forTesting()],
       declarations: [AddressFormContainerComponent, MockComponent(AddressFormComponent)],
       providers: [
@@ -45,7 +45,7 @@ describe('Address Form Container Component', () => {
         { provide: AppFacade, useFactory: () => instance(appFacade) },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AddressFormContainerComponent);

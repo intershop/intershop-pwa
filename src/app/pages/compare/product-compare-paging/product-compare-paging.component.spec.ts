@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { ProductComparePagingComponent } from './product-compare-paging.component';
@@ -7,12 +7,12 @@ describe('Product Compare Paging Component', () => {
   let component: ProductComparePagingComponent;
   let fixture: ComponentFixture<ProductComparePagingComponent>;
   let element: HTMLElement;
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [ProductComparePagingComponent],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductComparePagingComponent);

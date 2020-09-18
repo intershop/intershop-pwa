@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import * as using from 'jasmine-data-provider';
 import { anything, spy, verify } from 'ts-mockito';
@@ -17,13 +17,13 @@ describe('Product Mapper', () => {
   let productMapper: ProductMapper;
   let imageMapper: ImageMapper;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideMockStore({ selectors: [{ selector: getICMBaseURL, value: 'http://www.example.org' }] })],
     });
     productMapper = TestBed.inject(ProductMapper);
     imageMapper = spy(TestBed.inject(ImageMapper));
-  }));
+  });
 
   describe('fromData', () => {
     it(`should return Product when getting a ProductData`, () => {

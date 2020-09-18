@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -20,11 +20,11 @@ describe('Update Password Component', () => {
   let fixture: ComponentFixture<UpdatePasswordComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const accountFacade = mock(AccountFacade);
     when(accountFacade.passwordReminderSuccess$).thenReturn(EMPTY);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         MockComponent(ErrorMessageComponent),
         MockComponent(LoadingComponent),
@@ -36,7 +36,7 @@ describe('Update Password Component', () => {
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UpdatePasswordComponent);
@@ -50,10 +50,10 @@ describe('Update Password Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should render update password form on forgot-password update password page', async(() => {
+  it('should render update password form on forgot-password update password page', () => {
     component.secureCode = 'abc';
     component.userID = 'a123';
     fixture.detectChanges();
     expect(element.querySelector('ish-update-password-form')).toBeTruthy();
-  }));
+  });
 });

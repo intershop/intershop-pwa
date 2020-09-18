@@ -1,5 +1,5 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -14,29 +14,29 @@ describe('Select Title Component', () => {
   let fixture: ComponentFixture<SelectTitleComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         MockComponent(FormControlFeedbackComponent),
         MockDirective(ShowFormFeedbackDirective),
         SelectTitleComponent,
       ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(SelectTitleComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
+    }).compileComponents();
+  });
 
-        const form = new FormGroup({
-          countryCode: new FormControl('BG'),
-          title: new FormControl(),
-        });
-        component.form = form;
-        component.titles = ['account.salutation.ms.text', 'account.salutation.mr.text', 'account.salutation.dr.text'];
-      });
-  }));
+  beforeEach(() => {
+    fixture = TestBed.createComponent(SelectTitleComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+
+    const form = new FormGroup({
+      countryCode: new FormControl('BG'),
+      title: new FormControl(),
+    });
+    component.form = form;
+    component.titles = ['account.salutation.ms.text', 'account.salutation.mr.text', 'account.salutation.dr.text'];
+  });
 
   it('should be created', () => {
     expect(component).toBeTruthy();

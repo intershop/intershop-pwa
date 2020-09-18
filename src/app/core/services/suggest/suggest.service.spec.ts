@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -11,14 +11,14 @@ describe('Suggest Service', () => {
   let apiService: ApiService;
   let suggestService: SuggestService;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     apiService = mock(ApiService);
     when(apiService.get(anything(), anything())).thenReturn(of<SuggestTerm[]>([]));
     TestBed.configureTestingModule({
       providers: [SuggestService, { provide: ApiService, useFactory: () => instance(apiService) }],
     });
     suggestService = TestBed.inject(SuggestService);
-  }));
+  });
 
   it('should always delegate to api service when called', () => {
     verify(apiService.get(anything(), anything())).never();

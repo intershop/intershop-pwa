@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -19,7 +19,7 @@ describe('Content Include Component', () => {
   let include: ContentPageletEntryPointView;
   let cmsFacade: CMSFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     include = createContentPageletEntryPointView({
       id: 'test.include',
       definitionQualifiedName: 'test.include-Include',
@@ -35,11 +35,11 @@ describe('Content Include Component', () => {
     when(cmsFacade.contentInclude$(anything())).thenReturn(of(include));
     when(cmsFacade.contentIncludeSfeMetadata$(anything())).thenReturn(EMPTY);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [ContentIncludeComponent, MockComponent(ContentPageletComponent)],
       providers: [{ provide: CMSFacade, useValue: instance(cmsFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ContentIncludeComponent);

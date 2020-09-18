@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -13,28 +13,28 @@ describe('Select Year Month Component', () => {
   let fixture: ComponentFixture<SelectYearMonthComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         MockComponent(FormControlFeedbackComponent),
         MockDirective(ShowFormFeedbackDirective),
         SelectYearMonthComponent,
       ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(SelectYearMonthComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
+    }).compileComponents();
+  });
 
-        const form = new FormGroup({
-          month: new FormControl(''),
-          year: new FormControl('', [Validators.required]),
-        });
-        component.form = form;
-      });
-  }));
+  beforeEach(() => {
+    fixture = TestBed.createComponent(SelectYearMonthComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+
+    const form = new FormGroup({
+      month: new FormControl(''),
+      year: new FormControl('', [Validators.required]),
+    });
+    component.form = form;
+  });
 
   it('should be created', () => {
     expect(component).toBeTruthy();

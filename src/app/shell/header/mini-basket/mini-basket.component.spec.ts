@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -23,14 +23,14 @@ describe('Mini Basket Component', () => {
   let element: HTMLElement;
   let checkoutFacade: CheckoutFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     checkoutFacade = mock(CheckoutFacade);
     const accountFacade = mock(AccountFacade);
     when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
     const shoppingFacade = mock(ShoppingFacade);
     when(shoppingFacade.product$(anything(), anything())).thenReturn(of({} as ProductView));
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         MiniBasketComponent,
         MockComponent(FaIconComponent),
@@ -45,7 +45,7 @@ describe('Mini Basket Component', () => {
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MiniBasketComponent);

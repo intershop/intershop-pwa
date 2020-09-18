@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { of } from 'rxjs';
@@ -15,13 +15,13 @@ describe('Tacton Image Text Buttons Component', () => {
   let element: HTMLElement;
   let tactonFacade: TactonFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     tactonFacade = mock(TactonFacade);
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [FaIconComponent, TactonImageTextButtonsComponent],
       providers: [{ provide: TactonFacade, useFactory: () => instance(tactonFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TactonImageTextButtonsComponent);

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -14,8 +14,8 @@ describe('Account Payment Page Component', () => {
   let element: HTMLElement;
   const accountFacade = mock(AccountFacade);
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         AccountPaymentPageComponent,
         MockComponent(AccountPaymentComponent),
@@ -23,7 +23,7 @@ describe('Account Payment Page Component', () => {
       ],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountPaymentPageComponent);

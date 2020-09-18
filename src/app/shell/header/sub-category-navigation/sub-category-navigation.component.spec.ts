@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { MockComponent } from 'ng-mocks';
@@ -17,7 +17,7 @@ describe('Sub Category Navigation Component', () => {
   let component: SubCategoryNavigationComponent;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const shoppingFacade = mock(ShoppingFacade);
 
     when(shoppingFacade.navigationCategories$('A')).thenReturn(
@@ -35,7 +35,7 @@ describe('Sub Category Navigation Component', () => {
       ] as NavigationCategory[])
     );
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [CategoryRoutePipe, MockComponent(FaIconComponent), SubCategoryNavigationComponent],
       providers: [
@@ -43,7 +43,7 @@ describe('Sub Category Navigation Component', () => {
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SubCategoryNavigationComponent);

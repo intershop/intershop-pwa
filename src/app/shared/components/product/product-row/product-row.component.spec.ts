@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -35,8 +35,8 @@ describe('Product Row Component', () => {
   let fixture: ComponentFixture<ProductRowComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [FeatureToggleModule.forTesting(), ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(LazyProductAddToOrderTemplateComponent),
@@ -60,7 +60,7 @@ describe('Product Row Component', () => {
         ProductRowComponent,
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductRowComponent);

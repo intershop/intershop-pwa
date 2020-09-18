@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock, verify } from 'ts-mockito';
 
@@ -12,21 +12,21 @@ describe('Basket Add To Quote Component', () => {
   let element: HTMLElement;
   let quotingFacade: QuotingFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     quotingFacade = mock(QuotingFacade);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [BasketAddToQuoteComponent],
       imports: [TranslateModule.forRoot()],
       providers: [{ provide: QuotingFacade, useFactory: () => instance(quotingFacade) }],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(BasketAddToQuoteComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
-      });
-  }));
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(BasketAddToQuoteComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+  });
 
   it('should be created', () => {
     expect(component).toBeTruthy();

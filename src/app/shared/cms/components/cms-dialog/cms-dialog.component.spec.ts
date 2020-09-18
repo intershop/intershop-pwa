@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock, when } from 'ts-mockito';
@@ -16,16 +16,16 @@ describe('Cms Dialog Component', () => {
   let fixture: ComponentFixture<CMSDialogComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const appFacade = mock(AppFacade);
     when(appFacade.icmBaseUrl).thenReturn('http://example.com');
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [CMSDialogComponent, MockComponent(ContentSlotComponent), ServerHtmlDirective],
       providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CMSDialogComponent);

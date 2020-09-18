@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -18,14 +18,14 @@ describe('Quote List Page Component', () => {
   let element: HTMLElement;
   let quotingFacade: QuotingFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     quotingFacade = mock(QuotingFacade);
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [MockComponent(LoadingComponent), MockComponent(QuoteListComponent), QuoteListPageComponent],
       imports: [TranslateModule.forRoot()],
       providers: [{ provide: QuotingFacade, useFactory: () => instance(quotingFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(QuoteListPageComponent);

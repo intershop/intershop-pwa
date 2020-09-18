@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
@@ -18,13 +18,13 @@ describe('Lazy Captcha Component', () => {
   let element: HTMLElement;
   let captchaFacade: CaptchaFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     captchaFacade = mock(CaptchaFacade);
     when(captchaFacade.captchaVersion$).thenReturn(EMPTY);
     when(captchaFacade.captchaSiteKey$).thenReturn(of('captchaSiteKeyASDF'));
     when(captchaFacade.captchaActive$(anyString())).thenReturn(of(true));
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [LazyCaptchaComponent, MockComponent(RecaptchaComponent)],
       imports: [CaptchaV2ComponentModule, CaptchaV3ComponentModule],
       providers: [{ provide: CaptchaFacade, useFactory: () => instance(captchaFacade) }],
@@ -37,7 +37,7 @@ describe('Lazy Captcha Component', () => {
         },
       })
       .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LazyCaptchaComponent);

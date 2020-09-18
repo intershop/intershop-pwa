@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, SimpleChange, SimpleChanges } from '@angular/core';
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
@@ -32,11 +32,11 @@ describe('Checkout Payment Component', () => {
   let element: HTMLElement;
   let paymentMethodChange: SimpleChanges;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     @Component({ template: 'dummy' })
     class DummyComponent {}
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         CheckoutPaymentComponent,
         DummyComponent,
@@ -66,7 +66,7 @@ describe('Checkout Payment Component', () => {
         set: { changeDetection: ChangeDetectionStrategy.Default },
       })
       .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutPaymentComponent);

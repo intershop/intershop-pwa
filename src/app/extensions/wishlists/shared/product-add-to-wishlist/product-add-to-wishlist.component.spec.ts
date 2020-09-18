@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
@@ -48,11 +48,11 @@ describe('Product Add To Wishlist Component', () => {
     },
   ];
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     wishlistFacadeMock = mock(WishlistsFacade);
     accountFacadeMock = mock(AccountFacade);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         MockComponent(FaIconComponent),
         MockComponent(SelectWishlistModalComponent),
@@ -64,7 +64,7 @@ describe('Product Add To Wishlist Component', () => {
         { provide: AccountFacade, useFactory: () => instance(accountFacadeMock) },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductAddToWishlistComponent);

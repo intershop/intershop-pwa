@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -18,16 +18,16 @@ describe('Product Add To Basket Component', () => {
   let translate: TranslateService;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const checkoutFacade = mock(CheckoutFacade);
     when(checkoutFacade.basketLoading$).thenReturn(of(false));
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot(), TranslateModule.forRoot()],
       declarations: [MockComponent(FaIconComponent), ProductAddToBasketComponent],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductAddToBasketComponent);

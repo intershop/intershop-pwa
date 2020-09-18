@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -12,12 +12,12 @@ describe('Product Variation Select Component', () => {
   let fixture: ComponentFixture<ProductVariationSelectComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [FeatureToggleModule.forTesting(), ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [ProductVariationSelectComponent],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductVariationSelectComponent);

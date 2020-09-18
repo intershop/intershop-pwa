@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockDirective } from 'ng-mocks';
 
@@ -12,12 +12,12 @@ describe('Cms Image Enhanced Component', () => {
   let fixture: ComponentFixture<CMSImageEnhancedComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [CMSImageEnhancedComponent, MockDirective(ServerHtmlDirective)],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CMSImageEnhancedComponent);

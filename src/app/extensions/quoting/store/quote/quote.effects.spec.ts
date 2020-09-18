@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Store } from '@ngrx/store';
@@ -59,7 +59,7 @@ describe('Quote Effects', () => {
 
   const customer = { customerNo: 'CID', isBusinessCustomer: true } as Customer;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     quoteServiceMock = mock(QuoteService);
     basketServiceMock = mock(BasketService);
 
@@ -94,7 +94,7 @@ describe('Quote Effects', () => {
 
     store$.dispatch(loginUserSuccess({ customer }));
     store$.dispatch(loadCompanyUserSuccess({ user: { email: 'test' } as User }));
-  }));
+  });
 
   describe('loadQuotes$', () => {
     beforeEach(() => {

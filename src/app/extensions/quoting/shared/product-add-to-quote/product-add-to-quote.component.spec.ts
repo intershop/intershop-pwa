@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -18,27 +18,27 @@ describe('Product Add To Quote Component', () => {
   let element: HTMLElement;
   let quotingFacade: QuotingFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     quotingFacade = mock(QuotingFacade);
     const accountFacade = mock(AccountFacade);
     when(accountFacade.isLoggedIn$).thenReturn(EMPTY);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [MockComponent(FaIconComponent), ProductAddToQuoteComponent],
       providers: [
         { provide: QuotingFacade, useFactory: () => instance(quotingFacade) },
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
       ],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(ProductAddToQuoteComponent);
-        component = fixture.componentInstance;
-        component.product = { sku: 'dummy', minOrderQuantity: 5 } as Product;
-        element = fixture.nativeElement;
-      });
-  }));
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ProductAddToQuoteComponent);
+    component = fixture.componentInstance;
+    component.product = { sku: 'dummy', minOrderQuantity: 5 } as Product;
+    element = fixture.nativeElement;
+  });
 
   it('should be created', () => {
     expect(component).toBeTruthy();

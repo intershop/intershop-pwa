@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
@@ -18,11 +18,11 @@ describe('Auth Guard', () => {
     let authGuard: AuthGuard;
     let store$: Store;
 
-    beforeEach(async(() => {
+    beforeEach(async () => {
       @Component({ template: 'dummy' })
       class DummyComponent {}
 
-      TestBed.configureTestingModule({
+      await TestBed.configureTestingModule({
         imports: [
           CoreStoreModule.forTesting(),
           CustomerStoreModule.forTesting('user'),
@@ -31,7 +31,7 @@ describe('Auth Guard', () => {
         declarations: [DummyComponent],
         providers: [{ provide: CookiesService, useFactory: () => instance(mock(CookiesService)) }],
       }).compileComponents();
-    }));
+    });
 
     beforeEach(() => {
       authGuard = TestBed.inject(AuthGuard);

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
@@ -23,8 +23,8 @@ describe('Line Item Description Component', () => {
   let fixture: ComponentFixture<LineItemDescriptionComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [FeatureToggleModule.forTesting(), TranslateModule.forRoot()],
       declarations: [
         LineItemDescriptionComponent,
@@ -39,7 +39,7 @@ describe('Line Item Description Component', () => {
         MockPipe(PricePipe),
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LineItemDescriptionComponent);

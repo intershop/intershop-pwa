@@ -1,5 +1,5 @@
 import { SimpleChange } from '@angular/core';
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -22,7 +22,7 @@ describe('Product Listing Component', () => {
   let fixture: ComponentFixture<ProductListingComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const shoppingFacade = mock(ShoppingFacade);
     when(shoppingFacade.productListingViewType$).thenReturn(of('grid'));
     when(shoppingFacade.productListingView$(deepEqual(TEST_ID))).thenReturn(
@@ -36,7 +36,7 @@ describe('Product Listing Component', () => {
       } as ProductListingView)
     );
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [InfiniteScrollModule, RouterTestingModule],
       declarations: [
         MockComponent(LoadingComponent),
@@ -47,7 +47,7 @@ describe('Product Listing Component', () => {
       ],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductListingComponent);

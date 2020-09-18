@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
@@ -18,13 +18,13 @@ describe('Search Box Component', () => {
   let searchResults$: Subject<SuggestTerm[]>;
   let searchTerm$: Subject<string>;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     searchResults$ = new ReplaySubject(1);
     searchTerm$ = new ReplaySubject(1);
     searchResults$.next([]);
     searchTerm$.next(undefined);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [MockComponent(FaIconComponent), MockPipe(HighlightPipe), SearchBoxComponent],
       providers: [
@@ -34,7 +34,7 @@ describe('Search Box Component', () => {
         },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchBoxComponent);

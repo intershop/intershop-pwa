@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbModalModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -25,8 +25,8 @@ describe('Wishlist Preferences Dialog Component', () => {
     public: false,
   };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         MockComponent(CheckboxComponent),
         MockComponent(FaIconComponent),
@@ -35,7 +35,7 @@ describe('Wishlist Preferences Dialog Component', () => {
       ],
       imports: [NgbModalModule, NgbPopoverModule, ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WishlistPreferencesDialogComponent);

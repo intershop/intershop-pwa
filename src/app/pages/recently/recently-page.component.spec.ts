@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
@@ -14,8 +14,8 @@ describe('Recently Page Component', () => {
   let fixture: ComponentFixture<RecentlyPageComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         MockComponent(BreadcrumbComponent),
         MockComponent(RecentlyViewedAllComponent),
@@ -24,7 +24,7 @@ describe('Recently Page Component', () => {
       imports: [TranslateModule.forRoot()],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RecentlyPageComponent);

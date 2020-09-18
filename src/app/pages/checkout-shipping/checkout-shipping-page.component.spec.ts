@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
@@ -14,8 +14,8 @@ describe('Checkout Shipping Page Component', () => {
   let fixture: ComponentFixture<CheckoutShippingPageComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         CheckoutShippingPageComponent,
         MockComponent(CheckoutShippingComponent),
@@ -24,7 +24,7 @@ describe('Checkout Shipping Page Component', () => {
       imports: [TranslateModule.forRoot()],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutShippingPageComponent);

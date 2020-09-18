@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { SanitizePipe } from 'ish-core/pipes/sanitize.pipe';
@@ -10,11 +10,11 @@ describe('Filter Swatch Images Component', () => {
   let fixture: ComponentFixture<FilterSwatchImagesComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [FilterSwatchImagesComponent, SanitizePipe],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     const filterElement = {

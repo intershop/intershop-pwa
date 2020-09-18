@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -26,14 +26,14 @@ describe('Registration Form Component', () => {
   let element: HTMLElement;
   let fb: FormBuilder;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const addressFormFactoryMock = mock(AddressFormFactory);
     when(addressFormFactoryMock.getGroup(anything())).thenReturn(new FormGroup({}));
 
     const addressFormFactoryProviderMock = mock(AddressFormFactoryProvider);
     when(addressFormFactoryProviderMock.getFactory(anything())).thenReturn(addressFormFactoryMock);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         MockComponent(AddressFormContainerComponent),
         MockComponent(CheckboxComponent),
@@ -53,7 +53,7 @@ describe('Registration Form Component', () => {
         TranslateModule.forRoot(),
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RegistrationFormComponent);
@@ -89,16 +89,16 @@ describe('Registration Form Component', () => {
     component.cancelForm();
   });
 
-  it('should set submitted flag if submit is clicked and form is not valid', async(() => {
+  it('should set submitted flag if submit is clicked and form is not valid', async () => {
     component.form = new FormGroup({
       preferredLanguage: new FormControl('', Validators.required),
     });
     expect(component.submitted).toBeFalsy();
     component.submitForm();
-    fixture.whenStable().then(() => {
-      expect(component.submitted).toBeTruthy();
-    });
-  }));
+    await fixture.whenStable();
+
+    expect(component.submitted).toBeTruthy();
+  });
 
   it('should NOT throw create event for invalid form', done => {
     component.form = new FormGroup({

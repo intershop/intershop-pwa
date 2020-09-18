@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -17,8 +17,8 @@ describe('Contact Form Component', () => {
   let fixture: ComponentFixture<ContactFormComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         ContactFormComponent,
         MockComponent(InputComponent),
@@ -28,7 +28,7 @@ describe('Contact Form Component', () => {
       ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ContactFormComponent);

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserTransferStateModule } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
@@ -14,18 +14,18 @@ describe('Footer Component', () => {
   let element: HTMLElement;
   let component: FooterComponent;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [BrowserTransferStateModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [FooterComponent, MockComponent(FaIconComponent), MockDirective(ServerHtmlDirective)],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(FooterComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
-      });
-  }));
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(FooterComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+  });
 
   it('should be created', () => {
     expect(component).toBeTruthy();

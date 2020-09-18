@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
@@ -13,27 +13,28 @@ describe('Textarea Component', () => {
   let fixture: ComponentFixture<TextareaComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [MockDirective(ShowFormFeedbackDirective), TextareaComponent],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(TextareaComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
+    }).compileComponents();
+  });
 
-        const form = new FormGroup({
-          requiredField: new FormControl('', [Validators.required]),
-          simpleField: new FormControl(),
-        });
-        component.label = 'label';
-        component.form = form;
-        component.controlName = 'requiredField';
-      });
-  }));
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TextareaComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+
+    const form = new FormGroup({
+      requiredField: new FormControl('', [Validators.required]),
+      simpleField: new FormControl(),
+    });
+    component.label = 'label';
+    component.form = form;
+    component.controlName = 'requiredField';
+  });
+
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();

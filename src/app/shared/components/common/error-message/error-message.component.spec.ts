@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
 import { anything, instance, mock, verify } from 'ts-mockito';
@@ -15,14 +15,14 @@ describe('Error Message Component', () => {
   let element: HTMLElement;
   let messageFacade: MessageFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     messageFacade = mock(MessageFacade);
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [ErrorMessageComponent, MockDirective(ServerHtmlDirective)],
       providers: [{ provide: MessageFacade, useFactory: () => instance(messageFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ErrorMessageComponent);

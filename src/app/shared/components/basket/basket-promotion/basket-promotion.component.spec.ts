@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -20,13 +20,13 @@ describe('Basket Promotion Component', () => {
   let element: HTMLElement;
   let shoppingFacade: ShoppingFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     shoppingFacade = mock(ShoppingFacade);
 
     const appFacade = mock(AppFacade);
     when(appFacade.icmBaseUrl).thenReturn('example.org');
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         BasketPromotionComponent,
         MockComponent(PromotionDetailsComponent),
@@ -39,7 +39,7 @@ describe('Basket Promotion Component', () => {
         { provide: AppFacade, useFactory: () => instance(appFacade) },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BasketPromotionComponent);

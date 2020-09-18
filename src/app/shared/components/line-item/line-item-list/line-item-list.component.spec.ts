@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
@@ -30,11 +30,11 @@ describe('Line Item List Component', () => {
   let fixture: ComponentFixture<LineItemListComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const shoppingFacade = mock(ShoppingFacade);
     when(shoppingFacade.product$(anything(), anything())).thenReturn(of({} as ProductView));
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         LineItemListComponent,
         MockComponent(BasketPromotionComponent),
@@ -51,7 +51,7 @@ describe('Line Item List Component', () => {
       imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LineItemListComponent);

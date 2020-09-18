@@ -1,5 +1,5 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -15,8 +15,8 @@ describe('Select Address Component', () => {
   let fixture: ComponentFixture<SelectAddressComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         MockComponent(FormControlFeedbackComponent),
         MockDirective(ShowFormFeedbackDirective),
@@ -24,7 +24,7 @@ describe('Select Address Component', () => {
       ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SelectAddressComponent);

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { MockComponent } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
@@ -16,11 +16,11 @@ describe('Cms Video Component', () => {
   let pagelet: ContentPagelet;
   let componentSpy: CMSVideoComponent;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [CMSVideoComponent, MockComponent(FaIconComponent)],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CMSVideoComponent);

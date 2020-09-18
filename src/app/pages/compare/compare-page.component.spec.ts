@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -16,14 +16,14 @@ describe('Compare Page Component', () => {
   let component: ComparePageComponent;
   let shoppingFacade: ShoppingFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     shoppingFacade = mock(ShoppingFacade);
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [ComparePageComponent, MockComponent(ProductCompareListComponent)],
       imports: [TranslateModule.forRoot()],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ComparePageComponent);

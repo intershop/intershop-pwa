@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -34,13 +34,13 @@ describe('Product Detail Component', () => {
   let product: ProductView;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     product = { sku: 'sku' } as ProductView;
     product.name = 'Test Product';
     product.longDescription = 'long description';
     product.manufacturer = undefined;
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         FeatureToggleModule.forTesting(),
         ReactiveFormsModule,
@@ -68,15 +68,15 @@ describe('Product Detail Component', () => {
         MockDirective(IsTactonProductDirective),
         ProductDetailComponent,
       ],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(ProductDetailComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
-        component.product = product;
-      });
-  }));
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ProductDetailComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+    component.product = product;
+  });
 
   it('should be created', () => {
     expect(component).toBeTruthy();

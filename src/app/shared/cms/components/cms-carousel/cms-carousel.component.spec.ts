@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { MockComponent } from 'ng-mocks';
 
@@ -13,12 +13,12 @@ describe('Cms Carousel Component', () => {
   let fixture: ComponentFixture<CMSCarouselComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [CMSCarouselComponent, MockComponent(ContentPageletComponent), MockComponent(ContentSlotComponent)],
       imports: [NgbCarouselModule],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CMSCarouselComponent);

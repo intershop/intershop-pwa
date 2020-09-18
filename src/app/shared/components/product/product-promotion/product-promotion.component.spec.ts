@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -17,11 +17,11 @@ describe('Product Promotion Component', () => {
   let element: HTMLElement;
   let shoppingFacade: ShoppingFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     shoppingFacade = mock(ShoppingFacade);
     when(shoppingFacade.promotions$(anything())).thenReturn(EMPTY);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         MockComponent(PromotionDetailsComponent),
         MockDirective(ServerHtmlDirective),
@@ -29,7 +29,7 @@ describe('Product Promotion Component', () => {
       ],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductPromotionComponent);

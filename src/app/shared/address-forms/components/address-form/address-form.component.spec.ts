@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import * as using from 'jasmine-data-provider';
@@ -21,8 +21,8 @@ describe('Address Form Component', () => {
   let fixture: ComponentFixture<AddressFormComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         AddressFormComponent,
         MockComponent(AddressFormBusinessComponent),
@@ -35,21 +35,21 @@ describe('Address Form Component', () => {
         MockComponent(SelectCountryComponent),
       ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(AddressFormComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
+    }).compileComponents();
+  });
 
-        const form = new FormGroup({
-          countryCodeSwitch: new FormControl(),
-          phoneHome: new FormControl(),
-        });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AddressFormComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
 
-        component.parentForm = form;
-      });
-  }));
+    const form = new FormGroup({
+      countryCodeSwitch: new FormControl(),
+      phoneHome: new FormControl(),
+    });
+
+    component.parentForm = form;
+  });
 
   it('should be created', () => {
     expect(component).toBeTruthy();

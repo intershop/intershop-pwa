@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -26,15 +26,15 @@ describe('Tacton Configure Navigation Component', () => {
     { name: 'step2', description: 'step 2 description', active: false, hasVisibleParameters: true },
   ];
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     tactonFacade = mock(TactonFacade);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [TactonConfigureNavigationComponent],
       imports: [RouterTestingModule],
       providers: [{ provide: TactonFacade, useFactory: () => instance(tactonFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TactonConfigureNavigationComponent);

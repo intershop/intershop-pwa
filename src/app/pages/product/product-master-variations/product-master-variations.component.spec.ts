@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
@@ -14,8 +14,8 @@ describe('Product Master Variations Component', () => {
   let fixture: ComponentFixture<ProductMasterVariationsComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [
         MockComponent(FilterNavigationComponent),
@@ -23,7 +23,7 @@ describe('Product Master Variations Component', () => {
         ProductMasterVariationsComponent,
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductMasterVariationsComponent);

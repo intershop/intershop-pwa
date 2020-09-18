@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import * as using from 'jasmine-data-provider';
 import { of } from 'rxjs';
@@ -18,16 +18,16 @@ describe('Product Price Component', () => {
   let translate: TranslateService;
   let product: AnyProductType;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const accountFacade = mock(AccountFacade);
     when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [CommonModule, TranslateModule.forRoot()],
       declarations: [PricePipe, ProductPriceComponent],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     translate = TestBed.inject(TranslateService);

@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
@@ -43,12 +43,12 @@ describe('Product Page Component', () => {
 
   const categories = categoryTree([{ uniqueId: 'A', categoryPath: ['A'] } as Category]);
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     shoppingFacade = mock(ShoppingFacade);
     when(shoppingFacade.selectedProduct$).thenReturn(EMPTY);
     when(shoppingFacade.selectedCategory$).thenReturn(of(createCategoryView(categories, 'A')));
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         FeatureToggleModule.forTesting('recently'),
         RouterTestingModule.withRoutes([{ path: '**', component: ProductPageComponent }]),
@@ -66,7 +66,7 @@ describe('Product Page Component', () => {
       ],
       providers: [ProductRoutePipe, { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductPageComponent);

@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import * as using from 'jasmine-data-provider';
 import { anything, spy, verify } from 'ts-mockito';
 
@@ -14,11 +14,11 @@ describe('Category Mapper', () => {
   let categoryMapper: CategoryMapper;
   let imageMapper: ImageMapper;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({ imports: [CoreStoreModule.forTesting(['configuration'])] });
     categoryMapper = TestBed.inject(CategoryMapper);
     imageMapper = spy(TestBed.inject(ImageMapper));
-  }));
+  });
 
   describe('mapCategoryPath()', () => {
     it('should throw on falsy or empty input', () => {

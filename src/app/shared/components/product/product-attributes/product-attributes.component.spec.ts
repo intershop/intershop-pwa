@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { AttributeToStringPipe } from 'ish-core/models/attribute/attribute.pipe';
@@ -11,17 +11,17 @@ describe('Product Attributes Component', () => {
   let fixture: ComponentFixture<ProductAttributesComponent>;
   let element: HTMLElement;
   let product: Product;
-  beforeEach(async(() => {
+  beforeEach(async () => {
     product = { sku: 'sku' } as Product;
     product.attributes = [
       { name: 'A', type: 'String', value: 'A' },
       { name: 'B', type: 'String', value: 'B' },
     ];
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [AttributeToStringPipe, ProductAttributesComponent],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductAttributesComponent);

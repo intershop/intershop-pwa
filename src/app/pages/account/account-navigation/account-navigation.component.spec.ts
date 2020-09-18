@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -19,9 +19,9 @@ describe('Account Navigation Component', () => {
   let element: HTMLElement;
   let accountFacadeMock: AccountFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     accountFacadeMock = mock(AccountFacade);
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [AccountNavigationComponent, MockComponent(AccountUserInfoComponent)],
       imports: [
         AuthorizationToggleModule.forTesting('APP_B2B_MANAGE_USERS'),
@@ -33,7 +33,7 @@ describe('Account Navigation Component', () => {
     }).compileComponents();
 
     when(accountFacadeMock.isBusinessCustomer$).thenReturn(of(true));
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountNavigationComponent);

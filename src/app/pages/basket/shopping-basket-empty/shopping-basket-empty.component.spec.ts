@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
@@ -14,8 +14,8 @@ describe('Shopping Basket Empty Component', () => {
   let fixture: ComponentFixture<ShoppingBasketEmptyComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         MockComponent(BasketInfoComponent),
         MockComponent(BasketValidationResultsComponent),
@@ -24,7 +24,7 @@ describe('Shopping Basket Empty Component', () => {
       ],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ShoppingBasketEmptyComponent);

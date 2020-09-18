@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
@@ -11,11 +11,11 @@ describe('Product Label Component', () => {
   let fixture: ComponentFixture<ProductLabelComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [ProductLabelComponent],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductLabelComponent);
