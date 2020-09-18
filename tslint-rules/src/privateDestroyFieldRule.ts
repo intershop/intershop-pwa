@@ -19,7 +19,7 @@ class PrivateDestroyFieldWalker extends NgWalker {
       const containsPrivateKeyword = !!prop
         .getChildAt(0)
         .getChildren()
-        .filter(node => (node.kind = ts.SyntaxKind.PrivateKeyword)).length;
+        .filter(node => node.kind === ts.SyntaxKind.PrivateKeyword).length;
       if (name && name.length && !containsPrivateKeyword) {
         this.addFailureAtNode(prop, 'Property should be private.');
       }
