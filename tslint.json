@@ -496,6 +496,8 @@
     },
     "use-async-synchronization-in-tests": true,
     "use-jest-extended-matchers-in-tests": true,
+    "use-new-async-in-tests": true,
+    "do-not-use-then-with-testbed-in-tests": true,
     "no-any": {
       "severity": "warning"
     },

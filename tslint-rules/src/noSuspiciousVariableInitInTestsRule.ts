@@ -38,7 +38,12 @@ export class Rule extends Lint.Rules.AbstractRule {
             while (be.kind !== ts.SyntaxKind.ArrowFunction) {
               be = be.getChildAt(2).getChildAt(0);
             }
-            this.checkVariableStatementsInBeforeEach(be.getChildAt(4).getChildAt(1));
+            this.checkVariableStatementsInBeforeEach(
+              be
+                .getChildren()
+                .find(node => node.kind === ts.SyntaxKind.Block)
+                .getChildAt(1)
+            );
           }
         }
       }
@@ -64,12 +69,6 @@ export class Rule extends Lint.Rules.AbstractRule {
       if (statement.getChildCount() > 2 && statement.getChildAt(1).kind === ts.SyntaxKind.EqualsToken) {
         const varName = statement.getChildAt(0).getText();
         this.correctlyReinitializedVariables.push(varName);
-      } else if (statement.getText().search('TestBed') >= 0) {
-        const testBedStatement = statement.getChildAt(0);
-        const possibleThenStatement = testBedStatement.getChildAt(testBedStatement.getChildCount() - 1);
-        if (possibleThenStatement && possibleThenStatement.getText() === 'then') {
-          this.checkVariableStatementsInBeforeEach(statement.getChildAt(2).getChildAt(0).getChildAt(4).getChildAt(1));
-        }
       }
     });
   }

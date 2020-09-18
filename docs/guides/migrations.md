@@ -15,6 +15,11 @@ The clean up result is contained in a separate commit that should probably not b
 We renamed the testing helper `findAllIshElements` from [`ish-core/utils/dev/html-query-utils`](../../src/app/core/utils/dev/html-query-utils.ts) to `findAllCustomElements` to support project customization.
 The returned lists from `findAllCustomElements` and `findAllDataTestingIDs` are no longer sorted to represent the actual template structure.
 
+With Angular version 10.1, the testing utility [async](https://angular.io/api/core/testing/async) was [deprecated](https://github.com/angular/angular/commit/8f074296c2ffb20521e2ad1bbbb3dc8f2194cae6).
+We refactored out code base to use native async/await instead, which was possible in all cases.
+The TSLint rule `use-new-async-in-tests` takes care of automatically transforming TestBed initialization code in component tests.
+Other cases have to be refactored manually.
+
 ## 0.22 to 0.23
 
 We removed deprecated exports related to the NgRx testing refactorings introduced in version 0.21.
