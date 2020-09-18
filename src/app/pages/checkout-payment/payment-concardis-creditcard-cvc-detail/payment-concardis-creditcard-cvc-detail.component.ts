@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 
@@ -21,6 +29,7 @@ declare var PayEngine: any;
 // tslint:disable-next-line: rxjs-prefer-angular-takeuntil
 export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcardisComponent implements OnInit {
   @Input() paymentInstrument: PaymentInstrument;
+  @Output() disableNextStep = new EventEmitter<boolean>();
   validityTimeInMinutes: string;
   cvcDetailForm: FormGroup;
 
@@ -72,7 +81,7 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
   }
 
   isCvcExpired() {
-    (document.getElementById('checkoutBtn') as HTMLInputElement).disabled = true;
+    let isExpired = true;
     // if cvc last updated timestamp is less than maximum validity in minutes then return false
     if (this.paymentInstrument.parameters) {
       const cvcLastUpdatedAttr =
@@ -85,13 +94,13 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
           const cvcDate = new Date(cvcLastUpdatedValue);
           const diffAsMinutes = (Date.now() - cvcDate.getTime()) / (1000 * 60);
           if (diffAsMinutes <= parseInt(this.validityTimeInMinutes, 10)) {
-            (document.getElementById('checkoutBtn') as HTMLInputElement).disabled = false;
-            return false;
+            isExpired = false;
           }
         }
       }
     }
-    return true;
+    this.disableNextStep.emit(isExpired);
+    return isExpired;
   }
 
   /**

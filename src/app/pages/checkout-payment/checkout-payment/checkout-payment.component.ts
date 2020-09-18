@@ -29,7 +29,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 @Component({
   selector: 'ish-checkout-payment',
   templateUrl: './checkout-payment.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() basket: Basket;
@@ -53,6 +53,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
   nextSubmitted = false;
   formSubmitted = false;
+  disableContinue = false;
 
   redirectStatus: string;
 
@@ -104,9 +105,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
     if (c.paymentMethods) {
       // Enabling checkout submit button
-      if (document.getElementById('checkoutBtn') as HTMLInputElement) {
-        (document.getElementById('checkoutBtn') as HTMLInputElement).disabled = false;
-      }
+      this.disableContinue = false;
       // copy objects for runtime checks because formly modifies them, TODO: refactor
       this.filteredPaymentMethods = this.paymentMethods && this.paymentMethods.map(x => JSON.parse(JSON.stringify(x)));
     }
@@ -169,13 +168,17 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
     this.formSubmitted = false;
     this.openFormIndex = index;
     // Enabling checkout submit button
-    (document.getElementById('checkoutBtn') as HTMLInputElement).disabled = false;
+    this.disableContinue = false;
     // enable / disable the appropriate parameter form controls
     Object.keys(this.parameterForm.controls).forEach(key => {
       this.filteredPaymentMethods[index].parameters.find(param => param.key === key)
         ? this.parameterForm.controls[key].enable()
         : this.parameterForm.controls[key].disable();
     });
+  }
+
+  disableNextStep(disableNextStep: boolean) {
+    this.disableContinue = disableNextStep;
   }
 
   /**
