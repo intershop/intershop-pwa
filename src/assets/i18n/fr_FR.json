@@ -2786,6 +2786,7 @@
   "account.user.widget.monthly_spend_limit.label": "Limite de dépenses par mois",
   "account.user.widget.order_spend_limit.label": "Limite de dépenses par commande",
   "account.user.widget.view_all_users.link": "Afficher tous les utilisateurs",
+  "account.user.update_profile.heading": "Modifier le profil de l’utilisateur",
   "account.user.new.heading": "Créer un nouvel utilisateur",
   "account.user.new.active.label": "Actif",
   "account.user.new.active.yes.text": "oui",

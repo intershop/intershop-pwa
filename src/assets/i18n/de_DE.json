@@ -2784,6 +2784,7 @@
   "account.user.widget.monthly_spend_limit.label": "Ausgabelimit pro Monat",
   "account.user.widget.order_spend_limit.label": "Ausgabelimit pro Bestellung",
   "account.user.widget.view_all_users.link": "Alle Benutzer anzeigen",
+  "account.user.update_profile.heading": "Benutzerprofil bearbeiten",
   "account.user.new.heading": "Neuen Benutzer anlegen",
   "account.user.new.active.label": "Aktiv",
   "account.user.new.active.yes.text": "ja",
