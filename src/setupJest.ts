@@ -10,7 +10,13 @@ beforeEach(() => {
   getTestBed().configureCompiler({ preserveWhitespaces: false } as any);
 
   jest.spyOn(global.console, 'warn').mockImplementation(arg => {
-    if (typeof arg !== 'string' || !arg.startsWith('Navigation triggered outside Angular zone')) {
+    if (
+      typeof arg !== 'string' ||
+      !(
+        arg.startsWith('Navigation triggered outside Angular zone') ||
+        arg.startsWith('A router outlet has not been instantiated during routes activation. URL Segment:')
+      )
+    ) {
       // tslint:disable-next-line:no-console
       console.log(arg);
     }
