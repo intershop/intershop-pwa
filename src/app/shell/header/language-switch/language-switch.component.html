@@ -11,7 +11,7 @@
       >{{ view === 'accordion' ? locale.displayName : locale.value }}<span class="switch_arrow"></span
     ></span>
   </a>
-  <div ngbDropdownMenu class="language-switch-container dropdown-menu" style="left: 0 !important;">
+  <div ngbDropdownMenu class="language-switch-container dropdown-menu" style="left: 0 !important">
     <div class="language-switch-menu-container">
       <ng-container *ngIf="availableLocales$ | async as availableLocales">
         <ul *ngIf="availableLocales.length">
