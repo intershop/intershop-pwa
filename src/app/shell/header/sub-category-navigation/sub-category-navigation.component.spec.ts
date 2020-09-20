@@ -74,7 +74,7 @@ describe('Sub Category Navigation Component', () => {
           ></ish-sub-category-navigation>
         </li>
         <li class="main-navigation-level1-item">
-          <a style="width: 100%;" ng-reflect-router-link="/CAT_A2-catA.2" href="/CAT_A2-catA.2">CAT_A2</a>
+          <a style="width: 100%" ng-reflect-router-link="/CAT_A2-catA.2" href="/CAT_A2-catA.2">CAT_A2</a>
         </li>
       </ul>
     `);

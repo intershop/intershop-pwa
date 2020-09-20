@@ -62,12 +62,12 @@ describe('Header Navigation Component', () => {
           ></ish-sub-category-navigation>
         </li>
         <li class="dropdown">
-          <a style="width: 100%;" ng-reflect-router-link="/cat/B" data-testing-id="B-link" href="/cat/B">
+          <a style="width: 100%" ng-reflect-router-link="/cat/B" data-testing-id="B-link" href="/cat/B">
             CAT_B
           </a>
         </li>
         <li class="dropdown">
-          <a style="width: 100%;" ng-reflect-router-link="/cat/C" data-testing-id="C-link" href="/cat/C">
+          <a style="width: 100%" ng-reflect-router-link="/cat/C" data-testing-id="C-link" href="/cat/C">
             CAT_C
           </a>
         </li>
