@@ -67,6 +67,7 @@
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "@sentry/browser": "^5.24.2",
+    "@rx-angular/state": "^1.4.1",
     "@trademe/ng-defer-load": "^8.2.1",
     "angular2-uuid": "^1.1.1",
     "angulartics2": "^10.0.0",

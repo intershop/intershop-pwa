@@ -245,10 +245,6 @@
         "message": "Use ts-mockito instead!"
       },
       {
-        "name": ["*", "select"],
-        "message": "Use store.pipe(select()) instead!"
-      },
-      {
         "name": ["atob"],
         "message": "This is not available in universal mode. Use https://github.com/jacobwgillespie/b64u"
       },

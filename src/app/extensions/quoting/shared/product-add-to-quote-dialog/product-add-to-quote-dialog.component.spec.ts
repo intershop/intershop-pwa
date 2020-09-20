@@ -22,8 +22,8 @@ describe('Product Add To Quote Dialog Component', () => {
 
   beforeEach(async () => {
     const context = mock(QuoteContextFacade);
-    when(context.waitForSuccessfulUpdate$).thenReturn(EMPTY);
-    when(context.state$).thenReturn(of('New'));
+    when(context.select('updates')).thenReturn(EMPTY);
+    when(context.select('state')).thenReturn(of('New'));
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],

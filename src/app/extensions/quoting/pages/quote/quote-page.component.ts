@@ -26,10 +26,10 @@ export class QuotePageComponent implements OnInit {
   constructor(private context: QuoteContextFacade) {}
 
   ngOnInit() {
-    this.selectedQuote$ = this.context.entity$;
-    this.loading$ = this.context.loading$;
-    this.state$ = this.context.state$;
-    this.error$ = this.context.error$;
-    this.editable$ = this.context.isQuoteRequestEditable$;
+    this.selectedQuote$ = this.context.select('entity');
+    this.loading$ = this.context.select('loading');
+    this.state$ = this.context.select('state');
+    this.error$ = this.context.select('error');
+    this.editable$ = this.context.select('entityAsQuoteRequest', 'editable');
   }
 }

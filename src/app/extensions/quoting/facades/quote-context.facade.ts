@@ -1,32 +1,31 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
+import { RxState } from '@rx-angular/state';
 import { pick } from 'lodash-es';
-import { Observable, ReplaySubject, Subject, timer } from 'rxjs';
+import { Observable, timer } from 'rxjs';
 import {
   distinctUntilChanged,
   filter,
   first,
   map,
-  mapTo,
   sample,
-  shareReplay,
-  skipWhile,
+  skip,
   startWith,
   switchMap,
   switchMapTo,
-  takeUntil,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PriceHelper } from 'ish-core/models/price/price.model';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 import { QuoteRequestUpdate } from '../models/quote-request-update/quote-request-update.model';
 import { QuotingHelper } from '../models/quoting/quoting.helper';
-import { Quote, QuoteRequest, QuoteRequestItem } from '../models/quoting/quoting.model';
+import { Quote, QuoteRequest, QuoteRequestItem, QuoteStatus } from '../models/quoting/quoting.model';
 import {
   addQuoteToBasket,
   createQuoteRequestFromQuote,
@@ -42,102 +41,81 @@ import {
   updateQuoteRequest,
 } from '../store/quoting';
 
+export const isQuoteStarted = (state$: Observable<{ entityAsQuote: Quote }>) =>
+  state$.pipe(map(state => Date.now() > state.entityAsQuote?.validFromDate));
+
+export const isQuoteValid = (state$: Observable<{ entityAsQuote: Quote }>) =>
+  state$.pipe(
+    map(state => Date.now() < state.entityAsQuote?.validToDate && Date.now() > state.entityAsQuote?.validFromDate)
+  );
+
+export const formHasChanges = (state$: Observable<{ formChanges: QuoteRequestUpdate[] }>) =>
+  state$.pipe(
+    map(state => !!state.formChanges?.length),
+    distinctUntilChanged()
+  );
+
+function convertFormItemsToModel(form: FormGroup, originalItems: QuoteRequestItem[]): QuoteRequestItem[] {
+  return (form.get('items') as FormArray).controls
+    .map(c => c.value as { itemId: string; quantity: number })
+    .map(formItem => {
+      const originalItem = originalItems.find(item => formItem.itemId === item.id);
+      return {
+        ...originalItem,
+        quantity: { ...originalItem.quantity, value: formItem.quantity },
+        totals: {
+          total: { ...originalItem.totals.total, value: formItem.quantity * originalItem.singleBasePrice.value },
+        },
+      };
+    });
+}
+
+export const formBackedLineItems = (state$: Observable<{ form: FormGroup; entityAsQuoteRequest: QuoteRequest }>) =>
+  state$.pipe(
+    switchMap(state =>
+      state.form.valueChanges.pipe(
+        startWith(state.form),
+        map(() => convertFormItemsToModel(state.form, state.entityAsQuoteRequest.items as QuoteRequestItem[]))
+      )
+    )
+  );
+
+export const formBackedTotal = (state$: Observable<{ form: FormGroup; entityAsQuoteRequest: QuoteRequest }>) =>
+  state$.pipe(
+    formBackedLineItems,
+    map(items => items?.length && items.map(item => item.totals.total).reduce((a, b) => PriceHelper.sum(a, b)))
+  );
+
 @Injectable()
-export abstract class QuoteContextFacade implements OnDestroy {
+export abstract class QuoteContextFacade
+  extends RxState<{
+    id: string;
+    loading: boolean;
+    error: HttpError;
+    entity: Quote | QuoteRequest;
+    entityAsQuoteRequest: QuoteRequest;
+    entityAsQuote: Quote;
+    state: QuoteStatus;
+    form: FormGroup;
+    formChanges: QuoteRequestUpdate[];
+    updates: number;
+  }>
+  implements OnDestroy {
   constructor(private store: Store) {
+    super();
     store.pipe(first()).subscribe(state => {
       if (!isQuotingInitialized(state)) {
         this.store.dispatch(loadQuoting());
       }
     });
-  }
 
-  private destroy$ = new Subject();
+    this.connect('loading', this.store.pipe(select(getQuotingLoading)));
 
-  loading$ = this.store.pipe(select(getQuotingLoading));
-  error$ = this.store.pipe(select(getQuotingError));
+    this.connect('error', this.store.pipe(select(getQuotingError)));
 
-  entity$ = new ReplaySubject<Quote | QuoteRequest>(1);
-  entityAsQuoteRequest$ = this.entity$.pipe(map(QuotingHelper.asQuoteRequest));
-
-  state$ = timer(0, 2000).pipe(switchMapTo(this.entity$.pipe(map(QuotingHelper.state))));
-
-  isQuoteStarted$ = this.entity$.pipe(map(quote => Date.now() > QuotingHelper.asQuote(quote)?.validFromDate));
-
-  isQuoteValid$ = this.entity$.pipe(
-    map(QuotingHelper.asQuote),
-    map(quote => Date.now() < quote?.validToDate && Date.now() > quote?.validFromDate)
-  );
-
-  isQuoteRequestEditable$ = this.entity$.pipe(
-    map(QuotingHelper.asQuoteRequest),
-    map(quoteRequest => !!quoteRequest.editable)
-  );
-
-  private idOnce$ = this.entity$.pipe(
-    map(q => q?.id),
-    whenTruthy(),
-    first()
-  );
-
-  form$ = this.entityAsQuoteRequest$
-    .pipe(
-      map(
-        quote =>
-          new FormGroup({
-            displayName: new FormControl(quote.displayName, [Validators.maxLength(255)]),
-            description: new FormControl(quote.description || '', []),
-            items: new FormArray(
-              quote.items.map(
-                (item: QuoteRequestItem) => new FormControl({ itemId: item.id, quantity: item.quantity.value })
-              )
-            ),
-          })
-      )
-    )
-    .pipe(shareReplay(1));
-
-  private formChanges$ = this.form$.pipe(
-    switchMap(form =>
-      form.valueChanges.pipe(
-        startWith(form),
-        withLatestFrom(this.entityAsQuoteRequest$),
-        map(([, entity]) => this.calculateChanges(form, entity))
-      )
-    )
-  );
-
-  formHasChanges$ = this.formChanges$.pipe(
-    map(changes => !!changes?.length),
-    distinctUntilChanged(),
-    takeUntil(this.destroy$)
-  );
-
-  formBackedLineItems$ = this.form$.pipe(
-    switchMap(form =>
-      form.valueChanges.pipe(
-        startWith(form),
-        withLatestFrom(this.entityAsQuoteRequest$.pipe(map(q => q.items as QuoteRequestItem[]))),
-        map(([, items]) => this.convertFormItemsToModel(form, items))
-      )
-    ),
-    shareReplay(1)
-  );
-
-  formBackedTotal$ = this.formBackedLineItems$.pipe(
-    map(items => items?.length && items.map(item => item.totals.total).reduce((a, b) => PriceHelper.sum(a, b)))
-  );
-
-  waitForSuccessfulUpdate$ = this.formHasChanges$.pipe(
-    skipWhile(x => !x),
-    whenFalsy(),
-    mapTo(undefined)
-  );
-
-  protected connect(quoteId$: Observable<string>) {
-    this.destroy$.next();
-    quoteId$
-      .pipe(
+    this.connect(
+      'entity',
+      this.select('id').pipe(
         whenTruthy(),
         distinctUntilChanged(),
         switchMap(quoteId =>
@@ -149,15 +127,59 @@ export abstract class QuoteContextFacade implements OnDestroy {
                 this.store.dispatch(loadQuotingDetail({ entity, level: 'Detail' }));
               }
             }),
-            sample(this.loading$.pipe(whenFalsy())),
+            sample(this.select('loading').pipe(whenFalsy())),
             filter(entity => entity?.completenessLevel === 'Detail'),
             map(entity => entity as Quote | QuoteRequest)
           )
         ),
-        whenTruthy(),
-        takeUntil(this.destroy$)
+        whenTruthy()
       )
-      .subscribe(entity => this.entity$.next(entity));
+    );
+
+    this.connect('entityAsQuoteRequest', this.select('entity').pipe(map(QuotingHelper.asQuoteRequest)));
+    this.connect('entityAsQuote', this.select('entity').pipe(map(QuotingHelper.asQuote)));
+
+    this.connect('state', timer(0, 2000).pipe(switchMapTo(this.select('entity').pipe(map(QuotingHelper.state)))));
+
+    this.connect(
+      'form',
+      this.select('entityAsQuoteRequest').pipe(
+        map(
+          quote =>
+            new FormGroup({
+              displayName: new FormControl(quote.displayName, [Validators.maxLength(255)]),
+              description: new FormControl(quote.description || '', []),
+              items: new FormArray(
+                quote.items.map(
+                  (item: QuoteRequestItem) => new FormControl({ itemId: item.id, quantity: item.quantity.value })
+                )
+              ),
+            })
+        )
+      )
+    );
+
+    this.connect(
+      'formChanges',
+      this.select('form').pipe(
+        switchMap(form =>
+          form.valueChanges.pipe(
+            startWith(form),
+            withLatestFrom(this.select('entityAsQuoteRequest')),
+            map(([, entity]) => this.calculateChanges(form, entity))
+          )
+        )
+      )
+    );
+
+    this.connect(
+      'updates',
+      this.select('entity').pipe(
+        filter(entity => entity.completenessLevel === 'Detail'),
+        skip(1)
+      ),
+      state => (state.updates || 0) + 1
+    );
   }
 
   private calculateChanges(form: FormGroup, entity: QuoteRequest): QuoteRequestUpdate[] {
@@ -186,64 +208,41 @@ export abstract class QuoteContextFacade implements OnDestroy {
     return updates;
   }
 
-  private convertFormItemsToModel(form: FormGroup, originalItems: QuoteRequestItem[]): QuoteRequestItem[] {
-    return (form.get('items') as FormArray).controls
-      .map(c => c.value as { itemId: string; quantity: number })
-      .map(formItem => {
-        const originalItem = originalItems.find(item => formItem.itemId === item.id);
-        return {
-          ...originalItem,
-          quantity: { ...originalItem.quantity, value: formItem.quantity },
-          totals: {
-            total: { ...originalItem.totals.total, value: formItem.quantity * originalItem.singleBasePrice.value },
-          },
-        };
-      });
-  }
-
   updateItem(item: LineItemUpdate) {
-    this.form$.subscribe(form => {
-      const items = form.get('items') as FormArray;
-      const itemControl = items.controls.find(control => control.value.itemId === item.itemId);
-      itemControl?.setValue(pick(item, 'itemId', 'quantity'));
-    });
+    const items = this.get('form').get('items') as FormArray;
+    const itemControl = items.controls.find(control => control.value.itemId === item.itemId);
+    itemControl?.setValue(pick(item, 'itemId', 'quantity'));
   }
 
   deleteItem(itemId: string) {
-    this.form$.subscribe(form => {
-      const items = form.get('items') as FormArray;
-      items.removeAt(items.controls.findIndex(control => control.value.itemId === itemId));
-    });
+    const items = this.get('form').get('items') as FormArray;
+    items.removeAt(items.controls.findIndex(control => control.value.itemId === itemId));
   }
 
   reject() {
-    this.idOnce$.subscribe(id => this.store.dispatch(rejectQuote({ id })));
+    this.store.dispatch(rejectQuote({ id: this.get('entity', 'id') }));
   }
 
   copy() {
-    this.idOnce$.subscribe(id => this.store.dispatch(createQuoteRequestFromQuote({ id })));
+    this.store.dispatch(createQuoteRequestFromQuote({ id: this.get('entity', 'id') }));
   }
 
   addToBasket() {
-    this.idOnce$.subscribe(id => this.store.dispatch(addQuoteToBasket({ id })));
+    this.store.dispatch(addQuoteToBasket({ id: this.get('entity', 'id') }));
   }
 
   update() {
-    this.idOnce$
-      .pipe(withLatestFrom(this.formChanges$))
-      .subscribe(([id, changes]) => this.store.dispatch(updateQuoteRequest({ id, changes })));
+    this.store.dispatch(updateQuoteRequest({ id: this.get('entity', 'id'), changes: this.get('formChanges') }));
   }
 
   submit() {
-    this.idOnce$
-      .pipe(withLatestFrom(this.formChanges$))
-      .subscribe(([id, changes]) =>
-        this.store.dispatch(changes?.length ? updateAndSubmitQuoteRequest({ id, changes }) : submitQuoteRequest({ id }))
-      );
-  }
+    const changes = this.get('formChanges');
+    const id = this.get('entity', 'id');
 
-  // not-dead-code
-  ngOnDestroy() {
-    this.destroy$.next();
+    if (changes?.length) {
+      this.store.dispatch(updateAndSubmitQuoteRequest({ id, changes }));
+    } else {
+      this.store.dispatch(submitQuoteRequest({ id }));
+    }
   }
 }

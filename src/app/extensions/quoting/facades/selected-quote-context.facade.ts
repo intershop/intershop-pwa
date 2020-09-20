@@ -9,6 +9,6 @@ import { QuoteContextFacade } from './quote-context.facade';
 export class SelectedQuoteContextFacade extends QuoteContextFacade {
   constructor(store: Store) {
     super(store);
-    this.connect(store.pipe(select(selectRouteParam('quoteId'))));
+    this.connect('id', store.pipe(select(selectRouteParam('quoteId'))));
   }
 }

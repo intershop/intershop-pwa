@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { QuoteContextFacade } from '../../facades/quote-context.facade';
+import { QuoteContextFacade, formHasChanges, isQuoteValid } from '../../facades/quote-context.facade';
 import { Quote, QuoteRequest, QuoteStatus } from '../../models/quoting/quoting.model';
 
 @Component({
@@ -18,10 +18,10 @@ export class QuoteInteractionsComponent implements OnInit {
   constructor(private context: QuoteContextFacade) {}
 
   ngOnInit() {
-    this.quote$ = this.context.entity$;
-    this.state$ = this.context.state$;
-    this.isQuoteValid$ = this.context.isQuoteValid$;
-    this.formHasChanges$ = this.context.formHasChanges$;
+    this.quote$ = this.context.select('entity');
+    this.state$ = this.context.select('state');
+    this.isQuoteValid$ = this.context.select(isQuoteValid);
+    this.formHasChanges$ = this.context.select(formHasChanges);
   }
 
   reject() {

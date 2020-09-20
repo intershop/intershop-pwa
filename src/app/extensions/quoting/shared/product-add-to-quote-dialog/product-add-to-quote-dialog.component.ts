@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, Subject } from 'rxjs';
-import { delay, filter, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { delay, filter } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 import { ActiveQuoteContextFacade } from '../../facades/active-quote-context.facade';
 import { QuoteContextFacade } from '../../facades/quote-context.facade';
@@ -16,7 +17,7 @@ import { Quote, QuoteRequest, QuoteStatus } from '../../models/quoting/quoting.m
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: QuoteContextFacade, useClass: ActiveQuoteContextFacade }],
 })
-export class ProductAddToQuoteDialogComponent implements OnInit, OnDestroy {
+export class ProductAddToQuoteDialogComponent implements OnInit {
   activeQuoteRequest$: Observable<Quote | QuoteRequest>;
   loading$: Observable<boolean>;
   state$: Observable<QuoteStatus>;
@@ -24,40 +25,29 @@ export class ProductAddToQuoteDialogComponent implements OnInit, OnDestroy {
   editable$: Observable<boolean>;
 
   modalRef: NgbModalRef;
-  private destroy$ = new Subject();
 
   constructor(private context: QuoteContextFacade, private router: Router) {}
 
   ngOnInit() {
-    this.activeQuoteRequest$ = this.context.entity$;
-    this.loading$ = this.context.loading$;
-    this.state$ = this.context.state$;
-    this.error$ = this.context.error$;
-    this.editable$ = this.context.isQuoteRequestEditable$;
+    this.activeQuoteRequest$ = this.context.select('entity');
+    this.loading$ = this.context.select('loading');
+    this.state$ = this.context.select('state');
+    this.error$ = this.context.select('error');
+    this.editable$ = this.context.select('entityAsQuoteRequest', 'editable');
 
-    this.router.events
-      .pipe(
-        filter(event => event instanceof NavigationEnd),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(() => this.hide());
+    this.context.hold(this.router.events.pipe(filter(event => event instanceof NavigationEnd)), () => this.hide());
 
-    this.context.waitForSuccessfulUpdate$
-      .pipe(
+    this.context.hold(
+      this.context.select('updates').pipe(
+        whenTruthy(),
         delay(100),
-        withLatestFrom(this.state$),
-        filter(([, state]) => state === 'New'),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(() => this.hide());
+        filter(() => this.context.get('state') === 'New')
+      ),
+      () => this.hide()
+    );
   }
 
   hide() {
     this.modalRef.dismiss();
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

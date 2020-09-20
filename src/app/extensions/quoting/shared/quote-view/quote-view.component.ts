@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 
-import { QuoteContextFacade } from '../../facades/quote-context.facade';
+import { QuoteContextFacade, isQuoteStarted } from '../../facades/quote-context.facade';
 import { QuotingHelper } from '../../models/quoting/quoting.helper';
 import { Quote, QuoteRequest, QuoteStatus } from '../../models/quoting/quoting.model';
 
@@ -24,9 +24,9 @@ export class QuoteViewComponent implements OnInit {
   constructor(private accountFacade: AccountFacade, private context: QuoteContextFacade) {}
 
   ngOnInit() {
-    this.quote$ = this.context.entity$;
-    this.state$ = this.context.state$;
+    this.quote$ = this.context.select('entity');
+    this.state$ = this.context.select('state');
     this.userEmail$ = this.accountFacade.userEmail$;
-    this.isQuoteStarted$ = this.context.isQuoteStarted$;
+    this.isQuoteStarted$ = this.context.select(isQuoteStarted);
   }
 }

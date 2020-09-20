@@ -6,7 +6,12 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { Price } from 'ish-core/models/price/price.model';
 
-import { QuoteContextFacade } from '../../facades/quote-context.facade';
+import {
+  QuoteContextFacade,
+  formBackedLineItems,
+  formBackedTotal,
+  formHasChanges,
+} from '../../facades/quote-context.facade';
 import { QuoteRequest, QuoteRequestItem } from '../../models/quoting/quoting.model';
 
 /**
@@ -28,11 +33,11 @@ export class QuoteEditComponent implements OnInit {
   constructor(private context: QuoteContextFacade, private appFacade: AppFacade) {}
 
   ngOnInit() {
-    this.quote$ = this.context.entityAsQuoteRequest$;
-    this.form$ = this.context.form$;
-    this.formBackedLineItems$ = this.context.formBackedLineItems$;
-    this.formBackedTotal$ = this.context.formBackedTotal$;
-    this.appFacade.connectEditable(this.context.formHasChanges$);
+    this.quote$ = this.context.select('entityAsQuoteRequest');
+    this.form$ = this.context.select('form');
+    this.formBackedLineItems$ = this.context.select(formBackedLineItems);
+    this.formBackedTotal$ = this.context.select(formBackedTotal);
+    this.appFacade.connectEditable(this.context.select(formHasChanges));
   }
 
   onUpdateItem(item: LineItemUpdate) {
