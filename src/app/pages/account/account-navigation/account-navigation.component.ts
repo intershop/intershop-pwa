@@ -34,6 +34,7 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
       feature: 'wishlists',
       dataTestingId: 'wishlists-link',
     },
+    '/account/quotes': { localizationKey: 'account.navigation.quotes.link', feature: 'quoting' },
     '/account/order-templates': {
       localizationKey: 'account.ordertemplates.link',
       feature: 'orderTemplates',
@@ -42,7 +43,6 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
     '/account/payment': { localizationKey: 'account.payment.link', dataTestingId: 'payments-link' },
     '/account/addresses': { localizationKey: 'account.saved_addresses.link', dataTestingId: 'addresses-link' },
     '/account/profile': { localizationKey: 'account.profile.link' },
-    '/account/quotes': { localizationKey: 'account.navigation.quotes.link', feature: 'quoting' },
     '/account/organization': {
       localizationKey: 'account.organization.user_management',
       permission: 'APP_B2B_MANAGE_USERS',
