@@ -237,7 +237,7 @@ export class QuotingEffects {
       mapToPayloadProperty('entity'),
       map((entity: QuoteRequest) =>
         displaySuccessMessage({
-          message: 'entity.edit.saved.your_quote_request_has_been_saved.text',
+          message: 'quote.edit.saved.your_quote_request_has_been_saved.text',
           messageParams: { 0: entity.displayName },
         })
       )
