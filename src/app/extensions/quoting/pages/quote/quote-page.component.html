@@ -3,10 +3,10 @@
   <h1 [ngSwitch]="state$ | async">
     <ng-template [ngSwitchCase]="'Submitted'">{{ 'quote.edit.submitted.heading' | translate }}</ng-template>
     <ng-template [ngSwitchCase]="'Responded'">
-      {{ 'quote.edit.responded.quote_details.text' | translate }} - {{ quote.displayName }}
+      {{ 'quote.edit.responded.quote_details.text' | translate }} - {{ quote.displayName || quote.number }}
     </ng-template>
     <ng-template ngSwitchDefault>
-      {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate }} - {{ quote.displayName }}
+      {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate }} - {{ quote.displayName || quote.number }}
     </ng-template>
   </h1>
 

@@ -20,32 +20,31 @@
 
       <div class="section">
         <!-- displayName -->
-        <div class="row form-group">
+        <div class="row">
           <label class="col-4 col-md-3 col-xl-2 col-form-label">{{
             'quote.edit.unsubmitted.name.label' | translate
           }}</label>
           <div class="col-8 col-md-9 col-xl-10">
-            <input
-              type="text"
-              formControlName="displayName"
-              class="form-control"
-              [placeholder]="'quote.edit.unsubmitted.enter_an_optional_name.text' | translate"
-            />
+            <ish-inplace-edit (edited)="update.next()" (aborted)="reset.next()">
+              <p class="form-control-plaintext w-auto" [ngClass]="{ 'font-italic': !form.get('displayName').value }">
+                {{ form.get('displayName').value || 'quote.edit.unsubmitted.enter_an_optional_name.text' | translate }}
+              </p>
+              <input type="text" formControlName="displayName" class="form-control" />
+            </ish-inplace-edit>
           </div>
         </div>
 
-        <div class="row form-group">
+        <div class="row">
           <label for="quote-description" class="col-4 col-md-3 col-xl-2 col-form-label">{{
             'quote.edit.unsubmitted.comment.label' | translate
           }}</label>
           <div class="col-8 col-md-9 col-xl-10">
-            <textarea
-              formControlName="description"
-              class="form-control"
-              [placeholder]="'quote.edit.unsubmitted.provide_comment.text' | translate"
-              id="quote-description"
-            >
-            </textarea>
+            <ish-inplace-edit (edited)="update.next()" (aborted)="reset.next()">
+              <p class="form-control-plaintext w-auto" [ngClass]="{ 'font-italic': !form.get('description').value }">
+                {{ form.get('description').value || 'quote.edit.unsubmitted.provide_comment.text' | translate }}
+              </p>
+              <textarea formControlName="description" class="form-control" id="quote-description"> </textarea>
+            </ish-inplace-edit>
           </div>
         </div>
       </div>

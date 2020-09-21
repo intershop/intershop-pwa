@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { debounceTime, map, shareReplay, switchMap } from 'rxjs/operators';
+import { pick } from 'lodash-es';
+import { Observable, Subject, combineLatest } from 'rxjs';
+import { filter, first, map, shareReplay, startWith, switchMapTo } from 'rxjs/operators';
 
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 
@@ -22,13 +23,16 @@ export class QuoteEditComponent implements OnInit {
   quote$: Observable<QuoteRequest>;
   form$: Observable<FormGroup>;
 
+  update = new Subject();
+  reset = new Subject();
+
   constructor(private context: QuoteContextFacade) {}
 
   ngOnInit() {
     this.quote$ = this.context.select('entityAsQuoteRequest');
-    this.form$ = this.quote$.pipe(
+    this.form$ = combineLatest([this.quote$, this.reset.pipe(startWith(''))]).pipe(
       map(
-        quote =>
+        ([quote]) =>
           new FormGroup({
             displayName: new FormControl(quote.displayName),
             description: new FormControl(quote.description),
@@ -38,11 +42,23 @@ export class QuoteEditComponent implements OnInit {
     );
 
     this.context.hold(
-      this.form$.pipe(
-        switchMap(form => form.valueChanges),
-        debounceTime(800)
+      this.update.pipe(
+        switchMapTo(
+          combineLatest([
+            this.quote$.pipe(map(quote => pick(quote, 'displayName', 'description'))),
+            this.form$.pipe(map(form => form.value)),
+          ]).pipe(
+            first(),
+            filter(
+              ([a, b]) =>
+                a.displayName !== b.displayName ||
+                // tslint:disable-next-line: triple-equals
+                a.description != b.description
+            )
+          )
+        )
       ),
-      meta => this.context.update(meta)
+      ([, meta]) => this.context.update(meta)
     );
   }
 
