@@ -920,6 +920,7 @@
   "quote.edit.submitted.your_quote_expired.text": "Your quote expired at {{0}} {{1}}.",
   "quote.edit.submitted.your_quote_number.text": "Your quote number is:",
   "quote.edit.submitted.your_quote_request.text": "Your quote request has been submitted.<br/>You can check the status of your <a callback=\"callbackHideDialogModal\" href=\"{{0}}\">quotes</a> in your <a callback=\"callbackHideDialogModal\" href=\"{{1}}\">My Account</a> section.",
+  "quote.edit.submitted.your_quote_request_has_been_submitted.text": "Your quote request has been submitted at {{0}}. You will be informed about a quotation via e-mail.",
   "quote.edit.unsubmitted.comment.label": "Comment:",
   "quote.edit.unsubmitted.enter_an_optional_name.text": "Enter an optional quote request name here...",
   "quote.edit.unsubmitted.name.label": "Name:",

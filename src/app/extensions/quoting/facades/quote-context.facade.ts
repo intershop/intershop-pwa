@@ -42,6 +42,7 @@ export abstract class QuoteContextFacade
     entityAsQuoteRequest: QuoteRequest;
     entityAsQuote: Quote;
     state: QuoteStatus;
+    justSubmitted: boolean;
   }>
   implements OnDestroy {
   constructor(private store: Store) {
@@ -129,6 +130,7 @@ export abstract class QuoteContextFacade
   }
 
   submit() {
+    this.set('justSubmitted', () => true);
     this.store.dispatch(submitQuoteRequest({ id: this.get('entity', 'id') }));
   }
 }

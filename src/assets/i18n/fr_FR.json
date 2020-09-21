@@ -920,6 +920,7 @@
   "quote.edit.submitted.your_quote_expired.text": "Votre devis a expiré à {{0}} {{1}}.",
   "quote.edit.submitted.your_quote_number.text": "Votre numéro de devis est :",
   "quote.edit.submitted.your_quote_request.text": "Votre demande de devis a été soumise.<br/>Vous pouvez consulter l’état de vos <a callback=\"callbackHideDialogModal\" href=\"{{0}}\">devis</a> dans la section <a callback=\"callbackHideDialogModal\" href=\"{{1}}\">Mon compte</a>.",
+  "quote.edit.submitted.your_quote_request_has_been_submitted.text": "Votre demande de devis a été soumise à {{0}}. Vous serez informé sur votre demande de devis par courriel.",
   "quote.edit.unsubmitted.comment.label": "Commentaire :",
   "quote.edit.unsubmitted.enter_an_optional_name.text": "Entrez un nom de demande de devis optionnel ici...",
   "quote.edit.unsubmitted.name.label": "Nom :",

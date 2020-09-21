@@ -918,6 +918,7 @@
   "quote.edit.submitted.your_quote_expired.text": "Ihr Preisangebot ist am {{0}} {{1}} abgelaufen.",
   "quote.edit.submitted.your_quote_number.text": "Ihre Preisangebotsnummer lautet:",
   "quote.edit.submitted.your_quote_request.text": "Ihre Preisanfrage wurde gesendet.<br/>Den Status ihrer <a callback=\"callbackHideDialogModal\" href=\"{{0}}\">Preisangebote</a> können Sie im Bereich <a callback=\"callbackHideDialogModal\" href=\"{{1}}\">Mein Konto</a> einsehen.",
+  "quote.edit.submitted.your_quote_request_has_been_submitted.text": "Ihre Preisanfrage wurde am {{0}} gesendet. Sie werden per E-Mail über ein Angebot informiert.",
   "quote.edit.unsubmitted.comment.label": "Kommentar:",
   "quote.edit.unsubmitted.enter_an_optional_name.text": "Geben Sie hier einen Namen für die Preisanfrage ein (optional)",
   "quote.edit.unsubmitted.name.label": "Name:",
