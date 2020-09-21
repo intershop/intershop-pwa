@@ -23,7 +23,7 @@ interface QuoteItemStub {
   id: string;
 }
 
-export interface QuoteRequestItem extends QuoteItemStub {
+interface QuoteRequestItem extends QuoteItemStub {
   productSKU: string;
   quantity: Attribute<number>;
 

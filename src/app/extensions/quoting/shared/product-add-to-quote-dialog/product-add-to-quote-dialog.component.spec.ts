@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { EMPTY, of } from 'rxjs';
+import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
@@ -22,7 +22,6 @@ describe('Product Add To Quote Dialog Component', () => {
 
   beforeEach(async () => {
     const context = mock(QuoteContextFacade);
-    when(context.select('updates')).thenReturn(EMPTY);
     when(context.select('state')).thenReturn(of('New'));
 
     await TestBed.configureTestingModule({

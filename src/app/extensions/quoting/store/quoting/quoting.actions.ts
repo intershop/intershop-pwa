@@ -95,11 +95,6 @@ export const addProductToQuoteRequestSuccess = createAction(
 
 export const updateQuoteRequest = createAction('[Quoting] Update Quote Request', payload<ChangesPayloadType>());
 
-export const updateAndSubmitQuoteRequest = createAction(
-  '[Quoting] Update and Submit Quote Request',
-  payload<ChangesPayloadType>()
-);
-
 export const updateQuoteRequestSuccess = createAction(
   '[Quoting API] Update Quote Request Success',
   payload<EntityPayloadType>()

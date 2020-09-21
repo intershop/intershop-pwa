@@ -2,10 +2,9 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
-import { delay, filter } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { whenTruthy } from 'ish-core/utils/operators';
 
 import { ActiveQuoteContextFacade } from '../../facades/active-quote-context.facade';
 import { QuoteContextFacade } from '../../facades/quote-context.facade';
@@ -36,15 +35,6 @@ export class ProductAddToQuoteDialogComponent implements OnInit {
     this.editable$ = this.context.select('entityAsQuoteRequest', 'editable');
 
     this.context.hold(this.router.events.pipe(filter(event => event instanceof NavigationEnd)), () => this.hide());
-
-    this.context.hold(
-      this.context.select('updates').pipe(
-        whenTruthy(),
-        delay(100),
-        filter(() => this.context.get('state') === 'New')
-      ),
-      () => this.hide()
-    );
   }
 
   hide() {

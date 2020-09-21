@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { DiscardChangesGuard } from 'ish-core/guards/discard-changes.guard';
-
 import { QuotingModule } from '../../quoting.module';
 
 import { QuoteListPageComponent } from './quote-list-page.component';
@@ -13,7 +11,6 @@ const quoteListPageRoutes: Routes = [
   {
     path: ':quoteId',
     loadChildren: () => import('../quote/quote-page.module').then(m => m.QuotePageModule),
-    canDeactivate: [DiscardChangesGuard],
   },
 ];
 

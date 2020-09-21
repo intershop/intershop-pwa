@@ -1,20 +1,13 @@
 import { Injectable } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { Observable, combineLatest, merge, noop } from 'rxjs';
+import { combineLatest, merge, noop } from 'rxjs';
 import { filter, map, mapTo, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
 
 import { getAvailableLocales, getCurrentLocale, getDeviceType, getICMBaseURL } from 'ish-core/store/core/configuration';
 import { getGeneralError, getGeneralErrorType } from 'ish-core/store/core/error';
 import { selectPath } from 'ish-core/store/core/router';
-import {
-  getBreadcrumbData,
-  getHeaderType,
-  getPageHasChanges,
-  getWrapperClass,
-  isStickyHeader,
-  setPageEdited,
-} from 'ish-core/store/core/viewconf';
+import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } from 'ish-core/store/core/viewconf';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { getAllCountries, getCountriesLoading, loadCountries } from 'ish-core/store/general/countries';
 import { getRegionsByCountryCode, loadRegions } from 'ish-core/store/general/regions';
@@ -106,15 +99,5 @@ export class AppFacade {
   regions$(countryCode: string) {
     this.store.dispatch(loadRegions({ countryCode }));
     return this.store.pipe(select(getRegionsByCountryCode, { countryCode }));
-  }
-
-  // EDITABLE PAGES
-
-  pageHasChanges$ = this.store.pipe(select(getPageHasChanges));
-  connectEditable(pageHasChanges: Observable<boolean>) {
-    pageHasChanges.subscribe(edited => this.store.dispatch(setPageEdited({ edited })));
-  }
-  resetPageHasChanges() {
-    this.store.dispatch(setPageEdited({ edited: false }));
   }
 }

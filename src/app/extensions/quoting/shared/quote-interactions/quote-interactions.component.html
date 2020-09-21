@@ -13,17 +13,6 @@
       </button>
 
       <button
-        *ngIf="state === 'New'"
-        data-testing-id="save-quote-request"
-        type="submit"
-        class="btn btn-secondary float-right"
-        [disabled]="!(formHasChanges$ | async)"
-        (click)="update()"
-      >
-        {{ 'quote.edit.button.save.label' | translate }}
-      </button>
-
-      <button
         *ngIf="state === 'Responded' && (isQuoteValid$ | async)"
         type="submit"
         class="btn btn-primary float-right"

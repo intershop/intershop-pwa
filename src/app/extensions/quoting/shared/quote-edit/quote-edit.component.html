@@ -20,15 +20,19 @@
 
       <div class="section">
         <!-- displayName -->
-        <ish-input
-          [form]="form"
-          controlName="displayName"
-          label="quote.edit.unsubmitted.name.label"
-          labelClass="col-4 col-md-3 col-xl-2"
-          inputClass="col-8 col-md-9 col-xl-10"
-          maxLength="256"
-          [placeholder]="'quote.edit.unsubmitted.enter_an_optional_name.text'"
-        ></ish-input>
+        <div class="row form-group">
+          <label class="col-4 col-md-3 col-xl-2 col-form-label">{{
+            'quote.edit.unsubmitted.name.label' | translate
+          }}</label>
+          <div class="col-8 col-md-9 col-xl-10">
+            <input
+              type="text"
+              formControlName="displayName"
+              class="form-control"
+              [placeholder]="'quote.edit.unsubmitted.enter_an_optional_name.text' | translate"
+            />
+          </div>
+        </div>
 
         <div class="row form-group">
           <label for="quote-description" class="col-4 col-md-3 col-xl-2 col-form-label">{{
@@ -50,11 +54,11 @@
       <div class="section">
         <h3>{{ 'quote.items.table.heading' | translate }}</h3>
         <ish-line-item-list
-          *ngIf="formBackedLineItems$ | async as items"
-          [lineItems]="items"
+          *ngIf="quote.items"
+          [lineItems]="quote.items"
           [editable]="true"
           lineItemViewType="availability"
-          [total]="formBackedTotal$ | async"
+          [total]="quote.total"
           (updateItem)="onUpdateItem($event)"
           (deleteItem)="onDeleteItem($event)"
         ></ish-line-item-list>

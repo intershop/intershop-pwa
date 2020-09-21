@@ -1,18 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { debounceTime, map, shareReplay, switchMap } from 'rxjs/operators';
 
-import { AppFacade } from 'ish-core/facades/app.facade';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
-import { Price } from 'ish-core/models/price/price.model';
 
-import {
-  QuoteContextFacade,
-  formBackedLineItems,
-  formBackedTotal,
-  formHasChanges,
-} from '../../facades/quote-context.facade';
-import { QuoteRequest, QuoteRequestItem } from '../../models/quoting/quoting.model';
+import { QuoteContextFacade } from '../../facades/quote-context.facade';
+import { QuoteRequest } from '../../models/quoting/quoting.model';
 
 /**
  * The Quote Edit Component displays and updates quote or quote request data.
@@ -27,17 +21,29 @@ import { QuoteRequest, QuoteRequestItem } from '../../models/quoting/quoting.mod
 export class QuoteEditComponent implements OnInit {
   quote$: Observable<QuoteRequest>;
   form$: Observable<FormGroup>;
-  formBackedLineItems$: Observable<QuoteRequestItem[]>;
-  formBackedTotal$: Observable<Price>;
 
-  constructor(private context: QuoteContextFacade, private appFacade: AppFacade) {}
+  constructor(private context: QuoteContextFacade) {}
 
   ngOnInit() {
     this.quote$ = this.context.select('entityAsQuoteRequest');
-    this.form$ = this.context.select('form');
-    this.formBackedLineItems$ = this.context.select(formBackedLineItems);
-    this.formBackedTotal$ = this.context.select(formBackedTotal);
-    this.appFacade.connectEditable(this.context.select(formHasChanges));
+    this.form$ = this.quote$.pipe(
+      map(
+        quote =>
+          new FormGroup({
+            displayName: new FormControl(quote.displayName),
+            description: new FormControl(quote.description),
+          })
+      ),
+      shareReplay(1)
+    );
+
+    this.context.hold(
+      this.form$.pipe(
+        switchMap(form => form.valueChanges),
+        debounceTime(800)
+      ),
+      meta => this.context.update(meta)
+    );
   }
 
   onUpdateItem(item: LineItemUpdate) {

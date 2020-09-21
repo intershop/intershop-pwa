@@ -22,5 +22,3 @@ export const isStickyHeader = createSelector(
   getHeaderType,
   (state, headerType) => state.stickyHeader && !headerType
 );
-
-export const getPageHasChanges = createSelector(getViewconfState, state => state.pageHasChanges);

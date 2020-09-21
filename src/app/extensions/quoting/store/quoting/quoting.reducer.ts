@@ -28,7 +28,6 @@ import {
   rejectQuoteFail,
   submitQuoteRequest,
   submitQuoteRequestSuccess,
-  updateAndSubmitQuoteRequest,
   updateQuoteRequest,
   updateQuoteRequestSuccess,
 } from './quoting.actions';
@@ -64,8 +63,7 @@ export const quotingReducer = createReducer(
     createQuoteRequestFromBasket,
     submitQuoteRequest,
     addProductToQuoteRequest,
-    updateQuoteRequest,
-    updateAndSubmitQuoteRequest
+    updateQuoteRequest
   ),
   unsetLoadingAndErrorOn(
     loadQuotingSuccess,

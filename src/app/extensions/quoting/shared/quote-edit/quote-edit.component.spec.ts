@@ -3,9 +3,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
+import { EMPTY } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
-import { AppFacade } from 'ish-core/facades/app.facade';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
@@ -21,6 +21,9 @@ describe('Quote Edit Component', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
+    const context = mock(QuoteContextFacade);
+    when(context.select('entityAsQuoteRequest')).thenReturn(EMPTY);
+
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
@@ -30,10 +33,7 @@ describe('Quote Edit Component', () => {
         MockComponent(QuoteStateComponent),
         QuoteEditComponent,
       ],
-      providers: [
-        { provide: QuoteContextFacade, useFactory: () => instance(mock(QuoteContextFacade)) },
-        { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
-      ],
+      providers: [{ provide: QuoteContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });
 

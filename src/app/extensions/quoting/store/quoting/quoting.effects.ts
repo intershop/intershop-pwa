@@ -3,23 +3,12 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { iif, of } from 'rxjs';
-import {
-  concatMap,
-  delay,
-  first,
-  map,
-  mapTo,
-  mergeMap,
-  mergeMapTo,
-  switchMap,
-  tap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { concatMap, delay, first, map, mergeMap, mergeMapTo, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectRouteParam } from 'ish-core/store/core/router';
-import { setBreadcrumbData, setPageEdited } from 'ish-core/store/core/viewconf';
+import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { getCurrentBasketId, loadBasket } from 'ish-core/store/customer/basket';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, mapToProperty } from 'ish-core/utils/operators';
 
@@ -48,7 +37,6 @@ import {
   rejectQuoteFail,
   submitQuoteRequest,
   submitQuoteRequestSuccess,
-  updateAndSubmitQuoteRequest,
   updateQuoteRequest,
   updateQuoteRequestSuccess,
 } from './quoting.actions';
@@ -253,29 +241,6 @@ export class QuotingEffects {
           messageParams: { 0: entity.displayName },
         })
       )
-    )
-  );
-
-  updateAndSubmitQuoteRequest$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(updateAndSubmitQuoteRequest),
-      mapToPayload(),
-      concatMap(({ id, changes }) =>
-        this.quotingService.updateQuoteRequest(id, changes).pipe(
-          delay(1000),
-          concatMap(quoteRequestId => this.quotingService.submitQuoteRequest(quoteRequestId)),
-          concatMap(quoteRequestId => this.quotingService.getQuoteDetails(quoteRequestId, 'QuoteRequest', 'Detail')),
-          map(entity => submitQuoteRequestSuccess({ entity })),
-          mapErrorToAction(loadQuotingFail)
-        )
-      )
-    )
-  );
-
-  resetPageEditedState$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(updateQuoteRequestSuccess, submitQuoteRequestSuccess),
-      mapTo(setPageEdited({ edited: false }))
     )
   );
 }
