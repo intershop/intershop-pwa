@@ -90,6 +90,13 @@ export class QuotingEffects {
     )
   );
 
+  deleteSuccessMessage$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteQuotingEntitySuccess),
+      map(() => displaySuccessMessage({ message: 'quote.delete.message' }))
+    )
+  );
+
   rejectQuote$ = createEffect(() =>
     this.actions$.pipe(
       ofType(rejectQuote),
