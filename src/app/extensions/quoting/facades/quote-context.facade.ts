@@ -139,7 +139,10 @@ export abstract class QuoteContextFacade
     this.connect('entityAsQuoteRequest', this.select('entity').pipe(map(QuotingHelper.asQuoteRequest)));
     this.connect('entityAsQuote', this.select('entity').pipe(map(QuotingHelper.asQuote)));
 
-    this.connect('state', timer(0, 2000).pipe(switchMapTo(this.select('entity').pipe(map(QuotingHelper.state)))));
+    this.connect(
+      'state',
+      timer(0, 2000).pipe(switchMapTo(this.select('entity').pipe(map(QuotingHelper.state))), distinctUntilChanged())
+    );
 
     this.connect(
       'form',

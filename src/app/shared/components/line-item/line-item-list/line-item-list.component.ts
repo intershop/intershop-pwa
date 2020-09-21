@@ -42,7 +42,7 @@ export class LineItemListComponent {
 
   constructor(private shoppingFacade: ShoppingFacade) {}
 
-  createDummyForm: (pli: LineItemView, maxOrderQuantity: number) => FormGroup = memoize(
+  createDummyForm: (pli: Partial<LineItemView>, maxOrderQuantity?: number) => FormGroup = memoize(
     (pli, maxOrderQuantity) => {
       const group = new FormGroup({
         quantity: new FormControl(pli.quantity.value, [
@@ -67,7 +67,7 @@ export class LineItemListComponent {
 
       return group;
     },
-    pli => JSON.stringify(pli)
+    pli => pli.id
   );
 
   product$(sku: string) {
@@ -79,6 +79,9 @@ export class LineItemListComponent {
    * @param item ItemId and quantity pair that should be updated
    */
   onUpdateItem(item: LineItemUpdate) {
+    (this.createDummyForm({ id: item.itemId }).get('quantity') as FormControl).setValue(item.quantity, {
+      emitEvent: false,
+    });
     this.updateItem.emit(item);
   }
 
