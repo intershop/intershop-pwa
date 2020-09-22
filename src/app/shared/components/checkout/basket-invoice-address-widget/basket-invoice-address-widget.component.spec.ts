@@ -11,7 +11,7 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { findAllDataTestingIDs, findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements, findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
 import { CustomerAddressFormComponent } from 'ish-shared/address-forms/components/customer-address-form/customer-address-form.component';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { SelectAddressComponent } from 'ish-shared/forms/components/select-address/select-address.component';
@@ -82,16 +82,17 @@ describe('Basket Invoice Address Widget Component', () => {
     it('should render if invoice is set', () => {
       fixture.detectChanges();
 
-      expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+      expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
         Array [
+          "fa-icon",
           "ish-address",
           "ish-customer-address-form",
         ]
       `);
       expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
         Array [
-          "create-invoice-address-link",
           "edit-invoice-address-link",
+          "create-invoice-address-link",
           "invoice-address-form",
         ]
       `);
@@ -102,7 +103,7 @@ describe('Basket Invoice Address Widget Component', () => {
       (element.querySelector('a[data-testing-id="edit-invoice-address-link"') as HTMLLinkElement).click();
       fixture.detectChanges();
 
-      expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+      expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
         Array [
           "ish-address",
           "ish-customer-address-form",
@@ -124,7 +125,7 @@ describe('Basket Invoice Address Widget Component', () => {
       (element.querySelector('[data-testing-id="create-invoice-address-link"') as HTMLLinkElement).click();
       fixture.detectChanges();
 
-      expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+      expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
         Array [
           "ish-address",
           "ish-customer-address-form",

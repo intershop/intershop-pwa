@@ -5,7 +5,7 @@ import { of } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 
 import { ComparePageComponent } from './compare-page.component';
 import { ProductCompareListComponent } from './product-compare-list/product-compare-list.component';
@@ -39,14 +39,14 @@ describe('Compare Page Component', () => {
 
   it('should not display compare product list when no compare products available', () => {
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toBeEmpty();
+    expect(findAllCustomElements(element)).toBeEmpty();
   });
 
   it('should display compare product list when compare products available', () => {
     when(shoppingFacade.compareProductsCount$).thenReturn(of(2));
 
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toEqual(['ish-product-compare-list']);
+    expect(findAllCustomElements(element)).toEqual(['ish-product-compare-list']);
   });
 
   it('should dispatch an action if removeProductCompare is called', () => {

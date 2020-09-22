@@ -8,7 +8,7 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { LineItemEditComponent } from 'ish-shared/components/line-item/line-item-edit/line-item-edit.component';
 import { ProductBundleDisplayComponent } from 'ish-shared/components/product/product-bundle-display/product-bundle-display.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
@@ -73,12 +73,13 @@ describe('Line Item Description Component', () => {
 
   it('should display standard elements for normal products', () => {
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
-        "ish-line-item-edit",
         "ish-product-id",
+        "ish-line-item-edit",
         "ish-product-inventory",
         "ish-product-shipment",
+        "fa-icon",
       ]
     `);
   });
@@ -86,13 +87,13 @@ describe('Line Item Description Component', () => {
   it('should display bundle parts for bundle products', () => {
     component.product.type = 'Bundle';
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toContain('ish-product-bundle-display');
+    expect(findAllCustomElements(element)).toContain('ish-product-bundle-display');
   });
 
   it('should not display edit component for variation products with advanced variation handling', () => {
     component.product.type = 'VariationProduct';
     FeatureToggleModule.switchTestingFeatures('advancedVariationHandling');
     fixture.detectChanges();
-    expect(findAllIshElements(element)).not.toContain('ish-line-item-edit');
+    expect(findAllCustomElements(element)).not.toContain('ish-line-item-edit');
   });
 });

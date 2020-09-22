@@ -6,7 +6,7 @@ import { MockComponent } from 'ng-mocks';
 
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
-import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 import { FilterNavigationComponent } from 'ish-shared/components/filter/filter-navigation/filter-navigation.component';
@@ -51,7 +51,7 @@ describe('Category Products Component', () => {
   });
 
   it('should display all components on the page', () => {
-    expect(findAllIshElements(element)).toIncludeAllMembers([
+    expect(findAllCustomElements(element)).toIncludeAllMembers([
       'ish-breadcrumb',
       'ish-product-listing',
       'ish-filter-navigation',

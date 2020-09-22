@@ -8,7 +8,7 @@ import { instance, mock } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 
 import { AppComponent } from './app.component';
 import { FooterComponent } from './shell/footer/footer/footer.component';
@@ -52,6 +52,6 @@ describe('App Component', () => {
   });
 
   it('should render header component on page', async(() => {
-    expect(findAllIshElements(element)).toContain('ish-header');
+    expect(findAllCustomElements(element)).toContain('ish-header');
   }));
 });

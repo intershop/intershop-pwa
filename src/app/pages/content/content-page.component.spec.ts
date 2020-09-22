@@ -7,7 +7,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { createContentPageletEntryPointView } from 'ish-core/models/content-view/content-view.model';
-import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { ContentPageletComponent } from 'ish-shared/cms/components/content-pagelet/content-pagelet.component';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
@@ -62,7 +62,7 @@ describe('Content Page Component', () => {
     when(cmsFacade.contentPageLoading$).thenReturn(of(true));
     fixture.detectChanges();
 
-    expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
         "ish-loading",
       ]
@@ -73,7 +73,7 @@ describe('Content Page Component', () => {
     when(cmsFacade.contentPage$).thenReturn(of(createContentPageletEntryPointView(contentPage)));
     fixture.detectChanges();
 
-    expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
         "ish-breadcrumb",
         "ish-content-pagelet",

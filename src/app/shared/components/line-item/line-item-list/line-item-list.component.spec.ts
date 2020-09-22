@@ -13,7 +13,7 @@ import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { BasketPromotionComponent } from 'ish-shared/components/basket/basket-promotion/basket-promotion.component';
 import { LineItemDescriptionComponent } from 'ish-shared/components/line-item/line-item-description/line-item-description.component';
 import { PromotionDetailsComponent } from 'ish-shared/components/promotion/promotion-details/promotion-details.component';
@@ -68,7 +68,7 @@ describe('Line Item List Component', () => {
 
   it('should render sub components if basket changes', () => {
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toIncludeAllMembers(['ish-line-item-description', 'ish-product-image']);
+    expect(findAllCustomElements(element)).toIncludeAllMembers(['ish-line-item-description', 'ish-product-image']);
   });
 
   it('should throw deleteItem event when delete item is clicked', done => {

@@ -8,7 +8,7 @@ import { instance, mock, when } from 'ts-mockito';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
-import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
@@ -68,6 +68,6 @@ describe('Product List Component', () => {
 
     fixture.detectChanges();
 
-    expect(findAllIshElements(element)).toEqual(['ish-loading', 'ish-loading']);
+    expect(findAllCustomElements(element)).toEqual(['ish-loading', 'ish-loading']);
   }));
 });

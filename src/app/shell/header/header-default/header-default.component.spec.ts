@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { HeaderNavigationComponent } from 'ish-shell/header/header-navigation/header-navigation.component';
 import { LanguageSwitchComponent } from 'ish-shell/header/language-switch/language-switch.component';
 import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status.component';
@@ -59,21 +59,21 @@ describe('Header Default Component', () => {
 
   it('should render User Links on template', () => {
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toIncludeAllMembers(['ish-login-status', 'ish-product-compare-status']);
+    expect(findAllCustomElements(element)).toIncludeAllMembers(['ish-login-status', 'ish-product-compare-status']);
   });
   it('should render Language Switch on template', () => {
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toContain('ish-language-switch');
+    expect(findAllCustomElements(element)).toContain('ish-language-switch');
   });
 
   it('should render Search Box on template', () => {
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toContain('ish-search-box');
+    expect(findAllCustomElements(element)).toContain('ish-search-box');
   });
 
   it('should render Header Navigation on template', () => {
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toContain('ish-header-navigation');
+    expect(findAllCustomElements(element)).toContain('ish-header-navigation');
   });
 
   it('should render normal header adequately for mobile devices', () => {

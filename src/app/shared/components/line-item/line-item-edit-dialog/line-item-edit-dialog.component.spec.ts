@@ -11,7 +11,7 @@ import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
-import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
 import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
@@ -88,12 +88,12 @@ describe('Line Item Edit Dialog Component', () => {
 
   it('should display ish-components on the container', () => {
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toIncludeAllMembers(['ish-input', 'ish-product-image']);
+    expect(findAllCustomElements(element)).toIncludeAllMembers(['ish-input', 'ish-product-image']);
   });
 
   it('should display loading-components on the container', () => {
     when(shoppingFacade.productNotReady$(anything(), anything())).thenReturn(of(true));
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toIncludeAllMembers(['ish-input', 'ish-loading']);
+    expect(findAllCustomElements(element)).toIncludeAllMembers(['ish-input', 'ish-loading']);
   });
 });

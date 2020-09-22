@@ -6,7 +6,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 
 import { SearchNoResultComponent } from './search-no-result/search-no-result.component';
@@ -56,7 +56,7 @@ describe('Search Page Component', () => {
 
     fixture.detectChanges();
 
-    expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
         "ish-breadcrumb",
         "ish-search-no-result",
@@ -69,7 +69,7 @@ describe('Search Page Component', () => {
 
     fixture.detectChanges();
 
-    expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
         "ish-search-result",
       ]
