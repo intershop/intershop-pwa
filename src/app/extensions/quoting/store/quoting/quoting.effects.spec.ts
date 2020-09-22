@@ -4,17 +4,18 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { Observable, of } from 'rxjs';
-import { anything, instance, mock, verify, when } from 'ts-mockito';
+import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { getCurrentBasketId } from 'ish-core/store/customer/basket';
 
-import { QuoteStub } from '../../models/quoting/quoting.model';
+import { QuoteRequest, QuoteStub } from '../../models/quoting/quoting.model';
 import { QuotingService } from '../../services/quoting/quoting.service';
 
 import {
   addQuoteToBasket,
+  createQuoteRequestFromBasket,
   createQuoteRequestFromQuote,
   deleteQuotingEntity,
   loadQuoting,
@@ -145,6 +146,25 @@ describe('Quoting Effects', () => {
 
       effects.createQuoteRequestFromQuote$.subscribe(() => {
         verify(quotingService.createQuoteRequestFromQuote(anything())).once();
+        done();
+      });
+    });
+  });
+
+  describe('createQuoteRequestFromBasket$', () => {
+    it('should create quote request from basket via quoting service when triggered', done => {
+      when(quotingService.createQuoteRequestFromBasket(anything())).thenReturn(of({ id: 'NEW' } as QuoteRequest));
+      store$.overrideSelector(getCurrentBasketId, 'BasketID');
+
+      actions$ = of(createQuoteRequestFromBasket());
+
+      effects.createQuoteRequestFromBasket$.subscribe(action => {
+        verify(quotingService.createQuoteRequestFromBasket(anything())).once();
+        expect(capture(quotingService.createQuoteRequestFromBasket).last()?.[0]).toMatchInlineSnapshot(`"BasketID"`);
+        expect(action).toMatchInlineSnapshot(`
+          [Quoting API] Create Quote Request From Basket Success:
+            entity: {"id":"NEW"}
+        `);
         done();
       });
     });
