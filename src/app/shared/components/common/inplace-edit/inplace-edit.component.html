@@ -1,0 +1,32 @@
+<ng-container *ngIf="viewMode; else edit">
+  <div
+    class="d-flex flex-row align-items-baseline"
+    [title]="'inplace_edit.click_to_edit' | translate"
+    (mouseenter)="setHover()"
+    (mouseleave)="unsetHover()"
+  >
+    <ng-content select=".form-control-plaintext"></ng-content>
+    <a *ngIf="hover"><fa-icon class="pl-2 mr-auto btn-link" [icon]="['fas', 'pencil-alt']"></fa-icon></a>
+  </div>
+</ng-container>
+<ng-template #edit>
+  <div class="d-flex flex-row align-items-baseline">
+    <ng-content select=".form-control"></ng-content>
+    <button
+      class="btn btn-link ml-2"
+      data-testing-id="confirm"
+      [title]="'inplace_edit.save' | translate"
+      (click)="confirm()"
+    >
+      <fa-icon [icon]="['fas', 'check']"></fa-icon>
+    </button>
+    <button
+      class="btn btn-link"
+      data-testing-id="cancel"
+      [title]="'inplace_edit.cancel' | translate"
+      (click)="cancel()"
+    >
+      <fa-icon [icon]="['fas', 'times']"></fa-icon>
+    </button>
+  </div>
+</ng-template>
