@@ -215,4 +215,66 @@ describe('Quoting Service', () => {
       );
     });
   });
+
+  describe('updateQuoteRequest', () => {
+    beforeEach(() => {
+      when(apiService.put(anything(), anything())).thenReturn(of({}));
+      when(apiService.delete(anything())).thenReturn(of({}));
+    });
+
+    it('should use the quoterequest API for updating quote requests', done => {
+      quotingService
+        .updateQuoteRequest('quoteRequestID', [
+          { type: 'meta-data', description: 'DESC', displayName: 'DISPLAY' },
+          { type: 'remove-item', itemId: 'item2' },
+          { type: 'change-item', itemId: 'item1', quantity: 2 },
+          { type: 'change-item', itemId: 'item3', quantity: 1 },
+        ])
+        .subscribe(
+          id => {
+            expect(id).toMatchInlineSnapshot(`"quoteRequestID"`);
+
+            verify(apiService.put(anything(), anything())).thrice();
+            expect(capture(apiService.put).byCallIndex(0)).toMatchInlineSnapshot(`
+              Array [
+                "quoterequests/quoteRequestID",
+                Object {
+                  "description": "DESC",
+                  "displayName": "DISPLAY",
+                },
+              ]
+            `);
+            expect(capture(apiService.put).byCallIndex(1)).toMatchInlineSnapshot(`
+              Array [
+                "quoterequests/quoteRequestID/items/item1",
+                Object {
+                  "quantity": Object {
+                    "value": 2,
+                  },
+                },
+              ]
+            `);
+            expect(capture(apiService.put).byCallIndex(2)).toMatchInlineSnapshot(`
+              Array [
+                "quoterequests/quoteRequestID/items/item3",
+                Object {
+                  "quantity": Object {
+                    "value": 1,
+                  },
+                },
+              ]
+            `);
+
+            verify(apiService.delete(anything())).once();
+            expect(capture(apiService.delete).byCallIndex(0)).toMatchInlineSnapshot(`
+              Array [
+                "quoterequests/quoteRequestID/items/item2",
+              ]
+            `);
+          },
+          fail,
+          done
+        );
+    });
+  });
 });
