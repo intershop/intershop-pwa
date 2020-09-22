@@ -14,6 +14,7 @@ import { QuoteRequest, QuoteStub } from '../../models/quoting/quoting.model';
 import { QuotingService } from '../../services/quoting/quoting.service';
 
 import {
+  addProductToQuoteRequest,
   addQuoteToBasket,
   createQuoteRequestFromBasket,
   createQuoteRequestFromQuote,
@@ -22,6 +23,7 @@ import {
   loadQuotingDetail,
   rejectQuote,
   submitQuoteRequest,
+  updateQuoteRequest,
 } from './quoting.actions';
 import { QuotingEffects } from './quoting.effects';
 
@@ -195,6 +197,84 @@ describe('Quoting Effects', () => {
         expect(action).toMatchInlineSnapshot(`
           [Quoting API] Submit Quote Request Success:
             entity: {"id":"ID","type":"QuoteRequest","completenessLevel":"Detail"}
+        `);
+        done();
+      });
+    });
+  });
+
+  describe('addProductToQuoteRequest$', () => {
+    beforeEach(() => {
+      when(quotingService.addProductToQuoteRequest(anything(), anything())).thenReturn(of('quoteRequestID'));
+      when(quotingService.getQuoteDetails(anything(), anything(), anything())).thenCall((id, type) =>
+        of({ id, type, completenessLevel: 'Detail' } as QuoteStub)
+      );
+    });
+
+    it('should add product to quote request via quoting service when triggered', done => {
+      actions$ = of(addProductToQuoteRequest({ sku: 'SKU', quantity: 10 }));
+
+      effects.addProductToQuoteRequest$.subscribe(() => {
+        verify(quotingService.addProductToQuoteRequest(anything(), anything())).once();
+        expect(capture(quotingService.addProductToQuoteRequest).last()).toMatchInlineSnapshot(`
+          Array [
+            "SKU",
+            10,
+          ]
+        `);
+        done();
+      });
+    });
+
+    it('should load quote request details when triggered successfully', done => {
+      actions$ = of(addProductToQuoteRequest({ sku: 'SKU', quantity: 10 }));
+
+      effects.addProductToQuoteRequest$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Quoting API] Add Product To Quote Request Success:
+            entity: {"id":"quoteRequestID","type":"QuoteRequest","completenessLe...
+        `);
+        done();
+      });
+    });
+  });
+
+  describe('updateQuoteRequest$', () => {
+    beforeEach(() => {
+      // tslint:disable-next-line: no-unnecessary-callback-wrapper
+      when(quotingService.updateQuoteRequest(anything(), anything())).thenCall(id => of(id));
+      when(quotingService.getQuoteDetails(anything(), anything(), anything())).thenCall((id, type) =>
+        of({ id, type, completenessLevel: 'Detail' } as QuoteStub)
+      );
+    });
+
+    it('should add product to quote request via quoting service when triggered', done => {
+      actions$ = of(updateQuoteRequest({ id: 'quoteRequestID', changes: [{ type: 'remove-item', itemId: 'ITEM' }] }));
+
+      effects.updateQuoteRequest$.subscribe(() => {
+        verify(quotingService.updateQuoteRequest(anything(), anything())).once();
+        expect(capture(quotingService.updateQuoteRequest).last()).toMatchInlineSnapshot(`
+          Array [
+            "quoteRequestID",
+            Array [
+              Object {
+                "itemId": "ITEM",
+                "type": "remove-item",
+              },
+            ],
+          ]
+        `);
+        done();
+      });
+    });
+
+    it('should load quote request details when triggered successfully', done => {
+      actions$ = of(updateQuoteRequest({ id: 'quoteRequestID', changes: [{ type: 'remove-item', itemId: 'ITEM' }] }));
+
+      effects.updateQuoteRequest$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Quoting API] Update Quote Request Success:
+            entity: {"id":"quoteRequestID","type":"QuoteRequest","completenessLe...
         `);
         done();
       });
