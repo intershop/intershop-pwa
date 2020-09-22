@@ -949,7 +949,7 @@
   "quote.list.table.expiration_date": "Ablaufdatum",
   "quote.list.table.line_items": "Artikel",
   "quote.list.table.name": "Name",
-  "quote.list.table.quote_no": "Preisangebotsnr.:",
+  "quote.list.table.quote_no": "Preisangebotsnr.",
   "quote.list.table.status": "Status",
   "quote.not_found.error": "Das Preisangebot konnte nicht gefunden werden.",
   "quote.quote_details.link": "Preisangebot-Details",
