@@ -67,7 +67,6 @@ export interface QuoteRequest extends QuoteBase<QuoteRequestItem | QuoteItemStub
   type: 'QuoteRequest';
 
   submittedDate?: number;
-  editable: boolean;
 }
 
 export type QuotingEntity = QuoteStub | Quote | QuoteRequest | QuoteStubFromAttributes;

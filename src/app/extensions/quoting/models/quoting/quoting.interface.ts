@@ -54,9 +54,6 @@ export interface QuoteRequestResponse extends QuoteBaseData<Link | QuoteRequestL
   type: 'QuoteRequest';
 
   submittedDate?: number;
-
-  editable: boolean;
-  submitted: boolean;
 }
 
 export type QuoteData = Link | QuoteResponse | QuoteRequestResponse;

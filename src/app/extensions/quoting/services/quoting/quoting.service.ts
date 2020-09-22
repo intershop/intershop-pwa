@@ -142,7 +142,7 @@ export class QuotingService {
         concatMap(stubs => this.expansion(stubs)),
         expand(({ next }) => this.expansion(next)),
         map(({ quoteRequest }) => quoteRequest),
-        filter((quoteRequest: QuoteRequest) => quoteRequest.editable),
+        filter(quoteRequest => QuotingHelper.state(quoteRequest) === 'New'),
         take(1),
         defaultIfEmpty(undefined as QuoteRequest)
       )

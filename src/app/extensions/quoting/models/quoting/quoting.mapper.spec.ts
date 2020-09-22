@@ -257,8 +257,6 @@ describe('Quoting Mapper', () => {
         displayName: '0000008',
         id: 'Of4KCgoEGrcAAAF0kM8GFSQc',
         number: '0000008',
-        editable: true,
-        submitted: false,
         creationDate: 1598333702038,
         total: {
           type: 'Money',
@@ -282,7 +280,6 @@ describe('Quoting Mapper', () => {
           "creationDate": 1598333702038,
           "description": undefined,
           "displayName": "0000008",
-          "editable": true,
           "id": "Of4KCgoEGrcAAAF0kM8GFSQc",
           "items": Array [
             Object {
@@ -307,8 +304,6 @@ describe('Quoting Mapper', () => {
         displayName: '0000008',
         id: 'Of4KCgoEGrcAAAF0kM8GFSQc',
         number: '0000008',
-        editable: false,
-        submitted: true,
         creationDate: 1598333702038,
         submittedDate: 1598333709150,
         total: {
@@ -349,7 +344,6 @@ describe('Quoting Mapper', () => {
           "creationDate": 1598333702038,
           "description": undefined,
           "displayName": "0000008",
-          "editable": false,
           "id": "Of4KCgoEGrcAAAF0kM8GFSQc",
           "items": Array [
             Object {

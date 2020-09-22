@@ -21,7 +21,6 @@ export class ProductAddToQuoteDialogComponent implements OnInit {
   loading$: Observable<boolean>;
   state$: Observable<QuoteStatus>;
   error$: Observable<HttpError>;
-  editable$: Observable<boolean>;
 
   modalRef: NgbModalRef;
 
@@ -32,7 +31,6 @@ export class ProductAddToQuoteDialogComponent implements OnInit {
     this.loading$ = this.context.select('loading');
     this.state$ = this.context.select('state');
     this.error$ = this.context.select('error');
-    this.editable$ = this.context.select('entityAsQuoteRequest', 'editable');
 
     this.context.hold(this.router.events.pipe(filter(event => event instanceof NavigationEnd)), () => this.hide());
   }

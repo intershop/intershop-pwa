@@ -90,7 +90,6 @@ export class QuotingMapper {
           total: PriceMapper.fromData(data.total),
 
           submittedDate: data.submittedDate,
-          editable: !!data.editable,
 
           items: data.items?.map(item => {
             if (item.type === 'Link') {
