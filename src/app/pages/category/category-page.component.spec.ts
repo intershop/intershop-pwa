@@ -7,7 +7,7 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
-import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
@@ -52,7 +52,7 @@ describe('Category Page Component', () => {
   it('should not display anything when neither category nor loading is set', () => {
     fixture.detectChanges();
 
-    expect(findAllIshElements(element)).toBeEmpty();
+    expect(findAllCustomElements(element)).toBeEmpty();
   });
 
   it('should display categories when category has sub categories', () => {
@@ -64,7 +64,7 @@ describe('Category Page Component', () => {
     );
 
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toEqual(['ish-category-categories']);
+    expect(findAllCustomElements(element)).toEqual(['ish-category-categories']);
   });
 
   it('should display products when category has products', () => {
@@ -76,6 +76,6 @@ describe('Category Page Component', () => {
     );
 
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toEqual(['ish-category-products']);
+    expect(findAllCustomElements(element)).toEqual(['ish-category-products']);
   });
 });

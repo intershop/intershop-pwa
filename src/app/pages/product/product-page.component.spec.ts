@@ -21,7 +21,7 @@ import { VariationProductMaster } from 'ish-core/models/product/product-variatio
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
-import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
@@ -87,7 +87,7 @@ describe('Product Page Component', () => {
 
     fixture.detectChanges();
 
-    expect(findAllIshElements(element)).toEqual(['ish-loading', 'ish-recently-viewed']);
+    expect(findAllCustomElements(element)).toEqual(['ish-loading', 'ish-recently-viewed']);
   });
 
   it('should display product-detail when product is available', () => {
@@ -96,7 +96,7 @@ describe('Product Page Component', () => {
 
     fixture.detectChanges();
 
-    expect(findAllIshElements(element)).toEqual([
+    expect(findAllCustomElements(element)).toEqual([
       'ish-breadcrumb',
       'ish-product-detail',
       'ish-product-links',

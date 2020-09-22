@@ -6,7 +6,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { HeaderCheckoutComponent } from 'ish-shell/header/header-checkout/header-checkout.component';
 import { HeaderDefaultComponent } from 'ish-shell/header/header-default/header-default.component';
 import { HeaderSimpleComponent } from 'ish-shell/header/header-simple/header-simple.component';
@@ -49,7 +49,7 @@ describe('Header Component', () => {
 
   it('should render default header component if no headerType is set', () => {
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
         "ish-header-default",
       ]
@@ -59,7 +59,7 @@ describe('Header Component', () => {
   it('should render simple header component if set', () => {
     when(appFacade.headerType$).thenReturn(of('simple'));
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
         "ish-header-simple",
       ]

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
@@ -43,12 +43,12 @@ describe('Retail Set Parts Component', () => {
 
   it('should display elements for each part', () => {
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
+        "ish-product-item",
+        "ish-product-item",
+        "ish-product-item",
         "ish-product-add-to-basket",
-        "ish-product-item",
-        "ish-product-item",
-        "ish-product-item",
       ]
     `);
   });

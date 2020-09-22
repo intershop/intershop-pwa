@@ -1,7 +1,7 @@
 import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-function getAllElementTagsRecursively(el: Element): string[] {
+function getAllElementTagsRecursively(el: Element) {
   const returnList = [];
   returnList.push(el.tagName);
 
@@ -12,27 +12,25 @@ function getAllElementTagsRecursively(el: Element): string[] {
   return returnList;
 }
 
-export function findAllIshElements(el: HTMLElement): string[] {
+export function findAllCustomElements(el: HTMLElement): string[] {
   const returnList = [];
   const tagList = getAllElementTagsRecursively(el);
 
   for (let index = 0; index < tagList.length; index++) {
     const element = tagList[index];
     const tagName = element.toLocaleLowerCase();
-    if (!tagName.startsWith('ish-')) {
+    // https://stackoverflow.com/a/47737765/13001898
+    if (!tagName.includes('-')) {
       continue;
     }
     returnList.push(tagName);
   }
 
-  return returnList.sort();
+  return returnList;
 }
 
 export function findAllDataTestingIDs(fixture: ComponentFixture<unknown>) {
-  return fixture.debugElement
-    .queryAll(By.css('[data-testing-id]'))
-    .map(el => el.attributes['data-testing-id'])
-    .sort();
+  return fixture.debugElement.queryAll(By.css('[data-testing-id]')).map(el => el.attributes['data-testing-id']);
 }
 
 export function createDocumentFromHTML(html: string): HTMLDocument {

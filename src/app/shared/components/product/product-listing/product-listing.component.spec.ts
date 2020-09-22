@@ -8,7 +8,7 @@ import { deepEqual, instance, mock, when } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductListingView } from 'ish-core/models/product-listing/product-listing.model';
-import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ProductListPagingComponent } from 'ish-shared/components/product/product-list-paging/product-list-paging.component';
 import { ProductListToolbarComponent } from 'ish-shared/components/product/product-list-toolbar/product-list-toolbar.component';
@@ -67,7 +67,7 @@ describe('Product Listing Component', () => {
     component.ngOnChanges({ id: new SimpleChange(undefined, TEST_ID, true) });
     fixture.detectChanges();
 
-    expect(findAllIshElements(element)).toIncludeAllMembers(['ish-product-list', 'ish-product-list-toolbar']);
+    expect(findAllCustomElements(element)).toIncludeAllMembers(['ish-product-list', 'ish-product-list-toolbar']);
   });
 
   describe('display modes', () => {
@@ -79,11 +79,11 @@ describe('Product Listing Component', () => {
       component.mode = 'endless-scrolling';
       fixture.detectChanges();
 
-      expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+      expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
         Array [
+          "ish-product-list-toolbar",
           "ish-product-list",
           "ish-product-list-paging",
-          "ish-product-list-toolbar",
         ]
       `);
     });
@@ -92,10 +92,10 @@ describe('Product Listing Component', () => {
       component.mode = 'paging';
       fixture.detectChanges();
 
-      expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+      expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
         Array [
-          "ish-product-list",
           "ish-product-list-toolbar",
+          "ish-product-list",
           "ish-product-list-toolbar",
         ]
       `);

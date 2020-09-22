@@ -7,7 +7,7 @@ import { instance, mock, when } from 'ts-mockito';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
-import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { FilterNavigationBadgesComponent } from 'ish-shared/components/filter/filter-navigation-badges/filter-navigation-badges.component';
 import { FilterNavigationHorizontalComponent } from 'ish-shared/components/filter/filter-navigation-horizontal/filter-navigation-horizontal.component';
 import { FilterNavigationSidebarComponent } from 'ish-shared/components/filter/filter-navigation-sidebar/filter-navigation-sidebar.component';
@@ -52,7 +52,7 @@ describe('Filter Navigation Component', () => {
 
   it('should not display anything when filter is not set', () => {
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
         "ish-filter-navigation-sidebar",
       ]
@@ -62,7 +62,7 @@ describe('Filter Navigation Component', () => {
   it('should display sidebar component for default mode', () => {
     fixture.detectChanges();
 
-    expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
         "ish-filter-navigation-sidebar",
       ]
@@ -73,10 +73,10 @@ describe('Filter Navigation Component', () => {
     component.orientation = 'horizontal';
     fixture.detectChanges();
 
-    expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
-        "ish-filter-navigation-badges",
         "ish-filter-navigation-horizontal",
+        "ish-filter-navigation-badges",
       ]
     `);
   });
