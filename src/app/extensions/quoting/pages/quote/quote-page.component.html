@@ -1,9 +1,11 @@
 <ng-container *ngIf="selectedQuote$ | async as quote">
   <ng-container *ngIf="state$ | async as state">
     <!-- Title -->
-    <h1 [ngSwitch]="state">
-      <ng-template [ngSwitchCase]="'Submitted'">{{ 'quote.edit.submitted.heading' | translate }}</ng-template>
-      <ng-template [ngSwitchCase]="'Responded'">
+    <h1 [ngSwitch]="true">
+      <ng-template [ngSwitchCase]="state === 'Submitted' && (justSubmitted$ | async)">{{
+        'quote.edit.submitted.heading' | translate
+      }}</ng-template>
+      <ng-template [ngSwitchCase]="state === 'Responded'">
         {{ 'quote.edit.responded.quote_details.text' | translate }} - {{ quote.displayName || quote.number }}
       </ng-template>
       <ng-template ngSwitchDefault>

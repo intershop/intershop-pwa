@@ -19,6 +19,7 @@ export class QuotePageComponent implements OnInit {
   loading$: Observable<boolean>;
   state$: Observable<QuoteStatus>;
   error$: Observable<HttpError>;
+  justSubmitted$: Observable<boolean>;
 
   asQuoteRequest = QuotingHelper.asQuoteRequest;
 
@@ -29,5 +30,6 @@ export class QuotePageComponent implements OnInit {
     this.loading$ = this.context.select('loading');
     this.state$ = this.context.select('state');
     this.error$ = this.context.select('error');
+    this.justSubmitted$ = this.context.select('justSubmitted');
   }
 }
