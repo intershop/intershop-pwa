@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { pick } from 'lodash-es';
-import { Observable, Subject, combineLatest } from 'rxjs';
-import { filter, first, map, shareReplay, startWith, switchMapTo } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 
@@ -12,7 +12,6 @@ import { QuoteRequest } from '../../models/quoting/quoting.model';
 /**
  * The Quote Edit Component displays and updates quote or quote request data.
  * It provides modify and delete functionality for quote request items.
- * It provides functionality to submit a quote request.
  */
 @Component({
   selector: 'ish-quote-edit',
@@ -21,44 +20,41 @@ import { QuoteRequest } from '../../models/quoting/quoting.model';
 })
 export class QuoteEditComponent implements OnInit {
   quote$: Observable<QuoteRequest>;
-  form$: Observable<FormGroup>;
+  form = new FormGroup({
+    displayName: new FormControl(''),
+    description: new FormControl(''),
+  });
 
   update = new Subject();
   reset = new Subject();
 
   constructor(private context: QuoteContextFacade) {}
 
+  private get valuesFromQuote() {
+    return pick(this.context.get('entity'), 'displayName', 'description');
+  }
+
   ngOnInit() {
     this.quote$ = this.context.select('entityAsQuoteRequest');
-    this.form$ = combineLatest([this.quote$, this.reset.pipe(startWith(''))]).pipe(
-      map(
-        ([quote]) =>
-          new FormGroup({
-            displayName: new FormControl(quote.displayName),
-            description: new FormControl(quote.description),
-          })
-      ),
-      shareReplay(1)
-    );
+
+    this.context.hold(this.reset, () => {
+      this.form.reset(this.valuesFromQuote);
+    });
+
+    this.context.hold(this.quote$, () => this.reset.next());
 
     this.context.hold(
       this.update.pipe(
-        switchMapTo(
-          combineLatest([
-            this.quote$.pipe(map(quote => pick(quote, 'displayName', 'description'))),
-            this.form$.pipe(map(form => form.value)),
-          ]).pipe(
-            first(),
-            filter(
-              ([a, b]) =>
-                a.displayName !== b.displayName ||
-                // tslint:disable-next-line: triple-equals
-                a.description != b.description
-            )
-          )
-        )
+        map(() => [this.form.value, this.valuesFromQuote]),
+        filter(
+          ([a, b]) =>
+            a.displayName !== b.displayName ||
+            // tslint:disable-next-line: triple-equals
+            a.description != b.description
+        ),
+        map(([meta]) => meta)
       ),
-      ([, meta]) => this.context.update(meta)
+      meta => this.context.update(meta)
     );
   }
 

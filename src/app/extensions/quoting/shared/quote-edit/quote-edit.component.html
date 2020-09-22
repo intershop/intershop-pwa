@@ -1,67 +1,65 @@
-<ng-container *ngIf="form$ | async as form">
-  <ng-container *ngIf="quote$ | async as quote">
-    <form [formGroup]="form" class="form-horizontal form-horizontal-inline">
+<ng-container *ngIf="quote$ | async as quote">
+  <form [formGroup]="form" class="form-horizontal form-horizontal-inline">
+    <div class="row">
+      <label class="col-4 col-md-3 col-xl-2 col-form-label">{{
+        'quote.edit.unsubmitted.quote_no.label' | translate
+      }}</label>
+      <div class="col-8 col-md-9 col-xl-10">
+        <p class="form-control-plaintext">{{ quote.number }}</p>
+      </div>
+    </div>
+    <div class="row">
+      <label class="col-4 col-md-3 col-xl-2 col-form-label">{{
+        'quote.edit.unsubmitted.status.label' | translate
+      }}</label>
+      <div class="col-8 col-md-9 col-xl-10">
+        <p class="form-control-plaintext"><ish-quote-state [quoteId]="quote.id"></ish-quote-state></p>
+      </div>
+    </div>
+
+    <div class="section">
+      <!-- displayName -->
       <div class="row">
         <label class="col-4 col-md-3 col-xl-2 col-form-label">{{
-          'quote.edit.unsubmitted.quote_no.label' | translate
+          'quote.edit.unsubmitted.name.label' | translate
         }}</label>
         <div class="col-8 col-md-9 col-xl-10">
-          <p class="form-control-plaintext">{{ quote.number }}</p>
+          <ish-inplace-edit (edited)="update.next()" (aborted)="reset.next()">
+            <p class="form-control-plaintext w-auto" [ngClass]="{ 'font-italic': !form.get('displayName').value }">
+              {{ form.get('displayName').value || 'quote.edit.unsubmitted.enter_an_optional_name.text' | translate }}
+            </p>
+            <input type="text" formControlName="displayName" class="form-control" />
+          </ish-inplace-edit>
         </div>
       </div>
+
       <div class="row">
-        <label class="col-4 col-md-3 col-xl-2 col-form-label">{{
-          'quote.edit.unsubmitted.status.label' | translate
+        <label for="quote-description" class="col-4 col-md-3 col-xl-2 col-form-label">{{
+          'quote.edit.unsubmitted.comment.label' | translate
         }}</label>
         <div class="col-8 col-md-9 col-xl-10">
-          <p class="form-control-plaintext"><ish-quote-state [quoteId]="quote.id"></ish-quote-state></p>
+          <ish-inplace-edit (edited)="update.next()" (aborted)="reset.next()">
+            <p class="form-control-plaintext w-auto" [ngClass]="{ 'font-italic': !form.get('description').value }">
+              {{ form.get('description').value || 'quote.edit.unsubmitted.provide_comment.text' | translate }}
+            </p>
+            <textarea formControlName="description" class="form-control" id="quote-description"> </textarea>
+          </ish-inplace-edit>
         </div>
       </div>
+    </div>
 
-      <div class="section">
-        <!-- displayName -->
-        <div class="row">
-          <label class="col-4 col-md-3 col-xl-2 col-form-label">{{
-            'quote.edit.unsubmitted.name.label' | translate
-          }}</label>
-          <div class="col-8 col-md-9 col-xl-10">
-            <ish-inplace-edit (edited)="update.next()" (aborted)="reset.next()">
-              <p class="form-control-plaintext w-auto" [ngClass]="{ 'font-italic': !form.get('displayName').value }">
-                {{ form.get('displayName').value || 'quote.edit.unsubmitted.enter_an_optional_name.text' | translate }}
-              </p>
-              <input type="text" formControlName="displayName" class="form-control" />
-            </ish-inplace-edit>
-          </div>
-        </div>
-
-        <div class="row">
-          <label for="quote-description" class="col-4 col-md-3 col-xl-2 col-form-label">{{
-            'quote.edit.unsubmitted.comment.label' | translate
-          }}</label>
-          <div class="col-8 col-md-9 col-xl-10">
-            <ish-inplace-edit (edited)="update.next()" (aborted)="reset.next()">
-              <p class="form-control-plaintext w-auto" [ngClass]="{ 'font-italic': !form.get('description').value }">
-                {{ form.get('description').value || 'quote.edit.unsubmitted.provide_comment.text' | translate }}
-              </p>
-              <textarea formControlName="description" class="form-control" id="quote-description"> </textarea>
-            </ish-inplace-edit>
-          </div>
-        </div>
-      </div>
-
-      <!-- Quote Item List -->
-      <div class="section">
-        <h3>{{ 'quote.items.table.heading' | translate }}</h3>
-        <ish-line-item-list
-          *ngIf="quote.items"
-          [lineItems]="quote.items"
-          [editable]="true"
-          lineItemViewType="availability"
-          [total]="quote.total"
-          (updateItem)="onUpdateItem($event)"
-          (deleteItem)="onDeleteItem($event)"
-        ></ish-line-item-list>
-      </div>
-    </form>
-  </ng-container>
+    <!-- Quote Item List -->
+    <div class="section">
+      <h3>{{ 'quote.items.table.heading' | translate }}</h3>
+      <ish-line-item-list
+        *ngIf="quote.items"
+        [lineItems]="quote.items"
+        [editable]="true"
+        lineItemViewType="availability"
+        [total]="quote.total"
+        (updateItem)="onUpdateItem($event)"
+        (deleteItem)="onDeleteItem($event)"
+      ></ish-line-item-list>
+    </div>
+  </form>
 </ng-container>
