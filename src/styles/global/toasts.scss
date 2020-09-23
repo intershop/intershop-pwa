@@ -24,16 +24,11 @@
     }
 
     & > div {
-      width: 100%;
-      max-width: 540px;
+      width: 100% !important;
       margin-top: $top-header-height;
       font-size: $font-size-base;
       line-height: $line-height-base;
       opacity: 1;
-
-      @media (min-width: $screen-sm-min) {
-        max-width: calc(#{$screen-sm-min} - 1.5 * #{$grid-gutter-width});
-      }
 
       @media (min-width: $screen-md-min) {
         max-width: calc(#{$screen-md-min} - 2 * #{$grid-gutter-width});
