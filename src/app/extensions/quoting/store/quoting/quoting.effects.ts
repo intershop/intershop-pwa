@@ -9,7 +9,7 @@ import { BasketService } from 'ish-core/services/basket/basket.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
-import { getCurrentBasketId, loadBasket } from 'ish-core/store/customer/basket';
+import { getCurrentBasketId, updateBasket } from 'ish-core/store/customer/basket';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, mapToProperty } from 'ish-core/utils/operators';
 
 import { QuotingHelper } from '../../models/quoting/quoting.helper';
@@ -122,7 +122,7 @@ export class QuotingEffects {
             !basketId ? this.basketService.createBasket().pipe(map(basket => basket.id)) : of(basketId)
           ),
           concatMap(basketId => this.quotingService.addQuoteToBasket(id, basketId)),
-          mergeMapTo([loadBasket(), addQuoteToBasketSuccess({ id })]),
+          mergeMapTo([updateBasket({ update: { calculated: true } }), addQuoteToBasketSuccess({ id })]),
           mapErrorToAction(loadQuotingFail)
         )
       )
