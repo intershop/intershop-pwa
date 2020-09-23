@@ -6,7 +6,6 @@ import { QuoteDetailPage } from '../../pages/account/quote-detail.page';
 import { QuoteListPage } from '../../pages/account/quote-list.page';
 import { sensibleDefaults } from '../../pages/account/registration.page';
 import { CartPage } from '../../pages/checkout/cart.page';
-import { HomePage } from '../../pages/home.page';
 import { CategoryPage } from '../../pages/shopping/category.page';
 import { FamilyPage } from '../../pages/shopping/family.page';
 import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
@@ -32,6 +31,15 @@ describe('Quote Handling', () => {
     at(LoginPage, page => {
       page.fillForm(_.user.login, _.user.password);
       page.submit().its('status').should('equal', 200);
+    });
+  });
+
+  it('should check number of quotes', () => {
+    at(MyAccountPage, page => {
+      page.newQuoteLabel.should('have.text', '0');
+      page.submittedQuoteLabel.should('have.text', '0');
+      page.acceptedQuoteLabel.should('have.text', '0');
+      page.rejectedQuoteLabel.should('have.text', '0');
     });
   });
 
@@ -95,21 +103,22 @@ describe('Quote Handling', () => {
     });
   });
 
-  it('user submits quote from account quote request detail page and logs out', () => {
+  it('user adds product to quote request from family page', () => {
     at(MyAccountPage, page => page.header.gotoCategoryPage(_.catalog));
     at(CategoryPage, page => page.gotoSubCategory(_.categoryId));
     at(FamilyPage, page => page.productList.addProductToQuoteRequest(_.product.sku));
     at(QuoteRequestDialog, dialog => {
-      dialog.submitQuoteRequest().then(quoteId => {
-        dialog.hide();
-        at(FamilyPage, page => page.header.goToMyAccount());
-        at(MyAccountPage, page => page.navigateToQuoting());
-        at(QuoteListPage, page => page.goToQuoteDetailLink(quoteId));
-      });
+      dialog.hide();
     });
-    at(QuoteDetailPage, page => {
-      page.header.logout();
+  });
+
+  it('should check number of quotes again', () => {
+    at(FamilyPage, page => page.header.goToMyAccount());
+    at(MyAccountPage, page => {
+      page.newQuoteLabel.should('have.text', '1');
+      page.submittedQuoteLabel.should('have.text', '1');
+      page.acceptedQuoteLabel.should('have.text', '0');
+      page.rejectedQuoteLabel.should('have.text', '0');
     });
-    at(HomePage);
   });
 });
