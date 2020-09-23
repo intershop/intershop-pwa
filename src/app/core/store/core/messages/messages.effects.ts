@@ -7,6 +7,7 @@ import { IndividualConfig, ToastrService } from 'ngx-toastr';
 import { Subject, combineLatest } from 'rxjs';
 import { tap, withLatestFrom } from 'rxjs/operators';
 
+import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { getDeviceType } from 'ish-core/store/core/configuration';
 import { isStickyHeader } from 'ish-core/store/core/viewconf';
 import { mapToPayload } from 'ish-core/utils/operators';
@@ -106,7 +107,7 @@ export class MessagesEffects {
 
   private composeToastServiceArguments(
     payload: MessagesPayloadType,
-    deviceType: string,
+    deviceType: DeviceType,
     duration?: number
   ): [string, string, Partial<IndividualConfig>] {
     const timeOut = payload.duration ?? duration ?? 5000;
@@ -124,7 +125,7 @@ export class MessagesEffects {
         closeButton: timeOut === 0,
         enableHtml: true,
         tapToDismiss: true,
-        positionClass: deviceType !== 'mobile' ? 'toast-top-full-width' : 'toast-bottom-center',
+        positionClass: deviceType === 'desktop' ? 'toast-top-full-width' : 'toast-bottom-center',
       },
     ];
   }
