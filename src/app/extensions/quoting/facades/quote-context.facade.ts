@@ -13,6 +13,7 @@ import { Quote, QuoteRequest, QuoteStatus } from '../models/quoting/quoting.mode
 import {
   addQuoteToBasket,
   createQuoteRequestFromQuote,
+  createQuoteRequestFromQuoteRequest,
   getQuotingEntity,
   getQuotingError,
   getQuotingLoading,
@@ -116,7 +117,11 @@ export abstract class QuoteContextFacade
   }
 
   copy() {
-    this.store.dispatch(createQuoteRequestFromQuote({ id: this.get('entity', 'id') }));
+    if (this.get('entity', 'type') === 'Quote') {
+      this.store.dispatch(createQuoteRequestFromQuote({ id: this.get('entity', 'id') }));
+    } else {
+      this.store.dispatch(createQuoteRequestFromQuoteRequest({ entity: this.get('entity') }));
+    }
   }
 
   addToBasket() {

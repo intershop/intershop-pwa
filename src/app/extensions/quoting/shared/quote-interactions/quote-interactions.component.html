@@ -22,7 +22,14 @@
         {{ 'quote.edit.button.add_quote_to_cart.label' | translate }}
       </button>
 
-      <button *ngIf="quote.type === 'Quote'" class="btn btn-secondary" name="copy" type="submit" (click)="copy()">
+      <button
+        *ngIf="quote.type === 'Quote' || state === 'Submitted'"
+        data-testing-id="copy-quote-request"
+        class="btn btn-secondary"
+        name="copy"
+        type="submit"
+        (click)="copy()"
+      >
         {{ 'quote.edit.button.create_new_from_quote.label' | translate }}
       </button>
 

@@ -15,6 +15,8 @@ import {
   createQuoteRequestFromBasket,
   createQuoteRequestFromBasketSuccess,
   createQuoteRequestFromQuote,
+  createQuoteRequestFromQuoteRequest,
+  createQuoteRequestFromQuoteRequestSuccess,
   createQuoteRequestFromQuoteSuccess,
   deleteQuotingEntity,
   deleteQuotingEntityFail,
@@ -60,6 +62,7 @@ export const quotingReducer = createReducer(
     rejectQuote,
     addQuoteToBasket,
     createQuoteRequestFromQuote,
+    createQuoteRequestFromQuoteRequest,
     createQuoteRequestFromBasket,
     submitQuoteRequest,
     addProductToQuoteRequest,
@@ -71,6 +74,7 @@ export const quotingReducer = createReducer(
     deleteQuotingEntitySuccess,
     addQuoteToBasketSuccess,
     createQuoteRequestFromQuoteSuccess,
+    createQuoteRequestFromQuoteRequestSuccess,
     createQuoteRequestFromBasketSuccess,
     submitQuoteRequestSuccess,
     addProductToQuoteRequestSuccess,
@@ -84,6 +88,7 @@ export const quotingReducer = createReducer(
   on(
     loadQuotingDetailSuccess,
     createQuoteRequestFromQuoteSuccess,
+    createQuoteRequestFromQuoteRequestSuccess,
     createQuoteRequestFromBasketSuccess,
     submitQuoteRequestSuccess,
     addProductToQuoteRequestSuccess,
@@ -93,7 +98,7 @@ export const quotingReducer = createReducer(
   on(deleteQuotingEntitySuccess, (state, action) => quotingAdapter.removeOne(action.payload.id, state)),
   // active quote request
   on(addProductToQuoteRequest, state => ({ ...state, activeQuoteRequest: undefined })),
-  on(addProductToQuoteRequestSuccess, (state, action) => ({
+  on(addProductToQuoteRequestSuccess, createQuoteRequestFromQuoteRequestSuccess, (state, action) => ({
     ...state,
     activeQuoteRequest: action.payload.entity.id,
   }))

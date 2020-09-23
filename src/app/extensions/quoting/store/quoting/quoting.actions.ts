@@ -69,6 +69,16 @@ export const createQuoteRequestFromQuoteSuccess = createAction(
   payload<EntityPayloadType>()
 );
 
+export const createQuoteRequestFromQuoteRequest = createAction(
+  '[Quoting] Create Quote Request From Quote Request',
+  payload<EntityPayloadType>()
+);
+
+export const createQuoteRequestFromQuoteRequestSuccess = createAction(
+  '[Quoting API] Create Quote Request From Quote Request Success',
+  payload<EntityPayloadType>()
+);
+
 export const submitQuoteRequest = createAction('[Quoting] Submit Quote Request', payload<IdPayloadType>());
 
 export const submitQuoteRequestSuccess = createAction(

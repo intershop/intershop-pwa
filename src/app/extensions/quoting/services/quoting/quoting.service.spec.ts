@@ -2,10 +2,11 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
+import { Link } from 'ish-core/models/link/link.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 
 import { QuoteData } from '../../models/quoting/quoting.interface';
-import { QuoteStub } from '../../models/quoting/quoting.model';
+import { QuoteRequest, QuoteRequestItem, QuoteStub } from '../../models/quoting/quoting.model';
 
 import { QuotingService } from './quoting.service';
 
@@ -175,7 +176,7 @@ describe('Quoting Service', () => {
       when(apiService.post(anything(), anything())).thenReturn(of({ type: 'QuoteRequest' }));
     });
 
-    it('should use quote request API for creating quote from quote request', done => {
+    it('should use quote request API for creating quoterequest from quote', done => {
       quotingService.createQuoteRequestFromQuote('quoteID').subscribe(
         () => {
           verify(apiService.post(anything(), anything())).once();
@@ -190,6 +191,61 @@ describe('Quoting Service', () => {
         fail,
         done
       );
+    });
+  });
+
+  describe('createQuoteRequestFromQuoteRequest', () => {
+    beforeEach(() => {
+      when(apiService.post(anything())).thenReturn(of({ type: 'Link', title: 'NEW' } as Link));
+      when(apiService.put(anything(), anything())).thenReturn(of({}));
+    });
+
+    it('should use quote request API for creating quote request from quote request', done => {
+      quotingService
+        .createQuoteRequestFromQuoteRequest({
+          type: 'QuoteRequest',
+          items: [
+            { productSKU: 'SKU1', quantity: { value: 1 } },
+            { productSKU: 'SKU2', quantity: { value: 3 } },
+          ] as QuoteRequestItem[],
+        } as QuoteRequest)
+        .subscribe(
+          id => {
+            verify(apiService.post(anything())).once();
+            expect(capture(apiService.post).last()).toMatchInlineSnapshot(`
+              Array [
+                "quoterequests",
+              ]
+            `);
+
+            verify(apiService.put(anything(), anything())).once();
+            expect(capture(apiService.put).last()).toMatchInlineSnapshot(`
+              Array [
+                "quoterequests/NEW/items",
+                Object {
+                  "elements": Array [
+                    Object {
+                      "productSKU": "SKU1",
+                      "quantity": Object {
+                        "value": 1,
+                      },
+                    },
+                    Object {
+                      "productSKU": "SKU2",
+                      "quantity": Object {
+                        "value": 3,
+                      },
+                    },
+                  ],
+                },
+              ]
+            `);
+
+            expect(id).toMatchInlineSnapshot(`"NEW"`);
+          },
+          fail,
+          done
+        );
     });
   });
 

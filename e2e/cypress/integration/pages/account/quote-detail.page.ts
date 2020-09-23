@@ -31,10 +31,6 @@ export class QuoteDetailPage {
     cy.get(`a[title="Remove"]`).click();
   }
 
-  saveQuoteRequest() {
-    cy.get('[data-testing-id="save-quote-request"]').click();
-  }
-
   submitQuoteRequest() {
     cy.get('[data-testing-id="submit-quote-request"]').click();
   }

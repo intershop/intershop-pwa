@@ -18,6 +18,7 @@ import {
   addQuoteToBasket,
   createQuoteRequestFromBasket,
   createQuoteRequestFromQuote,
+  createQuoteRequestFromQuoteRequest,
   deleteQuotingEntity,
   loadQuoting,
   loadQuotingDetail,
@@ -146,8 +147,31 @@ describe('Quoting Effects', () => {
       when(quotingService.createQuoteRequestFromQuote(anything())).thenCall(({ id }) => of(id));
       actions$ = of(createQuoteRequestFromQuote({ id: 'ID' }));
 
-      effects.createQuoteRequestFromQuote$.subscribe(() => {
+      effects.createQuoteRequestFromQuote$.subscribe(action => {
         verify(quotingService.createQuoteRequestFromQuote(anything())).once();
+        expect(action).toMatchInlineSnapshot(`
+          [Quoting API] Create Quote Request From Quote Success:
+            entity: undefined
+        `);
+        done();
+      });
+    });
+  });
+
+  describe('createQuoteRequestFromQuoteRequest$', () => {
+    it('should create quote request from quote request via quoting service when triggered', done => {
+      when(quotingService.createQuoteRequestFromQuoteRequest(anything())).thenReturn(of('NEW'));
+      when(quotingService.getQuoteDetails(anything(), anything(), anything())).thenCall((id, type) =>
+        of({ id, type, completenessLevel: 'Detail' } as QuoteStub)
+      );
+      actions$ = of(createQuoteRequestFromQuoteRequest({ entity: { id: 'ID' } as QuoteRequest }));
+
+      effects.createQuoteRequestFromQuoteRequest$.subscribe(action => {
+        verify(quotingService.createQuoteRequestFromQuoteRequest(anything())).once();
+        expect(action).toMatchInlineSnapshot(`
+          [Quoting API] Create Quote Request From Quote Request Success:
+            entity: {"id":"NEW","type":"QuoteRequest","completenessLevel":"Detai...
+        `);
         done();
       });
     });

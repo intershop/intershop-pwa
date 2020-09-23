@@ -34,6 +34,8 @@ import {
   createQuoteRequestFromBasket,
   createQuoteRequestFromBasketSuccess,
   createQuoteRequestFromQuote,
+  createQuoteRequestFromQuoteRequest,
+  createQuoteRequestFromQuoteRequestSuccess,
   createQuoteRequestFromQuoteSuccess,
   deleteQuotingEntity,
   deleteQuotingEntityFail,
@@ -152,6 +154,21 @@ export class QuotingEffects {
     )
   );
 
+  createQuoteRequestFromQuoteRequest$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createQuoteRequestFromQuoteRequest),
+      mapToPayloadProperty('entity'),
+      map(QuotingHelper.asQuoteRequest),
+      concatMap(quoteRequest =>
+        this.quotingService.createQuoteRequestFromQuoteRequest(quoteRequest).pipe(
+          concatMap(id => this.quotingService.getQuoteDetails(id, 'QuoteRequest', 'List')),
+          map(entity => createQuoteRequestFromQuoteRequestSuccess({ entity })),
+          mapErrorToAction(loadQuotingFail)
+        )
+      )
+    )
+  );
+
   createQuoteRequestFromBasket$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createQuoteRequestFromBasket),
@@ -165,13 +182,28 @@ export class QuotingEffects {
     )
   );
 
-  redirectToNewQuote$ = createEffect(
+  redirectToNewQuoteRequest$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(createQuoteRequestFromQuoteSuccess, createQuoteRequestFromBasketSuccess),
         mapToPayloadProperty('entity'),
         mapToProperty('id'),
         tap(id => {
+          this.router.navigateByUrl('/account/quotes/' + id);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  redirectToNewQuoteRequestCopy$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(createQuoteRequestFromQuoteRequestSuccess),
+        mapToPayloadProperty('entity'),
+        mapToProperty('id'),
+        withLatestFrom(this.store.pipe(select(selectUrl))),
+        filter(([, url]) => url.startsWith('/account/quotes')),
+        tap(([id]) => {
           this.router.navigateByUrl('/account/quotes/' + id);
         })
       ),

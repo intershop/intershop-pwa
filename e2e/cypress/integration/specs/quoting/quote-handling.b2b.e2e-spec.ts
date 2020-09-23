@@ -86,12 +86,13 @@ describe('Quote Handling', () => {
     });
   });
 
-  it('user adds one product from product list page to quote and submit it', () => {
+  it('user adds one product from product list page to quote and submit it, afterwards copying it', () => {
     at(MyAccountPage, page => page.header.gotoCategoryPage(_.catalog));
     at(CategoryPage, page => page.gotoSubCategory(_.categoryId));
     at(FamilyPage, page => page.productList.addProductToQuoteRequest(_.product.sku));
     at(QuoteRequestDialog, dialog => {
       dialog.submitQuoteRequest().then(quoteId => {
+        dialog.copyQuoteRequest();
         dialog.hide();
         at(FamilyPage, page => page.header.goToMyAccount());
         at(MyAccountPage, page => page.navigateToQuoting());
@@ -115,7 +116,7 @@ describe('Quote Handling', () => {
   it('should check number of quotes again', () => {
     at(FamilyPage, page => page.header.goToMyAccount());
     at(MyAccountPage, page => {
-      page.newQuoteLabel.should('have.text', '1');
+      page.newQuoteLabel.should('have.text', '2');
       page.submittedQuoteLabel.should('have.text', '1');
       page.acceptedQuoteLabel.should('have.text', '0');
       page.rejectedQuoteLabel.should('have.text', '0');

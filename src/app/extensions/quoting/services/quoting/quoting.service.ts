@@ -1,7 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { flatten, pick } from 'lodash-es';
-import { EMPTY, concat, defer, forkJoin, iif, of, throwError } from 'rxjs';
+import { EMPTY, Observable, concat, defer, forkJoin, iif, of, throwError } from 'rxjs';
 import { concatMap, defaultIfEmpty, expand, filter, last, map, mapTo, take } from 'rxjs/operators';
 
 import { Link } from 'ish-core/models/link/link.model';
@@ -11,7 +11,13 @@ import { QuoteRequestUpdate } from '../../models/quote-request-update/quote-requ
 import { QuotingHelper } from '../../models/quoting/quoting.helper';
 import { QuoteData } from '../../models/quoting/quoting.interface';
 import { QuotingMapper } from '../../models/quoting/quoting.mapper';
-import { QuoteCompletenessLevel, QuoteRequest, QuoteStub, QuotingEntity } from '../../models/quoting/quoting.model';
+import {
+  QuoteCompletenessLevel,
+  QuoteRequest,
+  QuoteRequestItem,
+  QuoteStub,
+  QuotingEntity,
+} from '../../models/quoting/quoting.model';
 
 @Injectable({ providedIn: 'root' })
 export class QuotingService {
@@ -97,6 +103,22 @@ export class QuotingService {
       .pipe(map(data => this.quoteMapper.fromData(data, 'QuoteRequest')));
   }
 
+  createQuoteRequestFromQuoteRequest(quoteRequest: QuoteRequest) {
+    return this.createQuoteRequest().pipe(
+      concatMap(stub =>
+        this.apiService
+          .b2bUserEndpoint()
+          .put<Link>(`quoterequests/${stub.id}/items`, {
+            elements: quoteRequest.items.map((item: QuoteRequestItem) => ({
+              productSKU: item.productSKU,
+              quantity: { value: item.quantity.value },
+            })),
+          })
+          .pipe(mapTo(stub.id))
+      )
+    );
+  }
+
   createQuoteRequestFromBasket(basketID: string) {
     return this.apiService
       .b2bUserEndpoint()
@@ -111,7 +133,7 @@ export class QuotingService {
       .pipe(mapTo(quoteRequestID));
   }
 
-  private createQuoteRequest() {
+  private createQuoteRequest(): Observable<QuoteStub> {
     return this.apiService
       .b2bUserEndpoint()
       .post<Link>('quoterequests')
