@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { pick } from 'lodash-es';
-import { Observable, Subject } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 
@@ -25,9 +24,6 @@ export class QuoteEditComponent implements OnInit {
     description: new FormControl(''),
   });
 
-  update = new Subject();
-  reset = new Subject();
-
   constructor(private context: QuoteContextFacade) {}
 
   private get valuesFromQuote() {
@@ -37,25 +33,24 @@ export class QuoteEditComponent implements OnInit {
   ngOnInit() {
     this.quote$ = this.context.select('entityAsQuoteRequest');
 
-    this.context.hold(this.reset, () => {
-      this.form.reset(this.valuesFromQuote);
-    });
+    this.context.hold(this.quote$, () => this.reset());
+  }
 
-    this.context.hold(this.quote$, () => this.reset.next());
+  update() {
+    const formValues = this.form.value;
+    const quoteValues = this.valuesFromQuote;
 
-    this.context.hold(
-      this.update.pipe(
-        map(() => [this.form.value, this.valuesFromQuote]),
-        filter(
-          ([a, b]) =>
-            a.displayName !== b.displayName ||
-            // tslint:disable-next-line: triple-equals
-            a.description != b.description
-        ),
-        map(([meta]) => meta)
-      ),
-      meta => this.context.update(meta)
-    );
+    if (
+      formValues.displayName !== quoteValues.displayName ||
+      // tslint:disable-next-line: triple-equals
+      formValues.description != quoteValues.description
+    ) {
+      this.context.update(formValues);
+    }
+  }
+
+  reset() {
+    this.form.reset(this.valuesFromQuote);
   }
 
   onUpdateItem(item: LineItemUpdate) {
