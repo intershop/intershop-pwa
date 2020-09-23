@@ -258,7 +258,7 @@ export class QuotingEffects {
       map(([entity]) =>
         displaySuccessMessage({
           message: 'quote.edit.saved.your_quote_request_has_been_saved.text',
-          messageParams: { 0: entity.displayName },
+          messageParams: { 0: entity.displayName || entity.number },
         })
       )
     )
