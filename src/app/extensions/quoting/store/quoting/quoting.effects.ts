@@ -3,17 +3,27 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { iif, of } from 'rxjs';
-import { concatMap, delay, first, map, mergeMap, mergeMapTo, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import {
+  concatMap,
+  delay,
+  filter,
+  first,
+  map,
+  mergeMap,
+  mergeMapTo,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
-import { selectRouteParam } from 'ish-core/store/core/router';
+import { selectRouteParam, selectUrl } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { getCurrentBasketId, updateBasket } from 'ish-core/store/customer/basket';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, mapToProperty } from 'ish-core/utils/operators';
 
 import { QuotingHelper } from '../../models/quoting/quoting.helper';
-import { QuoteRequest } from '../../models/quoting/quoting.model';
 import { QuotingService } from '../../services/quoting/quoting.service';
 
 import {
@@ -242,7 +252,10 @@ export class QuotingEffects {
     this.actions$.pipe(
       ofType(updateQuoteRequestSuccess),
       mapToPayloadProperty('entity'),
-      map((entity: QuoteRequest) =>
+      map(QuotingHelper.asQuoteRequest),
+      withLatestFrom(this.store.pipe(select(selectUrl))),
+      filter(([, url]) => url.startsWith('/account/quotes')),
+      map(([entity]) =>
         displaySuccessMessage({
           message: 'quote.edit.saved.your_quote_request_has_been_saved.text',
           messageParams: { 0: entity.displayName },
