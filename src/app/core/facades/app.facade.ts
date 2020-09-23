@@ -13,7 +13,6 @@ import { getAllCountries, getCountriesLoading, loadCountries } from 'ish-core/st
 import { getRegionsByCountryCode, loadRegions } from 'ish-core/store/general/regions';
 import { getServerConfigParameter } from 'ish-core/store/general/server-config';
 
-// tslint:disable: member-ordering
 @Injectable({ providedIn: 'root' })
 export class AppFacade {
   icmBaseUrl: string;
