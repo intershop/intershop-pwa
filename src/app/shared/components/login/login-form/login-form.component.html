@@ -1,4 +1,4 @@
-<ish-error-message [error]="loginError$ | async"></ish-error-message>
+<ish-error-message [error]="loginError$ | async" [toast]="false"></ish-error-message>
 
 <form name="LoginUserForm" [formGroup]="form" class="form-horizontal" (ngSubmit)="loginUser()">
   <!--<p>{{ 'account.login.message' | translate }}</p>--><!-- Decision is pending, whether this message should be shown or not -->

@@ -1,12 +1,57 @@
-.toast-container .toast .toast-close-button {
-  top: 0;
-  background-color: inherit;
-  border: none;
-  opacity: 1;
-}
-
 .toast-container {
-  line-height: 1;
+  z-index: 1030; // appears on top of the page but below the modal windows
+
+  .toast .toast-close-button {
+    top: 0;
+    background-color: inherit;
+    border: none;
+    opacity: 1;
+  }
+
+  &.toast-top-full-width {
+    position: absolute;
+    top: 130px;
+
+    &.toast-sticky {
+      position: fixed;
+      top: 0;
+
+      & > div {
+        @media (max-width: $screen-sm-max) {
+          margin-top: $header-height-mobile;
+        }
+      }
+    }
+
+    & > div {
+      width: 100% !important;
+      margin-top: $top-header-height;
+      font-size: $font-size-base;
+      line-height: $line-height-base;
+      opacity: 1;
+
+      @media (min-width: $screen-md-min) {
+        max-width: calc(#{$screen-md-min} - 2 * #{$grid-gutter-width});
+      }
+
+      @media (min-width: $screen-lg-min) {
+        max-width: calc(1170px - #{$grid-gutter-width});
+      }
+
+      & + div {
+        margin-top: $space-default / 2;
+      }
+    }
+  }
+
+  &.toast-bottom-center {
+    position: fixed;
+    bottom: 0;
+
+    & > div {
+      width: 100% !important;
+    }
+  }
 }
 
 .toast-error {
@@ -25,25 +70,4 @@
   width: 100%;
   background-color: theme-color-level('success', $alert-border-level);
   background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="#{$toastViewBox}" fill="#{$toast-success-color}">#{$toast-success-icon}</svg>');
-}
-
-.toast-container.toast-top-full-width > div {
-  width: 100%;
-  max-width: 540px;
-  margin-top: 50px;
-  font-size: $font-size-base * 1.25;
-  opacity: 1;
-
-  @media (min-width: $screen-sm-min) {
-    max-width: calc(#{$screen-sm-min} - 1.5 * #{$grid-gutter-width});
-    margin-top: 40px;
-  }
-
-  @media (min-width: $screen-md-min) {
-    max-width: calc(#{$screen-md-min} - 2 * #{$grid-gutter-width});
-  }
-
-  @media (min-width: $screen-lg-min) {
-    max-width: calc(1170px - #{$grid-gutter-width});
-  }
 }
