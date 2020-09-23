@@ -10,8 +10,6 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
 
 import { AccountPaymentConcardisDirectdebitComponent } from '../account-payment-concardis-directdebit/account-payment-concardis-directdebit.component';
 
-import { AccountPaymentConcardisDirectdebitComponent } from '../account-payment-concardis-directdebit/account-payment-concardis-directdebit.component';
-
 import { AccountPaymentComponent } from './account-payment.component';
 
 describe('Account Payment Component', () => {
