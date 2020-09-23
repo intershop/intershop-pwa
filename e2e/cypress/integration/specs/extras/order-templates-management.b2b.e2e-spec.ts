@@ -1,4 +1,4 @@
-import { at } from '../../framework';
+import { at, waitLoadingEnd } from '../../framework';
 import { createB2BUserViaREST } from '../../framework/b2b-user';
 import { LoginPage } from '../../pages/account/login.page';
 import { OrderTemplatesDetailsPage } from '../../pages/account/order-templates-details.page';
@@ -96,7 +96,7 @@ describe('Order Template MyAccount Functionality', () => {
       page.listItemLink.then($listItems => {
         const initLength = $listItems.length;
         page.deleteOrderTemplate(_.product2);
-        cy.wait(500);
+        waitLoadingEnd(1000);
         page.listItemLink.invoke('attr', 'href').should('not.contain', _.product2);
         page.listItemLink.should('have.length', initLength - 1);
       });
@@ -106,7 +106,7 @@ describe('Order Template MyAccount Functionality', () => {
   it('user moves a product to another order template', () => {
     at(OrderTemplatesDetailsPage, page => {
       page.moveProductToOrderTemplate(_.product1, anotherOrderTemplate);
-      cy.wait(500);
+      waitLoadingEnd(1000);
       page.OrderTemplateTitle.should('contain', anotherOrderTemplate);
       page.getOrderTemplateItemById(_.product1).should('exist');
       OrderTemplatesDetailsPage.navigateToOverviewPage();

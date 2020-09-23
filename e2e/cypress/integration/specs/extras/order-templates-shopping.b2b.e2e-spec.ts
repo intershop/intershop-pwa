@@ -1,4 +1,4 @@
-import { at } from '../../framework';
+import { at, waitLoadingEnd } from '../../framework';
 import { createB2BUserViaREST } from '../../framework/b2b-user';
 import { LoginPage } from '../../pages/account/login.page';
 import { MyAccountPage } from '../../pages/account/my-account.page';
@@ -69,7 +69,7 @@ describe('Order Template Shopping Experience Functionality', () => {
   it('user adds an order template from order template detail page to cart', () => {
     at(OrderTemplatesDetailsPage, page => {
       page.addOrderTemplateToBasket(_.product1, 4);
-      cy.wait(2000);
+      waitLoadingEnd(2000);
       page.header.miniCart.goToCart();
     });
     at(CartPage, page => {
@@ -114,7 +114,7 @@ describe('Order Template Shopping Experience Functionality', () => {
     });
     at(OrderTemplatesOverviewPage, page => {
       page.addOrderTemplateToCart(accountOrderTemplate);
-      cy.wait(2000);
+      waitLoadingEnd(2000);
       page.header.miniCart.text.should('contain', '11 items');
       page.header.miniCart.goToCart();
     });
@@ -130,14 +130,13 @@ describe('Order Template Shopping Experience Functionality', () => {
   it('user adds only the selected product in order template details', () => {
     at(CartPage, page => {
       page.lineItem(0).remove();
-      cy.wait(2000);
+      waitLoadingEnd(2000);
       page.addProductToOrderTemplate();
       page.addToOrderTemplate.addProductToOrderTemplateFromPage(accountOrderTemplate, true);
     });
     at(OrderTemplatesDetailsPage, page => {
       page.toggleCheckbox(_.product1);
       page.addOrderTemplateToBasket();
-      cy.wait(1500);
       page.header.miniCart.text.should('contain', '7 items');
       page.header.miniCart.goToCart();
     });
@@ -154,7 +153,6 @@ describe('Order Template Shopping Experience Functionality', () => {
     OrderTemplatesDetailsPage.navigateToOverviewPage();
     at(OrderTemplatesOverviewPage, page => {
       page.addOrderTemplateToCart(accountOrderTemplate);
-      cy.wait(1500);
     });
     at(CartPage, page => {
       page.addBasketToOrderTemplate();
