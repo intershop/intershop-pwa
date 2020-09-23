@@ -60,9 +60,17 @@ beforeEach(() => {
   });
 });
 
-Cypress.Cookies.debug(true);
+// Cypress.Cookies.debug(true);
 
 // keep certain cookies
 Cypress.Cookies.defaults({
   whitelist: ['cookieLawSeen', 'apiToken'],
+});
+
+Cypress.on('uncaught:exception', (err, runnable) => {
+  console.error(err);
+
+  // returning false here prevents Cypress from
+  // failing the test
+  return false;
 });
