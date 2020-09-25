@@ -13,13 +13,19 @@ services:
     environment:
       - LOGGING=true
       - ICM_BASE_URL
+      # - PROXY_ICM=true
+      - TRUST_ICM=true
   nginx:
     build: ../nginx
     depends_on:
       - pwa
     environment:
       UPSTREAM_PWA: 'http://pwa:4200'
-      # DEBUG: 1
+      DEBUG: 1
+      CACHE: 0
+      PAGESPEED: 0
+      # COMPRESSION: 0
+      # DEVICE_DETECTION: 0
       PWA_1_DOMAIN: 'example.com'
       # PWA_1_SUBDOMAIN: "www"
       # PWA_1_TOPLEVELDOMAIN: "com"
@@ -30,8 +36,9 @@ services:
       PWA_2_LANG: de_DE
       PWA_2_THEME: blue
       PWA_3_TOPLEVELDOMAIN: 'net'
-      PWA_3_APPLICATION: 'smb-responsive'
-      PWA_3_CHANNEL: 'inSPIRED-inTRONICS-Site'
-      PWA_3_LANG: fr_FR
+      PWA_3_APPLICATION: 'rest'
+      PWA_3_CHANNEL: 'inSPIRED-inTRONICS_Business-Site'
+      PWA_3_LANG: en_US
+      PWA_3_FEATURES: quoting
     ports:
       - '4200:80'
