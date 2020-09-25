@@ -84,7 +84,20 @@ export const quotingReducer = createReducer(
   // initialized
   on(loadQuotingSuccess, state => ({ ...state, initialized: true })),
   // entities
-  on(loadQuotingSuccess, (state, action) => quotingAdapter.upsertMany(action.payload.quoting, state)),
+  on(loadQuotingSuccess, (state, action) =>
+    action.payload.quoting.reduce(
+      (acc, val) =>
+        !acc.entities[val.id]
+          ? // add if entity does not exist
+            quotingAdapter.addOne(val, acc)
+          : acc.entities[val.id].type !== val.type
+          ? // overwrite when type changes on server
+            quotingAdapter.setOne(val, acc)
+          : // no change by default
+            acc,
+      state
+    )
+  ),
   on(
     loadQuotingDetailSuccess,
     createQuoteRequestFromQuoteSuccess,

@@ -48,7 +48,7 @@ describe('Quote List Page Component', () => {
 
   it('should render quote list component if quotes present', () => {
     const quotes = [{ id: 'test' }] as Quote[];
-    when(quotingFacade.quotingEntities$).thenReturn(of(quotes));
+    when(quotingFacade.quotingEntities$()).thenReturn(of(quotes));
 
     fixture.detectChanges();
     expect(element.querySelector('ish-quote-list')).toBeTruthy();

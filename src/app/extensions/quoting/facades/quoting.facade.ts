@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { once } from 'lodash-es';
 import { timer } from 'rxjs';
-import { map, sample, switchMapTo, tap } from 'rxjs/operators';
+import { map, mapTo, sample, switchMap, switchMapTo, tap } from 'rxjs/operators';
 
 import { whenFalsy } from 'ish-core/utils/operators';
 
@@ -14,7 +13,6 @@ import {
   getQuotingEntities,
   getQuotingEntity,
   getQuotingLoading,
-  isQuotingInitialized,
   loadQuoting,
   loadQuotingDetail,
 } from '../store/quoting';
@@ -26,23 +24,32 @@ export class QuotingFacade {
 
   loading$ = this.store.pipe(select(getQuotingLoading));
 
-  quotingEntities$ = this.store.pipe(
-    tap(
-      once(state => {
-        if (!isQuotingInitialized(state)) {
-          this.store.dispatch(loadQuoting());
-        }
-      })
-    ),
-    select(getQuotingEntities),
-    sample(this.loading$.pipe(whenFalsy())),
-    tap(entities => {
-      entities.filter(QuotingHelper.isStub).forEach(entity => {
-        this.store.dispatch(loadQuotingDetail({ entity, level: 'List' }));
-      });
-    }),
-    map(entities => entities.filter(QuotingHelper.isNotStub))
-  );
+  quotingEntities$() {
+    // update on subscription
+    this.store.dispatch(loadQuoting());
+
+    return this.store.pipe(
+      select(getQuotingEntities),
+      sample(this.loading$.pipe(whenFalsy())),
+      switchMap(entities =>
+        // update every minute
+        timer(0, 60_000).pipe(
+          tap(count => {
+            if (count) {
+              this.store.dispatch(loadQuoting());
+            }
+          }),
+          mapTo(entities)
+        )
+      ),
+      tap(entities => {
+        entities.filter(QuotingHelper.isStub).forEach(entity => {
+          this.store.dispatch(loadQuotingDetail({ entity, level: 'List' }));
+        });
+      }),
+      map(entities => entities.filter(QuotingHelper.isNotStub))
+    );
+  }
 
   state$(quoteId: string) {
     return timer(0, 2000).pipe(

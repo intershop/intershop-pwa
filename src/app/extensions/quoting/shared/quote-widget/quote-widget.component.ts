@@ -26,7 +26,7 @@ export class QuoteWidgetComponent implements OnInit {
   ngOnInit() {
     this.loading$ = this.quotingFacade.loading$;
 
-    this.counts$ = this.quotingFacade.quotingEntities$.pipe(
+    this.counts$ = this.quotingFacade.quotingEntities$().pipe(
       switchMap(quotes =>
         iif(() => !quotes?.length, of([]), combineLatest(quotes.map(quote => this.quotingFacade.state$(quote.id))))
       ),

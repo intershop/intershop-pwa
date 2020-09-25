@@ -16,7 +16,7 @@ export class QuoteListPageComponent implements OnInit {
   constructor(private quotingFacade: QuotingFacade) {}
 
   ngOnInit() {
-    this.quotes$ = this.quotingFacade.quotingEntities$;
+    this.quotes$ = this.quotingFacade.quotingEntities$();
     this.loading$ = this.quotingFacade.loading$;
   }
 

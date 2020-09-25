@@ -20,7 +20,7 @@ describe('Quote Widget Component', () => {
 
   beforeEach(async () => {
     quotingFacade = mock(QuotingFacade);
-    when(quotingFacade.quotingEntities$).thenReturn(of([]));
+    when(quotingFacade.quotingEntities$()).thenReturn(of([]));
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
@@ -56,7 +56,7 @@ describe('Quote Widget Component', () => {
   });
 
   it('should calculate and display the right amounts when rendered', () => {
-    when(quotingFacade.quotingEntities$).thenReturn(
+    when(quotingFacade.quotingEntities$()).thenReturn(
       of(range(1, 6).map(num => (({ id: `${num}` } as unknown) as Quote)))
     );
     when(quotingFacade.state$('1')).thenReturn(of('New'));
