@@ -12,7 +12,11 @@ export class QuotingMapper {
   fromData(quoteData: QuoteData, type: 'Quote' | 'QuoteRequest'): QuoteStub | Quote | QuoteRequest {
     if (quoteData) {
       if (quoteData.type === 'Link') {
-        if (quoteData.attributes) {
+        if (
+          quoteData.attributes &&
+          ((type === 'Quote' && AttributeHelper.getAttributeByAttributeName(quoteData.attributes, 'rejected')) ||
+            type === 'QuoteRequest')
+        ) {
           const mapped: QuoteStubFromAttributes = {
             type,
             id: quoteData.title,
@@ -29,16 +33,21 @@ export class QuotingMapper {
             ),
             validToDate: AttributeHelper.getAttributeValueByAttributeName<number>(quoteData.attributes, 'validToDate'),
             itemCount: AttributeHelper.getAttributeValueByAttributeName<number>(quoteData.attributes, 'lineItems'),
-          };
-          return mapped;
-        } else {
-          const mapped: QuoteStub = {
-            type,
-            id: quoteData.title,
-            completenessLevel: 'Stub',
+            submittedDate: AttributeHelper.getAttributeValueByAttributeName<number>(
+              quoteData.attributes,
+              'submittedDate'
+            ),
+            rejected: AttributeHelper.getAttributeValueByAttributeName<boolean>(quoteData.attributes, 'rejected'),
           };
           return mapped;
         }
+
+        const defaultMapped: QuoteStub = {
+          type,
+          id: quoteData.title,
+          completenessLevel: 'Stub',
+        };
+        return defaultMapped;
       } else if (quoteData.type !== type) {
         throw new Error(`expected type '${type}' but received '${quoteData.type}'`);
       } else if (quoteData?.type === 'Quote') {

@@ -23,7 +23,7 @@ import {
 export class QuotingService {
   constructor(private apiService: ApiService, private quoteMapper: QuotingMapper) {}
 
-  private static ATTRS = 'number,name,lineItems,creationDate,validFromDate,validToDate';
+  private static ATTRS = 'number,name,lineItems,creationDate,validFromDate,validToDate,rejected,submittedDate';
 
   getQuotes() {
     return forkJoin([

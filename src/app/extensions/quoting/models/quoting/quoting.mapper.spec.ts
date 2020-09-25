@@ -64,8 +64,7 @@ describe('Quoting Mapper', () => {
           { name: 'name', type: 'String', value: '0000003' },
           { name: 'lineItems', type: 'Integer', value: 3 },
           { name: 'creationDate', type: 'Date', value: 1598872290353 },
-          { name: 'validFromDate', type: 'Date', value: 1599390660000 },
-          { name: 'validToDate', type: 'Date', value: 1599477060000 },
+          { name: 'submittedDate', type: 'Date', value: 1599390660000 },
         ],
       };
       const mapped = quoteMapper.fromData(data, 'QuoteRequest');
@@ -77,9 +76,11 @@ describe('Quoting Mapper', () => {
           "id": "ioMKCgoEcC4AAAF0BEAGFSQ5",
           "itemCount": 3,
           "number": "0000003",
+          "rejected": undefined,
+          "submittedDate": 1599390660000,
           "type": "QuoteRequest",
-          "validFromDate": 1599390660000,
-          "validToDate": 1599477060000,
+          "validFromDate": undefined,
+          "validToDate": undefined,
         }
       `);
     });
@@ -97,6 +98,7 @@ describe('Quoting Mapper', () => {
           { name: 'creationDate', type: 'Date', value: 1598872290353 },
           { name: 'validFromDate', type: 'Date', value: 1599390660000 },
           { name: 'validToDate', type: 'Date', value: 1599477060000 },
+          { name: 'rejected', type: 'Boolean', value: true },
         ],
       };
       const mapped = quoteMapper.fromData(data, 'Quote');
@@ -108,6 +110,8 @@ describe('Quoting Mapper', () => {
           "id": "IpMKCgoEYBcAAAF0TgwGFSQd",
           "itemCount": 3,
           "number": "0000003",
+          "rejected": true,
+          "submittedDate": undefined,
           "type": "Quote",
           "validFromDate": 1599390660000,
           "validToDate": 1599477060000,

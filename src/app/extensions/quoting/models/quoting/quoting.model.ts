@@ -17,6 +17,8 @@ export interface QuoteStubFromAttributes extends QuoteStub {
   creationDate: number;
   validFromDate: number;
   validToDate: number;
+  submittedDate: number;
+  rejected: boolean;
 }
 
 interface QuoteItemStub {
