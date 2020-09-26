@@ -16,6 +16,7 @@ import {
   QuoteRequest,
   QuoteRequestItem,
   QuoteStub,
+  QuoteStubFromAttributes,
   QuotingEntity,
 } from '../../models/quoting/quoting.model';
 
@@ -23,14 +24,12 @@ import {
 export class QuotingService {
   constructor(private apiService: ApiService, private quoteMapper: QuotingMapper) {}
 
-  private static ATTRS = 'number,name,lineItems,creationDate,validFromDate,validToDate,rejected,submittedDate';
-
   getQuotes() {
     return forkJoin([
       this.apiService
         .b2bUserEndpoint()
         .get('quoterequests', {
-          params: new HttpParams().set('attrs', QuotingService.ATTRS),
+          params: new HttpParams().set('attrs', 'number,name,lineItems,creationDate,submittedDate'),
         })
         .pipe(
           unpackEnvelope(),
@@ -39,7 +38,12 @@ export class QuotingService {
         ),
       this.apiService
         .b2bUserEndpoint()
-        .get('quotes', { params: new HttpParams().set('attrs', QuotingService.ATTRS) })
+        .get('quotes', {
+          params: new HttpParams().set(
+            'attrs',
+            'number,name,lineItems,creationDate,validFromDate,validToDate,rejected'
+          ),
+        })
         .pipe(
           unpackEnvelope(),
           map(qrs => qrs.reverse()),
@@ -140,9 +144,12 @@ export class QuotingService {
       .pipe(map(link => this.quoteMapper.fromData(link, 'QuoteRequest')));
   }
 
-  private expansion(stubs: QuoteStub[]) {
+  private expansion(stubs: (QuoteStub | QuoteStubFromAttributes)[]) {
     return stubs?.length
-      ? this.getQuoteDetails(stubs[0].id, stubs[0].type, 'List').pipe(
+      ? (stubs[0].completenessLevel === 'List'
+          ? of(stubs[0])
+          : this.getQuoteDetails(stubs[0].id, stubs[0].type, 'List')
+        ).pipe(
           map(quoteRequest => ({
             quoteRequest,
             next: stubs.slice(1),
@@ -155,7 +162,7 @@ export class QuotingService {
     return this.apiService
       .b2bUserEndpoint()
       .get('quoterequests', {
-        params: new HttpParams().set('attrs', QuotingService.ATTRS),
+        params: new HttpParams().set('attrs', 'submittedDate,editable'),
       })
       .pipe(
         unpackEnvelope<Link>(),
@@ -170,7 +177,6 @@ export class QuotingService {
       )
       .pipe(
         concatMap(active => (active ? of(active) : this.createQuoteRequest())),
-        concatMap(activeOrNew => this.getQuoteDetails(activeOrNew.id, activeOrNew.type, 'Detail')),
         map(QuotingHelper.asQuoteRequest)
       );
   }
