@@ -1,5 +1,5 @@
-<div class="clearfix">
-  <dl class="row dl-horizontal" *ngIf="totals">
+<div *ngIf="totals" class="clearfix">
+  <dl class="row dl-horizontal">
     <!-- SubTotal -->
     <dt class="col-6">{{ 'checkout.cart.subtotal.heading' | translate }}</dt>
     <dd class="col-6" data-testing-id="basket-subtotal">{{ totals.itemTotal | ishPrice }}</dd>
