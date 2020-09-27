@@ -24,7 +24,6 @@ export class BasketMockData {
   static getBasketItem(): LineItemView {
     return {
       id: '4712',
-      name: 'pli name',
       quantity: { value: 10 },
       productSKU: '4713',
       singleBasePrice: { gross: 3, net: 2, currency: 'USD', type: 'PriceItem' },

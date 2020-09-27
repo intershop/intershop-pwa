@@ -52,7 +52,6 @@ describe('Customer Store', () => {
 
   const lineItem = {
     id: 'test',
-    name: 'test',
     position: 1,
     quantity: { type: 'test', value: 1, unit: 'pcs.' },
     productSKU: 'test',

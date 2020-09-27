@@ -6,6 +6,7 @@ import { debounceTime } from 'rxjs/operators';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
+import { OrderLineItem } from 'ish-core/models/order/order.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
@@ -32,7 +33,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LineItemListComponent {
-  @Input() lineItems: LineItemView[];
+  @Input() lineItems: Partial<LineItemView & OrderLineItem>[];
   @Input() editable = true;
   @Input() total: Price;
   @Input() lineItemViewType?: 'simple' | 'availability';

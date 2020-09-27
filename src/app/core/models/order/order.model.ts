@@ -1,6 +1,13 @@
-import { Basket } from 'ish-core/models/basket/basket.model';
+import { AbstractBasket } from 'ish-core/models/basket/basket.model';
+import { LineItem } from 'ish-core/models/line-item/line-item.model';
 
-export interface Order extends Basket {
+export interface OrderLineItem extends LineItem {
+  name: string;
+  description: string;
+  fulfillmentStatus: string;
+}
+
+export interface Order extends AbstractBasket<OrderLineItem> {
   documentNo: string;
   creationDate: number;
   orderCreation: {

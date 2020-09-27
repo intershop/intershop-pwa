@@ -1,6 +1,7 @@
 import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.interface';
 import { BasketRebateMapper } from 'ish-core/models/basket-rebate/basket-rebate.mapper';
 import { OrderItemData } from 'ish-core/models/order-item/order-item.interface';
+import { OrderLineItem } from 'ish-core/models/order/order.model';
 import { PriceItemMapper } from 'ish-core/models/price-item/price-item.mapper';
 import { PriceMapper } from 'ish-core/models/price/price.mapper';
 
@@ -49,7 +50,7 @@ export class LineItemMapper {
     }
   }
 
-  static fromOrderItemData(data: OrderItemData, rebateData?: { [id: string]: BasketRebateData }): LineItem {
+  static fromOrderItemData(data: OrderItemData, rebateData?: { [id: string]: BasketRebateData }): OrderLineItem {
     if (data) {
       const orderItem = LineItemMapper.fromData(data, rebateData);
 
