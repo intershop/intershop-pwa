@@ -41,14 +41,6 @@
   padding: ($space-default * 2) 0 0 0;
 }
 
-.cart-button-group {
-  .btn {
-    @media (min-width: $screen-sm-min) {
-      margin-right: ($space-default / 2);
-    }
-  }
-}
-
 .cart-summary {
   padding: ($space-default + ($space-default / 2));
   border: $border-width-default solid $border-color-light;
