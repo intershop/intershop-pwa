@@ -92,25 +92,3 @@
     width: 100%;
   }
 }
-
-//
-// ADDRESSES
-
-.myAccount-addressBook {
-  .bootstrap-select:not([class*='col-']):not([class*='form-control']):not(.input-group-btn) {
-    // TODO: https://getbootstrap.com/docs/4.0/migration/#input-groups
-    @media (min-width: $screen-sm-min) {
-      &.btn-group {
-        width: auto;
-      }
-    }
-
-    @media (max-width: $screen-xs-max) {
-      width: 100%;
-
-      button {
-        font-family: $font-family-condensedbold;
-      }
-    }
-  }
-}

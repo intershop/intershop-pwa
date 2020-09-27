@@ -17,7 +17,6 @@
   }
 
   &.btn-link {
-    width: auto;
     font-family: $font-family-regular;
     text-decoration: none;
     text-transform: unset;
@@ -53,8 +52,11 @@
   }
 }
 
-// multiple buttons margin handling
+// multiple buttons margin handling (use "button-group" in case the buttons are not direct siblings)
+.button-group .btn,
 .btn:not(:only-child) {
+  margin-bottom: $space-default/3;
+
   &:not(.float-right) {
     margin-right: $space-default/3;
 
@@ -86,19 +88,4 @@
   color: #ccc;
   border: 1px solid $border-color-light;
   border-radius: 50%;
-}
-
-// Button Groups
-
-.btn-group {
-  .btn {
-    display: inline-block;
-    width: auto;
-    margin-bottom: 0;
-    clear: none;
-  }
-
-  .btn-tool {
-    margin-right: $space-default/2;
-  }
 }

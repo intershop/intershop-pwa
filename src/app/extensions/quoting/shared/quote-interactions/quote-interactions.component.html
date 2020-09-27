@@ -1,6 +1,6 @@
 <ng-container *ngIf="quote$ | async as quote">
   <ng-container *ngIf="state$ | async as state">
-    <div *ngIf="quote.items" class="form-btn-group clearfix">
+    <div *ngIf="quote.items" class="clearfix">
       <button
         *ngIf="state === 'New'"
         data-testing-id="submit-quote-request"
