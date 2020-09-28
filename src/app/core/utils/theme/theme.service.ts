@@ -1,9 +1,10 @@
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable, Renderer2, RendererFactory2 } from '@angular/core';
+import { DOCUMENT, isPlatformServer } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID, Renderer2, RendererFactory2, isDevMode } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { distinctUntilChanged, filter } from 'rxjs/operators';
+import { takeWhile } from 'rxjs/operators';
 
 import { getTheme } from 'ish-core/store/core/configuration';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
  * Service to add the configured/selected theme’s CSS file in the HTML’s head.
@@ -16,11 +17,13 @@ export class ThemeService {
   private renderer: Renderer2;
   private head: HTMLElement;
   private themeLinks: HTMLElement[] = [];
+  private themePreloadLinks: HTMLElement[] = [];
 
   constructor(
     private rendererFactory: RendererFactory2,
     @Inject(DOCUMENT) private document: Document,
-    private store: Store
+    private store: Store,
+    @Inject(PLATFORM_ID) private platformId: string
   ) {
     this.head = this.document.head;
     this.renderer = this.rendererFactory.createRenderer(undefined, undefined);
@@ -35,10 +38,10 @@ export class ThemeService {
 
   init() {
     this.store
-      .pipe(select(getTheme))
       .pipe(
-        distinctUntilChanged(),
-        filter(x => !!x)
+        takeWhile(() => isPlatformServer(this.platformId) || isDevMode()),
+        select(getTheme),
+        whenTruthy()
       )
       .subscribe(async theme => {
         const themeData = theme.split('|');
@@ -74,14 +77,26 @@ export class ThemeService {
   }
 
   private async loadCss(filename: string) {
+    const themePreloadLinkEl: HTMLElement = this.renderer.createElement('link');
+    this.renderer.setAttribute(themePreloadLinkEl, 'rel', 'preload');
+    this.renderer.setAttribute(themePreloadLinkEl, 'as', 'style');
+    this.renderer.setAttribute(themePreloadLinkEl, 'href', filename);
+    this.renderer.appendChild(this.head, themePreloadLinkEl);
+    this.themePreloadLinks = [...this.themePreloadLinks, themePreloadLinkEl];
+
+    // remove preload of previous theme
+    if (this.themePreloadLinks.length === 2) {
+      this.renderer.removeChild(this.head, this.themePreloadLinks.shift());
+    }
+
     return new Promise(resolve => {
-      const linkEl: HTMLElement = this.renderer.createElement('link');
-      this.renderer.setAttribute(linkEl, 'rel', 'stylesheet');
-      this.renderer.setAttribute(linkEl, 'type', 'text/css');
-      this.renderer.setAttribute(linkEl, 'href', filename);
-      this.renderer.setProperty(linkEl, 'onload', resolve);
-      this.renderer.appendChild(this.head, linkEl);
-      this.themeLinks = [...this.themeLinks, linkEl];
+      const themeLinkEl: HTMLElement = this.renderer.createElement('link');
+      this.renderer.setAttribute(themeLinkEl, 'rel', 'stylesheet');
+      this.renderer.setAttribute(themeLinkEl, 'type', 'text/css');
+      this.renderer.setAttribute(themeLinkEl, 'href', filename);
+      this.renderer.setProperty(themeLinkEl, 'onload', resolve);
+      this.renderer.appendChild(this.head, themeLinkEl);
+      this.themeLinks = [...this.themeLinks, themeLinkEl];
 
       // remove style of previous theme
       if (this.themeLinks.length === 2) {
