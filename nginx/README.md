@@ -6,6 +6,7 @@ This sub project provides a docker image of [nginx](https://www.nginx.com/) supp
 - Enabled compression for downstream services
 - Caching for PWA Universal responses
 - Easy to configure multi site handling via sub domains with environment variables
+- Device type detection for pre-rendering the page fitting to the incoming user agent.
 
 ## Build it!
 
@@ -36,6 +37,13 @@ Temper with the default Page Speed configuration:
 
 - set the environment variable `NPSC_ENABLE_FILTERS` to a comma-separated list of active [Page Speed Filters](https://www.modpagespeed.com/examples/) to override our carefully chosen defaults. Do this at your own risk!
 
+Enable and disable features:
+
+- use `CACHE=off` to disable caching (default `on`)
+- use `PAGESPEED=off` to disable pagespeed optimizations (default `on`)
+- use `COMPRESSION=off` to disable compression (default `on`)
+- use `DEVICE_DETECTION=off` to disable user-agent detection (default `on`)
+
 ## Example
 
 ```
@@ -44,6 +52,8 @@ docker run -d --name "my-awesome-nginx" \
         --restart always \
         -p 4199:80 \
         -e UPSTREAM_PWA=http://192.168.0.10:4200 \
+        -e CACHE=off \
+        -e PAGESPEED=off \
         -e PWA_1_TOPLEVELDOMAIN=net \
         -e PWA_1_CHANNEL=inSPIRED-inTRONICS-Site \
         -e PWA_1_LANG=en_US \
@@ -66,3 +76,11 @@ docker run -d --name "my-awesome-nginx" \
 And then access the PWA with `http://b2b.<your-fully-qualified-machine-name>:4199`
 
 If your DNS is not set up correctly, you have to use something like _dnsmasq_ (Linux) or _Acrylic DNS Proxy_ (Windows), or just ask your local network administrator.
+
+## Features
+
+Features can be supplied in the folder `nginx/features`. A file named `<feature>.conf` is included if the environment variable `<feature>` is set to `on`, `1`, `true` or `yes` (checked case in-sensitive). The feature is disabled otherwise and an optional file `<feature>-off.conf` is included in the configuration. The feature name must be all word-characters (letters, numbers and underscore).
+
+### Disabling Cache
+
+If the cache feature is switched off all caching for pre-rendered pages is disabled. If the cache should also be disabled for static resources, the pagespeed feature also has to be switched off as it caches optimized images individually.
