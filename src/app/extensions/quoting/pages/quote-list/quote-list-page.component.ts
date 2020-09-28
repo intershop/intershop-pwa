@@ -2,8 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { QuotingFacade } from '../../facades/quoting.facade';
-import { QuoteRequest } from '../../models/quote-request/quote-request.model';
-import { Quote } from '../../models/quote/quote.model';
+import { Quote, QuoteRequest } from '../../models/quoting/quoting.model';
 
 @Component({
   selector: 'ish-quote-list-page',
@@ -17,11 +16,11 @@ export class QuoteListPageComponent implements OnInit {
   constructor(private quotingFacade: QuotingFacade) {}
 
   ngOnInit() {
-    this.quotes$ = this.quotingFacade.quotesAndQuoteRequests$();
-    this.loading$ = this.quotingFacade.quotesOrQuoteRequestsLoading$;
+    this.quotes$ = this.quotingFacade.quotingEntities$();
+    this.loading$ = this.quotingFacade.loading$;
   }
 
   deleteItem(item: Quote | QuoteRequest) {
-    this.quotingFacade.deleteQuoteOrRequest(item);
+    this.quotingFacade.delete(item);
   }
 }

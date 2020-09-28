@@ -131,6 +131,9 @@
             <p *ngIf="pli.totals.originTotal" class="text-nowrap">{{ pli.totals.originTotal | ishPrice }}</p>
 
             <!-- (Suggested) Total Price  -->
+            <span *ngIf="pli.totals.originTotal" class="d-md-none">{{
+              'quote.items.suggested_price.label' | translate
+            }}</span>
             <div class="text-nowrap" data-testing-id="total-price">{{ pli.totals.total | ishPrice }}</div>
           </div>
 

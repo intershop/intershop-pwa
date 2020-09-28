@@ -245,10 +245,6 @@
         "message": "Use ts-mockito instead!"
       },
       {
-        "name": ["*", "select"],
-        "message": "Use store.pipe(select()) instead!"
-      },
-      {
         "name": ["atob"],
         "message": "This is not available in universal mode. Use https://github.com/jacobwgillespie/b64u"
       },
@@ -565,7 +561,7 @@
           // specific (lazy loaded) page modules
           "^.*(/src/app|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/pages/([a-z][a-z0-9-]+)/\\2-page\\.(module|component)\\.ts$",
           "^.*(/src/app|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/pages/[a-z][a-z0-9-]+/([a-z][a-z0-9-]+)/\\2\\.component\\.ts$",
-          "^.*/src/app/extensions/([a-z][a-z0-9-]+)/pages/\\1-routing\\.module\\.ts$",
+          "^.*/src/app/extensions/([a-z][a-z0-9-]+)/pages/\\1(.*)-routing\\.module\\.ts$",
           "^.*/projects/([a-z][a-z0-9-]+)/src/app/pages/\\1-routing\\.module\\.ts$",
           "^.*/src/app/pages/app[a-z0-9-]*-routing\\.module\\.ts$",
           // enforce folder structure for shared components

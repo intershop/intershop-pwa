@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock, verify } from 'ts-mockito';
+
+import { AccountFacade } from 'ish-core/facades/account.facade';
 
 import { QuotingFacade } from '../../facades/quoting.facade';
 
@@ -17,8 +20,11 @@ describe('Basket Add To Quote Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [BasketAddToQuoteComponent],
-      imports: [TranslateModule.forRoot()],
-      providers: [{ provide: QuotingFacade, useFactory: () => instance(quotingFacade) }],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      providers: [
+        { provide: QuotingFacade, useFactory: () => instance(quotingFacade) },
+        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
+      ],
     }).compileComponents();
   });
 
@@ -34,9 +40,9 @@ describe('Basket Add To Quote Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should dispatch action when addToQuote is triggered.', () => {
+  it('should call facade when triggered.', () => {
     component.addToQuote();
 
-    verify(quotingFacade.addBasketToQuoteRequest()).once();
+    verify(quotingFacade.createQuoteRequestFromBasket()).once();
   });
 });

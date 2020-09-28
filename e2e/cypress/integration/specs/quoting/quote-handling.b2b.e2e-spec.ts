@@ -6,7 +6,6 @@ import { QuoteDetailPage } from '../../pages/account/quote-detail.page';
 import { QuoteListPage } from '../../pages/account/quote-list.page';
 import { sensibleDefaults } from '../../pages/account/registration.page';
 import { CartPage } from '../../pages/checkout/cart.page';
-import { HomePage } from '../../pages/home.page';
 import { CategoryPage } from '../../pages/shopping/category.page';
 import { FamilyPage } from '../../pages/shopping/family.page';
 import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
@@ -35,6 +34,15 @@ describe('Quote Handling', () => {
     });
   });
 
+  it('should check number of quotes', () => {
+    at(MyAccountPage, page => {
+      page.newQuoteLabel.should('have.text', '0');
+      page.submittedQuoteLabel.should('have.text', '0');
+      page.acceptedQuoteLabel.should('have.text', '0');
+      page.rejectedQuoteLabel.should('have.text', '0');
+    });
+  });
+
   it('user adds one product from product detail page to quote', () => {
     const quantity = 2;
     at(MyAccountPage, page => page.header.gotoCategoryPage(_.catalog));
@@ -46,7 +54,7 @@ describe('Quote Handling', () => {
     });
     at(QuoteRequestDialog, dialog => {
       dialog.totalPrice.should('contain', _.product.price * quantity);
-      dialog.deleteItemFromQuoteRequest();
+      dialog.hide();
       dialog.assertClosed();
     });
   });
@@ -55,8 +63,8 @@ describe('Quote Handling', () => {
     at(ProductDetailPage, page => page.breadcrumb.items.eq(2).click());
     at(FamilyPage, page => page.productList.addProductToQuoteRequest(_.product.sku));
     at(QuoteRequestDialog, dialog => {
-      dialog.totalPrice.should('contain', _.product.price);
-      dialog.deleteItemFromQuoteRequest();
+      dialog.totalPrice.should('contain', _.product.price * 3);
+      dialog.hide();
       dialog.assertClosed();
     });
   });
@@ -78,12 +86,13 @@ describe('Quote Handling', () => {
     });
   });
 
-  it('user adds one product from product list page to quote and submit it', () => {
+  it('user adds one product from product list page to quote and submit it, afterwards copying it', () => {
     at(MyAccountPage, page => page.header.gotoCategoryPage(_.catalog));
     at(CategoryPage, page => page.gotoSubCategory(_.categoryId));
     at(FamilyPage, page => page.productList.addProductToQuoteRequest(_.product.sku));
     at(QuoteRequestDialog, dialog => {
       dialog.submitQuoteRequest().then(quoteId => {
+        dialog.copyQuoteRequest();
         dialog.hide();
         at(FamilyPage, page => page.header.goToMyAccount());
         at(MyAccountPage, page => page.navigateToQuoting());
@@ -95,23 +104,22 @@ describe('Quote Handling', () => {
     });
   });
 
-  it('user copy quote from account quote request detail page and logs out', () => {
+  it('user adds product to quote request from family page', () => {
     at(MyAccountPage, page => page.header.gotoCategoryPage(_.catalog));
     at(CategoryPage, page => page.gotoSubCategory(_.categoryId));
     at(FamilyPage, page => page.productList.addProductToQuoteRequest(_.product.sku));
     at(QuoteRequestDialog, dialog => {
-      dialog.submitQuoteRequest().then(quoteId => {
-        dialog.hide();
-        at(FamilyPage, page => page.header.goToMyAccount());
-        at(MyAccountPage, page => page.navigateToQuoting());
-        at(QuoteListPage, page => page.goToQuoteDetailLink(quoteId));
-      });
+      dialog.hide();
     });
-    at(QuoteDetailPage, page => {
-      page.copyQuoteRequest();
-      page.quoteState.should('have.text', 'New');
-      page.header.logout();
+  });
+
+  it('should check number of quotes again', () => {
+    at(FamilyPage, page => page.header.goToMyAccount());
+    at(MyAccountPage, page => {
+      page.newQuoteLabel.should('have.text', '2');
+      page.submittedQuoteLabel.should('have.text', '1');
+      page.acceptedQuoteLabel.should('have.text', '0');
+      page.rejectedQuoteLabel.should('have.text', '0');
     });
-    at(HomePage);
   });
 });

@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { countBy } from 'lodash-es';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, combineLatest, iif, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { QuotingFacade } from '../../facades/quoting.facade';
-import { QuoteRequest } from '../../models/quote-request/quote-request.model';
-import { Quote } from '../../models/quote/quote.model';
+import { QuoteStatus } from '../../models/quoting/quoting.model';
 
 type DisplayState = 'New' | 'Submitted' | 'Accepted' | 'Rejected';
 
@@ -25,22 +24,24 @@ export class QuoteWidgetComponent implements OnInit {
   constructor(private quotingFacade: QuotingFacade) {}
 
   ngOnInit() {
-    this.loading$ = this.quotingFacade.quotesOrQuoteRequestsLoading$;
+    this.loading$ = this.quotingFacade.loading$;
 
-    this.counts$ = this.quotingFacade
-      .quotesAndQuoteRequests$()
-      .pipe(map(quotes => countBy(quotes, quote => this.mapState(quote))));
+    this.counts$ = this.quotingFacade.quotingEntities$().pipe(
+      switchMap(quotes =>
+        iif(() => !quotes?.length, of([]), combineLatest(quotes.map(quote => this.quotingFacade.state$(quote.id))))
+      ),
+      map(quotes => countBy(quotes, quote => this.mapState(quote)))
+    );
   }
 
-  mapState(quote: Quote | QuoteRequest): DisplayState {
-    switch (quote.state) {
+  mapState(state: QuoteStatus): DisplayState {
+    switch (state) {
       case 'Responded':
       case 'Expired':
-      case 'Converted':
         return 'Accepted';
 
       default:
-        return quote.state;
+        return state as DisplayState;
     }
   }
 }

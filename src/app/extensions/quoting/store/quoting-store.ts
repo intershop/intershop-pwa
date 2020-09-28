@@ -1,11 +1,9 @@
 import { createFeatureSelector } from '@ngrx/store';
 
-import { QuoteRequestState } from './quote-request/quote-request.reducer';
-import { QuoteState } from './quote/quote.reducer';
+import { QuotingInternalState } from './quoting/quoting.reducer';
 
 export interface QuotingState {
-  quote: QuoteState;
-  quoteRequest: QuoteRequestState;
+  quoting: QuotingInternalState;
 }
 
 export const getQuotingState = createFeatureSelector<QuotingState>('quoting');

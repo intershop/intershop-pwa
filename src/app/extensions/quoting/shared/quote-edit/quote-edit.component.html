@@ -1,231 +1,65 @@
-<form [formGroup]="form" class="form-horizontal form-horizontal-inline">
-  <!-- Error messages -->
-  <!-- <isif condition="#isDefined(ERROR_submit_quote_failed)#">
-    <istext key="quote.edit.already_submitted.text" />
-  </isif>
-  <isif condition="#isDefined(ERROR_accept_quote_failed)#">
-    <istext key="quote.edit.already_accepted.text" />
-  </isif>
-  <isif condition="#isDefined(ERROR_refuse_quote_failed)#">
-    <istext key="quote.edit.already_refused.text" />
-  </isif> -->
-
-  <!-- Title -->
-  <ng-container *ngIf="submitted && quote.state === 'Submitted'; else quoteTitle">
-    <h1>{{ 'quote.edit.submitted.heading' | translate }}</h1>
-  </ng-container>
-  <ng-template #quoteTitle>
-    <h1>
-      <ng-container *ngIf="quote.state === 'Responded'; else unresponded">
-        {{ 'quote.edit.responded.quote_details.text' | translate }} - {{ displayName }}
-      </ng-container>
-      <ng-template #unresponded>
-        {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate }} - {{ displayName }}
-      </ng-template>
-    </h1>
-  </ng-template>
-
-  <div *ngIf="quote.state === 'Submitted' && !submitted" data-testing-id="success-message" class="alert alert-info">
-    {{
-      'quote.edit.submitted.your_quote_request_has_been_submitted.text'
-        | translate: { '0': quote.submittedDate || quote.creationDate | ishDate: 'shortDate' }
-    }}
-  </div>
-
-  <div *ngIf="displaySavedMessage$ | async" data-testing-id="success-message" class="alert alert-success alert-fade">
-    {{ 'quote.edit.saved.your_quote_request_has_been_saved.text' | translate: { '0': displayName } }}
-  </div>
-
-  <ish-error-message [error]="error"></ish-error-message>
-
-  <!-- Description -->
-  <!-- Quote Header ( shown once if quote request submitted ) -->
-  <ng-container *ngIf="submitted && quote.state === 'Submitted'; else quotePending">
-    <p>
-      {{ 'quote.edit.submitted.your_quote_number.text' | translate }}
-      <a [routerLink]="['/account/quotes/request', quote.id]">{{ quote.number }}</a>
-    </p>
-    <p
-      [ishServerHtml]="
-        'quote.edit.submitted.your_quote_request.text'
-          | translate: { '0': 'route://account/quotes', '1': 'route://account' }
-      "
-    ></p>
-    <p>{{ 'quote.edit.submitted.we_will_email.text' | translate: { '0': user.email } }}</p>
-  </ng-container>
-
-  <ng-template #quotePending>
-    <div *ngIf="quote.state === 'Responded' && !isQuoteStarted" class="alert alert-info">
-      {{ 'quote.error.not_started' | translate }}
+<ng-container *ngIf="quote$ | async as quote">
+  <form [formGroup]="form" class="form-horizontal form-horizontal-inline">
+    <div class="row">
+      <label class="col-4 col-md-3 col-xl-2 col-form-label">{{
+        'quote.edit.unsubmitted.quote_no.label' | translate
+      }}</label>
+      <div class="col-8 col-md-9 col-xl-10">
+        <p class="form-control-plaintext">{{ quote.number }}</p>
+      </div>
     </div>
-  </ng-template>
-
-  <!--
-  <isif condition="#isDefined(ErrorCode)#">
-    <p class="alert alert-info"><istext key="#'quote.edit.info.' . ErrorCode . '.text'#" /></p>
-  </isif>-->
-
-  <div class="row">
-    <label class="col-4 col-md-3 col-xl-2 col-form-label">{{
-      'quote.edit.unsubmitted.quote_no.label' | translate
-    }}</label>
-    <div class="col-8 col-md-9 col-xl-10">
-      <p class="form-control-plaintext">{{ quote.number }}</p>
+    <div class="row">
+      <label class="col-4 col-md-3 col-xl-2 col-form-label">{{
+        'quote.edit.unsubmitted.status.label' | translate
+      }}</label>
+      <div class="col-8 col-md-9 col-xl-10">
+        <p class="form-control-plaintext"><ish-quote-state [quoteId]="quote.id"></ish-quote-state></p>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <label class="col-4 col-md-3 col-xl-2 col-form-label">{{
-      'quote.edit.unsubmitted.status.label' | translate
-    }}</label>
-    <div class="col-8 col-md-9 col-xl-10">
-      <p class="form-control-plaintext"><ish-quote-state [quote]="quote"></ish-quote-state></p>
-    </div>
-  </div>
 
-  <!-- Shows the valid from/to date  -->
-  <div *ngIf="quote.state === 'Responded'" class="row">
-    <label class="col-4 col-md-3 col-xl-2 col-form-label">{{ 'quote.edit.unsubmitted.valid.label' | translate }}</label>
-    <div class="col-8 col-md-9 col-xl-10">
-      <p class="form-control-plaintext">
-        {{ validFromDate | ishDate: 'shortDate' }} - {{ validToDate | ishDate: 'shortDate' }}
-      </p>
-    </div>
-  </div>
-
-  <div class="section">
-    <!-- displayName -->
-    <ish-input
-      *ngIf="quote.state === 'New'; else staticDisplayName"
-      [form]="form"
-      controlName="displayName"
-      label="quote.edit.unsubmitted.name.label"
-      labelClass="col-4 col-md-3 col-xl-2"
-      inputClass="col-8 col-md-9 col-xl-10"
-      maxLength="256"
-      [placeholder]="'quote.edit.unsubmitted.enter_an_optional_name.text'"
-    ></ish-input>
-    <ng-template #staticDisplayName>
-      <div class="row has-feedback">
+    <div class="section">
+      <!-- displayName -->
+      <div class="row">
         <label class="col-4 col-md-3 col-xl-2 col-form-label">{{
           'quote.edit.unsubmitted.name.label' | translate
         }}</label>
         <div class="col-8 col-md-9 col-xl-10">
-          <p class="form-control-plaintext">{{ quote.displayName }}</p>
+          <ish-inplace-edit (edited)="update()" (aborted)="reset()">
+            <p class="form-control-plaintext w-auto" [ngClass]="{ 'font-italic': !form.get('displayName').value }">
+              {{ form.get('displayName').value || 'quote.edit.unsubmitted.enter_an_optional_name.text' | translate }}
+            </p>
+            <input type="text" formControlName="displayName" class="form-control" />
+          </ish-inplace-edit>
         </div>
       </div>
-    </ng-template>
 
-    <div
-      *ngIf="quote.state === 'New' || (quote.description && quote.description.length > 0)"
-      class="row"
-      [ngClass]="{ 'form-group': quote.state === 'New' }"
-    >
-      <label for="quote-description" class="col-4 col-md-3 col-xl-2 col-form-label">{{
-        'quote.edit.unsubmitted.comment.label' | translate
-      }}</label>
-      <div class="col-8 col-md-9 col-xl-10">
-        <ng-container *ngIf="quote.state === 'New'; else staticDescription">
-          <textarea
-            formControlName="description"
-            class="form-control"
-            [placeholder]="'quote.edit.unsubmitted.provide_comment.text' | translate"
-            id="quote-description"
-          >
-          </textarea>
-        </ng-container>
-        <ng-template #staticDescription>
-          <p class="form-control-plaintext">{{ quote.description }}</p>
-        </ng-template>
+      <div class="row">
+        <label for="quote-description" class="col-4 col-md-3 col-xl-2 col-form-label">{{
+          'quote.edit.unsubmitted.comment.label' | translate
+        }}</label>
+        <div class="col-8 col-md-9 col-xl-10">
+          <ish-inplace-edit (edited)="update()" (aborted)="reset()">
+            <p class="form-control-plaintext w-auto" [ngClass]="{ 'font-italic': !form.get('description').value }">
+              {{ form.get('description').value || 'quote.edit.unsubmitted.provide_comment.text' | translate }}
+            </p>
+            <textarea formControlName="description" class="form-control" id="quote-description"> </textarea>
+          </ish-inplace-edit>
+        </div>
       </div>
     </div>
 
-    <div *ngIf="quote.type === 'Quote' && sellerComment" class="row">
-      <label for="" class="col-4 col-md-3 col-xl-2 col-form-label">{{
-        'quote.edit.unsubmitted.seller_comment.label' | translate
-      }}</label>
-      <div class="col-8 col-md-9 col-xl-10">
-        <p class="form-control-plaintext">{{ sellerComment }}</p>
-      </div>
+    <!-- Quote Item List -->
+    <div class="section">
+      <h3>{{ 'quote.items.table.heading' | translate }}</h3>
+      <ish-line-item-list
+        *ngIf="quote.items"
+        [lineItems]="quote.items"
+        [editable]="true"
+        lineItemViewType="availability"
+        [total]="quote.total"
+        (updateItem)="onUpdateItem($event)"
+        (deleteItem)="onDeleteItem($event)"
+      ></ish-line-item-list>
     </div>
-  </div>
-
-  <!-- Quote Item List -->
-  <div class="section">
-    <h3>{{ 'quote.items.table.heading' | translate }}</h3>
-    <ish-line-item-list
-      *ngIf="quote.items"
-      [lineItems]="quote.items"
-      [editable]="quote.state === 'New'"
-      lineItemViewType="availability"
-      [total]="quote.total"
-      (updateItem)="onUpdateItem($event)"
-      (deleteItem)="onDeleteItem($event)"
-    ></ish-line-item-list>
-  </div>
-
-  <div class="form-btn-group clearfix">
-    <!-- here are the buttons -->
-    <ng-container *ngIf="quote.items">
-      <!-- IF STATE NEW -->
-      <ng-container *ngIf="quote.state === 'New'">
-        <button
-          data-testing-id="submit-quote-request"
-          type="submit"
-          class="btn btn-primary float-right"
-          [disabled]="quote.items.length === 0"
-          (click)="submit()"
-        >
-          {{ 'quote.edit.button.submit.label' | translate }}
-        </button>
-
-        <button
-          data-testing-id="save-quote-request"
-          type="submit"
-          class="btn btn-secondary float-right"
-          (click)="update()"
-        >
-          {{ 'quote.edit.button.save.label' | translate }}
-        </button>
-      </ng-container>
-
-      <!-- IF STATE SUBMITTED -->
-      <ng-container *ngIf="quote.state === 'Submitted'">
-        <button
-          class="btn btn-secondary"
-          name="copy"
-          type="submit"
-          (click)="copy()"
-          data-testing-id="copy-quote-request"
-        >
-          {{ 'quote.edit.button.create_new_from_quote.label' | translate }}
-        </button>
-      </ng-container>
-
-      <!-- ELSE ( if type === Quote ) -->
-      <ng-container *ngIf="quote.type === 'Quote'">
-        <ng-container *ngIf="quote.state === 'Responded' && isQuoteValid && showAddQuoteToCartButton">
-          <button type="submit" class="btn btn-primary float-right" name="add2cart" (click)="addToBasket()">
-            {{ 'quote.edit.button.add_quote_to_cart.label' | translate }}
-          </button>
-        </ng-container>
-
-        <button class="btn btn-secondary" name="copy" type="submit" (click)="copy()">
-          {{ 'quote.edit.button.create_new_from_quote.label' | translate }}
-        </button>
-
-        <button
-          *ngIf="quote.state === 'Responded'"
-          type="submit"
-          id="button-reject"
-          class="btn btn-secondary float-right"
-          name="refuse"
-          (click)="reject()"
-        >
-          {{ 'quote.edit.reject.button.reject.label' | translate }}
-        </button>
-      </ng-container>
-    </ng-container>
-  </div>
-
-  <a class="btn btn-link" routerLink="/account/quotes">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
-</form>
+  </form>
+</ng-container>

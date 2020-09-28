@@ -49,6 +49,7 @@ export class ProductListModule {
     cy.get(this.contextSelector)
       .find(`ish-product-item div[data-testing-sku="${sku}"] [data-testing-id="addToQuoteButton"]`)
       .click();
+    waitLoadingEnd();
   }
 
   get numberOfItems() {

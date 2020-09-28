@@ -1,0 +1,14 @@
+<ng-container [ngSwitch]="state$ | async">
+  <ng-template [ngSwitchCase]="'Expired'">
+    <span class="text-danger">{{
+      'quote.edit.submitted.your_quote_expired.text'
+        | translate
+          : {
+              '0': quote.validToDate | ishDate: 'shortDate',
+              '1': quote.validToDate | ishDate: 'mediumTime'
+            }
+    }}</span>
+  </ng-template>
+  <ng-template [ngSwitchCase]="'Responded'">{{ quote.validToDate | ishDate: 'shortDate' }}</ng-template>
+  <ng-template ngSwitchDefault>-</ng-template>
+</ng-container>

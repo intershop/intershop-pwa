@@ -1,12 +1,8 @@
-<ng-container [ngSwitch]="quote.state" *ngIf="currentDateTime$ | async as currentDateTime">
+<ng-container [ngSwitch]="state$ | async">
   <ng-template [ngSwitchCase]="'New'">{{ 'quote.state.new' | translate }}</ng-template>
   <ng-template [ngSwitchCase]="'Submitted'">{{ 'quote.state.submitted' | translate }}</ng-template>
-  <ng-template [ngSwitchCase]="'Responded'">
-    <ng-container *ngIf="validToDate < currentDateTime">
-      <span class="text-danger">{{ 'quote.state.expired' | translate }}</span>
-    </ng-container>
-    <ng-container *ngIf="validToDate > currentDateTime"> {{ 'quote.state.responded' | translate }} </ng-container>
-  </ng-template>
+  <ng-template [ngSwitchCase]="'Responded'">{{ 'quote.state.responded' | translate }}</ng-template>
+  <ng-template [ngSwitchCase]="'Expired'">{{ 'quote.state.expired' | translate }}</ng-template>
   <!-- TODO: implement accepted? -->
   <!-- <ng-template [ngSwitchCase]="7">
     {{ 'quote.state.accepted' | translate}}

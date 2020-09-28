@@ -1,7 +1,7 @@
 import { HeaderModule } from '../header.module';
 
 export class QuoteDetailPage {
-  readonly tag = 'ish-quote-edit';
+  readonly tag = 'ish-quote-page';
 
   readonly header = new HeaderModule();
 
@@ -29,10 +29,6 @@ export class QuoteDetailPage {
 
   deleteItemFromQuoteRequest() {
     cy.get(`a[title="Remove"]`).click();
-  }
-
-  saveQuoteRequest() {
-    cy.get('[data-testing-id="save-quote-request"]').click();
   }
 
   submitQuoteRequest() {

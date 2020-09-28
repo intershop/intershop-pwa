@@ -3,19 +3,21 @@ import { waitLoadingEnd } from '../../framework';
 export class QuoteRequestDialog {
   readonly tag = 'ish-product-add-to-quote-dialog';
 
-  private saveQuoteRequestButton = () => cy.get('[data-testing-id="saveQuoteRequest"]');
-  private submitQuoteRequestButton = () => cy.get('[data-testing-id="submitQuoteRequest"]');
+  private submitQuoteRequestButton = () => cy.get('[data-testing-id="submit-quote-request"]');
+  private copyQuoteRequestButton = () => cy.get('[data-testing-id="copy-quote-request"]');
+
   private hideButton = () => cy.get('.close');
   private quantityInput = () => cy.get('[data-testing-id="quantity"]');
-
-  saveQuoteRequest() {
-    this.saveQuoteRequestButton().click();
-  }
 
   submitQuoteRequest() {
     this.submitQuoteRequestButton().click();
     waitLoadingEnd(1000);
     return this.quoteId;
+  }
+
+  copyQuoteRequest() {
+    this.copyQuoteRequestButton().click();
+    waitLoadingEnd();
   }
 
   setQuantity(quantity: number) {

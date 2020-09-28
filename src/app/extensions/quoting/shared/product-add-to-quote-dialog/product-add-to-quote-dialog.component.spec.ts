@@ -1,22 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
-import { EMPTY, of } from 'rxjs';
-import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
-import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { AccountFacade } from 'ish-core/facades/account.facade';
-import { MessageFacade } from 'ish-core/facades/message.facade';
-import { DatePipe } from 'ish-core/pipes/date.pipe';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
-import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
-import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
-import { QuotingFacade } from '../../facades/quoting.facade';
-import { QuoteStateComponent } from '../quote-state/quote-state.component';
+import { QuoteContextFacade } from '../../facades/quote-context.facade';
+import { Quote, QuoteRequest } from '../../models/quoting/quoting.model';
+import { QuoteEditComponent } from '../quote-edit/quote-edit.component';
+import { QuoteInteractionsComponent } from '../quote-interactions/quote-interactions.component';
+import { QuoteViewComponent } from '../quote-view/quote-view.component';
 
 import { ProductAddToQuoteDialogComponent } from './product-add-to-quote-dialog.component';
 
@@ -24,127 +21,82 @@ describe('Product Add To Quote Dialog Component', () => {
   let component: ProductAddToQuoteDialogComponent;
   let fixture: ComponentFixture<ProductAddToQuoteDialogComponent>;
   let element: HTMLElement;
-  let quotingFacade: QuotingFacade;
-  let messageFacade: MessageFacade;
-  let accountFacade: AccountFacade;
+  let context: QuoteContextFacade;
 
   beforeEach(async () => {
-    quotingFacade = mock(QuotingFacade);
-    messageFacade = mock(MessageFacade);
-    accountFacade = mock(AccountFacade);
+    context = mock(QuoteContextFacade);
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
-        MockComponent(InputComponent),
-        MockComponent(LineItemListComponent),
+        MockComponent(ErrorMessageComponent),
         MockComponent(LoadingComponent),
-        MockComponent(QuoteStateComponent),
-        MockDirective(ServerHtmlDirective),
-        MockPipe(DatePipe),
+        MockComponent(QuoteEditComponent),
+        MockComponent(QuoteInteractionsComponent),
+        MockComponent(QuoteViewComponent),
         ProductAddToQuoteDialogComponent,
       ],
-      providers: [
-        NgbActiveModal,
-        { provide: QuotingFacade, useFactory: () => instance(quotingFacade) },
-        { provide: MessageFacade, useFactory: () => instance(messageFacade) },
-        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
-      ],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductAddToQuoteDialogComponent, {
+        set: { providers: [{ provide: QuoteContextFacade, useFactory: () => instance(context) }] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductAddToQuoteDialogComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    when(quotingFacade.activeQuoteRequest$).thenReturn(EMPTY);
   });
 
   it('should be created', () => {
-    when(quotingFacade.quoteRequest$).thenReturn(EMPTY);
-
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  describe('Quote Request', () => {
-    beforeEach(() => {
-      when(quotingFacade.quoteRequest$).thenReturn(
-        of({
-          id: 'ID',
-          type: 'QuoteRequest',
-          displayName: 'DNAME',
-          description: 'DESC',
-          state: 'New',
-          items: [],
-          // tslint:disable-next-line:no-any
-        } as any)
-      );
-    });
+  it('should display edit component for unsubmitted quote requests', () => {
+    when(context.select('entity')).thenReturn(of({} as QuoteRequest));
+    when(context.select('state')).thenReturn(of('New'));
 
-    it('should throw update item event when onUpdateItem is triggered.', () => {
-      const payload = { itemId: 'IID', quantity: 1 };
-      fixture.detectChanges();
+    fixture.detectChanges();
 
-      component.onUpdateItem(payload);
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
+      Array [
+        "ish-error-message",
+        "ish-quote-edit",
+        "ish-quote-interactions",
+      ]
+    `);
+  });
 
-      verify(quotingFacade.updateQuoteRequestItem(anything())).once();
-      const [args] = capture(quotingFacade.updateQuoteRequestItem).last();
-      expect(args).toMatchInlineSnapshot(`
-        Object {
-          "itemId": "IID",
-          "quantity": 1,
-        }
-      `);
-    });
+  it('should display view component for submitted quote requests', () => {
+    when(context.select('entity')).thenReturn(of({} as QuoteRequest));
+    when(context.select('state')).thenReturn(of('Submitted'));
 
-    it('should throw deleteItem event when delete item is clicked', () => {
-      fixture.detectChanges();
-      component.onDeleteItem('4712');
+    fixture.detectChanges();
 
-      verify(quotingFacade.deleteQuoteRequestItem(anything())).once();
-      const [args] = capture(quotingFacade.deleteQuoteRequestItem).last();
-      expect(args).toMatchInlineSnapshot(`"4712"`);
-    });
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
+      Array [
+        "ish-error-message",
+        "ish-quote-view",
+        "ish-quote-interactions",
+      ]
+    `);
+  });
 
-    it('should throw submitQuoteRequest event when submit is clicked', () => {
-      fixture.detectChanges();
-      component.submit();
-      verify(quotingFacade.submitQuoteRequest()).once();
-    });
+  it('should display view component for quotes', () => {
+    when(context.select('entity')).thenReturn(of({} as Quote));
+    when(context.select('state')).thenReturn(of('Responded'));
 
-    it('should throw updateQuoteRequest event when update is clicked', () => {
-      fixture.detectChanges();
-      component.form.value.displayName = 'DNAME';
-      component.form.value.description = 'DESC';
+    fixture.detectChanges();
 
-      component.update();
-
-      verify(quotingFacade.updateQuoteRequest(anything())).once();
-      const [args] = capture(quotingFacade.updateQuoteRequest).last();
-      expect(args).toMatchInlineSnapshot(`
-        Object {
-          "description": "DESC",
-          "displayName": "DNAME",
-        }
-      `);
-    });
-
-    it('should throw updateSubmitQuoteRequest event when submit is clicked and the form values were changed before ', () => {
-      component.form.value.displayName = 'DNAME';
-      component.form.value.description = 'DESC';
-      component.form.markAsDirty();
-
-      component.submit();
-      verify(quotingFacade.updateSubmitQuoteRequest(anything())).once();
-      const [arg] = capture(quotingFacade.updateSubmitQuoteRequest).last();
-      expect(arg).toMatchInlineSnapshot(`
-        Object {
-          "description": "DESC",
-          "displayName": "DNAME",
-        }
-      `);
-    });
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
+      Array [
+        "ish-error-message",
+        "ish-quote-view",
+        "ish-quote-interactions",
+      ]
+    `);
   });
 });
