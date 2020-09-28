@@ -22,7 +22,7 @@ describe('Basket Items Summary Component', () => {
 
   beforeEach(async () => {
     const shoppingFacade = mock(ShoppingFacade);
-    when(shoppingFacade.product$(anything(), anything())).thenCall(sku => of({ sku }));
+    when(shoppingFacade.product$(anything(), anything())).thenCall(sku => of({ sku, name: 'SKU:' + sku }));
 
     await TestBed.configureTestingModule({
       declarations: [
@@ -54,7 +54,7 @@ describe('Basket Items Summary Component', () => {
   it('should render basket product line items if basket items are there', () => {
     fixture.detectChanges();
     expect(element.querySelector('.cart-summary-checkout')).toBeTruthy();
-    expect(element.querySelector('.cart-summary-checkout').textContent).toContain('pli name');
+    expect(element.querySelector('.cart-summary-checkout').textContent).toContain('SKU:4713');
   });
 
   it('should not show anything if there are no basket items', () => {

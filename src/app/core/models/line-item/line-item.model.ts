@@ -35,11 +35,6 @@ export interface LineItem {
   isHiddenGift: boolean;
   isFreeGift: boolean;
 
-  // attributes needed for order line items
-  name?: string;
-  description?: string;
-  fulfillmentStatus?: string;
-
   // attributes needed for quote feature
   originSingleBasePrice?: PriceItem;
 

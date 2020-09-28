@@ -94,7 +94,7 @@ describe('Mini Basket Component', () => {
     component.open();
     fixture.detectChanges();
     expect(element.textContent.replace(/ /g, '')).toMatchInlineSnapshot(
-      `"30items/$141,796.98pliname$3.00x10pliname$3.00x10pliname$3.00x10VIEWCART"`
+      `"30items/$141,796.98$3.00x10$3.00x10$3.00x10VIEWCART"`
     );
   });
 

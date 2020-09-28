@@ -6,7 +6,7 @@ import { LineItem, LineItemView } from 'ish-core/models/line-item/line-item.mode
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 
-interface AbstractBasket<T> {
+export interface AbstractBasket<T> {
   id: string;
   purchaseCurrency?: string;
   dynamicMessages?: string[];
