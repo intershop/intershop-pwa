@@ -67,3 +67,4 @@ kb_sync_latest_only
 - [Guide - Google Tag Manager](./guides/google-tag-manager.md)
 - [Guide - Client-Side Error Monitoring with Sentry](./guides/sentry-error-monitoring.md)
 - [Guide - Extended Product Configurations with Tacton](./guides/tacton-product-configuration.md)
+- [Guide - Monitoring with Prometheus](./guides/prometheus-monitoring.md)

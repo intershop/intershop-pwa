@@ -43,6 +43,7 @@ Enable and disable features:
 - use `PAGESPEED=off` to disable pagespeed optimizations (default `on`)
 - use `COMPRESSION=off` to disable compression (default `on`)
 - use `DEVICE_DETECTION=off` to disable user-agent detection (default `on`)
+- use `PROMETHEUS=on` to enable [Prometheus](https://prometheus.io) metrics exports on port `9113` (default `off`)
 
 ## Example
 
