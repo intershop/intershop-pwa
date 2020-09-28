@@ -221,6 +221,11 @@ export function app() {
     server.use('/INTERSHOP', icmProxy);
   }
 
+  if (/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
+    const promBundle = require('express-prom-bundle');
+    server.use('*', promBundle({ buckets: [0.1, 0.3, 0.5, 0.7, 0.9, 1.1, 1.3, 1.5, 2, 3, 4, 5] }));
+  }
+
   // All regular routes use the Universal engine
   server.use('*', angularUniversal);
 

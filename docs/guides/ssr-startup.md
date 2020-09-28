@@ -27,6 +27,8 @@ If the format is _any_, then the environment variable just has to be set to any 
 Setting it to `"false"` still counts as active.
 Only empty strings count as inactive.
 
+If the format is _switch_, the property is switched on by supplying `on`, `1`, `yes` or `true` (checked case-insensitive), anything else is considered `off`.
+
 |                     | parameter       | format               | comment                                                                     |
 | ------------------- | --------------- | -------------------- | --------------------------------------------------------------------------- |
 | **SSR Specific**    | PORT            | number               | port for running the application                                            |
@@ -42,6 +44,7 @@ Only empty strings count as inactive.
 |                     | PROXY_ICM       | any \| URL           | proxy ICM via `/INTERSHOP` (enabled if SSR_HYBRID is active)                |
 | **Third party**     | GTM_TOKEN       | string               | token for Google Tag Manager                                                |
 |                     | SENTRY_DSN      | string               | Sentry DSN URL for using Sentry Error Monitor                               |
+|                     | PROMETHEUS      | switch               | Expose Prometheus metrics                                                   |
 
 ## References
 
@@ -49,3 +52,4 @@ Only empty strings count as inactive.
 - [Concept - Hybrid Approach](../concepts/hybrid-approach.md)
 - [Guide - Client-Side Error Monitoring with Sentry](./sentry-error-monitoring.md)
 - [Guide - Google Tag Manager](./google-tag-manager.md)
+- [Guide - Monitoring with Prometheus](./prometheus-monitoring.md)
