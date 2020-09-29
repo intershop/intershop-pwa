@@ -7,6 +7,43 @@ kb_everyone
 
 # Changelog
 
+## [0.24.0](https://github.com/intershop/intershop-pwa/releases/tag/0.24.0) (2020-09-30)
+
+**required Intershop Commerce Management version: 7.10.22.3**
+
+### Features
+
+- recheck concardis credit card cvc if necessary (#359) ([8c4b452](https://github.com/intershop/intershop-pwa/commit/8c4b452))
+- add posibility to deploy nginx with selected features (#386) ([1f0c4a4](https://github.com/intershop/intershop-pwa/commit/1f0c4a4))
+- component for inplace editing ([25f10f1](https://github.com/intershop/intershop-pwa/commit/25f10f1))
+- introduce dedicated endpoint for b2b user related API requests ([b15e6c9](https://github.com/intershop/intershop-pwa/commit/b15e6c9))
+- styled toasts for success and error messages (#356) ([9e7d99b](https://github.com/intershop/intershop-pwa/commit/9e7d99b))
+- save for later for Concardis Direct Debit (#319) ([a31f16c](https://github.com/intershop/intershop-pwa/commit/a31f16c))
+- node script to clean up localization files 'npm run clean-localizations' ([9863fe7](https://github.com/intershop/intershop-pwa/commit/9863fe7))
+- enhance option to overwrite URL for ICM in express server (#372) ([edf07dc](https://github.com/intershop/intershop-pwa/commit/edf07dc))
+
+### Bug Fixes
+
+- use product name for basket line item name and order line item name for orders (#387) ([6c7a3d7](https://github.com/intershop/intershop-pwa/commit/6c7a3d7))
+- prevent navigating twice on user login ([75fdc15](https://github.com/intershop/intershop-pwa/commit/75fdc15))
+- set breadcrumb only on successful navigation ([3e55b63](https://github.com/intershop/intershop-pwa/commit/3e55b63))
+- **schematics:** respect original component selector when generating lazy components (#379) ([b92230a](https://github.com/intershop/intershop-pwa/commit/b92230a))
+- load lazy components via extension modules (#376) ([e1eacd1](https://github.com/intershop/intershop-pwa/commit/e1eacd1))
+- **schematics:** enable customized-copy schematic for subfolders (#374) ([932aa01](https://github.com/intershop/intershop-pwa/commit/932aa01))
+
+### Performance Improvements
+
+- add preload link for stylesheet (#389) ([dee2bba](https://github.com/intershop/intershop-pwa/commit/dee2bba))
+- remove product views from entities for improved memoization (#373) ([4805fed](https://github.com/intershop/intershop-pwa/commit/4805fed))
+
+### Code Refactoring
+
+- rework quoting feature (#367) ([3ce106b](https://github.com/intershop/intershop-pwa/commit/3ce106b))
+
+### BREAKING CHANGES
+
+- The quoting feature was completely reworked to provide a better performance with growing numbers of users quotes and quote requests. It was changed to work with less necessary REST requests (e.g. by relying on improvements in the quoting REST API) and several known issues were fixed. Besides that the whole implementation was reworked with newer, improved implementation patterns of the PWA.
+
 ## [0.23.0](https://github.com/intershop/intershop-pwa/releases/tag/0.23.0) (2020-08-27)
 
 **required Intershop Commerce Management version: 7.10.21.0**
