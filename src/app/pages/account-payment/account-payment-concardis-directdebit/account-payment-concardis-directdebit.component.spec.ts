@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 
@@ -15,8 +15,8 @@ describe('Account Payment Concardis Directdebit Component', () => {
   const mandateTextValue = 'mandate_text';
   const mandateCreatedDateTimeValue = '1597644563000';
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [
         AccountPaymentConcardisDirectdebitComponent,
@@ -24,7 +24,7 @@ describe('Account Payment Concardis Directdebit Component', () => {
         MockPipe(DatePipe),
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountPaymentConcardisDirectdebitComponent);

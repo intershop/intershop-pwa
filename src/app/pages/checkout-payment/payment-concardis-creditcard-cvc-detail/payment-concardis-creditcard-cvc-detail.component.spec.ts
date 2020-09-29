@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -16,13 +16,13 @@ describe('Payment Concardis Creditcard Cvc Detail Component', () => {
   let fixture: ComponentFixture<PaymentConcardisCreditcardCvcDetailComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [MockComponent(InputComponent), PaymentConcardisCreditcardCvcDetailComponent],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PaymentConcardisCreditcardCvcDetailComponent);
