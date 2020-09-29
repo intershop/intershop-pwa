@@ -104,7 +104,6 @@
                   <ish-payment-concardis-creditcard-cvc-detail
                     [paymentInstrument]="basket.payment.paymentInstrument"
                     [paymentMethod]="paymentMethod"
-                    (disableNextStep)="disableNextStep($event)"
                   >
                   </ish-payment-concardis-creditcard-cvc-detail>
                 </div>
@@ -194,7 +193,7 @@
         class="btn btn-lg btn-block btn-primary"
         id="checkoutBtn"
         type="button"
-        [disabled]="nextDisabled || disableContinue"
+        [disabled]="nextDisabled"
         (click)="goToNextStep()"
       >
         {{ 'checkout.button.label' | translate }}

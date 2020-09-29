@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 
@@ -29,7 +21,7 @@ declare var PayEngine: any;
 // tslint:disable-next-line: rxjs-prefer-angular-takeuntil
 export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcardisComponent implements OnInit {
   @Input() paymentInstrument: PaymentInstrument;
-  @Output() disableNextStep = new EventEmitter<boolean>();
+
   validityTimeInMinutes: string;
   cvcDetailForm: FormGroup;
 
@@ -54,10 +46,6 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
         'ConcardisPaymentService.MerchantID',
         'checkout.credit_card.merchantId.error.notFound'
       );
-      this.validityTimeInMinutes = this.getParamValue(
-        'intershop.payment.Concardis_CreditCard.cvcmaxage',
-        'checkout.credit_card.validityTime.error.notFound'
-      );
       // if config params are missing - don't load script
       if (!merchantId) {
         return;
@@ -78,6 +66,10 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
           }
         );
     }
+    this.validityTimeInMinutes = this.getParamValue(
+      'intershop.payment.Concardis_CreditCard.cvcmaxage',
+      'checkout.credit_card.validityTime.error.notFound'
+    );
   }
 
   isCvcExpired() {
@@ -99,7 +91,6 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
         }
       }
     }
-    this.disableNextStep.emit(isExpired);
     return isExpired;
   }
 

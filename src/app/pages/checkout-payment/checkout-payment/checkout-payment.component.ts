@@ -53,7 +53,6 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
   nextSubmitted = false;
   formSubmitted = false;
-  disableContinue = false;
 
   redirectStatus: string;
 
@@ -104,8 +103,6 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
     this.setPaymentSelectionFromBasket(c);
 
     if (c.paymentMethods) {
-      // Enabling checkout submit button
-      this.disableContinue = false;
       // copy objects for runtime checks because formly modifies them, TODO: refactor
       this.filteredPaymentMethods = this.paymentMethods && this.paymentMethods.map(x => JSON.parse(JSON.stringify(x)));
     }
@@ -158,27 +155,14 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
    * opens the payment parameter form for a payment method to create a new payment instrument
    */
   openPaymentParameterForm(index: number) {
-    // unselecting the payment instrument
-    if (this.basket.payment && this.basket.payment.paymentInstrument.id) {
-      (document.getElementById(
-        'paymentOption_' + this.basket.payment.paymentInstrument.id
-      ) as HTMLInputElement).checked = false;
-    }
-    this.basket.payment = undefined;
     this.formSubmitted = false;
     this.openFormIndex = index;
-    // Enabling checkout submit button
-    this.disableContinue = false;
     // enable / disable the appropriate parameter form controls
     Object.keys(this.parameterForm.controls).forEach(key => {
       this.filteredPaymentMethods[index].parameters.find(param => param.key === key)
         ? this.parameterForm.controls[key].enable()
         : this.parameterForm.controls[key].disable();
     });
-  }
-
-  disableNextStep(disableNextStep: boolean) {
-    this.disableContinue = disableNextStep;
   }
 
   /**
