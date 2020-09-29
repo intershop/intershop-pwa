@@ -8,6 +8,8 @@ import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
+import { AccountPaymentConcardisDirectdebitComponent } from '../account-payment-concardis-directdebit/account-payment-concardis-directdebit.component';
+
 import { AccountPaymentComponent } from './account-payment.component';
 
 describe('Account Payment Component', () => {
@@ -18,7 +20,12 @@ describe('Account Payment Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [AccountPaymentComponent, MockComponent(ErrorMessageComponent), MockComponent(FaIconComponent)],
+      declarations: [
+        AccountPaymentComponent,
+        MockComponent(AccountPaymentConcardisDirectdebitComponent),
+        MockComponent(ErrorMessageComponent),
+        MockComponent(FaIconComponent),
+      ],
     }).compileComponents();
   });
 
