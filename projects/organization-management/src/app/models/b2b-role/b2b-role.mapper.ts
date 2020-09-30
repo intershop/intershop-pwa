@@ -12,6 +12,7 @@ export class B2bRoleMapper {
           id: role.roleID,
           fixed: role.fixed,
           displayName: role.roleDisplayName,
+          description: role.roleDescription,
           permissionDisplayNames: role.permissions.map(p => p.permissionDisplayName),
         }))
       );
