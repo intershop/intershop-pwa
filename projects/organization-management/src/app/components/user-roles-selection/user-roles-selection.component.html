@@ -11,7 +11,9 @@
               <div class="form-check form-control">
                 <label [for]="item.key">
                   <input type="checkbox" id="item.key" value="item.value.value" [formControl]="item.value" />
-                  <span>{{ role.displayName }}</span>
+                  <span>{{ role.displayName }}</span
+                  ><br />
+                  <span *ngIf="role.description" class="input-help">{{ role.description }}</span>
                 </label>
               </div>
             </div>
