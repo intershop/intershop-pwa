@@ -13,7 +13,37 @@ Activating the feature prometheus for nginx exposes metrics on port 9113 on the 
 
 Activating the prometheus feature for the express.js server exposes metrics on the `/metrics` URL on the same port it is running.
 
+After activating the features on both containers, add tasks to prometheus:
+
+```yaml
+scrape_configs:
+  - job_name: 'pwa-nginx'
+    scrape_interval: 5s
+    dns_sd_configs:
+      - names:
+          - 'tasks.pwa-nginx'
+        type: 'A'
+        port: 9113
+
+  - job_name: 'pwa-ssr'
+    scrape_interval: 5s
+    dns_sd_configs:
+      - names:
+          - 'tasks.pwa-ssr'
+        type: 'A'
+        port: 4200
+```
+
+You can import our example [Grafana Dashboard][grafana-pwa-dashboard] to get started:
+
+![Example Dashboard](./prometheus-monitoring-dashboard.png)
+
+:warning: We recommend switching off the SSR container health-check and instead define alerts in Grafana.
+
 # Further References
 
 - [Nginx](../../nginx/README.md)
 - [Guide - Building and Running Server-Side Rendering](../guides/ssr-startup.md)
+- [Grafana Dashboard][grafana-pwa-dashboard]
+
+[grafana-pwa-dashboard]: ./prometheus-monitoring-dashboard.json
