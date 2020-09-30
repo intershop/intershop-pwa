@@ -7,7 +7,8 @@ RUN echo "intalling nginx with mod-pagespeed" && \
 
 FROM scratch as configstep
 COPY --from=nginx:mainline /etc/nginx /etc/nginx
-COPY nginx.conf perf.conf pagespeed.conf device.conf /etc/nginx/
+COPY nginx.conf /etc/nginx/
+COPY features /etc/nginx/features/
 COPY channel.conf.tmpl /etc/nginx/conf.d/
 COPY entrypoint.sh /
 COPY 50x.html /usr/share/nginx/html/
@@ -20,7 +21,7 @@ RUN apt-get update && \
   rm -r /var/cache/apt /var/lib/apt/lists
 COPY --from=buildstep /usr/local/nginx /usr/local/nginx
 COPY --from=configstep / /
-ENV NPSC_ENABLE_FILTERS=in_place_optimize_for_browser,prioritize_critical_css,inline_preview_images,lazyload_images,rewrite_images,rewrite_css,remove_comments,move_css_to_head,move_css_above_scripts,collapse_whitespace,combine_javascript,extend_cache NPSC_JsPreserveURLs=off NPSC_ImagePreserveURLs=on NPSC_ForceCaching=off
+ENV NPSC_ENABLE_FILTERS=in_place_optimize_for_browser,prioritize_critical_css,inline_preview_images,lazyload_images,rewrite_images,rewrite_css,remove_comments,move_css_to_head,move_css_above_scripts,collapse_whitespace,combine_javascript,extend_cache NPSC_JsPreserveURLs=off NPSC_ImagePreserveURLs=on NPSC_ForceCaching=off CACHE=on COMPRESSION=on PAGESPEED=on DEVICE_DETECTION=on
 
 EXPOSE 80 443
 

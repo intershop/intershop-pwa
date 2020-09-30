@@ -77,7 +77,7 @@
               [attr.data-testing-id]="'payment-parameter-form-' + paymentMethod.id"
             >
               <li *ngFor="let paymentInstrument of paymentMethod.paymentInstruments" class="panel section">
-                <div class="form-check col-xl-4 col-md-5 col-sm-6 col-8" role="tab">
+                <div class="form-check col-10 col-md-6 col-lg-8 col-xl-6" role="tab">
                   <input
                     type="radio"
                     formControlName="name"
@@ -94,8 +94,20 @@
                     >{{ 'checkout.payment.method.delete.link' | translate }}</a
                   >
                 </div>
+                <div
+                  *ngIf="
+                    paymentMethod.serviceId === 'Concardis_CreditCard' &&
+                    basket.payment &&
+                    paymentInstrument.id === basket.payment.paymentInstrument.id
+                  "
+                >
+                  <ish-payment-concardis-creditcard-cvc-detail
+                    [paymentInstrument]="basket.payment.paymentInstrument"
+                    [paymentMethod]="paymentMethod"
+                  >
+                  </ish-payment-concardis-creditcard-cvc-detail>
+                </div>
               </li>
-
               <li class="panel">
                 <a *ngIf="!formIsOpen(i)" (click)="openPaymentParameterForm(i)" data-testing-id="add-payment-link"
                   >{{ 'checkout.payment.addPayment.link' | translate }}
@@ -177,7 +189,13 @@
     <div class="cost-summary">
       <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
 
-      <button class="btn btn-lg btn-block btn-primary" type="button" [disabled]="nextDisabled" (click)="goToNextStep()">
+      <button
+        class="btn btn-lg btn-block btn-primary"
+        id="checkoutBtn"
+        type="button"
+        [disabled]="nextDisabled"
+        (click)="goToNextStep()"
+      >
         {{ 'checkout.button.label' | translate }}
       </button>
     </div>

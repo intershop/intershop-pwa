@@ -176,7 +176,7 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
           { name: 'mandateText', value: result.attributes.mandate.mandateText },
           { name: 'mandateCreatedDateTime', value: result.attributes.mandate.createdDateTime },
         ],
-        saveAllowed: false,
+        saveAllowed: this.paymentMethod.saveAllowed && this.parameterForm.get('saveForLater').value,
       });
     }
     this.cd.detectChanges();
@@ -191,10 +191,14 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
       markAsDirtyRecursive(this.parameterForm);
       return;
     }
-
     const parameters = Object.entries(this.parameterForm.controls)
       .filter(([, control]) => control.enabled && control.value)
       .map(([key, control]) => ({ name: key, value: control.value }));
+
+    let directDebitType = 'SINGLE';
+    if (this.paymentMethod.saveAllowed && this.parameterForm.get('saveForLater').value) {
+      directDebitType = 'FIRST';
+    }
 
     let paymentData: {
       accountHolder: string;
@@ -211,7 +215,7 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
           ? parameters.find(p => p.name === 'mandateReference').value
           : undefined,
         mandateText: this.getParamValue('mandateText', ''),
-        directDebitType: this.getParamValue('directDebitType', ''),
+        directDebitType,
       },
     };
 

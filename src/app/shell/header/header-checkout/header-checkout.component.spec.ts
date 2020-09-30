@@ -1,7 +1,7 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 
-import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status.component';
 
 import { HeaderCheckoutComponent } from './header-checkout.component';
@@ -11,11 +11,11 @@ describe('Header Checkout Component', () => {
   let fixture: ComponentFixture<HeaderCheckoutComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [HeaderCheckoutComponent, MockComponent(LoginStatusComponent)],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderCheckoutComponent);
@@ -30,7 +30,7 @@ describe('Header Checkout Component', () => {
   });
 
   it('should render login status container for logout link', () => {
-    expect(findAllIshElements(element)).toContain('ish-login-status');
+    expect(findAllCustomElements(element)).toContain('ish-login-status');
   });
 
   it('should render home link for navigation to home page', () => {

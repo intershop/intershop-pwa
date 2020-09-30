@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -19,11 +19,11 @@ describe('Basket Cost Summary Component', () => {
   let fixture: ComponentFixture<BasketCostSummaryComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const accountFacade = mock(AccountFacade);
     when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         BasketCostSummaryComponent,
         MockComponent(BasketPromotionComponent),
@@ -38,7 +38,7 @@ describe('Basket Cost Summary Component', () => {
       // tslint:disable-next-line: no-any
       .configureCompiler({ preserveWhitespaces: true } as any)
       .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BasketCostSummaryComponent);

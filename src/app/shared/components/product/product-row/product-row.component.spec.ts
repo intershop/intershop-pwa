@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -7,7 +7,7 @@ import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
-import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductAddToCompareComponent } from 'ish-shared/components/product/product-add-to-compare/product-add-to-compare.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
@@ -35,8 +35,8 @@ describe('Product Row Component', () => {
   let fixture: ComponentFixture<ProductRowComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [FeatureToggleModule.forTesting(), ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(LazyProductAddToOrderTemplateComponent),
@@ -60,7 +60,7 @@ describe('Product Row Component', () => {
         ProductRowComponent,
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductRowComponent);
@@ -78,20 +78,20 @@ describe('Product Row Component', () => {
   it('should render default elements when not specifically configured', () => {
     component.configuration = DEFAULT_CONFIGURATION;
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
-        "ish-lazy-product-add-to-order-template",
-        "ish-lazy-product-add-to-quote",
-        "ish-lazy-product-add-to-wishlist",
-        "ish-product-add-to-basket",
-        "ish-product-add-to-compare",
-        "ish-product-id",
         "ish-product-image",
-        "ish-product-inventory",
         "ish-product-label",
-        "ish-product-price",
+        "ish-product-id",
         "ish-product-promotion",
+        "ish-lazy-product-add-to-quote",
+        "ish-product-add-to-compare",
+        "ish-lazy-product-add-to-wishlist",
+        "ish-lazy-product-add-to-order-template",
+        "ish-product-price",
+        "ish-product-inventory",
         "ish-product-quantity",
+        "ish-product-add-to-basket",
       ]
     `);
   });
@@ -99,7 +99,7 @@ describe('Product Row Component', () => {
   it('should render almost no elements when configured with empty configuration', () => {
     component.configuration = {};
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
         "ish-product-image",
         "ish-product-label",

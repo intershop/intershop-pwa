@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
+import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 
 /**
  * Displays the basket validation result items, e.g. items that cannot be shipped to the basket shipping address.
@@ -16,6 +18,12 @@ import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 export class BasketValidationItemsComponent {
   @Input() lineItems: LineItemView[];
   @Output() deleteItem = new EventEmitter<string>();
+
+  constructor(private shoppingFacade: ShoppingFacade) {}
+
+  product$(sku: string) {
+    return this.shoppingFacade.product$(sku, ProductCompletenessLevel.List);
+  }
 
   /**
    * Throws deleteItem event when delete button was clicked.

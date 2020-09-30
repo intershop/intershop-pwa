@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { EMPTY, merge, race, timer } from 'rxjs';
+import { EMPTY, race, timer } from 'rxjs';
 import {
   catchError,
   concatMap,
@@ -16,6 +16,7 @@ import {
   map,
   mapTo,
   mergeMap,
+  sample,
   switchMap,
   switchMapTo,
   tap,
@@ -27,7 +28,7 @@ import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
-import { ofUrl, selectQueryParam, selectUrl } from 'ish-core/store/core/router';
+import { selectQueryParam, selectUrl } from 'ish-core/store/core/router';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import {
@@ -129,20 +130,9 @@ export class UserEffects {
    */
   redirectAfterLogin$ = createEffect(
     () =>
-      merge(
-        this.actions$.pipe(
-          ofType(loginUserSuccess),
-          switchMapTo(this.store$.pipe(select(selectQueryParam('returnUrl')), first())),
-          whenTruthy()
-        ),
-        this.store$.pipe(
-          ofUrl(/^\/login.*/),
-          select(selectQueryParam('returnUrl')),
-          map(returnUrl => returnUrl || '/account'),
-          switchMap(returnUrl => this.store$.pipe(select(getLoggedInUser), whenTruthy(), mapTo(returnUrl)))
-        )
-      ).pipe(
+      this.store$.pipe(select(selectQueryParam('returnUrl'))).pipe(
         whenTruthy(),
+        sample(this.actions$.pipe(ofType(loginUserSuccess))),
         tap(navigateTo => this.router.navigateByUrl(navigateTo))
       ),
     { dispatch: false }

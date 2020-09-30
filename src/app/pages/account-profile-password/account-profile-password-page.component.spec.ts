@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -13,8 +13,8 @@ describe('Account Profile Password Page Component', () => {
   let fixture: ComponentFixture<AccountProfilePasswordPageComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         AccountProfilePasswordPageComponent,
         MockComponent(AccountProfilePasswordComponent),
@@ -22,7 +22,7 @@ describe('Account Profile Password Page Component', () => {
       ],
       providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountProfilePasswordPageComponent);

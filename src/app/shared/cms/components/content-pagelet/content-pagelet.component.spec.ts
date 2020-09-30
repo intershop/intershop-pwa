@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { noop, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -23,14 +23,14 @@ describe('Content Pagelet Component', () => {
   let sfeAdapterService: SfeAdapterService;
   let cmsFacade: CMSFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     sfeAdapterService = mock(SfeAdapterService);
     cmsFacade = mock(CMSFacade);
 
     const appFacade = mock(AppFacade);
     when(appFacade.icmBaseUrl).thenReturn('http://example.org');
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [CMSTextComponent, ContentPageletComponent, ServerHtmlDirective],
       providers: [
@@ -47,7 +47,7 @@ describe('Content Pagelet Component', () => {
     })
       .overrideComponent(ContentPageletComponent, { set: { entryComponents: [CMSTextComponent] } })
       .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ContentPageletComponent);

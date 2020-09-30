@@ -8,7 +8,7 @@
     "moduleResolution": "node",
     "strict": false,
     "strictFunctionTypes": false,
-    "noEmitOnError": true,
+    "noEmitOnError": false,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "sourceMap": false,

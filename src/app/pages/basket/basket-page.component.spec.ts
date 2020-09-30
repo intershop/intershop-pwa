@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -20,9 +20,9 @@ describe('Basket Page Component', () => {
   let element: HTMLElement;
   let checkoutFacade: CheckoutFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     checkoutFacade = mock(CheckoutFacade);
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         BasketPageComponent,
         MockComponent(LoadingComponent),
@@ -33,7 +33,7 @@ describe('Basket Page Component', () => {
       imports: [TranslateModule.forRoot()],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BasketPageComponent);

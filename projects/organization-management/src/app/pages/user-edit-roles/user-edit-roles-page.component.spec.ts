@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -21,7 +21,7 @@ describe('User Edit Roles Page Component', () => {
   let fixture: ComponentFixture<UserEditRolesPageComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const organizationManagementFacade = mock(OrganizationManagementFacade);
     when(organizationManagementFacade.selectedUser$).thenReturn(
       of({
@@ -35,7 +35,7 @@ describe('User Edit Roles Page Component', () => {
     const accountFacade = mock(AccountFacade);
     when(accountFacade.user$).thenReturn(of({ login: 'boss@test.de' } as User));
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(ErrorMessageComponent),
@@ -48,7 +48,7 @@ describe('User Edit Roles Page Component', () => {
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UserEditRolesPageComponent);

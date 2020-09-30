@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, SimpleChange, SimpleChanges } from '@angular/core';
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
@@ -21,6 +21,7 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
 
+import { PaymentConcardisCreditcardCvcDetailComponent } from '../payment-concardis-creditcard-cvc-detail/payment-concardis-creditcard-cvc-detail.component';
 import { PaymentConcardisCreditcardComponent } from '../payment-concardis-creditcard/payment-concardis-creditcard.component';
 import { PaymentConcardisDirectdebitComponent } from '../payment-concardis-directdebit/payment-concardis-directdebit.component';
 
@@ -32,11 +33,11 @@ describe('Checkout Payment Component', () => {
   let element: HTMLElement;
   let paymentMethodChange: SimpleChanges;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     @Component({ template: 'dummy' })
     class DummyComponent {}
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         CheckoutPaymentComponent,
         DummyComponent,
@@ -52,6 +53,7 @@ describe('Checkout Payment Component', () => {
         MockComponent(ModalDialogLinkComponent),
         MockComponent(NgbCollapse),
         MockComponent(PaymentConcardisCreditcardComponent),
+        MockComponent(PaymentConcardisCreditcardCvcDetailComponent),
         MockComponent(PaymentConcardisDirectdebitComponent),
         MockDirective(ServerHtmlDirective),
         MockPipe(PricePipe),
@@ -66,7 +68,7 @@ describe('Checkout Payment Component', () => {
         set: { changeDetection: ChangeDetectionStrategy.Default },
       })
       .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutPaymentComponent);
@@ -175,6 +177,7 @@ describe('Checkout Payment Component', () => {
 
   describe('parameter forms', () => {
     it('should open and close payment form if open/cancel form is triggered', () => {
+      component.basket.payment = undefined;
       expect(component.formIsOpen(-1)).toBeTruthy();
       component.openPaymentParameterForm(2);
       expect(component.formIsOpen(2)).toBeTruthy();
@@ -184,6 +187,7 @@ describe('Checkout Payment Component', () => {
     });
 
     it('should throw createPaymentInstrument event when the user submits a valid parameter form and saving is not allowed', done => {
+      component.basket.payment = undefined;
       component.ngOnChanges(paymentMethodChange);
       component.openPaymentParameterForm(1);
 
@@ -201,6 +205,7 @@ describe('Checkout Payment Component', () => {
     });
 
     it('should throw createUserPaymentInstrument event when the user submits a valid parameter form and saving is allowed', done => {
+      component.basket.payment = undefined;
       component.ngOnChanges(paymentMethodChange);
       component.openPaymentParameterForm(3);
 
@@ -218,6 +223,7 @@ describe('Checkout Payment Component', () => {
     });
 
     it('should disable submit button when the user submits an invalid parameter form', () => {
+      component.basket.payment = undefined;
       component.openPaymentParameterForm(1);
       fixture.detectChanges();
 
@@ -228,6 +234,7 @@ describe('Checkout Payment Component', () => {
     });
 
     it('should render standard parameter form for standard parametrized form', () => {
+      component.basket.payment = undefined;
       component.openPaymentParameterForm(1);
 
       component.ngOnChanges(paymentMethodChange);

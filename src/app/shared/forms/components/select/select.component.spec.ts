@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -13,36 +13,36 @@ describe('Select Component', () => {
   let fixture: ComponentFixture<SelectComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         MockComponent(FormControlFeedbackComponent),
         MockDirective(ShowFormFeedbackDirective),
         SelectComponent,
       ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(SelectComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
+    }).compileComponents();
+  });
 
-        const form = new FormGroup({
-          simpleField: new FormControl(),
-          requiredField: new FormControl('', [Validators.required]),
-        });
-        const options: SelectOption[] = [
-          { label: 'optionLabel', value: 'optionValue' },
-          { label: 'optionLabel2', value: 'optionValue2' },
-        ];
+  beforeEach(() => {
+    fixture = TestBed.createComponent(SelectComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
 
-        component.label = 'label';
-        component.form = form;
-        component.controlName = 'simpleField';
-        component.options = options;
-      });
-  }));
+    const form = new FormGroup({
+      simpleField: new FormControl(),
+      requiredField: new FormControl('', [Validators.required]),
+    });
+    const options: SelectOption[] = [
+      { label: 'optionLabel', value: 'optionValue' },
+      { label: 'optionLabel2', value: 'optionValue2' },
+    ];
+
+    component.label = 'label';
+    component.form = form;
+    component.controlName = 'simpleField';
+    component.options = options;
+  });
 
   it('should be created', () => {
     expect(component).toBeTruthy();

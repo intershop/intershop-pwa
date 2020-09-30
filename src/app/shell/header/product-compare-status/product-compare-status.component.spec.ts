@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { ComponentFixture, TestBed, async, inject } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
@@ -17,28 +17,30 @@ describe('Product Compare Status Component', () => {
   let fixture: ComponentFixture<ProductCompareStatusComponent>;
   let element: HTMLElement;
   let shoppingFacade: ShoppingFacade;
+  let location: Location;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     @Component({ template: 'dummy' })
     class DummyComponent {}
 
     shoppingFacade = mock(ShoppingFacade);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [DummyComponent, MockComponent(FaIconComponent), ProductCompareStatusComponent],
       imports: [
         RouterTestingModule.withRoutes([{ path: 'compare', component: DummyComponent }]),
         TranslateModule.forRoot(),
       ],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(ProductCompareStatusComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
-      });
-  }));
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ProductCompareStatusComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+    location = TestBed.inject(Location);
+  });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
@@ -46,15 +48,13 @@ describe('Product Compare Status Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should navigate to compare page when compare icon is clicked', async(
-    inject([Location], (location: Location) => {
-      fixture.detectChanges();
-      element.querySelector('a').click();
-      fixture.whenStable().then(() => {
-        expect(location.path()).toContain('compare');
-      });
-    })
-  ));
+  it('should navigate to compare page when compare icon is clicked', async () => {
+    fixture.detectChanges();
+    element.querySelector('a').click();
+    await fixture.whenStable();
+
+    expect(location.path()).toContain('compare');
+  });
 
   it('should display product compare count when rendered', () => {
     when(shoppingFacade.compareProductsCount$).thenReturn(of(123456789));

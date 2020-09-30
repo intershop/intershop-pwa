@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
@@ -26,10 +26,10 @@ describe('Select Order Template Modal Component', () => {
     public: false,
   };
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     orderTemplateFacadeMock = mock(OrderTemplatesFacade);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         MockComponent(InputComponent),
         MockDirective(ServerHtmlDirective),
@@ -38,7 +38,7 @@ describe('Select Order Template Modal Component', () => {
       imports: [NgbModalModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacadeMock) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SelectOrderTemplateModalComponent);

@@ -1,3 +1,4 @@
+import { waitLoadingEnd } from '../../framework';
 import { HeaderModule } from '../header.module';
 
 export class OrderTemplatesDetailsPage {
@@ -36,6 +37,7 @@ export class OrderTemplatesDetailsPage {
   }
 
   deleteOrderTemplate(id: string) {
+    waitLoadingEnd();
     this.getOrderTemplateItemById(id).find('[data-testing-id="delete-order-template"]').click();
   }
 

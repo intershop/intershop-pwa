@@ -1,5 +1,5 @@
 export interface Attribute<T = unknown> {
-  name: string;
+  name?: string;
   type?: string;
   value: T;
 }

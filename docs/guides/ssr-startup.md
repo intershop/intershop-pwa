@@ -39,7 +39,7 @@ Only empty strings count as inactive.
 | **Debug** :warning: | TRUST_ICM       | any                  | use this if ICM is deployed with an insecure certificate                    |
 |                     | LOGGING         | any                  | enable extra log output                                                     |
 | **Hybrid Approach** | SSR_HYBRID      | any                  | enable running PWA and ICM in [Hybrid Mode](../concepts/hybrid-approach.md) |
-|                     | PROXY_ICM       | any                  | proxy ICM via `/INTERSHOP` (enabled if SSR_HYBRID is active)                |
+|                     | PROXY_ICM       | any \| URL           | proxy ICM via `/INTERSHOP` (enabled if SSR_HYBRID is active)                |
 | **Third party**     | GTM_TOKEN       | string               | token for Google Tag Manager                                                |
 |                     | SENTRY_DSN      | string               | Sentry DSN URL for using Sentry Error Monitor                               |
 

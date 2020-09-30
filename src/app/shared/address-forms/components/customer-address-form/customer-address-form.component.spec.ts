@@ -1,5 +1,5 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -16,13 +16,13 @@ describe('Customer Address Form Component', () => {
   let element: HTMLElement;
   let fb: FormBuilder;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [CustomerAddressFormComponent, MockComponent(AddressFormContainerComponent)],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [AddressFormFactoryProvider],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomerAddressFormComponent);
@@ -57,16 +57,16 @@ describe('Customer Address Form Component', () => {
     verify(emitter.emit()).once();
   });
 
-  it('should set submitted flag if submit is clicked and form is not valid', async(() => {
+  it('should set submitted flag if submit is clicked and form is not valid', async () => {
     component.form = new FormGroup({
       control: new FormControl('', Validators.required),
     });
     expect(component.submitted).toBeFalsy();
     component.submitForm();
-    fixture.whenStable().then(() => {
-      expect(component.submitted).toBeTruthy();
-    });
-  }));
+    await fixture.whenStable();
+
+    expect(component.submitted).toBeTruthy();
+  });
 
   it('should NOT throw submit event for invalid form', () => {
     component.form = new FormGroup({

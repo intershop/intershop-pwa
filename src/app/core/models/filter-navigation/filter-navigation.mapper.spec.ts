@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 
 import { getICMStaticURL } from 'ish-core/store/core/configuration';
@@ -10,12 +10,12 @@ import { FilterNavigation } from './filter-navigation.model';
 describe('Filter Navigation Mapper', () => {
   let mapper: FilterNavigationMapper;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideMockStore({ selectors: [{ selector: getICMStaticURL, value: 'http://www.example.org' }] })],
     });
     mapper = TestBed.inject(FilterNavigationMapper);
-  }));
+  });
 
   describe('fromData', () => {
     it('should return empty FilterNavigation when elements not exists', () => {

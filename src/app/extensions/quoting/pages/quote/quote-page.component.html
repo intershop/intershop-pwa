@@ -1,0 +1,31 @@
+<ng-container *ngIf="selectedQuote$ | async as quote">
+  <ng-container *ngIf="state$ | async as state">
+    <!-- Title -->
+    <h1 [ngSwitch]="true">
+      <ng-template [ngSwitchCase]="state === 'Submitted' && (justSubmitted$ | async)">{{
+        'quote.edit.submitted.heading' | translate
+      }}</ng-template>
+      <ng-template [ngSwitchCase]="state === 'Responded'">
+        {{ 'quote.edit.responded.quote_details.text' | translate }} - {{ quote.displayName || quote.number }}
+      </ng-template>
+      <ng-template ngSwitchDefault>
+        {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate }} - {{ quote.displayName || quote.number }}
+      </ng-template>
+    </h1>
+
+    <ish-error-message [error]="error$ | async"></ish-error-message>
+
+    <ng-container *ngIf="state === 'New'; else elseTemplate">
+      <ish-quote-edit></ish-quote-edit>
+    </ng-container>
+    <ng-template #elseTemplate>
+      <ish-quote-view></ish-quote-view>
+    </ng-template>
+
+    <ish-quote-interactions></ish-quote-interactions>
+
+    <a class="btn btn-link" [routerLink]="['/account/quotes']">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
+  </ng-container>
+</ng-container>
+
+<ish-loading *ngIf="loading$ | async"></ish-loading>

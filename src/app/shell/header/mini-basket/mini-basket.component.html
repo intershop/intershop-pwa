@@ -25,18 +25,20 @@
     <ng-container *ngIf="lineItems$ | async as lineItems; else emptyBlock">
       <div class="product-rows-block">
         <div *ngFor="let lineItem of lineItems" class="product-row">
-          <div class="mini-product-img">
-            <a [routerLink]="lineItem.product | ishProductRoute" (click)="collapse()">
-              <ish-product-image [product]="lineItem.product" imageType="S" class="product-image"></ish-product-image>
-            </a>
-          </div>
-          <div class="mini-product-info">
-            <a [routerLink]="lineItem.product | ishProductRoute" (click)="collapse()"> {{ lineItem.name }} </a>
-            <div class="product-price">{{ lineItem.price | ishPrice }}</div>
-            <div class="cart-pli-data">
-              <span>{{ 'shopping_cart.pli.qty.label' | translate }}</span> {{ lineItem.quantity.value }}
+          <ng-container *ngIf="product$(lineItem.productSKU) | async as product">
+            <div class="mini-product-img">
+              <a [routerLink]="product | ishProductRoute" (click)="collapse()">
+                <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
+              </a>
             </div>
-          </div>
+            <div class="mini-product-info">
+              <a [routerLink]="product | ishProductRoute" (click)="collapse()"> {{ product.name }} </a>
+              <div class="product-price">{{ lineItem.price | ishPrice }}</div>
+              <div class="cart-pli-data">
+                <span>{{ 'shopping_cart.pli.qty.label' | translate }}</span> {{ lineItem.quantity.value }}
+              </div>
+            </div>
+          </ng-container>
         </div>
       </div>
 

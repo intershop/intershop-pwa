@@ -1,6 +1,9 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock, verify } from 'ts-mockito';
+
+import { AccountFacade } from 'ish-core/facades/account.facade';
 
 import { QuotingFacade } from '../../facades/quoting.facade';
 
@@ -12,21 +15,24 @@ describe('Basket Add To Quote Component', () => {
   let element: HTMLElement;
   let quotingFacade: QuotingFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     quotingFacade = mock(QuotingFacade);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [BasketAddToQuoteComponent],
-      imports: [TranslateModule.forRoot()],
-      providers: [{ provide: QuotingFacade, useFactory: () => instance(quotingFacade) }],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(BasketAddToQuoteComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
-      });
-  }));
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      providers: [
+        { provide: QuotingFacade, useFactory: () => instance(quotingFacade) },
+        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
+      ],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(BasketAddToQuoteComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+  });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
@@ -34,9 +40,9 @@ describe('Basket Add To Quote Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should dispatch action when addToQuote is triggered.', () => {
+  it('should call facade when triggered.', () => {
     component.addToQuote();
 
-    verify(quotingFacade.addBasketToQuoteRequest()).once();
+    verify(quotingFacade.createQuoteRequestFromBasket()).once();
   });
 });

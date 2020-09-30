@@ -1,16 +1,13 @@
 import {
-  ChangeDetectionStrategy, Component, ComponentFactoryResolver,
+  ChangeDetectionStrategy, Component, OnInit, ViewChild, ViewContainerRef,
+  Compiler, Injector, NgModuleFactory,
   <% if (bindings.length) { %>ComponentRef, Input, OnChanges, <% } %>
-  OnInit,
   <% if (onChanges === 'complex') { %>SimpleChange, SimpleChanges, <% } %>
-  ViewChild, ViewContainerRef,
 } from '@angular/core';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 
 <% if (imports.length) { %><%= imports.map(i => `import { ${i.types.join(', ')} } from ${i.from};`).join('\n') %><% } %>
-
-import { <%= classify(originalName) %>Component } from '../../shared/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component';
 
 @Component({
   selector: '<%= selector %>',
@@ -32,20 +29,37 @@ export class <%= classify(name) %>Component implements OnInit <% if (bindings.le
   @ViewChild('anchor', { read: ViewContainerRef, static: true }) anchor: ViewContainerRef;
   <% if (bindings.length) { %><%= bindings.map(b => b.declaration).join('\n  ') %><% } %>
 
-  <% if (bindings.length) { %>private component: ComponentRef<<%= classify(originalName) %>Component>;<% } %>
+  <% if (bindings.length) { %>// tslint:disable-next-line: no-any
+  private component: ComponentRef<any>;<% } %>
 
   constructor(
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private featureToggleService: FeatureToggleService
+    private featureToggleService: FeatureToggleService,
+    private compiler: Compiler,
+    private injector: Injector
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     if (this.featureToggleService.enabled('<%= camelize(extension) %>')) {
-      const factory = this.componentFactoryResolver.resolveComponentFactory(<%= classify(originalName) %>Component);
-      <% if (bindings.length) { %>this.component = <% } %>this.anchor.createComponent(factory);
-      <% if (bindings.length) { %>this.ngOnChanges(<% if (onChanges === 'complex') { %>{
+      // prevent cyclic dependency warnings
+      const extension = '<%= dasherize(extension) %>';
+      const moduleObj = await import(`../../${extension}.module`);
+      const module = moduleObj[Object.keys(moduleObj)[0]];
+
+      const { <%= classify(originalName) %>Component } = await import('../../shared/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component');
+
+      const moduleFactory = await this.loadModuleFactory(module);
+      const moduleRef = moduleFactory.create(this.injector);
+      const factory = moduleRef.componentFactoryResolver.resolveComponentFactory(<%= classify(originalName) %>Component);
+
+    <% if (bindings.length) { %>
+      this.component = this.anchor.createComponent(factory);
+      this.ngOnChanges(<% if (onChanges === 'complex') { %>{
           <%= bindings.map(b => `${b.name}: new SimpleChange(undefined, this.${b.name}, true),`).join('\n        ') %>
-        }<% } %>);<% } %>
+        }<% } %>);
+      this.component.changeDetectorRef.markForCheck();
+    <% } else { %>
+      this.anchor.createComponent(factory).changeDetectorRef.markForCheck();
+    <% } %>
     }
   }
 
@@ -57,4 +71,12 @@ export class <%= classify(name) %>Component implements OnInit <% if (bindings.le
     }
   }
 <% } %>
+
+  private async loadModuleFactory(t) {
+    if (t instanceof NgModuleFactory) {
+      return t;
+    } else {
+      return await this.compiler.compileModuleAsync(t);
+    }
+  }
 }

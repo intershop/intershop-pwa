@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { MockComponent } from 'ng-mocks';
@@ -18,10 +18,10 @@ describe('Header Navigation Component', () => {
   let element: HTMLElement;
   let shoppingFacade: ShoppingFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     shoppingFacade = mock(ShoppingFacade);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [
         CategoryRoutePipe,
@@ -31,7 +31,7 @@ describe('Header Navigation Component', () => {
       ],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderNavigationComponent);
@@ -62,12 +62,12 @@ describe('Header Navigation Component', () => {
           ></ish-sub-category-navigation>
         </li>
         <li class="dropdown">
-          <a style="width: 100%;" ng-reflect-router-link="/cat/B" data-testing-id="B-link" href="/cat/B">
+          <a style="width: 100%" ng-reflect-router-link="/cat/B" data-testing-id="B-link" href="/cat/B">
             CAT_B
           </a>
         </li>
         <li class="dropdown">
-          <a style="width: 100%;" ng-reflect-router-link="/cat/C" data-testing-id="C-link" href="/cat/C">
+          <a style="width: 100%" ng-reflect-router-link="/cat/C" data-testing-id="C-link" href="/cat/C">
             CAT_C
           </a>
         </li>

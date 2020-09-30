@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
@@ -15,7 +15,7 @@ describe('User Roles Selection Component', () => {
   let fixture: ComponentFixture<UserRolesSelectionComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const organizationManagementFacade = mock(OrganizationManagementFacade);
     const buyerRole = {
       id: 'APP_B2B_BUYER',
@@ -33,12 +33,12 @@ describe('User Roles Selection Component', () => {
     when(organizationManagementFacade.role$(buyerRole.id)).thenReturn(of(buyerRole));
     when(organizationManagementFacade.role$(approverRole.id)).thenReturn(of(approverRole));
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [MockComponent(FaIconComponent), UserRolesSelectionComponent],
       providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UserRolesSelectionComponent);

@@ -24,6 +24,8 @@ fi
 
 [ -f "/etc/nginx/conf.d/default.conf" ] && rm /etc/nginx/conf.d/default.conf
 
+find /etc/nginx/features/*.conf | xargs -I{} echo {} | sed -e "s%.*\/\(\w*\).conf%\1%" | grep -E '^\w+$' | while read feature; do echo "# $feature" ; env | grep -iqE "^$feature=(on|1|true|yes)$" && echo "include /etc/nginx/features/${feature}.conf;" || echo "include /etc/nginx/features/${feature}-off[.]conf;" ; done >/etc/nginx/conf.d/features.conf
+
 i=1
 while true
 do
@@ -66,9 +68,12 @@ env | grep NPSC_ | sed -e 's/^NPSC_//g' -e "s/\([A-Z_]*\)=/\L\1=/g" -e "s/_\([a-
 
 env | grep NPSC_ | sed -e 's/^[^=]*=//' -e 's/$/;/' > /tmp/pagespeed-suffix.txt
 
-paste -d" " /tmp/pagespeed-prefix.txt /tmp/pagespeed-suffix.txt >> /etc/nginx/pagespeed.conf
+paste -d" " /tmp/pagespeed-prefix.txt /tmp/pagespeed-suffix.txt >> /etc/nginx/features/pagespeed.conf
 
-[ ! -z "$DEBUG" ] && find /etc/nginx -name '*.conf' -print -exec cat '{}' \;
+if env | grep -iqE "^DEBUG=(on|1|true|yes)$"
+then
+  find /etc/nginx -name '*.conf' -print -exec cat '{}' \;
+fi
 
 if [ -z "$*" ]
 then

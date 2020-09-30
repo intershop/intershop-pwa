@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { MockComponent } from 'ng-mocks';
@@ -17,7 +17,7 @@ describe('Sub Category Navigation Component', () => {
   let component: SubCategoryNavigationComponent;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const shoppingFacade = mock(ShoppingFacade);
 
     when(shoppingFacade.navigationCategories$('A')).thenReturn(
@@ -35,7 +35,7 @@ describe('Sub Category Navigation Component', () => {
       ] as NavigationCategory[])
     );
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [CategoryRoutePipe, MockComponent(FaIconComponent), SubCategoryNavigationComponent],
       providers: [
@@ -43,7 +43,7 @@ describe('Sub Category Navigation Component', () => {
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SubCategoryNavigationComponent);
@@ -74,7 +74,7 @@ describe('Sub Category Navigation Component', () => {
           ></ish-sub-category-navigation>
         </li>
         <li class="main-navigation-level1-item">
-          <a style="width: 100%;" ng-reflect-router-link="/CAT_A2-catA.2" href="/CAT_A2-catA.2">CAT_A2</a>
+          <a style="width: 100%" ng-reflect-router-link="/CAT_A2-catA.2" href="/CAT_A2-catA.2">CAT_A2</a>
         </li>
       </ul>
     `);

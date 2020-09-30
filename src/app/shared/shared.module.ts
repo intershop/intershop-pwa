@@ -48,8 +48,6 @@ import { BasketPromotionComponent } from './components/basket/basket-promotion/b
 import { BasketValidationItemsComponent } from './components/basket/basket-validation-items/basket-validation-items.component';
 import { BasketValidationProductsComponent } from './components/basket/basket-validation-products/basket-validation-products.component';
 import { BasketValidationResultsComponent } from './components/basket/basket-validation-results/basket-validation-results.component';
-import { LineItemDescriptionComponent } from './components/basket/line-item-description/line-item-description.component';
-import { LineItemListComponent } from './components/basket/line-item-list/line-item-list.component';
 import { BasketInvoiceAddressWidgetComponent } from './components/checkout/basket-invoice-address-widget/basket-invoice-address-widget.component';
 import { BasketShippingAddressWidgetComponent } from './components/checkout/basket-shipping-address-widget/basket-shipping-address-widget.component';
 import { AccordionItemComponent } from './components/common/accordion-item/accordion-item.component';
@@ -57,6 +55,7 @@ import { AccordionComponent } from './components/common/accordion/accordion.comp
 import { BreadcrumbComponent } from './components/common/breadcrumb/breadcrumb.component';
 import { ErrorMessageComponent } from './components/common/error-message/error-message.component';
 import { InfoBoxComponent } from './components/common/info-box/info-box.component';
+import { InplaceEditComponent } from './components/common/inplace-edit/inplace-edit.component';
 import { LoadingComponent } from './components/common/loading/loading.component';
 import { ModalDialogLinkComponent } from './components/common/modal-dialog-link/modal-dialog-link.component';
 import { ModalDialogComponent } from './components/common/modal-dialog/modal-dialog.component';
@@ -69,8 +68,10 @@ import { FilterNavigationSidebarComponent } from './components/filter/filter-nav
 import { FilterNavigationComponent } from './components/filter/filter-navigation/filter-navigation.component';
 import { FilterSwatchImagesComponent } from './components/filter/filter-swatch-images/filter-swatch-images.component';
 import { FilterTextComponent } from './components/filter/filter-text/filter-text.component';
+import { LineItemDescriptionComponent } from './components/line-item/line-item-description/line-item-description.component';
 import { LineItemEditDialogComponent } from './components/line-item/line-item-edit-dialog/line-item-edit-dialog.component';
 import { LineItemEditComponent } from './components/line-item/line-item-edit/line-item-edit.component';
+import { LineItemListComponent } from './components/line-item/line-item-list/line-item-list.component';
 import { LoginFormComponent } from './components/login/login-form/login-form.component';
 import { LoginModalComponent } from './components/login/login-modal/login-modal.component';
 import { OrderListComponent } from './components/order/order-list/order-list.component';
@@ -185,6 +186,7 @@ const exportedComponents = [
   ErrorMessageComponent,
   FilterNavigationComponent,
   InfoBoxComponent,
+  InplaceEditComponent,
   LineItemListComponent,
   LoadingComponent,
   LoginFormComponent,

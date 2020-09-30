@@ -11,6 +11,11 @@
       },
       "visible": false
     },
+    "path": {
+      "type": "string",
+      "format": "path",
+      "visible": false
+    },
     "from": {
       "type": "string",
       "description": "The folder of the component source.",

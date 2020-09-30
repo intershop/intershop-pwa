@@ -6,7 +6,10 @@ import { BasketAddToQuoteComponent } from './shared/basket-add-to-quote/basket-a
 import { ProductAddToQuoteDialogComponent } from './shared/product-add-to-quote-dialog/product-add-to-quote-dialog.component';
 import { ProductAddToQuoteComponent } from './shared/product-add-to-quote/product-add-to-quote.component';
 import { QuoteEditComponent } from './shared/quote-edit/quote-edit.component';
+import { QuoteExpirationDateComponent } from './shared/quote-expiration-date/quote-expiration-date.component';
+import { QuoteInteractionsComponent } from './shared/quote-interactions/quote-interactions.component';
 import { QuoteStateComponent } from './shared/quote-state/quote-state.component';
+import { QuoteViewComponent } from './shared/quote-view/quote-view.component';
 import { QuoteWidgetComponent } from './shared/quote-widget/quote-widget.component';
 
 @NgModule({
@@ -16,9 +19,21 @@ import { QuoteWidgetComponent } from './shared/quote-widget/quote-widget.compone
     ProductAddToQuoteComponent,
     ProductAddToQuoteDialogComponent,
     QuoteEditComponent,
+    QuoteExpirationDateComponent,
+    QuoteInteractionsComponent,
     QuoteStateComponent,
+    QuoteViewComponent,
     QuoteWidgetComponent,
   ],
-  exports: [QuoteEditComponent, QuoteStateComponent, SharedModule],
+  exports: [
+    ProductAddToQuoteComponent,
+    QuoteEditComponent,
+    QuoteExpirationDateComponent,
+    QuoteInteractionsComponent,
+    QuoteStateComponent,
+    QuoteViewComponent,
+    QuoteWidgetComponent,
+    SharedModule,
+  ],
 })
 export class QuotingModule {}

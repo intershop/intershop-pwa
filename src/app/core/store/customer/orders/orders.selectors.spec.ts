@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
-import { OrderView } from 'ish-core/models/order/order.model';
+import { Order } from 'ish-core/models/order/order.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
@@ -41,7 +41,7 @@ describe('Orders Selectors', () => {
       documentNo: '00000002',
       lineItems: [{ id: 'test2', productSKU: 'sku', quantity: { value: 5 } }] as LineItem[],
     },
-  ] as OrderView[];
+  ] as Order[];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -107,7 +107,7 @@ describe('Orders Selectors', () => {
         expect(loadedOrders[1].documentNo).toEqual(orders[1].documentNo);
         expect(loadedOrders[1].lineItems).toHaveLength(1);
         expect(loadedOrders[1].lineItems[0].id).toEqual('test2');
-        expect(loadedOrders[1].lineItems[0].product).toHaveProperty('sku', 'sku');
+        expect(loadedOrders[1].lineItems[0].productSKU).toEqual('sku');
       });
     });
 
@@ -146,7 +146,7 @@ describe('Orders Selectors', () => {
         expect(loadedOrder.documentNo).toEqual(orders[0].documentNo);
         expect(loadedOrder.lineItems).toHaveLength(1);
         expect(loadedOrder.lineItems[0].id).toEqual('test');
-        expect(loadedOrder.lineItems[0].product).toHaveProperty('sku', 'sku');
+        expect(loadedOrder.lineItems[0].productSKU).toEqual('sku');
       });
     });
 

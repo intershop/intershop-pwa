@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { RecaptchaModule } from 'ng-recaptcha';
@@ -14,16 +14,16 @@ describe('Captcha V2 Component', () => {
   let fixture: ComponentFixture<CaptchaV2Component>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const captchaFacade = mock(CaptchaFacade);
     when(captchaFacade.captchaSiteKey$).thenReturn(of('captchaV2SiteKey'));
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [CaptchaV2Component],
       imports: [ReactiveFormsModule, RecaptchaModule.forRoot(), TranslateModule.forRoot()],
       providers: [{ provide: CaptchaFacade, useFactory: () => instance(captchaFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CaptchaV2Component);

@@ -67,6 +67,7 @@ export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
     expiryMonth: { messageKey: '', message: '', code: 0 },
   };
 
+  // tslint:disable-next-line: private-destroy-field
   protected destroy$ = new Subject();
 
   getPayEngineURL() {

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { OrderView } from 'ish-core/models/order/order.model';
+import { Order } from 'ish-core/models/order/order.model';
 
 /**
  * The Order Page Component displays the details of an order. See also {@link OrderPageContainerComponent}
@@ -14,5 +14,5 @@ import { OrderView } from 'ish-core/models/order/order.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountOrderComponent {
-  @Input() order: OrderView;
+  @Input() order: Order;
 }

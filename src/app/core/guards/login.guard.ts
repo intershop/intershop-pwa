@@ -34,12 +34,7 @@ export class LoginGuard implements CanActivate {
       return true;
     }
 
-    const returnUrl = route.queryParams.returnUrl || '/home';
-
-    const component = await (await import('../../shared/components/login/login-modal/login-modal.component'))
-      .LoginModalComponent;
-
-    this.currentDialog = this.modalService.open(component, { centered: true, size: 'sm' });
+    this.currentDialog = this.modalService.open(LoginModalComponent, { centered: true, size: 'sm' });
 
     const loginModalComponent = this.currentDialog.componentInstance as LoginModalComponent;
     loginModalComponent.loginMessageKey = route.queryParamMap.get('messageKey');
@@ -62,7 +57,6 @@ export class LoginGuard implements CanActivate {
     // login successful
     this.store.pipe(select(getUserAuthorized), whenTruthy(), first()).subscribe(() => {
       this.currentDialog.dismiss();
-      this.router.navigateByUrl(returnUrl);
     });
 
     return false;

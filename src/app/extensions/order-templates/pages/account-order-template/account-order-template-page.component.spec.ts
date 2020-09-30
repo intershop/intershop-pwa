@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
@@ -19,10 +19,10 @@ describe('Account Order Template Page Component', () => {
   let fixture: ComponentFixture<AccountOrderTemplatePageComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const orderTemplatesFacade = mock(OrderTemplatesFacade);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [NgbPopoverModule, TranslateModule.forRoot()],
       declarations: [
         AccountOrderTemplatePageComponent,
@@ -34,7 +34,7 @@ describe('Account Order Template Page Component', () => {
       ],
       providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountOrderTemplatePageComponent);

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
@@ -29,11 +29,11 @@ describe('Users Page Component', () => {
     { firstName: 'Jack', lastName: 'Link', name: 'Jack Link', email: 'jlink@test.intershop.de' },
   ] as B2bUser[];
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
     accountFacade = mock(AccountFacade);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(ErrorMessageComponent),
@@ -48,7 +48,7 @@ describe('Users Page Component', () => {
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UsersPageComponent);

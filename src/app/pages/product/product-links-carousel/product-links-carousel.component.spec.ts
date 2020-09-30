@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { SwiperModule } from 'ngx-swiper-wrapper';
 
@@ -12,12 +12,12 @@ describe('Product Links Carousel Component', () => {
   let fixture: ComponentFixture<ProductLinksCarouselComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [SwiperModule],
       declarations: [MockComponent(ProductItemComponent), ProductLinksCarouselComponent],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     const productLink = { productSKUs: ['sku'], categoryIds: ['catID'] } as ProductLinkView;

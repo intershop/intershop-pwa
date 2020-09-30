@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -20,8 +20,8 @@ describe('Registration Page Component', () => {
   @Component({ template: 'dummy' })
   class DummyComponent {}
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [DummyComponent, MockComponent(RegistrationFormComponent), RegistrationPageComponent],
       imports: [
         RouterTestingModule.withRoutes([{ path: 'home', component: DummyComponent }]),
@@ -31,7 +31,7 @@ describe('Registration Page Component', () => {
     }).compileComponents();
 
     location = TestBed.inject(Location);
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RegistrationPageComponent);

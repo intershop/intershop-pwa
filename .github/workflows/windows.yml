@@ -13,6 +13,7 @@ jobs:
 
     steps:
       - name: Cancel Old Pipeline
+        if: "!startsWith(github.ref, 'refs/tags/') && github.ref != 'refs/heads/master' && github.ref != 'refs/heads/develop'"
         uses: rokroskar/workflow-run-cleanup-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -33,11 +34,7 @@ jobs:
       - run: npm run check
 
       - name: Check No Changes
-        run: git diff-files --quiet
-
-      - name: Display Changes
-        if: failure()
-        run: git diff
+        run: git diff --exit-code --raw -p --stat
 
   Local:
     runs-on: windows-latest

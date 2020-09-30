@@ -239,7 +239,6 @@ describe('Basket Items Effects', () => {
             lineItems: [
               {
                 id: 'BIID',
-                name: 'NAME',
                 quantity: { value: 1 },
                 productSKU: 'SKU',
                 price: undefined,

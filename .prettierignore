@@ -36,8 +36,8 @@ Dockerfile*
 /tslint-rules/test
 /schematics/src/**/files/**
 /schematics/src/**/*.js
-/nginx/*.conf
-/nginx/*.tmpl
+/nginx/**/*.conf
+/nginx/**/*.tmpl
 /.idea/
 /charts/**/templates/*
 *~

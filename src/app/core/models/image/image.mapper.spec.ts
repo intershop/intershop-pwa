@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 
 import { getICMBaseURL } from 'ish-core/store/core/configuration';
@@ -32,12 +32,12 @@ describe('Image Mapper', () => {
     },
   ] as Image[];
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideMockStore({ selectors: [{ selector: getICMBaseURL, value: 'http://example.org' }] })],
     });
     imageMapper = TestBed.inject(ImageMapper);
-  }));
+  });
 
   describe('fromImages', () => {
     it(`should return Images when getting an Image`, () => {

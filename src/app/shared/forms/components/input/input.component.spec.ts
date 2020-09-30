@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -13,30 +13,30 @@ describe('Input Component', () => {
   let fixture: ComponentFixture<InputComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         InputComponent,
         MockComponent(FormControlFeedbackComponent),
         MockDirective(ShowFormFeedbackDirective),
       ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(InputComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
+    }).compileComponents();
+  });
 
-        const form = new FormGroup({
-          requiredField: new FormControl('', [Validators.required]),
-          simpleField: new FormControl(),
-        });
-        component.label = 'label';
-        component.form = form;
-        component.controlName = 'requiredField';
-      });
-  }));
+  beforeEach(() => {
+    fixture = TestBed.createComponent(InputComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+
+    const form = new FormGroup({
+      requiredField: new FormControl('', [Validators.required]),
+      simpleField: new FormControl(),
+    });
+    component.label = 'label';
+    component.form = form;
+    component.controlName = 'requiredField';
+  });
 
   it('should be created', () => {
     expect(component).toBeTruthy();

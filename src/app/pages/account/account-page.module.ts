@@ -45,7 +45,7 @@ const accountPageRoutes: Routes = [
         path: 'quotes',
         data: { breadcrumbData: [{ key: 'quote.quotes.link' }] },
         loadChildren: () =>
-          import('../../extensions/quoting/pages/quoting-routing.module').then(m => m.QuotingRoutingModule),
+          import('../../extensions/quoting/pages/quote-list/quote-list-page.module').then(m => m.QuoteListPageModule),
       },
       {
         path: '',

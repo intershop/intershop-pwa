@@ -14,8 +14,8 @@ import {
 } from 'ish-core/store/shopping/categories';
 import {
   addToCompare,
-  getCompareProducts,
   getCompareProductsCount,
+  getCompareProductsSKUs,
   isInCompareProducts,
   removeFromCompare,
   toggleCompare,
@@ -172,7 +172,7 @@ export class ShoppingFacade {
 
   // COMPARE
 
-  compareProducts$ = this.store.pipe(select(getCompareProducts));
+  compareProducts$ = this.store.pipe(select(getCompareProductsSKUs));
   compareProductsCount$ = this.store.pipe(select(getCompareProductsCount));
 
   inCompareProducts$(sku: string | Observable<string>) {

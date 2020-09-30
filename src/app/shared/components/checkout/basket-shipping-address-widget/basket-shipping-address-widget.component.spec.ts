@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
@@ -11,7 +11,7 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { findAllDataTestingIDs, findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements, findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
 import { CustomerAddressFormComponent } from 'ish-shared/address-forms/components/customer-address-form/customer-address-form.component';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
@@ -26,7 +26,7 @@ describe('Basket Shipping Address Widget Component', () => {
   let checkoutFacade: CheckoutFacade;
   let accountFacade: AccountFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     checkoutFacade = mock(CheckoutFacade);
     when(checkoutFacade.basket$).thenReturn(EMPTY);
     when(checkoutFacade.basketShippingAddress$).thenReturn(EMPTY);
@@ -34,7 +34,7 @@ describe('Basket Shipping Address Widget Component', () => {
     accountFacade = mock(AccountFacade);
     when(accountFacade.addresses$()).thenReturn(EMPTY);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
         BasketShippingAddressWidgetComponent,
@@ -50,7 +50,7 @@ describe('Basket Shipping Address Widget Component', () => {
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BasketShippingAddressWidgetComponent);
@@ -85,18 +85,19 @@ describe('Basket Shipping Address Widget Component', () => {
     it('should render if shipping is set', () => {
       fixture.detectChanges();
 
-      expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+      expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
         Array [
-          "ish-address",
-          "ish-customer-address-form",
+          "fa-icon",
           "ish-modal-dialog",
+          "ish-address",
           "ish-select-address",
+          "ish-customer-address-form",
         ]
       `);
       expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
         Array [
-          "create-shipping-address-link",
           "edit-shipping-address-link",
+          "create-shipping-address-link",
           "shipping-address-form",
         ]
       `);
@@ -107,12 +108,12 @@ describe('Basket Shipping Address Widget Component', () => {
       (element.querySelector('a[data-testing-id="edit-shipping-address-link"') as HTMLLinkElement).click();
       fixture.detectChanges();
 
-      expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+      expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
         Array [
-          "ish-address",
-          "ish-customer-address-form",
           "ish-modal-dialog",
+          "ish-address",
           "ish-select-address",
+          "ish-customer-address-form",
         ]
       `);
       expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
@@ -134,16 +135,16 @@ describe('Basket Shipping Address Widget Component', () => {
       it('should render if shipping is set', () => {
         fixture.detectChanges();
 
-        expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+        expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
           Array [
-            "ish-customer-address-form",
             "ish-select-address",
+            "ish-customer-address-form",
           ]
         `);
         expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
           Array [
-            "create-shipping-address-link",
             "sameAsInvoice",
+            "create-shipping-address-link",
             "shipping-address-form",
           ]
         `);
@@ -154,10 +155,10 @@ describe('Basket Shipping Address Widget Component', () => {
         (element.querySelector('[data-testing-id="create-shipping-address-link"') as HTMLLinkElement).click();
         fixture.detectChanges();
 
-        expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+        expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
           Array [
-            "ish-customer-address-form",
             "ish-select-address",
+            "ish-customer-address-form",
           ]
         `);
         expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`

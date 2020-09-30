@@ -22,7 +22,7 @@
               <label>{{ 'account.wishlist.table.added_on' | translate }}</label>
               {{ wishlistItemData?.creationDate | ishDate: 'shortDate' }}
             </div>
-            <div class="btn-group mb-2">
+            <div class="mb-2">
               <a class="btn-tool" (click)="moveDialog.show()" data-testing-id="move-wishlist">
                 <fa-icon
                   [icon]="['fas', 'arrows-alt']"

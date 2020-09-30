@@ -74,14 +74,12 @@ export class LineItemEditDialogComponent implements OnInit, OnDestroy, OnChanges
   ngOnChanges(changes: SimpleChanges) {
     if (changes.lineItem && this.lineItem) {
       this.form.patchValue({ quantity: this.lineItem.quantity.value });
-      this.form
-        .get('quantity')
-        .setValidators([
-          Validators.required,
-          Validators.max(this.lineItem.product.maxOrderQuantity),
-          SpecialValidators.integer,
-        ]);
-      this.sku$.next(this.lineItem.product.sku);
+      this.form.get('quantity').setValidators([
+        Validators.required,
+        // Validators.max(this.lineItem.product.maxOrderQuantity),
+        SpecialValidators.integer,
+      ]);
+      this.sku$.next(this.lineItem.productSKU);
     }
   }
 

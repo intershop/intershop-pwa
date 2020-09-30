@@ -17,7 +17,7 @@
           [attr.data-testing-id]="controlName[0]"
         >
           <option value="">{{ 'account.date.month' | translate }}</option>
-          <option *ngFor="let option of monthOptions" [value]="option.value"> {{ option.label | translate }} </option>
+          <option *ngFor="let option of monthOptions" [value]="option.value">{{ option.label | translate }}</option>
         </select>
         <ish-form-control-feedback
           [messages]="errorMessages[0]"
@@ -32,7 +32,7 @@
           [attr.data-testing-id]="controlName[1]"
         >
           <option value="">{{ 'account.date.year' | translate }}</option>
-          <option *ngFor="let option of yearOptions" [value]="option.value"> {{ option.label | translate }} </option>
+          <option *ngFor="let option of yearOptions" [value]="option.value">{{ option.label | translate }}</option>
         </select>
         <ish-form-control-feedback
           [messages]="errorMessages[1]"

@@ -1,10 +1,13 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
+import { of } from 'rxjs';
+import { anything, instance, mock, when } from 'ts-mockito';
 
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { AttributeToStringPipe } from 'ish-core/models/attribute/attribute.pipe';
 import { ProductView, createProductView } from 'ish-core/models/product-view/product-view.model';
 import { Product } from 'ish-core/models/product/product.model';
@@ -29,35 +32,8 @@ describe('Product Compare List Component', () => {
   let translate: TranslateService;
   let compareProduct1: ProductView;
   let compareProduct2: ProductView;
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [
-        MockComponent(FaIconComponent),
-        MockComponent(ProductAddToBasketComponent),
-        MockComponent(ProductAttributesComponent),
-        MockComponent(ProductComparePagingComponent),
-        MockComponent(ProductIdComponent),
-        MockComponent(ProductImageComponent),
-        MockComponent(ProductInventoryComponent),
-        MockComponent(ProductPriceComponent),
-        MockComponent(ProductRatingComponent),
-        MockDirective(FeatureToggleDirective),
-        MockPipe(AttributeToStringPipe),
-        MockPipe(ProductRoutePipe),
-        ProductCompareListComponent,
-      ],
-    }).compileComponents();
-  }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ProductCompareListComponent);
-    component = fixture.componentInstance;
-    element = fixture.nativeElement;
-    translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('en');
-    translate.use('en');
-    element = fixture.nativeElement;
+  beforeEach(async () => {
     compareProduct1 = createProductView({ sku: '111', inStock: true, availability: true } as Product, categoryTree());
     compareProduct1.attributes = [
       {
@@ -88,13 +64,46 @@ describe('Product Compare List Component', () => {
         },
       ],
     };
-    component.compareProducts = [compareProduct1, compareProduct2];
+
+    const shoppingFacade = mock(ShoppingFacade);
+    when(shoppingFacade.product$(compareProduct1.sku, anything())).thenReturn(of(compareProduct1));
+    when(shoppingFacade.product$(compareProduct2.sku, anything())).thenReturn(of(compareProduct2));
+
+    await TestBed.configureTestingModule({
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      declarations: [
+        MockComponent(FaIconComponent),
+        MockComponent(ProductAddToBasketComponent),
+        MockComponent(ProductAttributesComponent),
+        MockComponent(ProductComparePagingComponent),
+        MockComponent(ProductIdComponent),
+        MockComponent(ProductImageComponent),
+        MockComponent(ProductInventoryComponent),
+        MockComponent(ProductPriceComponent),
+        MockComponent(ProductRatingComponent),
+        MockDirective(FeatureToggleDirective),
+        MockPipe(AttributeToStringPipe),
+        MockPipe(ProductRoutePipe),
+        ProductCompareListComponent,
+      ],
+      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ProductCompareListComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+    translate = TestBed.inject(TranslateService);
+    translate.setDefaultLang('en');
+    translate.use('en');
+    element = fixture.nativeElement;
+    component.compareProducts = [compareProduct1.sku, compareProduct2.sku];
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    expect(() => component.ngOnChanges()).not.toThrow();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
@@ -115,15 +124,13 @@ describe('Product Compare List Component', () => {
   });
 
   it('should switch to lower page when number of products is reduced', () => {
-    component.compareProducts = [compareProduct1, compareProduct1, compareProduct1, compareProduct1];
+    component.compareProducts = [compareProduct1.sku, compareProduct1.sku, compareProduct1.sku, compareProduct1.sku];
     component.changeCurrentPage(2);
-    component.ngOnChanges();
     fixture.detectChanges();
 
     expect(component.currentPage).toEqual(2);
 
-    component.compareProducts = [compareProduct1];
-    component.ngOnChanges();
+    component.compareProducts = [compareProduct1.sku];
     fixture.detectChanges();
 
     expect(component.currentPage).toEqual(1);

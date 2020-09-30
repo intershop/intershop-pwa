@@ -2,7 +2,6 @@ import { BasketFeedback } from 'ish-core/models/basket-feedback/basket-feedback.
 import { BasketRebate } from 'ish-core/models/basket-rebate/basket-rebate.model';
 import { PriceItem } from 'ish-core/models/price-item/price-item.model';
 import { Price } from 'ish-core/models/price/price.model';
-import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 export interface LineItem {
   id: string;
@@ -36,11 +35,6 @@ export interface LineItem {
   isHiddenGift: boolean;
   isFreeGift: boolean;
 
-  // attributes needed for order line items
-  name?: string;
-  description?: string;
-  fulfillmentStatus?: string;
-
   // attributes needed for quote feature
   originSingleBasePrice?: PriceItem;
 
@@ -48,7 +42,6 @@ export interface LineItem {
 }
 
 export interface LineItemView extends LineItem {
-  product: ProductView;
   validationError?: BasketFeedback;
   info?: BasketFeedback;
 }

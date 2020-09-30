@@ -175,6 +175,8 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
           { name: 'maskedCardNumber', value: result.attributes.cardNumber },
           { name: 'cardType', value: result.attributes.brand },
           { name: 'expirationDate', value: `${result.attributes.expiryMonth}/${result.attributes.expiryYear}` },
+          { name: 'cvcLastUpdated', value: new Date().toISOString() },
+          { name: 'token', value: result.paymentInstrumentId },
         ],
         saveAllowed: this.paymentMethod.saveAllowed && this.parameterForm.get('saveForLater').value,
       });

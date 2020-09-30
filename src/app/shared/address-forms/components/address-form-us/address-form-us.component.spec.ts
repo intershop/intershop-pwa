@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
@@ -16,8 +16,8 @@ describe('Address Form Us Component', () => {
   let fixture: ComponentFixture<AddressFormUSComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         AddressFormUSComponent,
         MockComponent(FaIconComponent),
@@ -26,17 +26,17 @@ describe('Address Form Us Component', () => {
         MockComponent(SelectRegionComponent),
       ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(AddressFormUSComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
+    }).compileComponents();
+  });
 
-        const addressForm = AddressMockData.getAddressForm('US');
-        component.addressForm = addressForm;
-      });
-  }));
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AddressFormUSComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+
+    const addressForm = AddressMockData.getAddressForm('US');
+    component.addressForm = addressForm;
+  });
 
   it('should be created', () => {
     expect(component).toBeTruthy();

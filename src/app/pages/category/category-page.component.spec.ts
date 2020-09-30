@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -7,7 +7,7 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
-import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
@@ -21,9 +21,9 @@ describe('Category Page Component', () => {
   let element: HTMLElement;
   let shoppingFacade: ShoppingFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     shoppingFacade = mock(ShoppingFacade);
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         CategoryPageComponent,
         MockComponent(CategoryCategoriesComponent),
@@ -35,7 +35,7 @@ describe('Category Page Component', () => {
         { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CategoryPageComponent);
@@ -52,7 +52,7 @@ describe('Category Page Component', () => {
   it('should not display anything when neither category nor loading is set', () => {
     fixture.detectChanges();
 
-    expect(findAllIshElements(element)).toBeEmpty();
+    expect(findAllCustomElements(element)).toBeEmpty();
   });
 
   it('should display categories when category has sub categories', () => {
@@ -64,7 +64,7 @@ describe('Category Page Component', () => {
     );
 
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toEqual(['ish-category-categories']);
+    expect(findAllCustomElements(element)).toEqual(['ish-category-categories']);
   });
 
   it('should display products when category has products', () => {
@@ -76,6 +76,6 @@ describe('Category Page Component', () => {
     );
 
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toEqual(['ish-category-products']);
+    expect(findAllCustomElements(element)).toEqual(['ish-category-products']);
   });
 });

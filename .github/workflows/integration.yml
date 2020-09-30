@@ -20,6 +20,7 @@ jobs:
 
     steps:
       - name: Cancel Old Pipeline
+        if: "!startsWith(github.ref, 'refs/tags/') && github.ref != 'refs/heads/master' && github.ref != 'refs/heads/develop'"
         uses: rokroskar/workflow-run-cleanup-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -97,7 +98,6 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      max-parallel: 2
       matrix:
         test: ['mock', 'b2c', 'b2b']
 

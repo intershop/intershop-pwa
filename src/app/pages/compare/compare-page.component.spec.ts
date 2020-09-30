@@ -1,11 +1,11 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 
 import { ComparePageComponent } from './compare-page.component';
 import { ProductCompareListComponent } from './product-compare-list/product-compare-list.component';
@@ -16,14 +16,14 @@ describe('Compare Page Component', () => {
   let component: ComparePageComponent;
   let shoppingFacade: ShoppingFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     shoppingFacade = mock(ShoppingFacade);
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [ComparePageComponent, MockComponent(ProductCompareListComponent)],
       imports: [TranslateModule.forRoot()],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ComparePageComponent);
@@ -39,14 +39,14 @@ describe('Compare Page Component', () => {
 
   it('should not display compare product list when no compare products available', () => {
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toBeEmpty();
+    expect(findAllCustomElements(element)).toBeEmpty();
   });
 
   it('should display compare product list when compare products available', () => {
     when(shoppingFacade.compareProductsCount$).thenReturn(of(2));
 
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toEqual(['ish-product-compare-list']);
+    expect(findAllCustomElements(element)).toEqual(['ish-product-compare-list']);
   });
 
   it('should dispatch an action if removeProductCompare is called', () => {

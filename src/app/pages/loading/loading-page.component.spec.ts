@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
@@ -10,11 +10,11 @@ describe('Loading Page Component', () => {
   let fixture: ComponentFixture<LoadingPageComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [LoadingPageComponent, MockComponent(LoadingComponent)],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoadingPageComponent);

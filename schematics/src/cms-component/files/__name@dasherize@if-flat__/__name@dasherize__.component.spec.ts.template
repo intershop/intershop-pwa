@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { <%= artifactName %> } from './<%= dasherize(name) %>.component';
 
@@ -7,11 +7,11 @@ describe('<%= artifactName %>', () => {
   let fixture: ComponentFixture<<%= artifactName %>>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [<%= artifactName %>]
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(<%= artifactName %>);

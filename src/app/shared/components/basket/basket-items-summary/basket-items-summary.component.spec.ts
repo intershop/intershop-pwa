@@ -1,9 +1,12 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
+import { of } from 'rxjs';
+import { anything, instance, mock, when } from 'ts-mockito';
 
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -17,8 +20,11 @@ describe('Basket Items Summary Component', () => {
   let fixture: ComponentFixture<BasketItemsSummaryComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    const shoppingFacade = mock(ShoppingFacade);
+    when(shoppingFacade.product$(anything(), anything())).thenCall(sku => of({ sku, name: 'SKU:' + sku }));
+
+    await TestBed.configureTestingModule({
       declarations: [
         BasketItemsSummaryComponent,
         MockComponent(BasketPromotionComponent),
@@ -28,8 +34,9 @@ describe('Basket Items Summary Component', () => {
         MockPipe(ProductRoutePipe),
       ],
       imports: [RouterTestingModule, TranslateModule.forRoot()],
+      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BasketItemsSummaryComponent);
@@ -47,7 +54,7 @@ describe('Basket Items Summary Component', () => {
   it('should render basket product line items if basket items are there', () => {
     fixture.detectChanges();
     expect(element.querySelector('.cart-summary-checkout')).toBeTruthy();
-    expect(element.querySelector('.cart-summary-checkout').innerHTML).toContain('pli name');
+    expect(element.querySelector('.cart-summary-checkout').textContent).toContain('SKU:4713');
   });
 
   it('should not show anything if there are no basket items', () => {

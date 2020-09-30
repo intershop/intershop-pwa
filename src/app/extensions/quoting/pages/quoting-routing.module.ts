@@ -6,31 +6,17 @@ import { AuthGuard } from 'ish-core/guards/auth.guard';
 
 const routes: Routes = [
   {
-    path: '',
-    loadChildren: () => import('./quote-list/quote-list-page.module').then(m => m.QuoteListPageModule),
+    path: 'addProductToQuoteRequest',
     canActivate: [FeatureToggleGuard, AuthGuard],
-    data: { feature: 'quoting' },
-  },
-  {
-    path: ':quoteId',
-    loadChildren: () => import('./quote-edit/quote-edit-page.module').then(m => m.QuoteEditPageModule),
-    canActivate: [FeatureToggleGuard, AuthGuard],
-    data: {
-      feature: 'quoting',
-      breadcrumbData: [{ key: 'quote.quotes.link', link: '/account/quotes' }, { key: 'quote.quote_details.link' }],
-    },
-  },
-  {
-    path: 'request/:quoteRequestId',
     loadChildren: () =>
-      import('./quote-request-edit/quote-request-edit-page.module').then(m => m.QuoteRequestEditPageModule),
-    canActivate: [FeatureToggleGuard, AuthGuard],
+      import('./quoting-product-add-to-quote-request-routing.module').then(
+        m => m.QuotingProductAddToQuoteRequestRoutingModule
+      ),
     data: {
       feature: 'quoting',
-      breadcrumbData: [
-        { key: 'quote.quotes.link', link: '/account/quotes' },
-        { key: 'quote.edit.unsubmitted.quote_request_details.text' },
-      ],
+      queryParams: {
+        messageKey: 'quotes',
+      },
     },
   },
 ];

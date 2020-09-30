@@ -1,5 +1,5 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -14,32 +14,32 @@ describe('Select Region Component', () => {
   let fixture: ComponentFixture<SelectRegionComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         MockComponent(FormControlFeedbackComponent),
         MockDirective(ShowFormFeedbackDirective),
         SelectRegionComponent,
       ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(SelectRegionComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
+    }).compileComponents();
+  });
 
-        const form = new FormGroup({
-          countryCode: new FormControl('BG'),
-          state: new FormControl('Region1', [Validators.required]),
-        });
-        component.form = form;
-        component.regions = [
-          { countryCode: 'BG', regionCode: '02', name: 'Burgas', id: 'BG02' },
-          { countryCode: 'BG', regionCode: '23', name: 'Sofia', id: 'BG23' },
-        ];
-      });
-  }));
+  beforeEach(() => {
+    fixture = TestBed.createComponent(SelectRegionComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+
+    const form = new FormGroup({
+      countryCode: new FormControl('BG'),
+      state: new FormControl('Region1', [Validators.required]),
+    });
+    component.form = form;
+    component.regions = [
+      { countryCode: 'BG', regionCode: '02', name: 'Burgas', id: 'BG02' },
+      { countryCode: 'BG', regionCode: '23', name: 'Sofia', id: 'BG23' },
+    ];
+  });
 
   it('should be created', () => {
     expect(component).toBeTruthy();

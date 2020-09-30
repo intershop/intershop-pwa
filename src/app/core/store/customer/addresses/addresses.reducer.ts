@@ -9,7 +9,7 @@ import {
   deleteBasketShippingAddress,
   updateBasketAddress,
 } from 'ish-core/store/customer/basket';
-import { setErrorOn, setLoadingOn } from 'ish-core/utils/ngrx-creators';
+import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
 import {
   createCustomerAddress,
@@ -48,40 +48,20 @@ export const addressesReducer = createReducer(
     deleteBasketShippingAddress
   ),
   setErrorOn(loadAddressesFail, createCustomerAddressFail, updateCustomerAddressFail, deleteCustomerAddressFail),
-  on(loadAddressesSuccess, (state: AddressesState, action) => {
-    const { addresses } = action.payload;
-
-    return {
-      ...addressAdapter.setAll(addresses, state),
-      error: undefined,
-      loading: false,
-    };
-  }),
-  on(createCustomerAddressSuccess, createBasketAddressSuccess, (state: AddressesState, action) => {
-    const { address } = action.payload;
-
-    return {
-      ...addressAdapter.addOne(address, state),
-      loading: false,
-      error: undefined,
-    };
-  }),
-  on(updateCustomerAddressSuccess, (state: AddressesState, action) => {
-    const { address } = action.payload;
-
-    return {
-      ...addressAdapter.updateOne({ id: address.id, changes: address }, state),
-      loading: false,
-      error: undefined,
-    };
-  }),
-  on(deleteCustomerAddressSuccess, (state: AddressesState, action) => {
-    const { addressId } = action.payload;
-
-    return {
-      ...addressAdapter.removeOne(addressId, state),
-      loading: false,
-      error: undefined,
-    };
-  })
+  unsetLoadingAndErrorOn(
+    loadAddressesSuccess,
+    createCustomerAddressSuccess,
+    updateCustomerAddressSuccess,
+    deleteCustomerAddressSuccess
+  ),
+  on(loadAddressesSuccess, (state: AddressesState, action) => addressAdapter.setAll(action.payload.addresses, state)),
+  on(
+    createCustomerAddressSuccess,
+    createBasketAddressSuccess,
+    updateCustomerAddressSuccess,
+    (state: AddressesState, action) => addressAdapter.upsertOne(action.payload.address, state)
+  ),
+  on(deleteCustomerAddressSuccess, (state: AddressesState, action) =>
+    addressAdapter.removeOne(action.payload.addressId, state)
+  )
 );

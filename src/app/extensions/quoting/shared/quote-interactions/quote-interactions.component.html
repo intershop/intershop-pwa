@@ -1,0 +1,48 @@
+<ng-container *ngIf="quote$ | async as quote">
+  <ng-container *ngIf="state$ | async as state">
+    <div *ngIf="quote.items" class="clearfix">
+      <button
+        *ngIf="state === 'New'"
+        data-testing-id="submit-quote-request"
+        type="submit"
+        class="btn btn-primary float-right"
+        [disabled]="quote.items.length === 0"
+        (click)="submit()"
+      >
+        {{ 'quote.edit.button.submit.label' | translate }}
+      </button>
+
+      <button
+        *ngIf="state === 'Responded' && (isQuoteValid$ | async)"
+        type="submit"
+        class="btn btn-primary float-right"
+        name="add2cart"
+        (click)="addToBasket()"
+      >
+        {{ 'quote.edit.button.add_quote_to_cart.label' | translate }}
+      </button>
+
+      <button
+        *ngIf="quote.type === 'Quote' || state === 'Submitted'"
+        data-testing-id="copy-quote-request"
+        class="btn btn-secondary"
+        name="copy"
+        type="submit"
+        (click)="copy()"
+      >
+        {{ 'quote.edit.button.create_new_from_quote.label' | translate }}
+      </button>
+
+      <button
+        *ngIf="state === 'Responded'"
+        type="submit"
+        id="button-reject"
+        class="btn btn-secondary float-right"
+        name="refuse"
+        (click)="reject()"
+      >
+        {{ 'quote.edit.reject.button.reject.label' | translate }}
+      </button>
+    </div>
+  </ng-container>
+</ng-container>

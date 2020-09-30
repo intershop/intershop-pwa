@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -11,7 +11,7 @@ import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
-import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
 import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
@@ -29,10 +29,10 @@ describe('Line Item Edit Dialog Component', () => {
   let element: HTMLElement;
   let shoppingFacade: ShoppingFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     shoppingFacade = mock(ShoppingFacade);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [NgbModalModule, ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
         LineItemEditDialogComponent,
@@ -48,7 +48,7 @@ describe('Line Item Edit Dialog Component', () => {
       ],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LineItemEditDialogComponent);
@@ -56,22 +56,20 @@ describe('Line Item Edit Dialog Component', () => {
     element = fixture.nativeElement;
 
     component.lineItem = ({
-      product: {
-        type: 'VariationProduct',
-        sku: 'SKU',
-        variableVariationAttributes: [],
-        availability: true,
-        inStock: true,
-        completenessLevel: ProductCompletenessLevel.List,
-      },
-
       quantity: {
         value: 5,
       },
     } as unknown) as LineItemView;
 
     when(shoppingFacade.product$(anything(), anything())).thenReturn(
-      of(component.lineItem.product) as Observable<VariationProductView>
+      of({
+        type: 'VariationProduct',
+        sku: 'SKU',
+        variableVariationAttributes: [],
+        availability: true,
+        inStock: true,
+        completenessLevel: ProductCompletenessLevel.List,
+      } as VariationProductView)
     );
 
     when(shoppingFacade.productNotReady$(anything(), anything())).thenReturn(of(false));
@@ -90,12 +88,12 @@ describe('Line Item Edit Dialog Component', () => {
 
   it('should display ish-components on the container', () => {
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toIncludeAllMembers(['ish-input', 'ish-product-image']);
+    expect(findAllCustomElements(element)).toIncludeAllMembers(['ish-input', 'ish-product-image']);
   });
 
   it('should display loading-components on the container', () => {
     when(shoppingFacade.productNotReady$(anything(), anything())).thenReturn(of(true));
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toIncludeAllMembers(['ish-input', 'ish-loading']);
+    expect(findAllCustomElements(element)).toIncludeAllMembers(['ish-input', 'ish-loading']);
   });
 });

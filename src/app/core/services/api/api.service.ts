@@ -12,12 +12,12 @@ import {
   of,
   throwError,
 } from 'rxjs';
-import { concatMap, first, map, tap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, first, map, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { Captcha } from 'ish-core/models/captcha/captcha.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { getCurrentLocale, getICMServerURL, getRestEndpoint } from 'ish-core/store/core/configuration';
-import { getAPIToken, getPGID } from 'ish-core/store/customer/user';
+import { getAPIToken, getLoggedInCustomer, getLoggedInUser, getPGID } from 'ish-core/store/customer/user';
 
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 
@@ -283,5 +283,43 @@ export class ApiService {
         // flatten to API requests O<O<T>[]> -> O<T[]>
         concatMap(obsArray => iif(() => !!obsArray.length, forkJoin(obsArray), of([])))
       );
+  }
+
+  // not-dead-code
+  b2bUserEndpoint() {
+    const ids$ = combineLatest([
+      this.store.pipe(select(getLoggedInUser)),
+      this.store.pipe(select(getLoggedInCustomer)),
+    ]).pipe(
+      filter(([user, customer]) => !!user && !!customer),
+      take(1)
+    );
+
+    return {
+      get: <T>(path: string, options?: AvailableOptions) =>
+        ids$.pipe(
+          concatMap(([user, customer]) =>
+            this.get<T>(`customers/${customer.customerNo}/users/${user.login}/${path}`, options)
+          )
+        ),
+      delete: <T>(path: string, options?: AvailableOptions) =>
+        ids$.pipe(
+          concatMap(([user, customer]) =>
+            this.delete<T>(`customers/${customer.customerNo}/users/${user.login}/${path}`, options)
+          )
+        ),
+      put: <T>(path: string, body = {}, options?: AvailableOptions) =>
+        ids$.pipe(
+          concatMap(([user, customer]) =>
+            this.put<T>(`customers/${customer.customerNo}/users/${user.login}/${path}`, body, options)
+          )
+        ),
+      post: <T>(path: string, body = {}, options?: AvailableOptions) =>
+        ids$.pipe(
+          concatMap(([user, customer]) =>
+            this.post<T>(`customers/${customer.customerNo}/users/${user.login}/${path}`, body, options)
+          )
+        ),
+    };
   }
 }

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
@@ -24,23 +24,23 @@ describe('Language Switch Component', () => {
     { lang: 'fr_FR', value: 'fr', displayName: 'Fran¢aise' },
   ] as Locale[];
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     appFacade = mock(AppFacade);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [LanguageSwitchComponent, MakeHrefPipe, MockComponent(FaIconComponent)],
       imports: [NgbDropdownModule, RouterTestingModule],
       providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(LanguageSwitchComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
-        const router = TestBed.inject(Router);
-        router.initialNavigation();
-      });
-  }));
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(LanguageSwitchComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+    const router = TestBed.inject(Router);
+    router.initialNavigation();
+  });
 
   it('should be created', () => {
     expect(component).toBeTruthy();

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -13,15 +13,15 @@ describe('Basket Info Component', () => {
   let element: HTMLElement;
   let checkoutFacadeMock: CheckoutFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     checkoutFacadeMock = mock(CheckoutFacade);
     when(checkoutFacadeMock.basketInfo$).thenReturn(of(undefined));
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [BasketInfoComponent],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacadeMock) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BasketInfoComponent);

@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
@@ -61,7 +61,7 @@ describe('Products Service', () => {
     name: 'products',
   };
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     apiServiceMock = mock(ApiService);
     TestBed.configureTestingModule({
       imports: [
@@ -76,7 +76,7 @@ describe('Products Service', () => {
       ],
     });
     productsService = TestBed.inject(ProductsService);
-  }));
+  });
 
   it("should get Product data when 'getProduct' is called", done => {
     when(apiServiceMock.get(`products/${productSku}`, anything())).thenReturn(of({ sku: productSku } as Product));

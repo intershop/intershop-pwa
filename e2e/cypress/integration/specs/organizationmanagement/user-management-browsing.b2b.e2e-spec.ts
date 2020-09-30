@@ -16,7 +16,7 @@ const _ = {
     name: 'Patricia Miller',
     email: 'pmiller@test.intershop.de',
     role: 'Buyer',
-    permission: 'Manage Purchases',
+    permission: 'View cost objects',
   },
 };
 

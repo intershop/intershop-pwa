@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Category } from 'ish-core/models/category/category.model';
 
@@ -9,11 +9,11 @@ describe('Category Image Component', () => {
   let element: HTMLElement;
   let fixture: ComponentFixture<CategoryImageComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [CategoryImageComponent],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CategoryImageComponent);

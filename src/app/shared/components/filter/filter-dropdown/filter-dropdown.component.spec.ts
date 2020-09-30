@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { MockComponent } from 'ng-mocks';
 
@@ -12,11 +12,11 @@ describe('Filter Dropdown Component', () => {
   let fixture: ComponentFixture<FilterDropdownComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [FilterDropdownComponent, MockComponent(FaIconComponent)],
     }).compileComponents();
-  }));
+  });
 
   const facet = (n, value) => ({
     name: value,

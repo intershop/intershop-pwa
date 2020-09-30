@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { anything, capture, instance, mock, verify } from 'ts-mockito';
@@ -14,13 +14,13 @@ describe('Tacton Select Input Component', () => {
   let element: HTMLElement;
   let tactonFacade: TactonFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     tactonFacade = mock(TactonFacade);
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [FaIconComponent, TactonSelectInputComponent],
       providers: [{ provide: TactonFacade, useFactory: () => instance(tactonFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TactonSelectInputComponent);
@@ -112,13 +112,13 @@ describe('Tacton Select Input Component', () => {
 
     expect(element).toMatchInlineSnapshot(`
       <div class="form-group">
-        <select class="form-control mw-100"
-          ><option value="opt1">OPT1</option
-          ><option value="opt2">OPT2</option
-          ><option value="opt3">OPT3</option
-          ><option value="opt4">OPT4</option
-          ><option value="opt5">OPT5</option></select
-        >
+        <select class="form-control mw-100">
+          <option value="opt1">OPT1</option>
+          <option value="opt2">OPT2</option>
+          <option value="opt3">OPT3</option>
+          <option value="opt4">OPT4</option>
+          <option value="opt5">OPT5</option>
+        </select>
       </div>
     `);
   });

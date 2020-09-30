@@ -79,7 +79,7 @@ describe('Server Html Directive', () => {
             alt=""
             width="92"
             height="92"
-            style="width: unset;"
+            style="width: unset"
           />
         </div>
       `);

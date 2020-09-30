@@ -1,7 +1,7 @@
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { Component } from '@angular/core';
-import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -23,13 +23,13 @@ describe('Price Pipe', () => {
     price: Price | PriceItem;
   }
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [DummyComponent, PricePipe],
       imports: [TranslateModule.forRoot()],
       providers: [PricePipe, { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
-    });
-  }));
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     registerLocaleData(localeDe);
@@ -113,16 +113,16 @@ describe('Price Pipe', () => {
     price: Price | PriceItem;
   }
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     accountFacade = mock(AccountFacade);
     when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [DummyComponent, PricePipe],
       imports: [TranslateModule.forRoot()],
       providers: [PricePipe, { provide: AccountFacade, useFactory: () => instance(accountFacade) }],
-    });
-  }));
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     registerLocaleData(localeDe);

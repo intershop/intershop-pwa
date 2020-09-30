@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { switchMap, take, tap } from 'rxjs/operators';
+import { map, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Contact } from 'ish-core/models/contact/contact.model';
@@ -58,6 +58,7 @@ export class AccountFacade {
   // USER
 
   user$ = this.store.pipe(select(getLoggedInUser));
+  userEmail$ = this.user$.pipe(map(user => user?.email));
   userError$ = this.store.pipe(select(getUserError));
   userLoading$ = this.store.pipe(select(getUserLoading));
   isLoggedIn$ = this.store.pipe(select(getUserAuthorized));

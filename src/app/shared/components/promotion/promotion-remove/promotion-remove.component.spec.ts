@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -14,16 +14,16 @@ describe('Promotion Remove Component', () => {
   let element: HTMLElement;
   let checkoutFacade: CheckoutFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     checkoutFacade = mock(CheckoutFacade);
     when(checkoutFacade.basket$).thenReturn(of({} as BasketView));
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [PromotionRemoveComponent],
       imports: [TranslateModule.forRoot()],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PromotionRemoveComponent);

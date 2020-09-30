@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { SafeHtmlPipe } from 'ish-core/pipes/safe-html.pipe';
-import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { SearchBoxComponent } from 'ish-shell/header/search-box/search-box.component';
 
 import { ErrorComponent } from './error.component';
@@ -14,12 +14,12 @@ describe('Error Component', () => {
   let component: ErrorComponent;
   let translate: TranslateService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [ErrorComponent, MockComponent(SearchBoxComponent), SafeHtmlPipe],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ErrorComponent);
@@ -44,6 +44,6 @@ describe('Error Component', () => {
 
   it('should render search box on template', () => {
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toEqual(['ish-search-box']);
+    expect(findAllCustomElements(element)).toEqual(['ish-search-box']);
   });
 });

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
@@ -14,14 +14,14 @@ describe('Tacton Selected Image Component', () => {
   let element: HTMLElement;
   let tactonFacade: TactonFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     tactonFacade = mock(TactonFacade);
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [FaIconComponent, TactonSelectedImageComponent],
       providers: [{ provide: TactonFacade, useFactory: () => instance(tactonFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TactonSelectedImageComponent);

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -17,10 +17,10 @@ describe('Account Overview Page Component', () => {
   let element: HTMLElement;
   let accountFacadeMock: AccountFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     accountFacadeMock = mock(AccountFacade);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         AccountOverviewPageComponent,
         MockComponent(AccountOverviewComponent),
@@ -29,7 +29,7 @@ describe('Account Overview Page Component', () => {
       imports: [TranslateModule.forRoot()],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacadeMock) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountOverviewPageComponent);

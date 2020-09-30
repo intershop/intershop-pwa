@@ -1,10 +1,10 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { Product } from 'ish-core/models/product/product.model';
-import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { CounterComponent } from 'ish-shared/forms/components/counter/counter.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { SelectComponent } from 'ish-shared/forms/components/select/select.component';
@@ -17,8 +17,8 @@ describe('Product Quantity Component', () => {
   let product: Product;
   let translate: TranslateService;
   let element: HTMLElement;
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(CounterComponent),
@@ -27,7 +27,7 @@ describe('Product Quantity Component', () => {
         ProductQuantityComponent,
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductQuantityComponent);
@@ -55,12 +55,12 @@ describe('Product Quantity Component', () => {
   it('should not render when inStock = false', () => {
     product.inStock = false;
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toBeEmpty();
+    expect(findAllCustomElements(element)).toBeEmpty();
   });
 
   it('should display number input when type is not select', () => {
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toContain('ish-input');
+    expect(findAllCustomElements(element)).toContain('ish-input');
   });
 
   it('should be read-only when configured that way', () => {
