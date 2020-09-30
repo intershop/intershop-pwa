@@ -11,6 +11,7 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -112,9 +113,13 @@ describe('Organization Hierarchies Effects', () => {
       const action = createGroup({ parent: parentNode, child: childNode });
 
       const completion = createGroupSuccess({ nodeTree: NodeHelper.empty() });
+      const completion2 = displaySuccessMessage({
+        message: 'account.organization.hierarchies.groups.new.confirmation',
+        messageParams: { 0: childNode.name },
+      });
 
-      actions$ = hot('        -a---a---a---|', { a: action });
-      const expected$ = cold('-c---c---c---|', { c: completion });
+      actions$ = hot('        -a----a----a---|', { a: action });
+      const expected$ = cold('-(cd)-(cd)-(cd)|', { c: completion, d: completion2 });
 
       expect(effects.createNewGroup$).toBeObservable(expected$);
     });
