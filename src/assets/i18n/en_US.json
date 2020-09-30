@@ -966,5 +966,6 @@
   "account.organization.hierarchies.groups.add": "Add Group",
   "account.organization.hierarchies.groups.new.heading": "Add Group",
   "account.organization.hierarchies.groups.new.message": "Creating a new group to track your company structure. You can assign users to it.",
+  "account.organization.hierarchies.groups.new.confirmation": "The group \"{{0}}\" has been created.",
   "account.organization.hierarchies.groups.new.button.label": "Create"
 }

@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concatMap, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, map, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
+import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload } from 'ish-core/utils/operators';
 
@@ -46,7 +47,13 @@ export class OrganizationHierarchiesEffects {
       mapToPayload(),
       concatMap(newGroup =>
         this.organizationService.createNode(newGroup.parent, newGroup.child).pipe(
-          map(nodeTree => createGroupSuccess({ nodeTree })),
+          mergeMap(nodeTree => [
+            createGroupSuccess({ nodeTree }),
+            displaySuccessMessage({
+              message: 'account.organization.hierarchies.groups.new.confirmation',
+              messageParams: { 0: newGroup.child.name },
+            }),
+          ]),
           mapErrorToAction(createGroupFail)
         )
       )
