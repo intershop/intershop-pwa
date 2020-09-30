@@ -77,7 +77,7 @@ fi
 
 if env | grep -iqE "^PROMETHEUS=(on|1|true|yes)$"
 then
-  (sleep 5 && /nginx-prometheus-exporter -nginx.scrape-uri http://localhost:8080/nginx_status)&
+  (sleep 5 && /nginx-prometheus-exporter)&
 fi
 
 if [ -z "$*" ]
