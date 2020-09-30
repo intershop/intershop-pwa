@@ -15,7 +15,6 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 7,
   "links": [],
   "panels": [
     {
@@ -66,17 +65,23 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(increase(nginx_http_requests_total{job=\"pwa-nginx\"}[2m]))",
+          "expr": "avg(increase(nginx_http_requests_total{job=\"pwa-nginx\"}[1m]))",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "nginx",
           "refId": "A"
+        },
+        {
+          "expr": "sum(increase(http_request_duration_seconds_sum{job=\"pwa-ssr\"}[1m]))",
+          "interval": "",
+          "legendFormat": "ssr",
+          "refId": "B"
         }
       ],
       "thresholds": [],
       "timeFrom": "30m",
       "timeRegions": [],
       "timeShift": null,
-      "title": "nginx Requests 2m Window",
+      "title": "Requests 1m Window",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -180,7 +185,21 @@
       "datasource": null,
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {},
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
         },
         "overrides": []
       },
@@ -193,7 +212,7 @@
         "y": 8
       },
       "hiddenSeries": false,
-      "id": 10,
+      "id": 5,
       "legend": {
         "avg": false,
         "current": false,
@@ -220,7 +239,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(increase(http_request_duration_seconds_sum{job=\"pwa-ssr\"}[2m]))",
+          "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{job=\"pwa-ssr\"}[5m])) by (le))",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -230,7 +249,7 @@
       "timeFrom": "30m",
       "timeRegions": [],
       "timeShift": null,
-      "title": "SSR Requests 2m Window",
+      "title": "SSR Mean Render Time",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -333,115 +352,6 @@
       "datasource": null,
       "fieldConfig": {
         "defaults": {
-          "custom": {},
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 19,
-        "x": 0,
-        "y": 16
-      },
-      "hiddenSeries": false,
-      "id": 5,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.2.0",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{job=\"pwa-ssr\"}[5m])) by (le))",
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": "30m",
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "SSR Mean Render Time",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {
           "custom": {}
         },
         "overrides": []
@@ -452,7 +362,7 @@
         "h": 8,
         "w": 19,
         "x": 0,
-        "y": 24
+        "y": 16
       },
       "hiddenSeries": false,
       "id": 9,
@@ -545,5 +455,5 @@
   "timezone": "",
   "title": "PWA",
   "uid": "IXapu1KMk",
-  "version": 7
+  "version": 8
 }

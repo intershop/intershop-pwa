@@ -36,7 +36,7 @@ scrape_configs:
 
 You can import our example [Grafana Dashboard][grafana-pwa-dashboard] to get started:
 
-![Example Dashboard](./prometheus-monitoring-dashboard.png)
+![Example Dashboard](./prometheus-monitoring-dashboard-annotated.png)
 
 :warning: We recommend switching off the SSR container health-check and instead define alerts in Grafana.
 
