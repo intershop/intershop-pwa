@@ -14,7 +14,7 @@ function generateProductSlug(product: ProductView) {
     return;
   }
 
-  let slug = product.name.replace(/ /g, '-').replace(/-+$/g, '');
+  let slug = product.name.replace(/[ \(\)]+/g, '-').replace(/-+$/g, '');
 
   if (ProductHelper.isVariationProduct(product) && product.variableVariationAttributes) {
     slug += '-';

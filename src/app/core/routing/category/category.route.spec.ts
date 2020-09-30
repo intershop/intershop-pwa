@@ -18,7 +18,7 @@ import {
 } from './category.route';
 
 describe('Category Route', () => {
-  const specials = { categoryPath: ['Specials'], uniqueId: 'Specials', name: 'Spezielles' } as Category;
+  const specials = { categoryPath: ['Specials'], uniqueId: 'Specials', name: 'Spezielles (Aktion)' } as Category;
   const topSeller = {
     categoryPath: ['Specials', 'Specials.TopSeller'],
     uniqueId: 'Specials.TopSeller',
@@ -81,7 +81,7 @@ describe('Category Route', () => {
     const category = createCategoryView(categoryTree([specials]), specials.uniqueId);
 
     it('should be created', () => {
-      expect(generateCategoryUrl(category)).toMatchInlineSnapshot(`"/Spezielles-catSpecials"`);
+      expect(generateCategoryUrl(category)).toMatchInlineSnapshot(`"/Spezielles-Aktion-catSpecials"`);
     });
 
     it('should not be a match for matcher', () => {
@@ -133,7 +133,7 @@ describe('Category Route', () => {
   describe('generateLocalizedCategorySlug', () => {
     it('should generate slug for top level category', () => {
       const category = createCategoryView(categoryTree([specials]), specials.uniqueId);
-      expect(generateLocalizedCategorySlug(category)).toMatchInlineSnapshot(`"Spezielles"`);
+      expect(generateLocalizedCategorySlug(category)).toMatchInlineSnapshot(`"Spezielles-Aktion"`);
     });
 
     it('should generate slug for deep category', () => {
