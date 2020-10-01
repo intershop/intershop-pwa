@@ -66,7 +66,7 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
     '/logout': { localizationKey: 'account.navigation.logout.link' },
   };
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 
   ngOnInit() {
     this.isMobileView = this.deviceType === 'tablet' || this.deviceType === 'mobile';
