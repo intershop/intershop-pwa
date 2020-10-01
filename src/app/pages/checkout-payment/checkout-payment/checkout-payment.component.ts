@@ -137,8 +137,11 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
    */
   paymentCostThresholdReached(paymentMethod: PaymentMethod): boolean {
     const basketTotalPrice = PriceItemHelper.selectType(this.basket.totals.total, this.priceType);
+
     if (paymentMethod.paymentCostsThreshold && basketTotalPrice) {
-      return paymentMethod.paymentCostsThreshold.value <= basketTotalPrice.value;
+      return (
+        PriceItemHelper.selectType(paymentMethod.paymentCostsThreshold, this.priceType)?.value <= basketTotalPrice.value
+      );
     }
     return false;
   }
