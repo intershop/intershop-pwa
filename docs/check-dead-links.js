@@ -57,7 +57,7 @@ glob('**/*.md')
       .filter(file => !file.includes('node_modules'))
       .forEach(file => {
         const content = fs.readFileSync(file, { encoding: 'utf-8' });
-        const match = content.match(/\[.*?\](\(|:\s+)[^\s]*\)?/g);
+        const match = content.match(/\[.*?\](\(|:\ +)[^\s]*\)?/g);
         if (match) {
           match.forEach(link => {
             const linkTo = /\](\(<?|:\s+)(.*?)(>?\)|$|#)/.exec(link)[2];

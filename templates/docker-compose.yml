@@ -15,6 +15,7 @@ services:
       - ICM_BASE_URL
       # - PROXY_ICM=true
       - TRUST_ICM=true
+      # - PROMETHEUS=on
   nginx:
     build: ../nginx
     depends_on:
@@ -24,6 +25,7 @@ services:
       DEBUG: 1
       CACHE: 0
       PAGESPEED: 0
+      # PROMETHEUS: 1
       # COMPRESSION: 0
       # DEVICE_DETECTION: 0
       PWA_1_DOMAIN: 'example.com'
@@ -42,3 +44,4 @@ services:
       PWA_3_FEATURES: quoting
     ports:
       - '4200:80'
+      # - '9113:9113'

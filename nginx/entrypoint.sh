@@ -75,6 +75,11 @@ then
   find /etc/nginx -name '*.conf' -print -exec cat '{}' \;
 fi
 
+if env | grep -iqE "^PROMETHEUS=(on|1|true|yes)$"
+then
+  (sleep 5 && /nginx-prometheus-exporter)&
+fi
+
 if [ -z "$*" ]
 then
   /usr/local/nginx/sbin/nginx -c /etc/nginx/nginx.conf -g "daemon off;"
