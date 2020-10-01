@@ -32,7 +32,7 @@ If the format is _switch_, the property is switched on by supplying `on`, `1`, `
 |                     | parameter       | format               | comment                                                                     |
 | ------------------- | --------------- | -------------------- | --------------------------------------------------------------------------- |
 | **SSR Specific**    | PORT            | number               | Port for running the application                                            |
-|                     | SSL             | any                  | Enables TLS (expects `server.crt` and `server.key` in `dist` folder)         |
+|                     | SSL             | any                  | Enables TLS (expects `server.crt` and `server.key` in `dist` folder)        |
 | **General**         | ICM_BASE_URL    | string               | Sets the base URL for the ICM                                               |
 |                     | ICM_CHANNEL     | string               | Overrides the default channel                                               |
 |                     | ICM_APPLICATION | string               | Overrides the default application                                           |
