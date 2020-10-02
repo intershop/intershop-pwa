@@ -12,7 +12,10 @@
     <ng-container *ngFor="let user of users$ | async">
       <div *ngIf="user" class="list-item-row row mx-0">
         <div class="col-3 list-item">
-          <a [routerLink]="[user.login]">{{ user.firstName }} {{ user.lastName }}</a>
+          <a [routerLink]="[user.login]" class="d-block">{{ user.firstName }} {{ user.lastName }}</a>
+          <span *ngIf="user.active === false" class="input-help">{{
+            'account.user.list.status.inactive' | translate
+          }}</span>
         </div>
         <div class="col-6 list-item">
           <dl [attr.data-testing-id]="'user-roles-' + user.login">

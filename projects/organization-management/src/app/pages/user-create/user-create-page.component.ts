@@ -25,6 +25,7 @@ export class UserCreatePageComponent implements OnInit {
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       email: ['', [Validators.required, SpecialValidators.email]],
+      active: [true],
       phone: [''],
       birthday: [''],
       preferredLanguage: ['en_US', [Validators.required]],

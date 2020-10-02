@@ -9,6 +9,7 @@ import { instance, mock, when } from 'ts-mockito';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { SelectTitleComponent } from 'ish-shared/forms/components/select-title/select-title.component';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
@@ -28,6 +29,7 @@ describe('User Profile Form Component', () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
+        MockComponent(CheckboxComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(InputComponent),
         MockComponent(SelectTitleComponent),
@@ -61,5 +63,6 @@ describe('User Profile Form Component', () => {
     expect(element.querySelector('[controlname=firstName]')).toBeTruthy();
     expect(element.querySelector('[controlname=lastName]')).toBeTruthy();
     expect(element.querySelector('[controlname=phone]')).toBeTruthy();
+    expect(element.querySelector('[controlname=active]')).toBeTruthy();
   });
 });

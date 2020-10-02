@@ -57,6 +57,7 @@ describe('User Edit Profile Page Component', () => {
         title: [component.user.title, [Validators.required]],
         firstName: [component.user.firstName, [Validators.required]],
         lastName: [component.user.lastName, [Validators.required]],
+        active: [true],
         preferredLanguage: [component.user.preferredLanguage, [Validators.required]],
       }),
     });

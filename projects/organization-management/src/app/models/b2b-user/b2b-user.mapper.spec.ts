@@ -15,11 +15,13 @@ describe('B2b User Mapper', () => {
         preferredInvoiceToAddress: BasketMockData.getAddress(),
         preferredShipToAddress: { urn: 'urn:1234' } as Address,
         preferredPaymentInstrument: { id: '1234' } as PaymentInstrument,
+        active: true,
       } as UserData;
       const user = B2bUserMapper.fromData(userData);
 
       expect(user).toMatchInlineSnapshot(`
         Object {
+          "active": true,
           "birthday": undefined,
           "businessPartnerNo": undefined,
           "department": undefined,

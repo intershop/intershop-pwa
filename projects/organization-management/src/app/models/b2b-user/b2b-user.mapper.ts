@@ -7,7 +7,7 @@ import { B2bUser } from './b2b-user.model';
 
 export class B2bUserMapper {
   static fromData(user: UserData): B2bUser {
-    return UserMapper.fromData(user);
+    return { ...UserMapper.fromData(user), active: user.active };
   }
 
   static fromListData(data: B2bUserData[]): B2bUser[] {
@@ -17,6 +17,7 @@ export class B2bUserMapper {
         firstName: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'firstName'),
         lastName: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'lastName'),
         roleIDs: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'roleIDs'),
+        // ToDo: #IS-31051: map the active flag
       }));
     } else {
       throw new Error('data is required');
