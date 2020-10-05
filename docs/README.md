@@ -23,6 +23,7 @@ kb_sync_latest_only
 - [Concept - Localization](./concepts/localization.md)
 - [Concept - SEO](./concepts/search-engine-optimization.md)
 - [Guide - Forms](./guides/forms.md)
+- [Concept - Deployment Scenarios for Angular Applications](./concepts/deployment-angular.md)
 
 ### Developing
 
@@ -55,7 +56,7 @@ kb_sync_latest_only
 
 ### Setup
 
-- [Concept - Deployment Scenarios](./concepts/deployment-scenarios.md)
+- [Concept - Building Blocks of the Intershop PWA](./concepts/pwa-building-blocks.md)
   - [Guide - Building and Running Server-Side Rendering](./guides/ssr-startup.md)
   - [Guide - Building and Running nginx Docker Image](./guides/nginx-startup.md)
 - [Concept - Hybrid Approach](./concepts/hybrid-approach.md)

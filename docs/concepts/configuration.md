@@ -91,7 +91,6 @@ Therefore only NgRx means should be used to supply them.
 Nevertheless, default values can be provided by environment files and can later be overridden by system environment variables.
 
 Everything managed in the NgRx state is accumulated on the server side and sent to the client side with the initial HTML response.
-The reason for this is that this is the most common deployment scenario of PWAs (see [Concept - Deployment Scenarios](./deployment-scenarios.md)).
 
 ## Multi-Site Handling
 
