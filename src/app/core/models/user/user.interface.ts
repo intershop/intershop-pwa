@@ -24,6 +24,4 @@ export interface UserData {
 
   businessPartnerNo?: string;
   department?: string;
-
-  active?: boolean;
 }
