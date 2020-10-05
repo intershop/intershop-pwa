@@ -4,6 +4,7 @@ on:
   pull_request:
     types: [closed]
     paths-ignore:
+      - '**.md'
       - 'docs/**'
 
 env:

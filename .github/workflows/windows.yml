@@ -5,6 +5,7 @@ on:
     branches:
       - '**'
     paths-ignore:
+      - '**.md'
       - 'docs/**'
 
 jobs:
