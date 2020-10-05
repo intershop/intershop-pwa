@@ -62,3 +62,9 @@ The feature name must be all word-characters (letters, numbers and underscore).
 
 If the cache feature is switched off all caching for pre-rendered pages is disabled.
 If the cache should also be disabled for static resources, the pagespeed feature also has to be switched off as it caches optimized images individually.
+
+# Further References
+
+- [Concept - Configuration](../concepts/configuration.md)
+- [Concept - Logging](../concepts/logging.md)
+- [Guide - Monitoring with Prometheus](./prometheus-monitoring.md)
