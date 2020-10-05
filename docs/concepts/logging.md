@@ -29,3 +29,8 @@ Information logged to the console contains the following:
 - Further the redirect actions of the [Hybrid Approach](./hybrid-approach.md) are logged with `RED <url>`.
 
 - Uncaught `Error` objects thrown in the SSR process, including `HttpErrorResponse` and runtime errors are printed as well.
+
+# Further References
+
+- [Guide - Building and Running Server-Side Rendering](../guides/ssr-startup.md)
+- [Guide - Building and Running nginx Docker Image](../guides/nginx-startup.md)
