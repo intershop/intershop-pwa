@@ -15,6 +15,7 @@ import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
+import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
 import { Wishlist } from '../../models/wishlist/wishlist.model';
 import { WishlistService } from '../../services/wishlist/wishlist.service';
@@ -528,6 +529,7 @@ describe('Wishlist Effects', () => {
 
     it('should set the breadcrumb of the selected wishlist in my account area', done => {
       router.navigateByUrl('/account/wishlists/' + wishlists[0].id);
+      actions$ = of(routerTestNavigatedAction({}));
 
       effects.setWishlistBreadcrumb$.subscribe(action => {
         expect(action.payload).toMatchInlineSnapshot(`

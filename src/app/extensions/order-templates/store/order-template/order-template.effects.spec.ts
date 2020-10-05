@@ -15,6 +15,7 @@ import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
+import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
 import { OrderTemplate } from '../../models/order-template/order-template.model';
 import { OrderTemplateService } from '../../services/order-template/order-template.service';
@@ -511,6 +512,7 @@ describe('Order Template Effects', () => {
 
     it('should set the breadcrumb of the selected Order Template when on account url', done => {
       router.navigateByUrl('/account/order-templates/' + orderTemplates[0].id);
+      actions$ = of(routerTestNavigatedAction({}));
 
       effects.setOrderTemplateBreadcrumb$.subscribe(action => {
         expect(action.payload).toMatchInlineSnapshot(`

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { concat } from 'rxjs';
-import { concatMap, filter, last, map, mapTo, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, last, map, mapTo, mergeMap, switchMap, switchMapTo, withLatestFrom } from 'rxjs/operators';
 
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
@@ -273,17 +274,22 @@ export class OrderTemplateEffects {
   );
 
   setOrderTemplateBreadcrumb$ = createEffect(() =>
-    this.store.pipe(
-      ofUrl(/^\/account\/.*/),
-      select(getSelectedOrderTemplateDetails),
-      whenTruthy(),
-      map(orderTemplate =>
-        setBreadcrumbData({
-          breadcrumbData: [
-            { key: 'account.ordertemplates.link', link: '/account/order-templates' },
-            { text: orderTemplate.title },
-          ],
-        })
+    this.actions$.pipe(
+      ofType(routerNavigatedAction),
+      switchMapTo(
+        this.store.pipe(
+          ofUrl(/^\/account\/order-templates\/.*/),
+          select(getSelectedOrderTemplateDetails),
+          whenTruthy(),
+          map(orderTemplate =>
+            setBreadcrumbData({
+              breadcrumbData: [
+                { key: 'account.ordertemplates.link', link: '/account/order-templates' },
+                { text: orderTemplate.title },
+              ],
+            })
+          )
+        )
       )
     )
   );
