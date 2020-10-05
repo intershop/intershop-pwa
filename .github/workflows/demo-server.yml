@@ -3,6 +3,7 @@ name: DemoServerUp
 on:
   pull_request:
     paths-ignore:
+      - '**.md'
       - 'docs/**'
 
 env:

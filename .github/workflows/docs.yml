@@ -35,7 +35,7 @@ jobs:
 
       - name: Check Formatting
         run: |
-          npx prettier --write docs/**/*.*
+          npx prettier --write docs/**/*.* **/*.md
           bash ./scripts/ci-test-no-changes.sh 'you probably committed unformatted documentation'
 
       - name: Check Dead Links For All Files
