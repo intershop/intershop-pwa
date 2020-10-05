@@ -46,10 +46,11 @@ If the format is _switch_, the property is switched on by supplying `on`, `1`, `
 |                     | SENTRY_DSN      | string               | Sentry DSN URL for using Sentry Error Monitor                               |
 |                     | PROMETHEUS      | switch               | Expose Prometheus metrics                                                   |
 
-## References
+# Further References
 
 - [Concept - Configuration](../concepts/configuration.md)
 - [Concept - Hybrid Approach](../concepts/hybrid-approach.md)
+- [Concept - Logging](../concepts/logging.md)
 - [Guide - Client-Side Error Monitoring with Sentry](./sentry-error-monitoring.md)
 - [Guide - Google Tag Manager](./google-tag-manager.md)
 - [Guide - Monitoring with Prometheus](./prometheus-monitoring.md)

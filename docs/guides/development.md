@@ -53,6 +53,12 @@ Further options of the development server can be found running `ng serve --help`
 
 > **Warning:** DO NOT USE webpack-dev-server IN PRODUCTION environments!
 
+## Testing Production Setups
+
+Sometimes it is necessary to boot up a production chain for development to test modifications in the [nginx](./nginx-startup.md) or test the interaction with it.
+The easiest way to do this is using [Docker Compose](https://docs.docker.com/compose/) with the `docker-compose.yml` in the `templates` folder.
+For usage instructions check the comments in that file.
+
 ## Development Tools
 
 The used IDE or editor should support the [Prettier - Code formatter](https://prettier.io) that is configured to apply a common formatting style on all TypeScript, Javascript, JSON, HTML, SCSS and other files.
