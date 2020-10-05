@@ -56,7 +56,8 @@ kb_sync_latest_only
 ### Setup
 
 - [Concept - Deployment Scenarios](./concepts/deployment-scenarios.md)
-  - [Guide - SSR Parameters](./guides/ssr-startup.md)
+  - [Guide - Building and Running Server-Side Rendering](./guides/ssr-startup.md)
+  - [Guide - Building and Running nginx Docker Image](./guides/nginx-startup.md)
 - [Concept - Hybrid Approach](./concepts/hybrid-approach.md)
   - [Guide - Hybrid Approach and ICM URL Rewriting](./guides/hybrid-approach-icm-url-rewriting.md)
 - [Concept - Logging](./concepts/logging.md)
