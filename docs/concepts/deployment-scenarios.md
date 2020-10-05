@@ -5,6 +5,30 @@ kb_everyone
 kb_sync_latest_only
 -->
 
+<!--
+- [ ] move /nginx/README.md to /docs/guides/nginx-startup.md and re-work
+- [ ] move /docs/concepts/deployment-scenarios.md (explains standard Angular setups) + link
+- [ ] explain building blocks of PWA, link to features
+  - SSR container
+    - server-side rendering
+    - SEO meta
+    - Hybrid Approach
+    - ...
+  - nginx container
+    - cache
+    - compression
+    - pagespeed
+    - device detection
+    - multi-channel
+- [ ] move part /docs/concepts/configuration.md#multi-site-handling to new document, link moved nginx documentation
+- [ ] explain standard setup (nginx + SSR + ICM), flow
+- [ ] link to Hybrid Approach
+  - explain possible usage scenarios
+- [ ] link to new Multi-Channel doc
+- [ ] test environment with htaccess
+- [ ] maybe explain serverless deployment with function/lambda
+-->
+
 # Deployment Scenarios
 
 ## Simple Browser-Side Rendering
