@@ -6,7 +6,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
-import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
@@ -127,7 +127,7 @@ describe('Basket Effects', () => {
 
   describe('loadBasketEligibleShippingMethods$', () => {
     beforeEach(() => {
-      when(basketServiceMock.getBasketEligibleShippingMethods(anyString(), anything())).thenReturn(
+      when(basketServiceMock.getBasketEligibleShippingMethods(anything())).thenReturn(
         of([BasketMockData.getShippingMethod()])
       );
 
@@ -146,7 +146,7 @@ describe('Basket Effects', () => {
       actions$ = of(action);
 
       effects.loadBasketEligibleShippingMethods$.subscribe(() => {
-        verify(basketServiceMock.getBasketEligibleShippingMethods('BID', undefined)).once();
+        verify(basketServiceMock.getBasketEligibleShippingMethods(undefined)).once();
         done();
       });
     });
@@ -163,7 +163,7 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type LoadBasketEligibleShippingMethodsFail', () => {
-      when(basketServiceMock.getBasketEligibleShippingMethods(anyString(), anything())).thenReturn(
+      when(basketServiceMock.getBasketEligibleShippingMethods(anything())).thenReturn(
         throwError(makeHttpError({ message: 'invalid' }))
       );
       const action = loadBasketEligibleShippingMethods();
@@ -179,7 +179,7 @@ describe('Basket Effects', () => {
 
   describe('updateBasket$', () => {
     beforeEach(() => {
-      when(basketServiceMock.updateBasket(anyString(), anything())).thenReturn(of(BasketMockData.getBasket()));
+      when(basketServiceMock.updateBasket(anything())).thenReturn(of(BasketMockData.getBasket()));
 
       store$.dispatch(
         loadBasketSuccess({
@@ -192,13 +192,12 @@ describe('Basket Effects', () => {
     });
 
     it('should call the basketService for updateBasket', done => {
-      const basketId = 'BID';
       const update = { invoiceToAddress: '7654' };
       const action = updateBasket({ update });
       actions$ = of(action);
 
       effects.updateBasket$.subscribe(() => {
-        verify(basketServiceMock.updateBasket(basketId, update)).once();
+        verify(basketServiceMock.updateBasket(update)).once();
         done();
       });
     });
@@ -216,9 +215,7 @@ describe('Basket Effects', () => {
 
     it('should map invalid request to action of type UpdateBasketFail', () => {
       const update = { commonShippingMethod: 'shippingId' };
-      when(basketServiceMock.updateBasket(anyString(), anything())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
-      );
+      when(basketServiceMock.updateBasket(anything())).thenReturn(throwError(makeHttpError({ message: 'invalid' })));
 
       const action = updateBasket({ update });
       const completion = updateBasketFail({ error: makeHttpError({ message: 'invalid' }) });

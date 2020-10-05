@@ -96,8 +96,8 @@ export class QuotingService {
       .pipe(map(data => this.quoteMapper.fromData(data, 'Quote')));
   }
 
-  addQuoteToBasket(quoteID: string, basketId: string) {
-    return this.apiService.post(`baskets/${basketId}/items`, { quoteID }).pipe(mapTo(quoteID));
+  addQuoteToBasket(quoteID: string) {
+    return this.apiService.post(`baskets/current/items`, { quoteID }).pipe(mapTo(quoteID));
   }
 
   createQuoteRequestFromQuote(quoteID: string) {

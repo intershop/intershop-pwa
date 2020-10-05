@@ -130,15 +130,13 @@ export class BasketItemsEffects {
       map(([{ lineItemUpdates }, { lineItems }]) =>
         LineItemUpdateHelper.filterUpdatesByItems(lineItemUpdates, lineItems as LineItemUpdateHelperItem[])
       ),
-
-      withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-      concatMap(([updates, basketId]) =>
+      concatMap(updates =>
         concat(
           ...updates.map(update => {
             if (update.quantity === 0) {
-              return this.basketService.deleteBasketItem(basketId, update.itemId);
+              return this.basketService.deleteBasketItem(update.itemId);
             } else {
-              return this.basketService.updateBasketItem(basketId, update.itemId, {
+              return this.basketService.updateBasketItem(update.itemId, {
                 quantity: update.quantity > 0 ? { value: update.quantity, unit: update.unit } : undefined,
                 product: update.sku,
               });
@@ -173,9 +171,8 @@ export class BasketItemsEffects {
     this.actions$.pipe(
       ofType(deleteBasketItem),
       mapToPayloadProperty('itemId'),
-      withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-      concatMap(([itemId, basketId]) =>
-        this.basketService.deleteBasketItem(basketId, itemId).pipe(
+      concatMap(itemId =>
+        this.basketService.deleteBasketItem(itemId).pipe(
           map(info => deleteBasketItemSuccess({ info })),
           mapErrorToAction(deleteBasketItemFail)
         )

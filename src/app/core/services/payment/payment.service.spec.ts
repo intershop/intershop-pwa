@@ -109,28 +109,20 @@ describe('Payment Service', () => {
     it("should get basket eligible payment methods for a basket when 'getBasketEligiblePaymentMethods' is called", done => {
       when(apiService.get(anything(), anything())).thenReturn(of({ data: [] }));
 
-      paymentService.getBasketEligiblePaymentMethods(basketMock.data.id).subscribe(() => {
-        verify(apiService.get(`baskets/${basketMock.data.id}/eligible-payment-methods`, anything())).once();
+      paymentService.getBasketEligiblePaymentMethods().subscribe(() => {
+        verify(apiService.get(`baskets/current/eligible-payment-methods`, anything())).once();
         done();
       });
     });
 
     it("should set a payment to the basket when 'setBasketPayment' is called", done => {
       when(
-        apiService.put(
-          `baskets/${basketMock.data.id}/payments/open-tender?include=paymentMethod`,
-          anything(),
-          anything()
-        )
+        apiService.put(`baskets/current/payments/open-tender?include=paymentMethod`, anything(), anything())
       ).thenReturn(of([]));
 
-      paymentService.setBasketPayment(basketMock.data.id, basketMock.data.payment.name).subscribe(() => {
+      paymentService.setBasketPayment(basketMock.data.payment.name).subscribe(() => {
         verify(
-          apiService.put(
-            `baskets/${basketMock.data.id}/payments/open-tender?include=paymentMethod`,
-            anything(),
-            anything()
-          )
+          apiService.put(`baskets/current/payments/open-tender?include=paymentMethod`, anything(), anything())
         ).once();
         done();
       });
@@ -138,29 +130,19 @@ describe('Payment Service', () => {
 
     it("should create a payment instrument for the basket when 'createBasketPayment' is called", done => {
       when(
-        apiService.post(
-          `baskets/${basketMock.data.id}/payment-instruments?include=paymentMethod`,
-          anything(),
-          anything()
-        )
+        apiService.post(`baskets/current/payment-instruments?include=paymentMethod`, anything(), anything())
       ).thenReturn(of([]));
 
-      paymentService.createBasketPayment(basketMock.data.id, newPaymentInstrument).subscribe(() => {
+      paymentService.createBasketPayment(newPaymentInstrument).subscribe(() => {
         verify(
-          apiService.post(
-            `baskets/${basketMock.data.id}/payment-instruments?include=paymentMethod`,
-            anything(),
-            anything()
-          )
+          apiService.post(`baskets/current/payment-instruments?include=paymentMethod`, anything(), anything())
         ).once();
         done();
       });
     });
 
     it("should update a basket payment when 'updateBasketPayment' is called", done => {
-      when(apiService.patch(`baskets/${basketMock.data.id}/payments/open-tender`, anything(), anything())).thenReturn(
-        of({})
-      );
+      when(apiService.patch(`baskets/current/payments/open-tender`, anything(), anything())).thenReturn(of({}));
 
       const params = {
         redirect: 'success',
@@ -168,8 +150,8 @@ describe('Payment Service', () => {
         param2: '456',
       };
 
-      paymentService.updateBasketPayment(basketMock.data.id, params).subscribe(() => {
-        verify(apiService.patch(`baskets/${basketMock.data.id}/payments/open-tender`, anything(), anything())).once();
+      paymentService.updateBasketPayment(params).subscribe(() => {
+        verify(apiService.patch(`baskets/current/payments/open-tender`, anything(), anything())).once();
         done();
       });
     });
@@ -216,18 +198,16 @@ describe('Payment Service', () => {
 
     it("should update payment instrument from basket when 'updateBasketPaymentInstrument' is called", done => {
       when(apiService.patch(anyString(), anything(), anything())).thenReturn(of({}));
-      paymentService
-        .updateConcardisCvcLastUpdated(BasketMockData.getBasket(), creditCardPaymentInstrument)
-        .subscribe(() => {
-          verify(
-            apiService.patch(
-              `baskets/${BasketMockData.getBasket().id}/payment-instruments/${creditCardPaymentInstrument.id}`,
-              anything(),
-              anything()
-            )
-          ).once();
-          done();
-        });
+      paymentService.updateConcardisCvcLastUpdated(creditCardPaymentInstrument).subscribe(() => {
+        verify(
+          apiService.patch(
+            `baskets/current/payment-instruments/${creditCardPaymentInstrument.id}`,
+            anything(),
+            anything()
+          )
+        ).once();
+        done();
+      });
     });
   });
 
@@ -295,12 +275,10 @@ describe('Payment Service', () => {
       };
 
       when(apiService.put(anyString(), anything())).thenReturn(of({}));
-      paymentService
-        .updateConcardisCvcLastUpdated(BasketMockData.getBasket(), userCreditCardPaymentInstrument)
-        .subscribe(() => {
-          verify(apiService.put(`customers/-/payments/${userCreditCardPaymentInstrument.id}`, anything())).once();
-          done();
-        });
+      paymentService.updateConcardisCvcLastUpdated(userCreditCardPaymentInstrument).subscribe(() => {
+        verify(apiService.put(`customers/-/payments/${userCreditCardPaymentInstrument.id}`, anything())).once();
+        done();
+      });
     });
   });
 });

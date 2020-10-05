@@ -119,15 +119,14 @@ export class BasketService {
   ];
 
   /**
-   * Get the basket for the given basket id or fallback to 'current' as basket id to get the current basket for the current user.
-   * @param basketId  The basket id.
+   * Get the basket for the current user.
    * @returns         The basket.
    */
-  getBasket(basketId: string = 'current'): Observable<Basket> {
+  getBasket(): Observable<Basket> {
     const params = new HttpParams().set('include', this.allBasketIncludes.join());
 
     return this.apiService
-      .get<BasketData>(`baskets/${basketId}`, {
+      .get<BasketData>(`baskets/current`, {
         headers: this.basketHeaders,
         params,
       })
@@ -201,18 +200,17 @@ export class BasketService {
 
   /**
    * Updates the basket for the given basket id or fallback to 'current' as basket id.
-   * @param basketId  The basket id.
    * @param body      Basket related data (invoice address, shipping address, shipping method ...), which should be changed
    * @returns         The changed basket.
    */
-  updateBasket(basketId: string = 'current', body: BasketUpdateType): Observable<Basket> {
+  updateBasket(body: BasketUpdateType): Observable<Basket> {
     if (!body) {
       return throwError('updateBasket() called without body');
     }
 
     const params = new HttpParams().set('include', this.allBasketIncludes.join());
     return this.apiService
-      .patch<BasketData>(`baskets/${basketId}`, body, {
+      .patch<BasketData>(`baskets/current`, body, {
         headers: this.basketHeaders,
         params,
       })
@@ -221,23 +219,19 @@ export class BasketService {
 
   /**
    * Validates the basket for the given basket id.
-   * @param basketId  The basket id. (default: current)
    * @param scopes    Basket scopes which should be validated ( see also BasketValidationScopeType ), default: minimal scope (max items limit, empty basket)
    * @returns         The (adjusted) basket and the validation results.
    */
-  validateBasket(
-    basketId: string = 'current',
-    scopes: BasketValidationScopeType[] = ['']
-  ): Observable<BasketValidation> {
+  validateBasket(scopes: BasketValidationScopeType[] = ['']): Observable<BasketValidation> {
     const body = {
-      basket: basketId,
+      basket: 'current',
       adjustmentsAllowed: !scopes.some(scope => scope === 'All'), // don't allow adjustments for 'All' validation steps, because you cannot show them to the user at once
       scopes,
     };
 
     const params = new HttpParams().set('include', this.allBasketValidationIncludes.join());
     return this.apiService
-      .post<BasketValidationData>(`baskets/${basketId}/validations`, body, {
+      .post<BasketValidationData>(`baskets/current/validations`, body, {
         headers: this.basketHeaders,
         params,
       })
@@ -259,13 +253,9 @@ export class BasketService {
 
   /**
    * Adds a list of items with the given sku and quantity to the given basket.
-   * @param basketId  The id of the basket to add the items to.
    * @param items     The list of product SKU and quantity pairs to be added to the basket.
    */
-  addItemsToBasket(
-    basketId: string = 'current',
-    items: { sku: string; quantity: number; unit: string }[]
-  ): Observable<BasketInfo[]> {
+  addItemsToBasket(items: { sku: string; quantity: number; unit: string }[]): Observable<BasketInfo[]> {
     if (!items) {
       return throwError('addItemsToBasket() called without items');
     }
@@ -279,7 +269,7 @@ export class BasketService {
     }));
 
     return this.apiService
-      .post(`baskets/${basketId}/items`, body, {
+      .post(`baskets/current/items`, body, {
         headers: this.basketHeaders,
       })
       .pipe(map(BasketInfoMapper.fromInfo));
@@ -287,17 +277,16 @@ export class BasketService {
 
   /**
    * Add a promotion code to basket.
-   * @param basketId  The id of the basket which the promotion code should be added to.
    * @param codeStr   The code string of the promotion code that should be added to basket.
    * @returns         The info message after creation.
    */
-  addPromotionCodeToBasket(basketId: string = 'current', codeStr: string): Observable<string> {
+  addPromotionCodeToBasket(codeStr: string): Observable<string> {
     const body = {
       code: codeStr,
     };
 
     return this.apiService
-      .post(`baskets/${basketId}/promotioncodes`, body, {
+      .post(`baskets/current/promotioncodes`, body, {
         headers: this.basketHeaders,
       })
       .pipe(map(({ infos }) => infos && infos[0] && infos[0].message));
@@ -305,25 +294,23 @@ export class BasketService {
 
   /**
    * Remove a promotion code from basket.
-   * @param basketId  The id of the basket where the promotion code should be removed.
    * @param codeStr   The code string of the promotion code that should be removed from basket.
    */
-  removePromotionCodeFromBasket(basketId: string = 'current', codeStr: string): Observable<string> {
-    return this.apiService.delete(`baskets/${basketId}/promotioncodes/${codeStr}`, {
+  removePromotionCodeFromBasket(codeStr: string): Observable<string> {
+    return this.apiService.delete(`baskets/current/promotioncodes/${codeStr}`, {
       headers: this.basketHeaders,
     });
   }
 
   /**
    * Updates specific line items (quantity/shipping method) for the given basket.
-   * @param basketId  The id of the basket in which the item should be updated.
    * @param itemId    The id of the line item that should be updated.
    * @param body      request body
    * @returns         Possible infos after the update.
    */
-  updateBasketItem(basketId: string, itemId: string, body: BasketItemUpdateType): Observable<BasketInfo[]> {
+  updateBasketItem(itemId: string, body: BasketItemUpdateType): Observable<BasketInfo[]> {
     return this.apiService
-      .patch<{ infos: BasketInfo[] }>(`baskets/${basketId}/items/${itemId}`, body, {
+      .patch<{ infos: BasketInfo[] }>(`baskets/current/items/${itemId}`, body, {
         headers: this.basketHeaders,
       })
       .pipe(
@@ -334,12 +321,11 @@ export class BasketService {
 
   /**
    * Remove specific line item from the given basket.
-   * @param basketId  The id of the basket where the item should be removed.
    * @param itemId    The id of the line item that should be deleted.
    */
-  deleteBasketItem(basketId: string, itemId: string): Observable<BasketInfo[]> {
+  deleteBasketItem(itemId: string): Observable<BasketInfo[]> {
     return this.apiService
-      .delete<{ infos: BasketInfo[] }>(`baskets/${basketId}/items/${itemId}`, {
+      .delete<{ infos: BasketInfo[] }>(`baskets/current/items/${itemId}`, {
         headers: this.basketHeaders,
       })
 
@@ -351,20 +337,16 @@ export class BasketService {
 
   /**
    * Create a basket address for the selected basket of an anonymous user.
-   * @param basketId  The basket id.
    * @param address   The address which should be created
    * @returns         The new basket address.
    */
-  createBasketAddress(basketId: string, address: Address): Observable<Address> {
-    if (!basketId) {
-      return throwError('createBasketAddress() called without basketId');
-    }
+  createBasketAddress(address: Address): Observable<Address> {
     if (!address) {
       return throwError('createBasketAddress() called without address');
     }
 
     return this.apiService
-      .post(`baskets/${basketId}/addresses`, address, {
+      .post(`baskets/current/addresses`, address, {
         headers: this.basketHeaders,
       })
       .pipe(
@@ -375,14 +357,10 @@ export class BasketService {
 
   /**
    * Updates partly or completely an address for the selected basket of an anonymous user.
-   * @param basketId  The basket id.
    * @param address   The address data which should be updated
    * @returns         The new basket address.
    */
-  updateBasketAddress(basketId: string, address: Address): Observable<Address> {
-    if (!basketId) {
-      return throwError('updateBasketAddress() called without basketId');
-    }
+  updateBasketAddress(address: Address): Observable<Address> {
     if (!address) {
       return throwError('updateBasketAddress() called without address');
     }
@@ -391,7 +369,7 @@ export class BasketService {
     }
 
     return this.apiService
-      .patch(`baskets/${basketId}/addresses/${address.id}`, address, {
+      .patch(`baskets/current/addresses/${address.id}`, address, {
         headers: this.basketHeaders,
       })
       .pipe(
@@ -402,18 +380,13 @@ export class BasketService {
 
   /**
    * Get eligible shipping methods for the selected basket or for the selected bucket of a basket.
-   * @param basketId  The basket id.
-   * @param basketId  The basket id.
+   * @param bucketId  The bucket id.
    * @returns         The eligible shipping methods.
    */
-  getBasketEligibleShippingMethods(basketId: string, bucketId?: string): Observable<ShippingMethod[]> {
-    if (!basketId) {
-      return throwError('getBasketEligibleShippingMethods() called without basketId');
-    }
-
+  getBasketEligibleShippingMethods(bucketId?: string): Observable<ShippingMethod[]> {
     return bucketId
       ? this.apiService
-          .get(`baskets/${basketId}/buckets/${bucketId}/eligible-shipping-methods`, {
+          .get(`baskets/current/buckets/${bucketId}/eligible-shipping-methods`, {
             headers: this.basketHeaders,
           })
           .pipe(
@@ -421,7 +394,7 @@ export class BasketService {
             map(data => data.map(ShippingMethodMapper.fromData))
           )
       : this.apiService
-          .get(`baskets/${basketId}/eligible-shipping-methods`, {
+          .get(`baskets/current/eligible-shipping-methods`, {
             headers: this.basketHeaders,
           })
           .pipe(

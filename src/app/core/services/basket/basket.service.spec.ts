@@ -52,11 +52,11 @@ describe('Basket Service', () => {
   });
 
   it("should get basket data when 'getBasket' is called", done => {
-    when(apiService.get(`baskets/${basketMockData.data.id}`, anything())).thenReturn(of(basketMockData));
+    when(apiService.get(`baskets/current`, anything())).thenReturn(of(basketMockData));
 
-    basketService.getBasket(basketMockData.data.id).subscribe(data => {
+    basketService.getBasket().subscribe(data => {
       expect(data.id).toEqual(basketMockData.data.id);
-      verify(apiService.get(`baskets/${basketMockData.data.id}`, anything())).once();
+      verify(apiService.get(`baskets/current`, anything())).once();
       done();
     });
   });
@@ -94,8 +94,8 @@ describe('Basket Service', () => {
     when(apiService.patch(anything(), anything(), anything())).thenReturn(of(basketMockData));
     const payload = { invoiceToAddress: '123456' };
 
-    basketService.updateBasket(basketMockData.data.id, payload).subscribe(() => {
-      verify(apiService.patch(`baskets/${basketMockData.data.id}`, payload, anything())).once();
+    basketService.updateBasket(payload).subscribe(() => {
+      verify(apiService.patch(`baskets/current`, payload, anything())).once();
       done();
     });
   });
@@ -103,8 +103,8 @@ describe('Basket Service', () => {
   it("should validate the basket when 'validateBasket' is called", done => {
     when(apiService.post(anything(), anything(), anything())).thenReturn(of(undefined));
 
-    basketService.validateBasket(basketMockData.data.id).subscribe(() => {
-      verify(apiService.post(`baskets/${basketMockData.data.id}/validations`, anything(), anything())).once();
+    basketService.validateBasket().subscribe(() => {
+      verify(apiService.post(`baskets/current/validations`, anything(), anything())).once();
       done();
     });
   });
@@ -121,8 +121,8 @@ describe('Basket Service', () => {
   it("should post item to basket when 'addItemsToBasket' is called", done => {
     when(apiService.post(anything(), anything(), anything())).thenReturn(of({}));
 
-    basketService.addItemsToBasket(basketMockData.data.id, [itemMockData]).subscribe(() => {
-      verify(apiService.post(`baskets/${basketMockData.data.id}/items`, anything(), anything())).once();
+    basketService.addItemsToBasket([itemMockData]).subscribe(() => {
+      verify(apiService.post(`baskets/current/items`, anything(), anything())).once();
       done();
     });
   });
@@ -167,10 +167,8 @@ describe('Basket Service', () => {
     when(apiService.patch(anyString(), anything(), anything())).thenReturn(of({}));
 
     const payload = { quantity: { value: 2 } } as BasketItemUpdateType;
-    basketService.updateBasketItem(basketMockData.data.id, lineItemData.id, payload).subscribe(() => {
-      verify(
-        apiService.patch(`baskets/${basketMockData.data.id}/items/${lineItemData.id}`, payload, anything())
-      ).once();
+    basketService.updateBasketItem(lineItemData.id, payload).subscribe(() => {
+      verify(apiService.patch(`baskets/current/items/${lineItemData.id}`, payload, anything())).once();
       done();
     });
   });
@@ -178,8 +176,8 @@ describe('Basket Service', () => {
   it("should remove line item from specific basket when 'deleteBasketItem' is called", done => {
     when(apiService.delete(anyString(), anything())).thenReturn(of({}));
 
-    basketService.deleteBasketItem(basketMockData.data.id, lineItemData.id).subscribe(() => {
-      verify(apiService.delete(`baskets/${basketMockData.data.id}/items/${lineItemData.id}`, anything())).once();
+    basketService.deleteBasketItem(lineItemData.id).subscribe(() => {
+      verify(apiService.delete(`baskets/current/items/${lineItemData.id}`, anything())).once();
       done();
     });
   });
@@ -187,8 +185,8 @@ describe('Basket Service', () => {
   it("should add promotion code to specific basket when 'addPromotionCodeToBasket' is called", done => {
     when(apiService.post(anything(), anything(), anything())).thenReturn(of({}));
 
-    basketService.addPromotionCodeToBasket(basketMockData.data.id, 'code').subscribe(() => {
-      verify(apiService.post(`baskets/${basketMockData.data.id}/promotioncodes`, anything(), anything())).once();
+    basketService.addPromotionCodeToBasket('code').subscribe(() => {
+      verify(apiService.post(`baskets/current/promotioncodes`, anything(), anything())).once();
       done();
     });
   });
@@ -196,8 +194,8 @@ describe('Basket Service', () => {
   it("should remove a promotion code from a specific basket when 'removePromotionCodeFromBasket' is called", done => {
     when(apiService.delete(anyString(), anything())).thenReturn(of({}));
 
-    basketService.removePromotionCodeFromBasket(basketMockData.data.id, 'promoCode').subscribe(() => {
-      verify(apiService.delete(`baskets/${basketMockData.data.id}/promotioncodes/promoCode`, anything())).once();
+    basketService.removePromotionCodeFromBasket('promoCode').subscribe(() => {
+      verify(apiService.delete(`baskets/current/promotioncodes/promoCode`, anything())).once();
       done();
     });
   });
@@ -205,8 +203,8 @@ describe('Basket Service', () => {
   it("should create a basket address when 'createBasketAddress' is called", done => {
     when(apiService.post(anyString(), anything(), anything())).thenReturn(of({ data: {} as Address }));
 
-    basketService.createBasketAddress(basketMockData.data.id, BasketMockData.getAddress()).subscribe(() => {
-      verify(apiService.post(`baskets/${basketMockData.data.id}/addresses`, anything(), anything())).once();
+    basketService.createBasketAddress(BasketMockData.getAddress()).subscribe(() => {
+      verify(apiService.post(`baskets/current/addresses`, anything(), anything())).once();
       done();
     });
   });
@@ -216,10 +214,8 @@ describe('Basket Service', () => {
 
     const address = BasketMockData.getAddress();
 
-    basketService.updateBasketAddress(basketMockData.data.id, address).subscribe(() => {
-      verify(
-        apiService.patch(`baskets/${basketMockData.data.id}/addresses/${address.id}`, anything(), anything())
-      ).once();
+    basketService.updateBasketAddress(address).subscribe(() => {
+      verify(apiService.patch(`baskets/current/addresses/${address.id}`, anything(), anything())).once();
       done();
     });
   });
@@ -227,8 +223,8 @@ describe('Basket Service', () => {
   it("should get eligible shipping methods for a basket when 'getBasketEligibleShippingMethods' is called", done => {
     when(apiService.get(anything(), anything())).thenReturn(of({ data: [] }));
 
-    basketService.getBasketEligibleShippingMethods(basketMockData.data.id).subscribe(() => {
-      verify(apiService.get(`baskets/${basketMockData.data.id}/eligible-shipping-methods`, anything())).once();
+    basketService.getBasketEligibleShippingMethods().subscribe(() => {
+      verify(apiService.get(`baskets/current/eligible-shipping-methods`, anything())).once();
       done();
     });
   });
