@@ -53,9 +53,10 @@ jobs:
           useLockFile: false
 
       - name: Code Formatting
-        run: |
-          npm run format
-          bash scripts/ci-test-no-changes.sh 'you probably committed unformatted code'
+        run: npm run format
+
+      - name: Check No Changes
+        run: git diff --exit-code --raw -p --stat
 
       - name: Compile Angular
         run: npm run ng -- build --aot
