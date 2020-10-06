@@ -33,8 +33,8 @@ export class PaymentMethodMapper {
         isRestricted: data.restricted,
         saveAllowed: data.saveAllowed && !!data.parameterDefinitions && !!data.parameterDefinitions.length,
         restrictionCauses: data.restrictions,
-        paymentCosts: PriceItemMapper.fromSpecificPriceItem(data.paymentCosts, 'net'),
-        paymentCostsThreshold: PriceItemMapper.fromSpecificPriceItem(data.paymentCostsThreshold, 'net'),
+        paymentCosts: PriceItemMapper.fromPriceItem(data.paymentCosts),
+        paymentCostsThreshold: PriceItemMapper.fromPriceItem(data.paymentCostsThreshold),
         paymentInstruments:
           included && included.paymentInstruments && data.paymentInstruments
             ? data.paymentInstruments.map(id => included.paymentInstruments[id])
