@@ -1,4 +1,4 @@
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
@@ -113,48 +113,16 @@ describe('Basket Items Effects', () => {
       });
     });
 
-    it('should call the basketService for addItemsToBasket with specific basketId when basketId set', done => {
-      store$.dispatch(
-        loadBasketSuccess({
-          basket: {
-            id: 'BID',
-            lineItems: [],
-          } as Basket,
-        })
-      );
-
-      const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
-      const basketId = 'BID';
-      const action = addItemsToBasket({ items, basketId });
-      actions$ = of(action);
-
-      effects.addItemsToBasket$.subscribe(() => {
-        verify(basketServiceMock.addItemsToBasket('BID', items)).once();
-        done();
-      });
-    });
-
-    it('should not call the basketService for addItemsToBasket if no basket in store', fakeAsync(() => {
-      const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
-      const action = addItemsToBasket({ items });
-      actions$ = of(action);
-
-      effects.addItemsToBasket$.subscribe(fail, fail);
-
-      tick(5000);
-
-      verify(basketServiceMock.addItemsToBasket('BID', anything())).never();
-    }));
-
-    it('should call the basketService for createBasket when no basket is present', done => {
+    it('should call the basketService for createBasket and addItemsToBasket when no basket is present', done => {
       when(basketServiceMock.createBasket()).thenReturn(of({} as Basket));
 
       const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
       const action = addItemsToBasket({ items });
       actions$ = of(action);
 
-      effects.createBasketBeforeAddItemsToBasket$.subscribe(() => {
+      effects.addItemsToBasket$.subscribe(() => {
         verify(basketServiceMock.createBasket()).once();
+        verify(basketServiceMock.addItemsToBasket(items)).once();
         done();
       });
     });

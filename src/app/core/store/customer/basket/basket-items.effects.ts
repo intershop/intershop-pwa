@@ -13,6 +13,7 @@ import {
   mapTo,
   mergeMap,
   reduce,
+  switchMap,
   tap,
   window,
   withLatestFrom,
@@ -24,7 +25,7 @@ import {
 } from 'ish-core/models/line-item-update/line-item-update.helper';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { getProductEntities, loadProduct } from 'ish-core/store/shopping/products';
-import { mapErrorToAction, mapToPayload, mapToPayloadProperty, mapToProperty } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
 
 import {
   addItemsToBasket,
@@ -80,28 +81,30 @@ export class BasketItemsEffects {
     )
   );
 
-  /**
-   * Add items to the current basket.
-   * Only triggers if basket is set or action payload contains basketId.
-   */
   addItemsToBasket$ = createEffect(() =>
     this.actions$.pipe(
       ofType(addItemsToBasket),
       mapToPayload(),
       withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-      filter(([{ basketId }, currentBasketId]) => !!currentBasketId || !!basketId),
-      concatMap(([payload, currentBasketId]) => {
-        // get basket id from AddItemsToBasket action if set, otherwise use current basket id
-        const basketId = payload.basketId || currentBasketId;
-
-        return this.basketService.addItemsToBasket(basketId, payload.items).pipe(
-          map(info => addItemsToBasketSuccess({ info })),
-          mapErrorToAction(addItemsToBasketFail)
-        );
+      concatMap(([payload, basketId]) => {
+        if (basketId) {
+          return this.basketService.addItemsToBasket(payload.items).pipe(
+            map(info => addItemsToBasketSuccess({ info })),
+            mapErrorToAction(addItemsToBasketFail)
+          );
+        } else {
+          return this.basketService.createBasket().pipe(
+            switchMap(() =>
+              this.basketService.addItemsToBasket(payload.items).pipe(
+                map(info => addItemsToBasketSuccess({ info })),
+                mapErrorToAction(addItemsToBasketFail)
+              )
+            )
+          );
+        }
       })
     )
   );
-
   /**
    * Reload products when they are added to basket to update price and inStock information
    */
@@ -110,25 +113,6 @@ export class BasketItemsEffects {
       ofType(addItemsToBasket),
       mapToPayload(),
       concatMap(payload => [...payload.items.map(item => loadProduct({ sku: item.sku }))])
-    )
-  );
-
-  /**
-   * Creates a basket if missing and call AddItemsToBasketAction
-   * Only triggers if basket is unset set and action payload does not contain basketId.
-   */
-  createBasketBeforeAddItemsToBasket$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(addItemsToBasket),
-      mapToPayload(),
-      withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-      filter(([payload, basketId]) => !basketId && !payload.basketId),
-      mergeMap(([{ items }]) =>
-        this.basketService.createBasket().pipe(
-          mapToProperty('id'),
-          map(basketId => addItemsToBasket({ items, basketId }))
-        )
-      )
     )
   );
 

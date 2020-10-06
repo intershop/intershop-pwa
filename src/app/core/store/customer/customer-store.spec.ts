@@ -223,13 +223,6 @@ describe('Customer Store', () => {
               quantity: 1
             [Basket Internal] Add Items To Basket:
               items: [{"sku":"test","quantity":1,"unit":"pcs."}]
-            [Products Internal] Load Product:
-              sku: "test"
-            [Basket Internal] Add Items To Basket:
-              items: [{"sku":"test","quantity":1,"unit":"pcs."}]
-              basketId: "test"
-            [Products API] Load Product Success:
-              product: {"name":"test","shortDescription":"test","longDescription":"...
             [Basket API] Add Items To Basket Success:
               info: undefined
             [Products Internal] Load Product:
