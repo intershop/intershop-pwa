@@ -98,9 +98,9 @@ export class MessagesEffects {
           const container = this.document.getElementById('toast-container');
           if (container) {
             if (sticky) {
-              container.className += ' toast-sticky';
+              container.classList.add('toast-sticky');
             } else {
-              container.className = container.className.replace(' toast-sticky', '');
+              container.classList.remove('toast-sticky');
             }
           }
         })
