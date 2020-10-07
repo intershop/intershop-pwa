@@ -1,0 +1,49 @@
+<div [formGroup]="cyberSourceCreditCardForm">
+  <!-- Containers in which we will load microform -->
+  <div class="row form-group">
+    <label class="col-form-label col-md-4" for="number-container">Card Number</label>
+    <div class="col-sm-6">
+      <div id="number-container" class="iframe-container"></div>
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <label class="col-form-label col-md-4" for="securityCode-container">Security Code</label>
+    <div class="col-sm-6">
+      <div id="securityCode-container" class="iframe-container"></div>
+    </div>
+  </div>
+
+  <!-- All the other fields comprising the form post to your server -->
+  <ish-input
+    [form]="cyberSourceCreditCardForm"
+    controlName="expirationMonth"
+    inputClass="col-sm-6"
+    label="Month"
+    labelClass="col-form-label col-md-4"
+    markRequiredLabel="on"
+  ></ish-input>
+
+  <ish-input
+    [form]="cyberSourceCreditCardForm"
+    controlName="expirationYear"
+    inputClass="col-sm-6"
+    label="Year"
+    labelClass="col-form-label col-md-4"
+    markRequiredLabel="on"
+  ></ish-input>
+</div>
+
+<div class="offset-md-4 col-md-8">
+  <div class="form-group">
+    <input
+      type="button"
+      (click)="submitNewPaymentInstrument()"
+      class="btn btn-primary"
+      value="{{ 'checkout.account.submit.button.label' | translate }}"
+    />
+    <button type="button" class="btn btn-secondary" (click)="cancelNewPaymentInstrument()">
+      {{ 'checkout.cancel.button.label' | translate }}
+    </button>
+  </div>
+</div>
