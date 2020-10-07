@@ -1,9 +1,11 @@
+import { BreadcrumbModule } from '../breadcrumb.module';
 import { HeaderModule } from '../header.module';
 
 export class WishlistsOverviewPage {
   readonly tag = 'ish-account-wishlist-page';
 
   readonly header = new HeaderModule();
+  readonly breadcrumb = new BreadcrumbModule();
 
   addWishlist(name: string, preferred: boolean) {
     cy.get('a[data-testing-id="add-wishlist"').click();

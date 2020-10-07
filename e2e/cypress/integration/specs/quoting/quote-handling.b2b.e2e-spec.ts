@@ -96,10 +96,14 @@ describe('Quote Handling', () => {
         dialog.hide();
         at(FamilyPage, page => page.header.goToMyAccount());
         at(MyAccountPage, page => page.navigateToQuoting());
-        at(QuoteListPage, page => page.goToQuoteDetailLink(quoteId));
+        at(QuoteListPage, page => {
+          page.breadcrumb.items.should('have.length', 3);
+          page.goToQuoteDetailLink(quoteId);
+        });
       });
     });
     at(QuoteDetailPage, page => {
+      page.breadcrumb.items.should('have.length', 4);
       page.quoteState.should('have.text', 'Submitted');
     });
   });

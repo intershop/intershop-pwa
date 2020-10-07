@@ -34,9 +34,10 @@ describe('Order Template MyAccount Functionality', () => {
     at(OrderTemplatesOverviewPage);
   });
 
-  it('user creates order template', () => {
+  it('user creates an order template', () => {
     at(OrderTemplatesOverviewPage, page => {
       page.addOrderTemplate(orderTemplate);
+      page.breadcrumb.items.should('have.length', 3);
       page.orderTemplatesArray.should('have.length', 1);
       page.orderTemplatesTitlesArray.should('contain', orderTemplate);
     });
@@ -76,6 +77,8 @@ describe('Order Template MyAccount Functionality', () => {
       page.addToOrderTemplate.addProductToOrderTemplateFromPage(orderTemplate, true);
     });
     at(OrderTemplatesDetailsPage, page => {
+      page.breadcrumb.items.should('have.length', 4);
+      page.breadcrumb.items.eq(3).should('contain', orderTemplate);
       page.listItemLink.invoke('attr', 'href').should('contain', _.product2);
       page.header.gotoCategoryPage(_.category);
     });
@@ -107,6 +110,7 @@ describe('Order Template MyAccount Functionality', () => {
     at(OrderTemplatesDetailsPage, page => {
       page.moveProductToOrderTemplate(_.product1, anotherOrderTemplate);
       waitLoadingEnd(1000);
+      page.breadcrumb.items.eq(3).should('contain', anotherOrderTemplate);
       page.OrderTemplateTitle.should('contain', anotherOrderTemplate);
       page.getOrderTemplateItemById(_.product1).should('exist');
       OrderTemplatesDetailsPage.navigateToOverviewPage();

@@ -1,9 +1,11 @@
+import { BreadcrumbModule } from '../breadcrumb.module';
 import { HeaderModule } from '../header.module';
 
 export class OrderTemplatesOverviewPage {
   readonly tag = 'ish-account-order-template-page';
 
   readonly header = new HeaderModule();
+  readonly breadcrumb = new BreadcrumbModule();
 
   addOrderTemplate(name: string) {
     cy.get('a[data-testing-id="add-order-template"').click();
