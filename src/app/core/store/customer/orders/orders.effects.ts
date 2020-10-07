@@ -3,10 +3,12 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
+import { isEqual } from 'lodash-es';
 import { race } from 'rxjs';
 import {
   concatMap,
   debounceTime,
+  distinctUntilChanged,
   filter,
   map,
   mapTo,
@@ -177,7 +179,9 @@ export class OrdersEffects {
       select(selectRouteParam('orderId')),
       withLatestFrom(this.store.pipe(select(getSelectedOrderId))),
       filter(([fromAction, selectedOrderId]) => fromAction && fromAction !== selectedOrderId),
-      map(([orderId]) => selectOrder({ orderId }))
+      map(([orderId]) => orderId),
+      distinctUntilChanged(),
+      map(orderId => selectOrder({ orderId }))
     )
   );
 
@@ -190,6 +194,7 @@ export class OrdersEffects {
       ofUrl(/^\/checkout\/(receipt|payment)/),
       select(selectQueryParams),
       filter(({ redirect, orderId }) => redirect && orderId),
+      distinctUntilChanged(isEqual),
       switchMap(queryParams =>
         // SelectOrderAfterRedirect will be triggered either after a user is logged in or after the paid order is loaded (anonymous user)
         race([
