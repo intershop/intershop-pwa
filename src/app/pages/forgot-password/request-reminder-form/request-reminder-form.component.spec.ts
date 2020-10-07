@@ -37,8 +37,6 @@ describe('Request Reminder Form Component', () => {
     fixture.detectChanges();
 
     expect(element.querySelector('ish-input[controlname=email]')).toBeTruthy();
-    expect(element.querySelector('ish-input[controlname=firstName]')).toBeTruthy();
-    expect(element.querySelector('ish-input[controlname=lastName]')).toBeTruthy();
     expect(element.querySelector('[name="passwordReminder"]')).toBeTruthy();
   });
 

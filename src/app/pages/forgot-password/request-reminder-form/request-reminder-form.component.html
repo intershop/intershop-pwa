@@ -11,28 +11,6 @@
     }"
   ></ish-input>
 
-  <ish-input
-    [form]="form"
-    controlName="firstName"
-    type="text"
-    label="account.forgotdata.firstname.label"
-    markRequiredLabel="off"
-    [errorMessages]="{
-      required: 'account.firstname.error.required'
-    }"
-  ></ish-input>
-
-  <ish-input
-    [form]="form"
-    controlName="lastName"
-    type="text"
-    label="account.forgotdata.lastname.label"
-    markRequiredLabel="off"
-    [errorMessages]="{
-      required: 'account.lastname.error.required'
-    }"
-  ></ish-input>
-
   <ish-lazy-captcha topic="forgotPassword" [form]="form" cssClass="offset-md-4 col-md-8"></ish-lazy-captcha>
 
   <div class="row form-group">

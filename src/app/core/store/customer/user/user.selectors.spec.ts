@@ -175,8 +175,6 @@ describe('User Selectors', () => {
   it('should loading on RequestPasswordReminder action', () => {
     const data: PasswordReminder = {
       email: 'patricia@test.intershop.de',
-      firstName: 'Patricia',
-      lastName: 'Miller',
     };
     store$.dispatch(requestPasswordReminder({ data }));
 

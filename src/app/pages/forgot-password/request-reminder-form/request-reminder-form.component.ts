@@ -30,8 +30,6 @@ export class RequestReminderFormComponent implements OnInit {
   ngOnInit() {
     this.form = new FormGroup({
       email: new FormControl('', [Validators.required, SpecialValidators.email]),
-      firstName: new FormControl('', Validators.required),
-      lastName: new FormControl('', Validators.required),
       captcha: new FormControl(''),
       captchaAction: new FormControl('forgotPassword'),
     });
