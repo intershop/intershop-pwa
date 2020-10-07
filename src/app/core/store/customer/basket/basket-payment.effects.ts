@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { RouterNavigatedPayload, routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { concatMap, filter, map, mapTo, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { PaymentService } from 'ish-core/services/payment/payment.service';
-import { ofUrl, selectQueryParams } from 'ish-core/store/core/router';
+import { RouterState } from 'ish-core/store/core/router/router.reducer';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
@@ -99,17 +100,22 @@ export class BasketPaymentEffects {
    * Checks, if the page is called with redirect query params and sends them to the server ( only RedirectBeforeCheckout)
    */
   sendPaymentRedirectData$ = createEffect(() =>
-    this.store.pipe(
-      ofUrl(/\/checkout\/(payment|review).*/),
-      select(selectQueryParams),
+    this.actions$.pipe(
+      ofType(routerNavigatedAction),
+      mapToPayloadProperty<RouterNavigatedPayload<RouterState>>('routerState'),
       // don't do anything in case of RedirectAfterCheckout
-      filter(({ redirect, orderId }) => redirect && !orderId),
-      switchMap(queryParams =>
+      filter(
+        (routerState: RouterState) =>
+          /\/checkout\/(payment|review).*/.test(routerState.url) &&
+          routerState.queryParams.redirect &&
+          !routerState.queryParams.orderId
+      ),
+      switchMap(routerState =>
         this.store.pipe(
           select(getCurrentBasketId),
           whenTruthy(),
           take(1),
-          mapTo(updateBasketPayment({ params: queryParams }))
+          mapTo(updateBasketPayment({ params: routerState.queryParams }))
         )
       )
     )
