@@ -15,6 +15,7 @@ import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.modu
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
 import {
   loadBasket,
@@ -247,26 +248,37 @@ describe('Basket Effects', () => {
     it('should fire ResetBasketErrors when route basket or checkout/* is navigated', done => {
       router.navigateByUrl('/checkout/payment');
 
+      actions$ = of(
+        routerTestNavigatedAction({
+          routerState: { url: '/checkout/payment' },
+        })
+      );
+
       effects.routeListenerForResettingBasketErrors$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`[Basket Internal] Reset Basket and Basket Promotion Errors`);
         done();
       });
     });
 
-    it('should not fire ResetBasketErrors when route basket or checkout/* is navigated with query param error=true', done => {
-      router.navigateByUrl('/checkout/payment?error=true');
+    it('should not fire ResetBasketErrors when route basket or checkout/* is navigated with query param error=true', () => {
+      actions$ = of(
+        routerTestNavigatedAction({
+          routerState: { url: '/checkout/payment', queryParams: { error: true } },
+        })
+      );
 
-      effects.routeListenerForResettingBasketErrors$.subscribe(fail, fail, fail);
-
-      setTimeout(done, 1000);
+      expect(effects.routeListenerForResettingBasketErrors$).toBeObservable(cold('|'));
     });
 
-    it('should not fire ResetBasketErrors when route /something is navigated', done => {
+    it('should not fire ResetBasketErrors when route /something is navigated', () => {
       router.navigateByUrl('/something');
 
-      effects.routeListenerForResettingBasketErrors$.subscribe(fail, fail, fail);
-
-      setTimeout(done, 1000);
+      actions$ = of(
+        routerTestNavigatedAction({
+          routerState: { url: '/something' },
+        })
+      );
+      expect(effects.routeListenerForResettingBasketErrors$).toBeObservable(cold('|'));
     });
   });
 });
