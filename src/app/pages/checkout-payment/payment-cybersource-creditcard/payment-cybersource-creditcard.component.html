@@ -1,89 +1,37 @@
-<!-- error messages -->
-<p *ngIf="errorMessage.general.message" class="text-danger col-sm-offset-4">
-  {{ errorMessage.general.message | translate }}
-</p>
-
 <div [formGroup]="cyberSourceCreditCardForm">
   <!-- Containers in which we will load microform -->
-  <div class="row form-group" [ngClass]="{ 'has-error': errorMessage?.number.message }">
-    <label class="col-form-label col-md-4" for="number-container"
-      >{{ 'checkout.credit_card.number.label' | translate }}<span class="required">*</span></label
-    >
+  <div class="row form-group">
+    <label class="col-form-label col-md-4" for="number-container">Card Number</label>
     <div class="col-sm-6">
       <div id="number-container" class="iframe-container"></div>
-      <small *ngIf="errorMessage.number?.message" class="form-text">{{
-        errorMessage.number.message | translate
-      }}</small>
     </div>
   </div>
 
-  <!-- Expiry date mm-yyyy -->
-  <div
-    class="row form-group has-feedback"
-    [ishShowFormFeedback]="[
-      cyberSourceCreditCardForm.controls.expirationMonth,
-      cyberSourceCreditCardForm.controls.expirationYear
-    ]"
-  >
-    <label for="month" class="col-form-label col-md-4"
-      >{{ 'checkout.credit_card.expiration_date.label' | translate }}<span class="required">*</span></label
-    >
-    <div class="col-sm-6">
-      <div class="clearfix row">
-        <div class="col-6">
-          <select
-            class="form-control"
-            id="cybersource_creditcard_month"
-            formControlName="expirationMonth"
-            data-testing-id="expirationMonth"
-          >
-            <option value="">{{ 'account.date.month' | translate }}</option>
-            <option *ngFor="let option of monthOptions" [value]="option.value">{{ option.label | translate }}</option>
-          </select>
-          <ish-form-control-feedback
-            [messages]="{ required: 'account.date.month.error.required' }"
-            [control]="cyberSourceCreditCardForm.controls.expirationMonth"
-          ></ish-form-control-feedback>
-        </div>
-        <div class="col-6">
-          <select
-            class="form-control"
-            id="cybersource_creditcard_year"
-            formControlName="expirationYear"
-            data-testing-id="expirationYear"
-          >
-            <option value="">{{ 'account.date.year' | translate }}</option>
-            <option *ngFor="let option of yearOptions" [value]="option.value">{{ option.label | translate }}</option>
-          </select>
-          <ish-form-control-feedback
-            [messages]="{ required: 'account.date.year.error.required' }"
-            [control]="cyberSourceCreditCardForm.controls.expirationYear"
-          ></ish-form-control-feedback>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- security code CVC -->
-  <div class="row form-group" [ngClass]="{ 'has-error': errorMessage.securityCode?.message }">
-    <label class="col-form-label col-md-4" for="securityCode-container"
-      >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required">*</span></label
-    >
+  <div class="row form-group">
+    <label class="col-form-label col-md-4" for="securityCode-container">Security Code</label>
     <div class="col-sm-6">
       <div id="securityCode-container" class="iframe-container"></div>
-      <small *ngIf="errorMessage.securityCode?.message" class="form-text">{{
-        errorMessage.securityCode.message | translate
-      }}</small>
-    </div>
-    <div>
-      <ng-template #CVCHelp>
-        <span [innerHTML]="'checkout.credit_card.cvc.popover.content' | translate"></span>
-      </ng-template>
-      <a [ngbPopover]="CVCHelp" [popoverTitle]="'checkout.credit_card.cvc.popover.title' | translate" placement="auto"
-        ><fa-icon [icon]="['fas', 'question-circle']"></fa-icon>
-      </a>
     </div>
   </div>
+
+  <!-- All the other fields comprising the form post to your server -->
+  <ish-input
+    [form]="cyberSourceCreditCardForm"
+    controlName="expirationMonth"
+    inputClass="col-sm-6"
+    label="Month"
+    labelClass="col-form-label col-md-4"
+    markRequiredLabel="on"
+  ></ish-input>
+
+  <ish-input
+    [form]="cyberSourceCreditCardForm"
+    controlName="expirationYear"
+    inputClass="col-sm-6"
+    label="Year"
+    labelClass="col-form-label col-md-4"
+    markRequiredLabel="on"
+  ></ish-input>
 </div>
 
 <div class="offset-md-4 col-md-8">
