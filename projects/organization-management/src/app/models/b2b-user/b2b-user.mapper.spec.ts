@@ -1,9 +1,8 @@
 import { Address } from 'ish-core/models/address/address.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
-import { UserData } from 'ish-core/models/user/user.interface';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
-import { B2bUserData } from './b2b-user.interface';
+import { B2bUserData, B2bUserDataLink } from './b2b-user.interface';
 import { B2bUserMapper } from './b2b-user.mapper';
 
 describe('B2b User Mapper', () => {
@@ -15,11 +14,13 @@ describe('B2b User Mapper', () => {
         preferredInvoiceToAddress: BasketMockData.getAddress(),
         preferredShipToAddress: { urn: 'urn:1234' } as Address,
         preferredPaymentInstrument: { id: '1234' } as PaymentInstrument,
-      } as UserData;
+        active: true,
+      } as B2bUserData;
       const user = B2bUserMapper.fromData(userData);
 
       expect(user).toMatchInlineSnapshot(`
         Object {
+          "active": true,
           "birthday": undefined,
           "businessPartnerNo": undefined,
           "department": undefined,
@@ -54,7 +55,7 @@ describe('B2b User Mapper', () => {
             { name: 'firstName', value: 'Patricia' },
             { name: 'lastName', value: 'Miller' },
           ],
-        } as B2bUserData,
+        } as B2bUserDataLink,
       ];
       const users = B2bUserMapper.fromListData(userListData);
 

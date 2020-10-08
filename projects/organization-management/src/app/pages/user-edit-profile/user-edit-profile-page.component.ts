@@ -50,6 +50,7 @@ export class UserEditProfilePageComponent implements OnInit, OnDestroy {
       title: [userProfile.title ? userProfile.title : ''],
       firstName: [userProfile.firstName, [Validators.required]],
       lastName: [userProfile.lastName, [Validators.required]],
+      active: [userProfile.active],
       phone: [userProfile.phoneHome],
     });
   }
@@ -67,6 +68,7 @@ export class UserEditProfilePageComponent implements OnInit, OnDestroy {
       title: formValue.title,
       firstName: formValue.firstName,
       lastName: formValue.lastName,
+      active: formValue.active,
       phoneHome: formValue.phone,
     };
     this.organizationManagementFacade.updateUser(user);

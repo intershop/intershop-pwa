@@ -12,6 +12,9 @@
             <dt class="col-md-4">{{ 'account.user.details.profile.name' | translate }}</dt>
             <dd data-testing-id="name-field" class="col-md-8">
               <ng-container *ngIf="user.title">{{ user.title }} </ng-container> {{ user.firstName }} {{ user.lastName }}
+              <span *ngIf="user.active === false" class="input-help">{{
+                'account.user.list.status.inactive' | translate
+              }}</span>
             </dd>
             <dt class="col-md-4">{{ 'account.user.details.profile.email' | translate }}</dt>
             <dd data-testing-id="email-field" class="col-md-8">{{ user.email }}</dd>

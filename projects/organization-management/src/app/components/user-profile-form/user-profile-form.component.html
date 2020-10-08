@@ -19,9 +19,13 @@
         required: 'account.user.new.lastname.error.required'
       }"
     ></ish-input>
+    <div class="offset-md-4 col-md-8">
+      <ish-checkbox [form]="form" controlName="active" label="account.user.active.label"></ish-checkbox>
+    </div>
   </fieldset>
-  <fieldset *ngIf="form.value.email !== undefined">
+  <fieldset>
     <ish-input
+      *ngIf="form.value.email !== undefined"
       [form]="form"
       controlName="email"
       label="account.user.email.label"
@@ -30,8 +34,6 @@
         email: 'account.update_email.email.error.email'
       }"
     ></ish-input>
-  </fieldset>
-  <fieldset>
     <ish-input [form]="form" controlName="phone" label="account.profile.phone.label"></ish-input>
   </fieldset>
 </div>

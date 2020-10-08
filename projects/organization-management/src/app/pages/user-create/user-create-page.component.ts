@@ -25,6 +25,7 @@ export class UserCreatePageComponent implements OnInit {
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       email: ['', [Validators.required, SpecialValidators.email]],
+      active: [true],
       phone: [''],
       birthday: [''],
       preferredLanguage: ['en_US', [Validators.required]],
@@ -59,6 +60,7 @@ export class UserCreatePageComponent implements OnInit {
       firstName: formValue.profile.firstName,
       lastName: formValue.profile.lastName,
       email: formValue.profile.email,
+      active: formValue.profile.active,
       phoneHome: formValue.profile.phone,
       birthday: formValue.profile.birthday === '' ? undefined : formValue.birthday, // TODO: see IS-22276
       preferredLanguage: formValue.profile.preferredLanguage,

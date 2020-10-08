@@ -57,6 +57,7 @@ describe('User Create Page Component', () => {
         lastName: ['Boldner', [Validators.required]],
         email: ['test@gmail.com', [Validators.required, SpecialValidators.email]],
         preferredLanguage: ['en_US', [Validators.required]],
+        active: [true],
       }),
     });
 
