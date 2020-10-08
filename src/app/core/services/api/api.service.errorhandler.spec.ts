@@ -2,7 +2,6 @@ import { HttpHeaders } from '@angular/common/http';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Action, Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import * as using from 'jasmine-data-provider';
 import { cold } from 'jest-marbles';
 import { noop, throwError } from 'rxjs';
 import { anything, capture, spy, verify } from 'ts-mockito';
@@ -25,39 +24,34 @@ describe('Api Service Errorhandler', () => {
     store$ = spy(TestBed.inject(Store));
   });
 
-  function dataProviderKnown() {
-    return [
-      { error: { status: 0 }, expectedType: communicationTimeoutError.type },
-      { error: { status: 500 }, expectedType: serverError.type },
-    ];
-  }
-  function dataProviderUnknown() {
-    return [{ error: { status: 301 } }, { error: { status: 404 } }];
-  }
-
-  using(dataProviderUnknown, dataSlice => {
-    it(`should delegate Error when Http Code ${dataSlice.error.status} is handled`, () => {
+  it.each([[{ status: 301, headers: undefined }], [{ status: 404, headers: undefined }]])(
+    `should delegate Error when Http Code %j is handled`,
+    error => {
       const header = new HttpHeaders();
-      dataSlice.error.headers = header;
-      const result$ = throwError(dataSlice.error).pipe(apiServiceErrorHandler.handleErrors(true));
+      error.headers = header;
+      const result$ = throwError(error).pipe(apiServiceErrorHandler.handleErrors(true));
 
       verify(store$.dispatch(anything())).never();
-      expect(result$).toBeObservable(cold('#', undefined, dataSlice.error));
-    });
-  });
+      expect(result$).toBeObservable(cold('#', undefined, error));
+    }
+  );
 
-  using(dataProviderKnown, dataSlice => {
-    it(`should create state \'${dataSlice.expectedType}\' when Http Code ${dataSlice.error.status} is handled`, fakeAsync(() => {
+  it.each([
+    [communicationTimeoutError.type, { status: 0, headers: undefined }],
+    [serverError.type, { status: 500, headers: undefined }],
+  ])(
+    `should create state %s when Http Code %j is handled`,
+    fakeAsync((expectedType, error) => {
       const header = new HttpHeaders();
-      dataSlice.error.headers = header;
+      error.headers = header;
 
-      throwError(dataSlice.error).pipe(apiServiceErrorHandler.handleErrors(true)).subscribe(noop);
+      throwError(error).pipe(apiServiceErrorHandler.handleErrors(true)).subscribe(noop);
 
       tick(1000);
 
       verify(store$.dispatch(anything())).called();
       const [arg] = capture(store$.dispatch).last();
-      expect((arg as Action).type).toBe(dataSlice.expectedType);
-    }));
-  });
+      expect((arg as Action).type).toBe(expectedType);
+    })
+  );
 });

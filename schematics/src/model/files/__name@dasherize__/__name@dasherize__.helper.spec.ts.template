@@ -1,23 +1,18 @@
-import * as using from 'jasmine-data-provider';
-
 import { <%= classify(name) %>Helper } from './<%= dasherize(name) %>.helper';
 import { <%= classify(name) %> } from './<%= dasherize(name) %>.model';
 
 describe('<%= classify(name) %> Helper', () => {
   describe('equal', () => {
-    using(
-      [
-        { o1: undefined, o2: undefined, expected: false },
-        { o1: { id: 'test' } as <%= classify(name) %>, o2: undefined, expected: false },
-        { o1: undefined, o2: { id: 'test' } as <%= classify(name) %>, expected: false },
-        { o1: { id: 'test' } as <%= classify(name) %>, o2: { id: 'other' } as <%= classify(name) %>, expected: false },
-        { o1: { id: 'test' } as <%= classify(name) %>, o2: { id: 'test' } as <%= classify(name) %>, expected: true },
-      ],
-      slice => {
-        it(`should return ${slice.expected} when comparing ${JSON.stringify(slice.o1)} and ${JSON.stringify(slice.o2)}`, () => {
-          expect(<%= classify(name) %>Helper.equal(slice.o1, slice.o2)).toEqual(slice.expected);
-        });
-      }
-    );
+    it.each([
+        [false, undefined,  undefined],
+        [false, { id: 'test' } as <%= classify(name) %>,  undefined],
+        [false, undefined,  { id: 'test' } as <%= classify(name) %>],
+        [false, { id: 'test' } as <%= classify(name) %>,  { id: 'other' } as <%= classify(name) %>],
+        [true, { id: 'test' } as <%= classify(name) %>,  { id: 'test' } as <%= classify(name) %>],
+      ])
+      (`should return %s when comparing %j and %j`,
+      (expected, o1, o2) => {
+        expect(<%= classify(name) %>Helper.equal(o1, o2)).toEqual(expected);
+      });
   });
 });

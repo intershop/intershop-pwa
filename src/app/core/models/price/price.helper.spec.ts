@@ -1,125 +1,117 @@
-import * as using from 'jasmine-data-provider';
-
 import { PriceItem } from 'ish-core/models/price-item/price-item.model';
 
 import { Price, PriceHelper } from './price.model';
 
 describe('Price Helper', () => {
-  function dataProviderValid() {
-    return [
-      {
-        p1: { type: 'Money', currency: 'USD', value: 10 } as Price,
-        p2: { type: 'Money', currency: 'USD', value: 9 } as Price,
-        diff: { type: 'Money', currency: 'USD', value: 1 } as Price,
-        sum: { type: 'Money', currency: 'USD', value: 19 } as Price,
-        min: { type: 'Money', currency: 'USD', value: 9 } as Price,
-      },
-      {
-        p1: { type: 'Money', currency: 'USD', value: 10.99 } as Price,
-        p2: { type: 'Money', currency: 'USD', value: 9.45 } as Price,
-        diff: { type: 'Money', currency: 'USD', value: 1.54 } as Price,
-        sum: { type: 'Money', currency: 'USD', value: 20.44 } as Price,
-        min: { type: 'Money', currency: 'USD', value: 9.45 } as Price,
-      },
-      {
-        p1: { type: 'Money', currency: 'USD', value: 8 } as Price,
-        p2: { type: 'Money', currency: 'USD', value: 9 } as Price,
-        diff: { type: 'Money', currency: 'USD', value: -1 } as Price,
-        sum: { type: 'Money', currency: 'USD', value: 17 } as Price,
-        min: { type: 'Money', currency: 'USD', value: 8 } as Price,
-      },
-      {
-        p1: { type: 'Money', currency: 'USD', value: 8.88888 } as Price,
-        p2: { type: 'Money', currency: 'USD', value: 3.55555 } as Price,
-        diff: { type: 'Money', currency: 'USD', value: 5.33 } as Price,
-        sum: { type: 'Money', currency: 'USD', value: 12.44 } as Price,
-        min: { type: 'Money', currency: 'USD', value: 3.56 } as Price,
-      },
-    ];
-  }
-
-  function dataProviderInvalid() {
-    return [
-      {
-        p1: undefined,
-        p2: { type: 'Money', currency: 'USD', value: 9 } as Price,
-        error: /.*undefined.*/,
-      },
-      {
-        p1: { type: 'Money', currency: 'USD', value: 9 } as Price,
-        p2: undefined,
-        error: /.*undefined.*/,
-      },
-      {
-        p1: { type: 'Money', currency: 'USD', value: 9 } as Price,
-        p2: { type: 'Money', value: 9 } as Price,
-        error: /.*undefined.*/,
-      },
-      {
-        p1: { type: 'Money', currency: 'USD', value: 9 } as Price,
-        p2: { type: 'Money', currency: 'USD' } as Price,
-        error: /.*undefined.*/,
-      },
-      {
-        p1: { type: 'Money', currency: 'USD', value: 10 } as Price,
-        p2: { type: 'Money', currency: 'EUR', value: 9 } as Price,
-        error: /.*currency.*/,
-      },
-    ];
-  }
+  const dataProviderInvalid = [
+    [/.*undefined.*/, undefined, { type: 'Money', currency: 'USD', value: 9 }],
+    [/.*undefined.*/, { type: 'Money', currency: 'USD', value: 9 }, undefined],
+    [/.*undefined.*/, { type: 'Money', currency: 'USD', value: 9 }, { type: 'Money', value: 9 }],
+    [/.*undefined.*/, { type: 'Money', currency: 'USD', value: 9 }, { type: 'Money', currency: 'USD' }],
+    [/.*currency.*/, { type: 'Money', currency: 'USD', value: 10 }, { type: 'Money', currency: 'EUR', value: 9 }],
+  ];
 
   describe('diff', () => {
-    using(dataProviderValid, slice => {
-      it(`should return ${slice.diff.value} when diff'ing '${JSON.stringify(slice.p1)}' and '${JSON.stringify(
-        slice.p2
-      )}'`, () => {
-        expect(PriceHelper.diff(slice.p1, slice.p2)).toEqual(slice.diff);
-      });
+    it.each([
+      [
+        { type: 'Money', currency: 'USD', value: 1 },
+        { type: 'Money', currency: 'USD', value: 10 },
+        { type: 'Money', currency: 'USD', value: 9 },
+      ],
+
+      [
+        { type: 'Money', currency: 'USD', value: 1.54 },
+        { type: 'Money', currency: 'USD', value: 10.99 },
+        { type: 'Money', currency: 'USD', value: 9.45 },
+      ],
+      [
+        { type: 'Money', currency: 'USD', value: -1 },
+        { type: 'Money', currency: 'USD', value: 8 },
+        { type: 'Money', currency: 'USD', value: 9 },
+      ],
+      [
+        { type: 'Money', currency: 'USD', value: 5.33 },
+        { type: 'Money', currency: 'USD', value: 8.88888 },
+        { type: 'Money', currency: 'USD', value: 3.55555 },
+      ],
+    ])(`should return %j when diff'ing '%j' and '%j'`, (diff, p1: Price, p2: Price) => {
+      expect(PriceHelper.diff(p1, p2)).toEqual(diff);
     });
 
-    using(dataProviderInvalid, slice => {
-      it(`should throw something like ${slice.error} when diff'ing '${JSON.stringify(slice.p1)}' and '${JSON.stringify(
-        slice.p2
-      )}'`, () => {
-        expect(() => PriceHelper.diff(slice.p1, slice.p2)).toThrowError(slice.error);
-      });
-    });
+    it.each(dataProviderInvalid)(
+      `should throw something like %s when diff'ing '%j' and '%j'`,
+      (error: RegExp, p1: Price, p2: Price) => {
+        expect(() => PriceHelper.diff(p1, p2)).toThrowError(error);
+      }
+    );
   });
 
   describe('sum', () => {
-    using(dataProviderValid, slice => {
-      it(`should return ${slice.sum.value} when summing '${JSON.stringify(slice.p1)}' and '${JSON.stringify(
-        slice.p2
-      )}'`, () => {
-        expect(PriceHelper.sum(slice.p1, slice.p2)).toEqual(slice.sum);
-      });
+    it.each([
+      [
+        { type: 'Money', currency: 'USD', value: 19 },
+        { type: 'Money', currency: 'USD', value: 10 },
+        { type: 'Money', currency: 'USD', value: 9 },
+      ],
+      [
+        { type: 'Money', currency: 'USD', value: 20.44 },
+        { type: 'Money', currency: 'USD', value: 10.99 },
+        { type: 'Money', currency: 'USD', value: 9.45 },
+      ],
+      [
+        { type: 'Money', currency: 'USD', value: 17 },
+        { type: 'Money', currency: 'USD', value: 8 },
+        { type: 'Money', currency: 'USD', value: 9 },
+      ],
+      [
+        { type: 'Money', currency: 'USD', value: 12.44 },
+        { type: 'Money', currency: 'USD', value: 8.88888 },
+        { type: 'Money', currency: 'USD', value: 3.55555 },
+      ],
+    ])(`should return %j when summing '%j' and '%j'`, (sum, p1: Price, p2: Price) => {
+      expect(PriceHelper.sum(p1, p2)).toEqual(sum);
     });
 
-    using(dataProviderInvalid, slice => {
-      it(`should throw something like ${slice.error} when summing '${JSON.stringify(slice.p1)}' and '${JSON.stringify(
-        slice.p2
-      )}'`, () => {
-        expect(() => PriceHelper.sum(slice.p1, slice.p2)).toThrowError(slice.error);
-      });
-    });
+    it.each(dataProviderInvalid)(
+      `should throw something like %s when summing '%j' and '%j'`,
+      (error: RegExp, p1: Price, p2: Price) => {
+        expect(() => PriceHelper.sum(p1, p2)).toThrowError(error);
+      }
+    );
   });
 
   describe('min', () => {
-    using(dataProviderValid, slice => {
-      it(`should return ${slice.min.value} when finding minimum of '${JSON.stringify(slice.p1)}' and '${JSON.stringify(
-        slice.p2
-      )}'`, () => {
-        expect(PriceHelper.min(slice.p1, slice.p2)).toEqual(slice.min);
-      });
+    it.each([
+      [
+        { type: 'Money', currency: 'USD', value: 9 },
+        { type: 'Money', currency: 'USD', value: 10 },
+        { type: 'Money', currency: 'USD', value: 9 },
+      ],
+      [
+        { type: 'Money', currency: 'USD', value: 9.45 },
+        { type: 'Money', currency: 'USD', value: 10.99 },
+        { type: 'Money', currency: 'USD', value: 9.45 },
+      ],
+      [
+        { type: 'Money', currency: 'USD', value: 8 },
+        { type: 'Money', currency: 'USD', value: 8 },
+        { type: 'Money', currency: 'USD', value: 9 },
+      ],
+      [
+        { type: 'Money', currency: 'USD', value: 3.56 },
+        { type: 'Money', currency: 'USD', value: 8.88888 },
+        { type: 'Money', currency: 'USD', value: 3.55555 },
+      ],
+    ])(`should return %j when finding minimum of '%j' and '%j'`, (min, p1: Price, p2: Price) => {
+      expect(PriceHelper.min(p1, p2)).toEqual(min);
     });
 
-    using(dataProviderInvalid, slice => {
-      it(`should throw something like ${slice.error} when finding minimum '${JSON.stringify(
-        slice.p1
-      )}' and '${JSON.stringify(slice.p2)}'`, () => {
-        expect(() => PriceHelper.min(slice.p1, slice.p2)).toThrowError(slice.error);
-      });
-    });
+    it.each(dataProviderInvalid)(
+      `should throw something like %s when finding minimum '%j' and '%j'`,
+      (error: RegExp, p1: Price, p2: Price) => {
+        expect(() => PriceHelper.min(p1, p2)).toThrowError(error);
+      }
+    );
   });
 
   describe('invert', () => {

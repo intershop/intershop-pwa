@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
-import * as using from 'jasmine-data-provider';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
@@ -231,25 +230,20 @@ describe('Product Mapper', () => {
   });
 
   describe('parseSKUfromURI()', () => {
-    using(
-      [
-        'site/products/123',
-        'products/123',
-        'site/products/123?test=dummy',
-        'products/123?test=dummy',
-        'site/products;spgid=dfds/123',
-        'products;spgid=dfds/123',
-        'site/products;spgid=dfds/123?test=dummy',
-        'products;spgid=dfds/123?test=dummy',
-        'site/products;spgid=dfds/123?test=dummy&test2=dummy',
-        'products;spgid=dfds/123?test=dummy&test2=dummy',
-      ],
-      uri => {
-        it(`should parse correct sku when given '${uri}'`, () => {
-          expect(ProductMapper.parseSKUfromURI(uri)).toEqual('123');
-        });
-      }
-    );
+    it.each([
+      'site/products/123',
+      'products/123',
+      'site/products/123?test=dummy',
+      'products/123?test=dummy',
+      'site/products;spgid=dfds/123',
+      'products;spgid=dfds/123',
+      'site/products;spgid=dfds/123?test=dummy',
+      'products;spgid=dfds/123?test=dummy',
+      'site/products;spgid=dfds/123?test=dummy&test2=dummy',
+      'products;spgid=dfds/123?test=dummy&test2=dummy',
+    ])(`should parse correct sku when given '%s'`, uri => {
+      expect(ProductMapper.parseSKUfromURI(uri)).toEqual('123');
+    });
   });
 
   it('should find default variation for master product', () => {

@@ -1,7 +1,6 @@
 import { HttpEventType, HttpHandler, HttpRequest, HttpResponse, HttpXhrBackend } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
-import * as using from 'jasmine-data-provider';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -43,56 +42,44 @@ describe('Mock Interceptor', () => {
   describe('Request URL Modification', () => {
     const request = new HttpRequest('GET', '');
 
-    function dataProvider() {
-      return [
-        { url: BASE_URL + '/categories', willBeMocked: true, method: 'GET' },
-        { url: BASE_URL + ';loc=en_US;cur=USD/categories', willBeMocked: true, method: 'GET' },
-        { url: './assets/picture.png', willBeMocked: false, method: 'GET' },
-      ];
-    }
-
-    using(dataProvider, dataSlice => {
-      it(`should ${dataSlice.willBeMocked ? '' : 'not '}mock request to ${dataSlice.url}`, () => {
-        expect(mockInterceptor.requestHasToBeMocked(request.clone({ url: dataSlice.url }))).toBe(
-          dataSlice.willBeMocked
-        );
+    describe.each([
+      [true, BASE_URL + '/categories'],
+      [true, BASE_URL + ';loc=en_US;cur=USD/categories'],
+      [false, './assets/picture.png'],
+    ])(``, (willBeMocked, url) => {
+      it(`should mock request (${willBeMocked}) to ${url}`, () => {
+        expect(mockInterceptor.requestHasToBeMocked(request.clone({ url }))).toBe(willBeMocked);
       });
-      it(`should ${dataSlice.willBeMocked ? '' : 'not '}change url for ${dataSlice.url}`, () => {
-        if (dataSlice.willBeMocked) {
-          expect(mockInterceptor.getMockUrl(dataSlice)).not.toBe(dataSlice.url);
-          if (dataSlice.target) {
-            expect(mockInterceptor.getMockUrl(dataSlice)).toBe(dataSlice.target);
-          }
+      it(`should change url (${willBeMocked}) for ${url}`, () => {
+        const http = new HttpRequest('GET', url);
+        if (willBeMocked) {
+          expect(mockInterceptor.getMockUrl(http)).not.toBe(url);
         } else {
-          expect(mockInterceptor.getMockUrl(dataSlice)).toBe(dataSlice.url);
+          expect(mockInterceptor.getMockUrl(http)).toBe(url);
         }
       });
     });
   });
 
   describe('matchPath Method', () => {
-    function dataProvider() {
-      return [
-        { item: 'categories', in: undefined, expect: false },
-        { item: 'categories', in: undefined, expect: false },
-        { item: 'categories', in: [], expect: false },
-        { item: 'categories', in: ['categories'], expect: true },
-        { item: 'catego', in: ['categories'], expect: false },
-        { item: 'categories', in: ['cat.*'], expect: true },
-        { item: 'categories/Computers', in: ['categories'], expect: false },
-        { item: 'categories/Computers', in: ['categories.*'], expect: true },
-        { item: 'categories/Computers', in: ['categories/.*'], expect: true },
-        { item: 'categories/Computers', in: ['categories/Computers'], expect: true },
-        { item: 'categories/Computers', in: ['categories/Audio'], expect: false },
-        { item: 'categories/Computers', in: ['categories/'], expect: false },
-        { item: 'categories/Computers', in: ['categories/(Audio|Computers|HiFi)'], expect: true },
-        { item: 'categories/Computers', in: ['categories/(Audio|Computers|HiFi)/'], expect: false },
-      ];
-    }
-
-    using(dataProvider, dataSlice => {
-      it(`should${dataSlice.expect ? '' : ' not'} when \'${dataSlice.item}\' in ${dataSlice.in}`, () => {
-        expect(mockInterceptor.matchPath(dataSlice.item, dataSlice.in)).toBe(dataSlice.expect);
+    describe.each`
+      item                      | within                                    | expected
+      ${'categories'}           | ${undefined}                              | ${false}
+      ${'categories'}           | ${[]}                                     | ${false}
+      ${'categories'}           | ${['categories']}                         | ${true}
+      ${'catego'}               | ${['categories']}                         | ${false}
+      ${'categories'}           | ${['cat.*']}                              | ${true}
+      ${'categories/Computers'} | ${['categories']}                         | ${false}
+      ${'categories/Computers'} | ${['categories.*']}                       | ${true}
+      ${'categories/Computers'} | ${['categories/.*']}                      | ${true}
+      ${'categories/Computers'} | ${['categories/Computers']}               | ${true}
+      ${'categories/Computers'} | ${['categories/Audio']}                   | ${false}
+      ${'categories/Computers'} | ${['categories/']}                        | ${false}
+      ${'categories/Computers'} | ${['categories/(Audio|Computers|HiFi)']}  | ${true}
+      ${'categories/Computers'} | ${['categories/(Audio|Computers|HiFi)/']} | ${false}
+    `(``, ({ item, within, expected }) => {
+      it(`should be ${expected} when '${item}' in ${within}`, () => {
+        expect(mockInterceptor.matchPath(item, within)).toBe(expected);
       });
     });
   });

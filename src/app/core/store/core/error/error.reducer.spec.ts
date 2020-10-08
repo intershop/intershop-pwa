@@ -1,5 +1,4 @@
 import { Action } from '@ngrx/store';
-import * as using from 'jasmine-data-provider';
 import { anything } from 'ts-mockito';
 
 import { loginUserSuccess } from 'ish-core/store/customer/user';
@@ -27,32 +26,20 @@ describe('Error Reducer', () => {
     });
   });
 
-  function dataProvider() {
-    return [
-      {
-        state: initialState,
-        action: {},
-        expected: initialState,
-      },
-      {
-        state: initialState,
-        action: communicationTimeoutError({ error: makeHttpError({}) }),
-        expected: { current: { name: 'HttpErrorResponse' }, type: communicationTimeoutError.type },
-      },
-      {
-        state: initialState,
-        action: loginUserSuccess(anything()),
-        expected: initialState,
-      },
-    ];
-  }
+  it(`should return initialState when Action undefined is reduced on initial state`, () => {
+    const newState = errorReducer(initialState, {} as Action);
+    expect(newState).toEqual(initialState);
+  });
 
-  using(dataProvider, dataSlice => {
-    it(`should return ${
-      dataSlice.expected === initialState ? ' initialState' : ` '${dataSlice.expected.type}'`
-    } when Action ${dataSlice.action.type} is reduced on state ${dataSlice.state.type}`, () => {
-      const newState = errorReducer(dataSlice.state, dataSlice.action);
-      expect(newState).toEqual(dataSlice.expected);
-    });
+  it(`should return Timeout Error when Action Timeout Error is reduced on initial state`, () => {
+    const action = communicationTimeoutError({ error: makeHttpError({}) });
+    const newState = errorReducer(initialState, action);
+    expect(newState).toEqual({ current: { name: 'HttpErrorResponse' }, type: communicationTimeoutError.type });
+  });
+
+  it(`should return initialState when Action Login User Success is reduced on initial state`, () => {
+    const action = loginUserSuccess(anything());
+    const newState = errorReducer(initialState, action);
+    expect(newState).toEqual(initialState);
   });
 });

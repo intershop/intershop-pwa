@@ -1015,7 +1015,6 @@
 "istanbul-lib-report@3.0.0","BSD-3-Clause","Copyright 2012-2015 Yahoo! Inc.. All rights reserved.","https://github.com/istanbuljs/istanbuljs"
 "istanbul-lib-source-maps@4.0.0","BSD-3-Clause","Copyright 2015 Yahoo! Inc.. All rights reserved.","https://github.com/istanbuljs/istanbuljs"
 "istanbul-reports@3.0.2","BSD-3-Clause","Copyright 2012-2015 Yahoo! Inc.. All rights reserved.","https://github.com/istanbuljs/istanbuljs"
-"jasmine-data-provider@2.2.0","MIT","","https://github.com/MortalFlesh/jasmine-data-provider"
 "jest-changed-files@26.3.0","MIT","Copyright (c) Facebook, Inc. and its affiliates.","https://github.com/facebook/jest"
 "jest-cli@26.4.2","MIT","Copyright (c) Facebook, Inc. and its affiliates.","https://github.com/facebook/jest"
 "jest-config@26.4.2","MIT","Copyright (c) Facebook, Inc. and its affiliates.","https://github.com/facebook/jest"

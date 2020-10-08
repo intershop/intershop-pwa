@@ -116,7 +116,6 @@
     "cz-customizable": "^6.3.0",
     "husky": "^4.3.0",
     "intershop-schematics": "file:schematics/src",
-    "jasmine-data-provider": "^2.2.0",
     "jest": "^26.4.2",
     "jest-extended": "^0.11.5",
     "jest-marbles": "^2.5.1",

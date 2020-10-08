@@ -1,12 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import * as using from 'jasmine-data-provider';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { ImageMapper } from 'ish-core/models/image/image.mapper';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
-import { CategoryData } from './category.interface';
+import { CategoryData, CategoryPathElement } from './category.interface';
 import { CategoryMapper } from './category.mapper';
 import { Category } from './category.model';
 
@@ -27,18 +26,13 @@ describe('Category Mapper', () => {
       expect(() => categoryMapper.mapCategoryPath([])).toThrow('input is falsy');
     });
 
-    using(
-      [
-        { path: [{ id: '1' }], result: ['1'] },
-        { path: [{ id: '1' }, { id: '2' }], result: ['1', '1.2'] },
-        { path: [{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }], result: ['1', '1.2', '1.2.3', '1.2.3.4'] },
-      ],
-      slice => {
-        it(`should return ${slice.result} when mapping path from '${JSON.stringify(slice.path)}'`, () => {
-          expect(categoryMapper.mapCategoryPath(slice.path)).toEqual(slice.result);
-        });
-      }
-    );
+    it.each([
+      [['1'], [{ id: '1' }] as CategoryPathElement[]],
+      [['1', '1.2'], [{ id: '1' }, { id: '2' }] as CategoryPathElement[]],
+      [['1', '1.2', '1.2.3', '1.2.3.4'], [{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }] as CategoryPathElement[]],
+    ])(`should return %p when mapping path from %j`, (result, path) => {
+      expect(categoryMapper.mapCategoryPath(path)).toEqual(result);
+    });
   });
 
   describe('categoriesFromCategoryPath()', () => {
@@ -56,34 +50,31 @@ describe('Category Mapper', () => {
       name: 'n3',
     } as Category;
 
-    using(
-      [
-        { path: [{ id: '1', name: 'n1' }], result: categoryTree() },
-        {
-          path: [
-            { id: '1', name: 'n1' },
-            { id: '2', name: 'n2' },
-          ],
-          result: categoryTree([cat1]),
-        },
-        {
-          path: [
-            { id: '1', name: 'n1' },
-            { id: '2', name: 'n2' },
-            { id: '3', name: 'n3' },
-            { id: '4', name: 'n4' },
-          ],
-          result: categoryTree([cat1, cat2, cat3]),
-        },
-      ],
-      slice => {
-        it(`should return tree with ${Object.keys(slice.result.nodes)} when mapping path from '${JSON.stringify(
-          slice.path
-        )}'`, () => {
-          expect(categoryMapper.categoriesFromCategoryPath(slice.path)).toEqual(slice.result);
-        });
-      }
-    );
+    it('should return empty tree when mapping path with one element', () => {
+      expect(categoryMapper.categoriesFromCategoryPath([{ id: '1', name: 'n1' }] as CategoryPathElement[])).toEqual(
+        categoryTree()
+      );
+    });
+
+    it('should return first category when mapping path with two elements', () => {
+      expect(
+        categoryMapper.categoriesFromCategoryPath([
+          { id: '1', name: 'n1' },
+          { id: '2', name: 'n2' },
+        ] as CategoryPathElement[])
+      ).toEqual(categoryTree([cat1]));
+    });
+
+    it('should return the first three categories when mapping path with four elements', () => {
+      expect(
+        categoryMapper.categoriesFromCategoryPath([
+          { id: '1', name: 'n1' },
+          { id: '2', name: 'n2' },
+          { id: '3', name: 'n3' },
+          { id: '4', name: 'n4' },
+        ] as CategoryPathElement[])
+      ).toEqual(categoryTree([cat1, cat2, cat3]));
+    });
   });
 
   describe('computeCompleteness()', () => {
@@ -104,7 +95,7 @@ describe('Category Mapper', () => {
     });
   });
 
-  describe('fromDataSingle()', () => {
+  describe('fromDataSingle', () => {
     it('should throw an error when input is falsy', () => {
       expect(() => categoryMapper.fromDataSingle(undefined)).toThrow();
     });
