@@ -1,13 +1,13 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { routerRequestAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { IndividualConfig, ToastrService } from 'ngx-toastr';
-import { Subject, combineLatest } from 'rxjs';
-import { tap, withLatestFrom } from 'rxjs/operators';
+import { ActiveToast, IndividualConfig, ToastrService } from 'ngx-toastr';
+import { OperatorFunction, Subject, combineLatest } from 'rxjs';
+import { map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
-import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { getDeviceType } from 'ish-core/store/core/configuration';
 import { isStickyHeader } from 'ish-core/store/core/viewconf';
 import { mapToPayload } from 'ish-core/utils/operators';
@@ -37,11 +37,12 @@ export class MessagesEffects {
       this.actions$.pipe(
         ofType(displayInfoMessage),
         mapToPayload(),
-        withLatestFrom(this.store.pipe(select(getDeviceType))),
-        tap(([payload, deviceType]) => {
-          this.toastr.info(...this.composeToastServiceArguments(payload, deviceType, 0));
+        this.composeToastServiceArguments(0),
+        map(args => this.toastr.info(...args)),
+        tap(() => {
           this.applyStyle$.next();
-        })
+        }),
+        this.closeToastOnRouting()
       ),
     { dispatch: false }
   );
@@ -51,11 +52,12 @@ export class MessagesEffects {
       this.actions$.pipe(
         ofType(displayErrorMessage),
         mapToPayload(),
-        withLatestFrom(this.store.pipe(select(getDeviceType))),
-        tap(([payload, deviceType]) => {
-          this.toastr.error(...this.composeToastServiceArguments(payload, deviceType, 0));
+        this.composeToastServiceArguments(0),
+        map(args => this.toastr.error(...args)),
+        tap(() => {
           this.applyStyle$.next();
-        })
+        }),
+        this.closeToastOnRouting()
       ),
     { dispatch: false }
   );
@@ -65,11 +67,12 @@ export class MessagesEffects {
       this.actions$.pipe(
         ofType(displayWarningMessage),
         mapToPayload(),
-        withLatestFrom(this.store.pipe(select(getDeviceType))),
-        tap(([payload, deviceType]) => {
-          this.toastr.warning(...this.composeToastServiceArguments(payload, deviceType, 0));
+        this.composeToastServiceArguments(0),
+        map(args => this.toastr.warning(...args)),
+        tap(() => {
           this.applyStyle$.next();
-        })
+        }),
+        this.closeToastOnRouting()
       ),
     { dispatch: false }
   );
@@ -79,9 +82,9 @@ export class MessagesEffects {
       this.actions$.pipe(
         ofType(displaySuccessMessage),
         mapToPayload(),
-        withLatestFrom(this.store.pipe(select(getDeviceType))),
-        tap(([payload, deviceType]) => {
-          this.toastr.success(...this.composeToastServiceArguments(payload, deviceType));
+        this.composeToastServiceArguments(),
+        map(args => this.toastr.success(...args)),
+        tap(() => {
           this.applyStyle$.next();
         })
       ),
@@ -95,9 +98,9 @@ export class MessagesEffects {
           const container = this.document.getElementById('toast-container');
           if (container) {
             if (sticky) {
-              container.className += ' toast-sticky';
+              container.classList.add('toast-sticky');
             } else {
-              container.className = container.className.replace(' toast-sticky', '');
+              container.classList.remove('toast-sticky');
             }
           }
         })
@@ -105,28 +108,44 @@ export class MessagesEffects {
     { dispatch: false }
   );
 
-  private composeToastServiceArguments(
-    payload: MessagesPayloadType,
-    deviceType: DeviceType,
-    duration?: number
-  ): [string, string, Partial<IndividualConfig>] {
-    const timeOut = payload.duration ?? duration ?? 5000;
+  private closeToastOnRouting() {
+    return switchMap((activeToast: ActiveToast<unknown>) =>
+      this.actions$.pipe(
+        ofType(routerRequestAction),
+        take(1),
+        tap(() => {
+          activeToast.toastRef.manualClose();
+        })
+      )
+    );
+  }
 
-    return [
-      // message translation
-      this.translate.instant(payload.message, payload.messageParams),
-      // title translation
-      payload.title ? this.translate.instant(payload.title, payload.titleParams) : payload.title,
-      // extra options
-      {
-        timeOut,
-        extendedTimeOut: 3000,
-        progressBar: false,
-        closeButton: timeOut === 0,
-        enableHtml: true,
-        tapToDismiss: true,
-        positionClass: deviceType === 'desktop' ? 'toast-top-full-width' : 'toast-bottom-center',
-      },
-    ];
+  private composeToastServiceArguments(
+    duration?: number
+  ): OperatorFunction<MessagesPayloadType, [string, string, Partial<IndividualConfig>]> {
+    return stream$ =>
+      stream$.pipe(
+        withLatestFrom(this.store.pipe(select(getDeviceType))),
+        map(([payload, deviceType]) => {
+          const timeOut = payload.duration ?? duration ?? 5000;
+
+          return [
+            // message translation
+            this.translate.instant(payload.message, payload.messageParams),
+            // title translation
+            payload.title ? this.translate.instant(payload.title, payload.titleParams) : payload.title,
+            // extra options
+            {
+              timeOut,
+              extendedTimeOut: 3000,
+              progressBar: false,
+              closeButton: timeOut === 0,
+              enableHtml: true,
+              tapToDismiss: true,
+              positionClass: deviceType === 'desktop' ? 'toast-top-full-width' : 'toast-bottom-center',
+            },
+          ];
+        })
+      );
   }
 }

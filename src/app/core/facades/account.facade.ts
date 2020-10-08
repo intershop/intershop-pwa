@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { Subject } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Contact } from 'ish-core/models/contact/contact.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update/password-reminder-update.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { User } from 'ish-core/models/user/user.model';
@@ -53,13 +55,20 @@ import { whenTruthy } from 'ish-core/utils/operators';
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
 export class AccountFacade {
-  constructor(private store: Store) {}
+  /**
+   * internal subject so error can only be subscribed to once
+   */
+  private internalUserError$ = new Subject<HttpError>();
+
+  constructor(private store: Store) {
+    store.pipe(select(getUserError)).subscribe(this.internalUserError$);
+  }
 
   // USER
 
   user$ = this.store.pipe(select(getLoggedInUser));
   userEmail$ = this.user$.pipe(map(user => user?.email));
-  userError$ = this.store.pipe(select(getUserError));
+  userError$ = this.internalUserError$.asObservable();
   userLoading$ = this.store.pipe(select(getUserLoading));
   isLoggedIn$ = this.store.pipe(select(getUserAuthorized));
   roles$ = this.store.pipe(select(getUserRoles));
