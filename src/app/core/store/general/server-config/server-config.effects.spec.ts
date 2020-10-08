@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { routerNavigationAction } from '@ngrx/router-store';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
@@ -10,6 +9,7 @@ import { ConfigurationService } from 'ish-core/services/configuration/configurat
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { GeneralStoreModule } from 'ish-core/store/general/general-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
+import { routerTestNavigationAction } from 'ish-core/utils/dev/routing';
 
 import { loadServerConfig, loadServerConfigFail, loadServerConfigSuccess } from './server-config.actions';
 import { ServerConfigEffects } from './server-config.effects';
@@ -38,8 +38,7 @@ describe('Server Config Effects', () => {
 
   describe('loadServerConfigOnInit$', () => {
     it('should trigger the loading of config data on the first page', () => {
-      // tslint:disable-next-line: no-any
-      const action = routerNavigationAction({ payload: {} as any });
+      const action = routerTestNavigationAction({});
       const expected = loadServerConfig();
 
       actions$ = hot('a', { a: action });
@@ -53,8 +52,7 @@ describe('Server Config Effects', () => {
         })
       );
 
-      // tslint:disable-next-line: no-any
-      const action = routerNavigationAction({ payload: {} as any });
+      const action = routerTestNavigationAction({});
       actions$ = hot('        ----a---a--a', { a: action });
       const expected$ = cold('------------');
 

@@ -460,9 +460,19 @@
         {
           "import": "^createProductView$",
           "from": ".*/product-view.model",
-          // TODO: remove quote-request selectors after rework
-          "filePattern": "^(?!.*/(.*\\.spec|products\\.selectors|quote-request\\.selectors)\\.ts$).*$",
+          "filePattern": "^(?!.*/(.*\\.spec|products\\.selectors)\\.ts$).*$",
           "message": "Product views should not be attached to other entities. Use ShoppingFacade.product$ in components."
+        },
+        {
+          "import": "SerializedRouterStateSnapshot",
+          "from": "@ngrx/router-store",
+          "message": "We customized the serialization of the router state. Use 'RouterState' from 'ish-core/store/core/router/router.reducer'."
+        },
+        {
+          "import": "routerNavigatedAction|routerNavigationAction|ROUTER_NAVIGATED|ROUTER_NAVIGATION",
+          "from": "@ngrx/router-store",
+          "filePattern": "^.*\\.spec\\.ts*$",
+          "message": "We customized the serialization of the router state. Use router actions from 'ish-core/utils/dev/routing' in tests."
         }
       ]
     },

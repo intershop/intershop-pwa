@@ -4,7 +4,6 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { routerNavigatedAction } from '@ngrx/router-store';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { EMPTY, Observable, from, noop, of, throwError } from 'rxjs';
@@ -21,6 +20,7 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
+import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
 import {
   createUser,
@@ -500,8 +500,7 @@ describe('User Effects', () => {
     it('should dispatch UserErrorReset action on router navigation if error was set', done => {
       store$.dispatch(loginUserFail({ error: makeHttpError({ message: 'error' }) }));
 
-      // tslint:disable-next-line: no-any
-      actions$ = of(routerNavigatedAction({ payload: {} as any }));
+      actions$ = of(routerTestNavigatedAction({}));
 
       effects.resetUserError$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`[User Internal] Reset User Error`);
