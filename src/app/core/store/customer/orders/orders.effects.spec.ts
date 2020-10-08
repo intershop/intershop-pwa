@@ -22,6 +22,7 @@ import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
 import {
   createOrder,
@@ -452,12 +453,17 @@ describe('Orders Effects', () => {
   });
 
   describe('setOrderBreadcrumb$', () => {
-    beforeEach(() => {
+    beforeEach(fakeAsync(() => {
       store$.dispatch(loadOrdersSuccess({ orders }));
+      router.navigateByUrl('/account/orders/' + orders[0].id);
+      tick(500);
       store$.dispatch(selectOrder({ orderId: orders[0].id }));
-    });
+    }));
 
     it('should set the breadcrumb of the selected order', done => {
+      // tslint:disable-next-line: no-any
+      actions$ = of(routerTestNavigatedAction({}));
+
       effects.setOrderBreadcrumb$.subscribe(action => {
         expect(action.payload).toMatchInlineSnapshot(`
           Object {

@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
 import { race } from 'rxjs';
 import {
   concatMap,
-  debounceTime,
   distinctUntilChanged,
   filter,
   map,
   mapTo,
   mergeMap,
   switchMap,
+  switchMapTo,
   take,
   tap,
   withLatestFrom,
@@ -241,18 +242,22 @@ export class OrdersEffects {
   );
 
   setOrderBreadcrumb$ = createEffect(() =>
-    this.store.pipe(
-      select(getSelectedOrder),
-      whenTruthy(),
-      debounceTime(0),
-      withLatestFrom(this.translateService.get('account.orderdetails.breadcrumb')),
-      map(([order, x]) =>
-        setBreadcrumbData({
-          breadcrumbData: [
-            { key: 'account.order_history.link', link: '/account/orders' },
-            { text: `${x} - ${order.documentNo}` },
-          ],
-        })
+    this.actions$.pipe(
+      ofType(routerNavigatedAction),
+      switchMapTo(
+        this.store.pipe(
+          ofUrl(/^\/account\/orders\/.*/),
+          select(getSelectedOrder),
+          whenTruthy(),
+          map(order =>
+            setBreadcrumbData({
+              breadcrumbData: [
+                { key: 'account.order_history.link', link: '/account/orders' },
+                { text: `${this.translateService.instant('account.orderdetails.breadcrumb')} - ${order.documentNo}` },
+              ],
+            })
+          )
+        )
       )
     )
   );

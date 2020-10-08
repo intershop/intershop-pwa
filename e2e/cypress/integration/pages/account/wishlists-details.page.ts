@@ -1,9 +1,11 @@
+import { BreadcrumbModule } from '../breadcrumb.module';
 import { HeaderModule } from '../header.module';
 
 export class WishlistsDetailsPage {
   readonly tag = 'ish-account-wishlist-detail-page';
 
   readonly header = new HeaderModule();
+  readonly breadcrumb = new BreadcrumbModule();
 
   static navigateToOverviewPage() {
     cy.get('[href="/account/wishlists"]').first().click();
@@ -37,6 +39,7 @@ export class WishlistsDetailsPage {
       cy.get('[data-testing-id="preferred"]').check();
     }
     cy.get('[data-testing-id="wishlist-dialog-submit"]').click();
+    cy.wait(500);
   }
 
   deleteWishlist(id: string) {
