@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -19,9 +19,9 @@ describe('Hierarchies Create Group Page Component', () => {
   let organizationManagementFacade: OrganizationManagementFacade;
   let fb: FormBuilder;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         HierarchiesCreateGroupPageComponent,
@@ -30,7 +30,7 @@ describe('Hierarchies Create Group Page Component', () => {
       ],
       providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HierarchiesCreateGroupPageComponent);
