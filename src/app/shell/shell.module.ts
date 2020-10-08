@@ -14,7 +14,6 @@ import { RoleToggleModule } from 'ish-core/role-toggle.module';
 
 import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
 import { OrderTemplatesExportsModule } from '../extensions/order-templates/exports/order-templates-exports.module';
-import { OrganizationHierarchiesExportsModule } from '../extensions/organization-hierarchies/exports/organization-hierarchies-exports.module';
 import { PunchoutExportsModule } from '../extensions/punchout/exports/punchout-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
 import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
@@ -41,7 +40,6 @@ const importExportModules = [
   CaptchaExportsModule,
   DirectivesModule,
   OrderTemplatesExportsModule,
-  OrganizationHierarchiesExportsModule,
   PunchoutExportsModule,
   QuickorderExportsModule,
   QuotingExportsModule,
