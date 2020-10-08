@@ -446,8 +446,6 @@ describe('User Reducer', () => {
     it('should set loading when reduced', () => {
       const data: PasswordReminder = {
         email: 'patricia@test.intershop.de',
-        firstName: 'Patricia',
-        lastName: 'Miller',
       };
       const state = userReducer(initialState, requestPasswordReminder({ data }));
 

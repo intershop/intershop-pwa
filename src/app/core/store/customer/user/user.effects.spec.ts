@@ -630,8 +630,6 @@ describe('User Effects', () => {
   describe('requestPasswordReminder$', () => {
     const data: PasswordReminder = {
       email: 'patricia@test.intershop.de',
-      firstName: 'Patricia',
-      lastName: 'Miller',
     };
 
     it('should call the api service when RequestPasswordReminder event is called', done => {
