@@ -7,13 +7,7 @@ kb_sync_latest_only
 
 # Building and Running nginx Docker Image
 
-We provide a docker image based on [nginx](https://www.nginx.com/) for the PWA deployment supplying the following capabilities:
-
-- [PageSpeed Module](https://www.modpagespeed.com/) for browser optimization
-- Enabled compression for downstream services
-- Caching of PWA SSR responses
-- Multi Channel handling via domains with environment variables
-- Device type detection for pre-rendering the page fitting to the incoming user agent.
+We provide a docker image based on [nginx](https://www.nginx.com/) for the [PWA deployment](../concepts/pwa-building-blocks.md#pwa---nginx).
 
 ## Building
 
