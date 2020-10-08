@@ -7,7 +7,7 @@ on:
       - 'docs/**'
 
 env:
-  ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
+  ICM_BASE_URL: https://ishkonsumorganizationhierarchies.azurewebsites.net
   B2C_APP_SUFFIX: universal-b2c
   B2B_APP_SUFFIX: universal-b2b
 
@@ -75,7 +75,7 @@ jobs:
           GROUP: ${{ secrets.AZURE_DEMO_RESOURCEGROUP }}
         run: |
           az webapp config container set --resource-group $GROUP --name $APP --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --docker-custom-image-name $DOCKER_IMAGE_UNIVERSAL || az webapp create --resource-group $GROUP --plan ${{ secrets.AZURE_DEMO_APPSERVICEPLAN }} --name $APP --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --deployment-container-image-name $DOCKER_IMAGE_UNIVERSAL
-          az webapp config appsettings set -g $GROUP -n $APP --settings LOGGING=true ICM_BASE_URL=$ICM_BASE_URL ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site THEME=blue\|688dc3 FEATURES=compare,recently,tracking,sentry,advancedVariationHandling,businessCustomerRegistration,quoting,quickorder,orderTemplates TACTON='${{ secrets.TACTON }}'
+          az webapp config appsettings set -g $GROUP -n $APP --settings LOGGING=true ICM_BASE_URL=$ICM_BASE_URL ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site THEME=blue\|688dc3 FEATURES=compare,recently,tracking,sentry,advancedVariationHandling,businessCustomerRegistration,quoting,quickorder,orderTemplates,organizationHierarchies TACTON='${{ secrets.TACTON }}'
           az webapp deployment container config -g $GROUP -n $APP --enable-cd true
           echo "B2B channel: http://$APP.azurewebsites.net"
 
