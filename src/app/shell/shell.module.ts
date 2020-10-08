@@ -13,7 +13,6 @@ import { PipesModule } from 'ish-core/pipes.module';
 
 import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
 import { OrderTemplatesExportsModule } from '../extensions/order-templates/exports/order-templates-exports.module';
-import { OrganizationHierarchiesExportsModule } from '../extensions/organization-hierarchies/exports/organization-hierarchies-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
 import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
 import { TactonExportsModule } from '../extensions/tacton/exports/tacton-exports.module';
@@ -39,7 +38,6 @@ const importExportModules = [
   CaptchaExportsModule,
   DirectivesModule,
   OrderTemplatesExportsModule,
-  OrganizationHierarchiesExportsModule,
   QuickorderExportsModule,
   QuotingExportsModule,
   TactonExportsModule,
