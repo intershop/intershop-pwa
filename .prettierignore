@@ -8,6 +8,8 @@
 *.svg
 *.groovy
 *.woff
+*.woff2
+*.eot
 *.ttf
 *.ico
 *.txt
