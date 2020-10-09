@@ -51,6 +51,7 @@ export const addressesReducer = createReducer(
   unsetLoadingAndErrorOn(
     loadAddressesSuccess,
     createCustomerAddressSuccess,
+    createBasketAddressSuccess,
     updateCustomerAddressSuccess,
     deleteCustomerAddressSuccess
   ),
