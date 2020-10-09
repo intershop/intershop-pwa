@@ -59,6 +59,7 @@ kb_sync_latest_only
 - [Concept - Building Blocks of the Intershop PWA](./concepts/pwa-building-blocks.md)
   - [Guide - Building and Running Server-Side Rendering](./guides/ssr-startup.md)
   - [Guide - Building and Running nginx Docker Image](./guides/nginx-startup.md)
+- [Concept - Multi-Site Handling](./concepts/multi-site-handling.md)
 - [Concept - Hybrid Approach](./concepts/hybrid-approach.md)
   - [Guide - Hybrid Approach and ICM URL Rewriting](./guides/hybrid-approach-icm-url-rewriting.md)
 - [Concept - Logging](./concepts/logging.md)

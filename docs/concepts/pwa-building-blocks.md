@@ -21,7 +21,7 @@ kb_sync_latest_only
 Features:
 
 - SEO features (LINK)
-- Dynamic configuration via URL parameters (LINK to configuration), used for multi-channel (LINK) and multi-theme (LINK).
+- Dynamic configuration via URL parameters (LINK to configuration), used for multi-site (LINK) and multi-theme (LINK).
 - hybrid approach (LINK)
 - growing list of thirdparty integrations (LINK see overview)
 
@@ -34,7 +34,7 @@ Features:
 - [PageSpeed Module](https://www.modpagespeed.com/) for browser optimization
 - Enabled compression for downstream services
 - Caching of PWA SSR responses
-- Multi Channel handling via domains with environment variables (LINK to multi-channel)
+- Multi Channel handling via domains with environment variables (LINK to multi-site)
 - Device type detection for pre-rendering the page fitting to the incoming user agent.
 - growing list of thirdparty integrations (LINK see overview)
 

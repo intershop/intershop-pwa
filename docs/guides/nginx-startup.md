@@ -59,6 +59,7 @@ If the cache should also be disabled for static resources, the pagespeed feature
 
 # Further References
 
+- [Concept - Multi-Site Handling](../concepts/multi-site-handling.md)
 - [Concept - Configuration](../concepts/configuration.md)
 - [Concept - Logging](../concepts/logging.md)
 - [Guide - Monitoring with Prometheus](./prometheus-monitoring.md)
