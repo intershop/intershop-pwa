@@ -339,12 +339,6 @@
           "message": "Use CookiesService from ish-core instead."
         },
         {
-          "import": "MetaGuard",
-          "from": "@ngx-meta/core",
-          "filePattern": "^.*$",
-          "message": "Use MetaGuard from seo module instead."
-        },
-        {
           "import": "^FormsModule$",
           "from": "@angular/forms",
           "message": "This module is for the template-driven approach which we don't use."
