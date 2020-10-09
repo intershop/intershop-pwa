@@ -1,11 +1,7 @@
 import { NgModule } from '@angular/core';
-import { Router } from '@angular/router';
 import { MetaLoader, MetaModule, MetaSettings, MetaStaticLoader, PageTitlePositioning } from '@ngx-meta/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { addGlobalGuard } from 'ish-core/utils/routing';
-
-import { MetaGuard } from './guards/meta.guard';
 import { SeoStoreModule } from './store/seo-store.module';
 
 export function metaFactory(translate: TranslateService): MetaLoader {
@@ -29,8 +25,4 @@ export function metaFactory(translate: TranslateService): MetaLoader {
     SeoStoreModule,
   ],
 })
-export class SeoModule {
-  constructor(router: Router) {
-    addGlobalGuard(router, MetaGuard);
-  }
-}
+export class SeoModule {}
