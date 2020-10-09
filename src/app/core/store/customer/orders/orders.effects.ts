@@ -23,7 +23,7 @@ import {
 import { OrderService } from 'ish-core/services/order/order.service';
 import { ofUrl, selectQueryParams, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
-import { continueCheckoutWithIssues, loadBasket } from 'ish-core/store/customer/basket';
+import { continueCheckoutWithIssues, getCurrentBasketId, loadBasket } from 'ish-core/store/customer/basket';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
@@ -60,8 +60,8 @@ export class OrdersEffects {
   createOrder$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createOrder),
-      mapToPayloadProperty('basketId'),
-      mergeMap(basketId =>
+      withLatestFrom(this.store.select(getCurrentBasketId)),
+      mergeMap(([, basketId]) =>
         this.orderService.createOrder(basketId, true).pipe(
           map(order => createOrderSuccess({ order })),
           mapErrorToAction(createOrderFail)

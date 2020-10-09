@@ -64,7 +64,7 @@ export class BasketEffects {
       ofType(loadBasketEligibleShippingMethods),
       withLatestFrom(this.store.pipe(select(getCurrentBasket))),
       concatMap(([, basket]) =>
-        this.basketService.getBasketEligibleShippingMethods(basket.id, basket.bucketId).pipe(
+        this.basketService.getBasketEligibleShippingMethods(basket.bucketId).pipe(
           map(result => loadBasketEligibleShippingMethodsSuccess({ shippingMethods: result })),
           mapErrorToAction(loadBasketEligibleShippingMethodsFail)
         )
@@ -79,9 +79,8 @@ export class BasketEffects {
     this.actions$.pipe(
       ofType(updateBasket),
       mapToPayloadProperty('update'),
-      withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-      concatMap(([update, currentBasketId]) =>
-        this.basketService.updateBasket(currentBasketId, update).pipe(
+      concatMap(update =>
+        this.basketService.updateBasket(update).pipe(
           concatMap(basket => [loadBasketSuccess({ basket }), resetBasketErrors()]),
           mapErrorToAction(updateBasketFail)
         )

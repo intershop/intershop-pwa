@@ -4,7 +4,7 @@ import { createAction } from '@ngrx/store';
 import { Order } from 'ish-core/models/order/order.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
-export const createOrder = createAction('[Orders] Create Order', payload<{ basketId: string }>());
+export const createOrder = createAction('[Orders] Create Order');
 
 export const createOrderFail = createAction('[Orders API] Create Order Fail', httpError());
 
