@@ -32,29 +32,35 @@ export class MetaDataModule {
     return typeof val === 'string' ? 'equal' : Array.isArray(val) ? 'deep.equal' : 'match';
   }
 
-  check(expect: { title: string; url: RegExp; description: string; [key: string]: string | RegExp }) {
+  check(expect: { title?: string; url?: RegExp; description?: string; [key: string]: string | RegExp }) {
     const expected = {
       ...MetaDataModule.defaultMeta,
       ...expect,
     };
 
-    this.title.should(this.checkStrategy(expected.title), expected.title);
-    this.meta('og:title').should(this.checkStrategy(expected.title), expected.title);
-    this.title.then(title => {
-      this.meta('og:title').should('equal', title);
-    });
+    if (expected.title) {
+      this.title.should(this.checkStrategy(expected.title), expected.title);
+      this.meta('og:title').should(this.checkStrategy(expected.title), expected.title);
+      this.title.then(title => {
+        this.meta('og:title').should('equal', title);
+      });
+    }
 
-    this.canonicalLink.should(this.checkStrategy(expected.url), expected.url);
-    this.meta('og:url').should(this.checkStrategy(expected.url), expected.url);
-    this.canonicalLink.then(url => {
-      this.meta('og:url').should('equal', url);
-    });
+    if (expected.url) {
+      this.canonicalLink.should(this.checkStrategy(expected.url), expected.url);
+      this.meta('og:url').should(this.checkStrategy(expected.url), expected.url);
+      this.canonicalLink.then(url => {
+        this.meta('og:url').should('equal', url);
+      });
+    }
 
-    this.meta('description').should(this.checkStrategy(expected.description), expected.description);
-    this.meta('og:description').should(this.checkStrategy(expected.description), expected.description);
-    this.meta('description').then(description => {
-      this.meta('og:description').should('equal', description);
-    });
+    if (expected.description) {
+      this.meta('description').should(this.checkStrategy(expected.description), expected.description);
+      this.meta('og:description').should(this.checkStrategy(expected.description), expected.description);
+      this.meta('description').then(description => {
+        this.meta('og:description').should('equal', description);
+      });
+    }
 
     Object.keys(expected)
       .filter(key => key !== 'title' && key !== 'url' && key !== 'description' && !key.startsWith('_'))
