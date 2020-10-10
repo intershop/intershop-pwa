@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
@@ -43,12 +42,7 @@ describe('Shopping Basket Component', () => {
         MockComponent(ModalDialogLinkComponent),
         ShoppingBasketComponent,
       ],
-      imports: [
-        AuthorizationToggleModule.forTesting(),
-        ReactiveFormsModule,
-        RoleToggleModule.forTesting(),
-        TranslateModule.forRoot(),
-      ],
+      imports: [AuthorizationToggleModule.forTesting(), RoleToggleModule.forTesting(), TranslateModule.forRoot()],
     }).compileComponents();
   });
 
@@ -63,26 +57,6 @@ describe('Shopping Basket Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-  });
-
-  it('should throw deleteItem event when onDeleteItem is triggered.', done => {
-    component.deleteItem.subscribe(firedItem => {
-      expect(firedItem).toBe('4712');
-      done();
-    });
-
-    component.onDeleteItem('4712');
-  });
-
-  it('should throw update item event when onUpdateItem is triggered.', done => {
-    const payload = { itemId: 'IID', quantity: 1 };
-
-    component.updateItem.subscribe(firedItem => {
-      expect(firedItem).toBe(payload);
-      done();
-    });
-
-    component.onUpdateItem(payload);
   });
 
   it('should not render an error if no error occurs', () => {

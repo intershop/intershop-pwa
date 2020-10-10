@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
@@ -42,8 +42,9 @@ describe('Account Wishlist Detail Line Item Component', () => {
         MockComponent(SelectWishlistModalComponent),
         MockPipe(DatePipe),
         MockPipe(ProductRoutePipe),
+        ProductContextDirective,
       ],
-      imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
       providers: [
         { provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) },
         { provide: WishlistsFacade, useFactory: () => instance(mock(WishlistsFacade)) },

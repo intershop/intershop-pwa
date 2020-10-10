@@ -19,30 +19,18 @@
       <ish-product-inventory [product]="variation"></ish-product-inventory>
 
       <!-- select (variation) -->
-      <ish-product-variation-select
-        *ngIf="variationOptions$ | async as variationOptions"
-        [variationOptions]="variationOptions"
-        (selectVariation)="variationSelected($event)"
-      ></ish-product-variation-select>
+      <div class="product-variation-container">
+        <ish-product-variation-select></ish-product-variation-select>
+      </div>
 
       <!-- input (quantity) -->
       <div class="form-group">
-        <ish-input
-          [form]="form"
-          controlName="quantity"
-          type="number"
-          labelClass="col-form-label col"
-          label="product.quantity.label"
-          inputClass="col"
-          [min]="0"
-          markRequiredLabel="off"
-          [max]="variation.maxOrderQuantity"
-          [errorMessages]="{
-            required: 'shopping_cart.quantity.invalid.error',
-            max: 'shopping_cart.quantity.invalid.error.maxvalue',
-            integer: 'shopping_cart.quantity.invalid.error'
-          }"
-        ></ish-input>
+        <div class="row">
+          <label class="col-form-label col" translate>product.quantity.label</label>
+          <div class="col">
+            <ish-product-quantity></ish-product-quantity>
+          </div>
+        </div>
       </div>
     </div>
   </div>

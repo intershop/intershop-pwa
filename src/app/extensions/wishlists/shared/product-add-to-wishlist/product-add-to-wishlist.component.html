@@ -1,5 +1,6 @@
 <!-- display addToCart Icon/animated Icon or link-->
 <button
+  *ngIf="visible$ | async"
   type="button"
   name="addProduct"
   class="btn add-to-wishlist"

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { instance, mock } from 'ts-mockito';
 
-import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
 import { ProductVariationDisplayComponent } from './product-variation-display.component';
 
@@ -12,18 +13,13 @@ describe('Product Variation Display Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ProductVariationDisplayComponent],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(mock(ProductContextFacade)) }],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductVariationDisplayComponent);
     component = fixture.componentInstance;
-
-    component.product = {
-      sku: 'SKU',
-      variableVariationAttributes: [],
-    } as VariationProductView;
-
     element = fixture.nativeElement;
   });
 

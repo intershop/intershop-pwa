@@ -1,0 +1,9 @@
+<div *ngIf="visible$ | async" class="product-variation-container">
+  <ng-container *ishFeature="'advancedVariationHandling'; else variationSelect">
+    <ish-product-variation-display></ish-product-variation-display>
+    <ish-product-master-link></ish-product-master-link>
+  </ng-container>
+  <ng-template #variationSelect>
+    <ish-product-variation-select></ish-product-variation-select>
+  </ng-template>
+</div>

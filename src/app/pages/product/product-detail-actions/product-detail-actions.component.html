@@ -1,28 +1,23 @@
-<div class="row product-details-top-line justify-content-end">
+<div class="row product-details-top-line justify-content-end" *ngIf="product$ | async as product">
   <div class="col-lg-12">
     <ul class="share-tools">
-      <ng-container *ishFeature="'tacton'; else standardInteractions">
-        <ng-container *ishIsTactonProduct="product; else standardInteractions"></ng-container>
+      <ng-container *ishFeature="'wishlists'">
+        <li
+          *ngIf="configuration$('addToWishlist') | async"
+          class="mr-2"
+          [attr.data-testing-id]="'wishlist-' + product.sku"
+        >
+          <ish-lazy-product-add-to-wishlist displayType="animated"></ish-lazy-product-add-to-wishlist>
+        </li>
       </ng-container>
-
-      <ng-template #standardInteractions>
-        <ng-container *ishFeature="'wishlists'">
-          <li class="mr-2" [attr.data-testing-id]="'wishlist-' + product.sku">
-            <ish-lazy-product-add-to-wishlist
-              [product]="product"
-              displayType="animated"
-            ></ish-lazy-product-add-to-wishlist>
-          </li>
-        </ng-container>
-        <ng-container *ishFeature="'compare'">
-          <li *ngIf="!isMasterProduct(product)" [attr.data-testing-id]="'compare-' + product.sku">
-            <a routerLink="/compare" (click)="addToCompare()" rel="nofollow">
-              <fa-icon [icon]="['fas', 'columns']"></fa-icon>
-              <span class="share-label">{{ 'product.compare.link' | translate }}</span>
-            </a>
-          </li>
-        </ng-container>
-      </ng-template>
+      <ng-container *ishFeature="'compare'">
+        <li *ngIf="configuration$('addToCompare') | async" [attr.data-testing-id]="'compare-' + product.sku">
+          <a routerLink="/compare" (click)="addToCompare()" rel="nofollow">
+            <fa-icon [icon]="['fas', 'columns']"></fa-icon>
+            <span class="share-label">{{ 'product.compare.link' | translate }}</span>
+          </a>
+        </li>
+      </ng-container>
 
       <li>
         <a href="javascript:window.print();" class="link-print" rel="nofollow">

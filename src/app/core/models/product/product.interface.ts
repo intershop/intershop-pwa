@@ -36,6 +36,7 @@ export interface ProductData {
   productMasterSKU?: string;
   minOrderQuantity: number;
   maxOrderQuantity?: number;
+  stepOrderQuantity?: number;
   packingUnit: string;
 
   // If Variation Master and Retail Set {

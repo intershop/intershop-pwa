@@ -11,10 +11,10 @@
             {{ orderTemplate.title }}
             <a *ngIf="orderTemplate.items?.length" class="align-top float-right">
               <ish-product-add-to-basket
+                ishProductContext
+                [parts]="getParts(orderTemplate)"
                 displayType="icon"
-                [product]="dummyProduct"
                 class="p-0 mb-0"
-                (productToBasket)="addTemplateToBasket(orderTemplate)"
               ></ish-product-add-to-basket>
             </a>
           </div>

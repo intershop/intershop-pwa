@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { OrderTemplate, OrderTemplateHeader } from '../models/order-template/order-template.model';
@@ -23,7 +22,7 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class OrderTemplatesFacade {
-  constructor(private productFacade: ShoppingFacade, private store: Store) {}
+  constructor(private store: Store) {}
 
   orderTemplates$: Observable<OrderTemplate[]> = this.store.pipe(select(getAllOrderTemplates));
   currentOrderTemplate$: Observable<OrderTemplate> = this.store.pipe(select(getSelectedOrderTemplateDetails));
@@ -36,14 +35,6 @@ export class OrderTemplatesFacade {
 
   addBasketToNewOrderTemplate(orderTemplate: OrderTemplateHeader): void | HttpError {
     this.store.dispatch(addBasketToNewOrderTemplate({ orderTemplate }));
-  }
-
-  addOrderTemplateToBasket(orderTemplate: OrderTemplate) {
-    if (orderTemplate?.items?.length) {
-      orderTemplate.items.forEach(item => {
-        this.productFacade.addProductToBasket(item.sku, item.desiredQuantity.value);
-      });
-    }
   }
 
   deleteOrderTemplate(id: string): void {

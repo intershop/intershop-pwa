@@ -2,35 +2,34 @@
   <h3>{{ 'product.retailSet.products.heading' | translate }}</h3>
 
   <div class="product-list row">
-    <ng-container *ngFor="let part of parts; index as i; trackBy: trackByFn">
+    <ng-container *ngFor="let part of parts$ | async; index as i">
       <div *ngIf="displayType === 'tile'" class="col-6 col-lg-4 product-list-item grid-view">
         <ish-product-item
-          [productSku]="part.sku"
-          [quantity]="part.quantity"
-          (productSkuChange)="productChange(i, $event)"
-          (quantityChange)="productChange(i, part.sku, $event)"
+          displayType="tile"
+          ishProductContext
+          [sku]="part.sku"
+          [propagateIndex]="i"
           [configuration]="{
-            displayType: 'tile',
-            displayAddToCompare: false,
-            displayAddToQuote: false
+            addToCompare: false,
+            addToWishlist: false,
+            addToOrderTemplate: false,
+            addToQuote: false
           }"
         ></ish-product-item>
       </div>
 
       <div *ngIf="displayType === 'row'" class="col-lg-12 product-list-item list-view">
         <ish-product-item
-          [productSku]="part.sku"
-          [quantity]="part.quantity"
-          (productSkuChange)="productChange(i, $event)"
-          (quantityChange)="productChange(i, part.sku, $event)"
+          displayType="row"
+          ishProductContext
+          [sku]="part.sku"
+          [propagateIndex]="i"
+          [allowZeroQuantity]="true"
           [configuration]="{
-            allowZeroQuantity: true,
-            displayType: 'row',
-            displayAddToCompare: false,
-            displayAddToWishlist: false,
-            displayAddToOrderTemplate: false,
-            displayAddToQuote: false,
-            displayShipment: true
+            addToCompare: false,
+            addToWishlist: false,
+            addToOrderTemplate: false,
+            addToQuote: false
           }"
         ></ish-product-item>
       </div>
@@ -38,11 +37,7 @@
   </div>
   <div class="row product-info">
     <div class="col align-self-start no-gutters">
-      <ish-product-add-to-basket
-        [product]="product"
-        translationKey="product.add_to_cart.retailset.link"
-        (productToBasket)="productToBasket.emit()"
-      ></ish-product-add-to-basket>
+      <ish-product-add-to-basket translationKey="product.add_to_cart.retailset.link"></ish-product-add-to-basket>
     </div>
   </div>
 </div>

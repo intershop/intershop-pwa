@@ -4,19 +4,18 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 import { EMPTY, noop, of } from 'rxjs';
-import { anything, instance, mock, verify, when } from 'ts-mockito';
+import { instance, mock, when } from 'ts-mockito';
 
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
-import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
 import {
   VariationProductView,
   createProductView,
   createVariationProductMasterView,
 } from 'ish-core/models/product-view/product-view.model';
-import { ProductRetailSet } from 'ish-core/models/product/product-retail-set.model';
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
@@ -39,13 +38,16 @@ describe('Product Page Component', () => {
   let element: HTMLElement;
   let location: Location;
   let shoppingFacade: ShoppingFacade;
+  let context: ProductContextFacade;
 
   const categories = categoryTree([{ uniqueId: 'A', categoryPath: ['A'] } as Category]);
 
   beforeEach(async () => {
     shoppingFacade = mock(ShoppingFacade);
-    when(shoppingFacade.selectedProduct$).thenReturn(EMPTY);
     when(shoppingFacade.selectedCategory$).thenReturn(of(createCategoryView(categories, 'A')));
+
+    context = mock(ProductContextFacade);
+    when(context.select('product')).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
       imports: [
@@ -64,7 +66,11 @@ describe('Product Page Component', () => {
         ProductPageComponent,
       ],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductPageComponent, {
+        set: { providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -82,7 +88,7 @@ describe('Product Page Component', () => {
   });
 
   it('should display loading when product is loading', () => {
-    when(shoppingFacade.productDetailLoading$).thenReturn(of(true));
+    when(context.select('loading')).thenReturn(of(true));
 
     fixture.detectChanges();
 
@@ -91,7 +97,7 @@ describe('Product Page Component', () => {
 
   it('should display product-detail when product is available', () => {
     const product = { sku: 'dummy', completenessLevel: ProductCompletenessLevel.Detail } as Product;
-    when(shoppingFacade.selectedProduct$).thenReturn(of(createProductView(product, categories)));
+    when(context.select('product')).thenReturn(of(createProductView(product, categories)));
 
     fixture.detectChanges();
 
@@ -103,41 +109,13 @@ describe('Product Page Component', () => {
     ]);
   });
 
-  it('should redirect to product page when variation is selected', fakeAsync(() => {
-    const product = {
-      sku: '222',
-      variableVariationAttributes: [
-        { name: 'Attr 1', type: 'String', value: 'B', variationAttributeId: 'a1' },
-        { name: 'Attr 2', type: 'String', value: 'D', variationAttributeId: 'a2' },
-      ],
-      variations: () => [
-        {
-          sku: '222',
-          variableVariationAttributes: [
-            { name: 'Attr 1', type: 'String', value: 'B', variationAttributeId: 'a1' },
-            { name: 'Attr 2', type: 'String', value: 'D', variationAttributeId: 'a2' },
-          ],
-        },
-        {
-          sku: '333',
-          attributes: [{ name: 'defaultVariation', type: 'Boolean', value: true }],
-          variableVariationAttributes: [
-            { name: 'Attr 1', type: 'String', value: 'A', variationAttributeId: 'a1' },
-            { name: 'Attr 2', type: 'String', value: 'D', variationAttributeId: 'a2' },
-          ],
-          defaultCategory: noop,
-        },
-      ],
-    } as VariationProductView;
-
-    const selection: VariationSelection = {
-      a1: 'A',
-      a2: 'D',
-    };
-
+  it('should redirect to product page when product changes', fakeAsync(() => {
     fixture.detectChanges();
+    component.redirectToVariation({
+      sku: '333',
+      defaultCategory: noop,
+    } as VariationProductView);
 
-    component.variationSelected({ selection }, product);
     tick(500);
 
     expect(location.path()).toMatchInlineSnapshot(`"/sku333-catA"`);
@@ -159,7 +137,7 @@ describe('Product Page Component', () => {
     } as VariationProduct;
 
     beforeEach(() => {
-      when(shoppingFacade.selectedProduct$).thenReturn(
+      when(context.select('product')).thenReturn(
         of(createVariationProductMasterView(product, { 111: variation1, 222: variation2 }, categories))
       );
       TestBed.inject(Router).navigateByUrl('/product/M111');
@@ -180,27 +158,5 @@ describe('Product Page Component', () => {
 
       expect(location.path()).toMatchInlineSnapshot(`"/product/M111"`);
     }));
-  });
-
-  it('should only dispatch retail set products when quantities are greater than 0', () => {
-    const product = {
-      sku: 'ABC',
-      partSKUs: ['A', 'B', 'C'],
-      type: 'RetailSet',
-    } as ProductRetailSet;
-    when(shoppingFacade.selectedProduct$).thenReturn(of(createProductView(product, categories)));
-
-    fixture.detectChanges();
-
-    component.retailSetParts$.next([
-      { sku: 'A', quantity: 1 },
-      { sku: 'B', quantity: 0 },
-      { sku: 'C', quantity: 1 },
-    ]);
-
-    component.addToBasket();
-    verify(shoppingFacade.addProductToBasket('A', 1)).once();
-    verify(shoppingFacade.addProductToBasket('C', 1)).once();
-    verify(shoppingFacade.addProductToBasket('B', anything())).never();
   });
 });

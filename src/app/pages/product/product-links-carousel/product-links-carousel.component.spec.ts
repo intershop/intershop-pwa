@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { SwiperModule } from 'ngx-swiper-wrapper';
 
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ProductLinkView } from 'ish-core/models/product-links/product-links.model';
 import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
@@ -15,7 +16,11 @@ describe('Product Links Carousel Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SwiperModule],
-      declarations: [MockComponent(ProductItemComponent), ProductLinksCarouselComponent],
+      declarations: [
+        MockComponent(ProductItemComponent),
+        MockDirective(ProductContextDirective),
+        ProductLinksCarouselComponent,
+      ],
     }).compileComponents();
   });
 
@@ -33,8 +38,10 @@ describe('Product Links Carousel Component', () => {
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element.querySelector('swiper')).toBeTruthy();
-    expect(element.querySelector('swiper .swiper-slide')).toMatchInlineSnapshot(
-      `<div class="swiper-slide"><ish-product-item ng-reflect-product-sku="sku"></ish-product-item></div>`
-    );
+    expect(element.querySelector('swiper .swiper-slide')).toMatchInlineSnapshot(`
+      <div class="swiper-slide">
+        <ish-product-item ishproductcontext="" ng-reflect-sku="sku"></ish-product-item>
+      </div>
+    `);
   });
 });

@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 
+import { EXTERNAL_DISPLAY_PROPERTY_PROVIDER } from 'ish-core/facades/product-context.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
 
-import { IsTactonProductDirective } from '../directives/is-tacton-product.directive';
+import { TactonProductContextDisplayPropertiesService } from '../services/tacton-product-context-display-properties/tacton-product-context-display-properties.service';
 
 import { LazyTactonConfigureProductComponent } from './lazy-tacton-configure-product/lazy-tacton-configure-product.component';
 
@@ -15,8 +16,13 @@ import { LazyTactonConfigureProductComponent } from './lazy-tacton-configure-pro
       useValue: { feature: 'tacton', location: import('../store/tacton-store.module') },
       multi: true,
     },
+    {
+      provide: EXTERNAL_DISPLAY_PROPERTY_PROVIDER,
+      useClass: TactonProductContextDisplayPropertiesService,
+      multi: true,
+    },
   ],
-  declarations: [IsTactonProductDirective, LazyTactonConfigureProductComponent],
-  exports: [IsTactonProductDirective, LazyTactonConfigureProductComponent],
+  declarations: [LazyTactonConfigureProductComponent],
+  exports: [LazyTactonConfigureProductComponent],
 })
 export class TactonExportsModule {}

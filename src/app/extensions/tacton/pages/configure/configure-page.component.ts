@@ -2,7 +2,8 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from
 import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { SelectedProductContextFacade } from 'ish-core/facades/selected-product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
@@ -18,6 +19,7 @@ import {
   selector: 'ish-configure-page',
   templateUrl: './configure-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{ provide: ProductContextFacade, useClass: SelectedProductContextFacade }],
 })
 export class ConfigurePageComponent implements OnInit, OnDestroy {
   @ViewChild('conflictResolutionDialog') conflictResolutionDialog: ModalDialogComponent<
@@ -30,10 +32,11 @@ export class ConfigurePageComponent implements OnInit, OnDestroy {
   product$: Observable<ProductView>;
   private destroy$ = new Subject();
 
-  constructor(private tactonFacade: TactonFacade, private shoppingFacade: ShoppingFacade) {}
+  constructor(private tactonFacade: TactonFacade, private context: ProductContextFacade) {}
 
   ngOnInit() {
-    this.product$ = this.shoppingFacade.selectedProduct$;
+    this.product$ = this.context.select('product');
+
     this.state$ = this.tactonFacade.configureProduct$;
     this.step$ = this.tactonFacade.currentStep$;
     this.loading$ = this.tactonFacade.loading$;

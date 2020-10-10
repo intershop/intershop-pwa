@@ -1,5 +1,5 @@
 <ng-container *ngIf="product$ | async as product">
-  <div class="d-flex">
+  <div class="row">
     <div class="col-3 col-md-2 list-item">
       <a [routerLink]="product | ishProductRoute">
         <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
@@ -13,7 +13,7 @@
               {{ product.name }}
             </a>
             <ish-product-id [product]="product"></ish-product-id>
-            <ish-product-variation-display [product]="product"></ish-product-variation-display>
+            <ish-product-variation-display></ish-product-variation-display>
             <ish-product-bundle-display
               *ngIf="product.type === 'Bundle'"
               [productBundleSKU]="product.sku"
@@ -39,29 +39,22 @@
           </div>
         </div>
 
-        <div class="col-12 col-md-5 product-list-actions-container">
+        <div ishProductContext [sku]="product.sku" class="col-12 col-md-5 product-list-actions-container">
           <ish-product-price [product]="product"></ish-product-price>
-          <p *ngIf="product.available; else noInStock">{{ 'account.wishlist.table.in_stock' | translate }}</p>
+          <p *ngIf="product.available; else noInStock">
+            {{ 'account.wishlist.table.in_stock' | translate }}
+          </p>
           <ng-template #noInStock>
             <p>{{ 'account.wishlist.table.not_accessible' | translate }}</p>
           </ng-template>
-          <form [formGroup]="addToCartForm" class="row">
+          <div *ngIf="product.available" class="row">
             <div class="col-6 offset-md-6 col-lg-5 offset-lg-0">
-              <ish-product-quantity
-                [allowZeroQuantity]="false"
-                [quantityLabel]="''"
-                [product]="product"
-                [parentForm]="addToCartForm"
-                controlName="quantity"
-              ></ish-product-quantity>
+              <ish-product-quantity></ish-product-quantity>
             </div>
             <div class="col-12 col-lg-7 addtocart-container">
-              <ish-product-add-to-basket
-                [product]="product"
-                (productToBasket)="addToCart(product.sku)"
-              ></ish-product-add-to-basket>
+              <ish-product-add-to-basket></ish-product-add-to-basket>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { SkuQuantityType } from 'ish-core/models/product/product.model';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -18,8 +19,6 @@ export class OrderTemplateWidgetComponent implements OnInit {
   loading$: Observable<boolean>;
   orderTemplates$: Observable<OrderTemplate[]>;
 
-  dummyProduct = { sku: 'dummy', available: true };
-
   constructor(private facade: OrderTemplatesFacade) {}
 
   ngOnInit() {
@@ -30,7 +29,7 @@ export class OrderTemplateWidgetComponent implements OnInit {
     );
   }
 
-  addTemplateToBasket(orderTemplate: OrderTemplate) {
-    this.facade.addOrderTemplateToBasket(orderTemplate);
+  getParts(tmpl: OrderTemplate): SkuQuantityType[] {
+    return tmpl?.items.map(item => ({ sku: item.sku, quantity: item.desiredQuantity.value }));
   }
 }

@@ -1,30 +1,7 @@
-<ng-container *ngIf="product$ | async as product">
-  <ish-product-tile
-    *ngIf="isTile"
-    [configuration]="configuration"
-    [product]="product"
-    [quantity]="quantity"
-    [category]="category"
-    [variationOptions]="productVariationOptions$ | async"
-    [isInCompareList]="isInCompareList$ | async"
-    (compareToggle)="toggleCompare()"
-    (productToBasket)="addToBasket($event)"
-    (selectVariation)="replaceVariation($event)"
-  ></ish-product-tile>
+<ng-container *ngIf="product$ | async">
+  <ish-product-tile *ngIf="isTile" [category]="category"></ish-product-tile>
 
-  <ish-product-row
-    *ngIf="isRow"
-    [configuration]="configuration"
-    [product]="product"
-    [quantity]="quantity"
-    (quantityChange)="quantityChange.emit($event)"
-    [category]="category"
-    [variationOptions]="productVariationOptions$ | async"
-    [isInCompareList]="isInCompareList$ | async"
-    (productToBasket)="addToBasket($event)"
-    (compareToggle)="toggleCompare()"
-    (selectVariation)="replaceVariation($event)"
-  ></ish-product-row>
+  <ish-product-row *ngIf="isRow" [category]="category"></ish-product-row>
 </ng-container>
 
 <ish-loading *ngIf="loading$ | async"></ish-loading>

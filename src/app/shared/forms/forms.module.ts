@@ -9,7 +9,6 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
-import { CounterComponent } from './components/counter/counter.component';
 import { FormControlFeedbackComponent } from './components/form-control-feedback/form-control-feedback.component';
 import { InputBirthdayComponent } from './components/input-birthday/input-birthday.component';
 import { InputComponent } from './components/input/input.component';
@@ -24,7 +23,6 @@ import { ShowFormFeedbackDirective } from './directives/show-form-feedback.direc
 
 const exportedComponents = [
   CheckboxComponent,
-  CounterComponent,
   FormControlFeedbackComponent,
   InputBirthdayComponent,
   InputComponent,

@@ -26,15 +26,10 @@
     <ish-basket-validation-results></ish-basket-validation-results>
   </div>
 
-  <form class="form-horizontal" [formGroup]="form">
+  <div class="form-horizontal">
     <div class="row">
       <div class="col-md-12 col-lg-8">
-        <ish-line-item-list
-          *ngIf="basket"
-          [lineItems]="basket.lineItems"
-          (updateItem)="onUpdateItem($event)"
-          (deleteItem)="onDeleteItem($event)"
-        ></ish-line-item-list>
+        <ish-line-item-list *ngIf="basket" [lineItems]="basket.lineItems"></ish-line-item-list>
 
         <div class="button-group">
           <ish-lazy-basket-add-to-quote></ish-lazy-basket-add-to-quote>
@@ -73,5 +68,5 @@
         </div>
       </div>
     </div>
-  </form>
+  </div>
 </div>

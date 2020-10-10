@@ -1,6 +1,9 @@
-<ng-container *ishHasNotRole="'APP_B2B_OCI_USER'">
+<ng-container *ngIf="visible$ | async">
   <div
-    *ngIf="isShipmentInformationAvailable && product.available"
+    *ngIf="{
+      readyForShipmentMin: readyForShipmentMin$ | async,
+      readyForShipmentMax: readyForShipmentMax$ | async
+    } as product"
     class="ready-for-shipment"
     data-testing-id="section-productshipping-shortinfo"
   >

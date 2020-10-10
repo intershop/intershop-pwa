@@ -1,8 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
-import { ProductBundle } from 'ish-core/models/product/product-bundle.model';
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
@@ -15,13 +18,23 @@ describe('Product Bundle Parts Component', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
+    const context = mock(ProductContextFacade);
+    when(context.select('parts')).thenReturn(
+      of([
+        { sku: '1', quantity: 3 },
+        { sku: '2', quantity: 1 },
+      ])
+    );
+
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [
         MockComponent(ProductAddToBasketComponent),
         MockComponent(ProductItemComponent),
+        MockDirective(ProductContextDirective),
         ProductBundlePartsComponent,
       ],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });
 
@@ -29,13 +42,6 @@ describe('Product Bundle Parts Component', () => {
     fixture = TestBed.createComponent(ProductBundlePartsComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-
-    component.product = {
-      bundledProducts: [
-        { sku: '1', quantity: 3 },
-        { sku: '2', quantity: 1 },
-      ],
-    } as ProductBundle;
   });
 
   it('should be created', () => {

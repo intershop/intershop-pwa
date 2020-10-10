@@ -28,9 +28,9 @@
     {{ 'account.wishlist.header.preferred_wishlist' | translate }}
   </p>
 
-  <div class="section">
-    <ng-container *ngIf="wishlist.itemsCount && wishlist.itemsCount > 0; else noItems" class="section">
-      <div class="list-header d-md-flex">
+  <div class="container">
+    <ng-container *ngIf="wishlist.itemsCount && wishlist.itemsCount > 0; else noItems">
+      <div class="list-header row">
         <div class="col-3 col-sm-3 list-header-item">{{ 'account.wishlist.table.header.item' | translate }}</div>
         <div class="col-sm-9 col-9 list-header-item column-price">
           {{ 'account.wishlist.table.header.price' | translate }}

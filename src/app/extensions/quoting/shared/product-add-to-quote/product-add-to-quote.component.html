@@ -1,10 +1,10 @@
 <button
-  *ishHasNotRole="'APP_B2B_OCI_USER'"
+  *ngIf="visible$ | async"
   type="submit"
   class="btn"
   [ngClass]="class"
   [class.btn-secondary]="displayType !== 'icon'"
-  [disabled]="disabled"
+  [disabled]="disabled$ | async"
   [attr.title]="'quote.add_product_to_quote.button.add_to_quote.label' | translate"
   data-testing-id="addToQuoteButton"
   (click)="addToQuote()"

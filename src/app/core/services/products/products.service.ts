@@ -22,7 +22,7 @@ import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-togg
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
   static STUB_ATTRS =
-    'sku,salePrice,listPrice,availability,manufacturer,image,minOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating,retailSet';
+    'sku,salePrice,listPrice,availability,manufacturer,image,minOrderQuantity,maxOrderQuantity,stepOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating,retailSet';
 
   private itemsPerPage: number;
 

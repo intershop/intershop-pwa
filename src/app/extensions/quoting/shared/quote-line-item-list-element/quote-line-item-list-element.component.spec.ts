@@ -6,7 +6,7 @@ import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
@@ -14,8 +14,8 @@ import { findAllCustomElements, findAllDataTestingIDs } from 'ish-core/utils/dev
 import { ProductBundleDisplayComponent } from 'ish-shared/components/product/product-bundle-display/product-bundle-display.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
 import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
+import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
 import { ProductVariationDisplayComponent } from 'ish-shared/components/product/product-variation-display/product-variation-display.component';
-import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
 
 import { LazyProductAddToOrderTemplateComponent } from '../../../order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
@@ -29,10 +29,11 @@ describe('Quote Line Item List Element Component', () => {
   let fixture: ComponentFixture<QuoteLineItemListElementComponent>;
   let element: HTMLElement;
   let quoteContext: QuoteContextFacade;
+  let productContext: ProductContextFacade;
 
   beforeEach(async () => {
-    const shoppingFacade = mock(ShoppingFacade);
-    when(shoppingFacade.product$(anything(), anything())).thenReturn(
+    productContext = mock(ProductContextFacade);
+    when(productContext.select('product')).thenReturn(
       of({
         sku: '123',
       } as ProductView)
@@ -44,13 +45,13 @@ describe('Quote Line Item List Element Component', () => {
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(FaIconComponent),
-        MockComponent(InputComponent),
         MockComponent(LazyProductAddToOrderTemplateComponent),
         MockComponent(LazyProductAddToWishlistComponent),
         MockComponent(ProductBundleDisplayComponent),
         MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
+        MockComponent(ProductQuantityComponent),
         MockComponent(ProductVariationDisplayComponent),
         MockPipe(PricePipe),
         MockPipe(ProductRoutePipe),
@@ -58,7 +59,7 @@ describe('Quote Line Item List Element Component', () => {
       ],
       providers: [
         { provide: QuoteContextFacade, useFactory: () => instance(quoteContext) },
-        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
+        { provide: ProductContextFacade, useFactory: () => instance(productContext) },
       ],
     }).compileComponents();
   });
@@ -76,18 +77,17 @@ describe('Quote Line Item List Element Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    expect(() => component.ngOnChanges()).not.toThrow();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
   it('should render all sub elements when initialized read only', () => {
-    component.ngOnChanges();
     fixture.detectChanges();
 
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
         "ish-product-image",
         "ish-product-id",
+        "ish-product-variation-display",
         "ish-product-inventory",
       ]
     `);
@@ -102,19 +102,19 @@ describe('Quote Line Item List Element Component', () => {
   it('should render all sub elements when initialized editable', () => {
     when(quoteContext.select('editable')).thenReturn(of(true));
 
-    component.ngOnChanges();
     fixture.detectChanges();
 
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
         "ish-product-image",
         "ish-product-id",
+        "ish-product-variation-display",
         "ish-product-inventory",
         "ish-lazy-product-add-to-order-template",
         "ish-lazy-product-add-to-wishlist",
         "fa-icon",
-        "ish-input",
-        "ish-input",
+        "ish-product-quantity",
+        "ish-product-quantity",
       ]
     `);
     expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`

@@ -49,7 +49,7 @@ export class ProductListingComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.id) {
+    if (changes.id && this.id?.value) {
       this.productListingView$ = this.shoppingFacade.productListingView$(this.id).pipe(takeUntil(this.destroy$));
     }
   }

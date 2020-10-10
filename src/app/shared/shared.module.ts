@@ -73,9 +73,9 @@ import { FilterNavigationSidebarComponent } from './components/filter/filter-nav
 import { FilterNavigationComponent } from './components/filter/filter-navigation/filter-navigation.component';
 import { FilterSwatchImagesComponent } from './components/filter/filter-swatch-images/filter-swatch-images.component';
 import { FilterTextComponent } from './components/filter/filter-text/filter-text.component';
-import { LineItemDescriptionComponent } from './components/line-item/line-item-description/line-item-description.component';
 import { LineItemEditDialogComponent } from './components/line-item/line-item-edit-dialog/line-item-edit-dialog.component';
 import { LineItemEditComponent } from './components/line-item/line-item-edit/line-item-edit.component';
+import { LineItemListElementComponent } from './components/line-item/line-item-list-element/line-item-list-element.component';
 import { LineItemListComponent } from './components/line-item/line-item-list/line-item-list.component';
 import { Auth0SigninComponent } from './components/login/auth0-signin/auth0-signin.component';
 import { IdentityProviderLoginComponent } from './components/login/identity-provider-login/identity-provider-login.component';
@@ -89,6 +89,7 @@ import { ProductAttributesComponent } from './components/product/product-attribu
 import { ProductBundleDisplayComponent } from './components/product/product-bundle-display/product-bundle-display.component';
 import { ProductIdComponent } from './components/product/product-id/product-id.component';
 import { ProductInventoryComponent } from './components/product/product-inventory/product-inventory.component';
+import { ProductItemVariationsComponent } from './components/product/product-item-variations/product-item-variations.component';
 import { ProductItemComponent } from './components/product/product-item/product-item.component';
 import { ProductLabelComponent } from './components/product/product-label/product-label.component';
 import { ProductListPagingComponent } from './components/product/product-list-paging/product-list-paging.component';
@@ -97,6 +98,7 @@ import { ProductListComponent } from './components/product/product-list/product-
 import { ProductListingComponent } from './components/product/product-listing/product-listing.component';
 import { ProductPriceComponent } from './components/product/product-price/product-price.component';
 import { ProductPromotionComponent } from './components/product/product-promotion/product-promotion.component';
+import { ProductQuantityLabelComponent } from './components/product/product-quantity-label/product-quantity-label.component';
 import { ProductQuantityComponent } from './components/product/product-quantity/product-quantity.component';
 import { ProductRatingStarComponent } from './components/product/product-rating-star/product-rating-star.component';
 import { ProductRatingComponent } from './components/product/product-rating/product-rating.component';
@@ -162,12 +164,13 @@ const declaredComponents = [
   FilterNavigationSidebarComponent,
   FilterSwatchImagesComponent,
   FilterTextComponent,
-  LineItemDescriptionComponent,
   LineItemEditComponent,
   LineItemEditDialogComponent,
+  LineItemListElementComponent,
   LoginFormComponent,
   LoginModalComponent,
   ProductIdComponent,
+  ProductItemVariationsComponent,
   ProductLabelComponent,
   ProductListComponent,
   ProductListPagingComponent,
@@ -219,6 +222,7 @@ const exportedComponents = [
   ProductPriceComponent,
   ProductPromotionComponent,
   ProductQuantityComponent,
+  ProductQuantityLabelComponent,
   ProductRatingComponent,
   ProductShipmentComponent,
   ProductVariationDisplayComponent,

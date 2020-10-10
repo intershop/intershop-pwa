@@ -5,35 +5,16 @@
     <ng-container *ngIf="product$ | async as product">
       <ish-breadcrumb></ish-breadcrumb>
 
-      <ish-product-detail
-        [product]="product"
-        [price]="price$ | async"
-        [(quantity)]="quantity"
-        [variationOptions]="productVariationOptions$ | async"
-        (productToBasket)="addToBasket()"
-        (productToCompare)="addToCompare($event)"
-        (selectVariation)="variationSelected($event, product)"
-      ></ish-product-detail>
+      <ish-product-detail></ish-product-detail>
 
       <ish-product-master-variations
         *ngIf="isMasterProduct(product)"
-        [product]="product"
         [category]="category$ | async"
       ></ish-product-master-variations>
 
-      <ish-product-bundle-parts
-        *ngIf="isProductBundle(product)"
-        [product]="product"
-        (productToBasket)="addToBasket()"
-      ></ish-product-bundle-parts>
+      <ish-product-bundle-parts *ngIf="isProductBundle(product)"></ish-product-bundle-parts>
 
-      <ish-retail-set-parts
-        *ngIf="isRetailSet(product)"
-        [product]="product"
-        [parts]="retailSetParts$ | async"
-        (partsChange)="retailSetParts$.next($event)"
-        (productToBasket)="addToBasket()"
-      ></ish-retail-set-parts>
+      <ish-retail-set-parts *ngIf="isRetailSet(product)"></ish-retail-set-parts>
 
       <ish-product-links [sku]="product.sku"></ish-product-links>
     </ng-container>

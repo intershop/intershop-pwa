@@ -1,80 +1,33 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { UUID } from 'angular2-uuid';
-import { isEqual } from 'lodash-es';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
-import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
 
 @Component({
   selector: 'ish-product-variation-select',
   templateUrl: './product-variation-select.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductVariationSelectComponent implements OnChanges, OnDestroy {
-  @Input() readOnly = false;
-  @Input() variationOptions: VariationOptionGroup[] = [];
-  @Input() productMasterSKU: string;
-  @Output() selectVariation = new EventEmitter<{ selection: VariationSelection; changedAttribute?: string }>();
-
-  form: FormGroup;
-  advancedVariationHandling: boolean;
+export class ProductVariationSelectComponent implements OnInit {
   uuid = UUID.UUID();
-  initialSelection: VariationSelection;
+  variationOptions$: Observable<VariationOptionGroup[]>;
+  visible$: Observable<boolean>;
 
-  private destroy$ = new Subject();
+  constructor(private context: ProductContextFacade) {}
 
-  constructor(featureToggleService: FeatureToggleService) {
-    this.advancedVariationHandling = featureToggleService.enabled('advancedVariationHandling');
+  ngOnInit() {
+    this.variationOptions$ = this.context
+      .select('productAsVariationProduct')
+      .pipe(map(ProductVariationHelper.buildVariationOptionGroups));
+    this.visible$ = this.context.select('displayProperties', 'variations');
   }
 
-  ngOnChanges() {
-    this.initForm();
-  }
-
-  initForm() {
-    if (this.variationOptions) {
-      this.form = this.buildSelectForm(this.variationOptions);
-      this.initialSelection = this.form.getRawValue();
-      this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(selection => {
-        this.selectVariation.emit({ selection, changedAttribute: this.getChangedAttribute(selection) });
-      });
-    }
-  }
-
-  getChangedAttribute(selection) {
-    const diff = Object.keys(selection).reduce(
-      (acc, k) => (isEqual(selection[k], this.initialSelection[k]) ? acc : acc.concat(k)),
-      []
-    );
-    return diff && diff.length === 1 ? diff[0] : undefined;
-  }
-
-  getActiveOption(group: VariationOptionGroup) {
-    return group.options.find(o => o.active);
-  }
-
-  /**
-   * Build the product variations select form
-   */
-  buildSelectForm(optionGroups: VariationOptionGroup[]): FormGroup {
-    return new FormGroup(
-      optionGroups.reduce((acc, group) => {
-        const activeOption = this.getActiveOption(group);
-
-        return {
-          ...acc,
-          [group.id]: new FormControl(activeOption && activeOption.value),
-        };
-      }, {})
-    );
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+  optionChange(group: string, target: EventTarget) {
+    // tslint:disable-next-line: no-string-literal
+    this.context.changeVariationOption(group, target['value']);
   }
 }

@@ -1,7 +1,7 @@
 <!-- Error message -->
 <ish-error-message [error]="orderTemplateError$ | async"></ish-error-message>
 
-<ng-container *ngIf="orderTemplate$ | async as orderTemplate">
+<ng-container *ngIf="orderTemplate$ | async as orderTemplate" ishProductContext>
   <h1>
     {{ orderTemplate?.title }}
     <a
@@ -28,12 +28,15 @@
         </div>
       </div>
       <div class="list-body">
-        <ng-container *ngFor="let item of orderTemplate.items">
+        <ng-container *ngFor="let item of orderTemplate.items; let i = index">
           <div class="list-item-row list-item-row-big">
             <ish-account-order-template-detail-line-item
+              ishProductContext
+              [propagateIndex]="i"
+              [sku]="item.sku"
+              [quantity]="item.desiredQuantity.value"
               [orderTemplateItemData]="item"
               [currentOrderTemplate]="orderTemplate"
-              [selectedItemsForm]="selectedItemsForm"
             ></ish-account-order-template-detail-line-item>
           </div>
         </ng-container>
@@ -41,11 +44,8 @@
     </ng-container>
   </div>
   <ish-product-add-to-basket
-    *ngIf="orderTemplate.itemsCount && orderTemplate.itemsCount > 0"
-    [product]="dummyProduct"
-    [disabled]="!selectedItems?.length"
+    *ngIf="orderTemplate.itemsCount"
     [class]="'btn btn-primary float-right'"
-    (productToBasket)="addSelectedItemsToCart(orderTemplate)"
   ></ish-product-add-to-basket>
 
   <ng-template #noItems>
