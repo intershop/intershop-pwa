@@ -1,16 +1,42 @@
+<!-- error messages -->
+<p *ngIf="errorMessage.general.message" class="text-danger col-sm-offset-4">
+  {{ errorMessage.general.message | translate }}
+</p>
+
 <div [formGroup]="cyberSourceCreditCardForm">
   <!-- Containers in which we will load microform -->
-  <div class="row form-group">
-    <label class="col-form-label col-md-4" for="number-container">Card Number</label>
+  <div class="row form-group" [ngClass]="{ 'has-error': errorMessage.number && errorMessage.number.message }">
+    <label class="col-form-label col-md-4" for="number-container"
+      >{{ 'checkout.credit_card.number.label' | translate }}<span class="required">*</span></label
+    >
     <div class="col-sm-6">
       <div id="number-container" class="iframe-container"></div>
+      <small *ngIf="errorMessage.number?.message" class="form-text">{{
+        errorMessage.number.message | translate
+      }}</small>
     </div>
   </div>
 
-  <div class="row form-group">
-    <label class="col-form-label col-md-4" for="securityCode-container">Security Code</label>
+  <div
+    class="row form-group"
+    [ngClass]="{ 'has-error': errorMessage.securityCode && errorMessage.securityCode.message }"
+  >
+    <label class="col-form-label col-md-4" for="securityCode-container"
+      >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required">*</span></label
+    >
     <div class="col-sm-6">
       <div id="securityCode-container" class="iframe-container"></div>
+      <small *ngIf="errorMessage.securityCode?.message" class="form-text">{{
+        errorMessage.securityCode.message | translate
+      }}</small>
+    </div>
+    <div class="pull-left">
+      <ng-template #CVCHelp>
+        <span [innerHTML]="'checkout.credit_card.cvc.popover.content' | translate"></span>
+      </ng-template>
+      <a [ngbPopover]="CVCHelp" [popoverTitle]="'checkout.credit_card.cvc.popover.title' | translate" placement="auto"
+        ><fa-icon [icon]="['fas', 'question-circle']"></fa-icon>
+      </a>
     </div>
   </div>
 
@@ -22,6 +48,10 @@
     label="Month"
     labelClass="col-form-label col-md-4"
     markRequiredLabel="on"
+    [errorMessages]="{
+      required: 'checkout.credit_card.expiryMonth.error.invalid',
+      pattern: 'checkout.credit_card.expiryMonth.error.invalid'
+    }"
   ></ish-input>
 
   <ish-input
@@ -31,6 +61,10 @@
     label="Year"
     labelClass="col-form-label col-md-4"
     markRequiredLabel="on"
+    [errorMessages]="{
+      required: 'checkout.credit_card.expiryMonth.error.invalid',
+      pattern: 'checkout.credit_card.expiryMonth.error.invalid'
+    }"
   ></ish-input>
 </div>
 
