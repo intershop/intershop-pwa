@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
@@ -14,7 +16,12 @@ describe('Payment Cybersource Creditcard Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(InputComponent), PaymentCybersourceCreditcardComponent],
+      declarations: [
+        MockComponent(FaIconComponent),
+        MockComponent(InputComponent),
+        MockComponent(NgbPopover),
+        PaymentCybersourceCreditcardComponent,
+      ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
   });

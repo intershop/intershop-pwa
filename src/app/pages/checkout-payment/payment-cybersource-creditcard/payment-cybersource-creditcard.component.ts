@@ -17,6 +17,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
+import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 // allows access to concardis js functionality
 // tslint:disable-next-line:no-any
@@ -55,11 +56,16 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
   // tslint:disable-next-line: no-any
   microform: any;
 
+  expirationMonthVal: string;
+  expirationYearVal: string;
+
   /**
    * error messages from host
    */
   errorMessage = {
     general: { message: '' },
+    number: { message: '' },
+    securityCode: { message: '' },
   };
 
   /**
@@ -97,14 +103,14 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
     );
     this.cyberSourceCreditCardForm.addControl(
       'expirationYear',
-      new FormControl('', [Validators.required, Validators.pattern('[0-9]{2}')])
+      new FormControl('', [Validators.required, Validators.pattern('[0-9]{4}')])
     );
   }
 
   // tslint:disable-next-line:no-empty
   loadScript() {
     // load script only once if component becomes visible
-    if (this.activated && !this.scriptLoaded) {
+    if (this.activated) {
       const flexkeyId = this.getParamValue('flexkeyId', 'checkout.credit_card.flexkeyId.error.notFound');
 
       this.scriptLoaded = true;
@@ -140,47 +146,81 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
     }
   }
 
+  submitCallback(error: { details: { location: string; message: string }[] }, token: string) {
+    this.resetErrors();
+
+    if (error) {
+      // handling error
+      for (const detail of error.details) {
+        switch (detail.location) {
+          case 'number': {
+            this.errorMessage.number.message = 'checkout.credit_card.number.error.invalid';
+            break;
+          }
+          case 'securityCode': {
+            this.errorMessage.securityCode.message = 'checkout.credit_card.cvc.error.invalid';
+            break;
+          }
+          case 'expirationMonth': {
+            this.cyberSourceCreditCardForm.controls.expirationMonth.setErrors({
+              customError: 'checkout.credit_card.expiryMonth.error.invalid',
+            });
+            break;
+          }
+          case 'expirationYear': {
+            this.cyberSourceCreditCardForm.controls.expirationYear.setErrors({
+              customError: 'checkout.credit_card.expiryMonth.error.invalid',
+            });
+            break;
+          }
+        }
+      }
+    } else if (!this.cyberSourceCreditCardForm.invalid) {
+      const tokenSplit = token.split('.');
+      const payloadjson: {
+        data: { number: string; type: string; expirationMonth: string; expirationYear: string };
+        iss: string;
+        exp: string;
+        iat: string;
+        jti: string;
+      } = JSON.parse(b64u.decode(tokenSplit[1]));
+
+      this.submit.emit({
+        parameters: [
+          { name: 'token', value: token },
+          { name: 'tokenExpiryTime', value: payloadjson.exp },
+          { name: 'cardType', value: payloadjson.data.type },
+          { name: 'maskedCardNumber', value: payloadjson.data.number },
+          { name: 'expirationDate', value: `${this.expirationMonthVal}/${this.expirationYearVal}` },
+        ],
+        saveAllowed: false,
+      });
+    }
+    this.cd.detectChanges();
+  }
+  resetErrors() {
+    this.errorMessage.general.message = undefined;
+    this.errorMessage.number.message = undefined;
+    this.errorMessage.securityCode.message = undefined;
+  }
+
   /**
    * submit cybersource payment form
    */
   submitNewPaymentInstrument() {
-    const expirationMonthVal = this.cyberSourceCreditCardForm.controls.expirationMonth.value;
-    const expirationYearVal = this.cyberSourceCreditCardForm.controls.expirationYear.value;
+    if (this.cyberSourceCreditCardForm.invalid) {
+      markAsDirtyRecursive(this.cyberSourceCreditCardForm);
+    } else {
+      this.expirationMonthVal = this.cyberSourceCreditCardForm.controls.expirationMonth.value;
+      this.expirationYearVal = this.cyberSourceCreditCardForm.controls.expirationYear.value;
 
-    const options = {
-      expirationMonth: expirationMonthVal,
-      expirationYear: expirationYearVal,
-    };
+      const options = {
+        expirationMonth: this.expirationMonthVal,
+        expirationYear: this.expirationYearVal,
+      };
 
-    this.microform.createToken(options, (err, token) => {
-      if (err) {
-        // handle error
-        // tslint:disable-next-line: no-console
-        console.log(err);
-      } else {
-        const tokenSplit: string[] = token.split('.');
-
-        const payloadjson: {
-          data: { number: string; type: string; expirationMonth: string; expirationYear: string };
-          iss: string;
-          exp: string;
-          iat: string;
-          jti: string;
-        } = JSON.parse(b64u.decode(tokenSplit[1]));
-
-        this.submit.emit({
-          parameters: [
-            { name: 'token', value: token },
-            { name: 'tokenExpiryTime', value: payloadjson.exp },
-            { name: 'cardType', value: payloadjson.data.type },
-            { name: 'maskedCardNumber', value: payloadjson.data.number },
-            { name: 'expirationDate', value: `${expirationMonthVal}/${expirationYearVal}` },
-          ],
-          saveAllowed: false,
-        });
-        this.cd.detectChanges();
-      }
-    });
+      this.microform.createToken(options, (error, token) => this.submitCallback(error, token));
+    }
   }
 
   /**
