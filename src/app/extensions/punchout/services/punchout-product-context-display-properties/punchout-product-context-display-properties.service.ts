@@ -1,0 +1,29 @@
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map, switchMapTo } from 'rxjs/operators';
+
+import {
+  ExternalDisplayPropertiesProvider,
+  ProductContextDisplayProperties,
+} from 'ish-core/facades/product-context.facade';
+import { AnyProductViewType } from 'ish-core/models/product/product.model';
+import { RoleToggleService } from 'ish-core/role-toggle.module';
+
+@Injectable({ providedIn: 'root' })
+export class PunchoutProductContextDisplayPropertiesService implements ExternalDisplayPropertiesProvider {
+  constructor(private roleToggleService: RoleToggleService) {}
+
+  setup(product$: Observable<AnyProductViewType>): Observable<Partial<ProductContextDisplayProperties<false>>> {
+    return product$.pipe(
+      switchMapTo(this.roleToggleService.hasRole('APP_B2B_OCI_USER')),
+      map(isPunchoutUser =>
+        isPunchoutUser
+          ? {
+              addToQuote: false,
+              shipment: false,
+            }
+          : {}
+      )
+    );
+  }
+}

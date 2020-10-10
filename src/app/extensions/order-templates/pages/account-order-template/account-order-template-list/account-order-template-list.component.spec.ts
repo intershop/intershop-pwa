@@ -1,15 +1,16 @@
+import { I18nPluralPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
-import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
+import { spy, verify } from 'ts-mockito';
 
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
+import { findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
-
-import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 
 import { AccountOrderTemplateListComponent } from './account-order-template-list.component';
 
@@ -17,7 +18,6 @@ describe('Account Order Template List Component', () => {
   let component: AccountOrderTemplateListComponent;
   let fixture: ComponentFixture<AccountOrderTemplateListComponent>;
   let element: HTMLElement;
-  let orderTemplateFacadeMock: OrderTemplatesFacade;
 
   const orderTemplateDetails = [
     {
@@ -51,18 +51,17 @@ describe('Account Order Template List Component', () => {
   ];
 
   beforeEach(async () => {
-    orderTemplateFacadeMock = mock(OrderTemplatesFacade);
-    when(orderTemplateFacadeMock.addOrderTemplateToBasket(anything())).thenReturn();
     await TestBed.configureTestingModule({
       declarations: [
         AccountOrderTemplateListComponent,
         MockComponent(FaIconComponent),
         MockComponent(ModalDialogComponent),
         MockComponent(ProductAddToBasketComponent),
+        MockDirective(ProductContextDirective),
         MockPipe(DatePipe),
+        MockPipe(I18nPluralPipe),
       ],
       imports: [RouterTestingModule, TranslateModule.forRoot()],
-      providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacadeMock) }],
     }).compileComponents();
   });
 
@@ -78,39 +77,36 @@ describe('Account Order Template List Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
+  it('should render table when provided with data', () => {
+    component.orderTemplates = orderTemplateDetails;
+    fixture.detectChanges();
+
+    expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
+      Array [
+        "order-template-list-item-container",
+        "order-template-list-item",
+        "order-template-list-title",
+        "order-template-list-title",
+        "delete-order-template",
+        "order-template-list-item-container",
+        "order-template-list-item",
+        "order-template-list-title",
+        "order-template-list-title",
+        "delete-order-template",
+        "order-template-list-item-container",
+        "order-template-list-item",
+        "order-template-list-title",
+        "order-template-list-title",
+        "delete-order-template",
+      ]
+    `);
+  });
+
   it('should emit delete id when delete is called', () => {
     const emitter = spy(component.deleteOrderTemplate);
 
     component.delete('deleteId');
 
     verify(emitter.emit('deleteId')).once();
-  });
-
-  it('should trigger add product to basket with right order template', () => {
-    expect(() => fixture.detectChanges()).not.toThrow();
-    component.orderTemplates = orderTemplateDetails;
-    component.addTemplateToBasket(orderTemplateDetails[0]);
-
-    verify(orderTemplateFacadeMock.addOrderTemplateToBasket(anything())).once();
-    expect(capture(orderTemplateFacadeMock.addOrderTemplateToBasket).last()).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "id": ".SKsEQAE4FIAAAFuNiUBWx0d",
-          "items": Array [
-            Object {
-              "creationDate": 123124125,
-              "desiredQuantity": Object {
-                "value": 1,
-              },
-              "id": "12345",
-              "sku": "1234",
-            },
-          ],
-          "itemsCount": 1,
-          "public": false,
-          "title": "testing order template",
-        },
-      ]
-    `);
   });
 });

@@ -11,7 +11,8 @@ export interface Product {
   longDescription: string;
   available: boolean;
   minOrderQuantity: number;
-  maxOrderQuantity?: number;
+  maxOrderQuantity: number;
+  stepOrderQuantity: number;
   attributes: Attribute[];
   attributeGroups?: { [id: string]: AttributeGroup };
   images: Image[];
@@ -26,7 +27,7 @@ export interface Product {
   packingUnit: string;
 
   // properties added in model
-  type: 'Product' | 'VariationProduct' | 'VariationProductMaster' | 'Bundle' | 'RetailSet';
+  type: 'Product' | 'VariationProduct' | 'VariationProductMaster' | 'Bundle' | 'RetailSet' | string;
   promotionIds: string[];
   completenessLevel: number;
   failed: boolean;

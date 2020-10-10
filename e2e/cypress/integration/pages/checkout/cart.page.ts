@@ -66,8 +66,24 @@ export class CartPage {
     return {
       quantity: {
         set: (num: number) =>
-          cy.get(this.tag).find('input[data-testing-id="quantity"]').eq(idx).clear().type(num.toString()).blur(),
-        get: () => cy.get(this.tag).find('input[data-testing-id="quantity"]').eq(idx).invoke('val'),
+          cy
+            .get(this.tag)
+            .find('input[data-testing-id="quantity"]:visible')
+            .eq(idx)
+            .click()
+            .wait(1000)
+            .clear()
+            .wait(1000)
+            .type(num.toString())
+            .wait(1000)
+            .blur(),
+        get: () =>
+          cy
+            .get(this.tag)
+            .find('input[data-testing-id="quantity"]:visible')
+            .eq(idx)
+            .invoke('val')
+            .then(v => +v),
       },
       remove: () => cy.get(this.tag).find('svg[data-icon="trash-alt"]').eq(idx).click(),
       sku: cy.get(this.tag).find('.product-id').eq(idx),

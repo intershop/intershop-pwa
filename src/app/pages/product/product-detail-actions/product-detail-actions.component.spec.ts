@@ -1,13 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
-import { spy, verify } from 'ts-mockito';
+import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
+import { anyString, instance, mock, verify, when } from 'ts-mockito';
 
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { createProductView } from 'ish-core/models/product-view/product-view.model';
+import { Product } from 'ish-core/models/product/product.model';
+import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
-import { IsTactonProductDirective } from '../../../extensions/tacton/directives/is-tacton-product.directive';
 import { LazyProductAddToWishlistComponent } from '../../../extensions/wishlists/exports/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
 
 import { ProductDetailActionsComponent } from './product-detail-actions.component';
@@ -15,32 +18,35 @@ import { ProductDetailActionsComponent } from './product-detail-actions.componen
 describe('Product Detail Actions Component', () => {
   let component: ProductDetailActionsComponent;
   let fixture: ComponentFixture<ProductDetailActionsComponent>;
-  let product: ProductView;
   let translate: TranslateService;
   let element: HTMLElement;
+  let context: ProductContextFacade;
 
   beforeEach(async () => {
+    context = mock(ProductContextFacade);
     await TestBed.configureTestingModule({
       imports: [FeatureToggleModule.forTesting('compare'), TranslateModule.forRoot()],
       declarations: [
         MockComponent(FaIconComponent),
         MockComponent(LazyProductAddToWishlistComponent),
-        MockDirective(IsTactonProductDirective),
         ProductDetailActionsComponent,
       ],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductDetailActionsComponent);
     component = fixture.componentInstance;
+    element = fixture.nativeElement;
+
     translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');
-    product = { sku: 'sku' } as ProductView;
-    product.available = true;
-    element = fixture.nativeElement;
-    component.product = product;
+
+    const product = { sku: 'sku', available: true } as Product;
+    when(context.select('product')).thenReturn(of(createProductView(product, categoryTree())));
+    when(context.select('displayProperties', anyString())).thenReturn(of(true));
   });
 
   it('should be created', () => {
@@ -75,18 +81,20 @@ describe('Product Detail Actions Component', () => {
     });
 
     it('should not show "compare" link when product information is available and productMaster = true', () => {
-      component.product.type = 'VariationProductMaster';
+      when(context.select('product')).thenReturn(
+        of(createProductView({ sku: 'SKU', type: 'VariationProductMaster' } as Product, categoryTree()))
+      );
       fixture.detectChanges();
+
       expect(element.querySelector("[data-testing-id='compare-sku']")).toBeFalsy();
     });
   });
 
   it('should emit "product to compare" event when compare link is clicked', () => {
-    const eventEmitter$ = spy(component.productToCompare);
     fixture.detectChanges();
 
     element.querySelector<HTMLElement>("[data-testing-id='compare-sku'] a").click();
 
-    verify(eventEmitter$.emit()).once();
+    verify(context.addToCompare()).once();
   });
 });

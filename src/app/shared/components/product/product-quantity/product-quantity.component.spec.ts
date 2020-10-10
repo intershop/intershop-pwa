@@ -1,48 +1,37 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
-import { Product } from 'ish-core/models/product/product.model';
-import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { CounterComponent } from 'ish-shared/forms/components/counter/counter.component';
-import { InputComponent } from 'ish-shared/forms/components/input/input.component';
-import { SelectComponent } from 'ish-shared/forms/components/select/select.component';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
 
 import { ProductQuantityComponent } from './product-quantity.component';
 
 describe('Product Quantity Component', () => {
   let component: ProductQuantityComponent;
   let fixture: ComponentFixture<ProductQuantityComponent>;
-  let product: Product;
-  let translate: TranslateService;
   let element: HTMLElement;
+  let context: ProductContextFacade;
+
   beforeEach(async () => {
+    context = mock(ProductContextFacade);
+    when(context.select('displayProperties', 'quantity')).thenReturn(of(true));
+    when(context.select('quantity')).thenReturn(of(2));
+    when(context.select('minQuantity')).thenReturn(of(2));
+    when(context.select('maxQuantity')).thenReturn(of(6));
+    when(context.select('stepQuantity')).thenReturn(of(2));
+
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [
-        MockComponent(CounterComponent),
-        MockComponent(InputComponent),
-        MockComponent(SelectComponent),
-        ProductQuantityComponent,
-      ],
+      declarations: [ProductQuantityComponent],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductQuantityComponent);
     component = fixture.componentInstance;
-    translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('en');
-    translate.use('en');
-    product = { sku: 'sku' } as Product;
-    product.minOrderQuantity = 1;
-    product.available = true;
     element = fixture.nativeElement;
-    component.product = product;
-    component.controlName = 'quantity';
-    component.parentForm = new FormGroup({});
-    component.parentForm.addControl(component.controlName, new FormControl(1));
+    component.id = 'ASDF';
   });
 
   it('should be created', () => {
@@ -51,20 +40,71 @@ describe('Product Quantity Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should not render when product not available', () => {
-    product.available = false;
+  it('should not render when display is false', () => {
+    when(context.select('displayProperties', 'quantity')).thenReturn(of(false));
     fixture.detectChanges();
-    expect(findAllCustomElements(element)).toBeEmpty();
+    expect(element).toMatchInlineSnapshot(`N/A`);
   });
 
-  it('should display number input when type is not select', () => {
+  it('should display counter input when type is not selected', () => {
     fixture.detectChanges();
-    expect(findAllCustomElements(element)).toContain('ish-input');
+    expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
+      Array [
+        "decrease-quantity-ASDF",
+        "increase-quantity-ASDF",
+        "quantity",
+      ]
+    `);
+    expect(element.querySelector('input')).toMatchInlineSnapshot(`
+      <input
+        class="form-control text-center"
+        data-testing-id="quantity"
+        type="number"
+        id="ASDF"
+        min="2"
+        max="6"
+        step="2"
+      />
+    `);
   });
 
-  it('should be read-only when configured that way', () => {
-    component.readOnly = true;
+  it('should display number input when type is input', () => {
+    component.type = 'input';
+
     fixture.detectChanges();
-    expect(element.textContent).toMatchInlineSnapshot(`"product.quantity.label: 1"`);
+    expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
+      Array [
+        "quantity",
+      ]
+    `);
+    expect(element.querySelector('input')).toMatchInlineSnapshot(`
+      <input
+        class="form-control"
+        data-testing-id="quantity"
+        type="number"
+        id="ASDF"
+        min="2"
+        max="6"
+        step="2"
+      />
+    `);
+  });
+
+  it('should display select when type is select', () => {
+    component.type = 'select';
+
+    fixture.detectChanges();
+    expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
+      Array [
+        "quantity",
+      ]
+    `);
+    expect(element.querySelector('select')).toMatchInlineSnapshot(`
+      <select class="form-control" data-testing-id="quantity" id="ASDF">
+        <option value="2">2</option>
+        <option value="4">4</option>
+        <option value="6">6</option>
+      </select>
+    `);
   });
 });

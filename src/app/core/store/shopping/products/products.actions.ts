@@ -71,3 +71,8 @@ export const loadProductLinksSuccess = createAction(
   '[Products API] Load Product Links Success',
   payload<{ sku: string; links: ProductLinks }>()
 );
+
+export const productSpecialUpdate = createAction(
+  '[Products Internal] Special Product Update',
+  payload<{ sku: string; update: unknown }>()
+);

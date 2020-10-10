@@ -119,25 +119,21 @@ describe('Product Variation Helper', () => {
     });
   });
 
-  describe('findPossibleVariationForSelection', () => {
-    it('should find possible variation on variation option group selection', () => {
-      // perfect match
-      expect(
-        ProductVariationHelper.findPossibleVariationForSelection({ a1: 'A', a2: 'B' }, variationProduct).sku
-      ).toEqual('333');
+  describe('findPossibleVariation', () => {
+    it('should find perfect match when first attribute is changed', () => {
+      expect(ProductVariationHelper.findPossibleVariation('a2', 'B', variationProduct)).toEqual('333');
+    });
 
-      // possible varations
-      expect(
-        ProductVariationHelper.findPossibleVariationForSelection({ a1: 'A', a2: 'C' }, variationProduct).sku
-      ).toEqual('333');
+    it('should find perfect match when second attribute is changed', () => {
+      expect(ProductVariationHelper.findPossibleVariation('a1', 'B', variationProduct)).toEqual('444');
+    });
 
-      expect(
-        ProductVariationHelper.findPossibleVariationForSelection({ a1: 'A', a2: 'C' }, variationProduct, 'a1').sku
-      ).toEqual('333');
+    it('should find variation match when second attribute is changed and no perfect match could be found', () => {
+      expect(ProductVariationHelper.findPossibleVariation('a2', 'C', variationProduct)).toEqual('666');
+    });
 
-      expect(
-        ProductVariationHelper.findPossibleVariationForSelection({ a1: 'A', a2: 'C' }, variationProduct, 'a2').sku
-      ).toEqual('666');
+    it('should return original sku when impossible selection is selected', () => {
+      expect(ProductVariationHelper.findPossibleVariation('a2', 'Z', variationProduct)).toEqual('222');
     });
   });
 

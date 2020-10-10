@@ -7,7 +7,7 @@
       <h1>{{ 'application.recentlyViewed.product.heading' | translate }}</h1>
       <div class="product-list row">
         <div *ngFor="let productSku of products" class="col-6 col-lg-4 product-list-item grid-view">
-          <ish-product-item [productSku]="productSku" [configuration]="{ displayType: 'tile' }"></ish-product-item>
+          <ish-product-item ishProductContext [sku]="productSku" displayType="tile"></ish-product-item>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, ReplaySubject } from 'rxjs';
-import { distinctUntilChanged, map, switchMap, take } from 'rxjs/operators';
+import { distinctUntilChanged, map, take } from 'rxjs/operators';
 
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -20,11 +20,7 @@ import {
   submitTactonConfiguration,
   uncommitTactonConfigurationValue,
 } from '../store/product-configuration';
-import {
-  getSelfServiceApiConfiguration,
-  getTactonProductForSKU,
-  getTactonProductForSelectedProduct,
-} from '../store/tacton-config';
+import { getSelfServiceApiConfiguration, getTactonProductForSelectedProduct } from '../store/tacton-config';
 
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
@@ -32,10 +28,6 @@ export class TactonFacade {
   constructor(private store: Store) {}
 
   loading$ = this.store.pipe(select(getProductConfigurationLoading));
-
-  getTactonProductForSKU$(sku$: Observable<string>) {
-    return sku$.pipe(switchMap(sku => this.store.pipe(select(getTactonProductForSKU(sku)))));
-  }
 
   configureProduct$ = this.store.pipe(select(getCurrentProductConfiguration));
 

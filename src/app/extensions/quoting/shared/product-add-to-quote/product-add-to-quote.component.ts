@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
-import { Product } from 'ish-core/models/product/product.model';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 /**
@@ -14,18 +15,23 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 @GenerateLazyComponent()
-export class ProductAddToQuoteComponent {
-  @Input() product: Product;
-  @Input() disabled?: boolean;
+export class ProductAddToQuoteComponent implements OnInit {
   @Input() displayType?: 'icon' | 'link' = 'link';
   @Input() class?: string;
-  @Input() quantity?: number;
 
-  constructor(private router: Router) {}
+  disabled$: Observable<boolean>;
+  visible$: Observable<boolean>;
+
+  constructor(private router: Router, private context: ProductContextFacade) {}
+
+  ngOnInit() {
+    this.disabled$ = this.context.select('hasQuantityError');
+    this.visible$ = this.context.select('displayProperties', 'addToQuote');
+  }
 
   addToQuote() {
-    const quantity = this.quantity ? this.quantity : this.product.minOrderQuantity;
-    const sku = this.product.sku;
-    this.router.navigate(['/addProductToQuoteRequest'], { queryParams: { sku, quantity } });
+    this.router.navigate(['/addProductToQuoteRequest'], {
+      queryParams: { sku: this.context.get('sku'), quantity: this.context.get('quantity') },
+    });
   }
 }

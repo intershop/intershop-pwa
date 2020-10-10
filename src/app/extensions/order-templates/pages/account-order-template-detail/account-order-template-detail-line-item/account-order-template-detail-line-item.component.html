@@ -1,7 +1,7 @@
 <ng-container *ngIf="product$ | async as product">
   <div class="d-flex">
     <div class="col-1 col-md-2 list-item d-flex">
-      <ish-checkbox [form]="selectItemForm" controlName="productCheckbox"> </ish-checkbox>
+      <input type="checkbox" data-testing-id="productCheckbox" [checked]="true" (click)="setActive($event.target)" />
       <a class="d-none d-md-inline" [routerLink]="product | ishProductRoute">
         <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
       </a>
@@ -12,7 +12,7 @@
           {{ product.name }}
         </a>
         <ish-product-id [product]="product"></ish-product-id>
-        <ish-product-variation-display [product]="product"></ish-product-variation-display>
+        <ish-product-variation-display></ish-product-variation-display>
         <ish-product-bundle-display
           *ngIf="product.type === 'Bundle'"
           [productBundleSKU]="product.sku"
@@ -38,15 +38,7 @@
         </div>
       </div>
       <div class="col-6 col-md-3 p-md-0 text-right">
-        <form [formGroup]="addToCartForm">
-          <ish-product-quantity
-            [allowZeroQuantity]="false"
-            [quantityLabel]="''"
-            [product]="product"
-            [parentForm]="addToCartForm"
-            controlName="quantity"
-          ></ish-product-quantity>
-        </form>
+        <ish-product-quantity></ish-product-quantity>
       </div>
     </div>
     <div class="col-2 list-item d-none d-md-block text-right">
@@ -60,7 +52,6 @@
   <ish-select-order-template-modal
     #moveDialog
     addMoveProduct="move"
-    [product]="product"
     (submitEmitter)="moveItemToOtherOrderTemplate(product.sku, $event)"
   ></ish-select-order-template-modal>
 </ng-container>

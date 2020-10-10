@@ -3,7 +3,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 import { TactonConfigureProductComponent } from './tacton-configure-product.component';
@@ -12,11 +15,16 @@ describe('Tacton Configure Product Component', () => {
   let component: TactonConfigureProductComponent;
   let fixture: ComponentFixture<TactonConfigureProductComponent>;
   let element: HTMLElement;
+  let context: ProductContextFacade;
 
   beforeEach(async () => {
+    context = mock(ProductContextFacade);
+    when(context.select('product')).thenReturn(of({ sku: 'normal', type: 'Product' } as ProductView));
+
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [MockComponent(FaIconComponent), TactonConfigureProductComponent],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });
 
@@ -40,7 +48,9 @@ describe('Tacton Configure Product Component', () => {
 
   describe('with product', () => {
     beforeEach(() => {
-      component.product = { sku: 'CONFIGURABLE_PRODUCT' } as ProductView;
+      when(context.select('product')).thenReturn(
+        of({ sku: 'CONFIGURABLE_PRODUCT', type: 'TactonProduct' } as ProductView)
+      );
     });
 
     it('should display link to product configuration when rendered', () => {

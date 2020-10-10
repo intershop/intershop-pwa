@@ -1,8 +1,10 @@
 <!-- display addToOrderTemplate Icon/animated Icon or link-->
 <button
+  *ngIf="visible$ | async"
   type="button"
   name="addProduct"
   class="btn"
+  [disabled]="disabled$ | async"
   [ngClass]="class"
   (click)="openModal(modal)"
   data-testing-id="addToOrderTemplateButton"
@@ -31,6 +33,5 @@
 
 <ish-select-order-template-modal
   #modal
-  [product]="product"
   (submitEmitter)="addProductToOrderTemplate($event)"
 ></ish-select-order-template-modal>

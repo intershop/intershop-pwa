@@ -1,14 +1,20 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { ProductBundle } from 'ish-core/models/product/product-bundle.model';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { SkuQuantityType } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-bundle-parts',
   templateUrl: './product-bundle-parts.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductBundlePartsComponent {
-  @Input() product: ProductBundle;
+export class ProductBundlePartsComponent implements OnInit {
+  parts$: Observable<SkuQuantityType[]>;
 
-  @Output() productToBasket = new EventEmitter();
+  constructor(private context: ProductContextFacade) {}
+
+  ngOnInit() {
+    this.parts$ = this.context.select('parts');
+  }
 }

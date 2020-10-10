@@ -5,7 +5,7 @@ import { MockComponent } from 'ng-mocks';
 import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
@@ -40,11 +40,12 @@ describe('Configure Page Component', () => {
         MockComponent(TactonGroupComponent),
         MockComponent(TactonStepButtonsComponent),
       ],
-      providers: [
-        { provide: TactonFacade, useFactory: () => instance(tactonFacade) },
-        { provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) },
-      ],
-    }).compileComponents();
+      providers: [{ provide: TactonFacade, useFactory: () => instance(tactonFacade) }],
+    })
+      .overrideComponent(ConfigurePageComponent, {
+        set: { providers: [{ provide: ProductContextFacade, useFactory: () => instance(mock(ProductContextFacade)) }] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

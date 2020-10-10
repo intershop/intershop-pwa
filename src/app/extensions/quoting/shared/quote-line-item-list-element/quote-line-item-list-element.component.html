@@ -19,10 +19,7 @@
       <ish-product-id [product]="product"></ish-product-id>
 
       <!-- Product Variations -->
-      <ish-product-variation-display
-        *ngIf="isVariationProduct(product)"
-        [product]="product"
-      ></ish-product-variation-display>
+      <ish-product-variation-display></ish-product-variation-display>
       <!-- Product Bundles -->
       <ish-product-bundle-display
         *ngIf="isBundleProduct(product)"
@@ -33,13 +30,10 @@
       <div *ngIf="editable$ | async" class="d-flex align-items-center">
         <ish-lazy-product-add-to-order-template
           [class]="'btn btn-link btn-tool add-to-order-template'"
-          [product]="product"
           displayType="icon"
-          [quantity]="lineItem.quantity.value"
         ></ish-lazy-product-add-to-order-template>
         <ish-lazy-product-add-to-wishlist
           [class]="'btn-link btn-tool ml-0'"
-          [product]="product"
           displayType="icon"
         ></ish-lazy-product-add-to-wishlist>
         <a
@@ -57,26 +51,9 @@
     <!-- mobile quantity -->
     <div class="quantity d-xl-none">
       <div class="form-group">
-        <ng-container *ngIf="editable$ | async; else readonlyQuantity">
-          <ish-input
-            [form]="form$ | async"
-            controlName="quantity"
-            type="number"
-            label="shopping_cart.pli.qty.label"
-            labelClass="d-xl-none col-form-label"
-            inputClass="w-100"
-            [min]="0"
-            markRequiredLabel="off"
-            [max]="product.maxOrderQuantity"
-            [errorMessages]="{
-              required: 'shopping_cart.quantity.invalid.error',
-              max: 'shopping_cart.quantity.invalid.error.maxvalue',
-              integer: 'shopping_cart.quantity.invalid.error'
-            }"
-          ></ish-input>
-        </ng-container>
+        <label class="col-form-label">{{ 'shopping_cart.pli.qty.label' | translate }}</label>
+        <ish-product-quantity *ngIf="editable$ | async; else readonlyQuantity"></ish-product-quantity>
         <ng-template #readonlyQuantity>
-          <label class="d-xl-none col-form-label">{{ 'shopping_cart.pli.qty.label' | translate }}</label>
           {{ lineItem.quantity.value | number }}
         </ng-template>
       </div>
@@ -86,24 +63,7 @@
   <!-- desktop quantity -->
   <div class="quantity col-xl-2 list-item d-none d-xl-flex">
     <div class="form-group w-100" [ngClass]="{ 'text-right': editable$ | async }">
-      <ng-container *ngIf="editable$ | async; else readonlyQuantity">
-        <ish-input
-          [form]="form$ | async"
-          controlName="quantity"
-          type="number"
-          label="shopping_cart.pli.qty.label"
-          labelClass="d-xl-none col-form-label"
-          inputClass="w-100"
-          [min]="0"
-          markRequiredLabel="off"
-          [max]="product.maxOrderQuantity"
-          [errorMessages]="{
-            required: 'shopping_cart.quantity.invalid.error',
-            max: 'shopping_cart.quantity.invalid.error.maxvalue',
-            integer: 'shopping_cart.quantity.invalid.error'
-          }"
-        ></ish-input>
-      </ng-container>
+      <ish-product-quantity *ngIf="editable$ | async; else readonlyQuantity"></ish-product-quantity>
       <ng-template #readonlyQuantity>
         <label class="d-xl-none col-form-label">{{ 'shopping_cart.pli.qty.label' | translate }}</label>
         {{ lineItem.quantity.value | number }}

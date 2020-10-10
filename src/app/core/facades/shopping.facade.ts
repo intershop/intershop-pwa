@@ -5,6 +5,7 @@ import { debounce, filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { ProductListingID } from 'ish-core/models/product-listing/product-listing.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
+import { selectRouteParam } from 'ish-core/store/core/router';
 import { addProductToBasket } from 'ish-core/store/customer/basket';
 import {
   getCategory,
@@ -32,10 +33,6 @@ import {
   getProductBundleParts,
   getProductLinks,
   getProductVariationCount,
-  getProductVariationOptions,
-  getProducts,
-  getSelectedProduct,
-  getSelectedProductVariationOptions,
   loadProductIfNotLoaded,
   loadProductLinks,
 } from 'ish-core/store/shopping/products';
@@ -71,11 +68,7 @@ export class ShoppingFacade {
 
   // PRODUCT
 
-  selectedProduct$ = this.store.pipe(select(getSelectedProduct));
-  selectedProductVariationOptions$ = this.store.pipe(select(getSelectedProductVariationOptions));
-  productDetailLoading$ = this.selectedProduct$.pipe(
-    map(p => !ProductHelper.isReadyForDisplay(p, ProductCompletenessLevel.Detail))
-  );
+  selectedProductId$ = this.store.pipe(select(selectRouteParam('sku')));
 
   product$(sku: string | Observable<string>, level: ProductCompletenessLevel) {
     return toObservable(sku).pipe(
@@ -89,16 +82,6 @@ export class ShoppingFacade {
     );
   }
 
-  products$(skus: string[]) {
-    return this.store.pipe(select(getProducts, { skus }));
-  }
-
-  productVariationOptions$(sku: string | Observable<string>) {
-    return toObservable(sku).pipe(
-      switchMap(plainSKU => this.store.pipe(select(getProductVariationOptions, { sku: plainSKU })))
-    );
-  }
-
   productVariationCount$(sku: string) {
     return toObservable(sku).pipe(
       switchMap(plainSKU => this.store.pipe(select(getProductVariationCount, { sku: plainSKU })))
@@ -107,17 +90,6 @@ export class ShoppingFacade {
 
   productBundleParts$(sku: string) {
     return this.store.pipe(select(getProductBundleParts, { sku }));
-  }
-
-  productNotReady$(sku$: Observable<string>, level: ProductCompletenessLevel) {
-    return sku$.pipe(
-      switchMap(sku =>
-        this.store.pipe(
-          select(getProduct, { sku }),
-          map(p => !ProductHelper.isReadyForDisplay(p, level))
-        )
-      )
-    );
   }
 
   // CHECKOUT

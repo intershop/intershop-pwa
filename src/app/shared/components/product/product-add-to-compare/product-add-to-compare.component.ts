@@ -1,14 +1,15 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
 /**
  * The Product Add To Compare Component add and remove a product to the compare view.
  *
  * @example
  * <ish-product-add-to-compare
- *               [isInCompareList]="isInCompareList"
- *               displayType="icon"
- *               class="btn-link"
- *               (compareToggle)="toggleCompare()"
+ *   displayType="icon"
+ *   class="btn-link"
  * ></ish-product-add-to-compare>
  */
 @Component({
@@ -16,13 +17,21 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
   templateUrl: './product-add-to-compare.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductAddToCompareComponent {
-  @Input() isInCompareList: boolean;
+export class ProductAddToCompareComponent implements OnInit {
   @Input() displayType?: string;
   @Input() class?: string;
-  @Output() compareToggle = new EventEmitter<void>();
+
+  isInCompareList$: Observable<boolean>;
+  visible$: Observable<boolean>;
+
+  constructor(private context: ProductContextFacade) {}
+
+  ngOnInit() {
+    this.isInCompareList$ = this.context.select('isInCompareList');
+    this.visible$ = this.context.select('displayProperties', 'addToCompare');
+  }
 
   toggleCompare() {
-    this.compareToggle.emit();
+    this.context.toggleCompare();
   }
 }

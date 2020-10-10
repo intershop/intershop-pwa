@@ -28,7 +28,6 @@ import {
   getProduct,
   getProductEntities,
   getProductLinks,
-  getProducts,
   getSelectedProduct,
 } from './products.selectors';
 
@@ -331,12 +330,6 @@ describe('Products Selectors', () => {
       expect(getProduct(store$.state, { sku: 'SKU1' })).toHaveProperty('name', 'sku1');
       expect(getProduct(store$.state, { sku: 'SKU2' })).toHaveProperty('name', 'sku2');
       expect(getProduct(store$.state, { sku: 'SKU3' })).toHaveProperty('name', 'sku3');
-    });
-
-    it('should select various products on multiple products selector', () => {
-      const products = getProducts(store$.state, { skus: ['SKU1', 'SKU2', 'SKU3'] });
-      expect(products).toHaveLength(3);
-      expect(products.map(p => p.name)).toEqual(['sku1', 'sku2', 'sku3']);
     });
   });
 

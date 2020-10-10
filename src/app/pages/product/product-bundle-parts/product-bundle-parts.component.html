@@ -2,23 +2,24 @@
   <h3>{{ 'product.productBundle.products.heading' | translate }}</h3>
 
   <div class="product-list row">
-    <ng-container *ngFor="let part of product.bundledProducts">
+    <ng-container *ngFor="let part of parts$ | async">
       <div class="col-lg-8 product-list-item list-view">
         <ish-product-item
-          [productSku]="part.sku"
+          displayType="row"
+          ishProductContext
+          [sku]="part.sku"
           [quantity]="part.quantity"
           [configuration]="{
             readOnly: true,
-            quantityLabel: 'product.quantity.label',
-            displayType: 'row',
-            displayPrice: false,
-            displayInventory: false,
-            displayPromotions: false,
-            displayAddToBasket: false,
-            displayAddToWishlist: false,
-            displayAddToOrderTemplate: false,
-            displayAddToQuote: false,
-            displayAddToCompare: false
+            price: false,
+            inventory: false,
+            shipment: false,
+            promotions: false,
+            addToBasket: false,
+            addToWishlist: false,
+            addToOrderTemplate: false,
+            addToQuote: false,
+            addToCompare: false
           }"
         ></ish-product-item>
       </div>
@@ -26,10 +27,7 @@
   </div>
   <div class="row product-info">
     <div class="col align-self-start no-gutters">
-      <ish-product-add-to-basket
-        [product]="product"
-        (productToBasket)="productToBasket.emit()"
-      ></ish-product-add-to-basket>
+      <ish-product-add-to-basket></ish-product-add-to-basket>
     </div>
   </div>
 </div>

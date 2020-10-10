@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
@@ -33,11 +33,9 @@ describe('Account Order Template Detail Page Component', () => {
         MockComponent(LoadingComponent),
         MockComponent(OrderTemplatePreferencesDialogComponent),
         MockComponent(ProductAddToBasketComponent),
+        MockDirective(ProductContextDirective),
       ],
-      providers: [
-        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) },
-        { provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) },
-      ],
+      providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) }],
     }).compileComponents();
   });
 

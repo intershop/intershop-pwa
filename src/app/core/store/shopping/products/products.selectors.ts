@@ -26,16 +26,6 @@ import { productAdapter } from './products.reducer';
 
 const getProductsState = createSelector(getShoppingState, state => state.products);
 
-const productToVariationOptions = memoize(
-  product => {
-    if (ProductHelper.isVariationProduct(product) && ProductHelper.hasVariations(product)) {
-      return ProductVariationHelper.buildVariationOptionGroups(product);
-    }
-  },
-  product =>
-    `${product && product.sku}#${ProductHelper.isVariationProduct(product) && ProductHelper.hasVariations(product)}`
-);
-
 export const { selectEntities: getProductEntities } = productAdapter.getSelectors(getProductsState);
 
 const getFailed = createSelector(getProductsState, state => state.failed);
@@ -85,26 +75,11 @@ export const getProduct = createSelector(
     createFailedOrProductView(props.sku, failed, entities, tree)
 );
 
-export const getProducts = createSelector(
-  getCategoryTree,
-  getProductEntities,
-  getFailed,
-  (
-    tree,
-    entities,
-    failed,
-    props: { skus: string[] }
-  ): (ProductView | VariationProductView | VariationProductMasterView)[] =>
-    props.skus.map(sku => createFailedOrProductView(sku, failed, entities, tree)).filter(x => !!x)
-);
-
 export const getSelectedProduct = createSelector(
   state => state,
   selectRouteParam('sku'),
   (state, sku): ProductView | VariationProductView | VariationProductMasterView => getProduct(state, { sku })
 );
-
-export const getProductVariationOptions = createSelector(getProduct, productToVariationOptions);
 
 export const getProductVariationCount = createSelector(
   getProduct,
@@ -112,8 +87,6 @@ export const getProductVariationCount = createSelector(
   (product, filters) =>
     ProductHelper.isMasterProduct(product) && ProductVariationHelper.productVariationCount(product, filters)
 );
-
-export const getSelectedProductVariationOptions = createSelector(getSelectedProduct, productToVariationOptions);
 
 export const getProductBundleParts = createSelector(getProductEntities, (entities, props: { sku: string }): {
   product: Product;

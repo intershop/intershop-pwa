@@ -1,19 +1,23 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { Product } from 'ish-core/models/product/product.model';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
 @Component({
   selector: 'ish-product-shipment',
   templateUrl: './product-shipment.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductShipmentComponent implements OnChanges {
-  @Input() product: Product;
+export class ProductShipmentComponent implements OnInit {
+  visible$: Observable<boolean>;
+  readyForShipmentMin$: Observable<number>;
+  readyForShipmentMax$: Observable<number>;
 
-  isShipmentInformationAvailable = false;
+  constructor(private context: ProductContextFacade) {}
 
-  ngOnChanges() {
-    this.isShipmentInformationAvailable =
-      Number.isInteger(this.product.readyForShipmentMin) && Number.isInteger(this.product.readyForShipmentMax);
+  ngOnInit() {
+    this.visible$ = this.context.select('displayProperties', 'shipment');
+    this.readyForShipmentMin$ = this.context.select('product', 'readyForShipmentMin');
+    this.readyForShipmentMax$ = this.context.select('product', 'readyForShipmentMax');
   }
 }

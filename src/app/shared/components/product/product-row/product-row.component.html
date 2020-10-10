@@ -1,4 +1,4 @@
-<div class="product-tile-list row" [attr.data-testing-sku]="product.sku">
+<div *ngIf="product$ | async as product" class="product-tile-list row" [attr.data-testing-sku]="product.sku">
   <div class="col-3 col-md-2">
     <div class="product-image-container">
       <a [routerLink]="product | ishProductRoute: category" queryParamsHandling="merge">
@@ -12,7 +12,7 @@
     <div class="row">
       <div class="col-md-7 col-xs-12">
         <a
-          *ngIf="configuration.displayName"
+          *ngIf="configuration$('name') | async"
           class="product-title"
           [routerLink]="product | ishProductRoute: category"
           queryParamsHandling="merge"
@@ -21,134 +21,75 @@
 
         <ish-product-rating *ishFeature="'rating'" [product]="product"></ish-product-rating>
 
-        <ish-product-id *ngIf="configuration.displaySKU" [product]="product"></ish-product-id>
+        <ish-product-id *ngIf="configuration$('sku') | async" [product]="product"></ish-product-id>
 
-        <div *ngIf="configuration.displayDescription" class="product-description">{{ product.shortDescription }}</div>
+        <div *ngIf="configuration$('description') | async" class="product-description">
+          {{ product.shortDescription }}
+        </div>
 
-        <ng-container *ishFeature="'tacton'; else displayInteractions">
-          <ng-container *ishIsTactonProduct="product; else displayInteractions"></ng-container>
-        </ng-container>
+        <ish-product-promotion
+          *ngIf="configuration$('promotions') | async"
+          [product]="product"
+          displayType="simpleWithDetail"
+        ></ish-product-promotion>
 
-        <ng-template #displayInteractions>
-          <ish-product-promotion
-            *ngIf="configuration.displayPromotions"
-            [product]="product"
-            displayType="simpleWithDetail"
-          ></ish-product-promotion>
-
-          <div class="product-tile-actions btn-group">
-            <ish-lazy-product-add-to-quote
-              *ngIf="configuration.displayAddToQuote"
-              [product]="product"
-              displayType="icon"
-              class="btn-link"
-            ></ish-lazy-product-add-to-quote>
-            <ish-product-add-to-compare
-              *ngIf="configuration.displayAddToCompare"
-              [isInCompareList]="isInCompareList"
-              displayType="icon"
-              class="btn-link"
-              (compareToggle)="toggleCompare()"
-            ></ish-product-add-to-compare>
-            <ish-lazy-product-add-to-wishlist
-              *ngIf="configuration.displayAddToWishlist"
-              displayType="icon"
-              class="btn-link"
-              [product]="product"
-            ></ish-lazy-product-add-to-wishlist>
-            <ish-lazy-product-add-to-order-template
-              *ngIf="configuration.displayAddToOrderTemplate"
-              displayType="icon"
-              [quantity]="1"
-              class="btn-link"
-              [product]="product"
-            ></ish-lazy-product-add-to-order-template>
-          </div>
-        </ng-template>
+        <div class="product-tile-actions btn-group">
+          <ish-lazy-product-add-to-quote displayType="icon" class="btn-link"></ish-lazy-product-add-to-quote>
+          <ish-product-add-to-compare displayType="icon" class="btn-link"></ish-product-add-to-compare>
+          <ish-lazy-product-add-to-wishlist displayType="icon" class="btn-link"></ish-lazy-product-add-to-wishlist>
+          <ish-lazy-product-add-to-order-template
+            displayType="icon"
+            class="btn-link"
+          ></ish-lazy-product-add-to-order-template>
+        </div>
       </div>
 
       <div class="col-12 col-md-5 text-md-right">
-        <ng-container *ishFeature="'tacton'; else standardInformation">
-          <ng-container *ishIsTactonProduct="product; else standardInformation"></ng-container>
-        </ng-container>
+        <ish-product-price
+          *ngIf="configuration$('price') | async"
+          [product]="product"
+          [showInformationalPrice]="true"
+        ></ish-product-price>
+        <ish-product-inventory *ngIf="configuration$('inventory') | async" [product]="product"></ish-product-inventory>
+        <ish-product-shipment></ish-product-shipment>
 
-        <ng-template #standardInformation>
-          <ish-product-price
-            *ngIf="configuration.displayPrice"
-            [product]="product"
-            [showInformationalPrice]="true"
-          ></ish-product-price>
-          <ish-product-inventory
-            *ngIf="configuration.displayInventory && !isMasterProduct(product)"
-            [product]="product"
-          ></ish-product-inventory>
-          <ish-product-shipment
-            *ngIf="configuration.displayShipment && !isMasterProduct(product)"
-            [product]="product"
-          ></ish-product-shipment>
-        </ng-template>
-
-        <ish-product-variation-select
-          *ngIf="variationOptions && configuration.displayVariations"
-          [readOnly]="configuration.readOnly"
-          [variationOptions]="variationOptions"
-          (selectVariation)="variationSelected($event)"
-        ></ish-product-variation-select>
+        <ish-product-item-variations></ish-product-item-variations>
 
         <div class="product-list-actions-container">
-          <ng-container *ishFeature="'tacton'; else standardInteractions">
-            <ish-lazy-tacton-configure-product
-              *ishIsTactonProduct="product; else standardInteractions"
-              [product]="product"
-              displayType="list-button"
-            ></ish-lazy-tacton-configure-product>
+          <ish-lazy-tacton-configure-product displayType="list-button"></ish-lazy-tacton-configure-product>
+
+          <ng-container *ngIf="!isMasterProduct(product); else masterProductActions">
+            <div class="product-form form-horizontal row">
+              <ng-container *ngIf="configuration$('readOnly') | async; else quantityInput">
+                <div class="action-container col-12 col-xl-7">
+                  <span *ngIf="configuration$('quantity') | async"
+                    >{{ 'product.quantity.label' | translate }}: {{ quantity$ | async }}</span
+                  >
+                </div>
+              </ng-container>
+              <ng-template #quantityInput>
+                <div class="action-container col-6 offset-md-6 col-lg-5 offset-lg-0">
+                  <ish-product-quantity *ngIf="configuration$('quantity') | async"></ish-product-quantity>
+                </div>
+              </ng-template>
+
+              <div class="action-container addtocart-container col-12 col-lg-7">
+                <ish-product-add-to-basket></ish-product-add-to-basket>
+              </div>
+            </div>
           </ng-container>
 
-          <ng-template #standardInteractions>
-            <ng-container *ngIf="!isMasterProduct(product); else masterProductActions">
-              <form [formGroup]="productItemForm" class="product-form form-horizontal row">
-                <div
-                  class="action-container"
-                  [ngClass]="
-                    configuration.quantityLabel === ' ' ? 'col-6 offset-md-6 col-lg-5 offset-lg-0' : 'col-12 col-xl-7'
-                  "
-                >
-                  <ish-product-quantity
-                    *ngIf="configuration.displayQuantity"
-                    [readOnly]="configuration.readOnly"
-                    [allowZeroQuantity]="configuration.allowZeroQuantity"
-                    [quantityLabel]="configuration.quantityLabel"
-                    [product]="product"
-                    [parentForm]="productItemForm"
-                    [controlName]="quantityControlName"
-                  ></ish-product-quantity>
-                </div>
-
-                <div
-                  class="action-container addtocart-container"
-                  [ngClass]="configuration.quantityLabel === ' ' ? 'col-12 col-lg-7' : 'col-12 col-xl-5'"
-                >
-                  <ish-product-add-to-basket
-                    *ngIf="configuration.displayAddToBasket"
-                    [product]="product"
-                    (productToBasket)="addToBasket()"
-                  ></ish-product-add-to-basket>
-                </div>
-              </form>
-            </ng-container>
-
-            <ng-template #masterProductActions>
-              <div class="action-container">
-                <a
-                  [routerLink]="product | ishProductRoute: category"
-                  queryParamsHandling="merge"
-                  class="btn btn-primary"
-                  role="button"
-                >
-                  {{ 'product.choose_variation.link' | translate }}
-                </a>
-              </div>
-            </ng-template>
+          <ng-template #masterProductActions>
+            <div class="action-container">
+              <a
+                [routerLink]="product | ishProductRoute: category"
+                queryParamsHandling="merge"
+                class="btn btn-primary"
+                role="button"
+              >
+                {{ 'product.choose_variation.link' | translate }}
+              </a>
+            </div>
           </ng-template>
         </div>
       </div>

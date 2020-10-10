@@ -1,9 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 
 /**
  * The Shopping Basket Component displays the users basket items, cost summary
@@ -32,41 +30,9 @@ export class ShoppingBasketComponent {
   @Input() basket: BasketView;
   @Input() error: HttpError;
 
-  @Output() updateItem = new EventEmitter<LineItemUpdate>();
-  @Output() deleteItem = new EventEmitter<string>();
   @Output() nextStep = new EventEmitter<void>();
 
-  form: FormGroup;
   submitted = false;
-
-  constructor() {
-    this.form = new FormGroup({});
-  }
-
-  /**
-   * Create new Form Group which contains line items from child component
-   * @param lineItemForm The child components form group.
-   */
-  onFormChange(lineItemForm: FormGroup) {
-    this.form = new FormGroup({
-      inner: lineItemForm,
-    });
-  }
-
-  /**
-   * Throws updateItem event when onUpdateItem event trigggerd.
-   * @param item Item id and quantity pair that should be changed
-   */
-  onUpdateItem(item: LineItemUpdate) {
-    this.updateItem.emit(item);
-  }
-
-  /**
-   * Throws deleteItem event when delete button was clicked.
-   */
-  onDeleteItem(itemId) {
-    this.deleteItem.emit(itemId);
-  }
 
   /**
    * checkout button leads to checkout address page if basket is valid
