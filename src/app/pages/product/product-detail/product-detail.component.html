@@ -44,12 +44,20 @@
         ></ish-product-shipment>
       </ng-template>
 
-      <ish-product-variation-select
-        *ngIf="isVariationProduct(product)"
-        [productMasterSKU]="product.productMasterSKU"
-        [variationOptions]="variationOptions"
-        (selectVariation)="variationSelected($event)"
-      ></ish-product-variation-select>
+      <div *ngIf="isVariationProduct(product)" class="product-variation-container">
+        <ng-container *ishFeature="'advancedVariationHandling'; else variationSelect">
+          <ish-product-variation-display [product]="product"></ish-product-variation-display>
+          <a [routerLink]="['/product', product.productMasterSKU]" class="product-variation all-variations-link">{{
+            'product.choose_another_variation.link' | translate
+          }}</a>
+        </ng-container>
+        <ng-template #variationSelect>
+          <ish-product-variation-select
+            [variationOptions]="variationOptions"
+            (selectVariation)="variationSelected($event)"
+          ></ish-product-variation-select>
+        </ng-template>
+      </div>
 
       <ng-container *ishFeature="'tacton'; else standardInteractions">
         <ish-lazy-tacton-configure-product

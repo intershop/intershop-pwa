@@ -88,12 +88,28 @@
           ></ish-product-shipment>
         </ng-template>
 
-        <ish-product-variation-select
-          *ngIf="variationOptions && configuration.displayVariations"
-          [readOnly]="configuration.readOnly"
-          [variationOptions]="variationOptions"
-          (selectVariation)="variationSelected($event)"
-        ></ish-product-variation-select>
+        <div *ngIf="configuration.displayVariations" class="product-variation-container">
+          <ng-container *ishFeature="'advancedVariationHandling'; else normalVariationDisplay">
+            <ish-product-variation-display
+              *ngIf="isVariationProduct(product)"
+              [product]="product"
+            ></ish-product-variation-display>
+          </ng-container>
+          <ng-template #normalVariationDisplay>
+            <ng-container *ngIf="isVariationProduct(product) && variationOptions">
+              <ng-container *ngIf="configuration.readOnly; else variationSelect">
+                <ish-product-variation-display [product]="product"></ish-product-variation-display>
+              </ng-container>
+            </ng-container>
+          </ng-template>
+        </div>
+
+        <ng-template #variationSelect>
+          <ish-product-variation-select
+            [variationOptions]="variationOptions"
+            (selectVariation)="variationSelected($event)"
+          ></ish-product-variation-select>
+        </ng-template>
 
         <div class="product-list-actions-container">
           <ng-container *ishFeature="'tacton'; else standardInteractions">

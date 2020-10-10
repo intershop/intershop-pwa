@@ -51,6 +51,7 @@ export class ProductRowComponent implements OnInit, OnDestroy {
   @Output() selectVariation = new EventEmitter<{ selection: VariationSelection; changedAttribute?: string }>();
 
   isMasterProduct = ProductHelper.isMasterProduct;
+  isVariationProduct = ProductHelper.isVariationProduct;
 
   productItemForm: FormGroup;
   readonly quantityControlName = 'quantity';

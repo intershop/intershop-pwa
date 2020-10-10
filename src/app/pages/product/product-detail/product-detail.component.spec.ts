@@ -17,6 +17,7 @@ import { ProductPromotionComponent } from 'ish-shared/components/product/product
 import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
 import { ProductRatingComponent } from 'ish-shared/components/product/product-rating/product-rating.component';
 import { ProductShipmentComponent } from 'ish-shared/components/product/product-shipment/product-shipment.component';
+import { ProductVariationDisplayComponent } from 'ish-shared/components/product/product-variation-display/product-variation-display.component';
 import { ProductVariationSelectComponent } from 'ish-shared/components/product/product-variation-select/product-variation-select.component';
 
 import { LazyProductAddToOrderTemplateComponent } from '../../../extensions/order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
@@ -64,6 +65,7 @@ describe('Product Detail Component', () => {
         MockComponent(ProductQuantityComponent),
         MockComponent(ProductRatingComponent),
         MockComponent(ProductShipmentComponent),
+        MockComponent(ProductVariationDisplayComponent),
         MockComponent(ProductVariationSelectComponent),
         MockDirective(IsTactonProductDirective),
         ProductDetailComponent,

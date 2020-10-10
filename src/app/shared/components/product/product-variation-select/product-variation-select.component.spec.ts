@@ -1,9 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 
 import { ProductVariationSelectComponent } from './product-variation-select.component';
 
@@ -14,7 +11,7 @@ describe('Product Variation Select Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting(), ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [ProductVariationSelectComponent],
     }).compileComponents();
   });
@@ -117,12 +114,5 @@ describe('Product Variation Select Component', () => {
       a1: 'BBB',
       a2: 'D',
     });
-  });
-
-  it('should render read-only data when configured', () => {
-    component.readOnly = true;
-    component.ngOnChanges();
-    fixture.detectChanges();
-    expect(element.textContent).toMatchInlineSnapshot(`"Attr 1: BAttr 2: D"`);
   });
 });

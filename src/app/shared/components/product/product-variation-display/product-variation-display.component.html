@@ -1,6 +1,4 @@
-<dl *ngIf="isVariationProduct(product) && product.variableVariationAttributes as attributes" class="dl-horizontal">
-  <ng-container *ngFor="let attr of attributes; let last = last">
-    <dt>{{ attr.name }}:</dt>
-    <dd [ngClass]="{ 'variationAttribute-last': last }">{{ attr.value }}</dd>
-  </ng-container>
-</dl>
+<div *ngFor="let attr of product.variableVariationAttributes" class="product-variation read-only">
+  <span class="product-variation-name">{{ attr.name }}: </span>
+  <span class="product-variation-value">{{ attr.value }}</span>
+</div>

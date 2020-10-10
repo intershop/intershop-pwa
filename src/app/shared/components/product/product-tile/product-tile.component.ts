@@ -44,6 +44,7 @@ export class ProductTileComponent implements OnChanges {
   variationCount$: Observable<number>;
 
   isMasterProduct = ProductHelper.isMasterProduct;
+  isVariationProduct = ProductHelper.isVariationProduct;
 
   constructor(private shoppingFacade: ShoppingFacade) {}
 

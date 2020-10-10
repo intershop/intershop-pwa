@@ -5,7 +5,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
+import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 import { OrderTemplate, OrderTemplateItem } from '../../../models/order-template/order-template.model';
@@ -26,6 +26,8 @@ export class AccountOrderTemplateDetailLineItemComponent implements OnChanges, O
   addToCartForm: FormGroup;
   selectItemForm: FormGroup;
   product$: Observable<ProductView>;
+
+  isVariationProduct = ProductHelper.isVariationProduct;
 
   private destroy$ = new Subject<void>();
 

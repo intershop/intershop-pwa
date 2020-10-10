@@ -1,41 +1,22 @@
-<ng-container *ngIf="readOnly || advancedVariationHandling; else selection">
-  <div class="product-variation-container">
-    <div *ngFor="let group of variationOptions" class="product-variation read-only">
-      <span>{{ group.label }}: {{ getActiveOption(group)?.label }}</span>
-    </div>
-    <ng-container *ngIf="advancedVariationHandling">
-      <a
-        *ngIf="productMasterSKU"
-        [routerLink]="['/product', productMasterSKU]"
-        class="product-variation all-variations-link"
-        translate
-        >product.choose_another_variation.link</a
+<form *ngIf="form" [formGroup]="form">
+  <div *ngFor="let group of variationOptions" class="product-variation">
+    <div class="form-group">
+      <label [for]="uuid + '__' + group.id" class="col-form-label">{{ group.label }}</label>
+      <select
+        class="form-control"
+        [id]="uuid + '__' + group.id"
+        [formControlName]="group.id"
+        [attr.data-testing-id]="group.id"
       >
-    </ng-container>
-  </div>
-</ng-container>
-
-<ng-template #selection>
-  <form *ngIf="form" [formGroup]="form" class="product-variation-container">
-    <div *ngFor="let group of variationOptions" class="product-variation">
-      <div class="form-group">
-        <label [for]="uuid + '__' + group.id" class="col-form-label">{{ group.label }}</label>
-        <select
-          class="form-control"
-          [id]="uuid + '__' + group.id"
-          [formControlName]="group.id"
-          [attr.data-testing-id]="group.id"
-        >
-          <ng-container *ngFor="let option of group.options">
-            <option *ngIf="!option.alternativeCombination || variationOptions.length > 1" [value]="option.value">
-              {{ option.label }}
-              <ng-container *ngIf="option.alternativeCombination">
-                - {{ 'product.available_in_different_configuration' | translate }}
-              </ng-container>
-            </option>
-          </ng-container>
-        </select>
-      </div>
+        <ng-container *ngFor="let option of group.options">
+          <option *ngIf="!option.alternativeCombination || variationOptions.length > 1" [value]="option.value">
+            {{ option.label }}
+            <ng-container *ngIf="option.alternativeCombination">
+              - {{ 'product.available_in_different_configuration' | translate }}
+            </ng-container>
+          </option>
+        </ng-container>
+      </select>
     </div>
-  </form>
-</ng-template>
+  </div>
+</form>
