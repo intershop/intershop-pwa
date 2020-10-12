@@ -69,7 +69,7 @@ describe('Order Template Shopping Experience Functionality', () => {
   it('user adds an order template from order template detail page to cart', () => {
     at(OrderTemplatesDetailsPage, page => {
       page.addOrderTemplateToBasket(_.product1, 4);
-      waitLoadingEnd(2000);
+      waitLoadingEnd();
       page.header.miniCart.goToCart();
     });
     at(CartPage, page => {
@@ -130,7 +130,7 @@ describe('Order Template Shopping Experience Functionality', () => {
   it('user adds only the selected product in order template details', () => {
     at(CartPage, page => {
       page.lineItem(0).remove();
-      waitLoadingEnd(2000);
+      waitLoadingEnd();
       page.addProductToOrderTemplate();
       page.addToOrderTemplate.addProductToOrderTemplateFromPage(accountOrderTemplate, true);
     });

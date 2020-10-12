@@ -27,7 +27,6 @@ describe('Quote Handling as Anonymous User', () => {
     it('user should press add product to basket and go to basket page and add basket to quote', () => {
       at(ProductDetailPage, page => {
         page.addProductToCart();
-        cy.wait(2000);
         page.header.miniCart.goToCart();
       });
       at(CartPage, page => page.createQuoteRequest());
