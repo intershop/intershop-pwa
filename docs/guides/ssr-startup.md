@@ -54,3 +54,5 @@ If the format is _switch_, the property is switched on by supplying `on`, `1`, `
 - [Guide - Client-Side Error Monitoring with Sentry](./sentry-error-monitoring.md)
 - [Guide - Google Tag Manager](./google-tag-manager.md)
 - [Guide - Monitoring with Prometheus](./prometheus-monitoring.md)
+- [Youtube - Server Side Rendering and Pre Rendering with Angular Universal](https://youtu.be/-VDOAjzLcvQ)
+- [Google Developers - Rendering on the Web](https://developers.google.com/web/updates/2019/02/rendering-on-the-web)

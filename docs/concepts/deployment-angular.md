@@ -17,7 +17,7 @@ When the application is served this way, the initial page response for the brows
 ![Angular-BrowserSideApp-Sequence](deployment-angular-browsersideapp-sequence.jpg 'Angular-BrowserSideApp-Sequence')
 
 Of course, this can have a significant impact on the client side if no efficient rendering power is available.
-Search engine crawlers might also not be able to execute JavaScript and therefor might only see the initial minimal response.
+Search engine crawlers might also not be able to execute JavaScript and therefore might only see the initial minimal response.
 
 This method of deployment is suitable for demo servers supplying a fast build chain.
 However, we do not recommend this setup for production use.
