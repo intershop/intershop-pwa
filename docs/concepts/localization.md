@@ -287,7 +287,7 @@ Therefore additional patterns have to be added for additional keys used in this 
 ```javascript
 // regular expression for patterns of not explicitly used localization keys (dynamic created keys, error keys from REST calls)
 // ADDITIONAL PATTERNS HAVE TO BE ADDED HERE
-const regEx = /account\.login\..*\.message|.*\.error\..*/i;
+const regEx = /account\.login\..*\.message*|account\.approvallist\.*|.*\.error\..*/i;
 ```
 
 The clean up script is integrated in the full check run (`npm run check`) and will also be performed in continuous integration on the whole code base.

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -19,11 +19,11 @@ describe('Requisition Buyer Approval Component', () => {
   let fixture: ComponentFixture<RequisitionBuyerApprovalComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const accountFacade = mock(AccountFacade);
     when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [
         MockComponent(BudgetBarComponent),
@@ -35,7 +35,7 @@ describe('Requisition Buyer Approval Component', () => {
     }) // tslint:disable-next-line: no-any
       .configureCompiler({ preserveWhitespaces: true } as any)
       .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     const translate = TestBed.inject(TranslateService);

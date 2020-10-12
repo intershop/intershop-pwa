@@ -9,7 +9,7 @@ import { instance, mock, when } from 'ts-mockito';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 
 import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
-import { RequisitionView } from '../../models/requisition/requisition.model';
+import { Requisition } from '../../models/requisition/requisition.model';
 import { routes } from '../../pages/requisition-management-routing.module';
 import { RequisitionManagementStoreModule } from '../../store/requisition-management-store.module';
 
@@ -49,7 +49,7 @@ describe('Requisition Management Breadcrumb Service', () => {
     requisitionManagementBreadcrumbService = TestBed.inject(RequisitionManagementBreadcrumbService);
     router = TestBed.inject(Router);
 
-    when(reqFacade.selectedRequisition$).thenReturn(of({ id: '65435435', requisitionNo: '12345' } as RequisitionView));
+    when(reqFacade.selectedRequisition$).thenReturn(of({ id: '65435435', requisitionNo: '12345' } as Requisition));
 
     router.initialNavigation();
   });
