@@ -1,3 +1,4 @@
+import { waitLoadingEnd } from '../../framework';
 import { AddToOrderTemplateModule } from '../account/add-to-order-template.module';
 import { AddToWishlistModule } from '../account/add-to-wishlist.module';
 import { HeaderModule } from '../header.module';
@@ -17,6 +18,7 @@ export class CartPage {
   }
 
   createQuoteRequest() {
+    waitLoadingEnd(1000);
     this.saveQuoteRequestButton().click();
   }
 
