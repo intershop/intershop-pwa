@@ -30,7 +30,7 @@ jobs:
           node-version: 12
 
       - name: Install root dependencies
-        uses: bahmutov/npm-install@v1
+        run: npm ci
 
       - run: npm run check
 

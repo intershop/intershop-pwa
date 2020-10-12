@@ -44,13 +44,12 @@ jobs:
             ${{ runner.os }}-cache-
 
       - name: Install root dependencies
-        uses: bahmutov/npm-install@v1
+        run: npm ci
 
       - name: Install e2e dependencies
-        uses: bahmutov/npm-install@v1
-        with:
-          working-directory: e2e
-          useLockFile: false
+        run: |
+          cd e2e
+          npm i
 
       - name: Code Formatting
         run: npm run format
@@ -86,7 +85,7 @@ jobs:
           node-version: 12
 
       - name: Install root dependencies
-        uses: bahmutov/npm-install@v1
+        run: npm ci
 
       - name: PWA Jest
         run: npm test
@@ -109,7 +108,7 @@ jobs:
           node-version: 12
 
       - name: Install root dependencies
-        uses: bahmutov/npm-install@v1
+        run: npm ci
 
       - name: Test Schematics
         run: |

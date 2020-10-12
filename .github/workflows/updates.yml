@@ -21,13 +21,12 @@ jobs:
           node-version: 12
 
       - name: Install root dependencies
-        uses: bahmutov/npm-install@v1
+        run: npm ci
 
       - name: Install e2e dependencies
-        uses: bahmutov/npm-install@v1
-        with:
-          working-directory: e2e
-          useLockFile: false
+        run: |
+          cd e2e
+          npm i
 
       - name: Possible Angular Updates
         if: always()
