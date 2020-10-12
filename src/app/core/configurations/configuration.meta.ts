@@ -25,7 +25,7 @@ function extractConfigurationParameters(state: ConfigurationState, paramMap: Sim
     .map(key => ({ [key]: paramMap.get(key) }))
     .reduce((acc, val) => ({ ...acc, ...val }), {});
 
-  if (paramMap.has('icmHost')) {
+  if (paramMap.has('icmHost') && paramMap.get('icmHost') !== 'default') {
     properties.baseURL = `${paramMap.get('icmScheme') || 'https'}://${paramMap.get('icmHost')}`;
   }
 

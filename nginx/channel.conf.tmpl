@@ -61,7 +61,7 @@ server {
 
         rewrite '^(?!.*;lang=.*)(.*)$' '$1;lang=$LANG';
 
-        set $default_rewrite_params ';channel=$CHANNEL;application=$APPLICATION;features=$FEATURES;theme=$THEME;device=$ua_device';
+        set $default_rewrite_params ';icmHost=default;channel=$CHANNEL;application=$APPLICATION;features=$FEATURES;theme=$THEME;device=$ua_device';
 
         rewrite '^(?!.*;device=.*)(.*)$' '$1$default_rewrite_params' break;
 
