@@ -2,26 +2,23 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
-import { distinctUntilChanged, filter, map, mapTo, mergeMap, switchMap, take } from 'rxjs/operators';
+import { distinctUntilChanged, map, mapTo, switchMap, take } from 'rxjs/operators';
 
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
   PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
-import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { ProductListingView } from 'ish-core/models/product-listing/product-listing.model';
-import { Product, ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
-import { ProductMasterVariationsService } from 'ish-core/services/product-master-variations/product-master-variations.service';
 import { selectQueryParam, selectQueryParams } from 'ish-core/store/core/router';
 import {
   applyFilter,
   loadFilterForCategory,
+  loadFilterForMaster,
   loadFilterForSearch,
-  loadFilterSuccess,
   loadProductsForFilter,
 } from 'ish-core/store/shopping/filter';
-import { getProduct, loadProductsForCategory } from 'ish-core/store/shopping/products';
+import { loadProductsForCategory, loadProductsForMaster } from 'ish-core/store/shopping/products';
 import { searchProducts } from 'ish-core/store/shopping/search';
 import { mapToPayload, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 import { stringToFormParams } from 'ish-core/utils/url-form-params';
@@ -29,7 +26,6 @@ import { stringToFormParams } from 'ish-core/utils/url-form-params';
 import {
   loadMoreProducts,
   loadMoreProductsForParams,
-  loadPagesForMaster,
   setProductListingPageSize,
   setProductListingPages,
   setViewType,
@@ -42,9 +38,7 @@ export class ProductListingEffects {
     @Inject(PRODUCT_LISTING_ITEMS_PER_PAGE) private itemsPerPage: number,
     @Inject(DEFAULT_PRODUCT_LISTING_VIEW_TYPE) private defaultViewType: ViewType,
     private actions$: Actions,
-    private store: Store,
-    private productListingMapper: ProductListingMapper,
-    private productMasterVariationsService: ProductMasterVariationsService
+    private store: Store
   ) {}
 
   initializePageSize$ = createEffect(() =>
@@ -139,9 +133,7 @@ export class ProductListingEffects {
         if (
           filters &&
           // TODO: work-around for different products/hits-result without filters
-          (id.type !== 'search' || this.isSearchFor(filters.searchTerm, id)) &&
-          // TODO: work-around for client side computation of master variations
-          ['search', 'category'].includes(id.type)
+          (id.type !== 'search' || this.isSearchFor(filters.searchTerm, id))
         ) {
           const searchParameter = filters;
           return loadProductsForFilter({ id: { ...id, filters }, searchParameter, page, sorting });
@@ -152,7 +144,7 @@ export class ProductListingEffects {
             case 'search':
               return searchProducts({ searchTerm: id.value, page, sorting });
             case 'master':
-              return loadPagesForMaster({ id, sorting, filters });
+              return loadProductsForMaster({ masterSKU: id.value, page, sorting });
             default:
               return;
           }
@@ -173,9 +165,7 @@ export class ProductListingEffects {
         if (
           filters &&
           // TODO: work-around for different products/hits-result without filters
-          (type !== 'search' || this.isSearchFor(filters.searchTerm, { type, value })) &&
-          // TODO: work-around for client side computation of master variations
-          ['search', 'category'].includes(type)
+          (type !== 'search' || this.isSearchFor(filters.searchTerm, { type, value }))
         ) {
           const searchParameter = filters;
           return applyFilter({ searchParameter });
@@ -186,48 +176,13 @@ export class ProductListingEffects {
             case 'search':
               return loadFilterForSearch({ searchTerm: value });
             case 'master':
-              return loadPagesForMaster({ id: { type, value }, sorting: undefined, filters });
+              return loadFilterForMaster({ masterSKU: value });
             default:
               return;
           }
         }
       }),
       whenTruthy()
-    )
-  );
-
-  /**
-   * client side computation of master variations
-   * TODO: this is a work-around
-   */
-  loadPagesForMaster$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loadPagesForMaster),
-      mapToPayload(),
-      switchMap(({ id, filters }) =>
-        this.store.pipe(
-          select(getProduct, { sku: id.value }),
-          filter((p: Product) => ProductHelper.isSufficientlyLoaded(p, ProductCompletenessLevel.Detail)),
-          filter(ProductHelper.hasVariations),
-          filter(ProductHelper.isMasterProduct),
-          take(1),
-          mergeMap(product => {
-            const {
-              filterNavigation,
-              products,
-            } = this.productMasterVariationsService.getFiltersAndFilteredVariationsForMasterProduct(product, filters);
-
-            return [
-              setProductListingPages(
-                this.productListingMapper.createPages(products, id.type, id.value, {
-                  filters: filters ? filters : undefined,
-                })
-              ),
-              loadFilterSuccess({ filterNavigation }),
-            ];
-          })
-        )
-      )
     )
   );
 

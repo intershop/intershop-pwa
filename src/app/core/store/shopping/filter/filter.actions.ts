@@ -10,17 +10,22 @@ export const loadFilterForCategory = createAction(
   payload<{ uniqueId: string }>()
 );
 
+export const loadFilterForSearch = createAction(
+  '[Filter Internal] Load Filter for Search',
+  payload<{ searchTerm: string }>()
+);
+
+export const loadFilterForMaster = createAction(
+  '[Filter Internal] Load Filter for Master',
+  payload<{ masterSKU: string }>()
+);
+
 export const loadFilterSuccess = createAction(
   '[Filter API] Load Filter Success',
   payload<{ filterNavigation: FilterNavigation }>()
 );
 
 export const loadFilterFail = createAction('[Filter API] Load Filter Fail', httpError());
-
-export const loadFilterForSearch = createAction(
-  '[Filter Internal] Load Filter for Search',
-  payload<{ searchTerm: string }>()
-);
 
 export const applyFilter = createAction('[Filter] Apply Filter', payload<{ searchParameter: URLFormParams }>());
 

@@ -14,6 +14,7 @@ import {
   applyFilterSuccess,
   loadFilterFail,
   loadFilterForCategory,
+  loadFilterForMaster,
   loadFilterForSearch,
   loadFilterSuccess,
   loadProductsForFilter,
@@ -46,6 +47,19 @@ export class FilterEffects {
       mapToPayloadProperty('searchTerm'),
       mergeMap(searchTerm =>
         this.filterService.getFilterForSearch(searchTerm).pipe(
+          map(filterNavigation => loadFilterSuccess({ filterNavigation })),
+          mapErrorToAction(loadFilterFail)
+        )
+      )
+    )
+  );
+
+  loadFilterForMaster$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadFilterForMaster),
+      mapToPayloadProperty('masterSKU'),
+      mergeMap(masterSKU =>
+        this.filterService.getFilterForMaster(masterSKU).pipe(
           map(filterNavigation => loadFilterSuccess({ filterNavigation })),
           mapErrorToAction(loadFilterFail)
         )

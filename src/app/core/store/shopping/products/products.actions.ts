@@ -25,6 +25,16 @@ export const loadProductsForCategoryFail = createAction(
   httpError<{ categoryId: string }>()
 );
 
+export const loadProductsForMaster = createAction(
+  '[Products Internal] Load Products for Master',
+  payload<{ masterSKU: string; page?: number; sorting?: string }>()
+);
+
+export const loadProductsForMasterFail = createAction(
+  '[Products API] Load Products for Master Fail',
+  httpError<{ masterSKU: string }>()
+);
+
 export const loadProductVariations = createAction(
   '[Products Internal] Load Product Variations',
   payload<{ sku: string }>()

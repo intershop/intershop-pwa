@@ -44,6 +44,12 @@ export class FilterService {
       .pipe(map(filter => this.filterNavigationMapper.fromData(filter)));
   }
 
+  getFilterForMaster(masterSKU: string): Observable<FilterNavigation> {
+    return this.apiService
+      .get<FilterNavigationData>(`productfilters?MasterSKU=${masterSKU}`)
+      .pipe(map(filter => this.filterNavigationMapper.fromData(filter)));
+  }
+
   applyFilter(searchParameter: URLFormParams): Observable<FilterNavigation> {
     const params = formParamsToString({ ...searchParameter, category: undefined });
     const categoryPath = searchParameter.category ? searchParameter.category[0] : undefined;

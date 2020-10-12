@@ -4,9 +4,14 @@ import { createReducer, on } from '@ngrx/store';
 import { ProductListingID, ProductListingType } from 'ish-core/models/product-listing/product-listing.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { loadProductsForFilter } from 'ish-core/store/shopping/filter';
-import { loadProductsForCategory, loadProductsForCategoryFail } from 'ish-core/store/shopping/products';
+import {
+  loadProductsForCategory,
+  loadProductsForCategoryFail,
+  loadProductsForMaster,
+  loadProductsForMasterFail,
+} from 'ish-core/store/shopping/products';
 import { searchProducts, searchProductsFail } from 'ish-core/store/shopping/search';
-import { setLoadingOn } from 'ish-core/utils/ngrx-creators';
+import { setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 import { formParamsToString } from 'ish-core/utils/url-form-params';
 
 import { setProductListingPageSize, setProductListingPages, setViewType } from './product-listing.actions';
@@ -78,8 +83,8 @@ export const productListingReducer = createReducer(
     itemsPerPage: action.payload.itemsPerPage,
   })),
   on(setViewType, (state: ProductListingState, action) => ({ ...state, viewType: action.payload.viewType })),
-  setLoadingOn(searchProducts, loadProductsForCategory, loadProductsForFilter),
-  on(searchProductsFail, loadProductsForCategoryFail, (state: ProductListingState) => ({ ...state, loading: false })),
+  setLoadingOn(searchProducts, loadProductsForCategory, loadProductsForFilter, loadProductsForMaster),
+  unsetLoadingAndErrorOn(searchProductsFail, loadProductsForCategoryFail, loadProductsForMasterFail),
   on(setProductListingPages, (state: ProductListingState, action) => {
     const pages =
       action.payload.pages ||
