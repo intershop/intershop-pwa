@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
@@ -8,16 +8,16 @@ import { anyString, instance, mock, when } from 'ts-mockito';
 
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
-import { LineItemListComponent } from 'ish-shared/components/basket/line-item-list/line-item-list.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 
 import { RequisitionBuyerApprovalComponent } from '../../components/requisition-buyer-approval/requisition-buyer-approval.component';
 import { RequisitionRejectDialogComponent } from '../../components/requisition-reject-dialog/requisition-reject-dialog.component';
 import { RequisitionSummaryComponent } from '../../components/requisition-summary/requisition-summary.component';
 import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
-import { RequisitionView } from '../../models/requisition/requisition.model';
+import { Requisition } from '../../models/requisition/requisition.model';
 
 import { RequisitionDetailPageComponent } from './requisition-detail-page.component';
 
@@ -27,9 +27,9 @@ describe('Requisition Detail Page Component', () => {
   let element: HTMLElement;
   let reqFacade: RequisitionManagementFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     reqFacade = mock(RequisitionManagementFacade);
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(AddressComponent),
@@ -46,7 +46,7 @@ describe('Requisition Detail Page Component', () => {
       ],
       providers: [{ provide: RequisitionManagementFacade, useFactory: () => instance(reqFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RequisitionDetailPageComponent);
@@ -69,7 +69,7 @@ describe('Requisition Detail Page Component', () => {
       creationDate: 24324321,
       lineItemCount: 2,
       lineItems: undefined,
-    } as RequisitionView;
+    } as Requisition;
 
     when(reqFacade.requisition$(anyString())).thenReturn(of(requisition));
   });

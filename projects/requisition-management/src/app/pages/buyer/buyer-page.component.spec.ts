@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
@@ -20,9 +20,9 @@ describe('Buyer Page Component', () => {
   let element: HTMLElement;
   let reqFacade: RequisitionManagementFacade;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     reqFacade = mock(RequisitionManagementFacade);
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [NgbNavModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         BuyerPageComponent,
@@ -32,7 +32,7 @@ describe('Buyer Page Component', () => {
       ],
       providers: [{ provide: RequisitionManagementFacade, useFactory: () => instance(reqFacade) }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BuyerPageComponent);
