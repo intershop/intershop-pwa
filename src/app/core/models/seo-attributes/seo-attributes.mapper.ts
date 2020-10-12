@@ -7,7 +7,7 @@ export class SeoAttributesMapper {
       return {
         title: data.metaTitle,
         description: data.metaDescription,
-        robots: data.robots && data.robots.join(', '),
+        robots: data.robots?.join(', '),
       };
     }
   }

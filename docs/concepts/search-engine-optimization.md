@@ -32,11 +32,10 @@ To use a custom `robots.txt`, place it as a file in the `dist` folder.
 ## Page Metadata
 
 The PWA uses the library [@ngx-meta/core](https://www.npmjs.com/package/@ngx-meta/core) for setting tags for title, meta description, robots, canonical links and open graph infos in page headers.
+
+Meta information can be added to the routing in form of the data property `meta`.
+Have a look at [`app-routing.module`](../../src/app/pages/app-routing.module.ts) for examples.
 It is also possible to use translation keys here.
 
-The process is triggered by adding the guard `MetaGuard` to the routing.
-This is automatically done for all routes in the SEO module.
-The default `MetaSettings` are also configured in this guard.
-
-`seo.effects.ts` is the central place for customizations concerning dynamic content, e.g. names of products or categories (asynchronous data from the API).
+[`seo.effects.ts`](../../src/app/extensions/seo/store/seo/seo.effects.ts) is the central place for customizations concerning dynamic content, e.g. names of products or categories (asynchronous data from the API).
 Effects are an essential part of our [State Management](./state-management.md).

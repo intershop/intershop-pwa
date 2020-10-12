@@ -1,42 +1,33 @@
 import { DOCUMENT, isPlatformServer } from '@angular/common';
 import { ApplicationRef, Inject, Injectable, Optional, PLATFORM_ID } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { routerNavigatedAction } from '@ngrx/router-store';
+import { routerNavigatedAction, routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { REQUEST } from '@nguniversal/express-engine/tokens';
 import { MetaService } from '@ngx-meta/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Request } from 'express';
-import { Observable } from 'rxjs';
-import {
-  distinctUntilChanged,
-  distinctUntilKeyChanged,
-  filter,
-  first,
-  map,
-  switchMap,
-  switchMapTo,
-  tap,
-} from 'rxjs/operators';
+import { isEqual } from 'lodash-es';
+import { Observable, merge, race } from 'rxjs';
+import { distinctUntilChanged, filter, first, map, mapTo, switchMap, switchMapTo, tap } from 'rxjs/operators';
 
 import { CategoryHelper } from 'ish-core/models/category/category.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.helper';
 import { SeoAttributes } from 'ish-core/models/seo-attributes/seo-attributes.model';
-import { ofCategoryUrl } from 'ish-core/routing/category/category.route';
+import { generateCategoryUrl, ofCategoryUrl } from 'ish-core/routing/category/category.route';
 import { generateProductUrl, ofProductUrl } from 'ish-core/routing/product/product.route';
 import { getSelectedContentPage } from 'ish-core/store/content/pages';
 import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/core/configuration';
-import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
+import { ofUrl, selectRouteData, selectRouteParam } from 'ish-core/store/core/router';
 import { getSelectedCategory } from 'ish-core/store/shopping/categories/categories.selectors';
 import { getSelectedProduct } from 'ish-core/store/shopping/products';
-import { mapToPayload, mapToProperty, whenTruthy } from 'ish-core/utils/operators';
-
-import { setSeoAttributes } from './seo.actions';
+import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
 @Injectable()
 export class SeoEffects {
-  baseURL: string;
-  ogImageDefault: string;
+  private baseURL: string;
+  private ogImageDefault: string;
 
   constructor(
     private actions$: Actions,
@@ -61,111 +52,97 @@ export class SeoEffects {
     this.ogImageDefault = `${this.baseURL}assets/img/og-image-default.jpg`;
   }
 
+  private productPage$ = this.store.pipe(
+    ofProductUrl(),
+    select(getSelectedProduct),
+    filter(p => ProductHelper.isSufficientlyLoaded(p, ProductCompletenessLevel.Detail)),
+    filter(p => !ProductHelper.isFailedLoading(p))
+  );
+
+  private categoryPage$ = this.store.pipe(
+    ofCategoryUrl(),
+    select(getSelectedCategory),
+    filter(CategoryHelper.isCategoryCompletelyLoaded)
+  );
+
   seoCanonicalLink$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(routerNavigatedAction),
-        tap(() => {
-          let canonicalLink = this.doc.querySelector('link[rel="canonical"]');
-          if (!canonicalLink) {
-            canonicalLink = this.doc.createElement('link');
-            canonicalLink.setAttribute('rel', 'canonical');
-            this.doc.head.appendChild(canonicalLink);
-          }
-          canonicalLink.setAttribute('href', this.doc.URL);
-          this.meta.setTag('og:url', this.doc.URL);
-        })
-      ),
-    { dispatch: false }
-  );
-
-  setMetaData$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(setSeoAttributes),
-        mapToPayload(),
-        whenTruthy(),
-        tap((seoAttributes: SeoAttributes) => {
-          if (seoAttributes) {
-            this.meta.setTitle(seoAttributes.title);
-            this.meta.setTag('og:image', seoAttributes['og:image'] || this.ogImageDefault);
-            Object.keys(seoAttributes)
-              .filter(key => key !== 'title' && key !== 'og:image')
-              .forEach(key => {
-                this.meta.setTag(key, seoAttributes[key]);
-              });
-          }
-        })
-      ),
-    { dispatch: false }
-  );
-
-  seoCategory$ = createEffect(() =>
-    this.waitAppStable(
-      this.store.pipe(
-        ofCategoryUrl(),
-        select(getSelectedCategory),
-        filter(CategoryHelper.isCategoryCompletelyLoaded),
-        map(
-          c =>
-            c &&
-            c.seoAttributes && {
-              canonical: `category/${c.uniqueId}`,
-              ...c.seoAttributes,
-            }
+        switchMap(() =>
+          race([
+            // PRODUCT PAGE
+            this.productPage$.pipe(map(product => this.baseURL + generateProductUrl(product).substr(1))),
+            // CATEGORY / FAMILY PAGE
+            this.categoryPage$.pipe(map(category => this.baseURL + generateCategoryUrl(category).substr(1))),
+            // DEFAULT
+            this.appRef.isStable.pipe(whenTruthy(), mapTo(this.doc.URL.replace(/[;?].*/g, ''))),
+          ])
         ),
-        whenTruthy(),
-        map(setSeoAttributes)
-      )
-    )
-  );
-
-  seoProduct$ = createEffect(() =>
-    this.waitAppStable(
-      this.store.pipe(
-        ofProductUrl(),
-        select(getSelectedProduct),
-        filter(p => ProductHelper.isSufficientlyLoaded(p, ProductCompletenessLevel.Detail)),
-        filter(p => !ProductHelper.isFailedLoading(p)),
-        map(p => (ProductHelper.isVariationProduct(p) && p.productMaster()) || p),
-        distinctUntilKeyChanged('sku'),
-        map(p => {
-          const productImage = ProductHelper.getPrimaryImage(p, 'L');
-          const seoAttributes = {
-            canonical: generateProductUrl(p),
-            'og:image': productImage && productImage.effectiveUrl,
-          };
-          return p.seoAttributes ? { ...seoAttributes, ...p.seoAttributes } : seoAttributes;
-        }),
-        whenTruthy(),
-        map(setSeoAttributes)
-      )
-    )
-  );
-
-  seoSearch$ = createEffect(() =>
-    this.waitAppStable(
-      this.store.pipe(
-        ofUrl(/^\/search.*/),
-        select(selectRouteParam('searchTerm')),
-        switchMap(searchTerm => this.translate.get('seo.title.search', { 0: searchTerm })),
-        whenTruthy(),
-        map(title => setSeoAttributes({ title }))
-      )
-    )
-  );
-
-  seoContentPage$ = createEffect(() =>
-    this.waitAppStable(
-      this.store.pipe(
-        ofUrl(/^\/page.*/),
-        select(getSelectedContentPage),
-        mapToProperty('displayName'),
-        whenTruthy(),
         distinctUntilChanged(),
-        map(title => setSeoAttributes({ title }))
-      )
-    )
+        tap(url => {
+          this.setCanonicalLink(url);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  seoMetaData$ = createEffect(
+    () =>
+      merge(
+        this.actions$.pipe(
+          ofType(routerNavigationAction),
+          // DEFAULT or ROUTING
+          switchMap(() => this.store.pipe(select(selectRouteData<SeoAttributes>('meta'))))
+        ),
+        this.actions$.pipe(
+          ofType(routerNavigatedAction),
+          switchMap(() =>
+            race([
+              // PRODUCT PAGE
+              this.productPage$.pipe(
+                map<ProductView, SeoAttributes>(p => ({
+                  'og:image': ProductHelper.getPrimaryImage(p, 'L')?.effectiveUrl,
+                  ...p.seoAttributes,
+                })),
+                whenTruthy()
+              ),
+              // CATEGORY / FAMILY PAGE
+              this.categoryPage$.pipe(mapToProperty('seoAttributes'), whenTruthy()),
+              // SEARCH RESULT PAGE
+              this.store.pipe(
+                ofUrl(/^\/search.*/),
+                select(selectRouteParam('searchTerm')),
+                whenTruthy(),
+                switchMap(searchTerm => this.translate.get('seo.title.search', { 0: searchTerm })),
+                map<string, Partial<SeoAttributes>>(title => ({ title }))
+              ),
+              // CONTENT PAGE
+              this.store.pipe(
+                ofUrl(/^\/page.*/),
+                select(getSelectedContentPage),
+                mapToProperty('displayName'),
+                whenTruthy(),
+                map<string, Partial<SeoAttributes>>(title => ({ title }))
+              ),
+            ])
+          )
+        )
+      ).pipe(
+        map(attributes => ({
+          title: 'seo.defaults.title',
+          description: 'seo.defaults.description',
+          robots: 'index, follow',
+          'og:type': 'website',
+          'og:image': this.ogImageDefault,
+          ...attributes,
+        })),
+        distinctUntilChanged(isEqual),
+        tap(seoAttributes => {
+          this.setSeoAttributes(seoAttributes);
+        })
+      ),
+    { dispatch: false }
   );
 
   seoLanguage$ = createEffect(
@@ -195,6 +172,32 @@ export class SeoEffects {
       ),
     { dispatch: false }
   );
+
+  private setCanonicalLink(url: string) {
+    let canonicalLink = this.doc.querySelector('link[rel="canonical"]');
+    if (!canonicalLink) {
+      canonicalLink = this.doc.createElement('link');
+      canonicalLink.setAttribute('rel', 'canonical');
+      this.doc.head.appendChild(canonicalLink);
+    }
+    canonicalLink.setAttribute('href', url);
+    this.meta.setTag('og:url', url);
+  }
+
+  private setSeoAttributes(seoAttributes: SeoAttributes) {
+    Object.entries(seoAttributes)
+      .filter(([, v]) => !!v)
+      .forEach(([key, value]) => {
+        switch (key) {
+          case 'title':
+            this.meta.setTitle(value);
+            break;
+          default:
+            this.meta.setTag(key, value);
+            break;
+        }
+      });
+  }
 
   private waitAppStable<T>(obs: Observable<T>) {
     return this.appRef.isStable.pipe(whenTruthy(), first(), switchMapTo(obs));
