@@ -520,7 +520,6 @@
   "account.wishlists.wishlist_form.preferred.tooltip.content": "Selection will make the wish list your preferred wish list and sets all other (if any) back to normal. All added products will be added by default to this wish list.",
   "account.wishlists.wishlist_form.preferred.tooltip.headline": "Set as Preferred",
   "account.wishlists.wishlist_form.preferred.tooltip.linktext": "Details",
-  "application.overlay.close.text": "Close",
   "application.recentlyViewed.breadcrumb.label": "Your Browsing History",
   "application.recentlyViewed.clear": "Clear My History",
   "application.recentlyViewed.empty": "Your browsing history is empty",

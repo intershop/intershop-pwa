@@ -518,7 +518,6 @@
   "account.wishlists.wishlist_form.preferred.tooltip.content": "Die Auswahl markiert die Wunschliste als bevorzugte Liste und setzt alle anderen (wenn vorhanden) zurück auf Standard. Alle hinzugefügten Produkte werden standardmäßig zu dieser Liste hinzugefügt.",
   "account.wishlists.wishlist_form.preferred.tooltip.headline": "Als bevorzugt markieren",
   "account.wishlists.wishlist_form.preferred.tooltip.linktext": "Details",
-  "application.overlay.close.text": "Schließen",
   "application.recentlyViewed.breadcrumb.label": "Ihre Browsing-Historie",
   "application.recentlyViewed.clear": "Historie löschen",
   "application.recentlyViewed.empty": "Ihre Browsing-Historie ist leer",

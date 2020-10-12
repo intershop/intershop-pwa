@@ -4,7 +4,7 @@ export class AddToWishlistModule {
   addProductToWishlistFromPage(title: string = '', modal: boolean = false) {
     if (modal) {
       cy.get(`[data-testing-id="${title}"]`).click();
-      cy.get('[class="modal-footer"] button.btn-primary').click();
+      cy.get('.modal-footer button.btn-primary').click();
     }
     this.closeAddProductToWishlistModal('link');
   }
@@ -15,7 +15,7 @@ export class AddToWishlistModule {
         .find(`ish-product-item div[data-testing-sku="${product}"] button.add-to-wishlist`)
         .click();
       cy.get(`[data-testing-id="${title}"]`).click();
-      cy.get('[class="modal-footer"] button.btn-primary').click();
+      cy.get('.modal-footer button.btn-primary').click();
       this.closeAddProductToWishlistModal('link');
     } else {
       cy.get(this.contextSelector)
@@ -29,6 +29,6 @@ export class AddToWishlistModule {
     cy.wait(500);
     mode === 'link'
       ? cy.get('[data-testing-id="wishlist-success-link"] a').click()
-      : cy.get('[class="modal-header"] button').click();
+      : cy.get('.modal-header button').click();
   }
 }

@@ -3,14 +3,14 @@ export class AddToOrderTemplateModule {
 
   addNewOrderTemplate(name: string) {
     cy.wait(500);
-    cy.get('[class="modal-body"] input').type(name);
-    cy.get('[class="modal-footer"] button.btn-primary').click();
+    cy.get('.modal-body input').type(name);
+    cy.get('.modal-footer button.btn-primary').click();
   }
 
   addProductToOrderTemplateFromPage(title: string = '', modal: boolean = false) {
     if (modal) {
       cy.get(`[data-testing-id="${title}"]`).click();
-      cy.get('[class="modal-footer"] button.btn-primary').click();
+      cy.get('.modal-footer button.btn-primary').click();
     }
     this.closeAddProductToOrderTemplateModal('link');
   }
@@ -23,7 +23,7 @@ export class AddToOrderTemplateModule {
       if (title) {
         cy.get(`[data-testing-id="${title}"]`).click();
       }
-      cy.get('[class="modal-footer"] button.btn-primary').click();
+      cy.get('.modal-footer button.btn-primary').click();
       this.closeAddProductToOrderTemplateModal('link');
     } else {
       cy.get(this.contextSelector)
@@ -37,6 +37,6 @@ export class AddToOrderTemplateModule {
     cy.wait(500);
     mode === 'link'
       ? cy.get('[data-testing-id="order-template-success-link"] a').click()
-      : cy.get('[class="modal-header"] button').click();
+      : cy.get('.modal-header button').click();
   }
 }

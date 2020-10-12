@@ -2,7 +2,6 @@
   <ng-container *ngIf="state$ | async as state">
     <div class="modal-header">
       <h2 class="modal-title">
-        <!-- Titel and Description -->
         <ng-container *ngIf="state === 'Submitted'; else quoteTitle">
           {{ 'quote.edit.submitted.heading' | translate }}
         </ng-container>
@@ -11,7 +10,13 @@
           {{ quote.displayName || quote.number }}
         </ng-template>
       </h2>
-      <button type="button" class="close" [attr.aria-label]="'dialog.close.text' | translate" (click)="hide()">
+      <button
+        type="button"
+        class="close"
+        [title]="'dialog.close.text' | translate"
+        [attr.aria-label]="'dialog.close.text' | translate"
+        (click)="hide()"
+      >
         <span aria-hidden="true">&times;</span>
       </button>
     </div>

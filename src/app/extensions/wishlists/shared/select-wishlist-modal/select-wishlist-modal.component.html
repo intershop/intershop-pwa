@@ -1,96 +1,93 @@
 <ng-template #modal let-selectModal>
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2 class="modal-title">{{ headerTranslationKey | translate }}</h2>
-      <button
-        type="button"
-        class="close close-modal"
-        [attr.aria-label]="'dialog.close.text' | translate"
-        (click)="hide()"
-        [title]="'application.overlay.close.text' | translate"
-      >
-        <span aria-hidden="true">&times;</span>
+  <div class="modal-header">
+    <h2 class="modal-title">{{ headerTranslationKey | translate }}</h2>
+    <button
+      type="button"
+      class="close"
+      [title]="'dialog.close.text' | translate"
+      [attr.aria-label]="'dialog.close.text' | translate"
+      (click)="hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <ng-container *ngIf="showForm; else showSuccess">
+    <div class="modal-body">
+      <form [formGroup]="updateWishlistForm" (ngSubmit)="submitForm()">
+        <ng-container *ngIf="wishlistOptions === undefined || wishlistOptions.length === 0; else radioButtonForm">
+          <ish-input
+            controlName="newWishlist"
+            [errorMessages]="{ required: 'account.wishlist.name.error.required' }"
+            [form]="updateWishlistForm"
+          ></ish-input>
+        </ng-container>
+
+        <ng-template #radioButtonForm>
+          <div class="form-group">
+            <div class="radio" *ngFor="let option of wishlistOptions; let i = index">
+              <label>
+                <input
+                  type="radio"
+                  name="wishlist"
+                  formControlName="wishlist"
+                  [value]="option.value"
+                  id="wishlist_{{ i }}"
+                  [attr.data-testing-id]="option.label"
+                />
+                {{ option.label }}
+              </label>
+            </div>
+            <div class="radio">
+              <label class="d-flex align-items-center">
+                <input
+                  type="radio"
+                  name="wishlist"
+                  formControlName="wishlist"
+                  value="newList"
+                  class="mb-3"
+                  id="wishlist"
+                />
+                <ish-input
+                  controlName="newWishlist"
+                  [disabled]="newWishlistDisabled ? 'true' : null"
+                  [errorMessages]="{ required: 'account.wishlist.name.error.required' }"
+                  [form]="updateWishlistForm"
+                  inputClass="col-md-12"
+                ></ish-input>
+              </label>
+            </div>
+          </div>
+        </ng-template>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="submitForm()">
+        {{ submitButtonTranslationKey | translate }}
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="hide()">
+        {{ 'account.wishlists.add_to_wishlist.cancel_button.text' | translate }}
       </button>
     </div>
-    <ng-container *ngIf="showForm; else showSuccess">
-      <form [formGroup]="updateWishlistForm" (ngSubmit)="submitForm()">
-        <div class="modal-body">
-          <ng-container *ngIf="wishlistOptions === undefined || wishlistOptions.length === 0; else radioButtonForm">
-            <ish-input
-              controlName="newWishlist"
-              [errorMessages]="{ required: 'account.wishlist.name.error.required' }"
-              [form]="updateWishlistForm"
-            ></ish-input>
-          </ng-container>
+  </ng-container>
 
-          <ng-template #radioButtonForm>
-            <div class="form-group">
-              <div class="radio" *ngFor="let option of wishlistOptions; let i = index">
-                <label>
-                  <input
-                    type="radio"
-                    name="wishlist"
-                    formControlName="wishlist"
-                    [value]="option.value"
-                    id="wishlist_{{ i }}"
-                    [attr.data-testing-id]="option.label"
-                  />
-                  {{ option.label }}
-                </label>
-              </div>
-              <div class="radio">
-                <label class="d-flex align-items-center">
-                  <input
-                    type="radio"
-                    name="wishlist"
-                    formControlName="wishlist"
-                    value="newList"
-                    class="mb-3"
-                    id="wishlist"
-                  />
-                  <ish-input
-                    controlName="newWishlist"
-                    [disabled]="newWishlistDisabled ? 'true' : null"
-                    [errorMessages]="{ required: 'account.wishlist.name.error.required' }"
-                    [form]="updateWishlistForm"
-                    inputClass="col-md-12"
-                  ></ish-input>
-                </label>
-              </div>
-            </div>
-          </ng-template>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-primary" type="submit">
-            {{ submitButtonTranslationKey | translate }}
-          </button>
-          <button
-            class="btn btn-secondary"
-            type="button"
-            [name]="'account.wishlists.wishlist_form.cancel_button.text' | translate"
-            (click)="hide()"
-          >
-            {{ 'account.wishlists.add_to_wishlist.cancel_button.text' | translate }}
-          </button>
-        </div>
-      </form>
-    </ng-container>
-    <ng-template #showSuccess>
-      <div class="modal-body">
-        <span
-          [ishServerHtml]="
-            successTranslationKey
-              | translate: { '0': product.name, '1': selectedWishlistRoute, '2': selectedWishlistTitle }
-          "
-          [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
-          data-testing-id="wishlist-success-link"
-        ></span>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" (click)="hide()">
-          {{ 'account.wishlists.add_to_wishlist.confirmation.ok_button.text' | translate }}
-        </button>
-      </div>
-    </ng-template>
-  </div>
+  <ng-template #showSuccess>
+    <div class="modal-body">
+      <span
+        [ishServerHtml]="
+          successTranslationKey
+            | translate: { '0': product.name, '1': selectedWishlistRoute, '2': selectedWishlistTitle }
+        "
+        [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
+        data-testing-id="wishlist-success-link"
+      ></span>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="hide()">
+        {{ 'account.wishlists.add_to_wishlist.confirmation.ok_button.text' | translate }}
+      </button>
+    </div>
+  </ng-template>
 </ng-template>
