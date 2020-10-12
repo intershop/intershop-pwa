@@ -1,5 +1,5 @@
 import { CdkTableModule } from '@angular/cdk/table';
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
@@ -9,7 +9,7 @@ import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
-import { RequisitionView } from '../../models/requisition/requisition.model';
+import { Requisition } from '../../models/requisition/requisition.model';
 
 import { RequisitionsListComponent } from './requisitions-list.component';
 
@@ -39,10 +39,10 @@ describe('Requisitions List Component', () => {
       user: { firstName: 'Patricia', lastName: 'Miller', email: 'pmiller@test.intershop.de' },
       totals: {},
     },
-  ] as RequisitionView[];
+  ] as Requisition[];
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [CdkTableModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(ErrorMessageComponent),
@@ -52,7 +52,7 @@ describe('Requisitions List Component', () => {
         RequisitionsListComponent,
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RequisitionsListComponent);

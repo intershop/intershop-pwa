@@ -1,9 +1,5 @@
 import { createSelector } from '@ngrx/store';
 
-import { getCategoryTree } from 'ish-core/store/shopping/categories';
-import { getProductEntities } from 'ish-core/store/shopping/products';
-
-import { createRequisitionView } from '../../models/requisition/requisition.model';
 import { getRequisitionManagementState } from '../requisition-management-store';
 
 import { requisitionsAdapter } from './requisitions.reducer';
@@ -16,11 +12,4 @@ export const getRequisitionsError = createSelector(getRequisitionsState, state =
 
 export const { selectAll: getRequisitions } = requisitionsAdapter.getSelectors(getRequisitionsState);
 
-const getRequisitionInternal = createSelector(getRequisitionsState, state => state.requisition);
-
-export const getRequisition = createSelector(
-  getRequisitionInternal,
-  getProductEntities,
-  getCategoryTree,
-  createRequisitionView
-);
+export const getRequisition = createSelector(getRequisitionsState, state => state.requisition);
