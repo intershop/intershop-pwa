@@ -18,7 +18,7 @@ The manifest in the PWA is theme specific and can be customized in the file `src
 
 ## Service Worker
 
-[Service Workers](https://angular.io/guide/service-worker-intro) are automatically installed into client device browsers after the first visit to the shop and take over the all handling of the application on the client side.
+[Service Workers](https://angular.io/guide/service-worker-intro) are automatically installed into client device browsers after the first visit to the shop and take over all the handling of the application on the client side.
 Possible advanced features supplied are offline-capabilities and push notifications.
 After installation, the service worker effectively disables server-side rendering for clients and invokes all rendering on the client himself.
 
