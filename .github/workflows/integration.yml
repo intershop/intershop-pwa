@@ -37,7 +37,7 @@ jobs:
           node-version: 12
 
       - name: Install root dependencies
-        uses: bahmutov/npm-install@v1
+        run: npm ci
 
       - name: Disable ServiceWorker
         run: node schematics/customization/service-worker false
@@ -104,13 +104,12 @@ jobs:
 
       - name: Install root dependencies
         if: matrix.test == 'mock'
-        uses: bahmutov/npm-install@v1
+        run: npm ci
 
       - name: Install e2e dependencies
-        uses: bahmutov/npm-install@v1
-        with:
-          working-directory: e2e
-          useLockFile: false
+        run: |
+          cd e2e
+          npm i
 
       - name: Download Build Output
         if: matrix.test != 'mock'
