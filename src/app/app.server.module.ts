@@ -2,12 +2,14 @@ import { HTTP_INTERCEPTORS, HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { ServerModule, ServerTransferStateModule } from '@angular/platform-server';
+import { META_REDUCERS } from '@ngrx/store';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { existsSync, readFileSync } from 'fs';
 import { ServerCookiesModule } from 'ngx-utils-cookies-port';
 import { join } from 'path';
 import { Observable, Observer } from 'rxjs';
 
+import { configurationMeta } from 'ish-core/configurations/configuration.meta';
 import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
 import { UniversalLogInterceptor } from 'ish-core/interceptors/universal-log.interceptor';
 import { UniversalMockInterceptor } from 'ish-core/interceptors/universal-mock.interceptor';
@@ -67,6 +69,7 @@ export class UniversalErrorHandler implements ErrorHandler {
     { provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: UniversalLogInterceptor, multi: true },
     { provide: ErrorHandler, useClass: UniversalErrorHandler },
+    { provide: META_REDUCERS, useValue: configurationMeta, multi: true },
   ],
   bootstrap: [AppComponent],
 })
