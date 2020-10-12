@@ -1,12 +1,13 @@
-if (process.env.CI) {
+const force = process.argv.length > 2 && process.argv[2] === '-f';
+
+if (process.env.CI && !force) {
   console.log('skipping creation of environment.local.ts');
   process.exit(0);
 }
 
-const fs = require('fs');
-
-const force = process.argv.length > 2 && process.argv[2] === '-f';
 const environmentLocalPath = 'src/environments/environment.local.ts';
+
+const fs = require('fs');
 
 if (!fs.existsSync(environmentLocalPath) || force) {
   if (fs.existsSync(environmentLocalPath)) {

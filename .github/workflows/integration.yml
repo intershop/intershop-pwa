@@ -73,20 +73,16 @@ jobs:
           path: dist
 
       - name: Set Environment
-        uses: allenevans/set-env@master
-        with:
-          overwrite: true
-          LOGGING: true
-          PROXY_ICM: true
+        run: |
+          echo "LOGGING=true" >> $GITHUB_ENV
+          echo "PROXY_ICM=true" >> $GITHUB_ENV
 
       - name: Set B2B Environment
         if: matrix.test == 'b2b'
-        uses: allenevans/set-env@master
-        with:
-          overwrite: true
-          THEME: blue
-          ICM_CHANNEL: inSPIRED-inTRONICS_Business-Site
-          FEATURES: quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,advancedVariationHandling
+        run: |
+          echo "THEME=blue" >> $GITHUB_ENV
+          echo "ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site" >> $GITHUB_ENV
+          echo "FEATURES=quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,advancedVariationHandling" >> $GITHUB_ENV
 
       - name: Start SSR
         run: npm run serve &
@@ -124,22 +120,18 @@ jobs:
           path: dist
 
       - name: Set Environment
-        uses: allenevans/set-env@master
-        with:
-          overwrite: true
-          PWA_BASE_URL: http://localhost:4200
-          LOGGING: true
-          PROXY_ICM: true
-          BROWSER: chrome
+        run: |
+          echo "PWA_BASE_URL=http://localhost:4200" >> $GITHUB_ENV
+          echo "LOGGING=true" >> $GITHUB_ENV
+          echo "PROXY_ICM=true" >> $GITHUB_ENV
+          echo "BROWSER=chrome" >> $GITHUB_ENV
 
       - name: Set B2B Environment
         if: matrix.test == 'b2b'
-        uses: allenevans/set-env@master
-        with:
-          overwrite: true
-          THEME: blue
-          ICM_CHANNEL: inSPIRED-inTRONICS_Business-Site
-          FEATURES: quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,advancedVariationHandling
+        run: |
+          echo "THEME=blue" >> $GITHUB_ENV
+          echo "ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site" >> $GITHUB_ENV
+          echo "FEATURES=quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,advancedVariationHandling" >> $GITHUB_ENV
 
       - name: Start SSR
         if: matrix.test != 'mock'
