@@ -47,14 +47,10 @@ jobs:
         with:
           node-version: 12
 
-      - name: Set Environment
-        uses: allenevans/set-env@master
-        with:
-          overwrite: true
-          CI: ''
-
       - name: Install Clean Repository
-        run: npm run clean
+        run: |
+          npm run clean
+          node scripts/init-local-environment -f
 
       - name: Build with local environment
         run: npm run ng -- build -c local
