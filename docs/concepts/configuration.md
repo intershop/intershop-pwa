@@ -104,7 +104,7 @@ See also [Guide - Building and Running Server-Side Rendering](../guides/ssr-star
 Independent of where and how you deploy the Angular Universal application, be it in a docker container or plain, running on Azure, with or without service orchestrator, setting the base URL provides the most flexible way of configuring the PWA.
 Refer to the documentation for mechanisms of your environment on how to set and pass environment variables.
 
-### Setting for Channels and Applications
+### Settings for Channels and Applications
 
 Use the properties `icmChannel` and `icmApplication` in the Angular CLI environment or the environment variables `ICM_CHANNEL` and `ICM_APPLICATION` to statically direct one deployment to a specific REST endpoint of the ICM.
 
@@ -193,7 +193,7 @@ export class ConfigurationModule {
 
 > ### Configuration REST Resource
 >
-> We are currently planning to implement a Configuration REST resource in the ICM so that all necessary runtime configuration can be defined in the ICM Back Office and consumed by each PWA deployment.
+> We are currently planning to implement a Configuration REST resource in ICM so that all necessary runtime configuration can be defined in the ICM back office and consumed by each PWA deployment.
 
 # Further References
 
