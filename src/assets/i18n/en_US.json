@@ -214,7 +214,7 @@
   "account.order_template.list.link.remove": "Delete",
   "account.order_template.list.no_templates.text": "Currently you don't have any order templates.",
   "account.order_template.list.table.created": "Created",
-  "account.order_template.list.table.item": "No. of Items",
+  "account.order_template.list.table.item": "Line Items",
   "account.order_template.list.table.template": "Template Name",
   "account.order_template.move.added.text": "{{0}} has been added to <a callback=\"callbackHideDialogModal\" href=\"{{2}}\">{{1}}</a>.",
   "account.order_template.name.error.required": "If you want to create a new order template, please enter a name.",

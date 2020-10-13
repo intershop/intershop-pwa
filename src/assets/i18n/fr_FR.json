@@ -214,7 +214,7 @@
   "account.order_template.list.link.remove": "Supprimer",
   "account.order_template.list.no_templates.text": "Actuellement, vous n’avez pas de modèles de commande.",
   "account.order_template.list.table.created": "Créé",
-  "account.order_template.list.table.item": "Nombre d’articles",
+  "account.order_template.list.table.item": "Articles",
   "account.order_template.list.table.template": "Nom du modèle",
   "account.order_template.move.added.text": "{{0}} a été ajouté au modèle de <a callback=\"callbackHideDialogModal\" href=\"{{2}}\">{{1}}</a>.",
   "account.order_template.name.error.required": "Si vous souhaitez créer un nouveau modèle de commande, veuillez entrer un nom.",

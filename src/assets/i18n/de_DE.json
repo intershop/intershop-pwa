@@ -214,7 +214,7 @@
   "account.order_template.list.link.remove": "Löschen",
   "account.order_template.list.no_templates.text": "Derzeit haben Sie keine Bestellvorlagen.",
   "account.order_template.list.table.created": "Angelegt",
-  "account.order_template.list.table.item": "Artikelanzahl",
+  "account.order_template.list.table.item": "Bestellpositionen",
   "account.order_template.list.table.template": "Name der Vorlage",
   "account.order_template.move.added.text": "{{0}} wurde zu Bestellvorlage <a callback=\"callbackHideDialogModal\" href=\"{{2}}\">{{1}}</a> hinzugefügt.",
   "account.order_template.name.error.required": "Zum Erstellen einer neuen Bestellvorlage geben Sie bitte einen Namen ein.",
