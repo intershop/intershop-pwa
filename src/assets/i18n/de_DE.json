@@ -205,9 +205,9 @@
   "account.order_template.form.name.error.required": "Geben Sie einen Namen für die Bestellvorlage an.",
   "account.order_template.form.name.label": "Name der Bestellvorlage",
   "account.order_template.items": {
-    "=0": "0 Artikel",
-    "=1": "1 Artikel",
-    "other": "# Artikel"
+    "=0": "0",
+    "=1": "1",
+    "other": "#"
   },
   "account.order_template.list.button.add_template.label": "Bestellvorlage hinzufügen",
   "account.order_template.list.link.back": "Zurück zu Bestellvorlagen",

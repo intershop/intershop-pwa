@@ -205,9 +205,9 @@
   "account.order_template.form.name.error.required": "Please enter an order template name.",
   "account.order_template.form.name.label": "Order Template Name",
   "account.order_template.items": {
-    "=0": "0 Items",
-    "=1": "1 Item",
-    "other": "# Items"
+    "=0": "0",
+    "=1": "1",
+    "other": "#"
   },
   "account.order_template.list.button.add_template.label": "Add Order Template",
   "account.order_template.list.link.back": "Back to Order Templates",

@@ -205,9 +205,9 @@
   "account.order_template.form.name.error.required": "Veuillez entrer un nom pour le modèle de commande.",
   "account.order_template.form.name.label": "Nom du modèle de commande",
   "account.order_template.items": {
-    "=0": "0 Articles",
-    "=1": "1 Article",
-    "other": "# Articles"
+    "=0": "0",
+    "=1": "1",
+    "other": "#"
   },
   "account.order_template.list.button.add_template.label": "Ajouter un modèle de commande",
   "account.order_template.list.link.back": "Retour aux modèles de commande",
