@@ -7,9 +7,9 @@ kb_sync_latest_only
 
 # Building Blocks of the Intershop PWA Public Deployment
 
-## Intershop Commerce Suite (ICM)
+## Intershop Commerce Management (ICM)
 
-The Intershop Commerce Suite (ICM) provides the necessary data for running the Intershop PWA Public Deployment via a REST API.
+The Intershop Commerce Management (ICM) provides the necessary data for running the Intershop PWA Public Deployment via a REST API.
 Since release [0.23](https://github.com/intershop/intershop-pwa/releases/tag/0.23.0), it uses the new headless application type (see [Migrations - 0.22 to 0.23](../guides/migrations.md#022-to-023)).
 
 Using another backend is also possible as long as it provides a [compatible REST API](cms-integration.md#integration-with-an-external-cms).

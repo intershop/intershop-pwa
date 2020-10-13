@@ -106,3 +106,4 @@ For this reason, the PWA must be adapted to work with the Responsive Starter Sto
 
 - [Guide - Building and Running Server-Side Rendering](../guides/ssr-startup.md)
 - [Guide - Handle rewritten ICM URLs in Hybrid Mode](../guides/hybrid-approach-icm-url-rewriting.md)
+- [Concept - Multi-site handling](multi-site-handling.md)
