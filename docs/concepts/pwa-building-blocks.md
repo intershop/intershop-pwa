@@ -9,14 +9,14 @@ kb_sync_latest_only
 
 ## Intershop Commerce Management (ICM)
 
-The Intershop Commerce Management (ICM) provides the necessary data for running the Intershop PWA Public Deployment via a REST API.
+The Intershop Commerce Management (ICM) provides the necessary data for running the default Intershop PWA deployment via a REST API.
 Since release [0.23](https://github.com/intershop/intershop-pwa/releases/tag/0.23.0), it uses the new headless application type (see [Migrations - 0.22 to 0.23](../guides/migrations.md#022-to-023)).
 
 Using another backend is also possible as long as it provides a [compatible REST API](cms-integration.md#integration-with-an-external-cms).
 
 ## PWA - Server-Side Rendering (SSR)
 
-In order to facilitate server-side rendering (SSR), the demo deployment uses a dockerized [_express.js_](https://expressjs.com/) server running [Angular Universal](https://angular.io/guide/universal).
+In order to facilitate server-side rendering (SSR), the default deployment uses a dockerized [_express.js_](https://expressjs.com/) server running [Angular Universal](https://angular.io/guide/universal).
 On a new request, Angular Universal pre-renders the page and instantly provides the browser with meaningful content.
 For an architectural overview of how SSR functions in the Intershop PWA, see [Deployment Scenarios](deployment-angular.md).
 Pre-rendering pages enables a number of features:
@@ -29,7 +29,7 @@ For an overview of the ever-growing list of third party integrations relating to
 
 ## PWA - nginx
 
-As a first point of contact for any browser requests directed at the demo deployment, the custom [_nginx_](https://www.nginx.com/) reverse proxy webserver serves a number of functions.
+As a first point of contact for any browser requests directed at a default deployment, the custom [_nginx_](https://www.nginx.com/) reverse proxy webserver serves a number of functions.
 Each of these is seperately configurable (see [Building and Running nginx Docker Image](../guides/nginx-startup.md)).
 Nginx enables the following features to be used in a Intershop PWA deployment:
 
