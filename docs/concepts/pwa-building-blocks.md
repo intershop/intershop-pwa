@@ -47,10 +47,6 @@ The browser runs the bootstrapped/pre-rendered Angular application.
 After initially communicating with the _nginx_ webserver, later REST request are directed to the configured ICM endpoint or custom backend.
 For more information on the browser's role in rendering the Intershop PWA, see [Deployment Scenarios for Angular Applications](deployment-angular.md).
 
-## Comparison - Internal State
-
--...
-
 # Default Production Deployment
 
 Chaining the building blocks together results in the depicted system.
@@ -80,6 +76,19 @@ Read on for a step-by-step walkthrough of the initial connection request.
 Deployment without using nginx is theoretically possible, even though the many useful features of an nginx deployment are obviously forfeited.
 
 > :warning: Enabling [service workers](progressive-web-app.md#service-worker) is not possible without using nginx. The Intershop PWA will not function as intended if you do.
+
+## Stateless vs. Stateful Building Blocks
+
+For scalability and parallelization reasons, considering whether each building block is stateful or stateless is important.
+The **ICM** deals with large databases, caches write and read requests and therefore manages a high amount of internal state.
+Substituting ICM instances at runtime and managing fail-over capacities is not trivial.
+The **SSR container** acts like a pure function.
+Making the same request is always going to return the same result.
+This way, setting up multiple instances, rebooting containers at runtime or even setting up serverless deployments are all possible.
+It's important to keep the stateless nature of the Intershop PWA in mind when writing new code and expanding its functionalities.
+The **nginx container** is not technically stateless, since it handles caching of SSR responses.
+However, nginx is not functionally dependent on its internal state like the ICM is.
+If an nginx container were to lose its internal state, all cached responses would instead be passed on to the express.js server and be answered at the cost of a delay.
 
 # Further References
 
