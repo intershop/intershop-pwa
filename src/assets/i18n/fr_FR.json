@@ -83,7 +83,7 @@
     "=1": "1 Entrée",
     "other": "# Entrées"
   },
-  "account.approvallist.no_items_message": "Aucune commande à afficher.",
+  "account.approvallist.no_items_message": "Aucune réquisition à afficher.",
   "account.approvallist.table.approval_date": "Date d’approbation",
   "account.approvallist.table.approver": "Approbateur",
   "account.approvallist.table.date_of_order": "Date de création",
@@ -248,6 +248,7 @@
   "account.order_templates.delete_dialog.header": "Supprimer {{0}}",
   "account.order_templates.edit.confirmation": "Votre modèle de commande \"{{0}}\" a été mise à jour.",
   "account.order_templates.edit_form.save_button.text": "Enregistrer les modifications",
+  "account.orderdetails.approved.text": "approved by {{0}} on {{1}}",
   "account.orderdetails.breadcrumb": "Détails de la commande",
   "account.orderdetails.date_of_order.label": "Date de la commande",
   "account.orderdetails.headerDetails.default": "Ci-dessous, vous trouverez des détails sur les articles que vous avez commandés. Si vous avez commandé plus d’un article, veuillez noter que certains articles peuvent afficher une méthode d’expédition différente et/ou un état différent parce qu’ils sont expédiés dans un emballage séparé.",

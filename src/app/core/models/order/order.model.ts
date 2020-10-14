@@ -20,4 +20,9 @@ export interface Order extends AbstractBasket<OrderLineItem> {
   };
   statusCode: string;
   status: string;
+  approval?: {
+    approverFirstName: string;
+    approverLastName: string;
+    date: number;
+  };
 }

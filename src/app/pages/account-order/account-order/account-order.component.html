@@ -14,7 +14,25 @@
 <div *ngIf="order" class="section" data-testing-id="order-summary-info">
   <dl class="row dl-horizontal dl-separator">
     <dt class="col-6 col-sm-4 col-md-2">{{ 'account.orderdetails.order_number.label' | translate }}</dt>
-    <dd class="col-6 col-sm-8 col-md-10" data-testing-id="order-number">{{ order.documentNo }}</dd>
+    <dd class="col-6 col-sm-8 col-md-10" data-testing-id="order-number">
+      {{ order.documentNo }}
+      <span *ngIf="order.approval">
+        (
+        {{
+          'account.orderdetails.approved.text'
+            | translate
+              : {
+                  '0': order.approval.approverFirstName + ' ' + order.approval.approverLastName,
+                  '1': order.approval.date | ishDate: 'shortDate'
+                }
+        }}
+        -
+        <a [routerLink]="['../../../../requisitions/buyer', order.id, { status: 'approved' }]">{{
+          'account.order.view_this_order.link' | translate
+        }}</a>
+        )
+      </span>
+    </dd>
     <dt class="col-6 col-sm-4 col-md-2">{{ 'account.orderdetails.date_of_order.label' | translate }}</dt>
     <dd class="col-6 col-sm-8 col-md-10" data-testing-id="order-date">{{ order.creationDate | ishDate }}</dd>
     <dt class="col-6 col-sm-4 col-md-2">{{ 'account.orderdetails.order_status.label' | translate }}</dt>
