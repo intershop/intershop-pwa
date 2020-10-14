@@ -205,16 +205,16 @@
   "account.order_template.form.name.error.required": "Geben Sie einen Namen für die Bestellvorlage an.",
   "account.order_template.form.name.label": "Name der Bestellvorlage",
   "account.order_template.items": {
-    "=0": "0 Artikel",
-    "=1": "1 Artikel",
-    "other": "# Artikel"
+    "=0": "0",
+    "=1": "1",
+    "other": "#"
   },
   "account.order_template.list.button.add_template.label": "Bestellvorlage hinzufügen",
   "account.order_template.list.link.back": "Zurück zu Bestellvorlagen",
   "account.order_template.list.link.remove": "Löschen",
   "account.order_template.list.no_templates.text": "Derzeit haben Sie keine Bestellvorlagen.",
   "account.order_template.list.table.created": "Angelegt",
-  "account.order_template.list.table.item": "Artikelanzahl",
+  "account.order_template.list.table.item": "Bestellpositionen",
   "account.order_template.list.table.template": "Name der Vorlage",
   "account.order_template.move.added.text": "{{0}} wurde zu Bestellvorlage <a callback=\"callbackHideDialogModal\" href=\"{{2}}\">{{1}}</a> hinzugefügt.",
   "account.order_template.name.error.required": "Zum Erstellen einer neuen Bestellvorlage geben Sie bitte einen Namen ein.",
