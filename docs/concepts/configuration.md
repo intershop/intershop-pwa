@@ -51,8 +51,36 @@ As can be seen here, only build-time and deploy-time configuration parameter can
 
 ### Node.js Environment Variables
 
-When running the application in Angular Universal mode within a _Node.js_ environment, we can additionally access the process environment variables via _process.env._ This method provides a way to configure the application at deploy time, e.g., when using docker images.
-Configuration can then be consumed and passed to the client side via means of state transfer.
+When running the application in Angular Universal mode within a _Node.js_ environment, we can additionally access the process environment variables via _process.env_.
+This method provides a way to configure the application at deploy time, e.g., when using docker images.
+Configuration can then be consumed and passed to the client side via state transfer using Angular's [TransferState](https://angular.io/api/platform-browser/TransferState).
+
+To introduce a new `TransferState` key it should be added to the [`state-keys.ts`](../../src/app/core/configurations/state-keys.ts).
+
+```typescript
+export const NEW_KEY = makeStateKey<string>('newKey');
+```
+
+The actual transfer is handled by the [`app.server.module.ts`](../../src/app/app.server.module.ts) where the mapping of the environment variable is done.
+
+Accessing the transferred state in a service or a component is pretty straight forward:
+
+```typescript
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
+import { NEW_KEY } from 'ish-core/configurations/state-keys';
+
+newKey string;
+
+constructor(
+  @Inject(PLATFORM_ID) private platformId: string,
+  private transferState: TransferState,
+) {}
+
+if (isPlatformBrowser(this.platformId)) {
+  this.newKey = this.transferState.get<string>(NEW_KEY, 'default value');
+}
+```
 
 ### NgRx Configuration State
 
@@ -82,6 +110,8 @@ The most common way of supplying them can be implemented by using Angular CLI en
 
 An example for this kind of settings are breakpoint settings for the different device classes of the application touch points.
 
+Deployment settings can also be set by using `TransferState` to use environment variables of the deployment for the configuration of the application.
+
 ### Runtime Settings
 
 The most flexible kind of settings, which can also change when the application runs, are runtime settings.
@@ -91,6 +121,15 @@ Therefore only NgRx means should be used to supply them.
 Nevertheless, default values can be provided by environment files and can later be overridden by system environment variables.
 
 Everything managed in the NgRx state is accumulated on the server side and sent to the client side with the initial HTML response.
+
+To access these properties we provide the [`StatePropertiesService`](../../src/app/core/utils/state-transfer/state-properties.service.ts), which takes care of retrieving the configuration either from the configuration state, an environment variable or the environment.ts (in that order).
+
+### Configurations REST Resource
+
+ICM provides a Configurations REST resource - `/configurations` - that is supposed to provide all relevant runtime configurations that can be defined in the ICM back office and are required to configure a REST client as well.
+This includes service configurations, locales, basket preferences, etc.
+
+The ICM configurations information can be accessed through the [`getServerConfigParameter`](../../src/app/core/store/general/server-config/server-config.selectors.ts) selector.
 
 ## ICM Endpoint Configuration
 
@@ -190,10 +229,6 @@ export class ConfigurationModule {
   }
 }
 ```
-
-> ### Configuration REST Resource
->
-> We are currently planning to implement a Configuration REST resource in ICM so that all necessary runtime configuration can be defined in the ICM back office and consumed by each PWA deployment.
 
 # Further References
 
