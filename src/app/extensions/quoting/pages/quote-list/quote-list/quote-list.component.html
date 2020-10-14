@@ -14,17 +14,17 @@
       </thead>
 
       <tr *ngFor="let quote of quotes">
-        <td>
+        <td class="px-0">
           <a [routerLink]="[quote.id]">{{ quote.number }}</a>
         </td>
-        <td>
+        <td class="px-0">
           <a [routerLink]="[quote.id]">{{ quote.displayName }}</a>
         </td>
-        <td>{{ itemCount(quote) }}</td>
-        <td>{{ quote.creationDate | ishDate: 'shortDate' }}</td>
-        <td><ish-quote-expiration-date [quote]="quote"></ish-quote-expiration-date></td>
-        <td align="left" nowrap="nowrap"><ish-quote-state [quoteId]="quote.id"></ish-quote-state></td>
-        <td class="text-right">
+        <td class="px-0">{{ itemCount(quote) }}</td>
+        <td class="px-0">{{ quote.creationDate | ishDate: 'shortDate' }}</td>
+        <td class="px-0"><ish-quote-expiration-date [quote]="quote"></ish-quote-expiration-date></td>
+        <td class="px-0" align="left" nowrap="nowrap"><ish-quote-state [quoteId]="quote.id"></ish-quote-state></td>
+        <td class="px-0" class="text-right">
           <a
             class="btn-tool"
             [title]="'quote.list.delete.button.delete.label' | translate"
