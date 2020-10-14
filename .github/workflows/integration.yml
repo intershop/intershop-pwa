@@ -13,7 +13,7 @@ on:
       - 'docs/**'
 
 env:
-  ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
+  ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8080
 
 jobs:
   CancelPrevious:
