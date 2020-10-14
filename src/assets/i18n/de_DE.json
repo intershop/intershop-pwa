@@ -50,7 +50,7 @@
     "=1": "1 Eintrag",
     "other": "# Einträge"
   },
-  "account.approvallist.no_items_message": "Sie haben derzeit keine Bestellungen.",
+  "account.approvallist.no_items_message": "Sie haben derzeit keine Bestellanforderungen.",
   "account.approvallist.table.approval_date": "Genehmigungsdatum",
   "account.approvallist.table.approver": "Genehmiger",
   "account.approvallist.table.date_of_order": "Erstellungsdatum",
@@ -186,6 +186,7 @@
   "account.order_templates.delete_dialog.header": "{{0}} löschen",
   "account.order_templates.edit.confirmation": "Ihre Bestellvorlage \"{{0}}\" wurde aktualisiert.",
   "account.order_templates.edit_form.save_button.text": "Änderungen speichern",
+  "account.orderdetails.approved.text": "genehmigt von {{0}} am {{1}}",
   "account.orderdetails.breadcrumb": "Bestelldetails",
   "account.orderdetails.date_of_order.label": "Bestelldatum",
   "account.orderdetails.headerDetails.default": "Unten finden Sie Details zu Artikeln Ihrer Bestellung. Wenn Sie mehr als einen Artikel bestellt haben, beachten Sie, dass einige Artikel eine andere Versandart und/oder Bestellstatus besitzen, weil sie einzeln versandt werden.",

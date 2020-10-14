@@ -34,7 +34,14 @@ export class ApproverPageComponent implements OnInit, OnDestroy {
       this.status = status;
       switch (status) {
         case 'approved':
-          this.columnsToDisplay = ['requisitionNo', 'orderNo', 'creationDate', 'buyer', 'approvalDate', 'orderTotal'];
+          this.columnsToDisplay = [
+            'requisitionNo',
+            'orderNoSimple',
+            'creationDate',
+            'buyer',
+            'approvalDate',
+            'orderTotal',
+          ];
           break;
         case 'rejected':
           this.columnsToDisplay = [

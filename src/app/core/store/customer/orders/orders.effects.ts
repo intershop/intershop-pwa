@@ -181,7 +181,6 @@ export class OrdersEffects {
       withLatestFrom(this.store.pipe(select(getSelectedOrderId))),
       filter(([fromAction, selectedOrderId]) => fromAction && fromAction !== selectedOrderId),
       map(([orderId]) => orderId),
-      distinctUntilChanged(),
       map(orderId => selectOrder({ orderId }))
     )
   );
