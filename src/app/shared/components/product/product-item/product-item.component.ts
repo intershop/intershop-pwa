@@ -28,7 +28,7 @@ export type ProductItemContainerConfiguration = ProductTileComponentConfiguratio
 export const DEFAULT_CONFIGURATION: Readonly<ProductItemContainerConfiguration> = {
   readOnly: false,
   allowZeroQuantity: false,
-  quantityLabel: ' ',
+  quantityLabel: '',
   displayName: true,
   displayDescription: true,
   displaySKU: true,

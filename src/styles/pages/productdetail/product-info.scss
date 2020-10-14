@@ -12,10 +12,6 @@ a.product-title {
 .product-id {
   font-size: $font-size-corporate;
   color: $text-color-quarternary;
-
-  label {
-    padding-right: ($space-default / 3);
-  }
 }
 
 .product-info {
@@ -74,6 +70,7 @@ a.product-title {
   .product-quantity,
   .product-variation {
     label {
+      margin-right: $space-default / 3;
       text-align: left;
       text-transform: uppercase;
     }
