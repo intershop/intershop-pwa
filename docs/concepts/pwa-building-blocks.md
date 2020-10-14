@@ -77,6 +77,14 @@ Deployment without using nginx is theoretically possible, even though the many u
 
 > :warning: Enabling [service workers](progressive-web-app.md#service-worker) is not possible without using nginx. The Intershop PWA will not function as intended if you do.
 
+## Hiding the ICM Backend
+
+For security reasons, it may be desirable to hide the backend adress and prevent direct access to it.
+The Intershop PWA supports this functionality and the default deployment uses this feature.
+Instead of directing REST calls straight to the ICM (see step seven in the [Default Production Deployment](#default-production-deployment)), traffic is routed through the SSR container.
+The express.js server is set up to proxy requests.
+At startup, Angular Universal will replace all occurences of the ICM URL in its pre-rendered response so that the client-side PWA boots up without knowledge of the proxied adress.
+
 ## Stateless vs. Stateful Building Blocks
 
 For scalability and parallelization reasons, considering whether each building block is stateful or stateless is important.
