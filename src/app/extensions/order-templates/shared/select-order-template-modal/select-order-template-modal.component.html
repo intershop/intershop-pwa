@@ -1,94 +1,96 @@
 <ng-template #modal let-selectModal>
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2 class="modal-title">{{ headerTranslationKey | translate }}</h2>
-      <button
-        type="button"
-        class="close close-modal"
-        [attr.aria-label]="'dialog.close.text' | translate"
-        (click)="hide()"
-        [title]="'application.overlay.close.text' | translate"
-      >
-        <span aria-hidden="true">&times;</span>
+  <div class="modal-header">
+    <h2 class="modal-title">{{ headerTranslationKey | translate }}</h2>
+    <button
+      type="button"
+      class="close"
+      [title]="'dialog.close.text' | translate"
+      [attr.aria-label]="'dialog.close.text' | translate"
+      (click)="hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <ng-container *ngIf="showForm; else showSuccess">
+    <div class="modal-body">
+      <form [formGroup]="updateOrderTemplateForm" (ngSubmit)="submitForm()">
+        <ng-container
+          *ngIf="orderTemplateOptions === undefined || orderTemplateOptions.length === 0; else radioButtonForm"
+        >
+          <ish-input
+            controlName="newOrderTemplate"
+            [errorMessages]="{ required: 'account.order_template.name.error.required' }"
+            [form]="updateOrderTemplateForm"
+          ></ish-input>
+        </ng-container>
+
+        <ng-template #radioButtonForm>
+          <div class="form-group">
+            <div class="radio" *ngFor="let option of orderTemplateOptions; let i = index">
+              <label>
+                <input
+                  type="radio"
+                  name="orderTemplate"
+                  formControlName="orderTemplate"
+                  [value]="option.value"
+                  id="orderTemplate_{{ i }}"
+                  [attr.data-testing-id]="option.label"
+                />
+                {{ option.label }}
+              </label>
+            </div>
+            <div class="radio">
+              <label class="d-flex align-items-center">
+                <input
+                  type="radio"
+                  name="orderTemplate"
+                  formControlName="orderTemplate"
+                  value="newTemplate"
+                  class="mb-3"
+                  id="orderTemplate"
+                />
+                <ish-input
+                  class="w-75"
+                  controlName="newOrderTemplate"
+                  [disabled]="newOrderTemplateDisabled ? 'true' : null"
+                  [errorMessages]="{ required: 'account.order_template.name.error.required' }"
+                  [form]="updateOrderTemplateForm"
+                  inputClass="col-md-12"
+                ></ish-input>
+              </label>
+            </div>
+          </div>
+        </ng-template>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="submitForm()">
+        {{ submitButtonTranslationKey | translate }}
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="hide()">
+        {{ 'account.cancel.button.label' | translate }}
       </button>
     </div>
-    <ng-container *ngIf="showForm; else showSuccess">
-      <form [formGroup]="updateOrderTemplateForm" (ngSubmit)="submitForm()">
-        <div class="modal-body">
-          <ng-container
-            *ngIf="orderTemplateOptions === undefined || orderTemplateOptions.length === 0; else radioButtonForm"
-          >
-            <ish-input
-              controlName="newOrderTemplate"
-              [errorMessages]="{ required: 'account.order_template.name.error.required' }"
-              [form]="updateOrderTemplateForm"
-            ></ish-input>
-          </ng-container>
+  </ng-container>
 
-          <ng-template #radioButtonForm>
-            <div class="form-group">
-              <div class="radio" *ngFor="let option of orderTemplateOptions; let i = index">
-                <label>
-                  <input
-                    type="radio"
-                    name="orderTemplate"
-                    formControlName="orderTemplate"
-                    [value]="option.value"
-                    id="orderTemplate_{{ i }}"
-                    [attr.data-testing-id]="option.label"
-                  />
-                  {{ option.label }}
-                </label>
-              </div>
-              <div class="radio">
-                <label class="d-flex align-items-center">
-                  <input
-                    type="radio"
-                    name="orderTemplate"
-                    formControlName="orderTemplate"
-                    value="newTemplate"
-                    class="mb-3"
-                    id="orderTemplate"
-                  />
-                  <ish-input
-                    class="w-75"
-                    controlName="newOrderTemplate"
-                    [disabled]="newOrderTemplateDisabled ? 'true' : null"
-                    [errorMessages]="{ required: 'account.order_template.name.error.required' }"
-                    [form]="updateOrderTemplateForm"
-                    inputClass="col-md-12"
-                  ></ish-input>
-                </label>
-              </div>
-            </div>
-          </ng-template>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-primary" type="submit">
-            {{ submitButtonTranslationKey | translate }}
-          </button>
-          <button class="btn btn-secondary" type="button" (click)="hide()">
-            {{ 'account.cancel.button.label' | translate }}
-          </button>
-        </div>
-      </form>
-    </ng-container>
-    <ng-template #showSuccess>
-      <div class="modal-body">
-        <span
-          [ishServerHtml]="
-            successTranslationKey
-              | translate: { '0': product.name, '1': selectedOrderTemplateTitle, '2': selectedOrderTemplateRoute }
-          "
-          [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
-          data-testing-id="order-template-success-link"
-        ></span>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" (click)="hide()">
-          {{ 'store.dialog.button.ok' | translate }}
-        </button>
-      </div>
-    </ng-template>
-  </div>
+  <ng-template #showSuccess>
+    <div class="modal-body">
+      <span
+        [ishServerHtml]="
+          successTranslationKey
+            | translate: { '0': product.name, '1': selectedOrderTemplateTitle, '2': selectedOrderTemplateRoute }
+        "
+        [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
+        data-testing-id="order-template-success-link"
+      ></span>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="hide()">
+        {{ 'store.dialog.button.ok' | translate }}
+      </button>
+    </div>
+  </ng-template>
 </ng-template>

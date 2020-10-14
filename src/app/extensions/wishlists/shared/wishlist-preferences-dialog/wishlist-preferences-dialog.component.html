@@ -1,69 +1,69 @@
 <ng-template #modal let-addModal>
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2 class="modal-title">{{ modalHeader | translate }}</h2>
-      <button class="close" (click)="hide()" [title]="'application.overlay.close.text' | translate" aria-label="Close">
-        <span aria-hidden="true">×</span>
-      </button>
-    </div>
+  <div class="modal-header">
+    <h2 class="modal-title">{{ modalHeader | translate }}</h2>
+    <button
+      type="button"
+      class="close"
+      [title]="'dialog.close.text' | translate"
+      [attr.aria-label]="'dialog.close.text' | translate"
+      (click)="hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
 
+  <div class="modal-body">
     <form [formGroup]="wishListForm" (ngSubmit)="submitWishlistForm(); addModal.close('')">
-      <div class="modal-body">
-        <!-- TODO: Show server error -->
-        <ish-input
-          [form]="wishListForm"
-          controlName="title"
-          label="account.wishlists.wishlist_form.name.label"
-          markRequiredLabel="off"
-          maxlength="35"
-          [errorMessages]="{
-            required: 'account.wishlists.wishlist_form.name.error.required',
-            maxlength: 'account.wishlists.wishlist_form.name.error.maxlength'
-          }"
-          data-testing-id="wishlist-dialog-name"
-        ></ish-input>
-        <div class="offset-md-4 col row">
-          <div class="d-flex align-items-center">
-            <ish-checkbox
-              [form]="wishListForm"
-              controlName="preferred"
-              label="account.wishlists.wishlist_form.preferred.label"
-              data-testing-id="wishlist-dialog-preferred"
-            ></ish-checkbox>
-            <ng-template #preferredDetails>
-              <span innerHTML="{{ 'account.wishlists.wishlist_form.preferred.tooltip.content' | translate }}"></span>
-            </ng-template>
+      <!-- TODO: Show server error -->
+      <ish-input
+        [form]="wishListForm"
+        controlName="title"
+        label="account.wishlists.wishlist_form.name.label"
+        markRequiredLabel="off"
+        maxlength="35"
+        [errorMessages]="{
+          required: 'account.wishlists.wishlist_form.name.error.required',
+          maxlength: 'account.wishlists.wishlist_form.name.error.maxlength'
+        }"
+        data-testing-id="wishlist-dialog-name"
+      ></ish-input>
+      <div class="offset-md-4 col row">
+        <div class="d-flex align-items-center">
+          <ish-checkbox
+            [form]="wishListForm"
+            controlName="preferred"
+            label="account.wishlists.wishlist_form.preferred.label"
+            data-testing-id="wishlist-dialog-preferred"
+          ></ish-checkbox>
+          <ng-template #preferredDetails>
+            <span innerHTML="{{ 'account.wishlists.wishlist_form.preferred.tooltip.content' | translate }}"></span>
+          </ng-template>
 
-            <a
-              [ngbPopover]="preferredDetails"
-              class="details-tooltip"
-              placement="top"
-              popoverTitle="{{ 'account.wishlists.wishlist_form.preferred.tooltip.headline' | translate }}"
-              >{{ 'account.wishlists.wishlist_form.preferred.tooltip.linktext' | translate }}
-              <fa-icon [icon]="['fas', 'info-circle']"></fa-icon
-            ></a>
-          </div>
+          <a
+            [ngbPopover]="preferredDetails"
+            class="details-tooltip"
+            placement="top"
+            popoverTitle="{{ 'account.wishlists.wishlist_form.preferred.tooltip.headline' | translate }}"
+            >{{ 'account.wishlists.wishlist_form.preferred.tooltip.linktext' | translate }}
+            <fa-icon [icon]="['fas', 'info-circle']"></fa-icon
+          ></a>
         </div>
       </div>
     </form>
-    <div class="modal-footer">
-      <button
-        class="btn btn-primary"
-        type="submit"
-        [disabled]="formDisabled"
-        (click)="submitWishlistForm()"
-        data-testing-id="wishlist-dialog-submit"
-      >
-        {{ primaryButton | translate }}
-      </button>
-      <button
-        class="btn btn-secondary"
-        type="button"
-        [name]="'account.wishlists.wishlist_form.cancel_button.text' | translate"
-        (click)="addModal.close('')"
-      >
-        {{ 'account.wishlists.wishlist_form.cancel_button.text' | translate }}
-      </button>
-    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-primary"
+      [disabled]="formDisabled"
+      (click)="submitWishlistForm()"
+      data-testing-id="wishlist-dialog-submit"
+    >
+      {{ primaryButton | translate }}
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="addModal.close('')">
+      {{ 'account.wishlists.wishlist_form.cancel_button.text' | translate }}
+    </button>
   </div>
 </ng-template>

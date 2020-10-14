@@ -1,15 +1,17 @@
 <div class="login-modal">
   <div class="modal-header">
-    <h2>{{ 'account.login.signin.heading' | translate }}</h2>
+    <h2 class="modal-title">{{ 'account.login.signin.heading' | translate }}</h2>
     <button
       type="button"
-      class="close close-modal"
+      class="close"
+      [title]="'dialog.close.text' | translate"
       [attr.aria-label]="'dialog.close.text' | translate"
       (click)="hide()"
     >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
+
   <div class="modal-body">
     <div data-testing-id="account-login-page">
       <p *ngIf="loginMessageKey" class="alert alert-info">
