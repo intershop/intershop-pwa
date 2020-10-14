@@ -6,7 +6,10 @@
     <ng-container *ngIf="requisition.approval?.statusCode === 'approved'">
       <dt class="col-6 col-sm-4 col-md-2">{{ 'approval.detailspage.order_reference_id.label' | translate }}</dt>
       <dd class="col-6 col-sm-8 col-md-10">
-        <a [routerLink]="'/account/orders/' + requisition.id">{{ requisition.orderNo }}</a>
+        <a *ngIf="view === 'buyer'; else noOrderLink" [routerLink]="'/account/orders/' + requisition.id">{{
+          requisition.orderNo
+        }}</a>
+        <ng-template #noOrderLink>{{ requisition.orderNo }}</ng-template>
       </dd>
     </ng-container>
 

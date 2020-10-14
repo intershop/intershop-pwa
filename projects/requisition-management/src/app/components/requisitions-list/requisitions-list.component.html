@@ -26,6 +26,16 @@
       </td>
     </ng-container>
 
+    <!-- Order No - No link -->
+    <ng-container cdkColumnDef="orderNoSimple">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-no-simple">
+        {{ 'account.approvallist.table.no_of_order' | translate }}
+      </th>
+      <td cdk-cell *cdkCellDef="let requisition" [attr.data-th]="'account.approvallist.table.no_of_order' | translate">
+        {{ requisition.orderNo }}
+      </td>
+    </ng-container>
+
     <!-- Creation Date -->
     <ng-container cdkColumnDef="creationDate">
       <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-creation-date">
