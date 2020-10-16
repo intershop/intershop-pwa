@@ -144,3 +144,14 @@ You can re-use variables from global styling on component level by adding import
 
 When updating dependencies and resolving conflicts inside of `package-lock.json`, always **accept Intershop's changes** first.
 After that run `npm install` to regenerate the file.
+
+### Cypress Tests
+
+We currently don't support specific adaptions for customizing cypress tests in projects.
+In theory the customized PWA project can re-use our Page Objects without much adaptions if the customized PWA also uses the same selectors for css classes and data-testing-ids.
+
+Specs should be copied and adapted for the project to use correct demo data.
+When executing tests, the test itself requires an appropriate demo server to be launched before the run.
+We currently use patterns in the test name to determine the channel for which the test can be run.
+E.g. `login-user.mock.b2c.e2e-spec.ts` can be run on mocked data (no ICM) and a PWA configured with the inSPIRED B2C channel.
+The same system can be adopted for customization projects.
