@@ -9,7 +9,12 @@
   </ul>
 </div>
 
-<h1>{{ 'approval.detailspage.heading' | translate }}</h1>
+<h1>
+  <ng-container *ngIf="view === 'approver'; else requisitionTitle">{{
+    'approval.detailspage.approval.heading' | translate
+  }}</ng-container>
+  <ng-template #requisitionTitle>{{ 'approval.detailspage.requisition.heading' | translate }}</ng-template>
+</h1>
 <ish-error-message [error]="error$ | async"></ish-error-message>
 
 <div *ngIf="requisition$ | async as requisition" class="section loading-container" data-testing-id="order-summary-info">
