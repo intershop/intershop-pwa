@@ -5,6 +5,7 @@ import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
 import { ActionReducerMap, MetaReducer, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
+import { configurationMeta } from 'ish-core/configurations/configuration.meta';
 import { ngrxStateTransferMeta } from 'ish-core/configurations/ngrx-state-transfer';
 import { ConfigurationGuard } from 'ish-core/guards/configuration.guard';
 import { addGlobalGuard } from 'ish-core/utils/routing';
@@ -30,7 +31,10 @@ const coreReducers: ActionReducerMap<CoreState> = {
 
 const coreEffects = [ErrorEffects, ViewconfEffects, ConfigurationEffects, MessagesEffects];
 
-const coreMetaReducers: MetaReducer<CoreState>[] = [ngrxStateTransferMeta];
+const coreMetaReducers: MetaReducer<CoreState>[] = [
+  ngrxStateTransferMeta,
+  ...(environment.production ? [] : [configurationMeta]),
+];
 
 @NgModule({
   imports: [
