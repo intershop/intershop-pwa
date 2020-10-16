@@ -9,7 +9,7 @@ kb_sync_latest_only
 
 ## Intershop Commerce Management (ICM)
 
-The Intershop Commerce Management (ICM) provides the necessary data for running the default Intershop PWA deployment via a REST API.
+The Intershop Commerce Management (ICM) provides the necessary data for running the [default Intershop PWA deployment](https://intershoppwa.azurewebsites.net/home) via a REST API.
 Since release [0.23](https://github.com/intershop/intershop-pwa/releases/tag/0.23.0), it uses the new headless application type (see [Migrations - 0.22 to 0.23](../guides/migrations.md#022-to-023)).
 
 Using another backend is also possible as long as it provides a [compatible REST API](cms-integration.md#integration-with-an-external-cms).
@@ -80,10 +80,11 @@ Deployment without using nginx is theoretically possible, even though the many u
 ## Hiding the ICM Backend
 
 For security reasons, it may be desirable to hide the backend adress and prevent direct access to it.
-The Intershop PWA supports this functionality and the default deployment uses this feature.
+The Intershop PWA supports this functionality and the [default deployment](https://intershoppwa.azurewebsites.net/home) uses this feature.
+To enable it, set the `PROXY_ICM` environment variable on the [SSR container](../guides/ssr-startup.md) to a new URL.
 Instead of directing REST calls straight to the ICM (see step seven in the [Default Production Deployment](#default-production-deployment)), traffic is routed through the SSR container.
 The express.js server is set up to proxy requests.
-At startup, Angular Universal will replace all occurences of the ICM URL in its pre-rendered response so that the client-side PWA boots up without knowledge of the proxied adress.
+Upon completing the Angular Universal pre-rendering, all URLs referring explicitly to the used ICM (links, images, configuration) are replaced with URLs to the proxy.
 
 ## Stateless vs. Stateful Building Blocks
 
