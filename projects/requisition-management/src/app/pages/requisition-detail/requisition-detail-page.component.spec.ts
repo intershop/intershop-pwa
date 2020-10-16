@@ -80,9 +80,7 @@ describe('Requisition Detail Page Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display only the title if there is no requisition given', () => {
-    when(reqFacade.requisition$).thenReturn();
-
+  it('should display the requisition title for default', () => {
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
       <div class="float-right">
@@ -95,7 +93,7 @@ describe('Requisition Detail Page Component', () => {
           </li>
         </ul>
       </div>
-      <h1>approval.detailspage.heading</h1>
+      <h1>approval.detailspage.requisition.heading</h1>
       <ish-error-message></ish-error-message>
     `);
   });

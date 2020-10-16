@@ -64,10 +64,12 @@ describe('Requisition Summary Component', () => {
       NodeList [
         <dd class="col-6 col-sm-8 col-md-10">4712</dd>,
         <dd class="col-6 col-sm-8 col-md-10"></dd>,
-        <dd class="col-6 col-sm-8 col-md-10">Jack Link , Bernhhard Boldner (Approval Pending)</dd>,
+        <dd class="col-6 col-sm-8 col-md-10">Jack Link , Bernhhard Boldner</dd>,
         <dd class="col-6 col-sm-8 col-md-10"></dd>,
         <dd class="col-6 col-sm-8 col-md-10">
-        <span class="border border-secondary badge badge-secondary text-capitalize">
+        <span
+          class="border border-secondary badge badge-secondary text-capitalize border-warning badge-warning"
+        >
           Approval Pending</span
         >
       </dd>,
@@ -86,7 +88,9 @@ describe('Requisition Summary Component', () => {
         <dd class="col-6 col-sm-8 col-md-10">Patricia Miller</dd>,
         <dd class="col-6 col-sm-8 col-md-10"></dd>,
         <dd class="col-6 col-sm-8 col-md-10">
-        <span class="border border-secondary badge badge-secondary text-capitalize">
+        <span
+          class="border border-secondary badge badge-secondary text-capitalize border-warning badge-warning"
+        >
           Approval Pending</span
         >
       </dd>,

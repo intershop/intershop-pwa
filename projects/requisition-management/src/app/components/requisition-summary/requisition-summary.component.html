@@ -26,7 +26,6 @@
           <ng-container *ngFor="let approver of requisition.approval?.customerApprovers; let i = index">
             <ng-container *ngIf="i > 0">, </ng-container>{{ approver.firstName }} {{ approver.lastName }}
           </ng-container>
-          ({{ requisition.approval.status }})
         </ng-template>
       </dd>
     </ng-container>
@@ -57,7 +56,8 @@
       <span
         class="border border-secondary badge badge-secondary text-capitalize"
         [ngClass]="{
-          'border-primary badge-primary': requisition.approval.statusCode === 'approved',
+          'border-warning badge-warning': requisition.approval.statusCode === 'pending',
+          'border-success badge-success': requisition.approval.statusCode === 'approved',
           'border-danger badge-danger': requisition.approval.statusCode === 'rejected'
         }"
       >
