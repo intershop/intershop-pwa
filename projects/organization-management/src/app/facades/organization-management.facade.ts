@@ -9,6 +9,12 @@ import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 import { B2bUser } from '../models/b2b-user/b2b-user.model';
 import { UserBudgets } from '../models/user-budgets/user-budgets.model';
 import {
+  getCurrentUserBudget,
+  getCurrentUserBudgetError,
+  getCurrentUserBudgetLoading,
+  loadBudget,
+} from '../store/budget';
+import {
   addUser,
   deleteUser,
   getRole,
@@ -32,6 +38,14 @@ export class OrganizationManagementFacade {
   usersLoading$ = this.store.pipe(select(getUsersLoading));
   selectedUser$ = this.store.pipe(select(getSelectedUser));
   users$ = this.store.pipe(select(getUsers));
+
+  loggedInUserBudget$() {
+    this.store.dispatch(loadBudget());
+    return this.store.pipe(select(getCurrentUserBudget));
+  }
+
+  loggedInUserBudgetLoading$ = this.store.pipe(select(getCurrentUserBudgetLoading));
+  loggedInUserBudgetError$ = this.store.pipe(select(getCurrentUserBudgetError));
 
   addUser(user: B2bUser) {
     this.store.dispatch(

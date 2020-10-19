@@ -6,41 +6,58 @@
     "
     data-testing-id="personal-message-b2b"
   ></h1>
+
+  <p>{{ 'account.overview.message_b2b.text' | translate }}</p>
 </ng-container>
+
 <ng-template #personalCustomerMessage>
   <h1
     [innerHTML]="'account.overview.personal_message.text' | translate: { '0': user.firstName }"
     data-testing-id="personal-message-default"
   ></h1>
+
+  <p>{{ 'account.overview.message.text' | translate }}</p>
+
+  <div class="row account-dashboard">
+    <div class="col-6 col-sm-4 col-md-3 dashboard-item">
+      <a routerLink="/account/orders">
+        <div class="circle-icon"><fa-icon [icon]="['fas', 'list-alt']"></fa-icon></div>
+        {{ 'account.order_history.link' | translate }}
+      </a>
+    </div>
+    <div *ishFeature="'wishlists'" class="col-6 col-sm-4 col-md-3 dashboard-item">
+      <a routerLink="/account/wishlists">
+        <div class="circle-icon"><fa-icon [icon]="['fas', 'heart']"></fa-icon></div>
+        {{ 'account.wishlists.link' | translate }}
+      </a>
+    </div>
+    <div class="col-6 col-sm-4 col-md-3 dashboard-item">
+      <a routerLink="/account/addresses">
+        <div class="circle-icon"><fa-icon [icon]="['fas', 'address-book']"></fa-icon></div>
+        {{ 'account.saved_addresses.link' | translate }}
+      </a>
+    </div>
+    <div class="col-6 col-sm-4 col-md-3 dashboard-item">
+      <a routerLink="/account/profile">
+        <div class="circle-icon"><fa-icon [icon]="['fas', 'cog']"></fa-icon></div>
+        {{ 'account.profile.link' | translate }}
+      </a>
+    </div>
+  </div>
 </ng-template>
 
-<p>{{ 'account.overview.message.text' | translate }}</p>
-
-<div class="row account-dashboard">
-  <div class="col-6 col-sm-4 col-md-3 dashboard-item">
-    <a routerLink="/account/orders">
-      <div class="circle-icon"><fa-icon [icon]="['fas', 'list-alt']"></fa-icon></div>
-      {{ 'account.order_history.link' | translate }}
-    </a>
+<!-- Budget, Requisition, Approval & Quoting Widgets -->
+<div class="row">
+  <ish-lazy-budget-widget class="col-12"></ish-lazy-budget-widget>
+  <ish-lazy-requisition-widget
+    class="col-xs-12 col-md"
+    *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting"
+  ></ish-lazy-requisition-widget>
+  <div *ishIsAuthorizedTo="'APP_B2B_ORDER_APPROVAL'" class="col-xs-12 col-md">
+    <ish-lazy-approval-widget *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting">
+    </ish-lazy-approval-widget>
   </div>
-  <div *ishFeature="'wishlists'" class="col-6 col-sm-4 col-md-3 dashboard-item">
-    <a routerLink="/account/wishlists">
-      <div class="circle-icon"><fa-icon [icon]="['fas', 'heart']"></fa-icon></div>
-      {{ 'account.wishlists.link' | translate }}
-    </a>
-  </div>
-  <div class="col-6 col-sm-4 col-md-3 dashboard-item">
-    <a routerLink="/account/addresses">
-      <div class="circle-icon"><fa-icon [icon]="['fas', 'address-book']"></fa-icon></div>
-      {{ 'account.saved_addresses.link' | translate }}
-    </a>
-  </div>
-  <div class="col-6 col-sm-4 col-md-3 dashboard-item">
-    <a routerLink="/account/profile">
-      <div class="circle-icon"><fa-icon [icon]="['fas', 'cog']"></fa-icon></div>
-      {{ 'account.profile.link' | translate }}
-    </a>
-  </div>
+  <ish-lazy-quote-widget class="col-xs-12 col-md"></ish-lazy-quote-widget>
 </div>
 
 <!-- Order Widget - displays latest orders as list -->
@@ -48,9 +65,6 @@
 
 <!-- Wishlist Widget - displays all unique items from all wishlists (if wishlists feature is enabled) -->
 <ish-lazy-wishlist-widget></ish-lazy-wishlist-widget>
-
-<!-- Quote Widget - displays different quote states if quoting is enabled -->
-<ish-lazy-quote-widget></ish-lazy-quote-widget>
 
 <p class="form-text">
   {{ 'account.overview.note.heading' | translate }}:

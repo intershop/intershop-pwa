@@ -7,7 +7,7 @@ import { User } from 'ish-core/models/user/user.model';
 
 export type RequisitionStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
 
-export type RequisitionViewer = 'buyer' | 'approver';
+export type RequisitionViewer = 'buyer' | 'approver' | 'all';
 
 export interface RequisitionApproval {
   status: string;

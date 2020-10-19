@@ -33,6 +33,13 @@ describe('Requisitions Service', () => {
     });
   });
 
+  it('should call getRequsitions of API service twice when fetching requisitions with view "all" ', done => {
+    requisitionsService.getRequisitions('all', 'PENDING').subscribe(() => {
+      verify(apiServiceMock.get(anything(), anything())).twice();
+      done();
+    });
+  });
+
   it('should call getRequisition of customer API when fetching a requisition', done => {
     requisitionsService.getRequisition('4712').subscribe(() => {
       verify(apiServiceMock.get('requisitions/4712', anything())).once();

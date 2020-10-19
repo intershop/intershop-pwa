@@ -149,4 +149,21 @@ describe('Users Service', () => {
         done();
       });
   });
+
+  it('should call get of apiService to get budgets for current user and set empty spentBudget', done => {
+    when(apiService.b2bUserEndpoint()).thenReturn(instance(apiService));
+    when(apiService.get('budgets')).thenReturn(of({}));
+
+    usersService.getCurrentUserBudgets().subscribe(userBudget => {
+      verify(apiService.get('budgets')).once();
+      expect(userBudget.spentBudget).toMatchInlineSnapshot(`
+        Object {
+          "currency": undefined,
+          "type": "Money",
+          "value": 0,
+        }
+      `);
+      done();
+    });
+  });
 });

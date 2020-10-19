@@ -1,21 +1,21 @@
 <div *ngIf="budget">
   <dl class="row dl-horizontal dl-separator">
-    <dt class="col-12 col-sm-7">{{ 'account.user.new.order_spend_limit.label' | translate }}</dt>
-    <dd *ngIf="budget.orderSpentLimit; else noLimit" class="col-5 column-price">
+    <dt class="col-7">{{ 'account.user.new.order_spend_limit.label' | translate }}</dt>
+    <dd *ngIf="budget.orderSpentLimit; else noLimit" class="col-5 column-price font-weight-bold text-right">
       {{ budget.orderSpentLimit | ishPrice }}
     </dd>
     <ng-template #noLimit>
-      <dd class="col-5 column-price">{{ 'account.budget.unlimited' | translate }}</dd>
+      <dd class="col-5 column-price font-weight-bold text-right">{{ 'account.budget.unlimited' | translate }}</dd>
     </ng-template>
   </dl>
 
   <ng-container *ngIf="budget.budget; else noBudget">
     <dl class="row dl-horizontal dl-separator">
-      <dt class="col-12 col-sm-7">{{ 'account.budget.type.' + budget.budgetPeriod + '.label' | translate }}</dt>
-      <dd class="col-5 column-price">{{ budget.budget | ishPrice }}</dd>
+      <dt class="col-7">{{ 'account.budget.type.' + budget.budgetPeriod + '.label' | translate }}</dt>
+      <dd class="col-5 column-price font-weight-bold text-right">{{ budget.budget | ishPrice }}</dd>
     </dl>
     <div [ngbPopover]="BudgetPopover" placement="top" data-testing-id="user-budget-popover">
-      <div class="progress">
+      <div class="progress" [ngClass]="progressBarClass">
         <div
           class="progress-bar"
           [ngClass]="{ 'bg-danger': usedBudgetPercentage * 100 > 90 }"
@@ -54,6 +54,6 @@
 <ng-template #noBudget>
   <dl class="row dl-horizontal dl-separator">
     <dt class="col-12 col-sm-7">{{ 'account.user.budget.label' | translate }}</dt>
-    <dd class="col-5 column-price">{{ 'account.budget.unlimited' | translate }}</dd>
+    <dd class="col-5 column-price font-weight-bold">{{ 'account.budget.unlimited' | translate }}</dd>
   </dl>
 </ng-template>

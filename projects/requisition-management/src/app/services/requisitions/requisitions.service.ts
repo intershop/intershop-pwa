@@ -1,6 +1,6 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, forkJoin, of, throwError } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 
 import { OrderData } from 'ish-core/models/order/order.interface';
@@ -49,6 +49,9 @@ export class RequisitionsService {
    * @returns        Requisitions of the customer with their main attributes. To get all properties the getRequisition call is needed.
    */
   getRequisitions(view?: RequisitionViewer, status?: RequisitionStatus): Observable<Requisition[]> {
+    if (view === 'all') {
+      return this.getAllRequsitionsByStatus(status);
+    }
     let params = new HttpParams();
     if (view) {
       params = params.set('view', view);
@@ -61,6 +64,16 @@ export class RequisitionsService {
       .b2bUserEndpoint()
       .get<RequisitionData>(`requisitions`, { params })
       .pipe(map(data => this.requisitionMapper.fromListData(data)));
+  }
+
+  private getAllRequsitionsByStatus(status?: RequisitionStatus): Observable<Requisition[]> {
+    return forkJoin([this.getRequisitions('buyer', status), this.getRequisitions('approver', status)]).pipe(
+      map(([reqsBuyer, reqsApprover]) =>
+        reqsBuyer
+          ?.concat(reqsApprover)
+          .filter((requisition, index, array) => array.findIndex(r => r.id === requisition.id) === index)
+      )
+    );
   }
 
   /**
