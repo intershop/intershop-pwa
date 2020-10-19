@@ -23,15 +23,52 @@ For HTTP, the server will run on default port 80.
 If HTTPS is chosen as an upstream, it will run on default port 443.
 In the latter case the files `server.key` and `server.crt` have to be supplied in the container folder `/etx/nginx` (either by volume mapping with `docker run` or in the image itself by `docker build`).
 
-If the nginx container is run without further configuration, the default Angular CLI environment properties are not overridden.
-Multiple PWA channels can be set up with the following environment variables:
+### Multi-Channel
 
-- `PWA_X_SUBDOMAIN`, `PWA_X_TOPLEVELDOMAIN` or `PWA_X_DOMAIN` for the channel domain
-- `PWA_X_CHANNEL` for the channel name
-- `PWA_X_APPLICATION` for the application name
-- `PWA_X_LANG` for the default locale in the form of `lang_COUNTRY`
-- `PWA_X_FEATURES` for a comma separated list of active feature toggles
-- `PWA_X_THEME` for setting the theme of the channel
+If the nginx container is run without further configuration, the default Angular CLI environment properties are not overridden.
+Multiple PWA channels can be set up by supplying a [YAML](https://yaml.org) configuration listing all domains the PWA should work for.
+
+The first way of supplying a configuration for domains is to add multiple domain configuration nodes and specify properties:
+
+```yaml
+'domain1':
+  channel: channel1
+  application: app1
+  features: f1,f2,f3
+  lang: la_CO
+  theme: name|color
+```
+
+The domain is interpreted as a regular expression.
+Subdomains (`b2b\..+`) as well as top level domains (`.+\.com`) can be supplied.
+The `channel` property is also mandatory.
+All other properties are optional.
+
+Multiple channels can also be configured via context paths, which re-configure the PWA upstream to use a different `baseHref` for each channel.
+
+```yaml
+'domain2':
+  - baseHref: /us
+    channel: channelUS
+    lang: en_US
+  - baseHref: /de
+    channel: channelDE
+    lang: de_DE
+```
+
+The domain has to be supplied, to match all domains use `.+`.
+The parameters `baseHref` and `channel` are mandatory.
+`baseHref` must start with `/`.
+Also note that context path channels have to be supplied as a list.
+The first entry is chosen as default channel, if the website is accessed without supplying a channel.
+
+This configuration can be supplied simply by setting the environment variable `MULTI_CHANNEL`.
+Alternatively, the source can be supplied by setting `MULTI_CHANNEL_SOURCE` in any [supported format by gomplate](https://docs.gomplate.ca/datasources).
+If no environment variables for multi-channel configuration are given, the configuration will fall back to the content of [`nginx/multi-channel.yaml`](../../nginx/multi-channel.yaml), which can also be customized.
+
+> :warning: Multi-Channel configuration with context paths does not work in conjunction with [service workers](../concepts/progressive-web-app.md#service-worker)
+
+### Other
 
 The page speed configuration can also be overridden:
 

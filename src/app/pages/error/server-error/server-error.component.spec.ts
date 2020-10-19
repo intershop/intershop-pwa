@@ -1,7 +1,11 @@
+import { APP_BASE_HREF } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { instance, mock } from 'ts-mockito';
 
-import { SafeHtmlPipe } from 'ish-core/pipes/safe-html.pipe';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { ServerErrorComponent } from './server-error.component';
@@ -14,8 +18,12 @@ describe('Server Error Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [SafeHtmlPipe, ServerErrorComponent],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      declarations: [ServerErrorComponent, ServerHtmlDirective],
+      providers: [
+        { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
+        { provide: APP_BASE_HREF, useValue: '/' },
+      ],
     }).compileComponents();
   });
 

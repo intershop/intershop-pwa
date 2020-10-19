@@ -17,3 +17,4 @@ export { environment } from './environments/environment';
 export { HYBRID_MAPPING_TABLE, ICM_WEB_URL } from './hybrid/default-url-mapping-table';
 
 export { renderModule, renderModuleFactory } from '@angular/platform-server';
+export { APP_BASE_HREF } from '@angular/common';

@@ -266,6 +266,24 @@ deploy_demo_nginx:
     GIT_STRATEGY: none
     SERVICE: 'github-develop-nginx'
     IMAGE: '${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}'
+    MULTI_CHANNEL: |
+      .+\.net:
+        channel: inSPIRED-inTRONICS-Site
+        lang: en_US
+      .+\.de:
+        channel: inSPIRED-inTRONICS-Site
+        lang: de_DE
+      .+\.com:
+        channel: inSPIRED-inTRONICS_Business-Site
+        lang: de_DE
+        features: quoting,quickorder,orderTemplates,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry,tacton
+        theme: blue|688dc3
+      .+\.fr:
+        channel: inSPIRED-inTRONICS-Site
+        lang: fr_FR
+        application: smb-responsive
+        features: quoting
+        theme: blue|688dc3
   script:
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker rm -f "${SERVICE}" || true
@@ -275,22 +293,7 @@ deploy_demo_nginx:
       --publish 4326:80
       --name "${SERVICE}"
       -e UPSTREAM_PWA=http://$DEMO_SERVER_NAME:4321
-      -e PWA_1_TOPLEVELDOMAIN=net
-      -e PWA_1_CHANNEL=inSPIRED-inTRONICS-Site
-      -e PWA_1_LANG=en_US
-      -e PWA_2_TOPLEVELDOMAIN=de
-      -e PWA_2_CHANNEL=inSPIRED-inTRONICS-Site
-      -e PWA_2_LANG=de_DE
-      -e PWA_3_TOPLEVELDOMAIN=com
-      -e PWA_3_CHANNEL=inSPIRED-inTRONICS_Business-Site
-      -e PWA_3_FEATURES=quoting,quickorder,orderTemplates,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry,tacton
-      -e PWA_3_THEME="blue|688dc3"
-      -e PWA_4_TOPLEVELDOMAIN=fr
-      -e PWA_4_LANG=fr_FR
-      -e PWA_4_CHANNEL=inSPIRED-inTRONICS-Site
-      -e PWA_4_APPLICATION=smb-responsive
-      -e PWA_4_FEATURES=quoting
-      -e PWA_4_THEME="blue|688dc3"
+      -e MULTI_CHANNEL="${MULTI_CHANNEL}"
       --add-host $DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
       ${IMAGE}
   environment:
@@ -368,6 +371,25 @@ deploy_review_b2c:
     - shell-executor
     - docker
     - demoserver
+  variables:
+    MULTI_CHANNEL: |
+      .+\.net:
+        channel: inSPIRED-inTRONICS-Site
+        lang: en_US
+      .+\.de:
+        channel: inSPIRED-inTRONICS-Site
+        lang: de_DE
+      .+\.com:
+        channel: inSPIRED-inTRONICS_Business-Site
+        lang: de_DE
+        features: quoting,quickorder,orderTemplates,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry,tacton
+        theme: blue|688dc3
+      .+\.fr:
+        channel: inSPIRED-inTRONICS-Site
+        lang: fr_FR
+        application: smb-responsive
+        features: quoting
+        theme: blue|688dc3
   script:
     - set -x
     - DEMO_SERVER_IP=$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
@@ -407,22 +429,7 @@ deploy_review_b2c:
       --name "${CI_COMMIT_REF_SLUG}-nginx"
       --link $CI_COMMIT_REF_SLUG-pwa-b2c
       -e UPSTREAM_PWA=http://$CI_COMMIT_REF_SLUG-pwa-b2c:4200
-      -e PWA_1_TOPLEVELDOMAIN=net
-      -e PWA_1_CHANNEL=inSPIRED-inTRONICS-Site
-      -e PWA_1_LANG=en_US
-      -e PWA_2_TOPLEVELDOMAIN=de
-      -e PWA_2_CHANNEL=inSPIRED-inTRONICS-Site
-      -e PWA_2_LANG=de_DE
-      -e PWA_3_TOPLEVELDOMAIN=com
-      -e PWA_3_CHANNEL=inSPIRED-inTRONICS_Business-Site
-      -e PWA_3_FEATURES=quoting,quickorder,orderTemplates,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry,tacton
-      -e PWA_3_THEME="blue|688dc3"
-      -e PWA_4_TOPLEVELDOMAIN=fr
-      -e PWA_4_LANG=fr_FR
-      -e PWA_4_CHANNEL=inSPIRED-inTRONICS-Site
-      -e PWA_4_APPLICATION=smb-responsive
-      -e PWA_4_FEATURES=quoting
-      -e PWA_4_THEME="blue|688dc3"
+      -e MULTI_CHANNEL="${MULTI_CHANNEL}"
       ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
     - sleep 10
     - docker run --rm --add-host $DEMO_SERVER_NAME:$DEMO_SERVER_IP mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2c"
