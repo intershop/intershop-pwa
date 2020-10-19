@@ -1,5 +1,3 @@
-import * as using from 'jasmine-data-provider';
-
 import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
@@ -119,18 +117,12 @@ describe('Product Helper', () => {
   });
 
   describe('isMasterProduct()', () => {
-    function dataProvider() {
-      return [
-        { product: { type: 'Product' }, expected: false },
-        { product: { type: 'VariationProduct' }, expected: false },
-        { product: { type: 'VariationProductMaster' }, expected: true },
-      ];
-    }
-
-    using(dataProvider, dataSlice => {
-      it(`should return ${dataSlice.expected} when supplying product '${JSON.stringify(dataSlice.product)}'`, () => {
-        expect(ProductHelper.isMasterProduct(dataSlice.product)).toEqual(dataSlice.expected);
-      });
+    it.each([
+      [false, { type: 'Product' }],
+      [false, { type: 'VariationProduct' }],
+      [true, { type: 'VariationProductMaster' }],
+    ])(`should return %s when supplying '%j'`, (expected, product: Product) => {
+      expect(ProductHelper.isMasterProduct(product)).toEqual(expected);
     });
   });
 
@@ -161,51 +153,36 @@ describe('Product Helper', () => {
   });
 
   describe('isFailedLoading()', () => {
-    using(
-      [
-        { product: undefined, expected: false },
-        { product: {}, expected: false },
-        { product: { failed: false }, expected: false },
-        { product: { failed: true }, expected: true },
-      ],
-      ({ product, expected }) => {
-        it(`should return ${expected} when supplying product '${JSON.stringify(product)}'`, () => {
-          expect(ProductHelper.isFailedLoading(product)).toEqual(expected);
-        });
-      }
-    );
+    it.each([
+      [false, undefined],
+      [false, {}],
+      [false, { failed: false }],
+      [true, { failed: true }],
+    ])(`should return %s when supplying product '%j'`, (expected, product: Product) => {
+      expect(ProductHelper.isFailedLoading(product)).toEqual(expected);
+    });
   });
 
   describe('isSufficientlyLoaded()', () => {
-    using(
-      [
-        { product: undefined, expected: false },
-        { product: { completenessLevel: 0 }, expected: false },
-        { product: { completenessLevel: ProductCompletenessLevel.List }, expected: true },
-        { product: { completenessLevel: ProductCompletenessLevel.Detail }, expected: true },
-      ],
-      ({ product, expected }) => {
-        it(`should return ${expected} when supplying product '${JSON.stringify(product)}'`, () => {
-          expect(ProductHelper.isSufficientlyLoaded(product, ProductCompletenessLevel.List)).toEqual(expected);
-        });
-      }
-    );
+    it.each([
+      [false, undefined],
+      [false, { completenessLevel: 0 }],
+      [true, { completenessLevel: ProductCompletenessLevel.List }],
+      [true, { completenessLevel: ProductCompletenessLevel.Detail }],
+    ])(`should return %s when supplying product '%j'`, (expected, product: Product) => {
+      expect(ProductHelper.isSufficientlyLoaded(product, ProductCompletenessLevel.List)).toEqual(expected);
+    });
   });
 
   describe('isReadyForDisplay()', () => {
-    using(
-      [
-        { product: undefined, expected: false },
-        { product: { completenessLevel: ProductCompletenessLevel.List }, expected: true },
-        { product: { completenessLevel: ProductCompletenessLevel.Detail }, expected: true },
-        { product: { failed: true }, expected: true },
-      ],
-      ({ product, expected }) => {
-        it(`should return ${expected} when supplying product '${JSON.stringify(product)}'`, () => {
-          expect(ProductHelper.isReadyForDisplay(product, ProductCompletenessLevel.List)).toEqual(expected);
-        });
-      }
-    );
+    it.each([
+      [false, undefined],
+      [true, { completenessLevel: ProductCompletenessLevel.List }],
+      [true, { completenessLevel: ProductCompletenessLevel.Detail }],
+      [true, { failed: true }],
+    ])(`should return %s when supplying product '%j'`, (expected, product: Product) => {
+      expect(ProductHelper.isReadyForDisplay(product, ProductCompletenessLevel.List)).toEqual(expected);
+    });
   });
 
   describe('calculatePriceRange()', () => {

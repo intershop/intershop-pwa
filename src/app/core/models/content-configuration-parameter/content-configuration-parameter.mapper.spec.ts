@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
-import * as using from 'jasmine-data-provider';
 
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { getCurrentLocale, getICMStaticURL } from 'ish-core/store/core/configuration';
@@ -63,46 +62,25 @@ describe('Content Configuration Parameter Mapper', () => {
   });
 
   describe('postProcessFileReferences', () => {
-    using(
+    it.each([
+      ['assets/pwa/pwa_home_teaser_1.jpg', 'assets/pwa/pwa_home_teaser_1.jpg', 'Image'],
       [
-        {
-          key: 'Image',
-          input: 'assets/pwa/pwa_home_teaser_1.jpg',
-          expected: 'assets/pwa/pwa_home_teaser_1.jpg',
-        },
-        {
-          key: 'Image',
-          input: 'site:/pwa/pwa_home_teaser_1.jpg',
-          expected: 'http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg',
-        },
-        {
-          key: 'ImageXS',
-          input: 'site:/pwa/pwa_home_teaser_1.jpg',
-          expected: 'http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg',
-        },
-        {
-          key: 'Other',
-          input: 'site:/pwa/pwa_home_teaser_1.jpg',
-          expected: 'site:/pwa/pwa_home_teaser_1.jpg',
-        },
-        {
-          key: 'Video',
-          input: 'site:/video/video.mp4',
-          expected: 'http://www.example.org/static/channel/-/site/de_DE/video/video.mp4',
-        },
-        {
-          key: 'Video',
-          input: 'https://www.youtube.com/watch?v=ABCDEFG',
-          expected: 'https://www.youtube.com/watch?v=ABCDEFG',
-        },
+        'site:/pwa/pwa_home_teaser_1.jpg',
+        'http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg',
+        'Image',
       ],
-      ({ key, input, expected }) => {
-        it(`should transform ${input} to ${expected} for key ${key}`, () => {
-          expect(contentConfigurationParameterMapper.postProcessFileReferences({ [key]: input })).toEqual({
-            [key]: expected,
-          });
-        });
-      }
-    );
+      [
+        'site:/pwa/pwa_home_teaser_1.jpg',
+        'http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg',
+        'ImageXS',
+      ],
+      ['site:/pwa/pwa_home_teaser_1.jpg', 'site:/pwa/pwa_home_teaser_1.jpg', 'Other'],
+      ['site:/video/video.mp4', 'http://www.example.org/static/channel/-/site/de_DE/video/video.mp4', 'Video'],
+      ['https://www.youtube.com/watch?v=ABCDEFG', 'https://www.youtube.com/watch?v=ABCDEFG', 'Video'],
+    ])(`should transform %s to %s for key %s`, (input, expected, key) => {
+      expect(contentConfigurationParameterMapper.postProcessFileReferences({ [key]: input })).toEqual({
+        [key]: expected,
+      });
+    });
   });
 });

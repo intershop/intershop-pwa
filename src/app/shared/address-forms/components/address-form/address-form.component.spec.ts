@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import * as using from 'jasmine-data-provider';
 import { MockComponent } from 'ng-mocks';
 
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
@@ -73,23 +72,17 @@ describe('Address Form Component', () => {
   });
 
   describe('dataprovider', () => {
-    function dataProvider() {
-      return [
-        { countryCode: '', cmp: 'ish-address-form-default' },
-        { countryCode: 'DE', cmp: 'ish-address-form-de' },
-        { countryCode: 'FR', cmp: 'ish-address-form-fr' },
-        { countryCode: 'GB', cmp: 'ish-address-form-gb' },
-        { countryCode: 'US', cmp: 'ish-address-form-us' },
-        { countryCode: 'BG', cmp: 'ish-address-form-default' },
-      ];
-    }
-
-    using(dataProvider, dataSlice => {
-      it(`should render \'${dataSlice.cmp}\' if countryCode equals \'${dataSlice.countryCode}\'`, () => {
-        component.countryCode = dataSlice.countryCode;
-        fixture.detectChanges();
-        expect(findAllCustomElements(element)).toContain(dataSlice.cmp);
-      });
+    it.each([
+      ['ish-address-form-default', ''],
+      ['ish-address-form-de', 'DE'],
+      ['ish-address-form-fr', 'FR'],
+      ['ish-address-form-gb', 'GB'],
+      ['ish-address-form-us', 'US'],
+      ['ish-address-form-default', 'BG'],
+    ])(`should render '%s' if countryCode equals '%s'`, (cmp, countryCode) => {
+      component.countryCode = countryCode;
+      fixture.detectChanges();
+      expect(findAllCustomElements(element)).toContain(cmp);
     });
   });
 });
