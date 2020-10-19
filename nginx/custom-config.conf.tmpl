@@ -1,0 +1,98 @@
+server {
+    server_name www.exampleshop.com;
+    include /etc/nginx/conf.d/listen.conf;
+
+    # let ICM handle everything ICM related
+    location ~* ^/INTERSHOP.*$ {
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_no_cache true;
+        proxy_cache_bypass true;
+        add_header X-Cache-Status $upstream_cache_status;
+
+        proxy_pass $UPSTREAM_PWA;
+        proxy_buffer_size 128k;
+        proxy_buffers 4 256k;
+        proxy_busy_buffers_size 256k;
+    }
+
+    # respect cache entries of static assets
+    location ~* ^/(ngx_pagespeed_beacon|metrics|assets|.*\.(js|css|ico|json|txt|webmanifest|woff|woff2))(.*)$ {
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_pass $UPSTREAM_PWA;
+        proxy_buffer_size 128k;
+        proxy_buffers 4 256k;
+        proxy_busy_buffers_size 256k;
+    }
+
+    location /de {
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        add_header X-Cache-Status $upstream_cache_status;
+        proxy_ignore_headers Cache-Control;
+        proxy_cache_valid 200 302 10m;
+        proxy_cache_valid 404      1m;
+
+        rewrite ^.*/index.html$ /loading;
+
+        rewrite ^/$ /home;
+
+        set $default_rewrite_params ';icmHost=default;channel=inSPIRED-inTRONICS-Site;lang=de_DE;theme=default;device=$ua_device';
+
+        rewrite '^(?!.*;device=.*)(.*)$' '$1$default_rewrite_params' break;
+
+        proxy_pass $UPSTREAM_PWA;
+        proxy_buffer_size 128k;
+        proxy_buffers 4 256k;
+        proxy_busy_buffers_size 256k;
+    }
+
+    location /en {
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        add_header X-Cache-Status $upstream_cache_status;
+        proxy_ignore_headers Cache-Control;
+        proxy_cache_valid 200 302 10m;
+        proxy_cache_valid 404      1m;
+
+        rewrite ^.*/index.html$ /loading;
+
+        rewrite ^/$ /home;
+
+        set $default_rewrite_params ';icmHost=default;channel=inSPIRED-inTRONICS_Business-Site;lang=en_US;theme=blue;device=$ua_device';
+
+        rewrite '^(?!.*;device=.*)(.*)$' '$1$default_rewrite_params' break;
+
+        proxy_pass $UPSTREAM_PWA;
+        proxy_buffer_size 128k;
+        proxy_buffers 4 256k;
+        proxy_busy_buffers_size 256k;
+    }
+
+    location / {
+        if ($request_uri = '/') {
+            rewrite ^(.*)$ "$scheme://$http_host/de/home" permanent;
+        }
+        rewrite ^(.*)$ "$scheme://$http_host/de$request_uri" permanent;
+    }
+
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page 500 502 503 504 /50x.html;
+    location = /50x.html {
+        root /usr/share/nginx/html;
+    }
+}

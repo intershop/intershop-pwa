@@ -63,6 +63,8 @@ do
   i=$((i+1))
 done
 
+envsubst '$UPSTREAM_PWA' </etc/nginx/custom-config.conf.tmpl >/etc/nginx/custom-config.conf
+
 # Generate Pagespeed config based on environment variables
 env | grep NPSC_ | sed -e 's/^NPSC_//g' -e "s/\([A-Z_]*\)=/\L\1=/g" -e "s/_\([a-zA-Z]\)/\u\1/g" -e "s/^\([a-zA-Z]\)/\u\1/g" -e 's/=.*$//' -e 's/\=/ /' -e 's/^/\pagespeed /' > /tmp/pagespeed-prefix.txt
 

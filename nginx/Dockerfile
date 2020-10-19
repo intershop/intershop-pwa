@@ -6,7 +6,7 @@ RUN bash install.sh --nginx-version latest --additional-nginx-configure-argument
 
 FROM scratch as configstep
 COPY --from=nginx:mainline /etc/nginx /etc/nginx
-COPY nginx.conf /etc/nginx/
+COPY nginx.conf custom-config.conf.tmpl /etc/nginx/
 COPY features /etc/nginx/features/
 COPY channel.conf.tmpl /etc/nginx/conf.d/
 COPY entrypoint.sh /

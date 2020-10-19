@@ -1,4 +1,4 @@
-import { DOCUMENT, isPlatformServer } from '@angular/common';
+import { APP_BASE_HREF, DOCUMENT, isPlatformServer } from '@angular/common';
 import { ApplicationRef, Inject, Injectable, Optional, PLATFORM_ID } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction, routerNavigationAction } from '@ngrx/router-store';
@@ -37,13 +37,14 @@ export class SeoEffects {
     @Inject(DOCUMENT) private doc: Document,
     @Inject(PLATFORM_ID) private platformId: string,
     @Optional() @Inject(REQUEST) private request: Request,
+    @Optional() @Inject(APP_BASE_HREF) private baseHref: string,
     private appRef: ApplicationRef
   ) {
     // get baseURL
     if (isPlatformServer(this.platformId)) {
-      this.baseURL = `${this.request.protocol}://${
-        this.request.get('host') + this.doc.querySelector('base').getAttribute('href')
-      }`;
+      const currentBaseHref =
+        this.baseHref || this.request.get('host') + this.doc.querySelector('base')?.getAttribute('href');
+      this.baseURL = `${this.request.protocol}://${currentBaseHref}`;
     } else {
       this.baseURL = this.doc.baseURI;
     }

@@ -7,7 +7,7 @@ import * as robots from 'express-robots-txt';
 import * as fs from 'fs';
 import * as proxy from 'express-http-proxy';
 // tslint:disable-next-line: ban-specific-imports
-import { AppServerModule, ICM_WEB_URL, HYBRID_MAPPING_TABLE, environment } from './src/main.server';
+import { AppServerModule, ICM_WEB_URL, HYBRID_MAPPING_TABLE, environment, APP_BASE_HREF } from './src/main.server';
 import { ngExpressEngine } from '@nguniversal/express-engine';
 
 const PORT = process.env.PORT || 4200;
@@ -51,12 +51,14 @@ export function app() {
   const server = express();
 
   // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
-  server.engine(
-    'html',
+  server.engine('html', (path, options: { req: express.Request }, callback) =>
     ngExpressEngine({
       bootstrap: AppServerModule,
-      providers: [{ provide: 'SSR_HYBRID', useValue: !!process.env.SSR_HYBRID }],
-    })
+      providers: [
+        { provide: 'SSR_HYBRID', useValue: !!process.env.SSR_HYBRID },
+        { provide: APP_BASE_HREF, useValue: '/' + options.req.originalUrl.split('/')[1] },
+      ],
+    })(path, options, callback)
   );
 
   server.set('view engine', 'html');
@@ -138,13 +140,15 @@ export function app() {
       },
       (err, html) => {
         if (html) {
-          let newHtml: string;
+          let newHtml = html;
           if (process.env.PROXY_ICM && req.get('host')) {
-            newHtml = html.replace(
+            newHtml = newHtml.replace(
               new RegExp(ICM_BASE_URL, 'g'),
               process.env.PROXY_ICM.startsWith('http') ? process.env.PROXY_ICM : `${req.protocol}://${req.get('host')}`
             );
           }
+          newHtml = newHtml.replace(/<base href="[^>]*/, `<base href="/${req.originalUrl.split('/')[1]}" />`);
+
           res.status(res.statusCode).send(newHtml || html);
         } else {
           res.status(500).send(err.message);
