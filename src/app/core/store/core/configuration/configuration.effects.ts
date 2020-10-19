@@ -1,5 +1,5 @@
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { ApplicationRef, Inject, Injectable, Optional, PLATFORM_ID } from '@angular/core';
+import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { Actions, ROOT_EFFECTS_INIT, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
@@ -23,7 +23,7 @@ export class ConfigurationEffects {
     private store: Store,
     private translateService: TranslateService,
     private stateProperties: StatePropertiesService,
-    @Optional() private transferState: TransferState,
+    private transferState: TransferState,
     @Inject(PLATFORM_ID) private platformId: string,
     private appRef: ApplicationRef,
     @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: number,
@@ -42,7 +42,7 @@ export class ConfigurationEffects {
 
   setInitialRestEndpoint$ = createEffect(() =>
     iif(
-      () => !this.transferState || !this.transferState.hasKey(NGRX_STATE_SK),
+      () => !this.transferState.hasKey(NGRX_STATE_SK),
       this.actions$.pipe(
         ofType(ROOT_EFFECTS_INIT),
         take(1),

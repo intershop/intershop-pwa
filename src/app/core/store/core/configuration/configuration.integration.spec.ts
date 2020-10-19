@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
-import { Component, PLATFORM_ID } from '@angular/core';
+import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { BrowserTransferStateModule } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -34,6 +35,7 @@ describe('Configuration Integration', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
+        BrowserTransferStateModule,
         CoreStoreModule.forTesting(['router', 'configuration'], [ConfigurationEffects], [configurationMeta]),
         RouterTestingModule.withRoutes([
           { path: 'home', component: DummyComponent, canActivate: [ConfigurationGuard] },
@@ -42,7 +44,6 @@ describe('Configuration Integration', () => {
       ],
       providers: [
         provideStoreSnapshots(),
-        { provide: PLATFORM_ID, useValue: 'server' },
         { provide: ConfigurationService, useFactory: () => instance(configurationService) },
         { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
         { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
