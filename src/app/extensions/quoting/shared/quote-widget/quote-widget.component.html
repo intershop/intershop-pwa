@@ -1,22 +1,40 @@
-<div class="section">
-  <h2>{{ 'account.quotes.widget.my_quotes.heading' | translate }}</h2>
+<ish-info-box
+  heading="account.quotes.widget.my_quotes.heading"
+  class="infobox-wrapper h-100"
+  cssClass="infobox-color-widget d-flex flex-column"
+>
+  <div class="loading-container mt-auto">
+    <div *ngIf="!(loading$ | async); else loading">
+      <div class="row align-items-end no-gutters">
+        <div class="col">
+          <div class="infobox-count" data-testing-id="responded-counter">
+            {{ respondedQuotes$ | async }}
+          </div>
+          <div>
+            {{ 'account.quotes.widget.responded.label' | translate }}
+          </div>
+        </div>
+        <div class="col text-right">
+          <div class="infobox-count-large" data-testing-id="submitted-counter">
+            {{ submittedQuoteRequests$ | async }}
+          </div>
+          <div>
+            {{ 'account.quotes.widget.submitted.label' | translate }}
+          </div>
+        </div>
+      </div>
 
-  <div class="loading-container">
-    <div *ngIf="counts$ | async as counts" class="row pb-2" data-testing-id="quote-widget">
-      <div class="col-6">{{ 'account.quotes.widget.new.label' | translate }}</div>
-      <div class="col-6 text-right" data-testing-id="new-counter">{{ counts['New'] || 0 }}</div>
-      <div class="col-6">{{ 'account.quotes.widget.submitted.label' | translate }}</div>
-      <div class="col-6 text-right" data-testing-id="submitted-counter">{{ counts['Submitted'] || 0 }}</div>
-      <div class="col-6">{{ 'account.quotes.widget.accepted.label' | translate }}</div>
-      <div class="col-6 text-right" data-testing-id="accepted-counter">{{ counts['Accepted'] || 0 }}</div>
-      <div class="col-6">{{ 'account.quotes.widget.rejected.label' | translate }}</div>
-      <div class="col-6 text-right" data-testing-id="rejected-counter">{{ counts['Rejected'] || 0 }}</div>
+      <div class="row">
+        <div class="col">
+          <a routerLink="/account/quotes" data-testing-id="quote-list-link">
+            {{ 'account.quotes.widget.view_all_quotes.link' | translate }}
+          </a>
+        </div>
+      </div>
     </div>
-
-    <ish-loading *ngIf="loading$ | async"></ish-loading>
   </div>
+</ish-info-box>
 
-  <a routerLink="/account/quotes" data-testing-id="quoute-list-link">{{
-    'account.quotes.widget.view_all_quotes.link' | translate
-  }}</a>
-</div>
+<ng-template #loading>
+  <ish-loading></ish-loading>
+</ng-template>

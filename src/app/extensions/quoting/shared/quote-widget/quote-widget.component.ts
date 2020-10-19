@@ -1,14 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { countBy } from 'lodash-es';
 import { Observable, combineLatest, iif, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { QuotingFacade } from '../../facades/quoting.facade';
-import { QuoteStatus } from '../../models/quoting/quoting.model';
-
-type DisplayState = 'New' | 'Submitted' | 'Accepted' | 'Rejected';
 
 @Component({
   selector: 'ish-quote-widget',
@@ -19,29 +15,25 @@ type DisplayState = 'New' | 'Submitted' | 'Accepted' | 'Rejected';
 export class QuoteWidgetComponent implements OnInit {
   loading$: Observable<boolean>;
 
-  counts$: Observable<Partial<{ [state in DisplayState]: number }>>;
+  respondedQuotes$: Observable<number>;
+  submittedQuoteRequests$: Observable<number>;
 
   constructor(private quotingFacade: QuotingFacade) {}
 
   ngOnInit() {
     this.loading$ = this.quotingFacade.loading$;
 
-    this.counts$ = this.quotingFacade.quotingEntities$().pipe(
-      switchMap(quotes =>
-        iif(() => !quotes?.length, of([]), combineLatest(quotes.map(quote => this.quotingFacade.state$(quote.id))))
-      ),
-      map(quotes => countBy(quotes, quote => this.mapState(quote)))
+    const quotingStates$ = this.quotingFacade
+      .quotingEntities$()
+      .pipe(
+        switchMap(quotes =>
+          iif(() => !quotes?.length, of([]), combineLatest(quotes.map(quote => this.quotingFacade.state$(quote.id))))
+        )
+      );
+
+    this.respondedQuotes$ = quotingStates$.pipe(map(states => states.filter(state => state === 'Responded').length));
+    this.submittedQuoteRequests$ = quotingStates$.pipe(
+      map(states => states.filter(state => state === 'Submitted').length)
     );
-  }
-
-  mapState(state: QuoteStatus): DisplayState {
-    switch (state) {
-      case 'Responded':
-      case 'Expired':
-        return 'Accepted';
-
-      default:
-        return state as DisplayState;
-    }
   }
 }

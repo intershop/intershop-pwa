@@ -64,12 +64,12 @@ describe('User Budget Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <div>
         <dl class="row dl-horizontal dl-separator">
-          <dt class="col-12 col-sm-7">account.user.new.order_spend_limit.label</dt>
-          <dd class="col-5 column-price">USD 100</dd>
+          <dt class="col-7">account.user.new.order_spend_limit.label</dt>
+          <dd class="col-5 column-price font-weight-bold text-right">USD 100</dd>
         </dl>
         <dl class="row dl-horizontal dl-separator">
-          <dt class="col-12 col-sm-7">account.budget.type.monthly.label</dt>
-          <dd class="col-5 column-price">USD 5000</dd>
+          <dt class="col-7">account.budget.type.monthly.label</dt>
+          <dd class="col-5 column-price font-weight-bold text-right">USD 5000</dd>
         </dl>
         <div data-testing-id="user-budget-popover" placement="top" ng-reflect-placement="top">
           <div class="progress">

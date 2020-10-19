@@ -25,7 +25,7 @@ export class ApproverPageComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject();
 
   ngOnInit() {
-    this.requisitions$ = this.requisitionManagementFacade.requisitions$;
+    this.requisitions$ = this.requisitionManagementFacade.requisitionsByRoute$;
     this.error$ = this.requisitionManagementFacade.requisitionsError$;
     this.loading$ = this.requisitionManagementFacade.requisitionsLoading$;
     this.status$ = this.requisitionManagementFacade.requisitionsStatus$ as Observable<RequisitionStatus>;

@@ -11,25 +11,25 @@
   <div class="list-body" data-testing-id="user-list">
     <ng-container *ngFor="let user of users$ | async">
       <div *ngIf="user" class="list-item-row row mx-0">
-        <div class="col-2 list-item">
+        <div class="col-6 col-sm-2 list-item order-1">
           <a [routerLink]="[user.login]" class="d-block">{{ user.firstName }} {{ user.lastName }}</a>
           <span *ngIf="user.active === false" class="input-help">{{
             'account.user.list.status.inactive' | translate
           }}</span>
         </div>
-        <div class="col-4 list-item">
+        <div class="col-5 col-sm-4 list-item order-2">
           <dl [attr.data-testing-id]="'user-roles-' + user.login">
             <ish-user-roles-badges [roleIDs]="user.roleIDs"></ish-user-roles-badges>
           </dl>
         </div>
-        <div class="col-5 list-item">
+        <div class="col-12 col-sm-5 list-item order-4 order-sm-3">
           <ish-user-budget
             *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting"
             [budget]="user.budgets"
             [attr.data-testing-id]="'user-budget-' + user.login"
           ></ish-user-budget>
         </div>
-        <div class="col-1 list-item text-right">
+        <div class="col-1 list-item text-right order-sm-4 order-3">
           <div *ngIf="user.login !== (currentUser$ | async)?.login" class="float-right">
             <a
               data-testing-id="remove-user"

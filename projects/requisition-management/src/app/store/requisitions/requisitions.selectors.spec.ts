@@ -1,11 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 
+import { CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { Requisition } from '../../models/requisition/requisition.model';
+import { Requisition, RequisitionApproval } from '../../models/requisition/requisition.model';
 import { RequisitionManagementStoreModule } from '../requisition-management-store.module';
 
 import {
@@ -15,14 +18,23 @@ import {
   loadRequisitionsFail,
   loadRequisitionsSuccess,
 } from './requisitions.actions';
-import { getRequisitions, getRequisitionsError, getRequisitionsLoading } from './requisitions.selectors';
+import {
+  getBuyerPendingRequisitions,
+  getRequisitions,
+  getRequisitionsError,
+  getRequisitionsLoading,
+} from './requisitions.selectors';
 
 describe('Requisitions Selectors', () => {
   let store$: StoreWithSnapshots;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), RequisitionManagementStoreModule.forTesting('requisitions')],
+      imports: [
+        CoreStoreModule.forTesting(),
+        CustomerStoreModule.forTesting('user'),
+        RequisitionManagementStoreModule.forTesting('requisitions'),
+      ],
       providers: [provideStoreSnapshots()],
     });
 
@@ -143,6 +155,44 @@ describe('Requisitions Selectors', () => {
       });
 
       /* ToDo: getRequisition is empty */
+    });
+  });
+
+  describe('getXPendingRequisitions', () => {
+    const requisitions = [
+      {
+        id: '1',
+        lineItems: [{ id: 'test', productSKU: 'sku', quantity: { value: 5 } } as LineItem],
+        user: { email: 'testmail@intershop.de' },
+        approval: {
+          customerApprovers: [{ firstName: 'a', lastName: 'b ', email: 'testmail@intershop.de' }],
+          statusCode: 'PENDING',
+          status: 'pending',
+        } as RequisitionApproval,
+      } as Requisition,
+    ];
+
+    beforeEach(() => {
+      store$.dispatch(
+        loginUserSuccess({
+          customer: {
+            customerNo: 'PC',
+            isBusinessCustomer: false,
+          },
+          user: {
+            email: 'testmail@intershop.de',
+            firstName: 'test',
+          },
+        } as CustomerUserType)
+      );
+      store$.dispatch(loadRequisitionsSuccess({ requisitions }));
+    });
+
+    it('should return correct buyer requisitions for the user', () => {
+      expect(getBuyerPendingRequisitions(store$.state)).toEqual(requisitions);
+    });
+    it('should return correct approver requisitions for the user', () => {
+      expect(getBuyerPendingRequisitions(store$.state)).toEqual(requisitions);
     });
   });
 });

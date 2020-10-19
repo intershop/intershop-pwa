@@ -1,12 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
+import { LazyBudgetWidgetComponent } from 'organization-management';
+import { LazyApprovalWidgetComponent, LazyRequisitionWidgetComponent } from 'requisition-management';
 
+import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { OrderWidgetComponent } from 'ish-shared/components/order/order-widget/order-widget.component';
 
 import { LazyQuoteWidgetComponent } from '../../../extensions/quoting/exports/lazy-quote-widget/lazy-quote-widget.component';
@@ -19,6 +23,7 @@ describe('Account Overview Component', () => {
   let component: AccountOverviewComponent;
   let element: HTMLElement;
   let translate: TranslateService;
+
   const user = { firstName: 'Patricia' } as User;
   const customer = { isBusinessCustomer: false } as Customer;
 
@@ -27,11 +32,16 @@ describe('Account Overview Component', () => {
       declarations: [
         AccountOverviewComponent,
         MockComponent(FaIconComponent),
+        MockComponent(LazyApprovalWidgetComponent),
+        MockComponent(LazyBudgetWidgetComponent),
         MockComponent(LazyQuoteWidgetComponent),
+        MockComponent(LazyRequisitionWidgetComponent),
         MockComponent(OrderWidgetComponent),
+        MockDirective(AuthorizationToggleDirective),
         MockDirective(FeatureToggleDirective),
         MockDirective(LazyWishlistWidgetComponent),
         MockDirective(ServerHtmlDirective),
+        MockPipe(ServerSettingPipe, () => true),
       ],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();

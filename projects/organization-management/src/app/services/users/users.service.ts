@@ -3,6 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable, forkJoin, of, throwError } from 'rxjs';
 import { concatMap, map, switchMap, take } from 'rxjs/operators';
 
+import { PriceHelper } from 'ish-core/models/price/price.helper';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -174,5 +175,17 @@ export class UsersService {
         this.apiService.put<UserBudgets>(`customers/${customer.customerNo}/users/${login}/budgets`, budgets)
       )
     );
+  }
+
+  getCurrentUserBudgets(): Observable<UserBudgets> {
+    return this.apiService
+      .b2bUserEndpoint()
+      .get<UserBudgets>('budgets')
+      .pipe(
+        map(budget => ({
+          ...budget,
+          spentBudget: budget.spentBudget ?? PriceHelper.empty(budget.budget?.currency),
+        }))
+      );
   }
 }

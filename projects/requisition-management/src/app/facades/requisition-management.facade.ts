@@ -9,6 +9,8 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 import { RequisitionStatus, RequisitionViewer } from '../models/requisition/requisition.model';
 import {
+  getApproverPendingRequisitions,
+  getBuyerPendingRequisitions,
   getRequisition,
   getRequisitions,
   getRequisitionsError,
@@ -41,7 +43,7 @@ export class RequisitionManagementFacade {
     return this.store.pipe(select(getRequisition(requisitionId)));
   }
 
-  requisitions$ = combineLatest([
+  requisitionsByRoute$ = combineLatest([
     this.store.pipe(select(selectRouteParam('status')), distinctUntilChanged()),
     this.store.pipe(
       select(selectUrl),
@@ -64,4 +66,14 @@ export class RequisitionManagementFacade {
     }),
     switchMapTo(this.store.pipe(select(getRequisitions)))
   );
+
+  buyerPendingRequisitions$() {
+    this.store.dispatch(loadRequisitions({ view: 'all', status: 'PENDING' }));
+    return this.store.pipe(select(getBuyerPendingRequisitions));
+  }
+
+  approverPendingRequisitions$() {
+    this.store.dispatch(loadRequisitions({ view: 'all', status: 'PENDING' }));
+    return this.store.pipe(select(getApproverPendingRequisitions));
+  }
 }
