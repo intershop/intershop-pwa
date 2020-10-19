@@ -1,3 +1,4 @@
+import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule, Optional, SkipSelf } from '@angular/core';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -41,6 +42,11 @@ import { ModuleLoaderService } from './utils/module-loader/module-loader.service
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
     { provide: ErrorHandler, useClass: DefaultErrorhandler },
+    {
+      provide: APP_BASE_HREF,
+      useFactory: (s: PlatformLocation, baseHref: string) => baseHref || s.getBaseHrefFromDOM(),
+      deps: [PlatformLocation, [new Optional(), new SkipSelf(), APP_BASE_HREF]],
+    },
   ],
   // exports needed to use the cookie banner in the AppComponent
   exports: [NgxCookieBannerModule, TranslateModule],

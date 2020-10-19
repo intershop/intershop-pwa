@@ -1,5 +1,6 @@
+import { APP_BASE_HREF, Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { instance, mock, when } from 'ts-mockito';
@@ -26,7 +27,10 @@ describe('Server Html Directive', () => {
       TestBed.configureTestingModule({
         declarations: [ServerHtmlDirective, TestComponent],
         imports: [RouterTestingModule],
-        providers: [{ provide: AppFacade, useFactory: () => instance(mock(AppFacade)) }],
+        providers: [
+          { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
+          { provide: APP_BASE_HREF, useValue: '/' },
+        ],
       }).compileComponents();
 
       const fixture = TestBed.createComponent(TestComponent);
@@ -63,7 +67,10 @@ describe('Server Html Directive', () => {
       TestBed.configureTestingModule({
         declarations: [ServerHtmlDirective, TestComponent],
         imports: [RouterTestingModule],
-        providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
+        providers: [
+          { provide: AppFacade, useFactory: () => instance(appFacade) },
+          { provide: APP_BASE_HREF, useValue: '/' },
+        ],
       }).compileComponents();
 
       const fixture = TestBed.createComponent(TestComponent);
@@ -101,7 +108,10 @@ describe('Server Html Directive', () => {
       TestBed.configureTestingModule({
         declarations: [ServerHtmlDirective, TestComponent],
         imports: [RouterTestingModule],
-        providers: [{ provide: AppFacade, useFactory: () => instance(mock(AppFacade)) }],
+        providers: [
+          { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
+          { provide: APP_BASE_HREF, useValue: '/' },
+        ],
       }).compileComponents();
 
       const fixture = TestBed.createComponent(TestComponent);
@@ -116,6 +126,7 @@ describe('Server Html Directive', () => {
 
   describe('with links in translations', () => {
     let element: HTMLElement;
+    let location: Location;
 
     beforeEach(() => {
       @Component({
@@ -126,8 +137,14 @@ describe('Server Html Directive', () => {
 
       TestBed.configureTestingModule({
         declarations: [ServerHtmlDirective, TestComponent],
-        imports: [RouterTestingModule, TranslateModule.forRoot()],
-        providers: [{ provide: AppFacade, useFactory: () => instance(mock(AppFacade)) }],
+        imports: [
+          RouterTestingModule.withRoutes([{ path: '**', component: TestComponent }]),
+          TranslateModule.forRoot(),
+        ],
+        providers: [
+          { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
+          { provide: APP_BASE_HREF, useValue: '/' },
+        ],
       }).compileComponents();
 
       const translate = TestBed.inject(TranslateService);
@@ -137,6 +154,7 @@ describe('Server Html Directive', () => {
       const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
       element = fixture.nativeElement;
+      location = TestBed.inject(Location);
     });
 
     it('should transform the links within translated input to routing links', () => {
@@ -144,5 +162,63 @@ describe('Server Html Directive', () => {
         `<div>Get help at <a href="/page/page.helpdesk">our HelpDesk</a>. We are there for you!</div>`
       );
     });
+
+    it('should route to linked page via angular router', fakeAsync(() => {
+      element.querySelector('a').click();
+
+      tick(500);
+
+      expect(location.path()).toMatchInlineSnapshot(`"/page/page.helpdesk"`);
+    }));
+  });
+
+  describe('with links in translations and baseHref', () => {
+    let element: HTMLElement;
+    let location: Location;
+
+    beforeEach(() => {
+      @Component({
+        template: ` <div [ishServerHtml]="'get.help.at' | translate: { '0': 'page://page.helpdesk' }"></div> `,
+        changeDetection: ChangeDetectionStrategy.OnPush,
+      })
+      class TestComponent {}
+
+      TestBed.configureTestingModule({
+        declarations: [ServerHtmlDirective, TestComponent],
+        imports: [
+          RouterTestingModule.withRoutes([{ path: '**', component: TestComponent }]),
+          TranslateModule.forRoot(),
+        ],
+        providers: [
+          { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
+          { provide: APP_BASE_HREF, useValue: '/americas' },
+        ],
+      }).compileComponents();
+
+      const translate = TestBed.inject(TranslateService);
+      translate.use('en');
+      translate.set('get.help.at', 'Get help at <a href="{{0}}">our HelpDesk</a>. We are there for you!');
+
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+      element = fixture.nativeElement;
+      location = TestBed.inject(Location);
+    });
+
+    it('should transform the links within translated input to routing links', () => {
+      expect(element).toMatchInlineSnapshot(`
+        <div>
+          Get help at <a href="/americas/page/page.helpdesk">our HelpDesk</a>. We are there for you!
+        </div>
+      `);
+    });
+
+    it('should route to linked page via angular router', fakeAsync(() => {
+      element.querySelector('a').click();
+
+      tick(500);
+
+      expect(location.path()).toMatchInlineSnapshot(`"/page/page.helpdesk"`);
+    }));
   });
 });

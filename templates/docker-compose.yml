@@ -11,7 +11,7 @@ services:
         configuration: production
         serviceWorker: 'false'
     environment:
-      - LOGGING=true
+      - LOGGING=on
       - ICM_BASE_URL
       # - PROXY_ICM=true
       - TRUST_ICM=true
@@ -22,26 +22,37 @@ services:
       - pwa
     environment:
       UPSTREAM_PWA: 'http://pwa:4200'
-      DEBUG: 1
+      # DEBUG: 1
       CACHE: 0
       PAGESPEED: 0
       # PROMETHEUS: 1
       # COMPRESSION: 0
       # DEVICE_DETECTION: 0
-      PWA_1_DOMAIN: 'example.com'
-      # PWA_1_SUBDOMAIN: "www"
-      # PWA_1_TOPLEVELDOMAIN: "com"
-      PWA_1_CHANNEL: 'inSPIRED-inTRONICS-Site'
-      PWA_1_LANG: en_US
-      PWA_2_TOPLEVELDOMAIN: 'de'
-      PWA_2_CHANNEL: 'inSPIRED-inTRONICS_Business-Site'
-      PWA_2_LANG: de_DE
-      PWA_2_THEME: blue
-      PWA_3_TOPLEVELDOMAIN: 'net'
-      PWA_3_APPLICATION: 'rest'
-      PWA_3_CHANNEL: 'inSPIRED-inTRONICS_Business-Site'
-      PWA_3_LANG: en_US
-      PWA_3_FEATURES: quoting
+      # MULTI_CHANNEL_SOURCE: env:///ASDF?type=application/yaml
+      MULTI_CHANNEL: |
+        .+\.net:
+            - baseHref: /de
+              lang: de_DE
+              channel: inSPIRED-inTRONICS-Site
+            - baseHref: /us
+              lang: en_US
+              channel: inSPIRED-inTRONICS_Business-Site
+              features: quoting,businessCustomerRegistration,advancedVariationHandling
+              theme: "blue|688dc3"
+        .+\.de:
+            channel: inSPIRED-inTRONICS-Site
+            lang: de_DE
+        .+\.com:
+            channel: inSPIRED-inTRONICS_Business-Site
+            features: quoting,businessCustomerRegistration,advancedVariationHandling
+            theme: "blue|688dc3"
+        .+\.fr:
+            channel: inSPIRED-inTRONICS-Site
+            lang: fr_FR
+            application: smb-responsive
+            features: quoting
+            theme: "blue|688dc3"
+
     ports:
       - '4200:80'
       # - '9113:9113'

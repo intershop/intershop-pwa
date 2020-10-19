@@ -1,7 +1,7 @@
 <div class="errorpage-content col-lg-6 offset-lg-3">
   <h1>{{ 'servererror.page.title' | translate }}</h1>
   <div class="error-text">
-    <div [innerHTML]="'servererror.page.text' | translate | safeHtml"></div>
+    <div [ishServerHtml]="'servererror.page.text' | translate"></div>
     <p class="text-muted" (click)="expand()">
       <ng-container [ngSwitch]="error.status">
         <ng-container *ngSwitchCase="0"> Server timeout </ng-container>
