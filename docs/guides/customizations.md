@@ -147,8 +147,8 @@ After that run `npm install` to regenerate the file.
 
 ### Cypress Tests
 
-We currently don't support specific adaptions for customizing cypress tests in projects.
-In theory the customized PWA project can re-use our Page Objects without much adaptions if the customized PWA also uses the same selectors for css classes and data-testing-ids.
+We currently do not support specific adaptions for customizing Cypress tests in projects.
+In theory the customized PWA project can re-use our Page Objects without much adaptions if the customized PWA also uses the same selectors for CSS classes and data-testing-ids.
 
 Specs should be copied and adapted for the project to use correct demo data.
 When executing tests, the test itself requires an appropriate demo server to be launched before the run.
