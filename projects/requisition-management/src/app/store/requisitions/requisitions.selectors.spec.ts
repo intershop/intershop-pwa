@@ -16,12 +16,7 @@ import {
   loadRequisitionsFail,
   loadRequisitionsSuccess,
 } from './requisitions.actions';
-import {
-  getRequisition,
-  getRequisitions,
-  getRequisitionsError,
-  getRequisitionsLoading,
-} from './requisitions.selectors';
+import { getRequisitions, getRequisitionsError, getRequisitionsLoading } from './requisitions.selectors';
 
 describe('Requisitions Selectors', () => {
   let store$: StoreWithSnapshots;
@@ -134,8 +129,8 @@ describe('Requisitions Selectors', () => {
         expect(getRequisitionsError(store$.state)).toBeUndefined();
       });
 
-      it('should have an entities when successfully loading', () => {
-        expect(getRequisition(store$.state)).not.toBeEmpty();
+      it('should have entities when successfully loading', () => {
+        expect(getRequisitions(store$.state)).not.toBeEmpty();
       });
     });
 

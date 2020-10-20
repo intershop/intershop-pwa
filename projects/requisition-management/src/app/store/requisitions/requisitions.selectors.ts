@@ -12,4 +12,6 @@ export const getRequisitionsError = createSelector(getRequisitionsState, state =
 
 export const { selectAll: getRequisitions } = requisitionsAdapter.getSelectors(getRequisitionsState);
 
-export const getRequisition = createSelector(getRequisitionsState, state => state.requisition);
+const { selectEntities } = requisitionsAdapter.getSelectors(getRequisitionsState);
+
+export const getRequisition = (id: string) => createSelector(selectEntities, entities => entities[id]);
