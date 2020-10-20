@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -16,23 +15,14 @@ import {
   loadRequisitionsFail,
   loadRequisitionsSuccess,
 } from './requisitions.actions';
-import {
-  getRequisition,
-  getRequisitions,
-  getRequisitionsError,
-  getRequisitionsLoading,
-} from './requisitions.selectors';
+import { getRequisitions, getRequisitionsError, getRequisitionsLoading } from './requisitions.selectors';
 
 describe('Requisitions Selectors', () => {
   let store$: StoreWithSnapshots;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(),
-        RequisitionManagementStoreModule.forTesting('requisitions'),
-        ShoppingStoreModule.forTesting('products', 'categories'),
-      ],
+      imports: [CoreStoreModule.forTesting(), RequisitionManagementStoreModule.forTesting('requisitions')],
       providers: [provideStoreSnapshots()],
     });
 
@@ -134,8 +124,8 @@ describe('Requisitions Selectors', () => {
         expect(getRequisitionsError(store$.state)).toBeUndefined();
       });
 
-      it('should have an entities when successfully loading', () => {
-        expect(getRequisition(store$.state)).not.toBeEmpty();
+      it('should have entities when successfully loading', () => {
+        expect(getRequisitions(store$.state)).not.toBeEmpty();
       });
     });
 
