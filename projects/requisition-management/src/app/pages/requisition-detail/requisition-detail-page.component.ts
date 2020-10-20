@@ -1,54 +1,38 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
-import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
+import { RequisitionContextFacade } from '../../facades/requisition-context.facade';
 import { Requisition } from '../../models/requisition/requisition.model';
 
 @Component({
   selector: 'ish-requisition-detail-page',
   templateUrl: './requisition-detail-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [RequisitionContextFacade],
 })
-export class RequisitionDetailPageComponent implements OnInit, OnDestroy {
+export class RequisitionDetailPageComponent implements OnInit {
   requisition$: Observable<Requisition>;
   error$: Observable<HttpError>;
   loading$: Observable<boolean>;
+  view$: Observable<'buyer' | 'approver'>;
 
-  private destroy$ = new Subject();
-
-  view: string;
-
-  constructor(private requisitionManagementFacade: RequisitionManagementFacade, private route: ActivatedRoute) {}
+  constructor(private context: RequisitionContextFacade) {}
 
   ngOnInit() {
-    this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params: { requisitionId: string }) => {
-      this.requisition$ = this.requisitionManagementFacade.requisition$(params.requisitionId);
-    });
-
-    this.route.url.pipe(takeUntil(this.destroy$)).subscribe(url => {
-      const urlSegment = url.find(entry => entry.path === 'buyer' || 'approver');
-      this.view = urlSegment ? urlSegment.path : 'approver';
-    });
-
-    this.error$ = this.requisitionManagementFacade.requisitionsError$;
-    this.loading$ = this.requisitionManagementFacade.requisitionsLoading$;
+    this.requisition$ = this.context.select('entity');
+    this.loading$ = this.context.select('loading');
+    this.error$ = this.context.select('error');
+    this.view$ = this.context.select('view');
   }
 
-  approveRequisition(requisitionId: string) {
-    this.requisitionManagementFacade.approveRequisition$(requisitionId);
+  approveRequisition() {
+    this.context.approveRequisition$();
   }
 
-  rejectRequisition(requisitionId: string, comment: string) {
-    this.requisitionManagementFacade.rejectRequisition$(requisitionId, comment);
+  rejectRequisition(comment: string) {
+    this.context.rejectRequisition$(comment);
     return false;
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

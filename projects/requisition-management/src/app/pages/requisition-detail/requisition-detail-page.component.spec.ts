@@ -4,7 +4,7 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
-import { anyString, instance, mock, when } from 'ts-mockito';
+import { instance, mock, when } from 'ts-mockito';
 
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
@@ -16,8 +16,7 @@ import { LineItemListComponent } from 'ish-shared/components/line-item/line-item
 import { RequisitionBuyerApprovalComponent } from '../../components/requisition-buyer-approval/requisition-buyer-approval.component';
 import { RequisitionRejectDialogComponent } from '../../components/requisition-reject-dialog/requisition-reject-dialog.component';
 import { RequisitionSummaryComponent } from '../../components/requisition-summary/requisition-summary.component';
-import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
-import { Requisition } from '../../models/requisition/requisition.model';
+import { RequisitionContextFacade } from '../../facades/requisition-context.facade';
 
 import { RequisitionDetailPageComponent } from './requisition-detail-page.component';
 
@@ -25,10 +24,11 @@ describe('Requisition Detail Page Component', () => {
   let component: RequisitionDetailPageComponent;
   let fixture: ComponentFixture<RequisitionDetailPageComponent>;
   let element: HTMLElement;
-  let reqFacade: RequisitionManagementFacade;
+  let context: RequisitionContextFacade;
 
   beforeEach(async () => {
-    reqFacade = mock(RequisitionManagementFacade);
+    context = mock(RequisitionContextFacade);
+
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
@@ -44,8 +44,11 @@ describe('Requisition Detail Page Component', () => {
         MockComponent(RequisitionSummaryComponent),
         RequisitionDetailPageComponent,
       ],
-      providers: [{ provide: RequisitionManagementFacade, useFactory: () => instance(reqFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(RequisitionDetailPageComponent, {
+        set: { providers: [{ provide: RequisitionContextFacade, useFactory: () => instance(context) }] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -53,25 +56,8 @@ describe('Requisition Detail Page Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    const requisition = {
-      id: '4711',
-      requisitionNo: '4712',
-      approval: {
-        status: 'Approval Pending',
-        statusCode: 'pending',
-        customerApprovers: [
-          { firstName: 'Jack', lastName: 'Link' },
-          { firstName: 'Bernhhard', lastName: 'Boldner' },
-        ],
-      },
-      user: { firstName: 'Patricia', lastName: 'Miller' },
-      totals: undefined,
-      creationDate: 24324321,
-      lineItemCount: 2,
-      lineItems: undefined,
-    } as Requisition;
-
-    when(reqFacade.requisition$(anyString())).thenReturn(of(requisition));
+    when(context.select('entity')).thenReturn(of());
+    when(context.select('view')).thenReturn(of('approver'));
   });
 
   it('should be created', () => {
@@ -83,18 +69,20 @@ describe('Requisition Detail Page Component', () => {
   it('should display the requisition title for default', () => {
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
-      <div class="float-right">
-        <ul class="share-tools">
-          <li>
-            <a class="link-print" href="javascript:window.print();" rel="nofollow"
-              ><fa-icon ng-reflect-icon="fas,print"></fa-icon
-              ><span class="share-label">account.orderdetails.print_link.text</span></a
-            >
-          </li>
-        </ul>
+      <div>
+        <div class="float-right">
+          <ul class="share-tools">
+            <li>
+              <a class="link-print" href="javascript:window.print();" rel="nofollow"
+                ><fa-icon ng-reflect-icon="fas,print"></fa-icon
+                ><span class="share-label">account.orderdetails.print_link.text</span></a
+              >
+            </li>
+          </ul>
+        </div>
+        <h1>approval.detailspage.approval.heading</h1>
+        <ish-error-message></ish-error-message>
       </div>
-      <h1>approval.detailspage.requisition.heading</h1>
-      <ish-error-message></ish-error-message>
     `);
   });
 });
