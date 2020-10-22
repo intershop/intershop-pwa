@@ -61,6 +61,8 @@ export class BasketPromotionCodeComponent implements OnInit, OnDestroy {
       this.lastEnteredPromoCode = this.codeInput.value;
     }
     this.checkoutFacade.addPromotionCodeToBasket(this.codeInput.value);
+    // prevent further form submit
+    return false;
   }
 
   ngOnDestroy() {

@@ -12,12 +12,13 @@
   <div class="form-inline" [ngbCollapse]="isCollapsed">
     <input
       [formControl]="codeInput"
+      (keydown.enter)="submitPromotionCode()"
       class="form-control"
       type="text"
       [maxlength]="codeMaxLength"
       [placeholder]="'shopping_cart.promotional_code.label' | translate"
     />
-    <button type="submit" class="btn btn-secondary" [disabled]="!codeInput.valid" (click)="submitPromotionCode()">
+    <button type="button" class="btn btn-secondary" [disabled]="!codeInput.valid" (click)="submitPromotionCode()">
       {{ 'shopping_cart.promotion.apply.button.label' | translate }}
     </button>
   </div>
