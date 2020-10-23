@@ -26,24 +26,30 @@ export function createLazyComponent(options: Options): Rule {
       throw new SchematicsException('Option (project) is required.');
     }
     const workspace = await getWorkspace(host);
-    const project = workspace.projects.get(options.project);
+    const isProject = options.path.startsWith('projects/');
+
+    const project = workspace.projects.get(isProject ? options.path.split('/')[1] : options.project);
 
     const originalPath = options.path.replace(/.*src\/app\//, '');
     const componentPath = `/${project.sourceRoot}/app/${originalPath}`;
 
     if (
       !originalPath.endsWith('component.ts') ||
-      !originalPath.startsWith('extensions/') ||
+      !(originalPath.startsWith('extensions/') || isProject) ||
       !host.exists(componentPath)
     ) {
-      throw new SchematicsException('path does not point to an existing component in an extension');
+      throw new SchematicsException('path does not point to an existing component in an extension or project');
     }
 
     const pathSplits = originalPath.split('/');
     const extension = pathSplits[1];
     const originalName = /\/([a-z0-9-]+)\.component\.ts/.exec(originalPath)[1];
     options.name = 'lazy-' + originalName;
-    options.path = `${project.sourceRoot}/app/extensions/${extension}/exports`;
+    if (isProject) {
+      options.path = `${project.sourceRoot}/app/exports`;
+    } else {
+      options.path = `${project.sourceRoot}/app/extensions/${extension}/exports`;
+    }
     options = findDeclaringModule(host, options);
     options = determineArtifactName('component', host, options);
 
@@ -136,8 +142,9 @@ export function createLazyComponent(options: Options): Rule {
             extension,
             originalName,
             onChanges,
+            isProject,
           }),
-          move(`/${project.sourceRoot}/app/extensions/${extension}/exports`),
+          move(options.path),
           forEach(fileEntry => {
             if (host.exists(fileEntry.path)) {
               host.overwrite(fileEntry.path, fileEntry.content);

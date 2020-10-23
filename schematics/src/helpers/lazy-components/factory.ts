@@ -12,20 +12,32 @@ export function createLazyComponents(options: Options): Rule {
     const project = workspace.projects.get(options.project);
     const operations = [];
 
+    const fileVisitor = (file: string) => {
+      if (file.endsWith('.component.ts')) {
+        const componentContent = host.read(file).toString('utf-8');
+        if (componentContent.includes('@GenerateLazyComponent')) {
+          operations.push(schematic('lazy-component', { ...options, path: file.substring(1) }));
+        }
+      }
+    };
+
     const extensionsRoot = `/${project.sourceRoot}/app/extensions`;
     host.getDir(extensionsRoot).subdirs.forEach(extension => {
       const sharedComponentFolder = `${extensionsRoot}/${extension}/shared`;
-      const extensionComponents = host.getDir(sharedComponentFolder).subdirs;
+      const components = host.getDir(sharedComponentFolder).subdirs;
 
-      if (extensionComponents.length) {
-        host.getDir(sharedComponentFolder).visit(file => {
-          if (file.endsWith('.component.ts')) {
-            const componentContent = host.read(file).toString('utf-8');
-            if (componentContent.includes('@GenerateLazyComponent')) {
-              operations.push(schematic('lazy-component', { ...options, path: file.replace(/.*\/src\/app\//, '') }));
-            }
-          }
-        });
+      if (components.length) {
+        host.getDir(sharedComponentFolder).visit(fileVisitor);
+      }
+    });
+
+    const projectsRoot = `/projects`;
+    host.getDir(projectsRoot).subdirs.forEach(projectName => {
+      const sharedComponentFolder = `${projectsRoot}/${projectName}/src/app/components`;
+      const components = host.getDir(sharedComponentFolder).subdirs;
+
+      if (components.length) {
+        host.getDir(sharedComponentFolder).visit(fileVisitor);
       }
     });
 

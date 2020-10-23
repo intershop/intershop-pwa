@@ -50,7 +50,7 @@ describe('Lazy Component Schematic', () => {
       .toPromise()
       .catch(error => error);
 
-    expect(err.message).toEqual('path does not point to an existing component in an extension');
+    expect(err.message).toMatch(/path does not point to an existing component/);
   });
 
   it.each(['extensions/ext/shared/dummy/dummy.component.ts', 'src/app/extensions/ext/shared/dummy/dummy.component.ts'])(
