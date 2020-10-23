@@ -45,7 +45,7 @@ export class <%= classify(name) %>Component implements OnInit <% if (bindings.le
       const moduleObj = await import(`../../${extension}.module`);
       const module = moduleObj[Object.keys(moduleObj)[0]];
 
-      const { <%= classify(originalName) %>Component } = await import('../../shared/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component');
+      const { <%= classify(originalName) %>Component } = await import('../../<% if (isProject) { %>components<% } else { %>shared<% } %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component');
 
       const moduleFactory = await this.loadModuleFactory(module);
       const moduleRef = moduleFactory.create(this.injector);
