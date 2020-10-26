@@ -1,7 +1,7 @@
 <div *ngIf="basket && shippingMethods" class="row">
   <!-- Messages -->
   <div class="col-md-12">
-    <ish-error-message [error]="error"></ish-error-message>
+    <ish-error-message [error]="error" [toast]="false"></ish-error-message>
     <ish-basket-validation-results></ish-basket-validation-results>
   </div>
 

@@ -5,7 +5,7 @@
       {{ 'checkout.payment.no_Selection.error' | translate }}
     </div>
 
-    <ish-error-message [error]="error"></ish-error-message>
+    <ish-error-message [error]="error" [toast]="false"></ish-error-message>
     <ish-basket-validation-results></ish-basket-validation-results>
 
     <div *ngIf="redirectStatus" role="alert" class="alert alert-danger">
