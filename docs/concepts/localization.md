@@ -274,7 +274,7 @@ In the current state of the Intershop Progressive Web App, the converted localiz
 Localization files require constant maintenance to keep them up to date.
 They should not contain any localizations that are no longer required by the project sources or functionality.
 The PWA project provides a script that helps to keep the localization files clean.
-It can be run with `npm run clean-localizations`.
+The script is saved under `scripts/clean-up-localizations.js` and can be run with `npm run clean-localizations`.
 
 The script removes all unused localization keys from the default localization file `src/assets/i18n/en_US.json` and sorts the remaining keys.
 In a second step it generates localization files for the other available language files under `src/assets/i18n` by using the localization keys found for the default language.
