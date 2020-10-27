@@ -68,7 +68,7 @@ export class LineItemListComponent {
 
       return group;
     },
-    pli => pli.id
+    pli => pli.id + pli.quantity?.value
   );
 
   product$(sku: string) {
@@ -80,7 +80,9 @@ export class LineItemListComponent {
    * @param item ItemId and quantity pair that should be updated
    */
   onUpdateItem(item: LineItemUpdate) {
-    (this.createDummyForm({ id: item.itemId }).get('quantity') as FormControl).setValue(item.quantity, {
+    (this.createDummyForm({ id: item.itemId, quantity: { value: item.quantity } }).get(
+      'quantity'
+    ) as FormControl).setValue(item.quantity, {
       emitEvent: false,
     });
     this.updateItem.emit(item);
