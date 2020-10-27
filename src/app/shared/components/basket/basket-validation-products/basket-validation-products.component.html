@@ -19,9 +19,7 @@
             </div>
             <!---Product Description --->
             <div class="col-7 col-md-6 list-item">
-              <div class="product-title">
-                <a [routerLink]="product | ishProductRoute">{{ product.name }}</a>
-              </div>
+              <a [routerLink]="product | ishProductRoute" class="product-title">{{ product.name }}</a>
               <p class="product-id">{{ 'product.itemNumber.label' | translate }}&nbsp;{{ product.sku }}</p>
             </div>
 
