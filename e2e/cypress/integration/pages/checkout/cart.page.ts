@@ -53,6 +53,7 @@ export class CartPage {
       quantity: {
         set: (num: number) =>
           cy.get(this.tag).find('input[data-testing-id="quantity"]').eq(idx).clear().type(num.toString()).blur(),
+        get: () => cy.get(this.tag).find('input[data-testing-id="quantity"]').eq(idx).invoke('val'),
       },
       remove: () => cy.get(this.tag).find('svg[data-icon="trash-alt"]').eq(idx).click(),
       sku: cy.get(this.tag).find('.product-id').eq(idx),

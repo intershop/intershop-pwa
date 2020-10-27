@@ -78,6 +78,9 @@ describe('Basket Handling', () => {
       waitLoadingEnd(1000);
       page.header.miniCart.total.should('contain', _.product.price * 3);
     });
+    at(CartPage, page => {
+      page.lineItem(0).quantity.get().should('equal', '3');
+    });
   });
 
   it('user should get info messages', () => {
