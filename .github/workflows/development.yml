@@ -36,13 +36,6 @@ jobs:
         with:
           node-version: 12
 
-      - uses: actions/cache@v2
-        with:
-          path: ~/.cache
-          key: ${{ runner.os }}-cache-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-cache-
-
       - name: Install root dependencies
         run: npm ci
 
@@ -54,7 +47,7 @@ jobs:
       - name: Code Formatting
         run: npm run format
 
-      - name: Check No Changes
+      - name: Check No Changes from Formatting
         run: git diff --exit-code --raw -p --stat
 
       - name: Compile Angular
@@ -71,8 +64,30 @@ jobs:
           node scripts/tslint-hard
           npm run lint
 
+  DeadCode:
+    runs-on: ubuntu-latest
+    if: "!startsWith(github.ref, 'refs/tags/') && github.ref != 'refs/heads/master' && github.ref != 'refs/heads/develop'"
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install root dependencies
+        run: npm ci
+
       - name: Find Dead Code
         run: npx ts-node scripts/find-dead-code
+
+      - name: Find Unused TestBed declarations
+        run: |
+          npx ts-node scripts/cleanup-testbed origin/develop
+          git diff --exit-code --raw -p --stat
 
   Jest:
     runs-on: ubuntu-latest

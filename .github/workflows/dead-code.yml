@@ -1,0 +1,29 @@
+name: DeadCode
+
+on:
+  workflow_dispatch:
+  schedule:
+    # every sunday at midnight
+    - cron: '0 0 * * 0'
+
+jobs:
+  TestBed:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Find Unused TestBed declarations
+        run: |
+          npx ts-node scripts/cleanup-testbed
+          git diff --exit-code --raw -p --stat
