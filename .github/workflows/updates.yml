@@ -5,6 +5,7 @@ on:
     branches:
       - develop
       - upgrade/**
+      - update/**
   schedule:
     - cron: '0 0 * * *'
 
