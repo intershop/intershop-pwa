@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Product Links Carousel Component should be created 1`] = `<div class="swiper-slide"><ish-product-item ng-reflect-product-sku="sku"></ish-product-item></div>`;
