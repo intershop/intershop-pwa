@@ -48,6 +48,19 @@ export class CartPage {
     this.addBasketToOrderTemplateButton().click();
   }
 
+  collapsePromotionForm() {
+    return cy.get('[data-testing-id="promo-collapse-link"]').click();
+  }
+
+  submitPromotionCode(code: string) {
+    cy.get('[data-testing-id="promo-code-form"] input').clear().type(code);
+    return cy.get('[data-testing-id="promo-code-form"] button').click();
+  }
+
+  removePromotionCode() {
+    return cy.get('[data-testing-id="promo-remove-link"]').click();
+  }
+
   lineItem(idx: number) {
     return {
       quantity: {
@@ -70,6 +83,10 @@ export class CartPage {
     return cy.get('[data-testing-id="basket-tax"]');
   }
 
+  get promotion() {
+    return cy.get('.cost-summary ish-basket-promotion');
+  }
+
   get lineItemInfoMessage() {
     return {
       message: cy.get('ish-line-item-list').find('.alert-info'),
@@ -78,7 +95,13 @@ export class CartPage {
 
   get errorMessage() {
     return {
-      message: cy.get('ish-error-message').find('.alert-error'),
+      message: cy.get('#toast-container').find('.toast-error'),
+    };
+  }
+
+  get successMessage() {
+    return {
+      message: cy.get('#toast-container').find('.toast-message'),
     };
   }
 }
