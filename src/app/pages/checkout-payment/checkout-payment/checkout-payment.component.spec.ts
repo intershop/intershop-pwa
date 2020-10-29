@@ -11,14 +11,12 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { BasketAddressSummaryComponent } from 'ish-shared/components/basket/basket-address-summary/basket-address-summary.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
 import { BasketItemsSummaryComponent } from 'ish-shared/components/basket/basket-items-summary/basket-items-summary.component';
 import { BasketPromotionCodeComponent } from 'ish-shared/components/basket/basket-promotion-code/basket-promotion-code.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
 
 import { PaymentConcardisCreditcardCvcDetailComponent } from '../payment-concardis-creditcard-cvc-detail/payment-concardis-creditcard-cvc-detail.component';
@@ -47,10 +45,8 @@ describe('Checkout Payment Component', () => {
         MockComponent(BasketPromotionCodeComponent),
         MockComponent(BasketValidationResultsComponent),
         MockComponent(CheckboxComponent),
-        MockComponent(ContentIncludeComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(FormlyForm),
-        MockComponent(ModalDialogLinkComponent),
         MockComponent(NgbCollapse),
         MockComponent(PaymentConcardisCreditcardComponent),
         MockComponent(PaymentConcardisCreditcardCvcDetailComponent),

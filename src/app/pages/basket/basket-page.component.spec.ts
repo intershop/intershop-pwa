@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -30,7 +29,6 @@ describe('Basket Page Component', () => {
         MockComponent(ShoppingBasketComponent),
         MockComponent(ShoppingBasketEmptyComponent),
       ],
-      imports: [TranslateModule.forRoot()],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     }).compileComponents();
   });

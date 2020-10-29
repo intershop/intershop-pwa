@@ -6,7 +6,6 @@ import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { AddressFormContainerComponent } from 'ish-shared/address-forms/components/address-form-container/address-form-container.component';
-import { AddressFormFactoryProvider } from 'ish-shared/address-forms/configurations/address-form-factory.provider';
 
 import { CustomerAddressFormComponent } from './customer-address-form.component';
 
@@ -20,7 +19,6 @@ describe('Customer Address Form Component', () => {
     await TestBed.configureTestingModule({
       declarations: [CustomerAddressFormComponent, MockComponent(AddressFormContainerComponent)],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      providers: [AddressFormFactoryProvider],
     }).compileComponents();
   });
 

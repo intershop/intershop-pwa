@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -16,7 +15,7 @@ describe('Product Add To Compare Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting('compare'), RouterTestingModule, TranslateModule.forRoot()],
+      imports: [FeatureToggleModule.forTesting('compare'), TranslateModule.forRoot()],
       declarations: [MockComponent(FaIconComponent), ProductAddToCompareComponent],
     }).compileComponents();
   });

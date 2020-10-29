@@ -11,7 +11,6 @@ import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketPromotionComponent } from 'ish-shared/components/basket/basket-promotion/basket-promotion.component';
-import { PromotionDetailsComponent } from 'ish-shared/components/promotion/promotion-details/promotion-details.component';
 
 import { BasketItemsSummaryComponent } from './basket-items-summary.component';
 
@@ -29,7 +28,6 @@ describe('Basket Items Summary Component', () => {
         BasketItemsSummaryComponent,
         MockComponent(BasketPromotionComponent),
         MockComponent(FaIconComponent),
-        MockComponent(PromotionDetailsComponent),
         MockPipe(PricePipe),
         MockPipe(ProductRoutePipe),
       ],

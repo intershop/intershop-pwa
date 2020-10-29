@@ -8,7 +8,6 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { AddressService } from 'ish-core/services/address/address.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { OrderService } from 'ish-core/services/order/order.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import {
   deleteCustomerAddressFail,
@@ -36,14 +35,12 @@ import {
 describe('Basket Addresses Effects', () => {
   let actions$: Observable<Action>;
   let basketServiceMock: BasketService;
-  let orderServiceMock: OrderService;
   let addressServiceMock: AddressService;
   let effects: BasketAddressesEffects;
   let store$: Store;
 
   beforeEach(() => {
     basketServiceMock = mock(BasketService);
-    orderServiceMock = mock(OrderService);
     addressServiceMock = mock(AddressService);
 
     TestBed.configureTestingModule({
@@ -52,7 +49,6 @@ describe('Basket Addresses Effects', () => {
         BasketAddressesEffects,
         provideMockActions(() => actions$),
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
-        { provide: OrderService, useFactory: () => instance(orderServiceMock) },
         { provide: AddressService, useFactory: () => instance(addressServiceMock) },
       ],
     });

@@ -2,15 +2,12 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { ToastrModule } from 'ngx-toastr';
 import { EMPTY, of } from 'rxjs';
 import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
 
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
-  LARGE_BREAKPOINT_WIDTH,
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
-  MEDIUM_BREAKPOINT_WIDTH,
   PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -165,7 +162,6 @@ describe('Customer Store', () => {
           },
         ]),
         ShoppingStoreModule,
-        ToastrModule.forRoot(),
         TranslateModule.forRoot(),
       ],
       providers: [
@@ -175,8 +171,6 @@ describe('Customer Store', () => {
         { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },
         { provide: OrderService, useFactory: () => instance(orderServiceMock) },
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
-        { provide: ConfigurationService, useFactory: () => instance(configurationServiceMock) },
-        { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },
@@ -187,8 +181,6 @@ describe('Customer Store', () => {
         { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 3 },
-        { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
-        { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
         { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'list' },
       ],
     });

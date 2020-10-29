@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { MockComponent } from 'ng-mocks';
 
 import { FilterCollapsableComponent } from './filter-collapsable.component';
@@ -12,7 +11,6 @@ describe('Filter Collapsable Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgbCollapseModule],
       declarations: [FilterCollapsableComponent, MockComponent(FaIconComponent)],
     }).compileComponents();
   });

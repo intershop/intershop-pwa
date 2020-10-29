@@ -1,6 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
@@ -23,12 +21,11 @@ describe('Account Order Template Page Component', () => {
     const orderTemplatesFacade = mock(OrderTemplatesFacade);
 
     await TestBed.configureTestingModule({
-      imports: [NgbPopoverModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       declarations: [
         AccountOrderTemplatePageComponent,
         MockComponent(AccountOrderTemplateListComponent),
         MockComponent(ErrorMessageComponent),
-        MockComponent(FaIconComponent),
         MockComponent(LoadingComponent),
         MockComponent(OrderTemplatePreferencesDialogComponent),
       ],

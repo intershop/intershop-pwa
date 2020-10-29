@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { Product } from 'ish-core/models/product/product.model';
@@ -61,7 +60,7 @@ describe('Product Images Component', () => {
       },
     ];
     await TestBed.configureTestingModule({
-      imports: [NgbCarouselModule, TranslateModule.forRoot()],
+      imports: [NgbCarouselModule],
       declarations: [
         MockComponent(ProductImageComponent),
         MockComponent(ProductLabelComponent),

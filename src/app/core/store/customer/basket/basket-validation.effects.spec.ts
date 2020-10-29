@@ -11,9 +11,7 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { BasketValidation } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { OrderService } from 'ish-core/services/order/order.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { createOrder } from 'ish-core/store/customer/orders';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -32,7 +30,6 @@ import {
 describe('Basket Validation Effects', () => {
   let actions$: Observable<Action>;
   let basketServiceMock: BasketService;
-  let orderServiceMock: OrderService;
   let effects: BasketValidationEffects;
   let store$: Store;
   let location: Location;
@@ -42,13 +39,11 @@ describe('Basket Validation Effects', () => {
 
   beforeEach(() => {
     basketServiceMock = mock(BasketService);
-    orderServiceMock = mock(OrderService);
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(),
-        CustomerStoreModule.forTesting('basket'),
         RouterTestingModule.withRoutes([
           { path: 'checkout', children: [{ path: 'address', component: DummyComponent }] },
         ]),
@@ -57,7 +52,6 @@ describe('Basket Validation Effects', () => {
         BasketValidationEffects,
         provideMockActions(() => actions$),
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
-        { provide: OrderService, useFactory: () => instance(orderServiceMock) },
       ],
     });
 

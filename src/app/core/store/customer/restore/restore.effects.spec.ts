@@ -1,4 +1,3 @@
-import { PLATFORM_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -14,7 +13,6 @@ import { loadBasketByAPIToken, loadBasketSuccess } from 'ish-core/store/customer
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loadOrderByAPIToken, loadOrderSuccess } from 'ish-core/store/customer/orders';
 import { loadUserByAPIToken, loginUserSuccess, logoutUser, setAPIToken } from 'ish-core/store/customer/user';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { RestoreEffects } from './restore.effects';
@@ -33,13 +31,8 @@ describe('Restore Effects', () => {
         CoreStoreModule.forTesting(['router'], true),
         CustomerStoreModule.forTesting('user', 'orders', 'basket'),
         RouterTestingModule.withRoutes([]),
-        ShoppingStoreModule.forTesting('products', 'categories'),
       ],
-      providers: [
-        RestoreEffects,
-        { provide: PLATFORM_ID, useValue: 'browser' },
-        { provide: CookiesService, useFactory: () => instance(cookiesServiceMock) },
-      ],
+      providers: [RestoreEffects, { provide: CookiesService, useFactory: () => instance(cookiesServiceMock) }],
     });
 
     restoreEffects = TestBed.inject(RestoreEffects);

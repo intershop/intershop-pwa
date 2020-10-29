@@ -27,7 +27,7 @@ describe('Price Pipe', () => {
     await TestBed.configureTestingModule({
       declarations: [DummyComponent, PricePipe],
       imports: [TranslateModule.forRoot()],
-      providers: [PricePipe, { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     }).compileComponents();
   });
 
@@ -120,7 +120,7 @@ describe('Price Pipe', () => {
     await TestBed.configureTestingModule({
       declarations: [DummyComponent, PricePipe],
       imports: [TranslateModule.forRoot()],
-      providers: [PricePipe, { provide: AccountFacade, useFactory: () => instance(accountFacade) }],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   });
 

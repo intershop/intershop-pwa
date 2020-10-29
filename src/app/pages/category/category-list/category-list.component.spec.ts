@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 
 import { CategoryTileComponent } from '../category-tile/category-tile.component';
@@ -13,7 +12,6 @@ describe('Category List Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
       declarations: [CategoryListComponent, MockComponent(CategoryTileComponent)],
     }).compileComponents();
   });

@@ -10,9 +10,7 @@ import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Product } from 'ish-core/models/product/product.model';
-import { AddressService } from 'ish-core/services/address/address.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { OrderService } from 'ish-core/services/order/order.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loadProduct, loadProductSuccess } from 'ish-core/store/shopping/products';
@@ -39,15 +37,11 @@ import {
 describe('Basket Items Effects', () => {
   let actions$: Observable<Action>;
   let basketServiceMock: BasketService;
-  let orderServiceMock: OrderService;
-  let addressServiceMock: AddressService;
   let effects: BasketItemsEffects;
   let store$: Store;
 
   beforeEach(() => {
     basketServiceMock = mock(BasketService);
-    orderServiceMock = mock(OrderService);
-    addressServiceMock = mock(AddressService);
 
     TestBed.configureTestingModule({
       imports: [
@@ -60,8 +54,6 @@ describe('Basket Items Effects', () => {
         BasketItemsEffects,
         provideMockActions(() => actions$),
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
-        { provide: OrderService, useFactory: () => instance(orderServiceMock) },
-        { provide: AddressService, useFactory: () => instance(addressServiceMock) },
       ],
     });
 

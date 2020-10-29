@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { SwiperModule } from 'ngx-swiper-wrapper';
@@ -24,7 +23,7 @@ describe('Wishlist Widget Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [MockComponent(ProductItemComponent), WishlistWidgetComponent],
-      imports: [RouterTestingModule, SwiperModule, TranslateModule.forRoot()],
+      imports: [SwiperModule, TranslateModule.forRoot()],
       providers: [
         { provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) },
         { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },

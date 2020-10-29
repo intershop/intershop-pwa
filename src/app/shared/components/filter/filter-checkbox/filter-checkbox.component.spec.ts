@@ -1,11 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
 
 import { Filter } from 'ish-core/models/filter/filter.model';
-import { SanitizePipe } from 'ish-core/pipes/sanitize.pipe';
 
 import { FilterCheckboxComponent } from './filter-checkbox.component';
 
@@ -17,7 +13,7 @@ describe('Filter Checkbox Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [FilterCheckboxComponent, MockComponent(FaIconComponent), MockComponent(NgbCollapse), SanitizePipe],
+      declarations: [FilterCheckboxComponent],
     }).compileComponents();
   });
 

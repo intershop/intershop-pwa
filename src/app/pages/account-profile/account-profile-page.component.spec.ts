@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -33,7 +32,6 @@ describe('Account Profile Page Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [AccountProfilePageComponent, MockComponent(AccountProfileComponent)],
-      imports: [TranslateModule.forRoot()],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   });
