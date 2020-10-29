@@ -59,6 +59,7 @@ import { InplaceEditComponent } from './components/common/inplace-edit/inplace-e
 import { LoadingComponent } from './components/common/loading/loading.component';
 import { ModalDialogLinkComponent } from './components/common/modal-dialog-link/modal-dialog-link.component';
 import { ModalDialogComponent } from './components/common/modal-dialog/modal-dialog.component';
+import { SuccessMessageComponent } from './components/common/success-message/success-message.component';
 import { FilterCheckboxComponent } from './components/filter/filter-checkbox/filter-checkbox.component';
 import { FilterCollapsableComponent } from './components/filter/filter-collapsable/filter-collapsable.component';
 import { FilterDropdownComponent } from './components/filter/filter-dropdown/filter-dropdown.component';
@@ -213,6 +214,7 @@ const exportedComponents = [
   PromotionDetailsComponent,
   PromotionRemoveComponent,
   RecentlyViewedComponent,
+  SuccessMessageComponent,
 ];
 
 @NgModule({
