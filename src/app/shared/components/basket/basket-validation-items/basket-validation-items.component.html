@@ -16,9 +16,7 @@
         </div>
         <!---Product Description --->
         <div class="col-5 col-md-4 list-item">
-          <div class="product-title">
-            <a [routerLink]="product | ishProductRoute">{{ product.name }}</a>
-          </div>
+          <a [routerLink]="product | ishProductRoute">{{ product.name }}</a>
           <p class="product-id">{{ 'product.itemNumber.label' | translate }}&nbsp;{{ pli.productSKU }}</p>
 
           <!---Out of Stock --->
