@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -33,11 +32,7 @@ describe('Basket Promotion Component', () => {
         MockComponent(PromotionRemoveComponent),
         MockDirective(ServerHtmlDirective),
       ],
-      imports: [RouterTestingModule],
-      providers: [
-        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
-        { provide: AppFacade, useFactory: () => instance(appFacade) },
-      ],
+      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
   });
 
