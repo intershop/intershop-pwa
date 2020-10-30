@@ -30,8 +30,8 @@ export class ProductImagesComponent {
    * Set the active slide via index (used by the thumbnail indicator)
    * @param slideIndex The slide index number to set the active slide
    */
-  setActiveSlide(slideIndex: number) {
-    this.activeSlide = slideIndex;
+  setActiveSlide(slideIndex: number | string) {
+    this.activeSlide = Number(slideIndex);
   }
 
   /**
@@ -41,5 +41,9 @@ export class ProductImagesComponent {
    */
   isActiveSlide(slideIndex: number): boolean {
     return this.activeSlide === slideIndex;
+  }
+
+  getString(num: number): string {
+    return num.toString();
   }
 }

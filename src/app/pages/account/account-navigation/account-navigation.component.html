@@ -35,7 +35,7 @@
         <option
           *ishFeature="item.value.feature || 'always'"
           [value]="item.key"
-          [attr.selected]="item.value.link === currentPath ? 'selected' : undefined"
+          [attr.selected]="isSelected(item.value.link)"
         >
           {{ item.value.localizationKey | translate }}
         </option>

@@ -5,7 +5,7 @@ import { MockComponent, MockDirective } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { Product } from 'ish-core/models/product/product.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 import { IsTactonProductDirective } from '../../../extensions/tacton/directives/is-tacton-product.directive';
 import { LazyProductAddToWishlistComponent } from '../../../extensions/wishlists/exports/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
@@ -15,7 +15,7 @@ import { ProductDetailActionsComponent } from './product-detail-actions.componen
 describe('Product Detail Actions Component', () => {
   let component: ProductDetailActionsComponent;
   let fixture: ComponentFixture<ProductDetailActionsComponent>;
-  let product: Product;
+  let product: ProductView;
   let translate: TranslateService;
   let element: HTMLElement;
 
@@ -37,7 +37,7 @@ describe('Product Detail Actions Component', () => {
     translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');
-    product = { sku: 'sku' } as Product;
+    product = { sku: 'sku' } as ProductView;
     product.availability = true;
     element = fixture.nativeElement;
     component.product = product;

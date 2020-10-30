@@ -60,10 +60,6 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
     this.isMobileView = this.deviceType === 'tablet' || this.deviceType === 'mobile';
   }
 
-  get currentPath() {
-    return location.pathname;
-  }
-
   navigateTo(link) {
     if (link) {
       this.router.navigate([link]);
@@ -72,5 +68,9 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
 
   get unsorted() {
     return () => 0;
+  }
+
+  isSelected(itemValueLink: string): string {
+    return itemValueLink === location.pathname ? 'selected' : undefined;
   }
 }

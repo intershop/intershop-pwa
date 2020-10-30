@@ -14,9 +14,9 @@ import { FormElementComponent } from 'ish-shared/forms/components/form-element/f
  *    [form]="form"
  *    [errorMessages]="[{ required: 'textarea.required.error' }]"
  *    label="textarea.label"
- *    maxlength="30000"
+ *    maxlength=30000
  *    placeholder="textarea.placeholder"
- *    rows="5"
+ *    rows=5
  *    [spellcheck]="true"
  * ></ish-textarea>
  */

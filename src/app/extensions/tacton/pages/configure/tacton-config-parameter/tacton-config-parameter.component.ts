@@ -12,7 +12,7 @@ export abstract class TactonConfigParameterComponent {
 
   constructor(protected facade: TactonFacade) {}
 
-  change(value) {
+  change(value: string) {
     this.facade.commitValue(this.parameter, value);
   }
 
