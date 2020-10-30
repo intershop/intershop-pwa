@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { mock, when } from 'ts-mockito';
 
 import { configurationMeta } from 'ish-core/configurations/configuration.meta';
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
@@ -44,7 +44,6 @@ describe('Configuration Integration', () => {
       ],
       providers: [
         provideStoreSnapshots(),
-        { provide: ConfigurationService, useFactory: () => instance(configurationService) },
         { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
         { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
       ],

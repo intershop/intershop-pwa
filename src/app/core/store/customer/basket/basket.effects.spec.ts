@@ -12,7 +12,6 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
@@ -51,7 +50,6 @@ describe('Basket Effects', () => {
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user', 'basket'),
         RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
-        ShoppingStoreModule.forTesting('products', 'categories'),
       ],
       providers: [
         BasketEffects,

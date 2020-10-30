@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -41,8 +40,7 @@ describe('Content Page Component', () => {
         MockComponent(ContentPageletComponent),
         MockComponent(LoadingComponent),
       ],
-      imports: [RouterTestingModule],
-      providers: [ContentPageComponent, { provide: CMSFacade, useFactory: () => instance(cmsFacade) }],
+      providers: [{ provide: CMSFacade, useFactory: () => instance(cmsFacade) }],
     }).compileComponents();
   });
 

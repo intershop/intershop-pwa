@@ -10,7 +10,6 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
@@ -47,11 +46,7 @@ describe('Basket Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(),
-        CustomerStoreModule.forTesting('user', 'basket'),
-        ShoppingStoreModule.forTesting('products', 'categories'),
-      ],
+      imports: [CoreStoreModule.forTesting(), CustomerStoreModule.forTesting('user', 'basket')],
       providers: [provideStoreSnapshots()],
     });
 

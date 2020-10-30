@@ -1,16 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockComponent } from 'ng-mocks';
 import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
-import { RequestReminderFormComponent } from '../request-reminder-form/request-reminder-form.component';
 import { UpdatePasswordFormComponent } from '../update-password-form/update-password-form.component';
 
 import { UpdatePasswordComponent } from './update-password.component';
@@ -28,9 +26,7 @@ describe('Update Password Component', () => {
       declarations: [
         MockComponent(ErrorMessageComponent),
         MockComponent(LoadingComponent),
-        MockComponent(RequestReminderFormComponent),
         MockComponent(UpdatePasswordFormComponent),
-        MockDirective(ServerHtmlDirective),
         UpdatePasswordComponent,
       ],
       imports: [RouterTestingModule, TranslateModule.forRoot()],

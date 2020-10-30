@@ -20,7 +20,6 @@ import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.modu
 import { getAPIToken, getPGID, setAPIToken } from 'ish-core/store/customer/user';
 
 import { ApiService, unpackEnvelope } from './api.service';
-import { ApiServiceErrorHandler } from './api.service.errorhandler';
 
 // testing here is handled by http testing controller
 // tslint:disable: use-async-synchronization-in-tests
@@ -37,8 +36,6 @@ describe('Api Service', () => {
         // https://angular.io/guide/http#testing-http-requests
         imports: [HttpClientTestingModule],
         providers: [
-          ApiServiceErrorHandler,
-          ApiService,
           provideMockStore({
             selectors: [
               { selector: getRestEndpoint, value: 'http://www.example.org/WFS/site/-' },
@@ -199,8 +196,6 @@ describe('Api Service', () => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule],
         providers: [
-          ApiServiceErrorHandler,
-          ApiService,
           provideMockStore({
             selectors: [
               { selector: getRestEndpoint, value: 'http://www.example.org/WFS/site/-' },
@@ -364,8 +359,6 @@ describe('Api Service', () => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule],
         providers: [
-          ApiServiceErrorHandler,
-          ApiService,
           provideMockStore({
             selectors: [
               { selector: getRestEndpoint, value: 'http://www.example.org/WFS/site/-' },
@@ -508,7 +501,6 @@ describe('Api Service', () => {
           CustomerStoreModule.forTesting('user'),
           HttpClientTestingModule,
         ],
-        providers: [ApiServiceErrorHandler, ApiService],
       });
 
       apiService = TestBed.inject(ApiService);
@@ -629,8 +621,6 @@ describe('Api Service', () => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule],
         providers: [
-          ApiServiceErrorHandler,
-          ApiService,
           provideMockStore({
             selectors: [
               { selector: getICMServerURL, value: undefined },

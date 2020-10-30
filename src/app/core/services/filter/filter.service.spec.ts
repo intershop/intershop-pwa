@@ -1,14 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { FilterNavigationData } from 'ish-core/models/filter-navigation/filter-navigation.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { getProductListingItemsPerPage } from 'ish-core/store/shopping/product-listing';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 import { FilterService } from './filter.service';
@@ -39,9 +36,7 @@ describe('Filter Service', () => {
     apiService = mock(ApiService);
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), RouterTestingModule, ShoppingStoreModule.forTesting('productListing')],
       providers: [
-        FilterService,
         { provide: ApiService, useFactory: () => instance(apiService) },
         provideMockStore({
           selectors: [

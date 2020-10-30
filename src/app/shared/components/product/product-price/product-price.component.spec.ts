@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -22,7 +21,7 @@ describe('Product Price Component', () => {
     when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
 
     await TestBed.configureTestingModule({
-      imports: [CommonModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       declarations: [PricePipe, ProductPriceComponent],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();

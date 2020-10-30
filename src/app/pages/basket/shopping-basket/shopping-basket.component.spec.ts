@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
@@ -40,7 +39,7 @@ describe('Shopping Basket Component', () => {
         MockComponent(ModalDialogLinkComponent),
         ShoppingBasketComponent,
       ],
-      imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

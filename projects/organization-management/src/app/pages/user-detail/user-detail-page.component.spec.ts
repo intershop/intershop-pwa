@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -38,7 +37,7 @@ describe('User Detail Page Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       declarations: [MockComponent(FaIconComponent), UserDetailPageComponent],
       providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
     }).compileComponents();

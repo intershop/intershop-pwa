@@ -16,7 +16,6 @@ import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
@@ -60,7 +59,6 @@ describe('Basket Payment Effects', () => {
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user', 'basket'),
         RouterTestingModule.withRoutes([{ path: 'checkout/review', component: DummyComponent }]),
-        ShoppingStoreModule.forTesting('products', 'categories'),
       ],
       providers: [
         BasketPaymentEffects,

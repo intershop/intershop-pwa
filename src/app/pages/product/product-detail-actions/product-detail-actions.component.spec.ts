@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -22,7 +21,7 @@ describe('Product Detail Actions Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule, FeatureToggleModule.forTesting('compare'), TranslateModule.forRoot()],
+      imports: [FeatureToggleModule.forTesting('compare'), TranslateModule.forRoot()],
       declarations: [
         MockComponent(FaIconComponent),
         MockComponent(LazyProductAddToWishlistComponent),

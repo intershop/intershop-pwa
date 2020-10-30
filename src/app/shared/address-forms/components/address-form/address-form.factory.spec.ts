@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 
 import { AddressFormFactory } from './address-form.factory';
 
@@ -8,7 +7,7 @@ describe('Address Form Factory', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [FormBuilder, AddressFormFactory],
+      providers: [AddressFormFactory],
     });
     addressFactory = TestBed.inject(AddressFormFactory);
   });

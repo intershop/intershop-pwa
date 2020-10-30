@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
@@ -22,7 +21,7 @@ describe('Account Wishlist Detail Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgbPopoverModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [NgbPopoverModule, TranslateModule.forRoot()],
       declarations: [
         AccountWishlistDetailPageComponent,
         MockComponent(AccountWishlistDetailLineItemComponent),

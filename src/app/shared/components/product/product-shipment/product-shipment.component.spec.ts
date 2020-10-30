@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
@@ -18,7 +17,7 @@ describe('Product Shipment Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgbModalModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       declarations: [
         MockComponent(ContentIncludeComponent),
         MockComponent(ModalDialogLinkComponent),

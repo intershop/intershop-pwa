@@ -1,12 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
-import { DatePipe } from 'ish-core/pipes/date.pipe';
 
 import { AccountProfileComponent } from './account-profile.component';
 
@@ -20,12 +19,7 @@ describe('Account Profile Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        AccountProfileComponent,
-        MockComponent(FaIconComponent),
-        MockDirective(ServerHtmlDirective),
-        MockPipe(DatePipe),
-      ],
+      declarations: [AccountProfileComponent, MockComponent(FaIconComponent), MockDirective(ServerHtmlDirective)],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();
   });

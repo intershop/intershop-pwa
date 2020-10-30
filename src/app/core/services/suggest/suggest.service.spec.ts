@@ -15,7 +15,7 @@ describe('Suggest Service', () => {
     apiService = mock(ApiService);
     when(apiService.get(anything(), anything())).thenReturn(of<SuggestTerm[]>([]));
     TestBed.configureTestingModule({
-      providers: [SuggestService, { provide: ApiService, useFactory: () => instance(apiService) }],
+      providers: [{ provide: ApiService, useFactory: () => instance(apiService) }],
     });
     suggestService = TestBed.inject(SuggestService);
   });

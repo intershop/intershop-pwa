@@ -11,7 +11,6 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
@@ -63,7 +62,6 @@ describe('Users Effects', () => {
       declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router']),
-        CustomerStoreModule.forTesting('user'),
         OrganizationManagementStoreModule.forTesting('users'),
         RouterTestingModule.withRoutes([
           { path: 'users/:B2BCustomerLogin', component: DummyComponent },

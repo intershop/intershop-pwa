@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -35,7 +34,7 @@ describe('Select Order Template Modal Component', () => {
         MockDirective(ServerHtmlDirective),
         SelectOrderTemplateModalComponent,
       ],
-      imports: [NgbModalModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [NgbModalModule, ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacadeMock) }],
     }).compileComponents();
   });

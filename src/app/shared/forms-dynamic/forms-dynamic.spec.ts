@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -24,7 +24,7 @@ describe('Forms Dynamic', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DummyComponent],
-      imports: [FormlyModule, FormsDynamicModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [FormlyModule, FormsDynamicModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

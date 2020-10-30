@@ -8,7 +8,6 @@ import { cold, hot } from 'jest-marbles';
 import { of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
@@ -80,7 +79,6 @@ describe('Order Template Effects', () => {
       imports: [
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user'),
-        FeatureToggleModule.forTesting('orderTemplates'),
         OrderTemplatesStoreModule.forTesting('orderTemplates'),
         RouterTestingModule.withRoutes([
           { path: 'account/order-templates/:orderTemplateName', component: DummyComponent },

@@ -1,7 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -15,8 +12,6 @@ import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
 import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
-import { ProductRowComponent } from 'ish-shared/components/product/product-row/product-row.component';
-import { ProductTileComponent } from 'ish-shared/components/product/product-tile/product-tile.component';
 import { ProductVariationSelectComponent } from 'ish-shared/components/product/product-variation-select/product-variation-select.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
@@ -33,7 +28,6 @@ describe('Line Item Edit Dialog Component', () => {
     shoppingFacade = mock(ShoppingFacade);
 
     await TestBed.configureTestingModule({
-      imports: [NgbModalModule, ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
         LineItemEditDialogComponent,
         MockComponent(InputComponent),
@@ -41,8 +35,6 @@ describe('Line Item Edit Dialog Component', () => {
         MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
-        MockComponent(ProductRowComponent),
-        MockComponent(ProductTileComponent),
         MockComponent(ProductVariationSelectComponent),
         MockPipe(PricePipe),
       ],

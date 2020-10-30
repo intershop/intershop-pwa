@@ -31,10 +31,6 @@ describe('Http Status Code Service', () => {
       TestBed.configureTestingModule({
         declarations: [DummyComponent],
         imports: [RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }])],
-        providers: [
-          { provide: RESPONSE, useValue: RES },
-          { provide: PLATFORM_ID, useValue: 'browser' },
-        ],
       });
       httpStatusCodeService = TestBed.inject(HttpStatusCodeService);
       location = TestBed.inject(Location);

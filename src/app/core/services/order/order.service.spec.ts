@@ -31,7 +31,6 @@ describe('Order Service', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        OrderService,
         { provide: ApiService, useFactory: () => instance(apiService) },
         provideMockStore({ selectors: [{ selector: getCurrentLocale, value: { lang: 'en_US' } as Locale }] }),
       ],

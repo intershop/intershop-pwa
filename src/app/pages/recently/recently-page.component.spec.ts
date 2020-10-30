@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -21,7 +20,6 @@ describe('Recently Page Component', () => {
         MockComponent(RecentlyViewedAllComponent),
         RecentlyPageComponent,
       ],
-      imports: [TranslateModule.forRoot()],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) }],
     }).compileComponents();
   });

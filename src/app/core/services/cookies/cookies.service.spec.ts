@@ -1,4 +1,3 @@
-import { PLATFORM_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { CookiesService as ForeignCookiesService } from 'ngx-utils-cookies-port';
 import { anything, instance, mock, verify } from 'ts-mockito';
@@ -12,10 +11,7 @@ describe('Cookies Service', () => {
   beforeEach(() => {
     foreignCookiesServiceMock = mock(ForeignCookiesService);
     TestBed.configureTestingModule({
-      providers: [
-        { provide: PLATFORM_ID, useValue: 'browser' },
-        { provide: ForeignCookiesService, useFactory: () => instance(foreignCookiesServiceMock) },
-      ],
+      providers: [{ provide: ForeignCookiesService, useFactory: () => instance(foreignCookiesServiceMock) }],
     });
     cookiesService = TestBed.inject(CookiesService);
   });

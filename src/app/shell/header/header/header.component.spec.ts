@@ -5,7 +5,6 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { HeaderCheckoutComponent } from 'ish-shell/header/header-checkout/header-checkout.component';
 import { HeaderDefaultComponent } from 'ish-shell/header/header-default/header-default.component';
@@ -24,7 +23,7 @@ describe('Header Component', () => {
     when(appFacade.headerType$).thenReturn(of(undefined));
 
     await TestBed.configureTestingModule({
-      imports: [FeatureToggleModule, RouterTestingModule],
+      imports: [RouterTestingModule],
       declarations: [
         HeaderComponent,
         MockComponent(HeaderCheckoutComponent),

@@ -20,7 +20,6 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { continueCheckoutWithIssues, loadBasket, loadBasketSuccess } from 'ish-core/store/customer/basket';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
@@ -78,7 +77,6 @@ describe('Orders Effects', () => {
           { path: 'account/orders/:orderId', component: DummyComponent },
           { path: '**', component: DummyComponent },
         ]),
-        ShoppingStoreModule.forTesting('products', 'categories'),
         TranslateModule.forRoot(),
       ],
       providers: [

@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { mock, when } from 'ts-mockito';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -29,7 +29,6 @@ describe('Account Navigation Component', () => {
         RouterTestingModule,
         TranslateModule.forRoot(),
       ],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacadeMock) }],
     }).compileComponents();
 
     when(accountFacadeMock.isBusinessCustomer$).thenReturn(of(true));

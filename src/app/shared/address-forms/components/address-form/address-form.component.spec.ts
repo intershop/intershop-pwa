@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
@@ -33,7 +32,7 @@ describe('Address Form Component', () => {
         MockComponent(InputComponent),
         MockComponent(SelectCountryComponent),
       ],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule],
     }).compileComponents();
   });
 

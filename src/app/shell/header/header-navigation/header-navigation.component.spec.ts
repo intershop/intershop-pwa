@@ -7,7 +7,6 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { NavigationCategory } from 'ish-core/models/navigation-category/navigation-category.model';
-import { CategoryRoutePipe } from 'ish-core/routing/category/category-route.pipe';
 import { SubCategoryNavigationComponent } from 'ish-shell/header/sub-category-navigation/sub-category-navigation.component';
 
 import { HeaderNavigationComponent } from './header-navigation.component';
@@ -24,7 +23,6 @@ describe('Header Navigation Component', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [
-        CategoryRoutePipe,
         HeaderNavigationComponent,
         MockComponent(FaIconComponent),
         MockComponent(SubCategoryNavigationComponent),

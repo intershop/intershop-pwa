@@ -1,13 +1,10 @@
-import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
 
-import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -20,9 +17,6 @@ describe('Promotions Effects', () => {
   let effects: PromotionsEffects;
   let promotionsServiceMock: PromotionsService;
 
-  @Component({ template: 'dummy' })
-  class DummyComponent {}
-
   beforeEach(() => {
     promotionsServiceMock = mock(PromotionsService);
     when(promotionsServiceMock.getPromotion(anyString())).thenCall((id: string) => {
@@ -34,13 +28,10 @@ describe('Promotions Effects', () => {
     });
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
-      imports: [RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }])],
       providers: [
         PromotionsEffects,
         provideMockActions(() => actions$),
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
-        { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 3 },
       ],
     });
 

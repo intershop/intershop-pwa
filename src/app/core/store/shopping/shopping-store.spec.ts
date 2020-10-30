@@ -4,33 +4,25 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { createSelector } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { ToastrModule } from 'ngx-toastr';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
-  LARGE_BREAKPOINT_WIDTH,
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
-  MEDIUM_BREAKPOINT_WIDTH,
   PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
 import { Category, CategoryCompletenessLevel } from 'ish-core/models/category/category.model';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
-import { AddressService } from 'ish-core/services/address/address.service';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { CountryService } from 'ish-core/services/country/country.service';
 import { FilterService } from 'ish-core/services/filter/filter.service';
-import { OrderService } from 'ish-core/services/order/order.service';
-import { PaymentService } from 'ish-core/services/payment/payment.service';
-import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
-import { UserService } from 'ish-core/services/user/user.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
@@ -183,27 +175,17 @@ describe('Shopping Store', () => {
           },
         ]),
         ShoppingStoreModule,
-        ToastrModule.forRoot(),
         TranslateModule.forRoot(),
       ],
       providers: [
         provideStoreSnapshots(),
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
-        { provide: ConfigurationService, useFactory: () => instance(configurationServiceMock) },
-        { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
-        { provide: OrderService, useFactory: () => instance(mock(OrderService)) },
-        { provide: UserService, useFactory: () => instance(mock(UserService)) },
-        { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },
-        { provide: PersonalizationService, useFactory: () => instance(mock(PersonalizationService)) },
-        { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 3 },
-        { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
-        { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
         { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'list' },
       ],
     });

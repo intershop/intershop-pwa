@@ -1,14 +1,10 @@
-import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, verify } from 'ts-mockito';
 
-import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-keys';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { AddressFormContainerComponent } from 'ish-shared/address-forms/components/address-form-container/address-form-container.component';
@@ -26,31 +22,18 @@ describe('Checkout Address Anonymous Component', () => {
   let checkoutFacade: CheckoutFacade;
 
   beforeEach(async () => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     checkoutFacade = mock(CheckoutFacade);
 
     await TestBed.configureTestingModule({
       declarations: [
         CheckoutAddressAnonymousComponent,
-        DummyComponent,
         MockComponent(AddressFormContainerComponent),
         MockComponent(ErrorMessageComponent),
-        MockComponent(FaIconComponent),
         MockComponent(InputComponent),
         MockComponent(LoginFormComponent),
       ],
-      imports: [
-        NgbCollapseModule,
-        ReactiveFormsModule,
-        RouterTestingModule.withRoutes([{ path: 'checkout/shipping', component: DummyComponent }]),
-        TranslateModule.forRoot(),
-      ],
-      providers: [
-        { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
-        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
-      ],
+      imports: [NgbCollapseModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     }).compileComponents();
   });
 

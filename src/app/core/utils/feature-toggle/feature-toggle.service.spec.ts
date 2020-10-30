@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 
-import { FeatureToggleModule, FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { getFeatures } from 'ish-core/store/core/configuration';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 
@@ -11,7 +11,7 @@ describe('Feature Toggle Service', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [CoreStoreModule.forTesting(['configuration']), FeatureToggleModule],
+        imports: [CoreStoreModule.forTesting(['configuration'])],
       });
       featureToggle = TestBed.inject(FeatureToggleService);
     });
@@ -26,7 +26,6 @@ describe('Feature Toggle Service', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [FeatureToggleModule],
         providers: [provideMockStore({ selectors: [{ selector: getFeatures, value: ['feature1'] }] })],
       });
       featureToggle = TestBed.inject(FeatureToggleService);
