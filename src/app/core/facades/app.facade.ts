@@ -15,13 +15,12 @@ import { getServerConfigParameter } from 'ish-core/store/general/server-config';
 
 @Injectable({ providedIn: 'root' })
 export class AppFacade {
-  icmBaseUrl: string;
-
   constructor(private store: Store, private router: Router) {
     this.routingInProgress$.subscribe(noop);
 
     store.pipe(select(getICMBaseURL)).subscribe(icmBaseUrl => (this.icmBaseUrl = icmBaseUrl));
   }
+  icmBaseUrl: string;
 
   headerType$ = this.store.pipe(select(getHeaderType));
   deviceType$ = this.store.pipe(select(getDeviceType));
@@ -45,8 +44,6 @@ export class AppFacade {
       map(deviceType => (deviceType === 'mobile' ? 'sticky-header' : ''))
     ),
   ]).pipe(map(classes => classes.filter(c => !!c)));
-
-  // COUNTRIES AND REGIONS
 
   countriesLoading$ = this.store.pipe(select(getCountriesLoading));
 
@@ -88,6 +85,10 @@ export class AppFacade {
     isAppTypeREST: boolean
   ): 'customers' | 'privatecustomers' {
     return isAppTypeREST && !isBusinessCustomer ? 'privatecustomers' : 'customers';
+  }
+
+  serverSetting$<T>(path: string) {
+    return this.store.pipe(select(getServerConfigParameter<T>(path)));
   }
 
   countries$() {

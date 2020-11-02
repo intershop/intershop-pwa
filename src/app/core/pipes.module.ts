@@ -27,7 +27,6 @@ const pipes = [
 @NgModule({
   declarations: [...pipes],
   exports: [...pipes],
-  providers: [ServerSettingPipe],
 })
 export class PipesModule {
   static forRoot(): ModuleWithProviders<PipesModule> {
