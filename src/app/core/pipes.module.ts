@@ -6,6 +6,7 @@ import { DatePipe } from './pipes/date.pipe';
 import { HighlightPipe } from './pipes/highlight.pipe';
 import { MakeHrefPipe } from './pipes/make-href.pipe';
 import { SanitizePipe } from './pipes/sanitize.pipe';
+import { ServerSettingPipe } from './pipes/server-setting.pipe';
 import { CategoryRoutePipe } from './routing/category/category-route.pipe';
 import { ProductRoutePipe } from './routing/product/product-route.pipe';
 
@@ -18,11 +19,13 @@ const pipes = [
   PricePipe,
   ProductRoutePipe,
   SanitizePipe,
+  ServerSettingPipe,
 ];
 
 @NgModule({
   declarations: [...pipes],
   exports: [...pipes],
+  providers: [ServerSettingPipe],
 })
 export class PipesModule {
   static forRoot(): ModuleWithProviders<PipesModule> {
