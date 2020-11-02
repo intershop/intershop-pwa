@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { concat, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 
 import { ServerSettingPipe } from './server-setting.pipe';
 
@@ -20,10 +20,7 @@ describe('Server Setting Pipe', () => {
     appFacade = mock(AppFacade);
     TestBed.configureTestingModule({
       declarations: [ServerSettingPipe, TestComponent],
-      providers: [
-        { provide: AppFacade, useFactory: () => instance(appFacade) },
-        { provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) },
-      ],
+      providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
     }).compileComponents();
   });
 
@@ -58,5 +55,20 @@ describe('Server Setting Pipe', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`N/A`);
+  });
+
+  it.skip('should render TEST when setting is set', done => {
+    when(appFacade.serverSetting$('service.ABC.runnable')).thenReturn(concat(of(false), of(true).pipe(delay(2000))));
+    fixture.detectChanges();
+
+    setTimeout(() => {
+      expect(element).toMatchInlineSnapshot(`N/A`);
+    }, 1000);
+
+    setTimeout(() => {
+      fixture.detectChanges();
+      expect(element).toMatchInlineSnapshot(`TEST`);
+      done();
+    }, 3000);
   });
 });
