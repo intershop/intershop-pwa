@@ -2,13 +2,11 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 
 import { FeatureToggleDirective } from './directives/feature-toggle.directive';
 import { NotFeatureToggleDirective } from './directives/not-feature-toggle.directive';
-import { FeatureTogglePipe } from './pipes/feature-toggle.pipe';
 import { FeatureToggleService, checkFeature } from './utils/feature-toggle/feature-toggle.service';
 
 @NgModule({
-  declarations: [FeatureToggleDirective, FeatureTogglePipe, NotFeatureToggleDirective],
+  declarations: [FeatureToggleDirective, NotFeatureToggleDirective],
   exports: [FeatureToggleDirective, NotFeatureToggleDirective],
-  providers: [FeatureTogglePipe],
 })
 export class FeatureToggleModule {
   private static features: string[];
@@ -22,7 +20,6 @@ export class FeatureToggleModule {
           provide: FeatureToggleService,
           useValue: { enabled: (feature: string) => checkFeature(FeatureToggleModule.features, feature) },
         },
-        FeatureTogglePipe,
       ],
     };
   }

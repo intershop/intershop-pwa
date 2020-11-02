@@ -3,6 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 
+import { FeatureTogglePipe } from './feature-toggle.pipe';
+
 @Component({
   template: `
     <div>unrelated</div>
@@ -22,7 +24,7 @@ describe('Feature Toggle Pipe', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [FeatureToggleModule.forTesting('feature1')],
-      declarations: [TestComponent],
+      declarations: [FeatureTogglePipe, TestComponent],
     });
   });
 
