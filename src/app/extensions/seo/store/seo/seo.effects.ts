@@ -1,5 +1,5 @@
-import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
-import { ApplicationRef, Inject, Injectable, Optional } from '@angular/core';
+import { APP_BASE_HREF, DOCUMENT, isPlatformServer } from '@angular/common';
+import { ApplicationRef, Inject, Injectable, Optional, PLATFORM_ID } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction, routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
@@ -8,8 +8,8 @@ import { MetaService } from '@ngx-meta/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Request } from 'express';
 import { isEqual } from 'lodash-es';
-import { Observable, merge, race } from 'rxjs';
-import { distinctUntilChanged, filter, first, map, mapTo, switchMap, switchMapTo, tap } from 'rxjs/operators';
+import { merge, race } from 'rxjs';
+import { distinctUntilChanged, filter, map, mapTo, switchMap, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 
 import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
@@ -34,7 +34,8 @@ export class SeoEffects {
     @Inject(DOCUMENT) private doc: Document,
     @Optional() @Inject(REQUEST) private request: Request,
     @Inject(APP_BASE_HREF) private baseHref: string,
-    private appRef: ApplicationRef
+    private appRef: ApplicationRef,
+    @Inject(PLATFORM_ID) private platformId: string
   ) {}
 
   private productPage$ = this.store.pipe(
@@ -130,30 +131,16 @@ export class SeoEffects {
     { dispatch: false }
   );
 
-  seoLanguage$ = createEffect(
+  seoLanguages$ = createEffect(
     () =>
-      this.waitAppStable(
-        this.store.pipe(
-          select(getCurrentLocale),
-          whenTruthy(),
-          tap(current => {
-            this.meta.setTag('og:locale', current.lang);
-          })
-        )
-      ),
-    { dispatch: false }
-  );
-
-  seoAlternateLanguages$ = createEffect(
-    () =>
-      this.waitAppStable(
-        this.store.pipe(
-          select(getAvailableLocales),
-          whenTruthy(),
-          tap(locales => {
-            this.meta.setTag('og:locale:alternate', locales.map(x => x.lang).join(','));
-          })
-        )
+      this.actions$.pipe(
+        takeWhile(() => isPlatformServer(this.platformId)),
+        ofType(routerNavigatedAction),
+        withLatestFrom(this.store.pipe(select(getCurrentLocale)), this.store.pipe(select(getAvailableLocales))),
+        tap(([, current, locales]) => {
+          this.meta.setTag('og:locale', current.lang);
+          this.meta.setTag('og:locale:alternate', locales.map(x => x.lang).join(','));
+        })
       ),
     { dispatch: false }
   );
@@ -192,9 +179,5 @@ export class SeoEffects {
             break;
         }
       });
-  }
-
-  private waitAppStable<T>(obs: Observable<T>) {
-    return this.appRef.isStable.pipe(whenTruthy(), first(), switchMapTo(obs));
   }
 }

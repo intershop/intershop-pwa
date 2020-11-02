@@ -37,8 +37,9 @@ export const getAvailableLocales = createSelector(getConfigurationState, state =
 /**
  * selects the current locale if set. If not returns the first available locale
  */
-export const getCurrentLocale = createSelector(getConfigurationState, state =>
-  state.lang ? state.locales.find(l => l.lang === state.lang) : state.locales[0]
+export const getCurrentLocale = createSelector(
+  getConfigurationState,
+  state => state.locales.find(l => l.lang === state.lang) || state.locales[0]
 );
 
 export const getDeviceType = createSelector(getConfigurationState, state => state._deviceType);
