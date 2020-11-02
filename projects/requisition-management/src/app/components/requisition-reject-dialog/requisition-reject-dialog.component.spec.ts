@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
@@ -17,7 +16,7 @@ describe('Requisition Reject Dialog Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [MockComponent(TextareaComponent), RequisitionRejectDialogComponent],
-      imports: [NgbModalModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

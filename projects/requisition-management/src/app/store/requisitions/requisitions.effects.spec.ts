@@ -7,12 +7,9 @@ import { Observable, of } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 
 import { Requisition } from '../../models/requisition/requisition.model';
 import { RequisitionsService } from '../../services/requisitions/requisitions.service';
-import { RequisitionManagementStoreModule } from '../requisition-management-store.module';
 
 import {
   loadRequisition,
@@ -65,12 +62,7 @@ describe('Requisitions Effects', () => {
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
-      imports: [
-        CoreStoreModule.forTesting(),
-        CustomerStoreModule.forTesting('user'),
-        RequisitionManagementStoreModule.forTesting('requisitions'),
-        RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
-      ],
+      imports: [RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }])],
       providers: [
         RequisitionsEffects,
         provideMockActions(() => actions$),

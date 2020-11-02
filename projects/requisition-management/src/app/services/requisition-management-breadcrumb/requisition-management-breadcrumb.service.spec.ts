@@ -11,7 +11,6 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
 import { Requisition } from '../../models/requisition/requisition.model';
 import { routes } from '../../pages/requisition-management-routing.module';
-import { RequisitionManagementStoreModule } from '../../store/requisition-management-store.module';
 
 import { RequisitionManagementBreadcrumbService } from './requisition-management-breadcrumb.service';
 
@@ -37,7 +36,6 @@ describe('Requisition Management Breadcrumb Service', () => {
       declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration']),
-        RequisitionManagementStoreModule.forTesting('requisitions'),
         RouterTestingModule.withRoutes([
           ...adaptRoutes(routes, DummyComponent),
           { path: '**', component: DummyComponent },
