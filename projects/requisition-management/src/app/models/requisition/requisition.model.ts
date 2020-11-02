@@ -24,7 +24,9 @@ export interface RequisitionUserBudgets {
   spentBudget?: Price;
 }
 
-export interface Requisition extends AbstractBasket<LineItem> {
+type RequisitionBasket = Omit<AbstractBasket<LineItem>, 'approval'>;
+
+export interface Requisition extends RequisitionBasket {
   requisitionNo: string;
   orderNo?: string;
   creationDate: number;
