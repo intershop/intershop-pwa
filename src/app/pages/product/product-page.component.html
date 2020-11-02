@@ -5,13 +5,6 @@
     <ng-container *ngIf="product$ | async as product">
       <ish-breadcrumb></ish-breadcrumb>
 
-      <!-- ViewContext usage example
-      <ish-content-viewcontext
-        viewContextId="vc_product_detail"
-        [callParameters]="{ Product: product.sku, Category: (category$ | async)?.categoryRef }"
-      ></ish-content-viewcontext>
-      -->
-
       <ish-product-detail
         [product]="product"
         [price]="price$ | async"

@@ -8,15 +8,13 @@ import { serializeContextSpecificViewContextId, viewcontextsAdapter } from './vi
 
 const getViewcontextsState = createSelector(getContentState, state => state.viewcontexts);
 
-export const getViewcontextsLoading = createSelector(getViewcontextsState, state => state.loading);
+export const { selectEntities: getViewContextEntities } = viewcontextsAdapter.getSelectors(getViewcontextsState);
 
-export const { selectEntities: getViewcontextEntities } = viewcontextsAdapter.getSelectors(getViewcontextsState);
-
-const getViewcontextInternal = (viewContextId: string, callParameters: CallParameters) =>
+const getViewContextMemoized = (viewContextId: string, callParameters: CallParameters) =>
   createSelector(
-    getViewcontextEntities,
+    getViewContextEntities,
     entities => entities[serializeContextSpecificViewContextId(viewContextId, callParameters)]
   );
 
-export const getViewcontext = (viewContextId: string, callParameters: CallParameters) =>
-  createSelector(getViewcontextInternal(viewContextId, callParameters), createContentPageletEntryPointView);
+export const getViewContext = (viewContextId: string, callParameters: CallParameters) =>
+  createSelector(getViewContextMemoized(viewContextId, callParameters), createContentPageletEntryPointView);

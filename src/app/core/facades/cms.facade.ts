@@ -7,7 +7,7 @@ import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.
 import { getContentInclude, loadContentInclude } from 'ish-core/store/content/includes';
 import { getContentPagelet } from 'ish-core/store/content/pagelets';
 import { getContentPageLoading, getSelectedContentPage } from 'ish-core/store/content/pages';
-import { getViewcontext, loadViewContextEntrypoint } from 'ish-core/store/content/viewcontexts';
+import { getViewContext, loadViewContextEntrypoint } from 'ish-core/store/content/viewcontexts';
 import { getPGID } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { SfeAdapterService } from 'ish-shared/cms/sfe-adapter/sfe-adapter.service';
@@ -41,6 +41,6 @@ export class CMSFacade {
 
   viewContext$(viewContextId: string, callParameters: CallParameters) {
     this.store.dispatch(loadViewContextEntrypoint({ viewContextId, callParameters }));
-    return this.store.pipe(select(getViewcontext(viewContextId, callParameters)));
+    return this.store.pipe(select(getViewContext(viewContextId, callParameters)));
   }
 }

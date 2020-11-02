@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, switchMap } from 'rxjs/operators';
+import { concatMap, map } from 'rxjs/operators';
 
 import { CMSService } from 'ish-core/services/cms/cms.service';
 import { mapErrorToAction, mapToPayload } from 'ish-core/utils/operators';
@@ -19,7 +19,7 @@ export class ViewcontextsEffects {
     this.actions$.pipe(
       ofType(loadViewContextEntrypoint),
       mapToPayload(),
-      switchMap(({ viewContextId, callParameters }) =>
+      concatMap(({ viewContextId, callParameters }) =>
         this.cmsService.getViewContextContent(viewContextId, callParameters).pipe(
           map(({ entrypoint, pagelets }) =>
             loadViewContextEntrypointSuccess({ entrypoint, pagelets, viewContextId, callParameters })

@@ -31,7 +31,7 @@ describe('Viewcontexts Effects', () => {
   });
 
   describe('loadViewContextEntrypoint$', () => {
-    it('should not dispatch actions when encountering loadViewcontexts', () => {
+    it('should dispatch success actions when encountering loadViewcontexts', () => {
       when(cmsServiceMock.getViewContextContent(anything(), anything())).thenReturn(
         of({ entrypoint: { id: 'test' } as ContentPageletEntryPoint, pagelets: [] })
       );

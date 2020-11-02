@@ -68,7 +68,9 @@ export class CMSService {
     }
 
     let params = new HttpParams();
-    Object.keys(callParameters).forEach(item => (params = params.set(item, callParameters[item])));
+    if (callParameters) {
+      params = Object.entries(callParameters).reduce((param, [key, value]) => param.set(key, value), new HttpParams());
+    }
 
     return this.apiService
       .get<ContentPageletEntryPointData>(`cms/viewcontexts/${viewContextId}/entrypoint`, {
