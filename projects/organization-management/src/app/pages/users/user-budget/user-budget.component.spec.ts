@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
@@ -16,7 +15,7 @@ describe('User Budget Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgbPopoverModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [NgbPopoverModule, TranslateModule.forRoot()],
       declarations: [MockPipe(PricePipe, (price: Price) => `${price.currency} ${price.value}`), UserBudgetComponent],
     }).compileComponents();
   });

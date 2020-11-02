@@ -2,12 +2,10 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockPipe } from 'ng-mocks';
 
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { Requisition } from '../../models/requisition/requisition.model';
 
@@ -44,13 +42,7 @@ describe('Requisitions List Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CdkTableModule, RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [
-        MockComponent(ErrorMessageComponent),
-        MockComponent(LoadingComponent),
-        MockPipe(DatePipe),
-        MockPipe(PricePipe),
-        RequisitionsListComponent,
-      ],
+      declarations: [MockPipe(DatePipe), MockPipe(PricePipe), RequisitionsListComponent],
     }).compileComponents();
   });
 
