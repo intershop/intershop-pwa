@@ -55,29 +55,28 @@ export class CMSService {
 
   /**
    * Get the content for the given View Context with the given context (e.g. Product or Category).
-   * @param viewcontextId  The view context ID.
+   * @param viewContextId  The view context ID.
    * @param callParameters The call parameters to give the current context.
    * @returns              The view contexts entrypoint content data.
    */
   getViewContextContent(
-    viewcontextId: string,
-    callParameters: CallParameters,
-    clientId: string
+    viewContextId: string,
+    callParameters: CallParameters
   ): Observable<{ entrypoint: ContentPageletEntryPoint; pagelets: ContentPagelet[] }> {
-    if (!viewcontextId) {
-      return throwError('getViewContextContent() called without a viewcontextId');
+    if (!viewContextId) {
+      return throwError('getViewContextContent() called without a viewContextId');
     }
 
     let params = new HttpParams();
     Object.keys(callParameters).forEach(item => (params = params.set(item, callParameters[item])));
 
     return this.apiService
-      .get<ContentPageletEntryPointData>(`cms/viewcontexts/${viewcontextId}/entrypoint`, {
+      .get<ContentPageletEntryPointData>(`cms/viewcontexts/${viewContextId}/entrypoint`, {
         params,
         skipApiErrorHandling: true,
       })
       .pipe(
-        map(entrypoint => this.contentPageletEntryPointMapper.fromData(entrypoint, clientId)),
+        map(entrypoint => this.contentPageletEntryPointMapper.fromData(entrypoint)),
         map(({ pageletEntryPoint, pagelets }) => ({ entrypoint: pageletEntryPoint, pagelets }))
       );
   }

@@ -34,16 +34,6 @@ export class ContentViewcontextComponent implements OnChanges {
   constructor(private cmsFacade: CMSFacade) {}
 
   ngOnChanges() {
-    this.cmsFacade.loadViewContext(this.viewContextId, this.callParameters, this.serializeViewContextClientId());
-    this.viewContextEntrypoint$ = this.cmsFacade.viewContext$(this.serializeViewContextClientId());
-  }
-
-  private serializeViewContextClientId() {
-    return (
-      this.viewContextId +
-      Object.keys(this.callParameters)
-        .map(key => `@${key}-${this.callParameters[key]}`)
-        .join('')
-    );
+    this.viewContextEntrypoint$ = this.cmsFacade.viewContext$(this.viewContextId, this.callParameters);
   }
 }

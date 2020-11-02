@@ -39,11 +39,8 @@ export class CMSFacade {
     return this.store.pipe(select(getContentPagelet(id)));
   }
 
-  loadViewContext(viewcontextId: string, callParameters: CallParameters, clientId: string) {
-    this.store.dispatch(loadViewContextEntrypoint({ viewcontextId, callParameters, clientId }));
-  }
-
-  viewContext$(viewcontextId: string) {
-    return this.store.pipe(select(getViewcontext, viewcontextId));
+  viewContext$(viewContextId: string, callParameters: CallParameters) {
+    this.store.dispatch(loadViewContextEntrypoint({ viewContextId, callParameters }));
+    return this.store.pipe(select(getViewcontext(viewContextId, callParameters)));
   }
 }

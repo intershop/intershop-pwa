@@ -37,9 +37,8 @@ describe('Viewcontexts Selectors', () => {
 
   describe('loadViewContextEntrypoint', () => {
     const action = loadViewContextEntrypoint({
-      viewcontextId: 'test',
+      viewContextId: 'test',
       callParameters: {},
-      clientId: 'test-id',
     });
 
     beforeEach(() => {
@@ -54,6 +53,8 @@ describe('Viewcontexts Selectors', () => {
       const successAction = loadViewContextEntrypointSuccess({
         entrypoint: { id: 'test' } as ContentPageletEntryPoint,
         pagelets: [],
+        viewContextId: 'test',
+        callParameters: {},
       });
 
       beforeEach(() => {

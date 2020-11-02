@@ -8,5 +8,4 @@ export interface ContentPageletEntryPoint {
   resourceSetId: string;
   pageletIDs?: string[];
   configurationParameters?: ContentConfigurationParameters;
-  clientId?: string;
 }

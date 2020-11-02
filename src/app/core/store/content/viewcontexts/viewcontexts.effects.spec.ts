@@ -32,21 +32,22 @@ describe('Viewcontexts Effects', () => {
 
   describe('loadViewContextEntrypoint$', () => {
     it('should not dispatch actions when encountering loadViewcontexts', () => {
-      when(cmsServiceMock.getViewContextContent(anything(), anything(), anything())).thenReturn(
+      when(cmsServiceMock.getViewContextContent(anything(), anything())).thenReturn(
         of({ entrypoint: { id: 'test' } as ContentPageletEntryPoint, pagelets: [] })
       );
 
       actions$ = hot('-a-a-a', {
         a: loadViewContextEntrypoint({
-          viewcontextId: 'test',
+          viewContextId: 'test',
           callParameters: {},
-          clientId: 'test-id',
         }),
       });
       const expected$ = cold('-c-c-c', {
         c: loadViewContextEntrypointSuccess({
           entrypoint: { id: 'test' } as ContentPageletEntryPoint,
           pagelets: [],
+          viewContextId: 'test',
+          callParameters: {},
         }),
       });
 

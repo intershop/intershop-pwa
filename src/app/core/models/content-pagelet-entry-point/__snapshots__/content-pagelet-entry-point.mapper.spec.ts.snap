@@ -3,7 +3,6 @@
 exports[`Content Pagelet Entry Point Mapper should convert a complex example to complex type 1`] = `
 Object {
   "pageletEntryPoint": Object {
-    "clientId": "include-id",
     "configurationParameters": Object {},
     "definitionQualifiedName": "fq",
     "displayName": "name-include",
