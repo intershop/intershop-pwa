@@ -14,8 +14,8 @@ declare type ContentPageletEntryPointWithContext = ContentPageletEntryPoint & {
 export function serializeContextSpecificViewContextId(viewContextId: string, callParameters: CallParameters) {
   const serializedParams = callParameters
     ? Object.entries(callParameters)
-        .map(([key, value]) => `@@${key}-${value}`)
         .sort()
+        .map(([key, value]) => `@@${key}-${value}`)
         .join('')
     : '';
   return viewContextId + serializedParams;
