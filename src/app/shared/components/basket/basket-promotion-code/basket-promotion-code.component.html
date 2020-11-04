@@ -3,13 +3,15 @@
     'shopping_cart.promotional_code.heading' | translate
   }}</a>
 
-  <ish-error-message [error]="promotionError$ | async"></ish-error-message>
+  <ish-error-message [error]="promotionError$ | async" [toast]="toast"></ish-error-message>
 
-  <div *ngIf="displaySuccessMessage" class="alert alert-success" role="alert">
-    {{ 'shopping_cart.promotion.qualified_promo.text' | translate }}
-  </div>
+  <ish-success-message
+    *ngIf="displaySuccessMessage"
+    message="shopping_cart.promotion.qualified_promo.text"
+    [toast]="toast"
+  ></ish-success-message>
 
-  <div class="form-inline" [ngbCollapse]="isCollapsed">
+  <div class="form-inline" [ngbCollapse]="isCollapsed" data-testing-id="promo-code-form">
     <input
       [formControl]="codeInput"
       (keydown.enter)="submitPromotionCode()"

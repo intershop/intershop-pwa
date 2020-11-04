@@ -8,6 +8,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { SuccessMessageComponent } from 'ish-shared/components/common/success-message/success-message.component';
 
 import { BasketPromotionCodeComponent } from './basket-promotion-code.component';
 
@@ -22,7 +23,12 @@ describe('Basket Promotion Code Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [BasketPromotionCodeComponent, MockComponent(ErrorMessageComponent), MockComponent(NgbCollapse)],
+      declarations: [
+        BasketPromotionCodeComponent,
+        MockComponent(ErrorMessageComponent),
+        MockComponent(NgbCollapse),
+        MockComponent(SuccessMessageComponent),
+      ],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     }).compileComponents();
   });
