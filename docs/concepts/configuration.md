@@ -51,8 +51,36 @@ As can be seen here, only build-time and deploy-time configuration parameter can
 
 ### Node.js Environment Variables
 
-When running the application in Angular Universal mode within a _Node.js_ environment, we can additionally access the process environment variables via _process.env._ This method provides a way to configure the application at deploy time, e.g., when using docker images.
-Configuration can then be consumed and passed to the client side via means of state transfer.
+When running the application in Angular Universal mode within a _Node.js_ environment, we can additionally access the process environment variables via _process.env_.
+This method provides a way to configure the application at deploy time, e.g., when using docker images.
+Configuration can then be consumed and passed to the client side via state transfer using Angular's [TransferState](https://angular.io/api/platform-browser/TransferState).
+
+To introduce a new `TransferState` key it should be added to the [`state-keys.ts`](../../src/app/core/configurations/state-keys.ts).
+
+```typescript
+export const NEW_KEY = makeStateKey<string>('newKey');
+```
+
+The actual transfer is handled by the [`app.server.module.ts`](../../src/app/app.server.module.ts) where the mapping of the environment variable is done.
+
+Accessing the transferred state in a service or a component is pretty straight forward:
+
+```typescript
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
+import { NEW_KEY } from 'ish-core/configurations/state-keys';
+
+newKey string;
+
+constructor(
+  @Inject(PLATFORM_ID) private platformId: string,
+  private transferState: TransferState,
+) {}
+
+if (isPlatformBrowser(this.platformId)) {
+  this.newKey = this.transferState.get<string>(NEW_KEY, 'default value');
+}
+```
 
 ### NgRx Configuration State
 
@@ -80,7 +108,9 @@ Deployment settings do not influence the build process and therefore can be set 
 The main criteria of this category is the fact that deployment settings do not change during runtime.
 The most common way of supplying them can be implemented by using Angular CLI environment files and `InjectionToken`s for distribution throughout the application's code.
 
-An example for this kind of settings are breakpoint settings for the different device classes of the application touchpoints.
+An example for this kind of settings are breakpoint settings for the different device classes of the application touch points.
+
+Deployment settings can also be set by using `TransferState` to use environment variables of the deployment for the configuration of the application.
 
 ### Runtime Settings
 
@@ -91,44 +121,31 @@ Therefore only NgRx means should be used to supply them.
 Nevertheless, default values can be provided by environment files and can later be overridden by system environment variables.
 
 Everything managed in the NgRx state is accumulated on the server side and sent to the client side with the initial HTML response.
-The reason for this is that this is the most common deployment scenario of PWAs (see [Concept - Deployment Scenarios](./deployment-scenarios.md)).
 
-## Multi-Site Handling
+To access these properties we provide the [`StatePropertiesService`](../../src/app/core/utils/state-transfer/state-properties.service.ts), which takes care of retrieving the configuration either from the configuration state, an environment variable or the environment.ts (in that order).
 
-Since version 0.9 of the PWA there are means to dynamically configure ICM channel and application to determine the correct REST endpoint for each incoming top level request.
-Nevertheless, you can still configure it in a static way for each PWA deployment via Angluar CLI environments.
+### Configurations REST Resource
+
+ICM provides a Configurations REST resource - `/configurations` - that is supposed to provide all relevant runtime configurations that can be defined in the ICM back office and are required to configure a REST client as well.
+This includes service configurations, locales, basket preferences, etc.
+
+The ICM configurations information can be accessed through the [`getServerConfigParameter`](../../src/app/core/store/general/server-config/server-config.selectors.ts) selector.
+
+## ICM Endpoint Configuration
 
 ### Setting the Base URL
 
 At first, the PWA has to be connected with the corresponding ICM.
 This can be done by modifying environment files or by setting the environment variable `ICM_BASE_URL` for the process running the _Node.js_ server.
 The latter is the preferred way.
+See also [Guide - Building and Running Server-Side Rendering](../guides/ssr-startup.md)
 
 Independent of where and how you deploy the Angular Universal application, be it in a docker container or plain, running on Azure, with or without service orchestrator, setting the base URL provides the most flexible way of configuring the PWA.
 Refer to the documentation for mechanisms of your environment on how to set and pass environment variables.
 
-### Static Setting for Channels
+### Settings for Channels and Applications
 
 Use the properties `icmChannel` and `icmApplication` in the Angular CLI environment or the environment variables `ICM_CHANNEL` and `ICM_APPLICATION` to statically direct one deployment to a specific REST endpoint of the ICM.
-
-### Dynamic Setting of Channels
-
-To set ICM channels and applications dynamically, you have to use URL rewriting in a reverse proxy running in front of the PWA instances.
-The values have to be provided as URL parameters (not to be confused with query parameters).
-
-**nginx URL rewrite snippet**
-
-```text
-rewrite ^(.*)$ "$1;channel=inSPIRED-inTRONICS_Business-Site;application=-" break;
-```
-
-The above example configuration snippet shows a [Nginx](https://en.wikipedia.org/wiki/Nginx) rewrite rule on how to map an incoming top level request URL to an internal worker process, e.g., _Node.js_.
-It shows both the PWA parameters `channel`, `application` and their fixed example values.
-The parameters of each incoming request are then read and transferred to the NgRx store to be used for the composition of the initial HTML response on the server side.
-Afterwards they are propagated to the client side and re-used for subsequent REST requests.
-
-In the source code of the project we provide an extended [Nginx](https://en.wikipedia.org/wiki/Nginx) docker image for easy configuration of multiple channels via sub-domains.
-Refer to our Gitlab CI configuration (file _.gitlab-ci.yml)_ for a usage example.
 
 ## Feature Toggles
 
@@ -140,7 +157,7 @@ Of course, the ICM server must supply appropriate REST resources to leverage fun
 ### Configuring Features
 
 The configuration of features can be done statically by the Angular CLI environment property `features` (string array) or the environment parameter `FEATURES` (comma-separated string list).
-To configure it dynamically, use the PWA URL parameter `features` (comma-separated string list) during URL rewriting in the reverse proxy.
+To configure it dynamically, use the PWA URL parameter `features` (comma-separated string list) during URL rewriting in the reverse proxy. (see [Concept - Multi-Site Handling][concept-multi-site])
 
 ### Programmatically Switching Features
 
@@ -193,7 +210,7 @@ Switching features in tests can be triggered by calling [`FeatureToggleModule.sw
 
 You can set the default locale statically by modifying the order of the provided locales in the Angular CLI environment files.
 The first locale is always chosen as the default one.
-To dynamically set the default locale, use the URL parameter `lang` when rewriting the URL in the reverse proxy (see Dynamic Setting of Channels).
+To dynamically set the default locale, use the URL parameter `lang` when rewriting the URL in the reverse proxy (see [Concept - Multi-Site Handling][concept-multi-site]).
 
 ## Extend Locales
 
@@ -213,6 +230,10 @@ export class ConfigurationModule {
 }
 ```
 
-> ### Configuration REST Resource
->
-> We are currently planning to implement a Configuration REST resource in the ICM so that all necessary runtime configuration can be defined in the ICM Backoffice and consumed by each PWA deployment.
+# Further References
+
+- [Concept - Multi-Site Handling][concept-multi-site]
+- [Guide - Building and Running Server-Side Rendering](../guides/ssr-startup.md)
+- [Guide - Building and Running nginx Docker Image](../guides/nginx-startup.md)
+
+[concept-multi-site]: ./multi-site-handling.md

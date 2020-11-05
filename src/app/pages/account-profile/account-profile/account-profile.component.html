@@ -27,6 +27,7 @@
   </div>
   <div class="col-2 col-lg-4">
     <a
+      *ishIdentityProviderCapability="'editEmail'"
       routerLink="/account/profile/email"
       class="btn-tool"
       [title]="'account.profile.update.link' | translate"
@@ -38,7 +39,7 @@
 </div>
 
 <!-- Password Template -->
-<div class="row section">
+<div class="row section" *ishIdentityProviderCapability="'editPassword'">
   <div class="col-10 col-lg-8">
     <h3>{{ 'account.profile.password.heading' | translate }}</h3>
     <div class="row">
@@ -161,6 +162,6 @@
 <p class="form-text">
   {{ 'account.overview.note.heading' | translate }}:
   <span
-    [ishServerHtml]="'account.overview.note.text' | translate: { '0': 'route://page/page.privacyPolicy.pagelet2-Page' }"
+    [ishServerHtml]="'account.overview.note.text' | translate: { '0': 'page://page.privacyPolicy.pagelet2-Page' }"
   ></span>
 </p>

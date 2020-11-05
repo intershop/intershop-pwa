@@ -2,15 +2,12 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { ToastrModule } from 'ngx-toastr';
 import { EMPTY, of } from 'rxjs';
 import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
 
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
-  LARGE_BREAKPOINT_WIDTH,
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
-  MEDIUM_BREAKPOINT_WIDTH,
   PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -26,7 +23,6 @@ import { AuthorizationService } from 'ish-core/services/authorization/authorizat
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
-import { CookiesService } from 'ish-core/services/cookies/cookies.service';
 import { CountryService } from 'ish-core/services/country/country.service';
 import { FilterService } from 'ish-core/services/filter/filter.service';
 import { OrderService } from 'ish-core/services/order/order.service';
@@ -42,6 +38,7 @@ import { loginUser } from 'ish-core/store/customer/user';
 import { UserEffects } from 'ish-core/store/customer/user/user.effects';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
@@ -131,13 +128,11 @@ describe('Customer Store', () => {
     when(countryServiceMock.getCountries()).thenReturn(of([{ countryCode: 'DE', name: 'Germany' }]));
 
     const basketServiceMock = mock(BasketService);
-    when(basketServiceMock.getBasket(anything())).thenReturn(of(basket));
     when(basketServiceMock.getBasket()).thenReturn(of(basket));
-    when(basketServiceMock.getBasket(anything())).thenReturn(of(basket));
     when(basketServiceMock.createBasket()).thenReturn(of(basket));
     when(basketServiceMock.getBaskets()).thenReturn(of([]));
     when(basketServiceMock.mergeBasket(anything(), anything(), anything())).thenReturn(of(basket));
-    when(basketServiceMock.addItemsToBasket(anything(), anything())).thenReturn(of(undefined));
+    when(basketServiceMock.addItemsToBasket(anything())).thenReturn(of(undefined));
 
     const productsServiceMock = mock(ProductsService);
     when(productsServiceMock.getProduct(anything())).thenReturn(of(product));
@@ -167,7 +162,6 @@ describe('Customer Store', () => {
           },
         ]),
         ShoppingStoreModule,
-        ToastrModule.forRoot(),
         TranslateModule.forRoot(),
       ],
       providers: [
@@ -177,8 +171,6 @@ describe('Customer Store', () => {
         { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },
         { provide: OrderService, useFactory: () => instance(orderServiceMock) },
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
-        { provide: ConfigurationService, useFactory: () => instance(configurationServiceMock) },
-        { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },
@@ -189,8 +181,6 @@ describe('Customer Store', () => {
         { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 3 },
-        { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
-        { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
         { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'list' },
       ],
     });
@@ -223,13 +213,6 @@ describe('Customer Store', () => {
               quantity: 1
             [Basket Internal] Add Items To Basket:
               items: [{"sku":"test","quantity":1,"unit":"pcs."}]
-            [Products Internal] Load Product:
-              sku: "test"
-            [Basket Internal] Add Items To Basket:
-              items: [{"sku":"test","quantity":1,"unit":"pcs."}]
-              basketId: "test"
-            [Products API] Load Product Success:
-              product: {"name":"test","shortDescription":"test","longDescription":"...
             [Basket API] Add Items To Basket Success:
               info: undefined
             [Products Internal] Load Product:

@@ -236,20 +236,29 @@ export const reducedTreeComplex = {
 
 //////////////////////////////////
 
-export const domDataProvider = {
-  'text/comment nodes and nested sfe elements': {
-    html: html1,
-    tree: tree1,
-    reducedTree: reducedTree1,
-  },
-  'nested nodes containing sfe elements': {
-    html: html2,
-    tree: tree2,
-    reducedTree: reducedTree2,
-  },
-  'nested nodes containing no sfe elements': {
-    html: html3,
-    tree: tree3,
-    reducedTree: reducedTree3,
-  },
-};
+export const domDataProvider = [
+  [
+    'text/comment nodes and nested sfe elements',
+    {
+      html: html1,
+      tree: tree1,
+      reducedTree: reducedTree1,
+    },
+  ],
+  [
+    'nested nodes containing sfe elements',
+    {
+      html: html2,
+      tree: tree2,
+      reducedTree: reducedTree2,
+    },
+  ],
+  [
+    'nested nodes containing no sfe elements',
+    {
+      html: html3,
+      tree: tree3,
+      reducedTree: reducedTree3,
+    },
+  ],
+];

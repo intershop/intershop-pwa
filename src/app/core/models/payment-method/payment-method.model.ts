@@ -2,7 +2,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentRestriction } from 'ish-core/models/payment-restriction/payment-restriction.model';
-import { Price } from 'ish-core/models/price/price.model';
+import { PriceItem } from 'ish-core/models/price-item/price-item.model';
 
 export interface PaymentMethod {
   id: string;
@@ -11,8 +11,8 @@ export interface PaymentMethod {
   saveAllowed?: boolean;
   description?: string;
   capabilities?: string[];
-  paymentCosts?: Price;
-  paymentCostsThreshold?: Price;
+  paymentCosts?: PriceItem;
+  paymentCostsThreshold?: PriceItem;
   isRestricted?: boolean;
   restrictionCauses?: PaymentRestriction[];
   paymentInstruments?: PaymentInstrument[];

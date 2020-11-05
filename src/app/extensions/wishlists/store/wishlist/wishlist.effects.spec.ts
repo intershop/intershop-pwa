@@ -8,13 +8,13 @@ import { cold, hot } from 'jest-marbles';
 import { of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
+import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
 import { Wishlist } from '../../models/wishlist/wishlist.model';
 import { WishlistService } from '../../services/wishlist/wishlist.service';
@@ -83,7 +83,6 @@ describe('Wishlist Effects', () => {
       imports: [
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user'),
-        FeatureToggleModule.forTesting('wishlists'),
         RouterTestingModule.withRoutes([{ path: 'account/wishlists/:wishlistName', component: DummyComponent }]),
         WishlistsStoreModule.forTesting('wishlists'),
       ],
@@ -528,6 +527,7 @@ describe('Wishlist Effects', () => {
 
     it('should set the breadcrumb of the selected wishlist in my account area', done => {
       router.navigateByUrl('/account/wishlists/' + wishlists[0].id);
+      actions$ = of(routerTestNavigatedAction({}));
 
       effects.setWishlistBreadcrumb$.subscribe(action => {
         expect(action.payload).toMatchInlineSnapshot(`

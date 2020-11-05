@@ -1,9 +1,11 @@
+import { APP_BASE_HREF } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
   Directive,
   ElementRef,
   HostListener,
+  Inject,
   Input,
   OnChanges,
   SimpleChanges,
@@ -21,7 +23,12 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnC
     [key: string]: () => {};
   };
 
-  constructor(private router: Router, private elementRef: ElementRef, private appFacade: AppFacade) {}
+  constructor(
+    private router: Router,
+    private elementRef: ElementRef,
+    private appFacade: AppFacade,
+    @Inject(APP_BASE_HREF) private baseHref: string
+  ) {}
 
   @Input() set ishServerHtml(val: string) {
     const element = this.elementRef.nativeElement;
@@ -44,7 +51,7 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnC
   private patchElements() {
     // use setAttribute here to bypass security check
     Array.from(this.elementRef.nativeElement.querySelectorAll('[href]')).forEach((element: HTMLElement) => {
-      element.setAttribute('href', LinkParser.parseLink(element.getAttribute('href')));
+      element.setAttribute('href', LinkParser.parseLink(element.getAttribute('href'), this.baseHref));
     });
     Array.from(this.elementRef.nativeElement.querySelectorAll('[src]')).forEach((element: HTMLElement) => {
       element.setAttribute('src', this.transformMediaObjectSrc(element.getAttribute('src')));
@@ -80,22 +87,26 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnC
           this.callbacks[cb]();
         }
 
-        // apply default link handling for empty href, external links, javascript links & target _blank
         if (
           !href ||
           href.startsWith('http') ||
           href.startsWith('javascript:') ||
-          el.getAttribute('target') === '_blank'
+          el.getAttribute('target') === '_blank' ||
+          el.getAttribute('target') === '_self'
         ) {
+          // apply default link handling
           return;
         }
 
+        const routeHref =
+          this.baseHref !== '/' && href.startsWith(this.baseHref) ? href.substring(this.baseHref.length) : href;
+
         // handle fragment links / anchor navigation
-        if (href.startsWith('#')) {
-          document.getElementById(href.replace('#', '')).scrollIntoView({ block: 'start', behavior: 'smooth' });
+        if (routeHref.startsWith('#')) {
+          document.getElementById(routeHref.replace('#', '')).scrollIntoView({ block: 'start', behavior: 'smooth' });
         } else {
           // otherwise handle as routerLink
-          this.router.navigateByUrl(href);
+          this.router.navigateByUrl(routeHref);
         }
 
         // prevent default link handling

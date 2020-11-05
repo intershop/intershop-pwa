@@ -1,12 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { InplaceEditComponent } from 'ish-shared/components/common/inplace-edit/inplace-edit.component';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 
@@ -25,9 +23,8 @@ describe('Quote Edit Component', () => {
     when(context.select('entityAsQuoteRequest')).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
-        DatePipe,
         MockComponent(InplaceEditComponent),
         MockComponent(LineItemListComponent),
         MockComponent(QuoteStateComponent),

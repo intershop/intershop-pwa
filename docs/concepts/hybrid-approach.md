@@ -53,7 +53,7 @@ The server-side rendering process must be started with `SSR_HYBRID=1`.
 In addition, the PWA must be run with secure URLs as well.
 This can be achieved with `SSL=1`.
 
-**Only for development environments**: It might be necessary to set `TRUST_ICM=1` if the used development ICM is deployed with an insecure certificate.
+> :warning: **Only for development environments**: It might be necessary to set `TRUST_ICM=1` if the used development ICM is deployed with an insecure certificate.
 
 Also, the **Service Worker must be disabled** for the PWA, as it installs itself into the browser of the client device and takes over the routing process, making it impossible to break out of the PWA and delegate to the ICM.
 
@@ -106,3 +106,4 @@ For this reason, the PWA must be adapted to work with the Responsive Starter Sto
 
 - [Guide - Building and Running Server-Side Rendering](../guides/ssr-startup.md)
 - [Guide - Handle rewritten ICM URLs in Hybrid Mode](../guides/hybrid-approach-icm-url-rewriting.md)
+- [Concept - Multi-site handling](multi-site-handling.md)

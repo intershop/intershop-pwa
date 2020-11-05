@@ -8,8 +8,6 @@ import { anyString, instance, mock, verify, when } from 'ts-mockito';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { BasketPromotionCodeEffects } from './basket-promotion-code.effects';
@@ -33,11 +31,7 @@ describe('Basket Promotion Code Effects', () => {
   beforeEach(() => {
     basketServiceMock = mock(BasketService);
     TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(),
-        CustomerStoreModule.forTesting('basket'),
-        ShoppingStoreModule.forTesting('promotions'),
-      ],
+      imports: [CoreStoreModule.forTesting()],
       providers: [
         BasketPromotionCodeEffects,
         provideMockActions(() => actions$),
@@ -62,7 +56,7 @@ describe('Basket Promotion Code Effects', () => {
 
   describe('addPromotionCodeToBasket$', () => {
     beforeEach(() => {
-      when(basketServiceMock.addPromotionCodeToBasket(anyString(), anyString())).thenReturn(of(undefined));
+      when(basketServiceMock.addPromotionCodeToBasket(anyString())).thenReturn(of(undefined));
 
       store$.dispatch(
         loadBasketSuccess({
@@ -80,7 +74,7 @@ describe('Basket Promotion Code Effects', () => {
       actions$ = of(action);
 
       effects.addPromotionCodeToBasket$.subscribe(() => {
-        verify(basketServiceMock.addPromotionCodeToBasket('BID', 'CODE')).once();
+        verify(basketServiceMock.addPromotionCodeToBasket('CODE')).once();
         done();
       });
     });
@@ -96,7 +90,7 @@ describe('Basket Promotion Code Effects', () => {
     });
 
     it('should map invalid request to action of type AddPromotionCodeToBasketFail', () => {
-      when(basketServiceMock.addPromotionCodeToBasket(anyString(), anyString())).thenReturn(
+      when(basketServiceMock.addPromotionCodeToBasket(anyString())).thenReturn(
         throwError(makeHttpError({ message: 'invalid' }))
       );
 
@@ -112,7 +106,7 @@ describe('Basket Promotion Code Effects', () => {
 
   describe('removePromotionCodeFromBasket$', () => {
     beforeEach(() => {
-      when(basketServiceMock.removePromotionCodeFromBasket(anyString(), anyString())).thenReturn(of(undefined));
+      when(basketServiceMock.removePromotionCodeFromBasket(anyString())).thenReturn(of(undefined));
 
       store$.dispatch(
         loadBasketSuccess({
@@ -130,7 +124,7 @@ describe('Basket Promotion Code Effects', () => {
       actions$ = of(action);
 
       effects.removePromotionCodeFromBasket$.subscribe(() => {
-        verify(basketServiceMock.removePromotionCodeFromBasket('BID', 'CODE')).once();
+        verify(basketServiceMock.removePromotionCodeFromBasket('CODE')).once();
         done();
       });
     });
@@ -146,7 +140,7 @@ describe('Basket Promotion Code Effects', () => {
     });
 
     it('should map invalid request to action of type RemovePromotionCodeFromBasketFail', () => {
-      when(basketServiceMock.removePromotionCodeFromBasket(anyString(), anyString())).thenReturn(
+      when(basketServiceMock.removePromotionCodeFromBasket(anyString())).thenReturn(
         throwError(makeHttpError({ message: 'invalid' }))
       );
 

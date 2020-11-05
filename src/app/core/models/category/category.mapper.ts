@@ -100,6 +100,7 @@ export class CategoryMapper {
 
       return {
         uniqueId,
+        categoryRef: categoryData.categoryRef,
         categoryPath,
         name: categoryData.name,
         hasOnlineProducts: categoryData.hasOnlineProducts,

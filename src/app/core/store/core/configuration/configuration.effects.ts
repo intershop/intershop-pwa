@@ -1,5 +1,5 @@
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { ApplicationRef, Inject, Injectable, Optional, PLATFORM_ID } from '@angular/core';
+import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { Actions, ROOT_EFFECTS_INIT, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
@@ -23,7 +23,7 @@ export class ConfigurationEffects {
     private store: Store,
     private translateService: TranslateService,
     private stateProperties: StatePropertiesService,
-    @Optional() private transferState: TransferState,
+    private transferState: TransferState,
     @Inject(PLATFORM_ID) private platformId: string,
     private appRef: ApplicationRef,
     @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: number,
@@ -42,7 +42,7 @@ export class ConfigurationEffects {
 
   setInitialRestEndpoint$ = createEffect(() =>
     iif(
-      () => !this.transferState || !this.transferState.hasKey(NGRX_STATE_SK),
+      () => !this.transferState.hasKey(NGRX_STATE_SK),
       this.actions$.pipe(
         ofType(ROOT_EFFECTS_INIT),
         take(1),
@@ -55,10 +55,38 @@ export class ConfigurationEffects {
           this.stateProperties
             .getStateOrEnvOrDefault<string | string[]>('FEATURES', 'features')
             .pipe(map(x => (typeof x === 'string' ? x.split(/,/g) : x))),
-          this.stateProperties.getStateOrEnvOrDefault<string>('THEME', 'theme').pipe(map(x => x || 'default'))
+          this.stateProperties.getStateOrEnvOrDefault<string>('THEME', 'theme').pipe(map(x => x || 'default')),
+          this.stateProperties
+            .getStateOrEnvOrDefault<string>('ICM_IDENTITY_PROVIDER', 'identityProvider')
+            .pipe(map(x => x || 'ICM')),
+          this.stateProperties
+            .getStateOrEnvOrDefault<string | object>('IDENTITY_PROVIDERS', 'identityProviders')
+            .pipe(map(config => (typeof config === 'string' ? JSON.parse(config) : config)))
         ),
-        map(([, baseURL, server, serverStatic, channel, application, features, theme]) =>
-          applyConfiguration({ baseURL, server, serverStatic, channel, application, features, theme })
+        map(
+          ([
+            ,
+            baseURL,
+            server,
+            serverStatic,
+            channel,
+            application,
+            features,
+            theme,
+            identityProvider,
+            identityProviders,
+          ]) =>
+            applyConfiguration({
+              baseURL,
+              server,
+              serverStatic,
+              channel,
+              application,
+              features,
+              theme,
+              identityProvider,
+              identityProviders,
+            })
         )
       )
     )

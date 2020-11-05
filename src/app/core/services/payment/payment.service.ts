@@ -34,18 +34,13 @@ export class PaymentService {
 
   /**
    * Get eligible payment methods for selected basket.
-   * @param basketId  The basket id.
    * @returns         The eligible payment methods.
    */
-  getBasketEligiblePaymentMethods(basketId: string): Observable<PaymentMethod[]> {
-    if (!basketId) {
-      return throwError('getBasketEligiblePaymentMethods() called without basketId');
-    }
-
+  getBasketEligiblePaymentMethods(): Observable<PaymentMethod[]> {
     const params = new HttpParams().set('include', 'paymentInstruments');
 
     return this.apiService
-      .get(`baskets/${basketId}/eligible-payment-methods`, {
+      .get(`baskets/current/eligible-payment-methods`, {
         headers: this.basketHeaders,
         params,
       })
@@ -54,21 +49,17 @@ export class PaymentService {
 
   /**
    * Adds a payment at the selected basket. If redirect is required the redirect urls are saved at basket in dependence of the payment instrument capabilities (redirectBeforeCheckout/RedirectAfterCheckout).
-   * @param basketId          The basket id.
    * @param paymentInstrument The unique name of the payment method, e.g. ISH_INVOICE
    * @returns                 The payment instrument.
    */
-  setBasketPayment(basketId: string, paymentInstrument: string): Observable<string> {
-    if (!basketId) {
-      return throwError('setBasketPayment() called without basketId');
-    }
+  setBasketPayment(paymentInstrument: string): Observable<string> {
     if (!paymentInstrument) {
       return throwError('setBasketPayment() called without paymentInstrument');
     }
 
     return this.apiService
       .put<{ data: PaymentInstrument; included: { paymentMethod: { [id: string]: PaymentMethodBaseData } } }>(
-        `baskets/${basketId}/payments/open-tender?include=paymentMethod`,
+        `baskets/current/payments/open-tender?include=paymentMethod`,
         { paymentInstrument },
         {
           headers: this.basketHeaders,
@@ -80,7 +71,7 @@ export class PaymentService {
         ),
         withLatestFrom(this.store.pipe(select(getCurrentLocale))),
         concatMap(([pm, currentLocale]) =>
-          this.sendRedirectUrlsIfRequired(pm, paymentInstrument, basketId, currentLocale && currentLocale.lang)
+          this.sendRedirectUrlsIfRequired(pm, paymentInstrument, currentLocale && currentLocale.lang)
         )
       );
   }
@@ -89,14 +80,12 @@ export class PaymentService {
    *  Checks, if RedirectUrls are requested by the server and sends them if it is necessary.
    * @param pm                The payment method to determine if redirect is required.
    * @param paymentInstrument The payment instrument id.
-   * @param basketId          The basket id.
    * @param lang              The language code of the current locale, e.g. en_US
    * @returns                 The payment instrument id.
    */
   private sendRedirectUrlsIfRequired(
     pm: PaymentMethodBaseData,
     paymentInstrument: string,
-    basketId: string,
     lang: string
   ): Observable<string> {
     const loc = location.origin;
@@ -123,7 +112,7 @@ export class PaymentService {
       };
 
       return this.apiService
-        .put(`baskets/${basketId}/payments/open-tender`, body, {
+        .put(`baskets/current/payments/open-tender`, body, {
           headers: this.basketHeaders,
         })
         .pipe(mapTo(paymentInstrument));
@@ -131,14 +120,10 @@ export class PaymentService {
   }
   /**
    * Creates a payment instrument for the selected basket.
-   * @param basketId          The basket id.
    * @param paymentInstrument The payment instrument with parameters, id=undefined, paymentMethod= required.
    * @returns                 The created payment instrument.
    */
-  createBasketPayment(basketId: string, paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
-    if (!basketId) {
-      return throwError('createBasketPayment() called without basketId');
-    }
+  createBasketPayment(paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
     if (!paymentInstrument) {
       return throwError('createBasketPayment() called without paymentInstrument');
     }
@@ -147,7 +132,7 @@ export class PaymentService {
     }
 
     return this.apiService
-      .post(`baskets/${basketId}/payment-instruments?include=paymentMethod`, paymentInstrument, {
+      .post(`baskets/current/payment-instruments?include=paymentMethod`, paymentInstrument, {
         headers: this.basketHeaders,
       })
       .pipe(map(({ data }) => data));
@@ -155,15 +140,10 @@ export class PaymentService {
 
   /**
    * Updates a payment for the selected basket. Used to set redirect query parameters and status after redirect.
-   * @param basketId          The basket id.
    * @param redirect          The payment redirect information (parameters and status).
    * @returns                 The updated payment.
    */
-  updateBasketPayment(basketId: string, params: { [key: string]: string }): Observable<Payment> {
-    if (!basketId) {
-      return throwError('createBasketPayment() called without basketId');
-    }
-
+  updateBasketPayment(params: { [key: string]: string }): Observable<Payment> {
     if (!params) {
       return throwError('updateBasketPayment() called without parameter data');
     }
@@ -181,7 +161,7 @@ export class PaymentService {
 
     return this.apiService
       .patch(
-        `baskets/${basketId}/payments/open-tender`,
+        `baskets/current/payments/open-tender`,
         { redirect },
         {
           headers: this.basketHeaders,
@@ -328,13 +308,9 @@ export class PaymentService {
 
   /**
    * Update CvcLastUpdated in concardis credit card (user/basket) payment instrument.
-   * @param basket            The basket.
    * @param paymentInstrument The payment instrument, that is to be updated
    */
-  updateConcardisCvcLastUpdated(basket: Basket, paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
-    if (!basket) {
-      return throwError('updateConcardisCvcLastUpdated() called without basket');
-    }
+  updateConcardisCvcLastUpdated(paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
     if (!paymentInstrument) {
       return throwError('updateConcardisCvcLastUpdated() called without paymentInstrument');
     }
@@ -353,7 +329,7 @@ export class PaymentService {
       };
 
       return this.apiService
-        .patch(`baskets/${basket.id}/payment-instruments/${paymentInstrument.id}`, body, {
+        .patch(`baskets/current/payment-instruments/${paymentInstrument.id}`, body, {
           headers: this.basketHeaders,
         })
         .pipe(map(({ data }) => data));

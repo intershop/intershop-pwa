@@ -1,10 +1,63 @@
-server {
-    server_name ~^$DOMAIN$;
-    include /etc/nginx/conf.d/listen.conf;
+{{ $UPSTREAM_PWA := getenv "UPSTREAM_PWA" }}
 
-    ## uncomment for debugging rewrite rules
-    # error_log /dev/stdout notice;
-    # rewrite_log on;
+{{ define "LOCATION_TEMPLATE" }}
+        {{- $channel := .channel }}
+        {{- $application := "default" }}{{ if (has . "application") }}{{ $application = .application }}{{ end }}
+        {{- $lang := "default" }}{{ if (has . "lang") }}{{ $lang = .lang }}{{ end }}
+        {{- $features := "default" }}{{ if (has . "features") }}{{ $features = .features }}{{ end }}
+        {{- $theme := "default" }}{{ if (has . "theme") }}{{ $theme = .theme }}{{ end }}
+        {{- $baseHref := "/" }}{{ if (has . "baseHref") }}{{ $baseHref = .baseHref }}{{ end }}
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        add_header X-Cache-Status $upstream_cache_status;
+        proxy_ignore_headers Cache-Control;
+        proxy_cache_valid 200 302 10m;
+        proxy_cache_valid 404      1m;
+
+        add_header X-icm-channel {{ $channel }} always;
+        add_header X-icm-application {{ $application }} always;
+        add_header X-icm-features {{ $features }} always;
+        add_header X-icm-default-lang {{ $lang }} always;
+        add_header X-ua-device $ua_device always;
+
+        rewrite ^.*/index.html$ {{ $baseHref }}/loading;
+
+        rewrite ^{{ $baseHref }}/?$ {{ $baseHref }}/home;
+
+        rewrite '^(?!.*;lang=.*)(.*)$' '$1;lang={{ $lang }}';
+
+        set $default_rewrite_params ';icmHost=default;channel={{ $channel }};application={{ $application }};features={{ $features }};theme={{ $theme }};baseHref={{ $baseHref | strings.ReplaceAll "/" "%2F" }};device=$ua_device';
+
+        rewrite '^(.*)$' '$1$default_rewrite_params' break;
+
+        proxy_pass {{ getenv "UPSTREAM_PWA" }};
+        proxy_buffer_size 128k;
+        proxy_buffers 4 256k;
+        proxy_busy_buffers_size 256k;
+{{- end }}
+
+{{- range $domain, $mapping := (ds "domains") }}
+server {
+    server_name ~^{{ $domain }}$;
+  {{ if $UPSTREAM_PWA | strings.HasPrefix "https" }}
+    listen 443 ssl;
+    ssl_certificate     server.crt;
+    ssl_certificate_key server.key;
+    ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers         HIGH:!aNULL:!MD5;
+
+    # https://ma.ttias.be/force-redirect-http-https-custom-port-nginx/
+    error_page  497 https://$http_host$request_uri;
+  {{ else }}
+    listen 80;
+  {{- end }}
+  {{ if getenv "DEBUG" | strings.ToLower | regexp.Match "on|1|true|yes" }}
+    error_log /dev/stdout notice;
+    rewrite_log on;
+  {{- end }}
 
     # let ICM handle everything ICM related
     location ~* ^/INTERSHOP.*$ {
@@ -17,59 +70,40 @@ server {
         proxy_cache_bypass true;
         add_header X-Cache-Status $upstream_cache_status;
 
-        proxy_pass $UPSTREAM_PWA;
+        proxy_pass {{ $UPSTREAM_PWA }};
         proxy_buffer_size 128k;
         proxy_buffers 4 256k;
         proxy_busy_buffers_size 256k;
     }
 
     # respect cache entries of static assets
-    location ~* ^/(ngx_pagespeed_beacon|assets|.*\.(js|css|ico|json|txt|webmanifest|woff|woff2))(.*)$ {
+    location ~* ^/(ngx_pagespeed_beacon|metrics|assets|.*\.(js|css|ico|json|txt|webmanifest|woff|woff2))(.*)$ {
         proxy_set_header Host $http_host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
 
-        proxy_pass $UPSTREAM_PWA;
+        proxy_pass {{ $UPSTREAM_PWA }};
         proxy_buffer_size 128k;
         proxy_buffers 4 256k;
         proxy_busy_buffers_size 256k;
     }
-
-    # cache and rewriting for rendered pages
+  {{ if (has $mapping "channel") }}
     location / {
-        proxy_set_header Host $http_host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-
-        add_header X-Cache-Status $upstream_cache_status;
-        proxy_ignore_headers Cache-Control;
-        proxy_cache_valid 200 302 10m;
-        proxy_cache_valid 404      1m;
-
-        add_header X-icm-domain $DOMAIN always;
-        add_header X-icm-channel $CHANNEL always;
-        add_header X-icm-application $APPLICATION always;
-        add_header X-icm-features $FEATURES always;
-        add_header X-icm-default-lang $LANG always;
-        add_header X-ua-device $ua_device always;
-
-        rewrite ^.*/index.html$ /loading;
-
-        rewrite ^/$ /home;
-
-        rewrite '^(?!.*;lang=.*)(.*)$' '$1;lang=$LANG';
-
-        set $default_rewrite_params ';channel=$CHANNEL;application=$APPLICATION;features=$FEATURES;theme=$THEME;device=$ua_device';
-
-        rewrite '^(?!.*;device=.*)(.*)$' '$1$default_rewrite_params' break;
-
-        proxy_pass $UPSTREAM_PWA;
-        proxy_buffer_size 128k;
-        proxy_buffers 4 256k;
-        proxy_busy_buffers_size 256k;
+        {{- tmpl.Exec "LOCATION_TEMPLATE" $mapping }}
     }
+  {{- else -}}
+    {{ range $mapping }}
+    location {{ .baseHref }} {
+        {{- tmpl.Exec "LOCATION_TEMPLATE" . }}
+    }
+    {{ end }}
+    location / {
+        {{ $first := index $mapping 0 -}}
+        rewrite ^/$ "$scheme://$http_host{{ $first.baseHref }}/home" permanent;
+        rewrite ^(.*)$ "$scheme://$http_host{{ $first.baseHref }}$request_uri" permanent;
+    }
+  {{- end }}
 
     # redirect server error pages to the static page /50x.html
     #
@@ -78,3 +112,4 @@ server {
         root /usr/share/nginx/html;
     }
 }
+{{ end }}

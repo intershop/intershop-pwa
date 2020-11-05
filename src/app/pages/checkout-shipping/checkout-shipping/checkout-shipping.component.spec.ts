@@ -1,7 +1,5 @@
-import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
@@ -11,13 +9,11 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { BasketAddressSummaryComponent } from 'ish-shared/components/basket/basket-address-summary/basket-address-summary.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
 import { BasketItemsSummaryComponent } from 'ish-shared/components/basket/basket-items-summary/basket-items-summary.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 
 import { CheckoutShippingComponent } from './checkout-shipping.component';
 
@@ -27,30 +23,20 @@ describe('Checkout Shipping Component', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     await TestBed.configureTestingModule({
       declarations: [
         CheckoutShippingComponent,
-        DummyComponent,
         MockComponent(BasketAddressSummaryComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketItemsSummaryComponent),
         MockComponent(BasketValidationResultsComponent),
-        MockComponent(ContentIncludeComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(FaIconComponent),
-        MockComponent(ModalDialogLinkComponent),
         MockComponent(NgbPopover),
         MockDirective(ServerHtmlDirective),
         MockPipe(PricePipe),
       ],
-      imports: [
-        ReactiveFormsModule,
-        RouterTestingModule.withRoutes([{ path: 'checkout/payment', component: DummyComponent }]),
-        TranslateModule.forRoot(),
-      ],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

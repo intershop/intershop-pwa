@@ -3,7 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { FeatureToggleGuard } from 'ish-core/feature-toggle.module';
 import { AuthGuard } from 'ish-core/guards/auth.guard';
-import { LogoutGuard } from 'ish-core/guards/logout.guard';
+import { IdentityProviderLoginGuard } from 'ish-core/guards/identity-provider-login.guard';
+import { IdentityProviderLogoutGuard } from 'ish-core/guards/identity-provider-logout.guard';
+import { IdentityProviderRegisterGuard } from 'ish-core/guards/identity-provider-register.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -96,6 +98,7 @@ const routes: Routes = [
   {
     path: 'register',
     loadChildren: () => import('./registration/registration-page.module').then(m => m.RegistrationPageModule),
+    canActivate: [IdentityProviderRegisterGuard],
     data: {
       meta: {
         title: 'account.register.link',
@@ -106,10 +109,11 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./login/login-page.module').then(m => m.LoginPageModule),
+    canActivate: [IdentityProviderLoginGuard],
   },
   {
     path: 'logout',
-    canActivate: [LogoutGuard],
+    canActivate: [IdentityProviderLogoutGuard],
     children: [],
   },
   {
@@ -133,6 +137,7 @@ const routes: Routes = [
       breadcrumbData: [{ key: 'helpdesk.contact_us.link' }],
     },
   },
+  { path: 'cookies', loadChildren: () => import('./cookies/cookies-page.module').then(m => m.CookiesPageModule) },
 ];
 
 @NgModule({

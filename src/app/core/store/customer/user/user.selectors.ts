@@ -22,10 +22,6 @@ export const getUserLoading = createSelector(getUserState, state => state.loadin
 
 export const getUserError = createSelector(getUserState, state => state.error);
 
-export const getAPIToken = createSelector(getUserState, state => state.authToken);
-
-export const getLastAPITokenBeforeLogin = createSelector(getUserState, state => state.lastAuthTokenBeforeLogin);
-
 export const getPGID = createSelector(getUserState, state => state.pgid);
 
 export const getPasswordReminderSuccess = createSelector(getUserState, state => state.passwordReminderSuccess);

@@ -6,15 +6,16 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
-import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
 import {
   loadBasket,
@@ -50,12 +51,12 @@ describe('Basket Effects', () => {
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user', 'basket'),
         RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
-        ShoppingStoreModule.forTesting('products', 'categories'),
       ],
       providers: [
         BasketEffects,
         provideMockActions(() => actions$),
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
+        { provide: ApiTokenService, useFactory: () => instance(mock(ApiTokenService)) },
       ],
     });
 
@@ -127,7 +128,7 @@ describe('Basket Effects', () => {
 
   describe('loadBasketEligibleShippingMethods$', () => {
     beforeEach(() => {
-      when(basketServiceMock.getBasketEligibleShippingMethods(anyString(), anything())).thenReturn(
+      when(basketServiceMock.getBasketEligibleShippingMethods(anything())).thenReturn(
         of([BasketMockData.getShippingMethod()])
       );
 
@@ -146,7 +147,7 @@ describe('Basket Effects', () => {
       actions$ = of(action);
 
       effects.loadBasketEligibleShippingMethods$.subscribe(() => {
-        verify(basketServiceMock.getBasketEligibleShippingMethods('BID', undefined)).once();
+        verify(basketServiceMock.getBasketEligibleShippingMethods(undefined)).once();
         done();
       });
     });
@@ -163,7 +164,7 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type LoadBasketEligibleShippingMethodsFail', () => {
-      when(basketServiceMock.getBasketEligibleShippingMethods(anyString(), anything())).thenReturn(
+      when(basketServiceMock.getBasketEligibleShippingMethods(anything())).thenReturn(
         throwError(makeHttpError({ message: 'invalid' }))
       );
       const action = loadBasketEligibleShippingMethods();
@@ -179,7 +180,7 @@ describe('Basket Effects', () => {
 
   describe('updateBasket$', () => {
     beforeEach(() => {
-      when(basketServiceMock.updateBasket(anyString(), anything())).thenReturn(of(BasketMockData.getBasket()));
+      when(basketServiceMock.updateBasket(anything())).thenReturn(of(BasketMockData.getBasket()));
 
       store$.dispatch(
         loadBasketSuccess({
@@ -192,13 +193,12 @@ describe('Basket Effects', () => {
     });
 
     it('should call the basketService for updateBasket', done => {
-      const basketId = 'BID';
       const update = { invoiceToAddress: '7654' };
       const action = updateBasket({ update });
       actions$ = of(action);
 
       effects.updateBasket$.subscribe(() => {
-        verify(basketServiceMock.updateBasket(basketId, update)).once();
+        verify(basketServiceMock.updateBasket(update)).once();
         done();
       });
     });
@@ -216,9 +216,7 @@ describe('Basket Effects', () => {
 
     it('should map invalid request to action of type UpdateBasketFail', () => {
       const update = { commonShippingMethod: 'shippingId' };
-      when(basketServiceMock.updateBasket(anyString(), anything())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
-      );
+      when(basketServiceMock.updateBasket(anything())).thenReturn(throwError(makeHttpError({ message: 'invalid' })));
 
       const action = updateBasket({ update });
       const completion = updateBasketFail({ error: makeHttpError({ message: 'invalid' }) });
@@ -247,26 +245,37 @@ describe('Basket Effects', () => {
     it('should fire ResetBasketErrors when route basket or checkout/* is navigated', done => {
       router.navigateByUrl('/checkout/payment');
 
+      actions$ = of(
+        routerTestNavigatedAction({
+          routerState: { url: '/checkout/payment' },
+        })
+      );
+
       effects.routeListenerForResettingBasketErrors$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`[Basket Internal] Reset Basket and Basket Promotion Errors`);
         done();
       });
     });
 
-    it('should not fire ResetBasketErrors when route basket or checkout/* is navigated with query param error=true', done => {
-      router.navigateByUrl('/checkout/payment?error=true');
+    it('should not fire ResetBasketErrors when route basket or checkout/* is navigated with query param error=true', () => {
+      actions$ = of(
+        routerTestNavigatedAction({
+          routerState: { url: '/checkout/payment', queryParams: { error: true } },
+        })
+      );
 
-      effects.routeListenerForResettingBasketErrors$.subscribe(fail, fail, fail);
-
-      setTimeout(done, 1000);
+      expect(effects.routeListenerForResettingBasketErrors$).toBeObservable(cold('|'));
     });
 
-    it('should not fire ResetBasketErrors when route /something is navigated', done => {
+    it('should not fire ResetBasketErrors when route /something is navigated', () => {
       router.navigateByUrl('/something');
 
-      effects.routeListenerForResettingBasketErrors$.subscribe(fail, fail, fail);
-
-      setTimeout(done, 1000);
+      actions$ = of(
+        routerTestNavigatedAction({
+          routerState: { url: '/something' },
+        })
+      );
+      expect(effects.routeListenerForResettingBasketErrors$).toBeObservable(cold('|'));
     });
   });
 });

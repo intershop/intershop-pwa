@@ -9,10 +9,11 @@ on:
   pull_request:
     types: [opened, synchronize]
     paths-ignore:
+      - '**.md'
       - 'docs/**'
 
 env:
-  ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
+  ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8080
 
 jobs:
   CancelPrevious:
@@ -35,26 +36,19 @@ jobs:
         with:
           node-version: 12
 
-      - uses: actions/cache@v2
-        with:
-          path: ~/.cache
-          key: ${{ runner.os }}-cache-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-cache-
-
       - name: Install root dependencies
-        uses: bahmutov/npm-install@v1
+        run: npm ci
 
       - name: Install e2e dependencies
-        uses: bahmutov/npm-install@v1
-        with:
-          working-directory: e2e
-          useLockFile: false
+        run: |
+          cd e2e
+          npm i
 
       - name: Code Formatting
-        run: |
-          npm run format
-          bash scripts/ci-test-no-changes.sh 'you probably committed unformatted code'
+        run: npm run format
+
+      - name: Check No Changes from Formatting
+        run: git diff --exit-code --raw -p --stat
 
       - name: Compile Angular
         run: npm run ng -- build --aot
@@ -70,8 +64,30 @@ jobs:
           node scripts/tslint-hard
           npm run lint
 
+  DeadCode:
+    runs-on: ubuntu-latest
+    if: "!startsWith(github.ref, 'refs/tags/') && github.ref != 'refs/heads/master' && github.ref != 'refs/heads/develop'"
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install root dependencies
+        run: npm ci
+
       - name: Find Dead Code
         run: npx ts-node scripts/find-dead-code
+
+      - name: Find Unused TestBed declarations
+        run: |
+          npx ts-node scripts/cleanup-testbed origin/develop
+          git diff --exit-code --raw -p --stat
 
   Jest:
     runs-on: ubuntu-latest
@@ -84,7 +100,7 @@ jobs:
           node-version: 12
 
       - name: Install root dependencies
-        uses: bahmutov/npm-install@v1
+        run: npm ci
 
       - name: PWA Jest
         run: npm test
@@ -107,7 +123,7 @@ jobs:
           node-version: 12
 
       - name: Install root dependencies
-        uses: bahmutov/npm-install@v1
+        run: npm ci
 
       - name: Test Schematics
         run: |

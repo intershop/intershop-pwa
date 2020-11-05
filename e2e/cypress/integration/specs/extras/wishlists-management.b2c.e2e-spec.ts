@@ -41,6 +41,7 @@ describe('Wishlist MyAccount Functionality', () => {
       page.addWishlist(unpreferredWishlist, false);
       page.wishlistsArray.should('have.length', 1);
       page.wishlistsTitlesArray.should('contain', unpreferredWishlist);
+      page.breadcrumb.items.should('have.length', 3);
     });
   });
 
@@ -78,6 +79,8 @@ describe('Wishlist MyAccount Functionality', () => {
       page.addToWishlist.addProductToWishlistFromPage();
     });
     at(WishlistsDetailsPage, page => {
+      page.breadcrumb.items.should('have.length', 4);
+      page.breadcrumb.items.eq(3).should('contain', preferredWishlist);
       page.listItemLinks.invoke('attr', 'href').should('contain', _.product2);
       page.header.gotoCategoryPage(_.category);
     });
@@ -96,6 +99,8 @@ describe('Wishlist MyAccount Functionality', () => {
   it('user renames a wishlist and sets it to unpreferred', () => {
     at(WishlistsDetailsPage, page => {
       page.editWishlistDetails(editedWishlist, false);
+      page.breadcrumb.items.should('have.length', 4);
+      page.breadcrumb.items.eq(3).should('contain', editedWishlist);
       page.wishlistTitle.should('equal', editedWishlist);
       page.wishlistPreferredTextElement.should('not.exist');
     });
@@ -119,6 +124,7 @@ describe('Wishlist MyAccount Functionality', () => {
       page.header.gotoWishlists();
     });
     at(WishlistsOverviewPage, page => {
+      page.breadcrumb.items.should('have.length', 3);
       page.goToWishlistDetailLink(editedWishlist);
     });
 

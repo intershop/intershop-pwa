@@ -10,7 +10,6 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketPromotionComponent } from 'ish-shared/components/basket/basket-promotion/basket-promotion.component';
-import { PromotionDetailsComponent } from 'ish-shared/components/promotion/promotion-details/promotion-details.component';
 
 import { BasketCostSummaryComponent } from './basket-cost-summary.component';
 
@@ -29,7 +28,6 @@ describe('Basket Cost Summary Component', () => {
         MockComponent(BasketPromotionComponent),
         MockComponent(FaIconComponent),
         MockComponent(NgbPopover),
-        MockComponent(PromotionDetailsComponent),
         PricePipe,
       ],
       imports: [TranslateModule.forRoot()],

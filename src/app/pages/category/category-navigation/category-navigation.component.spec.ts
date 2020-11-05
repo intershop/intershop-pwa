@@ -1,12 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { NavigationCategory } from 'ish-core/models/navigation-category/navigation-category.model';
-import { CategoryRoutePipe } from 'ish-core/routing/category/category-route.pipe';
 
 import { CategoryNavigationComponent } from './category-navigation.component';
 
@@ -34,7 +32,7 @@ describe('Category Navigation Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [CategoryNavigationComponent, MockPipe(CategoryRoutePipe)],
+      declarations: [CategoryNavigationComponent],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
   });

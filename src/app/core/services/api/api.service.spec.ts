@@ -17,10 +17,9 @@ import {
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { serverError } from 'ish-core/store/core/error';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { getAPIToken, getPGID, setAPIToken } from 'ish-core/store/customer/user';
+import { getPGID } from 'ish-core/store/customer/user';
 
 import { ApiService, unpackEnvelope } from './api.service';
-import { ApiServiceErrorHandler } from './api.service.errorhandler';
 
 // testing here is handled by http testing controller
 // tslint:disable: use-async-synchronization-in-tests
@@ -37,13 +36,10 @@ describe('Api Service', () => {
         // https://angular.io/guide/http#testing-http-requests
         imports: [HttpClientTestingModule],
         providers: [
-          ApiServiceErrorHandler,
-          ApiService,
           provideMockStore({
             selectors: [
               { selector: getRestEndpoint, value: 'http://www.example.org/WFS/site/-' },
               { selector: getICMServerURL, value: undefined },
-              { selector: getAPIToken, value: undefined },
               { selector: getCurrentLocale, value: undefined },
               { selector: getPGID, value: undefined },
             ],
@@ -199,13 +195,10 @@ describe('Api Service', () => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule],
         providers: [
-          ApiServiceErrorHandler,
-          ApiService,
           provideMockStore({
             selectors: [
               { selector: getRestEndpoint, value: 'http://www.example.org/WFS/site/-' },
               { selector: getICMServerURL, value: 'http://www.example.org/WFS' },
-              { selector: getAPIToken, value: undefined },
               { selector: getCurrentLocale, value: undefined },
               { selector: getPGID, value: undefined },
             ],
@@ -364,15 +357,12 @@ describe('Api Service', () => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule],
         providers: [
-          ApiServiceErrorHandler,
-          ApiService,
           provideMockStore({
             selectors: [
               { selector: getRestEndpoint, value: 'http://www.example.org/WFS/site/-' },
               { selector: getICMServerURL, value: undefined },
               { selector: getCurrentLocale, value: undefined },
               { selector: getPGID, value: undefined },
-              { selector: getAPIToken, value: undefined },
             ],
           }),
         ],
@@ -508,7 +498,6 @@ describe('Api Service', () => {
           CustomerStoreModule.forTesting('user'),
           HttpClientTestingModule,
         ],
-        providers: [ApiServiceErrorHandler, ApiService],
       });
 
       apiService = TestBed.inject(ApiService);
@@ -564,34 +553,6 @@ describe('Api Service', () => {
       expect(req.request.headers.get('Accept')).toEqual('application/xml');
     });
 
-    it('should not have a token, when no token is in store', () => {
-      apiService.get('dummy').subscribe(fail, fail, fail);
-
-      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
-      expect(req.request.headers.has(ApiService.TOKEN_HEADER_KEY)).toBeFalse();
-    });
-
-    it('should have a token, when token is in store', () => {
-      const apiToken = 'blubb';
-      store$.dispatch(setAPIToken({ apiToken }));
-      apiService.get('dummy').subscribe(fail, fail, fail);
-
-      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
-      expect(req.request.headers.has(ApiService.TOKEN_HEADER_KEY)).toBeTrue();
-      expect(req.request.headers.get(ApiService.TOKEN_HEADER_KEY)).toEqual(apiToken);
-    });
-
-    it('should not have a token, when request is authorization request', () => {
-      const apiToken = 'blubb';
-      store$.dispatch(setAPIToken({ apiToken }));
-      apiService
-        .get('dummy', { headers: new HttpHeaders().set(ApiService.AUTHORIZATION_HEADER_KEY, 'dummy') })
-        .subscribe(fail, fail, fail);
-
-      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
-      expect(req.request.headers.has(ApiService.TOKEN_HEADER_KEY)).toBeFalse();
-    });
-
     it('should set Captcha V2 authorization header key when captcha is supplied without captchaAction', () => {
       apiService.get('dummy', { captcha: { captcha: 'captchatoken' } }).subscribe(fail, fail, fail);
 
@@ -623,21 +584,17 @@ describe('Api Service', () => {
   describe('API Service exclusive runs', () => {
     let apiService: ApiService;
     let httpTestingController: HttpTestingController;
-    let store$: MockStore;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule],
         providers: [
-          ApiServiceErrorHandler,
-          ApiService,
           provideMockStore({
             selectors: [
               { selector: getICMServerURL, value: undefined },
               { selector: getRestEndpoint, value: 'http://www.example.org' },
               { selector: getCurrentLocale, value: undefined },
               { selector: getPGID, value: undefined },
-              { selector: getAPIToken, value: undefined },
             ],
           }),
         ],
@@ -645,7 +602,6 @@ describe('Api Service', () => {
 
       apiService = TestBed.inject(ApiService);
       httpTestingController = TestBed.inject(HttpTestingController);
-      store$ = TestBed.inject(MockStore);
     });
 
     afterEach(() => {
@@ -728,37 +684,6 @@ describe('Api Service', () => {
       setTimeout(() => {
         req3.flush('TEST3');
       }, 3000);
-    });
-
-    it('should read apiToken just in time when making actual request', done => {
-      store$.overrideSelector(getAPIToken, '0');
-
-      apiService.get('dummy1', { runExclusively: true }).subscribe(data => {
-        expect(data).toBeTruthy();
-      });
-
-      const req1 = httpTestingController.expectOne(`http://www.example.org/dummy1`);
-      expect(req1.request.headers.get(ApiService.TOKEN_HEADER_KEY)).toEqual('0');
-
-      apiService.get('dummy2').subscribe(data => {
-        expect(data).toBeTruthy();
-      });
-
-      httpTestingController.verify();
-
-      setTimeout(() => {
-        // set incoming api token
-        // emulates AuthInterceptor
-        store$.overrideSelector(getAPIToken, '1');
-        req1.flush('TEST1');
-      }, 1000);
-
-      setTimeout(() => {
-        const req2 = httpTestingController.expectOne(`http://www.example.org/dummy2`);
-        req2.flush('TEST2');
-        expect(req2.request.headers.get(ApiService.TOKEN_HEADER_KEY)).toEqual('1');
-        done();
-      }, 1500);
     });
   });
 });

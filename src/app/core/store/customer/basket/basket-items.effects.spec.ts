@@ -1,4 +1,4 @@
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
@@ -10,9 +10,7 @@ import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Product } from 'ish-core/models/product/product.model';
-import { AddressService } from 'ish-core/services/address/address.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { OrderService } from 'ish-core/services/order/order.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loadProduct, loadProductSuccess } from 'ish-core/store/shopping/products';
@@ -39,15 +37,11 @@ import {
 describe('Basket Items Effects', () => {
   let actions$: Observable<Action>;
   let basketServiceMock: BasketService;
-  let orderServiceMock: OrderService;
-  let addressServiceMock: AddressService;
   let effects: BasketItemsEffects;
   let store$: Store;
 
   beforeEach(() => {
     basketServiceMock = mock(BasketService);
-    orderServiceMock = mock(OrderService);
-    addressServiceMock = mock(AddressService);
 
     TestBed.configureTestingModule({
       imports: [
@@ -60,8 +54,6 @@ describe('Basket Items Effects', () => {
         BasketItemsEffects,
         provideMockActions(() => actions$),
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
-        { provide: OrderService, useFactory: () => instance(orderServiceMock) },
-        { provide: AddressService, useFactory: () => instance(addressServiceMock) },
       ],
     });
 
@@ -90,7 +82,7 @@ describe('Basket Items Effects', () => {
 
   describe('addItemsToBasket$', () => {
     beforeEach(() => {
-      when(basketServiceMock.addItemsToBasket(anyString(), anything())).thenReturn(of(undefined));
+      when(basketServiceMock.addItemsToBasket(anything())).thenReturn(of(undefined));
     });
 
     it('should call the basketService for addItemsToBasket', done => {
@@ -108,53 +100,21 @@ describe('Basket Items Effects', () => {
       actions$ = of(action);
 
       effects.addItemsToBasket$.subscribe(() => {
-        verify(basketServiceMock.addItemsToBasket('BID', items)).once();
+        verify(basketServiceMock.addItemsToBasket(items)).once();
         done();
       });
     });
 
-    it('should call the basketService for addItemsToBasket with specific basketId when basketId set', done => {
-      store$.dispatch(
-        loadBasketSuccess({
-          basket: {
-            id: 'BID',
-            lineItems: [],
-          } as Basket,
-        })
-      );
-
-      const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
-      const basketId = 'BID';
-      const action = addItemsToBasket({ items, basketId });
-      actions$ = of(action);
-
-      effects.addItemsToBasket$.subscribe(() => {
-        verify(basketServiceMock.addItemsToBasket('BID', items)).once();
-        done();
-      });
-    });
-
-    it('should not call the basketService for addItemsToBasket if no basket in store', fakeAsync(() => {
-      const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
-      const action = addItemsToBasket({ items });
-      actions$ = of(action);
-
-      effects.addItemsToBasket$.subscribe(fail, fail);
-
-      tick(5000);
-
-      verify(basketServiceMock.addItemsToBasket('BID', anything())).never();
-    }));
-
-    it('should call the basketService for createBasket when no basket is present', done => {
+    it('should call the basketService for createBasket and addItemsToBasket when no basket is present', done => {
       when(basketServiceMock.createBasket()).thenReturn(of({} as Basket));
 
       const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
       const action = addItemsToBasket({ items });
       actions$ = of(action);
 
-      effects.createBasketBeforeAddItemsToBasket$.subscribe(() => {
+      effects.addItemsToBasket$.subscribe(() => {
         verify(basketServiceMock.createBasket()).once();
+        verify(basketServiceMock.addItemsToBasket(items)).once();
         done();
       });
     });
@@ -179,7 +139,7 @@ describe('Basket Items Effects', () => {
     });
 
     it('should map invalid request to action of type AddItemsToBasketFail', () => {
-      when(basketServiceMock.addItemsToBasket(anyString(), anything())).thenReturn(
+      when(basketServiceMock.addItemsToBasket(anything())).thenReturn(
         throwError(makeHttpError({ message: 'invalid' }))
       );
 
@@ -204,7 +164,7 @@ describe('Basket Items Effects', () => {
 
   describe('loadProductsForAddItemsToBasket$', () => {
     it('should trigger product loading actions for line items if AddItemsToBasket action is triggered', () => {
-      when(basketServiceMock.getBasket(anything())).thenReturn(of());
+      when(basketServiceMock.getBasket()).thenReturn(of());
 
       const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
       const action = addItemsToBasket({ items });
@@ -230,7 +190,7 @@ describe('Basket Items Effects', () => {
 
   describe('updateBasketItems$', () => {
     beforeEach(() => {
-      when(basketServiceMock.updateBasketItem(anyString(), anyString(), anything())).thenReturn(of([{} as BasketInfo]));
+      when(basketServiceMock.updateBasketItem(anyString(), anything())).thenReturn(of([{} as BasketInfo]));
 
       store$.dispatch(
         loadBasketSuccess({
@@ -270,10 +230,9 @@ describe('Basket Items Effects', () => {
       actions$ = of(action);
 
       effects.updateBasketItems$.subscribe(() => {
-        verify(basketServiceMock.updateBasketItem('BID', payload.lineItemUpdates[1].itemId, anything())).thrice();
+        verify(basketServiceMock.updateBasketItem(payload.lineItemUpdates[1].itemId, anything())).thrice();
         expect(capture(basketServiceMock.updateBasketItem).first()).toMatchInlineSnapshot(`
           Array [
-            "BID",
             "BIID",
             Object {
               "product": undefined,
@@ -286,7 +245,6 @@ describe('Basket Items Effects', () => {
         `);
         expect(capture(basketServiceMock.updateBasketItem).second()).toMatchInlineSnapshot(`
           Array [
-            "BID",
             "BIID",
             Object {
               "product": undefined,
@@ -299,7 +257,6 @@ describe('Basket Items Effects', () => {
         `);
         expect(capture(basketServiceMock.updateBasketItem).third()).toMatchInlineSnapshot(`
           Array [
-            "BID",
             "BIID",
             Object {
               "product": undefined,
@@ -315,7 +272,7 @@ describe('Basket Items Effects', () => {
     });
 
     it('should call the basketService for deleteBasketItem if quantity = 0', done => {
-      when(basketServiceMock.deleteBasketItem(anyString(), anyString())).thenReturn(of());
+      when(basketServiceMock.deleteBasketItem(anyString())).thenReturn(of());
 
       const payload = {
         lineItemUpdates: [
@@ -329,7 +286,7 @@ describe('Basket Items Effects', () => {
       actions$ = of(action);
 
       effects.updateBasketItems$.subscribe(() => {
-        verify(basketServiceMock.deleteBasketItem('BID', payload.lineItemUpdates[0].itemId)).once();
+        verify(basketServiceMock.deleteBasketItem(payload.lineItemUpdates[0].itemId)).once();
         done();
       });
     });
@@ -353,7 +310,7 @@ describe('Basket Items Effects', () => {
     });
 
     it('should map invalid request to action of type UpdateBasketItemsFail', () => {
-      when(basketServiceMock.updateBasketItem(anyString(), anyString(), anything())).thenReturn(
+      when(basketServiceMock.updateBasketItem(anyString(), anything())).thenReturn(
         throwError(makeHttpError({ message: 'invalid' }))
       );
 
@@ -398,7 +355,7 @@ describe('Basket Items Effects', () => {
 
   describe('deleteBasketItem$', () => {
     beforeEach(() => {
-      when(basketServiceMock.deleteBasketItem(anyString(), anyString())).thenReturn(of(undefined));
+      when(basketServiceMock.deleteBasketItem(anyString())).thenReturn(of(undefined));
 
       store$.dispatch(
         loadBasketSuccess({
@@ -416,7 +373,7 @@ describe('Basket Items Effects', () => {
       actions$ = of(action);
 
       effects.deleteBasketItem$.subscribe(() => {
-        verify(basketServiceMock.deleteBasketItem('BID', 'BIID')).once();
+        verify(basketServiceMock.deleteBasketItem('BIID')).once();
         done();
       });
     });
@@ -432,7 +389,7 @@ describe('Basket Items Effects', () => {
     });
 
     it('should map invalid request to action of type DeleteBasketItemFail', () => {
-      when(basketServiceMock.deleteBasketItem(anyString(), anyString())).thenReturn(
+      when(basketServiceMock.deleteBasketItem(anyString())).thenReturn(
         throwError(makeHttpError({ message: 'invalid' }))
       );
 

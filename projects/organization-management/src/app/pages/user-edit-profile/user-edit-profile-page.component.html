@@ -1,7 +1,7 @@
 <div *ngIf="profileForm">
   <h1>{{ 'account.user.update_profile.heading' | translate }} - {{ user.firstName }} {{ user.lastName }}</h1>
   <form [formGroup]="profileForm" (ngSubmit)="submitForm()" class="form-horizontal" novalidate="novalidate">
-    <ish-user-profile-form [form]="profileForm"></ish-user-profile-form>
+    <ish-user-profile-form [form]="profileForm" [error]="userError$ | async"></ish-user-profile-form>
     <div class="row">
       <div class="offset-md-4 col-md-8">
         <button type="submit" class="btn btn-primary" [disabled]="formDisabled" data-testing-id="edit-user-submit">

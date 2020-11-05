@@ -335,14 +335,8 @@
         {
           "import": "CookiesService",
           "from": "ngx-utils-cookies-port",
-          "filePattern": "^((?!src/app/core/services/cookies/cookies\\.service(\\.spec|)\\.ts).)*$",
+          "filePattern": "^((?!src/app/core/utils/cookies/cookies\\.service(\\.spec|)\\.ts).)*$",
           "message": "Use CookiesService from ish-core instead."
-        },
-        {
-          "import": "MetaGuard",
-          "from": "@ngx-meta/core",
-          "filePattern": "^.*$",
-          "message": "Use MetaGuard from seo module instead."
         },
         {
           "import": "^FormsModule$",
@@ -460,9 +454,19 @@
         {
           "import": "^createProductView$",
           "from": ".*/product-view.model",
-          // TODO: remove quote-request selectors after rework
-          "filePattern": "^(?!.*/(.*\\.spec|products\\.selectors|quote-request\\.selectors)\\.ts$).*$",
+          "filePattern": "^(?!.*/(.*\\.spec|products\\.selectors)\\.ts$).*$",
           "message": "Product views should not be attached to other entities. Use ShoppingFacade.product$ in components."
+        },
+        {
+          "import": "SerializedRouterStateSnapshot",
+          "from": "@ngrx/router-store",
+          "message": "We customized the serialization of the router state. Use 'RouterState' from 'ish-core/store/core/router/router.reducer'."
+        },
+        {
+          "import": "routerNavigatedAction|routerNavigationAction|ROUTER_NAVIGATED|ROUTER_NAVIGATION",
+          "from": "@ngrx/router-store",
+          "filePattern": "^.*\\.spec\\.ts*$",
+          "message": "We customized the serialization of the router state. Use router actions from 'ish-core/utils/dev/routing' in tests."
         }
       ]
     },
@@ -538,7 +542,7 @@
           "^.*/src/app/core/routing/([a-z0-9-]+)/\\1\\-route\\.pipe\\.ts",
           // extra artifacts
           "^.*(/src/app/core|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/(service)s/([a-z][a-z0-9-]+)/\\3(\\-[a-z0-9-]+|)\\.\\2[a-z0-9-\\.]*\\.ts",
-          "^.*(/src/app/core|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/(interceptor|guard|directive|pipe)s/[a-z][a-z0-9-]+.\\2\\.ts",
+          "^.*(/src/app/core|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/(interceptor|guard|directive|pipe|animation)s/[a-z][a-z0-9-]+.\\2\\.ts",
           "^.*projects/[a-z][a-z0-9-]+/src/app/exports/index.ts",
           // models
           "^.*(/src/app/core|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/models/([a-z][a-z0-9-]+)/\\2\\.(pipe|helper|interface|mapper|types)\\.ts$",
@@ -556,10 +560,10 @@
           // allow only app related content directly in src/app
           "^.*/src/app/app[\\w\\.\\-]+\\.ts$",
           // application shell
-          "^.*/src/app/shell/(header|footer)/([a-z][a-z0-9-]+)/\\2\\.component\\.ts$",
+          "^.*/src/app/shell/(header|footer|application)/([a-z][a-z0-9-]+)/\\2\\.component\\.ts$",
           "^.*/src/app/shell/[a-z][a-z0-9-]+/configurations/.*\\.ts$",
           // specific (lazy loaded) page modules
-          "^.*(/src/app|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/pages/([a-z][a-z0-9-]+)/\\2-page\\.(module|component)\\.ts$",
+          "^.*(/src/app|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/pages/([a-z][a-z0-9-]+)/\\2-page\\.(module|component|guard)\\.ts$",
           "^.*(/src/app|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/pages/[a-z][a-z0-9-]+/([a-z][a-z0-9-]+)/\\2\\.component\\.ts$",
           "^.*/src/app/extensions/([a-z][a-z0-9-]+)/pages/\\1(.*)-routing\\.module\\.ts$",
           "^.*/projects/([a-z][a-z0-9-]+)/src/app/pages/\\1-routing\\.module\\.ts$",
@@ -572,6 +576,8 @@
           "^.*/src/app/shared/[a-z][a-z0-9-]+/components/([a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
           "^.*/projects/[a-z][a-z0-9-]+/src/app/components/([a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
           "^.*/src/app/shared/address-forms/components/([a-z][a-z0-9-]+)/\\1\\.factory\\.ts$",
+          // identity providers
+          "^.*/src/app/core/identity-provider/.*$",
           // aggregation modules
           "^.*/src/app/(shell|shared)/\\1\\.module\\.ts$",
           "^.*/src/app/extensions/([a-z][a-z0-9-]+)/\\1\\.module\\.ts$",
@@ -636,6 +642,10 @@
           {
             "name": "^([A-Z].*)Directive$",
             "file": ".*/directives/<kebab>\\.directive\\.ts$"
+          },
+          {
+            "name": "^([A-Z].*)PageGuard$",
+            "file": ".*/pages/<kebab>/<kebab>-page\\.guard\\.ts$"
           },
           {
             "name": "^([A-Z].*)Guard$",

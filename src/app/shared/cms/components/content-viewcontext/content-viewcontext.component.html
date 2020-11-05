@@ -1,0 +1,3 @@
+<ng-container *ngIf="viewContextEntrypoint$ | async as entrypoint">
+  <ish-content-pagelet *ngFor="let pagelet of entrypoint.pageletIDs" [pageletId]="pagelet"></ish-content-pagelet>
+</ng-container>

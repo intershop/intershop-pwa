@@ -101,8 +101,8 @@ describe('Payment Method Mapper', () => {
 
       expect(paymentMethod).toBeTruthy();
       expect(paymentMethod.id).toEqual('ISH_CreditCard');
-      expect(paymentMethod.paymentCosts.value).toBePositive();
-      expect(paymentMethod.paymentCostsThreshold.value).toBePositive();
+      expect(paymentMethod.paymentCosts.net).toBePositive();
+      expect(paymentMethod.paymentCostsThreshold.net).toBePositive();
       expect(paymentMethod.isRestricted).toBeFalse();
       expect(paymentMethod.saveAllowed).toBeFalse();
     });

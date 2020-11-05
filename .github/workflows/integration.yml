@@ -9,10 +9,11 @@ on:
   pull_request:
     types: [opened, synchronize]
     paths-ignore:
+      - '**.md'
       - 'docs/**'
 
 env:
-  ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
+  ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8080
 
 jobs:
   CancelPrevious:
@@ -36,7 +37,7 @@ jobs:
           node-version: 12
 
       - name: Install root dependencies
-        uses: bahmutov/npm-install@v1
+        run: npm ci
 
       - name: Disable ServiceWorker
         run: node schematics/customization/service-worker false
@@ -72,20 +73,16 @@ jobs:
           path: dist
 
       - name: Set Environment
-        uses: allenevans/set-env@master
-        with:
-          overwrite: true
-          LOGGING: true
-          PROXY_ICM: true
+        run: |
+          echo "LOGGING=true" >> $GITHUB_ENV
+          echo "PROXY_ICM=true" >> $GITHUB_ENV
 
       - name: Set B2B Environment
         if: matrix.test == 'b2b'
-        uses: allenevans/set-env@master
-        with:
-          overwrite: true
-          THEME: blue
-          ICM_CHANNEL: inSPIRED-inTRONICS_Business-Site
-          FEATURES: quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,advancedVariationHandling
+        run: |
+          echo "THEME=blue" >> $GITHUB_ENV
+          echo "ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site" >> $GITHUB_ENV
+          echo "FEATURES=quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,advancedVariationHandling" >> $GITHUB_ENV
 
       - name: Start SSR
         run: npm run serve &
@@ -107,13 +104,12 @@ jobs:
 
       - name: Install root dependencies
         if: matrix.test == 'mock'
-        uses: bahmutov/npm-install@v1
+        run: npm ci
 
       - name: Install e2e dependencies
-        uses: bahmutov/npm-install@v1
-        with:
-          working-directory: e2e
-          useLockFile: false
+        run: |
+          cd e2e
+          npm i
 
       - name: Download Build Output
         if: matrix.test != 'mock'
@@ -123,22 +119,18 @@ jobs:
           path: dist
 
       - name: Set Environment
-        uses: allenevans/set-env@master
-        with:
-          overwrite: true
-          PWA_BASE_URL: http://localhost:4200
-          LOGGING: true
-          PROXY_ICM: true
-          BROWSER: chrome
+        run: |
+          echo "PWA_BASE_URL=http://localhost:4200" >> $GITHUB_ENV
+          echo "LOGGING=true" >> $GITHUB_ENV
+          echo "PROXY_ICM=true" >> $GITHUB_ENV
+          echo "BROWSER=chrome" >> $GITHUB_ENV
 
       - name: Set B2B Environment
         if: matrix.test == 'b2b'
-        uses: allenevans/set-env@master
-        with:
-          overwrite: true
-          THEME: blue
-          ICM_CHANNEL: inSPIRED-inTRONICS_Business-Site
-          FEATURES: quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,advancedVariationHandling
+        run: |
+          echo "THEME=blue" >> $GITHUB_ENV
+          echo "ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site" >> $GITHUB_ENV
+          echo "FEATURES=quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,advancedVariationHandling" >> $GITHUB_ENV
 
       - name: Start SSR
         if: matrix.test != 'mock'

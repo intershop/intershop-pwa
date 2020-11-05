@@ -1,7 +1,5 @@
-import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import * as using from 'jasmine-data-provider';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -23,7 +21,7 @@ describe('Product Price Component', () => {
     when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
 
     await TestBed.configureTestingModule({
-      imports: [CommonModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       declarations: [PricePipe, ProductPriceComponent],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
@@ -62,40 +60,20 @@ describe('Product Price Component', () => {
   });
 
   describe('price comparison', () => {
-    function dataProvider() {
-      return [
-        {
-          listPrice: 10,
-          salePrice: 10,
-          isListPriceGreaterThanSalePrice: false,
-          isListPriceLessThanSalePrice: false,
-          description: 'list price equals sale price',
-        },
-        {
-          listPrice: 11,
-          salePrice: 10,
-          isListPriceGreaterThanSalePrice: true,
-          isListPriceLessThanSalePrice: false,
-          description: 'list price is greater than sale price',
-        },
-        {
-          listPrice: 10,
-          salePrice: 11,
-          isListPriceGreaterThanSalePrice: false,
-          isListPriceLessThanSalePrice: true,
-          description: 'list price is less than sale price',
-        },
-      ];
-    }
-    using(dataProvider, dataSlice => {
-      it(`should evaluate isListPriceGreaterThanSalePrice to "${dataSlice.isListPriceGreaterThanSalePrice}" and isListPriceLessThanSalePrice to "${dataSlice.isListPriceLessThanSalePrice}" when ${dataSlice.description}`, () => {
-        product.listPrice.value = dataSlice.listPrice;
-        product.salePrice.value = dataSlice.salePrice;
+    it.each([
+      [false, false, 'list price equals sale price', 10, 10],
+      [true, false, 'list price is greater than sale price', 11, 10],
+      [false, true, 'list price is less than sale price', 10, 11],
+    ])(
+      `should evaluate isListPriceGreaterThanSalePrice to "%s" and isListPriceLessThanSalePrice to "%s" when %s`,
+      (isListPriceGreaterThanSalePrice, isListPriceLessThanSalePrice, _, listPrice, salePrice) => {
+        product.listPrice.value = listPrice;
+        product.salePrice.value = salePrice;
         component.ngOnChanges();
-        expect(component.isListPriceGreaterThanSalePrice).toBe(dataSlice.isListPriceGreaterThanSalePrice);
-        expect(component.isListPriceLessThanSalePrice).toBe(dataSlice.isListPriceLessThanSalePrice);
-      });
-    });
+        expect(component.isListPriceGreaterThanSalePrice).toBe(isListPriceGreaterThanSalePrice);
+        expect(component.isListPriceLessThanSalePrice).toBe(isListPriceLessThanSalePrice);
+      }
+    );
   });
 
   describe('template rendering', () => {
@@ -155,36 +133,20 @@ describe('Product Price Component', () => {
         translate.set('product.price.savingsFallback.text', 'you saved {{0}}');
         component.showInformationalPrice = true;
       });
-      function dataProvider() {
-        return [
-          {
-            isListPriceGreaterThanSalePrice: false,
-            isListPriceLessThanSalePrice: false,
-            querySelector: '.current-price',
-            description: 'list price equals sale price',
-          },
-          {
-            isListPriceGreaterThanSalePrice: true,
-            isListPriceLessThanSalePrice: false,
-            querySelector: '.current-price.sale-price',
-            description: 'list price is greater than sale price',
-          },
-          {
-            isListPriceGreaterThanSalePrice: false,
-            isListPriceLessThanSalePrice: true,
-            querySelector: '.current-price.sale-price-higher',
-            description: 'list price is less than sale price',
-          },
-        ];
-      }
-      using(dataProvider, dataSlice => {
-        it(`should apply "${dataSlice.querySelector}" class when showInformationalPrice = true and ${dataSlice.description}`, () => {
-          component.isListPriceGreaterThanSalePrice = dataSlice.isListPriceGreaterThanSalePrice;
-          component.isListPriceLessThanSalePrice = dataSlice.isListPriceLessThanSalePrice;
+
+      it.each([
+        ['.current-price', 'list price equals sale price', false, false],
+        ['.current-price.sale-price', 'list price is greater than sale price', true, false],
+        ['.current-price.sale-price-higher', 'list price is less than sale price', false, true],
+      ])(
+        `should apply "%s" class when showInformationalPrice = true and %s`,
+        (querySelector, _, isListPriceGreaterThanSalePrice, isListPriceLessThanSalePrice) => {
+          component.isListPriceGreaterThanSalePrice = isListPriceGreaterThanSalePrice;
+          component.isListPriceLessThanSalePrice = isListPriceLessThanSalePrice;
           fixture.detectChanges();
-          expect(element.querySelector(dataSlice.querySelector)).toBeTruthy();
-        });
-      });
+          expect(element.querySelector(querySelector)).toBeTruthy();
+        }
+      );
     });
 
     it('should generate rich snippet meta tag when sale price is available', () => {

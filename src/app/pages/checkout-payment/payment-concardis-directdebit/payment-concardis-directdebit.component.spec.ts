@@ -1,7 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyForm } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -19,14 +16,8 @@ describe('Payment Concardis Directdebit Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(CheckboxComponent),
-        MockComponent(FaIconComponent),
-        MockComponent(FormlyForm),
-        MockComponent(NgbPopover),
-        PaymentConcardisDirectdebitComponent,
-      ],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      declarations: [MockComponent(CheckboxComponent), MockComponent(FormlyForm), PaymentConcardisDirectdebitComponent],
+      imports: [TranslateModule.forRoot()],
     }).compileComponents();
   });
 

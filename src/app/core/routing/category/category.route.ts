@@ -7,7 +7,7 @@ import { CoreState } from 'ish-core/store/core/core-store';
 import { selectRouteParam } from 'ish-core/store/core/router';
 
 export function generateLocalizedCategorySlug(category: Category) {
-  return category?.name?.replace(/ /g, '-') || '';
+  return category?.name?.replace(/[ \(\)]+/g, '-').replace(/-+$/g, '') || '';
 }
 
 const categoryRouteFormat = /^\/(?!category\/.*$)(.*-)?cat(.*)$/;

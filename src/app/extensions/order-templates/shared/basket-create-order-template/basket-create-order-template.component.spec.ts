@@ -8,7 +8,6 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { OrderTemplatePreferencesDialogComponent } from '../order-template-preferences-dialog/order-template-preferences-dialog.component';
-import { SelectOrderTemplateModalComponent } from '../select-order-template-modal/select-order-template-modal.component';
 
 import { BasketCreateOrderTemplateComponent } from './basket-create-order-template.component';
 
@@ -19,11 +18,7 @@ describe('Basket Create Order Template Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        BasketCreateOrderTemplateComponent,
-        MockComponent(OrderTemplatePreferencesDialogComponent),
-        MockComponent(SelectOrderTemplateModalComponent),
-      ],
+      declarations: [BasketCreateOrderTemplateComponent, MockComponent(OrderTemplatePreferencesDialogComponent)],
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       providers: [
         { provide: OrderTemplatesFacade, useFactory: () => instance(mock(OrderTemplatesFacade)) },

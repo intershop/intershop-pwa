@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { AddressMockData } from 'ish-core/utils/dev/address-mock-data';
@@ -17,7 +16,7 @@ describe('Address Form Default Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AddressFormDefaultComponent, MockComponent(InputComponent), MockComponent(SelectRegionComponent)],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule],
     }).compileComponents();
   });
 

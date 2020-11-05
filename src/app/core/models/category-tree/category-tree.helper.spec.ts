@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
-import * as using from 'jasmine-data-provider';
 
 import { CategoryData } from 'ish-core/models/category/category.interface';
 import { CategoryMapper } from 'ish-core/models/category/category.mapper';
@@ -431,33 +430,28 @@ describe('Category Tree Helper', () => {
   });
 
   describe('updateStrategy()', () => {
-    using(
-      [
-        { category1CL: 0, category2CL: 1, expected: 'new' },
-        { category1CL: 0, category2CL: 2, expected: 'new' },
-        { category1CL: 2, category2CL: 2, expected: 'new' },
-        { category1CL: 1, category2CL: 0, expected: 'old' },
-        { category1CL: 2, category2CL: 0, expected: 'old' },
-      ],
-      slice => {
-        it(`should prefer ${slice.expected} one when having completenessLevel ${slice.category1completenessLevel} vs. ${slice.category2completenessLevel}`, () => {
-          const category1 = {
-            uniqueId: 'A',
-            name: 'old',
-            completenessLevel: slice.category1CL,
-          } as Category;
-          const category2 = {
-            uniqueId: 'A',
-            name: 'new',
-            completenessLevel: slice.category2CL,
-          } as Category;
+    it.each([
+      ['new', 0, 1],
+      ['new', 0, 2],
+      ['new', 2, 2],
+      ['old', 1, 0],
+      ['old', 2, 0],
+    ])(`should prefer %s one when having completenessLevel %i vs. %i`, (expected, category1CL, category2CL) => {
+      const category1 = {
+        uniqueId: 'A',
+        name: 'old',
+        completenessLevel: category1CL,
+      } as Category;
+      const category2 = {
+        uniqueId: 'A',
+        name: 'new',
+        completenessLevel: category2CL,
+      } as Category;
 
-          const result = CategoryTreeHelper.updateStrategy(category1, category2);
+      const result = CategoryTreeHelper.updateStrategy(category1, category2);
 
-          expect(result.name).toEqual(slice.expected);
-        });
-      }
-    );
+      expect(result.name).toEqual(expected);
+    });
   });
 
   describe('subTree', () => {

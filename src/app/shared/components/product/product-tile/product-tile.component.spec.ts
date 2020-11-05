@@ -22,7 +22,6 @@ import { LazyProductAddToQuoteComponent } from '../../../../extensions/quoting/e
 import { IsTactonProductDirective } from '../../../../extensions/tacton/directives/is-tacton-product.directive';
 import { LazyTactonConfigureProductComponent } from '../../../../extensions/tacton/exports/lazy-tacton-configure-product/lazy-tacton-configure-product.component';
 import { LazyProductAddToWishlistComponent } from '../../../../extensions/wishlists/exports/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
-import { ProductAddToWishlistComponent } from '../../../../extensions/wishlists/shared/product-add-to-wishlist/product-add-to-wishlist.component';
 
 import { ProductTileComponent } from './product-tile.component';
 
@@ -41,7 +40,6 @@ describe('Product Tile Component', () => {
         MockComponent(LazyTactonConfigureProductComponent),
         MockComponent(ProductAddToBasketComponent),
         MockComponent(ProductAddToCompareComponent),
-        MockComponent(ProductAddToWishlistComponent),
         MockComponent(ProductImageComponent),
         MockComponent(ProductLabelComponent),
         MockComponent(ProductPriceComponent),

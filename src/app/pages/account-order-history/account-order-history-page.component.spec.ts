@@ -3,7 +3,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { OrderListComponent } from 'ish-shared/components/order/order-list/order-list.component';
 
 import { AccountOrderHistoryPageComponent } from './account-order-history-page.component';
@@ -17,7 +16,6 @@ describe('Account Order History Page Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         AccountOrderHistoryPageComponent,
-        MockComponent(LoadingComponent),
         MockComponent(OrderListComponent),
         MockDirective(ServerHtmlDirective),
       ],

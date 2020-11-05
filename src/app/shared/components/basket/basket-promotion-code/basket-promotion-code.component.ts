@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -21,9 +21,10 @@ import { whenTruthy } from 'ish-core/utils/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketPromotionCodeComponent implements OnInit, OnDestroy {
+  @Input() toast = true;
+
   basket$: Observable<BasketView>;
   promotionError$: Observable<HttpError>;
-
   codeInput: FormControl;
   isCollapsed = true;
   codeMaxLength = 128;
@@ -61,6 +62,8 @@ export class BasketPromotionCodeComponent implements OnInit, OnDestroy {
       this.lastEnteredPromoCode = this.codeInput.value;
     }
     this.checkoutFacade.addPromotionCodeToBasket(this.codeInput.value);
+    // prevent further form submit
+    return false;
   }
 
   ngOnDestroy() {

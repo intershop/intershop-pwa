@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -31,13 +30,9 @@ describe('Basket Promotion Component', () => {
         BasketPromotionComponent,
         MockComponent(PromotionDetailsComponent),
         MockComponent(PromotionRemoveComponent),
-        ServerHtmlDirective,
+        MockDirective(ServerHtmlDirective),
       ],
-      imports: [RouterTestingModule],
-      providers: [
-        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
-        { provide: AppFacade, useFactory: () => instance(appFacade) },
-      ],
+      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
   });
 
@@ -71,7 +66,7 @@ describe('Basket Promotion Component', () => {
 
     expect(element).toMatchInlineSnapshot(`
       <div>
-        <div class="promotion-title">MyPromotionTitle</div>
+        <div class="promotion-title" ng-reflect-ish-server-html="MyPromotionTitle"></div>
         <div class="promotion-details-and-remove-links">
           <ish-promotion-details></ish-promotion-details><ish-promotion-remove></ish-promotion-remove>
         </div>

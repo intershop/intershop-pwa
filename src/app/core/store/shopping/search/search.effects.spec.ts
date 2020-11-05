@@ -12,7 +12,6 @@ import {
   PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
 import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
-import { ApiService } from 'ish-core/services/api/api.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -70,7 +69,6 @@ describe('Search Effects', () => {
       ],
       providers: [
         provideStoreSnapshots(),
-        { provide: ApiService, useFactory: () => instance(mock(ApiService)) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 3 },

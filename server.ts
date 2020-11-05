@@ -7,7 +7,7 @@ import * as robots from 'express-robots-txt';
 import * as fs from 'fs';
 import * as proxy from 'express-http-proxy';
 // tslint:disable-next-line: ban-specific-imports
-import { AppServerModule, ICM_WEB_URL, HYBRID_MAPPING_TABLE, environment } from './src/main.server';
+import { AppServerModule, ICM_WEB_URL, HYBRID_MAPPING_TABLE, environment, APP_BASE_HREF } from './src/main.server';
 import { ngExpressEngine } from '@nguniversal/express-engine';
 
 const PORT = process.env.PORT || 4200;
@@ -31,7 +31,7 @@ global['navigator'] = win.navigator;
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app() {
-  const logging = !!process.env.LOGGING;
+  const logging = /on|1|true|yes/.test(process.env.LOGGING?.toLowerCase());
 
   const ICM_BASE_URL = process.env.ICM_BASE_URL || environment.icmBaseURL;
   if (!ICM_BASE_URL) {
@@ -130,21 +130,31 @@ export function app() {
     if (logging) {
       console.log(`SSR ${req.originalUrl}`);
     }
+    // find last baseHref parameter
+    const regex = /baseHref=([^;\?\#]*)/g;
+    let baseHref = '/';
+    for (let match: RegExpExecArray; (match = regex.exec(req.originalUrl)); ) {
+      baseHref = match[1].replace(/%25/g, '%').replace(/%2F/g, '/');
+    }
+
     res.render(
       'index',
       {
         req,
         res,
+        providers: [{ provide: APP_BASE_HREF, useValue: baseHref }],
       },
       (err, html) => {
         if (html) {
-          let newHtml: string;
+          let newHtml = html;
           if (process.env.PROXY_ICM && req.get('host')) {
-            newHtml = html.replace(
+            newHtml = newHtml.replace(
               new RegExp(ICM_BASE_URL, 'g'),
               process.env.PROXY_ICM.startsWith('http') ? process.env.PROXY_ICM : `${req.protocol}://${req.get('host')}`
             );
           }
+          newHtml = newHtml.replace(/<base href="[^>]*>/, `<base href="${baseHref}" />`);
+
           res.status(res.statusCode).send(newHtml || html);
         } else {
           res.status(500).send(err.message);
@@ -219,6 +229,11 @@ export function app() {
   if (process.env.PROXY_ICM || process.env.SSR_HYBRID) {
     console.log("making ICM available for all requests to '/INTERSHOP'");
     server.use('/INTERSHOP', icmProxy);
+  }
+
+  if (/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
+    const promBundle = require('express-prom-bundle');
+    server.use('*', promBundle({ buckets: [0.1, 0.3, 0.5, 0.7, 0.9, 1.1, 1.3, 1.5, 2, 3, 4, 5] }));
   }
 
   // All regular routes use the Universal engine

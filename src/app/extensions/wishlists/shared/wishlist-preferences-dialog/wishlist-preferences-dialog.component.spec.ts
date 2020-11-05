@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { NgbModalModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
@@ -33,7 +33,7 @@ describe('Wishlist Preferences Dialog Component', () => {
         MockComponent(InputComponent),
         WishlistPreferencesDialogComponent,
       ],
-      imports: [NgbModalModule, NgbPopoverModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [NgbPopoverModule, ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

@@ -5,7 +5,7 @@
       {{ 'checkout.payment.no_Selection.error' | translate }}
     </div>
 
-    <ish-error-message [error]="error"></ish-error-message>
+    <ish-error-message [error]="error" [toast]="false"></ish-error-message>
     <ish-basket-validation-results></ish-basket-validation-results>
 
     <div *ngIf="redirectStatus" role="alert" class="alert alert-danger">
@@ -32,12 +32,11 @@
               <p *ngIf="paymentMethod.description">{{ paymentMethod.description }}</p>
               <p *ngIf="paymentCostThresholdReached(paymentMethod); else displayPaymentCosts">
                 {{ 'checkout.payment.payment_cost_threshold.amount_reached' | translate }}
-                &nbsp;
                 {{ basket.totals.total | ishPrice }}
               </p>
               <ng-template #displayPaymentCosts>
                 <div *ngIf="!paymentMethod.isRestricted; else displayRestrictions">
-                  <p *ngIf="paymentMethod.paymentCosts && paymentMethod.paymentCosts.value">
+                  <p *ngIf="paymentMethod.paymentCosts">
                     {{ 'checkout.payment.method.charges.text' | translate }}&nbsp;{{
                       paymentMethod.paymentCosts | ishPrice
                     }}&nbsp;
@@ -181,7 +180,7 @@
   <div class="col-md-12 col-lg-4 order-summary">
     <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
 
-    <ish-basket-promotion-code></ish-basket-promotion-code>
+    <ish-basket-promotion-code [toast]="false"></ish-basket-promotion-code>
 
     <ish-basket-address-summary [basket]="basket"></ish-basket-address-summary>
     <ish-basket-items-summary [basket]="basket"></ish-basket-items-summary>
@@ -202,8 +201,7 @@
     <!-- Privacy policy link -->
     <span
       [ishServerHtml]="
-        'checkout.widget.security_privacy_policy.link'
-          | translate: { '0': 'route://page/page.privacyPolicy.pagelet2-Page' }
+        'checkout.widget.security_privacy_policy.link' | translate: { '0': 'page://page.privacyPolicy.pagelet2-Page' }
       "
     ></span>
   </div>

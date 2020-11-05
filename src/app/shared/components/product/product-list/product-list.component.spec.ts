@@ -6,8 +6,6 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
@@ -23,11 +21,7 @@ describe('Product List Component', () => {
   beforeEach(async () => {
     shoppingFacade = mock(ShoppingFacade);
     await TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(),
-        ShoppingStoreModule.forTesting('productListing'),
-        TranslateModule.forRoot(),
-      ],
+      imports: [TranslateModule.forRoot()],
       declarations: [MockComponent(LoadingComponent), MockComponent(ProductItemComponent), ProductListComponent],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();

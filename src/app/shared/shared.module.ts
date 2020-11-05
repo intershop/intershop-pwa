@@ -38,6 +38,7 @@ import { CMSVideoComponent } from './cms/components/cms-video/cms-video.componen
 import { ContentIncludeComponent } from './cms/components/content-include/content-include.component';
 import { ContentPageletComponent } from './cms/components/content-pagelet/content-pagelet.component';
 import { ContentSlotComponent } from './cms/components/content-slot/content-slot.component';
+import { ContentViewcontextComponent } from './cms/components/content-viewcontext/content-viewcontext.component';
 import { AddressComponent } from './components/address/address/address.component';
 import { BasketAddressSummaryComponent } from './components/basket/basket-address-summary/basket-address-summary.component';
 import { BasketCostSummaryComponent } from './components/basket/basket-cost-summary/basket-cost-summary.component';
@@ -59,6 +60,7 @@ import { InplaceEditComponent } from './components/common/inplace-edit/inplace-e
 import { LoadingComponent } from './components/common/loading/loading.component';
 import { ModalDialogLinkComponent } from './components/common/modal-dialog-link/modal-dialog-link.component';
 import { ModalDialogComponent } from './components/common/modal-dialog/modal-dialog.component';
+import { SuccessMessageComponent } from './components/common/success-message/success-message.component';
 import { FilterCheckboxComponent } from './components/filter/filter-checkbox/filter-checkbox.component';
 import { FilterCollapsableComponent } from './components/filter/filter-collapsable/filter-collapsable.component';
 import { FilterDropdownComponent } from './components/filter/filter-dropdown/filter-dropdown.component';
@@ -183,6 +185,7 @@ const exportedComponents = [
   BreadcrumbComponent,
   ContentIncludeComponent,
   ContentPageletComponent,
+  ContentViewcontextComponent,
   ErrorMessageComponent,
   FilterNavigationComponent,
   InfoBoxComponent,
@@ -213,6 +216,7 @@ const exportedComponents = [
   PromotionDetailsComponent,
   PromotionRemoveComponent,
   RecentlyViewedComponent,
+  SuccessMessageComponent,
 ];
 
 @NgModule({

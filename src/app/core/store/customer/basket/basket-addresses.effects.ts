@@ -53,7 +53,7 @@ export class BasketAddressesEffects {
           );
           // create address at basket for anonymous user
         } else {
-          return this.basketService.createBasketAddress('current', action.payload.address).pipe(
+          return this.basketService.createBasketAddress(action.payload.address).pipe(
             map(newAddress => createBasketAddressSuccess({ address: newAddress, scope: action.payload.scope })),
             mapErrorToAction(createCustomerAddressFail)
           );
@@ -127,7 +127,7 @@ export class BasketAddressesEffects {
           // create address at basket for anonymous user
         } else {
           return this.basketService
-            .updateBasketAddress('current', address)
+            .updateBasketAddress(address)
             .pipe(
               concatMapTo([updateCustomerAddressSuccess({ address }), loadBasket(), resetBasketErrors()]),
               mapErrorToAction(updateCustomerAddressFail)

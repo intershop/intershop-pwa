@@ -1,6 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 
@@ -14,7 +12,6 @@ describe('Payment Concardis Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [PaymentConcardisComponent],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 
 import * as injectionKeys from './configurations/injection-keys';
 import { SPECIAL_HTTP_ERROR_HANDLER } from './interceptors/icm-error-mapper.interceptor';
+import { createPaymentErrorHandler } from './utils/http-error/create-payment.error-handler';
 import { editPasswordErrorHandler } from './utils/http-error/edit-password.error-handler';
 import { LoginUserErrorHandler } from './utils/http-error/login-user.error-handler';
 import { requestReminderErrorHandler } from './utils/http-error/request-reminder.error-handler';
@@ -26,10 +27,12 @@ import { updatePasswordErrorHandler } from './utils/http-error/update-password.e
     { provide: injectionKeys.LARGE_BREAKPOINT_WIDTH, useValue: environment.largeBreakpointWidth },
     { provide: injectionKeys.EXTRALARGE_BREAKPOINT_WIDTH, useValue: environment.extralargeBreakpointWidth },
     { provide: injectionKeys.THEME, useValue: environment.theme },
+    { provide: injectionKeys.COOKIE_CONSENT_OPTIONS, useValue: environment.cookieConsentOptions },
     { provide: SPECIAL_HTTP_ERROR_HANDLER, useValue: updatePasswordErrorHandler, multi: true },
     { provide: SPECIAL_HTTP_ERROR_HANDLER, useClass: LoginUserErrorHandler, multi: true },
     { provide: SPECIAL_HTTP_ERROR_HANDLER, useValue: requestReminderErrorHandler, multi: true },
     { provide: SPECIAL_HTTP_ERROR_HANDLER, useValue: editPasswordErrorHandler, multi: true },
+    { provide: SPECIAL_HTTP_ERROR_HANDLER, useValue: createPaymentErrorHandler, multi: true },
   ],
 })
 export class ConfigurationModule {}

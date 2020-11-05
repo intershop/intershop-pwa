@@ -1,6 +1,5 @@
 import { Order } from 'ish-core/models/order/order.model';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
-import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import {
   createOrder,
@@ -46,7 +45,7 @@ describe('Orders Reducer', () => {
   describe('CreateOrder actions', () => {
     describe('CreateOrder action', () => {
       it('should set loading to true', () => {
-        const action = createOrder({ basketId: BasketMockData.getBasket().id });
+        const action = createOrder();
         const state = ordersReducer(initialState, action);
 
         expect(state.loading).toBeTrue();

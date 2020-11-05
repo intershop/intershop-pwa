@@ -8,13 +8,13 @@ import { cold, hot } from 'jest-marbles';
 import { of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
+import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
 import { OrderTemplate } from '../../models/order-template/order-template.model';
 import { OrderTemplateService } from '../../services/order-template/order-template.service';
@@ -79,7 +79,6 @@ describe('Order Template Effects', () => {
       imports: [
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user'),
-        FeatureToggleModule.forTesting('orderTemplates'),
         OrderTemplatesStoreModule.forTesting('orderTemplates'),
         RouterTestingModule.withRoutes([
           { path: 'account/order-templates/:orderTemplateName', component: DummyComponent },
@@ -511,6 +510,7 @@ describe('Order Template Effects', () => {
 
     it('should set the breadcrumb of the selected Order Template when on account url', done => {
       router.navigateByUrl('/account/order-templates/' + orderTemplates[0].id);
+      actions$ = of(routerTestNavigatedAction({}));
 
       effects.setOrderTemplateBreadcrumb$.subscribe(action => {
         expect(action.payload).toMatchInlineSnapshot(`

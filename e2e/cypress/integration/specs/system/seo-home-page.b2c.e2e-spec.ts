@@ -2,7 +2,7 @@ import { at, waitLoadingEnd } from '../../framework';
 import { HomePage } from '../../pages/home.page';
 import { NotFoundPage } from '../../pages/shopping/not-found.page';
 
-describe('Home Page Meta', () => {
+describe('Page Meta', () => {
   before(() => HomePage.navigateTo());
 
   it('should have all metadata set on home page', () => {
@@ -10,7 +10,7 @@ describe('Home Page Meta', () => {
       waitLoadingEnd(1000);
       page.metaData.check({
         title: 'inTRONICS Home | Intershop PWA',
-        url: /.*\/home/,
+        url: /.*\/home$/,
         description: 'inTRONICS home description ...',
       });
     });
@@ -24,7 +24,7 @@ describe('Home Page Meta', () => {
     at(NotFoundPage, page => {
       page.metaData.check({
         title: 'Error | Intershop PWA',
-        url: /.*\/error/,
+        url: /.*\/error$/,
         description: 'Intershop - Progressive Web App - Demo PWA',
       });
     });

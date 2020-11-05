@@ -4,7 +4,7 @@ import { tap } from 'rxjs/operators';
 
 export class UniversalLogInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    if (!process.env.LOGGING) {
+    if (!/on|1|true|yes/.test(process.env.LOGGING?.toLowerCase())) {
       return next.handle(req);
     }
     const start = new Date().getTime();

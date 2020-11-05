@@ -3,18 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { iif, of } from 'rxjs';
-import {
-  concatMap,
-  delay,
-  filter,
-  first,
-  map,
-  mergeMap,
-  mergeMapTo,
-  switchMap,
-  tap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { concatMap, filter, first, map, mergeMap, mergeMapTo, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
@@ -133,7 +122,7 @@ export class QuotingEffects {
           switchMap(basketId =>
             !basketId ? this.basketService.createBasket().pipe(map(basket => basket.id)) : of(basketId)
           ),
-          concatMap(basketId => this.quotingService.addQuoteToBasket(id, basketId)),
+          concatMap(() => this.quotingService.addQuoteToBasket(id)),
           mergeMapTo([updateBasket({ update: { calculated: true } }), addQuoteToBasketSuccess({ id })]),
           mapErrorToAction(loadQuotingFail)
         )
@@ -257,8 +246,6 @@ export class QuotingEffects {
                     state === 'New' ? 'quote.edit.unsubmitted.quote_request_details.text' : 'quote.quote_details.link',
                 },
               ]),
-              // short delay to override parent breadcrumb
-              delay(100),
               map(breadcrumbData => setBreadcrumbData({ breadcrumbData }))
             )
           )

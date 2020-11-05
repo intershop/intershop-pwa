@@ -17,7 +17,7 @@
 <div *ngIf="basket" class="row">
   <!-- Error Message-->
   <div class="col-md-12">
-    <ish-error-message [error]="error"></ish-error-message>
+    <ish-error-message [error]="error" [toast]="false"></ish-error-message>
     <ish-basket-validation-results></ish-basket-validation-results>
   </div>
 
@@ -95,7 +95,7 @@
           [errorMessages]="{ pattern: 'checkout.tac.error.tip' }"
         >
           <span
-            [ishServerHtml]="'checkout.tac.text' | translate: { '0': '/page/page.termsAndConditions.pagelet2-Page' }"
+            [ishServerHtml]="'checkout.tac.text' | translate: { '0': 'page://page.termsAndConditions.pagelet2-Page' }"
           ></span>
         </ish-checkbox>
       </form>

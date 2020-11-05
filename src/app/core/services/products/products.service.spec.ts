@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
@@ -66,7 +65,6 @@ describe('Products Service', () => {
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['configuration'], [ProductListingEffects]),
-        RouterTestingModule,
         ShoppingStoreModule.forTesting('productListing'),
       ],
       providers: [

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { debounceTime, filter, map, mapTo, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, filter, map, mapTo, mergeMap, switchMap, switchMapTo, withLatestFrom } from 'rxjs/operators';
 
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
@@ -218,17 +219,22 @@ export class WishlistEffects {
   );
 
   setWishlistBreadcrumb$ = createEffect(() =>
-    this.store.pipe(
-      ofUrl(/^\/account\/.*/),
-      select(getSelectedWishlistDetails),
-      whenTruthy(),
-      map(wishlist =>
-        setBreadcrumbData({
-          breadcrumbData: [
-            { key: 'account.wishlists.breadcrumb_link', link: '/account/wishlists' },
-            { text: wishlist.title },
-          ],
-        })
+    this.actions$.pipe(
+      ofType(routerNavigatedAction),
+      switchMapTo(
+        this.store.pipe(
+          ofUrl(/^\/account\/wishlists\/.*/),
+          select(getSelectedWishlistDetails),
+          whenTruthy(),
+          map(wishlist =>
+            setBreadcrumbData({
+              breadcrumbData: [
+                { key: 'account.wishlists.breadcrumb_link', link: '/account/wishlists' },
+                { text: wishlist.title },
+              ],
+            })
+          )
+        )
       )
     )
   );

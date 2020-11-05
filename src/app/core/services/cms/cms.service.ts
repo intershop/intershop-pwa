@@ -1,7 +1,9 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.model';
 import { ContentPageletEntryPointData } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.interface';
 import { ContentPageletEntryPointMapper } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.mapper';
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
@@ -48,6 +50,36 @@ export class CMSService {
       .pipe(
         map(x => this.contentPageletEntryPointMapper.fromData(x)),
         map(({ pageletEntryPoint, pagelets }) => ({ page: pageletEntryPoint, pagelets }))
+      );
+  }
+
+  /**
+   * Get the content for the given View Context with the given context (e.g. Product or Category).
+   * @param viewContextId  The view context ID.
+   * @param callParameters The call parameters to give the current context.
+   * @returns              The view contexts entrypoint content data.
+   */
+  getViewContextContent(
+    viewContextId: string,
+    callParameters: CallParameters
+  ): Observable<{ entrypoint: ContentPageletEntryPoint; pagelets: ContentPagelet[] }> {
+    if (!viewContextId) {
+      return throwError('getViewContextContent() called without a viewContextId');
+    }
+
+    let params = new HttpParams();
+    if (callParameters) {
+      params = Object.entries(callParameters).reduce((param, [key, value]) => param.set(key, value), new HttpParams());
+    }
+
+    return this.apiService
+      .get<ContentPageletEntryPointData>(`cms/viewcontexts/${viewContextId}/entrypoint`, {
+        params,
+        skipApiErrorHandling: true,
+      })
+      .pipe(
+        map(entrypoint => this.contentPageletEntryPointMapper.fromData(entrypoint)),
+        map(({ pageletEntryPoint, pagelets }) => ({ entrypoint: pageletEntryPoint, pagelets }))
       );
   }
 }

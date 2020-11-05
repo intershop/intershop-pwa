@@ -11,17 +11,18 @@ import { Observable, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { BasketFeedback } from 'ish-core/models/basket-feedback/basket-feedback.model';
+import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { Order } from 'ish-core/models/order/order.model';
 import { User } from 'ish-core/models/user/user.model';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { continueCheckoutWithIssues, loadBasket } from 'ish-core/store/customer/basket';
+import { continueCheckoutWithIssues, loadBasket, loadBasketSuccess } from 'ish-core/store/customer/basket';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
 import {
   createOrder,
@@ -64,7 +65,7 @@ describe('Orders Effects', () => {
       declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router']),
-        CustomerStoreModule.forTesting('user', 'orders'),
+        CustomerStoreModule.forTesting('user', 'orders', 'basket'),
         RouterTestingModule.withRoutes([
           {
             path: 'checkout',
@@ -76,7 +77,6 @@ describe('Orders Effects', () => {
           { path: 'account/orders/:orderId', component: DummyComponent },
           { path: '**', component: DummyComponent },
         ]),
-        ShoppingStoreModule.forTesting('products', 'categories'),
         TranslateModule.forRoot(),
       ],
       providers: [
@@ -93,10 +93,14 @@ describe('Orders Effects', () => {
   });
 
   describe('createOrder$', () => {
+    beforeEach(() => {
+      store$.dispatch(loadBasketSuccess({ basket: { id: 'BID' } as Basket }));
+    });
+
     it('should call the orderService for createOrder', done => {
       when(orderServiceMock.createOrder(anything(), anything())).thenReturn(of(undefined));
-      const payload = BasketMockData.getBasket().id;
-      const action = createOrder({ basketId: payload });
+      const payload = 'BID';
+      const action = createOrder();
       actions$ = of(action);
 
       effects.createOrder$.subscribe(() => {
@@ -111,7 +115,7 @@ describe('Orders Effects', () => {
       );
       const basketId = BasketMockData.getBasket().id;
       const newOrder = { id: basketId } as Order;
-      const action = createOrder({ basketId });
+      const action = createOrder();
       const completion = createOrderSuccess({ order: newOrder });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -123,8 +127,7 @@ describe('Orders Effects', () => {
       when(orderServiceMock.createOrder(anything(), anything())).thenReturn(
         throwError(makeHttpError({ message: 'invalid' }))
       );
-      const basketId = BasketMockData.getBasket().id;
-      const action = createOrder({ basketId });
+      const action = createOrder();
       const completion = createOrderFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -452,12 +455,17 @@ describe('Orders Effects', () => {
   });
 
   describe('setOrderBreadcrumb$', () => {
-    beforeEach(() => {
+    beforeEach(fakeAsync(() => {
       store$.dispatch(loadOrdersSuccess({ orders }));
+      router.navigateByUrl('/account/orders/' + orders[0].id);
+      tick(500);
       store$.dispatch(selectOrder({ orderId: orders[0].id }));
-    });
+    }));
 
     it('should set the breadcrumb of the selected order', done => {
+      // tslint:disable-next-line: no-any
+      actions$ = of(routerTestNavigatedAction({}));
+
       effects.setOrderBreadcrumb$.subscribe(action => {
         expect(action.payload).toMatchInlineSnapshot(`
           Object {

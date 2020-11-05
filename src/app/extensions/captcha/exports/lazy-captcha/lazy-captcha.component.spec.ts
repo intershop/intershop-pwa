@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { MockComponent } from 'ng-mocks';
-import { RECAPTCHA_V3_SITE_KEY, RecaptchaComponent } from 'ng-recaptcha';
+import { RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
 import { EMPTY, of } from 'rxjs';
 import { anyString, instance, mock, when } from 'ts-mockito';
 
@@ -25,8 +24,7 @@ describe('Lazy Captcha Component', () => {
     when(captchaFacade.captchaActive$(anyString())).thenReturn(of(true));
 
     await TestBed.configureTestingModule({
-      declarations: [LazyCaptchaComponent, MockComponent(RecaptchaComponent)],
-      imports: [CaptchaV2ComponentModule, CaptchaV3ComponentModule],
+      declarations: [LazyCaptchaComponent],
       providers: [{ provide: CaptchaFacade, useFactory: () => instance(captchaFacade) }],
     })
       .overrideModule(CaptchaV2ComponentModule, { set: { entryComponents: [CaptchaV2Component] } })

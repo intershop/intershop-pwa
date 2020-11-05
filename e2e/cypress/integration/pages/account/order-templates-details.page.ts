@@ -1,10 +1,12 @@
 import { waitLoadingEnd } from '../../framework';
+import { BreadcrumbModule } from '../breadcrumb.module';
 import { HeaderModule } from '../header.module';
 
 export class OrderTemplatesDetailsPage {
   readonly tag = 'ish-account-order-template-detail-page';
 
   readonly header = new HeaderModule();
+  readonly breadcrumb = new BreadcrumbModule();
 
   static navigateToOverviewPage() {
     cy.get('[href="/account/order-templates"]').first().click();

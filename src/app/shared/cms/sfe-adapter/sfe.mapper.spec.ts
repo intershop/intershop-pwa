@@ -1,5 +1,3 @@
-import * as using from 'jasmine-data-provider';
-
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import {
   ContentPageletView,
@@ -13,22 +11,26 @@ import { SfeMapper } from './sfe.mapper';
 
 describe('Sfe Mapper', () => {
   describe('tree mappings with getDomTree and reduceDomTree', () => {
-    using(domDataProvider, (slice, description) => {
-      it(`should extract the tree structure for DOM with ${description}`, () => {
-        const dom = createDocumentFromHTML(slice.html).querySelector('body').firstChild;
+    it.each(domDataProvider)(
+      `should extract the tree structure for DOM with %s`,
+      // tslint:disable-next-line:no-any
+      (_, data: { html: string; tree: any; reducedTree: any }) => {
+        const dom = createDocumentFromHTML(data.html).querySelector('body').firstChild;
         const tree = SfeMapper.getDomTree(dom);
 
-        expect(tree).toEqual(slice.tree);
-      });
-    });
+        expect(tree).toEqual(data.tree);
+      }
+    );
 
-    using(domDataProvider, (slice, description) => {
-      it(`should reduce the tree structure for ${description}`, () => {
-        const reducedTree = SfeMapper.reduceDomTree(slice.tree);
+    it.each(domDataProvider)(
+      `should reduce the tree structure for %s`,
+      // tslint:disable-next-line:no-any
+      (_, data: { html: string; tree: any; reducedTree: any }) => {
+        const reducedTree = SfeMapper.reduceDomTree(data.tree);
 
-        expect(reducedTree).toEqual(slice.reducedTree);
-      });
-    });
+        expect(reducedTree).toEqual(data.reducedTree);
+      }
+    );
 
     it('should create reduced tree for complex DOM', () => {
       const dom = createDocumentFromHTML(htmlComplex).querySelector('body').firstChild;

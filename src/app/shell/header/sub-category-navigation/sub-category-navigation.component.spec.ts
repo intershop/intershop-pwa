@@ -8,7 +8,6 @@ import { instance, mock, when } from 'ts-mockito';
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { NavigationCategory } from 'ish-core/models/navigation-category/navigation-category.model';
-import { CategoryRoutePipe } from 'ish-core/routing/category/category-route.pipe';
 
 import { SubCategoryNavigationComponent } from './sub-category-navigation.component';
 
@@ -37,7 +36,7 @@ describe('Sub Category Navigation Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [CategoryRoutePipe, MockComponent(FaIconComponent), SubCategoryNavigationComponent],
+      declarations: [MockComponent(FaIconComponent), SubCategoryNavigationComponent],
       providers: [
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 2 },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },

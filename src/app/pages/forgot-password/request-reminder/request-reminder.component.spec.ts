@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
@@ -10,7 +9,6 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { RequestReminderFormComponent } from '../request-reminder-form/request-reminder-form.component';
-import { UpdatePasswordFormComponent } from '../update-password-form/update-password-form.component';
 
 import { RequestReminderComponent } from './request-reminder.component';
 
@@ -25,11 +23,10 @@ describe('Request Reminder Component', () => {
         MockComponent(ErrorMessageComponent),
         MockComponent(LoadingComponent),
         MockComponent(RequestReminderFormComponent),
-        MockComponent(UpdatePasswordFormComponent),
         MockDirective(ServerHtmlDirective),
         RequestReminderComponent,
       ],
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     }).compileComponents();
   });

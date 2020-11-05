@@ -11,14 +11,17 @@ import { includesReducer } from './includes/includes.reducer';
 import { pageletsReducer } from './pagelets/pagelets.reducer';
 import { PagesEffects } from './pages/pages.effects';
 import { pagesReducer } from './pages/pages.reducer';
+import { ViewcontextsEffects } from './viewcontexts/viewcontexts.effects';
+import { viewcontextsReducer } from './viewcontexts/viewcontexts.reducer';
 
 const contentReducers: ActionReducerMap<ContentState> = {
   includes: includesReducer,
   pagelets: pageletsReducer,
   pages: pagesReducer,
+  viewcontexts: viewcontextsReducer,
 };
 
-const contentEffects = [IncludesEffects, PagesEffects];
+const contentEffects = [IncludesEffects, PagesEffects, ViewcontextsEffects];
 
 const metaReducers = [resetOnLogoutMeta];
 

@@ -3,6 +3,7 @@ name: DemoServerUp
 on:
   pull_request:
     paths-ignore:
+      - '**.md'
       - 'docs/**'
 
 env:
@@ -51,11 +52,9 @@ jobs:
       #     workdir: nginx
 
       - name: Set Environment
-        uses: allenevans/set-env@master
-        with:
-          overwrite: true
-          DOCKER_IMAGE_UNIVERSAL: ${{ steps.universal.outputs.digest }}
-          # DOCKER_IMAGE_NGINX: ${{ steps.nginx.outputs.digest }}
+        run: |
+          echo "DOCKER_IMAGE_UNIVERSAL=${{ steps.universal.outputs.digest }}"  >> $GITHUB_ENV
+          echo "DOCKER_IMAGE_NGINX=${{ steps.nginx.outputs.digest }}" >> $GITHUB_ENV
 
       - name: Login to Azure
         run: az login --service-principal --username ${{ secrets.AZURE_SP_USERNAME }} --password ${{ secrets.AZURE_SP_PASSWORD }} --tenant ${{ secrets.AZURE_SP_TENANT }}

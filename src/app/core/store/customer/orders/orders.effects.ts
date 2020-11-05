@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
+import { isEqual } from 'lodash-es';
 import { race } from 'rxjs';
 import {
   concatMap,
-  debounceTime,
+  distinctUntilChanged,
   filter,
   map,
   mapTo,
   mergeMap,
   switchMap,
+  switchMapTo,
   take,
   tap,
   withLatestFrom,
@@ -20,7 +23,7 @@ import {
 import { OrderService } from 'ish-core/services/order/order.service';
 import { ofUrl, selectQueryParams, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
-import { continueCheckoutWithIssues, loadBasket } from 'ish-core/store/customer/basket';
+import { continueCheckoutWithIssues, getCurrentBasketId, loadBasket } from 'ish-core/store/customer/basket';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
@@ -57,8 +60,8 @@ export class OrdersEffects {
   createOrder$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createOrder),
-      mapToPayloadProperty('basketId'),
-      mergeMap(basketId =>
+      withLatestFrom(this.store.select(getCurrentBasketId)),
+      mergeMap(([, basketId]) =>
         this.orderService.createOrder(basketId, true).pipe(
           map(order => createOrderSuccess({ order })),
           mapErrorToAction(createOrderFail)
@@ -177,7 +180,9 @@ export class OrdersEffects {
       select(selectRouteParam('orderId')),
       withLatestFrom(this.store.pipe(select(getSelectedOrderId))),
       filter(([fromAction, selectedOrderId]) => fromAction && fromAction !== selectedOrderId),
-      map(([orderId]) => selectOrder({ orderId }))
+      map(([orderId]) => orderId),
+      distinctUntilChanged(),
+      map(orderId => selectOrder({ orderId }))
     )
   );
 
@@ -190,6 +195,7 @@ export class OrdersEffects {
       ofUrl(/^\/checkout\/(receipt|payment)/),
       select(selectQueryParams),
       filter(({ redirect, orderId }) => redirect && orderId),
+      distinctUntilChanged(isEqual),
       switchMap(queryParams =>
         // SelectOrderAfterRedirect will be triggered either after a user is logged in or after the paid order is loaded (anonymous user)
         race([
@@ -236,18 +242,22 @@ export class OrdersEffects {
   );
 
   setOrderBreadcrumb$ = createEffect(() =>
-    this.store.pipe(
-      select(getSelectedOrder),
-      whenTruthy(),
-      debounceTime(0),
-      withLatestFrom(this.translateService.get('account.orderdetails.breadcrumb')),
-      map(([order, x]) =>
-        setBreadcrumbData({
-          breadcrumbData: [
-            { key: 'account.order_history.link', link: '/account/orders' },
-            { text: `${x} - ${order.documentNo}` },
-          ],
-        })
+    this.actions$.pipe(
+      ofType(routerNavigatedAction),
+      switchMapTo(
+        this.store.pipe(
+          ofUrl(/^\/account\/orders\/.*/),
+          select(getSelectedOrder),
+          whenTruthy(),
+          map(order =>
+            setBreadcrumbData({
+              breadcrumbData: [
+                { key: 'account.order_history.link', link: '/account/orders' },
+                { text: `${this.translateService.instant('account.orderdetails.breadcrumb')} - ${order.documentNo}` },
+              ],
+            })
+          )
+        )
       )
     )
   );

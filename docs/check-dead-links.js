@@ -57,7 +57,7 @@ glob('**/*.md')
       .filter(file => !file.includes('node_modules'))
       .forEach(file => {
         const content = fs.readFileSync(file, { encoding: 'utf-8' });
-        const match = content.match(/\[.*?\](\(|:\s+)[^\s]*\)?/g);
+        const match = content.match(/\[.*?\](\(|:\ +)[^\s]*\)?/g);
         if (match) {
           match.forEach(link => {
             const linkTo = /\](\(<?|:\s+)(.*?)(>?\)|$|#)/.exec(link)[2];
@@ -98,6 +98,7 @@ glob('**/*.md')
           !link.includes('tacton.com') &&
           !link.includes('repository.intershop.de') &&
           !link.includes('support.intershop.com') &&
+          !link.includes('docs.intershop.com') &&
           !link.includes('azurewebsites.net') &&
           !link.includes('github.com') &&
           !link.includes('github.com/intershop/intershop-pwa/commit')
@@ -108,7 +109,7 @@ glob('**/*.md')
       filtered,
       async link => {
         const isError = await checkExternalLinkError(link);
-        if (isError) throw new Error('found dead external link to', link);
+        if (isError) throw new Error('found dead external link');
         await sleep(1000);
       },
       err => {

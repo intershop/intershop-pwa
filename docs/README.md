@@ -23,6 +23,7 @@ kb_sync_latest_only
 - [Concept - Localization](./concepts/localization.md)
 - [Concept - SEO](./concepts/search-engine-optimization.md)
 - [Guide - Forms](./guides/forms.md)
+- [Concept - Deployment Scenarios for Angular Applications](./concepts/deployment-angular.md)
 
 ### Developing
 
@@ -43,6 +44,7 @@ kb_sync_latest_only
 - [Concept - Progressive Web App](./concepts/progressive-web-app.md)
 - [Guide - Customizations](./guides/customizations.md)
   - [Guide - Multiple Themes](./guides/multiple-themes.md)
+- [Guide - Cookie Consent](./guides/cookie-consent.md)
 - [Guide - Migration](./guides/migrations.md)
 - [Concept - URL Rewriting](./concepts/url-rewriting.md)
 - [Guide - Mocking REST API Calls](./guides/mocking-rest-calls.md)
@@ -55,8 +57,10 @@ kb_sync_latest_only
 
 ### Setup
 
-- [Concept - Deployment Scenarios](./concepts/deployment-scenarios.md)
-  - [Guide - SSR Parameters](./guides/ssr-startup.md)
+- [Concept - Building Blocks of the Intershop PWA](./concepts/pwa-building-blocks.md)
+  - [Guide - Building and Running Server-Side Rendering](./guides/ssr-startup.md)
+  - [Guide - Building and Running nginx Docker Image](./guides/nginx-startup.md)
+- [Concept - Multi-Site Handling](./concepts/multi-site-handling.md)
 - [Concept - Hybrid Approach](./concepts/hybrid-approach.md)
   - [Guide - Hybrid Approach and ICM URL Rewriting](./guides/hybrid-approach-icm-url-rewriting.md)
 - [Concept - Logging](./concepts/logging.md)
@@ -67,3 +71,4 @@ kb_sync_latest_only
 - [Guide - Google Tag Manager](./guides/google-tag-manager.md)
 - [Guide - Client-Side Error Monitoring with Sentry](./guides/sentry-error-monitoring.md)
 - [Guide - Extended Product Configurations with Tacton](./guides/tacton-product-configuration.md)
+- [Guide - Monitoring with Prometheus](./guides/prometheus-monitoring.md)

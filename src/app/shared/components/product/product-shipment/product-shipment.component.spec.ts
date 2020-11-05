@@ -1,7 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import * as using from 'jasmine-data-provider';
 import { MockComponent } from 'ng-mocks';
 
 import { Product } from 'ish-core/models/product/product.model';
@@ -19,7 +17,7 @@ describe('Product Shipment Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgbModalModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       declarations: [
         MockComponent(ContentIncludeComponent),
         MockComponent(ModalDialogLinkComponent),
@@ -57,40 +55,26 @@ describe('Product Shipment Component', () => {
   });
 
   describe('text rendering', () => {
-    function dataProvider() {
-      return [
-        {
-          readyForShipmentMin: 0,
-          readyForShipmentMax: 1,
-          localeKey: 'product.ready_for_shipment.within24',
-          localeValue: 'Usually ships within 24 hours',
-          expectedText: 'Usually ships within 24 hours',
-        },
-        {
-          readyForShipmentMin: 0,
-          readyForShipmentMax: 3,
-          localeKey: 'product.ready_for_shipment.within',
-          localeValue: 'Usually ships within {{0}} days.',
-          expectedText: 'Usually ships within 3 days.',
-        },
-        {
-          readyForShipmentMin: 3,
-          readyForShipmentMax: 7,
-          localeKey: 'product.ready_for_shipment.minmax',
-          localeValue: 'Usually ships in {{0}} to {{1}} days.',
-          expectedText: 'Usually ships in 3 to 7 days.',
-        },
-      ];
-    }
-    using(dataProvider, dataSlice => {
-      it(`should use "${dataSlice.localeKey}" localization text when readyForShipmentMin = ${dataSlice.readyForShipmentMin} and readyForShipmentMax = ${dataSlice.readyForShipmentMax}`, () => {
-        product.readyForShipmentMin = dataSlice.readyForShipmentMin;
-        product.readyForShipmentMax = dataSlice.readyForShipmentMax;
-        translate.set(dataSlice.localeKey, dataSlice.localeValue);
+    it.each([
+      ['product.ready_for_shipment.within24', 0, 1, 'Usually ships within 24 hours', 'Usually ships within 24 hours'],
+      ['product.ready_for_shipment.within', 0, 3, 'Usually ships within {{0}} days.', 'Usually ships within 3 days.'],
+      [
+        'product.ready_for_shipment.minmax',
+        3,
+        7,
+        'Usually ships in {{0}} to {{1}} days.',
+        'Usually ships in 3 to 7 days.',
+      ],
+    ])(
+      `should use "%s" localization text when readyForShipmentMin = %i and readyForShipmentMax = %i`,
+      (localeKey, readyForShipmentMin, readyForShipmentMax, localeValue, expectedText) => {
+        product.readyForShipmentMin = readyForShipmentMin;
+        product.readyForShipmentMax = readyForShipmentMax;
+        translate.set(localeKey, localeValue);
         component.isShipmentInformationAvailable = true;
         fixture.detectChanges();
-        expect(element.querySelector('.ready-for-shipment').textContent).toContain(dataSlice.expectedText);
-      });
-    });
+        expect(element.querySelector('.ready-for-shipment').textContent).toContain(expectedText);
+      }
+    );
   });
 });

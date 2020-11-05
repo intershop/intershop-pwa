@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -34,7 +33,7 @@ describe('User Edit Profile Page Component', () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(LoadingComponent),
         MockComponent(UserProfileFormComponent),
@@ -57,6 +56,7 @@ describe('User Edit Profile Page Component', () => {
         title: [component.user.title, [Validators.required]],
         firstName: [component.user.firstName, [Validators.required]],
         lastName: [component.user.lastName, [Validators.required]],
+        active: [true],
         preferredLanguage: [component.user.preferredLanguage, [Validators.required]],
       }),
     });

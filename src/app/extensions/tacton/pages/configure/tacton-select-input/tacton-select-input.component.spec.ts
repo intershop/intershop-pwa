@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { anything, capture, instance, mock, verify } from 'ts-mockito';
 
 import { TactonFacade } from '../../../facades/tacton.facade';
@@ -17,7 +16,7 @@ describe('Tacton Select Input Component', () => {
   beforeEach(async () => {
     tactonFacade = mock(TactonFacade);
     await TestBed.configureTestingModule({
-      declarations: [FaIconComponent, TactonSelectInputComponent],
+      declarations: [TactonSelectInputComponent],
       providers: [{ provide: TactonFacade, useFactory: () => instance(tactonFacade) }],
     }).compileComponents();
   });

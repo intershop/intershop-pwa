@@ -1,12 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
+import { IdentityProviderCapabilityDirective } from 'ish-core/directives/identity-provider-capability.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { IdentityProviderFactory } from 'ish-core/identity-provider/identity-provider.factory';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
-import { DatePipe } from 'ish-core/pipes/date.pipe';
 
 import { AccountProfileComponent } from './account-profile.component';
 
@@ -22,11 +23,19 @@ describe('Account Profile Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         AccountProfileComponent,
+        IdentityProviderCapabilityDirective,
         MockComponent(FaIconComponent),
         MockDirective(ServerHtmlDirective),
-        MockPipe(DatePipe),
       ],
       imports: [TranslateModule.forRoot()],
+      providers: [
+        {
+          provide: IdentityProviderFactory,
+          useValue: {
+            getInstance: () => ({ getCapabilities: () => ({ editEmail: true, editPassword: true }) }),
+          } as IdentityProviderFactory,
+        },
+      ],
     }).compileComponents();
   });
 

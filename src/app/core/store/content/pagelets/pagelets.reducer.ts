@@ -4,6 +4,7 @@ import { createReducer, on } from '@ngrx/store';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { loadContentIncludeSuccess } from 'ish-core/store/content/includes/includes.actions';
 import { loadContentPageSuccess } from 'ish-core/store/content/pages/pages.actions';
+import { loadViewContextEntrypointSuccess } from 'ish-core/store/content/viewcontexts/viewcontexts.actions';
 
 export interface PageletsState extends EntityState<ContentPagelet> {}
 
@@ -17,6 +18,9 @@ export const pageletsReducer = createReducer(
     pageletsAdapter.upsertMany(action.payload.pagelets, state)
   ),
   on(loadContentPageSuccess, (state: PageletsState, action) =>
+    pageletsAdapter.upsertMany(action.payload.pagelets, state)
+  ),
+  on(loadViewContextEntrypointSuccess, (state: PageletsState, action) =>
     pageletsAdapter.upsertMany(action.payload.pagelets, state)
   )
 );

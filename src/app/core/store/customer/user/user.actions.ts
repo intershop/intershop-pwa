@@ -13,10 +13,6 @@ export const loginUserFail = createAction('[User API] Login User Failed', httpEr
 
 export const loginUserSuccess = createAction('[User API] Login User Success', payload<CustomerUserType>());
 
-export const setAPIToken = createAction('[User Internal] Set API Token', payload<{ apiToken: string }>());
-
-export const resetAPIToken = createAction('[User Internal] Reset API Token');
-
 export const loadCompanyUser = createAction('[User Internal] Load Company User');
 
 export const loadCompanyUserFail = createAction('[User API] Load Company User Fail', httpError());
@@ -64,7 +60,7 @@ export const updateCustomerFail = createAction('[User API] Update Customer Faile
 
 export const userErrorReset = createAction('[User Internal] Reset User Error');
 
-export const loadUserByAPIToken = createAction('[User] Load User by API Token', payload<{ apiToken: string }>());
+export const loadUserByAPIToken = createAction('[User] Load User by API Token');
 
 export const setPGID = createAction('[User Internal] Set PGID', payload<{ pgid: string }>());
 

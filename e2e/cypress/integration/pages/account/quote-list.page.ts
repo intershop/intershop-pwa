@@ -1,9 +1,11 @@
+import { BreadcrumbModule } from '../breadcrumb.module';
 import { HeaderModule } from '../header.module';
 
 export class QuoteListPage {
   readonly tag = 'ish-quote-list';
 
   readonly header = new HeaderModule();
+  readonly breadcrumb = new BreadcrumbModule();
 
   static navigateTo() {
     cy.visit('/account/quotes');

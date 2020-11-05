@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 
 import { CoreModule } from 'ish-core/core.module';
 import { AuthGuard } from 'ish-core/guards/auth.guard';
-import { LogoutGuard } from 'ish-core/guards/logout.guard';
+import { IdentityProviderLogoutGuard } from 'ish-core/guards/identity-provider-logout.guard';
 import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
 import { AppComponent } from './app.component';
@@ -25,7 +25,7 @@ import { LoginComponent } from './login.component';
       },
       {
         path: 'logout',
-        canActivate: [LogoutGuard],
+        canActivate: [IdentityProviderLogoutGuard],
         component: LoginComponent,
       },
       {

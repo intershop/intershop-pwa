@@ -24,51 +24,43 @@ describe('B2b Role Mapper', () => {
       const data = [
         {
           roleID: 'APP_B2B_BUYER',
-          roleDisplayName: 'Einkäufer',
+          roleDisplayName: 'Buyer',
+          roleDescription: 'The buyer manages own requisitions, order templates, quotes, orders and subscriptions.',
           fixed: true,
           permissions: [
-            { permissionDisplayName: 'Kostenobjekt zu Warenkorb zuordnen' },
-            { permissionDisplayName: 'Kostenobjekt zu Warenkorbposition zuordnen' },
-            { permissionDisplayName: 'Preisangebote erstellen' },
-            { permissionDisplayName: 'Einkäufe tätigen' },
-            { permissionDisplayName: 'Kostenobjekte anzeigen' },
+            { permissionDisplayName: 'Assign a cost object to a basket' },
+            { permissionDisplayName: 'Assign a cost object to a basket line item' },
+            { permissionDisplayName: 'Create Quotes' },
           ],
         },
         {
           roleID: 'APP_B2B_APPROVER',
-          roleDisplayName: 'Genehmiger',
+          roleDisplayName: 'Approver',
           fixed: false,
-          permissions: [
-            { permissionDisplayName: 'Kostenobjekt zu Warenkorb zuordnen' },
-            { permissionDisplayName: 'Kostenobjekt zu Warenkorbposition zuordnen' },
-            { permissionDisplayName: 'Preisangebote erstellen' },
-            { permissionDisplayName: 'Offene Bestellungen genehmigen' },
-            { permissionDisplayName: 'Einkäufe tätigen' },
-            { permissionDisplayName: 'Kostenobjekte anzeigen' },
-          ],
+          permissions: [{ permissionDisplayName: 'Approve Pending Orders' }],
         },
       ] as B2bRoleData[];
       const mapped = b2bRoleMapper.fromData(data);
       expect(mapped).toMatchInlineSnapshot(`
         Array [
           Object {
-            "displayName": "Einkäufer",
+            "description": "The buyer manages own requisitions, order templates, quotes, orders and subscriptions.",
+            "displayName": "Buyer",
             "fixed": true,
             "id": "APP_B2B_BUYER",
             "permissionDisplayNames": Array [
-              "Kostenobjekt zu Warenkorb zuordnen",
-              "Kostenobjekt zu Warenkorbposition zuordnen",
-              "Preisangebote erstellen",
-              "Einkäufe tätigen",
-              "Kostenobjekte anzeigen",
+              "Assign a cost object to a basket",
+              "Assign a cost object to a basket line item",
+              "Create Quotes",
             ],
           },
           Object {
-            "displayName": "Genehmiger",
+            "description": undefined,
+            "displayName": "Approver",
             "fixed": false,
             "id": "APP_B2B_APPROVER",
             "permissionDisplayNames": Array [
-              "Offene Bestellungen genehmigen",
+              "Approve Pending Orders",
             ],
           },
         ]

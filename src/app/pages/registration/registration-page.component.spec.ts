@@ -2,7 +2,6 @@ import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -23,10 +22,7 @@ describe('Registration Page Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DummyComponent, MockComponent(RegistrationFormComponent), RegistrationPageComponent],
-      imports: [
-        RouterTestingModule.withRoutes([{ path: 'home', component: DummyComponent }]),
-        TranslateModule.forRoot(),
-      ],
+      imports: [RouterTestingModule.withRoutes([{ path: 'home', component: DummyComponent }])],
       providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     }).compileComponents();
 

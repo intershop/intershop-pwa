@@ -8,10 +8,7 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { AddressFormContainerComponent } from 'ish-shared/address-forms/components/address-form-container/address-form-container.component';
 import { AddressFormFactory } from 'ish-shared/address-forms/components/address-form/address-form.factory';
 import { AddressFormFactoryProvider } from 'ish-shared/address-forms/configurations/address-form-factory.provider';
-import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
-import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
 import { TacCheckboxComponent } from 'ish-shared/forms/components/tac-checkbox/tac-checkbox.component';
 
 import { LazyCaptchaComponent } from '../../../extensions/captcha/exports/lazy-captcha/lazy-captcha.component';
@@ -36,11 +33,8 @@ describe('Registration Form Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         MockComponent(AddressFormContainerComponent),
-        MockComponent(CheckboxComponent),
-        MockComponent(ContentIncludeComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(LazyCaptchaComponent),
-        MockComponent(ModalDialogComponent),
         MockComponent(RegistrationCompanyFormComponent),
         MockComponent(RegistrationCredentialsFormComponent),
         MockDirective(TacCheckboxComponent),

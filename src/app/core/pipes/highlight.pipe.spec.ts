@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import * as using from 'jasmine-data-provider';
 
 import { HighlightPipe } from './highlight.pipe';
 
@@ -17,26 +16,16 @@ describe('Highlight Pipe', () => {
     expect(pipe).toBeTruthy();
   });
 
-  using(
+  it.each([
+    [undefined, undefined, undefined],
+    ['Lorem ipsum dolor sit amet', undefined, 'Lorem ipsum dolor sit amet'],
+    ['Lorem ipsum dolor sit amet', 'ipsum', 'Lorem <span class="searchTerm">ipsum</span> dolor sit amet'],
     [
-      { text: undefined, expected: undefined },
-      { text: 'Lorem ipsum dolor sit amet', search: undefined, expected: 'Lorem ipsum dolor sit amet' },
-      {
-        text: 'Lorem ipsum dolor sit amet',
-        search: 'ipsum',
-        expected: 'Lorem <span class="searchTerm">ipsum</span> dolor sit amet',
-      },
-      {
-        text: 'Lorem ipsum dolor sit amet',
-        search: 'Lorem ipsum dolor sit amet',
-        expected:
-          '<span class="searchTerm">Lorem</span> <span class="searchTerm">ipsum</span> <span class="searchTerm">dolor</span> <span class="searchTerm">sit</span> <span class="searchTerm">amet</span>',
-      },
+      'Lorem ipsum dolor sit amet',
+      'Lorem ipsum dolor sit amet',
+      '<span class="searchTerm">Lorem</span> <span class="searchTerm">ipsum</span> <span class="searchTerm">dolor</span> <span class="searchTerm">sit</span> <span class="searchTerm">amet</span>',
     ],
-    ({ text, search, expected }) => {
-      it(`should transform "${text}" with "${search}" to "${expected}"`, () => {
-        expect(pipe.transform(text, search)).toEqual(expected);
-      });
-    }
-  );
+  ])(`should transform '%s' with '%s' to '%s'`, (text, search, expected) => {
+    expect(pipe.transform(text, search)).toEqual(expected);
+  });
 });

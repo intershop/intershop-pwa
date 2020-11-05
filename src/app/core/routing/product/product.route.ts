@@ -14,14 +14,16 @@ function generateProductSlug(product: ProductView) {
     return;
   }
 
-  let slug = product.name.replace(/ /g, '-').replace(/-+$/g, '');
+  let slug = product.name.replace(/[ \(\)]+/g, '-').replace(/-+$/g, '');
 
   if (ProductHelper.isVariationProduct(product) && product.variableVariationAttributes) {
     slug += '-';
     slug += product.variableVariationAttributes
       .map(att => att.value)
       .filter(val => typeof val === 'string' || typeof val === 'boolean' || typeof val === 'number')
-      .join('-');
+      .map(val => val.toString().replace(/[ \(\)]+/g, '-'))
+      .join('-')
+      .replace(/-+/g, '-');
   }
 
   return slug;

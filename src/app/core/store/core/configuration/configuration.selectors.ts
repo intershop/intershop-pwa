@@ -1,6 +1,9 @@
-import { createSelector } from '@ngrx/store';
+import { createSelector, createSelectorFactory, defaultMemoize } from '@ngrx/store';
+import { isEqual } from 'lodash-es';
 
 import { getCoreState } from 'ish-core/store/core/core-store';
+
+import { ConfigurationState } from './configuration.reducer';
 
 export const getConfigurationState = createSelector(getCoreState, state => state.configuration);
 
@@ -37,8 +40,16 @@ export const getAvailableLocales = createSelector(getConfigurationState, state =
 /**
  * selects the current locale if set. If not returns the first available locale
  */
-export const getCurrentLocale = createSelector(getConfigurationState, state =>
-  state.lang ? state.locales.find(l => l.lang === state.lang) : state.locales[0]
+export const getCurrentLocale = createSelector(
+  getConfigurationState,
+  state => state.locales.find(l => l.lang === state.lang) || state.locales[0]
 );
 
 export const getDeviceType = createSelector(getConfigurationState, state => state._deviceType);
+
+export const getIdentityProvider = createSelectorFactory(projector => defaultMemoize(projector, undefined, isEqual))(
+  getConfigurationState,
+  (state: ConfigurationState) =>
+    state.identityProvider &&
+    (state.identityProvider === 'ICM' ? { type: 'ICM' } : state.identityProviders?.[state.identityProvider])
+);

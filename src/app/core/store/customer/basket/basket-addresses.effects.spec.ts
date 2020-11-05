@@ -8,7 +8,6 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { AddressService } from 'ish-core/services/address/address.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { OrderService } from 'ish-core/services/order/order.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import {
   deleteCustomerAddressFail,
@@ -36,14 +35,12 @@ import {
 describe('Basket Addresses Effects', () => {
   let actions$: Observable<Action>;
   let basketServiceMock: BasketService;
-  let orderServiceMock: OrderService;
   let addressServiceMock: AddressService;
   let effects: BasketAddressesEffects;
   let store$: Store;
 
   beforeEach(() => {
     basketServiceMock = mock(BasketService);
-    orderServiceMock = mock(OrderService);
     addressServiceMock = mock(AddressService);
 
     TestBed.configureTestingModule({
@@ -52,7 +49,6 @@ describe('Basket Addresses Effects', () => {
         BasketAddressesEffects,
         provideMockActions(() => actions$),
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
-        { provide: OrderService, useFactory: () => instance(orderServiceMock) },
         { provide: AddressService, useFactory: () => instance(addressServiceMock) },
       ],
     });
@@ -97,7 +93,7 @@ describe('Basket Addresses Effects', () => {
 
   describe('createAddressForBasket$ for an anonymous user', () => {
     beforeEach(() => {
-      when(basketServiceMock.createBasketAddress('current', anything())).thenReturn(of(BasketMockData.getAddress()));
+      when(basketServiceMock.createBasketAddress(anything())).thenReturn(of(BasketMockData.getAddress()));
     });
     it('should call the basketService if user is not logged in', done => {
       const address = BasketMockData.getAddress();
@@ -105,7 +101,7 @@ describe('Basket Addresses Effects', () => {
       actions$ = of(action);
 
       effects.createAddressForBasket$.subscribe(() => {
-        verify(basketServiceMock.createBasketAddress('current', anything())).once();
+        verify(basketServiceMock.createBasketAddress(anything())).once();
         done();
       });
     });
@@ -240,7 +236,7 @@ describe('Basket Addresses Effects', () => {
 
   describe('updateBasketAddress$ for anonymous user', () => {
     beforeEach(() => {
-      when(basketServiceMock.updateBasketAddress(anyString(), anything())).thenReturn(of(BasketMockData.getAddress()));
+      when(basketServiceMock.updateBasketAddress(anything())).thenReturn(of(BasketMockData.getAddress()));
     });
 
     it('should call the basketService for updateBasketAddress', done => {
@@ -249,7 +245,7 @@ describe('Basket Addresses Effects', () => {
       actions$ = of(action);
 
       effects.updateBasketAddress$.subscribe(() => {
-        verify(basketServiceMock.updateBasketAddress('current', anything())).once();
+        verify(basketServiceMock.updateBasketAddress(anything())).once();
         done();
       });
     });
@@ -268,7 +264,7 @@ describe('Basket Addresses Effects', () => {
 
     it('should map invalid request to action of type UpdateCustomerAddressFail', () => {
       const address = BasketMockData.getAddress();
-      when(basketServiceMock.updateBasketAddress(anyString(), anything())).thenReturn(
+      when(basketServiceMock.updateBasketAddress(anything())).thenReturn(
         throwError(makeHttpError({ message: 'invalid' }))
       );
 

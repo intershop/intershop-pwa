@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { TactonProductConfigurationBomItem } from '../../../models/tacton-product-configuration/tacton-product-configuration.model';
@@ -13,7 +12,7 @@ describe('Tacton Bom Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       declarations: [TactonBomComponent],
     }).compileComponents();
   });

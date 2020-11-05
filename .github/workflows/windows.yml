@@ -5,6 +5,7 @@ on:
     branches:
       - '**'
     paths-ignore:
+      - '**.md'
       - 'docs/**'
 
 jobs:
@@ -29,7 +30,7 @@ jobs:
           node-version: 12
 
       - name: Install root dependencies
-        uses: bahmutov/npm-install@v1
+        run: npm ci
 
       - run: npm run check
 
@@ -46,14 +47,10 @@ jobs:
         with:
           node-version: 12
 
-      - name: Set Environment
-        uses: allenevans/set-env@master
-        with:
-          overwrite: true
-          CI: ''
-
       - name: Install Clean Repository
-        run: npm run clean
+        run: |
+          npm run clean
+          node scripts/init-local-environment -f
 
       - name: Build with local environment
         run: npm run ng -- build -c local

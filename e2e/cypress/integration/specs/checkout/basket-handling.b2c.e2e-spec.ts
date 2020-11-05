@@ -62,7 +62,7 @@ describe('Basket Handling', () => {
     at(LoginPage, page => {
       page.fillForm(_.user.login, _.user.password);
       page.submit().its('status').should('equal', 200);
-      cy.wait(1000);
+      waitLoadingEnd(5000);
     });
     at(MyAccountPage, page => {
       page.header.miniCart.total.should('contain', _.product.price * 2);
@@ -75,8 +75,11 @@ describe('Basket Handling', () => {
     at(FamilyPage, page => page.productList.gotoProductDetailPageBySku(_.product.sku));
     at(ProductDetailPage, page => {
       page.addProductToCart().its('status').should('equal', 200);
-      cy.wait(1000);
+      waitLoadingEnd(1000);
       page.header.miniCart.total.should('contain', _.product.price * 3);
+    });
+    at(CartPage, page => {
+      page.lineItem(0).quantity.get().should('equal', '3');
     });
   });
 
@@ -102,7 +105,7 @@ describe('Basket Handling', () => {
     at(FamilyPage, page => page.productList.gotoProductDetailPageBySku(_.product.sku));
     at(ProductDetailPage, page => {
       page.addProductToCart().its('status').should('equal', 422);
-      cy.wait(1000);
+      waitLoadingEnd(1000);
       page.header.miniCart.error.should('contain', 'could not be added');
     });
   });

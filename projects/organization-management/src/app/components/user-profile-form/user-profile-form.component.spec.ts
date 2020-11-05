@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -9,6 +8,7 @@ import { instance, mock, when } from 'ts-mockito';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { SelectTitleComponent } from 'ish-shared/forms/components/select-title/select-title.component';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
@@ -26,8 +26,9 @@ describe('User Profile Form Component', () => {
     appFacade = mock(AppFacade);
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
+        MockComponent(CheckboxComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(InputComponent),
         MockComponent(SelectTitleComponent),
@@ -61,5 +62,6 @@ describe('User Profile Form Component', () => {
     expect(element.querySelector('[controlname=firstName]')).toBeTruthy();
     expect(element.querySelector('[controlname=lastName]')).toBeTruthy();
     expect(element.querySelector('[controlname=phone]')).toBeTruthy();
+    expect(element.querySelector('[controlname=active]')).toBeTruthy();
   });
 });

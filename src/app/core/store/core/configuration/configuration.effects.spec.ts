@@ -1,5 +1,6 @@
 import { PLATFORM_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { BrowserTransferStateModule } from '@angular/platform-browser';
 import { ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -23,9 +24,8 @@ describe('Configuration Effects', () => {
     translateServiceMock = mock(TranslateService);
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['configuration'], [ConfigurationEffects])],
+      imports: [BrowserTransferStateModule, CoreStoreModule.forTesting(['configuration'], [ConfigurationEffects])],
       providers: [
-        ConfigurationEffects,
         { provide: TranslateService, useFactory: () => instance(translateServiceMock) },
         provideMockActions(() => actions$),
         { provide: PLATFORM_ID, useValue: 'server' },

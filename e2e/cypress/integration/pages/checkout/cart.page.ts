@@ -1,3 +1,4 @@
+import { waitLoadingEnd } from '../../framework';
 import { AddToOrderTemplateModule } from '../account/add-to-order-template.module';
 import { AddToWishlistModule } from '../account/add-to-wishlist.module';
 import { HeaderModule } from '../header.module';
@@ -17,6 +18,7 @@ export class CartPage {
   }
 
   createQuoteRequest() {
+    waitLoadingEnd(1000);
     this.saveQuoteRequestButton().click();
   }
 
@@ -46,11 +48,25 @@ export class CartPage {
     this.addBasketToOrderTemplateButton().click();
   }
 
+  collapsePromotionForm() {
+    return cy.get('[data-testing-id="promo-collapse-link"]').click();
+  }
+
+  submitPromotionCode(code: string) {
+    cy.get('[data-testing-id="promo-code-form"] input').clear().type(code);
+    return cy.get('[data-testing-id="promo-code-form"] button').click();
+  }
+
+  removePromotionCode() {
+    return cy.get('[data-testing-id="promo-remove-link"]').click();
+  }
+
   lineItem(idx: number) {
     return {
       quantity: {
         set: (num: number) =>
           cy.get(this.tag).find('input[data-testing-id="quantity"]').eq(idx).clear().type(num.toString()).blur(),
+        get: () => cy.get(this.tag).find('input[data-testing-id="quantity"]').eq(idx).invoke('val'),
       },
       remove: () => cy.get(this.tag).find('svg[data-icon="trash-alt"]').eq(idx).click(),
       sku: cy.get(this.tag).find('.product-id').eq(idx),
@@ -67,6 +83,10 @@ export class CartPage {
     return cy.get('[data-testing-id="basket-tax"]');
   }
 
+  get promotion() {
+    return cy.get('.cost-summary ish-basket-promotion');
+  }
+
   get lineItemInfoMessage() {
     return {
       message: cy.get('ish-line-item-list').find('.alert-info'),
@@ -75,7 +95,13 @@ export class CartPage {
 
   get errorMessage() {
     return {
-      message: cy.get('ish-error-message').find('.alert-error'),
+      message: cy.get('#toast-container').find('.toast-error'),
+    };
+  }
+
+  get successMessage() {
+    return {
+      message: cy.get('#toast-container').find('.toast-message'),
     };
   }
 }

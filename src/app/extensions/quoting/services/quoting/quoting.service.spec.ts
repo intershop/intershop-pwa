@@ -154,11 +154,11 @@ describe('Quoting Service', () => {
     });
 
     it('should use basket API for adding quotes to basket', done => {
-      quotingService.addQuoteToBasket('quoteID', 'basketID').subscribe(
+      quotingService.addQuoteToBasket('quoteID').subscribe(
         () => {
           verify(apiService.post(anything(), anything())).once();
           const args = capture(apiService.post).last();
-          expect(args?.[0]).toMatchInlineSnapshot(`"baskets/basketID/items"`);
+          expect(args?.[0]).toMatchInlineSnapshot(`"baskets/current/items"`);
           expect(args?.[1]).toMatchInlineSnapshot(`
             Object {
               "quoteID": "quoteID",

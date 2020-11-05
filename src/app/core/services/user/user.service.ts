@@ -68,17 +68,14 @@ export class UserService {
       );
   }
 
-  signinUserByToken(apiToken: string): Observable<CustomerUserType> {
-    const headers = new HttpHeaders().set(ApiService.TOKEN_HEADER_KEY, apiToken);
+  signinUserByToken(): Observable<CustomerUserType> {
     return this.apiService
-      .get<CustomerData>('customers/-', { headers, skipApiErrorHandling: true, runExclusively: true })
+      .get<CustomerData>('customers/-', { skipApiErrorHandling: true, runExclusively: true })
       .pipe(
         withLatestFrom(this.appFacade.isAppTypeREST$),
         concatMap(([data, isAppTypeRest]) =>
           // ToDo: #IS-30018 use the customer type for this decision
-          isAppTypeRest && !data.companyName
-            ? this.apiService.get<CustomerData>('privatecustomers/-', { headers })
-            : of(data)
+          isAppTypeRest && !data.companyName ? this.apiService.get<CustomerData>('privatecustomers/-') : of(data)
         ),
         map(CustomerMapper.mapLoginData),
         catchError(() => EMPTY)
@@ -151,6 +148,7 @@ export class UserService {
       preferredInvoiceToAddressUrn: undefined,
       preferredShipToAddressUrn: undefined,
       preferredPaymentInstrumentId: undefined,
+      preferredLanguage: body.user.preferredLanguage || 'en_US',
     };
 
     return this.appFacade.customerRestResource$.pipe(

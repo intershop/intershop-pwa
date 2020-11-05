@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
@@ -15,7 +14,7 @@ describe('Tac Checkbox Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       declarations: [MockComponent(CheckboxComponent), MockDirective(ServerHtmlDirective), TacCheckboxComponent],
     }).compileComponents();
   });

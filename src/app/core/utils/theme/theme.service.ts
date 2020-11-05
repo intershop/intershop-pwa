@@ -1,8 +1,9 @@
-import { DOCUMENT, isPlatformServer } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID, Renderer2, RendererFactory2, isDevMode } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable, Renderer2, RendererFactory2 } from '@angular/core';
+import { TransferState } from '@angular/platform-browser';
 import { Store, select } from '@ngrx/store';
-import { takeWhile } from 'rxjs/operators';
 
+import { NGRX_STATE_SK } from 'ish-core/configurations/ngrx-state-transfer';
 import { getTheme } from 'ish-core/store/core/configuration';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -23,7 +24,7 @@ export class ThemeService {
     private rendererFactory: RendererFactory2,
     @Inject(DOCUMENT) private document: Document,
     private store: Store,
-    @Inject(PLATFORM_ID) private platformId: string
+    private transferState: TransferState
   ) {
     this.head = this.document.head;
     this.renderer = this.rendererFactory.createRenderer(undefined, undefined);
@@ -37,13 +38,8 @@ export class ThemeService {
   }
 
   init() {
-    this.store
-      .pipe(
-        takeWhile(() => isPlatformServer(this.platformId) || isDevMode()),
-        select(getTheme),
-        whenTruthy()
-      )
-      .subscribe(async theme => {
+    if (!this.transferState.hasKey(NGRX_STATE_SK)) {
+      this.store.pipe(select(getTheme), whenTruthy()).subscribe(async theme => {
         const themeData = theme.split('|');
         const themeName = themeData[0];
         const themeColor = themeData[1];
@@ -74,6 +70,7 @@ export class ThemeService {
 
         await this.loadCss(`${themeName}.css`);
       });
+    }
   }
 
   private async loadCss(filename: string) {

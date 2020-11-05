@@ -13,6 +13,7 @@ import {
   getICMBaseURL,
   getICMServerURL,
   getICMStaticURL,
+  getIdentityProvider,
   getRestEndpoint,
 } from './configuration.selectors';
 
@@ -39,6 +40,7 @@ describe('Configuration Selectors', () => {
       expect(getAvailableLocales(store$.state)).not.toBeEmpty();
       expect(getCurrentLocale(store$.state)).not.toBeEmpty();
       expect(getDeviceType(store$.state)).not.toBeEmpty();
+      expect(getIdentityProvider(store$.state)).toBeUndefined();
     });
   });
 
@@ -89,6 +91,31 @@ describe('Configuration Selectors', () => {
 
     it('should set token to state', () => {
       expect(getGTMToken(store$.state)).toEqual('dummy');
+    });
+  });
+
+  describe('after setting identity provider', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        applyConfiguration({
+          identityProvider: 'MyProvider',
+          identityProviders: {
+            MyProvider: {
+              type: 'id',
+              setting: 'specific setting',
+            },
+          },
+        })
+      );
+    });
+
+    it('should select the specific identity provider setting when queried', () => {
+      expect(getIdentityProvider(store$.state)).toMatchInlineSnapshot(`
+        Object {
+          "setting": "specific setting",
+          "type": "id",
+        }
+      `);
     });
   });
 });

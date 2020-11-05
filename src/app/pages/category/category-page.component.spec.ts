@@ -9,7 +9,6 @@ import { createCategoryView } from 'ish-core/models/category-view/category-view.
 import { Category } from 'ish-core/models/category/category.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { CategoryCategoriesComponent } from './category-categories/category-categories.component';
 import { CategoryPageComponent } from './category-page.component';
@@ -28,7 +27,6 @@ describe('Category Page Component', () => {
         CategoryPageComponent,
         MockComponent(CategoryCategoriesComponent),
         MockComponent(CategoryProductsComponent),
-        MockComponent(LoadingComponent),
       ],
       providers: [
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },

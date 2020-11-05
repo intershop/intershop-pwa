@@ -1,4 +1,4 @@
-import { at } from '../../framework';
+import { at, waitLoadingEnd } from '../../framework';
 import { createUserViaREST } from '../../framework/users';
 import { LoginPage } from '../../pages/account/login.page';
 import { sensibleDefaults } from '../../pages/account/registration.page';
@@ -71,7 +71,7 @@ describe('Shopping User', () => {
 
     it('should set first addresses automatically', () => {
       at(CheckoutAddressesPage, page => {
-        cy.wait(1000);
+        waitLoadingEnd(3000);
         page.continueCheckout();
       });
     });
