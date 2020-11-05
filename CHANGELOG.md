@@ -7,6 +7,61 @@ kb_everyone
 
 # Changelog
 
+## [0.25.0](https://github.com/intershop/intershop-pwa/releases/tag/0.25.0) (2020-11-05)
+
+**required Intershop Commerce Management version: 7.10.24.1**
+
+### Features
+
+- configurable, granular custom cookie consent implementation (#357) ([6bb732e](https://github.com/intershop/intershop-pwa/commit/6bb732e))
+- remove ngx-cookie-banner functionality ([38231c1](https://github.com/intershop/intershop-pwa/commit/38231c1))
+- render view context content (#4) ([dc36c87](https://github.com/intershop/intershop-pwa/commit/dc36c87))
+- multi channel deployment with context path support (#432) ([1f35ad6](https://github.com/intershop/intershop-pwa/commit/1f35ad6))
+- remove unnecessary first/last name fields from password retrieval (#408) ([e9421c2](https://github.com/intershop/intershop-pwa/commit/e9421c2))
+- monitor PWA containers with prometheus (#391) ([f4fb1b1](https://github.com/intershop/intershop-pwa/commit/f4fb1b1))
+- display user role description on create/edit b2b user pages (#393) ([07b6ab9](https://github.com/intershop/intershop-pwa/commit/07b6ab9))
+
+### Bug Fixes
+
+- consolidate the display of promotion messages (#448) ([ce3cfb7](https://github.com/intershop/intershop-pwa/commit/ce3cfb7))
+- repair setting of locales meta tags (#451) ([dc3a206](https://github.com/intershop/intershop-pwa/commit/dc3a206))
+- improve the ui of out-of-stock products on the cart page after a failing cart validation (#443) ([5488707](https://github.com/intershop/intershop-pwa/commit/5488707))
+- display line item quantity on the cart page after merging quantities (#442) ([aab2be4](https://github.com/intershop/intershop-pwa/commit/aab2be4))
+- display error messages on the header of checkout pages ([c6f526a](https://github.com/intershop/intershop-pwa/commit/c6f526a))
+- display error message for duplicate payment instruments on checkout payment page ([31cfbab](https://github.com/intershop/intershop-pwa/commit/31cfbab))
+- submit a promotion code by pressing enter (#436) ([360b649](https://github.com/intershop/intershop-pwa/commit/360b649))
+- repair limitation for theme apply to fix prod mode with webpack-dev-server (#430) ([f45c6a0](https://github.com/intershop/intershop-pwa/commit/f45c6a0))
+- adjust quote list item padding (#418) ([6547d1e](https://github.com/intershop/intershop-pwa/commit/6547d1e))
+- set default icmHost in nginx URL rewiriting to prevent security issue (#415) ([a8992d6](https://github.com/intershop/intershop-pwa/commit/a8992d6))
+- provide configuration meta reducer only on SSR side (#415) ([cf09ee8](https://github.com/intershop/intershop-pwa/commit/cf09ee8))
+- repair setting of canonical urls and other meta data (#412) ([05e54c0](https://github.com/intershop/intershop-pwa/commit/05e54c0))
+- remove loading animation after address creation during the checkout (#413) ([eb08ae9](https://github.com/intershop/intershop-pwa/commit/eb08ae9))
+- display error messages on the b2b user edit profile page (#409) ([3800872](https://github.com/intershop/intershop-pwa/commit/3800872))
+- set breadcrumb from routing only if none was set previously (#399,#402) ([530ba90](https://github.com/intershop/intershop-pwa/commit/530ba90))
+- display and edit the b2b user's active status in the organization management of the myAccount (#397) ([e44fbf8](https://github.com/intershop/intershop-pwa/commit/e44fbf8))
+- close toast on routing (#404) ([bb38d50](https://github.com/intershop/intershop-pwa/commit/bb38d50))
+- don't trigger order actions unnecessarily ([56e2bc5](https://github.com/intershop/intershop-pwa/commit/56e2bc5))
+- send payment parameters for redirect before checkout payment methods ([119bbbc](https://github.com/intershop/intershop-pwa/commit/119bbbc))
+- remove basket messages after route changes ([169abae](https://github.com/intershop/intershop-pwa/commit/169abae))
+- display payment costs according to the configured display type (gross/net) (#396) ([b89c59d](https://github.com/intershop/intershop-pwa/commit/b89c59d))
+- replace parantheses in URL slugs (#395) ([85e110a](https://github.com/intershop/intershop-pwa/commit/85e110a))
+
+### Documentation
+
+- improve configuration documentation ([c0091ea](https://github.com/intershop/intershop-pwa/commit/c0091ea))
+- deployment and PWA building blocks documentation (#398) ([807fafb](https://github.com/intershop/intershop-pwa/commit/807fafb))
+- deployment documentation rework (#398) ([9640bfb](https://github.com/intershop/intershop-pwa/commit/9640bfb))
+- customization for cypress tests (#426) ([a5dc212](https://github.com/intershop/intershop-pwa/commit/a5dc212))
+
+### Code Refactoring
+
+- abstract ICM as identity provider (#447) ([f97b114](https://github.com/intershop/intershop-pwa/commit/f97b114))
+
+### BREAKING CHANGES
+
+- Setting certain cookies can no longer be dependent on the `cookieLawSeen$` state but needs to be checked with `cookieService.cookieConsentFor()`.
+- The login/logout handling is abstracted as identity provider service.
+
 ## [0.24.0](https://github.com/intershop/intershop-pwa/releases/tag/0.24.0) (2020-09-30)
 
 **required Intershop Commerce Management version: 7.10.22.3**

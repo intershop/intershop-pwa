@@ -607,7 +607,7 @@
   "order.number.label": "Order Number:",
   "order.tracking.error": "Unfortunately, we could not locate an order with the information you provided.",
   "order_template.create.heading": "Create Order Template",
-  "payment.error.PaymentInstrumentAlreadyExists": "A payment instrument with the given parameters already exists",
+  "payment.error.PaymentInstrumentAlreadyExists": "A payment instrument with the given parameters already exists.",
   "product.add_to_cart.link": "Add to Cart",
   "product.add_to_cart.retailset.link": "Add item(s) to Cart",
   "product.add_to_wishlist.link": "Add to Wish List",
