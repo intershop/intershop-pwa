@@ -26,7 +26,8 @@
     "noUnusedParameters": true
   },
   "angularCompilerOptions": {
-    "strictTemplates": false,
+    "fullTemplateTypeCheck": true,
+    "strictTemplates": true,
     "strictInjectionParameters": true
   }
 }

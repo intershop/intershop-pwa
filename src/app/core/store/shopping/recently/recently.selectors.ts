@@ -8,7 +8,7 @@ import { RecentlyState } from './recently.reducer';
 
 const getRecentlyState = createSelector(getShoppingState, state => state.recently);
 
-export const getRecentlyViewedProducts = createSelectorFactory(projector =>
+export const getRecentlyViewedProducts = createSelectorFactory<unknown, string[]>(projector =>
   defaultMemoize(projector, undefined, isEqual)
 )(getRecentlyState, (state: RecentlyState): string[] =>
   state.products

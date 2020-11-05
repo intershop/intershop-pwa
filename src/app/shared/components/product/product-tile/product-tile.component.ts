@@ -11,16 +11,16 @@ import {
 import { ProductHelper } from 'ish-core/models/product/product.model';
 
 export interface ProductTileComponentConfiguration {
-  readOnly?: boolean;
+  readOnly: boolean;
   displayName: boolean;
-  displayVariations?: boolean;
-  displayPrice?: boolean;
-  displayPromotions?: boolean;
-  displayAddToBasket?: boolean;
-  displayAddToWishlist?: boolean;
-  displayAddToOrderTemplate?: boolean;
-  displayAddToCompare?: boolean;
-  displayAddToQuote?: boolean;
+  displayVariations: boolean;
+  displayPrice: boolean;
+  displayPromotions: boolean;
+  displayAddToBasket: boolean;
+  displayAddToWishlist: boolean;
+  displayAddToOrderTemplate: boolean;
+  displayAddToCompare: boolean;
+  displayAddToQuote: boolean;
 }
 
 @Component({

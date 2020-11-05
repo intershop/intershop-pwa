@@ -78,7 +78,7 @@ export class ProductItemComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * configuration
    */
-  @Input() configuration: ProductItemContainerConfiguration = DEFAULT_CONFIGURATION;
+  @Input() configuration: Partial<ProductItemContainerConfiguration> = DEFAULT_CONFIGURATION;
 
   product$: Observable<ProductView>;
   loading$: Observable<boolean>;

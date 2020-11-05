@@ -12,8 +12,9 @@ export abstract class TactonConfigParameterComponent {
 
   constructor(protected facade: TactonFacade) {}
 
-  change(value: string) {
-    this.facade.commitValue(this.parameter, value);
+  change(value: string | EventTarget) {
+    // tslint:disable-next-line: no-string-literal
+    this.facade.commitValue(this.parameter, typeof value === 'string' ? value : value['value']);
   }
 
   getImageUrl(picture: string): Observable<string> {

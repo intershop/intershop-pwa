@@ -1,4 +1,4 @@
 <div *ngIf="parameter.properties.tc_info_text">{{ parameter.properties.tc_info_text }}</div>
 <div class="form-group">
-  <textarea class="form-control" [value]="parameter.value" (change)="change($event.target.value)"></textarea>
+  <textarea class="form-control" [value]="parameter.value" (change)="change($event.target)"></textarea>
 </div>

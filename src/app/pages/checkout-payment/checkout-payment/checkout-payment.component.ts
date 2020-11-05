@@ -15,6 +15,7 @@ import { FormlyFormOptions } from '@ngx-formly/core';
 import { Subject } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
 
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
@@ -178,7 +179,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * creates a new payment instrument
    */
-  createNewPaymentInstrument(body: { parameters: { name: string; value: string }[]; saveAllowed: boolean }) {
+  createNewPaymentInstrument(body: { parameters: Attribute<string>[]; saveAllowed: boolean }) {
     const paymentMethod = this.filteredPaymentMethods[this.openFormIndex];
     const paymentInstrument: PaymentInstrument = {
       id: undefined,

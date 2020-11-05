@@ -5,7 +5,7 @@
         type="radio"
         [name]="parameter.name"
         [checked]="opt.selected"
-        (change)="change($event.target.value)"
+        (change)="change($event.target)"
         [value]="opt.name"
       />
       {{ opt.description }}

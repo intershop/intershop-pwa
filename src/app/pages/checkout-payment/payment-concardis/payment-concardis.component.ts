@@ -35,7 +35,7 @@ export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
   @Input() activated = false;
 
   @Output() cancel = new EventEmitter<void>();
-  @Output() submit = new EventEmitter<{ parameters: Attribute[]; saveAllowed: boolean }>();
+  @Output() submit = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
 
   /**
    * flag to make sure that the init script is executed only once
