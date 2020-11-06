@@ -8,7 +8,7 @@ const _ = require('lodash');
 const fs = require('fs');
 const cypress = require('cypress');
 
-const MAX_NUM_RUNS = 1;
+const MAX_NUM_RUNS = 4;
 const BROWSER = process.env.BROWSER || 'chrome';
 const TEST_FILES = process.argv.length > 2 ? process.argv[2].split(',') : undefined;
 
