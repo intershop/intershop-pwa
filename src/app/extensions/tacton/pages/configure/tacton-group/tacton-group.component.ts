@@ -19,6 +19,7 @@ export class TactonGroupComponent {
   constructor(private facade: TactonFacade) {}
 
   isGroup = TactonProductConfigurationHelper.isGroup;
+  isParameter = TactonProductConfigurationHelper.isParameter;
 
   getImageUrl(picture: string): Observable<string> {
     return this.facade.getImageUrl$(picture);
