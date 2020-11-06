@@ -69,7 +69,11 @@ describe('Logged in Sleeping User', () => {
         })
         .as('invalid');
       at(MyAccountPage, page => {
-        page.navigateToAddresses();
+        try {
+          page.navigateToAddresses();
+        } catch (er) {
+          // do nothing
+        }
         cy.wait('@invalid');
         cy.route({
           method: 'GET',
