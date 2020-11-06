@@ -1,15 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 import { Price, PriceHelper } from 'ish-core/models/price/price.model';
-import { ProductRetailSet } from 'ish-core/models/product/product-retail-set.model';
-import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
-import { Product } from 'ish-core/models/product/product.model';
-
-declare type PricesOfProducts = Partial<
-  Pick<Product, 'salePrice' | 'listPrice'> &
-    Pick<ProductRetailSet, 'summedUpSalePrice'> &
-    Pick<VariationProductMaster, 'minSalePrice' | 'maxSalePrice'>
->;
+import { ProductPrices } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-price',
@@ -17,7 +9,7 @@ declare type PricesOfProducts = Partial<
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductPriceComponent implements OnChanges {
-  @Input() product: PricesOfProducts;
+  @Input() product: ProductPrices;
   @Input() showInformationalPrice: boolean;
   @Input() showPriceSavings: boolean;
 
@@ -29,7 +21,7 @@ export class ProductPriceComponent implements OnChanges {
     this.applyPriceParameters(this.product);
   }
 
-  private applyPriceParameters(product: PricesOfProducts) {
+  private applyPriceParameters(product: ProductPrices) {
     if (product.listPrice && product.salePrice) {
       this.isListPriceGreaterThanSalePrice = product.listPrice.value > product.salePrice.value;
       this.isListPriceLessThanSalePrice = product.listPrice.value < product.salePrice.value;
