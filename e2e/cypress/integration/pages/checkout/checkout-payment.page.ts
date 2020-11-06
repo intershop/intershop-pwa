@@ -41,6 +41,7 @@ export class CheckoutPaymentPage {
 
       submit() {
         cy.get(`[data-testing-id=payment-parameter-form-${method}]`).find('[type="submit"]').click();
+        waitLoadingEnd(3000);
       },
 
       delete() {

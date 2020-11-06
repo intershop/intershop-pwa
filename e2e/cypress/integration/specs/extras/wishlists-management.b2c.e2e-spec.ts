@@ -1,4 +1,4 @@
-import { at, waitLoadingEnd } from '../../framework';
+import { at } from '../../framework';
 import { createUserViaREST } from '../../framework/users';
 import { LoginPage } from '../../pages/account/login.page';
 import { sensibleDefaults } from '../../pages/account/registration.page';
@@ -109,7 +109,6 @@ describe('Wishlist MyAccount Functionality', () => {
   it('user deletes a product from wishlist', () => {
     at(WishlistsDetailsPage, page => {
       page.deleteWishlist(_.product2);
-      waitLoadingEnd();
       page.listItemLinks.invoke('attr', 'href').should('not.contain', _.product2);
       page.listItemLinks.should('have.length', 1);
     });
@@ -118,7 +117,6 @@ describe('Wishlist MyAccount Functionality', () => {
   it('user moves a product to another wishlist', () => {
     at(WishlistsDetailsPage, page => {
       page.moveProductToWishlist(_.product1, anotherWishlist);
-      waitLoadingEnd();
       page.wishlistTitle.should('equal', anotherWishlist);
       page.getWishlistItemById(_.product1).should('exist');
       page.header.gotoWishlists();
