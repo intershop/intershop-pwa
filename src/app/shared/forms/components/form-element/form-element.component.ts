@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { UUID } from 'angular2-uuid';
 
@@ -10,7 +10,7 @@ export abstract class FormElementComponent {
   /**
    * Name of the corresponding form group (required)
    */
-  @Input() form: FormGroup;
+  @Input() form: AbstractControl;
   /**
    * control name, corresponding control with this name should exist in the form group (required)
    */
@@ -62,8 +62,8 @@ export abstract class FormElementComponent {
   /**
    * get the form control according to the controlName
    */
-  get formControl(): AbstractControl {
-    return this.form.get(this.controlName);
+  get formControl(): FormControl {
+    return this.form.get(this.controlName) as FormControl;
   }
 
   /** decides whether to show a required sign after the label in dependence of the markRequiredLabel

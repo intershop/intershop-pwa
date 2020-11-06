@@ -47,12 +47,9 @@ export class TextareaComponent extends FormElementComponent implements OnInit, O
     super.init();
     if (this.maxlength) {
       this.charactersRemaining = this.maxlength;
-      this.form
-        .get(this.controlName)
-        .valueChanges.pipe(takeUntil(this.destroy$))
-        .subscribe(text => {
-          this.charactersRemaining = this.maxlength - text.length;
-        });
+      this.formControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(text => {
+        this.charactersRemaining = this.maxlength - text.length;
+      });
     }
   }
 
