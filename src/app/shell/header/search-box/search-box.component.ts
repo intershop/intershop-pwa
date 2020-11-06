@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { IconName } from '@fortawesome/fontawesome-svg-core';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, take, takeUntil } from 'rxjs/operators';
 
@@ -27,7 +27,7 @@ interface SearchBoxConfiguration {
   /**
    * configure search box icon
    */
-  icon?: IconProp;
+  icon?: IconName;
   /**
    * show last search term as search box value
    */
@@ -60,11 +60,13 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
   activeIndex = -1;
   inputFocused: boolean;
 
-  defaultIcon: IconProp = 'search';
-
   private destroy$ = new Subject();
 
   constructor(private shoppingFacade: ShoppingFacade, private router: Router) {}
+
+  get usedIcon(): IconName {
+    return this.configuration?.icon || 'search';
+  }
 
   ngOnInit() {
     // initialize with searchTerm when on search route

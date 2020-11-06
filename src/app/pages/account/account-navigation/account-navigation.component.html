@@ -29,7 +29,7 @@
 </ng-container>
 
 <ng-template #mobileNavigation>
-  <select (change)="navigateTo($event.target.value)" class="form-control">
+  <select (change)="navigateTo($event.target)" class="form-control">
     <ng-container *ngFor="let item of navigationItems | keyvalue: unsorted">
       <ng-container *ishIsAuthorizedTo="item.value.permission || 'always'">
         <option *ishFeature="item.value.feature || 'always'" [value]="item.key" [attr.selected]="isSelected(item.key)">

@@ -60,9 +60,10 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
     this.isMobileView = this.deviceType === 'tablet' || this.deviceType === 'mobile';
   }
 
-  navigateTo(link) {
-    if (link) {
-      this.router.navigate([link]);
+  navigateTo(target: EventTarget) {
+    if (target) {
+      // tslint:disable-next-line: no-string-literal
+      this.router.navigate([target['value']]);
     }
   }
 

@@ -13,7 +13,7 @@ import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { filter, startWith, take, takeUntil } from 'rxjs/operators';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { Category } from 'ish-core/models/category/category.model';
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
@@ -74,7 +74,7 @@ export class ProductItemComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * The optional Category context.
    */
-  @Input() category?: Category;
+  @Input() category?: CategoryView;
   /**
    * configuration
    */

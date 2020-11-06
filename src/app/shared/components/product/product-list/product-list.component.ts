@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { Observable } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { Category } from 'ish-core/models/category/category.model';
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 
 /**
@@ -22,7 +22,7 @@ import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 })
 export class ProductListComponent implements OnInit {
   @Input() products: string[];
-  @Input() category?: Category;
+  @Input() category?: CategoryView;
   @Input() viewType?: ViewType = 'grid';
 
   listingLoading$: Observable<boolean>;

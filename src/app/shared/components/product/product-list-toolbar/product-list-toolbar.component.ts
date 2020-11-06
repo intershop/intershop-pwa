@@ -28,7 +28,7 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
   @Input() sortBy = 'default';
   @Input() sortKeys: string[];
   @Input() currentPage: number;
-  @Input() pageIndices: number[];
+  @Input() pageIndices: { value: number; display: string }[];
   @Input() fragmentOnRouting: string;
   @Input() isPaging = false;
 

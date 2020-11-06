@@ -38,7 +38,7 @@
     >
       <!-- search button with icon -->
       <ng-container *ngIf="!configuration?.buttonText; else textBlock">
-        <fa-icon [icon]="['fas', configuration?.icon || defaultIcon]"></fa-icon>
+        <fa-icon [icon]="['fas', usedIcon]"></fa-icon>
       </ng-container>
       <!-- search button with text -->
       <ng-template #textBlock> {{ configuration?.buttonText }} </ng-template>
