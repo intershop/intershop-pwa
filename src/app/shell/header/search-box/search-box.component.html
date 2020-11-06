@@ -6,7 +6,7 @@
     autocomplete="off"
     type="text"
     class="form-control searchTerm"
-    (input)="searchSuggest($event.target.value)"
+    (input)="searchSuggest($event.target)"
     [value]="inputSearchTerms$ | async"
     (blur)="blur()"
     (keydown)="focus()"
