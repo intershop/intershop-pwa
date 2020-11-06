@@ -52,10 +52,11 @@ describe('Logged in Sleeping User', () => {
 
   describe('being a long time on a myaccount page', () => {
     it('should wait a long time on myaccount page after logging in', () => {
-      LoginPage.navigateTo();
+      LoginPage.navigateTo('/account/wishlists');
       at(LoginPage, page => page.fillForm(_.user.login, _.user.password).submit().its('status').should('equal', 200));
       at(MyAccountPage, page => {
         page.header.myAccountLink.should('have.text', `${_.user.firstName} ${_.user.lastName}`);
+        waitLoadingEnd(2000);
       });
     });
 
@@ -69,11 +70,7 @@ describe('Logged in Sleeping User', () => {
         })
         .as('invalid');
       at(MyAccountPage, page => {
-        try {
-          page.navigateToAddresses();
-        } catch (er) {
-          // do nothing
-        }
+        page.navigateToAddresses();
         cy.wait('@invalid');
         cy.route({
           method: 'GET',
