@@ -22,7 +22,7 @@
   <div class="col-12 col-lg-9 product-detail-img clearfix">
     <div class="product-image-container">
       <ngb-carousel
-        [activeId]="getString(activeSlide)"
+        [activeId]="activeSlide"
         (slide)="setActiveSlide($event.current)"
         [showNavigationArrows]="getImageViewIDsExcludePrimary(product, 'L').length > 0"
         [showNavigationIndicators]="false"
@@ -34,7 +34,7 @@
         <ng-template
           ngbSlide
           *ngFor="let imageView of getImageViewIDsExcludePrimary(product, 'L'); index as i"
-          [id]="getString(i + 1)"
+          id="{{ i + 1 }}"
         >
           <ish-product-image [product]="product" imageType="L" [imageView]="imageView"></ish-product-image>
         </ng-template>

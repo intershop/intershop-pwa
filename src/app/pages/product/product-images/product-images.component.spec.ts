@@ -74,7 +74,7 @@ describe('Product Images Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.product = product;
-    component.activeSlide = 0;
+    component.activeSlide = '0';
   });
 
   it('should be created', () => {
@@ -101,7 +101,7 @@ describe('Product Images Component', () => {
     (element.getElementsByClassName('product-thumb-set')[1] as HTMLElement).click();
     fixture.detectChanges();
     expect(element.getElementsByClassName('product-thumb-set')[1].getAttribute('class')).toContain('active');
-    expect(component.activeSlide).toEqual(1);
+    expect(component.activeSlide).toEqual('1');
   });
 
   it('should render product image component on component', () => {

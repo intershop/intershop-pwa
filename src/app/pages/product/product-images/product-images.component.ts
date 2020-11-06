@@ -22,28 +22,24 @@ export class ProductImagesComponent {
    */
   @Input() product: Product;
 
-  activeSlide = 0;
+  activeSlide = '0';
 
   getImageViewIDsExcludePrimary = ProductHelper.getImageViewIDsExcludePrimary;
 
   /**
    * Set the active slide via index (used by the thumbnail indicator)
-   * @param slideIndex The slide index number to set the active slide
+   * @param slideIndex The slide index to set the active slide
    */
   setActiveSlide(slideIndex: number | string) {
-    this.activeSlide = Number(slideIndex);
+    this.activeSlide = slideIndex?.toString();
   }
 
   /**
    * Check if the given slide index equals the active slide
-   * @param slideIndex The slide index number to be checked if it is the active slide
+   * @param slideIndex The slide index to be checked if it is the active slide
    * @returns True if the given slide index is the active slide, false otherwise
    */
   isActiveSlide(slideIndex: number): boolean {
-    return this.activeSlide === slideIndex;
-  }
-
-  getString(num: number): string {
-    return num.toString();
+    return this.activeSlide === slideIndex?.toString();
   }
 }
