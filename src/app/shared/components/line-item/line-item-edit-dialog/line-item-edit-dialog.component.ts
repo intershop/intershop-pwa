@@ -48,7 +48,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LineItemEditDialogComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() lineItem: LineItemView;
+  @Input() lineItem: Partial<LineItemView>;
   @Input() modalDialogRef?: ModalDialogComponent<unknown>;
   @Input() editable = true;
   @Output() updateItem = new EventEmitter<LineItemUpdate>();

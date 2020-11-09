@@ -1,0 +1,138 @@
+<div
+  *ngIf="product$ | async as product"
+  class="row list-item-row list-item-row-big"
+  data-testing-id="product-list-item"
+>
+  <!-- Product Image -->
+  <div class="col-2 list-item">
+    <a [routerLink]="product | ishProductRoute">
+      <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
+    </a>
+  </div>
+
+  <div class="col-7 col-md-6 col-xl-4 list-item">
+    <!--Product Description -->
+    <div class="pli-description">
+      <a class="product-title" [routerLink]="product | ishProductRoute">{{ product.name }}</a>
+
+      <!-- Product ID -->
+      <ish-product-id [product]="product"></ish-product-id>
+
+      <!-- Product Variations -->
+      <ish-product-variation-display
+        *ngIf="isVariationProduct(product)"
+        [product]="product"
+      ></ish-product-variation-display>
+      <!-- Product Bundles -->
+      <ish-product-bundle-display
+        *ngIf="isBundleProduct(product)"
+        [productBundleSKU]="product.sku"
+      ></ish-product-bundle-display>
+
+      <ish-product-inventory [product]="product"></ish-product-inventory>
+      <div *ngIf="editable$ | async" class="d-flex align-items-center">
+        <ish-lazy-product-add-to-order-template
+          [class]="'btn btn-link btn-tool add-to-order-template'"
+          [product]="product"
+          displayType="icon"
+          [quantity]="lineItem.quantity.value"
+        ></ish-lazy-product-add-to-order-template>
+        <ish-lazy-product-add-to-wishlist
+          class="btn-tool ml-0"
+          [product]="product"
+          displayType="icon"
+        ></ish-lazy-product-add-to-wishlist>
+        <a
+          class="btn-tool"
+          [attr.data-testing-id]="'remove-pli-' + lineItem.id + '-element'"
+          [attr.data-id]="lineItem.id"
+          title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
+          (click)="onDeleteItem()"
+        >
+          <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+        </a>
+      </div>
+    </div>
+
+    <!-- mobile quantity -->
+    <div class="quantity d-xl-none">
+      <div class="form-group">
+        <ng-container *ngIf="editable$ | async; else readonlyQuantity">
+          <ish-input
+            [form]="form$ | async"
+            controlName="quantity"
+            type="number"
+            label="shopping_cart.pli.qty.label"
+            labelClass="d-xl-none col-form-label"
+            inputClass="w-100"
+            [min]="0"
+            markRequiredLabel="off"
+            [max]="product.maxOrderQuantity"
+            [errorMessages]="{
+              required: 'shopping_cart.quantity.invalid.error',
+              max: 'shopping_cart.quantity.invalid.error.maxvalue',
+              integer: 'shopping_cart.quantity.invalid.error'
+            }"
+          ></ish-input>
+        </ng-container>
+        <ng-template #readonlyQuantity>
+          <label class="d-xl-none col-form-label">{{ 'shopping_cart.pli.qty.label' | translate }}</label>
+          {{ lineItem.quantity.value | number }}
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- desktop quantity -->
+  <div class="quantity col-xl-2 list-item d-none d-xl-flex">
+    <div class="form-group w-100" [ngClass]="{ 'text-right': editable$ | async }">
+      <ng-container *ngIf="editable$ | async; else readonlyQuantity">
+        <ish-input
+          [form]="form$ | async"
+          controlName="quantity"
+          type="number"
+          label="shopping_cart.pli.qty.label"
+          labelClass="d-xl-none col-form-label"
+          inputClass="w-100"
+          [min]="0"
+          markRequiredLabel="off"
+          [max]="product.maxOrderQuantity"
+          [errorMessages]="{
+            required: 'shopping_cart.quantity.invalid.error',
+            max: 'shopping_cart.quantity.invalid.error.maxvalue',
+            integer: 'shopping_cart.quantity.invalid.error'
+          }"
+        ></ish-input>
+      </ng-container>
+      <ng-template #readonlyQuantity>
+        <label class="d-xl-none col-form-label">{{ 'shopping_cart.pli.qty.label' | translate }}</label>
+        {{ lineItem.quantity.value | number }}
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- Prices -->
+  <div class="col-md-2 d-none d-md-block list-item column-price single-price">
+    <!-- Original Single Base Price  -->
+    <p *ngIf="lineItem.originSingleBasePrice">
+      {{ 'quote.items.original_price.label' | translate }} {{ lineItem.originSingleBasePrice | ishPrice }}
+    </p>
+
+    <!-- (Suggested) Single Base Price  -->
+    <p>
+      <ng-container *ngIf="lineItem.originSingleBasePrice">{{
+        'quote.items.suggested_price.label' | translate
+      }}</ng-container>
+      {{ lineItem.singleBasePrice | ishPrice }}
+    </p>
+  </div>
+  <div class="col-3 col-md-2 list-item column-price">
+    <div>
+      <p *ngIf="lineItem.originTotal">{{ lineItem.originTotal | ishPrice }}</p>
+
+      <!-- (Suggested) Total Price  -->
+      <span *ngIf="lineItem.originTotal" class="d-md-none">{{ 'quote.items.suggested_price.label' | translate }}</span>
+      <div data-testing-id="total-price">{{ lineItem.total | ishPrice }}</div>
+    </div>
+  </div>
+</div>

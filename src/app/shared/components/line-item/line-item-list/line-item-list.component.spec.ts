@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockComponents, MockPipe } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -38,10 +38,10 @@ describe('Line Item List Component', () => {
         MockComponent(BasketPromotionComponent),
         MockComponent(FaIconComponent),
         MockComponent(InputComponent),
+        MockComponent(LazyProductAddToOrderTemplateComponent),
+        MockComponent(LazyProductAddToWishlistComponent),
         MockComponent(LineItemDescriptionComponent),
         MockComponent(ProductImageComponent),
-        MockComponents(LazyProductAddToOrderTemplateComponent),
-        MockComponents(LazyProductAddToWishlistComponent),
         MockPipe(PricePipe),
         MockPipe(ProductRoutePipe),
       ],
