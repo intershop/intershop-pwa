@@ -27,6 +27,7 @@ import {
   loadBasketEligibleShippingMethodsSuccess,
   loadBasketFail,
   loadBasketSuccess,
+  submitBasketSuccess,
 } from './basket.actions';
 import {
   getBasketEligiblePaymentMethods,
@@ -39,6 +40,7 @@ import {
   getBasketValidationResults,
   getCurrentBasket,
   getCurrentBasketId,
+  getSubmittedBasket,
 } from './basket.selectors';
 
 describe('Basket Selectors', () => {
@@ -65,6 +67,10 @@ describe('Basket Selectors', () => {
 
     it('should not select any payment methods if it is in initial state', () => {
       expect(getBasketEligiblePaymentMethods(store$.state)).toBeUndefined();
+    });
+
+    it('should not select a submitted basket if it is in initial state', () => {
+      expect(getSubmittedBasket(store$.state)).toBeUndefined();
     });
 
     it('should not select loading, error and lastTimeProductAdded if it is in initial state', () => {
@@ -297,6 +303,34 @@ describe('Basket Selectors', () => {
       expect(getBasketValidationResults(store$.state).valid).toBeFalse();
       expect(getBasketValidationResults(store$.state).errors[0].message).toEqual('error occured');
       expect(getBasketValidationResults(store$.state).errors[0].lineItem.id).toEqual('4712');
+    });
+  });
+
+  describe('loading a submitted basket', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        loadProductSuccess({
+          product: { sku: 'sku', completenessLevel: ProductCompletenessLevel.Detail } as Product,
+        })
+      );
+      store$.dispatch(
+        loadBasketSuccess({
+          basket: {
+            id: 'test',
+            lineItems: [{ id: 'test', productSKU: 'sku', quantity: { value: 5 } } as LineItem],
+            payment: { paymentInstrument: { id: 'ISH_INVOICE' } },
+          } as BasketView,
+        })
+      );
+    });
+
+    it('should return the submitted basket when called', () => {
+      expect(getCurrentBasket(store$.state).id).toBe('test');
+      expect(getSubmittedBasket(store$.state)).toBeUndefined();
+
+      store$.dispatch(submitBasketSuccess());
+      expect(getSubmittedBasket(store$.state).id).toBe('test');
+      expect(getCurrentBasket(store$.state)).toBeUndefined();
     });
   });
 });

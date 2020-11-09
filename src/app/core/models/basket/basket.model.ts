@@ -15,6 +15,7 @@ export interface AbstractBasket<T> {
   commonShipToAddress?: Address;
   commonShippingMethod?: ShippingMethod;
   customerNo?: string;
+  email?: string;
   lineItems?: T[];
   payment?: Payment;
   promotionCodes?: string[];

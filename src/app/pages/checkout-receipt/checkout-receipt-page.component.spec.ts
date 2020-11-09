@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
+import { LazyCheckoutReceiptRequisitionComponent } from 'requisition-management';
 import { instance, mock } from 'ts-mockito';
 
-import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
+import { CheckoutReceiptOrderComponent } from './checkout-receipt-order/checkout-receipt-order.component';
 import { CheckoutReceiptPageComponent } from './checkout-receipt-page.component';
 import { CheckoutReceiptComponent } from './checkout-receipt/checkout-receipt.component';
 
@@ -19,12 +20,11 @@ describe('Checkout Receipt Page Component', () => {
       declarations: [
         CheckoutReceiptPageComponent,
         MockComponent(CheckoutReceiptComponent),
+        MockComponent(CheckoutReceiptOrderComponent),
+        MockComponent(LazyCheckoutReceiptRequisitionComponent),
         MockComponent(LoadingComponent),
       ],
-      providers: [
-        { provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) },
-        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
-      ],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) }],
     }).compileComponents();
   });
 

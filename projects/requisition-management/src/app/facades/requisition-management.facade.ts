@@ -13,6 +13,7 @@ import {
   getRequisitions,
   getRequisitionsError,
   getRequisitionsLoading,
+  loadRequisition,
   loadRequisitions,
 } from '../store/requisitions';
 
@@ -34,6 +35,11 @@ export class RequisitionManagementFacade {
     whenTruthy(),
     switchMap(requisitionId => this.store.pipe(select(getRequisition(requisitionId))))
   );
+
+  requisition$(requisitionId: string) {
+    this.store.dispatch(loadRequisition({ requisitionId }));
+    return this.store.pipe(select(getRequisition(requisitionId)));
+  }
 
   requisitions$ = combineLatest([
     this.store.pipe(select(selectRouteParam('status')), distinctUntilChanged()),

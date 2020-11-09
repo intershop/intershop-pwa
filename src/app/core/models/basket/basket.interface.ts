@@ -18,6 +18,7 @@ export interface BasketBaseData {
   commonShipToAddress?: string;
   commonShippingMethod?: string;
   customer?: string;
+  user?: string;
   discounts?: {
     dynamicMessages?: string[];
     shippingBasedDiscounts?: string[];

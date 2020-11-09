@@ -49,6 +49,9 @@ import {
   setBasketPayment,
   setBasketPaymentFail,
   setBasketPaymentSuccess,
+  submitBasket,
+  submitBasketFail,
+  submitBasketSuccess,
   updateBasket,
   updateBasketFail,
   updateBasketItems,
@@ -73,6 +76,7 @@ export interface BasketState {
   info: BasketInfo[];
   lastTimeProductAdded: number;
   validationResults: BasketValidationResultType;
+  submittedBasket: Basket;
 }
 
 const initialValidationResults: BasketValidationResultType = {
@@ -91,6 +95,7 @@ export const initialState: BasketState = {
   promotionError: undefined,
   lastTimeProductAdded: undefined,
   validationResults: initialValidationResults,
+  submittedBasket: undefined,
 };
 
 export const basketReducer = createReducer(
@@ -113,6 +118,7 @@ export const basketReducer = createReducer(
     createBasketPayment,
     updateBasketPayment,
     deleteBasketPayment,
+    submitBasket,
     updateConcardisCvcLastUpdated
   ),
   setErrorOn(
@@ -130,7 +136,8 @@ export const basketReducer = createReducer(
     createBasketPaymentFail,
     updateBasketPaymentFail,
     deleteBasketPaymentFail,
-    updateConcardisCvcLastUpdatedFail
+    updateConcardisCvcLastUpdatedFail,
+    submitBasketFail
   ),
   on(addPromotionCodeToBasketFail, (state: BasketState, action) => {
     const { error } = action.payload;
@@ -172,6 +179,7 @@ export const basketReducer = createReducer(
     error: undefined,
     info: action.payload.info,
     lastTimeProductAdded: new Date().getTime(),
+    submittedBasket: undefined,
   })),
   on(mergeBasketSuccess, loadBasketSuccess, (state: BasketState, action) => {
     const basket = {
@@ -183,6 +191,7 @@ export const basketReducer = createReducer(
       basket,
       loading: false,
       error: undefined,
+      submittedBasket: undefined,
     };
   }),
   on(continueCheckoutSuccess, continueCheckoutWithIssues, (state: BasketState, action) => {
@@ -195,6 +204,7 @@ export const basketReducer = createReducer(
       loading: false,
       error: undefined,
       info: undefined,
+      submittedBasket: undefined,
       validationResults: validation && validation.results,
     };
   }),
@@ -211,6 +221,17 @@ export const basketReducer = createReducer(
     error: undefined,
   })),
   on(createOrderSuccess, () => initialState),
+  on(submitBasketSuccess, (state: BasketState) => ({
+    ...state,
+    loading: false,
+    submittedBasket: state.basket,
+    basket: undefined,
+    error: undefined,
+    info: undefined,
+    promotionError: undefined,
+    validationResults: initialValidationResults,
+  })),
+
   on(resetBasketErrors, (state: BasketState) => ({
     ...state,
     error: undefined,

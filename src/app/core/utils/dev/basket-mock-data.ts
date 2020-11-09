@@ -43,6 +43,7 @@ export class BasketMockData {
     return {
       id: '4711',
       documentNo: '12345678',
+      customerNo: 'OilCorp',
       lineItems: [BasketMockData.getBasketItem()],
       invoiceToAddress: BasketMockData.getAddress(),
       commonShipToAddress: BasketMockData.getAddress(),
