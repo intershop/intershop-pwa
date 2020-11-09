@@ -43,7 +43,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   constructor(options: Lint.IOptions) {
     super(options);
     try {
-      const config = parse(fs.readFileSync('./tsconfig.base.json', { encoding: 'UTF-8' }));
+      const config = parse(fs.readFileSync('./tsconfig.base.json', { encoding: 'utf-8' }));
       if (config && config.compilerOptions && config.compilerOptions.paths) {
         const paths = config.compilerOptions.paths;
         this.shortImports = Object.keys(paths).map(key => ({

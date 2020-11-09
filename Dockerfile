@@ -1,4 +1,4 @@
-FROM node:12-alpine as buildstep
+FROM node:14-alpine as buildstep
 WORKDIR /workspace
 COPY schematics /workspace/schematics/
 COPY package.json package-lock.json /workspace/
@@ -21,7 +21,7 @@ RUN test "${serviceWorker}" = "true" && sed -i 's/canonicalHash !== cacheBustedH
 RUN egrep -o '^\s*(mockServerAPI: true|mustMockPaths)' src/environments/environment.prod.ts || rm -Rf dist/browser/assets/mock*
 COPY dist/entrypoint.sh dist/healthcheck.js dist/server.crt dist/server.key dist/robots.txt* /workspace/dist/
 
-FROM node:12-alpine
+FROM node:14-alpine
 COPY --from=buildstep /workspace/dist /dist
 ARG displayVersion=
 LABEL displayVersion="${displayVersion}"

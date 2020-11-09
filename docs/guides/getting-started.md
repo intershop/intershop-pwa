@@ -8,7 +8,7 @@ kb_sync_latest_only
 # Getting Started
 
 Before working with this project, download and install [Node.js](https://nodejs.org) with the included npm package manager.
-Currently Node.js 12.x LTS with the corresponding npm is required.
+Currently Node.js 14.x LTS with the corresponding npm is required.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) and follows the Angular CLI style guide and naming conventions.
 
