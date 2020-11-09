@@ -1,9 +1,21 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { RouterNavigatedPayload, routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { EMPTY, combineLatest, iif, of } from 'rxjs';
-import { concatMap, filter, map, mapTo, mergeMap, sample, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
+import {
+  concatMap,
+  filter,
+  map,
+  mapTo,
+  mergeMap,
+  sample,
+  startWith,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { RouterState } from 'ish-core/store/core/router/router.reducer';
@@ -22,6 +34,9 @@ import {
   mergeBasketFail,
   mergeBasketSuccess,
   resetBasketErrors,
+  submitBasket,
+  submitBasketFail,
+  submitBasketSuccess,
   updateBasket,
   updateBasketFail,
   updateBasketShippingMethod,
@@ -32,9 +47,10 @@ import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
 export class BasketEffects {
   constructor(
     private actions$: Actions,
-    private store: Store,
     private basketService: BasketService,
-    private apiTokenService: ApiTokenService
+    private apiTokenService: ApiTokenService,
+    private router: Router,
+    private store: Store
   ) {}
 
   /**
@@ -168,6 +184,23 @@ export class BasketEffects {
         (routerState: RouterState) => /^\/(basket|checkout.*)/.test(routerState.url) && !routerState.queryParams?.error
       ),
       mapTo(resetBasketErrors())
+    )
+  );
+
+  /**
+   * Creates a requisition based on the given basket, if approval is required
+   */
+  createRequisition$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(submitBasket),
+      withLatestFrom(this.store.select(getCurrentBasketId)),
+      concatMap(([, basketId]) =>
+        this.basketService.createRequisition(basketId).pipe(
+          tap(() => this.router.navigate(['/checkout/receipt'])),
+          map(submitBasketSuccess),
+          mapErrorToAction(submitBasketFail)
+        )
+      )
     )
   );
 }

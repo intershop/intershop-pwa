@@ -18,9 +18,10 @@
     <p>
       {{ 'approval.details.place_order' | translate }}
     </p>
-    <!-- ToDo: The parameter 0 has to be set to the account approval page -->
     <p
-      [ishServerHtml]="'approval.details.after' | translate: { '0': 'route://account', '1': 'route://account' }"
+      [ishServerHtml]="
+        'approval.details.after' | translate: { '0': 'route://account/requisitions/buyer', '1': 'route://account' }
+      "
       [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
     ></p>
 

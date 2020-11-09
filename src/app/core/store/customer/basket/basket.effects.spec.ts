@@ -6,7 +6,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
-import { anything, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
@@ -26,6 +26,9 @@ import {
   loadBasketFail,
   loadBasketSuccess,
   resetBasketErrors,
+  submitBasket,
+  submitBasketFail,
+  submitBasketSuccess,
   updateBasket,
   updateBasketFail,
   updateBasketShippingMethod,
@@ -276,6 +279,47 @@ describe('Basket Effects', () => {
         })
       );
       expect(effects.routeListenerForResettingBasketErrors$).toBeObservable(cold('|'));
+    });
+  });
+
+  describe('submitBasket$', () => {
+    beforeEach(() => {
+      store$.dispatch(loadBasketSuccess({ basket: { id: 'BID' } as Basket }));
+    });
+
+    it('should call the basketService for submitBasket', done => {
+      when(basketServiceMock.createRequisition(anyString())).thenReturn(of(undefined));
+      const payload = 'BID';
+      const action = submitBasket();
+      actions$ = of(action);
+
+      effects.createRequisition$.subscribe(() => {
+        verify(basketServiceMock.createRequisition(payload)).once();
+        done();
+      });
+    });
+
+    it('should map a valid request to action of type SubmitBasketBuccess', () => {
+      when(basketServiceMock.createRequisition(anyString())).thenReturn(of(undefined));
+
+      const action = submitBasket();
+      const completion = submitBasketSuccess();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.createRequisition$).toBeObservable(expected$);
+    });
+
+    it('should map an invalid request to action of type SubmitBasketFail', () => {
+      when(basketServiceMock.createRequisition(anyString())).thenReturn(
+        throwError(makeHttpError({ message: 'invalid' }))
+      );
+      const action = submitBasket();
+      const completion = submitBasketFail({ error: makeHttpError({ message: 'invalid' }) });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.createRequisition$).toBeObservable(expected$);
     });
   });
 });

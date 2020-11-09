@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { concatMap, filter, map, tap } from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
+import { concatMap, filter, map, tap, withLatestFrom } from 'rxjs/operators';
 
 import {
   BasketValidationResultType,
@@ -19,12 +20,19 @@ import {
   continueCheckoutWithIssues,
   loadBasketEligiblePaymentMethods,
   loadBasketEligibleShippingMethods,
+  submitBasket,
   validateBasket,
 } from './basket.actions';
+import { getCurrentBasket } from './basket.selectors';
 
 @Injectable()
 export class BasketValidationEffects {
-  constructor(private actions$: Actions, private router: Router, private basketService: BasketService) {}
+  constructor(
+    private actions$: Actions,
+    private router: Router,
+    private store: Store,
+    private basketService: BasketService
+  ) {}
 
   /**
    * validates the basket but doesn't change the route
@@ -87,10 +95,13 @@ export class BasketValidationEffects {
           }
         }
         return this.basketService.validateBasket(scopes).pipe(
-          concatMap(basketValidation =>
+          withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+          concatMap(([basketValidation, basket]) =>
             basketValidation.results.valid
               ? targetStep === 5 && !basketValidation.results.adjusted
-                ? [createOrder(), continueCheckoutSuccess({ targetRoute: undefined, basketValidation })]
+                ? basket.approval?.approvalRequired
+                  ? [submitBasket(), continueCheckoutSuccess({ targetRoute: undefined, basketValidation })]
+                  : [createOrder(), continueCheckoutSuccess({ targetRoute: undefined, basketValidation })]
                 : [continueCheckoutSuccess({ targetRoute, basketValidation })]
               : [continueCheckoutWithIssues({ targetRoute, basketValidation })]
           ),

@@ -1,38 +1,7 @@
-<div class="cart-header">
-  <h1 class="d-flex flex-wrap align-items-baseline">
-    <span class="cart-header-title">{{ 'checkout.receipt.tankyou.message' | translate }}</span>
-    <span class="header-note">
-      <span>{{ 'shopping_cart.transaction.text' | translate }}</span>
-      <ish-modal-dialog-link
-        linkText="shopping_cart.read_more.link"
-        [options]="{ titleText: 'checkout.safeandsecure.details.title' | translate, size: 'lg' }"
-        class="details-link"
-      >
-        <ish-content-include includeId="include.dialog.safeAndSecure.pagelet2-Include"></ish-content-include>
-      </ish-modal-dialog-link>
-    </span>
-  </h1>
-</div>
-
 <div *ngIf="order" class="row">
-  <div class="col-md-12">
-    <p *ngIf="order.statusCode === 'PENDING'" class="alert alert-info">
-      {{ 'checkout.receipt.order_pending.message' | translate }}
-    </p>
-  </div>
-
   <div class="col-md-12 col-lg-8">
-    <!-- Receipt message -->
-    <div class="section">
-      <p>
-        <span>{{ 'checkout.order.number.label' | translate }}</span>
-        <strong data-testing-id="order-document-number">
-          <a *ngIf="user; else plainOrderNo" [routerLink]="'/account/orders/' + order.id"> {{ order.documentNo }}</a>
-          <ng-template #plainOrderNo> {{ order.documentNo }}</ng-template>
-        </strong>
-      </p>
-      <p [innerHTML]="'checkout.receipt.notification.mail.text' | translate: { '0': order.invoiceToAddress.email }"></p>
-    </div>
+    <!-- header as content -->
+    <ng-content></ng-content>
 
     <div class="row d-flex">
       <!-- Invoice Address -->
@@ -73,18 +42,30 @@
   </div>
 
   <!-- order summary -->
-  <div class="col-md-12 col-lg-4 order-summary">
-    <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
-
-    <div class="cost-summary"><ish-basket-cost-summary [totals]="order.totals"></ish-basket-cost-summary></div>
-    <div *ngIf="user" class="cart-summary">
-      <h3>{{ 'checkout.account.email.registered.heading' | translate }}</h3>
-      {{ 'checkout.account.email.registered.text' | translate }}&nbsp;
-      <a routerLink="/account" data-testing-id="myaccount-link" class="text-nowrap">{{
-        'checkout.account.email.registered.link' | translate
-      }}</a
-      >.
+  <div class="col-md-12 col-lg-4">
+    <div class="text-right pt-3 pb-3">
+      <ul class="share-tools">
+        <li>
+          <a href="javascript:window.print();" class="link-print" rel="nofollow">
+            <fa-icon [icon]="['fas', 'print']"></fa-icon>
+            <span class="share-label">{{ 'checkout.receipt.print.button.label' | translate }}</span>
+          </a>
+        </li>
+      </ul>
     </div>
-    <a routerLink="/home" data-testing-id="home-link">{{ 'checkout.receipt.continue.shopping' | translate }}</a>
+    <div class="order-summary">
+      <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
+
+      <div class="cost-summary"><ish-basket-cost-summary [totals]="order.totals"></ish-basket-cost-summary></div>
+      <div *ngIf="order.customerNo" class="cart-summary">
+        <h3>{{ 'checkout.account.email.registered.heading' | translate }}</h3>
+        {{ 'checkout.account.email.registered.text' | translate }}&nbsp;
+        <a routerLink="/account" data-testing-id="myaccount-link" class="text-nowrap">{{
+          'checkout.account.email.registered.link' | translate
+        }}</a
+        >.
+      </div>
+      <a routerLink="/home" data-testing-id="home-link">{{ 'checkout.receipt.continue.shopping' | translate }}</a>
+    </div>
   </div>
 </div>
