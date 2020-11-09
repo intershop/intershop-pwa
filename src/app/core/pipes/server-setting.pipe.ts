@@ -1,9 +1,8 @@
-import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform } from '@angular/core';
+import { OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { log } from 'ish-core/utils/dev/operators';
 
 @Pipe({ name: 'ishServerSetting', pure: false })
 export class ServerSettingPipe implements PipeTransform, OnDestroy {
@@ -12,25 +11,20 @@ export class ServerSettingPipe implements PipeTransform, OnDestroy {
   private destroy$ = new Subject();
   private sub: Subscription;
 
-  constructor(private appFacade: AppFacade, private cdRef: ChangeDetectorRef) {}
+  constructor(private appFacade: AppFacade) {}
 
   transform(path: string) {
-    console.log('##', path);
-
     if (this.sub) {
-      // tslint:disable-next-line: ban
-      this.sub.unsubscribe();
+      return this.returnValue;
+    } else {
+      this.sub = this.appFacade
+        .serverSetting$(path)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(value => {
+          this.returnValue = value;
+        });
+      return this.returnValue;
     }
-
-    this.sub = this.appFacade
-      .serverSetting$(path)
-      .pipe(log('####'), takeUntil(this.destroy$))
-      .subscribe(value => {
-        this.returnValue = value;
-        this.cdRef.detectChanges();
-      });
-
-    return this.returnValue;
   }
 
   ngOnDestroy() {

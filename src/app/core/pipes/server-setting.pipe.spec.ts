@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { concat, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -57,18 +57,14 @@ describe('Server Setting Pipe', () => {
     expect(element).toMatchInlineSnapshot(`N/A`);
   });
 
-  it.skip('should render TEST when setting is set', done => {
-    when(appFacade.serverSetting$('service.ABC.runnable')).thenReturn(concat(of(false), of(true).pipe(delay(2000))));
+  it('should render TEST when setting is set', fakeAsync(() => {
+    when(appFacade.serverSetting$('service.ABC.runnable')).thenReturn(concat(of(false), of(true).pipe(delay(1000))));
     fixture.detectChanges();
 
-    setTimeout(() => {
-      expect(element).toMatchInlineSnapshot(`N/A`);
-    }, 1000);
+    expect(element).toMatchInlineSnapshot(`N/A`);
+    tick(1000);
 
-    setTimeout(() => {
-      fixture.detectChanges();
-      expect(element).toMatchInlineSnapshot(`TEST`);
-      done();
-    }, 3000);
-  });
+    fixture.detectChanges();
+    expect(element).toMatchInlineSnapshot(`TEST`);
+  }));
 });
