@@ -4,6 +4,8 @@ import { anyString, anything, capture, instance, mock, verify, when } from 'ts-m
 
 import { Address } from 'ish-core/models/address/address.model';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { OrderService } from 'ish-core/services/order/order.service';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { BasketItemUpdateType, BasketService } from './basket.service';
@@ -11,6 +13,7 @@ import { BasketItemUpdateType, BasketService } from './basket.service';
 describe('Basket Service', () => {
   let basketService: BasketService;
   let apiService: ApiService;
+  let orderService: OrderService;
 
   const basketMockData = {
     data: {
@@ -48,7 +51,8 @@ describe('Basket Service', () => {
 
   beforeEach(() => {
     apiService = mock(ApiService);
-    basketService = new BasketService(instance(apiService));
+    orderService = mock(OrderService);
+    basketService = new BasketService(instance(apiService), instance(orderService));
   });
 
   it("should get basket data when 'getBasket' is called", done => {
@@ -225,6 +229,17 @@ describe('Basket Service', () => {
 
     basketService.getBasketEligibleShippingMethods().subscribe(() => {
       verify(apiService.get(`baskets/current/eligible-shipping-methods`, anything())).once();
+      done();
+    });
+  });
+
+  it("should submit a basket for approval when 'submitBasket' is called", done => {
+    when(orderService.createOrder(anything(), anything())).thenReturn(
+      throwError(makeHttpError({ message: 'invalid', status: 422 }))
+    );
+
+    basketService.createRequisition('basketId').subscribe(() => {
+      verify(orderService.createOrder('basketId', anything())).once();
       done();
     });
   });

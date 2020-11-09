@@ -1,5 +1,20 @@
-<div data-testing-id="checkout-receipt-page">
-  <ish-checkout-receipt [order]="order$ | async" [user]="user$ | async"></ish-checkout-receipt>
+<div
+  *ngIf="{
+    order: order$ | async,
+    basket: submittedBasket$ | async
+  } as data"
+  data-testing-id="checkout-receipt-page"
+>
+  <ish-checkout-receipt [order]="data.basket || data.order">
+    <ish-lazy-checkout-receipt-requisition
+      *ngIf="data.basket; else orderReceiptHeader"
+      [basket]="data.basket"
+    ></ish-lazy-checkout-receipt-requisition>
+
+    <ng-template #orderReceiptHeader>
+      <ish-checkout-receipt-order [order]="data.order"></ish-checkout-receipt-order>
+    </ng-template>
+  </ish-checkout-receipt>
 
   <ish-loading *ngIf="loading$ | async"></ish-loading>
 </div>
