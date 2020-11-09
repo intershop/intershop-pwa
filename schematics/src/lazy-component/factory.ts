@@ -27,7 +27,7 @@ export function createLazyComponent(options: Options): Rule {
     }
     const workspace = await getWorkspace(host);
     const isProject = options.path.startsWith('projects/');
-
+    const projectName = isProject ? options.path.split('/')[1].trim() : '';
     const project = workspace.projects.get(isProject ? options.path.split('/')[1] : options.project);
 
     const originalPath = options.path.replace(/.*src\/app\//, '');
@@ -139,6 +139,7 @@ export function createLazyComponent(options: Options): Rule {
             bindings,
             imports,
             originalPath,
+            projectName,
             extension,
             originalName,
             onChanges,

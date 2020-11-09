@@ -33,15 +33,15 @@ export class <%= classify(name) %>Component implements OnInit <% if (bindings.le
   private component: ComponentRef<any>;<% } %>
 
   constructor(
-    private featureToggleService: FeatureToggleService,
+    <% if(!isProject) { %> private featureToggleService: FeatureToggleService, <% } %>
     private compiler: Compiler,
     private injector: Injector
   ) {}
 
   async ngOnInit() {
-    if (this.featureToggleService.enabled('<%= camelize(extension) %>')) {
+    <% if(!isProject) { %> if (this.featureToggleService.enabled('<%= camelize(extension) %>')) { <% } %>
       // prevent cyclic dependency warnings
-      const extension = '<%= dasherize(extension) %>';
+      const extension = '<% if(isProject) { %><%= dasherize(projectName) %><% } else { %><%=dasherize(extension)%><% } %>';
       const moduleObj = await import(`../../${extension}.module`);
       const module = moduleObj[Object.keys(moduleObj)[0]];
 
@@ -60,7 +60,7 @@ export class <%= classify(name) %>Component implements OnInit <% if (bindings.le
     <% } else { %>
       this.anchor.createComponent(factory).changeDetectorRef.markForCheck();
     <% } %>
-    }
+    <% if(!isProject){ %> } <% } %>
   }
 
 <% if (bindings.length) { %>
