@@ -5,7 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
-import { Requisition } from '../../models/requisition/requisition.model';
+import { Requisition, RequisitionStatus } from '../../models/requisition/requisition.model';
 
 @Component({
   selector: 'ish-buyer-page',
@@ -16,9 +16,9 @@ export class BuyerPageComponent implements OnInit, OnDestroy {
   requisitions$: Observable<Requisition[]>;
   error$: Observable<HttpError>;
   loading$: Observable<boolean>;
-  status$: Observable<string>;
+  status$: Observable<RequisitionStatus>;
 
-  status: string;
+  status: RequisitionStatus;
   columnsToDisplay: string[];
   private destroy$ = new Subject();
 
@@ -28,7 +28,7 @@ export class BuyerPageComponent implements OnInit, OnDestroy {
     this.requisitions$ = this.requisitionManagementFacade.requisitions$;
     this.error$ = this.requisitionManagementFacade.requisitionsError$;
     this.loading$ = this.requisitionManagementFacade.requisitionsLoading$;
-    this.status$ = this.requisitionManagementFacade.requisitionsStatus$;
+    this.status$ = this.requisitionManagementFacade.requisitionsStatus$ as Observable<RequisitionStatus>;
 
     this.status$.pipe(takeUntil(this.destroy$)).subscribe(status => {
       this.status = status;
