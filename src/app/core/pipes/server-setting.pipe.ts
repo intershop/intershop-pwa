@@ -4,6 +4,15 @@ import { takeUntil } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 
+/**
+ * Pipe
+ *
+ * Used on a string, this pipe will return the corresponding server setting by checking the general/serverConfig store.
+ * If it is set, the Pipe will return a truthy value.
+ *
+ * @example
+ * <example *ngIf="'services.ABC.runnable' | ishServerSetting"> ...</example>
+ */
 @Pipe({ name: 'ishServerSetting', pure: false })
 export class ServerSettingPipe implements PipeTransform, OnDestroy {
   private returnValue: unknown;
