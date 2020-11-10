@@ -61,6 +61,7 @@ kb_everyone
 
 - Setting certain cookies can no longer be dependent on the `cookieLawSeen$` state but needs to be checked with `cookieService.cookieConsentFor()`.
 - The login/logout handling is abstracted as identity provider service.
+- The format for setting up Multi-Site support with nginx has changed.
 
 ## [0.24.0](https://github.com/intershop/intershop-pwa/releases/tag/0.24.0) (2020-09-30)
 

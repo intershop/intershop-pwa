@@ -14,6 +14,10 @@ A basic configuration is already provided.
 The cookie consent configuration and usage is documented in our [Cookie Consent Guide](./cookie-consent.md).
 With this change it is necessary to adapt all uses of the `cookiesService.cookieLawSeen$` observable with the new synchronous method - `cookiesService.cookieConsentFor('tracking')` - provided to check for the required cookie consent.
 
+We reworked the configuration format for setting up multiple channels in the nginx to enable context-path support.
+Multiple `PWA_X_` environment properties are no longer supported, instead a structured configuration has to be supplied.
+For more information see [Nginx documentation](./nginx-startup.md).
+
 ## 0.23 to 0.24
 
 We introduced a [localization file clean up script](../concepts/localization.md#localization-file-clean-up-process) that removes all unused localization keys from the localization files and sorts the remaining keys.
