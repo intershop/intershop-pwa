@@ -62,7 +62,7 @@ export class HierarchiesCreateGroupPageComponent implements OnInit {
     return this.form.invalid && this.submitted;
   }
 
-  get group() {
-    return this.form.get('org_group');
+  get group(): FormGroup {
+    return this.form.get('org_group') as FormGroup;
   }
 }
