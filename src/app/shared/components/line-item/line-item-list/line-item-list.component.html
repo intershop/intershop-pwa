@@ -113,27 +113,11 @@
 
         <!-- Prices -->
         <div class="col-md-2 d-none d-md-block list-item column-price single-price">
-          <!-- Original Single Base Price  -->
-          <p *ngIf="pli.originSingleBasePrice">
-            {{ 'quote.items.original_price.label' | translate }} {{ pli.originSingleBasePrice | ishPrice }}
-          </p>
-
           <!-- (Suggested) Single Base Price  -->
-          <p>
-            <ng-container *ngIf="pli.originSingleBasePrice">{{
-              'quote.items.suggested_price.label' | translate
-            }}</ng-container>
-            {{ pli.singleBasePrice | ishPrice }}
-          </p>
+          <p>{{ pli.singleBasePrice | ishPrice }}</p>
         </div>
         <div *ngIf="pli.totals" class="col-3 col-md-2 list-item column-price">
           <div>
-            <p *ngIf="pli.totals.originTotal">{{ pli.totals.originTotal | ishPrice }}</p>
-
-            <!-- (Suggested) Total Price  -->
-            <span *ngIf="pli.totals.originTotal" class="d-md-none">{{
-              'quote.items.suggested_price.label' | translate
-            }}</span>
             <div data-testing-id="total-price">{{ pli.totals.total | ishPrice }}</div>
           </div>
 
@@ -171,7 +155,7 @@
       label="shopping_cart.pli.qty.label"
       labelClass="d-xl-none col-form-label"
       inputClass="w-100"
-      min="0"
+      [min]="0"
       markRequiredLabel="off"
       [max]="maxOrderQuantity"
       [errorMessages]="{

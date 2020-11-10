@@ -1,7 +1,7 @@
 <div class="section">
   <h2>{{ 'account.order.most_recent.heading' | translate }}</h2>
 
-  <ish-order-list maxListItems="5" [compact]="true"></ish-order-list>
+  <ish-order-list [maxListItems]="5" [compact]="true"></ish-order-list>
 
   <a routerLink="/account/orders">{{ 'account.order.view_all_order.link' | translate }}</a>
 </div>

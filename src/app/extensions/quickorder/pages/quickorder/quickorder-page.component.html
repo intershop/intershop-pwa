@@ -71,7 +71,7 @@
                 [form]="item"
                 controlName="quantity"
                 inputClass="w-100"
-                min="1"
+                [min]="1"
                 [errorMessages]="{
                   required: 'product.quantity.notempty.text',
                   integer: 'product.quantity.integer.text',

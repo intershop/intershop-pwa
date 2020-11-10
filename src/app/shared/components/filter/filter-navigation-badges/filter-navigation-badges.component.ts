@@ -12,7 +12,7 @@ export class FilterNavigationBadgesComponent implements OnChanges {
   @Input() filterNavigation: FilterNavigation;
   @Output() applyFilter = new EventEmitter<{ searchParameter: URLFormParams }>();
   @Output() clearFilters = new EventEmitter<void>();
-  selected: { searchParameter: string; facetName: string; filterName: string }[];
+  selected: { searchParameter: URLFormParams; facetName: string; filterName: string }[];
 
   ngOnChanges() {
     this.selected =

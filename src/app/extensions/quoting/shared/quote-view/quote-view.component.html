@@ -96,13 +96,7 @@
 
     <div class="section">
       <h3>{{ 'quote.items.table.heading' | translate }}</h3>
-      <ish-line-item-list
-        *ngIf="quote.items"
-        [lineItems]="quote.items"
-        [editable]="false"
-        lineItemViewType="availability"
-        [total]="quote.total"
-      ></ish-line-item-list>
+      <ish-quote-line-item-list *ngIf="quote.items"></ish-quote-line-item-list>
     </div>
   </ng-container>
 </ng-container>

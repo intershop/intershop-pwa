@@ -7,9 +7,9 @@ import { instance, mock } from 'ts-mockito';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
-import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 
 import { QuoteContextFacade } from '../../facades/quote-context.facade';
+import { QuoteLineItemListComponent } from '../quote-line-item-list/quote-line-item-list.component';
 import { QuoteStateComponent } from '../quote-state/quote-state.component';
 
 import { QuoteViewComponent } from './quote-view.component';
@@ -23,7 +23,7 @@ describe('Quote View Component', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
-        MockComponent(LineItemListComponent),
+        MockComponent(QuoteLineItemListComponent),
         MockComponent(QuoteStateComponent),
         MockDirective(ServerHtmlDirective),
         MockPipe(DatePipe),

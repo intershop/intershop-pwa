@@ -28,7 +28,7 @@
         [routerLink]="[]"
         queryParamsHandling="merge"
         [queryParams]="{ view: 'list' }"
-        replaceUrl
+        [replaceUrl]="true"
         [fragment]="fragmentOnRouting"
       >
         <fa-icon [icon]="['fas', 'list']"></fa-icon>
@@ -40,7 +40,7 @@
         [routerLink]="[]"
         queryParamsHandling="merge"
         [queryParams]="{ view: 'grid' }"
-        replaceUrl
+        [replaceUrl]="true"
         [fragment]="fragmentOnRouting"
       >
         <fa-icon [icon]="['fas', 'th']"></fa-icon>

@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { AllProductTypes } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-recently-page',
@@ -10,7 +9,7 @@ import { AllProductTypes } from 'ish-core/models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecentlyPageComponent implements OnInit {
-  products$: Observable<AllProductTypes>;
+  products$: Observable<string[]>;
 
   constructor(private shoppingFacade: ShoppingFacade) {}
 

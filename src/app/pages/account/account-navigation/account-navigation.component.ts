@@ -60,17 +60,18 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
     this.isMobileView = this.deviceType === 'tablet' || this.deviceType === 'mobile';
   }
 
-  get currentPath() {
-    return location.pathname;
-  }
-
-  navigateTo(link) {
-    if (link) {
-      this.router.navigate([link]);
+  navigateTo(target: EventTarget) {
+    if (target) {
+      // tslint:disable-next-line: no-string-literal
+      this.router.navigate([target['value']]);
     }
   }
 
   get unsorted() {
     return () => 0;
+  }
+
+  isSelected(itemValueLink: string): string {
+    return itemValueLink === location.pathname ? 'selected' : undefined;
   }
 }

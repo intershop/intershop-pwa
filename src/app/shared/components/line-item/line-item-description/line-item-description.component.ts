@@ -23,7 +23,7 @@ import { ProductHelper } from 'ish-core/models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LineItemDescriptionComponent {
-  @Input() pli: LineItemView;
+  @Input() pli: Partial<LineItemView>;
   @Input() product: ProductView;
   @Input() editable = true;
   @Input() lineItemViewType?: 'simple' | 'availability';

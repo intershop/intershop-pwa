@@ -1,5 +1,5 @@
 <div class="form-group">
-  <select (change)="change($event.target.value)" class="form-control mw-100">
+  <select (change)="change($event.target)" class="form-control mw-100">
     <option *ngFor="let opt of parameter.domain.elements" [value]="opt.name" [selected]="opt.selected">
       {{ opt.description }}
     </option>

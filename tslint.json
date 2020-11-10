@@ -434,6 +434,12 @@
           "message": "Use MockComponent for individual components in tests instead."
         },
         {
+          "import": "^MockComponents$",
+          "from": "ng-mocks",
+          "filePattern": "^.*\\.spec\\.ts*$",
+          "message": "Use MockComponent for individual components in tests instead."
+        },
+        {
           "import": "^PipesModule$",
           "from": "ish-core/pipes.module",
           "filePattern": "^.*\\.spec\\.ts*$",

@@ -33,6 +33,6 @@ export class SelectComponent extends FormElementComponent implements OnInit {
     super.init();
 
     // show empty option if the control value is empty
-    this.showEmptyOption = !this.form.get(this.controlName).value;
+    this.showEmptyOption = !this.formControl.value;
   }
 }

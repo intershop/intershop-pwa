@@ -118,11 +118,11 @@ export class ProductPageComponent implements OnInit, OnDestroy {
 
   variationSelected(
     event: { selection: VariationSelection; changedAttribute?: string },
-    product: VariationProductView
+    product: ProductView | VariationProductView | VariationProductMasterView
   ) {
     const variation = ProductVariationHelper.findPossibleVariationForSelection(
       event.selection,
-      product,
+      product as VariationProductView,
       event.changedAttribute
     );
     this.redirectToVariation(variation);

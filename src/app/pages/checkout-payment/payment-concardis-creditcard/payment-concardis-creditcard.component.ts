@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { range } from 'lodash-es';
 import { takeUntil } from 'rxjs/operators';
 
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
+import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { PaymentConcardisComponent } from '../payment-concardis/payment-concardis.component';
@@ -31,7 +33,20 @@ declare var PayEngine: any;
 export class PaymentConcardisCreditcardComponent extends PaymentConcardisComponent implements OnInit {
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
     super(scriptLoader, cd);
+
+    this.monthOptions = range(1, 13)
+      .map(n => n.toString().padStart(2, '0'))
+      .map(n => ({ label: n, value: n }));
+
+    const currentYear = new Date().getFullYear();
+    this.yearOptions = range(currentYear, currentYear + 7).map(n => ({
+      label: n.toString(),
+      value: n.toString().slice(2),
+    }));
   }
+
+  monthOptions: SelectOption[];
+  yearOptions: SelectOption[];
 
   iframesReference: {
     // iframesReference, id needed by the payment host

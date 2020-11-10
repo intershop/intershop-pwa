@@ -7,9 +7,9 @@
   <img *ngIf="group.properties?.tc_group_picture" [src]="getImageUrl(group.properties?.tc_group_picture) | async" />
 
   <ng-container *ngFor="let item of group?.members; let last = last">
-    <ish-tacton-group *ngIf="isGroup(item); else isParameter" [group]="item" [level]="level + 1"></ish-tacton-group>
-    <ng-template #isParameter>
-      <ish-tacton-parameter [item]="item"></ish-tacton-parameter>
+    <ish-tacton-group *ngIf="isGroup(item); else parameter" [group]="item" [level]="level + 1"></ish-tacton-group>
+    <ng-template #parameter>
+      <ish-tacton-parameter *ngIf="isParameter(item)" [item]="item"></ish-tacton-parameter>
     </ng-template>
     <span *ngIf="!last" ishIntersectionObserver (visibilityChange)="onIntersection(group.name, $event)"></span>
   </ng-container>

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponents } from 'ng-mocks';
+import { MockComponent } from 'ng-mocks';
 
 import { Product } from 'ish-core/models/product/product.model';
 import { ProductRatingStarComponent } from 'ish-shared/components/product/product-rating-star/product-rating-star.component';
@@ -13,7 +13,7 @@ describe('Product Rating Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MockComponents(ProductRatingStarComponent), ProductRatingComponent],
+      declarations: [MockComponent(ProductRatingStarComponent), ProductRatingComponent],
     }).compileComponents();
   });
 

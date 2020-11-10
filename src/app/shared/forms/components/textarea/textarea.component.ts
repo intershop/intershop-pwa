@@ -14,9 +14,9 @@ import { FormElementComponent } from 'ish-shared/forms/components/form-element/f
  *    [form]="form"
  *    [errorMessages]="[{ required: 'textarea.required.error' }]"
  *    label="textarea.label"
- *    maxlength="30000"
+ *    [maxlength]="30000"
  *    placeholder="textarea.placeholder"
- *    rows="5"
+ *    [rows]="5"
  *    [spellcheck]="true"
  * ></ish-textarea>
  */
@@ -47,12 +47,9 @@ export class TextareaComponent extends FormElementComponent implements OnInit, O
     super.init();
     if (this.maxlength) {
       this.charactersRemaining = this.maxlength;
-      this.form
-        .get(this.controlName)
-        .valueChanges.pipe(takeUntil(this.destroy$))
-        .subscribe(text => {
-          this.charactersRemaining = this.maxlength - text.length;
-        });
+      this.formControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(text => {
+        this.charactersRemaining = this.maxlength - text.length;
+      });
     }
   }
 

@@ -17,7 +17,6 @@ import { SelectAddressComponent } from './components/select-address/select-addre
 import { SelectCountryComponent } from './components/select-country/select-country.component';
 import { SelectRegionComponent } from './components/select-region/select-region.component';
 import { SelectTitleComponent } from './components/select-title/select-title.component';
-import { SelectYearMonthComponent } from './components/select-year-month/select-year-month.component';
 import { SelectComponent } from './components/select/select.component';
 import { TacCheckboxComponent } from './components/tac-checkbox/tac-checkbox.component';
 import { TextareaComponent } from './components/textarea/textarea.component';
@@ -34,7 +33,6 @@ const exportedComponents = [
   SelectCountryComponent,
   SelectRegionComponent,
   SelectTitleComponent,
-  SelectYearMonthComponent,
   ShowFormFeedbackDirective,
   TacCheckboxComponent,
   TextareaComponent,
