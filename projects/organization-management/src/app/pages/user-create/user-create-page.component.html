@@ -2,7 +2,7 @@
   <div class="col-md-12">
     <h1>{{ 'account.user.new.heading' | translate }}</h1>
     <form [formGroup]="form" (ngSubmit)="submitForm()" class="form-horizontal" novalidate="novalidate">
-      <ish-user-profile-form [form]="profileForm" [error]="userError$ | async"></ish-user-profile-form>
+      <ish-user-profile-form [form]="profile" [error]="userError$ | async"></ish-user-profile-form>
       <ish-user-roles-selection formControlName="roleIDs"></ish-user-roles-selection>
       <ish-user-budget-form *ishOrderApproval [form]="budgetsForm"></ish-user-budget-form>
       <div class="row">
