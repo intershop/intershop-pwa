@@ -16,7 +16,12 @@ import * as ts from 'typescript';
 
 import { determineArtifactName, findDeclaringModule } from '../utils/common';
 import { applyLintFix } from '../utils/lint-fix';
-import { addDeclarationToNgModule, addDecoratorToClass, addExportToNgModule } from '../utils/registration';
+import {
+  addDeclarationToNgModule,
+  addDecoratorToClass,
+  addExportToNgModule,
+  addLazyExportToBarrelFile,
+} from '../utils/registration';
 
 import { PWALazyComponentOptionsSchema as Options } from './schema';
 
@@ -120,6 +125,7 @@ export function createLazyComponent(options: Options): Rule {
     if (!options.ci) {
       operations.push(addDeclarationToNgModule(options));
       operations.push(addExportToNgModule(options));
+      operations.push(addLazyExportToBarrelFile(options));
       operations.push(
         addDecoratorToClass(
           componentPath,

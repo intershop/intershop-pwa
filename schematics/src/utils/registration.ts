@@ -134,6 +134,11 @@ export function insertImport(
   }
 }
 
+export function insertExport(recorder: UpdateRecorder, artifactName: string, relativePath: string) {
+  const imp = `export { ${artifactName} } from '${relativePath}';`;
+  recorder.insertLeft(0, `${imp}\n\n`);
+}
+
 export function addImportToNgModuleBefore(
   options: {
     module?: string;
@@ -177,6 +182,15 @@ export function addImportToFile(options: { module?: string; artifactName?: strin
     insertImport(source, importRecorder, options.artifactName, relativePath);
 
     host.commitUpdate(importRecorder);
+  };
+}
+
+export function addLazyExportToBarrelFile(options: { path?: string; name?: string; artifactName?: string }): Rule {
+  const barrelFile = `${options.path}/index.ts`;
+  return host => {
+    const exportRecorder = host.beginUpdate(barrelFile);
+    insertExport(exportRecorder, options.artifactName, `./${options.name}/${options.name}.component`);
+    host.commitUpdate(exportRecorder);
   };
 }
 
