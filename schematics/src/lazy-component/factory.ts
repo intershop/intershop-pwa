@@ -182,38 +182,6 @@ export function createLazyComponent(options: Options): Rule {
       )
     );
 
-    // if (exportsModuleExists) {
-    //   operations.push(
-    //     mergeWith(
-    //       apply(url(exportsModulePath), [
-    //         forEach(() => {
-    //           host.overwrite(exportsModulePath, exportsModuleContent);
-    //           // tslint:disable-next-line: no-null-keyword
-    //           return null;
-    //         }),
-    //       ])
-    //     )
-    //   );
-    //   operations.push(
-    //     addDeclarationToNgModule({
-    //       ...options,
-    //       module: findModuleFromOptions(host, { name: `${classify(exportsModuleName)}Exports` }),
-    //     })
-    //   );
-    //   // addDeclarationToModule(
-    //   //   readIntoSourceFile(host, exportsModulePath),
-    //   //   exportsModulePath,
-    //   //   classify(options.name),
-    //   //   componentPath
-    //   // );
-    //   // operations.push(
-    //   //   addExportToNgModule({
-    //   //     ...options,
-    //   //     module: findModuleFromOptions(host, { ...options, name: exportsModuleName }),
-    //   //   })
-    //   // );
-    // }
-
     if (!options.ci) {
       operations.push(applyLintFix());
     }
