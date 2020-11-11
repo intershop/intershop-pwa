@@ -186,6 +186,12 @@ If the feature is deactivated, the user is sent to the error page on accessing.
 <ish-product-add-to-compare *ishFeature="'compare'"> ...</ish-product-add-to-compare>
 ```
 
+**Pipe**
+
+```html
+<ish-product-add-to-compare *ngIf="'compare' | ishFeature"> ...</ish-product-add-to-compare>
+```
+
 **Service**
 
 ```typescript
