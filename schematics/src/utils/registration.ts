@@ -8,7 +8,7 @@ import {
   addProviderToModule,
 } from '@schematics/angular/utility/ast-utils';
 import { InsertChange } from '@schematics/angular/utility/change';
-import { buildRelativePath } from '@schematics/angular/utility/find-module';
+import { buildRelativePath, findModule } from '@schematics/angular/utility/find-module';
 import { ImportKind, findImports, forEachToken } from 'tsutils';
 import * as ts from 'typescript';
 
@@ -222,5 +222,12 @@ export function addDecoratorToClass(
         }
       }
     );
+  };
+}
+
+export function updateModule(options): Rule {
+  return host => {
+    options.module = findModule(host, options.path);
+    return host;
   };
 }

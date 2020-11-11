@@ -8,6 +8,7 @@ import {
   forEach,
   mergeWith,
   move,
+  schematic,
   url,
 } from '@angular-devkit/schematics';
 import { tsquery } from '@phenomnomnominal/tsquery';
@@ -21,6 +22,7 @@ import {
   addDecoratorToClass,
   addExportToNgModule,
   addLazyExportToBarrelFile,
+  updateModule,
 } from '../utils/registration';
 
 import { PWALazyComponentOptionsSchema as Options } from './schema';
@@ -119,13 +121,28 @@ export function createLazyComponent(options: Options): Rule {
         }
       }
     }
+    const exportsModuleName = `${isProject ? projectName : extension}-exports`;
+    const exportsModuleExists = host.exists(`${options.path}/${exportsModuleName}.module.ts`);
 
     const operations = [];
 
     if (!options.ci) {
+      if (!exportsModuleExists) {
+        operations.push(
+          schematic('module', {
+            ...options,
+            name: exportsModuleName,
+            flat: true,
+          })
+        );
+        operations.push(updateModule(options));
+      }
       operations.push(addDeclarationToNgModule(options));
       operations.push(addExportToNgModule(options));
-      operations.push(addLazyExportToBarrelFile(options));
+
+      if (isProject) {
+        operations.push(addLazyExportToBarrelFile(options));
+      }
       operations.push(
         addDecoratorToClass(
           componentPath,
@@ -164,6 +181,38 @@ export function createLazyComponent(options: Options): Rule {
         ])
       )
     );
+
+    // if (exportsModuleExists) {
+    //   operations.push(
+    //     mergeWith(
+    //       apply(url(exportsModulePath), [
+    //         forEach(() => {
+    //           host.overwrite(exportsModulePath, exportsModuleContent);
+    //           // tslint:disable-next-line: no-null-keyword
+    //           return null;
+    //         }),
+    //       ])
+    //     )
+    //   );
+    //   operations.push(
+    //     addDeclarationToNgModule({
+    //       ...options,
+    //       module: findModuleFromOptions(host, { name: `${classify(exportsModuleName)}Exports` }),
+    //     })
+    //   );
+    //   // addDeclarationToModule(
+    //   //   readIntoSourceFile(host, exportsModulePath),
+    //   //   exportsModulePath,
+    //   //   classify(options.name),
+    //   //   componentPath
+    //   // );
+    //   // operations.push(
+    //   //   addExportToNgModule({
+    //   //     ...options,
+    //   //     module: findModuleFromOptions(host, { ...options, name: exportsModuleName }),
+    //   //   })
+    //   // );
+    // }
 
     if (!options.ci) {
       operations.push(applyLintFix());
