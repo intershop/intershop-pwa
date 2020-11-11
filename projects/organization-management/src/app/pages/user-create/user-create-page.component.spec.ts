@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
@@ -30,6 +31,7 @@ describe('User Create Page Component', () => {
         MockComponent(UserBudgetFormComponent),
         MockComponent(UserProfileFormComponent),
         MockComponent(UserRolesSelectionComponent),
+        MockPipe(ServerSettingPipe),
         UserCreatePageComponent,
       ],
       providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],

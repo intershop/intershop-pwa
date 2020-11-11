@@ -66,7 +66,10 @@
     </div>
   </div>
 
-  <ish-user-detail-budget *ishOrderApproval [budget]="user.budgets"></ish-user-detail-budget>
+  <ish-user-detail-budget
+    *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting"
+    [budget]="user.budgets"
+  ></ish-user-detail-budget>
 </ng-container>
 
 <a routerLink=".." data-testing-id="back-to-user-management">{{

@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
@@ -45,6 +46,7 @@ describe('User Edit Budget Page Component', () => {
         MockComponent(ErrorMessageComponent),
         MockComponent(LoadingComponent),
         MockComponent(UserBudgetFormComponent),
+        MockPipe(ServerSettingPipe),
         UserEditBudgetPageComponent,
       ],
       providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
