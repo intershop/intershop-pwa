@@ -32,7 +32,7 @@ describe('Requisition Summary Component', () => {
       requisitionNo: '4712',
       approval: {
         status: 'Approval Pending',
-        statusCode: 'pending',
+        statusCode: 'PENDING',
         customerApprovers: [
           { firstName: 'Jack', lastName: 'Link' },
           { firstName: 'Bernhhard', lastName: 'Boldner' },

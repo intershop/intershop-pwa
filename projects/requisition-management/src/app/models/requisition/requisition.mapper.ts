@@ -36,8 +36,6 @@ export class RequisitionMapper {
           approval: {
             ...data.approvalStatus,
             customerApprovers: data.approval?.customerApproval?.approvers,
-            /* ToDo: IS-30670: get the status and the statusCode from server */
-            statusCode: data.approvalStatus?.status,
           },
         };
       } else {

@@ -3,7 +3,7 @@ import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { User } from 'ish-core/models/user/user.model';
 
-export type RequisitionStatus = 'pending' | 'approved' | 'rejected';
+export type RequisitionStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
 
 export type RequisitionViewer = 'buyer' | 'approver';
 

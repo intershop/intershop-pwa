@@ -29,7 +29,7 @@ describe('Requisition Mapper', () => {
         creationDate: 12345678,
         lineItemCount: 2,
         approvalStatus: {
-          status: 'approved',
+          status: 'APPROVED',
           approver: { firstName: 'Bernhard', lastName: 'Boldner' },
           approvalDate: 76543627,
         },
@@ -54,8 +54,7 @@ describe('Requisition Mapper', () => {
               "lastName": "Boldner",
             },
             "customerApprovers": undefined,
-            "status": "approved",
-            "statusCode": "approved",
+            "status": "APPROVED",
           },
           "bucketId": undefined,
           "commonShipToAddress": undefined,

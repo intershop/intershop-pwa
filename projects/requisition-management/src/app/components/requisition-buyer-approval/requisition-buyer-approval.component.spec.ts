@@ -50,7 +50,7 @@ describe('Requisition Buyer Approval Component', () => {
       requisitionNo: '0001',
       orderNo: '10001',
       approval: {
-        statusCode: 'approved',
+        statusCode: 'APPROVED',
         approver: { firstName: 'Bernhard', lastName: 'Boldner' },
         approvalDate: 76543627,
       },
@@ -92,7 +92,7 @@ describe('Requisition Buyer Approval Component', () => {
   });
 
   it('should display budget including this order information if approval status pending', () => {
-    component.requisition.approval.statusCode = 'pending';
+    component.requisition.approval.statusCode = 'PENDING';
     component.ngOnChanges();
     fixture.detectChanges();
     expect(element.textContent.replace(/^\s*[\r\n]*/gm, '')).toMatchInlineSnapshot(`
