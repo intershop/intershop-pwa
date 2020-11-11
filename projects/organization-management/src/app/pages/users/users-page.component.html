@@ -24,7 +24,7 @@
         </div>
         <div class="col-5 list-item">
           <ish-user-budget
-            *ishOrderApproval
+            *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting"
             [budget]="user.budgets"
             [attr.data-testing-id]="'user-budget-' + user.login"
           ></ish-user-budget>

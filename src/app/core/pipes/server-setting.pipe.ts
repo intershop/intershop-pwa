@@ -23,15 +23,19 @@ export class ServerSettingPipe implements PipeTransform, OnDestroy {
   constructor(private appFacade: AppFacade) {}
 
   transform(path: string) {
-    if (this.sub) {
-      return this.returnValue;
+    if (path === 'always') {
+      return true;
+    } else if (path === 'never') {
+      return false;
     } else {
-      this.sub = this.appFacade
-        .serverSetting$(path)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(value => {
-          this.returnValue = value;
-        });
+      if (!this.sub) {
+        this.sub = this.appFacade
+          .serverSetting$(path)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(value => {
+            this.returnValue = value;
+          });
+      }
       return this.returnValue;
     }
   }

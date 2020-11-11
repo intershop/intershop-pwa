@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { Observable, combineLatest, merge, noop } from 'rxjs';
+import { combineLatest, merge, noop } from 'rxjs';
 import { filter, map, mapTo, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
 
 import { getAvailableLocales, getCurrentLocale, getDeviceType, getICMBaseURL } from 'ish-core/store/core/configuration';
@@ -12,7 +12,6 @@ import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { getAllCountries, getCountriesLoading, loadCountries } from 'ish-core/store/general/countries';
 import { getRegionsByCountryCode, loadRegions } from 'ish-core/store/general/regions';
 import { getServerConfigParameter } from 'ish-core/store/general/server-config';
-import { whenTruthy } from 'ish-core/utils/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AppFacade {
@@ -79,20 +78,6 @@ export class AppFacade {
   customerRestResource$ = this.isAppTypeREST$.pipe(
     withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
     map(([isRest, customer]) => AppFacade.getCustomerRestResource(!customer || customer.isBusinessCustomer, isRest))
-  );
-
-  /**
-   * order approval service check
-   */
-
-  orderApprovalEnabled$: Observable<boolean> = this.store.pipe(
-    select(
-      getServerConfigParameter<{
-        OrderApprovalServiceDefinition: { runnable: boolean };
-      }>('services')
-    ),
-    whenTruthy(),
-    map(services => services.OrderApprovalServiceDefinition && services.OrderApprovalServiceDefinition.runnable)
   );
 
   static getCustomerRestResource(

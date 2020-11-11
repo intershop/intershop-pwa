@@ -4,8 +4,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 
 import { AccountUserInfoComponent } from '../account-user-info/account-user-info.component';
 
@@ -18,10 +18,14 @@ describe('Account Navigation Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AccountNavigationComponent, MockComponent(AccountUserInfoComponent), MockPipe(FeatureTogglePipe)],
+      declarations: [
+        AccountNavigationComponent,
+        MockComponent(AccountUserInfoComponent),
+        MockPipe(FeatureTogglePipe, () => true),
+        MockPipe(ServerSettingPipe, () => true),
+      ],
       imports: [
         AuthorizationToggleModule.forTesting('APP_B2B_MANAGE_USERS', 'APP_B2B_PURCHASE'),
-        FeatureToggleModule.forTesting('quoting', 'orderTemplates'),
         RouterTestingModule,
         TranslateModule.forRoot(),
       ],
@@ -55,13 +59,7 @@ describe('Account Navigation Component', () => {
     expect(element.textContent).toContain('account.organization.user_management');
   });
 
-  it('should not display link to requisition list if order approval service is disabled', () => {
-    fixture.detectChanges();
-    expect(element.textContent).not.toContain('account.requisitions.requisitions');
-  });
-
   it('should display link to requisition list if order approval service is enabled', () => {
-    component.isOrderApprovalEnabled = true;
     fixture.detectChanges();
     expect(element.textContent).toContain('account.requisitions.requisitions');
   });
