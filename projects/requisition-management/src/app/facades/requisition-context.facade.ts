@@ -64,12 +64,12 @@ export class RequisitionContextFacade
   }
 
   approveRequisition$() {
-    this.store.dispatch(updateRequisitionStatus({ requisitionId: this.get('entity', 'id'), status: 'approved' }));
+    this.store.dispatch(updateRequisitionStatus({ requisitionId: this.get('entity', 'id'), status: 'APPROVED' }));
   }
 
   rejectRequisition$(comment?: string) {
     this.store.dispatch(
-      updateRequisitionStatus({ requisitionId: this.get('entity', 'id'), status: 'rejected', approvalComment: comment })
+      updateRequisitionStatus({ requisitionId: this.get('entity', 'id'), status: 'REJECTED', approvalComment: comment })
     );
   }
 }

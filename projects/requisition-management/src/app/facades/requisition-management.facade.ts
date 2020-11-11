@@ -27,7 +27,7 @@ export class RequisitionManagementFacade {
 
   requisitionsStatus$ = this.store.pipe(
     select(selectRouteParam('status')),
-    map(status => status || 'pending')
+    map(status => status || 'PENDING')
   );
 
   selectedRequisition$ = this.store.pipe(
@@ -58,7 +58,7 @@ export class RequisitionManagementFacade {
       )
     ),
     tap(([istatus, iview]) => {
-      const status = (istatus as RequisitionStatus) || 'pending';
+      const status = (istatus as RequisitionStatus) || 'PENDING';
       const view = iview as RequisitionViewer;
       this.store.dispatch(loadRequisitions({ view, status }));
     }),

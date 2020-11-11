@@ -81,7 +81,7 @@
     <ng-container *ngTemplateOutlet="approvalButtonBar; context: { requisition: requisition }"></ng-container>
 
     <ng-template #approvalButtonBar let-requisition="requisition">
-      <div *ngIf="requisition.approval?.statusCode === 'pending' && view === 'approver'" class="section text-right">
+      <div *ngIf="requisition.approval?.statusCode === 'PENDING' && view === 'approver'" class="section text-right">
         <button (click)="rejectDialog.show()" type="button" class="btn btn-secondary">
           {{ 'approval.detailspage.reject.button.label' | translate }}
         </button>

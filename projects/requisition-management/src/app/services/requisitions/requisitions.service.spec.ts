@@ -38,7 +38,7 @@ describe('Requisitions Service', () => {
   });
 
   it('should call the getRequisitions of customer API when fetching requisitions', done => {
-    requisitionsService.getRequisitions('buyer', 'pending').subscribe(() => {
+    requisitionsService.getRequisitions('buyer', 'PENDING').subscribe(() => {
       verify(apiServiceMock.get('customers/4711/users/pmiller@test.intershop.de/requisitions', anything())).once();
       done();
     });
@@ -52,7 +52,7 @@ describe('Requisitions Service', () => {
   });
 
   it('should call updateRequisitionStatus of customer API when patching a requisition status', done => {
-    requisitionsService.updateRequisitionStatus('4712', 'approved').subscribe(() => {
+    requisitionsService.updateRequisitionStatus('4712', 'APPROVED').subscribe(() => {
       verify(
         apiServiceMock.patch('customers/4711/users/pmiller@test.intershop.de/requisitions/4712', anything(), anything())
       ).once();

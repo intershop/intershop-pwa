@@ -44,7 +44,7 @@
             {{ requisition.userBudgets.spentBudget | ishPrice }} ({{ spentPercentage | percent }})
           </span>
         </p>
-        <p *ngIf="requisition.approval.statusCode !== 'approved'; else leftBudgetDisplay" class="row">
+        <p *ngIf="requisition.approval.statusCode !== 'APPROVED'; else leftBudgetDisplay" class="row">
           <span class="col-6">{{ 'approval.detailspage.budget.including_order.label' | translate }}</span>
           <span class="col-6" [ngClass]="{ 'text-danger': spentPercentageIncludingThisOrder > 1 }">
             {{ spentBudgetIncludingThisOrder | ishPrice }} ({{ spentPercentageIncludingThisOrder | percent }})

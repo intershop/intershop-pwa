@@ -33,7 +33,7 @@ export class ApproverPageComponent implements OnInit, OnDestroy {
     this.status$.pipe(takeUntil(this.destroy$)).subscribe(status => {
       this.status = status;
       switch (status) {
-        case 'approved':
+        case 'APPROVED':
           this.columnsToDisplay = [
             'requisitionNo',
             'orderNoSimple',
@@ -43,7 +43,7 @@ export class ApproverPageComponent implements OnInit, OnDestroy {
             'orderTotal',
           ];
           break;
-        case 'rejected':
+        case 'REJECTED':
           this.columnsToDisplay = [
             'requisitionNo',
             'creationDate',

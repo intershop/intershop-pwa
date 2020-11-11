@@ -27,7 +27,7 @@ const requisitions = [
     id: 'testUUID',
     requisitionNo: '0001',
     user: { firstName: 'Patricia', lastName: 'Miller' },
-    approval: { status: 'pending' },
+    approval: { status: 'pending', statusCode: 'PENDING' },
     lineItems: [
       ({
         id: 'BIID',
@@ -43,7 +43,7 @@ const requisitions = [
     id: 'testUUID2',
     requisitionNo: '0002',
     user: { firstName: 'Jack', lastName: 'Miller' },
-    approval: { status: 'pending' },
+    approval: { status: 'pending', statusCode: 'PENDING' },
   },
 ] as Requisition[];
 
@@ -75,7 +75,7 @@ describe('Requisitions Effects', () => {
 
   describe('loadRequisitions$', () => {
     it('should call the service for retrieving requisitions', done => {
-      actions$ = of(loadRequisitions({ view: 'buyer', status: 'pending' }));
+      actions$ = of(loadRequisitions({ view: 'buyer', status: 'PENDING' }));
 
       effects.loadRequisitions$.subscribe(() => {
         verify(requisitionsService.getRequisitions(anything(), anything())).once();
@@ -84,7 +84,7 @@ describe('Requisitions Effects', () => {
     });
 
     it('should retrieve requisitions when triggered', done => {
-      actions$ = of(loadRequisitions({ view: 'buyer', status: 'pending' }));
+      actions$ = of(loadRequisitions({ view: 'buyer', status: 'PENDING' }));
 
       effects.loadRequisitions$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
@@ -135,18 +135,18 @@ describe('Requisitions Effects', () => {
   describe('updateRequisitionStatus$', () => {
     it('should call the service for updating the status of a requisition', done => {
       actions$ = of(
-        updateRequisitionStatus({ requisitionId: '4711', status: 'approved', approvalComment: 'test comment' })
+        updateRequisitionStatus({ requisitionId: '4711', status: 'APPROVED', approvalComment: 'test comment' })
       );
 
       effects.updateRequisitionStatus$.subscribe(() => {
-        verify(requisitionsService.updateRequisitionStatus('4711', 'approved', 'test comment')).once();
+        verify(requisitionsService.updateRequisitionStatus('4711', 'APPROVED', 'test comment')).once();
         done();
       });
     });
 
     it('should retrieve the requisition after updating the status', done => {
       actions$ = of(
-        updateRequisitionStatus({ requisitionId: '4711', status: 'approved', approvalComment: 'test comment' })
+        updateRequisitionStatus({ requisitionId: '4711', status: 'APPROVED', approvalComment: 'test comment' })
       );
 
       effects.updateRequisitionStatus$.subscribe(action => {

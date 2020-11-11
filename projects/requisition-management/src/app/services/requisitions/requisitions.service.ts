@@ -50,7 +50,7 @@ export class RequisitionsService {
   /**
    * Get all customer requisitions of a certain status and view. The current user is expected to have the approver permission.
    * @param  view    Defines whether the 'buyer' or 'approver' view is returned. Default: 'buyer'
-   * @param  status  Approval status filter ('pending', 'approved', 'rejected'). Default: All requisitions are returned
+   * @param  status  Approval status filter. Default: All requisitions are returned
    * @returns        Requisitions of the customer with their main attributes. To get all properties the getRequisition call is needed.
    */
   getRequisitions(view?: RequisitionViewer, status?: RequisitionStatus): Observable<Requisition[]> {
@@ -96,28 +96,28 @@ export class RequisitionsService {
 
   /**
    * Updates the requisition status. The current user is expected to have the approver permission.
-   * @param id      Requisition id.
-   * @param status  The requisition approval status
-   * @param comment The approval comment
-   * @returns       The updated requisition with all attributes. If the requisition is approved and the order is placed, also order data are returned as part of the requisition.
+   * @param id          Requisition id.
+   * @param statusCode  The requisition approval status
+   * @param comment     The approval comment
+   * @returns           The updated requisition with all attributes. If the requisition is approved and the order is placed, also order data are returned as part of the requisition.
    */
   updateRequisitionStatus(
     requisitionId: string,
-    status: RequisitionStatus,
+    statusCode: RequisitionStatus,
     approvalComment?: string
   ): Observable<Requisition> {
     if (!requisitionId) {
       return throwError('updateRequisitionStatus() called without required id');
     }
-    if (!status) {
-      return throwError('updateRequisitionStatus() called without required requisitionstatus');
+    if (!statusCode) {
+      return throwError('updateRequisitionStatus() called without required requisition status');
     }
 
     const params = new HttpParams().set('include', this.allIncludes.join());
     const body = {
       name: 'string',
       type: 'ApprovalStatusChange',
-      status,
+      statusCode,
       approvalComment,
     };
 

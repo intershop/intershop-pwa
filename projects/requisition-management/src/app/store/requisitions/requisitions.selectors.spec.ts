@@ -44,7 +44,7 @@ describe('Requisitions Selectors', () => {
   });
 
   describe('LoadRequisitions', () => {
-    const action = loadRequisitions({ view: 'buyer', status: 'pending' });
+    const action = loadRequisitions({ view: 'buyer', status: 'PENDING' });
 
     beforeEach(() => {
       store$.dispatch(action);
