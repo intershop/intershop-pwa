@@ -1,7 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { setErrorOn, setLoadingOn } from 'ish-core/utils/ngrx-creators';
+import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
 import { NodeHelper } from '../../models/node/node.helper';
 import { NodeTree } from '../../models/node/node.model';
@@ -31,6 +31,7 @@ export const organizationHierarchiesReducer = createReducer(
   initialState,
   setLoadingOn(loadGroups, createGroup),
   setErrorOn(loadGroupsFail, createGroupFail),
+  unsetLoadingAndErrorOn(loadGroupsSuccess, createGroupSuccess),
   on(loadGroupsSuccess, (state: OrganizationHierarchiesState, action) => ({
     ...state,
     groups: action.payload.nodeTree,
