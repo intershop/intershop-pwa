@@ -1,6 +1,6 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -18,7 +18,6 @@ describe('Group Form Component', () => {
   let component: GroupFormComponent;
   let fixture: ComponentFixture<GroupFormComponent>;
   let element: HTMLElement;
-  let fb: FormBuilder;
   const rootNode = {
     id: 'root',
     name: 'ROOT',
@@ -53,14 +52,12 @@ describe('Group Form Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.parents = nodeTree;
-    fb = TestBed.inject(FormBuilder);
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(fb).toBeTruthy();
   });
 
   it('should display form input fields on creation', () => {
