@@ -62,7 +62,7 @@ describe('Hierarchies Create Group Page Component', () => {
     fixture.detectChanges();
 
     component.form = fb.group({
-      org_group: fb.group({
+      organizationGroup: fb.group({
         name: ['Test', [Validators.required]],
         parent: ['Organization', [Validators.required]],
         description: [''],
