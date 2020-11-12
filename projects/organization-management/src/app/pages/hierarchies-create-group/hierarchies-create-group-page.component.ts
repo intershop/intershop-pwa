@@ -16,7 +16,7 @@ import { Node, NodeTree } from '../../models/node/node.model';
 })
 export class HierarchiesCreateGroupPageComponent implements OnInit {
   form: FormGroup = this.fb.group({
-    org_group: this.fb.group({
+    organizationGroup: this.fb.group({
       name: ['', [Validators.required]],
       parent: ['', [Validators.required]],
       description: [''],
@@ -46,13 +46,13 @@ export class HierarchiesCreateGroupPageComponent implements OnInit {
 
     const child: Node = {
       id: UUID.UUID(),
-      name: formValue.org_group.name,
-      description: formValue.org_group.description === '' ? undefined : formValue.org_group.description,
+      name: formValue.organizationGroup.name,
+      description: formValue.organizationGroupdescription === '' ? undefined : formValue.organizationGroup.description,
     };
 
     const parent: Node = {
-      id: formValue.org_group.parent,
-      name: formValue.org_group.parent,
+      id: formValue.organizationGroup.parent,
+      name: formValue.organizationGroup.parent,
     };
 
     this.organizationManagementFacade.createAndAddGroup(parent, child);
@@ -63,6 +63,6 @@ export class HierarchiesCreateGroupPageComponent implements OnInit {
   }
 
   get group(): FormGroup {
-    return this.form.get('org_group') as FormGroup;
+    return this.form.get('organizationGroup') as FormGroup;
   }
 }
