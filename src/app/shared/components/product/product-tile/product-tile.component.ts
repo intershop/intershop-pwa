@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Observable } from 'rxjs';
 
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
@@ -28,7 +30,7 @@ export interface ProductTileComponentConfiguration {
   templateUrl: './product-tile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductTileComponent {
+export class ProductTileComponent implements OnChanges {
   @Input() configuration: Partial<ProductTileComponentConfiguration> = {};
   @Input() product: ProductView | VariationProductView | VariationProductMasterView;
   @Input() quantity: number;
@@ -39,7 +41,15 @@ export class ProductTileComponent {
   @Output() productToBasket = new EventEmitter<number>();
   @Output() selectVariation = new EventEmitter<{ selection: VariationSelection; changedAttribute?: string }>();
 
+  variationCount$: Observable<number>;
+
   isMasterProduct = ProductHelper.isMasterProduct;
+
+  constructor(private shoppingFacade: ShoppingFacade) {}
+
+  ngOnChanges() {
+    this.variationCount$ = this.shoppingFacade.productVariationCount$(this.product?.sku);
+  }
 
   addToBasket() {
     this.productToBasket.emit(this.quantity || this.product.minOrderQuantity);
@@ -51,14 +61,5 @@ export class ProductTileComponent {
 
   variationSelected(event: { selection: VariationSelection; changedAttribute?: string }) {
     this.selectVariation.emit(event);
-  }
-
-  get variationCount() {
-    return (
-      this.product &&
-      ProductHelper.isMasterProduct(this.product) &&
-      this.product.variations() &&
-      this.product.variations().length
-    );
   }
 }

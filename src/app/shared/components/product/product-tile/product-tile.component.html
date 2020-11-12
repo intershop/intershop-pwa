@@ -35,7 +35,9 @@
     (selectVariation)="variationSelected($event)"
   ></ish-product-variation-select>
   <ng-container *ngIf="isMasterProduct(product)">
-    <span class="product-variation read-only">{{ variationCount }} {{ 'product.variations.text' | translate }}</span>
+    <span class="product-variation read-only"
+      >{{ variationCount$ | async }} {{ 'product.variations.text' | translate }}</span
+    >
   </ng-container>
 
   <div class="product-tile-actions btn-group">
