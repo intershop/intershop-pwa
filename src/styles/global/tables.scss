@@ -312,7 +312,10 @@ table.mobile-optimized.table-lg {
           float: left;
           width: 40%;
           margin-bottom: $space-default/3;
-          content: attr(data-th);
+          content: '';
+        }
+        &[data-label]::before {
+          content: attr(data-label) ':';
         }
       }
 
