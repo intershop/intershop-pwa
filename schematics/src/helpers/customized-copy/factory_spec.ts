@@ -106,10 +106,10 @@ export class DummyTwoComponent {}
       Array [
         "/src/app/app-routing.module.ts",
         "/src/app/app.module.ts",
-        "/src/app/app.component.css",
         "/src/app/app.component.html",
         "/src/app/app.component.spec.ts",
         "/src/app/app.component.ts",
+        "/src/app/app.component.css",
         "/src/app/shared/shared.module.ts",
         "/src/app/shared/dummy-two/dummy-two.component.html",
         "/src/app/shared/dummy-two/dummy-two.component.spec.ts",
@@ -175,10 +175,10 @@ export class DummyTwoComponent {}
       Array [
         "/src/app/app-routing.module.ts",
         "/src/app/app.module.ts",
-        "/src/app/app.component.css",
         "/src/app/app.component.html",
         "/src/app/app.component.spec.ts",
         "/src/app/app.component.ts",
+        "/src/app/app.component.css",
         "/src/app/shared/shared.module.ts",
         "/src/app/shared/dummy-two/dummy-two.component.html",
         "/src/app/shared/dummy-two/dummy-two.component.spec.ts",

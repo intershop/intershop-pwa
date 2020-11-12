@@ -184,6 +184,7 @@ export function createLazyComponent(options: Options): Rule {
 
     if (!options.ci) {
       operations.push(applyLintFix());
+      operations.push(applyLintFix());
     }
 
     return chain(operations);
