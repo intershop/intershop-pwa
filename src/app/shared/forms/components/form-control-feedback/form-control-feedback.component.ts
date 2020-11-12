@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component, DoCheck, Input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
 
 interface FormErrorMessages {
   [key: string]: string;
@@ -16,9 +14,7 @@ export class FormControlFeedbackComponent implements DoCheck {
   @Input() messages: FormErrorMessages = {};
   @Input() control: AbstractControl;
 
-  errors: Observable<string>[];
-
-  constructor(private translate: TranslateService) {}
+  errors: string[];
 
   ngDoCheck() {
     if (this.control.dirty) {
@@ -26,7 +22,7 @@ export class FormControlFeedbackComponent implements DoCheck {
     }
   }
 
-  getErrorList(): Observable<string>[] {
+  getErrorList(): string[] {
     if (!this.control.errors) {
       return [];
     }
@@ -37,7 +33,6 @@ export class FormControlFeedbackComponent implements DoCheck {
           ? this.messages[key]
           : this.control.errors.customError
       )
-      .filter(locString => !!locString)
-      .map(locString => this.translate.get(locString));
+      .filter(locString => !!locString);
   }
 }
