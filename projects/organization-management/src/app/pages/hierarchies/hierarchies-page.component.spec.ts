@@ -18,7 +18,7 @@ describe('Hierarchies Page Component', () => {
   let fixture: ComponentFixture<HierarchiesPageComponent>;
   let element: HTMLElement;
   let organizationManagementFacade: OrganizationManagementFacade;
-  const error = {} as HttpError;
+
   const rootNode = {
     id: 'root',
     name: 'ROOT',
@@ -71,7 +71,7 @@ describe('Hierarchies Page Component', () => {
 
   it('should not display organizations in case of error', () => {
     when(organizationManagementFacade.groups$()).thenReturn(of());
-    when(organizationManagementFacade.groupsError$).thenReturn(of(error));
+    when(organizationManagementFacade.groupsError$).thenReturn(of({} as HttpError));
     fixture.detectChanges();
     expect(element.querySelector('h1.a')).toBeFalsy();
     expect(element).toMatchInlineSnapshot(`<h1>Company Structure</h1>`);
