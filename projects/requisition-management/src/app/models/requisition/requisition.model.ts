@@ -1,6 +1,7 @@
+import { UserBudgets } from 'organization-management';
+
 import { AbstractBasket } from 'ish-core/models/basket/basket.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
-import { Price } from 'ish-core/models/price/price.model';
 import { User } from 'ish-core/models/user/user.model';
 
 export type RequisitionStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
@@ -16,14 +17,6 @@ export interface RequisitionApproval {
   customerApprovers?: { firstName: string; lastName: string; email: string }[];
 }
 
-export interface RequisitionUserBudgets {
-  budget: Price;
-  budgetPeriod: string;
-  orderSpentLimit: Price;
-  remainingBudget?: Price;
-  spentBudget?: Price;
-}
-
 type RequisitionBasket = Omit<AbstractBasket<LineItem>, 'approval'>;
 
 export interface Requisition extends RequisitionBasket {
@@ -33,6 +26,6 @@ export interface Requisition extends RequisitionBasket {
   lineItemCount: number;
 
   user: User;
-  userBudgets: RequisitionUserBudgets;
+  userBudgets: UserBudgets;
   approval: RequisitionApproval;
 }
