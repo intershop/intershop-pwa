@@ -1,4 +1,3 @@
-import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -66,18 +65,5 @@ describe('Group Form Component', () => {
     expect(element.querySelector('[controlname=name]')).toBeTruthy();
     expect(element.querySelector('[controlname=parent]')).toBeTruthy();
     expect(element.querySelector('[controlname=description]')).toBeTruthy();
-  });
-
-  it('should process parents if component input changes', () => {
-    expect(component.parentOptions).toBeUndefined();
-    const changes: SimpleChanges = {
-      parents: new SimpleChange(undefined, component.parents, false),
-    };
-    component.ngOnChanges(changes);
-
-    fixture.detectChanges();
-    expect(component.parentOptions).toBeArrayOfSize(2);
-    expect(component.parentOptions[0]).toStrictEqual({ label: childNode.name, value: childNode.id });
-    expect(component.parentOptions[1]).toStrictEqual({ label: rootNode.name, value: rootNode.id });
   });
 });
