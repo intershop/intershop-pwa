@@ -188,9 +188,11 @@ export function addImportToFile(options: { module?: string; artifactName?: strin
 export function addLazyExportToBarrelFile(options: { path?: string; name?: string; artifactName?: string }): Rule {
   const barrelFile = `${options.path}/index.ts`;
   return host => {
-    const exportRecorder = host.beginUpdate(barrelFile);
-    insertExport(exportRecorder, options.artifactName, `./${options.name}/${options.name}.component`);
-    host.commitUpdate(exportRecorder);
+    if (!tsquery(readIntoSourceFile(host, barrelFile), `Identifier[name=${options.artifactName}]`).length) {
+      const exportRecorder = host.beginUpdate(barrelFile);
+      insertExport(exportRecorder, options.artifactName, `./${options.name}/${options.name}.component`);
+      host.commitUpdate(exportRecorder);
+    }
   };
 }
 
