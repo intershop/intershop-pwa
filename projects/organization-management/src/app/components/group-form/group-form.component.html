@@ -18,7 +18,7 @@
       }"
       [form]="form"
       label="organization.groups.parent.label"
-      [options]="parentOptions"
+      [options]="toOptions(parents.nodes | keyvalue)"
       [translateOptionLabels]="false"
     >
     </ish-select>
