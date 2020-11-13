@@ -1,3 +1,5 @@
+import { UserBudgets } from 'organization-management';
+
 import { AddressData } from 'ish-core/models/address/address.interface';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.interface';
@@ -10,7 +12,7 @@ import { PriceData } from 'ish-core/models/price/price.interface';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 import { User } from 'ish-core/models/user/user.model';
 
-import { RequisitionApproval, RequisitionUserBudgets } from './requisition.model';
+import { RequisitionApproval } from './requisition.model';
 
 export interface RequisitionBaseData extends BasketBaseData {
   requisitionNo: string;
@@ -24,7 +26,7 @@ export interface RequisitionBaseData extends BasketBaseData {
   totalNet: PriceData;
 
   userInformation: User;
-  userBudgets: RequisitionUserBudgets;
+  userBudgets: UserBudgets;
 
   approvalStatus: RequisitionApproval;
 }
