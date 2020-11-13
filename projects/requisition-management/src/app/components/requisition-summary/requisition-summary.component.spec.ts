@@ -62,11 +62,11 @@ describe('Requisition Summary Component', () => {
     fixture.detectChanges();
     expect(element.querySelectorAll('dd')).toMatchInlineSnapshot(`
       NodeList [
-        <dd class="col-6 col-sm-8 col-md-10">4712</dd>,
-        <dd class="col-6 col-sm-8 col-md-10"></dd>,
-        <dd class="col-6 col-sm-8 col-md-10">Jack Link , Bernhhard Boldner</dd>,
-        <dd class="col-6 col-sm-8 col-md-10"></dd>,
-        <dd class="col-6 col-sm-8 col-md-10">
+        <dd class="col-6 col-sm-8 col-md-9">4712</dd>,
+        <dd class="col-6 col-sm-8 col-md-9"></dd>,
+        <dd class="col-6 col-sm-8 col-md-9">Jack Link , Bernhhard Boldner</dd>,
+        <dd class="col-6 col-sm-8 col-md-9"></dd>,
+        <dd class="col-6 col-sm-8 col-md-9">
         <span
           class="border border-secondary badge badge-secondary text-capitalize border-warning badge-warning"
         >
@@ -83,11 +83,11 @@ describe('Requisition Summary Component', () => {
     fixture.detectChanges();
     expect(element.querySelectorAll('dd')).toMatchInlineSnapshot(`
       NodeList [
-        <dd class="col-6 col-sm-8 col-md-10">4712</dd>,
-        <dd class="col-6 col-sm-8 col-md-10"></dd>,
-        <dd class="col-6 col-sm-8 col-md-10">Patricia Miller</dd>,
-        <dd class="col-6 col-sm-8 col-md-10"></dd>,
-        <dd class="col-6 col-sm-8 col-md-10">
+        <dd class="col-6 col-sm-8 col-md-9">4712</dd>,
+        <dd class="col-6 col-sm-8 col-md-9"></dd>,
+        <dd class="col-6 col-sm-8 col-md-9">Patricia Miller</dd>,
+        <dd class="col-6 col-sm-8 col-md-9"></dd>,
+        <dd class="col-6 col-sm-8 col-md-9">
         <span
           class="border border-secondary badge badge-secondary text-capitalize border-warning badge-warning"
         >

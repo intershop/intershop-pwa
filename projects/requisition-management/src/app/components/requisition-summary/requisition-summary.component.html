@@ -1,11 +1,11 @@
 <div *ngIf="requisition" class="section">
   <dl class="row dl-horizontal dl-separator">
-    <dt class="col-6 col-sm-4 col-md-2">{{ 'approval.detailspage.order.request_id' | translate }}</dt>
-    <dd class="col-6 col-sm-8 col-md-10">{{ requisition.requisitionNo }}</dd>
+    <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.order.request_id' | translate }}</dt>
+    <dd class="col-6 col-sm-8 col-md-9">{{ requisition.requisitionNo }}</dd>
 
     <ng-container *ngIf="requisition.approval?.statusCode === 'APPROVED'">
-      <dt class="col-6 col-sm-4 col-md-2">{{ 'approval.detailspage.order_reference_id.label' | translate }}</dt>
-      <dd class="col-6 col-sm-8 col-md-10">
+      <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.order_reference_id.label' | translate }}</dt>
+      <dd class="col-6 col-sm-8 col-md-9">
         <a *ngIf="view === 'buyer'; else noOrderLink" [routerLink]="'/account/orders/' + requisition.id">{{
           requisition.orderNo
         }}</a>
@@ -13,12 +13,12 @@
       </dd>
     </ng-container>
 
-    <dt class="col-6 col-sm-4 col-md-2">{{ 'approval.detailspage.order_date.label' | translate }}</dt>
-    <dd class="col-6 col-sm-8 col-md-10">{{ requisition.creationDate | ishDate }}</dd>
+    <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.order_date.label' | translate }}</dt>
+    <dd class="col-6 col-sm-8 col-md-9">{{ requisition.creationDate | ishDate }}</dd>
 
     <ng-container *ngIf="view === 'buyer'">
-      <dt class="col-6 col-sm-4 col-md-2">{{ 'approval.detailspage.approver.label' | translate }}</dt>
-      <dd class="col-6 col-sm-8 col-md-10">
+      <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.approver.label' | translate }}</dt>
+      <dd class="col-6 col-sm-8 col-md-9">
         <ng-container *ngIf="requisition.approval?.statusCode !== 'PENDING'; else pendingCustomerApprovers">
           {{ requisition.approval?.approver?.firstName }} {{ requisition.approval?.approver?.lastName }}
         </ng-container>
@@ -31,28 +31,28 @@
     </ng-container>
 
     <ng-container *ngIf="view === 'approver'">
-      <dt class="col-6 col-sm-4 col-md-2">{{ 'approval.detailspage.purchaser.label' | translate }}</dt>
-      <dd class="col-6 col-sm-8 col-md-10">{{ requisition.user?.firstName }} {{ requisition.user?.lastName }}</dd>
+      <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.purchaser.label' | translate }}</dt>
+      <dd class="col-6 col-sm-8 col-md-9">{{ requisition.user?.firstName }} {{ requisition.user?.lastName }}</dd>
     </ng-container>
 
     <ng-container *ngIf="requisition.approval?.statusCode !== 'PENDING'">
       <dt
         *ngIf="requisition.approval?.statusCode === 'APPROVED'; else labelDateRejected"
-        class="col-6 col-sm-4 col-md-2"
+        class="col-6 col-sm-4 col-md-3"
       >
         {{ 'approval.detailspage.approval_date.label' | translate }}
       </dt>
       <ng-template #labelDateRejected>
-        <dt class="col-6 col-sm-4 col-md-2">{{ 'approval.detailspage.rejection_date.label' | translate }}</dt>
+        <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.rejection_date.label' | translate }}</dt>
       </ng-template>
-      <dd class="col-6 col-sm-8 col-md-10">{{ requisition.approval.approvalDate | ishDate }}</dd>
+      <dd class="col-6 col-sm-8 col-md-9">{{ requisition.approval.approvalDate | ishDate }}</dd>
     </ng-container>
 
-    <dt class="col-6 col-sm-4 col-md-2">{{ 'approval.detailspage.order_total.label' | translate }}</dt>
-    <dd class="col-6 col-sm-8 col-md-10">{{ requisition.totals?.total | ishPrice: 'gross' }}</dd>
+    <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.order_total.label' | translate }}</dt>
+    <dd class="col-6 col-sm-8 col-md-9">{{ requisition.totals?.total | ishPrice: 'gross' }}</dd>
 
-    <dt class="col-6 col-sm-4 col-md-2">{{ 'approval.detailspage.approval_status.label' | translate }}</dt>
-    <dd class="col-6 col-sm-8 col-md-10">
+    <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.approval_status.label' | translate }}</dt>
+    <dd class="col-6 col-sm-8 col-md-9">
       <span
         class="border border-secondary badge badge-secondary text-capitalize"
         [ngClass]="{
@@ -66,8 +66,8 @@
     </dd>
 
     <ng-container *ngIf="requisition.approval.approvalComment">
-      <dt class="col-6 col-sm-4 col-md-2 mt-3">{{ 'approval.detailspage.comment.label=Comment' | translate }}</dt>
-      <dd class="col-6 col-sm-8 col-md-10 mt-3">{{ requisition.approval.approvalComment }}</dd>
+      <dt class="col-6 col-sm-4 col-md-3 mt-3">{{ 'approval.detailspage.comment.label=Comment' | translate }}</dt>
+      <dd class="col-6 col-sm-8 col-md-9 mt-3">{{ requisition.approval.approvalComment }}</dd>
     </ng-container>
   </dl>
 </div>

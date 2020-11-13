@@ -42,8 +42,8 @@ export class UserEditBudgetPageComponent implements OnInit, OnDestroy {
 
   initForm(user: B2bUser) {
     this.budgetForm = this.fb.group({
-      orderSpentLimit: [user.budgets?.orderSpentLimit?.value, SpecialValidators.moneyAmount],
-      budget: [user.budgets?.budget?.value, SpecialValidators.moneyAmount],
+      orderSpentLimit: [user.budgets?.orderSpentLimit?.value || '', SpecialValidators.moneyAmount],
+      budget: [user.budgets?.budget?.value || '', SpecialValidators.moneyAmount],
       budgetPeriod: [
         !user.budgets?.budgetPeriod || user.budgets?.budgetPeriod === 'none' ? 'weekly' : user.budgets.budgetPeriod,
       ],

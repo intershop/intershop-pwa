@@ -17,7 +17,7 @@
               {{ requisition.userBudgets.orderSpentLimit | ishPrice }}
             </ng-container>
             <ng-template #noLimit>
-              {{ 'approval.details.threshold.unlimited' | translate }}
+              {{ 'account.budget.unlimited' | translate }}
             </ng-template>
           </strong>
         </p>
@@ -30,7 +30,7 @@
       <div class="col-md-6">
         <p *ngIf="requisition.userBudgets.budgetPeriod !== 'none'" class="row">
           <span class="col-6">
-            {{ 'approval.detailspage.budget.type.' + requisition.userBudgets.budgetPeriod + '.label' | translate }}
+            {{ 'account.budget.type.' + requisition.userBudgets.budgetPeriod + '.label' | translate }}
           </span>
           <strong class="col-6">
             <ng-container *ngIf="requisition.userBudgets.budget; else noLimit">
@@ -39,7 +39,7 @@
           </strong>
         </p>
         <p *ngIf="requisition.userBudgets?.spentBudget" class="row">
-          <span class="col-6">{{ 'approval.detailspage.budget.already_spent.label' | translate }}</span>
+          <span class="col-6">{{ 'account.budget.already_spent.label' | translate }}</span>
           <span class="col-6">
             {{ requisition.userBudgets.spentBudget | ishPrice }} ({{ spentPercentage | percent }})
           </span>
@@ -52,7 +52,7 @@
         </p>
         <ng-template #leftBudgetDisplay>
           <p class="row">
-            <span class="col-6">{{ 'approval.detailspage.budget.left.label' | translate }}</span>
+            <span class="col-6">{{ 'account.budget.left.label' | translate }}</span>
             <span class="col-6">{{ leftBudget | ishPrice }} ({{ leftPercentage | percent }})</span>
           </p>
         </ng-template>
@@ -61,7 +61,7 @@
         <ish-budget-bar
           [budget]="requisition.userBudgets?.budget"
           [spentBudget]="requisition.userBudgets?.spentBudget"
-          [additionalAmount]="orderTotal"
+          [additionalAmount]="requisition.approval.statusCode !== 'APPROVED' ? orderTotal : undefined"
         ></ish-budget-bar>
       </div>
     </div>

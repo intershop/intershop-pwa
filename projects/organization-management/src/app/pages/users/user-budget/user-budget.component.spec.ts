@@ -42,6 +42,11 @@ describe('User Budget Component', () => {
         currency: 'USD',
         type: 'Money',
       },
+      spentBudget: {
+        value: 2500,
+        currency: 'USD',
+        type: 'Money',
+      },
     };
   });
 
@@ -63,7 +68,7 @@ describe('User Budget Component', () => {
           <dd class="col-5 column-price">USD 100</dd>
         </dl>
         <dl class="row dl-horizontal dl-separator">
-          <dt class="col-12 col-sm-7">account.budget.common.per_type</dt>
+          <dt class="col-12 col-sm-7">account.budget.type.monthly.label</dt>
           <dd class="col-5 column-price">USD 5000</dd>
         </dl>
         <div data-testing-id="user-budget-popover" placement="top" ng-reflect-placement="top">

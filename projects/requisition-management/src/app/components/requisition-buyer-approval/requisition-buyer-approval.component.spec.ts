@@ -81,11 +81,11 @@ describe('Requisition Buyer Approval Component', () => {
       Patricia Miller
       approval.detailspage.order_spend_limit.label
       $500.00
-      approval.detailspage.budget.type.weekly.label
+      account.budget.type.weekly.label
       $3,000.00
-      approval.detailspage.budget.already_spent.label
+      account.budget.already_spent.label
       $300.00 (10%)
-      approval.detailspage.budget.left.label
+      account.budget.left.label
       $2,700.00 (90%)
       "
     `);
@@ -100,9 +100,9 @@ describe('Requisition Buyer Approval Component', () => {
       Patricia Miller
       approval.detailspage.order_spend_limit.label
       $500.00
-      approval.detailspage.budget.type.weekly.label
+      account.budget.type.weekly.label
       $3,000.00
-      approval.detailspage.budget.already_spent.label
+      account.budget.already_spent.label
       $300.00 (10%)
       approval.detailspage.budget.including_order.label
       $2,300.00 (77%)

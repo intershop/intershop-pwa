@@ -10,7 +10,7 @@
             {{ budget.orderSpentLimit | ishPrice }}
           </dd>
           <ng-template #noLimit>
-            <dd class="col-md-8">{{ 'approval.details.threshold.unlimited' | translate }}</dd>
+            <dd class="col-md-8">{{ 'account.budget.unlimited' | translate }}</dd>
           </ng-template>
           <ng-container *ngIf="budget.budget; else noBudget">
             <dt class="col-md-4">
@@ -24,7 +24,7 @@
           </ng-container>
           <ng-template #noBudget>
             <dt class="col-md-4">{{ 'account.user.budget.label' | translate }}</dt>
-            <dd class="col-md-8">{{ 'account.budget.common.undefined' | translate }}</dd>
+            <dd class="col-md-8">{{ 'account.budget.unlimited' | translate }}</dd>
           </ng-template>
         </dl>
       </div>
