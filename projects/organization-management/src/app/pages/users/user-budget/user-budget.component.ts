@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
-import { Price, PriceHelper } from 'ish-core/models/price/price.model';
+import { Price } from 'ish-core/models/price/price.model';
 
 import { UserBudgets } from '../../../models/user-budgets/user-budgets.model';
 
@@ -30,8 +30,8 @@ export class UserBudgetComponent implements OnChanges {
   }
 
   private calculate() {
-    this.usedBudget = PriceHelper.diff(this.budget.budget, this.budget.remainingBudget);
-    this.usedBudgetPercentage = this.budget.budget.value === 0 ? 0 : this.usedBudget.value / this.budget.budget.value;
+    this.usedBudget = this.budget.spentBudget;
+    this.usedBudgetPercentage = this.budget.budget.value === 0 ? 0 : this.usedBudget?.value / this.budget.budget.value;
     this.remainingBudgetPercentage =
       this.budget.budget.value === 0 ? 0 : this.budget.remainingBudget.value / this.budget.budget.value;
   }

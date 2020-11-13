@@ -100,8 +100,8 @@ export class BasketValidationEffects {
             basketValidation.results.valid
               ? targetStep === 5 && !basketValidation.results.adjusted
                 ? basket.approval?.approvalRequired
-                  ? [submitBasket(), continueCheckoutSuccess({ targetRoute: undefined, basketValidation })]
-                  : [createOrder(), continueCheckoutSuccess({ targetRoute: undefined, basketValidation })]
+                  ? [continueCheckoutSuccess({ targetRoute: undefined, basketValidation }), submitBasket()]
+                  : [continueCheckoutSuccess({ targetRoute: undefined, basketValidation }), createOrder()]
                 : [continueCheckoutSuccess({ targetRoute, basketValidation })]
               : [continueCheckoutWithIssues({ targetRoute, basketValidation })]
           ),

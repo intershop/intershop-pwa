@@ -5,4 +5,5 @@ export interface UserBudgets {
   budgetPeriod: string;
   orderSpentLimit: Price;
   remainingBudget?: Price;
+  spentBudget?: Price;
 }

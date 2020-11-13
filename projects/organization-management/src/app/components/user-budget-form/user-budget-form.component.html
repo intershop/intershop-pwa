@@ -5,7 +5,7 @@
       [form]="form"
       controlName="orderSpentLimit"
       label="account.user.new.order_spend_limit.label"
-      [prepend]="currency"
+      [prepend]="currencySymbol"
       [errorMessages]="{ pattern: 'account.user.new.OrderLimit.error.valid' }"
     ></ish-input>
 
@@ -21,7 +21,7 @@
           <div class="col-6">
             <div class="input-group">
               <div class="input-group-prepend">
-                <span class="input-group-text">{{ currency }}</span>
+                <span class="input-group-text">{{ currencySymbol }}</span>
               </div>
 
               <input

@@ -57,7 +57,8 @@ describe('B2b User Mapper', () => {
             { name: 'budgetPeriod', type: 'String', value: 'monthly' },
             { name: 'orderSpentLimit', type: 'MoneyRO', value: { currency: 'USD', value: 500 } },
             { name: 'budget', type: 'MoneyRO', value: { currency: 'USD', value: 10000 } },
-            { name: 'remainingBudget', type: 'MoneyRO', value: { currency: 'USD', value: 10000 } },
+            { name: 'remainingBudget', type: 'MoneyRO', value: { currency: 'USD', value: 8000 } },
+            { name: 'spentBudget', type: 'MoneyRO', value: { currency: 'USD', value: 2000 } },
           ],
         } as B2bUserDataLink,
       ];
@@ -78,7 +79,11 @@ describe('B2b User Mapper', () => {
               },
               "remainingBudget": Object {
                 "currency": "USD",
-                "value": 10000,
+                "value": 8000,
+              },
+              "spentBudget": Object {
+                "currency": "USD",
+                "value": 2000,
               },
             },
             "firstName": "Patricia",

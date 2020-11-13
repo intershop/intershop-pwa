@@ -5,13 +5,13 @@
       {{ budget.orderSpentLimit | ishPrice }}
     </dd>
     <ng-template #noLimit>
-      <dd class="col-5 column-price">{{ 'approval.details.threshold.unlimited' | translate }}</dd>
+      <dd class="col-5 column-price">{{ 'account.budget.unlimited' | translate }}</dd>
     </ng-template>
   </dl>
 
   <ng-container *ngIf="budget.budget; else noBudget">
     <dl class="row dl-horizontal dl-separator">
-      <dt class="col-12 col-sm-7">{{ 'account.budget.common.per_type' | translate: { '0': budget.budgetPeriod } }}</dt>
+      <dt class="col-12 col-sm-7">{{ 'account.budget.type.' + budget.budgetPeriod + '.label' | translate }}</dt>
       <dd class="col-5 column-price">{{ budget.budget | ishPrice }}</dd>
     </dl>
     <div [ngbPopover]="BudgetPopover" placement="top" data-testing-id="user-budget-popover">
@@ -34,13 +34,13 @@
             </div>
             <div class="row col-md-12">
               <div class="col-md-6">
-                <label>{{ 'account.user.list.spent.label' | translate }}</label>
+                <label>{{ 'account.budget.already_spent.label' | translate }}</label>
               </div>
-              <div class="col-md-6 text-right">{{ usedBudget.value }} ({{ usedBudgetPercentage | percent }})</div>
+              <div class="col-md-6 text-right">{{ usedBudget | ishPrice }} ({{ usedBudgetPercentage | percent }})</div>
             </div>
             <div class="row col-md-12">
               <div class="col-md-6">
-                <label>{{ 'account.user.list.left.label' | translate }}</label>
+                <label>{{ 'account.budget.left.label' | translate }}</label>
               </div>
               <div class="col-md-6 text-right">
                 {{ budget.remainingBudget | ishPrice }} ({{ remainingBudgetPercentage | percent }})
@@ -55,6 +55,6 @@
 
 <ng-template #noBudget>
   <dl>
-    <dd>{{ 'account.budget.common.undefined' | translate }}</dd>
+    <dd>{{ 'account.budget.unlimited' | translate }}</dd>
   </dl>
 </ng-template>

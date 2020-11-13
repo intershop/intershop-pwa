@@ -22,6 +22,10 @@ export class B2bUserMapper {
           budget: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'budget'),
           remainingBudget: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'remainingBudget'),
           budgetPeriod: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'budgetPeriod'),
+          spentBudget: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'spentBudget') || {
+            ...AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'budget'),
+            value: 0,
+          },
         },
       }));
     } else {

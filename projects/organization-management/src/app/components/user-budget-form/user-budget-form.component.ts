@@ -1,3 +1,4 @@
+import { getCurrencySymbol } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
@@ -17,7 +18,7 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
 
   currentLocale$: Observable<Locale>;
   periods = ['weekly', 'monthly', 'quarterly'];
-  currency = 'USD'; // fallback currency
+  currencySymbol = '$'; // fallback currency
 
   private destroy$ = new Subject();
 
@@ -39,15 +40,14 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
     this.currentLocale$ = this.appFacade.currentLocale$;
 
     // if there is no predefined currency determine currency from default locale
-    if (!this.form.get('currency').value) {
-      this.currentLocale$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(locale => {
-        if (locale.currency) {
-          this.form.get('currency').setValue(locale.currency);
-          this.form.updateValueAndValidity();
-        }
-      });
-    }
-    this.currency = this.form.get('currency').value;
+
+    this.currentLocale$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(locale => {
+      if (locale.currency && !this.form.get('currency').value) {
+        this.form.get('currency').setValue(locale.currency);
+        this.form.updateValueAndValidity();
+      }
+      this.currencySymbol = getCurrencySymbol(this.form.get('currency').value, 'wide', locale.lang);
+    });
   }
 
   get formControlBudget(): AbstractControl {
