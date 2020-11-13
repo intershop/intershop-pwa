@@ -38,16 +38,16 @@ describe('Store Schematic', () => {
     const options = { ...defaultOptions };
 
     const tree = await schematicRunner.runSchematicAsync('store', options, appTree).toPromise();
-    const files = tree.files.filter(x => x.search('foo') >= 0);
+    const files = tree.files.filter(x => x.search('foo') >= 0).sort();
     expect(files).toMatchInlineSnapshot(`
       Array [
-        "/src/app/core/store/core/foo/index.ts",
         "/src/app/core/store/core/foo/foo.actions.ts",
         "/src/app/core/store/core/foo/foo.effects.spec.ts",
         "/src/app/core/store/core/foo/foo.effects.ts",
         "/src/app/core/store/core/foo/foo.reducer.ts",
         "/src/app/core/store/core/foo/foo.selectors.spec.ts",
         "/src/app/core/store/core/foo/foo.selectors.ts",
+        "/src/app/core/store/core/foo/index.ts",
       ]
     `);
   });
@@ -70,16 +70,16 @@ describe('Store Schematic', () => {
     const options = { ...defaultOptions, feature: 'bar' };
 
     const tree = await schematicRunner.runSchematicAsync('store', options, appTree).toPromise();
-    const files = tree.files.filter(x => x.search('foo') >= 0);
+    const files = tree.files.filter(x => x.search('foo') >= 0).sort();
     expect(files).toMatchInlineSnapshot(`
       Array [
-        "/src/app/core/store/bar/foo/index.ts",
         "/src/app/core/store/bar/foo/foo.actions.ts",
         "/src/app/core/store/bar/foo/foo.effects.spec.ts",
         "/src/app/core/store/bar/foo/foo.effects.ts",
         "/src/app/core/store/bar/foo/foo.reducer.ts",
         "/src/app/core/store/bar/foo/foo.selectors.spec.ts",
         "/src/app/core/store/bar/foo/foo.selectors.ts",
+        "/src/app/core/store/bar/foo/index.ts",
       ]
     `);
   });
@@ -102,16 +102,16 @@ describe('Store Schematic', () => {
     const options = { ...defaultOptions, extension: 'feature' };
 
     const tree = await schematicRunner.runSchematicAsync('store', options, appTree).toPromise();
-    const files = tree.files.filter(x => x.search('foo') >= 0);
+    const files = tree.files.filter(x => x.search('foo') >= 0).sort();
     expect(files).toMatchInlineSnapshot(`
       Array [
-        "/src/app/extensions/feature/store/foo/index.ts",
         "/src/app/extensions/feature/store/foo/foo.actions.ts",
         "/src/app/extensions/feature/store/foo/foo.effects.spec.ts",
         "/src/app/extensions/feature/store/foo/foo.effects.ts",
         "/src/app/extensions/feature/store/foo/foo.reducer.ts",
         "/src/app/extensions/feature/store/foo/foo.selectors.spec.ts",
         "/src/app/extensions/feature/store/foo/foo.selectors.ts",
+        "/src/app/extensions/feature/store/foo/index.ts",
       ]
     `);
   });

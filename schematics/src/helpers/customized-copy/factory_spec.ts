@@ -102,24 +102,24 @@ export class DummyTwoComponent {}
       .runSchematicAsync('customized-copy', { project: 'bar', from: 'foo/dummy' }, appTree)
       .toPromise();
 
-    expect(appTree.files.filter(x => x.includes('/src/app/'))).toMatchInlineSnapshot(`
+    expect(appTree.files.filter(x => x.includes('/src/app/')).sort()).toMatchInlineSnapshot(`
       Array [
         "/src/app/app-routing.module.ts",
-        "/src/app/app.module.ts",
+        "/src/app/app.component.css",
         "/src/app/app.component.html",
         "/src/app/app.component.spec.ts",
         "/src/app/app.component.ts",
-        "/src/app/app.component.css",
-        "/src/app/shared/shared.module.ts",
-        "/src/app/shared/dummy-two/dummy-two.component.html",
-        "/src/app/shared/dummy-two/dummy-two.component.spec.ts",
-        "/src/app/shared/dummy-two/dummy-two.component.ts",
-        "/src/app/foo/dummy/dummy.component.html",
-        "/src/app/foo/dummy/dummy.component.spec.ts",
-        "/src/app/foo/dummy/dummy.component.ts",
+        "/src/app/app.module.ts",
         "/src/app/foo/custom-dummy/custom-dummy.component.html",
         "/src/app/foo/custom-dummy/custom-dummy.component.spec.ts",
         "/src/app/foo/custom-dummy/custom-dummy.component.ts",
+        "/src/app/foo/dummy/dummy.component.html",
+        "/src/app/foo/dummy/dummy.component.spec.ts",
+        "/src/app/foo/dummy/dummy.component.ts",
+        "/src/app/shared/dummy-two/dummy-two.component.html",
+        "/src/app/shared/dummy-two/dummy-two.component.spec.ts",
+        "/src/app/shared/dummy-two/dummy-two.component.ts",
+        "/src/app/shared/shared.module.ts",
       ]
     `);
 
@@ -171,24 +171,24 @@ export class DummyTwoComponent {}
       .runSchematicAsync('customized-copy', { project: 'bar', from: 'shared/dummy-two' }, appTree)
       .toPromise();
 
-    expect(appTree.files.filter(x => x.includes('/src/app/'))).toMatchInlineSnapshot(`
+    expect(appTree.files.filter(x => x.includes('/src/app/')).sort()).toMatchInlineSnapshot(`
       Array [
         "/src/app/app-routing.module.ts",
-        "/src/app/app.module.ts",
+        "/src/app/app.component.css",
         "/src/app/app.component.html",
         "/src/app/app.component.spec.ts",
         "/src/app/app.component.ts",
-        "/src/app/app.component.css",
-        "/src/app/shared/shared.module.ts",
-        "/src/app/shared/dummy-two/dummy-two.component.html",
-        "/src/app/shared/dummy-two/dummy-two.component.spec.ts",
-        "/src/app/shared/dummy-two/dummy-two.component.ts",
-        "/src/app/shared/custom-dummy-two/custom-dummy-two.component.html",
-        "/src/app/shared/custom-dummy-two/custom-dummy-two.component.spec.ts",
-        "/src/app/shared/custom-dummy-two/custom-dummy-two.component.ts",
+        "/src/app/app.module.ts",
         "/src/app/foo/dummy/dummy.component.html",
         "/src/app/foo/dummy/dummy.component.spec.ts",
         "/src/app/foo/dummy/dummy.component.ts",
+        "/src/app/shared/custom-dummy-two/custom-dummy-two.component.html",
+        "/src/app/shared/custom-dummy-two/custom-dummy-two.component.spec.ts",
+        "/src/app/shared/custom-dummy-two/custom-dummy-two.component.ts",
+        "/src/app/shared/dummy-two/dummy-two.component.html",
+        "/src/app/shared/dummy-two/dummy-two.component.spec.ts",
+        "/src/app/shared/dummy-two/dummy-two.component.ts",
+        "/src/app/shared/shared.module.ts",
       ]
     `);
 
