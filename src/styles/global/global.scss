@@ -28,6 +28,13 @@ h3,
   margin-top: $space-default;
   margin-bottom: $space-default;
   text-transform: uppercase;
+
+  .header-note {
+    font-family: $font-family-regular;
+    font-size: $font-size-corporate;
+    color: $text-color-quarternary;
+    text-transform: none;
+  }
 }
 
 h4,
