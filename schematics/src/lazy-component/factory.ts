@@ -1,4 +1,5 @@
 import { strings } from '@angular-devkit/core';
+import { classify } from '@angular-devkit/core/src/utils/strings';
 import {
   Rule,
   SchematicsException,
@@ -20,8 +21,9 @@ import { applyLintFix } from '../utils/lint-fix';
 import {
   addDeclarationToNgModule,
   addDecoratorToClass,
+  addExportToBarrelFile,
   addExportToNgModule,
-  addLazyExportToBarrelFile,
+  generateGitignore,
   updateModule,
 } from '../utils/registration';
 
@@ -122,7 +124,9 @@ export function createLazyComponent(options: Options): Rule {
       }
     }
     const exportsModuleName = `${isProject ? projectName : extension}-exports`;
-    const exportsModuleExists = host.exists(`${options.path}/${exportsModuleName}.module.ts`);
+    const exportsModuleExists = host.exists(`/${options.path}/${exportsModuleName}.module.ts`);
+
+    const gitignoreExists = host.exists(`/${options.path}/.gitignore`);
 
     const operations = [];
 
@@ -136,12 +140,22 @@ export function createLazyComponent(options: Options): Rule {
           })
         );
         operations.push(updateModule(options));
+        operations.push(
+          addExportToBarrelFile({
+            ...options,
+            artifactName: classify(`${exportsModuleName}-module`),
+            moduleImportPath: `/${options.path}/${exportsModuleName}.module`,
+          })
+        );
       }
       operations.push(addDeclarationToNgModule(options));
       operations.push(addExportToNgModule(options));
+      if (!gitignoreExists) {
+        operations.push(generateGitignore({ ...options, content: '/lazy**' }));
+      }
 
       if (isProject) {
-        operations.push(addLazyExportToBarrelFile(options));
+        operations.push(addExportToBarrelFile(options));
       }
       operations.push(
         addDecoratorToClass(

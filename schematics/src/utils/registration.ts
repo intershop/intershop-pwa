@@ -185,12 +185,17 @@ export function addImportToFile(options: { module?: string; artifactName?: strin
   };
 }
 
-export function addLazyExportToBarrelFile(options: { path?: string; name?: string; artifactName?: string }): Rule {
-  const barrelFile = `${options.path}/index.ts`;
+export function addExportToBarrelFile(options: {
+  path?: string;
+  artifactName?: string;
+  moduleImportPath?: string;
+}): Rule {
+  const barrelFile = `/${options.path}/index.ts`;
   return host => {
     if (!tsquery(readIntoSourceFile(host, barrelFile), `Identifier[name=${options.artifactName}]`).length) {
+      const relativePath = buildRelativePath(barrelFile, options.moduleImportPath);
       const exportRecorder = host.beginUpdate(barrelFile);
-      insertExport(exportRecorder, options.artifactName, `./${options.name}/${options.name}.component`);
+      insertExport(exportRecorder, options.artifactName, relativePath);
       host.commitUpdate(exportRecorder);
     }
   };
@@ -224,6 +229,14 @@ export function addDecoratorToClass(
         }
       }
     );
+  };
+}
+
+export function generateGitignore(options: { path?: string; content?: string }): Rule {
+  const gitignore = `/${options.path}/.gitignore`;
+  return host => {
+    host.create(gitignore, options.content);
+    return host;
   };
 }
 
