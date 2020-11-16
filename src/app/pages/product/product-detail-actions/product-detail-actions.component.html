@@ -7,7 +7,7 @@
 
       <ng-template #standardInteractions>
         <ng-container *ishFeature="'wishlists'">
-          <li class="d-none d-md-block mt-1 mr-2" [attr.data-testing-id]="'wishlist-' + product.sku">
+          <li class="mr-2" [attr.data-testing-id]="'wishlist-' + product.sku">
             <ish-lazy-product-add-to-wishlist
               [product]="product"
               displayType="animated"
@@ -15,11 +15,7 @@
           </li>
         </ng-container>
         <ng-container *ishFeature="'compare'">
-          <li
-            *ngIf="!isMasterProduct(product)"
-            class="d-none d-md-block"
-            [attr.data-testing-id]="'compare-' + product.sku"
-          >
+          <li *ngIf="!isMasterProduct(product)" [attr.data-testing-id]="'compare-' + product.sku">
             <a routerLink="/compare" (click)="addToCompare()" rel="nofollow">
               <fa-icon [icon]="['fas', 'columns']"></fa-icon>
               <span class="share-label">{{ 'product.compare.link' | translate }}</span>
@@ -28,7 +24,7 @@
         </ng-container>
       </ng-template>
 
-      <li class="d-none d-md-block">
+      <li>
         <a href="javascript:window.print();" class="link-print" rel="nofollow">
           <fa-icon [icon]="['fas', 'print']"></fa-icon>
           <span class="share-label">{{ 'product.print_page.link' | translate }}</span>
