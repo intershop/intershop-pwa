@@ -17,9 +17,9 @@ export class OrganizationErrorHandler implements SpecialHttpErrorHandler {
   map(httpError: HttpErrorResponse): Partial<HttpError> {
     const error = httpError.error.errors[0];
     return {
-      message: error?.detail,
-      code: error?.code,
-      status: error?.status,
+      message: error.detail,
+      code: error.code,
+      status: error.status,
     };
   }
 }
