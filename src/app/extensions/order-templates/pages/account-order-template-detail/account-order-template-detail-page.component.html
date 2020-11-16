@@ -41,6 +41,7 @@
     </ng-container>
   </div>
   <ish-product-add-to-basket
+    *ngIf="orderTemplate.itemsCount && orderTemplate.itemsCount > 0"
     [product]="dummyProduct"
     [disabled]="!selectedItems?.length"
     [class]="'btn btn-primary float-right'"
