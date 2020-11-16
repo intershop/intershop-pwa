@@ -51,17 +51,17 @@
                 <ish-basket-promotion [rebate]="rebate" class="list-item-promo"></ish-basket-promotion>
               </ng-container>
             </div>
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-end">
               <ish-lazy-product-add-to-order-template
                 *ngIf="editable"
-                [class]="'btn btn-link btn-tool add-to-order-template'"
+                [class]="'btn-link btn-tool pl-0 add-to-order-template'"
                 [product]="product"
                 displayType="icon"
                 [quantity]="pli.quantity.value"
               ></ish-lazy-product-add-to-order-template>
               <ish-lazy-product-add-to-wishlist
                 *ngIf="editable"
-                class="btn-tool ml-0"
+                [class]="'btn-link btn-tool pl-0'"
                 [product]="product"
                 displayType="icon"
               ></ish-lazy-product-add-to-wishlist>
