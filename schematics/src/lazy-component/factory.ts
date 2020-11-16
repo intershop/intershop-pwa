@@ -1,5 +1,4 @@
 import { strings } from '@angular-devkit/core';
-import { classify } from '@angular-devkit/core/src/utils/strings';
 import {
   Rule,
   SchematicsException,
@@ -143,7 +142,7 @@ export function createLazyComponent(options: Options): Rule {
         operations.push(
           addExportToBarrelFile({
             ...options,
-            artifactName: classify(`${exportsModuleName}-module`),
+            artifactName: strings.classify(`${exportsModuleName}-module`),
             moduleImportPath: `/${options.path}/${exportsModuleName}.module`,
           })
         );
