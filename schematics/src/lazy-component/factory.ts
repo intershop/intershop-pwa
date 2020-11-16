@@ -8,6 +8,7 @@ import {
   forEach,
   mergeWith,
   move,
+  schematic,
   url,
 } from '@angular-devkit/schematics';
 import { tsquery } from '@phenomnomnominal/tsquery';
@@ -16,7 +17,14 @@ import * as ts from 'typescript';
 
 import { determineArtifactName, findDeclaringModule } from '../utils/common';
 import { applyLintFix } from '../utils/lint-fix';
-import { addDeclarationToNgModule, addDecoratorToClass, addExportToNgModule } from '../utils/registration';
+import {
+  addDeclarationToNgModule,
+  addDecoratorToClass,
+  addExportToBarrelFile,
+  addExportToNgModule,
+  generateGitignore,
+  updateModule,
+} from '../utils/registration';
 
 import { PWALazyComponentOptionsSchema as Options } from './schema';
 
@@ -26,24 +34,30 @@ export function createLazyComponent(options: Options): Rule {
       throw new SchematicsException('Option (project) is required.');
     }
     const workspace = await getWorkspace(host);
-    const project = workspace.projects.get(options.project);
+    const isProject = options.path.startsWith('projects/');
+    const projectName = isProject ? options.path.split('/')[1].trim() : '';
+    const project = workspace.projects.get(isProject ? options.path.split('/')[1] : options.project);
 
     const originalPath = options.path.replace(/.*src\/app\//, '');
     const componentPath = `/${project.sourceRoot}/app/${originalPath}`;
 
     if (
       !originalPath.endsWith('component.ts') ||
-      !originalPath.startsWith('extensions/') ||
+      !(originalPath.startsWith('extensions/') || isProject) ||
       !host.exists(componentPath)
     ) {
-      throw new SchematicsException('path does not point to an existing component in an extension');
+      throw new SchematicsException('path does not point to an existing component in an extension or project');
     }
 
     const pathSplits = originalPath.split('/');
     const extension = pathSplits[1];
     const originalName = /\/([a-z0-9-]+)\.component\.ts/.exec(originalPath)[1];
     options.name = 'lazy-' + originalName;
-    options.path = `${project.sourceRoot}/app/extensions/${extension}/exports`;
+    if (isProject) {
+      options.path = `${project.sourceRoot}/app/exports`;
+    } else {
+      options.path = `${project.sourceRoot}/app/extensions/${extension}/exports`;
+    }
     options = findDeclaringModule(host, options);
     options = determineArtifactName('component', host, options);
 
@@ -108,12 +122,40 @@ export function createLazyComponent(options: Options): Rule {
         }
       }
     }
+    const exportsModuleName = `${isProject ? projectName : extension}-exports`;
+    const exportsModuleExists = host.exists(`/${options.path}/${exportsModuleName}.module.ts`);
+
+    const gitignoreExists = host.exists(`/${options.path}/.gitignore`);
 
     const operations = [];
 
     if (!options.ci) {
+      if (!exportsModuleExists) {
+        operations.push(
+          schematic('module', {
+            ...options,
+            name: exportsModuleName,
+            flat: true,
+          })
+        );
+        operations.push(updateModule(options));
+        operations.push(
+          addExportToBarrelFile({
+            ...options,
+            artifactName: strings.classify(`${exportsModuleName}-module`),
+            moduleImportPath: `/${options.path}/${exportsModuleName}.module`,
+          })
+        );
+      }
       operations.push(addDeclarationToNgModule(options));
       operations.push(addExportToNgModule(options));
+      if (!gitignoreExists) {
+        operations.push(generateGitignore({ ...options, content: '/lazy**' }));
+      }
+
+      if (isProject) {
+        operations.push(addExportToBarrelFile(options));
+      }
       operations.push(
         addDecoratorToClass(
           componentPath,
@@ -133,11 +175,13 @@ export function createLazyComponent(options: Options): Rule {
             bindings,
             imports,
             originalPath,
+            projectName,
             extension,
             originalName,
             onChanges,
+            isProject,
           }),
-          move(`/${project.sourceRoot}/app/extensions/${extension}/exports`),
+          move(options.path),
           forEach(fileEntry => {
             if (host.exists(fileEntry.path)) {
               host.overwrite(fileEntry.path, fileEntry.content);
@@ -152,6 +196,7 @@ export function createLazyComponent(options: Options): Rule {
     );
 
     if (!options.ci) {
+      operations.push(applyLintFix());
       operations.push(applyLintFix());
     }
 

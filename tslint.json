@@ -588,9 +588,10 @@
           "^.*/src/app/(shell|shared)/\\1\\.module\\.ts$",
           "^.*/src/app/extensions/([a-z][a-z0-9-]+)/\\1\\.module\\.ts$",
           "^.*/projects/([a-z][a-z0-9-]+)/src/app/\\1\\.module\\.ts$",
-          // extension exports
-          "^.*/src/app/extensions/[a-z][a-z0-9-]+/exports/(lazy-[a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
-          "^.*/src/app/extensions/([a-z][a-z0-9-]+)/exports/\\1-exports\\.module\\.ts$"
+          // extension/projects exports
+          "^.*(/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/exports/(lazy-[a-z][a-z0-9-]+)/\\2\\.component\\.ts$",
+          "^.*/src/app/extensions/([a-z][a-z0-9-]+)/exports/\\1-exports\\.module\\.ts$",
+          "^.*/projects/([a-z][a-z0-9-]+)/src/app/exports/\\1-exports\\.module\\.ts$"
         ],
         "patterns": [
           // root components
@@ -669,7 +670,7 @@
           // modules and routing
           {
             "name": "^([A-Z].+)ExportsModule$",
-            "file": ".*/extensions/<kebab>/exports/<kebab>-exports\\.module\\.ts$"
+            "file": ".*(/extensions/<kebab>|/projects/<kebab>/src/app)/exports/<kebab>-exports\\.module\\.ts$"
           },
           {
             "name": "^([A-Z].+)SharedModule$",

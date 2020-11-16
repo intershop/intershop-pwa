@@ -60,21 +60,21 @@ export class DummyTwoComponent {}
       .runSchematicAsync('move-component', { project: 'bar', from: 'foo/dummy', to: 'foo' }, appTree)
       .toPromise();
 
-    expect(appTree.files.filter(x => x.includes('/src/app/'))).toMatchInlineSnapshot(`
+    expect(appTree.files.filter(x => x.includes('/src/app/')).sort()).toMatchInlineSnapshot(`
       Array [
         "/src/app/app-routing.module.ts",
-        "/src/app/app.module.ts",
         "/src/app/app.component.css",
         "/src/app/app.component.html",
         "/src/app/app.component.spec.ts",
         "/src/app/app.component.ts",
-        "/src/app/shared/shared.module.ts",
-        "/src/app/shared/dummy-two/dummy-two.component.html",
-        "/src/app/shared/dummy-two/dummy-two.component.spec.ts",
-        "/src/app/shared/dummy-two/dummy-two.component.ts",
+        "/src/app/app.module.ts",
         "/src/app/foo/foo.component.html",
         "/src/app/foo/foo.component.spec.ts",
         "/src/app/foo/foo.component.ts",
+        "/src/app/shared/dummy-two/dummy-two.component.html",
+        "/src/app/shared/dummy-two/dummy-two.component.spec.ts",
+        "/src/app/shared/dummy-two/dummy-two.component.ts",
+        "/src/app/shared/shared.module.ts",
       ]
     `);
   });
