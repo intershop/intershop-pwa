@@ -46,14 +46,18 @@
         </p>
         <p *ngIf="requisition.approval.statusCode !== 'APPROVED'; else leftBudgetDisplay" class="row">
           <span class="col-6">{{ 'approval.detailspage.budget.including_order.label' | translate }}</span>
-          <span class="col-6" [ngClass]="{ 'text-danger': spentPercentageIncludingThisOrder > 1 }">
-            {{ spentBudgetIncludingThisOrder | ishPrice }} ({{ spentPercentageIncludingThisOrder | percent }})
+          <span class="col-6" [ngClass]="{ 'text-danger': spentPercentageIncludingThisRequisition > 1 }">
+            {{ requisition.userBudgets?.spentBudgetIncludingThisRequisition | ishPrice }} ({{
+              spentPercentageIncludingThisRequisition | percent
+            }})
           </span>
         </p>
         <ng-template #leftBudgetDisplay>
           <p class="row">
             <span class="col-6">{{ 'account.budget.left.label' | translate }}</span>
-            <span class="col-6">{{ leftBudget | ishPrice }} ({{ leftPercentage | percent }})</span>
+            <span class="col-6"
+              >{{ this.requisition.userBudgets?.remainingBudget | ishPrice }} ({{ leftPercentage | percent }})</span
+            >
           </p>
         </ng-template>
       </div>

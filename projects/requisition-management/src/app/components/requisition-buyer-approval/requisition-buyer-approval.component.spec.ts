@@ -60,6 +60,9 @@ describe('Requisition Buyer Approval Component', () => {
         orderSpentLimit: { currency: 'USD', value: 500, type: 'Money' },
         spentBudget: { currency: 'USD', value: 300, type: 'Money' },
         budget: { currency: 'USD', value: 3000, type: 'Money' },
+        remainingBudget: { currency: 'USD', value: 2700, type: 'Money' },
+        remainingBudgetIncludingThisRequisition: { currency: 'USD', value: 700, type: 'Money' },
+        spentBudgetIncludingThisRequisition: { currency: 'USD', value: 2300, type: 'Money' },
       },
       totals: {
         total: { gross: 2000, net: 1800, currency: 'USD' },
