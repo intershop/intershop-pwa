@@ -5,7 +5,7 @@ import {
   <% if (onChanges === 'complex') { %>SimpleChange, SimpleChanges, <% } %>
 } from '@angular/core';
 
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+<% if(!isProject) { %> import { FeatureToggleService } from 'ish-core/feature-toggle.module'; <% } %>
 
 <% if (imports.length) { %><%= imports.map(i => `import { ${i.types.join(', ')} } from ${i.from};`).join('\n') %><% } %>
 
