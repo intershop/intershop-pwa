@@ -35,7 +35,7 @@
     background-color: $button-default-bg;
     border-color: $button-default-border;
 
-    &:hover {
+    &:not(:disabled):hover {
       //color: $button-default-color;
       background-color: darken($button-default-bg, 10%);
       border-color: darken($button-default-border, 10%);
