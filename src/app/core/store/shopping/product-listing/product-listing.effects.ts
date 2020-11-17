@@ -88,6 +88,7 @@ export class ProductListingEffects {
               ? {
                   ...stringToFormParams(params.filters),
                   ...(id.type === 'search' ? { searchTerm: [id.value] } : {}),
+                  ...(id.type === 'master' ? { MasterSKU: [id.value] } : {}),
                 }
               : undefined;
 
@@ -130,11 +131,7 @@ export class ProductListingEffects {
         if (viewAvailable) {
           return setProductListingPages({ id: { page, sorting, filters, ...id } });
         }
-        if (
-          filters &&
-          // TODO: work-around for different products/hits-result without filters
-          (id.type !== 'search' || this.isSearchFor(filters.searchTerm, id))
-        ) {
+        if (filters) {
           const searchParameter = filters;
           return loadProductsForFilter({ id: { ...id, filters }, searchParameter, page, sorting });
         } else {
@@ -162,11 +159,7 @@ export class ProductListingEffects {
       map(({ id, filters }) => ({ type: id.type, value: id.value, filters })),
       distinctUntilChanged(isEqual),
       map(({ type, value, filters }) => {
-        if (
-          filters &&
-          // TODO: work-around for different products/hits-result without filters
-          (type !== 'search' || this.isSearchFor(filters.searchTerm, { type, value }))
-        ) {
+        if (filters) {
           const searchParameter = filters;
           return applyFilter({ searchParameter });
         } else {
@@ -185,8 +178,4 @@ export class ProductListingEffects {
       whenTruthy()
     )
   );
-
-  private isSearchFor(searchTerm: string[], id: { type: string; value: string }): boolean {
-    return id.type === 'search' && searchTerm && searchTerm.includes(id.value);
-  }
 }

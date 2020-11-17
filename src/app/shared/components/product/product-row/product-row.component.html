@@ -1,7 +1,7 @@
 <div class="product-tile-list row" [attr.data-testing-sku]="product.sku">
   <div class="col-3 col-md-2">
     <div class="product-image-container">
-      <a [routerLink]="product | ishProductRoute: category">
+      <a [routerLink]="product | ishProductRoute: category" queryParamsHandling="merge">
         <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
       </a>
       <ish-product-label [product]="product"></ish-product-label>
@@ -11,9 +11,13 @@
   <div class="col-9 col-md-10">
     <div class="row">
       <div class="col-md-7 col-xs-12">
-        <a *ngIf="configuration.displayName" class="product-title" [routerLink]="product | ishProductRoute: category">{{
-          product.name
-        }}</a>
+        <a
+          *ngIf="configuration.displayName"
+          class="product-title"
+          [routerLink]="product | ishProductRoute: category"
+          queryParamsHandling="merge"
+          >{{ product.name }}</a
+        >
 
         <ish-product-rating *ishFeature="'rating'" [product]="product"></ish-product-rating>
 
@@ -135,7 +139,12 @@
 
             <ng-template #masterProductActions>
               <div class="action-container">
-                <a [routerLink]="product | ishProductRoute: category" class="btn btn-primary" role="button">
+                <a
+                  [routerLink]="product | ishProductRoute: category"
+                  queryParamsHandling="merge"
+                  class="btn btn-primary"
+                  role="button"
+                >
                   {{ 'product.choose_variation.link' | translate }}
                 </a>
               </div>

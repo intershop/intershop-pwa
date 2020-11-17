@@ -1,14 +1,18 @@
 <div class="product-tile" [attr.data-testing-sku]="product.sku">
   <div class="product-image-container">
-    <a [routerLink]="product | ishProductRoute: category">
+    <a [routerLink]="product | ishProductRoute: category" queryParamsHandling="merge">
       <ish-product-image [product]="product" imageType="M" class="product-image"></ish-product-image>
     </a>
     <ish-product-label [product]="product"></ish-product-label>
   </div>
 
-  <a *ngIf="configuration.displayName" class="product-title" [routerLink]="product | ishProductRoute: category">{{
-    product.name
-  }}</a>
+  <a
+    *ngIf="configuration.displayName"
+    class="product-title"
+    [routerLink]="product | ishProductRoute: category"
+    queryParamsHandling="merge"
+    >{{ product.name }}</a
+  >
 
   <ish-product-rating *ishFeature="'rating'" [product]="product"></ish-product-rating>
 
