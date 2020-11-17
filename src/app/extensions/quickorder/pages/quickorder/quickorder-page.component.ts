@@ -104,6 +104,14 @@ export class QuickorderPageComponent implements OnInit {
     return this.quickOrderForm.get('quickOrderlines') as FormArray;
   }
 
+  get quickOrderFormDisabled() {
+    return (
+      this.quickOrderForm.invalid ||
+      !this.quickOrderlines.value[0].sku ||
+      !parseInt(this.quickOrderlines.value[0].quantity, 10)
+    );
+  }
+
   createLine(): FormGroup {
     return this.qf.group(
       { sku: [''], quantity: [''], product: [{}] },
