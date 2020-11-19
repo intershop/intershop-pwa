@@ -80,7 +80,7 @@ describe('Requisition Buyer Approval Component', () => {
     component.ngOnChanges();
     fixture.detectChanges();
     expect(element.textContent.replace(/^\s*[\r\n]*/gm, '')).toMatchInlineSnapshot(`
-      "approval.detailspage.purchaser.label:
+      "approval.detailspage.purchaser.label
       Patricia Miller
       approval.detailspage.order_spend_limit.label
       $500.00
@@ -99,7 +99,7 @@ describe('Requisition Buyer Approval Component', () => {
     component.ngOnChanges();
     fixture.detectChanges();
     expect(element.textContent.replace(/^\s*[\r\n]*/gm, '')).toMatchInlineSnapshot(`
-      "approval.detailspage.purchaser.label:
+      "approval.detailspage.purchaser.label
       Patricia Miller
       approval.detailspage.order_spend_limit.label
       $500.00

@@ -24,23 +24,21 @@
         >
           <span class="progress-display">{{ usedBudgetPercentage | percent }}</span>
           <ng-template #BudgetPopover>
-            <div class="row col-md-12">
+            <div class="row">
               <div class="col-md-6">
-                <label>{{
-                  'orders.widget.budget.period.' + budget.budgetPeriod + '_spend_limit.label' | translate
-                }}</label>
+                <label>{{ 'account.budget.type.' + budget.budgetPeriod + '.label' | translate }}:</label>
               </div>
               <div class="col-md-6 text-right">{{ budget.budget | ishPrice }}</div>
             </div>
-            <div class="row col-md-12">
+            <div class="row">
               <div class="col-md-6">
-                <label>{{ 'account.budget.already_spent.label' | translate }}</label>
+                <label>{{ 'account.budget.already_spent.label' | translate }}:</label>
               </div>
               <div class="col-md-6 text-right">{{ usedBudget | ishPrice }} ({{ usedBudgetPercentage | percent }})</div>
             </div>
-            <div class="row col-md-12">
+            <div class="row">
               <div class="col-md-6">
-                <label>{{ 'account.budget.left.label' | translate }}</label>
+                <label>{{ 'account.budget.left.label' | translate }}:</label>
               </div>
               <div class="col-md-6 text-right">
                 {{ budget.remainingBudget | ishPrice }} ({{ remainingBudgetPercentage | percent }})
@@ -54,7 +52,8 @@
 </div>
 
 <ng-template #noBudget>
-  <dl>
-    <dd>{{ 'account.budget.unlimited' | translate }}</dd>
+  <dl class="row dl-horizontal dl-separator">
+    <dt class="col-12 col-sm-7">{{ 'account.user.budget.label' | translate }}</dt>
+    <dd class="col-5 column-price">{{ 'account.budget.unlimited' | translate }}</dd>
   </dl>
 </ng-template>
