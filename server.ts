@@ -130,6 +130,17 @@ export function app() {
     if (logging) {
       console.log(`SSR ${req.originalUrl}`);
     }
+
+    if (req.headers.accept) {
+      const accept = req.headers.accept.toLowerCase();
+      if (!accept.includes('html') && ['css', 'image', 'json', 'javascript'].some(inc => accept.includes(inc))) {
+        if (logging) {
+          console.log(`RES 404 ${req.originalUrl} - accept header mismatch '${accept}'`);
+        }
+        return res.sendStatus(404);
+      }
+    }
+
     // find last baseHref parameter
     const regex = /baseHref=([^;\?\#]*)/g;
     let baseHref = '/';
