@@ -7,7 +7,7 @@
 
       <ng-template #standardInteractions>
         <ng-container *ishFeature="'wishlists'">
-          <li class="mt-1 mr-2" [attr.data-testing-id]="'wishlist-' + product.sku">
+          <li class="mr-2" [attr.data-testing-id]="'wishlist-' + product.sku">
             <ish-lazy-product-add-to-wishlist
               [product]="product"
               displayType="animated"

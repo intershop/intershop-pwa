@@ -11,7 +11,7 @@
   > li {
     max-width: 50px;
     height: 27px;
-    padding: 0 $space-default;
+    padding: 0 $space-default * 2 / 3;
     margin: 0;
     overflow: hidden;
     font-size: 18px;
@@ -19,7 +19,9 @@
     @include transition(max-width 0.5s ease-in-out);
 
     button {
-      padding: 0;
+      padding: 3px 0 0;
+      font-family: $font-family-regular;
+      text-transform: none;
       white-space: normal;
       background-color: transparent;
       border: 0;
