@@ -194,7 +194,7 @@
   "account.order_templates.delete_dialog.header": "Delete {{0}}",
   "account.order_templates.edit.confirmation": "Your order template \"{{0}}\" has been updated.",
   "account.order_templates.edit_form.save_button.text": "Save Changes",
-  "account.orderdetails.approved.text": "approved by {{0}} on {{1}}",
+  "account.orderdetails.approved.text": "(approved by {{0}} on {{1}})",
   "account.orderdetails.breadcrumb": "Order Details",
   "account.orderdetails.date_of_order.label": "Date of Order",
   "account.orderdetails.headerDetails.default": "Below are details about the item(s) in your order. If you ordered more than one item, please note that some items may display a different shipping method and/or status because they are shipped in a separate package.",

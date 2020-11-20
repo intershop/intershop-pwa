@@ -27,4 +27,5 @@ export interface Order extends OrderBasket {
     approverLastName: string;
     date: number;
   };
+  requisitionNo?: string;
 }

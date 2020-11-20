@@ -14,23 +14,22 @@
 <div *ngIf="order" class="section" data-testing-id="order-summary-info">
   <dl class="row dl-horizontal dl-separator">
     <dt class="col-6 col-sm-4 col-md-2">{{ 'account.orderdetails.order_number.label' | translate }}</dt>
-    <dd class="col-6 col-sm-8 col-md-10" data-testing-id="order-number">
-      {{ order.documentNo }}
-      <span *ngIf="order.approval">
-        ({{
-          'account.orderdetails.approved.text'
-            | translate
-              : {
-                  '0': order.approval.approverFirstName + ' ' + order.approval.approverLastName,
-                  '1': order.approval.date | ishDate: 'shortDate'
-                }
-        }}
-        -
-        <a [routerLink]="['../../../../requisitions/buyer', order.id, { status: 'APPROVED' }]">{{
-          'account.order.view_this_order.link' | translate
-        }}</a
-        >)
-      </span>
+    <dd class="col-6 col-sm-8 col-md-10" data-testing-id="order-number">{{ order.documentNo }}</dd>
+    <dt *ngIf="order.approval" class="col-6 col-sm-4 col-md-2">
+      {{ 'approval.detailspage.order.request_id' | translate }}
+    </dt>
+    <dd *ngIf="order.approval" class="col-6 col-sm-8 col-md-10">
+      <a [routerLink]="['../../../../requisitions/buyer', order.id, { status: 'APPROVED' }]">{{
+        order.requisitionNo
+      }}</a>
+      {{
+        'account.orderdetails.approved.text'
+          | translate
+            : {
+                '0': order.approval.approverFirstName + ' ' + order.approval.approverLastName,
+                '1': order.approval.date | ishDate: 'shortDate'
+              }
+      }}
     </dd>
     <dt class="col-6 col-sm-4 col-md-2">{{ 'account.orderdetails.date_of_order.label' | translate }}</dt>
     <dd class="col-6 col-sm-8 col-md-10" data-testing-id="order-date">{{ order.creationDate | ishDate }}</dd>
@@ -38,7 +37,6 @@
     <dd class="col-6 col-sm-8 col-md-10" data-testing-id="order-status">
       <span class="badge badge-info">{{ order.status }}</span>
     </dd>
-    <!-- ToDo: should actually be the status display name -->
   </dl>
 </div>
 
