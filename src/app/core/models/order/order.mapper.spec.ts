@@ -16,6 +16,7 @@ describe('Order Mapper', () => {
     commonShipToAddress: 'urn_commonShipToAddress_123',
     commonShippingMethod: 'shipping_method_123',
     lineItems: ['YikKAE8BKC0AAAFrIW8IyLLD'],
+    requisitionDocumentNo: '58765',
     totals: {
       grandTotal: {
         gross: {
@@ -158,6 +159,7 @@ describe('Order Mapper', () => {
       expect(order.infos).toBeArrayOfSize(1);
 
       expect(order.approval.approverFirstName).toBe('Patricia');
+      expect(order.requisitionNo).toBe(orderBaseData.requisitionDocumentNo);
     });
   });
 });

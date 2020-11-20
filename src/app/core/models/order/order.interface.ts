@@ -23,6 +23,7 @@ export interface OrderBaseData extends BasketBaseData {
   statusCode: string;
   status: string;
   basket: string;
+  requisitionDocumentNo?: string;
   attributes?: Attribute[];
 }
 
