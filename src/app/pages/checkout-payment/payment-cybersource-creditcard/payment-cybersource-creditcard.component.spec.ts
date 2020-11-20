@@ -3,9 +3,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
+import { FormControlFeedbackComponent } from 'ish-shared/forms/components/form-control-feedback/form-control-feedback.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
+import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form-feedback.directive';
 
 import { PaymentCybersourceCreditcardComponent } from './payment-cybersource-creditcard.component';
 
@@ -18,8 +20,10 @@ describe('Payment Cybersource Creditcard Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         MockComponent(FaIconComponent),
+        MockComponent(FormControlFeedbackComponent),
         MockComponent(InputComponent),
         MockComponent(NgbPopover),
+        MockDirective(ShowFormFeedbackDirective),
         PaymentCybersourceCreditcardComponent,
       ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
