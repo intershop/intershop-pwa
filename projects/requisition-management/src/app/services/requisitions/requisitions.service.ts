@@ -1,13 +1,10 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { Observable, combineLatest, of, throwError } from 'rxjs';
-import { concatMap, map, switchMap, take } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { concatMap, map } from 'rxjs/operators';
 
 import { OrderData } from 'ish-core/models/order/order.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
-import { whenTruthy } from 'ish-core/utils/operators';
 
 import { RequisitionData } from '../../models/requisition/requisition.interface';
 import { RequisitionMapper } from '../../models/requisition/requisition.mapper';
@@ -26,7 +23,7 @@ type RequisitionIncludeType =
 
 @Injectable({ providedIn: 'root' })
 export class RequisitionsService {
-  constructor(private apiService: ApiService, private store: Store, private requisitionMapper: RequisitionMapper) {}
+  constructor(private apiService: ApiService, private requisitionMapper: RequisitionMapper) {}
 
   private allIncludes: RequisitionIncludeType[] = [
     'invoiceToAddress',
@@ -39,8 +36,6 @@ export class RequisitionsService {
     'payments_paymentMethod',
     'payments_paymentInstrument',
   ];
-
-  private currentCustomer$ = this.store.pipe(select(getLoggedInCustomer), whenTruthy(), take(1));
 
   private orderHeaders = new HttpHeaders({
     'content-type': 'application/json',
@@ -62,13 +57,10 @@ export class RequisitionsService {
       params = params.set('status', status);
     }
 
-    return combineLatest([this.currentCustomer$, this.store.pipe(select(getLoggedInUser), whenTruthy(), take(1))]).pipe(
-      switchMap(([customer, user]) =>
-        this.apiService
-          .get<RequisitionData>(`customers/${customer.customerNo}/users/${user.login}/requisitions`, { params })
-          .pipe(map(data => this.requisitionMapper.fromListData(data)))
-      )
-    );
+    return this.apiService
+      .b2bUserEndpoint()
+      .get<RequisitionData>(`requisitions`, { params })
+      .pipe(map(data => this.requisitionMapper.fromListData(data)));
   }
 
   /**
@@ -83,15 +75,12 @@ export class RequisitionsService {
 
     const params = new HttpParams().set('include', this.allIncludes.join());
 
-    return combineLatest([this.currentCustomer$, this.store.pipe(select(getLoggedInUser), whenTruthy(), take(1))]).pipe(
-      switchMap(([customer, user]) =>
-        this.apiService
-          .get<RequisitionData>(`customers/${customer.customerNo}/users/${user.login}/requisitions/${requisitionId}`, {
-            params,
-          })
-          .pipe(concatMap(payload => this.processRequisitionData(payload)))
-      )
-    );
+    return this.apiService
+      .b2bUserEndpoint()
+      .get<RequisitionData>(`requisitions/${requisitionId}`, {
+        params,
+      })
+      .pipe(concatMap(payload => this.processRequisitionData(payload)));
   }
 
   /**
@@ -121,19 +110,12 @@ export class RequisitionsService {
       approvalComment,
     };
 
-    return combineLatest([this.currentCustomer$, this.store.pipe(select(getLoggedInUser), whenTruthy(), take(1))]).pipe(
-      switchMap(([customer, user]) =>
-        this.apiService
-          .patch<RequisitionData>(
-            `customers/${customer.customerNo}/users/${user.login}/requisitions/${requisitionId}`,
-            body,
-            {
-              params,
-            }
-          )
-          .pipe(concatMap(payload => this.processRequisitionData(payload)))
-      )
-    );
+    return this.apiService
+      .b2bUserEndpoint()
+      .patch<RequisitionData>(`requisitions/${requisitionId}`, body, {
+        params,
+      })
+      .pipe(concatMap(payload => this.processRequisitionData(payload)));
   }
 
   /**
