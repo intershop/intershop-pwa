@@ -41,31 +41,41 @@
   </div>
 
   <!-- All the other fields comprising the form post to your server -->
-  <ish-input
-    [form]="cyberSourceCreditCardForm"
-    controlName="expirationMonth"
-    inputClass="col-sm-6"
-    label="Month"
-    labelClass="col-form-label col-md-4"
-    markRequiredLabel="on"
-    [errorMessages]="{
-      required: 'checkout.credit_card.expiryMonth.error.invalid',
-      pattern: 'checkout.credit_card.expiryMonth.error.invalid'
-    }"
-  ></ish-input>
-
-  <ish-input
-    [form]="cyberSourceCreditCardForm"
-    controlName="expirationYear"
-    inputClass="col-sm-6"
-    label="Year"
-    labelClass="col-form-label col-md-4"
-    markRequiredLabel="on"
-    [errorMessages]="{
-      required: 'checkout.credit_card.expiryMonth.error.invalid',
-      pattern: 'checkout.credit_card.expiryMonth.error.invalid'
-    }"
-  ></ish-input>
+  <div
+    class="row form-group has-feedback"
+    [ishShowFormFeedback]="[
+      cyberSourceCreditCardForm.controls.expirationMonth,
+      cyberSourceCreditCardForm.controls.expirationYear
+    ]"
+  >
+    <label for="month" class="col-form-label col-md-4"
+      >{{ 'checkout.credit_card.expiration_date.label' | translate }}<span class="required">*</span></label
+    >
+    <div class="col-sm-6">
+      <div class="clearfix row">
+        <div class="col-6">
+          <select class="form-control" id="month" formControlName="expirationMonth" data-testing-id="expirationMonth">
+            <option value="">{{ 'account.date.month' | translate }}</option>
+            <option *ngFor="let option of monthOptions" [value]="option.value">{{ option.label | translate }}</option>
+          </select>
+          <ish-form-control-feedback
+            [messages]="{ required: 'account.date.month.error.required' }"
+            [control]="cyberSourceCreditCardForm.controls.expirationMonth"
+          ></ish-form-control-feedback>
+        </div>
+        <div class="col-6">
+          <select class="form-control" id="year" formControlName="expirationYear" data-testing-id="expirationYear">
+            <option value="">{{ 'account.date.year' | translate }}</option>
+            <option *ngFor="let option of yearOptions" [value]="option.value">{{ option.label | translate }}</option>
+          </select>
+          <ish-form-control-feedback
+            [messages]="{ required: 'account.date.year.error.required' }"
+            [control]="cyberSourceCreditCardForm.controls.expirationYear"
+          ></ish-form-control-feedback>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="offset-md-4 col-md-8">

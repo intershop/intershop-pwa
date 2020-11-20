@@ -11,12 +11,14 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import b64u from 'b64u';
+import { range } from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
+import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 // allows access to concardis js functionality
@@ -26,12 +28,27 @@ declare var Flex: any;
 @Component({
   selector: 'ish-payment-cybersource-creditcard',
   templateUrl: './payment-cybersource-creditcard.component.html',
+  styleUrls: ['./payment-cybersource-creditcard.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestroy, OnInit {
   cyberSourceCreditCardForm: FormGroup;
 
-  constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {}
+  constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
+    this.monthOptions = range(1, 13)
+      .map(n => n.toString().padStart(2, '0'))
+      .map(n => ({ label: n, value: n }));
+
+    const currentYear = new Date().getFullYear();
+    this.yearOptions = range(currentYear, currentYear + 7).map(n => ({
+      label: n.toString(),
+      value: n.toString(),
+    }));
+  }
+
+  monthOptions: SelectOption[];
+  yearOptions: SelectOption[];
+
   /**
    * concardis payment method, needed to get configuration parameters
    */
@@ -43,7 +60,7 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
   @Input() activated = false;
 
   @Output() cancel = new EventEmitter<void>();
-  @Output() submit = new EventEmitter<{ parameters: Attribute[]; saveAllowed: boolean }>();
+  @Output() submit = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
 
   // tslint:disable-next-line: private-destroy-field
   protected destroy$ = new Subject();
