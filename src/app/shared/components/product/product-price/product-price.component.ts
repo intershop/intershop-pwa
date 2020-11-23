@@ -6,7 +6,7 @@ import { ProductPrices } from 'ish-core/models/product/product.model';
 @Component({
   selector: 'ish-product-price',
   templateUrl: './product-price.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ProductPriceComponent implements OnChanges {
   @Input() product: ProductPrices;
