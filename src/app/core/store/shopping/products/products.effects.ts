@@ -54,6 +54,8 @@ import {
   loadProductVariationsSuccess,
   loadProductsForCategory,
   loadProductsForCategoryFail,
+  loadProductsForMaster,
+  loadProductsForMasterFail,
   loadRetailSetSuccess,
 } from './products.actions';
 import { getBreadcrumbForProductPage, getProductEntities, getSelectedProduct } from './products.selectors';
@@ -126,6 +128,38 @@ export class ProductsEffects {
             ),
           ]),
           mapErrorToAction(loadProductsForCategoryFail, { categoryId })
+        )
+      )
+    )
+  );
+
+  /**
+   * retrieve products for category incremental respecting paging
+   */
+  loadProductsForMaster$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadProductsForMaster),
+      mapToPayload(),
+      map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
+      concatMap(({ masterSKU, page, sorting }) =>
+        this.productsService.getProductsForMaster(masterSKU, page, sorting).pipe(
+          concatMap(({ total, products, sortKeys }) => [
+            ...products.map(product => loadProductSuccess({ product })),
+            setProductListingPages(
+              this.productListingMapper.createPages(
+                products.map(p => p.sku),
+                'master',
+                masterSKU,
+                {
+                  startPage: page,
+                  sortKeys,
+                  sorting,
+                  itemCount: total,
+                }
+              )
+            ),
+          ]),
+          mapErrorToAction(loadProductsForMasterFail, { masterSKU })
         )
       )
     )

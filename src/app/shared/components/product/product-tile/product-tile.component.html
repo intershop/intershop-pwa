@@ -1,14 +1,18 @@
 <div class="product-tile" [attr.data-testing-sku]="product.sku">
   <div class="product-image-container">
-    <a [routerLink]="product | ishProductRoute: category">
+    <a [routerLink]="product | ishProductRoute: category" queryParamsHandling="merge">
       <ish-product-image [product]="product" imageType="M" class="product-image"></ish-product-image>
     </a>
     <ish-product-label [product]="product"></ish-product-label>
   </div>
 
-  <a *ngIf="configuration.displayName" class="product-title" [routerLink]="product | ishProductRoute: category">{{
-    product.name
-  }}</a>
+  <a
+    *ngIf="configuration.displayName"
+    class="product-title"
+    [routerLink]="product | ishProductRoute: category"
+    queryParamsHandling="merge"
+    >{{ product.name }}</a
+  >
 
   <ish-product-rating *ishFeature="'rating'" [product]="product"></ish-product-rating>
 
@@ -35,7 +39,9 @@
     (selectVariation)="variationSelected($event)"
   ></ish-product-variation-select>
   <ng-container *ngIf="isMasterProduct(product)">
-    <span class="product-variation read-only">{{ variationCount }} {{ 'product.variations.text' | translate }}</span>
+    <span class="product-variation read-only"
+      >{{ variationCount$ | async }} {{ 'product.variations.text' | translate }}</span
+    >
   </ng-container>
 
   <div class="product-tile-actions btn-group">

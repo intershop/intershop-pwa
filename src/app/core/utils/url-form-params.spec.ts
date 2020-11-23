@@ -1,4 +1,6 @@
-import { formParamsToString, stringToFormParams } from './url-form-params';
+import { HttpParams } from '@angular/common/http';
+
+import { appendFormParamsToHttpParams, formParamsToString, stringToFormParams } from './url-form-params';
 
 describe('Url Form Params', () => {
   describe('stringToFormParams', () => {
@@ -103,6 +105,54 @@ describe('Url Form Params', () => {
           },
           '_or_'
         )
+      ).toMatchInlineSnapshot(`"bar=d_or_e&foo=c"`);
+    });
+  });
+
+  describe('appendFormParamsToHttpParams', () => {
+    it('should return empty strings for falsy input', () => {
+      expect(appendFormParamsToHttpParams(undefined).toString()).toMatchInlineSnapshot(`""`);
+      expect(appendFormParamsToHttpParams({}).toString()).toMatchInlineSnapshot(`""`);
+    });
+
+    it('should return empty string values for falsy or empty values', () => {
+      expect(appendFormParamsToHttpParams({ test: undefined }).toString()).toMatchInlineSnapshot(`""`);
+      expect(appendFormParamsToHttpParams({ test: [] }).toString()).toMatchInlineSnapshot(`""`);
+    });
+
+    it('should handle complex examples for given input', () => {
+      expect(
+        appendFormParamsToHttpParams({
+          bar: ['d', 'e'],
+          foo: ['c'],
+          test: ['a', 'b'],
+          foobar: [],
+        }).toString()
+      ).toMatchInlineSnapshot(`"bar=d,e&foo=c&test=a,b"`);
+    });
+
+    it('should append to existing params when merging form params', () => {
+      expect(
+        appendFormParamsToHttpParams(
+          {
+            bar: ['d', 'e'],
+            foo: ['c'],
+          },
+          new HttpParams().set('dummy', 'test')
+        ).toString()
+      ).toMatchInlineSnapshot(`"dummy=test&bar=d,e&foo=c"`);
+    });
+
+    it('should respect the separator option when merging form params', () => {
+      expect(
+        appendFormParamsToHttpParams(
+          {
+            bar: ['d', 'e'],
+            foo: ['c'],
+          },
+          new HttpParams(),
+          '_or_'
+        ).toString()
       ).toMatchInlineSnapshot(`"bar=d_or_e&foo=c"`);
     });
   });

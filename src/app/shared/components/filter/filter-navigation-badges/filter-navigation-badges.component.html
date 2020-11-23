@@ -1,8 +1,8 @@
 <div *ngIf="selected" class="row">
   <div class="col-md-10 col-xs-12">
     <div *ngFor="let select of selected" class="filter-navigation-badges">
-      <a (click)="apply(select)">
-        {{ select.filterName }}: {{ select.facetName }}
+      <a (click)="apply(select.searchParameter)">
+        {{ select.filterName }}: {{ select.displayName }}
         <fa-icon [icon]="['fas', 'times']" class="form-control-feedback"></fa-icon>
       </a>
     </div>

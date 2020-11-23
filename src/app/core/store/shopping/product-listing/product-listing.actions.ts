@@ -26,8 +26,3 @@ export const loadMoreProductsForParams = createAction(
 );
 
 export const setViewType = createAction('[Product Listing Internal] Set View Type', payload<{ viewType: ViewType }>());
-
-export const loadPagesForMaster = createAction(
-  '[Product Listing Internal] Load Pages For Master',
-  payload<{ id: ProductListingID; filters: URLFormParams; sorting: string }>()
-);

@@ -9,9 +9,13 @@ import { environment } from '../../environments/environment';
 import { ngrxStateTransfer } from './configurations/ngrx-state-transfer';
 import { ContentStoreModule } from './store/content/content-store.module';
 import { CoreStoreModule } from './store/core/core-store.module';
+import { setStickyHeader } from './store/core/viewconf';
 import { CustomerStoreModule } from './store/customer/customer-store.module';
 import { GeneralStoreModule } from './store/general/general-store.module';
 import { HybridStoreModule } from './store/hybrid/hybrid-store.module';
+import { loadProductIfNotLoaded } from './store/shopping/products';
+import { loadPromotion } from './store/shopping/promotions';
+import { suggestSearch } from './store/shopping/search';
 import { ShoppingStoreModule } from './store/shopping/shopping-store.module';
 
 @NgModule({
@@ -21,6 +25,7 @@ import { ShoppingStoreModule } from './store/shopping/shopping-store.module';
     StoreDevtoolsModule.instrument({
       maxAge: environment.production ? 25 : 200,
       logOnly: environment.production, // Restrict extension to log-only mode
+      actionsBlocklist: [loadPromotion.type, loadProductIfNotLoaded.type, setStickyHeader.type, suggestSearch.type],
     }),
     GeneralStoreModule,
     CustomerStoreModule,

@@ -19,6 +19,7 @@ import { Product, ProductCompletenessLevel, ProductHelper } from 'ish-core/model
 import { generateCategoryUrl } from 'ish-core/routing/category/category.route';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { getCategoryEntities, getCategoryTree, getSelectedCategory } from 'ish-core/store/shopping/categories';
+import { getAvailableFilter } from 'ish-core/store/shopping/filter';
 import { getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
 import { productAdapter } from './products.reducer';
@@ -104,6 +105,13 @@ export const getSelectedProduct = createSelector(
 );
 
 export const getProductVariationOptions = createSelector(getProduct, productToVariationOptions);
+
+export const getProductVariationCount = createSelector(
+  getProduct,
+  getAvailableFilter,
+  (product, filters) =>
+    ProductHelper.isMasterProduct(product) && ProductVariationHelper.productVariationCount(product, filters)
+);
 
 export const getSelectedProductVariationOptions = createSelector(getSelectedProduct, productToVariationOptions);
 

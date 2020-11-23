@@ -1,3 +1,5 @@
+import { HttpParams } from '@angular/common/http';
+
 export interface URLFormParams {
   [facet: string]: string[];
 }
@@ -9,6 +11,18 @@ export function formParamsToString(object: URLFormParams, separator = ','): stri
         .map(([key, val]) => `${key}=${(val as string[]).join(separator)}`)
         .join('&')
     : '';
+}
+
+export function appendFormParamsToHttpParams(
+  object: URLFormParams,
+  params: HttpParams = new HttpParams(),
+  separator = ','
+): HttpParams {
+  return object
+    ? Object.entries(object)
+        .filter(([, value]) => Array.isArray(value) && value.length)
+        .reduce((p, [key, val]) => p.set(decodeURI(key), (val as string[]).map(decodeURI).join(separator)), params)
+    : params;
 }
 
 export function stringToFormParams(object: string, separator = ','): URLFormParams {
