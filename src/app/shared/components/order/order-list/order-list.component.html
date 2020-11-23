@@ -32,7 +32,9 @@
             <div class="col-7 col-md-2 order-md-1 list-item">{{ order.creationDate | ishDate }}</div>
 
             <!-- Order Total -->
-            <div class="col-3 col-md-2 order-md-10 list-item text-md-right">{{ order.totals.total | ishPrice }}</div>
+            <div class="col-3 col-md-2 order-md-10 list-item text-md-right">
+              {{ order.totals.total | ishPrice: 'gross' }}
+            </div>
 
             <!-- Details -->
             <div class="col-2 col-md-1 order-md-12 list-item text-right">
