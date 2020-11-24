@@ -8,20 +8,21 @@ import { ProductHelper } from 'ish-core/models/product/product.model';
 import { generateLocalizedCategorySlug } from 'ish-core/routing/category/category.route';
 import { CoreState } from 'ish-core/store/core/core-store';
 import { selectRouteParam } from 'ish-core/store/core/router';
+import { reservedCharactersRegEx } from 'ish-core/utils/routing';
 
 function generateProductSlug(product: ProductView) {
   if (!product || !product.name) {
     return;
   }
 
-  let slug = product.name.replace(/[ \(\)]+/g, '-').replace(/-+$/g, '');
+  let slug = product.name.replace(reservedCharactersRegEx, '-').replace(/-+/g, '-').replace(/-+$/, '');
 
   if (ProductHelper.isVariationProduct(product) && product.variableVariationAttributes) {
     slug += '-';
     slug += product.variableVariationAttributes
       .map(att => att.value)
       .filter(val => typeof val === 'string' || typeof val === 'boolean' || typeof val === 'number')
-      .map(val => val.toString().replace(/[ \(\)]+/g, '-'))
+      .map(val => val.toString().replace(reservedCharactersRegEx, '-'))
       .join('-')
       .replace(/-+/g, '-');
   }

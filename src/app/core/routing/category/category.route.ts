@@ -5,9 +5,10 @@ import { filter } from 'rxjs/operators';
 import { Category } from 'ish-core/models/category/category.model';
 import { CoreState } from 'ish-core/store/core/core-store';
 import { selectRouteParam } from 'ish-core/store/core/router';
+import { reservedCharactersRegEx } from 'ish-core/utils/routing';
 
 export function generateLocalizedCategorySlug(category: Category) {
-  return category?.name?.replace(/[ \(\)]+/g, '-').replace(/-+$/g, '') || '';
+  return category?.name?.replace(reservedCharactersRegEx, '-').replace(/-+/g, '-').replace(/-+$/, '') || '';
 }
 
 const categoryRouteFormat = /^\/(?!category\/.*$)(.*-)?cat(.*)$/;
