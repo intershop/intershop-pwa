@@ -2,7 +2,7 @@ import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { setErrorOn, setLoadingOn } from 'ish-core/utils/ngrx-creators';
+import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
 import { Requisition } from '../../models/requisition/requisition.model';
 
@@ -33,19 +33,16 @@ const initialState: RequisitionsState = requisitionsAdapter.getInitialState({
 export const requisitionsReducer = createReducer(
   initialState,
   setLoadingOn(loadRequisitions, loadRequisition, updateRequisitionStatus),
+  unsetLoadingAndErrorOn(loadRequisitionsSuccess, loadRequisitionSuccess, updateRequisitionStatusSuccess),
   setErrorOn(loadRequisitionsFail, loadRequisitionFail, updateRequisitionStatusFail),
   on(loadRequisitionsSuccess, (state: RequisitionsState, action) =>
     requisitionsAdapter.setAll(action.payload.requisitions, {
       ...state,
-      loading: false,
-      error: undefined,
     })
   ),
   on(loadRequisitionSuccess, updateRequisitionStatusSuccess, (state: RequisitionsState, action) =>
     requisitionsAdapter.upsertOne(action.payload.requisition, {
       ...state,
-      loading: false,
-      error: undefined,
     })
   )
 );

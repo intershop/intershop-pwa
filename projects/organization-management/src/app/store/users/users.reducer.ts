@@ -2,7 +2,7 @@ import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { setErrorOn, setLoadingOn } from 'ish-core/utils/ngrx-creators';
+import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
 import { B2bRole } from '../../models/b2b-role/b2b-role.model';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
@@ -49,6 +49,7 @@ const initialState: UsersState = usersAdapter.getInitialState({
 export const usersReducer = createReducer(
   initialState,
   setLoadingOn(loadUsers, addUser, updateUser, deleteUser, setUserBudgets),
+  unsetLoadingAndErrorOn(loadUsersSuccess, addUserSuccess, updateUserSuccess, deleteUserSuccess, setUserBudgetsSuccess),
   setErrorOn(
     loadUsersFail,
     loadUserFail,
@@ -65,8 +66,6 @@ export const usersReducer = createReducer(
       ...usersAdapter.upsertMany(users, state),
       // preserve order from API
       ids: users.map(u => u.login),
-      loading: false,
-      error: undefined,
     };
   }),
   on(loadUserSuccess, (state: UsersState, action) => {
@@ -83,8 +82,6 @@ export const usersReducer = createReducer(
 
     return {
       ...usersAdapter.addOne(user, state),
-      loading: false,
-      error: undefined,
     };
   }),
   on(updateUserSuccess, (state: UsersState, action) => {
@@ -92,8 +89,6 @@ export const usersReducer = createReducer(
 
     return {
       ...usersAdapter.upsertOne(user, state),
-      loading: false,
-      error: undefined,
     };
   }),
   on(deleteUserSuccess, (state: UsersState, action) => {
@@ -101,8 +96,6 @@ export const usersReducer = createReducer(
 
     return {
       ...usersAdapter.removeOne(login, state),
-      loading: false,
-      error: undefined,
     };
   }),
   on(loadSystemUserRolesSuccess, (state, action) => ({
@@ -114,7 +107,5 @@ export const usersReducer = createReducer(
   ),
   on(setUserBudgetsSuccess, (state, action) => ({
     ...usersAdapter.updateOne({ id: action.payload.login, changes: { budgets: action.payload.budgets } }, state),
-    loading: false,
-    error: undefined,
   }))
 );
