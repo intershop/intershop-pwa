@@ -36,12 +36,9 @@
     </ng-container>
 
     <ng-container *ngIf="requisition.approval?.statusCode !== 'PENDING'">
-      <dt
-        *ngIf="requisition.approval?.statusCode === 'APPROVED'; else labelDateRejected"
-        class="col-6 col-sm-4 col-md-3"
-      >
-        {{ 'approval.detailspage.approval_date.label' | translate }}
-      </dt>
+      <ng-container *ngIf="requisition.approval?.statusCode === 'APPROVED'; else labelDateRejected">
+        <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.approval_date.label' | translate }}</dt>
+      </ng-container>
       <ng-template #labelDateRejected>
         <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.rejection_date.label' | translate }}</dt>
       </ng-template>
@@ -66,7 +63,7 @@
     </dd>
 
     <ng-container *ngIf="requisition.approval.approvalComment">
-      <dt class="col-6 col-sm-4 col-md-3 mt-3">{{ 'approval.detailspage.comment.label=Comment' | translate }}</dt>
+      <dt class="col-6 col-sm-4 col-md-3 mt-3">{{ 'approval.detailspage.comment.label' | translate }}</dt>
       <dd class="col-6 col-sm-8 col-md-9 mt-3">{{ requisition.approval.approvalComment }}</dd>
     </ng-container>
   </dl>

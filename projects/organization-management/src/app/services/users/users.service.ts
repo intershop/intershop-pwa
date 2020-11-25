@@ -159,10 +159,10 @@ export class UsersService {
   }
 
   /**
-   * Set budgets for a given b2b user.
+   * Set the budget for a given b2b user.
    * @param login   The login of the user.
    * @param budgets The user's budget.
-   * @returns the set of new roles
+   * @returns The new budget
    */
   setUserBudgets(login: string, budgets: UserBudgets): Observable<UserBudgets> {
     if (!budgets) {

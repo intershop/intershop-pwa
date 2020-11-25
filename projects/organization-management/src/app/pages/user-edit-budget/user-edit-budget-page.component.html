@@ -4,16 +4,13 @@
   <ish-error-message [error]="error$ | async"></ish-error-message>
 
   <form
-    *ngIf="budgetForm"
+    *ngIf="budgetForm && 'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting"
     [formGroup]="budgetForm"
     (ngSubmit)="submitForm()"
     class="form-horizontal"
     novalidate="novalidate"
   >
-    <ish-user-budget-form
-      *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting"
-      [form]="budgetForm"
-    ></ish-user-budget-form>
+    <ish-user-budget-form [form]="budgetForm"></ish-user-budget-form>
 
     <div class="row">
       <div class="offset-md-4 col-md-8">

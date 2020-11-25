@@ -2,13 +2,19 @@
   <div class="modal-content">
     <div class="modal-header">
       <h2 class="modal-title">{{ 'approval.rejectform.reject_order.heading' | translate }}</h2>
-      <button class="close" (click)="hide()" [title]="'application.overlay.close.text' | translate" aria-label="Close">
-        <span aria-hidden="true">×</span>
+      <button
+        type="button"
+        class="close"
+        [title]="'dialog.close.text' | translate"
+        [attr.aria-label]="'dialog.close.text' | translate"
+        (click)="hide()"
+      >
+        <span aria-hidden="true">&times;</span>
       </button>
     </div>
 
-    <form [formGroup]="rejectForm" (ngSubmit)="submitForm()">
-      <div class="modal-body">
+    <div class="modal-body">
+      <form [formGroup]="rejectForm" (ngSubmit)="submitForm()">
         <div class="form-group clearfix">
           <ish-textarea
             [form]="rejectForm"
@@ -22,16 +28,16 @@
             [rows]="4"
           ></ish-textarea>
         </div>
-      </div>
+      </form>
+    </div>
 
-      <div class="modal-footer">
-        <button class="btn btn-primary" type="submit" (click)="submitForm()" [disabled]="formDisabled">
-          {{ 'approval.rejectform.button.reject.label' | translate }}
-        </button>
-        <button class="btn btn-secondary" type="button" (click)="rejectModal.close('')">
-          {{ 'approval.rejectform.button.cancel.label' | translate }}
-        </button>
-      </div>
-    </form>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="submit" (click)="submitForm()" [disabled]="formDisabled">
+        {{ 'approval.rejectform.button.reject.label' | translate }}
+      </button>
+      <button class="btn btn-secondary" type="button" (click)="rejectModal.close('')">
+        {{ 'approval.rejectform.button.cancel.label' | translate }}
+      </button>
+    </div>
   </div>
 </ng-template>
