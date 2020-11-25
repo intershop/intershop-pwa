@@ -3,8 +3,8 @@
     >{{ label | translate }}<span *ngIf="required" class="required">*</span>
   </label>
   <div [ngClass]="inputClass">
-    <div [ngClass]="{ 'input-group': !!prepend }">
-      <div *ngIf="!!prepend" class="input-group-prepend">
+    <div [ngClass]="{ 'input-group': prepend }">
+      <div *ngIf="prepend" class="input-group-prepend">
         <span class="input-group-text">{{ prepend }}</span>
       </div>
 

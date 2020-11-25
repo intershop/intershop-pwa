@@ -31,9 +31,7 @@
     <div class="row">
       <div class="col-md-6">
         <dl *ngIf="requisition.userBudgets.budgetPeriod !== 'none'" class="row dl-horizontal dl-separator">
-          <dt class="col-6">
-            {{ 'account.budget.type.' + requisition.userBudgets.budgetPeriod + '.label' | translate }}
-          </dt>
+          <dt class="col-6">{{ budgetLabel | translate }}</dt>
           <dd class="col-6">
             <strong>
               <ng-container *ngIf="requisition.userBudgets.budget; else noLimit">

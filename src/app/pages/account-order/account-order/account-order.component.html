@@ -19,9 +19,7 @@
       {{ 'approval.detailspage.order.request_id' | translate }}
     </dt>
     <dd *ngIf="order.approval" class="col-6 col-sm-8 col-md-10">
-      <a [routerLink]="['../../../../requisitions/buyer', order.id, { status: 'APPROVED' }]">{{
-        order.requisitionNo
-      }}</a>
+      <a [routerLink]="['/account/requisitions/buyer', order.id, { status: 'APPROVED' }]">{{ order.requisitionNo }}</a>
       {{
         'account.orderdetails.approved.text'
           | translate

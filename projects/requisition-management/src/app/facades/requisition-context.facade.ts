@@ -45,8 +45,6 @@ export class RequisitionContextFacade
           this.store.pipe(
             select(getRequisition(requisitionId)),
             whenTruthy(),
-            //            sample(this.select('loading').pipe(whenFalsy())),
-
             map(entity => entity as Requisition)
           )
         ),
