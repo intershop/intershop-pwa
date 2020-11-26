@@ -10,5 +10,8 @@
   "requestTimeout": 30000,
   "responseTimeout": 30000,
   "modifyObstructiveCode": false,
-  "chromeWebSecurity": false
+  "chromeWebSecurity": false,
+  "env": {
+    "ngrxStrictRuntimeChecks": true
+  }
 }

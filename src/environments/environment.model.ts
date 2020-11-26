@@ -96,6 +96,8 @@ export interface Environment {
       [key: string]: unknown;
     };
   };
+
+  ngrxStrictRuntimeChecks?: boolean;
 }
 
 export const ENVIRONMENT_DEFAULTS: Environment = {
@@ -147,4 +149,5 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
     allowedCookies: ['cookieConsent', 'apiToken'],
   },
   cookieConsentVersion: 1,
+  ngrxStrictRuntimeChecks: true,
 };
