@@ -57,7 +57,7 @@ describe('User Budget Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display budgets when rendering', () => {
+  it('should display budget when rendering', () => {
     component.ngOnChanges();
     fixture.detectChanges();
 

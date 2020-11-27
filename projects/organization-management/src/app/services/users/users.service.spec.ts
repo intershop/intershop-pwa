@@ -9,7 +9,7 @@ import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
 import { B2bRoleData } from '../../models/b2b-role/b2b-role.interface';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
-import { UserBudgets } from '../../models/user-budgets/user-budgets.model';
+import { UserBudget } from '../../models/user-budget/user-budget.model';
 
 import { UsersService } from './users.service';
 
@@ -121,15 +121,15 @@ describe('Users Service', () => {
     });
   });
 
-  it('should put the budgets onto user when calling setUserBudgets', done => {
+  it('should put the budget onto user when calling setUserBudget', done => {
     when(apiService.put(anyString(), anything())).thenReturn(of({}));
 
     usersService
-      .setUserBudgets('pmiller@test.intershop.de', {
+      .setUserBudget('pmiller@test.intershop.de', {
         orderSpentLimit: undefined,
         budget: { value: 2000, currency: 'USD' },
         budgetPeriod: 'monthly',
-      } as UserBudgets)
+      } as UserBudget)
       .subscribe(data => {
         expect(data).toMatchInlineSnapshot(`Object {}`);
         verify(apiService.put(anything(), anything())).once();
@@ -150,11 +150,11 @@ describe('Users Service', () => {
       });
   });
 
-  it('should call get of apiService to get budgets for current user and set empty spentBudget', done => {
+  it('should call get of apiService to get budget for current user and set empty spentBudget', done => {
     when(apiService.b2bUserEndpoint()).thenReturn(instance(apiService));
     when(apiService.get('budgets')).thenReturn(of({}));
 
-    usersService.getCurrentUserBudgets().subscribe(userBudget => {
+    usersService.getCurrentUserBudget().subscribe(userBudget => {
       verify(apiService.get('budgets')).once();
       expect(userBudget.spentBudget).toMatchInlineSnapshot(`
         Object {

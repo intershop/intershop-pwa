@@ -39,7 +39,7 @@ describe('Budget Effects', () => {
 
   beforeEach(() => {
     usersService = mock(UsersService);
-    when(usersService.getCurrentUserBudgets()).thenReturn(of(budget));
+    when(usersService.getCurrentUserBudget()).thenReturn(of(budget));
 
     TestBed.configureTestingModule({
       providers: [

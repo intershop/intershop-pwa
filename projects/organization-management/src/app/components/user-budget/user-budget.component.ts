@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/c
 
 import { Price } from 'ish-core/models/price/price.model';
 
-import { UserBudgets } from '../../models/user-budgets/user-budgets.model';
+import { UserBudget } from '../../models/user-budget/user-budget.model';
 
 /**
  * displays the user budget and the appropriate budget bar
@@ -13,7 +13,7 @@ import { UserBudgets } from '../../models/user-budgets/user-budgets.model';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class UserBudgetComponent implements OnChanges {
-  @Input() budget: UserBudgets;
+  @Input() budget: UserBudget;
   @Input() progressBarClass;
 
   usedBudget: Price;
@@ -21,12 +21,12 @@ export class UserBudgetComponent implements OnChanges {
   remainingBudgetPercentage: number;
 
   ngOnChanges(): void {
-    if (this.budgetsDefined) {
+    if (this.isBudgetDefined()) {
       this.calculate();
     }
   }
 
-  get budgetsDefined(): boolean {
+  isBudgetDefined(): boolean {
     return !!this.budget?.budget && !!this.budget?.remainingBudget;
   }
 

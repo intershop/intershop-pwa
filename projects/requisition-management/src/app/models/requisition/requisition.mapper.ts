@@ -30,7 +30,7 @@ export class RequisitionMapper {
           requisitionNo: data.requisitionNo,
           orderNo: data.orderNo,
           creationDate: data.creationDate,
-          userBudgets: { ...data.userBudgets, spentBudget: data.userBudgets?.spentBudget || emptyPrice },
+          userBudget: { ...data.userBudgets, spentBudget: data.userBudgets?.spentBudget || emptyPrice },
           lineItemCount: data.lineItemCount,
           user: data.userInformation,
           approval: {

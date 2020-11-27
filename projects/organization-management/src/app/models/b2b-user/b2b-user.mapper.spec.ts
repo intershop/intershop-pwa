@@ -69,7 +69,14 @@ describe('B2b User Mapper', () => {
         Array [
           Object {
             "active": true,
-            "budgets": Object {
+            "firstName": "Patricia",
+            "lastName": "Miller",
+            "login": "pmiller@test.intershop.de",
+            "roleIDs": Array [
+              "APP_B2B_COSTCENTER_OWNER",
+              "APP_B2B_BUYER",
+            ],
+            "userBudget": Object {
               "budget": Object {
                 "currency": "USD",
                 "value": 10000,
@@ -88,13 +95,6 @@ describe('B2b User Mapper', () => {
                 "value": 2000,
               },
             },
-            "firstName": "Patricia",
-            "lastName": "Miller",
-            "login": "pmiller@test.intershop.de",
-            "roleIDs": Array [
-              "APP_B2B_COSTCENTER_OWNER",
-              "APP_B2B_BUYER",
-            ],
           },
         ]
       `);

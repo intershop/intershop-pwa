@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
-import { UserBudgets } from '../../models/user-budgets/user-budgets.model';
+import { UserBudget } from '../../models/user-budget/user-budget.model';
 
 @Component({
   selector: 'ish-budget-widget',
@@ -12,7 +12,7 @@ import { UserBudgets } from '../../models/user-budgets/user-budgets.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BudgetWidgetComponent implements OnInit {
-  userBudget$: Observable<UserBudgets>;
+  userBudget$: Observable<UserBudget>;
   budgetLoading$: Observable<boolean>;
   error$: Observable<HttpError>;
 

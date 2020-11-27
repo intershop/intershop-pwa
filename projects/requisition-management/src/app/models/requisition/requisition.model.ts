@@ -1,4 +1,4 @@
-import { UserBudgets } from 'organization-management';
+import { UserBudget } from 'organization-management';
 
 import { AbstractBasket } from 'ish-core/models/basket/basket.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
@@ -18,7 +18,7 @@ export interface RequisitionApproval {
   customerApprovers?: { firstName: string; lastName: string; email: string }[];
 }
 
-export interface RequisitionUserBudgets extends UserBudgets {
+export interface RequisitionUserBudget extends UserBudget {
   spentBudgetIncludingThisRequisition?: Price;
   remainingBudgetIncludingThisRequisition?: Price;
 }
@@ -32,6 +32,6 @@ export interface Requisition extends RequisitionBasket {
   lineItemCount: number;
 
   user: User;
-  userBudgets: RequisitionUserBudgets;
+  userBudget: RequisitionUserBudget;
   approval: RequisitionApproval;
 }

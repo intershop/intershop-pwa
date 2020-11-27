@@ -41,7 +41,7 @@ export class UsersDetailPage {
     return cy.get(this.tag).find('[data-testing-id="budget-field"]');
   }
 
-  get userBudgets() {
-    return cy.get(this.tag).find('[data-testing-id="user-budgets"]');
+  get userBudget() {
+    return cy.get(this.tag).find('[data-testing-id="user-budget"]');
   }
 }

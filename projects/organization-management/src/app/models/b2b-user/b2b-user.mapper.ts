@@ -17,7 +17,7 @@ export class B2bUserMapper {
         lastName: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'lastName'),
         roleIDs: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'roleIDs'),
         active: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'active'),
-        budgets: {
+        userBudget: {
           orderSpentLimit: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'orderSpentLimit'),
           budget: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'budget'),
           remainingBudget: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'remainingBudget'),

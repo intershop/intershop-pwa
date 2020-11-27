@@ -28,7 +28,7 @@ describe('User Edit Budget Page Component', () => {
         lastName: 'Doe',
         login: 'j.d@test.de',
         roleIDs: ['APP_B2B_BUYER'],
-        budgets: {
+        userBudget: {
           budget: { value: 500, currency: 'USD' },
           orderSpentLimit: { value: 9000, currency: 'USD' },
           remainingBudget: { value: 500, currency: 'USD' },
@@ -38,7 +38,7 @@ describe('User Edit Budget Page Component', () => {
     );
     when(organizationManagementFacade.usersLoading$).thenReturn(of(false));
     when(organizationManagementFacade.usersError$).thenReturn(of());
-    when(organizationManagementFacade.setSelectedUserBudgets(anything())).thenReturn();
+    when(organizationManagementFacade.setSelectedUserBudget(anything())).thenReturn();
 
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],

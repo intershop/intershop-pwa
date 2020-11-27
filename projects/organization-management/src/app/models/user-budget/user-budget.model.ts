@@ -1,6 +1,6 @@
 import { Price } from 'ish-core/models/price/price.model';
 
-export interface UserBudgets {
+export interface UserBudget {
   budget: Price;
   budgetPeriod: string;
   orderSpentLimit: Price;

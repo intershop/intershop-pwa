@@ -10,7 +10,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
-import { UserBudgets } from '../../models/user-budgets/user-budgets.model';
+import { UserBudget } from '../../models/user-budget/user-budget.model';
 
 @Component({
   selector: 'ish-user-edit-budget-page',
@@ -42,12 +42,14 @@ export class UserEditBudgetPageComponent implements OnInit, OnDestroy {
 
   initForm(user: B2bUser) {
     this.budgetForm = this.fb.group({
-      orderSpentLimit: [user.budgets?.orderSpentLimit?.value || '', SpecialValidators.moneyAmount],
-      budget: [user.budgets?.budget?.value || '', SpecialValidators.moneyAmount],
+      orderSpentLimit: [user.userBudget?.orderSpentLimit?.value || '', SpecialValidators.moneyAmount],
+      budget: [user.userBudget?.budget?.value || '', SpecialValidators.moneyAmount],
       budgetPeriod: [
-        !user.budgets?.budgetPeriod || user.budgets?.budgetPeriod === 'none' ? 'weekly' : user.budgets.budgetPeriod,
+        !user.userBudget?.budgetPeriod || user.userBudget?.budgetPeriod === 'none'
+          ? 'weekly'
+          : user.userBudget.budgetPeriod,
       ],
-      currency: [user.budgets?.remainingBudget?.currency, Validators.required],
+      currency: [user.userBudget?.remainingBudget?.currency, Validators.required],
     });
   }
 
@@ -60,7 +62,7 @@ export class UserEditBudgetPageComponent implements OnInit, OnDestroy {
 
     const formValue = this.budgetForm.value;
 
-    const budgets: UserBudgets = formValue
+    const budget: UserBudget = formValue
       ? {
           budget: formValue.budget
             ? { value: formValue.budget, currency: formValue.currency, type: 'Money' }
@@ -76,7 +78,7 @@ export class UserEditBudgetPageComponent implements OnInit, OnDestroy {
         }
       : undefined;
 
-    this.organizationManagementFacade.setSelectedUserBudgets(budgets);
+    this.organizationManagementFacade.setSelectedUserBudget(budget);
   }
 
   get formDisabled() {

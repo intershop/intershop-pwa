@@ -104,7 +104,7 @@ describe('User Management - CRUD', () => {
     at(UsersDetailPage, page => {
       page.budget.should('contain', `${_.budget.budget}`);
       page.orderSpendLimit.should('contain', `${_.budget.orderSpentLimit}`);
-      page.userBudgets.should('contain', `${_.budget.budgetPeriod}`);
+      page.userBudget.should('contain', `${_.budget.budgetPeriod}`);
     });
   });
 

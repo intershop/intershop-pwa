@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { UserBudgets } from '../../../models/user-budgets/user-budgets.model';
+import { UserBudget } from '../../../models/user-budget/user-budget.model';
 
 /**
  * displays the user budget and the appropriate budget bar
@@ -11,5 +11,5 @@ import { UserBudgets } from '../../../models/user-budgets/user-budgets.model';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class UserDetailBudgetComponent {
-  @Input() budget: UserBudgets;
+  @Input() budget: UserBudget;
 }

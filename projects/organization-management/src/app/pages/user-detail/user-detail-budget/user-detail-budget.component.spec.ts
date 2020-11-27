@@ -55,11 +55,11 @@ describe('User Detail Budget Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display budgets when rendering', () => {
+  it('should display budget when rendering', () => {
     fixture.detectChanges();
 
-    expect(element.querySelector('[data-testing-id=user-budgets]')).toMatchInlineSnapshot(`
-      <div class="col-md-12" data-testing-id="user-budgets">
+    expect(element.querySelector('[data-testing-id=user-budget]')).toMatchInlineSnapshot(`
+      <div class="col-md-12" data-testing-id="user-budget">
         <dl class="row dl-horizontal dl-separator">
           <dt class="col-md-4">account.user.new.order_spend_limit.label</dt>
           <dd class="col-md-8" data-testing-id="order-spend-limit-field">USD 100</dd>

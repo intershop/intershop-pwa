@@ -63,7 +63,7 @@ describe('User Create Page Component', () => {
         active: [true],
       }),
       roleIDs: ['Buyer'],
-      budgets: fb.group({
+      userBudget: fb.group({
         orderSpentLimit: ['70000'],
         budget: [10000],
         budgetPeriod: ['monthly'],
@@ -74,12 +74,6 @@ describe('User Create Page Component', () => {
     expect(component.formDisabled).toBeFalse();
     expect(component.form.value).toMatchInlineSnapshot(`
       Object {
-        "budgets": Object {
-          "budget": 10000,
-          "budgetPeriod": "monthly",
-          "currency": "USD",
-          "orderSpentLimit": "70000",
-        },
         "profile": Object {
           "active": true,
           "email": "test@gmail.com",
@@ -88,6 +82,12 @@ describe('User Create Page Component', () => {
           "preferredLanguage": "en_US",
         },
         "roleIDs": "Buyer",
+        "userBudget": Object {
+          "budget": 10000,
+          "budgetPeriod": "monthly",
+          "currency": "USD",
+          "orderSpentLimit": "70000",
+        },
       }
     `);
 

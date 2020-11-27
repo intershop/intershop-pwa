@@ -4,7 +4,7 @@ import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 import { B2bRole } from '../../models/b2b-role/b2b-role.model';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
-import { UserBudgets } from '../../models/user-budgets/user-budgets.model';
+import { UserBudget } from '../../models/user-budget/user-budget.model';
 
 export const loadUsers = createAction('[Users] Load Users');
 
@@ -46,16 +46,16 @@ export const setUserRolesSuccess = createAction(
   payload<{ login: string; roles: string[] }>()
 );
 
-export const setUserRolesFail = createAction('[Users API] Set Roles for User Failed', httpError<{ login: string }>());
+export const setUserRolesFail = createAction('[Users API] Set Roles for User Fail', httpError<{ login: string }>());
 
-export const setUserBudgets = createAction(
-  '[Users] Set Budgets for User',
-  payload<{ login: string; budgets: UserBudgets }>()
+export const setUserBudget = createAction(
+  '[Users] Set Budget for User',
+  payload<{ login: string; budget: UserBudget }>()
 );
 
-export const setUserBudgetsSuccess = createAction(
-  '[Users API] Set Budgets for User Success',
-  payload<{ login: string; budgets: UserBudgets }>()
+export const setUserBudgetSuccess = createAction(
+  '[Users API] Set Budget for User Success',
+  payload<{ login: string; budget: UserBudget }>()
 );
 
-export const setUserBudgetsFail = createAction('[Users API] Set Roles for User Failed', httpError<{ login: string }>());
+export const setUserBudgetFail = createAction('[Users API] Set Budget for User Fail', httpError<{ login: string }>());

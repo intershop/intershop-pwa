@@ -25,9 +25,9 @@ import {
   loadUsers,
   loadUsersFail,
   loadUsersSuccess,
-  setUserBudgets,
-  setUserBudgetsFail,
-  setUserBudgetsSuccess,
+  setUserBudget,
+  setUserBudgetFail,
+  setUserBudgetSuccess,
   setUserRoles,
   setUserRolesFail,
   setUserRolesSuccess,
@@ -155,20 +155,20 @@ export class UsersEffects {
     )
   );
 
-  setUserBudgets$ = createEffect(() =>
+  setUserBudget$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(setUserBudgets),
+      ofType(setUserBudget),
       mapToPayload(),
-      mergeMap(({ login, budgets }) =>
-        this.usersService.setUserBudgets(login, budgets).pipe(
+      mergeMap(({ login, budget }) =>
+        this.usersService.setUserBudget(login, budget).pipe(
           withLatestFrom(this.store.pipe(select(selectPath))),
           tap(([, path]) => {
             if (path?.endsWith('users/:B2BCustomerLogin/budget')) {
               this.navigateTo('../../' + login);
             }
           }),
-          map(([newBudgets]) => setUserBudgetsSuccess({ login, budgets: newBudgets })),
-          mapErrorToAction(setUserBudgetsFail, { login })
+          map(([newBudget]) => setUserBudgetSuccess({ login, budget: newBudget })),
+          mapErrorToAction(setUserBudgetFail, { login })
         )
       )
     )
@@ -184,9 +184,9 @@ export class UsersEffects {
     )
   );
 
-  updateCurrentUserBudgets$ = createEffect(() =>
+  updateCurrentUserBudget$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(setUserBudgetsSuccess),
+      ofType(setUserBudgetSuccess),
       mapToPayloadProperty('login'),
       withLatestFrom(this.store.pipe(select(getLoggedInUser))),
       filter(([login, currentUser]) => login === currentUser.login),
@@ -196,7 +196,7 @@ export class UsersEffects {
 
   successMessageAfterUpdate$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(updateUserSuccess, setUserRolesSuccess, setUserBudgetsSuccess),
+      ofType(updateUserSuccess, setUserRolesSuccess, setUserBudgetSuccess),
       withLatestFrom(this.store.pipe(select(getSelectedUser), whenTruthy())),
       map(([, user]) =>
         displaySuccessMessage({

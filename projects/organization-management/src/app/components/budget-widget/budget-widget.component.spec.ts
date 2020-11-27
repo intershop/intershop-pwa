@@ -73,7 +73,7 @@ describe('Budget Widget Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should render loading component if budgets loading', () => {
+  it('should render loading component if budget is loading', () => {
     when(organizationManagementFacade.loggedInUserBudgetLoading$).thenReturn(of(true));
     fixture.detectChanges();
     expect(element.querySelector('ish-loading')).toBeTruthy();

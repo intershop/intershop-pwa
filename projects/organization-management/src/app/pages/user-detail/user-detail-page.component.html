@@ -68,7 +68,7 @@
 
   <ish-user-detail-budget
     *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting"
-    [budget]="user.budgets"
+    [budget]="user.userBudget"
   ></ish-user-detail-budget>
 </ng-container>
 

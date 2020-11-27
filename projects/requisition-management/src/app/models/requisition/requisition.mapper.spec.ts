@@ -98,7 +98,7 @@ describe('Requisition Mapper', () => {
             "firstName": "Patricia",
             "lastName": "Miller",
           },
-          "userBudgets": Object {
+          "userBudget": Object {
             "budget": Object {
               "currency": "USD",
               "type": "Money",

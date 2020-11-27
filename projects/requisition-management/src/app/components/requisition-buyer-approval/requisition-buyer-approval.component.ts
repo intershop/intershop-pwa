@@ -24,7 +24,7 @@ export class RequisitionBuyerApprovalComponent implements OnChanges {
 
   ngOnChanges() {
     this.calculate();
-    this.budgetLabel = `account.budget.type.${this.requisition?.userBudgets?.budgetPeriod}.label`;
+    this.budgetLabel = `account.budget.type.${this.requisition?.userBudget?.budgetPeriod}.label`;
   }
 
   /**  calculates all displayed prices and percentages */
@@ -36,16 +36,16 @@ export class RequisitionBuyerApprovalComponent implements OnChanges {
         currency: this.requisition.totals.total.currency,
       };
 
-      this.spentPercentage = this.requisition.userBudgets?.spentBudget?.value
-        ? this.requisition.userBudgets.spentBudget.value / this.requisition.userBudgets.budget.value
+      this.spentPercentage = this.requisition.userBudget?.spentBudget?.value
+        ? this.requisition.userBudget.spentBudget.value / this.requisition.userBudget.budget.value
         : 0;
       this.leftPercentage = this.spentPercentage < 1 ? 1 - this.spentPercentage : 0;
 
-      const spentBudgetIncludingThisOrder = this.requisition.userBudgets?.spentBudgetIncludingThisRequisition;
+      const spentBudgetIncludingThisOrder = this.requisition.userBudget?.spentBudgetIncludingThisRequisition;
 
       this.spentPercentageIncludingThisRequisition =
-        spentBudgetIncludingThisOrder?.value && this.requisition.userBudgets?.budget?.value
-          ? spentBudgetIncludingThisOrder.value / this.requisition.userBudgets?.budget.value
+        spentBudgetIncludingThisOrder?.value && this.requisition.userBudget?.budget?.value
+          ? spentBudgetIncludingThisOrder.value / this.requisition.userBudget?.budget.value
           : 0;
     }
   }

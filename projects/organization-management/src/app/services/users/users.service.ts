@@ -13,7 +13,7 @@ import { B2bRoleMapper } from '../../models/b2b-role/b2b-role.mapper';
 import { B2bRole } from '../../models/b2b-role/b2b-role.model';
 import { B2bUserMapper } from '../../models/b2b-user/b2b-user.mapper';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
-import { UserBudgets } from '../../models/user-budgets/user-budgets.model';
+import { UserBudget } from '../../models/user-budget/user-budget.model';
 
 @Injectable({ providedIn: 'root' })
 export class UsersService {
@@ -72,6 +72,8 @@ export class UsersService {
                 preferredInvoiceToAddressUrn: undefined,
                 preferredShipToAddressUrn: undefined,
                 preferredPaymentInstrumentId: undefined,
+                userBudgets: undefined,
+                roleIds: undefined,
               },
             ],
           })
@@ -79,11 +81,11 @@ export class UsersService {
             concatMap(() =>
               forkJoin([
                 this.setUserRoles(user.email, user.roleIDs),
-                this.setUserBudgets(user.email, user.budgets),
+                this.setUserBudget(user.email, user.userBudget),
                 this.getUser(user.email),
               ])
             ),
-            map(([roleIDs, budgets, newUser]) => ({ ...newUser, roleIDs, budgets }))
+            map(([roleIDs, userBudget, newUser]) => ({ ...newUser, roleIDs, userBudget }))
           )
       )
     );
@@ -162,25 +164,25 @@ export class UsersService {
   /**
    * Set the budget for a given b2b user.
    * @param login   The login of the user.
-   * @param budgets The user's budget.
+   * @param budget The user's budget.
    * @returns The new budget
    */
-  setUserBudgets(login: string, budgets: UserBudgets): Observable<UserBudgets> {
-    if (!budgets) {
+  setUserBudget(login: string, budget: UserBudget): Observable<UserBudget> {
+    if (!budget) {
       // tslint:disable-next-line: ish-no-object-literal-type-assertion
-      return of({} as UserBudgets);
+      return of({} as UserBudget);
     }
     return this.currentCustomer$.pipe(
       switchMap(customer =>
-        this.apiService.put<UserBudgets>(`customers/${customer.customerNo}/users/${login}/budgets`, budgets)
+        this.apiService.put<UserBudget>(`customers/${customer.customerNo}/users/${login}/budgets`, budget)
       )
     );
   }
 
-  getCurrentUserBudgets(): Observable<UserBudgets> {
+  getCurrentUserBudget(): Observable<UserBudget> {
     return this.apiService
       .b2bUserEndpoint()
-      .get<UserBudgets>('budgets')
+      .get<UserBudget>('budgets')
       .pipe(
         map(budget => ({
           ...budget,

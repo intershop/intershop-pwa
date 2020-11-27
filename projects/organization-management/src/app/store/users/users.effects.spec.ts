@@ -26,9 +26,9 @@ import {
   loadUsers,
   loadUsersFail,
   loadUsersSuccess,
-  setUserBudgets,
-  setUserBudgetsFail,
-  setUserBudgetsSuccess,
+  setUserBudget,
+  setUserBudgetFail,
+  setUserBudgetSuccess,
   setUserRolesSuccess,
   updateUser,
   updateUserFail,
@@ -45,7 +45,7 @@ const users = [
     firstName: 'Patricia',
     lastName: 'Miller',
     name: 'Patricia Miller',
-    budgets: {
+    budget: {
       budget: { value: 500, currency: 'USD' },
       orderSpentLimit: { value: 9000, currency: 'USD' },
       budgetPeriod: 'monthly',
@@ -70,7 +70,7 @@ describe('Users Effects', () => {
     when(usersService.updateUser(anything())).thenReturn(of(users[0]));
     when(usersService.getUsers()).thenReturn(of(users));
     when(usersService.deleteUser(anything())).thenReturn(of(true));
-    when(usersService.setUserBudgets(anyString(), anything())).thenReturn(of(users[0].budgets));
+    when(usersService.setUserBudget(anyString(), anything())).thenReturn(of(users[0].userBudget));
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -246,37 +246,37 @@ describe('Users Effects', () => {
     });
   });
 
-  describe('updateUserBudgets$', () => {
-    it('should call the service for updating user budgets', done => {
-      actions$ = of(setUserBudgets({ login: users[0].login, budgets: users[0].budgets }));
+  describe('updateUserBudget$', () => {
+    it('should call the service for updating user budget', done => {
+      actions$ = of(setUserBudget({ login: users[0].login, budget: users[0].userBudget }));
 
-      effects.setUserBudgets$.subscribe(() => {
-        verify(usersService.setUserBudgets(users[0].login, anything())).once();
+      effects.setUserBudget$.subscribe(() => {
+        verify(usersService.setUserBudget(users[0].login, anything())).once();
         done();
       });
     });
 
-    it('should update user budgets when triggered', () => {
-      const action = setUserBudgets({ login: users[0].login, budgets: users[0].budgets });
+    it('should update user budget when triggered', () => {
+      const action = setUserBudget({ login: users[0].login, budget: users[0].userBudget });
 
-      const completion = setUserBudgetsSuccess({ login: users[0].login, budgets: users[0].budgets });
+      const completion = setUserBudgetSuccess({ login: users[0].login, budget: users[0].userBudget });
       actions$ = hot('        -a-a-a-|', { a: action });
       const expected$ = cold('-c-c-c-|', { c: completion });
 
-      expect(effects.setUserBudgets$).toBeObservable(expected$);
+      expect(effects.setUserBudget$).toBeObservable(expected$);
     });
 
     it('should dispatch an UpdateUserFail action on failed user update', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(usersService.setUserBudgets(anyString(), anything())).thenReturn(throwError(error));
+      when(usersService.setUserBudget(anyString(), anything())).thenReturn(throwError(error));
 
-      const action = setUserBudgets({ login: users[0].login, budgets: users[0].budgets });
-      const completion = setUserBudgetsFail({ login: users[0].login, error });
+      const action = setUserBudget({ login: users[0].login, budget: users[0].userBudget });
+      const completion = setUserBudgetFail({ login: users[0].login, error });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
 
-      expect(effects.setUserBudgets$).toBeObservable(expected$);
+      expect(effects.setUserBudget$).toBeObservable(expected$);
     });
   });
 
@@ -342,7 +342,7 @@ describe('Users Effects', () => {
       });
 
       it('should display success message after role update', () => {
-        const action = setUserBudgetsSuccess({ login: '1', budgets: undefined });
+        const action = setUserBudgetSuccess({ login: '1', budget: undefined });
 
         actions$ = hot('        -a-a-a-|', { a: action });
         const expected$ = cold('-c-c-c-|', { c: completion });

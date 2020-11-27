@@ -7,7 +7,7 @@ import { toObservable } from 'ish-core/utils/functions';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { B2bUser } from '../models/b2b-user/b2b-user.model';
-import { UserBudgets } from '../models/user-budgets/user-budgets.model';
+import { UserBudget } from '../models/user-budget/user-budget.model';
 import {
   getCurrentUserBudget,
   getCurrentUserBudgetError,
@@ -24,7 +24,7 @@ import {
   getUsers,
   getUsersError,
   getUsersLoading,
-  setUserBudgets,
+  setUserBudget,
   setUserRoles,
   updateUser,
 } from '../store/users';
@@ -83,9 +83,9 @@ export class OrganizationManagementFacade {
       .subscribe(login => this.store.dispatch(setUserRoles({ login, roles: roleIDs })));
   }
 
-  setSelectedUserBudgets(budgets: UserBudgets) {
+  setSelectedUserBudget(budget: UserBudget) {
     this.selectedUser$
       .pipe(take(1), whenTruthy(), mapToProperty('login'))
-      .subscribe(login => this.store.dispatch(setUserBudgets({ login, budgets })));
+      .subscribe(login => this.store.dispatch(setUserBudget({ login, budget })));
   }
 }

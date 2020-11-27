@@ -31,7 +31,7 @@ export class UserCreatePageComponent implements OnInit {
       preferredLanguage: ['en_US', [Validators.required]],
     }),
     roleIDs: this.fb.control([]),
-    budgets: this.fb.group({
+    userBudget: this.fb.group({
       orderSpentLimit: ['', SpecialValidators.moneyAmount],
       budget: ['', SpecialValidators.moneyAmount],
       budgetPeriod: ['weekly'],
@@ -52,8 +52,8 @@ export class UserCreatePageComponent implements OnInit {
     return this.form.get('profile') as FormGroup;
   }
 
-  get budgetsForm() {
-    return this.form.get('budgets') as FormGroup;
+  get budgetForm() {
+    return this.form.get('userBudget') as FormGroup;
   }
 
   submitForm() {
@@ -76,16 +76,16 @@ export class UserCreatePageComponent implements OnInit {
       preferredLanguage: formValue.profile.preferredLanguage,
       businessPartnerNo: 'U' + UUID.UUID(),
       roleIDs: formValue.roleIDs,
-      budgets: formValue.budgets.currency
+      userBudget: formValue.userBudget.currency
         ? {
-            budget: formValue.budgets.budget
-              ? { value: formValue.budgets.budget, currency: formValue.budgets.currency, type: 'Money' }
+            budget: formValue.userBudget.budget
+              ? { value: formValue.userBudget.budget, currency: formValue.userBudget.currency, type: 'Money' }
               : undefined,
-            budgetPeriod: formValue.budgets.budgetPeriod,
-            orderSpentLimit: formValue.budgets.orderSpentLimit
+            budgetPeriod: formValue.userBudget.budgetPeriod,
+            orderSpentLimit: formValue.userBudget.orderSpentLimit
               ? {
-                  value: formValue.budgets.orderSpentLimit,
-                  currency: formValue.budgets.currency,
+                  value: formValue.userBudget.orderSpentLimit,
+                  currency: formValue.userBudget.currency,
                   type: 'Money',
                 }
               : undefined,

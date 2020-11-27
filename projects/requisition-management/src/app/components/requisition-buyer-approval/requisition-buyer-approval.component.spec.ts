@@ -55,7 +55,7 @@ describe('Requisition Buyer Approval Component', () => {
         approvalDate: 76543627,
       },
       user: { firstName: 'Patricia', lastName: 'Miller', email: 'pmiller@test.intershop.de' },
-      userBudgets: {
+      userBudget: {
         budgetPeriod: 'weekly',
         orderSpentLimit: { currency: 'USD', value: 500, type: 'Money' },
         spentBudget: { currency: 'USD', value: 300, type: 'Money' },

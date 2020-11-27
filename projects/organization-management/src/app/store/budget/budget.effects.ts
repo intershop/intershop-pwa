@@ -16,7 +16,7 @@ export class BudgetEffects {
     this.actions$.pipe(
       ofType(loadBudget),
       switchMap(() =>
-        this.usersService.getCurrentUserBudgets().pipe(
+        this.usersService.getCurrentUserBudget().pipe(
           map(budget => loadBudgetSuccess({ budget })),
           mapErrorToAction(loadBudgetFail)
         )
