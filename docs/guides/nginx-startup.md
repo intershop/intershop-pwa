@@ -42,7 +42,14 @@ The first way of supplying a configuration for domains is to add multiple domain
 The domain is interpreted as a regular expression.
 Subdomains (`b2b\..+`) as well as top level domains (`.+\.com`) can be supplied.
 The `channel` property is also mandatory.
-All other properties are optional.
+
+All other properties are optional:
+
+- **application**: the ICM application
+- **identityProvider**: the active identity provider for this site
+- **features**: comma-separated list of activated features
+- **lang**: the default language as defined in the Angular CLI environment
+- **theme**: the theme used for the channel (format: `<theme-name>(|<icon-color>)?`)
 
 Multiple channels can also be configured via context paths, which re-configure the PWA upstream to use a different `baseHref` for each channel.
 
@@ -99,4 +106,5 @@ If the cache should also be disabled for static resources, the page speed featur
 - [Concept - Multi-Site Handling](../concepts/multi-site-handling.md)
 - [Concept - Configuration](../concepts/configuration.md)
 - [Concept - Logging](../concepts/logging.md)
+- [Concept - Single Sign-On (SSO) for PWA](../concepts/sso.md)
 - [Guide - Monitoring with Prometheus](./prometheus-monitoring.md)
