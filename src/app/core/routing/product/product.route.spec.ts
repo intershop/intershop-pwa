@@ -84,8 +84,8 @@ describe('Product Route', () => {
       });
 
       it('should include filtered slug when product has a name with special characters', () => {
-        const product2 = { ...product, name: 'name & speci@l char$ (RETAIL)' };
-        expect(generateProductUrl(product2)).toMatchInlineSnapshot(`"/name-&-speci@l-char$-RETAIL-skuA"`);
+        const product2 = { ...product, name: 'name & speci@l char$ - 1/2 price - (RETAIL)' };
+        expect(generateProductUrl(product2)).toMatchInlineSnapshot(`"/name-speci@l-char$-1/2-price-RETAIL-skuA"`);
       });
 
       it('should be a match for matcher', () => {
@@ -103,13 +103,19 @@ describe('Product Route', () => {
           sku: 'A',
           name: 'some example name',
           type: 'VariationProduct',
-          variableVariationAttributes: [{ value: 'SSD(HDD)' }, { value: 'Cobalt Blue' }],
+          variableVariationAttributes: [
+            { value: 'SSD - (HDD)' },
+            { value: 'Cobalt Blue & Yellow' },
+            { value: '500 r/min' },
+          ],
         } as VariationProduct,
         categoryTree()
       );
 
       it('should include attribute values in slug when product is a variation', () => {
-        expect(generateProductUrl(product)).toMatchInlineSnapshot(`"/some-example-name-SSD-HDD-Cobalt-Blue-skuA"`);
+        expect(generateProductUrl(product)).toMatchInlineSnapshot(
+          `"/some-example-name-SSD-HDD-Cobalt-Blue-Yellow-500-r/min-skuA"`
+        );
       });
     });
   });
