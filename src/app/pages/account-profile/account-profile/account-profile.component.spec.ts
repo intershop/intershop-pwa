@@ -5,7 +5,7 @@ import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { IdentityProviderCapabilityDirective } from 'ish-core/directives/identity-provider-capability.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { IdentityProviderFactory } from 'ish-core/identity-provider/identity-provider.factory';
+import { IdentityProviderModule } from 'ish-core/identity-provider.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 
@@ -27,17 +27,7 @@ describe('Account Profile Component', () => {
         MockComponent(FaIconComponent),
         MockDirective(ServerHtmlDirective),
       ],
-      imports: [TranslateModule.forRoot()],
-      providers: [
-        {
-          provide: IdentityProviderFactory,
-          useValue: {
-            getInstance: () => ({
-              getCapabilities: () => ({ editEmail: true, editPassword: true, editProfile: true }),
-            }),
-          } as IdentityProviderFactory,
-        },
-      ],
+      imports: [IdentityProviderModule.forTesting(), TranslateModule.forRoot()],
     }).compileComponents();
   });
 

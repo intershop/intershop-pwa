@@ -1,6 +1,8 @@
 import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
+
+type TriggerReturnType = Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree;
 
 export interface IdentityProviderCapabilities {
   editPassword?: boolean;
@@ -22,17 +24,17 @@ export interface IdentityProvider {
   /**
    * Route Guard for login
    */
-  triggerLogin(route: ActivatedRouteSnapshot, state: RouterStateSnapshot);
+  triggerLogin(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): TriggerReturnType;
 
   /**
    * Route guard for register. If not provided, login logic is reused.
    */
-  triggerRegister?(route: ActivatedRouteSnapshot, state: RouterStateSnapshot);
+  triggerRegister?(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): TriggerReturnType;
 
   /**
    * Route guard for logout
    */
-  triggerLogout(route: ActivatedRouteSnapshot, state: RouterStateSnapshot);
+  triggerLogout(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): TriggerReturnType;
 
   /**
    * Interceptor for all API requests directed to the ICM
