@@ -72,9 +72,11 @@
 
     <!-- order summary -->
     <div class="section row">
-      <div class="col-12 col-md-6 offset-md-6 cost-summary">
-        <h3>{{ 'checkout.order_summary.heading' | translate }}</h3>
-        <ish-basket-cost-summary [totals]="requisition.totals"></ish-basket-cost-summary>
+      <div class="col-12 col-md-6 offset-md-6">
+        <div class="cost-summary">
+          <h3>{{ 'checkout.order_summary.heading' | translate }}</h3>
+          <ish-basket-cost-summary [totals]="requisition.totals"></ish-basket-cost-summary>
+        </div>
       </div>
     </div>
 

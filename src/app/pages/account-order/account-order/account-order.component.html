@@ -15,20 +15,22 @@
   <dl class="row dl-horizontal dl-separator">
     <dt class="col-6 col-sm-4 col-md-2">{{ 'account.orderdetails.order_number.label' | translate }}</dt>
     <dd class="col-6 col-sm-8 col-md-10" data-testing-id="order-number">{{ order.documentNo }}</dd>
-    <dt *ngIf="order.approval" class="col-6 col-sm-4 col-md-2">
-      {{ 'approval.detailspage.order.request_id' | translate }}
-    </dt>
-    <dd *ngIf="order.approval" class="col-6 col-sm-8 col-md-10">
-      <a [routerLink]="['/account/requisitions/buyer', order.id, { status: 'APPROVED' }]">{{ order.requisitionNo }}</a>
-      {{
-        'account.orderdetails.approved.text'
-          | translate
-            : {
-                '0': order.approval.approverFirstName + ' ' + order.approval.approverLastName,
-                '1': order.approval.date | ishDate: 'shortDate'
-              }
-      }}
-    </dd>
+    <ng-container *ngIf="order.approval">
+      <dt class="col-6 col-sm-4 col-md-2">{{ 'approval.detailspage.order.request_id' | translate }}</dt>
+      <dd class="col-6 col-sm-8 col-md-10">
+        <a [routerLink]="['/account/requisitions/buyer', order.id, { status: 'APPROVED' }]">{{
+          order.requisitionNo
+        }}</a>
+        {{
+          'account.orderdetails.approved.text'
+            | translate
+              : {
+                  '0': order.approval.approverFirstName + ' ' + order.approval.approverLastName,
+                  '1': order.approval.date | ishDate: 'shortDate'
+                }
+        }}
+      </dd>
+    </ng-container>
     <dt class="col-6 col-sm-4 col-md-2">{{ 'account.orderdetails.date_of_order.label' | translate }}</dt>
     <dd class="col-6 col-sm-8 col-md-10" data-testing-id="order-date">{{ order.creationDate | ishDate }}</dd>
     <dt class="col-6 col-sm-4 col-md-2">{{ 'account.orderdetails.order_status.label' | translate }}</dt>
@@ -78,9 +80,13 @@
   ></ish-line-item-list>
 
   <!-- Cost Summary -->
-  <div class="section cost-summary float-right">
-    <h3>{{ 'checkout.order_summary.heading' | translate }}</h3>
-    <ish-basket-cost-summary [totals]="order.totals"></ish-basket-cost-summary>
+  <div class="section row">
+    <div class="col-12 col-md-6 offset-md-6">
+      <div class="cost-summary">
+        <h3>{{ 'checkout.order_summary.heading' | translate }}</h3>
+        <ish-basket-cost-summary [totals]="order.totals"></ish-basket-cost-summary>
+      </div>
+    </div>
   </div>
 </ng-container>
 
