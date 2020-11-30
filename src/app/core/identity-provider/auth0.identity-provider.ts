@@ -1,5 +1,6 @@
+import { APP_BASE_HREF } from '@angular/common';
 import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { OAuthService } from 'angular-oauth2-oidc';
@@ -28,7 +29,8 @@ export class Auth0IdentityProvider implements IdentityProvider {
     private apiService: ApiService,
     private store: Store,
     private router: Router,
-    private apiTokenService: ApiTokenService
+    private apiTokenService: ApiTokenService,
+    @Inject(APP_BASE_HREF) private baseHref: string
   ) {}
 
   getCapabilities() {
@@ -40,6 +42,8 @@ export class Auth0IdentityProvider implements IdentityProvider {
   }
 
   init(config: Auth0Config) {
+    const effectiveOrigin = this.baseHref === '/' ? window.location.origin : window.location.origin + this.baseHref;
+
     this.oauthService.configure({
       // Your Auth0 app's domain
       // Important: Don't forget to start with https:// AND the trailing slash!
@@ -49,10 +53,10 @@ export class Auth0IdentityProvider implements IdentityProvider {
       clientId: config.clientID,
 
       // The app's redirectUri configured in Auth0
-      redirectUri: window.location.origin + '/loading',
+      redirectUri: effectiveOrigin + '/loading',
 
       // logout redirect URL
-      postLogoutRedirectUri: window.location.origin,
+      postLogoutRedirectUri: effectiveOrigin,
 
       // Scopes ("rights") the Angular application wants get delegated
       // https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims

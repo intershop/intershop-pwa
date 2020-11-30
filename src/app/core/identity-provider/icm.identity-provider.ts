@@ -9,7 +9,7 @@ import { selectQueryParam } from 'ish-core/store/core/router';
 import { logoutUser } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 
-import { IdentityProvider, TriggerReturnType } from './identity-provider.interface';
+import { IdentityProvider } from './identity-provider.interface';
 
 @Injectable({ providedIn: 'root' })
 export class ICMIdentityProvider implements IdentityProvider {
@@ -36,11 +36,11 @@ export class ICMIdentityProvider implements IdentityProvider {
     });
   }
 
-  triggerLogin(): TriggerReturnType {
+  triggerLogin() {
     return true;
   }
 
-  triggerLogout(): TriggerReturnType {
+  triggerLogout() {
     this.store.dispatch(logoutUser());
     this.apiTokenService.removeApiToken();
     return this.store.pipe(
@@ -50,7 +50,7 @@ export class ICMIdentityProvider implements IdentityProvider {
     );
   }
 
-  triggerRegister(): TriggerReturnType {
+  triggerRegister() {
     return true;
   }
 
