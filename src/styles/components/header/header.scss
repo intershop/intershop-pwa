@@ -14,7 +14,7 @@ header {
     background-color: $color-primary;
 
     @include media-breakpoint-down(sm) {
-      background-color: $color-inverse;
+      background-color: $color-primary;
     }
   }
 
@@ -64,7 +64,7 @@ header {
     .navbar-nav {
       @include media-breakpoint-down(sm) {
         display: flex;
-        background-color: $color-inverse;
+        background-color: $color-primary;
       }
     }
   }
@@ -86,7 +86,7 @@ header {
     padding-left: 0;
     margin-right: 0;
     margin-left: 0;
-    background: $color-inverse;
+    background: $color-primary;
   }
 
   a span:hover {
@@ -125,7 +125,7 @@ header {
     padding-right: ($space-default * 3 / 2);
     font-family: $font-family-bold;
     font-size: 12px;
-    color: $text-color-quarternary;
+    color: $text-color-primary;
     text-transform: uppercase;
     list-style: none;
 

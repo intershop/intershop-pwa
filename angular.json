@@ -38,6 +38,16 @@
                 "inject": false,
                 "input": "src/styles/themes/blue/style.scss",
                 "bundleName": "blue"
+              },
+              {
+                "inject": false,
+                "input": "src/styles/themes/shark/style.scss",
+                "bundleName": "shark"
+              },
+              {
+                "inject": false,
+                "input": "src/styles/themes/ninja/style.scss",
+                "bundleName": "ninja"
               }
             ],
             "scripts": []

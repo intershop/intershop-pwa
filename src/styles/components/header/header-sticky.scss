@@ -14,16 +14,17 @@
     z-index: 100;
     display: block;
     width: 100%;
-    background-color: $color-inverse;
+    background-color: $color-primary;
     box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
 
     &::before {
-      background-color: $color-inverse;
+      background-color: $color-primary;
     }
 
     .header {
       position: relative;
       display: flex;
+      align-items: center;
 
       @include media-breakpoint-down(md) {
         max-width: 100%;
@@ -81,7 +82,7 @@
 
       .header-utility {
         order: 10;
-        background: $color-inverse;
+        background: $color-primary;
 
         @include media-breakpoint-down(md) {
           line-height: $header-height-mobile;

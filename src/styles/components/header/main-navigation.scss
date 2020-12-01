@@ -131,15 +131,14 @@
     list-style: none;
 
     a {
-      font-family: $font-family-condensedbold;
-      text-transform: uppercase;
+      font-family: $font-family-regular;
     }
   }
 
   .main-navigation-list {
     a {
       font-size: $font-size-navbar-item;
-      color: $text-color-primary;
+      color: $text-color-inverse;
     }
 
     > li {

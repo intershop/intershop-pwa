@@ -11,4 +11,5 @@ export const environment: Environment = {
 
   /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
   icmBaseURL: 'http://localhost:4200',
+  theme: 'shark',
 };
