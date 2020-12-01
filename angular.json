@@ -26,7 +26,6 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "aot": true,
-            "extractCss": true,
             "assets": ["src/assets"],
             "styles": [
               {
@@ -53,7 +52,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -87,14 +85,14 @@
                 }
               ],
               "sourceMap": true,
-              "serviceWorker": false
+              "serviceWorker": false,
+              "aot": true
             }
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "aot": true,
             "browserTarget": "intershop-pwa:build"
           },
           "configurations": {
