@@ -111,10 +111,10 @@ describe('Router Integration', () => {
           event: {"id":1,"url":"/"}
         @ngrx/router-store/navigation:
           routerState: {"url":"/","params":{},"queryParams":{},"data":{},"path":"**"}
-          event: {"id":1,"url":"/"}
+          event: {"id":1,"url":"/","urlAfterRedirects":"/"}
         @ngrx/router-store/navigated:
           routerState: {"url":"/","params":{},"queryParams":{},"data":{},"path":"**"}
-          event: {"id":1,"url":"/"}
+          event: {"id":1,"url":"/","urlAfterRedirects":"/"}
       `);
     }));
 

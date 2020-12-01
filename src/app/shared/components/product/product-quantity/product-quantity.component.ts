@@ -32,7 +32,7 @@ export class ProductQuantityComponent implements OnInit, OnChanges {
   @Input() product: Product;
   @Input() parentForm: FormGroup;
   @Input() controlName: string;
-  @Input() type?: 'input' | 'select' | 'counter';
+  @Input() type: 'input' | 'select' | 'counter' = 'input';
   @Input() class?: string;
 
   quantityOptions: SelectOption[];

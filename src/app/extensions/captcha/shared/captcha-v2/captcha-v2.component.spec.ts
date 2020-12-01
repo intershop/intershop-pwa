@@ -20,7 +20,7 @@ describe('Captcha V2 Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [CaptchaV2Component],
-      imports: [ReactiveFormsModule, RecaptchaModule.forRoot(), TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, RecaptchaModule, TranslateModule.forRoot()],
       providers: [{ provide: CaptchaFacade, useFactory: () => instance(captchaFacade) }],
     }).compileComponents();
   });
