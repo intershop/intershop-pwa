@@ -45,11 +45,11 @@ The `channel` property is also mandatory.
 
 All other properties are optional:
 
-- **application**: the ICM application
-- **identityProvider**: the active identity provider for this site
-- **features**: comma-separated list of activated features
-- **lang**: the default language as defined in the Angular CLI environment
-- **theme**: the theme used for the channel (format: `<theme-name>(|<icon-color>)?`)
+- **application**: The ICM application
+- **identityProvider**: The active identity provider for this site
+- **features**: Comma-separated list of activated features
+- **lang**: The default language as defined in the Angular CLI environment
+- **theme**: The theme used for the channel (format: `<theme-name>(|<icon-color>)?`)
 
 Multiple channels can also be configured via context paths, which re-configure the PWA upstream to use a different `baseHref` for each channel.
 

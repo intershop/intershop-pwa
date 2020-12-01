@@ -39,12 +39,12 @@ If the format is _switch_, the property is switched on by supplying `on`, `1`, `
 |                     | FEATURES              | comma-separated list | Overrides active features                                            |
 |                     | THEME                 | string               | Overrides the default theme                                          |
 | **Debug** :warning: | TRUST_ICM             | any                  | Use this if ICM is deployed with an insecure certificate             |
-|                     | LOGGING               | switch               | Enable extra log output                                              |
-| **Hybrid Approach** | SSR_HYBRID            | any                  | Enable running PWA and ICM in [Hybrid Mode][concept-hybrid]          |
+|                     | LOGGING               | switch               | Enables extra log output                                             |
+| **Hybrid Approach** | SSR_HYBRID            | any                  | Enables running PWA and ICM in [Hybrid Mode][concept-hybrid]         |
 |                     | PROXY_ICM             | any \| URL           | Proxy ICM via `/INTERSHOP` (enabled if SSR_HYBRID is active)         |
 | **Third party**     | GTM_TOKEN             | string               | Token for Google Tag Manager                                         |
 |                     | SENTRY_DSN            | string               | Sentry DSN URL for using Sentry Error Monitor                        |
-|                     | PROMETHEUS            | switch               | Expose Prometheus metrics                                            |
+|                     | PROMETHEUS            | switch               | Exposes Prometheus metrics                                           |
 |                     | ICM_IDENTITY_PROVIDER | string               | ID of Identity Provider for [SSO][concept-sso]                       |
 |                     | IDENTITY_PROVIDERS    | JSON                 | Configuration of Identity Providers for [SSO][concept-sso]           |
 

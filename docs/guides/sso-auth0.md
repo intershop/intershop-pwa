@@ -9,7 +9,7 @@ kb_sync_latest_only
 
 Follow [this guide](https://manfredsteyer.github.io/angular-oauth2-oidc/docs/additional-documentation/authorization-servers/auth0.html) to set up an application in the Auth0 configuration.
 
-The PWA implementation for this Identity Provider is located in [`Auth0IdentityProvider`](../../src/app/core/identity-provider/auth0.identity-provider.ts).
+The PWA implementation for this identity provider is located in [`Auth0IdentityProvider`](../../src/app/core/identity-provider/auth0.identity-provider.ts).
 
 Use the fields "Domain" and "Client ID" for configuring the provider:
 
