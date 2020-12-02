@@ -16,7 +16,7 @@ export class B2bUserMapper {
         firstName: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'firstName'),
         lastName: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'lastName'),
         roleIDs: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'roleIDs'),
-        // ToDo: #IS-31051: map the active flag
+        active: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'active'),
       }));
     } else {
       throw new Error('data is required');
