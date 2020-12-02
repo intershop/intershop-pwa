@@ -85,6 +85,18 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
     securityCode: { message: '' },
   };
 
+  ngOnInit() {
+    this.cyberSourceCreditCardForm = new FormGroup({});
+    this.cyberSourceCreditCardForm.addControl(
+      'expirationMonth',
+      new FormControl('', [Validators.required, Validators.pattern('[0-9]{2}')])
+    );
+    this.cyberSourceCreditCardForm.addControl(
+      'expirationYear',
+      new FormControl('', [Validators.required, Validators.pattern('[0-9]{4}')])
+    );
+  }
+
   /**
    * load concardis script if component is shown
    */
@@ -112,18 +124,6 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
     return parameter.value;
   }
 
-  ngOnInit() {
-    this.cyberSourceCreditCardForm = new FormGroup({});
-    this.cyberSourceCreditCardForm.addControl(
-      'expirationMonth',
-      new FormControl('', [Validators.required, Validators.pattern('[0-9]{2}')])
-    );
-    this.cyberSourceCreditCardForm.addControl(
-      'expirationYear',
-      new FormControl('', [Validators.required, Validators.pattern('[0-9]{4}')])
-    );
-  }
-
   // tslint:disable-next-line:no-empty
   loadScript() {
     // load script only once if component becomes visible
@@ -138,24 +138,11 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
           // the capture context that was requested server-side for this transaction
           const captureContext = flexkeyId;
 
-          // custom styles that will be applied to each field we create using Microform
-          const myStyles = {
-            input: {
-              'font-size': '14px',
-              'font-family': 'helvetica, tahoma, calibri, sans-serif',
-              color: '#555',
-            },
-            ':focus': { color: 'blue' },
-            ':disabled': { cursor: 'not-allowed' },
-            valid: { color: '#3c763d' },
-            invalid: { color: '#a94442' },
-          };
-
           // setup
           const flex = new Flex(captureContext);
-          this.microform = flex.microform({ styles: myStyles });
-          const cardnumber = this.microform.createField('number', { placeholder: 'Enter card number' });
-          const securityCode = this.microform.createField('securityCode', { placeholder: '•••' });
+          this.microform = flex.microform();
+          const cardnumber = this.microform.createField('number');
+          const securityCode = this.microform.createField('securityCode');
 
           cardnumber.load('#number-container');
           securityCode.load('#securityCode-container');
