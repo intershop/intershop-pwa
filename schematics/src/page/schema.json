@@ -42,7 +42,7 @@
     "lazy": {
       "type": "boolean",
       "description": "Lazy-load the created page. (default is true)",
-      "default": "true"
+      "default": true
     }
   }
 }

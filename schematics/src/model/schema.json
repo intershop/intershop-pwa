@@ -17,7 +17,7 @@
     },
     "restricted": {
       "type": "boolean",
-      "default": "true",
+      "default": true,
       "visible": "false"
     },
     "name": {
