@@ -79,13 +79,14 @@ export class UsersService {
           })
           .pipe(
             concatMap(() =>
-              forkJoin([
-                this.setUserRoles(user.email, user.roleIDs),
-                this.setUserBudget(user.email, user.userBudget),
-                this.getUser(user.email),
-              ])
-            ),
-            map(([roleIDs, userBudget, newUser]) => ({ ...newUser, roleIDs, userBudget }))
+              this.setUserRoles(user.email, user.roleIDs).pipe(
+                concatMap(roleIDs =>
+                  forkJoin([this.setUserBudget(user.email, user.userBudget), this.getUser(user.email)]).pipe(
+                    map(([userBudget, newUser]) => ({ ...newUser, userBudget, roleIDs }))
+                  )
+                )
+              )
+            )
           )
       )
     );
