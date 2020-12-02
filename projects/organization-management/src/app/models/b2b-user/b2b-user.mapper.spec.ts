@@ -54,6 +54,7 @@ describe('B2b User Mapper', () => {
             },
             { name: 'firstName', value: 'Patricia' },
             { name: 'lastName', value: 'Miller' },
+            { name: 'active', value: true },
           ],
         } as B2bUserDataLink,
       ];
@@ -62,6 +63,7 @@ describe('B2b User Mapper', () => {
       expect(users).toMatchInlineSnapshot(`
         Array [
           Object {
+            "active": true,
             "firstName": "Patricia",
             "lastName": "Miller",
             "login": "pmiller@test.intershop.de",
