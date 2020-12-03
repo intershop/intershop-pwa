@@ -81,6 +81,15 @@ export const validateBasket = createAction(
   payload<{ scopes: BasketValidationScopeType[] }>()
 );
 
+export const startCheckout = createAction('[Basket] Start the checkout process');
+
+export const startCheckoutSuccess = createAction(
+  '[Basket API] Start the checkout process success',
+  payload<{ basketValidation: BasketValidation; targetRoute?: string }>()
+);
+
+export const startCheckoutFail = createAction('[Basket API] Start the checkout process fail', httpError());
+
 export const continueCheckout = createAction(
   '[Basket] Validate Basket and continue checkout',
   payload<{ targetStep: number }>()

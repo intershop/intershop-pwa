@@ -37,6 +37,7 @@ import {
   removePromotionCodeFromBasket,
   setBasketAttribute,
   setBasketPayment,
+  startCheckout,
   updateBasketAddress,
   updateBasketItems,
   updateBasketShippingMethod,
@@ -53,6 +54,10 @@ export class CheckoutFacade {
   constructor(private store: Store) {}
 
   checkoutStep$ = this.store.pipe(select(selectRouteData<number>('checkoutStep')));
+
+  start() {
+    this.store.dispatch(startCheckout());
+  }
 
   continue(targetStep: number) {
     this.store.dispatch(continueCheckout({ targetStep }));

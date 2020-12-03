@@ -33,6 +33,6 @@ export class BasketPageComponent implements OnInit {
   }
 
   nextStep() {
-    this.checkoutFacade.continue(1);
+    this.checkoutFacade.start();
   }
 }
