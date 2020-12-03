@@ -35,7 +35,7 @@ describe('Addresses Effects', () => {
   beforeEach(() => {
     addressServiceMock = mock(AddressService);
 
-    when(addressServiceMock.getCustomerAddresses(anyString())).thenReturn(of([{ urn: 'test' } as Address]));
+    when(addressServiceMock.getCustomerAddresses()).thenReturn(of([{ urn: 'test' } as Address]));
     when(addressServiceMock.createCustomerAddress(anyString(), anything())).thenReturn(of({ urn: 'test' } as Address));
     when(addressServiceMock.deleteCustomerAddress(anyString(), anything())).thenReturn(of('123'));
 
@@ -60,7 +60,7 @@ describe('Addresses Effects', () => {
       actions$ = of(action);
 
       effects.loadAddresses$.subscribe(() => {
-        verify(addressServiceMock.getCustomerAddresses('patricia')).once();
+        verify(addressServiceMock.getCustomerAddresses()).once();
         done();
       });
     });
