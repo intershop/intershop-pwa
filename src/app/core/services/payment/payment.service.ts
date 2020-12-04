@@ -1,7 +1,7 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, forkJoin, of, throwError } from 'rxjs';
 import { concatMap, first, map, mapTo, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -234,7 +234,17 @@ export class PaymentService {
       concatMap(restResource =>
         this.apiService.get(`${restResource}/${customer.customerNo}/payments`).pipe(
           unpackEnvelope<Link>(),
-          this.apiService.resolveLinks<PaymentInstrumentData>(),
+          // this.apiService.resolveLinks<PaymentInstrumentData>(),
+          map(links => links.map(l => l.uri.replace(/.*\//g, ''))),
+          concatMap(ids =>
+            ids.length
+              ? forkJoin(
+                  ids.map(id =>
+                    this.apiService.get<PaymentInstrumentData>(`${restResource}/${customer.customerNo}/payments/${id}`)
+                  )
+                )
+              : of([])
+          ),
           concatMap(instruments =>
             this.apiService.options(`${restResource}/${customer.customerNo}/payments`).pipe(
               unpackEnvelope<PaymentMethodOptionsDataType>('methods'),
