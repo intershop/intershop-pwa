@@ -16,6 +16,7 @@ export const IDENTITY_PROVIDER_IMPLEMENTOR = new InjectionToken<{ type: string; 
 @Injectable({ providedIn: 'root' })
 export class IdentityProviderFactory {
   private instance: IdentityProvider;
+  private config: { type: string };
 
   constructor(private store: Store, private injector: Injector, @Inject(PLATFORM_ID) platformId: string) {
     if (isPlatformBrowser(platformId)) {
@@ -31,6 +32,7 @@ export class IdentityProviderFactory {
           instance.init(config);
 
           this.instance = instance;
+          this.config = config;
         }
       });
     } else {
@@ -46,5 +48,9 @@ export class IdentityProviderFactory {
 
   getInstance() {
     return this.instance;
+  }
+
+  getType(): string {
+    return this.config?.type;
   }
 }

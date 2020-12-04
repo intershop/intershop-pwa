@@ -74,6 +74,8 @@ import { LineItemDescriptionComponent } from './components/line-item/line-item-d
 import { LineItemEditDialogComponent } from './components/line-item/line-item-edit-dialog/line-item-edit-dialog.component';
 import { LineItemEditComponent } from './components/line-item/line-item-edit/line-item-edit.component';
 import { LineItemListComponent } from './components/line-item/line-item-list/line-item-list.component';
+import { Auth0SigninComponent } from './components/login/auth0-signin/auth0-signin.component';
+import { IdentityProviderLoginComponent } from './components/login/identity-provider-login/identity-provider-login.component';
 import { LoginFormComponent } from './components/login/login-form/login-form.component';
 import { LoginModalComponent } from './components/login/login-modal/login-modal.component';
 import { OrderListComponent } from './components/order/order-list/order-list.component';
@@ -132,6 +134,7 @@ const importExportModules = [
 ];
 
 const declaredComponents = [
+  Auth0SigninComponent,
   BasketValidationItemsComponent,
   BasketValidationProductsComponent,
   CMSCarouselComponent,
@@ -158,6 +161,7 @@ const declaredComponents = [
   LineItemDescriptionComponent,
   LineItemEditComponent,
   LineItemEditDialogComponent,
+  LoginFormComponent,
   LoginModalComponent,
   ProductIdComponent,
   ProductLabelComponent,
@@ -188,11 +192,11 @@ const exportedComponents = [
   ContentViewcontextComponent,
   ErrorMessageComponent,
   FilterNavigationComponent,
+  IdentityProviderLoginComponent,
   InfoBoxComponent,
   InplaceEditComponent,
   LineItemListComponent,
   LoadingComponent,
-  LoginFormComponent,
   ModalDialogComponent,
   ModalDialogLinkComponent,
   OrderListComponent,
