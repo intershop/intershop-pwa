@@ -125,7 +125,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
   }
 
   triggerLogin() {
-    this.router.navigateByUrl('/loading');
+    this.router.navigateByUrl('/loading', { replaceUrl: false, skipLocationChange: true });
     return this.oauthService.loadDiscoveryDocumentAndLogin();
   }
 
