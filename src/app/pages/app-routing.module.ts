@@ -93,6 +93,19 @@ const routes: Routes = [
     },
   },
   {
+    path: 'checkout-spa',
+    loadChildren: () =>
+      import('../extensions/single-page-checkout/single-page-checkout.module').then(m => m.SinglePageCheckoutModule),
+    data: {
+      feature: 'spaCheckout',
+      headerType: 'checkout',
+      meta: {
+        title: 'seo.title.checkout',
+        robots: 'noindex, nofollow',
+      },
+    },
+  },
+  {
     path: 'page',
     loadChildren: () => import('./content/content-page.module').then(m => m.ContentPageModule),
   },

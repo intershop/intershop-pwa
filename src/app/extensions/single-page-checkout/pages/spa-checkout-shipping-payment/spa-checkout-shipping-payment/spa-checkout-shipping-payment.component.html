@@ -1,0 +1,55 @@
+<div *ngIf="basket && shippingMethods" class="row">
+  <!-- Messages -->
+  <div class="col-md-12">
+    <ish-error-message [error]="error"></ish-error-message>
+    <ish-basket-validation-results></ish-basket-validation-results>
+  </div>
+  <div class="col-md-12">
+    <div class="address-container-box">
+      <div class="row">
+        <!-- Invoice Address -->
+        <ish-info-box heading="pwa.checkout.widget.billing-address.heading" class="infobox-wrapper col-md-6">
+          <ish-address [address]="basket.invoiceToAddress"></ish-address>
+        </ish-info-box>
+
+        <!-- Shipping Address -->
+        <ish-info-box heading="pwa.checkout.widget.shipping-address.heading" class="infobox-wrapper col-md-6">
+          <ish-address [address]="basket.commonShipToAddress"></ish-address>
+        </ish-info-box>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-6">
+        <div id="checkout__shipping">
+          <ish-spa-checkout-shipping-page></ish-spa-checkout-shipping-page>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div id="checkout__payment">
+          <ish-spa-checkout-payment-page></ish-spa-checkout-payment-page>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- basket summary -->
+  <div class="col-md-12">
+    <div class="order-summary">
+      <div class="cost-summary">
+        <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-md-3 footer-button col-12">
+    <button
+      class="btn btn-lg btn-block btn-primary"
+      type="button"
+      [disabled]="nextDisabled || isPaymentStatusInvalid"
+      (click)="goToNextStep()"
+    >
+      {{ 'pwa.checkout.button.label' | translate }}
+    </button>
+  </div>
+</div>

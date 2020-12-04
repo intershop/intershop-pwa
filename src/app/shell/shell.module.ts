@@ -15,6 +15,7 @@ import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
 import { SentryExportsModule } from '../extensions/sentry/exports/sentry-exports.module';
 import { SeoExportsModule } from '../extensions/seo/exports/seo-exports.module';
+import { SinglePageCheckoutExportsModule } from '../extensions/single-page-checkout/exports/single-page-checkout-exports.module';
 import { TrackingExportsModule } from '../extensions/tracking/exports/tracking-exports.module';
 import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
 
@@ -52,6 +53,7 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     RouterModule,
     SentryExportsModule,
     SeoExportsModule,
+    SinglePageCheckoutExportsModule,
     TrackingExportsModule,
     TranslateModule,
     WishlistsExportsModule,

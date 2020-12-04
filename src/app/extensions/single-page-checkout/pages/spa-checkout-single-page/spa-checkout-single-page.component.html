@@ -1,0 +1,55 @@
+<div class="sp-wrapper sp-checkout">
+  <ng-container *ngIf="currentStep !== stepsOrder[3]; else receiptBlock">
+    <!-- Address -->
+    <div
+      class="sp-checkout__tabs"
+      [ngClass]="{ done: completeSteps(stepsOrder[0]), active: currentStep === stepsOrder[0] }"
+    >
+      <span>1. Address Information</span>
+      <a
+        *ngIf="completeSteps(stepsOrder[0])"
+        class="float-right btn-tool"
+        title="Edit"
+        [routerLink]="'/checkout-spa/address'"
+      >
+        <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
+      </a>
+    </div>
+    <div class="sp-checkout__content container" *ngIf="currentStep === stepsOrder[0]">
+      <ish-spa-checkout-address-page></ish-spa-checkout-address-page>
+    </div>
+
+    <!-- shipping and payment -->
+    <div
+      class="sp-checkout__tabs"
+      [ngClass]="{ done: completeSteps(stepsOrder[1]), active: currentStep === stepsOrder[1] }"
+    >
+      <span>2. Shipping & Payments</span>
+      <a
+        *ngIf="completeSteps(stepsOrder[1])"
+        class="float-right btn-tool"
+        title="Edit"
+        [routerLink]="'/checkout-spa/shipping_payment'"
+      >
+        <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
+      </a>
+    </div>
+    <div class="sp-checkout__content" *ngIf="currentStep === stepsOrder[1]">
+      <ish-spa-checkout-shipping-payment-page></ish-spa-checkout-shipping-payment-page>
+    </div>
+
+    <!-- Review -->
+    <div class="sp-checkout__tabs" [ngClass]="{ active: currentStep === stepsOrder[2] }">
+      <span>3. Order Summary</span>
+      <span class="float-right mr-2" *ngIf="currentStep !== stepsOrder[2]"> {{ totalAmount | ishPrice }}</span>
+    </div>
+    <div class="sp-checkout__content" *ngIf="currentStep === stepsOrder[2]">
+      <ish-spa-checkout-review-page></ish-spa-checkout-review-page>
+    </div>
+  </ng-container>
+  <ng-template #receiptBlock>
+    <div class="order-reciept-page">
+      <ish-spa-checkout-receipt-page></ish-spa-checkout-receipt-page>
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,11 @@
+<div data-testing-id="checkout-shipping-page">
+  <ish-spa-checkout-shipping-payment
+    [basket]="basket$ | async"
+    [shippingMethods]="shippingMethods$ | async"
+    [error]="basketError$ | async"
+    (updateShippingMethod)="updateBasketShippingMethod($event)"
+    (nextStep)="nextStep()"
+  >
+  </ish-spa-checkout-shipping-payment>
+  <ish-loading *ngIf="loading$ | async"></ish-loading>
+</div>
