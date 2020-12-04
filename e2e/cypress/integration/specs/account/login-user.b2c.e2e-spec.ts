@@ -46,11 +46,7 @@ describe('Returning User', () => {
     it('should enter wrong credentials and submit and be be still at login page', () => {
       at(LoginPage, page => {
         page.fillForm(_.email, _.wrongPassword);
-        page.submit();
-        /*
-          not possible when testing with mock-interceptor
-          .its('status').should('equal', 401);
-         */
+        page.submit().its('status').should('equal', 401);
         page.errorText.should('be.visible');
       });
     });

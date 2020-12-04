@@ -12,8 +12,7 @@ import { updatePasswordErrorHandler } from './utils/http-error/update-password.e
 
 @NgModule({
   providers: [
-    { provide: injectionKeys.MOCK_SERVER_API, useValue: environment.mockServerAPI },
-    { provide: injectionKeys.MUST_MOCK_PATHS, useValue: environment.mustMockPaths },
+    { provide: injectionKeys.API_MOCK_PATHS, useValue: environment.apiMockPaths },
     {
       provide: injectionKeys.MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
       useValue: environment.mainNavigationMaxSubCategoriesDepth,

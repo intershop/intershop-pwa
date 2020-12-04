@@ -13,9 +13,8 @@ In the PWA we supply a mocking mechanism so the frontend team can start implemen
 
 ## Switching On Mocking
 
-Mocking complete REST responses can be configured in _environment.ts_.
-The property `mockServerAPI` switches between mocking all calls (true) and only mocking paths that have to be mocked because they do not yet exist in the [REST API](http://developer.cloud.intershop.com).
-The property `mustMockPaths` is an array of regular expressions for paths that have to be mocked, regardless if `mockServerAPI` is enabled or disabled.
+Mocking complete REST responses can be configured in _environment.ts_ for calls, that do not yet exist in the [REST API](http://developer.cloud.intershop.com) during development.
+The property `apiMockPaths` is an array of regular expressions for paths.
 
 ## Supply Mocked Data
 

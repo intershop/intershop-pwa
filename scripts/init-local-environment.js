@@ -40,7 +40,6 @@ export const environment: Environment = {
 
   production: false,
   serviceWorker: false,
-  mockServerAPI: false,
   defaultDeviceType: 'desktop',
 
   icmBaseURL: 'https://intershoppwa.azurewebsites.net',

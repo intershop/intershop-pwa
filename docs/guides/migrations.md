@@ -16,6 +16,10 @@ With that a breaking change was introduced.
 The [RouterModule's `relativeLinkResolution` property changed](https://angular.io/api/router/ExtraOptions#relativeLinkResolution) from `legacy` to `corrected`.
 We couldn't detect any impact for the PWA itself but custom code might have to be adapted.
 
+We removed the Intershop PWA mock-data, as there are currently public servers provided for testing and exploring.
+The handling for mocking REST API calls during development is hereby untouched.
+The Angular CLI environment property `mockServerAPI` became obsolete, the property `mustMockPaths` was renamed to `apiMockPaths`.
+
 ## 0.24 to 0.25
 
 We replaced the simple [ngx-cookie-banner](https://github.com/exportarts/ngx-cookie-banner) cookie banner with an own implementation that provides the means to configure and set more fine grained cookie consent options.

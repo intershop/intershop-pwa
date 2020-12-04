@@ -125,13 +125,6 @@ stat src/app/extensions/quoting/shared/custom-quote-widget/custom-quote-widget.c
 
 sed -i -e "s%icmBaseURL.*%icmBaseURL: 'http://localhost:4200',%g" src/environments/environment.prod.ts
 
-if grep mockServerAPI src/environments/environment.prod.ts
-then
-  sed -i -e 's/mockServerAPI.*/mockServerAPI: true,/g' src/environments/environment.prod.ts
-else
-  sed -i -e 's/^};$/mockServerAPI: true };/' src/environments/environment.prod.ts
-fi
-
 node schematics/customization/service-worker false
 grep '"serviceWorker": false' angular.json
 grep 'serviceWorker: false' src/environments/environment.prod.ts

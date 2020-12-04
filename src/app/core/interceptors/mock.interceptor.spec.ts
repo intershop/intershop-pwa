@@ -1,10 +1,8 @@
-import { HttpEventType, HttpHandler, HttpRequest, HttpResponse, HttpXhrBackend } from '@angular/common/http';
+import { HttpRequest } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
-import { of } from 'rxjs';
-import { anything, instance, mock, when } from 'ts-mockito';
 
-import { MOCK_SERVER_API, MUST_MOCK_PATHS } from 'ish-core/configurations/injection-keys';
+import { API_MOCK_PATHS } from 'ish-core/configurations/injection-keys';
 import { getRestEndpoint } from 'ish-core/store/core/configuration';
 
 import { MockInterceptor } from './mock.interceptor';
@@ -19,8 +17,7 @@ describe('Mock Interceptor', () => {
     TestBed.configureTestingModule({
       providers: [
         MockInterceptor,
-        { provide: MOCK_SERVER_API, useValue: true },
-        { provide: MUST_MOCK_PATHS, useValue: [] },
+        { provide: API_MOCK_PATHS, useValue: ['.*'] },
         provideMockStore({ selectors: [{ selector: getRestEndpoint, value: BASE_URL }] }),
       ],
     });
@@ -81,50 +78,6 @@ describe('Mock Interceptor', () => {
       it(`should be ${expected} when '${item}' in ${within}`, () => {
         expect(mockInterceptor.matchPath(item, within)).toBe(expected);
       });
-    });
-  });
-
-  describe('Intercepting', () => {
-    let request: HttpRequest<unknown>;
-    let handler: HttpHandler;
-
-    beforeEach(() => {
-      request = new HttpRequest('GET', `${BASE_URL}/some`);
-      const handlerMock = mock(HttpXhrBackend);
-      when(handlerMock.handle(anything())).thenReturn(of(new HttpResponse<unknown>()));
-      handler = instance(handlerMock);
-    });
-
-    it('should attach token when patricia is logged in correctly', done => {
-      mockInterceptor
-        .intercept(
-          request.clone({
-            headers: request.headers.append(
-              'Authorization',
-              'BASIC cGF0cmljaWFAdGVzdC5pbnRlcnNob3AuZGU6IUludGVyU2hvcDAwIQ=='
-            ),
-          }),
-          handler
-        )
-        .subscribe(event => {
-          expect(event.type).toBe(HttpEventType.Response);
-
-          const response = event as HttpResponse<unknown>;
-          expect(response.headers.get('authentication-token')).toBeTruthy();
-          done();
-        });
-    });
-
-    it('should return error response when patricia is not logged in correctly', done => {
-      mockInterceptor
-        .intercept(request.clone({ headers: request.headers.append('Authorization', 'invalid') }), handler)
-        .subscribe(fail, event => {
-          expect(event.ok).toBeFalsy();
-          expect(event.status).toBe(401);
-          expect(event.headers.get('authentication-token')).toBeFalsy();
-          expect(event.headers.get('error-key')).toBeTruthy();
-          done();
-        });
     });
   });
 });
