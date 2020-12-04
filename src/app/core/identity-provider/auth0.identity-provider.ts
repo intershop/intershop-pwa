@@ -1,7 +1,7 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { UUID } from 'angular2-uuid';
@@ -119,14 +119,14 @@ export class Auth0IdentityProvider implements IdentityProvider {
       .subscribe(() => {
         this.apiTokenService.removeApiToken();
         if (this.router.url.startsWith('/loading')) {
-          this.router.navigateByUrl('/account');
+          this.router.navigateByUrl(this.oauthService.state ? decodeURIComponent(this.oauthService.state) : '/account');
         }
       });
   }
 
-  triggerLogin() {
+  triggerLogin(route: ActivatedRouteSnapshot) {
     this.router.navigateByUrl('/loading', { replaceUrl: false, skipLocationChange: true });
-    return this.oauthService.loadDiscoveryDocumentAndLogin();
+    return this.oauthService.loadDiscoveryDocumentAndLogin({ state: route.queryParams.returnUrl });
   }
 
   triggerLogout() {
