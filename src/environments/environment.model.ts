@@ -149,5 +149,4 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
     allowedCookies: ['cookieConsent', 'apiToken'],
   },
   cookieConsentVersion: 1,
-  ngrxStrictRuntimeChecks: true,
 };

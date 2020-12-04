@@ -12,6 +12,6 @@
   "modifyObstructiveCode": false,
   "chromeWebSecurity": false,
   "env": {
-    "ngrxStrictRuntimeChecks": true
+    "production": false
   }
 }

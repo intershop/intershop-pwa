@@ -42,10 +42,10 @@ const coreMetaReducers: MetaReducer<CoreState>[] = [
     StoreModule.forRoot<CoreState>(coreReducers, {
       metaReducers: coreMetaReducers,
       runtimeChecks: {
-        strictActionImmutability: environment.production ? false : environment.ngrxStrictRuntimeChecks,
-        strictActionSerializability: environment.production ? false : environment.ngrxStrictRuntimeChecks,
-        strictStateImmutability: environment.production ? false : environment.ngrxStrictRuntimeChecks,
-        strictStateSerializability: environment.production ? false : environment.ngrxStrictRuntimeChecks,
+        strictActionImmutability: !environment.production,
+        strictActionSerializability: !environment.production,
+        strictStateImmutability: !environment.production,
+        strictStateSerializability: !environment.production,
       },
     }),
     StoreRouterConnectingModule.forRoot({ serializer: CustomRouterSerializer }),
