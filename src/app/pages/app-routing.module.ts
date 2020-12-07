@@ -95,7 +95,9 @@ const routes: Routes = [
   {
     path: 'checkout-spa',
     loadChildren: () =>
-      import('../extensions/single-page-checkout/single-page-checkout.module').then(m => m.SinglePageCheckoutModule),
+      import('../extensions/single-page-checkout/single-page-checkout.module').then(
+        m => m.SinglePageCheckoutModule
+      ),
     data: {
       feature: 'spaCheckout',
       headerType: 'checkout',
