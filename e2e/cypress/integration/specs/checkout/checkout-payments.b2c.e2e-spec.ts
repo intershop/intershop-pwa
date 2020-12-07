@@ -143,7 +143,9 @@ describe('Checkout Payment', () => {
       at(CheckoutPaymentPage, page => page.content.should('contain', '********4444'));
     });
   });
-  describe('Within the MyAccount', () => {
+
+  // ignored until https://jira.intershop.de/browse/IS-31634 is fixed
+  xdescribe('Within the MyAccount', () => {
     before(() => {
       at(CheckoutPaymentPage, page => page.header.gotoHomePage());
       at(HomePage, page => page.header.goToMyAccount());
