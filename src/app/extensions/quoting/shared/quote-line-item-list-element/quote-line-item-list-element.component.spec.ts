@@ -69,7 +69,7 @@ describe('Quote Line Item List Element Component', () => {
     element = fixture.nativeElement;
     component.lineItem = {
       id: 'item123',
-      quantity: { value: 3 },
+      quantity: { name: 'Attr', value: 3 },
     };
   });
 

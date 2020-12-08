@@ -5,6 +5,7 @@ import { catchError, concatMap, map } from 'rxjs/operators';
 
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { Address } from 'ish-core/models/address/address.model';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { BasketInfoMapper } from 'ish-core/models/basket-info/basket-info.mapper';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketMergeHelper } from 'ish-core/models/basket-merge/basket-merge.helper';
@@ -357,7 +358,7 @@ export class BasketService {
   }
 
   /**
-   * Updates partly or completely an address for the selected basket of an anonymous user.
+   * Update partly or completely an address for the selected basket of an anonymous user.
    * @param address   The address data which should be updated
    * @returns         The new basket address.
    */
@@ -423,5 +424,55 @@ export class BasketService {
         return throwError(err);
       })
     );
+  }
+
+  /**
+   * Create a custom attribute on the basket. Default attribute type is 'String'.
+   * @param attr   The custom attribute
+   * @returns      The custom attribute
+   */
+  createBasketAttribute(attr: Attribute): Observable<Attribute> {
+    if (!attr) {
+      return throwError('createBasketAttribute() called without attribute');
+    }
+
+    // if no type is provided save it as string
+    const attribute = { ...attr, type: attr.type ?? 'String' };
+
+    return this.apiService.post<Attribute>(`baskets/current/attributes`, attribute, {
+      headers: this.basketHeaders,
+    });
+  }
+
+  /**
+   * Update a custom attribute on the basket. Default attribute type is 'String'.
+   * @param attribute   The custom attribute
+   * @returns           The custom attribute
+   */
+  updateBasketAttribute(attr: Attribute): Observable<Attribute> {
+    if (!attr) {
+      return throwError('updateBasketAttribute() called without attribute');
+    }
+
+    // if no type is provided save it as string
+    const attribute = { ...attr, type: attr.type ?? 'String' };
+
+    return this.apiService.patch<Attribute>(`baskets/current/attributes/${attribute.name}`, attribute, {
+      headers: this.basketHeaders,
+    });
+  }
+
+  /**
+   * Delete a custom attribute from the basket
+   * @param attributeName The name of the custom attribute
+   */
+  deleteBasketAttribute(attributeName: string): Observable<void> {
+    if (!attributeName) {
+      return throwError('deleteBasketAttribute() called without attributeName');
+    }
+
+    return this.apiService.delete(`baskets/current/attributes/${attributeName}`, {
+      headers: this.basketHeaders,
+    });
   }
 }

@@ -2,6 +2,7 @@ import { Params } from '@angular/router';
 import { createAction } from '@ngrx/store';
 
 import { Address } from 'ish-core/models/address/address.model';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketValidation, BasketValidationScopeType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -143,6 +144,24 @@ export const addPromotionCodeToBasket = createAction(
 export const addPromotionCodeToBasketFail = createAction('[Basket API] Add Promotion Code To Basket Fail', httpError());
 
 export const addPromotionCodeToBasketSuccess = createAction('[Basket API] Add Promotion Code To Basket Success');
+
+export const setBasketAttribute = createAction(
+  '[Basket] Add or Update Basket Attribute',
+  payload<{ attribute: Attribute }>()
+);
+
+export const setBasketAttributeFail = createAction('[Basket API] Add or Update Basket Attribute Fail', httpError());
+
+export const setBasketAttributeSuccess = createAction('[Basket API] Add or Update Basket Attribute Success');
+
+export const deleteBasketAttribute = createAction(
+  '[Basket] Delete Basket Attribute',
+  payload<{ attributeName: string }>()
+);
+
+export const deleteBasketAttributeFail = createAction('[Basket API] Delete Basket Attribute Fail', httpError());
+
+export const deleteBasketAttributeSuccess = createAction('[Basket API] Delete Basket Attribute Success');
 
 export const loadBasketEligibleShippingMethods = createAction(
   '[Basket Internal] Load Basket Eligible Shipping Methods'

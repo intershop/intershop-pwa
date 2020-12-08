@@ -7,17 +7,17 @@ const variationProduct = {
   sku: '222',
   productMasterSKU: 'M111',
   variableVariationAttributes: [
-    { name: 'Attr 1', type: 'VariationAttribute', value: 'A', variationAttributeId: 'a1' },
-    { name: 'Attr 2', type: 'VariationAttribute', value: 'A', variationAttributeId: 'a2' },
+    { name: 'Attr 1', type: 'String', value: 'A', variationAttributeId: 'a1' },
+    { name: 'Attr 2', type: 'String', value: 'A', variationAttributeId: 'a2' },
   ],
   productMaster: () => ({
     sku: 'M111',
     variationAttributeValues: [
-      { name: 'Attr 1', type: 'VariationAttribute', value: 'A', variationAttributeId: 'a1' },
-      { name: 'Attr 1', type: 'VariationAttribute', value: 'B', variationAttributeId: 'a1' },
-      { name: 'Attr 2', type: 'VariationAttribute', value: 'A', variationAttributeId: 'a2' },
-      { name: 'Attr 2', type: 'VariationAttribute', value: 'B', variationAttributeId: 'a2' },
-      { name: 'Attr 2', type: 'VariationAttribute', value: 'C', variationAttributeId: 'a2' },
+      { name: 'Attr 1', type: 'String', value: 'A', variationAttributeId: 'a1' },
+      { name: 'Attr 1', type: 'String', value: 'B', variationAttributeId: 'a1' },
+      { name: 'Attr 2', type: 'String', value: 'A', variationAttributeId: 'a2' },
+      { name: 'Attr 2', type: 'String', value: 'B', variationAttributeId: 'a2' },
+      { name: 'Attr 2', type: 'String', value: 'C', variationAttributeId: 'a2' },
     ],
     variations: () => variationProduct.variations(),
   }),
@@ -25,37 +25,37 @@ const variationProduct = {
     {
       sku: '222',
       variableVariationAttributes: [
-        { name: 'Attr 1', type: 'VariationAttribute', value: 'A', variationAttributeId: 'a1' },
-        { name: 'Attr 2', type: 'VariationAttribute', value: 'A', variationAttributeId: 'a2' },
+        { name: 'Attr 1', type: 'String', value: 'A', variationAttributeId: 'a1' },
+        { name: 'Attr 2', type: 'String', value: 'A', variationAttributeId: 'a2' },
       ],
     },
     {
       sku: '333',
       attributes: [{ name: 'defaultVariation', type: 'Boolean', value: true }],
       variableVariationAttributes: [
-        { name: 'Attr 1', type: 'VariationAttribute', value: 'A', variationAttributeId: 'a1' },
-        { name: 'Attr 2', type: 'VariationAttribute', value: 'B', variationAttributeId: 'a2' },
+        { name: 'Attr 1', type: 'String', value: 'A', variationAttributeId: 'a1' },
+        { name: 'Attr 2', type: 'String', value: 'B', variationAttributeId: 'a2' },
       ],
     },
     {
       sku: '444',
       variableVariationAttributes: [
-        { name: 'Attr 1', type: 'VariationAttribute', value: 'B', variationAttributeId: 'a1' },
-        { name: 'Attr 2', type: 'VariationAttribute', value: 'A', variationAttributeId: 'a2' },
+        { name: 'Attr 1', type: 'String', value: 'B', variationAttributeId: 'a1' },
+        { name: 'Attr 2', type: 'String', value: 'A', variationAttributeId: 'a2' },
       ],
     },
     {
       sku: '555',
       variableVariationAttributes: [
-        { name: 'Attr 1', type: 'VariationAttribute', value: 'B', variationAttributeId: 'a1' },
-        { name: 'Attr 2', type: 'VariationAttribute', value: 'B', variationAttributeId: 'a2' },
+        { name: 'Attr 1', type: 'String', value: 'B', variationAttributeId: 'a1' },
+        { name: 'Attr 2', type: 'String', value: 'B', variationAttributeId: 'a2' },
       ],
     },
     {
       sku: '666',
       variableVariationAttributes: [
-        { name: 'Attr 1', type: 'VariationAttribute', value: 'B', variationAttributeId: 'a1' },
-        { name: 'Attr 2', type: 'VariationAttribute', value: 'C', variationAttributeId: 'a2' },
+        { name: 'Attr 1', type: 'String', value: 'B', variationAttributeId: 'a1' },
+        { name: 'Attr 2', type: 'String', value: 'C', variationAttributeId: 'a2' },
       ],
     },
   ],
