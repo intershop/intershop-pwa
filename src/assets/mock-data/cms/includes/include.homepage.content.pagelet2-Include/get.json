@@ -1,0 +1,38 @@
+{
+  "type": "PageletEntryPointRO",
+  "definitionQualifiedName": "app_sf_pwa_cm:include.homepage.content.pagelet2-Include",
+  "link": {
+    "type": "Link",
+    "uri": "inSPIRED-inTRONICS-Site/rest/cms/includes/include.homepage.content.pagelet2-Include",
+    "title": "Homepage Content",
+    "itemId": "include.homepage.content.pagelet2-Include"
+  },
+  "pagelets": [
+    {
+      "type": "PageletRO",
+      "definitionQualifiedName": "app_sf_base_cm:component.common.freeStyle.pagelet2-Component",
+      "link": {
+        "type": "Link",
+        "uri": "/inSPIRED-inTRONICS-Site/rest/cms/pagelets/cmp_homepage_mock_content",
+        "title": "Homepage Mock Content",
+        "itemId": "cmp_homepage_mock_content"
+      },
+      "displayName": "Homepage Mock Content",
+      "id": "cmp_homepage_mock_content",
+      "domain": "inSPIRED-inTRONICS-rest",
+      "customAttributes": {},
+      "configurationParameters": {
+        "HTML": {
+          "value": "<div class=\"container\">\r\n<h1>Mock Content</h1>\r\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n</div>",
+          "type": "bc_pmc:types.pagelet2-Html",
+          "definitionQualifiedName": "app_sf_base_cm:component.common.freeStyle.pagelet2-Component-HTML"
+        }
+      }
+    }
+  ],
+  "displayName": "Homepage Content",
+  "id": "include.homepage.content.pagelet2-Include",
+  "domain": "inSPIRED-inTRONICS-rest",
+  "resourceSetID": "app_sf_pwa_cm",
+  "customAttributes": {}
+}
