@@ -1,4 +1,5 @@
 import { AddressData } from 'ish-core/models/address/address.interface';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { BasketApproval } from 'ish-core/models/basket-approval/basket-approval.model';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.interface';
@@ -43,6 +44,7 @@ export interface BasketBaseData {
     }[];
   };
   approval?: BasketApproval;
+  attributes?: Attribute[];
 }
 
 export interface BasketData {

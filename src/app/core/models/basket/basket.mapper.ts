@@ -48,7 +48,7 @@ export class BasketMapper {
           : [],
       totalProductQuantity: data.totalProductQuantity,
       payment:
-        included && included.payments && data.payments && data.payments.length && included.payments[data.payments[0]]
+        included?.payments && data.payments?.length && included.payments[data.payments[0]]
           ? PaymentMapper.fromIncludeData(
               included.payments[data.payments[0]],
               included.payments_paymentMethod &&
@@ -64,6 +64,7 @@ export class BasketMapper {
       totals,
       infos: infos && infos.filter(info => info.code !== 'include.not_resolved.error'),
       approval: data.approval,
+      attributes: data.attributes,
     };
   }
 

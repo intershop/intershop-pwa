@@ -6,6 +6,7 @@ import { Store, select } from '@ngrx/store';
 import { EMPTY, combineLatest, iif, of } from 'rxjs';
 import {
   concatMap,
+  concatMapTo,
   filter,
   map,
   mapTo,
@@ -17,6 +18,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { Basket } from 'ish-core/models/basket/basket.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { RouterState } from 'ish-core/store/core/router/router.reducer';
 import { loadUserByAPIToken, loginUser, loginUserSuccess } from 'ish-core/store/customer/user';
@@ -24,6 +26,9 @@ import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 
 import {
+  deleteBasketAttribute,
+  deleteBasketAttributeFail,
+  deleteBasketAttributeSuccess,
   loadBasket,
   loadBasketByAPIToken,
   loadBasketEligibleShippingMethods,
@@ -34,6 +39,9 @@ import {
   mergeBasketFail,
   mergeBasketSuccess,
   resetBasketErrors,
+  setBasketAttribute,
+  setBasketAttributeFail,
+  setBasketAttributeSuccess,
   submitBasket,
   submitBasketFail,
   submitBasketSuccess,
@@ -123,6 +131,44 @@ export class BasketEffects {
   );
 
   /**
+   * Add or update an attribute at the basket.
+   */
+  setCustomAttributeToBasket$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(setBasketAttribute),
+      mapToPayloadProperty('attribute'),
+      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      mergeMap(([attr, basket]) =>
+        (this.basketContainsAttribute(basket, attr.name)
+          ? this.basketService.updateBasketAttribute(attr)
+          : this.basketService.createBasketAttribute(attr)
+        ).pipe(concatMapTo([setBasketAttributeSuccess(), loadBasket()]), mapErrorToAction(setBasketAttributeFail))
+      )
+    )
+  );
+
+  /**
+   * Delete an attribute from the basket. If the attribute doesn't exist, ignore it and return with the success action.
+   */
+  deleteCustomAttributeFromBasket$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteBasketAttribute),
+      mapToPayloadProperty('attributeName'),
+      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      mergeMap(([name, basket]) =>
+        this.basketContainsAttribute(basket, name)
+          ? this.basketService
+              .deleteBasketAttribute(name)
+              .pipe(
+                concatMapTo([deleteBasketAttributeSuccess(), loadBasket()]),
+                mapErrorToAction(deleteBasketAttributeFail)
+              )
+          : [deleteBasketAttributeSuccess()]
+      )
+    )
+  );
+
+  /**
    * dummy effect keeping the anonymous basket with the corresponding apiToken for the basket merge call
    */
   private anonymousBasket$ = createEffect(
@@ -203,4 +249,12 @@ export class BasketEffects {
       )
     )
   );
+
+  /** check whether a specific custom attribute exists at basket.
+   * @param basket
+   * @param attributeName
+   */
+  private basketContainsAttribute(basket: Basket, attributeName: string): boolean {
+    return !!basket?.attributes?.find(attr => attr.name === attributeName);
+  }
 }

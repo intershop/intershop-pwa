@@ -1,4 +1,5 @@
 import { Address } from 'ish-core/models/address/address.model';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { BasketApproval } from 'ish-core/models/basket-approval/basket-approval.model';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
@@ -24,6 +25,7 @@ export interface AbstractBasket<T> {
   bucketId?: string;
   infos?: BasketInfo[];
   approval?: BasketApproval;
+  attributes?: Attribute[];
 }
 
 export interface Basket extends AbstractBasket<LineItem> {}

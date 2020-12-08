@@ -81,6 +81,7 @@ export class OrderMapper {
             : undefined,
         totals,
         infos,
+        attributes: data.attributes,
       };
     }
   }

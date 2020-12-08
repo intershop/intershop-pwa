@@ -243,4 +243,30 @@ describe('Basket Service', () => {
       done();
     });
   });
+  it("should create an attribute for a basket when 'createBasketAttribute' is called", done => {
+    when(apiService.post(anything(), anything(), anything())).thenReturn(of({}));
+
+    basketService.createBasketAttribute({ name: 'attr', value: 'xyz' }).subscribe(() => {
+      verify(apiService.post('baskets/current/attributes', anything(), anything())).once();
+      done();
+    });
+  });
+
+  it("should update an attribute for a basket when 'updateBasketAttribute' is called", done => {
+    when(apiService.patch(anything(), anything(), anything())).thenReturn(of({}));
+
+    basketService.updateBasketAttribute({ name: 'attr', value: 'xyz' }).subscribe(() => {
+      verify(apiService.patch('baskets/current/attributes/attr', anything(), anything())).once();
+      done();
+    });
+  });
+
+  it("should delete an attribute for a basket when 'deleteBasketAttribute' is called", done => {
+    when(apiService.delete(anything(), anything())).thenReturn(of({}));
+
+    basketService.deleteBasketAttribute('attr').subscribe(() => {
+      verify(apiService.delete('baskets/current/attributes/attr', anything())).once();
+      done();
+    });
+  });
 });

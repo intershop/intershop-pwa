@@ -4,6 +4,7 @@ import { merge } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { selectRouteData } from 'ish-core/store/core/router';
@@ -14,6 +15,7 @@ import {
   continueCheckout,
   createBasketAddress,
   createBasketPayment,
+  deleteBasketAttribute,
   deleteBasketItem,
   deleteBasketPayment,
   deleteBasketShippingAddress,
@@ -33,6 +35,7 @@ import {
   loadBasketEligiblePaymentMethods,
   loadBasketEligibleShippingMethods,
   removePromotionCodeFromBasket,
+  setBasketAttribute,
   setBasketPayment,
   updateBasketAddress,
   updateBasketItems,
@@ -80,6 +83,14 @@ export class CheckoutFacade {
 
   updateBasketShippingMethod(shippingId: string) {
     this.store.dispatch(updateBasketShippingMethod({ shippingId }));
+  }
+
+  setBasketCustomAttribute(attribute: Attribute): void {
+    this.store.dispatch(setBasketAttribute({ attribute }));
+  }
+
+  deleteBasketCustomAttribute(attributeName: string): void {
+    this.store.dispatch(deleteBasketAttribute({ attributeName }));
   }
 
   // ORDERS
