@@ -1,6 +1,8 @@
-import { HttpRequest } from '@angular/common/http';
+import { HttpHandler, HttpRequest } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
+import { EMPTY } from 'rxjs';
+import { capture, instance, mock } from 'ts-mockito';
 
 import { API_MOCK_PATHS } from 'ish-core/configurations/injection-keys';
 import { getRestEndpoint } from 'ish-core/store/core/configuration';
@@ -24,37 +26,25 @@ describe('Mock Interceptor', () => {
     mockInterceptor = TestBed.inject(MockInterceptor);
   });
 
-  describe('REST Path Extraction', () => {
-    it('should extract the correct path when rest URL is given', () => {
-      expect(mockInterceptor.getRestPath(BASE_URL + '/categories/Cameras')).toBe('categories/Cameras');
-    });
-
-    it('should extract the correct path when rest URL is given with currency and locale', () => {
-      expect(mockInterceptor.getRestPath(BASE_URL + ';loc=en_US;cur=USD/categories/Cameras')).toBe(
-        'categories/Cameras'
-      );
-    });
-  });
-
   describe('Request URL Modification', () => {
-    const request = new HttpRequest('GET', '');
+    it.each([
+      [BASE_URL + '/categories/Cameras', './assets/mock-data/categories/Cameras/get.json'],
+      [BASE_URL + ';loc=en_US;cur=USD/categories/Cameras', './assets/mock-data/categories/Cameras/get.json'],
+      [BASE_URL + '/categories?view=tree', './assets/mock-data/categories/get.json'],
+      [BASE_URL + ';loc=en_US;cur=USD/categories?view=tree', './assets/mock-data/categories/get.json'],
+      ['./assets/picture.png', './assets/picture.png'],
+    ])('should replace request to "%s" with "%s"', (incoming, outgoing) => {
+      const http = new HttpRequest('GET', incoming);
 
-    describe.each([
-      [true, BASE_URL + '/categories'],
-      [true, BASE_URL + ';loc=en_US;cur=USD/categories'],
-      [false, './assets/picture.png'],
-    ])(``, (willBeMocked, url) => {
-      it(`should mock request (${willBeMocked}) to ${url}`, () => {
-        expect(mockInterceptor.requestHasToBeMocked(request.clone({ url }))).toBe(willBeMocked);
-      });
-      it(`should change url (${willBeMocked}) for ${url}`, () => {
-        const http = new HttpRequest('GET', url);
-        if (willBeMocked) {
-          expect(mockInterceptor.getMockUrl(http)).not.toBe(url);
-        } else {
-          expect(mockInterceptor.getMockUrl(http)).toBe(url);
-        }
-      });
+      class MyHandler extends HttpHandler {
+        handle = () => EMPTY;
+      }
+
+      const handler = mock(MyHandler);
+      mockInterceptor.intercept(http, instance(handler));
+
+      const request = capture(handler.handle).last()?.[0] as HttpRequest<unknown>;
+      expect(request?.urlWithParams).toEqual(outgoing);
     });
   });
 
@@ -66,16 +56,20 @@ describe('Mock Interceptor', () => {
       ${'categories'}           | ${['categories']}                         | ${true}
       ${'catego'}               | ${['categories']}                         | ${false}
       ${'categories'}           | ${['cat.*']}                              | ${true}
-      ${'categories/Computers'} | ${['categories']}                         | ${false}
+      ${'product/cat'}          | ${['cat.*']}                              | ${true}
+      ${'product/38201833'}     | ${['2018']}                               | ${true}
+      ${'product/cat'}          | ${['^cat.*']}                             | ${false}
+      ${'categories/Computers'} | ${['categories$']}                        | ${false}
       ${'categories/Computers'} | ${['categories.*']}                       | ${true}
       ${'categories/Computers'} | ${['categories/.*']}                      | ${true}
       ${'categories/Computers'} | ${['categories/Computers']}               | ${true}
       ${'categories/Computers'} | ${['categories/Audio']}                   | ${false}
-      ${'categories/Computers'} | ${['categories/']}                        | ${false}
+      ${'categories/Computers'} | ${['categories/']}                        | ${true}
       ${'categories/Computers'} | ${['categories/(Audio|Computers|HiFi)']}  | ${true}
       ${'categories/Computers'} | ${['categories/(Audio|Computers|HiFi)/']} | ${false}
+      ${'categories/Computers'} | ${['Computers']}                          | ${true}
     `(``, ({ item, within, expected }) => {
-      it(`should be ${expected} when '${item}' in ${within}`, () => {
+      it(`should be ${expected} for URL '${item}' and mock paths [${within}]`, () => {
         expect(mockInterceptor.matchPath(item, within)).toBe(expected);
       });
     });
