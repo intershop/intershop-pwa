@@ -268,6 +268,7 @@
   "account.saved_addresses.link": "Adresses",
   "account.send_password.heading": "Mot de passe oublié ?",
   "account.send_password.message": "Un courriel contenant un lien a été envoyé à votre adresse courriel. Veuillez suivre ce lien pour modifier votre mot de passe.",
+  "account.signin.auth0.button.label": "Connectez-vous avec Auth0",
   "account.signin.button.label": "Se connecter",
   "account.submit.button.label": "OK",
   "account.update.button.label": "Enregistrer les modifications",

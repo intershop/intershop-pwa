@@ -1,7 +1,7 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { UUID } from 'angular2-uuid';
@@ -119,25 +119,29 @@ export class Auth0IdentityProvider implements IdentityProvider {
       .subscribe(() => {
         this.apiTokenService.removeApiToken();
         if (this.router.url.startsWith('/loading')) {
-          this.router.navigateByUrl('/account');
+          this.router.navigateByUrl(this.oauthService.state ? decodeURIComponent(this.oauthService.state) : '/account');
         }
       });
   }
 
-  triggerLogin() {
-    this.router.navigateByUrl('/loading');
-    return this.oauthService.loadDiscoveryDocumentAndLogin();
+  triggerLogin(route: ActivatedRouteSnapshot) {
+    this.router.navigateByUrl('/loading', { replaceUrl: false, skipLocationChange: true });
+    return this.oauthService.loadDiscoveryDocumentAndLogin({ state: route.queryParams.returnUrl });
   }
 
   triggerLogout() {
-    this.oauthService.revokeTokenAndLogout(
-      {
-        client_id: this.oauthService.clientId,
-        returnTo: this.oauthService.postLogoutRedirectUri,
-      },
-      true
-    );
-    return this.router.parseUrl('/loading');
+    if (this.oauthService.hasValidIdToken()) {
+      this.oauthService.revokeTokenAndLogout(
+        {
+          client_id: this.oauthService.clientId,
+          returnTo: this.oauthService.postLogoutRedirectUri,
+        },
+        true
+      );
+      return this.router.parseUrl('/loading');
+    } else {
+      return false;
+    }
   }
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {

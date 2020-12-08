@@ -46,6 +46,7 @@ export class IdentityProviderModule {
               triggerLogout: () => true,
               getCapabilities: () => capabilities,
             }),
+            getType: () => 'ICM',
           },
         },
       ],

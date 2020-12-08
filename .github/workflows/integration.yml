@@ -95,6 +95,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
         test: ['mock', 'b2c', 'b2b']
 
