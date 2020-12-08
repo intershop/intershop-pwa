@@ -97,15 +97,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        test: ['mock', 'b2c', 'b2b']
+        test: ['b2c', 'b2b']
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Install root dependencies
-        if: matrix.test == 'mock'
-        run: npm ci
 
       - name: Install e2e dependencies
         run: |
@@ -113,7 +109,6 @@ jobs:
           npm i
 
       - name: Download Build Output
-        if: matrix.test != 'mock'
         uses: actions/download-artifact@v2
         with:
           name: dist
@@ -134,12 +129,7 @@ jobs:
           echo "FEATURES=quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,advancedVariationHandling" >> $GITHUB_ENV
 
       - name: Start SSR
-        if: matrix.test != 'mock'
         run: npm run serve &
-
-      - name: Start Dev-Server
-        if: matrix.test == 'mock'
-        run: npm run ng -- serve &
 
       - name: Cypress
         uses: cypress-io/github-action@v2

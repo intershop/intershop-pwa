@@ -4,14 +4,9 @@ import { CookieConsentOptions } from 'ish-core/models/cookies/cookies.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 
 /**
- * If 'true' the application has to work with the implemented mock data, if 'false' a backend system is used
- */
-export const MOCK_SERVER_API = new InjectionToken<boolean>('mockServerAPI');
-
-/**
  * Array of paths that always use mocked data
  */
-export const MUST_MOCK_PATHS = new InjectionToken<string[]>('mustMockPaths');
+export const API_MOCK_PATHS = new InjectionToken<string[]>('apiMockPaths');
 
 /**
  * If 'username' login name is used for registration, if 'email' the email is used as login name (default: 'email')

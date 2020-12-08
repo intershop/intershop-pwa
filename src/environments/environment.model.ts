@@ -21,10 +21,8 @@ export interface Environment {
   icmChannel: string;
   icmApplication?: string;
 
-  // set 'mockServerAPI' to true if not working against a real ICM server
-  mockServerAPI?: boolean;
   // array of REST path expressions that should always be mocked
-  mustMockPaths?: string[];
+  apiMockPaths?: string[];
 
   /* FEATURE TOOGLES */
   features: (
@@ -111,7 +109,6 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
   identityProvider: 'ICM',
 
   production: false,
-  mockServerAPI: false,
 
   /* FEATURE TOOGLES */
   features: ['compare', 'recently', 'rating', 'wishlists'],
