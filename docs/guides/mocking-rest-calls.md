@@ -19,7 +19,7 @@ The property `apiMockPaths` is an array of regular expressions for paths.
 The following configuration example will mock all CMS calls.
 
 ```
-apiMockPaths: ['cms', 'cms/.*'],
+apiMockPaths: ['^cms/.*'],
 ```
 
 ## Supply Mocked Data
@@ -30,7 +30,7 @@ The JSON response is put into a file called _get.json_ in the respective folder.
 
 Example path to a homepage include mock file.
 
-`src\assets\mock-data\cms\includes\include.homepage.content.pagelet2-Include\get.json`
+`src/assets/mock-data/cms/includes/include.homepage.content.pagelet2-Include/get.json`
 
 Switching to mocked REST API calls is done by the `MockInterceptor` which reads the configuration and acts accordingly.
 
