@@ -166,7 +166,7 @@
     ],
     "*.ts": [
       "tslint --project tsconfig.base.json --fix",
-      "jest --ci --bail --findRelatedTests"
+      "jest --ci -bi --findRelatedTests"
     ]
   },
   "commitlint": {
