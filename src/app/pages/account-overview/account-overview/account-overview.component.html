@@ -49,14 +49,19 @@
 <!-- Budget, Requisition, Approval & Quoting Widgets -->
 <div class="row">
   <ish-lazy-budget-widget class="col-12"></ish-lazy-budget-widget>
+
   <ish-lazy-requisition-widget
-    class="col-xs-12 col-md"
     *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting"
+    class="col-xs-12 col-md"
   ></ish-lazy-requisition-widget>
-  <div *ishIsAuthorizedTo="'APP_B2B_ORDER_APPROVAL'" class="col-xs-12 col-md">
-    <ish-lazy-approval-widget *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting">
-    </ish-lazy-approval-widget>
-  </div>
+
+  <ng-container *ishIsAuthorizedTo="'APP_B2B_ORDER_APPROVAL'">
+    <ish-lazy-approval-widget
+      *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting"
+      class="col-xs-12 col-md"
+    ></ish-lazy-approval-widget>
+  </ng-container>
+
   <ish-lazy-quote-widget class="col-xs-12 col-md"></ish-lazy-quote-widget>
 </div>
 

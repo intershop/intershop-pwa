@@ -2,15 +2,13 @@ import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { combineLatest } from 'rxjs';
-import { distinctUntilChanged, filter, map, sample, startWith, switchMap, switchMapTo, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, sample, startWith, switchMap, tap } from 'rxjs/operators';
 
 import { selectRouteParam, selectUrl } from 'ish-core/store/core/router';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { RequisitionStatus, RequisitionViewer } from '../models/requisition/requisition.model';
 import {
-  getApproverPendingRequisitions,
-  getBuyerPendingRequisitions,
   getRequisition,
   getRequisitions,
   getRequisitionsError,
@@ -18,6 +16,7 @@ import {
   loadRequisition,
   loadRequisitions,
 } from '../store/requisitions';
+import { log } from 'ish-core/utils/dev/operators';
 
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
@@ -43,13 +42,18 @@ export class RequisitionManagementFacade {
     return this.store.pipe(select(getRequisition(requisitionId)));
   }
 
+  requisitions$(view: RequisitionViewer, status: RequisitionStatus) {
+    this.store.dispatch(loadRequisitions({ view, status }));
+    return this.store.pipe(select(getRequisitions(view, status)));
+  }
+
   requisitionsByRoute$ = combineLatest([
-    this.store.pipe(select(selectRouteParam('status')), distinctUntilChanged()),
     this.store.pipe(
       select(selectUrl),
       map(url => (url.includes('/buyer') ? 'buyer' : 'approver')),
       distinctUntilChanged()
     ),
+    this.store.pipe(select(selectRouteParam('status')), distinctUntilChanged()),
   ]).pipe(
     sample(
       this.router.events.pipe(
@@ -59,21 +63,19 @@ export class RequisitionManagementFacade {
         startWith({})
       )
     ),
-    tap(([istatus, iview]) => {
-      const status = (istatus as RequisitionStatus) || 'PENDING';
-      const view = iview as RequisitionViewer;
-      this.store.dispatch(loadRequisitions({ view, status }));
+
+    // TODO: optimieren mit requisitions$(view, status)
+    map(([routeView, routeStatus]) => {
+      const view = routeView as RequisitionViewer;
+      const status = (routeStatus as RequisitionStatus) || 'PENDING';
+      return { view, status };
     }),
-    switchMapTo(this.store.pipe(select(getRequisitions)))
+    log('what I got here'),
+    tap(viewAndStatus => {
+      this.store.dispatch(loadRequisitions(viewAndStatus));
+    }),
+    switchMap(viewAndStatus => {
+      return this.store.pipe(select(getRequisitions(viewAndStatus.view, viewAndStatus.status)));
+    })
   );
-
-  buyerPendingRequisitions$() {
-    this.store.dispatch(loadRequisitions({ view: 'all', status: 'PENDING' }));
-    return this.store.pipe(select(getBuyerPendingRequisitions));
-  }
-
-  approverPendingRequisitions$() {
-    this.store.dispatch(loadRequisitions({ view: 'all', status: 'PENDING' }));
-    return this.store.pipe(select(getApproverPendingRequisitions));
-  }
 }

@@ -24,7 +24,7 @@ export class RequisitionWidgetComponent implements OnInit {
   constructor(private requisitionFacade: RequisitionManagementFacade) {}
 
   ngOnInit() {
-    const pendingRequisitions$ = this.requisitionFacade.buyerPendingRequisitions$();
+    const pendingRequisitions$ = this.requisitionFacade.requisitions$('buyer', 'PENDING');
 
     this.numPendingRequisitions$ = pendingRequisitions$.pipe(
       startWith([] as Requisition[]),

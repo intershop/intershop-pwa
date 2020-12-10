@@ -24,7 +24,7 @@ export class ApprovalWidgetComponent implements OnInit {
   constructor(private requisitionFacade: RequisitionManagementFacade) {}
 
   ngOnInit() {
-    const pendingApprovals$ = this.requisitionFacade.approverPendingRequisitions$();
+    const pendingApprovals$ = this.requisitionFacade.requisitions$('approver', 'PENDING');
 
     this.numPendingApprovals$ = pendingApprovals$.pipe(
       startWith([] as Requisition[]),
