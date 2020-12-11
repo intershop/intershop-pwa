@@ -18,12 +18,12 @@ describe('Organization Group Mapper', () => {
 
     it('should map incoming data to model data', () => {
       const data: OrganizationGroupData = {
-        incomingField: 'test',
-        otherField: 'other',
+        attributes: { name: 'Some Name' },
+        id: 'test',
       };
       const mapped = organizationGroupMapper.fromData(data);
       expect(mapped).toHaveProperty('id', 'test');
-      expect(mapped).toHaveProperty('name', 'other');
+      expect(mapped).toHaveProperty('name', 'Some Name');
     });
   });
 });
