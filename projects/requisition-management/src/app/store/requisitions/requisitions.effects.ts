@@ -31,7 +31,7 @@ export class RequisitionsEffects {
       mapToPayload(),
       switchMap(({ view, status }) =>
         this.requisitionsService.getRequisitions(view, status).pipe(
-          map(requisitions => loadRequisitionsSuccess({ requisitions })),
+          map(requisitions => loadRequisitionsSuccess({ requisitions, view, status })),
           mapErrorToAction(loadRequisitionsFail)
         )
       )

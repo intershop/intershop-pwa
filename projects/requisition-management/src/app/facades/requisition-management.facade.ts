@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { combineLatest } from 'rxjs';
-import { distinctUntilChanged, filter, map, sample, startWith, switchMap, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, sample, startWith, switchMap } from 'rxjs/operators';
 
 import { selectRouteParam, selectUrl } from 'ish-core/store/core/router';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -16,7 +16,6 @@ import {
   loadRequisition,
   loadRequisitions,
 } from '../store/requisitions';
-import { log } from 'ish-core/utils/dev/operators';
 
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
@@ -63,19 +62,8 @@ export class RequisitionManagementFacade {
         startWith({})
       )
     ),
-
-    // TODO: optimieren mit requisitions$(view, status)
-    map(([routeView, routeStatus]) => {
-      const view = routeView as RequisitionViewer;
-      const status = (routeStatus as RequisitionStatus) || 'PENDING';
-      return { view, status };
-    }),
-    log('what I got here'),
-    tap(viewAndStatus => {
-      this.store.dispatch(loadRequisitions(viewAndStatus));
-    }),
-    switchMap(viewAndStatus => {
-      return this.store.pipe(select(getRequisitions(viewAndStatus.view, viewAndStatus.status)));
+    switchMap(([view, status]) => {
+      return this.requisitions$(view as RequisitionViewer, (status as RequisitionStatus) || 'PENDING');
     })
   );
 }

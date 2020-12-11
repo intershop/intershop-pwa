@@ -23,11 +23,27 @@ export const requisitionsAdapter = createEntityAdapter<Requisition>();
 export interface RequisitionsState extends EntityState<Requisition> {
   loading: boolean;
   error: HttpError;
+  filters: {
+    buyerPENDING: string[];
+    buyerAPPROVED: string[];
+    buyerREJECTED: string[];
+    approverPENDING: string[];
+    approverAPPROVED: string[];
+    approverREJECTED: string[];
+  };
 }
 
 const initialState: RequisitionsState = requisitionsAdapter.getInitialState({
   loading: false,
   error: undefined,
+  filters: {
+    buyerPENDING: [],
+    buyerAPPROVED: [],
+    buyerREJECTED: [],
+    approverPENDING: [],
+    approverAPPROVED: [],
+    approverREJECTED: [],
+  },
 });
 
 export const requisitionsReducer = createReducer(
@@ -35,14 +51,16 @@ export const requisitionsReducer = createReducer(
   setLoadingOn(loadRequisitions, loadRequisition, updateRequisitionStatus),
   unsetLoadingAndErrorOn(loadRequisitionsSuccess, loadRequisitionSuccess, updateRequisitionStatusSuccess),
   setErrorOn(loadRequisitionsFail, loadRequisitionFail, updateRequisitionStatusFail),
-  on(loadRequisitionsSuccess, (state: RequisitionsState, action) =>
-    requisitionsAdapter.upsertMany(action.payload.requisitions, {
+  on(loadRequisitionsSuccess, (state: RequisitionsState, action) => {
+    return requisitionsAdapter.upsertMany(action.payload.requisitions, {
       ...state,
-    })
-  ),
+      filters: {
+        ...state.filters,
+        [action.payload.view + action.payload.status]: action.payload.requisitions.map(requisition => requisition.id),
+      },
+    });
+  }),
   on(loadRequisitionSuccess, updateRequisitionStatusSuccess, (state: RequisitionsState, action) =>
-    requisitionsAdapter.upsertOne(action.payload.requisition, {
-      ...state,
-    })
+    requisitionsAdapter.upsertOne(action.payload.requisition, state)
   )
 );
