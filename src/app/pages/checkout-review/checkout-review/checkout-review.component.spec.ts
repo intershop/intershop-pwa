@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
 
+import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { BasketApproval } from 'ish-core/models/basket-approval/basket-approval.model';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -12,6 +13,7 @@ import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { BasketApprovalInfoComponent } from 'ish-shared/components/basket/basket-approval-info/basket-approval-info.component';
+import { BasketBuyerComponent } from 'ish-shared/components/basket/basket-buyer/basket-buyer.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
@@ -33,6 +35,7 @@ describe('Checkout Review Component', () => {
         CheckoutReviewComponent,
         MockComponent(AddressComponent),
         MockComponent(BasketApprovalInfoComponent),
+        MockComponent(BasketBuyerComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketValidationResultsComponent),
         MockComponent(CheckboxComponent),
@@ -42,6 +45,7 @@ describe('Checkout Review Component', () => {
         MockComponent(InfoBoxComponent),
         MockComponent(LineItemListComponent),
         MockComponent(ModalDialogLinkComponent),
+        MockDirective(FeatureToggleDirective),
         MockDirective(ServerHtmlDirective),
       ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],

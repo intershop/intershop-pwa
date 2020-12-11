@@ -42,6 +42,13 @@
           data-testing-id="invoiceAddressForm"
           [parentForm]="invoiceAddressForm"
         ></ish-address-form-container>
+        <!-- Taxation ID input field -->
+        <ish-input
+          *ishFeature="'businessCustomerRegistration'"
+          [form]="form"
+          controlName="taxationID"
+          label="account.address.taxation.label"
+        ></ish-input>
         <!-- Email address input field-->
         <ish-input
           [form]="form"

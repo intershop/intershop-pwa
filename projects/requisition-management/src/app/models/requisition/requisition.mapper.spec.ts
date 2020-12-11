@@ -56,6 +56,7 @@ describe('Requisition Mapper', () => {
             "customerApprovers": undefined,
             "status": "APPROVED",
           },
+          "attributes": undefined,
           "bucketId": undefined,
           "commonShipToAddress": undefined,
           "commonShippingMethod": undefined,
