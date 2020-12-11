@@ -41,6 +41,12 @@
 </div>
 
 <ng-container *ngIf="order">
+  <div *ishFeature="'businessCustomerRegistration'" class="row">
+    <!-- Buyer-->
+    <ish-info-box heading="checkout.widget.buyer.heading" class="infobox-wrapper col-md-6">
+      <ish-basket-buyer [object]="order"></ish-basket-buyer>
+    </ish-info-box>
+  </div>
   <div class="row d-flex">
     <!-- Invoice Address -->
     <ish-info-box heading="checkout.widget.billing-address.heading" class="infobox-wrapper col-md-6">

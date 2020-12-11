@@ -658,6 +658,8 @@
   "checkout.termsandconditions.details.title": "Terms & Conditions",
   "checkout.variation.edit.button.label": "Edit",
   "checkout.widget.billing-address.heading": "Invoice Address",
+  "checkout.widget.buyer.TaxationID": "Taxation ID:",
+  "checkout.widget.buyer.heading": "Buyer",
   "checkout.widget.payment_method.heading": "Payment Method",
   "checkout.widget.promotion.discount": "Discount",
   "checkout.widget.return_to_cart.link": "Return to Cart",

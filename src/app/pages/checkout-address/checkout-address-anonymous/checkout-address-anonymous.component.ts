@@ -54,6 +54,7 @@ export class CheckoutAddressAnonymousComponent implements OnChanges, OnInit, OnD
   ngOnInit() {
     // create address form for basket addresses
     this.form = this.fb.group({
+      taxationID: [''],
       email: ['', [Validators.required, SpecialValidators.email]],
       shipOption: ['shipToInvoiceAddress', [Validators.required]],
     });
@@ -125,6 +126,12 @@ export class CheckoutAddressAnonymousComponent implements OnChanges, OnInit, OnD
       this.form.controls.shipOption.value === 'shipToInvoiceAddress'
         ? undefined
         : this.shippingAddressForm.get('address').value;
+
+    if (this.form.get('taxationID').value) {
+      this.checkoutFacade.setBasketCustomAttribute({ name: 'taxationID', value: this.form.get('taxationID').value });
+    } else {
+      this.checkoutFacade.deleteBasketCustomAttribute('taxationID');
+    }
 
     if (shippingAddress) {
       this.checkoutFacade.createBasketAddress(invoiceAddress, 'invoice');

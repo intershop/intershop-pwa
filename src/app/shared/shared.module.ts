@@ -42,6 +42,7 @@ import { ContentViewcontextComponent } from './cms/components/content-viewcontex
 import { AddressComponent } from './components/address/address/address.component';
 import { BasketAddressSummaryComponent } from './components/basket/basket-address-summary/basket-address-summary.component';
 import { BasketApprovalInfoComponent } from './components/basket/basket-approval-info/basket-approval-info.component';
+import { BasketBuyerComponent } from './components/basket/basket-buyer/basket-buyer.component';
 import { BasketCostSummaryComponent } from './components/basket/basket-cost-summary/basket-cost-summary.component';
 import { BasketInfoComponent } from './components/basket/basket-info/basket-info.component';
 import { BasketItemsSummaryComponent } from './components/basket/basket-items-summary/basket-items-summary.component';
@@ -180,6 +181,7 @@ const exportedComponents = [
   AddressComponent,
   BasketAddressSummaryComponent,
   BasketApprovalInfoComponent,
+  BasketBuyerComponent,
   BasketCostSummaryComponent,
   BasketInfoComponent,
   BasketInvoiceAddressWidgetComponent,

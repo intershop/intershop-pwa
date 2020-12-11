@@ -2,9 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { anything, instance, mock, verify } from 'ts-mockito';
 
+import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { AddressFormContainerComponent } from 'ish-shared/address-forms/components/address-form-container/address-form-container.component';
@@ -31,6 +32,7 @@ describe('Checkout Address Anonymous Component', () => {
         MockComponent(ErrorMessageComponent),
         MockComponent(IdentityProviderLoginComponent),
         MockComponent(InputComponent),
+        MockDirective(FeatureToggleDirective),
       ],
       imports: [NgbCollapseModule, ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
@@ -118,6 +120,7 @@ describe('Checkout Address Anonymous Component', () => {
   it('should create address for valid invoice address form', () => {
     component.form = fb.group({
       email: new FormControl(''),
+      taxationID: new FormControl(''),
       shipOption: new FormControl('shipToInvoiceAddress'),
     });
     component.invoiceAddressForm = fb.group({

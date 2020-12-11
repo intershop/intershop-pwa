@@ -29,6 +29,12 @@
       </p>
     </div>
     <ish-basket-approval-info *ngIf="basket.approval" [approval]="basket.approval"></ish-basket-approval-info>
+    <div *ishFeature="'businessCustomerRegistration'" class="row">
+      <!-- Buyer-->
+      <ish-info-box heading="checkout.widget.buyer.heading" class="infobox-wrapper col-md-6">
+        <ish-basket-buyer [object]="basket"></ish-basket-buyer>
+      </ish-info-box>
+    </div>
     <div class="row d-flex">
       <!-- Invoice Address -->
       <ish-info-box
