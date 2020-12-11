@@ -8,8 +8,8 @@ export class OrganizationGroupMapper {
   fromData(organizationGroupData: OrganizationGroupData): OrganizationGroup {
     if (organizationGroupData) {
       return {
-        id: organizationGroupData.incomingField,
-        name: organizationGroupData.otherField,
+        id: organizationGroupData.id,
+        name: organizationGroupData.attributes.name,
       };
     } else {
       throw new Error(`organizationGroupData is required`);
