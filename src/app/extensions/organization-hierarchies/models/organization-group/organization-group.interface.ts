@@ -1,4 +1,7 @@
 export interface OrganizationGroupData {
-  incomingField: string;
-  otherField: string;
+  attributes: {
+    name: string;
+    description?: string;
+  };
+  id: string;
 }
