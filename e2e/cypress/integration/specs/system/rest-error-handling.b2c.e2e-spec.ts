@@ -18,12 +18,7 @@ describe('Missing Data', () => {
     before(() => {
       LoginPage.navigateTo();
 
-      cy.server().route({
-        method: 'GET',
-        url: '**/cms/**',
-        status: 500,
-        response: '',
-      });
+      cy.intercept('GET', '**/cms/**', { statusCode: 500 });
     });
 
     it('should lead to server error page', () => {
@@ -39,12 +34,7 @@ describe('Missing Data', () => {
     before(() => {
       LoginPage.navigateTo();
 
-      cy.server().route({
-        method: 'GET',
-        url: '**/cms/**',
-        status: 404,
-        response: '',
-      });
+      cy.intercept('GET', '**/cms/**', { statusCode: 404 });
     });
 
     it('should not lead to error page', () => {
@@ -60,12 +50,7 @@ describe('Missing Data', () => {
     before(() => {
       LoginPage.navigateTo();
 
-      cy.server().route({
-        method: 'GET',
-        url: '**/products/201807194*',
-        status: 404,
-        response: '',
-      });
+      cy.intercept('GET', '**/products/201807194*', { statusCode: 404 });
     });
 
     it('should not lead to complete redirect to error page', () => {
@@ -81,12 +66,7 @@ describe('Missing Data', () => {
     before(() => {
       HomePage.navigateTo();
 
-      cy.server().route({
-        method: 'GET',
-        url: '**/products/3957279*',
-        status: 404,
-        response: '',
-      });
+      cy.intercept('GET', '**/products/3957279*', { statusCode: 404 });
     });
 
     it('should not lead to complete redirect to error page', () => {
@@ -115,12 +95,7 @@ describe('Missing Data', () => {
     before(() => {
       HomePage.navigateTo();
 
-      cy.server().route({
-        method: 'GET',
-        url: '**/products*',
-        status: 404,
-        response: '',
-      });
+      cy.intercept('GET', '**/products*', { statusCode: 404 });
     });
 
     it('should lead straight to error page', () => {

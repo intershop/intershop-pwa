@@ -23,7 +23,9 @@ describe('Language Changing User', () => {
 
     it('should log in', () => {
       createUserViaREST(_.user);
-      at(LoginPage, page => page.fillForm(_.user.login, _.user.password).submit().its('status').should('equal', 200));
+      at(LoginPage, page =>
+        page.fillForm(_.user.login, _.user.password).submit().its('response.statusCode').should('equal', 200)
+      );
       at(MyAccountPage, page =>
         page.header.myAccountLink.should('have.text', `${_.user.firstName} ${_.user.lastName}`)
       );

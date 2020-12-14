@@ -24,7 +24,9 @@ export class CheckoutPaymentPage {
   }
 
   addPaymentInstrument(method: string) {
+    waitLoadingEnd(1000);
     cy.get(`[data-testing-id=payment-parameter-form-${method}] a[data-testing-id="add-payment-link"]`).click();
+    waitLoadingEnd(1000);
   }
 
   paymentInstrument(method: string) {
@@ -49,6 +51,7 @@ export class CheckoutPaymentPage {
           .find('a[data-testing-id=delete-payment-link]')
           .first()
           .click();
+        waitLoadingEnd(3000);
       },
 
       formError(key: string) {

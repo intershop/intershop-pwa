@@ -14,7 +14,7 @@ describe('Returning User with Basket', () => {
     it('should add product to basket', () => {
       ProductDetailPage.navigateTo(_.product.sku);
       at(ProductDetailPage, page => {
-        page.addProductToCart().its('status').should('equal', 201);
+        page.addProductToCart().its('response.statusCode').should('equal', 201);
         page.header.miniCart.total.should('contain', _.product.price);
         waitLoadingEnd(1000);
       });

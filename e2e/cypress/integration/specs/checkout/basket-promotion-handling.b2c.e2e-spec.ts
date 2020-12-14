@@ -19,7 +19,7 @@ describe('Promotion Handling in Cart', () => {
 
   it('user adds a promotion code that cannot applied yet', () => {
     at(ProductDetailPage, page => {
-      page.addProductToCart().its('status').should('equal', 201);
+      page.addProductToCart().its('response.statusCode').should('equal', 201);
       page.header.miniCart.goToCart();
     });
     at(CartPage, page => {
@@ -48,7 +48,7 @@ describe('Promotion Handling in Cart', () => {
     at(RegistrationPage, page => {
       page.fillForm(_.user);
       page.acceptTAC();
-      page.submitAndObserve().its('statusMessage').should('equal', '201 (Created)');
+      page.submitAndObserve().its('response.statusCode').should('equal', 201);
     });
     at(MyAccountPage, page => {
       page.header.miniCart.goToCart();

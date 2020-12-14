@@ -19,7 +19,9 @@ describe('Changing User', () => {
     createB2BUserViaREST(_.user);
 
     LoginPage.navigateTo('/account/profile');
-    at(LoginPage, page => page.fillForm(_.user.login, _.user.password).submit().its('status').should('equal', 200));
+    at(LoginPage, page =>
+      page.fillForm(_.user.login, _.user.password).submit().its('response.statusCode').should('equal', 200)
+    );
     at(ProfilePage, page => {
       page.name.should('have.text', `${_.user.firstName} ${_.user.lastName}`);
       page.phone.should('have.text', _.user.phoneHome);
@@ -31,7 +33,9 @@ describe('Changing User', () => {
   it('should be able to edit company details and see changes', () => {
     at(ProfilePage, page => page.editCompanyDetails());
 
-    at(ProfileEditCompanyPage, page => page.fillForm(_.newDetails).submit().its('status').should('equal', 200));
+    at(ProfileEditCompanyPage, page =>
+      page.fillForm(_.newDetails).submit().its('response.statusCode').should('equal', 200)
+    );
     at(ProfilePage, page => {
       page.companyName.should('have.text', `${_.newDetails.companyName}${_.newDetails.companyName2}`);
       page.taxationId.should('have.text', _.newDetails.taxationID);

@@ -11,7 +11,7 @@ export class ProfileEditCompanyPage {
   }
 
   submit() {
-    cy.server().route('PUT', '**/customers/**').as('customers');
+    cy.intercept('PUT', '**/customers/**').as('customers');
     cy.wait(500);
 
     cy.get(this.tag).find('button[type="submit"]').click();

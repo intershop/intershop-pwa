@@ -16,17 +16,13 @@ describe('Anonymous Sleeping User', () => {
     });
 
     it('should not go to error page when clicking on product after a long time', () => {
-      cy.server()
-        .route({
-          method: 'GET',
-          url: `**/products/${_.product}*`,
-          status: 400,
-          response: 'Bad Request (AuthenticationTokenInvalid)',
-        })
-        .as('invalid');
+      cy.intercept('GET', `**/products/${_.product}*`, {
+        statusCode: 400,
+        body: 'Bad Request (AuthenticationTokenInvalid)',
+      }).as('invalid');
       at(FamilyPage, page => {
         page.productList.gotoProductDetailPageBySku(_.product, () => cy.wait('@invalid'));
-        cy.route({
+        cy.intercept({
           method: 'GET',
           url: `**/products/${_.product}*`,
         });
@@ -48,17 +44,13 @@ describe('Anonymous Sleeping User', () => {
     });
 
     it('should lose basket after a long time not doing anything', () => {
-      cy.server()
-        .route({
-          method: 'GET',
-          url: `**/cms/**`,
-          status: 400,
-          response: 'Bad Request (AuthenticationTokenInvalid)',
-        })
-        .as('invalid');
+      cy.intercept('GET', `**/cms/**`, {
+        statusCode: 400,
+        body: 'Bad Request (AuthenticationTokenInvalid)',
+      }).as('invalid');
       at(ProductDetailPage, page => {
         page.header.gotoHomePage(() => cy.wait('@invalid'));
-        cy.route({
+        cy.intercept({
           method: 'GET',
           url: `**/cms/**`,
         });

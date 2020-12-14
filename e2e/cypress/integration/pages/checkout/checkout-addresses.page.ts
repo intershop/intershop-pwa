@@ -10,6 +10,7 @@ export class CheckoutAddressesPage {
 
   guestCheckout() {
     cy.get('button[data-testing-id="guest-checkout-button"]').click();
+    waitLoadingEnd(1000);
   }
 
   fillInvoiceAddressForm(address: AddressDetailsTypes, email: string) {
@@ -40,7 +41,9 @@ export class CheckoutAddressesPage {
   }
 
   continueCheckout() {
+    waitLoadingEnd(1000);
     cy.get('button').contains('Continue Checkout').click();
+    waitLoadingEnd(1000);
   }
 
   editInvoiceAddress() {
@@ -54,6 +57,7 @@ export class CheckoutAddressesPage {
       .first()
       .select(regionCode);
     cy.get(`[data-testing-id="invoice-address-form"]`).find('button.btn-primary').first().click();
+    waitLoadingEnd(1000);
   }
 
   get validationMessage() {

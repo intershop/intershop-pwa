@@ -51,7 +51,7 @@ describe('User Management - CRUD', () => {
     LoginPage.navigateTo('/account/organization/users');
     at(LoginPage, page => {
       page.fillForm(_.user.login, _.user.password);
-      page.submit().its('status').should('equal', 200);
+      page.submit().its('response.statusCode').should('equal', 200);
     });
     at(UsersPage, page => {
       page.usersList.should('contain', `${_.user.firstName}`);
