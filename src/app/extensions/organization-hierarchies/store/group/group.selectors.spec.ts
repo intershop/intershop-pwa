@@ -7,8 +7,8 @@ import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ng
 import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
 import { OrganizationHierarchiesStoreModule } from '../organization-hierarchies-store.module';
 
-import { loadGroup, loadGroupFail, loadGroupSuccess } from './group.actions';
-import { getGroup, getGroupEntities, getGroupError, getGroupLoading, getNumberOfGroup } from './group.selectors';
+import { loadGroups, loadGroupsFail, loadGroupsSuccess } from './group.actions';
+import { getGroupEntities, getGroupError, getGroupLoading, getGroups, getNumberOfGroups } from './group.selectors';
 
 describe('Group Selectors', () => {
   let store$: StoreWithSnapshots;
@@ -33,13 +33,13 @@ describe('Group Selectors', () => {
 
     it('should not have entities when in initial state', () => {
       expect(getGroupEntities(store$.state)).toBeEmpty();
-      expect(getGroup(store$.state)).toBeEmpty();
-      expect(getNumberOfGroup(store$.state)).toBe(0);
+      expect(getGroups(store$.state)).toBeEmpty();
+      expect(getNumberOfGroups(store$.state)).toBe(0);
     });
   });
 
   describe('loading groups', () => {
-    const action = loadGroup();
+    const action = loadGroups();
 
     beforeEach(() => {
       store$.dispatch(action);
@@ -50,23 +50,23 @@ describe('Group Selectors', () => {
     });
 
     it('should set loading to false and set group state', () => {
-      const group = [{ id: '1' }, { id: '2' }] as OrganizationGroup[];
-      store$.dispatch(loadGroupSuccess({ group }));
+      const groups = [{ id: '1' }, { id: '2' }] as OrganizationGroup[];
+      store$.dispatch(loadGroupsSuccess({ groups }));
       expect(getGroupLoading(store$.state)).toBeFalse();
       expect(getGroupError(store$.state)).toBeUndefined();
       expect(getGroupEntities(store$.state)).not.toBeEmpty();
-      expect(getGroup(store$.state)).not.toBeEmpty();
-      expect(getNumberOfGroup(store$.state)).toBe(2);
+      expect(getGroups(store$.state)).not.toBeEmpty();
+      expect(getNumberOfGroups(store$.state)).toBe(2);
     });
 
     it('should set loading to false and set error state', () => {
-      store$.dispatch(loadGroupFail({ error: makeHttpError({}) }));
+      store$.dispatch(loadGroupsFail({ error: makeHttpError({}) }));
 
       expect(getGroupLoading(store$.state)).toBeFalse();
       expect(getGroupError(store$.state)).toBeTruthy();
       expect(getGroupEntities(store$.state)).toBeEmpty();
-      expect(getGroup(store$.state)).toBeEmpty();
-      expect(getNumberOfGroup(store$.state)).toBe(0);
+      expect(getGroups(store$.state)).toBeEmpty();
+      expect(getNumberOfGroups(store$.state)).toBe(0);
     });
   });
 });
