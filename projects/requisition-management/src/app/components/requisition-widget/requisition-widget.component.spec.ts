@@ -91,7 +91,7 @@ describe('Requisition Widget Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    when(requisitionManagementFacade.buyerPendingRequisitions$()).thenReturn(of(requisitions));
+    when(requisitionManagementFacade.requisitions$('buyer', 'PENDING')).thenReturn(of(requisitions));
     when(requisitionManagementFacade.requisitionsLoading$).thenReturn(of(false));
   });
 

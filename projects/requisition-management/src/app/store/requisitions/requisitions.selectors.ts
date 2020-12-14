@@ -1,7 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
 import { RequisitionStatus, RequisitionViewer } from '../../models/requisition/requisition.model';
-
 import { getRequisitionManagementState } from '../requisition-management-store';
 
 import { requisitionsAdapter } from './requisitions.reducer';
@@ -14,7 +13,7 @@ export const getRequisitionsError = createSelector(getRequisitionsState, state =
 
 const getRequisitionsFilters = createSelector(getRequisitionsState, state => state.filters);
 
-const { selectEntities } = requisitionsAdapter.getSelectors(getRequisitionsState);
+export const { selectEntities } = requisitionsAdapter.getSelectors(getRequisitionsState);
 
 export const getRequisitions = (view: RequisitionViewer, status: RequisitionStatus) =>
   createSelector(selectEntities, getRequisitionsFilters, (requisitions, filters) =>

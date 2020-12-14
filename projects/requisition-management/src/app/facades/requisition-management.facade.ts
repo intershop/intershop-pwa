@@ -62,8 +62,8 @@ export class RequisitionManagementFacade {
         startWith({})
       )
     ),
-    switchMap(([view, status]) => {
-      return this.requisitions$(view as RequisitionViewer, (status as RequisitionStatus) || 'PENDING');
-    })
+    switchMap(([view, status]) =>
+      this.requisitions$(view as RequisitionViewer, (status as RequisitionStatus) || 'PENDING')
+    )
   );
 }

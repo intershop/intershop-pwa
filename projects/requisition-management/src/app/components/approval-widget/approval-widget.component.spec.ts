@@ -91,7 +91,7 @@ describe('Approval Widget Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    when(requisitionManagementFacade.approverPendingRequisitions$()).thenReturn(of(requisitions));
+    when(requisitionManagementFacade.requisitions$('approver', 'PENDING')).thenReturn(of(requisitions));
     when(requisitionManagementFacade.requisitionsLoading$).thenReturn(of(false));
   });
 
