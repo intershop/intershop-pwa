@@ -6,7 +6,7 @@ import { setErrorOn, setLoadingOn } from 'ish-core/utils/ngrx-creators';
 
 import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
 
-import { loadGroup, loadGroupFail, loadGroupSuccess } from './group.actions';
+import { loadGroups, loadGroupsFail, loadGroupsSuccess } from './group.actions';
 
 export const groupAdapter = createEntityAdapter<OrganizationGroup>();
 
@@ -22,12 +22,12 @@ const initialState: GroupState = groupAdapter.getInitialState({
 
 export const groupReducer = createReducer(
   initialState,
-  setLoadingOn(loadGroup),
-  setErrorOn(loadGroupFail),
-  on(loadGroupSuccess, (state: GroupState, action) => {
-    const { group } = action.payload;
+  setLoadingOn(loadGroups),
+  setErrorOn(loadGroupsFail),
+  on(loadGroupsSuccess, (state: GroupState, action) => {
+    const { groups } = action.payload;
     return {
-      ...groupAdapter.upsertMany(group, state),
+      ...groupAdapter.upsertMany(groups, state),
       loading: false,
       error: undefined,
     };
