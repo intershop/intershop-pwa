@@ -4,7 +4,7 @@ import { Action } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable } from 'rxjs';
 
-import { loadGroup } from './group.actions';
+import { loadGroups } from './group.actions';
 import { GroupEffects } from './group.effects';
 
 describe('Group Effects', () => {
@@ -21,7 +21,7 @@ describe('Group Effects', () => {
 
   describe('loadGroup$', () => {
     it('should not dispatch actions when encountering loadGroup', () => {
-      const action = loadGroup();
+      const action = loadGroups();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('------');
 

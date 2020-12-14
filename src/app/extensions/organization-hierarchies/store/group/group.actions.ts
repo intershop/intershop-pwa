@@ -4,11 +4,11 @@ import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
 
-export const loadGroup = createAction('[Group] Load Group');
+export const loadGroups = createAction('[Organization Hierarchies API] Load Groups');
 
-export const loadGroupFail = createAction('[Group API] Load Group Fail', httpError());
+export const loadGroupsFail = createAction('[Organization Hierarchies API] Load Groups Fail', httpError());
 
-export const loadGroupSuccess = createAction(
-  '[Group API] Load Group Success',
-  payload<{ group: OrganizationGroup[] }>()
+export const loadGroupsSuccess = createAction(
+  '[Organization Hierarchies API] Load Groups Success',
+  payload<{ groups: OrganizationGroup[] }>()
 );
