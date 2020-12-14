@@ -123,7 +123,7 @@ export abstract class QuoteContextFacade
     if (this.get('entity', 'type') === 'Quote') {
       this.store.dispatch(createQuoteRequestFromQuote({ id: this.get('entity', 'id') }));
     } else {
-      this.store.dispatch(createQuoteRequestFromQuoteRequest({ entity: this.get('entity') }));
+      this.store.dispatch(createQuoteRequestFromQuoteRequest({ id: this.get('entity', 'id') }));
     }
   }
 

@@ -2,11 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
-import { Link } from 'ish-core/models/link/link.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 
 import { QuoteData } from '../../models/quoting/quoting.interface';
-import { QuoteRequest, QuoteRequestItem, QuoteStub } from '../../models/quoting/quoting.model';
+import { QuoteStub } from '../../models/quoting/quoting.model';
 
 import { QuotingService } from './quoting.service';
 
@@ -173,20 +172,18 @@ describe('Quoting Service', () => {
 
   describe('createQuoteRequestFromQuote', () => {
     beforeEach(() => {
-      when(apiService.post(anything(), anything())).thenReturn(of({ type: 'QuoteRequest' }));
+      when(apiService.post(anything(), anything(), anything())).thenReturn(of({ type: 'QuoteRequest' }));
     });
 
     it('should use quote request API for creating quoterequest from quote', done => {
       quotingService.createQuoteRequestFromQuote('quoteID').subscribe(
         () => {
-          verify(apiService.post(anything(), anything())).once();
+          verify(apiService.post(anything(), anything(), anything())).once();
           const args = capture(apiService.post).last();
           expect(args?.[0]).toMatchInlineSnapshot(`"quoterequests"`);
-          expect(args?.[1]).toMatchInlineSnapshot(`
-            Object {
-              "quoteID": "quoteID",
-            }
-          `);
+          expect(args?.[1]).toMatchInlineSnapshot(`undefined`);
+          // tslint:disable-next-line: no-string-literal
+          expect(args?.[2]?.['params']?.toString()).toMatchInlineSnapshot(`"quoteID=quoteID"`);
         },
         fail,
         done
@@ -196,56 +193,22 @@ describe('Quoting Service', () => {
 
   describe('createQuoteRequestFromQuoteRequest', () => {
     beforeEach(() => {
-      when(apiService.post(anything())).thenReturn(of({ type: 'Link', title: 'NEW' } as Link));
-      when(apiService.put(anything(), anything())).thenReturn(of({}));
+      when(apiService.post(anything(), anything(), anything())).thenReturn(of({ type: 'QuoteRequest' }));
     });
 
     it('should use quote request API for creating quote request from quote request', done => {
-      quotingService
-        .createQuoteRequestFromQuoteRequest({
-          type: 'QuoteRequest',
-          items: [
-            { productSKU: 'SKU1', quantity: { value: 1 } },
-            { productSKU: 'SKU2', quantity: { value: 3 } },
-          ] as QuoteRequestItem[],
-        } as QuoteRequest)
-        .subscribe(
-          id => {
-            verify(apiService.post(anything())).once();
-            expect(capture(apiService.post).last()).toMatchInlineSnapshot(`
-              Array [
-                "quoterequests",
-              ]
-            `);
-
-            verify(apiService.put(anything(), anything())).once();
-            expect(capture(apiService.put).last()).toMatchInlineSnapshot(`
-              Array [
-                "quoterequests/NEW/items",
-                Object {
-                  "elements": Array [
-                    Object {
-                      "productSKU": "SKU1",
-                      "quantity": Object {
-                        "value": 1,
-                      },
-                    },
-                    Object {
-                      "productSKU": "SKU2",
-                      "quantity": Object {
-                        "value": 3,
-                      },
-                    },
-                  ],
-                },
-              ]
-            `);
-
-            expect(id).toMatchInlineSnapshot(`"NEW"`);
-          },
-          fail,
-          done
-        );
+      quotingService.createQuoteRequestFromQuoteRequest('quoteRequestID').subscribe(
+        () => {
+          verify(apiService.post(anything(), anything(), anything())).once();
+          const args = capture(apiService.post).last();
+          expect(args?.[0]).toMatchInlineSnapshot(`"quoterequests"`);
+          expect(args?.[1]).toMatchInlineSnapshot(`undefined`);
+          // tslint:disable-next-line: no-string-literal
+          expect(args?.[2]?.['params']?.toString()).toMatchInlineSnapshot(`"quoteRequestID=quoteRequestID"`);
+        },
+        fail,
+        done
+      );
     });
   });
 
