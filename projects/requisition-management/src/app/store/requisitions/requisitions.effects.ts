@@ -29,7 +29,7 @@ export class RequisitionsEffects {
     this.actions$.pipe(
       ofType(loadRequisitions),
       mapToPayload(),
-      switchMap(({ view, status }) =>
+      concatMap(({ view, status }) =>
         this.requisitionsService.getRequisitions(view, status).pipe(
           map(requisitions => loadRequisitionsSuccess({ requisitions, view, status })),
           mapErrorToAction(loadRequisitionsFail)
