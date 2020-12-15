@@ -35,6 +35,7 @@ export interface Environment {
     | 'quoting'
     | 'quickorder'
     | 'orderTemplates'
+    | 'punchout'
     /* Third-party Integrations */
     | 'sentry'
     | 'tracking'
