@@ -1,0 +1,40 @@
+<div *ngIf="basket" class="row checkout-address-book">
+  <!-- Error Message -->
+  <div *ngIf="error" class="col-md-12">
+    <ish-error-message [error]="error"></ish-error-message>
+  </div>
+
+  <div *ngIf="nextDisabled && !error" class="col-md-12">
+    <div class="alert alert-danger">{{ 'pwa.checkout.addresses.no_Selection.error' | translate }}</div>
+  </div>
+
+  <!-- Validation messages-->
+  <div class="col-md-12">
+    <ish-basket-validation-results (continueCheckout)="goToNextStep()"></ish-basket-validation-results>
+  </div>
+
+  <!-- ------------------------------- invoice address ---------------------------------- -->
+  <div class="col-md-6 col-lg-6" data-testing-id="invoiceToAddress">
+    <ish-basket-invoice-address-widget
+      [showErrors]="nextDisabled"
+      [collapse]="active === 'shipping'"
+      (collapseChange)="invoiceCollapsed($event)"
+    ></ish-basket-invoice-address-widget>
+  </div>
+
+  <!-- ------------------------------ shipping address ----------------------------------------- -->
+  <div class="col-md-6 col-lg-6" data-testing-id="shipToAddress">
+    <ish-basket-shipping-address-widget
+      [showErrors]="nextDisabled"
+      [collapse]="active === 'invoice'"
+      (collapseChange)="shippingCollapsed($event)"
+    ></ish-basket-shipping-address-widget>
+  </div>
+
+
+  <div class="col-12 text-center mb-4">
+    <button class="btn btn-lg btn-primary" type="button" [disabled]="nextDisabled" (click)="goToNextStep()">
+      {{ 'pwa.checkout.button.label' | translate }}
+    </button>
+  </div>
+</div>

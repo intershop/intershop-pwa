@@ -1,0 +1,28 @@
+<div data-testing-id="checkout-address-page">
+  <ng-container *ngIf="basket$ | async as basket">
+    <ng-container
+      *ngIf="
+        (currentUser$ | async) || (validBasketAddresses$ | async) || nextStepRequested;
+        else anonymousCheckoutStart
+      "
+    >
+      <h2>{{ 'checkout.addresses.heading' | translate }}</h2>
+      <ish-spa-checkout-address
+        [basket]="basket"
+        [error]="(basketError$ | async) || (addressesError$ | async)"
+        (nextStep)="nextStep()"
+      ></ish-spa-checkout-address>
+    </ng-container>
+    <ng-template #anonymousCheckoutStart>
+      <h2>&nbsp;</h2>
+      <!-- empty h1 to provide space -->
+      <ish-spa-checkout-address-anonymous
+        [basket]="basket"
+        [error]="(basketError$ | async) || (addressesError$ | async)"
+        (nextStep)="nextStep()"
+      ></ish-spa-checkout-address-anonymous>
+    </ng-template>
+  </ng-container>
+
+  <ish-loading *ngIf="(basketLoading$ | async) || (addressesLoading$ | async)"></ish-loading>
+</div>

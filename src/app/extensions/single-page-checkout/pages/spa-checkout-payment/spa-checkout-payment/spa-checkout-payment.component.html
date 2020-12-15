@@ -1,0 +1,180 @@
+<div class="row" *ngIf="basket">
+  <div class="col-md-12">
+    <!-- Messages -->
+    <div *ngIf="nextDisabled && !error" role="alert" class="alert alert-danger">
+      {{ 'checkout.payment.no_Selection.error' | translate }}
+    </div>
+
+    <ish-error-message [error]="error"></ish-error-message>
+    <ish-basket-validation-results></ish-basket-validation-results>
+
+    <div *ngIf="redirectStatus" role="alert" class="alert alert-danger">
+      {{ 'checkout.payment.sorry_message.text' | translate }}
+      <ng-container *ngIf="redirectStatus === 'cancel'">{{
+        'checkout.payment.canceled.text' | translate
+      }}</ng-container>
+      <ng-container *ngIf="redirectStatus === 'failure'">{{ 'checkout.payment.failed.text' | translate }}</ng-container>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <h3>{{ 'checkout.payment.method.select.heading' | translate }}</h3>
+
+    <!-- display all payment methods -->
+    <form [formGroup]="paymentForm" class="form-horizontal" (ngSubmit)="submitParameterForm()">
+      <ul *ngIf="hasPaymentMethods" id="payment-accordion" class="list-unstyled">
+        <ng-container *ngFor="let paymentMethod of filteredPaymentMethods; index as i">
+          <li class="panel">
+            <div [ngClass]="{ 'form-check': !paymentMethod.parameters }" role="tab">
+              <strong>
+                {{ paymentMethod.displayName }}
+                <ng-container *ngIf="!paymentMethod.displayName">{{ paymentMethod.id }}</ng-container>
+              </strong>
+              <p *ngIf="paymentMethod.description">{{ paymentMethod.description }}</p>
+              <p *ngIf="paymentCostThresholdReached(paymentMethod); else displayPaymentCosts">
+                {{ 'checkout.payment.payment_cost_threshold.amount_reached' | translate }}
+                &nbsp;
+                {{ basket.totals.total | ishPrice }}
+              </p>
+              <ng-template #displayPaymentCosts>
+                <div *ngIf="!paymentMethod.isRestricted; else displayRestrictions">
+                  <p *ngIf="paymentMethod.paymentCosts && paymentMethod.paymentCosts.value">
+                    {{ 'checkout.payment.method.charges.text' | translate }}&nbsp;{{
+                      paymentMethod.paymentCosts | ishPrice
+                    }}&nbsp;
+                    <span *ngIf="paymentMethod.paymentCostsThreshold" class="text-muted">
+                      <span class="hidden-xs">-&nbsp;</span
+                      >{{ 'checkout.payment.payment_cost_threshold.text' | translate }}
+                      <span class="text-nowrap">{{ paymentMethod.paymentCostsThreshold | ishPrice }}</span>
+                    </span>
+                  </p>
+                </div>
+              </ng-template>
+              <ng-template #displayRestrictions>
+                {{ 'checkout.payment.method.charges.text' | translate }}
+                &nbsp;
+                {{ paymentMethod.paymentCosts | ishPrice }}
+                &nbsp;
+                <p *ngFor="let restriction of paymentMethod.restrictionCauses" class="text-info">
+                  {{ restriction.message }}
+                </p>
+              </ng-template>
+              <!-- display radio buttons only for payment methods without parameters -->
+              <ng-container *ngIf="!paymentMethod.parameters && !paymentMethod.isRestricted">
+                <input
+                  type="radio"
+                  formControlName="name"
+                  [id]="'paymentOption_' + paymentMethod.id"
+                  [value]="paymentMethod.id"
+                />
+                <label class="form-check-label" [for]="'paymentOption_' + paymentMethod.id">
+                  {{ 'checkout.payment.payWith.link' | translate: { '0': paymentMethod.displayName } }}
+                </label>
+              </ng-container>
+            </div>
+            <!-- Payment parameter form -->
+            <div
+              *ngIf="paymentMethod.parameters && paymentMethod.parameters.length"
+              [attr.data-testing-id]="'payment-parameter-form-' + paymentMethod.id"
+            >
+              <li *ngFor="let paymentInstrument of paymentMethod.paymentInstruments" class="panel section">
+                <div class="form-check col-10 col-md-6 col-lg-8 col-xl-6" role="tab">
+                  <input
+                    type="radio"
+                    formControlName="name"
+                    [id]="'paymentOption_' + paymentInstrument.id"
+                    [value]="paymentInstrument.id"
+                  />
+                  <label class="form-check-label" [for]="'paymentOption_' + paymentInstrument.id">
+                    {{ paymentInstrument.accountIdentifier }}
+                  </label>
+                  <a
+                    class="float-right"
+                    (click)="deleteBasketPayment(paymentInstrument)"
+                    data-testing-id="delete-payment-link"
+                    >{{ 'checkout.payment.method.delete.link' | translate }}</a
+                  >
+                </div>
+                <div
+                  *ngIf="
+                    paymentMethod.serviceId === 'Concardis_CreditCard' &&
+                    basket.payment &&
+                    paymentInstrument.id === basket.payment.paymentInstrument.id
+                  "
+                >
+                  <ish-spa-payment-concardis-creditcard-cvc-detail
+                    [paymentInstrument]="basket.payment.paymentInstrument"
+                    [paymentMethod]="paymentMethod"
+                  >
+                  </ish-spa-payment-concardis-creditcard-cvc-detail>
+                </div>
+              </li>
+              <li class="panel">
+                <a *ngIf="!formIsOpen(i)" (click)="openPaymentParameterForm(i)" data-testing-id="add-payment-link"
+                  >{{ 'checkout.payment.addPayment.link' | translate }}
+                </a>
+              </li>
+
+              <div [ngbCollapse]="!formIsOpen(i)">
+                <p class="indicates-required">
+                  <span class="required">*</span>{{ 'account.required_field.message' | translate }}
+                </p>
+                <ng-container [ngSwitch]="paymentMethod.serviceId">
+                  <ng-template [ngSwitchCase]="'Concardis_CreditCard'">
+                    <ish-spa-payment-concardis-creditcard
+                      [paymentMethod]="paymentMethod"
+                      [activated]="formIsOpen(i)"
+                      (submit)="createNewPaymentInstrument($event)"
+                      (cancel)="cancelNewPaymentInstrument()"
+                    ></ish-spa-payment-concardis-creditcard>
+                  </ng-template>
+
+                  <ng-template [ngSwitchCase]="'Concardis_DirectDebit'">
+                    <ish-spa-payment-concardis-directdebit
+                      [paymentMethod]="paymentMethod"
+                      [activated]="formIsOpen(i)"
+                      (submit)="createNewPaymentInstrument($event)"
+                      (cancel)="cancelNewPaymentInstrument()"
+                    ></ish-spa-payment-concardis-directdebit>
+                  </ng-template>
+
+                  <ng-template ngSwitchDefault>
+                    <formly-form
+                      [form]="parameterForm"
+                      [options]="options"
+                      [model]="model"
+                      [fields]="paymentMethod.parameters"
+                    >
+                      <div class="offset-md-4 col-md-8">
+                        <ng-container *ngIf="paymentMethod.saveAllowed">
+                          <ng-container *ngTemplateOutlet="saveForLaterTemplate"></ng-container>
+                        </ng-container>
+                        <div class="form-group">
+                          <button type="submit" class="btn btn-primary">
+                            {{ 'checkout.account.submit.button.label' | translate }}
+                          </button>
+                          <button type="button" class="btn btn-secondary" (click)="cancelNewPaymentInstrument()">
+                            {{ 'checkout.cancel.button.label' | translate }}
+                          </button>
+                        </div>
+                      </div>
+                    </formly-form>
+                  </ng-template>
+                </ng-container>
+              </div>
+            </div>
+          </li>
+        </ng-container>
+      </ul>
+      <!-- saveForLater checkbox - outlet template -->
+      <ng-template #saveForLaterTemplate>
+        <div class="form-group">
+          <ish-checkbox
+            [form]="paymentForm"
+            controlName="saveForLater"
+            label="checkout.save_edit.checkbox.label"
+          ></ish-checkbox>
+        </div>
+      </ng-template>
+    </form>
+  </div>
+</div>

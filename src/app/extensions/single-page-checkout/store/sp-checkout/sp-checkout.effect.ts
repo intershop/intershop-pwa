@@ -51,17 +51,17 @@ export class SpCheckoutEffects {
             break;
           }
           case 2: {
-            scopes = ['InvoiceAddress', 'ShippingAddress', 'Addresses', 'Shipping'];
+            scopes = ['InvoiceAddress', 'ShippingAddress', 'Addresses'];
             targetRoute = '/checkout-spa/shipping-payment';
             break;
           }
           case 3: {
-            scopes = ['Payment'];
+            scopes = ['Payment', 'Shipping'];
             targetRoute = '/checkout-spa/review';
             break;
           }
           // before order creation the whole basket is validated again
-          case 5: {
+          case 4: {
             scopes = ['All'];
             targetRoute = 'auto'; // targetRoute will be calculated in dependence of the validation result
             break;
@@ -119,7 +119,7 @@ export class SpCheckoutEffects {
   /**
    * Navigates to the target route, in case targetRoute equals 'auto' the target route will be calculated based on the calculation result
    */
-  private jumpToTargetRoute(targetRoute: string, results: BasketValidationResultType) {
+private jumpToTargetRoute(targetRoute: string, results: BasketValidationResultType) {
     if (!targetRoute || !results) {
       return;
     }

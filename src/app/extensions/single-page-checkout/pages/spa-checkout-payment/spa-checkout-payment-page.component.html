@@ -1,0 +1,13 @@
+<div data-testing-id="checkout-payment-page">
+
+  <ish-spa-checkout-payment
+    [basket]="basket$ | async"
+    [paymentMethods]="paymentMethods$ | async"
+    [priceType]="priceType$ | async"
+    [error]="basketError$ | async"
+    (updatePaymentMethod)="updateBasketPaymentMethod($event)"
+    (createPaymentInstrument)="createPaymentInstrument($event)"
+    (deletePaymentInstrument)="deletePaymentInstrument($event)"
+    (nextStep)="nextStep()"
+  ></ish-spa-checkout-payment>
+</div>

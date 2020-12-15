@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -10,7 +10,6 @@ import { Price } from 'ish-core/models/price/price.model';
 
 @Component({
   templateUrl: './spa-checkout-single-page.component.html',
-  styleUrls: ['./spa-checkout-single-page-component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SpaCheckoutSinglePageComponent implements OnInit, OnDestroy {
@@ -26,8 +25,10 @@ export class SpaCheckoutSinglePageComponent implements OnInit, OnDestroy {
     this.checkoutFacade.basket$.pipe(takeUntil(this.destroy$)).subscribe((basket: BasketView) => {
       this.totalAmount = basket && basket.totals && basket.totals.itemTotal;
     });
-    this.currentStep = this.route.snapshot.firstChild.url.join('');
-    this.updateSteps();
+    this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe((params: ParamMap) => {
+      this.currentStep = params.get('step');
+      this.updateSteps();
+    });
   }
 
   completeSteps(step: string): boolean {

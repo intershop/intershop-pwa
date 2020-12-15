@@ -93,7 +93,7 @@ const routes: Routes = [
     },
   },
   {
-    path: 'checkout-spa',
+    path: 'checkout-spa/:step',
     loadChildren: () =>
       import('../extensions/single-page-checkout/single-page-checkout.module').then(
         m => m.SinglePageCheckoutModule

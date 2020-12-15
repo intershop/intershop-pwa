@@ -15,7 +15,7 @@
         <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
       </a>
     </div>
-    <div class="sp-checkout__content container" *ngIf="currentStep === stepsOrder[0]">
+    <div class="sp-checkout__content" *ngIf="currentStep === stepsOrder[0]">
       <ish-spa-checkout-address-page></ish-spa-checkout-address-page>
     </div>
 
@@ -29,7 +29,7 @@
         *ngIf="completeSteps(stepsOrder[1])"
         class="float-right btn-tool"
         title="Edit"
-        [routerLink]="'/checkout-spa/shipping_payment'"
+        [routerLink]="'/checkout-spa/shipping-payment'"
       >
         <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
       </a>
