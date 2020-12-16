@@ -415,7 +415,7 @@ export class BasketService {
     }
 
     return this.orderService.createOrder(basketId, true).pipe(
-      concatMap(() => this.getBasket()),
+      concatMap(() => of(undefined)),
       catchError(err => {
         if (err.status === 422) {
           return of(undefined);
