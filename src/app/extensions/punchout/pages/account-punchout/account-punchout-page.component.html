@@ -1,6 +1,24 @@
 <h1>
   {{ 'account.punchout.heading' | translate }}
 </h1>
+<ish-error-message [error]="error$ | async"></ish-error-message>
 <div class="section">
   {{ 'account.punchout.subtitle' | translate }}
 </div>
+
+<div class="section">
+  <ng-container *ngIf="punchoutUsers$ | async as users; else emptyList">
+    <div *ngIf="users.length; else emptyList" class="list-body" data-testing-id="user-list">
+      <ng-container *ngFor="let user of punchoutUsers$ | async">
+        <div *ngIf="user; else emptyList" class="list-item-row row mx-0">
+          {{ user.login }}
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+  <ng-template #emptyList>
+    {{ 'account.punchout.no.user.text' | translate }}
+  </ng-template>
+</div>
+
+<ish-loading *ngIf="loading$ | async"></ish-loading>

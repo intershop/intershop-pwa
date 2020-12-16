@@ -267,6 +267,7 @@
   "account.profile.update_profile.message": "Your profile information has been updated.",
   "account.punchout.link": "Punchout",
   "account.punchout.heading": "Punchout",
+  "account.punchout.no.user.text": "Please specify a username and password to create a new OCI user.",
   "account.punchout.subtitle": "Punchout is provided via Open Catalog Interface (OCI).",
   "account.quotes.widget.accepted.label": "Accepted",
   "account.quotes.widget.my_quotes.heading": "My Quotes",
