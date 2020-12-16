@@ -14,6 +14,10 @@
       <dt class="col-7">{{ 'account.budget.type.' + budget.budgetPeriod + '.label' | translate }}</dt>
       <dd class="col-5 column-price font-weight-bold text-right">{{ budget.budget | ishPrice }}</dd>
     </dl>
+    <dl class="row dl-horizontal dl-separator">
+      <dt class="col-7">{{ 'account.budget.already_spent.label' | translate }}</dt>
+      <dd class="col-5 column-price font-weight-bold text-right">{{ usedBudget | ishPrice }}</dd>
+    </dl>
     <div [ngbPopover]="BudgetPopover" placement="top" data-testing-id="user-budget-popover">
       <div class="progress" [ngClass]="progressBarClass">
         <div

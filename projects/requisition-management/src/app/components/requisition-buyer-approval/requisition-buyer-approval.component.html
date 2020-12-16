@@ -42,7 +42,9 @@
         </dl>
         <dl *ngIf="requisition.userBudget?.spentBudget" class="row dl-horizontal dl-separator">
           <dt class="col-6">{{ 'account.budget.already_spent.label' | translate }}</dt>
-          <dd class="col-6">{{ requisition.userBudget.spentBudget | ishPrice }} ({{ spentPercentage | percent }})</dd>
+          <dd class="col-6" [ngClass]="{ 'text-danger': spentPercentage > 1 }">
+            {{ requisition.userBudget.spentBudget | ishPrice }} ({{ spentPercentage | percent }})
+          </dd>
         </dl>
         <dl
           *ngIf="requisition.approval.statusCode !== 'APPROVED'; else leftBudgetDisplay"
