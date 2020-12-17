@@ -1,2 +1,8 @@
-<span class="separator">&#124;</span>
-<span>hierarchy-switch works!</span>
+<ng-container *ngIf="(count | async) > 0">
+  <span class="separator">&#124;</span>
+  <select data-testing-id="hierarchy-switch">
+    <option *ngFor="let option of groups | async" [value]="option.id">
+      <span>{{ option.name }}</span>
+    </option>
+  </select>
+</ng-container>
