@@ -2,13 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
-import { of } from 'rxjs';
-import { mock, when } from 'ts-mockito';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
-import { AccountFacade } from 'ish-core/facades/account.facade';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 
 import { AccountUserInfoComponent } from '../account-user-info/account-user-info.component';
 
@@ -18,21 +15,21 @@ describe('Account Navigation Component', () => {
   let component: AccountNavigationComponent;
   let fixture: ComponentFixture<AccountNavigationComponent>;
   let element: HTMLElement;
-  let accountFacadeMock: AccountFacade;
 
   beforeEach(async () => {
-    accountFacadeMock = mock(AccountFacade);
     await TestBed.configureTestingModule({
-      declarations: [AccountNavigationComponent, MockComponent(AccountUserInfoComponent), MockPipe(FeatureTogglePipe)],
+      declarations: [
+        AccountNavigationComponent,
+        MockComponent(AccountUserInfoComponent),
+        MockPipe(FeatureTogglePipe, () => true),
+        MockPipe(ServerSettingPipe, () => true),
+      ],
       imports: [
-        AuthorizationToggleModule.forTesting('APP_B2B_MANAGE_USERS'),
-        FeatureToggleModule.forTesting('quoting', 'orderTemplates'),
+        AuthorizationToggleModule.forTesting('APP_B2B_MANAGE_USERS', 'APP_B2B_PURCHASE'),
         RouterTestingModule,
         TranslateModule.forRoot(),
       ],
     }).compileComponents();
-
-    when(accountFacadeMock.isBusinessCustomer$).thenReturn(of(true));
   });
 
   beforeEach(() => {
@@ -60,5 +57,10 @@ describe('Account Navigation Component', () => {
   it('should display link to user list', () => {
     fixture.detectChanges();
     expect(element.textContent).toContain('account.organization.user_management');
+  });
+
+  it('should display link to requisition list if order approval service is enabled', () => {
+    fixture.detectChanges();
+    expect(element.textContent).toContain('account.requisitions.requisitions');
   });
 });

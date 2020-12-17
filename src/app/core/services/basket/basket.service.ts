@@ -1,7 +1,7 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EMPTY, Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { EMPTY, Observable, of, throwError } from 'rxjs';
+import { catchError, concatMap, map } from 'rxjs/operators';
 
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { Address } from 'ish-core/models/address/address.model';
@@ -19,6 +19,7 @@ import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-met
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { OrderService } from 'ish-core/services/order/order.service';
 
 export type BasketUpdateType =
   | { invoiceToAddress: string }
@@ -70,7 +71,7 @@ type ValidationBasketIncludeType =
  */
 @Injectable({ providedIn: 'root' })
 export class BasketService {
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private orderService: OrderService) {}
 
   /**
    * http header for Basket API v1
@@ -401,5 +402,26 @@ export class BasketService {
             unpackEnvelope<ShippingMethodData>('data'),
             map(data => data.map(ShippingMethodMapper.fromData))
           );
+  }
+
+  /**
+   * Creates a requisition of a certain basket that has to be approved.
+   * @param  basketId      Basket id.
+   * @returns              nothing
+   */
+  createRequisition(basketId: string): Observable<void> {
+    if (!basketId) {
+      return throwError('createRequisition() called without required basketId');
+    }
+
+    return this.orderService.createOrder(basketId, true).pipe(
+      concatMap(() => of(undefined)),
+      catchError(err => {
+        if (err.status === 422) {
+          return of(undefined);
+        }
+        return throwError(err);
+      })
+    );
   }
 }

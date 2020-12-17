@@ -1,4 +1,5 @@
 import { AddressData } from 'ish-core/models/address/address.interface';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.interface';
 import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
@@ -21,6 +22,9 @@ export interface OrderBaseData extends BasketBaseData {
   };
   statusCode: string;
   status: string;
+  basket: string;
+  requisitionDocumentNo?: string;
+  attributes?: Attribute[];
 }
 
 export interface OrderData {

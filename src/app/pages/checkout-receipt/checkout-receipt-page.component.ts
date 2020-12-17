@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { Basket } from 'ish-core/models/basket/basket.model';
 import { Order } from 'ish-core/models/order/order.model';
-import { User } from 'ish-core/models/user/user.model';
 
 @Component({
   selector: 'ish-checkout-receipt-page',
@@ -14,14 +13,13 @@ import { User } from 'ish-core/models/user/user.model';
 export class CheckoutReceiptPageComponent implements OnInit {
   order$: Observable<Order>;
   loading$: Observable<boolean>;
-  /** ToDo: User data should be available by the Order, see #IS-17616 */
-  user$: Observable<User>;
+  submittedBasket$: Observable<Basket>;
 
-  constructor(private checkoutFacade: CheckoutFacade, private accountFacade: AccountFacade) {}
+  constructor(private checkoutFacade: CheckoutFacade) {}
 
   ngOnInit() {
     this.order$ = this.checkoutFacade.selectedOrder$;
     this.loading$ = this.checkoutFacade.basketLoading$;
-    this.user$ = this.accountFacade.user$;
+    this.submittedBasket$ = this.checkoutFacade.submittedBasket$;
   }
 }

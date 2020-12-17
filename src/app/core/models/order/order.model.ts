@@ -7,7 +7,9 @@ export interface OrderLineItem extends LineItem {
   fulfillmentStatus: string;
 }
 
-export interface Order extends AbstractBasket<OrderLineItem> {
+type OrderBasket = Omit<AbstractBasket<OrderLineItem>, 'approval'>;
+
+export interface Order extends OrderBasket {
   documentNo: string;
   creationDate: number;
   orderCreation: {
@@ -20,4 +22,10 @@ export interface Order extends AbstractBasket<OrderLineItem> {
   };
   statusCode: string;
   status: string;
+  approval?: {
+    approverFirstName: string;
+    approverLastName: string;
+    date: number;
+  };
+  requisitionNo?: string;
 }

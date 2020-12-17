@@ -1,0 +1,43 @@
+<ng-template #modal let-rejectModal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title">{{ 'approval.rejectform.reject_order.heading' | translate }}</h2>
+      <button
+        type="button"
+        class="close"
+        [title]="'dialog.close.text' | translate"
+        [attr.aria-label]="'dialog.close.text' | translate"
+        (click)="hide()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <form [formGroup]="rejectForm" (ngSubmit)="submitForm()">
+        <div class="form-group clearfix">
+          <ish-textarea
+            [form]="rejectForm"
+            controlName="comment"
+            label="approval.rejectform.add_a_comment.label"
+            labelClass="col-12"
+            inputClass="col-12"
+            [errorMessages]="{ required: 'approval.rejectform.invalid_comment.error' }"
+            markRequiredLabel="off"
+            [maxlength]="1000"
+            [rows]="4"
+          ></ish-textarea>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="submit" (click)="submitForm()" [disabled]="formDisabled">
+        {{ 'approval.rejectform.button.reject.label' | translate }}
+      </button>
+      <button class="btn btn-secondary" type="button" (click)="rejectModal.close('')">
+        {{ 'approval.rejectform.button.cancel.label' | translate }}
+      </button>
+    </div>
+  </div>
+</ng-template>

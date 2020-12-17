@@ -1,0 +1,53 @@
+<div>
+  <fieldset *ngIf="form">
+    <!-- Order Spent Limit-->
+    <ish-input
+      [form]="form"
+      controlName="orderSpentLimit"
+      label="account.user.new.order_spend_limit.label"
+      [prepend]="currencySymbol"
+      [errorMessages]="{ pattern: 'account.user.new.OrderLimit.error.valid' }"
+    ></ish-input>
+
+    <!-- Budget-->
+    <div class="row form-group has-feedback" [formGroup]="form" [ishShowFormFeedback]="formControlBudget">
+      <label for="budget_input" class="col-form-label" class="col-md-4"
+        >{{ 'account.user.budget.label' | translate }}
+      </label>
+
+      <div class="col-md-8">
+        <div class="row">
+          <!--Budget Value -->
+          <div class="col-6">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">{{ currencySymbol }}</span>
+              </div>
+
+              <input
+                type="input"
+                class="form-control"
+                id="budget_input"
+                formControlName="budget"
+                data-testing-id="budget"
+              />
+            </div>
+            <ish-form-control-feedback
+              [messages]="{ pattern: 'account.user.new.Budget.error.valid' }"
+              [control]="formControlBudget"
+            ></ish-form-control-feedback>
+          </div>
+
+          <!--Budget period -->
+          <div class="col-6">
+            <select class="form-control" formControlName="budgetPeriod" data-testing-id="budgetPeriod">
+              <option *ngFor="let period of periods" [value]="period">
+                {{ 'account.user.new.budget.period.value.' + period | translate }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</div>

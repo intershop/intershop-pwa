@@ -8,6 +8,7 @@ interface NavigationItems {
     localizationKey: string;
     dataTestingId?: string;
     feature?: string;
+    serverSetting?: string;
     permission?: string;
     children?: NavigationItems;
   };
@@ -28,11 +29,15 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
    */
   navigationItems: NavigationItems = {
     '/account': { localizationKey: 'account.my_account.link' },
-    '/account/orders': { localizationKey: 'account.order_history.link' },
-    '/account/wishlists': {
-      localizationKey: 'account.wishlists.link',
-      feature: 'wishlists',
-      dataTestingId: 'wishlists-link',
+    '/account/requisitions/buyer': {
+      localizationKey: 'account.requisitions.requisitions',
+      serverSetting: 'services.OrderApprovalServiceDefinition.runnable',
+      permission: 'APP_B2B_PURCHASE',
+    },
+    '/account/requisitions/approver': {
+      localizationKey: 'account.requisitions.approvals',
+      serverSetting: 'services.OrderApprovalServiceDefinition.runnable',
+      permission: 'APP_B2B_ORDER_APPROVAL',
     },
     '/account/quotes': { localizationKey: 'account.navigation.quotes.link', feature: 'quoting' },
     '/account/order-templates': {
@@ -40,8 +45,14 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
       feature: 'orderTemplates',
       dataTestingId: 'order-templates-link',
     },
-    '/account/payment': { localizationKey: 'account.payment.link', dataTestingId: 'payments-link' },
+    '/account/orders': { localizationKey: 'account.order_history.link' },
+    '/account/wishlists': {
+      localizationKey: 'account.wishlists.link',
+      feature: 'wishlists',
+      dataTestingId: 'wishlists-link',
+    },
     '/account/addresses': { localizationKey: 'account.saved_addresses.link', dataTestingId: 'addresses-link' },
+    '/account/payment': { localizationKey: 'account.payment.link', dataTestingId: 'payments-link' },
     '/account/profile': { localizationKey: 'account.profile.link' },
     '/account/organization': {
       localizationKey: 'account.organization.user_management',

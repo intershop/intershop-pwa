@@ -203,6 +203,12 @@ export const deleteBasketPaymentFail = createAction('[Basket API] Delete Basket 
 
 export const deleteBasketPaymentSuccess = createAction('[Basket API] Delete Basket Payment Success');
 
+export const submitBasket = createAction('[Basket API] Submit a Basket for Approval');
+
+export const submitBasketSuccess = createAction('[Basket API] Submit a Basket for Approval Success');
+
+export const submitBasketFail = createAction('[Basket API] Submit a Basket for Approval Fail', httpError());
+
 export const resetBasketErrors = createAction('[Basket Internal] Reset Basket and Basket Promotion Errors');
 
 export const updateConcardisCvcLastUpdated = createAction(

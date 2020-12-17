@@ -7,7 +7,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
-import { anything, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
@@ -26,6 +26,9 @@ import {
   loadUsers,
   loadUsersFail,
   loadUsersSuccess,
+  setUserBudget,
+  setUserBudgetFail,
+  setUserBudgetSuccess,
   setUserRolesSuccess,
   updateUser,
   updateUserFail,
@@ -37,7 +40,17 @@ import { UsersEffects } from './users.effects';
 class DummyComponent {}
 
 const users = [
-  { login: '1', firstName: 'Patricia', lastName: 'Miller', name: 'Patricia Miller' },
+  {
+    login: '1',
+    firstName: 'Patricia',
+    lastName: 'Miller',
+    name: 'Patricia Miller',
+    budget: {
+      budget: { value: 500, currency: 'USD' },
+      orderSpentLimit: { value: 9000, currency: 'USD' },
+      budgetPeriod: 'monthly',
+    },
+  },
   { login: '2' },
 ] as B2bUser[];
 
@@ -57,6 +70,7 @@ describe('Users Effects', () => {
     when(usersService.updateUser(anything())).thenReturn(of(users[0]));
     when(usersService.getUsers()).thenReturn(of(users));
     when(usersService.deleteUser(anything())).thenReturn(of(true));
+    when(usersService.setUserBudget(anyString(), anything())).thenReturn(of(users[0].userBudget));
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -211,10 +225,6 @@ describe('Users Effects', () => {
       const action = updateUser({ user: users[0] });
 
       const completion = updateUserSuccess({ user: users[0] });
-      // const completion2 = displaySuccessMessage({
-      //   message: 'account.organization.user_management.update_user.confirmation',
-      //   messageParams: { 0: `${users[0].firstName} ${users[0].lastName}` },
-      // });
 
       actions$ = hot('        -a-a-a-|', { a: action });
       const expected$ = cold('-c-c-c-|', { c: completion });
@@ -233,6 +243,40 @@ describe('Users Effects', () => {
       const expected$ = cold('-b', { b: completion });
 
       expect(effects.updateUser$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updateUserBudget$', () => {
+    it('should call the service for updating user budget', done => {
+      actions$ = of(setUserBudget({ login: users[0].login, budget: users[0].userBudget }));
+
+      effects.setUserBudget$.subscribe(() => {
+        verify(usersService.setUserBudget(users[0].login, anything())).once();
+        done();
+      });
+    });
+
+    it('should update user budget when triggered', () => {
+      const action = setUserBudget({ login: users[0].login, budget: users[0].userBudget });
+
+      const completion = setUserBudgetSuccess({ login: users[0].login, budget: users[0].userBudget });
+      actions$ = hot('        -a-a-a-|', { a: action });
+      const expected$ = cold('-c-c-c-|', { c: completion });
+
+      expect(effects.setUserBudget$).toBeObservable(expected$);
+    });
+
+    it('should dispatch an UpdateUserFail action on failed user update', () => {
+      const error = makeHttpError({ status: 401, code: 'feld' });
+      when(usersService.setUserBudget(anyString(), anything())).thenReturn(throwError(error));
+
+      const action = setUserBudget({ login: users[0].login, budget: users[0].userBudget });
+      const completion = setUserBudgetFail({ login: users[0].login, error });
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-b', { b: completion });
+
+      expect(effects.setUserBudget$).toBeObservable(expected$);
     });
   });
 
@@ -290,6 +334,15 @@ describe('Users Effects', () => {
 
       it('should display success message after role update', () => {
         const action = setUserRolesSuccess({ login: '1', roles: [] });
+
+        actions$ = hot('        -a-a-a-|', { a: action });
+        const expected$ = cold('-c-c-c-|', { c: completion });
+
+        expect(effects.successMessageAfterUpdate$).toBeObservable(expected$);
+      });
+
+      it('should display success message after role update', () => {
+        const action = setUserBudgetSuccess({ login: '1', budget: undefined });
 
         actions$ = hot('        -a-a-a-|', { a: action });
         const expected$ = cold('-c-c-c-|', { c: completion });

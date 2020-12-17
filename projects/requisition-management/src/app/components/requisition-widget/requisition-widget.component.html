@@ -1,0 +1,40 @@
+<ish-info-box
+  heading="account.requisitions.widget.requisitions_title"
+  class="infobox-wrapper h-100"
+  cssClass="infobox-color-widget d-flex flex-column"
+>
+  <div class="loading-container mt-auto">
+    <div *ngIf="!(requisitionsLoading$ | async); else loading">
+      <div class="row align-items-end">
+        <div class="col">
+          <div class="infobox-count-large" data-testing-id="pending-counter">
+            {{ numPendingRequisitions$ | async }}
+          </div>
+          {{ 'account.requisitions.widget.pending' | translate }}
+        </div>
+        <div class="col text-right" *ngIf="totalAmountRequisitons$ | async as amount">
+          <div *ngIf="amount.value > 0">
+            <div>
+              {{ 'account.requisitions.widget.order_total' | translate }}
+            </div>
+            <div class="font-weight-bold" data-testing-id="pending-amount-sum">
+              {{ amount | ishPrice: 'gross' }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <a routerLink="/account/requisitions/buyer">
+            {{ 'account.requisitions.widget.view_all_requisitions' | translate }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</ish-info-box>
+
+<ng-template #loading>
+  <ish-loading></ish-loading>
+</ng-template>

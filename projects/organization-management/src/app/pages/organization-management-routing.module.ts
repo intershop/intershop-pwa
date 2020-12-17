@@ -6,6 +6,7 @@ import { RedirectFirstToParentGuard } from '../guards/redirect-first-to-parent.g
 
 import { UserCreatePageComponent } from './user-create/user-create-page.component';
 import { UserDetailPageComponent } from './user-detail/user-detail-page.component';
+import { UserEditBudgetPageComponent } from './user-edit-budget/user-edit-budget-page.component';
 import { UserEditProfilePageComponent } from './user-edit-profile/user-edit-profile-page.component';
 import { UserEditRolesPageComponent } from './user-edit-roles/user-edit-roles-page.component';
 import { UsersPageComponent } from './users/users-page.component';
@@ -43,6 +44,11 @@ export const routes: Routes = [
   {
     path: 'users/:B2BCustomerLogin/roles',
     component: UserEditRolesPageComponent,
+    canActivate: [RedirectFirstToParentGuard],
+  },
+  {
+    path: 'users/:B2BCustomerLogin/budget',
+    component: UserEditBudgetPageComponent,
     canActivate: [RedirectFirstToParentGuard],
   },
 ];

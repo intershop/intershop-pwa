@@ -58,4 +58,12 @@ export class PriceHelper {
       value: Math.round((p1.value + p2.value) * 100) / 100,
     };
   }
+
+  static empty(currency?: string): Price {
+    return {
+      type: 'Money',
+      value: 0,
+      currency,
+    };
+  }
 }

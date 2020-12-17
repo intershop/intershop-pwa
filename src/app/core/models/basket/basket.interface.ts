@@ -1,4 +1,5 @@
 import { AddressData } from 'ish-core/models/address/address.interface';
+import { BasketApproval } from 'ish-core/models/basket-approval/basket-approval.model';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.interface';
 import { BasketTotalData } from 'ish-core/models/basket-total/basket-total.interface';
@@ -17,6 +18,7 @@ export interface BasketBaseData {
   commonShipToAddress?: string;
   commonShippingMethod?: string;
   customer?: string;
+  user?: string;
   discounts?: {
     dynamicMessages?: string[];
     shippingBasedDiscounts?: string[];
@@ -40,6 +42,7 @@ export interface BasketBaseData {
       name: string;
     }[];
   };
+  approval?: BasketApproval;
 }
 
 export interface BasketData {

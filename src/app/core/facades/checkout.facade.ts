@@ -28,6 +28,7 @@ import {
   getBasketShippingAddress,
   getBasketValidationResults,
   getCurrentBasket,
+  getSubmittedBasket,
   isBasketInvoiceAndShippingAddressEqual,
   loadBasketEligiblePaymentMethods,
   loadBasketEligibleShippingMethods,
@@ -67,6 +68,7 @@ export class CheckoutFacade {
   basketLineItems$ = this.basket$.pipe(
     map(basket => (basket && basket.lineItems && basket.lineItems.length ? basket.lineItems : undefined))
   );
+  submittedBasket$ = this.store.pipe(select(getSubmittedBasket));
 
   deleteBasketItem(itemId: string) {
     this.store.dispatch(deleteBasketItem({ itemId }));

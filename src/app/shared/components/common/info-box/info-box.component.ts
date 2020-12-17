@@ -23,4 +23,9 @@ export class InfoBoxComponent {
    * Router link for Editing the displayed data. If a routerLink is given a link is displayed to route *to an edit page
    */
   @Input() editRouterLink: string;
+
+  /**
+   * Additional css classes to be passed to the infobox div
+   */
+  @Input() cssClass?: string;
 }

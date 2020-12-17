@@ -12,6 +12,7 @@ import { BasketValidation } from 'ish-core/models/basket-validation/basket-valid
 import { Product } from 'ish-core/models/product/product.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { createOrder } from 'ish-core/store/customer/orders';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -24,6 +25,7 @@ import {
   continueCheckoutSuccess,
   continueCheckoutWithIssues,
   loadBasketSuccess,
+  submitBasket,
   validateBasket,
 } from './basket.actions';
 
@@ -44,6 +46,7 @@ describe('Basket Validation Effects', () => {
       declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(),
+        CustomerStoreModule.forTesting('user', 'basket'),
         RouterTestingModule.withRoutes([
           { path: 'checkout', children: [{ path: 'address', component: DummyComponent }] },
         ]),
@@ -171,8 +174,24 @@ describe('Basket Validation Effects', () => {
 
     it('should map to action of type CreateOrder if targetStep is 5 (order creation)', () => {
       const action = continueCheckout({ targetStep: 5 });
-      const completion1 = createOrder();
-      const completion2 = continueCheckoutSuccess({ targetRoute: undefined, basketValidation });
+      const completion1 = continueCheckoutSuccess({ targetRoute: undefined, basketValidation });
+      const completion2 = createOrder();
+      actions$ = hot('-a----a----a', { a: action });
+      const expected$ = cold('-(cd)-(cd)-(cd)', { c: completion1, d: completion2 });
+
+      expect(effects.validateBasketAndContinueCheckout$).toBeObservable(expected$);
+    });
+
+    it('should map to action of type SubmitBasket if targetStep is 5 (order creation) and approval is required', () => {
+      store$.dispatch(
+        loadBasketSuccess({
+          basket: { ...BasketMockData.getBasket(), approval: { approvalRequired: true } },
+        })
+      );
+
+      const action = continueCheckout({ targetStep: 5 });
+      const completion1 = continueCheckoutSuccess({ targetRoute: undefined, basketValidation });
+      const completion2 = submitBasket();
       actions$ = hot('-a----a----a', { a: action });
       const expected$ = cold('-(cd)-(cd)-(cd)', { c: completion1, d: completion2 });
 

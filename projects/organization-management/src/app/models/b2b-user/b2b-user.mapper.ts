@@ -17,6 +17,16 @@ export class B2bUserMapper {
         lastName: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'lastName'),
         roleIDs: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'roleIDs'),
         active: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'active'),
+        userBudget: {
+          orderSpentLimit: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'orderSpentLimit'),
+          budget: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'budget'),
+          remainingBudget: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'remainingBudget'),
+          budgetPeriod: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'budgetPeriod'),
+          spentBudget: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'spentBudget') || {
+            ...AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'budget'),
+            value: 0,
+          },
+        },
       }));
     } else {
       throw new Error('data is required');

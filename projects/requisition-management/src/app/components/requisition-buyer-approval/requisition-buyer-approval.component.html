@@ -1,0 +1,78 @@
+<div *ngIf="requisition" class="row">
+  <ish-info-box heading="approval.detailspage.buyer_budget.heading" class="infobox-wrapper col-12">
+    <div class="row">
+      <div class="col-md-6">
+        <dl class="row dl-horizontal dl-separator">
+          <dt class="col-6">{{ 'approval.detailspage.buyer.label' | translate }}</dt>
+          <dd class="col-6">{{ requisition.user.firstName }} {{ requisition.user.lastName }}</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="row section">
+      <div class="col-md-6 pt-1">
+        <dl class="row dl-horizontal dl-separator">
+          <dt class="col-6">{{ 'approval.detailspage.order_spend_limit.label' | translate }}</dt>
+          <dd class="col-6">
+            <strong>
+              <ng-container *ngIf="requisition.userBudget?.orderSpentLimit; else noLimit">
+                {{ requisition.userBudget.orderSpentLimit | ishPrice }}
+              </ng-container>
+              <ng-template #noLimit>
+                {{ 'account.budget.unlimited' | translate }}
+              </ng-template>
+            </strong>
+          </dd>
+        </dl>
+      </div>
+      <div *ngIf="requisition.userBudget?.orderSpentLimit" class="col-md-6 mb-2">
+        <ish-budget-bar [budget]="requisition.userBudget?.orderSpentLimit" [spentBudget]="orderTotal"></ish-budget-bar>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <dl *ngIf="requisition.userBudget.budgetPeriod !== 'none'" class="row dl-horizontal dl-separator">
+          <dt class="col-6">{{ budgetLabel | translate }}</dt>
+          <dd class="col-6">
+            <strong>
+              <ng-container *ngIf="requisition.userBudget.budget; else noLimit">
+                {{ requisition.userBudget.budget | ishPrice }}
+              </ng-container>
+            </strong>
+          </dd>
+        </dl>
+        <dl *ngIf="requisition.userBudget?.spentBudget" class="row dl-horizontal dl-separator">
+          <dt class="col-6">{{ 'account.budget.already_spent.label' | translate }}</dt>
+          <dd class="col-6" [ngClass]="{ 'text-danger': spentPercentage > 1 }">
+            {{ requisition.userBudget.spentBudget | ishPrice }} ({{ spentPercentage | percent }})
+          </dd>
+        </dl>
+        <dl
+          *ngIf="requisition.approval.statusCode !== 'APPROVED'; else leftBudgetDisplay"
+          class="row dl-horizontal dl-separator"
+        >
+          <dt class="col-6">{{ 'approval.detailspage.budget.including_order.label' | translate }}</dt>
+          <dd class="col-6" [ngClass]="{ 'text-danger': spentPercentageIncludingThisRequisition > 1 }">
+            {{ requisition.userBudget?.spentBudgetIncludingThisRequisition | ishPrice }} ({{
+              spentPercentageIncludingThisRequisition | percent
+            }})
+          </dd>
+        </dl>
+        <ng-template #leftBudgetDisplay>
+          <dl class="row dl-horizontal dl-separator">
+            <dt class="col-6">{{ 'account.budget.left.label' | translate }}</dt>
+            <dd class="col-6">
+              {{ this.requisition.userBudget?.remainingBudget | ishPrice }} ({{ leftPercentage | percent }})
+            </dd>
+          </dl>
+        </ng-template>
+      </div>
+      <div *ngIf="requisition.userBudget?.budget" class="col-md-6 mb-3">
+        <ish-budget-bar
+          [budget]="requisition.userBudget?.budget"
+          [spentBudget]="requisition.userBudget?.spentBudget"
+          [additionalAmount]="requisition.approval.statusCode !== 'APPROVED' ? orderTotal : undefined"
+        ></ish-budget-bar>
+      </div>
+    </div>
+  </ish-info-box>
+</div>
