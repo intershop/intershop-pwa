@@ -144,14 +144,16 @@ describe('Quoting Effects', () => {
 
   describe('createQuoteRequestFromQuote$', () => {
     it('should create quote request from quote via quoting service when triggered', done => {
-      when(quotingService.createQuoteRequestFromQuote(anything())).thenCall(({ id }) => of(id));
+      when(quotingService.createQuoteRequestFromQuote(anything())).thenCall(id =>
+        of({ type: 'QuoteRequest', id } as QuoteRequest)
+      );
       actions$ = of(createQuoteRequestFromQuote({ id: 'ID' }));
 
       effects.createQuoteRequestFromQuote$.subscribe(action => {
         verify(quotingService.createQuoteRequestFromQuote(anything())).once();
         expect(action).toMatchInlineSnapshot(`
           [Quoting API] Create Quote Request From Quote Success:
-            entity: undefined
+            entity: {"type":"QuoteRequest","id":"ID"}
         `);
         done();
       });
@@ -160,17 +162,19 @@ describe('Quoting Effects', () => {
 
   describe('createQuoteRequestFromQuoteRequest$', () => {
     it('should create quote request from quote request via quoting service when triggered', done => {
-      when(quotingService.createQuoteRequestFromQuoteRequest(anything())).thenReturn(of('NEW'));
+      when(quotingService.createQuoteRequestFromQuoteRequest(anything())).thenCall(id =>
+        of({ type: 'QuoteRequest', id } as QuoteRequest)
+      );
       when(quotingService.getQuoteDetails(anything(), anything(), anything())).thenCall((id, type) =>
         of({ id, type, completenessLevel: 'Detail' } as QuoteStub)
       );
-      actions$ = of(createQuoteRequestFromQuoteRequest({ entity: { id: 'ID' } as QuoteRequest }));
+      actions$ = of(createQuoteRequestFromQuoteRequest({ id: 'ID' }));
 
       effects.createQuoteRequestFromQuoteRequest$.subscribe(action => {
         verify(quotingService.createQuoteRequestFromQuoteRequest(anything())).once();
         expect(action).toMatchInlineSnapshot(`
           [Quoting API] Create Quote Request From Quote Request Success:
-            entity: {"id":"NEW","type":"QuoteRequest","completenessLevel":"Detai...
+            entity: {"type":"QuoteRequest","id":"ID"}
         `);
         done();
       });

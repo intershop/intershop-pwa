@@ -146,11 +146,10 @@ export class QuotingEffects {
   createQuoteRequestFromQuoteRequest$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createQuoteRequestFromQuoteRequest),
-      mapToPayloadProperty('entity'),
-      map(QuotingHelper.asQuoteRequest),
-      concatMap(quoteRequest =>
-        this.quotingService.createQuoteRequestFromQuoteRequest(quoteRequest).pipe(
-          concatMap(id => this.quotingService.getQuoteDetails(id, 'QuoteRequest', 'List')),
+      mapToPayloadProperty('id'),
+      concatMap(quoteRequestId =>
+        this.quotingService.createQuoteRequestFromQuoteRequest(quoteRequestId).pipe(
+          // concatMap(id => this.quotingService.getQuoteDetails(id, 'QuoteRequest', 'List')),
           map(entity => createQuoteRequestFromQuoteRequestSuccess({ entity })),
           mapErrorToAction(loadQuotingFail)
         )
