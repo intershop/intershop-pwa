@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { getOrganizationHierarchiesState } from '../store/organization-hierarchies-store';
+import { getGroupsOfOrganization, getGroupsOfOrganizationCount } from '../store/group';
 
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
 export class OrganizationHierarchiesFacade {
   constructor(private store: Store) {}
 
-  /**
-   * example for debugging
-   */
-  organizationHierarchiesState$ = this.store.pipe(select(getOrganizationHierarchiesState));
+  groups$ = this.store.pipe(select(getGroupsOfOrganization));
+
+  groupsCount$ = this.store.pipe(select(getGroupsOfOrganizationCount));
 }
