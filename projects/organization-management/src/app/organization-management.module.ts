@@ -21,7 +21,13 @@ const exportedComponents = [
 ];
 
 @NgModule({
-  declarations: [...exportedComponents, BudgetWidgetComponent, HierarchiesCreateGroupPageComponent, HierarchiesPageComponent],
+  declarations: [
+    ...exportedComponents,
+    BudgetWidgetComponent,
+    GroupFormComponent,
+    HierarchiesCreateGroupPageComponent,
+    HierarchiesPageComponent,
+  ],
   exports: [...exportedComponents],
   imports: [OrganizationManagementStoreModule, SharedModule, TreeviewModule.forRoot()],
 })
