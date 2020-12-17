@@ -722,7 +722,7 @@
   "order.number.label": "Numéro de commande :",
   "order.tracking.error": "Malheureusement, nous n’avons pas pu localiser de commande avec les informations que vous nous avez fournies.",
   "order_template.create.heading": "Créer un modèle de commande",
-  "payment.error.PaymentInstrumentAlreadyExists": "L’instrument de paiement avec les paramètres donnés existe déjà.",
+  "payment.error.PaymentInstrumentAlreadyExists": "L’instrument de paiement n’a pas pu être créé. Les données de paiement avec les paramètres fournis existent déjà.",
   "product.add_to_cart.link": "Ajouter au panier",
   "product.add_to_cart.retailset.link": "Ajouter les articles au panier",
   "product.add_to_wishlist.link": "Ajouter à la liste de souhaits",

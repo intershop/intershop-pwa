@@ -720,7 +720,7 @@
   "order.number.label": "Bestellnummer:",
   "order.tracking.error": "Leider konnte keine Bestellung mit Ihren Daten gefunden werden.",
   "order_template.create.heading": "Bestellvorlage anlegen",
-  "payment.error.PaymentInstrumentAlreadyExists": "Ein Zahlungsmittel mit den angegebenen Parametern existiert bereits.",
+  "payment.error.PaymentInstrumentAlreadyExists": "Das Zahlungsmittel konnte nicht angelegt werden. Zahlungsdaten mit den angegebenen Parametern sind bereits vorhanden.",
   "product.add_to_cart.link": "In den Warenkorb",
   "product.add_to_cart.retailset.link": "Artikel in den Warenkorb legen",
   "product.add_to_wishlist.link": "Auf die Wunschliste",
