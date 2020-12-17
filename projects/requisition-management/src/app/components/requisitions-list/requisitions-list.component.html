@@ -74,9 +74,9 @@
     <!-- Buyer -->
     <ng-container cdkColumnDef="buyer">
       <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-buyer">
-        {{ 'account.approvallist.table.purchaser' | translate }}
+        {{ 'account.approvallist.table.buyer' | translate }}
       </th>
-      <td cdk-cell *cdkCellDef="let requisition" [attr.data-label]="'account.approvallist.table.purchaser' | translate">
+      <td cdk-cell *cdkCellDef="let requisition" [attr.data-label]="'account.approvallist.table.buyer' | translate">
         {{ requisition.user.firstName }} {{ requisition.user.lastName }}
       </td>
     </ng-container>
