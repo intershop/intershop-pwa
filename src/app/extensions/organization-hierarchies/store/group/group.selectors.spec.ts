@@ -8,7 +8,12 @@ import { OrganizationGroup } from '../../models/organization-group/organization-
 import { OrganizationHierarchiesStoreModule } from '../organization-hierarchies-store.module';
 
 import { loadGroups, loadGroupsFail, loadGroupsSuccess } from './group.actions';
-import { getGroupEntities, getGroupError, getGroupLoading, getGroups, getNumberOfGroups } from './group.selectors';
+import {
+  getGroupError,
+  getGroupLoading,
+  getGroupsOfOrganization,
+  getGroupsOfOrganizationCount,
+} from './group.selectors';
 
 describe('Group Selectors', () => {
   let store$: StoreWithSnapshots;
@@ -32,9 +37,8 @@ describe('Group Selectors', () => {
     });
 
     it('should not have entities when in initial state', () => {
-      expect(getGroupEntities(store$.state)).toBeEmpty();
-      expect(getGroups(store$.state)).toBeEmpty();
-      expect(getNumberOfGroups(store$.state)).toBe(0);
+      expect(getGroupsOfOrganization(store$.state)).toBeEmpty();
+      expect(getGroupsOfOrganizationCount(store$.state)).toBe(0);
     });
   });
 
@@ -54,9 +58,8 @@ describe('Group Selectors', () => {
       store$.dispatch(loadGroupsSuccess({ groups }));
       expect(getGroupLoading(store$.state)).toBeFalse();
       expect(getGroupError(store$.state)).toBeUndefined();
-      expect(getGroupEntities(store$.state)).not.toBeEmpty();
-      expect(getGroups(store$.state)).not.toBeEmpty();
-      expect(getNumberOfGroups(store$.state)).toBe(2);
+      expect(getGroupsOfOrganization(store$.state)).not.toBeEmpty();
+      expect(getGroupsOfOrganizationCount(store$.state)).toBe(2);
     });
 
     it('should set loading to false and set error state', () => {
@@ -64,9 +67,8 @@ describe('Group Selectors', () => {
 
       expect(getGroupLoading(store$.state)).toBeFalse();
       expect(getGroupError(store$.state)).toBeTruthy();
-      expect(getGroupEntities(store$.state)).toBeEmpty();
-      expect(getGroups(store$.state)).toBeEmpty();
-      expect(getNumberOfGroups(store$.state)).toBe(0);
+      expect(getGroupsOfOrganization(store$.state)).toBeEmpty();
+      expect(getGroupsOfOrganizationCount(store$.state)).toBe(0);
     });
   });
 });

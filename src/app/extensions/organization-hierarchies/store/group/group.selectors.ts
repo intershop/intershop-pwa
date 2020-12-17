@@ -11,7 +11,6 @@ export const getGroupLoading = createSelector(getGroupState, state => state.load
 export const getGroupError = createSelector(getGroupState, state => state.error);
 
 export const {
-  selectEntities: getGroupEntities,
-  selectAll: getGroups,
-  selectTotal: getNumberOfGroups,
+  selectAll: getGroupsOfOrganization,
+  selectTotal: getGroupsOfOrganizationCount,
 } = groupAdapter.getSelectors(getGroupState);
