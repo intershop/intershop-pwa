@@ -1,25 +1,17 @@
-import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
-import { provideMockStore } from '@ngrx/store/testing';
 import { cold, hot } from 'jest-marbles';
-import { Observable } from 'rxjs';
-import { instance, mock } from 'ts-mockito';
+import { Observable, of } from 'rxjs';
+import { anything, instance, mock, when } from 'ts-mockito';
 
-import { Customer } from 'ish-core/models/customer/customer.model';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
 import { OrganizationHierarchiesService } from '../../services/organization-hierarchies/organization-hierarchies.service';
 
-import { loadGroups } from './group.actions';
+import { loadGroups, loadGroupsSuccess } from './group.actions';
 import { GroupEffects } from './group.effects';
-
-@Component({ template: 'dummy' })
-class DummyComponent {}
-
-const customer = { customerNo: 'patricia' } as Customer;
 
 describe('Group Effects', () => {
   let actions$: Observable<Action>;
@@ -28,16 +20,14 @@ describe('Group Effects', () => {
 
   beforeEach(() => {
     orgServiceMock = mock(OrganizationHierarchiesService);
+    when(orgServiceMock.getGroups(anything())).thenReturn(of([]));
+
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
-      imports: [CustomerStoreModule.forTesting('user')],
+      imports: [CoreStoreModule.forTesting(), CustomerStoreModule.forTesting('user')],
       providers: [
         GroupEffects,
         provideMockActions(() => actions$),
         { provide: OrganizationHierarchiesService, useFactory: () => instance(orgServiceMock) },
-        provideMockStore({
-          selectors: [{ selector: getLoggedInCustomer, value: { customer } }],
-        }),
       ],
     });
 
@@ -45,12 +35,13 @@ describe('Group Effects', () => {
   });
 
   describe('loadGroups$', () => {
-    it('should not dispatch actions when encountering loadGroups', () => {
+    it('should dispatch loadGroupsSuccess actions when encountering loadGroups actions', () => {
       const action = loadGroups();
+      const completion = loadGroupsSuccess({ groups: [] });
       actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('------');
+      const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.loadGroup$).toBeObservable(expected$);
+      expect(effects.loadGroups$).toBeObservable(expected$);
     });
   });
 });
