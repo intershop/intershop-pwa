@@ -18,7 +18,7 @@ export class GroupEffects {
     private organizationService: OrganizationHierarchiesService
   ) {}
 
-  loadGroup$ = createEffect(() =>
+  loadGroups$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadGroups),
       withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
