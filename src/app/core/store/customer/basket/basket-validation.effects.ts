@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concatMap, filter, map, tap, withLatestFrom } from 'rxjs/operators';
+import { intersection } from 'lodash-es';
+import { concatMap, filter, map, mapTo, tap, withLatestFrom } from 'rxjs/operators';
 
 import {
   BasketValidationResultType,
@@ -10,6 +11,7 @@ import {
 } from 'ish-core/models/basket-validation/basket-validation.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { createOrder } from 'ish-core/store/customer/orders';
+import { getServerConfigParameter } from 'ish-core/store/general/server-config';
 import { loadProduct } from 'ish-core/store/shopping/products';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
@@ -20,6 +22,9 @@ import {
   continueCheckoutWithIssues,
   loadBasketEligiblePaymentMethods,
   loadBasketEligibleShippingMethods,
+  startCheckout,
+  startCheckoutFail,
+  startCheckoutSuccess,
   submitBasket,
   validateBasket,
 } from './basket.actions';
@@ -29,10 +34,72 @@ import { getCurrentBasket } from './basket.selectors';
 export class BasketValidationEffects {
   constructor(
     private actions$: Actions,
-    private router: Router,
     private store: Store,
+    private router: Router,
     private basketService: BasketService
   ) {}
+
+  private validationSteps: { scopes: BasketValidationScopeType[]; route: string }[] = [
+    { scopes: ['Products', 'Value'], route: '/basket' },
+    { scopes: ['InvoiceAddress', 'ShippingAddress', 'Addresses'], route: '/checkout/address' },
+    { scopes: ['Shipping'], route: '/checkout/shipping' },
+    { scopes: ['Payment'], route: '/checkout/payment' },
+    { scopes: ['All'], route: '/checkout/review' },
+    { scopes: ['All'], route: 'auto' }, // targetRoute will be calculated in dependence of the validation result
+  ];
+
+  /**
+   * Jumps to the first checkout step (no basket acceleration)
+   */
+  startCheckoutWithoutAcceleration$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(startCheckout),
+      withLatestFrom(this.store.pipe(select(getServerConfigParameter<boolean>('basket.acceleration')))),
+      filter(([, acc]) => !acc),
+      mapTo(continueCheckout({ targetStep: 1 }))
+    )
+  );
+
+  /**
+   * Check the basket before starting the basket acceleration
+   */
+  startCheckoutWithAcceleration$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(startCheckout),
+      withLatestFrom(this.store.pipe(select(getServerConfigParameter<boolean>('basket.acceleration')))),
+      filter(([, acc]) => acc),
+      concatMap(() =>
+        this.basketService.validateBasket(this.validationSteps[0].scopes).pipe(
+          map(basketValidation => startCheckoutSuccess({ basketValidation })),
+          mapErrorToAction(startCheckoutFail)
+        )
+      )
+    )
+  );
+
+  /**
+   * Validates the basket and jumps to the next possible checkout step (basket acceleration)
+   */
+  continueCheckoutWithAcceleration$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(startCheckoutSuccess),
+        mapToPayload(),
+        map(payload => payload.basketValidation.results),
+        filter(results => results.valid && !results.adjusted),
+        concatMap(() =>
+          this.basketService.validateBasket(this.validationSteps[4].scopes).pipe(
+            tap(basketValidation => {
+              if (basketValidation?.results?.valid) {
+                this.router.navigate([this.validationSteps[4].route]);
+              }
+              this.jumpToTargetRoute('auto', basketValidation?.results);
+            })
+          )
+        )
+      ),
+    { dispatch: false }
+  );
 
   /**
    * validates the basket but doesn't change the route
@@ -64,37 +131,9 @@ export class BasketValidationEffects {
       mapToPayloadProperty('targetStep'),
       whenTruthy(),
       concatMap(targetStep => {
-        let scopes: BasketValidationScopeType[] = [''];
-        let targetRoute = '';
-        switch (targetStep) {
-          case 1: {
-            scopes = ['Products', 'Value'];
-            targetRoute = '/checkout/address';
-            break;
-          }
-          case 2: {
-            scopes = ['InvoiceAddress', 'ShippingAddress', 'Addresses'];
-            targetRoute = '/checkout/shipping';
-            break;
-          }
-          case 3: {
-            scopes = ['Shipping'];
-            targetRoute = '/checkout/payment';
-            break;
-          }
-          case 4: {
-            scopes = ['Payment'];
-            targetRoute = '/checkout/review';
-            break;
-          }
-          // before order creation the whole basket is validated again
-          case 5: {
-            scopes = ['All'];
-            targetRoute = 'auto'; // targetRoute will be calculated in dependence of the validation result
-            break;
-          }
-        }
-        return this.basketService.validateBasket(scopes).pipe(
+        const targetRoute = this.validationSteps[targetStep].route;
+
+        return this.basketService.validateBasket(this.validationSteps[targetStep - 1].scopes).pipe(
           withLatestFrom(this.store.pipe(select(getCurrentBasket))),
           concatMap(([basketValidation, basket]) =>
             basketValidation.results.valid
@@ -153,38 +192,22 @@ export class BasketValidationEffects {
     if (!targetRoute || !results) {
       return;
     }
+
     if (targetRoute === 'auto') {
-      // determine where to go if basket validation finished with an issue before order creation
-      // consider the 1st error or info - maybe this logic can be enhanced later on
-      let scope =
-        results.errors && results.errors.find(issue => issue.parameters && issue.parameters.scopes).parameters.scopes;
-      if (!scope) {
-        scope =
-          results.infos && results.infos.find(issue => issue.parameters && issue.parameters.scopes).parameters.scopes;
+      let scopes = [];
+      results.errors?.forEach(error => (scopes = scopes.concat(error?.parameters?.scopes)));
+      if (!scopes?.length) {
+        results.infos?.forEach(info => (scopes = scopes.concat(info?.parameters?.scopes)));
       }
 
-      switch (scope) {
-        case 'Products':
-        case 'Value': {
-          this.router.navigate(['/basket'], { queryParams: { error: true } });
-          break;
+      this.validationSteps.every(step => {
+        if (intersection(step.scopes, scopes)?.length) {
+          this.router.navigate([step.route], { queryParams: { error: true } });
+          return false;
         }
-        case 'Addresses':
-        case 'ShippingAddress':
-        case 'InvoiceAddress': {
-          this.router.navigate(['/checkout/address'], { queryParams: { error: true } });
-          break;
-        }
-        case 'Shipping': {
-          this.router.navigate(['/checkout/shipping'], { queryParams: { error: true } });
-          break;
-        }
-        case 'Payment': {
-          this.router.navigate(['/checkout/payment'], { queryParams: { error: true } });
-          break;
-        }
-        // otherwise stay on the current page
-      }
+        return true;
+      });
+      // otherwise stay on the current page
     } else if (results.valid && !results.adjusted) {
       this.router.navigate([targetRoute]);
     }

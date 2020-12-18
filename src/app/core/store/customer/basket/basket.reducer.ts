@@ -55,6 +55,9 @@ import {
   setBasketPayment,
   setBasketPaymentFail,
   setBasketPaymentSuccess,
+  startCheckout,
+  startCheckoutFail,
+  startCheckoutSuccess,
   submitBasket,
   submitBasketFail,
   submitBasketSuccess,
@@ -127,7 +130,8 @@ export const basketReducer = createReducer(
     updateBasketPayment,
     deleteBasketPayment,
     submitBasket,
-    updateConcardisCvcLastUpdated
+    updateConcardisCvcLastUpdated,
+    startCheckout
   ),
   unsetLoadingAndErrorOn(
     loadBasketSuccess,
@@ -144,7 +148,9 @@ export const basketReducer = createReducer(
     continueCheckoutWithIssues,
     loadBasketEligibleShippingMethodsSuccess,
     loadBasketEligiblePaymentMethodsSuccess,
-    submitBasketSuccess
+    updateConcardisCvcLastUpdatedSuccess,
+    submitBasketSuccess,
+    startCheckoutSuccess
   ),
   setErrorOn(
     mergeBasketFail,
@@ -165,7 +171,7 @@ export const basketReducer = createReducer(
     deleteBasketPaymentFail,
     updateConcardisCvcLastUpdatedFail,
     submitBasketFail,
-    updateConcardisCvcLastUpdatedSuccess
+    startCheckoutFail
   ),
 
   on(loadBasketSuccess, mergeBasketSuccess, (state: BasketState, action) => {
@@ -203,7 +209,7 @@ export const basketReducer = createReducer(
       validationResults: initialValidationResults,
     })
   ),
-  on(continueCheckoutSuccess, continueCheckoutWithIssues, (state: BasketState, action) => {
+  on(startCheckoutSuccess, continueCheckoutSuccess, continueCheckoutWithIssues, (state: BasketState, action) => {
     const validation = action.payload.basketValidation;
     const basket = validation && validation.results.adjusted && validation.basket ? validation.basket : state.basket;
 

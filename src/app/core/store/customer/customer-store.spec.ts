@@ -36,13 +36,14 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUser } from 'ish-core/store/customer/user';
 import { UserEffects } from 'ish-core/store/customer/user/user.effects';
+import { GeneralStoreModule } from 'ish-core/store/general/general-store.module';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
-import { addProductToBasket, loadBasketSuccess } from './basket';
+import { addProductToBasket, loadBasketSuccess, startCheckout } from './basket';
 
 describe('Customer Store', () => {
   let store: StoreWithSnapshots;
@@ -133,6 +134,15 @@ describe('Customer Store', () => {
     when(basketServiceMock.getBaskets()).thenReturn(of([]));
     when(basketServiceMock.mergeBasket(anything(), anything(), anything())).thenReturn(of(basket));
     when(basketServiceMock.addItemsToBasket(anything())).thenReturn(of(undefined));
+    when(basketServiceMock.validateBasket(anything())).thenReturn(
+      of({
+        basket,
+        results: {
+          valid: true,
+          adjusted: false,
+        },
+      })
+    );
 
     const productsServiceMock = mock(ProductsService);
     when(productsServiceMock.getProduct(anything())).thenReturn(of(product));
@@ -155,9 +165,14 @@ describe('Customer Store', () => {
       imports: [
         CoreStoreModule.forTesting(['configuration'], [UserEffects]),
         CustomerStoreModule,
+        GeneralStoreModule.forTesting('serverConfig'),
         RouterTestingModule.withRoutes([
           {
             path: 'account',
+            component: DummyComponent,
+          },
+          {
+            path: 'checkout/address',
             component: DummyComponent,
           },
         ]),
@@ -229,10 +244,12 @@ describe('Customer Store', () => {
     });
 
     describe('and with basket', () => {
-      it('should merge basket on user login.', () => {
+      beforeEach(() => {
         store.dispatch(loadBasketSuccess({ basket }));
 
         store.reset();
+      });
+      it('should merge basket on user login.', () => {
         store.dispatch(loginUser({ credentials: {} as Credentials }));
 
         expect(store.actionsArray()).toMatchInlineSnapshot(`
@@ -243,6 +260,18 @@ describe('Customer Store', () => {
             user: {"title":"","firstName":"test","lastName":"test","phoneHome"...
           [Basket API] Merge two baskets Success:
             basket: {"id":"test","lineItems":[1]}
+        `);
+      });
+
+      it('should go to checkout address page after starting checkout.', () => {
+        store.dispatch(startCheckout());
+        expect(store.actionsArray()).toMatchInlineSnapshot(`
+          [Basket] Start the checkout process
+          [Basket] Validate Basket and continue checkout:
+            targetStep: 1
+          [Basket API] Validate Basket and continue with success:
+            targetRoute: "/checkout/address"
+            basketValidation: {"basket":{"id":"test","lineItems":[1]},"results":{"valid":t...
         `);
       });
     });
