@@ -7,6 +7,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./account-punchout/account-punchout-page.module').then(m => m.AccountPunchoutPageModule),
   },
+  {
+    path: 'create',
+    loadChildren: () =>
+      import('./account-punchout-create/account-punchout-create-page.module').then(
+        m => m.AccountPunchoutCreatePageModule
+      ),
+  },
 ];
 
 @NgModule({

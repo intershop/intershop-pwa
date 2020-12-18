@@ -6,7 +6,14 @@ import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils
 
 import { PunchoutUser } from '../../models/punchout-user/punchout-user.model';
 
-import { loadPunchoutUsers, loadPunchoutUsersFail, loadPunchoutUsersSuccess } from './oci-punchout.actions';
+import {
+  addPunchoutUser,
+  addPunchoutUserFail,
+  addPunchoutUserSuccess,
+  loadPunchoutUsers,
+  loadPunchoutUsersFail,
+  loadPunchoutUsersSuccess,
+} from './oci-punchout.actions';
 
 export const ociPunchoutAdapter = createEntityAdapter<PunchoutUser>();
 
@@ -22,8 +29,10 @@ const initialState: OciPunchoutState = ociPunchoutAdapter.getInitialState({
 
 export const ociPunchoutReducer = createReducer(
   initialState,
-  setLoadingOn(loadPunchoutUsers),
-  setErrorOn(loadPunchoutUsersFail),
-  unsetLoadingAndErrorOn(loadPunchoutUsersSuccess),
-  on(loadPunchoutUsersSuccess, (state, action) => ociPunchoutAdapter.upsertMany(action.payload.users, state))
+  setLoadingOn(loadPunchoutUsers, addPunchoutUser),
+  setErrorOn(loadPunchoutUsersFail, addPunchoutUserFail),
+  unsetLoadingAndErrorOn(loadPunchoutUsersSuccess, addPunchoutUserSuccess),
+
+  on(loadPunchoutUsersSuccess, (state, action) => ociPunchoutAdapter.upsertMany(action.payload.users, state)),
+  on(addPunchoutUserSuccess, (state, action) => ociPunchoutAdapter.addOne(action.payload.user, state))
 );

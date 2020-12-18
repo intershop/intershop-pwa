@@ -1,16 +1,25 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap } from 'rxjs/operators';
+import { map, mergeMap, tap } from 'rxjs/operators';
 
-import { mapErrorToAction } from 'ish-core/utils/operators';
+import { displaySuccessMessage } from 'ish-core/store/core/messages';
+import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 
 import { PunchoutService } from '../../services/punchout/punchout.service';
 
-import { loadPunchoutUsers, loadPunchoutUsersFail, loadPunchoutUsersSuccess } from './oci-punchout.actions';
+import {
+  addPunchoutUser,
+  addPunchoutUserFail,
+  addPunchoutUserSuccess,
+  loadPunchoutUsers,
+  loadPunchoutUsersFail,
+  loadPunchoutUsersSuccess,
+} from './oci-punchout.actions';
 
 @Injectable()
 export class OciPunchoutEffects {
-  constructor(private punchoutService: PunchoutService, private actions$: Actions) {}
+  constructor(private punchoutService: PunchoutService, private actions$: Actions, private router: Router) {}
 
   loadPunchoutUsers$ = createEffect(() =>
     this.actions$.pipe(
@@ -19,6 +28,29 @@ export class OciPunchoutEffects {
         this.punchoutService.getUsers().pipe(
           map(users => loadPunchoutUsersSuccess({ users })),
           mapErrorToAction(loadPunchoutUsersFail)
+        )
+      )
+    )
+  );
+
+  createPunchoutUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addPunchoutUser),
+      mapToPayloadProperty('user'),
+      mergeMap(newUser =>
+        this.punchoutService.createUser(newUser).pipe(
+          tap(() => {
+            // ToDo: go To account/punchout/<id> page
+            this.router.navigate(['/account/punchout']);
+          }),
+          mergeMap(user => [
+            addPunchoutUserSuccess({ user }),
+            displaySuccessMessage({
+              message: 'account.punchout.connection.created.message',
+              messageParams: { 0: `${user.login}` },
+            }),
+          ]),
+          mapErrorToAction(addPunchoutUserFail)
         )
       )
     )

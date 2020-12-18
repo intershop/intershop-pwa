@@ -1,17 +1,30 @@
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
-import { instance, mock, verify, when } from 'ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
+import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { PunchoutUser } from '../../models/punchout-user/punchout-user.model';
 import { PunchoutService } from '../../services/punchout/punchout.service';
 
-import { loadPunchoutUsers, loadPunchoutUsersFail, loadPunchoutUsersSuccess } from './oci-punchout.actions';
+import {
+  addPunchoutUser,
+  addPunchoutUserFail,
+  addPunchoutUserSuccess,
+  loadPunchoutUsers,
+  loadPunchoutUsersFail,
+  loadPunchoutUsersSuccess,
+} from './oci-punchout.actions';
 import { OciPunchoutEffects } from './oci-punchout.effects';
+
+@Component({ template: 'dummy' })
+class DummyComponent {}
 
 describe('Oci Punchout Effects', () => {
   let actions$: Observable<Action>;
@@ -23,8 +36,11 @@ describe('Oci Punchout Effects', () => {
   beforeEach(() => {
     punchoutService = mock(PunchoutService);
     when(punchoutService.getUsers()).thenReturn(of(users));
+    when(punchoutService.createUser(users[0])).thenReturn(of(users[0]));
 
     TestBed.configureTestingModule({
+      declarations: [DummyComponent],
+      imports: [RouterTestingModule.withRoutes([{ path: 'account/punchout', component: DummyComponent }])],
       providers: [
         OciPunchoutEffects,
         provideMockActions(() => actions$),
@@ -64,6 +80,44 @@ describe('Oci Punchout Effects', () => {
       const expected$ = cold('-b', { b: completion });
 
       expect(effects.loadPunchoutUsers$).toBeObservable(expected$);
+    });
+  });
+
+  describe('createPunchoutUsers$', () => {
+    it('should call the service for adding a punchout user', done => {
+      actions$ = of(addPunchoutUser({ user: users[0] }));
+
+      effects.createPunchoutUser$.subscribe(() => {
+        verify(punchoutService.createUser(anything())).once();
+        done();
+      });
+    });
+    it('should map to action of type AddPunchoutUserSuccess and DisplaySuccessMessage', () => {
+      const action = addPunchoutUser({ user: users[0] });
+
+      const completion1 = addPunchoutUserSuccess({ user: users[0] });
+      const completion2 = displaySuccessMessage({
+        message: 'account.punchout.connection.created.message',
+        messageParams: { 0: `${users[0].login}` },
+      });
+
+      actions$ = hot('        -a----a----a----|', { a: action });
+      const expected$ = cold('-(cd)-(cd)-(cd)-|', { c: completion1, d: completion2 });
+
+      expect(effects.createPunchoutUser$).toBeObservable(expected$);
+    });
+
+    it('should dispatch a AddPunchoutUserFail action on failed user creation', () => {
+      const error = makeHttpError({ status: 401, code: 'feld' });
+      when(punchoutService.createUser(users[0])).thenReturn(throwError(error));
+
+      const action = addPunchoutUser({ user: users[0] });
+      const completion = addPunchoutUserFail({ error });
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-b', { b: completion });
+
+      expect(effects.createPunchoutUser$).toBeObservable(expected$);
     });
   });
 });

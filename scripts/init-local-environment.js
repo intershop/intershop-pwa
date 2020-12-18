@@ -31,7 +31,7 @@ const b2b = 0;
 
 const extraFeatures: typeof environment.features =
   // default
-  b2b ? ['advancedVariationHandling', 'businessCustomerRegistration', 'quoting', 'quickorder', 'orderTemplates', punchout] : ['wishlists'];
+  b2b ? ['advancedVariationHandling', 'businessCustomerRegistration', 'quoting', 'quickorder', 'orderTemplates', 'punchout'] : ['wishlists'];
   // none
   // [];
 

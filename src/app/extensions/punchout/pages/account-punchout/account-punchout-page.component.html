@@ -7,17 +7,32 @@
 </div>
 
 <div class="section">
+  <div class="d-flex justify-content-between">
+    <h2 class="mt-1">{{ 'account.punchout.connections.list.heading' | translate }}</h2>
+    <button routerLink="/account/punchout/create" type="button" class="btn btn-secondary">
+      {{ 'account.punchout.add.button.label' | translate }}
+    </button>
+  </div>
   <ng-container *ngIf="punchoutUsers$ | async as users; else emptyList">
     <div *ngIf="users.length; else emptyList" class="list-body" data-testing-id="user-list">
       <ng-container *ngFor="let user of punchoutUsers$ | async">
         <div *ngIf="user; else emptyList" class="list-item-row row mx-0">
-          {{ user.login }}
+          <p>
+            {{ user.login }}<br />
+            <span *ngIf="user.active === false" class="input-help">{{
+              'account.user.list.status.inactive' | translate
+            }}</span>
+          </p>
         </div>
       </ng-container>
     </div>
+    <p>
+      {{ 'account.punchout.info.url.helptext' | translate }}
+    </p>
+    <p>!!ToDo: print die pwa link to start the pwa with the punchout user here!!</p>
   </ng-container>
   <ng-template #emptyList>
-    {{ 'account.punchout.no.user.text' | translate }}
+    {{ 'account.punchout.no_connections.text' | translate }}
   </ng-template>
 </div>
 

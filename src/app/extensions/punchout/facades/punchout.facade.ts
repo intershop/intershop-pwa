@@ -1,7 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { getPunchoutError, getPunchoutLoading, getPunchoutUsers, loadPunchoutUsers } from '../store/oci-punchout';
+import { PunchoutUser } from '../models/punchout-user/punchout-user.model';
+import {
+  addPunchoutUser,
+  getPunchoutError,
+  getPunchoutLoading,
+  getPunchoutUsers,
+  loadPunchoutUsers,
+} from '../store/oci-punchout';
 
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
@@ -14,5 +21,9 @@ export class PunchoutFacade {
   punchoutUsers$() {
     this.store.dispatch(loadPunchoutUsers());
     return this.store.pipe(select(getPunchoutUsers));
+  }
+
+  addPunchoutUser(user: PunchoutUser) {
+    this.store.dispatch(addPunchoutUser({ user }));
   }
 }

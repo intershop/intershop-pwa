@@ -7,6 +7,8 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
+import { PunchoutUser } from '../../models/punchout-user/punchout-user.model';
+
 import { PunchoutService } from './punchout.service';
 
 describe('Punchout Service', () => {
@@ -17,6 +19,8 @@ describe('Punchout Service', () => {
     apiServiceMock = mock(ApiService);
     when(apiServiceMock.get(anything())).thenReturn(of({}));
     when(apiServiceMock.resolveLinks()).thenReturn(() => of([]));
+    when(apiServiceMock.post(anything(), anything())).thenReturn(of({}));
+    when(apiServiceMock.resolveLink()).thenReturn(() => of({}));
 
     TestBed.configureTestingModule({
       providers: [
@@ -43,6 +47,14 @@ describe('Punchout Service', () => {
           "customers/4711/punchouts/oci/users",
         ]
       `);
+      done();
+    });
+  });
+
+  it('should call the addUser for creating a new punchout user', done => {
+    punchoutService.createUser({ login: 'ociuser' } as PunchoutUser).subscribe(() => {
+      verify(apiServiceMock.post(anything(), anything())).once();
+      expect(capture(apiServiceMock.post).last()[0]).toMatchInlineSnapshot(`"customers/4711/punchouts/oci/users"`);
       done();
     });
   });

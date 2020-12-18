@@ -14,6 +14,11 @@ export class SpecialValidators {
     return noSpecialCharsPattern.test(control.value) ? undefined : { noSpecialChars: { valid: false } };
   }
 
+  static punchoutLogin(control: FormControl): { [error: string]: { valid: boolean } } {
+    const punchoutLoginPattern = /^[a-zA-Z0-9_.@]*$/;
+    return punchoutLoginPattern.test(control.value) ? undefined : { punchoutLogin: { valid: false } };
+  }
+
   static integer(control: FormControl): { [error: string]: { valid: boolean } } {
     const integerPattern = /^(?:-?(?:0|[1-9][0-9]*)|)$/;
     return integerPattern.test(control.value) ? undefined : { integer: { valid: false } };

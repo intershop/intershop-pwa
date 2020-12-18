@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
 
 import { Link } from 'ish-core/models/link/link.model';
@@ -17,9 +17,8 @@ export class PunchoutService {
   private currentCustomer$ = this.store.pipe(select(getLoggedInCustomer), whenTruthy(), take(1));
 
   /**
-   * Returns the list of active baskets for the current user. The first basket is the last modified basket.
-   * Use this method to check if the user has at least one active basket
-   * @returns         An array of basket base data.
+   * Gets the list of oci punchout users.
+   * @returns    An array of puchout users.
    */
   getUsers(): Observable<PunchoutUser[]> {
     return this.currentCustomer$.pipe(
@@ -27,6 +26,25 @@ export class PunchoutService {
         this.apiService
           .get(`customers/${customer.customerNo}/punchouts/oci/users`)
           .pipe(unpackEnvelope<Link>(), this.apiService.resolveLinks<PunchoutUser>())
+      )
+    );
+  }
+
+  /**
+   * Creates an oci punchout user (connection).
+   * @param user    The punchout user.
+   * @returns       The created punchout user.
+   */
+  createUser(user: PunchoutUser): Observable<PunchoutUser> {
+    if (!user) {
+      return throwError('createUser() called without punchout user');
+    }
+
+    return this.currentCustomer$.pipe(
+      switchMap(customer =>
+        this.apiService
+          .post(`customers/${customer.customerNo}/punchouts/oci/users`, user)
+          .pipe(this.apiService.resolveLink<PunchoutUser>())
       )
     );
   }
