@@ -13,7 +13,7 @@ on:
       - 'docs/**'
 
 env:
-  ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8080
+  ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
 
 jobs:
   CancelPrevious:
@@ -31,10 +31,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 12
+      - name: Use Node.js 14
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
 
       - name: Install root dependencies
         run: npm ci
@@ -61,10 +61,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 12
+      - name: Use Node.js 14
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
 
       - name: Download Build Output
         uses: actions/download-artifact@v2
@@ -95,16 +95,13 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
-        test: ['mock', 'b2c', 'b2b']
+        test: ['b2c', 'b2b']
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Install root dependencies
-        if: matrix.test == 'mock'
-        run: npm ci
 
       - name: Install e2e dependencies
         run: |
@@ -112,7 +109,6 @@ jobs:
           npm i
 
       - name: Download Build Output
-        if: matrix.test != 'mock'
         uses: actions/download-artifact@v2
         with:
           name: dist
@@ -133,12 +129,7 @@ jobs:
           echo "FEATURES=quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,advancedVariationHandling" >> $GITHUB_ENV
 
       - name: Start SSR
-        if: matrix.test != 'mock'
         run: npm run serve &
-
-      - name: Start Dev-Server
-        if: matrix.test == 'mock'
-        run: npm run ng -- serve &
 
       - name: Cypress
         uses: cypress-io/github-action@v2

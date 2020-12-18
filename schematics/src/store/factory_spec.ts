@@ -38,7 +38,7 @@ describe('Store Schematic', () => {
     const options = { ...defaultOptions };
 
     const tree = await schematicRunner.runSchematicAsync('store', options, appTree).toPromise();
-    const files = tree.files.filter(x => x.search('foo') >= 0);
+    const files = tree.files.filter(x => x.search('foo') >= 0).sort();
     expect(files).toMatchInlineSnapshot(`
       Array [
         "/src/app/core/store/core/foo/foo.actions.ts",
@@ -70,7 +70,7 @@ describe('Store Schematic', () => {
     const options = { ...defaultOptions, feature: 'bar' };
 
     const tree = await schematicRunner.runSchematicAsync('store', options, appTree).toPromise();
-    const files = tree.files.filter(x => x.search('foo') >= 0);
+    const files = tree.files.filter(x => x.search('foo') >= 0).sort();
     expect(files).toMatchInlineSnapshot(`
       Array [
         "/src/app/core/store/bar/foo/foo.actions.ts",
@@ -102,7 +102,7 @@ describe('Store Schematic', () => {
     const options = { ...defaultOptions, extension: 'feature' };
 
     const tree = await schematicRunner.runSchematicAsync('store', options, appTree).toPromise();
-    const files = tree.files.filter(x => x.search('foo') >= 0);
+    const files = tree.files.filter(x => x.search('foo') >= 0).sort();
     expect(files).toMatchInlineSnapshot(`
       Array [
         "/src/app/extensions/feature/store/foo/foo.actions.ts",

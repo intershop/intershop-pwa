@@ -10,27 +10,19 @@ export class MyAccountPage {
   }
 
   navigateToQuoting() {
-    cy.get('a[data-testing-id="quoute-list-link"]').click();
+    cy.get('a[data-testing-id="quote-list-link"]').click();
   }
 
-  get newQuoteLabel() {
-    return cy.get('[data-testing-id="new-counter"]');
+  get respondedQuotesCount() {
+    return cy.get('[data-testing-id="responded-counter"]');
   }
 
-  get submittedQuoteLabel() {
+  get submittedQuotesCount() {
     return cy.get('[data-testing-id="submitted-counter"]');
   }
 
-  get acceptedQuoteLabel() {
-    return cy.get('[data-testing-id="accepted-counter"]');
-  }
-
-  get rejectedQuoteLabel() {
-    return cy.get('[data-testing-id="rejected-counter"]');
-  }
-
   navigateToAddresses() {
-    cy.get('a[data-testing-id="addresses-link"]').click({ force: true });
+    cy.get('a[data-testing-id="addresses-link"]').click();
   }
 
   navigateToWishlists() {

@@ -6,9 +6,9 @@ import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { InplaceEditComponent } from 'ish-shared/components/common/inplace-edit/inplace-edit.component';
-import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 
 import { QuoteContextFacade } from '../../facades/quote-context.facade';
+import { QuoteLineItemListComponent } from '../quote-line-item-list/quote-line-item-list.component';
 import { QuoteStateComponent } from '../quote-state/quote-state.component';
 
 import { QuoteEditComponent } from './quote-edit.component';
@@ -26,7 +26,7 @@ describe('Quote Edit Component', () => {
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(InplaceEditComponent),
-        MockComponent(LineItemListComponent),
+        MockComponent(QuoteLineItemListComponent),
         MockComponent(QuoteStateComponent),
         QuoteEditComponent,
       ],

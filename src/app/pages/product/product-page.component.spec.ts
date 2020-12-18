@@ -107,23 +107,23 @@ describe('Product Page Component', () => {
     const product = {
       sku: '222',
       variableVariationAttributes: [
-        { name: 'Attr 1', type: 'VariationAttribute', value: 'B', variationAttributeId: 'a1' },
-        { name: 'Attr 2', type: 'VariationAttribute', value: 'D', variationAttributeId: 'a2' },
+        { name: 'Attr 1', type: 'String', value: 'B', variationAttributeId: 'a1' },
+        { name: 'Attr 2', type: 'String', value: 'D', variationAttributeId: 'a2' },
       ],
       variations: () => [
         {
           sku: '222',
           variableVariationAttributes: [
-            { name: 'Attr 1', type: 'VariationAttribute', value: 'B', variationAttributeId: 'a1' },
-            { name: 'Attr 2', type: 'VariationAttribute', value: 'D', variationAttributeId: 'a2' },
+            { name: 'Attr 1', type: 'String', value: 'B', variationAttributeId: 'a1' },
+            { name: 'Attr 2', type: 'String', value: 'D', variationAttributeId: 'a2' },
           ],
         },
         {
           sku: '333',
           attributes: [{ name: 'defaultVariation', type: 'Boolean', value: true }],
           variableVariationAttributes: [
-            { name: 'Attr 1', type: 'VariationAttribute', value: 'A', variationAttributeId: 'a1' },
-            { name: 'Attr 2', type: 'VariationAttribute', value: 'D', variationAttributeId: 'a2' },
+            { name: 'Attr 1', type: 'String', value: 'A', variationAttributeId: 'a1' },
+            { name: 'Attr 2', type: 'String', value: 'D', variationAttributeId: 'a2' },
           ],
           defaultCategory: noop,
         },

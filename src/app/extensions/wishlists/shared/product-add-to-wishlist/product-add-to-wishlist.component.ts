@@ -28,6 +28,7 @@ import { SelectWishlistModalComponent } from '../select-wishlist-modal/select-wi
 export class ProductAddToWishlistComponent implements OnDestroy {
   @Input() product: Product;
   @Input() displayType?: 'icon' | 'link' | 'animated' = 'link';
+  @Input() class?: string;
 
   private destroy$ = new Subject();
 

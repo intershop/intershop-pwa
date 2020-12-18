@@ -2,7 +2,7 @@ import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { setErrorOn, setLoadingOn } from 'ish-core/utils/ngrx-creators';
+import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
 import { B2bRole } from '../../models/b2b-role/b2b-role.model';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
@@ -20,6 +20,9 @@ import {
   loadUsers,
   loadUsersFail,
   loadUsersSuccess,
+  setUserBudget,
+  setUserBudgetFail,
+  setUserBudgetSuccess,
   setUserRolesFail,
   setUserRolesSuccess,
   updateUser,
@@ -45,8 +48,17 @@ const initialState: UsersState = usersAdapter.getInitialState({
 
 export const usersReducer = createReducer(
   initialState,
-  setLoadingOn(loadUsers, addUser, updateUser, deleteUser),
-  setErrorOn(loadUsersFail, loadUserFail, addUserFail, updateUserFail, deleteUserFail, setUserRolesFail),
+  setLoadingOn(loadUsers, addUser, updateUser, deleteUser, setUserBudget),
+  unsetLoadingAndErrorOn(loadUsersSuccess, addUserSuccess, updateUserSuccess, deleteUserSuccess, setUserBudgetSuccess),
+  setErrorOn(
+    loadUsersFail,
+    loadUserFail,
+    addUserFail,
+    updateUserFail,
+    deleteUserFail,
+    setUserRolesFail,
+    setUserBudgetFail
+  ),
   on(loadUsersSuccess, (state: UsersState, action) => {
     const { users } = action.payload;
 
@@ -54,8 +66,6 @@ export const usersReducer = createReducer(
       ...usersAdapter.upsertMany(users, state),
       // preserve order from API
       ids: users.map(u => u.login),
-      loading: false,
-      error: undefined,
     };
   }),
   on(loadUserSuccess, (state: UsersState, action) => {
@@ -72,8 +82,6 @@ export const usersReducer = createReducer(
 
     return {
       ...usersAdapter.addOne(user, state),
-      loading: false,
-      error: undefined,
     };
   }),
   on(updateUserSuccess, (state: UsersState, action) => {
@@ -81,8 +89,6 @@ export const usersReducer = createReducer(
 
     return {
       ...usersAdapter.upsertOne(user, state),
-      loading: false,
-      error: undefined,
     };
   }),
   on(deleteUserSuccess, (state: UsersState, action) => {
@@ -90,8 +96,6 @@ export const usersReducer = createReducer(
 
     return {
       ...usersAdapter.removeOne(login, state),
-      loading: false,
-      error: undefined,
     };
   }),
   on(loadSystemUserRolesSuccess, (state, action) => ({
@@ -100,5 +104,8 @@ export const usersReducer = createReducer(
   })),
   on(setUserRolesSuccess, (state, action) =>
     usersAdapter.updateOne({ id: action.payload.login, changes: { roleIDs: action.payload.roles } }, state)
-  )
+  ),
+  on(setUserBudgetSuccess, (state, action) => ({
+    ...usersAdapter.updateOne({ id: action.payload.login, changes: { userBudget: action.payload.budget } }, state),
+  }))
 );

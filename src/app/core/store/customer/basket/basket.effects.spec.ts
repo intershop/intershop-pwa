@@ -6,7 +6,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
-import { anything, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
@@ -18,6 +18,9 @@ import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
 import {
+  deleteBasketAttribute,
+  deleteBasketAttributeFail,
+  deleteBasketAttributeSuccess,
   loadBasket,
   loadBasketByAPIToken,
   loadBasketEligibleShippingMethods,
@@ -26,6 +29,12 @@ import {
   loadBasketFail,
   loadBasketSuccess,
   resetBasketErrors,
+  setBasketAttribute,
+  setBasketAttributeFail,
+  setBasketAttributeSuccess,
+  submitBasket,
+  submitBasketFail,
+  submitBasketSuccess,
   updateBasket,
   updateBasketFail,
   updateBasketShippingMethod,
@@ -241,6 +250,149 @@ describe('Basket Effects', () => {
     });
   });
 
+  describe('setCustomAttributeToBasket$', () => {
+    beforeEach(() => {
+      when(basketServiceMock.createBasketAttribute(anything())).thenReturn(of(undefined));
+      when(basketServiceMock.updateBasketAttribute(anything())).thenReturn(of(undefined));
+
+      store$.dispatch(
+        loadBasketSuccess({
+          basket: {
+            id: 'BID',
+            lineItems: [],
+            attributes: [
+              {
+                name: 'attr2',
+                value: 'abc',
+              },
+            ],
+          } as Basket,
+        })
+      );
+    });
+
+    it('should call the basketService for setCustomAttributeToBasket (create)', done => {
+      const attribute = { name: 'attr1', value: 'xyz' };
+      const action = setBasketAttribute({ attribute });
+      actions$ = of(action);
+
+      effects.setCustomAttributeToBasket$.subscribe(() => {
+        verify(basketServiceMock.createBasketAttribute(attribute)).once();
+        done();
+      });
+    });
+
+    it('should call the basketService for setCustomAttributeToBasket (update)', done => {
+      const attribute = { name: 'attr2', value: 'xyz' };
+      const action = setBasketAttribute({ attribute });
+      actions$ = of(action);
+
+      effects.setCustomAttributeToBasket$.subscribe(() => {
+        verify(basketServiceMock.updateBasketAttribute(attribute)).once();
+        done();
+      });
+    });
+
+    it('should map to action of type SetBasketCustomAttributeSuccess and LoadBasket', () => {
+      const attribute = { name: 'attr', value: 'xyz' };
+      const action = setBasketAttribute({ attribute });
+      const completion1 = setBasketAttributeSuccess();
+      const completion2 = loadBasket();
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
+
+      expect(effects.setCustomAttributeToBasket$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type SetBasketCustomAttributeFail', () => {
+      when(basketServiceMock.createBasketAttribute(anything())).thenReturn(
+        throwError(makeHttpError({ message: 'invalid' }))
+      );
+
+      const attribute = { name: 'attr', value: 'xyz' };
+      const action = setBasketAttribute({ attribute });
+      const completion = setBasketAttributeFail({ error: makeHttpError({ message: 'invalid' }) });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.setCustomAttributeToBasket$).toBeObservable(expected$);
+    });
+  });
+
+  describe('deleteCustomAttributeToBasket$', () => {
+    beforeEach(() => {
+      when(basketServiceMock.deleteBasketAttribute(anyString())).thenReturn(of(undefined));
+
+      store$.dispatch(
+        loadBasketSuccess({
+          basket: {
+            id: 'BID',
+            lineItems: [],
+            attributes: [
+              {
+                name: 'attr2',
+                value: 'abc',
+              },
+            ],
+          } as Basket,
+        })
+      );
+    });
+
+    it('should call the basketService for deleteCustomAttributeToBasket', done => {
+      const attributeName = 'attr2';
+      const action = deleteBasketAttribute({ attributeName });
+      actions$ = of(action);
+
+      effects.deleteCustomAttributeFromBasket$.subscribe(() => {
+        verify(basketServiceMock.deleteBasketAttribute(attributeName)).once();
+        done();
+      });
+    });
+
+    it('should not call the basketService for deleteCustomAttributeToBasket if the custom attribute does not exist at basket', done => {
+      const attributeName = 'attr1';
+      const action = deleteBasketAttribute({ attributeName });
+      actions$ = of(action);
+
+      effects.deleteCustomAttributeFromBasket$.subscribe(
+        () => {
+          verify(basketServiceMock.deleteBasketAttribute(attributeName)).never();
+        },
+        fail,
+        done
+      );
+    });
+
+    it('should map to action of type DeleteBasketCustomAttributeSuccess and LoadBasket', () => {
+      const attributeName = 'attr2';
+      const action = deleteBasketAttribute({ attributeName });
+      actions$ = of(action);
+
+      const completion1 = deleteBasketAttributeSuccess();
+      const completion2 = loadBasket();
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
+
+      expect(effects.deleteCustomAttributeFromBasket$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type DeleteBasketCustomAttributeFail', () => {
+      when(basketServiceMock.deleteBasketAttribute(anyString())).thenReturn(
+        throwError(makeHttpError({ message: 'invalid' }))
+      );
+
+      const attributeName = 'attr2';
+      const action = deleteBasketAttribute({ attributeName });
+      actions$ = of(action);
+      const completion = deleteBasketAttributeFail({ error: makeHttpError({ message: 'invalid' }) });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.deleteCustomAttributeFromBasket$).toBeObservable(expected$);
+    });
+  });
+
   describe('routeListenerForResettingBasketErrors$', () => {
     it('should fire ResetBasketErrors when route basket or checkout/* is navigated', done => {
       router.navigateByUrl('/checkout/payment');
@@ -276,6 +428,47 @@ describe('Basket Effects', () => {
         })
       );
       expect(effects.routeListenerForResettingBasketErrors$).toBeObservable(cold('|'));
+    });
+  });
+
+  describe('submitBasket$', () => {
+    beforeEach(() => {
+      store$.dispatch(loadBasketSuccess({ basket: { id: 'BID' } as Basket }));
+    });
+
+    it('should call the basketService for submitBasket', done => {
+      when(basketServiceMock.createRequisition(anyString())).thenReturn(of(undefined));
+      const payload = 'BID';
+      const action = submitBasket();
+      actions$ = of(action);
+
+      effects.createRequisition$.subscribe(() => {
+        verify(basketServiceMock.createRequisition(payload)).once();
+        done();
+      });
+    });
+
+    it('should map a valid request to action of type SubmitBasketBuccess', () => {
+      when(basketServiceMock.createRequisition(anyString())).thenReturn(of(undefined));
+
+      const action = submitBasket();
+      const completion = submitBasketSuccess();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.createRequisition$).toBeObservable(expected$);
+    });
+
+    it('should map an invalid request to action of type SubmitBasketFail', () => {
+      when(basketServiceMock.createRequisition(anyString())).thenReturn(
+        throwError(makeHttpError({ message: 'invalid' }))
+      );
+      const action = submitBasket();
+      const completion = submitBasketFail({ error: makeHttpError({ message: 'invalid' }) });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.createRequisition$).toBeObservable(expected$);
     });
   });
 });

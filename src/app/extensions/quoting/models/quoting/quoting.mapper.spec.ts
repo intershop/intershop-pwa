@@ -132,6 +132,7 @@ describe('Quoting Mapper', () => {
           {
             type: 'QuoteLineItem',
             originQuantity: {
+              name: 'Attr1',
               type: 'Quantity',
               value: 1,
               unit: '',
@@ -149,6 +150,7 @@ describe('Quoting Mapper', () => {
               currency: 'USD',
             } as PriceData,
             quantity: {
+              name: 'Attr2',
               type: 'Quantity',
               value: 2,
               unit: '',
@@ -201,6 +203,7 @@ describe('Quoting Mapper', () => {
             Object {
               "id": undefined,
               "originQuantity": Object {
+                "name": "Attr1",
                 "type": "Quantity",
                 "unit": "",
                 "value": 1,
@@ -210,8 +213,14 @@ describe('Quoting Mapper', () => {
                 "type": "Money",
                 "value": 1002.95,
               },
+              "originTotal": Object {
+                "currency": "USD",
+                "type": "Money",
+                "value": 1002.95,
+              },
               "productSKU": "10696946",
               "quantity": Object {
+                "name": "Attr2",
                 "type": "Quantity",
                 "unit": "",
                 "value": 2,
@@ -221,17 +230,10 @@ describe('Quoting Mapper', () => {
                 "type": "Money",
                 "value": 10.95,
               },
-              "totals": Object {
-                "originTotal": Object {
-                  "currency": "USD",
-                  "type": "Money",
-                  "value": 1002.95,
-                },
-                "total": Object {
-                  "currency": "USD",
-                  "type": "Money",
-                  "value": 10.95,
-                },
+              "total": Object {
+                "currency": "USD",
+                "type": "Money",
+                "value": 10.95,
               },
             },
           ],
@@ -320,6 +322,7 @@ describe('Quoting Mapper', () => {
           {
             type: 'QuoteRequestLineItem',
             quantity: {
+              name: 'Attr',
               type: 'Quantity',
               value: 1,
               unit: '',
@@ -354,6 +357,7 @@ describe('Quoting Mapper', () => {
               "id": "yMUKCgoEgGkAAAF0AdEGFSQc",
               "productSKU": "8899566",
               "quantity": Object {
+                "name": "Attr",
                 "type": "Quantity",
                 "unit": "",
                 "value": 1,
@@ -363,12 +367,10 @@ describe('Quoting Mapper', () => {
                 "type": "Money",
                 "value": 964.5,
               },
-              "totals": Object {
-                "total": Object {
-                  "currency": "USD",
-                  "type": "Money",
-                  "value": 964.5,
-                },
+              "total": Object {
+                "currency": "USD",
+                "type": "Money",
+                "value": 964.5,
               },
             },
           ],

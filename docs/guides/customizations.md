@@ -153,5 +153,5 @@ In theory the customized PWA project can re-use our Page Objects without much ad
 Specs should be copied and adapted for the project to use correct demo data.
 When executing tests, the test itself requires an appropriate demo server to be launched before the run.
 We currently use patterns in the test name to determine the channel for which the test can be run.
-E.g. `login-user.mock.b2c.e2e-spec.ts` can be run on mocked data (no ICM) and a PWA configured with the inSPIRED B2C channel.
+E.g. `login-user.b2b.b2c.e2e-spec.ts` can be run on with the inSPIRED B2C and B2B channels.
 The same system can be adopted for customization projects.

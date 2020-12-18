@@ -1,3 +1,4 @@
+import { waitLoadingEnd } from '../../framework';
 import { BreadcrumbModule } from '../breadcrumb.module';
 import { HeaderModule } from '../header.module';
 
@@ -39,11 +40,12 @@ export class WishlistsDetailsPage {
       cy.get('[data-testing-id="preferred"]').check();
     }
     cy.get('[data-testing-id="wishlist-dialog-submit"]').click();
-    cy.wait(500);
+    waitLoadingEnd(2000);
   }
 
   deleteWishlist(id: string) {
     this.getWishlistItemById(id).find('[data-testing-id="delete-wishlist"]').click();
+    waitLoadingEnd(2000);
   }
 
   moveProductToWishlist(productId: string, listName: string) {
@@ -51,15 +53,16 @@ export class WishlistsDetailsPage {
     cy.get(`[data-testing-id="${listName}"]`).check();
     cy.get('ngb-modal-window').find('button[class="btn btn-primary"]').click();
     cy.get('[data-testing-id="wishlist-success-link"] a').click();
+    waitLoadingEnd(2000);
   }
 
   addProductToBasket(productId: string, quantity: number) {
     this.getWishlistItemById(productId).find('[data-testing-id="quantity"]').clear().type(quantity.toString());
 
-    cy.wait(3000);
+    waitLoadingEnd(2000);
     cy.server().route('POST', '**/baskets/*/items').as('basket');
     cy.server().route('GET', '**/baskets/current*').as('basketCurrent');
-    cy.wait(3000);
+    waitLoadingEnd(2000);
 
     this.getWishlistItemById(productId).find('[data-testing-id="addToCartButton"]').click();
 

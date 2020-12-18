@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { FormControlFeedbackComponent } from './form-control-feedback.component';
@@ -11,19 +11,12 @@ describe('Form Control Feedback Component', () => {
   let fixture: ComponentFixture<FormControlFeedbackComponent>;
   let component: FormControlFeedbackComponent;
   let element: HTMLElement;
-  let translateService: TranslateService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [FormControlFeedbackComponent, MockComponent(FaIconComponent)],
     }).compileComponents();
-
-    translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    translateService.use('en');
-    translateService.set('requiredkey', 'requiredmessage');
-    translateService.set('lengthkey', 'lengthmessage');
   });
 
   beforeEach(() => {
@@ -64,7 +57,7 @@ describe('Form Control Feedback Component', () => {
 
     expect(component.control.errors.minlength).toBeTruthy();
     expect(elements).toHaveLength(1);
-    expect(elements[0].nativeElement.textContent).toContain('lengthmessage');
+    expect(elements[0].nativeElement.textContent).toContain('lengthkey');
   });
 
   it('should show hidden existing error when marked as dirty', () => {

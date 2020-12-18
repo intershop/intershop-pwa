@@ -5,8 +5,8 @@
     infiniteScroll
     (scrolled)="loadMoreProducts('down')"
     (scrolledUp)="loadMoreProducts('up')"
-    alwaysCallback="true"
-    immediateCheck="true"
+    [alwaysCallback]="true"
+    [immediateCheck]="true"
   >
     <ish-product-list-toolbar
       [itemCount]="listing.itemCount"

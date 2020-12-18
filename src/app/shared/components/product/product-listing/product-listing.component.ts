@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { concatMap, map, take, takeUntil } from 'rxjs/operators';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { Category } from 'ish-core/models/category/category.model';
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { ProductListingID, ProductListingView } from 'ish-core/models/product-listing/product-listing.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
@@ -15,7 +15,7 @@ import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListingComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() category?: Category;
+  @Input() category?: CategoryView;
   @Input() id: ProductListingID;
   @Input() mode: 'endless-scrolling' | 'paging' = 'endless-scrolling';
   @Input() fragmentOnRouting = 'product-list-top';

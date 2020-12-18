@@ -1,3 +1,4 @@
+import { Auth0Config } from 'ish-core/identity-provider/auth0.identity-provider';
 import { CookieConsentOptions } from 'ish-core/models/cookies/cookies.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
@@ -20,10 +21,8 @@ export interface Environment {
   icmChannel: string;
   icmApplication?: string;
 
-  // set 'mockServerAPI' to true if not working against a real ICM server
-  mockServerAPI?: boolean;
   // array of REST path expressions that should always be mocked
-  mustMockPaths?: string[];
+  apiMockPaths?: string[];
 
   /* FEATURE TOOGLES */
   features: (
@@ -91,10 +90,12 @@ export interface Environment {
 
   // client-side configuration for identity providers
   identityProviders?: {
-    [name: string]: {
-      type: string;
-      [key: string]: unknown;
-    };
+    [name: string]:
+      | {
+          type: string;
+          [key: string]: unknown;
+        }
+      | Auth0Config;
   };
 }
 
@@ -108,7 +109,6 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
   identityProvider: 'ICM',
 
   production: false,
-  mockServerAPI: false,
 
   /* FEATURE TOOGLES */
   features: ['compare', 'recently', 'rating', 'wishlists'],

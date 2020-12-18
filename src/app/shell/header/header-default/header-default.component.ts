@@ -26,7 +26,7 @@ type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
 export class HeaderDefaultComponent implements OnChanges {
   @Input() isSticky = false;
   @Input() deviceType: DeviceType;
-  @Input() reset: void;
+  @Input() reset: unknown;
 
   activeComponent: CollapsibleComponent = 'search';
 

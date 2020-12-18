@@ -23,3 +23,8 @@ export function addGlobalGuard(
     }
   });
 }
+
+/**
+ * RegEx that finds reserved characters that should not be contained in non functional parts of routes/URLs (e.g product slugs for SEO)
+ */
+export const reservedCharactersRegEx = /[ &\(\)]/g;

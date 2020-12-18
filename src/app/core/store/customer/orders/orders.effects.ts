@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
-import { race } from 'rxjs';
+import { iif, race } from 'rxjs';
 import {
   concatMap,
   distinctUntilChanged,
@@ -50,6 +51,7 @@ export class OrdersEffects {
     private actions$: Actions,
     private orderService: OrderService,
     private router: Router,
+    @Inject(PLATFORM_ID) private platformId: string,
     private store: Store,
     private translateService: TranslateService
   ) {}
@@ -163,11 +165,14 @@ export class OrdersEffects {
    * Selects and loads an order.
    */
   loadOrderForSelectedOrder$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(selectOrder),
-      mapToPayloadProperty('orderId'),
-      whenTruthy(),
-      map(orderId => loadOrder({ orderId }))
+    iif(
+      () => isPlatformBrowser(this.platformId),
+      this.actions$.pipe(
+        ofType(selectOrder),
+        mapToPayloadProperty('orderId'),
+        whenTruthy(),
+        map(orderId => loadOrder({ orderId }))
+      )
     )
   );
 
@@ -181,7 +186,6 @@ export class OrdersEffects {
       withLatestFrom(this.store.pipe(select(getSelectedOrderId))),
       filter(([fromAction, selectedOrderId]) => fromAction && fromAction !== selectedOrderId),
       map(([orderId]) => orderId),
-      distinctUntilChanged(),
       map(orderId => selectOrder({ orderId }))
     )
   );

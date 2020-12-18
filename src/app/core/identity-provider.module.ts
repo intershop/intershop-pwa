@@ -1,32 +1,16 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { first, tap } from 'rxjs/operators';
+import { NgModule } from '@angular/core';
+import { OAuthModule } from 'angular-oauth2-oidc';
+import { NgModuleWithProviders } from 'ng-mocks';
+import { noop } from 'rxjs';
 
+import { Auth0IdentityProvider } from './identity-provider/auth0.identity-provider';
 import { ICMIdentityProvider } from './identity-provider/icm.identity-provider';
 import { IDENTITY_PROVIDER_IMPLEMENTOR, IdentityProviderFactory } from './identity-provider/identity-provider.factory';
-import { getIdentityProvider } from './store/core/configuration';
-import { whenTruthy } from './utils/operators';
-
-export function identityProviderFactoryInitializer(store: Store, identityProviderFactory: IdentityProviderFactory) {
-  return () =>
-    store
-      .pipe(
-        select(getIdentityProvider),
-        whenTruthy(),
-        first(),
-        tap(config => identityProviderFactory.init(config))
-      )
-      .toPromise();
-}
+import { IdentityProviderCapabilities } from './identity-provider/identity-provider.interface';
 
 @NgModule({
+  imports: [OAuthModule.forRoot({ resourceServer: { sendAccessToken: false } })],
   providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: identityProviderFactoryInitializer,
-      deps: [Store, IdentityProviderFactory],
-      multi: true,
-    },
     {
       provide: IDENTITY_PROVIDER_IMPLEMENTOR,
       multi: true,
@@ -35,6 +19,37 @@ export function identityProviderFactoryInitializer(store: Store, identityProvide
         implementor: ICMIdentityProvider,
       },
     },
+    {
+      provide: IDENTITY_PROVIDER_IMPLEMENTOR,
+      multi: true,
+      useValue: {
+        type: 'auth0',
+        implementor: Auth0IdentityProvider,
+      },
+    },
   ],
 })
-export class IdentityProviderModule {}
+export class IdentityProviderModule {
+  static forTesting(
+    capabilities: IdentityProviderCapabilities = { editEmail: true, editPassword: true, editProfile: true }
+  ): NgModuleWithProviders {
+    return {
+      ngModule: IdentityProviderModule,
+      providers: [
+        {
+          provide: IdentityProviderFactory,
+          useValue: {
+            getInstance: () => ({
+              init: noop,
+              intercept: (req, next) => next.handle(req),
+              triggerLogin: () => true,
+              triggerLogout: () => true,
+              getCapabilities: () => capabilities,
+            }),
+            getType: () => 'ICM',
+          },
+        },
+      ],
+    };
+  }
+}

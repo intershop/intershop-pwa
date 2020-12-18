@@ -4,7 +4,9 @@
     <ng-container *ngFor="let item of navigationItems | keyvalue: unsorted; let first = first">
       <ng-container *ishIsAuthorizedTo="item.value.permission || 'always'">
         <li
-          *ishFeature="item.value.feature || 'always'"
+          *ngIf="
+            (item.value.feature || 'always' | ishFeature) && (item.value.serverSetting || 'always' | ishServerSetting)
+          "
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: first }"
         >
@@ -16,7 +18,12 @@
       <ul *ngIf="item.value.children" class="account-navigation list-unstyled">
         <ng-container *ngFor="let subItem of item.value.children | keyvalue: unsorted">
           <ng-container *ishIsAuthorizedTo="item.value.permission || 'always'">
-            <li *ishFeature="subItem.value.feature || 'always'">
+            <li
+              *ngIf="
+                (subItem.value.feature || 'always' | ishFeature) &&
+                (subItem.value.serverSetting || 'always' | ishServerSetting)
+              "
+            >
               <a [routerLink]="item.key + subItem.key" [attr.data-testing-id]="subItem.value.dataTestingId">{{
                 subItem.value.localizationKey | translate
               }}</a>
@@ -29,13 +36,15 @@
 </ng-container>
 
 <ng-template #mobileNavigation>
-  <select (change)="navigateTo($event.target.value)" class="form-control">
+  <select (change)="navigateTo($event.target)" class="form-control">
     <ng-container *ngFor="let item of navigationItems | keyvalue: unsorted">
       <ng-container *ishIsAuthorizedTo="item.value.permission || 'always'">
         <option
-          *ishFeature="item.value.feature || 'always'"
+          *ngIf="
+            (item.value.feature || 'always' | ishFeature) && (item.value.serverSetting || 'always' | ishServerSetting)
+          "
           [value]="item.key"
-          [attr.selected]="item.value.link === currentPath ? 'selected' : undefined"
+          [attr.selected]="isSelected(item.key)"
         >
           {{ item.value.localizationKey | translate }}
         </option>

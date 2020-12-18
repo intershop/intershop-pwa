@@ -13,7 +13,7 @@ on:
       - 'docs/**'
 
 env:
-  ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8080
+  ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
 
 jobs:
   CancelPrevious:
@@ -31,10 +31,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 12
+      - name: Use Node.js 14
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
 
       - name: Install root dependencies
         run: npm ci
@@ -73,10 +73,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Use Node.js 12
+      - name: Use Node.js 14
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
 
       - name: Install root dependencies
         run: npm ci
@@ -94,10 +94,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 12
+      - name: Use Node.js 14
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
 
       - name: Install root dependencies
         run: npm ci
@@ -117,10 +117,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 12
+      - name: Use Node.js 14
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
 
       - name: Install root dependencies
         run: npm ci

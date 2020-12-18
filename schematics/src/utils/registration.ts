@@ -8,7 +8,7 @@ import {
   addProviderToModule,
 } from '@schematics/angular/utility/ast-utils';
 import { InsertChange } from '@schematics/angular/utility/change';
-import { buildRelativePath } from '@schematics/angular/utility/find-module';
+import { buildRelativePath, findModule } from '@schematics/angular/utility/find-module';
 import { ImportKind, findImports, forEachToken } from 'tsutils';
 import * as ts from 'typescript';
 
@@ -134,6 +134,11 @@ export function insertImport(
   }
 }
 
+export function insertExport(recorder: UpdateRecorder, artifactName: string, relativePath: string) {
+  const imp = `export { ${artifactName} } from '${relativePath}';`;
+  recorder.insertLeft(0, `${imp}\n\n`);
+}
+
 export function addImportToNgModuleBefore(
   options: {
     module?: string;
@@ -180,6 +185,22 @@ export function addImportToFile(options: { module?: string; artifactName?: strin
   };
 }
 
+export function addExportToBarrelFile(options: {
+  path?: string;
+  artifactName?: string;
+  moduleImportPath?: string;
+}): Rule {
+  const barrelFile = `/${options.path}/index.ts`;
+  return host => {
+    if (!tsquery(readIntoSourceFile(host, barrelFile), `Identifier[name=${options.artifactName}]`).length) {
+      const relativePath = buildRelativePath(barrelFile, options.moduleImportPath);
+      const exportRecorder = host.beginUpdate(barrelFile);
+      insertExport(exportRecorder, options.artifactName, relativePath);
+      host.commitUpdate(exportRecorder);
+    }
+  };
+}
+
 export function addDecoratorToClass(
   file: string,
   className: string,
@@ -208,5 +229,20 @@ export function addDecoratorToClass(
         }
       }
     );
+  };
+}
+
+export function generateGitignore(options: { path?: string; content?: string }): Rule {
+  const gitignore = `/${options.path}/.gitignore`;
+  return host => {
+    host.create(gitignore, options.content);
+    return host;
+  };
+}
+
+export function updateModule(options): Rule {
+  return host => {
+    options.module = findModule(host, options.path);
+    return host;
   };
 }

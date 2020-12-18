@@ -16,6 +16,7 @@ describe('Order Mapper', () => {
     commonShipToAddress: 'urn_commonShipToAddress_123',
     commonShippingMethod: 'shipping_method_123',
     lineItems: ['YikKAE8BKC0AAAFrIW8IyLLD'],
+    requisitionDocumentNo: '58765',
     totals: {
       grandTotal: {
         gross: {
@@ -63,6 +64,11 @@ describe('Order Mapper', () => {
         },
       ],
     },
+    attributes: [
+      { name: 'BusinessObjectAttributes#OrderApproval_ApprovalDate', value: '2020-10-12T13:40:00+02:00', type: 'Date' },
+      { name: 'BusinessObjectAttributes#OrderApproval_ApproverFirstName', value: 'Patricia', type: 'String' },
+      { name: 'BusinessObjectAttributes#OrderApproval_ApproverLastName', value: 'Miller', type: 'String' },
+    ],
   } as OrderBaseData;
 
   const orderData = {
@@ -151,6 +157,9 @@ describe('Order Mapper', () => {
       expect(order.commonShippingMethod.id).toBe('shipping_method_123');
       expect(order.lineItems).toBeArrayOfSize(1);
       expect(order.infos).toBeArrayOfSize(1);
+
+      expect(order.approval.approverFirstName).toBe('Patricia');
+      expect(order.requisitionNo).toBe(orderBaseData.requisitionDocumentNo);
     });
   });
 });

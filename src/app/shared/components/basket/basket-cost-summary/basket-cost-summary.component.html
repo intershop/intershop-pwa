@@ -7,7 +7,7 @@
     <!-- list all applied order level promotions -->
     <ng-container *ngIf="totals.valueRebates && totals.valueRebates.length > 0">
       <ng-container *ngFor="let rebate of totals.valueRebates">
-        <dt *ngIf="rebate.promotionId" class="col-6">
+        <dt *ngIf="rebate?.promotionId" class="col-6">
           <ish-basket-promotion [rebate]="rebate"></ish-basket-promotion>
           <ng-template #default>{{ 'checkout.widget.promotion.discount' | translate }}</ng-template>
         </dt>

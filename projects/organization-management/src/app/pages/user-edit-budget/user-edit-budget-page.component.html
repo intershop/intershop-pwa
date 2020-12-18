@@ -1,0 +1,28 @@
+<div *ngIf="selectedUser$ | async as user">
+  <h1>{{ 'account.user.update_budget.heading' | translate }} - {{ user.firstName }} {{ user.lastName }}</h1>
+
+  <ish-error-message [error]="error$ | async"></ish-error-message>
+
+  <form
+    *ngIf="budgetForm && 'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting"
+    [formGroup]="budgetForm"
+    (ngSubmit)="submitForm()"
+    class="form-horizontal"
+    novalidate="novalidate"
+  >
+    <ish-user-budget-form [form]="budgetForm"></ish-user-budget-form>
+
+    <div class="row">
+      <div class="offset-md-4 col-md-8">
+        <button type="submit" class="btn btn-primary" [disabled]="formDisabled" data-testing-id="edit-budget-submit">
+          {{ 'account.update.button.label' | translate }}
+        </button>
+        <a routerLink="../" class="btn btn-secondary" data-testing-id="edit-budget-cancel">{{
+          'account.cancel.link' | translate
+        }}</a>
+      </div>
+    </div>
+  </form>
+
+  <ish-loading *ngIf="loading$ | async"></ish-loading>
+</div>

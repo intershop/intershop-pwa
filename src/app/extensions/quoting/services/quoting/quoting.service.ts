@@ -14,7 +14,6 @@ import { QuotingMapper } from '../../models/quoting/quoting.mapper';
 import {
   QuoteCompletenessLevel,
   QuoteRequest,
-  QuoteRequestItem,
   QuoteStub,
   QuoteStubFromAttributes,
   QuotingEntity,
@@ -103,30 +102,21 @@ export class QuotingService {
   createQuoteRequestFromQuote(quoteID: string) {
     return this.apiService
       .b2bUserEndpoint()
-      .post<Link>('quoterequests', { quoteID })
+      .post<Link>('quoterequests', undefined, { params: new HttpParams().set('quoteID', quoteID) })
       .pipe(map(data => this.quoteMapper.fromData(data, 'QuoteRequest')));
   }
 
-  createQuoteRequestFromQuoteRequest(quoteRequest: QuoteRequest) {
-    return this.createQuoteRequest().pipe(
-      concatMap(stub =>
-        this.apiService
-          .b2bUserEndpoint()
-          .put<Link>(`quoterequests/${stub.id}/items`, {
-            elements: quoteRequest.items.map((item: QuoteRequestItem) => ({
-              productSKU: item.productSKU,
-              quantity: { value: item.quantity.value },
-            })),
-          })
-          .pipe(mapTo(stub.id))
-      )
-    );
+  createQuoteRequestFromQuoteRequest(quoteRequestID: string) {
+    return this.apiService
+      .b2bUserEndpoint()
+      .post<Link>('quoterequests', undefined, { params: new HttpParams().set('quoteRequestID', quoteRequestID) })
+      .pipe(map(data => this.quoteMapper.fromData(data, 'QuoteRequest')));
   }
 
   createQuoteRequestFromBasket(basketID: string) {
     return this.apiService
       .b2bUserEndpoint()
-      .post<Link>('quoterequests', { basketID })
+      .post<Link>('quoterequests', undefined, { params: new HttpParams().set('basketID', basketID) })
       .pipe(map(data => this.quoteMapper.fromData(data, 'QuoteRequest')));
   }
 

@@ -7,4 +7,12 @@ import { FieldType } from '@ngx-formly/core';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 // tslint:disable-next-line: component-creation-test
-export class CheckboxDynamicComponent extends FieldType {}
+export class CheckboxDynamicComponent extends FieldType {
+  castControlName(val: unknown) {
+    return val as string;
+  }
+
+  castErrorMessages(val: unknown) {
+    return val as { [key: string]: string };
+  }
+}

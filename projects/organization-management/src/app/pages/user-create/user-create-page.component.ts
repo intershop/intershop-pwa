@@ -31,6 +31,12 @@ export class UserCreatePageComponent implements OnInit {
       preferredLanguage: ['en_US', [Validators.required]],
     }),
     roleIDs: this.fb.control([]),
+    userBudget: this.fb.group({
+      orderSpentLimit: ['', SpecialValidators.moneyAmount],
+      budget: ['', SpecialValidators.moneyAmount],
+      budgetPeriod: ['weekly'],
+      currency: [''],
+    }),
   });
 
   submitted = false;
@@ -42,8 +48,12 @@ export class UserCreatePageComponent implements OnInit {
     this.userError$ = this.organizationManagementFacade.usersError$;
   }
 
-  get profile() {
-    return this.form.get('profile');
+  get profile(): FormGroup {
+    return this.form.get('profile') as FormGroup;
+  }
+
+  get budgetForm() {
+    return this.form.get('userBudget') as FormGroup;
   }
 
   submitForm() {
@@ -66,6 +76,21 @@ export class UserCreatePageComponent implements OnInit {
       preferredLanguage: formValue.profile.preferredLanguage,
       businessPartnerNo: 'U' + UUID.UUID(),
       roleIDs: formValue.roleIDs,
+      userBudget: formValue.userBudget.currency
+        ? {
+            budget: formValue.userBudget.budget
+              ? { value: formValue.userBudget.budget, currency: formValue.userBudget.currency, type: 'Money' }
+              : undefined,
+            budgetPeriod: formValue.userBudget.budgetPeriod,
+            orderSpentLimit: formValue.userBudget.orderSpentLimit
+              ? {
+                  value: formValue.userBudget.orderSpentLimit,
+                  currency: formValue.userBudget.currency,
+                  type: 'Money',
+                }
+              : undefined,
+          }
+        : undefined,
     };
 
     this.organizationManagementFacade.addUser(user);

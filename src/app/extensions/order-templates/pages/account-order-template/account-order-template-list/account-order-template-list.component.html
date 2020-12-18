@@ -26,11 +26,10 @@
       {{ orderTemplate.itemsCount | i18nPlural: ('account.order_template.items' | translate) || { other: '#' } }}
     </div>
     <div class="col-5 col-md-2 list-item text-right">
-      <a class="btn-tool d-inline-flex align-top">
+      <a *ngIf="orderTemplate.items?.length" class="btn-tool d-inline-flex align-top">
         <ish-product-add-to-basket
           displayType="icon"
           [product]="dummyProduct"
-          [disabled]="!orderTemplate.items?.length"
           class="text-primary p-0"
           (productToBasket)="addTemplateToCart(orderTemplate.id)"
         ></ish-product-add-to-basket>
@@ -54,13 +53,15 @@
   </div>
 </ng-template>
 
+<!-- the title will be set dynamically -->
 <ish-modal-dialog
   #deleteDialog
-  (confirmed)="delete($event)"
   [options]="{
     confirmText: 'account.order_template.delete.button.text' | translate,
-    rejectText: 'account.cancel.button.label' | translate
+    rejectText: 'account.cancel.button.label' | translate,
+    titleText: 'undefined'
   }"
+  (confirmed)="delete($event)"
 >
   {{ 'account.order_template.delete.do_you_really.text' | translate }}
 </ish-modal-dialog>

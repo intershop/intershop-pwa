@@ -2,6 +2,7 @@ import { Params } from '@angular/router';
 import { createAction } from '@ngrx/store';
 
 import { Address } from 'ish-core/models/address/address.model';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketValidation, BasketValidationScopeType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -80,6 +81,15 @@ export const validateBasket = createAction(
   payload<{ scopes: BasketValidationScopeType[] }>()
 );
 
+export const startCheckout = createAction('[Basket] Start the checkout process');
+
+export const startCheckoutSuccess = createAction(
+  '[Basket API] Start the checkout process success',
+  payload<{ basketValidation: BasketValidation; targetRoute?: string }>()
+);
+
+export const startCheckoutFail = createAction('[Basket API] Start the checkout process fail', httpError());
+
 export const continueCheckout = createAction(
   '[Basket] Validate Basket and continue checkout',
   payload<{ targetStep: number }>()
@@ -144,6 +154,24 @@ export const addPromotionCodeToBasketFail = createAction('[Basket API] Add Promo
 
 export const addPromotionCodeToBasketSuccess = createAction('[Basket API] Add Promotion Code To Basket Success');
 
+export const setBasketAttribute = createAction(
+  '[Basket] Add or Update Basket Attribute',
+  payload<{ attribute: Attribute }>()
+);
+
+export const setBasketAttributeFail = createAction('[Basket API] Add or Update Basket Attribute Fail', httpError());
+
+export const setBasketAttributeSuccess = createAction('[Basket API] Add or Update Basket Attribute Success');
+
+export const deleteBasketAttribute = createAction(
+  '[Basket] Delete Basket Attribute',
+  payload<{ attributeName: string }>()
+);
+
+export const deleteBasketAttributeFail = createAction('[Basket API] Delete Basket Attribute Fail', httpError());
+
+export const deleteBasketAttributeSuccess = createAction('[Basket API] Delete Basket Attribute Success');
+
 export const loadBasketEligibleShippingMethods = createAction(
   '[Basket Internal] Load Basket Eligible Shipping Methods'
 );
@@ -202,6 +230,12 @@ export const deleteBasketPayment = createAction(
 export const deleteBasketPaymentFail = createAction('[Basket API] Delete Basket Payment Fail', httpError());
 
 export const deleteBasketPaymentSuccess = createAction('[Basket API] Delete Basket Payment Success');
+
+export const submitBasket = createAction('[Basket API] Submit a Basket for Approval');
+
+export const submitBasketSuccess = createAction('[Basket API] Submit a Basket for Approval Success');
+
+export const submitBasketFail = createAction('[Basket API] Submit a Basket for Approval Fail', httpError());
 
 export const resetBasketErrors = createAction('[Basket Internal] Reset Basket and Basket Promotion Errors');
 

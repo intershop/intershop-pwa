@@ -18,19 +18,44 @@
   </div>
 
   <!-- Expiration date (month/Year)  -->
-  <ish-select-year-month
-    [form]="parameterForm"
-    label="checkout.credit_card.expiration_date.label"
-    [controlName]="['expirationMonth', 'expirationYear']"
-    inputClass="col-sm-6"
+  <div
+    class="row form-group has-feedback"
     [ngClass]="{ 'has-error': errorMessage.expiryMonth?.message }"
+    [ishShowFormFeedback]="[parameterForm.controls.expirationMonth, parameterForm.controls.expirationYear]"
   >
+    <label for="month" class="col-form-label col-md-4"
+      >{{ 'checkout.credit_card.expiration_date.label' | translate }}<span class="required">*</span></label
+    >
+    <div class="col-sm-6">
+      <div class="clearfix row">
+        <div class="col-6">
+          <select class="form-control" id="month" formControlName="expirationMonth" data-testing-id="expirationMonth">
+            <option value="">{{ 'account.date.month' | translate }}</option>
+            <option *ngFor="let option of monthOptions" [value]="option.value">{{ option.label | translate }}</option>
+          </select>
+          <ish-form-control-feedback
+            [messages]="{ required: 'account.date.month.error.required' }"
+            [control]="parameterForm.controls.expirationMonth"
+          ></ish-form-control-feedback>
+        </div>
+        <div class="col-6">
+          <select class="form-control" id="year" formControlName="expirationYear" data-testing-id="expirationYear">
+            <option value="">{{ 'account.date.year' | translate }}</option>
+            <option *ngFor="let option of yearOptions" [value]="option.value">{{ option.label | translate }}</option>
+          </select>
+          <ish-form-control-feedback
+            [messages]="{ required: 'account.date.year.error.required' }"
+            [control]="parameterForm.controls.expirationYear"
+          ></ish-form-control-feedback>
+        </div>
+      </div>
+    </div>
     <div class="col-sm-6 offset-sm-4">
       <small *ngIf="errorMessage.expiryMonth?.messageKey" class="form-text">{{
         errorMessage.expiryMonth.messageKey | translate
       }}</small>
     </div>
-  </ish-select-year-month>
+  </div>
 
   <!-- CVC -->
   <div class="row form-group" [ngClass]="{ 'has-error': errorMessage.cvc?.message }">

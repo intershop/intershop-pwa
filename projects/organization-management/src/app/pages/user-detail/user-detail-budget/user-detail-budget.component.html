@@ -1,0 +1,40 @@
+<div *ngIf="budget" class="row section">
+  <div class="col-10 col-lg-8">
+    <h3>{{ 'account.user.details.profile.budget_limits.heading' | translate }}</h3>
+
+    <div class="row">
+      <div class="col-md-12" data-testing-id="user-budget">
+        <dl class="row dl-horizontal dl-separator">
+          <dt class="col-md-4">{{ 'account.user.new.order_spend_limit.label' | translate }}</dt>
+          <dd data-testing-id="order-spend-limit-field" class="col-md-8" *ngIf="budget.orderSpentLimit; else noLimit">
+            {{ budget.orderSpentLimit | ishPrice }}
+          </dd>
+          <ng-template #noLimit>
+            <dd class="col-md-8">{{ 'account.budget.unlimited' | translate }}</dd>
+          </ng-template>
+          <ng-container *ngIf="budget.budget; else noBudget">
+            <dt class="col-md-4">{{ 'account.budget.type.' + budget.budgetPeriod + '.label' | translate }}</dt>
+            <dd class="col-md-8" data-testing-id="budget-field">
+              {{ budget.budget | ishPrice }}
+            </dd>
+          </ng-container>
+          <ng-template #noBudget>
+            <dt class="col-md-4">{{ 'account.user.budget.label' | translate }}</dt>
+            <dd class="col-md-8">{{ 'account.budget.unlimited' | translate }}</dd>
+          </ng-template>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-2 col-lg-4">
+    <a
+      routerLink="budget"
+      class="btn-tool"
+      [title]="'account.profile.update.link' | translate"
+      data-testing-id="edit-budget"
+    >
+      <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
+    </a>
+  </div>
+</div>

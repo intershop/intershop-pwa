@@ -133,6 +133,38 @@ export class ProductsService {
       );
   }
 
+  getProductsForMaster(
+    masterSKU: string,
+    page: number = 1,
+    sortKey?: string
+  ): Observable<{ products: Product[]; sortKeys: string[]; total: number }> {
+    if (!masterSKU) {
+      return throwError('getProductsForMaster() called without masterSKU');
+    }
+
+    let params = new HttpParams()
+      .set('MasterSKU', masterSKU)
+      .set('amount', this.itemsPerPage.toString())
+      .set('offset', ((page - 1) * this.itemsPerPage).toString())
+      .set('attrs', ProductsService.STUB_ATTRS)
+      .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
+      .set('returnSortKeys', 'true');
+    if (sortKey) {
+      params = params.set('sortKey', sortKey);
+    }
+
+    return this.apiService
+      .get<{ elements: ProductDataStub[]; sortKeys: string[]; total: number }>('products', { params })
+      .pipe(
+        map(response => ({
+          products: response.elements.map(element => this.productMapper.fromStubData(element)) as Product[],
+          sortKeys: response.sortKeys,
+          total: response.total ? response.total : response.elements.length,
+        })),
+        map(({ products, sortKeys, total }) => ({ products, sortKeys, total }))
+      );
+  }
+
   /**
    * exchange single-return variation products to master products for B2B
    * TODO: this is a work-around

@@ -1,10 +1,11 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EMPTY, Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { EMPTY, Observable, of, throwError } from 'rxjs';
+import { catchError, concatMap, map } from 'rxjs/operators';
 
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { Address } from 'ish-core/models/address/address.model';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { BasketInfoMapper } from 'ish-core/models/basket-info/basket-info.mapper';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketMergeHelper } from 'ish-core/models/basket-merge/basket-merge.helper';
@@ -19,6 +20,7 @@ import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-met
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { OrderService } from 'ish-core/services/order/order.service';
 
 export type BasketUpdateType =
   | { invoiceToAddress: string }
@@ -70,7 +72,7 @@ type ValidationBasketIncludeType =
  */
 @Injectable({ providedIn: 'root' })
 export class BasketService {
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private orderService: OrderService) {}
 
   /**
    * http header for Basket API v1
@@ -356,7 +358,7 @@ export class BasketService {
   }
 
   /**
-   * Updates partly or completely an address for the selected basket of an anonymous user.
+   * Update partly or completely an address for the selected basket of an anonymous user.
    * @param address   The address data which should be updated
    * @returns         The new basket address.
    */
@@ -401,5 +403,76 @@ export class BasketService {
             unpackEnvelope<ShippingMethodData>('data'),
             map(data => data.map(ShippingMethodMapper.fromData))
           );
+  }
+
+  /**
+   * Creates a requisition of a certain basket that has to be approved.
+   * @param  basketId      Basket id.
+   * @returns              nothing
+   */
+  createRequisition(basketId: string): Observable<void> {
+    if (!basketId) {
+      return throwError('createRequisition() called without required basketId');
+    }
+
+    return this.orderService.createOrder(basketId, true).pipe(
+      concatMap(() => of(undefined)),
+      catchError(err => {
+        if (err.status === 422) {
+          return of(undefined);
+        }
+        return throwError(err);
+      })
+    );
+  }
+
+  /**
+   * Create a custom attribute on the basket. Default attribute type is 'String'.
+   * @param attr   The custom attribute
+   * @returns      The custom attribute
+   */
+  createBasketAttribute(attr: Attribute): Observable<Attribute> {
+    if (!attr) {
+      return throwError('createBasketAttribute() called without attribute');
+    }
+
+    // if no type is provided save it as string
+    const attribute = { ...attr, type: attr.type ?? 'String' };
+
+    return this.apiService.post<Attribute>(`baskets/current/attributes`, attribute, {
+      headers: this.basketHeaders,
+    });
+  }
+
+  /**
+   * Update a custom attribute on the basket. Default attribute type is 'String'.
+   * @param attribute   The custom attribute
+   * @returns           The custom attribute
+   */
+  updateBasketAttribute(attr: Attribute): Observable<Attribute> {
+    if (!attr) {
+      return throwError('updateBasketAttribute() called without attribute');
+    }
+
+    // if no type is provided save it as string
+    const attribute = { ...attr, type: attr.type ?? 'String' };
+
+    return this.apiService.patch<Attribute>(`baskets/current/attributes/${attribute.name}`, attribute, {
+      headers: this.basketHeaders,
+    });
+  }
+
+  /**
+   * Delete a custom attribute from the basket
+   * @param attributeName The name of the custom attribute
+   */
+  deleteBasketAttribute(attributeName: string): Observable<void> {
+    if (!attributeName) {
+      return throwError('deleteBasketAttribute() called without attributeName');
+    }
+
+    return this.apiService.delete(`baskets/current/attributes/${attributeName}`, {
+      headers: this.basketHeaders,
+    });
   }
 }

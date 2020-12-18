@@ -1,4 +1,4 @@
-FROM node:12 as reporting
+FROM node:14 as reporting
 COPY package.json package-lock.json tsconfig.base.json /workspace/
 COPY tslint-rules /workspace/tslint-rules/
 WORKDIR /workspace

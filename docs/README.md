@@ -24,6 +24,7 @@ kb_sync_latest_only
 - [Concept - SEO](./concepts/search-engine-optimization.md)
 - [Guide - Forms](./guides/forms.md)
 - [Concept - Deployment Scenarios for Angular Applications](./concepts/deployment-angular.md)
+- [Concept - Single Sign-On (SSO) for PWA](./concepts/sso.md)
 
 ### Developing
 
@@ -72,3 +73,4 @@ kb_sync_latest_only
 - [Guide - Client-Side Error Monitoring with Sentry](./guides/sentry-error-monitoring.md)
 - [Guide - Extended Product Configurations with Tacton](./guides/tacton-product-configuration.md)
 - [Guide - Monitoring with Prometheus](./guides/prometheus-monitoring.md)
+- [Guide - SSO with Auth0 for PWA](./guides/sso-auth0.md)

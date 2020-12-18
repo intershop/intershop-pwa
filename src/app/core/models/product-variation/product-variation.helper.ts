@@ -1,5 +1,6 @@
-import { groupBy } from 'lodash-es';
+import { flatten, groupBy } from 'lodash-es';
 
+import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { VariationProductMasterView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
 import { objectToArray } from 'ish-core/utils/functions';
 
@@ -152,5 +153,30 @@ export class ProductVariationHelper {
 
   static hasDefaultVariation(product: VariationProductMasterView): boolean {
     return product && !!product.defaultVariationSKU;
+  }
+
+  static productVariationCount(product: VariationProductMasterView, filters: FilterNavigation): number {
+    if (!product) {
+      return 0;
+    } else if (!filters?.filter) {
+      return product.variations()?.length;
+    }
+
+    const selectedFacets = flatten(
+      filters.filter.map(filter => filter.facets.filter(facet => facet.selected).map(facet => facet.name))
+    ).map(selected => selected.split('='));
+
+    return product
+      .variations()
+      .map(p => p.variableVariationAttributes)
+      .filter(attrs =>
+        attrs.every(
+          attr =>
+            // attribute is not selected
+            !selectedFacets.find(([key]) => key === attr.variationAttributeId) ||
+            // selection is variation
+            selectedFacets.find(([key, val]) => key === attr.variationAttributeId && val === attr.value)
+        )
+      ).length;
   }
 }

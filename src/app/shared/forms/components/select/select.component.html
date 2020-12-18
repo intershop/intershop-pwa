@@ -1,10 +1,10 @@
 <ng-container *ngIf="options?.length > 0 || required">
-  <div class="row form-group has-feedback" [formGroup]="form" [ishShowFormFeedback]="formControl">
+  <div class="row form-group has-feedback" [ishShowFormFeedback]="formControl">
     <label *ngIf="label" [for]="uuid" class="col-form-label" [ngClass]="labelClass"
       >{{ label | translate }}<span *ngIf="required" class="required">*</span></label
     >
     <div [ngClass]="inputClass">
-      <select class="form-control" [id]="uuid" [formControlName]="controlName" [attr.data-testing-id]="controlName">
+      <select class="form-control" [id]="uuid" [formControl]="formControl" [attr.data-testing-id]="controlName">
         <option value="" *ngIf="showEmptyOption">{{ emptyOptionLabel | translate }}</option>
 
         <!-- translate option values -->

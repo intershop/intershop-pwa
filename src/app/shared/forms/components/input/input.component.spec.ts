@@ -80,6 +80,17 @@ describe('Input Component', () => {
     expect(element.querySelector('input[placeholder=placeholder]')).toBeTruthy();
   });
 
+  it('should render a prepend string if prepend is set', () => {
+    component.prepend = 'USD';
+    fixture.detectChanges();
+    expect(element.querySelector('.input-group')).toBeTruthy();
+  });
+
+  it('should not render a prepend string if prepend is not set', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('.input-group')).toBeFalsy();
+  });
+
   /*
     tests for parent class: form-element
   */

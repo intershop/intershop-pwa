@@ -7,6 +7,7 @@ import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-togg
  * Used on an element, this element will only be rendered if the specified feature *is enabled*.
  *
  * For the negated case see {@link NotFeatureToggleDirective}.
+ * For the corresponding pipe see {@link FeatureTogglePipe}.
  *
  * @example
  * <div *ishFeature="'quoting'">

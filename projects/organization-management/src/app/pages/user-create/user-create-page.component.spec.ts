@@ -1,12 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
+import { UserBudgetFormComponent } from '../../components/user-budget-form/user-budget-form.component';
 import { UserProfileFormComponent } from '../../components/user-profile-form/user-profile-form.component';
 import { UserRolesSelectionComponent } from '../../components/user-roles-selection/user-roles-selection.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
@@ -26,8 +28,10 @@ describe('User Create Page Component', () => {
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(LoadingComponent),
+        MockComponent(UserBudgetFormComponent),
         MockComponent(UserProfileFormComponent),
         MockComponent(UserRolesSelectionComponent),
+        MockPipe(ServerSettingPipe),
         UserCreatePageComponent,
       ],
       providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
@@ -58,9 +62,35 @@ describe('User Create Page Component', () => {
         preferredLanguage: ['en_US', [Validators.required]],
         active: [true],
       }),
+      roleIDs: ['Buyer'],
+      userBudget: fb.group({
+        orderSpentLimit: ['70000'],
+        budget: [10000],
+        budgetPeriod: ['monthly'],
+        currency: 'USD',
+      }),
     });
 
     expect(component.formDisabled).toBeFalse();
+    expect(component.form.value).toMatchInlineSnapshot(`
+      Object {
+        "profile": Object {
+          "active": true,
+          "email": "test@gmail.com",
+          "firstName": "Bernhard",
+          "lastName": "Boldner",
+          "preferredLanguage": "en_US",
+        },
+        "roleIDs": "Buyer",
+        "userBudget": Object {
+          "budget": 10000,
+          "budgetPeriod": "monthly",
+          "currency": "USD",
+          "orderSpentLimit": "70000",
+        },
+      }
+    `);
+
     component.submitForm();
     expect(component.formDisabled).toBeFalse();
   });

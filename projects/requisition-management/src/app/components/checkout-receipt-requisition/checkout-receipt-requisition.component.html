@@ -1,0 +1,35 @@
+<div *ngIf="basket">
+  <h1>
+    {{ 'checkout.cart_for_approval.title' | translate }}
+  </h1>
+  <div>
+    <p *ngIf="requisition$ | async as req">
+      {{ 'checkout.id_of_order.label' | translate
+      }}<strong data-testing-id="order-document-number"
+        >&nbsp;
+        <a
+          [routerLink]="['/account/requisitions/buyer/' + req.id, { status: 'PENDING' }]"
+          data-testing-id="requisition-number"
+          >{{ req.requisitionNo }}</a
+        >
+      </strong>
+    </p>
+
+    <p>{{ 'approval.cart.order_has_been_submitted' | translate }}</p>
+    <div *ngIf="basket.customerNo; else notifyAnonymous">
+      <p
+        [ishServerHtml]="
+          'approval.cart.once_order_approved'
+            | translate: { '0': 'route://account/requisitions/buyer', '1': 'route://account' }
+        "
+      ></p>
+      <p [innerHTML]="'approval.cart.notification.mail.text' | translate: { '0': basket.email }"></p>
+    </div>
+    <ng-template #notifyAnonymous>
+      <p [innerHTML]="'approval.cart.notification.mail.text' | translate: { '0': basket.invoiceToAddress.email }"></p>
+    </ng-template>
+    <div>
+      <ish-basket-approval-info *ngIf="basket.approval" [approval]="basket.approval"></ish-basket-approval-info>
+    </div>
+  </div>
+</div>

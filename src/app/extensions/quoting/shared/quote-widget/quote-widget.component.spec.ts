@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { range } from 'lodash-es';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
+import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { QuotingFacade } from '../../facades/quoting.facade';
@@ -24,7 +25,7 @@ describe('Quote Widget Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [MockComponent(LoadingComponent), QuoteWidgetComponent],
+      declarations: [MockComponent(InfoBoxComponent), MockComponent(LoadingComponent), QuoteWidgetComponent],
       providers: [{ provide: QuotingFacade, useFactory: () => instance(quotingFacade) }],
     }).compileComponents();
   });
@@ -33,14 +34,6 @@ describe('Quote Widget Component', () => {
     fixture = TestBed.createComponent(QuoteWidgetComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-
-    const translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('en');
-    translate.use('en');
-    translate.set('account.quotes.widget.new.label', 'N');
-    translate.set('account.quotes.widget.submitted.label', 'S');
-    translate.set('account.quotes.widget.accepted.label', 'A');
-    translate.set('account.quotes.widget.rejected.label', 'R');
   });
 
   it('should be created', () => {
@@ -67,8 +60,9 @@ describe('Quote Widget Component', () => {
 
     fixture.detectChanges();
 
-    const quoteWidget = element.querySelector('[data-testing-id="quote-widget"]');
-    expect(quoteWidget).toBeTruthy();
-    expect(quoteWidget.textContent).toMatchInlineSnapshot(`"N1S1A2R1"`);
+    const respondedCounter = element.querySelector('[data-testing-id="responded-counter"]');
+    const submittedCounter = element.querySelector('[data-testing-id="submitted-counter"]');
+    expect(respondedCounter.textContent.trim()).toEqual('1');
+    expect(submittedCounter.textContent.trim()).toEqual('1');
   });
 });

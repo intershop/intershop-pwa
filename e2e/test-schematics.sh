@@ -86,6 +86,19 @@ stat src/app/shared/cms/components/audio/audio.component.ts
 grep "AudioComponent" src/app/shared/cms/cms.module.ts
 grep "AudioComponent" src/app/shared/shared.module.ts
 
+npx ng g lazy-component --project organization-management --path projects/organization-management/src/app/components/user-profile-form/user-profile-form.component.ts
+stat projects/organization-management/src/app/exports/lazy-user-profile-form/lazy-user-profile-form.component.ts
+stat projects/organization-management/src/app/exports/lazy-user-profile-form/lazy-user-profile-form.component.html
+stat projects/organization-management/src/app/exports/organization-management-exports.module.ts
+grep "LazyUserProfileFormComponent" projects/organization-management/src/app/exports/organization-management-exports.module.ts
+grep "LazyUserProfileFormComponent" projects/organization-management/src/app/exports/index.ts
+
+npx ng g lazy-component --project organization-management --path projects/organization-management/src/app/components/user-roles-selection/user-roles-selection.component.ts
+stat projects/organization-management/src/app/exports/lazy-user-roles-selection/lazy-user-roles-selection.component.ts
+stat projects/organization-management/src/app/exports/lazy-user-roles-selection/lazy-user-roles-selection.component.html
+grep "LazyUserRolesSelectionComponent" projects/organization-management/src/app/exports/organization-management-exports.module.ts
+grep "LazyUserRolesSelectionComponent" projects/organization-management/src/app/exports/index.ts
+
 npm run lint
 
 node schematics/customization/add custom
@@ -111,13 +124,6 @@ stat src/app/extensions/quoting/shared/custom-quote-widget/custom-quote-widget.c
 # grep 'custom-lazy-quote-widget' src/app/pages/account-overview/account-overview/account-overview.component.html
 
 sed -i -e "s%icmBaseURL.*%icmBaseURL: 'http://localhost:4200',%g" src/environments/environment.prod.ts
-
-if grep mockServerAPI src/environments/environment.prod.ts
-then
-  sed -i -e 's/mockServerAPI.*/mockServerAPI: true,/g' src/environments/environment.prod.ts
-else
-  sed -i -e 's/^};$/mockServerAPI: true };/' src/environments/environment.prod.ts
-fi
 
 node schematics/customization/service-worker false
 grep '"serviceWorker": false' angular.json

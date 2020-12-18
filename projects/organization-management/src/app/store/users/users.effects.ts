@@ -25,6 +25,9 @@ import {
   loadUsers,
   loadUsersFail,
   loadUsersSuccess,
+  setUserBudget,
+  setUserBudgetFail,
+  setUserBudgetSuccess,
   setUserRoles,
   setUserRolesFail,
   setUserRolesSuccess,
@@ -131,7 +134,7 @@ export class UsersEffects {
         this.usersService.setUserRoles(login, roles).pipe(
           withLatestFrom(this.store.pipe(select(selectPath))),
           tap(([, path]) => {
-            if (path.endsWith('users/:B2BCustomerLogin/roles')) {
+            if (path?.endsWith('users/:B2BCustomerLogin/roles')) {
               this.navigateTo('../../' + login);
             }
           }),
@@ -142,15 +145,31 @@ export class UsersEffects {
     )
   );
 
-  successMessageAfterUpdate$ = createEffect(() =>
+  updateCurrentUserRoles$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(updateUserSuccess, setUserRolesSuccess),
-      withLatestFrom(this.store.pipe(select(getSelectedUser), whenTruthy())),
-      map(([, user]) =>
-        displaySuccessMessage({
-          message: 'account.organization.user_management.update_user.confirmation',
-          messageParams: { 0: `${user.firstName} ${user.lastName}` },
-        })
+      ofType(setUserRolesSuccess),
+      mapToPayloadProperty('login'),
+      withLatestFrom(this.store.pipe(select(getLoggedInUser))),
+      filter(([login, currentUser]) => login === currentUser.login),
+      mapTo(loadRolesAndPermissions())
+    )
+  );
+
+  setUserBudget$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(setUserBudget),
+      mapToPayload(),
+      mergeMap(({ login, budget }) =>
+        this.usersService.setUserBudget(login, budget).pipe(
+          withLatestFrom(this.store.pipe(select(selectPath))),
+          tap(([, path]) => {
+            if (path?.endsWith('users/:B2BCustomerLogin/budget')) {
+              this.navigateTo('../../' + login);
+            }
+          }),
+          map(([newBudget]) => setUserBudgetSuccess({ login, budget: newBudget })),
+          mapErrorToAction(setUserBudgetFail, { login })
+        )
       )
     )
   );
@@ -165,13 +184,26 @@ export class UsersEffects {
     )
   );
 
-  updateCurrentUserRoles$ = createEffect(() =>
+  updateCurrentUserBudget$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(setUserRolesSuccess),
+      ofType(setUserBudgetSuccess),
       mapToPayloadProperty('login'),
       withLatestFrom(this.store.pipe(select(getLoggedInUser))),
       filter(([login, currentUser]) => login === currentUser.login),
       mapTo(loadRolesAndPermissions())
+    )
+  );
+
+  successMessageAfterUpdate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateUserSuccess, setUserRolesSuccess, setUserBudgetSuccess),
+      withLatestFrom(this.store.pipe(select(getSelectedUser), whenTruthy())),
+      map(([, user]) =>
+        displaySuccessMessage({
+          message: 'account.organization.user_management.update_user.confirmation',
+          messageParams: { 0: `${user.firstName} ${user.lastName}` },
+        })
+      )
     )
   );
 

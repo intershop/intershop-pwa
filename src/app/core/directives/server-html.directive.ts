@@ -20,7 +20,7 @@ import { LinkParser } from 'ish-core/utils/link-parser';
 })
 export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnChanges {
   @Input() callbacks: {
-    [key: string]: () => {};
+    [key: string]: () => void;
   };
 
   constructor(

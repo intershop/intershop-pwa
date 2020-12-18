@@ -1,6 +1,11 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, InjectionToken, Injector, PLATFORM_ID, Type } from '@angular/core';
+import { Store, select } from '@ngrx/store';
 import { noop } from 'rxjs';
+import { first } from 'rxjs/operators';
+
+import { getIdentityProvider } from 'ish-core/store/core/configuration';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 import { IdentityProvider } from './identity-provider.interface';
 
@@ -10,33 +15,27 @@ export const IDENTITY_PROVIDER_IMPLEMENTOR = new InjectionToken<{ type: string; 
 
 @Injectable({ providedIn: 'root' })
 export class IdentityProviderFactory {
-  private config: { type: string };
   private instance: IdentityProvider;
+  private config: { type: string };
 
-  constructor(private injector: Injector, @Inject(PLATFORM_ID) private platformId: string) {}
+  constructor(private store: Store, private injector: Injector, @Inject(PLATFORM_ID) platformId: string) {
+    if (isPlatformBrowser(platformId)) {
+      this.store.pipe(select(getIdentityProvider), whenTruthy(), first()).subscribe(config => {
+        const provider = this.injector
+          .get<{ type: string; implementor: Type<IdentityProvider> }[]>(IDENTITY_PROVIDER_IMPLEMENTOR, [])
+          .find(p => p.type === config?.type);
 
-  getInstance() {
-    return this.instance;
-  }
+        if (!provider) {
+          console.error('did not find identity provider for config', config);
+        } else {
+          const instance = this.injector.get(provider.implementor);
+          instance.init(config);
 
-  init(config: { type: string }) {
-    if (isPlatformBrowser(this.platformId)) {
-      this.config = config;
-
-      const provider = this.injector
-        .get<{ type: string; implementor: Type<IdentityProvider> }[]>(IDENTITY_PROVIDER_IMPLEMENTOR, [])
-        .find(p => p.type === this.config?.type);
-
-      if (!provider) {
-        console.error('did not find identity provider for config', this.config);
-      } else {
-        const instance = this.injector.get(provider.implementor);
-        instance.init(this.config);
-
-        this.instance = instance;
-      }
+          this.instance = instance;
+          this.config = config;
+        }
+      });
     } else {
-      // provide dummy instance for server side
       this.instance = {
         init: noop,
         intercept: (req, next) => next.handle(req),
@@ -45,5 +44,13 @@ export class IdentityProviderFactory {
         getCapabilities: () => ({}),
       };
     }
+  }
+
+  getInstance() {
+    return this.instance;
+  }
+
+  getType(): string {
+    return this.config?.type;
   }
 }

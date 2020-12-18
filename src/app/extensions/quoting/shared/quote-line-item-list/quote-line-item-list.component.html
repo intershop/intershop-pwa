@@ -1,0 +1,28 @@
+<div class="container">
+  <!-- Line Items Overview -->
+  <div class="row list-header d-none d-md-flex">
+    <div class="col-md-8 col-xl-6 list-header-item list-header-item-descr">
+      {{ 'shopping_cart.product_description.heading' | translate }}
+    </div>
+    <div class="col-xl-2 d-none d-xl-flex list-header-item" [ngClass]="{ 'justify-content-end': editable$ | async }">
+      {{ 'shopping_cart.qty.heading' | translate }}
+    </div>
+    <div class="col-md-2 list-header-item column-price">{{ 'shopping_cart.price.heading' | translate }}</div>
+    <div class="col-md-2 list-header-item column-price">{{ 'shopping_cart.total.heading' | translate }}</div>
+  </div>
+  <div class="list-body">
+    <ish-quote-line-item-list-element *ngFor="let pli of lineItems$ | async" [lineItem]="pli">
+    </ish-quote-line-item-list-element>
+  </div>
+
+  <div *ngIf="displayTotal$ | async" class="clearfix section">
+    <div class="row justify-content-end list-body">
+      <!-- TODO: remove style attribute -->
+      <div class="col-sm-4 col-md-3 col-lg-2 text-right pr-0">{{ 'quote.items.total.label' | translate }}</div>
+      <!-- TODO: remove style attribute -->
+      <div class="col-sm-4 col-md-2 pr-0">
+        <div class="total-price text-right">{{ total$ | async | ishPrice }}</div>
+      </div>
+    </div>
+  </div>
+</div>

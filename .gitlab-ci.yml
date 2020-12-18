@@ -1,11 +1,8 @@
 stages:
-  - mrconfig
   - setup
   - build
   - publish
   - deploy
-  - universal
-  - e2e
   - verify
 
 variables:
@@ -32,51 +29,6 @@ start_review_server:
   environment:
     name: review-server
     url: http://$DEMO_SERVER_NAME:3000
-
-deploy_review_mock:
-  cache: {}
-  dependencies: []
-  stage: build
-  tags:
-    - shell-executor
-    - docker
-    - performance
-    - demoserver
-  script:
-    - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
-    - docker build -t ${CI_REGISTRY_IMAGE}:mock-${CI_BUILD_REF}
-      --file=templates/Dockerfile_dev
-      .
-    - PUBLISH_PWA=$(sh .gitlab-ci-get-publish.sh "${CI_COMMIT_REF_SLUG}-mock" 8080)
-    - docker rm -f "${CI_COMMIT_REF_SLUG}-mock" || true
-    - docker run
-      --detach
-      $PUBLISH_PWA
-      --name "${CI_COMMIT_REF_SLUG}-mock"
-      ${CI_REGISTRY_IMAGE}:mock-${CI_BUILD_REF}
-    - DEMO_SERVER_IP=$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
-    - docker run --rm --add-host $DEMO_SERVER_NAME:$DEMO_SERVER_IP mwendler/wget --wait 60 --tries 20 --retry-connrefused "http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock"
-  environment:
-    name: review/mock-$CI_COMMIT_REF_SLUG
-    url: http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock
-    on_stop: stop_review_mock
-
-stop_review_mock:
-  stage: build
-  cache: {}
-  dependencies: []
-  when: manual
-  tags:
-    - shell-executor
-    - docker
-    - demoserver
-  variables:
-    GIT_STRATEGY: none
-  script:
-    - docker rm -f "${CI_COMMIT_REF_SLUG}-mock" || true
-  environment:
-    name: review/mock-$CI_COMMIT_REF_SLUG
-    action: stop
 
 publish_pwa:
   cache: {}

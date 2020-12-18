@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { IconName } from '@fortawesome/fontawesome-svg-core';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, take, takeUntil } from 'rxjs/operators';
 
@@ -26,7 +27,7 @@ interface SearchBoxConfiguration {
   /**
    * configure search box icon
    */
-  icon?: string;
+  icon?: IconName;
   /**
    * show last search term as search box value
    */
@@ -63,6 +64,10 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
 
   constructor(private shoppingFacade: ShoppingFacade, private router: Router) {}
 
+  get usedIcon(): IconName {
+    return this.configuration?.icon || 'search';
+  }
+
   ngOnInit() {
     // initialize with searchTerm when on search route
     this.shoppingFacade.searchTerm$
@@ -90,8 +95,9 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
     this.inputFocused = true;
   }
 
-  searchSuggest(searchTerm: string) {
-    this.inputSearchTerms$.next(searchTerm);
+  searchSuggest(source: string | EventTarget) {
+    // tslint:disable-next-line: no-string-literal
+    this.inputSearchTerms$.next(typeof source === 'string' ? source : source['value']);
   }
 
   submitSearch(suggestedTerm: string) {

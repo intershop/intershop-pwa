@@ -1,6 +1,6 @@
 export interface TactonProductConfigurationGroup {
-  isGroup: true;
-  isParameter: false;
+  isGroup?: true;
+  isParameter?: false;
   name: string;
   description: string;
   hasVisibleParameters?: boolean;

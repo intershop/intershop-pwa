@@ -41,6 +41,8 @@ import { ContentSlotComponent } from './cms/components/content-slot/content-slot
 import { ContentViewcontextComponent } from './cms/components/content-viewcontext/content-viewcontext.component';
 import { AddressComponent } from './components/address/address/address.component';
 import { BasketAddressSummaryComponent } from './components/basket/basket-address-summary/basket-address-summary.component';
+import { BasketApprovalInfoComponent } from './components/basket/basket-approval-info/basket-approval-info.component';
+import { BasketBuyerComponent } from './components/basket/basket-buyer/basket-buyer.component';
 import { BasketCostSummaryComponent } from './components/basket/basket-cost-summary/basket-cost-summary.component';
 import { BasketInfoComponent } from './components/basket/basket-info/basket-info.component';
 import { BasketItemsSummaryComponent } from './components/basket/basket-items-summary/basket-items-summary.component';
@@ -74,6 +76,8 @@ import { LineItemDescriptionComponent } from './components/line-item/line-item-d
 import { LineItemEditDialogComponent } from './components/line-item/line-item-edit-dialog/line-item-edit-dialog.component';
 import { LineItemEditComponent } from './components/line-item/line-item-edit/line-item-edit.component';
 import { LineItemListComponent } from './components/line-item/line-item-list/line-item-list.component';
+import { Auth0SigninComponent } from './components/login/auth0-signin/auth0-signin.component';
+import { IdentityProviderLoginComponent } from './components/login/identity-provider-login/identity-provider-login.component';
 import { LoginFormComponent } from './components/login/login-form/login-form.component';
 import { LoginModalComponent } from './components/login/login-modal/login-modal.component';
 import { OrderListComponent } from './components/order/order-list/order-list.component';
@@ -132,6 +136,7 @@ const importExportModules = [
 ];
 
 const declaredComponents = [
+  Auth0SigninComponent,
   BasketValidationItemsComponent,
   BasketValidationProductsComponent,
   CMSCarouselComponent,
@@ -158,6 +163,7 @@ const declaredComponents = [
   LineItemDescriptionComponent,
   LineItemEditComponent,
   LineItemEditDialogComponent,
+  LoginFormComponent,
   LoginModalComponent,
   ProductIdComponent,
   ProductLabelComponent,
@@ -174,6 +180,8 @@ const exportedComponents = [
   AccordionItemComponent,
   AddressComponent,
   BasketAddressSummaryComponent,
+  BasketApprovalInfoComponent,
+  BasketBuyerComponent,
   BasketCostSummaryComponent,
   BasketInfoComponent,
   BasketInvoiceAddressWidgetComponent,
@@ -188,11 +196,11 @@ const exportedComponents = [
   ContentViewcontextComponent,
   ErrorMessageComponent,
   FilterNavigationComponent,
+  IdentityProviderLoginComponent,
   InfoBoxComponent,
   InplaceEditComponent,
   LineItemListComponent,
   LoadingComponent,
-  LoginFormComponent,
   ModalDialogComponent,
   ModalDialogLinkComponent,
   OrderListComponent,

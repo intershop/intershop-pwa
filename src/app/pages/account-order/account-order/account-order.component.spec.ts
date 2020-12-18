@@ -1,11 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
+import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
+import { BasketBuyerComponent } from 'ish-shared/components/basket/basket-buyer/basket-buyer.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
@@ -22,13 +25,15 @@ describe('Account Order Component', () => {
       declarations: [
         AccountOrderComponent,
         MockComponent(AddressComponent),
+        MockComponent(BasketBuyerComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(FaIconComponent),
         MockComponent(InfoBoxComponent),
         MockComponent(LineItemListComponent),
+        MockDirective(FeatureToggleDirective),
         MockPipe(DatePipe),
       ],
-      imports: [TranslateModule.forRoot()],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

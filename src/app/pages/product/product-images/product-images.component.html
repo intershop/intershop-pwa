@@ -26,15 +26,15 @@
         (slide)="setActiveSlide($event.current)"
         [showNavigationArrows]="getImageViewIDsExcludePrimary(product, 'L').length > 0"
         [showNavigationIndicators]="false"
-        [interval]="false"
+        [interval]="0"
       >
-        <ng-template ngbSlide [id]="0">
+        <ng-template ngbSlide id="0">
           <ish-product-image [product]="product" imageType="L"></ish-product-image>
         </ng-template>
         <ng-template
           ngbSlide
           *ngFor="let imageView of getImageViewIDsExcludePrimary(product, 'L'); index as i"
-          [id]="i + 1"
+          id="{{ i + 1 }}"
         >
           <ish-product-image [product]="product" imageType="L" [imageView]="imageView"></ish-product-image>
         </ng-template>

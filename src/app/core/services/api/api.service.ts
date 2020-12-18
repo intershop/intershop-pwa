@@ -297,6 +297,12 @@ export class ApiService {
             this.put<T>(`customers/${customer.customerNo}/users/${user.login}/${path}`, body, options)
           )
         ),
+      patch: <T>(path: string, body = {}, options?: AvailableOptions) =>
+        ids$.pipe(
+          concatMap(([user, customer]) =>
+            this.patch<T>(`customers/${customer.customerNo}/users/${user.login}/${path}`, body, options)
+          )
+        ),
       post: <T>(path: string, body = {}, options?: AvailableOptions) =>
         ids$.pipe(
           concatMap(([user, customer]) =>

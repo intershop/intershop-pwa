@@ -4,6 +4,7 @@ import { merge } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { selectRouteData } from 'ish-core/store/core/router';
@@ -14,6 +15,7 @@ import {
   continueCheckout,
   createBasketAddress,
   createBasketPayment,
+  deleteBasketAttribute,
   deleteBasketItem,
   deleteBasketPayment,
   deleteBasketShippingAddress,
@@ -28,11 +30,14 @@ import {
   getBasketShippingAddress,
   getBasketValidationResults,
   getCurrentBasket,
+  getSubmittedBasket,
   isBasketInvoiceAndShippingAddressEqual,
   loadBasketEligiblePaymentMethods,
   loadBasketEligibleShippingMethods,
   removePromotionCodeFromBasket,
+  setBasketAttribute,
   setBasketPayment,
+  startCheckout,
   updateBasketAddress,
   updateBasketItems,
   updateBasketShippingMethod,
@@ -49,6 +54,10 @@ export class CheckoutFacade {
   constructor(private store: Store) {}
 
   checkoutStep$ = this.store.pipe(select(selectRouteData<number>('checkoutStep')));
+
+  start() {
+    this.store.dispatch(startCheckout());
+  }
 
   continue(targetStep: number) {
     this.store.dispatch(continueCheckout({ targetStep }));
@@ -67,6 +76,7 @@ export class CheckoutFacade {
   basketLineItems$ = this.basket$.pipe(
     map(basket => (basket && basket.lineItems && basket.lineItems.length ? basket.lineItems : undefined))
   );
+  submittedBasket$ = this.store.pipe(select(getSubmittedBasket));
 
   deleteBasketItem(itemId: string) {
     this.store.dispatch(deleteBasketItem({ itemId }));
@@ -78,6 +88,14 @@ export class CheckoutFacade {
 
   updateBasketShippingMethod(shippingId: string) {
     this.store.dispatch(updateBasketShippingMethod({ shippingId }));
+  }
+
+  setBasketCustomAttribute(attribute: Attribute): void {
+    this.store.dispatch(setBasketAttribute({ attribute }));
+  }
+
+  deleteBasketCustomAttribute(attributeName: string): void {
+    this.store.dispatch(deleteBasketAttribute({ attributeName }));
   }
 
   // ORDERS

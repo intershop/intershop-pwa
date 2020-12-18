@@ -3,7 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { LoginFormComponent } from 'ish-shared/components/login/login-form/login-form.component';
+import { IdentityProviderLoginComponent } from 'ish-shared/components/login/identity-provider-login/identity-provider-login.component';
 
 import { LoginModalComponent } from './login-modal.component';
 
@@ -15,7 +15,11 @@ describe('Login Modal Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [LoginModalComponent, MockComponent(LoginFormComponent), MockDirective(ServerHtmlDirective)],
+      declarations: [
+        LoginModalComponent,
+        MockComponent(IdentityProviderLoginComponent),
+        MockDirective(ServerHtmlDirective),
+      ],
     }).compileComponents();
   });
 

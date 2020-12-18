@@ -2,8 +2,8 @@
   <ish-checkbox
     *ngIf="field && field.templateOptions"
     [form]="form"
-    [controlName]="field.key"
+    [controlName]="castControlName(field.key)"
     [label]="field.templateOptions.label"
-    [errorMessages]="field.templateOptions.attributes"
+    [errorMessages]="castErrorMessages(field.templateOptions.attributes)"
   ></ish-checkbox>
 </div>

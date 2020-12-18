@@ -21,7 +21,7 @@ if (prefix != 'ish') {
   if (!styles.find(style => style.bundleName === prefix)) {
     styles.push({
       input: `src/styles/themes/${prefix}/style.scss`,
-      inject: true,
+      inject: false,
       bundleName: prefix,
     });
   }

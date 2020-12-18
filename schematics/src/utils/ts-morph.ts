@@ -9,7 +9,7 @@ export function createTsMorphProject(host: Tree) {
       getCurrentDirectory: () => '',
       directoryExistsSync: p => host.exists(p) || existsSync(p),
       fileExistsSync: p => host.exists(p) || existsSync(p),
-      readFileSync: (p, encoding) => (host.read(p) || readFileSync(p)).toString(encoding),
+      readFileSync: (p, encoding) => (host.read(p) || readFileSync(p)).toString(encoding as BufferEncoding),
     } as FileSystemHost,
   });
 }

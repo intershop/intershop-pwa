@@ -1,0 +1,34 @@
+<div *ngIf="order">
+  <div class="cart-header">
+    <h1 class="d-flex flex-wrap align-items-baseline">
+      <span class="cart-header-title">{{ 'checkout.receipt.tankyou.message' | translate }}</span>
+      <span class="header-note">
+        <span>{{ 'shopping_cart.transaction.text' | translate }}</span>
+        <ish-modal-dialog-link
+          linkText="shopping_cart.read_more.link"
+          [options]="{ titleText: 'checkout.safeandsecure.details.title' | translate, size: 'lg' }"
+          class="details-link"
+        >
+          <ish-content-include includeId="include.dialog.safeAndSecure.pagelet2-Include"></ish-content-include>
+        </ish-modal-dialog-link>
+      </span>
+    </h1>
+  </div>
+  <p *ngIf="order.statusCode === 'PENDING'" class="alert alert-info">
+    {{ 'checkout.receipt.order_pending.message' | translate }}
+  </p>
+
+  <!-- Receipt message -->
+  <div class="section">
+    <p>
+      <span>{{ 'checkout.order.number.label' | translate }}</span>
+      <strong data-testing-id="order-document-number">
+        <a *ngIf="order.customerNo; else plainOrderNo" [routerLink]="'/account/orders/' + order.id">
+          {{ order.documentNo }}</a
+        >
+        <ng-template #plainOrderNo> {{ order.documentNo }}</ng-template>
+      </strong>
+    </p>
+    <p [innerHTML]="'checkout.receipt.notification.mail.text' | translate: { '0': order.invoiceToAddress.email }"></p>
+  </div>
+</div>

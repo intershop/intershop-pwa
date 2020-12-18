@@ -10,8 +10,19 @@ exports[`Cms Carousel Component should be created 1`] = `
         ng-reflect-interval="0"
         ng-reflect-show-navigation-arrows="false"
         style="display: block"
-        ><div class="carousel-inner">
-          <div class="carousel-item active">
+        aria-activedescendant="ngb-slide-0"
+        ><ol class="carousel-indicators sr-only" role="tablist">
+          <li
+            role="tab"
+            class="active"
+            aria-labelledby="slide-ngb-slide-0"
+            aria-controls="slide-ngb-slide-0"
+            aria-selected="true"
+          ></li>
+        </ol>
+        <div class="carousel-inner">
+          <div class="carousel-item active" role="tabpanel" id="slide-ngb-slide-0">
+            <span class="sr-only"> Slide 1 of 1 </span>
             <div class="row">
               <div class="col-sm-6" ng-reflect-ng-class="col-sm-6">
                 <ish-content-pagelet ng-reflect-pagelet-id="slide1"></ish-content-pagelet>

@@ -31,7 +31,7 @@ describe('Product Label Component', () => {
 
   it('should create HTML tag span when component is created', () => {
     const attributeGroup = {
-      attributes: [{ name: 'sale', type: 'string', value: 'sale' }],
+      attributes: [{ name: 'sale', type: 'String', value: 'sale' }],
     } as AttributeGroup;
     component.product = {
       name: 'FakeProduct',

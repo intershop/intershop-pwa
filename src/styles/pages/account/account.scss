@@ -38,6 +38,19 @@
   .cost-summary {
     border: none;
   }
+
+  .progress {
+    height: 20px;
+
+    &.background-inverse {
+      background-color: $color-inverse;
+    }
+
+    .progress-bar {
+      overflow: visible;
+      text-shadow: 0 0 2px #000;
+    }
+  }
 }
 
 //

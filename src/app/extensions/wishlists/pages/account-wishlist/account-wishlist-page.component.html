@@ -1,19 +1,19 @@
 <div class="wishlist">
-  <ng-template #WishlistDescription>
-    <span innerHTML="{{ 'account.wishlists.heading.tooltip.content' | translate }}"></span>
-  </ng-template>
-  <a
-    [ngbPopover]="WishlistDescription"
-    placement="bottom"
-    popoverTitle="{{ 'account.wishlists.heading.tooltip.headline' | translate }}"
-  >
-    {{ 'account.wishlists.heading.tooltip.link' | translate }}
-    <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
-  </a>
-
-  <h1>
-    {{ 'account.wishlists.heading' | translate
-    }}<a class="btn btn-secondary" data-testing-id="add-wishlist" (click)="addWishlistDialog.show()">{{
+  <h1 class="cart-header">
+    {{ 'account.wishlists.heading' | translate }}
+    <ng-template #WishlistDescription>
+      <span innerHTML="{{ 'account.wishlists.heading.tooltip.content' | translate }}"></span>
+    </ng-template>
+    <a
+      class="header-note pl-2"
+      [ngbPopover]="WishlistDescription"
+      placement="bottom"
+      popoverTitle="{{ 'account.wishlists.heading.tooltip.headline' | translate }}"
+    >
+      {{ 'account.wishlists.heading.tooltip.link' | translate }}
+      <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
+    </a>
+    <a class="btn btn-secondary" data-testing-id="add-wishlist" (click)="addWishlistDialog.show()">{{
       'account.wishlists.add_wishlist' | translate
     }}</a>
   </h1>

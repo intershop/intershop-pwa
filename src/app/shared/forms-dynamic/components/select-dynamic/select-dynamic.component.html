@@ -1,11 +1,11 @@
 <ish-select
   *ngIf="field && field.templateOptions && !field.hide"
   [form]="form"
-  [controlName]="field.key"
+  [controlName]="castControlName(field.key)"
   [label]="field.templateOptions.label"
-  [options]="field.templateOptions.options"
+  [options]="castOptions(field.templateOptions.options)"
   labelClass="col-form-label col-md-4"
   inputClass="col-sm-6"
-  [errorMessages]="field.templateOptions.attributes"
+  [errorMessages]="castErrorMessages(field.templateOptions.attributes)"
   [translateOptionLabels]="false"
 ></ish-select>

@@ -3,12 +3,12 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
+import { toArray } from 'rxjs/operators';
 import { anything, deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
 import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { FilterService } from 'ish-core/services/filter/filter.service';
-import { setProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import {
@@ -54,7 +54,7 @@ describe('Filter Effects', () => {
       } else {
         return of({
           total: 2,
-          productSKUs: ['123', '234'],
+          products: [{ sku: '123' }, { sku: '234' }],
         });
       }
     });
@@ -142,29 +142,31 @@ describe('Filter Effects', () => {
   });
 
   describe('loadFilteredProducts$', () => {
-    it('should trigger product actions for ApplyFilterSuccess action', () => {
+    it('should trigger product actions for ApplyFilterSuccess action', done => {
       const action = loadProductsForFilter({
         id: {
           type: 'search',
           value: 'test',
           filters: { searchTerm: ['b*'] },
         },
-
         searchParameter: { param: ['b'] },
       });
-      const completion = setProductListingPages({
-        id: {
-          type: 'search',
-          value: 'test',
-          filters: { searchTerm: ['b*'] },
-        },
-        1: ['123', '234'],
-        itemCount: 2,
-        sortKeys: [],
+
+      actions$ = of(action);
+      effects.loadFilteredProducts$.pipe(toArray()).subscribe(actions => {
+        expect(actions).toMatchInlineSnapshot(`
+          [Products API] Load Product Success:
+            product: {"sku":"123"}
+          [Products API] Load Product Success:
+            product: {"sku":"234"}
+          [Product Listing Internal] Set Product Listing Pages:
+            1: ["123","234"]
+            id: {"type":"search","value":"test","filters":{"searchTerm":[1]}}
+            itemCount: 2
+            sortKeys: []
+        `);
+        done();
       });
-      actions$ = hot('        ---b-|', { b: action });
-      const expected$ = cold('---c-|', { c: completion });
-      expect(effects.loadFilteredProducts$).toBeObservable(expected$);
     });
   });
 

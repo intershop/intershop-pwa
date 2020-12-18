@@ -28,6 +28,13 @@ h3,
   margin-top: $space-default;
   margin-bottom: $space-default;
   text-transform: uppercase;
+
+  .header-note {
+    font-family: $font-family-regular;
+    font-size: $font-size-corporate;
+    color: $text-color-quarternary;
+    text-transform: none;
+  }
 }
 
 h4,
@@ -110,6 +117,31 @@ img {
 .grey-panel {
   padding: ($space-default + ($space-default / 2)) 0;
   background: $color-tertiary;
+}
+
+// Navbar
+.nav-tabs {
+  display: block;
+  margin-bottom: $space-default;
+  overflow-x: auto;
+  white-space: nowrap;
+
+  .nav-item {
+    display: inline-block;
+    margin-bottom: 0;
+  }
+
+  .nav-link:hover,
+  .nav-link:focus {
+    border-color: transparent;
+  }
+
+  .nav-link.active,
+  .nav-link.active:hover,
+  .nav-link.active:focus {
+    border-color: transparent;
+    border-bottom: 2px solid $CORPORATE-PRIMARY;
+  }
 }
 
 // Help Text

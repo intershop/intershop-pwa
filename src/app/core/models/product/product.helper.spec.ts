@@ -129,7 +129,7 @@ describe('Product Helper', () => {
   describe('get attributes', () => {
     it('should return attribute when attribute is defined', () => {
       const productData = {
-        attributes: [{ name: 'sku', type: 'string', value: '01234567' }],
+        attributes: [{ name: 'sku', type: 'String', value: '01234567' }],
         description: '',
       } as ProductDataStub;
       expect(AttributeHelper.getAttributeValueByAttributeName<string>(productData.attributes, 'sku')).toBe('01234567');
@@ -137,7 +137,7 @@ describe('Product Helper', () => {
 
     it('should return attribute of attribute group when attribute group is defined', () => {
       const attributeGroup = {
-        attributes: [{ name: 'sale', type: 'string', value: 'sale' }],
+        attributes: [{ name: 'sale', type: 'String', value: 'sale' }],
       } as AttributeGroup;
       const product = {
         name: 'FakeProduct',

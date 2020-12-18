@@ -2,14 +2,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { anything, instance, mock, verify } from 'ts-mockito';
 
+import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { AddressFormContainerComponent } from 'ish-shared/address-forms/components/address-form-container/address-form-container.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { LoginFormComponent } from 'ish-shared/components/login/login-form/login-form.component';
+import { IdentityProviderLoginComponent } from 'ish-shared/components/login/identity-provider-login/identity-provider-login.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
 import { CheckoutAddressAnonymousComponent } from './checkout-address-anonymous.component';
@@ -29,8 +30,9 @@ describe('Checkout Address Anonymous Component', () => {
         CheckoutAddressAnonymousComponent,
         MockComponent(AddressFormContainerComponent),
         MockComponent(ErrorMessageComponent),
+        MockComponent(IdentityProviderLoginComponent),
         MockComponent(InputComponent),
-        MockComponent(LoginFormComponent),
+        MockDirective(FeatureToggleDirective),
       ],
       imports: [NgbCollapseModule, ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
@@ -52,7 +54,7 @@ describe('Checkout Address Anonymous Component', () => {
 
   it('should render login container component on page', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-login-form')).toBeTruthy();
+    expect(element.querySelector('ish-identity-provider-login')).toBeTruthy();
   });
 
   it('should initially have shipping and invoice address forms on page', () => {
@@ -118,6 +120,7 @@ describe('Checkout Address Anonymous Component', () => {
   it('should create address for valid invoice address form', () => {
     component.form = fb.group({
       email: new FormControl(''),
+      taxationID: new FormControl(''),
       shipOption: new FormControl('shipToInvoiceAddress'),
     });
     component.invoiceAddressForm = fb.group({

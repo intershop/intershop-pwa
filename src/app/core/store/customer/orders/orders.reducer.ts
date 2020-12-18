@@ -3,7 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Order } from 'ish-core/models/order/order.model';
-import { setErrorOn, setLoadingOn } from 'ish-core/utils/ngrx-creators';
+import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
 import {
   createOrder,
@@ -36,28 +36,26 @@ export const initialState: OrdersState = orderAdapter.getInitialState({
 
 export const ordersReducer = createReducer(
   initialState,
+  setLoadingOn(createOrder, loadOrder, loadOrders),
+  unsetLoadingAndErrorOn(createOrderSuccess, loadOrderSuccess, loadOrdersSuccess),
+  setErrorOn(loadOrdersFail, loadOrderFail, createOrderFail),
   on(selectOrder, (state: OrdersState, action) => ({
     ...state,
     selected: action.payload.orderId,
   })),
-  setLoadingOn(loadOrders, loadOrder, createOrder),
+
   on(createOrderSuccess, loadOrderSuccess, (state: OrdersState, action) => {
     const { order } = action.payload;
 
     return {
       ...orderAdapter.upsertOne(order, state),
       selected: order.id,
-      loading: false,
-      error: undefined,
     };
   }),
   on(loadOrdersSuccess, (state: OrdersState, action) => {
     const { orders } = action.payload;
     return {
       ...orderAdapter.setAll(orders, state),
-      loading: false,
-      error: undefined,
     };
-  }),
-  setErrorOn(loadOrdersFail, loadOrderFail, createOrderFail)
+  })
 );

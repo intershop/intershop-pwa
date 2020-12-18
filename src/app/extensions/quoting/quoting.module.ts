@@ -8,6 +8,8 @@ import { ProductAddToQuoteComponent } from './shared/product-add-to-quote/produc
 import { QuoteEditComponent } from './shared/quote-edit/quote-edit.component';
 import { QuoteExpirationDateComponent } from './shared/quote-expiration-date/quote-expiration-date.component';
 import { QuoteInteractionsComponent } from './shared/quote-interactions/quote-interactions.component';
+import { QuoteLineItemListElementComponent } from './shared/quote-line-item-list-element/quote-line-item-list-element.component';
+import { QuoteLineItemListComponent } from './shared/quote-line-item-list/quote-line-item-list.component';
 import { QuoteStateComponent } from './shared/quote-state/quote-state.component';
 import { QuoteViewComponent } from './shared/quote-view/quote-view.component';
 import { QuoteWidgetComponent } from './shared/quote-widget/quote-widget.component';
@@ -21,6 +23,8 @@ import { QuoteWidgetComponent } from './shared/quote-widget/quote-widget.compone
     QuoteEditComponent,
     QuoteExpirationDateComponent,
     QuoteInteractionsComponent,
+    QuoteLineItemListComponent,
+    QuoteLineItemListElementComponent,
     QuoteStateComponent,
     QuoteViewComponent,
     QuoteWidgetComponent,

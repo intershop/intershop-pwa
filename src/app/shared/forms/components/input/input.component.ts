@@ -13,7 +13,7 @@ export class InputComponent extends FormElementComponent implements OnInit {
    * values: 'text' (default), 'password', 'email'
    */
   @Input() type = 'text';
-  @Input() maxlength = '60';
+  @Input() maxlength = 60;
   /**
    * default = undefined  for input type 'text' and 'email' (autocomplete not set)
    * 'off' for input type 'password'
@@ -23,6 +23,8 @@ export class InputComponent extends FormElementComponent implements OnInit {
   @Input() max?: number;
 
   @Input() placeholder = '';
+  /** Extend the input field by a prepend text */
+  @Input() prepend?: string;
   @Input() disabled: boolean;
 
   calculatedAutocomplete: string;

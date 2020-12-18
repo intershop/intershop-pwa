@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 import { Price, PriceHelper } from 'ish-core/models/price/price.model';
-import { AnyProductType, Product } from 'ish-core/models/product/product.model';
+import { ProductPrices } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-price',
   templateUrl: './product-price.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ProductPriceComponent implements OnChanges {
-  @Input() product: AnyProductType;
+  @Input() product: ProductPrices;
   @Input() showInformationalPrice: boolean;
   @Input() showPriceSavings: boolean;
 
@@ -21,7 +21,7 @@ export class ProductPriceComponent implements OnChanges {
     this.applyPriceParameters(this.product);
   }
 
-  private applyPriceParameters(product: Product) {
+  private applyPriceParameters(product: ProductPrices) {
     if (product.listPrice && product.salePrice) {
       this.isListPriceGreaterThanSalePrice = product.listPrice.value > product.salePrice.value;
       this.isListPriceLessThanSalePrice = product.listPrice.value < product.salePrice.value;

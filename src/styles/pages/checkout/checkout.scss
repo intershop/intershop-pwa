@@ -94,6 +94,44 @@
         padding-left: $space-default * 2;
       }
     }
+
+    &.infobox-color-widget {
+      padding-bottom: $space-default;
+      color: $text-color-inverse;
+      text-transform: uppercase;
+      background: $CORPORATE-PRIMARY;
+      h3 {
+        font-size: $font-size-navbar-item;
+        color: inherit;
+      }
+      a {
+        color: inherit;
+        text-decoration: underline;
+        text-transform: none;
+        &:hover {
+          color: darken($text-color-inverse, 15%);
+        }
+      }
+      .infobox-count {
+        font-size: $font-size-lg * 2;
+        line-height: 1;
+      }
+      .infobox-count-large {
+        font-size: 3.75rem;
+        line-height: 1;
+      }
+      .row:last-of-type {
+        margin-top: 0.5rem;
+      }
+    }
+
+    &.infobox-widget {
+      padding-bottom: $space-default;
+
+      .row:last-of-type {
+        margin-top: $space-default;
+      }
+    }
   }
 }
 

@@ -41,6 +41,7 @@ export class CheckoutPaymentPage {
 
       submit() {
         cy.get(`[data-testing-id=payment-parameter-form-${method}]`).find('[type="submit"]').click();
+        waitLoadingEnd(3000);
       },
 
       delete() {
@@ -51,7 +52,11 @@ export class CheckoutPaymentPage {
       },
 
       formError(key: string) {
-        return cy.get(`[data-testing-id=payment-parameter-form-${method}]`).find(`[data-testing-id='${key}']`).next();
+        return cy
+          .get(`[data-testing-id=payment-parameter-form-${method}]`)
+          .find(`[data-testing-id='${key}']`)
+          .parent()
+          .next();
       },
     };
   }

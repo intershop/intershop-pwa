@@ -43,6 +43,7 @@ export abstract class QuoteContextFacade
     entityAsQuoteRequest: QuoteRequest;
     entityAsQuote: Quote;
     state: QuoteStatus;
+    editable: boolean;
     justSubmitted: boolean;
   }>
   implements OnDestroy {
@@ -88,6 +89,8 @@ export abstract class QuoteContextFacade
       'state',
       timer(0, 2000).pipe(switchMapTo(this.select('entity').pipe(map(QuotingHelper.state))), distinctUntilChanged())
     );
+
+    this.connect('editable', this.select('state').pipe(map(state => state === 'New')));
   }
 
   updateItem(item: LineItemUpdate) {
@@ -120,7 +123,7 @@ export abstract class QuoteContextFacade
     if (this.get('entity', 'type') === 'Quote') {
       this.store.dispatch(createQuoteRequestFromQuote({ id: this.get('entity', 'id') }));
     } else {
-      this.store.dispatch(createQuoteRequestFromQuoteRequest({ entity: this.get('entity') }));
+      this.store.dispatch(createQuoteRequestFromQuoteRequest({ id: this.get('entity', 'id') }));
     }
   }
 

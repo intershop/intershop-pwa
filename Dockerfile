@@ -1,9 +1,10 @@
-FROM node:12-alpine as buildstep
+FROM node:14-alpine as buildstep
 WORKDIR /workspace
 COPY schematics /workspace/schematics/
 COPY package.json package-lock.json /workspace/
 RUN npm i --ignore-scripts
 COPY projects/organization-management/src/app /workspace/projects/organization-management/src/app/
+COPY projects/requisition-management/src/app /workspace/projects/requisition-management/src/app/
 COPY src /workspace/src/
 COPY tsconfig.app.json tsconfig.base.json ngsw-config.json .browserslistrc angular.json /workspace/
 RUN npm run build:schematics && npm run synchronize-lazy-components -- --ci
@@ -18,10 +19,9 @@ RUN npm run ng -- run intershop-pwa:server:${configuration} --bundleDependencies
 # remove cache check for resources (especially index.html)
 # https://github.com/angular/angular/issues/23613#issuecomment-415886919
 RUN test "${serviceWorker}" = "true" && sed -i 's/canonicalHash !== cacheBustedHash/false/g' /workspace/dist/browser/ngsw-worker.js || true
-RUN egrep -o '^\s*(mockServerAPI: true|mustMockPaths)' src/environments/environment.prod.ts || rm -Rf dist/browser/assets/mock*
 COPY dist/entrypoint.sh dist/healthcheck.js dist/server.crt dist/server.key dist/robots.txt* /workspace/dist/
 
-FROM node:12-alpine
+FROM node:14-alpine
 COPY --from=buildstep /workspace/dist /dist
 ARG displayVersion=
 LABEL displayVersion="${displayVersion}"

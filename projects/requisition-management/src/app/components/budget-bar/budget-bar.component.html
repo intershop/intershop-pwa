@@ -1,0 +1,27 @@
+<div *ngIf="budget && overflowPercentage > 0" class="budget-bar-overflow">
+  <div class="overflow-indicator" [ngStyle]="{ width: overflowPercentage / 100 | percent }" [title]="budget | ishPrice">
+    <span class="overflow-display">{{ overflowPercentage / 100 | percent }}</span>
+  </div>
+</div>
+<div *ngIf="budget" class="budget-bar">
+  <div
+    class="budget-bar-used"
+    [title]="spentBudget | ishPrice"
+    [ngClass]="displayClass"
+    aria-hidden="true"
+    [ngStyle]="{ width: budgetPercentage / 100 | percent }"
+  >
+    {{ spentBudget | ishPrice }}
+  </div>
+  <div
+    *ngIf="additionalAmount?.value"
+    [title]="additionalAmount | ishPrice"
+    class="budget-bar-used budget-bar-used-additional border-left"
+    [ngClass]="addDisplayClass"
+    role="progressbar"
+    [ngStyle]="{ width: additionalPercentage / 100 | percent }"
+    aria-hidden="true"
+  >
+    <span>{{ additionalAmount | ishPrice }}</span>
+  </div>
+</div>

@@ -9,13 +9,6 @@
   .cart-header-title {
     padding-right: 10px;
   }
-
-  .cart-header-note {
-    font-family: $font-family-regular;
-    font-size: $font-size-corporate;
-    color: $text-color-quarternary;
-    text-transform: none;
-  }
 }
 
 .cart-line-img {
@@ -54,6 +47,7 @@
 
     *:last-child {
       margin-right: 0;
+      margin-bottom: 0;
     }
   }
 
@@ -261,7 +255,9 @@
 
   .btn-tool {
     display: inline-block;
+    padding: 0 $space-default/3;
     margin-top: ($space-default);
+    margin-bottom: 0;
 
     @media (max-width: $screen-md-max) {
       margin-bottom: $space-default;

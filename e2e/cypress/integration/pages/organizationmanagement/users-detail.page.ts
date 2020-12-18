@@ -21,11 +21,27 @@ export class UsersDetailPage {
     return cy.get('[data-testing-id="edit-roles"]').click();
   }
 
+  editBudget() {
+    return cy.get('[data-testing-id="edit-budget"]').click();
+  }
+
   goToUserManagement() {
     cy.get('[data-testing-id="back-to-user-management"]').click();
   }
 
   get rolesAndPermissions() {
     return cy.get(this.tag).find('[data-testing-id="user-roles-fields"]');
+  }
+
+  get orderSpendLimit() {
+    return cy.get(this.tag).find('[data-testing-id="order-spend-limit-field"]');
+  }
+
+  get budget() {
+    return cy.get(this.tag).find('[data-testing-id="budget-field"]');
+  }
+
+  get userBudget() {
+    return cy.get(this.tag).find('[data-testing-id="user-budget"]');
   }
 }

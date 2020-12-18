@@ -212,10 +212,10 @@ describe('Shopping Store', () => {
           event: {"id":1,"url":"/home"}
         @ngrx/router-store/navigation:
           routerState: {"url":"/home","params":{},"queryParams":{},"data":{},"path"...
-          event: {"id":1,"url":"/home"}
+          event: {"id":1,"url":"/home","urlAfterRedirects":"/home"}
         @ngrx/router-store/navigated:
           routerState: {"url":"/home","params":{},"queryParams":{},"data":{},"path"...
-          event: {"id":1,"url":"/home"}
+          event: {"id":1,"url":"/home","urlAfterRedirects":"/home"}
       `);
 
       expect(getCategoryIds(store.state)).toBeEmpty();
@@ -247,7 +247,7 @@ describe('Shopping Store', () => {
             event: {"id":2,"url":"/category/A.123"}
           @ngrx/router-store/navigation:
             routerState: {"url":"/category/A.123","params":{"categoryUniqueId":"A.123...
-            event: {"id":2,"url":"/category/A.123"}
+            event: {"id":2,"url":"/category/A.123","urlAfterRedirects":"/catego...
           [Categories Internal] Load Category:
             categoryId: "A.123"
           [Categories API] Load Category Success:
@@ -262,7 +262,7 @@ describe('Shopping Store', () => {
             breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123"}]
           @ngrx/router-store/navigated:
             routerState: {"url":"/category/A.123","params":{"categoryUniqueId":"A.123...
-            event: {"id":2,"url":"/category/A.123"}
+            event: {"id":2,"url":"/category/A.123","urlAfterRedirects":"/catego...
           [Viewconf Internal] Set Breadcrumb Data:
             breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123"}]
         `);
@@ -305,12 +305,12 @@ describe('Shopping Store', () => {
             event: {"id":2,"url":"/search/something"}
           @ngrx/router-store/navigation:
             routerState: {"url":"/search/something","params":{"searchTerm":"something...
-            event: {"id":2,"url":"/search/something"}
+            event: {"id":2,"url":"/search/something","urlAfterRedirects":"/sear...
           [Viewconf Internal] Set Breadcrumb Data:
             breadcrumbData: [{"text":"search.breadcrumbs.your_search.label something"}]
           @ngrx/router-store/navigated:
             routerState: {"url":"/search/something","params":{"searchTerm":"something...
-            event: {"id":2,"url":"/search/something"}
+            event: {"id":2,"url":"/search/something","urlAfterRedirects":"/sear...
           [Product Listing] Load More Products:
             id: {"type":"search","value":"something"}
           [Viewconf Internal] Set Breadcrumb Data:
@@ -352,7 +352,7 @@ describe('Shopping Store', () => {
               event: {"id":3,"url":"/product/P2"}
             @ngrx/router-store/navigation:
               routerState: {"url":"/product/P2","params":{"sku":"P2"},"queryParams":{},...
-              event: {"id":3,"url":"/product/P2"}
+              event: {"id":3,"url":"/product/P2","urlAfterRedirects":"/product/P2"}
             [Products Internal] Load Product:
               sku: "P2"
             [Recently Viewed Internal] Add Product to Recently:
@@ -362,7 +362,7 @@ describe('Shopping Store', () => {
               product: {"sku":"P2","name":"nP2"}
             @ngrx/router-store/navigated:
               routerState: {"url":"/product/P2","params":{"sku":"P2"},"queryParams":{},...
-              event: {"id":3,"url":"/product/P2"}
+              event: {"id":3,"url":"/product/P2","urlAfterRedirects":"/product/P2"}
           `);
         }));
       });
@@ -393,7 +393,7 @@ describe('Shopping Store', () => {
           event: {"id":1,"url":"/category/A.123"}
         @ngrx/router-store/navigation:
           routerState: {"url":"/category/A.123","params":{"categoryUniqueId":"A.123...
-          event: {"id":1,"url":"/category/A.123"}
+          event: {"id":1,"url":"/category/A.123","urlAfterRedirects":"/catego...
         [Categories Internal] Load Category:
           categoryId: "A.123"
         [Categories API] Load Category Success:
@@ -404,7 +404,7 @@ describe('Shopping Store', () => {
           categories: tree(A,A.123)
         @ngrx/router-store/navigated:
           routerState: {"url":"/category/A.123","params":{"categoryUniqueId":"A.123...
-          event: {"id":1,"url":"/category/A.123"}
+          event: {"id":1,"url":"/category/A.123","urlAfterRedirects":"/catego...
         [Viewconf Internal] Set Breadcrumb Data:
           breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123"}]
       `);
@@ -435,10 +435,10 @@ describe('Shopping Store', () => {
             event: {"id":2,"url":"/compare"}
           @ngrx/router-store/navigation:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{},"pa...
-            event: {"id":2,"url":"/compare"}
+            event: {"id":2,"url":"/compare","urlAfterRedirects":"/compare"}
           @ngrx/router-store/navigated:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{},"pa...
-            event: {"id":2,"url":"/compare"}
+            event: {"id":2,"url":"/compare","urlAfterRedirects":"/compare"}
         `);
       }));
 
@@ -473,7 +473,7 @@ describe('Shopping Store', () => {
           event: {"id":1,"url":"/category/A.123.456"}
         @ngrx/router-store/navigation:
           routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
-          event: {"id":1,"url":"/category/A.123.456"}
+          event: {"id":1,"url":"/category/A.123.456","urlAfterRedirects":"/ca...
         [Categories Internal] Load Category:
           categoryId: "A.123.456"
         [Categories API] Load Category Success:
@@ -488,7 +488,7 @@ describe('Shopping Store', () => {
           categories: tree(A.123,A.123.456)
         @ngrx/router-store/navigated:
           routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
-          event: {"id":1,"url":"/category/A.123.456"}
+          event: {"id":1,"url":"/category/A.123.456","urlAfterRedirects":"/ca...
         [Product Listing] Load More Products:
           id: {"type":"category","value":"A.123.456"}
         [Viewconf Internal] Set Breadcrumb Data:
@@ -536,7 +536,7 @@ describe('Shopping Store', () => {
             event: {"id":2,"url":"/category/A.123.456/product/P1"}
           @ngrx/router-store/navigation:
             routerState: {"url":"/category/A.123.456/product/P1","params":{"categoryU...
-            event: {"id":2,"url":"/category/A.123.456/product/P1"}
+            event: {"id":2,"url":"/category/A.123.456/product/P1","urlAfterRedi...
           [Products Internal] Load Product:
             sku: "P1"
           [Recently Viewed Internal] Add Product to Recently:
@@ -546,7 +546,7 @@ describe('Shopping Store', () => {
             product: {"sku":"P1","name":"nP1"}
           @ngrx/router-store/navigated:
             routerState: {"url":"/category/A.123.456/product/P1","params":{"categoryU...
-            event: {"id":2,"url":"/category/A.123.456/product/P1"}
+            event: {"id":2,"url":"/category/A.123.456/product/P1","urlAfterRedi...
         `);
       }));
 
@@ -568,14 +568,14 @@ describe('Shopping Store', () => {
               event: {"id":3,"url":"/category/A.123.456"}
             @ngrx/router-store/navigation:
               routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
-              event: {"id":3,"url":"/category/A.123.456"}
+              event: {"id":3,"url":"/category/A.123.456","urlAfterRedirects":"/ca...
             [Product Listing] Load More Products:
               id: {"type":"category","value":"A.123.456"}
             [Viewconf Internal] Set Breadcrumb Data:
               breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123","link":"/nA...
             @ngrx/router-store/navigated:
               routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
-              event: {"id":3,"url":"/category/A.123.456"}
+              event: {"id":3,"url":"/category/A.123.456","urlAfterRedirects":"/ca...
             [Product Listing] Load More Products:
               id: {"type":"category","value":"A.123.456"}
             [Viewconf Internal] Set Breadcrumb Data:
@@ -599,12 +599,12 @@ describe('Shopping Store', () => {
             event: {"id":2,"url":"/search/something"}
           @ngrx/router-store/navigation:
             routerState: {"url":"/search/something","params":{"searchTerm":"something...
-            event: {"id":2,"url":"/search/something"}
+            event: {"id":2,"url":"/search/something","urlAfterRedirects":"/sear...
           [Viewconf Internal] Set Breadcrumb Data:
             breadcrumbData: [{"text":"search.breadcrumbs.your_search.label something"}]
           @ngrx/router-store/navigated:
             routerState: {"url":"/search/something","params":{"searchTerm":"something...
-            event: {"id":2,"url":"/search/something"}
+            event: {"id":2,"url":"/search/something","urlAfterRedirects":"/sear...
           [Product Listing] Load More Products:
             id: {"type":"search","value":"something"}
           [Viewconf Internal] Set Breadcrumb Data:
@@ -646,7 +646,7 @@ describe('Shopping Store', () => {
               event: {"id":3,"url":"/category/A.123.456"}
             @ngrx/router-store/navigation:
               routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
-              event: {"id":3,"url":"/category/A.123.456"}
+              event: {"id":3,"url":"/category/A.123.456","urlAfterRedirects":"/ca...
             [Product Listing] Load More Products:
               id: {"type":"category","value":"A.123.456"}
             [Viewconf Internal] Set Breadcrumb Data:
@@ -664,7 +664,7 @@ describe('Shopping Store', () => {
               filterNavigation: {}
             @ngrx/router-store/navigated:
               routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
-              event: {"id":3,"url":"/category/A.123.456"}
+              event: {"id":3,"url":"/category/A.123.456","urlAfterRedirects":"/ca...
             [Product Listing] Load More Products:
               id: {"type":"category","value":"A.123.456"}
             [Viewconf Internal] Set Breadcrumb Data:
@@ -699,10 +699,10 @@ describe('Shopping Store', () => {
             event: {"id":2,"url":"/compare"}
           @ngrx/router-store/navigation:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{},"pa...
-            event: {"id":2,"url":"/compare"}
+            event: {"id":2,"url":"/compare","urlAfterRedirects":"/compare"}
           @ngrx/router-store/navigated:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{},"pa...
-            event: {"id":2,"url":"/compare"}
+            event: {"id":2,"url":"/compare","urlAfterRedirects":"/compare"}
         `);
       }));
 
@@ -737,7 +737,7 @@ describe('Shopping Store', () => {
           event: {"id":1,"url":"/category/A.123.456/product/P1"}
         @ngrx/router-store/navigation:
           routerState: {"url":"/category/A.123.456/product/P1","params":{"categoryU...
-          event: {"id":1,"url":"/category/A.123.456/product/P1"}
+          event: {"id":1,"url":"/category/A.123.456/product/P1","urlAfterRedi...
         [Categories Internal] Load Category:
           categoryId: "A.123.456"
         [Products Internal] Load Product:
@@ -759,7 +759,7 @@ describe('Shopping Store', () => {
           categories: tree(A.123,A.123.456)
         @ngrx/router-store/navigated:
           routerState: {"url":"/category/A.123.456/product/P1","params":{"categoryU...
-          event: {"id":1,"url":"/category/A.123.456/product/P1"}
+          event: {"id":1,"url":"/category/A.123.456/product/P1","urlAfterRedi...
       `);
     }));
 
@@ -792,7 +792,7 @@ describe('Shopping Store', () => {
             event: {"id":2,"url":"/category/A.123.456"}
           @ngrx/router-store/navigation:
             routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
-            event: {"id":2,"url":"/category/A.123.456"}
+            event: {"id":2,"url":"/category/A.123.456","urlAfterRedirects":"/ca...
           [Product Listing] Load More Products:
             id: {"type":"category","value":"A.123.456"}
           [Viewconf Internal] Set Breadcrumb Data:
@@ -821,7 +821,7 @@ describe('Shopping Store', () => {
             filterNavigation: {}
           @ngrx/router-store/navigated:
             routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
-            event: {"id":2,"url":"/category/A.123.456"}
+            event: {"id":2,"url":"/category/A.123.456","urlAfterRedirects":"/ca...
           [Product Listing] Load More Products:
             id: {"type":"category","value":"A.123.456"}
           [Viewconf Internal] Set Breadcrumb Data:
@@ -859,10 +859,10 @@ describe('Shopping Store', () => {
             event: {"id":2,"url":"/compare"}
           @ngrx/router-store/navigation:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{},"pa...
-            event: {"id":2,"url":"/compare"}
+            event: {"id":2,"url":"/compare","urlAfterRedirects":"/compare"}
           @ngrx/router-store/navigated:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{},"pa...
-            event: {"id":2,"url":"/compare"}
+            event: {"id":2,"url":"/compare","urlAfterRedirects":"/compare"}
         `);
       }));
 
@@ -891,7 +891,7 @@ describe('Shopping Store', () => {
           event: {"id":1,"url":"/product/P1"}
         @ngrx/router-store/navigation:
           routerState: {"url":"/product/P1","params":{"sku":"P1"},"queryParams":{},...
-          event: {"id":1,"url":"/product/P1"}
+          event: {"id":1,"url":"/product/P1","urlAfterRedirects":"/product/P1"}
         [Products Internal] Load Product:
           sku: "P1"
         [Products API] Load Product Success:
@@ -901,7 +901,7 @@ describe('Shopping Store', () => {
           group: undefined
         @ngrx/router-store/navigated:
           routerState: {"url":"/product/P1","params":{"sku":"P1"},"queryParams":{},...
-          event: {"id":1,"url":"/product/P1"}
+          event: {"id":1,"url":"/product/P1","urlAfterRedirects":"/product/P1"}
       `);
     }));
 
@@ -924,10 +924,10 @@ describe('Shopping Store', () => {
             event: {"id":2,"url":"/compare"}
           @ngrx/router-store/navigation:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{},"pa...
-            event: {"id":2,"url":"/compare"}
+            event: {"id":2,"url":"/compare","urlAfterRedirects":"/compare"}
           @ngrx/router-store/navigated:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{},"pa...
-            event: {"id":2,"url":"/compare"}
+            event: {"id":2,"url":"/compare","urlAfterRedirects":"/compare"}
         `);
       }));
 
@@ -962,7 +962,7 @@ describe('Shopping Store', () => {
           event: {"id":1,"url":"/category/A.123.456/product/P3"}
         @ngrx/router-store/navigation:
           routerState: {"url":"/category/A.123.456/product/P3","params":{"categoryU...
-          event: {"id":1,"url":"/category/A.123.456/product/P3"}
+          event: {"id":1,"url":"/category/A.123.456/product/P3","urlAfterRedi...
         [Categories Internal] Load Category:
           categoryId: "A.123.456"
         [Products Internal] Load Product:
@@ -989,10 +989,10 @@ describe('Shopping Store', () => {
           categories: tree(A.123,A.123.456)
         @ngrx/router-store/navigation:
           routerState: {"url":"/error","params":{},"queryParams":{},"data":{"header...
-          event: {"id":2,"url":"/error"}
+          event: {"id":2,"url":"/error","urlAfterRedirects":"/error"}
         @ngrx/router-store/navigated:
           routerState: {"url":"/error","params":{},"queryParams":{},"data":{"header...
-          event: {"id":2,"url":"/error"}
+          event: {"id":2,"url":"/error","urlAfterRedirects":"/error"}
       `);
     }));
 
@@ -1024,7 +1024,7 @@ describe('Shopping Store', () => {
           event: {"id":1,"url":"/category/A.123.XXX"}
         @ngrx/router-store/navigation:
           routerState: {"url":"/category/A.123.XXX","params":{"categoryUniqueId":"A...
-          event: {"id":1,"url":"/category/A.123.XXX"}
+          event: {"id":1,"url":"/category/A.123.XXX","urlAfterRedirects":"/ca...
         [Categories Internal] Load Category:
           categoryId: "A.123.XXX"
         [Categories API] Load Category Fail:
@@ -1038,10 +1038,10 @@ describe('Shopping Store', () => {
           event: {"id":2,"url":"/error"}
         @ngrx/router-store/navigation:
           routerState: {"url":"/error","params":{},"queryParams":{},"data":{"header...
-          event: {"id":2,"url":"/error"}
+          event: {"id":2,"url":"/error","urlAfterRedirects":"/error"}
         @ngrx/router-store/navigated:
           routerState: {"url":"/error","params":{},"queryParams":{},"data":{"header...
-          event: {"id":2,"url":"/error"}
+          event: {"id":2,"url":"/error","urlAfterRedirects":"/error"}
       `);
     }));
 
@@ -1068,10 +1068,10 @@ describe('Shopping Store', () => {
           event: {"id":1,"url":"/search/something"}
         @ngrx/router-store/navigation:
           routerState: {"url":"/search/something","params":{"searchTerm":"something...
-          event: {"id":1,"url":"/search/something"}
+          event: {"id":1,"url":"/search/something","urlAfterRedirects":"/sear...
         @ngrx/router-store/navigated:
           routerState: {"url":"/search/something","params":{"searchTerm":"something...
-          event: {"id":1,"url":"/search/something"}
+          event: {"id":1,"url":"/search/something","urlAfterRedirects":"/sear...
         [Product Listing] Load More Products:
           id: {"type":"search","value":"something"}
         [Viewconf Internal] Set Breadcrumb Data:

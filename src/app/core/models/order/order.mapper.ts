@@ -1,4 +1,5 @@
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
+import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
 import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
 import { PaymentMapper } from 'ish-core/models/payment/payment.mapper';
@@ -20,7 +21,28 @@ export class OrderMapper {
         orderCreation: data.orderCreation,
         statusCode: data.statusCode,
         status: data.status,
-
+        requisitionNo: data.requisitionDocumentNo,
+        approval:
+          data.attributes &&
+          AttributeHelper.getAttributeValueByAttributeName(
+            data.attributes,
+            'BusinessObjectAttributes#OrderApproval_ApprovalDate'
+          )
+            ? {
+                date: AttributeHelper.getAttributeValueByAttributeName(
+                  data.attributes,
+                  'BusinessObjectAttributes#OrderApproval_ApprovalDate'
+                ),
+                approverFirstName: AttributeHelper.getAttributeValueByAttributeName(
+                  data.attributes,
+                  'BusinessObjectAttributes#OrderApproval_ApproverFirstName'
+                ),
+                approverLastName: AttributeHelper.getAttributeValueByAttributeName(
+                  data.attributes,
+                  'BusinessObjectAttributes#OrderApproval_ApproverLastName'
+                ),
+              }
+            : undefined,
         purchaseCurrency: data.purchaseCurrency,
         dynamicMessages: data.discounts ? data.discounts.dynamicMessages : undefined,
         invoiceToAddress:
@@ -35,6 +57,8 @@ export class OrderMapper {
           included && included.commonShippingMethod && data.commonShippingMethod
             ? ShippingMethodMapper.fromData(included.commonShippingMethod[data.commonShippingMethod])
             : undefined,
+        customerNo: data.customer,
+        email: data.user,
         lineItems:
           included && included.lineItems && data.lineItems && data.lineItems.length
             ? data.lineItems.map(lineItemId =>
@@ -57,6 +81,7 @@ export class OrderMapper {
             : undefined,
         totals,
         infos,
+        attributes: data.attributes,
       };
     }
   }
