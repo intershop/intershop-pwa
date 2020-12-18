@@ -7,6 +7,43 @@ kb_everyone
 
 # Changelog
 
+## [0.26.0](https://github.com/intershop/intershop-pwa/releases/tag/0.26.0) (2020-12-18)
+
+**required Intershop Commerce Management version: 7.10.26.2-LTS**
+
+**required/tested Node.js version: 14.15.0 LTS (including npm 6.14.8)**
+
+### Features
+
+- checkout - simple basket acceleration (#479) ([ff08159](https://github.com/intershop/intershop-pwa/commit/ff08159))
+- display buyer widget for B2B customers on checkout and order details pages (#486) ([5f046c1](https://github.com/intershop/intershop-pwa/commit/5f046c1))
+- custom attributes support for basket and orders (#476) ([6cc98e0](https://github.com/intershop/intershop-pwa/commit/6cc98e0))
+- Requisition Management / Order Approval functionality (#326) ([eee665f](https://github.com/intershop/intershop-pwa/commit/eee665f))
+- SSO with Auth0 for B2C (#352) ([a8cc433](https://github.com/intershop/intershop-pwa/commit/a8cc433))
+- use new REST API for filters and products on master variation page (#414) ([5b9847c](https://github.com/intershop/intershop-pwa/commit/5b9847c))
+- **schematics:** adapt lazy-components for projects (#437) ([18a3f2f](https://github.com/intershop/intershop-pwa/commit/18a3f2f))
+- add server configuration pipe and feature toggle pipe ([906a5b4](https://github.com/intershop/intershop-pwa/commit/906a5b4))
+
+### Bug Fixes
+
+- display the inactive status on the b2b user list ([5f7a55e](https://github.com/intershop/intershop-pwa/commit/5f7a55e))
+- repair schema build (#475) ([96e12f9](https://github.com/intershop/intershop-pwa/commit/96e12f9))
+- display only one validation error for a form element at once ([fdc1480](https://github.com/intershop/intershop-pwa/commit/fdc1480))
+- replace interfering special characters from product and category slugs (#469) ([591fc99](https://github.com/intershop/intershop-pwa/commit/591fc99))
+- disable add-to-cart button on quick order page if the form is invalid ([57bcabb](https://github.com/intershop/intershop-pwa/commit/57bcabb))
+- hide add-to-cart button on order template details page if the order template is empty ([11f71ca](https://github.com/intershop/intershop-pwa/commit/11f71ca))
+- customization start script should add themes with inject false (#462) ([bb15b79](https://github.com/intershop/intershop-pwa/commit/bb15b79))
+- prevent error if language switched on order details page in case of ssr ([0023025](https://github.com/intershop/intershop-pwa/commit/0023025))
+
+### Performance Improvements
+
+- prevent SSR rendering cycle for static resources (#465) ([2b81911](https://github.com/intershop/intershop-pwa/commit/2b81911))
+- run configurations call only once for SSR (#466) ([8c211de](https://github.com/intershop/intershop-pwa/commit/8c211de))
+
+### Documentation
+
+- add migration note for new multi-channel format (#457) ([ab733d1](https://github.com/intershop/intershop-pwa/commit/ab733d1))
+
 ## [0.25.0](https://github.com/intershop/intershop-pwa/releases/tag/0.25.0) (2020-11-05)
 
 **required Intershop Commerce Management version: 7.10.24.1**
