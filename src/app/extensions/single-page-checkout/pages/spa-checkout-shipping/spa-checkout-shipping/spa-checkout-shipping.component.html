@@ -1,17 +1,8 @@
 <div *ngIf="basket && shippingMethods" class="row">
-  <!-- Messages -->
-  <div class="col-md-12">
-    <ish-error-message [error]="error"></ish-error-message>
-    <ish-basket-validation-results></ish-basket-validation-results>
-  </div>
-
   <div class="col-md-12 col-lg-8">
     <!-- shipping method selection -->
     <form [formGroup]="shippingForm" class="form-horizontal">
       <div *ngIf="shippingMethods.length; else noShippingMethods" class="shipping-methods">
-        <div *ngIf="nextDisabled && !error" role="alert" class="alert alert-danger">
-          {{ 'checkout.shipping_method.no_Selection.error' | translate }}
-        </div>
         <h3>{{ 'checkout.shipping_method.selection.heading' | translate }}</h3>
 
         <div *ngFor="let shippingMethod of shippingMethods" class="radio">

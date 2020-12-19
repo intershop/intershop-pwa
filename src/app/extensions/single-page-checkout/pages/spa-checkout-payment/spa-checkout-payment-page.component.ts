@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 
@@ -14,7 +13,6 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 })
 export class SpaCheckoutPaymentPageComponent implements OnInit {
   basket$: Observable<BasketView>;
-  basketError$: Observable<HttpError>;
   loading$: Observable<boolean>;
   paymentMethods$: Observable<PaymentMethod[]>;
   priceType$: Observable<'gross' | 'net'>;
@@ -23,7 +21,6 @@ export class SpaCheckoutPaymentPageComponent implements OnInit {
 
   ngOnInit() {
     this.basket$ = this.checkoutFacade.basket$;
-    this.basketError$ = this.checkoutFacade.basketError$;
     this.loading$ = this.checkoutFacade.basketLoading$;
     this.paymentMethods$ = this.checkoutFacade.eligiblePaymentMethods$();
     this.priceType$ = this.checkoutFacade.priceType$;

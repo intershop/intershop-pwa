@@ -14,7 +14,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 
 @Component({
@@ -25,7 +24,6 @@ import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.
 export class SpaCheckoutShippingComponent implements OnInit, OnChanges, OnDestroy {
   @Input() basket: Basket;
   @Input() shippingMethods: ShippingMethod[];
-  @Input() error: HttpError;
 
   @Output() updateShippingMethod = new EventEmitter<string>();
   @Output() nextStep = new EventEmitter<void>();

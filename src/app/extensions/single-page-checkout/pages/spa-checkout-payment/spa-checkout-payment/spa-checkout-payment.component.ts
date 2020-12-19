@@ -16,7 +16,6 @@ import { Subject } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
@@ -31,7 +30,6 @@ export class SpaCheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy
   @Input() basket: Basket;
   @Input() paymentMethods: PaymentMethod[];
   @Input() priceType: 'gross' | 'net';
-  @Input() error: HttpError;
 
   @Output() updatePaymentMethod = new EventEmitter<string>();
   @Output() createPaymentInstrument = new EventEmitter<{

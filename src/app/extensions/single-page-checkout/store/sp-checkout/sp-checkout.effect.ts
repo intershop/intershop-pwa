@@ -70,7 +70,7 @@ export class SpCheckoutEffects {
         return this.basketService.validateBasket(basketId, scopes).pipe(
           concatMap(basketValidation =>
             basketValidation.results.valid
-              ? targetStep === 5 && !basketValidation.results.adjusted
+              ? targetStep === 4 && !basketValidation.results.adjusted
                 ? [createOrder({ basketId }), continueCheckoutSuccess({ targetRoute: undefined, basketValidation })]
                 : [continueCheckoutSuccess({ targetRoute, basketValidation })]
               : [continueCheckoutWithIssues({ targetRoute, basketValidation })]
