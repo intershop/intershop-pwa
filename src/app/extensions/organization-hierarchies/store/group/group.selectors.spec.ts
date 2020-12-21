@@ -8,12 +8,7 @@ import { OrganizationGroup } from '../../models/organization-group/organization-
 import { OrganizationHierarchiesStoreModule } from '../organization-hierarchies-store.module';
 
 import { loadGroups, loadGroupsFail, loadGroupsSuccess } from './group.actions';
-import {
-  getGroupError,
-  getGroupLoading,
-  getGroupsOfOrganization,
-  getGroupsOfOrganizationCount,
-} from './group.selectors';
+import { getGroupsOfOrganization, getGroupsOfOrganizationCount } from './group.selectors';
 
 describe('Group Selectors', () => {
   let store$: StoreWithSnapshots;
@@ -28,14 +23,6 @@ describe('Group Selectors', () => {
   });
 
   describe('initial state', () => {
-    it('should not be loading when in initial state', () => {
-      expect(getGroupLoading(store$.state)).toBeFalse();
-    });
-
-    it('should not have an error when in initial state', () => {
-      expect(getGroupError(store$.state)).toBeUndefined();
-    });
-
     it('should not have entities when in initial state', () => {
       expect(getGroupsOfOrganization(store$.state)).toBeEmpty();
       expect(getGroupsOfOrganizationCount(store$.state)).toBe(0);
@@ -49,15 +36,9 @@ describe('Group Selectors', () => {
       store$.dispatch(action);
     });
 
-    it('should set loading to true', () => {
-      expect(getGroupLoading(store$.state)).toBeTrue();
-    });
-
     it('should set loading to false and set group state', () => {
       const groups = [{ id: '1' }, { id: '2' }] as OrganizationGroup[];
       store$.dispatch(loadGroupsSuccess({ groups }));
-      expect(getGroupLoading(store$.state)).toBeFalse();
-      expect(getGroupError(store$.state)).toBeUndefined();
       expect(getGroupsOfOrganization(store$.state)).not.toBeEmpty();
       expect(getGroupsOfOrganizationCount(store$.state)).toBe(2);
     });
@@ -65,8 +46,6 @@ describe('Group Selectors', () => {
     it('should set loading to false and set error state', () => {
       store$.dispatch(loadGroupsFail({ error: makeHttpError({}) }));
 
-      expect(getGroupLoading(store$.state)).toBeFalse();
-      expect(getGroupError(store$.state)).toBeTruthy();
       expect(getGroupsOfOrganization(store$.state)).toBeEmpty();
       expect(getGroupsOfOrganizationCount(store$.state)).toBe(0);
     });
