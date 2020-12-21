@@ -101,7 +101,6 @@ export class OrganizationManagementFacade {
       .subscribe(login => this.store.dispatch(setUserBudget({ login, budget })));
   }
 
-  // private initialize = once(() => this.store.dispatch(loadGroups()));
   groups$(): Observable<NodeTree> {
     const customer$ = this.store.pipe(select(getLoggedInCustomer));
     return customer$.pipe(
