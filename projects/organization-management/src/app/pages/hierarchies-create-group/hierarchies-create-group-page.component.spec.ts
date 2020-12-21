@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, verify } from 'ts-mockito';
@@ -22,7 +21,7 @@ describe('Hierarchies Create Group Page Component', () => {
   beforeEach(async () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
         HierarchiesCreateGroupPageComponent,
         MockComponent(GroupFormComponent),
