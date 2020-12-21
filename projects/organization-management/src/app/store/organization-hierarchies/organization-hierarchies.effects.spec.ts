@@ -19,7 +19,6 @@ import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { NodeHelper } from '../../models/node/node.helper';
 import { Node } from '../../models/node/node.model';
 import { OrganizationHierarchiesService } from '../../services/organization-hierarchies/organization-hierarchies.service';
-import { OrganizationManagementStoreModule } from '../organization-management-store.module';
 
 import { createGroup, createGroupFail, createGroupSuccess, loadGroups } from './organization-hierarchies.actions';
 import { OrganizationHierarchiesEffects } from './organization-hierarchies.effects';
@@ -55,7 +54,6 @@ describe('Organization Hierarchies Effects', () => {
       imports: [
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user'),
-        OrganizationManagementStoreModule.forTesting('organizationHierarchies'),
         RouterTestingModule.withRoutes([
           { path: 'hierarchies/', component: DummyComponent },
           { path: 'hierarchies/create-group', component: DummyComponent },
