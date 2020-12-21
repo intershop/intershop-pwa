@@ -7,6 +7,8 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { Node, NodeTree } from '../../models/node/node.model';
@@ -40,7 +42,12 @@ describe('Hierarchies Page Component', () => {
     when(organizationManagementFacade.groups$()).thenReturn(of(nodeTree));
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [HierarchiesPageComponent, MockComponent(TreeviewComponent)],
+      declarations: [
+        HierarchiesPageComponent,
+        MockComponent(ErrorMessageComponent),
+        MockComponent(LoadingComponent),
+        MockComponent(TreeviewComponent),
+      ],
       providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
     }).compileComponents();
   });
@@ -66,7 +73,7 @@ describe('Hierarchies Page Component', () => {
   it('should display organizations root after init', () => {
     fixture.detectChanges();
     expect(component.items$).toBeTruthy();
-    expect(element.querySelector('div').textContent).toMatchInlineSnapshot(`"Manage the structure of \\"ROOT\\"."`);
+    expect(element.querySelector('div').textContent).toMatchInlineSnapshot(`" Manage the structure of \\"ROOT\\". "`);
   });
 
   it('should not display organizations in case of error', () => {
@@ -74,7 +81,11 @@ describe('Hierarchies Page Component', () => {
     when(organizationManagementFacade.groupsError$).thenReturn(of({} as HttpError));
     fixture.detectChanges();
     expect(element.querySelector('h1.a')).toBeFalsy();
-    expect(element).toMatchInlineSnapshot(`<h1>Company Structure</h1>`);
+    expect(element).toMatchInlineSnapshot(`
+      <h1>Company Structure</h1>
+      <ish-error-message></ish-error-message>
+      <div class="loading-container"></div>
+    `);
   });
 
   it('should map node tree data after init', () => {
