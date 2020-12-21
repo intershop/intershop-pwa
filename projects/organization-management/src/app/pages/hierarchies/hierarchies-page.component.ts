@@ -17,6 +17,7 @@ export class HierarchiesPageComponent implements OnInit {
   @ViewChild('ngx-treeview') treeViewComponent: TreeviewComponent;
   items$: Observable<TreeviewItem[]>;
   error$: Observable<HttpError>;
+  loading$: Observable<boolean>;
   config: TreeviewConfig = TreeviewConfig.create({
     hasAllCheckBox: false,
     hasFilter: false,
@@ -24,14 +25,15 @@ export class HierarchiesPageComponent implements OnInit {
     decoupleChildFromParent: false,
   });
 
-  constructor(private organizationManagement: OrganizationManagementFacade) {}
+  constructor(private organizationManagementFacade: OrganizationManagementFacade) {}
 
   ngOnInit(): void {
-    this.items$ = this.organizationManagement.groups$().pipe(
+    this.items$ = this.organizationManagementFacade.groups$().pipe(
       map(nodeTree => this.mapToTreeItems(nodeTree, nodeTree.rootIds)),
       map(items => items.map(item => new TreeviewItem(item)))
     );
-    this.error$ = this.organizationManagement.groupsError$;
+    this.error$ = this.organizationManagementFacade.groupsError$;
+    this.loading$ = this.organizationManagementFacade.groupsLoading$;
   }
 
   mapTreeViewItem(orgNode: Node): TreeItem {
