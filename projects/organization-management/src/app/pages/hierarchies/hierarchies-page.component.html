@@ -4,7 +4,16 @@
     'account.organization.hierarchies.groups.add' | translate
   }}</a>
 </h1>
-<ng-container *ngIf="items$ | async as items">
-  <div>{{ 'account.organization.hierarchies.description' | translate: { '0': items[0]?.text } }}</div>
-  <ngx-treeview [config]="config" [items]="items"> </ngx-treeview>
-</ng-container>
+
+<ish-error-message [error]="error$ | async"></ish-error-message>
+
+<div class="loading-container">
+  <ng-container *ngIf="items$ | async as items">
+    <div *ngIf="items.length">
+      {{ 'account.organization.hierarchies.description' | translate: { '0': items[0]?.text } }}
+    </div>
+    <ngx-treeview [config]="config" [items]="items"> </ngx-treeview>
+  </ng-container>
+
+  <ish-loading *ngIf="loading$ | async"></ish-loading>
+</div>
