@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { instance, mock } from 'ts-mockito';
 
 import { ApiService } from 'ish-core/services/api/api.service';
+import { getICMBaseURL } from 'ish-core/store/core/configuration';
 
 import { OrganizationHierarchiesService } from './organization-hierarchies.service';
-import { provideMockStore } from '@ngrx/store/testing';
-import { getICMBaseURL } from 'ish-core/store/core/configuration';
 
 describe('Organization Hierarchies Service', () => {
   let apiServiceMock: ApiService;
