@@ -37,7 +37,10 @@ describe('Group Selectors', () => {
     });
 
     it('should set loading to false and set group state', () => {
-      const groups = [{ id: '1' }, { id: '2' }] as OrganizationGroup[];
+      const groups = [
+        { id: '1', name: 'Test 1' },
+        { id: '2', name: 'Test 2' },
+      ] as OrganizationGroup[];
       store$.dispatch(loadGroupsSuccess({ groups }));
       expect(getGroupsOfOrganization(store$.state)).not.toBeEmpty();
       expect(getGroupsOfOrganizationCount(store$.state)).toBe(2);
