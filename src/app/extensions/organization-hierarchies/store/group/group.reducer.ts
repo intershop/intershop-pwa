@@ -3,13 +3,20 @@ import { createReducer, on } from '@ngrx/store';
 
 import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
 
-import { loadGroupsSuccess } from './group.actions';
+import { loadGroupsSuccess, selectGroup } from './group.actions';
 
-export const groupAdapter = createEntityAdapter<OrganizationGroup>();
+export const groupAdapter = createEntityAdapter<OrganizationGroup>({
+  selectId: group => group.id,
+  sortComparer: (groupA, groupB) => groupA.name.localeCompare(groupB.name),
+});
 
-export interface GroupState extends EntityState<OrganizationGroup> {}
+export interface GroupState extends EntityState<OrganizationGroup> {
+  selected: string;
+}
 
-const initialState: GroupState = groupAdapter.getInitialState({});
+const initialState: GroupState = groupAdapter.getInitialState({
+  selected: undefined,
+});
 
 export const groupReducer = createReducer(
   initialState,
@@ -17,6 +24,13 @@ export const groupReducer = createReducer(
     const { groups } = action.payload;
     return {
       ...groupAdapter.upsertMany(groups, state),
+    };
+  }),
+  on(selectGroup, (state: GroupState, action) => {
+    const { id } = action.payload;
+    return {
+      ...state,
+      selected: id,
     };
   })
 );
