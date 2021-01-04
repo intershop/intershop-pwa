@@ -25,7 +25,7 @@ describe('Hierarchy Switch Component', () => {
   beforeEach(async () => {
     organizationHierarchiesFacade = mock(OrganizationHierarchiesFacade);
     when(organizationHierarchiesFacade.groups$).thenReturn(of([groupA, groupB]));
-    when(organizationHierarchiesFacade.groupsCount$).thenReturn(of(2));
+    when(organizationHierarchiesFacade.groupsCount$()).thenReturn(of(2));
 
     await TestBed.configureTestingModule({
       declarations: [HierarchySwitchComponent],
@@ -49,7 +49,7 @@ describe('Hierarchy Switch Component', () => {
 
   it('should not be rendered if there are no options', () => {
     when(organizationHierarchiesFacade.groups$).thenReturn(of([]));
-    when(organizationHierarchiesFacade.groupsCount$).thenReturn(of(0));
+    when(organizationHierarchiesFacade.groupsCount$()).thenReturn(of(0));
     fixture.detectChanges();
     expect(element.querySelector('select[data-testing-id=hierarchy-switch]')).toBeFalsy();
   });

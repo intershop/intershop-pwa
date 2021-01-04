@@ -19,6 +19,6 @@ export class HierarchySwitchComponent implements OnInit {
 
   ngOnInit(): void {
     this.groups = this.facade.groups$;
-    this.count = this.facade.groupsCount$;
+    this.count = this.facade.groupsCount$();
   }
 }
