@@ -23,4 +23,8 @@ export class AccountPunchoutPageComponent implements OnInit {
     this.loading$ = this.punchoutFacade.punchoutLoading$;
     this.error$ = this.punchoutFacade.punchoutError$;
   }
+
+  deleteUser(user: PunchoutUser) {
+    this.punchoutFacade.deletePunchoutUser(user.login);
+  }
 }

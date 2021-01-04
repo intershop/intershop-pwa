@@ -4,6 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { PunchoutUser } from '../models/punchout-user/punchout-user.model';
 import {
   addPunchoutUser,
+  deletePunchoutUser,
   getPunchoutError,
   getPunchoutLoading,
   getPunchoutUsers,
@@ -25,5 +26,9 @@ export class PunchoutFacade {
 
   addPunchoutUser(user: PunchoutUser) {
     this.store.dispatch(addPunchoutUser({ user }));
+  }
+
+  deletePunchoutUser(login: string) {
+    this.store.dispatch(deletePunchoutUser({ login }));
   }
 }

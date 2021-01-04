@@ -21,3 +21,12 @@ export const addPunchoutUserSuccess = createAction(
   '[Punchout API] Add Punchout User Success',
   payload<{ user: PunchoutUser }>()
 );
+
+export const deletePunchoutUser = createAction('[Punchout] Delete Punchout User', payload<{ login: string }>());
+
+export const deletePunchoutUserFail = createAction('[Punchout API] Delete Punchout User Fail', httpError());
+
+export const deletePunchoutUserSuccess = createAction(
+  '[Punchout API] Punchout Delete User Success',
+  payload<{ login: string }>()
+);

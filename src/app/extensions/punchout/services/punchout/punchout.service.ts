@@ -37,7 +37,7 @@ export class PunchoutService {
    */
   createUser(user: PunchoutUser): Observable<PunchoutUser> {
     if (!user) {
-      return throwError('createUser() called without punchout user');
+      return throwError('createUser() of the punchout service called without punchout user');
     }
 
     return this.currentCustomer$.pipe(
@@ -45,6 +45,22 @@ export class PunchoutService {
         this.apiService
           .post(`customers/${customer.customerNo}/punchouts/oci/users`, user)
           .pipe(this.apiService.resolveLink<PunchoutUser>())
+      )
+    );
+  }
+
+  /**
+   * Deletes an oci punchout user (connection).
+   * @param login   The login of the punchout user.
+   */
+  deleteUser(login: string): Observable<void> {
+    if (!login) {
+      return throwError('deleteUser() of the punchout service called without login');
+    }
+
+    return this.currentCustomer$.pipe(
+      switchMap(customer =>
+        this.apiService.delete<void>(`customers/${customer.customerNo}/punchouts/oci/users/${login}`)
       )
     );
   }

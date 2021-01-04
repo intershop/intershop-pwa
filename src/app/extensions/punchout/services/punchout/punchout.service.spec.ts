@@ -21,6 +21,7 @@ describe('Punchout Service', () => {
     when(apiServiceMock.resolveLinks()).thenReturn(() => of([]));
     when(apiServiceMock.post(anything(), anything())).thenReturn(of({}));
     when(apiServiceMock.resolveLink()).thenReturn(() => of({}));
+    when(apiServiceMock.delete(anything())).thenReturn(of({}));
 
     TestBed.configureTestingModule({
       providers: [
@@ -55,6 +56,16 @@ describe('Punchout Service', () => {
     punchoutService.createUser({ login: 'ociuser' } as PunchoutUser).subscribe(() => {
       verify(apiServiceMock.post(anything(), anything())).once();
       expect(capture(apiServiceMock.post).last()[0]).toMatchInlineSnapshot(`"customers/4711/punchouts/oci/users"`);
+      done();
+    });
+  });
+
+  it('should call deleteUser for deleting a punchout user', done => {
+    punchoutService.deleteUser('ociuser').subscribe(() => {
+      verify(apiServiceMock.delete(anything())).once();
+      expect(capture(apiServiceMock.delete).last()[0]).toMatchInlineSnapshot(
+        `"customers/4711/punchouts/oci/users/ociuser"`
+      );
       done();
     });
   });

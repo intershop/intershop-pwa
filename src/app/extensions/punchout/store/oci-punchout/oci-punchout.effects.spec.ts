@@ -17,6 +17,9 @@ import {
   addPunchoutUser,
   addPunchoutUserFail,
   addPunchoutUserSuccess,
+  deletePunchoutUser,
+  deletePunchoutUserFail,
+  deletePunchoutUserSuccess,
   loadPunchoutUsers,
   loadPunchoutUsersFail,
   loadPunchoutUsersSuccess,
@@ -37,6 +40,7 @@ describe('Oci Punchout Effects', () => {
     punchoutService = mock(PunchoutService);
     when(punchoutService.getUsers()).thenReturn(of(users));
     when(punchoutService.createUser(users[0])).thenReturn(of(users[0]));
+    when(punchoutService.deleteUser(users[0].login)).thenReturn(of(undefined));
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -83,7 +87,7 @@ describe('Oci Punchout Effects', () => {
     });
   });
 
-  describe('createPunchoutUsers$', () => {
+  describe('createPunchoutUser$', () => {
     it('should call the service for adding a punchout user', done => {
       actions$ = of(addPunchoutUser({ user: users[0] }));
 
@@ -118,6 +122,44 @@ describe('Oci Punchout Effects', () => {
       const expected$ = cold('-b', { b: completion });
 
       expect(effects.createPunchoutUser$).toBeObservable(expected$);
+    });
+  });
+
+  describe('deletePunchoutUser$', () => {
+    it('should call the service for deleting a punchout user', done => {
+      actions$ = of(deletePunchoutUser({ login: users[0].login }));
+
+      effects.deletePunchoutUser$.subscribe(() => {
+        verify(punchoutService.deleteUser(users[0].login)).once();
+        done();
+      });
+    });
+    it('should map to action of type DeletePunchoutUserSuccess and DisplaySuccessMessage', () => {
+      const action = deletePunchoutUser({ login: users[0].login });
+
+      const completion1 = deletePunchoutUserSuccess({ login: users[0].login });
+      const completion2 = displaySuccessMessage({
+        message: 'account.punchout.connection.delete.confirmation',
+        messageParams: { 0: `${users[0].login}` },
+      });
+
+      actions$ = hot('        -a----a----a----|', { a: action });
+      const expected$ = cold('-(cd)-(cd)-(cd)-|', { c: completion1, d: completion2 });
+
+      expect(effects.deletePunchoutUser$).toBeObservable(expected$);
+    });
+
+    it('should dispatch a DeletePunchoutUserFail action on failed user deletion', () => {
+      const error = makeHttpError({ status: 401, code: 'feld' });
+      when(punchoutService.deleteUser(users[0].login)).thenReturn(throwError(error));
+
+      const action = deletePunchoutUser({ login: users[0].login });
+      const completion = deletePunchoutUserFail({ error });
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-b', { b: completion });
+
+      expect(effects.deletePunchoutUser$).toBeObservable(expected$);
     });
   });
 });

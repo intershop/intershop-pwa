@@ -10,6 +10,9 @@ import {
   addPunchoutUser,
   addPunchoutUserFail,
   addPunchoutUserSuccess,
+  deletePunchoutUser,
+  deletePunchoutUserFail,
+  deletePunchoutUserSuccess,
   loadPunchoutUsers,
   loadPunchoutUsersFail,
   loadPunchoutUsersSuccess,
@@ -29,10 +32,11 @@ const initialState: OciPunchoutState = ociPunchoutAdapter.getInitialState({
 
 export const ociPunchoutReducer = createReducer(
   initialState,
-  setLoadingOn(loadPunchoutUsers, addPunchoutUser),
-  setErrorOn(loadPunchoutUsersFail, addPunchoutUserFail),
-  unsetLoadingAndErrorOn(loadPunchoutUsersSuccess, addPunchoutUserSuccess),
+  setLoadingOn(loadPunchoutUsers, addPunchoutUser, deletePunchoutUser),
+  setErrorOn(loadPunchoutUsersFail, addPunchoutUserFail, deletePunchoutUserFail),
+  unsetLoadingAndErrorOn(loadPunchoutUsersSuccess, addPunchoutUserSuccess, deletePunchoutUserSuccess),
 
   on(loadPunchoutUsersSuccess, (state, action) => ociPunchoutAdapter.upsertMany(action.payload.users, state)),
-  on(addPunchoutUserSuccess, (state, action) => ociPunchoutAdapter.addOne(action.payload.user, state))
+  on(addPunchoutUserSuccess, (state, action) => ociPunchoutAdapter.addOne(action.payload.user, state)),
+  on(deletePunchoutUserSuccess, (state, action) => ociPunchoutAdapter.removeOne(action.payload.login, state))
 );

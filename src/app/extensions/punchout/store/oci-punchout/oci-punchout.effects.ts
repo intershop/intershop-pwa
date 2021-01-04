@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap, tap } from 'rxjs/operators';
+import { exhaustMap, map, mergeMap, tap } from 'rxjs/operators';
 
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
@@ -12,6 +12,9 @@ import {
   addPunchoutUser,
   addPunchoutUserFail,
   addPunchoutUserSuccess,
+  deletePunchoutUser,
+  deletePunchoutUserFail,
+  deletePunchoutUserSuccess,
   loadPunchoutUsers,
   loadPunchoutUsersFail,
   loadPunchoutUsersSuccess,
@@ -51,6 +54,25 @@ export class OciPunchoutEffects {
             }),
           ]),
           mapErrorToAction(addPunchoutUserFail)
+        )
+      )
+    )
+  );
+
+  deletePunchoutUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deletePunchoutUser),
+      mapToPayloadProperty('login'),
+      exhaustMap(login =>
+        this.punchoutService.deleteUser(login).pipe(
+          mergeMap(() => [
+            deletePunchoutUserSuccess({ login }),
+            displaySuccessMessage({
+              message: 'account.punchout.connection.delete.confirmation',
+              messageParams: { 0: `${login}` },
+            }),
+          ]),
+          mapErrorToAction(deletePunchoutUserFail)
         )
       )
     )

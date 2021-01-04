@@ -9,20 +9,46 @@
 <div class="section">
   <div class="d-flex justify-content-between">
     <h2 class="mt-1">{{ 'account.punchout.connections.list.heading' | translate }}</h2>
-    <button routerLink="/account/punchout/create" type="button" class="btn btn-secondary">
+    <button routerLink="/account/punchout/create" type="button" class="btn btn-secondary mr-0">
       {{ 'account.punchout.add.button.label' | translate }}
     </button>
   </div>
   <ng-container *ngIf="punchoutUsers$ | async as users; else emptyList">
-    <div *ngIf="users.length; else emptyList" class="list-body" data-testing-id="user-list">
+    <div *ngIf="users.length; else emptyList" class="list-body" data-testing-id="connection-list">
       <ng-container *ngFor="let user of punchoutUsers$ | async">
         <div *ngIf="user; else emptyList" class="list-item-row row mx-0">
-          <p>
-            {{ user.login }}<br />
-            <span *ngIf="user.active === false" class="input-help">{{
-              'account.user.list.status.inactive' | translate
-            }}</span>
-          </p>
+          <div class="col-10 list-item">
+            <p>
+              {{ user.login }}<br />
+              <span *ngIf="user.active === false" class="input-help">{{
+                'account.user.list.status.inactive' | translate
+              }}</span>
+            </p>
+          </div>
+          <div class="col-2 list-item text-right">
+            <div class="float-right">
+              <a
+                data-testing-id="remove-user"
+                class="btn-tool"
+                title="{{ 'account.user.delete_user_dialog.header' | translate: { '0': user.login } }}"
+                (click)="modalDialog.show(user)"
+              >
+                <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+              </a>
+
+              <ish-modal-dialog
+                #modalDialog
+                [options]="{
+                  titleText: 'account.user.delete_user_dialog.header' | translate: { '0': user.login },
+                  confirmText: 'account.user.delete_user_dialog.delete_button.text' | translate,
+                  rejectText: 'account.user.delete_user_dialog.cancel_button.text' | translate
+                }"
+                (confirmed)="deleteUser($event)"
+              >
+                <p>{{ 'account.punchout.connection.delete.text' | translate }}</p>
+              </ish-modal-dialog>
+            </div>
+          </div>
         </div>
       </ng-container>
     </div>
