@@ -126,7 +126,7 @@
                 <div
                   class="action-container"
                   [ngClass]="
-                    configuration.quantityLabel === ' ' ? 'col-6 offset-md-6 col-lg-5 offset-lg-0' : 'col-12 col-xl-7'
+                    configuration.quantityLabel === '' ? 'col-6 offset-md-6 col-lg-5 offset-lg-0' : 'col-12 col-xl-7'
                   "
                 >
                   <ish-product-quantity
@@ -142,7 +142,7 @@
 
                 <div
                   class="action-container addtocart-container"
-                  [ngClass]="configuration.quantityLabel === ' ' ? 'col-12 col-lg-7' : 'col-12 col-xl-5'"
+                  [ngClass]="configuration.quantityLabel === '' ? 'col-12 col-lg-7' : 'col-12 col-xl-5'"
                 >
                   <ish-product-add-to-basket
                     *ngIf="configuration.displayAddToBasket"
