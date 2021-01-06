@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { instance, mock, verify, when } from 'ts-mockito';
 
 import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
 import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
@@ -64,5 +64,17 @@ describe('Hierarchy Switch Component', () => {
     expect(
       element.querySelector('select[data-testing-id=hierarchy-switch] option[value = child ]').innerHTML
     ).toContain('CHILD');
+  });
+
+  it('should invoke select group at facade if a group has been selected', () => {
+    fixture.componentInstance.dispatch({ target: { value: 'root' } });
+    verify(organizationHierarchiesFacade.selectGroup('root')).once();
+  });
+
+  it('should not invoke select group at facade if nothing was selected', () => {
+    fixture.componentInstance.dispatch(undefined);
+    fixture.componentInstance.dispatch({ target: undefined });
+    fixture.componentInstance.dispatch({ target: { value: undefined } });
+    verify(organizationHierarchiesFacade.selectGroup('root')).never();
   });
 });
