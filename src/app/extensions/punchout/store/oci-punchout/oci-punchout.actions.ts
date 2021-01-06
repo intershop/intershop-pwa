@@ -30,3 +30,9 @@ export const deletePunchoutUserSuccess = createAction(
   '[Punchout API] Punchout Delete User Success',
   payload<{ login: string }>()
 );
+
+export const startOCIPunchout = createAction('[Punchout] Start OCI Punchout');
+
+export const startOCIPunchoutFail = createAction('[Punchout API] Start OCI Punchout Fail', httpError());
+
+export const startOCIPunchoutSuccess = createAction('[Punchout API] Start OCI Punchout Success');

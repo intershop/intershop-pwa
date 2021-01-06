@@ -2,12 +2,16 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
-import { anything, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { displaySuccessMessage } from 'ish-core/store/core/messages';
+import { Basket } from 'ish-core/models/basket/basket.model';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { displayErrorMessage, displaySuccessMessage } from 'ish-core/store/core/messages';
+import { loadBasketSuccess } from 'ish-core/store/customer/basket';
+import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { PunchoutUser } from '../../models/punchout-user/punchout-user.model';
@@ -23,6 +27,9 @@ import {
   loadPunchoutUsers,
   loadPunchoutUsersFail,
   loadPunchoutUsersSuccess,
+  startOCIPunchout,
+  startOCIPunchoutFail,
+  startOCIPunchoutSuccess,
 } from './oci-punchout.actions';
 import { OciPunchoutEffects } from './oci-punchout.effects';
 
@@ -33,6 +40,7 @@ describe('Oci Punchout Effects', () => {
   let actions$: Observable<Action>;
   let effects: OciPunchoutEffects;
   let punchoutService: PunchoutService;
+  let store$: Store;
 
   const users = [{ id: 'ociUser', email: 'ociuser@test.de' }] as PunchoutUser[];
 
@@ -41,10 +49,16 @@ describe('Oci Punchout Effects', () => {
     when(punchoutService.getUsers()).thenReturn(of(users));
     when(punchoutService.createUser(users[0])).thenReturn(of(users[0]));
     when(punchoutService.deleteUser(users[0].login)).thenReturn(of(undefined));
+    when(punchoutService.getOciPunchoutData(anyString())).thenReturn(of(undefined));
+    when(punchoutService.submitOciPunchoutData(anyString(), anything())).thenReturn(of(undefined));
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
-      imports: [RouterTestingModule.withRoutes([{ path: 'account/punchout', component: DummyComponent }])],
+      imports: [
+        CoreStoreModule.forTesting(),
+        CustomerStoreModule.forTesting('basket'),
+        RouterTestingModule.withRoutes([{ path: 'account/punchout', component: DummyComponent }]),
+      ],
       providers: [
         OciPunchoutEffects,
         provideMockActions(() => actions$),
@@ -53,6 +67,7 @@ describe('Oci Punchout Effects', () => {
     });
 
     effects = TestBed.inject(OciPunchoutEffects);
+    store$ = TestBed.inject(Store);
   });
 
   describe('loadPunchoutUsers$', () => {
@@ -160,6 +175,75 @@ describe('Oci Punchout Effects', () => {
       const expected$ = cold('-b', { b: completion });
 
       expect(effects.deletePunchoutUser$).toBeObservable(expected$);
+    });
+  });
+
+  describe('transferPunchoutBasket$', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        loadBasketSuccess({
+          basket: {
+            id: 'BID',
+            lineItems: [],
+          } as Basket,
+        })
+      );
+    });
+    it('should call the service for getting the punchout data', done => {
+      actions$ = of(startOCIPunchout());
+
+      effects.transferPunchoutBasket$.subscribe(() => {
+        verify(punchoutService.getOciPunchoutData('BID')).once();
+        done();
+      });
+    });
+
+    it('should call the service for submitting the punchout data', done => {
+      actions$ = of(startOCIPunchout());
+
+      effects.transferPunchoutBasket$.subscribe(() => {
+        verify(punchoutService.submitOciPunchoutData(anyString(), anything())).once();
+        done();
+      });
+    });
+
+    it('should map to action of type startOCIPunchoutSuccess', () => {
+      const action = startOCIPunchout();
+
+      const completion = startOCIPunchoutSuccess();
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-b', { b: completion });
+
+      expect(effects.transferPunchoutBasket$).toBeObservable(expected$);
+    });
+
+    it('should dispatch a DeletePunchoutUserFail action in case of an error', () => {
+      const error = makeHttpError({ status: 401, code: 'feld' });
+      when(punchoutService.getOciPunchoutData(anyString())).thenReturn(throwError(error));
+
+      const action = startOCIPunchout();
+      const completion = startOCIPunchoutFail({ error });
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-b', { b: completion });
+
+      expect(effects.transferPunchoutBasket$).toBeObservable(expected$);
+    });
+
+    it('should map to action of type DisplayErrorMessage in case of an error', () => {
+      const error = makeHttpError({ status: 401, code: 'feld', message: 'e-message' });
+
+      const action = startOCIPunchoutFail({ error });
+
+      const completion = displayErrorMessage({
+        message: 'e-message',
+      });
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-b', { b: completion });
+
+      expect(effects.displayPunchoutErrorMessage$).toBeObservable(expected$);
     });
   });
 });

@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { exhaustMap, map, mergeMap, tap } from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
+import { concatMap, exhaustMap, filter, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 
-import { displaySuccessMessage } from 'ish-core/store/core/messages';
+import { displayErrorMessage, displaySuccessMessage } from 'ish-core/store/core/messages';
+import { getCurrentBasketId } from 'ish-core/store/customer/basket';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 
 import { PunchoutService } from '../../services/punchout/punchout.service';
@@ -18,11 +20,19 @@ import {
   loadPunchoutUsers,
   loadPunchoutUsersFail,
   loadPunchoutUsersSuccess,
+  startOCIPunchout,
+  startOCIPunchoutFail,
+  startOCIPunchoutSuccess,
 } from './oci-punchout.actions';
 
 @Injectable()
 export class OciPunchoutEffects {
-  constructor(private punchoutService: PunchoutService, private actions$: Actions, private router: Router) {}
+  constructor(
+    private punchoutService: PunchoutService,
+    private actions$: Actions,
+    private router: Router,
+    private store: Store
+  ) {}
 
   loadPunchoutUsers$ = createEffect(() =>
     this.actions$.pipe(
@@ -74,6 +84,38 @@ export class OciPunchoutEffects {
           ]),
           mapErrorToAction(deletePunchoutUserFail)
         )
+      )
+    )
+  );
+
+  /**
+   * ToDo: read hook URL from state
+   */
+  transferPunchoutBasket$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(startOCIPunchout),
+      withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
+      filter(([, basketId]) => !!basketId),
+      concatMap(([, basketId]) =>
+        this.punchoutService.getOciPunchoutData(basketId).pipe(
+          concatMap(data =>
+            this.punchoutService.submitOciPunchoutData('https://punchoutcommerce.com/tools/oci-roundtrip-return', data)
+          ),
+          mapTo(startOCIPunchoutSuccess()),
+          mapErrorToAction(startOCIPunchoutFail)
+        )
+      )
+    )
+  );
+
+  displayPunchoutErrorMessage$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(startOCIPunchoutFail),
+      mapToPayloadProperty('error'),
+      map(error =>
+        displayErrorMessage({
+          message: error.message,
+        })
       )
     )
   );

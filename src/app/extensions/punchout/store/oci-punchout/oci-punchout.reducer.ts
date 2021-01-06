@@ -16,6 +16,9 @@ import {
   loadPunchoutUsers,
   loadPunchoutUsersFail,
   loadPunchoutUsersSuccess,
+  startOCIPunchout,
+  startOCIPunchoutFail,
+  startOCIPunchoutSuccess,
 } from './oci-punchout.actions';
 
 export const ociPunchoutAdapter = createEntityAdapter<PunchoutUser>();
@@ -32,9 +35,14 @@ const initialState: OciPunchoutState = ociPunchoutAdapter.getInitialState({
 
 export const ociPunchoutReducer = createReducer(
   initialState,
-  setLoadingOn(loadPunchoutUsers, addPunchoutUser, deletePunchoutUser),
-  setErrorOn(loadPunchoutUsersFail, addPunchoutUserFail, deletePunchoutUserFail),
-  unsetLoadingAndErrorOn(loadPunchoutUsersSuccess, addPunchoutUserSuccess, deletePunchoutUserSuccess),
+  setLoadingOn(loadPunchoutUsers, addPunchoutUser, deletePunchoutUser, startOCIPunchout),
+  setErrorOn(loadPunchoutUsersFail, addPunchoutUserFail, deletePunchoutUserFail, startOCIPunchoutFail),
+  unsetLoadingAndErrorOn(
+    loadPunchoutUsersSuccess,
+    addPunchoutUserSuccess,
+    deletePunchoutUserSuccess,
+    startOCIPunchoutSuccess
+  ),
 
   on(loadPunchoutUsersSuccess, (state, action) => ociPunchoutAdapter.upsertMany(action.payload.users, state)),
   on(addPunchoutUserSuccess, (state, action) => ociPunchoutAdapter.addOne(action.payload.user, state)),

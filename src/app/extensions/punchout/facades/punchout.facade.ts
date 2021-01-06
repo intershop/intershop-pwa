@@ -9,6 +9,7 @@ import {
   getPunchoutLoading,
   getPunchoutUsers,
   loadPunchoutUsers,
+  startOCIPunchout,
 } from '../store/oci-punchout';
 
 // tslint:disable:member-ordering
@@ -30,5 +31,9 @@ export class PunchoutFacade {
 
   deletePunchoutUser(login: string) {
     this.store.dispatch(deletePunchoutUser({ login }));
+  }
+
+  transferOCIBasket() {
+    this.store.dispatch(startOCIPunchout());
   }
 }

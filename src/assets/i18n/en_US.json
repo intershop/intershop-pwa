@@ -943,6 +943,7 @@
     "other": "# items"
   },
   "shopping_cart.ministatus.view_cart.link": "View Cart",
+  "shopping_cart.oci.transfer_basket.button": "Transfer OCI Cart",
   "shopping_cart.pli.qty.label": "Quantity:",
   "shopping_cart.price.heading": "Price",
   "shopping_cart.proceed_to_checkout.button.label": "Checkout",

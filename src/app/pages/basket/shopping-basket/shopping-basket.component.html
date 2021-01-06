@@ -62,6 +62,9 @@
           <button type="submit" class="btn btn-lg btn-block btn-primary" (click)="checkout()">
             {{ 'shopping_cart.proceed_to_checkout.button.label' | translate }}
           </button>
+          <ish-lazy-punchout-transfer-basket
+            *ishIsAuthorizedTo="'APP_B2B_SEND_OCI_BASKET'"
+          ></ish-lazy-punchout-transfer-basket>
         </div>
       </div>
     </div>
