@@ -21,4 +21,10 @@ export class HierarchySwitchComponent implements OnInit {
     this.groups = this.facade.groups$;
     this.count = this.facade.groupsCount$();
   }
+
+  dispatch(ev: any): void {
+    if (ev?.target?.value) {
+      this.facade.selectGroup(ev.target.value);
+    }
+  }
 }
