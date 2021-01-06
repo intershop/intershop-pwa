@@ -42,7 +42,7 @@ export const environment: Environment = {
   serviceWorker: false,
   defaultDeviceType: 'desktop',
 
-  icmBaseURL: 'https://intershoppwa.azurewebsites.net',
+  icmBaseURL: 'https://pwa-ish-demo.test.intershop.com',
   icmChannel: b2b ? 'inSPIRED-inTRONICS_Business-Site' : 'inSPIRED-inTRONICS-Site',
 
   theme: b2b ? 'blue' : 'default',
