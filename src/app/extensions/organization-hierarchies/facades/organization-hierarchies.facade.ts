@@ -6,7 +6,7 @@ import { switchMap, take, tap } from 'rxjs/operators';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 
-import { getGroupsOfOrganization, getGroupsOfOrganizationCount, loadGroups } from '../store/group';
+import { getGroupsOfOrganization, getGroupsOfOrganizationCount, loadGroups, selectGroup } from '../store/group';
 
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
@@ -23,5 +23,9 @@ export class OrganizationHierarchiesFacade {
       tap(() => this.store.dispatch(loadGroups())),
       switchMap(() => this.store.pipe(select(getGroupsOfOrganizationCount)))
     );
+  }
+
+  selectGroup(id: string): void {
+    this.store.dispatch(selectGroup({ id }));
   }
 }
