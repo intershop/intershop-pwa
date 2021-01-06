@@ -20,7 +20,7 @@ describe('Authorization Mapper', () => {
       expect(authorizationMapper.fromData({ userRoles: [] })).toMatchInlineSnapshot(`
         Object {
           "permissionIDs": Array [],
-          "roleDisplayNames": Array [],
+          "roles": Array [],
         }
       `);
     });
@@ -29,7 +29,7 @@ describe('Authorization Mapper', () => {
       expect(authorizationMapper.fromData(({} as unknown) as AuthorizationData)).toMatchInlineSnapshot(`
         Object {
           "permissionIDs": Array [],
-          "roleDisplayNames": Array [],
+          "roles": Array [],
         }
       `);
     });
@@ -104,10 +104,16 @@ describe('Authorization Mapper', () => {
         ],
       } as unknown) as AuthorizationData;
       const mapped = authorizationMapper.fromData(data);
-      expect(mapped.roleDisplayNames).toMatchInlineSnapshot(`
+      expect(mapped.roles).toMatchInlineSnapshot(`
         Array [
-          "Einkäufer",
-          "Genehmiger",
+          Object {
+            "displayName": "Einkäufer",
+            "roleId": "APP_B2B_BUYER",
+          },
+          Object {
+            "displayName": "Genehmiger",
+            "roleId": "APP_B2B_APPROVER",
+          },
         ]
       `);
       expect(mapped.permissionIDs).toMatchInlineSnapshot(`

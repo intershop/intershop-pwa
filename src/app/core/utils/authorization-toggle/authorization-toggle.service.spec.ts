@@ -18,9 +18,7 @@ describe('Authorization Toggle Service', () => {
     });
 
     store$ = TestBed.inject(Store);
-    store$.dispatch(
-      loadRolesAndPermissionsSuccess({ authorization: { roleDisplayNames: [], permissionIDs: ['DO_THIS'] } })
-    );
+    store$.dispatch(loadRolesAndPermissionsSuccess({ authorization: { roles: [], permissionIDs: ['DO_THIS'] } }));
 
     authorizationToggleService = TestBed.inject(AuthorizationToggleService);
   });

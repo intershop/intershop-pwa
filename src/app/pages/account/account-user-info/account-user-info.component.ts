@@ -23,6 +23,9 @@ export class AccountUserInfoComponent implements OnInit {
     this.isBusinessUser$ = this.accountFacade.customer$.pipe(map(user => !!user?.isBusinessCustomer));
     this.user$ = this.accountFacade.user$;
     this.customer$ = this.accountFacade.customer$;
-    this.roles$ = this.accountFacade.roles$.pipe(map(a => a.join(', ')));
+    this.roles$ = this.accountFacade.roles$.pipe(
+      map(roles => roles.map(role => role.displayName)),
+      map(a => a.join(', '))
+    );
   }
 }
