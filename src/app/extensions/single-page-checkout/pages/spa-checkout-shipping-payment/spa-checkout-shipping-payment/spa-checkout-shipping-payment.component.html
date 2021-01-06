@@ -8,12 +8,12 @@
     <div class="address-container-box">
       <div class="row">
         <!-- Invoice Address -->
-        <ish-info-box heading="pwa.checkout.widget.billing-address.heading" class="infobox-wrapper col-md-6">
+        <ish-info-box heading="checkout.widget.billing-address.heading" class="infobox-wrapper col-md-6">
           <ish-address [address]="basket.invoiceToAddress"></ish-address>
         </ish-info-box>
 
         <!-- Shipping Address -->
-        <ish-info-box heading="pwa.checkout.widget.shipping-address.heading" class="infobox-wrapper col-md-6">
+        <ish-info-box heading="checkout.widget.shipping-address.heading" class="infobox-wrapper col-md-6">
           <ish-address [address]="basket.commonShipToAddress"></ish-address>
         </ish-info-box>
       </div>
@@ -51,7 +51,7 @@
       [disabled]="nextDisabled || isPaymentStatusInvalid"
       (click)="goToNextStep()"
     >
-      {{ 'pwa.checkout.button.label' | translate }}
+      {{ 'checkout.button.label' | translate }}
     </button>
   </div>
 </div>
