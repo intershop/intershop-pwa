@@ -5,7 +5,7 @@
   </div>
 
   <div *ngIf="nextDisabled && !error" class="col-md-12">
-    <div class="alert alert-danger">{{ 'pwa.checkout.addresses.no_Selection.error' | translate }}</div>
+    <div class="alert alert-danger">{{ 'checkout.addresses.no_Selection.error' | translate }}</div>
   </div>
 
   <!-- Validation messages-->
@@ -31,10 +31,9 @@
     ></ish-basket-shipping-address-widget>
   </div>
 
-
   <div class="col-12 text-center mb-4">
     <button class="btn btn-lg btn-primary" type="button" [disabled]="nextDisabled" (click)="goToNextStep()">
-      {{ 'pwa.checkout.button.label' | translate }}
+      {{ 'checkout.button.label' | translate }}
     </button>
   </div>
 </div>
