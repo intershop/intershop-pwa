@@ -6,5 +6,5 @@ export const environment: Environment = {
   serviceWorker: false,
 
   /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
-  icmBaseURL: 'https://intershoppwa.azurewebsites.net',
+  icmBaseURL: 'https://pwa-ish-demo.test.intershop.com',
 };

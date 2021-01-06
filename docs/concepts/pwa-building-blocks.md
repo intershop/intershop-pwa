@@ -79,7 +79,7 @@ Deployment without using nginx is theoretically possible, even though many usefu
 
 ## Hiding the ICM Backend
 
-For security reasons, it may be desirable to hide the backend adress and prevent direct access to it.
+For security reasons, it may be desirable to hide the backend address and prevent direct access to it.
 The Intershop PWA supports this functionality and the [default deployment](https://intershoppwa.azurewebsites.net/home) uses this feature.
 To enable it, set the `PROXY_ICM` environment variable on the [SSR container](../guides/ssr-startup.md) to a new URL.
 Instead of directing REST calls straight to the ICM (see step seven in the [Default Production Deployment](#default-production-deployment)), traffic is routed through the SSR container.
