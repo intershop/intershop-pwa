@@ -8,10 +8,10 @@ export class AuthorizationMapper {
   fromData(authorizationData: AuthorizationData): Authorization {
     if (authorizationData) {
       if (!authorizationData.userRoles?.length) {
-        return { permissionIDs: [], roleDisplayNames: [] };
+        return { permissionIDs: [], roles: [] };
       }
       return {
-        roleDisplayNames: authorizationData.userRoles.map(role => role.roleDisplayName),
+        roles: authorizationData.userRoles.map(role => ({ displayName: role.roleDisplayName, roleId: role.roleID })),
         permissionIDs: authorizationData.userRoles
           .map(role => role.permissions.map(p => p.permissionID))
           .reduce((acc, val) => [...acc, ...val], [])

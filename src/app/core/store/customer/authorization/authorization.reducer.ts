@@ -5,7 +5,7 @@ import { Authorization } from 'ish-core/models/authorization/authorization.model
 import { loadRolesAndPermissionsSuccess } from './authorization.actions';
 
 const initialState: Authorization = {
-  roleDisplayNames: [],
+  roles: [],
   // has to be undefined so the service can wait for retrieval
   permissionIDs: undefined,
 };
