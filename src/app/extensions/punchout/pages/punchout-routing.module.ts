@@ -2,6 +2,17 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
+  { path: 'punchout', loadChildren: () => import('./punchout/punchout-page.module').then(m => m.PunchoutPageModule) },
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
+})
+export class PunchoutRoutingModule {}
+
+// tslint:disable-next-line: project-structure
+const accountRoutes: Routes = [
   {
     path: '',
     loadChildren: () =>
@@ -17,7 +28,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [RouterModule.forChild(accountRoutes)],
   exports: [RouterModule],
 })
-export class PunchoutRoutingModule {}
+// tslint:disable-next-line: project-structure
+export class AccountPunchoutRoutingModule {}
