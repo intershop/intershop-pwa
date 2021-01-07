@@ -19,6 +19,7 @@ import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module'
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
+import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { ShellModule } from 'ish-shell/shell.module';
 
 import { AddressFormsSharedModule } from './address-forms/address-forms.module';
@@ -129,6 +130,7 @@ const importExportModules = [
   NgbPopoverModule,
   PipesModule,
   ReactiveFormsModule,
+  RoleToggleModule,
   RouterModule,
   ShellModule,
   SwiperModule,
