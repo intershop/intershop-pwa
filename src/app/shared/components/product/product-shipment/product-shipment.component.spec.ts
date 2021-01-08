@@ -3,6 +3,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { Product } from 'ish-core/models/product/product.model';
+import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 
@@ -17,7 +18,7 @@ describe('Product Shipment Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [RoleToggleModule.forTesting(), TranslateModule.forRoot()],
       declarations: [
         MockComponent(ContentIncludeComponent),
         MockComponent(ModalDialogLinkComponent),

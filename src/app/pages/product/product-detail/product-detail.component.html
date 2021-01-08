@@ -112,13 +112,15 @@
       </ng-container>
 
       <ng-template #shippingInformation>
-        <ish-accordion-item
-          *ngIf="!isMasterProduct(product)"
-          [heading]="'product.shipping.heading' | translate"
-          dataTestingId="section-shipping-tab"
-        >
-          <ish-product-shipment [product]="product"></ish-product-shipment>
-        </ish-accordion-item>
+        <ng-container *ishHasNotRole="'APP_B2B_OCI_USER'">
+          <ish-accordion-item
+            *ngIf="!isMasterProduct(product)"
+            [heading]="'product.shipping.heading' | translate"
+            dataTestingId="section-shipping-tab"
+          >
+            <ish-product-shipment [product]="product"></ish-product-shipment>
+          </ish-accordion-item>
+        </ng-container>
       </ng-template>
     </ish-accordion>
   </div>
