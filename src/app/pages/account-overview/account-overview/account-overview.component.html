@@ -7,7 +7,7 @@
     data-testing-id="personal-message-b2b"
   ></h1>
 
-  <p>{{ 'account.overview.message_b2b.text' | translate }}</p>
+  <p *ishHasNotRole="'APP_B2B_OCI_USER'">{{ 'account.overview.message_b2b.text' | translate }}</p>
 </ng-container>
 
 <ng-template #personalCustomerMessage>
@@ -47,26 +47,28 @@
 </ng-template>
 
 <!-- Budget, Requisition, Approval & Quoting Widgets -->
-<div class="row">
-  <ng-container *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting">
-    <ish-lazy-budget-widget class="col-12 col-md-8"></ish-lazy-budget-widget>
+<ng-container *ishHasNotRole="'APP_B2B_OCI_USER'">
+  <div class="row">
+    <ng-container *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting">
+      <ish-lazy-budget-widget class="col-12 col-md-8"></ish-lazy-budget-widget>
 
-    <ish-lazy-requisition-widget class="col-12 col-md-4"></ish-lazy-requisition-widget>
+      <ish-lazy-requisition-widget class="col-12 col-md-4"></ish-lazy-requisition-widget>
 
-    <ng-container *ishIsAuthorizedTo="'APP_B2B_ORDER_APPROVAL'">
-      <ish-lazy-approval-widget class="col-12 col-md-4"></ish-lazy-approval-widget>
+      <ng-container *ishIsAuthorizedTo="'APP_B2B_ORDER_APPROVAL'">
+        <ish-lazy-approval-widget class="col-12 col-md-4"></ish-lazy-approval-widget>
+      </ng-container>
     </ng-container>
-  </ng-container>
 
-  <ish-lazy-quote-widget *ishFeature="'quoting'" class="col-12 col-md-4"></ish-lazy-quote-widget>
-  <ish-lazy-order-template-widget class="col-12 col-md-4"></ish-lazy-order-template-widget>
-</div>
+    <ish-lazy-quote-widget *ishFeature="'quoting'" class="col-12 col-md-4"></ish-lazy-quote-widget>
+    <ish-lazy-order-template-widget class="col-12 col-md-4"></ish-lazy-order-template-widget>
+  </div>
 
-<!-- Order Widget - displays latest orders as list -->
-<ish-order-widget></ish-order-widget>
+  <!-- Order Widget - displays latest orders as list -->
+  <ish-order-widget></ish-order-widget>
 
-<!-- Wishlist Widget - displays all unique items from all wishlists (if wishlists feature is enabled) -->
-<ish-lazy-wishlist-widget></ish-lazy-wishlist-widget>
+  <!-- Wishlist Widget - displays all unique items from all wishlists (if wishlists feature is enabled) -->
+  <ish-lazy-wishlist-widget></ish-lazy-wishlist-widget>
+</ng-container>
 
 <p class="form-text">
   {{ 'account.overview.note.heading' | translate }}:

@@ -10,6 +10,7 @@ interface NavigationItems {
     feature?: string;
     serverSetting?: string;
     permission?: string;
+    notRole?: string;
     children?: NavigationItems;
   };
 }
@@ -33,27 +34,41 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
       localizationKey: 'account.requisitions.requisitions',
       serverSetting: 'services.OrderApprovalServiceDefinition.runnable',
       permission: 'APP_B2B_PURCHASE',
+      notRole: 'APP_B2B_OCI_USER',
     },
     '/account/requisitions/approver': {
       localizationKey: 'account.requisitions.approvals',
       serverSetting: 'services.OrderApprovalServiceDefinition.runnable',
       permission: 'APP_B2B_ORDER_APPROVAL',
     },
-    '/account/quotes': { localizationKey: 'account.navigation.quotes.link', feature: 'quoting' },
+    '/account/quotes': {
+      localizationKey: 'account.navigation.quotes.link',
+      feature: 'quoting',
+      notRole: 'APP_B2B_OCI_USER',
+    },
     '/account/order-templates': {
       localizationKey: 'account.ordertemplates.link',
       feature: 'orderTemplates',
       dataTestingId: 'order-templates-link',
     },
-    '/account/orders': { localizationKey: 'account.order_history.link' },
+    '/account/orders': { localizationKey: 'account.order_history.link', notRole: 'APP_B2B_OCI_USER' },
     '/account/wishlists': {
       localizationKey: 'account.wishlists.link',
       feature: 'wishlists',
       dataTestingId: 'wishlists-link',
+      notRole: 'APP_B2B_OCI_USER',
     },
-    '/account/addresses': { localizationKey: 'account.saved_addresses.link', dataTestingId: 'addresses-link' },
-    '/account/payment': { localizationKey: 'account.payment.link', dataTestingId: 'payments-link' },
-    '/account/profile': { localizationKey: 'account.profile.link' },
+    '/account/addresses': {
+      localizationKey: 'account.saved_addresses.link',
+      dataTestingId: 'addresses-link',
+      notRole: 'APP_B2B_OCI_USER',
+    },
+    '/account/payment': {
+      localizationKey: 'account.payment.link',
+      dataTestingId: 'payments-link',
+      notRole: 'APP_B2B_OCI_USER',
+    },
+    '/account/profile': { localizationKey: 'account.profile.link', notRole: 'APP_B2B_OCI_USER' },
     '/account/organization': {
       localizationKey: 'account.organization.user_management',
       permission: 'APP_B2B_MANAGE_USERS',
@@ -64,7 +79,7 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
       feature: 'punchout',
       permission: 'APP_B2B_MANAGE_PUNCHOUT',
     },
-    '/logout': { localizationKey: 'account.navigation.logout.link' },
+    '/logout': { localizationKey: 'account.navigation.logout.link', notRole: 'APP_B2B_OCI_USER' },
   };
 
   constructor(private router: Router) {}

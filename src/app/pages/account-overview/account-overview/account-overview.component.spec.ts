@@ -11,6 +11,7 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
+import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { OrderWidgetComponent } from 'ish-shared/components/order/order-widget/order-widget.component';
 
 import { LazyOrderTemplateWidgetComponent } from '../../../extensions/order-templates/exports/lazy-order-template-widget/lazy-order-template-widget.component';
@@ -45,7 +46,7 @@ describe('Account Overview Component', () => {
         MockDirective(ServerHtmlDirective),
         MockPipe(ServerSettingPipe, () => true),
       ],
-      imports: [TranslateModule.forRoot()],
+      imports: [RoleToggleModule.forTesting(), TranslateModule.forRoot()],
     }).compileComponents();
   });
 
