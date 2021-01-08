@@ -11,7 +11,7 @@ const organizationHierarchiesReducers: ActionReducerMap<OrganizationHierarchiesS
   group: groupReducer,
 };
 
-const organizationHierarchiesEffects = [GroupEffects, GroupEffects];
+const organizationHierarchiesEffects = [GroupEffects];
 
 // not-dead-code
 @NgModule({
