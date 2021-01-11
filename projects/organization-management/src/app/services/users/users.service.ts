@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, forkJoin, of, throwError } from 'rxjs';
-import { concatMap, map, switchMap, take } from 'rxjs/operators';
+import { concatMap, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { PriceHelper } from 'ish-core/models/price/price.helper';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
@@ -17,7 +18,12 @@ import { UserBudget } from '../../models/user-budget/user-budget.model';
 
 @Injectable({ providedIn: 'root' })
 export class UsersService {
-  constructor(private apiService: ApiService, private store: Store, private b2bRoleMapper: B2bRoleMapper) {}
+  constructor(
+    private apiService: ApiService,
+    private store: Store,
+    private b2bRoleMapper: B2bRoleMapper,
+    private appFacade: AppFacade
+  ) {}
 
   private currentCustomer$ = this.store.pipe(select(getLoggedInCustomer), whenTruthy(), take(1));
 
@@ -59,7 +65,8 @@ export class UsersService {
     }
 
     return this.currentCustomer$.pipe(
-      switchMap(customer =>
+      withLatestFrom(this.appFacade.currentLocale$),
+      switchMap(([customer, currentLocale]) =>
         this.apiService
           .post<B2bUser>(`customers/${customer.customerNo}/users`, {
             elements: [
@@ -72,6 +79,7 @@ export class UsersService {
                 preferredInvoiceToAddressUrn: undefined,
                 preferredShipToAddressUrn: undefined,
                 preferredPaymentInstrumentId: undefined,
+                preferredLanguage: currentLocale.lang ?? 'en_US',
                 userBudgets: undefined,
                 roleIds: undefined,
               },

@@ -3,7 +3,9 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
+import { Locale } from 'ish-core/models/locale/locale.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
@@ -16,17 +18,21 @@ import { UsersService } from './users.service';
 describe('Users Service', () => {
   let apiService: ApiService;
   let usersService: UsersService;
+  let appFacade: AppFacade;
 
   beforeEach(() => {
     apiService = mock(ApiService);
+    appFacade = mock(AppFacade);
     when(apiService.get(anything())).thenReturn(of({}));
     when(apiService.delete(anything())).thenReturn(of({}));
     when(apiService.post(anyString(), anything())).thenReturn(of({}));
     when(apiService.put(anyString(), anything())).thenReturn(of({}));
+    when(appFacade.currentLocale$).thenReturn(of({ lang: 'en_US' } as Locale));
 
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiService, useFactory: () => instance(apiService) },
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
         provideMockStore({
           selectors: [
             { selector: getLoggedInCustomer, value: { customerNo: '4711', isBusinessCustomer: true } as Customer },

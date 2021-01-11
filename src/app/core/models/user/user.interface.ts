@@ -17,7 +17,7 @@ export interface UserData {
   email: string;
   login: string;
 
-  preferredLanguage: string;
+  preferredLanguage?: string;
   preferredInvoiceToAddress?: Address;
   preferredShipToAddress?: Address;
   preferredPaymentInstrument?: PaymentInstrument;

@@ -10,7 +10,7 @@ export class UserMapper {
           lastName: user.lastName,
           email: user.email,
           login: user.login,
-          preferredLanguage: user.preferredLanguage || 'en_US', // necessary because of #IS-26193
+          preferredLanguage: user.preferredLanguage,
           title: user.title,
           phoneHome: user.phoneHome,
           phoneBusiness: user.phoneBusiness,
