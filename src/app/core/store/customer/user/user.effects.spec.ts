@@ -243,11 +243,11 @@ describe('User Effects', () => {
       });
     });
 
-    it('should dispatch a CreateUserLogin action on successful user creation', () => {
+    it('should dispatch a LoginUserSuccess action on successful user creation', () => {
       const credentials: Credentials = { login: '1234', password: 'xxx' };
 
       const action = createUser({ credentials } as CustomerRegistrationType);
-      const completion = loginUser({ credentials });
+      const completion = loginUserSuccess({} as CustomerUserType);
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });

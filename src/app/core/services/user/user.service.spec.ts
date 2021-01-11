@@ -119,16 +119,19 @@ describe('User Service', () => {
 
     it("should create a new individual user when 'createUser' is called", done => {
       when(apiServiceMock.post(anyString(), anything(), anything())).thenReturn(of({}));
+      when(apiServiceMock.get(anything(), anything())).thenReturn(of({ customerNo: 'PC' } as Customer));
 
       const payload = {
         customer: { customerNo: '4711', isBusinessCustomer: false } as Customer,
         address: {} as Address,
-        credentials: {} as Credentials,
+        credentials: { login: 'patricia@test.intershop.de', password: 'xyz' } as Credentials,
         user: {} as User,
       } as CustomerRegistrationType;
 
       userService.createUser(payload).subscribe(() => {
         verify(apiServiceMock.post('privatecustomers', anything(), anything())).once();
+        verify(apiServiceMock.get('customers/-', anything())).once();
+        verify(apiServiceMock.get('privatecustomers/-', anything())).once();
         done();
       });
     });
