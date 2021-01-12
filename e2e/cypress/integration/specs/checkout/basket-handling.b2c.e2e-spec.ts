@@ -54,32 +54,50 @@ describe('Basket Handling', () => {
     at(ProductDetailPage, page => {
       page.addProductToCart().its('status').should('equal', 201);
       page.header.miniCart.total.should('contain', _.product.price);
+      page.header.miniCart.goToCart();
+    });
+  });
+
+  it('user adds a promotion code that can be applied yet', () => {
+    at(CartPage, page => {
+      page.lineItem(0).quantity.set(2);
+      cy.wait(1000);
+      page.collapsePromotionForm();
+      page.submitPromotionCode('INTERSHOP');
+      page.successMessage.message.should('contain', 'applied');
+      page.promotion.should('exist');
     });
   });
 
   it('user logs in again and baskets should be merged', () => {
-    at(ProductDetailPage, page => page.header.gotoLoginPage());
+    at(CartPage, page => page.header.gotoLoginPage());
     at(LoginPage, page => {
       page.fillForm(_.user.login, _.user.password);
       page.submit().its('status').should('equal', 200);
       waitLoadingEnd(5000);
     });
     at(MyAccountPage, page => {
-      page.header.miniCart.total.should('contain', _.product.price * 2);
+      page.header.miniCart.total.should('contain', _.product.price * 3);
+      page.header.miniCart.goToCart();
+    });
+    at(CartPage, page => {
+      page.header.miniCart.total.should('contain', _.product.price * 3);
+      page.header.miniCart.goToCart();
+      page.promotion.should('exist');
     });
   });
 
   it('user adds one more product to basket when logged in', () => {
-    at(MyAccountPage, page => page.header.gotoCategoryPage(_.catalog));
+    at(CartPage, page => page.header.gotoCategoryPage(_.catalog));
     at(CategoryPage, page => page.gotoSubCategory(_.category.id));
     at(FamilyPage, page => page.productList.gotoProductDetailPageBySku(_.product.sku));
     at(ProductDetailPage, page => {
       page.addProductToCart().its('status').should('equal', 200);
       waitLoadingEnd(1000);
-      page.header.miniCart.total.should('contain', _.product.price * 3);
+      page.header.miniCart.total.should('contain', _.product.price * 4);
     });
     at(CartPage, page => {
-      page.lineItem(0).quantity.get().should('equal', '3');
+      page.lineItem(0).quantity.get().should('equal', '4');
     });
   });
 
