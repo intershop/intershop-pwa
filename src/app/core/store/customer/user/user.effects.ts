@@ -121,11 +121,7 @@ export class UserEffects {
       ofType(createUser),
       mapToPayload(),
       mergeMap((data: CustomerRegistrationType) =>
-        this.userService.createUser(data).pipe(
-          // TODO:see #IS-22750 - user should actually be logged in after registration
-          map(() => loginUser({ credentials: data.credentials })),
-          mapErrorToAction(createUserFail)
-        )
+        this.userService.createUser(data).pipe(map(loginUserSuccess), mapErrorToAction(createUserFail))
       )
     )
   );

@@ -1,9 +1,15 @@
 import { at } from '../../framework';
+import { MyAccountPage } from '../../pages/account/my-account.page';
+import { Registration, RegistrationPage, sensibleDefaults } from '../../pages/account/registration.page';
 import { CartPage } from '../../pages/checkout/cart.page';
 import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
 
 const _ = {
   productSku: '201807171',
+  user: {
+    login: `testuser${new Date().getTime()}@test.intershop.de`,
+    ...sensibleDefaults,
+  } as Registration,
 };
 
 describe('Promotion Handling in Cart', () => {
@@ -31,6 +37,23 @@ describe('Promotion Handling in Cart', () => {
       cy.wait(1000);
       page.submitPromotionCode('INTERSHOP');
       page.successMessage.message.should('contain', 'applied');
+      page.promotion.should('exist');
+    });
+  });
+
+  it('user registers and the basket is merged with the promotion code', () => {
+    at(CartPage, page => {
+      page.header.gotoRegistrationPage();
+    });
+    at(RegistrationPage, page => {
+      page.fillForm(_.user);
+      page.acceptTAC();
+      page.submitAndObserve().its('statusMessage').should('equal', '201 (Created)');
+    });
+    at(MyAccountPage, page => {
+      page.header.miniCart.goToCart();
+    });
+    at(CartPage, page => {
       page.promotion.should('exist');
     });
   });
