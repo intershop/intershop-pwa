@@ -7,7 +7,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
-import { Node, NodeTree } from '../../models/node/node.model';
+import { Group, GroupTree } from '../../models/group/group.model';
 
 @Component({
   selector: 'ish-hierarchies-create-group-page',
@@ -25,7 +25,7 @@ export class HierarchiesCreateGroupPageComponent implements OnInit {
   submitted = false;
   loading$: Observable<boolean>;
   error$: Observable<HttpError>;
-  items$: Observable<NodeTree>;
+  items$: Observable<GroupTree>;
 
   constructor(private fb: FormBuilder, private organizationManagementFacade: OrganizationManagementFacade) {}
 
@@ -44,13 +44,13 @@ export class HierarchiesCreateGroupPageComponent implements OnInit {
 
     const formValue = this.form.value;
 
-    const child: Node = {
+    const child: Group = {
       id: UUID.UUID(),
       name: formValue.organizationGroup.name,
       description: formValue.organizationGroupdescription === '' ? undefined : formValue.organizationGroup.description,
     };
 
-    const parent: Node = {
+    const parent: Group = {
       id: formValue.organizationGroup.parent,
       name: formValue.organizationGroup.parent,
     };

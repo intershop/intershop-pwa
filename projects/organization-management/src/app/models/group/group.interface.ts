@@ -5,21 +5,21 @@ import {
   ResourceIdentifierListDocument,
 } from '../resource-identifier/resource-identifier.interface';
 
-export interface NodeListDocument {
-  data: NodeData[];
+export interface GroupListDocument {
+  data: GroupData[];
 }
 
-export interface NodeDocument {
-  data: NodeData;
+export interface GroupDocument {
+  data: GroupData;
 }
 
-export interface NodeData extends ResourceIdentifierData {
+export interface GroupData extends ResourceIdentifierData {
   attributes: ResourceAttributeData;
-  relationships: NodeRelationships;
+  relationships: GroupRelationships;
 }
 
-interface NodeRelationships {
-  childNodes?: ResourceIdentifierListDocument;
+interface GroupRelationships {
+  childGroups?: ResourceIdentifierListDocument;
   organization: ResourceIdentifierDocument;
-  parentNode?: ResourceIdentifierDocument;
+  parentGroup?: ResourceIdentifierDocument;
 }
