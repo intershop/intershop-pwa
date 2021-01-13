@@ -33,8 +33,8 @@ export class OrganizationHierarchiesEffects {
       ofType(loadGroups),
       withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
       switchMap(([, customer]) =>
-        this.organizationService.getNodes(customer).pipe(
-          map(nodeTree => loadGroupsSuccess({ nodeTree })),
+        this.organizationService.getGroups(customer).pipe(
+          map(groupTree => loadGroupsSuccess({ groupTree })),
           mapErrorToAction(loadGroupsFail)
         )
       )
@@ -46,9 +46,9 @@ export class OrganizationHierarchiesEffects {
       ofType(createGroup),
       mapToPayload(),
       concatMap(newGroup =>
-        this.organizationService.createNode(newGroup.parent, newGroup.child).pipe(
-          mergeMap(nodeTree => [
-            createGroupSuccess({ nodeTree }),
+        this.organizationService.createGroup(newGroup.parent, newGroup.child).pipe(
+          mergeMap(groupTree => [
+            createGroupSuccess({ groupTree }),
             displaySuccessMessage({
               message: 'account.organization.hierarchies.groups.new.confirmation',
               messageParams: { 0: newGroup.child.name },

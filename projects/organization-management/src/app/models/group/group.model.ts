@@ -1,12 +1,12 @@
-export interface Node {
+export interface Group {
   id: string;
   name: string;
   description?: string;
   organization?: string;
 }
 
-export interface NodeTree {
-  nodes: { [id: string]: Node };
+export interface GroupTree {
+  groups: { [id: string]: Group };
   edges: { [id: string]: string[] };
   rootIds: string[];
 }

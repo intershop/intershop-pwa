@@ -10,14 +10,14 @@ import { getICMBaseURL } from 'ish-core/store/core/configuration';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
-import { NodeHelper } from '../../models/node/node.helper';
-import { NodeDocument, NodeListDocument } from '../../models/node/node.interface';
-import { NodeMapper } from '../../models/node/node.mapper';
-import { Node, NodeTree } from '../../models/node/node.model';
+import { GroupHelper } from '../../models/group/group.helper';
+import { GroupDocument, GroupListDocument } from '../../models/group/group.interface';
+import { GroupMapper } from '../../models/group/group.mapper';
+import { Group, GroupTree } from '../../models/group/group.model';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationHierarchiesService {
-  constructor(private apiService: ApiService, private nodeMapper: NodeMapper, private store: Store) {}
+  constructor(private apiService: ApiService, private groupMapper: GroupMapper, private store: Store) {}
 
   private currentCustomer$ = this.store.pipe(select(getLoggedInCustomer), whenTruthy(), take(1));
   private icmBaseURL$ = this.store.pipe(select(getICMBaseURL), whenTruthy(), take(1));
@@ -26,33 +26,33 @@ export class OrganizationHierarchiesService {
     headers: new HttpHeaders({ ['Accept']: 'application/vnd.api+json', ['content-type']: 'application/vnd.api+json' }),
   };
 
-  getNodes(customer: Customer): Observable<NodeTree> {
+  getGroups(customer: Customer): Observable<GroupTree> {
     return this.icmBaseURL$.pipe(
       switchMap(icmBaseURL =>
         this.apiService
-          .get<NodeListDocument>(`${icmBaseURL}/organizations/${customer.customerNo}/nodes`, this.contentTypeHeader)
+          .get<GroupListDocument>(`${icmBaseURL}/organizations/${customer.customerNo}/groups`, this.contentTypeHeader)
           .pipe(
             map(data =>
-              NodeHelper.setParent(this.nodeMapper.fromCustomerData(customer), this.nodeMapper.fromDocument(data))
+              GroupHelper.setParent(this.groupMapper.fromCustomerData(customer), this.groupMapper.fromDocument(data))
             )
           )
       )
     );
   }
 
-  createNode(parent: Node, child: Node): Observable<NodeTree> {
+  createGroup(parent: Group, child: Group): Observable<GroupTree> {
     return this.currentCustomer$.pipe(
       withLatestFrom(this.icmBaseURL$),
       switchMap(([customer, icmBaseURL]) =>
         this.apiService
-          .post<NodeDocument>(
-            `${icmBaseURL}/organizations/${customer.customerNo}/nodes`,
-            this.nodeMapper.toNodeDocument(child, parent.id === customer.customerNo ? undefined : parent),
+          .post<GroupDocument>(
+            `${icmBaseURL}/organizations/${customer.customerNo}/groups`,
+            this.groupMapper.toGroupDocument(child, parent.id === customer.customerNo ? undefined : parent),
             this.contentTypeHeader
           )
           .pipe(
             mapToProperty('data'),
-            map(nodeData => this.nodeMapper.fromDataReversed(nodeData))
+            map(groupData => this.groupMapper.fromDataReversed(groupData))
           )
       )
     );

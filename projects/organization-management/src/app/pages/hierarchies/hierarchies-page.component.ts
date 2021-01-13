@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
-import { Node, NodeTree } from '../../models/node/node.model';
+import { Group, GroupTree } from '../../models/group/group.model';
 
 @Component({
   selector: 'ish-hierarchies-page',
@@ -29,17 +29,17 @@ export class HierarchiesPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.items$ = this.organizationManagementFacade.groups$().pipe(
-      map(nodeTree => this.mapToTreeItems(nodeTree, nodeTree.rootIds)),
+      map(groupTree => this.mapToTreeItems(groupTree, groupTree.rootIds)),
       map(items => items.map(item => new TreeviewItem(item)))
     );
     this.error$ = this.organizationManagementFacade.groupsError$;
     this.loading$ = this.organizationManagementFacade.groupsLoading$;
   }
 
-  mapTreeViewItem(orgNode: Node): TreeItem {
+  mapTreeViewItem(orgGroup: Group): TreeItem {
     return {
-      text: orgNode.name ?? 'unknown',
-      value: orgNode,
+      text: orgGroup.name ?? 'unknown',
+      value: orgGroup,
       collapsed: false,
       children: [],
       checked: false,
@@ -47,19 +47,19 @@ export class HierarchiesPageComponent implements OnInit {
     };
   }
 
-  mapToTreeItems(nodeTree: NodeTree, rootIds: string[]): TreeItem[] {
+  mapToTreeItems(groupTree: GroupTree, rootIds: string[]): TreeItem[] {
     return rootIds
-      .map(rootId => nodeTree.nodes[rootId])
-      .map(root => this.traverse(nodeTree, root, this.mapTreeViewItem(root)));
+      .map(rootId => groupTree.groups[rootId])
+      .map(root => this.traverse(groupTree, root, this.mapTreeViewItem(root)));
   }
 
-  traverse(nodeTree: NodeTree, parent: Node, viewItem: TreeItem): TreeItem {
-    if (!nodeTree.edges[parent.id]) {
+  traverse(groupTree: GroupTree, parent: Group, viewItem: TreeItem): TreeItem {
+    if (!groupTree.edges[parent.id]) {
       return viewItem;
     }
-    return nodeTree.edges[parent.id]
-      .map(id => nodeTree.nodes[id])
-      .map(node => this.traverse(nodeTree, node, this.mapTreeViewItem(node)))
+    return groupTree.edges[parent.id]
+      .map(id => groupTree.groups[id])
+      .map(group => this.traverse(groupTree, group, this.mapTreeViewItem(group)))
       .reduce((prev, current) => {
         prev.children.push(current);
         return prev;
