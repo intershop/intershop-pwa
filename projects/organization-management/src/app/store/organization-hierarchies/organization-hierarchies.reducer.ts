@@ -3,8 +3,8 @@ import { createReducer, on } from '@ngrx/store';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
-import { NodeHelper } from '../../models/node/node.helper';
-import { NodeTree } from '../../models/node/node.model';
+import { GroupHelper } from '../../models/group/group.helper';
+import { GroupTree } from '../../models/group/group.model';
 
 import {
   createGroup,
@@ -18,13 +18,13 @@ import {
 export interface OrganizationHierarchiesState {
   loading: boolean;
   error: HttpError;
-  groups: NodeTree;
+  groups: GroupTree;
 }
 
 const initialState: OrganizationHierarchiesState = {
   loading: false,
   error: undefined,
-  groups: NodeHelper.empty(),
+  groups: GroupHelper.empty(),
 };
 
 export const organizationHierarchiesReducer = createReducer(
@@ -34,16 +34,16 @@ export const organizationHierarchiesReducer = createReducer(
   unsetLoadingAndErrorOn(loadGroupsSuccess, createGroupSuccess),
   on(loadGroupsSuccess, (state: OrganizationHierarchiesState, action) => ({
     ...state,
-    groups: action.payload.nodeTree,
+    groups: action.payload.groupTree,
     error: undefined,
     loading: false,
   })),
   on(createGroupSuccess, (state: OrganizationHierarchiesState, action) => {
-    const node = action.payload.nodeTree;
+    const group = action.payload.groupTree;
     return {
-      groups: NodeHelper.merge(state.groups, {
-        edges: { ...node.edges },
-        nodes: { ...node.nodes },
+      groups: GroupHelper.merge(state.groups, {
+        edges: { ...group.edges },
+        groups: { ...group.groups },
         rootIds: [],
       }),
       loading: false,

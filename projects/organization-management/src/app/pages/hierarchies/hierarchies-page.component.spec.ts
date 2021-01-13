@@ -10,7 +10,7 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
-import { Node, NodeTree } from '../../models/node/node.model';
+import { Group, GroupTree } from '../../models/group/group.model';
 
 import { HierarchiesPageComponent } from './hierarchies-page.component';
 
@@ -20,25 +20,25 @@ describe('Hierarchies Page Component', () => {
   let element: HTMLElement;
   let organizationManagementFacade: OrganizationManagementFacade;
 
-  const rootNode = {
+  const rootGroup = {
     id: 'root',
     name: 'ROOT',
     organization: 'acme.org',
-  } as Node;
-  const childNode = {
+  } as Group;
+  const childGroup = {
     id: 'child',
     name: 'Child',
     organization: 'acme.org',
-  } as Node;
-  const nodeTree = {
+  } as Group;
+  const groupTree = {
     edges: { root: ['child'] },
-    nodes: { root: rootNode, child: childNode },
+    groups: { root: rootGroup, child: childGroup },
     rootIds: ['root'],
-  } as NodeTree;
+  } as GroupTree;
 
   beforeEach(async () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
-    when(organizationManagementFacade.groups$()).thenReturn(of(nodeTree));
+    when(organizationManagementFacade.groups$()).thenReturn(of(groupTree));
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [
@@ -87,8 +87,8 @@ describe('Hierarchies Page Component', () => {
     `);
   });
 
-  it('should map node tree data after init', () => {
-    const treeItems = component.mapToTreeItems(nodeTree, ['root']);
+  it('should map group tree data after init', () => {
+    const treeItems = component.mapToTreeItems(groupTree, ['root']);
     expect(treeItems).toBeArrayOfSize(1);
     expect(treeItems[0]).toMatchInlineSnapshot(`
       Object {

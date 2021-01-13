@@ -8,7 +8,7 @@ import { toObservable } from 'ish-core/utils/functions';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { B2bUser } from '../models/b2b-user/b2b-user.model';
-import { Node, NodeTree } from '../models/node/node.model';
+import { Group, GroupTree } from '../models/group/group.model';
 import { UserBudget } from '../models/user-budget/user-budget.model';
 import {
   getCurrentUserBudget,
@@ -101,7 +101,7 @@ export class OrganizationManagementFacade {
       .subscribe(login => this.store.dispatch(setUserBudget({ login, budget })));
   }
 
-  groups$(): Observable<NodeTree> {
+  groups$(): Observable<GroupTree> {
     const customer$ = this.store.pipe(select(getLoggedInCustomer));
     return customer$.pipe(
       whenTruthy(),
@@ -111,7 +111,7 @@ export class OrganizationManagementFacade {
     );
   }
 
-  createAndAddGroup(parent: Node, child: Node) {
+  createAndAddGroup(parent: Group, child: Group) {
     this.store.dispatch(createGroup({ parent, child }));
   }
 }

@@ -27,7 +27,7 @@ export class OrganizationHierarchiesService {
       switchMap(baseURL =>
         this.apiService
           .get<OrganizationGroupListData>(
-            `${baseURL}/organizations/${customer.customerNo}/nodes`,
+            `${baseURL}/organizations/${customer.customerNo}/groups`,
             this.contentTypeHeader
           )
           .pipe(

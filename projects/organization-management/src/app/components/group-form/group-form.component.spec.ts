@@ -7,7 +7,7 @@ import { InputComponent } from 'ish-shared/forms/components/input/input.componen
 import { SelectComponent } from 'ish-shared/forms/components/select/select.component';
 import { TextareaComponent } from 'ish-shared/forms/components/textarea/textarea.component';
 
-import { Node, NodeTree } from '../../models/node/node.model';
+import { Group, GroupTree } from '../../models/group/group.model';
 
 import { GroupFormComponent } from './group-form.component';
 
@@ -15,21 +15,21 @@ describe('Group Form Component', () => {
   let component: GroupFormComponent;
   let fixture: ComponentFixture<GroupFormComponent>;
   let element: HTMLElement;
-  const rootNode = {
+  const rootGroup = {
     id: 'root',
     name: 'ROOT',
     organization: 'acme.org',
-  } as Node;
-  const childNode = {
+  } as Group;
+  const childGroup = {
     id: 'child',
     name: 'Child',
     organization: 'acme.org',
-  } as Node;
-  const nodeTree = {
+  } as Group;
+  const groupTree = {
     edges: { root: ['child'] },
-    nodes: { root: rootNode, child: childNode },
+    groups: { root: rootGroup, child: childGroup },
     rootIds: ['root'],
-  } as NodeTree;
+  } as GroupTree;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -48,7 +48,7 @@ describe('Group Form Component', () => {
     fixture = TestBed.createComponent(GroupFormComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.parents = nodeTree;
+    component.parents = groupTree;
   });
 
   it('should be created', () => {

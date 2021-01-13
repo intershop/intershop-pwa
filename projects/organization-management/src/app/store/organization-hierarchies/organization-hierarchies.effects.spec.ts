@@ -16,8 +16,8 @@ import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.modu
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
-import { NodeHelper } from '../../models/node/node.helper';
-import { Node } from '../../models/node/node.model';
+import { GroupHelper } from '../../models/group/group.helper';
+import { Group } from '../../models/group/group.model';
 import { OrganizationHierarchiesService } from '../../services/organization-hierarchies/organization-hierarchies.service';
 
 import { createGroup, createGroupFail, createGroupSuccess, loadGroups } from './organization-hierarchies.actions';
@@ -35,19 +35,19 @@ describe('Organization Hierarchies Effects', () => {
   let store$: Store;
   let location: Location;
   let router: Router;
-  const parentNode = {
+  const parentGroup = {
     id: 'parent',
     name: 'Parent',
-  } as Node;
-  const childNode = {
+  } as Group;
+  const childGroup = {
     id: 'child',
     name: 'Child',
-  } as Node;
+  } as Group;
 
   beforeEach(() => {
     orgServiceMock = mock(OrganizationHierarchiesService);
-    when(orgServiceMock.getNodes(customer)).thenReturn(of(NodeHelper.empty()));
-    when(orgServiceMock.createNode(anything(), anything())).thenReturn(of(NodeHelper.empty()));
+    when(orgServiceMock.getGroups(customer)).thenReturn(of(GroupHelper.empty()));
+    when(orgServiceMock.createGroup(anything(), anything())).thenReturn(of(GroupHelper.empty()));
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -79,7 +79,7 @@ describe('Organization Hierarchies Effects', () => {
       actions$ = of(loadGroups());
 
       effects.loadOrganizationHierarchies$.subscribe(() => {
-        verify(orgServiceMock.getNodes(customer)).once();
+        verify(orgServiceMock.getGroups(customer)).once();
         done();
       });
     });
@@ -90,8 +90,8 @@ describe('Organization Hierarchies Effects', () => {
       effects.loadOrganizationHierarchies$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
           [Organization Hierarchies API] Load Groups Success:
-            nodeTree: tree()
-          `);
+            groupTree: {"edges":{},"groups":{},"rootIds":[0]}
+        `);
         done();
       });
     });
@@ -99,21 +99,21 @@ describe('Organization Hierarchies Effects', () => {
 
   describe('createNewGroup$', () => {
     it('should call the service for creating and adding new group', done => {
-      actions$ = of(createGroup({ parent: parentNode, child: childNode }));
+      actions$ = of(createGroup({ parent: parentGroup, child: childGroup }));
 
       effects.createNewGroup$.subscribe(() => {
-        verify(orgServiceMock.createNode(anything(), anything())).once();
+        verify(orgServiceMock.createGroup(anything(), anything())).once();
         done();
       });
     });
 
     it('should create a user when triggered', () => {
-      const action = createGroup({ parent: parentNode, child: childNode });
+      const action = createGroup({ parent: parentGroup, child: childGroup });
 
-      const completion = createGroupSuccess({ nodeTree: NodeHelper.empty() });
+      const completion = createGroupSuccess({ groupTree: GroupHelper.empty() });
       const completion2 = displaySuccessMessage({
         message: 'account.organization.hierarchies.groups.new.confirmation',
-        messageParams: { 0: childNode.name },
+        messageParams: { 0: childGroup.name },
       });
 
       actions$ = hot('        -a----a----a---|', { a: action });
@@ -124,9 +124,9 @@ describe('Organization Hierarchies Effects', () => {
 
     it('should dispatch an createGroupFail action on failed group creation', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(orgServiceMock.createNode(anything(), anything())).thenReturn(throwError(error));
+      when(orgServiceMock.createGroup(anything(), anything())).thenReturn(throwError(error));
 
-      const action = createGroup({ parent: parentNode, child: childNode });
+      const action = createGroup({ parent: parentGroup, child: childGroup });
       const completion = createGroupFail({ error });
 
       actions$ = hot('        -a', { a: action });
@@ -141,7 +141,7 @@ describe('Organization Hierarchies Effects', () => {
       router.navigateByUrl('/hierarchies/create-group');
       tick(500);
 
-      const action = createGroupSuccess({ nodeTree: NodeHelper.empty() });
+      const action = createGroupSuccess({ groupTree: GroupHelper.empty() });
 
       actions$ = of(action);
 
