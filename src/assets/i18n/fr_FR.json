@@ -599,6 +599,7 @@
   "checkout.payment.method.select.heading": "Sélectionnez un mode de paiement",
   "checkout.payment.no_AvailablePaymentMethods.error": "Il n’y a pas de modes de paiement disponibles pour vous.",
   "checkout.payment.no_Selection.error": "Veuillez sélectionner un mode de paiement.",
+  "checkout.payment.no_selection_required.info": "Vous n’avez pas besoin un mode de paiement parce que le montant de la commande est de {{0}}.",
   "checkout.payment.pagetitle": "Paiement",
   "checkout.payment.payWith.link": "Payer par {{0}}",
   "checkout.payment.payment_cost_threshold.amount_reached": "Gratuit pour cette commande de ",

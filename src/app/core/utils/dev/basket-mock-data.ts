@@ -160,6 +160,7 @@ export class BasketMockData {
       },
       total: {
         gross: 142470.71,
+        net: 13000.0,
         currency: 'USD',
         type: 'PriceItem',
       },
