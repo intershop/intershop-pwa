@@ -84,7 +84,8 @@ const accountPageRoutes: Routes = [
       },
       {
         path: 'punchout',
-        data: { breadcrumbData: [{ key: 'account.punchout.link' }] },
+        data: { breadcrumbData: [{ key: 'account.punchout.link' }], permission: 'APP_B2B_MANAGE_PUNCHOUT' },
+        canActivate: [AuthorizationToggleGuard],
         loadChildren: () =>
           import('../../extensions/punchout/pages/punchout-routing.module').then(m => m.PunchoutRoutingModule),
       },

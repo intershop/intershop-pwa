@@ -16,6 +16,8 @@ export class AccountPunchoutPageComponent implements OnInit {
   loading$: Observable<boolean>;
   error$: Observable<HttpError>;
 
+  punchoutUrl = `${window.location.origin}/punchout?USERNAME=<USERNAME>&PASSWORD=<PASSWORD>&HOOK_URL=<HOOK_URL>`;
+
   constructor(private punchoutFacade: PunchoutFacade) {}
 
   ngOnInit() {

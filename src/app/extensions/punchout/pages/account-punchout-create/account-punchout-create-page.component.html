@@ -1,8 +1,8 @@
-<h1>{{ 'account.punchout.create.heading' | translate }}</h1>
+<h1>{{ 'account.punchout.oci.create.heading' | translate }}</h1>
 
 <ish-error-message [error]="error$ | async"></ish-error-message>
 
-<p>{{ 'account.punchout.create.description' | translate }}</p>
+<p>{{ 'account.punchout.oci.create.description' | translate }}</p>
 
 <form [formGroup]="form" (ngSubmit)="submitForm()" class="form-horizontal" novalidate="novalidate">
   <div class="row">
@@ -17,7 +17,7 @@
             [disabled]="formDisabled"
             data-testing-id="create-punchout-user-submit"
           >
-            {{ 'account.punchout.create.button.label' | translate }}
+            {{ 'account.user.new.button.create.label' | translate }}
           </button>
           <a routerLink="../" class="btn btn-secondary" data-testing-id="create-user-cancel">{{
             'account.cancel.link' | translate

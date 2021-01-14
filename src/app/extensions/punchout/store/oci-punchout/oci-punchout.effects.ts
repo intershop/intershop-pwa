@@ -59,7 +59,7 @@ export class OciPunchoutEffects {
           mergeMap(user => [
             addPunchoutUserSuccess({ user }),
             displaySuccessMessage({
-              message: 'account.punchout.connection.created.message',
+              message: 'account.punchout.user.created.message',
               messageParams: { 0: `${user.login}` },
             }),
           ]),
@@ -78,7 +78,7 @@ export class OciPunchoutEffects {
           mergeMap(() => [
             deletePunchoutUserSuccess({ login }),
             displaySuccessMessage({
-              message: 'account.punchout.connection.delete.confirmation',
+              message: 'account.punchout.user.delete.confirmation',
               messageParams: { 0: `${login}` },
             }),
           ]),

@@ -116,7 +116,7 @@ describe('Oci Punchout Effects', () => {
 
       const completion1 = addPunchoutUserSuccess({ user: users[0] });
       const completion2 = displaySuccessMessage({
-        message: 'account.punchout.connection.created.message',
+        message: 'account.punchout.user.created.message',
         messageParams: { 0: `${users[0].login}` },
       });
 
@@ -154,7 +154,7 @@ describe('Oci Punchout Effects', () => {
 
       const completion1 = deletePunchoutUserSuccess({ login: users[0].login });
       const completion2 = displaySuccessMessage({
-        message: 'account.punchout.connection.delete.confirmation',
+        message: 'account.punchout.user.delete.confirmation',
         messageParams: { 0: `${users[0].login}` },
       });
 

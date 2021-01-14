@@ -8,9 +8,9 @@
 
 <div class="section">
   <div class="d-flex justify-content-between">
-    <h2 class="mt-1">{{ 'account.punchout.connections.list.heading' | translate }}</h2>
+    <h2 class="mt-1">{{ 'account.punchout.oci.user.list.heading' | translate }}</h2>
     <button routerLink="/account/punchout/create" type="button" class="btn btn-secondary mr-0">
-      {{ 'account.punchout.add.button.label' | translate }}
+      {{ 'account.punchout.oci.user.add.button.label' | translate }}
     </button>
   </div>
   <ng-container *ngIf="punchoutUsers$ | async as users; else emptyList">
@@ -45,7 +45,7 @@
                 }"
                 (confirmed)="deleteUser($event)"
               >
-                <p>{{ 'account.punchout.connection.delete.text' | translate }}</p>
+                <p>{{ 'account.punchout.user.delete.text' | translate }}</p>
               </ish-modal-dialog>
             </div>
           </div>
@@ -55,10 +55,10 @@
     <p>
       {{ 'account.punchout.info.url.helptext' | translate }}
     </p>
-    <p>!!ToDo: print die pwa link to start the pwa with the punchout user here!!</p>
+    <p>{{ punchoutUrl }}</p>
   </ng-container>
   <ng-template #emptyList>
-    {{ 'account.punchout.no_connections.text' | translate }}
+    {{ 'account.punchout.oci.no_user.text' | translate }}
   </ng-template>
 </div>
 
