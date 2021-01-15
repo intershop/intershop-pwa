@@ -597,6 +597,7 @@
   "checkout.payment.method.select.heading": "Zahlungsart auswählen",
   "checkout.payment.no_AvailablePaymentMethods.error": "Es stehen Ihnen keine Zahlungsarten zur Verfügung.",
   "checkout.payment.no_Selection.error": "Wählen Sie eine Zahlungsart aus.",
+  "checkout.payment.no_selection_required.info": "Sie brauchen keine Zahlungsart, weil der Gesamtbetrag {{0}} ist.",
   "checkout.payment.pagetitle": "Zahlung",
   "checkout.payment.payWith.link": "Mit {{0}} bezahlen",
   "checkout.payment.payment_cost_threshold.amount_reached": "kostenlos für diese Bestellung über ",

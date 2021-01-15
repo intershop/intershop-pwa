@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { filter, first, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
@@ -12,12 +13,14 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
   templateUrl: './checkout-payment-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckoutPaymentPageComponent implements OnInit {
+export class CheckoutPaymentPageComponent implements OnInit, OnDestroy {
   basket$: Observable<BasketView>;
   basketError$: Observable<HttpError>;
   loading$: Observable<boolean>;
   paymentMethods$: Observable<PaymentMethod[]>;
   priceType$: Observable<'gross' | 'net'>;
+
+  private destroy$ = new Subject();
 
   constructor(private checkoutFacade: CheckoutFacade) {}
 
@@ -25,8 +28,21 @@ export class CheckoutPaymentPageComponent implements OnInit {
     this.basket$ = this.checkoutFacade.basket$;
     this.basketError$ = this.checkoutFacade.basketError$;
     this.loading$ = this.checkoutFacade.basketLoading$;
-    this.paymentMethods$ = this.checkoutFacade.eligiblePaymentMethods$();
     this.priceType$ = this.checkoutFacade.priceType$;
+    this.paymentMethods$ = this.checkoutFacade.eligiblePaymentMethods$();
+
+    // if there is only one eligible payment method without parameters, assign it automatically to the basket
+    this.paymentMethods$
+      .pipe(
+        filter(methods => methods?.length === 1),
+        map(methods => methods[0]),
+        filter(pm => !pm.parameters),
+        first(),
+        withLatestFrom(this.basket$),
+        filter(([, basket]) => !basket?.payment),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(([pm]) => this.updateBasketPaymentMethod(pm.id));
   }
 
   updateBasketPaymentMethod(paymentName: string) {
@@ -53,5 +69,10 @@ export class CheckoutPaymentPageComponent implements OnInit {
    */
   nextStep() {
     this.checkoutFacade.continue(4);
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -599,6 +599,7 @@
   "checkout.payment.method.select.heading": "Select a Payment Method",
   "checkout.payment.no_AvailablePaymentMethods.error": "There are no payment methods available for you.",
   "checkout.payment.no_Selection.error": "Please select a payment method.",
+  "checkout.payment.no_selection_required.info": "You do not need a payment method because the order amount is {{0}}.",
   "checkout.payment.pagetitle": "Payment",
   "checkout.payment.payWith.link": "Pay with {{0}}",
   "checkout.payment.payment_cost_threshold.amount_reached": "Free charge for this order of ",
