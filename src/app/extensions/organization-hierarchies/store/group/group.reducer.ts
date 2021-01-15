@@ -7,7 +7,8 @@ import { loadGroupsSuccess, selectGroup } from './group.actions';
 
 export const groupAdapter = createEntityAdapter<OrganizationGroup>({
   selectId: group => group.id,
-  sortComparer: (groupA, groupB) => groupA.name.localeCompare(groupB.name),
+  sortComparer: (groupA, groupB) =>
+    !groupA.parentid ? -1 : !groupB.parentid ? 1 : groupA.name.localeCompare(groupB.name),
 });
 
 export interface GroupState extends EntityState<OrganizationGroup> {
