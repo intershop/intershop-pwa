@@ -15,7 +15,8 @@ export class TxSelectedGroupInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return this.store.pipe(
-      filter(store => store.organizationHierarchies),
+      // tslint:disable-next-line
+      filter(store => store['organizationHierarchies']),
       select(getFeatures),
       whenTruthy(),
       filter(features => features.includes('organizationHierarchies')),
