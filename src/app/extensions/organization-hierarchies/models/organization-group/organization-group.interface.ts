@@ -4,4 +4,11 @@ export interface OrganizationGroupData {
     description?: string;
   };
   id: string;
+  relationships: {
+    parentNode?: {
+      data: {
+        id?: string;
+      };
+    };
+  };
 }
