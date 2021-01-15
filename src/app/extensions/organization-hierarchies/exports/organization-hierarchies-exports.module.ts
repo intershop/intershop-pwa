@@ -19,6 +19,7 @@ import { LazyHierarchySwitchComponent } from './lazy-hierarchy-switch/lazy-hiera
       },
       multi: true,
     },
+    // TODO: Fix interceptor registration, use export instead.
     { provide: HTTP_INTERCEPTORS, useClass: TxSelectedGroupInterceptor, multi: true },
   ],
 
