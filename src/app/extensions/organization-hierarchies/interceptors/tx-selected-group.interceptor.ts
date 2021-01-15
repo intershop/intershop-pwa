@@ -23,7 +23,7 @@ export class TxSelectedGroupInterceptor implements HttpInterceptor {
       switchMap(() =>
         this.facade.getSelectedGroup().pipe(
           map(group =>
-            group && !req?.headers.has('BuyingGroupID')
+            group?.parentid && !req?.headers.has('BuyingGroupID')
               ? req.clone({ headers: req.headers.set('BuyingGroupID', group.id) })
               : req
           ),
