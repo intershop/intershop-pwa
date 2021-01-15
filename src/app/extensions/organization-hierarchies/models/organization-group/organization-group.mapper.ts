@@ -10,9 +10,17 @@ export class OrganizationGroupMapper {
       return {
         id: organizationGroupData.id,
         name: organizationGroupData.attributes.name,
+        parentid: organizationGroupData.relationships.parentNode?.data?.id,
       };
     } else {
       throw new Error(`organizationGroupData is required`);
     }
+  }
+
+  handleRoot(organizationGroup: OrganizationGroup, companyName: string): OrganizationGroup {
+    return {
+      ...organizationGroup,
+      name: organizationGroup.parentid ? organizationGroup.name : companyName,
+    };
   }
 }
