@@ -85,29 +85,36 @@ export class UserService {
       ...body.address,
       mainDivision: body.address.mainDivisionCode,
     };
-    let newCustomer: CreatePrivateCustomerType | CreateBusinessCustomerType;
 
-    if (!body.customer.isBusinessCustomer) {
-      newCustomer = {
-        type: 'PrivateCustomer',
-        ...body.customer,
-        ...body.user,
-        address: customerAddress,
-        credentials: body.credentials,
-      };
-    } else {
-      newCustomer = {
-        type: 'SMBCustomer',
-        ...body.customer,
-        user: { ...body.user },
-        address: customerAddress,
-        credentials: body.credentials,
-      };
-    }
+    let newCustomer$: Observable<CreatePrivateCustomerType | CreateBusinessCustomerType>;
+    newCustomer$ = this.appFacade.currentLocale$.pipe(
+      map(currentLocale =>
+        body.customer.isBusinessCustomer
+          ? {
+              type: 'SMBCustomer',
+              ...body.customer,
+              user: {
+                ...body.user,
+                preferredLanguage: currentLocale.lang ?? 'en_US',
+              },
+              address: customerAddress,
+              credentials: body.credentials,
+            }
+          : {
+              type: 'PrivateCustomer',
+              ...body.customer,
+              ...body.user,
+              address: customerAddress,
+              credentials: body.credentials,
+              preferredLanguage: currentLocale.lang ?? 'en_US',
+            }
+      )
+    );
 
     return this.appFacade.isAppTypeREST$.pipe(
       first(),
-      concatMap(isAppTypeRest =>
+      withLatestFrom(newCustomer$.pipe(first())),
+      concatMap(([isAppTypeRest, newCustomer]) =>
         this.apiService
           .post<void>(AppFacade.getCustomerRestResource(body.customer.isBusinessCustomer, isAppTypeRest), newCustomer, {
             captcha: pick(body, ['captcha', 'captchaAction']),
