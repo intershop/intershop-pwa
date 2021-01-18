@@ -148,4 +148,6 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
     allowedCookies: ['cookieConsent', 'apiToken'],
   },
   cookieConsentVersion: 1,
+  // TODO: to no longer test punchout VALIDATE and SEARCH with mock data the next line needs to be removed once the ICM punchout REST API offers this functionality
+  apiMockPaths: ['^customers/OilCorp/punchouts/oci/(validate|search)'],
 };
