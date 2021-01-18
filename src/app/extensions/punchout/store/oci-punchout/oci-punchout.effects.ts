@@ -88,9 +88,6 @@ export class OciPunchoutEffects {
     )
   );
 
-  /**
-   * ToDo: read hook URL from state
-   */
   transferPunchoutBasket$ = createEffect(() =>
     this.actions$.pipe(
       ofType(startOCIPunchout),
@@ -98,9 +95,7 @@ export class OciPunchoutEffects {
       filter(([, basketId]) => !!basketId),
       concatMap(([, basketId]) =>
         this.punchoutService.getOciPunchoutData(basketId).pipe(
-          concatMap(data =>
-            this.punchoutService.submitOciPunchoutData('https://punchoutcommerce.com/tools/oci-roundtrip-return', data)
-          ),
+          concatMap(data => this.punchoutService.submitOciPunchoutData(data)),
           mapTo(startOCIPunchoutSuccess()),
           mapErrorToAction(startOCIPunchoutFail)
         )

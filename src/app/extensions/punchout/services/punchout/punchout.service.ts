@@ -7,13 +7,14 @@ import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
+import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { PunchoutUser } from '../../models/punchout-user/punchout-user.model';
 
 @Injectable({ providedIn: 'root' })
 export class PunchoutService {
-  constructor(private apiService: ApiService, private store: Store) {}
+  constructor(private apiService: ApiService, private cookiesService: CookiesService, private store: Store) {}
 
   private currentCustomer$ = this.store.pipe(select(getLoggedInCustomer), whenTruthy(), take(1));
 
@@ -86,9 +87,10 @@ export class PunchoutService {
   /**
    * Gets the json object for the oci punchout.
    */
-  submitOciPunchoutData(hookUrl: string, data: Attribute<string>[]) {
+  submitOciPunchoutData(data: Attribute<string>[]) {
+    const hookUrl = this.cookiesService.get('hookURL');
     if (!hookUrl) {
-      return throwError('sendOciPunchoutData() of the punchout service called without hookUrl');
+      return throwError('no HOOK_URL available in cookies to sendOciPunchoutData()');
     }
     if (!data || !data.length) {
       return throwError('sendOciPunchoutData() of the punchout service called without data');

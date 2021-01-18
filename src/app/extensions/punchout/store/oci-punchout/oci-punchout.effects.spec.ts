@@ -50,7 +50,7 @@ describe('Oci Punchout Effects', () => {
     when(punchoutService.createUser(users[0])).thenReturn(of(users[0]));
     when(punchoutService.deleteUser(users[0].login)).thenReturn(of(undefined));
     when(punchoutService.getOciPunchoutData(anyString())).thenReturn(of(undefined));
-    when(punchoutService.submitOciPunchoutData(anyString(), anything())).thenReturn(of(undefined));
+    when(punchoutService.submitOciPunchoutData(anything())).thenReturn(of(undefined));
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -202,7 +202,7 @@ describe('Oci Punchout Effects', () => {
       actions$ = of(startOCIPunchout());
 
       effects.transferPunchoutBasket$.subscribe(() => {
-        verify(punchoutService.submitOciPunchoutData(anyString(), anything())).once();
+        verify(punchoutService.submitOciPunchoutData(anything())).once();
         done();
       });
     });
