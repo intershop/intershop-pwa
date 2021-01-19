@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, of, throwError } from 'rxjs';
@@ -90,7 +91,7 @@ export class PunchoutService {
   }
 
   // tslint:disable-next-line:force-jsdoc-comments
-  // !! ToDo: this code is currently working with mock data and has to be adapted, tests are missing !!
+  // !! ToDo: tests are missing !!
 
   /**
    * Gets the json object for the oci punchout.
@@ -101,9 +102,15 @@ export class PunchoutService {
       return throwError('getOciPunchoutData() of the punchout service called without basketId');
     }
 
-    return this.apiService
-      .get<{ data: Attribute<string>[] }>(`punchouts/oci/transfer`)
-      .pipe(map(data => data.data));
+    return this.currentCustomer$.pipe(
+      switchMap(customer =>
+        this.apiService
+          .post<{ data: Attribute<string>[] }>(`customers/${customer.customerNo}/punchouts/oci/transfer`, undefined, {
+            params: new HttpParams().set('basketId', basketId),
+          })
+          .pipe(map(data => data.data))
+      )
+    );
   }
 
   /**
