@@ -24,15 +24,19 @@ if (args.length === 1 && !(args[0].startsWith('src') || args[0].includes('/src/'
   args = spawnSync('git', ['--no-pager', 'diff', args[0], '--name-only']).stdout.toString().split('\n');
 }
 
-for (const file of args.length ? project.getSourceFiles(args) : project.getSourceFiles()) {
+const files = args.length ? project.getSourceFiles(args) : project.getSourceFiles();
+
+let processedFiles = 0;
+
+for (const file of files) {
+  processedFiles++;
+
   if (!file.getFilePath().endsWith('.spec.ts')) {
     continue;
   }
 
   const copyPath = file.getFilePath() + '.ut.spec.ts';
   let foundSomething = false;
-
-  console.log(`at ${path(file)}`);
 
   top: while (true) {
     if (
@@ -63,6 +67,9 @@ for (const file of args.length ? project.getSourceFiles(args) : project.getSourc
           tb++;
         }
       });
+
+      const percent = ((processedFiles / files.length) * 100).toFixed(0);
+      console.log(`at ${percent}% - ${path(file)}`, configs.length, `test(s)`);
 
       next: for (const config of configs) {
         tb = -1;
