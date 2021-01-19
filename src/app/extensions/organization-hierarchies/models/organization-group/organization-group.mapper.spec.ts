@@ -16,7 +16,7 @@ describe('Organization Group Mapper', () => {
     attributes: { name: 'Some Child' },
     id: 'Child',
     relationships: {
-      parentNode: {
+      parentGroup: {
         data: { id: 'test' },
       },
     },
