@@ -74,6 +74,7 @@ export class CMSService {
 
     return this.apiService
       .get<ContentPageletEntryPointData>(`cms/viewcontexts/${viewContextId}/entrypoint`, {
+        sendPGID: true,
         params,
         skipApiErrorHandling: true,
       })
