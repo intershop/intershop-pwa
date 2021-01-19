@@ -10,7 +10,7 @@ export class OrganizationGroupMapper {
       return {
         id: organizationGroupData.id,
         name: organizationGroupData.attributes.name,
-        parentid: organizationGroupData.relationships.parentNode?.data?.id,
+        parentid: organizationGroupData.relationships.parentGroup?.data?.id,
       };
     } else {
       throw new Error(`organizationGroupData is required`);
