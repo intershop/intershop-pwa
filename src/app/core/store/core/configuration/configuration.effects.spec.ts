@@ -9,7 +9,6 @@ import { Observable, Subject, of } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { anything, capture, instance, mock, verify } from 'ts-mockito';
 
-import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 
 import { applyConfiguration, setGTMToken } from './configuration.actions';
@@ -29,8 +28,6 @@ describe('Configuration Effects', () => {
         { provide: TranslateService, useFactory: () => instance(translateServiceMock) },
         provideMockActions(() => actions$),
         { provide: PLATFORM_ID, useValue: 'server' },
-        { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
-        { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
       ],
     });
 

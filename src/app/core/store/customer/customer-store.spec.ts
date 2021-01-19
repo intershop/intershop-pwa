@@ -5,11 +5,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
 
-import {
-  DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
-  MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
-  PRODUCT_LISTING_ITEMS_PER_PAGE,
-} from 'ish-core/configurations/injection-keys';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
@@ -194,9 +189,6 @@ describe('Customer Store', () => {
         { provide: AuthorizationService, useFactory: () => instance(authorizationServiceMock) },
         { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
         { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
-        { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
-        { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 3 },
-        { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'list' },
       ],
     });
 

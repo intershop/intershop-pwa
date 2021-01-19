@@ -377,7 +377,7 @@
         {
           "import": ".*",
           "from": ".*environments/environment.*",
-          "filePattern": "^.*/app/((?!(module|core/store/core/configuration/configuration\\.reducer|core/utils/state-transfer/state-properties\\.service)\\.ts).)*$",
+          "filePattern": "^.*/app/((?!(module|core/store/core/configuration/configuration\\.reducer|core/utils/state-transfer/state-properties\\.service|injection-keys)\\.ts).)*$",
           "message": "Importing environment is not allowed. Inject needed properties instead."
         },
         {

@@ -7,11 +7,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
-import {
-  DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
-  MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
-  PRODUCT_LISTING_ITEMS_PER_PAGE,
-} from 'ish-core/configurations/injection-keys';
 import { Category, CategoryCompletenessLevel } from 'ish-core/models/category/category.model';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Product } from 'ish-core/models/product/product.model';
@@ -184,9 +179,6 @@ describe('Shopping Store', () => {
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
-        { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
-        { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 3 },
-        { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'list' },
       ],
     });
 

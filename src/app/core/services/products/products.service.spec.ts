@@ -2,10 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
-import {
-  DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
-  PRODUCT_LISTING_ITEMS_PER_PAGE,
-} from 'ish-core/configurations/injection-keys';
 import { Product } from 'ish-core/models/product/product.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -67,11 +63,7 @@ describe('Products Service', () => {
         CoreStoreModule.forTesting(['configuration'], [ProductListingEffects]),
         ShoppingStoreModule.forTesting('productListing'),
       ],
-      providers: [
-        { provide: ApiService, useFactory: () => instance(apiServiceMock) },
-        { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 3 },
-        { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'grid' },
-      ],
+      providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }],
     });
     productsService = TestBed.inject(ProductsService);
   });

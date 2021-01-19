@@ -5,7 +5,6 @@ import { SwiperModule } from 'ngx-swiper-wrapper';
 import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { LARGE_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
@@ -24,10 +23,7 @@ describe('Wishlist Widget Component', () => {
     await TestBed.configureTestingModule({
       declarations: [MockComponent(ProductItemComponent), WishlistWidgetComponent],
       imports: [SwiperModule, TranslateModule.forRoot()],
-      providers: [
-        { provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) },
-        { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
-      ],
+      providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) }],
     }).compileComponents();
   });
 
