@@ -25,6 +25,7 @@ describe('Punchout Service', () => {
     when(apiServiceMock.resolveLinks()).thenReturn(() => of([]));
     when(apiServiceMock.post(anything(), anything())).thenReturn(of({}));
     when(apiServiceMock.resolveLink()).thenReturn(() => of({}));
+    when(apiServiceMock.put(anything(), anything())).thenReturn(of({}));
     when(apiServiceMock.delete(anything())).thenReturn(of({}));
 
     TestBed.configureTestingModule({
@@ -61,6 +62,16 @@ describe('Punchout Service', () => {
     punchoutService.createUser({ login: 'ociuser' } as PunchoutUser).subscribe(() => {
       verify(apiServiceMock.post(anything(), anything())).once();
       expect(capture(apiServiceMock.post).last()[0]).toMatchInlineSnapshot(`"customers/4711/punchouts/oci/users"`);
+      done();
+    });
+  });
+
+  it('should call the updateUser for updating a punchout user', done => {
+    punchoutService.updateUser({ login: 'ociuser' } as PunchoutUser).subscribe(() => {
+      verify(apiServiceMock.put(anything(), anything())).once();
+      expect(capture(apiServiceMock.put).last()[0]).toMatchInlineSnapshot(
+        `"customers/4711/punchouts/oci/users/ociuser"`
+      );
       done();
     });
   });

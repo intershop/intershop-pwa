@@ -5,8 +5,10 @@ export class SpecialValidators {
    * password validator: char + numbers, min length 7
    */
   static password(control: FormControl): { [error: string]: { valid: boolean } } {
-    const passwordPattern = /^(?=[^\s]*[a-zA-Z])(?=[^\s]*[\d])[^\s]*$/;
-    return passwordPattern.test(control.value) && control.value.length > 6 ? undefined : { password: { valid: false } };
+    const passwordPattern = /^(|(?=[^\s]*[a-zA-Z])(?=[^\s]*[\d])[^\s]*)$/;
+    return passwordPattern.test(control.value) && (control.value.length > 6 || !control.value.length)
+      ? undefined
+      : { password: { valid: false } };
   }
 
   static noSpecialChars(control: FormControl): { [error: string]: { valid: boolean } } {

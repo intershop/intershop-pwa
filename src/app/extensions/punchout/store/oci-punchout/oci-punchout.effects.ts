@@ -5,8 +5,9 @@ import { Store, select } from '@ngrx/store';
 import { concatMap, exhaustMap, filter, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { displayErrorMessage, displaySuccessMessage } from 'ish-core/store/core/messages';
+import { selectRouteParam } from 'ish-core/store/core/router';
 import { getCurrentBasketId } from 'ish-core/store/customer/basket';
-import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { PunchoutService } from '../../services/punchout/punchout.service';
 
@@ -23,6 +24,9 @@ import {
   startOCIPunchout,
   startOCIPunchoutFail,
   startOCIPunchoutSuccess,
+  updatePunchoutUser,
+  updatePunchoutUserFail,
+  updatePunchoutUserSuccess,
 } from './oci-punchout.actions';
 
 @Injectable()
@@ -46,6 +50,19 @@ export class OciPunchoutEffects {
     )
   );
 
+  loadDetailedUser$ = createEffect(() =>
+    this.store.pipe(
+      select(selectRouteParam('PunchoutLogin')),
+      whenTruthy(),
+      mergeMap(() =>
+        this.punchoutService.getUsers().pipe(
+          map(users => loadPunchoutUsersSuccess({ users })),
+          mapErrorToAction(loadPunchoutUsersFail)
+        )
+      )
+    )
+  );
+
   createPunchoutUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(addPunchoutUser),
@@ -53,8 +70,7 @@ export class OciPunchoutEffects {
       mergeMap(newUser =>
         this.punchoutService.createUser(newUser).pipe(
           tap(() => {
-            // ToDo: go To account/punchout/<id> page
-            this.router.navigate(['/account/punchout']);
+            this.router.navigate([`/account/punchout/${newUser.login}`]);
           }),
           mergeMap(user => [
             addPunchoutUserSuccess({ user }),
@@ -64,6 +80,28 @@ export class OciPunchoutEffects {
             }),
           ]),
           mapErrorToAction(addPunchoutUserFail)
+        )
+      )
+    )
+  );
+
+  updatePunchoutUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updatePunchoutUser),
+      mapToPayloadProperty('user'),
+      mergeMap(changedUser =>
+        this.punchoutService.updateUser(changedUser).pipe(
+          tap(() => {
+            this.router.navigate([`/account/punchout`]);
+          }),
+          mergeMap(user => [
+            updatePunchoutUserSuccess({ user }),
+            displaySuccessMessage({
+              message: 'account.punchout.user.updated.message',
+              messageParams: { 0: `${user.login}` },
+            }),
+          ]),
+          mapErrorToAction(updatePunchoutUserFail)
         )
       )
     )

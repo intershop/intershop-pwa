@@ -25,6 +25,13 @@ const accountRoutes: Routes = [
         m => m.AccountPunchoutCreatePageModule
       ),
   },
+  {
+    path: ':PunchoutLogin',
+    loadChildren: () =>
+      import('./account-punchout-details/account-punchout-details-page.module').then(
+        m => m.AccountPunchoutDetailsPageModule
+      ),
+  },
 ];
 
 @NgModule({

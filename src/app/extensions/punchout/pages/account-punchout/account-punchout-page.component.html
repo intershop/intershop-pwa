@@ -19,7 +19,7 @@
         <div *ngIf="user; else emptyList" class="list-item-row row mx-0">
           <div class="col-10 list-item">
             <p>
-              {{ user.login }}<br />
+              <span class="d-block">{{ user.login }}</span>
               <span *ngIf="user.active === false" class="input-help">{{
                 'account.user.list.status.inactive' | translate
               }}</span>
@@ -28,10 +28,18 @@
           <div class="col-2 list-item text-right">
             <div class="float-right">
               <a
-                data-testing-id="remove-user"
+                [routerLink]="[user.login]"
+                class="btn-tool"
+                title="{{ 'account.profile.update.link' | translate }}"
+                data-testing-id="edit-user"
+              >
+                <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
+              </a>
+              <a
                 class="btn-tool"
                 title="{{ 'account.user.delete_user_dialog.header' | translate: { '0': user.login } }}"
                 (click)="modalDialog.show(user)"
+                data-testing-id="remove-user"
               >
                 <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
               </a>

@@ -22,6 +22,15 @@ export const addPunchoutUserSuccess = createAction(
   payload<{ user: PunchoutUser }>()
 );
 
+export const updatePunchoutUser = createAction('[Punchout] Update Punchout User', payload<{ user: PunchoutUser }>());
+
+export const updatePunchoutUserFail = createAction('[Punchout API] Update Punchout User Fail', httpError());
+
+export const updatePunchoutUserSuccess = createAction(
+  '[Punchout API] Update Punchout User Success',
+  payload<{ user: PunchoutUser }>()
+);
+
 export const deletePunchoutUser = createAction('[Punchout] Delete Punchout User', payload<{ login: string }>());
 
 export const deletePunchoutUserFail = createAction('[Punchout API] Delete Punchout User Fail', httpError());

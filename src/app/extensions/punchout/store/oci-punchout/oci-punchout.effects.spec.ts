@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
@@ -30,6 +31,9 @@ import {
   startOCIPunchout,
   startOCIPunchoutFail,
   startOCIPunchoutSuccess,
+  updatePunchoutUser,
+  updatePunchoutUserFail,
+  updatePunchoutUserSuccess,
 } from './oci-punchout.actions';
 import { OciPunchoutEffects } from './oci-punchout.effects';
 
@@ -40,14 +44,16 @@ describe('Oci Punchout Effects', () => {
   let actions$: Observable<Action>;
   let effects: OciPunchoutEffects;
   let punchoutService: PunchoutService;
+  let router: Router;
   let store$: Store;
 
-  const users = [{ id: 'ociUser', email: 'ociuser@test.de' }] as PunchoutUser[];
+  const users = [{ id: 'ociUser', login: 'ociuser@test.de', email: 'ociuser@test.de' }] as PunchoutUser[];
 
   beforeEach(() => {
     punchoutService = mock(PunchoutService);
     when(punchoutService.getUsers()).thenReturn(of(users));
     when(punchoutService.createUser(users[0])).thenReturn(of(users[0]));
+    when(punchoutService.updateUser(anything())).thenReturn(of(users[0]));
     when(punchoutService.deleteUser(users[0].login)).thenReturn(of(undefined));
     when(punchoutService.getOciPunchoutData(anyString())).thenReturn(of(undefined));
     when(punchoutService.submitOciPunchoutData(anything())).thenReturn(of(undefined));
@@ -55,9 +61,13 @@ describe('Oci Punchout Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        CoreStoreModule.forTesting(),
+        CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('basket'),
-        RouterTestingModule.withRoutes([{ path: 'account/punchout', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([
+          { path: 'account/punchout', component: DummyComponent },
+          { path: 'account/punchout/:PunchoutLogin', component: DummyComponent },
+          { path: '**', component: DummyComponent },
+        ]),
       ],
       providers: [
         OciPunchoutEffects,
@@ -67,6 +77,7 @@ describe('Oci Punchout Effects', () => {
     });
 
     effects = TestBed.inject(OciPunchoutEffects);
+    router = TestBed.inject(Router);
     store$ = TestBed.inject(Store);
   });
 
@@ -99,6 +110,29 @@ describe('Oci Punchout Effects', () => {
       const expected$ = cold('-b', { b: completion });
 
       expect(effects.loadPunchoutUsers$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadDetailedUser$', () => {
+    it('should call the service for retrieving user', done => {
+      router.navigate(['/account/punchout', 'ociuser@test.de']);
+
+      effects.loadDetailedUser$.subscribe(() => {
+        verify(punchoutService.getUsers()).once();
+        done();
+      });
+    });
+
+    it('should retrieve the user when triggered', done => {
+      router.navigate(['/account/punchout', 'ociuser@test.de']);
+
+      effects.loadDetailedUser$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Punchout API] Load Punchout Users Success:
+            users: [{"id":"ociUser","login":"ociuser@test.de","email":"ociuser@...
+        `);
+        done();
+      });
     });
   });
 
@@ -137,6 +171,44 @@ describe('Oci Punchout Effects', () => {
       const expected$ = cold('-b', { b: completion });
 
       expect(effects.createPunchoutUser$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updatePunchoutUser$', () => {
+    it('should call the service for updating a punchout user', done => {
+      actions$ = of(updatePunchoutUser({ user: users[0] }));
+
+      effects.updatePunchoutUser$.subscribe(() => {
+        verify(punchoutService.updateUser(anything())).once();
+        done();
+      });
+    });
+    it('should map to action of type UpdatePunchoutUserSuccess and DisplaySuccessMessage', () => {
+      const action = updatePunchoutUser({ user: users[0] });
+
+      const completion1 = updatePunchoutUserSuccess({ user: users[0] });
+      const completion2 = displaySuccessMessage({
+        message: 'account.punchout.user.updated.message',
+        messageParams: { 0: `${users[0].login}` },
+      });
+
+      actions$ = hot('        -a----a----a----|', { a: action });
+      const expected$ = cold('-(cd)-(cd)-(cd)-|', { c: completion1, d: completion2 });
+
+      expect(effects.updatePunchoutUser$).toBeObservable(expected$);
+    });
+
+    it('should dispatch a UpdatePunchoutUserFail action on failed user creation', () => {
+      const error = makeHttpError({ status: 401, code: 'feld' });
+      when(punchoutService.updateUser(users[0])).thenReturn(throwError(error));
+
+      const action = updatePunchoutUser({ user: users[0] });
+      const completion = updatePunchoutUserFail({ error });
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-b', { b: completion });
+
+      expect(effects.updatePunchoutUser$).toBeObservable(expected$);
     });
   });
 

@@ -4,6 +4,7 @@
     controlName="login"
     label="account.punchout.username.label"
     markRequiredLabel="off"
+    [disabled]="update"
     [errorMessages]="{
       required: 'account.punchout.username.error.required',
       punchoutLogin: 'account.punchout.username.invalid'

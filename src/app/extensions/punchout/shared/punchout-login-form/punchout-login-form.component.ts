@@ -8,4 +8,5 @@ import { FormGroup } from '@angular/forms';
 })
 export class PunchoutLoginFormComponent {
   @Input() form: FormGroup;
+  @Input() update = false;
 }

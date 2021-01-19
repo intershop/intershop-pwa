@@ -19,21 +19,23 @@ export class PunchoutService {
   private currentCustomer$ = this.store.pipe(select(getLoggedInCustomer), whenTruthy(), take(1));
 
   /**
-   * Gets the list of oci punchout users.
-   * @returns    An array of puchout users.
+   * Gets the list of punchout users.
+   * @returns    An array of punchout users.
    */
   getUsers(): Observable<PunchoutUser[]> {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
-        this.apiService
-          .get(`customers/${customer.customerNo}/punchouts/oci/users`)
-          .pipe(unpackEnvelope<Link>(), this.apiService.resolveLinks<PunchoutUser>())
+        this.apiService.get(`customers/${customer.customerNo}/punchouts/oci/users`).pipe(
+          unpackEnvelope<Link>(),
+          this.apiService.resolveLinks<PunchoutUser>(),
+          map(users => users.map(user => ({ ...user, password: undefined })))
+        )
       )
     );
   }
 
   /**
-   * Creates an oci punchout user (connection).
+   * Creates a punchout user.
    * @param user    The punchout user.
    * @returns       The created punchout user.
    */
@@ -44,15 +46,35 @@ export class PunchoutService {
 
     return this.currentCustomer$.pipe(
       switchMap(customer =>
-        this.apiService
-          .post(`customers/${customer.customerNo}/punchouts/oci/users`, user)
-          .pipe(this.apiService.resolveLink<PunchoutUser>())
+        this.apiService.post(`customers/${customer.customerNo}/punchouts/oci/users`, user).pipe(
+          this.apiService.resolveLink<PunchoutUser>(),
+          map(updatedUser => ({ ...updatedUser, password: undefined }))
+        )
       )
     );
   }
 
   /**
-   * Deletes an oci punchout user (connection).
+   * Updates a punchout user.
+   * @param user    The punchout user.
+   * @returns       The updated punchout user.
+   */
+  updateUser(user: PunchoutUser): Observable<PunchoutUser> {
+    if (!user) {
+      return throwError('updateUser() of the punchout service called without punchout user');
+    }
+
+    return this.currentCustomer$.pipe(
+      switchMap(customer =>
+        this.apiService
+          .put<PunchoutUser>(`customers/${customer.customerNo}/punchouts/oci/users/${user.login}`, user)
+          .pipe(map(updatedUser => ({ ...updatedUser, password: undefined })))
+      )
+    );
+  }
+
+  /**
+   * Deletes an oci punchout user.
    * @param login   The login of the punchout user.
    */
   deleteUser(login: string): Observable<void> {

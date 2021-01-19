@@ -8,8 +8,10 @@ import {
   getPunchoutError,
   getPunchoutLoading,
   getPunchoutUsers,
+  getSelectedPunchoutUser,
   loadPunchoutUsers,
   startOCIPunchout,
+  updatePunchoutUser,
 } from '../store/oci-punchout';
 
 // tslint:disable:member-ordering
@@ -24,9 +26,14 @@ export class PunchoutFacade {
     this.store.dispatch(loadPunchoutUsers());
     return this.store.pipe(select(getPunchoutUsers));
   }
+  selectedPunchoutUser$ = this.store.pipe(select(getSelectedPunchoutUser));
 
   addPunchoutUser(user: PunchoutUser) {
     this.store.dispatch(addPunchoutUser({ user }));
+  }
+
+  updatePunchoutUser(user: PunchoutUser) {
+    this.store.dispatch(updatePunchoutUser({ user }));
   }
 
   deletePunchoutUser(login: string) {
