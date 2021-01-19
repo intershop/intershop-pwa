@@ -20,3 +20,17 @@ export const getSelectedGroupDetails = createSelector(
   getSelectedGroupId,
   (entities, id): OrganizationGroup => id && entities[id]
 );
+
+export const getSelectedGroupPath = createSelector(
+  selectEntities,
+  getSelectedGroupId,
+  (entities, id): OrganizationGroup[] => {
+    let current = id && entities[id];
+    const ret = new Array<OrganizationGroup>();
+    while (typeof current !== 'undefined') {
+      ret.push(current);
+      current = current.parentid ? entities[current.parentid] : undefined;
+    }
+    return ret;
+  }
+);
