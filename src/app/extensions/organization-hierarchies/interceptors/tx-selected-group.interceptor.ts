@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable, iif } from 'rxjs';
 import { concatMap, first, map } from 'rxjs/operators';
 
-import { getSelectedGroupDetails } from '../store/group';
+import { getSelectedGroupPath } from '../store/group';
 
 @Injectable()
 export class TxSelectedGroupInterceptor implements HttpInterceptor {
@@ -17,10 +17,11 @@ export class TxSelectedGroupInterceptor implements HttpInterceptor {
         iif(
           () => !!store.organizationHierarchies,
           this.store.pipe(
-            select(getSelectedGroupDetails),
-            map(group =>
-              group?.parentid && !req?.headers.has('BuyingGroupID')
-                ? req.clone({ headers: req.headers.set('BuyingGroupID', group.id) })
+            select(getSelectedGroupPath),
+            map(groups => groups.reduce((acc, val, index) => (index > 0 ? `${val.id},${acc}` : val.id), '')),
+            map(path =>
+              path?.length > 0 && !req?.headers.has('BuyingGroupID')
+                ? req.clone({ headers: req.headers.set('BuyingGroupID', path) })
                 : req
             ),
             first(),
