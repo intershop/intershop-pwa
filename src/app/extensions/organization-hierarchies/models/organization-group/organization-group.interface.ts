@@ -5,7 +5,7 @@ export interface OrganizationGroupData {
   };
   id: string;
   relationships: {
-    parentNode?: {
+    parentGroup?: {
       data: {
         id?: string;
       };
