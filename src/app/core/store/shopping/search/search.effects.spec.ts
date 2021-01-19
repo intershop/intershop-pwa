@@ -7,10 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
-import {
-  DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
-  PRODUCT_LISTING_ITEMS_PER_PAGE,
-} from 'ish-core/configurations/injection-keys';
+import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
 import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
@@ -71,8 +68,6 @@ describe('Search Effects', () => {
         provideStoreSnapshots(),
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
-        { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 3 },
-        { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'grid' },
       ],
     });
 

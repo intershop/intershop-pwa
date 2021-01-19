@@ -6,7 +6,6 @@ import { Observable, of, throwError } from 'rxjs';
 import { toArray } from 'rxjs/operators';
 import { anything, deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
-import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { FilterService } from 'ish-core/services/filter/filter.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -71,7 +70,6 @@ describe('Filter Effects', () => {
         FilterEffects,
         provideMockActions(() => actions$),
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
-        { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 2 },
       ],
     });
 

@@ -89,7 +89,6 @@ describe('Products Effects', () => {
         ProductsEffects,
         provideMockActions(() => actions$),
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
-        { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 3 },
       ],
     });
 
