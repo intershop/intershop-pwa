@@ -69,7 +69,7 @@ describe('Users Selectors', () => {
     });
 
     describe('LoadUsersSuccess', () => {
-      const users = [{ login: '1' }, { login: '2' }] as User[];
+      const users = [{ login: '1' }, { login: '2' }, { login: '3', roleIDs: ['APP_B2B_OCI_USER'] }] as User[];
       const successAction = loadUsersSuccess({ users });
 
       beforeEach(() => {
@@ -85,7 +85,7 @@ describe('Users Selectors', () => {
       });
 
       it('should have entities when successfully loading', () => {
-        expect(getUsers(store$.state)).not.toBeEmpty();
+        expect(getUsers(store$.state)).toHaveLength(2);
       });
     });
 
