@@ -8,8 +8,7 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { PunchoutFacade } from '../../facades/punchout.facade';
-import { PunchoutLoginFormComponent } from '../../shared/punchout-login-form/punchout-login-form.component';
-import { PunchoutPasswordFormComponent } from '../../shared/punchout-password-form/punchout-password-form.component';
+import { PunchoutUserFormComponent } from '../../shared/punchout-user-form/punchout-user-form.component';
 
 import { AccountPunchoutCreatePageComponent } from './account-punchout-create-page.component';
 
@@ -28,8 +27,7 @@ describe('Account Punchout Create Page Component', () => {
         AccountPunchoutCreatePageComponent,
         MockComponent(ErrorMessageComponent),
         MockComponent(LoadingComponent),
-        MockComponent(PunchoutLoginFormComponent),
-        MockComponent(PunchoutPasswordFormComponent),
+        MockComponent(PunchoutUserFormComponent),
       ],
       providers: [{ provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) }],
     }).compileComponents();

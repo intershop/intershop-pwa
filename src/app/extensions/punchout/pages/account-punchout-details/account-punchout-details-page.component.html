@@ -9,9 +9,7 @@
   <form [formGroup]="form" (ngSubmit)="submitForm()" class="form-horizontal" novalidate="novalidate">
     <div class="row">
       <div class="col-md-10 col-xl-8">
-        <ish-punchout-login-form [form]="form" [update]="true"></ish-punchout-login-form>
-        <ish-punchout-password-form [form]="form"></ish-punchout-password-form>
-
+        <ish-punchout-user-form [form]="form" [update]="true"></ish-punchout-user-form>
         <div class="row">
           <div class="offset-md-4 col-md-8">
             <button type="submit" class="btn btn-primary" [disabled]="formDisabled">
