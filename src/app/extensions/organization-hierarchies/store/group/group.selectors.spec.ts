@@ -7,8 +7,13 @@ import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ng
 import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
 import { OrganizationHierarchiesStoreModule } from '../organization-hierarchies-store.module';
 
-import { loadGroups, loadGroupsFail, loadGroupsSuccess } from './group.actions';
-import { getGroupsOfOrganization, getGroupsOfOrganizationCount } from './group.selectors';
+import { loadGroups, loadGroupsFail, loadGroupsSuccess, selectGroup } from './group.actions';
+import {
+  getGroupsOfOrganization,
+  getGroupsOfOrganizationCount,
+  getSelectedGroupDetails,
+  getSelectedGroupPath,
+} from './group.selectors';
 
 describe('Group Selectors', () => {
   let store$: StoreWithSnapshots;
@@ -51,6 +56,60 @@ describe('Group Selectors', () => {
 
       expect(getGroupsOfOrganization(store$.state)).toBeEmpty();
       expect(getGroupsOfOrganizationCount(store$.state)).toBe(0);
+    });
+  });
+
+  describe('selected group', () => {
+    const groups = [
+      { id: '1', name: 'Test 1' },
+      { id: '2', name: 'Test 2', parentid: '1' },
+    ] as OrganizationGroup[];
+
+    beforeEach(() => {
+      store$.dispatch(loadGroupsSuccess({ groups }));
+    });
+
+    it('should set selected to 1', () => {
+      store$.dispatch(selectGroup({ id: '1' }));
+      expect(getSelectedGroupDetails(store$.state)).toMatchInlineSnapshot(`
+        Object {
+          "id": "1",
+          "name": "Test 1",
+        }
+      `);
+    });
+
+    it('should set selected to 2', () => {
+      store$.dispatch(selectGroup({ id: '2' }));
+      expect(getSelectedGroupDetails(store$.state)).toMatchInlineSnapshot(`
+        Object {
+          "id": "2",
+          "name": "Test 2",
+          "parentid": "1",
+        }
+      `);
+    });
+
+    it('should set selected to undefined', () => {
+      store$.dispatch(selectGroup({ id: '3' }));
+      expect(getSelectedGroupDetails(store$.state)).toBeFalsy();
+    });
+
+    it('should get all groups from selected up to the root', () => {
+      store$.dispatch(selectGroup({ id: '2' }));
+      expect(getSelectedGroupPath(store$.state)).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "id": "2",
+            "name": "Test 2",
+            "parentid": "1",
+          },
+          Object {
+            "id": "1",
+            "name": "Test 1",
+          },
+        ]
+      `);
     });
   });
 });
