@@ -3,7 +3,7 @@
   <div class="loading-container">
     <div *ngIf="!(budgetLoading$ | async); else loading">
       <div class="row">
-        <div class="col-xs-12 col-md-8">
+        <div class="col-12">
           <ish-user-budget progressBarClass="background-inverse" [budget]="userBudget$ | async"></ish-user-budget>
         </div>
       </div>

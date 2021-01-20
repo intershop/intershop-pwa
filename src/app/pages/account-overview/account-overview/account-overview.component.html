@@ -49,16 +49,17 @@
 <!-- Budget, Requisition, Approval & Quoting Widgets -->
 <div class="row">
   <ng-container *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting">
-    <ish-lazy-budget-widget class="col-12"></ish-lazy-budget-widget>
+    <ish-lazy-budget-widget class="col-12 col-md-8"></ish-lazy-budget-widget>
 
-    <ish-lazy-requisition-widget class="col-xs-12 col-md"></ish-lazy-requisition-widget>
+    <ish-lazy-requisition-widget class="col-12 col-md-4"></ish-lazy-requisition-widget>
 
     <ng-container *ishIsAuthorizedTo="'APP_B2B_ORDER_APPROVAL'">
-      <ish-lazy-approval-widget class="col-xs-12 col-md"></ish-lazy-approval-widget>
+      <ish-lazy-approval-widget class="col-12 col-md-4"></ish-lazy-approval-widget>
     </ng-container>
   </ng-container>
 
-  <ish-lazy-quote-widget class="col-xs-12 col-md"></ish-lazy-quote-widget>
+  <ish-lazy-quote-widget *ishFeature="'quoting'" class="col-12 col-md-4"></ish-lazy-quote-widget>
+  <ish-lazy-order-template-widget class="col-12 col-md-4"></ish-lazy-order-template-widget>
 </div>
 
 <!-- Order Widget - displays latest orders as list -->

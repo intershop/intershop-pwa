@@ -216,6 +216,8 @@
   "account.orderlist.table.order_total": "Gesamtsumme",
   "account.ordertemplates.heading": "Bestellvorlagen",
   "account.ordertemplates.link": "Bestellvorlagen",
+  "account.ordertemplates.widget.heading": "Meine Bestellvorlagen",
+  "account.ordertemplates.widget.view_all.link": "Alle Bestellvorlagen ansehen",
   "account.organization.user_management": "Benutzerverwaltung",
   "account.organization.user_management.back_to_list": "Zurück zur Benutzerverwaltung",
   "account.organization.user_management.new_user.confirmation": "Der Benutzer \"{{0}}\" wurde erstellt.",
