@@ -144,8 +144,7 @@ describe('Checkout Payment', () => {
     });
   });
 
-  // ignored until https://jira.intershop.de/browse/IS-31634 is fixed
-  xdescribe('Within the MyAccount', () => {
+  describe('Within the MyAccount', () => {
     before(() => {
       at(CheckoutPaymentPage, page => page.header.gotoHomePage());
       at(HomePage, page => page.header.goToMyAccount());

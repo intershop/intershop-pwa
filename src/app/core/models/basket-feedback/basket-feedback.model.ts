@@ -7,7 +7,7 @@ export interface BasketFeedback {
     lineItemId?: string;
     productSku?: string;
     shippingRestriction?: string;
-    scopes?: string; // data type will change IS-28602
+    scopes?: string[];
   };
 }
 

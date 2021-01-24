@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { RouterNavigatedPayload, routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { EMPTY, combineLatest, iif, of } from 'rxjs';
+import { EMPTY, combineLatest, from, iif, of } from 'rxjs';
 import {
   concatMap,
   concatMapTo,
@@ -14,7 +14,6 @@ import {
   sample,
   startWith,
   switchMap,
-  tap,
   withLatestFrom,
 } from 'rxjs/operators';
 
@@ -241,11 +240,12 @@ export class BasketEffects {
       ofType(submitBasket),
       withLatestFrom(this.store.select(getCurrentBasketId)),
       concatMap(([, basketId]) =>
-        this.basketService.createRequisition(basketId).pipe(
-          tap(() => this.router.navigate(['/checkout/receipt'])),
-          map(submitBasketSuccess),
-          mapErrorToAction(submitBasketFail)
-        )
+        this.basketService
+          .createRequisition(basketId)
+          .pipe(
+            concatMapTo(from(this.router.navigate(['/checkout/receipt'])).pipe(mapTo(submitBasketSuccess()))),
+            mapErrorToAction(submitBasketFail)
+          )
       )
     )
   );

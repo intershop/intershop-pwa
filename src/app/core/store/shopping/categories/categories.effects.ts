@@ -2,7 +2,8 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { filter, map, mergeMap, switchMap, switchMapTo, tap, withLatestFrom } from 'rxjs/operators';
+import { from } from 'rxjs';
+import { concatMap, filter, map, mergeMap, switchMap, switchMapTo, withLatestFrom } from 'rxjs/operators';
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
@@ -109,7 +110,7 @@ export class CategoriesEffects {
     () =>
       this.actions$.pipe(
         ofType(loadCategoryFail),
-        tap(() => this.httpStatusCodeService.setStatusAndRedirect(404))
+        concatMap(() => from(this.httpStatusCodeService.setStatusAndRedirect(404)))
       ),
     { dispatch: false }
   );

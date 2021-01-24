@@ -473,6 +473,12 @@
           "from": "@ngrx/router-store",
           "filePattern": "^.*\\.spec\\.ts*$",
           "message": "We customized the serialization of the router state. Use router actions from 'ish-core/utils/dev/routing' in tests."
+        },
+        {
+          "import": "tap",
+          "from": "rxjs/operators",
+          "filePattern": "^(?!.*/store/(sentry-config/sentry-config|seo/seo|core/messages/messages)\\.effects\\.ts$).*\\.effects\\.ts*$",
+          "message": "The usage of 'tap' in effects, if not related to 3rd party integrations, can usually be transformed properly into RxJS stream code."
         }
       ]
     },

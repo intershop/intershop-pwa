@@ -20,6 +20,6 @@ export class HttpStatusCodeService {
 
   setStatusAndRedirect(status: number) {
     this.setStatus(status);
-    this.router.navigateByUrl('/error');
+    return this.router.navigateByUrl('/error');
   }
 }

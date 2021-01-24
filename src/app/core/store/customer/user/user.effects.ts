@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { EMPTY } from 'rxjs';
+import { EMPTY, from } from 'rxjs';
 import {
   catchError,
   concatMap,
@@ -17,7 +17,6 @@ import {
   sample,
   switchMap,
   takeWhile,
-  tap,
   withLatestFrom,
 } from 'rxjs/operators';
 
@@ -109,9 +108,7 @@ export class UserEffects {
         takeWhile(() => isPlatformBrowser(this.platformId)),
         whenTruthy(),
         sample(this.actions$.pipe(ofType(loginUserSuccess))),
-        tap(navigateTo => {
-          this.router.navigateByUrl(navigateTo);
-        })
+        concatMap(navigateTo => from(this.router.navigateByUrl(navigateTo)))
       ),
     { dispatch: false }
   );
@@ -180,9 +177,7 @@ export class UserEffects {
         ofType(updateUserSuccess, updateCustomerSuccess, updateUserPasswordSuccess),
         withLatestFrom(this.store$.pipe(select(selectUrl))),
         filter(([, url]) => url.includes('/account/profile')),
-        tap(() => {
-          this.router.navigateByUrl('/account/profile');
-        })
+        concatMap(() => from(this.router.navigateByUrl('/account/profile')))
       ),
     { dispatch: false }
   );

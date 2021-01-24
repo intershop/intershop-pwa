@@ -34,7 +34,6 @@ import {
   setBasketAttributeSuccess,
   submitBasket,
   submitBasketFail,
-  submitBasketSuccess,
   updateBasket,
   updateBasketFail,
   updateBasketShippingMethod,
@@ -448,15 +447,15 @@ describe('Basket Effects', () => {
       });
     });
 
-    it('should map a valid request to action of type SubmitBasketBuccess', () => {
+    it('should map a valid request to action of type SubmitBasketBuccess', done => {
       when(basketServiceMock.createRequisition(anyString())).thenReturn(of(undefined));
 
-      const action = submitBasket();
-      const completion = submitBasketSuccess();
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      actions$ = of(submitBasket());
 
-      expect(effects.createRequisition$).toBeObservable(expected$);
+      effects.createRequisition$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`[Basket API] Submit a Basket for Approval Success`);
+        done();
+      });
     });
 
     it('should map an invalid request to action of type SubmitBasketFail', () => {

@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -51,6 +52,7 @@ describe('Requisitions Effects', () => {
   let actions$: Observable<Action>;
   let effects: RequisitionsEffects;
   let requisitionsService: RequisitionsService;
+  let location: Location;
 
   beforeEach(() => {
     requisitionsService = mock(RequisitionsService);
@@ -71,6 +73,7 @@ describe('Requisitions Effects', () => {
     });
 
     effects = TestBed.inject(RequisitionsEffects);
+    location = TestBed.inject(Location);
   });
 
   describe('loadRequisitions$', () => {
@@ -135,11 +138,13 @@ describe('Requisitions Effects', () => {
   });
 
   describe('updateRequisitionStatus$', () => {
-    it('should call the service for updating the status of a requisition', done => {
+    beforeEach(() => {
       actions$ = of(
         updateRequisitionStatus({ requisitionId: '4711', status: 'APPROVED', approvalComment: 'test comment' })
       );
+    });
 
+    it('should call the service for updating the status of a requisition', done => {
       effects.updateRequisitionStatus$.subscribe(() => {
         verify(requisitionsService.updateRequisitionStatus('4711', 'APPROVED', 'test comment')).once();
         done();
@@ -147,15 +152,18 @@ describe('Requisitions Effects', () => {
     });
 
     it('should retrieve the requisition after updating the status', done => {
-      actions$ = of(
-        updateRequisitionStatus({ requisitionId: '4711', status: 'APPROVED', approvalComment: 'test comment' })
-      );
-
       effects.updateRequisitionStatus$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
           [Requisitions API] Update Requisition Status Success:
             requisition: {"id":"testUUID","requisitionNo":"0001","user":{"firstName":...
         `);
+        done();
+      });
+    });
+
+    it('should redirect to listing', done => {
+      effects.updateRequisitionStatus$.subscribe(() => {
+        expect(location.path()).toMatchInlineSnapshot(`"/account/requisitions/approver/testUUID;status=PENDING"`);
         done();
       });
     });

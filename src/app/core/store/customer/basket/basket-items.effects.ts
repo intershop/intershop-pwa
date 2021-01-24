@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concat } from 'rxjs';
+import { concat, from } from 'rxjs';
 import {
   concatMap,
   debounceTime,
@@ -14,7 +14,6 @@ import {
   mergeMap,
   reduce,
   switchMap,
-  tap,
   window,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -186,13 +185,18 @@ export class BasketItemsEffects {
   loadBasketAfterBasketItemsChangeSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(addItemsToBasketSuccess, updateBasketItemsSuccess, deleteBasketItemSuccess),
-      mapToPayloadProperty('info'),
-      tap(info =>
-        info && info.length && info[0].message
-          ? this.router.navigate(['/basket'], { queryParams: { error: true } })
-          : undefined
-      ),
       mapTo(loadBasket())
     )
+  );
+
+  redirectToBasketIfBasketInteractionHasInfo$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(addItemsToBasketSuccess, updateBasketItemsSuccess, deleteBasketItemSuccess),
+        mapToPayloadProperty('info'),
+        filter(info => !!info?.[0]?.message),
+        concatMap(() => from(this.router.navigate(['/basket'], { queryParams: { error: true } })))
+      ),
+    { dispatch: false }
   );
 }
