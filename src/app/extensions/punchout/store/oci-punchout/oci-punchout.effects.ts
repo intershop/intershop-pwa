@@ -132,8 +132,8 @@ export class OciPunchoutEffects {
       withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
       filter(([, basketId]) => !!basketId),
       concatMap(([, basketId]) =>
-        this.punchoutService.getOciPunchoutData(basketId).pipe(
-          concatMap(data => this.punchoutService.submitOciPunchoutData(data)),
+        this.punchoutService.getBasketPunchoutData(basketId).pipe(
+          concatMap(data => this.punchoutService.submitPunchoutData(data)),
           mapTo(startOCIPunchoutSuccess()),
           mapErrorToAction(startOCIPunchoutFail)
         )

@@ -97,9 +97,9 @@ export class PunchoutService {
    * Gets the json object for the oci punchout.
    * @param basketId   The basket id for the punchout.
    */
-  getOciPunchoutData(basketId: string): Observable<Attribute<string>[]> {
+  getBasketPunchoutData(basketId: string): Observable<Attribute<string>[]> {
     if (!basketId) {
-      return throwError('getOciPunchoutData() of the punchout service called without basketId');
+      return throwError('getBasketPunchoutData() of the punchout service called without basketId');
     }
 
     return this.currentCustomer$.pipe(
@@ -114,10 +114,58 @@ export class PunchoutService {
   }
 
   /**
-   * Gets the json object for the oci punchout.
+   * TODO: Gets the json object for the oci punchout.
+   * @param productSKU   The basket id for the punchout.
+   * @param quantity   The basket id for the punchout.
    */
-  submitOciPunchoutData(data: Attribute<string>[]) {
+  getProductPunchoutData(productSKU: string, quantity = 1): Observable<Attribute<string>[]> {
+    if (!productSKU) {
+      return throwError('getProductPunchoutData() of the punchout service called without productSKU');
+    }
+
+    return this.currentCustomer$.pipe(
+      switchMap(() =>
+        this.apiService
+          .get<{ data: Attribute<string>[] }>(`punchouts/oci/validate`, {
+            params: new HttpParams().set('productSKU', productSKU).set('quantity', quantity.toString()),
+          })
+          // .get<{ data: Attribute<string>[] }>(`customers/${customer.customerNo}/punchouts/oci/validate`, {
+          //   params: new HttpParams().set('productSKU', productSKU).set('quantity', quantity.toString()),
+          // })
+          .pipe(map(data => data.data))
+      )
+    );
+  }
+
+  /**
+   * TODO: Gets the json object for the oci punchout.
+   * @param searchString   The basket id for the punchout.
+   */
+  getSearchPunchoutData(searchString: string): Observable<Attribute<string>[]> {
+    if (!searchString) {
+      return throwError('getSearchPunchoutData() of the punchout service called without searchString');
+    }
+
+    return this.currentCustomer$.pipe(
+      switchMap(() =>
+        this.apiService
+          .get<{ data: Attribute<string>[] }>(`punchouts/oci/search`, {
+            params: new HttpParams().set('searchString', searchString),
+          })
+          // .get<{ data: Attribute<string>[] }>(`customers/${customer.customerNo}/punchouts/oci/search`, {
+          //   params: new HttpParams().set('searchString', searchString),
+          // })
+          .pipe(map(data => data.data))
+      )
+    );
+  }
+
+  /**
+   * TODO: Gets the json object for the oci punchout.
+   */
+  submitPunchoutData(data: Attribute<string>[], submit = true) {
     const hookUrl = this.cookiesService.get('hookURL');
+    // TODO: check HOOK_URL format (with or whithout http)
     if (!hookUrl) {
       return throwError('no HOOK_URL available in cookies to sendOciPunchoutData()');
     }
@@ -127,9 +175,11 @@ export class PunchoutService {
 
     // create a form and send it to the hook Url
     const ociform = this.createOciForm(hookUrl, data);
+    document.body.innerHTML = '';
     document.body.appendChild(ociform);
-    ociform.submit();
-
+    if (submit) {
+      ociform.submit();
+    }
     return of();
   }
 
@@ -144,11 +194,7 @@ export class PunchoutService {
     ociform.method = 'POST';
     ociform.action = hookUrl;
     ociform.style.display = 'none';
-    ociform.append('Content-Type', 'application/x-www-form-urlencoded');
-    ociform.append('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8');
-
     data.forEach(e => ociform.appendChild(this.createHiddenInput(e)));
-
     return ociform;
   }
 
@@ -162,7 +208,6 @@ export class PunchoutService {
     input.setAttribute('name', inputData.name); // set the param name
     input.setAttribute('value', inputData.value); // set the value
     input.setAttribute('type', 'hidden'); // set the type, like "hidden" or other
-
     return input;
   }
 }

@@ -55,8 +55,8 @@ describe('Oci Punchout Effects', () => {
     when(punchoutService.createUser(users[0])).thenReturn(of(users[0]));
     when(punchoutService.updateUser(anything())).thenReturn(of(users[0]));
     when(punchoutService.deleteUser(users[0].login)).thenReturn(of(undefined));
-    when(punchoutService.getOciPunchoutData(anyString())).thenReturn(of(undefined));
-    when(punchoutService.submitOciPunchoutData(anything())).thenReturn(of(undefined));
+    when(punchoutService.getBasketPunchoutData(anyString())).thenReturn(of(undefined));
+    when(punchoutService.submitPunchoutData(anything())).thenReturn(of(undefined));
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -265,7 +265,7 @@ describe('Oci Punchout Effects', () => {
       actions$ = of(startOCIPunchout());
 
       effects.transferPunchoutBasket$.subscribe(() => {
-        verify(punchoutService.getOciPunchoutData('BID')).once();
+        verify(punchoutService.getBasketPunchoutData('BID')).once();
         done();
       });
     });
@@ -274,7 +274,7 @@ describe('Oci Punchout Effects', () => {
       actions$ = of(startOCIPunchout());
 
       effects.transferPunchoutBasket$.subscribe(() => {
-        verify(punchoutService.submitOciPunchoutData(anything())).once();
+        verify(punchoutService.submitPunchoutData(anything())).once();
         done();
       });
     });
@@ -292,7 +292,7 @@ describe('Oci Punchout Effects', () => {
 
     it('should dispatch a DeletePunchoutUserFail action in case of an error', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(punchoutService.getOciPunchoutData(anyString())).thenReturn(throwError(error));
+      when(punchoutService.getBasketPunchoutData(anyString())).thenReturn(throwError(error));
 
       const action = startOCIPunchout();
       const completion = startOCIPunchoutFail({ error });
