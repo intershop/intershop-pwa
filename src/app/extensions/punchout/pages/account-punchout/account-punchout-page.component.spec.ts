@@ -56,7 +56,7 @@ describe('Account Punchout Page Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display loading overlay if connections are loading', () => {
+  it('should display loading overlay if users are loading', () => {
     when(punchoutFacade.punchoutLoading$).thenReturn(of(true));
     fixture.detectChanges();
     expect(element.querySelector('ish-loading')).toBeTruthy();
@@ -65,10 +65,8 @@ describe('Account Punchout Page Component', () => {
   it('should display user list after creation ', () => {
     fixture.detectChanges();
 
-    expect(element.querySelector('[data-testing-id="connection-list"]')).toBeTruthy();
-    expect(element.querySelector('[data-testing-id="connection-list"]').innerHTML).toContain(
-      'punchout1@test.intershop.de'
-    );
+    expect(element.querySelector('[data-testing-id="user-list"]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id="user-list"]').innerHTML).toContain('punchout1@test.intershop.de');
   });
 
   it('should call deletePunchoutUser at punchout facade  when deleteUser is triggered', () => {

@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UUID } from 'angular2-uuid';
 import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -45,7 +46,9 @@ export class AccountPunchoutCreatePageComponent implements OnInit {
       return;
     }
 
-    this.punchoutFacade.addPunchoutUser({ ...this.form.value, email: this.form.get('login').value });
+    const email = this.form.get('login').value + UUID.UUID();
+
+    this.punchoutFacade.addPunchoutUser({ ...this.form.value, email });
   }
 
   get formDisabled() {

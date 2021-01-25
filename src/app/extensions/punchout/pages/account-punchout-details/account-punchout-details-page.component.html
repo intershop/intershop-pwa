@@ -12,7 +12,12 @@
         <ish-punchout-user-form [form]="form" [update]="true"></ish-punchout-user-form>
         <div class="row">
           <div class="offset-md-4 col-md-8">
-            <button type="submit" class="btn btn-primary" [disabled]="formDisabled">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="formDisabled"
+              data-testing-id="update-punchout-user-submit"
+            >
               {{ 'account.update.button.label' | translate }}
             </button>
             <a routerLink="../" class="btn btn-secondary" data-testing-id="create-user-cancel">{{

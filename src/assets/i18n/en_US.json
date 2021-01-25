@@ -816,6 +816,7 @@
   "promotion.detailslink.label": "Promotion Details",
   "promotion.detailslink.text": "Details",
   "promotion.removelink.text": "Remove",
+  "punchout.login_already_exists.error": "A punchout user with that user name already exists. Please check the information for accuracy or enter a different name.",
   "quickorder.page.add.cart": "Add to Cart",
   "quickorder.page.add.row": "Add more rows",
   "quickorder.page.breadcrumb": "Quick Order",

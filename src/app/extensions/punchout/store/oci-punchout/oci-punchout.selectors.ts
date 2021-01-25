@@ -4,9 +4,9 @@ import { selectRouteParam } from 'ish-core/store/core/router';
 
 import { getPunchoutState } from '../punchout-store';
 
-import { ociPunchoutAdapter } from './oci-punchout.reducer';
+import { initialState, ociPunchoutAdapter } from './oci-punchout.reducer';
 
-const getOciPunchoutState = createSelector(getPunchoutState, state => state.ociPunchout);
+const getOciPunchoutState = createSelector(getPunchoutState, state => (state ? state.ociPunchout : initialState));
 
 export const getPunchoutLoading = createSelector(getOciPunchoutState, state => state.loading);
 

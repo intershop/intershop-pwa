@@ -31,7 +31,7 @@ export interface OciPunchoutState extends EntityState<PunchoutUser> {
   error: HttpError;
 }
 
-const initialState: OciPunchoutState = ociPunchoutAdapter.getInitialState({
+export const initialState: OciPunchoutState = ociPunchoutAdapter.getInitialState({
   loading: false,
   error: undefined,
 });

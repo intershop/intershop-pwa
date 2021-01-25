@@ -10,7 +10,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 import { PunchoutService } from '../../services/punchout/punchout.service';
 
-// tslint:disable: no-console
+/* tslint:disable */
 @Injectable()
 export class PunchoutPageGuard implements CanActivate {
   constructor(

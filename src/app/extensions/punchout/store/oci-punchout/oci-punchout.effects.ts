@@ -70,7 +70,7 @@ export class OciPunchoutEffects {
       mergeMap(newUser =>
         this.punchoutService.createUser(newUser).pipe(
           tap(() => {
-            this.router.navigate([`/account/punchout/${newUser.login}`]);
+            this.router.navigate([`/account/punchout`]);
           }),
           mergeMap(user => [
             addPunchoutUserSuccess({ user }),
