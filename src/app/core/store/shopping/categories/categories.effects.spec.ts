@@ -115,15 +115,16 @@ describe('Categories Effects', () => {
       });
     });
 
-    it('should do nothing if category is completely loaded', done => {
+    it('should do nothing if category is completely loaded', fakeAsync(() => {
       category.completenessLevel = CategoryCompletenessLevel.Max;
       store$.dispatch(loadCategorySuccess({ categories: categoryTree([category]) }));
       router.navigateByUrl('/category/dummy');
 
       effects.selectedCategory$.subscribe(fail, fail, fail);
 
-      setTimeout(done, 1000);
-    });
+      tick(2000);
+    }));
+
     it('should trigger LoadCategory if category exists but subcategories have not been loaded', done => {
       category.completenessLevel = 0;
       const subcategory = { ...category, uniqueId: `${category.uniqueId}${CategoryHelper.uniqueIdSeparator}456` };
@@ -152,13 +153,13 @@ describe('Categories Effects', () => {
       });
     });
 
-    it('should not trigger LoadCategory when /something is visited', done => {
+    it('should not trigger LoadCategory when /something is visited', fakeAsync(() => {
       router.navigateByUrl('/something');
 
       effects.selectedCategory$.subscribe(fail, fail, fail);
 
-      setTimeout(done, 1000);
-    });
+      tick(2000);
+    }));
   });
 
   describe('loadCategory$', () => {
