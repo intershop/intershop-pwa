@@ -26,6 +26,7 @@ import { ofUrl, selectQueryParams, selectRouteParam } from 'ish-core/store/core/
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { continueCheckoutWithIssues, getCurrentBasketId, loadBasket } from 'ish-core/store/customer/basket';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
+import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import {
@@ -53,7 +54,8 @@ export class OrdersEffects {
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: string,
     private store: Store,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private featureToggleService: FeatureToggleService
   ) {}
 
   /**
@@ -91,7 +93,8 @@ export class OrdersEffects {
             location.assign(order.orderCreation.stopAction.redirectUrl);
             return EMPTY;
           } else {
-            return from(this.router.navigate(['/checkout/receipt']));
+            const receiptRoute = [`/checkout${this.featureToggleService.enabled('spCheckout') ? '-spa' : ''}/receipt`];
+            this.router.navigate(receiptRoute);
           }
         })
       ),
