@@ -337,13 +337,13 @@ describe('Products Effects', () => {
       });
     });
 
-    it('should not fire SelectProduct when route /something is navigated', done => {
+    it('should not fire SelectProduct when route /something is navigated', fakeAsync(() => {
       router.navigateByUrl('/any');
 
       effects.selectedProduct$.subscribe(fail, fail, fail);
 
-      setTimeout(done, 1000);
-    });
+      tick(2000);
+    }));
   });
 
   describe('redirectIfErrorInProducts$', () => {
@@ -361,13 +361,13 @@ describe('Products Effects', () => {
       expect(location.path()).toEqual('/error');
     }));
 
-    it('should not redirect if triggered on page other than product detail page', done => {
+    it('should not redirect if triggered on page other than product detail page', fakeAsync(() => {
       router.navigateByUrl('/any');
 
       effects.redirectIfErrorInProducts$.subscribe(fail, fail, fail);
 
-      setTimeout(done, 1000);
-    });
+      tick(2000);
+    }));
   });
 
   describe('redirectIfErrorInCategoryProducts$', () => {
@@ -547,7 +547,7 @@ describe('Products Effects', () => {
       });
     });
 
-    it('should not load a default category for the product if none is selected and product has none', done => {
+    it('should not load a default category for the product if none is selected and product has none', fakeAsync(() => {
       store$.dispatch(
         loadProductSuccess({
           product: { sku: 'ABC', type: 'Product' } as Product,
@@ -558,10 +558,10 @@ describe('Products Effects', () => {
 
       effects.loadDefaultCategoryContextForProduct$.subscribe(fail, fail, fail);
 
-      setTimeout(done, 1000);
-    });
+      tick(2000);
+    }));
 
-    it('should not load a default category for the product if the product failed loading', done => {
+    it('should not load a default category for the product if the product failed loading', fakeAsync(() => {
       store$.dispatch(
         loadProductFail({
           sku: 'ABC',
@@ -573,10 +573,10 @@ describe('Products Effects', () => {
 
       effects.loadDefaultCategoryContextForProduct$.subscribe(fail, fail, fail);
 
-      setTimeout(done, 1000);
-    });
+      tick(2000);
+    }));
 
-    it('should not load a default category for the product if the category is taken from the context', done => {
+    it('should not load a default category for the product if the category is taken from the context', fakeAsync(() => {
       store$.dispatch(
         loadProductSuccess({
           product: { sku: 'ABC', type: 'Product', defaultCategoryId: '123' } as Product,
@@ -587,7 +587,7 @@ describe('Products Effects', () => {
 
       effects.loadDefaultCategoryContextForProduct$.subscribe(fail, fail, fail);
 
-      setTimeout(done, 1000);
-    });
+      tick(2000);
+    }));
   });
 });

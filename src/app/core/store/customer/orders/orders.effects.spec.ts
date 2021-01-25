@@ -324,25 +324,25 @@ describe('Orders Effects', () => {
       });
     });
 
-    it('should not fire SelectOrder when route /something is navigated', done => {
+    it('should not fire SelectOrder when route /something is navigated', fakeAsync(() => {
       router.navigateByUrl('/something');
 
       effects.routeListenerForSelectingOrder$.subscribe(fail, fail, fail);
 
-      setTimeout(done, 1000);
-    });
+      tick(2000);
+    }));
   });
 
   describe('returnFromRedirectAfterOrderCreation$', () => {
-    it('should not trigger SelectOrderAfterRedirect action if checkout payment/receipt page is called with query param "redirect" and there is no logged in user and no order', done => {
+    it('should not trigger SelectOrderAfterRedirect action if checkout payment/receipt page is called with query param "redirect" and there is no logged in user and no order', fakeAsync(() => {
       router.navigate(['checkout', 'receipt'], {
         queryParams: { redirect: 'success', param1: 123, orderId: order.id },
       });
 
       effects.returnFromRedirectAfterOrderCreation$.subscribe(fail, fail, fail);
 
-      setTimeout(done, 1000);
-    });
+      tick(2000);
+    }));
 
     it('should trigger SelectOrderAfterRedirect action if checkout payment/receipt page is called with query param "redirect" and a user is logged in', done => {
       const customer = { customerNo: 'patricia' } as Customer;

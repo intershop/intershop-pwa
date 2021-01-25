@@ -244,10 +244,10 @@ describe('Router Integration', () => {
       });
     });
 
-    it('should not pass through exact matcher when used', done => {
-      store$.pipe(ofUrl(/^\/any$/), select(selectUrl)).subscribe(fail);
+    it('should not pass through exact matcher when used', fakeAsync(() => {
+      store$.pipe(ofUrl(/^\/any$/), select(selectUrl)).subscribe(fail, fail, fail);
 
-      setTimeout(done, 1000);
-    });
+      tick(2000);
+    }));
   });
 });

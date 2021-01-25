@@ -1,5 +1,5 @@
 import { Component, Type } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Route, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -58,11 +58,12 @@ describe('Requisition Management Breadcrumb Service', () => {
 
   describe('breadcrumb$', () => {
     describe('unrelated routes', () => {
-      it('should not report a breadcrumb for unrelated routes', done => {
+      it('should not report a breadcrumb for unrelated routes', fakeAsync(() => {
         router.navigateByUrl('/foobar');
         requisitionManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(fail, fail, fail);
-        setTimeout(done, 2000);
-      });
+
+        tick(2000);
+      }));
     });
 
     describe('requisition management routes', () => {

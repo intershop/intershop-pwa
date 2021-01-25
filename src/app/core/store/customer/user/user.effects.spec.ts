@@ -469,13 +469,13 @@ describe('User Effects', () => {
   });
 
   describe('resetUserError$', () => {
-    it('should not dispatch UserErrorReset action on router navigation if error is not set', done => {
+    it('should not dispatch UserErrorReset action on router navigation if error is not set', fakeAsync(() => {
       router.navigateByUrl('/any');
 
       effects.resetUserError$.subscribe(fail, fail, fail);
 
-      setTimeout(done, 1000);
-    });
+      tick(2000);
+    }));
 
     it('should dispatch UserErrorReset action on router navigation if error was set', done => {
       store$.dispatch(loginUserFail({ error: makeHttpError({ message: 'error' }) }));

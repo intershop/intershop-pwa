@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, UrlMatchResult, UrlSegment } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, select } from '@ngrx/store';
@@ -185,20 +185,20 @@ describe('Category Route', () => {
       });
     });
 
-    it('should not detect category route when sku and categoryUniqueId are params', done => {
+    it('should not detect category route when sku and categoryUniqueId are params', fakeAsync(() => {
       router.navigateByUrl('/category;sku=123;categoryUniqueId=ABC');
 
       store$.pipe(ofCategoryUrl()).subscribe(fail, fail, fail);
 
-      setTimeout(done, 1000);
-    });
+      tick(2000);
+    }));
 
-    it('should not detect category route when categoryUniqueId is missing', done => {
+    it('should not detect category route when categoryUniqueId is missing', fakeAsync(() => {
       router.navigateByUrl('/other');
 
       store$.pipe(ofCategoryUrl()).subscribe(fail, fail, fail);
 
-      setTimeout(done, 1000);
-    });
+      tick(2000);
+    }));
   });
 });

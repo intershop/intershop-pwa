@@ -62,7 +62,7 @@ describe('Configuration Effects', () => {
         const params = capture(translateServiceMock.use).last();
         expect(params[0]).toEqual('en_US');
         done();
-      }, 1000);
+      }, 10);
     });
   });
 

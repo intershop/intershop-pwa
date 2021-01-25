@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, UrlMatchResult, UrlSegment } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, select } from '@ngrx/store';
@@ -372,12 +372,12 @@ describe('Product Route', () => {
       });
     });
 
-    it('should not detect product route when sku is missing', done => {
+    it('should not detect product route when sku is missing', fakeAsync(() => {
       router.navigateByUrl('/other');
 
       store$.pipe(ofProductUrl()).subscribe(fail, fail, fail);
 
-      setTimeout(done, 1000);
-    });
+      tick(2000);
+    }));
   });
 });

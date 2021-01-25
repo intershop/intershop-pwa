@@ -27,19 +27,13 @@ describe('Cookies Service', () => {
     verify(foreignCookiesServiceMock.get('dummy')).once();
   });
 
-  it('should call remove of underlying implementation', done => {
-    setTimeout(() => {
-      cookiesService.remove('dummy');
-      verify(foreignCookiesServiceMock.remove('dummy')).once();
-      done();
-    }, 2000);
+  it('should call remove of underlying implementation', () => {
+    cookiesService.remove('dummy');
+    verify(foreignCookiesServiceMock.remove('dummy')).once();
   });
 
-  it('should call put of underlying implementation', done => {
-    setTimeout(() => {
-      cookiesService.put('dummy', 'value');
-      verify(foreignCookiesServiceMock.put('dummy', anything(), anything())).once();
-      done();
-    }, 2000);
+  it('should call put of underlying implementation', () => {
+    cookiesService.put('dummy', 'value');
+    verify(foreignCookiesServiceMock.put('dummy', anything(), anything())).once();
   });
 });
