@@ -14,7 +14,17 @@ const routes: Routes = [
     matcher: matchCategoryRoute,
     loadChildren: () => import('./category/category-page.module').then(m => m.CategoryPageModule),
   },
-  { path: '**', children: [], canActivate: [NotFoundStatusGuard] },
+  {
+    path: '**',
+    canActivate: [NotFoundStatusGuard],
+    loadChildren: () => import('./error/error-page.module').then(m => m.ErrorPageModule),
+    data: {
+      meta: {
+        title: 'seo.title.error',
+        robots: 'noindex, nofollow',
+      },
+    },
+  },
 ];
 
 @NgModule({

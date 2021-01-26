@@ -27,6 +27,7 @@ describe('Missing Data', () => {
       });
       waitLoadingEnd();
       at(ServerErrorPage);
+      cy.url().should('contain', '/error');
     });
   });
 
@@ -43,6 +44,7 @@ describe('Missing Data', () => {
       });
       waitLoadingEnd();
       at(HomePage);
+      cy.url().should('contain', '/home');
     });
   });
 
@@ -59,6 +61,7 @@ describe('Missing Data', () => {
       });
       waitLoadingEnd();
       at(HomePage);
+      cy.url().should('contain', '/home');
     });
   });
 
@@ -81,6 +84,7 @@ describe('Missing Data', () => {
       at(SearchResultPage, page => {
         page.productList.visibleProducts.should('have.length.gte', 1);
       });
+      cy.url().should('contain', '/search/kodak');
     });
   });
 
@@ -88,6 +92,7 @@ describe('Missing Data', () => {
     it('should lead straight to error page', () => {
       ProductDetailPage.navigateTo('ERROAR');
       at(NotFoundPage);
+      cy.url().should('contain', 'skuERROAR');
     });
   });
 
@@ -102,6 +107,7 @@ describe('Missing Data', () => {
       at(HomePage, page => page.header.gotoCategoryPage(_.catalog));
       at(CategoryPage, page => page.gotoSubCategory(_.categoryid));
       at(NotFoundPage);
+      cy.url().should('contain', 'cat' + _.categoryid);
     });
   });
 
@@ -109,6 +115,7 @@ describe('Missing Data', () => {
     it('should lead straight to error page', () => {
       FamilyPage.navigateTo('ERROAR');
       at(NotFoundPage);
+      cy.url().should('contain', 'catERROAR');
     });
   });
 });

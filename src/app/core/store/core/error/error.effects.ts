@@ -17,7 +17,7 @@ export class ErrorEffects {
         whenTruthy(),
         map(error => this.mapStatus(error))
       )
-      .subscribe(status => httpStatusCodeService.setStatusAndRedirect(status));
+      .subscribe(status => httpStatusCodeService.setStatus(status));
   }
 
   private mapStatus(state: HttpError | string): number {

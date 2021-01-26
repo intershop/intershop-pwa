@@ -1,7 +1,7 @@
 import { Data, Params } from '@angular/router';
+import { BaseRouterStoreState } from '@ngrx/router-store';
 
-export interface RouterState {
-  url: string;
+export interface RouterState extends BaseRouterStoreState {
   params: Params;
   queryParams: Params;
   data: Data;

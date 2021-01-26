@@ -103,7 +103,7 @@ export class SearchEffects {
     () =>
       this.actions$.pipe(
         ofType(searchProductsFail),
-        concatMap(() => from(this.httpStatusCodeService.setStatusAndRedirect(404)))
+        concatMap(() => from(this.httpStatusCodeService.setStatus(404)))
       ),
     { dispatch: false }
   );
