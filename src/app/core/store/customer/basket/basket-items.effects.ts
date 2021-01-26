@@ -106,7 +106,7 @@ export class BasketItemsEffects {
     )
   );
   /**
-   * Reload products when they are added to basket to update price and inStock information
+   * Reload products when they are added to basket to update price and availability information
    */
   loadProductsForAddItemsToBasket$ = createEffect(() =>
     this.actions$.pipe(

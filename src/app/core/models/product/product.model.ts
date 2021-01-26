@@ -9,8 +9,7 @@ export interface Product {
   name: string;
   shortDescription: string;
   longDescription: string;
-  availability: boolean;
-  inStock: boolean;
+  available: boolean;
   minOrderQuantity: number;
   maxOrderQuantity?: number;
   attributes: Attribute[];

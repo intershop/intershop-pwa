@@ -34,7 +34,7 @@ describe('Product Compare List Component', () => {
   let compareProduct2: ProductView;
 
   beforeEach(async () => {
-    compareProduct1 = createProductView({ sku: '111', inStock: true, availability: true } as Product, categoryTree());
+    compareProduct1 = createProductView({ sku: '111', available: true } as Product, categoryTree());
     compareProduct1.attributes = [
       {
         name: 'Optical zoom',

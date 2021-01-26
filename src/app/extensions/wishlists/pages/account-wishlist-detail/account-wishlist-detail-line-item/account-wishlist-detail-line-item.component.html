@@ -41,7 +41,7 @@
 
         <div class="col-12 col-md-5 product-list-actions-container">
           <ish-product-price [product]="product"></ish-product-price>
-          <p *ngIf="product.inStock; else noInStock">{{ 'account.wishlist.table.in_stock' | translate }}</p>
+          <p *ngIf="product.available; else noInStock">{{ 'account.wishlist.table.in_stock' | translate }}</p>
           <ng-template #noInStock>
             <p>{{ 'account.wishlist.table.not_accessible' | translate }}</p>
           </ng-template>

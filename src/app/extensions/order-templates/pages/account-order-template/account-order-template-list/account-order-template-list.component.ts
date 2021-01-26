@@ -23,7 +23,7 @@ export class AccountOrderTemplateListComponent implements OnDestroy {
    */
   @Output() deleteOrderTemplate = new EventEmitter<string>();
 
-  dummyProduct = { sku: 'dummy', inStock: true, availability: true };
+  dummyProduct = { sku: 'dummy', available: true };
 
   private destroy$ = new Subject();
 

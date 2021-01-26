@@ -124,6 +124,21 @@ describe('Product Mapper', () => {
       expect(p2).toBeTruthy();
       expect(p2.attributes).toEqual([{ name: 'Grafikkarte', type: 'String', value: 'NVIDIA Quadro K2200' }]);
     });
+
+    describe('available', () => {
+      it.each([
+        [undefined, undefined, false],
+        [false, undefined, false],
+        [true, undefined, true],
+        [undefined, false, false],
+        [false, false, false],
+        [true, false, false],
+        [true, true, true],
+      ])('should calculate availability=%s inStock=%s -> %s', (availability, inStock, expected) => {
+        const data = { availability, inStock } as ProductData;
+        expect(productMapper.fromData(data).available).toEqual(expected);
+      });
+    });
   });
 
   describe('fromStubData', () => {
@@ -190,6 +205,27 @@ describe('Product Mapper', () => {
       });
 
       expect(stub).toMatchSnapshot();
+    });
+
+    describe('available', () => {
+      it.each([
+        [undefined, undefined, false],
+        [false, undefined, false],
+        [true, undefined, true],
+        [undefined, false, false],
+        [false, false, false],
+        [true, false, false],
+        [true, true, true],
+      ])('should calculate availability=%s inStock=%s -> %s', (availability, inStock, expected) => {
+        const data = {
+          attributes: [
+            { name: 'sku', value: '123' },
+            { name: 'availability', value: availability },
+            { name: 'inStock', value: inStock },
+          ],
+        } as ProductDataStub;
+        expect(productMapper.fromStubData(data).available).toEqual(expected);
+      });
     });
   });
 

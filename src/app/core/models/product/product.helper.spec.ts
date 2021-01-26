@@ -242,7 +242,7 @@ describe('Product Helper', () => {
     let compareProduct2: Product;
 
     beforeEach(() => {
-      product = { sku: '110', inStock: true, availability: true } as Product;
+      product = { sku: '110', available: true } as Product;
       product.attributes = [
         {
           name: 'Optical zoom',
@@ -329,8 +329,7 @@ describe('Product Helper', () => {
                 "name": "Image formats supported",
               },
             ],
-            "availability": true,
-            "inStock": true,
+            "available": true,
             "sku": "110",
           }
         `);
@@ -341,8 +340,7 @@ describe('Product Helper', () => {
                 "name": "Focal length (35mm film equivalent)",
               },
             ],
-            "availability": true,
-            "inStock": true,
+            "available": true,
             "sku": "110",
           }
         `);
@@ -357,8 +355,7 @@ describe('Product Helper', () => {
                 "name": "Image formats supported",
               },
             ],
-            "availability": true,
-            "inStock": true,
+            "available": true,
             "sku": "110",
           }
         `);

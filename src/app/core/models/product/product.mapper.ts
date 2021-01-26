@@ -89,6 +89,10 @@ export class ProductMapper {
     };
   }
 
+  private calculateAvailable(availability: boolean, inStock: boolean) {
+    return !!availability && (inStock !== undefined ? inStock : true);
+  }
+
   /**
    * construct a {@link Product} stub from data returned by link list responses with additional data
    */
@@ -139,8 +143,10 @@ export class ProductMapper {
         },
       ]),
       manufacturer: retrieveStubAttributeValue(data, 'manufacturer'),
-      availability: retrieveStubAttributeValue(data, 'availability'),
-      inStock: retrieveStubAttributeValue(data, 'inStock'),
+      available: this.calculateAvailable(
+        retrieveStubAttributeValue(data, 'availability'),
+        retrieveStubAttributeValue(data, 'inStock')
+      ),
       longDescription: undefined,
       minOrderQuantity,
       packingUnit: retrieveStubAttributeValue(data, 'packingUnit'),
@@ -185,8 +191,7 @@ export class ProductMapper {
       name: data.productName,
       shortDescription: data.shortDescription,
       longDescription: data.longDescription,
-      availability: data.availability,
-      inStock: data.inStock,
+      available: this.calculateAvailable(data.availability, data.inStock),
       minOrderQuantity: data.minOrderQuantity || 1,
       packingUnit: data.packingUnit,
       maxOrderQuantity: data.maxOrderQuantity || 100,

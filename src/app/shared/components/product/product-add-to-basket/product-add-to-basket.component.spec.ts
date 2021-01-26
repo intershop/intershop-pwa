@@ -35,9 +35,8 @@ describe('Product Add To Basket Component', () => {
     translate.setDefaultLang('en');
     translate.use('en');
     product = { sku: 'sku' } as Product;
-    product.inStock = true;
     product.minOrderQuantity = 1;
-    product.availability = true;
+    product.available = true;
     element = fixture.nativeElement;
     component.product = product;
   });
@@ -54,8 +53,8 @@ describe('Product Add To Basket Component', () => {
     expect(element.querySelector('button')).toBeFalsy();
   });
 
-  it('should not render when inStock = false', () => {
-    product.inStock = false;
+  it('should not render when product not available', () => {
+    product.available = false;
 
     fixture.detectChanges();
     expect(element.querySelector('button')).toBeFalsy();
