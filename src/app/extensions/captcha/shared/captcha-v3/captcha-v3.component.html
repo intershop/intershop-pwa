@@ -1,0 +1,12 @@
+<div class="row">
+  <div class="offset-md-4 col-md-8">
+    <p
+      data-testing-id="recaptcha-v3-info"
+      class="form-text"
+      [ishServerHtml]="
+        'recaptcha.v3.info_text'
+          | translate: { '0': 'https://policies.google.com/privacy', '1': 'https://policies.google.com/terms' }
+      "
+    ></p>
+  </div>
+</div>
