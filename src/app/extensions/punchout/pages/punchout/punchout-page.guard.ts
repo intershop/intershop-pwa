@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { isPlatformServer } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { concatMap, delay, first, switchMap, switchMapTo, tap } from 'rxjs/operators';
@@ -17,7 +18,8 @@ export class PunchoutPageGuard implements CanActivate {
     private router: Router,
     private accountFacade: AccountFacade,
     private cookiesService: CookiesService,
-    private punchoutService: PunchoutService
+    private punchoutService: PunchoutService,
+    @Inject(PLATFORM_ID) private platformId: string
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot) {
@@ -25,7 +27,10 @@ export class PunchoutPageGuard implements CanActivate {
 
     // TODO: should there be a general check for a HOOK_URL before doing anything with the punchout route?
 
-    // TODO: visual feedback like loading?
+    // prevent any punchout handling on the server and instead show loading
+    if (isPlatformServer(this.platformId)) {
+      return this.router.parseUrl('/loading');
+    }
 
     // TODO: a better idea to start the stream?
     return of(undefined).pipe(
@@ -74,7 +79,7 @@ export class PunchoutPageGuard implements CanActivate {
 
           // Login URL
         } else {
-          console.log('LOGIN', route.queryParams.PRODUCTID);
+          console.log('LOGIN', route.queryParams.USERNAME);
           return of(this.router.parseUrl('/home'));
         }
         console.log('END');
