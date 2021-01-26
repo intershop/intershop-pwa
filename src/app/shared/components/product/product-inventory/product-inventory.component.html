@@ -1,5 +1,5 @@
 <div class="product-availability">
-  <ng-container *ngIf="product.inStock && product.availability; else outOfStock">
+  <ng-container *ngIf="product.available; else outOfStock">
     <span class="product-in-stock">
       {{ 'product.instock.text' | translate }} <link itemprop="availability" href="http://schema.org/InStock" />
     </span>

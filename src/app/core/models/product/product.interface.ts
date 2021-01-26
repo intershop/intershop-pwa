@@ -15,6 +15,8 @@ export interface ProductData {
   longDescription: string;
 
   availability: boolean;
+  inStock: boolean;
+
   averageRating: string;
   roundedAverageRating: string;
 
@@ -25,8 +27,6 @@ export interface ProductData {
   availableGiftMessages?: unknown[];
   bundles: unknown[];
   retailSet: boolean;
-
-  inStock: boolean;
 
   // If warranty {
   price?: PriceData;

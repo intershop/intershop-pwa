@@ -36,9 +36,8 @@ describe('Product Quantity Component', () => {
     translate.setDefaultLang('en');
     translate.use('en');
     product = { sku: 'sku' } as Product;
-    product.inStock = true;
     product.minOrderQuantity = 1;
-    product.availability = true;
+    product.available = true;
     element = fixture.nativeElement;
     component.product = product;
     component.controlName = 'quantity';
@@ -52,8 +51,8 @@ describe('Product Quantity Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should not render when inStock = false', () => {
-    product.inStock = false;
+  it('should not render when product not available', () => {
+    product.available = false;
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toBeEmpty();
   });

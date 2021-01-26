@@ -29,7 +29,7 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
   /**
    * The product that can be added to basket
    */
-  @Input() product: Pick<Product, 'inStock' | 'availability'>;
+  @Input() product: Pick<Product, 'available'>;
   /**
    * When true, it specifies that the button should be disabled
    */

@@ -38,7 +38,7 @@ describe('Product Detail Actions Component', () => {
     translate.setDefaultLang('en');
     translate.use('en');
     product = { sku: 'sku' } as ProductView;
-    product.availability = true;
+    product.available = true;
     element = fixture.nativeElement;
     component.product = product;
   });

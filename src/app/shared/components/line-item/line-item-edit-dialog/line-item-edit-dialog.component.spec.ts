@@ -58,8 +58,7 @@ describe('Line Item Edit Dialog Component', () => {
         type: 'VariationProduct',
         sku: 'SKU',
         variableVariationAttributes: [],
-        availability: true,
-        inStock: true,
+        available: true,
         completenessLevel: ProductCompletenessLevel.List,
       } as VariationProductView)
     );

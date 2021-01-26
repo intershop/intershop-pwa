@@ -12,7 +12,7 @@
     [options]="{
       titleText: product.name,
       confirmText: 'shopping_cart.variation.save.button.label' | translate,
-      confirmDisabled: product.availability && !product.inStock,
+      confirmDisabled: !product.available,
       rejectText: 'shopping_cart.button.cancel' | translate,
       size: 'lg'
     }"

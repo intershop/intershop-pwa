@@ -94,7 +94,7 @@ export class LineItemEditDialogComponent implements OnInit, OnDestroy, OnChanges
 
     this.variation$.pipe(takeUntil(this.destroy$)).subscribe(product => {
       if (this.modalDialogRef) {
-        this.modalDialogRef.options.confirmDisabled = !product.availability || !product.inStock || false;
+        this.modalDialogRef.options.confirmDisabled = !product.available;
       }
     });
 

@@ -1,4 +1,4 @@
-<div *ngIf="product.inStock && product.availability" [formGroup]="parentForm" class="product-quantity">
+<div *ngIf="product.available" [formGroup]="parentForm" class="product-quantity">
   <ng-container *ngIf="!readOnly">
     <ng-container [ngSwitch]="type">
       <ish-select
