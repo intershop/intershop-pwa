@@ -5,7 +5,7 @@ import { combineLatest, merge, noop } from 'rxjs';
 import { filter, map, mapTo, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
 
 import { getAvailableLocales, getCurrentLocale, getDeviceType, getICMBaseURL } from 'ish-core/store/core/configuration';
-import { getGeneralError, getGeneralErrorType } from 'ish-core/store/core/error';
+import { businessError, getGeneralError, getGeneralErrorType } from 'ish-core/store/core/error';
 import { selectPath } from 'ish-core/store/core/router';
 import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } from 'ish-core/store/core/viewconf';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
@@ -85,6 +85,10 @@ export class AppFacade {
     isAppTypeREST: boolean
   ): 'customers' | 'privatecustomers' {
     return isAppTypeREST && !isBusinessCustomer ? 'privatecustomers' : 'customers';
+  }
+
+  setBusinessError(error: string) {
+    this.store.dispatch(businessError({ error }));
   }
 
   /**

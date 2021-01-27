@@ -19,10 +19,18 @@ export class ServerErrorComponent {
   /**
    * The occured error.
    */
-  @Input() error: HttpError;
+  @Input() error: HttpError | string;
   @Input() type: string;
 
   expanded = false;
+
+  get httpError() {
+    return this.error as HttpError;
+  }
+
+  get stringError() {
+    return this.error as string;
+  }
 
   expand() {
     this.expanded = true;

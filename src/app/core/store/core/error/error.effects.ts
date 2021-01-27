@@ -20,12 +20,13 @@ export class ErrorEffects {
       .subscribe(status => httpStatusCodeService.setStatusAndRedirect(status));
   }
 
-  private mapStatus(state: HttpError): number {
-    if (state && typeof state.status === 'number') {
-      if (state.status === 0) {
-        return 504;
-      }
-      return state.status;
+  private mapStatus(state: HttpError | string): number {
+    if (!state) {
+      return 500;
+    } else if (typeof state === 'string') {
+      return 400;
+    } else if (typeof state.status === 'number') {
+      return state.status === 0 ? 504 : state.status;
     }
     return 500;
   }
