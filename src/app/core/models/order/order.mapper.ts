@@ -22,6 +22,7 @@ export class OrderMapper {
         statusCode: data.statusCode,
         status: data.status,
         requisitionNo: data.requisitionDocumentNo,
+        buyingContext: data.buyingContext,
         approval:
           data.attributes &&
           AttributeHelper.getAttributeValueByAttributeName(

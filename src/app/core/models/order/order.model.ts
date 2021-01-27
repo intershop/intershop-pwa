@@ -28,4 +28,5 @@ export interface Order extends OrderBasket {
     date: number;
   };
   requisitionNo?: string;
+  buyingContext?: string;
 }
