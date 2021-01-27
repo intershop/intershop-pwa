@@ -816,6 +816,7 @@
   "promotion.detailslink.label": "Détails de promotion",
   "promotion.detailslink.text": "Détails",
   "promotion.removelink.text": "Supprimer",
+  "punchout.error.missing.hook_url": "Error connecting to punchout catalog. The parameter HOOK_URL is missing.",
   "punchout.login_already_exists.error": "Un utilisateur avec ce nom d’utilisateur existe déjà. Veuillez vérifier l’exactitude des informations ou entrer un nom d’utilisateur différent.",
   "quickorder.page.add.cart": "Ajouter au panier",
   "quickorder.page.add.row": "Ajouter lignes supplémentaires",

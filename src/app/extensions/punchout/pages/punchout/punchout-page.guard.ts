@@ -1,90 +1,101 @@
 import { isPlatformServer } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
-import { of } from 'rxjs';
-import { concatMap, delay, first, switchMap, switchMapTo, tap } from 'rxjs/operators';
+import { of, race, throwError } from 'rxjs';
+import { catchError, concatMap, mapTo, switchMap, take, tap } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
-import { log } from 'ish-core/utils/dev/operators';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { PunchoutService } from '../../services/punchout/punchout.service';
 
-/* tslint:disable */
 @Injectable()
 export class PunchoutPageGuard implements CanActivate {
   constructor(
     private router: Router,
     private accountFacade: AccountFacade,
+    private appFacade: AppFacade,
     private cookiesService: CookiesService,
     private punchoutService: PunchoutService,
     @Inject(PLATFORM_ID) private platformId: string
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot) {
-    console.log('punchout parameters:', route.queryParams);
-
-    // TODO: should there be a general check for a HOOK_URL before doing anything with the punchout route?
+    // check for a HOOK_URL before doing anything with the punchout route
+    if (!route.queryParamMap.has('HOOK_URL')) {
+      this.appFacade.setBusinessError('punchout.error.missing.hook_url');
+      return false;
+    }
 
     // prevent any punchout handling on the server and instead show loading
     if (isPlatformServer(this.platformId)) {
       return this.router.parseUrl('/loading');
     }
 
-    // TODO: a better idea to start the stream?
-    return of(undefined).pipe(
-      tap(() => {
-        this.accountFacade.loginUser({
-          login: route.queryParams.USERNAME,
-          password: route.queryParams.PASSWORD,
-        });
-      }),
-      switchMapTo(this.accountFacade.isLoggedIn$),
-      whenTruthy(), // TODO: do we need a branching if there are problems?
-      first(),
-      delay(0), // this delay is needed to prevent any unwanted automatic effects e.g. additional routing
-      switchMap(() => {
-        // save HOOK_URL to 'hookURL' cookie
-        if (route.queryParams.HOOK_URL) {
-          this.cookiesService.put('hookURL', route.queryParams.HOOK_URL);
-        }
+    // initiate the punchout user login with the given credentials
+    this.accountFacade.loginUser({
+      login: route.queryParamMap.get('USERNAME'),
+      password: route.queryParamMap.get('PASSWORD'),
+    });
 
-        // Product Details
-        if (route.queryParams.FUNCTION === 'DETAIL' && route.queryParams.PRODUCTID) {
-          console.log('DETAIL', route.queryParams.PRODUCTID);
-          return of(this.router.parseUrl(`/product/${route.queryParams.PRODUCTID}`));
+    return race(
+      // throw an error if a user login error occurs
+      this.accountFacade.userError$.pipe(
+        whenTruthy(),
+        take(1),
+        // tslint:disable-next-line: no-unnecessary-callback-wrapper
+        concatMap(userError => throwError(userError))
+      ),
 
-          // Validation of Products
-        } else if (route.queryParams.FUNCTION === 'VALIDATE' && route.queryParams.PRODUCTID) {
-          console.log('VALIDATE', route.queryParams.PRODUCTID);
-          this.punchoutService
-            .getProductPunchoutData(route.queryParams.PRODUCTID)
-            .pipe(
-              log('validation data'),
-              concatMap(data => this.punchoutService.submitPunchoutData(data))
-            )
-            .subscribe();
+      // handle the punchout functions once the punchout user is logged in
+      this.accountFacade.isLoggedIn$.pipe(
+        whenTruthy(),
+        take(1),
+        switchMap(() => {
+          // save HOOK_URL to 'hookURL' cookie
+          if (route.queryParamMap.get('HOOK_URL')) {
+            this.cookiesService.put('hookURL', route.queryParamMap.get('HOOK_URL'));
+          }
 
-          // Background Search
-        } else if (route.queryParams.FUNCTION === 'BACKGROUND_SEARCH' && route.queryParams.SEARCHSTRING) {
-          console.log('BACKGROUND_SEARCH', route.queryParams.SEARCHSTRING);
-          this.punchoutService
-            .getSearchPunchoutData(route.queryParams.SEARCHSTRING)
-            .pipe(
-              log('search data'),
-              concatMap(data => this.punchoutService.submitPunchoutData(data, false))
-            )
-            .subscribe();
+          // Product Details
+          if (route.queryParamMap.get('FUNCTION') === 'DETAIL' && route.queryParamMap.get('PRODUCTID')) {
+            return of(this.router.parseUrl(`/product/${route.queryParamMap.get('PRODUCTID')}`));
 
-          // Login URL
-        } else {
-          console.log('LOGIN', route.queryParams.USERNAME);
-          return of(this.router.parseUrl('/home'));
-        }
-        console.log('END');
-        return of(false);
-      })
+            // Validation of Products
+          } else if (route.queryParamMap.get('FUNCTION') === 'VALIDATE' && route.queryParamMap.get('PRODUCTID')) {
+            return this.punchoutService
+              .getProductPunchoutData(route.queryParamMap.get('PRODUCTID'), route.queryParamMap.get('QUANTITY'))
+              .pipe(
+                tap(data => this.punchoutService.submitPunchoutData(data)),
+                mapTo(false)
+              );
+
+            // Background Search
+          } else if (
+            route.queryParamMap.get('FUNCTION') === 'BACKGROUND_SEARCH' &&
+            route.queryParamMap.get('SEARCHSTRING')
+          ) {
+            return this.punchoutService.getSearchPunchoutData(route.queryParamMap.get('SEARCHSTRING')).pipe(
+              tap(data => this.punchoutService.submitPunchoutData(data, false)),
+              mapTo(false)
+            );
+
+            // Login
+          } else {
+            return of(this.router.parseUrl('/home'));
+          }
+        })
+      )
+    ).pipe(
+      catchError(error =>
+        of(this.router.parseUrl('/error')).pipe(
+          tap(() => {
+            this.appFacade.setBusinessError(error);
+          })
+        )
+      )
     );
   }
 }
