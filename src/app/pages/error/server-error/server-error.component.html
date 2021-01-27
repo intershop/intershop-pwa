@@ -3,10 +3,11 @@
   <div class="error-text">
     <div [ishServerHtml]="'servererror.page.text' | translate"></div>
     <p class="text-muted" (click)="expand()">
-      <ng-container [ngSwitch]="error.status">
+      <ng-container [ngSwitch]="httpError?.status">
+        <ng-container *ngSwitchCase="undefined"> {{ stringError | translate }} </ng-container>
         <ng-container *ngSwitchCase="0"> Server timeout </ng-container>
         <ng-container *ngSwitchDefault>
-          Error code {{ error.status }}<br />
+          Error code {{ httpError.status }}<br />
           {{ type }}
         </ng-container>
       </ng-container>
