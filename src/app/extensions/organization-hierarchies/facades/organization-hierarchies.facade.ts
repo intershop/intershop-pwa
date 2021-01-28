@@ -6,7 +6,9 @@ import { switchMap, take, tap } from 'rxjs/operators';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 
+import { OrganizationGroup } from '../models/organization-group/organization-group.model';
 import {
+  getGroupDetails,
   getGroupsOfOrganization,
   getGroupsOfOrganizationCount,
   getSelectedGroupDetails,
@@ -35,5 +37,9 @@ export class OrganizationHierarchiesFacade {
 
   selectGroup(id: string): void {
     this.store.dispatch(selectGroup({ id }));
+  }
+
+  getDetailsOfGroup$(id: string): Observable<OrganizationGroup> {
+    return this.store.pipe(select(getGroupDetails(id)));
   }
 }
