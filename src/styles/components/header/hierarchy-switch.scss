@@ -1,0 +1,81 @@
+.hierarchy-switch {
+  font-family: $font-family-bold;
+  font-size: $font-size-sm;
+  display: inline-block;
+            
+  .dropdown-menu {
+    position: absolute;
+    min-width: 50px;
+    max-width: 200px;
+    margin-top: 0;
+  }
+
+  .display-selected {
+    max-width: 200px;
+  }
+
+  .hierarchy-switch-current-selection {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 150px;
+  }
+
+  .hierarchy-switch-link {
+    text-transform: none;
+    cursor: pointer;
+    padding-right: $space-default;
+    padding-left: $space-default / 2;
+    color: $text-color-quinary !important;
+    text-transform: uppercase;
+       
+      //hierarchy selector when dropdown is shown
+      &.show .hierarchy-switch-link {
+        span:hover {
+          color: darken($text-color-quinary, 10%);
+        }
+      }
+
+      //hierarchy selector when dropdown is hidden
+      &:not(.show) .hierarchy-switch-link {
+        span:hover {
+          color: darken($text-color-quinary, 10%);
+        }
+      }
+    }
+
+    .hierarchy-switch-menu-container {
+      margin: -15px;
+    }
+
+    .hierarchy-switch-container {
+      z-index: 9999;
+      padding: ($space-default * 2/3) $space-default;
+      background: $color-inverse;
+      box-shadow: 0 4px 3px 0 rgba(0, 0, 0, 0.2);
+
+      ul {
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+        text-transform: none;
+        
+        li {
+          font-family: $font-family-regular;
+          font-size: $font-size-corporate;
+          line-height: ($line-height-base * 1.5);
+          
+          a {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+          }
+
+          a:hover {
+            color: $CORPORATE-SECONDARY;
+          }
+        }
+      }
+    }
+  
+}

@@ -1,8 +1,25 @@
-<ng-container *ngIf="(count | async) > 0">
-  <span class="separator">&#124;</span>
-  <select data-testing-id="hierarchy-switch" (change)="dispatch($event)">
-    <option *ngFor="let option of groups | async" [value]="option.id">
-      <span>{{ option.name }}</span>
-    </option>
-  </select>
-</ng-container>
+<div
+  *ngIf="count$ | async"
+  class="hierarchy-switch"
+  ngbDropdown
+  placement="{{ placement === 'up' ? 'top-left' : 'bottom-left' }}"
+>
+  <a ngbDropdownToggle class="hierarchy-switch-link">
+    <span class="separator">&#124;</span>
+    <span class="hierarchy-switch-current-selection"
+      >{{getName(selectedElement)}}<span class="switch_arrow"></span
+    ></span>
+  </a>
+  
+  <div ngbDropdownMenu class="hierarchy-switch-container dropdown-menu" style="left: 0 !important">
+    <div class="hierarchy-switch-menu-container">
+      <ng-container *ngIf="groups$ | async as groups">
+        <ul>
+          <li *ngFor="let g of groups">
+            <a class="dropdown-item d-block" (click)="groupSelected(g)">{{ g.name }}</a>
+          </li>
+        </ul>
+      </ng-container>
+    </div>
+  </div>
+</div>
