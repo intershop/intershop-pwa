@@ -28,9 +28,9 @@ import {
   loadPunchoutUsers,
   loadPunchoutUsersFail,
   loadPunchoutUsersSuccess,
-  startOCIPunchout,
-  startOCIPunchoutFail,
-  startOCIPunchoutSuccess,
+  transferPunchoutBasket,
+  transferPunchoutBasketFail,
+  transferPunchoutBasketSuccess,
   updatePunchoutUser,
   updatePunchoutUserFail,
   updatePunchoutUserSuccess,
@@ -56,7 +56,7 @@ describe('Oci Punchout Effects', () => {
     when(punchoutService.updateUser(anything())).thenReturn(of(users[0]));
     when(punchoutService.deleteUser(users[0].login)).thenReturn(of(undefined));
     when(punchoutService.getBasketPunchoutData(anyString())).thenReturn(of(undefined));
-    when(punchoutService.submitPunchoutData(anything())).thenReturn(of(undefined));
+    when(punchoutService.submitPunchoutData(anything())).thenReturn(void);
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -262,7 +262,7 @@ describe('Oci Punchout Effects', () => {
       );
     });
     it('should call the service for getting the punchout data', done => {
-      actions$ = of(startOCIPunchout());
+      actions$ = of(transferPunchoutBasket());
 
       effects.transferPunchoutBasket$.subscribe(() => {
         verify(punchoutService.getBasketPunchoutData('BID')).once();
@@ -271,7 +271,7 @@ describe('Oci Punchout Effects', () => {
     });
 
     it('should call the service for submitting the punchout data', done => {
-      actions$ = of(startOCIPunchout());
+      actions$ = of(transferPunchoutBasket());
 
       effects.transferPunchoutBasket$.subscribe(() => {
         verify(punchoutService.submitPunchoutData(anything())).once();
@@ -279,10 +279,10 @@ describe('Oci Punchout Effects', () => {
       });
     });
 
-    it('should map to action of type startOCIPunchoutSuccess', () => {
-      const action = startOCIPunchout();
+    it('should map to action of type transferPunchoutBasketSuccess', () => {
+      const action = transferPunchoutBasket();
 
-      const completion = startOCIPunchoutSuccess();
+      const completion = transferPunchoutBasketSuccess();
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -294,8 +294,8 @@ describe('Oci Punchout Effects', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
       when(punchoutService.getBasketPunchoutData(anyString())).thenReturn(throwError(error));
 
-      const action = startOCIPunchout();
-      const completion = startOCIPunchoutFail({ error });
+      const action = transferPunchoutBasket();
+      const completion = transferPunchoutBasketFail({ error });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -306,7 +306,7 @@ describe('Oci Punchout Effects', () => {
     it('should map to action of type DisplayErrorMessage in case of an error', () => {
       const error = makeHttpError({ status: 401, code: 'feld', message: 'e-message' });
 
-      const action = startOCIPunchoutFail({ error });
+      const action = transferPunchoutBasketFail({ error });
 
       const completion = displayErrorMessage({
         message: 'e-message',

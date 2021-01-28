@@ -34,11 +34,11 @@ describe('Punchout Transfer Basket Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should call transferOCIBasket at punchout facade  when transferBasket is triggered', () => {
-    when(punchoutFacade.transferOCIBasket()).thenReturn(undefined);
+  it('should call transferBasket at punchout facade when transferBasket is triggered', () => {
+    when(punchoutFacade.transferBasket()).thenReturn(undefined);
 
     component.transferBasket();
 
-    verify(punchoutFacade.transferOCIBasket()).once();
+    verify(punchoutFacade.transferBasket()).once();
   });
 });

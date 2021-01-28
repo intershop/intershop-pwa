@@ -14,6 +14,6 @@ export class PunchoutTransferBasketComponent {
   constructor(private punchoutFacade: PunchoutFacade) {}
 
   transferBasket() {
-    this.punchoutFacade.transferOCIBasket();
+    this.punchoutFacade.transferBasket();
   }
 }

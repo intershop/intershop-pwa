@@ -21,9 +21,9 @@ import {
   loadPunchoutUsers,
   loadPunchoutUsersFail,
   loadPunchoutUsersSuccess,
-  startOCIPunchout,
-  startOCIPunchoutFail,
-  startOCIPunchoutSuccess,
+  transferPunchoutBasket,
+  transferPunchoutBasketFail,
+  transferPunchoutBasketSuccess,
   updatePunchoutUser,
   updatePunchoutUserFail,
   updatePunchoutUserSuccess,
@@ -128,14 +128,14 @@ export class OciPunchoutEffects {
 
   transferPunchoutBasket$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(startOCIPunchout),
+      ofType(transferPunchoutBasket),
       withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
       filter(([, basketId]) => !!basketId),
       concatMap(([, basketId]) =>
         this.punchoutService.getBasketPunchoutData(basketId).pipe(
           map(data => this.punchoutService.submitPunchoutData(data)),
-          mapTo(startOCIPunchoutSuccess()),
-          mapErrorToAction(startOCIPunchoutFail)
+          mapTo(transferPunchoutBasketSuccess()),
+          mapErrorToAction(transferPunchoutBasketFail)
         )
       )
     )
@@ -143,7 +143,7 @@ export class OciPunchoutEffects {
 
   displayPunchoutErrorMessage$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(startOCIPunchoutFail),
+      ofType(transferPunchoutBasketFail),
       mapToPayloadProperty('error'),
       map(error =>
         displayErrorMessage({

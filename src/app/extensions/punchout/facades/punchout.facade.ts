@@ -10,7 +10,7 @@ import {
   getPunchoutUsers,
   getSelectedPunchoutUser,
   loadPunchoutUsers,
-  startOCIPunchout,
+  transferPunchoutBasket,
   updatePunchoutUser,
 } from '../store/oci-punchout';
 
@@ -40,7 +40,7 @@ export class PunchoutFacade {
     this.store.dispatch(deletePunchoutUser({ login }));
   }
 
-  transferOCIBasket() {
-    this.store.dispatch(startOCIPunchout());
+  transferBasket() {
+    this.store.dispatch(transferPunchoutBasket());
   }
 }

@@ -16,9 +16,9 @@ import {
   loadPunchoutUsers,
   loadPunchoutUsersFail,
   loadPunchoutUsersSuccess,
-  startOCIPunchout,
-  startOCIPunchoutFail,
-  startOCIPunchoutSuccess,
+  transferPunchoutBasket,
+  transferPunchoutBasketFail,
+  transferPunchoutBasketSuccess,
   updatePunchoutUser,
   updatePunchoutUserFail,
   updatePunchoutUserSuccess,
@@ -38,20 +38,20 @@ export const initialState: OciPunchoutState = ociPunchoutAdapter.getInitialState
 
 export const ociPunchoutReducer = createReducer(
   initialState,
-  setLoadingOn(loadPunchoutUsers, addPunchoutUser, updatePunchoutUser, deletePunchoutUser, startOCIPunchout),
+  setLoadingOn(loadPunchoutUsers, addPunchoutUser, updatePunchoutUser, deletePunchoutUser, transferPunchoutBasket),
   setErrorOn(
     loadPunchoutUsersFail,
     addPunchoutUserFail,
     updatePunchoutUserFail,
     deletePunchoutUserFail,
-    startOCIPunchoutFail
+    transferPunchoutBasketFail
   ),
   unsetLoadingAndErrorOn(
     loadPunchoutUsersSuccess,
     addPunchoutUserSuccess,
     updatePunchoutUserSuccess,
     deletePunchoutUserSuccess,
-    startOCIPunchoutSuccess
+    transferPunchoutBasketSuccess
   ),
 
   on(loadPunchoutUsersSuccess, (state, action) => ociPunchoutAdapter.upsertMany(action.payload.users, state)),

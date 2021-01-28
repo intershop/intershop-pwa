@@ -40,8 +40,8 @@ export const deletePunchoutUserSuccess = createAction(
   payload<{ login: string }>()
 );
 
-export const startOCIPunchout = createAction('[Punchout] Start OCI Punchout');
+export const transferPunchoutBasket = createAction('[Punchout] Transfer Punchout Basket');
 
-export const startOCIPunchoutFail = createAction('[Punchout API] Start OCI Punchout Fail', httpError());
+export const transferPunchoutBasketFail = createAction('[Punchout API] Transfer Punchout BasketFail', httpError());
 
-export const startOCIPunchoutSuccess = createAction('[Punchout API] Start OCI Punchout Success');
+export const transferPunchoutBasketSuccess = createAction('[Punchout API] Transfer Punchout Basket Success');
