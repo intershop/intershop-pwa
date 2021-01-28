@@ -6,9 +6,10 @@ import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
-import { iif, race } from 'rxjs';
+import { EMPTY, from, iif, race } from 'rxjs';
 import {
   concatMap,
+  concatMapTo,
   distinctUntilChanged,
   filter,
   map,
@@ -17,7 +18,6 @@ import {
   switchMap,
   switchMapTo,
   take,
-  tap,
   withLatestFrom,
 } from 'rxjs/operators';
 
@@ -81,7 +81,7 @@ export class OrdersEffects {
         ofType(createOrderSuccess),
         mapToPayloadProperty('order'),
         filter(order => !order || !order.orderCreation || order.orderCreation.status !== 'ROLLED_BACK'),
-        tap(order => {
+        concatMap(order => {
           if (
             order.orderCreation &&
             order.orderCreation.status === 'STOPPED' &&
@@ -89,8 +89,9 @@ export class OrdersEffects {
             order.orderCreation.stopAction.redirectUrl
           ) {
             location.assign(order.orderCreation.stopAction.redirectUrl);
+            return EMPTY;
           } else {
-            this.router.navigate(['/checkout/receipt']);
+            return from(this.router.navigate(['/checkout/receipt']));
           }
         })
       ),
@@ -102,21 +103,24 @@ export class OrdersEffects {
       ofType(createOrderSuccess),
       mapToPayloadProperty('order'),
       filter(order => order.orderCreation && order.orderCreation.status === 'ROLLED_BACK'),
-      tap(() => this.router.navigate(['/checkout/payment'], { queryParams: { error: true } })),
-      concatMap(order => [
-        loadBasket(),
-        continueCheckoutWithIssues({
-          targetRoute: undefined,
-          basketValidation: {
-            basket: undefined,
-            results: {
-              valid: false,
-              adjusted: false,
-              errors: order.infos,
-            },
-          },
-        }),
-      ])
+      concatMap(order =>
+        from(this.router.navigate(['/checkout/payment'], { queryParams: { error: true } })).pipe(
+          concatMapTo([
+            loadBasket(),
+            continueCheckoutWithIssues({
+              targetRoute: undefined,
+              basketValidation: {
+                basket: undefined,
+                results: {
+                  valid: false,
+                  adjusted: false,
+                  errors: order.infos,
+                },
+              },
+            }),
+          ])
+        )
+      )
     )
   );
 
@@ -236,12 +240,13 @@ export class OrdersEffects {
   selectOrderAfterRedirectFailed$ = createEffect(() =>
     this.actions$.pipe(
       ofType(selectOrderAfterRedirectFail),
-      tap(() =>
-        this.router.navigate(['/checkout/payment'], {
-          queryParams: { redirect: 'failure' },
-        })
-      ),
-      mapTo(loadBasket())
+      concatMap(() =>
+        from(
+          this.router.navigate(['/checkout/payment'], {
+            queryParams: { redirect: 'failure' },
+          })
+        ).pipe(mapTo(loadBasket()))
+      )
     )
   );
 

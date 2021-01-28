@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { filter, tap } from 'rxjs/operators';
+import { Action } from '@ngrx/store';
+import { EMPTY, Observable } from 'rxjs';
+import { concatMap } from 'rxjs/operators';
 
 import { load<%= classify(name) %> } from './<%= dasherize(name) %>.actions';
 
@@ -11,9 +13,7 @@ export class <%= classify(name) %>Effects {
   load<%= classify(name) %>$ = createEffect(() =>
     this.actions$.pipe(
       ofType(load<%= classify(name) %>),
-      // tslint:disable-next-line:no-console
-      tap(() => console.log('got load<%= classify(name) %> in <%= classify(name) %>Effects.load<%= classify(name) %>$')),
-      filter(() => false)
+      concatMap(() => EMPTY as Observable<Action>)
     )
   );
 }

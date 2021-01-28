@@ -5,7 +5,7 @@ import { Actions, ROOT_EFFECTS_INIT, createEffect, ofType } from '@ngrx/effects'
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { defer, fromEvent, iif, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, take, takeWhile, withLatestFrom } from 'rxjs/operators';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { NGRX_STATE_SK } from 'ish-core/configurations/ngrx-state-transfer';
@@ -21,24 +21,30 @@ export class ConfigurationEffects {
   constructor(
     private actions$: Actions,
     private store: Store,
-    private translateService: TranslateService,
     private stateProperties: StatePropertiesService,
     private transferState: TransferState,
     @Inject(PLATFORM_ID) private platformId: string,
-    private appRef: ApplicationRef,
     @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: number,
-    @Inject(LARGE_BREAKPOINT_WIDTH) private largeBreakpointWidth: number
-  ) {}
+    @Inject(LARGE_BREAKPOINT_WIDTH) private largeBreakpointWidth: number,
+    translateService: TranslateService,
+    appRef: ApplicationRef
+  ) {
+    appRef.isStable
+      .pipe(takeWhile(() => isPlatformBrowser(platformId)))
+      // tslint:disable-next-line:no-any
+      .subscribe(stable => ((window as any).angularStable = stable));
 
-  $stable = createEffect(
-    () =>
-      this.appRef.isStable.pipe(
-        takeWhile(() => isPlatformBrowser(this.platformId)),
-        // tslint:disable-next-line:no-any
-        tap(stable => ((window as any).angularStable = stable))
-      ),
-    { dispatch: false }
-  );
+    store
+      .pipe(
+        select(getCurrentLocale),
+        mapToProperty('lang'),
+        distinctUntilChanged(),
+        // https://github.com/ngx-translate/core/issues/1030
+        debounceTime(0),
+        whenTruthy()
+      )
+      .subscribe(lang => translateService.use(lang));
+  }
 
   setInitialRestEndpoint$ = createEffect(() =>
     iif(
@@ -90,20 +96,6 @@ export class ConfigurationEffects {
         )
       )
     )
-  );
-
-  setLocale$ = createEffect(
-    () =>
-      this.store.pipe(
-        select(getCurrentLocale),
-        mapToProperty('lang'),
-        distinctUntilChanged(),
-        // https://github.com/ngx-translate/core/issues/1030
-        debounceTime(0),
-        whenTruthy(),
-        tap(lang => this.translateService.use(lang))
-      ),
-    { dispatch: false }
   );
 
   setGTMToken$ = createEffect(() =>

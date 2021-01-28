@@ -1,9 +1,11 @@
-import { TestBed } from '@angular/core/testing';
+import { Location } from '@angular/common';
+import { Component } from '@angular/core';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, noop, of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
@@ -39,15 +41,20 @@ describe('Basket Items Effects', () => {
   let basketServiceMock: BasketService;
   let effects: BasketItemsEffects;
   let store$: Store;
+  let location: Location;
 
   beforeEach(() => {
+    @Component({ template: 'dummy' })
+    class DummyComponent {}
+
     basketServiceMock = mock(BasketService);
 
     TestBed.configureTestingModule({
+      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(),
         CustomerStoreModule.forTesting('basket'),
-        RouterTestingModule,
+        RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
         ShoppingStoreModule.forTesting('products', 'categories'),
       ],
       providers: [
@@ -59,6 +66,7 @@ describe('Basket Items Effects', () => {
 
     effects = TestBed.inject(BasketItemsEffects);
     store$ = TestBed.inject(Store);
+    location = TestBed.inject(Location);
   });
 
   describe('addProductToBasket$', () => {
@@ -412,5 +420,27 @@ describe('Basket Items Effects', () => {
 
       expect(effects.loadBasketAfterBasketItemsChangeSuccess$).toBeObservable(expected$);
     });
+  });
+
+  describe('redirectToBasketIfBasketInteractionHasInfo$', () => {
+    it('should navigate to basket if interaction has info', fakeAsync(() => {
+      actions$ = of(deleteBasketItemSuccess({ info: [{ message: 'INFO' } as BasketInfo] }));
+
+      effects.redirectToBasketIfBasketInteractionHasInfo$.subscribe(noop, fail, noop);
+
+      tick(500);
+
+      expect(location.path()).toMatchInlineSnapshot(`"/basket?error=true"`);
+    }));
+
+    it('should not navigate to basket if interaction had no info', fakeAsync(() => {
+      actions$ = of(deleteBasketItemSuccess({ info: undefined }));
+
+      effects.redirectToBasketIfBasketInteractionHasInfo$.subscribe(noop, fail, noop);
+
+      tick(500);
+
+      expect(location.path()).toMatchInlineSnapshot(`""`);
+    }));
   });
 });

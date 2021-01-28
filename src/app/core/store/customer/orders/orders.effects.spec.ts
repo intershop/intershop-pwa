@@ -8,16 +8,16 @@ import { Action, Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { cold, hot } from 'jest-marbles';
 import { Observable, noop, of, throwError } from 'rxjs';
+import { toArray } from 'rxjs/operators';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { BasketFeedback } from 'ish-core/models/basket-feedback/basket-feedback.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { Order } from 'ish-core/models/order/order.model';
 import { User } from 'ish-core/models/user/user.model';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { continueCheckoutWithIssues, loadBasket, loadBasketSuccess } from 'ish-core/store/customer/basket';
+import { loadBasket, loadBasketSuccess } from 'ish-core/store/customer/basket';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -172,7 +172,7 @@ describe('Orders Effects', () => {
   });
 
   describe('rollbackAfterOrderCreation', () => {
-    it('should navigate to /checkout/payment after CreateOrderSuccess if order creation was rolled back', () => {
+    it('should navigate to /checkout/payment after CreateOrderSuccess if order creation was rolled back', done => {
       const action = createOrderSuccess({
         order: {
           id: '123',
@@ -182,22 +182,22 @@ describe('Orders Effects', () => {
       });
       actions$ = of(action);
 
-      const completion1 = loadBasket();
-      const completion2 = continueCheckoutWithIssues({
-        targetRoute: undefined,
-        basketValidation: {
-          basket: undefined,
-          results: {
-            valid: false,
-            adjusted: false,
-            errors: [{ message: 'Info' } as BasketFeedback],
-          },
-        },
-      });
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
+      effects.rollbackAfterOrderCreation$.pipe(toArray()).subscribe(
+        actions => {
+          expect(actions).toMatchInlineSnapshot(`
+            [Basket Internal] Load Basket
+            [Basket API] Validate Basket and continue with issues:
+              targetRoute: undefined
+              basketValidation: {"results":{"valid":false,"adjusted":false,"errors":[1]}}
+          `);
 
-      expect(effects.rollbackAfterOrderCreation$).toBeObservable(expected$);
+          expect(location.path()).toMatchInlineSnapshot(`"/checkout/payment?error=true"`);
+
+          done();
+        },
+        fail,
+        noop
+      );
     });
   });
 
@@ -433,24 +433,18 @@ describe('Orders Effects', () => {
   });
 
   describe('selectOrderAfterRedirectFailed', () => {
-    it('should navigate to /checkout/payment if order creation failed after redirect', fakeAsync(() => {
-      const action = selectOrderAfterRedirectFail(undefined);
-      actions$ = of(action);
+    it('should navigate to /checkout/payment if order creation failed after redirect', done => {
+      actions$ = of(selectOrderAfterRedirectFail(undefined));
 
-      effects.selectOrderAfterRedirectFailed$.subscribe(noop, fail, noop);
-
-      tick(500);
-
-      expect(location.path()).toEqual('/checkout/payment?redirect=failure');
-    }));
-
-    it('should map to action of type LoadBasket', () => {
-      const action = selectOrderAfterRedirectFail(undefined);
-      const completion = loadBasket();
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.selectOrderAfterRedirectFailed$).toBeObservable(expected$);
+      effects.selectOrderAfterRedirectFailed$.subscribe(
+        action => {
+          expect(action).toMatchInlineSnapshot(`[Basket Internal] Load Basket`);
+          expect(location.path()).toEqual('/checkout/payment?redirect=failure');
+          done();
+        },
+        fail,
+        noop
+      );
     });
   });
 

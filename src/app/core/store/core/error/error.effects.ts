@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { createEffect } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
@@ -11,18 +10,15 @@ import { getGeneralError } from './error.selectors';
 
 @Injectable()
 export class ErrorEffects {
-  constructor(private store: Store, private httpStatusCodeService: HttpStatusCodeService) {}
-
-  gotoErrorPageInCaseOfError$ = createEffect(
-    () =>
-      this.store.pipe(
+  constructor(store: Store, httpStatusCodeService: HttpStatusCodeService) {
+    store
+      .pipe(
         select(getGeneralError),
         whenTruthy(),
-        map(error => this.mapStatus(error)),
-        tap(status => this.httpStatusCodeService.setStatusAndRedirect(status))
-      ),
-    { dispatch: false }
-  );
+        map(error => this.mapStatus(error))
+      )
+      .subscribe(status => httpStatusCodeService.setStatusAndRedirect(status));
+  }
 
   private mapStatus(state: HttpError): number {
     if (state && typeof state.status === 'number') {
