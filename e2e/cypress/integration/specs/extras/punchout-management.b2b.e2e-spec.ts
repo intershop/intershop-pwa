@@ -26,7 +26,7 @@ describe('Punchout MyAccount Functionality', () => {
     LoginPage.navigateTo('/account/punchout');
     at(LoginPage, page => {
       page.fillForm(_.user.login, _.user.password);
-      page.submit().its('status').should('equal', 200);
+      page.submit().its('response.statusCode').should('equal', 200);
     });
     at(PunchoutOverviewPage, page => {
       page.emptyList.should('be.visible');
@@ -60,7 +60,7 @@ describe('Punchout MyAccount Functionality', () => {
   it('admin user deletes a punchout user', () => {
     at(PunchoutOverviewPage, page => {
       page.deleteUser(_.ociUser.login);
-      page.userList.should('not.contain', `${_.ociUser.login}`);
+      page.userList.should('not.exist');
       page.emptyList.should('be.visible');
     });
   });
