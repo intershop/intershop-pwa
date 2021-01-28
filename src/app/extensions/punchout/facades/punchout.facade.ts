@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import { PunchoutUser } from '../models/punchout-user/punchout-user.model';
+import { transferPunchoutBasket } from '../store/punchout-functions';
 import {
   addPunchoutUser,
   deletePunchoutUser,
@@ -10,7 +11,6 @@ import {
   getPunchoutUsers,
   getSelectedPunchoutUser,
   loadPunchoutUsers,
-  transferPunchoutBasket,
   updatePunchoutUser,
 } from '../store/punchout-users';
 

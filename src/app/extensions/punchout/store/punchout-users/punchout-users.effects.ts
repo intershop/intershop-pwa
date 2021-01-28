@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concatMap, exhaustMap, filter, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import { exhaustMap, map, mergeMap, tap } from 'rxjs/operators';
 
-import { displayErrorMessage, displaySuccessMessage } from 'ish-core/store/core/messages';
+import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectRouteParam } from 'ish-core/store/core/router';
-import { getCurrentBasketId } from 'ish-core/store/customer/basket';
 import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { PunchoutService } from '../../services/punchout/punchout.service';
@@ -21,9 +20,6 @@ import {
   loadPunchoutUsers,
   loadPunchoutUsersFail,
   loadPunchoutUsersSuccess,
-  transferPunchoutBasket,
-  transferPunchoutBasketFail,
-  transferPunchoutBasketSuccess,
   updatePunchoutUser,
   updatePunchoutUserFail,
   updatePunchoutUserSuccess,
@@ -122,33 +118,6 @@ export class PunchoutUsersEffects {
           ]),
           mapErrorToAction(deletePunchoutUserFail)
         )
-      )
-    )
-  );
-
-  transferPunchoutBasket$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(transferPunchoutBasket),
-      withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-      filter(([, basketId]) => !!basketId),
-      concatMap(([, basketId]) =>
-        this.punchoutService.getBasketPunchoutData(basketId).pipe(
-          map(data => this.punchoutService.submitPunchoutData(data)),
-          mapTo(transferPunchoutBasketSuccess()),
-          mapErrorToAction(transferPunchoutBasketFail)
-        )
-      )
-    )
-  );
-
-  displayPunchoutErrorMessage$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(transferPunchoutBasketFail),
-      mapToPayloadProperty('error'),
-      map(error =>
-        displayErrorMessage({
-          message: error.message,
-        })
       )
     )
   );

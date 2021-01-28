@@ -3,16 +3,13 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store } from '@ngrx/store';
+import { Action } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
-import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { Basket } from 'ish-core/models/basket/basket.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { displayErrorMessage, displaySuccessMessage } from 'ish-core/store/core/messages';
-import { loadBasketSuccess } from 'ish-core/store/customer/basket';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { PunchoutUser } from '../../models/punchout-user/punchout-user.model';
@@ -28,9 +25,6 @@ import {
   loadPunchoutUsers,
   loadPunchoutUsersFail,
   loadPunchoutUsersSuccess,
-  transferPunchoutBasket,
-  transferPunchoutBasketFail,
-  transferPunchoutBasketSuccess,
   updatePunchoutUser,
   updatePunchoutUserFail,
   updatePunchoutUserSuccess,
@@ -45,7 +39,6 @@ describe('Punchout Users Effects', () => {
   let effects: PunchoutUsersEffects;
   let punchoutService: PunchoutService;
   let router: Router;
-  let store$: Store;
 
   const users = [{ id: 'ociUser', login: 'ociuser@test.de', email: 'ociuser@test.de' }] as PunchoutUser[];
 
@@ -55,13 +48,11 @@ describe('Punchout Users Effects', () => {
     when(punchoutService.createUser(users[0])).thenReturn(of(users[0]));
     when(punchoutService.updateUser(anything())).thenReturn(of(users[0]));
     when(punchoutService.deleteUser(users[0].login)).thenReturn(of(undefined));
-    when(punchoutService.getBasketPunchoutData(anyString())).thenReturn(of(undefined));
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router']),
-        CustomerStoreModule.forTesting('basket'),
         RouterTestingModule.withRoutes([
           { path: 'account/punchout', component: DummyComponent },
           { path: 'account/punchout/:PunchoutLogin', component: DummyComponent },
@@ -77,7 +68,6 @@ describe('Punchout Users Effects', () => {
 
     effects = TestBed.inject(PunchoutUsersEffects);
     router = TestBed.inject(Router);
-    store$ = TestBed.inject(Store);
   });
 
   describe('loadPunchoutUsers$', () => {
@@ -246,75 +236,6 @@ describe('Punchout Users Effects', () => {
       const expected$ = cold('-b', { b: completion });
 
       expect(effects.deletePunchoutUser$).toBeObservable(expected$);
-    });
-  });
-
-  describe('transferPunchoutBasket$', () => {
-    beforeEach(() => {
-      store$.dispatch(
-        loadBasketSuccess({
-          basket: {
-            id: 'BID',
-            lineItems: [],
-          } as Basket,
-        })
-      );
-    });
-    it('should call the service for getting the punchout data', done => {
-      actions$ = of(transferPunchoutBasket());
-
-      effects.transferPunchoutBasket$.subscribe(() => {
-        verify(punchoutService.getBasketPunchoutData('BID')).once();
-        done();
-      });
-    });
-
-    it('should call the service for submitting the punchout data', done => {
-      actions$ = of(transferPunchoutBasket());
-
-      effects.transferPunchoutBasket$.subscribe(() => {
-        verify(punchoutService.submitPunchoutData(anything())).once();
-        done();
-      });
-    });
-
-    it('should map to action of type transferPunchoutBasketSuccess', () => {
-      const action = transferPunchoutBasket();
-
-      const completion = transferPunchoutBasketSuccess();
-
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-b', { b: completion });
-
-      expect(effects.transferPunchoutBasket$).toBeObservable(expected$);
-    });
-
-    it('should dispatch a DeletePunchoutUserFail action in case of an error', () => {
-      const error = makeHttpError({ status: 401, code: 'feld' });
-      when(punchoutService.getBasketPunchoutData(anyString())).thenReturn(throwError(error));
-
-      const action = transferPunchoutBasket();
-      const completion = transferPunchoutBasketFail({ error });
-
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-b', { b: completion });
-
-      expect(effects.transferPunchoutBasket$).toBeObservable(expected$);
-    });
-
-    it('should map to action of type DisplayErrorMessage in case of an error', () => {
-      const error = makeHttpError({ status: 401, code: 'feld', message: 'e-message' });
-
-      const action = transferPunchoutBasketFail({ error });
-
-      const completion = displayErrorMessage({
-        message: 'e-message',
-      });
-
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-b', { b: completion });
-
-      expect(effects.displayPunchoutErrorMessage$).toBeObservable(expected$);
     });
   });
 });

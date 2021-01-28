@@ -16,9 +16,6 @@ import {
   loadPunchoutUsers,
   loadPunchoutUsersFail,
   loadPunchoutUsersSuccess,
-  transferPunchoutBasket,
-  transferPunchoutBasketFail,
-  transferPunchoutBasketSuccess,
   updatePunchoutUser,
   updatePunchoutUserFail,
   updatePunchoutUserSuccess,
@@ -38,20 +35,13 @@ export const initialState: PunchoutUsersState = punchoutUsersAdapter.getInitialS
 
 export const punchoutUsersReducer = createReducer(
   initialState,
-  setLoadingOn(loadPunchoutUsers, addPunchoutUser, updatePunchoutUser, deletePunchoutUser, transferPunchoutBasket),
-  setErrorOn(
-    loadPunchoutUsersFail,
-    addPunchoutUserFail,
-    updatePunchoutUserFail,
-    deletePunchoutUserFail,
-    transferPunchoutBasketFail
-  ),
+  setLoadingOn(loadPunchoutUsers, addPunchoutUser, updatePunchoutUser, deletePunchoutUser),
+  setErrorOn(loadPunchoutUsersFail, addPunchoutUserFail, updatePunchoutUserFail, deletePunchoutUserFail),
   unsetLoadingAndErrorOn(
     loadPunchoutUsersSuccess,
     addPunchoutUserSuccess,
     updatePunchoutUserSuccess,
-    deletePunchoutUserSuccess,
-    transferPunchoutBasketSuccess
+    deletePunchoutUserSuccess
   ),
 
   on(loadPunchoutUsersSuccess, (state, action) => punchoutUsersAdapter.upsertMany(action.payload.users, state)),

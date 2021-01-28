@@ -39,9 +39,3 @@ export const deletePunchoutUserSuccess = createAction(
   '[Punchout API] Punchout Delete User Success',
   payload<{ login: string }>()
 );
-
-export const transferPunchoutBasket = createAction('[Punchout] Transfer Punchout Basket');
-
-export const transferPunchoutBasketFail = createAction('[Punchout API] Transfer Punchout BasketFail', httpError());
-
-export const transferPunchoutBasketSuccess = createAction('[Punchout API] Transfer Punchout Basket Success');
