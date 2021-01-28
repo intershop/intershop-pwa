@@ -279,6 +279,8 @@
   "account.punchout.password.confirmation.label": "Confirm Password",
   "account.punchout.password.error.required": "Please enter a password.",
   "account.punchout.password.label": "Password",
+  "account.punchout.password.new.confirmation.label": "Confirm New Password",
+  "account.punchout.password.new.label": "New Password",
   "account.punchout.subtitle": "Punchout is provided via Open Catalog Interface (OCI).",
   "account.punchout.user.created.message": "The punchout user \"{{0}}\" has been created.",
   "account.punchout.user.delete.confirmation": "The punchout user \"{{0}}\" has been deleted.",

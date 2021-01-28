@@ -1,6 +1,6 @@
 <ng-container *ngIf="logoutOnly; else loginStatus">
   <ng-container *ngIf="user$ | async as user; else notLoggedIn">
-    <a *ishHasNotRole="'APP_B2B_OCI_USER'" routerLink="/logout" data-testing-id="link-logout">
+    <a routerLink="/logout" data-testing-id="link-logout">
       <fa-icon [icon]="['fas', 'user']" class="header-icon"></fa-icon>
       <span *ngIf="view != 'small'"> {{ 'account.logout.link' | translate }} </span>
     </a>
@@ -22,12 +22,10 @@
         }}</span></ng-template
       >
     </a>
-    <ng-container *ishHasNotRole="'APP_B2B_OCI_USER'">
-      <span class="separator" [ngClass]="getViewClasses()">&#124;</span>
-      <a routerLink="/logout" class="my-account-link my-account-logout" data-testing-id="link-logout">
-        <span [ngClass]="getViewClasses()">{{ 'account.logout.link' | translate }}</span>
-      </a>
-    </ng-container>
+    <span class="separator" [ngClass]="getViewClasses()">&#124;</span>
+    <a routerLink="/logout" class="my-account-link my-account-logout" data-testing-id="link-logout">
+      <span [ngClass]="getViewClasses()">{{ 'account.logout.link' | translate }}</span>
+    </a>
   </ng-container>
   <!-- not logged in -->
   <ng-template #notLoggedIn>

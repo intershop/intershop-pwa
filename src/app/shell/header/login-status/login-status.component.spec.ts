@@ -8,7 +8,6 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { User } from 'ish-core/models/user/user.model';
-import { RoleToggleModule } from 'ish-core/role-toggle.module';
 
 import { LoginStatusComponent } from './login-status.component';
 
@@ -27,7 +26,7 @@ describe('Login Status Component', () => {
     accountFacade = mock(AccountFacade);
     await TestBed.configureTestingModule({
       declarations: [LoginStatusComponent, MockComponent(FaIconComponent)],
-      imports: [RoleToggleModule.forTesting(), RouterTestingModule, TranslateModule.forRoot()],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   });

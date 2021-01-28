@@ -279,6 +279,8 @@
   "account.punchout.password.confirmation.label": "Kennwort bestätigen",
   "account.punchout.password.error.required": "Bitte geben Sie ein Kennwort ein.",
   "account.punchout.password.label": "Kennwort",
+  "account.punchout.password.new.confirmation.label": "Neues Kennwort bestätigen",
+  "account.punchout.password.new.label": "Neues Kennwort",
   "account.punchout.subtitle": "Punchout wird über das Open Catalog Interface (OCI) bereitgestellt.",
   "account.punchout.user.created.message": "Der Punchout Benutzer \"{{0}}\" wurde erstellt.",
   "account.punchout.user.delete.confirmation": "Der Punchout Benutzer \"{{0}}\" wurde gelöscht.",

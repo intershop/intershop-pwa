@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
@@ -21,7 +22,9 @@ export class AccountPunchoutPageComponent implements OnInit {
   constructor(private punchoutFacade: PunchoutFacade) {}
 
   ngOnInit() {
-    this.punchoutUsers$ = this.punchoutFacade.punchoutUsers$();
+    this.punchoutUsers$ = this.punchoutFacade
+      .punchoutUsers$()
+      .pipe(map(users => users.sort((u1, u2) => (u1.login > u2.login ? 1 : -1))));
     this.loading$ = this.punchoutFacade.punchoutLoading$;
     this.error$ = this.punchoutFacade.punchoutError$;
   }

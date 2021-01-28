@@ -19,7 +19,7 @@
     [form]="form"
     type="password"
     controlName="password"
-    label="account.punchout.password.label"
+    [label]="update ? 'account.punchout.password.new.label' : 'account.punchout.password.label'"
     markRequiredLabel="off"
     [errorMessages]="{
       required: 'account.punchout.password.error.required',
@@ -31,7 +31,9 @@
     [form]="form"
     type="password"
     controlName="passwordConfirmation"
-    label="account.punchout.password.confirmation.label"
+    [label]="
+      update ? 'account.punchout.password.new.confirmation.label' : 'account.punchout.password.confirmation.label'
+    "
     markRequiredLabel="off"
     [errorMessages]="{
       required: 'account.punchout.password.confirmation.error.required',

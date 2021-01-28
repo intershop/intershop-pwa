@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -34,7 +34,7 @@ export class AccountPunchoutDetailsPageComponent implements OnInit, OnDestroy {
     this.loading$ = this.punchoutFacade.punchoutLoading$;
     this.error$ = this.punchoutFacade.punchoutError$;
 
-    this.selectedUser$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(user => {
+    this.selectedUser$.pipe(whenTruthy(), take(1), takeUntil(this.destroy$)).subscribe(user => {
       this.user = user;
       this.createForm();
     });
