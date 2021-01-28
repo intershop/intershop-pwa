@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
+import { LazyHierarchyGroupNameComponent } from 'src/app/extensions/organization-hierarchies/exports/lazy-hierarchy-group-name/lazy-hierarchy-group-name.component';
 import { instance, mock, when } from 'ts-mockito';
 
+import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Order } from 'ish-core/models/order/order.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
@@ -30,7 +32,9 @@ describe('Order List Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         MockComponent(AddressComponent),
+        MockComponent(LazyHierarchyGroupNameComponent),
         MockComponent(LoadingComponent),
+        MockDirective(FeatureToggleDirective),
         MockPipe(DatePipe),
         MockPipe(PricePipe),
         OrderListComponent,

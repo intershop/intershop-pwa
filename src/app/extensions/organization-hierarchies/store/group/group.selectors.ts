@@ -21,6 +21,8 @@ export const getSelectedGroupDetails = createSelector(
   (entities, id): OrganizationGroup => id && entities[id]
 );
 
+export const getGroupDetails = (id: string) => createSelector(selectEntities, entities => id && entities[id]);
+
 export const getSelectedGroupPath = createSelector(
   selectEntities,
   getSelectedGroupId,
