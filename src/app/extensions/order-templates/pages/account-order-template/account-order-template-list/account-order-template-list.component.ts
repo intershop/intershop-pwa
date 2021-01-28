@@ -3,9 +3,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
+import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 import { OrderTemplate } from '../../../models/order-template/order-template.model';
 
 @Component({
@@ -27,18 +27,10 @@ export class AccountOrderTemplateListComponent implements OnDestroy {
 
   private destroy$ = new Subject();
 
-  constructor(private translate: TranslateService, private productFacade: ShoppingFacade) {}
+  constructor(private translate: TranslateService, private facade: OrderTemplatesFacade) {}
 
-  addTemplateToCart(orderTemplateId: string) {
-    const products = this.orderTemplates.find(t => t.id === orderTemplateId).items
-      ? this.orderTemplates.find(t => t.id === orderTemplateId).items
-      : [];
-
-    if (products.length > 0) {
-      products.forEach(product => {
-        this.productFacade.addProductToBasket(product.sku, product.desiredQuantity.value);
-      });
-    }
+  addTemplateToBasket(orderTemplate: OrderTemplate) {
+    this.facade.addOrderTemplateToBasket(orderTemplate);
   }
 
   /** Emits the id of the order template to delete. */

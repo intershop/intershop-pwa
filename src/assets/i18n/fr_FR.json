@@ -216,6 +216,8 @@
   "account.orderlist.table.order_total": "Total de la commande",
   "account.ordertemplates.heading": "Modèles de commande",
   "account.ordertemplates.link": "Modèles de commande",
+  "account.ordertemplates.widget.heading": "Mes modèles de commande",
+  "account.ordertemplates.widget.view_all.link": "Afficher tous les modèles de commande",
   "account.organization.user_management": "Gestion des utilisateurs",
   "account.organization.user_management.back_to_list": "Retourner à la gestion des utilisateurs",
   "account.organization.user_management.new_user.confirmation": " L’utilisateur \"{{0}}\" a été créé.",

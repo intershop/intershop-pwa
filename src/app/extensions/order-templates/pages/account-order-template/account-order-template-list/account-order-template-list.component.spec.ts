@@ -3,12 +3,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
-import { anything, capture, instance, mock, spy, verify } from 'ts-mockito';
+import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
+
+import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 
 import { AccountOrderTemplateListComponent } from './account-order-template-list.component';
 
@@ -16,7 +17,7 @@ describe('Account Order Template List Component', () => {
   let component: AccountOrderTemplateListComponent;
   let fixture: ComponentFixture<AccountOrderTemplateListComponent>;
   let element: HTMLElement;
-  let shoppingFacadeMock: ShoppingFacade;
+  let orderTemplateFacadeMock: OrderTemplatesFacade;
 
   const orderTemplateDetails = [
     {
@@ -50,7 +51,8 @@ describe('Account Order Template List Component', () => {
   ];
 
   beforeEach(async () => {
-    shoppingFacadeMock = mock(ShoppingFacade);
+    orderTemplateFacadeMock = mock(OrderTemplatesFacade);
+    when(orderTemplateFacadeMock.addOrderTemplateToBasket(anything())).thenReturn();
     await TestBed.configureTestingModule({
       declarations: [
         AccountOrderTemplateListComponent,
@@ -60,7 +62,7 @@ describe('Account Order Template List Component', () => {
         MockPipe(DatePipe),
       ],
       imports: [RouterTestingModule, TranslateModule.forRoot()],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacadeMock) }],
+      providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacadeMock) }],
     }).compileComponents();
   });
 
@@ -84,25 +86,31 @@ describe('Account Order Template List Component', () => {
     verify(emitter.emit('deleteId')).once();
   });
 
-  it('should trigger add product to cart with right sku', () => {
+  it('should trigger add product to basket with right order template', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
     component.orderTemplates = orderTemplateDetails;
-    component.addTemplateToCart('.SKsEQAE4FIAAAFuNiUBWx0d');
+    component.addTemplateToBasket(orderTemplateDetails[0]);
 
-    verify(shoppingFacadeMock.addProductToBasket(anything(), anything())).once();
-    expect(capture(shoppingFacadeMock.addProductToBasket).last()).toMatchInlineSnapshot(`
+    verify(orderTemplateFacadeMock.addOrderTemplateToBasket(anything())).once();
+    expect(capture(orderTemplateFacadeMock.addOrderTemplateToBasket).last()).toMatchInlineSnapshot(`
       Array [
-        "1234",
-        1,
+        Object {
+          "id": ".SKsEQAE4FIAAAFuNiUBWx0d",
+          "items": Array [
+            Object {
+              "creationDate": 123124125,
+              "desiredQuantity": Object {
+                "value": 1,
+              },
+              "id": "12345",
+              "sku": "1234",
+            },
+          ],
+          "itemsCount": 1,
+          "public": false,
+          "title": "testing order template",
+        },
       ]
     `);
-  });
-
-  it('should not trigger add to product if template doesnt have items', () => {
-    expect(() => fixture.detectChanges()).not.toThrow();
-    component.orderTemplates = orderTemplateDetails;
-    component.addTemplateToCart('.AsdHS18FIAAAFuNiUBWx0d');
-
-    verify(shoppingFacadeMock.addProductToBasket(anything(), anything())).never();
   });
 });
