@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
@@ -6,6 +7,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
+import { toArray } from 'rxjs/operators';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -18,7 +20,6 @@ import { PunchoutService } from '../../services/punchout/punchout.service';
 import {
   addPunchoutUser,
   addPunchoutUserFail,
-  addPunchoutUserSuccess,
   deletePunchoutUser,
   deletePunchoutUserFail,
   deletePunchoutUserSuccess,
@@ -27,7 +28,6 @@ import {
   loadPunchoutUsersSuccess,
   updatePunchoutUser,
   updatePunchoutUserFail,
-  updatePunchoutUserSuccess,
 } from './punchout-users.actions';
 import { PunchoutUsersEffects } from './punchout-users.effects';
 
@@ -38,6 +38,7 @@ describe('Punchout Users Effects', () => {
   let actions$: Observable<Action>;
   let effects: PunchoutUsersEffects;
   let punchoutService: PunchoutService;
+  let location: Location;
   let router: Router;
 
   const users = [{ id: 'ociUser', login: 'ociuser@test.de', email: 'ociuser@test.de' }] as PunchoutUser[];
@@ -68,6 +69,7 @@ describe('Punchout Users Effects', () => {
 
     effects = TestBed.inject(PunchoutUsersEffects);
     router = TestBed.inject(Router);
+    location = TestBed.inject(Location);
   });
 
   describe('loadPunchoutUsers$', () => {
@@ -134,19 +136,25 @@ describe('Punchout Users Effects', () => {
         done();
       });
     });
-    it('should map to action of type AddPunchoutUserSuccess and DisplaySuccessMessage', () => {
+
+    it('should map to action of type AddPunchoutUserSuccess and DisplaySuccessMessage and navigate to "/account/punchout"', done => {
       const action = addPunchoutUser({ user: users[0] });
+      actions$ = of(action);
 
-      const completion1 = addPunchoutUserSuccess({ user: users[0] });
-      const completion2 = displaySuccessMessage({
-        message: 'account.punchout.user.created.message',
-        messageParams: { 0: `${users[0].login}` },
-      });
-
-      actions$ = hot('        -a----a----a----|', { a: action });
-      const expected$ = cold('-(cd)-(cd)-(cd)-|', { c: completion1, d: completion2 });
-
-      expect(effects.createPunchoutUser$).toBeObservable(expected$);
+      effects.createPunchoutUser$.pipe(toArray()).subscribe(
+        actions => {
+          expect(actions).toMatchInlineSnapshot(`
+            [Punchout API] Add Punchout User Success:
+              user: {"id":"ociUser","login":"ociuser@test.de","email":"ociuser@t...
+            [Message] Success Toast:
+              message: "account.punchout.user.created.message"
+              messageParams: {"0":"ociuser@test.de"}
+          `);
+          expect(location.path()).toMatchInlineSnapshot(`"/account/punchout"`);
+        },
+        fail,
+        done
+      );
     });
 
     it('should dispatch a AddPunchoutUserFail action on failed user creation', () => {
@@ -172,19 +180,25 @@ describe('Punchout Users Effects', () => {
         done();
       });
     });
-    it('should map to action of type UpdatePunchoutUserSuccess and DisplaySuccessMessage', () => {
+
+    it('should map to action of type UpdatePunchoutUserSuccess and DisplaySuccessMessage and navigate to "/account/punchout"', done => {
       const action = updatePunchoutUser({ user: users[0] });
+      actions$ = of(action);
 
-      const completion1 = updatePunchoutUserSuccess({ user: users[0] });
-      const completion2 = displaySuccessMessage({
-        message: 'account.punchout.user.updated.message',
-        messageParams: { 0: `${users[0].login}` },
-      });
-
-      actions$ = hot('        -a----a----a----|', { a: action });
-      const expected$ = cold('-(cd)-(cd)-(cd)-|', { c: completion1, d: completion2 });
-
-      expect(effects.updatePunchoutUser$).toBeObservable(expected$);
+      effects.updatePunchoutUser$.pipe(toArray()).subscribe(
+        actions => {
+          expect(actions).toMatchInlineSnapshot(`
+            [Punchout API] Update Punchout User Success:
+              user: {"id":"ociUser","login":"ociuser@test.de","email":"ociuser@t...
+            [Message] Success Toast:
+              message: "account.punchout.user.updated.message"
+              messageParams: {"0":"ociuser@test.de"}
+          `);
+          expect(location.path()).toMatchInlineSnapshot(`"/account/punchout"`);
+        },
+        fail,
+        done
+      );
     });
 
     it('should dispatch a UpdatePunchoutUserFail action on failed user creation', () => {

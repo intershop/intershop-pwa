@@ -30,7 +30,7 @@ describe('Punchout Users Selectors', () => {
       declarations: [DummyComponent],
 
       imports: [
-        CoreStoreModule.forTesting(),
+        CoreStoreModule.forTesting(['router']),
         PunchoutStoreModule.forTesting('punchoutUsers'),
         RouterTestingModule.withRoutes([{ path: 'account/punchout/:PunchoutLogin', component: DummyComponent }]),
       ],
@@ -111,7 +111,10 @@ describe('Punchout Users Selectors', () => {
 
   describe('SelectedPunchoutUser', () => {
     beforeEach(() => {
-      const users = [{ login: '1' }, { login: '2' }] as PunchoutUser[];
+      const users = [
+        { id: '1', login: '1' },
+        { id: '2', login: '2' },
+      ] as PunchoutUser[];
       const successAction = loadPunchoutUsersSuccess({ users });
       store$.dispatch(successAction);
     });
@@ -122,13 +125,18 @@ describe('Punchout Users Selectors', () => {
         tick(500);
       }));
 
-      it('should return the category information when used', () => {
+      it('should return the punchout user information when used', () => {
         expect(getPunchoutUsers(store$.state)).not.toBeEmpty();
         expect(getPunchoutLoading(store$.state)).toBeFalse();
       });
 
       it('should return the selected user when the punchout user login is given as query param', () => {
-        expect(getSelectedPunchoutUser(store$.state)).toBeTruthy();
+        expect(getSelectedPunchoutUser(store$.state)).toMatchInlineSnapshot(`
+          Object {
+            "id": "1",
+            "login": "1",
+          }
+        `);
       });
     });
   });
