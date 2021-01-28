@@ -5,13 +5,13 @@ import { pick } from 'lodash-es';
 
 import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
 
-import { OciPunchoutEffects } from './oci-punchout/oci-punchout.effects';
-import { ociPunchoutReducer } from './oci-punchout/oci-punchout.reducer';
 import { PunchoutState } from './punchout-store';
+import { PunchoutUsersEffects } from './punchout-users/punchout-users.effects';
+import { punchoutUsersReducer } from './punchout-users/punchout-users.reducer';
 
-const punchoutReducers: ActionReducerMap<PunchoutState> = { ociPunchout: ociPunchoutReducer };
+const punchoutReducers: ActionReducerMap<PunchoutState> = { punchoutUsers: punchoutUsersReducer };
 
-const punchoutEffects = [OciPunchoutEffects];
+const punchoutEffects = [PunchoutUsersEffects];
 
 const metaReducers = [resetOnLogoutMeta];
 

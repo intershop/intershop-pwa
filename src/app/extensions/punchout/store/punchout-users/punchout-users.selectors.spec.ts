@@ -10,18 +10,18 @@ import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ng
 import { PunchoutUser } from '../../models/punchout-user/punchout-user.model';
 import { PunchoutStoreModule } from '../punchout-store.module';
 
-import { loadPunchoutUsers, loadPunchoutUsersFail, loadPunchoutUsersSuccess } from './oci-punchout.actions';
+import { loadPunchoutUsers, loadPunchoutUsersFail, loadPunchoutUsersSuccess } from './punchout-users.actions';
 import {
   getPunchoutError,
   getPunchoutLoading,
   getPunchoutUsers,
   getSelectedPunchoutUser,
-} from './oci-punchout.selectors';
+} from './punchout-users.selectors';
 
 @Component({ template: 'dummy' })
 class DummyComponent {}
 
-describe('Oci Punchout Selectors', () => {
+describe('Punchout Users Selectors', () => {
   let store$: StoreWithSnapshots;
   let router: Router;
 
@@ -31,7 +31,7 @@ describe('Oci Punchout Selectors', () => {
 
       imports: [
         CoreStoreModule.forTesting(),
-        PunchoutStoreModule.forTesting('ociPunchout'),
+        PunchoutStoreModule.forTesting('punchoutUsers'),
         RouterTestingModule.withRoutes([{ path: 'account/punchout/:PunchoutLogin', component: DummyComponent }]),
       ],
       providers: [provideStoreSnapshots()],

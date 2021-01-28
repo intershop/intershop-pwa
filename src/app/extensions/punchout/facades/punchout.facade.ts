@@ -12,7 +12,7 @@ import {
   loadPunchoutUsers,
   transferPunchoutBasket,
   updatePunchoutUser,
-} from '../store/oci-punchout';
+} from '../store/punchout-users';
 
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })

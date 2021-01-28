@@ -22,21 +22,21 @@ import {
   updatePunchoutUser,
   updatePunchoutUserFail,
   updatePunchoutUserSuccess,
-} from './oci-punchout.actions';
+} from './punchout-users.actions';
 
-export const ociPunchoutAdapter = createEntityAdapter<PunchoutUser>();
+export const punchoutUsersAdapter = createEntityAdapter<PunchoutUser>();
 
-export interface OciPunchoutState extends EntityState<PunchoutUser> {
+export interface PunchoutUsersState extends EntityState<PunchoutUser> {
   loading: boolean;
   error: HttpError;
 }
 
-export const initialState: OciPunchoutState = ociPunchoutAdapter.getInitialState({
+export const initialState: PunchoutUsersState = punchoutUsersAdapter.getInitialState({
   loading: false,
   error: undefined,
 });
 
-export const ociPunchoutReducer = createReducer(
+export const punchoutUsersReducer = createReducer(
   initialState,
   setLoadingOn(loadPunchoutUsers, addPunchoutUser, updatePunchoutUser, deletePunchoutUser, transferPunchoutBasket),
   setErrorOn(
@@ -54,8 +54,8 @@ export const ociPunchoutReducer = createReducer(
     transferPunchoutBasketSuccess
   ),
 
-  on(loadPunchoutUsersSuccess, (state, action) => ociPunchoutAdapter.upsertMany(action.payload.users, state)),
-  on(addPunchoutUserSuccess, (state, action) => ociPunchoutAdapter.addOne(action.payload.user, state)),
-  on(updatePunchoutUserSuccess, (state, action) => ociPunchoutAdapter.upsertOne(action.payload.user, state)),
-  on(deletePunchoutUserSuccess, (state, action) => ociPunchoutAdapter.removeOne(action.payload.login, state))
+  on(loadPunchoutUsersSuccess, (state, action) => punchoutUsersAdapter.upsertMany(action.payload.users, state)),
+  on(addPunchoutUserSuccess, (state, action) => punchoutUsersAdapter.addOne(action.payload.user, state)),
+  on(updatePunchoutUserSuccess, (state, action) => punchoutUsersAdapter.upsertOne(action.payload.user, state)),
+  on(deletePunchoutUserSuccess, (state, action) => punchoutUsersAdapter.removeOne(action.payload.login, state))
 );

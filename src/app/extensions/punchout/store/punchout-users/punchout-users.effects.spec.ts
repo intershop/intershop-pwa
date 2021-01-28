@@ -34,15 +34,15 @@ import {
   updatePunchoutUser,
   updatePunchoutUserFail,
   updatePunchoutUserSuccess,
-} from './oci-punchout.actions';
-import { OciPunchoutEffects } from './oci-punchout.effects';
+} from './punchout-users.actions';
+import { PunchoutUsersEffects } from './punchout-users.effects';
 
 @Component({ template: 'dummy' })
 class DummyComponent {}
 
-describe('Oci Punchout Effects', () => {
+describe('Punchout Users Effects', () => {
   let actions$: Observable<Action>;
-  let effects: OciPunchoutEffects;
+  let effects: PunchoutUsersEffects;
   let punchoutService: PunchoutService;
   let router: Router;
   let store$: Store;
@@ -56,7 +56,6 @@ describe('Oci Punchout Effects', () => {
     when(punchoutService.updateUser(anything())).thenReturn(of(users[0]));
     when(punchoutService.deleteUser(users[0].login)).thenReturn(of(undefined));
     when(punchoutService.getBasketPunchoutData(anyString())).thenReturn(of(undefined));
-    when(punchoutService.submitPunchoutData(anything())).thenReturn(void);
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -70,13 +69,13 @@ describe('Oci Punchout Effects', () => {
         ]),
       ],
       providers: [
-        OciPunchoutEffects,
+        PunchoutUsersEffects,
         provideMockActions(() => actions$),
         { provide: PunchoutService, useFactory: () => instance(punchoutService) },
       ],
     });
 
-    effects = TestBed.inject(OciPunchoutEffects);
+    effects = TestBed.inject(PunchoutUsersEffects);
     router = TestBed.inject(Router);
     store$ = TestBed.inject(Store);
   });

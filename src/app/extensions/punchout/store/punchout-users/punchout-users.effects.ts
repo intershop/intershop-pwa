@@ -27,10 +27,10 @@ import {
   updatePunchoutUser,
   updatePunchoutUserFail,
   updatePunchoutUserSuccess,
-} from './oci-punchout.actions';
+} from './punchout-users.actions';
 
 @Injectable()
-export class OciPunchoutEffects {
+export class PunchoutUsersEffects {
   constructor(
     private punchoutService: PunchoutService,
     private actions$: Actions,

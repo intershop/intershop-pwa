@@ -1,9 +1,9 @@
 import { createFeatureSelector } from '@ngrx/store';
 
-import { OciPunchoutState } from './oci-punchout/oci-punchout.reducer';
+import { PunchoutUsersState } from './punchout-users/punchout-users.reducer';
 
 export interface PunchoutState {
-  ociPunchout: OciPunchoutState;
+  punchoutUsers: PunchoutUsersState;
 }
 
 export const getPunchoutState = createFeatureSelector<PunchoutState>('punchout');
