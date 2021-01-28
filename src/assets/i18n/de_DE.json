@@ -868,6 +868,7 @@
   "quote.state.unknown": "Unbekannt",
   "quoterequest.not_editable.error": "Sie haben die Preisanfrage bereits gesendet. <a href=\"javascript:location.reload()\">Laden Sie diese Seite neu</a>, um die Änderungen zu sehen.",
   "recaptcha.v2.incorrect.error": "Beweisen Sie, dass Sie keine Maschine sind.",
+  "recaptcha.v3.info_text": "Diese Seite ist durch reCAPTCHA geschützt und es gelten die Google <a href=\"{{0}}\" target=\"_blank\">Datenschutzbestimmungen</a> und <a href=\"{{1}}\" target=\"_blank\">Nutzungsbedingungen</a>.",
   "recentlyViewed.component.heading": "Zuletzt angesehen",
   "registration.tac.error.tip": "Bitte stimmen Sie den Bedingungen zu, um fortzufahren.",
   "registration.tac_privacy_policy.text": "Ich akzeptiere die <a href=\"{{0}}\" target=\"_blank\">AGB</a> und <a href=\"{{1}}\" target=\"_blank\">Datenschutzhinweise</a>.",

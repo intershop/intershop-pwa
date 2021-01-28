@@ -1,9 +1,13 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
+import { TranslateModule } from '@ngx-translate/core';
+import { MockDirective } from 'ng-mocks';
+import { RECAPTCHA_V3_SITE_KEY, ReCaptchaV3Service } from 'ng-recaptcha';
 import { EMPTY, of } from 'rxjs';
 import { anyString, instance, mock, when } from 'ts-mockito';
+
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 
 import { CaptchaFacade } from '../../facades/captcha.facade';
 import { CaptchaV2Component, CaptchaV2ComponentModule } from '../../shared/captcha-v2/captcha-v2.component';
@@ -30,8 +34,13 @@ describe('Lazy Captcha Component', () => {
       .overrideModule(CaptchaV2ComponentModule, { set: { entryComponents: [CaptchaV2Component] } })
       .overrideModule(CaptchaV3ComponentModule, {
         set: {
+          imports: [TranslateModule.forRoot()],
+          declarations: [CaptchaV3Component, MockDirective(ServerHtmlDirective)],
           entryComponents: [CaptchaV3Component],
-          providers: [{ provide: RECAPTCHA_V3_SITE_KEY, useValue: 'captchaSiteKeyQWERTY' }],
+          providers: [
+            { provide: RECAPTCHA_V3_SITE_KEY, useValue: 'captchaSiteKeyQWERTY' },
+            { provide: ReCaptchaV3Service },
+          ],
         },
       })
       .compileComponents();
@@ -70,7 +79,14 @@ describe('Lazy Captcha Component', () => {
     fixture.detectChanges();
 
     tick(500);
-    expect(element).toMatchInlineSnapshot(`<ish-captcha-v3></ish-captcha-v3>`);
+    expect(element).toMatchInlineSnapshot(`
+      <ish-captcha-v3
+        ><div class="row">
+          <div class="offset-md-4 col-md-8">
+            <p class="form-text" data-testing-id="recaptcha-v3-info"></p>
+          </div></div
+      ></ish-captcha-v3>
+    `);
     const v3Cmp: CaptchaV3Component = fixture.debugElement.query(By.css('ish-captcha-v3'))?.componentInstance;
     expect(v3Cmp).toBeTruthy();
   }));

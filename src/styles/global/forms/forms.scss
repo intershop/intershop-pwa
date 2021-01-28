@@ -99,6 +99,10 @@ input[type='file'] {
   }
 }
 
+.grecaptcha-badge {
+  visibility: hidden;
+}
+
 .filter-dropdown {
   position: relative;
   padding-bottom: 15px;

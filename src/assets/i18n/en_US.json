@@ -870,6 +870,7 @@
   "quote.state.unknown": "Unknown",
   "quoterequest.not_editable.error": "You have already submitted the quote request. Please <a href=\"javascript:location.reload()\">reload</a> this page to view the changes.",
   "recaptcha.v2.incorrect.error": "Please verify you are a real person.",
+  "recaptcha.v3.info_text": "This site is protected by reCAPTCHA and the Google <a href=\"{{0}}\" target=\"_blank\">Privacy Policy</a> and <a href=\"{{1}}\" target=\"_blank\">Terms of Service</a> apply.",
   "recentlyViewed.component.heading": "Recently Viewed",
   "registration.tac.error.tip": "Please agree to the terms to continue.",
   "registration.tac_privacy_policy.text": "I agree to the <a href=\"{{0}}\" target=\"_blank\">Terms & Conditions</a> and <a href=\"{{1}}\" target=\"_blank\">Privacy Policy</a>.",
