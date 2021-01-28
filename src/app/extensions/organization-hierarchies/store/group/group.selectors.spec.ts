@@ -9,6 +9,7 @@ import { OrganizationHierarchiesStoreModule } from '../organization-hierarchies-
 
 import { loadGroups, loadGroupsFail, loadGroupsSuccess, selectGroup } from './group.actions';
 import {
+  getGroupDetails,
   getGroupsOfOrganization,
   getGroupsOfOrganizationCount,
   getSelectedGroupDetails,
@@ -49,6 +50,13 @@ describe('Group Selectors', () => {
       store$.dispatch(loadGroupsSuccess({ groups }));
       expect(getGroupsOfOrganization(store$.state)).not.toBeEmpty();
       expect(getGroupsOfOrganizationCount(store$.state)).toBe(2);
+      expect(getGroupDetails('not-existing')(store$.state)).toBeUndefined();
+      expect(getGroupDetails('1')(store$.state)).toMatchInlineSnapshot(`
+        Object {
+          "id": "1",
+          "name": "Test 1",
+        }
+      `);
     });
 
     it('should set loading to false and set error state', () => {
