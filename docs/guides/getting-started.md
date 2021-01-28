@@ -7,14 +7,23 @@ kb_sync_latest_only
 
 # Getting Started
 
+## VSCode Remote-Containers
+
+> If you don't want to be part of the future of development start with [Old-School Quick Start](#old-school-quick-start)
+
+For using VSCode Remote-Containers, [Docker](https://docs.docker.com/get-docker) has to be installed on your development machine.
+
+After also installing [VSCode](https://code.visualstudio.com), install the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension.
+After cloning your local working copy (of course, with VSCode), you will be asked if you want to reopen the folder in a container.
+By doing this, VSCode will prepare your environment for you.
+It installs Node.js LTS, Angular CLI and also performs all required setup steps to get you started in an isolated environment.
+
+Open a console in VSCode and run `ng serve` to start developing.
+
+## Old-School Quick Start
+
 Before working with this project, download and install [Node.js](https://nodejs.org) with the included npm package manager.
 Currently Node.js 14.x LTS with the corresponding npm is required.
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) and follows the Angular CLI style guide and naming conventions.
-
----
-
-## Quick Start
 
 After having cloned the project from the Git repository, open a command line in the project folder and run `npm install`.
 
