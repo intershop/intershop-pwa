@@ -133,7 +133,7 @@ export class OciPunchoutEffects {
       filter(([, basketId]) => !!basketId),
       concatMap(([, basketId]) =>
         this.punchoutService.getBasketPunchoutData(basketId).pipe(
-          concatMap(data => this.punchoutService.submitPunchoutData(data)),
+          map(data => this.punchoutService.submitPunchoutData(data)),
           mapTo(startOCIPunchoutSuccess()),
           mapErrorToAction(startOCIPunchoutFail)
         )

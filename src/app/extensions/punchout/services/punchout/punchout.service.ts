@@ -1,7 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
@@ -75,7 +75,7 @@ export class PunchoutService {
   }
 
   /**
-   * Deletes an oci punchout user.
+   * Deletes a punchout user.
    * @param login   The login of the punchout user.
    */
   deleteUser(login: string): Observable<void> {
@@ -90,11 +90,8 @@ export class PunchoutService {
     );
   }
 
-  // tslint:disable-next-line:force-jsdoc-comments
-  // !! ToDo: tests are missing !!
-
   /**
-   * Gets the json object for the oci punchout.
+   * Gets a JSON object with the necessary punchout data for the basket transfer.
    * @param basketId   The basket id for the punchout.
    */
   getBasketPunchoutData(basketId: string): Observable<Attribute<string>[]> {
@@ -114,32 +111,29 @@ export class PunchoutService {
   }
 
   /**
-   * TODO: Gets the json object for the oci punchout.
-   * @param productSKU   The basket id for the punchout.
-   * @param quantity   The basket id for the punchout.
+   * Gets a JSON object with the necessary punchout data for the product validation.
+   * @param productSKU   The product SKU of the product to validate.
+   * @param quantity     The quantity for the validation.
    */
-  getProductPunchoutData(productSKU: string, quantity = 1): Observable<Attribute<string>[]> {
+  getProductPunchoutData(productSKU: string, quantity: string): Observable<Attribute<string>[]> {
     if (!productSKU) {
       return throwError('getProductPunchoutData() of the punchout service called without productSKU');
     }
 
     return this.currentCustomer$.pipe(
-      switchMap(() =>
+      switchMap(customer =>
         this.apiService
-          .get<{ data: Attribute<string>[] }>(`punchouts/oci/validate`, {
-            params: new HttpParams().set('productSKU', productSKU).set('quantity', quantity.toString()),
+          .get<{ data: Attribute<string>[] }>(`customers/${customer.customerNo}/punchouts/oci/validate`, {
+            params: new HttpParams().set('productSKU', productSKU).set('quantity', quantity),
           })
-          // .get<{ data: Attribute<string>[] }>(`customers/${customer.customerNo}/punchouts/oci/validate`, {
-          //   params: new HttpParams().set('productSKU', productSKU).set('quantity', quantity.toString()),
-          // })
           .pipe(map(data => data.data))
       )
     );
   }
 
   /**
-   * TODO: Gets the json object for the oci punchout.
-   * @param searchString   The basket id for the punchout.
+   * Gets a JSON object with the necessary punchout data for the background search.
+   * @param searchString   The search string to search punchout products.
    */
   getSearchPunchoutData(searchString: string): Observable<Attribute<string>[]> {
     if (!searchString) {
@@ -147,67 +141,56 @@ export class PunchoutService {
     }
 
     return this.currentCustomer$.pipe(
-      switchMap(() =>
+      switchMap(customer =>
         this.apiService
-          .get<{ data: Attribute<string>[] }>(`punchouts/oci/search`, {
+          .get<{ data: Attribute<string>[] }>(`customers/${customer.customerNo}/punchouts/oci/search`, {
             params: new HttpParams().set('searchString', searchString),
           })
-          // .get<{ data: Attribute<string>[] }>(`customers/${customer.customerNo}/punchouts/oci/search`, {
-          //   params: new HttpParams().set('searchString', searchString),
-          // })
           .pipe(map(data => data.data))
       )
     );
   }
 
   /**
-   * TODO: Gets the json object for the oci punchout.
+   * Submits the punchout data via HTML form to the punchout system configured in the HOOK_URL
+   * @param data     The punchout data retrieved from ICM.
+   * @param submit   Controls whether the HTML form is actually submitted (default) or not (only created in the document body).
    */
   submitPunchoutData(data: Attribute<string>[], submit = true) {
     const hookUrl = this.cookiesService.get('hookURL');
-    // TODO: check HOOK_URL format (with or whithout http)
     if (!hookUrl) {
-      return throwError('no HOOK_URL available in cookies to sendOciPunchoutData()');
+      return throwError('no HOOK_URL available in cookies to submitPunchoutData()');
     }
     if (!data || !data.length) {
-      return throwError('sendOciPunchoutData() of the punchout service called without data');
+      return throwError('submitPunchoutData() of the punchout service called without data');
     }
 
-    // create a form and send it to the hook Url
-    const ociform = this.createOciForm(hookUrl, data);
+    // create a form and send it to the hook URL
+    const form = this.createOciForm(data, hookUrl);
     document.body.innerHTML = '';
-    document.body.appendChild(ociform);
+    document.body.appendChild(form);
     if (submit) {
-      ociform.submit();
+      form.submit();
     }
-    return of();
   }
 
   /**
-   * Creates a form with hidden input field that reflects the attributes of the basket items.
-   * @param   hookUrl   The hook Url
+   * Creates an OCI punchout compatible form with hidden input fields that reflect the attributes of the punchout data.
    * @param   data      Attributes (key value pair) array
-   * @returns             The create hidden input field
+   * @param   hookUrl   The hook URL
+   * @returns           The OCI punchout form
    */
-  private createOciForm(hookUrl: string, data: Attribute<string>[]): HTMLFormElement {
-    const ociform = document.createElement('form');
-    ociform.method = 'POST';
-    ociform.action = hookUrl;
-    ociform.style.display = 'none';
-    data.forEach(e => ociform.appendChild(this.createHiddenInput(e)));
-    return ociform;
-  }
-
-  /**
-   * Creates a hidden input field for the ociform.
-   * @param   inputData   Attribute (key value pair)
-   * @returns             The create hidden input field
-   */
-  private createHiddenInput(inputData: Attribute<string>): HTMLInputElement {
-    const input = document.createElement('input'); // prepare a new input DOM element
-    input.setAttribute('name', inputData.name); // set the param name
-    input.setAttribute('value', inputData.value); // set the value
-    input.setAttribute('type', 'hidden'); // set the type, like "hidden" or other
-    return input;
+  private createOciForm(data: Attribute<string>[], hookUrl: string): HTMLFormElement {
+    const ociForm = document.createElement('form');
+    ociForm.method = 'post';
+    ociForm.action = hookUrl;
+    data.forEach(inputData => {
+      const input = document.createElement('input'); // prepare a new input DOM element
+      input.setAttribute('name', inputData.name); // set the param name
+      input.setAttribute('value', inputData.value); // set the value
+      input.setAttribute('type', 'hidden'); // set the type "hidden"
+      ociForm.appendChild(input); // add the input to the OCI form
+    });
+    return ociForm;
   }
 }
