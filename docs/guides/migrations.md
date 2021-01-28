@@ -7,6 +7,10 @@ kb_sync_latest_only
 
 # Migrations
 
+## 0.26 to 0.27
+
+We upgraded Cypress from Version 4 to 6 and followed all migrations in their [Migration Guide](https://docs.cypress.io/guides/references/migration-guide.html).
+
 ## 0.25 to 0.26
 
 The project configuration was updated to use and test with Node.js version 14.15.0 LTS (including npm 6.14.8) for any further development.

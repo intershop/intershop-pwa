@@ -65,7 +65,7 @@ describe('Search Box', () => {
 
   it('should follow search when using buttons with mouse', () => {
     at(HomePage, page => {
-      page.header.searchBox.clearButton.should('not.be.visible');
+      page.header.searchBox.clearButton.should('not.exist');
       page.header.searchBox.searchButton.should('be.visible');
 
       page.header.searchBox.type('ko');

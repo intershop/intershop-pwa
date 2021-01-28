@@ -31,7 +31,7 @@ describe('Quote Handling as Anonymous User', () => {
     it('user should log in and land at product detail page with open dialog', () => {
       at(LoginPage, page => {
         page.fillForm(_.user.login, _.user.password);
-        page.submit().its('status').should('equal', 200);
+        page.submit().its('response.statusCode').should('equal', 200);
       });
       at(ProductDetailPage, page => page.sku.should('have.text', _.product.sku));
       at(QuoteRequestDialog);

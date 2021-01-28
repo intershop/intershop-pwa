@@ -28,9 +28,13 @@ export function createUserViaREST(user: Partial<Registration>) {
     preferredLanguage: 'en_US',
   };
 
-  cy.request('POST', Cypress.env('ICM_BASE_URL') + '/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/customers', customer)
-    .its('status')
-    .should('equal', 201);
+  cy.request(
+    'POST',
+    Cypress.env('ICM_BASE_URL') + '/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/customers',
+    customer
+  ).then(response => {
+    expect(response.status).to.equal(201);
+  });
 }
 
 export function createBasketViaREST(user: Partial<Registration>, lineItems: { [sku: string]: number }) {

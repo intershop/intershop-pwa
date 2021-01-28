@@ -52,7 +52,7 @@ export function createB2BUserViaREST(user: Partial<Registration>) {
     'POST',
     Cypress.env('ICM_BASE_URL') + '/INTERSHOP/rest/WFS/inSPIRED-inTRONICS_Business-Site/-/customers',
     customer
-  )
-    .its('status')
-    .should('equal', 201);
+  ).then(response => {
+    expect(response.status).to.equal(201);
+  });
 }

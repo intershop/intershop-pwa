@@ -41,7 +41,7 @@ export class SearchBoxModule {
   }
 
   assertNoSuggestions() {
-    this.suggestionsOverlay().should('not.be.visible');
+    this.suggestionsOverlay().should('not.exist');
   }
 
   clickSuggestion(text: string) {

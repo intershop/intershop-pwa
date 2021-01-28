@@ -17,7 +17,9 @@ describe('Logged in Sleeping User', () => {
   describe('being a long time on a family page', () => {
     it('should wait a long time on family page after logging in', () => {
       LoginPage.navigateTo('/category/' + _.category);
-      at(LoginPage, page => page.fillForm(_.user.login, _.user.password).submit().its('status').should('equal', 200));
+      at(LoginPage, page =>
+        page.fillForm(_.user.login, _.user.password).submit().its('response.statusCode').should('equal', 200)
+      );
       at(FamilyPage, page => {
         waitLoadingEnd(3000);
         page.productList.productTile(_.product).should('be.visible');
@@ -26,17 +28,13 @@ describe('Logged in Sleeping User', () => {
     });
 
     it('should not go to error page but get logged out when clicking on product after a long time', () => {
-      cy.server()
-        .route({
-          method: 'GET',
-          url: `**/products/${_.product}*`,
-          status: 400,
-          response: 'Bad Request (AuthenticationTokenInvalid)',
-        })
-        .as('invalid');
+      cy.intercept('GET', `**/products/${_.product}*`, {
+        statusCode: 400,
+        body: 'Bad Request (AuthenticationTokenInvalid)',
+      }).as('invalid');
       at(FamilyPage, page => {
         page.productList.gotoProductDetailPageBySku(_.product, () => cy.wait('@invalid'));
-        cy.route({
+        cy.intercept({
           method: 'GET',
           url: `**/products/${_.product}*`,
         });
@@ -44,7 +42,7 @@ describe('Logged in Sleeping User', () => {
         cy.wait(5000);
       });
       at(LoginPage, page => {
-        page.header.myAccountLink.should('not.have.text', `${_.user.firstName} ${_.user.lastName}`);
+        page.header.myAccountLink.should('not.exist');
         page.infoText.should('contain.text', 'logged out automatically');
       });
     });
@@ -53,7 +51,9 @@ describe('Logged in Sleeping User', () => {
   describe('being a long time on a myaccount page', () => {
     it('should wait a long time on myaccount page after logging in', () => {
       LoginPage.navigateTo('/account/wishlists');
-      at(LoginPage, page => page.fillForm(_.user.login, _.user.password).submit().its('status').should('equal', 200));
+      at(LoginPage, page =>
+        page.fillForm(_.user.login, _.user.password).submit().its('response.statusCode').should('equal', 200)
+      );
       at(MyAccountPage, page => {
         page.header.myAccountLink.should('have.text', `${_.user.firstName} ${_.user.lastName}`);
         waitLoadingEnd(2000);
@@ -61,25 +61,21 @@ describe('Logged in Sleeping User', () => {
     });
 
     it('should go to login page and get logged out when clicking on addresses after a long time', () => {
-      cy.server()
-        .route({
-          method: 'GET',
-          url: `**`,
-          status: 400,
-          response: 'Bad Request (AuthenticationTokenInvalid)',
-        })
-        .as('invalid');
+      cy.intercept('GET', `**/addresses`, {
+        statusCode: 400,
+        body: 'Bad Request (AuthenticationTokenInvalid)',
+      }).as('invalid');
       at(MyAccountPage, page => {
         page.navigateToAddresses();
         cy.wait('@invalid');
-        cy.route({
+        cy.intercept({
           method: 'GET',
           url: `**`,
         });
         cy.wait(5000);
       });
       at(LoginPage, page => {
-        page.header.myAccountLink.should('not.have.text', `${_.user.firstName} ${_.user.lastName}`);
+        page.header.myAccountLink.should('not.exist');
         page.infoText.should('contain.text', 'logged out automatically');
       });
     });

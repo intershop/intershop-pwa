@@ -30,7 +30,7 @@ describe('Quote Handling', () => {
     LoginPage.navigateTo();
     at(LoginPage, page => {
       page.fillForm(_.user.login, _.user.password);
-      page.submit().its('status').should('equal', 200);
+      page.submit().its('response.statusCode').should('equal', 200);
     });
   });
 
@@ -72,7 +72,7 @@ describe('Quote Handling', () => {
     at(FamilyPage, page => page.productList.gotoProductDetailPageBySku(_.product.sku));
     at(ProductDetailPage, page => {
       page.setQuantity(quantity);
-      page.addProductToCart().its('status').should('equal', 201);
+      page.addProductToCart().its('response.statusCode').should('equal', 201);
       page.header.miniCart.goToCart();
     });
     at(CartPage, page => {
@@ -80,7 +80,16 @@ describe('Quote Handling', () => {
     });
     at(QuoteDetailPage, page => {
       page.totalPrice.should('contain', _.product.price * quantity);
+    });
+  });
+
+  it('user deletes item and quote', () => {
+    at(QuoteDetailPage, page => {
       page.deleteItemFromQuoteRequest();
+      page.breadcrumb.items.eq(2).click();
+    });
+    at(QuoteListPage, page => {
+      page.deleteQuote(0);
     });
   });
 
@@ -109,7 +118,7 @@ describe('Quote Handling', () => {
     at(QuoteDetailPage, page => {
       page.copyQuoteRequest();
       page.quoteState.should('have.text', 'New');
-      page.totalPrice.should('contain', _.product.price);
+      page.totalPrice.should('contain', _.product.price * 4);
     });
   });
 
