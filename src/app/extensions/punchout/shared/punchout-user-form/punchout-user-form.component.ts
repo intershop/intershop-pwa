@@ -4,7 +4,7 @@ import { FormGroup } from '@angular/forms';
 @Component({
   selector: 'ish-punchout-user-form',
   templateUrl: './punchout-user-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class PunchoutUserFormComponent {
   @Input() form: FormGroup;
