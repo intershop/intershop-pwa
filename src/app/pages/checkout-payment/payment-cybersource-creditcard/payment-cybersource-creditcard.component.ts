@@ -28,7 +28,7 @@ declare var Flex: any;
 @Component({
   selector: 'ish-payment-cybersource-creditcard',
   templateUrl: './payment-cybersource-creditcard.component.html',
-  styleUrls: ['./payment-cybersource-creditcard.scss'],
+  styleUrls: ['./payment-cybersource-creditcard.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestroy, OnInit {
@@ -62,8 +62,7 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
   @Output() cancel = new EventEmitter<void>();
   @Output() submit = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
 
-  // tslint:disable-next-line: private-destroy-field
-  protected destroy$ = new Subject();
+  private destroy$ = new Subject();
 
   /**
    * flag to make sure that the init script is executed only once
@@ -106,9 +105,9 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
     }
   }
 
-  // tslint:disable-next-line: rxjs-prefer-angular-takeuntil
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 
   /**
@@ -124,7 +123,6 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
     return parameter.value;
   }
 
-  // tslint:disable-next-line:no-empty
   loadScript() {
     // load script only once if component becomes visible
     if (this.activated) {

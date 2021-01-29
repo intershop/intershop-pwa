@@ -5,7 +5,7 @@
 
 <div [formGroup]="cyberSourceCreditCardForm">
   <!-- Containers in which we will load microform -->
-  <div class="row form-group" [ngClass]="{ 'has-error': errorMessage.number && errorMessage.number.message }">
+  <div class="row form-group" [ngClass]="{ 'has-error': errorMessage?.number.message }">
     <label class="col-form-label col-md-4" for="number-container"
       >{{ 'checkout.credit_card.number.label' | translate }}<span class="required">*</span></label
     >
