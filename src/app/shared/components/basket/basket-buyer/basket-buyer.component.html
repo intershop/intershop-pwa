@@ -1,6 +1,12 @@
 <div *ngIf="object">
   <ng-container *ngIf="customer$ | async as customer; else companyFromInvoice">
-    {{ customer.companyName }} {{ customer.companyName2 }}
+    {{ customer.companyName }}
+    <span *ngIf="customer.companyName2">{{ customer.companyName2 }}</span>
+    <span *ngIf="object.buyingContext" class="separator">&#124;</span>
+    <ish-lazy-hierarchy-group-name
+      *ishFeature="'organizationHierarchies'"
+      [buyingGroupId]="object.buyingContext"
+    ></ish-lazy-hierarchy-group-name>
   </ng-container>
   <ng-template #companyFromInvoice>
     {{ object.invoiceToAddress.companyName1 }} {{ object.invoiceToAddress.companyName2 }}
