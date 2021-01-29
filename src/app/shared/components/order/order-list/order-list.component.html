@@ -47,10 +47,12 @@
                 {{ 'account.orderlist.orderDetails.orderNo.label' | translate }}</label
               >
               <a [routerLink]="'/account/orders/' + order.id">{{ order.documentNo }}</a>
-              <ish-lazy-hierarchy-group-name
-                *ishFeature="'organizationHierarchies'"
-                [buyingGroupId]="order.buyingContext"
-              ></ish-lazy-hierarchy-group-name>
+              <p>
+                <ish-lazy-hierarchy-group-name
+                  *ishFeature="'organizationHierarchies'"
+                  [buyingGroupId]="order.buyingContext"
+                ></ish-lazy-hierarchy-group-name>
+              </p>
             </div>
 
             <!-- Order items count -->

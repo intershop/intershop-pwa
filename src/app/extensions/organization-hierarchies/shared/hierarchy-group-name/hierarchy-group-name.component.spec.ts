@@ -49,6 +49,6 @@ describe('Hierarchy Group Name Component', () => {
     const group: OrganizationGroup = { id: 'test-group', name: 'Test Group' };
     when(organizationHierarchiesFacade.getDetailsOfGroup$(strictEqual('test-group'))).thenReturn(of(group));
     fixture.detectChanges();
-    expect(element).toMatchInlineSnapshot(`<p>Group: Test Group</p>`);
+    expect(element).toMatchInlineSnapshot(`Group: Test Group`);
   });
 });
