@@ -5,7 +5,7 @@ import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { UUID } from 'angular2-uuid';
-import { Observable, throwError, timer } from 'rxjs';
+import { Observable, from, throwError, timer } from 'rxjs';
 import { catchError, concatMap, first, map, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -69,15 +69,16 @@ export class Auth0IdentityProvider implements IdentityProvider {
       // Your Auth0 account's logout url
       // Derive it from your application's domain
       logoutUrl: `https://${config.domain}/v2/logout`,
+
+      sessionChecksEnabled: true,
     });
+
+    this.oauthService.setupAutomaticSilentRefresh();
 
     this.apiTokenService
       .restore$(['basket', 'order'])
       .pipe(
-        tap(() => {
-          this.oauthService.setupAutomaticSilentRefresh();
-          this.oauthService.loadDiscoveryDocumentAndTryLogin();
-        }),
+        switchMap(() => from(this.oauthService.loadDiscoveryDocumentAndTryLogin())),
         switchMapTo(
           timer(0, 200).pipe(
             map(() => this.oauthService.getIdToken()),
