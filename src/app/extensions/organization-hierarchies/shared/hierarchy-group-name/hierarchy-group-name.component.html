@@ -1,1 +1,3 @@
-<p *ngIf="group$ | async as group">{{ 'organization.group.label' | translate: { '0': group.name } }}</p>
+<ng-container *ngIf="group$ | async as group">{{
+  'organization.group.label' | translate: { '0': group.name }
+}}</ng-container>
