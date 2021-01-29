@@ -6,6 +6,7 @@ import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { AccordionItemComponent } from 'ish-shared/components/common/accordion-item/accordion-item.component';
 import { AccordionComponent } from 'ish-shared/components/common/accordion/accordion.component';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
@@ -44,6 +45,7 @@ describe('Product Detail Component', () => {
       imports: [
         FeatureToggleModule.forTesting(),
         ReactiveFormsModule,
+        RoleToggleModule.forTesting(),
         RouterTestingModule.withRoutes([{ path: 'search', component: ProductDetailComponent }]),
         TranslateModule.forRoot(),
       ],

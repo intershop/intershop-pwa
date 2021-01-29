@@ -6,6 +6,7 @@ import { MockComponent, MockPipe } from 'ng-mocks';
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
+import { RoleToggleModule } from 'ish-core/role-toggle.module';
 
 import { AccountUserInfoComponent } from '../account-user-info/account-user-info.component';
 
@@ -26,6 +27,7 @@ describe('Account Navigation Component', () => {
       ],
       imports: [
         AuthorizationToggleModule.forTesting('APP_B2B_MANAGE_USERS', 'APP_B2B_PURCHASE'),
+        RoleToggleModule.forTesting(),
         RouterTestingModule,
         TranslateModule.forRoot(),
       ],

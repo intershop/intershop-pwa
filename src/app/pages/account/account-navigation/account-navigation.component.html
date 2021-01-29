@@ -3,17 +3,19 @@
     <ish-account-user-info></ish-account-user-info>
     <ng-container *ngFor="let item of navigationItems | keyvalue: unsorted; let first = first">
       <ng-container *ishIsAuthorizedTo="item.value.permission || 'always'">
-        <li
-          *ngIf="
-            (item.value.feature || 'always' | ishFeature) && (item.value.serverSetting || 'always' | ishServerSetting)
-          "
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: first }"
-        >
-          <a [routerLink]="item.key" [attr.data-testing-id]="item.value.dataTestingId">{{
-            item.value.localizationKey | translate
-          }}</a>
-        </li>
+        <ng-container *ishHasNotRole="item.value.notRole">
+          <li
+            *ngIf="
+              (item.value.feature || 'always' | ishFeature) && (item.value.serverSetting || 'always' | ishServerSetting)
+            "
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: first }"
+          >
+            <a [routerLink]="item.key" [attr.data-testing-id]="item.value.dataTestingId">{{
+              item.value.localizationKey | translate
+            }}</a>
+          </li>
+        </ng-container>
       </ng-container>
       <ul *ngIf="item.value.children" class="account-navigation list-unstyled">
         <ng-container *ngFor="let subItem of item.value.children | keyvalue: unsorted">
@@ -39,15 +41,17 @@
   <select (change)="navigateTo($event.target)" class="form-control">
     <ng-container *ngFor="let item of navigationItems | keyvalue: unsorted">
       <ng-container *ishIsAuthorizedTo="item.value.permission || 'always'">
-        <option
-          *ngIf="
-            (item.value.feature || 'always' | ishFeature) && (item.value.serverSetting || 'always' | ishServerSetting)
-          "
-          [value]="item.key"
-          [attr.selected]="isSelected(item.key)"
-        >
-          {{ item.value.localizationKey | translate }}
-        </option>
+        <ng-container *ishHasNotRole="item.value.notRole">
+          <option
+            *ngIf="
+              (item.value.feature || 'always' | ishFeature) && (item.value.serverSetting || 'always' | ishServerSetting)
+            "
+            [value]="item.key"
+            [attr.selected]="isSelected(item.key)"
+          >
+            {{ item.value.localizationKey | translate }}
+          </option>
+        </ng-container>
       </ng-container>
     </ng-container>
   </select>

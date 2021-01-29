@@ -1,0 +1,44 @@
+<fieldset>
+  <ish-input
+    [form]="form"
+    controlName="login"
+    label="account.punchout.username.label"
+    markRequiredLabel="off"
+    [disabled]="update"
+    [errorMessages]="{
+      required: 'account.punchout.username.error.required',
+      punchoutLogin: 'account.punchout.username.invalid'
+    }"
+  ></ish-input>
+  <div class="offset-md-4 col-md-8">
+    <ish-checkbox [form]="form" controlName="active" label="account.user.active.label"></ish-checkbox>
+  </div>
+</fieldset>
+<fieldset>
+  <ish-input
+    [form]="form"
+    type="password"
+    controlName="password"
+    [label]="update ? 'account.punchout.password.new.label' : 'account.punchout.password.label'"
+    markRequiredLabel="off"
+    [errorMessages]="{
+      required: 'account.punchout.password.error.required',
+      password: 'account.update_password.new_password.error.regexp'
+    }"
+    ><small class="input-help">{{ 'account.register.password.extrainfo.message' | translate: { '0': '7' } }}</small>
+  </ish-input>
+  <ish-input
+    [form]="form"
+    type="password"
+    controlName="passwordConfirmation"
+    [label]="
+      update ? 'account.punchout.password.new.confirmation.label' : 'account.punchout.password.confirmation.label'
+    "
+    markRequiredLabel="off"
+    [errorMessages]="{
+      required: 'account.punchout.password.confirmation.error.required',
+      password: 'account.update_password.new_password.error.regexp',
+      equalTo: 'account.update_password.confirm_password.error.stringcompare'
+    }"
+  ></ish-input>
+</fieldset>

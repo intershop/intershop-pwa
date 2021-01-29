@@ -1,5 +1,11 @@
 <ng-container *ngIf="isLoggedIn$ | async; else elseTemplate">
-  <a class="btn btn-secondary" id="createQuote" name="createQuote" (click)="addToQuote()">
+  <a
+    *ishHasNotRole="'APP_B2B_OCI_USER'"
+    class="btn btn-secondary"
+    id="createQuote"
+    name="createQuote"
+    (click)="addToQuote()"
+  >
     {{ 'shopping_cart.quote.create.button' | translate }}
   </a>
 </ng-container>

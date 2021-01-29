@@ -10,6 +10,7 @@ import { mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Product } from 'ish-core/models/product/product.model';
+import { RoleToggleModule } from 'ish-core/role-toggle.module';
 
 import { ProductAddToQuoteComponent } from './product-add-to-quote.component';
 
@@ -27,7 +28,11 @@ describe('Product Add To Quote Component', () => {
     when(accountFacade.isLoggedIn$).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]), TranslateModule.forRoot()],
+      imports: [
+        RoleToggleModule.forTesting(),
+        RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
+        TranslateModule.forRoot(),
+      ],
       declarations: [DummyComponent, MockComponent(FaIconComponent), ProductAddToQuoteComponent],
     }).compileComponents();
   });

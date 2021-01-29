@@ -3,6 +3,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
+import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
+import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
@@ -15,6 +17,7 @@ import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dia
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 
 import { LazyBasketCreateOrderTemplateComponent } from '../../../extensions/order-templates/exports/lazy-basket-create-order-template/lazy-basket-create-order-template.component';
+import { LazyPunchoutTransferBasketComponent } from '../../../extensions/punchout/exports/lazy-punchout-transfer-basket/lazy-punchout-transfer-basket.component';
 import { LazyBasketAddToQuoteComponent } from '../../../extensions/quoting/exports/lazy-basket-add-to-quote/lazy-basket-add-to-quote.component';
 
 import { ShoppingBasketComponent } from './shopping-basket.component';
@@ -35,11 +38,17 @@ describe('Shopping Basket Component', () => {
         MockComponent(ErrorMessageComponent),
         MockComponent(LazyBasketAddToQuoteComponent),
         MockComponent(LazyBasketCreateOrderTemplateComponent),
+        MockComponent(LazyPunchoutTransferBasketComponent),
         MockComponent(LineItemListComponent),
         MockComponent(ModalDialogLinkComponent),
         ShoppingBasketComponent,
       ],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [
+        AuthorizationToggleModule.forTesting(),
+        ReactiveFormsModule,
+        RoleToggleModule.forTesting(),
+        TranslateModule.forRoot(),
+      ],
     }).compileComponents();
   });
 
