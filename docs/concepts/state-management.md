@@ -60,13 +60,13 @@ They should be used in Angular artifacts but not within NgRx artifacts themselve
 ### Context Facades
 
 Context facades provide an elevated access to the state management.
-They store data that is unique to the context (i.e. product context: sku & quantity of the product), so that this context doesn't have to be provided using further helper methods and `Observable` streams.
-For implementing these context facades, we are using the library [@rx-angular/state][rx-angular-state].
+They store data that is unique to the context (i.e. product context: SKU & quantity of the product), so that this context doesn't have to be provided using further helper methods and `Observable` streams.
+For implementing these context facades, we use the library [@rx-angular/state][rx-angular-state].
 
-Context facades are provided using [`ElementInjector`](https://angular.io/guide/hierarchical-dependency-injection#elementinjector) and can then be used in providing Components and their children:
+Context facades are provided using [`ElementInjector`](https://angular.io/guide/hierarchical-dependency-injection#elementinjector) and can then be used in providing components and their children:
 
-- provided in the `@Component` decorator
-- provided via directives on the template
+- Provided in the `@Component` decorator
+- Provided via directives on the template
 
 For a more detailed introduction see [here][facades-meetup].
 
