@@ -53,8 +53,22 @@ After successful or erroneous completion, an effect might trigger another action
 
 ### Facades
 
-Facades are injectable instances which provide simplified access to the store via exposed observables and action dispatcher methods.
-They should be used in Angular components but not within NgRx artifacts themselves.
+Facades are injectable instances which provide simplified and abstracted access to the store via exposed observables and helper methods for dispatching actions.
+Facades themselves don't store any data, everything should be delegated to the NgRx store.
+They should be used in Angular artifacts but not within NgRx artifacts themselves.
+
+### Context Facades
+
+Context facades provide an elevated access to the state management.
+They store data that is unique to the context (i.e. product context: sku & quantity of the product), so that this context doesn't have to be provided using further helper methods and `Observable` streams.
+For implementing these context facades, we are using the library [@rx-angular/state][rx-angular-state].
+
+Context facades are provided using [`ElementInjector`](https://angular.io/guide/hierarchical-dependency-injection#elementinjector) and can then be used in providing Components and their children:
+
+- provided in the `@Component` decorator
+- provided via directives on the template
+
+For a more detailed introduction see [here][facades-meetup].
 
 ## File Structure
 
@@ -205,3 +219,11 @@ Every other slice of the state that also uses products must only save identifier
 In selectors, the data can be linked to views to be easily usable by components.
 
 see: [NgRx: Normalizing state](https://medium.com/@timdeschryver/ngrx-normalizing-state-d3960a86a3aa)
+
+# Further References
+
+- [@rx-angular/state][rx-angular-state]
+- [Facades – The Best Layer of your Angular Application @ ngLeipzig #36][facades-meetup]
+
+[rx-angular-state]: https://github.com/rx-angular/rx-angular/blob/master/libs/state/README.md
+[facades-meetup]: https://www.youtube.com/watch?v=I14r3joLu9A
