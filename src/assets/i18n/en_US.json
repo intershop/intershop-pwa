@@ -268,7 +268,7 @@
   "account.punchout.heading": "Punchout",
   "account.punchout.info.url.helptext": "Please use the following URL for the configuration in your procurement system. Replace <USERNAME> and <PASSWORD> with the OCI Punchout user credentials and consider setting the <HOOK_URL> according to your procurement system.",
   "account.punchout.link": "Punchout",
-  "account.punchout.oci.create.description": "Please specify your user with your OCI Punchout credentials.",
+  "account.punchout.oci.create.description": "Please provide the credentials of the OCI user.",
   "account.punchout.oci.create.heading": "Create New OCI User",
   "account.punchout.oci.create.link": "Create New OCI User",
   "account.punchout.oci.no_user.text": "Currently you don't have any OCI users.",
