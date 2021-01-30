@@ -58,7 +58,6 @@ export class RegistrationFormComponent implements OnInit {
         }
       ),
       countryCodeSwitch: ['', [Validators.required]],
-      preferredLanguage: ['en_US', [Validators.required]],
       birthday: [''],
       termsAndConditions: [false, [Validators.required, Validators.pattern('true')]],
       captcha: [''],
@@ -102,7 +101,6 @@ export class RegistrationFormComponent implements OnInit {
       email: formValue.credentials.login,
       phoneHome: formValue.address.phoneHome,
       birthday: formValue.birthday === '' ? undefined : formValue.birthday, // TODO: see IS-22276
-      preferredLanguage: formValue.preferredLanguage,
     };
 
     const credentials: Credentials = {

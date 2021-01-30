@@ -11,7 +11,7 @@ export class ProfileEditPasswordPage {
   }
 
   submit() {
-    cy.server().route('PUT', '**/password').as('passwordChange');
+    cy.intercept('PUT', '**/password').as('passwordChange');
     cy.wait(500);
 
     cy.get(this.tag).find('button[type="submit"]').click();

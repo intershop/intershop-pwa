@@ -27,19 +27,19 @@ describe('Search Box', () => {
   it('should display suggest overlay when typing and follow when entering', () => {
     at(HomePage, page => {
       page.header.searchBox.type('k');
-      page.header.searchBox.suggestions.should('deep.equal', ['Kensington', 'Keyboards', 'Kingston', 'Kodak']);
+      page.header.searchBox.suggestions.should('contain', 'Kensington');
 
       page.header.searchBox.type('e');
-      page.header.searchBox.suggestions.should('deep.equal', ['Kensington', 'Keyboards']);
+      page.header.searchBox.suggestions.should('contain', 'Kensington');
 
       page.header.searchBox.backspace();
-      page.header.searchBox.suggestions.should('deep.equal', ['Kensington', 'Keyboards', 'Kingston', 'Kodak']);
+      page.header.searchBox.suggestions.should('contain', 'Kensington');
 
       page.header.searchBox.type('o');
-      page.header.searchBox.suggestions.should('deep.equal', ['Kodak']);
+      page.header.searchBox.suggestions.should('contain', 'Kodak');
 
       page.header.searchBox.type('dak');
-      page.header.searchBox.suggestions.should('deep.equal', ['Kodak']);
+      page.header.searchBox.suggestions.should('contain', 'Kodak');
 
       page.header.searchBox.enter();
     });
@@ -47,17 +47,17 @@ describe('Search Box', () => {
 
   it('should follow search when hitting enter with choosing suggestion with keyboard', () => {
     at(HomePage, page => {
-      page.header.searchBox.type('k');
-      page.header.searchBox.suggestions.should('deep.equal', ['Kensington', 'Keyboards', 'Kingston', 'Kodak']);
+      page.header.searchBox.type('ko');
+      page.header.searchBox.suggestions.should('contain', 'Kodak');
 
-      page.header.searchBox.down().down().down().down().enter();
+      page.header.searchBox.down().enter();
     });
   });
 
   it('should follow search when choosing suggestion with mouse', () => {
     at(HomePage, page => {
-      page.header.searchBox.type('k');
-      page.header.searchBox.suggestions.should('deep.equal', ['Kensington', 'Keyboards', 'Kingston', 'Kodak']);
+      page.header.searchBox.type('kod');
+      page.header.searchBox.suggestions.should('contain', 'Kodak');
 
       page.header.searchBox.clickSuggestion('Kodak');
     });
@@ -65,11 +65,11 @@ describe('Search Box', () => {
 
   it('should follow search when using buttons with mouse', () => {
     at(HomePage, page => {
-      page.header.searchBox.clearButton.should('not.be.visible');
+      page.header.searchBox.clearButton.should('not.exist');
       page.header.searchBox.searchButton.should('be.visible');
 
-      page.header.searchBox.type('k');
-      page.header.searchBox.suggestions.should('deep.equal', ['Kensington', 'Keyboards', 'Kingston', 'Kodak']);
+      page.header.searchBox.type('ko');
+      page.header.searchBox.suggestions.should('contain', 'Kodak');
 
       page.header.searchBox.type('asdf');
       page.header.searchBox.assertNoSuggestions();
@@ -85,7 +85,7 @@ describe('Search Box', () => {
       at(HomePage);
 
       page.header.searchBox.type('kodak');
-      page.header.searchBox.suggestions.should('deep.equal', ['Kodak']);
+      page.header.searchBox.suggestions.should('contain', 'Kodak');
 
       page.header.searchBox.searchButton.should('be.visible');
       page.header.searchBox.searchButton.click();
@@ -94,8 +94,8 @@ describe('Search Box', () => {
 
   it('should properly track displaying suggestion focus', () => {
     at(HomePage, page => {
-      page.header.searchBox.type('k');
-      page.header.searchBox.suggestions.should('deep.equal', ['Kensington', 'Keyboards', 'Kingston', 'Kodak']);
+      page.header.searchBox.type('ko');
+      page.header.searchBox.suggestions.should('contain', 'Kodak');
 
       page.header.searchBox.esc();
 
@@ -105,16 +105,16 @@ describe('Search Box', () => {
 
       page.header.searchBox.assertNoSuggestions();
 
-      page.header.searchBox.type('o');
-      page.header.searchBox.suggestions.should('deep.equal', ['Kodak']);
+      page.header.searchBox.type('d');
+      page.header.searchBox.suggestions.should('contain', 'Kodak');
 
       page.header.gotoHomePage();
       waitLoadingEnd(2000);
 
       page.header.searchBox.assertNoSuggestions();
 
-      page.header.searchBox.type('d');
-      page.header.searchBox.suggestions.should('deep.equal', ['Kodak']);
+      page.header.searchBox.type('a');
+      page.header.searchBox.suggestions.should('contain', 'Kodak');
 
       page.header.searchBox.clickSuggestion('Kodak');
     });

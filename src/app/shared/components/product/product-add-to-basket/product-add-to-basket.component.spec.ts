@@ -1,45 +1,42 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { Product } from 'ish-core/models/product/product.model';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
 import { ProductAddToBasketComponent } from './product-add-to-basket.component';
 
 describe('Product Add To Basket Component', () => {
   let component: ProductAddToBasketComponent;
   let fixture: ComponentFixture<ProductAddToBasketComponent>;
-  let product: Product;
-  let translate: TranslateService;
   let element: HTMLElement;
+  let context: ProductContextFacade;
 
   beforeEach(async () => {
     const checkoutFacade = mock(CheckoutFacade);
     when(checkoutFacade.basketLoading$).thenReturn(of(false));
 
+    context = mock(ProductContextFacade);
+    when(context.select('displayProperties', 'addToBasket')).thenReturn(of(true));
+
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [MockComponent(FaIconComponent), ProductAddToBasketComponent],
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
+      providers: [
+        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+        { provide: ProductContextFacade, useFactory: () => instance(context) },
+      ],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductAddToBasketComponent);
     component = fixture.componentInstance;
-    translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('en');
-    translate.use('en');
-    product = { sku: 'sku' } as Product;
-    product.inStock = true;
-    product.minOrderQuantity = 1;
-    product.availability = true;
     element = fixture.nativeElement;
-    component.product = product;
   });
 
   it('should be created', () => {
@@ -48,15 +45,8 @@ describe('Product Add To Basket Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should throw an error if input parameter product is not set', () => {
-    component.product = undefined;
-    fixture.detectChanges();
-    expect(element.querySelector('button')).toBeFalsy();
-  });
-
-  it('should not render when inStock = false', () => {
-    product.inStock = false;
-
+  it('should not render when display is false', () => {
+    when(context.select('displayProperties', 'addToBasket')).thenReturn(of(false));
     fixture.detectChanges();
     expect(element.querySelector('button')).toBeFalsy();
   });
@@ -72,8 +62,8 @@ describe('Product Add To Basket Component', () => {
     expect(element.querySelector('fa-icon')).toBeTruthy();
   });
 
-  it('should show disable button when "disabled" is set to "false" ', () => {
-    component.disabled = true;
+  it('should show disabled button when add to cart is not possible', () => {
+    when(context.select('hasQuantityError')).thenReturn(of(true));
     fixture.detectChanges();
     expect(element.querySelector('button').disabled).toBeTruthy();
   });

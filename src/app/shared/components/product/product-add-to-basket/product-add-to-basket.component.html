@@ -1,11 +1,11 @@
-<div *ngIf="product?.inStock && product?.availability" class="add-to-cart">
+<div *ngIf="visible$ | async" class="add-to-cart">
   <button
     type="submit"
     name="addProduct"
     class="btn"
     [ngClass]="class"
     [class.btn-primary]="!displayIcon"
-    [disabled]="disabled || (displaySpinner$ | async)"
+    [disabled]="(hasQuantityError$ | async) || (displaySpinner$ | async)"
     [attr.title]="translationKey | translate"
     data-testing-id="addToCartButton"
     (click)="addToBasket()"

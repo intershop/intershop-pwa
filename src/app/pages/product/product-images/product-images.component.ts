@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
+import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 
@@ -22,6 +23,8 @@ export class ProductImagesComponent {
    */
   @Input() product: Product;
 
+  @ViewChild('carousel') carousel: NgbCarousel;
+
   activeSlide = '0';
 
   getImageViewIDsExcludePrimary = ProductHelper.getImageViewIDsExcludePrimary;
@@ -32,6 +35,8 @@ export class ProductImagesComponent {
    */
   setActiveSlide(slideIndex: number | string) {
     this.activeSlide = slideIndex?.toString();
+
+    this.carousel.select(this.activeSlide);
   }
 
   /**

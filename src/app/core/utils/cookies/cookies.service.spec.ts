@@ -3,8 +3,6 @@ import { BrowserTransferStateModule } from '@angular/platform-browser';
 import { CookiesService as ForeignCookiesService } from 'ngx-utils-cookies-port';
 import { anything, instance, mock, verify } from 'ts-mockito';
 
-import { COOKIE_CONSENT_OPTIONS } from 'ish-core/configurations/injection-keys';
-
 import { CookiesService } from './cookies.service';
 
 describe('Cookies Service', () => {
@@ -15,22 +13,7 @@ describe('Cookies Service', () => {
     foreignCookiesServiceMock = mock(ForeignCookiesService);
     TestBed.configureTestingModule({
       imports: [BrowserTransferStateModule],
-      providers: [
-        {
-          provide: COOKIE_CONSENT_OPTIONS,
-          useValue: {
-            options: [
-              {
-                id: 'required',
-                name: 'required.name',
-                description: 'required.description',
-                required: true,
-              },
-            ],
-          },
-        },
-        { provide: ForeignCookiesService, useFactory: () => instance(foreignCookiesServiceMock) },
-      ],
+      providers: [{ provide: ForeignCookiesService, useFactory: () => instance(foreignCookiesServiceMock) }],
     });
     cookiesService = TestBed.inject(CookiesService);
   });
@@ -44,19 +27,13 @@ describe('Cookies Service', () => {
     verify(foreignCookiesServiceMock.get('dummy')).once();
   });
 
-  it('should call remove of underlying implementation', done => {
-    setTimeout(() => {
-      cookiesService.remove('dummy');
-      verify(foreignCookiesServiceMock.remove('dummy')).once();
-      done();
-    }, 2000);
+  it('should call remove of underlying implementation', () => {
+    cookiesService.remove('dummy');
+    verify(foreignCookiesServiceMock.remove('dummy')).once();
   });
 
-  it('should call put of underlying implementation', done => {
-    setTimeout(() => {
-      cookiesService.put('dummy', 'value');
-      verify(foreignCookiesServiceMock.put('dummy', anything(), anything())).once();
-      done();
-    }, 2000);
+  it('should call put of underlying implementation', () => {
+    cookiesService.put('dummy', 'value');
+    verify(foreignCookiesServiceMock.put('dummy', anything(), anything())).once();
   });
 });

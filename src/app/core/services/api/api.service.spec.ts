@@ -621,7 +621,7 @@ describe('Api Service', () => {
 
       setTimeout(() => {
         req1.flush('TEST1');
-      }, 2000);
+      }, 200);
 
       apiService.get('dummy2').subscribe(data => {
         expect(data).toBeTruthy();
@@ -635,18 +635,18 @@ describe('Api Service', () => {
       });
 
       httpTestingController.verify();
-      setTimeout(() => httpTestingController.verify(), 500);
-      setTimeout(() => httpTestingController.verify(), 1000);
-      setTimeout(() => httpTestingController.verify(), 1500);
+      setTimeout(() => httpTestingController.verify(), 50);
+      setTimeout(() => httpTestingController.verify(), 100);
+      setTimeout(() => httpTestingController.verify(), 150);
 
       setTimeout(() => {
         const req2 = httpTestingController.expectOne(`http://www.example.org/dummy2`);
         req2.flush('TEST2');
-      }, 2500);
+      }, 250);
       setTimeout(() => {
         const req3 = httpTestingController.expectOne(`http://www.example.org/dummy3`);
         req3.flush('TEST3');
-      }, 3000);
+      }, 300);
     });
 
     it('should run calls in parallel if not explicitly run exclusively', done => {
@@ -677,13 +677,13 @@ describe('Api Service', () => {
 
       setTimeout(() => {
         req1.flush('TEST1');
-      }, 2000);
+      }, 200);
       setTimeout(() => {
         req2.flush('TEST2');
-      }, 1500);
+      }, 150);
       setTimeout(() => {
         req3.flush('TEST3');
-      }, 3000);
+      }, 300);
     });
   });
 });

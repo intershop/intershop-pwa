@@ -11,8 +11,10 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
+import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { OrderWidgetComponent } from 'ish-shared/components/order/order-widget/order-widget.component';
 
+import { LazyOrderTemplateWidgetComponent } from '../../../extensions/order-templates/exports/lazy-order-template-widget/lazy-order-template-widget.component';
 import { LazyQuoteWidgetComponent } from '../../../extensions/quoting/exports/lazy-quote-widget/lazy-quote-widget.component';
 import { LazyWishlistWidgetComponent } from '../../../extensions/wishlists/exports/lazy-wishlist-widget/lazy-wishlist-widget.component';
 
@@ -34,6 +36,7 @@ describe('Account Overview Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(LazyApprovalWidgetComponent),
         MockComponent(LazyBudgetWidgetComponent),
+        MockComponent(LazyOrderTemplateWidgetComponent),
         MockComponent(LazyQuoteWidgetComponent),
         MockComponent(LazyRequisitionWidgetComponent),
         MockComponent(OrderWidgetComponent),
@@ -43,7 +46,7 @@ describe('Account Overview Component', () => {
         MockDirective(ServerHtmlDirective),
         MockPipe(ServerSettingPipe, () => true),
       ],
-      imports: [TranslateModule.forRoot()],
+      imports: [RoleToggleModule.forTesting(), TranslateModule.forRoot()],
     }).compileComponents();
   });
 

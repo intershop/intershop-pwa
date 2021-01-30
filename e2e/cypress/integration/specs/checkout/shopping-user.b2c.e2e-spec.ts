@@ -47,7 +47,7 @@ describe('Shopping User', () => {
 
     it('should add the product to cart', () => {
       at(ProductDetailPage, page => {
-        page.addProductToCart().its('status').should('equal', 201);
+        page.addProductToCart().its('response.statusCode').should('equal', 201);
         page.header.miniCart.total.should('contain', _.product.price);
         page.header.miniCart.goToCart();
       });
@@ -65,7 +65,7 @@ describe('Shopping User', () => {
       at(CartPage, page => page.beginCheckout());
       at(LoginPage, page => {
         page.fillForm(_.user.login, _.user.password);
-        page.submit().its('status').should('equal', 200);
+        page.submit().its('response.statusCode').should('equal', 200);
       });
     });
 

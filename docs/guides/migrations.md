@@ -7,6 +7,18 @@ kb_sync_latest_only
 
 # Migrations
 
+## 0.26 to 0.27
+
+We upgraded Cypress from Version 4 to 6 and followed all migrations in their [Migration Guide](https://docs.cypress.io/guides/references/migration-guide.html).
+
+We have introduced a [Context Facade](../concepts/state-management.md#context-facades) for product entities and [refactored](https://github.com/intershop/intershop-pwa/pull/403) most of the components that are specific to a single product.
+This includes:
+
+- Targeted components no longer require a `product` input, as they retrieve the product from the context.
+- The handling for adding products to the basket was refactored and simplified.
+- Product quantity handling moved almost completely to the context.
+- The decision for displaying certain components on product tiles and rows also moved into the context.
+
 ## 0.25 to 0.26
 
 The project configuration was updated to use and test with Node.js version 14.15.0 LTS (including npm 6.14.8) for any further development.

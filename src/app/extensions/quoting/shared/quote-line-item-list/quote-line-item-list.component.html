@@ -11,7 +11,14 @@
     <div class="col-md-2 list-header-item column-price">{{ 'shopping_cart.total.heading' | translate }}</div>
   </div>
   <div class="list-body">
-    <ish-quote-line-item-list-element *ngFor="let pli of lineItems$ | async" [lineItem]="pli">
+    <ish-quote-line-item-list-element
+      *ngFor="let pli of lineItems$ | async"
+      [lineItem]="pli"
+      ishProductContext
+      [allowZeroQuantity]="true"
+      [sku]="pli.productSKU"
+      [quantity]="pli.quantity?.value"
+    >
     </ish-quote-line-item-list-element>
   </div>
 

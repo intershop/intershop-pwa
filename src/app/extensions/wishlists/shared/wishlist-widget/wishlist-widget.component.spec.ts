@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { SwiperModule } from 'ngx-swiper-wrapper';
 import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { LARGE_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
@@ -22,12 +22,13 @@ describe('Wishlist Widget Component', () => {
     when(wishlistFacadeMock.allWishlistsItemsSkus$).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(ProductItemComponent), WishlistWidgetComponent],
-      imports: [SwiperModule, TranslateModule.forRoot()],
-      providers: [
-        { provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) },
-        { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
+      declarations: [
+        MockComponent(ProductItemComponent),
+        MockDirective(ProductContextDirective),
+        WishlistWidgetComponent,
       ],
+      imports: [SwiperModule, TranslateModule.forRoot()],
+      providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) }],
     }).compileComponents();
   });
 

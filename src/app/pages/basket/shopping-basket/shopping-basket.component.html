@@ -26,15 +26,10 @@
     <ish-basket-validation-results></ish-basket-validation-results>
   </div>
 
-  <form class="form-horizontal" [formGroup]="form">
+  <div class="form-horizontal">
     <div class="row">
       <div class="col-md-12 col-lg-8">
-        <ish-line-item-list
-          *ngIf="basket"
-          [lineItems]="basket.lineItems"
-          (updateItem)="onUpdateItem($event)"
-          (deleteItem)="onDeleteItem($event)"
-        ></ish-line-item-list>
+        <ish-line-item-list *ngIf="basket" [lineItems]="basket.lineItems"></ish-line-item-list>
 
         <div class="button-group">
           <ish-lazy-basket-add-to-quote></ish-lazy-basket-add-to-quote>
@@ -59,11 +54,19 @@
           <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
 
           <!-- ToDo: ISREST-275: disable button if basket max value is exceeded -->
-          <button type="submit" class="btn btn-lg btn-block btn-primary" (click)="checkout()">
+          <button
+            *ishHasNotRole="'APP_B2B_OCI_USER'"
+            type="submit"
+            class="btn btn-lg btn-block btn-primary"
+            (click)="checkout()"
+          >
             {{ 'shopping_cart.proceed_to_checkout.button.label' | translate }}
           </button>
+          <ish-lazy-punchout-transfer-basket
+            *ishIsAuthorizedTo="'APP_B2B_SEND_OCI_BASKET'"
+          ></ish-lazy-punchout-transfer-basket>
         </div>
       </div>
     </div>
-  </form>
+  </div>
 </div>

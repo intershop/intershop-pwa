@@ -27,7 +27,7 @@ Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
 
   originalFn(url, { ...options, failOnStatusCode: false });
 
-  cy.get('ish-root', { timeout: 60000 }).should('be.hidden');
+  cy.get('ish-root', { timeout: 60000 }).should('be.visible');
 
   return cy
     .window()
@@ -63,7 +63,7 @@ beforeEach(() => {
 
 // keep certain cookies
 Cypress.Cookies.defaults({
-  whitelist: ['apiToken'],
+  preserve: ['apiToken'],
 });
 
 Cypress.on('uncaught:exception', (err, runnable) => {

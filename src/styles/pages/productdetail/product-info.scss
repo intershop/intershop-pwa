@@ -74,8 +74,15 @@ a.product-title {
   .product-quantity,
   .product-variation {
     label {
+      padding-bottom: 0;
       text-align: left;
       text-transform: uppercase;
+    }
+
+    &.read-only {
+      label {
+        padding-right: $space-default / 3;
+      }
     }
 
     .form-group {

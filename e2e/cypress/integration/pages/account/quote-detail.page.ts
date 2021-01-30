@@ -1,3 +1,4 @@
+import { waitLoadingEnd } from '../../framework';
 import { BreadcrumbModule } from '../breadcrumb.module';
 import { HeaderModule } from '../header.module';
 
@@ -11,6 +12,7 @@ export class QuoteDetailPage {
 
   copyQuoteRequest() {
     this.copyQuoteRequestButton().click();
+    waitLoadingEnd(1000);
   }
 
   get quantity() {
@@ -31,9 +33,11 @@ export class QuoteDetailPage {
 
   deleteItemFromQuoteRequest() {
     cy.get(`a[title="Remove"]`).click();
+    waitLoadingEnd(1000);
   }
 
   submitQuoteRequest() {
     cy.get('[data-testing-id="submit-quote-request"]').click();
+    waitLoadingEnd(1000);
   }
 }

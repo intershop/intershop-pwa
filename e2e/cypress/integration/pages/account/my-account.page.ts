@@ -30,7 +30,7 @@ export class MyAccountPage {
   }
 
   navigateToOrderTemplates() {
-    cy.get('a[href="/account/order-templates"]').click();
+    cy.get('a[href="/account/order-templates"]').first().click();
   }
 
   navigateToPayments() {

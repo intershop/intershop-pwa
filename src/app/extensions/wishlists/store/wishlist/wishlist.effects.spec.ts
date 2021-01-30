@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -547,10 +547,10 @@ describe('Wishlist Effects', () => {
       });
     });
 
-    it('should not set the breadcrumb of the selected wishlist when on another url', done => {
+    it('should not set the breadcrumb of the selected wishlist when on another url', fakeAsync(() => {
       effects.setWishlistBreadcrumb$.subscribe(fail, fail, fail);
 
-      setTimeout(done, 1000);
-    });
+      tick(2000);
+    }));
   });
 });

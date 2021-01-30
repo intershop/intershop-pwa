@@ -1,9 +1,7 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { SkuQuantityType } from 'ish-core/models/product/product.model';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { OrderTemplate } from '../../../models/order-template/order-template.model';
@@ -13,7 +11,7 @@ import { OrderTemplate } from '../../../models/order-template/order-template.mod
   templateUrl: './account-order-template-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountOrderTemplateListComponent implements OnDestroy {
+export class AccountOrderTemplateListComponent {
   /**
    * The list of order templates of the customer.
    */
@@ -23,23 +21,7 @@ export class AccountOrderTemplateListComponent implements OnDestroy {
    */
   @Output() deleteOrderTemplate = new EventEmitter<string>();
 
-  dummyProduct = { sku: 'dummy', inStock: true, availability: true };
-
-  private destroy$ = new Subject();
-
-  constructor(private translate: TranslateService, private productFacade: ShoppingFacade) {}
-
-  addTemplateToCart(orderTemplateId: string) {
-    const products = this.orderTemplates.find(t => t.id === orderTemplateId).items
-      ? this.orderTemplates.find(t => t.id === orderTemplateId).items
-      : [];
-
-    if (products.length > 0) {
-      products.forEach(product => {
-        this.productFacade.addProductToBasket(product.sku, product.desiredQuantity.value);
-      });
-    }
-  }
+  constructor(private translate: TranslateService) {}
 
   /** Emits the id of the order template to delete. */
   delete(orderTemplateId: string) {
@@ -48,16 +30,13 @@ export class AccountOrderTemplateListComponent implements OnDestroy {
 
   /** Determine the heading of the delete modal and opens the modal. */
   openDeleteConfirmationDialog(orderTemplate: OrderTemplate, modal: ModalDialogComponent<string>) {
-    this.translate
-      .get('account.order_templates.delete_dialog.header', { 0: orderTemplate.title })
-      .pipe(take(1), takeUntil(this.destroy$))
-      .subscribe(res => (modal.options.titleText = res));
-
+    modal.options.titleText = this.translate.instant('account.order_templates.delete_dialog.header', {
+      0: orderTemplate.title,
+    });
     modal.show(orderTemplate.id);
   }
 
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+  getParts(tmpl: OrderTemplate): SkuQuantityType[] {
+    return tmpl?.items.map(item => ({ sku: item.sku, quantity: item.desiredQuantity.value }));
   }
 }

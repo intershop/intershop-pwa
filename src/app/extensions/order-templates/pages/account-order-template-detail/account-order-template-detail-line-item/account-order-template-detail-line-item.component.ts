@@ -1,11 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 import { OrderTemplate, OrderTemplateItem } from '../../../models/order-template/order-template.model';
@@ -15,54 +12,20 @@ import { OrderTemplate, OrderTemplateItem } from '../../../models/order-template
   templateUrl: './account-order-template-detail-line-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountOrderTemplateDetailLineItemComponent implements OnChanges, OnInit, OnDestroy {
-  constructor(private productFacade: ShoppingFacade, private orderTemplatesFacade: OrderTemplatesFacade) {}
+export class AccountOrderTemplateDetailLineItemComponent implements OnInit {
+  constructor(private context: ProductContextFacade, private orderTemplatesFacade: OrderTemplatesFacade) {}
 
-  private static REQUIRED_COMPLETENESS_LEVEL = ProductCompletenessLevel.List;
   @Input() orderTemplateItemData: OrderTemplateItem;
   @Input() currentOrderTemplate: OrderTemplate;
-  @Input() selectedItemsForm: FormArray;
 
-  addToCartForm: FormGroup;
-  selectItemForm: FormGroup;
   product$: Observable<ProductView>;
 
-  private destroy$ = new Subject<void>();
-
   ngOnInit() {
-    this.initForm();
-    this.updateQuantities();
-  }
+    this.product$ = this.context.select('product');
 
-  ngOnChanges(s: SimpleChanges) {
-    if (s.orderTemplateItemData) {
-      this.loadProductDetails();
-    }
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  updateQuantities() {
-    this.addToCartForm.valueChanges
-      .pipe(debounceTime(500), takeUntil(this.destroy$))
-      .subscribe(val => this.updateProductQuantity(this.orderTemplateItemData.sku, val.quantity));
-  }
-
-  /** init form in the beginning */
-  private initForm() {
-    this.addToCartForm = new FormGroup({
-      quantity: new FormControl(this.orderTemplateItemData.desiredQuantity.value || 1),
+    this.context.hold(this.context.validDebouncedQuantityUpdate$(), quantity => {
+      this.updateProductQuantity(this.context.get('sku'), quantity);
     });
-
-    this.selectItemForm = new FormGroup({
-      productCheckbox: new FormControl(true),
-      sku: new FormControl(this.orderTemplateItemData.sku),
-    });
-
-    this.selectedItemsForm.push(this.selectItemForm);
   }
 
   moveItemToOtherOrderTemplate(sku: string, orderTemplateMoveData: { id: string; title: string }) {
@@ -71,14 +34,14 @@ export class AccountOrderTemplateDetailLineItemComponent implements OnChanges, O
         this.currentOrderTemplate.id,
         orderTemplateMoveData.id,
         sku,
-        Number(this.addToCartForm.get('quantity').value)
+        this.context.get('quantity')
       );
     } else {
       this.orderTemplatesFacade.moveItemToNewOrderTemplate(
         this.currentOrderTemplate.id,
         orderTemplateMoveData.title,
         sku,
-        Number(this.addToCartForm.get('quantity').value)
+        this.context.get('quantity')
       );
     }
   }
@@ -95,13 +58,8 @@ export class AccountOrderTemplateDetailLineItemComponent implements OnChanges, O
     this.orderTemplatesFacade.removeProductFromOrderTemplate(this.currentOrderTemplate.id, sku);
   }
 
-  /**if the orderTemplateItem is loaded, get product details*/
-  private loadProductDetails() {
-    if (!this.product$) {
-      this.product$ = this.productFacade.product$(
-        this.orderTemplateItemData.sku,
-        AccountOrderTemplateDetailLineItemComponent.REQUIRED_COMPLETENESS_LEVEL
-      );
-    }
+  setActive(target: EventTarget) {
+    // tslint:disable-next-line: no-string-literal
+    this.context.set('propagateActive', () => target['checked']);
   }
 }

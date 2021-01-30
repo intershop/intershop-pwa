@@ -34,7 +34,7 @@ describe('Returning User with Basket', () => {
     it('should log in', () => {
       at(LoginPage, page => {
         page.fillForm(_.user.login, _.user.password);
-        page.submit().its('status').should('equal', 200);
+        page.submit().its('response.statusCode').should('equal', 200);
       });
     });
 
@@ -43,7 +43,7 @@ describe('Returning User with Basket', () => {
       at(CategoryPage, page => page.gotoSubCategory(_.category.id));
       at(FamilyPage, page => page.productList.gotoProductDetailPageBySku(_.product.sku));
       at(ProductDetailPage, page => {
-        page.addProductToCart().its('status').should('equal', 201);
+        page.addProductToCart().its('response.statusCode').should('equal', 201);
         page.header.miniCart.total.should('contain', _.product.price);
       });
     });

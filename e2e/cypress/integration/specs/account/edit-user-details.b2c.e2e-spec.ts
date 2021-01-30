@@ -20,7 +20,9 @@ describe('Changing User', () => {
     createUserViaREST(_.user);
 
     LoginPage.navigateTo('/account/profile');
-    at(LoginPage, page => page.fillForm(_.user.login, _.user.password).submit().its('status').should('equal', 200));
+    at(LoginPage, page =>
+      page.fillForm(_.user.login, _.user.password).submit().its('response.statusCode').should('equal', 200)
+    );
 
     at(ProfilePage, page => {
       page.name.should('have.text', `${_.user.firstName} ${_.user.lastName}`);
@@ -31,7 +33,9 @@ describe('Changing User', () => {
   it('should be able to edit details and see changes', () => {
     at(ProfilePage, page => page.editDetails());
 
-    at(ProfileEditDetailsPage, page => page.fillForm(_.newDetails).submit().its('status').should('equal', 200));
+    at(ProfileEditDetailsPage, page =>
+      page.fillForm(_.newDetails).submit().its('response.statusCode').should('equal', 200)
+    );
     at(ProfilePage, page => {
       page.header.myAccountLink.should('have.text', `${_.newDetails.firstName} ${_.newDetails.lastName}`);
       page.name.should('have.text', `${_.newDetails.title} ${_.newDetails.firstName} ${_.newDetails.lastName}`);

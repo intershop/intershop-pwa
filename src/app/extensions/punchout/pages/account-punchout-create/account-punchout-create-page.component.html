@@ -1,0 +1,30 @@
+<h1>{{ 'account.punchout.oci.create.heading' | translate }}</h1>
+
+<ish-error-message [error]="error$ | async"></ish-error-message>
+
+<p>{{ 'account.punchout.oci.create.description' | translate }}</p>
+
+<form [formGroup]="form" (ngSubmit)="submitForm()" class="form-horizontal" novalidate="novalidate">
+  <div class="row">
+    <div class="col-md-10 col-xl-8">
+      <ish-punchout-user-form [form]="form"></ish-punchout-user-form>
+      <div class="row">
+        <div class="offset-md-4 col-md-8">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="formDisabled"
+            data-testing-id="create-punchout-user-submit"
+          >
+            {{ 'account.user.new.button.create.label' | translate }}
+          </button>
+          <a routerLink="../" class="btn btn-secondary" data-testing-id="create-user-cancel">{{
+            'account.cancel.link' | translate
+          }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<ish-loading *ngIf="loading$ | async"></ish-loading>

@@ -1,0 +1,7 @@
+<ng-container *ngIf="visible$ | async">
+  <ng-container *ngIf="product$ | async as product">
+    <a [routerLink]="product.productMaster() | ishProductRoute" class="product-variation all-variations-link">{{
+      'product.choose_another_variation.link' | translate
+    }}</a>
+  </ng-container>
+</ng-container>

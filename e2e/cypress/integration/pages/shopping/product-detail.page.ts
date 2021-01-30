@@ -67,19 +67,22 @@ export class ProductDetailPage {
 
   addProductToCart(): Cypress.Chainable<Cypress.WaitXHR> {
     waitLoadingEnd(1000);
-    cy.server().route('POST', '**/baskets/*/items').as('basket');
-    cy.server().route('GET', '**/baskets/current*').as('basketCurrent');
+    cy.intercept('POST', '**/baskets/*/items').as('basket');
+    cy.intercept('GET', '**/baskets/current*').as('basketCurrent');
     waitLoadingEnd(1000);
     this.addToCartButton().click();
 
     return cy
       .wait('@basket')
-      .then(result => (result.status >= 400 ? result : cy.wait('@basketCurrent').then(() => result))) as any;
+      .then(result =>
+        result.response.statusCode >= 400 ? result : cy.wait('@basketCurrent').then(() => result)
+      ) as any;
   }
 
   addProductToQuoteRequest() {
     waitLoadingEnd(1000);
     this.addToQuoteRequestButton().click();
+    waitLoadingEnd(1000);
   }
 
   addProductToWishlist() {

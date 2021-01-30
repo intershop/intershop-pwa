@@ -1,7 +1,6 @@
 import { createSelector } from '@ngrx/store';
 import { User } from '@sentry/browser';
 import { UUID } from 'angular2-uuid';
-import { identity } from 'rxjs';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
@@ -21,8 +20,8 @@ export const getNewExternalId = createSelector(
 
 const productMappings = createSelector(getTactonConfig, state => state?.productMappings || {});
 
-export const getTactonProductForSKU = (sku: string) => createSelector(productMappings, mappings => mappings[sku]);
-
-export const getTactonProductForSelectedProduct = createSelector(identity, getSelectedProduct, (state, product) =>
-  getTactonProductForSKU(product?.sku)(state)
+export const getTactonProductForSelectedProduct = createSelector(
+  productMappings,
+  getSelectedProduct,
+  (mappings, product) => mappings[product?.sku]
 );

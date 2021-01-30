@@ -5,7 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Dictionary } from '@ngrx/entity';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { identity } from 'rxjs';
+import { from, identity } from 'rxjs';
 import {
   concatMap,
   distinct,
@@ -16,7 +16,6 @@ import {
   map,
   mergeMap,
   switchMapTo,
-  tap,
   throttleTime,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -325,7 +324,7 @@ export class ProductsEffects {
         whenTruthy(),
         distinctUntilKeyChanged('sku'),
         filter(ProductHelper.isFailedLoading),
-        tap(() => this.httpStatusCodeService.setStatusAndRedirect(404))
+        concatMap(() => from(this.httpStatusCodeService.setStatusAndRedirect(404)))
       ),
     { dispatch: false }
   );
@@ -334,7 +333,7 @@ export class ProductsEffects {
     () =>
       this.actions$.pipe(
         ofType(loadProductsForCategoryFail),
-        tap(() => this.httpStatusCodeService.setStatusAndRedirect(404))
+        concatMap(() => from(this.httpStatusCodeService.setStatusAndRedirect(404)))
       ),
     { dispatch: false }
   );

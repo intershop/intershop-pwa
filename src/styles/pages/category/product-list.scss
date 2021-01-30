@@ -29,6 +29,10 @@
 
         .form-group {
           margin-bottom: $space-default / 3;
+
+          label {
+            padding-bottom: 0;
+          }
         }
       }
     }
@@ -62,16 +66,17 @@
           text-align: left;
         }
 
-        label {
-          width: 100%;
-          padding-top: 0;
-          text-align: left;
-        }
-
         .form-group {
           margin-right: 0;
           margin-bottom: $space-default / 2;
           margin-left: 0;
+
+          label {
+            width: 100%;
+            padding-top: 0;
+            padding-bottom: 0;
+            text-align: left;
+          }
         }
       }
     }
@@ -310,12 +315,6 @@
     }
   }
 
-  .product-variation {
-    &.read-only {
-      color: $text-color-quarternary;
-    }
-  }
-
   &:hover {
     .product-tile-actions {
       opacity: 1;
@@ -323,6 +322,18 @@
 
     .product-image {
       transform: scale(1.1);
+    }
+  }
+}
+
+.product-variation {
+  &.read-only {
+    label {
+      padding-right: $space-default / 3;
+      margin-bottom: 0;
+    }
+    &:last-of-type {
+      margin-bottom: $space-default * 2/3;
     }
   }
 }

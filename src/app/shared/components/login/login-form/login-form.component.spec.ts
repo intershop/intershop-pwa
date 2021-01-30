@@ -5,7 +5,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
-import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-keys';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
@@ -25,7 +24,6 @@ describe('Login Form Component', () => {
       declarations: [LoginFormComponent, MockComponent(ErrorMessageComponent), MockComponent(InputComponent)],
       imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
       providers: [
-        { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
         {
           provide: AccountFacade,
           useFactory: () => instance(accountFacade),

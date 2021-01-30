@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { RouterNavigatedPayload, routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { EMPTY, combineLatest, iif, of } from 'rxjs';
+import { EMPTY, combineLatest, from, iif, of } from 'rxjs';
 import {
   concatMap,
   concatMapTo,
@@ -14,14 +14,13 @@ import {
   sample,
   startWith,
   switchMap,
-  tap,
   withLatestFrom,
 } from 'rxjs/operators';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { RouterState } from 'ish-core/store/core/router/router.reducer';
-import { loadUserByAPIToken, loginUser, loginUserSuccess } from 'ish-core/store/customer/user';
+import { createUser, loadUserByAPIToken, loginUser, loginUserSuccess } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 
@@ -174,7 +173,7 @@ export class BasketEffects {
   private anonymousBasket$ = createEffect(
     () =>
       combineLatest([this.store.pipe(select(getCurrentBasketId)), this.apiTokenService.apiToken$]).pipe(
-        sample(this.actions$.pipe(ofType(loginUser, loadUserByAPIToken))),
+        sample(this.actions$.pipe(ofType(loginUser, createUser, loadUserByAPIToken))),
         startWith([undefined, undefined])
       ),
     { dispatch: false }
@@ -241,11 +240,12 @@ export class BasketEffects {
       ofType(submitBasket),
       withLatestFrom(this.store.select(getCurrentBasketId)),
       concatMap(([, basketId]) =>
-        this.basketService.createRequisition(basketId).pipe(
-          tap(() => this.router.navigate(['/checkout/receipt'])),
-          map(submitBasketSuccess),
-          mapErrorToAction(submitBasketFail)
-        )
+        this.basketService
+          .createRequisition(basketId)
+          .pipe(
+            concatMapTo(from(this.router.navigate(['/checkout/receipt'])).pipe(mapTo(submitBasketSuccess()))),
+            mapErrorToAction(submitBasketFail)
+          )
       )
     )
   );

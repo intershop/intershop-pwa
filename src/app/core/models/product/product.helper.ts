@@ -3,7 +3,11 @@ import { intersection } from 'lodash-es';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Image } from 'ish-core/models/image/image.model';
 import { PriceHelper } from 'ish-core/models/price/price.model';
-import { VariationProductMasterView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
+import {
+  ProductView,
+  VariationProductMasterView,
+  VariationProductView,
+} from 'ish-core/models/product-view/product-view.model';
 
 import { ProductBundle } from './product-bundle.model';
 import { ProductRetailSet } from './product-retail-set.model';
@@ -13,7 +17,7 @@ import { Product } from './product.model';
 
 export interface SkuQuantityType {
   sku: string;
-  quantity: number;
+  quantity?: number;
 }
 
 export enum ProductCompletenessLevel {
@@ -22,6 +26,8 @@ export enum ProductCompletenessLevel {
 }
 
 export type AllProductTypes = Product | VariationProduct | VariationProductMaster | ProductBundle | ProductRetailSet;
+
+export type AnyProductViewType = ProductView | VariationProductView | VariationProductMasterView;
 
 export type ProductPrices = Partial<
   Pick<ProductRetailSet, 'minListPrice' | 'minSalePrice' | 'summedUpListPrice' | 'summedUpSalePrice'>
@@ -106,13 +112,6 @@ export class ProductHelper {
     return product && product.type === 'VariationProduct';
   }
 
-  static hasVariations(product: Product): product is VariationProductView | VariationProductMasterView {
-    return (
-      (ProductHelper.isVariationProduct(product) || ProductHelper.isMasterProduct(product)) &&
-      !!product.variations().length
-    );
-  }
-
   /**
    * Check if product is a product bundle
    */
@@ -139,6 +138,7 @@ export class ProductHelper {
     return;
   }
 
+  // not-dead-code
   static calculatePriceRange(products: Product[]): ProductPrices {
     if (!products || !products.length) {
       return {};

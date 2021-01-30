@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { EMPTY } from 'rxjs';
+import { EMPTY, from } from 'rxjs';
 import {
   catchError,
   concatMap,
@@ -13,7 +13,6 @@ import {
   sample,
   switchMap,
   switchMapTo,
-  tap,
   withLatestFrom,
 } from 'rxjs/operators';
 
@@ -104,7 +103,7 @@ export class SearchEffects {
     () =>
       this.actions$.pipe(
         ofType(searchProductsFail),
-        tap(() => this.httpStatusCodeService.setStatusAndRedirect(404))
+        concatMap(() => from(this.httpStatusCodeService.setStatusAndRedirect(404)))
       ),
     { dispatch: false }
   );

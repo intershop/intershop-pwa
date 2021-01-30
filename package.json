@@ -1,7 +1,7 @@
 {
   "name": "intershop-pwa",
   "description": "Intershop Progressive Web App",
-  "version": "0.26.0",
+  "version": "0.27.0",
   "license": "Intershop Standard Software End User License Agreement Intershop 7",
   "keywords": [
     "intershop"
@@ -17,14 +17,14 @@
     "build:schematics": "cd schematics && npm run build",
     "ng": "ng",
     "test": "jest --ci",
-    "test:watch": "jest --watch",
+    "test:watch": "jest --watch -i",
     "e2e": "cd e2e && npm install && node open-cypress",
     "lint": "ng lint",
     "format": "node docs/check-sentence-newline && stylelint \"**/*.{css,scss}\" --fix && prettier --loglevel warn --write \"**/*.*\"",
     "dead-code": "npx ts-node scripts/find-dead-code.ts",
     "clean-localizations": "node scripts/clean-up-localizations",
     "clean": "git clean -xdf -e \"*environment.local.ts\" && npm ci",
-    "check": "npm run lint -- --fix && npm run format && tsc --project tsconfig.all.json && npm run build && npx jest -u && npm run dead-code && npm run clean-localizations",
+    "check": "npm run lint -- --fix && npm run format && tsc --project tsconfig.all.json && npm run build && npm run test && npm run dead-code && npm run clean-localizations",
     "clean-check": "npm run clean && npm run check",
     "changelog": "npx -p conventional-changelog-cli conventional-changelog -n intershop-changelog.js -i CHANGELOG.md -s",
     "3rd-party-licenses": "npm ci && npx license-checker --csv --out 3rd-party-licenses.txt --customPath templates/3rd-party-licenses_format.json",

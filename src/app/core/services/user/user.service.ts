@@ -54,39 +54,29 @@ export class UserService {
       'BASIC ' + b64u.toBase64(b64u.encode(`${loginCredentials.login}:${loginCredentials.password}`))
     );
 
-    return this.apiService
-      .get<CustomerData>('customers/-', { headers })
-      .pipe(
-        withLatestFrom(this.appFacade.isAppTypeREST$),
-        concatMap(([data, isAppTypeRest]) =>
-          // ToDo: #IS-30018 use the customer type for this decision
-          isAppTypeRest && !data.companyName
-            ? this.apiService.get<CustomerData>('privatecustomers/-', { headers })
-            : of(data)
-        ),
-        map(CustomerMapper.mapLoginData)
-      );
+    return this.fetchCustomer({ headers });
   }
 
   signinUserByToken(): Observable<CustomerUserType> {
-    return this.apiService
-      .get<CustomerData>('customers/-', { skipApiErrorHandling: true, runExclusively: true })
-      .pipe(
-        withLatestFrom(this.appFacade.isAppTypeREST$),
-        concatMap(([data, isAppTypeRest]) =>
-          // ToDo: #IS-30018 use the customer type for this decision
-          isAppTypeRest && !data.companyName ? this.apiService.get<CustomerData>('privatecustomers/-') : of(data)
-        ),
-        map(CustomerMapper.mapLoginData),
-        catchError(() => EMPTY)
-      );
+    return this.fetchCustomer({ skipApiErrorHandling: true, runExclusively: true }).pipe(catchError(() => EMPTY));
+  }
+
+  private fetchCustomer(options?: AvailableOptions): Observable<CustomerUserType> {
+    return this.apiService.get<CustomerData>('customers/-', options).pipe(
+      withLatestFrom(this.appFacade.isAppTypeREST$),
+      concatMap(([data, isAppTypeRest]) =>
+        // ToDo: #IS-30018 use the customer type for this decision
+        isAppTypeRest && !data.companyName ? this.apiService.get<CustomerData>('privatecustomers/-') : of(data)
+      ),
+      map(CustomerMapper.mapLoginData)
+    );
   }
 
   /**
    * Create a new user for the given data.
    * @param body  The user data (customer, user, credentials, address) to create a new user.
    */
-  createUser(body: CustomerRegistrationType): Observable<void> {
+  createUser(body: CustomerRegistrationType): Observable<CustomerUserType> {
     if (!body || !body.customer || !body.user || !body.credentials || !body.address) {
       return throwError('createUser() called without required body data');
     }
@@ -95,36 +85,41 @@ export class UserService {
       ...body.address,
       mainDivision: body.address.mainDivisionCode,
     };
-    let newCustomer: CreatePrivateCustomerType | CreateBusinessCustomerType;
 
-    if (!body.customer.isBusinessCustomer) {
-      newCustomer = {
-        type: 'PrivateCustomer',
-        ...body.customer,
-        ...body.user,
-        address: customerAddress,
-        credentials: body.credentials,
-      };
-    } else {
-      newCustomer = {
-        type: 'SMBCustomer',
-        ...body.customer,
-        user: { ...body.user },
-        address: customerAddress,
-        credentials: body.credentials,
-      };
-    }
+    let newCustomer$: Observable<CreatePrivateCustomerType | CreateBusinessCustomerType>;
+    newCustomer$ = this.appFacade.currentLocale$.pipe(
+      map(currentLocale =>
+        body.customer.isBusinessCustomer
+          ? {
+              type: 'SMBCustomer',
+              ...body.customer,
+              user: {
+                ...body.user,
+                preferredLanguage: currentLocale.lang ?? 'en_US',
+              },
+              address: customerAddress,
+              credentials: body.credentials,
+            }
+          : {
+              type: 'PrivateCustomer',
+              ...body.customer,
+              ...body.user,
+              address: customerAddress,
+              credentials: body.credentials,
+              preferredLanguage: currentLocale.lang ?? 'en_US',
+            }
+      )
+    );
 
     return this.appFacade.isAppTypeREST$.pipe(
       first(),
-      concatMap(isAppTypeRest =>
-        this.apiService.post<void>(
-          AppFacade.getCustomerRestResource(body.customer.isBusinessCustomer, isAppTypeRest),
-          newCustomer,
-          {
+      withLatestFrom(newCustomer$.pipe(first())),
+      concatMap(([isAppTypeRest, newCustomer]) =>
+        this.apiService
+          .post<void>(AppFacade.getCustomerRestResource(body.customer.isBusinessCustomer, isAppTypeRest), newCustomer, {
             captcha: pick(body, ['captcha', 'captchaAction']),
-          }
-        )
+          })
+          .pipe(concatMap(() => this.fetchCustomer()))
       )
     );
   }

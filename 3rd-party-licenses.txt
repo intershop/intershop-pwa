@@ -924,7 +924,7 @@
 "inquirer@7.3.3","MIT","Copyright (c) 2012 Simon Boudrias","https://github.com/SBoudrias/Inquirer.js"
 "internal-ip@4.3.0","MIT","Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)","https://github.com/sindresorhus/internal-ip"
 "interpret@1.4.0","MIT","Copyright (c) 2014-2018 Tyler Kellen <tyler@sleekcode.net>, Blaine Bublitz <blaine.bublitz@gmail.com>, and Eric Schoffstall <yo@contra.io>","https://github.com/gulpjs/interpret"
-"intershop-pwa@0.26.0","UNLICENSED","Copyright (c) 2020 Intershop Communications AG, http://www.intershop.de",""
+"intershop-pwa@0.27.0","UNLICENSED","Copyright (c) 2020 Intershop Communications AG, http://www.intershop.de",""
 "intershop-schematics@0.0.1","UNLICENSED","",""
 "inversify@5.0.1","MIT","Copyright (c) 2015-2017 Remo H. Jansen","https://github.com/inversify/InversifyJS"
 "ip-regex@2.1.0","MIT","Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)","https://github.com/sindresorhus/ip-regex"

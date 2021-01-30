@@ -7,6 +7,44 @@ kb_everyone
 
 # Changelog
 
+## [0.27.0](https://github.com/intershop/intershop-pwa/releases/tag/0.27.0) (2021-01-30)
+
+**required Intershop Commerce Management version: 7.10.27.0**
+
+### Features
+
+- support for Cybersource credit card payment (#464) ([e953874](https://github.com/intershop/intershop-pwa/commit/e953874))
+- punchout functionality - user management, basket transmission, functions routing (OCI Punchout) (#490) ([2529e89](https://github.com/intershop/intershop-pwa/commit/2529e89))
+- add structural not-role-toggle-directive to hide html elements if the current user has a certain role ([24fb46b](https://github.com/intershop/intershop-pwa/commit/24fb46b))
+- extend authorization store by roleIds ([68a3fc6](https://github.com/intershop/intershop-pwa/commit/68a3fc6))
+- set business errors independent of REST API errors to trigger the error page ([397a285](https://github.com/intershop/intershop-pwa/commit/397a285))
+- add order templates widget on MyAccount overview page (#502) ([6eff141](https://github.com/intershop/intershop-pwa/commit/6eff141))
+- if the basket total equals 0 display only an info message on checkout payment page (#499) ([508450f](https://github.com/intershop/intershop-pwa/commit/508450f))
+
+### Bug Fixes
+
+- use localStorage as storage for oauth (#518) ([ae000ee](https://github.com/intershop/intershop-pwa/commit/ae000ee))
+- hide badge for recaptcha v3 (#510) ([c3568cc](https://github.com/intershop/intershop-pwa/commit/c3568cc))
+- use carousel select method to set active slide (#508) ([2302a53](https://github.com/intershop/intershop-pwa/commit/2302a53))
+- properly calculate product availability ([a5e4612](https://github.com/intershop/intershop-pwa/commit/a5e4612))
+- send PGID for CMS View Context calls (#501) ([402ffc6](https://github.com/intershop/intershop-pwa/commit/402ffc6))
+- user registration mail always sent in english even if the user triggers the registration from a different locale (#498) ([d235ca7](https://github.com/intershop/intershop-pwa/commit/d235ca7))
+- basket promotion code assignment gets lost after registration (#497) ([4b42fa6](https://github.com/intershop/intershop-pwa/commit/4b42fa6))
+- wrap budget-widget to approval scope (#493) ([3bffb9a](https://github.com/intershop/intershop-pwa/commit/3bffb9a))
+- payment error message when multiple errors are received after creating a payment instrument (#491) ([2c54961](https://github.com/intershop/intershop-pwa/commit/2c54961))
+
+### Documentation
+
+- documentation and migration note for product contexts (#517) ([043d2eb](https://github.com/intershop/intershop-pwa/commit/043d2eb))
+
+### Code Refactoring
+
+- introduce product context (#403) ([cce23e3](https://github.com/intershop/intershop-pwa/commit/cce23e3))
+
+### BREAKING CHANGES
+
+- refactoring the way product specific components retrieve data with context facade
+
 ## [0.26.0](https://github.com/intershop/intershop-pwa/releases/tag/0.26.0) (2020-12-18)
 
 **required Intershop Commerce Management version: 7.10.26.2-LTS**

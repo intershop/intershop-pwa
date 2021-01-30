@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { Product } from 'ish-core/models/product/product.model';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
 import { SelectWishlistModalComponent } from '../select-wishlist-modal/select-wishlist-modal.component';
@@ -50,7 +50,10 @@ describe('Product Add To Wishlist Component', () => {
 
   beforeEach(async () => {
     wishlistFacadeMock = mock(WishlistsFacade);
+    when(wishlistFacadeMock.wishlists$).thenReturn(of(wishlistDetails));
     accountFacadeMock = mock(AccountFacade);
+    const context = mock(ProductContextFacade);
+    when(context.get('sku')).thenReturn('test sku');
 
     await TestBed.configureTestingModule({
       declarations: [
@@ -62,6 +65,7 @@ describe('Product Add To Wishlist Component', () => {
       providers: [
         { provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) },
         { provide: AccountFacade, useFactory: () => instance(accountFacadeMock) },
+        { provide: ProductContextFacade, useFactory: () => instance(context) },
       ],
     }).compileComponents();
   });
@@ -70,8 +74,6 @@ describe('Product Add To Wishlist Component', () => {
     fixture = TestBed.createComponent(ProductAddToWishlistComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    when(wishlistFacadeMock.wishlists$).thenReturn(of(wishlistDetails));
-    component.product = { name: 'Test Product', sku: 'test sku' } as Product;
   });
 
   it('should be created', () => {

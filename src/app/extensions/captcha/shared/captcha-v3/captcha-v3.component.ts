@@ -1,8 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, NgModule, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import { RECAPTCHA_V3_SITE_KEY, ReCaptchaV3Service, RecaptchaV3Module } from 'ng-recaptcha';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { DirectivesModule } from 'ish-core/directives.module';
 
 import {
   SitekeyProviderService,
@@ -16,7 +19,7 @@ import {
  */
 @Component({
   selector: 'ish-captcha-v3',
-  template: '',
+  templateUrl: './captcha-v3.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CaptchaV3Component implements OnInit, OnDestroy {
@@ -45,7 +48,7 @@ export class CaptchaV3Component implements OnInit, OnDestroy {
 }
 
 @NgModule({
-  imports: [RecaptchaV3Module],
+  imports: [RecaptchaV3Module, TranslateModule, DirectivesModule],
   declarations: [CaptchaV3Component],
   providers: [
     {

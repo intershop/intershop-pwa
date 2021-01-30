@@ -1,5 +1,4 @@
 {
-  "$schema": "https://raw.githubusercontent.com/cypress-io/cypress/develop/cli/schema/cypress.schema.json",
   "baseUrl": "http://localhost:4200",
   "viewportWidth": 1024,
   "viewportHeight": 1500,

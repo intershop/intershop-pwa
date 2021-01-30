@@ -7,6 +7,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
+import { toArray } from 'rxjs/operators';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -20,7 +21,6 @@ import { OrganizationManagementStoreModule } from '../organization-management-st
 import {
   addUser,
   addUserFail,
-  addUserSuccess,
   deleteUser,
   deleteUserSuccess,
   loadUsers,
@@ -170,32 +170,35 @@ describe('Users Effects', () => {
       });
     });
 
-    it('should create a user when triggered', () => {
-      const action = addUser({ user: users[0] });
+    it('should create a user when triggered', done => {
+      actions$ = of(addUser({ user: users[0] }));
 
-      const completion = addUserSuccess({ user: users[0] });
-      const completion2 = displaySuccessMessage({
-        message: 'account.organization.user_management.new_user.confirmation',
-        messageParams: { 0: `${users[0].firstName} ${users[0].lastName}` },
-      });
-
-      actions$ = hot('        -a----a----a----|', { a: action });
-      const expected$ = cold('-(cd)-(cd)-(cd)-|', { c: completion, d: completion2 });
-
-      expect(effects.addUser$).toBeObservable(expected$);
+      effects.addUser$.pipe(toArray()).subscribe(
+        actions => {
+          expect(actions).toMatchInlineSnapshot(`
+            [Users API] Add User Success:
+              user: {"login":"1","firstName":"Patricia","lastName":"Miller","nam...
+            [Message] Success Toast:
+              message: "account.organization.user_management.new_user.confirmation"
+              messageParams: {"0":"Patricia Miller"}
+          `);
+        },
+        fail,
+        done
+      );
     });
 
-    it('should navigate to user detail on success', fakeAsync(() => {
-      const action = addUser({ user: users[0] });
+    it('should navigate to user detail on success', done => {
+      actions$ = of(addUser({ user: users[0] }));
 
-      actions$ = of(action);
-
-      effects.addUser$.subscribe();
-
-      tick(500);
-
-      expect(location.path()).toMatchInlineSnapshot(`"/users/1"`);
-    }));
+      effects.addUser$.subscribe(
+        () => {
+          expect(location.path()).toMatchInlineSnapshot(`"/users/1"`);
+        },
+        fail,
+        done
+      );
+    });
 
     it('should dispatch an UpdateUserFail action on failed user update', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });

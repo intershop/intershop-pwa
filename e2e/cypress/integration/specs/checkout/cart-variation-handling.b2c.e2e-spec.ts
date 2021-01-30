@@ -21,7 +21,7 @@ describe('Variation Handling in Cart', () => {
 
   it('user adds one variation-product to basket and switch the variation', () => {
     at(ProductDetailPage, page => {
-      page.addProductToCart().its('status').should('equal', 201);
+      page.addProductToCart().its('response.statusCode').should('equal', 201);
       page.header.miniCart.goToCart();
     });
     at(CartPage, page => {

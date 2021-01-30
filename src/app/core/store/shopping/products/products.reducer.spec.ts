@@ -79,7 +79,7 @@ describe('Products Reducer', () => {
         product = {
           sku: '111',
           name: 'Test product',
-          inStock: true,
+          available: true,
           completenessLevel: 2,
           longDescription: 'some description',
         } as Product;
@@ -102,7 +102,7 @@ describe('Products Reducer', () => {
           completenessLevel: 1,
           manufacturer: 'Microsoft',
           name: 'Updated product',
-          inStock: false,
+          available: false,
         } as Product;
 
         const action2 = loadProductSuccess({ product: updatedProduct });
@@ -111,8 +111,8 @@ describe('Products Reducer', () => {
         expect(state2.ids).toHaveLength(1);
         expect(state2.entities[product.sku]).toMatchInlineSnapshot(`
           Object {
+            "available": false,
             "completenessLevel": 2,
-            "inStock": false,
             "longDescription": "some description",
             "manufacturer": "Microsoft",
             "name": "Updated product",

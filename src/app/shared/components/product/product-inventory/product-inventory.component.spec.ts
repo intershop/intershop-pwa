@@ -41,10 +41,9 @@ describe('Product Inventory Component', () => {
     expect(() => fixture.detectChanges()).toThrow();
   });
 
-  it('should show In Stock when inStock = true', () => {
+  it('should show In Stock when product available', () => {
     translate.set('product.instock.text', 'In Stock');
-    product.inStock = true;
-    product.availability = true;
+    product.available = true;
     fixture.detectChanges();
     expect(element.querySelector('.product-availability').textContent).toContain('In Stock');
     expect(
@@ -52,9 +51,9 @@ describe('Product Inventory Component', () => {
     ).toBeTruthy();
   });
 
-  it('should show Out of Stock when inStock = false', () => {
+  it('should show Out of Stock when product not available', () => {
     translate.set('product.out_of_stock.text', 'Out of Stock');
-    product.inStock = false;
+    product.available = false;
     fixture.detectChanges();
     expect(element.querySelector('.product-availability').textContent).toContain('Out of Stock');
     expect(

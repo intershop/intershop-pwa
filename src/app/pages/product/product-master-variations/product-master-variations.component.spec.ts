@@ -2,8 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
-import { VariationProductMasterView } from 'ish-core/models/product-view/product-view.model';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { FilterNavigationComponent } from 'ish-shared/components/filter/filter-navigation/filter-navigation.component';
 import { ProductListingComponent } from 'ish-shared/components/product/product-listing/product-listing.component';
 
@@ -15,6 +17,9 @@ describe('Product Master Variations Component', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
+    const context = mock(ProductContextFacade);
+    when(context.select('product', 'sku')).thenReturn(of('123456789'));
+
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [
@@ -22,6 +27,7 @@ describe('Product Master Variations Component', () => {
         MockComponent(ProductListingComponent),
         ProductMasterVariationsComponent,
       ],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });
 
@@ -29,8 +35,6 @@ describe('Product Master Variations Component', () => {
     fixture = TestBed.createComponent(ProductMasterVariationsComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-
-    component.product = { sku: '123456789' } as VariationProductMasterView;
   });
 
   it('should be created', () => {

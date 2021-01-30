@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { concatMap, map, switchMap, tap } from 'rxjs/operators';
+import { from } from 'rxjs';
+import { concatMap, map, mapTo, switchMap } from 'rxjs/operators';
 
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { loadProductIfNotLoaded } from 'ish-core/store/shopping/products';
@@ -75,14 +76,15 @@ export class RequisitionsEffects {
         this.requisitionsService
           .updateRequisitionStatus(payload.requisitionId, payload.status, payload.approvalComment)
           .pipe(
-            tap(requisition =>
+            concatMap(requisition =>
               /* ToDo: use only relative routes */
-              this.router.navigate([
-                `/account/requisitions/approver/${requisition.id}`,
-                { status: requisition.approval?.statusCode },
-              ])
+              from(
+                this.router.navigate([
+                  `/account/requisitions/approver/${requisition.id}`,
+                  { status: requisition.approval?.statusCode },
+                ])
+              ).pipe(mapTo(updateRequisitionStatusSuccess({ requisition })))
             ),
-            map(requisition => updateRequisitionStatusSuccess({ requisition })),
             mapErrorToAction(updateRequisitionStatusFail)
           )
       )

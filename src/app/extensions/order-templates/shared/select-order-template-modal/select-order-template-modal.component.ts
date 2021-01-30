@@ -15,7 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 
-import { Product } from 'ish-core/models/product/product.model';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
@@ -31,8 +31,6 @@ import { OrderTemplate } from '../../models/order-template/order-template.model'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
-  @Input() product: Product;
-
   /**
    * changes the some logic and the translations keys between add or move a product (default: 'add')
    */
@@ -60,7 +58,8 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
     private ngbModal: NgbModal,
     private fb: FormBuilder,
     private translate: TranslateService,
-    private orderTemplatesFacade: OrderTemplatesFacade
+    private orderTemplatesFacade: OrderTemplatesFacade,
+    private context: ProductContextFacade
   ) {}
 
   ngOnInit() {
@@ -220,5 +219,9 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
     return this.addMoveProduct === 'add'
       ? 'account.order_template.added.confirmation'
       : 'account.order_template.move.added.text';
+  }
+
+  get product() {
+    return this.context.get('product');
   }
 }

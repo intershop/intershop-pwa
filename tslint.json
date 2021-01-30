@@ -377,7 +377,7 @@
         {
           "import": ".*",
           "from": ".*environments/environment.*",
-          "filePattern": "^.*/app/((?!(module|core/store/core/configuration/configuration\\.reducer|core/utils/state-transfer/state-properties\\.service)\\.ts).)*$",
+          "filePattern": "^.*/app/((?!(module|core/store/core/configuration/configuration\\.reducer|core/utils/state-transfer/state-properties\\.service|injection-keys)\\.ts).)*$",
           "message": "Importing environment is not allowed. Inject needed properties instead."
         },
         {
@@ -473,6 +473,12 @@
           "from": "@ngrx/router-store",
           "filePattern": "^.*\\.spec\\.ts*$",
           "message": "We customized the serialization of the router state. Use router actions from 'ish-core/utils/dev/routing' in tests."
+        },
+        {
+          "import": "tap",
+          "from": "rxjs/operators",
+          "filePattern": "^(?!.*/store/(sentry-config/sentry-config|seo/seo|core/messages/messages)\\.effects\\.ts$).*\\.effects\\.ts*$",
+          "message": "The usage of 'tap' in effects, if not related to 3rd party integrations, can usually be transformed properly into RxJS stream code."
         }
       ]
     },

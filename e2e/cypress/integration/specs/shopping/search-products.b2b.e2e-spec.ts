@@ -4,10 +4,10 @@ import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
 import { SearchResultPage } from '../../pages/shopping/search-result.page';
 
 const _ = {
-  suggestTerm: 'b',
-  searchTerm: 'belkin',
+  suggestTerm: 'bel',
   suggestItemText: 'Belkin',
-  product: '643941',
+  searchTerm: 'belkin n',
+  product: '10802812',
 };
 
 describe('Searching B2B User', () => {

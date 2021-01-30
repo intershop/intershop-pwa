@@ -88,6 +88,7 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit, OnDestroy {
           const componentRef = this.anchor.createComponent(factory);
 
           componentRef.instance.parentForm = this.form;
+          componentRef.changeDetectorRef.markForCheck();
         } else if (version === 2) {
           this.formControl.setValidators([Validators.required]);
           this.formControl.updateValueAndValidity();
@@ -103,6 +104,7 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit, OnDestroy {
 
           componentRef.instance.cssClass = this.cssClass;
           componentRef.instance.parentForm = this.form;
+          componentRef.changeDetectorRef.markForCheck();
         }
       });
   }

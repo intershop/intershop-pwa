@@ -3,11 +3,8 @@ import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { Observable } from 'rxjs';
 
 import { LARGE_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
+import { ProductContextDisplayProperties } from 'ish-core/facades/product-context.facade';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
-import {
-  DEFAULT_CONFIGURATION,
-  ProductItemContainerConfiguration,
-} from 'ish-shared/components/product/product-item/product-item.component';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
 
@@ -29,15 +26,14 @@ export class WishlistWidgetComponent implements OnInit {
    */
   swiperConfig: SwiperConfigInterface;
 
-  tileConfiguration: ProductItemContainerConfiguration;
+  tileConfiguration: Partial<ProductContextDisplayProperties>;
 
   constructor(private wishlistsFacade: WishlistsFacade, @Inject(LARGE_BREAKPOINT_WIDTH) largeBreakpointWidth: number) {
     this.tileConfiguration = {
-      ...DEFAULT_CONFIGURATION,
-      displayAddToWishlist: false,
-      displayAddToOrderTemplate: false,
-      displayAddToCompare: false,
-      displayAddToQuote: false,
+      addToWishlist: false,
+      addToOrderTemplate: false,
+      addToCompare: false,
+      addToQuote: false,
     };
 
     this.swiperConfig = {

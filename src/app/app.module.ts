@@ -8,6 +8,7 @@ import { CoreModule } from 'ish-core/core.module';
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
+import { PunchoutRoutingModule } from './extensions/punchout/pages/punchout-routing.module';
 import { QuickorderRoutingModule } from './extensions/quickorder/pages/quickorder-routing.module';
 import { QuotingRoutingModule } from './extensions/quoting/pages/quoting-routing.module';
 import { TactonRoutingModule } from './extensions/tacton/pages/tacton-routing.module';
@@ -24,8 +25,9 @@ import { ShellModule } from './shell/shell.module';
     ShellModule,
     AppRoutingModule,
     QuickorderRoutingModule,
-    TactonRoutingModule,
     QuotingRoutingModule,
+    PunchoutRoutingModule,
+    TactonRoutingModule,
     AppLastRoutingModule,
   ],
   bootstrap: [AppComponent],

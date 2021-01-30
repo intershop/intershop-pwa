@@ -14,6 +14,7 @@ describe('B2b User Mapper', () => {
         preferredInvoiceToAddress: BasketMockData.getAddress(),
         preferredShipToAddress: { urn: 'urn:1234' } as Address,
         preferredPaymentInstrument: { id: '1234' } as PaymentInstrument,
+        preferredLanguage: 'en_US',
         active: true,
       } as B2bUserData;
       const user = B2bUserMapper.fromData(userData);

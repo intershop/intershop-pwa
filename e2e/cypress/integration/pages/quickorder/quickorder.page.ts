@@ -21,13 +21,15 @@ export class QuickorderPage {
 
   addToCart(): Cypress.Chainable<Cypress.WaitXHR> {
     cy.wait(3000);
-    cy.server().route('POST', '**/baskets/*/items').as('basket');
-    cy.server().route('GET', '**/baskets/current*').as('basketCurrent');
+    cy.intercept('POST', '**/baskets/*/items').as('basket');
+    cy.intercept('GET', '**/baskets/current*').as('basketCurrent');
     cy.wait(3000);
     this.addToCartButton().click();
 
     return cy
       .wait('@basket')
-      .then(result => (result.status >= 400 ? result : cy.wait('@basketCurrent').then(() => result))) as any;
+      .then(result =>
+        result.response.statusCode >= 400 ? result : cy.wait('@basketCurrent').then(() => result)
+      ) as any;
   }
 }

@@ -46,7 +46,7 @@ describe('Anonymous Checkout', () => {
 
   it('should add the product to cart', () => {
     at(ProductDetailPage, page => {
-      page.addProductToCart().its('status').should('equal', 201);
+      page.addProductToCart().its('response.statusCode').should('equal', 201);
       page.header.miniCart.total.should('contain', _.product.price);
       page.header.miniCart.goToCart();
     });
@@ -70,7 +70,7 @@ describe('Anonymous Checkout', () => {
   it('should not display the save for later option on payment page', () => {
     at(CheckoutPaymentPage, page => {
       page.addPaymentInstrument('ISH_CREDITCARD');
-      page.saveForLaterCheckbox.should('not.be.visible');
+      page.saveForLaterCheckbox.should('not.exist');
     });
   });
   it('should select invoice payment', () => {

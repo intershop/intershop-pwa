@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
-import { Product } from 'ish-core/models/product/product.model';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 
@@ -11,11 +13,14 @@ import { ProductShipmentComponent } from './product-shipment.component';
 describe('Product Shipment Component', () => {
   let component: ProductShipmentComponent;
   let fixture: ComponentFixture<ProductShipmentComponent>;
-  let product: Product;
   let translate: TranslateService;
   let element: HTMLElement;
+  let context: ProductContextFacade;
 
   beforeEach(async () => {
+    context = mock(ProductContextFacade);
+    when(context.select('displayProperties', 'shipment')).thenReturn(of(true));
+
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [
@@ -23,6 +28,7 @@ describe('Product Shipment Component', () => {
         MockComponent(ModalDialogLinkComponent),
         ProductShipmentComponent,
       ],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });
 
@@ -32,10 +38,7 @@ describe('Product Shipment Component', () => {
     translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');
-    product = { sku: 'sku' } as Product;
-    product.availability = true;
     element = fixture.nativeElement;
-    component.product = product;
   });
 
   it('should be created', () => {
@@ -44,12 +47,9 @@ describe('Product Shipment Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should throw an error if input parameter product is not set properly', () => {
-    component.product = undefined;
-    expect(() => component.ngOnChanges()).toThrow();
-  });
+  it('should not render when not displayed', () => {
+    when(context.select('displayProperties', 'shipment')).thenReturn(of(false));
 
-  it('should not render when readyForShipmentMin and readyForShipmentMax are not available', () => {
     fixture.detectChanges();
     expect(element.querySelector('.ready-for-shipment')).toBeFalsy();
   });
@@ -68,11 +68,12 @@ describe('Product Shipment Component', () => {
     ])(
       `should use "%s" localization text when readyForShipmentMin = %i and readyForShipmentMax = %i`,
       (localeKey, readyForShipmentMin, readyForShipmentMax, localeValue, expectedText) => {
-        product.readyForShipmentMin = readyForShipmentMin;
-        product.readyForShipmentMax = readyForShipmentMax;
+        when(context.select('product', 'readyForShipmentMin')).thenReturn(of(readyForShipmentMin));
+        when(context.select('product', 'readyForShipmentMax')).thenReturn(of(readyForShipmentMax));
         translate.set(localeKey, localeValue);
-        component.isShipmentInformationAvailable = true;
+
         fixture.detectChanges();
+
         expect(element.querySelector('.ready-for-shipment').textContent).toContain(expectedText);
       }
     );

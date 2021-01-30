@@ -1,4 +1,7 @@
 export interface Authorization {
-  roleDisplayNames: string[];
+  roles: {
+    roleId: string;
+    displayName: string;
+  }[];
   permissionIDs: string[];
 }

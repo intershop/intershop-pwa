@@ -23,9 +23,9 @@ describe('Returning User', () => {
 
     it('should enter credentials and submit and be directed to my-account', () => {
       at(LoginPage, page => {
-        page.errorText.should('not.be.visible');
+        page.errorText.should('not.exist');
         page.fillForm(_.email, _.password);
-        page.submit().its('status').should('equal', 200);
+        page.submit().its('response.statusCode').should('equal', 200);
       });
       at(MyAccountPage, page => {
         page.header.myAccountLink.should('have.text', _.name);
@@ -46,7 +46,7 @@ describe('Returning User', () => {
     it('should enter wrong credentials and submit and be be still at login page', () => {
       at(LoginPage, page => {
         page.fillForm(_.email, _.wrongPassword);
-        page.submit().its('status').should('equal', 401);
+        page.submit().its('response.statusCode').should('equal', 401);
         page.errorText.should('be.visible');
       });
     });

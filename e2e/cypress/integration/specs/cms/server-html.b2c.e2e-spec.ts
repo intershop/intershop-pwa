@@ -15,11 +15,9 @@ describe('Server Html', () => {
   beforeEach(() => {
     LoginPage.navigateTo();
 
-    cy.server().route({
-      method: 'GET',
-      url: '**/cms/**',
-      status: 200,
-      response: {
+    cy.intercept('GET', '**/cms/**', {
+      statusCode: 200,
+      body: {
         definitionQualifiedName: 'app_sf_pwa_cm:include.homepage.content.pagelet2-Include',
         displayName: 'Homepage Content',
         id: 'include.homepage.content.pagelet2-Include',

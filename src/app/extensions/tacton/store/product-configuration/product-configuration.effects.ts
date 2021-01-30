@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { combineLatest, of } from 'rxjs';
+import { combineLatest, from, of } from 'rxjs';
 import {
   catchError,
   concatMap,
@@ -14,7 +14,6 @@ import {
   switchMap,
   switchMapTo,
   take,
-  tap,
   throttleTime,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -107,11 +106,8 @@ export class ProductConfigurationEffects {
           this.store.pipe(select(selectRouteParam('sku'))),
           this.store.pipe(select(selectRouteParam('mainStep')))
         ),
-        tap(([step, sku, previous]) => {
-          if (step && previous !== step) {
-            this.router.navigate(['/configure', sku, step]);
-          }
-        })
+        filter(([step, , previous]) => step && previous !== step),
+        switchMap(([step, sku]) => from(this.router.navigate(['/configure', sku, step])))
       ),
     { dispatch: false }
   );
@@ -229,9 +225,7 @@ export class ProductConfigurationEffects {
       this.actions$.pipe(
         ofType(submitTactonConfigurationSuccess, submitTactonConfigurationFail),
         withLatestFrom(this.store.pipe(select(getSelectedProduct))),
-        tap(([, product]) => {
-          this.router.navigateByUrl(generateProductUrl(product));
-        })
+        switchMap(([, product]) => from(this.router.navigateByUrl(generateProductUrl(product))))
       ),
     { dispatch: false }
   );

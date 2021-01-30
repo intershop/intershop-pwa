@@ -15,6 +15,8 @@ export interface ProductData {
   longDescription: string;
 
   availability: boolean;
+  inStock: boolean;
+
   averageRating: string;
   roundedAverageRating: string;
 
@@ -26,8 +28,6 @@ export interface ProductData {
   bundles: unknown[];
   retailSet: boolean;
 
-  inStock: boolean;
-
   // If warranty {
   price?: PriceData;
   currency?: unknown;
@@ -36,6 +36,7 @@ export interface ProductData {
   productMasterSKU?: string;
   minOrderQuantity: number;
   maxOrderQuantity?: number;
+  stepOrderQuantity?: number;
   packingUnit: string;
 
   // If Variation Master and Retail Set {

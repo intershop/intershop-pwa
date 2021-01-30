@@ -65,7 +65,6 @@ describe('Registration Form Component', () => {
   it('should create a registration form on creation', () => {
     expect(component.form).toBeUndefined();
     fixture.detectChanges();
-    expect(component.form.get('preferredLanguage')).toBeTruthy();
     expect(component.form.get('birthday')).toBeTruthy();
     expect(component.form.get('taxationID')).toBeTruthy();
   });
@@ -85,7 +84,7 @@ describe('Registration Form Component', () => {
 
   it('should set submitted flag if submit is clicked and form is not valid', async () => {
     component.form = new FormGroup({
-      preferredLanguage: new FormControl('', Validators.required),
+      countryCodeSwitch: new FormControl('', Validators.required),
     });
     expect(component.submitted).toBeFalsy();
     component.submitForm();

@@ -3,8 +3,10 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { intersection } from 'lodash-es';
-import { concatMap, filter, map, mapTo, tap, withLatestFrom } from 'rxjs/operators';
+import { EMPTY, Observable, from } from 'rxjs';
+import { concatMap, filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
 
+import { BasketFeedbackView } from 'ish-core/models/basket-feedback/basket-feedback.model';
 import {
   BasketValidationResultType,
   BasketValidationScopeType,
@@ -88,14 +90,15 @@ export class BasketValidationEffects {
         map(payload => payload.basketValidation.results),
         filter(results => results.valid && !results.adjusted),
         concatMap(() =>
-          this.basketService.validateBasket(this.validationSteps[4].scopes).pipe(
-            tap(basketValidation => {
-              if (basketValidation?.results?.valid) {
-                this.router.navigate([this.validationSteps[4].route]);
-              }
-              this.jumpToTargetRoute('auto', basketValidation?.results);
-            })
-          )
+          this.basketService
+            .validateBasket(this.validationSteps[4].scopes)
+            .pipe(
+              concatMap(basketValidation =>
+                basketValidation?.results?.valid
+                  ? from(this.router.navigate([this.validationSteps[4].route]))
+                  : this.jumpToTargetRoute('auto', basketValidation?.results)
+              )
+            )
         )
       ),
     { dispatch: false }
@@ -153,20 +156,21 @@ export class BasketValidationEffects {
   /**
    * Jumps to the next checkout step after basket validation. In case of adjustments related data like product data, eligible shipping methods etc. are loaded.
    */
-  jumpToNextCheckoutStep$ = createEffect(() =>
+  jumpToNextCheckoutStep$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(continueCheckoutSuccess, continueCheckoutWithIssues),
+        mapToPayload(),
+        concatMap(payload => this.jumpToTargetRoute(payload.targetRoute, payload.basketValidation?.results))
+      ),
+    { dispatch: false }
+  );
+
+  loadDataForNextCheckoutStep$ = createEffect(() =>
     this.actions$.pipe(
       ofType(continueCheckoutSuccess, continueCheckoutWithIssues),
       mapToPayload(),
-      tap(payload => {
-        this.jumpToTargetRoute(payload.targetRoute, payload.basketValidation && payload.basketValidation.results);
-      }),
-
-      filter(
-        payload =>
-          payload.basketValidation &&
-          payload.basketValidation.results.adjusted &&
-          !!payload.basketValidation.results.infos
-      ),
+      filter(payload => payload.basketValidation?.results.adjusted && !!payload.basketValidation.results.infos),
       map(payload => payload.basketValidation),
       concatMap(validation => {
         // Load eligible shipping methods if shipping infos are available
@@ -178,38 +182,43 @@ export class BasketValidationEffects {
         } else {
           // Load products if product related infos are available
           return validation.results.infos
-            .filter(info => info.parameters && info.parameters.productSku)
+            .filter(info => info.parameters?.productSku)
             .map(info => loadProduct({ sku: info.parameters.productSku }));
         }
       })
     )
   );
 
+  private extractScopes(elements: BasketFeedbackView[]): string[] {
+    return elements
+      ?.filter(el => !!el.parameters?.scopes?.length)
+      .reduce((acc, el) => [...acc, ...el.parameters.scopes], [])
+      .filter((val, idx, arr) => !!val && arr.indexOf(val) === idx);
+  }
+
   /**
    * Navigates to the target route, in case targetRoute equals 'auto' the target route will be calculated based on the calculation result
    */
-  private jumpToTargetRoute(targetRoute: string, results: BasketValidationResultType) {
+  private jumpToTargetRoute(targetRoute: string, results: BasketValidationResultType): Observable<boolean> {
     if (!targetRoute || !results) {
-      return;
+      return EMPTY;
     }
 
     if (targetRoute === 'auto') {
-      let scopes = [];
-      results.errors?.forEach(error => (scopes = scopes.concat(error?.parameters?.scopes)));
+      let scopes = this.extractScopes(results.errors);
       if (!scopes?.length) {
-        results.infos?.forEach(info => (scopes = scopes.concat(info?.parameters?.scopes)));
+        scopes = this.extractScopes(results.infos);
       }
 
-      this.validationSteps.every(step => {
-        if (intersection(step.scopes, scopes)?.length) {
-          this.router.navigate([step.route], { queryParams: { error: true } });
-          return false;
-        }
-        return true;
-      });
+      const foundStep = this.validationSteps.find(step => intersection(step.scopes, scopes).length);
+      if (foundStep) {
+        return from(this.router.navigate([foundStep.route], { queryParams: { error: true } }));
+      }
       // otherwise stay on the current page
     } else if (results.valid && !results.adjusted) {
-      this.router.navigate([targetRoute]);
+      return from(this.router.navigate([targetRoute]));
     }
+
+    return EMPTY;
   }
 }

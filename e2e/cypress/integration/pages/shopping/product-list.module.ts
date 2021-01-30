@@ -36,6 +36,12 @@ export class ProductListModule {
     return cy.get(this.contextSelector).find(`ish-product-item div[data-testing-sku="${sku}"]`);
   }
 
+  setProductTileQuantity(sku: string, quantity: number) {
+    const input = cy.get(this.contextSelector).find(`[data-testing-sku="${sku}"]`).find('[data-testing-id="quantity"]');
+    input.clear();
+    input.type(quantity.toString());
+  }
+
   gotoProductDetailPageBySku(sku: string, wait: () => unknown = waitLoadingEnd) {
     this.productTile(sku).scrollIntoView().find('a.product-title').wait(500).click();
     wait();
@@ -49,7 +55,7 @@ export class ProductListModule {
     cy.get(this.contextSelector)
       .find(`ish-product-item div[data-testing-sku="${sku}"] [data-testing-id="addToQuoteButton"]`)
       .click();
-    waitLoadingEnd();
+    waitLoadingEnd(1000);
   }
 
   get numberOfItems() {

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
@@ -13,7 +14,11 @@ describe('Cms Product List Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CMSProductListComponent, MockComponent(ProductItemComponent)],
+      declarations: [
+        CMSProductListComponent,
+        MockComponent(ProductItemComponent),
+        MockDirective(ProductContextDirective),
+      ],
     }).compileComponents();
   });
 
@@ -46,10 +51,20 @@ describe('Cms Product List Component', () => {
         <h2>PageletTitle</h2>
         <div class="product-list row">
           <div class="product-list-item li-css-class" ng-reflect-ng-class="li-css-class">
-            <ish-product-item ng-reflect-product-sku="1"></ish-product-item>
+            <ish-product-item
+              displaytype="tile"
+              ishproductcontext=""
+              ng-reflect-display-type="tile"
+              ng-reflect-sku="1"
+            ></ish-product-item>
           </div>
           <div class="product-list-item li-css-class" ng-reflect-ng-class="li-css-class">
-            <ish-product-item ng-reflect-product-sku="2"></ish-product-item>
+            <ish-product-item
+              displaytype="tile"
+              ishproductcontext=""
+              ng-reflect-display-type="tile"
+              ng-reflect-sku="2"
+            ></ish-product-item>
           </div>
         </div>
       </div>

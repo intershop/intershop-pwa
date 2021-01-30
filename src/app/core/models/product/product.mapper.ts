@@ -89,6 +89,10 @@ export class ProductMapper {
     };
   }
 
+  private calculateAvailable(availability: boolean, inStock: boolean) {
+    return !!availability && (inStock !== undefined ? inStock : true);
+  }
+
   /**
    * construct a {@link Product} stub from data returned by link list responses with additional data
    */
@@ -99,11 +103,7 @@ export class ProductMapper {
     }
     const productCategory = retrieveStubAttributeValue<CategoryData>(data, 'defaultCategory');
 
-    const minOrderQuantityValue = retrieveStubAttributeValue<{ value: number }>(data, 'minOrderQuantity');
-    const minOrderQuantity = minOrderQuantityValue ? minOrderQuantityValue.value : undefined;
-
-    const promotionsValue = retrieveStubAttributeValue<{ elements: Link[] }>(data, 'promotions');
-    const promotionLinks = promotionsValue && promotionsValue.elements ? promotionsValue.elements : [];
+    const promotionLinks = retrieveStubAttributeValue<{ elements: Link[] }>(data, 'promotions')?.elements ?? [];
 
     const mastered = retrieveStubAttributeValue<boolean>(data, 'mastered');
     const productMaster = retrieveStubAttributeValue<boolean>(data, 'productMaster');
@@ -139,10 +139,14 @@ export class ProductMapper {
         },
       ]),
       manufacturer: retrieveStubAttributeValue(data, 'manufacturer'),
-      availability: retrieveStubAttributeValue(data, 'availability'),
-      inStock: retrieveStubAttributeValue(data, 'inStock'),
+      available: this.calculateAvailable(
+        retrieveStubAttributeValue(data, 'availability'),
+        retrieveStubAttributeValue(data, 'inStock')
+      ),
       longDescription: undefined,
-      minOrderQuantity,
+      minOrderQuantity: retrieveStubAttributeValue<{ value: number }>(data, 'minOrderQuantity')?.value || 1,
+      maxOrderQuantity: retrieveStubAttributeValue<{ value: number }>(data, 'maxOrderQuantity')?.value || 100,
+      stepOrderQuantity: retrieveStubAttributeValue<{ value: number }>(data, 'stepOrderQuantity')?.value || 1,
       packingUnit: retrieveStubAttributeValue(data, 'packingUnit'),
       attributeGroups: data.attributeGroup && mapAttributeGroups(data),
       readyForShipmentMin: undefined,
@@ -185,11 +189,11 @@ export class ProductMapper {
       name: data.productName,
       shortDescription: data.shortDescription,
       longDescription: data.longDescription,
-      availability: data.availability,
-      inStock: data.inStock,
+      available: this.calculateAvailable(data.availability, data.inStock),
       minOrderQuantity: data.minOrderQuantity || 1,
-      packingUnit: data.packingUnit,
       maxOrderQuantity: data.maxOrderQuantity || 100,
+      stepOrderQuantity: data.stepOrderQuantity || 1,
+      packingUnit: data.packingUnit,
       attributes:
         (data.attributeGroups &&
           data.attributeGroups.PRODUCT_DETAIL_ATTRIBUTES &&

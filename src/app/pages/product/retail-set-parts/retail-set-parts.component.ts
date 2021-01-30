@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { ProductRetailSet } from 'ish-core/models/product/product-retail-set.model';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { SkuQuantityType } from 'ish-core/models/product/product.model';
 
 type DisplayType = 'tile' | 'row';
@@ -10,23 +11,14 @@ type DisplayType = 'tile' | 'row';
   templateUrl: './retail-set-parts.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RetailSetPartsComponent {
-  @Input() product: ProductRetailSet;
-  @Input() parts: SkuQuantityType[];
-  @Output() partsChange = new EventEmitter<SkuQuantityType[]>();
+export class RetailSetPartsComponent implements OnInit {
   @Input() displayType?: DisplayType = 'row';
-  @Output() productToBasket = new EventEmitter<void>();
 
-  /**
-   * accumulate changes from product item containers and emit the complete current retail set
-   */
-  productChange(idx: number, sku: string, quantity?: number) {
-    const newParts = [...this.parts];
-    newParts.splice(idx, 1, { sku, quantity: typeof quantity === 'number' ? quantity : this.parts[idx].quantity });
-    this.partsChange.emit(newParts);
-  }
+  parts$: Observable<SkuQuantityType[]>;
 
-  trackByFn(idx) {
-    return idx;
+  constructor(private context: ProductContextFacade) {}
+
+  ngOnInit() {
+    this.parts$ = this.context.select('parts');
   }
 }

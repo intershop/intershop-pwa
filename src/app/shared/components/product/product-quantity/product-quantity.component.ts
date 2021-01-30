@@ -1,83 +1,74 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChange,
-  SimpleChanges,
-} from '@angular/core';
-import { FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { UUID } from 'angular2-uuid';
 import { range } from 'lodash-es';
+import { Observable, combineLatest } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
-import { Product } from 'ish-core/models/product/product.model';
-import { SelectOption } from 'ish-shared/forms/components/select/select.component';
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
-
-function generateSelectOptionsForRange(min: number, max: number): SelectOption[] {
-  return range(min, max)
-    .map(num => num.toString())
-    .map(num => ({ label: num, value: num }));
-}
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
 @Component({
   selector: 'ish-product-quantity',
   templateUrl: './product-quantity.component.html',
+  styleUrls: ['./product-quantity.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductQuantityComponent implements OnInit, OnChanges {
-  @Input() readOnly = false;
-  @Input() allowZeroQuantity = false;
-  @Input() quantityLabel = 'product.quantity.label';
-  @Input() product: Product;
-  @Input() parentForm: FormGroup;
-  @Input() controlName: string;
-  @Input() type: 'input' | 'select' | 'counter' = 'input';
-  @Input() class?: string;
+export class ProductQuantityComponent implements OnInit {
+  @Input() type: 'input' | 'select' | 'counter' = 'counter';
+  @Input() id: string = UUID.UUID();
 
-  quantityOptions: SelectOption[];
+  visible$: Observable<boolean>;
+  quantity$: Observable<number>;
+  min$: Observable<number>;
+  max$: Observable<number>;
+  step$: Observable<number>;
+  hasQuantityError$: Observable<boolean>;
+  quantityError$: Observable<string>;
+
+  selectValues$: Observable<number[]>;
+
+  cannotIncrease$: Observable<boolean>;
+  cannotDecrease$: Observable<boolean>;
+
+  constructor(private context: ProductContextFacade) {}
 
   ngOnInit() {
-    this.parentForm.get(this.controlName).setValidators(this.getValidations());
+    this.visible$ = this.context.select('displayProperties', 'quantity');
+    this.quantity$ = this.context.select('quantity').pipe(filter(n => typeof n === 'number' && !isNaN(n)));
+    this.min$ = this.context.select('minQuantity');
+    this.max$ = this.context.select('maxQuantity');
+    this.step$ = this.context.select('stepQuantity');
+    this.hasQuantityError$ = this.context.select('hasQuantityError');
+    this.quantityError$ = this.context.select('quantityError');
+
+    this.selectValues$ = combineLatest([this.min$, this.max$, this.step$]).pipe(
+      map(([min, max, step]) => range(min, max + 1, step))
+    );
+
+    this.cannotIncrease$ = combineLatest([this.max$, this.quantity$]).pipe(map(([max, quantity]) => quantity >= max));
+    this.cannotDecrease$ = combineLatest([this.min$, this.quantity$]).pipe(map(([min, quantity]) => quantity <= min));
   }
 
-  get quantity() {
-    return this.parentForm.get(this.controlName) && this.parentForm.get(this.controlName).value;
+  private setValue(value: number) {
+    this.context.set('quantity', () => value);
   }
 
-  get labelClass() {
-    return this.quantityLabel.trim() === '' ? 'col-0' : 'label-quantity col-6';
+  private setNextValue(value: number) {
+    const max = this.context.get('maxQuantity');
+    const min = this.context.get('minQuantity');
+    const step = this.context.get('stepQuantity');
+    this.setValue(value > max ? max : value < min ? min : value - (value % step));
   }
 
-  get inputClass() {
-    return this.quantityLabel.trim() === ''
-      ? 'col-12' + (this.class ? this.class : '')
-      : 'col-6' + (this.class ? this.class : '');
+  increase() {
+    this.setNextValue(this.context.get('quantity') + this.context.get('stepQuantity'));
   }
 
-  getValidations(): ValidatorFn {
-    if (this.type === 'input') {
-      return Validators.compose([
-        Validators.required,
-        Validators.min(this.allowZeroQuantity ? 0 : this.product.minOrderQuantity),
-        Validators.max(this.product.maxOrderQuantity),
-        SpecialValidators.integer,
-      ]);
-    }
+  decrease() {
+    this.setNextValue(this.context.get('quantity') - this.context.get('stepQuantity'));
   }
 
-  ngOnChanges(change: SimpleChanges) {
-    if (this.type === 'select') {
-      this.createSelectOptions(change.product);
-    }
-  }
-
-  private createSelectOptions(change: SimpleChange) {
-    if (change && change.currentValue) {
-      this.quantityOptions = generateSelectOptionsForRange(
-        this.product.minOrderQuantity,
-        this.product.maxOrderQuantity
-      );
-    }
+  change(target: EventTarget) {
+    // tslint:disable-next-line: no-string-literal
+    this.setValue(Number.parseInt(target['value'], 10));
   }
 }

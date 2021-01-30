@@ -32,7 +32,7 @@ export interface LineItem {
   isHiddenGift: boolean;
   isFreeGift: boolean;
 
-  isQuantityFixed?: boolean;
+  editable: boolean;
 }
 
 export interface LineItemView extends LineItem {

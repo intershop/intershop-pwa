@@ -2,7 +2,18 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concatMap, exhaustMap, filter, map, mapTo, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { from } from 'rxjs';
+import {
+  concatMap,
+  exhaustMap,
+  filter,
+  map,
+  mapTo,
+  mergeMap,
+  mergeMapTo,
+  switchMap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectPath, selectRouteParam } from 'ish-core/store/core/router';
@@ -86,16 +97,17 @@ export class UsersEffects {
       mapToPayloadProperty('user'),
       concatMap(newUser =>
         this.usersService.addUser(newUser).pipe(
-          tap(user => {
-            this.navigateTo('../' + user.login);
-          }),
-          mergeMap(user => [
-            addUserSuccess({ user }),
-            displaySuccessMessage({
-              message: 'account.organization.user_management.new_user.confirmation',
-              messageParams: { 0: `${user.firstName} ${user.lastName}` },
-            }),
-          ]),
+          concatMap(user =>
+            this.navigateTo('../' + user.login).pipe(
+              mergeMapTo([
+                addUserSuccess({ user }),
+                displaySuccessMessage({
+                  message: 'account.organization.user_management.new_user.confirmation',
+                  messageParams: { 0: `${user.firstName} ${user.lastName}` },
+                }),
+              ])
+            )
+          ),
           mapErrorToAction(addUserFail)
         )
       )
@@ -119,9 +131,7 @@ export class UsersEffects {
     () =>
       this.actions$.pipe(
         ofType(updateUserSuccess),
-        tap(() => {
-          this.navigateTo('../');
-        })
+        concatMap(() => this.navigateTo('../'))
       ),
     { dispatch: false }
   );
@@ -132,17 +142,22 @@ export class UsersEffects {
       mapToPayload(),
       mergeMap(({ login, roles }) =>
         this.usersService.setUserRoles(login, roles).pipe(
-          withLatestFrom(this.store.pipe(select(selectPath))),
-          tap(([, path]) => {
-            if (path?.endsWith('users/:B2BCustomerLogin/roles')) {
-              this.navigateTo('../../' + login);
-            }
-          }),
-          map(([newRoles]) => setUserRolesSuccess({ login, roles: newRoles })),
+          map(newRoles => setUserRolesSuccess({ login, roles: newRoles })),
           mapErrorToAction(setUserRolesFail, { login })
         )
       )
     )
+  );
+
+  redirectToUserDetailAfterUpdatingRoles$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(setUserRolesSuccess),
+        withLatestFrom(this.store.pipe(select(selectPath))),
+        filter(([, path]) => path?.endsWith('users/:B2BCustomerLogin/roles')),
+        concatMap(() => this.navigateTo('../'))
+      ),
+    { dispatch: false }
   );
 
   updateCurrentUserRoles$ = createEffect(() =>
@@ -161,17 +176,22 @@ export class UsersEffects {
       mapToPayload(),
       mergeMap(({ login, budget }) =>
         this.usersService.setUserBudget(login, budget).pipe(
-          withLatestFrom(this.store.pipe(select(selectPath))),
-          tap(([, path]) => {
-            if (path?.endsWith('users/:B2BCustomerLogin/budget')) {
-              this.navigateTo('../../' + login);
-            }
-          }),
-          map(([newBudget]) => setUserBudgetSuccess({ login, budget: newBudget })),
+          map(newBudget => setUserBudgetSuccess({ login, budget: newBudget })),
           mapErrorToAction(setUserBudgetFail, { login })
         )
       )
     )
+  );
+
+  redirectToUserDetailsAfterUpdatingBudgets$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(setUserBudgetSuccess),
+        withLatestFrom(this.store.pipe(select(selectPath))),
+        filter(([, path]) => path?.endsWith('users/:B2BCustomerLogin/budget')),
+        concatMap(() => this.navigateTo('../'))
+      ),
+    { dispatch: false }
   );
 
   refreshLoggedInUserAfterUpdate$ = createEffect(() =>
@@ -225,12 +245,12 @@ export class UsersEffects {
     )
   );
 
-  private navigateTo(path: string): void {
+  private navigateTo(path: string) {
     // find current ActivatedRoute by following first activated children
     let currentRoute = this.router.routerState.root;
     while (currentRoute.firstChild) {
       currentRoute = currentRoute.firstChild;
     }
-    this.router.navigate([path], { relativeTo: currentRoute });
+    return from(this.router.navigate([path], { relativeTo: currentRoute }));
   }
 }

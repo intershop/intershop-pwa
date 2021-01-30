@@ -1,0 +1,19 @@
+<ng-container *ngIf="variationCount$ | async as variationCount; else variationProduct">
+  <span class="product-variation read-only">{{ variationCount }} {{ 'product.variations.text' | translate }}</span>
+</ng-container>
+<ng-template #variationProduct>
+  <div *ngIf="visible$ | async" class="product-variation-container">
+    <ng-container *ishFeature="'advancedVariationHandling'; else normalVariationDisplay">
+      <ish-product-variation-display></ish-product-variation-display>
+    </ng-container>
+    <ng-template #normalVariationDisplay>
+      <ng-container *ngIf="readOnly$ | async; else variationSelect">
+        <ish-product-variation-display></ish-product-variation-display>
+      </ng-container>
+    </ng-template>
+  </div>
+
+  <ng-template #variationSelect>
+    <ish-product-variation-select></ish-product-variation-select>
+  </ng-template>
+</ng-template>

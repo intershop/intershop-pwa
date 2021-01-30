@@ -22,6 +22,7 @@
   <div class="col-12 col-lg-9 product-detail-img clearfix">
     <div class="product-image-container">
       <ngb-carousel
+        #carousel
         [activeId]="activeSlide"
         (slide)="setActiveSlide($event.current)"
         [showNavigationArrows]="getImageViewIDsExcludePrimary(product, 'L').length > 0"

@@ -2,7 +2,7 @@
   <h2 *ngIf="pagelet.hasParam('Title')">{{ pagelet.stringParam('Title') }}</h2>
   <div class="product-list row">
     <div *ngFor="let sku of productSKUs" class="product-list-item" [ngClass]="pagelet.stringParam('ListItemCSSClass')">
-      <ish-product-item [productSku]="sku" [configuration]="{ displayType: 'tile' }"></ish-product-item>
+      <ish-product-item ishProductContext [sku]="sku" displayType="tile"></ish-product-item>
     </div>
   </div>
 </div>

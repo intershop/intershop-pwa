@@ -1,6 +1,6 @@
-<ish-product-detail-actions [product]="product" (productToCompare)="addToCompare()"></ish-product-detail-actions>
+<ish-product-detail-actions></ish-product-detail-actions>
 
-<div class="row product-details">
+<div *ngIf="product$ | async as product" class="row product-details">
   <div class="col-12 col-md-6 col-lg-8"><ish-product-images [product]="product"></ish-product-images></div>
 
   <div class="col-12 col-md-6 col-lg-4">
@@ -18,82 +18,44 @@
 
       <ish-product-id [product]="product"></ish-product-id>
 
-      <ng-container *ishFeature="'tacton'; else standardInformation">
-        <ng-container *ishIsTactonProduct="product; else standardInformation"></ng-container>
-      </ng-container>
+      <ish-product-promotion *ngIf="configuration$('promotions') | async" [product]="product"></ish-product-promotion>
 
-      <ng-template #standardInformation>
-        <ish-product-promotion [product]="product"></ish-product-promotion>
+      <div class="price-container" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        <ish-product-price
+          *ngIf="configuration$('price') | async"
+          [product]="product"
+          [showInformationalPrice]="true"
+          [showPriceSavings]="true"
+        ></ish-product-price>
 
-        <div class="price-container" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-          <ish-product-price
-            [product]="price || product"
-            [showInformationalPrice]="true"
-            [showPriceSavings]="true"
-          ></ish-product-price>
+        <ish-product-inventory *ngIf="configuration$('inventory') | async" [product]="product"></ish-product-inventory>
+      </div>
 
-          <ish-product-inventory
-            *ngIf="!isRetailSet(product) && !isMasterProduct(product)"
-            [product]="product"
-          ></ish-product-inventory>
+      <ish-product-shipment></ish-product-shipment>
+
+      <ish-product-detail-variations></ish-product-detail-variations>
+
+      <ish-lazy-tacton-configure-product></ish-lazy-tacton-configure-product>
+
+      <div class="row form-group">
+        <div class="col-6">
+          <ish-product-quantity-label for="product-detail-quantity"></ish-product-quantity-label>
         </div>
+        <div class="col-6">
+          <ish-product-quantity id="product-detail-quantity"></ish-product-quantity>
+        </div>
+      </div>
 
-        <ish-product-shipment
-          *ngIf="!isRetailSet(product) && !isMasterProduct(product)"
-          [product]="product"
-        ></ish-product-shipment>
-      </ng-template>
+      <ish-product-add-to-basket
+        [class]="'btn-lg btn-block'"
+        [translationKey]="isRetailSet(product) ? 'product.add_to_cart.retailset.link' : 'product.add_to_cart.link'"
+      ></ish-product-add-to-basket>
 
-      <ish-product-variation-select
-        *ngIf="isVariationProduct(product)"
-        [productMasterSKU]="product.productMasterSKU"
-        [variationOptions]="variationOptions"
-        (selectVariation)="variationSelected($event)"
-      ></ish-product-variation-select>
+      <ish-lazy-product-add-to-order-template
+        [class]="'btn btn-default btn-block'"
+      ></ish-lazy-product-add-to-order-template>
 
-      <ng-container *ishFeature="'tacton'; else standardInteractions">
-        <ish-lazy-tacton-configure-product
-          *ishIsTactonProduct="product; else standardInteractions"
-          [product]="product"
-        ></ish-lazy-tacton-configure-product>
-      </ng-container>
-
-      <ng-template #standardInteractions>
-        <form *ngIf="!isMasterProduct(product)" [formGroup]="productDetailForm" class="product-form form-horizontal">
-          <div class="row">
-            <div class="w-100">
-              <ish-product-quantity
-                *ngIf="!isRetailSet(product)"
-                [product]="product"
-                [parentForm]="productDetailForm"
-                [controlName]="quantityControlName"
-                [type]="'input'"
-              ></ish-product-quantity>
-            </div>
-          </div>
-
-          <ish-product-add-to-basket
-            [product]="product"
-            [class]="'btn-lg btn-block'"
-            [disabled]="productDetailForm.invalid"
-            [translationKey]="isRetailSet(product) ? 'product.add_to_cart.retailset.link' : 'product.add_to_cart.link'"
-            (productToBasket)="addToBasket()"
-          ></ish-product-add-to-basket>
-
-          <ish-lazy-product-add-to-order-template
-            [class]="'btn btn-default btn-block'"
-            [product]="product"
-            [quantity]="quantity"
-          ></ish-lazy-product-add-to-order-template>
-
-          <ish-lazy-product-add-to-quote
-            [product]="product"
-            [disabled]="productDetailForm.invalid"
-            [quantity]="quantity"
-            [class]="'btn-block'"
-          ></ish-lazy-product-add-to-quote>
-        </form>
-      </ng-template>
+      <ish-lazy-product-add-to-quote [class]="'btn-block'"></ish-lazy-product-add-to-quote>
     </div>
 
     <ish-accordion>
@@ -107,19 +69,13 @@
         <ish-product-attributes [product]="product"></ish-product-attributes>
       </ish-accordion-item>
 
-      <ng-container *ishFeature="'tacton'; else shippingInformation">
-        <ng-container *ishIsTactonProduct="product; else shippingInformation"></ng-container>
-      </ng-container>
-
-      <ng-template #shippingInformation>
-        <ish-accordion-item
-          *ngIf="!isMasterProduct(product)"
-          [heading]="'product.shipping.heading' | translate"
-          dataTestingId="section-shipping-tab"
-        >
-          <ish-product-shipment [product]="product"></ish-product-shipment>
-        </ish-accordion-item>
-      </ng-template>
+      <ish-accordion-item
+        *ngIf="configuration$('shipment') | async"
+        [heading]="'product.shipping.heading' | translate"
+        dataTestingId="section-shipping-tab"
+      >
+        <ish-product-shipment></ish-product-shipment>
+      </ish-accordion-item>
     </ish-accordion>
   </div>
 </div>

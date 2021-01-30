@@ -59,7 +59,6 @@ describe('User Create Page Component', () => {
         firstName: ['Bernhard', [Validators.required]],
         lastName: ['Boldner', [Validators.required]],
         email: ['test@gmail.com', [Validators.required, SpecialValidators.email]],
-        preferredLanguage: ['en_US', [Validators.required]],
         active: [true],
       }),
       roleIDs: ['Buyer'],
@@ -79,7 +78,6 @@ describe('User Create Page Component', () => {
           "email": "test@gmail.com",
           "firstName": "Bernhard",
           "lastName": "Boldner",
-          "preferredLanguage": "en_US",
         },
         "roleIDs": "Buyer",
         "userBudget": Object {

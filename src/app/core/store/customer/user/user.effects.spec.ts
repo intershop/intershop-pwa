@@ -243,11 +243,11 @@ describe('User Effects', () => {
       });
     });
 
-    it('should dispatch a CreateUserLogin action on successful user creation', () => {
+    it('should dispatch a LoginUserSuccess action on successful user creation', () => {
       const credentials: Credentials = { login: '1234', password: 'xxx' };
 
       const action = createUser({ credentials } as CustomerRegistrationType);
-      const completion = loginUser({ credentials });
+      const completion = loginUserSuccess({} as CustomerUserType);
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -469,13 +469,13 @@ describe('User Effects', () => {
   });
 
   describe('resetUserError$', () => {
-    it('should not dispatch UserErrorReset action on router navigation if error is not set', done => {
+    it('should not dispatch UserErrorReset action on router navigation if error is not set', fakeAsync(() => {
       router.navigateByUrl('/any');
 
       effects.resetUserError$.subscribe(fail, fail, fail);
 
-      setTimeout(done, 1000);
-    });
+      tick(2000);
+    }));
 
     it('should dispatch UserErrorReset action on router navigation if error was set', done => {
       store$.dispatch(loginUserFail({ error: makeHttpError({ message: 'error' }) }));

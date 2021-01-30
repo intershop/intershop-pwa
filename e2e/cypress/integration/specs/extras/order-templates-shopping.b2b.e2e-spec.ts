@@ -31,7 +31,7 @@ describe('Order Template Shopping Experience Functionality', () => {
     LoginPage.navigateTo('/account/order-templates');
     at(LoginPage, page => {
       page.fillForm(_.user.login, _.user.password);
-      page.submit().its('status').should('equal', 200);
+      page.submit().its('response.statusCode').should('equal', 200);
     });
     at(OrderTemplatesOverviewPage, page => {
       page.addOrderTemplate(accountOrderTemplate);

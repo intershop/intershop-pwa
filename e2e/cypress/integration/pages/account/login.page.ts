@@ -21,9 +21,7 @@ export class LoginPage {
   }
 
   submit() {
-    cy.server()
-      .route('GET', /.*\/customers\/-.*/)
-      .as('currentCustomer');
+    cy.intercept('GET', /.*\/customers\/-.*/).as('currentCustomer');
     cy.wait(500);
 
     cy.get('button[name="login"]').click();

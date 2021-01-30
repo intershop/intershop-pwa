@@ -48,7 +48,12 @@ describe('Account User Info Component', () => {
   it('should render when user is business customer', () => {
     when(accountFacade.customer$).thenReturn(of({ isBusinessCustomer: true, companyName: 'Foods Inc.' } as Customer));
     when(accountFacade.user$).thenReturn(of({ firstName: 'Max', lastName: 'Mustermann' } as User));
-    when(accountFacade.roles$).thenReturn(of(['Approver', 'Buyer']));
+    when(accountFacade.roles$).thenReturn(
+      of([
+        { displayName: 'Approver', roleId: 'APP_B2B_APPROVER' },
+        { displayName: 'Buyer', roleId: 'APP_B2B_BUYER' },
+      ])
+    );
 
     fixture.detectChanges();
 

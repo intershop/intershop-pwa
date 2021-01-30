@@ -28,7 +28,6 @@ export class UserCreatePageComponent implements OnInit {
       active: [true],
       phone: [''],
       birthday: [''],
-      preferredLanguage: ['en_US', [Validators.required]],
     }),
     roleIDs: this.fb.control([]),
     userBudget: this.fb.group({
@@ -73,7 +72,6 @@ export class UserCreatePageComponent implements OnInit {
       active: formValue.profile.active,
       phoneHome: formValue.profile.phone,
       birthday: formValue.profile.birthday === '' ? undefined : formValue.birthday, // TODO: see IS-22276
-      preferredLanguage: formValue.profile.preferredLanguage,
       businessPartnerNo: 'U' + UUID.UUID(),
       roleIDs: formValue.roleIDs,
       userBudget: formValue.userBudget.currency

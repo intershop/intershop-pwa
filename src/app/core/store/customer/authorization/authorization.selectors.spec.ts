@@ -29,7 +29,10 @@ describe('Authorization Selectors', () => {
   describe('after successfully loading roles and permissions', () => {
     const action = loadRolesAndPermissionsSuccess({
       authorization: {
-        roleDisplayNames: ['Buyer', 'Approver'],
+        roles: [
+          { displayName: 'Buyer', roleId: 'APP_B2B_Buyer' },
+          { displayName: 'Approver', roleId: 'APP_B2B_Approver' },
+        ],
         permissionIDs: ['A', 'C'],
       },
     });
@@ -39,7 +42,10 @@ describe('Authorization Selectors', () => {
     });
 
     it('should set loading to true', () => {
-      expect(getUserRoles(store$.state)).toIncludeSameMembers(['Buyer', 'Approver']);
+      expect(getUserRoles(store$.state)).toIncludeSameMembers([
+        { displayName: 'Buyer', roleId: 'APP_B2B_Buyer' },
+        { displayName: 'Approver', roleId: 'APP_B2B_Approver' },
+      ]);
       expect(getUserPermissions(store$.state)).toIncludeSameMembers(['A', 'C']);
     });
   });

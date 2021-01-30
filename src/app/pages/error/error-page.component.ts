@@ -10,7 +10,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ErrorPageComponent implements OnInit {
-  error$: Observable<HttpError>;
+  error$: Observable<HttpError | string>;
   type$: Observable<string>;
 
   constructor(private appFacade: AppFacade) {}

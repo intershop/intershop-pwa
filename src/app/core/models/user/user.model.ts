@@ -2,7 +2,7 @@ export interface User {
   title?: string;
   firstName: string;
   lastName: string;
-  preferredLanguage: string;
+  preferredLanguage?: string;
   birthday?: string;
 
   phoneHome?: string;

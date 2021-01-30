@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 import { anyNumber, anyString, instance, mock, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { Product } from 'ish-core/models/product/product.model';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { SelectOrderTemplateModalComponent } from '../select-order-template-modal/select-order-template-modal.component';
@@ -18,8 +18,8 @@ describe('Product Add To Order Template Component', () => {
   let component: ProductAddToOrderTemplateComponent;
   let fixture: ComponentFixture<ProductAddToOrderTemplateComponent>;
   let element: HTMLElement;
-  let orderTemplateFacadeMock: OrderTemplatesFacade;
-  let accountFacadeMock: AccountFacade;
+  let orderTemplateFacade: OrderTemplatesFacade;
+  let accountFacade: AccountFacade;
 
   const orderTemplateDetails = [
     {
@@ -43,8 +43,12 @@ describe('Product Add To Order Template Component', () => {
   ];
 
   beforeEach(async () => {
-    orderTemplateFacadeMock = mock(OrderTemplatesFacade);
-    accountFacadeMock = mock(AccountFacade);
+    orderTemplateFacade = mock(OrderTemplatesFacade);
+    when(orderTemplateFacade.orderTemplates$).thenReturn(of(orderTemplateDetails));
+    accountFacade = mock(AccountFacade);
+    const productContext = mock(ProductContextFacade);
+    when(productContext.get('sku')).thenReturn('test sku');
+    when(productContext.get('quantity')).thenReturn(1);
 
     await TestBed.configureTestingModule({
       declarations: [
@@ -54,8 +58,9 @@ describe('Product Add To Order Template Component', () => {
       ],
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       providers: [
-        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacadeMock) },
-        { provide: AccountFacade, useFactory: () => instance(accountFacadeMock) },
+        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacade) },
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        { provide: ProductContextFacade, useFactory: () => instance(productContext) },
       ],
     }).compileComponents();
   });
@@ -64,9 +69,6 @@ describe('Product Add To Order Template Component', () => {
     fixture = TestBed.createComponent(ProductAddToOrderTemplateComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    when(orderTemplateFacadeMock.orderTemplates$).thenReturn(of(orderTemplateDetails));
-    component.product = { name: 'Test Product', sku: 'test sku' } as Product;
-    component.quantity = 1;
   });
 
   it('should be created', () => {
@@ -78,12 +80,12 @@ describe('Product Add To Order Template Component', () => {
   it('should call orderTemplateFacade to add product to order template', () => {
     fixture.detectChanges();
     component.addProductToOrderTemplate({ id: 'testid', title: 'Test Order Template' });
-    verify(orderTemplateFacadeMock.addProductToOrderTemplate(anyString(), anyString(), anyNumber())).once();
+    verify(orderTemplateFacade.addProductToOrderTemplate(anyString(), anyString(), anyNumber())).once();
   });
 
   it('should call orderTemplateFacade to add product to new order template', () => {
     fixture.detectChanges();
     component.addProductToOrderTemplate({ id: undefined, title: 'Test Order Template' });
-    verify(orderTemplateFacadeMock.addProductToNewOrderTemplate(anyString(), anyString(), anyNumber())).once();
+    verify(orderTemplateFacade.addProductToNewOrderTemplate(anyString(), anyString(), anyNumber())).once();
   });
 });

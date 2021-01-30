@@ -33,13 +33,12 @@ describe('Checkout Payment', () => {
       LoginPage.navigateTo('/checkout/address');
       at(LoginPage, page => {
         page.fillForm(_.user.login, _.user.password);
-        page.submit().its('status').should('equal', 200);
+        page.submit().its('response.statusCode').should('equal', 200);
       });
     });
 
     it('should set first addresses automatically', () => {
       at(CheckoutAddressesPage, page => {
-        cy.wait(1000);
         page.continueCheckout();
       });
     });
@@ -87,15 +86,12 @@ describe('Checkout Payment', () => {
         page.paymentInstrument('ISH_DEBIT_TRANSFER').formError('BIC').should('not.be.visible');
         page.paymentInstrument('ISH_DEBIT_TRANSFER').submit();
       });
-      cy.wait(500);
       at(CheckoutPaymentPage, page => page.content.should('contain', '****************0001'));
     });
 
     it('should delete a direct debit transfer', () => {
       at(CheckoutPaymentPage, page => {
         page.paymentInstrument('ISH_DEBIT_TRANSFER').delete();
-
-        cy.wait(500);
         page.content.should('not.contain', '****************0001');
       });
     });
@@ -109,7 +105,6 @@ describe('Checkout Payment', () => {
           BIC: '12345678',
         });
         page.paymentInstrument('ISH_DEBIT_TRANSFER').submit();
-        cy.wait(500);
         page.content.should('contain', '****************0000');
       });
     });
@@ -129,9 +124,7 @@ describe('Checkout Payment', () => {
 
     it('should fill in form for credit card correctly without saving it for later and submit', () => {
       at(CheckoutPaymentPage, page => {
-        cy.wait(500);
         page.addPaymentInstrument('ISH_CREDITCARD');
-        cy.wait(600);
         page.paymentInstrument('ISH_CREDITCARD').fillForm({
           creditCardNumber: '5555555555554444',
           creditCardType: 'mas',
@@ -144,8 +137,7 @@ describe('Checkout Payment', () => {
     });
   });
 
-  // ignored until https://jira.intershop.de/browse/IS-31634 is fixed
-  xdescribe('Within the MyAccount', () => {
+  describe('Within the MyAccount', () => {
     before(() => {
       at(CheckoutPaymentPage, page => page.header.gotoHomePage());
       at(HomePage, page => page.header.goToMyAccount());

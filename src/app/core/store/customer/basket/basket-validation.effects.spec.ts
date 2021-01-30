@@ -376,7 +376,7 @@ describe('Basket Validation Effects', () => {
         results: {
           valid: false,
           adjusted: false,
-          errors: [{ code: '1234', message: 'error', parameters: { scopes: 'Addresses' } }],
+          errors: [{ code: '1234', message: 'error', parameters: { scopes: ['Addresses'] } }],
         },
       };
       const action = continueCheckoutWithIssues({

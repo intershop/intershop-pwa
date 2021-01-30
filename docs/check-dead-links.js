@@ -54,7 +54,7 @@ glob('**/*.md')
     let isError = false;
 
     files
-      .filter(file => !file.includes('node_modules'))
+      .filter(file => !file.includes('node_modules/') && !file.includes('dist/'))
       .forEach(file => {
         const content = fs.readFileSync(file, { encoding: 'utf-8' });
         const match = content.match(/\[.*?\](\(|:\ +)[^\s]*\)?/g);
