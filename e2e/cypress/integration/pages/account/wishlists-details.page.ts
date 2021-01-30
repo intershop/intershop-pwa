@@ -1,4 +1,4 @@
-import { waitLoadingEnd } from '../../framework';
+import { performAddToCart, waitLoadingEnd } from '../../framework';
 import { BreadcrumbModule } from '../breadcrumb.module';
 import { HeaderModule } from '../header.module';
 
@@ -59,17 +59,6 @@ export class WishlistsDetailsPage {
   addProductToBasket(productId: string, quantity: number) {
     this.getWishlistItemById(productId).find('[data-testing-id="quantity"]').clear().type(quantity.toString());
 
-    waitLoadingEnd(2000);
-    cy.intercept('POST', '**/baskets/*/items').as('basket');
-    cy.intercept('GET', '**/baskets/current*').as('basketCurrent');
-    waitLoadingEnd(2000);
-
-    this.getWishlistItemById(productId).find('[data-testing-id="addToCartButton"]').click();
-
-    return cy
-      .wait('@basket')
-      .then(result =>
-        result.response.statusCode >= 400 ? result : cy.wait('@basketCurrent').then(() => result)
-      ) as any;
+    return performAddToCart(() => this.getWishlistItemById(productId).find('[data-testing-id="addToCartButton"]'));
   }
 }
