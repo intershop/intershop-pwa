@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AsyncValidatorFn, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { EMPTY } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { debounceTime, map, mapTo, switchMap, tap } from 'rxjs/operators';
 
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
@@ -59,9 +60,18 @@ export class QuickorderPageComponent implements OnInit {
   quickOrderForm: FormGroup;
   csvForm: FormGroup;
 
-  constructor(private shoppingFacade: ShoppingFacade, private qf: FormBuilder, private cdRef: ChangeDetectorRef) {}
+  loading$: Observable<boolean>;
+
+  constructor(
+    private shoppingFacade: ShoppingFacade,
+    private checkoutFacade: CheckoutFacade,
+    private qf: FormBuilder,
+    private cdRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
+    this.loading$ = this.checkoutFacade.basketLoading$;
+
     this.initForms();
     // Dummy data to test search suggestion styling, typing 1234 will show the dropwdown with this product
     this.searchSuggestions.push({
