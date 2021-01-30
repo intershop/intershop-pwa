@@ -1,4 +1,4 @@
-import { fillFormField } from '../../framework';
+import { fillFormField, performAddToCart } from '../../framework';
 import { HeaderModule } from '../header.module';
 
 export class QuickorderPage {
@@ -19,17 +19,7 @@ export class QuickorderPage {
     cy.get('a[data-testing-id="add-quickorder-line"]').click();
   }
 
-  addToCart(): Cypress.Chainable<Cypress.WaitXHR> {
-    cy.wait(3000);
-    cy.intercept('POST', '**/baskets/*/items').as('basket');
-    cy.intercept('GET', '**/baskets/current*').as('basketCurrent');
-    cy.wait(3000);
-    this.addToCartButton().click();
-
-    return cy
-      .wait('@basket')
-      .then(result =>
-        result.response.statusCode >= 400 ? result : cy.wait('@basketCurrent').then(() => result)
-      ) as any;
+  addToCart() {
+    return performAddToCart(this.addToCartButton);
   }
 }

@@ -54,3 +54,18 @@ export function fillFormField(parent: string, key: string, value: number | strin
     });
   });
 }
+
+export function performAddToCart(
+  button: () => Cypress.Chainable<JQuery<HTMLElement>>
+): Cypress.Chainable<Cypress.WaitXHR> {
+  waitLoadingEnd(1000);
+  cy.intercept('POST', '**/baskets/*/items').as('basket');
+  cy.intercept('GET', '**/baskets/current*').as('basketCurrent');
+  waitLoadingEnd(1000);
+
+  button().click();
+
+  return cy
+    .wait('@basket')
+    .then(result => (result.response.statusCode >= 400 ? result : cy.wait('@basketCurrent').then(() => result))) as any;
+}
