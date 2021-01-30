@@ -4,8 +4,10 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
 import { QuickorderPageComponent } from './quickorder-page.component';
@@ -18,8 +20,16 @@ describe('Quickorder Page Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [MockComponent(BreadcrumbComponent), MockComponent(InputComponent), QuickorderPageComponent],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) }],
+      declarations: [
+        MockComponent(BreadcrumbComponent),
+        MockComponent(InputComponent),
+        MockComponent(LoadingComponent),
+        QuickorderPageComponent,
+      ],
+      providers: [
+        { provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) },
+        { provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) },
+      ],
     }).compileComponents();
   });
 
