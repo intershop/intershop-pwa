@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject, concat, of, timer } from 'rxjs';
-import { distinctUntilChanged, filter, mapTo, switchMap, takeUntil } from 'rxjs/operators';
+import { filter, mapTo, switchMap, takeUntil } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -60,9 +60,7 @@ export class MiniBasketComponent implements OnInit, OnDestroy {
       .subscribe(() => this.open());
 
     this.basketAnimation$ = this.checkoutFacade.basketChange$.pipe(
-      filter(() => this.location.path() !== '/basket'),
-      whenTruthy(),
-      distinctUntilChanged(),
+      filter(() => !this.location.path().startsWith('/basket')),
       switchMap(() => concat(of('tada'), timer(2500).pipe(mapTo(''))))
     );
 
