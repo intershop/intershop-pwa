@@ -332,9 +332,11 @@ describe('Product Context Facade', () => {
       expect(context.get('parts')).toMatchInlineSnapshot(`
         Array [
           Object {
+            "quantity": 1,
             "sku": "p1",
           },
           Object {
+            "quantity": 1,
             "sku": "p2",
           },
         ]

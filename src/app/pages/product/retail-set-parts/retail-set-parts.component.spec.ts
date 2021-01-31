@@ -19,7 +19,13 @@ describe('Retail Set Parts Component', () => {
 
   beforeEach(async () => {
     const context = mock(ProductContextFacade);
-    when(context.select('parts')).thenReturn(of([{ sku: '1' }, { sku: '2' }, { sku: '3' }]));
+    when(context.select('parts')).thenReturn(
+      of([
+        { sku: '1', quantity: 1 },
+        { sku: '2', quantity: 1 },
+        { sku: '3', quantity: 1 },
+      ])
+    );
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],

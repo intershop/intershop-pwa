@@ -17,7 +17,7 @@ import { Product } from './product.model';
 
 export interface SkuQuantityType {
   sku: string;
-  quantity?: number;
+  quantity: number;
 }
 
 export enum ProductCompletenessLevel {
