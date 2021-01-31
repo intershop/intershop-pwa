@@ -3,7 +3,7 @@ import { SearchResultPage } from '../../pages/shopping/search-result.page';
 
 const _ = {
   searchTerm: 'microsoft',
-  items: 68,
+  itemsMin: 60,
 };
 
 describe('Scrolling User', () => {
@@ -11,8 +11,8 @@ describe('Scrolling User', () => {
 
   it('should not see all product tiles available in that category', () => {
     at(SearchResultPage, page => {
-      page.productList.numberOfItems.should('equal', _.items);
-      page.productList.visibleProducts.should('not.have.length', _.items);
+      page.productList.numberOfItems.should('be.greaterThan', _.itemsMin);
+      page.productList.visibleProducts.should('have.length.lessThan', _.itemsMin);
     });
   });
 
@@ -34,7 +34,7 @@ describe('Scrolling User', () => {
 
   it('should now see all product tiles on page', () => {
     at(SearchResultPage, page => {
-      page.productList.visibleProducts.should('have.length', _.items);
+      page.productList.visibleProducts.should('have.length.greaterThan', _.itemsMin);
     });
   });
 });
