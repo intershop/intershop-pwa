@@ -224,7 +224,7 @@ export class ProductContextFacade extends RxState<ProductContext> {
         ),
         this.select('product').pipe(
           filter(ProductHelper.isRetailSet),
-          map(p => p?.partSKUs?.map(sku => ({ sku })))
+          map(p => p?.partSKUs?.map(sku => ({ sku, quantity: 1 })))
         )
       )
     );
