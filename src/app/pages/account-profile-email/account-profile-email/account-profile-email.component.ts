@@ -46,7 +46,6 @@ export class AccountProfileEmailComponent implements OnInit {
 
     const email = this.form.get('email').value;
     const login = undefined;
-
     this.updateEmail.emit({ ...this.currentUser, email, login });
   }
 
