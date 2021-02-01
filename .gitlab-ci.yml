@@ -193,7 +193,7 @@ deploy_demo_b2b:
       --env LOGGING=true
       --env PROXY_ICM=true
       --env THEME="blue|688dc3"
-      --env FEATURES=quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,advancedVariationHandling,sentry,tacton, punchout
+      --env FEATURES=quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,advancedVariationHandling,sentry,tacton,punchout
       --env ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site
       --env SENTRY_DSN=${SENTRY_DSN}
       --env TACTON="${TACTON}"
@@ -228,7 +228,7 @@ deploy_demo_nginx:
       .+\.com:
         channel: inSPIRED-inTRONICS_Business-Site
         lang: de_DE
-        features: quoting,quickorder,orderTemplates,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry,tacton, punchout
+        features: quoting,quickorder,orderTemplates,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry,tacton,punchout
         theme: blue|688dc3
       .+\.fr:
         channel: inSPIRED-inTRONICS-Site
@@ -334,7 +334,7 @@ deploy_review_b2c:
       .+\.com:
         channel: inSPIRED-inTRONICS_Business-Site
         lang: de_DE
-        features: quoting,quickorder,orderTemplates,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry,tacton, punchout
+        features: quoting,quickorder,orderTemplates,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry,tacton,punchout
         theme: blue|688dc3
       .+\.fr:
         channel: inSPIRED-inTRONICS-Site
@@ -447,7 +447,7 @@ deploy_review_b2b:
       -e ICM_BASE_URL=${ICM_BASE_URL}
       -e THEME="blue|688dc3"
       -e ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site
-      -e FEATURES=quoting,quickorder,orderTemplates,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry,tacton, punchout
+      -e FEATURES=quoting,quickorder,orderTemplates,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry,tacton,punchout
       --add-host $ICM_HOST:$ICM_IP
       --add-host $DEMO_SERVER_NAME:$DEMO_SERVER_IP
       ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
