@@ -42,6 +42,7 @@
     "start:local": "ng run intershop-pwa:serve-ssr:local"
   },
   "dependencies": {
+    "@angular-builders/custom-webpack": "^11.0.0",
     "@angular/animations": "~11.0.3",
     "@angular/cdk": "^11.0.2",
     "@angular/common": "~11.0.3",

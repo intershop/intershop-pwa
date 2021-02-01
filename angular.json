@@ -18,7 +18,7 @@
       "prefix": "ish",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
             "outputPath": "dist/browser",
             "index": "src/index.html",
@@ -43,6 +43,10 @@
           },
           "configurations": {
             "production": {
+              "customWebpackConfig": {
+                "path": "./templates/production/webpack.production.js",
+                "replaceDuplicatePlugins": true
+              },
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -119,7 +123,7 @@
           }
         },
         "server": {
-          "builder": "@angular-devkit/build-angular:server",
+          "builder": "@angular-builders/custom-webpack:server",
           "options": {
             "outputPath": "dist/server",
             "main": "server.ts",
@@ -127,6 +131,10 @@
           },
           "configurations": {
             "production": {
+              "customWebpackConfig": {
+                "path": "./templates/production/webpack.production.js",
+                "replaceDuplicatePlugins": true
+              },
               "outputHashing": "media",
               "fileReplacements": [
                 {
