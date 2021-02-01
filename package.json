@@ -35,6 +35,7 @@
     "synchronize-lazy-components": "ng g lazy-components",
     "build:watch": "ng build --aot --watch",
     "build": "ng build -c production && ng run intershop-pwa:server:production --bundleDependencies",
+    "build:local": "ng build -c local && ng run intershop-pwa:server:local --bundleDependencies",
     "analyze": "ng build --prod --stats-json && npx webpack-bundle-analyzer --host 0.0.0.0 dist/browser/stats.json dist/browser",
     "serve": "node dist/server/main.js",
     "start": "npm run build && npm run serve",
