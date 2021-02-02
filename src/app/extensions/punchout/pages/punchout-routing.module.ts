@@ -1,8 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { FeatureToggleGuard } from 'ish-core/feature-toggle.module';
+
 const routes: Routes = [
-  { path: 'punchout', loadChildren: () => import('./punchout/punchout-page.module').then(m => m.PunchoutPageModule) },
+  {
+    path: 'punchout',
+    canActivate: [FeatureToggleGuard],
+    data: { feature: 'punchout' },
+    loadChildren: () => import('./punchout/punchout-page.module').then(m => m.PunchoutPageModule),
+  },
 ];
 
 @NgModule({
@@ -10,33 +17,3 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 export class PunchoutRoutingModule {}
-
-// tslint:disable-next-line: project-structure
-const accountRoutes: Routes = [
-  {
-    path: '',
-    loadChildren: () =>
-      import('./account-punchout/account-punchout-page.module').then(m => m.AccountPunchoutPageModule),
-  },
-  {
-    path: 'create',
-    loadChildren: () =>
-      import('./account-punchout-create/account-punchout-create-page.module').then(
-        m => m.AccountPunchoutCreatePageModule
-      ),
-  },
-  {
-    path: ':PunchoutLogin',
-    loadChildren: () =>
-      import('./account-punchout-details/account-punchout-details-page.module').then(
-        m => m.AccountPunchoutDetailsPageModule
-      ),
-  },
-];
-
-@NgModule({
-  imports: [RouterModule.forChild(accountRoutes)],
-  exports: [RouterModule],
-})
-// tslint:disable-next-line: project-structure
-export class AccountPunchoutRoutingModule {}
