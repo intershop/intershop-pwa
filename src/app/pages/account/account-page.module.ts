@@ -17,6 +17,11 @@ const accountPageRoutes: Routes = [
     component: AccountPageComponent,
     children: [
       {
+        path: '',
+        data: { breadcrumbData: [] },
+        component: AccountOverviewPageModule.component,
+      },
+      {
         path: 'addresses',
         data: { breadcrumbData: [{ key: 'account.saved_addresses.link' }] },
         loadChildren: () =>
@@ -43,45 +48,12 @@ const accountPageRoutes: Routes = [
           import('../account-profile/account-profile-page.module').then(m => m.AccountProfilePageModule),
       },
       {
-        path: 'quotes',
-        data: { breadcrumbData: [{ key: 'quote.quotes.link' }] },
-        loadChildren: () =>
-          import('../../extensions/quoting/pages/quote-list/quote-list-page.module').then(m => m.QuoteListPageModule),
-      },
-      {
-        path: '',
-        data: { breadcrumbData: [] },
-        component: AccountOverviewPageModule.component,
-      },
-      {
-        path: 'wishlists',
-        data: { breadcrumbData: [{ key: 'account.wishlists.breadcrumb_link' }] },
-        loadChildren: () =>
-          import('../../extensions/wishlists/pages/wishlists-routing.module').then(m => m.WishlistsRoutingModule),
-      },
-      {
         path: 'order-templates',
         data: { breadcrumbData: [{ key: 'account.ordertemplates.link' }] },
         loadChildren: () =>
           import('../../extensions/order-templates/pages/order-templates-routing.module').then(
             m => m.OrderTemplatesRoutingModule
           ),
-      },
-      {
-        path: 'organization',
-        loadChildren: () => import('organization-management').then(m => m.OrganizationManagementModule),
-        canActivate: [AuthorizationToggleGuard],
-        data: {
-          permission: 'APP_B2B_MANAGE_USERS',
-        },
-      },
-      {
-        path: 'requisitions',
-        loadChildren: () => import('requisition-management').then(m => m.RequisitionManagementModule),
-        canActivate: [AuthorizationToggleGuard],
-        data: {
-          permission: 'APP_B2B_PURCHASE',
-        },
       },
       {
         path: 'punchout',
@@ -95,7 +67,30 @@ const accountPageRoutes: Routes = [
           import('../../extensions/punchout/pages/punchout-account-routing.module').then(
             m => m.PunchoutAccountRoutingModule
           ),
-
+      },
+      {
+        path: 'quotes',
+        data: { breadcrumbData: [{ key: 'quote.quotes.link' }] },
+        loadChildren: () =>
+          import('../../extensions/quoting/pages/quote-list/quote-list-page.module').then(m => m.QuoteListPageModule),
+      },
+      {
+        path: 'wishlists',
+        data: { breadcrumbData: [{ key: 'account.wishlists.breadcrumb_link' }] },
+        loadChildren: () =>
+          import('../../extensions/wishlists/pages/wishlists-routing.module').then(m => m.WishlistsRoutingModule),
+      },
+      {
+        path: 'organization',
+        canActivate: [AuthorizationToggleGuard],
+        data: { permission: 'APP_B2B_MANAGE_USERS' },
+        loadChildren: () => import('organization-management').then(m => m.OrganizationManagementModule),
+      },
+      {
+        path: 'requisitions',
+        canActivate: [AuthorizationToggleGuard],
+        data: { permission: 'APP_B2B_PURCHASE' },
+        loadChildren: () => import('requisition-management').then(m => m.RequisitionManagementModule),
       },
     ],
   },
