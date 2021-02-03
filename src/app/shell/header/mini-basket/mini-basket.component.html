@@ -27,12 +27,12 @@
         <div *ngFor="let lineItem of lineItems" class="product-row">
           <ng-container *ngIf="product$(lineItem.productSKU) | async as product">
             <div class="mini-product-img">
-              <a [routerLink]="product | ishProductRoute" (click)="collapse()">
+              <a [routerLink]="product | ishProductRoute">
                 <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
               </a>
             </div>
             <div class="mini-product-info">
-              <a [routerLink]="product | ishProductRoute" (click)="collapse()"> {{ product.name }} </a>
+              <a [routerLink]="product | ishProductRoute"> {{ product.name }} </a>
               <div class="product-price">{{ lineItem.price | ishPrice }}</div>
               <div class="cart-pli-data">
                 <span>{{ 'shopping_cart.pli.qty.label' | translate }}</span> {{ lineItem.quantity.value }}
@@ -42,7 +42,7 @@
         </div>
       </div>
 
-      <a class="view-cart btn btn-primary btn-lg btn-block" routerLink="/basket" (click)="collapse()">
+      <a class="view-cart btn btn-primary btn-lg btn-block" routerLink="/basket">
         {{ 'shopping_cart.ministatus.view_cart.link' | translate }}
       </a>
     </ng-container>

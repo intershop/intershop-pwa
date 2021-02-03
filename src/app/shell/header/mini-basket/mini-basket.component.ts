@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy
 import { Observable, Subject, concat, of, timer } from 'rxjs';
 import { filter, mapTo, switchMap, takeUntil } from 'rxjs/operators';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -32,6 +33,7 @@ export class MiniBasketComponent implements OnInit, OnDestroy {
   constructor(
     private checkoutFacade: CheckoutFacade,
     private shoppingFacade: ShoppingFacade,
+    private appFacade: AppFacade,
     private location: Location,
     private cdRef: ChangeDetectorRef
   ) {}
@@ -70,6 +72,10 @@ export class MiniBasketComponent implements OnInit, OnDestroy {
       } else {
         this.collapse();
       }
+    });
+
+    this.appFacade.routingInProgress$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(() => {
+      this.collapse();
     });
   }
 
