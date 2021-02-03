@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
-import { LazyHierarchyGroupNameComponent } from 'src/app/extensions/organization-hierarchies/exports/lazy-hierarchy-group-name/lazy-hierarchy-group-name.component';
 import { instance, mock, when } from 'ts-mockito';
 
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
@@ -10,6 +9,8 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+
+import { LazyHierarchyGroupNameComponent } from '../../../../extensions/organization-hierarchies/exports/lazy-hierarchy-group-name/lazy-hierarchy-group-name.component';
 
 import { BasketBuyerComponent } from './basket-buyer.component';
 

@@ -8,6 +8,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { User } from 'ish-core/models/user/user.model';
 
 import { LazyHierarchySwitchComponent } from '../../../extensions/organization-hierarchies/exports/lazy-hierarchy-switch/lazy-hierarchy-switch.component';
@@ -19,6 +20,7 @@ describe('Login Status Component', () => {
   let fixture: ComponentFixture<LoginStatusComponent>;
   let element: HTMLElement;
   let accountFacade: AccountFacade;
+  let appFacade: AppFacade;
 
   const userData = {
     firstName: 'Patricia',
@@ -27,6 +29,7 @@ describe('Login Status Component', () => {
 
   beforeEach(async () => {
     accountFacade = mock(AccountFacade);
+    appFacade = mock(AppFacade);
     await TestBed.configureTestingModule({
       declarations: [
         LoginStatusComponent,
@@ -35,7 +38,10 @@ describe('Login Status Component', () => {
         MockDirective(FeatureToggleDirective),
       ],
       imports: [RouterTestingModule, TranslateModule.forRoot()],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
+      providers: [
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
+      ],
     }).compileComponents();
   });
 

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
@@ -26,9 +27,11 @@ describe('Hierarchy Switch Component', () => {
     organizationHierarchiesFacade = mock(OrganizationHierarchiesFacade);
     when(organizationHierarchiesFacade.groups$).thenReturn(of([groupA, groupB]));
     when(organizationHierarchiesFacade.groupsCount$()).thenReturn(of(2));
+    when(organizationHierarchiesFacade.getSelectedGroup$).thenReturn(of(groupA));
 
     await TestBed.configureTestingModule({
       declarations: [HierarchySwitchComponent],
+      imports: [NgbDropdownModule],
       providers: [
         { provide: OrganizationHierarchiesFacade, useFactory: () => instance(organizationHierarchiesFacade) },
       ],
@@ -51,30 +54,22 @@ describe('Hierarchy Switch Component', () => {
     when(organizationHierarchiesFacade.groups$).thenReturn(of([]));
     when(organizationHierarchiesFacade.groupsCount$()).thenReturn(of(0));
     fixture.detectChanges();
-    expect(element.querySelector('select[data-testing-id=hierarchy-switch]')).toBeFalsy();
+    expect(element.querySelector('.hierarchy-switch-current-selection')).toBeFalsy();
   });
 
   it('should be rendered on creation and show options', () => {
     fixture.detectChanges();
-    expect(element.querySelector('select[data-testing-id=hierarchy-switch]')).toBeTruthy();
-    expect(element.querySelector('select[data-testing-id=hierarchy-switch] option[value = root ]')).toBeTruthy();
-    expect(element.querySelector('select[data-testing-id=hierarchy-switch] option[value = root ]').innerHTML).toContain(
-      'ROOT'
-    );
-    expect(
-      element.querySelector('select[data-testing-id=hierarchy-switch] option[value = child ]').innerHTML
-    ).toContain('CHILD');
+    expect(element.querySelectorAll('li')).toHaveLength(2);
+    expect(element.querySelector('.hierarchy-switch-current-selection').textContent).toMatchInlineSnapshot(`"ROOT"`);
   });
 
   it('should invoke select group at facade if a group has been selected', () => {
-    fixture.componentInstance.dispatch({ target: { value: 'root' } });
+    fixture.componentInstance.groupSelected(groupA);
     verify(organizationHierarchiesFacade.selectGroup('root')).once();
   });
 
   it('should not invoke select group at facade if nothing was selected', () => {
-    fixture.componentInstance.dispatch(undefined);
-    fixture.componentInstance.dispatch({ target: undefined });
-    fixture.componentInstance.dispatch({ target: { value: undefined } });
+    fixture.componentInstance.groupSelected(undefined);
     verify(organizationHierarchiesFacade.selectGroup('root')).never();
   });
 });
