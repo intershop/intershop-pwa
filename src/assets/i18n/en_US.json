@@ -758,7 +758,7 @@
   "order.number.label": "Order Number:",
   "order.tracking.error": "Unfortunately, we could not locate an order with the information you provided.",
   "order_template.create.heading": "Create Order Template",
-  "organization.group.label": "Group: {{0}}",
+  "organization.group.label": "Group:",
   "organization.groups.description.label": "Description",
   "organization.groups.name.label": "Name",
   "organization.groups.new.name.error.required": "Please enter a name.",
