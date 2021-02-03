@@ -44,13 +44,13 @@ describe('Feature Toggle Guard', () => {
     router.navigate(['/feature1']);
     tick(2000);
 
-    expect(router.url).toEndWith('feature1');
+    expect(router.url).toMatchInlineSnapshot(`"/feature1"`);
   }));
 
   it('should not navigate to deactivated features', fakeAsync(() => {
     router.navigate(['/feature2']);
     tick(2000);
 
-    expect(router.url).toEndWith('error');
+    expect(router.url).toMatchInlineSnapshot(`"/error?error=feature-deactivated&value=feature2"`);
   }));
 });

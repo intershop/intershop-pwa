@@ -110,7 +110,7 @@ export class CategoriesEffects {
     () =>
       this.actions$.pipe(
         ofType(loadCategoryFail),
-        concatMap(() => from(this.httpStatusCodeService.setStatusAndRedirect(404)))
+        concatMap(() => from(this.httpStatusCodeService.setStatus(404)))
       ),
     { dispatch: false }
   );

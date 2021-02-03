@@ -25,8 +25,13 @@ export class AuthorizationToggleGuard implements CanActivate {
     ).pipe(
       map(enabled => {
         if (!enabled) {
-          this.httpStatusCodeService.setStatus(404);
-          return this.router.parseUrl('/error');
+          this.httpStatusCodeService.setStatus(404, false);
+          return this.router.createUrlTree(['/error'], {
+            queryParams: {
+              error: 'missing-permission',
+              value: route.data.permission,
+            },
+          });
         }
         return true;
       })

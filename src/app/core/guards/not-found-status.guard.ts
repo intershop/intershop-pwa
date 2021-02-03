@@ -7,8 +7,7 @@ import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-stat
 export class NotFoundStatusGuard implements CanActivate {
   constructor(private httpStatusCodeService: HttpStatusCodeService) {}
 
-  canActivate(): boolean {
-    this.httpStatusCodeService.setStatusAndRedirect(404);
-    return false;
+  canActivate() {
+    return this.httpStatusCodeService.setStatus(404, false);
   }
 }

@@ -5,12 +5,11 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Dictionary } from '@ngrx/entity';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { from, identity } from 'rxjs';
+import { combineLatest, from, identity } from 'rxjs';
 import {
   concatMap,
   distinct,
   distinctUntilChanged,
-  distinctUntilKeyChanged,
   filter,
   groupBy,
   map,
@@ -318,13 +317,12 @@ export class ProductsEffects {
 
   redirectIfErrorInProducts$ = createEffect(
     () =>
-      this.store.pipe(
-        ofProductUrl(),
-        select(getSelectedProduct),
-        whenTruthy(),
-        distinctUntilKeyChanged('sku'),
-        filter(ProductHelper.isFailedLoading),
-        concatMap(() => from(this.httpStatusCodeService.setStatusAndRedirect(404)))
+      combineLatest([
+        this.actions$.pipe(ofType(loadProductFail), mapToPayloadProperty('sku')),
+        this.store.pipe(select(selectRouteParam('sku'))),
+      ]).pipe(
+        filter(([a, b]) => a === b),
+        concatMap(() => from(this.httpStatusCodeService.setStatus(404)))
       ),
     { dispatch: false }
   );
@@ -333,7 +331,7 @@ export class ProductsEffects {
     () =>
       this.actions$.pipe(
         ofType(loadProductsForCategoryFail),
-        concatMap(() => from(this.httpStatusCodeService.setStatusAndRedirect(404)))
+        concatMap(() => from(this.httpStatusCodeService.setStatus(404)))
       ),
     { dispatch: false }
   );

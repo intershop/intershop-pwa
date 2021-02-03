@@ -41,17 +41,22 @@ describe('Http Status Code Service', () => {
     });
 
     describe('setStatus', () => {
-      it('should do nothing on browser side', fakeAsync(() => {
+      it('should do nothing for normal status', fakeAsync(() => {
+        httpStatusCodeService.setStatus(204);
+        tick(500);
+        verify(resSpy.status(anyNumber())).never();
+        expect(location.path()).toBeEmpty();
+      }));
+
+      it('should do nothing for normal errors', fakeAsync(() => {
         httpStatusCodeService.setStatus(404);
         tick(500);
         verify(resSpy.status(anyNumber())).never();
         expect(location.path()).toBeEmpty();
       }));
-    });
 
-    describe('setStatusAndRedirect', () => {
-      it('should only redirect on browser side', fakeAsync(() => {
-        httpStatusCodeService.setStatusAndRedirect(404);
+      it('should redirect to error page for server errors', fakeAsync(() => {
+        httpStatusCodeService.setStatus(500);
         tick(500);
         verify(resSpy.status(anyNumber())).never();
         expect(location.path()).toEqual('/error');
@@ -78,19 +83,24 @@ describe('Http Status Code Service', () => {
     });
 
     describe('setStatus', () => {
-      it('should set status on server side', fakeAsync(() => {
+      it('should set status for normal status', fakeAsync(() => {
+        httpStatusCodeService.setStatus(204);
+        tick(500);
+        verify(resSpy.status(204)).once();
+        expect(location.path()).toBeEmpty();
+      }));
+
+      it('should set status and redirect for normal errors', fakeAsync(() => {
         httpStatusCodeService.setStatus(404);
         tick(500);
         verify(resSpy.status(404)).once();
-        expect(location.path()).toBeEmpty();
+        expect(location.path()).toEqual('/error');
       }));
-    });
 
-    describe('setStatusAndRedirect', () => {
-      it('should perform all actions on server side', fakeAsync(() => {
-        httpStatusCodeService.setStatusAndRedirect(404);
+      it('should redirect to error page for server errors', fakeAsync(() => {
+        httpStatusCodeService.setStatus(500);
         tick(500);
-        verify(resSpy.status(404)).once();
+        verify(resSpy.status(500)).once();
         expect(location.path()).toEqual('/error');
       }));
     });

@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
@@ -8,7 +7,7 @@ import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { toArray } from 'rxjs/operators';
-import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
@@ -20,6 +19,7 @@ import { loadCategory } from 'ish-core/store/shopping/categories';
 import { setProductListingPageSize, setProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
+import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 
 import {
   loadProduct,
@@ -43,7 +43,7 @@ describe('Products Effects', () => {
   let store$: Store;
   let productsServiceMock: ProductsService;
   let router: Router;
-  let location: Location;
+  let httpStatusCodeService: HttpStatusCodeService;
 
   @Component({ template: 'dummy' })
   class DummyComponent {}
@@ -95,7 +95,8 @@ describe('Products Effects', () => {
     effects = TestBed.inject(ProductsEffects);
     store$ = TestBed.inject(Store);
     router = TestBed.inject(Router);
-    location = TestBed.inject(Location);
+    httpStatusCodeService = spy(TestBed.inject(HttpStatusCodeService));
+
     store$.dispatch(setProductListingPageSize({ itemsPerPage: TestBed.inject(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
   });
 
@@ -348,43 +349,60 @@ describe('Products Effects', () => {
 
   describe('redirectIfErrorInProducts$', () => {
     beforeEach(() => {
-      store$.dispatch(loadProductFail({ sku: 'SKU', error: makeHttpError({ status: 404 }) }));
+      actions$ = of(loadProductFail({ sku: 'SKU', error: makeHttpError({ status: 404 }) }));
     });
 
-    it('should redirect if triggered on product detail page', fakeAsync(() => {
+    it('should call error service if triggered on product detail page', done => {
       router.navigateByUrl('/product/SKU');
+      effects.redirectIfErrorInProducts$.subscribe(
+        () => {
+          verify(httpStatusCodeService.setStatus(anything())).once();
+          expect(capture(httpStatusCodeService.setStatus).last()).toMatchInlineSnapshot(`
+            Array [
+              404,
+            ]
+          `);
+          done();
+        },
+        fail,
+        noop
+      );
+    });
 
-      effects.redirectIfErrorInProducts$.subscribe(noop, fail, noop);
-
-      tick(500);
-
-      expect(location.path()).toEqual('/error');
-    }));
-
-    it('should not redirect if triggered on page other than product detail page', fakeAsync(() => {
+    it('should not call error service if triggered on page other than product detail page', fakeAsync(() => {
       router.navigateByUrl('/any');
 
       effects.redirectIfErrorInProducts$.subscribe(fail, fail, fail);
 
       tick(2000);
+
+      verify(httpStatusCodeService.setStatus(anything())).never();
     }));
   });
 
   describe('redirectIfErrorInCategoryProducts$', () => {
-    it('should redirect if triggered', fakeAsync(() => {
-      const action = loadProductsForCategoryFail({
-        categoryId: 'ID',
-        error: makeHttpError({ status: 404 }),
-      });
+    it('should call error service if triggered', done => {
+      actions$ = of(
+        loadProductsForCategoryFail({
+          categoryId: 'ID',
+          error: makeHttpError({ status: 404 }),
+        })
+      );
 
-      actions$ = of(action);
-
-      effects.redirectIfErrorInCategoryProducts$.subscribe(noop, fail, noop);
-
-      tick(500);
-
-      expect(location.path()).toEqual('/error');
-    }));
+      effects.redirectIfErrorInCategoryProducts$.subscribe(
+        () => {
+          verify(httpStatusCodeService.setStatus(anything())).once();
+          expect(capture(httpStatusCodeService.setStatus).last()).toMatchInlineSnapshot(`
+          Array [
+            404,
+          ]
+        `);
+          done();
+        },
+        fail,
+        noop
+      );
+    });
   });
 
   describe('loadProductBundles$', () => {
