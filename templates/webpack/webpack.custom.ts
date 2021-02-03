@@ -41,8 +41,19 @@ export default (config: webpack.Configuration, _: CustomWebpackBrowserSchema, ta
   log('setting production:', production);
 
   if (production) {
-    log('setting up data-testing-id removal');
+    // splitChunks not available for SSR build
+    if (config.optimization.splitChunks) {
+      log('optimizing chunk splitting');
 
+      const cacheGroups = config.optimization.splitChunks.cacheGroups as {
+        [key: string]: webpack.Options.CacheGroupsOptions;
+      };
+      cacheGroups.default.minChunks = 10;
+      cacheGroups.common.minChunks = 1;
+      cacheGroups.common.priority = 20;
+    }
+
+    log('setting up data-testing-id removal');
     // remove testing ids when loading html files
     config.module.rules.push({
       test: /\.html$/,
