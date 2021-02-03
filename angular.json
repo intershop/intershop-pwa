@@ -53,12 +53,26 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
+              "vendorChunk": true,
               "buildOptimizer": true,
               "budgets": [
                 {
+                  "type": "bundle",
+                  "name": "main",
+                  "baseline": "750kb",
+                  "warning": "200kb",
+                  "error": "500kb"
+                },
+                {
+                  "type": "bundle",
+                  "name": "vendor",
+                  "baseline": "1mb",
+                  "warning": "200kb",
+                  "error": "500kb"
+                },
+                {
                   "type": "initial",
-                  "maximumWarning": "2mb",
+                  "maximumWarning": "3mb",
                   "maximumError": "5mb"
                 },
                 {
