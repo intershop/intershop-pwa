@@ -56,7 +56,7 @@ Further options of the development server can be found running `ng serve --help`
 ## Testing Production Setups
 
 Sometimes it is necessary to boot up a production chain for development to test modifications in the [nginx](./nginx-startup.md) or test the interaction with it.
-The easiest way to do this is using [Docker Compose](https://docs.docker.com/compose/) with the `docker-compose.yml` in the `templates` folder.
+The easiest way to do this is using [Docker Compose](https://docs.docker.com/compose/) with the `docker-compose.yml` in the project root.
 For usage instructions check the comments in that file.
 
 ## Development Tools

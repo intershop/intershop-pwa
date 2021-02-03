@@ -130,3 +130,23 @@ jobs:
           bash e2e/test-schematics.sh
           node scripts/tslint-hard
           npm run lint
+
+  ProductionPWA:
+    needs: [Quality, Jest]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Production Build PWA Image
+        run: docker-compose build --build-arg configuration=production pwa
+
+  Nginx:
+    needs: [Quality, Jest]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build Nginx Image
+        run: docker-compose build nginx
