@@ -1,11 +1,11 @@
 # export appropriate ICM_BASE_URL and use with
-# docker-compose -f templates/docker-compose.yml up --build
+# docker-compose up --build
 
 version: '3'
 services:
   pwa:
     build:
-      context: ..
+      context: .
       args:
         # configuration: local
         configuration: production
@@ -17,7 +17,7 @@ services:
       - TRUST_ICM=true
       # - PROMETHEUS=on
   nginx:
-    build: ../nginx
+    build: nginx
     depends_on:
       - pwa
     environment:

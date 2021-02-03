@@ -75,6 +75,8 @@ If no environment variables for multi-channel configuration are given, the confi
 
 > :warning: Multi-Channel configuration with context paths does not work in conjunction with [service workers](../concepts/progressive-web-app.md#service-worker)
 
+An extended example can be found in the `docker-compose.yml` in the project root.
+
 ### Other
 
 The page speed configuration can also be overridden:
