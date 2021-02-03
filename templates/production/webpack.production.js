@@ -1,6 +1,14 @@
 var path = require('path');
 
 module.exports = config => {
+  // splitChunks not available for SSR build
+  if (config.optimization.splitChunks) {
+    const cacheGroups = config.optimization.splitChunks.cacheGroups;
+    cacheGroups.default.minChunks = 10;
+    cacheGroups.common.minChunks = 1;
+    cacheGroups.common.priority = 20;
+  }
+
   const angularPluginIndex = config.plugins.findIndex(
     p => typeof p && p.constructor && p.constructor.name === 'AngularCompilerPlugin'
   );
