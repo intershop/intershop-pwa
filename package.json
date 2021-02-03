@@ -25,7 +25,7 @@
     "clean-localizations": "node scripts/clean-up-localizations",
     "clean": "git clean -xdf -e \"*environment.local.ts\" -e \"*node_modules\"",
     "postclean": "npm ci",
-    "check": "npm run lint -- --fix && npm run format && tsc --project tsconfig.all.json && npm run build && npm run test && npm run dead-code && npm run clean-localizations",
+    "check": "npm run lint -- --fix && npm run format && tsc --project tsconfig.all.json && npm run build && npm run test -- --maxWorkers=50% && npm run dead-code && npm run clean-localizations",
     "clean-check": "npm run clean && npm run check",
     "changelog": "npx -p conventional-changelog-cli conventional-changelog -n intershop-changelog.js -i CHANGELOG.md -s",
     "3rd-party-licenses": "npm ci && npx license-checker --csv --out 3rd-party-licenses.txt --customPath templates/3rd-party-licenses_format.json",
@@ -170,7 +170,7 @@
     ],
     "*.ts": [
       "tslint --project tsconfig.base.json --fix",
-      "jest --ci --bail --findRelatedTests"
+      "jest --ci --bail --findRelatedTests --maxWorkers=50%"
     ]
   },
   "commitlint": {
