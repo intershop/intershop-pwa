@@ -34,7 +34,7 @@ describe('Hierarchy Group Name Component', () => {
     translateService = TestBed.inject(TranslateService);
     translateService.use('en');
     translateService.setTranslation('en', {
-      'organization.group.label': 'Group: {{0}}',
+      'organization.group.label': 'Group:',
     });
   });
 
@@ -49,6 +49,15 @@ describe('Hierarchy Group Name Component', () => {
     const group: OrganizationGroup = { id: 'test-group', name: 'Test Group' };
     when(organizationHierarchiesFacade.getDetailsOfGroup$(strictEqual('test-group'))).thenReturn(of(group));
     fixture.detectChanges();
-    expect(element).toMatchInlineSnapshot(`Group: Test Group`);
+    expect(element).toMatchInlineSnapshot(`<span>Group:&nbsp;</span><span>Test Group</span>`);
+  });
+
+  it('should show group name without label when provided with id', () => {
+    component.buyingGroupId = 'test-group';
+    component.showLabel = false;
+    const group: OrganizationGroup = { id: 'test-group', name: 'Test Group' };
+    when(organizationHierarchiesFacade.getDetailsOfGroup$(strictEqual('test-group'))).thenReturn(of(group));
+    fixture.detectChanges();
+    expect(element).toMatchInlineSnapshot(`<span>Test Group</span>`);
   });
 });
