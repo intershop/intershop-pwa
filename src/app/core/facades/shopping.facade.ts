@@ -115,7 +115,7 @@ export class ShoppingFacade {
 
   productLinks$(sku: string) {
     this.store.dispatch(loadProductLinks({ sku }));
-    return this.store.pipe(select(getProductLinks, { sku }));
+    return this.store.pipe(select(getProductLinks(sku)));
   }
 
   // SEARCH

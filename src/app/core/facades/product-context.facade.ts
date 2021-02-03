@@ -5,6 +5,7 @@ import { isEqual } from 'lodash-es';
 import { BehaviorSubject, Observable, combineLatest, race } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, first, map, skip, startWith, switchMap } from 'rxjs/operators';
 
+import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
 import {
@@ -77,6 +78,7 @@ interface ProductContext {
   product: AnyProductViewType;
   productAsVariationProduct: VariationProductView;
   loading: boolean;
+  links: ProductLinksDictionary;
 
   displayProperties: Partial<ProductContextDisplayProperties<boolean>>;
 
@@ -214,6 +216,14 @@ export class ProductContextFacade extends RxState<ProductContext> {
         first()
       ),
       (state, minOrderQuantity) => (state.quantity ??= minOrderQuantity)
+    );
+
+    this.connect(
+      'links',
+      this.select('sku').pipe(
+        whenTruthy(),
+        switchMap(sku => this.shoppingFacade.productLinks$(sku))
+      )
     );
 
     this.connect(

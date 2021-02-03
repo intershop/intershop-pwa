@@ -1,6 +1,7 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
+import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
 import { AllProductTypes } from 'ish-core/models/product/product.model';
 
 import {
@@ -20,10 +21,12 @@ export const productAdapter = createEntityAdapter<AllProductTypes>({
 
 export interface ProductsState extends EntityState<AllProductTypes> {
   failed: string[];
+  links: { [sku: string]: ProductLinksDictionary };
 }
 
 export const initialState: ProductsState = productAdapter.getInitialState({
   failed: [],
+  links: {},
 });
 
 function addFailed(failed: string[], sku: string): string[] {
@@ -73,12 +76,11 @@ export const productsReducer = createReducer(
   on(loadRetailSetSuccess, (state: ProductsState, action) =>
     productAdapter.updateOne({ id: action.payload.sku, changes: { partSKUs: action.payload.parts } }, state)
   ),
-  on(loadProductLinksSuccess, (state: ProductsState, action) =>
-    productAdapter.updateOne(
-      { id: action.payload.sku, changes: { links: action.payload.links } },
-      { ...state, loading: false }
-    )
-  ),
+  on(loadProductLinksSuccess, (state: ProductsState, action) => ({
+    ...state,
+    links: { ...state.links, [action.payload.sku]: action.payload.links },
+    loading: false,
+  })),
   on(productSpecialUpdate, (state: ProductsState, action) =>
     productAdapter.updateOne({ id: action.payload.sku, changes: action.payload.update }, state)
   )

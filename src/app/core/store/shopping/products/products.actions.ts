@@ -1,6 +1,6 @@
 import { createAction } from '@ngrx/store';
 
-import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
+import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
 import { Product, ProductCompletenessLevel, SkuQuantityType } from 'ish-core/models/product/product.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
@@ -69,7 +69,7 @@ export const loadProductLinksFail = createAction(
 
 export const loadProductLinksSuccess = createAction(
   '[Products API] Load Product Links Success',
-  payload<{ sku: string; links: ProductLinks }>()
+  payload<{ sku: string; links: ProductLinksDictionary }>()
 );
 
 export const productSpecialUpdate = createAction(

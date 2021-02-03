@@ -3,7 +3,7 @@ import { MockComponent, MockDirective } from 'ng-mocks';
 import { SwiperModule } from 'ngx-swiper-wrapper';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
-import { ProductLinkView } from 'ish-core/models/product-links/product-links.model';
+import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
 import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 import { ProductLinksCarouselComponent } from './product-links-carousel.component';
@@ -25,7 +25,7 @@ describe('Product Links Carousel Component', () => {
   });
 
   beforeEach(() => {
-    const productLink = { productSKUs: ['sku'], categoryIds: ['catID'] } as ProductLinkView;
+    const productLink = { products: ['sku'], categories: ['catID'] } as ProductLinks;
 
     fixture = TestBed.createComponent(ProductLinksCarouselComponent);
     component = fixture.componentInstance;

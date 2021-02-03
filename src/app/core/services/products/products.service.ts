@@ -7,7 +7,7 @@ import { defaultIfEmpty, map, switchMap } from 'rxjs/operators';
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { Link } from 'ish-core/models/link/link.model';
-import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
+import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
 import { SortableAttributesType } from 'ish-core/models/product-listing/product-listing.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { ProductData, ProductDataStub, ProductVariationLink } from 'ish-core/models/product/product.interface';
@@ -255,7 +255,7 @@ export class ProductsService {
     );
   }
 
-  getProductLinks(sku: string): Observable<ProductLinks> {
+  getProductLinks(sku: string): Observable<ProductLinksDictionary> {
     return this.apiService.get(`products/${sku}/links`).pipe(
       unpackEnvelope<{ linkType: string; categoryLinks: Link[]; productLinks: Link[] }>(),
       map(links =>

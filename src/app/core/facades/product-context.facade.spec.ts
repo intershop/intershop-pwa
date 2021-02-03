@@ -33,6 +33,7 @@ describe('Product Context Facade', () => {
 
   beforeEach(() => {
     shoppingFacade = mock(ShoppingFacade);
+    when(shoppingFacade.productLinks$(anything())).thenReturn(EMPTY);
 
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
@@ -577,6 +578,7 @@ describe('Product Context Facade', () => {
       someOther$ = new BehaviorSubject(false);
 
       shoppingFacade = mock(ShoppingFacade);
+      when(shoppingFacade.productLinks$(anything())).thenReturn(EMPTY);
 
       product = {
         completenessLevel: ProductCompletenessLevel.Detail,

@@ -162,17 +162,17 @@ describe('Products Selectors', () => {
 
           it('should generate a breadcrumb with default category when product is selected', () => {
             expect(getBreadcrumbForProductPage(store$.state)).toMatchInlineSnapshot(`
-            Array [
-              Object {
-                "link": "/nA-catA",
-                "text": "nA",
-              },
-              Object {
-                "link": undefined,
-                "text": "product",
-              },
-            ]
-          `);
+              Array [
+                Object {
+                  "link": "/nA-catA",
+                  "text": "nA",
+                },
+                Object {
+                  "link": undefined,
+                  "text": "product",
+                },
+              ]
+            `);
           });
         });
 
@@ -184,17 +184,17 @@ describe('Products Selectors', () => {
 
           it('should generate a breadcrumb with selected category when product is selected', () => {
             expect(getBreadcrumbForProductPage(store$.state)).toMatchInlineSnapshot(`
-            Array [
-              Object {
-                "link": "/nB-catB",
-                "text": "nB",
-              },
-              Object {
-                "link": undefined,
-                "text": "product",
-              },
-            ]
-          `);
+                Array [
+                  Object {
+                    "link": "/nB-catB",
+                    "text": "nB",
+                  },
+                  Object {
+                    "link": undefined,
+                    "text": "product",
+                  },
+                ]
+              `);
           });
         });
 
@@ -207,17 +207,17 @@ describe('Products Selectors', () => {
 
           it('should generate a breadcrumb with selected category even if product has default category when product is selected', () => {
             expect(getBreadcrumbForProductPage(store$.state)).toMatchInlineSnapshot(`
-            Array [
-              Object {
-                "link": "/nB-catB",
-                "text": "nB",
-              },
-              Object {
-                "link": undefined,
-                "text": "product",
-              },
-            ]
-          `);
+              Array [
+                Object {
+                  "link": "/nB-catB",
+                  "text": "nB",
+                },
+                Object {
+                  "link": undefined,
+                  "text": "product",
+                },
+              ]
+            `);
           });
         });
       });
@@ -343,17 +343,15 @@ describe('Products Selectors', () => {
         })
       );
 
-      expect(getProductLinks(store$.state, { sku: 'ABC' })).toMatchInlineSnapshot(`
+      expect(getProductLinks('ABC')(store$.state)).toMatchInlineSnapshot(`
         Object {
           "linkType": Object {
-            "categories": [Function],
-            "categoryIds": Array [
+            "categories": Array [
               "cat",
             ],
-            "productSKUs": Array [
+            "products": Array [
               "prod",
             ],
-            "products": [Function],
           },
         }
       `);
