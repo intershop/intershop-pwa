@@ -27,6 +27,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   Quality:
+    needs: [CancelPrevious]
     runs-on: ubuntu-latest
 
     steps:
@@ -64,7 +65,31 @@ jobs:
           node scripts/tslint-hard
           npm run lint
 
+  Jest:
+    needs: [CancelPrevious]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 14
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: PWA Jest
+        run: npm test
+
+      - name: tslint-rules Jest
+        run: cd tslint-rules && npm run test -- --ci
+
+      - name: schematics Jest
+        run: cd schematics && npm run test -- --ci
+
   DeadCode:
+    needs: [Quality, Jest]
     runs-on: ubuntu-latest
     if: "!startsWith(github.ref, 'refs/tags/') && github.ref != 'refs/heads/master' && github.ref != 'refs/heads/develop'"
 
@@ -88,28 +113,6 @@ jobs:
         run: |
           npx ts-node scripts/cleanup-testbed origin/develop
           git diff --exit-code --raw -p --stat
-
-  Jest:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js 14
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14
-
-      - name: Install root dependencies
-        run: npm ci
-
-      - name: PWA Jest
-        run: npm test
-
-      - name: tslint-rules Jest
-        run: cd tslint-rules && npm run test -- --ci
-
-      - name: schematics Jest
-        run: cd schematics && npm run test -- --ci
 
   Schematics:
     needs: [Quality, Jest]

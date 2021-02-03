@@ -27,6 +27,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   Build:
+    needs: [CancelPrevious]
     runs-on: ubuntu-latest
 
     steps:
