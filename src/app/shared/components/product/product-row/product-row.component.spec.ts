@@ -22,6 +22,7 @@ import { ProductQuantityComponent } from 'ish-shared/components/product/product-
 import { ProductRatingComponent } from 'ish-shared/components/product/product-rating/product-rating.component';
 import { ProductShipmentComponent } from 'ish-shared/components/product/product-shipment/product-shipment.component';
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
+import { ProductNameComponent } from 'ish-shell/header/product-name/product-name.component';
 
 import { LazyProductAddToOrderTemplateComponent } from '../../../../extensions/order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
 import { LazyProductAddToQuoteComponent } from '../../../../extensions/quoting/exports/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
@@ -54,6 +55,7 @@ describe('Product Row Component', () => {
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductItemVariationsComponent),
         MockComponent(ProductLabelComponent),
+        MockComponent(ProductNameComponent),
         MockComponent(ProductPriceComponent),
         MockComponent(ProductPromotionComponent),
         MockComponent(ProductQuantityComponent),
@@ -84,6 +86,7 @@ describe('Product Row Component', () => {
       Array [
         "ish-product-image",
         "ish-product-label",
+        "ish-product-name",
         "ish-lazy-product-add-to-quote",
         "ish-product-add-to-compare",
         "ish-lazy-product-add-to-wishlist",

@@ -2,10 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -15,6 +16,7 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
+import { ProductNameComponent } from 'ish-shell/header/product-name/product-name.component';
 
 import { MiniBasketComponent } from './mini-basket.component';
 
@@ -38,6 +40,8 @@ describe('Mini Basket Component', () => {
         MiniBasketComponent,
         MockComponent(FaIconComponent),
         MockComponent(ProductImageComponent),
+        MockComponent(ProductNameComponent),
+        MockDirective(ProductContextDirective),
         MockPipe(ProductRoutePipe),
         PricePipe,
       ],

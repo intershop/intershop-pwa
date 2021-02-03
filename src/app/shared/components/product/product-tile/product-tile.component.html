@@ -6,13 +6,7 @@
     <ish-product-label [product]="product"></ish-product-label>
   </div>
 
-  <a
-    *ngIf="configuration$('name') | async"
-    class="product-title"
-    [routerLink]="product | ishProductRoute: category"
-    queryParamsHandling="merge"
-    >{{ product.name }}</a
-  >
+  <ish-product-name></ish-product-name>
 
   <ish-product-rating *ishFeature="'rating'" [product]="product"></ish-product-rating>
 

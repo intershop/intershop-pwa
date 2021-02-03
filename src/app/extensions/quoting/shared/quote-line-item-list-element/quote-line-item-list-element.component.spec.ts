@@ -17,6 +17,7 @@ import { ProductInventoryComponent } from 'ish-shared/components/product/product
 import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
 import { ProductVariationDisplayComponent } from 'ish-shared/components/product/product-variation-display/product-variation-display.component';
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
+import { ProductNameComponent } from 'ish-shell/header/product-name/product-name.component';
 
 import { LazyProductAddToOrderTemplateComponent } from '../../../order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
 import { LazyProductAddToWishlistComponent } from '../../../wishlists/exports/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
@@ -51,6 +52,7 @@ describe('Quote Line Item List Element Component', () => {
         MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
+        MockComponent(ProductNameComponent),
         MockComponent(ProductQuantityComponent),
         MockComponent(ProductVariationDisplayComponent),
         MockPipe(PricePipe),
@@ -86,6 +88,7 @@ describe('Quote Line Item List Element Component', () => {
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
         "ish-product-image",
+        "ish-product-name",
         "ish-product-id",
         "ish-product-variation-display",
         "ish-product-bundle-display",
@@ -108,6 +111,7 @@ describe('Quote Line Item List Element Component', () => {
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
         "ish-product-image",
+        "ish-product-name",
         "ish-product-id",
         "ish-product-variation-display",
         "ish-product-bundle-display",

@@ -1,5 +1,5 @@
 <ng-container *ngIf="product$ | async as product">
-  <div class="row">
+  <div class="row" data-testing-id="wishlist-product" ishProductContext [sku]="product.sku">
     <div class="col-3 col-md-2 list-item">
       <a [routerLink]="product | ishProductRoute">
         <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
@@ -9,9 +9,7 @@
       <div class="row">
         <div class="col-md-7 col-xs-12 text-left">
           <div class="pli-description">
-            <a [routerLink]="product | ishProductRoute" class="product-title" data-testing-id="wishlist-product-link">
-              {{ product.name }}
-            </a>
+            <ish-product-name></ish-product-name>
             <ish-product-id [product]="product"></ish-product-id>
             <ish-product-variation-display></ish-product-variation-display>
             <ish-product-bundle-display></ish-product-bundle-display>
@@ -36,7 +34,7 @@
           </div>
         </div>
 
-        <div ishProductContext [sku]="product.sku" class="col-12 col-md-5 product-list-actions-container">
+        <div class="col-12 col-md-5 product-list-actions-container">
           <ish-product-price [product]="product"></ish-product-price>
           <p *ngIf="product.available; else noInStock">
             {{ 'account.wishlist.table.in_stock' | translate }}

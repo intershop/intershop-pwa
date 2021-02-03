@@ -32,6 +32,7 @@ import { LoginStatusComponent } from './header/login-status/login-status.compone
 import { MiniBasketComponent } from './header/mini-basket/mini-basket.component';
 import { ProductCompareStatusComponent } from './header/product-compare-status/product-compare-status.component';
 import { ProductImageComponent } from './header/product-image/product-image.component';
+import { ProductNameComponent } from './header/product-name/product-name.component';
 import { SearchBoxComponent } from './header/search-box/search-box.component';
 import { SubCategoryNavigationComponent } from './header/sub-category-navigation/sub-category-navigation.component';
 import { UserInformationMobileComponent } from './header/user-information-mobile/user-information-mobile.component';
@@ -53,6 +54,7 @@ const exportedComponents = [
   FooterComponent,
   HeaderComponent,
   ProductImageComponent,
+  ProductNameComponent,
   SearchBoxComponent,
 ];
 

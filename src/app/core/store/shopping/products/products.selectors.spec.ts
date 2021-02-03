@@ -185,17 +185,17 @@ describe('Products Selectors', () => {
 
           it('should generate a breadcrumb with selected category when product is selected', () => {
             expect(getBreadcrumbForProductPage(store$.state)).toMatchInlineSnapshot(`
-                Array [
-                  Object {
-                    "link": "/nB-catB",
-                    "text": "nB",
-                  },
-                  Object {
-                    "link": undefined,
-                    "text": "product",
-                  },
-                ]
-              `);
+              Array [
+                Object {
+                  "link": "/nB-catB",
+                  "text": "nB",
+                },
+                Object {
+                  "link": undefined,
+                  "text": "product",
+                },
+              ]
+            `);
           });
         });
 

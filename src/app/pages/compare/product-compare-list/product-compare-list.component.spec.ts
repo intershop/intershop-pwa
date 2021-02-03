@@ -21,6 +21,7 @@ import { ProductInventoryComponent } from 'ish-shared/components/product/product
 import { ProductPriceComponent } from 'ish-shared/components/product/product-price/product-price.component';
 import { ProductRatingComponent } from 'ish-shared/components/product/product-rating/product-rating.component';
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
+import { ProductNameComponent } from 'ish-shell/header/product-name/product-name.component';
 
 import { ProductComparePagingComponent } from '../product-compare-paging/product-compare-paging.component';
 
@@ -80,6 +81,7 @@ describe('Product Compare List Component', () => {
         MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
+        MockComponent(ProductNameComponent),
         MockComponent(ProductPriceComponent),
         MockComponent(ProductRatingComponent),
         MockDirective(FeatureToggleDirective),

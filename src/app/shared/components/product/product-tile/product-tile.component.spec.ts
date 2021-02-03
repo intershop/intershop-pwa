@@ -17,6 +17,7 @@ import { ProductPriceComponent } from 'ish-shared/components/product/product-pri
 import { ProductPromotionComponent } from 'ish-shared/components/product/product-promotion/product-promotion.component';
 import { ProductRatingComponent } from 'ish-shared/components/product/product-rating/product-rating.component';
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
+import { ProductNameComponent } from 'ish-shell/header/product-name/product-name.component';
 
 import { LazyProductAddToOrderTemplateComponent } from '../../../../extensions/order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
 import { LazyProductAddToQuoteComponent } from '../../../../extensions/quoting/exports/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
@@ -47,6 +48,7 @@ describe('Product Tile Component', () => {
         MockComponent(ProductImageComponent),
         MockComponent(ProductItemVariationsComponent),
         MockComponent(ProductLabelComponent),
+        MockComponent(ProductNameComponent),
         MockComponent(ProductPriceComponent),
         MockComponent(ProductPromotionComponent),
         MockComponent(ProductRatingComponent),
@@ -75,6 +77,7 @@ describe('Product Tile Component', () => {
       Array [
         "ish-product-image",
         "ish-product-label",
+        "ish-product-name",
         "ish-product-item-variations",
         "ish-lazy-tacton-configure-product",
         "ish-lazy-product-add-to-quote",

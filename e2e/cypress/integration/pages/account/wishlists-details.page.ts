@@ -17,7 +17,7 @@ export class WishlistsDetailsPage {
   }
 
   get listItemLinks() {
-    return this.listItems.find('a[data-testing-id="wishlist-product-link"]');
+    return this.listItems.find('[data-testing-id="wishlist-product"] a[data-testing-id="product-name-link"]');
   }
 
   get wishlistTitle() {

@@ -1,16 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
-import { of } from 'rxjs';
-import { anything, instance, mock, when } from 'ts-mockito';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
-import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketPromotionComponent } from 'ish-shared/components/basket/basket-promotion/basket-promotion.component';
+import { ProductNameComponent } from 'ish-shell/header/product-name/product-name.component';
 
 import { BasketItemsSummaryComponent } from './basket-items-summary.component';
 
@@ -20,19 +17,16 @@ describe('Basket Items Summary Component', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
-    const shoppingFacade = mock(ShoppingFacade);
-    when(shoppingFacade.product$(anything(), anything())).thenCall(sku => of({ sku, name: 'SKU:' + sku }));
-
     await TestBed.configureTestingModule({
       declarations: [
         BasketItemsSummaryComponent,
         MockComponent(BasketPromotionComponent),
         MockComponent(FaIconComponent),
+        MockComponent(ProductNameComponent),
+        MockDirective(ProductContextDirective),
         MockPipe(PricePipe),
-        MockPipe(ProductRoutePipe),
       ],
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
+      imports: [TranslateModule.forRoot()],
     }).compileComponents();
   });
 
@@ -52,7 +46,6 @@ describe('Basket Items Summary Component', () => {
   it('should render basket product line items if basket items are there', () => {
     fixture.detectChanges();
     expect(element.querySelector('.cart-summary-checkout')).toBeTruthy();
-    expect(element.querySelector('.cart-summary-checkout').textContent).toContain('SKU:4713');
   });
 
   it('should not show anything if there are no basket items', () => {

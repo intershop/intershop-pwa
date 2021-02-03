@@ -16,6 +16,7 @@ import { ProductPriceComponent } from 'ish-shared/components/product/product-pri
 import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
 import { ProductVariationDisplayComponent } from 'ish-shared/components/product/product-variation-display/product-variation-display.component';
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
+import { ProductNameComponent } from 'ish-shell/header/product-name/product-name.component';
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 import { SelectOrderTemplateModalComponent } from '../../../shared/select-order-template-modal/select-order-template-modal.component';
@@ -39,6 +40,7 @@ describe('Account Order Template Detail Line Item Component', () => {
         MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
+        MockComponent(ProductNameComponent),
         MockComponent(ProductPriceComponent),
         MockComponent(ProductQuantityComponent),
         MockComponent(ProductVariationDisplayComponent),

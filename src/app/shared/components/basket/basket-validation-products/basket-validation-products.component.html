@@ -10,7 +10,12 @@
       </div>
       <div class="list-body">
         <div class="list-item-row list-item-row-big">
-          <div class="row clearfix" *ngIf="product$(item.productSKU) | async as product">
+          <div
+            class="row clearfix"
+            *ngIf="product$(item.productSKU) | async as product"
+            ishProductContext
+            [sku]="item.productSKU"
+          >
             <!---Product Image --->
             <div class="col-2 list-item">
               <a [routerLink]="product | ishProductRoute">
@@ -19,7 +24,7 @@
             </div>
             <!---Product Description --->
             <div class="col-7 col-md-6 list-item">
-              <a [routerLink]="product | ishProductRoute" class="product-title">{{ product.name }}</a>
+              <ish-product-name></ish-product-name>
               <p class="product-id">{{ 'product.itemNumber.label' | translate }}&nbsp;{{ product.sku }}</p>
             </div>
 

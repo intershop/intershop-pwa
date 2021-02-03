@@ -1,5 +1,5 @@
 <ng-container *ngIf="product$ | async as product">
-  <div class="d-flex">
+  <div class="d-flex" data-testing-id="order-template-product">
     <div class="col-1 col-md-2 list-item d-flex">
       <input type="checkbox" data-testing-id="productCheckbox" [checked]="true" (click)="setActive($event.target)" />
       <a class="d-none d-md-inline" [routerLink]="product | ishProductRoute">
@@ -8,9 +8,7 @@
     </div>
     <div class="col-8 col-md-6 list-item d-block d-md-flex">
       <div class="col-12 col-md-9 pli-description">
-        <a [routerLink]="product | ishProductRoute" class="product-title" data-testing-id="order-template-product-link">
-          {{ product.name }}
-        </a>
+        <ish-product-name></ish-product-name>
         <ish-product-id [product]="product"></ish-product-id>
         <ish-product-variation-display></ish-product-variation-display>
         <ish-product-bundle-display></ish-product-bundle-display>

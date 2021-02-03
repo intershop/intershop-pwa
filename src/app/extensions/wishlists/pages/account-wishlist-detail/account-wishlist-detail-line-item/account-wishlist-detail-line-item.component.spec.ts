@@ -16,6 +16,7 @@ import { ProductPriceComponent } from 'ish-shared/components/product/product-pri
 import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
 import { ProductVariationDisplayComponent } from 'ish-shared/components/product/product-variation-display/product-variation-display.component';
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
+import { ProductNameComponent } from 'ish-shell/header/product-name/product-name.component';
 
 import { WishlistsFacade } from '../../../facades/wishlists.facade';
 import { SelectWishlistModalComponent } from '../../../shared/select-wishlist-modal/select-wishlist-modal.component';
@@ -36,6 +37,7 @@ describe('Account Wishlist Detail Line Item Component', () => {
         MockComponent(ProductBundleDisplayComponent),
         MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
+        MockComponent(ProductNameComponent),
         MockComponent(ProductPriceComponent),
         MockComponent(ProductQuantityComponent),
         MockComponent(ProductVariationDisplayComponent),
