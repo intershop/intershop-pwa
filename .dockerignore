@@ -11,3 +11,4 @@ templates
 .gitlab-ci.yml
 Dockerfile*
 templates
+!templates/production

@@ -13,6 +13,7 @@ COPY scripts /workspace/scripts/
 RUN test "${configuration}" = 'local' && node scripts/init-local-environment.js || true
 ARG serviceWorker
 RUN node schematics/customization/service-worker ${serviceWorker} || true
+COPY templates/production/* /workspace/templates/production/
 RUN npm run ng -- build -c ${configuration}
 COPY tsconfig.server.json server.ts /workspace/
 RUN npm run ng -- run intershop-pwa:server:${configuration} --bundleDependencies
