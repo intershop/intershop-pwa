@@ -14,6 +14,7 @@ import { OrganizationGroup } from '../../models/organization-group/organization-
 @GenerateLazyComponent()
 export class HierarchyGroupNameComponent implements OnInit {
   @Input() buyingGroupId: string;
+  @Input() showLabel = true;
   group$: Observable<OrganizationGroup>;
 
   constructor(private facade: OrganizationHierarchiesFacade) {}
