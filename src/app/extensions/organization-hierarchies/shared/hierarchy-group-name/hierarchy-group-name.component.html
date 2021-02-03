@@ -1,3 +1,4 @@
-<ng-container *ngIf="group$ | async as group">{{
-  'organization.group.label' | translate: { '0': group.name }
-}}</ng-container>
+<ng-container *ngIf="group$ | async as group">
+  <span *ngIf="showLabel">{{ 'organization.group.label' | translate }}&nbsp;</span>
+  <span>{{ group.name }}</span>
+</ng-container>
