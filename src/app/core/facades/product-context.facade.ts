@@ -5,6 +5,8 @@ import { isEqual } from 'lodash-es';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, first, map, skip, startWith, switchMap } from 'rxjs/operators';
 
+import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
+import { Image } from 'ish-core/models/image/image.model';
 import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
@@ -85,6 +87,7 @@ interface ProductContext {
   productURL: string;
   loading: boolean;
   links: ProductLinksDictionary;
+  label: string;
 
   displayProperties: Partial<ProductContextDisplayProperties<boolean>>;
 
@@ -240,6 +243,15 @@ export class ProductContextFacade extends RxState<ProductContext> {
     );
 
     this.connect(
+      'label',
+      this.select('product').pipe(
+        map(
+          product => ProductHelper.getAttributesOfGroup(product, AttributeGroupTypes.ProductLabelAttributes)?.[0]?.name
+        )
+      )
+    );
+
+    this.connect(
       'parts',
       this.select('sku').pipe(
         whenTruthy(),
@@ -321,6 +333,17 @@ export class ProductContextFacade extends RxState<ProductContext> {
       filter(() => !this.get('hasQuantityError')),
       distinctUntilChanged(),
       skip(1)
+    );
+  }
+
+  getProductImage$(imageType: string, imageView: string): Observable<Image> {
+    return this.select('product').pipe(
+      whenTruthy(),
+      map(product =>
+        imageView
+          ? ProductHelper.getImageByImageTypeAndImageView(product, imageType, imageView)
+          : ProductHelper.getPrimaryImage(product, imageType)
+      )
     );
   }
 }

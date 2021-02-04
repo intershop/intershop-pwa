@@ -100,6 +100,7 @@ describe('Product Context Facade', () => {
         Object {
           "allowZeroQuantity": false,
           "hasQuantityError": false,
+          "label": undefined,
           "loading": false,
           "maxQuantity": 100,
           "minQuantity": 10,
@@ -171,6 +172,7 @@ describe('Product Context Facade', () => {
         Object {
           "allowZeroQuantity": false,
           "hasQuantityError": false,
+          "label": undefined,
           "loading": false,
           "maxQuantity": 100,
           "minQuantity": 10,
@@ -340,6 +342,31 @@ describe('Product Context Facade', () => {
 
     it('should calculate the url property of the product', () => {
       expect(context.get('productURL')).toMatchInlineSnapshot(`"//sku123-catABC"`);
+    });
+  });
+
+  describe('with product having labels', () => {
+    let product: ProductView;
+
+    beforeEach(() => {
+      product = {
+        sku: '123',
+        completenessLevel: ProductCompletenessLevel.Detail,
+      } as ProductView;
+
+      product.attributeGroups = {
+        [AttributeGroupTypes.ProductLabelAttributes]: {
+          attributes: [{ name: 'sale', type: 'String', value: 'sale' }],
+        } as AttributeGroup,
+      };
+
+      when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
+
+      context.set('sku', () => '123');
+    });
+
+    it('should calculate the label property of the product', () => {
+      expect(context.get('label')).toMatchInlineSnapshot(`"sale"`);
     });
   });
 

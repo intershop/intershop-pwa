@@ -3,7 +3,7 @@
     <div class="col-1 col-md-2 list-item d-flex">
       <input type="checkbox" data-testing-id="productCheckbox" [checked]="true" (click)="setActive($event.target)" />
       <a class="d-none d-md-inline" [routerLink]="product | ishProductRoute">
-        <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
+        <ish-product-image imageType="S"></ish-product-image>
       </a>
     </div>
     <div class="col-8 col-md-6 list-item d-block d-md-flex">

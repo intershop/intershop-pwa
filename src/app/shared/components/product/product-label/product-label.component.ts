@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
-import { Product, ProductHelper } from 'ish-core/models/product/product.model';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
 /**
  * The Product Label Component renders a label for a product with label information, i.a. new, sale or topseller.
@@ -14,29 +14,12 @@ import { Product, ProductHelper } from 'ish-core/models/product/product.model';
   templateUrl: './product-label.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductLabelComponent implements OnChanges {
-  /**
-   * The product for which the label should be displayed
-   */
-  @Input() product: Product;
+export class ProductLabelComponent implements OnInit {
+  productLabel$: Observable<string>;
 
-  productLabel: string;
+  constructor(private context: ProductContextFacade) {}
 
-  ngOnChanges() {
-    this.determineProductLabel();
-  }
-
-  /**
-   * Determines if a product has product label information assigned to it
-   * by evaluating the ProductLabelAttributes of the product
-   * and setting the first one found if any exists.
-   */
-  determineProductLabel() {
-    if (ProductHelper.getAttributesOfGroup(this.product, AttributeGroupTypes.ProductLabelAttributes)) {
-      this.productLabel = ProductHelper.getAttributesOfGroup(
-        this.product,
-        AttributeGroupTypes.ProductLabelAttributes
-      )[0].name;
-    }
+  ngOnInit() {
+    this.productLabel$ = this.context.select('label');
   }
 }

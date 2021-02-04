@@ -1,8 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
-import { Product } from 'ish-core/models/product/product.model';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductLabelComponent } from 'ish-shared/components/product/product-label/product-label.component';
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
 
@@ -11,54 +15,58 @@ import { ProductImagesComponent } from './product-images.component';
 describe('Product Images Component', () => {
   let component: ProductImagesComponent;
   let fixture: ComponentFixture<ProductImagesComponent>;
-  let product: Product;
   let element: HTMLElement;
 
   beforeEach(async () => {
-    product = { sku: 'sku' } as Product;
-    product.name = 'Lenco';
-    product.images = [
-      {
-        name: 'front S',
-        type: 'Image',
-        imageActualHeight: 110,
-        imageActualWidth: 110,
-        viewID: 'front',
-        effectiveUrl: '/assets/product_img/a.jpg',
-        typeID: 'S',
-        primaryImage: true,
-      },
-      {
-        name: 'front S',
-        type: 'Image',
-        imageActualHeight: 110,
-        imageActualWidth: 110,
-        viewID: 'front',
-        effectiveUrl: '/assets/product_img/a.jpg',
-        typeID: 'S',
-        primaryImage: false,
-      },
-      {
-        name: 'front L',
-        type: 'Image',
-        imageActualHeight: 500,
-        imageActualWidth: 500,
-        viewID: 'front',
-        effectiveUrl: '/assets/product_img/a.jpg',
-        typeID: 'L',
-        primaryImage: true,
-      },
-      {
-        name: 'front L',
-        type: 'Image',
-        imageActualHeight: 500,
-        imageActualWidth: 500,
-        viewID: 'front',
-        effectiveUrl: '/assets/product_img/a.jpg',
-        typeID: 'L',
-        primaryImage: false,
-      },
-    ];
+    const context = mock(ProductContextFacade);
+    when(context.select('product')).thenReturn(
+      of({
+        sku: 'sku',
+        name: 'Lenco',
+        images: [
+          {
+            name: 'front S',
+            type: 'Image',
+            imageActualHeight: 110,
+            imageActualWidth: 110,
+            viewID: 'front',
+            effectiveUrl: '/assets/product_img/a.jpg',
+            typeID: 'S',
+            primaryImage: true,
+          },
+          {
+            name: 'front S',
+            type: 'Image',
+            imageActualHeight: 110,
+            imageActualWidth: 110,
+            viewID: 'front',
+            effectiveUrl: '/assets/product_img/a.jpg',
+            typeID: 'S',
+            primaryImage: false,
+          },
+          {
+            name: 'front L',
+            type: 'Image',
+            imageActualHeight: 500,
+            imageActualWidth: 500,
+            viewID: 'front',
+            effectiveUrl: '/assets/product_img/a.jpg',
+            typeID: 'L',
+            primaryImage: true,
+          },
+          {
+            name: 'front L',
+            type: 'Image',
+            imageActualHeight: 500,
+            imageActualWidth: 500,
+            viewID: 'front',
+            effectiveUrl: '/assets/product_img/a.jpg',
+            typeID: 'L',
+            primaryImage: false,
+          },
+        ],
+      } as ProductView)
+    );
     await TestBed.configureTestingModule({
       imports: [NgbCarouselModule],
       declarations: [
@@ -66,6 +74,7 @@ describe('Product Images Component', () => {
         MockComponent(ProductLabelComponent),
         ProductImagesComponent,
       ],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });
 
@@ -73,7 +82,6 @@ describe('Product Images Component', () => {
     fixture = TestBed.createComponent(ProductImagesComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.product = product;
     component.activeSlide = '0';
   });
 
@@ -90,10 +98,11 @@ describe('Product Images Component', () => {
 
   it('should render thumbnails on component', () => {
     fixture.detectChanges();
-    const thumbNailsSetElement = element.getElementsByClassName('product-thumb-set');
+    const thumbNailsSetElement = fixture.debugElement.queryAll(By.css('.product-thumb-set'));
     expect(thumbNailsSetElement).toHaveLength(2);
-    const productImageElem = thumbNailsSetElement[0].querySelector('ish-product-image');
-    expect(productImageElem.getAttribute('ng-reflect-image-type')).toBe(component.product.images[0].typeID);
+    const productImageElem = thumbNailsSetElement[0].query(By.css('ish-product-image'))
+      ?.componentInstance as ProductImageComponent;
+    expect(productImageElem.imageType).toMatchInlineSnapshot(`"S"`);
   });
 
   it('should show corresponding image in carousel and set active class on thumbnail when clicking on thumbnail image', () => {

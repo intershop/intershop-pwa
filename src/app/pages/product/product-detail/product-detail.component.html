@@ -1,7 +1,7 @@
 <ish-product-detail-actions></ish-product-detail-actions>
 
 <div *ngIf="product$ | async as product" class="row product-details">
-  <div class="col-12 col-md-6 col-lg-8"><ish-product-images [product]="product"></ish-product-images></div>
+  <div class="col-12 col-md-6 col-lg-8"><ish-product-images></ish-product-images></div>
 
   <div class="col-12 col-md-6 col-lg-4">
     <ish-product-rating *ishFeature="'rating'" [product]="product"></ish-product-rating>

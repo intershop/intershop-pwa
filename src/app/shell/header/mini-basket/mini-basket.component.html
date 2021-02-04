@@ -28,7 +28,7 @@
           <ng-container *ngIf="product$(lineItem.productSKU) | async as product" ishProductContext [sku]="product?.sku">
             <div class="mini-product-img">
               <a [routerLink]="product | ishProductRoute">
-                <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
+                <ish-product-image imageType="S"></ish-product-image>
               </a>
             </div>
             <div class="mini-product-info">

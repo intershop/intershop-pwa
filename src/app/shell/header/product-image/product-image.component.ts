@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { Observable, ReplaySubject, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { Image } from 'ish-core/models/image/image.model';
-import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 
 /**
  * The Product Image Component renders the product image
@@ -16,11 +18,7 @@ import { Product, ProductHelper } from 'ish-core/models/product/product.model';
   templateUrl: './product-image.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductImageComponent implements OnChanges {
-  /**
-   * The product with the image information.
-   */
-  @Input() product: Product;
+export class ProductImageComponent implements OnInit {
   /**
    * The image type (size), i.e. 'S' for the small image.
    */
@@ -30,52 +28,28 @@ export class ProductImageComponent implements OnChanges {
    */
   @Input() imageView?: string;
   /**
-   * The additional CSS classes for the img tag.
-   */
-  @Input() class?: string;
-  /**
    * A custom alt text for the img tag.
    */
   @Input() altText?: string;
 
-  productImage: Image;
+  productImage$: Observable<Image>;
+  defaultAltText$: Observable<string>;
 
   /**
    * deferred loading flag
    */
-  showImage = false;
+  showImage$ = new ReplaySubject(1);
 
-  constructor(private translateService: TranslateService) {}
+  constructor(private translateService: TranslateService, private context: ProductContextFacade) {}
 
-  ngOnChanges() {
-    this.productImage = this.imageView
-      ? ProductHelper.getImageByImageTypeAndImageView(this.product, this.imageType, this.imageView)
-      : ProductHelper.getPrimaryImage(this.product, this.imageType);
-  }
-
-  /**
-   * Gets the image source URL from the effectiveUrl of the product image.
-   * @returns defined effectiveUrl or empty string.
-   */
-  imageSourceUrl(): string {
-    return this.productImage && this.productImage.effectiveUrl && this.productImage.effectiveUrl.length > 0
-      ? `${this.productImage.effectiveUrl}`
-      : '/assets/img/not_available.png';
-  }
-
-  /**
-   * Builds the alternative text from a product image.
-   * @returns Property altText or a string composed of
-   * (a) product name OR product SKU and
-   * (b) an additional defined alt text
-   * (c) image view and image type if image view is given
-   */
-  getImgAltText(): string {
-    return this.altText ? this.altText : `${this.buildProductNameOrProductSku()} ${this.buildAdditionalAltText()}`;
-  }
-
-  private buildProductNameOrProductSku(): string {
-    return this.product ? (this.product.name ? this.product.name : this.product.sku) : '';
+  ngOnInit() {
+    this.productImage$ = combineLatest([
+      this.context.getProductImage$(this.imageType, this.imageView),
+      this.showImage$,
+    ]).pipe(map(([i]) => i));
+    this.defaultAltText$ = this.context
+      .select('product')
+      .pipe(map(product => [product?.name || product?.sku || '', this.buildAdditionalAltText()].join(' ')));
   }
 
   private buildAdditionalAltText(): string {

@@ -1,13 +1,13 @@
-<div (deferLoad)="showImage = true" class="defer-load">
+<div (deferLoad)="showImage$.next()" class="defer-load">
   <img
-    *ngIf="showImage"
-    [src]="imageSourceUrl()"
-    [ngClass]="class"
-    [attr.data-type]="productImage?.typeID"
-    [attr.data-view]="productImage?.viewID"
-    [attr.height]="productImage?.imageActualHeight"
-    [attr.width]="productImage?.imageActualWidth"
-    [attr.alt]="getImgAltText()"
+    *ngIf="{ image: productImage$ | async } as product"
+    class="product-image"
+    [src]="product.image?.effectiveUrl || '/assets/img/not_available.png'"
+    [attr.data-type]="product.image?.typeID"
+    [attr.data-view]="product.image?.viewID"
+    [attr.height]="product.image?.imageActualHeight"
+    [attr.width]="product.image?.imageActualWidth"
+    [attr.alt]="altText || (defaultAltText$ | async)"
     itemprop="image"
   />
 </div>
