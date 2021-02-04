@@ -134,6 +134,7 @@ describe('Line Item List Element Component', () => {
         "ish-product-image",
         "ish-product-id",
         "ish-product-variation-display",
+        "ish-product-bundle-display",
         "ish-line-item-edit",
         "ish-product-inventory",
         "ish-product-shipment",

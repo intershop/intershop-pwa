@@ -12,9 +12,9 @@
         [category]="category$ | async"
       ></ish-product-master-variations>
 
-      <ish-product-bundle-parts *ngIf="isProductBundle(product)"></ish-product-bundle-parts>
+      <ish-product-bundle-parts></ish-product-bundle-parts>
 
-      <ish-retail-set-parts *ngIf="isRetailSet(product)"></ish-retail-set-parts>
+      <ish-retail-set-parts></ish-retail-set-parts>
 
       <ish-product-links></ish-product-links>
     </ng-container>

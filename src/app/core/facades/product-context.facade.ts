@@ -2,7 +2,7 @@ import { Injectable, InjectionToken, Injector } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { RxState } from '@rx-angular/state';
 import { isEqual } from 'lodash-es';
-import { BehaviorSubject, Observable, combineLatest, race } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, first, map, skip, startWith, switchMap } from 'rxjs/operators';
 
 import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
@@ -30,6 +30,8 @@ export interface ProductContextDisplayProperties<T = boolean> {
   promotions: T;
   quantity: T;
   variations: T;
+  bundleParts: T;
+  retailSetParts: T;
   shipment: T;
   addToBasket: T;
   addToWishlist: T;
@@ -54,6 +56,8 @@ const defaultDisplayProperties: () => ProductContextDisplayProperties<DisplayEva
     promotions: true,
     quantity: canBeOrderedNotRetail,
     variations: p => ProductHelper.isVariationProduct(p),
+    bundleParts: ProductHelper.isProductBundle,
+    retailSetParts: ProductHelper.isRetailSet,
     shipment: p =>
       canBeOrderedNotRetail(p) && Number.isInteger(p.readyForShipmentMin) && Number.isInteger(p.readyForShipmentMax),
     addToBasket: canBeOrdered,
@@ -228,15 +232,9 @@ export class ProductContextFacade extends RxState<ProductContext> {
 
     this.connect(
       'parts',
-      race(
-        this.select('product').pipe(
-          filter(ProductHelper.isProductBundle),
-          map(p => p?.bundledProducts)
-        ),
-        this.select('product').pipe(
-          filter(ProductHelper.isRetailSet),
-          map(p => p?.partSKUs?.map(sku => ({ sku, quantity: 1 })))
-        )
+      this.select('sku').pipe(
+        whenTruthy(),
+        switchMap(sku => this.shoppingFacade.productParts$(sku))
       )
     );
 

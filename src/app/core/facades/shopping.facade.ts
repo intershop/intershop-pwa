@@ -30,8 +30,8 @@ import {
 } from 'ish-core/store/shopping/product-listing';
 import {
   getProduct,
-  getProductBundleParts,
   getProductLinks,
+  getProductParts,
   getProductVariationCount,
   loadProductIfNotLoaded,
   loadProductLinks,
@@ -88,10 +88,6 @@ export class ShoppingFacade {
     );
   }
 
-  productBundleParts$(sku: string) {
-    return this.store.pipe(select(getProductBundleParts, { sku }));
-  }
-
   // CHECKOUT
 
   addProductToBasket(sku: string, quantity: number) {
@@ -116,6 +112,12 @@ export class ShoppingFacade {
   productLinks$(sku: string) {
     this.store.dispatch(loadProductLinks({ sku }));
     return this.store.pipe(select(getProductLinks(sku)));
+  }
+
+  // PRODUCT RETAILSET / BUNDLES
+
+  productParts$(sku: string) {
+    return this.store.pipe(select(getProductParts(sku)));
   }
 
   // SEARCH

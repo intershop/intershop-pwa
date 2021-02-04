@@ -14,10 +14,7 @@
             </a>
             <ish-product-id [product]="product"></ish-product-id>
             <ish-product-variation-display></ish-product-variation-display>
-            <ish-product-bundle-display
-              *ngIf="product.type === 'Bundle'"
-              [productBundleSKU]="product.sku"
-            ></ish-product-bundle-display>
+            <ish-product-bundle-display></ish-product-bundle-display>
             <div class="hidden-xs">
               <label>{{ 'account.wishlist.table.added_on' | translate }}</label>
               {{ wishlistItemData?.creationDate | ishDate: 'shortDate' }}

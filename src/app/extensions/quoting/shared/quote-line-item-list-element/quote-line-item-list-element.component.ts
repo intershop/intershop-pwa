@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { ProductHelper } from 'ish-core/models/product/product.model';
 
 import { QuoteContextFacade } from '../../facades/quote-context.facade';
 import { QuoteItem, QuoteRequestItem } from '../../models/quoting/quoting.model';
@@ -21,8 +20,6 @@ export class QuoteLineItemListElementComponent implements OnInit {
         'id' | 'productSKU' | 'quantity' | 'originSingleBasePrice' | 'singleBasePrice' | 'total' | 'originTotal'
       >
   >;
-
-  isBundleProduct = ProductHelper.isProductBundle;
 
   editable$: Observable<boolean>;
 

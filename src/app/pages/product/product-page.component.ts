@@ -29,8 +29,6 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   productLoading$: Observable<boolean>;
   category$: Observable<CategoryView>;
 
-  isProductBundle = ProductHelper.isProductBundle;
-  isRetailSet = ProductHelper.isRetailSet;
   isMasterProduct = ProductHelper.isMasterProduct;
 
   private destroy$ = new Subject();

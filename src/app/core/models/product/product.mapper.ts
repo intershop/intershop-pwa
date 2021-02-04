@@ -247,7 +247,6 @@ export class ProductMapper {
         minSalePrice: PriceMapper.fromData(data.minSalePrice),
         summedUpListPrice: PriceMapper.fromData(data.summedUpListPrice),
         summedUpSalePrice: PriceMapper.fromData(data.summedUpSalePrice),
-        partSKUs: [],
       };
     } else {
       return product;

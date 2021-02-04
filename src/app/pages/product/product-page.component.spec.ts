@@ -101,12 +101,16 @@ describe('Product Page Component', () => {
 
     fixture.detectChanges();
 
-    expect(findAllCustomElements(element)).toEqual([
-      'ish-breadcrumb',
-      'ish-product-detail',
-      'ish-product-links',
-      'ish-recently-viewed',
-    ]);
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
+      Array [
+        "ish-breadcrumb",
+        "ish-product-detail",
+        "ish-product-bundle-parts",
+        "ish-retail-set-parts",
+        "ish-product-links",
+        "ish-recently-viewed",
+      ]
+    `);
   });
 
   it('should redirect to product page when product changes', fakeAsync(() => {

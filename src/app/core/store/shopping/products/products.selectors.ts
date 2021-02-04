@@ -87,21 +87,9 @@ export const getProductVariationCount = createSelector(
     ProductHelper.isMasterProduct(product) && ProductVariationHelper.productVariationCount(product, filters)
 );
 
-export const getProductBundleParts = createSelector(getProductEntities, (entities, props: { sku: string }): {
-  product: Product;
-  quantity: number;
-}[] =>
-  !ProductHelper.isProductBundle(entities[props.sku]) || !entities[props.sku].bundledProducts
-    ? []
-    : entities[props.sku].bundledProducts
-        .filter(({ sku }) => !!entities[sku])
-        .map(({ sku, quantity }) => ({
-          product: entities[sku],
-          quantity,
-        }))
-);
-
 export const getProductLinks = (sku: string) => createSelector(getProductsState, state => state.links[sku]);
+
+export const getProductParts = (sku: string) => createSelector(getProductsState, state => state.parts[sku]);
 
 export const getBreadcrumbForProductPage = createSelectorFactory(projector =>
   defaultMemoize(projector, undefined, isEqual)

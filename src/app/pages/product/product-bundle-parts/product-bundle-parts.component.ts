@@ -11,10 +11,12 @@ import { SkuQuantityType } from 'ish-core/models/product/product.model';
 })
 export class ProductBundlePartsComponent implements OnInit {
   parts$: Observable<SkuQuantityType[]>;
+  visible$: Observable<boolean>;
 
   constructor(private context: ProductContextFacade) {}
 
   ngOnInit() {
     this.parts$ = this.context.select('parts');
+    this.visible$ = this.context.select('displayProperties', 'bundleParts');
   }
 }

@@ -2,7 +2,7 @@ import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
 import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
-import { AllProductTypes } from 'ish-core/models/product/product.model';
+import { AllProductTypes, SkuQuantityType } from 'ish-core/models/product/product.model';
 
 import {
   loadProductBundlesSuccess,
@@ -22,11 +22,13 @@ export const productAdapter = createEntityAdapter<AllProductTypes>({
 export interface ProductsState extends EntityState<AllProductTypes> {
   failed: string[];
   links: { [sku: string]: ProductLinksDictionary };
+  parts: { [sku: string]: SkuQuantityType[] };
 }
 
 export const initialState: ProductsState = productAdapter.getInitialState({
   failed: [],
   links: {},
+  parts: {},
 });
 
 function addFailed(failed: string[], sku: string): string[] {
@@ -54,7 +56,6 @@ export const productsReducer = createReducer(
 
     return productAdapter.upsertOne(newProduct, {
       ...state,
-      loading: false,
       failed: removeFailed(state.failed, product.sku),
     });
   }),
@@ -64,22 +65,20 @@ export const productsReducer = createReducer(
         id: action.payload.sku,
         changes: { variationSKUs: action.payload.variations, defaultVariationSKU: action.payload.defaultVariation },
       },
-      { ...state, loading: false }
+      state
     )
   ),
-  on(loadProductBundlesSuccess, (state: ProductsState, action) =>
-    productAdapter.updateOne(
-      { id: action.payload.sku, changes: { bundledProducts: action.payload.bundledProducts } },
-      { ...state, loading: false }
-    )
-  ),
-  on(loadRetailSetSuccess, (state: ProductsState, action) =>
-    productAdapter.updateOne({ id: action.payload.sku, changes: { partSKUs: action.payload.parts } }, state)
-  ),
+  on(loadProductBundlesSuccess, (state: ProductsState, action) => ({
+    ...state,
+    parts: { ...state.parts, [action.payload.sku]: action.payload.bundledProducts },
+  })),
+  on(loadRetailSetSuccess, (state: ProductsState, action) => ({
+    ...state,
+    parts: { ...state.parts, [action.payload.sku]: action.payload.parts.map(sku => ({ sku, quantity: 1 })) },
+  })),
   on(loadProductLinksSuccess, (state: ProductsState, action) => ({
     ...state,
     links: { ...state.links, [action.payload.sku]: action.payload.links },
-    loading: false,
   })),
   on(productSpecialUpdate, (state: ProductsState, action) =>
     productAdapter.updateOne({ id: action.payload.sku, changes: action.payload.update }, state)

@@ -21,10 +21,7 @@
       <!-- Product Variations -->
       <ish-product-variation-display></ish-product-variation-display>
       <!-- Product Bundles -->
-      <ish-product-bundle-display
-        *ngIf="isBundleProduct(product)"
-        [productBundleSKU]="product.sku"
-      ></ish-product-bundle-display>
+      <ish-product-bundle-display></ish-product-bundle-display>
 
       <ish-product-inventory [product]="product"></ish-product-inventory>
       <div *ngIf="editable$ | async" class="d-flex align-items-center">

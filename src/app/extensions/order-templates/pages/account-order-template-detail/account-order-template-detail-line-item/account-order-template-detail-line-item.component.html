@@ -13,10 +13,7 @@
         </a>
         <ish-product-id [product]="product"></ish-product-id>
         <ish-product-variation-display></ish-product-variation-display>
-        <ish-product-bundle-display
-          *ngIf="product.type === 'Bundle'"
-          [productBundleSKU]="product.sku"
-        ></ish-product-bundle-display>
+        <ish-product-bundle-display></ish-product-bundle-display>
         <ish-product-inventory [product]="product"></ish-product-inventory>
         <div>
           <a class="btn-tool" (click)="moveDialog.show()" data-testing-id="move-order-template">

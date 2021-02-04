@@ -34,6 +34,7 @@ describe('Product Context Facade', () => {
   beforeEach(() => {
     shoppingFacade = mock(ShoppingFacade);
     when(shoppingFacade.productLinks$(anything())).thenReturn(EMPTY);
+    when(shoppingFacade.productParts$(anything())).thenReturn(EMPTY);
 
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
@@ -121,6 +122,7 @@ describe('Product Context Facade', () => {
           "addToOrderTemplate": false,
           "addToQuote": false,
           "addToWishlist": true,
+          "bundleParts": false,
           "description": true,
           "inventory": true,
           "name": true,
@@ -128,6 +130,7 @@ describe('Product Context Facade', () => {
           "promotions": true,
           "quantity": false,
           "readOnly": false,
+          "retailSetParts": false,
           "shipment": false,
           "sku": true,
           "variations": false,
@@ -297,6 +300,7 @@ describe('Product Context Facade', () => {
           "addToOrderTemplate": true,
           "addToQuote": true,
           "addToWishlist": true,
+          "bundleParts": false,
           "description": true,
           "inventory": true,
           "name": true,
@@ -304,6 +308,7 @@ describe('Product Context Facade', () => {
           "promotions": true,
           "quantity": true,
           "readOnly": false,
+          "retailSetParts": false,
           "shipment": true,
           "sku": true,
           "variations": false,
@@ -315,17 +320,21 @@ describe('Product Context Facade', () => {
   describe('with a retail set', () => {
     beforeEach(() => {
       when(shoppingFacade.product$(anything(), anything())).thenReturn(
-        of(({
+        of({
           sku: '123',
           completenessLevel: ProductCompletenessLevel.Detail,
           minOrderQuantity: 1,
           maxOrderQuantity: 100,
           type: 'RetailSet',
-          partSKUs: ['p1', 'p2'],
           available: true,
-        } as unknown) as ProductView)
+        } as ProductView)
       );
-
+      when(shoppingFacade.productParts$(anything())).thenReturn(
+        of([
+          { sku: 'p1', quantity: 1 },
+          { sku: 'p2', quantity: 1 },
+        ])
+      );
       context.set('sku', () => '123');
     });
 
@@ -356,6 +365,7 @@ describe('Product Context Facade', () => {
           "addToOrderTemplate": true,
           "addToQuote": true,
           "addToWishlist": true,
+          "bundleParts": false,
           "description": true,
           "inventory": false,
           "name": true,
@@ -363,6 +373,7 @@ describe('Product Context Facade', () => {
           "promotions": true,
           "quantity": false,
           "readOnly": false,
+          "retailSetParts": true,
           "shipment": false,
           "sku": true,
           "variations": false,
@@ -374,22 +385,23 @@ describe('Product Context Facade', () => {
   describe('with a bundle', () => {
     beforeEach(() => {
       when(shoppingFacade.product$(anything(), anything())).thenReturn(
-        of(({
+        of({
           sku: '123',
           completenessLevel: ProductCompletenessLevel.Detail,
           minOrderQuantity: 1,
           maxOrderQuantity: 100,
           type: 'Bundle',
-          bundledProducts: [
-            { sku: 'p1', quantity: 1 },
-            { sku: 'p2', quantity: 2 },
-          ],
           available: true,
           readyForShipmentMin: 0,
           readyForShipmentMax: 2,
-        } as unknown) as ProductView)
+        } as ProductView)
       );
-
+      when(shoppingFacade.productParts$(anything())).thenReturn(
+        of([
+          { sku: 'p1', quantity: 1 },
+          { sku: 'p2', quantity: 2 },
+        ])
+      );
       context.set('sku', () => '123');
     });
 
@@ -420,6 +432,7 @@ describe('Product Context Facade', () => {
           "addToOrderTemplate": true,
           "addToQuote": true,
           "addToWishlist": true,
+          "bundleParts": true,
           "description": true,
           "inventory": true,
           "name": true,
@@ -427,6 +440,7 @@ describe('Product Context Facade', () => {
           "promotions": true,
           "quantity": true,
           "readOnly": false,
+          "retailSetParts": false,
           "shipment": true,
           "sku": true,
           "variations": false,
@@ -468,6 +482,7 @@ describe('Product Context Facade', () => {
           "addToOrderTemplate": true,
           "addToQuote": true,
           "addToWishlist": true,
+          "bundleParts": false,
           "description": true,
           "inventory": true,
           "name": true,
@@ -475,6 +490,7 @@ describe('Product Context Facade', () => {
           "promotions": true,
           "quantity": true,
           "readOnly": false,
+          "retailSetParts": false,
           "shipment": true,
           "sku": true,
           "variations": true,
@@ -512,6 +528,7 @@ describe('Product Context Facade', () => {
           "addToOrderTemplate": false,
           "addToQuote": false,
           "addToWishlist": false,
+          "bundleParts": false,
           "description": true,
           "inventory": false,
           "name": true,
@@ -519,6 +536,7 @@ describe('Product Context Facade', () => {
           "promotions": true,
           "quantity": false,
           "readOnly": false,
+          "retailSetParts": false,
           "shipment": false,
           "sku": true,
           "variations": false,
@@ -579,6 +597,7 @@ describe('Product Context Facade', () => {
 
       shoppingFacade = mock(ShoppingFacade);
       when(shoppingFacade.productLinks$(anything())).thenReturn(EMPTY);
+      when(shoppingFacade.productParts$(anything())).thenReturn(EMPTY);
 
       product = {
         completenessLevel: ProductCompletenessLevel.Detail,
@@ -616,6 +635,7 @@ describe('Product Context Facade', () => {
           "addToOrderTemplate": true,
           "addToQuote": true,
           "addToWishlist": true,
+          "bundleParts": false,
           "description": true,
           "inventory": true,
           "name": true,
@@ -623,6 +643,7 @@ describe('Product Context Facade', () => {
           "promotions": false,
           "quantity": true,
           "readOnly": false,
+          "retailSetParts": false,
           "shipment": false,
           "sku": true,
           "variations": false,
@@ -644,6 +665,7 @@ describe('Product Context Facade', () => {
           "addToOrderTemplate": false,
           "addToQuote": false,
           "addToWishlist": false,
+          "bundleParts": false,
           "description": true,
           "inventory": true,
           "name": true,
@@ -651,6 +673,7 @@ describe('Product Context Facade', () => {
           "promotions": false,
           "quantity": true,
           "readOnly": false,
+          "retailSetParts": false,
           "shipment": false,
           "sku": true,
           "variations": false,

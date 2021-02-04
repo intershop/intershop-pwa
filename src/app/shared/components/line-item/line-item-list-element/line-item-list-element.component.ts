@@ -6,7 +6,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { OrderLineItem } from 'ish-core/models/order/order.model';
-import { AnyProductViewType, ProductHelper } from 'ish-core/models/product/product.model';
+import { AnyProductViewType } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-line-item-list-element',
@@ -19,8 +19,6 @@ export class LineItemListElementComponent implements OnInit {
   @Input() lineItemViewType?: 'simple' | 'availability';
 
   product$: Observable<AnyProductViewType>;
-
-  isBundleProduct = ProductHelper.isProductBundle;
 
   constructor(private context: ProductContextFacade, private checkoutFacade: CheckoutFacade) {}
 

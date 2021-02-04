@@ -28,6 +28,7 @@ import {
   getProduct,
   getProductEntities,
   getProductLinks,
+  getProductParts,
   getSelectedProduct,
 } from './products.selectors';
 
@@ -225,7 +226,7 @@ describe('Products Selectors', () => {
   });
 
   describe('when loading bundles', () => {
-    it('should contain the product bundle information on the product', () => {
+    it('should contain information for the product bundle', () => {
       store$.dispatch(loadProductSuccess({ product: { sku: 'ABC' } as Product }));
       store$.dispatch(
         loadProductBundlesSuccess({
@@ -237,26 +238,23 @@ describe('Products Selectors', () => {
         })
       );
 
-      expect(getProductEntities(store$.state).ABC).toMatchInlineSnapshot(`
-        Object {
-          "bundledProducts": Array [
-            Object {
-              "quantity": 1,
-              "sku": "A",
-            },
-            Object {
-              "quantity": 2,
-              "sku": "B",
-            },
-          ],
-          "sku": "ABC",
-        }
+      expect(getProductParts('ABC')(store$.state)).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "quantity": 1,
+            "sku": "A",
+          },
+          Object {
+            "quantity": 2,
+            "sku": "B",
+          },
+        ]
       `);
     });
   });
 
   describe('when loading retail sets', () => {
-    it('should contain the product retail set information on the product', () => {
+    it('should contain information for the product retail set', () => {
       store$.dispatch(loadProductSuccess({ product: { sku: 'ABC' } as Product }));
       store$.dispatch(
         loadRetailSetSuccess({
@@ -265,14 +263,17 @@ describe('Products Selectors', () => {
         })
       );
 
-      expect(getProductEntities(store$.state).ABC).toMatchInlineSnapshot(`
-        Object {
-          "partSKUs": Array [
-            "A",
-            "B",
-          ],
-          "sku": "ABC",
-        }
+      expect(getProductParts('ABC')(store$.state)).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "quantity": 1,
+            "sku": "A",
+          },
+          Object {
+            "quantity": 1,
+            "sku": "B",
+          },
+        ]
       `);
     });
   });
