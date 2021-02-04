@@ -7,20 +7,7 @@ kb_sync_latest_only
 
 # Getting Started
 
-## VSCode Remote-Containers
-
-> If you don't want to be part of the future of development start with [Old-School Quick Start](#old-school-quick-start)
-
-For using VSCode Remote-Containers, [Docker](https://docs.docker.com/get-docker) has to be installed on your development machine.
-
-After also installing [VSCode](https://code.visualstudio.com), install the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension.
-After cloning your local working copy (of course, with VSCode), you will be asked if you want to reopen the folder in a container.
-By doing this, VSCode will prepare your environment for you.
-It installs Node.js LTS, Angular CLI and also performs all required setup steps to get you started in an isolated environment.
-
-Open a console in VSCode and run `ng serve` to start developing.
-
-## Old-School Quick Start
+## Quick Start
 
 Before working with this project, download and install [Node.js](https://nodejs.org) with the included npm package manager.
 Currently Node.js 14.x LTS with the corresponding npm is required.
@@ -32,6 +19,19 @@ Run `npm install -g @angular/cli` once to globally install Angular CLI on your d
 Use `ng serve --open` to start up the development server and open the Progressive Web App in your browser.
 
 The project can alternatively be run in production mode with `npm start`.
+
+## Visual Studio Code Remote Development
+
+An alternative development setup for the PWA is provided when using Visual Studio Code Remote - Containers to work in an isolated pre-configured project development environment.
+
+As prerequisite [Docker](https://docs.docker.com/get-docker) has to be installed on your development machine.
+As IDE [Visual Studio Code](https://code.visualstudio.com) needs to be used with the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension installed.
+
+After cloning your local working copy (e.g. with VS Code), you will be asked if you want to reopen the folder in a container.
+By doing this, VS Code will prepare your environment for you.
+It installs Node.js LTS, Angular CLI and also performs all required setup steps to get you started in an isolated environment.
+
+Open a console in VS Code and run `ng serve` to start developing.
 
 ## Customization
 
