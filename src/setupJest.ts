@@ -9,6 +9,14 @@ beforeEach(() => {
   // tslint:disable-next-line: no-any
   getTestBed().configureCompiler({ preserveWhitespaces: false } as any);
 
+  const logFunction = global.console.log;
+  global.console.log = (...args: unknown[]) => {
+    if (args?.some(arg => arg instanceof Error)) {
+      fail(...args);
+    }
+    logFunction(...args);
+  };
+
   jest.spyOn(global.console, 'warn').mockImplementation(arg => {
     if (
       typeof arg !== 'string' ||
