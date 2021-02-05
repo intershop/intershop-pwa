@@ -7,7 +7,6 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { SelectedProductContextFacade } from 'ish-core/facades/selected-product-context.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
-import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import {
   ProductView,
@@ -25,12 +24,9 @@ import { whenTruthy } from 'ish-core/utils/operators';
   providers: [{ provide: ProductContextFacade, useClass: SelectedProductContextFacade }],
 })
 export class ProductPageComponent implements OnInit, OnDestroy {
-  product$: Observable<ProductView | VariationProductView | VariationProductMasterView>;
   productLoading$: Observable<boolean>;
-  category$: Observable<CategoryView>;
 
-  isMasterProduct = ProductHelper.isMasterProduct;
-
+  private product$: Observable<ProductView | VariationProductView | VariationProductMasterView>;
   private destroy$ = new Subject();
 
   constructor(
@@ -47,8 +43,6 @@ export class ProductPageComponent implements OnInit, OnDestroy {
 
     this.product$ = this.context.select('product');
     this.productLoading$ = this.context.select('loading');
-
-    this.category$ = this.shoppingFacade.selectedCategory$;
 
     this.product$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(product => {
       if (

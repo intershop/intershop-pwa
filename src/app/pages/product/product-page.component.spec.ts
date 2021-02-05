@@ -95,7 +95,7 @@ describe('Product Page Component', () => {
     expect(findAllCustomElements(element)).toEqual(['ish-loading', 'ish-recently-viewed']);
   });
 
-  it('should display product-detail when product is available', () => {
+  it('should display product page components when product is available', () => {
     const product = { sku: 'dummy', completenessLevel: ProductCompletenessLevel.Detail } as Product;
     when(context.select('product')).thenReturn(of(createProductView(product, categories)));
 
@@ -105,6 +105,7 @@ describe('Product Page Component', () => {
       Array [
         "ish-breadcrumb",
         "ish-product-detail",
+        "ish-product-master-variations",
         "ish-product-bundle-parts",
         "ish-retail-set-parts",
         "ish-product-links",

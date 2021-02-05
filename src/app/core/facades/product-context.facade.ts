@@ -109,6 +109,8 @@ interface ProductContext {
 
 @Injectable()
 export class ProductContextFacade extends RxState<ProductContext> {
+  selectedCategory$ = this.shoppingFacade.selectedCategory$;
+
   private privateConfig$ = new BehaviorSubject<Partial<ProductContextDisplayProperties>>({});
   private loggingActive = false;
 

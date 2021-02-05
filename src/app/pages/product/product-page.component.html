@@ -2,22 +2,17 @@
   <ish-loading *ngIf="productLoading$ | async; else productDetail"></ish-loading>
 
   <ng-template #productDetail>
-    <ng-container *ngIf="product$ | async as product">
-      <ish-breadcrumb></ish-breadcrumb>
+    <ish-breadcrumb></ish-breadcrumb>
 
-      <ish-product-detail></ish-product-detail>
+    <ish-product-detail></ish-product-detail>
 
-      <ish-product-master-variations
-        *ngIf="isMasterProduct(product)"
-        [category]="category$ | async"
-      ></ish-product-master-variations>
+    <ish-product-master-variations></ish-product-master-variations>
 
-      <ish-product-bundle-parts></ish-product-bundle-parts>
+    <ish-product-bundle-parts></ish-product-bundle-parts>
 
-      <ish-retail-set-parts></ish-retail-set-parts>
+    <ish-retail-set-parts></ish-retail-set-parts>
 
-      <ish-product-links></ish-product-links>
-    </ng-container>
+    <ish-product-links></ish-product-links>
   </ng-template>
 </div>
 
