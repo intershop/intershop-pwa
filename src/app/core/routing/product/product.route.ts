@@ -2,7 +2,7 @@ import { UrlMatchResult, UrlSegment } from '@angular/router';
 import { MonoTypeOperatorFunction } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { CategoryView } from 'ish-core/models/category-view/category-view.model';
+import { Category } from 'ish-core/models/category/category.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductHelper } from 'ish-core/models/product/product.model';
 import { generateLocalizedCategorySlug } from 'ish-core/routing/category/category.route';
@@ -59,14 +59,14 @@ export function matchProductRoute(segments: UrlSegment[]): UrlMatchResult {
   return;
 }
 
-export function generateProductUrl(product: ProductView, category?: CategoryView): string {
+export function generateProductUrl(product: ProductView, category?: Category): string {
   if (!product || !product.sku) {
     return '/';
   }
 
   let route = '/';
 
-  const contextCategory = category || product?.defaultCategory?.();
+  const contextCategory = category || product?.defaultCategory;
   if (contextCategory) {
     route += generateLocalizedCategorySlug(contextCategory);
     route += '/';

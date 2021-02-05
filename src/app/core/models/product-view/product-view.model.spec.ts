@@ -15,7 +15,7 @@ describe('Product View Model', () => {
     const empty = categoryTree();
     const view = createProductView({ defaultCategoryId: 'some' } as Product, empty);
     expect(view).toBeTruthy();
-    expect(view.defaultCategory()).toBeUndefined();
+    expect(view.defaultCategory).toBeUndefined();
   });
 
   it('should return product if the product default category is empty', () => {
@@ -37,7 +37,7 @@ describe('Product View Model', () => {
 
     expect(view).toBeTruthy();
     expect(view.sku).toEqual('some');
-    expect(view.defaultCategory()).toHaveProperty('uniqueId', '123');
-    expect(view.defaultCategory()).toHaveProperty('name', 'test');
+    expect(view.defaultCategory).toHaveProperty('uniqueId', '123');
+    expect(view.defaultCategory).toHaveProperty('name', 'test');
   });
 });

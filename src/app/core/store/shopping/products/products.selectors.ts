@@ -99,7 +99,7 @@ export const getBreadcrumbForProductPage = createSelectorFactory(projector =>
   getCategoryEntities,
   (product: ProductView, category: CategoryView, entities: Dictionary<Category>) =>
     ProductHelper.isSufficientlyLoaded(product, ProductCompletenessLevel.Detail)
-      ? (category?.categoryPath || product.defaultCategory()?.categoryPath || [])
+      ? (category?.categoryPath || product.defaultCategory?.categoryPath || [])
           .map(id => entities[id])
           .filter(x => !!x)
           .map(cat => ({

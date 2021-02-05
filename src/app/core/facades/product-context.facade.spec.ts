@@ -7,7 +7,7 @@ import { anyString, anything, instance, mock, when } from 'ts-mockito';
 
 import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
-import { CategoryView } from 'ish-core/models/category-view/category-view.model';
+import { Category } from 'ish-core/models/category/category.model';
 import {
   ProductView,
   VariationProductMasterView,
@@ -330,7 +330,7 @@ describe('Product Context Facade', () => {
       product = {
         sku: '123',
         completenessLevel: ProductCompletenessLevel.Detail,
-        defaultCategory: () => ({ uniqueId: 'ABC' } as CategoryView),
+        defaultCategory: { uniqueId: 'ABC' } as Category,
       } as ProductView;
 
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
