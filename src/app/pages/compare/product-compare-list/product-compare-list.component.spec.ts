@@ -83,10 +83,10 @@ describe('Product Compare List Component', () => {
         MockComponent(ProductPriceComponent),
         MockComponent(ProductRatingComponent),
         MockDirective(FeatureToggleDirective),
+        MockDirective(ProductContextDirective),
         MockPipe(AttributeToStringPipe),
         MockPipe(ProductRoutePipe),
         ProductCompareListComponent,
-        ProductContextDirective,
       ],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();

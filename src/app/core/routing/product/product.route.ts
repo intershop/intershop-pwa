@@ -60,20 +60,19 @@ export function matchProductRoute(segments: UrlSegment[]): UrlMatchResult {
 }
 
 export function generateProductUrl(product: ProductView, category?: CategoryView): string {
-  const contextCategory = category || (product && product.defaultCategory());
-
-  if (!(product && product.sku)) {
+  if (!product || !product.sku) {
     return '/';
   }
 
   let route = '/';
 
+  const contextCategory = category || product?.defaultCategory?.();
   if (contextCategory) {
     route += generateLocalizedCategorySlug(contextCategory);
     route += '/';
   }
 
-  if (product.name) {
+  if (product?.name) {
     route += `${generateProductSlug(product)}-`;
   }
 

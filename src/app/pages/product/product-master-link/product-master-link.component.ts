@@ -1,22 +1,24 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, SkipSelf } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
 
 @Component({
   selector: 'ish-product-master-link',
   templateUrl: './product-master-link.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [ProductContextFacade],
 })
 export class ProductMasterLinkComponent implements OnInit {
-  product$: Observable<VariationProductView>;
+  masterProductURL$: Observable<string>;
   visible$: Observable<boolean>;
 
-  constructor(private context: ProductContextFacade) {}
+  constructor(@SkipSelf() private parentContext: ProductContextFacade, private context: ProductContextFacade) {}
 
   ngOnInit() {
-    this.product$ = this.context.select('productAsVariationProduct');
-    this.visible$ = this.context.select('displayProperties', 'variations');
+    this.context.connect('sku', this.parentContext.select('productAsVariationProduct', 'productMasterSKU'));
+    this.visible$ = this.parentContext.select('displayProperties', 'variations');
+
+    this.masterProductURL$ = this.context.select('productURL');
   }
 }

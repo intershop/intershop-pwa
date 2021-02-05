@@ -33,11 +33,9 @@ export const getCategory = (uniqueId: string) =>
 /**
  * Retrieves the currently resolved selected category.
  */
-export const getSelectedCategory = createSelectorFactory(projector => defaultMemoize(projector, undefined, isEqual))(
-  getCategoryTree,
-  selectRouteParam('categoryUniqueId'),
-  createCategoryView
-);
+export const getSelectedCategory = createSelectorFactory<object, CategoryView>(projector =>
+  defaultMemoize(projector, undefined, isEqual)
+)(getCategoryTree, selectRouteParam('categoryUniqueId'), createCategoryView);
 
 export const getBreadcrumbForCategoryPage = createSelectorFactory(projector =>
   defaultMemoize(projector, undefined, isEqual)

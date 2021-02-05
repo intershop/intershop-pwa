@@ -5,6 +5,9 @@ import { BehaviorSubject, EMPTY, Observable, Subject, of } from 'rxjs';
 import { map, mapTo, switchMapTo } from 'rxjs/operators';
 import { anyString, anything, instance, mock, when } from 'ts-mockito';
 
+import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
+import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import {
   ProductView,
   VariationProductMasterView,
@@ -35,6 +38,7 @@ describe('Product Context Facade', () => {
     shoppingFacade = mock(ShoppingFacade);
     when(shoppingFacade.productLinks$(anything())).thenReturn(EMPTY);
     when(shoppingFacade.productParts$(anything())).thenReturn(EMPTY);
+    when(shoppingFacade.selectedCategory$).thenReturn(of(undefined));
 
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
@@ -100,6 +104,7 @@ describe('Product Context Facade', () => {
           "maxQuantity": 100,
           "minQuantity": 10,
           "productAsVariationProduct": null,
+          "productURL": "/sku123",
           "propagateActive": true,
           "quantity": 10,
           "quantityError": undefined,
@@ -170,6 +175,7 @@ describe('Product Context Facade', () => {
           "maxQuantity": 100,
           "minQuantity": 10,
           "productAsVariationProduct": null,
+          "productURL": "/sku123",
           "propagateActive": true,
           "quantity": 10,
           "quantityError": undefined,
@@ -314,6 +320,26 @@ describe('Product Context Facade', () => {
           "variations": false,
         }
       `);
+    });
+  });
+
+  describe('with product with default category', () => {
+    let product: ProductView;
+
+    beforeEach(() => {
+      product = {
+        sku: '123',
+        completenessLevel: ProductCompletenessLevel.Detail,
+        defaultCategory: () => ({ uniqueId: 'ABC' } as CategoryView),
+      } as ProductView;
+
+      when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
+
+      context.set('sku', () => '123');
+    });
+
+    it('should calculate the url property of the product', () => {
+      expect(context.get('productURL')).toMatchInlineSnapshot(`"//sku123-catABC"`);
     });
   });
 
@@ -598,6 +624,7 @@ describe('Product Context Facade', () => {
       shoppingFacade = mock(ShoppingFacade);
       when(shoppingFacade.productLinks$(anything())).thenReturn(EMPTY);
       when(shoppingFacade.productParts$(anything())).thenReturn(EMPTY);
+      when(shoppingFacade.selectedCategory$).thenReturn(of(undefined));
 
       product = {
         completenessLevel: ProductCompletenessLevel.Detail,

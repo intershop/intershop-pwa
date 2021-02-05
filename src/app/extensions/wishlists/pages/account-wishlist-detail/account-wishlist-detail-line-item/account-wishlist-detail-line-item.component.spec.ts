@@ -2,11 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
@@ -40,16 +40,17 @@ describe('Account Wishlist Detail Line Item Component', () => {
         MockComponent(ProductQuantityComponent),
         MockComponent(ProductVariationDisplayComponent),
         MockComponent(SelectWishlistModalComponent),
+        MockDirective(ProductContextDirective),
         MockPipe(DatePipe),
         MockPipe(ProductRoutePipe),
-        ProductContextDirective,
       ],
       imports: [RouterTestingModule, TranslateModule.forRoot()],
-      providers: [
-        { provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) },
-        { provide: WishlistsFacade, useFactory: () => instance(mock(WishlistsFacade)) },
-      ],
-    }).compileComponents();
+      providers: [{ provide: WishlistsFacade, useFactory: () => instance(mock(WishlistsFacade)) }],
+    })
+      .overrideComponent(AccountWishlistDetailLineItemComponent, {
+        set: { providers: [{ provide: ProductContextFacade, useFactory: () => instance(mock(ProductContextFacade)) }] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

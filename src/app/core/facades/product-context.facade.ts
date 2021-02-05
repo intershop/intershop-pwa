@@ -14,6 +14,7 @@ import {
   ProductHelper,
   SkuQuantityType,
 } from 'ish-core/models/product/product.model';
+import { generateProductUrl } from 'ish-core/routing/product/product.route';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { ShoppingFacade } from './shopping.facade';
@@ -81,6 +82,7 @@ interface ProductContext {
   requiredCompletenessLevel: ProductCompletenessLevel;
   product: AnyProductViewType;
   productAsVariationProduct: VariationProductView;
+  productURL: string;
   loading: boolean;
   links: ProductLinksDictionary;
 
@@ -154,6 +156,11 @@ export class ProductContextFacade extends RxState<ProductContext> {
       'productAsVariationProduct',
       // tslint:disable-next-line: no-null-keyword
       this.select('product').pipe(map(product => (ProductHelper.isVariationProduct(product) ? product : null)))
+    );
+
+    this.connect(
+      'productURL',
+      combineLatest([this.select('product'), this.selectedCategory$]).pipe(map(args => generateProductUrl(...args)))
     );
 
     this.connect(

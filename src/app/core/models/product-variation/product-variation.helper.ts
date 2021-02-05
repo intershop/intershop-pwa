@@ -25,7 +25,7 @@ export class ProductVariationHelper {
     // loop all selected product attributes ignoring the ones related to currently checked option.
     for (const selectedAttribute of product.variableVariationAttributes) {
       // loop all possible variations
-      for (const variation of product.variations()) {
+      for (const variation of product.variations) {
         quality = 0;
 
         // loop attributes of possible variation.
@@ -76,7 +76,7 @@ export class ProductVariationHelper {
 
     // transform all variation attribute values to selectOptions
     // each with information about alternative combinations and active status (active status comes from currently selected variation)
-    const options: VariationSelectOption[] = (product.productMaster()?.variationAttributeValues || [])
+    const options: VariationSelectOption[] = (product.productMaster?.variationAttributeValues || [])
       .map(attr => ({
         label: attr.value,
         value: attr.value,
@@ -94,7 +94,7 @@ export class ProductVariationHelper {
     // go through those groups and transform them to more complex objects
     return Object.keys(groupedOptions).map(attrId => {
       // we need to get one of the original attributes again here, because we lost the attribute name
-      const attribute = product.productMaster().variationAttributeValues.find(a => a.variationAttributeId === attrId);
+      const attribute = product.productMaster.variationAttributeValues.find(a => a.variationAttributeId === attrId);
       return {
         id: attribute.variationAttributeId,
         label: attribute.name,
@@ -126,8 +126,7 @@ export class ProductVariationHelper {
       name
     );
 
-    const candidates = product
-      .variations()
+    const candidates = product.variations
       .filter(variation =>
         variation.variableVariationAttributes.some(attr => attr.variationAttributeId === name && attr.value === value)
       )
@@ -150,7 +149,7 @@ export class ProductVariationHelper {
     return product.sku;
   }
 
-  static hasDefaultVariation(product: VariationProductMasterView): boolean {
+  static hasDefaultVariation(product: VariationProductMasterView): product is VariationProductMasterView {
     return product && !!product.defaultVariationSKU;
   }
 
@@ -158,15 +157,14 @@ export class ProductVariationHelper {
     if (!product) {
       return 0;
     } else if (!filters?.filter) {
-      return product.variations()?.length;
+      return product.variations?.length;
     }
 
     const selectedFacets = flatten(
       filters.filter.map(filter => filter.facets.filter(facet => facet.selected).map(facet => facet.name))
     ).map(selected => selected.split('='));
 
-    return product
-      .variations()
+    return product.variations
       .map(p => p.variableVariationAttributes)
       .filter(attrs =>
         attrs.every(

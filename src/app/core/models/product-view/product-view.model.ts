@@ -1,5 +1,4 @@
 import { Dictionary } from '@ngrx/entity';
-import { once } from 'lodash-es';
 
 import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
 import { CategoryView, createCategoryView } from 'ish-core/models/category-view/category-view.model';
@@ -16,14 +15,13 @@ export interface ProductView extends Product {
 }
 
 export interface VariationProductView extends VariationProduct {
-  productMaster(): VariationProductMasterView;
-  variations(): VariationProductView[];
+  productMaster: VariationProductMaster;
+  variations: VariationProduct[];
   defaultCategory(): CategoryView;
 }
 
 export interface VariationProductMasterView extends VariationProductMaster {
-  variations(): VariationProductView[];
-  defaultVariation(): VariationProductView;
+  variations: VariationProduct[];
   defaultCategory(): CategoryView;
 }
 
@@ -51,14 +49,7 @@ export function createVariationProductMasterView(
 
   return {
     ...createProductView(product, tree),
-    variations: product.variationSKUs
-      ? once(() =>
-          product.variationSKUs.map(variationSKU => createVariationProductView(entities[variationSKU], entities, tree))
-        )
-      : () => [],
-    defaultVariation: product.defaultVariationSKU
-      ? once(() => createVariationProductView(entities[product.defaultVariationSKU], entities, tree))
-      : () => undefined,
+    variations: product.variationSKUs?.map(sku => entities[sku]).filter(x => !!x) || [],
   };
 }
 
@@ -73,9 +64,10 @@ export function createVariationProductView(
 
   return {
     ...createProductView(product, tree),
-    variations: entities[product.productMasterSKU]
-      ? once(() => createVariationProductMasterView(entities[product.productMasterSKU], entities, tree).variations())
-      : () => [],
-    productMaster: once(() => createVariationProductMasterView(entities[product.productMasterSKU], entities, tree)),
+    variations:
+      (entities[product.productMasterSKU] as VariationProductMaster)?.variationSKUs
+        ?.map(sku => entities[sku])
+        .filter(x => !!x) || [],
+    productMaster: entities[product.productMasterSKU],
   };
 }

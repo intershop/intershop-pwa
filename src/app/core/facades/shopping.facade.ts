@@ -97,6 +97,7 @@ export class ShoppingFacade {
   // PRODUCT LISTING
 
   productListingView$(id: ProductListingID) {
+    this.store.dispatch(loadMoreProducts({ id }));
     return this.store.pipe(select(getProductListingView, id));
   }
 
