@@ -25,7 +25,7 @@ The project can alternatively be run in production mode with `npm start`.
 An alternative development setup for the PWA is provided when using Visual Studio Code Remote - Containers to work in an isolated pre-configured project development environment.
 
 As prerequisite [Docker](https://docs.docker.com/get-docker) has to be installed on your development machine.
-As IDE [Visual Studio Code](https://code.visualstudio.com) needs to be used with the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension installed.
+Furthermore, [Visual Studio Code](https://code.visualstudio.com) with the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension has to be used as IDE.
 
 After cloning your local working copy (e.g. with VS Code), you will be asked if you want to reopen the folder in a container.
 By doing this, VS Code will prepare your environment for you.
