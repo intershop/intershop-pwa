@@ -7,14 +7,10 @@ kb_sync_latest_only
 
 # Getting Started
 
+## Quick Start
+
 Before working with this project, download and install [Node.js](https://nodejs.org) with the included npm package manager.
 Currently Node.js 14.x LTS with the corresponding npm is required.
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) and follows the Angular CLI style guide and naming conventions.
-
----
-
-## Quick Start
 
 After having cloned the project from the Git repository, open a command line in the project folder and run `npm install`.
 
@@ -23,6 +19,19 @@ Run `npm install -g @angular/cli` once to globally install Angular CLI on your d
 Use `ng serve --open` to start up the development server and open the Progressive Web App in your browser.
 
 The project can alternatively be run in production mode with `npm start`.
+
+## Visual Studio Code Remote Development
+
+An alternative development setup for the PWA is provided when using Visual Studio Code Remote - Containers to work in an isolated pre-configured project development environment.
+
+As prerequisite [Docker](https://docs.docker.com/get-docker) has to be installed on your development machine.
+Furthermore, [Visual Studio Code](https://code.visualstudio.com) with the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension has to be used as IDE.
+
+After cloning your local working copy (e.g. with VS Code), VSCode will ask you if you want to reopen the folder in a container.
+By doing this, VS Code will prepare the environment for you inside the container.
+It installs Node.js LTS, Angular CLI and also performs all required setup steps to get you started in an isolated environment.
+
+Open a console in VS Code and run `ng serve` to start developing.
 
 ## Customization
 
