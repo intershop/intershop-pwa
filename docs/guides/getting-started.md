@@ -27,8 +27,8 @@ An alternative development setup for the PWA is provided when using Visual Studi
 As prerequisite [Docker](https://docs.docker.com/get-docker) has to be installed on your development machine.
 Furthermore, [Visual Studio Code](https://code.visualstudio.com) with the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension has to be used as IDE.
 
-After cloning your local working copy (e.g. with VS Code), you will be asked if you want to reopen the folder in a container.
-By doing this, VS Code will prepare your environment for you.
+After cloning your local working copy (e.g. with VS Code), VSCode will ask you if you want to reopen the folder in a container.
+By doing this, VS Code will prepare the environment for you inside the container.
 It installs Node.js LTS, Angular CLI and also performs all required setup steps to get you started in an isolated environment.
 
 Open a console in VS Code and run `ng serve` to start developing.
