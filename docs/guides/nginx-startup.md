@@ -51,6 +51,12 @@ All other properties are optional:
 - **lang**: The default language as defined in the Angular CLI environment
 - **theme**: The theme used for the channel (format: `<theme-name>(|<icon-color>)?`)
 
+Dynamically directing the PWA to different ICM installations can by done by using:
+
+- **icmHost**: the domain where the ICM instance is running (without protocol and port)
+- **icmPort**: (optional) if the port differs from 443
+- **icmScheme**: (optional) if the protocol differs from 'https'
+
 Multiple channels can also be configured via context paths, which re-configure the PWA upstream to use a different `baseHref` for each channel.
 
 ```yaml
