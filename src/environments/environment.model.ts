@@ -6,8 +6,6 @@ import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { TactonConfig } from '../app/extensions/tacton/models/tacton-config/tacton-config.model';
 
 export interface Environment {
-  production: boolean;
-
   /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
 
   icmBaseURL: string;
@@ -108,8 +106,6 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
   icmServerStatic: 'INTERSHOP/static/WFS',
   icmApplication: 'rest',
   identityProvider: 'ICM',
-
-  production: false,
 
   /* FEATURE TOOGLES */
   features: ['compare', 'recently', 'rating', 'wishlists'],

@@ -777,6 +777,7 @@
           ".*.spec.ts$",
           "tslint-rules/",
           "scripts/",
+          "templates/",
           "utils/dev/",
           "core/utils/",
           ".*.actions.ts$",

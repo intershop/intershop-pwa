@@ -178,5 +178,6 @@ export class SeoEffects {
             break;
         }
       });
+    this.meta.setTag('pwa-version', PWA_VERSION);
   }
 }

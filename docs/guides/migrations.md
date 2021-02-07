@@ -7,6 +7,12 @@ kb_sync_latest_only
 
 # Migrations
 
+## 0.27 to 0.28
+
+We removed the property `production` from Angular CLI `environment.ts` files.
+Production mode can now consistently be set by using Angular CLI configurations.
+This also works when running multiple configurations like `--configuration=brand,production`.
+
 ## 0.26 to 0.27
 
 We upgraded Cypress from Version 4 to 6 and followed all migrations in their [Migration Guide](https://docs.cypress.io/guides/references/migration-guide.html).
