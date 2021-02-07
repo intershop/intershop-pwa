@@ -4,8 +4,6 @@ import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
-import { environment } from '../../environments/environment';
-
 import { ngrxStateTransfer } from './configurations/ngrx-state-transfer';
 import { ContentStoreModule } from './store/content/content-store.module';
 import { CoreStoreModule } from './store/core/core-store.module';
@@ -23,8 +21,8 @@ import { ShoppingStoreModule } from './store/shopping/shopping-store.module';
     BrowserTransferStateModule,
     CoreStoreModule,
     StoreDevtoolsModule.instrument({
-      maxAge: environment.production ? 25 : 200,
-      logOnly: environment.production, // Restrict extension to log-only mode
+      maxAge: PRODUCTION_MODE ? 25 : 200,
+      logOnly: PRODUCTION_MODE, // Restrict extension to log-only mode
       actionsBlocklist: [loadPromotion.type, loadProductIfNotLoaded.type, setStickyHeader.type, suggestSearch.type],
     }),
     GeneralStoreModule,

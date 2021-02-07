@@ -10,6 +10,7 @@ services:
       args:
         # configuration: local
         configuration: production
+        # configuration: local,production
         serviceWorker: 'false'
     environment:
       - LOGGING=on

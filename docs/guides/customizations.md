@@ -24,9 +24,9 @@ To start customizing, **set a prefix** for your custom components with the scrip
 After that we recommend to additionally use the prefix in every component to further help identifying customized components.
 
 ```bash
-$ node schematics/customization/add custom
-$ ng g c shared/components/basket/custom-basket-display
-CREATE src/app/shared/components/basket/custom-basket-display/custom-basket-display.component.ts (275 bytes)
+$ node schematics/customization/add brand
+$ ng g c shared/components/basket/brand-basket-display
+CREATE src/app/shared/components/basket/brand-basket-display/brand-basket-display.component.ts (275 bytes)
 ...
 ```
 
@@ -79,14 +79,23 @@ If 20 % of the component has to be changed, it is already a good idea to duplica
 That way incoming changes will not affect your customizations.
 Typical hot-spots where copying is a good idea are header-related or product-detail-page related customizations.
 
+#### Environment Specific Copies
+
+The [customized webpack build](./optimizations.md) supports replacing HTML templates and component SCSS files with an environment suffix before the file extension.
+If you for example want to customize the template `product-detail.component.html`, put your customized content in the parallel file `product-detail.component.brand.html` and run a build with `--configuration=brand`.
+Then this overridden component template will be swapped in.
+
+#### Deep Copies with Replacements
+
+If you also want to replace component logic in the TypeScript file, you will have to work with a deep copy.
 We supply a schematic `customized-copy` for copying components and replacing all usages.
 
 ```bash
-$ node schematics/customization/add custom
+$ node schematics/customization/add brand
 $ ng g customized-copy shared/components/product/product-price
-CREATE src/app/shared/components/product/custom-product-price/custom-product-price.component.html (1591 bytes)
-CREATE src/app/shared/components/product/custom-product-price/custom-product-price.component.spec.ts (7632 bytes)
-CREATE src/app/shared/components/product/custom-product-price/custom-product-price.component.ts (1370 bytes)
+CREATE src/app/shared/components/product/brand-product-price/brand-product-price.component.html (1591 bytes)
+CREATE src/app/shared/components/product/brand-product-price/brand-product-price.component.spec.ts (7632 bytes)
+CREATE src/app/shared/components/product/brand-product-price/brand-product-price.component.ts (1370 bytes)
 UPDATE src/app/shared/shared.module.ts (12676 bytes)
 UPDATE src/app/shared/components/product/product-row/product-row.component.html (4110 bytes)
 UPDATE src/app/shared/components/product/product-row/product-row.component.spec.ts (5038 bytes)

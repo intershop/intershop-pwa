@@ -31,6 +31,13 @@ if (prefix != 'ish') {
     execSync(`npx ncp src/styles/themes/default src/styles/themes/${prefix} --stopOnErr`);
   }
 }
+
+angularJson.projects[project].architect.build.configurations[prefix] = {};
+angularJson.projects[project].architect.serve.configurations[prefix] = {
+  browserTarget: 'intershop-pwa:build:' + prefix,
+};
+angularJson.projects[project].architect.server.configurations[prefix] = {};
+
 fs.writeFileSync('./angular.json', stringify(angularJson, null, 2));
 execSync('npx prettier --write angular.json');
 

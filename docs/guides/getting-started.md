@@ -41,11 +41,13 @@ Before customizing the PWA for your specific needs, have a look at our [Customiz
 
 Run `ng serve` or `ng s` for a development server that is configured by default via _environment.ts_ to use mocked responses instead of actual REST calls.
 
-Running `ng serve --configuration production` or `ng s -c production` starts a server that will communicate by default with the Intershop Commerce Management of our public demo via REST API (see the used _environment.prod.ts_ for the configuration).
+Running `ng serve --configuration production` or `ng s -c production` starts a server that will communicate by default with the Intershop Commerce Management of our public demo via REST API.
 
 The project is also configured to support the usage of an own local environment file _environment.local.ts_ that can be configured according to the development environment, e.g. with a different icmBaseURL or different configuration options (see the _environment.model.ts_).
 This file will be ignored by Git so the developer-specific setting will not be committed.
 To use this local environment configuration, the server should be started with `ng s -c local`.
+
+Multiple configurations can also be combined, where `production` should be the last in the list: `ng serve -c local,production`.
 
 Once the server is running, navigate to _http://localhost:4200/_ in your browser to see the application.
 The application will automatically reload if you change any of the source files.

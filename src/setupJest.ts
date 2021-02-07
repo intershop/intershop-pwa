@@ -33,6 +33,10 @@ beforeEach(() => {
 
 afterEach(() => jest.clearAllTimers());
 
+Object.defineProperty(global, 'PRODUCTION_MODE', {
+  value: () => false,
+});
+
 Object.defineProperty(document.body.style, 'transform', {
   value: () => ({
     enumerable: true,
