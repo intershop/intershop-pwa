@@ -12,3 +12,4 @@ templates
 Dockerfile*
 templates
 !templates/production
+!templates/nginx.conf
