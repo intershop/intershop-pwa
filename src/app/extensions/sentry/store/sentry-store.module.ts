@@ -7,7 +7,7 @@ import { sentryConfigReducer } from './sentry-config/sentry-config.reducer';
 import { SentryState } from './sentry-store';
 
 const sentryReducers: ActionReducerMap<SentryState> = {
-  config: sentryConfigReducer,
+  dsn: sentryConfigReducer,
 };
 
 const sentryEffects = [SentryConfigEffects];
