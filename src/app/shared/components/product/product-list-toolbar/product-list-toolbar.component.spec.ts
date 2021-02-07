@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
@@ -21,7 +20,7 @@ describe('Product List Toolbar Component', () => {
         MockComponent(ProductListPagingComponent),
         ProductListToolbarComponent,
       ],
-      imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

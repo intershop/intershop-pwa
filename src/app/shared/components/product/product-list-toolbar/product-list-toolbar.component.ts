@@ -1,18 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  SimpleChange,
-  SimpleChanges,
-} from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { isEqual } from 'lodash-es';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { SortableAttributesType } from 'ish-core/models/product-listing/product-listing.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
@@ -23,7 +10,7 @@ import { SelectOption } from 'ish-shared/forms/components/select/select.componen
   templateUrl: './product-list-toolbar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy {
+export class ProductListToolbarComponent implements OnChanges {
   @Input() itemCount: number;
   @Input() viewType: ViewType = 'grid';
   @Input() sortBy = 'default';
@@ -33,54 +20,33 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
   @Input() fragmentOnRouting: string;
   @Input() isPaging = false;
 
-  sortDropdown = new FormControl('');
   sortOptions: SelectOption[] = [];
-
-  private destroy$ = new Subject();
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
-    this.sortDropdown.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(sorting => {
-      this.router.navigate([], {
-        relativeTo: this.activatedRoute,
-        queryParamsHandling: 'merge',
-        queryParams: this.isPaging ? { sorting, page: 1 } : { sorting },
-        fragment: this.fragmentOnRouting,
-      });
+  ngOnChanges() {
+    this.sortOptions = this.mapSortableAttributesToSelectOptions(this.sortableAttributes);
+  }
+
+  changeSortBy(target: EventTarget) {
+    // tslint:disable-next-line: no-string-literal
+    const sorting = target['value'];
+
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParamsHandling: 'merge',
+      queryParams: this.isPaging ? { sorting, page: 1 } : { sorting },
+      fragment: this.fragmentOnRouting,
     });
   }
 
-  ngOnChanges(c: SimpleChanges) {
-    if (c.sortableAttributes && !isEqual(c.sortableAttributes.currentValue, c.sortableAttributes.previousValue)) {
-      this.updateSortableAttributes(c.sortableAttributes);
-    }
-    this.updateSortBy(c.sortBy);
-  }
-
-  private updateSortBy(sortBy: SimpleChange) {
-    if (sortBy) {
-      this.sortDropdown.setValue(this.sortBy || undefined, { emitEvent: false });
-    }
-  }
-
-  private updateSortableAttributes(sortableAttributes: SimpleChange) {
-    if (sortableAttributes) {
-      this.sortOptions = this.mapSortableAttributesToSelectOptions(this.sortableAttributes);
-    }
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  private mapSortableAttributesToSelectOptions(sortableAttributes: SortableAttributesType[]): SelectOption[] {
-    // TODO: probably it's good to map this in a selector, not here
-    return sortableAttributes
+  private mapSortableAttributesToSelectOptions(sortableAttributes: SortableAttributesType[] = []): SelectOption[] {
+    const options = sortableAttributes
       .filter(x => !!x)
       .map(sk => ({ value: sk.name, label: sk.displayName || sk.name }))
       .sort((a, b) => a.label.localeCompare(b.label));
+    options.unshift({ value: 'default', label: undefined });
+    return options;
   }
 
   get listView() {
