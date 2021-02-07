@@ -26,7 +26,7 @@ describe('Product Listing Mapper', () => {
           "value": "dummy",
         },
         "itemCount": 2,
-        "sortKeys": Array [],
+        "sortableAttributes": Array [],
       }
     `);
   });
@@ -50,7 +50,7 @@ describe('Product Listing Mapper', () => {
           "value": "dummy",
         },
         "itemCount": 5,
-        "sortKeys": Array [],
+        "sortableAttributes": Array [],
       }
     `);
   });
@@ -58,7 +58,7 @@ describe('Product Listing Mapper', () => {
   it('should map extra arguments when supplied', () => {
     expect(
       productListingMapper.createPages(['A', 'B', 'C', 'D'], 'test', 'dummy', {
-        sortKeys: ['name-desc'],
+        sortableAttributes: [{ name: 'name-desc' }],
         itemCount: 200,
         sorting: 'name-asc',
         filters: { bla: ['blubb'] },
@@ -85,8 +85,10 @@ describe('Product Listing Mapper', () => {
           "value": "dummy",
         },
         "itemCount": 200,
-        "sortKeys": Array [
-          "name-desc",
+        "sortableAttributes": Array [
+          Object {
+            "name": "name-desc",
+          },
         ],
       }
     `);

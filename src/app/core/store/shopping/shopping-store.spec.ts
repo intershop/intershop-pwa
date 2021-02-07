@@ -115,13 +115,13 @@ describe('Shopping Store', () => {
     });
     when(productsServiceMock.getCategoryProducts('A.123.456', anyNumber(), anything())).thenReturn(
       of({
-        sortKeys: [],
+        sortableAttributes: [],
         products: [{ sku: 'P1' }, { sku: 'P2' }] as Product[],
         total: 2,
       })
     );
     when(productsServiceMock.searchProducts('something', anyNumber(), anything())).thenReturn(
-      of({ products: [{ sku: 'P2' } as Product], sortKeys: [], total: 1 })
+      of({ products: [{ sku: 'P2' } as Product], sortableAttributes: [], total: 1 })
     );
 
     promotionsServiceMock = mock(PromotionsService);
@@ -324,7 +324,7 @@ describe('Shopping Store', () => {
             1: ["P2"]
             id: {"type":"search","value":"something"}
             itemCount: 1
-            sortKeys: []
+            sortableAttributes: []
           [Filter API] Load Filter Success:
             filterNavigation: {}
         `);
@@ -504,7 +504,7 @@ describe('Shopping Store', () => {
           1: ["P1","P2"]
           id: {"type":"category","value":"A.123.456"}
           itemCount: 2
-          sortKeys: []
+          sortableAttributes: []
         [Filter API] Load Filter Success:
           filterNavigation: {}
       `);
@@ -618,7 +618,7 @@ describe('Shopping Store', () => {
             1: ["P2"]
             id: {"type":"search","value":"something"}
             itemCount: 1
-            sortKeys: []
+            sortableAttributes: []
           [Filter API] Load Filter Success:
             filterNavigation: {}
         `);
@@ -808,7 +808,7 @@ describe('Shopping Store', () => {
             1: ["P1","P2"]
             id: {"type":"category","value":"A.123.456"}
             itemCount: 2
-            sortKeys: []
+            sortableAttributes: []
           [Filter API] Load Filter Success:
             filterNavigation: {}
           @ngrx/router-store/navigated:
@@ -1085,7 +1085,7 @@ describe('Shopping Store', () => {
           1: ["P2"]
           id: {"type":"search","value":"something"}
           itemCount: 1
-          sortKeys: []
+          sortableAttributes: []
         [Filter API] Load Filter Success:
           filterNavigation: {}
       `);

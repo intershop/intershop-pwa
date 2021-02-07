@@ -8,6 +8,7 @@ import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-g
 import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
+import { SortableAttributesType } from 'ish-core/models/product-listing/product-listing.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { ProductData, ProductDataStub, ProductVariationLink } from 'ish-core/models/product/product.interface';
 import { ProductMapper } from 'ish-core/models/product/product.mapper';
@@ -63,7 +64,7 @@ export class ProductsService {
     categoryUniqueId: string,
     page: number,
     sortKey?: string
-  ): Observable<{ products: Product[]; sortKeys: string[]; total: number }> {
+  ): Observable<{ products: Product[]; sortableAttributes: SortableAttributesType[]; total: number }> {
     if (!categoryUniqueId) {
       return throwError('getCategoryProducts() called without categoryUniqueId');
     }
@@ -80,17 +81,23 @@ export class ProductsService {
     }
 
     return this.apiService
-      .get<{ elements: ProductDataStub[]; sortKeys: string[]; categoryUniqueId: string; total: number }>(
-        `categories/${CategoryHelper.getCategoryPath(categoryUniqueId)}/products`,
-        { params }
-      )
+      .get<{
+        elements: ProductDataStub[];
+        sortableAttributes: { [id: string]: SortableAttributesType };
+        categoryUniqueId: string;
+        total: number;
+      }>(`categories/${CategoryHelper.getCategoryPath(categoryUniqueId)}/products`, { params })
       .pipe(
         map(response => ({
           products: response.elements.map((element: ProductDataStub) => this.productMapper.fromStubData(element)),
-          sortKeys: response.sortKeys,
+          sortableAttributes: Object.values(response.sortableAttributes || {}),
           total: response.total ? response.total : response.elements.length,
         })),
-        map(({ products, sortKeys, total }) => ({ products: this.postProcessMasters(products), sortKeys, total }))
+        map(({ products, sortableAttributes, total }) => ({
+          products: this.postProcessMasters(products),
+          sortableAttributes,
+          total,
+        }))
       );
   }
 
@@ -105,7 +112,7 @@ export class ProductsService {
     searchTerm: string,
     page: number = 1,
     sortKey?: string
-  ): Observable<{ products: Product[]; sortKeys: string[]; total: number }> {
+  ): Observable<{ products: Product[]; sortableAttributes: SortableAttributesType[]; total: number }> {
     if (!searchTerm) {
       return throwError('searchProducts() called without searchTerm');
     }
@@ -122,14 +129,23 @@ export class ProductsService {
     }
 
     return this.apiService
-      .get<{ elements: ProductDataStub[]; sortKeys: string[]; total: number }>('products', { params })
+      .get<{
+        elements: ProductDataStub[];
+        sortKeys: string[];
+        sortableAttributes: { [id: string]: SortableAttributesType };
+        total: number;
+      }>('products', { params })
       .pipe(
         map(response => ({
           products: response.elements.map(element => this.productMapper.fromStubData(element)),
-          sortKeys: response.sortKeys,
+          sortableAttributes: Object.values(response.sortableAttributes || {}),
           total: response.total ? response.total : response.elements.length,
         })),
-        map(({ products, sortKeys, total }) => ({ products: this.postProcessMasters(products), sortKeys, total }))
+        map(({ products, sortableAttributes, total }) => ({
+          products: this.postProcessMasters(products),
+          sortableAttributes,
+          total,
+        }))
       );
   }
 
@@ -137,7 +153,7 @@ export class ProductsService {
     masterSKU: string,
     page: number = 1,
     sortKey?: string
-  ): Observable<{ products: Product[]; sortKeys: string[]; total: number }> {
+  ): Observable<{ products: Product[]; sortableAttributes: SortableAttributesType[]; total: number }> {
     if (!masterSKU) {
       return throwError('getProductsForMaster() called without masterSKU');
     }
@@ -154,14 +170,17 @@ export class ProductsService {
     }
 
     return this.apiService
-      .get<{ elements: ProductDataStub[]; sortKeys: string[]; total: number }>('products', { params })
+      .get<{
+        elements: ProductDataStub[];
+        sortableAttributes: { [id: string]: SortableAttributesType };
+        total: number;
+      }>('products', { params })
       .pipe(
         map(response => ({
           products: response.elements.map(element => this.productMapper.fromStubData(element)) as Product[],
-          sortKeys: response.sortKeys,
+          sortableAttributes: Object.values(response.sortableAttributes || {}),
           total: response.total ? response.total : response.elements.length,
-        })),
-        map(({ products, sortKeys, total }) => ({ products, sortKeys, total }))
+        }))
       );
   }
 

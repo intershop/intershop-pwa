@@ -14,6 +14,7 @@ import { isEqual } from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { SortableAttributesType } from 'ish-core/models/product-listing/product-listing.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 
@@ -26,7 +27,7 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
   @Input() itemCount: number;
   @Input() viewType: ViewType = 'grid';
   @Input() sortBy = 'default';
-  @Input() sortKeys: string[];
+  @Input() sortableAttributes: SortableAttributesType[];
   @Input() currentPage: number;
   @Input() pageIndices: { value: number; display: string }[];
   @Input() fragmentOnRouting: string;
@@ -51,8 +52,8 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
   }
 
   ngOnChanges(c: SimpleChanges) {
-    if (c.sortKeys && !isEqual(c.sortKeys.currentValue, c.sortKeys.previousValue)) {
-      this.updateSortKeys(c.sortKeys);
+    if (c.sortableAttributes && !isEqual(c.sortableAttributes.currentValue, c.sortableAttributes.previousValue)) {
+      this.updateSortableAttributes(c.sortableAttributes);
     }
     this.updateSortBy(c.sortBy);
   }
@@ -63,9 +64,9 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
     }
   }
 
-  private updateSortKeys(sortKeys: SimpleChange) {
-    if (sortKeys) {
-      this.sortOptions = this.mapSortKeysToSelectOptions(this.sortKeys);
+  private updateSortableAttributes(sortableAttributes: SimpleChange) {
+    if (sortableAttributes) {
+      this.sortOptions = this.mapSortableAttributesToSelectOptions(this.sortableAttributes);
     }
   }
 
@@ -74,9 +75,12 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
     this.destroy$.complete();
   }
 
-  private mapSortKeysToSelectOptions(sortKeys: string[]): SelectOption[] {
+  private mapSortableAttributesToSelectOptions(sortableAttributes: SortableAttributesType[]): SelectOption[] {
     // TODO: probably it's good to map this in a selector, not here
-    return sortKeys.map(sk => ({ value: sk, label: sk }));
+    return sortableAttributes
+      .filter(x => !!x)
+      .map(sk => ({ value: sk.name, label: sk.displayName || sk.name }))
+      .sort((a, b) => a.label.localeCompare(b.label));
   }
 
   get listView() {
