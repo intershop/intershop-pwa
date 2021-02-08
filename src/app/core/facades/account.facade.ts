@@ -40,6 +40,7 @@ import {
   resetPasswordReminder,
   updateCustomer,
   updateUser,
+  updateUserEmail,
   updateUserPassword,
   updateUserPasswordByPasswordReminder,
 } from 'ish-core/store/customer/user';
@@ -85,8 +86,8 @@ export class AccountFacade {
     this.store.dispatch(updateUser({ user, successMessage }));
   }
 
-  updateUserEmail(user: User) {
-    this.store.dispatch(updateUser({ user, successMessage: 'account.profile.update_email.message' }));
+  updateUserEmail(user: User, password: string) {
+    this.store.dispatch(updateUserEmail({ user, password, successMessage: 'account.profile.update_email.message' }));
   }
 
   updateUserPassword(data: { password: string; currentPassword: string }) {

@@ -39,7 +39,7 @@ interface CreateBusinessCustomerType extends Customer {
  */
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  constructor(private apiService: ApiService, private appFacade: AppFacade) {}
+  constructor(private apiService: ApiService, private appFacade: AppFacade) { }
 
   /**
    * Sign in an existing user with the given login credentials (login, password).
@@ -91,23 +91,23 @@ export class UserService {
       map(currentLocale =>
         body.customer.isBusinessCustomer
           ? {
-              type: 'SMBCustomer',
-              ...body.customer,
-              user: {
-                ...body.user,
-                preferredLanguage: currentLocale.lang ?? 'en_US',
-              },
-              address: customerAddress,
-              credentials: body.credentials,
-            }
-          : {
-              type: 'PrivateCustomer',
-              ...body.customer,
+            type: 'SMBCustomer',
+            ...body.customer,
+            user: {
               ...body.user,
-              address: customerAddress,
-              credentials: body.credentials,
               preferredLanguage: currentLocale.lang ?? 'en_US',
-            }
+            },
+            address: customerAddress,
+            credentials: body.credentials,
+          }
+          : {
+            type: 'PrivateCustomer',
+            ...body.customer,
+            ...body.user,
+            address: customerAddress,
+            credentials: body.credentials,
+            preferredLanguage: currentLocale.lang ?? 'en_US',
+          }
       )
     );
 
@@ -150,6 +150,41 @@ export class UserService {
       first(),
       concatMap(restResource =>
         body.customer.isBusinessCustomer
+          ? this.apiService.put<User>('customers/-/users/-', changedUser).pipe(map(UserMapper.fromData))
+          : this.apiService.put<User>(`${restResource}/-`, changedUser).pipe(map(UserMapper.fromData))
+      )
+    );
+  }
+
+  /**
+  * Updates the email of the currently logged in user.
+  * @param body  The user data (customer, user, password) to update the user email.
+  */
+  updateUserEmail(body: CustomerUserType, password: string): Observable<User> {
+    if (!body || !body.customer || !body.user) {
+      return throwError('updateUserEmail() called without required body data');
+    }
+    if (!password) {
+      return throwError('updateUserEmail() called without password');
+    }
+    const changedUser = {
+      type: body.customer.isBusinessCustomer ? 'SMBCustomer' : 'PrivateCustomer',
+      ...body.customer,
+      ...body.user,
+      preferredInvoiceToAddress: { urn: body.user.preferredInvoiceToAddressUrn },
+      preferredShipToAddress: { urn: body.user.preferredShipToAddressUrn },
+      preferredPaymentInstrument: { id: body.user.preferredPaymentInstrumentId },
+      preferredInvoiceToAddressUrn: undefined,
+      preferredShipToAddressUrn: undefined,
+      preferredPaymentInstrumentId: undefined,
+      preferredLanguage: body.user.preferredLanguage || 'en_US',
+    };
+
+    return this.appFacade.customerRestResource$.pipe(
+      first(),
+      concatMap(restResource =>
+        body.customer.isBusinessCustomer
+          //TODO not authtoken but basic auth
           ? this.apiService.put<User>('customers/-/users/-', changedUser).pipe(map(UserMapper.fromData))
           : this.apiService.put<User>(`${restResource}/-`, changedUser).pipe(map(UserMapper.fromData))
       )

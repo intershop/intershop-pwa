@@ -53,6 +53,7 @@ import {
   updateCustomerSuccess,
   updateUser,
   updateUserFail,
+  updateUserEmail,
   updateUserPassword,
   updateUserPasswordByPasswordReminder,
   updateUserPasswordByPasswordReminderFail,
@@ -74,7 +75,7 @@ export class UserEffects {
     private personalizationService: PersonalizationService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: string
-  ) {}
+  ) { }
 
   loginUser$ = createEffect(() =>
     this.actions$.pipe(
@@ -130,6 +131,20 @@ export class UserEffects {
       withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
       concatMap(([{ user, successMessage }, customer]) =>
         this.userService.updateUser({ user, customer }).pipe(
+          map(changedUser => updateUserSuccess({ user: changedUser, successMessage })),
+          mapErrorToAction(updateUserFail)
+        )
+      )
+    )
+  );
+
+  updateUserEmail$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateUserEmail),
+      mapToPayload(),
+      withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
+      concatMap(([{ user, password, successMessage }, customer]) =>
+        this.userService.updateUserEmail({ user, customer }, password).pipe(
           map(changedUser => updateUserSuccess({ user: changedUser, successMessage })),
           mapErrorToAction(updateUserFail)
         )

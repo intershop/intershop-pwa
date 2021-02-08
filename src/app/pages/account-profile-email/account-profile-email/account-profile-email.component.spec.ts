@@ -33,9 +33,9 @@ describe('Account Profile Email Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display 2 input fields for email and emailConfirmation', () => {
+  it('should display 3 input fields for email, emailConfirmation and password', () => {
     fixture.detectChanges();
-    expect(element.querySelectorAll('ish-input')).toHaveLength(2);
+    expect(element.querySelectorAll('ish-input')).toHaveLength(3);
   });
 
   it('should emit updateEmail event if form is valid', () => {
@@ -44,6 +44,7 @@ describe('Account Profile Email Component', () => {
 
     component.form.get('email').setValue('patricia@test.intershop.de');
     component.form.get('emailConfirmation').setValue('patricia@test.intershop.de');
+    component.form.get('password').setValue('intershop');
     component.submit();
 
     verify(eventEmitter$.emit(anything())).once();

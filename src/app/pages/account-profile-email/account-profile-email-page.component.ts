@@ -18,7 +18,7 @@ export class AccountProfileEmailPageComponent implements OnInit {
   userError$: Observable<HttpError>;
   userLoading$: Observable<boolean>;
 
-  constructor(private accountFacade: AccountFacade) {}
+  constructor(private accountFacade: AccountFacade) { }
 
   ngOnInit() {
     this.currentUser$ = this.accountFacade.user$;
@@ -26,7 +26,7 @@ export class AccountProfileEmailPageComponent implements OnInit {
     this.userLoading$ = this.accountFacade.userLoading$;
   }
 
-  updateUserEmail(user: User) {
-    this.accountFacade.updateUserEmail(user);
+  updateUserEmail(user: User, password: string) {
+    this.accountFacade.updateUserEmail(user, password);
   }
 }

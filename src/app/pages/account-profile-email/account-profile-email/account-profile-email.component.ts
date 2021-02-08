@@ -19,7 +19,7 @@ export class AccountProfileEmailComponent implements OnInit {
   @Input() error: HttpError;
   @Input() currentUser: User;
 
-  @Output() updateEmail = new EventEmitter<User>();
+  @Output() updateEmail = new EventEmitter<{ user: User, password: string }>();
 
   form: FormGroup;
   submitted = false;
@@ -29,6 +29,7 @@ export class AccountProfileEmailComponent implements OnInit {
       {
         email: new FormControl('', [Validators.required, SpecialValidators.email]),
         emailConfirmation: new FormControl('', [Validators.required, SpecialValidators.email]),
+        password: new FormControl('', [Validators.required, SpecialValidators.password]),
       },
       SpecialValidators.equalTo('emailConfirmation', 'email')
     );
@@ -46,7 +47,12 @@ export class AccountProfileEmailComponent implements OnInit {
 
     const email = this.form.get('email').value;
     const login = undefined;
-    this.updateEmail.emit({ ...this.currentUser, email, login });
+    const password = this.form.get('password').value;
+
+    this.updateEmail.emit({
+      user: { ...this.currentUser, email, login },
+      password: password,
+    });
   }
 
   get buttonDisabled() {

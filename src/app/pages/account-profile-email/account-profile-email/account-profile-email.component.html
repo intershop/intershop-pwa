@@ -15,32 +15,26 @@
           <div *ngIf="currentUser" class="col-md-8 col-form-label">{{ currentUser.email }}</div>
         </div>
 
-        <ish-input
-          [form]="form"
-          controlName="email"
-          type="email"
-          label="account.update_email.newemail.label"
-          markRequiredLabel="off"
-          [errorMessages]="{
+        <ish-input [form]="form" controlName="email" type="email" label="account.update_email.newemail.label"
+          markRequiredLabel="off" [errorMessages]="{
             required: 'account.update_email.email.error.notempty',
             email: 'account.update_email.email.error.email'
-          }"
-        >
+          }">
         </ish-input>
 
-        <ish-input
-          [form]="form"
-          controlName="emailConfirmation"
-          type="email"
-          markRequiredLabel="on"
-          label="account.update_email.email_confirmation.label"
-          markRequiredLabel="off"
-          [errorMessages]="{
+        <ish-input [form]="form" controlName="emailConfirmation" type="email" markRequiredLabel="on"
+          label="account.update_email.email_confirmation.label" markRequiredLabel="off" [errorMessages]="{
             required: 'account.update_email.email.error.notempty',
             email: 'account.update_email.email.error.email',
             equalTo: 'account.update_email.email_confirmation.error.stringcompare'
-          }"
-        ></ish-input>
+          }"></ish-input>
+
+        <ish-input [form]="form" controlName="password" type="password" label="account.update_email.password.label"
+          markRequiredLabel="off" [errorMessages]="{
+            required: 'account.update_email.password.error.required',
+            incorrect: 'account.update_email.password.error.incorrect'
+          }">
+        </ish-input>
 
         <div class="row">
           <div class="offset-md-4 col-md-8">

@@ -352,6 +352,7 @@
   "account.update_email.email_confirmation.label": "Neue E-Mail-Adresse wiederholen",
   "account.update_email.heading": "E-Mail-Einstellungen bearbeiten",
   "account.update_email.newemail.label": "Neue E-Mail-Adresse eingeben",
+  "account.update_email.password.label": "Kennwort eingeben",
   "account.update_email.question.text": "Was passiert, wenn ich meine E-Mail-Adresse ändere?",
   "account.update_password.answer.text": "Das neue Kennwort ist sofort aktiv. Verwenden Sie es bei der nächsten Bestellung oder aktualisieren Sie Ihre Kontoinformationen.",
   "account.update_password.breadcrumb": "Kennwort ändern",

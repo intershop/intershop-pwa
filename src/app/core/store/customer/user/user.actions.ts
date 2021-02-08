@@ -34,6 +34,11 @@ export const updateUserSuccess = createAction(
 
 export const updateUserFail = createAction('[User API] Update User Failed', httpError());
 
+export const updateUserEmail = createAction(
+  '[User] Update User Email',
+  payload<{ user: User; password: string; successMessage?: string }>()
+);
+
 export const updateUserPassword = createAction(
   '[User] Update User Password',
   payload<{ password: string; currentPassword: string; successMessage?: string }>()
