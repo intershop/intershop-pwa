@@ -24,7 +24,6 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: [
-    'eslint-plugin-prefer-arrow',
     'eslint-plugin-import',
     'rxjs',
     'rxjs-angular',
@@ -101,7 +100,6 @@ module.exports = {
     ],
     '@typescript-eslint/consistent-type-assertions': 'error',
     '@typescript-eslint/consistent-type-definitions': 'error',
-    '@typescript-eslint/dot-notation': 'error',
     '@typescript-eslint/explicit-member-accessibility': [
       'error',
       {
@@ -140,7 +138,7 @@ module.exports = {
       {
         selector: 'variable',
         modifiers: ['const'],
-        format: ['camelCase'],
+        format: ['camelCase', 'UPPER_CASE'],
       },
       {
         selector: 'typeParameter',
@@ -151,7 +149,7 @@ module.exports = {
         format: ['PascalCase'],
       },
     ],
-    '@typescript-eslint/no-confusing-void-expression': ['error', { ignoreArrowShorthand: true }],
+    '@typescript-eslint/no-confusing-void-expression': ['off', { ignoreArrowShorthand: true }],
     '@typescript-eslint/no-empty-function': 'warn',
     '@typescript-eslint/no-empty-interface': 'warn',
     '@typescript-eslint/no-explicit-any': 'warn',
@@ -170,7 +168,6 @@ module.exports = {
       },
     ],
     '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'error',
-    '@typescript-eslint/no-unused-expressions': 'error',
     '@typescript-eslint/prefer-function-type': 'error',
     '@typescript-eslint/quotes': 'off',
     '@typescript-eslint/semi': ['error', 'always'],
@@ -181,9 +178,9 @@ module.exports = {
     'brace-style': ['error', '1tbs'],
     'comma-dangle': 'off',
     'constructor-super': 'error',
-    curly: 'error',
+    'curly': 'error',
+    'dot-notation': 'off',
     'eol-last': 'error',
-    eqeqeq: ['error', 'always'],
     'guard-for-in': 'error',
     'id-blacklist': [
       'error',
@@ -255,12 +252,12 @@ module.exports = {
     'no-trailing-spaces': 'error',
     'no-undef-init': 'error',
     'no-underscore-dangle': 'error',
-    'no-unused-expressions': 'error',
+    'no-unused-expressions':  ['error', { 'allowTernary': true } ],
     'no-unused-labels': 'error',
-    'no-unused-vars': 'error',
+    'no-unused-vars':  [ 'error', { 'argsIgnorePattern': '[_]' }],
     'no-var': 'error',
     'one-var': ['error', 'never'],
-    'prefer-arrow/prefer-arrow-functions': 'error',
+    'prefer-arrow-callback':  'error',
     'prefer-const': 'error',
     'prefer-template': 'warn',
     'prettier/prettier': 'error',
@@ -288,6 +285,7 @@ module.exports = {
     'rxjs/no-unsafe-subject-next': 'error',
     'rxjs/no-unsafe-switchmap': 'error',
     'rxjs/no-unsafe-takeuntil': 'error',
+    'rxjs/throw-error': 'error',
     'rxjs-angular/prefer-takeuntil': [
       'error',
       {

@@ -33,7 +33,7 @@ export class IdentityProviderLoginComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // tslint:disable-next-line: no-any
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
     let componentRef: ComponentRef<any>;
 
     switch (this.identityProviderFactory.getType()) {

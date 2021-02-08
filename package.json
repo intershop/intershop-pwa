@@ -21,7 +21,7 @@
     "test": "jest --ci",
     "test:watch": "jest --watch -i",
     "e2e": "cd e2e && npm install && node open-cypress",
-    "lint": "eslint -c .eslintrc.js --ext .ts \"src/app/shell/header/**/*.ts\"",
+    "lint": "eslint -c .eslintrc.js --ext .ts \"src/app/shared/components/filter/**/*.ts\"",
     "format": "node docs/check-sentence-newline && stylelint \"**/*.{css,scss}\" --fix && prettier --loglevel warn --write \"**/*.*\"",
     "compile": "tsc --project tsconfig.all.json",
     "dead-code": "npx ts-node scripts/find-dead-code.ts",

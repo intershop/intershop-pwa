@@ -83,8 +83,8 @@ export class InputBirthdayComponent extends FormElementComponent implements OnIn
       this.dateForm.get('month').valid &&
       this.dateForm.get('year').valid
     ) {
-      day = day.length === 1 ? '0' + day : day;
-      month = month.length === 1 ? '0' + month : month;
+      day = day.length === 1 ? `0${day}` : day;
+      month = month.length === 1 ? `0${month}` : month;
       birthday = `${year}-${month}-${day}`;
     }
 
