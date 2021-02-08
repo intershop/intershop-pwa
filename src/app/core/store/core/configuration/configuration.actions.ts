@@ -7,8 +7,3 @@ import { ConfigurationState } from './configuration.reducer';
 type ConfigurationType = Partial<ConfigurationState>;
 
 export const applyConfiguration = createAction('[Configuration] Apply Configuration', payload<ConfigurationType>());
-
-export const setGTMToken = createAction(
-  '[Configuration] Set Google Tag Manager Token',
-  payload<{ gtmToken: string }>()
-);

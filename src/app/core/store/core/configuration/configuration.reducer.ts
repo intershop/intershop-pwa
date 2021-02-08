@@ -5,7 +5,7 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 import { environment } from '../../../../../environments/environment';
 
-import { applyConfiguration, setGTMToken } from './configuration.actions';
+import { applyConfiguration } from './configuration.actions';
 
 export interface ConfigurationState {
   baseURL?: string;
@@ -16,7 +16,6 @@ export interface ConfigurationState {
   identityProvider?: string;
   identityProviders?: { [id: string]: { type?: string; [key: string]: unknown } };
   features?: string[];
-  gtmToken?: string;
   theme?: string;
   locales?: Locale[];
   lang?: string;
@@ -31,7 +30,6 @@ const initialState: ConfigurationState = {
   channel: undefined,
   application: undefined,
   features: undefined,
-  gtmToken: undefined,
   theme: undefined,
   locales: environment.locales,
   lang: undefined,
@@ -40,9 +38,5 @@ const initialState: ConfigurationState = {
 
 export const configurationReducer = createReducer(
   initialState,
-  on(applyConfiguration, (state: ConfigurationState, action) => ({ ...state, ...action.payload })),
-  on(setGTMToken, (state: ConfigurationState, action) => {
-    const { gtmToken } = action.payload;
-    return { ...state, gtmToken };
-  })
+  on(applyConfiguration, (state: ConfigurationState, action) => ({ ...state, ...action.payload }))
 );

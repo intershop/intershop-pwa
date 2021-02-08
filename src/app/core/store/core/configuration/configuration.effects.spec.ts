@@ -1,4 +1,3 @@
-import { PLATFORM_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { BrowserTransferStateModule } from '@angular/platform-browser';
 import { ROOT_EFFECTS_INIT } from '@ngrx/effects';
@@ -11,7 +10,7 @@ import { anything, capture, instance, mock, verify } from 'ts-mockito';
 
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 
-import { applyConfiguration, setGTMToken } from './configuration.actions';
+import { applyConfiguration } from './configuration.actions';
 import { ConfigurationEffects } from './configuration.effects';
 
 describe('Configuration Effects', () => {
@@ -27,7 +26,6 @@ describe('Configuration Effects', () => {
       providers: [
         { provide: TranslateService, useFactory: () => instance(translateServiceMock) },
         provideMockActions(() => actions$),
-        { provide: PLATFORM_ID, useValue: 'server' },
       ],
     });
 
@@ -63,37 +61,6 @@ describe('Configuration Effects', () => {
         expect(params[0]).toEqual('en_US');
         done();
       }, 10);
-    });
-  });
-
-  describe('setGTMToken$', () => {
-    beforeEach(() => {
-      // on server
-      process.env.GTM_TOKEN = 'dummy';
-    });
-
-    afterEach(() => {
-      process.env.GTM_TOKEN = undefined;
-    });
-
-    it('should set the token once on effects init and complete', done => {
-      // tslint:disable:use-async-synchronization-in-tests
-      const testComplete$ = new Subject<void>();
-
-      actions$ = of({ type: ROOT_EFFECTS_INIT });
-
-      testComplete$.pipe(take(2)).subscribe({ complete: done });
-
-      effects.setGTMToken$.subscribe(
-        data => {
-          expect(data.type).toEqual(setGTMToken.type);
-          expect(data.payload).toHaveProperty('gtmToken', 'dummy');
-          testComplete$.next();
-        },
-        fail,
-        () => testComplete$.next()
-      );
-      // tslint:enable:use-async-synchronization-in-tests
     });
   });
 });
