@@ -11,24 +11,27 @@
 <ng-template #loginStatus>
   <!-- logged in -->
   <ng-container *ngIf="user$ | async as user; else notLoggedIn">
-    <a routerLink="/account" class="my-account-link" data-testing-id="link-myaccount">
-      <fa-icon [icon]="['fas', 'user']" class="header-icon"></fa-icon>
-      <span *ngIf="user.lastName; else nameNotDisplayed" class="login-name" [ngClass]="getViewClasses()">{{
-        user.firstName + ' ' + user.lastName
-      }}</span>
-      <ng-template #nameNotDisplayed
-        ><span class="login-name" [ngClass]="getViewClasses()">{{
-          'account.login_status.myaccount.link' | translate
-        }}</span></ng-template
-      >
-    </a>
+    <div class="header-utility">
+      <a routerLink="/account" class="my-account-link" data-testing-id="link-myaccount">
+        <fa-icon [icon]="['fas', 'user']" class="header-icon"></fa-icon>
+        <span *ngIf="user.lastName; else nameNotDisplayed" class="login-name" [ngClass]="getViewClasses()">{{
+          user.firstName + ' ' + user.lastName
+        }}</span>
+        <ng-template #nameNotDisplayed
+          ><span class="login-name" [ngClass]="getViewClasses()">{{
+            'account.login_status.myaccount.link' | translate
+          }}</span></ng-template
+        >
+      </a>
+      <ng-container *ngIf="!(isSticky$ | async) && view !== 'small'">
+        <ish-lazy-hierarchy-switch *ishFeature="'organizationHierarchies'"></ish-lazy-hierarchy-switch>
+      </ng-container>
 
-    <ish-lazy-hierarchy-switch *ishFeature="'organizationHierarchies'"></ish-lazy-hierarchy-switch>
-
-    <span class="separator" [ngClass]="getViewClasses()">&#124;</span>
-    <a routerLink="/logout" class="my-account-link my-account-logout" data-testing-id="link-logout">
-      <span [ngClass]="getViewClasses()">{{ 'account.logout.link' | translate }}</span>
-    </a>
+      <span class="separator" [ngClass]="getViewClasses()">&#124;</span>
+      <a routerLink="/logout" class="my-account-link my-account-logout" data-testing-id="link-logout">
+        <span [ngClass]="getViewClasses()">{{ 'account.logout.link' | translate }}</span>
+      </a>
+    </div>
   </ng-container>
   <!-- not logged in -->
   <ng-template #notLoggedIn>

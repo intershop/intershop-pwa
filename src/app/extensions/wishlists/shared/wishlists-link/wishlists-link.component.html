@@ -7,7 +7,7 @@
   <fa-icon class="header-icon" [icon]="['fas', 'heart']"></fa-icon>
 
   <span class="badge badge-pill" *ngIf="preferredWishlist$ | async as wishlist">{{ wishlist.itemsCount }}</span>
-  <span [ngClass]="{ 'd-none': view === 'auto' || view === 'small', 'd-md-inline': view === 'auto' }">{{
+  <span [ngClass]="{ 'd-none': view === 'auto' || view === 'small', 'd-lg-inline': view === 'auto' }">{{
     'account.wishlists.link' | translate
   }}</span>
 </a>
