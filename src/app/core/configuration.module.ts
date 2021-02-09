@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
-import { OrganizationErrorHandler } from 'projects/organization-management/src/app/http-error/organization.error-handler';
 
 import { SPECIAL_HTTP_ERROR_HANDLER } from './interceptors/icm-error-mapper.interceptor';
 import { createPaymentErrorHandler } from './utils/http-error/create-payment.error-handler';
 import { editPasswordErrorHandler } from './utils/http-error/edit-password.error-handler';
 import { LoginUserErrorHandler } from './utils/http-error/login-user.error-handler';
+import { OrganizationErrorHandler } from './utils/http-error/organization.error-handler';
 import { requestReminderErrorHandler } from './utils/http-error/request-reminder.error-handler';
 import { updatePasswordErrorHandler } from './utils/http-error/update-password.error-handler';
 
