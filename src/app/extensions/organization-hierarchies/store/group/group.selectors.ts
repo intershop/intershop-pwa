@@ -13,7 +13,7 @@ export const getGroupsOfOrganization = selectAll;
 
 export const getGroupsOfOrganizationCount = selectTotal;
 
-export const getSelectedGroupId = createSelector(getGroupState, state => state.selected);
+const getSelectedGroupId = createSelector(getGroupState, state => state.selected);
 
 export const getSelectedGroupDetails = createSelector(
   selectEntities,
