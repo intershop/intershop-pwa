@@ -69,18 +69,10 @@ describe('Tx Selected Group Interceptor', () => {
 describe('Tx Selected Group Interceptor', () => {
   let httpController: HttpTestingController;
   let http: HttpClient;
-  const selectedGroups: OrganizationGroup[] = [];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: TxSelectedGroupInterceptor, multi: true },
-        provideMockStore({
-          initialState: { organizationHierarchies: {} },
-          selectors: [{ selector: getSelectedGroupPath, value: selectedGroups }],
-        }),
-      ],
     });
 
     httpController = TestBed.inject(HttpTestingController);
@@ -115,12 +107,6 @@ describe('Tx Selected Group Interceptor', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: TxSelectedGroupInterceptor, multi: true },
-        provideMockStore({
-          selectors: [{ selector: getSelectedGroupPath, value: undefined }],
-        }),
-      ],
     });
 
     httpController = TestBed.inject(HttpTestingController);

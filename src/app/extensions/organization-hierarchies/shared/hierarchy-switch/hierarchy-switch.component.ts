@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
@@ -13,18 +14,36 @@ import { OrganizationGroup } from '../../models/organization-group/organization-
 })
 @GenerateLazyComponent()
 export class HierarchySwitchComponent implements OnInit {
-  groups: Observable<OrganizationGroup[]>;
-  count: Observable<number>;
+  /**
+   * determines position of dropbox - dropup or dropdown, default is dropdown
+   */
+  @Input() placement: '' | 'up' = '';
+
+  groups$: Observable<OrganizationGroup[]>;
+  count$: Observable<number>;
+  selectedElement$: Observable<OrganizationGroup>;
+
   constructor(private facade: OrganizationHierarchiesFacade) {}
 
   ngOnInit(): void {
-    this.groups = this.facade.groups$;
-    this.count = this.facade.groupsCount$();
+    this.groups$ = this.facade.groups$;
+    this.count$ = this.facade.groupsCount$();
+    this.setSelectedElement();
   }
 
-  dispatch(ev: any): void {
-    if (ev?.target?.value) {
-      this.facade.selectGroup(ev.target.value);
+  groupSelected(group: OrganizationGroup): void {
+    if (group) {
+      this.facade.selectGroup(group.id);
     }
+  }
+
+  setSelectedElement(): void {
+    this.selectedElement$ = this.facade.getSelectedGroup$.pipe(
+      switchMap(selectedElement =>
+        selectedElement
+          ? of(selectedElement)
+          : this.groups$.pipe(map(groups => (groups?.length ? groups[0] : undefined)))
+      )
+    );
   }
 }

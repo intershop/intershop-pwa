@@ -120,7 +120,7 @@ header {
     align-self: center;
   }
 
-  li {
+  & > li {
     float: left;
     padding-right: ($space-default * 3 / 2);
     font-family: $font-family-bold;
