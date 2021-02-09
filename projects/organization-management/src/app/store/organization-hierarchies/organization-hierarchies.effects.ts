@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concatMap, map, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
@@ -64,9 +64,7 @@ export class OrganizationHierarchiesEffects {
     () =>
       this.actions$.pipe(
         ofType(createGroupSuccess),
-        tap(() => {
-          this.navigateTo('../');
-        })
+        concatMap(async () => this.navigateTo('../'))
       ),
     { dispatch: false }
   );

@@ -3,7 +3,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
-import { LazyHierarchyGroupNameComponent } from 'src/app/extensions/organization-hierarchies/exports/lazy-hierarchy-group-name/lazy-hierarchy-group-name.component';
 import { instance, mock, when } from 'ts-mockito';
 
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
@@ -13,6 +12,8 @@ import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+
+import { LazyHierarchyGroupNameComponent } from '../../../../extensions/organization-hierarchies/exports/lazy-hierarchy-group-name/lazy-hierarchy-group-name.component';
 
 import { OrderListComponent } from './order-list.component';
 
