@@ -4,7 +4,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { filter, map, skip, withLatestFrom } from 'rxjs/operators';
 
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
-import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 
 import { AppFacade } from './app.facade';
@@ -22,7 +21,7 @@ export class SelectedProductContextFacade extends ProductContextFacade {
     private appFacade: AppFacade
   ) {
     super(shoppingFacade, translate, injector);
-    this.set('requiredCompletenessLevel', () => ProductCompletenessLevel.Detail);
+    this.set('requiredCompletenessLevel', () => true);
     this.connect('sku', shoppingFacade.selectedProductId$);
 
     this.connect(

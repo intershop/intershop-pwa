@@ -80,7 +80,7 @@ export const EXTERNAL_DISPLAY_PROPERTY_PROVIDER = new InjectionToken<ExternalDis
 
 interface ProductContext {
   sku: string;
-  requiredCompletenessLevel: ProductCompletenessLevel;
+  requiredCompletenessLevel: ProductCompletenessLevel | true;
   product: AnyProductViewType;
   productAsVariationProduct: VariationProductView;
   productURL: string;
@@ -142,7 +142,6 @@ export class ProductContextFacade extends RxState<ProductContext> {
         filter(([sku, level]) => !!sku && !!level),
         switchMap(([sku, level]) =>
           this.shoppingFacade.product$(sku, level).pipe(
-            filter(p => ProductHelper.isReadyForDisplay(p, level)),
             map(product => ({
               product,
               loading: false,

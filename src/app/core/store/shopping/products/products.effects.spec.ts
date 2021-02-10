@@ -251,21 +251,6 @@ describe('Products Effects', () => {
 
       expect(effects.loadMasterProductForProduct$).toBeObservable(expected$);
     });
-
-    it('should not trigger LoadProduct action if LoadProductSuccess contains productMasterSKU of loaded product', () => {
-      store$.dispatch(loadProductSuccess({ product: { sku: 'MSKU' } as Product }));
-
-      const action = loadProductSuccess({
-        product: {
-          productMasterSKU: 'MSKU',
-          type: 'VariationProduct',
-        } as VariationProduct,
-      });
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-');
-
-      expect(effects.loadMasterProductForProduct$).toBeObservable(expected$);
-    });
   });
 
   describe('loadProductVariationsForMasterProduct$', () => {
@@ -283,22 +268,6 @@ describe('Products Effects', () => {
       expect(effects.loadProductVariationsForMasterProduct$).toBeObservable(expected$);
     });
 
-    it('should not trigger LoadProductVariations action if loaded product variations present', () => {
-      const product = {
-        sku: 'MSKU',
-        type: 'VariationProductMaster',
-      } as VariationProductMaster;
-
-      store$.dispatch(loadProductSuccess({ product }));
-      store$.dispatch(loadProductVariationsSuccess({ sku: 'MSKU', variations: ['VAR'], defaultVariation: 'VAR' }));
-
-      const action = loadProductSuccess({ product });
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-');
-
-      expect(effects.loadProductVariationsForMasterProduct$).toBeObservable(expected$);
-    });
-
     it('should not trigger LoadProductVariants action if loaded product is not of type VariationProductMaster.', () => {
       const action = loadProductSuccess({
         product: {
@@ -311,40 +280,6 @@ describe('Products Effects', () => {
 
       expect(effects.loadProductVariationsForMasterProduct$).toBeObservable(expected$);
     });
-  });
-
-  describe('selectedProduct$', () => {
-    it('should fire SelectProduct when route /category/XXX/product/YYY is navigated', done => {
-      router.navigateByUrl('/category/dummy/product/foobar');
-
-      effects.selectedProduct$.subscribe(action => {
-        expect(action).toMatchInlineSnapshot(`
-          [Products Internal] Load Product:
-            sku: "foobar"
-        `);
-        done();
-      });
-    });
-
-    it('should fire SelectProduct when route /product/YYY is navigated', done => {
-      router.navigateByUrl('/product/foobar');
-
-      effects.selectedProduct$.subscribe(action => {
-        expect(action).toMatchInlineSnapshot(`
-          [Products Internal] Load Product:
-            sku: "foobar"
-        `);
-        done();
-      });
-    });
-
-    it('should not fire SelectProduct when route /something is navigated', fakeAsync(() => {
-      router.navigateByUrl('/any');
-
-      effects.selectedProduct$.subscribe(fail, fail, fail);
-
-      tick(2000);
-    }));
   });
 
   describe('redirectIfErrorInProducts$', () => {

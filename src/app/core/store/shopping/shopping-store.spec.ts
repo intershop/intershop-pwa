@@ -7,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
+import { SelectedProductContextFacade } from 'ish-core/facades/selected-product-context.facade';
 import { Category, CategoryCompletenessLevel } from 'ish-core/models/category/category.model';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Product } from 'ish-core/models/product/product.model';
@@ -173,6 +174,7 @@ describe('Shopping Store', () => {
         TranslateModule.forRoot(),
       ],
       providers: [
+        SelectedProductContextFacade,
         provideStoreSnapshots(),
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
@@ -184,6 +186,7 @@ describe('Shopping Store', () => {
 
     store = TestBed.inject(StoreWithSnapshots);
     router = TestBed.inject(Router);
+    TestBed.inject(SelectedProductContextFacade);
     store.reset();
   });
 
@@ -345,11 +348,11 @@ describe('Shopping Store', () => {
             @ngrx/router-store/navigation:
               routerState: {"url":"/product/P2","params":{"sku":"P2"},"queryParams":{},...
               event: {"id":3,"url":"/product/P2","urlAfterRedirects":"/product/P2"}
-            [Products Internal] Load Product:
-              sku: "P2"
             [Recently Viewed Internal] Add Product to Recently:
               sku: "P2"
               group: undefined
+            [Products Internal] Load Product:
+              sku: "P2"
             [Products API] Load Product Success:
               product: {"sku":"P2","name":"nP2"}
             @ngrx/router-store/navigated:
@@ -529,11 +532,11 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigation:
             routerState: {"url":"/category/A.123.456/product/P1","params":{"categoryU...
             event: {"id":2,"url":"/category/A.123.456/product/P1","urlAfterRedi...
-          [Products Internal] Load Product:
-            sku: "P1"
           [Recently Viewed Internal] Add Product to Recently:
             sku: "P1"
             group: undefined
+          [Products Internal] Load Product:
+            sku: "P1"
           [Products API] Load Product Success:
             product: {"sku":"P1","name":"nP1"}
           @ngrx/router-store/navigated:
@@ -732,23 +735,23 @@ describe('Shopping Store', () => {
           event: {"id":1,"url":"/category/A.123.456/product/P1","urlAfterRedi...
         [Categories Internal] Load Category:
           categoryId: "A.123.456"
-        [Products Internal] Load Product:
-          sku: "P1"
         [Categories API] Load Category Success:
           categories: tree(A.123.456)
-        [Products API] Load Product Success:
-          product: {"sku":"P1","name":"nP1"}
+        [Products Internal] Load Product:
+          sku: "P1"
         [Categories Internal] Load Category:
           categoryId: "A"
         [Categories Internal] Load Category:
           categoryId: "A.123"
-        [Recently Viewed Internal] Add Product to Recently:
-          sku: "P1"
-          group: undefined
+        [Products API] Load Product Success:
+          product: {"sku":"P1","name":"nP1"}
         [Categories API] Load Category Success:
           categories: tree(A,A.123)
         [Categories API] Load Category Success:
           categories: tree(A.123,A.123.456)
+        [Recently Viewed Internal] Add Product to Recently:
+          sku: "P1"
+          group: undefined
         @ngrx/router-store/navigated:
           routerState: {"url":"/category/A.123.456/product/P1","params":{"categoryU...
           event: {"id":1,"url":"/category/A.123.456/product/P1","urlAfterRedi...
@@ -957,17 +960,21 @@ describe('Shopping Store', () => {
           event: {"id":1,"url":"/category/A.123.456/product/P3","urlAfterRedi...
         [Categories Internal] Load Category:
           categoryId: "A.123.456"
-        [Products Internal] Load Product:
-          sku: "P3"
         [Categories API] Load Category Success:
           categories: tree(A.123.456)
-        [Products API] Load Product Fail:
-          error: {"name":"HttpErrorResponse","message":"error loading product...
+        [Products Internal] Load Product:
           sku: "P3"
         [Categories Internal] Load Category:
           categoryId: "A"
         [Categories Internal] Load Category:
           categoryId: "A.123"
+        [Products API] Load Product Fail:
+          error: {"name":"HttpErrorResponse","message":"error loading product...
+          sku: "P3"
+        [Categories API] Load Category Success:
+          categories: tree(A,A.123)
+        [Categories API] Load Category Success:
+          categories: tree(A.123,A.123.456)
         @ngrx/router-store/cancel:
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}
           storeState: {"configuration":{"locales":[3],"_deviceType":"mobile"},"sho...
@@ -975,10 +982,6 @@ describe('Shopping Store', () => {
         @ngrx/router-store/request:
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}
           event: {"id":2,"url":"/error"}
-        [Categories API] Load Category Success:
-          categories: tree(A,A.123)
-        [Categories API] Load Category Success:
-          categories: tree(A.123,A.123.456)
         @ngrx/router-store/navigation:
           routerState: {"url":"/error","params":{},"queryParams":{},"data":{"header...
           event: {"id":2,"url":"/error","urlAfterRedirects":"/error"}
