@@ -107,9 +107,8 @@ export class SeoEffects {
               this.store.pipe(
                 ofUrl(/^\/page.*/),
                 select(getSelectedContentPage),
-                mapToProperty('displayName'),
-                whenTruthy(),
-                map<string, Partial<SeoAttributes>>(title => ({ title }))
+                mapToProperty('seoAttributes'),
+                whenTruthy()
               ),
             ])
           )

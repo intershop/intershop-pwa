@@ -72,11 +72,24 @@ describe('Content Pagelet Entry Point Mapper', () => {
       ],
     };
 
-    const result = contentPageletEntryPointMapper.fromData(input);
+    const [pageletEntryPoint, pagelets] = contentPageletEntryPointMapper.fromData(input);
 
-    expect(result.pagelets).toHaveLength(3);
-    expect(result.pagelets.map(p => p.id)).toIncludeAllMembers(['pagelet1', 'pagelet11', 'pagelet2']);
-    expect(result.pageletEntryPoint).not.toBeEmpty();
-    expect(result).toMatchSnapshot();
+    expect(pagelets).toHaveLength(3);
+    expect(pagelets.map(p => p.id)).toIncludeAllMembers(['pagelet1', 'pagelet11', 'pagelet2']);
+    expect(pageletEntryPoint).not.toBeEmpty();
+    expect(pageletEntryPoint).toMatchInlineSnapshot(`
+      Object {
+        "configurationParameters": Object {},
+        "definitionQualifiedName": "fq",
+        "displayName": "name-include",
+        "domain": "the-domain",
+        "id": "include-id",
+        "pageletIDs": Array [
+          "pagelet1",
+          "pagelet2",
+        ],
+        "resourceSetId": "resource-set-id",
+      }
+    `);
   });
 });
