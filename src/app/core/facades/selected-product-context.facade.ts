@@ -22,6 +22,7 @@ export class SelectedProductContextFacade extends ProductContextFacade {
   ) {
     super(shoppingFacade, translate, injector);
     this.set('requiredCompletenessLevel', () => true);
+    this.connect('categoryId', shoppingFacade.selectedCategoryId$);
     this.connect('sku', shoppingFacade.selectedProductId$);
 
     this.connect(

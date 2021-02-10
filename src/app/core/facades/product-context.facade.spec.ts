@@ -7,6 +7,7 @@ import { anyString, anything, instance, mock, when } from 'ts-mockito';
 
 import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
 import {
   ProductView,
@@ -37,7 +38,7 @@ describe('Product Context Facade', () => {
   beforeEach(() => {
     shoppingFacade = mock(ShoppingFacade);
     when(shoppingFacade.productParts$(anything())).thenReturn(EMPTY);
-    when(shoppingFacade.selectedCategory$).thenReturn(of(undefined));
+    when(shoppingFacade.category$(anything())).thenReturn(of(undefined));
 
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
@@ -52,6 +53,7 @@ describe('Product Context Facade', () => {
     expect(context.get()).toMatchInlineSnapshot(`
       Object {
         "allowZeroQuantity": false,
+        "categoryId": null,
         "displayProperties": Object {
           "addToBasket": true,
           "readOnly": true,
@@ -98,6 +100,7 @@ describe('Product Context Facade', () => {
       expect(omit(context.get(), 'displayProperties', 'product')).toMatchInlineSnapshot(`
         Object {
           "allowZeroQuantity": false,
+          "categoryId": null,
           "hasQuantityError": false,
           "label": undefined,
           "loading": false,
@@ -170,6 +173,7 @@ describe('Product Context Facade', () => {
       expect(omit(context.get(), 'displayProperties', 'product')).toMatchInlineSnapshot(`
         Object {
           "allowZeroQuantity": false,
+          "categoryId": null,
           "hasQuantityError": false,
           "label": undefined,
           "loading": false,
@@ -324,23 +328,68 @@ describe('Product Context Facade', () => {
     });
   });
 
-  describe('with product with default category', () => {
-    let product: ProductView;
+  describe('category handling', () => {
+    describe('with product with default category', () => {
+      let product: ProductView;
 
-    beforeEach(() => {
-      product = {
-        sku: '123',
-        completenessLevel: ProductCompletenessLevel.Detail,
-        defaultCategory: { uniqueId: 'ABC' } as Category,
-      } as ProductView;
+      beforeEach(() => {
+        product = {
+          sku: '123',
+          completenessLevel: ProductCompletenessLevel.Detail,
+          defaultCategory: { uniqueId: 'ABC' } as Category,
+        } as ProductView;
 
-      when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
+        when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
 
-      context.set('sku', () => '123');
+        context.set('sku', () => '123');
+      });
+
+      it('should calculate the url property of the product with default category', () => {
+        expect(context.get('productURL')).toMatchInlineSnapshot(`"//sku123-catABC"`);
+      });
     });
 
-    it('should calculate the url property of the product', () => {
-      expect(context.get('productURL')).toMatchInlineSnapshot(`"//sku123-catABC"`);
+    describe('with product with context category', () => {
+      let product: ProductView;
+
+      beforeEach(() => {
+        product = {
+          sku: '123',
+          completenessLevel: ProductCompletenessLevel.Detail,
+        } as ProductView;
+
+        when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
+        when(shoppingFacade.category$(anything())).thenReturn(of({ uniqueId: 'ASDF' } as CategoryView));
+
+        context.set('categoryId', () => 'ASDF');
+        context.set('sku', () => '123');
+      });
+
+      it('should calculate the url property of the product with context category', () => {
+        expect(context.get('productURL')).toMatchInlineSnapshot(`"//sku123-catASDF"`);
+      });
+    });
+
+    describe('with product with context category and default category', () => {
+      let product: ProductView;
+
+      beforeEach(() => {
+        product = {
+          sku: '123',
+          completenessLevel: ProductCompletenessLevel.Detail,
+          defaultCategory: { uniqueId: 'ABC' } as Category,
+        } as ProductView;
+
+        when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
+        when(shoppingFacade.category$(anything())).thenReturn(of({ uniqueId: 'ASDF' } as CategoryView));
+
+        context.set('categoryId', () => 'ASDF');
+        context.set('sku', () => '123');
+      });
+
+      it('should calculate the url property of the product with context category', () => {
+        expect(context.get('productURL')).toMatchInlineSnapshot(`"//sku123-catASDF"`);
+      });
     });
   });
 
@@ -649,7 +698,6 @@ describe('Product Context Facade', () => {
 
       shoppingFacade = mock(ShoppingFacade);
       when(shoppingFacade.productParts$(anything())).thenReturn(EMPTY);
-      when(shoppingFacade.selectedCategory$).thenReturn(of(undefined));
 
       product = {
         completenessLevel: ProductCompletenessLevel.Detail,

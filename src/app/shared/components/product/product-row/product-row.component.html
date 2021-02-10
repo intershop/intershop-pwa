@@ -50,39 +50,25 @@
         <div class="product-list-actions-container">
           <ish-lazy-tacton-configure-product displayType="list-button"></ish-lazy-tacton-configure-product>
 
-          <ng-container *ngIf="!isMasterProduct(product); else masterProductActions">
-            <div class="product-form form-horizontal row">
-              <ng-container *ngIf="configuration$('readOnly') | async; else quantityInput">
-                <div class="action-container col-12 col-xl-7">
-                  <span *ngIf="configuration$('quantity') | async"
-                    >{{ 'product.quantity.label' | translate }}: {{ quantity$ | async }}</span
-                  >
-                </div>
-              </ng-container>
-              <ng-template #quantityInput>
-                <div class="action-container col-6 offset-md-6 col-lg-5 offset-lg-0">
-                  <ish-product-quantity *ngIf="configuration$('quantity') | async"></ish-product-quantity>
-                </div>
-              </ng-template>
-
-              <div class="action-container addtocart-container col-12 col-lg-7">
-                <ish-product-add-to-basket></ish-product-add-to-basket>
+          <div class="product-form form-horizontal row">
+            <ng-container *ngIf="configuration$('readOnly') | async; else quantityInput">
+              <div class="action-container col-12 col-xl-7">
+                <span *ngIf="configuration$('quantity') | async"
+                  >{{ 'product.quantity.label' | translate }}: {{ quantity$ | async }}</span
+                >
               </div>
-            </div>
-          </ng-container>
+            </ng-container>
+            <ng-template #quantityInput>
+              <div class="action-container col-6 offset-md-6 col-lg-5 offset-lg-0">
+                <ish-product-quantity></ish-product-quantity>
+              </div>
+            </ng-template>
 
-          <ng-template #masterProductActions>
-            <div class="action-container">
-              <a
-                [routerLink]="product | ishProductRoute: category"
-                queryParamsHandling="merge"
-                class="btn btn-primary"
-                role="button"
-              >
-                {{ 'product.choose_variation.link' | translate }}
-              </a>
+            <div class="action-container addtocart-container col-12 col-lg-7">
+              <ish-product-add-to-basket></ish-product-add-to-basket>
+              <ish-product-choose-variation></ish-product-choose-variation>
             </div>
-          </ng-template>
+          </div>
         </div>
       </div>
     </div>

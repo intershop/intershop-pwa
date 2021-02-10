@@ -86,6 +86,7 @@ import { ProductAddToBasketComponent } from './components/product/product-add-to
 import { ProductAddToCompareComponent } from './components/product/product-add-to-compare/product-add-to-compare.component';
 import { ProductAttributesComponent } from './components/product/product-attributes/product-attributes.component';
 import { ProductBundleDisplayComponent } from './components/product/product-bundle-display/product-bundle-display.component';
+import { ProductChooseVariationComponent } from './components/product/product-choose-variation/product-choose-variation.component';
 import { ProductIdComponent } from './components/product/product-id/product-id.component';
 import { ProductInventoryComponent } from './components/product/product-inventory/product-inventory.component';
 import { ProductItemVariationsComponent } from './components/product/product-item-variations/product-item-variations.component';
@@ -168,6 +169,7 @@ const declaredComponents = [
   LineItemEditDialogComponent,
   LineItemListElementComponent,
   LoginModalComponent,
+  ProductChooseVariationComponent,
   ProductIdComponent,
   ProductItemVariationsComponent,
   ProductLabelComponent,

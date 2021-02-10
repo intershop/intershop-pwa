@@ -1,17 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductAddToCompareComponent } from 'ish-shared/components/product/product-add-to-compare/product-add-to-compare.component';
+import { ProductChooseVariationComponent } from 'ish-shared/components/product/product-choose-variation/product-choose-variation.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
 import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
 import { ProductItemVariationsComponent } from 'ish-shared/components/product/product-item-variations/product-item-variations.component';
@@ -42,7 +41,7 @@ describe('Product Row Component', () => {
     when(context.select('product')).thenReturn(of({ sku: 'SKU' } as ProductView));
 
     await TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting(), RouterTestingModule, TranslateModule.forRoot()],
+      imports: [FeatureToggleModule.forTesting(), TranslateModule.forRoot()],
       declarations: [
         MockComponent(LazyProductAddToOrderTemplateComponent),
         MockComponent(LazyProductAddToQuoteComponent),
@@ -50,6 +49,7 @@ describe('Product Row Component', () => {
         MockComponent(LazyTactonConfigureProductComponent),
         MockComponent(ProductAddToBasketComponent),
         MockComponent(ProductAddToCompareComponent),
+        MockComponent(ProductChooseVariationComponent),
         MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
@@ -61,7 +61,6 @@ describe('Product Row Component', () => {
         MockComponent(ProductQuantityComponent),
         MockComponent(ProductRatingComponent),
         MockComponent(ProductShipmentComponent),
-        MockPipe(ProductRoutePipe),
         ProductRowComponent,
       ],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
@@ -94,7 +93,9 @@ describe('Product Row Component', () => {
         "ish-product-shipment",
         "ish-product-item-variations",
         "ish-lazy-tacton-configure-product",
+        "ish-product-quantity",
         "ish-product-add-to-basket",
+        "ish-product-choose-variation",
       ]
     `);
   });

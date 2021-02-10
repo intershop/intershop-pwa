@@ -55,6 +55,7 @@ export class ShoppingFacade {
   // CATEGORY
 
   selectedCategory$ = this.store.pipe(select(getSelectedCategory));
+  selectedCategoryId$ = this.store.pipe(select(selectRouteParam('categoryUniqueId')));
 
   category$(uniqueId: string) {
     return this.store.pipe(select(getCategory(uniqueId)));

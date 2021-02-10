@@ -1,0 +1,9 @@
+<a
+  *ngIf="visible$ | async"
+  [routerLink]="productURL$ | async"
+  queryParamsHandling="merge"
+  class="btn btn-primary"
+  role="button"
+>
+  {{ 'product.choose_variation.link' | translate }}
+</a>

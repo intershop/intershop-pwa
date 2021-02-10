@@ -86,6 +86,7 @@ interface ProductContext {
   productURL: string;
   loading: boolean;
   label: string;
+  categoryId: string;
 
   displayProperties: Partial<ProductContextDisplayProperties<boolean>>;
 
@@ -112,8 +113,6 @@ interface ProductContext {
 
 @Injectable()
 export class ProductContextFacade extends RxState<ProductContext> {
-  selectedCategory$ = this.shoppingFacade.selectedCategory$;
-
   private privateConfig$ = new BehaviorSubject<Partial<ProductContextDisplayProperties>>({});
   private loggingActive = false;
 
@@ -132,6 +131,8 @@ export class ProductContextFacade extends RxState<ProductContext> {
         readOnly: true,
         addToBasket: true,
       },
+      // tslint:disable-next-line: no-null-keyword
+      categoryId: null,
     });
 
     this.connect(
@@ -160,7 +161,10 @@ export class ProductContextFacade extends RxState<ProductContext> {
 
     this.connect(
       'productURL',
-      combineLatest([this.select('product'), this.selectedCategory$]).pipe(map(args => generateProductUrl(...args)))
+      combineLatest([
+        this.select('product'),
+        this.select('categoryId').pipe(switchMap(categoryId => this.shoppingFacade.category$(categoryId))),
+      ]).pipe(map(args => generateProductUrl(...args)))
     );
 
     this.connect(

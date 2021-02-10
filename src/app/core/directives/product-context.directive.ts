@@ -32,6 +32,11 @@ export class ProductContextDirective implements OnInit, OnChanges {
   }
 
   @Input()
+  set categoryId(categoryId: string) {
+    this.context.set('categoryId', () => categoryId);
+  }
+
+  @Input()
   set quantity(quantity: number) {
     this.context.set('quantity', () => quantity);
   }

@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 /**
@@ -15,11 +14,6 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductItemComponent implements OnInit {
-  /**
-   * The optional Category context.
-   */
-  @Input() category?: CategoryView;
-
   @Input() displayType: 'tile' | 'row' = 'tile';
 
   product$: Observable<ProductView>;

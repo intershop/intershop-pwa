@@ -19,7 +19,7 @@
       <ish-breadcrumb></ish-breadcrumb>
       <h1>{{ category.name }}</h1>
       <ish-product-listing
-        [category]="category"
+        [categoryId]="category.uniqueId"
         [id]="{ type: 'category', value: category.uniqueId }"
         fragmentOnRouting="family-page-top"
       ></ish-product-listing>

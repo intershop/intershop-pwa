@@ -18,7 +18,7 @@
 
     <ish-product-list
       [products]="listing.products()"
-      [category]="category"
+      [categoryId]="categoryId"
       [viewType]="viewType$ | async"
     ></ish-product-list>
 
@@ -51,7 +51,7 @@
 
       <ish-product-list
         [products]="listing.productsOfPage(currentPage)"
-        [category]="category"
+        [categoryId]="categoryId"
         [viewType]="viewType$ | async"
       ></ish-product-list>
 
