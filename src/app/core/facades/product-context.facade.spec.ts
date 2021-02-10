@@ -36,7 +36,6 @@ describe('Product Context Facade', () => {
 
   beforeEach(() => {
     shoppingFacade = mock(ShoppingFacade);
-    when(shoppingFacade.productLinks$(anything())).thenReturn(EMPTY);
     when(shoppingFacade.productParts$(anything())).thenReturn(EMPTY);
     when(shoppingFacade.selectedCategory$).thenReturn(of(undefined));
 
@@ -649,7 +648,6 @@ describe('Product Context Facade', () => {
       someOther$ = new BehaviorSubject(false);
 
       shoppingFacade = mock(ShoppingFacade);
-      when(shoppingFacade.productLinks$(anything())).thenReturn(EMPTY);
       when(shoppingFacade.productParts$(anything())).thenReturn(EMPTY);
       when(shoppingFacade.selectedCategory$).thenReturn(of(undefined));
 

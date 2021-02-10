@@ -49,6 +49,6 @@ export class ProductLinksComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.links$ = this.context.select('links');
+    this.links$ = this.context.productLinks$();
   }
 }

@@ -7,7 +7,6 @@ import { debounceTime, distinctUntilChanged, filter, first, map, skip, startWith
 
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { Image } from 'ish-core/models/image/image.model';
-import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
 import {
@@ -86,7 +85,6 @@ interface ProductContext {
   productAsVariationProduct: VariationProductView;
   productURL: string;
   loading: boolean;
-  links: ProductLinksDictionary;
   label: string;
 
   displayProperties: Partial<ProductContextDisplayProperties<boolean>>;
@@ -235,14 +233,6 @@ export class ProductContextFacade extends RxState<ProductContext> {
     );
 
     this.connect(
-      'links',
-      this.select('sku').pipe(
-        whenTruthy(),
-        switchMap(sku => this.shoppingFacade.productLinks$(sku))
-      )
-    );
-
-    this.connect(
       'label',
       this.select('product').pipe(
         map(
@@ -345,5 +335,9 @@ export class ProductContextFacade extends RxState<ProductContext> {
           : ProductHelper.getPrimaryImage(product, imageType)
       )
     );
+  }
+
+  productLinks$() {
+    return this.shoppingFacade.productLinks$(this.select('sku'));
   }
 }

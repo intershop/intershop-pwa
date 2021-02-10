@@ -110,9 +110,13 @@ export class ShoppingFacade {
 
   // PRODUCT LINKS
 
-  productLinks$(sku: string) {
-    this.store.dispatch(loadProductLinks({ sku }));
-    return this.store.pipe(select(getProductLinks(sku)));
+  productLinks$(sku: string | Observable<string>) {
+    return toObservable(sku).pipe(
+      tap(plainSKU => {
+        this.store.dispatch(loadProductLinks({ sku: plainSKU }));
+      }),
+      switchMap(plainSKU => this.store.pipe(select(getProductLinks(plainSKU))))
+    );
   }
 
   // PRODUCT RETAILSET / BUNDLES
