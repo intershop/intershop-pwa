@@ -5,11 +5,9 @@ import { filter, mapTo, switchMap, takeUntil } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { PriceItem } from 'ish-core/models/price-item/price-item.model';
-import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
@@ -32,15 +30,10 @@ export class MiniBasketComponent implements OnInit, OnDestroy {
 
   constructor(
     private checkoutFacade: CheckoutFacade,
-    private shoppingFacade: ShoppingFacade,
     private appFacade: AppFacade,
     private location: Location,
     private cdRef: ChangeDetectorRef
   ) {}
-
-  product$(sku: string) {
-    return this.shoppingFacade.product$(sku, ProductCompletenessLevel.List);
-  }
 
   ngOnDestroy() {
     this.destroy$.next();

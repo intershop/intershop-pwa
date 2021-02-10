@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
@@ -13,7 +12,6 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { BasketPromotionComponent } from 'ish-shared/components/basket/basket-promotion/basket-promotion.component';
@@ -44,7 +42,7 @@ describe('Line Item List Element Component', () => {
     when(context.select('quantity')).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting(), RouterTestingModule, TranslateModule.forRoot()],
+      imports: [FeatureToggleModule.forTesting(), TranslateModule.forRoot()],
       declarations: [
         LineItemListElementComponent,
         MockComponent(BasketPromotionComponent),
@@ -63,7 +61,6 @@ describe('Line Item List Element Component', () => {
         MockComponent(ProductVariationDisplayComponent),
         MockDirective(ProductContextDirective),
         MockPipe(PricePipe),
-        MockPipe(ProductRoutePipe),
       ],
       providers: [
         { provide: ProductContextFacade, useFactory: () => instance(context) },

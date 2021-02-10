@@ -2,9 +2,9 @@
   <div class="d-flex" data-testing-id="order-template-product">
     <div class="col-1 col-md-2 list-item d-flex">
       <input type="checkbox" data-testing-id="productCheckbox" [checked]="true" (click)="setActive($event.target)" />
-      <a class="d-none d-md-inline" [routerLink]="product | ishProductRoute">
-        <ish-product-image imageType="S"></ish-product-image>
-      </a>
+      <div class="d-none d-md-inline">
+        <ish-product-image imageType="S" [link]="true"></ish-product-image>
+      </div>
     </div>
     <div class="col-8 col-md-6 list-item d-block d-md-flex">
       <div class="col-12 col-md-9 pli-description">

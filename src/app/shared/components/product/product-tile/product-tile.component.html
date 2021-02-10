@@ -1,8 +1,6 @@
 <div *ngIf="product$ | async as product" class="product-tile" [attr.data-testing-sku]="product.sku">
   <div class="product-image-container">
-    <a [routerLink]="product | ishProductRoute: category" queryParamsHandling="merge">
-      <ish-product-image imageType="M"></ish-product-image>
-    </a>
+    <ish-product-image imageType="M" [link]="true"></ish-product-image>
     <ish-product-label></ish-product-label>
   </div>
 

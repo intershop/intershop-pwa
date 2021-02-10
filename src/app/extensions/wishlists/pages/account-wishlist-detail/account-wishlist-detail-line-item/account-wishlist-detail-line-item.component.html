@@ -1,9 +1,7 @@
 <ng-container *ngIf="product$ | async as product">
-  <div class="row" data-testing-id="wishlist-product" ishProductContext [sku]="product.sku">
+  <div class="row" data-testing-id="wishlist-product">
     <div class="col-3 col-md-2 list-item">
-      <a [routerLink]="product | ishProductRoute">
-        <ish-product-image imageType="S"></ish-product-image>
-      </a>
+      <ish-product-image imageType="S" [link]="true"></ish-product-image>
     </div>
     <div class="col-9 col-md-10 list-item column-price">
       <div class="row">

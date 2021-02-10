@@ -1,4 +1,14 @@
 <div (deferLoad)="showImage$.next()" class="defer-load">
+  <a
+    *ngIf="link; else image"
+    data-testing-id="product-image-link"
+    [routerLink]="productURL$ | async"
+    [queryParamsHandling]="queryParamsHandling"
+    ><ng-container *ngTemplateOutlet="image"></ng-container>
+  </a>
+</div>
+
+<ng-template #image>
   <img
     *ngIf="{ image: productImage$ | async } as product"
     class="product-image"
@@ -10,4 +20,4 @@
     [attr.alt]="altText || (defaultAltText$ | async)"
     itemprop="image"
   />
-</div>
+</ng-template>

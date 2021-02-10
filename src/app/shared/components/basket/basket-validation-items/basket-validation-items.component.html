@@ -15,9 +15,7 @@
       >
         <!---Product Image --->
         <div class="col-2 list-item">
-          <a [routerLink]="product | ishProductRoute">
-            <ish-product-image imageType="S"></ish-product-image>
-          </a>
+          <ish-product-image imageType="S" [link]="true"></ish-product-image>
         </div>
         <!---Product Description --->
         <div class="col-5 col-md-4 list-item">

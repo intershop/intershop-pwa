@@ -25,11 +25,9 @@
     <ng-container *ngIf="lineItems$ | async as lineItems; else emptyBlock">
       <div class="product-rows-block">
         <div *ngFor="let lineItem of lineItems" class="product-row">
-          <ng-container *ngIf="product$(lineItem.productSKU) | async as product" ishProductContext [sku]="product?.sku">
+          <ng-container ishProductContext [sku]="lineItem.productSKU">
             <div class="mini-product-img">
-              <a [routerLink]="product | ishProductRoute">
-                <ish-product-image imageType="S"></ish-product-image>
-              </a>
+              <ish-product-image imageType="S" [link]="true"></ish-product-image>
             </div>
             <div class="mini-product-info">
               <ish-product-name></ish-product-name>

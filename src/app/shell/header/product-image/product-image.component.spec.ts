@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -19,9 +20,10 @@ describe('Product Image Component', () => {
     context = mock(ProductContextFacade);
     when(context.getProductImage$(anything(), anything())).thenReturn(EMPTY);
     when(context.select('product')).thenReturn(of({} as ProductView));
+    when(context.select('productURL')).thenReturn(of('/product/TEST'));
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [ProductImageComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
@@ -51,15 +53,13 @@ describe('Product Image Component', () => {
     when(context.getProductImage$(anything(), anything())).thenReturn(of(undefined));
 
     fixture.detectChanges();
-    expect(element).toMatchInlineSnapshot(`
-      <div class="defer-load">
-        <img
-          class="product-image"
-          itemprop="image"
-          src="/assets/img/not_available.png"
-          alt=" product photo"
-        />
-      </div>
+    expect(element.querySelector('img')?.attributes).toMatchInlineSnapshot(`
+      NamedNodeMap {
+        "alt": " product photo",
+        "class": "product-image",
+        "itemprop": "image",
+        "src": "/assets/img/not_available.png",
+      }
     `);
   });
 
@@ -78,19 +78,17 @@ describe('Product Image Component', () => {
     );
 
     fixture.detectChanges();
-    expect(element).toMatchInlineSnapshot(`
-      <div class="defer-load">
-        <img
-          class="product-image"
-          itemprop="image"
-          src="/assets/product_img/a.jpg"
-          data-type="S"
-          data-view="front"
-          height="110"
-          width="110"
-          alt=" product photo"
-        />
-      </div>
+    expect(element.querySelector('img')?.attributes).toMatchInlineSnapshot(`
+      NamedNodeMap {
+        "alt": " product photo",
+        "class": "product-image",
+        "data-type": "S",
+        "data-view": "front",
+        "height": "110",
+        "itemprop": "image",
+        "src": "/assets/product_img/a.jpg",
+        "width": "110",
+      }
     `);
   });
 
@@ -112,7 +110,7 @@ describe('Product Image Component', () => {
     expect(element.querySelector('img').getAttribute('src')).toBe('/assets/img/not_available.png');
   });
 
-  describe('image alt attibute', () => {
+  describe('image alt attribute', () => {
     it('should render if altText set as input parameter', () => {
       component.altText = 'test';
       fixture.detectChanges();
@@ -144,6 +142,15 @@ describe('Product Image Component', () => {
 
       fixture.detectChanges();
       expect(element.querySelector('img').getAttribute('alt')).toContain('front S');
+    });
+  });
+
+  describe('link creation', () => {
+    it('should generate a link around the component if requested', () => {
+      component.link = true;
+      fixture.detectChanges();
+
+      expect(element.querySelector('a').href).toMatchInlineSnapshot(`"http://localhost/product/TEST"`);
     });
   });
 });

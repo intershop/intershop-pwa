@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { QueryParamsHandling } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, ReplaySubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -11,7 +12,7 @@ import { Image } from 'ish-core/models/image/image.model';
  * for the given imageType and imageView or the according defaults.
  *
  * @example
- * <ish-product-image [product]="product" imageType="M"></ish-product-image>
+ * <ish-product-image imageType="M" [link]="true"></ish-product-image>
  */
 @Component({
   selector: 'ish-product-image',
@@ -19,6 +20,11 @@ import { Image } from 'ish-core/models/image/image.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductImageComponent implements OnInit {
+  /**
+   * If true, a product link is generated around the component
+   */
+  @Input() link = false;
+  @Input() queryParamsHandling: QueryParamsHandling = 'merge';
   /**
    * The image type (size), i.e. 'S' for the small image.
    */
@@ -32,6 +38,7 @@ export class ProductImageComponent implements OnInit {
    */
   @Input() altText?: string;
 
+  productURL$: Observable<string>;
   productImage$: Observable<Image>;
   defaultAltText$: Observable<string>;
 
@@ -43,6 +50,7 @@ export class ProductImageComponent implements OnInit {
   constructor(private translateService: TranslateService, private context: ProductContextFacade) {}
 
   ngOnInit() {
+    this.productURL$ = this.context.select('productURL');
     this.productImage$ = combineLatest([
       this.context.getProductImage$(this.imageType, this.imageView),
       this.showImage$,
