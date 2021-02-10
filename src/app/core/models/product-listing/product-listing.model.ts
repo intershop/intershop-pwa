@@ -1,5 +1,11 @@
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
+export interface SortableAttributesType {
+  name: string;
+  displayName?: string;
+  direction?: 'asc' | 'desc';
+}
+
 export interface ProductListingID {
   type: string;
   value: string;
@@ -11,14 +17,14 @@ export interface ProductListingID {
 export interface ProductListingType {
   id: ProductListingID;
   itemCount?: number;
-  sortKeys?: string[];
+  sortableAttributes?: SortableAttributesType[];
   [page: number]: string[];
   pages?: number[];
 }
 
 export interface ProductListingView {
   itemCount: number;
-  sortKeys: string[];
+  sortableAttributes: SortableAttributesType[];
   lastPage: number;
   products(): string[];
   productsOfPage(page: number): string[];

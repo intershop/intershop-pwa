@@ -68,7 +68,7 @@ describe('Products Effects', () => {
 
     when(productsServiceMock.getCategoryProducts('123', anyNumber(), anything())).thenReturn(
       of({
-        sortKeys: ['name-asc', 'name-desc'],
+        sortableAttributes: [{ name: 'name-asc' }, { name: 'name-desc' }],
         products: [{ sku: 'P222' }, { sku: 'P333' }] as Product[],
         total: 2,
       })
@@ -166,7 +166,7 @@ describe('Products Effects', () => {
         d: setProductListingPages({
           id: { type: 'category', value: '123' },
           itemCount: 2,
-          sortKeys: ['name-asc', 'name-desc'],
+          sortableAttributes: [{ name: 'name-asc' }, { name: 'name-desc' }],
           1: ['P222', 'P333'],
         }),
       };

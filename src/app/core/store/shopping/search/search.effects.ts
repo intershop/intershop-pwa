@@ -61,7 +61,7 @@ export class SearchEffects {
       map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
       concatMap(({ searchTerm, page, sorting }) =>
         this.productsService.searchProducts(searchTerm, page, sorting).pipe(
-          concatMap(({ total, products, sortKeys }) => [
+          concatMap(({ total, products, sortableAttributes }) => [
             ...products.map(product => loadProductSuccess({ product })),
             setProductListingPages(
               this.productListingMapper.createPages(
@@ -71,7 +71,7 @@ export class SearchEffects {
                 {
                   startPage: page,
                   sorting,
-                  sortKeys,
+                  sortableAttributes,
                   itemCount: total,
                 }
               )
