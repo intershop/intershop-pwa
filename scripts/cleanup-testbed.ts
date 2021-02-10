@@ -24,27 +24,36 @@ if (args.length === 1 && !(args[0].startsWith('src') || args[0].includes('/src/'
   args = spawnSync('git', ['--no-pager', 'diff', args[0], '--name-only']).stdout.toString().split('\n');
 }
 
-const files = args.length ? project.getSourceFiles(args) : project.getSourceFiles();
+args = [
+  ...args.filter(f => f.endsWith('.spec.ts')),
+  ...args.filter(f => !f.endsWith('.spec.ts')).map(file => file.replace(/\.(ts|html)$/, '.spec.ts')),
+].filter((v, i, a) => a.indexOf(v) === i);
+
+let files = args.length ? project.getSourceFiles(args) : project.getSourceFiles();
+
+files = files.filter(f => f.getBaseName().endsWith('.spec.ts'));
+
+console.log(`found ${files.length} test file(s)`);
 
 let processedFiles = 0;
 
 for (const file of files) {
   processedFiles++;
 
-  if (!file.getFilePath().endsWith('.spec.ts')) {
-    continue;
-  }
-
   const copyPath = file.getFilePath() + '.ut.spec.ts';
   let foundSomething = false;
 
   top: while (true) {
+    const percent = ((processedFiles / files.length) * 100).toFixed(0);
+
     if (
-      tsquery(
+      !tsquery(
         file.getSourceFile().compilerNode,
         'PropertyAccessExpression[expression.text=TestBed][name.text=configureTestingModule]'
       ).length
     ) {
+      console.log(`at ${percent}% - ${path(file)}`, 0, `test(s)`);
+    } else {
       const configs: { tb: number; type: string; index: number }[] = [];
 
       let tb = 0;
@@ -68,7 +77,6 @@ for (const file of files) {
         }
       });
 
-      const percent = ((processedFiles / files.length) * 100).toFixed(0);
       console.log(`at ${percent}% - ${path(file)}`, configs.length, `test(s)`);
 
       next: for (const config of configs) {
