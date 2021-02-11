@@ -22,6 +22,11 @@ export class ProductContextDirective implements OnInit, OnChanges {
   }
 
   @Input()
+  set log(log: boolean) {
+    this.context.log(log);
+  }
+
+  @Input()
   set sku(sku: string) {
     this.context.set('sku', () => sku);
   }
