@@ -16,6 +16,8 @@ The preferred way for **production deployments** is to build the `Dockerfile` in
 While building, you can provide a build argument (i.e. via `--build-arg`) `configuration` and build a different configuration from _angular.json_.
 By default the `production` configuration is built.
 
+All `configuration` options can also be multiple configurations like `--configuration=brand,production`, where production should always come last.
+
 ## Running
 
 Overwriting configurations of the PWA is entirely done by environment variables.

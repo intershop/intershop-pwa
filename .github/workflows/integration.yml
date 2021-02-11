@@ -46,7 +46,7 @@ jobs:
       - name: Build SSR
         run: |
           node scripts/init-local-environment -f
-          npm run build:local
+          npm run build --configuration=local
 
       - name: Upload Build Output
         uses: actions/upload-artifact@v2

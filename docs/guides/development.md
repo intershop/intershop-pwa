@@ -29,7 +29,7 @@ Use `ng serve --open` to start up the development server and open the Progressiv
 
 Run `ng serve` or `ng s` for a development server that is configured by default via `environment.ts` to use mocked responses instead of actual REST calls.
 
-Running `ng serve --configuration production` or `ng s -c production` starts a development server that will communicate by default with the Intershop Commerce Management server of our public demo via REST API.
+Running `ng serve --configuration=production` or `ng s -c production` starts a development server that will communicate by default with the Intershop Commerce Management server of our public demo via REST API.
 
 The project is also configured to support the usage of an own local environment file `environment.local.ts` that can be configured according to your local development environment needs, e.g. with a different icmBaseURL or different configuration options (see the `environment.model.ts` for the available configuration options).
 This file will be ignored by Git so the developer specific settings will not be committed and accidentally shared.
