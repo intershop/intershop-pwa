@@ -84,7 +84,7 @@ export class ShoppingFacade {
       }),
       switchMap(plainSKU =>
         this.store.pipe(
-          select(getProduct, { sku: plainSKU }),
+          select(getProduct(plainSKU)),
           filter(p => ProductHelper.isReadyForDisplay(p, completenessLevel))
         )
       )
@@ -92,9 +92,7 @@ export class ShoppingFacade {
   }
 
   productVariationCount$(sku: string) {
-    return toObservable(sku).pipe(
-      switchMap(plainSKU => this.store.pipe(select(getProductVariationCount, { sku: plainSKU })))
-    );
+    return toObservable(sku).pipe(switchMap(plainSKU => this.store.pipe(select(getProductVariationCount(plainSKU)))));
   }
 
   // CHECKOUT

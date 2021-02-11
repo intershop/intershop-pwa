@@ -23,12 +23,16 @@ export interface ProductsState extends EntityState<AllProductTypes> {
   failed: string[];
   links: { [sku: string]: ProductLinksDictionary };
   parts: { [sku: string]: SkuQuantityType[] };
+  variations: { [sku: string]: string[] };
+  defaultVariation: { [sku: string]: string };
 }
 
 export const initialState: ProductsState = productAdapter.getInitialState({
   failed: [],
   links: {},
   parts: {},
+  variations: {},
+  defaultVariation: {},
 });
 
 function addFailed(failed: string[], sku: string): string[] {
@@ -59,15 +63,11 @@ export const productsReducer = createReducer(
       failed: removeFailed(state.failed, product.sku),
     });
   }),
-  on(loadProductVariationsSuccess, (state: ProductsState, action) =>
-    productAdapter.updateOne(
-      {
-        id: action.payload.sku,
-        changes: { variationSKUs: action.payload.variations, defaultVariationSKU: action.payload.defaultVariation },
-      },
-      state
-    )
-  ),
+  on(loadProductVariationsSuccess, (state: ProductsState, action) => ({
+    ...state,
+    variations: { ...state.variations, [action.payload.sku]: action.payload.variations },
+    defaultVariation: { ...state.defaultVariation, [action.payload.sku]: action.payload.defaultVariation },
+  })),
   on(loadProductBundlesSuccess, (state: ProductsState, action) => ({
     ...state,
     parts: { ...state.parts, [action.payload.sku]: action.payload.bundledProducts },

@@ -4,14 +4,11 @@ import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
 import { createProductView } from 'ish-core/models/product-view/product-view.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { RecentlyViewedComponent } from 'ish-shared/components/recently/recently-viewed/recently-viewed.component';
@@ -27,15 +24,9 @@ describe('Product Page Component', () => {
   let component: ProductPageComponent;
   let fixture: ComponentFixture<ProductPageComponent>;
   let element: HTMLElement;
-  let shoppingFacade: ShoppingFacade;
   let context: ProductContextFacade;
 
-  const categories = categoryTree([{ uniqueId: 'A', categoryPath: ['A'] } as Category]);
-
   beforeEach(async () => {
-    shoppingFacade = mock(ShoppingFacade);
-    when(shoppingFacade.selectedCategory$).thenReturn(of(createCategoryView(categories, 'A')));
-
     context = mock(ProductContextFacade);
     when(context.select('product')).thenReturn(EMPTY);
 
@@ -86,7 +77,8 @@ describe('Product Page Component', () => {
 
   it('should display product page components when product is available', () => {
     const product = { sku: 'dummy', completenessLevel: ProductCompletenessLevel.Detail } as Product;
-    when(context.select('product')).thenReturn(of(createProductView(product, categories)));
+    const category = { uniqueId: 'A', categoryPath: ['A'] } as Category;
+    when(context.select('product')).thenReturn(of(createProductView(product, category)));
 
     fixture.detectChanges();
 

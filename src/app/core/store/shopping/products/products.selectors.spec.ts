@@ -93,7 +93,13 @@ describe('Products Selectors', () => {
       });
 
       it('should return a product stub if product is selected', () => {
-        expect(getProduct(store$.state, { sku: 'invalid' })).toBeTruthy();
+        expect(getProduct('invalid')(store$.state)).toMatchInlineSnapshot(`
+          Object {
+            "defaultCategory": undefined,
+            "failed": true,
+            "sku": "invalid",
+          }
+        `);
       });
     });
   });
@@ -286,17 +292,22 @@ describe('Products Selectors', () => {
 
     describe('and reporting success', () => {
       beforeEach(() => {
+        store$.dispatch(loadProductSuccess({ product: { sku: 'VAR', type: 'VariationProduct' } as Product }));
         store$.dispatch(loadProductVariationsSuccess({ sku: 'SKU', variations: ['VAR'], defaultVariation: 'VAR' }));
       });
 
       it('should add variations to state', () => {
-        expect(getProductEntities(store$.state).SKU).toMatchInlineSnapshot(`
+        expect(getProduct('SKU')(store$.state)).toMatchInlineSnapshot(`
           Object {
+            "defaultCategory": undefined,
             "defaultVariationSKU": "VAR",
             "sku": "SKU",
             "type": "VariationProductMaster",
-            "variationSKUs": Array [
-              "VAR",
+            "variations": Array [
+              Object {
+                "sku": "VAR",
+                "type": "VariationProduct",
+              },
             ],
           }
         `);
@@ -328,9 +339,9 @@ describe('Products Selectors', () => {
     });
 
     it('should select various products on single product selector', () => {
-      expect(getProduct(store$.state, { sku: 'SKU1' })).toHaveProperty('name', 'sku1');
-      expect(getProduct(store$.state, { sku: 'SKU2' })).toHaveProperty('name', 'sku2');
-      expect(getProduct(store$.state, { sku: 'SKU3' })).toHaveProperty('name', 'sku3');
+      expect(getProduct('SKU1')(store$.state)).toHaveProperty('name', 'sku1');
+      expect(getProduct('SKU2')(store$.state)).toHaveProperty('name', 'sku2');
+      expect(getProduct('SKU3')(store$.state)).toHaveProperty('name', 'sku3');
     });
   });
 
