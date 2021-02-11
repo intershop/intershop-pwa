@@ -41,7 +41,7 @@ Before customizing the PWA for your specific needs, have a look at our [Customiz
 
 Run `ng serve` or `ng s` for a development server that is configured by default via _environment.ts_ to use mocked responses instead of actual REST calls.
 
-Running `ng serve --configuration production` or `ng s -c production` starts a server that will communicate by default with the Intershop Commerce Management of our public demo via REST API.
+Running `ng serve --configuration=production` or `ng s -c production` starts a server that will communicate by default with the Intershop Commerce Management of our public demo via REST API.
 
 The project is also configured to support the usage of an own local environment file _environment.local.ts_ that can be configured according to the development environment, e.g. with a different icmBaseURL or different configuration options (see the _environment.model.ts_).
 This file will be ignored by Git so the developer-specific setting will not be committed.
@@ -65,7 +65,7 @@ Also have a look at further information in the [Development Guide](./development
 
 Deployments are generated to the _dist_ folder of the project.
 
-Use `npm run build` to generate the preferred Angular Universal enabled version.
+Use `npm run build` to generate an Angular Universal enabled version.
 On the server the _dist/server.js_ script has to be executed with `node`.
 
 Alternatively, you can use `ng build --prod` to get an application using browser rendering.
