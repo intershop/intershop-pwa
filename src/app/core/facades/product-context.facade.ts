@@ -104,6 +104,7 @@ interface ProductContext {
 @Injectable()
 export class ProductContextFacade extends RxState<ProductContext> {
   private privateConfig$ = new BehaviorSubject<Partial<ProductContextDisplayProperties>>({});
+  private loggingActive = false;
 
   set config(config: Partial<ProductContextDisplayProperties>) {
     this.privateConfig$.next(config);
@@ -251,6 +252,15 @@ export class ProductContextFacade extends RxState<ProductContext> {
         map(props => props.reduce((acc, p) => ({ ...acc, ...p }), {}))
       )
     );
+  }
+
+  log(val: boolean) {
+    if (!this.loggingActive) {
+      this.hold(this.select().pipe(filter(() => !!val)), ctx => {
+        // tslint:disable-next-line: no-console
+        console.log(ctx);
+      });
+    }
   }
 
   changeVariationOption(name: string, value: string) {
