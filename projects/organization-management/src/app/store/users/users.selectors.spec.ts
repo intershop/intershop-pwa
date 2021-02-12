@@ -69,7 +69,12 @@ describe('Users Selectors', () => {
     });
 
     describe('LoadUsersSuccess', () => {
-      const users = [{ login: '1' }, { login: '2' }, { login: '3', roleIDs: ['APP_B2B_OCI_USER'] }] as User[];
+      const users = [
+        { login: '1' },
+        { login: '2' },
+        { login: '3', roleIDs: ['APP_B2B_OCI_USER'] },
+        { login: '3', roleIDs: ['APP_B2B_CXML_USER'] },
+      ] as User[];
       const successAction = loadUsersSuccess({ users });
 
       beforeEach(() => {

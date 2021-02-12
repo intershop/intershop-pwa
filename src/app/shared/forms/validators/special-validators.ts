@@ -6,9 +6,10 @@ export class SpecialValidators {
    */
   static password(control: FormControl): { [error: string]: { valid: boolean } } {
     const passwordPattern = /^(|(?=[^\s]*[a-zA-Z])(?=[^\s]*[\d])[^\s]*)$/;
-    return passwordPattern.test(control.value) && (control.value.length > 6 || !control.value.length)
-      ? undefined
-      : { password: { valid: false } };
+    if (!control.value) {
+      return;
+    }
+    return passwordPattern.test(control.value) && control.value.length > 6 ? undefined : { password: { valid: false } };
   }
 
   static noSpecialChars(control: FormControl): { [error: string]: { valid: boolean } } {

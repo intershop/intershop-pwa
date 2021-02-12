@@ -1,5 +1,12 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, forwardRef } from '@angular/core';
-import { ControlValueAccessor, FormBuilder, FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  AbstractControl,
+  ControlValueAccessor,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  NG_VALUE_ACCESSOR,
+} from '@angular/forms';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { first, map, shareReplay, startWith, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 
@@ -40,7 +47,10 @@ export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit
           roles.reduce(
             (acc, role) => ({
               ...acc,
-              [role.id]: this.createFormControl(staticRoles.includes(role.id), role.id === 'APP_B2B_OCI_USER'),
+              [role.id]: this.createFormControl(
+                staticRoles.includes(role.id),
+                ['APP_B2B_OCI_USER', 'APP_B2B_CXML_USER'].includes(role.id)
+              ),
             }),
             {}
           )
@@ -77,6 +87,10 @@ export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit
 
   get unsorted() {
     return () => 0;
+  }
+
+  hideRole(control: AbstractControl): boolean {
+    return control.disabled && !control.value;
   }
 
   writeValue(initialRoleIDs: string[]): void {

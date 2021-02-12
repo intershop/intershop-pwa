@@ -41,14 +41,16 @@ describe('Punchout Users Effects', () => {
   let location: Location;
   let router: Router;
 
-  const users = [{ id: 'ociUser', login: 'ociuser@test.de', email: 'ociuser@test.de' }] as PunchoutUser[];
+  const users = [
+    { id: 'ociUser', login: 'ociuser@test.de', email: 'ociuser@test.de', punchoutType: 'oci' },
+  ] as PunchoutUser[];
 
   beforeEach(() => {
     punchoutService = mock(PunchoutService);
-    when(punchoutService.getUsers()).thenReturn(of(users));
-    when(punchoutService.createUser(users[0])).thenReturn(of(users[0]));
+    when(punchoutService.getUsers(anything())).thenReturn(of(users));
+    when(punchoutService.createUser(anything())).thenReturn(of(users[0]));
     when(punchoutService.updateUser(anything())).thenReturn(of(users[0]));
-    when(punchoutService.deleteUser(users[0].login)).thenReturn(of(undefined));
+    when(punchoutService.deleteUser(anything())).thenReturn(of(undefined));
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -74,15 +76,15 @@ describe('Punchout Users Effects', () => {
 
   describe('loadPunchoutUsers$', () => {
     it('should call the service for retrieving punchout users', done => {
-      actions$ = of(loadPunchoutUsers());
+      actions$ = of(loadPunchoutUsers({ type: 'oci' }));
 
       effects.loadPunchoutUsers$.subscribe(() => {
-        verify(punchoutService.getUsers()).once();
+        verify(punchoutService.getUsers('oci')).once();
         done();
       });
     });
     it('should map to action of type LoadPunchoutUsersSuccess', () => {
-      const action = loadPunchoutUsers();
+      const action = loadPunchoutUsers({ type: 'oci' });
       const completion = loadPunchoutUsersSuccess({ users });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -92,9 +94,9 @@ describe('Punchout Users Effects', () => {
 
     it('should dispatch a loadPunchoutUsersFail action on failed users load', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(punchoutService.getUsers()).thenReturn(throwError(error));
+      when(punchoutService.getUsers(anything())).thenReturn(throwError(error));
 
-      const action = loadPunchoutUsers();
+      const action = loadPunchoutUsers({ type: 'oci' });
       const completion = loadPunchoutUsersFail({ error });
 
       actions$ = hot('-a', { a: action });
@@ -106,10 +108,10 @@ describe('Punchout Users Effects', () => {
 
   describe('loadDetailedUser$', () => {
     it('should call the service for retrieving user', done => {
-      router.navigate(['/account/punchout', 'ociuser@test.de']);
+      router.navigate(['/account/punchout/ociuser@test.de', { format: 'oci' }]);
 
       effects.loadDetailedUser$.subscribe(() => {
-        verify(punchoutService.getUsers()).once();
+        verify(punchoutService.getUsers('oci')).once();
         done();
       });
     });
@@ -150,7 +152,7 @@ describe('Punchout Users Effects', () => {
               message: "account.punchout.user.created.message"
               messageParams: {"0":"ociuser@test.de"}
           `);
-          expect(location.path()).toMatchInlineSnapshot(`"/account/punchout"`);
+          expect(location.path()).toMatchInlineSnapshot(`"/account/punchout;format=oci"`);
         },
         fail,
         done
@@ -194,7 +196,7 @@ describe('Punchout Users Effects', () => {
               message: "account.punchout.user.updated.message"
               messageParams: {"0":"ociuser@test.de"}
           `);
-          expect(location.path()).toMatchInlineSnapshot(`"/account/punchout"`);
+          expect(location.path()).toMatchInlineSnapshot(`"/account/punchout;format=oci"`);
         },
         fail,
         done
@@ -217,15 +219,15 @@ describe('Punchout Users Effects', () => {
 
   describe('deletePunchoutUser$', () => {
     it('should call the service for deleting a punchout user', done => {
-      actions$ = of(deletePunchoutUser({ login: users[0].login }));
+      actions$ = of(deletePunchoutUser({ user: users[0] }));
 
       effects.deletePunchoutUser$.subscribe(() => {
-        verify(punchoutService.deleteUser(users[0].login)).once();
+        verify(punchoutService.deleteUser(anything())).once();
         done();
       });
     });
     it('should map to action of type DeletePunchoutUserSuccess and DisplaySuccessMessage', () => {
-      const action = deletePunchoutUser({ login: users[0].login });
+      const action = deletePunchoutUser({ user: users[0] });
 
       const completion1 = deletePunchoutUserSuccess({ login: users[0].login });
       const completion2 = displaySuccessMessage({
@@ -241,9 +243,9 @@ describe('Punchout Users Effects', () => {
 
     it('should dispatch a DeletePunchoutUserFail action on failed user deletion', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(punchoutService.deleteUser(users[0].login)).thenReturn(throwError(error));
+      when(punchoutService.deleteUser(users[0])).thenReturn(throwError(error));
 
-      const action = deletePunchoutUser({ login: users[0].login });
+      const action = deletePunchoutUser({ user: users[0] });
       const completion = deletePunchoutUserFail({ error });
 
       actions$ = hot('-a', { a: action });

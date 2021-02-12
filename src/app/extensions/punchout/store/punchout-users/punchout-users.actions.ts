@@ -2,9 +2,9 @@ import { createAction } from '@ngrx/store';
 
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
-import { PunchoutUser } from '../../models/punchout-user/punchout-user.model';
+import { PunchoutType, PunchoutUser } from '../../models/punchout-user/punchout-user.model';
 
-export const loadPunchoutUsers = createAction('[Punchout] Load Punchout Users');
+export const loadPunchoutUsers = createAction('[Punchout] Load Punchout Users', payload<{ type: PunchoutType }>());
 
 export const loadPunchoutUsersFail = createAction('[Punchout API] Load Punchout Users Fail', httpError());
 
@@ -31,7 +31,7 @@ export const updatePunchoutUserSuccess = createAction(
   payload<{ user: PunchoutUser }>()
 );
 
-export const deletePunchoutUser = createAction('[Punchout] Delete Punchout User', payload<{ login: string }>());
+export const deletePunchoutUser = createAction('[Punchout] Delete Punchout User', payload<{ user: PunchoutUser }>());
 
 export const deletePunchoutUserFail = createAction('[Punchout API] Delete Punchout User Fail', httpError());
 

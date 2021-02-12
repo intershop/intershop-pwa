@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -29,7 +28,7 @@ describe('Account Punchout Details Page Component', () => {
     when(punchoutFacade.updatePunchoutUser(anything())).thenReturn();
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       declarations: [
         AccountPunchoutDetailsPageComponent,
         MockComponent(ErrorMessageComponent),
@@ -50,14 +49,5 @@ describe('Account Punchout Details Page Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-  });
-
-  it('should submit a valid form when the user fills all required fields', () => {
-    fixture.detectChanges();
-
-    expect(component.formDisabled).toBeFalse();
-    component.submitForm();
-
-    expect(component.formDisabled).toBeFalse();
   });
 });
