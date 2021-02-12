@@ -88,7 +88,7 @@ interface ProductContext {
   label: string;
   categoryId: string;
 
-  displayProperties: Partial<ProductContextDisplayProperties<boolean>>;
+  displayProperties: Partial<ProductContextDisplayProperties>;
 
   // variation handling
   variationCount: number;
@@ -151,6 +151,10 @@ export class ProductContextFacade extends RxState<ProductContext> {
           )
         )
       )
+    );
+
+    this.hold(combineLatest([this.select('product'), this.select('displayProperties')]), args =>
+      this.postProductFetch(...args)
     );
 
     this.connect(
@@ -264,7 +268,7 @@ export class ProductContextFacade extends RxState<ProductContext> {
             .reduce((acc, [k, v]) => {
               acc[k] = typeof v === 'function' ? v(product) : v;
               return acc;
-            }, {}) as ProductContextDisplayProperties<boolean>
+            }, {}) as ProductContextDisplayProperties
       )
     );
 
@@ -274,6 +278,16 @@ export class ProductContextFacade extends RxState<ProductContext> {
         map(props => props.reduce((acc, p) => ({ ...acc, ...p }), {}))
       )
     );
+  }
+
+  private postProductFetch(product: AnyProductViewType, displayProperties: Partial<ProductContextDisplayProperties>) {
+    if (
+      ProductHelper.isRetailSet(product) &&
+      displayProperties.price &&
+      this.get('requiredCompletenessLevel') !== ProductCompletenessLevel.Detail
+    ) {
+      this.set('requiredCompletenessLevel', () => ProductCompletenessLevel.Detail);
+    }
   }
 
   log(val: boolean) {

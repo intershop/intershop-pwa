@@ -247,21 +247,6 @@ export class ProductsEffects {
     )
   );
 
-  loadRetailSetProductDetail$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loadProductSuccess),
-      mapToPayloadProperty('product'),
-      filter(ProductHelper.isRetailSet),
-      mapToProperty('sku'),
-      map(sku =>
-        loadProductIfNotLoaded({
-          sku,
-          level: ProductCompletenessLevel.Detail,
-        })
-      )
-    )
-  );
-
   loadPartsOfRetailSet$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadProductSuccess),

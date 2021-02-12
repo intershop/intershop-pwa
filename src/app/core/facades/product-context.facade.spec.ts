@@ -195,6 +195,10 @@ describe('Product Context Facade', () => {
       expect(context.get('productAsVariationProduct')).toBeFalsy();
     });
 
+    it('should not adapt required completeness level for normal product', () => {
+      expect(context.get('requiredCompletenessLevel')).toEqual(ProductCompletenessLevel.List);
+    });
+
     describe('quantity handling', () => {
       it('should start with min order quantity for product', () => {
         expect(pickQuantityFields(context)).toMatchInlineSnapshot(`
@@ -480,6 +484,10 @@ describe('Product Context Facade', () => {
           "variations": false,
         }
       `);
+    });
+
+    it('should adapt required completeness level to detail', () => {
+      expect(context.get('requiredCompletenessLevel')).toEqual(ProductCompletenessLevel.Detail);
     });
   });
 
