@@ -16,6 +16,10 @@ When the application is served this way, the initial page response for the brows
 
 ![Angular-BrowserSideApp-Sequence](deployment-angular-browsersideapp-sequence.jpg 'Angular-BrowserSideApp-Sequence')
 
+You can get your hands on that HTTP Server by building a container image based on file `Dockerfile_noSSR`.
+That file contains all the instructions necessary to build the image.
+By default it is instructed to expose port 4200 and it doesn't support https.
+
 Of course, this can have a significant impact on the client side if no efficient rendering power is available.
 Search engine crawlers might also not be able to execute JavaScript and therefore might only see the initial minimal response.
 
