@@ -97,8 +97,8 @@ glob('**/*.md')
         link =>
           !link.includes('tacton.com') &&
           !link.includes('repository.intershop.de') &&
-          !link.includes('support.intershop.com') &&
-          !link.includes('docs.intershop.com') &&
+          !link.includes('support.intershop.') &&
+          !link.includes('docs.intershop.') &&
           !link.includes('azurewebsites.net') &&
           !link.includes('github.com') &&
           !link.includes('github.com/intershop/intershop-pwa/commit')
