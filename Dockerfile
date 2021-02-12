@@ -1,3 +1,4 @@
+# synchronize-marker:pwa-docker-build:begin
 FROM node:14-alpine as buildstep
 WORKDIR /workspace
 COPY schematics /workspace/schematics/
@@ -15,6 +16,7 @@ ARG serviceWorker
 RUN node schematics/customization/service-worker ${serviceWorker} || true
 COPY templates/production/* /workspace/templates/production/
 RUN npm run ng -- build -c ${configuration}
+# synchronize-marker:pwa-docker-build:end
 
 # ^ this part above is copied to Dockerfile_noSSR and should be kept in sync
 
