@@ -9,6 +9,7 @@ import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
 import { SortableAttributesType } from 'ish-core/models/product-listing/product-listing.model';
+import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { ProductData, ProductDataStub, ProductVariationLink } from 'ish-core/models/product/product.interface';
 import { ProductMapper } from 'ish-core/models/product/product.mapper';
@@ -200,7 +201,13 @@ export class ProductsService {
   /**
    * Get product variations for the given master product sku.
    */
-  getProductVariations(sku: string): Observable<{ products: Partial<VariationProduct>[]; defaultVariation: string }> {
+  getProductVariations(
+    sku: string
+  ): Observable<{
+    products: Partial<VariationProduct>[];
+    defaultVariation: string;
+    masterProduct: Partial<VariationProductMaster>;
+  }> {
     if (!sku) {
       return throwError('getProductVariations() called without a sku');
     }
@@ -219,7 +226,8 @@ export class ProductsService {
         products: links.map(link => this.productMapper.fromVariationLink(link, sku)),
         defaultVariation: ProductMapper.findDefaultVariation(links),
       })),
-      defaultIfEmpty({ products: [], defaultVariation: undefined })
+      map(data => ({ ...data, masterProduct: ProductMapper.constructMasterStub(sku, data.products) })),
+      defaultIfEmpty({ products: [], defaultVariation: undefined, masterProduct: undefined })
     );
   }
 

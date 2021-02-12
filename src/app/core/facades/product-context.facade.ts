@@ -282,7 +282,7 @@ export class ProductContextFacade extends RxState<ProductContext> {
 
   private postProductFetch(product: AnyProductViewType, displayProperties: Partial<ProductContextDisplayProperties>) {
     if (
-      ProductHelper.isRetailSet(product) &&
+      (ProductHelper.isRetailSet(product) || ProductHelper.isMasterProduct(product)) &&
       displayProperties.price &&
       this.get('requiredCompletenessLevel') !== ProductCompletenessLevel.Detail
     ) {

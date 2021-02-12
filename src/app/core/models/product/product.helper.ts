@@ -94,28 +94,30 @@ export class ProductHelper {
   /**
    * Check if product is a retail set
    */
-  static isRetailSet(product: Product): product is ProductRetailSet {
+  static isRetailSet(product: Partial<AllProductTypes>): product is ProductRetailSet {
     return product && product.type === 'RetailSet';
   }
 
   /**
    * Check if product is a master product
    */
-  static isMasterProduct(product: Product): product is VariationProductMaster & VariationProductMasterView {
+  static isMasterProduct(
+    product: Partial<AllProductTypes>
+  ): product is VariationProductMaster & VariationProductMasterView {
     return product && product.type === 'VariationProductMaster';
   }
 
   /**
    * Check if product is a variation product
    */
-  static isVariationProduct(product: Partial<Product>): product is VariationProduct & VariationProductView {
+  static isVariationProduct(product: Partial<AllProductTypes>): product is VariationProduct & VariationProductView {
     return product && product.type === 'VariationProduct';
   }
 
   /**
    * Check if product is a product bundle
    */
-  static isProductBundle(product: Product): product is ProductBundle {
+  static isProductBundle(product: Partial<AllProductTypes>): product is ProductBundle {
     return product && product.type === 'Bundle';
   }
 

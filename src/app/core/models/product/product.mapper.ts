@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { flatten } from 'lodash-es';
 
 import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
@@ -9,6 +10,7 @@ import { Link } from 'ish-core/models/link/link.model';
 import { PriceMapper } from 'ish-core/models/price/price.mapper';
 import { SeoAttributesMapper } from 'ish-core/models/seo-attributes/seo-attributes.mapper';
 
+import { VariationProductMaster } from './product-variation-master.model';
 import { VariationProduct } from './product-variation.model';
 import { AllProductTypes, SkuQuantityType } from './product.helper';
 import { ProductData, ProductDataStub, ProductVariationLink } from './product.interface';
@@ -58,6 +60,20 @@ export class ProductMapper {
     );
 
     return defaultVariation ? ProductMapper.parseSKUfromURI(defaultVariation.uri) : undefined;
+  }
+
+  static constructMasterStub(sku: string, variations: Partial<VariationProduct>[]): Partial<VariationProductMaster> {
+    return (
+      variations?.length && {
+        type: 'VariationProductMaster',
+        sku,
+        completenessLevel: 0,
+        variationAttributeValues: flatten(variations.map(v => v.variableVariationAttributes)).filter(
+          (val, idx, arr) =>
+            arr.findIndex(el => el.variationAttributeId === val.variationAttributeId && el.value === val.value) === idx
+        ),
+      }
+    );
   }
 
   fromLink(link: Link): Partial<Product> {

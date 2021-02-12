@@ -1,7 +1,7 @@
 import { createAction } from '@ngrx/store';
 
 import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
-import { Product, ProductCompletenessLevel, SkuQuantityType } from 'ish-core/models/product/product.model';
+import { AllProductTypes, ProductCompletenessLevel, SkuQuantityType } from 'ish-core/models/product/product.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 export const loadProduct = createAction('[Products Internal] Load Product', payload<{ sku: string }>());
@@ -13,7 +13,10 @@ export const loadProductIfNotLoaded = createAction(
   payload<{ sku: string; level: ProductCompletenessLevel }>()
 );
 
-export const loadProductSuccess = createAction('[Products API] Load Product Success', payload<{ product: Product }>());
+export const loadProductSuccess = createAction(
+  '[Products API] Load Product Success',
+  payload<{ product: Partial<AllProductTypes> }>()
+);
 
 export const loadProductsForCategory = createAction(
   '[Products Internal] Load Products for Category',
@@ -35,8 +38,8 @@ export const loadProductsForMasterFail = createAction(
   httpError<{ masterSKU: string }>()
 );
 
-export const loadProductVariations = createAction(
-  '[Products Internal] Load Product Variations',
+export const loadProductVariationsIfNotLoaded = createAction(
+  '[Products Internal] Load Product Variations if not loaded',
   payload<{ sku: string }>()
 );
 

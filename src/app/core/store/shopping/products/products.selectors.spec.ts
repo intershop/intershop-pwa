@@ -18,8 +18,8 @@ import {
   loadProductFail,
   loadProductLinksSuccess,
   loadProductSuccess,
-  loadProductVariations,
   loadProductVariationsFail,
+  loadProductVariationsIfNotLoaded,
   loadProductVariationsSuccess,
   loadRetailSetSuccess,
 } from './products.actions';
@@ -287,7 +287,7 @@ describe('Products Selectors', () => {
   describe('loading product variations', () => {
     beforeEach(() => {
       store$.dispatch(loadProductSuccess({ product: { sku: 'SKU', type: 'VariationProductMaster' } as Product }));
-      store$.dispatch(loadProductVariations({ sku: 'SKU' }));
+      store$.dispatch(loadProductVariationsIfNotLoaded({ sku: 'SKU' }));
     });
 
     describe('and reporting success', () => {

@@ -58,7 +58,7 @@ export const productsReducer = createReducer(
       newProduct.completenessLevel = Math.max(product.completenessLevel, oldProduct.completenessLevel);
     }
 
-    return productAdapter.upsertOne(newProduct, {
+    return productAdapter.upsertOne(newProduct as AllProductTypes, {
       ...state,
       failed: removeFailed(state.failed, product.sku),
     });

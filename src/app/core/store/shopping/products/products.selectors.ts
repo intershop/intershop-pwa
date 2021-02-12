@@ -57,7 +57,7 @@ const internalProductDefaultVariationSKU = (sku: string) =>
   /* memoization automatically by output: string identity */
   createSelector(getProductsState, state => state.defaultVariation[sku]);
 
-const internalProductVariationSKUs = (sku: string) =>
+export const getProductVariationSKUs = (sku: string) =>
   /* memoization automatically by output: object identity */
   createSelector(getProductsState, (state: ProductsState) => {
     const product = state.entities[sku];
@@ -71,7 +71,7 @@ const internalProductVariations = (sku: string) =>
   /* memoization manually by output: variation SKUs don't vary, but reference to state changes often */
   createSelectorFactory<object, VariationProduct[]>(projector => resultMemoize(projector, isEqual))(
     getProductsState,
-    internalProductVariationSKUs(sku),
+    getProductVariationSKUs(sku),
     (state: ProductsState, variations: string[]) =>
       variations?.map(variationSku => productOrFailedStub(state, variationSku)) || []
   );

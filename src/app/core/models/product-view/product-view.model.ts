@@ -11,11 +11,13 @@ export interface ProductView extends Product {
 }
 
 export interface VariationProductView extends VariationProduct, ProductView {
+  type: 'VariationProduct';
   variations: VariationProduct[];
   productMaster: VariationProductMaster;
 }
 
 export interface VariationProductMasterView extends VariationProductMaster, ProductView {
+  type: 'VariationProductMaster';
   variations: VariationProduct[];
   defaultVariationSKU: string;
 }
@@ -30,7 +32,15 @@ export function createVariationProductMasterView(
   variations: VariationProduct[],
   defaultCategory?: Category
 ): VariationProductMasterView {
-  return product && { ...createProductView(product, defaultCategory), defaultVariationSKU, variations };
+  return (
+    product &&
+    variations?.length && {
+      ...createProductView(product, defaultCategory),
+      type: 'VariationProductMaster',
+      defaultVariationSKU,
+      variations,
+    }
+  );
 }
 
 export function createVariationProductView(
@@ -39,5 +49,14 @@ export function createVariationProductView(
   productMaster: VariationProductMaster,
   defaultCategory?: Category
 ): VariationProductView {
-  return product && { ...createProductView(product, defaultCategory), variations, productMaster };
+  return (
+    product &&
+    productMaster &&
+    variations?.length && {
+      ...createProductView(product, defaultCategory),
+      type: 'VariationProduct',
+      variations,
+      productMaster,
+    }
+  );
 }
