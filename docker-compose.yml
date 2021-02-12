@@ -6,6 +6,7 @@ services:
   pwa:
     build:
       context: .
+      # dockerfile: Dockerfile_noSSR
       args:
         # configuration: local
         configuration: production

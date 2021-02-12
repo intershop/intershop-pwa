@@ -15,6 +15,9 @@ ARG serviceWorker
 RUN node schematics/customization/service-worker ${serviceWorker} || true
 COPY templates/production/* /workspace/templates/production/
 RUN npm run ng -- build -c ${configuration}
+
+# ^ this part above is copied to Dockerfile_noSSR and should be kept in sync
+
 COPY tsconfig.server.json server.ts /workspace/
 RUN npm run ng -- run intershop-pwa:server:${configuration} --bundleDependencies
 # remove cache check for resources (especially index.html)
