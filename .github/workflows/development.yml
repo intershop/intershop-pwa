@@ -65,6 +65,9 @@ jobs:
           node scripts/tslint-hard
           npm run lint
 
+      - name: Check File Synchronization Status
+        run: node scripts/check-file-synchronization
+
   Jest:
     needs: [CancelPrevious]
     runs-on: ubuntu-latest
