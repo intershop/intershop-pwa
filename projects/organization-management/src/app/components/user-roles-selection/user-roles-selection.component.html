@@ -6,7 +6,11 @@
     <div class="col-md-8">
       <div *ngIf="form$ | async as form" class="row" [formGroup]="form">
         <ng-container *ngFor="let item of form.controls | keyvalue: unsorted; let i = index">
-          <div class="col-12" *ngIf="role$(item.key) | async as role">
+          <div
+            *ngIf="role$(item.key) | async as role"
+            [ngClass]="{ 'd-none': hideRole(form.get(item.key)) }"
+            class="col-12"
+          >
             <div class="form-control-checkbox">
               <div class="form-check form-control">
                 <label [for]="item.key">

@@ -4,7 +4,13 @@ import { Store, select } from '@ngrx/store';
 import { combineLatest, merge, noop } from 'rxjs';
 import { filter, map, mapTo, sample, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
 
-import { getAvailableLocales, getCurrentLocale, getDeviceType, getICMBaseURL } from 'ish-core/store/core/configuration';
+import {
+  getAvailableLocales,
+  getCurrentLocale,
+  getDeviceType,
+  getICMBaseURL,
+  getRestEndpoint,
+} from 'ish-core/store/core/configuration';
 import { businessError, getGeneralError, getGeneralErrorType } from 'ish-core/store/core/error';
 import { selectPath } from 'ish-core/store/core/router';
 import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } from 'ish-core/store/core/viewconf';
@@ -32,6 +38,8 @@ export class AppFacade {
   generalError$ = this.store.pipe(select(getGeneralError));
   generalErrorType$ = this.store.pipe(select(getGeneralErrorType));
   breadcrumbData$ = this.store.pipe(select(getBreadcrumbData));
+
+  getRestEndpoint$ = this.store.pipe(select(getRestEndpoint));
 
   appWrapperClasses$ = combineLatest([
     this.store.pipe(

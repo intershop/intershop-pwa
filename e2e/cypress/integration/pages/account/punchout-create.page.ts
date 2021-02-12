@@ -9,7 +9,7 @@ declare interface PunchoutUserCreateForm {
 export class PunchoutCreatePage {
   readonly tag = 'ish-account-punchout-create-page';
 
-  private submitButton = () => cy.get('[data-testing-id="create-punchout-user-submit"]');
+  private submitButton = () => cy.get('[data-testing-id="punchout-user-submit"]');
 
   fillForm(content: PunchoutUserCreateForm) {
     Object.keys(content)

@@ -15,7 +15,7 @@ export const getUsersError = createSelector(getUsersState, state => state.error)
 const { selectAll, selectEntities, selectTotal } = usersAdapter.getSelectors(getUsersState);
 
 export const getUsers = createSelector(selectAll, users =>
-  users.filter(user => !user.roleIDs?.find(roleID => roleID === 'APP_B2B_OCI_USER'))
+  users.filter(user => !user.roleIDs?.find(roleID => ['APP_B2B_OCI_USER', 'APP_B2B_CXML_USER'].includes(roleID)))
 );
 
 export const getUserCount = selectTotal;

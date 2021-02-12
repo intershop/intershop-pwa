@@ -34,20 +34,46 @@ export class PunchoutService {
     return punchoutType === 'oci' ? 'oci5' : 'cxml1.2';
   }
 
+  /**
+   * Gets all supported punchout formats.
+   * @returns    An array of punchout types.
+   */
+  getPunchoutTypes(): Observable<PunchoutType[]> {
+    return this.currentCustomer$.pipe(
+      switchMap(customer =>
+        this.apiService.get(`customers/${customer.customerNo}/punchouts`, { headers: this.punchoutHeaders }).pipe(
+          unpackEnvelope<Link>(),
+          this.apiService.resolveLinks<{ punchoutType: PunchoutType; version: string }>({
+            headers: this.punchoutHeaders,
+          }),
+          map(types => types?.map(type => type.punchoutType))
+        )
+      )
+    );
+  }
+
   // PUNCHOUT USER MANAGEMENT
 
-  /** Gets the list of punchout users.
-   * @returns    An array of punchout users.
+  /**
+   * Gets the list of punchout users.
+   * @param punchoutType    The user's punchout type.
+   * @returns               An array of punchout users.
    */
-  getUsers(): Observable<PunchoutUser[]> {
+  getUsers(punchoutType: PunchoutType): Observable<PunchoutUser[]> {
+    if (!punchoutType) {
+      return throwError('getUsers() of the punchout service called without punchout type');
+    }
+
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .get(`customers/${customer.customerNo}/punchouts/oci5/users`, { headers: this.punchoutHeaders })
+          .get(`customers/${customer.customerNo}/punchouts/${this.getResourceType(punchoutType)}/users`, {
+            headers: this.punchoutHeaders,
+          })
           .pipe(
             unpackEnvelope<Link>(),
             this.apiService.resolveLinks<PunchoutUser>({ headers: this.punchoutHeaders }),
-            map(users => users.map(user => ({ ...user, password: undefined })))
+            map(users => users.map(user => ({ ...user, punchoutType, password: undefined })))
           )
       )
     );
@@ -55,8 +81,8 @@ export class PunchoutService {
 
   /**
    * Creates a punchout user.
-   * @param user    The punchout user.
-   * @returns       The created punchout user.
+   * @param user          The punchout user.
+   * @returns             The created punchout user.
    */
   createUser(user: PunchoutUser): Observable<PunchoutUser> {
     if (!user) {
@@ -66,12 +92,12 @@ export class PunchoutService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .post(`customers/${customer.customerNo}/punchouts/oci5/users`, user, {
+          .post(`customers/${customer.customerNo}/punchouts/${this.getResourceType(user.punchoutType)}/users`, user, {
             headers: this.punchoutHeaders,
           })
           .pipe(
             this.apiService.resolveLink<PunchoutUser>({ headers: this.punchoutHeaders }),
-            map(updatedUser => ({ ...updatedUser, password: undefined }))
+            map(createdUser => ({ ...createdUser, punchoutType: user.punchoutType, password: undefined }))
           )
       )
     );
@@ -90,28 +116,35 @@ export class PunchoutService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .put<PunchoutUser>(`customers/${customer.customerNo}/punchouts/oci5/users/${user.login}`, user, {
-            headers: this.punchoutHeaders,
-          })
-          .pipe(map(updatedUser => ({ ...updatedUser, password: undefined })))
+          .put<PunchoutUser>(
+            `customers/${customer.customerNo}/punchouts/${this.getResourceType(user.punchoutType)}/users/${user.login}`,
+            user,
+            {
+              headers: this.punchoutHeaders,
+            }
+          )
+          .pipe(map(updatedUser => ({ ...updatedUser, punchoutType: user.punchoutType, password: undefined })))
       )
     );
   }
 
   /**
    * Deletes a punchout user.
-   * @param login   The login of the punchout user.
+   * @param user    The punchout user.
    */
-  deleteUser(login: string): Observable<void> {
-    if (!login) {
-      return throwError('deleteUser() of the punchout service called without login');
+  deleteUser(user: PunchoutUser): Observable<void> {
+    if (!user) {
+      return throwError('deleteUser() of the punchout service called without user');
     }
 
     return this.currentCustomer$.pipe(
       switchMap(customer =>
-        this.apiService.delete<void>(`customers/${customer.customerNo}/punchouts/oci5/users/${login}`, {
-          headers: this.punchoutHeaders,
-        })
+        this.apiService.delete<void>(
+          `customers/${customer.customerNo}/punchouts/${this.getResourceType(user.punchoutType)}/users/${user.login}`,
+          {
+            headers: this.punchoutHeaders,
+          }
+        )
       )
     );
   }

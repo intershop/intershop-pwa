@@ -51,12 +51,12 @@ describe('Punchout Users Selectors', () => {
     });
 
     it('should not have entities when in initial state', () => {
-      expect(getPunchoutUsers(store$.state)).toBeEmpty();
+      expect(getPunchoutUsers('oci')(store$.state)).toBeEmpty();
     });
   });
 
   describe('loadPunchoutUsers', () => {
-    const action = loadPunchoutUsers();
+    const action = loadPunchoutUsers({ type: 'oci' });
 
     beforeEach(() => {
       store$.dispatch(action);
@@ -67,7 +67,10 @@ describe('Punchout Users Selectors', () => {
     });
 
     describe('loadPunchoutUsersSuccess', () => {
-      const users = [{ id: '1' }, { id: '2' }] as PunchoutUser[];
+      const users = [
+        { id: '1', punchoutType: 'oci' },
+        { id: '2', punchoutType: 'oci' },
+      ] as PunchoutUser[];
       const successAction = loadPunchoutUsersSuccess({ users });
 
       beforeEach(() => {
@@ -83,7 +86,7 @@ describe('Punchout Users Selectors', () => {
       });
 
       it('should have entities when successfully loading', () => {
-        expect(getPunchoutUsers(store$.state)).not.toBeEmpty();
+        expect(getPunchoutUsers('oci')(store$.state)).not.toBeEmpty();
       });
     });
 
@@ -104,7 +107,7 @@ describe('Punchout Users Selectors', () => {
       });
 
       it('should not have entities when reducing error', () => {
-        expect(getPunchoutUsers(store$.state)).toBeEmpty();
+        expect(getPunchoutUsers('oci')(store$.state)).toBeEmpty();
       });
     });
   });
@@ -112,8 +115,8 @@ describe('Punchout Users Selectors', () => {
   describe('SelectedPunchoutUser', () => {
     beforeEach(() => {
       const users = [
-        { id: '1', login: '1' },
-        { id: '2', login: '2' },
+        { id: '1', login: '1', punchoutType: 'oci' },
+        { id: '2', login: '2', punchoutType: 'oci' },
       ] as PunchoutUser[];
       const successAction = loadPunchoutUsersSuccess({ users });
       store$.dispatch(successAction);
@@ -126,7 +129,7 @@ describe('Punchout Users Selectors', () => {
       }));
 
       it('should return the punchout user information when used', () => {
-        expect(getPunchoutUsers(store$.state)).not.toBeEmpty();
+        expect(getPunchoutUsers('oci')(store$.state)).not.toBeEmpty();
         expect(getPunchoutLoading(store$.state)).toBeFalse();
       });
 
@@ -135,6 +138,7 @@ describe('Punchout Users Selectors', () => {
           Object {
             "id": "1",
             "login": "1",
+            "punchoutType": "oci",
           }
         `);
       });

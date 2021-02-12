@@ -7,7 +7,7 @@ const localizationFile_default = 'src/assets/i18n/en_US.json';
 
 // regular expression for patterns of not explicitly used localization keys (dynamic created keys, error keys from REST calls)
 // ADDITIONAL PATTERNS HAVE TO BE ADDED HERE
-const regEx = /account\.login\..*\.message|.*budget.period..*|account\.budget\.type\..*|.*\.error.*/i;
+const regEx = /account\.login\..*\.message|.*budget.period..*|account\.punchout\..*\.text|account\.budget\.type\..*|.*\.error.*/i;
 
 // store localizations from default localization file in an object
 const localizations_default = JSON.parse(fs.readFileSync(localizationFile_default, 'utf8'));

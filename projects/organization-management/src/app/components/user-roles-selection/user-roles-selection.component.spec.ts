@@ -29,7 +29,13 @@ describe('User Roles Selection Component', () => {
       permissionDisplayNames: ['approve'],
       fixed: false,
     };
-    when(organizationManagementFacade.availableRoles$).thenReturn(of([buyerRole, approverRole]));
+    const punchoutRole = {
+      id: 'APP_B2B_OCI_USER',
+      displayName: 'Oci Punchout User Manager',
+      permissionDisplayNames: ['punchout'],
+      fixed: false,
+    };
+    when(organizationManagementFacade.availableRoles$).thenReturn(of([buyerRole, approverRole, punchoutRole]));
     when(organizationManagementFacade.role$(buyerRole.id)).thenReturn(of(buyerRole));
     when(organizationManagementFacade.role$(approverRole.id)).thenReturn(of(approverRole));
 
