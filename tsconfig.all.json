@@ -2,7 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "emitDecoratorMetadata": true,
-    "outDir": "./out-tsc/all",
+    "outDir": "./node_modules/.out-tsc/all",
     "types": ["jest", "jest-extended", "node"]
   },
   "include": ["src/**/*.ts", "projects/**/*.ts"]
