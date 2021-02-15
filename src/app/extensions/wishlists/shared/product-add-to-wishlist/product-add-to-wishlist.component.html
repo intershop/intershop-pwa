@@ -20,8 +20,4 @@
   </ng-container>
 </button>
 
-<ish-select-wishlist-modal
-  #modal
-  [product]="product"
-  (submitEmitter)="addProductToWishlist($event)"
-></ish-select-wishlist-modal>
+<ish-select-wishlist-modal #modal (submitEmitter)="addProductToWishlist($event)"></ish-select-wishlist-modal>

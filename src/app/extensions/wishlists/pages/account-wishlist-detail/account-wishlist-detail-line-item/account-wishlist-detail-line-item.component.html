@@ -22,7 +22,11 @@
                   [title]="'account.wishlist.table.options.move_to_another_wishlist' | translate"
                 ></fa-icon>
               </a>
-              <a class="btn-tool" (click)="removeProductFromWishlist(product?.sku)" data-testing-id="delete-wishlist">
+              <a
+                class="btn-tool"
+                (click)="removeProductFromWishlist(wishlistItemData.sku)"
+                data-testing-id="delete-wishlist"
+              >
                 <fa-icon
                   [icon]="['fas', 'trash-alt']"
                   [title]="'account.wishlist.table.options.remove' | translate"
@@ -56,7 +60,6 @@
   <ish-select-wishlist-modal
     #moveDialog
     addMoveProduct="move"
-    [product]="product"
-    (submitEmitter)="moveItemToOtherWishlist(product.sku, $event)"
+    (submitEmitter)="moveItemToOtherWishlist(wishlistItemData.sku, $event)"
   ></ish-select-wishlist-modal>
 </ng-container>

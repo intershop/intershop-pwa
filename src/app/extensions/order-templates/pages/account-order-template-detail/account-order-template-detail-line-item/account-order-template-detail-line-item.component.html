@@ -22,7 +22,7 @@
           </a>
           <a
             class="btn-tool"
-            (click)="removeProductFromOrderTemplate(product?.sku)"
+            (click)="removeProductFromOrderTemplate(orderTemplateItemData.sku)"
             data-testing-id="delete-order-template"
           >
             <fa-icon
@@ -47,6 +47,6 @@
   <ish-select-order-template-modal
     #moveDialog
     addMoveProduct="move"
-    (submitEmitter)="moveItemToOtherOrderTemplate(product.sku, $event)"
+    (submitEmitter)="moveItemToOtherOrderTemplate(orderTemplateItemData.sku, $event)"
   ></ish-select-order-template-modal>
 </ng-container>
