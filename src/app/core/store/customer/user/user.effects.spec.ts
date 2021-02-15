@@ -38,6 +38,7 @@ import {
   loginUser,
   loginUserFail,
   loginUserSuccess,
+  loginUserWithToken,
   requestPasswordReminder,
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
@@ -81,6 +82,7 @@ describe('User Effects', () => {
     userServiceMock = mock(UserService);
     paymentServiceMock = mock(PaymentService);
     when(userServiceMock.signinUser(anything())).thenReturn(of(loginResponseData));
+    when(userServiceMock.signinUserByToken(anything())).thenReturn(of(loginResponseData));
     when(userServiceMock.createUser(anything())).thenReturn(of(undefined));
     when(userServiceMock.updateUser(anything(), anything())).thenReturn(of({ firstName: 'Patricia' } as User));
     when(userServiceMock.updateUserPassword(anything(), anything(), anything(), anyString())).thenReturn(of(undefined));
@@ -120,6 +122,17 @@ describe('User Effects', () => {
 
       effects.loginUser$.subscribe(() => {
         verify(userServiceMock.signinUser(anything())).once();
+        done();
+      });
+    });
+
+    it('should call the api service when LoginUserWithToken event is called', done => {
+      const action = loginUserWithToken({ token: '12345' });
+
+      actions$ = of(action);
+
+      effects.loginUserWithToken$.subscribe(() => {
+        verify(userServiceMock.signinUserByToken(anything())).once();
         done();
       });
     });
