@@ -21,12 +21,7 @@
       <ish-product-promotion *ngIf="configuration$('promotions') | async" [product]="product"></ish-product-promotion>
 
       <div class="price-container" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-        <ish-product-price
-          *ngIf="configuration$('price') | async"
-          [product]="product"
-          [showInformationalPrice]="true"
-          [showPriceSavings]="true"
-        ></ish-product-price>
+        <ish-product-price [showInformationalPrice]="true" [showPriceSavings]="true"></ish-product-price>
 
         <ish-product-inventory></ish-product-inventory>
       </div>

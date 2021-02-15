@@ -37,7 +37,7 @@
         </div>
 
         <div class="col-12 col-md-5 product-list-actions-container">
-          <ish-product-price [product]="product"></ish-product-price>
+          <ish-product-price></ish-product-price>
           <p *ngIf="product.available; else noInStock">
             {{ 'account.wishlist.table.in_stock' | translate }}
           </p>

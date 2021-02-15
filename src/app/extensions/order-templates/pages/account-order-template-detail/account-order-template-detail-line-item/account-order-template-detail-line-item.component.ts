@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 import { OrderTemplate, OrderTemplateItem } from '../../../models/order-template/order-template.model';
@@ -18,11 +16,7 @@ export class AccountOrderTemplateDetailLineItemComponent implements OnInit {
   @Input() orderTemplateItemData: OrderTemplateItem;
   @Input() currentOrderTemplate: OrderTemplate;
 
-  product$: Observable<ProductView>;
-
   ngOnInit() {
-    this.product$ = this.context.select('product');
-
     this.context.hold(this.context.validDebouncedQuantityUpdate$(), quantity => {
       this.updateProductQuantity(this.context.get('sku'), quantity);
     });

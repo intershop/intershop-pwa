@@ -29,6 +29,7 @@ export type AllProductTypes = Product | VariationProduct | VariationProductMaste
 
 export type AnyProductViewType = ProductView | VariationProductView | VariationProductMasterView;
 
+// not-dead-code
 export type ProductPrices = Partial<
   Pick<ProductRetailSet, 'minListPrice' | 'minSalePrice' | 'summedUpListPrice' | 'summedUpSalePrice'>
 > &

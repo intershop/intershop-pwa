@@ -37,11 +37,7 @@
       </div>
 
       <div class="col-12 col-md-5 text-md-right">
-        <ish-product-price
-          *ngIf="configuration$('price') | async"
-          [product]="product"
-          [showInformationalPrice]="true"
-        ></ish-product-price>
+        <ish-product-price [showInformationalPrice]="true"></ish-product-price>
         <ish-product-inventory></ish-product-inventory>
         <ish-product-shipment></ish-product-shipment>
 

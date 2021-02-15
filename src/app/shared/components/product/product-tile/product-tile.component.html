@@ -15,7 +15,7 @@
   ></ish-product-promotion>
 
   <div *ngIf="configuration$('price') | async" class="price-container">
-    <ish-product-price [product]="product" [showInformationalPrice]="true"></ish-product-price>
+    <ish-product-price [showInformationalPrice]="true"></ish-product-price>
   </div>
 
   <ish-product-item-variations></ish-product-item-variations>

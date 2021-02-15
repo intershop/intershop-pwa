@@ -50,7 +50,11 @@
           <tr>
             <th>{{ 'product.compare.price.label' | translate }}</th>
             <td *ngFor="let product of visibleProducts">
-              <ish-product-price [product]="product" [showInformationalPrice]="true"></ish-product-price>
+              <ish-product-price
+                ishProductContext
+                [sku]="product?.sku"
+                [showInformationalPrice]="true"
+              ></ish-product-price>
             </td>
           </tr>
 

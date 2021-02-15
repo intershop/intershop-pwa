@@ -91,6 +91,7 @@ describe('Product Row Component', () => {
         "ish-product-add-to-compare",
         "ish-lazy-product-add-to-wishlist",
         "ish-lazy-product-add-to-order-template",
+        "ish-product-price",
         "ish-product-inventory",
         "ish-product-shipment",
         "ish-product-item-variations",
