@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { ProductContextDisplayProperties, ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { AnyProductViewType, ProductHelper } from 'ish-core/models/product/product.model';
 
 @Component({
@@ -19,9 +19,5 @@ export class ProductDetailComponent implements OnInit {
 
   ngOnInit() {
     this.product$ = this.context.select('product');
-  }
-
-  configuration$(key: keyof ProductContextDisplayProperties) {
-    return this.context.select('displayProperties', key);
   }
 }

@@ -1,0 +1,19 @@
+<ish-accordion *ngIf="product$ | async as product">
+  <ish-accordion-item [heading]="'product.description.heading' | translate">
+    <div [innerHTML]="product.longDescription"></div>
+  </ish-accordion-item>
+  <ish-accordion-item
+    *ngIf="product.attributes && product.attributes.length"
+    [heading]="'product.details.heading' | translate"
+  >
+    <ish-product-attributes [product]="product"></ish-product-attributes>
+  </ish-accordion-item>
+
+  <ish-accordion-item
+    *ngIf="configuration$('shipment') | async"
+    [heading]="'product.shipping.heading' | translate"
+    dataTestingId="section-shipping-tab"
+  >
+    <ish-product-shipment></ish-product-shipment>
+  </ish-accordion-item>
+</ish-accordion>
