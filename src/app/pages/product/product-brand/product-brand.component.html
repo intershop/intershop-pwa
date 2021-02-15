@@ -1,0 +1,5 @@
+<div *ngIf="manufacturer$ | async as manufacturer" class="product-brand">
+  <a [routerLink]="['/search', manufacturer]">
+    <span itemprop="brand">{{ manufacturer }}</span>
+  </a>
+</div>

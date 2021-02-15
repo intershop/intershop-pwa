@@ -10,11 +10,7 @@
     </h1>
 
     <div class="product-info">
-      <div *ngIf="product.manufacturer" class="product-brand">
-        <a [routerLink]="['/search', product.manufacturer]">
-          <span itemprop="brand">{{ product.manufacturer }}</span>
-        </a>
-      </div>
+      <ish-product-brand></ish-product-brand>
 
       <ish-product-id></ish-product-id>
 

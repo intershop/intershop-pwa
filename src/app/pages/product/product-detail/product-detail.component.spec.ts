@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -24,6 +23,7 @@ import { ProductNameComponent } from 'ish-shell/header/product-name/product-name
 import { LazyProductAddToOrderTemplateComponent } from '../../../extensions/order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
 import { LazyProductAddToQuoteComponent } from '../../../extensions/quoting/exports/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
 import { LazyTactonConfigureProductComponent } from '../../../extensions/tacton/exports/lazy-tacton-configure-product/lazy-tacton-configure-product.component';
+import { ProductBrandComponent } from '../product-brand/product-brand.component';
 import { ProductDetailActionsComponent } from '../product-detail-actions/product-detail-actions.component';
 import { ProductDetailVariationsComponent } from '../product-detail-variations/product-detail-variations.component';
 import { ProductImagesComponent } from '../product-images/product-images.component';
@@ -46,10 +46,7 @@ describe('Product Detail Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([{ path: 'search', component: ProductDetailComponent }]),
-        TranslateModule.forRoot(),
-      ],
+      imports: [TranslateModule.forRoot()],
       declarations: [
         MockComponent(AccordionComponent),
         MockComponent(AccordionItemComponent),
@@ -58,6 +55,7 @@ describe('Product Detail Component', () => {
         MockComponent(LazyTactonConfigureProductComponent),
         MockComponent(ProductAddToBasketComponent),
         MockComponent(ProductAttributesComponent),
+        MockComponent(ProductBrandComponent),
         MockComponent(ProductDetailActionsComponent),
         MockComponent(ProductDetailVariationsComponent),
         MockComponent(ProductIdComponent),
