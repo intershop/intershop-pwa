@@ -19,11 +19,7 @@
           {{ product.shortDescription }}
         </div>
 
-        <ish-product-promotion
-          *ngIf="configuration$('promotions') | async"
-          [product]="product"
-          displayType="simpleWithDetail"
-        ></ish-product-promotion>
+        <ish-product-promotion displayType="simpleWithDetail"></ish-product-promotion>
 
         <div class="product-tile-actions btn-group">
           <ish-lazy-product-add-to-quote displayType="icon" class="btn-link"></ish-lazy-product-add-to-quote>

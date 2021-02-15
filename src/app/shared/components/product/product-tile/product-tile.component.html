@@ -8,11 +8,7 @@
 
   <ish-product-rating></ish-product-rating>
 
-  <ish-product-promotion
-    *ngIf="configuration$('promotions') | async"
-    [product]="product"
-    displayType="simple"
-  ></ish-product-promotion>
+  <ish-product-promotion displayType="simple"></ish-product-promotion>
 
   <div *ngIf="configuration$('price') | async" class="price-container">
     <ish-product-price [showInformationalPrice]="true"></ish-product-price>

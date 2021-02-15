@@ -74,6 +74,7 @@ describe('Product Tile Component', () => {
         "ish-product-label",
         "ish-product-name",
         "ish-product-rating",
+        "ish-product-promotion",
         "ish-product-item-variations",
         "ish-lazy-tacton-configure-product",
         "ish-lazy-product-add-to-quote",

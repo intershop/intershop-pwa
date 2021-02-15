@@ -357,4 +357,8 @@ export class ProductContextFacade extends RxState<ProductContext> {
   productLinks$() {
     return this.shoppingFacade.productLinks$(this.select('sku'));
   }
+
+  productPromotions$() {
+    return this.select('product', 'promotionIds').pipe(switchMap(ids => this.shoppingFacade.promotions$(ids)));
+  }
 }

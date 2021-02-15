@@ -1,5 +1,5 @@
-<ng-container *ngIf="promotions$ | async as promotions">
-  <ul *ngIf="promotions.length" class="promotion-list">
+<ng-container *ngIf="visible$ | async">
+  <ul *ngIf="promotions$ | async as promotions" class="promotion-list">
     <ng-container *ngFor="let promotion of promotions">
       <li *ngIf="!promotion.disableMessages" class="promotion-list-item">
         <ng-container *ngIf="displayType === 'simple' || displayType === 'simpleWithDetail'; else default">
