@@ -10,6 +10,8 @@ import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 export const loginUser = createAction('[User] Login User', payload<{ credentials: Credentials }>());
 
+export const loginUserWithToken = createAction('[User] Login User With Token', payload<{ token: string }>());
+
 export const loginUserFail = createAction('[User API] Login User Failed', httpError());
 
 export const loginUserSuccess = createAction('[User API] Login User Success', payload<CustomerUserType>());
