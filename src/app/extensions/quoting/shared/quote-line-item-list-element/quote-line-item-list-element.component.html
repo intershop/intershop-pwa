@@ -21,7 +21,7 @@
       <!-- Product Bundles -->
       <ish-product-bundle-display></ish-product-bundle-display>
 
-      <ish-product-inventory [product]="product"></ish-product-inventory>
+      <ish-product-inventory></ish-product-inventory>
       <div *ngIf="editable$ | async" class="d-flex align-items-center">
         <ish-lazy-product-add-to-order-template
           [class]="'btn btn-link btn-tool add-to-order-template'"

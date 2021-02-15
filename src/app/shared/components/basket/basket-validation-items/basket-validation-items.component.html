@@ -7,12 +7,7 @@
   </div>
   <div class="list-body">
     <div *ngFor="let pli of lineItems" class="list-item-row list-item-row-big">
-      <div
-        *ngIf="product$(pli.productSKU) | async as product"
-        ishProductContext
-        [sku]="pli.productSKU"
-        class="row clearfix"
-      >
+      <div ishProductContext [sku]="pli.productSKU" class="row clearfix">
         <!---Product Image --->
         <div class="col-2 list-item">
           <ish-product-image imageType="S" [link]="true"></ish-product-image>
@@ -23,7 +18,7 @@
           <p class="product-id">{{ 'product.itemNumber.label' | translate }}&nbsp;{{ pli.productSKU }}</p>
 
           <!---Out of Stock --->
-          <ish-product-inventory [product]="product"></ish-product-inventory>
+          <ish-product-inventory></ish-product-inventory>
         </div>
         <div class="col-2 list-item column-price">
           {{ pli.quantity.value }}

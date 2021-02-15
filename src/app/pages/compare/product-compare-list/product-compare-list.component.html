@@ -57,7 +57,7 @@
           <tr>
             <th></th>
             <td *ngFor="let product of visibleProducts">
-              <ish-product-inventory [product]="product"></ish-product-inventory>
+              <ish-product-inventory ishProductContext [sku]="product?.sku"></ish-product-inventory>
             </td>
           </tr>
 

@@ -42,7 +42,7 @@
           [product]="product"
           [showInformationalPrice]="true"
         ></ish-product-price>
-        <ish-product-inventory *ngIf="configuration$('inventory') | async" [product]="product"></ish-product-inventory>
+        <ish-product-inventory></ish-product-inventory>
         <ish-product-shipment></ish-product-shipment>
 
         <ish-product-item-variations></ish-product-item-variations>

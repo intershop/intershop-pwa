@@ -1,13 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
-import { of } from 'rxjs';
-import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
+import { spy, verify } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
-import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
@@ -19,10 +16,8 @@ describe('Basket Validation Items Component', () => {
   let component: BasketValidationItemsComponent;
   let fixture: ComponentFixture<BasketValidationItemsComponent>;
   let element: HTMLElement;
-  let shoppingFacade: ShoppingFacade;
 
   beforeEach(async () => {
-    shoppingFacade = mock(ShoppingFacade);
     await TestBed.configureTestingModule({
       declarations: [
         BasketValidationItemsComponent,
@@ -33,7 +28,6 @@ describe('Basket Validation Items Component', () => {
         MockPipe(PricePipe),
       ],
       imports: [TranslateModule.forRoot()],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
   });
 
@@ -56,7 +50,6 @@ describe('Basket Validation Items Component', () => {
 
   it('should display an validation line item if there is a validation item', () => {
     component.lineItems = [BasketMockData.getBasketItem()];
-    when(shoppingFacade.product$(anything(), anything())).thenReturn(of({ sku: '4713' } as ProductView));
 
     fixture.detectChanges();
 

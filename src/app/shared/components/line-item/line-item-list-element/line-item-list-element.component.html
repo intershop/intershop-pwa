@@ -36,7 +36,7 @@
 
         <!-- lineItemViewType = 'availability' -->
         <ng-container *ngSwitchCase="'availability'">
-          <ish-product-inventory [product]="product"></ish-product-inventory>
+          <ish-product-inventory></ish-product-inventory>
         </ng-container>
 
         <!-- default lineItemViewType -->
@@ -54,7 +54,7 @@
           </ng-container>
 
           <!-- availability -->
-          <ish-product-inventory [product]="product"></ish-product-inventory>
+          <ish-product-inventory></ish-product-inventory>
 
           <!-- ship window message -->
           <ish-product-shipment></ish-product-shipment>

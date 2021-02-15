@@ -1,12 +1,21 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { Product } from 'ish-core/models/product/product.model';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
 @Component({
   selector: 'ish-product-inventory',
   templateUrl: './product-inventory.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductInventoryComponent {
-  @Input() product: Product;
+export class ProductInventoryComponent implements OnInit {
+  visible$: Observable<boolean>;
+  available$: Observable<boolean>;
+
+  constructor(private context: ProductContextFacade) {}
+
+  ngOnInit() {
+    this.visible$ = this.context.select('displayProperties', 'inventory');
+    this.available$ = this.context.select('product', 'available');
+  }
 }
