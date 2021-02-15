@@ -44,6 +44,7 @@ import {
   loginUser,
   loginUserFail,
   loginUserSuccess,
+  loginUserWithToken,
   requestPasswordReminder,
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
@@ -82,6 +83,16 @@ export class UserEffects {
       mapToPayloadProperty('credentials'),
       exhaustMap(credentials =>
         this.userService.signinUser(credentials).pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
+      )
+    )
+  );
+
+  loginUserWithToken$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loginUserWithToken),
+      mapToPayloadProperty('token'),
+      exhaustMap(token =>
+        this.userService.signinUserByToken(token).pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
       )
     )
   );
