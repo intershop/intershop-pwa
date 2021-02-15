@@ -1,6 +1,6 @@
 <ish-product-detail-actions></ish-product-detail-actions>
 
-<div *ngIf="product$ | async as product" class="row product-details">
+<div class="row product-details">
   <div class="col-12 col-md-6 col-lg-8"><ish-product-images></ish-product-images></div>
 
   <div class="col-12 col-md-6 col-lg-4">
@@ -37,10 +37,7 @@
         </div>
       </div>
 
-      <ish-product-add-to-basket
-        [class]="'btn-lg btn-block'"
-        [translationKey]="isRetailSet(product) ? 'product.add_to_cart.retailset.link' : 'product.add_to_cart.link'"
-      ></ish-product-add-to-basket>
+      <ish-product-add-to-basket [class]="'btn-lg btn-block'"></ish-product-add-to-basket>
 
       <ish-lazy-product-add-to-order-template
         [class]="'btn btn-default btn-block'"

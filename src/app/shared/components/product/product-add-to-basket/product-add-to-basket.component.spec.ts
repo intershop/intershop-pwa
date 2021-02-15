@@ -7,6 +7,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 import { ProductAddToBasketComponent } from './product-add-to-basket.component';
 
@@ -22,6 +23,7 @@ describe('Product Add To Basket Component', () => {
 
     context = mock(ProductContextFacade);
     when(context.select('displayProperties', 'addToBasket')).thenReturn(of(true));
+    when(context.select('product')).thenReturn(of({} as ProductView));
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
@@ -73,9 +75,9 @@ describe('Product Add To Basket Component', () => {
     expect(element.textContent).toMatchInlineSnapshot(`"product.add_to_cart.link"`);
   });
 
-  it('should use configured translation when it is configured', () => {
-    component.translationKey = 'abc';
+  it('should use retail set translation when product is retail set', () => {
+    when(context.select('product')).thenReturn(of({ type: 'RetailSet' } as ProductView));
     fixture.detectChanges();
-    expect(element.textContent).toMatchInlineSnapshot(`"abc"`);
+    expect(element.textContent).toMatchInlineSnapshot(`"product.add_to_cart.retailset.link"`);
   });
 });

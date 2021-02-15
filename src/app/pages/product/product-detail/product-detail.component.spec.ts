@@ -1,10 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
-import { of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
 
-import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
 import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
@@ -33,15 +29,6 @@ describe('Product Detail Component', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
-    const context = mock(ProductContextFacade);
-    when(context.select('product')).thenReturn(
-      of({
-        sku: 'sku',
-        name: 'Test Product',
-        longDescription: 'long description',
-      } as ProductView)
-    );
-
     await TestBed.configureTestingModule({
       declarations: [
         MockComponent(LazyProductAddToOrderTemplateComponent),
@@ -64,7 +51,6 @@ describe('Product Detail Component', () => {
         MockComponent(ProductShipmentComponent),
         ProductDetailComponent,
       ],
-      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });
 

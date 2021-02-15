@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { ProductHelper } from 'ish-core/models/product/product.helper';
 import { whenFalsy } from 'ish-core/utils/operators';
 
 /**
@@ -21,7 +22,6 @@ import { whenFalsy } from 'ish-core/utils/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductAddToBasketComponent implements OnInit, OnDestroy {
-  basketLoading$: Observable<boolean>;
   /**
    * when 'icon', the button label is an icon, otherwise it is text
    */
@@ -30,13 +30,11 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
    * additional css styling
    */
   @Input() class?: string;
-  /**
-   * translationKey for the button label
-   */
-  @Input() translationKey = 'product.add_to_cart.link';
 
+  basketLoading$: Observable<boolean>;
   hasQuantityError$: Observable<boolean>;
   visible$: Observable<boolean>;
+  translationKey$: Observable<string>;
 
   constructor(private checkoutFacade: CheckoutFacade, private context: ProductContextFacade) {}
 
@@ -50,6 +48,12 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.hasQuantityError$ = this.context.select('hasQuantityError');
     this.visible$ = this.context.select('displayProperties', 'addToBasket');
+    this.translationKey$ = this.context.select('product').pipe(
+      map(product =>
+        ProductHelper.isRetailSet(product) ? 'product.add_to_cart.retailset.link' : 'product.add_to_cart.link'
+      ),
+      startWith('product.add_to_cart.link')
+    );
 
     this.basketLoading$ = this.checkoutFacade.basketLoading$;
 
