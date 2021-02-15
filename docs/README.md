@@ -66,6 +66,7 @@ kb_sync_latest_only
   - [Guide - Hybrid Approach and ICM URL Rewriting](./guides/hybrid-approach-icm-url-rewriting.md)
 - [Concept - Logging](./concepts/logging.md)
 - [Guide - CI](./guides/continuous-integration.md)
+- [Guide - Optimizations](./guides/optimizations.md)
 
 ### Third-party Integrations
 
