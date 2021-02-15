@@ -6,7 +6,6 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { AccordionItemComponent } from 'ish-shared/components/common/accordion-item/accordion-item.component';
 import { AccordionComponent } from 'ish-shared/components/common/accordion/accordion.component';
@@ -48,7 +47,6 @@ describe('Product Detail Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        FeatureToggleModule.forTesting(),
         RouterTestingModule.withRoutes([{ path: 'search', component: ProductDetailComponent }]),
         TranslateModule.forRoot(),
       ],

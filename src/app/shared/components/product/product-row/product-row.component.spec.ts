@@ -5,7 +5,6 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
@@ -41,7 +40,7 @@ describe('Product Row Component', () => {
     when(context.select('product')).thenReturn(of({ sku: 'SKU' } as ProductView));
 
     await TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting(), TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       declarations: [
         MockComponent(LazyProductAddToOrderTemplateComponent),
         MockComponent(LazyProductAddToQuoteComponent),
@@ -86,6 +85,7 @@ describe('Product Row Component', () => {
         "ish-product-image",
         "ish-product-label",
         "ish-product-name",
+        "ish-product-rating",
         "ish-product-id",
         "ish-lazy-product-add-to-quote",
         "ish-product-add-to-compare",

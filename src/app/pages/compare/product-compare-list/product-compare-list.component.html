@@ -64,7 +64,7 @@
           <tr *ishFeature="'rating'">
             <th>{{ 'product.compare.ratings.label' | translate }}</th>
             <td *ngFor="let product of visibleProducts">
-              <ish-product-rating [product]="product"></ish-product-rating>
+              <ish-product-rating ishProductContext [sku]="product?.sku"></ish-product-rating>
             </td>
           </tr>
 
