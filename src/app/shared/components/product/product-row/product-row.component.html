@@ -13,7 +13,7 @@
 
         <ish-product-rating *ishFeature="'rating'" [product]="product"></ish-product-rating>
 
-        <ish-product-id *ngIf="configuration$('sku') | async" [product]="product"></ish-product-id>
+        <ish-product-id></ish-product-id>
 
         <div *ngIf="configuration$('description') | async" class="product-description">
           {{ product.shortDescription }}

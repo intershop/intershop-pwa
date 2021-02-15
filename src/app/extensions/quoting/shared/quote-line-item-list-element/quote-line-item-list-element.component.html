@@ -1,8 +1,4 @@
-<div
-  *ngIf="product$ | async as product"
-  class="row list-item-row list-item-row-big"
-  data-testing-id="product-list-item"
->
+<div class="row list-item-row list-item-row-big" data-testing-id="product-list-item">
   <!-- Product Image -->
   <div class="col-2 list-item">
     <ish-product-image imageType="S" [link]="true"></ish-product-image>
@@ -14,7 +10,7 @@
       <ish-product-name></ish-product-name>
 
       <!-- Product ID -->
-      <ish-product-id [product]="product"></ish-product-id>
+      <ish-product-id></ish-product-id>
 
       <!-- Product Variations -->
       <ish-product-variation-display></ish-product-variation-display>

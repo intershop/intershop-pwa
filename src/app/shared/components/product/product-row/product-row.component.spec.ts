@@ -86,6 +86,7 @@ describe('Product Row Component', () => {
         "ish-product-image",
         "ish-product-label",
         "ish-product-name",
+        "ish-product-id",
         "ish-lazy-product-add-to-quote",
         "ish-product-add-to-compare",
         "ish-lazy-product-add-to-wishlist",

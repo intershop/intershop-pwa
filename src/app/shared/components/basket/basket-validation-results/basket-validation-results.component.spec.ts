@@ -98,7 +98,7 @@ describe('Basket Validation Results Component', () => {
 
   it('should display a removed item message if there is a removed item', () => {
     const validationMessage = {
-      infos: [{ message: 'info message', parameters: { productSku: '43242' } }],
+      infos: [{ message: 'info message', parameters: { productSku: '43242' }, lineItem: {} }],
     } as BasketValidationResultType;
 
     when(checkoutFacadeMock.basketValidationResults$).thenReturn(of(validationMessage));

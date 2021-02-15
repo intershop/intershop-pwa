@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 import { QuoteContextFacade } from '../../facades/quote-context.facade';
 import { QuoteItem, QuoteRequestItem } from '../../models/quoting/quoting.model';
@@ -23,13 +22,10 @@ export class QuoteLineItemListElementComponent implements OnInit {
 
   editable$: Observable<boolean>;
 
-  product$: Observable<ProductView>;
-
   constructor(private quoteContext: QuoteContextFacade, private productContext: ProductContextFacade) {}
 
   ngOnInit() {
     this.editable$ = this.quoteContext.select('editable');
-    this.product$ = this.productContext.select('product');
 
     this.productContext.hold(this.productContext.validDebouncedQuantityUpdate$(), quantity => {
       this.quoteContext.updateItem({

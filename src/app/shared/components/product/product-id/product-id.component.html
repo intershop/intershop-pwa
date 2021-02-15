@@ -1,4 +1,4 @@
-<div class="product-id">
+<div class="product-id" *ngIf="visible$ | async">
   <label>{{ 'product.itemNumber.label' | translate }}</label>
-  <span itemprop="sku">{{ product.sku }}</span>
+  <span itemprop="sku">{{ sku$ | async }}</span>
 </div>
