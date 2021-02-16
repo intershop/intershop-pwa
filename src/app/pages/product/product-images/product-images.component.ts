@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ProductHelper } from 'ish-core/models/product/product.model';
+import { AnyProductViewType, ProductHelper } from 'ish-core/models/product/product.model';
 
 /**
  * The Product Images Component
@@ -19,15 +20,21 @@ import { ProductHelper } from 'ish-core/models/product/product.model';
   templateUrl: './product-images.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductImagesComponent {
+export class ProductImagesComponent implements OnInit {
   @ViewChild('carousel') carousel: NgbCarousel;
 
   activeSlide = '0';
 
+  product$: Observable<AnyProductViewType>;
+
   constructor(private context: ProductContextFacade) {}
 
+  ngOnInit() {
+    this.product$ = this.context.select('product');
+  }
+
   getImageViewIDsExcludePrimary$(imageType: string) {
-    return this.context.select('product').pipe(map(p => ProductHelper.getImageViewIDsExcludePrimary(p, imageType)));
+    return this.product$.pipe(map(p => ProductHelper.getImageViewIDsExcludePrimary(p, imageType)));
   }
 
   /**

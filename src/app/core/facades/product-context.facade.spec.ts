@@ -54,10 +54,6 @@ describe('Product Context Facade', () => {
       Object {
         "allowZeroQuantity": false,
         "categoryId": null,
-        "displayProperties": Object {
-          "addToBasket": true,
-          "readOnly": true,
-        },
         "propagateActive": true,
         "requiredCompletenessLevel": 2,
       }

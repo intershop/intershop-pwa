@@ -127,10 +127,6 @@ export class ProductContextFacade extends RxState<ProductContext> {
       requiredCompletenessLevel: ProductCompletenessLevel.List,
       propagateActive: true,
       allowZeroQuantity: false,
-      displayProperties: {
-        readOnly: true,
-        addToBasket: true,
-      },
       // tslint:disable-next-line: no-null-keyword
       categoryId: null,
     });
@@ -332,6 +328,11 @@ export class ProductContextFacade extends RxState<ProductContext> {
       current[index] = childState;
       return current;
     });
+    this.set('displayProperties', state => ({
+      ...state.displayProperties,
+      readOnly: true,
+      addToBasket: true,
+    }));
   }
 
   validDebouncedQuantityUpdate$(time = 800) {

@@ -49,6 +49,10 @@ export class ProductContextDirective implements OnInit, OnChanges {
   @Input()
   set parts(parts: SkuQuantityType[]) {
     this.context.set('parts', () => parts);
+    this.context.set('displayProperties', () => ({
+      readOnly: true,
+      addToBasket: true,
+    }));
   }
 
   @Input()

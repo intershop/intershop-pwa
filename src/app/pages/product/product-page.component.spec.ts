@@ -67,12 +67,7 @@ describe('Product Page Component', () => {
 
     fixture.detectChanges();
 
-    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
-        "ish-loading",
-        "ish-recently-viewed",
-      ]
-    `);
+    expect(findAllCustomElements(element)).toContain('ish-loading');
   });
 
   it('should display product page components when product is available', () => {

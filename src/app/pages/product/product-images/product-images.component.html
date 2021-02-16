@@ -1,4 +1,4 @@
-<div class="row">
+<div *ngIf="product$ | async" class="row">
   <div class="col-lg-3 d-none d-lg-block">
     <div class="product-img-thumbs" data-type="S">
       <div class="product-thumb-set" [ngClass]="{ active: isActiveSlide(0) }" (click)="setActiveSlide(0)">
