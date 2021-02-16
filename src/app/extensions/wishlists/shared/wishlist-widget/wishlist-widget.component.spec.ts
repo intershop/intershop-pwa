@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
-import { SwiperModule } from 'ngx-swiper-wrapper';
 import { EMPTY } from 'rxjs';
+import { SwiperComponent } from 'swiper/angular';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
@@ -24,10 +24,11 @@ describe('Wishlist Widget Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         MockComponent(ProductItemComponent),
+        MockComponent(SwiperComponent),
         MockDirective(ProductContextDirective),
         WishlistWidgetComponent,
       ],
-      imports: [SwiperModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) }],
     }).compileComponents();
   });

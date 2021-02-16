@@ -15,42 +15,36 @@
     <ish-product-links-carousel
       [links]="links.crossselling"
       [productLinkTitle]="'product.product_links.crossselling.title' | translate"
-      [swiperConfig]="swiperConfig"
     ></ish-product-links-carousel>
   </ng-container>
   <ng-container *ngIf="links.accessory?.products?.length">
     <ish-product-links-carousel
       [links]="links.accessory"
       [productLinkTitle]="'product.product_links.accessory.title' | translate"
-      [swiperConfig]="swiperConfig"
     ></ish-product-links-carousel>
   </ng-container>
   <ng-container *ngIf="links.differentorderunit?.products?.length">
     <ish-product-links-carousel
       [links]="links.differentorderunit"
       [productLinkTitle]="'product.product_links.differentorderunit.title' | translate"
-      [swiperConfig]="swiperConfig"
     ></ish-product-links-carousel>
   </ng-container>
   <ng-container *ngIf="links.followup?.products?.length">
     <ish-product-links-carousel
       [links]="links.followup"
       [productLinkTitle]="'product.product_links.followup.title' | translate"
-      [swiperConfig]="swiperConfig"
     ></ish-product-links-carousel>
   </ng-container>
   <ng-container *ngIf="links.other?.products?.length">
     <ish-product-links-carousel
       [links]="links.other"
       [productLinkTitle]="'product.product_links.other.title' | translate"
-      [swiperConfig]="swiperConfig"
     ></ish-product-links-carousel>
   </ng-container>
   <ng-container *ngIf="links.replacement?.products?.length">
     <ish-product-links-carousel
       [links]="links.replacement"
       [productLinkTitle]="'product.product_links.replacement.title' | translate"
-      [swiperConfig]="swiperConfig"
     ></ish-product-links-carousel>
   </ng-container>
 </ng-container>
