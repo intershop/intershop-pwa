@@ -147,7 +147,8 @@
     "tslint-eslint-rules": "^5.4.0",
     "tslint-etc": "^1.13.9",
     "tslint-plugin-prettier": "^2.3.0",
-    "typescript": "~4.0.5"
+    "typescript": "~4.0.5",
+    "typescript-tslint-plugin": "^1.0.1"
   },
   "husky": {
     "hooks": {
@@ -169,7 +170,7 @@
       "prettier --loglevel warn --write"
     ],
     "*.ts": [
-      "tslint --project tsconfig.base.json --fix",
+      "tslint --project tsconfig.json --fix",
       "jest --ci --bail --findRelatedTests --maxWorkers=50%"
     ]
   },
