@@ -90,7 +90,7 @@ const accountPageRoutes: Routes = [
         path: 'requisitions',
         canActivate: [AuthorizationToggleGuard],
         data: { permission: 'APP_B2B_PURCHASE' },
-        loadChildren: () => import('requisition-management').then(m => m.RequisitionManagementModule),
+        loadChildren: () => import('requisition-management').then(m => m.RequisitionManagementRoutingModule),
       },
     ],
   },

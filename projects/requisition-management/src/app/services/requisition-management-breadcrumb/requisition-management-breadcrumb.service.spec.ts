@@ -18,8 +18,9 @@ import { RequisitionManagementBreadcrumbService } from './requisition-management
 function adaptRoutes(rts: Route[], cmp: Type<any>): Route[] {
   return rts.map(r => ({
     ...r,
+    loadChildren: undefined,
     path: 'requisitions/' + r.path,
-    component: r.component && cmp,
+    component: (r.component || r.loadChildren) && cmp,
   }));
 }
 
