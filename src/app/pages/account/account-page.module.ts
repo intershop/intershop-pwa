@@ -84,7 +84,7 @@ const accountPageRoutes: Routes = [
         path: 'organization',
         canActivate: [AuthorizationToggleGuard],
         data: { permission: 'APP_B2B_MANAGE_USERS' },
-        loadChildren: () => import('organization-management').then(m => m.OrganizationManagementModule),
+        loadChildren: () => import('organization-management').then(m => m.OrganizationManagementRoutingModule),
       },
       {
         path: 'requisitions',

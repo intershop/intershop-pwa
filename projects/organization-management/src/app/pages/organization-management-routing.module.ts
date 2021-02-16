@@ -4,13 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { FetchUsersGuard } from '../guards/fetch-users.guard';
 import { RedirectFirstToParentGuard } from '../guards/redirect-first-to-parent.guard';
 
-import { UserCreatePageComponent } from './user-create/user-create-page.component';
-import { UserDetailPageComponent } from './user-detail/user-detail-page.component';
-import { UserEditBudgetPageComponent } from './user-edit-budget/user-edit-budget-page.component';
-import { UserEditProfilePageComponent } from './user-edit-profile/user-edit-profile-page.component';
-import { UserEditRolesPageComponent } from './user-edit-roles/user-edit-roles-page.component';
-import { UsersPageComponent } from './users/users-page.component';
-
 /**
  * routes for the organization management
  *
@@ -20,17 +13,17 @@ export const routes: Routes = [
   { path: '', redirectTo: 'users', pathMatch: 'full' },
   {
     path: 'users',
-    component: UsersPageComponent,
+    loadChildren: () => import('./users/users-page.module').then(m => m.UsersPageModule),
     canActivate: [FetchUsersGuard],
   },
   {
     path: 'users/create',
-    component: UserCreatePageComponent,
+    loadChildren: () => import('./user-create/user-create-page.module').then(m => m.UserCreatePageModule),
     canActivate: [RedirectFirstToParentGuard],
   },
   {
     path: 'users/:B2BCustomerLogin',
-    component: UserDetailPageComponent,
+    loadChildren: () => import('./user-detail/user-detail-page.module').then(m => m.UserDetailPageModule),
     canActivate: [FetchUsersGuard],
     data: {
       onlyInitialUsers: true,
@@ -38,17 +31,18 @@ export const routes: Routes = [
   },
   {
     path: 'users/:B2BCustomerLogin/profile',
-    component: UserEditProfilePageComponent,
+    loadChildren: () =>
+      import('./user-edit-profile/user-edit-profile-page.module').then(m => m.UserEditProfilePageModule),
     canActivate: [RedirectFirstToParentGuard],
   },
   {
     path: 'users/:B2BCustomerLogin/roles',
-    component: UserEditRolesPageComponent,
+    loadChildren: () => import('./user-edit-roles/user-edit-roles-page.module').then(m => m.UserEditRolesPageModule),
     canActivate: [RedirectFirstToParentGuard],
   },
   {
     path: 'users/:B2BCustomerLogin/budget',
-    component: UserEditBudgetPageComponent,
+    loadChildren: () => import('./user-edit-budget/user-edit-budget-page.module').then(m => m.UserEditBudgetPageModule),
     canActivate: [RedirectFirstToParentGuard],
   },
 ];
