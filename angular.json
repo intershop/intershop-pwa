@@ -166,11 +166,6 @@
       "cli": {
         "defaultCollection": "intershop-schematics"
       },
-      "schematics": {
-        "intershop-schematics:page": {
-          "lazy": false
-        }
-      },
       "root": "projects/organization-management",
       "sourceRoot": "projects/organization-management/src",
       "prefix": "ish",
@@ -215,11 +210,6 @@
       "projectType": "application",
       "cli": {
         "defaultCollection": "intershop-schematics"
-      },
-      "schematics": {
-        "intershop-schematics:page": {
-          "lazy": false
-        }
       },
       "root": "projects/requisition-management",
       "sourceRoot": "projects/requisition-management/src",
