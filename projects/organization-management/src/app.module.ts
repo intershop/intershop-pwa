@@ -6,18 +6,20 @@ import { RouterModule } from '@angular/router';
 import { CoreModule } from 'ish-core/core.module';
 import { AuthGuard } from 'ish-core/guards/auth.guard';
 import { IdentityProviderLogoutGuard } from 'ish-core/guards/identity-provider-logout.guard';
-import { FormsSharedModule } from 'ish-shared/forms/forms.module';
+import { SharedModule } from 'ish-shared/shared.module';
 
 import { AppComponent } from './app.component';
+import { OrganizationManagementModule } from './app/organization-management.module';
 import { LoginComponent } from './login.component';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent],
+  exports: [SharedModule],
   imports: [
     BrowserModule,
     CoreModule,
-    FormsSharedModule,
     NoopAnimationsModule,
+    OrganizationManagementModule,
     RouterModule.forRoot([
       {
         path: 'login',
@@ -30,7 +32,8 @@ import { LoginComponent } from './login.component';
       },
       {
         path: 'organization-management',
-        loadChildren: () => import('./app/organization-management.module').then(m => m.OrganizationManagementModule),
+        loadChildren: () =>
+          import('./app/pages/organization-management-routing.module').then(m => m.OrganizationManagementRoutingModule),
         canActivate: [AuthGuard],
         canActivateChild: [AuthGuard],
       },
@@ -40,6 +43,7 @@ import { LoginComponent } from './login.component';
         pathMatch: 'full',
       },
     ]),
+    SharedModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

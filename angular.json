@@ -171,8 +171,12 @@
       "prefix": "ish",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "customWebpackConfig": {
+              "path": "./templates/webpack/webpack.custom.ts",
+              "replaceDuplicatePlugins": true
+            },
             "outputPath": "dist/organization-management",
             "index": "projects/organization-management/src/index.html",
             "main": "projects/organization-management/src/main.ts",
@@ -197,7 +201,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
             "browserTarget": "organization-management:build",
             "disableHostCheck": true,
@@ -216,8 +220,12 @@
       "prefix": "ish",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "customWebpackConfig": {
+              "path": "./templates/webpack/webpack.custom.ts",
+              "replaceDuplicatePlugins": true
+            },
             "outputPath": "dist/requisition-management",
             "index": "projects/requisition-management/src/index.html",
             "main": "projects/requisition-management/src/main.ts",
@@ -238,7 +246,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
             "browserTarget": "requisition-management:build",
             "disableHostCheck": true,
