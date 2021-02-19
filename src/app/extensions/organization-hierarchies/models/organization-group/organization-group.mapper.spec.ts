@@ -45,21 +45,5 @@ describe('Organization Group Mapper', () => {
       expect(mapped).toHaveProperty('name', 'Some Child');
       expect(mapped).toHaveProperty('parentid', 'test');
     });
-
-    it('should map customer name to mapped data', () => {
-      const mapped = organizationGroupMapper.fromData(ROOT);
-      const handled = organizationGroupMapper.handleRoot(mapped, 'OilCorp');
-      expect(handled).toHaveProperty('id', 'test');
-      expect(handled).toHaveProperty('name', 'OilCorp');
-      expect(handled).toHaveProperty('parentid', undefined);
-    });
-
-    it('should NOT map customer name to mapped data', () => {
-      const mapped = organizationGroupMapper.fromData(CHILD);
-      const handled = organizationGroupMapper.handleRoot(mapped, 'OilCorp');
-      expect(handled).toHaveProperty('id', 'Child');
-      expect(handled).toHaveProperty('name', 'Some Child');
-      expect(handled).toHaveProperty('parentid', 'test');
-    });
   });
 });
