@@ -30,11 +30,7 @@ export class OrganizationHierarchiesService {
             `${baseURL}/organizations/${customer.customerNo}/groups`,
             this.contentTypeHeader
           )
-          .pipe(
-            map(list =>
-              list.data.map(this.mapper.fromData).map(item => this.mapper.handleRoot(item, customer.companyName))
-            )
-          )
+          .pipe(map(list => list.data.map(this.mapper.fromData)))
       )
     );
   }

@@ -16,11 +16,4 @@ export class OrganizationGroupMapper {
       throw new Error(`organizationGroupData is required`);
     }
   }
-
-  handleRoot(organizationGroup: OrganizationGroup, companyName: string): OrganizationGroup {
-    return {
-      ...organizationGroup,
-      name: organizationGroup.parentid ? organizationGroup.name : companyName,
-    };
-  }
 }
