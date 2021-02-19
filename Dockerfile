@@ -16,8 +16,6 @@ ARG serviceWorker
 RUN node schematics/customization/service-worker ${serviceWorker} || true
 COPY templates/webpack/* /workspace/templates/webpack/
 RUN npm run ng -- build -c ${configuration}
-COPY purgecss.config.js /workspace/
-RUN npm run postbuild
 # synchronize-marker:pwa-docker-build:end
 
 # ^ this part above is copied to Dockerfile_noSSR and should be kept in sync

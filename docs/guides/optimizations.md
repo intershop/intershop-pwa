@@ -26,11 +26,8 @@ If the PWA is built using `production` configuration. (Either by building with `
 - Angular CLI [build-optimizer](https://github.com/angular/angular-cli/tree/master/packages/angular_devkit/build_optimizer#angular-build-optimizer)
 - Webpack [SplitChunksPlugin](https://webpack.js.org/plugins/split-chunks-plugin/) is instructed to produce only `main`, `vendor`, `polyfills` and one `common` bundle for the code for optimized compression and download of the application.
 - All `data-testing` attributes are removed from the HTML templates to reduce output.
-
-## CSS Optimization
-
-On npm `postbuild`, we integrated [PurgeCSS](https://purgecss.com) to remove unused CSS classes from the CSS output.
-[Configuration](https://purgecss.com/configuration.html), especially whitelisting certain classes, can be done in [`purgecss.config.js`](../../purgecss.config.js).
+- [PurgeCSS](https://purgecss.com) is used to remove unused CSS classes from the CSS output.
+  [Configuration](https://purgecss.com/configuration.html), especially [safelisting](https://purgecss.com/safelisting.html) certain classes, can be done on the plugin configuration or directly in your CSS with a special comment.
 
 # Further References
 
