@@ -8,6 +8,9 @@
         {{- $features := "" }}{{ if (has . "features") }}{{ $features = join ( slice ";features" .features ) "=" }}{{ end }}
         {{- $theme := "" }}{{ if (has . "theme") }}{{ $theme = join ( slice ";theme" .theme ) "=" }}{{ end }}
         {{- $baseHref := "/" }}{{ if (has . "baseHref") }}{{ $baseHref = .baseHref }}{{ end }}
+        {{- $icmScheme := "" }}{{ if (has . "icmScheme") }}{{ $icmScheme = join ( slice "icmScheme" .icmScheme ) "=" }}{{ end }}
+        {{- $icmPort := "" }}{{ if (has . "icmPort") }}{{ $icmPort = join ( slice "icmPort" .icmPort ) "=" }}{{ end }}
+        {{- $icmHost := "default" }}{{ if (has . "icmHost") }}{{ $icmHost = .icmHost }}{{ end }}
         proxy_set_header Host $http_host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -28,7 +31,7 @@
 
         rewrite '^(?!.*;lang=.*)(.*)$' '$1;lang={{ $lang }}';
 
-        set $default_rewrite_params ';icmHost=default;channel={{ $channel }}{{ $application }}{{ $identityProvider }}{{ $features }}{{ $theme }};baseHref={{ $baseHref | strings.ReplaceAll "/" "%2F" }};device=$ua_device';
+        set $default_rewrite_params ';icmHost={{ $icmHost }}{{ $icmScheme }}{{ $icmPort }};channel={{ $channel }}{{ $application }}{{ $identityProvider }}{{ $features }}{{ $theme }};baseHref={{ $baseHref | strings.ReplaceAll "/" "%2F" }};device=$ua_device';
 
         rewrite '^(.*)$' '$1$default_rewrite_params' break;
 
