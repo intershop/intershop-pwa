@@ -6,18 +6,20 @@ import { RouterModule } from '@angular/router';
 import { CoreModule } from 'ish-core/core.module';
 import { AuthGuard } from 'ish-core/guards/auth.guard';
 import { IdentityProviderLogoutGuard } from 'ish-core/guards/identity-provider-logout.guard';
-import { FormsSharedModule } from 'ish-shared/forms/forms.module';
+import { SharedModule } from 'ish-shared/shared.module';
 
 import { AppComponent } from './app.component';
+import { RequisitionManagementModule } from './app/requisition-management.module';
 import { LoginComponent } from './login.component';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent],
+  exports: [SharedModule],
   imports: [
     BrowserModule,
     CoreModule,
-    FormsSharedModule,
     NoopAnimationsModule,
+    RequisitionManagementModule,
     RouterModule.forRoot([
       {
         path: 'login',
@@ -30,16 +32,18 @@ import { LoginComponent } from './login.component';
       },
       {
         path: 'requisition-management',
-        loadChildren: () => import('./app/requisition-management.module').then(m => m.RequisitionManagementModule),
+        loadChildren: () =>
+          import('./app/pages/requisition-management-routing.module').then(m => m.RequisitionManagementRoutingModule),
         canActivate: [AuthGuard],
         canActivateChild: [AuthGuard],
       },
       {
         path: '**',
-        redirectTo: 'requisition-management',
+        redirectTo: 'requisition-management/buyer',
         pathMatch: 'full',
       },
     ]),
+    SharedModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

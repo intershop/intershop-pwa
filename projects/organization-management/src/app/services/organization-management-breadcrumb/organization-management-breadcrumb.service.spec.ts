@@ -17,7 +17,8 @@ import { OrganizationManagementBreadcrumbService } from './organization-manageme
 function adaptRoutes(rts: Route[], cmp: Type<unknown>): Route[] {
   return rts.map(r => ({
     ...r,
-    component: r.component && cmp,
+    loadChildren: undefined,
+    component: (r.component || r.loadChildren) && cmp,
     children: r.children && adaptRoutes(r.children, cmp),
   }));
 }
