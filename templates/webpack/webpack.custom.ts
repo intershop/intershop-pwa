@@ -1,7 +1,7 @@
 import { CustomWebpackBrowserSchema, TargetOptions } from '@angular-builders/custom-webpack';
 import { AngularCompilerPlugin } from '@ngtools/webpack';
 import { existsSync } from 'fs';
-import { dirname, join, resolve } from 'path';
+import { join, resolve } from 'path';
 import * as webpack from 'webpack';
 
 const log = (...txt) => {
@@ -77,7 +77,7 @@ export default (config: webpack.Configuration, _: CustomWebpackBrowserSchema, ta
       },
     });
 
-    const environmentsBase = join(dirname(angularCompilerPlugin.options.mainPath), 'environments');
+    const environmentsBase = join(process.cwd(), 'src', 'environments');
     const specialEnvironmentFile = join(environmentsBase, `environment.${key}.ts`);
 
     if (existsSync(specialEnvironmentFile)) {

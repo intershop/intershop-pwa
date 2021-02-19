@@ -31,8 +31,6 @@ export const getICMBaseURL = createSelector(getConfigurationState, state => stat
 
 export const getFeatures = createSelector(getConfigurationState, state => state.features);
 
-export const getGTMToken = createSelector(getConfigurationState, state => state.gtmToken);
-
 export const getTheme = createSelector(getConfigurationState, state => state.theme);
 
 export const getAvailableLocales = createSelector(getConfigurationState, state => state.locales);

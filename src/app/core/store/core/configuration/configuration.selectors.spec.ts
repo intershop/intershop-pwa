@@ -3,13 +3,12 @@ import { TestBed } from '@angular/core/testing';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { applyConfiguration, setGTMToken } from './configuration.actions';
+import { applyConfiguration } from './configuration.actions';
 import {
   getAvailableLocales,
   getCurrentLocale,
   getDeviceType,
   getFeatures,
-  getGTMToken,
   getICMBaseURL,
   getICMServerURL,
   getICMStaticURL,
@@ -36,7 +35,6 @@ describe('Configuration Selectors', () => {
       expect(getICMServerURL(store$.state)).toBeUndefined();
       expect(getICMStaticURL(store$.state)).toBeUndefined();
       expect(getFeatures(store$.state)).toBeUndefined();
-      expect(getGTMToken(store$.state)).toBeUndefined();
       expect(getAvailableLocales(store$.state)).not.toBeEmpty();
       expect(getCurrentLocale(store$.state)).not.toBeEmpty();
       expect(getDeviceType(store$.state)).not.toBeEmpty();
@@ -81,16 +79,6 @@ describe('Configuration Selectors', () => {
         expect(getICMStaticURL(store$.state)).toEqual('http://example.org/static/site/app');
         expect(getFeatures(store$.state)).toIncludeAllMembers(['compare', 'recently']);
       });
-    });
-  });
-
-  describe('after setting gtm token', () => {
-    beforeEach(() => {
-      store$.dispatch(setGTMToken({ gtmToken: 'dummy' }));
-    });
-
-    it('should set token to state', () => {
-      expect(getGTMToken(store$.state)).toEqual('dummy');
     });
   });
 
