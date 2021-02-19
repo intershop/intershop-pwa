@@ -1,4 +1,4 @@
-import { Optional } from '@angular/core';
+import { FactoryProvider, Optional } from '@angular/core';
 import { Actions } from '@ngrx/effects';
 import { Action, ActionReducer, Store } from '@ngrx/store';
 
@@ -59,7 +59,7 @@ export abstract class StoreWithSnapshots {
  * Provider wrapping ngrx {@link Store} for testing.
  * use it in combination with {@link StoreWithSnapshots}.
  */
-export function provideStoreSnapshots() {
+export function provideStoreSnapshots(): FactoryProvider {
   const actionList: Action[] = [];
   function saveStore(store: StoreWithSnapshots & Store, actions: Actions) {
     store.subscribe(state => (store.state = state as CoreState));
@@ -73,11 +73,9 @@ export function provideStoreSnapshots() {
     return store;
   }
 
-  return [
-    {
-      provide: StoreWithSnapshots,
-      useFactory: saveStore,
-      deps: [Store, [new Optional(), Actions]],
-    },
-  ];
+  return {
+    provide: StoreWithSnapshots,
+    useFactory: saveStore,
+    deps: [Store, [new Optional(), Actions]],
+  };
 }

@@ -423,29 +423,55 @@ If you initialize directly under `describe`, the variable is initialized only on
 > Since tests should be independent of each other, do not do this.
 
 ```typescript
-describe(... () => {
-  let varA = true;    // if changed once, value is not initialized again
-  const varB = true;  // immutable value
-  let varC;           // initialized in beforeEach for every test
+describe('...', () => {
+  let a = true; // initialized just once
+  const b = true; // immutable value
+  let c; // re-initialized in beforeEach
 
-  beforeEach({ varC = true; });
+  beforeEach(() => {
+    c = true;
+  });
 
-  it( 'test1' () => {
-    varA = false;
-    // varB = false; not possible
-    varC = false; });
-  it( 'test2' () => {
-    // varA is still false
-    // varB is still true
-    // varC is back to true
-  })
+  it('test1', () => {
+    a = false;
+    // b = false; not possible
+    c = false;
+  });
+
+  it('test2', () => {
+    // a is still false
+    // c is back to true
+  });
 });
 ```
 
-As shown in the above example, `varA` shows the wrong way of initializing variables in tests.
+As shown in the above example, `a` shows the wrong way of initializing variables in tests.
 
-If you do not need to change the value, use a `const` declaration like variable `varB`.
-If you need to change the value in some tests, assure it is reinitialized each time in the `beforeEach` method like `varC`.
+If you do not need to change the value, use a `const` declaration for primitive variables like `b`.
+If you need to change the value in some tests, assure it is reinitialized each time in the `beforeEach` method like `c`.
+
+A `const` declaration like `b` should not be used for complex values, as the object behind `b` is still mutable and has to be re-initialized properly:
+
+```typescript
+describe('...', () => {
+  let a: any;
+  const b = { value: true };
+
+  beforeEach(() => {
+    a = { value: true };
+  });
+
+  it('test1', () => {
+    a.value = false;
+    b.value = false;
+  });
+
+  it('test2', () => {
+    // a.value is back to true
+    // b.value is still false
+  });
+});
+```
 
 ### Use the right way to test EventEmitter
 

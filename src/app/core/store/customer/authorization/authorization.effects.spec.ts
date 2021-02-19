@@ -1,12 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { Observable, of, throwError } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Authorization } from 'ish-core/models/authorization/authorization.model';
-import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { AuthorizationService } from 'ish-core/services/authorization/authorization.service';
 import { getLoggedInCustomer, getLoggedInUser, loadCompanyUserSuccess } from 'ish-core/store/customer/user';
@@ -18,7 +17,6 @@ import { AuthorizationEffects } from './authorization.effects';
 describe('Authorization Effects', () => {
   let actions$: Observable<Action>;
   let effects: AuthorizationEffects;
-  let store$: MockStore;
   let authorizationService: AuthorizationService;
 
   beforeEach(() => {
@@ -40,8 +38,6 @@ describe('Authorization Effects', () => {
     });
 
     effects = TestBed.inject(AuthorizationEffects);
-    store$ = TestBed.inject(MockStore);
-    store$.overrideSelector(getLoggedInCustomer, {} as Customer);
   });
 
   describe('triggerLoading$', () => {

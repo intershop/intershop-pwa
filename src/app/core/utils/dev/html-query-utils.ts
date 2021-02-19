@@ -29,7 +29,7 @@ export function findAllCustomElements(el: HTMLElement): string[] {
   return returnList;
 }
 
-export function findAllDataTestingIDs(fixture: ComponentFixture<unknown>) {
+export function findAllDataTestingIDs(fixture: ComponentFixture<unknown>): string[] {
   return fixture.debugElement.queryAll(By.css('[data-testing-id]')).map(el => el.attributes['data-testing-id']);
 }
 

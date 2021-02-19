@@ -5,8 +5,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { Observable, noop, of, throwError } from 'rxjs';
-import { toArray } from 'rxjs/operators';
+import { BehaviorSubject, Observable, merge, noop, of, throwError } from 'rxjs';
+import { delay, toArray } from 'rxjs/operators';
 import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
@@ -16,7 +16,7 @@ import { Product, ProductCompletenessLevel } from 'ish-core/models/product/produ
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadCategory } from 'ish-core/store/shopping/categories';
-import { setProductListingPageSize, setProductListingPages } from 'ish-core/store/shopping/product-listing';
+import { setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
@@ -135,7 +135,7 @@ describe('Products Effects', () => {
       expect(effects.loadProduct$).toBeObservable(expected$);
     });
 
-    it('should map invalid request to action of type LoadProductFail', () => {
+    it('should map invalid request to action of type LoadProductFail - marbles', () => {
       const sku = 'invalid';
       const action = loadProduct({ sku });
       const completion = loadProductFail({ error: makeHttpError({ message: 'invalid' }), sku });
@@ -144,6 +144,70 @@ describe('Products Effects', () => {
 
       expect(effects.loadProduct$).toBeObservable(expected$);
     });
+
+    it('should map invalid request to action of type LoadProductFail - setTimeout', done => {
+      actions$ = merge(
+        new BehaviorSubject(loadProduct({ sku: 'invalid' })),
+        of(loadProduct({ sku: 'invalid' })).pipe(delay(1000)),
+        of(loadProduct({ sku: 'invalid' })).pipe(delay(2000))
+      );
+
+      const actions = [];
+
+      effects.loadProduct$.subscribe(
+        action => {
+          actions.push(action);
+        },
+        fail,
+        () => fail('COMPLETED')
+      );
+
+      setTimeout(() => {
+        expect(actions).toHaveLength(1);
+      }, 500);
+
+      setTimeout(() => {
+        expect(actions).toHaveLength(2);
+      }, 1500);
+
+      setTimeout(() => {
+        expect(actions).toHaveLength(3);
+      }, 2500);
+
+      setTimeout(() => {
+        expect(actions.every(a => a.type === loadProductFail.type));
+        done();
+      }, 3000);
+    });
+
+    it('should map invalid request to action of type LoadProductFail - fakeAsync', fakeAsync(() => {
+      actions$ = merge(
+        new BehaviorSubject(loadProduct({ sku: 'invalid' })),
+        of(loadProduct({ sku: 'invalid' })).pipe(delay(1000)),
+        of(loadProduct({ sku: 'invalid' })).pipe(delay(2000))
+      );
+
+      const actions: Action[] = [];
+
+      effects.loadProduct$.subscribe(
+        action => {
+          actions.push(action);
+        },
+        fail,
+        () => fail('COMPLETED')
+      );
+
+      tick(500);
+      expect(actions).toHaveLength(1);
+
+      tick(1000);
+      expect(actions).toHaveLength(2);
+
+      tick(1000);
+      expect(actions).toHaveLength(3);
+
+      expect(actions.every(a => a.type === loadProductFail.type));
+    }));
   });
 
   describe('loadProductsForCategory$', () => {
@@ -156,21 +220,23 @@ describe('Products Effects', () => {
       });
     });
 
-    it('should trigger actions for loading content for the product list', () => {
-      actions$ = hot('a', {
-        a: loadProductsForCategory({ categoryId: '123' }),
+    it('should trigger actions for loading content for the product list', done => {
+      actions$ = of(loadProductsForCategory({ categoryId: '123' }));
+
+      effects.loadProductsForCategory$.pipe(toArray()).subscribe(actions => {
+        expect(actions).toMatchInlineSnapshot(`
+          [Products API] Load Product Success:
+            product: {"sku":"P222"}
+          [Products API] Load Product Success:
+            product: {"sku":"P333"}
+          [Product Listing Internal] Set Product Listing Pages:
+            1: ["P222","P333"]
+            id: {"type":"category","value":"123"}
+            itemCount: 2
+            sortableAttributes: [{"name":"name-asc"},{"name":"name-desc"}]
+        `);
+        done();
       });
-      const expectedValues = {
-        b: loadProductSuccess({ product: { sku: 'P222' } as Product }),
-        c: loadProductSuccess({ product: { sku: 'P333' } as Product }),
-        d: setProductListingPages({
-          id: { type: 'category', value: '123' },
-          itemCount: 2,
-          sortableAttributes: [{ name: 'name-asc' }, { name: 'name-desc' }],
-          1: ['P222', 'P333'],
-        }),
-      };
-      expect(effects.loadProductsForCategory$).toBeObservable(cold('(bcd)', expectedValues));
     });
 
     it('should not die if repeating errors are encountered', () => {
@@ -393,10 +459,10 @@ describe('Products Effects', () => {
         () => {
           verify(httpStatusCodeService.setStatus(anything())).once();
           expect(capture(httpStatusCodeService.setStatus).last()).toMatchInlineSnapshot(`
-          Array [
-            404,
-          ]
-        `);
+                      Array [
+                        404,
+                      ]
+                  `);
           done();
         },
         fail,

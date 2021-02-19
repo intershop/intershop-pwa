@@ -1,10 +1,14 @@
-import { TestBed } from '@angular/core/testing';
+import { Location } from '@angular/common';
+import { Component } from '@angular/core';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { Observable, of } from 'rxjs';
-import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { Observable, noop, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
+import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
@@ -19,6 +23,7 @@ import {
   createQuoteRequestFromBasket,
   createQuoteRequestFromQuote,
   createQuoteRequestFromQuoteRequest,
+  createQuoteRequestFromQuoteSuccess,
   deleteQuotingEntity,
   loadQuoting,
   loadQuotingDetail,
@@ -34,13 +39,19 @@ describe('Quoting Effects', () => {
   let effects: QuotingEffects;
   let quotingService: QuotingService;
   let basketService: BasketService;
+  let location: Location;
+  let router: Router;
 
   beforeEach(() => {
+    @Component({ template: 'dummy' })
+    class DummyComponent {}
+
     quotingService = mock(QuotingService);
     basketService = mock(BasketService);
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      declarations: [DummyComponent],
+      imports: [RouterTestingModule.withRoutes([{ path: 'account/quotes/:id', component: DummyComponent }])],
       providers: [
         QuotingEffects,
         provideMockActions(() => actions$),
@@ -52,6 +63,70 @@ describe('Quoting Effects', () => {
 
     effects = TestBed.inject(QuotingEffects);
     store$ = TestBed.inject(MockStore);
+    location = TestBed.inject(Location);
+    router = TestBed.inject(Router);
+  });
+
+  describe('redirectToNewQuoteRequest$', () => {
+    it('should navigate to created quote request', done => {
+      actions$ = of(createQuoteRequestFromQuoteSuccess({ entity: { id: '123' } as QuoteRequest }));
+
+      effects.redirectToNewQuoteRequest$.subscribe(() => {
+        expect(location.path()).toMatchInlineSnapshot(`"/account/quotes/123"`);
+
+        done();
+      });
+    });
+
+    it('should navigate to created quote request 1', done => {
+      actions$ = of(createQuoteRequestFromQuoteSuccess({ entity: { id: '123' } as QuoteRequest }));
+
+      effects.redirectToNewQuoteRequest$.pipe(delay(0)).subscribe(() => {
+        expect(location.path()).toMatchInlineSnapshot(`"/account/quotes/123"`);
+
+        done();
+      });
+    });
+
+    it('should navigate to created quote request 2', fakeAsync(() => {
+      actions$ = of(createQuoteRequestFromQuoteSuccess({ entity: { id: '123' } as QuoteRequest }));
+
+      effects.redirectToNewQuoteRequest$.subscribe(noop, fail, noop);
+
+      tick(0);
+
+      expect(location.path()).toMatchInlineSnapshot(`"/account/quotes/123"`);
+    }));
+
+    it('should navigate to created quote request 3', done => {
+      actions$ = of(createQuoteRequestFromQuoteSuccess({ entity: { id: '123' } as QuoteRequest }));
+
+      effects.redirectToNewQuoteRequest$.subscribe(noop, fail, noop);
+
+      setTimeout(() => {
+        expect(location.path()).toMatchInlineSnapshot(`"/account/quotes/123"`);
+
+        done();
+      }, 0);
+    });
+
+    it('should navigate to created quote request 4', done => {
+      const routerSpy = spy(router);
+
+      actions$ = of(createQuoteRequestFromQuoteSuccess({ entity: { id: '123' } as QuoteRequest }));
+
+      effects.redirectToNewQuoteRequest$.subscribe(noop, fail, noop);
+
+      verify(routerSpy.navigateByUrl(anything())).once();
+
+      expect(capture(routerSpy.navigateByUrl).last()).toMatchInlineSnapshot(`
+        Array [
+          "/account/quotes/123",
+        ]
+      `);
+
+      done();
+    });
   });
 
   describe('loadQuoting$', () => {
