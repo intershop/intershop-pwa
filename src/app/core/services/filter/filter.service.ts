@@ -1,7 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { omit } from 'lodash-es';
 import { Observable, identity } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -18,6 +17,7 @@ import { ApiService } from 'ish-core/services/api/api.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { getProductListingItemsPerPage } from 'ish-core/store/shopping/product-listing';
 import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
+import { omit } from 'ish-core/utils/functions';
 import { URLFormParams, appendFormParamsToHttpParams } from 'ish-core/utils/url-form-params';
 
 @Injectable({ providedIn: 'root' })

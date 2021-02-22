@@ -329,8 +329,9 @@
           "from": "lodash.*"
         },
         {
-          "import": "^(?!(range|uniq|memoize|once|groupBy|countBy|flatten|isEqual|intersection|omit|pick)$).*",
-          "from": "lodash.*"
+          "import": "^(?!(range|uniq|memoize|once|groupBy|countBy|flatten|isEqual|intersection|pick)$).*",
+          "from": "lodash.*",
+          "filePattern": "^(?!.*.spec.ts$).*.ts$"
         },
         {
           "import": "CookiesService",

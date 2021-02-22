@@ -39,3 +39,11 @@ export function mergeDeep(target, source) {
   }
   return output;
 }
+
+export function omit<T>(from: T, ...keys: (keyof T | string)[]) {
+  return !!from && !Array.isArray(from)
+    ? Object.entries(from)
+        .filter(([key]) => !keys.includes(key))
+        .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {})
+    : from;
+}
