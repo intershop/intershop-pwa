@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { User } from '@sentry/browser';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
+import { User } from 'ish-core/models/user/user.model';
 
 @Component({
   selector: 'ish-account-user-info',

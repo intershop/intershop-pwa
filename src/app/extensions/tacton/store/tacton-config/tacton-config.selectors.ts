@@ -1,8 +1,8 @@
 import { createSelector } from '@ngrx/store';
-import { User } from '@sentry/browser';
 import { UUID } from 'angular2-uuid';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
+import { User } from 'ish-core/models/user/user.model';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
 import { getSelectedProduct } from 'ish-core/store/shopping/products';
 
