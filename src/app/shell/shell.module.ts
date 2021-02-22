@@ -35,6 +35,7 @@ import { ProductImageComponent } from './header/product-image/product-image.comp
 import { SearchBoxComponent } from './header/search-box/search-box.component';
 import { SubCategoryNavigationComponent } from './header/sub-category-navigation/sub-category-navigation.component';
 import { UserInformationMobileComponent } from './header/user-information-mobile/user-information-mobile.component';
+import { LazyContentIncludeComponent } from './shared/lazy-content-include/lazy-content-include.component';
 
 const importExportModules = [
   CaptchaExportsModule,
@@ -78,6 +79,7 @@ const exportedComponents = [
     HeaderNavigationComponent,
     HeaderSimpleComponent,
     LanguageSwitchComponent,
+    LazyContentIncludeComponent,
     LoginStatusComponent,
     MiniBasketComponent,
     ProductCompareStatusComponent,
