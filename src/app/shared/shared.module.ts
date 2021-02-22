@@ -22,7 +22,6 @@ import { PipesModule } from 'ish-core/pipes.module';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { ShellModule } from 'ish-shell/shell.module';
 
-import { AddressFormsSharedModule } from './address-forms/address-forms.module';
 import { CMSModule } from './cms/cms.module';
 import { CMSCarouselComponent } from './cms/components/cms-carousel/cms-carousel.component';
 import { CMSContainerComponent } from './cms/components/cms-container/cms-container.component';
@@ -110,20 +109,19 @@ import { ProductVariationSelectComponent } from './components/product/product-va
 import { PromotionDetailsComponent } from './components/promotion/promotion-details/promotion-details.component';
 import { PromotionRemoveComponent } from './components/promotion/promotion-remove/promotion-remove.component';
 import { RecentlyViewedComponent } from './components/recently/recently-viewed/recently-viewed.component';
+import { FormlyAddressFormsModule } from './formly-address-forms/formly-address-forms.module';
 import { FormlyModule } from './formly/formly.module';
-import { FormsDynamicModule } from './forms-dynamic/forms-dynamic.module';
 import { FormsSharedModule } from './forms/forms.module';
 
 const importExportModules = [
-  AddressFormsSharedModule,
   AuthorizationToggleModule,
   CMSModule,
   CommonModule,
   DeferLoadModule,
   FeatureToggleModule,
+  FormlyAddressFormsModule,
   FormlyBaseModule,
   FormlyModule,
-  FormsDynamicModule,
   FormsSharedModule,
   IconModule,
   InfiniteScrollModule,

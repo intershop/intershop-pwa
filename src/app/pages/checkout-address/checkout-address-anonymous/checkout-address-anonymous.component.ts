@@ -7,8 +7,9 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -40,6 +41,8 @@ export class CheckoutAddressAnonymousComponent implements OnChanges, OnInit, OnD
 
   @Output() nextStep = new EventEmitter<void>();
 
+  @ViewChild('addressForm') addressForm: FormGroupDirective;
+
   form: FormGroup;
   invoiceAddressForm: FormGroup;
   shippingAddressForm: FormGroup;
@@ -59,13 +62,10 @@ export class CheckoutAddressAnonymousComponent implements OnChanges, OnInit, OnD
       shipOption: ['shipToInvoiceAddress', [Validators.required]],
     });
     this.invoiceAddressForm = this.fb.group({
-      countryCodeSwitch: ['', [Validators.required]],
-      // create address sub form, init/country change will be done by address-form-container
-      address: this.fb.group({}),
+      address: new FormGroup({}),
     });
     this.shippingAddressForm = this.fb.group({
-      countryCodeSwitch: ['', [Validators.required]],
-      address: this.fb.group({}),
+      address: new FormGroup({}),
     });
     this.form.addControl('invoiceAddress', this.invoiceAddressForm);
 
@@ -103,10 +103,9 @@ export class CheckoutAddressAnonymousComponent implements OnChanges, OnInit, OnD
 
   cancelAddressForm() {
     this.isAddressFormCollapsed = true;
-    this.form.reset();
-    this.invoiceAddressForm.controls.countryCodeSwitch.setValue('');
-    this.shippingAddressForm.controls.countryCodeSwitch.setValue('');
+    this.addressForm.resetForm();
     this.form.controls.shipOption.setValue('shipToInvoiceAddress');
+    this.submitted = false;
   }
 
   /**

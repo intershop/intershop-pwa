@@ -2,9 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockPipe } from 'ng-mocks';
 
-import { FieldTooltipComponent } from 'ish-shared/formly/components/field-tooltip/field-tooltip.component';
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 import { FormlyTestingExampleComponent } from 'ish-shared/formly/dev/testing/formly-testing-example/formly-testing-example.component';
@@ -25,7 +24,7 @@ describe('Horizontal Wrapper Component', () => {
         }),
         FormlyTestingComponentsModule,
       ],
-      declarations: [HorizontalWrapperComponent, MockComponent(FieldTooltipComponent), MockPipe(TranslatePipe)],
+      declarations: [HorizontalWrapperComponent, MockPipe(TranslatePipe)],
     }).compileComponents();
   });
 

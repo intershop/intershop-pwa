@@ -1,4 +1,4 @@
-import { AbstractControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
 /**
  * Marks all fields in a form group as dirty recursively (i.e. for nested form groups also)
@@ -13,40 +13,6 @@ export function markAsDirtyRecursive(formGroup: FormGroup) {
       formGroup.controls[key].updateValueAndValidity();
     }
   });
-}
-
-/**
- * Updates validators for control
- * - enables required validator when there are elements in the array
- * - disables validator when no elements present
- * - resets control value to empty
- * @param control
- * @param array
- * @param validators
- * @param async
- */
-export function updateValidatorsByDataLength(
-  control: AbstractControl,
-  array: unknown[],
-  validators: ValidatorFn | ValidatorFn[] = Validators.required,
-  async = false
-) {
-  // asyncify this if async flag is set
-  if (async) {
-    return this.asyncify(() => this.updateValidatorsByDataLength(control, array, validators, false));
-  }
-
-  if (array && array.length) {
-    control.setValidators(validators);
-  } else {
-    control.clearValidators();
-  }
-  // clear value for empty array
-  if (array && !array.length) {
-    control.setValue('');
-  }
-
-  control.updateValueAndValidity();
 }
 
 /**

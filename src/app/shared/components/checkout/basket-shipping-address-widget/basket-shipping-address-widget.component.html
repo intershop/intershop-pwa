@@ -82,11 +82,11 @@
 
 <!-- shipping address form -->
 <div id="collapseBasic" [ngbCollapse]="collapseChange | async" data-testing-id="shipping-address-form">
-  <ish-customer-address-form
+  <ish-formly-customer-address-form
     [address]="editAddress"
-    [resetForm]="!(collapseChange | async)"
+    [resetForm]="collapseChange | async"
     (save)="saveAddress($event)"
     (cancel)="cancelEditAddress()"
   >
-  </ish-customer-address-form>
+  </ish-formly-customer-address-form>
 </div>

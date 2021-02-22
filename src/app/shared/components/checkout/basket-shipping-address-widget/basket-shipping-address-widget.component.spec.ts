@@ -12,9 +12,9 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { findAllCustomElements, findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
-import { CustomerAddressFormComponent } from 'ish-shared/address-forms/components/customer-address-form/customer-address-form.component';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { FormlyCustomerAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-customer-address-form/formly-customer-address-form.component';
 import { SelectAddressComponent } from 'ish-shared/forms/components/select-address/select-address.component';
 
 import { BasketShippingAddressWidgetComponent } from './basket-shipping-address-widget.component';
@@ -39,8 +39,8 @@ describe('Basket Shipping Address Widget Component', () => {
       declarations: [
         BasketShippingAddressWidgetComponent,
         MockComponent(AddressComponent),
-        MockComponent(CustomerAddressFormComponent),
         MockComponent(FaIconComponent),
+        MockComponent(FormlyCustomerAddressFormComponent),
         MockComponent(ModalDialogComponent),
         MockComponent(SelectAddressComponent),
         MockDirective(NgbCollapse),
@@ -84,14 +84,13 @@ describe('Basket Shipping Address Widget Component', () => {
 
     it('should render if shipping is set', () => {
       fixture.detectChanges();
-
       expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
         Array [
           "fa-icon",
           "ish-modal-dialog",
           "ish-address",
           "ish-select-address",
-          "ish-customer-address-form",
+          "ish-formly-customer-address-form",
         ]
       `);
       expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
@@ -113,7 +112,7 @@ describe('Basket Shipping Address Widget Component', () => {
           "ish-modal-dialog",
           "ish-address",
           "ish-select-address",
-          "ish-customer-address-form",
+          "ish-formly-customer-address-form",
         ]
       `);
       expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
@@ -122,8 +121,8 @@ describe('Basket Shipping Address Widget Component', () => {
         ]
       `);
 
-      const form = fixture.debugElement.query(By.css('ish-customer-address-form'))
-        .componentInstance as CustomerAddressFormComponent;
+      const form = fixture.debugElement.query(By.css('ish-formly-customer-address-form'))
+        .componentInstance as FormlyCustomerAddressFormComponent;
       expect(form.address).toBeTruthy();
     });
 
@@ -138,7 +137,7 @@ describe('Basket Shipping Address Widget Component', () => {
         expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
           Array [
             "ish-select-address",
-            "ish-customer-address-form",
+            "ish-formly-customer-address-form",
           ]
         `);
         expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
@@ -158,7 +157,7 @@ describe('Basket Shipping Address Widget Component', () => {
         expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
           Array [
             "ish-select-address",
-            "ish-customer-address-form",
+            "ish-formly-customer-address-form",
           ]
         `);
         expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
@@ -168,9 +167,9 @@ describe('Basket Shipping Address Widget Component', () => {
           ]
         `);
 
-        const form = fixture.debugElement.query(By.css('ish-customer-address-form'))
-          .componentInstance as CustomerAddressFormComponent;
-        expect(form.address).toBeFalsy();
+        const form = fixture.debugElement.query(By.css('ish-formly-customer-address-form'))
+          .componentInstance as FormlyCustomerAddressFormComponent;
+        expect(form.address).toBeEmpty();
       });
     });
   });

@@ -19,9 +19,11 @@ import { registerTranslateSelectOptionsExtension } from './extensions/translate-
 import { CaptchaFieldComponent } from './types/captcha-field/captcha-field.component';
 import { EmailFieldComponent } from './types/email-field/email-field.component';
 import { FieldsetFieldComponent } from './types/fieldset-field/fieldset-field.component';
+import { PasswordFieldComponent } from './types/password-field/password-field.component';
 import { SelectFieldComponent } from './types/select-field/select-field.component';
 import { TextInputFieldComponent } from './types/text-input-field/text-input-field.component';
 import { TextareaFieldComponent } from './types/textarea-field/textarea-field.component';
+import { DescriptionWrapperComponent } from './wrappers/description-wrapper/description-wrapper.component';
 import { HorizontalWrapperComponent } from './wrappers/horizontal-wrapper/horizontal-wrapper.component';
 import { TextareaDescriptionWrapperComponent } from './wrappers/textarea-description-wrapper/textarea-description-wrapper.component';
 import { TooltipWrapperComponent } from './wrappers/tooltip-wrapper/tooltip-wrapper.component';
@@ -41,6 +43,11 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
         {
           name: 'ish-email-field',
           component: EmailFieldComponent,
+          wrappers: ['form-field-horizontal', 'validation'],
+        },
+        {
+          name: 'ish-password-field',
+          component: PasswordFieldComponent,
           wrappers: ['form-field-horizontal', 'validation'],
         },
         {
@@ -64,6 +71,7 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
         { name: 'textarea-description', component: TextareaDescriptionWrapperComponent },
         { name: 'tooltip', component: TooltipWrapperComponent },
         { name: 'validation', component: ValidationWrapperComponent },
+        { name: 'description', component: DescriptionWrapperComponent },
       ],
       extras: {
         lazyRender: true,
@@ -87,10 +95,12 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
   ],
   declarations: [
     CaptchaFieldComponent,
+    DescriptionWrapperComponent,
     EmailFieldComponent,
     FieldTooltipComponent,
     FieldsetFieldComponent,
     HorizontalWrapperComponent,
+    PasswordFieldComponent,
     SelectFieldComponent,
     TextInputFieldComponent,
     TextareaDescriptionWrapperComponent,

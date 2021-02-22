@@ -163,7 +163,7 @@ export class PaymentMethodMapper {
     return parametersData.map(p => {
       const param: FormlyFieldConfig = {
         key: p.name,
-        type: p.options ? 'ish-select-field' : 'ish-input-field',
+        type: p.options ? 'ish-select-field' : 'ish-text-input-field',
         templateOptions: {
           labelClass: 'col-md-4',
           fieldClass: 'col-sm-6',

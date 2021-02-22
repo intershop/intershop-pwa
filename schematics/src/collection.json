@@ -1,6 +1,12 @@
 {
   "$schema": "../../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
+    "address-form-configuration": {
+      "aliases": ["afc"],
+      "factory": "./address-form-configuration/factory#createAddressFormConfiguration",
+      "description": "Create an address form configuration",
+      "schema": "./address-form-configuration/schema.json"
+    },
     "cms-component": {
       "aliases": ["cms"],
       "factory": "./cms-component/factory#createCMSComponent",

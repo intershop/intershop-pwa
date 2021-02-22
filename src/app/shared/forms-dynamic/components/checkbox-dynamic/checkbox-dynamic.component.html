@@ -1,9 +1,0 @@
-<div *ngIf="field.fieldGroupClassName" class="{{ field.fieldGroupClassName }} form-group">
-  <ish-checkbox
-    *ngIf="field && field.templateOptions"
-    [form]="form"
-    [controlName]="castControlName(field.key)"
-    [label]="field.templateOptions.label"
-    [errorMessages]="castErrorMessages(field.templateOptions.attributes)"
-  ></ish-checkbox>
-</div>

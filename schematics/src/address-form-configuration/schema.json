@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "SchematicsPWAComponent",
+  "title": "PWA Address Form Configuration Options Schema",
+  "type": "object",
+  "description": "Creates a new address form configuration.",
+  "properties": {
+    "project": {
+      "type": "string",
+      "$default": {
+        "$source": "projectName"
+      },
+      "visible": false
+    },
+    "path": {
+      "type": "string",
+      "format": "path",
+      "visible": false
+    },
+    "countryCode": {
+      "type": "string",
+      "description": "The countryCode of the configuration.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What country code would you like to generate a configuration for?"
+    }
+  }
+}

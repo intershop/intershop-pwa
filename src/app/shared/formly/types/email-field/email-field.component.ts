@@ -11,7 +11,7 @@ export class EmailFieldComponent extends FieldType {
   formControl: FormControl;
   prePopulate(field: FormlyFieldConfig) {
     field.validators = field.validators ?? {};
-    field.validators.validation = [...(field.validators.validaiton ?? []), Validators.email];
+    field.validators.validation = [...(field.validators.validation ?? []), Validators.email];
 
     field.validation = field.validation ?? {};
     field.validation.messages = {

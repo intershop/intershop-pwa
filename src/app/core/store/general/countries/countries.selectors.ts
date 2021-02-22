@@ -7,5 +7,3 @@ import { countryAdapter } from './countries.reducer';
 const getCountriesState = createSelector(getGeneralState, state => state.countries);
 
 export const { selectAll: getAllCountries } = countryAdapter.getSelectors(getCountriesState);
-
-export const getCountriesLoading = createSelector(getCountriesState, countries => countries.loading);

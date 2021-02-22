@@ -22,7 +22,7 @@ export function createB2BUserViaREST(user: Partial<Registration>) {
       postalCode: user.postalCode,
       city: user.city,
       phoneHome: user.phoneHome,
-      countryCode: user.countryCodeSwitch,
+      countryCode: user.countryCode,
     },
     user: {
       firstName: user.firstName,
@@ -43,7 +43,7 @@ export function createB2BUserViaREST(user: Partial<Registration>) {
         postalCode: user.postalCode,
         city: user.city,
         phoneHome: user.phoneHome,
-        countryCode: user.countryCodeSwitch,
+        countryCode: user.countryCode,
       },
     },
   };

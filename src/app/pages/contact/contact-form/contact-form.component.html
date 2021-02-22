@@ -1,46 +1,10 @@
 <p>{{ 'helpdesk.contactus.prolog' | translate }}</p>
 <p class="indicates-required"><span class="required">*</span>{{ 'helpdesk.contactus.indicates' | translate }}</p>
 <form class="form-horizontal" [formGroup]="contactForm" name="ContactUsForm" (ngSubmit)="submitForm()">
-  <ish-input
-    controlName="name"
-    [errorMessages]="{ required: 'helpdesk.contactus.name.error' }"
-    [form]="contactForm"
-    label="helpdesk.contactus.name.label"
-  ></ish-input>
-  <ish-input
-    controlName="email"
-    [errorMessages]="{ required: 'helpdesk.contactus.email.error', email: 'helpdesk.contactus.email.error' }"
-    [form]="contactForm"
-    label="helpdesk.contactus.email.label"
-  ></ish-input>
-  <ish-input
-    controlName="phone"
-    [errorMessages]="{ required: 'helpdesk.contactus.phone.error' }"
-    [form]="contactForm"
-    label="helpdesk.contactus.phone.label"
-  ></ish-input>
-  <ish-input controlName="order" [form]="contactForm" label="helpdesk.contactus.order.label"></ish-input>
-  <ish-select
-    controlName="subject"
-    [errorMessages]="{ required: 'helpdesk.contactus.subject.error' }"
-    [form]="contactForm"
-    label="helpdesk.contactus.subject.label"
-    [options]="subjectOptions"
-    [translateOptionLabels]="true"
-  ></ish-select>
-  <ish-textarea
-    controlName="comment"
-    [errorMessages]="{ required: 'helpdesk.contactus.comments.error' }"
-    [form]="contactForm"
-    label="helpdesk.contactus.comments.label"
-    [maxlength]="30000"
-    [rows]="10"
-  ></ish-textarea>
-
-  <ish-lazy-captcha topic="contactUs" [form]="contactForm"></ish-lazy-captcha>
+  <formly-form [form]="contactForm" [fields]="fields" [model]="model$ | async"></formly-form>
 
   <div class="row form-group">
-    <div class="offset-md-4 col-md-8">
+    <div class="offset-md-5 col-md-7">
       <input
         type="submit"
         [disabled]="formDisabled"
