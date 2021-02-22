@@ -8,6 +8,7 @@ import { RedirectFirstToParentGuard } from '../guards/redirect-first-to-parent.g
 
 import { HierarchiesCreateGroupPageComponent } from './hierarchies-create-group/hierarchies-create-group-page.component';
 import { HierarchiesPageComponent } from './hierarchies/hierarchies-page.component';
+
 /**
  * routes for the organization management
  *
