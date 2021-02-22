@@ -452,6 +452,11 @@
           "message": "Imports from @ngx-meta are only allowed in SEO extension."
         },
         {
+          "import": "User",
+          "from": "@sentry/browser",
+          "message": "You probably meant to import the ISH PWA user model."
+        },
+        {
           "import": ".*ExportsModule",
           "from": ".*.*",
           "filePattern": ".*/shared/shared.module.ts$",
