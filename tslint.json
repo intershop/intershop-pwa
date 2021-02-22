@@ -596,7 +596,7 @@
           "^.*/src/app/extensions/([a-z][a-z0-9-]+)/\\1\\.module\\.ts$",
           "^.*/projects/([a-z][a-z0-9-]+)/src/app/\\1\\.module\\.ts$",
           // extension/projects exports
-          "^.*(/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/exports/(lazy-[a-z][a-z0-9-]+)/\\2\\.component\\.ts$",
+          "^.*(src/app/extensions/[a-z][a-z0-9-]+/exports|projects/[a-z][a-z0-9-]+/src/app/exports|src/app/shell/shared)/(lazy-[a-z][a-z0-9-]+)/\\2\\.component\\.ts$",
           "^.*/src/app/extensions/([a-z][a-z0-9-]+)/exports/\\1-exports\\.module\\.ts$",
           "^.*/projects/([a-z][a-z0-9-]+)/src/app/exports/\\1-exports\\.module\\.ts$"
         ],

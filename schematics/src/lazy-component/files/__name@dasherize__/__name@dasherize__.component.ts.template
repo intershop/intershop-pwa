@@ -5,7 +5,7 @@ import {
   <% if (onChanges === 'complex') { %>SimpleChange, SimpleChanges, <% } %>
 } from '@angular/core';
 
-<% if(!isProject) { %> import { FeatureToggleService } from 'ish-core/feature-toggle.module'; <% } %>
+<% if(!isProject && !isShared) { %> import { FeatureToggleService } from 'ish-core/feature-toggle.module'; <% } %>
 
 <% if (imports.length) { %><%= imports.map(i => `import { ${i.types.join(', ')} } from ${i.from};`).join('\n') %><% } %>
 
@@ -33,19 +33,17 @@ export class <%= classify(name) %>Component implements OnInit <% if (bindings.le
   private component: ComponentRef<any>;<% } %>
 
   constructor(
-    <% if(!isProject) { %> private featureToggleService: FeatureToggleService, <% } %>
+    <% if(!isProject && !isShared) { %> private featureToggleService: FeatureToggleService, <% } %>
     private compiler: Compiler,
     private injector: Injector
   ) {}
 
   async ngOnInit() {
-    <% if(!isProject) { %> if (this.featureToggleService.enabled('<%= camelize(extension) %>')) { <% } %>
-      // prevent cyclic dependency warnings
-      const extension = '<% if(isProject) { %><%= dasherize(projectName) %><% } else { %><%=dasherize(extension)%><% } %>';
-      const moduleObj = await import(`../../${extension}.module`);
+    <% if(!isProject && !isShared) { %> if (this.featureToggleService.enabled('<%= camelize(extension) %>')) { <% } %>
+      const moduleObj = await import(`../..<% if(isShared) { %>/../shared<% } %>/<% if(isProject) { %><%= dasherize(projectName) %><% } else { %><%=dasherize(extension)%><% } %>.module`);
       const module = moduleObj[Object.keys(moduleObj)[0]];
 
-      const { <%= classify(originalName) %>Component } = await import('../../<% if (isProject) { %>components<% } else { %>shared<% } %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component');
+      const { <%= classify(originalName) %>Component } = await import('<%= componentImportPath %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component');
 
       const moduleFactory = await this.loadModuleFactory(module);
       const moduleRef = moduleFactory.create(this.injector);
@@ -60,7 +58,7 @@ export class <%= classify(name) %>Component implements OnInit <% if (bindings.le
     <% } else { %>
       this.anchor.createComponent(factory).changeDetectorRef.markForCheck();
     <% } %>
-    <% if(!isProject){ %> } <% } %>
+    <% if(!isProject && !isShared){ %> } <% } %>
   }
 
 <% if (bindings.length) { %>

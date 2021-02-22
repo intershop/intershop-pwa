@@ -131,6 +131,7 @@
               "path": "./templates/webpack/webpack.custom.ts",
               "replaceDuplicatePlugins": true
             },
+            "showCircularDependencies": false,
             "outputPath": "dist/server",
             "main": "server.ts",
             "optimization": true,

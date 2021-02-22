@@ -19,27 +19,27 @@ export function createLazyComponents(options: Options): Rule {
           operations.push(schematic('lazy-component', { ...options, path: file.substring(1) }));
         }
       }
+      try {
+        host.getDir(file).visit(fileVisitor);
+      } catch (err) {
+        // do nothing
+      }
     };
 
     const extensionsRoot = `/${project.sourceRoot}/app/extensions`;
     host.getDir(extensionsRoot).subdirs.forEach(extension => {
       const sharedComponentFolder = `${extensionsRoot}/${extension}/shared`;
-      const components = host.getDir(sharedComponentFolder).subdirs;
-
-      if (components.length) {
-        host.getDir(sharedComponentFolder).visit(fileVisitor);
-      }
+      host.getDir(sharedComponentFolder).visit(fileVisitor);
     });
 
     const projectsRoot = `/projects`;
     host.getDir(projectsRoot).subdirs.forEach(projectName => {
       const sharedComponentFolder = `${projectsRoot}/${projectName}/src/app/components`;
-      const components = host.getDir(sharedComponentFolder).subdirs;
-
-      if (components.length) {
-        host.getDir(sharedComponentFolder).visit(fileVisitor);
-      }
+      host.getDir(sharedComponentFolder).visit(fileVisitor);
     });
+
+    const sharedRoot = `/src/app/shared`;
+    host.getDir(sharedRoot).visit(fileVisitor);
 
     return chain(operations);
   };
