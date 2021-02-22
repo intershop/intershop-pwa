@@ -7,8 +7,8 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
 import { ProductLabelComponent } from 'ish-shared/components/product/product-label/product-label.component';
-import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
 
 import { ProductImagesComponent } from './product-images.component';
 

@@ -5,7 +5,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ProductNameComponent } from 'ish-shell/header/product-name/product-name.component';
+import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
 
 import { ProductBundleDisplayComponent } from './product-bundle-display.component';
 

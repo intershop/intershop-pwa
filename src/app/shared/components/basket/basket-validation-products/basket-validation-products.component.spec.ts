@@ -6,9 +6,9 @@ import { ProductContextDirective } from 'ish-core/directives/product-context.dir
 import { PriceItem } from 'ish-core/models/price-item/price-item.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
+import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
 import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
-import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
-import { ProductNameComponent } from 'ish-shell/header/product-name/product-name.component';
+import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
 
 import { BasketValidationProductsComponent } from './basket-validation-products.component';
 

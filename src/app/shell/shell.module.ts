@@ -31,11 +31,10 @@ import { LanguageSwitchComponent } from './header/language-switch/language-switc
 import { LoginStatusComponent } from './header/login-status/login-status.component';
 import { MiniBasketComponent } from './header/mini-basket/mini-basket.component';
 import { ProductCompareStatusComponent } from './header/product-compare-status/product-compare-status.component';
-import { ProductImageComponent } from './header/product-image/product-image.component';
-import { ProductNameComponent } from './header/product-name/product-name.component';
 import { SearchBoxComponent } from './header/search-box/search-box.component';
 import { SubCategoryNavigationComponent } from './header/sub-category-navigation/sub-category-navigation.component';
 import { UserInformationMobileComponent } from './header/user-information-mobile/user-information-mobile.component';
+import { LazyMiniBasketContentComponent } from './shared/lazy-mini-basket-content/lazy-mini-basket-content.component';
 
 const importExportModules = [
   CaptchaExportsModule,
@@ -49,14 +48,7 @@ const importExportModules = [
   WishlistsExportsModule,
 ];
 
-const exportedComponents = [
-  CookiesBannerComponent,
-  FooterComponent,
-  HeaderComponent,
-  ProductImageComponent,
-  ProductNameComponent,
-  SearchBoxComponent,
-];
+const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderComponent, SearchBoxComponent];
 
 @NgModule({
   imports: [
@@ -80,6 +72,7 @@ const exportedComponents = [
     HeaderNavigationComponent,
     HeaderSimpleComponent,
     LanguageSwitchComponent,
+    LazyMiniBasketContentComponent,
     LoginStatusComponent,
     MiniBasketComponent,
     ProductCompareStatusComponent,

@@ -7,7 +7,7 @@ import { ProductContextDirective } from 'ish-core/directives/product-context.dir
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketPromotionComponent } from 'ish-shared/components/basket/basket-promotion/basket-promotion.component';
-import { ProductNameComponent } from 'ish-shell/header/product-name/product-name.component';
+import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
 
 import { BasketItemsSummaryComponent } from './basket-items-summary.component';
 

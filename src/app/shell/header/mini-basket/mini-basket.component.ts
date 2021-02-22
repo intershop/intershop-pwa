@@ -6,7 +6,6 @@ import { filter, mapTo, switchMap, takeUntil } from 'rxjs/operators';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { PriceItem } from 'ish-core/models/price-item/price-item.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -16,16 +15,15 @@ import { whenTruthy } from 'ish-core/utils/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MiniBasketComponent implements OnInit, OnDestroy {
-  basketError$: Observable<HttpError>;
   basketAnimation$: Observable<string>;
   itemTotal$: Observable<PriceItem>;
   itemCount$: Observable<number>;
-  lineItems$: Observable<LineItemView[]>;
 
   isCollapsed = true;
 
   @Input() view: 'auto' | 'small' | 'full' = 'auto';
 
+  private basketError$: Observable<HttpError>;
   private destroy$ = new Subject();
 
   constructor(
@@ -43,7 +41,6 @@ export class MiniBasketComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.itemCount$ = this.checkoutFacade.basketItemCount$;
     this.itemTotal$ = this.checkoutFacade.basketItemTotal$;
-    this.lineItems$ = this.checkoutFacade.basketLineItems$;
     this.basketError$ = this.checkoutFacade.basketError$;
 
     this.basketError$

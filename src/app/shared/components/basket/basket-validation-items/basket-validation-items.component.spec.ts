@@ -6,9 +6,9 @@ import { spy, verify } from 'ts-mockito';
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
 import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
-import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
-import { ProductNameComponent } from 'ish-shell/header/product-name/product-name.component';
+import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
 
 import { BasketValidationItemsComponent } from './basket-validation-items.component';
 

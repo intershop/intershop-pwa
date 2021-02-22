@@ -1,18 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockComponent } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
-import { ProductNameComponent } from 'ish-shell/header/product-name/product-name.component';
+import { LazyMiniBasketContentComponent } from 'ish-shell/shared/lazy-mini-basket-content/lazy-mini-basket-content.component';
 
 import { MiniBasketComponent } from './mini-basket.component';
 
@@ -33,9 +31,7 @@ describe('Mini Basket Component', () => {
       declarations: [
         MiniBasketComponent,
         MockComponent(FaIconComponent),
-        MockComponent(ProductImageComponent),
-        MockComponent(ProductNameComponent),
-        MockDirective(ProductContextDirective),
+        MockComponent(LazyMiniBasketContentComponent),
         PricePipe,
       ],
       imports: [TranslateModule.forRoot()],
@@ -79,12 +75,6 @@ describe('Mini Basket Component', () => {
     expect(element.getElementsByClassName('product-row')).toHaveLength(0);
   });
 
-  it('should render product rows if expanded', () => {
-    component.open();
-    fixture.detectChanges();
-    expect(element.getElementsByClassName('product-row')).toHaveLength(3);
-  });
-
   it('should display summary when collapsed', () => {
     fixture.detectChanges();
     expect(element.textContent.replace(/ /g, '')).toMatchInlineSnapshot(`"30items/$141,796.98"`);
@@ -93,15 +83,7 @@ describe('Mini Basket Component', () => {
   it('should display right amounts, lineItems and totals when expanded', () => {
     component.open();
     fixture.detectChanges();
-    expect(element.textContent.replace(/ /g, '')).toMatchInlineSnapshot(
-      `"30items/$141,796.98$3.00x10$3.00x10$3.00x10VIEWCART"`
-    );
-  });
-
-  it('should render product image component on expanded component', () => {
-    component.open();
-    fixture.detectChanges();
-    expect(element.getElementsByTagName('ish-product-image')).toHaveLength(3);
+    expect(element.textContent.replace(/ /g, '')).toMatchInlineSnapshot(`"30items/$141,796.98"`);
   });
 
   it('should set isCollapsed to proper value if toggleCollapsed is called', () => {
