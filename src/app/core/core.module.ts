@@ -2,7 +2,6 @@ import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule, Optional, SkipSelf } from '@angular/core';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { BrowserCookiesModule } from 'ngx-utils-cookies-port';
 
@@ -28,7 +27,6 @@ import { ModuleLoaderService } from './utils/module-loader/module-loader.service
     ConfigurationModule,
     ExtrasModule,
     FeatureToggleModule,
-    FormlyModule.forRoot(),
     HttpClientModule,
     IdentityProviderModule,
     InternationalizationModule,

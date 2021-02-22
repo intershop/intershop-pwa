@@ -118,6 +118,12 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
       deps: [TranslateService],
     },
   ],
-  exports: [CaptchaFieldComponent, SelectFieldComponent, TextInputFieldComponent, TextareaFieldComponent],
+  exports: [
+    CaptchaFieldComponent,
+    FormlyBaseModule,
+    SelectFieldComponent,
+    TextInputFieldComponent,
+    TextareaFieldComponent,
+  ],
 })
 export class FormlyModule {}
