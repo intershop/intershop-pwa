@@ -1,0 +1,25 @@
+<formly-form [form]="form" [model]="model" [fields]="fields"> </formly-form>
+<div class="offset-md-4 col-md-8">
+  <ng-container *ngIf="paymentMethod.saveAllowed">
+    <ng-container *ngTemplateOutlet="saveForLaterTemplate"></ng-container>
+  </ng-container>
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary" [disabled]="submitDisabled" (click)="submitParameterForm()">
+      {{ 'checkout.account.submit.button.label' | translate }}
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="cancelNewPaymentInstrument()">
+      {{ 'checkout.cancel.button.label' | translate }}
+    </button>
+  </div>
+</div>
+
+<!-- saveForLater checkbox - outlet template -->
+<ng-template #saveForLaterTemplate>
+  <div class="form-group">
+    <ish-checkbox
+      [form]="parentForm"
+      controlName="saveForLater"
+      label="checkout.save_edit.checkbox.label"
+    ></ish-checkbox>
+  </div>
+</ng-template>

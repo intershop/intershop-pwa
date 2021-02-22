@@ -588,6 +588,7 @@
           "^.*/src/app/shared/[a-z][a-z0-9-]+/components/([a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
           "^.*/projects/[a-z][a-z0-9-]+/src/app/components/([a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
           "^.*/src/app/shared/address-forms/components/([a-z][a-z0-9-]+)/\\1\\.factory\\.ts$",
+          "^.*/src/app/shared/formly/(components|wrappers|types|extensions|utils|dev)/.*$",
           // identity providers
           "^.*/src/app/core/identity-provider/.*$",
           // aggregation modules
