@@ -457,12 +457,6 @@
           "message": "You probably meant to import the ISH PWA user model."
         },
         {
-          "import": ".*ExportsModule",
-          "from": ".*.*",
-          "filePattern": ".*/shared/shared.module.ts$",
-          "message": "Importing and exporting extension modules should be done in ShellModule."
-        },
-        {
           "import": "^createProductView$",
           "from": ".*/product-view.model",
           "filePattern": "^(?!.*/(.*\\.spec|products\\.selectors)\\.ts$).*$",

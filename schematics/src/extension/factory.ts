@@ -52,12 +52,12 @@ export function createExtension(options: Options): Rule {
       )}-exports.module`,
     };
 
-    const shellModuleOptions = {
-      module: `${projectRoot}/shell/shell.module.ts`,
+    const sharedModuleOptions = {
+      module: `${projectRoot}/shared/shared.module.ts`,
       ...moduleImportOptions,
     };
-    operations.push(addExportToNgModule(shellModuleOptions));
-    operations.push(addImportToNgModule(shellModuleOptions));
+    operations.push(addExportToNgModule(sharedModuleOptions));
+    operations.push(addImportToNgModule(sharedModuleOptions));
 
     const appModuleOptions = {
       module: `${projectRoot}/app.module.ts`,

@@ -21,7 +21,7 @@ describe('Lazy Component Schematic', () => {
   beforeEach(async () => {
     appTree = await createApplication(schematicRunner)
       .pipe(
-        createModule(schematicRunner, { name: 'shell' }),
+        createModule(schematicRunner, { name: 'shared' }),
         createAppLastRoutingModule(schematicRunner),
         switchMap(tree => schematicRunner.runSchematicAsync('extension', { ...defaultOptions, name: 'ext' }, tree)),
         switchMap(tree =>

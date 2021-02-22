@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { Injector, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import {
@@ -15,11 +15,19 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SwiperModule } from 'ngx-swiper-wrapper';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
+import { DirectivesModule } from 'ish-core/directives.module';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
-import { ShellModule } from 'ish-shell/shell.module';
+import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
+
+import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
+import { OrderTemplatesExportsModule } from '../extensions/order-templates/exports/order-templates-exports.module';
+import { PunchoutExportsModule } from '../extensions/punchout/exports/punchout-exports.module';
+import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
+import { TactonExportsModule } from '../extensions/tacton/exports/tacton-exports.module';
+import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
 
 import { CMSModule } from './cms/cms.module';
 import { CMSCarouselComponent } from './cms/components/cms-carousel/cms-carousel.component';
@@ -112,6 +120,7 @@ import { ProductVariationSelectComponent } from './components/product/product-va
 import { PromotionDetailsComponent } from './components/promotion/promotion-details/promotion-details.component';
 import { PromotionRemoveComponent } from './components/promotion/promotion-remove/promotion-remove.component';
 import { RecentlyViewedComponent } from './components/recently/recently-viewed/recently-viewed.component';
+import { SearchBoxComponent } from './components/search/search-box/search-box.component';
 import { FormlyAddressFormsModule } from './formly-address-forms/formly-address-forms.module';
 import { FormlyModule } from './formly/formly.module';
 import { FormsSharedModule } from './forms/forms.module';
@@ -119,8 +128,10 @@ import { FormsSharedModule } from './forms/forms.module';
 const importExportModules = [
   AuthorizationToggleModule,
   CMSModule,
+  CaptchaExportsModule,
   CommonModule,
   DeferLoadModule,
+  DirectivesModule,
   FeatureToggleModule,
   FormlyAddressFormsModule,
   FormlyModule,
@@ -132,13 +143,17 @@ const importExportModules = [
   NgbDropdownModule,
   NgbModalModule,
   NgbPopoverModule,
+  OrderTemplatesExportsModule,
   PipesModule,
+  PunchoutExportsModule,
+  QuotingExportsModule,
   ReactiveFormsModule,
   RoleToggleModule,
   RouterModule,
-  ShellModule,
   SwiperModule,
+  TactonExportsModule,
   TranslateModule,
+  WishlistsExportsModule,
 ];
 
 const declaredComponents = [
@@ -236,6 +251,7 @@ const exportedComponents = [
   PromotionDetailsComponent,
   PromotionRemoveComponent,
   RecentlyViewedComponent,
+  SearchBoxComponent,
   SuccessMessageComponent,
 ];
 
@@ -244,4 +260,8 @@ const exportedComponents = [
   declarations: [...declaredComponents, ...exportedComponents],
   exports: [...exportedComponents, ...importExportModules],
 })
-export class SharedModule {}
+export class SharedModule {
+  constructor(moduleLoader: ModuleLoaderService, injector: Injector) {
+    moduleLoader.init(injector);
+  }
+}

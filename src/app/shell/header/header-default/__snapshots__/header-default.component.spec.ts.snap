@@ -44,7 +44,7 @@ exports[`Header Default Component should render normal header adequately for des
     <div class="col-md-5 text-right"><ish-lazy-header-quickorder></ish-lazy-header-quickorder></div>
     <div class="col-md-4">
       <div class="search-container header-search-container">
-        <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
+        <ish-lazy-search-box data-testing-id="search-box-desktop"></ish-lazy-search-box>
       </div>
     </div>
   </div>
@@ -75,7 +75,7 @@ exports[`Header Default Component should render normal header adequately for mob
   <div class="header-utility">
     <a class="search-toggler active-search"
       ><div class="search-container header-search-container show" ng-reflect-collapsed="false">
-        <ish-search-box data-testing-id="search-box-desktop"></ish-search-box></div
+        <ish-lazy-search-box data-testing-id="search-box-desktop"></ish-lazy-search-box></div
     ></a>
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
@@ -169,7 +169,7 @@ exports[`Header Default Component should render normal header adequately for tab
     <div class="col-md-5 text-right"><ish-lazy-header-quickorder></ish-lazy-header-quickorder></div>
     <div class="col-md-4">
       <div class="search-container header-search-container">
-        <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
+        <ish-lazy-search-box data-testing-id="search-box-desktop"></ish-lazy-search-box>
       </div>
     </div>
   </div>
@@ -194,7 +194,7 @@ exports[`Header Default Component should render sticky header adequately for des
     <a class="search-toggler active-search"
       ><fa-icon class="header-icon" ng-reflect-icon="fas,search"></fa-icon>
       <div class="search-container header-search-container" ng-reflect-collapsed="false">
-        <ish-search-box data-testing-id="search-box-desktop"></ish-search-box></div
+        <ish-lazy-search-box data-testing-id="search-box-desktop"></ish-lazy-search-box></div
     ></a>
     <div class="language-switch-container d-none d-md-block"></div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
@@ -248,7 +248,7 @@ exports[`Header Default Component should render sticky header adequately for mob
     <a class="search-toggler active-search"
       ><fa-icon class="header-icon" ng-reflect-icon="fas,search"></fa-icon>
       <div class="search-container header-search-container" ng-reflect-collapsed="false">
-        <ish-search-box data-testing-id="search-box-desktop"></ish-search-box></div
+        <ish-lazy-search-box data-testing-id="search-box-desktop"></ish-lazy-search-box></div
     ></a>
     <div class="language-switch-container d-none d-md-block"></div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
@@ -302,7 +302,7 @@ exports[`Header Default Component should render sticky header adequately for tab
     <a class="search-toggler active-search"
       ><fa-icon class="header-icon" ng-reflect-icon="fas,search"></fa-icon>
       <div class="search-container header-search-container" ng-reflect-collapsed="false">
-        <ish-search-box data-testing-id="search-box-desktop"></ish-search-box></div
+        <ish-lazy-search-box data-testing-id="search-box-desktop"></ish-lazy-search-box></div
     ></a>
     <div class="language-switch-container d-none d-md-block"></div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
