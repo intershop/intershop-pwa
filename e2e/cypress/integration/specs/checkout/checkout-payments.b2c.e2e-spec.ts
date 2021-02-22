@@ -65,6 +65,7 @@ describe('Checkout Payment', () => {
           BIC: 'A',
         });
         page.paymentInstrument('ISH_DEBIT_TRANSFER').submit();
+        page.paymentInstrument('ISH_DEBIT_TRANSFER').formError('holder').log('ish debit transfer');
         page.paymentInstrument('ISH_DEBIT_TRANSFER').formError('holder').should('contain', 'missing');
         /* TODO: size validator does not display message correctly
       page
@@ -81,9 +82,9 @@ describe('Checkout Payment', () => {
           IBAN: 'DE000000000000000001',
           BIC: '12345678',
         });
-        page.paymentInstrument('ISH_DEBIT_TRANSFER').formError('holder').should('not.be.visible');
-        page.paymentInstrument('ISH_DEBIT_TRANSFER').formError('IBAN').should('not.be.visible');
-        page.paymentInstrument('ISH_DEBIT_TRANSFER').formError('BIC').should('not.be.visible');
+        page.paymentInstrument('ISH_DEBIT_TRANSFER').formError('holder').should('not.exist');
+        page.paymentInstrument('ISH_DEBIT_TRANSFER').formError('IBAN').should('not.exist');
+        page.paymentInstrument('ISH_DEBIT_TRANSFER').formError('BIC').should('not.exist');
         page.paymentInstrument('ISH_DEBIT_TRANSFER').submit();
       });
       at(CheckoutPaymentPage, page => page.content.should('contain', '****************0001'));

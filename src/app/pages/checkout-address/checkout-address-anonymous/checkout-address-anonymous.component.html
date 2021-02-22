@@ -32,16 +32,20 @@
       [ngbCollapse]="isAddressFormCollapsed"
       data-testing-id="create-address-form"
     >
-      <form [formGroup]="form" (ngSubmit)="submitAddressForm()" class="form-horizontal" novalidate="novalidate">
+      <form
+        #addressForm="ngForm"
+        [formGroup]="form"
+        (ngSubmit)="submitAddressForm()"
+        class="form-horizontal"
+        novalidate="novalidate"
+      >
         <h3 class="subheading">{{ 'checkout.addresses.billing_address.heading' | translate }}</h3>
         <p class="indicates-required">
           <span class="required">*</span>{{ 'account.required_field.message' | translate }}
         </p>
         <!-- Invoice Address -->
-        <ish-address-form-container
-          data-testing-id="invoiceAddressForm"
-          [parentForm]="invoiceAddressForm"
-        ></ish-address-form-container>
+        <ish-formly-address-form #invoiceAddress data-testing-id="invoiceAddressForm" [parentForm]="invoiceAddressForm">
+        </ish-formly-address-form>
         <!-- Taxation ID input field -->
         <ish-input
           *ishFeature="'businessCustomerRegistration'"
@@ -82,10 +86,12 @@
         </div>
         <div [ngbCollapse]="!isShippingAddressFormExpanded" data-testing-id="shipping-address-form">
           <!-- Shipping Address -->
-          <ish-address-form-container
+          <ish-formly-address-form
+            #shippingAddress
             data-testing-id="shippingAddressForm"
             [parentForm]="shippingAddressForm"
-          ></ish-address-form-container>
+          >
+          </ish-formly-address-form>
         </div>
         <div [ngClass]="{ 'row form-group': isShippingAddressFormExpanded }">
           <div [ngClass]="{ 'offset-md-4 col-md-8': isShippingAddressFormExpanded }">

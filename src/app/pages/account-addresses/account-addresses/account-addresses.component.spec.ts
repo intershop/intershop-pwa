@@ -10,10 +10,10 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Address } from 'ish-core/models/address/address.model';
 import { User } from 'ish-core/models/user/user.model';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
-import { CustomerAddressFormComponent } from 'ish-shared/address-forms/components/customer-address-form/customer-address-form.component';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { FormlyCustomerAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-customer-address-form/formly-customer-address-form.component';
 import { SelectAddressComponent } from 'ish-shared/forms/components/select-address/select-address.component';
 
 import { AccountAddressesComponent } from './account-addresses.component';
@@ -29,9 +29,9 @@ describe('Account Addresses Component', () => {
       declarations: [
         AccountAddressesComponent,
         MockComponent(AddressComponent),
-        MockComponent(CustomerAddressFormComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(FaIconComponent),
+        MockComponent(FormlyCustomerAddressFormComponent),
         MockComponent(ModalDialogComponent),
         MockComponent(SelectAddressComponent),
       ],

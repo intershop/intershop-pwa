@@ -9,7 +9,7 @@ const _ = {
   user: {
     login: `test${new Date().getTime()}@testcity.de`,
     ...sensibleDefaults,
-    countryCodeSwitch: 'US',
+    countryCode: 'US',
     mainDivisionCode: 'AS',
   },
   product1: {
@@ -47,7 +47,7 @@ describe('Shopping User', () => {
 
   it('should remove validation messages after customer address changed', () => {
     at(CheckoutAddressesPage, page => {
-      page.changeInvoiceAddressRegion('CA');
+      page.changeInvoiceAddressRegion('US_CA');
       waitLoadingEnd(1000);
       page.validationMessage.should('not.exist');
     });

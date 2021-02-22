@@ -24,6 +24,9 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
   @Input()
   set collapse(value: boolean) {
     this.collapseChange.next(value);
+    if (value) {
+      this.editAddress = {};
+    }
   }
 
   shippingAddress$: Observable<Address>;
@@ -33,7 +36,7 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
   basketShippingAddressDeletable$: Observable<boolean>;
 
   form: FormGroup;
-  editAddress: Address;
+  editAddress: Partial<Address>;
 
   private destroy$ = new Subject();
 
@@ -102,13 +105,18 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
   }
 
   showAddressForm(address?: Address) {
-    this.editAddress = address;
+    if (address) {
+      this.editAddress = { ...address };
+    } else {
+      this.editAddress = {};
+    }
     this.collapse = false;
   }
 
   saveAddress(address: Address) {
-    if (this.editAddress) {
+    if (this.editAddress && Object.keys(this.editAddress).length > 0) {
       this.checkoutFacade.updateBasketAddress(address);
+      this.collapse = true;
     } else {
       this.checkoutFacade.createBasketAddress(address, 'shipping');
       (this.form.get('id') as FormControl).setValue('', { emitEvent: false });
@@ -117,7 +125,6 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
 
   cancelEditAddress() {
     this.collapse = true;
-    this.editAddress = undefined;
   }
 
   deleteAddress(address: Address) {

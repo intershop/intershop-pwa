@@ -9,7 +9,7 @@ import { businessError, getGeneralError, getGeneralErrorType } from 'ish-core/st
 import { selectPath } from 'ish-core/store/core/router';
 import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } from 'ish-core/store/core/viewconf';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
-import { getAllCountries, getCountriesLoading, loadCountries } from 'ish-core/store/general/countries';
+import { getAllCountries, loadCountries } from 'ish-core/store/general/countries';
 import { getRegionsByCountryCode, loadRegions } from 'ish-core/store/general/regions';
 import { getServerConfigParameter } from 'ish-core/store/general/server-config';
 
@@ -44,8 +44,6 @@ export class AppFacade {
       map(deviceType => (deviceType === 'mobile' ? 'sticky-header' : ''))
     ),
   ]).pipe(map(classes => classes.filter(c => !!c)));
-
-  countriesLoading$ = this.store.pipe(select(getCountriesLoading));
 
   routingInProgress$ = merge(
     this.router.events.pipe(

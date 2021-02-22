@@ -22,7 +22,7 @@ describe('New User', () => {
       at(RegistrationPage);
     });
 
-    it('should fill in registration form an submit', () => {
+    it('should fill in registration form and submit', () => {
       at(RegistrationPage, page => {
         page.fillForm(_.user);
         page.acceptTAC();

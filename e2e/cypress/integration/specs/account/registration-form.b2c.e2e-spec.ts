@@ -7,7 +7,7 @@ describe('Potential Registering User', () => {
   const requiredFields: (keyof Registration)[] = [
     'login',
     'password',
-    'countryCodeSwitch',
+    'countryCode',
     'firstName',
     'lastName',
     'addressLine1',
@@ -20,6 +20,10 @@ describe('Potential Registering User', () => {
       page.submit();
 
       requiredFields.forEach(key => page.input(key).should('be.invalid'));
+      // test formly class for formly fields
+      requiredFields
+        .filter(key => key !== 'login' && key !== 'password')
+        .forEach(key => page.wrapper(key).should('be.invalid'));
     });
   });
 

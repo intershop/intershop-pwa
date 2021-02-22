@@ -20,12 +20,12 @@
   <div id="collapseBasic" class="section" *ngIf="!isCreateAddressFormCollapsed" data-testing-id="create-address-form">
     <div class="row">
       <div class="col-md-10 col-xl-8">
-        <ish-customer-address-form
+        <ish-formly-customer-address-form
           [resetForm]="isCreateAddressFormCollapsed"
           (save)="createAddress($event)"
           (cancel)="hideCreateAddressForm()"
         >
-        </ish-customer-address-form>
+        </ish-formly-customer-address-form>
       </div>
     </div>
   </div>
