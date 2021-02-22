@@ -23,6 +23,7 @@ import { PaymentConcardisCreditcardCvcDetailComponent } from '../payment-concard
 import { PaymentConcardisCreditcardComponent } from '../payment-concardis-creditcard/payment-concardis-creditcard.component';
 import { PaymentConcardisDirectdebitComponent } from '../payment-concardis-directdebit/payment-concardis-directdebit.component';
 import { PaymentCybersourceCreditcardComponent } from '../payment-cybersource-creditcard/payment-cybersource-creditcard.component';
+import { PaymentParameterFormComponent } from '../payment-parameter-form/payment-parameter-form.component';
 
 import { CheckoutPaymentComponent } from './checkout-payment.component';
 
@@ -55,6 +56,7 @@ describe('Checkout Payment Component', () => {
         MockComponent(PaymentCybersourceCreditcardComponent),
         MockDirective(ServerHtmlDirective),
         MockPipe(PricePipe),
+        PaymentParameterFormComponent,
       ],
       imports: [
         ReactiveFormsModule,

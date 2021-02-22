@@ -9,7 +9,7 @@ import {
   NgbModalModule,
   NgbPopoverModule,
 } from '@ng-bootstrap/ng-bootstrap';
-import { FormlyModule } from '@ngx-formly/core';
+import { FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { DeferLoadModule } from '@trademe/ng-defer-load';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -110,6 +110,7 @@ import { ProductVariationSelectComponent } from './components/product/product-va
 import { PromotionDetailsComponent } from './components/promotion/promotion-details/promotion-details.component';
 import { PromotionRemoveComponent } from './components/promotion/promotion-remove/promotion-remove.component';
 import { RecentlyViewedComponent } from './components/recently/recently-viewed/recently-viewed.component';
+import { FormlyModule } from './formly/formly.module';
 import { FormsDynamicModule } from './forms-dynamic/forms-dynamic.module';
 import { FormsSharedModule } from './forms/forms.module';
 
@@ -120,6 +121,7 @@ const importExportModules = [
   CommonModule,
   DeferLoadModule,
   FeatureToggleModule,
+  FormlyBaseModule,
   FormlyModule,
   FormsDynamicModule,
   FormsSharedModule,

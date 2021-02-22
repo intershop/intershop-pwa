@@ -126,7 +126,7 @@ describe('Payment Method Mapper', () => {
 
       expect(paymentMethod.saveAllowed).toBeTrue();
       expect(paymentMethod.parameters).toHaveLength(4);
-      expect(paymentMethod.parameters[0].type).toEqual('input');
+      expect(paymentMethod.parameters[0].type).toEqual('ish-input-field');
       expect(paymentMethod.parameters[0].key).toEqual('holder');
       expect(paymentMethod.parameters[0].hide).toBeFalse();
       expect(paymentMethod.parameters[0].templateOptions.type).toEqual('text');

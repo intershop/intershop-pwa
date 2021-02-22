@@ -9,6 +9,7 @@ import { CheckboxDynamicComponent } from './components/checkbox-dynamic/checkbox
 import { InputDynamicComponent } from './components/input-dynamic/input-dynamic.component';
 import { SelectDynamicComponent } from './components/select-dynamic/select-dynamic.component';
 
+// not-dead-code
 @NgModule({
   imports: [
     CommonModule,
@@ -25,4 +26,8 @@ import { SelectDynamicComponent } from './components/select-dynamic/select-dynam
   declarations: [CheckboxDynamicComponent, InputDynamicComponent, SelectDynamicComponent],
   exports: [CheckboxDynamicComponent, InputDynamicComponent, SelectDynamicComponent],
 })
-export class FormsDynamicModule {}
+export class FormsDynamicModule {
+  constructor() {
+    console.warn('FormsDynamicModule is deprecated, please use the new formly implementation.');
+  }
+}
