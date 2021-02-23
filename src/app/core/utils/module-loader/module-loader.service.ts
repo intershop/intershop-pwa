@@ -7,7 +7,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 declare interface LazyModuleType {
   feature: string;
-  location: unknown;
+  location(): unknown;
 }
 
 export const LAZY_FEATURE_MODULE = new InjectionToken<LazyModuleType>('lazyModule');
@@ -25,7 +25,7 @@ export class ModuleLoaderService {
         .filter(mod => !this.loadedModules.includes(mod.feature))
         .filter(mod => this.featureToggleService.enabled(mod.feature))
         .forEach(async mod => {
-          await this.loadModule(mod.location, injector);
+          await this.loadModule(mod.location(), injector);
           this.loadedModules.push(mod.feature);
         });
     });

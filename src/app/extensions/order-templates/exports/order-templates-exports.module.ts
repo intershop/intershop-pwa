@@ -12,7 +12,7 @@ import { LazyProductAddToOrderTemplateComponent } from './lazy-product-add-to-or
   providers: [
     {
       provide: LAZY_FEATURE_MODULE,
-      useValue: { feature: 'orderTemplates', location: import('../store/order-templates-store.module') },
+      useValue: { feature: 'orderTemplates', location: () => import('../store/order-templates-store.module') },
       multi: true,
     },
   ],
