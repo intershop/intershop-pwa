@@ -29,6 +29,8 @@ jobs:
   Build:
     needs: [CancelPrevious]
     runs-on: ubuntu-latest
+    env:
+      TESTING: true
 
     steps:
       - uses: actions/checkout@v2
@@ -46,7 +48,7 @@ jobs:
       - name: Build SSR
         run: |
           node scripts/init-local-environment -f
-          npm run build --configuration=local
+          npm run build
 
       - name: Upload Build Output
         uses: actions/upload-artifact@v2

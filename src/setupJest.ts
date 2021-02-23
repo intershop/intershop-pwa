@@ -37,6 +37,10 @@ Object.defineProperty(global, 'PRODUCTION_MODE', {
   value: () => false,
 });
 
+Object.defineProperty(global, 'NGRX_RUNTIME_CHECKS', {
+  value: () => true,
+});
+
 Object.defineProperty(document.body.style, 'transform', {
   value: () => ({
     enumerable: true,
