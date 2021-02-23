@@ -5,8 +5,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { TranslateModule } from '@ngx-translate/core';
 import { BrowserCookiesModule } from 'ngx-utils-cookies-port';
 
-import { environment } from '../../environments/environment';
-
 import { AppearanceModule } from './appearance.module';
 import { ConfigurationModule } from './configuration.module';
 import { ExtrasModule } from './extras.module';
@@ -30,7 +28,7 @@ import { ModuleLoaderService } from './utils/module-loader/module-loader.service
     HttpClientModule,
     IdentityProviderModule,
     InternationalizationModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.serviceWorker }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: SERVICE_WORKER }),
     StateManagementModule,
   ],
   providers: [

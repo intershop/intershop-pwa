@@ -9,9 +9,12 @@ const log = (...txt) => {
   console.log('Custom Webpack:', ...txt);
 };
 
-export default (config: webpack.Configuration, _: CustomWebpackBrowserSchema, targetOptions: TargetOptions) => {
+export default (
+  config: webpack.Configuration,
+  angularJsonConfig: CustomWebpackBrowserSchema,
+  targetOptions: TargetOptions
+) => {
   const configurations = targetOptions.configuration.split(',');
-  const production = configurations.includes('production');
   const specificConfigurations = configurations.filter(x => x !== 'production');
   if (specificConfigurations.length > 1) {
     console.warn('cannot handle multiple configurations, ignoring', specificConfigurations.slice(1));
@@ -29,16 +32,22 @@ export default (config: webpack.Configuration, _: CustomWebpackBrowserSchema, ta
     log('deactivated directTemplateLoading');
   }
 
-  // set production mode
+  // set production mode and service-worker
+  const production = configurations.includes('production');
+  const serviceWorker = !!angularJsonConfig.serviceWorker;
   config.plugins.push(
     new webpack.DefinePlugin({
       PWA_VERSION: JSON.stringify(
-        `${require('../../package.json').version} built ${new Date()} - production:${production}`
+        `${require('../../package.json').version} built ${new Date()} - configuration:${
+          targetOptions.configuration
+        } service-worker:${serviceWorker}`
       ),
       PRODUCTION_MODE: production,
+      SERVICE_WORKER: serviceWorker,
     })
   );
   log('setting production:', production);
+  log('setting serviceWorker:', serviceWorker);
 
   if (production) {
     // splitChunks not available for SSR build
