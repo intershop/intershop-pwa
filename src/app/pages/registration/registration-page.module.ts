@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { FormlyModule } from '@ngx-formly/core';
 
@@ -26,7 +25,6 @@ const registrationPageRoutes: Routes = [{ path: '', component: RegistrationPageC
         { name: 'ish-registration-buttons-field', component: RegistrationButtonsFieldComponent },
       ],
     }),
-    ReactiveFormsModule,
     RouterModule.forChild(registrationPageRoutes),
     SharedModule,
   ],

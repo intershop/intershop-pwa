@@ -9,7 +9,6 @@ import {
   NgbModalModule,
   NgbPopoverModule,
 } from '@ng-bootstrap/ng-bootstrap';
-import { FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { DeferLoadModule } from '@trademe/ng-defer-load';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -124,7 +123,6 @@ const importExportModules = [
   DeferLoadModule,
   FeatureToggleModule,
   FormlyAddressFormsModule,
-  FormlyBaseModule,
   FormlyModule,
   FormsSharedModule,
   IconModule,

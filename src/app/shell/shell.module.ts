@@ -34,6 +34,7 @@ import { ProductCompareStatusComponent } from './header/product-compare-status/p
 import { SearchBoxComponent } from './header/search-box/search-box.component';
 import { SubCategoryNavigationComponent } from './header/sub-category-navigation/sub-category-navigation.component';
 import { UserInformationMobileComponent } from './header/user-information-mobile/user-information-mobile.component';
+import { LazyContentIncludeComponent } from './shared/lazy-content-include/lazy-content-include.component';
 import { LazyMiniBasketContentComponent } from './shared/lazy-mini-basket-content/lazy-mini-basket-content.component';
 
 const importExportModules = [
@@ -72,6 +73,7 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     HeaderNavigationComponent,
     HeaderSimpleComponent,
     LanguageSwitchComponent,
+    LazyContentIncludeComponent,
     LazyMiniBasketContentComponent,
     LoginStatusComponent,
     MiniBasketComponent,

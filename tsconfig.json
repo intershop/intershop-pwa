@@ -32,7 +32,7 @@
         "name": "typescript-tslint-plugin",
         "alwaysShowRuleFailuresAsWarnings": true,
         "ignoreDefinitionFiles": true,
-        "configFile": "../tslint.json",
+        "configFile": "tslint.json",
         "suppressWhileTypeErrorsPresent": true
       }
     ]
