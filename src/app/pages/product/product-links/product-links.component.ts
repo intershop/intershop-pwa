@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { Observable } from 'rxjs';
 
 import { LARGE_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { ProductLinksView } from 'ish-core/models/product-links/product-links.model';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
 
 /**
  * The Product Link Container Component
@@ -21,13 +21,8 @@ import { ProductLinksView } from 'ish-core/models/product-links/product-links.mo
   templateUrl: './product-links.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductLinksComponent implements OnChanges {
-  /**
-   * sku of the product whose product links should be rendered
-   */
-  @Input() sku: string;
-
-  links$: Observable<ProductLinksView>;
+export class ProductLinksComponent implements OnInit {
+  links$: Observable<ProductLinksDictionary>;
 
   /**
    * configuration of swiper carousel
@@ -35,7 +30,7 @@ export class ProductLinksComponent implements OnChanges {
    */
   swiperConfig: SwiperConfigInterface;
 
-  constructor(private shoppingFacade: ShoppingFacade, @Inject(LARGE_BREAKPOINT_WIDTH) largeBreakpointWidth: number) {
+  constructor(private context: ProductContextFacade, @Inject(LARGE_BREAKPOINT_WIDTH) largeBreakpointWidth: number) {
     this.swiperConfig = {
       breakpoints: {
         [largeBreakpointWidth]: {
@@ -53,9 +48,7 @@ export class ProductLinksComponent implements OnChanges {
     };
   }
 
-  ngOnChanges() {
-    if (this.sku) {
-      this.links$ = this.shoppingFacade.productLinks$(this.sku);
-    }
+  ngOnInit() {
+    this.links$ = this.context.productLinks$();
   }
 }

@@ -1,23 +1,16 @@
 <ng-container *ngIf="product$ | async as product">
-  <div class="row">
+  <div class="row" data-testing-id="wishlist-product">
     <div class="col-3 col-md-2 list-item">
-      <a [routerLink]="product | ishProductRoute">
-        <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
-      </a>
+      <ish-product-image imageType="S" [link]="true"></ish-product-image>
     </div>
     <div class="col-9 col-md-10 list-item column-price">
       <div class="row">
         <div class="col-md-7 col-xs-12 text-left">
           <div class="pli-description">
-            <a [routerLink]="product | ishProductRoute" class="product-title" data-testing-id="wishlist-product-link">
-              {{ product.name }}
-            </a>
-            <ish-product-id [product]="product"></ish-product-id>
+            <ish-product-name></ish-product-name>
+            <ish-product-id></ish-product-id>
             <ish-product-variation-display></ish-product-variation-display>
-            <ish-product-bundle-display
-              *ngIf="product.type === 'Bundle'"
-              [productBundleSKU]="product.sku"
-            ></ish-product-bundle-display>
+            <ish-product-bundle-display></ish-product-bundle-display>
             <div class="hidden-xs">
               <label>{{ 'account.wishlist.table.added_on' | translate }}</label>
               {{ wishlistItemData?.creationDate | ishDate: 'shortDate' }}
@@ -29,7 +22,11 @@
                   [title]="'account.wishlist.table.options.move_to_another_wishlist' | translate"
                 ></fa-icon>
               </a>
-              <a class="btn-tool" (click)="removeProductFromWishlist(product?.sku)" data-testing-id="delete-wishlist">
+              <a
+                class="btn-tool"
+                (click)="removeProductFromWishlist(wishlistItemData.sku)"
+                data-testing-id="delete-wishlist"
+              >
                 <fa-icon
                   [icon]="['fas', 'trash-alt']"
                   [title]="'account.wishlist.table.options.remove' | translate"
@@ -39,8 +36,8 @@
           </div>
         </div>
 
-        <div ishProductContext [sku]="product.sku" class="col-12 col-md-5 product-list-actions-container">
-          <ish-product-price [product]="product"></ish-product-price>
+        <div class="col-12 col-md-5 product-list-actions-container">
+          <ish-product-price></ish-product-price>
           <p *ngIf="product.available; else noInStock">
             {{ 'account.wishlist.table.in_stock' | translate }}
           </p>
@@ -63,7 +60,6 @@
   <ish-select-wishlist-modal
     #moveDialog
     addMoveProduct="move"
-    [product]="product"
-    (submitEmitter)="moveItemToOtherWishlist(product.sku, $event)"
+    (submitEmitter)="moveItemToOtherWishlist(wishlistItemData.sku, $event)"
   ></ish-select-wishlist-modal>
 </ng-container>

@@ -2,9 +2,11 @@ import { Injectable, InjectionToken, Injector } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { RxState } from '@rx-angular/state';
 import { isEqual } from 'lodash-es';
-import { BehaviorSubject, Observable, combineLatest, race } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, first, map, skip, startWith, switchMap } from 'rxjs/operators';
 
+import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
+import { Image } from 'ish-core/models/image/image.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
 import {
@@ -13,6 +15,7 @@ import {
   ProductHelper,
   SkuQuantityType,
 } from 'ish-core/models/product/product.model';
+import { generateProductUrl } from 'ish-core/routing/product/product.route';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { ShoppingFacade } from './shopping.facade';
@@ -29,6 +32,8 @@ export interface ProductContextDisplayProperties<T = boolean> {
   promotions: T;
   quantity: T;
   variations: T;
+  bundleParts: T;
+  retailSetParts: T;
   shipment: T;
   addToBasket: T;
   addToWishlist: T;
@@ -53,6 +58,8 @@ const defaultDisplayProperties: () => ProductContextDisplayProperties<DisplayEva
     promotions: true,
     quantity: canBeOrderedNotRetail,
     variations: p => ProductHelper.isVariationProduct(p),
+    bundleParts: ProductHelper.isProductBundle,
+    retailSetParts: ProductHelper.isRetailSet,
     shipment: p =>
       canBeOrderedNotRetail(p) && Number.isInteger(p.readyForShipmentMin) && Number.isInteger(p.readyForShipmentMax),
     addToBasket: canBeOrdered,
@@ -73,12 +80,15 @@ export const EXTERNAL_DISPLAY_PROPERTY_PROVIDER = new InjectionToken<ExternalDis
 
 interface ProductContext {
   sku: string;
-  requiredCompletenessLevel: ProductCompletenessLevel;
+  requiredCompletenessLevel: ProductCompletenessLevel | true;
   product: AnyProductViewType;
   productAsVariationProduct: VariationProductView;
+  productURL: string;
   loading: boolean;
+  label: string;
+  categoryId: string;
 
-  displayProperties: Partial<ProductContextDisplayProperties<boolean>>;
+  displayProperties: Partial<ProductContextDisplayProperties>;
 
   // variation handling
   variationCount: number;
@@ -117,10 +127,8 @@ export class ProductContextFacade extends RxState<ProductContext> {
       requiredCompletenessLevel: ProductCompletenessLevel.List,
       propagateActive: true,
       allowZeroQuantity: false,
-      displayProperties: {
-        readOnly: true,
-        addToBasket: true,
-      },
+      // tslint:disable-next-line: no-null-keyword
+      categoryId: null,
     });
 
     this.connect(
@@ -131,7 +139,6 @@ export class ProductContextFacade extends RxState<ProductContext> {
         filter(([sku, level]) => !!sku && !!level),
         switchMap(([sku, level]) =>
           this.shoppingFacade.product$(sku, level).pipe(
-            filter(p => ProductHelper.isReadyForDisplay(p, level)),
             map(product => ({
               product,
               loading: false,
@@ -142,10 +149,22 @@ export class ProductContextFacade extends RxState<ProductContext> {
       )
     );
 
+    this.hold(combineLatest([this.select('product'), this.select('displayProperties')]), args =>
+      this.postProductFetch(...args)
+    );
+
     this.connect(
       'productAsVariationProduct',
       // tslint:disable-next-line: no-null-keyword
       this.select('product').pipe(map(product => (ProductHelper.isVariationProduct(product) ? product : null)))
+    );
+
+    this.connect(
+      'productURL',
+      combineLatest([
+        this.select('product'),
+        this.select('categoryId').pipe(switchMap(categoryId => this.shoppingFacade.category$(categoryId))),
+      ]).pipe(map(args => generateProductUrl(...args)))
     );
 
     this.connect(
@@ -217,16 +236,19 @@ export class ProductContextFacade extends RxState<ProductContext> {
     );
 
     this.connect(
-      'parts',
-      race(
-        this.select('product').pipe(
-          filter(ProductHelper.isProductBundle),
-          map(p => p?.bundledProducts)
-        ),
-        this.select('product').pipe(
-          filter(ProductHelper.isRetailSet),
-          map(p => p?.partSKUs?.map(sku => ({ sku, quantity: 1 })))
+      'label',
+      this.select('product').pipe(
+        map(
+          product => ProductHelper.getAttributesOfGroup(product, AttributeGroupTypes.ProductLabelAttributes)?.[0]?.name
         )
+      )
+    );
+
+    this.connect(
+      'parts',
+      this.select('sku').pipe(
+        whenTruthy(),
+        switchMap(sku => this.shoppingFacade.productParts$(sku))
       )
     );
 
@@ -242,7 +264,7 @@ export class ProductContextFacade extends RxState<ProductContext> {
             .reduce((acc, [k, v]) => {
               acc[k] = typeof v === 'function' ? v(product) : v;
               return acc;
-            }, {}) as ProductContextDisplayProperties<boolean>
+            }, {}) as ProductContextDisplayProperties
       )
     );
 
@@ -252,6 +274,16 @@ export class ProductContextFacade extends RxState<ProductContext> {
         map(props => props.reduce((acc, p) => ({ ...acc, ...p }), {}))
       )
     );
+  }
+
+  private postProductFetch(product: AnyProductViewType, displayProperties: Partial<ProductContextDisplayProperties>) {
+    if (
+      (ProductHelper.isRetailSet(product) || ProductHelper.isMasterProduct(product)) &&
+      displayProperties.price &&
+      this.get('requiredCompletenessLevel') !== ProductCompletenessLevel.Detail
+    ) {
+      this.set('requiredCompletenessLevel', () => ProductCompletenessLevel.Detail);
+    }
   }
 
   log(val: boolean) {
@@ -296,6 +328,11 @@ export class ProductContextFacade extends RxState<ProductContext> {
       current[index] = childState;
       return current;
     });
+    this.set('displayProperties', state => ({
+      ...state.displayProperties,
+      readOnly: true,
+      addToBasket: true,
+    }));
   }
 
   validDebouncedQuantityUpdate$(time = 800) {
@@ -305,5 +342,24 @@ export class ProductContextFacade extends RxState<ProductContext> {
       distinctUntilChanged(),
       skip(1)
     );
+  }
+
+  getProductImage$(imageType: string, imageView: string): Observable<Image> {
+    return this.select('product').pipe(
+      whenTruthy(),
+      map(product =>
+        imageView
+          ? ProductHelper.getImageByImageTypeAndImageView(product, imageType, imageView)
+          : ProductHelper.getPrimaryImage(product, imageType)
+      )
+    );
+  }
+
+  productLinks$() {
+    return this.shoppingFacade.productLinks$(this.select('sku'));
+  }
+
+  productPromotions$() {
+    return this.select('product', 'promotionIds').pipe(switchMap(ids => this.shoppingFacade.promotions$(ids)));
   }
 }

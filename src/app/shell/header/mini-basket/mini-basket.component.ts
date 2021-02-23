@@ -3,12 +3,10 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy
 import { Observable, Subject, concat, of, timer } from 'rxjs';
 import { filter, mapTo, switchMap, takeUntil } from 'rxjs/operators';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { PriceItem } from 'ish-core/models/price-item/price-item.model';
-import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
@@ -17,28 +15,23 @@ import { whenTruthy } from 'ish-core/utils/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MiniBasketComponent implements OnInit, OnDestroy {
-  basketError$: Observable<HttpError>;
   basketAnimation$: Observable<string>;
   itemTotal$: Observable<PriceItem>;
   itemCount$: Observable<number>;
-  lineItems$: Observable<LineItemView[]>;
 
   isCollapsed = true;
 
   @Input() view: 'auto' | 'small' | 'full' = 'auto';
 
+  private basketError$: Observable<HttpError>;
   private destroy$ = new Subject();
 
   constructor(
     private checkoutFacade: CheckoutFacade,
-    private shoppingFacade: ShoppingFacade,
+    private appFacade: AppFacade,
     private location: Location,
     private cdRef: ChangeDetectorRef
   ) {}
-
-  product$(sku: string) {
-    return this.shoppingFacade.product$(sku, ProductCompletenessLevel.List);
-  }
 
   ngOnDestroy() {
     this.destroy$.next();
@@ -48,7 +41,6 @@ export class MiniBasketComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.itemCount$ = this.checkoutFacade.basketItemCount$;
     this.itemTotal$ = this.checkoutFacade.basketItemTotal$;
-    this.lineItems$ = this.checkoutFacade.basketLineItems$;
     this.basketError$ = this.checkoutFacade.basketError$;
 
     this.basketError$
@@ -70,6 +62,10 @@ export class MiniBasketComponent implements OnInit, OnDestroy {
       } else {
         this.collapse();
       }
+    });
+
+    this.appFacade.routingInProgress$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(() => {
+      this.collapse();
     });
   }
 

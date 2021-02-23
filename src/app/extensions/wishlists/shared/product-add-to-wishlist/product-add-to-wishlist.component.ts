@@ -71,8 +71,4 @@ export class ProductAddToWishlistComponent implements OnDestroy, OnInit {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
-  get product() {
-    return this.context.get('product');
-  }
 }

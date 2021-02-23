@@ -1,5 +1,5 @@
-<div class="product-availability">
-  <ng-container *ngIf="product.available; else outOfStock">
+<div *ngIf="visible$ | async" class="product-availability">
+  <ng-container *ngIf="available$ | async; else outOfStock">
     <span class="product-in-stock">
       {{ 'product.instock.text' | translate }} <link itemprop="availability" href="http://schema.org/InStock" />
     </span>

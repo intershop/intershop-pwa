@@ -4,9 +4,8 @@ import { VariationAttribute } from 'ish-core/models/product-variation/variation-
 import { Product } from './product.model';
 
 export interface VariationProductMaster extends Product {
+  type: 'VariationProductMaster';
   variationAttributeValues?: VariationAttribute[];
-  variationSKUs?: string[];
-  defaultVariationSKU?: string;
   minListPrice?: Price;
   minSalePrice?: Price;
   maxListPrice?: Price;

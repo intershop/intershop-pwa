@@ -1,9 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { MockComponent, MockDirective } from 'ng-mocks';
+import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { Product } from 'ish-core/models/product/product.model';
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
 
 import { ProductBundleDisplayComponent } from './product-bundle-display.component';
 
@@ -11,14 +13,20 @@ describe('Product Bundle Display Component', () => {
   let component: ProductBundleDisplayComponent;
   let fixture: ComponentFixture<ProductBundleDisplayComponent>;
   let element: HTMLElement;
-  let shoppingFacade: ShoppingFacade;
+  let context: ProductContextFacade;
 
   beforeEach(async () => {
-    shoppingFacade = mock(ShoppingFacade);
+    context = mock(ProductContextFacade);
+    when(context.select('parts')).thenReturn(EMPTY);
+    when(context.select('displayProperties', 'bundleParts')).thenReturn(of(true));
 
     await TestBed.configureTestingModule({
-      declarations: [ProductBundleDisplayComponent],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
+      declarations: [
+        MockComponent(ProductNameComponent),
+        MockDirective(ProductContextDirective),
+        ProductBundleDisplayComponent,
+      ],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });
 
@@ -35,21 +43,32 @@ describe('Product Bundle Display Component', () => {
   });
 
   it('should render product bundle parts when supplied', () => {
-    when(shoppingFacade.productBundleParts$('sku')).thenReturn(
+    when(context.select('parts')).thenReturn(
       of([
-        { product: { sku: 'ABC', name: 'abc' } as Product, quantity: 3 },
-        { product: { sku: 'DEF', name: 'def' } as Product, quantity: 2 },
+        { sku: 'ABC', quantity: 3 },
+        { sku: 'DEF', quantity: 2 },
       ])
     );
-    component.productBundleSKU = 'sku';
-
-    component.ngOnChanges();
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
       <ul>
-        <li>3 x abc</li>
-        <li>2 x def</li>
+        <li>
+          3 x
+          <ish-product-name
+            ishproductcontext=""
+            ng-reflect-link="false"
+            ng-reflect-sku="ABC"
+          ></ish-product-name>
+        </li>
+        <li>
+          2 x
+          <ish-product-name
+            ishproductcontext=""
+            ng-reflect-link="false"
+            ng-reflect-sku="DEF"
+          ></ish-product-name>
+        </li>
       </ul>
     `);
   });

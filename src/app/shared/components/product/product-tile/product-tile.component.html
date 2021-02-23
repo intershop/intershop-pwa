@@ -1,29 +1,17 @@
 <div *ngIf="product$ | async as product" class="product-tile" [attr.data-testing-sku]="product.sku">
   <div class="product-image-container">
-    <a [routerLink]="product | ishProductRoute: category" queryParamsHandling="merge">
-      <ish-product-image [product]="product" imageType="M" class="product-image"></ish-product-image>
-    </a>
-    <ish-product-label [product]="product"></ish-product-label>
+    <ish-product-image imageType="M" [link]="true"></ish-product-image>
+    <ish-product-label></ish-product-label>
   </div>
 
-  <a
-    *ngIf="configuration$('name') | async"
-    class="product-title"
-    [routerLink]="product | ishProductRoute: category"
-    queryParamsHandling="merge"
-    >{{ product.name }}</a
-  >
+  <ish-product-name></ish-product-name>
 
-  <ish-product-rating *ishFeature="'rating'" [product]="product"></ish-product-rating>
+  <ish-product-rating></ish-product-rating>
 
-  <ish-product-promotion
-    *ngIf="configuration$('promotions') | async"
-    [product]="product"
-    displayType="simple"
-  ></ish-product-promotion>
+  <ish-product-promotion displayType="simple"></ish-product-promotion>
 
   <div *ngIf="configuration$('price') | async" class="price-container">
-    <ish-product-price [product]="product" [showInformationalPrice]="true"></ish-product-price>
+    <ish-product-price [showInformationalPrice]="true"></ish-product-price>
   </div>
 
   <ish-product-item-variations></ish-product-item-variations>

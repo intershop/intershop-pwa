@@ -9,7 +9,6 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { createProductView } from 'ish-core/models/product-view/product-view.model';
 import { Product } from 'ish-core/models/product/product.model';
-import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { LazyProductAddToWishlistComponent } from '../../../extensions/wishlists/exports/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
 
@@ -45,7 +44,7 @@ describe('Product Detail Actions Component', () => {
     translate.use('en');
 
     const product = { sku: 'sku', available: true } as Product;
-    when(context.select('product')).thenReturn(of(createProductView(product, categoryTree())));
+    when(context.select('product')).thenReturn(of(createProductView(product)));
     when(context.select('displayProperties', anyString())).thenReturn(of(true));
   });
 
@@ -82,7 +81,7 @@ describe('Product Detail Actions Component', () => {
 
     it('should not show "compare" link when product information is available and productMaster = true', () => {
       when(context.select('product')).thenReturn(
-        of(createProductView({ sku: 'SKU', type: 'VariationProductMaster' } as Product, categoryTree()))
+        of(createProductView({ sku: 'SKU', type: 'VariationProductMaster' } as Product))
       );
       fixture.detectChanges();
 

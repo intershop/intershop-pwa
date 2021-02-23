@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { Product } from 'ish-core/models/product/product.model';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 
 @Component({
@@ -10,17 +9,16 @@ import { Promotion } from 'ish-core/models/promotion/promotion.model';
   templateUrl: './product-promotion.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductPromotionComponent implements OnChanges {
-  @Input() product: Product;
+export class ProductPromotionComponent implements OnInit {
   @Input() displayType?: string;
 
+  visible$: Observable<boolean>;
   promotions$: Observable<Promotion[]>;
 
-  constructor(private shoppingFacade: ShoppingFacade) {}
+  constructor(private context: ProductContextFacade) {}
 
-  ngOnChanges() {
-    if (this.product && this.product.promotionIds) {
-      this.promotions$ = this.shoppingFacade.promotions$(this.product.promotionIds);
-    }
+  ngOnInit() {
+    this.visible$ = this.context.select('displayProperties', 'promotions');
+    this.promotions$ = this.context.productPromotions$();
   }
 }

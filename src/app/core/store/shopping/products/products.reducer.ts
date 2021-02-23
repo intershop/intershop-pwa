@@ -1,7 +1,8 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
-import { AllProductTypes } from 'ish-core/models/product/product.model';
+import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
+import { AllProductTypes, SkuQuantityType } from 'ish-core/models/product/product.model';
 
 import {
   loadProductBundlesSuccess,
@@ -20,10 +21,18 @@ export const productAdapter = createEntityAdapter<AllProductTypes>({
 
 export interface ProductsState extends EntityState<AllProductTypes> {
   failed: string[];
+  links: { [sku: string]: ProductLinksDictionary };
+  parts: { [sku: string]: SkuQuantityType[] };
+  variations: { [sku: string]: string[] };
+  defaultVariation: { [sku: string]: string };
 }
 
 export const initialState: ProductsState = productAdapter.getInitialState({
   failed: [],
+  links: {},
+  parts: {},
+  variations: {},
+  defaultVariation: {},
 });
 
 function addFailed(failed: string[], sku: string): string[] {
@@ -49,36 +58,28 @@ export const productsReducer = createReducer(
       newProduct.completenessLevel = Math.max(product.completenessLevel, oldProduct.completenessLevel);
     }
 
-    return productAdapter.upsertOne(newProduct, {
+    return productAdapter.upsertOne(newProduct as AllProductTypes, {
       ...state,
-      loading: false,
       failed: removeFailed(state.failed, product.sku),
     });
   }),
-  on(loadProductVariationsSuccess, (state: ProductsState, action) =>
-    productAdapter.updateOne(
-      {
-        id: action.payload.sku,
-        changes: { variationSKUs: action.payload.variations, defaultVariationSKU: action.payload.defaultVariation },
-      },
-      { ...state, loading: false }
-    )
-  ),
-  on(loadProductBundlesSuccess, (state: ProductsState, action) =>
-    productAdapter.updateOne(
-      { id: action.payload.sku, changes: { bundledProducts: action.payload.bundledProducts } },
-      { ...state, loading: false }
-    )
-  ),
-  on(loadRetailSetSuccess, (state: ProductsState, action) =>
-    productAdapter.updateOne({ id: action.payload.sku, changes: { partSKUs: action.payload.parts } }, state)
-  ),
-  on(loadProductLinksSuccess, (state: ProductsState, action) =>
-    productAdapter.updateOne(
-      { id: action.payload.sku, changes: { links: action.payload.links } },
-      { ...state, loading: false }
-    )
-  ),
+  on(loadProductVariationsSuccess, (state: ProductsState, action) => ({
+    ...state,
+    variations: { ...state.variations, [action.payload.sku]: action.payload.variations },
+    defaultVariation: { ...state.defaultVariation, [action.payload.sku]: action.payload.defaultVariation },
+  })),
+  on(loadProductBundlesSuccess, (state: ProductsState, action) => ({
+    ...state,
+    parts: { ...state.parts, [action.payload.sku]: action.payload.bundledProducts },
+  })),
+  on(loadRetailSetSuccess, (state: ProductsState, action) => ({
+    ...state,
+    parts: { ...state.parts, [action.payload.sku]: action.payload.parts.map(sku => ({ sku, quantity: 1 })) },
+  })),
+  on(loadProductLinksSuccess, (state: ProductsState, action) => ({
+    ...state,
+    links: { ...state.links, [action.payload.sku]: action.payload.links },
+  })),
   on(productSpecialUpdate, (state: ProductsState, action) =>
     productAdapter.updateOne({ id: action.payload.sku, changes: action.payload.update }, state)
   )

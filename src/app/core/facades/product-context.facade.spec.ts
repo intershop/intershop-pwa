@@ -5,6 +5,10 @@ import { BehaviorSubject, EMPTY, Observable, Subject, of } from 'rxjs';
 import { map, mapTo, switchMapTo } from 'rxjs/operators';
 import { anyString, anything, instance, mock, when } from 'ts-mockito';
 
+import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
+import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
+import { Category } from 'ish-core/models/category/category.model';
 import {
   ProductView,
   VariationProductMasterView,
@@ -33,6 +37,8 @@ describe('Product Context Facade', () => {
 
   beforeEach(() => {
     shoppingFacade = mock(ShoppingFacade);
+    when(shoppingFacade.productParts$(anything())).thenReturn(EMPTY);
+    when(shoppingFacade.category$(anything())).thenReturn(of(undefined));
 
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
@@ -47,10 +53,7 @@ describe('Product Context Facade', () => {
     expect(context.get()).toMatchInlineSnapshot(`
       Object {
         "allowZeroQuantity": false,
-        "displayProperties": Object {
-          "addToBasket": true,
-          "readOnly": true,
-        },
+        "categoryId": null,
         "propagateActive": true,
         "requiredCompletenessLevel": 2,
       }
@@ -93,11 +96,14 @@ describe('Product Context Facade', () => {
       expect(omit(context.get(), 'displayProperties', 'product')).toMatchInlineSnapshot(`
         Object {
           "allowZeroQuantity": false,
+          "categoryId": null,
           "hasQuantityError": false,
+          "label": undefined,
           "loading": false,
           "maxQuantity": 100,
           "minQuantity": 10,
           "productAsVariationProduct": null,
+          "productURL": "/sku123",
           "propagateActive": true,
           "quantity": 10,
           "quantityError": undefined,
@@ -120,6 +126,7 @@ describe('Product Context Facade', () => {
           "addToOrderTemplate": false,
           "addToQuote": false,
           "addToWishlist": true,
+          "bundleParts": false,
           "description": true,
           "inventory": true,
           "name": true,
@@ -127,6 +134,7 @@ describe('Product Context Facade', () => {
           "promotions": true,
           "quantity": false,
           "readOnly": false,
+          "retailSetParts": false,
           "shipment": false,
           "sku": true,
           "variations": false,
@@ -161,11 +169,14 @@ describe('Product Context Facade', () => {
       expect(omit(context.get(), 'displayProperties', 'product')).toMatchInlineSnapshot(`
         Object {
           "allowZeroQuantity": false,
+          "categoryId": null,
           "hasQuantityError": false,
+          "label": undefined,
           "loading": false,
           "maxQuantity": 100,
           "minQuantity": 10,
           "productAsVariationProduct": null,
+          "productURL": "/sku123",
           "propagateActive": true,
           "quantity": 10,
           "quantityError": undefined,
@@ -178,6 +189,10 @@ describe('Product Context Facade', () => {
 
     it('should not set stream for variation product', () => {
       expect(context.get('productAsVariationProduct')).toBeFalsy();
+    });
+
+    it('should not adapt required completeness level for normal product', () => {
+      expect(context.get('requiredCompletenessLevel')).toEqual(ProductCompletenessLevel.List);
     });
 
     describe('quantity handling', () => {
@@ -296,6 +311,7 @@ describe('Product Context Facade', () => {
           "addToOrderTemplate": true,
           "addToQuote": true,
           "addToWishlist": true,
+          "bundleParts": false,
           "description": true,
           "inventory": true,
           "name": true,
@@ -303,6 +319,7 @@ describe('Product Context Facade', () => {
           "promotions": true,
           "quantity": true,
           "readOnly": false,
+          "retailSetParts": false,
           "shipment": true,
           "sku": true,
           "variations": false,
@@ -311,20 +328,114 @@ describe('Product Context Facade', () => {
     });
   });
 
+  describe('category handling', () => {
+    describe('with product with default category', () => {
+      let product: ProductView;
+
+      beforeEach(() => {
+        product = {
+          sku: '123',
+          completenessLevel: ProductCompletenessLevel.Detail,
+          defaultCategory: { uniqueId: 'ABC' } as Category,
+        } as ProductView;
+
+        when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
+
+        context.set('sku', () => '123');
+      });
+
+      it('should calculate the url property of the product with default category', () => {
+        expect(context.get('productURL')).toMatchInlineSnapshot(`"//sku123-catABC"`);
+      });
+    });
+
+    describe('with product with context category', () => {
+      let product: ProductView;
+
+      beforeEach(() => {
+        product = {
+          sku: '123',
+          completenessLevel: ProductCompletenessLevel.Detail,
+        } as ProductView;
+
+        when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
+        when(shoppingFacade.category$(anything())).thenReturn(of({ uniqueId: 'ASDF' } as CategoryView));
+
+        context.set('categoryId', () => 'ASDF');
+        context.set('sku', () => '123');
+      });
+
+      it('should calculate the url property of the product with context category', () => {
+        expect(context.get('productURL')).toMatchInlineSnapshot(`"//sku123-catASDF"`);
+      });
+    });
+
+    describe('with product with context category and default category', () => {
+      let product: ProductView;
+
+      beforeEach(() => {
+        product = {
+          sku: '123',
+          completenessLevel: ProductCompletenessLevel.Detail,
+          defaultCategory: { uniqueId: 'ABC' } as Category,
+        } as ProductView;
+
+        when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
+        when(shoppingFacade.category$(anything())).thenReturn(of({ uniqueId: 'ASDF' } as CategoryView));
+
+        context.set('categoryId', () => 'ASDF');
+        context.set('sku', () => '123');
+      });
+
+      it('should calculate the url property of the product with context category', () => {
+        expect(context.get('productURL')).toMatchInlineSnapshot(`"//sku123-catASDF"`);
+      });
+    });
+  });
+
+  describe('with product having labels', () => {
+    let product: ProductView;
+
+    beforeEach(() => {
+      product = {
+        sku: '123',
+        completenessLevel: ProductCompletenessLevel.Detail,
+      } as ProductView;
+
+      product.attributeGroups = {
+        [AttributeGroupTypes.ProductLabelAttributes]: {
+          attributes: [{ name: 'sale', type: 'String', value: 'sale' }],
+        } as AttributeGroup,
+      };
+
+      when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
+
+      context.set('sku', () => '123');
+    });
+
+    it('should calculate the label property of the product', () => {
+      expect(context.get('label')).toMatchInlineSnapshot(`"sale"`);
+    });
+  });
+
   describe('with a retail set', () => {
     beforeEach(() => {
       when(shoppingFacade.product$(anything(), anything())).thenReturn(
-        of(({
+        of({
           sku: '123',
           completenessLevel: ProductCompletenessLevel.Detail,
           minOrderQuantity: 1,
           maxOrderQuantity: 100,
           type: 'RetailSet',
-          partSKUs: ['p1', 'p2'],
           available: true,
-        } as unknown) as ProductView)
+        } as ProductView)
       );
-
+      when(shoppingFacade.productParts$(anything())).thenReturn(
+        of([
+          { sku: 'p1', quantity: 1 },
+          { sku: 'p2', quantity: 1 },
+        ])
+      );
       context.set('sku', () => '123');
     });
 
@@ -355,6 +466,7 @@ describe('Product Context Facade', () => {
           "addToOrderTemplate": true,
           "addToQuote": true,
           "addToWishlist": true,
+          "bundleParts": false,
           "description": true,
           "inventory": false,
           "name": true,
@@ -362,33 +474,39 @@ describe('Product Context Facade', () => {
           "promotions": true,
           "quantity": false,
           "readOnly": false,
+          "retailSetParts": true,
           "shipment": false,
           "sku": true,
           "variations": false,
         }
       `);
     });
+
+    it('should adapt required completeness level to detail', () => {
+      expect(context.get('requiredCompletenessLevel')).toEqual(ProductCompletenessLevel.Detail);
+    });
   });
 
   describe('with a bundle', () => {
     beforeEach(() => {
       when(shoppingFacade.product$(anything(), anything())).thenReturn(
-        of(({
+        of({
           sku: '123',
           completenessLevel: ProductCompletenessLevel.Detail,
           minOrderQuantity: 1,
           maxOrderQuantity: 100,
           type: 'Bundle',
-          bundledProducts: [
-            { sku: 'p1', quantity: 1 },
-            { sku: 'p2', quantity: 2 },
-          ],
           available: true,
           readyForShipmentMin: 0,
           readyForShipmentMax: 2,
-        } as unknown) as ProductView)
+        } as ProductView)
       );
-
+      when(shoppingFacade.productParts$(anything())).thenReturn(
+        of([
+          { sku: 'p1', quantity: 1 },
+          { sku: 'p2', quantity: 2 },
+        ])
+      );
       context.set('sku', () => '123');
     });
 
@@ -419,6 +537,7 @@ describe('Product Context Facade', () => {
           "addToOrderTemplate": true,
           "addToQuote": true,
           "addToWishlist": true,
+          "bundleParts": true,
           "description": true,
           "inventory": true,
           "name": true,
@@ -426,6 +545,7 @@ describe('Product Context Facade', () => {
           "promotions": true,
           "quantity": true,
           "readOnly": false,
+          "retailSetParts": false,
           "shipment": true,
           "sku": true,
           "variations": false,
@@ -467,6 +587,7 @@ describe('Product Context Facade', () => {
           "addToOrderTemplate": true,
           "addToQuote": true,
           "addToWishlist": true,
+          "bundleParts": false,
           "description": true,
           "inventory": true,
           "name": true,
@@ -474,6 +595,7 @@ describe('Product Context Facade', () => {
           "promotions": true,
           "quantity": true,
           "readOnly": false,
+          "retailSetParts": false,
           "shipment": true,
           "sku": true,
           "variations": true,
@@ -511,6 +633,7 @@ describe('Product Context Facade', () => {
           "addToOrderTemplate": false,
           "addToQuote": false,
           "addToWishlist": false,
+          "bundleParts": false,
           "description": true,
           "inventory": false,
           "name": true,
@@ -518,6 +641,7 @@ describe('Product Context Facade', () => {
           "promotions": true,
           "quantity": false,
           "readOnly": false,
+          "retailSetParts": false,
           "shipment": false,
           "sku": true,
           "variations": false,
@@ -577,6 +701,7 @@ describe('Product Context Facade', () => {
       someOther$ = new BehaviorSubject(false);
 
       shoppingFacade = mock(ShoppingFacade);
+      when(shoppingFacade.productParts$(anything())).thenReturn(EMPTY);
 
       product = {
         completenessLevel: ProductCompletenessLevel.Detail,
@@ -614,6 +739,7 @@ describe('Product Context Facade', () => {
           "addToOrderTemplate": true,
           "addToQuote": true,
           "addToWishlist": true,
+          "bundleParts": false,
           "description": true,
           "inventory": true,
           "name": true,
@@ -621,6 +747,7 @@ describe('Product Context Facade', () => {
           "promotions": false,
           "quantity": true,
           "readOnly": false,
+          "retailSetParts": false,
           "shipment": false,
           "sku": true,
           "variations": false,
@@ -642,6 +769,7 @@ describe('Product Context Facade', () => {
           "addToOrderTemplate": false,
           "addToQuote": false,
           "addToWishlist": false,
+          "bundleParts": false,
           "description": true,
           "inventory": true,
           "name": true,
@@ -649,6 +777,7 @@ describe('Product Context Facade', () => {
           "promotions": false,
           "quantity": true,
           "readOnly": false,
+          "retailSetParts": false,
           "shipment": false,
           "sku": true,
           "variations": false,

@@ -6,7 +6,7 @@
     [ngClass]="class"
     [class.btn-primary]="!displayIcon"
     [disabled]="(hasQuantityError$ | async) || (displaySpinner$ | async)"
-    [attr.title]="translationKey | translate"
+    [attr.title]="translationKey$ | async | translate"
     data-testing-id="addToCartButton"
     (click)="addToBasket()"
   >
@@ -16,7 +16,7 @@
         <fa-icon [icon]="['fas', 'shopping-cart']"></fa-icon>
       </ng-container>
 
-      <ng-template #defaultButton>{{ translationKey | translate }}</ng-template>
+      <ng-template #defaultButton>{{ translationKey$ | async | translate }}</ng-template>
     </ng-container>
     <!-- button with spinning animation after Add to Cart -->
     <ng-template #spinning>

@@ -1,7 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { Product, ProductHelper } from 'ish-core/models/product/product.model';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { AnyProductViewType, ProductHelper } from 'ish-core/models/product/product.model';
 
 /**
  * The Product Images Component
@@ -17,17 +20,22 @@ import { Product, ProductHelper } from 'ish-core/models/product/product.model';
   templateUrl: './product-images.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductImagesComponent {
-  /**
-   * The product for which the images should be displayed
-   */
-  @Input() product: Product;
-
+export class ProductImagesComponent implements OnInit {
   @ViewChild('carousel') carousel: NgbCarousel;
 
   activeSlide = '0';
 
-  getImageViewIDsExcludePrimary = ProductHelper.getImageViewIDsExcludePrimary;
+  product$: Observable<AnyProductViewType>;
+
+  constructor(private context: ProductContextFacade) {}
+
+  ngOnInit() {
+    this.product$ = this.context.select('product');
+  }
+
+  getImageViewIDsExcludePrimary$(imageType: string) {
+    return this.product$.pipe(map(p => ProductHelper.getImageViewIDsExcludePrimary(p, imageType)));
+  }
 
   /**
    * Set the active slide via index (used by the thumbnail indicator)

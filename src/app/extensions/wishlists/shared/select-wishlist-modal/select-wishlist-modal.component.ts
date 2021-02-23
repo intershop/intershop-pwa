@@ -15,7 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 
-import { Product } from 'ish-core/models/product/product.model';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
@@ -31,8 +31,6 @@ import { Wishlist } from '../../models/wishlist/wishlist.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectWishlistModalComponent implements OnInit, OnDestroy {
-  @Input() product: Product;
-
   /**
    * changes the some logic and the translations keys between add or move a product (default: 'add')
    */
@@ -61,7 +59,8 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
     private ngbModal: NgbModal,
     private fb: FormBuilder,
     private translate: TranslateService,
-    private wishlistsFacade: WishlistsFacade
+    private wishlistsFacade: WishlistsFacade,
+    private context: ProductContextFacade
   ) {}
 
   ngOnInit() {
@@ -233,5 +232,9 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
     return this.addMoveProduct === 'add'
       ? 'account.wishlists.add_to_wishlist.confirmation'
       : 'account.wishlists.move_wishlist_item.confirmation';
+  }
+
+  get product() {
+    return this.context.get('product');
   }
 }

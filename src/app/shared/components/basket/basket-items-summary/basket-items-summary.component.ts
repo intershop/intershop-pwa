@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
-import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-basket-items-summary',
@@ -14,12 +12,6 @@ export class BasketItemsSummaryComponent {
 
   isCollapsed = true;
   collapsedItemsCount = 3;
-
-  constructor(private shoppingFacade: ShoppingFacade) {}
-
-  product$(sku: string) {
-    return this.shoppingFacade.product$(sku, ProductCompletenessLevel.List);
-  }
 
   toggleCollapse() {
     this.isCollapsed = !this.isCollapsed;

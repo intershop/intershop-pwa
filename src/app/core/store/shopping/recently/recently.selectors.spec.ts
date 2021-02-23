@@ -2,11 +2,13 @@ import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { flatten } from 'lodash-es';
 
+import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { loadProductSuccess } from 'ish-core/store/shopping/products';
+import { loadProductSuccess, loadProductVariationsSuccess } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -73,14 +75,17 @@ describe('Recently Selectors', () => {
 
   describe('after viewing various variation', () => {
     beforeEach(fakeAsync(() => {
-      store$.dispatch(loadProductSuccess({ product: { sku: 'B' } as Product }));
-      ['A1', 'A2', 'A3'].forEach(sku =>
-        store$.dispatch(
+      flatten([
+        loadProductSuccess({ product: { sku: 'A', type: 'VariationProductMaster' } as VariationProductMaster }),
+        loadProductSuccess({ product: { sku: 'B' } as Product }),
+        ['A1', 'A2', 'A3'].map(sku =>
           loadProductSuccess({
             product: { sku, type: 'VariationProduct', productMasterSKU: 'A' } as VariationProduct,
           })
-        )
-      );
+        ),
+        loadProductVariationsSuccess({ sku: 'A', variations: ['A1', 'A2', 'A3'], defaultVariation: 'A1' }),
+      ]).forEach(a => store$.dispatch(a));
+
       ['A1', 'A2', 'B', 'A1', 'A3'].forEach(sku => {
         router.navigateByUrl('/product/' + sku);
         tick(500);

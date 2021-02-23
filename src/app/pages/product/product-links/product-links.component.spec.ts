@@ -3,7 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
 import { ProductLinksCarouselComponent } from '../product-links-carousel/product-links-carousel.component';
 import { ProductLinksListComponent } from '../product-links-list/product-links-list.component';
@@ -23,7 +23,7 @@ describe('Product Links Component', () => {
         MockComponent(ProductLinksListComponent),
         ProductLinksComponent,
       ],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) }],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(mock(ProductContextFacade)) }],
     }).compileComponents();
   });
 
@@ -36,7 +36,6 @@ describe('Product Links Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    expect(() => component.ngOnChanges()).not.toThrow();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 });

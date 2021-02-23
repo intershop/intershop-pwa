@@ -2,8 +2,8 @@
   <div *ngFor="let pli of basket.lineItems; index as i" class="row cart-summary-checkout">
     <ng-container *ngIf="isItemVisible(i)">
       <!-- product name and price -->
-      <div class="col-8" *ngIf="product$(pli.productSKU) | async as product">
-        <a [routerLink]="product | ishProductRoute"> {{ product.name }} </a>
+      <div class="col-8">
+        <ish-product-name ishProductContext [sku]="pli.productSKU"></ish-product-name>
       </div>
       <div class="col-4 text-right">{{ pli.totals.total | ishPrice }}</div>
 

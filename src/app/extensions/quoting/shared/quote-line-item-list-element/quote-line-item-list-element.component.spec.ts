@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
@@ -9,14 +8,14 @@ import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
 import { findAllCustomElements, findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
 import { ProductBundleDisplayComponent } from 'ish-shared/components/product/product-bundle-display/product-bundle-display.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
+import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
 import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
+import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
 import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
 import { ProductVariationDisplayComponent } from 'ish-shared/components/product/product-variation-display/product-variation-display.component';
-import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
 
 import { LazyProductAddToOrderTemplateComponent } from '../../../order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
 import { LazyProductAddToWishlistComponent } from '../../../wishlists/exports/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
@@ -42,7 +41,7 @@ describe('Quote Line Item List Element Component', () => {
     quoteContext = mock(QuoteContextFacade);
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       declarations: [
         MockComponent(FaIconComponent),
         MockComponent(LazyProductAddToOrderTemplateComponent),
@@ -51,10 +50,10 @@ describe('Quote Line Item List Element Component', () => {
         MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
+        MockComponent(ProductNameComponent),
         MockComponent(ProductQuantityComponent),
         MockComponent(ProductVariationDisplayComponent),
         MockPipe(PricePipe),
-        MockPipe(ProductRoutePipe),
         QuoteLineItemListElementComponent,
       ],
       providers: [
@@ -86,8 +85,10 @@ describe('Quote Line Item List Element Component', () => {
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
         "ish-product-image",
+        "ish-product-name",
         "ish-product-id",
         "ish-product-variation-display",
+        "ish-product-bundle-display",
         "ish-product-inventory",
       ]
     `);
@@ -107,8 +108,10 @@ describe('Quote Line Item List Element Component', () => {
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
         "ish-product-image",
+        "ish-product-name",
         "ish-product-id",
         "ish-product-variation-display",
+        "ish-product-bundle-display",
         "ish-product-inventory",
         "ish-lazy-product-add-to-order-template",
         "ish-lazy-product-add-to-wishlist",

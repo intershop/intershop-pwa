@@ -1,32 +1,23 @@
-<div
-  *ngIf="product$ | async as product"
-  class="row list-item-row list-item-row-big"
-  data-testing-id="product-list-item"
->
+<div class="row list-item-row list-item-row-big" data-testing-id="product-list-item">
   <!-- Product Image -->
   <div class="col-2 list-item">
-    <a [routerLink]="product | ishProductRoute">
-      <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
-    </a>
+    <ish-product-image imageType="S" [link]="true"></ish-product-image>
   </div>
 
   <div class="col-7 col-md-6 col-xl-4 list-item">
     <!--Product Description -->
     <div class="pli-description">
-      <a class="product-title" [routerLink]="product | ishProductRoute">{{ product.name }}</a>
+      <ish-product-name></ish-product-name>
 
       <!-- Product ID -->
-      <ish-product-id [product]="product"></ish-product-id>
+      <ish-product-id></ish-product-id>
 
       <!-- Product Variations -->
       <ish-product-variation-display></ish-product-variation-display>
       <!-- Product Bundles -->
-      <ish-product-bundle-display
-        *ngIf="isBundleProduct(product)"
-        [productBundleSKU]="product.sku"
-      ></ish-product-bundle-display>
+      <ish-product-bundle-display></ish-product-bundle-display>
 
-      <ish-product-inventory [product]="product"></ish-product-inventory>
+      <ish-product-inventory></ish-product-inventory>
       <div *ngIf="editable$ | async" class="d-flex align-items-center">
         <ish-lazy-product-add-to-order-template
           [class]="'btn btn-link btn-tool add-to-order-template'"

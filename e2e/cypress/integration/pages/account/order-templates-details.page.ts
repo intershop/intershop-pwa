@@ -19,7 +19,7 @@ export class OrderTemplatesDetailsPage {
   get listItemLink() {
     return cy
       .get('ish-account-order-template-detail-line-item')
-      .find('a[data-testing-id="order-template-product-link"]');
+      .find('[data-testing-id="order-template-product"] a[data-testing-id="product-name-link"]');
   }
 
   get OrderTemplateTitle() {

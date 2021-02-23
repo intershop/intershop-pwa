@@ -1,0 +1,14 @@
+<ng-container *ngIf="visible$ | async">
+  <ng-container *ngIf="productName$ | async as productName">
+    <ng-container *ngIf="link; else noLink">
+      <a
+        class="product-title"
+        data-testing-id="product-name-link"
+        [routerLink]="productURL$ | async"
+        [queryParamsHandling]="queryParamsHandling"
+        >{{ alternate || productName }}</a
+      >
+    </ng-container>
+    <ng-template #noLink>{{ alternate || productName }}</ng-template>
+  </ng-container>
+</ng-container>

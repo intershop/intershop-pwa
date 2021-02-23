@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
-import { ProductLinkView } from 'ish-core/models/product-links/product-links.model';
+import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
 import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 import { ProductLinksListComponent } from './product-links-list.component';
@@ -23,7 +23,7 @@ describe('Product Links List Component', () => {
   });
 
   beforeEach(() => {
-    const productLink = { productSKUs: ['sku'], categoryIds: ['catID'] } as ProductLinkView;
+    const productLink = { products: ['sku'], categories: ['catID'] } as ProductLinks;
 
     fixture = TestBed.createComponent(ProductLinksListComponent);
     component = fixture.componentInstance;

@@ -9,13 +9,19 @@
     <ish-loading [standalone]="true"></ish-loading>
   </div>
 
-  <ng-container *ngFor="let sku of products" ishProductContext [sku]="sku" [configuration]="{ shipment: false }">
+  <ng-container
+    *ngFor="let sku of products"
+    ishProductContext
+    [sku]="sku"
+    [categoryId]="categoryId"
+    [configuration]="{ shipment: false }"
+  >
     <div *ngIf="isGrid" class="col-6 col-lg-4 product-list-item grid-view">
-      <ish-product-item displayType="tile" [category]="category"> </ish-product-item>
+      <ish-product-item displayType="tile"></ish-product-item>
     </div>
 
     <div *ngIf="isList" class="col-lg-12 product-list-item list-view">
-      <ish-product-item displayType="row" [category]="category"> </ish-product-item>
+      <ish-product-item displayType="row"></ish-product-item>
     </div>
   </ng-container>
 

@@ -1,1 +1,5 @@
-<span *ngIf="productLabel" class="product-label" [ngClass]="'product-label-' + productLabel"></span>
+<span
+  *ngIf="productLabel$ | async as productLabel"
+  class="product-label"
+  [ngClass]="'product-label-' + productLabel"
+></span>

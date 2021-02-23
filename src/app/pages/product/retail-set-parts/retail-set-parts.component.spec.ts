@@ -19,6 +19,7 @@ describe('Retail Set Parts Component', () => {
 
   beforeEach(async () => {
     const context = mock(ProductContextFacade);
+    when(context.select('displayProperties', 'retailSetParts')).thenReturn(of(true));
     when(context.select('parts')).thenReturn(
       of([
         { sku: '1', quantity: 1 },

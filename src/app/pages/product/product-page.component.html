@@ -1,24 +1,19 @@
 <div class="clearfix" data-testing-id="product-detail-page" itemscope itemtype="http://schema.org/Product">
-  <ish-loading *ngIf="productLoading$ | async; else productDetail"></ish-loading>
+  <ish-loading *ngIf="productLoading$ | async"></ish-loading>
 
-  <ng-template #productDetail>
-    <ng-container *ngIf="product$ | async as product">
-      <ish-breadcrumb></ish-breadcrumb>
+  <ish-breadcrumb></ish-breadcrumb>
 
-      <ish-product-detail></ish-product-detail>
+  <ish-product-detail></ish-product-detail>
 
-      <ish-product-master-variations
-        *ngIf="isMasterProduct(product)"
-        [category]="category$ | async"
-      ></ish-product-master-variations>
+  <ish-product-master-variations></ish-product-master-variations>
 
-      <ish-product-bundle-parts *ngIf="isProductBundle(product)"></ish-product-bundle-parts>
+  <ish-product-bundle-parts></ish-product-bundle-parts>
 
-      <ish-retail-set-parts *ngIf="isRetailSet(product)"></ish-retail-set-parts>
+  <ish-retail-set-parts></ish-retail-set-parts>
 
-      <ish-product-links [sku]="product.sku"></ish-product-links>
-    </ng-container>
-  </ng-template>
+  <ish-product-links></ish-product-links>
 </div>
 
-<ng-container *ishFeature="'recently'"> <ish-recently-viewed></ish-recently-viewed> </ng-container>
+<ng-container *ishFeature="'recently'"
+  ><ish-recently-viewed *ngIf="!(productLoading$ | async)"></ish-recently-viewed
+></ng-container>

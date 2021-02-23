@@ -2,7 +2,6 @@ import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Dictionary } from '@ngrx/entity';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { combineLatest, from, identity } from 'rxjs';
@@ -10,19 +9,21 @@ import {
   concatMap,
   distinct,
   distinctUntilChanged,
+  exhaustMap,
   filter,
+  first,
   groupBy,
   map,
+  mapTo,
   mergeMap,
+  switchMap,
   switchMapTo,
   throttleTime,
   withLatestFrom,
 } from 'rxjs/operators';
 
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
-import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
-import { VariationProduct } from 'ish-core/models/product/product-variation.model';
-import { Product, ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
+import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { ofProductUrl } from 'ish-core/routing/product/product.route';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { selectRouteParam } from 'ish-core/store/core/router';
@@ -47,8 +48,8 @@ import {
   loadProductLinksFail,
   loadProductLinksSuccess,
   loadProductSuccess,
-  loadProductVariations,
   loadProductVariationsFail,
+  loadProductVariationsIfNotLoaded as loadProductVariationsIfNotLoaded,
   loadProductVariationsSuccess,
   loadProductsForCategory,
   loadProductsForCategoryFail,
@@ -56,7 +57,12 @@ import {
   loadProductsForMasterFail,
   loadRetailSetSuccess,
 } from './products.actions';
-import { getBreadcrumbForProductPage, getProductEntities, getSelectedProduct } from './products.selectors';
+import {
+  getBreadcrumbForProductPage,
+  getProductEntities,
+  getProductVariationSKUs,
+  getSelectedProduct,
+} from './products.selectors';
 
 @Injectable()
 export class ProductsEffects {
@@ -74,10 +80,16 @@ export class ProductsEffects {
     this.actions$.pipe(
       ofType(loadProduct),
       mapToPayloadProperty('sku'),
-      mergeMap(sku =>
-        this.productsService.getProduct(sku).pipe(
-          map(product => loadProductSuccess({ product })),
-          mapErrorToAction(loadProductFail, { sku })
+      groupBy(identity),
+      mergeMap(group$ =>
+        group$.pipe(
+          this.throttleOnBrowser(),
+          switchMap(sku =>
+            this.productsService.getProduct(sku).pipe(
+              map(product => loadProductSuccess({ product })),
+              mapErrorToAction(loadProductFail, { sku })
+            )
+          )
         )
       )
     )
@@ -89,13 +101,7 @@ export class ProductsEffects {
       mapToPayload(),
       withLatestFrom(this.store.pipe(select(getProductEntities))),
       filter(([{ sku, level }, entities]) => !ProductHelper.isSufficientlyLoaded(entities[sku], level)),
-      groupBy(([{ sku }]) => sku),
-      mergeMap(group$ =>
-        group$.pipe(
-          this.throttleOnBrowser(),
-          map(([{ sku }]) => loadProduct({ sku }))
-        )
-      )
+      map(([{ sku }]) => loadProduct({ sku }))
     )
   );
 
@@ -185,46 +191,33 @@ export class ProductsEffects {
    */
   loadProductVariations$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadProductVariations),
+      ofType(loadProductVariationsIfNotLoaded),
       mapToPayloadProperty('sku'),
-      mergeMap(sku =>
-        this.productsService.getProductVariations(sku).pipe(
-          mergeMap(({ products: variations, defaultVariation }) => [
-            ...variations.map((product: Product) => loadProductSuccess({ product })),
-            loadProductVariationsSuccess({
-              sku,
-              variations: variations.map(p => p.sku),
-              defaultVariation,
-            }),
-          ]),
-          mapErrorToAction(loadProductVariationsFail, { sku })
-        )
-      )
-    )
-  );
-
-  /**
-   * Trigger load product action if productMasterSKU is set in product success action payload.
-   * Ignores products that are already present.
-   */
-  loadMasterProductForProduct$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loadProductSuccess),
-      mapToPayloadProperty('product'),
-      filter(product => ProductHelper.isVariationProduct(product)),
-      withLatestFrom(this.store.pipe(select(getProductEntities))),
-      filter(
-        ([product, entities]: [VariationProduct, Dictionary<VariationProduct>]) => !entities[product.productMasterSKU]
-      ),
-      groupBy(([product]) => product.productMasterSKU),
-      mergeMap(groups =>
-        groups.pipe(
+      groupBy(identity),
+      mergeMap(group$ =>
+        group$.pipe(
           this.throttleOnBrowser(),
-          map(([product]) =>
-            loadProductIfNotLoaded({
-              sku: product.productMasterSKU,
-              level: ProductCompletenessLevel.List,
-            })
+          mergeMap(sku =>
+            this.store.pipe(
+              select(getProductVariationSKUs(sku)),
+              first(),
+              filter(variations => !variations?.length),
+              mapTo(sku)
+            )
+          ),
+          exhaustMap(sku =>
+            this.productsService.getProductVariations(sku).pipe(
+              mergeMap(({ products: variations, defaultVariation, masterProduct }) => [
+                ...variations.map(product => loadProductSuccess({ product })),
+                loadProductSuccess({ product: masterProduct }),
+                loadProductVariationsSuccess({
+                  sku,
+                  variations: variations.map(p => p.sku),
+                  defaultVariation,
+                }),
+              ]),
+              mapErrorToAction(loadProductVariationsFail, { sku })
+            )
           )
         )
       )
@@ -235,36 +228,22 @@ export class ProductsEffects {
    * Trigger load product variations action on product success action for master products.
    * Ignores product variation entries for products that are already present.
    */
-  loadProductVariationsForMasterProduct$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loadProductSuccess),
-      mapToPayloadProperty('product'),
-      filter(product => ProductHelper.isMasterProduct(product)),
-      withLatestFrom(this.store.pipe(select(getProductEntities))),
-      filter(
-        ([product, entities]: [VariationProductMaster, Dictionary<VariationProductMaster>]) =>
-          !entities[product.sku] || !entities[product.sku].variationSKUs
+  loadProductVariationsForMasterOrVariationProduct$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(loadProductSuccess),
+        mapToPayloadProperty('product'),
+        map(product =>
+          ProductHelper.isMasterProduct(product)
+            ? product.sku
+            : ProductHelper.isVariationProduct(product)
+            ? product.productMasterSKU
+            : undefined
+        ),
+        whenTruthy(),
+        map(sku => loadProductVariationsIfNotLoaded({ sku }))
       ),
-      groupBy(([product]) => product.sku),
-      mergeMap(groups =>
-        groups.pipe(
-          this.throttleOnBrowser(),
-          map(([product]) => loadProductVariations({ sku: product.sku }))
-        )
-      )
-    )
-  );
-
-  /**
-   * reloads product when it is selected (usually product detail page)
-   * change to {@link LoadProductIfNotLoaded} if no reload is needed
-   */
-  selectedProduct$ = createEffect(() =>
-    this.store.pipe(
-      select(selectRouteParam('sku')),
-      whenTruthy(),
-      map(sku => loadProduct({ sku }))
-    )
+    { dispatch: true }
   );
 
   loadDefaultCategoryContextForProduct$ = createEffect(() =>
@@ -278,21 +257,6 @@ export class ProductsEffects {
       whenTruthy(),
       distinctUntilChanged(),
       map(categoryId => loadCategory({ categoryId }))
-    )
-  );
-
-  loadRetailSetProductDetail$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loadProductSuccess),
-      mapToPayloadProperty('product'),
-      filter(ProductHelper.isRetailSet),
-      mapToProperty('sku'),
-      map(sku =>
-        loadProductIfNotLoaded({
-          sku,
-          level: ProductCompletenessLevel.Detail,
-        })
-      )
     )
   );
 
@@ -377,7 +341,7 @@ export class ProductsEffects {
     )
   );
 
-  private throttleOnBrowser() {
-    return isPlatformBrowser(this.platformId) && this.router.navigated ? throttleTime(100) : map(identity);
+  private throttleOnBrowser<T>() {
+    return isPlatformBrowser(this.platformId) && this.router.navigated ? throttleTime<T>(100) : map(identity);
   }
 }

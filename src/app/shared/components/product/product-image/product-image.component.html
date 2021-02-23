@@ -1,0 +1,23 @@
+<div (deferLoad)="showImage$.next()" class="defer-load">
+  <a
+    *ngIf="link; else image"
+    data-testing-id="product-image-link"
+    [routerLink]="productURL$ | async"
+    [queryParamsHandling]="queryParamsHandling"
+    ><ng-container *ngTemplateOutlet="image"></ng-container>
+  </a>
+</div>
+
+<ng-template #image>
+  <img
+    *ngIf="{ image: productImage$ | async } as product"
+    class="product-image"
+    [src]="product.image?.effectiveUrl || '/assets/img/not_available.png'"
+    [attr.data-type]="product.image?.typeID"
+    [attr.data-view]="product.image?.viewID"
+    [attr.height]="product.image?.imageActualHeight"
+    [attr.width]="product.image?.imageActualWidth"
+    [attr.alt]="altText || (defaultAltText$ | async)"
+    itemprop="image"
+  />
+</ng-template>

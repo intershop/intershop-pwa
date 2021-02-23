@@ -1,38 +1,46 @@
-<ng-container *ngIf="isPriceRange; then priceRange; else singlePrice"></ng-container>
+<ng-container *ngIf="visible$ | async">
+  <ng-container *ngIf="isPriceRange$ | async; then priceRange; else singlePrice"></ng-container>
+</ng-container>
 
 <ng-template #singlePrice>
-  <div
-    class="current-price"
-    [ngClass]="{
-      'sale-price': showInformationalPrice && isListPriceGreaterThanSalePrice,
-      'sale-price-higher': showInformationalPrice && isListPriceLessThanSalePrice
-    }"
-    data-testing-id="current-price"
+  <ng-container *ngIf="data$ | async as d">
+    <div
+      class="current-price"
+      [ngClass]="{
+        'sale-price': showInformationalPrice && d.isListPriceGreaterThanSalePrice,
+        'sale-price-higher': showInformationalPrice && d.isListPriceLessThanSalePrice
+      }"
+      data-testing-id="current-price"
+    >
+      <ng-container *ngIf="d.salePrice; else salePriceNotAvailable">
+        {{
+          (d.isListPriceGreaterThanSalePrice
+            ? 'product.price.salePricePrefix.text'
+            : 'product.price.salePriceFallback.text'
+          ) | translate: { '0': d.salePrice | ishPrice }
+        }}
+        <meta itemprop="price" [attr.content]="d.salePrice.value | number: '1.2-2':'en_US'" />
+        <meta itemprop="priceCurrency" [attr.content]="d.salePrice.currency" />
+      </ng-container>
+      <ng-template #salePriceNotAvailable> {{ 'product.price.na.text' | translate }} </ng-template>
+    </div>
+
+    <div
+      *ngIf="showInformationalPrice && d.isListPriceGreaterThanSalePrice"
+      class="old-price"
+      data-testing-id="old-price"
+    >
+      {{ 'product.price.listPriceFallback.text' | translate: { '0': d.listPrice | ishPrice } }}
+    </div>
+
+    <span *ngIf="showPriceSavings && d.isListPriceGreaterThanSalePrice" class="price-savings">
+      {{ 'product.price.savingsFallback.text' | translate: { '0': d.priceSavings | ishPrice } }}
+    </span></ng-container
   >
-    <ng-container *ngIf="product.salePrice; else salePriceNotAvailable">
-      {{
-        (isListPriceGreaterThanSalePrice
-          ? 'product.price.salePricePrefix.text'
-          : 'product.price.salePriceFallback.text'
-        ) | translate: { '0': product.salePrice | ishPrice }
-      }}
-      <meta itemprop="price" [attr.content]="product.salePrice.value | number: '1.2-2':'en_US'" />
-      <meta itemprop="priceCurrency" [attr.content]="product.salePrice.currency" />
-    </ng-container>
-    <ng-template #salePriceNotAvailable> {{ 'product.price.na.text' | translate }} </ng-template>
-  </div>
-
-  <div *ngIf="showInformationalPrice && isListPriceGreaterThanSalePrice" class="old-price" data-testing-id="old-price">
-    {{ 'product.price.listPriceFallback.text' | translate: { '0': product.listPrice | ishPrice } }}
-  </div>
-
-  <span *ngIf="showPriceSavings && isListPriceGreaterThanSalePrice" class="price-savings">
-    {{ 'product.price.savingsFallback.text' | translate: { '0': priceSavings | ishPrice } }}
-  </span>
 </ng-template>
 
 <ng-template #priceRange>
-  <div class="current-price" data-testing-id="current-price">
-    {{ product.minSalePrice | ishPrice }} - {{ upperPrice | ishPrice }}
+  <div *ngIf="data$ | async as d" class="current-price" data-testing-id="current-price">
+    {{ d.lowerPrice | ishPrice }} - {{ d.upperPrice | ishPrice }}
   </div>
 </ng-template>

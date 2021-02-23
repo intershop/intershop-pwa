@@ -6,6 +6,8 @@ import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
+import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
+import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
 
 import { ProductVariationSelectComponent } from './product-variation-select.component';
@@ -16,20 +18,26 @@ describe('Product Variation Select Component', () => {
   let element: HTMLElement;
   let context: ProductContextFacade;
 
+  const productMaster = {
+    variationAttributeValues: [
+      { variationAttributeId: 'a1', value: 'A' },
+      { variationAttributeId: 'a1', value: 'B' },
+      { variationAttributeId: 'a2', value: 'C' },
+      { variationAttributeId: 'a2', value: 'D' },
+    ],
+  } as VariationProductMaster;
+
   const variationProduct = {
     variableVariationAttributes: [
       { variationAttributeId: 'a1', value: 'B' },
       { variationAttributeId: 'a2', value: 'D' },
     ],
-    variations: () => [variationProduct],
-    productMaster: () => ({
-      variationAttributeValues: [
-        { variationAttributeId: 'a1', value: 'A' },
-        { variationAttributeId: 'a1', value: 'B' },
-        { variationAttributeId: 'a2', value: 'C' },
-        { variationAttributeId: 'a2', value: 'D' },
-      ],
-    }),
+  } as VariationProduct;
+
+  const variationProductView = {
+    ...variationProduct,
+    variations: [variationProduct],
+    productMaster,
   } as VariationProductView;
 
   beforeEach(async () => {
@@ -46,7 +54,7 @@ describe('Product Variation Select Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    when(context.select('productAsVariationProduct')).thenReturn(of(variationProduct));
+    when(context.select('productAsVariationProduct')).thenReturn(of(variationProductView));
     when(context.select('displayProperties', 'variations')).thenReturn(of(true));
   });
 

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 
-import { ProductLinkView } from 'ish-core/models/product-links/product-links.model';
+import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
 
 /**
  * The Product Link Carousel Component
@@ -21,7 +21,7 @@ export class ProductLinksCarouselComponent {
   /**
    * list of products which are assigned to the specific product link type
    */
-  @Input() links: ProductLinkView;
+  @Input() links: ProductLinks;
   /**
    * title that should displayed for the specific product link type
    */
