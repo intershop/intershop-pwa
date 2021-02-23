@@ -49,9 +49,10 @@ export default (
     log('deactivated directTemplateLoading');
   }
 
-  // set production mode and service-worker
+  // set production mode, service-worker, ngrx runtime checks
   const production = configurations.includes('production');
   const serviceWorker = !!angularJsonConfig.serviceWorker;
+  const ngrxRuntimeChecks = !!process.env.TESTING || !production;
   config.plugins.push(
     new webpack.DefinePlugin({
       PWA_VERSION: JSON.stringify(
@@ -61,10 +62,12 @@ export default (
       ),
       PRODUCTION_MODE: production,
       SERVICE_WORKER: serviceWorker,
+      NGRX_RUNTIME_CHECKS: ngrxRuntimeChecks,
     })
   );
   log('setting production:', production);
   log('setting serviceWorker:', serviceWorker);
+  log('setting ngrxRuntimeChecks:', ngrxRuntimeChecks);
 
   if (production) {
     // splitChunks not available for SSR build
@@ -121,12 +124,14 @@ export default (
       cacheGroups.common.priority = 20;
     }
 
-    log('setting up data-testing-id removal');
-    // remove testing ids when loading html files
-    config.module.rules.push({
-      test: /\.html$/,
-      use: [{ loader: join(__dirname, 'data-testing-id-loader.js') }],
-    });
+    if (!process.env.TESTING) {
+      log('setting up data-testing-id removal');
+      // remove testing ids when loading html files
+      config.module.rules.push({
+        test: /\.html$/,
+        use: [{ loader: join(__dirname, 'data-testing-id-loader.js') }],
+      });
+    }
 
     log('setting up purgecss CSS minification');
     config.plugins.push(

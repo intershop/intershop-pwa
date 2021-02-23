@@ -33,14 +33,15 @@ jobs:
         uses: elgohr/Publish-Docker-Github-Action@master
         env:
           serviceWorker: false
-          configuration: local
+          configuration: production
           displayVersion: ${{ github.event.after }}
+          testing: true
         with:
           name: universal
           username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
           registry: ${{ secrets.DOCKER_REGISTRY }}
-          buildargs: serviceWorker,configuration,displayVersion
+          buildargs: serviceWorker,configuration,displayVersion,testing
 
       # - name: Publish Nginx Image to Registry
       #   id: nginx
