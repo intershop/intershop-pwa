@@ -1,8 +1,11 @@
 import { CustomWebpackBrowserSchema, TargetOptions } from '@angular-builders/custom-webpack';
 import { AngularCompilerPlugin } from '@ngtools/webpack';
 import { existsSync } from 'fs';
+import * as glob from 'glob';
 import { join, resolve } from 'path';
 import * as webpack from 'webpack';
+
+const purgecssPlugin = require('purgecss-webpack-plugin');
 
 const log = (...txt) => {
   // tslint:disable-next-line: no-console
@@ -68,6 +71,17 @@ export default (
       test: /\.html$/,
       use: [{ loader: join(__dirname, 'data-testing-id-loader.js') }],
     });
+
+    log('setting up purgecss CSS minification');
+    config.plugins.push(
+      new purgecssPlugin({
+        paths: glob.sync('./{src,projects}/**/*', { nodir: true }),
+        safelist: {
+          standard: [/(p|m)(l|r|x|y|t|b)?-[0-5]/],
+          greedy: [/\bfa\b/, /\bmodal\b/, /\bswiper\b/, /\bcarousel\b/, /\bslide\b/],
+        },
+      })
+    );
   }
 
   if (key) {
