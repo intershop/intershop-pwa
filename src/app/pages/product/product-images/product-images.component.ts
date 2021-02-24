@@ -1,10 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
-import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { SwiperComponent } from 'swiper/angular';
+import SwiperCore, { Navigation } from 'swiper/core';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { AnyProductViewType, ProductHelper } from 'ish-core/models/product/product.model';
+
+SwiperCore.use([Navigation]);
 
 /**
  * The Product Images Component
@@ -21,9 +24,9 @@ import { AnyProductViewType, ProductHelper } from 'ish-core/models/product/produ
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductImagesComponent implements OnInit {
-  @ViewChild('carousel') carousel: NgbCarousel;
+  @ViewChild('carousel') carousel: SwiperComponent;
 
-  activeSlide = '0';
+  activeSlide = 0;
 
   product$: Observable<AnyProductViewType>;
 
@@ -33,18 +36,16 @@ export class ProductImagesComponent implements OnInit {
     this.product$ = this.context.select('product');
   }
 
-  getImageViewIDsExcludePrimary$(imageType: string) {
-    return this.product$.pipe(map(p => ProductHelper.getImageViewIDsExcludePrimary(p, imageType)));
+  getImageViewIDs$(imageType: string) {
+    return this.product$.pipe(map(p => ProductHelper.getImageViewIDs(p, imageType)));
   }
 
   /**
    * Set the active slide via index (used by the thumbnail indicator)
    * @param slideIndex The slide index to set the active slide
    */
-  setActiveSlide(slideIndex: number | string) {
-    this.activeSlide = slideIndex?.toString();
-
-    this.carousel.select(this.activeSlide);
+  setActiveSlide(slideIndex: number) {
+    this.carousel.setIndex(slideIndex);
   }
 
   /**
@@ -53,6 +54,6 @@ export class ProductImagesComponent implements OnInit {
    * @returns True if the given slide index is the active slide, false otherwise
    */
   isActiveSlide(slideIndex: number): boolean {
-    return this.activeSlide === slideIndex?.toString();
+    return this.activeSlide === slideIndex;
   }
 }

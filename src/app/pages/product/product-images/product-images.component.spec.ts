@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
+import { SwiperModule } from 'swiper/angular';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -68,7 +68,7 @@ describe('Product Images Component', () => {
       } as ProductView)
     );
     await TestBed.configureTestingModule({
-      imports: [NgbCarouselModule],
+      imports: [SwiperModule],
       declarations: [
         MockComponent(ProductImageComponent),
         MockComponent(ProductLabelComponent),
@@ -82,7 +82,7 @@ describe('Product Images Component', () => {
     fixture = TestBed.createComponent(ProductImagesComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.activeSlide = '0';
+    component.activeSlide = 0;
   });
 
   it('should be created', () => {
@@ -93,7 +93,7 @@ describe('Product Images Component', () => {
 
   it('should render carousel on component', () => {
     fixture.detectChanges();
-    expect(element.getElementsByClassName('carousel-item')).toHaveLength(2);
+    expect(element.getElementsByClassName('swiper-slide')).toHaveLength(2);
   });
 
   it('should render thumbnails on component', () => {
@@ -110,7 +110,7 @@ describe('Product Images Component', () => {
     (element.getElementsByClassName('product-thumb-set')[1] as HTMLElement).click();
     fixture.detectChanges();
     expect(element.getElementsByClassName('product-thumb-set')[1].getAttribute('class')).toContain('active');
-    expect(component.activeSlide).toEqual('1');
+    expect(component.activeSlide).toEqual(1);
   });
 
   it('should render product image component on component', () => {
