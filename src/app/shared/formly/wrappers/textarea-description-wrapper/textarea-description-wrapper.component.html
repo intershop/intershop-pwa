@@ -1,0 +1,6 @@
+<ng-template #fieldComponent></ng-template>
+<div *ngIf="description$ | async as desc">
+  <small class="form-text text-muted ng-star-inserted" data-testing-id="textarea-description">
+    {{ desc }}
+  </small>
+</div>

@@ -13,10 +13,7 @@ export abstract class AddressFormConfiguration {
 }
 
 function applyStandardStyles(config: FormlyFieldConfig): FormlyFieldConfig {
-  if (config) {
-    config.templateOptions.labelClass ??= 'col-md-4';
-    config.templateOptions.fieldClass ??= 'col-md-8';
-  }
+  /* do some customization here */
   return config;
 }
 

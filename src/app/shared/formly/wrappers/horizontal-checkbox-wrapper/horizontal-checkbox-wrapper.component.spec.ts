@@ -1,31 +1,34 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
+import { ValidationMessageComponent } from 'ish-shared/formly/components/validation-message/validation-message.component';
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { FormlyTestingExampleComponent } from 'ish-shared/formly/dev/testing/formly-testing-example/formly-testing-example.component';
 
-import { TextareaFieldComponent } from './textarea-field.component';
+import { HorizontalCheckboxWrapperComponent } from './horizontal-checkbox-wrapper.component';
 
-describe('Textarea Field Component', () => {
+describe('Horizontal Checkbox Wrapper Component', () => {
   let component: FormlyTestingContainerComponent;
   let fixture: ComponentFixture<FormlyTestingContainerComponent>;
   let element: HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TextareaFieldComponent],
       imports: [
         FormlyModule.forRoot({
-          types: [
-            {
-              name: 'ish-textarea-field',
-              component: TextareaFieldComponent,
-            },
-          ],
+          types: [{ name: 'example', component: FormlyTestingExampleComponent }],
+          wrappers: [{ name: 'form-field-checkbox-horizontal', component: HorizontalCheckboxWrapperComponent }],
         }),
         FormlyTestingComponentsModule,
-        ReactiveFormsModule,
+      ],
+      declarations: [
+        HorizontalCheckboxWrapperComponent,
+        MockComponent(ValidationMessageComponent),
+        MockPipe(TranslatePipe),
       ],
     }).compileComponents();
   });
@@ -34,19 +37,17 @@ describe('Textarea Field Component', () => {
     const testComponentInputs = {
       fields: [
         {
-          key: 'textarea',
-          type: 'ish-textarea-field',
-          templateOptions: {
-            label: 'test label',
-            required: true,
-          },
-        } as FormlyFieldConfig,
-      ],
-      form: new FormGroup({}),
+          key: 'example',
+          type: 'example',
+          wrappers: ['form-field-checkbox-horizontal'],
+        },
+      ] as FormlyFieldConfig[],
       model: {
-        textarea: '',
+        example: undefined,
       },
+      form: new FormGroup({}),
     };
+
     fixture = TestBed.createComponent(FormlyTestingContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
@@ -58,10 +59,11 @@ describe('Textarea Field Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+    expect(element.querySelector('ish-horizontal-checkbox-wrapper')).toBeTruthy();
   });
 
   it('should be rendered after creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-textarea-field > textarea')).toBeTruthy();
+    expect(element.querySelector('ish-horizontal-checkbox-wrapper')).toBeTruthy();
   });
 });

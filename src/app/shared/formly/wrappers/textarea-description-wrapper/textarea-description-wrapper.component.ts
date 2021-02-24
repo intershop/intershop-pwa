@@ -6,14 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'ish-textarea-description-wrapper',
-  template: `
-    <ng-template #fieldComponent></ng-template>
-    <div *ngIf="description$ | async as desc">
-      <small class="form-text text-muted ng-star-inserted" data-testing-id="textarea-description">
-        {{ desc }}
-      </small>
-    </div>
-  `,
+  templateUrl: './textarea-description-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class TextareaDescriptionWrapperComponent extends FieldWrapper implements OnInit, OnDestroy {

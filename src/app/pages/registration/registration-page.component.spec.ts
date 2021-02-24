@@ -4,6 +4,7 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormlyConfig, FormlyForm } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -31,7 +32,11 @@ describe('Registration Page Component', () => {
         MockComponent(FormlyForm),
         RegistrationPageComponent,
       ],
-      imports: [ReactiveFormsModule, RouterTestingModule.withRoutes([{ path: 'home', component: DummyComponent }])],
+      imports: [
+        ReactiveFormsModule,
+        RouterTestingModule.withRoutes([{ path: 'home', component: DummyComponent }]),
+        TranslateModule.forRoot(),
+      ],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
         { provide: FormlyConfig, useFactory: () => instance(formlyConfig) },
