@@ -1,9 +1,10 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Store, select } from '@ngrx/store';
 import b64u from 'b64u';
 import { pick } from 'lodash-es';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
-import { catchError, concatMap, first, map, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatMap, first, map, take, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Address } from 'ish-core/models/address/address.model';
@@ -16,6 +17,7 @@ import { PasswordReminder } from 'ish-core/models/password-reminder/password-rem
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
+import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
 /**
  * The User Service handles the registration related interaction with the 'customers' REST API.
@@ -39,7 +41,7 @@ interface CreateBusinessCustomerType extends Customer {
  */
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  constructor(private apiService: ApiService, private appFacade: AppFacade) {}
+  constructor(private apiService: ApiService, private appFacade: AppFacade, private store: Store) {}
 
   /**
    * Sign in an existing user with the given login credentials (login, password).
@@ -211,7 +213,12 @@ export class UserService {
    * @returns The related customer user data.
    */
   getCompanyUserData(): Observable<User> {
-    return this.apiService.get('customers/-/users/-').pipe(map(UserMapper.fromData));
+    return this.store.pipe(
+      select(getLoggedInCustomer),
+      map(customer => customer?.customerNo || '-'),
+      take(1),
+      concatMap(customerNo => this.apiService.get(`customers/${customerNo}/users/-`).pipe(map(UserMapper.fromData)))
+    );
   }
 
   /**
