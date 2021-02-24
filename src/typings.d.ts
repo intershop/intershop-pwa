@@ -7,4 +7,6 @@ interface NodeModule {
 
 declare var PRODUCTION_MODE: boolean;
 
+declare var SERVICE_WORKER: boolean;
+
 declare var PWA_VERSION: string;

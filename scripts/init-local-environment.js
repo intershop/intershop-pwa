@@ -38,7 +38,6 @@ const extraFeatures: typeof environment.features =
 export const environment: Environment = {
   ...ENVIRONMENT_DEFAULTS,
 
-  serviceWorker: false,
   defaultDeviceType: 'desktop',
 
   icmBaseURL: 'https://pwa-ish-demo.test.intershop.com',

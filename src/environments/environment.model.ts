@@ -73,9 +73,6 @@ export interface Environment {
   // default device type used for initial page responses
   defaultDeviceType: DeviceType;
 
-  // enable or disable service worker
-  serviceWorker: boolean;
-
   // configuration of the available locales - hard coded for now
   locales: Locale[];
 
@@ -111,7 +108,6 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
   features: ['compare', 'recently', 'rating', 'wishlists'],
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
-  serviceWorker: false,
   smallBreakpointWidth: 576,
   mediumBreakpointWidth: 768,
   largeBreakpointWidth: 992,

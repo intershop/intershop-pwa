@@ -133,7 +133,6 @@ node scripts/init-local-environment -f
 
 node schematics/customization/service-worker false
 grep '"serviceWorker": false' angular.json
-grep 'serviceWorker: false' src/environments/environment.local.ts
 
 git add -A
 npm run clean
