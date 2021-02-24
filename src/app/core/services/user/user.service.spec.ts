@@ -1,5 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
@@ -11,6 +12,7 @@ import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/m
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
 import { UserService } from './user.service';
 
@@ -27,6 +29,7 @@ describe('User Service', () => {
       providers: [
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
+        provideMockStore({ selectors: [{ selector: getLoggedInCustomer, value: undefined }] }),
       ],
     });
     userService = TestBed.inject(UserService);
