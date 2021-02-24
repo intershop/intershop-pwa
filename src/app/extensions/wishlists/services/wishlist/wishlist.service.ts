@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, forkJoin, throwError } from 'rxjs';
-import { concatMap, defaultIfEmpty, first, map, switchMap } from 'rxjs/operators';
+import { Observable, forkJoin, of, throwError } from 'rxjs';
+import { concatMap, first, map, switchMap } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
@@ -25,9 +25,7 @@ export class WishlistService {
           unpackEnvelope(),
           map(wishlistData => wishlistData.map(this.wishlistMapper.fromDataToIds)),
           map(wishlistData => wishlistData.map(wishlist => this.getWishlist(wishlist.id))),
-          // tslint:disable-next-line:no-unnecessary-callback-wrapper
-          switchMap(obsArray => forkJoin(obsArray)),
-          defaultIfEmpty([])
+          switchMap(obsArray => (obsArray.length ? forkJoin(obsArray) : of([])))
         )
       )
     );
