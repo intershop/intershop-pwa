@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { RoleToggleModule } from 'ish-core/role-toggle.module';
 
 import { FooterComponent } from './footer.component';
 
@@ -14,7 +15,7 @@ describe('Footer Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BrowserTransferStateModule, TranslateModule.forRoot()],
+      imports: [BrowserTransferStateModule, RoleToggleModule.forTesting(), TranslateModule.forRoot()],
       declarations: [FooterComponent, MockDirective(ServerHtmlDirective)],
     }).compileComponents();
   });

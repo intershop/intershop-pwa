@@ -1,8 +1,7 @@
-<form role="search" class="search clearfix" name="SearchBox_Header" (submit)="submitSearch(searchInput.value)">
+<div role="search" class="search clearfix">
   <input
     #searchInput
     [placeholder]="configuration?.placeholder || ''"
-    formControlName="search"
     autocomplete="off"
     type="text"
     class="form-control searchTerm"
@@ -15,6 +14,7 @@
     (keydown.arrowright)="selectSuggestedTerm(-1)"
     (keydown.arrowdown)="selectSuggestedTerm(activeIndex + 1)"
     (keydown.arrowup)="selectSuggestedTerm(activeIndex - 1)"
+    (keydown.enter)="submitSearch(searchInput.value)"
   />
 
   <div class="buttons">
@@ -35,6 +35,7 @@
       type="submit"
       name="search"
       [title]="'search.searchbox.button.title' | translate"
+      (click)="submitSearch(searchInput.value)"
     >
       <!-- search button with icon -->
       <ng-container *ngIf="!configuration?.buttonText; else textBlock">
@@ -61,4 +62,4 @@
       </li>
     </ul>
   </ng-container>
-</form>
+</div>

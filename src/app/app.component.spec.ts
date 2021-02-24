@@ -5,7 +5,6 @@ import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { CookiesBannerComponent } from 'ish-shell/application/cookies-banner/cookies-banner.component';
 
@@ -28,7 +27,7 @@ describe('App Component', () => {
         MockComponent(FooterComponent),
         MockComponent(HeaderComponent),
       ],
-      imports: [RoleToggleModule.forTesting(), RouterTestingModule, TranslateModule.forRoot()],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: AppFacade, useFactory: () => instance(mock(AppFacade)) }],
     }).compileComponents();
   });

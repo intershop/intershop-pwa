@@ -1,1 +1,3 @@
-<div [ishServerHtml]="'footer.content' | translate: { appVersion: appVersion }" class="clearfix"></div>
+<ng-container *ishHasNotRole="'APP_B2B_OCI_USER'">
+  <div [ishServerHtml]="'footer.content' | translate: { appVersion: appVersion }" class="clearfix"></div>
+</ng-container>

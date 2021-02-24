@@ -23,7 +23,7 @@ describe('Store Schematic', () => {
   beforeEach(async () => {
     appTree = await createApplication(schematicRunner)
       .pipe(
-        createModule(schematicRunner, { name: 'shell' }),
+        createModule(schematicRunner, { name: 'shared' }),
         createAppLastRoutingModule(schematicRunner),
         mergeMap(tree => schematicRunner.runSchematicAsync('extension', { name: 'feature', project: 'bar' }, tree)),
         copyFileFromPWA('src/app/core/store/core/core-store.module.ts'),
