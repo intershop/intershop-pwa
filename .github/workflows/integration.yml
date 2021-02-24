@@ -80,7 +80,6 @@ jobs:
       - name: Set Environment
         run: |
           echo "LOGGING=true" >> $GITHUB_ENV
-          echo "PROXY_ICM=true" >> $GITHUB_ENV
 
       - name: Set B2B Environment
         if: matrix.test == 'b2b'
@@ -123,7 +122,6 @@ jobs:
         run: |
           echo "PWA_BASE_URL=http://localhost:4200" >> $GITHUB_ENV
           echo "LOGGING=true" >> $GITHUB_ENV
-          echo "PROXY_ICM=true" >> $GITHUB_ENV
           echo "BROWSER=chrome" >> $GITHUB_ENV
 
       - name: Set B2B Environment
