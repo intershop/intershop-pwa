@@ -38,7 +38,9 @@ export function mapToPayload<T>(): OperatorFunction<{ payload: T; type: unknown 
   return (source$: Observable<{ payload: T }>) => source$.pipe(map(action => action.payload));
 }
 
-export function mapToPayloadProperty<T>(key: keyof T): OperatorFunction<{ payload: T; type: unknown }, T[keyof T]> {
+export function mapToPayloadProperty<T, K extends keyof T>(
+  key: K
+): OperatorFunction<{ payload: T; type: unknown }, T[K]> {
   return (source$: Observable<{ payload: T }>) =>
     source$.pipe(
       map(action => action.payload),
