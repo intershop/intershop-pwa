@@ -1,4 +1,4 @@
-import { Compiler, Injectable, InjectionToken, Injector, NgModuleFactory } from '@angular/core';
+import { Compiler, Injectable, InjectionToken, Injector, Type } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import { getFeatures } from 'ish-core/store/core/configuration';
@@ -7,7 +7,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 declare interface LazyModuleType {
   feature: string;
-  location(): unknown;
+  location(): Promise<Type<unknown>>;
 }
 
 export const LAZY_FEATURE_MODULE = new InjectionToken<LazyModuleType>('lazyModule');
@@ -25,27 +25,11 @@ export class ModuleLoaderService {
         .filter(mod => !this.loadedModules.includes(mod.feature))
         .filter(mod => this.featureToggleService.enabled(mod.feature))
         .forEach(async mod => {
-          await this.loadModule(mod.location(), injector);
+          const loaded = await mod.location();
+          const moduleFactory = await this.compiler.compileModuleAsync(loaded);
+          moduleFactory.create(injector);
           this.loadedModules.push(mod.feature);
         });
     });
-  }
-
-  private async loadModule(loc, injector: Injector) {
-    const loaded = await loc;
-    Object.keys(loaded)
-      .filter(key => key.endsWith('Module'))
-      .forEach(async key => {
-        const moduleFactory = await this.loadModuleFactory(loaded[key]);
-        moduleFactory.create(injector);
-      });
-  }
-
-  private async loadModuleFactory(t) {
-    if (t instanceof NgModuleFactory) {
-      return t;
-    } else {
-      return await this.compiler.compileModuleAsync(t);
-    }
   }
 }
