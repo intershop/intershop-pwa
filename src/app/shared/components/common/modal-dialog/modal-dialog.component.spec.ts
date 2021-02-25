@@ -43,15 +43,11 @@ describe('Modal Dialog Component', () => {
   });
 
   it('should output input data on confirm', done => {
-    let firedData;
-
     component.show('test');
-    component.confirmed.subscribe(data => {
-      firedData = data;
+    component.confirmed.subscribe((data: string) => {
+      expect(data).toBe('test');
       done();
     });
     component.confirm();
-
-    expect(firedData).toBe('test');
   });
 });

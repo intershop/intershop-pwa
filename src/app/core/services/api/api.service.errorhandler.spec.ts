@@ -41,7 +41,8 @@ describe('Api Service Errorhandler', () => {
     [serverError.type, { status: 500, headers: undefined }],
   ])(
     `should create state %s when Http Code %j is handled`,
-    fakeAsync((expectedType, error) => {
+    // tslint:disable-next-line: no-any
+    fakeAsync((expectedType: string, error: any) => {
       const header = new HttpHeaders();
       error.headers = header;
 

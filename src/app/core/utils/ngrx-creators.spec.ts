@@ -1,6 +1,8 @@
 import { createAction, createReducer } from '@ngrx/store';
 import { noop } from 'rxjs';
 
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+
 import { makeHttpError } from './dev/api-service-utils';
 import { httpError, payload, setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from './ngrx-creators';
 
@@ -10,7 +12,7 @@ describe('Ngrx Creators', () => {
   const loadFail = createAction('[Test API] Load Fail', httpError());
 
   describe('with boolean loading', () => {
-    const initialState = { loading: false, error: undefined };
+    const initialState = { loading: false, error: undefined as HttpError };
     const reducer = createReducer(
       initialState,
       setLoadingOn(load),

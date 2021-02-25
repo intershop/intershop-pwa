@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 
+// tslint:disable: no-any
 @Component({
   selector: 'ish-formly-testing-container',
   templateUrl: './formly-testing-container.component.html',
@@ -10,7 +11,7 @@ import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 export class FormlyTestingContainerComponent {
   @ViewChild(FormlyForm) formlyForm: FormlyForm;
 
-  set testComponentInputs(inputs: { fields: FormlyFieldConfig[]; form: FormGroup; model; options? }) {
+  set testComponentInputs(inputs: { fields: FormlyFieldConfig[]; form: FormGroup; model: any; options?: any }) {
     this.fields = inputs.fields;
     this.form = inputs.form;
     this.model = inputs.model;
@@ -19,6 +20,6 @@ export class FormlyTestingContainerComponent {
 
   fields: FormlyFieldConfig[];
   form: FormGroup;
-  model;
-  options;
+  model: any;
+  options: any;
 }

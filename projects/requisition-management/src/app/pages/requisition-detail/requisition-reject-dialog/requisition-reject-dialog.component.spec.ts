@@ -38,7 +38,7 @@ describe('Requisition Reject Dialog Component', () => {
       comment: 'test comment',
     });
 
-    component.submit.subscribe(emit => {
+    component.submit.subscribe((emit: string) => {
       expect(emit).toEqual('test comment');
       done();
     });

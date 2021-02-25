@@ -11,7 +11,7 @@ import { HttpStatusCodeService } from './http-status-code.service';
 describe('Http Status Code Service', () => {
   let httpStatusCodeService: HttpStatusCodeService;
   let RES: { status(status: number): void };
-  let resSpy;
+  let resSpy: { status(status: number): void };
   let location: Location;
 
   @Component({ template: 'dummy' })

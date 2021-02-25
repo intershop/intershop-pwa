@@ -34,7 +34,11 @@ describe('Horizontal Checkbox Wrapper Component', () => {
   });
 
   beforeEach(() => {
-    const testComponentInputs = {
+    fixture = TestBed.createComponent(FormlyTestingContainerComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+
+    component.testComponentInputs = {
       fields: [
         {
           key: 'example',
@@ -47,12 +51,6 @@ describe('Horizontal Checkbox Wrapper Component', () => {
       },
       form: new FormGroup({}),
     };
-
-    fixture = TestBed.createComponent(FormlyTestingContainerComponent);
-    component = fixture.componentInstance;
-    element = fixture.nativeElement;
-
-    component.testComponentInputs = testComponentInputs;
   });
 
   it('should be created', () => {
