@@ -67,7 +67,7 @@ export class ProductQuantityComponent implements OnInit {
     this.setNextValue(this.context.get('quantity') - this.context.get('stepQuantity'));
   }
 
-  change(target: HTMLDataElement) {
-    this.setValue(Number.parseInt(target.value, 10));
+  change(target: EventTarget) {
+    this.setValue(Number.parseInt((target as HTMLDataElement).value, 10));
   }
 }

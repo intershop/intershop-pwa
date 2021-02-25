@@ -10,7 +10,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import { PaymentConcardisComponent } from '../payment-concardis/payment-concardis.component';
 
 // allows access to concardis js functionality
-// tslint:disable-next-line:no-any
+// tslint:disable:no-any
 declare var PayEngine: any;
 
 @Component({
@@ -97,12 +97,12 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
   /**
    * call back function to submit data
    */
-  submitCallback(error) {
+  submitCallback(error: any) {
     if (error) {
       // map error messages
       if (typeof error.message !== 'string' && error.message.properties) {
         this.errorMessage.cvc =
-          error.message.properties && error.message.properties.find(prop => prop.key === 'verification');
+          error.message.properties && error.message.properties.find((prop: any) => prop.key === 'verification');
         if (this.errorMessage.cvc && this.errorMessage.cvc.code) {
           this.errorMessage.cvc.messageKey = this.getErrorMessage(
             this.errorMessage.cvc.code,
@@ -149,7 +149,7 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
       if (tokenValue) {
         const cvcValue = this.cvcDetailForm.get('cvcDetail').value;
         if (cvcValue) {
-          PayEngine.verifyPaymentInstrument(tokenValue, cvcValue, err => this.submitCallback(err));
+          PayEngine.verifyPaymentInstrument(tokenValue, cvcValue, (err: unknown) => this.submitCallback(err));
         } else {
           this.cvcDetailForm.get('cvcDetail').setErrors({ required: true });
           markAsDirtyRecursive(this.cvcDetailForm);

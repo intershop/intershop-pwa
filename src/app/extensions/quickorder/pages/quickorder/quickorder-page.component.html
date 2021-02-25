@@ -120,7 +120,7 @@
             size="35"
             class="form-control"
             accept=".csv"
-            (change)="uploadListener($event)"
+            (change)="uploadListener($event.target)"
           />
           <div [ngSwitch]="status" class="position-absolute">
             <small *ngSwitchCase="'IncorrectInput'" class="has-error"

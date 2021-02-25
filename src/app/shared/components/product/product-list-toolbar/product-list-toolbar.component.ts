@@ -28,8 +28,8 @@ export class ProductListToolbarComponent implements OnChanges {
     this.sortOptions = this.mapSortableAttributesToSelectOptions(this.sortableAttributes);
   }
 
-  changeSortBy(target: HTMLDataElement) {
-    const sorting = target.value;
+  changeSortBy(target: EventTarget) {
+    const sorting = (target as HTMLDataElement).value;
 
     this.router.navigate([], {
       relativeTo: this.activatedRoute,

@@ -52,7 +52,7 @@ export class AccountOrderTemplateDetailLineItemComponent implements OnInit {
     this.orderTemplatesFacade.removeProductFromOrderTemplate(this.currentOrderTemplate.id, sku);
   }
 
-  setActive(target: HTMLInputElement) {
-    this.context.set('propagateActive', () => target.checked);
+  setActive(target: EventTarget) {
+    this.context.set('propagateActive', () => (target as HTMLInputElement).checked);
   }
 }

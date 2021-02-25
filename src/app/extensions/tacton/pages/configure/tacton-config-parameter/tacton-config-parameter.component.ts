@@ -12,8 +12,8 @@ export abstract class TactonConfigParameterComponent {
 
   constructor(protected facade: TactonFacade) {}
 
-  change(value: string | HTMLDataElement) {
-    this.facade.commitValue(this.parameter, typeof value === 'string' ? value : value.value);
+  change(value: string | EventTarget) {
+    this.facade.commitValue(this.parameter, typeof value === 'string' ? value : (value as HTMLDataElement).value);
   }
 
   getImageUrl(picture: string): Observable<string> {

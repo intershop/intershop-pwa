@@ -26,7 +26,7 @@ export class ProductVariationSelectComponent implements OnInit {
     this.visible$ = this.context.select('displayProperties', 'variations');
   }
 
-  optionChange(group: string, target: HTMLDataElement) {
-    this.context.changeVariationOption(group, target.value);
+  optionChange(group: string, target: EventTarget) {
+    this.context.changeVariationOption(group, (target as HTMLDataElement).value);
   }
 }

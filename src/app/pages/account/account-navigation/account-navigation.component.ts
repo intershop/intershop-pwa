@@ -92,9 +92,9 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
     this.isMobileView = this.deviceType === 'tablet' || this.deviceType === 'mobile';
   }
 
-  navigateTo(target: HTMLDataElement) {
+  navigateTo(target: EventTarget) {
     if (target) {
-      this.router.navigateByUrl(target.value);
+      this.router.navigateByUrl((target as HTMLDataElement).value);
     }
   }
 
