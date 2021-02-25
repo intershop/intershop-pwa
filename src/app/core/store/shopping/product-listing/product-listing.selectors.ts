@@ -94,16 +94,14 @@ function calculateLookUpID(
   return serializeProductListingID({ ...currentSettings, ...id });
 }
 
-export const getProductListingView = createSelectorFactory<object, ProductListingView>(projector =>
-  resultMemoize(projector, isEqual)
-)(
-  getProductListingEntities,
-  getProductListingItemsPerPage,
-  getProductListingSettings,
-  (
-    entities: Dictionary<ProductListingType>,
-    itemsPerPage: number,
-    settings: { [id: string]: Pick<ProductListingID, 'filters' | 'sorting'> },
-    id: ProductListingID
-  ) => entities && createView(entities[calculateLookUpID(id, settings)], itemsPerPage)
-);
+export const getProductListingView = (id: ProductListingID) =>
+  createSelectorFactory<object, ProductListingView>(projector => resultMemoize(projector, isEqual))(
+    getProductListingEntities,
+    getProductListingItemsPerPage,
+    getProductListingSettings,
+    (
+      entities: Dictionary<ProductListingType>,
+      itemsPerPage: number,
+      settings: { [id: string]: Pick<ProductListingID, 'filters' | 'sorting'> }
+    ) => entities && createView(entities[calculateLookUpID(id, settings)], itemsPerPage)
+  );

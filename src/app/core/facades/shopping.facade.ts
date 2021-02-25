@@ -105,7 +105,7 @@ export class ShoppingFacade {
 
   productListingView$(id: ProductListingID) {
     this.store.dispatch(loadMoreProducts({ id }));
-    return this.store.pipe(select(getProductListingView, id));
+    return this.store.pipe(select(getProductListingView(id)));
   }
 
   productListingViewType$ = this.store.pipe(select(getProductListingViewType));
@@ -147,7 +147,7 @@ export class ShoppingFacade {
     debounce(() => this.store.pipe(select(getProductListingLoading), whenFalsy())),
     switchMap(term =>
       this.store.pipe(
-        select(getProductListingView, { type: 'search', value: term }),
+        select(getProductListingView({ type: 'search', value: term })),
         map(view => view.itemCount)
       )
     )

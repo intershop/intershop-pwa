@@ -2,7 +2,7 @@ import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { loadContentInclude, loadContentIncludeFail, loadContentIncludeSuccess } from './includes.actions';
-import { includesReducer, initialState } from './includes.reducer';
+import { IncludesState, includesReducer, initialState } from './includes.reducer';
 
 describe('Includes Reducer', () => {
   it('should be empty when nothing was reduced', () => {
@@ -20,7 +20,7 @@ describe('Includes Reducer', () => {
   });
 
   describe('after begin loading', () => {
-    let loadingState;
+    let loadingState: IncludesState;
 
     beforeEach(() => {
       loadingState = includesReducer(initialState, loadContentInclude({ includeId: '' }));

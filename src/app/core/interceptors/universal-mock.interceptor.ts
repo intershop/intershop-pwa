@@ -10,7 +10,7 @@ import { Observable, Observer } from 'rxjs';
  */
 @Injectable()
 export class UniversalMockInterceptor implements HttpInterceptor {
-  constructor(@Inject(PLATFORM_ID) private platformId) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: string) {}
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (!isPlatformServer(this.platformId)) {

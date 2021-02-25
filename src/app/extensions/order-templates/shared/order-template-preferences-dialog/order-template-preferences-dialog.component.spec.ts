@@ -6,6 +6,8 @@ import { spy, verify } from 'ts-mockito';
 
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
+import { OrderTemplate } from '../../models/order-template/order-template.model';
+
 import { OrderTemplatePreferencesDialogComponent } from './order-template-preferences-dialog.component';
 
 describe('Order Template Preferences Dialog Component', () => {
@@ -38,7 +40,7 @@ describe('Order Template Preferences Dialog Component', () => {
       title: 'test order template',
     });
 
-    component.submit.subscribe(emit => {
+    component.submit.subscribe((emit: OrderTemplate) => {
       expect(emit).toEqual({
         id: 'test order template',
         title: 'test order template',

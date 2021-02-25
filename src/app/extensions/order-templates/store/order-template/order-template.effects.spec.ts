@@ -3,9 +3,9 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Store } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { of, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
@@ -46,7 +46,7 @@ import {
 import { OrderTemplateEffects } from './order-template.effects';
 
 describe('Order Template Effects', () => {
-  let actions$;
+  let actions$: Observable<Action>;
   let orderTemplateServiceMock: OrderTemplateService;
   let effects: OrderTemplateEffects;
   let store$: Store;

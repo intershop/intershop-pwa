@@ -8,6 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -120,7 +121,7 @@ describe('Checkout Payment Component', () => {
   it('should throw updatePaymentMethod event when the user changes payment selection', done => {
     fixture.detectChanges();
 
-    component.updatePaymentMethod.subscribe(formValue => {
+    component.updatePaymentMethod.subscribe((formValue: string) => {
       expect(formValue).toBe('testPayment');
       done();
     });
@@ -191,14 +192,16 @@ describe('Checkout Payment Component', () => {
       component.ngOnChanges(paymentMethodChange);
       component.openPaymentParameterForm(1);
 
-      component.createPaymentInstrument.subscribe(formValue => {
-        expect(formValue.paymentInstrument).toEqual({
-          paymentMethod: 'Concardis_CreditCard',
-          parameters: [{ name: 'creditCardNumber', value: '123' }],
-        });
-        expect(formValue.saveForLater).toBeFalsy();
-        done();
-      });
+      component.createPaymentInstrument.subscribe(
+        (formValue: { paymentInstrument: PaymentInstrument; saveForLater: boolean }) => {
+          expect(formValue.paymentInstrument).toEqual({
+            paymentMethod: 'Concardis_CreditCard',
+            parameters: [{ name: 'creditCardNumber', value: '123' }],
+          });
+          expect(formValue.saveForLater).toBeFalsy();
+          done();
+        }
+      );
 
       component.parameterForm.addControl('creditCardNumber', new FormControl('123', Validators.required));
       component.submitParameterForm();
@@ -209,14 +212,16 @@ describe('Checkout Payment Component', () => {
       component.ngOnChanges(paymentMethodChange);
       component.openPaymentParameterForm(3);
 
-      component.createPaymentInstrument.subscribe(formValue => {
-        expect(formValue.paymentInstrument).toEqual({
-          paymentMethod: 'ISH_CreditCard',
-          parameters: [{ name: 'creditCardNumber', value: '456' }],
-        });
-        expect(formValue.saveForLater).toBeTruthy();
-        done();
-      });
+      component.createPaymentInstrument.subscribe(
+        (formValue: { paymentInstrument: PaymentInstrument; saveForLater: boolean }) => {
+          expect(formValue.paymentInstrument).toEqual({
+            paymentMethod: 'ISH_CreditCard',
+            parameters: [{ name: 'creditCardNumber', value: '456' }],
+          });
+          expect(formValue.saveForLater).toBeTruthy();
+          done();
+        }
+      );
 
       component.parameterForm.addControl('creditCardNumber', new FormControl('456', Validators.required));
       component.submitParameterForm();
@@ -272,7 +277,7 @@ describe('Checkout Payment Component', () => {
       };
       fixture.detectChanges();
 
-      component.deletePaymentInstrument.subscribe(instrument => {
+      component.deletePaymentInstrument.subscribe((instrument: PaymentInstrument) => {
         expect(instrument.id).toEqual(paymentInstrument.id);
         done();
       });

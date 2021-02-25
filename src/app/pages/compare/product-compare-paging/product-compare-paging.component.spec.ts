@@ -31,14 +31,11 @@ describe('Product Compare Paging Component', () => {
 
   it('should trigger changePage event when click next and previous button', done => {
     const expected = 1;
-    let called = false;
-    component.changePage.subscribe(data => {
+    component.changePage.subscribe((data: number) => {
       expect(data).toEqual(expected);
-      called = true;
       done();
     });
     component.changeToPage(expected);
-    expect(called).toBeTruthy();
   });
 
   it('should not show next button when current page equal to totalpages', () => {

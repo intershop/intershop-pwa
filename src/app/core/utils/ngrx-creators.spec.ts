@@ -64,7 +64,7 @@ describe('Ngrx Creators', () => {
   });
 
   describe('with number loading', () => {
-    const initialState = { loading: 0, error: undefined };
+    const initialState = { loading: 0, error: undefined as HttpError };
     const reducer = createReducer(
       initialState,
       setLoadingOn(load),

@@ -506,7 +506,7 @@ describe('Basket Reducer', () => {
           value: 'DE430859340859340',
         },
       ],
-    };
+    } as PaymentInstrument;
     describe('CreateBasketPayment action', () => {
       it('should set loading to true', () => {
         const action = createBasketPayment({ paymentInstrument, saveForLater: false });

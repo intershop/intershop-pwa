@@ -9,6 +9,8 @@ import { spy, verify } from 'ts-mockito';
 import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
+import { Wishlist } from '../../models/wishlist/wishlist.model';
+
 import { WishlistPreferencesDialogComponent } from './wishlist-preferences-dialog.component';
 
 describe('Wishlist Preferences Dialog Component', () => {
@@ -56,7 +58,7 @@ describe('Wishlist Preferences Dialog Component', () => {
       preferred: true,
     });
 
-    component.submit.subscribe(emit => {
+    component.submit.subscribe((emit: Wishlist) => {
       expect(emit).toEqual({
         id: 'test wishlist',
         title: 'test wishlist',

@@ -45,7 +45,7 @@ describe('Quote List Component', () => {
   });
 
   it('should throw deleteItem event when delete item is tapped', done => {
-    component.deleteItem.subscribe(item => {
+    component.deleteItem.subscribe((item: { type: string }) => {
       expect(item.type).toBe('Quote');
       done();
     });

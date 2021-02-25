@@ -86,7 +86,7 @@ describe('Checkout Shipping Component', () => {
   it('should throw updateShippingMethod event when the user changes payment selection', done => {
     fixture.detectChanges();
 
-    component.updateShippingMethod.subscribe(formValue => {
+    component.updateShippingMethod.subscribe((formValue: string) => {
       expect(formValue).toBe('testShipping');
       done();
     });

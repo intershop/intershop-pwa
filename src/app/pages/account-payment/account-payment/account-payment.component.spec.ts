@@ -113,7 +113,7 @@ describe('Account Payment Component', () => {
 
       fixture.detectChanges();
 
-      component.deletePaymentInstrument.subscribe(paymentInstrumentId => {
+      component.deletePaymentInstrument.subscribe((paymentInstrumentId: string) => {
         expect(paymentInstrumentId).toEqual(id);
         done();
       });
@@ -128,7 +128,7 @@ describe('Account Payment Component', () => {
 
       fixture.detectChanges();
 
-      component.updateDefaultPaymentInstrument.subscribe(user => {
+      component.updateDefaultPaymentInstrument.subscribe((user: User) => {
         expect(user.preferredPaymentInstrumentId).toBe(id);
         done();
       });
