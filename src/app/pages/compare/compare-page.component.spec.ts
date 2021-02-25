@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
-import { instance, mock, verify, when } from 'ts-mockito';
+import { instance, mock, when } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
@@ -47,10 +47,5 @@ describe('Compare Page Component', () => {
 
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toEqual(['ish-product-compare-list']);
-  });
-
-  it('should dispatch an action if removeProductCompare is called', () => {
-    component.removeFromCompare('111');
-    verify(shoppingFacade.removeProductFromCompare('111')).called();
   });
 });
