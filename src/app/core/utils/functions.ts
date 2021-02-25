@@ -51,3 +51,7 @@ export function omit<T>(from: T, ...keys: (keyof T | string)[]) {
         .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {})
     : from;
 }
+
+export function isArrayEqual<T>(a1: T[], a2: T[]): boolean {
+  return (!a1 && !a2) || (a1?.length === a2?.length && a1?.every((el, idx) => a2?.[idx] === el));
+}

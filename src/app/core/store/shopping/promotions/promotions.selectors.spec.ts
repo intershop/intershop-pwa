@@ -29,7 +29,7 @@ describe('Promotions Selectors', () => {
 
   describe('with empty state', () => {
     it('should not select any promotions when used', () => {
-      expect(getPromotions()(store$.state, { promotionIds: [promo.id, promo1.id] })).toBeEmpty();
+      expect(getPromotions([promo.id, promo1.id])(store$.state)).toBeEmpty();
     });
   });
 
@@ -40,7 +40,7 @@ describe('Promotions Selectors', () => {
       });
 
       it('should put the promotion to the state', () => {
-        expect(getPromotion()(store$.state, { promoId: promo.id })).toEqual(promo);
+        expect(getPromotion(promo.id)(store$.state)).toEqual(promo);
       });
     });
 
@@ -50,7 +50,7 @@ describe('Promotions Selectors', () => {
       });
 
       it('should not have loaded promotion on error', () => {
-        expect(getPromotions()(store$.state, { promotionIds: [promo.id, promo1.id] })).toBeEmpty();
+        expect(getPromotions([promo.id, promo1.id])(store$.state)).toBeEmpty();
       });
     });
   });
@@ -63,12 +63,12 @@ describe('Promotions Selectors', () => {
 
     describe('but no current router state', () => {
       it('should return a promotion stub if promotion is selected', () => {
-        expect(getPromotion()(store$.state, { promoId: promo.id })).toMatchInlineSnapshot(`
+        expect(getPromotion(promo.id)(store$.state)).toMatchInlineSnapshot(`
           Object {
             "id": "id",
           }
         `);
-        expect(getPromotions()(store$.state, { promotionIds: [promo.id, promo1.id] })).toMatchInlineSnapshot(`
+        expect(getPromotions([promo.id, promo1.id])(store$.state)).toMatchInlineSnapshot(`
           Array [
             Object {
               "id": "id",
