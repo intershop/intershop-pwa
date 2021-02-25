@@ -50,13 +50,16 @@ describe('Tooltip Wrapper Component', () => {
     element = fixture.nativeElement;
 
     component.testComponentInputs = testComponentInputs;
-    fixture.detectChanges();
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should be rendered after creation', () => {
+    fixture.detectChanges();
     expect(element.querySelector('ish-tooltip-wrapper')).toBeTruthy();
   });
 });

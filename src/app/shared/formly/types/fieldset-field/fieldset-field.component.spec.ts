@@ -62,9 +62,6 @@ describe('Fieldset Field Component', () => {
 
     component.testComponentInputs = testComponentInputs;
   });
-  beforeEach(() => {
-    fixture.detectChanges();
-  });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
@@ -73,6 +70,7 @@ describe('Fieldset Field Component', () => {
   });
 
   it('should contain both of the example fields wrapped in a fieldset', () => {
+    fixture.detectChanges();
     expect(findAllCustomElements(element.querySelector('fieldset'))).toMatchInlineSnapshot(`
       Array [
         "formly-field",

@@ -40,16 +40,20 @@ describe('Password Field Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.testComponentInputs = testComponentInputs;
-    fixture.detectChanges();
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should be rendered after creation', () => {
+    fixture.detectChanges();
     expect(element.querySelector('ish-password-field')).toBeTruthy();
   });
   it('should be invalid if an incorrect email is entered', () => {
+    fixture.detectChanges();
     component.form.get('password').setValue('@');
     fixture.detectChanges();
     expect(component.form.get('password').valid).toBeFalsy();

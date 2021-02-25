@@ -56,15 +56,17 @@ describe('Textarea Description Wrapper Component', () => {
     fixture = TestBed.createComponent(FormlyTestingContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-
     component.testComponentInputs = testComponentInputs;
-    fixture.detectChanges();
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should be rendered after creation', () => {
+    fixture.detectChanges();
     expect(element.querySelector('ish-textarea-description-wrapper')).toBeTruthy();
   });
 
@@ -75,6 +77,7 @@ describe('Textarea Description Wrapper Component', () => {
   });
 
   it('should display correct remaining length if field is not empty', () => {
+    fixture.detectChanges();
     component.form.get('textarea')?.setValue('0123456789');
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id="textarea-description"]')?.textContent.trim()).toEqual('990');

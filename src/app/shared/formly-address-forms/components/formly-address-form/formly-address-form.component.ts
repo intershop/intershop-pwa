@@ -75,8 +75,6 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
             required: true,
             label: 'account.address.country.label',
             forceRequiredStar: true,
-            labelClass: 'col-md-4',
-            fieldClass: 'col-md-8',
             placeholder: 'account.option.select.text',
             options: this.countries$,
           },

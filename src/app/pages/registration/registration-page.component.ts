@@ -3,7 +3,7 @@ import { FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FormlyConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { UUID } from 'angular2-uuid';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
@@ -32,14 +32,13 @@ export class RegistrationPageComponent implements OnInit {
     private config: FormlyConfig
   ) {}
 
-  submittedSubject$ = new Subject();
+  submitted = false;
 
   fields: FormlyFieldConfig[];
   model = {};
   form = new FormGroup({});
 
   ngOnInit() {
-    this.submittedSubject$.next(false);
     this.userError$ = this.accountFacade.userError$;
     this.businessCustomerRegistration = this.featureToggle.enabled('businessCustomerRegistration');
     this.fields = this.getRegistrationConfig();
@@ -51,7 +50,7 @@ export class RegistrationPageComponent implements OnInit {
 
   onCreate() {
     if (this.form.invalid) {
-      this.submittedSubject$.next(true);
+      this.submitted = true;
       return;
     }
     const formValue = this.form.value;
@@ -133,8 +132,6 @@ export class RegistrationPageComponent implements OnInit {
                 type: 'ish-text-input-field',
                 templateOptions: {
                   label: 'account.address.taxation.label',
-                  labelClass: 'col-md-4',
-                  fieldClass: 'col-md-8',
                 },
               }
             : {},
@@ -149,19 +146,12 @@ export class RegistrationPageComponent implements OnInit {
             },
           },
           {
-            type: 'ish-registration-buttons-field',
+            type: 'ish-captcha-field',
             templateOptions: {
-              submitted$: this.submittedSubject$.asObservable(),
-              onCancel: () => this.cancelForm(),
+              topic: 'register',
             },
           },
         ],
-      },
-      {
-        type: 'ish-captcha-field',
-        templateOptions: {
-          topic: 'register',
-        },
       },
     ];
   }
@@ -190,8 +180,6 @@ export class RegistrationPageComponent implements OnInit {
             templateOptions: {
               label: 'account.register.email.label',
               required: true,
-              labelClass: 'col-md-4',
-              fieldClass: 'col-md-8',
             },
             validation: {
               messages: {
@@ -205,8 +193,6 @@ export class RegistrationPageComponent implements OnInit {
             templateOptions: {
               label: 'account.register.email_confirmation.label',
               required: true,
-              labelClass: 'col-md-4',
-              fieldClass: 'col-md-8',
             },
             validators: {
               validation: [SpecialValidators.equalToControl('login')],
@@ -231,8 +217,7 @@ export class RegistrationPageComponent implements OnInit {
                 key: 'account.register.password.extrainfo.message',
                 args: { 0: '7' },
               },
-              labelClass: 'col-md-4',
-              fieldClass: 'col-md-8',
+
               autocomplete: 'new-password',
             },
             validation: {
@@ -247,8 +232,7 @@ export class RegistrationPageComponent implements OnInit {
             templateOptions: {
               required: true,
               label: 'account.register.password_confirmation.label',
-              labelClass: 'col-md-4',
-              fieldClass: 'col-md-8',
+
               autocomplete: 'new-password',
             },
             validators: {
@@ -264,5 +248,10 @@ export class RegistrationPageComponent implements OnInit {
         ],
       },
     ];
+  }
+
+  /** return boolean to set submit button enabled/disabled */
+  get formDisabled(): boolean {
+    return this.form.invalid && this.submitted;
   }
 }
