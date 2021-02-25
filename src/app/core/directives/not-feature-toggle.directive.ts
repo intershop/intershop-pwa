@@ -23,7 +23,7 @@ export class NotFeatureToggleDirective {
     private featureToggle: FeatureToggleService
   ) {}
 
-  @Input() set ishNotFeature(val) {
+  @Input() set ishNotFeature(val: string) {
     const enabled = !this.featureToggle.enabled(val);
 
     if (enabled) {
