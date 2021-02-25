@@ -15,10 +15,10 @@ export class FilterNavigationSidebarComponent {
   /**
    * keeps the collapsed state of subcomponents when changing filters
    */
-  collapsedElements = {};
+  collapsedElements: { [id: string]: boolean } = {};
 
   /**
    * keeps the show all state of subcomponents when changing filters
    */
-  showAllElements = {};
+  showAllElements: { [id: string]: boolean } = {};
 }
