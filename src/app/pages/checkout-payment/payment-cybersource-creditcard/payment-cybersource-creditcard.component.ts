@@ -221,7 +221,8 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
         expirationYear: this.expirationYearVal,
       };
 
-      this.microform.createToken(options, (error, token) => this.submitCallback(error, token));
+      // tslint:disable-next-line: no-any
+      this.microform.createToken(options, (error: any, token: any) => this.submitCallback(error, token));
     }
   }
 

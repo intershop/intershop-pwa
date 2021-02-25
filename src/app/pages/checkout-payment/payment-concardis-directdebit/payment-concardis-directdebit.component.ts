@@ -249,7 +249,7 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
     if (parameters.find(p => p.name === 'BIC')) {
       paymentData = { ...paymentData, bic: parameters.find(p => p.name === 'BIC').value };
     }
-    // tslint:disable-next-line:no-null-keyword
-    PayEngine.createPaymentInstrument('sepa', paymentData, null, (err, val) => this.submitCallback(err, val));
+    // tslint:disable-next-line:no-null-keyword no-any
+    PayEngine.createPaymentInstrument('sepa', paymentData, null, (err: any, val: any) => this.submitCallback(err, val));
   }
 }

@@ -10,7 +10,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import { PaymentConcardisComponent } from '../payment-concardis/payment-concardis.component';
 
 // allows access to concardis js functionality
-// tslint:disable-next-line:no-any
+// tslint:disable:no-any
 declare var PayEngine: any;
 
 /**
@@ -103,7 +103,7 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
               'a_credit_card_number_container',
               'a_verification_container',
               { cardNumberStyle: cardNumberStyleId, verificationStyle: cvcStyleId },
-              (err, val) => this.initCallback(err, val)
+              (err: any, val: any) => this.initCallback(err, val)
             );
           },
           error => {
@@ -118,7 +118,7 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
   /**
    * call back function to initialize iframes for cardNumber and cvc
    */
-  initCallback(error: { error: string }, result) {
+  initCallback(error: { error: string }, result: any) {
     if (error) {
       this.errorMessage.general.message = error.error;
       this.cd.detectChanges();
@@ -208,7 +208,7 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
       expiryYear: this.parameterForm.controls.expirationYear.value,
     };
     // tslint:disable-next-line:no-null-keyword
-    PayEngine.iframesCreatePaymentInstrument(this.iframesReference, paymentData, null, (err, val) =>
+    PayEngine.iframesCreatePaymentInstrument(this.iframesReference, paymentData, null, (err: any, val: any) =>
       this.submitCallback(err, val)
     );
   }
