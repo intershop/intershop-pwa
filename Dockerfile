@@ -7,7 +7,7 @@ RUN npm i --ignore-scripts
 COPY projects/organization-management/src/app /workspace/projects/organization-management/src/app/
 COPY projects/requisition-management/src/app /workspace/projects/requisition-management/src/app/
 COPY src /workspace/src/
-COPY tsconfig.app.json tsconfig.json ngsw-config.json .browserslistrc angular.json /workspace/
+COPY tsconfig.app.json tsconfig.app-no-checks.json tsconfig.json ngsw-config.json .browserslistrc angular.json /workspace/
 RUN npm run build:schematics && npm run synchronize-lazy-components -- --ci
 ARG configuration=production
 COPY scripts /workspace/scripts/

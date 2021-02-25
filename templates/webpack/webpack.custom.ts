@@ -6,9 +6,14 @@ import * as webpack from 'webpack';
 
 const purgecssPlugin = require('purgecss-webpack-plugin');
 
-const log = (...txt) => {
+const log = (...txt: unknown[]) => {
   // tslint:disable-next-line: no-console
   console.log('Custom Webpack:', ...txt);
+};
+
+const warn = (...txt: unknown[]) => {
+  // tslint:disable-next-line: no-console
+  console.warn('Custom Webpack:', ...txt);
 };
 
 type AngularPlugin = webpack.Plugin & {
@@ -167,6 +172,13 @@ export default (
     if (existsSync(specialEnvironmentFile)) {
       log(`setting up environments replacement for "${key}"`);
       angularCompilerPlugin.options.fileReplacements[join(environmentsBase, 'environment.ts')] = specialEnvironmentFile;
+    }
+  }
+
+  if (angularJsonConfig.tsConfig.endsWith('tsconfig.app-no-checks.json')) {
+    warn('using tsconfig without compile checks');
+    if (production) {
+      warn('USING NO COMPILE CHECKS SHOULD NEVER BE DONE IN PRODUCTION MODE!');
     }
   }
 
