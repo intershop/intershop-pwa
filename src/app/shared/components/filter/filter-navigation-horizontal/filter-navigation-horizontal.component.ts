@@ -13,7 +13,7 @@ export class FilterNavigationHorizontalComponent {
   @Input() filterNavigation: FilterNavigation;
   @Output() applyFilter = new EventEmitter<{ searchParameter: URLFormParams }>();
 
-  trackByFn(_, item: Filter) {
+  trackByFn(_: number, item: Filter) {
     return item.id;
   }
 }

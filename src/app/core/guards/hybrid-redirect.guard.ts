@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, CanActivateChild, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, RouterStateSnapshot } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -32,11 +32,11 @@ export class HybridRedirectGuard implements CanActivate, CanActivateChild {
     );
   }
 
-  canActivate(_, state: RouterStateSnapshot) {
+  canActivate(_: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return this.checkRedirect(state.url);
   }
 
-  canActivateChild(_, state: RouterStateSnapshot) {
+  canActivateChild(_: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return this.checkRedirect(state.url);
   }
 }
