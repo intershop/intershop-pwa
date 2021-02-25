@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { RouterNavigatedPayload, routerNavigatedAction } from '@ngrx/router-store';
+import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { EMPTY, combineLatest, from, iif, of } from 'rxjs';
 import {
@@ -19,7 +19,7 @@ import {
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { RouterState } from 'ish-core/store/core/router/router.reducer';
+import { mapToRouterState } from 'ish-core/store/core/router';
 import { createUser, loadUserByAPIToken, loginUser, loginUserSuccess } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
@@ -224,10 +224,8 @@ export class BasketEffects {
   routeListenerForResettingBasketErrors$ = createEffect(() =>
     this.actions$.pipe(
       ofType(routerNavigatedAction),
-      mapToPayloadProperty<RouterNavigatedPayload<RouterState>>('routerState'),
-      filter(
-        (routerState: RouterState) => /^\/(basket|checkout.*)/.test(routerState.url) && !routerState.queryParams?.error
-      ),
+      mapToRouterState(),
+      filter(routerState => /^\/(basket|checkout.*)/.test(routerState.url) && !routerState.queryParams?.error),
       mapTo(resetBasketErrors())
     )
   );
