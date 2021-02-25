@@ -135,7 +135,7 @@ export class UserService {
       return throwError('updateUser() called without required body data');
     }
 
-    const changedUser = {
+    const changedUser: object = {
       type: body.customer.isBusinessCustomer ? 'SMBCustomer' : 'PrivateCustomer',
       ...body.customer,
       ...body.user,

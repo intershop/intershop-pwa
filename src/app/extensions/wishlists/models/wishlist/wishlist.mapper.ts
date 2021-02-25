@@ -32,7 +32,7 @@ export class WishlistMapper {
             creationDate: Number(item.creationDate),
             desiredQuantity: {
               value: item.desiredQuantity.value,
-              // TBD: is the unit necessarry?
+              // TBD: is the unit necessary?
               // unit: item.desiredQuantity.unit,
             },
           }));

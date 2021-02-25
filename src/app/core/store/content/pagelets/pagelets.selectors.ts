@@ -1,3 +1,4 @@
+import { Dictionary } from '@ngrx/entity';
 import { createSelector, createSelectorFactory, defaultMemoize } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 
@@ -13,7 +14,7 @@ export const { selectEntities: getContentPageletEntities } = pageletsAdapter.get
 const getContentPageletMemoized = (pageletId: string) =>
   createSelectorFactory(projector => defaultMemoize(projector, undefined, isEqual))(
     getContentPageletEntities,
-    (entities): ContentPageletView => entities[pageletId]
+    (entities: Dictionary<ContentPageletView>): ContentPageletView => entities[pageletId]
   );
 
 export const getContentPagelet = (pageletId: string) =>

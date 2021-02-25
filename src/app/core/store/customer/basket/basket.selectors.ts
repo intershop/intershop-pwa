@@ -78,11 +78,11 @@ export const getBasketEligiblePaymentMethods = createSelector(
 
 export const getBasketInvoiceAddress = createSelectorFactory(projector =>
   defaultMemoize(projector, undefined, isEqual)
-)(getCurrentBasket, basket => basket && basket.invoiceToAddress);
+)(getCurrentBasket, (basket: BasketView) => basket?.invoiceToAddress);
 
 export const getBasketShippingAddress = createSelectorFactory(projector =>
   defaultMemoize(projector, undefined, isEqual)
-)(getCurrentBasket, basket => basket && basket.commonShipToAddress);
+)(getCurrentBasket, (basket: BasketView) => basket?.commonShipToAddress);
 
 export const isBasketInvoiceAndShippingAddressEqual = createSelector(
   getBasketInvoiceAddress,
