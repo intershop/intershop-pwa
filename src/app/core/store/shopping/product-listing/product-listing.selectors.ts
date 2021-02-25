@@ -1,6 +1,6 @@
 import { Dictionary } from '@ngrx/entity';
-import { createSelector } from '@ngrx/store';
-import { flatten, memoize, once, range } from 'lodash-es';
+import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
+import { flatten, isEqual, memoize, once, range } from 'lodash-es';
 import { identity } from 'rxjs';
 
 import {
@@ -86,25 +86,24 @@ const createView = (data: ProductListingType, itemsPerPage: number): ProductList
   };
 };
 
-function calculateLookUpID(id: ProductListingID, settings: Pick<ProductListingID, 'filters' | 'sorting'>) {
+function calculateLookUpID(
+  id: ProductListingID,
+  settings: { [id: string]: Pick<ProductListingID, 'filters' | 'sorting'> }
+) {
   const currentSettings = settings[serializeProductListingID(id)] || {};
   return serializeProductListingID({ ...currentSettings, ...id });
 }
 
-export const getProductListingView = createSelector(
+export const getProductListingView = createSelectorFactory<object, ProductListingView>(projector =>
+  resultMemoize(projector, isEqual)
+)(
   getProductListingEntities,
   getProductListingItemsPerPage,
   getProductListingSettings,
-  memoize(
-    (
-      // tslint:disable: no-unnecessary-type-annotation
-      entities: Dictionary<ProductListingType>,
-      itemsPerPage: number,
-      settings: Pick<ProductListingID, 'filters' | 'sorting'>,
-      id: ProductListingID
-      // tslint:enable: no-unnecessary-type-annotation
-    ) => entities && createView(entities[calculateLookUpID(id, settings)], itemsPerPage),
-    (entities, _, settings, id: ProductListingID) =>
-      JSON.stringify([entities[calculateLookUpID(id, settings)], settings[serializeProductListingID(id)]])
-  )
+  (
+    entities: Dictionary<ProductListingType>,
+    itemsPerPage: number,
+    settings: { [id: string]: Pick<ProductListingID, 'filters' | 'sorting'> },
+    id: ProductListingID
+  ) => entities && createView(entities[calculateLookUpID(id, settings)], itemsPerPage)
 );

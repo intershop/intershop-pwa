@@ -257,14 +257,16 @@ export class ProductContextFacade extends RxState<ProductContext> {
       .map(edp => edp.setup(this.select('product')));
 
     const internalDisplayProperty$ = combineLatest([this.select('product'), this.privateConfig$]).pipe(
-      map(
-        ([product, privateConfig]) =>
-          Object.entries(defaultDisplayProperties())
-            .map(([k, v]) => [k, privateConfig?.[k] ?? v])
-            .reduce((acc, [k, v]) => {
+      map(([product, privateConfig]) =>
+        Object.entries(defaultDisplayProperties())
+          .map(([k, v]: [keyof ProductContextDisplayProperties, DisplayEval]) => [k, privateConfig?.[k] ?? v])
+          .reduce<Partial<ProductContextDisplayProperties>>(
+            (acc, [k, v]: [keyof ProductContextDisplayProperties, DisplayEval]) => {
               acc[k] = typeof v === 'function' ? v(product) : v;
               return acc;
-            }, {}) as ProductContextDisplayProperties
+            },
+            {}
+          )
       )
     );
 
