@@ -3,10 +3,7 @@ import { FieldWrapper } from '@ngx-formly/core';
 
 @Component({
   selector: 'ish-tooltip-wrapper',
-  template: `
-    <ng-template #fieldComponent></ng-template>
-    <ish-field-tooltip [tooltipInfo]="to.tooltip"> </ish-field-tooltip>
-  `,
+  templateUrl: './tooltip-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class TooltipWrapperComponent extends FieldWrapper {}

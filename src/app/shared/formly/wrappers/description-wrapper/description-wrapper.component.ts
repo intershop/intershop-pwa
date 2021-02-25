@@ -3,10 +3,7 @@ import { FieldWrapper } from '@ngx-formly/core';
 
 @Component({
   selector: 'ish-description-wrapper',
-  template: `
-    <ng-template #fieldComponent> </ng-template>
-    <small [ngClass]="to.customDescription?.class"> {{ description | translate: args }} </small> <br />
-  `,
+  templateUrl: './description-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DescriptionWrapperComponent extends FieldWrapper {
