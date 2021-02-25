@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { pick } from 'lodash-es';
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
@@ -94,8 +95,7 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
 
   navigateTo(target: EventTarget) {
     if (target) {
-      // tslint:disable-next-line: no-string-literal
-      this.router.navigate([target['value']]);
+      this.router.navigateByUrl(pick(target, 'value') as string);
     }
   }
 

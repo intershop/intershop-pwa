@@ -49,7 +49,8 @@ export class TrackingConfigEffects {
     )
   );
 
-  private gtm(w, l: string, i: string) {
+  // tslint:disable-next-line: no-any
+  private gtm(w: any, l: string, i: string) {
     w[l] = w[l] || [];
     w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
     const gtmScript = document.createElement('script');

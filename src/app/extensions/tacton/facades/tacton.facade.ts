@@ -38,7 +38,7 @@ export class TactonFacade {
 
   conflicts$ = this.store.pipe(select(getCurrentProductConfigurationConflicts));
 
-  getImageUrl$(imgName): Observable<string> {
+  getImageUrl$(imgName: string): Observable<string> {
     return this.store.pipe(
       select(getSelfServiceApiConfiguration),
       whenTruthy(),
