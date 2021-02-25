@@ -9,8 +9,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { PaymentConcardisComponent } from '../payment-concardis/payment-concardis.component';
 
-// allows access to concardis js functionality
-// tslint:disable:no-any
+// tslint:disable:no-any - allows access to concardis js functionality
 declare var PayEngine: any;
 
 @Component({

@@ -28,7 +28,7 @@ import { ApiServiceErrorHandler } from './api.service.errorhandler';
  * @param key the name of the envelope (default 'elements')
  * @returns The items of an elements array without the elements wrapper.
  */
-// tslint:disable-next-line: no-any
+// tslint:disable-next-line: no-any - any to avoid having to type everything before
 export function unpackEnvelope<T>(key: string = 'elements'): OperatorFunction<any, T[]> {
   return map(data => (data?.[key]?.length ? data[key] : []));
 }

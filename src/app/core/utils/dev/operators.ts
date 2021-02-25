@@ -23,7 +23,7 @@ export function logDiff<T>(message?: unknown): OperatorFunction<T, T> {
 }
 
 // https://gist.github.com/Yimiprod/7ee176597fef230d1451
-// tslint:disable: no-any
+// tslint:disable: no-any - utility function
 function keyChanges(a: any, b: any) {
   const changes: any = {};
 

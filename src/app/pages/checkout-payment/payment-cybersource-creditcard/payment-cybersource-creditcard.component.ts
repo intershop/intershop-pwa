@@ -21,8 +21,7 @@ import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.
 import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
-// allows access to concardis js functionality
-// tslint:disable-next-line:no-any
+// tslint:disable:no-any - allows access to cybersource js functionality
 declare var Flex: any;
 
 @Component({
@@ -69,7 +68,6 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
    */
   scriptLoaded = false;
 
-  // tslint:disable-next-line: no-any
   microform: any;
 
   expirationMonthVal: string;
@@ -221,7 +219,6 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
         expirationYear: this.expirationYearVal,
       };
 
-      // tslint:disable-next-line: no-any
       this.microform.createToken(options, (error: any, token: any) => this.submitCallback(error, token));
     }
   }

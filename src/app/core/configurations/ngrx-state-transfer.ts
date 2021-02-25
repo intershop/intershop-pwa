@@ -22,7 +22,7 @@ export function ngrxStateTransferMeta(reducer: ActionReducer<CoreState>): Action
   };
 }
 
-// tslint:disable-next-line: no-any
+// tslint:disable-next-line: no-any - generic store can only be used as any
 export function filterState(store: any): object {
   if (store && typeof store === 'object' && !(store instanceof Array)) {
     return Object.keys(store)
