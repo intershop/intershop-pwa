@@ -41,7 +41,7 @@ export interface ContentPageletView extends ContentConfigurationParameterView {
   slot(qualifiedName: string): ContentSlotView;
 }
 
-const paramMemoize = (key, defaultValue) => JSON.stringify({ key, defaultValue });
+const paramMemoize = <T>(key: string, defaultValue: T) => JSON.stringify({ key, defaultValue });
 
 export const createContentConfigurationParameterView = (
   params: ContentConfigurationParameters
