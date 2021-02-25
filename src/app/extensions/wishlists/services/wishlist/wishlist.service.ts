@@ -36,7 +36,7 @@ export class WishlistService {
    * @param wishlistId  The wishlist id.
    * @returns           The wishlist.
    */
-  private getWishlist(wishlistId): Observable<Wishlist> {
+  private getWishlist(wishlistId: string): Observable<Wishlist> {
     if (!wishlistId) {
       return throwError('getWishlist() called without wishlistId');
     }
