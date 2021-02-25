@@ -121,6 +121,8 @@ describe('Functions', () => {
   });
 
   describe('isArrayEqual', () => {
+    const obj = {};
+
     it.each`
       array1       | array2       | isEqual
       ${undefined} | ${undefined} | ${true}
@@ -132,6 +134,8 @@ describe('Functions', () => {
       ${[1]}       | ${[1]}       | ${true}
       ${[1, 2]}    | ${[2, 1]}    | ${false}
       ${[1, 2]}    | ${[1, 2]}    | ${true}
+      ${[{}]}      | ${[{}]}      | ${false}
+      ${[obj]}     | ${[obj]}     | ${true}
     `('should return $isEqual when comparing $array1 and $array2', ({ array1, array2, isEqual }) => {
       expect(isArrayEqual(array1, array2)).toEqual(isEqual);
     });

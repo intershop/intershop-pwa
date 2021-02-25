@@ -67,13 +67,13 @@ export class ProductVariationHelper {
     }
 
     // transform currently selected variation attribute list to object with the attributeId as key
-    const currentSettings = (product.variableVariationAttributes || []).reduce(
+    const currentSettings = (product.variableVariationAttributes || []).reduce<{ [id: string]: VariationAttribute }>(
       (acc, attr) => ({
         ...acc,
         [attr.variationAttributeId]: attr,
       }),
       {}
-    ) as { [id: string]: VariationAttribute };
+    );
 
     // transform all variation attribute values to selectOptions
     // each with information about alternative combinations and active status (active status comes from currently selected variation)
