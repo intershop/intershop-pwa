@@ -26,7 +26,7 @@ export interface LineItem {
     shippingTaxTotal?: Price;
     shippingTotal: PriceItem;
     total: PriceItem;
-    undiscountedTotal;
+    undiscountedTotal: PriceItem;
     valueRebatesTotal?: PriceItem;
   };
   isHiddenGift: boolean;

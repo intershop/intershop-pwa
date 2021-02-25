@@ -64,7 +64,8 @@ export const createContentConfigurationParameterView = (
     paramMemoize
   ),
   numberParam: memoize((key, defaultValue = NaN) => Number(params[key]) || defaultValue, paramMemoize),
-  configParam: <T extends object>(key) => params[key] as T,
+  // tslint:disable-next-line: no-unnecessary-type-annotation
+  configParam: <T extends object>(key: string) => params[key] as T,
 });
 
 export const createContentPageletView = (pagelet: ContentPagelet): ContentPageletView =>
