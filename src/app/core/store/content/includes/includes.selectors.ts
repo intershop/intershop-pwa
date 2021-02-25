@@ -1,5 +1,5 @@
 import { Dictionary } from '@ngrx/entity';
-import { createSelector, createSelectorFactory, defaultMemoize } from '@ngrx/store';
+import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
@@ -15,7 +15,7 @@ const { selectEntities: getContentIncludeEntities } = includesAdapter.getSelecto
 export const getContentIncludeLoading = createSelector(getIncludesState, includes => includes.loading);
 
 const getContentIncludeMemoized = (includeId: string) =>
-  createSelectorFactory(projector => defaultMemoize(projector, undefined, isEqual))(
+  createSelectorFactory<object, ContentPageletEntryPoint>(projector => resultMemoize(projector, isEqual))(
     getContentIncludeEntities,
     (contentIncludes: Dictionary<ContentPageletEntryPoint>) => contentIncludes[includeId]
   );

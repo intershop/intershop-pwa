@@ -1,8 +1,9 @@
 import { Dictionary } from '@ngrx/entity';
-import { createSelector, createSelectorFactory, defaultMemoize } from '@ngrx/store';
+import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 
-import { ContentPageletView, createContentPageletView } from 'ish-core/models/content-view/content-view.model';
+import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
+import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { getContentState } from 'ish-core/store/content/content-store';
 
 import { pageletsAdapter } from './pagelets.reducer';
@@ -12,9 +13,9 @@ const getPageletsState = createSelector(getContentState, state => state.pagelets
 export const { selectEntities: getContentPageletEntities } = pageletsAdapter.getSelectors(getPageletsState);
 
 const getContentPageletMemoized = (pageletId: string) =>
-  createSelectorFactory(projector => defaultMemoize(projector, undefined, isEqual))(
+  createSelectorFactory<object, ContentPagelet>(projector => resultMemoize(projector, isEqual))(
     getContentPageletEntities,
-    (entities: Dictionary<ContentPageletView>): ContentPageletView => entities[pageletId]
+    (entities: Dictionary<ContentPagelet>) => entities[pageletId]
   );
 
 export const getContentPagelet = (pageletId: string) =>
