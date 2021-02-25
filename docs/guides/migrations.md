@@ -7,6 +7,11 @@ kb_sync_latest_only
 
 # Migrations
 
+## 0.28 to 0.29
+
+We activated TypeScript's [`noImplicitAny`](https://www.typescriptlang.org/tsconfig#noImplicitAny).
+Please refer to the [Type Safety](./getting-started.md#type-safety) part in the Getting Started Guide for motivations.
+
 ## 0.27 to 0.28
 
 We removed the property `production` from Angular CLI `environment.ts` files.
