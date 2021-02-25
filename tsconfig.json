@@ -27,6 +27,7 @@
     "lib": ["es2018", "dom"],
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "noImplicitAny": true,
     "plugins": [
       {
         "name": "typescript-tslint-plugin",
