@@ -1,3 +1,4 @@
+import { Dictionary } from '@ngrx/entity';
 import { createSelector } from '@ngrx/store';
 import { flatten, memoize, once, range } from 'lodash-es';
 import { identity } from 'rxjs';
@@ -63,7 +64,7 @@ function calculatePageIndices(currentPage: number, itemCount: number, itemsPerPa
   ];
 }
 
-const createView = (data: ProductListingType, itemsPerPage): ProductListingView => {
+const createView = (data: ProductListingType, itemsPerPage: number): ProductListingView => {
   const lastPage = data ? data.pages[data.pages.length - 1] : NaN;
   const firstPage = (data && data.pages && data.pages[0]) || NaN;
   return {
@@ -95,8 +96,14 @@ export const getProductListingView = createSelector(
   getProductListingItemsPerPage,
   getProductListingSettings,
   memoize(
-    (entities, itemsPerPage, settings, id) =>
-      entities && createView(entities[calculateLookUpID(id, settings)], itemsPerPage),
+    (
+      // tslint:disable: no-unnecessary-type-annotation
+      entities: Dictionary<ProductListingType>,
+      itemsPerPage: number,
+      settings: Pick<ProductListingID, 'filters' | 'sorting'>,
+      id: ProductListingID
+      // tslint:enable: no-unnecessary-type-annotation
+    ) => entities && createView(entities[calculateLookUpID(id, settings)], itemsPerPage),
     (entities, _, settings, id: ProductListingID) =>
       JSON.stringify([entities[calculateLookUpID(id, settings)], settings[serializeProductListingID(id)]])
   )

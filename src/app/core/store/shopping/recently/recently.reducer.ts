@@ -12,14 +12,6 @@ const initialState: RecentlyState = {
 
 export const recentlyReducer = createReducer(
   initialState,
-  on(addToRecently, (state: RecentlyState, action) => {
-    const products = [action.payload, ...state.products];
-
-    return { ...state, products };
-  }),
-  on(clearRecently, (state: RecentlyState) => {
-    const products = [];
-
-    return { ...state, products };
-  })
+  on(addToRecently, (state: RecentlyState, action) => ({ ...state, products: [action.payload, ...state.products] })),
+  on(clearRecently, (state: RecentlyState) => ({ ...state, products: [] }))
 );

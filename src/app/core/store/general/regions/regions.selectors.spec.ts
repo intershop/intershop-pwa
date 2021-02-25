@@ -53,7 +53,7 @@ describe('Regions Selectors', () => {
 
       it('should set loading to false', () => {
         expect(getRegionsLoading(store$.state)).toBeFalse();
-        expect(getRegionsByCountryCode(store$.state, { countryCode })).toEqual(countryRegions);
+        expect(getRegionsByCountryCode(countryCode)(store$.state)).toEqual(countryRegions);
       });
     });
 

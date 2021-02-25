@@ -104,6 +104,6 @@ export class AppFacade {
 
   regions$(countryCode: string) {
     this.store.dispatch(loadRegions({ countryCode }));
-    return this.store.pipe(select(getRegionsByCountryCode, { countryCode }));
+    return this.store.pipe(select(getRegionsByCountryCode(countryCode)));
   }
 }

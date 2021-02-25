@@ -15,14 +15,15 @@ export const arraySlices = <T>(input: T[], sliceLength: number): T[][] =>
 
 export const toObservable = <T>(input: T | Observable<T>): Observable<T> => (isObservable(input) ? input : of(input));
 
-function isObject(item) {
+function isObject(item: unknown) {
   return item && typeof item === 'object' && !Array.isArray(item);
 }
 
 /**
  * @see https://stackoverflow.com/a/37164538/13001898
  */
-export function mergeDeep(target, source) {
+// tslint:disable-next-line: no-any
+export function mergeDeep(target: any, source: any) {
   let output = { ...target };
   if (isObject(target) && isObject(source)) {
     Object.keys(source).forEach(key => {
