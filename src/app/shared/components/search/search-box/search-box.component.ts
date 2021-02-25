@@ -71,9 +71,8 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
     this.inputFocused = true;
   }
 
-  searchSuggest(source: string | EventTarget) {
-    // tslint:disable-next-line: no-string-literal
-    this.inputSearchTerms$.next(typeof source === 'string' ? source : source['value']);
+  searchSuggest(source: string | HTMLDataElement) {
+    this.inputSearchTerms$.next(typeof source === 'string' ? source : source.value);
   }
 
   submitSearch(suggestedTerm: string) {

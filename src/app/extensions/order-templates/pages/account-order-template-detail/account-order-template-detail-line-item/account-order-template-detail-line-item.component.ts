@@ -52,8 +52,7 @@ export class AccountOrderTemplateDetailLineItemComponent implements OnInit {
     this.orderTemplatesFacade.removeProductFromOrderTemplate(this.currentOrderTemplate.id, sku);
   }
 
-  setActive(target: EventTarget) {
-    // tslint:disable-next-line: no-string-literal
-    this.context.set('propagateActive', () => target['checked']);
+  setActive(target: HTMLInputElement) {
+    this.context.set('propagateActive', () => target.checked);
   }
 }

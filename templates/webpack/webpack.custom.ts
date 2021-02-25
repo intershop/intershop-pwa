@@ -159,7 +159,7 @@ export default (
       loader: 'file-replace-loader',
       options: {
         condition: 'if-replacement-exists',
-        replacement(resourcePath) {
+        replacement(resourcePath: string) {
           return resolve(resourcePath.replace('.component.', `.component.${key}.`));
         },
         async: true,

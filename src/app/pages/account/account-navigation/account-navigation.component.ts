@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { pick } from 'lodash-es';
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
@@ -93,9 +92,9 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
     this.isMobileView = this.deviceType === 'tablet' || this.deviceType === 'mobile';
   }
 
-  navigateTo(target: EventTarget) {
+  navigateTo(target: HTMLDataElement) {
     if (target) {
-      this.router.navigateByUrl(pick(target, 'value') as string);
+      this.router.navigateByUrl(target.value);
     }
   }
 

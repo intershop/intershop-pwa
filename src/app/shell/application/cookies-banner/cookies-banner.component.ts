@@ -19,7 +19,7 @@ import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 })
 export class CookiesBannerComponent implements OnInit {
   showBanner = false;
-  transitionBanner = undefined;
+  transitionBanner: string = undefined;
 
   // tslint:disable:no-intelligence-in-artifacts
   constructor(
