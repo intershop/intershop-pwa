@@ -12,7 +12,7 @@ import { LazyWishlistsLinkComponent } from './lazy-wishlists-link/lazy-wishlists
   providers: [
     {
       provide: LAZY_FEATURE_MODULE,
-      useValue: { feature: 'wishlists', location: import('../store/wishlists-store.module') },
+      useValue: { feature: 'wishlists', location: () => import('../store/wishlists-store.module') },
       multi: true,
     },
   ],

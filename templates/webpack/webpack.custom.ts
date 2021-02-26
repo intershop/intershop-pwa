@@ -60,7 +60,48 @@ export default (
       const cacheGroups = config.optimization.splitChunks.cacheGroups as {
         [key: string]: webpack.Options.CacheGroupsOptions;
       };
-      cacheGroups.default.minChunks = 10;
+
+      // chunk for all core functionality the user usually doesn't use while just browsing the shop
+      cacheGroups.customer = {
+        minChunks: 1,
+        priority: 30,
+        // add [\\/]src[\\/]app at the beginning of this regex to only include
+        // my-account pages from the PWA core
+        test: /[\\/]pages[\\/](account|checkout|registration|contact|forgot-password)/,
+        chunks: 'async',
+        name: 'customer',
+      };
+
+      // individual bundles for extensions and projects, that should only be loaded when necessary
+      cacheGroups.features = {
+        minChunks: 1,
+        priority: 25,
+        chunks: 'async',
+        name(module) {
+          const identifier = module.identifier();
+
+          // embed sentry library in sentry chunk
+          if (identifier.includes('@sentry')) {
+            return 'sentry';
+          }
+          // keep exports and routing modules in common
+          if (identifier.includes('routing') || identifier.includes('exports')) {
+            return 'common';
+          }
+
+          const feature = /[\\/](extensions|projects)[\\/](.*?)[\\/]/.exec(identifier)?.[2];
+
+          // include captcha functionality in common bundle
+          if (feature === 'captcha') {
+            return 'common';
+          }
+          return feature || 'common';
+        },
+      };
+
+      // overriding settings for the common bundle which contains:
+      // - all lazy-loadable core functionality
+      // - libraries that can be lazy loaded
       cacheGroups.common.minChunks = 1;
       cacheGroups.common.priority = 20;
     }

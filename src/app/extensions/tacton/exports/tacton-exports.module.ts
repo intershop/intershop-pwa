@@ -13,7 +13,7 @@ import { LazyTactonConfigureProductComponent } from './lazy-tacton-configure-pro
   providers: [
     {
       provide: LAZY_FEATURE_MODULE,
-      useValue: { feature: 'tacton', location: import('../store/tacton-store.module') },
+      useValue: { feature: 'tacton', location: () => import('../store/tacton-store.module') },
       multi: true,
     },
     {
