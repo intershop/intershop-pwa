@@ -118,6 +118,15 @@ Once all dependencies updates are finished it might be a good idea to re-generat
 For this the `node_modules` folder and the `package-lock.json` need to be removed.
 Afterwards `npm install` must be run to get a new clean `package-lock.json` that can either be amended, if the dependencies update is a single update commit, or as an additional commit.
 
+---
+
+**NOTE**
+
+A node script `node scripts/upgrade-pwa` is provided that is supposed to do the previously explained update steps in an automated fashion.
+It can be used to ease the update process but it might need regular adaptions and the results need to be checked.
+
+---
+
 ## Security Vulnerabilities
 
 Sometimes `npm install` reports security vulnerabilities:
