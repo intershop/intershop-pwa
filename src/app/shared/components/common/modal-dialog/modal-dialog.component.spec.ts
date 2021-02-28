@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { ModalDialogComponent } from './modal-dialog.component';
 
@@ -42,12 +43,14 @@ describe('Modal Dialog Component', () => {
     expect(component.ngbModalRef).toBeFalsy();
   });
 
-  it('should output input data on confirm', done => {
+  it('should output input data on confirm', () => {
+    const emitter = spy(component.confirmed);
+
     component.show('test');
-    component.confirmed.subscribe((data: string) => {
-      expect(data).toBe('test');
-      done();
-    });
     component.confirm();
+
+    verify(emitter.emit(anything())).once();
+    const [arg] = capture(emitter.emit).last();
+    expect(arg).toMatchInlineSnapshot(`"test"`);
   });
 });

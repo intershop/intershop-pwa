@@ -2,11 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { spy, verify } from 'ts-mockito';
+import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
-
-import { OrderTemplate } from '../../models/order-template/order-template.model';
 
 import { OrderTemplatePreferencesDialogComponent } from './order-template-preferences-dialog.component';
 
@@ -34,21 +32,24 @@ describe('Order Template Preferences Dialog Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should emit new order template data when submit form was called and the form was valid', done => {
+  it('should emit new order template data when submit form was called and the form was valid', () => {
     fixture.detectChanges();
     component.orderTemplateForm.setValue({
       title: 'test order template',
     });
 
-    component.submit.subscribe((emit: OrderTemplate) => {
-      expect(emit).toEqual({
-        id: 'test order template',
-        title: 'test order template',
-      });
-      done();
-    });
+    const emitter = spy(component.submit);
 
     component.submitOrderTemplateForm();
+
+    verify(emitter.emit(anything())).once();
+    const [arg] = capture(emitter.emit).last();
+    expect(arg).toMatchInlineSnapshot(`
+      Object {
+        "id": "test order template",
+        "title": "test order template",
+      }
+    `);
   });
 
   it('should not emit new order template data when submit form was called and the form was invalid', () => {
