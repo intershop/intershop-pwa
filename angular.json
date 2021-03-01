@@ -66,14 +66,14 @@
                 {
                   "type": "bundle",
                   "name": "vendor",
-                  "baseline": "900kb",
+                  "baseline": "800kb",
                   "warning": "100kb",
                   "error": "300kb"
                 },
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "4mb"
+                  "maximumWarning": "1500kb",
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
