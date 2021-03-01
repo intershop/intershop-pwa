@@ -31,7 +31,12 @@
     <div class="col-sm-6">
       <div class="clearfix row">
         <div class="col-6">
-          <select class="form-control" id="month" formControlName="expirationMonth" data-testing-id="expirationMonth">
+          <select
+            class="form-control"
+            id="cybersource_creditcard_month"
+            formControlName="expirationMonth"
+            data-testing-id="expirationMonth"
+          >
             <option value="">{{ 'account.date.month' | translate }}</option>
             <option *ngFor="let option of monthOptions" [value]="option.value">{{ option.label | translate }}</option>
           </select>
@@ -41,7 +46,12 @@
           ></ish-form-control-feedback>
         </div>
         <div class="col-6">
-          <select class="form-control" id="year" formControlName="expirationYear" data-testing-id="expirationYear">
+          <select
+            class="form-control"
+            id="cybersource_creditcard_year"
+            formControlName="expirationYear"
+            data-testing-id="expirationYear"
+          >
             <option value="">{{ 'account.date.year' | translate }}</option>
             <option *ngFor="let option of yearOptions" [value]="option.value">{{ option.label | translate }}</option>
           </select>
