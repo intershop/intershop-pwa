@@ -32,8 +32,8 @@ describe('Component Schematic', () => {
     `);
     const moduleContent = tree.readContent('/src/app/app.module.ts');
     expect(moduleContent).toMatchInlineSnapshot(`
-      "import { BrowserModule } from '@angular/platform-browser';
-      import { NgModule } from '@angular/core';
+      "import { NgModule } from '@angular/core';
+      import { BrowserModule } from '@angular/platform-browser';
 
       import { AppRoutingModule } from './app-routing.module';
       import { AppComponent } from './app.component';
