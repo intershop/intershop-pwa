@@ -1,6 +1,5 @@
 <h1>{{ 'account.company_profile.heading' | translate }}</h1>
 
-<!-- Error message -->
 <ish-error-message [error]="error"></ish-error-message>
 
 <p>{{ 'account.company_profile.heading.text' | translate }}</p>
@@ -11,20 +10,8 @@
       <p class="indicates-required">
         <span class="required">*</span>{{ 'account.required_field.message' | translate }}
       </p>
-      <form [formGroup]="form" (ngSubmit)="submit()" class="form-horizontal" novalidate="novalidate">
-        <ish-input
-          [form]="form"
-          controlName="companyName"
-          label="account.address.company_name.label"
-          [errorMessages]="{
-            required: 'account.address.company_name.error.required'
-          }"
-        ></ish-input>
-
-        <ish-input [form]="form" controlName="companyName2" label="account.address.company_name_2.label"></ish-input>
-
-        <ish-input [form]="form" controlName="taxationID" label="account.companyprofile.taxationid.label"></ish-input>
-
+      <form class="form-horizontal" [formGroup]="accountProfileCompanyForm" (ngSubmit)="submit()">
+        <formly-form [form]="accountProfileCompanyForm" [fields]="fields" [model]="model"></formly-form>
         <div class="row">
           <div class="offset-md-4 col-md-8">
             <button type="submit" class="btn btn-primary" [disabled]="buttonDisabled">
