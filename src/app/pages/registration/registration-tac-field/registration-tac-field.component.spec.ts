@@ -1,11 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
-import { MockComponent } from 'ng-mocks';
+import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { ValidationMessageComponent } from 'ish-shared/formly/components/validation-message/validation-message.component';
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
-import { TacCheckboxComponent } from 'ish-shared/forms/components/tac-checkbox/tac-checkbox.component';
 
 import { RegistrationTacFieldComponent } from './registration-tac-field.component';
 
@@ -21,8 +23,14 @@ describe('Registration Tac Field Component', () => {
           types: [{ name: 'tac', component: RegistrationTacFieldComponent }],
         }),
         FormlyTestingComponentsModule,
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
       ],
-      declarations: [MockComponent(TacCheckboxComponent), RegistrationTacFieldComponent],
+      declarations: [
+        MockComponent(ValidationMessageComponent),
+        MockDirective(ServerHtmlDirective),
+        RegistrationTacFieldComponent,
+      ],
     }).compileComponents();
   });
 
@@ -48,5 +56,10 @@ describe('Registration Tac Field Component', () => {
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element.querySelector('ish-registration-tac-field')).toBeTruthy();
+  });
+
+  it('should render a checkbox after creation', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('input.form-check-input[type="checkbox"]')).toBeTruthy();
   });
 });

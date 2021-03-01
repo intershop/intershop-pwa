@@ -36,6 +36,15 @@ input[type='file'] {
   box-shadow: none;
 }
 
+input.form-check-input {
+  margin-top: 0.25rem;
+  margin-left: 0;
+}
+
+.form-check-label {
+  margin-left: 18px;
+}
+
 .form-control-checkbox {
   margin-bottom: 0;
   font-size: $font-size-base;

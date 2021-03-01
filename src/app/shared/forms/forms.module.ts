@@ -17,7 +17,6 @@ import { SelectCountryComponent } from './components/select-country/select-count
 import { SelectRegionComponent } from './components/select-region/select-region.component';
 import { SelectTitleComponent } from './components/select-title/select-title.component';
 import { SelectComponent } from './components/select/select.component';
-import { TacCheckboxComponent } from './components/tac-checkbox/tac-checkbox.component';
 import { TextareaComponent } from './components/textarea/textarea.component';
 import { ShowFormFeedbackDirective } from './directives/show-form-feedback.directive';
 
@@ -32,7 +31,6 @@ const exportedComponents = [
   SelectRegionComponent,
   SelectTitleComponent,
   ShowFormFeedbackDirective,
-  TacCheckboxComponent,
   TextareaComponent,
 ];
 
