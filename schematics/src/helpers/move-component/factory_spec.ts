@@ -85,8 +85,8 @@ export class DummyTwoComponent {}
       .toPromise();
 
     expect(appTree.readContent('/src/app/app.module.ts')).toMatchInlineSnapshot(`
-      "import { BrowserModule } from '@angular/platform-browser';
-      import { NgModule } from '@angular/core';
+      "import { NgModule } from '@angular/core';
+      import { BrowserModule } from '@angular/platform-browser';
 
       import { AppRoutingModule } from './app-routing.module';
       import { AppComponent } from './app.component';

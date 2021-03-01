@@ -48,8 +48,8 @@ describe('Extension Schematic', () => {
     const tree = await schematicRunner.runSchematicAsync('extension', options, appTree).toPromise();
     const appModuleContent = tree.readContent('/src/app/app.module.ts');
     expect(appModuleContent).toMatchInlineSnapshot(`
-      "import { BrowserModule } from '@angular/platform-browser';
-      import { NgModule } from '@angular/core';
+      "import { NgModule } from '@angular/core';
+      import { BrowserModule } from '@angular/platform-browser';
 
       import { AppRoutingModule } from './app-routing.module';
       import { AppComponent } from './app.component';
