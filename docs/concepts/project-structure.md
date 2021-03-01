@@ -106,7 +106,6 @@ As a developer who **extends and customizes** the functionality of the PWA, you 
 As a developer who develops **new functionalities** for the PWA, you also have to deal with the following modules:
 
 - `src/app/core/X.module` - configuration for the main application organized in various modules
-- `src/app/utils/<util>.module` - utility modules like a CMS which supplies shared components and uses _shared.module_
 - `src/app/shared/<name>/<name>.module` - utility modules which aggregate functionality exported with _shared.module_
 - `src/app/core/store/**/<name>-store.module` - ngrx specific modules which should only be extended when adding B2C functionality. Current stores should not be extended, it is better to add additional store modules for custom functionalities.
 

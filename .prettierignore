@@ -27,7 +27,7 @@
 package*.json
 Dockerfile*
 .browserslistrc
-/node_modules
+node_modules
 /cache
 /dist
 /out-tsc

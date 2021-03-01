@@ -30,10 +30,10 @@ const print = (val, _, indent) => {
 
 const test = val => {
   return (
-    val &&
+    !!val &&
     typeof val === 'object' &&
     Object.keys(val).includes('type') &&
-    Object.keys(val).filter(key => !['type', 'payload'].includes(key)).length === 0
+    Object.keys(val).every(key => ['type', 'payload'].includes(key))
   );
 };
 

@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store } from '@ngrx/store';
+import { Action } from '@ngrx/store';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -9,35 +10,74 @@ import { ConfigurationService } from 'ish-core/services/configuration/configurat
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { GeneralStoreModule } from 'ish-core/store/general/general-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { routerTestNavigationAction } from 'ish-core/utils/dev/routing';
 
 import { loadServerConfig, loadServerConfigFail, loadServerConfigSuccess } from './server-config.actions';
 import { ServerConfigEffects } from './server-config.effects';
+import { isServerConfigurationLoaded } from './server-config.selectors';
+
+describe('Server Config Effects', () => {
+  let store$: StoreWithSnapshots;
+
+  beforeEach(() => {
+    const configurationServiceMock = mock(ConfigurationService);
+    when(configurationServiceMock.getServerConfiguration()).thenReturn(of({}));
+
+    TestBed.configureTestingModule({
+      imports: [CoreStoreModule.forTesting([], [ServerConfigEffects]), GeneralStoreModule.forTesting('serverConfig')],
+      providers: [
+        provideStoreSnapshots(),
+        { provide: ConfigurationService, useFactory: () => instance(configurationServiceMock) },
+      ],
+    });
+
+    store$ = TestBed.inject(StoreWithSnapshots);
+  });
+
+  it('should be created', () => {
+    expect(store$).toBeTruthy();
+  });
+
+  it('should trigger the loading of config data on the first page', () => {
+    store$.dispatch(routerTestNavigationAction({ routerState: { url: '/any' } }));
+
+    expect(store$.actionsArray()).toMatchInlineSnapshot(`
+      @ngrx/router-store/navigation:
+        routerState: {"url":"/any"}
+      [Configuration Internal] Get the ICM configuration
+      [Configuration API] Get the ICM configuration Success:
+        config: {}
+    `);
+  });
+});
 
 describe('Server Config Effects', () => {
   let actions$: Observable<Action>;
   let effects: ServerConfigEffects;
-  let store$: Store;
+  let store$: MockStore;
   let configurationServiceMock: ConfigurationService;
 
   beforeEach(() => {
     configurationServiceMock = mock(ConfigurationService);
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), GeneralStoreModule.forTesting('serverConfig')],
       providers: [
         ServerConfigEffects,
+        provideMockStore(),
         provideMockActions(() => actions$),
         { provide: ConfigurationService, useFactory: () => instance(configurationServiceMock) },
       ],
     });
 
     effects = TestBed.inject(ServerConfigEffects);
-    store$ = TestBed.inject(Store);
+    store$ = TestBed.inject(MockStore);
   });
 
   describe('loadServerConfigOnInit$', () => {
     it('should trigger the loading of config data on the first page', () => {
+      store$.overrideSelector(isServerConfigurationLoaded, false);
+
       const action = routerTestNavigationAction({});
       const expected = loadServerConfig();
 
@@ -46,11 +86,7 @@ describe('Server Config Effects', () => {
     });
 
     it('should not trigger the loading of config data on the second page', () => {
-      store$.dispatch(
-        loadServerConfigSuccess({
-          config: { application: 'intershop.B2CResponsive' },
-        })
-      );
+      store$.overrideSelector(isServerConfigurationLoaded, true);
 
       const action = routerTestNavigationAction({});
       actions$ = hot('        ----a---a--a', { a: action });
