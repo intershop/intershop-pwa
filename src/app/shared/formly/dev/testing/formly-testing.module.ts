@@ -12,7 +12,13 @@ class CaptchaFieldComponent extends FieldType {}
 @Component({ template: 'CheckboxFieldComponent: {{ to | json }}' })
 class CheckboxFieldComponent extends FieldType {}
 
-@Component({ template: 'FieldsetFieldComponent: {{ to | json }}' })
+@Component({
+  template: `FieldsetFieldComponent:
+    <div *ngFor="let f of field.fieldGroup">
+      {{ f.type }}
+      {{ f.templateOptions | json }}
+    </div>`,
+})
 class FieldsetFieldComponent extends FieldType {}
 
 @Component({ template: 'TextInputFieldComponent: {{ to | json }}' })
