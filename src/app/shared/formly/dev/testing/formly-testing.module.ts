@@ -9,6 +9,18 @@ import { FormlySelectModule } from '@ngx-formly/core/select';
 @Component({ template: 'CaptchaFieldComponent: {{ to | json }}' })
 class CaptchaFieldComponent extends FieldType {}
 
+@Component({ template: 'CheckboxFieldComponent: {{ to | json }}' })
+class CheckboxFieldComponent extends FieldType {}
+
+@Component({
+  template: `FieldsetFieldComponent:
+    <div *ngFor="let f of field.fieldGroup">
+      {{ f.type }}
+      {{ f.templateOptions | json }}
+    </div>`,
+})
+class FieldsetFieldComponent extends FieldType {}
+
 @Component({ template: 'TextInputFieldComponent: {{ to | json }}' })
 class TextInputFieldComponent extends FieldType {}
 
@@ -29,7 +41,9 @@ class TextareaFieldComponent extends FieldType {}
 @NgModule({
   declarations: [
     CaptchaFieldComponent,
+    CheckboxFieldComponent,
     EmailFieldComponent,
+    FieldsetFieldComponent,
     PasswordFieldComponent,
     SelectFieldComponent,
     TextInputFieldComponent,
@@ -42,6 +56,14 @@ class TextareaFieldComponent extends FieldType {}
         {
           name: 'ish-text-input-field',
           component: TextInputFieldComponent,
+        },
+        {
+          name: 'ish-fieldset-field',
+          component: FieldsetFieldComponent,
+        },
+        {
+          name: 'ish-checkbox-field',
+          component: CheckboxFieldComponent,
         },
         {
           name: 'ish-email-field',
