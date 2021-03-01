@@ -1,15 +1,13 @@
 <div class="row form-group">
   <div [class.formly-has-error]="showError" [ngClass]="to.fieldClass ? to.fieldClass : dto.fieldClass">
-    <div class="form-control-checkbox" [attr.data-testing-id]="keyString + '-wrapper'">
-      <div class="form-check form-control">
-        <label [attr.for]="id" [ngClass]="to.labelClass ? to.labelClass : dto.labelClass">
-          <span><ng-template #fieldComponent></ng-template></span>
-          <span *ngIf="to.label">{{ to.label | translate }}</span>
-        </label>
-      </div>
-      <ng-container *ngIf="showError" class="invalid-feedback d-block">
-        <ish-validation-message [field]="field" class="validation-message"></ish-validation-message>
-      </ng-container>
+    <div class="form-check" [attr.data-testing-id]="keyString + '-wrapper'">
+      <ng-template #fieldComponent></ng-template>
+      <label [attr.for]="id" class="form-check-label" [ngClass]="to.labelClass ? to.labelClass : dto.labelClass">
+        <span *ngIf="to.label">{{ to.label | translate }}</span>
+      </label>
     </div>
+    <ng-container *ngIf="showError" class="invalid-feedback d-block">
+      <ish-validation-message [field]="field" class="validation-message"></ish-validation-message>
+    </ng-container>
   </div>
 </div>

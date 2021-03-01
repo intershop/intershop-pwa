@@ -136,6 +136,7 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
     SelectFieldComponent,
     TextInputFieldComponent,
     TextareaFieldComponent,
+    ValidationMessageComponent,
   ],
 })
 export class FormlyModule {}
