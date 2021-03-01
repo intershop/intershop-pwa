@@ -15,8 +15,10 @@ import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
 import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
 
+import { ChannelChangeComponent } from './application/channel-change/channel-change.component';
 import { CookiesBannerComponent } from './application/cookies-banner/cookies-banner.component';
 import { FooterComponent } from './footer/footer/footer.component';
+import { HeaderChannelChangeComponent } from './header/header-channel-change/header-channel-change.component';
 import { HeaderCheckoutComponent } from './header/header-checkout/header-checkout.component';
 import { HeaderDefaultComponent } from './header/header-default/header-default.component';
 import { HeaderNavigationComponent } from './header/header-navigation/header-navigation.component';
@@ -32,7 +34,7 @@ import { LazyContentIncludeComponent } from './shared/lazy-content-include/lazy-
 import { LazyMiniBasketContentComponent } from './shared/lazy-mini-basket-content/lazy-mini-basket-content.component';
 import { LazySearchBoxComponent } from './shared/lazy-search-box/lazy-search-box.component';
 
-const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderComponent];
+const exportedComponents = [ChannelChangeComponent, CookiesBannerComponent, FooterComponent, HeaderComponent];
 
 @NgModule({
   imports: [
@@ -52,7 +54,7 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
   ],
   declarations: [
     ...exportedComponents,
-    CookiesBannerComponent,
+    HeaderChannelChangeComponent,
     HeaderCheckoutComponent,
     HeaderDefaultComponent,
     HeaderNavigationComponent,

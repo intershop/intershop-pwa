@@ -35,6 +35,8 @@ export const getTheme = createSelector(getConfigurationState, state => state.the
 
 export const getAvailableLocales = createSelector(getConfigurationState, state => state.locales);
 
+export const getIsProduction = createSelector(getConfigurationState, state => state.isProduction);
+
 /**
  * selects the current locale if set. If not returns the first available locale
  */

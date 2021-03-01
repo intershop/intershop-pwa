@@ -6,6 +6,7 @@ import { MockComponent } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
+import { HeaderChannelChangeComponent } from 'ish-shell/header/header-channel-change/header-channel-change.component';
 import { HeaderNavigationComponent } from 'ish-shell/header/header-navigation/header-navigation.component';
 import { LanguageSwitchComponent } from 'ish-shell/header/language-switch/language-switch.component';
 import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status.component';
@@ -30,6 +31,7 @@ describe('Header Default Component', () => {
       declarations: [
         HeaderDefaultComponent,
         MockComponent(FaIconComponent),
+        MockComponent(HeaderChannelChangeComponent),
         MockComponent(HeaderNavigationComponent),
         MockComponent(LanguageSwitchComponent),
         MockComponent(LazyHeaderQuickorderComponent),

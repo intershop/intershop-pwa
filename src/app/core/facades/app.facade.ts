@@ -4,7 +4,14 @@ import { Store, select } from '@ngrx/store';
 import { combineLatest, merge, noop } from 'rxjs';
 import { filter, map, mapTo, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
 
-import { getAvailableLocales, getCurrentLocale, getDeviceType, getICMBaseURL } from 'ish-core/store/core/configuration';
+import {
+  getAvailableLocales,
+  getCurrentLocale,
+  getDeviceType,
+  getICMBaseURL,
+  getIsProduction,
+  setLocale,
+} from 'ish-core/store/core/configuration';
 import { businessError, getGeneralError, getGeneralErrorType } from 'ish-core/store/core/error';
 import { selectPath } from 'ish-core/store/core/router';
 import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } from 'ish-core/store/core/viewconf';
@@ -28,6 +35,7 @@ export class AppFacade {
 
   currentLocale$ = this.store.pipe(select(getCurrentLocale));
   availableLocales$ = this.store.pipe(select(getAvailableLocales));
+  isProduction$ = this.store.pipe(select(getIsProduction));
 
   generalError$ = this.store.pipe(select(getGeneralError));
   generalErrorType$ = this.store.pipe(select(getGeneralErrorType));
@@ -105,5 +113,9 @@ export class AppFacade {
   regions$(countryCode: string) {
     this.store.dispatch(loadRegions({ countryCode }));
     return this.store.pipe(select(getRegionsByCountryCode, { countryCode }));
+  }
+
+  setLocale(lang: string) {
+    this.store.dispatch(setLocale({ lang }));
   }
 }
