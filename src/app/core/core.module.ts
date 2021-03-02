@@ -3,7 +3,6 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule, Optional, SkipSelf } from '@angular/core';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { TranslateModule } from '@ngx-translate/core';
-import { BrowserCookiesModule } from 'ngx-utils-cookies-port';
 
 import { AppearanceModule } from './appearance.module';
 import { ConfigurationModule } from './configuration.module';
@@ -20,7 +19,6 @@ import { DefaultErrorhandler } from './utils/default-error-handler';
 @NgModule({
   imports: [
     AppearanceModule,
-    BrowserCookiesModule.forRoot(),
     ConfigurationModule,
     ExtrasModule,
     FeatureToggleModule,

@@ -1,15 +1,22 @@
-import { isPlatformBrowser } from '@angular/common';
+import { APP_BASE_HREF, DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
-import { CookiesOptions, CookiesService as ForeignCookiesService } from 'ngx-utils-cookies-port';
 
 import { COOKIE_CONSENT_OPTIONS } from 'ish-core/configurations/injection-keys';
 import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
 import { CookieConsentOptions, CookieConsentSettings } from 'ish-core/models/cookies/cookies.model';
 
+interface CookiesOptions {
+  path?: string;
+  domain?: string;
+  expires?: string | Date;
+  secure?: boolean;
+  httpOnly?: boolean;
+}
+
 /**
  * The Cookies Service handles any interaction of the PWA with cookies.
- * It is a wrapper to the basic cookie handling with the 'ngx-utils-cookies-port'.
+ * Implementation is mostly transferred from the 'ngx-utils-cookies-port' library (https://github.com/junekpavel/ngx-utils-cookies-port).
  * in addition it provides methods for the cookie consent handling.
  */
 @Injectable({ providedIn: 'root' })
@@ -18,19 +25,24 @@ export class CookiesService {
     @Inject(PLATFORM_ID) private platformId: string,
     @Inject(COOKIE_CONSENT_OPTIONS) private cookieConsentOptions: CookieConsentOptions,
     private transferState: TransferState,
-    private cookiesService: ForeignCookiesService
+    @Inject(APP_BASE_HREF) private baseHref: string,
+    @Inject(DOCUMENT) private document: Document
   ) {}
 
   get(key: string): string {
-    return isPlatformBrowser(this.platformId) ? this.cookiesService.get(key) : undefined;
+    return isPlatformBrowser(this.platformId) ? (this.cookiesReader()[key] as string) : undefined;
   }
 
   remove(key: string) {
-    this.cookiesService.remove(key);
+    if (isPlatformBrowser(this.platformId)) {
+      this.cookiesWriter()(key, undefined);
+    }
   }
 
   put(key: string, value: string, options?: CookiesOptions) {
-    this.cookiesService.put(key, value, options);
+    if (isPlatformBrowser(this.platformId)) {
+      this.cookiesWriter()(key, value, options);
+    }
   }
 
   /**
@@ -58,9 +70,7 @@ export class CookiesService {
    */
   cookieConsentFor(option: string): boolean {
     if (isPlatformBrowser(this.platformId)) {
-      const cookieConsentSettings = JSON.parse(
-        this.cookiesService.get('cookieConsent') || 'null'
-      ) as CookieConsentSettings;
+      const cookieConsentSettings = JSON.parse(this.get('cookieConsent') || 'null') as CookieConsentSettings;
       return cookieConsentSettings?.enabledOptions ? cookieConsentSettings.enabledOptions.includes(option) : false;
     } else {
       return false;
@@ -71,11 +81,75 @@ export class CookiesService {
    * Deletes all cookies except for the ones configured as 'allowedCookies' in the environments cookie consent options.
    */
   private deleteAllCookies() {
-    const allCookies = this.cookiesService.getAll();
+    const allCookies = this.cookiesReader();
     for (const cookie in allCookies) {
       if (!this.cookieConsentOptions?.allowedCookies.includes(cookie)) {
-        this.cookiesService.remove(cookie);
+        this.cookiesWriter()(cookie, undefined);
       }
     }
+  }
+
+  private cookiesReader(): { [key: string]: unknown } {
+    let lastCookies = {};
+    let lastCookieString = '';
+    let cookiesArray: string[];
+    let cookie: string;
+    let i: number;
+    let index: number;
+    let name: string;
+    const currentCookieString = this.document.cookie || '';
+
+    if (currentCookieString !== lastCookieString) {
+      lastCookieString = currentCookieString;
+      cookiesArray = lastCookieString.split('; ');
+      lastCookies = {};
+      for (i = 0; i < cookiesArray.length; i++) {
+        cookie = cookiesArray[i];
+        index = cookie.indexOf('=');
+        if (index > 0) {
+          name = decodeURIComponent(cookie.substring(0, index));
+          if (!lastCookies[name]) {
+            const cookieValue = decodeURIComponent(cookie.substring(index + 1));
+            if (cookieValue) {
+              lastCookies[name] = cookieValue;
+            }
+          }
+        }
+      }
+    }
+    return lastCookies;
+  }
+
+  private cookiesWriter(): (name: string, value: string | undefined, options?: CookiesOptions) => void {
+    return (name, value, options?) => {
+      this.document.cookie = this.buildCookieString(name, value, options);
+    };
+  }
+
+  private buildCookieString(name: string, value: string | undefined, opts: CookiesOptions = {}): string {
+    let path = opts.path;
+    if (!path) {
+      path = this.baseHref;
+    }
+
+    let expires = opts.expires;
+    if (!value) {
+      expires = 'Thu, 01 Jan 1970 00:00:00 GMT';
+    }
+    if (typeof expires === 'string') {
+      expires = new Date(expires);
+    }
+    let str = `${encodeURIComponent(name)}=${encodeURIComponent(value || '')}`;
+    str += ';path=' + path;
+    str += opts.domain ? ';domain=' + opts.domain : '';
+    str += expires ? ';expires=' + expires.toUTCString() : '';
+    str += opts.secure ? ';secure' : '';
+    const cookiesLength = str.length + 1;
+    if (cookiesLength > 4096) {
+      // tslint:disable-next-line: no-console
+      console.log(`Cookie \'${name}\' possibly not set or overflowed because it was too
+      large (${cookiesLength} > 4096 bytes)!`);
+    }
+    return str;
   }
 }
