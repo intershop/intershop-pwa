@@ -65,16 +65,19 @@ export class ProductHelper {
   }
 
   /**
-   * Get all product ImageView ids excluding the primary product image
+   * Get all product ImageView ids matching image type
    * @param product   The Product for which to get the image types
    * @param imageType The wanted ImageType
    * @returns         Array of available ImageView ids
    */
-  static getImageViewIDsExcludePrimary(product: Product, imageType: string): string[] {
+  static getImageViewIDs(product: Product, imageType: string): string[] {
     if (!(product && product.images)) {
       return [];
     }
-    return product.images.filter(image => image.typeID === imageType && !image.primaryImage).map(image => image.viewID);
+    return product.images
+      .filter(image => image.typeID === imageType)
+      .sort((a, b) => (a.primaryImage ? -1 : b.primaryImage ? 1 : 0))
+      .map(image => image.viewID);
   }
 
   /**
