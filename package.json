@@ -68,7 +68,6 @@
     "@ngrx/store-devtools": "^11.0.1",
     "@nguniversal/express-engine": "^11.2.0",
     "@ngx-formly/core": "^5.10.14",
-    "@ngx-meta/core": "^9.0.0",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "@rx-angular/state": "^1.4.3",
