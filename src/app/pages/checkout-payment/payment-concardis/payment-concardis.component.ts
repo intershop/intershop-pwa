@@ -10,7 +10,7 @@ import {
   Output,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { FormlyFormOptions } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { Subject } from 'rxjs';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
@@ -50,6 +50,7 @@ export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * form for parameters which don't come form payment host
    */
+  fieldConfig: FormlyFieldConfig[];
   parameterForm: FormGroup;
   model = {};
   options: FormlyFormOptions = {};

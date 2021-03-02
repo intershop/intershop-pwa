@@ -7,7 +7,9 @@
   ></fa-icon>
   <ng-template #noError>
     <fa-icon
-      *ngIf="field.formControl?.valid && (field.formControl?.dirty || field.options?.parentForm.submitted)"
+      *ngIf="
+        field?.templateOptions?.showValidation ? field.templateOptions.showValidation(field) : defaultShowValidation()
+      "
       class="formly-validation-icon"
       [icon]="['fas', 'check']"
       data-testing-id="check-icon"

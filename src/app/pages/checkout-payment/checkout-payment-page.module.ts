@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormlyModule } from '@ngx-formly/core';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
@@ -10,9 +11,15 @@ import { PaymentConcardisDirectdebitComponent } from './payment-concardis-direct
 import { PaymentConcardisComponent } from './payment-concardis/payment-concardis.component';
 import { PaymentCybersourceCreditcardComponent } from './payment-cybersource-creditcard/payment-cybersource-creditcard.component';
 import { PaymentParameterFormComponent } from './payment-parameter-form/payment-parameter-form.component';
+import { serverValidationExtension } from './server-validation.extension';
 
 @NgModule({
-  imports: [SharedModule],
+  imports: [
+    FormlyModule.forChild({
+      extensions: [{ name: 'server-validation', extension: serverValidationExtension }],
+    }),
+    SharedModule,
+  ],
   declarations: [
     CheckoutPaymentComponent,
     CheckoutPaymentPageComponent,

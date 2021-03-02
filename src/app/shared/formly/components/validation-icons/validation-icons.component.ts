@@ -9,4 +9,8 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 export class ValidationIconsComponent {
   @Input() field: FormlyFieldConfig;
   @Input() showError: boolean;
+
+  defaultShowValidation() {
+    return this.field.formControl?.valid && (this.field.formControl?.dirty || this.field.options?.parentForm.submitted);
+  }
 }

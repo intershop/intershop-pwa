@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
-import { takeUntil } from 'rxjs/operators';
+import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
+import { pairwise, startWith, takeUntil } from 'rxjs/operators';
 
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
@@ -29,16 +29,47 @@ declare var PayEngine: any;
   changeDetection: ChangeDetectionStrategy.Default,
 })
 // tslint:disable-next-line: rxjs-prefer-angular-takeuntil
-export class PaymentConcardisDirectdebitComponent extends PaymentConcardisComponent {
+export class PaymentConcardisDirectdebitComponent extends PaymentConcardisComponent implements OnInit {
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
     super(scriptLoader, cd);
   }
 
+  // options.formstate contains "errors" and "to"
+  options: FormlyFormOptions;
+
   handleErrors(controlName: string, message: string) {
     if (this.parameterForm.controls[controlName]) {
-      this.parameterForm.controls[controlName].markAsDirty();
-      this.parameterForm.controls[controlName].setErrors({ customError: message });
+      this.options.formState = {
+        ...this.options.formState,
+        errors: {
+          ...this.options.formState.errors,
+          [controlName]: message,
+        },
+        changedSinceErrors: {
+          ...this.options.formState.changedSinceErrors,
+          [controlName]: false,
+        },
+      };
+      this.parameterForm.controls[controlName].updateValueAndValidity();
     }
+  }
+
+  ngOnInit() {
+    super.formInit();
+    this.fieldConfig = this.getFieldConfig();
+    this.parameterForm.valueChanges
+      .pipe(startWith({}), pairwise(), takeUntil(this.destroy$))
+      .subscribe(([prevValues, currentValues]) =>
+        Object.keys(currentValues).forEach(key => {
+          if (
+            currentValues[key] !== prevValues[key] &&
+            this.options.formState.changedSinceErrors?.hasOwnProperty(key)
+          ) {
+            this.options.formState.changedSinceErrors[key] = true;
+            this.parameterForm.get(key).updateValueAndValidity();
+          }
+        })
+      );
   }
 
   /* ---------------------------------------- load concardis script if component is visible ------------------------------------------- */
@@ -207,14 +238,10 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
       iban: string;
       mandate: { mandateId: string; mandateText: string; directDebitType: string };
     } = {
-      accountHolder: parameters.find(p => p.name === 'accountHolder')
-        ? parameters.find(p => p.name === 'accountHolder').value
-        : undefined,
-      iban: parameters.find(p => p.name === 'IBAN') ? parameters.find(p => p.name === 'IBAN').value : undefined,
+      accountHolder: parameters.find(p => p.name === 'accountHolder')?.value,
+      iban: parameters.find(p => p.name === 'IBAN')?.value,
       mandate: {
-        mandateId: parameters.find(p => p.name === 'mandateReference')
-          ? parameters.find(p => p.name === 'mandateReference').value
-          : undefined,
+        mandateId: parameters.find(p => p.name === 'mandateReference')?.value,
         mandateText: this.getParamValue('mandateText', ''),
         directDebitType,
       },
