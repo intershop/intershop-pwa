@@ -149,7 +149,7 @@ describe('Products Effects', () => {
         of(loadProduct({ sku: 'invalid' })).pipe(delay(2000))
       );
 
-      const actions = [];
+      const actions: Action[] = [];
 
       effects.loadProduct$.subscribe(
         action => {
