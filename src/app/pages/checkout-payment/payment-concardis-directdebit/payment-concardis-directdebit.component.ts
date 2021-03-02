@@ -34,7 +34,6 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
     super(scriptLoader, cd);
   }
 
-  // options.formstate contains "errors" and "to"
   options: FormlyFormOptions;
 
   handleErrors(controlName: string, message: string) {
