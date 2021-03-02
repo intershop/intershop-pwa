@@ -192,71 +192,8 @@ It defines a FormlyModule with preconfigured sample field types.
 
 ### Testing Custom Types
 
-<<<<<<< HEAD
-To test a custom type, create a `FormlyTestingContainerComponent`, configure `FormlyModule` for testing and set an appropriate testing configuration.
-A simple test for an example input component looks like this:
-
-```typescript
-describe('Example Input Field Component', () => {
-  let component: FormlyTestingContainerComponent;
-  let fixture: ComponentFixture<FormlyTestingContainerComponent>;
-  let element: HTMLElement;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ExampleInputFieldComponent],
-      imports: [
-        FormlyModule.forRoot({
-          types: [
-            {
-              name: 'example-input-field',
-              component: ExampleInputFieldComponent,
-            },
-          ],
-        }),
-        FormlyTestingComponentsModule,
-      ],
-    }).compileComponents();
-  });
-
-  beforeEach(() => {
-    const testComponentInputs = {
-      fields: [
-        {
-          key: 'input',
-          type: 'example-input-field',
-          templateOptions: {
-            label: 'test label',
-            required: true,
-          },
-        } as FormlyFieldConfig,
-      ],
-      form: new FormGroup({}),
-      model: {
-        input: '',
-      },
-    };
-    fixture = TestBed.createComponent(FormlyTestingContainerComponent);
-    component = fixture.componentInstance;
-    element = fixture.nativeElement;
-
-    component.testComponentInputs = testComponentInputs;
-  });
-
-  it('should be created', () => {
-    expect(component).toBeTruthy();
-    expect(element).toBeTruthy();
-    expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element.querySelector('example-input-field')).toBeTruthy();
-  });
-});
-```
-
-=======
 To test a custom type, you need to create a `FormlyTestingContainerComponent`, configure `FormlyModule` for testing and set an appropriate testing configuration.
 You can find a simple example of a custom type test in [text-input.field.component.spec.ts](../../src/app/shared/formly/types/text-input-field/text-input-field.component.spec.ts).
-
-> > > > > > > 241c4cbd3 (formly.md changes)
 
 ### Testing Wrappers
 
@@ -296,14 +233,13 @@ Refer to the tables below for an overview of these parts.
 
 ### Wrappers
 
-| Name                           | Functionality                                                                                                                                                 | Relevant templateOptions                                                                              |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| form-field-horizontal          | Adds a label next to the field and adds red styling for invalid fields.                                                                                       | `labelClass`& `fieldClass`: Classes that will be added to the label or field `<div>`                  |
-| form-field-checkbox-horizontal | Adds a label for a checkbox field, adds red styling and error messages for invalid fields. Uses `validators.validation` and `validation.messages` properties. | `labelClass`& `fieldClass`: Classes that will be added to the label or the outer field `<div>`        |
-| validation                     | Adds validation icons and error messages to the field. Uses `validators.validation` and `validation.messages` properties.                                     | ----                                                                                                  |
-| textarea-description           | Adds a description to textarea fields, including the amount of remaining characters.                                                                          | `maxLength`: Specifies the maximum length to be displayed in the message.                             |
-| decription                     | Adds a custom description to any field                                                                                                                        | `customDescription`: `string` or `{key: string; args: any}` that will be translated                   |
-| tooltip                        | Adds a tooltip to a field. Includes `<ish-field-tooltip>` component.                                                                                          | `tooltip`: `{ title?: string; text: string; link: string }` that defines the different tooltip texts. |
+| Name                  | Functionality                                                                                                             | Relevant templateOptions                                                                                                     |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| form-field-horizontal | Adds a label next to the field and adds red styling for invalid fields.                                                   | `labelClass`& `fieldClass`: Classes that will be added to the label or field `<div>`                                         |
+| validation            | Adds validation icons and error messages to the field. Uses `validators.validation` and `validation.messages` properties. | `showValidation`: `(field: FormlyFieldConfig) => boolean`: optional, used to determine whether to show validation checkmarks |
+| textarea-description  | Adds a description to textarea fields, including the amount of remaining characters.                                      | `maxLength`: Specifies the maximum length to be displayed in the message.                                                    |
+| decription            | Adds a custom description to any field                                                                                    | `customDescription`: `string` or `{key: string; args: any}` that will be translated                                          |
+| tooltip               | Adds a tooltip to a field. Includes `<ish-field-tooltip>` component.                                                      | `tooltip`: `{ title?: string; text: string; link: string }` that defines the different tooltip texts.                        |
 
 ### Extensions
 
