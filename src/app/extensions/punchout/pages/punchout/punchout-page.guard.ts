@@ -56,7 +56,7 @@ export class PunchoutPageGuard implements CanActivate {
         switchMap(() => {
           // save HOOK_URL to 'hookURL' cookie
           if (route.queryParamMap.get('HOOK_URL')) {
-            this.cookiesService.put('hookURL', route.queryParamMap.get('HOOK_URL'));
+            this.cookiesService.put('hookURL', route.queryParamMap.get('HOOK_URL'), { sameSite: 'Strict' });
           }
 
           // Product Details
