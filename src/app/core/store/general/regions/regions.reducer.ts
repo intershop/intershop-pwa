@@ -21,11 +21,11 @@ export const initialState: RegionsState = regionAdapter.getInitialState({
 export const regionsReducer = createReducer(
   initialState,
   setLoadingOn(loadRegions),
-  on(loadRegionsFail, (state: RegionsState) => ({
+  on(loadRegionsFail, state => ({
     ...state,
     loading: false,
   })),
-  on(loadRegionsSuccess, (state: RegionsState, action) => {
+  on(loadRegionsSuccess, (state, action) => {
     const { regions } = action.payload;
 
     return {

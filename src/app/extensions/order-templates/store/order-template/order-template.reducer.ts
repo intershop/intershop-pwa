@@ -58,7 +58,7 @@ export const orderTemplateReducer = createReducer(
     createOrderTemplateFail,
     addBasketToNewOrderTemplateFail,
     updateOrderTemplateFail,
-    (state: OrderTemplateState, action) => {
+    (state, action) => {
       const { error } = action.payload;
       return {
         ...state,
@@ -68,7 +68,7 @@ export const orderTemplateReducer = createReducer(
       };
     }
   ),
-  on(loadOrderTemplatesSuccess, (state: OrderTemplateState, action) => {
+  on(loadOrderTemplatesSuccess, (state, action) => {
     const { orderTemplates } = action.payload;
     return orderTemplateAdapter.setAll(orderTemplates, {
       ...state,
@@ -81,7 +81,7 @@ export const orderTemplateReducer = createReducer(
     updateOrderTemplateSuccess,
     addProductToOrderTemplateSuccess,
     removeItemFromOrderTemplateSuccess,
-    (state: OrderTemplateState, action) => {
+    (state, action) => {
       const { orderTemplate } = action.payload;
 
       return orderTemplateAdapter.upsertOne(orderTemplate, {
@@ -90,14 +90,14 @@ export const orderTemplateReducer = createReducer(
       });
     }
   ),
-  on(deleteOrderTemplateSuccess, (state: OrderTemplateState, action) => {
+  on(deleteOrderTemplateSuccess, (state, action) => {
     const { orderTemplateId } = action.payload;
     return orderTemplateAdapter.removeOne(orderTemplateId, {
       ...state,
       loading: false,
     });
   }),
-  on(selectOrderTemplate, (state: OrderTemplateState, action) => {
+  on(selectOrderTemplate, (state, action) => {
     const { id } = action.payload;
     return {
       ...state,

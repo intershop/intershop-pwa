@@ -20,5 +20,5 @@ const initialState: SearchState = searchAdapter.getInitialState({});
 
 export const searchReducer = createReducer(
   initialState,
-  on(suggestSearchSuccess, (state: SearchState, action) => searchAdapter.upsertOne(action.payload, state))
+  on(suggestSearchSuccess, (state, action) => searchAdapter.upsertOne(action.payload, state))
 );

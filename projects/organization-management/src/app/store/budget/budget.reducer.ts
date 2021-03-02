@@ -24,7 +24,7 @@ export const budgetReducer = createReducer(
   setLoadingOn(loadBudget),
   unsetLoadingAndErrorOn(loadBudgetSuccess),
   setErrorOn(loadBudgetFail),
-  on(loadBudgetSuccess, (state: BudgetState, { payload: { budget } }) => ({
+  on(loadBudgetSuccess, (state, { payload: { budget } }) => ({
     ...state,
     budget,
   }))

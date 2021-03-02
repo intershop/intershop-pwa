@@ -21,11 +21,11 @@ const initialState: PagesState = pagesAdapter.getInitialState({
 export const pagesReducer = createReducer(
   initialState,
   setLoadingOn(loadContentPage),
-  on(loadContentPageFail, (state: PagesState) => ({
+  on(loadContentPageFail, state => ({
     ...state,
     loading: false,
   })),
-  on(loadContentPageSuccess, (state: PagesState, action) => {
+  on(loadContentPageSuccess, (state, action) => {
     const { page } = action.payload;
 
     return {
