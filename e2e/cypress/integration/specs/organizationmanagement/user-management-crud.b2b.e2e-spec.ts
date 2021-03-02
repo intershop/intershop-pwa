@@ -20,7 +20,7 @@ const _ = {
     title: 'Mr.',
     firstName: 'John',
     lastName: 'Doe',
-    phone: '5551234',
+    phoneHome: '5551234',
     email: `j.joe${new Date().getTime()}@testcity.de`,
 
     orderSpentLimit: 100,

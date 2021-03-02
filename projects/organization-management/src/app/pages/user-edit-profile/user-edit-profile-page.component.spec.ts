@@ -41,6 +41,10 @@ describe('User Edit Profile Page Component', () => {
       ],
       providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
     }).compileComponents();
+
+    when(organizationManagementFacade.selectedUser$).thenReturn(of(user));
+    when(organizationManagementFacade.usersLoading$).thenReturn(of(false));
+    when(organizationManagementFacade.usersError$).thenReturn(of());
   });
 
   beforeEach(() => {
@@ -49,21 +53,15 @@ describe('User Edit Profile Page Component', () => {
     element = fixture.nativeElement;
     fb = TestBed.inject(FormBuilder);
 
-    component.user = user;
-
     component.profileForm = fb.group({
       profile: fb.group({
-        title: [component.user.title, [Validators.required]],
-        firstName: [component.user.firstName, [Validators.required]],
-        lastName: [component.user.lastName, [Validators.required]],
+        title: [user.title, [Validators.required]],
+        firstName: [user.firstName, [Validators.required]],
+        lastName: [user.lastName, [Validators.required]],
         active: [true],
-        preferredLanguage: [component.user.preferredLanguage, [Validators.required]],
+        preferredLanguage: [user.preferredLanguage, [Validators.required]],
       }),
     });
-
-    when(organizationManagementFacade.selectedUser$).thenReturn(of(user));
-    when(organizationManagementFacade.usersLoading$).thenReturn(of(false));
-    when(organizationManagementFacade.usersError$).thenReturn(of());
   });
 
   it('should be created', () => {
@@ -76,7 +74,7 @@ describe('User Edit Profile Page Component', () => {
     fixture.detectChanges();
 
     expect(component.formDisabled).toBeFalse();
-    component.submitForm();
+    component.submitForm(user);
     expect(component.formDisabled).toBeFalse();
   });
 });

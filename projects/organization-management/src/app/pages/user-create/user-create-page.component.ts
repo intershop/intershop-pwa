@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
 import { Observable } from 'rxjs';
 
@@ -20,15 +20,7 @@ export class UserCreatePageComponent implements OnInit {
   userError$: Observable<HttpError>;
 
   form: FormGroup = this.fb.group({
-    profile: this.fb.group({
-      title: [''],
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      email: ['', [Validators.required, SpecialValidators.email]],
-      active: [true],
-      phone: [''],
-      birthday: [''],
-    }),
+    profile: this.fb.group({}),
     roleIDs: this.fb.control([]),
     userBudget: this.fb.group({
       orderSpentLimit: ['', SpecialValidators.moneyAmount],
@@ -70,7 +62,7 @@ export class UserCreatePageComponent implements OnInit {
       lastName: formValue.profile.lastName,
       email: formValue.profile.email,
       active: formValue.profile.active,
-      phoneHome: formValue.profile.phone,
+      phoneHome: formValue.profile.phoneHome,
       birthday: formValue.profile.birthday === '' ? undefined : formValue.birthday, // TODO: see IS-22276
       businessPartnerNo: 'U' + UUID.UUID(),
       roleIDs: formValue.roleIDs,

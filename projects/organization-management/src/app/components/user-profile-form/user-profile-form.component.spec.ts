@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -8,10 +8,9 @@ import { instance, mock, when } from 'ts-mockito';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
-import { InputComponent } from 'ish-shared/forms/components/input/input.component';
-import { SelectTitleComponent } from 'ish-shared/forms/components/select-title/select-title.component';
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
+
+import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
 import { UserProfileFormComponent } from './user-profile-form.component';
 
@@ -26,14 +25,8 @@ describe('User Profile Form Component', () => {
     appFacade = mock(AppFacade);
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [
-        MockComponent(CheckboxComponent),
-        MockComponent(ErrorMessageComponent),
-        MockComponent(InputComponent),
-        MockComponent(SelectTitleComponent),
-        UserProfileFormComponent,
-      ],
+      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      declarations: [MockComponent(ErrorMessageComponent), UserProfileFormComponent],
       providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
     }).compileComponents();
   });
@@ -45,9 +38,7 @@ describe('User Profile Form Component', () => {
     fb = TestBed.inject(FormBuilder);
     when(appFacade.currentLocale$).thenReturn(of({ lang: 'en_US' } as Locale));
 
-    component.form = fb.group({
-      email: ['', [Validators.required, SpecialValidators.email]],
-    });
+    component.form = fb.group({});
   });
 
   it('should be created', () => {
@@ -56,12 +47,26 @@ describe('User Profile Form Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display form input fields on creation', () => {
+  it('should display all form input fields for user creation', () => {
     fixture.detectChanges();
 
-    expect(element.querySelector('[controlname=firstName]')).toBeTruthy();
-    expect(element.querySelector('[controlname=lastName]')).toBeTruthy();
-    expect(element.querySelector('[controlname=phone]')).toBeTruthy();
-    expect(element.querySelector('[controlname=active]')).toBeTruthy();
+    expect(element.innerHTML).toContain('title');
+    expect(element.innerHTML).toContain('firstName');
+    expect(element.innerHTML).toContain('lastName');
+    expect(element.innerHTML).toContain('phoneHome');
+    expect(element.innerHTML).toContain('active');
+    expect(element.innerHTML).toContain('email');
+  });
+
+  it('should display all form input fields except email for user update', () => {
+    component.user = { firstName: 'Patricia', lastName: 'Miller', email: 'patricia@test.intershop.de' } as B2bUser;
+    fixture.detectChanges();
+
+    expect(element.innerHTML).toContain('title');
+    expect(element.innerHTML).toContain('firstName');
+    expect(element.innerHTML).toContain('lastName');
+    expect(element.innerHTML).toContain('phoneHome');
+    expect(element.innerHTML).toContain('active');
+    expect(element.innerHTML).not.toContain('email');
   });
 });

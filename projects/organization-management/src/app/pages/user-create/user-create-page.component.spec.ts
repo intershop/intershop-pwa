@@ -96,6 +96,12 @@ describe('User Create Page Component', () => {
   it('should disable submit button when the user submits an invalid form', () => {
     fixture.detectChanges();
 
+    component.form = fb.group({
+      profile: fb.group({
+        firstName: ['', [Validators.required]],
+      }),
+    });
+
     expect(component.formDisabled).toBeFalse();
     component.submitForm();
     expect(component.formDisabled).toBeTrue();

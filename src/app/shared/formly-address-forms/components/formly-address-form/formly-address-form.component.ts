@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Address } from 'ish-core/models/address/address.model';
 import { AddressFormConfigurationProvider } from 'ish-shared/formly-address-forms/configurations/address-form-configuration.provider';
+import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 
 @Component({
   selector: 'ish-formly-address-form',
@@ -20,7 +21,7 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
 
   countryCode = '';
 
-  countries$: Observable<{ value: string; label: string }[]>;
+  countries$: Observable<SelectOption[]>;
 
   addressForm: FormGroup;
   addressModel: { [key: string]: unknown; countryCode: string };

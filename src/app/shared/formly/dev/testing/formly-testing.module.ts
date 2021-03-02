@@ -15,6 +15,7 @@ class CheckboxFieldComponent extends FieldType {}
 @Component({
   template: `FieldsetFieldComponent:
     <div *ngFor="let f of field.fieldGroup">
+      {{ f.key }}
       {{ f.type }}
       {{ f.templateOptions | json }}
     </div>`,
