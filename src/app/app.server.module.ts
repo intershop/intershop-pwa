@@ -5,7 +5,6 @@ import { ServerModule, ServerTransferStateModule } from '@angular/platform-serve
 import { META_REDUCERS } from '@ngrx/store';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { existsSync, readFileSync } from 'fs';
-import { ServerCookiesModule } from 'ngx-utils-cookies-port';
 import { join } from 'path';
 import { Observable, Observer } from 'rxjs';
 
@@ -57,7 +56,6 @@ export class UniversalErrorHandler implements ErrorHandler {
 @NgModule({
   imports: [
     AppModule,
-    ServerCookiesModule,
     ServerModule,
     ServerTransferStateModule,
     TranslateModule.forRoot({
