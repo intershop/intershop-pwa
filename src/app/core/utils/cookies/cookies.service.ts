@@ -12,6 +12,7 @@ interface CookiesOptions {
   expires?: string | Date;
   secure?: boolean;
   httpOnly?: boolean;
+  sameSite?: 'Lax' | 'Strict' | 'None';
 }
 
 /**
@@ -55,6 +56,7 @@ export class CookiesService {
     this.deleteAllCookies();
     this.put('cookieConsent', JSON.stringify({ enabledOptions: options, version: cookieConsentVersion }), {
       expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
+      sameSite: 'Strict',
     });
     window.location.reload();
   }
@@ -143,6 +145,7 @@ export class CookiesService {
     str += ';path=' + path;
     str += opts.domain ? ';domain=' + opts.domain : '';
     str += expires ? ';expires=' + expires.toUTCString() : '';
+    str += opts.sameSite ? ';SameSite=' + opts.sameSite : '';
     str += opts.secure ? ';secure' : '';
     const cookiesLength = str.length + 1;
     if (cookiesLength > 4096) {
