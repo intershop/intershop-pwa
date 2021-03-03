@@ -1,4 +1,4 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 
 import { AttributeToStringPipe } from './models/attribute/attribute.pipe';
 import { PricePipe } from './models/price/price.pipe';
@@ -28,11 +28,4 @@ const pipes = [
   declarations: [...pipes],
   exports: [...pipes],
 })
-export class PipesModule {
-  static forRoot(): ModuleWithProviders<PipesModule> {
-    return {
-      ngModule: PipesModule,
-      providers: [...pipes],
-    };
-  }
-}
+export class PipesModule {}

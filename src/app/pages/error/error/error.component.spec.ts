@@ -8,7 +8,7 @@ import { instance, mock } from 'ts-mockito';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { SearchBoxComponent } from 'ish-shell/header/search-box/search-box.component';
+import { SearchBoxComponent } from 'ish-shared/components/search/search-box/search-box.component';
 
 import { ErrorComponent } from './error.component';
 

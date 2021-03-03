@@ -9,6 +9,14 @@ beforeEach(() => {
   // tslint:disable-next-line: no-any
   getTestBed().configureCompiler({ preserveWhitespaces: false } as any);
 
+  const logFunction = global.console.log;
+  global.console.log = (...args: unknown[]) => {
+    if (args?.some(arg => arg instanceof Error)) {
+      fail(...args);
+    }
+    logFunction(...args);
+  };
+
   jest.spyOn(global.console, 'warn').mockImplementation(arg => {
     if (
       typeof arg !== 'string' ||
@@ -24,6 +32,14 @@ beforeEach(() => {
 });
 
 afterEach(() => jest.clearAllTimers());
+
+Object.defineProperty(global, 'PRODUCTION_MODE', {
+  value: () => false,
+});
+
+Object.defineProperty(global, 'NGRX_RUNTIME_CHECKS', {
+  value: () => true,
+});
 
 Object.defineProperty(document.body.style, 'transform', {
   value: () => ({

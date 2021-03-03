@@ -1,0 +1,18 @@
+<select
+  class="form-control"
+  [formControl]="formControl"
+  [compareWith]="to.compareWith ? to.compareWith : defaultOptions.templateOptions.compareWith"
+  [class.custom-select]="to.customSelect"
+  [formlyAttributes]="field"
+  [attr.data-testing-id]="field.key"
+>
+  <ng-container *ngIf="selectOptions && selectOptions | formlySelectOptions: field | async as opts">
+    <ng-container *ngIf="to._flatOptions">
+      <ng-container *ngFor="let opt of opts">
+        <option [value]="opt.value" [disabled]="opt.disabled">
+          {{ opt.label }}
+        </option>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</select>

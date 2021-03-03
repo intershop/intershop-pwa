@@ -31,6 +31,8 @@ You can also run specific subparts of it for verification.
 
 Do not upgrade too many packages at once as you can easily lose track of the process and have to start anew.
 
+Name your GitHub branch for the dependencies update `update/...` or `upgrade/...` to run additional 'Updates' checks in the GitHub CI.
+
 ### 0. Before the Update
 
 Check if all third-party libraries for the PWA are compatible with the new version.
@@ -109,6 +111,12 @@ At the end code re-formatting and optional refactorings should reside in individ
 :warning: Every commit along the way must be consistent. `npm run check` must be runnable without errors, so the customer project can use it to assure consistency.
 
 Add documentation with migration instructions to the [migration guide](./migrations.md).
+
+### 8. Rewrite package-lock.json
+
+Once all dependencies updates are finished it might be a good idea to re-generate the `package-lock.json`.
+For this the `node_modules` folder and the `package-lock.json` need to be removed.
+Afterwards `npm install` must be run to get a new clean `package-lock.json` that can either be amended, if the dependencies update is a single update commit, or as an additional commit.
 
 ## Security Vulnerabilities
 

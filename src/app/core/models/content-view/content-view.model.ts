@@ -4,6 +4,7 @@ import { ContentConfigurationParameters } from 'ish-core/models/content-configur
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { ContentSlot } from 'ish-core/models/content-slot/content-slot.model';
+import { SeoAttributes } from 'ish-core/models/seo-attributes/seo-attributes.model';
 
 export interface ContentConfigurationParameterView {
   hasParam(key: string): boolean;
@@ -28,6 +29,7 @@ export interface ContentPageletEntryPointView extends ContentEntryPointView, Con
   displayName: string;
   resourceSetId: string;
   pageletIDs: string[];
+  seoAttributes: SeoAttributes;
 }
 
 export interface ContentPageletView extends ContentConfigurationParameterView {
@@ -102,4 +104,5 @@ export const createContentPageletEntryPointView = (
     displayName: pageletEntryPoint.displayName,
     pageletIDs: pageletEntryPoint.pageletIDs || [],
     ...createContentConfigurationParameterView(pageletEntryPoint.configurationParameters || {}),
+    seoAttributes: pageletEntryPoint.seoAttributes,
   };

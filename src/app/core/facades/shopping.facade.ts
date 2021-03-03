@@ -30,9 +30,10 @@ import {
 } from 'ish-core/store/shopping/product-listing';
 import {
   getProduct,
-  getProductBundleParts,
   getProductLinks,
+  getProductParts,
   getProductVariationCount,
+  loadProduct,
   loadProductIfNotLoaded,
   loadProductLinks,
 } from 'ish-core/store/shopping/products';
@@ -54,6 +55,7 @@ export class ShoppingFacade {
   // CATEGORY
 
   selectedCategory$ = this.store.pipe(select(getSelectedCategory));
+  selectedCategoryId$ = this.store.pipe(select(selectRouteParam('categoryUniqueId')));
 
   category$(uniqueId: string) {
     return this.store.pipe(select(getCategory(uniqueId)));
@@ -70,26 +72,27 @@ export class ShoppingFacade {
 
   selectedProductId$ = this.store.pipe(select(selectRouteParam('sku')));
 
-  product$(sku: string | Observable<string>, level: ProductCompletenessLevel) {
+  product$(sku: string | Observable<string>, level: ProductCompletenessLevel | true) {
+    const completenessLevel = level === true ? ProductCompletenessLevel.Detail : level;
     return toObservable(sku).pipe(
-      tap(plainSKU => this.store.dispatch(loadProductIfNotLoaded({ sku: plainSKU, level }))),
+      tap(plainSKU => {
+        if (level === true) {
+          this.store.dispatch(loadProduct({ sku: plainSKU }));
+        } else {
+          this.store.dispatch(loadProductIfNotLoaded({ sku: plainSKU, level }));
+        }
+      }),
       switchMap(plainSKU =>
         this.store.pipe(
-          select(getProduct, { sku: plainSKU }),
-          filter(p => ProductHelper.isReadyForDisplay(p, level))
+          select(getProduct(plainSKU)),
+          filter(p => ProductHelper.isReadyForDisplay(p, completenessLevel))
         )
       )
     );
   }
 
   productVariationCount$(sku: string) {
-    return toObservable(sku).pipe(
-      switchMap(plainSKU => this.store.pipe(select(getProductVariationCount, { sku: plainSKU })))
-    );
-  }
-
-  productBundleParts$(sku: string) {
-    return this.store.pipe(select(getProductBundleParts, { sku }));
+    return toObservable(sku).pipe(switchMap(plainSKU => this.store.pipe(select(getProductVariationCount(plainSKU)))));
   }
 
   // CHECKOUT
@@ -101,6 +104,7 @@ export class ShoppingFacade {
   // PRODUCT LISTING
 
   productListingView$(id: ProductListingID) {
+    this.store.dispatch(loadMoreProducts({ id }));
     return this.store.pipe(select(getProductListingView, id));
   }
 
@@ -113,9 +117,19 @@ export class ShoppingFacade {
 
   // PRODUCT LINKS
 
-  productLinks$(sku: string) {
-    this.store.dispatch(loadProductLinks({ sku }));
-    return this.store.pipe(select(getProductLinks, { sku }));
+  productLinks$(sku: string | Observable<string>) {
+    return toObservable(sku).pipe(
+      tap(plainSKU => {
+        this.store.dispatch(loadProductLinks({ sku: plainSKU }));
+      }),
+      switchMap(plainSKU => this.store.pipe(select(getProductLinks(plainSKU))))
+    );
+  }
+
+  // PRODUCT RETAILSET / BUNDLES
+
+  productParts$(sku: string) {
+    return this.store.pipe(select(getProductParts(sku)));
   }
 
   // SEARCH

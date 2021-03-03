@@ -4,7 +4,7 @@ import { range } from 'lodash-es';
 import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
-import { ProductListingType } from './product-listing.model';
+import { ProductListingType, SortableAttributesType } from './product-listing.model';
 
 @Injectable({ providedIn: 'root' })
 export class ProductListingMapper {
@@ -16,7 +16,7 @@ export class ProductListingMapper {
     productListingValue: string,
     extras?: {
       startPage?: number;
-      sortKeys?: string[];
+      sortableAttributes?: SortableAttributesType[];
       itemCount?: number;
       sorting?: string;
       filters?: URLFormParams;
@@ -31,16 +31,16 @@ export class ProductListingMapper {
         type: productListingType,
         value: productListingValue,
       },
-      itemCount: (extras && extras.itemCount) || skus.length,
-      sortKeys: (extras && extras.sortKeys) || [],
+      itemCount: extras?.itemCount || skus.length,
+      sortableAttributes: extras?.sortableAttributes || [],
       ...pages.reduce((acc, val, idx) => ({ ...acc, [idx + startPage]: val }), {}),
     };
 
-    if (extras && extras.sorting) {
+    if (extras?.sorting) {
       view.id.sorting = extras.sorting;
     }
 
-    if (extras && extras.filters) {
+    if (extras?.filters) {
       view.id.filters = extras.filters;
     }
 

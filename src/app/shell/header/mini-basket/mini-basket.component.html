@@ -16,38 +16,7 @@
   </a>
 
   <div *ngIf="!isCollapsed" class="mini-cart">
-    <ng-container *ngIf="basketError$ | async as error">
-      <p *ngIf="error" role="alert" class="text-danger">
-        <span>{{ error.message }}</span>
-      </p>
-    </ng-container>
-
-    <ng-container *ngIf="lineItems$ | async as lineItems; else emptyBlock">
-      <div class="product-rows-block">
-        <div *ngFor="let lineItem of lineItems" class="product-row">
-          <ng-container *ngIf="product$(lineItem.productSKU) | async as product">
-            <div class="mini-product-img">
-              <a [routerLink]="product | ishProductRoute" (click)="collapse()">
-                <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
-              </a>
-            </div>
-            <div class="mini-product-info">
-              <a [routerLink]="product | ishProductRoute" (click)="collapse()"> {{ product.name }} </a>
-              <div class="product-price">{{ lineItem.price | ishPrice }}</div>
-              <div class="cart-pli-data">
-                <span>{{ 'shopping_cart.pli.qty.label' | translate }}</span> {{ lineItem.quantity.value }}
-              </div>
-            </div>
-          </ng-container>
-        </div>
-      </div>
-
-      <a class="view-cart btn btn-primary btn-lg btn-block" routerLink="/basket" (click)="collapse()">
-        {{ 'shopping_cart.ministatus.view_cart.link' | translate }}
-      </a>
-    </ng-container>
-
-    <ng-template #emptyBlock> {{ 'shopping_cart.ministatus.empty_cart.text' | translate }} </ng-template>
+    <ish-lazy-mini-basket-content></ish-lazy-mini-basket-content>
   </div>
 </div>
 

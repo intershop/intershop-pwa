@@ -4,12 +4,8 @@
 
 <ng-container *ngIf="(success$ | async) === undefined; else contactConfirmation">
   <div class="row">
-    <div class="col-md-10 col-lg-8 col-xl-6">
-      <ish-contact-form
-        [user]="user$ | async"
-        [subjects]="subjects$ | async"
-        (request)="createRequest($event)"
-      ></ish-contact-form>
+    <div class="col-md-10 col-lg-8 col-xl-7">
+      <ish-contact-form (request)="createRequest($event)"></ish-contact-form>
     </div>
   </div>
 

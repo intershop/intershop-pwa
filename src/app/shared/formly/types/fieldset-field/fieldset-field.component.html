@@ -1,0 +1,5 @@
+<fieldset [ngClass]="to.fieldsetClass">
+  <div [ngClass]="to.childClass">
+    <formly-field *ngFor="let f of field.fieldGroup" [field]="f"></formly-field>
+  </div>
+</fieldset>

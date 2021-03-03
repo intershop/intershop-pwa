@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
@@ -12,15 +11,14 @@ import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { AttributeToStringPipe } from 'ish-core/models/attribute/attribute.pipe';
 import { ProductView, createProductView } from 'ish-core/models/product-view/product-view.model';
 import { Product } from 'ish-core/models/product/product.model';
-import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
-import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductAttributesComponent } from 'ish-shared/components/product/product-attributes/product-attributes.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
+import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
 import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
+import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
 import { ProductPriceComponent } from 'ish-shared/components/product/product-price/product-price.component';
 import { ProductRatingComponent } from 'ish-shared/components/product/product-rating/product-rating.component';
-import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
 
 import { ProductComparePagingComponent } from '../product-compare-paging/product-compare-paging.component';
 
@@ -35,7 +33,7 @@ describe('Product Compare List Component', () => {
   let compareProduct2: ProductView;
 
   beforeEach(async () => {
-    compareProduct1 = createProductView({ sku: '111', available: true } as Product, categoryTree());
+    compareProduct1 = createProductView({ sku: '111', available: true } as Product);
     compareProduct1.attributes = [
       {
         name: 'Optical zoom',
@@ -71,7 +69,7 @@ describe('Product Compare List Component', () => {
     when(shoppingFacade.product$(compareProduct2.sku, anything())).thenReturn(of(compareProduct2));
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       declarations: [
         MockComponent(FaIconComponent),
         MockComponent(ProductAddToBasketComponent),
@@ -80,13 +78,13 @@ describe('Product Compare List Component', () => {
         MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
+        MockComponent(ProductNameComponent),
         MockComponent(ProductPriceComponent),
         MockComponent(ProductRatingComponent),
         MockDirective(FeatureToggleDirective),
+        MockDirective(ProductContextDirective),
         MockPipe(AttributeToStringPipe),
-        MockPipe(ProductRoutePipe),
         ProductCompareListComponent,
-        ProductContextDirective,
       ],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();

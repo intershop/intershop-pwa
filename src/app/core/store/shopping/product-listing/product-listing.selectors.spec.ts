@@ -21,7 +21,7 @@ describe('Product Listing Selectors', () => {
           'pageIndices()': val.pageIndices(),
           'products()': val.products(),
           'empty()': val.empty(),
-          sortKeys: val.sortKeys,
+          sortableAttributes: val.sortableAttributes,
           itemCount: val.itemCount,
           'allPagesAvailable()': val.allPagesAvailable(),
           lastPage: val.lastPage,
@@ -64,7 +64,7 @@ describe('Product Listing Selectors', () => {
           "productsOfPage(1)": Array [],
           "productsOfPage(2)": Array [],
           "productsOfPage(3)": Array [],
-          "sortKeys": Array [],
+          "sortableAttributes": Array [],
         }
       `);
     });
@@ -77,7 +77,7 @@ describe('Product Listing Selectors', () => {
         setProductListingPages({
           id: TEST_ID,
           itemCount: 4,
-          sortKeys: ['by-name', 'by-date'],
+          sortableAttributes: [{ name: 'by-name' }, { name: 'by-date' }],
           1: ['A', 'B'],
         })
       );
@@ -107,9 +107,13 @@ describe('Product Listing Selectors', () => {
           ],
           "productsOfPage(2)": Array [],
           "productsOfPage(3)": Array [],
-          "sortKeys": Array [
-            "by-name",
-            "by-date",
+          "sortableAttributes": Array [
+            Object {
+              "name": "by-name",
+            },
+            Object {
+              "name": "by-date",
+            },
           ],
         }
       `);
@@ -121,7 +125,7 @@ describe('Product Listing Selectors', () => {
           setProductListingPages({
             id: TEST_ID,
             itemCount: 4,
-            sortKeys: ['by-name', 'by-date'],
+            sortableAttributes: [{ name: 'by-name' }, { name: 'by-date' }],
             2: ['C', 'D'],
           })
         );
@@ -156,9 +160,13 @@ describe('Product Listing Selectors', () => {
               "D",
             ],
             "productsOfPage(3)": Array [],
-            "sortKeys": Array [
-              "by-name",
-              "by-date",
+            "sortableAttributes": Array [
+              Object {
+                "name": "by-name",
+              },
+              Object {
+                "name": "by-date",
+              },
             ],
           }
         `);
@@ -173,7 +181,7 @@ describe('Product Listing Selectors', () => {
         setProductListingPages({
           id: TEST_ID,
           itemCount: 6,
-          sortKeys: ['by-name', 'by-date'],
+          sortableAttributes: [{ name: 'by-name' }, { name: 'by-date' }],
           2: ['C', 'D'],
         })
       );
@@ -204,9 +212,13 @@ describe('Product Listing Selectors', () => {
             "D",
           ],
           "productsOfPage(3)": Array [],
-          "sortKeys": Array [
-            "by-name",
-            "by-date",
+          "sortableAttributes": Array [
+            Object {
+              "name": "by-name",
+            },
+            Object {
+              "name": "by-date",
+            },
           ],
         }
       `);
@@ -222,7 +234,7 @@ describe('Product Listing Selectors', () => {
         setProductListingPages({
           id: TEST_ID,
           itemCount: 61,
-          sortKeys: [],
+          sortableAttributes: [],
           1: [],
         })
       );
@@ -295,7 +307,7 @@ describe('Product Listing Selectors', () => {
         setProductListingPages({
           id: TEST_ID,
           itemCount: 6000,
-          sortKeys: [],
+          sortableAttributes: [],
           1: [],
         })
       );

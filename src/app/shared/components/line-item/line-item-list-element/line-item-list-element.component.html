@@ -1,8 +1,4 @@
-<div
-  *ngIf="product$ | async as product"
-  class="row list-item-row list-item-row-big"
-  data-testing-id="product-list-item"
->
+<div class="row list-item-row list-item-row-big" data-testing-id="product-list-item">
   <!-- Errors and Infos -->
   <div *ngIf="pli.validationError?.message" class="alert alert-inline alert-danger col-12">
     {{ pli.validationError.message }}
@@ -13,26 +9,21 @@
 
   <!-- Product Image -->
   <div class="col-2 list-item">
-    <a [routerLink]="product | ishProductRoute">
-      <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
-    </a>
+    <ish-product-image imageType="S" [link]="true"></ish-product-image>
   </div>
 
   <div class="col-7 col-md-6 col-xl-4 list-item">
     <!--Product Description -->
     <div class="pli-description">
-      <a class="product-title" [routerLink]="product | ishProductRoute">{{ pli.name || product.name }}</a>
+      <ish-product-name [alternate]="pli.name"></ish-product-name>
 
       <!-- Product ID -->
-      <ish-product-id [product]="product"></ish-product-id>
+      <ish-product-id></ish-product-id>
 
       <!-- Product Variations -->
       <ish-product-variation-display></ish-product-variation-display>
       <!-- Product Bundles -->
-      <ish-product-bundle-display
-        *ngIf="isBundleProduct(product)"
-        [productBundleSKU]="product.sku"
-      ></ish-product-bundle-display>
+      <ish-product-bundle-display></ish-product-bundle-display>
 
       <!-- switch by lineItemViewType -->
       <ng-container [ngSwitch]="lineItemViewType">
@@ -41,7 +32,7 @@
 
         <!-- lineItemViewType = 'availability' -->
         <ng-container *ngSwitchCase="'availability'">
-          <ish-product-inventory [product]="product"></ish-product-inventory>
+          <ish-product-inventory></ish-product-inventory>
         </ng-container>
 
         <!-- default lineItemViewType -->
@@ -59,7 +50,7 @@
           </ng-container>
 
           <!-- availability -->
-          <ish-product-inventory [product]="product"></ish-product-inventory>
+          <ish-product-inventory></ish-product-inventory>
 
           <!-- ship window message -->
           <ish-product-shipment></ish-product-shipment>

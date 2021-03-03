@@ -10,27 +10,25 @@
       </div>
       <div class="list-body">
         <div class="list-item-row list-item-row-big">
-          <div class="row clearfix" *ngIf="product$(item.productSKU) | async as product">
+          <div class="row clearfix" ishProductContext [sku]="item.productSKU">
             <!---Product Image --->
             <div class="col-2 list-item">
-              <a [routerLink]="product | ishProductRoute">
-                <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
-              </a>
+              <ish-product-image imageType="S" [link]="true"></ish-product-image>
             </div>
             <!---Product Description --->
             <div class="col-7 col-md-6 list-item">
-              <a [routerLink]="product | ishProductRoute" class="product-title">{{ product.name }}</a>
-              <p class="product-id">{{ 'product.itemNumber.label' | translate }}&nbsp;{{ product.sku }}</p>
+              <ish-product-name></ish-product-name>
+              <ish-product-id></ish-product-id>
             </div>
 
             <!---Out of Stock --->
             <div class="col-2 offset-2 offset-md-0 order-last order-md-3 list-item">
-              <ish-product-inventory [product]="product"></ish-product-inventory>
+              <ish-product-inventory></ish-product-inventory>
             </div>
 
             <!---Product Price --->
             <div class="col-3 col-md-2 order-last list-item column-price">
-              {{ product.listPrice | ishPrice }}
+              {{ item.price | ishPrice }}
             </div>
           </div>
         </div>

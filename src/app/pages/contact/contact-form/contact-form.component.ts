@@ -1,77 +1,142 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Contact } from 'ish-core/models/contact/contact.model';
-import { User } from 'ish-core/models/user/user.model';
-import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
  * The Contact Form Component show the customer a form to contact the shop
  *
  * @example
- * <ish-contact-form [subjects]="contactSubjects" (request)="sendRequest($event)"></ish-contact-form>
+ * <ish-contact-form (request)="sendRequest($event)"></ish-contact-form>
  */
 @Component({
   selector: 'ish-contact-form',
   templateUrl: './contact-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
-export class ContactFormComponent implements OnChanges, OnInit {
-  /** Possible subjects to show to the customer in a select box. */
-  @Input() subjects: string[] = [];
-  @Input() user: User;
+export class ContactFormComponent implements OnInit {
   /** The contact request to send. */
   @Output() request = new EventEmitter<Contact>();
 
-  subjectOptions: SelectOption[];
-
   /** The form for customer message to the shop. */
-  contactForm: FormGroup;
   submitted = false;
+  contactForm = new FormGroup({});
+  model$: Observable<Partial<Contact>>;
+  fields: FormlyFieldConfig[];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private accountFacade: AccountFacade) {}
 
   ngOnInit() {
-    this.initForm();
-  }
+    this.model$ = this.accountFacade.user$.pipe(
+      map(user => ({
+        name: user && `${user.firstName} ${user.lastName}`,
+        email: user?.email,
+        phone: user && (user.phoneBusiness || user.phoneMobile || user.phoneHome),
+      }))
+    );
 
-  ngOnChanges() {
-    this.subjectOptions = this.mapSubjectOptions(this.subjects);
+    this.fields = [
+      {
+        key: 'name',
+        type: 'ish-text-input-field',
+        templateOptions: {
+          label: 'helpdesk.contactus.name.label',
+          required: true,
+        },
+        validation: {
+          messages: {
+            required: 'helpdesk.contactus.name.error',
+          },
+        },
+      },
+      {
+        key: 'email',
+        type: 'ish-email-field',
+        templateOptions: {
+          label: 'helpdesk.contactus.email.label',
+          required: true,
+        },
+        validation: {
+          messages: {
+            required: 'helpdesk.contactus.email.error',
+          },
+        },
+      },
+      {
+        key: 'phone',
+        type: 'ish-text-input-field',
+        templateOptions: {
+          label: 'helpdesk.contactus.phone.label',
+          required: true,
+        },
+        validation: {
+          messages: {
+            required: 'helpdesk.contactus.phone.error',
+          },
+        },
+      },
+      {
+        key: 'order',
+        type: 'ish-text-input-field',
+        templateOptions: {
+          label: 'helpdesk.contactus.order.label',
+        },
+      },
+      {
+        key: 'subject',
+        type: 'ish-select-field',
+        templateOptions: {
+          label: 'helpdesk.contactus.subject.label',
+          required: true,
+          options: this.accountFacade.contactSubjects$().pipe(
+            startWith([] as string[]),
+            map(subjects => subjects.map(subject => ({ value: subject, label: subject })))
+          ),
+          placeholder: 'account.option.select.text',
+        },
+        validation: {
+          messages: {
+            required: 'helpdesk.contactus.subject.error',
+          },
+        },
+      },
+      {
+        key: 'comment',
+        type: 'ish-textarea-field',
+        templateOptions: {
+          label: 'helpdesk.contactus.comments.label',
+          required: true,
+          maxLength: 30000,
+          rows: 5,
+        },
+        validation: {
+          messages: {
+            required: 'helpdesk.contactus.comments.error',
+          },
+        },
+      },
+      {
+        type: 'ish-captcha-field',
+        templateOptions: {
+          topic: 'contactUs',
+        },
+      },
+    ];
   }
 
   /** emit contact request, when for is valid or mark form as dirty, when form is invalid */
   submitForm() {
     if (this.contactForm.valid) {
-      const contact: Contact = this.contactForm.value;
-
-      this.request.emit(contact);
+      this.request.emit(this.contactForm.value);
     } else {
       markAsDirtyRecursive(this.contactForm);
       this.submitted = true;
     }
-  }
-
-  /** map subjects to select box options */
-  private mapSubjectOptions(subjects: string[]): SelectOption[] {
-    return subjects.map(subject => ({ value: subject, label: subject }));
-  }
-
-  private initForm() {
-    const name = this.user && `${this.user.firstName} ${this.user.lastName}`;
-    const email = this.user && this.user.email;
-    const phone = this.user && (this.user.phoneBusiness || this.user.phoneMobile || this.user.phoneHome);
-
-    this.contactForm = this.fb.group({
-      name: [name, Validators.required],
-      email: [email, [Validators.required, Validators.email]],
-      phone: [phone, Validators.required],
-      order: [''],
-      subject: ['', Validators.required],
-      comment: ['', Validators.required],
-      captcha: [''],
-      captchaAction: ['contactUs'],
-    });
   }
 
   /** return boolean to set submit button enabled/disabled */

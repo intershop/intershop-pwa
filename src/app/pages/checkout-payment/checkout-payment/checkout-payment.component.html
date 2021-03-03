@@ -63,6 +63,7 @@
                   <input
                     type="radio"
                     formControlName="name"
+                    class="form-check-input"
                     [id]="'paymentOption_' + paymentMethod.id"
                     [value]="paymentMethod.id"
                   />
@@ -81,6 +82,7 @@
                     <input
                       type="radio"
                       formControlName="name"
+                      class="form-check-input"
                       [id]="'paymentOption_' + paymentInstrument.id"
                       [value]="paymentInstrument.id"
                     />
@@ -147,26 +149,13 @@
                     </ng-template>
 
                     <ng-template ngSwitchDefault>
-                      <formly-form
-                        [form]="parameterForm"
-                        [options]="options"
-                        [model]="model"
-                        [fields]="paymentMethod.parameters"
-                      >
-                        <div class="offset-md-4 col-md-8">
-                          <ng-container *ngIf="paymentMethod.saveAllowed">
-                            <ng-container *ngTemplateOutlet="saveForLaterTemplate"></ng-container>
-                          </ng-container>
-                          <div class="form-group">
-                            <button type="submit" class="btn btn-primary" [disabled]="submitDisabled">
-                              {{ 'checkout.account.submit.button.label' | translate }}
-                            </button>
-                            <button type="button" class="btn btn-secondary" (click)="cancelNewPaymentInstrument()">
-                              {{ 'checkout.cancel.button.label' | translate }}
-                            </button>
-                          </div>
-                        </div>
-                      </formly-form>
+                      <ish-payment-parameter-form
+                        [paymentMethod]="paymentMethod"
+                        [parentForm]="paymentForm"
+                        [submitDisabled]="submitDisabled"
+                        (cancel)="cancelNewPaymentInstrument()"
+                        (submit)="submitParameterForm()"
+                      ></ish-payment-parameter-form>
                     </ng-template>
                   </ng-container>
                 </div>

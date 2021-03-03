@@ -11,7 +11,6 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { FormlyFormOptions } from '@ngx-formly/core';
 import { Subject } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
 
@@ -47,8 +46,6 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   @Output() nextStep = new EventEmitter<void>();
 
   paymentForm: FormGroup;
-  model = {};
-  options: FormlyFormOptions = {};
 
   filteredPaymentMethods: PaymentMethod[] = [];
 

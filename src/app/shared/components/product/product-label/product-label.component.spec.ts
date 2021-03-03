@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
-import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
-import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
-import { Product } from 'ish-core/models/product/product.model';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
 import { ProductLabelComponent } from './product-label.component';
 
@@ -10,10 +10,13 @@ describe('Product Label Component', () => {
   let component: ProductLabelComponent;
   let fixture: ComponentFixture<ProductLabelComponent>;
   let element: HTMLElement;
+  let context: ProductContextFacade;
 
   beforeEach(async () => {
+    context = mock(ProductContextFacade);
     await TestBed.configureTestingModule({
       declarations: [ProductLabelComponent],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });
 
@@ -30,24 +33,9 @@ describe('Product Label Component', () => {
   });
 
   it('should create HTML tag span when component is created', () => {
-    const attributeGroup = {
-      attributes: [{ name: 'sale', type: 'String', value: 'sale' }],
-    } as AttributeGroup;
-    component.product = {
-      name: 'FakeProduct',
-      sku: 'sku',
-      attributeGroups: {
-        [AttributeGroupTypes.ProductLabelAttributes]: attributeGroup,
-      } as { [id: string]: AttributeGroup },
-    } as Product;
-    component.ngOnChanges();
+    when(context.select('label')).thenReturn(of('sale'));
+
     fixture.detectChanges();
     expect(element.querySelector('[class^="product-label product-label-sale"]')).not.toBeNull();
-  });
-
-  it('should not create HTML tag span when component is created', () => {
-    component.ngOnChanges();
-    fixture.detectChanges();
-    expect(element.querySelector('[class^="product-label product-label-sale"]')).toBeNull();
   });
 });

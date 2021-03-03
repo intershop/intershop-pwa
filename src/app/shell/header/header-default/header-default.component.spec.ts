@@ -11,8 +11,8 @@ import { LanguageSwitchComponent } from 'ish-shell/header/language-switch/langua
 import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status.component';
 import { MiniBasketComponent } from 'ish-shell/header/mini-basket/mini-basket.component';
 import { ProductCompareStatusComponent } from 'ish-shell/header/product-compare-status/product-compare-status.component';
-import { SearchBoxComponent } from 'ish-shell/header/search-box/search-box.component';
 import { UserInformationMobileComponent } from 'ish-shell/header/user-information-mobile/user-information-mobile.component';
+import { LazySearchBoxComponent } from 'ish-shell/shared/lazy-search-box/lazy-search-box.component';
 
 import { LazyHeaderQuickorderComponent } from '../../../extensions/quickorder/exports/lazy-header-quickorder/lazy-header-quickorder.component';
 import { LazyWishlistsLinkComponent } from '../../../extensions/wishlists/exports/lazy-wishlists-link/lazy-wishlists-link.component';
@@ -33,12 +33,12 @@ describe('Header Default Component', () => {
         MockComponent(HeaderNavigationComponent),
         MockComponent(LanguageSwitchComponent),
         MockComponent(LazyHeaderQuickorderComponent),
+        MockComponent(LazySearchBoxComponent),
         MockComponent(LazyWishlistsLinkComponent),
         MockComponent(LoginStatusComponent),
         MockComponent(MiniBasketComponent),
         MockComponent(NgbCollapse),
         MockComponent(ProductCompareStatusComponent),
-        MockComponent(SearchBoxComponent),
         MockComponent(UserInformationMobileComponent),
       ],
     }).compileComponents();
@@ -67,7 +67,7 @@ describe('Header Default Component', () => {
 
   it('should render Search Box on template', () => {
     fixture.detectChanges();
-    expect(findAllCustomElements(element)).toContain('ish-search-box');
+    expect(findAllCustomElements(element)).toContain('ish-lazy-search-box');
   });
 
   it('should render Header Navigation on template', () => {

@@ -1,64 +1,70 @@
-.product-list .swiper {
-  .swiper-slide {
-    padding-right: 15px;
-    padding-left: 15px;
-    overflow: hidden !important;
+.swiper-slide {
+  padding-right: $space-default;
+  padding-left: $space-default;
+  // overflow: hidden !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  position: absolute;
+  top: 0;
+  z-index: 10;
+  width: $carousel-control-icon-width;
+  height: 100%;
+  background: no-repeat 50% / 100% 100%;
+  opacity: 0.5;
+
+  &:hover {
+    opacity: 1;
   }
 
-  .swiper-button-next,
-  .swiper-button-prev {
-    display: inline-block;
-    width: $carousel-control-icon-width;
-    height: $carousel-control-icon-width;
-    background: no-repeat 50% / 100% 100%;
-    opacity: 0.5;
+  &.swiper-button-disabled {
+    opacity: 0;
+  }
+}
 
-    &:hover {
-      opacity: 1;
-    }
+.swiper-button-next {
+  right: 0;
+  background-image: escape-svg($carousel-control-next-icon-bg);
 
-    &.swiper-button-disabled {
-      opacity: 0;
-    }
+  &::after {
+    content: '';
+  }
+}
+
+.swiper-button-prev {
+  background-image: escape-svg($carousel-control-prev-icon-bg);
+
+  &::after {
+    content: '';
+  }
+}
+
+.swiper-pagination {
+  position: relative;
+  z-index: 10;
+  color: $text-color-primary;
+
+  .swiper-pagination-bullet-active {
+    background: $text-color-primary;
   }
 
-  .swiper-button-next {
-    background-image: escape-svg($carousel-control-next-icon-bg);
-
-    &::after {
-      content: '';
+  .swiper-pagination-bullet {
+    &:only-child {
+      visibility: hidden;
     }
   }
+}
 
-  .swiper-button-prev {
-    background-image: escape-svg($carousel-control-prev-icon-bg);
+.swiper-pagination-bullet {
+  margin: 7px 7px 7px 7px;
+}
 
-    &::after {
-      content: '';
-    }
-  }
-
-  .swiper-pagination {
-    position: relative;
-    color: $text-color-primary;
-
-    .swiper-pagination-bullet-active {
-      background: $text-color-primary;
-    }
-
-    .swiper-pagination-handle {
-      &:only-child {
-        visibility: hidden;
-      }
-    }
-  }
-
-  &.s-wrapper.swiper-container-horizontal {
-    > .swiper-pagination .swiper-pagination-handle {
-      .swiper-pagination-bullet.swiper-pagination-bullet-first,
-      .swiper-pagination-bullet.swiper-pagination-bullet-last {
-        margin: 0;
-      }
+.swiper-container-horizontal {
+  > .swiper-pagination .swiper-pagination-handle {
+    .swiper-pagination-bullet.swiper-pagination-bullet-first,
+    .swiper-pagination-bullet.swiper-pagination-bullet-last {
+      margin: 0;
     }
   }
 }

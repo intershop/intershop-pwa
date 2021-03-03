@@ -1,7 +1,7 @@
 {
-  "extends": "./tsconfig.base.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./out-tsc/app",
+    "outDir": "./node_modules/.out-tsc/app",
     "types": [],
     "module": "ESNext"
   },

@@ -2,7 +2,7 @@ import { fillFormField, waitLoadingEnd } from '../../framework';
 import { Registration } from '../account/registration.page';
 
 export type AddressDetailsTypes = Partial<
-  Pick<Registration, 'countryCodeSwitch' | 'firstName' | 'lastName' | 'addressLine1' | 'postalCode' | 'city'>
+  Pick<Registration, 'countryCode' | 'firstName' | 'lastName' | 'addressLine1' | 'postalCode' | 'city'>
 >;
 
 export class CheckoutAddressesPage {
@@ -54,7 +54,6 @@ export class CheckoutAddressesPage {
     this.editInvoiceAddress();
     cy.get(`[data-testing-id="invoice-address-form"]`)
       .find('select[data-testing-id="mainDivisionCode"]')
-      .first()
       .select(regionCode);
     cy.get(`[data-testing-id="invoice-address-form"]`).find('button.btn-primary').first().click();
     waitLoadingEnd(1000);

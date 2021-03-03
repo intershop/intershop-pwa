@@ -161,7 +161,7 @@ describe('Filter Effects', () => {
             1: ["123","234"]
             id: {"type":"search","value":"test","filters":{"searchTerm":[1]}}
             itemCount: 2
-            sortKeys: []
+            sortableAttributes: []
         `);
         done();
       });

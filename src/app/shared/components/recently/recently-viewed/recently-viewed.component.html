@@ -9,6 +9,8 @@
       </div>
     </div>
 
-    <a routerLink="/recently" class="view-all" data-testing-id="view-all">{{ 'common.view_all.link' | translate }}</a>
+    <a [routerLink]="['/recently']" class="view-all" data-testing-id="view-all">{{
+      'common.view_all.link' | translate
+    }}</a>
   </div>
 </ng-container>

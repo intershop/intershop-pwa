@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AuthorizationToggleGuard } from 'ish-core/authorization-toggle.module';
+import { FeatureToggleGuard } from 'ish-core/feature-toggle.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { AccountOverviewPageModule } from '../account-overview/account-overview-page.module';
@@ -15,6 +16,11 @@ const accountPageRoutes: Routes = [
     path: '',
     component: AccountPageComponent,
     children: [
+      {
+        path: '',
+        data: { breadcrumbData: [] },
+        component: AccountOverviewPageModule.component,
+      },
       {
         path: 'addresses',
         data: { breadcrumbData: [{ key: 'account.saved_addresses.link' }] },
@@ -42,23 +48,6 @@ const accountPageRoutes: Routes = [
           import('../account-profile/account-profile-page.module').then(m => m.AccountProfilePageModule),
       },
       {
-        path: 'quotes',
-        data: { breadcrumbData: [{ key: 'quote.quotes.link' }] },
-        loadChildren: () =>
-          import('../../extensions/quoting/pages/quote-list/quote-list-page.module').then(m => m.QuoteListPageModule),
-      },
-      {
-        path: '',
-        data: { breadcrumbData: [] },
-        component: AccountOverviewPageModule.component,
-      },
-      {
-        path: 'wishlists',
-        data: { breadcrumbData: [{ key: 'account.wishlists.breadcrumb_link' }] },
-        loadChildren: () =>
-          import('../../extensions/wishlists/pages/wishlists-routing.module').then(m => m.WishlistsRoutingModule),
-      },
-      {
         path: 'order-templates',
         data: { breadcrumbData: [{ key: 'account.ordertemplates.link' }] },
         loadChildren: () =>
@@ -67,27 +56,41 @@ const accountPageRoutes: Routes = [
           ),
       },
       {
-        path: 'organization',
-        loadChildren: () => import('organization-management').then(m => m.OrganizationManagementModule),
-        canActivate: [AuthorizationToggleGuard],
+        path: 'punchout',
+        canActivate: [FeatureToggleGuard, AuthorizationToggleGuard],
         data: {
-          permission: 'APP_B2B_MANAGE_USERS',
+          feature: 'punchout',
+          permission: 'APP_B2B_MANAGE_PUNCHOUT',
+          breadcrumbData: [{ key: 'account.punchout.link' }],
         },
+        loadChildren: () =>
+          import('../../extensions/punchout/pages/punchout-account-routing.module').then(
+            m => m.PunchoutAccountRoutingModule
+          ),
+      },
+      {
+        path: 'quotes',
+        data: { breadcrumbData: [{ key: 'quote.quotes.link' }] },
+        loadChildren: () =>
+          import('../../extensions/quoting/pages/quote-list/quote-list-page.module').then(m => m.QuoteListPageModule),
+      },
+      {
+        path: 'wishlists',
+        data: { breadcrumbData: [{ key: 'account.wishlists.breadcrumb_link' }] },
+        loadChildren: () =>
+          import('../../extensions/wishlists/pages/wishlists-routing.module').then(m => m.WishlistsRoutingModule),
+      },
+      {
+        path: 'organization',
+        canActivate: [AuthorizationToggleGuard],
+        data: { permission: 'APP_B2B_MANAGE_USERS' },
+        loadChildren: () => import('organization-management').then(m => m.OrganizationManagementRoutingModule),
       },
       {
         path: 'requisitions',
-        loadChildren: () => import('requisition-management').then(m => m.RequisitionManagementModule),
         canActivate: [AuthorizationToggleGuard],
-        data: {
-          permission: 'APP_B2B_PURCHASE',
-        },
-      },
-      {
-        path: 'punchout',
-        data: { breadcrumbData: [{ key: 'account.punchout.link' }], permission: 'APP_B2B_MANAGE_PUNCHOUT' },
-        canActivate: [AuthorizationToggleGuard],
-        loadChildren: () =>
-          import('../../extensions/punchout/pages/punchout-routing.module').then(m => m.AccountPunchoutRoutingModule),
+        data: { permission: 'APP_B2B_PURCHASE' },
+        loadChildren: () => import('requisition-management').then(m => m.RequisitionManagementRoutingModule),
       },
     ],
   },

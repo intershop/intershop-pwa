@@ -10,8 +10,6 @@ import { ngrxStateTransferMeta } from 'ish-core/configurations/ngrx-state-transf
 import { ConfigurationGuard } from 'ish-core/guards/configuration.guard';
 import { addGlobalGuard } from 'ish-core/utils/routing';
 
-import { environment } from '../../../../environments/environment';
-
 import { ConfigurationEffects } from './configuration/configuration.effects';
 import { configurationReducer } from './configuration/configuration.reducer';
 import { CoreState } from './core-store';
@@ -33,7 +31,7 @@ const coreEffects = [ErrorEffects, ViewconfEffects, ConfigurationEffects, Messag
 
 const coreMetaReducers: MetaReducer<CoreState>[] = [
   ngrxStateTransferMeta,
-  ...(environment.production ? [] : [configurationMeta]),
+  ...(PRODUCTION_MODE ? [] : [configurationMeta]),
 ];
 
 @NgModule({
@@ -42,10 +40,11 @@ const coreMetaReducers: MetaReducer<CoreState>[] = [
     StoreModule.forRoot<CoreState>(coreReducers, {
       metaReducers: coreMetaReducers,
       runtimeChecks: {
-        strictActionImmutability: !environment.production,
-        strictActionSerializability: !environment.production,
-        strictStateImmutability: !environment.production,
-        strictStateSerializability: !environment.production,
+        strictActionImmutability: NGRX_RUNTIME_CHECKS,
+        strictActionSerializability: NGRX_RUNTIME_CHECKS,
+        strictStateImmutability: NGRX_RUNTIME_CHECKS,
+        strictStateSerializability: NGRX_RUNTIME_CHECKS,
+        strictActionTypeUniqueness: NGRX_RUNTIME_CHECKS,
       },
     }),
     StoreRouterConnectingModule.forRoot({ serializer: CustomRouterSerializer }),

@@ -1,19 +1,45 @@
-// This is a "Solution Style" tsconfig.json file, and is used by editors and TypeScript’s language server to improve development experience.
-// It is not intended to be used to perform a compilation.
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.all.json"
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./node_modules/.out-tsc/base",
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    // leave this as CommonJS, so scripts can be run with 'npx ts-node'
+    // see https://github.com/TypeStrong/ts-node#import-statements
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2015",
+    "paths": {
+      "ish-core/*": ["src/app/core/*"],
+      "ish-shared/*": ["src/app/shared/*"],
+      "ish-shell/*": ["src/app/shell/*"],
+      "organization-management": [
+        "projects/organization-management/src/app/exports"
+      ],
+      "requisition-management": [
+        "projects/requisition-management/src/app/exports"
+      ]
     },
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    },
-    {
-      "path": "./e2e/cypress/tsconfig.json"
-    }
-  ]
+    "lib": ["es2018", "dom"],
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "plugins": [
+      {
+        "name": "typescript-tslint-plugin",
+        "alwaysShowRuleFailuresAsWarnings": true,
+        "ignoreDefinitionFiles": true,
+        "configFile": "tslint.json",
+        "suppressWhileTypeErrorsPresent": true
+      }
+    ]
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictTemplates": true,
+    "strictInjectionParameters": true
+  }
 }

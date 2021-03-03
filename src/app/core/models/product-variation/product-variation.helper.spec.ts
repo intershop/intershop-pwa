@@ -1,65 +1,75 @@
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
-import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
+import { VariationProductMasterView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
+import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
+import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 
 import { ProductVariationHelper } from './product-variation.helper';
 
-const variationProduct = {
-  sku: '222',
-  productMasterSKU: 'M111',
-  variableVariationAttributes: [
-    { name: 'Attr 1', type: 'String', value: 'A', variationAttributeId: 'a1' },
-    { name: 'Attr 2', type: 'String', value: 'A', variationAttributeId: 'a2' },
-  ],
-  productMaster: () => ({
-    sku: 'M111',
-    variationAttributeValues: [
+const productVariations = [
+  {
+    sku: '222',
+    productMasterSKU: 'M111',
+    variableVariationAttributes: [
       { name: 'Attr 1', type: 'String', value: 'A', variationAttributeId: 'a1' },
+      { name: 'Attr 2', type: 'String', value: 'A', variationAttributeId: 'a2' },
+    ],
+  },
+  {
+    sku: '333',
+    productMasterSKU: 'M111',
+    attributes: [{ name: 'defaultVariation', type: 'Boolean', value: true }],
+    variableVariationAttributes: [
+      { name: 'Attr 1', type: 'String', value: 'A', variationAttributeId: 'a1' },
+      { name: 'Attr 2', type: 'String', value: 'B', variationAttributeId: 'a2' },
+    ],
+  },
+  {
+    sku: '444',
+    productMasterSKU: 'M111',
+    variableVariationAttributes: [
       { name: 'Attr 1', type: 'String', value: 'B', variationAttributeId: 'a1' },
       { name: 'Attr 2', type: 'String', value: 'A', variationAttributeId: 'a2' },
+    ],
+  },
+  {
+    sku: '555',
+    productMasterSKU: 'M111',
+    variableVariationAttributes: [
+      { name: 'Attr 1', type: 'String', value: 'B', variationAttributeId: 'a1' },
       { name: 'Attr 2', type: 'String', value: 'B', variationAttributeId: 'a2' },
+    ],
+  },
+  {
+    sku: '666',
+    productMasterSKU: 'M111',
+    variableVariationAttributes: [
+      { name: 'Attr 1', type: 'String', value: 'B', variationAttributeId: 'a1' },
       { name: 'Attr 2', type: 'String', value: 'C', variationAttributeId: 'a2' },
     ],
-    variations: () => variationProduct.variations(),
-  }),
-  variations: () => [
-    {
-      sku: '222',
-      variableVariationAttributes: [
-        { name: 'Attr 1', type: 'String', value: 'A', variationAttributeId: 'a1' },
-        { name: 'Attr 2', type: 'String', value: 'A', variationAttributeId: 'a2' },
-      ],
-    },
-    {
-      sku: '333',
-      attributes: [{ name: 'defaultVariation', type: 'Boolean', value: true }],
-      variableVariationAttributes: [
-        { name: 'Attr 1', type: 'String', value: 'A', variationAttributeId: 'a1' },
-        { name: 'Attr 2', type: 'String', value: 'B', variationAttributeId: 'a2' },
-      ],
-    },
-    {
-      sku: '444',
-      variableVariationAttributes: [
-        { name: 'Attr 1', type: 'String', value: 'B', variationAttributeId: 'a1' },
-        { name: 'Attr 2', type: 'String', value: 'A', variationAttributeId: 'a2' },
-      ],
-    },
-    {
-      sku: '555',
-      variableVariationAttributes: [
-        { name: 'Attr 1', type: 'String', value: 'B', variationAttributeId: 'a1' },
-        { name: 'Attr 2', type: 'String', value: 'B', variationAttributeId: 'a2' },
-      ],
-    },
-    {
-      sku: '666',
-      variableVariationAttributes: [
-        { name: 'Attr 1', type: 'String', value: 'B', variationAttributeId: 'a1' },
-        { name: 'Attr 2', type: 'String', value: 'C', variationAttributeId: 'a2' },
-      ],
-    },
+  },
+] as VariationProduct[];
+
+const productMaster = {
+  sku: 'M111',
+  variationAttributeValues: [
+    { name: 'Attr 1', type: 'String', value: 'A', variationAttributeId: 'a1' },
+    { name: 'Attr 1', type: 'String', value: 'B', variationAttributeId: 'a1' },
+    { name: 'Attr 2', type: 'String', value: 'A', variationAttributeId: 'a2' },
+    { name: 'Attr 2', type: 'String', value: 'B', variationAttributeId: 'a2' },
+    { name: 'Attr 2', type: 'String', value: 'C', variationAttributeId: 'a2' },
   ],
+} as VariationProductMaster;
+
+const variationProductView = {
+  ...productVariations[0],
+  productMaster,
+  variations: productVariations,
 } as VariationProductView;
+
+const masterProductView = {
+  ...productMaster,
+  variations: productVariations,
+} as VariationProductMasterView;
 
 describe('Product Variation Helper', () => {
   describe('buildVariationOptionGroups', () => {
@@ -114,26 +124,26 @@ describe('Product Variation Helper', () => {
         },
       ];
 
-      const result = ProductVariationHelper.buildVariationOptionGroups(variationProduct);
+      const result = ProductVariationHelper.buildVariationOptionGroups(variationProductView);
       expect(result).toEqual(expectedGroups);
     });
   });
 
   describe('findPossibleVariation', () => {
     it('should find perfect match when first attribute is changed', () => {
-      expect(ProductVariationHelper.findPossibleVariation('a2', 'B', variationProduct)).toEqual('333');
+      expect(ProductVariationHelper.findPossibleVariation('a2', 'B', variationProductView)).toEqual('333');
     });
 
     it('should find perfect match when second attribute is changed', () => {
-      expect(ProductVariationHelper.findPossibleVariation('a1', 'B', variationProduct)).toEqual('444');
+      expect(ProductVariationHelper.findPossibleVariation('a1', 'B', variationProductView)).toEqual('444');
     });
 
     it('should find variation match when second attribute is changed and no perfect match could be found', () => {
-      expect(ProductVariationHelper.findPossibleVariation('a2', 'C', variationProduct)).toEqual('666');
+      expect(ProductVariationHelper.findPossibleVariation('a2', 'C', variationProductView)).toEqual('666');
     });
 
     it('should return original sku when impossible selection is selected', () => {
-      expect(ProductVariationHelper.findPossibleVariation('a2', 'Z', variationProduct)).toEqual('222');
+      expect(ProductVariationHelper.findPossibleVariation('a2', 'Z', variationProductView)).toEqual('222');
     });
   });
 
@@ -143,7 +153,7 @@ describe('Product Variation Helper', () => {
     });
 
     it('should use variation length when no filters are given', () => {
-      expect(ProductVariationHelper.productVariationCount(variationProduct.productMaster(), undefined)).toEqual(5);
+      expect(ProductVariationHelper.productVariationCount(masterProductView, undefined)).toEqual(5);
     });
 
     it('should ignore irrelevant selections when counting', () => {
@@ -156,7 +166,7 @@ describe('Product Variation Helper', () => {
         ],
       } as FilterNavigation;
 
-      expect(ProductVariationHelper.productVariationCount(variationProduct.productMaster(), filters)).toEqual(5);
+      expect(ProductVariationHelper.productVariationCount(masterProductView, filters)).toEqual(5);
     });
 
     it('should filter for products matching single selected attributes', () => {
@@ -176,7 +186,7 @@ describe('Product Variation Helper', () => {
         ],
       } as FilterNavigation;
 
-      expect(ProductVariationHelper.productVariationCount(variationProduct.productMaster(), filters)).toEqual(2);
+      expect(ProductVariationHelper.productVariationCount(masterProductView, filters)).toEqual(2);
     });
 
     it('should filter for products matching multiple selected attributes', () => {
@@ -192,7 +202,7 @@ describe('Product Variation Helper', () => {
         ],
       } as FilterNavigation;
 
-      expect(ProductVariationHelper.productVariationCount(variationProduct.productMaster(), filters)).toEqual(3);
+      expect(ProductVariationHelper.productVariationCount(masterProductView, filters)).toEqual(3);
     });
 
     it('should filter for products matching multiple selected attributes over multiple facets', () => {
@@ -209,7 +219,7 @@ describe('Product Variation Helper', () => {
         ],
       } as FilterNavigation;
 
-      expect(ProductVariationHelper.productVariationCount(variationProduct.productMaster(), filters)).toEqual(1);
+      expect(ProductVariationHelper.productVariationCount(masterProductView, filters)).toEqual(1);
     });
   });
 });

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, createSelector, select } from '@ngrx/store';
 import { merge } from 'rxjs';
-import { map, switchMap, take, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
@@ -46,7 +46,7 @@ import {
 import { getOrdersError, getSelectedOrder } from 'ish-core/store/customer/orders';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
 import { getServerConfigParameter } from 'ish-core/store/general/server-config';
-import { whenTruthy } from 'ish-core/utils/operators';
+import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
@@ -66,7 +66,12 @@ export class CheckoutFacade {
   // BASKET
 
   basket$ = this.store.pipe(select(getCurrentBasket));
-  basketChange$ = this.store.pipe(select(getBasketLastTimeProductAdded));
+  basketChange$ = this.store.pipe(
+    select(getBasketLastTimeProductAdded),
+    whenTruthy(),
+    distinctUntilChanged(),
+    switchMap(() => this.basketLoading$.pipe(debounceTime(500), whenFalsy()))
+  );
   basketError$ = this.store.pipe(select(getBasketError));
   basketInfo$ = this.store.pipe(select(getBasketInfo));
   basketLoading$ = this.store.pipe(select(getBasketLoading));

@@ -18,7 +18,7 @@
   </div>
   <div
     class="col-4 col-xs-3 col-sm-2 switch-layout"
-    [ngClass]="{ 'col-md-2': sortOptions.length, 'col-md-5': !sortOptions.length }"
+    [ngClass]="{ 'col-md-2': sortOptions?.length, 'col-md-5': !sortOptions?.length }"
   >
     <div class="sort-by align-items-center justify-content-end">
       <a
@@ -47,14 +47,14 @@
       </a>
     </div>
   </div>
-  <div *ngIf="sortOptions.length" class="col-8 col-xs-9 col-sm-12 col-md-3 pull-right sort-by">
+  <div *ngIf="sortOptions?.length" class="col-8 col-xs-9 col-sm-12 col-md-3 pull-right sort-by">
     <select
-      [formControl]="sortDropdown"
       class="form-control sort-by-filter"
       id="SortingAttribute"
       name="SortingAttribute"
+      (change)="changeSortBy($event.target)"
     >
-      <option *ngFor="let o of sortOptions" [value]="o.value">{{ o.label }}</option>
+      <option *ngFor="let o of sortOptions" [value]="o.value" [selected]="o.value === sortBy">{{ o.label }}</option>
     </select>
   </div>
 </div>

@@ -27,7 +27,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   Build:
+    needs: [CancelPrevious]
     runs-on: ubuntu-latest
+    env:
+      TESTING: true
 
     steps:
       - uses: actions/checkout@v2
@@ -43,7 +46,9 @@ jobs:
         run: node schematics/customization/service-worker false
 
       - name: Build SSR
-        run: npm run build
+        run: |
+          node scripts/init-local-environment -f
+          npm run build
 
       - name: Upload Build Output
         uses: actions/upload-artifact@v2
@@ -75,7 +80,6 @@ jobs:
       - name: Set Environment
         run: |
           echo "LOGGING=true" >> $GITHUB_ENV
-          echo "PROXY_ICM=true" >> $GITHUB_ENV
 
       - name: Set B2B Environment
         if: matrix.test == 'b2b'
@@ -118,7 +122,6 @@ jobs:
         run: |
           echo "PWA_BASE_URL=http://localhost:4200" >> $GITHUB_ENV
           echo "LOGGING=true" >> $GITHUB_ENV
-          echo "PROXY_ICM=true" >> $GITHUB_ENV
           echo "BROWSER=chrome" >> $GITHUB_ENV
 
       - name: Set B2B Environment

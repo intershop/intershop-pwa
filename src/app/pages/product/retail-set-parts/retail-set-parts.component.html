@@ -1,4 +1,4 @@
-<div class="col-xs-12 bundled-product-list">
+<div *ngIf="visible$ | async" class="col-xs-12 bundled-product-list">
   <h3>{{ 'product.retailSet.products.heading' | translate }}</h3>
 
   <div class="product-list row">
@@ -37,7 +37,7 @@
   </div>
   <div class="row product-info">
     <div class="col align-self-start no-gutters">
-      <ish-product-add-to-basket translationKey="product.add_to_cart.retailset.link"></ish-product-add-to-basket>
+      <ish-product-add-to-basket></ish-product-add-to-basket>
     </div>
   </div>
 </div>

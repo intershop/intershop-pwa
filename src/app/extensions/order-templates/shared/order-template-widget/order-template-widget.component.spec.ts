@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -30,7 +31,7 @@ describe('Order Template Widget Component', () => {
     when(orderTemplatesFacade.orderTemplates$).thenReturn(of(orderTemplates));
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(InfoBoxComponent),
         MockComponent(LoadingComponent),
@@ -62,8 +63,8 @@ describe('Order Template Widget Component', () => {
 
   it('should render order template list after creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('.loading-container').textContent.trim()).toMatchInlineSnapshot(
-      `"order template  order template 2"`
+    expect(element.querySelector('.loading-container').textContent).toMatchInlineSnapshot(
+      `"order templateorder template 2"`
     );
   });
 });

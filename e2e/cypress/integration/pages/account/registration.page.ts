@@ -7,7 +7,7 @@ export interface Registration {
   loginConfirmation: string;
   password: string;
   passwordConfirmation: string;
-  countryCodeSwitch: string;
+  countryCode: string;
   title: string;
   firstName: string;
   lastName: string;
@@ -24,7 +24,7 @@ export interface Registration {
 
 export const sensibleDefaults: Partial<Registration> = {
   password: '!InterShop00!',
-  countryCodeSwitch: 'AT',
+  countryCode: 'AT',
   firstName: 'Test',
   lastName: 'User',
   addressLine1: 'Testroad 1',
@@ -35,7 +35,7 @@ export const sensibleDefaults: Partial<Registration> = {
 };
 
 export class RegistrationPage {
-  readonly tag = 'ish-registration-form';
+  readonly tag = '[data-testing-id="account-create-full-page"]';
 
   static navigateTo() {
     cy.visit('/register');
@@ -48,11 +48,28 @@ export class RegistrationPage {
       should: (t: 'be.valid' | 'be.invalid' | string, arg?) => {
         switch (t) {
           case 'be.valid':
-            return input.should('have.class', 'ng-dirty').should('have.class', 'ng-valid');
+            return input.should('have.class', 'ng-valid');
           case 'be.invalid':
-            return input.should('have.class', 'ng-dirty').should('have.class', 'ng-invalid');
+            return input.should('have.class', 'ng-invalid');
           default:
             return input.should(t, arg);
+        }
+      },
+    };
+  }
+
+  wrapper(key: keyof Registration) {
+    const wrapper = cy.get(`[data-testing-id="${key}-wrapper"]`);
+    return {
+      ...wrapper,
+      should: (t: 'be.valid' | 'be.invalid' | string, arg?) => {
+        switch (t) {
+          case 'be.valid':
+            return wrapper.should('not.have.class', 'formly-has-error');
+          case 'be.invalid':
+            return wrapper.should('have.class', 'formly-has-error');
+          default:
+            return wrapper.should(t, arg);
         }
       },
     };

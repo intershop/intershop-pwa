@@ -7,6 +7,72 @@ kb_everyone
 
 # Changelog
 
+## [0.28.0](https://github.com/intershop/intershop-pwa/releases/tag/0.28.0) (2021-03-03)
+
+**required Intershop Commerce Management version: 7.10.27.0**
+
+### Features
+
+- introduce formly (a dynamic form library) for standard form handling ([932e36b](https://github.com/intershop/intershop-pwa/commit/932e36b))
+- use formly for many forms ([110f28d](https://github.com/intershop/intershop-pwa/commit/110f28d))
+- add formly checkbox field, minor formly improvements (#574) ([d850ee6](https://github.com/intershop/intershop-pwa/commit/d850ee6))
+- generate lazy component for content-include to be used in application shell ([b8ae40d](https://github.com/intershop/intershop-pwa/commit/b8ae40d))
+- multi-channel with multi ICM support (#536,#420) ([434ed47](https://github.com/intershop/intershop-pwa/commit/434ed47))
+- set unique ids for form fields in payment components (#586) ([832cdba](https://github.com/intershop/intershop-pwa/commit/832cdba))
+- add order template detail links on order template widget (#575) ([8112321](https://github.com/intershop/intershop-pwa/commit/8112321))
+- allow overriding component templates and component styles depending on environment (#537) ([b15a471](https://github.com/intershop/intershop-pwa/commit/b15a471))
+- provide Dockerfile for deployment without SSR (#538) ([1307a0b](https://github.com/intershop/intershop-pwa/commit/1307a0b))
+- use seo metadata provided by CMS REST API for content pages (#540) ([2b473ed](https://github.com/intershop/intershop-pwa/commit/2b473ed))
+- display ICM managed display names for sorting keys on listings (#535) ([f432188](https://github.com/intershop/intershop-pwa/commit/f432188))
+- devcontainer for VSCode (#515) ([7b3d937](https://github.com/intershop/intershop-pwa/commit/7b3d937))
+- **schematics:** generate lazy components for shared components in shell module ([beea0b4](https://github.com/intershop/intershop-pwa/commit/beea0b4))
+
+### Bug Fixes
+
+- use customer id when fetching company user ([3d684bf](https://github.com/intershop/intershop-pwa/commit/3d684bf))
+- working and adjusted concardis-directdebit validation (#590) ([deaed69](https://github.com/intershop/intershop-pwa/commit/deaed69))
+- flexible safety checks for custom webpack ([c358249](https://github.com/intershop/intershop-pwa/commit/c358249))
+- use new checkbox type in directdebit ([3b0adb4](https://github.com/intershop/intershop-pwa/commit/3b0adb4))
+- prevent endless loading with empty array for wishlists and order templates (#571) ([3f5f799](https://github.com/intershop/intershop-pwa/commit/3f5f799))
+- display of crossed prices in the checkout items widget (#559) ([19d88bb](https://github.com/intershop/intershop-pwa/commit/19d88bb))
+- add feature toggle route guard for 'punchout' routes (#527) ([7d27960](https://github.com/intershop/intershop-pwa/commit/7d27960))
+- regenerate self signed SSL certificate (#542) ([8ce720d](https://github.com/intershop/intershop-pwa/commit/8ce720d))
+- include production webpack in docker build to repair production build ([d464e58](https://github.com/intershop/intershop-pwa/commit/d464e58))
+- preserve URLs when errors are encountered (#511) ([97ad95b](https://github.com/intershop/intershop-pwa/commit/97ad95b))
+- loading overlay for quickorder ([0fc7045](https://github.com/intershop/intershop-pwa/commit/0fc7045))
+- expand minibasket when loading finished ([c96477f](https://github.com/intershop/intershop-pwa/commit/c96477f))
+- initialize quantity for retail set parts to repair add to cart from listing pages ([0ab511f](https://github.com/intershop/intershop-pwa/commit/0ab511f))
+
+### Performance Improvements
+
+- restructure chunk splitting for feature toggles (#570) ([6198f8f](https://github.com/intershop/intershop-pwa/commit/6198f8f))
+- purgecss for css minification integrated into webpack build (#562) ([2199b82](https://github.com/intershop/intershop-pwa/commit/2199b82))
+- shell module as standalone module (#568) ([c438931](https://github.com/intershop/intershop-pwa/commit/c438931))
+- move sentry to lazy loaded bundle by lazy invocation ([983ae82](https://github.com/intershop/intershop-pwa/commit/983ae82))
+- move formly to lazy bundle (#566) ([101e3a3](https://github.com/intershop/intershop-pwa/commit/101e3a3))
+- main bundle reduction (#553) ([0f3b23f](https://github.com/intershop/intershop-pwa/commit/0f3b23f))
+- add purgecss for css minification ([e4aa79f](https://github.com/intershop/intershop-pwa/commit/e4aa79f))
+- tune webpack chunk settings ([5e8f67e](https://github.com/intershop/intershop-pwa/commit/5e8f67e))
+- remove data-testing attributes for production build ([82ad581](https://github.com/intershop/intershop-pwa/commit/82ad581))
+
+### Documentation
+
+- dependencies update/upgrade documentation additions (branch naming, package-lock.json) ([a695bc4](https://github.com/intershop/intershop-pwa/commit/a695bc4))
+- optimizations documentation ([ef85d1c](https://github.com/intershop/intershop-pwa/commit/ef85d1c))
+- add chapter running server side rendering with https ([eeddc76](https://github.com/intershop/intershop-pwa/commit/eeddc76))
+
+### Code Refactoring
+
+- product selector memoization (#528) ([ac0b35a](https://github.com/intershop/intershop-pwa/commit/ac0b35a))
+- use native swiper instead of ngx-swiper-wrapper (#552) ([f596d0b](https://github.com/intershop/intershop-pwa/commit/f596d0b))
+
+### BREAKING CHANGES
+
+- Introduced formly for standard form handling. See [Migrations / 0.27 to 0.28](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#027-to-028) for more details.
+- Refactoring the way product memoization is done and additional product components retrieve data with context facade
+- Removed the dependency to ngx-swiper-wrapper and used swiper with native Angular support.
+- Refactored setting `production` mode to support running Angular CLI with multiple configurations (`ng serve -c brand,production`).
+
 ## [0.27.0](https://github.com/intershop/intershop-pwa/releases/tag/0.27.0) (2021-01-30)
 
 **required Intershop Commerce Management version: 7.10.27.0**
@@ -532,7 +598,7 @@ kb_everyone
 ### BREAKING CHANGES
 
 - Using containers and components is no longer a recommended pattern. See [Migrations /
-  0.16 to 0.17](https://github.com/intershop/intershop-pwa/blob/develop/docs/migrations.md#016-to-017) for more details.
+  0.16 to 0.17](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#016-to-017) for more details.
 
 ## [0.16.1](https://github.com/intershop/intershop-pwa/releases/tag/0.16.1) (2019-12-13)
 

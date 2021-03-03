@@ -23,6 +23,7 @@ kb_sync_latest_only
 - [Concept - Localization](./concepts/localization.md)
 - [Concept - SEO](./concepts/search-engine-optimization.md)
 - [Guide - Forms](./guides/forms.md)
+- [ Concept - Formly](./guides/formly.md)
 - [Concept - Deployment Scenarios for Angular Applications](./concepts/deployment-angular.md)
 - [Concept - Single Sign-On (SSO) for PWA](./concepts/sso.md)
 
@@ -66,6 +67,7 @@ kb_sync_latest_only
   - [Guide - Hybrid Approach and ICM URL Rewriting](./guides/hybrid-approach-icm-url-rewriting.md)
 - [Concept - Logging](./concepts/logging.md)
 - [Guide - CI](./guides/continuous-integration.md)
+- [Guide - Optimizations](./guides/optimizations.md)
 
 ### Third-party Integrations
 

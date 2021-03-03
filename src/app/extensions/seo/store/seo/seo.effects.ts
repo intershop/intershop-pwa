@@ -107,9 +107,8 @@ export class SeoEffects {
               this.store.pipe(
                 ofUrl(/^\/page.*/),
                 select(getSelectedContentPage),
-                mapToProperty('displayName'),
-                whenTruthy(),
-                map<string, Partial<SeoAttributes>>(title => ({ title }))
+                mapToProperty('seoAttributes'),
+                whenTruthy()
               ),
             ])
           )
@@ -179,5 +178,6 @@ export class SeoEffects {
             break;
         }
       });
+    this.meta.setTag('pwa-version', PWA_VERSION);
   }
 }

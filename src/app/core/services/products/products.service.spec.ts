@@ -52,7 +52,10 @@ describe('Products Service', () => {
       },
     ],
     type: 'ResourceCollection',
-    sortKeys: ['name-desc', 'name-asc'],
+    sortableAttributes: {
+      'name-desc': { name: 'name-desc' },
+      'name-asc': { name: 'name-asc' },
+    },
     name: 'products',
   };
 
@@ -81,7 +84,16 @@ describe('Products Service', () => {
     when(apiServiceMock.get(`categories/${categoryId}/products`, anything())).thenReturn(of(productsMockData));
     productsService.getCategoryProducts(categoryId, 0).subscribe(data => {
       expect(data.products.map(p => p.sku)).toEqual(['ProductA', 'ProductB']);
-      expect(data.sortKeys).toEqual(['name-desc', 'name-asc']);
+      expect(data.sortableAttributes).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "name": "name-desc",
+          },
+          Object {
+            "name": "name-asc",
+          },
+        ]
+      `);
       verify(apiServiceMock.get(`categories/${categoryId}/products`, anything())).once();
       done();
     });

@@ -18,8 +18,8 @@ import {
   loadProductFail,
   loadProductLinksSuccess,
   loadProductSuccess,
-  loadProductVariations,
   loadProductVariationsFail,
+  loadProductVariationsIfNotLoaded,
   loadProductVariationsSuccess,
   loadRetailSetSuccess,
 } from './products.actions';
@@ -28,6 +28,7 @@ import {
   getProduct,
   getProductEntities,
   getProductLinks,
+  getProductParts,
   getSelectedProduct,
 } from './products.selectors';
 
@@ -92,7 +93,13 @@ describe('Products Selectors', () => {
       });
 
       it('should return a product stub if product is selected', () => {
-        expect(getProduct(store$.state, { sku: 'invalid' })).toBeTruthy();
+        expect(getProduct('invalid')(store$.state)).toMatchInlineSnapshot(`
+          Object {
+            "defaultCategory": undefined,
+            "failed": true,
+            "sku": "invalid",
+          }
+        `);
       });
     });
   });
@@ -162,17 +169,17 @@ describe('Products Selectors', () => {
 
           it('should generate a breadcrumb with default category when product is selected', () => {
             expect(getBreadcrumbForProductPage(store$.state)).toMatchInlineSnapshot(`
-            Array [
-              Object {
-                "link": "/nA-catA",
-                "text": "nA",
-              },
-              Object {
-                "link": undefined,
-                "text": "product",
-              },
-            ]
-          `);
+              Array [
+                Object {
+                  "link": "/nA-catA",
+                  "text": "nA",
+                },
+                Object {
+                  "link": undefined,
+                  "text": "product",
+                },
+              ]
+            `);
           });
         });
 
@@ -184,17 +191,17 @@ describe('Products Selectors', () => {
 
           it('should generate a breadcrumb with selected category when product is selected', () => {
             expect(getBreadcrumbForProductPage(store$.state)).toMatchInlineSnapshot(`
-            Array [
-              Object {
-                "link": "/nB-catB",
-                "text": "nB",
-              },
-              Object {
-                "link": undefined,
-                "text": "product",
-              },
-            ]
-          `);
+              Array [
+                Object {
+                  "link": "/nB-catB",
+                  "text": "nB",
+                },
+                Object {
+                  "link": undefined,
+                  "text": "product",
+                },
+              ]
+            `);
           });
         });
 
@@ -207,17 +214,17 @@ describe('Products Selectors', () => {
 
           it('should generate a breadcrumb with selected category even if product has default category when product is selected', () => {
             expect(getBreadcrumbForProductPage(store$.state)).toMatchInlineSnapshot(`
-            Array [
-              Object {
-                "link": "/nB-catB",
-                "text": "nB",
-              },
-              Object {
-                "link": undefined,
-                "text": "product",
-              },
-            ]
-          `);
+              Array [
+                Object {
+                  "link": "/nB-catB",
+                  "text": "nB",
+                },
+                Object {
+                  "link": undefined,
+                  "text": "product",
+                },
+              ]
+            `);
           });
         });
       });
@@ -225,7 +232,7 @@ describe('Products Selectors', () => {
   });
 
   describe('when loading bundles', () => {
-    it('should contain the product bundle information on the product', () => {
+    it('should contain information for the product bundle', () => {
       store$.dispatch(loadProductSuccess({ product: { sku: 'ABC' } as Product }));
       store$.dispatch(
         loadProductBundlesSuccess({
@@ -237,26 +244,23 @@ describe('Products Selectors', () => {
         })
       );
 
-      expect(getProductEntities(store$.state).ABC).toMatchInlineSnapshot(`
-        Object {
-          "bundledProducts": Array [
-            Object {
-              "quantity": 1,
-              "sku": "A",
-            },
-            Object {
-              "quantity": 2,
-              "sku": "B",
-            },
-          ],
-          "sku": "ABC",
-        }
+      expect(getProductParts('ABC')(store$.state)).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "quantity": 1,
+            "sku": "A",
+          },
+          Object {
+            "quantity": 2,
+            "sku": "B",
+          },
+        ]
       `);
     });
   });
 
   describe('when loading retail sets', () => {
-    it('should contain the product retail set information on the product', () => {
+    it('should contain information for the product retail set', () => {
       store$.dispatch(loadProductSuccess({ product: { sku: 'ABC' } as Product }));
       store$.dispatch(
         loadRetailSetSuccess({
@@ -265,14 +269,17 @@ describe('Products Selectors', () => {
         })
       );
 
-      expect(getProductEntities(store$.state).ABC).toMatchInlineSnapshot(`
-        Object {
-          "partSKUs": Array [
-            "A",
-            "B",
-          ],
-          "sku": "ABC",
-        }
+      expect(getProductParts('ABC')(store$.state)).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "quantity": 1,
+            "sku": "A",
+          },
+          Object {
+            "quantity": 1,
+            "sku": "B",
+          },
+        ]
       `);
     });
   });
@@ -280,22 +287,27 @@ describe('Products Selectors', () => {
   describe('loading product variations', () => {
     beforeEach(() => {
       store$.dispatch(loadProductSuccess({ product: { sku: 'SKU', type: 'VariationProductMaster' } as Product }));
-      store$.dispatch(loadProductVariations({ sku: 'SKU' }));
+      store$.dispatch(loadProductVariationsIfNotLoaded({ sku: 'SKU' }));
     });
 
     describe('and reporting success', () => {
       beforeEach(() => {
+        store$.dispatch(loadProductSuccess({ product: { sku: 'VAR', type: 'VariationProduct' } as Product }));
         store$.dispatch(loadProductVariationsSuccess({ sku: 'SKU', variations: ['VAR'], defaultVariation: 'VAR' }));
       });
 
       it('should add variations to state', () => {
-        expect(getProductEntities(store$.state).SKU).toMatchInlineSnapshot(`
+        expect(getProduct('SKU')(store$.state)).toMatchInlineSnapshot(`
           Object {
+            "defaultCategory": undefined,
             "defaultVariationSKU": "VAR",
             "sku": "SKU",
             "type": "VariationProductMaster",
-            "variationSKUs": Array [
-              "VAR",
+            "variations": Array [
+              Object {
+                "sku": "VAR",
+                "type": "VariationProduct",
+              },
             ],
           }
         `);
@@ -327,9 +339,9 @@ describe('Products Selectors', () => {
     });
 
     it('should select various products on single product selector', () => {
-      expect(getProduct(store$.state, { sku: 'SKU1' })).toHaveProperty('name', 'sku1');
-      expect(getProduct(store$.state, { sku: 'SKU2' })).toHaveProperty('name', 'sku2');
-      expect(getProduct(store$.state, { sku: 'SKU3' })).toHaveProperty('name', 'sku3');
+      expect(getProduct('SKU1')(store$.state)).toHaveProperty('name', 'sku1');
+      expect(getProduct('SKU2')(store$.state)).toHaveProperty('name', 'sku2');
+      expect(getProduct('SKU3')(store$.state)).toHaveProperty('name', 'sku3');
     });
   });
 
@@ -343,17 +355,15 @@ describe('Products Selectors', () => {
         })
       );
 
-      expect(getProductLinks(store$.state, { sku: 'ABC' })).toMatchInlineSnapshot(`
+      expect(getProductLinks('ABC')(store$.state)).toMatchInlineSnapshot(`
         Object {
           "linkType": Object {
-            "categories": [Function],
-            "categoryIds": Array [
+            "categories": Array [
               "cat",
             ],
-            "productSKUs": Array [
+            "products": Array [
               "prod",
             ],
-            "products": [Function],
           },
         }
       `);

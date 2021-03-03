@@ -4,19 +4,19 @@
   <div *ngIf="variation$ | async as variation" class="row">
     <!-- right box -->
     <div class="col-12 col-md">
-      <div class="text-center"><ish-product-image [product]="variation" imageType="M"></ish-product-image></div>
+      <div class="text-center"><ish-product-image imageType="M"></ish-product-image></div>
     </div>
 
     <!-- left box -->
     <div class="col-12 col-md product-info">
       <!-- sku -->
-      <ish-product-id [product]="variation"></ish-product-id>
+      <ish-product-id></ish-product-id>
 
       <!-- price -->
       <div class="current-price">{{ variation.salePrice | ishPrice }}</div>
 
       <!-- Availability -->
-      <ish-product-inventory [product]="variation"></ish-product-inventory>
+      <ish-product-inventory></ish-product-inventory>
 
       <!-- select (variation) -->
       <div class="product-variation-container">

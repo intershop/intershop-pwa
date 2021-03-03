@@ -1,14 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
-import { anything, spy, verify } from 'ts-mockito';
+import { EMPTY, of } from 'rxjs';
+import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
-import { InputComponent } from 'ish-shared/forms/components/input/input.component';
-import { SelectComponent, SelectOption } from 'ish-shared/forms/components/select/select.component';
-import { TextareaComponent } from 'ish-shared/forms/components/textarea/textarea.component';
-
-import { LazyCaptchaComponent } from '../../../extensions/captcha/exports/lazy-captcha/lazy-captcha.component';
+import { AccountFacade } from 'ish-core/facades/account.facade';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { ContactFormComponent } from './contact-form.component';
 
@@ -18,15 +14,14 @@ describe('Contact Form Component', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
+    const accountFacade = mock(AccountFacade);
+    when(accountFacade.user$).thenReturn(EMPTY);
+    when(accountFacade.contactSubjects$()).thenReturn(of(['subject1', 'subject2']));
+
     await TestBed.configureTestingModule({
-      declarations: [
-        ContactFormComponent,
-        MockComponent(InputComponent),
-        MockComponent(LazyCaptchaComponent),
-        MockComponent(SelectComponent),
-        MockComponent(TextareaComponent),
-      ],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      declarations: [ContactFormComponent],
+      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   });
 
@@ -42,14 +37,9 @@ describe('Contact Form Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should map subjects to select options when subjects are provided by Input', () => {
-    component.subjects = ['Return', 'Product Questions'];
-    component.ngOnChanges();
-    const expected: SelectOption[] = [
-      { label: 'Return', value: 'Return' },
-      { label: 'Product Questions', value: 'Product Questions' },
-    ];
-    expect(component.subjectOptions).toEqual(expected);
+  it('should always render formly form', () => {
+    fixture.detectChanges();
+    expect(element.querySelectorAll('formly-field')).toHaveLength(7);
   });
 
   it('should not emit contact request when invalid form is submitted', () => {

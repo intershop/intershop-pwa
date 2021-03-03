@@ -41,6 +41,10 @@ npx ng g c shared/components/inventory/warehouse
 stat src/app/shared/components/inventory/warehouse/warehouse.component.ts
 grep "WarehouseComponent" src/app/shared/shared.module.ts
 
+npx ng g lazy-component src/app/shared/components/inventory/warehouse/warehouse.component.ts
+stat src/app/shell/shared/lazy-warehouse/lazy-warehouse.component.ts
+grep GenerateLazyComponent src/app/shared/components/inventory/warehouse/warehouse.component.ts
+
 
 npx ng g p warehouses
 stat src/app/pages/warehouses/warehouses-page.module.ts
@@ -123,11 +127,12 @@ stat src/app/extensions/quoting/shared/custom-quote-widget/custom-quote-widget.c
 # TODO
 # grep 'custom-lazy-quote-widget' src/app/pages/account-overview/account-overview/account-overview.component.html
 
-sed -i -e "s%icmBaseURL.*%icmBaseURL: 'http://localhost:4200',%g" src/environments/environment.prod.ts
+sed -i -e "s%icmBaseURL.*%icmBaseURL: 'http://localhost:4200',%g" src/environments/environment.ts
+
+node scripts/init-local-environment -f
 
 node schematics/customization/service-worker false
 grep '"serviceWorker": false' angular.json
-grep 'serviceWorker: false' src/environments/environment.prod.ts
 
 git add -A
 npm run clean

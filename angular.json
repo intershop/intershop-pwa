@@ -18,8 +18,12 @@
       "prefix": "ish",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "customWebpackConfig": {
+              "path": "./templates/webpack/webpack.custom.ts",
+              "replaceDuplicatePlugins": true
+            },
             "outputPath": "dist/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -39,28 +43,37 @@
                 "bundleName": "blue"
               }
             ],
-            "scripts": []
+            "scripts": [],
+            "sourceMap": true
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
+              "vendorChunk": true,
               "buildOptimizer": true,
               "budgets": [
                 {
+                  "type": "bundle",
+                  "name": "main",
+                  "baseline": "350kb",
+                  "warning": "100kb",
+                  "error": "200kb"
+                },
+                {
+                  "type": "bundle",
+                  "name": "vendor",
+                  "baseline": "800kb",
+                  "warning": "100kb",
+                  "error": "300kb"
+                },
+                {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "1500kb",
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -77,23 +90,16 @@
                   "type": "anyComponentStyle",
                   "maximumWarning": "6kb"
                 }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.local.ts"
-                }
-              ],
-              "sourceMap": true,
-              "serviceWorker": false,
-              "aot": true
+              ]
             }
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "intershop-pwa:build"
+            "browserTarget": "intershop-pwa:build",
+            "disableHostCheck": true,
+            "host": "0.0.0.0"
           },
           "configurations": {
             "production": {
@@ -113,38 +119,30 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["tsconfig.base.json"],
+            "tsConfig": ["tsconfig.json"],
             "exclude": ["**/node_modules/**"],
             "format": "stylish"
           }
         },
         "server": {
-          "builder": "@angular-devkit/build-angular:server",
+          "builder": "@angular-builders/custom-webpack:server",
           "options": {
+            "customWebpackConfig": {
+              "path": "./templates/webpack/webpack.custom.ts",
+              "replaceDuplicatePlugins": true
+            },
+            "showCircularDependencies": false,
             "outputPath": "dist/server",
             "main": "server.ts",
+            "optimization": true,
             "tsConfig": "tsconfig.server.json"
           },
           "configurations": {
             "production": {
               "outputHashing": "media",
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
-              "sourceMap": false,
-              "optimization": true
+              "sourceMap": false
             },
             "local": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.local.ts"
-                }
-              ],
-              "optimization": true,
               "sourceMap": true
             }
           }
@@ -169,18 +167,17 @@
       "cli": {
         "defaultCollection": "intershop-schematics"
       },
-      "schematics": {
-        "intershop-schematics:page": {
-          "lazy": false
-        }
-      },
       "root": "projects/organization-management",
       "sourceRoot": "projects/organization-management/src",
       "prefix": "ish",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "customWebpackConfig": {
+              "path": "./templates/webpack/webpack.custom.ts",
+              "replaceDuplicatePlugins": true
+            },
             "outputPath": "dist/organization-management",
             "index": "projects/organization-management/src/index.html",
             "main": "projects/organization-management/src/main.ts",
@@ -205,7 +202,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
             "browserTarget": "organization-management:build",
             "disableHostCheck": true,
@@ -219,18 +216,17 @@
       "cli": {
         "defaultCollection": "intershop-schematics"
       },
-      "schematics": {
-        "intershop-schematics:page": {
-          "lazy": false
-        }
-      },
       "root": "projects/requisition-management",
       "sourceRoot": "projects/requisition-management/src",
       "prefix": "ish",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "customWebpackConfig": {
+              "path": "./templates/webpack/webpack.custom.ts",
+              "replaceDuplicatePlugins": true
+            },
             "outputPath": "dist/requisition-management",
             "index": "projects/requisition-management/src/index.html",
             "main": "projects/requisition-management/src/main.ts",
@@ -239,7 +235,11 @@
             "aot": false,
             "styles": ["src/styles/themes/default/style.scss"],
             "assets": [
-              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
+              {
+                "glob": "**/*",
+                "input": "src/assets/",
+                "output": "/assets/"
+              }
             ],
             "scripts": [],
             "fileReplacements": [
@@ -251,7 +251,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
             "browserTarget": "requisition-management:build",
             "disableHostCheck": true,

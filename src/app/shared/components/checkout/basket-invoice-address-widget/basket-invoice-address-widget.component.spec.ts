@@ -12,8 +12,8 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { findAllCustomElements, findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
-import { CustomerAddressFormComponent } from 'ish-shared/address-forms/components/customer-address-form/customer-address-form.component';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
+import { FormlyCustomerAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-customer-address-form/formly-customer-address-form.component';
 import { SelectAddressComponent } from 'ish-shared/forms/components/select-address/select-address.component';
 
 import { BasketInvoiceAddressWidgetComponent } from './basket-invoice-address-widget.component';
@@ -38,8 +38,8 @@ describe('Basket Invoice Address Widget Component', () => {
       declarations: [
         BasketInvoiceAddressWidgetComponent,
         MockComponent(AddressComponent),
-        MockComponent(CustomerAddressFormComponent),
         MockComponent(FaIconComponent),
+        MockComponent(FormlyCustomerAddressFormComponent),
         MockComponent(SelectAddressComponent),
         MockDirective(NgbCollapse),
       ],
@@ -86,7 +86,7 @@ describe('Basket Invoice Address Widget Component', () => {
         Array [
           "fa-icon",
           "ish-address",
-          "ish-customer-address-form",
+          "ish-formly-customer-address-form",
         ]
       `);
       expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
@@ -106,7 +106,7 @@ describe('Basket Invoice Address Widget Component', () => {
       expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
         Array [
           "ish-address",
-          "ish-customer-address-form",
+          "ish-formly-customer-address-form",
         ]
       `);
       expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
@@ -115,8 +115,8 @@ describe('Basket Invoice Address Widget Component', () => {
         ]
       `);
 
-      const form = fixture.debugElement.query(By.css('ish-customer-address-form'))
-        .componentInstance as CustomerAddressFormComponent;
+      const form = fixture.debugElement.query(By.css('ish-formly-customer-address-form'))
+        .componentInstance as FormlyCustomerAddressFormComponent;
       expect(form.address).toBeTruthy();
     });
 
@@ -128,7 +128,7 @@ describe('Basket Invoice Address Widget Component', () => {
       expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
         Array [
           "ish-address",
-          "ish-customer-address-form",
+          "ish-formly-customer-address-form",
         ]
       `);
       expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
@@ -137,9 +137,9 @@ describe('Basket Invoice Address Widget Component', () => {
         ]
       `);
 
-      const form = fixture.debugElement.query(By.css('ish-customer-address-form'))
-        .componentInstance as CustomerAddressFormComponent;
-      expect(form.address).toBeFalsy();
+      const form = fixture.debugElement.query(By.css('ish-formly-customer-address-form'))
+        .componentInstance as FormlyCustomerAddressFormComponent;
+      expect(form.address).toBeEmpty();
     });
   });
 

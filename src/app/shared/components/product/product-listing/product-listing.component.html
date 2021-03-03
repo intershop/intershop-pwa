@@ -10,7 +10,7 @@
   >
     <ish-product-list-toolbar
       [itemCount]="listing.itemCount"
-      [sortKeys]="listing.sortKeys"
+      [sortableAttributes]="listing.sortableAttributes"
       [viewType]="viewType$ | async"
       [sortBy]="sortBy$ | async"
       [fragmentOnRouting]="fragmentOnRouting"
@@ -18,7 +18,7 @@
 
     <ish-product-list
       [products]="listing.products()"
-      [category]="category"
+      [categoryId]="categoryId"
       [viewType]="viewType$ | async"
     ></ish-product-list>
 
@@ -37,7 +37,7 @@
       <ng-template #pagingToolbar>
         <ish-product-list-toolbar
           [itemCount]="listing.itemCount"
-          [sortKeys]="listing.sortKeys"
+          [sortableAttributes]="listing.sortableAttributes"
           [viewType]="viewType$ | async"
           [sortBy]="sortBy$ | async"
           [currentPage]="currentPage"
@@ -51,7 +51,7 @@
 
       <ish-product-list
         [products]="listing.productsOfPage(currentPage)"
-        [category]="category"
+        [categoryId]="categoryId"
         [viewType]="viewType$ | async"
       ></ish-product-list>
 

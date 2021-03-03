@@ -18,6 +18,7 @@
 
 // import Swiper default theme
 @import '~swiper/swiper';
+@import '~swiper/components/pagination/pagination.scss';
 
 //
 // STYLING COMPATIBILITY LAYER
@@ -42,6 +43,7 @@
 @import 'global/forms/labels';
 @import 'global/forms/fields';
 @import 'global/forms/forms';
+@import 'global/forms/formly';
 @import 'global/lists';
 @import 'global/share-tools';
 @import 'global/notifications';

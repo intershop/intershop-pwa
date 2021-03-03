@@ -29,26 +29,3 @@ Object.keys(build.configurations).forEach(key => {
 
 fs.writeFileSync('./angular.json', stringify(angularJson, null, 2));
 execSync('npx prettier --write angular.json');
-
-// replace in environments
-const tsMorphProject = new Project();
-tsMorphProject.addSourceFilesAtPaths('src/environments/environment*.ts');
-
-tsMorphProject
-  .getSourceFiles()
-  .filter(file => !file.getBaseName().endsWith('.model.ts') && file.getBaseName() !== 'environment.ts')
-  .forEach(file => {
-    file
-      .forEachDescendantAsArray()
-      .filter(stm => stm.getKind() == ts.SyntaxKind.VariableDeclaration && stm.getName() === 'environment')
-      .map(stm => stm.getInitializer())
-      .forEach(objectLiteralExpression => {
-        const property = objectLiteralExpression.getProperty('serviceWorker');
-        if (property) {
-          property.setInitializer(`${enable}`);
-        }
-      });
-  });
-
-tsMorphProject.saveSync();
-execSync('npx prettier --write src/environments/*.*');

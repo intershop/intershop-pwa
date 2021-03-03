@@ -366,7 +366,7 @@
         {
           "import": "^SharedModule$",
           "from": "\\..*",
-          "filePattern": "^(?!.+(page|extensions/[a-z][a-z0-9-]+/[a-z][a-z0-9-]+\\.module|projects/[a-z][a-z0-9-]+/src/app/[a-z][a-z0-9-]+\\.module)).+\\.module\\.ts$",
+          "filePattern": "^(?!.+(page|extensions/[a-z][a-z0-9-]+/[a-z][a-z0-9-]+\\.module|projects/[a-z][a-z0-9-]+/src/app(/[a-z][a-z0-9-]+)?\\.module)).+\\.module\\.ts$",
           "message": "SharedModule must only be imported in page, extension or project modules."
         },
         {
@@ -377,7 +377,7 @@
         {
           "import": ".*",
           "from": ".*environments/environment.*",
-          "filePattern": "^.*/app/((?!(module|core/store/core/configuration/configuration\\.reducer|core/utils/state-transfer/state-properties\\.service|injection-keys)\\.ts).)*$",
+          "filePattern": "^.*/app/((?!(app(.server)?.module|core/store/core/configuration/configuration\\.reducer|core/utils/state-transfer/state-properties\\.service|injection-keys)\\.ts).)*$",
           "message": "Importing environment is not allowed. Inject needed properties instead."
         },
         {
@@ -452,10 +452,9 @@
           "message": "Imports from @ngx-meta are only allowed in SEO extension."
         },
         {
-          "import": ".*ExportsModule",
-          "from": ".*.*",
-          "filePattern": ".*/shared/shared.module.ts$",
-          "message": "Importing and exporting extension modules should be done in ShellModule."
+          "import": "User",
+          "from": "@sentry/browser",
+          "message": "You probably meant to import the ISH PWA user model."
         },
         {
           "import": "^createProductView$",
@@ -588,6 +587,9 @@
           "^.*/src/app/shared/[a-z][a-z0-9-]+/components/([a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
           "^.*/projects/[a-z][a-z0-9-]+/src/app/components/([a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
           "^.*/src/app/shared/address-forms/components/([a-z][a-z0-9-]+)/\\1\\.factory\\.ts$",
+          // formly
+          "^.*/src/app/shared/formly/(components|wrappers|types|extensions|utils|dev)/.*$",
+          "^.*/src/app/pages/([a-z][a-z0-9-]+)/formly/.*$",
           // identity providers
           "^.*/src/app/core/identity-provider/.*$",
           // aggregation modules
@@ -595,7 +597,7 @@
           "^.*/src/app/extensions/([a-z][a-z0-9-]+)/\\1\\.module\\.ts$",
           "^.*/projects/([a-z][a-z0-9-]+)/src/app/\\1\\.module\\.ts$",
           // extension/projects exports
-          "^.*(/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/exports/(lazy-[a-z][a-z0-9-]+)/\\2\\.component\\.ts$",
+          "^.*(src/app/extensions/[a-z][a-z0-9-]+/exports|projects/[a-z][a-z0-9-]+/src/app/exports|src/app/shell/shared)/(lazy-[a-z][a-z0-9-]+)/\\2\\.component\\.ts$",
           "^.*/src/app/extensions/([a-z][a-z0-9-]+)/exports/\\1-exports\\.module\\.ts$",
           "^.*/projects/([a-z][a-z0-9-]+)/src/app/exports/\\1-exports\\.module\\.ts$"
         ],
@@ -777,6 +779,7 @@
           ".*.spec.ts$",
           "tslint-rules/",
           "scripts/",
+          "templates/",
           "utils/dev/",
           "core/utils/",
           ".*.actions.ts$",

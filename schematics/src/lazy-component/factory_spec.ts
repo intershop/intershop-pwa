@@ -21,7 +21,7 @@ describe('Lazy Component Schematic', () => {
   beforeEach(async () => {
     appTree = await createApplication(schematicRunner)
       .pipe(
-        createModule(schematicRunner, { name: 'shell' }),
+        createModule(schematicRunner, { name: 'shared' }),
         createAppLastRoutingModule(schematicRunner),
         switchMap(tree => schematicRunner.runSchematicAsync('extension', { ...defaultOptions, name: 'ext' }, tree)),
         switchMap(tree =>
@@ -106,15 +106,11 @@ describe('Lazy Component Schematic', () => {
 
     it('should load component via module', async () => {
       // tslint:disable-next-line: no-invalid-template-strings
-      expect(componentContent).toContain('import(`../../${extension}.module`)');
+      expect(componentContent).toContain('import(`../../ext.module`)');
     });
 
     it('should load component using ivy', async () => {
       expect(componentContent).toContain('.resolveComponentFactory(DummyComponent)');
-    });
-
-    it('should have extension in variable to fool cyclic dependency detection', async () => {
-      expect(componentContent).toContain("const extension = 'ext';");
     });
 
     it('should check if extension is enabled', async () => {

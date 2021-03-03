@@ -22,8 +22,18 @@ export class ProductContextDirective implements OnInit, OnChanges {
   }
 
   @Input()
+  set log(log: boolean) {
+    this.context.log(log);
+  }
+
+  @Input()
   set sku(sku: string) {
     this.context.set('sku', () => sku);
+  }
+
+  @Input()
+  set categoryId(categoryId: string) {
+    this.context.set('categoryId', () => categoryId);
   }
 
   @Input()
@@ -39,6 +49,10 @@ export class ProductContextDirective implements OnInit, OnChanges {
   @Input()
   set parts(parts: SkuQuantityType[]) {
     this.context.set('parts', () => parts);
+    this.context.set('displayProperties', () => ({
+      readOnly: true,
+      addToBasket: true,
+    }));
   }
 
   @Input()

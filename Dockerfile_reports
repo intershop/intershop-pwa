@@ -1,12 +1,9 @@
 FROM node:14 as reporting
-COPY package.json package-lock.json tsconfig.base.json /workspace/
-COPY tslint-rules /workspace/tslint-rules/
 WORKDIR /workspace
 ENV CI=true
-RUN npm i --ignore-scripts
 COPY . /workspace/
+RUN npm i --ignore-scripts
 RUN npm run postinstall
-RUN npm i --no-save tslint-html-report && (node reports/tslint-report || true)
 RUN npm i --no-save jest-html-reporter jest-junit && npx jest -c jest-reports.config.js --ci --testFailureExitCode 0
 RUN npx license-checker --csv --out reports/licenses/licenses.csv --customPath templates/3rd-party-licenses_format.json && npm i --no-save htmlify-csv && node node_modules/htmlify-csv/htmlify-csv convert reports/licenses/licenses.csv --output reports/licenses/index.html
 RUN npm run compodoc

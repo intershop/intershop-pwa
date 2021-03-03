@@ -20,7 +20,7 @@ describe('Extension Schematic', () => {
   let appTree: UnitTestTree;
   beforeEach(async () => {
     appTree = await createApplication(schematicRunner)
-      .pipe(createModule(schematicRunner, { name: 'shell' }), createAppLastRoutingModule(schematicRunner))
+      .pipe(createModule(schematicRunner, { name: 'shared' }), createAppLastRoutingModule(schematicRunner))
       .toPromise();
   });
 
@@ -48,8 +48,8 @@ describe('Extension Schematic', () => {
     const tree = await schematicRunner.runSchematicAsync('extension', options, appTree).toPromise();
     const appModuleContent = tree.readContent('/src/app/app.module.ts');
     expect(appModuleContent).toMatchInlineSnapshot(`
-      "import { BrowserModule } from '@angular/platform-browser';
-      import { NgModule } from '@angular/core';
+      "import { NgModule } from '@angular/core';
+      import { BrowserModule } from '@angular/platform-browser';
 
       import { AppRoutingModule } from './app-routing.module';
       import { AppComponent } from './app.component';
@@ -73,12 +73,12 @@ describe('Extension Schematic', () => {
     `);
   });
 
-  it('should import and export extension exports in shell module', async () => {
+  it('should import and export extension exports in shared module', async () => {
     const options = { ...defaultOptions };
 
     const tree = await schematicRunner.runSchematicAsync('extension', options, appTree).toPromise();
-    const shellModuleContent = tree.readContent('/src/app/shell/shell.module.ts');
-    expect(shellModuleContent).toMatchInlineSnapshot(`
+    const sharedModuleContent = tree.readContent('/src/app/shared/shared.module.ts');
+    expect(sharedModuleContent).toMatchInlineSnapshot(`
       "import { NgModule } from '@angular/core';
       import { FooExportsModule } from '../extensions/foo/exports/foo-exports.module';
 
@@ -87,7 +87,7 @@ describe('Extension Schematic', () => {
         declarations: [],
         exports: [FooExportsModule]
       })
-      export class ShellModule { }
+      export class SharedModule { }
       "
     `);
   });

@@ -1,0 +1,65 @@
+<div role="search" class="search clearfix">
+  <input
+    #searchInput
+    [placeholder]="configuration?.placeholder || ''"
+    autocomplete="off"
+    type="text"
+    class="form-control searchTerm"
+    (input)="searchSuggest($event.target)"
+    [value]="inputSearchTerms$ | async"
+    (blur)="blur()"
+    (keydown)="focus()"
+    (keydown.esc)="blur()"
+    (keydown.arrowleft)="selectSuggestedTerm(-1)"
+    (keydown.arrowright)="selectSuggestedTerm(-1)"
+    (keydown.arrowdown)="selectSuggestedTerm(activeIndex + 1)"
+    (keydown.arrowup)="selectSuggestedTerm(activeIndex - 1)"
+    (keydown.enter)="submitSearch(searchInput.value)"
+  />
+
+  <div class="buttons">
+    <button
+      *ngIf="inputSearchTerms$ | async"
+      class="btn-reset btn btn-primary"
+      type="reset"
+      name="reset"
+      [title]="'search.searchbox.button.reset.title' | translate"
+      style="right: 40px"
+      (click)="searchSuggest(''); searchInput.focus()"
+    >
+      <fa-icon [icon]="['fas', 'times-circle']"></fa-icon>
+    </button>
+
+    <button
+      class="btn-search btn btn-primary"
+      type="submit"
+      name="search"
+      [title]="'search.searchbox.button.title' | translate"
+      (click)="submitSearch(searchInput.value)"
+    >
+      <!-- search button with icon -->
+      <ng-container *ngIf="!configuration?.buttonText; else textBlock">
+        <fa-icon [icon]="['fas', usedIcon]"></fa-icon>
+      </ng-container>
+      <!-- search button with text -->
+      <ng-template #textBlock> {{ configuration?.buttonText }} </ng-template>
+    </button>
+  </div>
+
+  <ng-container *ngIf="searchResults$ | async as results">
+    <ul *ngIf="results.length && inputFocused" class="search-suggest-results">
+      <li
+        *ngFor="let result of results | slice: 0:configuration?.maxAutoSuggests; let liIndex = index"
+        [class.active-suggestion]="activeIndex === liIndex"
+        (mousedown)="submitSearch(result.term)"
+        (mouseenter)="activeIndex = liIndex"
+      >
+        <button
+          type="button"
+          class="search-result"
+          [innerHTML]="result.term | titlecase | ishHighlight: (inputSearchTerms$ | async)"
+        ></button>
+      </li>
+    </ul>
+  </ng-container>
+</div>

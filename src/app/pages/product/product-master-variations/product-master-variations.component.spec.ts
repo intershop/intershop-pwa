@@ -18,6 +18,7 @@ describe('Product Master Variations Component', () => {
 
   beforeEach(async () => {
     const context = mock(ProductContextFacade);
+    when(context.select('variationCount')).thenReturn(of(3));
     when(context.select('product', 'sku')).thenReturn(of('123456789'));
 
     await TestBed.configureTestingModule({

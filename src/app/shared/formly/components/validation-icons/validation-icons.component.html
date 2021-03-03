@@ -1,0 +1,18 @@
+<ng-container>
+  <fa-icon
+    *ngIf="showError; else noError"
+    class="formly-validation-icon"
+    [icon]="['fas', 'times']"
+    data-testing-id="times-icon"
+  ></fa-icon>
+  <ng-template #noError>
+    <fa-icon
+      *ngIf="
+        field?.templateOptions?.showValidation ? field.templateOptions.showValidation(field) : defaultShowValidation()
+      "
+      class="formly-validation-icon"
+      [icon]="['fas', 'check']"
+      data-testing-id="check-icon"
+    ></fa-icon>
+  </ng-template>
+</ng-container>

@@ -11,3 +11,5 @@ templates
 .gitlab-ci.yml
 Dockerfile*
 templates
+!templates/webpack
+!templates/nginx.conf

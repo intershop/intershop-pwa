@@ -59,7 +59,8 @@ export class CheckoutPaymentPage {
           .get(`[data-testing-id=payment-parameter-form-${method}]`)
           .find(`[data-testing-id='${key}']`)
           .parent()
-          .next();
+          .parent()
+          .get('ish-validation-message');
       },
     };
   }

@@ -1,11 +1,10 @@
-import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of, throwError } from 'rxjs';
-import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
 import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
@@ -17,6 +16,7 @@ import { ProductListingEffects } from 'ish-core/store/shopping/product-listing/p
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
+import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 
 import { searchProductsFail, suggestSearch } from './search.actions';
 import { SearchEffects } from './search.effects';
@@ -24,10 +24,11 @@ import { SearchEffects } from './search.effects';
 describe('Search Effects', () => {
   let store$: StoreWithSnapshots;
   let effects: SearchEffects;
-  let location: Location;
   let router: Router;
   let productsServiceMock: ProductsService;
   let suggestServiceMock: SuggestService;
+  let httpStatusCodeService: HttpStatusCodeService;
+
   const suggests = [{ term: 'Goods' }] as SuggestTerm[];
 
   beforeEach(() => {
@@ -73,8 +74,8 @@ describe('Search Effects', () => {
 
     effects = TestBed.inject(SearchEffects);
     store$ = TestBed.inject(StoreWithSnapshots);
-    location = TestBed.inject(Location);
     router = TestBed.inject(Router);
+    httpStatusCodeService = spy(TestBed.inject(HttpStatusCodeService));
 
     store$.dispatch(setProductListingPageSize({ itemsPerPage: TestBed.inject(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
   });
@@ -208,13 +209,16 @@ describe('Search Effects', () => {
 
   describe('redirectIfSearchProductFail$', () => {
     it('should redirect if triggered', fakeAsync(() => {
-      const action = searchProductsFail({ error: makeHttpError({ status: 404 }) });
-
-      store$.dispatch(action);
+      store$.dispatch(searchProductsFail({ error: makeHttpError({ status: 404 }) }));
 
       tick(4000);
 
-      expect(location.path()).toEqual('/error');
+      verify(httpStatusCodeService.setStatus(anything())).once();
+      expect(capture(httpStatusCodeService.setStatus).last()).toMatchInlineSnapshot(`
+        Array [
+          404,
+        ]
+      `);
     }));
   });
 

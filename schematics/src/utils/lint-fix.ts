@@ -28,7 +28,7 @@ export function applyLintFix(): Rule {
       new TslintFixTask({
         ignoreErrors: true,
         silent: true,
-        tsConfigPath: 'tsconfig.base.json',
+        tsConfigPath: 'tsconfig.json',
         files: [...files],
       })
     );

@@ -8,9 +8,9 @@ import { anything, instance, mock, verify } from 'ts-mockito';
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
-import { AddressFormContainerComponent } from 'ish-shared/address-forms/components/address-form-container/address-form-container.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { IdentityProviderLoginComponent } from 'ish-shared/components/login/identity-provider-login/identity-provider-login.component';
+import { FormlyAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-address-form/formly-address-form.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
 import { CheckoutAddressAnonymousComponent } from './checkout-address-anonymous.component';
@@ -28,8 +28,8 @@ describe('Checkout Address Anonymous Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         CheckoutAddressAnonymousComponent,
-        MockComponent(AddressFormContainerComponent),
         MockComponent(ErrorMessageComponent),
+        MockComponent(FormlyAddressFormComponent),
         MockComponent(IdentityProviderLoginComponent),
         MockComponent(InputComponent),
         MockDirective(FeatureToggleDirective),
@@ -59,23 +59,23 @@ describe('Checkout Address Anonymous Component', () => {
 
   it('should initially have shipping and invoice address forms on page', () => {
     fixture.detectChanges();
-    expect(element.querySelectorAll('ish-address-form-container')).toHaveLength(2);
+    expect(element.querySelectorAll('ish-formly-address-form')).toHaveLength(2);
   });
 
   it('should initially not show invoice address form on page', () => {
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id=guest-checkout-button]')).toBeTruthy();
-    expect(element.querySelector('div.collapse.show ish-address-form-container')).toBeFalsy();
+    expect(element.querySelector('div.collapse.show ish-formly-address-form')).toBeFalsy();
   });
 
   it('should show invoice address form if checkout as guest button is clicked', () => {
     component.isAddressFormCollapsed = false;
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id=guest-checkout-button]')).toBeFalsy();
-    expect(element.querySelector('div.collapse.show ish-address-form-container')).toBeTruthy();
+    expect(element.querySelector('div.collapse.show ish-formly-address-form')).toBeTruthy();
     expect(component.form.controls.shipOption.value).toEqual('shipToInvoiceAddress');
     expect(
-      element.querySelector('div.collapse.show[data-testing-id=shipping-address-form] ish-address-form-container')
+      element.querySelector('div.collapse.show[data-testing-id=shipping-address-form] ish-formly-address-form')
     ).toBeFalsy();
   });
 

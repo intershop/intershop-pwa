@@ -1,7 +1,7 @@
 <ng-container *ngIf="product$ | async">
-  <ish-product-tile *ngIf="isTile" [category]="category"></ish-product-tile>
+  <ish-product-tile *ngIf="isTile"></ish-product-tile>
 
-  <ish-product-row *ngIf="isRow" [category]="category"></ish-product-row>
+  <ish-product-row *ngIf="isRow"></ish-product-row>
 </ng-container>
 
 <ish-loading *ngIf="loading$ | async"></ish-loading>

@@ -1,0 +1,28 @@
+<div class="row form-group">
+  <div [class.formly-has-error]="showError" class="offset-md-4 col-md-8">
+    <div class="form-check" [attr.data-testing-id]="'registration_tac-wrapper'">
+      <input
+        type="checkbox"
+        [formControl]="formControl"
+        [formlyAttributes]="field"
+        [attr.data-testing-id]="field.key"
+        class="form-check-input"
+      />
+      <label class="form-check-label" [attr.for]="id"
+        ><span
+          [ishServerHtml]="
+            'registration.tac_privacy_policy.text'
+              | translate
+                : {
+                    '0': 'page://page.termsAndConditions.pagelet2-Page',
+                    '1': 'page://page.privacyPolicy.pagelet2-Page'
+                  }
+          "
+        ></span
+      ></label>
+    </div>
+    <ng-container *ngIf="showError" class="invalid-feedback d-block">
+      <ish-validation-message [field]="field" class="validation-message"></ish-validation-message>
+    </ng-container>
+  </div>
+</div>

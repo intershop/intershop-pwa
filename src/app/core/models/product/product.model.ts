@@ -2,7 +2,6 @@ import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Image } from 'ish-core/models/image/image.model';
 import { Price } from 'ish-core/models/price/price.model';
-import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
 import { SeoAttributes } from 'ish-core/models/seo-attributes/seo-attributes.model';
 
 export interface Product {
@@ -31,7 +30,6 @@ export interface Product {
   promotionIds: string[];
   completenessLevel: number;
   failed: boolean;
-  links?: ProductLinks;
   seoAttributes?: SeoAttributes;
 }
 

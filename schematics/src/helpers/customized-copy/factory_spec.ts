@@ -61,8 +61,8 @@ export class DummyTwoComponent {}
     expect(JSON.parse(appTree.readContent('/angular.json')).projects.bar.prefix).toMatchInlineSnapshot(`"custom"`);
 
     expect(appTree.readContent('/src/app/app.module.ts')).toMatchInlineSnapshot(`
-      "import { BrowserModule } from '@angular/platform-browser';
-      import { NgModule } from '@angular/core';
+      "import { NgModule } from '@angular/core';
+      import { BrowserModule } from '@angular/platform-browser';
 
       import { AppRoutingModule } from './app-routing.module';
       import { AppComponent } from './app.component';
@@ -124,8 +124,8 @@ export class DummyTwoComponent {}
     `);
 
     expect(appTree.readContent('/src/app/app.module.ts')).toMatchInlineSnapshot(`
-      "import { BrowserModule } from '@angular/platform-browser';
-      import { NgModule } from '@angular/core';
+      "import { NgModule } from '@angular/core';
+      import { BrowserModule } from '@angular/platform-browser';
 
       import { AppRoutingModule } from './app-routing.module';
       import { AppComponent } from './app.component';

@@ -1,4 +1,5 @@
 import { ContentConfigurationParameters } from 'ish-core/models/content-configuration-parameter/content-configuration-parameter.mapper';
+import { SeoAttributes } from 'ish-core/models/seo-attributes/seo-attributes.model';
 
 export interface ContentPageletEntryPoint {
   id: string;
@@ -8,4 +9,5 @@ export interface ContentPageletEntryPoint {
   resourceSetId: string;
   pageletIDs?: string[];
   configurationParameters?: ContentConfigurationParameters;
+  seoAttributes?: SeoAttributes;
 }

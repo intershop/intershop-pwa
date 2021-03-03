@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, forkJoin, throwError } from 'rxjs';
-import { concatMap, defaultIfEmpty, map, switchMap } from 'rxjs/operators';
+import { Observable, forkJoin, of, throwError } from 'rxjs';
+import { concatMap, map, switchMap } from 'rxjs/operators';
 
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
@@ -21,9 +21,7 @@ export class OrderTemplateService {
       unpackEnvelope(),
       map(orderTemplateData => orderTemplateData.map(this.orderTemplateMapper.fromDataToIds)),
       map(orderTemplateData => orderTemplateData.map(orderTemplate => this.getOrderTemplate(orderTemplate.id))),
-      // tslint:disable-next-line:no-unnecessary-callback-wrapper
-      switchMap(obsArray => forkJoin(obsArray)),
-      defaultIfEmpty([])
+      switchMap(obsArray => (obsArray.length ? forkJoin(obsArray) : of([])))
     );
   }
 

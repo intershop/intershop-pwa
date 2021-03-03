@@ -1,136 +1,135 @@
 import { Dictionary } from '@ngrx/entity';
-import { createSelector, createSelectorFactory, defaultMemoize } from '@ngrx/store';
-import { isEqual, memoize } from 'lodash-es';
+import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
+import { isEqual } from 'lodash-es';
+import { identity } from 'rxjs';
 
-import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
-import { CategoryView, createCategoryView } from 'ish-core/models/category-view/category-view.model';
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
-import { ProductLinks, ProductLinksView } from 'ish-core/models/product-links/product-links.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import {
   ProductView,
-  VariationProductMasterView,
-  VariationProductView,
   createProductView,
   createVariationProductMasterView,
   createVariationProductView,
 } from 'ish-core/models/product-view/product-view.model';
-import { Product, ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
+import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
+import { VariationProduct } from 'ish-core/models/product/product-variation.model';
+import {
+  AllProductTypes,
+  AnyProductViewType,
+  Product,
+  ProductCompletenessLevel,
+  ProductHelper,
+} from 'ish-core/models/product/product.model';
 import { generateCategoryUrl } from 'ish-core/routing/category/category.route';
 import { selectRouteParam } from 'ish-core/store/core/router';
-import { getCategoryEntities, getCategoryTree, getSelectedCategory } from 'ish-core/store/shopping/categories';
+import { getCategoryEntities, getSelectedCategory } from 'ish-core/store/shopping/categories';
 import { getAvailableFilter } from 'ish-core/store/shopping/filter';
 import { getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
-import { productAdapter } from './products.reducer';
+import { ProductsState, productAdapter } from './products.reducer';
 
 const getProductsState = createSelector(getShoppingState, state => state.products);
 
 export const { selectEntities: getProductEntities } = productAdapter.getSelectors(getProductsState);
 
-const getFailed = createSelector(getProductsState, state => state.failed);
-
-const createView = memoize(
-  (product, entities, tree) => {
-    if (ProductHelper.isMasterProduct(product)) {
-      return createVariationProductMasterView(product, entities, tree);
-    } else if (ProductHelper.isVariationProduct(product)) {
-      return createVariationProductView(product, entities, tree);
-    } else {
-      return createProductView(product, tree);
-    }
-  },
-  // TODO: find a better way to return hash than stringify
-  (product, entities, tree: CategoryTree) => {
-    const defaultCategory = product ? tree.nodes[product.defaultCategoryId] : undefined;
-    // fire when self, master or default category changed
-    if (ProductHelper.isVariationProduct(product)) {
-      return JSON.stringify([product, defaultCategory, entities[product.productMasterSKU]]);
-    }
-    if (ProductHelper.isMasterProduct(product)) {
-      return JSON.stringify([
-        product,
-        defaultCategory,
-        product.variationSKUs && product.variationSKUs.map(sku => entities[sku]),
-      ]);
-    }
-    // fire when self or default category changed
-    return JSON.stringify([product, defaultCategory]);
-  }
-);
-
-function createFailedOrProductView(sku: string, failed, entities, tree) {
-  if (failed.includes(sku)) {
-    // tslint:disable-next-line: ish-no-object-literal-type-assertion
-    return createProductView({ sku, failed: true } as Product, tree);
-  }
-  return createView(entities[sku], entities, tree);
+function productOrFailedStub(state: ProductsState, sku: string) {
+  // tslint:disable-next-line: ish-no-object-literal-type-assertion
+  return state.failed.includes(sku) ? ({ sku, failed: true } as Product) : state.entities[sku];
 }
 
-export const getProduct = createSelector(
-  getCategoryTree,
-  getProductEntities,
-  getFailed,
-  (tree, entities, failed, props: { sku: string }): ProductView | VariationProductView | VariationProductMasterView =>
-    createFailedOrProductView(props.sku, failed, entities, tree)
-);
+const internalRawProduct = (sku: string) =>
+  /* memoization manually by output: products are merged in the state */
+  createSelectorFactory<object, AllProductTypes>(projector => resultMemoize(projector, isEqual))(
+    getProductsState,
+    (state: ProductsState) => productOrFailedStub(state, sku)
+  );
 
-export const getSelectedProduct = createSelector(
-  state => state,
-  selectRouteParam('sku'),
-  (state, sku): ProductView | VariationProductView | VariationProductMasterView => getProduct(state, { sku })
-);
+const internalProductDefaultCategory = (sku: string) =>
+  /* memoization manually by output: category object changes as CategoryTree does deep merges */
+  createSelectorFactory<object, Category>(projector => resultMemoize(projector, isEqual))(
+    getCategoryEntities,
+    internalRawProduct(sku),
+    (categories: Dictionary<Category>, product: AllProductTypes) => categories[product?.defaultCategoryId]
+  );
 
-export const getProductVariationCount = createSelector(
-  getProduct,
-  getAvailableFilter,
-  (product, filters) =>
-    ProductHelper.isMasterProduct(product) && ProductVariationHelper.productVariationCount(product, filters)
-);
+const internalProductDefaultVariationSKU = (sku: string) =>
+  /* memoization automatically by output: string identity */
+  createSelector(getProductsState, state => state.defaultVariation[sku]);
 
-export const getProductBundleParts = createSelector(getProductEntities, (entities, props: { sku: string }): {
-  product: Product;
-  quantity: number;
-}[] =>
-  !ProductHelper.isProductBundle(entities[props.sku]) || !entities[props.sku].bundledProducts
-    ? []
-    : entities[props.sku].bundledProducts
-        .filter(({ sku }) => !!entities[sku])
-        .map(({ sku, quantity }) => ({
-          product: entities[sku],
-          quantity,
-        }))
-);
+export const getProductVariationSKUs = (sku: string) =>
+  /* memoization automatically by output: object identity */
+  createSelector(getProductsState, (state: ProductsState) => {
+    const product = state.entities[sku];
+    if (ProductHelper.isVariationProduct(product)) {
+      return state.variations[product.productMasterSKU];
+    }
+    return state.variations[sku];
+  });
 
-export const getProductLinks = createSelector(
-  getCategoryTree,
-  getProductEntities,
-  (categories, products, props: { sku: string }): ProductLinksView =>
-    !products[props.sku] || !products[props.sku].links
-      ? {}
-      : Object.keys(products[props.sku].links).reduce((acc, val) => {
-          const links: ProductLinks = products[props.sku].links;
-          acc[val] = {
-            products: () =>
-              links[val].products.map(sku => createProductView(products[sku], categories)).filter(x => !!x),
-            productSKUs: links[val].products || [],
-            categories: () =>
-              links[val].categories.map(uniqueId => createCategoryView(categories, uniqueId)).filter(x => !!x),
-            categoryIds: links[val].categories || [],
-          };
-          return acc;
-        }, {})
-);
+const internalProductVariations = (sku: string) =>
+  /* memoization manually by output: variation SKUs don't vary, but reference to state changes often */
+  createSelectorFactory<object, VariationProduct[]>(projector => resultMemoize(projector, isEqual))(
+    getProductsState,
+    getProductVariationSKUs(sku),
+    (state: ProductsState, variations: string[]) =>
+      variations?.map(variationSku => productOrFailedStub(state, variationSku)) || []
+  );
 
-export const getBreadcrumbForProductPage = createSelectorFactory(projector =>
-  defaultMemoize(projector, undefined, isEqual)
-)(
+const internalProductMasterSKU = (sku: string) =>
+  /* memoization automatically by output: string identity */
+  createSelector(
+    internalRawProduct(sku),
+    product => ProductHelper.isVariationProduct(product) && product.productMasterSKU
+  );
+
+const internalProductMaster = (sku: string) =>
+  /* memoization manually by output: master SKU doesn't vary, but reference to state changes often */
+  createSelectorFactory<object, VariationProductMaster>(projector => resultMemoize(projector, isEqual))(
+    getProductsState,
+    internalProductMasterSKU(sku),
+    productOrFailedStub
+  );
+
+export const getProduct = (sku: string) =>
+  /* memoization automatically by inputs: as long as all dependant selectors are properly memoized */
+  createSelector(
+    internalRawProduct(sku),
+    internalProductDefaultCategory(sku),
+    internalProductDefaultVariationSKU(sku),
+    internalProductVariations(sku),
+    internalProductMaster(sku),
+    (product, defaultCategory, defaultVariationSKU, variations, productMaster): AnyProductViewType =>
+      ProductHelper.isMasterProduct(product)
+        ? createVariationProductMasterView(product, defaultVariationSKU, variations, defaultCategory)
+        : ProductHelper.isVariationProduct(product)
+        ? createVariationProductView(product, variations, productMaster, defaultCategory)
+        : createProductView(product, defaultCategory)
+  );
+
+export const getSelectedProduct = createSelectorFactory<object, AnyProductViewType>(projector =>
+  resultMemoize(projector, isEqual)
+)(identity, selectRouteParam('sku'), (state: object, sku: string) => getProduct(sku)(state));
+
+export const getProductVariationCount = (sku: string) =>
+  createSelector(
+    getAvailableFilter,
+    getProduct(sku),
+    (filters, product) =>
+      ProductHelper.isMasterProduct(product) && ProductVariationHelper.productVariationCount(product, filters)
+  );
+
+export const getProductLinks = (sku: string) => createSelector(getProductsState, state => state.links[sku]);
+
+export const getProductParts = (sku: string) => createSelector(getProductsState, state => state.parts[sku]);
+
+export const getBreadcrumbForProductPage = createSelectorFactory(projector => resultMemoize(projector, isEqual))(
   getSelectedProduct,
   getSelectedCategory,
   getCategoryEntities,
   (product: ProductView, category: CategoryView, entities: Dictionary<Category>) =>
     ProductHelper.isSufficientlyLoaded(product, ProductCompletenessLevel.Detail)
-      ? (category?.categoryPath || product.defaultCategory()?.categoryPath || [])
+      ? (category?.categoryPath || product.defaultCategory?.categoryPath || [])
           .map(id => entities[id])
           .filter(x => !!x)
           .map(cat => ({

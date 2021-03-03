@@ -17,7 +17,7 @@ import { Product } from './product.model';
 
 export interface SkuQuantityType {
   sku: string;
-  quantity?: number;
+  quantity: number;
 }
 
 export enum ProductCompletenessLevel {
@@ -29,6 +29,7 @@ export type AllProductTypes = Product | VariationProduct | VariationProductMaste
 
 export type AnyProductViewType = ProductView | VariationProductView | VariationProductMasterView;
 
+// not-dead-code
 export type ProductPrices = Partial<
   Pick<ProductRetailSet, 'minListPrice' | 'minSalePrice' | 'summedUpListPrice' | 'summedUpSalePrice'>
 > &
@@ -64,16 +65,19 @@ export class ProductHelper {
   }
 
   /**
-   * Get all product ImageView ids excluding the primary product image
+   * Get all product ImageView ids matching image type
    * @param product   The Product for which to get the image types
    * @param imageType The wanted ImageType
    * @returns         Array of available ImageView ids
    */
-  static getImageViewIDsExcludePrimary(product: Product, imageType: string): string[] {
+  static getImageViewIDs(product: Product, imageType: string): string[] {
     if (!(product && product.images)) {
       return [];
     }
-    return product.images.filter(image => image.typeID === imageType && !image.primaryImage).map(image => image.viewID);
+    return product.images
+      .filter(image => image.typeID === imageType)
+      .sort((a, b) => (a.primaryImage ? -1 : b.primaryImage ? 1 : 0))
+      .map(image => image.viewID);
   }
 
   /**
@@ -94,28 +98,30 @@ export class ProductHelper {
   /**
    * Check if product is a retail set
    */
-  static isRetailSet(product: Product): product is ProductRetailSet {
+  static isRetailSet(product: Partial<AllProductTypes>): product is ProductRetailSet {
     return product && product.type === 'RetailSet';
   }
 
   /**
    * Check if product is a master product
    */
-  static isMasterProduct(product: Product): product is VariationProductMaster & VariationProductMasterView {
+  static isMasterProduct(
+    product: Partial<AllProductTypes>
+  ): product is VariationProductMaster & VariationProductMasterView {
     return product && product.type === 'VariationProductMaster';
   }
 
   /**
    * Check if product is a variation product
    */
-  static isVariationProduct(product: Partial<Product>): product is VariationProduct & VariationProductView {
+  static isVariationProduct(product: Partial<AllProductTypes>): product is VariationProduct & VariationProductView {
     return product && product.type === 'VariationProduct';
   }
 
   /**
    * Check if product is a product bundle
    */
-  static isProductBundle(product: Product): product is ProductBundle {
+  static isProductBundle(product: Partial<AllProductTypes>): product is ProductBundle {
     return product && product.type === 'Bundle';
   }
 

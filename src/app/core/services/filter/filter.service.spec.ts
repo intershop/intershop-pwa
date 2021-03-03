@@ -99,7 +99,7 @@ describe('Filter Service', () => {
         ]
       `);
       expect(data?.total).toMatchInlineSnapshot(`2`);
-      expect(data?.sortKeys).toMatchInlineSnapshot(`undefined`);
+      expect(data?.sortableAttributes).toMatchInlineSnapshot(`Array []`);
 
       verify(apiService.get(anything(), anything())).once();
       const [resource, params] = capture(apiService.get).last();

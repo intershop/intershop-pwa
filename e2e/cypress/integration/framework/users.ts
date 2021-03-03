@@ -18,7 +18,7 @@ export function createUserViaREST(user: Partial<Registration>) {
       postalCode: user.postalCode,
       city: user.city,
       phoneHome: user.phoneHome,
-      countryCode: user.countryCodeSwitch,
+      countryCode: user.countryCode,
       mainDivision: user.mainDivisionCode,
     },
     credentials: {

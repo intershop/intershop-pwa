@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
-import { anything, instance, mock, when } from 'ts-mockito';
+import { instance, mock, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { Product } from 'ish-core/models/product/product.model';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { PromotionDetailsComponent } from 'ish-shared/components/promotion/promotion-details/promotion-details.component';
 
@@ -15,11 +14,12 @@ describe('Product Promotion Component', () => {
   let component: ProductPromotionComponent;
   let fixture: ComponentFixture<ProductPromotionComponent>;
   let element: HTMLElement;
-  let shoppingFacade: ShoppingFacade;
+  let context: ProductContextFacade;
 
   beforeEach(async () => {
-    shoppingFacade = mock(ShoppingFacade);
-    when(shoppingFacade.promotions$(anything())).thenReturn(EMPTY);
+    context = mock(ProductContextFacade);
+    when(context.select('displayProperties', 'promotions')).thenReturn(of(true));
+    when(context.productPromotions$()).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
       declarations: [
@@ -27,7 +27,7 @@ describe('Product Promotion Component', () => {
         MockDirective(ServerHtmlDirective),
         ProductPromotionComponent,
       ],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });
 
@@ -35,20 +35,16 @@ describe('Product Promotion Component', () => {
     fixture = TestBed.createComponent(ProductPromotionComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.product = {
-      promotionIds: ['PROMO_UUID'],
-    } as Product;
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    expect(() => component.ngOnChanges()).not.toThrow();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
   it('should display the promotion when supplied', () => {
-    when(shoppingFacade.promotions$(anything())).thenReturn(
+    when(context.productPromotions$()).thenReturn(
       of([
         {
           id: 'PROMO_UUID',
@@ -57,7 +53,6 @@ describe('Product Promotion Component', () => {
         } as Promotion,
       ])
     );
-    component.ngOnChanges();
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`

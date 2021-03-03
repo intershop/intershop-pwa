@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { Injector, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import {
@@ -9,20 +9,26 @@ import {
   NgbModalModule,
   NgbPopoverModule,
 } from '@ng-bootstrap/ng-bootstrap';
-import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { DeferLoadModule } from '@trademe/ng-defer-load';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { SwiperModule } from 'ngx-swiper-wrapper';
+import { SwiperModule } from 'swiper/angular';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
+import { DirectivesModule } from 'ish-core/directives.module';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
-import { ShellModule } from 'ish-shell/shell.module';
+import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 
-import { AddressFormsSharedModule } from './address-forms/address-forms.module';
+import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
+import { OrderTemplatesExportsModule } from '../extensions/order-templates/exports/order-templates-exports.module';
+import { PunchoutExportsModule } from '../extensions/punchout/exports/punchout-exports.module';
+import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
+import { TactonExportsModule } from '../extensions/tacton/exports/tacton-exports.module';
+import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
+
 import { CMSModule } from './cms/cms.module';
 import { CMSCarouselComponent } from './cms/components/cms-carousel/cms-carousel.component';
 import { CMSContainerComponent } from './cms/components/cms-container/cms-container.component';
@@ -52,6 +58,7 @@ import { BasketPromotionComponent } from './components/basket/basket-promotion/b
 import { BasketValidationItemsComponent } from './components/basket/basket-validation-items/basket-validation-items.component';
 import { BasketValidationProductsComponent } from './components/basket/basket-validation-products/basket-validation-products.component';
 import { BasketValidationResultsComponent } from './components/basket/basket-validation-results/basket-validation-results.component';
+import { MiniBasketContentComponent } from './components/basket/mini-basket-content/mini-basket-content.component';
 import { BasketInvoiceAddressWidgetComponent } from './components/checkout/basket-invoice-address-widget/basket-invoice-address-widget.component';
 import { BasketShippingAddressWidgetComponent } from './components/checkout/basket-shipping-address-widget/basket-shipping-address-widget.component';
 import { AccordionItemComponent } from './components/common/accordion-item/accordion-item.component';
@@ -87,7 +94,9 @@ import { ProductAddToBasketComponent } from './components/product/product-add-to
 import { ProductAddToCompareComponent } from './components/product/product-add-to-compare/product-add-to-compare.component';
 import { ProductAttributesComponent } from './components/product/product-attributes/product-attributes.component';
 import { ProductBundleDisplayComponent } from './components/product/product-bundle-display/product-bundle-display.component';
+import { ProductChooseVariationComponent } from './components/product/product-choose-variation/product-choose-variation.component';
 import { ProductIdComponent } from './components/product/product-id/product-id.component';
+import { ProductImageComponent } from './components/product/product-image/product-image.component';
 import { ProductInventoryComponent } from './components/product/product-inventory/product-inventory.component';
 import { ProductItemVariationsComponent } from './components/product/product-item-variations/product-item-variations.component';
 import { ProductItemComponent } from './components/product/product-item/product-item.component';
@@ -96,6 +105,7 @@ import { ProductListPagingComponent } from './components/product/product-list-pa
 import { ProductListToolbarComponent } from './components/product/product-list-toolbar/product-list-toolbar.component';
 import { ProductListComponent } from './components/product/product-list/product-list.component';
 import { ProductListingComponent } from './components/product/product-listing/product-listing.component';
+import { ProductNameComponent } from './components/product/product-name/product-name.component';
 import { ProductPriceComponent } from './components/product/product-price/product-price.component';
 import { ProductPromotionComponent } from './components/product/product-promotion/product-promotion.component';
 import { ProductQuantityLabelComponent } from './components/product/product-quantity-label/product-quantity-label.component';
@@ -110,18 +120,21 @@ import { ProductVariationSelectComponent } from './components/product/product-va
 import { PromotionDetailsComponent } from './components/promotion/promotion-details/promotion-details.component';
 import { PromotionRemoveComponent } from './components/promotion/promotion-remove/promotion-remove.component';
 import { RecentlyViewedComponent } from './components/recently/recently-viewed/recently-viewed.component';
-import { FormsDynamicModule } from './forms-dynamic/forms-dynamic.module';
+import { SearchBoxComponent } from './components/search/search-box/search-box.component';
+import { FormlyAddressFormsModule } from './formly-address-forms/formly-address-forms.module';
+import { FormlyModule } from './formly/formly.module';
 import { FormsSharedModule } from './forms/forms.module';
 
 const importExportModules = [
-  AddressFormsSharedModule,
   AuthorizationToggleModule,
   CMSModule,
+  CaptchaExportsModule,
   CommonModule,
   DeferLoadModule,
+  DirectivesModule,
   FeatureToggleModule,
+  FormlyAddressFormsModule,
   FormlyModule,
-  FormsDynamicModule,
   FormsSharedModule,
   IconModule,
   InfiniteScrollModule,
@@ -130,13 +143,17 @@ const importExportModules = [
   NgbDropdownModule,
   NgbModalModule,
   NgbPopoverModule,
+  OrderTemplatesExportsModule,
   PipesModule,
+  PunchoutExportsModule,
+  QuotingExportsModule,
   ReactiveFormsModule,
   RoleToggleModule,
   RouterModule,
-  ShellModule,
   SwiperModule,
+  TactonExportsModule,
   TranslateModule,
+  WishlistsExportsModule,
 ];
 
 const declaredComponents = [
@@ -167,8 +184,8 @@ const declaredComponents = [
   LineItemEditComponent,
   LineItemEditDialogComponent,
   LineItemListElementComponent,
-  LoginFormComponent,
   LoginModalComponent,
+  ProductChooseVariationComponent,
   ProductIdComponent,
   ProductItemVariationsComponent,
   ProductLabelComponent,
@@ -206,6 +223,8 @@ const exportedComponents = [
   InplaceEditComponent,
   LineItemListComponent,
   LoadingComponent,
+  LoginFormComponent,
+  MiniBasketContentComponent,
   ModalDialogComponent,
   ModalDialogLinkComponent,
   OrderListComponent,
@@ -215,10 +234,12 @@ const exportedComponents = [
   ProductAttributesComponent,
   ProductBundleDisplayComponent,
   ProductIdComponent,
+  ProductImageComponent,
   ProductInventoryComponent,
   ProductItemComponent,
   ProductLabelComponent,
   ProductListingComponent,
+  ProductNameComponent,
   ProductPriceComponent,
   ProductPromotionComponent,
   ProductQuantityComponent,
@@ -230,6 +251,7 @@ const exportedComponents = [
   PromotionDetailsComponent,
   PromotionRemoveComponent,
   RecentlyViewedComponent,
+  SearchBoxComponent,
   SuccessMessageComponent,
 ];
 
@@ -238,4 +260,8 @@ const exportedComponents = [
   declarations: [...declaredComponents, ...exportedComponents],
   exports: [...exportedComponents, ...importExportModules],
 })
-export class SharedModule {}
+export class SharedModule {
+  constructor(moduleLoader: ModuleLoaderService, injector: Injector) {
+    moduleLoader.init(injector);
+  }
+}

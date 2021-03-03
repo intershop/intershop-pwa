@@ -111,6 +111,7 @@ describe('Content View Model', () => {
           "p2",
         ],
         "resourceSetId": "resId",
+        "seoAttributes": undefined,
         "stringParam": [Function],
       }
     `);

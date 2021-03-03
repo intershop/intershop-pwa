@@ -1,34 +1,25 @@
 <ish-product-detail-actions></ish-product-detail-actions>
 
-<div *ngIf="product$ | async as product" class="row product-details">
-  <div class="col-12 col-md-6 col-lg-8"><ish-product-images [product]="product"></ish-product-images></div>
+<div class="row product-details">
+  <div class="col-12 col-md-6 col-lg-8"><ish-product-images></ish-product-images></div>
 
   <div class="col-12 col-md-6 col-lg-4">
-    <ish-product-rating *ishFeature="'rating'" [product]="product"></ish-product-rating>
+    <ish-product-rating></ish-product-rating>
     <h1>
-      <span itemprop="name">{{ product.name }}</span>
+      <span itemprop="name"><ish-product-name [link]="false"></ish-product-name></span>
     </h1>
 
     <div class="product-info">
-      <div *ngIf="product.manufacturer" class="product-brand">
-        <a [routerLink]="['/search', product.manufacturer]">
-          <span itemprop="brand">{{ product.manufacturer }}</span>
-        </a>
-      </div>
+      <ish-product-brand></ish-product-brand>
 
-      <ish-product-id [product]="product"></ish-product-id>
+      <ish-product-id></ish-product-id>
 
-      <ish-product-promotion *ngIf="configuration$('promotions') | async" [product]="product"></ish-product-promotion>
+      <ish-product-promotion></ish-product-promotion>
 
       <div class="price-container" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-        <ish-product-price
-          *ngIf="configuration$('price') | async"
-          [product]="product"
-          [showInformationalPrice]="true"
-          [showPriceSavings]="true"
-        ></ish-product-price>
+        <ish-product-price [showInformationalPrice]="true" [showPriceSavings]="true"></ish-product-price>
 
-        <ish-product-inventory *ngIf="configuration$('inventory') | async" [product]="product"></ish-product-inventory>
+        <ish-product-inventory></ish-product-inventory>
       </div>
 
       <ish-product-shipment></ish-product-shipment>
@@ -46,10 +37,7 @@
         </div>
       </div>
 
-      <ish-product-add-to-basket
-        [class]="'btn-lg btn-block'"
-        [translationKey]="isRetailSet(product) ? 'product.add_to_cart.retailset.link' : 'product.add_to_cart.link'"
-      ></ish-product-add-to-basket>
+      <ish-product-add-to-basket [class]="'btn-lg btn-block'"></ish-product-add-to-basket>
 
       <ish-lazy-product-add-to-order-template
         [class]="'btn btn-default btn-block'"
@@ -58,24 +46,6 @@
       <ish-lazy-product-add-to-quote [class]="'btn-block'"></ish-lazy-product-add-to-quote>
     </div>
 
-    <ish-accordion>
-      <ish-accordion-item [heading]="'product.description.heading' | translate">
-        <div [innerHTML]="product.longDescription"></div>
-      </ish-accordion-item>
-      <ish-accordion-item
-        *ngIf="product.attributes && product.attributes.length"
-        [heading]="'product.details.heading' | translate"
-      >
-        <ish-product-attributes [product]="product"></ish-product-attributes>
-      </ish-accordion-item>
-
-      <ish-accordion-item
-        *ngIf="configuration$('shipment') | async"
-        [heading]="'product.shipping.heading' | translate"
-        dataTestingId="section-shipping-tab"
-      >
-        <ish-product-shipment></ish-product-shipment>
-      </ish-accordion-item>
-    </ish-accordion>
+    <ish-product-detail-info-accordion></ish-product-detail-info-accordion>
   </div>
 </div>

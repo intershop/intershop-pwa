@@ -2,7 +2,7 @@ export class MiniCartModule {
   private readonly selector = 'ish-mini-basket[data-testing-id="mini-basket-desktop"]';
 
   private miniBasketLink = () => cy.get(this.selector).find('.quick-cart-link.d-md-block');
-  private viewCartButton = () => this.miniBasketLink().find('.view-cart').should('be.visible');
+  private viewCartButton = () => cy.get('a[href="/basket"]:visible').eq(0);
 
   get total() {
     return this.miniBasketLink()
@@ -17,15 +17,7 @@ export class MiniCartModule {
   }
 
   goToCart() {
-    this.miniBasketLink().then(miniBasket => {
-      if (miniBasket.hasClass('mini-cart-active')) {
-        this.viewCartButton().click();
-      } else {
-        this.miniBasketLink().click();
-        cy.wait(3000);
-        this.viewCartButton().click();
-      }
-    });
+    this.viewCartButton().click();
   }
 
   get text() {

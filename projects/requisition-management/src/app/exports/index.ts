@@ -1,4 +1,4 @@
-export { RequisitionManagementModule } from '../requisition-management.module';
+export { RequisitionManagementRoutingModule } from '../pages/requisition-management-routing.module';
 export { RequisitionManagementExportsModule } from './requisition-management-exports.module';
 
 export { RequisitionManagementBreadcrumbService } from '../services/requisition-management-breadcrumb/requisition-management-breadcrumb.service';

@@ -10,6 +10,7 @@ import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { FilterNavigationData } from 'ish-core/models/filter-navigation/filter-navigation.interface';
 import { FilterNavigationMapper } from 'ish-core/models/filter-navigation/filter-navigation.mapper';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
+import { SortableAttributesType } from 'ish-core/models/product-listing/product-listing.model';
 import { ProductDataStub } from 'ish-core/models/product/product.interface';
 import { ProductMapper } from 'ish-core/models/product/product.mapper';
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
@@ -72,7 +73,7 @@ export class FilterService {
     searchParameter: URLFormParams,
     page: number = 1,
     sortKey?: string
-  ): Observable<{ total: number; products: Partial<Product>[]; sortKeys: string[] }> {
+  ): Observable<{ total: number; products: Partial<Product>[]; sortableAttributes: SortableAttributesType[] }> {
     let params = new HttpParams()
       .set('amount', this.itemsPerPage.toString())
       .set('offset', ((page - 1) * this.itemsPerPage).toString())
@@ -86,16 +87,26 @@ export class FilterService {
 
     const resource = searchParameter.category ? `categories/${searchParameter.category[0]}/products` : 'products';
 
-    return this.apiService.get(resource, { params }).pipe(
-      map((x: { total: number; elements: ProductDataStub[]; sortKeys: string[] }) => ({
-        products: x.elements.map(stub => this.productMapper.fromStubData(stub)),
-        total: x.total,
-        sortKeys: x.sortKeys,
-      })),
-      params.has('MasterSKU')
-        ? identity
-        : map(({ products, sortKeys, total }) => ({ products: this.postProcessMasters(products), sortKeys, total }))
-    );
+    return this.apiService
+      .get<{
+        total: number;
+        elements: ProductDataStub[];
+        sortableAttributes: { [id: string]: SortableAttributesType };
+      }>(resource, { params })
+      .pipe(
+        map(x => ({
+          products: x.elements.map(stub => this.productMapper.fromStubData(stub)),
+          total: x.total,
+          sortableAttributes: Object.values(x.sortableAttributes || {}),
+        })),
+        params.has('MasterSKU')
+          ? identity
+          : map(({ products, sortableAttributes, total }) => ({
+              products: this.postProcessMasters(products),
+              sortableAttributes,
+              total,
+            }))
+      );
   }
 
   /**

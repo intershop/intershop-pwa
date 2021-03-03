@@ -19,6 +19,7 @@ describe('Product Bundle Parts Component', () => {
 
   beforeEach(async () => {
     const context = mock(ProductContextFacade);
+    when(context.select('displayProperties', 'bundleParts')).thenReturn(of(true));
     when(context.select('parts')).thenReturn(
       of([
         { sku: '1', quantity: 3 },

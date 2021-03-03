@@ -13,12 +13,12 @@ import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 
-import { RequisitionBuyerApprovalComponent } from '../../components/requisition-buyer-approval/requisition-buyer-approval.component';
-import { RequisitionRejectDialogComponent } from '../../components/requisition-reject-dialog/requisition-reject-dialog.component';
-import { RequisitionSummaryComponent } from '../../components/requisition-summary/requisition-summary.component';
 import { RequisitionContextFacade } from '../../facades/requisition-context.facade';
 
+import { RequisitionBuyerApprovalComponent } from './requisition-buyer-approval/requisition-buyer-approval.component';
 import { RequisitionDetailPageComponent } from './requisition-detail-page.component';
+import { RequisitionRejectDialogComponent } from './requisition-reject-dialog/requisition-reject-dialog.component';
+import { RequisitionSummaryComponent } from './requisition-summary/requisition-summary.component';
 
 describe('Requisition Detail Page Component', () => {
   let component: RequisitionDetailPageComponent;

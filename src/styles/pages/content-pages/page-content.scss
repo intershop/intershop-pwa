@@ -16,6 +16,7 @@ ol {
 
 // HELPDESK
 
+/* purgecss start ignore */
 .helpdesk-info-box {
   width: 100%;
   padding: $space-default/2;
@@ -32,6 +33,8 @@ ol {
     color: $text-color-inverse;
   }
 }
+
+/* purgecss end ignore */
 
 // SITEMAP
 

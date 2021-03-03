@@ -15,10 +15,12 @@ export class RetailSetPartsComponent implements OnInit {
   @Input() displayType?: DisplayType = 'row';
 
   parts$: Observable<SkuQuantityType[]>;
+  visible$: Observable<boolean>;
 
   constructor(private context: ProductContextFacade) {}
 
   ngOnInit() {
     this.parts$ = this.context.select('parts');
+    this.visible$ = this.context.select('displayProperties', 'retailSetParts');
   }
 }

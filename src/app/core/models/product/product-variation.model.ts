@@ -3,6 +3,7 @@ import { VariationAttribute } from 'ish-core/models/product-variation/variation-
 import { Product } from './product.model';
 
 export interface VariationProduct extends Product {
+  type: 'VariationProduct';
   variableVariationAttributes?: VariationAttribute[];
   productMasterSKU?: string;
 }

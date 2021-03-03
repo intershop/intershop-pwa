@@ -46,13 +46,13 @@ describe('Authorization Toggle Guard', () => {
     router.navigate(['/page1']);
     tick(2000);
 
-    expect(router.url).toEndWith('page1');
+    expect(router.url).toMatchInlineSnapshot(`"/page1"`);
   }));
 
   it('should not navigate if user is not authorized', fakeAsync(() => {
     router.navigate(['/page2']);
     tick(2000);
 
-    expect(router.url).toEndWith('error');
+    expect(router.url).toMatchInlineSnapshot(`"/error?error=missing-permission&value=DO_THAT"`);
   }));
 });

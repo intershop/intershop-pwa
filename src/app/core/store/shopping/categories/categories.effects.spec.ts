@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
@@ -7,7 +6,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, noop, of, throwError } from 'rxjs';
-import { anyNumber, capture, instance, mock, verify, when } from 'ts-mockito';
+import { anyNumber, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
@@ -17,6 +16,7 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
+import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 
 import {
   loadCategory,
@@ -32,8 +32,8 @@ describe('Categories Effects', () => {
   let actions$: Observable<Action>;
   let effects: CategoriesEffects;
   let store$: Store;
-  let location: Location;
   let router: Router;
+  let httpStatusCodeService: HttpStatusCodeService;
 
   let categoriesServiceMock: CategoriesService;
 
@@ -76,8 +76,8 @@ describe('Categories Effects', () => {
 
     effects = TestBed.inject(CategoriesEffects);
     store$ = TestBed.inject(Store);
-    location = TestBed.inject(Location);
     router = TestBed.inject(Router);
+    httpStatusCodeService = spy(TestBed.inject(HttpStatusCodeService));
   });
 
   describe('selectedCategory$', () => {
@@ -242,16 +242,22 @@ describe('Categories Effects', () => {
   });
 
   describe('redirectIfErrorInCategories$', () => {
-    it('should redirect if triggered', fakeAsync(() => {
-      const action = loadCategoryFail({ error: makeHttpError({ status: 404 }) });
+    it('should call error service if triggered', done => {
+      actions$ = of(loadCategoryFail({ error: makeHttpError({ status: 404 }) }));
 
-      actions$ = of(action);
-
-      effects.redirectIfErrorInCategories$.subscribe(noop, fail, noop);
-
-      tick(500);
-
-      expect(location.path()).toEqual('/error');
-    }));
+      effects.redirectIfErrorInCategories$.subscribe(
+        () => {
+          verify(httpStatusCodeService.setStatus(anything())).once();
+          expect(capture(httpStatusCodeService.setStatus).last()).toMatchInlineSnapshot(`
+          Array [
+            404,
+          ]
+        `);
+          done();
+        },
+        fail,
+        noop
+      );
+    });
   });
 });

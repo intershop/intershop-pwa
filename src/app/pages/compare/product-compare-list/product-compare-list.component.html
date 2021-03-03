@@ -12,11 +12,14 @@
         <tbody>
           <tr>
             <th class="legacy-col-6 legacy-col-md-3 no-border">&nbsp;</th>
-            <td *ngFor="let product of visibleProducts" class="legacy-col-6 legacy-col-md-3 no-border">
+            <td
+              *ngFor="let product of visibleProducts"
+              ishProductContext
+              [sku]="product?.sku"
+              class="legacy-col-6 legacy-col-md-3 no-border"
+            >
               <div class="product-image">
-                <a [routerLink]="product | ishProductRoute">
-                  <ish-product-image [product]="product" imageType="M"></ish-product-image>
-                </a>
+                <ish-product-image imageType="M" [link]="true"></ish-product-image>
                 <a
                   class="btn-tool"
                   [title]="'product.compare.remove.link' | translate"
@@ -27,14 +30,14 @@
               </div>
 
               <div>
-                <a class="product-title" [routerLink]="product | ishProductRoute"> {{ product.name }} </a>
+                <ish-product-name></ish-product-name>
               </div>
             </td>
           </tr>
           <tr>
             <th class="legacy-col-6 legacy-col-md-3 no-border">&nbsp;</th>
             <td *ngFor="let product of visibleProducts" class="legacy-col-6 legacy-col-md-3 no-border">
-              <ish-product-id [product]="product"></ish-product-id>
+              <ish-product-id ishProductContext [sku]="product?.sku"></ish-product-id>
             </td>
           </tr>
           <tr>
@@ -47,21 +50,25 @@
           <tr>
             <th>{{ 'product.compare.price.label' | translate }}</th>
             <td *ngFor="let product of visibleProducts">
-              <ish-product-price [product]="product" [showInformationalPrice]="true"></ish-product-price>
+              <ish-product-price
+                ishProductContext
+                [sku]="product?.sku"
+                [showInformationalPrice]="true"
+              ></ish-product-price>
             </td>
           </tr>
 
           <tr>
             <th></th>
             <td *ngFor="let product of visibleProducts">
-              <ish-product-inventory [product]="product"></ish-product-inventory>
+              <ish-product-inventory ishProductContext [sku]="product?.sku"></ish-product-inventory>
             </td>
           </tr>
 
           <tr *ishFeature="'rating'">
             <th>{{ 'product.compare.ratings.label' | translate }}</th>
             <td *ngFor="let product of visibleProducts">
-              <ish-product-rating [product]="product"></ish-product-rating>
+              <ish-product-rating ishProductContext [sku]="product?.sku"></ish-product-rating>
             </td>
           </tr>
 

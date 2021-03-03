@@ -1,4 +1,4 @@
-import { at } from '../../framework';
+import { at, waitLoadingEnd } from '../../framework';
 import { HomePage } from '../../pages/home.page';
 import { QuickorderPage } from '../../pages/quickorder/quickorder.page';
 
@@ -25,6 +25,7 @@ describe('Quick Order', () => {
   it('should add all products to cart', () => {
     at(QuickorderPage, page => {
       page.addToCart();
+      waitLoadingEnd(1000);
       // number of items + one free gift
       page.header.miniCart.text.should('contain', '40 items');
     });

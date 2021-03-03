@@ -163,8 +163,10 @@ export class PaymentMethodMapper {
     return parametersData.map(p => {
       const param: FormlyFieldConfig = {
         key: p.name,
-        type: p.options ? 'select' : 'input',
+        type: p.options ? 'ish-select-field' : 'ish-text-input-field',
         templateOptions: {
+          labelClass: 'col-md-4',
+          fieldClass: 'col-sm-6',
           type: p.type === 'string' ? 'text' : (p.type as string).toLowerCase(),
           label: p.displayName,
           placeholder: p.description,
@@ -175,23 +177,32 @@ export class PaymentMethodMapper {
               : undefined,
           attributes: {},
         },
+        validation: {
+          messages: {},
+        },
         hide: p.hidden,
       };
 
       if (p.constraints) {
         if (p.constraints.required) {
           param.templateOptions.required = true;
-          param.templateOptions.attributes.required = p.constraints.required.message;
+          param.validation.messages = { ...param.validation.messages, required: p.constraints.required.message };
         }
         if (p.constraints.size) {
           param.templateOptions.minLength = p.constraints.size.min;
           param.templateOptions.maxLength = p.constraints.size.max;
-          param.templateOptions.attributes.minLength = p.constraints.size.message;
-          param.templateOptions.attributes.maxLength = p.constraints.size.message;
+          param.validation.messages = {
+            ...param.validation.messages,
+            minLength: p.constraints.size.message,
+            maxLength: p.constraints.size.message,
+          };
         }
         if (p.constraints.pattern) {
           param.templateOptions.pattern = p.constraints.pattern.regexp;
-          param.templateOptions.attributes.pattern = p.constraints.pattern.message;
+          param.validation.messages = {
+            ...param.validation.messages,
+            pattern: p.constraints.pattern.message,
+          };
         }
       }
       return param;

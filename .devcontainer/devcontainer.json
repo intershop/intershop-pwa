@@ -1,0 +1,43 @@
+// For format details, see https://aka.ms/vscode-remote/devcontainer.json or this file's README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.134.0/containers/javascript-node
+{
+  "name": "Intershop PWA",
+  "build": {
+    "dockerfile": "Dockerfile",
+    // Update 'VARIANT' to pick a Node version: 10, 12, 14
+    "args": {
+      "VARIANT": "14"
+    }
+  },
+  // https://paulhammond.org/2020/vscode-ramdisks
+  "runArgs": ["--tmpfs", "${containerWorkspaceFolder}/node_modules:exec"],
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash"
+  },
+  "extensions": [
+    // general
+    "eamodio.gitlens",
+    "coenraads.bracket-pair-colorizer",
+    "vincaslt.highlight-matching-tag",
+    // code assist
+    "visualstudioexptteam.vscodeintellicode",
+    "cyrilletuzi.angular-schematics",
+    "angular.ng-template",
+    "mikael.angular-beastcode",
+    "formulahendry.auto-rename-tag",
+    // code style + formatting
+    "esbenp.prettier-vscode",
+    "stylelint.vscode-stylelint",
+    "csstools.postcss",
+    "ms-vscode.vscode-typescript-tslint-plugin",
+    // testing
+    "andys8.jest-snippets",
+    // documentation
+    "streetsidesoftware.code-spell-checker",
+    "yzhang.markdown-all-in-one"
+  ],
+  "forwardPorts": [4200],
+  "postStartCommand": "sudo chown node node_modules && npm install",
+  // Comment out the next line to run as root instead.
+  "remoteUser": "node"
+}

@@ -1,4 +1,4 @@
-import { waitLoadingEnd } from '../../framework';
+import { performAddToCart, waitLoadingEnd } from '../../framework';
 import { AddToOrderTemplateModule } from '../account/add-to-order-template.module';
 import { AddToWishlistModule } from '../account/add-to-wishlist.module';
 import { BreadcrumbModule } from '../breadcrumb.module';
@@ -66,17 +66,7 @@ export class ProductDetailPage {
   }
 
   addProductToCart(): Cypress.Chainable<Cypress.WaitXHR> {
-    waitLoadingEnd(1000);
-    cy.intercept('POST', '**/baskets/*/items').as('basket');
-    cy.intercept('GET', '**/baskets/current*').as('basketCurrent');
-    waitLoadingEnd(1000);
-    this.addToCartButton().click();
-
-    return cy
-      .wait('@basket')
-      .then(result =>
-        result.response.statusCode >= 400 ? result : cy.wait('@basketCurrent').then(() => result)
-      ) as any;
+    return performAddToCart(this.addToCartButton);
   }
 
   addProductToQuoteRequest() {

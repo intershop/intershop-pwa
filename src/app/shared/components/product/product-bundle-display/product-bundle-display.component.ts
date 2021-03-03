@@ -1,33 +1,22 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { Product } from 'ish-core/models/product/product.model';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { SkuQuantityType } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-bundle-display',
   templateUrl: './product-bundle-display.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductBundleDisplayComponent implements OnChanges, OnDestroy {
-  @Input() productBundleSKU: string;
+export class ProductBundleDisplayComponent implements OnInit {
+  parts$: Observable<SkuQuantityType[]>;
+  visible$: Observable<boolean>;
 
-  productBundleParts$: Observable<{ product: Product; quantity: number }[]>;
+  constructor(private context: ProductContextFacade) {}
 
-  private destroy$ = new Subject();
-
-  constructor(private shoppingFacade: ShoppingFacade) {}
-
-  ngOnDestroy() {
-    this.destroy$.next();
-  }
-
-  ngOnChanges() {
-    if (this.productBundleSKU) {
-      this.productBundleParts$ = this.shoppingFacade
-        .productBundleParts$(this.productBundleSKU)
-        .pipe(takeUntil(this.destroy$));
-    }
+  ngOnInit() {
+    this.parts$ = this.context.select('parts');
+    this.visible$ = this.context.select('displayProperties', 'bundleParts');
   }
 }

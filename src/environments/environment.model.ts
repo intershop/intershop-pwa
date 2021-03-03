@@ -6,8 +6,6 @@ import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { TactonConfig } from '../app/extensions/tacton/models/tacton-config/tacton-config.model';
 
 export interface Environment {
-  production: boolean;
-
   /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
 
   icmBaseURL: string;
@@ -75,9 +73,6 @@ export interface Environment {
   // default device type used for initial page responses
   defaultDeviceType: DeviceType;
 
-  // enable or disable service worker
-  serviceWorker: boolean;
-
   // configuration of the available locales - hard coded for now
   locales: Locale[];
 
@@ -109,13 +104,10 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
   icmApplication: 'rest',
   identityProvider: 'ICM',
 
-  production: false,
-
   /* FEATURE TOOGLES */
   features: ['compare', 'recently', 'rating', 'wishlists'],
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
-  serviceWorker: false,
   smallBreakpointWidth: 576,
   mediumBreakpointWidth: 768,
   largeBreakpointWidth: 992,

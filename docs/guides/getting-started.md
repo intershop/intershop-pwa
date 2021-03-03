@@ -7,14 +7,10 @@ kb_sync_latest_only
 
 # Getting Started
 
+## Quick Start
+
 Before working with this project, download and install [Node.js](https://nodejs.org) with the included npm package manager.
 Currently Node.js 14.x LTS with the corresponding npm is required.
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) and follows the Angular CLI style guide and naming conventions.
-
----
-
-## Quick Start
 
 After having cloned the project from the Git repository, open a command line in the project folder and run `npm install`.
 
@@ -24,6 +20,19 @@ Use `ng serve --open` to start up the development server and open the Progressiv
 
 The project can alternatively be run in production mode with `npm start`.
 
+## Visual Studio Code Remote Development
+
+An alternative development setup for the PWA is provided when using Visual Studio Code Remote - Containers to work in an isolated pre-configured project development environment.
+
+As prerequisite [Docker](https://docs.docker.com/get-docker) has to be installed on your development machine.
+Furthermore, [Visual Studio Code](https://code.visualstudio.com) with the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension has to be used as IDE.
+
+After cloning your local working copy (e.g. with VS Code), VSCode will ask you if you want to reopen the folder in a container.
+By doing this, VS Code will prepare the environment for you inside the container.
+It installs Node.js LTS, Angular CLI and also performs all required setup steps to get you started in an isolated environment.
+
+Open a console in VS Code and run `ng serve` to start developing.
+
 ## Customization
 
 Before customizing the PWA for your specific needs, have a look at our [Customization Guide](./customizations.md) and also have a look at the current [PWA Guide](https://support.intershop.de/kb/index.php?c=Search&qoff=0&qtext=guide+progressive+web+app) first.
@@ -32,11 +41,13 @@ Before customizing the PWA for your specific needs, have a look at our [Customiz
 
 Run `ng serve` or `ng s` for a development server that is configured by default via _environment.ts_ to use mocked responses instead of actual REST calls.
 
-Running `ng serve --configuration production` or `ng s -c production` starts a server that will communicate by default with the Intershop Commerce Management of our public demo via REST API (see the used _environment.prod.ts_ for the configuration).
+Running `ng serve --configuration=production` or `ng s -c production` starts a server that will communicate by default with the Intershop Commerce Management of our public demo via REST API.
 
 The project is also configured to support the usage of an own local environment file _environment.local.ts_ that can be configured according to the development environment, e.g. with a different icmBaseURL or different configuration options (see the _environment.model.ts_).
 This file will be ignored by Git so the developer-specific setting will not be committed.
 To use this local environment configuration, the server should be started with `ng s -c local`.
+
+Multiple configurations can also be combined, where `production` should be the last in the list: `ng serve -c local,production`.
 
 Once the server is running, navigate to _http://localhost:4200/_ in your browser to see the application.
 The application will automatically reload if you change any of the source files.
@@ -54,7 +65,7 @@ Also have a look at further information in the [Development Guide](./development
 
 Deployments are generated to the _dist_ folder of the project.
 
-Use `npm run build` to generate the preferred Angular Universal enabled version.
+Use `npm run build` to generate an Angular Universal enabled version.
 On the server the _dist/server.js_ script has to be executed with `node`.
 
 Alternatively, you can use `ng build --prod` to get an application using browser rendering.

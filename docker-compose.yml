@@ -1,0 +1,60 @@
+# export appropriate ICM_BASE_URL and use with
+# docker-compose up --build
+
+version: '3'
+services:
+  pwa:
+    build:
+      context: .
+      # dockerfile: Dockerfile_noSSR
+      args:
+        # configuration: local
+        configuration: production
+        # configuration: local,production
+        serviceWorker: 'false'
+    environment:
+      - LOGGING=on
+      - ICM_BASE_URL
+      # - PROXY_ICM=true
+      - TRUST_ICM=true
+      # - PROMETHEUS=on
+  nginx:
+    build: nginx
+    depends_on:
+      - pwa
+    environment:
+      UPSTREAM_PWA: 'http://pwa:4200'
+      # DEBUG: 1
+      CACHE: 0
+      PAGESPEED: 0
+      # PROMETHEUS: 1
+      # COMPRESSION: 0
+      # DEVICE_DETECTION: 0
+      # MULTI_CHANNEL_SOURCE: env:///ASDF?type=application/yaml
+      MULTI_CHANNEL: |
+        .+\.net:
+            - baseHref: /de
+              lang: de_DE
+              channel: inSPIRED-inTRONICS-Site
+            - baseHref: /us
+              lang: en_US
+              channel: inSPIRED-inTRONICS_Business-Site
+              features: quoting,businessCustomerRegistration,advancedVariationHandling
+              theme: "blue|688dc3"
+        .+\.de:
+            channel: inSPIRED-inTRONICS-Site
+            lang: de_DE
+        .+\.com:
+            channel: inSPIRED-inTRONICS_Business-Site
+            features: quoting,businessCustomerRegistration,advancedVariationHandling
+            theme: "blue|688dc3"
+        .+\.fr:
+            channel: inSPIRED-inTRONICS-Site
+            lang: fr_FR
+            application: smb-responsive
+            features: quoting
+            theme: "blue|688dc3"
+
+    ports:
+      - '4200:80'
+      # - '9113:9113'

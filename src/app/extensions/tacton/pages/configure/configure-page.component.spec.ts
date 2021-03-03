@@ -8,7 +8,7 @@ import { instance, mock, when } from 'ts-mockito';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
-import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
+import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
 
 import { TactonFacade } from '../../facades/tacton.facade';
 

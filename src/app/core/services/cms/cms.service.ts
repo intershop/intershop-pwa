@@ -8,6 +8,7 @@ import { ContentPageletEntryPointData } from 'ish-core/models/content-pagelet-en
 import { ContentPageletEntryPointMapper } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.mapper';
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
+import { SeoAttributesMapper } from 'ish-core/models/seo-attributes/seo-attributes.mapper';
 import { ApiService } from 'ish-core/services/api/api.service';
 
 /**
@@ -31,7 +32,7 @@ export class CMSService {
       .get<ContentPageletEntryPointData>(`cms/includes/${includeId}`, { sendPGID: true })
       .pipe(
         map(x => this.contentPageletEntryPointMapper.fromData(x)),
-        map(({ pageletEntryPoint, pagelets }) => ({ include: pageletEntryPoint, pagelets }))
+        map(([include, pagelets]) => ({ include, pagelets }))
       );
   }
 
@@ -49,8 +50,16 @@ export class CMSService {
       .get<ContentPageletEntryPointData>(`cms/pages/${pageId}`, { sendPGID: true })
       .pipe(
         map(x => this.contentPageletEntryPointMapper.fromData(x)),
-        map(({ pageletEntryPoint, pagelets }) => ({ page: pageletEntryPoint, pagelets }))
+        map(([page, pagelets]) => this.mapSeoAttributes(page, pagelets)),
+        map(([page, pagelets]) => ({ page, pagelets }))
       );
+  }
+
+  private mapSeoAttributes(
+    page: ContentPageletEntryPoint,
+    pagelets: ContentPagelet[]
+  ): [ContentPageletEntryPoint, ContentPagelet[]] {
+    return [{ ...page, seoAttributes: SeoAttributesMapper.fromCMSData(pagelets.length && pagelets[0]) }, pagelets];
   }
 
   /**
@@ -80,7 +89,7 @@ export class CMSService {
       })
       .pipe(
         map(entrypoint => this.contentPageletEntryPointMapper.fromData(entrypoint)),
-        map(({ pageletEntryPoint, pagelets }) => ({ entrypoint: pageletEntryPoint, pagelets }))
+        map(([entrypoint, pagelets]) => ({ entrypoint, pagelets }))
       );
   }
 }

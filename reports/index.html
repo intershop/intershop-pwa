@@ -19,11 +19,6 @@
           var summary = $('div.clearfix', html)[0];
           $('#coverage').append(summary);
         });
-        $.get('tslint/index.html', function (data, status) {
-          var html = $.parseHTML(data);
-          var summary = $('span.badge', html)[0];
-          $('#tslint').append('TSLint: ').append(summary);
-        });
         $.get('jscpd/index.html', function (data, status) {
           var html = $.parseHTML(data);
           var summary = $('h3', html)[0].textContent;
@@ -35,7 +30,12 @@
 
   <body>
     <h1>Intershop Progressive Webapp Reporting</h1>
-    <a href="docs/compodoc/index.html"> <h2>Documentation</h2> </a>
+    <a href="https://github.com/intershop/intershop-pwa/blob/develop/docs/README.md">
+      <h2>Documentation</h2>
+    </a>
+    <a href="docs/compodoc/index.html">
+      <h2>Compodoc</h2>
+    </a>
     <hr />
     <a href="unit-tests.html">
       <h2>Unit Test Report</h2>
@@ -45,25 +45,23 @@
       <h2>Coverage Report</h2>
       <div id="coverage"></div>
     </a>
-    <a href="tslint/index.html">
-      <h2>TSLint Report</h2>
-      <div id="tslint"></div>
-    </a>
     <a href="jscpd/index.html">
       <h2>jscpd - Duplicate Code Report</h2>
       <div id="jscpd"></div>
     </a>
     <a href="bundle_prod/index.html">
       <h2>Bundle Analyzer Report - Production</h2>
-      <div id="bundle_prod"></div>
     </a>
     <a href="bundle_aot/index.html">
       <h2>Bundle Analyzer Report - Development</h2>
-      <div id="bundle_aot"></div>
     </a>
     <hr />
-    <a href="junit.xml"> <h2>JUnit XML</h2> </a>
+    <a href="junit.xml">
+      <h2>JUnit XML</h2>
+    </a>
     <hr />
-    <a href="licenses/index.html"> <h2>3rd Party Licenses</h2> </a>
+    <a href="licenses/index.html">
+      <h2>3rd Party Licenses</h2>
+    </a>
   </body>
 </html>

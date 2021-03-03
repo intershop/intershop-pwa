@@ -13,7 +13,7 @@ import { LazyPunchoutTransferBasketComponent } from './lazy-punchout-transfer-ba
   providers: [
     {
       provide: LAZY_FEATURE_MODULE,
-      useValue: { feature: 'punchout', location: import('../store/punchout-store.module') },
+      useValue: { feature: 'punchout', location: () => import('../store/punchout-store.module') },
       multi: true,
     },
     {

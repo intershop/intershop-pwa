@@ -1,0 +1,9 @@
+<div *ngIf="tooltipInfo">
+  <ng-template #popover>
+    <span [innerHTML]="tooltipInfo.text | translate"></span>
+  </ng-template>
+  <a [ngbPopover]="popover" [popoverTitle]="tooltipInfo.title | translate" placement="top"
+    >{{ tooltipInfo.link | translate }}
+    <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
+  </a>
+</div>
