@@ -13,7 +13,16 @@ We removed the property `production` from Angular CLI `environment.ts` files.
 Production mode can now consistently be set by using Angular CLI configurations.
 This also works when running multiple configurations like `--configuration=brand,production`.
 
-We removed the dependency `ngx-swiper-wrapper` as it will [no longer be supported](https://github.com/zefoy/ngx-swiper-wrapper#eol-notice) and `swiper` now [natively supports](https://swiperjs.com/angular) Angular.
+We removed the property `serviceWorker` from Angular CLI `environment.ts` files.
+The Service Worker can now be set consistently depending on the current configuration in the `angular.json` file.
+
+We removed the dependency to `ngx-swiper-wrapper` as it will [no longer be supported](https://github.com/zefoy/ngx-swiper-wrapper#eol-notice) and `swiper` itself now [natively supports](https://swiperjs.com/angular) Angular (see changes #552).
+
+We introduced [formly](https://formly.dev/) to handle all kinds of forms from now on.
+We removed `src/app/shared/address-forms` in favor of `src/app/shared/formly-address-forms` and `src/app/shared/forms-dynamic` in favor of a generalized formly integration in `src/app/shared/formly`.
+To implement your country-specific address forms in formly, see [Forms](./forms.md#the-address-form-as-an-example-of-a-reusable-form).
+
+We introduced an improved usage of memoized selectors for products selectors, split up state and saved additionally retrieved data in separate places and migrated almost all product related components to use the previously introduced product context facade (see changes #528).
 
 ## 0.26 to 0.27
 
