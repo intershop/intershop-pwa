@@ -9,6 +9,7 @@ export interface Product {
   shortDescription: string;
   longDescription: string;
   available: boolean;
+  availableStock?: number;
   minOrderQuantity: number;
   maxOrderQuantity: number;
   stepOrderQuantity: number;

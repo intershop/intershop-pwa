@@ -210,6 +210,7 @@ export class ProductMapper {
       maxOrderQuantity: data.maxOrderQuantity || 100,
       stepOrderQuantity: data.stepOrderQuantity || 1,
       packingUnit: data.packingUnit,
+      availableStock: data.availableStock,
       attributes:
         (data.attributeGroups &&
           data.attributeGroups.PRODUCT_DETAIL_ATTRIBUTES &&
