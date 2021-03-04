@@ -1,8 +1,8 @@
 import { fillFormField } from '../../framework';
 
 declare interface B2BUserBudgetForm {
-  budget: number;
-  orderSpentLimit: number;
+  budgetValue: number;
+  orderSpentLimitValue: number;
   budgetPeriod: string;
 }
 

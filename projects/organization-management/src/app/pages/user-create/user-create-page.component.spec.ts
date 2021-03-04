@@ -63,32 +63,14 @@ describe('User Create Page Component', () => {
       }),
       roleIDs: ['Buyer'],
       userBudget: fb.group({
-        orderSpentLimit: ['70000'],
-        budget: [10000],
+        orderSpentLimitValue: ['70000'],
+        budgetValue: [10000],
         budgetPeriod: ['monthly'],
         currency: 'USD',
       }),
     });
 
     expect(component.formDisabled).toBeFalse();
-    expect(component.form.value).toMatchInlineSnapshot(`
-      Object {
-        "profile": Object {
-          "active": true,
-          "email": "test@gmail.com",
-          "firstName": "Bernhard",
-          "lastName": "Boldner",
-        },
-        "roleIDs": "Buyer",
-        "userBudget": Object {
-          "budget": 10000,
-          "budgetPeriod": "monthly",
-          "currency": "USD",
-          "orderSpentLimit": "70000",
-        },
-      }
-    `);
-
     component.submitForm();
     expect(component.formDisabled).toBeFalse();
   });

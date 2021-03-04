@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -18,7 +18,6 @@ describe('User Profile Form Component', () => {
   let component: UserProfileFormComponent;
   let fixture: ComponentFixture<UserProfileFormComponent>;
   let element: HTMLElement;
-  let fb: FormBuilder;
   let appFacade: AppFacade;
 
   beforeEach(async () => {
@@ -35,10 +34,9 @@ describe('User Profile Form Component', () => {
     fixture = TestBed.createComponent(UserProfileFormComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    fb = TestBed.inject(FormBuilder);
     when(appFacade.currentLocale$).thenReturn(of({ lang: 'en_US' } as Locale));
 
-    component.form = fb.group({});
+    component.form = new FormGroup({});
   });
 
   it('should be created', () => {

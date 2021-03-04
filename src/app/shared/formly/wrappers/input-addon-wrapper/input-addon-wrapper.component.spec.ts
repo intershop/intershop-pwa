@@ -28,12 +28,6 @@ describe('Input Addon Wrapper Component', () => {
     }).compileComponents();
   });
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [InputAddonWrapperComponent],
-    }).compileComponents();
-  });
-
   beforeEach(() => {
     const testComponentInputs = {
       fields: [

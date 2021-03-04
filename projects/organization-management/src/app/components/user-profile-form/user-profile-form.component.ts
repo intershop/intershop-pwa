@@ -23,7 +23,7 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 export class UserProfileFormComponent implements OnInit {
   @Input() form: FormGroup;
   @Input() error: HttpError;
-  @Input() user: B2bUser;
+  @Input() user?: B2bUser;
 
   fields: FormlyFieldConfig[];
   model: Partial<B2bUser>;

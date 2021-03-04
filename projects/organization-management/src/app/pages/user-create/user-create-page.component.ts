@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
@@ -22,12 +21,7 @@ export class UserCreatePageComponent implements OnInit {
   form: FormGroup = this.fb.group({
     profile: this.fb.group({}),
     roleIDs: this.fb.control([]),
-    userBudget: this.fb.group({
-      orderSpentLimit: ['', SpecialValidators.moneyAmount],
-      budget: ['', SpecialValidators.moneyAmount],
-      budgetPeriod: ['weekly'],
-      currency: [''],
-    }),
+    userBudget: this.fb.group({}),
   });
 
   submitted = false;
@@ -68,13 +62,13 @@ export class UserCreatePageComponent implements OnInit {
       roleIDs: formValue.roleIDs,
       userBudget: formValue.userBudget.currency
         ? {
-            budget: formValue.userBudget.budget
-              ? { value: formValue.userBudget.budget, currency: formValue.userBudget.currency, type: 'Money' }
+            budget: formValue.userBudget.budgetValue
+              ? { value: formValue.userBudget.budgetValue, currency: formValue.userBudget.currency, type: 'Money' }
               : undefined,
             budgetPeriod: formValue.userBudget.budgetPeriod,
-            orderSpentLimit: formValue.userBudget.orderSpentLimit
+            orderSpentLimit: formValue.userBudget.orderSpentLimitValue
               ? {
-                  value: formValue.userBudget.orderSpentLimit,
+                  value: formValue.userBudget.orderSpentLimitValue,
                   currency: formValue.userBudget.currency,
                   type: 'Money',
                 }
