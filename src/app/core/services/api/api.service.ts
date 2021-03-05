@@ -36,6 +36,7 @@ export function unpackEnvelope<T>(key: string = 'elements'): OperatorFunction<an
 export interface AvailableOptions {
   params?: HttpParams;
   headers?: HttpHeaders;
+  responseType?: string;
   skipApiErrorHandling?: boolean;
   runExclusively?: boolean;
   captcha?: Captcha;
@@ -151,8 +152,9 @@ export class ApiService {
       defer(() =>
         this.constructHeaders(options).pipe(
           map(headers => ({
-            params: options?.params,
             headers,
+            params: options?.params,
+            responseType: options?.responseType,
           }))
         )
       ),
