@@ -610,6 +610,20 @@ describe('Api Service', () => {
       const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
       expect(req.request.headers.get(ApiService.AUTHORIZATION_HEADER_KEY)).toBeFalsy();
     });
+
+    it('should have default response type of "json" if no other is provided', () => {
+      apiService.get('dummy').subscribe(fail, fail, fail);
+
+      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
+      expect(req.request.responseType).toEqual('json');
+    });
+
+    it('should append specific response type of "text" if provided', () => {
+      apiService.get('dummy', { responseType: 'text' }).subscribe(fail, fail, fail);
+
+      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
+      expect(req.request.responseType).toEqual('text');
+    });
   });
 
   describe('API Service exclusive runs', () => {
