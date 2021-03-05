@@ -130,10 +130,17 @@ export class UserService {
    * Updates the data of the currently logged in user.
    * @param body  The user data (customer, user ) to update the user.
    */
-  updateUser(body: CustomerUserType): Observable<User> {
+  updateUser(body: CustomerUserType, credentials?: Credentials): Observable<User> {
     if (!body || !body.customer || !body.user) {
       return throwError('updateUser() called without required body data');
     }
+
+    const headers = credentials
+      ? new HttpHeaders().set(
+          ApiService.AUTHORIZATION_HEADER_KEY,
+          'BASIC ' + b64u.toBase64(b64u.encode(`${credentials.login}:${credentials.password}`))
+        )
+      : undefined;
 
     const changedUser: object = {
       type: body.customer.isBusinessCustomer ? 'SMBCustomer' : 'PrivateCustomer',
@@ -152,8 +159,12 @@ export class UserService {
       first(),
       concatMap(restResource =>
         body.customer.isBusinessCustomer
-          ? this.apiService.put<User>('customers/-/users/-', changedUser).pipe(map(UserMapper.fromData))
-          : this.apiService.put<User>(`${restResource}/-`, changedUser).pipe(map(UserMapper.fromData))
+          ? this.apiService
+              .put<User>('customers/-/users/-', changedUser, { headers })
+              .pipe(map(UserMapper.fromData))
+          : this.apiService
+              .put<User>(`${restResource}/-`, changedUser, { headers })
+              .pipe(map(UserMapper.fromData))
       )
     );
   }

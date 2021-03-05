@@ -146,41 +146,39 @@ describe('User Service', () => {
   });
 
   describe('Update a user', () => {
-    it('should return an error when called with undefined', done => {
-      when(apiServiceMock.put(anything(), anything())).thenReturn(of({}));
+    beforeEach(() => {
+      when(apiServiceMock.put(anyString(), anything(), anything())).thenReturn(of({}));
+    });
 
+    it('should return an error when called with undefined', done => {
       userService.updateUser(undefined).subscribe(fail, err => {
         expect(err).toMatchInlineSnapshot(`"updateUser() called without required body data"`);
         done();
       });
 
-      verify(apiServiceMock.put(anything(), anything())).never();
+      verify(apiServiceMock.put(anything(), anything(), anything())).never();
     });
 
     it("should update a individual user when 'updateUser' is called", done => {
-      when(apiServiceMock.put(anyString(), anything())).thenReturn(of({}));
-
       const payload = {
         customer: { customerNo: '4711', isBusinessCustomer: false } as Customer,
         user: {} as User,
       } as CustomerUserType;
 
       userService.updateUser(payload).subscribe(() => {
-        verify(apiServiceMock.put('customers/-', anything())).once();
+        verify(apiServiceMock.put('customers/-', anything(), anything())).once();
         done();
       });
     });
 
     it("should update a business user when 'updateUser' is called", done => {
-      when(apiServiceMock.put(anyString(), anything())).thenReturn(of({}));
-
       const payload = {
         customer: { customerNo: '4711', isBusinessCustomer: true } as Customer,
         user: {} as User,
       } as CustomerUserType;
 
       userService.updateUser(payload).subscribe(() => {
-        verify(apiServiceMock.put('customers/-/users/-', anything())).once();
+        verify(apiServiceMock.put('customers/-/users/-', anything(), anything())).once();
         done();
       });
     });

@@ -25,7 +25,10 @@ export const createUser = createAction('[User] Create User', payload<CustomerReg
 
 export const createUserFail = createAction('[User API] Create User Failed', httpError());
 
-export const updateUser = createAction('[User] Update User', payload<{ user: User; successMessage?: string }>());
+export const updateUser = createAction(
+  '[User] Update User',
+  payload<{ user: User; credentials?: Credentials; successMessage?: string }>()
+);
 
 export const updateUserSuccess = createAction(
   '[User API] Update User Succeeded',

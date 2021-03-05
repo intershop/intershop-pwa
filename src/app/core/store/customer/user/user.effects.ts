@@ -128,8 +128,8 @@ export class UserEffects {
       ofType(updateUser),
       mapToPayload(),
       withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
-      concatMap(([{ user, successMessage }, customer]) =>
-        this.userService.updateUser({ user, customer }).pipe(
+      concatMap(([{ user, credentials, successMessage }, customer]) =>
+        this.userService.updateUser({ user, customer }, credentials).pipe(
           map(changedUser => updateUserSuccess({ user: changedUser, successMessage })),
           mapErrorToAction(updateUserFail)
         )

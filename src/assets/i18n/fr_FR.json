@@ -352,6 +352,7 @@
   "account.update_email.email_confirmation.label": "Répéter le nouveau courriel",
   "account.update_email.heading": "Modifiez les préférences de courriel",
   "account.update_email.newemail.label": "Entrez un nouvel courriel",
+  "account.update_email.password.label": "Vérifiez le mot de passe",
   "account.update_email.question.text": "Que se passe-t-il si je modifie mon adresse courriel ?",
   "account.update_password.answer.text": "Votre nouveau nom d’utilisateur prend effet immédiatement. Utilisez-le la prochaine fois que vous passez une commande ou que vous modifiez les informations de votre compte.",
   "account.update_password.breadcrumb": "Modifier le mot de passe",

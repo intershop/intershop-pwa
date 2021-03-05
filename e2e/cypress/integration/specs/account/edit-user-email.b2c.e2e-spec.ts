@@ -28,7 +28,11 @@ describe('Changing User', () => {
     });
 
     at(ProfileEditEmailPage, page =>
-      page.fillForm({ email: _.newEmail }).submit().its('response.statusCode').should('equal', 200)
+      page
+        .fillForm({ email: _.newEmail, currentPassword: _.user.password })
+        .submit()
+        .its('response.statusCode')
+        .should('equal', 200)
     );
     at(ProfilePage, page => {
       page.email.should('have.text', _.newEmail);

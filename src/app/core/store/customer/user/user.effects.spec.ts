@@ -82,7 +82,7 @@ describe('User Effects', () => {
     paymentServiceMock = mock(PaymentService);
     when(userServiceMock.signinUser(anything())).thenReturn(of(loginResponseData));
     when(userServiceMock.createUser(anything())).thenReturn(of(undefined));
-    when(userServiceMock.updateUser(anything())).thenReturn(of({ firstName: 'Patricia' } as User));
+    when(userServiceMock.updateUser(anything(), anything())).thenReturn(of({ firstName: 'Patricia' } as User));
     when(userServiceMock.updateUserPassword(anything(), anything(), anything(), anyString())).thenReturn(of(undefined));
     when(userServiceMock.updateCustomer(anything())).thenReturn(of(customer));
     when(userServiceMock.getCompanyUserData()).thenReturn(of({ firstName: 'Patricia' } as User));
@@ -291,7 +291,7 @@ describe('User Effects', () => {
       actions$ = of(action);
 
       effects.updateUser$.subscribe(() => {
-        verify(userServiceMock.updateUser(anything())).once();
+        verify(userServiceMock.updateUser(anything(), anything())).once();
         done();
       });
     });
@@ -320,7 +320,7 @@ describe('User Effects', () => {
 
     it('should dispatch an UpdateUserFail action on failed user update', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(userServiceMock.updateUser(anything())).thenReturn(throwError(error));
+      when(userServiceMock.updateUser(anything(), anything())).thenReturn(throwError(error));
 
       const action = updateUser({ user: {} as User });
       const completion = updateUserFail({ error });
