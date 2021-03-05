@@ -9,7 +9,6 @@ on:
 jobs:
   CancelPrevious:
     runs-on: ubuntu-latest
-
     steps:
       - name: Cancel Old Pipeline
         uses: rokroskar/workflow-run-cleanup-action@master
@@ -18,6 +17,7 @@ jobs:
 
   Build:
     needs: CancelPrevious
+    if: ${{ github.event.repository.owner.login == 'intershop' }}
     runs-on: ubuntu-latest
     steps:
       - name: Azure Pipelines Action
