@@ -3,9 +3,10 @@ import { fillFormField } from '../../framework';
 export class ProfileEditEmailPage {
   readonly tag = 'ish-account-profile-email-page';
 
-  fillForm(data: { email: string; emailConfirmation?: string }) {
+  fillForm(data: { email: string; currentPassword: string; emailConfirmation?: string }) {
     fillFormField(this.tag, 'email', data.email);
     fillFormField(this.tag, 'emailConfirmation', data.emailConfirmation || data.email);
+    fillFormField(this.tag, 'currentPassword', data.currentPassword);
     return this;
   }
 

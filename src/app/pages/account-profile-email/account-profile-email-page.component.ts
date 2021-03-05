@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
 
@@ -26,7 +27,7 @@ export class AccountProfileEmailPageComponent implements OnInit {
     this.userLoading$ = this.accountFacade.userLoading$;
   }
 
-  updateUserEmail(user: User) {
-    this.accountFacade.updateUserEmail(user);
+  updateUserEmail(data: { user: User; credentials: Credentials }) {
+    this.accountFacade.updateUserEmail(data.user, data.credentials);
   }
 }

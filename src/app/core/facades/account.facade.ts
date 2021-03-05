@@ -85,8 +85,8 @@ export class AccountFacade {
     this.store.dispatch(updateUser({ user, successMessage }));
   }
 
-  updateUserEmail(user: User) {
-    this.store.dispatch(updateUser({ user, successMessage: 'account.profile.update_email.message' }));
+  updateUserEmail(user: User, credentials: Credentials) {
+    this.store.dispatch(updateUser({ user, credentials, successMessage: 'account.profile.update_email.message' }));
   }
 
   updateUserPassword(data: { password: string; currentPassword: string }) {

@@ -352,6 +352,7 @@
   "account.update_email.email_confirmation.label": "Repeat New E-mail",
   "account.update_email.heading": "Edit E-mail Preferences",
   "account.update_email.newemail.label": "Enter New E-mail",
+  "account.update_email.password.label": "Verify Password",
   "account.update_email.question.text": "What happens if I edit my e-mail address?",
   "account.update_password.answer.text": "Your new password takes effect immediately. Use it the next time you place an order or update your account information.",
   "account.update_password.breadcrumb": "Edit Password",

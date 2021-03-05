@@ -42,6 +42,19 @@
           }"
         ></ish-input>
 
+        <ish-input
+          [form]="form"
+          controlName="currentPassword"
+          type="password"
+          label="account.update_email.password.label"
+          markRequiredLabel="off"
+          [errorMessages]="{
+            required: 'account.update_password.old_password.error.required',
+            incorrect: 'account.update_password.old_password.error.incorrect'
+          }"
+        >
+        </ish-input>
+
         <div class="row">
           <div class="offset-md-4 col-md-8">
             <button type="submit" class="btn btn-primary" [disabled]="buttonDisabled">
