@@ -6,7 +6,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { VariationProductMasterView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { ProductVariationDisplayComponent } from 'ish-shared/components/product/product-variation-display/product-variation-display.component';
 import { ProductVariationSelectComponent } from 'ish-shared/components/product/product-variation-select/product-variation-select.component';
@@ -22,7 +22,7 @@ describe('Product Item Variations Component', () => {
   beforeEach(async () => {
     context = mock(ProductContextFacade);
     when(context.select('displayProperties', 'variations')).thenReturn(of(true));
-    when(context.select('product')).thenReturn(of({ type: 'VariationProduct' } as VariationProductView));
+    when(context.select('product')).thenReturn(of({ type: 'VariationProduct' } as ProductView));
 
     await TestBed.configureTestingModule({
       imports: [FeatureToggleModule.forTesting(), TranslateModule.forRoot()],
@@ -84,7 +84,7 @@ describe('Product Item Variations Component', () => {
 
   it('should render variation count for variation product master for advanced variation handling', () => {
     FeatureToggleModule.switchTestingFeatures('advancedVariationHandling');
-    when(context.select('product')).thenReturn(of({ type: 'VariationProductMaster' } as VariationProductMasterView));
+    when(context.select('product')).thenReturn(of({ type: 'VariationProductMaster' } as ProductView));
     when(context.select('variationCount')).thenReturn(of(1234));
     fixture.detectChanges();
 

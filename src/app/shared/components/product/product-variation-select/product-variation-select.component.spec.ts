@@ -5,7 +5,7 @@ import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
@@ -38,7 +38,7 @@ describe('Product Variation Select Component', () => {
     ...variationProduct,
     variations: [variationProduct],
     productMaster,
-  } as VariationProductView;
+  } as ProductView;
 
   beforeEach(async () => {
     context = mock(ProductContextFacade);

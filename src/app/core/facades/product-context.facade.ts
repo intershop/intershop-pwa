@@ -8,18 +8,14 @@ import { debounceTime, distinctUntilChanged, filter, first, map, skip, startWith
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { Image } from 'ish-core/models/image/image.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
-import {
-  AnyProductViewType,
-  ProductCompletenessLevel,
-  ProductHelper,
-  SkuQuantityType,
-} from 'ish-core/models/product/product.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { ProductCompletenessLevel, ProductHelper, SkuQuantityType } from 'ish-core/models/product/product.model';
 import { generateProductUrl } from 'ish-core/routing/product/product.route';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { ShoppingFacade } from './shopping.facade';
 
-declare type DisplayEval = ((product: AnyProductViewType) => boolean) | boolean;
+declare type DisplayEval = ((product: ProductView) => boolean) | boolean;
 
 export interface ProductContextDisplayProperties<T = boolean> {
   readOnly: T;
@@ -42,10 +38,9 @@ export interface ProductContextDisplayProperties<T = boolean> {
 }
 
 const defaultDisplayProperties: () => ProductContextDisplayProperties<DisplayEval> = () => {
-  const canBeOrdered = (product: AnyProductViewType) => !ProductHelper.isMasterProduct(product) && product.available;
+  const canBeOrdered = (product: ProductView) => !ProductHelper.isMasterProduct(product) && product.available;
 
-  const canBeOrderedNotRetail = (product: AnyProductViewType) =>
-    canBeOrdered(product) && !ProductHelper.isRetailSet(product);
+  const canBeOrderedNotRetail = (product: ProductView) => canBeOrdered(product) && !ProductHelper.isRetailSet(product);
 
   return {
     readOnly: false,
@@ -70,7 +65,7 @@ const defaultDisplayProperties: () => ProductContextDisplayProperties<DisplayEva
 };
 
 export interface ExternalDisplayPropertiesProvider {
-  setup(product$: Observable<AnyProductViewType>): Observable<Partial<ProductContextDisplayProperties<false>>>;
+  setup(product$: Observable<ProductView>): Observable<Partial<ProductContextDisplayProperties<false>>>;
 }
 
 export const EXTERNAL_DISPLAY_PROPERTY_PROVIDER = new InjectionToken<ExternalDisplayPropertiesProvider>(
@@ -80,7 +75,7 @@ export const EXTERNAL_DISPLAY_PROPERTY_PROVIDER = new InjectionToken<ExternalDis
 interface ProductContext {
   sku: string;
   requiredCompletenessLevel: ProductCompletenessLevel | true;
-  product: AnyProductViewType;
+  product: ProductView;
   productURL: string;
   loading: boolean;
   label: string;
@@ -268,7 +263,7 @@ export class ProductContextFacade extends RxState<ProductContext> {
     );
   }
 
-  private postProductFetch(product: AnyProductViewType, displayProperties: Partial<ProductContextDisplayProperties>) {
+  private postProductFetch(product: ProductView, displayProperties: Partial<ProductContextDisplayProperties>) {
     if (
       (ProductHelper.isRetailSet(product) || ProductHelper.isMasterProduct(product)) &&
       displayProperties.price &&

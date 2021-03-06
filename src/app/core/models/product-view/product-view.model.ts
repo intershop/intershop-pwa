@@ -3,26 +3,27 @@ import { VariationProductMaster } from 'ish-core/models/product/product-variatio
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product } from 'ish-core/models/product/product.model';
 
-/**
- * View on a {@link Product} with additional methods for default category
- */
-export interface ProductView extends Product {
+export type ProductView = Partial<SimpleProductView> &
+  Partial<Omit<VariationProductView, 'type'>> &
+  Partial<Omit<VariationProductMasterView, 'type'>>;
+
+interface SimpleProductView extends Product {
   defaultCategory: Category;
 }
 
-export interface VariationProductView extends VariationProduct, ProductView {
+interface VariationProductView extends VariationProduct, SimpleProductView {
   type: 'VariationProduct';
   variations: VariationProduct[];
   productMaster: VariationProductMaster;
 }
 
-export interface VariationProductMasterView extends VariationProductMaster, ProductView {
+interface VariationProductMasterView extends VariationProductMaster, SimpleProductView {
   type: 'VariationProductMaster';
   variations: VariationProduct[];
   defaultVariationSKU: string;
 }
 
-export function createProductView(product: Product, defaultCategory?: Category): ProductView {
+export function createProductView(product: Product, defaultCategory?: Category): SimpleProductView {
   return product && { ...product, defaultCategory };
 }
 

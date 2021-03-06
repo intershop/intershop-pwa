@@ -5,7 +5,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
-import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
@@ -53,7 +53,7 @@ describe('Line Item Edit Dialog Component', () => {
         variableVariationAttributes: [],
         available: true,
         completenessLevel: ProductCompletenessLevel.List,
-      } as VariationProductView)
+      } as ProductView)
     );
 
     when(context.select('loading')).thenReturn(of(false));

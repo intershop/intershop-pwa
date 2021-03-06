@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@a
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { AnyProductViewType } from 'ish-core/models/product/product.helper';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 import { WishlistsFacade } from '../../../facades/wishlists.facade';
 import { Wishlist, WishlistItem } from '../../../models/wishlist/wishlist.model';
@@ -22,7 +22,7 @@ export class AccountWishlistDetailLineItemComponent implements OnChanges, OnInit
   @Input() wishlistItemData: WishlistItem;
   @Input() currentWishlist: Wishlist;
 
-  product$: Observable<AnyProductViewType>;
+  product$: Observable<ProductView>;
 
   ngOnInit() {
     this.product$ = this.context.select('product');

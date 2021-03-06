@@ -4,7 +4,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { SelectedProductContextFacade } from 'ish-core/facades/selected-product-context.facade';
-import { AnyProductViewType } from 'ish-core/models/product/product.helper';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
@@ -29,7 +29,7 @@ export class ConfigurePageComponent implements OnInit, OnDestroy {
   state$: Observable<TactonProductConfiguration>;
   step$: Observable<TactonProductConfigurationGroup>;
   loading$: Observable<boolean>;
-  product$: Observable<AnyProductViewType>;
+  product$: Observable<ProductView>;
   private destroy$ = new Subject();
 
   constructor(private tactonFacade: TactonFacade, private context: ProductContextFacade) {}

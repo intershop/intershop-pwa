@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextDisplayProperties, ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { AnyProductViewType } from 'ish-core/models/product/product.helper';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 @Component({
   selector: 'ish-product-detail-info-accordion',
@@ -10,7 +10,7 @@ import { AnyProductViewType } from 'ish-core/models/product/product.helper';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailInfoAccordionComponent implements OnInit {
-  product$: Observable<AnyProductViewType>;
+  product$: Observable<ProductView>;
 
   constructor(private context: ProductContextFacade) {}
 

@@ -9,12 +9,8 @@ import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
-import {
-  ProductView,
-  VariationProductMasterView,
-  VariationProductView,
-} from 'ish-core/models/product-view/product-view.model';
-import { AnyProductViewType, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 
 import {
   EXTERNAL_DISPLAY_PROPERTY_PROVIDER,
@@ -537,7 +533,7 @@ describe('Product Context Facade', () => {
   });
 
   describe('with a variation product', () => {
-    let product: VariationProductView;
+    let product: ProductView;
 
     beforeEach(() => {
       product = {
@@ -549,7 +545,7 @@ describe('Product Context Facade', () => {
         available: true,
         readyForShipmentMin: 0,
         readyForShipmentMax: 2,
-      } as VariationProductView;
+      } as ProductView;
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
 
       context.set('sku', () => '123');
@@ -581,7 +577,7 @@ describe('Product Context Facade', () => {
   });
 
   describe('with a master product', () => {
-    let product: VariationProductMasterView;
+    let product: ProductView;
 
     beforeEach(() => {
       product = {
@@ -591,7 +587,7 @@ describe('Product Context Facade', () => {
         maxOrderQuantity: 100,
         available: true,
         type: 'VariationProductMaster',
-      } as VariationProductMasterView;
+      } as ProductView;
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
 
       context.set('sku', () => '123');
@@ -632,7 +628,7 @@ describe('Product Context Facade', () => {
     let someOther$: Subject<boolean>;
 
     class ProviderA implements ExternalDisplayPropertiesProvider {
-      setup(product$: Observable<AnyProductViewType>): Observable<Partial<ProductContextDisplayProperties<false>>> {
+      setup(product$: Observable<ProductView>): Observable<Partial<ProductContextDisplayProperties<false>>> {
         return product$.pipe(
           map(p =>
             p?.sku === '456'
@@ -650,7 +646,7 @@ describe('Product Context Facade', () => {
     }
 
     class ProviderB implements ExternalDisplayPropertiesProvider {
-      setup(product$: Observable<AnyProductViewType>): Observable<Partial<ProductContextDisplayProperties<false>>> {
+      setup(product$: Observable<ProductView>): Observable<Partial<ProductContextDisplayProperties<false>>> {
         return product$.pipe(
           mapTo({
             shipment: false,
@@ -661,7 +657,7 @@ describe('Product Context Facade', () => {
     }
 
     class ProviderC implements ExternalDisplayPropertiesProvider {
-      setup(product$: Observable<AnyProductViewType>): Observable<Partial<ProductContextDisplayProperties<false>>> {
+      setup(product$: Observable<ProductView>): Observable<Partial<ProductContextDisplayProperties<false>>> {
         return product$.pipe(
           switchMapTo(someOther$),
           map(prop => (prop ? { price: false } : {}))

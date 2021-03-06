@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { AnyProductViewType } from 'ish-core/models/product/product.helper';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 /**
  * The Line Item Edit Dialog Component displays an edit-dialog of a line items to edit quantity and variation.
@@ -13,7 +13,7 @@ import { AnyProductViewType } from 'ish-core/models/product/product.helper';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LineItemEditDialogComponent implements OnInit {
-  variation$: Observable<AnyProductViewType>;
+  variation$: Observable<ProductView>;
   loading$: Observable<boolean>;
 
   constructor(private context: ProductContextFacade) {}

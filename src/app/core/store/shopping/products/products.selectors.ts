@@ -16,7 +16,6 @@ import { VariationProductMaster } from 'ish-core/models/product/product-variatio
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import {
   AllProductTypes,
-  AnyProductViewType,
   Product,
   ProductCompletenessLevel,
   ProductHelper,
@@ -99,7 +98,7 @@ export const getProduct = (sku: string) =>
     internalProductDefaultVariationSKU(sku),
     internalProductVariations(sku),
     internalProductMaster(sku),
-    (product, defaultCategory, defaultVariationSKU, variations, productMaster): AnyProductViewType =>
+    (product, defaultCategory, defaultVariationSKU, variations, productMaster): ProductView =>
       ProductHelper.isMasterProduct(product)
         ? createVariationProductMasterView(product, defaultVariationSKU, variations, defaultCategory)
         : ProductHelper.isVariationProduct(product)
@@ -107,7 +106,7 @@ export const getProduct = (sku: string) =>
         : createProductView(product, defaultCategory)
   );
 
-export const getSelectedProduct = createSelectorFactory<object, AnyProductViewType>(projector =>
+export const getSelectedProduct = createSelectorFactory<object, ProductView>(projector =>
   resultMemoize(projector, isEqual)
 )(identity, selectRouteParam('sku'), (state: object, sku: string) => getProduct(sku)(state));
 

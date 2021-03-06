@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { AnyProductViewType } from 'ish-core/models/product/product.helper';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 @Component({
   selector: 'ish-product-variation-display',
@@ -10,7 +10,7 @@ import { AnyProductViewType } from 'ish-core/models/product/product.helper';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductVariationDisplayComponent implements OnInit {
-  product$: Observable<AnyProductViewType>;
+  product$: Observable<ProductView>;
   visible$: Observable<boolean>;
 
   constructor(private context: ProductContextFacade) {}
