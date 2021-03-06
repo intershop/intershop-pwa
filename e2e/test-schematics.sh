@@ -139,6 +139,9 @@ npm run clean
 npx lint-staged
 npx tsc --project tsconfig.all.json
 
+npx ng g add-destroy src/app/extensions/awesome/shared/dummy/dummy.component.ts
+grep destroy src/app/extensions/awesome/shared/dummy/dummy.component.ts
+
 npm run build
 
 nohup bash -c "npm run serve &"
