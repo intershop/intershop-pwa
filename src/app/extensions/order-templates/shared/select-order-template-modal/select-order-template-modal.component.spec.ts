@@ -7,7 +7,6 @@ import { of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
@@ -36,10 +35,7 @@ describe('Select Order Template Modal Component', () => {
         SelectOrderTemplateModalComponent,
       ],
       imports: [NgbModalModule, ReactiveFormsModule, TranslateModule.forRoot()],
-      providers: [
-        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacadeMock) },
-        { provide: ProductContextFacade, useFactory: () => instance(mock(ProductContextFacade)) },
-      ],
+      providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacadeMock) }],
     }).compileComponents();
   });
 
