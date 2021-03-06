@@ -2,9 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
@@ -29,6 +30,7 @@ describe('Account Wishlist Detail Page Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(LoadingComponent),
         MockComponent(WishlistPreferencesDialogComponent),
+        MockDirective(ProductContextDirective),
       ],
       providers: [{ provide: WishlistsFacade, useFactory: () => instance(mock(WishlistsFacade)) }],
     }).compileComponents();
