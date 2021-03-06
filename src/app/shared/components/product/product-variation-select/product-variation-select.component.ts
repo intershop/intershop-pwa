@@ -21,7 +21,7 @@ export class ProductVariationSelectComponent implements OnInit {
 
   ngOnInit() {
     this.variationOptions$ = this.context
-      .select('productAsVariationProduct')
+      .select('product')
       .pipe(map(ProductVariationHelper.buildVariationOptionGroups));
     this.visible$ = this.context.select('displayProperties', 'variations');
   }

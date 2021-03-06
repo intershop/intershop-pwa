@@ -102,7 +102,6 @@ describe('Product Context Facade', () => {
           "loading": false,
           "maxQuantity": 100,
           "minQuantity": 10,
-          "productAsVariationProduct": null,
           "productURL": "/sku123",
           "propagateActive": true,
           "quantity": 10,
@@ -112,10 +111,6 @@ describe('Product Context Facade', () => {
           "stepQuantity": 10,
         }
       `);
-    });
-
-    it('should not set stream for variation product', () => {
-      expect(context.get('productAsVariationProduct')).toBeFalsy();
     });
 
     it('should set correct display properties for out-of-stock product', () => {
@@ -175,7 +170,6 @@ describe('Product Context Facade', () => {
           "loading": false,
           "maxQuantity": 100,
           "minQuantity": 10,
-          "productAsVariationProduct": null,
           "productURL": "/sku123",
           "propagateActive": true,
           "quantity": 10,
@@ -185,10 +179,6 @@ describe('Product Context Facade', () => {
           "stepQuantity": 10,
         }
       `);
-    });
-
-    it('should not set stream for variation product', () => {
-      expect(context.get('productAsVariationProduct')).toBeFalsy();
     });
 
     it('should not adapt required completeness level for normal product', () => {
@@ -454,10 +444,6 @@ describe('Product Context Facade', () => {
       `);
     });
 
-    it('should not set stream for variation product', () => {
-      expect(context.get('productAsVariationProduct')).toBeFalsy();
-    });
-
     it('should set correct display properties for retail set', () => {
       expect(context.get('displayProperties')).toMatchInlineSnapshot(`
         Object {
@@ -525,10 +511,6 @@ describe('Product Context Facade', () => {
       `);
     });
 
-    it('should not set stream for variation product', () => {
-      expect(context.get('productAsVariationProduct')).toBeFalsy();
-    });
-
     it('should set correct display properties for bundle', () => {
       expect(context.get('displayProperties')).toMatchInlineSnapshot(`
         Object {
@@ -573,12 +555,6 @@ describe('Product Context Facade', () => {
       context.set('sku', () => '123');
     });
 
-    it('should set stream for variation product', () => {
-      expect(context.get('productAsVariationProduct')).toEqual(product);
-
-      expect(context.get('productAsVariationProduct')).toEqual(context.get('product'));
-    });
-
     it('should set correct display properties for variation product', () => {
       expect(context.get('displayProperties')).toMatchInlineSnapshot(`
         Object {
@@ -619,10 +595,6 @@ describe('Product Context Facade', () => {
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
 
       context.set('sku', () => '123');
-    });
-
-    it('should not set stream for variation product', () => {
-      expect(context.get('productAsVariationProduct')).toBeFalsy();
     });
 
     it('should set correct display properties for master product', () => {

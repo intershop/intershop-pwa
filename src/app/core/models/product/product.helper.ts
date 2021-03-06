@@ -27,7 +27,9 @@ export enum ProductCompletenessLevel {
 
 export type AllProductTypes = Product | VariationProduct | VariationProductMaster | ProductBundle | ProductRetailSet;
 
-export type AnyProductViewType = ProductView | VariationProductView | VariationProductMasterView;
+export type AnyProductViewType = Partial<ProductView> &
+  Partial<Omit<VariationProductView, 'type'>> &
+  Partial<Omit<VariationProductMasterView, 'type'>>;
 
 // not-dead-code
 export type ProductPrices = Partial<
@@ -43,7 +45,7 @@ export class ProductHelper {
    * @param imageType The wanted ImageType
    * @returns         The primary product image of the given ImageType
    */
-  static getPrimaryImage(product: Product, imageType: string): Image {
+  static getPrimaryImage(product: AnyProductViewType, imageType: string): Image {
     if (!(product && product.images)) {
       return;
     }
@@ -57,7 +59,7 @@ export class ProductHelper {
    * @param imageView The wanted ImageView
    * @returns         The matching product image
    */
-  static getImageByImageTypeAndImageView(product: Product, imageType: string, imageView: string): Image {
+  static getImageByImageTypeAndImageView(product: AnyProductViewType, imageType: string, imageView: string): Image {
     if (!(product && product.images)) {
       return;
     }
@@ -70,7 +72,7 @@ export class ProductHelper {
    * @param imageType The wanted ImageType
    * @returns         Array of available ImageView ids
    */
-  static getImageViewIDs(product: Product, imageType: string): string[] {
+  static getImageViewIDs(product: AnyProductViewType, imageType: string): string[] {
     if (!(product && product.images)) {
       return [];
     }
@@ -83,15 +85,18 @@ export class ProductHelper {
   /**
    * check if a given product has a sufficient completeness level
    */
-  static isSufficientlyLoaded(product: Product, completenessLevel: ProductCompletenessLevel): boolean {
+  static isSufficientlyLoaded(
+    product: Product | AnyProductViewType,
+    completenessLevel: ProductCompletenessLevel
+  ): boolean {
     return !!product && product.completenessLevel >= completenessLevel;
   }
 
-  static isFailedLoading(product: Product): boolean {
+  static isFailedLoading(product: Product | AnyProductViewType): boolean {
     return !!product && !!product.failed;
   }
 
-  static isReadyForDisplay(product: Product, completenessLevel: ProductCompletenessLevel) {
+  static isReadyForDisplay(product: Product | AnyProductViewType, completenessLevel: ProductCompletenessLevel) {
     return ProductHelper.isSufficientlyLoaded(product, completenessLevel) || ProductHelper.isFailedLoading(product);
   }
 
@@ -131,7 +136,7 @@ export class ProductHelper {
    * @param attributeGroupId  The attribute group id of the attributes to get
    * @returns                 The product attributes of the attribute group (if any)
    */
-  static getAttributesOfGroup(product: Product, attributeGroupId: string): Attribute[] {
+  static getAttributesOfGroup(product: AnyProductViewType, attributeGroupId: string): Attribute[] {
     if (
       product &&
       product.attributeGroups &&
@@ -165,7 +170,7 @@ export class ProductHelper {
    * @param products List of products to be compared
    * @returns        A set of the common attribute names
    */
-  static getCommonAttributeNames(products: Product[]): string[] {
+  static getCommonAttributeNames(products: AnyProductViewType[]): string[] {
     if (!products || !products.length) {
       return [];
     }
@@ -179,7 +184,10 @@ export class ProductHelper {
    * @param visibleProducts List of products to be compared
    * @returns               A Product with specific attributes only compared to the common attributes
    */
-  static getProductWithoutCommonAttributes(product: Product, visibleProducts: Product[]): Product {
+  static getProductWithoutCommonAttributes(
+    product: AnyProductViewType,
+    visibleProducts: AnyProductViewType[]
+  ): AnyProductViewType {
     if (!product || !product.sku || !visibleProducts || !visibleProducts.length) {
       return;
     }

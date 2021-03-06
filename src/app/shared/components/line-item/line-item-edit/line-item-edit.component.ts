@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
-import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
+import { AnyProductViewType } from 'ish-core/models/product/product.helper';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 /**
@@ -20,12 +20,12 @@ export class LineItemEditComponent implements OnInit {
   @Input() itemId: string;
   @Output() updateItem = new EventEmitter<LineItemUpdate>();
 
-  product$: Observable<VariationProductView>;
+  product$: Observable<AnyProductViewType>;
 
   constructor(private context: ProductContextFacade) {}
 
   ngOnInit() {
-    this.product$ = this.context.select('productAsVariationProduct');
+    this.product$ = this.context.select('product');
   }
 
   show() {

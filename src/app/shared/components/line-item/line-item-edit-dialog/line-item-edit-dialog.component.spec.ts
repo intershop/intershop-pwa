@@ -46,7 +46,7 @@ describe('Line Item Edit Dialog Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    when(context.select('productAsVariationProduct')).thenReturn(
+    when(context.select('product')).thenReturn(
       of({
         type: 'VariationProduct',
         sku: 'SKU',

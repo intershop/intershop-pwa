@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { AnyProductViewType } from 'ish-core/models/product/product.helper';
 
 /**
  * The Product Item Component renders the product either as 'tile' or 'row'.
@@ -16,7 +16,7 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
 export class ProductItemComponent implements OnInit {
   @Input() displayType: 'tile' | 'row' = 'tile';
 
-  product$: Observable<ProductView>;
+  product$: Observable<AnyProductViewType>;
   loading$: Observable<boolean>;
 
   constructor(private context: ProductContextFacade) {}

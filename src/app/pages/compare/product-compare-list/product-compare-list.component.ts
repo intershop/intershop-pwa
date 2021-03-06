@@ -4,8 +4,7 @@ import { map, switchMap, tap } from 'rxjs/operators';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
-import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
+import { AnyProductViewType, ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 
 /**
  * The Product Compare List Component
@@ -49,7 +48,7 @@ export class ProductCompareListComponent implements OnInit {
   @Output() removeProductCompare = new EventEmitter<string>();
 
   private compareProductSKUs$ = new ReplaySubject<string[]>(1);
-  compareProducts$: Observable<ProductView[]>;
+  compareProducts$: Observable<AnyProductViewType[]>;
   commonAttributeNames$: Observable<string[]>;
 
   currentPage = 1;

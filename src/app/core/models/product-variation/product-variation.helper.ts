@@ -2,6 +2,7 @@ import { flatten, groupBy } from 'lodash-es';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { VariationProductMasterView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
+import { AnyProductViewType } from 'ish-core/models/product/product.helper';
 import { omit } from 'ish-core/utils/functions';
 
 import { VariationAttribute } from './variation-attribute.model';
@@ -121,7 +122,7 @@ export class ProductVariationHelper {
     return keys.reduce((sum, key) => (obj1[key] !== obj2[key] ? sum + 1 : sum), 0);
   }
 
-  static findPossibleVariation(name: string, value: string, product: VariationProductView): string {
+  static findPossibleVariation(name: string, value: string, product: AnyProductViewType): string {
     const target = omit(
       ProductVariationHelper.simplifyVariableVariationAttributes(product.variableVariationAttributes),
       name

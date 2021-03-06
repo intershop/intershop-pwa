@@ -8,7 +8,6 @@ import { debounceTime, distinctUntilChanged, filter, first, map, skip, startWith
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { Image } from 'ish-core/models/image/image.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
-import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
 import {
   AnyProductViewType,
   ProductCompletenessLevel,
@@ -82,7 +81,6 @@ interface ProductContext {
   sku: string;
   requiredCompletenessLevel: ProductCompletenessLevel | true;
   product: AnyProductViewType;
-  productAsVariationProduct: VariationProductView;
   productURL: string;
   loading: boolean;
   label: string;
@@ -151,12 +149,6 @@ export class ProductContextFacade extends RxState<ProductContext> {
 
     this.hold(combineLatest([this.select('product'), this.select('displayProperties')]), args =>
       this.postProductFetch(...args)
-    );
-
-    this.connect(
-      'productAsVariationProduct',
-      // tslint:disable-next-line: no-null-keyword
-      this.select('product').pipe(map(product => (ProductHelper.isVariationProduct(product) ? product : null)))
     );
 
     this.connect(
@@ -296,9 +288,7 @@ export class ProductContextFacade extends RxState<ProductContext> {
   }
 
   changeVariationOption(name: string, value: string) {
-    this.set('sku', () =>
-      ProductVariationHelper.findPossibleVariation(name, value, this.get('productAsVariationProduct'))
-    );
+    this.set('sku', () => ProductVariationHelper.findPossibleVariation(name, value, this.get('product')));
   }
 
   addToBasket() {

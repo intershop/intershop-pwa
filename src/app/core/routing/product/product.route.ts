@@ -3,14 +3,13 @@ import { MonoTypeOperatorFunction } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { Category } from 'ish-core/models/category/category.model';
-import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { ProductHelper } from 'ish-core/models/product/product.model';
+import { AnyProductViewType, ProductHelper } from 'ish-core/models/product/product.model';
 import { generateLocalizedCategorySlug } from 'ish-core/routing/category/category.route';
 import { CoreState } from 'ish-core/store/core/core-store';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { reservedCharactersRegEx } from 'ish-core/utils/routing';
 
-function generateProductSlug(product: ProductView) {
+function generateProductSlug(product: AnyProductViewType) {
   if (!product || !product.name) {
     return;
   }
@@ -59,7 +58,7 @@ export function matchProductRoute(segments: UrlSegment[]): UrlMatchResult {
   return;
 }
 
-export function generateProductUrl(product: ProductView, category?: Category): string {
+export function generateProductUrl(product: AnyProductViewType, category?: Category): string {
   if (!product || !product.sku) {
     return '/';
   }
