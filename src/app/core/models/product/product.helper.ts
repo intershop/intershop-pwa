@@ -5,11 +5,14 @@ import { Image } from 'ish-core/models/image/image.model';
 import { PriceHelper } from 'ish-core/models/price/price.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
-import { ProductBundle } from './product-bundle.model';
-import { ProductRetailSet } from './product-retail-set.model';
-import { VariationProductMaster } from './product-variation-master.model';
-import { VariationProduct } from './product-variation.model';
-import { Product } from './product.model';
+import {
+  AllProductTypes,
+  Product,
+  ProductBundle,
+  ProductRetailSet,
+  VariationProduct,
+  VariationProductMaster,
+} from './product.model';
 
 export interface SkuQuantityType {
   sku: string;
@@ -20,8 +23,6 @@ export enum ProductCompletenessLevel {
   Detail = 3,
   List = 2,
 }
-
-export type AllProductTypes = Product | VariationProduct | VariationProductMaster | ProductBundle | ProductRetailSet;
 
 // not-dead-code
 export type ProductPrices = Partial<

@@ -12,13 +12,13 @@ import {
   createVariationProductMasterView,
   createVariationProductView,
 } from 'ish-core/models/product-view/product-view.model';
-import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
-import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import {
   AllProductTypes,
   Product,
   ProductCompletenessLevel,
   ProductHelper,
+  VariationProduct,
+  VariationProductMaster,
 } from 'ish-core/models/product/product.model';
 import { generateCategoryUrl } from 'ish-core/routing/category/category.route';
 import { selectRouteParam } from 'ish-core/store/core/router';

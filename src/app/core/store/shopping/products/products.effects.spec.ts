@@ -10,8 +10,7 @@ import { delay, toArray } from 'rxjs/operators';
 import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
-import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
-import { Product } from 'ish-core/models/product/product.model';
+import { Product, VariationProductMaster } from 'ish-core/models/product/product.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadCategory } from 'ish-core/store/shopping/categories';

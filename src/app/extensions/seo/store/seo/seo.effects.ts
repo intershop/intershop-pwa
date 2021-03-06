@@ -13,7 +13,7 @@ import { distinctUntilChanged, filter, map, mapTo, switchMap, takeWhile, tap, wi
 
 import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.helper';
+import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { SeoAttributes } from 'ish-core/models/seo-attributes/seo-attributes.model';
 import { generateCategoryUrl, ofCategoryUrl } from 'ish-core/routing/category/category.route';
 import { generateProductUrl, ofProductUrl } from 'ish-core/routing/product/product.route';

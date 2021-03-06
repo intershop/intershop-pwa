@@ -1,7 +1,5 @@
 import { Category } from 'ish-core/models/category/category.model';
-import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
-import { VariationProduct } from 'ish-core/models/product/product-variation.model';
-import { Product } from 'ish-core/models/product/product.model';
+import { Product, VariationProduct, VariationProductMaster } from 'ish-core/models/product/product.model';
 
 export type ProductView = Partial<SimpleProductView> &
   Partial<Omit<VariationProductView, 'type'>> &
@@ -12,13 +10,13 @@ interface SimpleProductView extends Product {
 }
 
 interface VariationProductView extends VariationProduct, SimpleProductView {
-  type: 'VariationProduct';
+  type: VariationProduct['type'];
   variations: VariationProduct[];
   productMaster: VariationProductMaster;
 }
 
 interface VariationProductMasterView extends VariationProductMaster, SimpleProductView {
-  type: 'VariationProductMaster';
+  type: VariationProductMaster['type'];
   variations: VariationProduct[];
   defaultVariationSKU: string;
 }

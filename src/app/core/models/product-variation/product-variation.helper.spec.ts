@@ -1,7 +1,6 @@
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
-import { VariationProduct } from 'ish-core/models/product/product-variation.model';
+import { VariationProduct, VariationProductMaster } from 'ish-core/models/product/product.model';
 
 import { ProductVariationHelper } from './product-variation.helper';
 

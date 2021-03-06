@@ -9,11 +9,15 @@ import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
 import { SortableAttributesType } from 'ish-core/models/product-listing/product-listing.model';
-import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
-import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { ProductData, ProductDataStub, ProductVariationLink } from 'ish-core/models/product/product.interface';
 import { ProductMapper } from 'ish-core/models/product/product.mapper';
-import { Product, ProductHelper, SkuQuantityType } from 'ish-core/models/product/product.model';
+import {
+  Product,
+  ProductHelper,
+  SkuQuantityType,
+  VariationProduct,
+  VariationProductMaster,
+} from 'ish-core/models/product/product.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getProductListingItemsPerPage } from 'ish-core/store/shopping/product-listing';
 import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
