@@ -9,6 +9,8 @@ import { RoleToggleModule } from 'ish-core/role-toggle.module';
     <div *ishHasNotRole="'ROLE1'">content1</div>
     <div *ishHasNotRole="'ROLE2'">content2</div>
     <div *ishHasNotRole="dynamicRole">content3</div>
+    <div *ishHasNotRole="['ROLE1', 'ROLE3']">content4</div>
+    <div *ishHasNotRole="['ROLE2', 'ROLE3']">content5</div>
   `,
   // Default change detection for dynamic role test
   changeDetection: ChangeDetectionStrategy.Default,
@@ -72,5 +74,13 @@ describe('Not Role Toggle Directive', () => {
     fixture.detectChanges();
 
     expect(element.textContent).toContain('content3');
+  });
+
+  it('should not render content if role is in given roles', () => {
+    expect(element.textContent).not.toContain('content4');
+  });
+
+  it('should render content if the role is not in given roles', () => {
+    expect(element.textContent).toContain('content5');
   });
 });
