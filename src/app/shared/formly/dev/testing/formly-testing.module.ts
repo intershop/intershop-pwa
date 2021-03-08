@@ -45,6 +45,7 @@ class DummyWrapperComponent extends FieldWrapper {}
   declarations: [
     CaptchaFieldComponent,
     CheckboxFieldComponent,
+    DummyWrapperComponent,
     EmailFieldComponent,
     FieldsetFieldComponent,
     PasswordFieldComponent,
