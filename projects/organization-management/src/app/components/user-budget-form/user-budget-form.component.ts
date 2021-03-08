@@ -49,11 +49,11 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
       this.currentLocale = locale;
     });
 
-    this.model = this.setModel(this.budget);
-    this.fields = this.setFields();
+    this.model = this.getModel(this.budget);
+    this.fields = this.getFields();
   }
 
-  private setModel(budget: UserBudget) {
+  private getModel(budget: UserBudget) {
     const model: UserBudgetModel = {};
 
     if (budget) {
@@ -68,7 +68,7 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
     return model;
   }
 
-  private setFields() {
+  private getFields() {
     return [
       {
         type: 'ish-fieldset-field',
@@ -84,7 +84,7 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
           {
             key: 'orderSpentLimitValue',
             type: 'ish-text-input-field',
-            wrappers: [...this.config.getType('ish-text-input-field').wrappers, 'input-addon'],
+            wrappers: [...(this.config.getType('ish-text-input-field').wrappers ?? []), 'input-addon'],
             templateOptions: {
               label: 'account.user.new.order_spend_limit.label',
               addonLeft: {
@@ -107,7 +107,7 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
                 className: 'col-8',
                 key: 'budgetValue',
                 type: 'ish-text-input-field',
-                wrappers: [...this.config.getType('ish-text-input-field').wrappers, 'input-addon'],
+                wrappers: [...(this.config.getType('ish-text-input-field').wrappers ?? []), 'input-addon'],
                 templateOptions: {
                   labelClass: 'col-md-6',
                   fieldClass: 'col-md-6 pr-0',

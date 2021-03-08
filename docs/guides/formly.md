@@ -241,7 +241,7 @@ Refer to the tables below for an overview of these parts.
 | textarea-description           | Adds a description to textarea fields, including the amount of remaining characters.                                                                          | `maxLength`: Specifies the maximum length to be displayed in the message.                                                    |
 | decription                     | Adds a custom description to any field                                                                                                                        | `customDescription`: `string` or `{key: string; args: any}` that will be translated                                          |
 | tooltip                        | Adds a tooltip to a field. Includes `<ish-field-tooltip>` component.                                                                                          | `tooltip`: `{ title?: string; text: string; link: string }` that defines the different tooltip texts.                        |
-| input-addon                    | Adds a prepend or append text to a field, e.g. a currency or unit.                                                                                            | `addonLeft?`: `{ text: string; }, addonRight?: {text: string}` that defines the addon texts.          |
+| input-addon                    | Adds a prepend or append text to a field, e.g. a currency or unit.                                                                                            | `addonLeft?`: `{ text: string; }, addonRight?: {text: string}` that defines the addon texts.                                 |
 
 ### Extensions
 

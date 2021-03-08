@@ -44,15 +44,15 @@ export class UserProfileFormComponent implements OnInit {
       )
     );
 
-    this.model = this.setModel(this.user);
-    this.fields = this.setFields();
+    this.model = this.getModel(this.user);
+    this.fields = this.getFields();
   }
 
-  private setModel(user: B2bUser) {
+  private getModel(user: B2bUser) {
     return this.user ? pick(user, 'title', 'firstName', 'lastName', 'active', 'phoneHome') : { active: true };
   }
 
-  private setFields() {
+  private getFields() {
     return [
       {
         type: 'ish-fieldset-field',
@@ -64,11 +64,6 @@ export class UserProfileFormComponent implements OnInit {
               label: 'account.default_address.title.label',
               placeholder: 'account.option.select.text',
               options: this.titleOptions$,
-            },
-            validation: {
-              messages: {
-                required: 'account.address.country.error.default',
-              },
             },
           },
           {
