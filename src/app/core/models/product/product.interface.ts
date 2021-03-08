@@ -16,6 +16,7 @@ export interface ProductData {
 
   availability: boolean;
   inStock: boolean;
+  availableStock?: number;
 
   averageRating: string;
   roundedAverageRating: string;
