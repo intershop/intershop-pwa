@@ -40,6 +40,9 @@ export function mergeDeep(target, source) {
   return output;
 }
 
+/**
+ * Returns a copy of the object composed of the own and inherited enumerable property paths of the object that are not omitted.
+ */
 export function omit<T>(from: T, ...keys: (keyof T | string)[]) {
   return !!from && !Array.isArray(from)
     ? Object.entries(from)
