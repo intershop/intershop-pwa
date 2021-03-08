@@ -1,4 +1,4 @@
-import { arraySlices, mergeDeep } from './functions';
+import { arraySlices, mergeDeep, omit } from './functions';
 
 describe('Functions', () => {
   describe('arraySlices', () => {
@@ -69,6 +69,53 @@ describe('Functions', () => {
           },
           "d": 11,
         }
+      `);
+    });
+  });
+
+  describe('omit', () => {
+    let input;
+
+    beforeEach(() => {
+      input = {
+        a: 1,
+        b: '2',
+        c: true,
+        d: false,
+      };
+    });
+
+    it('should remove keys from object on input', () => {
+      expect(omit(input, 'a', 'c')).toMatchInlineSnapshot(`
+        Object {
+          "b": "2",
+          "d": false,
+        }
+      `);
+    });
+
+    it('should not modify original input when used', () => {
+      omit(input, 'a', 'c');
+
+      expect(input).toMatchInlineSnapshot(`
+        Object {
+          "a": 1,
+          "b": "2",
+          "c": true,
+          "d": false,
+        }
+      `);
+    });
+
+    it('should return original object if input was falsy', () => {
+      expect(omit(undefined, 'a')).toBeUndefined();
+    });
+
+    it('should return original object if input was array', () => {
+      expect(omit(['a'], 'a')).toMatchInlineSnapshot(`
+        Array [
+          "a",
+        ]
       `);
     });
   });
