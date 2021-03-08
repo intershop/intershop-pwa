@@ -1,12 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { User } from 'ish-core/models/user/user.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { InputComponent } from 'ish-shared/forms/components/input/input.component';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { AccountProfileEmailComponent } from './account-profile-email.component';
 
@@ -17,8 +16,8 @@ describe('Account Profile Email Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [AccountProfileEmailComponent, MockComponent(ErrorMessageComponent), MockComponent(InputComponent)],
+      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      declarations: [AccountProfileEmailComponent, MockComponent(ErrorMessageComponent)],
     }).compileComponents();
   });
 
@@ -38,7 +37,8 @@ describe('Account Profile Email Component', () => {
 
   it('should display 3 input fields for email, emailConfirmation and password', () => {
     fixture.detectChanges();
-    expect(element.querySelectorAll('ish-input')).toHaveLength(3);
+
+    expect(element.querySelectorAll('formly-field')).toHaveLength(3);
   });
 
   it('should emit updateEmail event if form is valid', () => {
