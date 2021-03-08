@@ -6,8 +6,10 @@ import { map } from 'rxjs/operators';
 import { getUserRoles } from 'ish-core/store/customer/authorization';
 import { whenTruthy } from 'ish-core/utils/operators';
 
-export function checkRole(roleIds: string[], roleId: string): boolean {
-  return roleIds.includes(roleId);
+export function checkRole(roleIds: string[], roleId: string | string[]): boolean {
+  // tslint:disable-next-line: no-parameter-reassignment
+  roleId = typeof roleId === 'string' ? [roleId] : typeof roleId === 'undefined' ? [] : roleId;
+  return roleId.some(id => roleIds.includes(id));
 }
 
 @Injectable({ providedIn: 'root' })
@@ -18,9 +20,9 @@ export class RoleToggleService {
     this.roleIds$ = store.pipe(select(getUserRoles)).pipe(map(roles => roles.map(role => role.roleId)));
   }
 
-  hasRole(roleId: string): Observable<boolean> {
+  hasRole(roleId: string | string[]): Observable<boolean> {
     return this.roleIds$.pipe(
-      // wait for permissions to be loaded
+      // wait for user roles to be loaded
       whenTruthy(),
       map(roleIds => checkRole(roleIds, roleId))
     );
