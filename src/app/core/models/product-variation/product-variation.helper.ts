@@ -1,7 +1,8 @@
-import { flatten, groupBy, omit } from 'lodash-es';
+import { flatten, groupBy } from 'lodash-es';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { VariationProductMasterView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
+import { omit } from 'ish-core/utils/functions';
 
 import { VariationAttribute } from './variation-attribute.model';
 import { VariationOptionGroup } from './variation-option-group.model';

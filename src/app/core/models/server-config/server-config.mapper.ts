@@ -1,4 +1,4 @@
-import { omit } from 'lodash-es';
+import { omit } from 'ish-core/utils/functions';
 
 import { ServerConfigData, ServerConfigDataEntry } from './server-config.interface';
 import { ServerConfig } from './server-config.model';
