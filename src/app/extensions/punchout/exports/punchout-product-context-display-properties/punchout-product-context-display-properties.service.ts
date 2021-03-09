@@ -15,7 +15,7 @@ export class PunchoutProductContextDisplayPropertiesService implements ExternalD
 
   setup(product$: Observable<ProductView>): Observable<Partial<ProductContextDisplayProperties<false>>> {
     return product$.pipe(
-      switchMapTo(this.roleToggleService.hasRole('APP_B2B_OCI_USER')),
+      switchMapTo(this.roleToggleService.hasRole(['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'])),
       map(isPunchoutUser =>
         isPunchoutUser
           ? {
