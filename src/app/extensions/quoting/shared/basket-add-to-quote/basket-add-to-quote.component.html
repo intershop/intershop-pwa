@@ -1,6 +1,6 @@
 <ng-container *ngIf="isLoggedIn$ | async; else elseTemplate">
   <a
-    *ishHasNotRole="'APP_B2B_OCI_USER'"
+    *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']"
     class="btn btn-secondary"
     id="createQuote"
     name="createQuote"
