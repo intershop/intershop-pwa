@@ -4,7 +4,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
-import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductBundleDisplayComponent } from 'ish-shared/components/product/product-bundle-display/product-bundle-display.component';
@@ -43,11 +42,7 @@ describe('Account Wishlist Detail Line Item Component', () => {
       ],
       imports: [TranslateModule.forRoot()],
       providers: [{ provide: WishlistsFacade, useFactory: () => instance(mock(WishlistsFacade)) }],
-    })
-      .overrideComponent(AccountWishlistDetailLineItemComponent, {
-        set: { providers: [{ provide: ProductContextFacade, useFactory: () => instance(mock(ProductContextFacade)) }] },
-      })
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

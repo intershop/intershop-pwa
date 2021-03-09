@@ -1,5 +1,7 @@
-<div *ngIf="manufacturer$ | async as manufacturer" class="product-brand">
-  <a [routerLink]="['/search', manufacturer]">
-    <span itemprop="brand">{{ manufacturer }}</span>
-  </a>
-</div>
+<ng-container *ishProductContextAccess="let product = product">
+  <div *ngIf="product.manufacturer as manufacturer" class="product-brand">
+    <a [routerLink]="['/search', manufacturer]">
+      <span itemprop="brand">{{ manufacturer }}</span>
+    </a>
+  </div>
+</ng-container>

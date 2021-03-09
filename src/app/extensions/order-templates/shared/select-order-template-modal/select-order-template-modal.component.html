@@ -76,7 +76,7 @@
   </ng-container>
 
   <ng-template #showSuccess>
-    <div class="modal-body">
+    <div class="modal-body" *ishProductContextAccess="let product = product">
       <span
         [ishServerHtml]="
           successTranslationKey

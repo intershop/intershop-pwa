@@ -7,7 +7,6 @@ import { of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
@@ -34,10 +33,7 @@ describe('Select Wishlist Modal Component', () => {
     await TestBed.configureTestingModule({
       declarations: [MockComponent(InputComponent), MockDirective(ServerHtmlDirective), SelectWishlistModalComponent],
       imports: [NgbModalModule, ReactiveFormsModule, TranslateModule.forRoot()],
-      providers: [
-        { provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) },
-        { provide: ProductContextFacade, useFactory: () => instance(mock(ProductContextFacade)) },
-      ],
+      providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) }],
     }).compileComponents();
   });
 

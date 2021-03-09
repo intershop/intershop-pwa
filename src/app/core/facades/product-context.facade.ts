@@ -78,7 +78,7 @@ export const EXTERNAL_DISPLAY_PROPERTY_PROVIDER = new InjectionToken<ExternalDis
   'externalDisplayPropertiesProvider'
 );
 
-interface ProductContext {
+export interface ProductContext {
   sku: string;
   requiredCompletenessLevel: ProductCompletenessLevel | true;
   product: AnyProductViewType;

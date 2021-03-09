@@ -1,4 +1,4 @@
-<ng-container *ngIf="product$ | async as product">
+<ng-container *ishProductContextAccess="let product = product">
   <div class="row" data-testing-id="wishlist-product">
     <div class="col-3 col-md-2 list-item">
       <ish-product-image imageType="S" [link]="true"></ish-product-image>
