@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FieldType, FormlyForm, FormlyModule } from '@ngx-formly/core';
+import { FieldType, FieldWrapper, FormlyForm, FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 
 // tslint:disable: project-structure
@@ -36,12 +36,16 @@ class SelectFieldComponent extends FieldType {}
 @Component({ template: 'TextareaFieldComponent: {{ to | json }}' })
 class TextareaFieldComponent extends FieldType {}
 
+@Component({ template: `<ng-template #fieldComponent> </ng-template>` })
+class DummyWrapperComponent extends FieldWrapper {}
+
 // tslint:enable: project-structure
 
 @NgModule({
   declarations: [
     CaptchaFieldComponent,
     CheckboxFieldComponent,
+    DummyWrapperComponent,
     EmailFieldComponent,
     FieldsetFieldComponent,
     PasswordFieldComponent,
@@ -82,6 +86,14 @@ class TextareaFieldComponent extends FieldType {}
           component: TextareaFieldComponent,
         },
         { name: 'ish-captcha-field', component: CaptchaFieldComponent },
+      ],
+      wrappers: [
+        { name: 'form-field-horizontal', component: DummyWrapperComponent },
+        { name: 'form-field-checkbox-horizontal', component: DummyWrapperComponent },
+        { name: 'textarea-description', component: DummyWrapperComponent },
+        { name: 'tooltip', component: DummyWrapperComponent },
+        { name: 'validation', component: DummyWrapperComponent },
+        { name: 'description', component: DummyWrapperComponent },
       ],
     }),
     FormlySelectModule,

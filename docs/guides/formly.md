@@ -187,8 +187,8 @@ To facilitate this, the `formly/dev/testing` folder contains a `FormlyTestingCom
 - `FormlyTestingExampleComponent` is a type that contains an empty input field and can be used as an example field type.
 - `FormlyTestingFieldgroupExampleComponent` is a type that renders all configs in the `fieldGroup` attribute of the field.
 
-In addition, to test components or pages that use Formly, use the `FormlyTestingModule`.
-It defines a FormlyModule with preconfigured sample field types.
+In addition, to test components or pages that use Formly, import the `FormlyTestingModule`.
+It defines and exports a FormlyModule with preconfigured dummy field types and wrappers that match the `FormlyModule`.
 
 ### Testing Custom Types
 
