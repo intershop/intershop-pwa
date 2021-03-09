@@ -5,7 +5,7 @@ declare interface B2BUserCreateForm {
   firstName: string;
   lastName: string;
   email: string;
-  phone: string;
+  phoneHome: string;
 }
 
 export class UserCreatePage {

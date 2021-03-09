@@ -40,3 +40,9 @@
 .formly-required-star {
   color: $error-color;
 }
+
+.formly-empty-label {
+  @media (max-width: $screen-xs-max) {
+    margin-top: 2.2rem;
+  }
+}

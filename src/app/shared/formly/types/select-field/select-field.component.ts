@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FieldType } from '@ngx-formly/core';
 
+import { SelectOption } from 'ish-shared/forms/components/select/select.component';
+
 @Component({
   selector: 'ish-select-field',
   templateUrl: './select-field.component.html',
@@ -11,7 +13,7 @@ export class SelectFieldComponent extends FieldType {
   formControl: FormControl;
   defaultOptions = {
     templateOptions: {
-      options: [],
+      options: [] as SelectOption[],
       compareWith(o1, o2) {
         return o1 === o2;
       },

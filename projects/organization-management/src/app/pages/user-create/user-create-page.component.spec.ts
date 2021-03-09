@@ -63,38 +63,26 @@ describe('User Create Page Component', () => {
       }),
       roleIDs: ['Buyer'],
       userBudget: fb.group({
-        orderSpentLimit: ['70000'],
-        budget: [10000],
+        orderSpentLimitValue: ['70000'],
+        budgetValue: [10000],
         budgetPeriod: ['monthly'],
         currency: 'USD',
       }),
     });
 
     expect(component.formDisabled).toBeFalse();
-    expect(component.form.value).toMatchInlineSnapshot(`
-      Object {
-        "profile": Object {
-          "active": true,
-          "email": "test@gmail.com",
-          "firstName": "Bernhard",
-          "lastName": "Boldner",
-        },
-        "roleIDs": "Buyer",
-        "userBudget": Object {
-          "budget": 10000,
-          "budgetPeriod": "monthly",
-          "currency": "USD",
-          "orderSpentLimit": "70000",
-        },
-      }
-    `);
-
     component.submitForm();
     expect(component.formDisabled).toBeFalse();
   });
 
   it('should disable submit button when the user submits an invalid form', () => {
     fixture.detectChanges();
+
+    component.form = fb.group({
+      profile: fb.group({
+        firstName: ['', [Validators.required]],
+      }),
+    });
 
     expect(component.formDisabled).toBeFalse();
     component.submitForm();

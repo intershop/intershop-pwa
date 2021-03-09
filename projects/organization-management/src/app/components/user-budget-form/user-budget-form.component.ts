@@ -1,12 +1,23 @@
 import { getCurrencySymbol } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
+import { FormGroup } from '@angular/forms';
+import { FormlyConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
+
+import { UserBudget } from '../../models/user-budget/user-budget.model';
+
+interface UserBudgetModel {
+  orderSpentLimitValue?: number;
+  budgetValue?: number;
+  budgetPeriod?: string;
+  currency?: string;
+}
 
 @Component({
   selector: 'ish-user-budget-form',
@@ -15,43 +26,122 @@ import { whenTruthy } from 'ish-core/utils/operators';
 })
 export class UserBudgetFormComponent implements OnInit, OnDestroy {
   @Input() form: FormGroup;
+  @Input() budget?: UserBudget;
 
-  currentLocale$: Observable<Locale>;
+  fields: FormlyFieldConfig[];
+  model: UserBudgetModel;
+
+  currentLocale: Locale;
+
   periods = ['weekly', 'monthly', 'quarterly'];
-  currencySymbol = '$'; // fallback currency
 
   private destroy$ = new Subject();
 
-  constructor(private appFacade: AppFacade) {}
+  constructor(private appFacade: AppFacade, private config: FormlyConfig) {}
 
   ngOnInit() {
-    this.init();
-  }
-
-  init() {
     if (!this.form) {
       throw new Error('required input parameter <form> is missing for UserBudgetFormComponent');
     }
 
-    if (!this.formControlBudget) {
-      throw new Error(`control 'budget' does not exist in the given form for UserBudgetFormComponent`);
-    }
-
-    this.currentLocale$ = this.appFacade.currentLocale$;
-
-    // if there is no predefined currency determine currency from default locale
-
-    this.currentLocale$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(locale => {
-      if (locale.currency && !this.form.get('currency').value) {
-        this.form.get('currency').setValue(locale.currency);
-        this.form.updateValueAndValidity();
-      }
-      this.currencySymbol = getCurrencySymbol(this.form.get('currency').value, 'wide', locale.lang);
+    // determine current locale
+    this.appFacade.currentLocale$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(locale => {
+      this.currentLocale = locale;
     });
+
+    this.model = this.getModel(this.budget);
+    this.fields = this.getFields();
   }
 
-  get formControlBudget(): AbstractControl {
-    return this.form && this.form.get('budget');
+  private getModel(budget: UserBudget) {
+    const model: UserBudgetModel = {};
+
+    if (budget) {
+      model.orderSpentLimitValue = budget.orderSpentLimit?.value;
+      model.budgetValue = budget.budget?.value;
+    }
+
+    model.currency = budget?.remainingBudget?.currency || this.currentLocale.currency;
+    model.budgetPeriod =
+      !budget?.budgetPeriod || budget?.budgetPeriod === 'none' ? this.periods[0] : budget.budgetPeriod;
+
+    return model;
+  }
+
+  private getFields() {
+    return [
+      {
+        type: 'ish-fieldset-field',
+        fieldGroup: [
+          {
+            key: 'currency',
+            type: 'ish-text-input-field',
+            templateOptions: {
+              fieldClass: 'd-none',
+              required: true,
+            },
+          },
+          {
+            key: 'orderSpentLimitValue',
+            type: 'ish-text-input-field',
+            wrappers: [...(this.config.getType('ish-text-input-field').wrappers ?? []), 'input-addon'],
+            templateOptions: {
+              label: 'account.user.new.order_spend_limit.label',
+              addonLeft: {
+                text: getCurrencySymbol(this.model.currency, 'wide', this.currentLocale.lang),
+              },
+            },
+            validators: {
+              validation: [SpecialValidators.moneyAmount],
+            },
+            validation: {
+              messages: {
+                moneyAmount: 'account.user.new.OrderLimit.error.valid',
+              },
+            },
+          },
+          {
+            fieldGroupClassName: 'row',
+            fieldGroup: [
+              {
+                className: 'col-8',
+                key: 'budgetValue',
+                type: 'ish-text-input-field',
+                wrappers: [...(this.config.getType('ish-text-input-field').wrappers ?? []), 'input-addon'],
+                templateOptions: {
+                  labelClass: 'col-md-6',
+                  fieldClass: 'col-md-6 pr-0',
+                  label: 'account.user.budget.label',
+                  addonLeft: {
+                    text: getCurrencySymbol(this.model.currency, 'wide', this.currentLocale.lang),
+                  },
+                },
+                validators: {
+                  validation: [SpecialValidators.moneyAmount],
+                },
+                validation: {
+                  messages: {
+                    moneyAmount: 'account.user.new.Budget.error.valid',
+                  },
+                },
+              },
+              {
+                className: 'col-4',
+                type: 'ish-select-field',
+                key: 'budgetPeriod',
+                templateOptions: {
+                  fieldClass: 'col-12 formly-empty-label',
+                  options: this.periods.map(period => ({
+                    value: period,
+                    label: `account.user.new.budget.period.value.${period}`,
+                  })),
+                },
+              },
+            ],
+          },
+        ],
+      },
+    ];
   }
 
   ngOnDestroy() {

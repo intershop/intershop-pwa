@@ -28,6 +28,7 @@ import { TextareaFieldComponent } from './types/textarea-field/textarea-field.co
 import { DescriptionWrapperComponent } from './wrappers/description-wrapper/description-wrapper.component';
 import { HorizontalCheckboxWrapperComponent } from './wrappers/horizontal-checkbox-wrapper/horizontal-checkbox-wrapper.component';
 import { HorizontalWrapperComponent } from './wrappers/horizontal-wrapper/horizontal-wrapper.component';
+import { InputAddonWrapperComponent } from './wrappers/input-addon-wrapper/input-addon-wrapper.component';
 import { TextareaDescriptionWrapperComponent } from './wrappers/textarea-description-wrapper/textarea-description-wrapper.component';
 import { TooltipWrapperComponent } from './wrappers/tooltip-wrapper/tooltip-wrapper.component';
 import { ValidationWrapperComponent } from './wrappers/validation-wrapper/validation-wrapper.component';
@@ -78,6 +79,7 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
       wrappers: [
         { name: 'form-field-horizontal', component: HorizontalWrapperComponent },
         { name: 'form-field-checkbox-horizontal', component: HorizontalCheckboxWrapperComponent },
+        { name: 'input-addon', component: InputAddonWrapperComponent },
         { name: 'textarea-description', component: TextareaDescriptionWrapperComponent },
         { name: 'tooltip', component: TooltipWrapperComponent },
         { name: 'validation', component: ValidationWrapperComponent },
@@ -112,6 +114,7 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
     FieldsetFieldComponent,
     HorizontalCheckboxWrapperComponent,
     HorizontalWrapperComponent,
+    InputAddonWrapperComponent,
     PasswordFieldComponent,
     SelectFieldComponent,
     TextInputFieldComponent,

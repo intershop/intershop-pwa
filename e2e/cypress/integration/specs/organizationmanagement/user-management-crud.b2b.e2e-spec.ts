@@ -20,11 +20,11 @@ const _ = {
     title: 'Mr.',
     firstName: 'John',
     lastName: 'Doe',
-    phone: '5551234',
+    phoneHome: '5551234',
     email: `j.joe${new Date().getTime()}@testcity.de`,
 
-    orderSpentLimit: 100,
-    budget: 800,
+    orderSpentLimitValue: 100,
+    budgetValue: 800,
     budgetPeriod: 'monthly',
   },
   roles: {
@@ -32,8 +32,8 @@ const _ = {
     assignedRole: 'Account Admin',
   },
   budget: {
-    orderSpentLimit: 200,
-    budget: 900,
+    orderSpentLimitValue: 200,
+    budgetValue: 900,
     budgetPeriod: 'weekly',
   },
   editUser: {
@@ -67,7 +67,7 @@ describe('User Management - CRUD', () => {
     at(UsersDetailPage, page => {
       page.name.should('contain', `${_.newUser.firstName} ${_.newUser.lastName}`);
       page.rolesAndPermissions.should('contain', _.roles.autoRole);
-      page.budget.should('contain', `${_.newUser.budget}`);
+      page.budget.should('contain', `${_.newUser.budgetValue}`);
     });
   });
 
@@ -102,8 +102,8 @@ describe('User Management - CRUD', () => {
       page.submit();
     });
     at(UsersDetailPage, page => {
-      page.budget.should('contain', `${_.budget.budget}`);
-      page.orderSpendLimit.should('contain', `${_.budget.orderSpentLimit}`);
+      page.budget.should('contain', `${_.budget.budgetValue}`);
+      page.orderSpendLimit.should('contain', `${_.budget.orderSpentLimitValue}`);
       page.userBudget.should('contain', `${_.budget.budgetPeriod}`);
     });
   });

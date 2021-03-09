@@ -6,34 +6,35 @@ import { FormlySelectModule } from '@ngx-formly/core/select';
 
 // tslint:disable: project-structure
 
-@Component({ template: 'CaptchaFieldComponent: {{ to | json }}' })
+@Component({ template: 'CaptchaFieldComponent: {{ field.key }} {{ to | json }}' })
 class CaptchaFieldComponent extends FieldType {}
 
-@Component({ template: 'CheckboxFieldComponent: {{ to | json }}' })
+@Component({ template: 'CheckboxFieldComponent: {{ field.key }} {{ to | json }}' })
 class CheckboxFieldComponent extends FieldType {}
 
 @Component({
   template: `FieldsetFieldComponent:
     <div *ngFor="let f of field.fieldGroup">
+      {{ f.key }}
       {{ f.type }}
       {{ f.templateOptions | json }}
     </div>`,
 })
 class FieldsetFieldComponent extends FieldType {}
 
-@Component({ template: 'TextInputFieldComponent: {{ to | json }}' })
+@Component({ template: 'TextInputFieldComponent: {{ field.key }} {{ to | json }}' })
 class TextInputFieldComponent extends FieldType {}
 
-@Component({ template: 'EmailFieldComponent: {{ to | json }}' })
+@Component({ template: 'EmailFieldComponent: {{ field.key }} {{ to | json }}' })
 class EmailFieldComponent extends FieldType {}
 
-@Component({ template: 'PasswordFieldComponent: {{ to | json }}' })
+@Component({ template: 'PasswordFieldComponent: {{ field.key }} {{ to | json }}' })
 class PasswordFieldComponent extends FieldType {}
 
-@Component({ template: 'SelectFieldComponent: {{ to | json }}' })
+@Component({ template: 'SelectFieldComponent: {{ field.key }} {{ to | json }}' })
 class SelectFieldComponent extends FieldType {}
 
-@Component({ template: 'TextareaFieldComponent: {{ to | json }}' })
+@Component({ template: 'TextareaFieldComponent: {{ field.key }} {{ to | json }}' })
 class TextareaFieldComponent extends FieldType {}
 
 @Component({ template: `<ng-template #fieldComponent> </ng-template>` })
