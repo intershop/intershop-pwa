@@ -12,14 +12,13 @@ import {
   createVariationProductMasterView,
   createVariationProductView,
 } from 'ish-core/models/product-view/product-view.model';
-import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
-import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import {
   AllProductTypes,
-  AnyProductViewType,
   Product,
   ProductCompletenessLevel,
   ProductHelper,
+  VariationProduct,
+  VariationProductMaster,
 } from 'ish-core/models/product/product.model';
 import { generateCategoryUrl } from 'ish-core/routing/category/category.route';
 import { selectRouteParam } from 'ish-core/store/core/router';
@@ -99,7 +98,7 @@ export const getProduct = (sku: string) =>
     internalProductDefaultVariationSKU(sku),
     internalProductVariations(sku),
     internalProductMaster(sku),
-    (product, defaultCategory, defaultVariationSKU, variations, productMaster): AnyProductViewType =>
+    (product, defaultCategory, defaultVariationSKU, variations, productMaster): ProductView =>
       ProductHelper.isMasterProduct(product)
         ? createVariationProductMasterView(product, defaultVariationSKU, variations, defaultCategory)
         : ProductHelper.isVariationProduct(product)
@@ -107,7 +106,7 @@ export const getProduct = (sku: string) =>
         : createProductView(product, defaultCategory)
   );
 
-export const getSelectedProduct = createSelectorFactory<object, AnyProductViewType>(projector =>
+export const getSelectedProduct = createSelectorFactory<object, ProductView>(projector =>
   resultMemoize(projector, isEqual)
 )(identity, selectRouteParam('sku'), (state: object, sku: string) => getProduct(sku)(state));
 

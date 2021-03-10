@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextDisplayProperties, ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { AnyProductViewType } from 'ish-core/models/product/product.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 @Component({
   selector: 'ish-product-row',
@@ -10,7 +10,7 @@ import { AnyProductViewType } from 'ish-core/models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductRowComponent implements OnInit {
-  product$: Observable<AnyProductViewType>;
+  product$: Observable<ProductView>;
   quantity$: Observable<number>;
 
   constructor(private context: ProductContextFacade) {}

@@ -4,7 +4,7 @@ import { map, startWith, takeUntil } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ProductHelper } from 'ish-core/models/product/product.helper';
+import { ProductHelper } from 'ish-core/models/product/product.model';
 import { whenFalsy } from 'ish-core/utils/operators';
 
 /**

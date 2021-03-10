@@ -1,7 +1,7 @@
 import { flatten, groupBy } from 'lodash-es';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
-import { VariationProductMasterView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { omit } from 'ish-core/utils/functions';
 
 import { VariationAttribute } from './variation-attribute.model';
@@ -15,7 +15,7 @@ export class ProductVariationHelper {
    * @returns       Indicates if no perfect match is found.
    * TODO: Refactor this to a more functional style
    */
-  private static alternativeCombinationCheck(option: VariationSelectOption, product: VariationProductView): boolean {
+  private static alternativeCombinationCheck(option: VariationSelectOption, product: ProductView): boolean {
     if (!product.variableVariationAttributes?.length) {
       return;
     }
@@ -61,7 +61,7 @@ export class ProductVariationHelper {
   /**
    * Build select value structure
    */
-  static buildVariationOptionGroups(product: VariationProductView): VariationOptionGroup[] {
+  static buildVariationOptionGroups(product: ProductView): VariationOptionGroup[] {
     if (!product) {
       return [];
     }
@@ -121,7 +121,7 @@ export class ProductVariationHelper {
     return keys.reduce((sum, key) => (obj1[key] !== obj2[key] ? sum + 1 : sum), 0);
   }
 
-  static findPossibleVariation(name: string, value: string, product: VariationProductView): string {
+  static findPossibleVariation(name: string, value: string, product: ProductView): string {
     const target = omit(
       ProductVariationHelper.simplifyVariableVariationAttributes(product.variableVariationAttributes),
       name
@@ -150,11 +150,11 @@ export class ProductVariationHelper {
     return product.sku;
   }
 
-  static hasDefaultVariation(product: VariationProductMasterView): product is VariationProductMasterView {
+  static hasDefaultVariation(product: ProductView): boolean {
     return product && !!product.defaultVariationSKU;
   }
 
-  static productVariationCount(product: VariationProductMasterView, filters: FilterNavigation): number {
+  static productVariationCount(product: ProductView, filters: FilterNavigation): number {
     if (!product) {
       return 0;
     } else if (!filters?.filter) {

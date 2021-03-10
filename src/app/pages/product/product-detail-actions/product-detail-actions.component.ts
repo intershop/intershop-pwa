@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/cor
 import { Observable } from 'rxjs';
 
 import { ProductContextDisplayProperties, ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { AnyProductViewType, ProductHelper } from 'ish-core/models/product/product.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 @Component({
   selector: 'ish-product-detail-actions',
@@ -16,8 +16,7 @@ export class ProductDetailActionsComponent implements OnInit {
    */
   channelName = 'inTRONICS';
 
-  isMasterProduct = ProductHelper.isMasterProduct;
-  product$: Observable<AnyProductViewType>;
+  product$: Observable<ProductView>;
 
   constructor(@Inject(DOCUMENT) public document: Document, private context: ProductContextFacade) {}
 
