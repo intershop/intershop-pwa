@@ -16,4 +16,4 @@ if (!configuration) {
 }
 
 execSync('npm run ng -- build -c ' + configuration, { stdio: [0, 1, 2] });
-execSync('npm run ng -- run intershop-pwa:server --bundleDependencies -c ' + configuration, { stdio: [0, 1, 2] });
+execSync('npm run ng -- run intershop-pwa:server -c ' + configuration, { stdio: [0, 1, 2] });
