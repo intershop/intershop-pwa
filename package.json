@@ -17,6 +17,7 @@
     "build:tslint-rules": "cd tslint-rules && npm run build",
     "build:schematics": "cd schematics && npm run build",
     "ng": "ng",
+    "ngcc": "ngcc",
     "test": "jest --ci",
     "test:watch": "jest --watch -i",
     "e2e": "cd e2e && npm install && node open-cypress",

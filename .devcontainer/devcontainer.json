@@ -37,7 +37,7 @@
     "yzhang.markdown-all-in-one"
   ],
   "forwardPorts": [4200],
-  "postStartCommand": "sudo chown node node_modules && npm install",
+  "postStartCommand": "sudo chown node node_modules && npm install && npm run ngcc",
   // Comment out the next line to run as root instead.
   "remoteUser": "node"
 }

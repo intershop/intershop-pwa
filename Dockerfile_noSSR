@@ -3,7 +3,7 @@ FROM node:14-alpine as buildstep
 WORKDIR /workspace
 COPY schematics /workspace/schematics/
 COPY package.json package-lock.json /workspace/
-RUN npm i --ignore-scripts
+RUN npm i --ignore-scripts && npm run ngcc
 COPY projects/organization-management/src/app /workspace/projects/organization-management/src/app/
 COPY projects/requisition-management/src/app /workspace/projects/requisition-management/src/app/
 COPY src /workspace/src/
