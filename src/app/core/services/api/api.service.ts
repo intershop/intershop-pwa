@@ -235,7 +235,7 @@ export class ApiService {
    * Pipeable operator for link translation (resolving one single link).
    * @returns The link resolved to its actual REST response data.
    */
-  resolveLink<T>(): OperatorFunction<Link, T> {
+  resolveLink<T>(options?: AvailableOptions): OperatorFunction<Link, T> {
     return stream$ =>
       stream$.pipe(
         withLatestFrom(this.store.pipe(select(getICMServerURL))),
@@ -244,7 +244,7 @@ export class ApiService {
             // check if link data is properly formatted
             () => link?.type === 'Link' && !!link.uri,
             // flat map to API request
-            this.get<T>(`${icmServerURL}/${link.uri}`),
+            this.get<T>(`${icmServerURL}/${link.uri}`, options),
             // throw if link is not properly supplied
             throwError(new Error('link was not properly formatted'))
           )
@@ -256,14 +256,14 @@ export class ApiService {
    * Pipeable operator for link translation (resolving multiple links).
    * @returns The links resolved to their actual REST response data.
    */
-  resolveLinks<T>(): OperatorFunction<Link[], T[]> {
+  resolveLinks<T>(options?: AvailableOptions): OperatorFunction<Link[], T[]> {
     return source$ =>
       source$.pipe(
         // filter for all real Link elements
         map(links => links.filter(el => el?.type === 'Link' && !!el.uri)),
         withLatestFrom(this.store.pipe(select(getICMServerURL))),
         // transform Link elements to API Observables
-        map(([links, icmServerURL]) => links.map(item => this.get<T>(`${icmServerURL}/${item.uri}`))),
+        map(([links, icmServerURL]) => links.map(item => this.get<T>(`${icmServerURL}/${item.uri}`, options))),
         // flatten to API requests O<O<T>[]> -> O<T[]>
         concatMap(obsArray => iif(() => !!obsArray.length, forkJoin(obsArray), of([])))
       );

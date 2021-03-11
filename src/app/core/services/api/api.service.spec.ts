@@ -346,6 +346,37 @@ describe('Api Service', () => {
 
       httpTestingController.expectNone(`${REST_URL}/dummy`);
     });
+
+    it('should append additional headers when resolveLink is used with header options', () => {
+      const someHeader = { headers: new HttpHeaders({ dummy: 'linkHeaderTest' }) };
+
+      apiService.get('something', someHeader).pipe(apiService.resolveLink(someHeader)).subscribe(fail, fail, fail);
+
+      const req = httpTestingController.expectOne(`${REST_URL}/something`);
+      expect(req.request.headers.get('dummy')).toEqual('linkHeaderTest');
+      req.flush({ type: 'Link', uri: 'site/-/dummy' });
+
+      const req2 = httpTestingController.expectOne(`${REST_URL}/dummy`);
+      expect(req2.request.headers.get('dummy')).toEqual('linkHeaderTest');
+    });
+
+    it('should append additional headers to all link requests when resolveLinks is used with header options', () => {
+      const someHeader = { headers: new HttpHeaders({ dummy: 'linkHeaderTest' }) };
+
+      apiService.get('something', someHeader).pipe(apiService.resolveLinks(someHeader)).subscribe(fail, fail, fail);
+
+      const req = httpTestingController.expectOne(`${REST_URL}/something`);
+      expect(req.request.headers.get('dummy')).toEqual('linkHeaderTest');
+      req.flush([
+        { type: 'Link', uri: 'site/-/dummy1' },
+        { type: 'Link', uri: 'site/-/dummy2' },
+      ] as Link[]);
+
+      const req2 = httpTestingController.expectOne(`${REST_URL}/dummy1`);
+      expect(req2.request.headers.get('dummy')).toEqual('linkHeaderTest');
+      const req3 = httpTestingController.expectOne(`${REST_URL}/dummy2`);
+      expect(req3.request.headers.get('dummy')).toEqual('linkHeaderTest');
+    });
   });
 
   describe('API Service URL construction', () => {
