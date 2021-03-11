@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store, select } from '@ngrx/store';
-import { concatMap, filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
+import { concatMap, map, mapTo } from 'rxjs/operators';
 
 import { displayErrorMessage } from 'ish-core/store/core/messages';
-import { getCurrentBasketId } from 'ish-core/store/customer/basket';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 
 import { PunchoutService } from '../../services/punchout/punchout.service';
@@ -17,19 +15,15 @@ import {
 
 @Injectable()
 export class PunchoutFunctionsEffects {
-  constructor(private punchoutService: PunchoutService, private actions$: Actions, private store: Store) {}
+  constructor(private punchoutService: PunchoutService, private actions$: Actions) {}
 
   transferPunchoutBasket$ = createEffect(() =>
     this.actions$.pipe(
       ofType(transferPunchoutBasket),
-      withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-      filter(([, basketId]) => !!basketId),
-      concatMap(([, basketId]) =>
-        this.punchoutService.getBasketPunchoutData(basketId).pipe(
-          map(data => this.punchoutService.submitPunchoutData(data)),
-          mapTo(transferPunchoutBasketSuccess()),
-          mapErrorToAction(transferPunchoutBasketFail)
-        )
+      concatMap(() =>
+        this.punchoutService
+          .transferPunchoutBasket()
+          .pipe(mapTo(transferPunchoutBasketSuccess()), mapErrorToAction(transferPunchoutBasketFail))
       )
     )
   );

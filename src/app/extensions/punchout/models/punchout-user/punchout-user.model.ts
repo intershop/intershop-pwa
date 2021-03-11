@@ -5,3 +5,5 @@ export interface PunchoutUser {
   password?: string;
   active: boolean;
 }
+
+export type PunchoutType = 'oci' | 'cxml';
