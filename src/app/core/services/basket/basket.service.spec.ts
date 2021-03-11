@@ -1,4 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
+import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
@@ -6,6 +8,7 @@ import { Address } from 'ish-core/models/address/address.model';
 import { BasketData } from 'ish-core/models/basket/basket.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { OrderService } from 'ish-core/services/order/order.service';
+import { getBasketIdOrCurrent } from 'ish-core/store/customer/basket';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
@@ -47,7 +50,17 @@ describe('Basket Service', () => {
   beforeEach(() => {
     apiService = mock(ApiService);
     orderService = mock(OrderService);
-    basketService = new BasketService(instance(apiService), instance(orderService));
+
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: ApiService, useFactory: () => instance(apiService) },
+        { provide: OrderService, useFactory: () => instance(orderService) },
+        provideMockStore({
+          selectors: [{ selector: getBasketIdOrCurrent, value: 'current' }],
+        }),
+      ],
+    });
+    basketService = TestBed.inject(BasketService);
   });
 
   it("should get basket data when 'getBasket' is called", done => {
@@ -238,6 +251,7 @@ describe('Basket Service', () => {
       done();
     });
   });
+
   it("should create an attribute for a basket when 'createBasketAttribute' is called", done => {
     when(apiService.post(anything(), anything(), anything())).thenReturn(of({}));
 

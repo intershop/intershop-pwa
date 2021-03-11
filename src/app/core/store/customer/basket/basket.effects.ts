@@ -25,6 +25,9 @@ import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 
 import {
+  createBasket,
+  createBasketFail,
+  createBasketSuccess,
   deleteBasketAttribute,
   deleteBasketAttributeFail,
   deleteBasketAttributeSuccess,
@@ -81,6 +84,21 @@ export class BasketEffects {
       mapToPayloadProperty('apiToken'),
       concatMap(apiToken =>
         this.basketService.getBasketByToken(apiToken).pipe(map(basket => loadBasketSuccess({ basket })))
+      )
+    )
+  );
+
+  /**
+   * Creates a basket that is used for all subsequent basket operations with a fixed basket id instead of 'current'.
+   */
+  createBasket$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createBasket),
+      mergeMap(() =>
+        this.basketService.createBasket().pipe(
+          map(basket => createBasketSuccess({ basket })),
+          mapErrorToAction(createBasketFail)
+        )
       )
     )
   );

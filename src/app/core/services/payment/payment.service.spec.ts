@@ -8,7 +8,9 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { BasketService } from 'ish-core/services/basket/basket.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
+import { getBasketIdOrCurrent } from 'ish-core/store/customer/basket';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { PaymentService } from './payment.service';
@@ -16,6 +18,7 @@ import { PaymentService } from './payment.service';
 describe('Payment Service', () => {
   let paymentService: PaymentService;
   let apiService: ApiService;
+  let basketService: BasketService;
   let appFacade: AppFacade;
 
   const paymentInstrument = {
@@ -70,14 +73,19 @@ describe('Payment Service', () => {
 
   beforeEach(() => {
     apiService = mock(ApiService);
+    basketService = mock(BasketService);
     appFacade = mock(AppFacade);
 
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiService, useFactory: () => instance(apiService) },
+        { provide: BasketService, useFactory: () => instance(basketService) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         provideMockStore({
-          selectors: [{ selector: getCurrentLocale, value: { lang: 'en_US' } as Locale }],
+          selectors: [
+            { selector: getCurrentLocale, value: { lang: 'en_US' } as Locale },
+            { selector: getBasketIdOrCurrent, value: 'current' },
+          ],
         }),
       ],
     });

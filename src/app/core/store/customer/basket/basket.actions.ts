@@ -24,6 +24,12 @@ export const loadBasketFail = createAction('[Basket API] Load Basket Fail', http
 
 export const loadBasketSuccess = createAction('[Basket API] Load Basket Success', payload<{ basket: Basket }>());
 
+export const createBasket = createAction('[Basket] Create Basket');
+
+export const createBasketFail = createAction('[Basket API] Create Basket Fail', httpError());
+
+export const createBasketSuccess = createAction('[Basket API] Create Basket Success', payload<{ basket: Basket }>());
+
 export const createBasketAddress = createAction(
   '[Basket] Create Basket Address',
   payload<{ address: Address; scope: 'invoice' | 'shipping' | 'any' }>()

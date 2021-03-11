@@ -25,6 +25,7 @@ import {
   createBasketPayment,
   createBasketPaymentFail,
   createBasketPaymentSuccess,
+  createBasketSuccess,
   deleteBasketAttribute,
   deleteBasketAttributeFail,
   deleteBasketAttributeSuccess,
@@ -175,7 +176,7 @@ export const basketReducer = createReducer(
     startCheckoutFail
   ),
 
-  on(loadBasketSuccess, mergeBasketSuccess, (state, action) => {
+  on(loadBasketSuccess, createBasketSuccess, mergeBasketSuccess, (state, action) => {
     const basket = {
       ...action.payload.basket,
     };
