@@ -3,13 +3,12 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
-import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displayErrorMessage } from 'ish-core/store/core/messages';
 import { loadBasketSuccess } from 'ish-core/store/customer/basket';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { PunchoutService } from '../../services/punchout/punchout.service';
@@ -29,10 +28,10 @@ describe('Punchout Functions Effects', () => {
 
   beforeEach(() => {
     punchoutService = mock(PunchoutService);
-    when(punchoutService.getBasketPunchoutData(anyString())).thenReturn(of(undefined));
+    when(punchoutService.transferPunchoutBasket()).thenReturn(of(undefined));
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting([]), CustomerStoreModule.forTesting('basket')],
+      imports: [CoreStoreModule.forTesting([])],
       providers: [
         PunchoutFunctionsEffects,
         provideMockActions(() => actions$),
@@ -56,20 +55,11 @@ describe('Punchout Functions Effects', () => {
       );
     });
 
-    it('should call the service for getting the punchout data', done => {
+    it('should call the service for transfering the punchout data', done => {
       actions$ = of(transferPunchoutBasket());
 
       effects.transferPunchoutBasket$.subscribe(() => {
-        verify(punchoutService.getBasketPunchoutData('BID')).once();
-        done();
-      });
-    });
-
-    it('should call the service for submitting the punchout data', done => {
-      actions$ = of(transferPunchoutBasket());
-
-      effects.transferPunchoutBasket$.subscribe(() => {
-        verify(punchoutService.submitPunchoutData(anything())).once();
+        verify(punchoutService.transferPunchoutBasket()).once();
         done();
       });
     });
@@ -85,9 +75,9 @@ describe('Punchout Functions Effects', () => {
       expect(effects.transferPunchoutBasket$).toBeObservable(expected$);
     });
 
-    it('should dispatch a DeletePunchoutUserFail action in case of an error', () => {
+    it('should dispatch a transferPunchoutBasketFail action in case of an error', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(punchoutService.getBasketPunchoutData(anyString())).thenReturn(throwError(error));
+      when(punchoutService.transferPunchoutBasket()).thenReturn(throwError(error));
 
       const action = transferPunchoutBasket();
       const completion = transferPunchoutBasketFail({ error });
