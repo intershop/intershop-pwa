@@ -1,4 +1,4 @@
-import { HttpParams } from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, throwError } from 'rxjs';
@@ -20,17 +20,26 @@ export class PunchoutService {
   private currentCustomer$ = this.store.pipe(select(getLoggedInCustomer), whenTruthy(), take(1));
 
   /**
+   * http header for Punchout API v2
+   */
+  private punchoutHeaders = new HttpHeaders({
+    Accept: 'application/vnd.intershop.punchout.v2+json',
+  });
+
+  /**
    * Gets the list of punchout users.
    * @returns    An array of punchout users.
    */
   getUsers(): Observable<PunchoutUser[]> {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
-        this.apiService.get(`customers/${customer.customerNo}/punchouts/oci/users`).pipe(
-          unpackEnvelope<Link>(),
-          this.apiService.resolveLinks<PunchoutUser>(),
-          map(users => users.map(user => ({ ...user, password: undefined })))
-        )
+        this.apiService
+          .get(`customers/${customer.customerNo}/punchouts/oci5/users`, { headers: this.punchoutHeaders })
+          .pipe(
+            unpackEnvelope<Link>(),
+            this.apiService.resolveLinks<PunchoutUser>({ headers: this.punchoutHeaders }),
+            map(users => users.map(user => ({ ...user, password: undefined })))
+          )
       )
     );
   }
@@ -47,10 +56,14 @@ export class PunchoutService {
 
     return this.currentCustomer$.pipe(
       switchMap(customer =>
-        this.apiService.post(`customers/${customer.customerNo}/punchouts/oci/users`, user).pipe(
-          this.apiService.resolveLink<PunchoutUser>(),
-          map(updatedUser => ({ ...updatedUser, password: undefined }))
-        )
+        this.apiService
+          .post(`customers/${customer.customerNo}/punchouts/oci5/users`, user, {
+            headers: this.punchoutHeaders,
+          })
+          .pipe(
+            this.apiService.resolveLink<PunchoutUser>({ headers: this.punchoutHeaders }),
+            map(updatedUser => ({ ...updatedUser, password: undefined }))
+          )
       )
     );
   }
@@ -68,7 +81,9 @@ export class PunchoutService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .put<PunchoutUser>(`customers/${customer.customerNo}/punchouts/oci/users/${user.login}`, user)
+          .put<PunchoutUser>(`customers/${customer.customerNo}/punchouts/oci5/users/${user.login}`, user, {
+            headers: this.punchoutHeaders,
+          })
           .pipe(map(updatedUser => ({ ...updatedUser, password: undefined })))
       )
     );
@@ -85,7 +100,9 @@ export class PunchoutService {
 
     return this.currentCustomer$.pipe(
       switchMap(customer =>
-        this.apiService.delete<void>(`customers/${customer.customerNo}/punchouts/oci/users/${login}`)
+        this.apiService.delete<void>(`customers/${customer.customerNo}/punchouts/oci5/users/${login}`, {
+          headers: this.punchoutHeaders,
+        })
       )
     );
   }
@@ -102,7 +119,8 @@ export class PunchoutService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .post<{ data: Attribute<string>[] }>(`customers/${customer.customerNo}/punchouts/oci/transfer`, undefined, {
+          .post<{ data: Attribute<string>[] }>(`customers/${customer.customerNo}/punchouts/oci5/transfer`, undefined, {
+            headers: this.punchoutHeaders,
             params: new HttpParams().set('basketId', basketId),
           })
           .pipe(map(data => data.data))
@@ -113,18 +131,19 @@ export class PunchoutService {
   /**
    * Gets a JSON object with the necessary punchout data for the product validation.
    * @param productSKU   The product SKU of the product to validate.
-   * @param quantity     The quantity for the validation.
+   * @param quantity     The quantity for the validation (default: '1').
    */
-  getProductPunchoutData(productSKU: string, quantity: string): Observable<Attribute<string>[]> {
-    if (!productSKU) {
+  getProductPunchoutData(productId: string, quantity = '1'): Observable<Attribute<string>[]> {
+    if (!productId) {
       return throwError('getProductPunchoutData() of the punchout service called without productSKU');
     }
 
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .get<{ data: Attribute<string>[] }>(`customers/${customer.customerNo}/punchouts/oci/validate`, {
-            params: new HttpParams().set('productSKU', productSKU).set('quantity', quantity),
+          .get<{ data: Attribute<string>[] }>(`customers/${customer.customerNo}/punchouts/oci5/validate`, {
+            headers: this.punchoutHeaders,
+            params: new HttpParams().set('productId', productId).set('quantity', quantity),
           })
           .pipe(map(data => data.data))
       )
@@ -143,7 +162,8 @@ export class PunchoutService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .get<{ data: Attribute<string>[] }>(`customers/${customer.customerNo}/punchouts/oci/search`, {
+          .get<{ data: Attribute<string>[] }>(`customers/${customer.customerNo}/punchouts/oci5/background-search`, {
+            headers: this.punchoutHeaders,
             params: new HttpParams().set('searchString', searchString),
           })
           .pipe(map(data => data.data))

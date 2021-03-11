@@ -6,6 +6,7 @@ import { catchError, concatMap, mapTo, switchMap, take, tap } from 'rxjs/operato
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -15,8 +16,9 @@ import { PunchoutService } from '../../services/punchout/punchout.service';
 export class PunchoutPageGuard implements CanActivate {
   constructor(
     private router: Router,
-    private accountFacade: AccountFacade,
     private appFacade: AppFacade,
+    private accountFacade: AccountFacade,
+    private checkoutFacade: CheckoutFacade,
     private cookiesService: CookiesService,
     private punchoutService: PunchoutService,
     @Inject(PLATFORM_ID) private platformId: string
@@ -59,6 +61,9 @@ export class PunchoutPageGuard implements CanActivate {
             this.cookiesService.put('hookURL', route.queryParamMap.get('HOOK_URL'), { sameSite: 'Strict' });
           }
 
+          // create a new basket for every punchout session to avoid basket conflicts for concurrent sessions
+          this.checkoutFacade.createBasket();
+
           // Product Details
           if (route.queryParamMap.get('FUNCTION') === 'DETAIL' && route.queryParamMap.get('PRODUCTID')) {
             return of(this.router.parseUrl(`/product/${route.queryParamMap.get('PRODUCTID')}`));
@@ -66,7 +71,7 @@ export class PunchoutPageGuard implements CanActivate {
             // Validation of Products
           } else if (route.queryParamMap.get('FUNCTION') === 'VALIDATE' && route.queryParamMap.get('PRODUCTID')) {
             return this.punchoutService
-              .getProductPunchoutData(route.queryParamMap.get('PRODUCTID'), route.queryParamMap.get('QUANTITY'))
+              .getProductPunchoutData(route.queryParamMap.get('PRODUCTID'), route.queryParamMap.get('QUANTITY') || '1')
               .pipe(
                 tap(data => this.punchoutService.submitPunchoutData(data)),
                 mapTo(false)
