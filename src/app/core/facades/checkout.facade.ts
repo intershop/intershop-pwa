@@ -13,6 +13,7 @@ import {
   addPromotionCodeToBasket,
   assignBasketAddress,
   continueCheckout,
+  createBasket,
   createBasketAddress,
   createBasketPayment,
   deleteBasketAttribute,
@@ -34,6 +35,7 @@ import {
   isBasketInvoiceAndShippingAddressEqual,
   loadBasketEligiblePaymentMethods,
   loadBasketEligibleShippingMethods,
+  loadBasketWithId,
   removePromotionCodeFromBasket,
   setBasketAttribute,
   setBasketPayment,
@@ -82,6 +84,14 @@ export class CheckoutFacade {
     map(basket => (basket && basket.lineItems && basket.lineItems.length ? basket.lineItems : undefined))
   );
   submittedBasket$ = this.store.pipe(select(getSubmittedBasket));
+
+  loadBasketWithId(basketId: string) {
+    this.store.dispatch(loadBasketWithId({ basketId }));
+  }
+
+  createBasket() {
+    this.store.dispatch(createBasket());
+  }
 
   deleteBasketItem(itemId: string) {
     this.store.dispatch(deleteBasketItem({ itemId }));
