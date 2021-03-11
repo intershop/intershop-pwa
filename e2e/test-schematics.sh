@@ -80,12 +80,12 @@ stat src/app/extensions/awesome/store/super/super.reducer.ts
 stat src/app/extensions/awesome/store/super/super.selectors.ts
 grep "SuperState" src/app/extensions/awesome/store/awesome-store.ts
 
-npx ng g cms --definitionQualifiedName app:component.custom.inventory.pagelet2-Component inventory
+npx ng g cms --definition-qualified-name app:component.custom.inventory.pagelet2-Component inventory
 stat src/app/shared/cms/components/cms-inventory/cms-inventory.component.ts
 grep "CMSInventoryComponent" src/app/shared/cms/cms.module.ts
 grep "CMSInventoryComponent" src/app/shared/shared.module.ts
 
-npx ng g cms --definitionQualifiedName app:component.custom.audio.pagelet2-Component --noCMSPrefixing audio
+npx ng g cms --definition-qualified-name app:component.custom.audio.pagelet2-Component --noCMSPrefixing audio
 stat src/app/shared/cms/components/audio/audio.component.ts
 grep "AudioComponent" src/app/shared/cms/cms.module.ts
 grep "AudioComponent" src/app/shared/shared.module.ts
