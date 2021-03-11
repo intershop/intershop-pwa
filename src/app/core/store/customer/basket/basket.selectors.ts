@@ -55,6 +55,10 @@ export const getCurrentBasketId = createSelector(getBasketState, basket =>
   basket.basket ? basket.basket.id : undefined
 );
 
+export const getBasketIdOrCurrent = createSelector(getBasketState, basket =>
+  basket.basket ? basket.basket.id : 'current'
+);
+
 export const getBasketLoading = createSelector(getBasketState, basket => basket.loading);
 
 export const getBasketError = createSelector(getBasketState, basket => basket.error);

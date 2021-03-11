@@ -25,6 +25,7 @@ import {
   createBasketPayment,
   createBasketPaymentFail,
   createBasketPaymentSuccess,
+  createBasketSuccess,
   deleteBasketAttribute,
   deleteBasketAttributeFail,
   deleteBasketAttributeSuccess,
@@ -43,6 +44,7 @@ import {
   loadBasketEligibleShippingMethodsSuccess,
   loadBasketFail,
   loadBasketSuccess,
+  loadBasketWithId,
   mergeBasketFail,
   mergeBasketSuccess,
   removePromotionCodeFromBasket,
@@ -111,6 +113,7 @@ export const basketReducer = createReducer(
   initialState,
   setLoadingOn(
     loadBasket,
+    loadBasketWithId,
     assignBasketAddress,
     updateBasketShippingMethod,
     updateBasket,
@@ -175,7 +178,7 @@ export const basketReducer = createReducer(
     startCheckoutFail
   ),
 
-  on(loadBasketSuccess, mergeBasketSuccess, (state, action) => {
+  on(loadBasketSuccess, createBasketSuccess, mergeBasketSuccess, (state, action) => {
     const basket = {
       ...action.payload.basket,
     };

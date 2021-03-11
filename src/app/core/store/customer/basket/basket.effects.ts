@@ -25,6 +25,9 @@ import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 
 import {
+  createBasket,
+  createBasketFail,
+  createBasketSuccess,
   deleteBasketAttribute,
   deleteBasketAttributeFail,
   deleteBasketAttributeSuccess,
@@ -35,6 +38,7 @@ import {
   loadBasketEligibleShippingMethodsSuccess,
   loadBasketFail,
   loadBasketSuccess,
+  loadBasketWithId,
   mergeBasketFail,
   mergeBasketSuccess,
   resetBasketErrors,
@@ -75,12 +79,46 @@ export class BasketEffects {
     )
   );
 
+  /**
+   * Loads a basket with the given id.
+   */
+  loadBasketWithId$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadBasketWithId),
+      mapToPayloadProperty('basketId'),
+      mergeMap(basketId =>
+        this.basketService.getBasketWithId(basketId).pipe(
+          map(basket => loadBasketSuccess({ basket })),
+          mapErrorToAction(loadBasketFail)
+        )
+      )
+    )
+  );
+
+  /**
+   * Loads the current basket for a user authenticated by apiToken.
+   */
   loadBasketByAPIToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadBasketByAPIToken),
       mapToPayloadProperty('apiToken'),
       concatMap(apiToken =>
         this.basketService.getBasketByToken(apiToken).pipe(map(basket => loadBasketSuccess({ basket })))
+      )
+    )
+  );
+
+  /**
+   * Creates a basket that is used for all subsequent basket operations with a fixed basket id instead of 'current'.
+   */
+  createBasket$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createBasket),
+      mergeMap(() =>
+        this.basketService.createBasket().pipe(
+          map(basket => createBasketSuccess({ basket })),
+          mapErrorToAction(createBasketFail)
+        )
       )
     )
   );
@@ -193,7 +231,7 @@ export class BasketEffects {
               // anonymous basket exists -> get or create user basket and merge anonymous basket into it
               return iif(
                 () => !!baskets.length,
-                this.basketService.getBasket(),
+                this.basketService.getBasketWithId('current'),
                 this.basketService.createBasket()
               ).pipe(
                 switchMap(newOrCurrentUserBasket =>

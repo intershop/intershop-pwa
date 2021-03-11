@@ -18,6 +18,7 @@ import { PaymentMethodMapper } from 'ish-core/models/payment-method/payment-meth
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { BasketService } from 'ish-core/services/basket/basket.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 
 /**
@@ -25,7 +26,12 @@ import { getCurrentLocale } from 'ish-core/store/core/configuration';
  */
 @Injectable({ providedIn: 'root' })
 export class PaymentService {
-  constructor(private apiService: ApiService, private store: Store, private appFacade: AppFacade) {}
+  constructor(
+    private apiService: ApiService,
+    private basketService: BasketService,
+    private store: Store,
+    private appFacade: AppFacade
+  ) {}
 
   private basketHeaders = new HttpHeaders({
     'content-type': 'application/json',
@@ -39,8 +45,9 @@ export class PaymentService {
   getBasketEligiblePaymentMethods(): Observable<PaymentMethod[]> {
     const params = new HttpParams().set('include', 'paymentInstruments');
 
-    return this.apiService
-      .get(`baskets/current/eligible-payment-methods`, {
+    return this.basketService
+      .currentBasketEndpoint()
+      .get('eligible-payment-methods', {
         headers: this.basketHeaders,
         params,
       })
@@ -57,9 +64,10 @@ export class PaymentService {
       return throwError('setBasketPayment() called without paymentInstrument');
     }
 
-    return this.apiService
+    return this.basketService
+      .currentBasketEndpoint()
       .put<{ data: PaymentInstrument; included: { paymentMethod: { [id: string]: PaymentMethodBaseData } } }>(
-        `baskets/current/payments/open-tender?include=paymentMethod`,
+        'payments/open-tender?include=paymentMethod',
         { paymentInstrument },
         {
           headers: this.basketHeaders,
@@ -111,8 +119,9 @@ export class PaymentService {
         redirect,
       };
 
-      return this.apiService
-        .put(`baskets/current/payments/open-tender`, body, {
+      return this.basketService
+        .currentBasketEndpoint()
+        .put('payments/open-tender', body, {
           headers: this.basketHeaders,
         })
         .pipe(mapTo(paymentInstrument));
@@ -131,8 +140,9 @@ export class PaymentService {
       return throwError('createBasketPayment() called without paymentMethodId');
     }
 
-    return this.apiService
-      .post(`baskets/current/payment-instruments?include=paymentMethod`, paymentInstrument, {
+    return this.basketService
+      .currentBasketEndpoint()
+      .post('payment-instruments?include=paymentMethod', paymentInstrument, {
         headers: this.basketHeaders,
       })
       .pipe(map(({ data }) => data));
@@ -159,9 +169,10 @@ export class PaymentService {
         .map(([name, value]) => ({ name, value })),
     };
 
-    return this.apiService
+    return this.basketService
+      .currentBasketEndpoint()
       .patch(
-        `baskets/current/payments/open-tender`,
+        'payments/open-tender',
         { redirect },
         {
           headers: this.basketHeaders,
@@ -328,8 +339,9 @@ export class PaymentService {
           .map(attr => ({ name: attr.name, value: attr.value })),
       };
 
-      return this.apiService
-        .patch(`baskets/current/payment-instruments/${paymentInstrument.id}`, body, {
+      return this.basketService
+        .currentBasketEndpoint()
+        .patch(`payment-instruments/${paymentInstrument.id}`, body, {
           headers: this.basketHeaders,
         })
         .pipe(map(({ data }) => data));
