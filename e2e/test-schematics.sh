@@ -142,12 +142,15 @@ npx tsc --project tsconfig.all.json
 npx ng g add-destroy src/app/extensions/awesome/shared/dummy/dummy.component.ts
 grep destroy src/app/extensions/awesome/shared/dummy/dummy.component.ts
 
-npm run build
+echo '<p>COMPONENT_OVERRIDES</p>' > src/app/pages/home/home-page.component.local.html
+
+npm run build --configuration=local
 
 nohup bash -c "npm run serve &"
 wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
 
 wget -O - -q "http://localhost:4200/warehouses" | grep -q "warehouses-page works"
+wget -O - -q "http://localhost:4200/home" | grep -q "COMPONENT_OVERRIDES"
 
 npx ng g kubernetes-deployment
 find charts
