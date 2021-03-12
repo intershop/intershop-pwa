@@ -5,7 +5,7 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 import { environment } from '../../../../../environments/environment';
 
-import { applyConfiguration } from './configuration.actions';
+import { applyConfiguration, setLocale } from './configuration.actions';
 
 export interface ConfigurationState {
   baseURL?: string;
@@ -21,6 +21,7 @@ export interface ConfigurationState {
   lang?: string;
   // not synced via state transfer
   _deviceType?: DeviceType;
+  isProduction?: boolean;
 }
 
 const initialState: ConfigurationState = {
@@ -34,9 +35,14 @@ const initialState: ConfigurationState = {
   locales: environment.locales,
   lang: undefined,
   _deviceType: environment.defaultDeviceType,
+  isProduction: environment.production,
 };
 
 export const configurationReducer = createReducer(
   initialState,
-  on(applyConfiguration, (state: ConfigurationState, action) => ({ ...state, ...action.payload }))
+  on(applyConfiguration, (state: ConfigurationState, action) => ({ ...state, ...action.payload })),
+  on(setLocale, (state: ConfigurationState, action) => {
+    const { lang } = action.payload;
+    return { ...state, lang };
+  })
 );

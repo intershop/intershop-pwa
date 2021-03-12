@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
   isBrowser: boolean;
   wrapperClasses$: Observable<string[]>;
   deviceType$: Observable<DeviceType>;
+  isProduction: Observable<boolean>;
 
   constructor(private appFacade: AppFacade, @Inject(PLATFORM_ID) platformId: string) {
     this.isBrowser = isPlatformBrowser(platformId);
@@ -28,5 +29,6 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.deviceType$ = this.appFacade.deviceType$;
     this.wrapperClasses$ = this.appFacade.appWrapperClasses$;
+    this.isProduction = this.appFacade.isProduction$;
   }
 }

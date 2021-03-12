@@ -1,0 +1,24 @@
+<ng-template #template>
+  <div class="modal-header">
+    <h2 class="modal-title pull-left">{{ 'channel.headline' | translate }}</h2>
+    <!-- <button type="button" class="close" [attr.aria-label]="'dialog.close.text' | translate" (click)="hide()">
+      <span aria-hidden="true" [attr.title]="'dialog.close.text' | translate">&times;</span>
+    </button> -->
+  </div>
+
+  <div class="modal-body">
+    <select (change)="changeCountry($any($event.target).value, $any($event.target).lang)" class="form-control mw-100">
+      <option
+        *ngFor="let locale of locales | async"
+        [value]="locale.value"
+        [selected]="locale.value == selectedChannel"
+      >
+        {{ 'channel.' + locale.value | translate }}
+      </option>
+    </select>
+  </div>
+
+  <div class="modal-footer">
+    <button data-testing-id="confirm" class="btn btn-primary" (click)="confirm()">Confirm</button>
+  </div>
+</ng-template>

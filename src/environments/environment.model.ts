@@ -6,6 +6,8 @@ import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { TactonConfig } from '../app/extensions/tacton/models/tacton-config/tacton-config.model';
 
 export interface Environment {
+  production: boolean;
+
   /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
 
   icmBaseURL: string;
@@ -96,6 +98,8 @@ export interface Environment {
 }
 
 export const ENVIRONMENT_DEFAULTS: Environment = {
+  production: false,
+
   /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
   icmBaseURL: 'NOT SET',
   icmChannel: 'inSPIRED-inTRONICS-Site',
