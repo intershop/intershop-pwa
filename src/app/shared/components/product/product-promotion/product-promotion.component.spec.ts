@@ -19,7 +19,7 @@ describe('Product Promotion Component', () => {
   beforeEach(async () => {
     context = mock(ProductContextFacade);
     when(context.select('displayProperties', 'promotions')).thenReturn(of(true));
-    when(context.productPromotions$()).thenReturn(EMPTY);
+    when(context.select('promotions')).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
       declarations: [
@@ -44,7 +44,7 @@ describe('Product Promotion Component', () => {
   });
 
   it('should display the promotion when supplied', () => {
-    when(context.productPromotions$()).thenReturn(
+    when(context.select('promotions')).thenReturn(
       of([
         {
           id: 'PROMO_UUID',
