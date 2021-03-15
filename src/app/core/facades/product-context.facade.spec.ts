@@ -439,19 +439,22 @@ describe('Product Context Facade', () => {
       context.set('sku', () => '123');
     });
 
-    it('should set parts property for retail set', () => {
-      expect(context.get('parts')).toMatchInlineSnapshot(`
-        Array [
-          Object {
-            "quantity": 1,
-            "sku": "p1",
-          },
-          Object {
-            "quantity": 1,
-            "sku": "p2",
-          },
-        ]
-      `);
+    it('should set parts property for retail set', done => {
+      context.select('parts').subscribe(parts => {
+        expect(parts).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "quantity": 1,
+              "sku": "p1",
+            },
+            Object {
+              "quantity": 1,
+              "sku": "p2",
+            },
+          ]
+        `);
+        done();
+      });
     });
 
     it('should set correct display properties for retail set', () => {
@@ -506,19 +509,22 @@ describe('Product Context Facade', () => {
       context.set('sku', () => '123');
     });
 
-    it('should set parts property for bundle', () => {
-      expect(context.get('parts')).toMatchInlineSnapshot(`
-        Array [
-          Object {
-            "quantity": 1,
-            "sku": "p1",
-          },
-          Object {
-            "quantity": 2,
-            "sku": "p2",
-          },
-        ]
-      `);
+    it('should set parts property for bundle', done => {
+      context.select('parts').subscribe(parts => {
+        expect(parts).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "quantity": 1,
+              "sku": "p1",
+            },
+            Object {
+              "quantity": 2,
+              "sku": "p2",
+            },
+          ]
+        `);
+        done();
+      });
     });
 
     it('should set correct display properties for bundle', () => {

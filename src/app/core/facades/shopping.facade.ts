@@ -36,6 +36,7 @@ import {
   loadProduct,
   loadProductIfNotLoaded,
   loadProductLinks,
+  loadProductParts,
 } from 'ish-core/store/shopping/products';
 import { getPromotion, getPromotions, loadPromotion } from 'ish-core/store/shopping/promotions';
 import {
@@ -119,6 +120,7 @@ export class ShoppingFacade {
 
   productLinks$(sku: string | Observable<string>) {
     return toObservable(sku).pipe(
+      whenTruthy(),
       tap(plainSKU => {
         this.store.dispatch(loadProductLinks({ sku: plainSKU }));
       }),
@@ -126,10 +128,16 @@ export class ShoppingFacade {
     );
   }
 
-  // PRODUCT RETAILSET / BUNDLES
+  // PRODUCT RETAIL SET / BUNDLES
 
-  productParts$(sku: string) {
-    return this.store.pipe(select(getProductParts(sku)));
+  productParts$(sku: string | Observable<string>) {
+    return toObservable(sku).pipe(
+      whenTruthy(),
+      tap(plainSKU => {
+        this.store.dispatch(loadProductParts({ sku: plainSKU }));
+      }),
+      switchMap(plainSKU => this.store.pipe(select(getProductParts(plainSKU))))
+    );
   }
 
   // SEARCH

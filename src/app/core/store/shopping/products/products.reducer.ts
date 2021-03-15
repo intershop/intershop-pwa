@@ -5,13 +5,12 @@ import { ProductLinksDictionary } from 'ish-core/models/product-links/product-li
 import { AllProductTypes, SkuQuantityType } from 'ish-core/models/product/product.model';
 
 import {
-  loadProductBundlesSuccess,
   loadProductFail,
   loadProductLinksSuccess,
+  loadProductPartsSuccess,
   loadProductSuccess,
   loadProductVariationsFail,
   loadProductVariationsSuccess,
-  loadRetailSetSuccess,
   productSpecialUpdate,
 } from './products.actions';
 
@@ -68,13 +67,9 @@ export const productsReducer = createReducer(
     variations: { ...state.variations, [action.payload.sku]: action.payload.variations },
     defaultVariation: { ...state.defaultVariation, [action.payload.sku]: action.payload.defaultVariation },
   })),
-  on(loadProductBundlesSuccess, (state, action) => ({
+  on(loadProductPartsSuccess, (state, action) => ({
     ...state,
-    parts: { ...state.parts, [action.payload.sku]: action.payload.bundledProducts },
-  })),
-  on(loadRetailSetSuccess, (state, action) => ({
-    ...state,
-    parts: { ...state.parts, [action.payload.sku]: action.payload.parts.map(sku => ({ sku, quantity: 1 })) },
+    parts: { ...state.parts, [action.payload.sku]: action.payload.parts },
   })),
   on(loadProductLinksSuccess, (state, action) => ({
     ...state,

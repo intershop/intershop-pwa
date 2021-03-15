@@ -53,14 +53,11 @@ export const loadProductVariationsSuccess = createAction(
   payload<{ sku: string; variations: string[]; defaultVariation: string }>()
 );
 
-export const loadProductBundlesSuccess = createAction(
-  '[Products API] Load Product Bundles Success',
-  payload<{ sku: string; bundledProducts: SkuQuantityType[] }>()
-);
+export const loadProductParts = createAction('[Products API] Load Product Parts', payload<{ sku: string }>());
 
-export const loadRetailSetSuccess = createAction(
-  '[Products API] Load Retail Set Success',
-  payload<{ sku: string; parts: string[] }>()
+export const loadProductPartsSuccess = createAction(
+  '[Products API] Load Product Parts Success',
+  payload<{ sku: string; parts: SkuQuantityType[] }>()
 );
 
 export const loadProductLinks = createAction('[Products Internal] Load Product Links', payload<{ sku: string }>());

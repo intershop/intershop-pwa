@@ -87,6 +87,7 @@ export interface ProductContext {
   // lazy
   links: ProductLinksDictionary;
   promotions: Promotion[];
+  parts: SkuQuantityType[];
 
   // variation handling
   variationCount: number;
@@ -104,7 +105,6 @@ export interface ProductContext {
   hasQuantityError: boolean;
 
   // child contexts
-  parts: SkuQuantityType[];
   propagateActive: boolean;
   children: ProductContext[];
 }
@@ -237,14 +237,6 @@ export class ProductContextFacade extends RxState<ProductContext> {
       )
     );
 
-    this.connect(
-      'parts',
-      this.select('sku').pipe(
-        whenTruthy(),
-        switchMap(sku => this.shoppingFacade.productParts$(sku))
-      )
-    );
-
     const externalDisplayPropertyProviders = injector
       .get<ExternalDisplayPropertiesProvider[]>(EXTERNAL_DISPLAY_PROPERTY_PROVIDER, [])
       .map(edp => edp.setup(this.select('product')));
@@ -289,28 +281,37 @@ export class ProductContextFacade extends RxState<ProductContext> {
   ): Observable<ProductContext[K1][K2]>;
 
   select<K1 extends keyof ProductContext, K2 extends keyof ProductContext[K1]>(k1?: K1, k2?: K2) {
+    const wrap = <K extends keyof ProductContext>(key: K, obs: Observable<ProductContext[K]>) => {
+      if (!this.lazyFieldsInitialized.includes(key)) {
+        this.connect(key, obs);
+        this.lazyFieldsInitialized.push(key);
+      }
+    };
+
     switch (k1) {
       case 'links':
-        if (!this.lazyFieldsInitialized.includes('links')) {
-          this.connect('links', this.shoppingFacade.productLinks$(this.select('sku')));
-          this.lazyFieldsInitialized.push('links');
-        }
+        wrap('links', this.shoppingFacade.productLinks$(this.select('sku')));
         break;
       case 'promotions':
-        if (!this.lazyFieldsInitialized.includes('promotions')) {
-          this.connect(
-            'promotions',
-            combineLatest([
-              this.select('displayProperties', 'promotions'),
-              this.select('product', 'promotionIds'),
-            ]).pipe(
-              filter(([visible]) => !!visible),
-              switchMap(([, ids]) => this.shoppingFacade.promotions$(ids))
-            )
-          );
-          this.lazyFieldsInitialized.push('promotions');
-        }
+        wrap(
+          'promotions',
+          combineLatest([this.select('displayProperties', 'promotions'), this.select('product', 'promotionIds')]).pipe(
+            filter(([visible]) => !!visible),
+            switchMap(([, ids]) => this.shoppingFacade.promotions$(ids))
+          )
+        );
         break;
+      case 'parts':
+        wrap(
+          'parts',
+          combineLatest([
+            this.select('displayProperties', 'bundleParts'),
+            this.select('displayProperties', 'retailSetParts'),
+          ]).pipe(
+            filter(([a, b]) => a || b),
+            switchMap(() => this.shoppingFacade.productParts$(this.select('sku')))
+          )
+        );
     }
     return k2 ? super.select(k1, k2) : k1 ? super.select(k1) : super.select();
   }
