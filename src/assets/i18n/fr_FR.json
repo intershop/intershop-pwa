@@ -952,6 +952,8 @@
   },
   "shopping_cart.ministatus.view_cart.link": "Afficher le panier",
   "shopping_cart.oci.transfer_basket.button": "Transférer le panier",
+  "shopping_cart.payment.creditCardExpiryDate.invalid.error": "La date d’expiration de la carte de crédit doit contenir 5 caractères et être au format nn/nn, où n est un nombre.",
+  "shopping_cart.payment.creditCardNumberRange.invalid.error": "Vous avez saisi un numéro non valide pour la carte sélectionnée.",
   "shopping_cart.pli.qty.label": "Quantité :",
   "shopping_cart.price.heading": "Prix",
   "shopping_cart.proceed_to_checkout.button.label": "Passer la commande",
