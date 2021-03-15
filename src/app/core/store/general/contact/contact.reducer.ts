@@ -23,17 +23,17 @@ const initialState: ContactState = {
 
 export const contactReducer = createReducer(
   initialState,
-  on(loadContact, (state: ContactState) => ({
+  on(loadContact, state => ({
     ...state,
     loading: true,
     success: undefined,
   })),
-  on(loadContactFail, (state: ContactState) => ({
+  on(loadContactFail, state => ({
     ...state,
     loading: false,
     success: undefined,
   })),
-  on(loadContactSuccess, (state: ContactState, action) => {
+  on(loadContactSuccess, (state, action) => {
     const { subjects } = action.payload;
     return {
       ...state,
@@ -42,17 +42,17 @@ export const contactReducer = createReducer(
       success: undefined,
     };
   }),
-  on(createContact, (state: ContactState) => ({
+  on(createContact, state => ({
     ...state,
     loading: true,
     success: undefined,
   })),
-  on(createContactFail, (state: ContactState) => ({
+  on(createContactFail, state => ({
     ...state,
     loading: false,
     success: false,
   })),
-  on(createContactSuccess, (state: ContactState) => ({
+  on(createContactSuccess, state => ({
     ...state,
     loading: false,
     success: true,

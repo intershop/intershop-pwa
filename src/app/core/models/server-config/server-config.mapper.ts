@@ -4,7 +4,7 @@ import { ServerConfigData, ServerConfigDataEntry } from './server-config.interfa
 import { ServerConfig } from './server-config.model';
 
 export class ServerConfigMapper {
-  private static transformType(val) {
+  private static transformType(val: unknown) {
     if (typeof val === 'string') {
       if (!isNaN(+val)) {
         return +val;

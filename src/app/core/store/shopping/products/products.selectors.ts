@@ -3,6 +3,7 @@ import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/stor
 import { isEqual } from 'lodash-es';
 import { identity } from 'rxjs';
 
+import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.interface';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
@@ -122,11 +123,13 @@ export const getProductLinks = (sku: string) => createSelector(getProductsState,
 
 export const getProductParts = (sku: string) => createSelector(getProductsState, state => state.parts[sku]);
 
-export const getBreadcrumbForProductPage = createSelectorFactory(projector => resultMemoize(projector, isEqual))(
+export const getBreadcrumbForProductPage = createSelectorFactory<object, BreadcrumbItem[]>(projector =>
+  resultMemoize(projector, isEqual)
+)(
   getSelectedProduct,
   getSelectedCategory,
   getCategoryEntities,
-  (product: ProductView, category: CategoryView, entities: Dictionary<Category>) =>
+  (product: ProductView, category: CategoryView, entities: Dictionary<Category>): BreadcrumbItem[] =>
     ProductHelper.isSufficientlyLoaded(product, ProductCompletenessLevel.Detail)
       ? (category?.categoryPath || product.defaultCategory?.categoryPath || [])
           .map(id => entities[id])

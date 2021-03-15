@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Observable, ReplaySubject, combineLatest } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
@@ -37,16 +37,6 @@ export class ProductCompareListComponent implements OnInit {
    * The maximum number of products to be compared on one page
    */
   @Input() itemsPerPage = 3;
-
-  /**
-   * Trigger an add product to basket event
-   */
-  @Output() productToBasket = new EventEmitter<{ sku: string; quantity: number }>();
-
-  /**
-   * Trigger a remove product from compare event
-   */
-  @Output() removeProductCompare = new EventEmitter<string>();
 
   private compareProductSKUs$ = new ReplaySubject<string[]>(1);
   compareProducts$: Observable<ProductView[]>;
@@ -96,15 +86,6 @@ export class ProductCompareListComponent implements OnInit {
    * @param sku The SKU of the product to remove
    */
   removeFromCompare(sku: string) {
-    this.removeProductCompare.emit(sku);
-  }
-
-  /**
-   * Add product with the given quantity to the basket.
-   * @param sku       The SKU of the product to add
-   * @param quantity  The quantity to be added
-   */
-  addToBasket(sku: string, quantity: number) {
-    this.productToBasket.emit({ sku, quantity });
+    this.shoppingFacade.removeProductFromCompare(sku);
   }
 }

@@ -68,7 +68,6 @@ export class ProductQuantityComponent implements OnInit {
   }
 
   change(target: EventTarget) {
-    // tslint:disable-next-line: no-string-literal
-    this.setValue(Number.parseInt(target['value'], 10));
+    this.setValue(Number.parseInt((target as HTMLDataElement).value, 10));
   }
 }

@@ -15,10 +15,10 @@ const initialState: CountriesState = countryAdapter.getInitialState({});
 
 export const countriesReducer = createReducer(
   initialState,
-  on(loadCountriesFail, (state: CountriesState) => ({
+  on(loadCountriesFail, state => ({
     ...state,
   })),
-  on(loadCountriesSuccess, (state: CountriesState, action) => {
+  on(loadCountriesSuccess, (state, action) => {
     const { countries } = action.payload;
 
     return countryAdapter.setAll(countries, state);

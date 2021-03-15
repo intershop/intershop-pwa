@@ -78,14 +78,14 @@ function mergeCurrentSettings(
 
 export const productListingReducer = createReducer(
   initialState,
-  on(setProductListingPageSize, (state: ProductListingState, action) => ({
+  on(setProductListingPageSize, (state, action) => ({
     ...state,
     itemsPerPage: action.payload.itemsPerPage,
   })),
-  on(setViewType, (state: ProductListingState, action) => ({ ...state, viewType: action.payload.viewType })),
+  on(setViewType, (state, action) => ({ ...state, viewType: action.payload.viewType })),
   setLoadingOn(searchProducts, loadProductsForCategory, loadProductsForFilter, loadProductsForMaster),
   unsetLoadingAndErrorOn(searchProductsFail, loadProductsForCategoryFail, loadProductsForMasterFail),
-  on(setProductListingPages, (state: ProductListingState, action) => {
+  on(setProductListingPages, (state, action) => {
     const pages =
       action.payload.pages ||
       calculatePages({ ...state.entities[serializeProductListingID(action.payload.id)], ...action.payload });

@@ -94,8 +94,7 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
 
   navigateTo(target: EventTarget) {
     if (target) {
-      // tslint:disable-next-line: no-string-literal
-      this.router.navigate([target['value']]);
+      this.router.navigateByUrl((target as HTMLDataElement).value);
     }
   }
 

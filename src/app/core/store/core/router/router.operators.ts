@@ -1,6 +1,8 @@
-import { MonoTypeOperatorFunction } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { RouterNavigatedAction, RouterNavigationAction } from '@ngrx/router-store';
+import { MonoTypeOperatorFunction, OperatorFunction } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
+import { RouterState } from './router.reducer';
 import { selectUrl } from './router.selectors';
 
 /**
@@ -10,4 +12,8 @@ import { selectUrl } from './router.selectors';
  */
 export function ofUrl(url: RegExp): MonoTypeOperatorFunction<{}> {
   return source$ => source$.pipe(filter(state => url.test(selectUrl(state))));
+}
+
+export function mapToRouterState(): OperatorFunction<RouterNavigatedAction | RouterNavigationAction, RouterState> {
+  return map<{ payload: { routerState: unknown } }, RouterState>(action => action?.payload.routerState as RouterState);
 }

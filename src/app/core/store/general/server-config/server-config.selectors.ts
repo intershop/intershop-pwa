@@ -12,7 +12,7 @@ export const getServerConfigParameter = <T>(path: string) =>
   createSelector(
     getServerConfig,
     (serverConfig): T =>
-      path
+      (path
         .split('.')
-        .reduce((obj, key) => (obj && obj[key] !== undefined ? obj[key] : undefined), serverConfig as unknown) as T
+        .reduce((obj, key) => (obj?.[key] !== undefined ? obj[key] : undefined), serverConfig) as unknown) as T
   );

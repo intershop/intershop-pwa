@@ -6,7 +6,7 @@ import { noop } from 'rxjs';
 import { CookiesService } from './cookies.service';
 
 const mockDocument = () => ({
-  cookie: undefined,
+  cookie: undefined as string,
   getElementById: noop,
 });
 

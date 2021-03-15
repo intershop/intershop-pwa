@@ -315,7 +315,7 @@ describe('Order Template Selectors', () => {
     });
 
     it('should return correct order template for given id', () => {
-      expect(getOrderTemplateDetails(store$.state, { id: orderTemplates[1].id })).toEqual(orderTemplates[1]);
+      expect(getOrderTemplateDetails(orderTemplates[1].id)(store$.state)).toEqual(orderTemplates[1]);
     });
   });
 });

@@ -14,7 +14,7 @@ export class HeaderNavigationComponent implements OnInit {
 
   categories$: Observable<NavigationCategory[]>;
 
-  openedCategories = [];
+  private openedCategories: string[] = [];
 
   constructor(private shoppingFacade: ShoppingFacade) {}
 
@@ -27,7 +27,7 @@ export class HeaderNavigationComponent implements OnInit {
    * Adds hover class to rendered element.
    * @param submenu The rendered sub menu element.
    */
-  subMenuShow(submenu) {
+  subMenuShow(submenu: HTMLElement) {
     submenu.classList.add('hover');
   }
 
@@ -36,7 +36,7 @@ export class HeaderNavigationComponent implements OnInit {
    * Removes hover class from rendered element.
    * @param submenu The rendered sub menu element.
    */
-  subMenuHide(submenu) {
+  subMenuHide(submenu: HTMLElement) {
     submenu.classList.remove('hover');
   }
 

@@ -1,4 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
+import { HttpHandler, HttpRequest } from '@angular/common/http';
 import { NgModule, PLATFORM_ID } from '@angular/core';
 import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
 import { NgModuleWithProviders } from 'ng-mocks';
@@ -53,7 +54,7 @@ export class IdentityProviderModule {
           useValue: {
             getInstance: () => ({
               init: noop,
-              intercept: (req, next) => next.handle(req),
+              intercept: (req: HttpRequest<unknown>, next: HttpHandler) => next.handle(req),
               triggerLogin: () => true,
               triggerLogout: () => true,
               getCapabilities: () => capabilities,

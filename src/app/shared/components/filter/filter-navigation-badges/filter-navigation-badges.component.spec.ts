@@ -3,8 +3,8 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
+import { Facet } from 'ish-core/models/facet/facet.model';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
-import { Filter } from 'ish-core/models/filter/filter.model';
 
 import { FilterNavigationBadgesComponent } from './filter-navigation-badges.component';
 
@@ -25,14 +25,15 @@ describe('Filter Navigation Badges Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    const facet = (n, value, selected) => ({
-      name: value,
-      searchParameter: { [n]: value },
-      displayName: value,
-      count: 0,
-      selected,
-      level: 0,
-    });
+    const facet = (n: string, value: string, selected: boolean) =>
+      ({
+        name: value,
+        searchParameter: { [n]: [value] },
+        displayName: value,
+        count: 0,
+        selected,
+        level: 0,
+      } as Facet);
     component.filterNavigation = {
       filter: [
         {
@@ -43,7 +44,7 @@ describe('Filter Navigation Badges Component', () => {
           name: 'HDD',
           facets: [facet('HDD', '123', false), facet('HDD', '456', true)],
         },
-      ] as Filter[],
+      ],
     } as FilterNavigation;
   });
 

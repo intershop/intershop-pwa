@@ -133,7 +133,7 @@ export class OrderTemplateEffects {
     this.actions$.pipe(
       ofType(deleteOrderTemplate),
       mapToPayloadProperty('orderTemplateId'),
-      mergeMap(orderTemplateId => this.store.pipe(select(getOrderTemplateDetails, { id: orderTemplateId }))),
+      mergeMap(orderTemplateId => this.store.pipe(select(getOrderTemplateDetails(orderTemplateId)))),
       whenTruthy(),
       map(orderTemplate => ({ orderTemplateId: orderTemplate.id, title: orderTemplate.title })),
       mergeMap(({ orderTemplateId, title }) =>

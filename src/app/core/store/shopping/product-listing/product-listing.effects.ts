@@ -116,7 +116,7 @@ export class ProductListingEffects {
       mapToPayload(),
       switchMap(({ id, sorting, page, filters }) =>
         this.store.pipe(
-          select(getProductListingView, { ...id, sorting, page, filters }),
+          select(getProductListingView({ ...id, sorting, page, filters })),
           map((view: ProductListingView) => ({
             id,
             sorting,

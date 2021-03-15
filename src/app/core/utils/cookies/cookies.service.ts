@@ -92,7 +92,7 @@ export class CookiesService {
   }
 
   private cookiesReader(): { [key: string]: unknown } {
-    let lastCookies = {};
+    let lastCookies: { [key: string]: unknown } = {};
     let lastCookieString = '';
     let cookiesArray: string[];
     let cookie: string;

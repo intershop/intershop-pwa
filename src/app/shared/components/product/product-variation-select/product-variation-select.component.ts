@@ -27,7 +27,6 @@ export class ProductVariationSelectComponent implements OnInit {
   }
 
   optionChange(group: string, target: EventTarget) {
-    // tslint:disable-next-line: no-string-literal
-    this.context.changeVariationOption(group, target['value']);
+    this.context.changeVariationOption(group, (target as HTMLDataElement).value);
   }
 }

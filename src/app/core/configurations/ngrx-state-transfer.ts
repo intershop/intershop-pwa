@@ -22,7 +22,8 @@ export function ngrxStateTransferMeta(reducer: ActionReducer<CoreState>): Action
   };
 }
 
-export function filterState(store) {
+// tslint:disable-next-line: no-any - generic store can only be used as any
+export function filterState(store: any): object {
   if (store && typeof store === 'object' && !(store instanceof Array)) {
     return Object.keys(store)
       .filter(k => !k.startsWith('_'))

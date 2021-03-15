@@ -1,5 +1,14 @@
 import { isPlatformBrowser } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, OnInit, PLATFORM_ID } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  Input,
+  OnChanges,
+  OnInit,
+  PLATFORM_ID,
+  SimpleChanges,
+} from '@angular/core';
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
@@ -39,11 +48,11 @@ export class SearchResultComponent implements OnInit, OnChanges {
     this.isCollapsed = this.deviceType === 'mobile';
   }
 
-  ngOnChanges(change) {
+  ngOnChanges(changes: SimpleChanges) {
     if (isPlatformBrowser(this.platformId)) {
       window.scroll(0, 0);
     }
-    if (change.deviceType) {
+    if (changes.deviceType) {
       this.isCollapsed = this.deviceType === 'mobile';
     }
   }

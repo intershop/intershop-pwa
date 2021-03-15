@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { ProductComparePagingComponent } from './product-compare-paging.component';
 
@@ -29,16 +30,14 @@ describe('Product Compare Paging Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should trigger changePage event when click next and previous button', done => {
-    const expected = 1;
-    let called = false;
-    component.changePage.subscribe(data => {
-      expect(data).toEqual(expected);
-      called = true;
-      done();
-    });
-    component.changeToPage(expected);
-    expect(called).toBeTruthy();
+  it('should trigger changePage event when click next and previous button', () => {
+    const emitter = spy(component.changePage);
+
+    component.changeToPage(1);
+
+    verify(emitter.emit(anything())).once();
+    const [arg] = capture(emitter.emit).last();
+    expect(arg).toMatchInlineSnapshot(`1`);
   });
 
   it('should not show next button when current page equal to totalpages', () => {

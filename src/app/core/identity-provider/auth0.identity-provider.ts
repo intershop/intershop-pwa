@@ -23,7 +23,7 @@ export interface Auth0Config {
 }
 
 @Injectable({ providedIn: 'root' })
-export class Auth0IdentityProvider implements IdentityProvider {
+export class Auth0IdentityProvider implements IdentityProvider<Auth0Config> {
   constructor(
     private oauthService: OAuthService,
     private apiService: ApiService,

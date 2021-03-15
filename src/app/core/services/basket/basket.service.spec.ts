@@ -3,6 +3,7 @@ import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { Address } from 'ish-core/models/address/address.model';
+import { BasketData } from 'ish-core/models/basket/basket.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -18,21 +19,15 @@ describe('Basket Service', () => {
   const basketMockData = {
     data: {
       id: 'test',
-      calculationState: 'UNCALCULATED',
-      buckets: [
-        {
-          lineItems: [],
-          shippingMethod: {},
-          shipToAddress: {},
-        },
-      ],
+      calculated: false,
+      buckets: [],
       payment: {
         name: 'testPayment',
         id: 'paymentId',
       },
-      totals: {},
+      totals: undefined,
     },
-  };
+  } as BasketData;
 
   const lineItemData = {
     id: 'test',

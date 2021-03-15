@@ -144,14 +144,13 @@ export class QuickorderPageComponent implements OnInit {
     }
   }
 
-  uploadListener($event): void {
-    const files = $event.srcElement.files;
+  uploadListener(target: EventTarget): void {
+    const files = (target as HTMLInputElement).files;
     this.status = 'Default';
 
     if (this.isValidCSVFile(files[0])) {
-      const input = $event.target;
       const reader = new FileReader();
-      reader.readAsText(input.files[0]);
+      reader.readAsText(files[0]);
 
       reader.onload = () => {
         const csvData = reader.result;
@@ -188,7 +187,7 @@ export class QuickorderPageComponent implements OnInit {
     }
   }
 
-  isValidCSVFile(file) {
+  isValidCSVFile(file: File) {
     return file.name.endsWith('.csv');
   }
 

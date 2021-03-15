@@ -18,25 +18,6 @@ describe('Payment Service', () => {
   let apiService: ApiService;
   let appFacade: AppFacade;
 
-  const basketMock = {
-    data: {
-      id: 'test',
-      calculationState: 'UNCALCULATED',
-      buckets: [
-        {
-          lineItems: [],
-          shippingMethod: {},
-          shipToAddress: {},
-        },
-      ],
-      payment: {
-        name: 'testPayment',
-        id: 'paymentId',
-      },
-      totals: {},
-    },
-  };
-
   const paymentInstrument = {
     id: '4321',
     paymentMethod: 'ISH_DirectDebit',
@@ -65,7 +46,7 @@ describe('Payment Service', () => {
         value: 'DE430859340859340',
       },
     ],
-  };
+  } as PaymentInstrument;
 
   const creditCardPaymentInstrument = {
     id: 'UZUKgzzAppcAAAFzK9FDCMcG',
@@ -120,7 +101,7 @@ describe('Payment Service', () => {
         apiService.put(`baskets/current/payments/open-tender?include=paymentMethod`, anything(), anything())
       ).thenReturn(of([]));
 
-      paymentService.setBasketPayment(basketMock.data.payment.name).subscribe(() => {
+      paymentService.setBasketPayment('testPayment').subscribe(() => {
         verify(
           apiService.put(`baskets/current/payments/open-tender?include=paymentMethod`, anything(), anything())
         ).once();

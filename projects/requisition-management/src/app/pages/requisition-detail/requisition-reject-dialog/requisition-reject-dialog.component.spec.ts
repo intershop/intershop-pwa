@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { spy, verify } from 'ts-mockito';
+import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { TextareaComponent } from 'ish-shared/forms/components/textarea/textarea.component';
 
@@ -32,18 +32,18 @@ describe('Requisition Reject Dialog Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should emit approval comment when submit form was called and the form was valid', done => {
+  it('should emit approval comment when submit form was called and the form was valid', () => {
     fixture.detectChanges();
     component.rejectForm.setValue({
       comment: 'test comment',
     });
 
-    component.submit.subscribe(emit => {
-      expect(emit).toEqual('test comment');
-      done();
-    });
-
+    const emitter = spy(component.submit);
     component.submitForm();
+
+    verify(emitter.emit(anything())).once();
+    const [arg] = capture(emitter.emit).last();
+    expect(arg).toMatchInlineSnapshot(`"test comment"`);
   });
 
   it('should not emit new approval comment when submit form was called and the form was invalid', () => {

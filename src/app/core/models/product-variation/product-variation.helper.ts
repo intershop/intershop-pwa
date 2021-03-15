@@ -67,7 +67,7 @@ export class ProductVariationHelper {
     }
 
     // transform currently selected variation attribute list to object with the attributeId as key
-    const currentSettings = (product.variableVariationAttributes || []).reduce(
+    const currentSettings = (product.variableVariationAttributes || []).reduce<{ [id: string]: VariationAttribute }>(
       (acc, attr) => ({
         ...acc,
         [attr.variationAttributeId]: attr,
@@ -104,7 +104,7 @@ export class ProductVariationHelper {
     });
   }
 
-  private static simplifyVariableVariationAttributes(attrs: VariationAttribute[]): object {
+  private static simplifyVariableVariationAttributes(attrs: VariationAttribute[]): { [name: string]: string } {
     return attrs
       .map(attr => ({
         name: attr.variationAttributeId,
@@ -113,7 +113,7 @@ export class ProductVariationHelper {
       .reduce((acc, val) => ({ ...acc, [val.name]: val.value }), {});
   }
 
-  private static difference(obj1: object, obj2: object): number {
+  private static difference(obj1: { [name: string]: string }, obj2: { [name: string]: string }): number {
     const keys = Object.keys(obj1);
     if (keys.length !== Object.keys(obj2).length || keys.some(k => Object.keys(obj2).indexOf(k) < 0)) {
       throw new Error("cannot calculate difference if objects don't have the same keys");

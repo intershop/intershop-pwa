@@ -51,7 +51,7 @@ export const requisitionsReducer = createReducer(
   setLoadingOn(loadRequisitions, loadRequisition, updateRequisitionStatus),
   unsetLoadingAndErrorOn(loadRequisitionsSuccess, loadRequisitionSuccess, updateRequisitionStatusSuccess),
   setErrorOn(loadRequisitionsFail, loadRequisitionFail, updateRequisitionStatusFail),
-  on(loadRequisitionsSuccess, (state: RequisitionsState, action) =>
+  on(loadRequisitionsSuccess, (state, action) =>
     requisitionsAdapter.upsertMany(action.payload.requisitions, {
       ...state,
       filters: {
@@ -60,7 +60,7 @@ export const requisitionsReducer = createReducer(
       },
     })
   ),
-  on(loadRequisitionSuccess, updateRequisitionStatusSuccess, (state: RequisitionsState, action) =>
+  on(loadRequisitionSuccess, updateRequisitionStatusSuccess, (state, action) =>
     requisitionsAdapter.upsertOne(action.payload.requisition, state)
   )
 );

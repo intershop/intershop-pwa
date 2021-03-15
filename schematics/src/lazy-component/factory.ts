@@ -36,10 +36,11 @@ export function createLazyComponent(options: Options): Rule {
     const workspace = await getWorkspace(host);
     const isProject = options.path.startsWith('projects/');
     const isShared = options.path.startsWith('src/app/shared/');
-    const projectName = isProject ? options.path.split('/')[1].trim() : '';
+    const originalPath = options.path.replace(/.*src\/app\//, '');
+    const extension = originalPath.split('/')[1];
+    const declaringModule = isShared ? 'shared' : isProject ? options.path.split('/')[1] : extension;
     const project = workspace.projects.get(isProject ? options.path.split('/')[1] : options.project);
 
-    const originalPath = options.path.replace(/.*src\/app\//, '');
     const componentPath = `/${project.sourceRoot}/app/${originalPath}`;
 
     if (
@@ -52,8 +53,6 @@ export function createLazyComponent(options: Options): Rule {
       );
     }
 
-    const pathSplits = originalPath.split('/');
-    const extension = isShared ? 'shared' : pathSplits[1];
     const originalName = /\/([a-z0-9-]+)\.component\.ts/.exec(originalPath)[1];
     options.name = 'lazy-' + originalName;
     if (isProject) {
@@ -127,7 +126,7 @@ export function createLazyComponent(options: Options): Rule {
         }
       }
     }
-    const exportsModuleName = `${isProject ? projectName : extension}-exports`;
+    const exportsModuleName = `${declaringModule}-exports`;
     const exportsModuleExists = host.exists(`/${options.path}/${exportsModuleName}.module.ts`);
 
     const gitignoreExists = host.exists(`/${options.path}/.gitignore`);
@@ -194,13 +193,13 @@ export function createLazyComponent(options: Options): Rule {
             bindings,
             imports,
             originalPath,
-            projectName,
             extension,
             originalName,
             onChanges,
             isProject,
             isShared,
             componentImportPath,
+            declaringModule,
           }),
           move(options.path),
           forEach(fileEntry => {

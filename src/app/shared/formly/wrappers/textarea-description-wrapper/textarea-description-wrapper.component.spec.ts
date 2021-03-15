@@ -31,7 +31,15 @@ describe('Textarea Description Wrapper Component', () => {
   });
 
   beforeEach(() => {
-    const testComponentInputs = {
+    translateService = TestBed.inject(TranslateService);
+    translateService.setDefaultLang('en');
+    translateService.use('en');
+    translateService.set('textarea.max_limit', '{{0}}');
+
+    fixture = TestBed.createComponent(FormlyTestingContainerComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+    component.testComponentInputs = {
       fields: [
         {
           key: 'textarea',
@@ -47,16 +55,6 @@ describe('Textarea Description Wrapper Component', () => {
       },
       form: new FormGroup({}),
     };
-
-    translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    translateService.use('en');
-    translateService.set('textarea.max_limit', '{{0}}');
-
-    fixture = TestBed.createComponent(FormlyTestingContainerComponent);
-    component = fixture.componentInstance;
-    element = fixture.nativeElement;
-    component.testComponentInputs = testComponentInputs;
   });
 
   it('should be created', () => {

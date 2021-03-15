@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { User } from 'ish-core/models/user/user.model';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -108,31 +109,32 @@ describe('Account Payment Component', () => {
   });
 
   describe('delete payment instrument', () => {
-    it('should throw deletePaymentInstrument event when the user deletes a payment instrument', done => {
-      const id = 'paymentInstrumentId';
-
+    it('should throw deletePaymentInstrument event when the user deletes a payment instrument', () => {
       fixture.detectChanges();
 
-      component.deletePaymentInstrument.subscribe(paymentInstrumentId => {
-        expect(paymentInstrumentId).toEqual(id);
-        done();
-      });
-      component.deleteUserPayment(id);
+      const emitter = spy(component.deletePaymentInstrument);
+
+      component.deleteUserPayment('paymentInstrumentId');
+
+      verify(emitter.emit(anything())).once();
+      const [arg] = capture(emitter.emit).last();
+      expect(arg).toMatchInlineSnapshot(`"paymentInstrumentId"`);
     });
   });
 
   describe('update default payment instrument', () => {
-    it('should throw updateDefaultPaymentInstrument event when the user changes his preferred payment instrument', done => {
-      const id = 'paymentInstrumentId';
+    it('should throw updateDefaultPaymentInstrument event when the user changes his preferred payment instrument', () => {
       component.user = { firstName: 'Patricia', lastName: 'Miller' } as User;
 
       fixture.detectChanges();
 
-      component.updateDefaultPaymentInstrument.subscribe(user => {
-        expect(user.preferredPaymentInstrumentId).toBe(id);
-        done();
-      });
-      component.setAsDefaultPayment(id);
+      const emitter = spy(component.updateDefaultPaymentInstrument);
+
+      component.setAsDefaultPayment('paymentInstrumentId');
+
+      verify(emitter.emit(anything())).once();
+      const [user] = capture(emitter.emit).last();
+      expect(user?.preferredPaymentInstrumentId).toMatchInlineSnapshot(`"paymentInstrumentId"`);
     });
   });
 });

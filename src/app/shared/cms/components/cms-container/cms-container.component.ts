@@ -32,7 +32,7 @@ export class CMSContainerComponent implements CMSComponent, OnChanges {
       // transform an incoming string like "ExtraSmall:12,Small:6,Medium:4,Large:0" to a grid object
       const gridObject = { ExtraSmall: 0, Small: 0, Medium: 0, Large: 0 };
       grid.split(',').forEach(element => {
-        gridObject[element.split(':')[0]] = Number(element.split(':')[1]);
+        gridObject[element.split(':')[0] as keyof typeof gridObject] = Number(element.split(':')[1]);
       });
 
       // the 'hidden-__' classes replacement is not 100% compatible to Bootstrap 3

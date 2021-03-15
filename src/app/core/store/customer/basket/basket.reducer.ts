@@ -174,7 +174,7 @@ export const basketReducer = createReducer(
     startCheckoutFail
   ),
 
-  on(loadBasketSuccess, mergeBasketSuccess, (state: BasketState, action) => {
+  on(loadBasketSuccess, mergeBasketSuccess, (state, action) => {
     const basket = {
       ...action.payload.basket,
     };
@@ -185,12 +185,12 @@ export const basketReducer = createReducer(
       submittedBasket: undefined,
     };
   }),
-  on(updateBasketItemsSuccess, deleteBasketItemSuccess, (state: BasketState, action) => ({
+  on(updateBasketItemsSuccess, deleteBasketItemSuccess, (state, action) => ({
     ...state,
     info: action.payload.info,
     validationResults: initialValidationResults,
   })),
-  on(addItemsToBasketSuccess, (state: BasketState, action) => ({
+  on(addItemsToBasketSuccess, (state, action) => ({
     ...state,
     info: action.payload.info,
     lastTimeProductAdded: new Date().getTime(),
@@ -204,12 +204,12 @@ export const basketReducer = createReducer(
     removePromotionCodeFromBasketSuccess,
     setBasketAttributeSuccess,
     deleteBasketAttributeSuccess,
-    (state: BasketState) => ({
+    state => ({
       ...state,
       validationResults: initialValidationResults,
     })
   ),
-  on(startCheckoutSuccess, continueCheckoutSuccess, continueCheckoutWithIssues, (state: BasketState, action) => {
+  on(startCheckoutSuccess, continueCheckoutSuccess, continueCheckoutWithIssues, (state, action) => {
     const validation = action.payload.basketValidation;
     const basket = validation && validation.results.adjusted && validation.basket ? validation.basket : state.basket;
 
@@ -221,15 +221,15 @@ export const basketReducer = createReducer(
       validationResults: validation && validation.results,
     };
   }),
-  on(loadBasketEligibleShippingMethodsSuccess, (state: BasketState, action) => ({
+  on(loadBasketEligibleShippingMethodsSuccess, (state, action) => ({
     ...state,
     eligibleShippingMethods: action.payload.shippingMethods,
   })),
-  on(loadBasketEligiblePaymentMethodsSuccess, (state: BasketState, action) => ({
+  on(loadBasketEligiblePaymentMethodsSuccess, (state, action) => ({
     ...state,
     eligiblePaymentMethods: action.payload.paymentMethods,
   })),
-  on(updateConcardisCvcLastUpdatedSuccess, (state: BasketState, action) => ({
+  on(updateConcardisCvcLastUpdatedSuccess, (state, action) => ({
     ...state,
     basket: {
       ...state.basket,
@@ -239,13 +239,13 @@ export const basketReducer = createReducer(
       },
     },
   })),
-  on(addPromotionCodeToBasketSuccess, (state: BasketState) => ({
+  on(addPromotionCodeToBasketSuccess, state => ({
     ...state,
     loading: false,
     promotionError: undefined,
   })),
 
-  on(addPromotionCodeToBasketFail, (state: BasketState, action) => {
+  on(addPromotionCodeToBasketFail, (state, action) => {
     const { error } = action.payload;
 
     return {
@@ -256,7 +256,7 @@ export const basketReducer = createReducer(
   }),
 
   on(createOrderSuccess, () => initialState),
-  on(submitBasketSuccess, (state: BasketState) => ({
+  on(submitBasketSuccess, state => ({
     ...state,
     submittedBasket: state.basket,
     basket: undefined,
@@ -265,7 +265,7 @@ export const basketReducer = createReducer(
     validationResults: initialValidationResults,
   })),
 
-  on(resetBasketErrors, (state: BasketState) => ({
+  on(resetBasketErrors, state => ({
     ...state,
     error: undefined,
     info: undefined,

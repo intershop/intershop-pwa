@@ -610,7 +610,7 @@ describe('Api Service', () => {
     });
 
     it('should run call exclusively when asked for it', done => {
-      let syncData;
+      let syncData: unknown;
 
       apiService.get('dummy1', { runExclusively: true }).subscribe(data => {
         expect(data).toBeTruthy();
@@ -650,7 +650,7 @@ describe('Api Service', () => {
     });
 
     it('should run calls in parallel if not explicitly run exclusively', done => {
-      let syncData;
+      let syncData: unknown;
 
       apiService.get('dummy1').subscribe(data => {
         expect(data).toBeTruthy();

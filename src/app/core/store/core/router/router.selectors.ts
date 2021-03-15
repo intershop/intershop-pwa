@@ -3,7 +3,7 @@ import { createSelector } from '@ngrx/store';
 
 import { RouterState } from './router.reducer';
 
-export const selectRouter: (state) => RouterReducerState<RouterState> = state => state.router;
+export const selectRouter = (state: { router?: RouterReducerState<RouterState> }) => state.router;
 
 export const selectRouteData = <T>(key: string) =>
   createSelector(selectRouter, (state): T => state?.state?.data && state.state.data[key]);

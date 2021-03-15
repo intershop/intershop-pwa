@@ -12,13 +12,13 @@ export const initialState: CompareState = {
 
 export const compareReducer = createReducer(
   initialState,
-  on(addToCompare, (state: CompareState, action) => {
+  on(addToCompare, (state, action) => {
     const { sku } = action.payload;
     const products = state.products.includes(sku) ? [...state.products] : [...state.products, sku];
 
     return { ...state, products };
   }),
-  on(removeFromCompare, (state: CompareState, action) => {
+  on(removeFromCompare, (state, action) => {
     const { sku } = action.payload;
     const products = state.products.filter(current => current !== sku);
 

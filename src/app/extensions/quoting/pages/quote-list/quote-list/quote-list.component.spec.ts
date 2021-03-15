@@ -3,6 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
+import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
@@ -44,12 +45,18 @@ describe('Quote List Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should throw deleteItem event when delete item is tapped', done => {
-    component.deleteItem.subscribe(item => {
-      expect(item.type).toBe('Quote');
-      done();
-    });
+  it('should throw deleteItem event when delete item is tapped', () => {
+    const emitter = spy(component.deleteItem);
 
     component.onDeleteItem({ id: 'test', type: 'Quote' } as Quote);
+
+    verify(emitter.emit(anything())).once();
+    const [arg] = capture(emitter.emit).last();
+    expect(arg).toMatchInlineSnapshot(`
+      Object {
+        "id": "test",
+        "type": "Quote",
+      }
+    `);
   });
 });

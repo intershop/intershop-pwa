@@ -3,7 +3,7 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
-import { anything, instance, mock, when } from 'ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
@@ -28,6 +28,7 @@ describe('Product Compare List Component', () => {
   let fixture: ComponentFixture<ProductCompareListComponent>;
   let component: ProductCompareListComponent;
   let element: HTMLElement;
+  let shoppingFacade: ShoppingFacade;
   let translate: TranslateService;
   let compareProduct1: ProductView;
   let compareProduct2: ProductView;
@@ -64,7 +65,7 @@ describe('Product Compare List Component', () => {
       ],
     };
 
-    const shoppingFacade = mock(ShoppingFacade);
+    shoppingFacade = mock(ShoppingFacade);
     when(shoppingFacade.product$(compareProduct1.sku, anything())).thenReturn(of(compareProduct1));
     when(shoppingFacade.product$(compareProduct2.sku, anything())).thenReturn(of(compareProduct2));
 
@@ -107,20 +108,10 @@ describe('Product Compare List Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should emit removeProductCompare when click on remove compare product', done => {
-    component.removeProductCompare.subscribe(sku => {
-      expect(sku).toBe('111');
-      done();
-    });
+  it('should use facade remove from compare when click on remove compare product', () => {
     component.removeFromCompare('111');
-  });
 
-  it('should emit add to basket when click on add to basket button', done => {
-    component.productToBasket.subscribe(data => {
-      expect(data).toEqual({ sku: '111', quantity: 1 });
-      done();
-    });
-    component.addToBasket('111', 1);
+    verify(shoppingFacade.removeProductFromCompare('111')).once();
   });
 
   it('should switch to lower page when number of products is reduced', () => {

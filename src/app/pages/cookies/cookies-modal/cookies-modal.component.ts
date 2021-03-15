@@ -16,7 +16,7 @@ export class CookiesModalComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
 
   cookieConsentSettings?: CookieConsentSettings;
-  selectedIds = {};
+  selectedIds: { [id: string]: boolean } = {};
 
   // tslint:disable:no-intelligence-in-artifacts
   constructor(

@@ -22,23 +22,23 @@ export function markAsDirtyRecursive(formGroup: FormGroup) {
  */
 export function determineSalutations(countryCode: string): string[] {
   // TODO: should come from configuration?
-  let salutationlabels = [];
+  let salutationLabels: string[] = [];
 
   switch (countryCode) {
     case 'DE': {
-      salutationlabels = ['account.salutation.ms.text', 'account.salutation.mr.text', 'account.salutation.dr.text'];
+      salutationLabels = ['account.salutation.ms.text', 'account.salutation.mr.text', 'account.salutation.dr.text'];
       break;
     }
     case 'FR': {
-      salutationlabels = ['account.salutation.ms.text', 'account.salutation.mr.text', 'account.salutation.dr.text'];
+      salutationLabels = ['account.salutation.ms.text', 'account.salutation.mr.text', 'account.salutation.dr.text'];
       break;
     }
     case 'US': {
-      salutationlabels = ['account.salutation.ms.text', 'account.salutation.mr.text', 'account.salutation.dr.text'];
+      salutationLabels = ['account.salutation.ms.text', 'account.salutation.mr.text', 'account.salutation.dr.text'];
       break;
     }
     case 'GB': {
-      salutationlabels = [
+      salutationLabels = [
         'account.salutation.ms.text',
         'account.salutation.miss.text',
         'account.salutation.mrs.text',
@@ -48,5 +48,5 @@ export function determineSalutations(countryCode: string): string[] {
       break;
     }
   }
-  return salutationlabels;
+  return salutationLabels;
 }

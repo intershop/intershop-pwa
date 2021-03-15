@@ -81,8 +81,8 @@ export class SfeAdapterService {
     return (
       isPlatformBrowser(this.platformId) &&
       // is iframe but not cypress
-      // tslint:disable-next-line: no-string-literal
-      ((window.parent && window.parent !== window && !window['Cypress']) ||
+      // tslint:disable-next-line: no-string-literal no-any
+      ((window.parent && window.parent !== window && !(window as any)['Cypress']) ||
         // force
         this.initOnTopLevel)
     );

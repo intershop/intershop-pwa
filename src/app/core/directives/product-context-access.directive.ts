@@ -25,9 +25,8 @@ export class ProductContextAccessDirective implements OnDestroy {
         if (!this.view && ctx?.product) {
           this.view = viewContainer.createEmbeddedView(template, { ...ctx, context });
         } else if (this.view && ctx?.product) {
-          Object.keys(ctx).forEach(key => {
-            this.view.context[key] = ctx[key];
-          });
+          // tslint:disable-next-line: ban
+          Object.assign(this.view.context, ctx);
         }
 
         if (this.view) {

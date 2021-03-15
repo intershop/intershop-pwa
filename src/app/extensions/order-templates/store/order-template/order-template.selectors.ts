@@ -1,6 +1,5 @@
 import { createSelector } from '@ngrx/store';
 
-import { OrderTemplate } from '../../models/order-template/order-template.model';
 import { getOrderTemplatesState } from '../order-templates-store';
 
 import { initialState, orderTemplateAdapter } from './order-template.reducer';
@@ -22,10 +21,7 @@ export const getSelectedOrderTemplateId = createSelector(getOrderTemplateState, 
 export const getSelectedOrderTemplateDetails = createSelector(
   selectEntities,
   getSelectedOrderTemplateId,
-  (entities, id): OrderTemplate => id && entities[id]
+  (entities, id) => entities[id]
 );
 
-export const getOrderTemplateDetails = createSelector(
-  selectEntities,
-  (entities, props: { id: string }): OrderTemplate => props.id && entities[props.id]
-);
+export const getOrderTemplateDetails = (id: string) => createSelector(selectEntities, entities => entities[id]);

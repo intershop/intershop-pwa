@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { RouterNavigatedPayload, routerNavigatedAction } from '@ngrx/router-store';
+import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { concatMap, filter, map, mapTo, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { PaymentService } from 'ish-core/services/payment/payment.service';
-import { RouterState } from 'ish-core/store/core/router/router.reducer';
+import { mapToRouterState } from 'ish-core/store/core/router';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
@@ -99,10 +99,10 @@ export class BasketPaymentEffects {
   sendPaymentRedirectData$ = createEffect(() =>
     this.actions$.pipe(
       ofType(routerNavigatedAction),
-      mapToPayloadProperty<RouterNavigatedPayload<RouterState>>('routerState'),
+      mapToRouterState(),
       // don't do anything in case of RedirectAfterCheckout
       filter(
-        (routerState: RouterState) =>
+        routerState =>
           /\/checkout\/(payment|review).*/.test(routerState.url) &&
           routerState.queryParams.redirect &&
           !routerState.queryParams.orderId

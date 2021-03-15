@@ -2,7 +2,7 @@ import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 function getAllElementTagsRecursively(el: Element) {
-  const returnList = [];
+  const returnList: string[] = [];
   returnList.push(el.tagName);
 
   for (let index = 0; index < el.children.length; index++) {

@@ -85,6 +85,7 @@
               "ngswConfigPath": "ngsw-config.json"
             },
             "local": {
+              "tsConfig": "tsconfig.app-no-checks.json",
               "budgets": [
                 {
                   "type": "anyComponentStyle",

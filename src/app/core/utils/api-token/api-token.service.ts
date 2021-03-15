@@ -157,7 +157,7 @@ export class ApiTokenService {
             case 'order': {
               this.store.dispatch(loadOrderByAPIToken({ orderId: cookie.orderId, apiToken: cookie.apiToken }));
               return race(
-                this.store.pipe(select(getOrder, { orderId: cookie.orderId }), whenTruthy(), take(1), mapTo(true)),
+                this.store.pipe(select(getOrder(cookie.orderId)), whenTruthy(), take(1), mapTo(true)),
                 timer(5000).pipe(mapTo(false))
               );
             }

@@ -1,4 +1,4 @@
-import { arraySlices, mergeDeep, omit } from './functions';
+import { arraySlices, isArrayEqual, mergeDeep, omit } from './functions';
 
 describe('Functions', () => {
   describe('arraySlices', () => {
@@ -74,7 +74,7 @@ describe('Functions', () => {
   });
 
   describe('omit', () => {
-    let input;
+    let input: object;
 
     beforeEach(() => {
       input = {
@@ -117,6 +117,27 @@ describe('Functions', () => {
           "a",
         ]
       `);
+    });
+  });
+
+  describe('isArrayEqual', () => {
+    const obj = {};
+
+    it.each`
+      array1       | array2       | isEqual
+      ${undefined} | ${undefined} | ${true}
+      ${undefined} | ${[]}        | ${false}
+      ${undefined} | ${[1]}       | ${false}
+      ${[]}        | ${undefined} | ${false}
+      ${[1]}       | ${undefined} | ${false}
+      ${[]}        | ${[]}        | ${true}
+      ${[1]}       | ${[1]}       | ${true}
+      ${[1, 2]}    | ${[2, 1]}    | ${false}
+      ${[1, 2]}    | ${[1, 2]}    | ${true}
+      ${[{}]}      | ${[{}]}      | ${false}
+      ${[obj]}     | ${[obj]}     | ${true}
+    `('should return $isEqual when comparing $array1 and $array2', ({ array1, array2, isEqual }) => {
+      expect(isArrayEqual(array1, array2)).toEqual(isEqual);
     });
   });
 });

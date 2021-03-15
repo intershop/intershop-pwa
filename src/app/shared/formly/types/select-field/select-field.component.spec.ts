@@ -33,7 +33,11 @@ describe('Select Field Component', () => {
   });
 
   beforeEach(() => {
-    const testComponentInputs = {
+    fixture = TestBed.createComponent(FormlyTestingContainerComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+
+    component.testComponentInputs = {
       fields: [
         {
           key: 'select',
@@ -50,11 +54,6 @@ describe('Select Field Component', () => {
         select: undefined,
       },
     };
-    fixture = TestBed.createComponent(FormlyTestingContainerComponent);
-    component = fixture.componentInstance;
-    element = fixture.nativeElement;
-
-    component.testComponentInputs = testComponentInputs;
   });
 
   it('should be created', () => {

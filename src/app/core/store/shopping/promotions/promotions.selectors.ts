@@ -1,32 +1,20 @@
-import {
-  DefaultProjectorFn,
-  MemoizedSelectorWithProps,
-  createSelector,
-  createSelectorFactory,
-  defaultMemoize,
-} from '@ngrx/store';
-import { isEqual } from 'lodash-es';
+import { Dictionary } from '@ngrx/entity';
+import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
 
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { ShoppingState, getShoppingState } from 'ish-core/store/shopping/shopping-store';
+import { isArrayEqual } from 'ish-core/utils/functions';
 
 import { promotionAdapter } from './promotions.reducer';
 
 const getPromotionsState = createSelector(getShoppingState, (state: ShoppingState) => state.promotions);
 
-const { selectEntities, selectAll } = promotionAdapter.getSelectors(getPromotionsState);
+const { selectEntities } = promotionAdapter.getSelectors(getPromotionsState);
 
-export const getPromotion = () =>
-  createSelector(selectEntities, (entities, props: { promoId: string }): Promotion => entities[props.promoId]);
+export const getPromotion = (promoId: string) => createSelector(selectEntities, entities => entities[promoId]);
 
-export const getPromotions = (): MemoizedSelectorWithProps<
-  object,
-  { promotionIds: string[] },
-  Promotion[],
-  DefaultProjectorFn<Promotion[]>
-> =>
-  createSelectorFactory(projector => defaultMemoize(projector, isEqual, isEqual))(
-    selectAll,
-    (promotions: Promotion[], props: { promotionIds: string[] }): Promotion[] =>
-      props.promotionIds.map(id => promotions.find(p => p.id === id)).filter(x => !!x)
+export const getPromotions = (promotionIds: string[]) =>
+  createSelectorFactory<object, Promotion[]>(projector => resultMemoize(projector, isArrayEqual))(
+    selectEntities,
+    (promotions: Dictionary<Promotion>) => promotionIds.map(id => promotions[id]).filter(x => !!x)
   );

@@ -3,7 +3,7 @@ import { SpecialHttpErrorHandler } from 'ish-core/interceptors/icm-error-mapper.
 export const updatePasswordErrorHandler: SpecialHttpErrorHandler = {
   test: (error, request) => error.url.endsWith('/security/password') && request.method === 'POST',
   map: error => {
-    switch (error.headers['error-missing-attributes'] || error.headers['error-invalid-attributes']) {
+    switch (error.headers.get('error-missing-attributes') || error.headers.get('error-invalid-attributes')) {
       case 'secureCode':
         return { code: 'account.forgotdata.consumer_invalid_hash.error' };
       case 'userID':

@@ -23,11 +23,11 @@ export function logDiff<T>(message?: unknown): OperatorFunction<T, T> {
 }
 
 // https://gist.github.com/Yimiprod/7ee176597fef230d1451
+// tslint:disable: no-any - utility function
+function keyChanges(a: any, b: any) {
+  const changes: any = {};
 
-function keyChanges<T>(a: T, b: T) {
-  const changes = {};
-
-  function walkObject(base: T, object: T, path = '') {
+  function walkObject(base: any, object: any, path = '') {
     for (const key of Object.keys(base)) {
       const currentPath = path === '' ? key : `${path}.${key}`;
 
@@ -55,3 +55,4 @@ function keyChanges<T>(a: T, b: T) {
 
   return changes;
 }
+// tslint:enable: no-any

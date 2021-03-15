@@ -10,11 +10,11 @@ export interface IdentityProviderCapabilities {
   editProfile?: boolean;
 }
 
-export interface IdentityProvider {
+export interface IdentityProvider<ConfigType = never> {
   /**
    * Initialization logic.
    */
-  init(config): void;
+  init(config: ConfigType): void;
 
   /**
    * Capabilities for the identity provider.

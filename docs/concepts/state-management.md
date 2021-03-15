@@ -170,7 +170,7 @@ export const fooReducer = createReducer(
   initialState,
   setLoadingOn(loadFoo),
   setErrorOn(loadFooFail),
-  on(loadFooSuccess, (state: FooState, action) => {
+  on(loadFooSuccess, (state, action) => {
     // state changes
   }),
   ...

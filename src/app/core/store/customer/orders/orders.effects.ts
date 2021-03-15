@@ -208,7 +208,7 @@ export class OrdersEffects {
         // SelectOrderAfterRedirect will be triggered either after a user is logged in or after the paid order is loaded (anonymous user)
         race([
           this.store.pipe(select(getLoggedInUser), whenTruthy(), take(1)),
-          this.store.pipe(select(getOrder, { orderId: queryParams.orderId }), whenTruthy(), take(1)),
+          this.store.pipe(select(getOrder(queryParams.orderId)), whenTruthy(), take(1)),
         ]).pipe(mapTo(selectOrderAfterRedirect({ params: queryParams })))
       )
     )

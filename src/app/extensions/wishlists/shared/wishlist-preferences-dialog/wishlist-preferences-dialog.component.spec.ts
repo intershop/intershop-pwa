@@ -4,7 +4,7 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { spy, verify } from 'ts-mockito';
+import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
@@ -49,24 +49,27 @@ describe('Wishlist Preferences Dialog Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should emit new wishlist data when submit form was called and the form was valid', done => {
+  it('should emit new wishlist data when submit form was called and the form was valid', () => {
     fixture.detectChanges();
     component.wishListForm.setValue({
       title: 'test wishlist',
       preferred: true,
     });
 
-    component.submit.subscribe(emit => {
-      expect(emit).toEqual({
-        id: 'test wishlist',
-        title: 'test wishlist',
-        preferred: true,
-        public: false,
-      });
-      done();
-    });
+    const emitter = spy(component.submit);
 
     component.submitWishlistForm();
+
+    verify(emitter.emit(anything())).once();
+    const [arg] = capture(emitter.emit).last();
+    expect(arg).toMatchInlineSnapshot(`
+      Object {
+        "id": "test wishlist",
+        "preferred": true,
+        "public": false,
+        "title": "test wishlist",
+      }
+    `);
   });
 
   it('should not emit new wishlist data when submit form was called and the form was invalid', () => {

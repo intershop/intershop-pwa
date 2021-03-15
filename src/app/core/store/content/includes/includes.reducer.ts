@@ -21,11 +21,11 @@ export const initialState: IncludesState = includesAdapter.getInitialState({
 export const includesReducer = createReducer(
   initialState,
   setLoadingOn(loadContentInclude),
-  on(loadContentIncludeFail, (state: IncludesState) => ({
+  on(loadContentIncludeFail, state => ({
     ...state,
     loading: false,
   })),
-  on(loadContentIncludeSuccess, (state: IncludesState, action) => {
+  on(loadContentIncludeSuccess, (state, action) => {
     const { include } = action.payload;
 
     return {
