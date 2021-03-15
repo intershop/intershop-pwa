@@ -45,7 +45,7 @@
       <h2 *ngIf="pagelet.hasParam('Heading2')">{{ pagelet.stringParam('Heading2') }}</h2>
       <p
         *ngIf="pagelet.hasParam('Description')"
-        class="hidden-xs"
+        class="d-none d-sm-inline"
         [ishServerHtml]="pagelet.stringParam('Description')"
       ></p>
       <a

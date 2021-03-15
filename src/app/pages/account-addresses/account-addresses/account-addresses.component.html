@@ -41,7 +41,7 @@
           <h3>{{ 'account.addresses.preferredinvoiceandshipping.heading' | translate }}</h3>
           <ish-address [address]="preferredInvoiceToAddress"></ish-address>
 
-          <div class="col-xs-11 col-sm-7 col-md-5">
+          <div class="col-sm-7 col-md-5">
             <form [formGroup]="preferredAddressForm">
               <ish-select-address
                 [form]="preferredAddressForm"
@@ -74,7 +74,7 @@
           <ng-template #noInvoiceToAddress>
             <p class="no-address-info">{{ 'account.addresses.no_preferred_invoice_address.text' | translate }}</p>
           </ng-template>
-          <div class="col-xs-11 col-sm-7 col-md-5">
+          <div class="col-sm-7 col-md-5">
             <form [formGroup]="preferredAddressForm">
               <ish-select-address
                 [form]="preferredAddressForm"
@@ -96,7 +96,7 @@
           <ng-template #noShipToAddress>
             <p class="no-address-info">{{ 'account.addresses.no_preferred_shipping_address.text' | translate }}</p>
           </ng-template>
-          <div class="col-xs-11 col-sm-7 col-md-5">
+          <div class="col-sm-7 col-md-5">
             <form [formGroup]="preferredAddressForm">
               <ish-select-address
                 [form]="preferredAddressForm"
@@ -116,7 +116,7 @@
           <h3>{{ 'account.addresses.heading' | translate }}</h3>
           <div *ngFor="let currentAddress of furtherAddresses" class="list-item-row">
             <div class="row">
-              <div class="col-xs-11 col-sm-7 col-md-5">
+              <div class="col-sm-7 col-md-5">
                 <div class="float-right">
                   <!-- delete address: is only possible if the customer has more than one address -->
                   <a

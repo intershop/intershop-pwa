@@ -72,11 +72,11 @@
     <label class="col-form-label col-md-4" for="cvcInput"
       >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required">*</span></label
     >
-    <div class="col-xs-10 col-sm-3 col-md-2">
+    <div class="col-sm-3 col-md-2">
       <div id="a_verification_container" class="iframe-container"></div>
       <small *ngIf="errorMessage.cvc?.message" class="form-text">{{ errorMessage.cvc.messageKey | translate }}</small>
     </div>
-    <div class="pull-left">
+    <div>
       <ng-template #CVCHelp>
         <span [innerHTML]="'checkout.credit_card.cvc.popover.content' | translate"></span>
       </ng-template>

@@ -340,7 +340,7 @@ Try to avoid general class names.
 :warning: **Wrong Selector**
 
 ```typescript
-const selectedLanguage = element.getElementsByClassName('hidden-xs');
+const selectedLanguage = element.getElementsByClassName('d-none');
 ```
 
 :heavy_check_mark: **Correct Selector**

@@ -24,7 +24,7 @@
       <ng-template #title> <h3 [ishServerHtml]="promotion.title"></h3> </ng-template>
 
       <p *ngIf="promotion.ruleDescription" [ishServerHtml]="promotion.ruleDescription"></p>
-      <p *ngIf="promotion.legalContentMessage" class="help-block" [ishServerHtml]="promotion.legalContentMessage"></p>
+      <p *ngIf="promotion.legalContentMessage" class="text-muted" [ishServerHtml]="promotion.legalContentMessage"></p>
       <p *ngIf="promotion.externalUrl">
         <a [href]="promotion.externalUrl" rel="nofollow" target="_blank">{{ promotion.externalUrl }}</a>
       </p>

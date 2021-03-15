@@ -34,7 +34,7 @@ To localize simple texts, just apply the `translate` pipe to the key:
 **\*.component.html**
 
 ```html
-<span class="hidden-xs">{{ 'header.wishlists.text' | translate }}</span>
+<span>{{ 'header.wishlists.text' | translate }}</span>
 ```
 
 ### Localization with Parameters
