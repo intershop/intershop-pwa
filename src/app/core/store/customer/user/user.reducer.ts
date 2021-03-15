@@ -78,7 +78,9 @@ export const userReducer = createReducer(
     updateUserPassword,
     updateCustomer,
     loadUserPaymentMethods,
-    deleteUserPaymentInstrument
+    deleteUserPaymentInstrument,
+    updateUserPasswordByPasswordReminder,
+    requestPasswordReminder
   ),
   unsetLoadingOn(
     updateUserPasswordByPasswordReminderSuccess,
@@ -163,7 +165,6 @@ export const userReducer = createReducer(
   })),
   on(updateUserPasswordByPasswordReminder, requestPasswordReminder, state => ({
     ...state,
-    loading: true,
     passwordReminderSuccess: undefined,
     passwordReminderError: undefined,
   })),
