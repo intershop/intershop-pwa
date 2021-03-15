@@ -7,7 +7,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 import { createOrderSuccess } from 'ish-core/store/customer/orders';
-import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
+import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn, unsetLoadingOn } from 'ish-core/utils/ngrx-creators';
 
 import {
   addItemsToBasket,
@@ -133,6 +133,7 @@ export const basketReducer = createReducer(
     updateConcardisCvcLastUpdated,
     startCheckout
   ),
+  unsetLoadingOn(addPromotionCodeToBasketSuccess, addPromotionCodeToBasketFail),
   unsetLoadingAndErrorOn(
     loadBasketSuccess,
     mergeBasketSuccess,
@@ -241,7 +242,6 @@ export const basketReducer = createReducer(
   })),
   on(addPromotionCodeToBasketSuccess, state => ({
     ...state,
-    loading: false,
     promotionError: undefined,
   })),
 
@@ -251,7 +251,6 @@ export const basketReducer = createReducer(
     return {
       ...state,
       promotionError: error,
-      loading: false,
     };
   }),
 

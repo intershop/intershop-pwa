@@ -2,7 +2,7 @@ import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { setErrorOn, setLoadingOn } from 'ish-core/utils/ngrx-creators';
+import { setErrorOn, setLoadingOn, unsetLoadingOn } from 'ish-core/utils/ngrx-creators';
 
 import { OrderTemplate } from '../../models/order-template/order-template.model';
 
@@ -52,6 +52,15 @@ export const orderTemplateReducer = createReducer(
     deleteOrderTemplate,
     updateOrderTemplate
   ),
+  unsetLoadingOn(
+    loadOrderTemplatesSuccess,
+    addBasketToNewOrderTemplateSuccess,
+    createOrderTemplateSuccess,
+    updateOrderTemplateSuccess,
+    addProductToOrderTemplateSuccess,
+    removeItemFromOrderTemplateSuccess,
+    deleteOrderTemplateSuccess
+  ),
   setErrorOn(
     loadOrderTemplatesFail,
     deleteOrderTemplateFail,
@@ -72,10 +81,7 @@ export const orderTemplateReducer = createReducer(
   ),
   on(loadOrderTemplatesSuccess, (state, action) => {
     const { orderTemplates } = action.payload;
-    return orderTemplateAdapter.setAll(orderTemplates, {
-      ...state,
-      loading: false,
-    });
+    return orderTemplateAdapter.setAll(orderTemplates, state);
   }),
   on(
     addBasketToNewOrderTemplateSuccess,
@@ -86,18 +92,12 @@ export const orderTemplateReducer = createReducer(
     (state, action) => {
       const { orderTemplate } = action.payload;
 
-      return orderTemplateAdapter.upsertOne(orderTemplate, {
-        ...state,
-        loading: false,
-      });
+      return orderTemplateAdapter.upsertOne(orderTemplate, state);
     }
   ),
   on(deleteOrderTemplateSuccess, (state, action) => {
     const { orderTemplateId } = action.payload;
-    return orderTemplateAdapter.removeOne(orderTemplateId, {
-      ...state,
-      loading: false,
-    });
+    return orderTemplateAdapter.removeOne(orderTemplateId, state);
   }),
   on(selectOrderTemplate, (state, action) => {
     const { id } = action.payload;

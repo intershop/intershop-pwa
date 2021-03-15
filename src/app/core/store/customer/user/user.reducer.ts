@@ -5,7 +5,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { User } from 'ish-core/models/user/user.model';
 import { loadRolesAndPermissionsFail } from 'ish-core/store/customer/authorization';
-import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
+import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn, unsetLoadingOn } from 'ish-core/utils/ngrx-creators';
 
 import {
   createUser,
@@ -80,6 +80,20 @@ export const userReducer = createReducer(
     loadUserPaymentMethods,
     deleteUserPaymentInstrument
   ),
+  unsetLoadingOn(
+    updateUserPasswordByPasswordReminderSuccess,
+    requestPasswordReminderSuccess,
+    updateUserPasswordByPasswordReminderFail,
+    requestPasswordReminderFail
+  ),
+  setErrorOn(
+    updateUserFail,
+    updateUserPasswordFail,
+    updateCustomerFail,
+    loadUserPaymentMethodsFail,
+    deleteUserPaymentInstrumentFail,
+    loadRolesAndPermissionsFail
+  ),
   on(loginUserFail, loadCompanyUserFail, createUserFail, (_, action) => {
     const error = action.payload.error;
 
@@ -89,14 +103,6 @@ export const userReducer = createReducer(
       error,
     };
   }),
-  setErrorOn(
-    updateUserFail,
-    updateUserPasswordFail,
-    updateCustomerFail,
-    loadUserPaymentMethodsFail,
-    deleteUserPaymentInstrumentFail,
-    loadRolesAndPermissionsFail
-  ),
   unsetLoadingAndErrorOn(
     loginUserSuccess,
     loadCompanyUserSuccess,
@@ -163,13 +169,11 @@ export const userReducer = createReducer(
   })),
   on(updateUserPasswordByPasswordReminderSuccess, requestPasswordReminderSuccess, state => ({
     ...state,
-    loading: false,
     passwordReminderSuccess: true,
     passwordReminderError: undefined,
   })),
   on(updateUserPasswordByPasswordReminderFail, requestPasswordReminderFail, (state, action) => ({
     ...state,
-    loading: false,
     passwordReminderSuccess: false,
     passwordReminderError: action.payload.error,
   })),
