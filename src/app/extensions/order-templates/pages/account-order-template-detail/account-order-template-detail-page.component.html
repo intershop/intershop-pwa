@@ -6,7 +6,7 @@
     {{ orderTemplate?.title }}
     <a
       (click)="editOrderTemplateDialog.show()"
-      class="btn btn-default btn-tool float-right"
+      class="btn btn-secondary float-right"
       [title]="'account.order_template.edit.heading' | translate"
       data-testing-id="order-template-details-edit"
       >{{ 'account.order_template.order_template.edit.rename' | translate }}</a
@@ -15,7 +15,7 @@
 
   <div class="section">
     <ng-container *ngIf="orderTemplate.itemsCount && orderTemplate.itemsCount > 0; else noItems" class="section">
-      <div class="list-header d-none d-md-flex">
+      <div class="list-header d-md-flex">
         <div class="col-6 list-header-item">{{ 'account.order_template.table.header.item' | translate }}</div>
         <div class="col-2 list-header-item text-right">
           {{ 'shopping_cart.qty.heading' | translate }}

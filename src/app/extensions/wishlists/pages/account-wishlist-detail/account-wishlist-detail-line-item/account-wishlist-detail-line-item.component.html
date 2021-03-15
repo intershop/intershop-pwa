@@ -5,13 +5,13 @@
     </div>
     <div class="col-9 col-md-10 list-item column-price">
       <div class="row">
-        <div class="col-md-7 col-xs-12 text-left">
+        <div class="col-md-7 text-left">
           <div class="pli-description">
             <ish-product-name></ish-product-name>
             <ish-product-id></ish-product-id>
             <ish-product-variation-display></ish-product-variation-display>
             <ish-product-bundle-display></ish-product-bundle-display>
-            <div class="hidden-xs">
+            <div class="d-none d-sm-block">
               <label>{{ 'account.wishlist.table.added_on' | translate }}</label>
               {{ wishlistItemData?.creationDate | ishDate: 'shortDate' }}
             </div>
