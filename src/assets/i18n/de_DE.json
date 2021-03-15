@@ -712,6 +712,7 @@
   "customer.credentials.login.not_unique.error": "Die angegebene E-Mail-Adresse wird bereits verwendet. Prüfen Sie die Richtigkeit der Eingabe oder geben Sie eine andere E-Mail-Adresse an.",
   "customer.credentials.passwordreset.invalid_password.error.PasswordExpressionViolation": "Das Kennwort muss mindestens 7 Zeichen enthalten, bestehend aus Zahlen und Buchstaben, keine Leerzeichen.",
   "customer.missing_fields.error": "Fehlende Felder",
+  "customer.wishlist.profane_word.error": "Ihre aktuelle Eingabe kann nicht bearbeitet werden. Unpassende, beleidigende bzw. vulgäre Sprache wird nicht akzeptiert. Bitte machen Sie eine neue Eingabe.",
   "dialog.close.text": "Schließen",
   "email.recommended_product.heading": "Ich habe bei {{0}} etwas für dich gefunden",
   "email.recommended_product.text": "Sieh mal, was ich für dich gefunden habe. {{0}}\n{{1}}",

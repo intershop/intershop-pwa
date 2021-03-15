@@ -714,6 +714,7 @@
   "customer.credentials.login.not_unique.error": "A user with that e-mail address already exists. Please check the information for accuracy or enter a different e-mail address.",
   "customer.credentials.passwordreset.invalid_password.error.PasswordExpressionViolation": "The password must include 7 characters minimum, containing numbers and letters, no spaces.",
   "customer.missing_fields.error": "Missing fields",
+  "customer.wishlist.profane_word.error": "Your current entry cannot be processed. Language deemed inappropriate, derogatory, or profane will not be accepted. Please create a new entry.",
   "dialog.close.text": "Close",
   "email.recommended_product.heading": "I found an item for you at {{0}}",
   "email.recommended_product.text": "Take a look at what I found for you. {{0}}\n{{1}}",
