@@ -2,7 +2,7 @@ import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { setLoadingOn } from 'ish-core/utils/ngrx-creators';
+import { setErrorOn, setLoadingOn } from 'ish-core/utils/ngrx-creators';
 
 import { OrderTemplate } from '../../models/order-template/order-template.model';
 
@@ -52,21 +52,23 @@ export const orderTemplateReducer = createReducer(
     deleteOrderTemplate,
     updateOrderTemplate
   ),
+  setErrorOn(
+    loadOrderTemplatesFail,
+    deleteOrderTemplateFail,
+    createOrderTemplateFail,
+    addBasketToNewOrderTemplateFail,
+    updateOrderTemplateFail
+  ),
   on(
     loadOrderTemplatesFail,
     deleteOrderTemplateFail,
     createOrderTemplateFail,
     addBasketToNewOrderTemplateFail,
     updateOrderTemplateFail,
-    (state, action) => {
-      const { error } = action.payload;
-      return {
-        ...state,
-        loading: false,
-        error,
-        selected: undefined,
-      };
-    }
+    (state: OrderTemplateState) => ({
+      ...state,
+      selected: undefined as string,
+    })
   ),
   on(loadOrderTemplatesSuccess, (state, action) => {
     const { orderTemplates } = action.payload;

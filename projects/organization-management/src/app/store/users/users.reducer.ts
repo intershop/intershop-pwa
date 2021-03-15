@@ -49,7 +49,14 @@ const initialState: UsersState = usersAdapter.getInitialState({
 export const usersReducer = createReducer(
   initialState,
   setLoadingOn(loadUsers, addUser, updateUser, deleteUser, setUserBudget),
-  unsetLoadingAndErrorOn(loadUsersSuccess, addUserSuccess, updateUserSuccess, deleteUserSuccess, setUserBudgetSuccess),
+  unsetLoadingAndErrorOn(
+    loadUsersSuccess,
+    loadUserSuccess,
+    addUserSuccess,
+    updateUserSuccess,
+    deleteUserSuccess,
+    setUserBudgetSuccess
+  ),
   setErrorOn(
     loadUsersFail,
     loadUserFail,
@@ -73,8 +80,6 @@ export const usersReducer = createReducer(
 
     return {
       ...usersAdapter.upsertOne(user, state),
-      loading: false,
-      error: undefined,
     };
   }),
   on(addUserSuccess, (state, action) => {
