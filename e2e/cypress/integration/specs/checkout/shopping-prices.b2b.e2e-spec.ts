@@ -1,4 +1,4 @@
-import { at } from '../../framework';
+import { at, waitLoadingEnd } from '../../framework';
 import { createB2BUserViaREST } from '../../framework/b2b-user';
 import { LoginPage } from '../../pages/account/login.page';
 import { MyAccountPage } from '../../pages/account/my-account.page';
@@ -51,6 +51,7 @@ describe('Price Display B2B', () => {
       page.fillForm(_.user.login, _.user.password);
       page.submit().its('response.statusCode').should('equal', 200);
     });
+    waitLoadingEnd();
   });
 
   it('should see the same prices', () => {

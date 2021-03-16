@@ -32,6 +32,7 @@ describe('Order Template Shopping Experience Functionality', () => {
     at(LoginPage, page => {
       page.fillForm(_.user.login, _.user.password);
       page.submit().its('response.statusCode').should('equal', 200);
+      waitLoadingEnd();
     });
     at(OrderTemplatesOverviewPage, page => {
       page.addOrderTemplate(accountOrderTemplate);
