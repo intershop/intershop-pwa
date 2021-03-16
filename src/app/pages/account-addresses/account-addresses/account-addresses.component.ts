@@ -68,7 +68,7 @@ export class AccountAddressesComponent implements OnInit, OnChanges, OnDestroy {
         if (urn) {
           this.accountFacade.updateUser(
             { ...this.user, preferredInvoiceToAddressUrn: urn },
-            'account.addresses.preferredinvoice.change.message'
+            { message: 'account.addresses.preferredinvoice.change.message' }
           );
           this.preferredAddressForm.get('preferredInvoiceAddressUrn').setValue('');
         }
@@ -82,7 +82,7 @@ export class AccountAddressesComponent implements OnInit, OnChanges, OnDestroy {
         if (urn) {
           this.accountFacade.updateUser(
             { ...this.user, preferredShipToAddressUrn: urn },
-            'account.addresses.preferredshipping.change.message'
+            { message: 'account.addresses.preferredshipping.change.message' }
           );
           this.preferredAddressForm.get('preferredShippingAddressUrn').setValue('');
         }

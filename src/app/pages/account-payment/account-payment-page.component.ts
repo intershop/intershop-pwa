@@ -34,6 +34,6 @@ export class AccountPaymentPageComponent implements OnInit {
   }
 
   updateDefaultPaymentInstrument(user: User) {
-    this.accountFacade.updateUser(user, 'account.payment.payment_created.message');
+    this.accountFacade.updateUser(user, { message: 'account.payment.payment_created.message' });
   }
 }
