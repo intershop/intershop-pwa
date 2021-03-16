@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { FormlyConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { pick } from 'lodash-es';
 import { map } from 'rxjs/operators';
 
@@ -15,7 +15,7 @@ import {
 export class AddressFormUSConfiguration extends AddressFormConfiguration {
   countryCode = 'US';
 
-  constructor(private appFacade: AppFacade, private config: FormlyConfig) {
+  constructor(private appFacade: AppFacade) {
     super();
   }
 
@@ -44,8 +44,8 @@ export class AddressFormUSConfiguration extends AddressFormConfiguration {
         {
           key: 'city',
           type: 'ish-text-input-field',
-          wrappers: [...this.config.getType('ish-text-input-field').wrappers, 'tooltip'],
           templateOptions: {
+            postWrappers: ['tooltip'],
             label: 'account.default_address.city.label',
             required: true,
             tooltip: {

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { FORMLY_CONFIG, FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
+import { FORMLY_CONFIG, FormlyConfig, FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
@@ -16,6 +16,7 @@ import { ValidationIconsComponent } from './components/validation-icons/validati
 import { ValidationMessageComponent } from './components/validation-message/validation-message.component';
 import { criticalDefaultValuesExtension } from './extensions/critical-default-values.extension';
 import { hideIfEmptyOptionsExtension } from './extensions/hide-if-empty-options.extension';
+import { registerPostWrappersExtension } from './extensions/post-wrappers-extension';
 import { registerTranslateSelectOptionsExtension } from './extensions/translate-select-options.extension';
 import { CaptchaFieldComponent } from './types/captcha-field/captcha-field.component';
 import { CheckboxFieldComponent } from './types/checkbox-field/checkbox-field.component';
@@ -131,6 +132,12 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
       multi: true,
       useFactory: registerTranslateSelectOptionsExtension,
       deps: [TranslateService],
+    },
+    {
+      provide: FORMLY_CONFIG,
+      multi: true,
+      useFactory: registerPostWrappersExtension,
+      deps: [FormlyConfig],
     },
   ],
   exports: [

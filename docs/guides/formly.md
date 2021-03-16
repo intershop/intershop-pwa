@@ -245,8 +245,9 @@ Refer to the tables below for an overview of these parts.
 
 ### Extensions
 
-| Name                     | Functionality                                                                   | Relevant templateOptions                                                 |
-| ------------------------ | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| critical-default-values  | Sets required attributes on `FormlyFieldConfigs` that are missing them.         | ----                                                                     |
-| hide-if-empty            | Hides fields of type `ish-select-field` that have an empty `options` attribute. | `options`: Used to determine emptiness.                                  |
-| translate-select-options | Automatically translates option labels and adds a placeholder option.           | `placeholder`: used to determine whether to set placeholder and its text |
+| Name                     | Functionality                                                                   | Relevant templateOptions                                                   |
+| ------------------------ | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| critical-default-values  | Sets required attributes on `FormlyFieldConfigs` that are missing them.         | ----                                                                       |
+| hide-if-empty            | Hides fields of type `ish-select-field` that have an empty `options` attribute. | `options`: Used to determine emptiness.                                    |
+| translate-select-options | Automatically translates option labels and adds a placeholder option.           | `placeholder`: used to determine whether to set placeholder and its text   |
+| post-wrappers            | Appends wrappers to the default ones defined in the `FormlyModule`              | `postWrappers`: `string[]` of extensions to append to the default wrappers |
