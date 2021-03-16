@@ -262,7 +262,7 @@
   "account.profile.phone.label": "Téléphone",
   "account.profile.update.link": "Modifier",
   "account.profile.update_company_profile.message": "Vos informations de l’entreprise ont été mises à jour.",
-  "account.profile.update_email.message": "Votre adresse courriel a été mise à jour.",
+  "account.profile.update_email.message": "Votre adresse courriel a été mise à jour. Nous avons envoyé un e-mail à {{0}} pour confirmer.",
   "account.profile.update_password.message": "Votre mot de passe a été mis à jour.",
   "account.profile.update_profile.message": "Vos informations du profil ont été mises à jour.",
   "account.punchout.heading": "Punchout",

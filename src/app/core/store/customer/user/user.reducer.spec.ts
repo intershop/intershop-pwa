@@ -156,7 +156,7 @@ describe('User Reducer', () => {
         firstName: 'test',
       } as User;
 
-      const action = updateUserSuccess({ user: changedUser as User, successMessage: 'success' });
+      const action = updateUserSuccess({ user: changedUser as User, successMessage: { message: 'success' } });
       const state = userReducer(initialState, action);
 
       expect(state.user).toEqual(changedUser);
@@ -182,7 +182,7 @@ describe('User Reducer', () => {
     });
 
     it('should set successMessage and reset loading when UpdateUserPasswordSuccess is reduced', () => {
-      const action = updateUserPasswordSuccess({ successMessage: 'success' });
+      const action = updateUserPasswordSuccess({ successMessage: { message: 'success' } });
       const state = userReducer(initialState, action);
 
       expect(state.loading).toBeFalse();
@@ -211,7 +211,7 @@ describe('User Reducer', () => {
         companyName: 'test',
       } as Customer;
 
-      const action = updateCustomerSuccess({ customer: changedCustomer, successMessage: 'success' });
+      const action = updateCustomerSuccess({ customer: changedCustomer, successMessage: { message: 'success' } });
       const state = userReducer(initialState, action);
 
       expect(state.customer).toEqual(changedCustomer);

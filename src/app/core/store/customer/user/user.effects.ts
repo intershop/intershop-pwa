@@ -147,7 +147,7 @@ export class UserEffects {
         this.userService.updateUserPassword(customer, user, payload.password, payload.currentPassword).pipe(
           mapTo(
             updateUserPasswordSuccess({
-              successMessage: payload.successMessage || 'account.profile.update_password.message',
+              successMessage: payload.successMessage || { message: 'account.profile.update_password.message' },
             })
           ),
           mapErrorToAction(updateUserPasswordFail)
@@ -187,11 +187,7 @@ export class UserEffects {
       ofType(updateUserPasswordSuccess, updateUserSuccess, updateCustomerSuccess),
       mapToPayloadProperty('successMessage'),
       filter(successMessage => !!successMessage),
-      map(successMessage =>
-        displaySuccessMessage({
-          message: successMessage,
-        })
-      )
+      map(displaySuccessMessage)
     )
   );
 

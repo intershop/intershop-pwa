@@ -299,8 +299,8 @@ describe('User Effects', () => {
     it('should dispatch a UpdateUserSuccess action on successful user update', () => {
       const user = { firstName: 'Patricia' } as User;
 
-      const action = updateUser({ user, successMessage: 'success' });
-      const completion = updateUserSuccess({ user, successMessage: 'success' });
+      const action = updateUser({ user, successMessage: { message: 'success' } });
+      const completion = updateUserSuccess({ user, successMessage: { message: 'success' } });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -309,7 +309,7 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a SuccessMessage action if update succeeded', () => {
-      const action = updateUserSuccess({ user: {} as User, successMessage: 'success' });
+      const action = updateUserSuccess({ user: {} as User, successMessage: { message: 'success' } });
       const completion = displaySuccessMessage({ message: 'success' });
 
       actions$ = hot('-a-a-a', { a: action });
@@ -361,7 +361,7 @@ describe('User Effects', () => {
 
       const action = updateUserPassword({ password, currentPassword });
       const completion = updateUserPasswordSuccess({
-        successMessage: 'account.profile.update_password.message',
+        successMessage: { message: 'account.profile.update_password.message' },
       });
 
       actions$ = hot('-a-a-a', { a: action });
@@ -374,9 +374,9 @@ describe('User Effects', () => {
       const password = '123';
       const currentPassword = '1234';
 
-      const action = updateUserPassword({ password, currentPassword, successMessage: 'success' });
+      const action = updateUserPassword({ password, currentPassword, successMessage: { message: 'success' } });
       const completion = updateUserPasswordSuccess({
-        successMessage: 'success',
+        successMessage: { message: 'success' },
       });
 
       actions$ = hot('-a-a-a', { a: action });
@@ -414,7 +414,7 @@ describe('User Effects', () => {
     it('should call the api service when UpdateCustomer is called for a business customer', done => {
       const action = updateCustomer({
         customer: { ...customer, companyName: 'OilCorp' },
-        successMessage: 'success',
+        successMessage: { message: 'success' },
       });
 
       actions$ = of(action);
@@ -426,8 +426,8 @@ describe('User Effects', () => {
     });
 
     it('should dispatch an UpdateCustomerSuccess action on successful customer update', () => {
-      const action = updateCustomer({ customer, successMessage: 'success' });
-      const completion = updateCustomerSuccess({ customer, successMessage: 'success' });
+      const action = updateCustomer({ customer, successMessage: { message: 'success' } });
+      const completion = updateCustomerSuccess({ customer, successMessage: { message: 'success' } });
 
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -447,7 +447,7 @@ describe('User Effects', () => {
         })
       );
 
-      const action = updateCustomer({ customer: privateCustomer, successMessage: 'success' });
+      const action = updateCustomer({ customer: privateCustomer, successMessage: { message: 'success' } });
 
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('----');
