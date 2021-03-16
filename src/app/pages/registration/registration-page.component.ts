@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FormlyConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { UUID } from 'angular2-uuid';
 import { Observable } from 'rxjs';
 
@@ -28,8 +28,7 @@ export class RegistrationPageComponent implements OnInit {
   constructor(
     private accountFacade: AccountFacade,
     private router: Router,
-    private featureToggle: FeatureToggleService,
-    private config: FormlyConfig
+    private featureToggle: FeatureToggleService
   ) {}
 
   submitted = false;
@@ -208,8 +207,8 @@ export class RegistrationPageComponent implements OnInit {
           {
             key: 'password',
             type: 'ish-password-field',
-            wrappers: [...this.config.getType('ish-password-field').wrappers, 'description'],
             templateOptions: {
+              postWrappers: ['description'],
               required: true,
               label: 'account.register.password.label',
               customDescription: {

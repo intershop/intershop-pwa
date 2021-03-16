@@ -1,7 +1,7 @@
 import { getCurrencySymbol } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormlyConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -37,7 +37,7 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject();
 
-  constructor(private appFacade: AppFacade, private config: FormlyConfig) {}
+  constructor(private appFacade: AppFacade) {}
 
   ngOnInit() {
     if (!this.form) {
@@ -84,8 +84,8 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
           {
             key: 'orderSpentLimitValue',
             type: 'ish-text-input-field',
-            wrappers: [...(this.config.getType('ish-text-input-field').wrappers ?? []), 'input-addon'],
             templateOptions: {
+              postWrappers: ['input-addon'],
               label: 'account.user.new.order_spend_limit.label',
               addonLeft: {
                 text: getCurrencySymbol(this.model.currency, 'wide', this.currentLocale.lang),
@@ -107,8 +107,8 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
                 className: 'col-8',
                 key: 'budgetValue',
                 type: 'ish-text-input-field',
-                wrappers: [...(this.config.getType('ish-text-input-field').wrappers ?? []), 'input-addon'],
                 templateOptions: {
+                  postWrappers: ['input-addon'],
                   labelClass: 'col-md-6',
                   fieldClass: 'col-md-6 pr-0',
                   label: 'account.user.budget.label',
