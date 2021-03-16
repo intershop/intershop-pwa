@@ -1,5 +1,9 @@
 import { FormlyConfig, FormlyExtension, FormlyFieldConfig, FormlyTemplateOptions } from '@ngx-formly/core';
 
+/**
+ * Extension that enables appending wrappers to the default configuration.
+ * It uses the templateOptions.postWrappers to modify a fields wrappers without overriding them.
+ */
 class PostWrappersExtension implements FormlyExtension {
   constructor(private formlyConfig: FormlyConfig) {}
 
