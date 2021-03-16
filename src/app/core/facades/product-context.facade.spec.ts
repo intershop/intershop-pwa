@@ -3,7 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { omit, pick } from 'lodash-es';
 import { BehaviorSubject, EMPTY, Observable, Subject, of } from 'rxjs';
 import { map, mapTo, switchMapTo } from 'rxjs/operators';
-import { anyString, anything, instance, mock, when } from 'ts-mockito';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
@@ -33,6 +33,7 @@ describe('Product Context Facade', () => {
 
   beforeEach(() => {
     shoppingFacade = mock(ShoppingFacade);
+    when(shoppingFacade.productLinks$(anything())).thenReturn(of({}));
     when(shoppingFacade.productParts$(anything())).thenReturn(EMPTY);
     when(shoppingFacade.category$(anything())).thenReturn(of(undefined));
 
@@ -54,6 +55,8 @@ describe('Product Context Facade', () => {
         "requiredCompletenessLevel": 2,
       }
     `);
+    verify(shoppingFacade.productLinks$(anything())).never();
+    verify(shoppingFacade.promotions$(anything())).never();
     expect(context.get('loading')).toBeFalsy();
   });
 
@@ -289,6 +292,17 @@ describe('Product Context Facade', () => {
       });
     });
 
+    describe('lazy property handling', () => {
+      it('should not load product links until subscription', done => {
+        verify(shoppingFacade.productLinks$(anything())).never();
+
+        context.select('links').subscribe(() => {
+          verify(shoppingFacade.productLinks$(anything())).once();
+          done();
+        });
+      });
+    });
+
     it('should set correct display properties for product', () => {
       expect(context.get('displayProperties')).toMatchInlineSnapshot(`
         Object {
@@ -425,19 +439,22 @@ describe('Product Context Facade', () => {
       context.set('sku', () => '123');
     });
 
-    it('should set parts property for retail set', () => {
-      expect(context.get('parts')).toMatchInlineSnapshot(`
-        Array [
-          Object {
-            "quantity": 1,
-            "sku": "p1",
-          },
-          Object {
-            "quantity": 1,
-            "sku": "p2",
-          },
-        ]
-      `);
+    it('should set parts property for retail set', done => {
+      context.select('parts').subscribe(parts => {
+        expect(parts).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "quantity": 1,
+              "sku": "p1",
+            },
+            Object {
+              "quantity": 1,
+              "sku": "p2",
+            },
+          ]
+        `);
+        done();
+      });
     });
 
     it('should set correct display properties for retail set', () => {
@@ -492,19 +509,22 @@ describe('Product Context Facade', () => {
       context.set('sku', () => '123');
     });
 
-    it('should set parts property for bundle', () => {
-      expect(context.get('parts')).toMatchInlineSnapshot(`
-        Array [
-          Object {
-            "quantity": 1,
-            "sku": "p1",
-          },
-          Object {
-            "quantity": 2,
-            "sku": "p2",
-          },
-        ]
-      `);
+    it('should set parts property for bundle', done => {
+      context.select('parts').subscribe(parts => {
+        expect(parts).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "quantity": 1,
+              "sku": "p1",
+            },
+            Object {
+              "quantity": 2,
+              "sku": "p2",
+            },
+          ]
+        `);
+        done();
+      });
     });
 
     it('should set correct display properties for bundle', () => {

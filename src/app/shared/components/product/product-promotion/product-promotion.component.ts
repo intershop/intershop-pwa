@@ -19,6 +19,6 @@ export class ProductPromotionComponent implements OnInit {
 
   ngOnInit() {
     this.visible$ = this.context.select('displayProperties', 'promotions');
-    this.promotions$ = this.context.productPromotions$();
+    this.promotions$ = this.context.select('promotions');
   }
 }

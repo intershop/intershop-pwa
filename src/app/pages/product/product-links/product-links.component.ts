@@ -25,6 +25,6 @@ export class ProductLinksComponent implements OnInit {
   constructor(private context: ProductContextFacade) {}
 
   ngOnInit() {
-    this.links$ = this.context.productLinks$();
+    this.links$ = this.context.select('links');
   }
 }

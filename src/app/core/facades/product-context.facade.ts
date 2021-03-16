@@ -7,9 +7,11 @@ import { debounceTime, distinctUntilChanged, filter, first, map, skip, startWith
 
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { Image } from 'ish-core/models/image/image.model';
+import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel, ProductHelper, SkuQuantityType } from 'ish-core/models/product/product.model';
+import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { generateProductUrl } from 'ish-core/routing/product/product.route';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -80,8 +82,12 @@ export interface ProductContext {
   loading: boolean;
   label: string;
   categoryId: string;
-
   displayProperties: Partial<ProductContextDisplayProperties>;
+
+  // lazy
+  links: ProductLinksDictionary;
+  promotions: Promotion[];
+  parts: SkuQuantityType[];
 
   // variation handling
   variationCount: number;
@@ -99,7 +105,6 @@ export interface ProductContext {
   hasQuantityError: boolean;
 
   // child contexts
-  parts: SkuQuantityType[];
   propagateActive: boolean;
   children: ProductContext[];
 }
@@ -108,6 +113,7 @@ export interface ProductContext {
 export class ProductContextFacade extends RxState<ProductContext> {
   private privateConfig$ = new BehaviorSubject<Partial<ProductContextDisplayProperties>>({});
   private loggingActive = false;
+  private lazyFieldsInitialized: string[] = [];
 
   set config(config: Partial<ProductContextDisplayProperties>) {
     this.privateConfig$.next(config);
@@ -231,14 +237,6 @@ export class ProductContextFacade extends RxState<ProductContext> {
       )
     );
 
-    this.connect(
-      'parts',
-      this.select('sku').pipe(
-        whenTruthy(),
-        switchMap(sku => this.shoppingFacade.productParts$(sku))
-      )
-    );
-
     const externalDisplayPropertyProviders = injector
       .get<ExternalDisplayPropertiesProvider[]>(EXTERNAL_DISPLAY_PROPERTY_PROVIDER, [])
       .map(edp => edp.setup(this.select('product')));
@@ -273,6 +271,49 @@ export class ProductContextFacade extends RxState<ProductContext> {
     ) {
       this.set('requiredCompletenessLevel', () => ProductCompletenessLevel.Detail);
     }
+  }
+
+  select(): Observable<ProductContext>;
+  select<K1 extends keyof ProductContext>(k1: K1): Observable<ProductContext[K1]>;
+  select<K1 extends keyof ProductContext, K2 extends keyof ProductContext[K1]>(
+    k1: K1,
+    k2: K2
+  ): Observable<ProductContext[K1][K2]>;
+
+  select<K1 extends keyof ProductContext, K2 extends keyof ProductContext[K1]>(k1?: K1, k2?: K2) {
+    const wrap = <K extends keyof ProductContext>(key: K, obs: Observable<ProductContext[K]>) => {
+      if (!this.lazyFieldsInitialized.includes(key)) {
+        this.connect(key, obs);
+        this.lazyFieldsInitialized.push(key);
+      }
+    };
+
+    switch (k1) {
+      case 'links':
+        wrap('links', this.shoppingFacade.productLinks$(this.select('sku')));
+        break;
+      case 'promotions':
+        wrap(
+          'promotions',
+          combineLatest([this.select('displayProperties', 'promotions'), this.select('product', 'promotionIds')]).pipe(
+            filter(([visible]) => !!visible),
+            switchMap(([, ids]) => this.shoppingFacade.promotions$(ids))
+          )
+        );
+        break;
+      case 'parts':
+        wrap(
+          'parts',
+          combineLatest([
+            this.select('displayProperties', 'bundleParts'),
+            this.select('displayProperties', 'retailSetParts'),
+          ]).pipe(
+            filter(([a, b]) => a || b),
+            switchMap(() => this.shoppingFacade.productParts$(this.select('sku')))
+          )
+        );
+    }
+    return k2 ? super.select(k1, k2) : k1 ? super.select(k1) : super.select();
   }
 
   log(val: boolean) {
@@ -340,13 +381,5 @@ export class ProductContextFacade extends RxState<ProductContext> {
           : ProductHelper.getPrimaryImage(product, imageType)
       )
     );
-  }
-
-  productLinks$() {
-    return this.shoppingFacade.productLinks$(this.select('sku'));
-  }
-
-  productPromotions$() {
-    return this.select('product', 'promotionIds').pipe(switchMap(ids => this.shoppingFacade.promotions$(ids)));
   }
 }

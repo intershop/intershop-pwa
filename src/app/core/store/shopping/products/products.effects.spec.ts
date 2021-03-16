@@ -25,6 +25,7 @@ import {
   loadProductLinks,
   loadProductLinksFail,
   loadProductLinksSuccess,
+  loadProductParts,
   loadProductSuccess,
   loadProductVariationsFail,
   loadProductVariationsIfNotLoaded,
@@ -51,14 +52,6 @@ describe('Products Effects', () => {
         return throwError(makeHttpError({ message: 'invalid' }));
       } else {
         return of({ sku } as Product);
-      }
-    });
-
-    when(productsServiceMock.getProductBundles(anything())).thenCall((sku: string) => {
-      if (!sku) {
-        return throwError(makeHttpError({ message: 'invalid' }));
-      } else {
-        return of({ product: { sku }, stubs: [] });
       }
     });
 
@@ -94,19 +87,6 @@ describe('Products Effects', () => {
     httpStatusCodeService = spy(TestBed.inject(HttpStatusCodeService));
 
     store$.dispatch(setProductListingPageSize({ itemsPerPage: TestBed.inject(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
-  });
-
-  describe('loadProductBundles$', () => {
-    it('should call the productsService for LoadProductBundles action', done => {
-      const sku = 'P123';
-      const action = loadProductSuccess({ product: { sku, type: 'Bundle' } as Product });
-      actions$ = of(action);
-
-      effects.loadProductBundles$.subscribe(() => {
-        verify(productsServiceMock.getProductBundles(sku)).once();
-        done();
-      });
-    });
   });
 
   describe('loadProduct$', () => {
@@ -410,52 +390,76 @@ describe('Products Effects', () => {
     });
   });
 
-  describe('loadProductBundles$', () => {
-    it('should load stubs and bundle reference when queried', done => {
-      when(productsServiceMock.getProductBundles('ABC')).thenReturn(
-        of({
-          stubs: [{ sku: 'A' }, { sku: 'B' }],
-          bundledProducts: [
-            { sku: 'A', quantity: 1 },
-            { sku: 'B', quantity: 1 },
-          ],
-        })
-      );
+  describe('loadProductParts$', () => {
+    describe('with bundle', () => {
+      beforeEach(() => {
+        store$.dispatch(loadProductSuccess({ product: { sku: 'ABC', type: 'Bundle' } as Product }));
 
-      actions$ = of(loadProductSuccess({ product: { sku: 'ABC', type: 'Bundle' } as Product }));
+        when(productsServiceMock.getProductBundles('ABC')).thenReturn(of({ stubs: [], bundledProducts: [] }));
+      });
 
-      effects.loadProductBundles$.pipe(toArray()).subscribe(actions => {
-        expect(actions).toMatchInlineSnapshot(`
-          [Products API] Load Product Success:
-            product: {"sku":"A"}
-          [Products API] Load Product Success:
-            product: {"sku":"B"}
-          [Products API] Load Product Bundles Success:
-            sku: "ABC"
-            bundledProducts: [{"sku":"A","quantity":1},{"sku":"B","quantity":1}]
-        `);
-        done();
+      it('should call the products service for loading bundle information', done => {
+        const action = loadProductParts({ sku: 'ABC' });
+        actions$ = of(action);
+
+        effects.loadProductParts$.subscribe(() => {
+          verify(productsServiceMock.getProductBundles(anything())).once();
+          const [sku] = capture(productsServiceMock.getProductBundles).last();
+          expect(sku).toMatchInlineSnapshot(`"ABC"`);
+          done();
+        });
+      });
+
+      it('should load stubs and bundle reference when queried', done => {
+        when(productsServiceMock.getProductBundles('ABC')).thenReturn(
+          of({
+            stubs: [{ sku: 'A' }, { sku: 'B' }],
+            bundledProducts: [
+              { sku: 'A', quantity: 1 },
+              { sku: 'B', quantity: 1 },
+            ],
+          })
+        );
+
+        actions$ = of(loadProductParts({ sku: 'ABC' }));
+
+        effects.loadProductParts$.pipe(toArray()).subscribe(actions => {
+          expect(actions).toMatchInlineSnapshot(`
+            [Products API] Load Product Success:
+              product: {"sku":"A"}
+            [Products API] Load Product Success:
+              product: {"sku":"B"}
+            [Products API] Load Product Parts Success:
+              sku: "ABC"
+              parts: [{"sku":"A","quantity":1},{"sku":"B","quantity":1}]
+          `);
+          done();
+        });
       });
     });
-  });
 
-  describe('loadPartsOfRetailSet$', () => {
-    it('should load stubs and retail set reference when queried', done => {
-      when(productsServiceMock.getRetailSetParts('ABC')).thenReturn(of([{ sku: 'A' }, { sku: 'B' }]));
+    describe('with retail set', () => {
+      beforeEach(() => {
+        store$.dispatch(loadProductSuccess({ product: { sku: 'ABC', type: 'RetailSet' } as Product }));
+      });
 
-      actions$ = of(loadProductSuccess({ product: { sku: 'ABC', type: 'RetailSet' } as Product }));
+      it('should load stubs and retail set reference when queried', done => {
+        when(productsServiceMock.getRetailSetParts('ABC')).thenReturn(of([{ sku: 'A' }, { sku: 'B' }]));
 
-      effects.loadPartsOfRetailSet$.pipe(toArray()).subscribe(actions => {
-        expect(actions).toMatchInlineSnapshot(`
-          [Products API] Load Product Success:
-            product: {"sku":"A"}
-          [Products API] Load Product Success:
-            product: {"sku":"B"}
-          [Products API] Load Retail Set Success:
-            sku: "ABC"
-            parts: ["A","B"]
-        `);
-        done();
+        actions$ = of(loadProductParts({ sku: 'ABC' }));
+
+        effects.loadProductParts$.pipe(toArray()).subscribe(actions => {
+          expect(actions).toMatchInlineSnapshot(`
+            [Products API] Load Product Success:
+              product: {"sku":"A"}
+            [Products API] Load Product Success:
+              product: {"sku":"B"}
+            [Products API] Load Product Parts Success:
+              sku: "ABC"
+              parts: [{"sku":"A","quantity":1},{"sku":"B","quantity":1}]
+          `);
+          done();
+        });
       });
     });
   });
