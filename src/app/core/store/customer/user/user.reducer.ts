@@ -5,7 +5,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { User } from 'ish-core/models/user/user.model';
 import { loadRolesAndPermissionsFail } from 'ish-core/store/customer/authorization';
-import { setErrorOn, setLoadingOn } from 'ish-core/utils/ngrx-creators';
+import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn, unsetLoadingOn } from 'ish-core/utils/ngrx-creators';
 
 import {
   createUser,
@@ -78,7 +78,23 @@ export const userReducer = createReducer(
     updateUserPassword,
     updateCustomer,
     loadUserPaymentMethods,
-    deleteUserPaymentInstrument
+    deleteUserPaymentInstrument,
+    updateUserPasswordByPasswordReminder,
+    requestPasswordReminder
+  ),
+  unsetLoadingOn(
+    updateUserPasswordByPasswordReminderSuccess,
+    requestPasswordReminderSuccess,
+    updateUserPasswordByPasswordReminderFail,
+    requestPasswordReminderFail
+  ),
+  setErrorOn(
+    updateUserFail,
+    updateUserPasswordFail,
+    updateCustomerFail,
+    loadUserPaymentMethodsFail,
+    deleteUserPaymentInstrumentFail,
+    loadRolesAndPermissionsFail
   ),
   on(loginUserFail, loadCompanyUserFail, createUserFail, (_, action) => {
     const error = action.payload.error;
@@ -89,15 +105,16 @@ export const userReducer = createReducer(
       error,
     };
   }),
-  setErrorOn(
-    updateUserFail,
-    updateUserPasswordFail,
-    updateCustomerFail,
-    loadUserPaymentMethodsFail,
-    deleteUserPaymentInstrumentFail,
-    loadRolesAndPermissionsFail
+  unsetLoadingAndErrorOn(
+    loginUserSuccess,
+    loadCompanyUserSuccess,
+    updateUserSuccess,
+    updateUserPasswordSuccess,
+    updateCustomerSuccess,
+    loadUserPaymentMethodsSuccess,
+    deleteUserPaymentInstrumentSuccess
   ),
-  on(loginUserSuccess, (state, action) => {
+  on(loginUserSuccess, (state: UserState, action) => {
     const customer = action.payload.customer;
     const user = action.payload.user;
 
@@ -106,8 +123,6 @@ export const userReducer = createReducer(
       authorized: true,
       customer,
       user,
-      loading: false,
-      error: undefined,
     };
   }),
   on(loadCompanyUserSuccess, (state, action) => {
@@ -116,8 +131,6 @@ export const userReducer = createReducer(
     return {
       ...state,
       user,
-      loading: false,
-      error: undefined,
     };
   }),
   on(updateUserSuccess, (state, action) => {
@@ -126,14 +139,10 @@ export const userReducer = createReducer(
     return {
       ...state,
       user,
-      loading: false,
-      error: undefined,
     };
   }),
   on(updateUserPasswordSuccess, state => ({
     ...state,
-    loading: false,
-    error: undefined,
   })),
   on(updateCustomerSuccess, (state, action) => {
     const customer = action.payload.customer;
@@ -141,8 +150,6 @@ export const userReducer = createReducer(
     return {
       ...state,
       customer,
-      loading: false,
-      error: undefined,
     };
   }),
   on(setPGID, (state, action) => ({
@@ -152,29 +159,22 @@ export const userReducer = createReducer(
   on(loadUserPaymentMethodsSuccess, (state, action) => ({
     ...state,
     paymentMethods: action.payload.paymentMethods,
-    loading: false,
-    error: undefined,
   })),
   on(deleteUserPaymentInstrumentSuccess, state => ({
     ...state,
-    loading: false,
-    error: undefined,
   })),
   on(updateUserPasswordByPasswordReminder, requestPasswordReminder, state => ({
     ...state,
-    loading: true,
     passwordReminderSuccess: undefined,
     passwordReminderError: undefined,
   })),
   on(updateUserPasswordByPasswordReminderSuccess, requestPasswordReminderSuccess, state => ({
     ...state,
-    loading: false,
     passwordReminderSuccess: true,
     passwordReminderError: undefined,
   })),
   on(updateUserPasswordByPasswordReminderFail, requestPasswordReminderFail, (state, action) => ({
     ...state,
-    loading: false,
     passwordReminderSuccess: false,
     passwordReminderError: action.payload.error,
   })),

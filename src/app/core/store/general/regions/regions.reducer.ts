@@ -2,7 +2,7 @@ import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
 import { Region } from 'ish-core/models/region/region.model';
-import { setLoadingOn } from 'ish-core/utils/ngrx-creators';
+import { setLoadingOn, unsetLoadingOn } from 'ish-core/utils/ngrx-creators';
 
 import { loadRegions, loadRegionsFail, loadRegionsSuccess } from './regions.actions';
 
@@ -21,16 +21,12 @@ export const initialState: RegionsState = regionAdapter.getInitialState({
 export const regionsReducer = createReducer(
   initialState,
   setLoadingOn(loadRegions),
-  on(loadRegionsFail, state => ({
-    ...state,
-    loading: false,
-  })),
+  unsetLoadingOn(loadRegionsFail, loadRegionsSuccess),
   on(loadRegionsSuccess, (state, action) => {
     const { regions } = action.payload;
 
     return {
       ...regionAdapter.upsertMany(regions, state),
-      loading: false,
     };
   })
 );

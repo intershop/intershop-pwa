@@ -2,7 +2,7 @@ import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
-import { setLoadingOn } from 'ish-core/utils/ngrx-creators';
+import { setLoadingOn, unsetLoadingOn } from 'ish-core/utils/ngrx-creators';
 
 import { loadContentInclude, loadContentIncludeFail, loadContentIncludeSuccess } from './includes.actions';
 
@@ -21,16 +21,12 @@ export const initialState: IncludesState = includesAdapter.getInitialState({
 export const includesReducer = createReducer(
   initialState,
   setLoadingOn(loadContentInclude),
-  on(loadContentIncludeFail, state => ({
-    ...state,
-    loading: false,
-  })),
+  unsetLoadingOn(loadContentIncludeFail, loadContentIncludeSuccess),
   on(loadContentIncludeSuccess, (state, action) => {
     const { include } = action.payload;
 
     return {
       ...includesAdapter.upsertOne(include, state),
-      loading: false,
     };
   })
 );

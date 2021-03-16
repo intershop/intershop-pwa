@@ -11,7 +11,7 @@ import {
   loadProductsForMasterFail,
 } from 'ish-core/store/shopping/products';
 import { searchProducts, searchProductsFail } from 'ish-core/store/shopping/search';
-import { setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
+import { setLoadingOn, unsetLoadingAndErrorOn, unsetLoadingOn } from 'ish-core/utils/ngrx-creators';
 import { formParamsToString } from 'ish-core/utils/url-form-params';
 
 import { setProductListingPageSize, setProductListingPages, setViewType } from './product-listing.actions';
@@ -84,6 +84,7 @@ export const productListingReducer = createReducer(
   })),
   on(setViewType, (state, action) => ({ ...state, viewType: action.payload.viewType })),
   setLoadingOn(searchProducts, loadProductsForCategory, loadProductsForFilter, loadProductsForMaster),
+  unsetLoadingOn(setProductListingPages),
   unsetLoadingAndErrorOn(searchProductsFail, loadProductsForCategoryFail, loadProductsForMasterFail),
   on(setProductListingPages, (state, action) => {
     const pages =
@@ -95,6 +96,6 @@ export const productListingReducer = createReducer(
       filters: action.payload.id.filters,
     });
 
-    return adapter.upsertOne({ ...action.payload, pages }, { ...state, loading: false, currentSettings });
+    return adapter.upsertOne({ ...action.payload, pages }, { ...state, currentSettings });
   })
 );
