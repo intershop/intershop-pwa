@@ -6,5 +6,5 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FieldTooltipComponent {
-  @Input() tooltipInfo: { title?: string; text: string; link: string };
+  @Input() tooltipInfo: { text: string; link: string; title?: string; class?: string };
 }

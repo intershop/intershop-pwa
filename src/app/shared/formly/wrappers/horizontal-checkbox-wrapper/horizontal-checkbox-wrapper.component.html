@@ -4,6 +4,7 @@
       <ng-template #fieldComponent></ng-template>
       <label [attr.for]="id" class="form-check-label" [ngClass]="to.labelClass ? to.labelClass : dto.labelClass">
         <span *ngIf="to.label">{{ to.label | translate }}</span>
+        <ish-field-tooltip *ngIf="to.tooltip" [tooltipInfo]="to.tooltip"> </ish-field-tooltip>
       </label>
     </div>
     <ng-container *ngIf="showError" class="invalid-feedback d-block">
