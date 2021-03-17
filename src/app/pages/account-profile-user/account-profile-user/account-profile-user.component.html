@@ -11,31 +11,8 @@
       <p class="indicates-required">
         <span class="required">*</span>{{ 'account.required_field.message' | translate }}
       </p>
-      <form [formGroup]="form" (ngSubmit)="submit()" class="form-horizontal" novalidate="novalidate">
-        <ish-select-title [form]="form" [titles]="titles"></ish-select-title>
-
-        <ish-input
-          [form]="form"
-          controlName="firstName"
-          label="account.update_profile.firstname.label"
-          [errorMessages]="{
-            required: 'account.firstname.error.required',
-            noSpecialChars: 'account.name.error.forbidden.chars'
-          }"
-        ></ish-input>
-
-        <ish-input
-          [form]="form"
-          controlName="lastName"
-          label="account.update_profile.lastname.label"
-          [errorMessages]="{
-            required: 'account.lastname.error.required',
-            noSpecialChars: 'account.name.error.forbidden.chars'
-          }"
-        ></ish-input>
-
-        <ish-input [form]="form" controlName="phoneHome" label="account.update_profile.phone.label"></ish-input>
-
+      <form [formGroup]="accountProfileUserForm" (ngSubmit)="submit()" class="form-horizontal" novalidate="novalidate">
+        <formly-form [form]="accountProfileUserForm" [fields]="fields" [model]="model"></formly-form>
         <div class="row">
           <div class="offset-md-4 col-md-8">
             <button type="submit" class="btn btn-primary" [disabled]="buttonDisabled">

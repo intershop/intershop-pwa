@@ -1,14 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { pick } from 'lodash-es';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -23,68 +16,67 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   templateUrl: './account-profile-company.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountProfileCompanyComponent implements OnInit, OnChanges {
-  @Input() currentCustomer: Customer;
+export class AccountProfileCompanyComponent implements OnInit {
   @Input() error: HttpError;
-
+  @Input() currentCustomer: Customer;
   @Output() updateCompanyProfile = new EventEmitter<Customer>();
 
-  form: FormGroup;
   submitted = false;
 
+  accountProfileCompanyForm = new FormGroup({});
+  model: Partial<Customer>;
+  fields: FormlyFieldConfig[];
+
   ngOnInit() {
-    // create form
-    this.form = new FormGroup({
-      companyName: new FormControl('', Validators.required),
-      companyName2: new FormControl(''),
-      taxationID: new FormControl(''),
-    });
-
-    // initialize form values in case currentUser is available
-    this.initFormValues();
-  }
-
-  ngOnChanges(c: SimpleChanges) {
-    // initialize form values in case currentCustomer changes (current customer is later than form creation)
-    if (c.currentCustomer) {
-      this.initFormValues();
-    }
-  }
-
-  /**
-   * fills form values with data of the logged in customer
-   */
-  initFormValues() {
-    if (this.form && this.currentCustomer) {
-      this.form.get('companyName').setValue(this.currentCustomer.companyName);
-      if (this.currentCustomer.companyName2) {
-        this.form
-          .get('companyName2')
-          .setValue(this.currentCustomer.companyName2 ? this.currentCustomer.companyName2 : '');
-      }
-      if (this.currentCustomer.taxationID) {
-        this.form.get('taxationID').setValue(this.currentCustomer.taxationID ? this.currentCustomer.taxationID : '');
-      }
-    }
+    this.model = pick(this.currentCustomer, 'companyName', 'companyName2', 'taxationID');
+    this.fields = [
+      {
+        key: 'companyName',
+        type: 'ish-text-input-field',
+        templateOptions: {
+          required: true,
+          label: 'account.address.company_name.label',
+        },
+        validation: {
+          messages: { required: 'account.address.company_name.error.required' },
+        },
+      },
+      {
+        key: 'companyName2',
+        type: 'ish-text-input-field',
+        templateOptions: {
+          required: false,
+          label: 'account.address.company_name_2.label',
+        },
+      },
+      {
+        key: 'taxationID',
+        type: 'ish-text-input-field',
+        templateOptions: {
+          required: false,
+          label: 'account.companyprofile.taxationid.label',
+        },
+      },
+    ];
   }
 
   /**
    * Submits form and throws update event when form is valid
    */
   submit() {
-    if (this.form.invalid) {
+    if (this.accountProfileCompanyForm.invalid) {
       this.submitted = true;
-      markAsDirtyRecursive(this.form);
+      markAsDirtyRecursive(this.accountProfileCompanyForm);
       return;
     }
-    const companyName = this.form.get('companyName').value;
-    const companyName2 = this.form.get('companyName2').value;
-    const taxationID = this.form.get('taxationID').value;
+    const companyName = this.accountProfileCompanyForm.get('companyName').value;
+    const companyName2 = this.accountProfileCompanyForm.get('companyName2').value;
+    const taxationID = this.accountProfileCompanyForm.get('taxationID').value;
 
     this.updateCompanyProfile.emit({ ...this.currentCustomer, companyName, companyName2, taxationID });
   }
 
   get buttonDisabled() {
-    return this.form.invalid && this.submitted;
+    return this.accountProfileCompanyForm.invalid && this.submitted;
   }
 }

@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { InputComponent } from 'ish-shared/forms/components/input/input.component';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { AccountProfilePasswordComponent } from './account-profile-password.component';
 
@@ -16,12 +15,8 @@ describe('Account Profile Password Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        AccountProfilePasswordComponent,
-        MockComponent(ErrorMessageComponent),
-        MockComponent(InputComponent),
-      ],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      declarations: [AccountProfilePasswordComponent, MockComponent(ErrorMessageComponent)],
+      imports: [FormlyTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
 
@@ -39,16 +34,16 @@ describe('Account Profile Password Component', () => {
 
   it('should display 3 input fields for oldPassword, password and passwordConfirmation', () => {
     fixture.detectChanges();
-    expect(element.querySelectorAll('ish-input')).toHaveLength(3);
+    expect(element.querySelectorAll('formly-field')).toHaveLength(3);
   });
 
   it('should emit updatePassword event if form is valid', () => {
     const eventEmitter$ = spy(component.updatePassword);
     fixture.detectChanges();
 
-    component.form.get('currentPassword').setValue('!Password01!');
-    component.form.get('password').setValue('!Password01!');
-    component.form.get('passwordConfirmation').setValue('!Password01!');
+    component.accountProfilePasswordForm.get('currentPassword').setValue('!Password01!');
+    component.accountProfilePasswordForm.get('password').setValue('!Password01!');
+    component.accountProfilePasswordForm.get('passwordConfirmation').setValue('!Password01!');
     component.submit();
 
     verify(eventEmitter$.emit(anything())).once();

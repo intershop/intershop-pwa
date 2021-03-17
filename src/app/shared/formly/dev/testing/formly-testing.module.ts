@@ -22,19 +22,19 @@ class CheckboxFieldComponent extends FieldType {}
 })
 class FieldsetFieldComponent extends FieldType {}
 
-@Component({ template: 'TextInputFieldComponent: {{ field.key }} {{ to | json }}' })
+@Component({ template: 'TextInputFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class TextInputFieldComponent extends FieldType {}
 
-@Component({ template: 'EmailFieldComponent: {{ field.key }} {{ to | json }}' })
+@Component({ template: 'EmailFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class EmailFieldComponent extends FieldType {}
 
-@Component({ template: 'PasswordFieldComponent: {{ field.key }} {{ to | json }}' })
+@Component({ template: 'PasswordFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class PasswordFieldComponent extends FieldType {}
 
-@Component({ template: 'SelectFieldComponent: {{ field.key }} {{ to | json }}' })
+@Component({ template: 'SelectFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class SelectFieldComponent extends FieldType {}
 
-@Component({ template: 'TextareaFieldComponent: {{ field.key }} {{ to | json }}' })
+@Component({ template: 'TextareaFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class TextareaFieldComponent extends FieldType {}
 
 @Component({ template: `<ng-template #fieldComponent> </ng-template>` })

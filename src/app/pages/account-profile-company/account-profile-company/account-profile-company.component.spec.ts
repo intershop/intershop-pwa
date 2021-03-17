@@ -1,12 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { InputComponent } from 'ish-shared/forms/components/input/input.component';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { AccountProfileCompanyComponent } from './account-profile-company.component';
 
@@ -17,12 +16,8 @@ describe('Account Profile Company Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [
-        AccountProfileCompanyComponent,
-        MockComponent(ErrorMessageComponent),
-        MockComponent(InputComponent),
-      ],
+      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      declarations: [AccountProfileCompanyComponent, MockComponent(ErrorMessageComponent)],
     }).compileComponents();
   });
 
@@ -40,7 +35,7 @@ describe('Account Profile Company Component', () => {
 
   it('should display 3 input fields for companyName, companyName2 and taxationID', () => {
     fixture.detectChanges();
-    expect(element.querySelectorAll('ish-input')).toHaveLength(3);
+    expect(element.querySelectorAll('formly-field')).toHaveLength(3);
   });
 
   it('should emit updateCompanyProfile event if form is valid', () => {
