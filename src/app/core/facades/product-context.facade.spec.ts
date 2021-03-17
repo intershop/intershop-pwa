@@ -127,7 +127,7 @@ describe('Product Context Facade', () => {
           "price": true,
           "promotions": true,
           "quantity": false,
-          "readOnly": false,
+          "readOnly": undefined,
           "retailSetParts": false,
           "shipment": false,
           "sku": true,
@@ -303,28 +303,59 @@ describe('Product Context Facade', () => {
       });
     });
 
-    it('should set correct display properties for product', () => {
-      expect(context.get('displayProperties')).toMatchInlineSnapshot(`
-        Object {
-          "addToBasket": true,
-          "addToCompare": true,
-          "addToOrderTemplate": true,
-          "addToQuote": true,
-          "addToWishlist": true,
-          "bundleParts": false,
-          "description": true,
-          "inventory": true,
-          "name": true,
-          "price": true,
-          "promotions": true,
-          "quantity": true,
-          "readOnly": false,
-          "retailSetParts": false,
-          "shipment": true,
-          "sku": true,
-          "variations": false,
-        }
-      `);
+    describe('display properties', () => {
+      it('should set correct display properties for product', () => {
+        expect(context.get('displayProperties')).toMatchInlineSnapshot(`
+          Object {
+            "addToBasket": true,
+            "addToCompare": true,
+            "addToOrderTemplate": true,
+            "addToQuote": true,
+            "addToWishlist": true,
+            "bundleParts": false,
+            "description": true,
+            "inventory": true,
+            "name": true,
+            "price": true,
+            "promotions": true,
+            "quantity": true,
+            "readOnly": undefined,
+            "retailSetParts": false,
+            "shipment": true,
+            "sku": true,
+            "variations": false,
+          }
+        `);
+      });
+
+      it('should include external displayProperty overrides when calculating', () => {
+        context.config = {
+          readOnly: true,
+          name: false,
+        };
+
+        expect(context.get('displayProperties')).toMatchInlineSnapshot(`
+          Object {
+            "addToBasket": true,
+            "addToCompare": true,
+            "addToOrderTemplate": true,
+            "addToQuote": true,
+            "addToWishlist": true,
+            "bundleParts": false,
+            "description": true,
+            "inventory": true,
+            "name": false,
+            "price": true,
+            "promotions": true,
+            "quantity": true,
+            "readOnly": true,
+            "retailSetParts": false,
+            "shipment": true,
+            "sku": true,
+            "variations": false,
+          }
+        `);
+      });
     });
   });
 
@@ -472,7 +503,7 @@ describe('Product Context Facade', () => {
           "price": true,
           "promotions": true,
           "quantity": false,
-          "readOnly": false,
+          "readOnly": undefined,
           "retailSetParts": true,
           "shipment": false,
           "sku": true,
@@ -542,7 +573,7 @@ describe('Product Context Facade', () => {
           "price": true,
           "promotions": true,
           "quantity": true,
-          "readOnly": false,
+          "readOnly": undefined,
           "retailSetParts": false,
           "shipment": true,
           "sku": true,
@@ -586,7 +617,7 @@ describe('Product Context Facade', () => {
           "price": true,
           "promotions": true,
           "quantity": true,
-          "readOnly": false,
+          "readOnly": undefined,
           "retailSetParts": false,
           "shipment": true,
           "sku": true,
@@ -628,7 +659,7 @@ describe('Product Context Facade', () => {
           "price": true,
           "promotions": true,
           "quantity": false,
-          "readOnly": false,
+          "readOnly": undefined,
           "retailSetParts": false,
           "shipment": false,
           "sku": true,
@@ -734,7 +765,7 @@ describe('Product Context Facade', () => {
           "price": true,
           "promotions": false,
           "quantity": true,
-          "readOnly": false,
+          "readOnly": undefined,
           "retailSetParts": false,
           "shipment": false,
           "sku": true,
@@ -764,7 +795,7 @@ describe('Product Context Facade', () => {
           "price": true,
           "promotions": false,
           "quantity": true,
-          "readOnly": false,
+          "readOnly": undefined,
           "retailSetParts": false,
           "shipment": false,
           "sku": true,
@@ -775,6 +806,37 @@ describe('Product Context Facade', () => {
       someOther$.next(true);
 
       expect(context.get('displayProperties', 'price')).toMatchInlineSnapshot(`false`);
+    });
+
+    it('should include external displayProperty overrides when calculating', () => {
+      context.set('sku', () => '456');
+
+      context.config = {
+        readOnly: true,
+        name: false,
+      };
+
+      expect(context.get('displayProperties')).toMatchInlineSnapshot(`
+        Object {
+          "addToBasket": false,
+          "addToCompare": false,
+          "addToOrderTemplate": false,
+          "addToQuote": false,
+          "addToWishlist": false,
+          "bundleParts": false,
+          "description": true,
+          "inventory": true,
+          "name": false,
+          "price": true,
+          "promotions": false,
+          "quantity": true,
+          "readOnly": true,
+          "retailSetParts": false,
+          "shipment": false,
+          "sku": true,
+          "variations": false,
+        }
+      `);
     });
   });
 });
