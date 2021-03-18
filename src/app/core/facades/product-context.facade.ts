@@ -14,6 +14,7 @@ import { ProductCompletenessLevel, ProductHelper, SkuQuantityType } from 'ish-co
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { generateProductUrl } from 'ish-core/routing/product/product.route';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { ProductContextDisplayPropertiesService } from 'ish-core/utils/product-context-display-properties/product-context-display-properties.service';
 
 import { ShoppingFacade } from './shopping.facade';
 
@@ -39,31 +40,24 @@ export interface ProductContextDisplayProperties<T = boolean> {
   addToQuote: T;
 }
 
-const defaultDisplayProperties: () => ProductContextDisplayProperties<DisplayEval> = () => {
-  const canBeOrdered = (product: ProductView) => !ProductHelper.isMasterProduct(product) && product.available;
-
-  const canBeOrderedNotRetail = (product: ProductView) => canBeOrdered(product) && !ProductHelper.isRetailSet(product);
-
-  return {
-    readOnly: false,
-    name: true,
-    description: true,
-    sku: true,
-    inventory: product => !ProductHelper.isRetailSet(product) && !ProductHelper.isMasterProduct(product),
-    price: true,
-    promotions: true,
-    quantity: canBeOrderedNotRetail,
-    variations: p => ProductHelper.isVariationProduct(p),
-    bundleParts: ProductHelper.isProductBundle,
-    retailSetParts: ProductHelper.isRetailSet,
-    shipment: p =>
-      canBeOrderedNotRetail(p) && Number.isInteger(p.readyForShipmentMin) && Number.isInteger(p.readyForShipmentMax),
-    addToBasket: canBeOrdered,
-    addToWishlist: product => !ProductHelper.isMasterProduct(product),
-    addToOrderTemplate: canBeOrdered,
-    addToCompare: product => !ProductHelper.isMasterProduct(product),
-    addToQuote: canBeOrdered,
-  };
+const defaultDisplayProperties: ProductContextDisplayProperties<true | undefined> = {
+  readOnly: undefined,
+  name: true,
+  description: true,
+  sku: true,
+  inventory: true,
+  price: true,
+  promotions: true,
+  quantity: true,
+  variations: true,
+  bundleParts: true,
+  retailSetParts: true,
+  shipment: true,
+  addToBasket: true,
+  addToWishlist: true,
+  addToOrderTemplate: true,
+  addToCompare: true,
+  addToQuote: true,
 };
 
 export interface ExternalDisplayPropertiesProvider {
@@ -237,13 +231,14 @@ export class ProductContextFacade extends RxState<ProductContext> {
       )
     );
 
-    const externalDisplayPropertyProviders = injector
-      .get<ExternalDisplayPropertiesProvider[]>(EXTERNAL_DISPLAY_PROPERTY_PROVIDER, [])
-      .map(edp => edp.setup(this.select('product')));
+    const externalDisplayPropertyProviders = [
+      injector.get(ProductContextDisplayPropertiesService),
+      ...injector.get<ExternalDisplayPropertiesProvider[]>(EXTERNAL_DISPLAY_PROPERTY_PROVIDER, []),
+    ].map(edp => edp.setup(this.select('product')));
 
     const internalDisplayProperty$ = combineLatest([this.select('product'), this.privateConfig$]).pipe(
       map(([product, privateConfig]) =>
-        Object.entries(defaultDisplayProperties())
+        Object.entries(defaultDisplayProperties)
           .map(([k, v]: [keyof ProductContextDisplayProperties, DisplayEval]) => [k, privateConfig?.[k] ?? v])
           .reduce<Partial<ProductContextDisplayProperties>>(
             (acc, [k, v]: [keyof ProductContextDisplayProperties, DisplayEval]) => {
