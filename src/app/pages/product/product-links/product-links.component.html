@@ -15,6 +15,7 @@
     <ish-product-links-carousel
       [links]="links.crossselling"
       [productLinkTitle]="'product.product_links.crossselling.title' | translate"
+      [filterInStock]="true"
     ></ish-product-links-carousel>
   </ng-container>
   <ng-container *ngIf="links.accessory?.products?.length">
