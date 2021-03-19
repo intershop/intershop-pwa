@@ -1,6 +1,7 @@
 import { TransferState, makeStateKey } from '@angular/platform-browser';
 import { Actions } from '@ngrx/effects';
-import { Action, ActionReducer, Store } from '@ngrx/store';
+import { Action, ActionReducer, Store, UPDATE } from '@ngrx/store';
+import { pick } from 'lodash-es';
 import { first, map, take } from 'rxjs/operators';
 
 import { CoreState } from 'ish-core/store/core/core-store';
@@ -10,13 +11,20 @@ export const NGRX_STATE_SK = makeStateKey<object>('ngrxState');
 
 const STATE_ACTION_TYPE = '[Internal] Import NgRx State';
 
+let transferredState: object;
+
 /**
  * meta reducer for overriding client side state if supplied by server
  */
 export function ngrxStateTransferMeta(reducer: ActionReducer<CoreState>): ActionReducer<CoreState> {
-  return (state: CoreState, action: Action & { payload: unknown }) => {
+  return (state: CoreState, action: Action & { payload: object; features: string[] }) => {
     if (action.type === STATE_ACTION_TYPE) {
-      return mergeDeep(state, action.payload);
+      transferredState = action.payload;
+      return mergeDeep(state, transferredState);
+    }
+    if (action.type === UPDATE && transferredState) {
+      // re-apply transferred state as it could be overwritten by uninitialized reducers
+      return reducer({ ...state, ...pick(transferredState, ...action.features) }, action);
     }
     return reducer(state, action);
   };
