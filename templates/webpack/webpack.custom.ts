@@ -144,7 +144,16 @@ export default (
         paths: glob.sync('./{src,projects}/**/*', { nodir: true }),
         safelist: {
           standard: [/(p|m)(l|r|x|y|t|b)?-[0-5]/],
-          greedy: [/\bfa\b/, /\bmodal\b/, /\bswiper\b/, /\bcarousel\b/, /\bslide\b/],
+          greedy: [
+            /\bfa\b/,
+            /\bmodal\b/,
+            /\bswiper\b/,
+            /\bcarousel\b/,
+            /\bslide\b/,
+            /\btoast-close-button\b/,
+            /\bnav-tabs\b/,
+            /\bnav-link\b/,
+          ],
         },
       })
     );
