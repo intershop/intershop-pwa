@@ -1,13 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges } from '@angular/core';
+import { Observable, combineLatest, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { SwiperOptions } from 'swiper';
 import SwiperCore, { Navigation, Pagination } from 'swiper/core';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
-import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 
 SwiperCore.use([Navigation, Pagination]);
@@ -26,7 +25,7 @@ SwiperCore.use([Navigation, Pagination]);
   templateUrl: './product-links-carousel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductLinksCarouselComponent implements OnInit, OnDestroy {
+export class ProductLinksCarouselComponent implements OnChanges {
   /**
    * list of products which are assigned to the specific product link type
    */
@@ -41,9 +40,8 @@ export class ProductLinksCarouselComponent implements OnInit, OnDestroy {
    */
   @Input() filterInStock = false;
 
-  productSKUs: Array<string> = [];
-  private destroy$ = new Subject();
-  private products: Array<ProductView> = [];
+  productSKUs$: Observable<string[]>;
+
   /**
    * configuration of swiper carousel
    * find possible parameters here: http://idangero.us/swiper/api/#parameters
@@ -53,7 +51,6 @@ export class ProductLinksCarouselComponent implements OnInit, OnDestroy {
   constructor(
     @Inject(LARGE_BREAKPOINT_WIDTH) largeBreakpointWidth: number,
     @Inject(MEDIUM_BREAKPOINT_WIDTH) mediumBreakpointWidth: number,
-    private ref: ChangeDetectorRef,
     private shoppingFacade: ShoppingFacade
   ) {
     this.swiperConfig = {
@@ -84,29 +81,11 @@ export class ProductLinksCarouselComponent implements OnInit, OnDestroy {
     };
   }
 
-  ngOnInit() {
-    if (!this.filterInStock) {
-      this.productSKUs = this.links.products;
-    } else {
-      this.links.products.forEach(sku =>
-        this.shoppingFacade
-          .product$(sku, ProductCompletenessLevel.List)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe(p => this.collectSKUs(p))
-      );
-    }
-  }
-
-  collectSKUs(product: ProductView) {
-    this.products.push(product);
-    if (this.products.length === this.links.products.length) {
-      this.productSKUs = this.products.filter(p => p.available).map(p => p.sku);
-      this.ref.detectChanges();
-    }
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+  ngOnChanges() {
+    this.productSKUs$ = this.filterInStock
+      ? combineLatest(
+          this.links.products.map(sku => this.shoppingFacade.product$(sku, ProductCompletenessLevel.List))
+        ).pipe(map(products => products.filter(p => p.available).map(p => p.sku)))
+      : of(this.links.products);
   }
 }
