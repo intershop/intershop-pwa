@@ -17,7 +17,7 @@ RUN node schematics/customization/service-worker ${serviceWorker} || true
 COPY templates/webpack/* /workspace/templates/webpack/
 ARG testing=false
 ENV TESTING=${testing}
-RUN npm run ng -- build -c ${configuration}
+RUN npm run ng -- build -c ${configuration} --deploy-url=/
 # synchronize-marker:pwa-docker-build:end
 
 # ^ this part above is copied from the standard Dockerfile and should be kept in sync
