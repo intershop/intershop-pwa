@@ -12,6 +12,14 @@ import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.
       },
       multi: true,
     },
+    {
+      provide: LAZY_FEATURE_MODULE,
+      useValue: {
+        feature: 'sentry',
+        location: () => import('../sentry.module').then(m => m.SentryModule),
+      },
+      multi: true,
+    },
   ],
 })
 export class SentryExportsModule {}

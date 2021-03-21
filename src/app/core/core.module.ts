@@ -13,7 +13,7 @@ import { IdentityProviderInterceptor } from './interceptors/identity-provider.in
 import { MockInterceptor } from './interceptors/mock.interceptor';
 import { InternationalizationModule } from './internationalization.module';
 import { StateManagementModule } from './state-management.module';
-import { DefaultErrorhandler } from './utils/default-error-handler';
+import { DefaultErrorHandler } from './utils/default-error-handler';
 
 @NgModule({
   imports: [
@@ -34,7 +34,7 @@ import { DefaultErrorhandler } from './utils/default-error-handler';
       multi: true,
     },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
-    { provide: ErrorHandler, useClass: DefaultErrorhandler },
+    { provide: ErrorHandler, useClass: DefaultErrorHandler },
     {
       provide: APP_BASE_HREF,
       useFactory: (s: PlatformLocation, baseHref: string) => baseHref || s.getBaseHrefFromDOM(),
