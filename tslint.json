@@ -345,9 +345,14 @@
           "message": "This module is for the template-driven approach which we don't use."
         },
         {
-          "from": "^\\.\\..*(component|reducer|effects|store)",
-          "filePattern": ".*.module.ts",
-          "message": "Modules should only aggregate deeper lying components."
+          "from": "^(?!.*(\\.module|environments\\/environment)$)\\.\\..*$",
+          "filePattern": "^(?!.*-routing\\.module\\.ts$).*\\.module\\.ts$",
+          "message": "Modules should only aggregate deeper lying artifacts."
+        },
+        {
+          "from": "^(?!.*\\.(module|guard)$)\\.\\..*$",
+          "filePattern": ".*-routing\\.module\\.ts",
+          "message": "Modules should only aggregate deeper lying artifacts."
         },
         {
           "from": ".*/extensions/.*",
@@ -600,6 +605,7 @@
           // extension/projects exports
           "^.*(src/app/extensions/[a-z][a-z0-9-]+/exports|projects/[a-z][a-z0-9-]+/src/app/exports|src/app/shell/shared)/(lazy-[a-z][a-z0-9-]+)/\\2\\.component\\.ts$",
           "^.*/src/app/extensions/([a-z][a-z0-9-]+)/exports/\\1-exports\\.module\\.ts$",
+          "^.*/src/app/extensions/([a-z][a-z0-9-]+)/exports/([a-z][a-z0-9-]+)/\\2\\.service\\.ts$",
           "^.*/projects/([a-z][a-z0-9-]+)/src/app/exports/\\1-exports\\.module\\.ts$"
         ],
         "patterns": [
@@ -674,7 +680,7 @@
           // services
           {
             "name": "^([A-Z].*)Service$",
-            "file": "(/utils.*|/services/([a-z][a-z0-9-]+/|))[a-z][a-z0-9-]+/<kebab>\\.service\\.ts$"
+            "file": "(/utils.*|/services/<kebab>|/exports/<kebab>)/<kebab>\\.service\\.ts$"
           },
           // modules and routing
           {
