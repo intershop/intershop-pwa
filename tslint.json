@@ -604,6 +604,7 @@
           "^.*/projects/([a-z][a-z0-9-]+)/src/app/\\1\\.module\\.ts$",
           // extension/projects exports
           "^.*(src/app/extensions/[a-z][a-z0-9-]+/exports|projects/[a-z][a-z0-9-]+/src/app/exports|src/app/shell/shared)/(lazy-[a-z][a-z0-9-]+)/\\2\\.component\\.ts$",
+          "^.*/src/app/extensions/([a-z][a-z0-9-]+)/exports/\\1-product-context-display-properties/\\1-product-context-display-properties\\.service\\.ts$",
           "^.*/src/app/extensions/([a-z][a-z0-9-]+)/exports/\\1-exports\\.module\\.ts$",
           "^.*/src/app/extensions/([a-z][a-z0-9-]+)/exports/([a-z][a-z0-9-]+)/\\2\\.service\\.ts$",
           "^.*/projects/([a-z][a-z0-9-]+)/src/app/exports/\\1-exports\\.module\\.ts$"
@@ -678,6 +679,10 @@
             "file": ".*/interceptors/<kebab>\\.interceptor\\.ts$"
           },
           // services
+          {
+            "name": "^([A-Z].*)ProductContextDisplayPropertiesService",
+            "file": ".*/extensions/<kebab>/exports/<kebab>-product-context-display-properties/<kebab>-product-context-display-properties\\.service\\.ts$"
+          },
           {
             "name": "^([A-Z].*)Service$",
             "file": "(/utils.*|/services/<kebab>|/exports/<kebab>)/<kebab>\\.service\\.ts$"
