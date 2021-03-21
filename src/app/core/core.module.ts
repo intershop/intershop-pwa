@@ -6,7 +6,6 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { AppearanceModule } from './appearance.module';
 import { ConfigurationModule } from './configuration.module';
-import { ExtrasModule } from './extras.module';
 import { FeatureToggleModule } from './feature-toggle.module';
 import { IdentityProviderModule } from './identity-provider.module';
 import { ICMErrorMapperInterceptor } from './interceptors/icm-error-mapper.interceptor';
@@ -20,7 +19,6 @@ import { DefaultErrorhandler } from './utils/default-error-handler';
   imports: [
     AppearanceModule,
     ConfigurationModule,
-    ExtrasModule,
     FeatureToggleModule,
     HttpClientModule,
     IdentityProviderModule,
