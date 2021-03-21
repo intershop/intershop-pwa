@@ -75,6 +75,13 @@ export default (
   log('setting ngrxRuntimeChecks:', ngrxRuntimeChecks);
 
   if (production) {
+    // keep module names for debugging
+    config.optimization.minimizer.forEach(m => {
+      if (m.options && m.options.terserOptions) {
+        m.options.terserOptions.keep_classnames = /.*Module$/;
+      }
+    });
+
     // splitChunks not available for SSR build
     if (config.optimization.splitChunks) {
       log('optimizing chunk splitting');
