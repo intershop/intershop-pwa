@@ -1,9 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { anything, spy, verify } from 'ts-mockito';
 
-import { InputComponent } from 'ish-shared/forms/components/input/input.component';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { UpdatePasswordFormComponent } from './update-password-form.component';
 
@@ -14,8 +13,8 @@ describe('Update Password Form Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(InputComponent), UpdatePasswordFormComponent],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      declarations: [UpdatePasswordFormComponent],
+      imports: [FormlyTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
 
@@ -33,8 +32,30 @@ describe('Update Password Form Component', () => {
 
   it('should render forgot password form step 2 for password reminder', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-input[controlname=password]')).toBeTruthy();
-    expect(element.querySelector('ish-input[controlname=passwordConfirmation]')).toBeTruthy();
+
+    expect(element.innerHTML.match(/ish-password-field/g)).toHaveLength(2);
+    expect(element.innerHTML).toContain('password');
+    expect(element.innerHTML).toContain('passwordConfirmation');
+
     expect(element.querySelector('[name="SubmitButton"]')).toBeTruthy();
+  });
+
+  it('should emit updatePassword event if form is valid', () => {
+    const eventEmitter$ = spy(component.submitPassword);
+    fixture.detectChanges();
+
+    component.updatePasswordForm.get('password').setValue('!Password01!');
+    component.updatePasswordForm.get('passwordConfirmation').setValue('!Password01!');
+    component.submitPasswordForm();
+
+    verify(eventEmitter$.emit(anything())).once();
+  });
+
+  it('should disable submit button when the user submits an invalid form', () => {
+    fixture.detectChanges();
+
+    expect(component.buttonDisabled).toBeFalse();
+    component.submitPasswordForm();
+    expect(component.buttonDisabled).toBeTrue();
   });
 });
