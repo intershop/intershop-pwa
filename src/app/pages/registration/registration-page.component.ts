@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormGroup } from '@angular/forms';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { UUID } from 'angular2-uuid';
 import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
@@ -11,7 +12,8 @@ import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
+
+import { RegistrationConfigurationService } from './formly/registration-configuration/registration-configuration.service';
 
 /**
  * The Registration Page Container renders the customer registration form using the {@link RegistrationFormComponent}
@@ -20,6 +22,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
 @Component({
   templateUrl: './registration-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [RegistrationConfigurationService],
 })
 export class RegistrationPageComponent implements OnInit {
   userError$: Observable<HttpError>;
@@ -28,19 +31,28 @@ export class RegistrationPageComponent implements OnInit {
   constructor(
     private accountFacade: AccountFacade,
     private router: Router,
-    private featureToggle: FeatureToggleService
+    private route: ActivatedRoute,
+    private featureToggle: FeatureToggleService,
+    private registrationConfiguration: RegistrationConfigurationService
   ) {}
 
   submitted = false;
 
-  fields: FormlyFieldConfig[];
+  fields$: Observable<FormlyFieldConfig[]>;
   model = {};
   form = new FormGroup({});
 
   ngOnInit() {
     this.userError$ = this.accountFacade.userError$;
+    this.fields$ = this.route.queryParamMap.pipe(
+      map((paramMap: ParamMap) => ({
+        sso: paramMap.get('sso') === 'true',
+        businessCustomer: this.featureToggle.enabled('businessCustomerRegistration'),
+      })),
+      tap(config => (this.registrationConfiguration.registrationConfig = config)),
+      map(() => this.registrationConfiguration.getRegistrationConfiguration())
+    );
     this.businessCustomerRegistration = this.featureToggle.enabled('businessCustomerRegistration');
-    this.fields = this.getRegistrationConfig();
   }
 
   cancelForm() {
@@ -88,165 +100,6 @@ export class RegistrationPageComponent implements OnInit {
     registration.captchaAction = this.form.get('captchaAction').value;
 
     this.accountFacade.createUser(registration);
-  }
-
-  private getRegistrationConfig(): FormlyFieldConfig[] {
-    return [
-      {
-        type: 'ish-registration-heading-field',
-        templateOptions: {
-          headingSize: 'h1',
-          heading: 'account.register.heading',
-          subheading: 'account.register.message',
-        },
-      },
-      ...this.getCredentialsConfig(),
-      {
-        type: 'ish-registration-heading-field',
-        templateOptions: {
-          headingSize: 'h2',
-          heading: this.businessCustomerRegistration
-            ? 'account.register.company_information.heading'
-            : 'account.register.address.headding',
-          subheading: 'account.register.address.message',
-          showRequiredInfo: true,
-        },
-      },
-      {
-        type: 'ish-fieldset-field',
-        templateOptions: {
-          fieldsetClass: 'row',
-          childClass: 'col-md-10 col-lg-8 col-xl-6',
-        },
-        fieldGroup: [
-          {
-            type: 'ish-registration-address-field',
-            templateOptions: {
-              businessCustomer: this.businessCustomerRegistration,
-            },
-          },
-          this.businessCustomerRegistration
-            ? {
-                key: 'taxationID',
-                type: 'ish-text-input-field',
-                templateOptions: {
-                  label: 'account.address.taxation.label',
-                },
-              }
-            : {},
-          {
-            type: 'ish-registration-tac-field',
-            key: 'termsAndConditions',
-            templateOptions: {
-              required: true,
-            },
-            validators: {
-              validation: [Validators.pattern('true')],
-            },
-          },
-          {
-            type: 'ish-captcha-field',
-            templateOptions: {
-              topic: 'register',
-            },
-          },
-        ],
-      },
-    ];
-  }
-  private getCredentialsConfig(): FormlyFieldConfig[] {
-    return [
-      {
-        type: 'ish-registration-heading-field',
-
-        templateOptions: {
-          headingSize: 'h2',
-          heading: 'account.register.email_password.heading',
-          subheading: 'account.register.email_password.message',
-          showRequiredInfo: true,
-        },
-      },
-      {
-        type: 'ish-fieldset-field',
-        templateOptions: {
-          fieldsetClass: 'row',
-          childClass: 'col-md-10 col-lg-8 col-xl-6',
-        },
-        fieldGroup: [
-          {
-            key: 'login',
-            type: 'ish-email-field',
-            templateOptions: {
-              label: 'account.register.email.label',
-              required: true,
-            },
-            validation: {
-              messages: {
-                required: 'account.update_email.email.error.notempty',
-              },
-            },
-          },
-          {
-            key: 'loginConfirmation',
-            type: 'ish-email-field',
-            templateOptions: {
-              label: 'account.register.email_confirmation.label',
-              required: true,
-            },
-            validators: {
-              validation: [SpecialValidators.equalToControl('login')],
-            },
-            validation: {
-              messages: {
-                required: 'account.update_email.email.error.notempty',
-                equalTo: 'account.registration.email.not_match.error',
-              },
-            },
-          },
-
-          {
-            key: 'password',
-            type: 'ish-password-field',
-            templateOptions: {
-              postWrappers: ['description'],
-              required: true,
-              label: 'account.register.password.label',
-              customDescription: {
-                class: 'input-help',
-                key: 'account.register.password.extrainfo.message',
-                args: { 0: '7' },
-              },
-
-              autocomplete: 'new-password',
-            },
-            validation: {
-              messages: {
-                required: 'account.update_password.new_password.error.required',
-              },
-            },
-          },
-          {
-            key: 'passwordConfirmation',
-            type: 'ish-password-field',
-            templateOptions: {
-              required: true,
-              label: 'account.register.password_confirmation.label',
-
-              autocomplete: 'new-password',
-            },
-            validators: {
-              validation: [SpecialValidators.equalToControl('password')],
-            },
-            validation: {
-              messages: {
-                required: 'account.register.password_confirmation.error.default',
-                equalTo: 'account.update_password.confirm_password.error.stringcompare',
-              },
-            },
-          },
-        ],
-      },
-    ];
   }
 
   /** return boolean to set submit button enabled/disabled */

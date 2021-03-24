@@ -2,7 +2,7 @@
 
 <div data-testing-id="account-create-full-page">
   <form [formGroup]="form" (ngSubmit)="onCreate()">
-    <formly-form [model]="model" [form]="form" [fields]="fields"></formly-form>
+    <formly-form [model]="model" [form]="form" [fields]="fields$ | async"></formly-form>
 
     <div class="row">
       <div class="col-md-10 col-lg-8 col-xl-6">

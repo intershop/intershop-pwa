@@ -12,6 +12,7 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
+import { RegistrationConfigurationService } from './formly/registration-configuration/registration-configuration.service';
 import { RegistrationPageComponent } from './registration-page.component';
 
 describe('Registration Page Component', () => {
@@ -36,6 +37,7 @@ describe('Registration Page Component', () => {
         TranslateModule.forRoot(),
       ],
       providers: [
+        RegistrationConfigurationService,
         { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
         { provide: FeatureToggleService, useFactory: () => instance(mock(FeatureToggleService)) },
       ],
