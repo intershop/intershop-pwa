@@ -20,7 +20,7 @@ import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { log } from 'ish-core/utils/dev/operators';
 import { whenTruthy } from 'ish-core/utils/operators';
 
-import { IdentityProvider } from './identity-provider.interface';
+import { IdentityProvider, TriggerReturnType } from './identity-provider.interface';
 
 export interface Auth0Config {
   type: 'auth0';
@@ -184,16 +184,21 @@ export class Auth0IdentityProvider implements IdentityProvider {
       });
   }
 
-  triggerRegister(): Observable<boolean> {
-    return of(true);
+  triggerRegister(route: ActivatedRouteSnapshot): TriggerReturnType {
+    if (route.queryParamMap.get('userid')) {
+      return of(true);
+    } else {
+      this.router.navigateByUrl('/loading', { replaceUrl: false, skipLocationChange: true });
+      return this.oauthService.loadDiscoveryDocumentAndLogin({ state: route.queryParams.returnUrl });
+    }
   }
 
-  triggerLogin(route: ActivatedRouteSnapshot) {
+  triggerLogin(route: ActivatedRouteSnapshot): TriggerReturnType {
     this.router.navigateByUrl('/loading', { replaceUrl: false, skipLocationChange: true });
     return this.oauthService.loadDiscoveryDocumentAndLogin({ state: route.queryParams.returnUrl });
   }
 
-  triggerLogout() {
+  triggerLogout(): TriggerReturnType {
     if (this.oauthService.hasValidIdToken()) {
       this.oauthService.revokeTokenAndLogout(
         {
