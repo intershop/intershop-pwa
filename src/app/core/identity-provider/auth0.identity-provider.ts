@@ -4,7 +4,7 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { EMPTY, Observable, combineLatest, from, iif, of, timer } from 'rxjs';
+import { Observable, combineLatest, from, iif, of, timer } from 'rxjs';
 import { filter, first, map, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
 
 import { UserData } from 'ish-core/models/user/user.interface';
@@ -170,7 +170,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
                             this.store.dispatch(loadUserByAPIToken());
                           })
                         )
-                      : EMPTY
+                      : of(navigated)
                   ),
                   log('Registered')
                 )
