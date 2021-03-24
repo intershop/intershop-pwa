@@ -1,24 +1,30 @@
 import { createReducer, on } from '@ngrx/store';
 
-import { Address } from 'ish-core/models/address/address.model';
+import { SsoRegistrationType } from 'ish-core/models/customer/customer.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
-import { deleteRegistrationInfo, setRegistrationInfo } from './sso-registration.actions';
+import { registerFailure, registerSuccess } from './sso-registration.actions';
 
 export interface SsoRegistrationState {
-  address: Address;
-  companyInfo: { companyName1: string; companyName2?: string; taxationID: string };
+  registered: boolean;
+  error: HttpError;
+  registrationInfo: SsoRegistrationType;
 }
 
 const initialState: SsoRegistrationState = {
-  address: undefined,
-  companyInfo: undefined,
+  registered: false,
+  error: undefined,
+  registrationInfo: undefined,
 };
 
 export const ssoRegistrationReducer = createReducer(
   initialState,
-  on(setRegistrationInfo, (_, action) => {
-    const { companyInfo, address } = action.payload;
-    return { companyInfo, address };
-  }),
-  on(deleteRegistrationInfo, () => ({ companyInfo: undefined, address: undefined }))
+  on(registerSuccess, (state: SsoRegistrationState) => ({
+    ...state,
+    registered: true,
+  })),
+  on(registerFailure, (state: SsoRegistrationState, { payload: { error } }) => ({
+    ...state,
+    error,
+  }))
 );

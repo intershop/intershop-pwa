@@ -4,13 +4,14 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { Observable, from, of, throwError, timer } from 'rxjs';
-import { catchError, concatMap, map, switchMap, switchMapTo, take } from 'rxjs/operators';
+import { Observable, from, iif, noop, of, timer } from 'rxjs';
+import { delay, first, map, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Customer } from 'ish-core/models/customer/customer.model';
 import { UserData } from 'ish-core/models/user/user.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { getSsoRegistrationInfo } from 'ish-core/store/customer/sso-registration';
+import { isSsoRegistrationSuccessfully } from 'ish-core/store/customer/sso-registration';
+import { getLoggedInCustomer, getUserAuthorized, loadUserByAPIToken } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { log } from 'ish-core/utils/dev/operators';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -128,25 +129,45 @@ export class Auth0IdentityProvider implements IdentityProvider {
               options: ['CREATE_USER'],
             })
             .pipe(
-              log('Start ====>'),
-              concatMap(userData =>
-                this.apiService.get(`customers/-`).pipe(
-                  catchError((httpError: HttpError) =>
-                    httpError?.status === 404
-                      ? this.router.navigate(['/register'], {
-                          queryParams: { sso: true, userid: userData.businessPartnerNo },
-                        })
-                      : throwError(httpError)
-                  )
+              tap(() => {
+                this.store.dispatch(loadUserByAPIToken());
+              }),
+              delay(500),
+              switchMap((userData: UserData) =>
+                this.store.pipe(select(getLoggedInCustomer)).pipe(
+                  log('customer: '),
+                  switchMap((customer: Customer) =>
+                    iif(
+                      () => !customer,
+                      this.router.navigate(['/register'], {
+                        queryParams: { sso: true, userid: userData.businessPartnerNo },
+                      })
+                    )
+                  ),
+                  switchMap((navigated: boolean) =>
+                    navigated
+                      ? this.store.pipe(
+                          select(isSsoRegistrationSuccessfully),
+                          whenTruthy(),
+                          tap(() => {
+                            this.store.dispatch(loadUserByAPIToken());
+                          })
+                        )
+                      : noop
+                  ),
+                  log('Registered')
                 )
               ),
-              concatMap(() => this.store.pipe(select(getSsoRegistrationInfo))),
-              log(' <======= Ende ')
+              log('Vor getUserAuthorized'),
+              switchMapTo(this.store.pipe(select(getUserAuthorized), whenTruthy(), first()))
             )
         )
       )
       .subscribe(() => {
-        console.log('Success');
+        this.apiTokenService.removeApiToken();
+        if (this.router.url.startsWith('/loading')) {
+          this.router.navigateByUrl(this.oauthService.state ? decodeURIComponent(this.oauthService.state) : '/account');
+        }
       });
   }
 

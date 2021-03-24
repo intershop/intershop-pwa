@@ -9,11 +9,10 @@ import { UUID } from 'angular2-uuid';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Address } from 'ish-core/models/address/address.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
-import { Customer, CustomerRegistrationType, SsoRegistrationType } from 'ish-core/models/customer/customer.model';
+import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { setRegistrationInfo } from 'ish-core/store/customer/sso-registration';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
-import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class RegistrationConfigurationService {
