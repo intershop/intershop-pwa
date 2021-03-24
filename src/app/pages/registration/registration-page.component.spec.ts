@@ -1,7 +1,5 @@
-import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -25,21 +23,14 @@ describe('Registration Page Component', () => {
   let activatedRoute: ActivatedRoute;
   let accountFacade: AccountFacade;
 
-  @Component({ template: 'dummy' })
-  class DummyComponent {}
-
   beforeEach(async () => {
     configService = mock(RegistrationFormConfigurationService);
     featureToggleService = mock(FeatureToggleService);
     activatedRoute = mock(ActivatedRoute);
     accountFacade = mock(AccountFacade);
     await TestBed.configureTestingModule({
-      declarations: [DummyComponent, MockComponent(ErrorMessageComponent), RegistrationPageComponent],
-      imports: [
-        FormlyTestingModule,
-        RouterTestingModule.withRoutes([{ path: 'home', component: DummyComponent }]),
-        TranslateModule.forRoot(),
-      ],
+      declarations: [MockComponent(ErrorMessageComponent), RegistrationPageComponent],
+      imports: [FormlyTestingModule, TranslateModule.forRoot()],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: FeatureToggleService, useFactory: () => instance(featureToggleService) },

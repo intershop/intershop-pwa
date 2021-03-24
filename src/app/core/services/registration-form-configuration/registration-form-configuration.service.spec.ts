@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 import { instance, mock } from 'ts-mockito';
@@ -21,10 +20,8 @@ describe('Registration Form Configuration Service', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       providers: [
-        { provide: Router, useFactory: () => instance(mock(Router)) },
         { provide: Store, useFactory: () => instance(mock(Store)) },
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
-        RegistrationFormConfigurationService,
       ],
     });
     registrationConfigurationService = TestBed.inject(RegistrationFormConfigurationService);
