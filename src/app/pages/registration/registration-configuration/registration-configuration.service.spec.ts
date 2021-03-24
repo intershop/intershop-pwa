@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { Store } from '@ngrx/store';
 import { instance, mock } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -13,6 +14,7 @@ describe('Registration Configuration Service', () => {
     accountFacade = mock(AccountFacade);
     TestBed.configureTestingModule({
       providers: [
+        { provide: Store, useFactory: () => instance(mock(Store)) },
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         RegistrationConfigurationService,
       ],
