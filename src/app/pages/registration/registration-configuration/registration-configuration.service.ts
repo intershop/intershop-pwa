@@ -9,18 +9,28 @@ import { UUID } from 'angular2-uuid';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Address } from 'ish-core/models/address/address.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
-import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
+import { Customer, CustomerRegistrationType, SsoRegistrationType } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { setRegistrationInfo } from 'ish-core/store/customer/sso-registration';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class RegistrationConfigurationService {
-  registrationConfig: { businessCustomer?: boolean; sso?: boolean } = {};
+  registrationConfig: { businessCustomer?: boolean; sso?: boolean; userId?: string } = {};
   constructor(private formlyConfig: FormlyConfig, private accountFacade: AccountFacade, private store: Store) {}
 
   setConfiguration(config: { businessCustomer?: boolean; sso?: boolean }) {
     this.registrationConfig = config;
+  }
+
+  register(data: SsoRegistrationType): Observable<CustomerRegistrationType> {
+    return {
+      credentials: {},
+      customer: {},
+      address: data.address,
+      user: data.userId,
+    };
   }
 
   getRegistrationConfiguration() {
@@ -89,7 +99,7 @@ export class RegistrationConfigurationService {
       phoneHome: formValue.phoneHome,
     };
 
-    if (this.registrationConfig.sso) {
+    if (this.registrationConfig.sso && this.registrationConfig.userId) {
       this.store.dispatch(
         setRegistrationInfo({
           companyInfo: {
@@ -98,6 +108,7 @@ export class RegistrationConfigurationService {
             taxationID: formValue.taxationID,
           },
           address,
+          userId: this.registrationConfig.userId,
         })
       );
     } else {

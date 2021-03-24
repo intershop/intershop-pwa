@@ -1,11 +1,18 @@
 import { createAction } from '@ngrx/store';
 
-import { Address } from 'ish-core/models/address/address.model';
-import { payload } from 'ish-core/utils/ngrx-creators';
+import { CustomerRegistrationType, SsoRegistrationType } from 'ish-core/models/customer/customer.model';
+import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 export const setRegistrationInfo = createAction(
   '[SsoRegistration] Set Registration Info',
-  payload<{ companyInfo: { companyName1: string; companyName2: string; taxationID: string }; address: Address }>()
+  payload<SsoRegistrationType>()
 );
+
+export const registerSuccess = createAction(
+  '[SsoRegistration] Register SMB Customer Success',
+  payload<CustomerRegistrationType>()
+);
+
+export const registerFailure = createAction('[SsoRegistration] Register SMB Customer Failure', httpError());
 
 export const deleteRegistrationInfo = createAction('[SsoRegistration] Delete Registration Info');

@@ -31,3 +31,9 @@ export interface CustomerRegistrationType extends CustomerUserType, Captcha {
   credentials: Credentials;
   address: Address;
 }
+
+export interface SsoRegistrationType {
+  companyInfo: { companyName1: string; companyName2: string; taxationID: string };
+  address: Address;
+  userId: string;
+}

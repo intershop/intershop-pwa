@@ -4,15 +4,15 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { UUID } from 'angular2-uuid';
-import { Observable, from, throwError, timer } from 'rxjs';
-import { catchError, concatMap, first, map, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
+import { Observable, from, of, throwError, timer } from 'rxjs';
+import { catchError, concatMap, map, switchMap, switchMapTo, take } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { UserData } from 'ish-core/models/user/user.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { getUserAuthorized, loadUserByAPIToken } from 'ish-core/store/customer/user';
+import { getSsoRegistrationInfo } from 'ish-core/store/customer/sso-registration';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
+import { log } from 'ish-core/utils/dev/operators';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { IdentityProvider } from './identity-provider.interface';
@@ -128,32 +128,30 @@ export class Auth0IdentityProvider implements IdentityProvider {
               options: ['CREATE_USER'],
             })
             .pipe(
+              log('Start ====>'),
               concatMap(userData =>
-                this.apiService.get(`customers/-/`).pipe(
+                this.apiService.get(`customers/-`).pipe(
                   catchError((httpError: HttpError) =>
                     httpError?.status === 404
-                      ? this.apiService.post('customers', {
-                          userId: userData.businessPartnerNo,
-                          customerNo: UUID.UUID(),
-                          address: this.ADDRESS,
+                      ? this.router.navigate(['/register'], {
+                          queryParams: { sso: true, userid: userData.businessPartnerNo },
                         })
                       : throwError(httpError)
                   )
                 )
               ),
-              tap(() => {
-                this.store.dispatch(loadUserByAPIToken());
-              }),
-              switchMapTo(this.store.pipe(select(getUserAuthorized), whenTruthy(), first()))
+              concatMap(() => this.store.pipe(select(getSsoRegistrationInfo))),
+              log(' <======= Ende ')
             )
         )
       )
       .subscribe(() => {
-        this.apiTokenService.removeApiToken();
-        if (this.router.url.startsWith('/loading')) {
-          this.router.navigateByUrl(this.oauthService.state ? decodeURIComponent(this.oauthService.state) : '/account');
-        }
+        console.log('Success');
       });
+  }
+
+  triggerRegister(): Observable<boolean> {
+    return of(true);
   }
 
   triggerLogin(route: ActivatedRouteSnapshot) {

@@ -42,6 +42,7 @@ export class RegistrationPageComponent implements OnInit {
     this.fields$ = this.route.queryParamMap.pipe(
       map((paramMap: ParamMap) => ({
         sso: paramMap.get('sso') === 'true',
+        userId: paramMap.get('userid'),
         businessCustomer: this.featureToggle.enabled('businessCustomerRegistration'),
       })),
       tap(config => this.registrationConfiguration.setConfiguration(config)),
