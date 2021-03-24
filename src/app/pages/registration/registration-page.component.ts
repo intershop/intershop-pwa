@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, InjectionToken, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -8,8 +8,20 @@ import { map, tap } from 'rxjs/operators';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { log } from 'ish-core/utils/dev/operators';
 
-import { RegistrationConfigurationService } from './registration-configuration/registration-configuration.service';
+export const REGISTRATION_CONFIGURATION = new InjectionToken<RegistrationConfiguration>('registrationConfiguration');
+
+export interface RegistrationConfiguration {
+  getRegistrationConfiguration(registrationConfig: RegistrationConfigType): FormlyFieldConfig[];
+  submitRegistration(form: FormGroup, registrationConfig: RegistrationConfigType): void;
+}
+
+export interface RegistrationConfigType {
+  businessCustomer?: boolean;
+  sso?: boolean;
+  userId?: string;
+}
 
 /**
  * The Registration Page Container renders the customer registration form using the {@link RegistrationFormComponent}
@@ -18,7 +30,6 @@ import { RegistrationConfigurationService } from './registration-configuration/r
 @Component({
   templateUrl: './registration-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [RegistrationConfigurationService],
 })
 export class RegistrationPageComponent implements OnInit {
   error$: Observable<HttpError>;
@@ -28,10 +39,12 @@ export class RegistrationPageComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private featureToggle: FeatureToggleService,
-    private registrationConfiguration: RegistrationConfigurationService
+    @Inject(REGISTRATION_CONFIGURATION) private registrationConfigurationProvider: RegistrationConfiguration
   ) {}
 
   submitted = false;
+
+  registrationConfig: RegistrationConfigType;
 
   fields$: Observable<FormlyFieldConfig[]>;
   model: { [key: string]: unknown };
@@ -46,8 +59,9 @@ export class RegistrationPageComponent implements OnInit {
         userId: paramMap.get('userid'),
         businessCustomer: this.featureToggle.enabled('businessCustomerRegistration'),
       })),
-      tap(config => this.registrationConfiguration.setConfiguration(config)),
-      map(() => this.registrationConfiguration.getRegistrationConfiguration())
+      tap(config => (this.registrationConfig = config)),
+      map(config => this.registrationConfigurationProvider.getRegistrationConfiguration(config)),
+      log('fields')
     );
   }
 
@@ -60,7 +74,7 @@ export class RegistrationPageComponent implements OnInit {
       this.submitted = true;
       return;
     }
-    this.registrationConfiguration.submitRegistration(this.form);
+    this.registrationConfigurationProvider.submitRegistration(this.form, this.registrationConfig);
   }
 
   /** return boolean to set submit button enabled/disabled */

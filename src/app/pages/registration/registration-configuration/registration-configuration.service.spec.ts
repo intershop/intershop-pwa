@@ -5,7 +5,9 @@ import { instance, mock } from 'ts-mockito';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { extractKeys } from 'ish-shared/formly/dev/testing/formly-testing-utils';
 
-import { RegistrationConfigType, RegistrationConfigurationService } from './registration-configuration.service';
+import { RegistrationConfigType } from '../registration-page.component';
+
+import { RegistrationConfigurationService } from './registration-configuration.service';
 
 describe('Registration Configuration Service', () => {
   let registrationConfigurationService: RegistrationConfigurationService;
@@ -24,14 +26,10 @@ describe('Registration Configuration Service', () => {
   });
 
   describe('with sso', () => {
-    beforeEach(() => {
-      const registrationConfig: RegistrationConfigType = { businessCustomer: true, sso: true, userId: 'uid' };
-
-      registrationConfigurationService.setConfiguration(registrationConfig);
-    });
+    const registrationConfig: RegistrationConfigType = { businessCustomer: true, sso: true, userId: 'uid' };
 
     it('should return right fields when calling getRegistrationConfig', () => {
-      const fieldConfig = registrationConfigurationService.getRegistrationConfiguration();
+      const fieldConfig = registrationConfigurationService.getRegistrationConfiguration(registrationConfig);
       expect(extractKeys(fieldConfig)).toMatchInlineSnapshot(`
         Array [
           Array [
@@ -54,14 +52,10 @@ describe('Registration Configuration Service', () => {
 
   describe('without sso', () => {
     describe('business customer', () => {
-      beforeEach(() => {
-        const registrationConfig: RegistrationConfigType = { businessCustomer: true, sso: false };
-
-        registrationConfigurationService.setConfiguration(registrationConfig);
-      });
+      const registrationConfig: RegistrationConfigType = { businessCustomer: true, sso: false };
 
       it('should return the right fields when calling getRegistrationConfig', () => {
-        const fieldConfig = registrationConfigurationService.getRegistrationConfiguration();
+        const fieldConfig = registrationConfigurationService.getRegistrationConfiguration(registrationConfig);
         expect(extractKeys(fieldConfig)).toMatchInlineSnapshot(`
           Array [
             Array [
@@ -88,14 +82,10 @@ describe('Registration Configuration Service', () => {
       });
     });
     describe('non-business customer', () => {
-      beforeEach(() => {
-        const registrationConfig: RegistrationConfigType = { businessCustomer: false, sso: false };
-
-        registrationConfigurationService.setConfiguration(registrationConfig);
-      });
+      const registrationConfig: RegistrationConfigType = { businessCustomer: false, sso: false };
 
       it('should return the right fields when calling getRegistrationConfig', () => {
-        const fieldConfig = registrationConfigurationService.getRegistrationConfiguration();
+        const fieldConfig = registrationConfigurationService.getRegistrationConfiguration(registrationConfig);
         expect(extractKeys(fieldConfig)).toMatchInlineSnapshot(`
           Array [
             Array [

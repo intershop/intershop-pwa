@@ -7,7 +7,8 @@ import { SharedModule } from 'ish-shared/shared.module';
 import { RegistrationAddressFieldComponent } from './formly/registration-address-field/registration-address-field.component';
 import { RegistrationHeadingFieldComponent } from './formly/registration-heading-field/registration-heading-field.component';
 import { RegistrationTacFieldComponent } from './formly/registration-tac-field/registration-tac-field.component';
-import { RegistrationPageComponent } from './registration-page.component';
+import { RegistrationConfigurationService } from './registration-configuration/registration-configuration.service';
+import { REGISTRATION_CONFIGURATION, RegistrationPageComponent } from './registration-page.component';
 
 const registrationPageRoutes: Routes = [{ path: '', component: RegistrationPageComponent }];
 
@@ -34,5 +35,6 @@ const registrationFormlyConfig: ConfigOption = {
     RegistrationPageComponent,
     RegistrationTacFieldComponent,
   ],
+  providers: [{ provide: REGISTRATION_CONFIGURATION, useClass: RegistrationConfigurationService }],
 })
 export class RegistrationPageModule {}

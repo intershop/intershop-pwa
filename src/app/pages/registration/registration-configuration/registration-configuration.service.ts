@@ -1,6 +1,6 @@
 // tslint:disable: project-structure
 // tslint:disable-next-line: ish-ordered-imports
-import { Injectable } from '@angular/core';
+import { Injectable, InjectionToken } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -13,34 +13,24 @@ import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/cus
 import { User } from 'ish-core/models/user/user.model';
 import { setRegistrationInfo } from 'ish-core/store/customer/sso-registration';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
-
-export interface RegistrationConfigType {
-  businessCustomer?: boolean;
-  sso?: boolean;
-  userId?: string;
-}
+import { RegistrationConfiguration, RegistrationConfigType } from '../registration-page.component';
 
 @Injectable()
-export class RegistrationConfigurationService {
-  registrationConfig: RegistrationConfigType = {};
+export class RegistrationConfigurationService implements RegistrationConfiguration {
   constructor(private accountFacade: AccountFacade, private store: Store) {}
 
-  setConfiguration(config: { businessCustomer?: boolean; sso?: boolean }) {
-    this.registrationConfig = config;
-  }
-
-  getRegistrationConfiguration() {
+  getRegistrationConfiguration(registrationConfig: RegistrationConfigType) {
     return [
       {
         type: 'ish-registration-heading-field',
         templateOptions: {
           headingSize: 'h1',
-          heading: this.registrationConfig.sso ? 'account.register.complete_heading' : 'account.register.heading',
+          heading: registrationConfig.sso ? 'account.register.complete_heading' : 'account.register.heading',
           subheading: 'account.register.message',
         },
       },
-      ...(!this.registrationConfig.sso ? this.getCredentialsConfig() : []),
-      ...(this.registrationConfig.businessCustomer ? this.getCompanyInfoConfig() : []),
+      ...(!registrationConfig.sso ? this.getCredentialsConfig() : []),
+      ...(registrationConfig.businessCustomer ? this.getCompanyInfoConfig() : []),
       ...this.getPersonalInfoConfig(),
       {
         type: 'ish-registration-heading-field',
@@ -61,7 +51,7 @@ export class RegistrationConfigurationService {
           {
             type: 'ish-registration-address-field',
             templateOptions: {
-              businessCustomer: this.registrationConfig.businessCustomer,
+              businessCustomer: registrationConfig.businessCustomer,
             },
           },
           {
@@ -85,7 +75,7 @@ export class RegistrationConfigurationService {
     ];
   }
 
-  submitRegistration(form: FormGroup) {
+  submitRegistration(form: FormGroup, registrationConfig: RegistrationConfigType) {
     const formValue = form.value;
 
     const address: Address = {
@@ -95,7 +85,7 @@ export class RegistrationConfigurationService {
       phoneHome: formValue.phoneHome,
     };
 
-    if (this.registrationConfig.sso && this.registrationConfig.userId) {
+    if (registrationConfig.sso && registrationConfig.userId) {
       this.store.dispatch(
         setRegistrationInfo({
           companyInfo: {
@@ -104,7 +94,7 @@ export class RegistrationConfigurationService {
             taxationID: formValue.taxationID,
           },
           address,
-          userId: this.registrationConfig.userId,
+          userId: registrationConfig.userId,
         })
       );
     } else {
@@ -127,7 +117,7 @@ export class RegistrationConfigurationService {
         password: formValue.password,
       };
 
-      if (this.registrationConfig.businessCustomer) {
+      if (registrationConfig.businessCustomer) {
         customer.isBusinessCustomer = true;
         customer.companyName = formValue.companyName1;
         customer.companyName2 = formValue.companyName2;

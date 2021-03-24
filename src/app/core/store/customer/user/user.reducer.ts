@@ -125,7 +125,6 @@ export const userReducer = createReducer(
       authorized: true,
       customer,
       user,
-      customerLoading: false,
       loading: false,
       error: undefined,
     };

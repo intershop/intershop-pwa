@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
-import { anyString, capture, instance, mock, when } from 'ts-mockito';
+import { anyString, anything, instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
@@ -14,7 +14,7 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { RegistrationConfigurationService } from './registration-configuration/registration-configuration.service';
-import { RegistrationPageComponent } from './registration-page.component';
+import { REGISTRATION_CONFIGURATION, RegistrationPageComponent } from './registration-page.component';
 
 describe('Registration Page Component', () => {
   let fixture: ComponentFixture<RegistrationPageComponent>;
@@ -24,6 +24,7 @@ describe('Registration Page Component', () => {
   let configService: RegistrationConfigurationService;
   let featureToggleService: FeatureToggleService;
   let activatedRoute: ActivatedRoute;
+  let accountFacade: AccountFacade;
 
   @Component({ template: 'dummy' })
   class DummyComponent {}
@@ -32,6 +33,7 @@ describe('Registration Page Component', () => {
     configService = mock(RegistrationConfigurationService);
     featureToggleService = mock(FeatureToggleService);
     activatedRoute = mock(ActivatedRoute);
+    accountFacade = mock(AccountFacade);
     await TestBed.configureTestingModule({
       declarations: [DummyComponent, MockComponent(ErrorMessageComponent), RegistrationPageComponent],
       imports: [
@@ -40,25 +42,26 @@ describe('Registration Page Component', () => {
         TranslateModule.forRoot(),
       ],
       providers: [
-        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: FeatureToggleService, useFactory: () => instance(featureToggleService) },
         { provide: ActivatedRoute, useFactory: () => instance(activatedRoute) },
+        { provide: REGISTRATION_CONFIGURATION, useFactory: () => instance(configService) },
       ],
-    })
-      .overrideComponent(RegistrationPageComponent, {
-        set: { providers: [{ provide: RegistrationConfigurationService, useFactory: () => instance(configService) }] },
-      })
-      .compileComponents();
+    }).compileComponents();
 
     location = TestBed.inject(Location);
+
     when(featureToggleService.enabled(anyString())).thenReturn(false);
-    when(configService.getRegistrationConfiguration()).thenReturn([
+    when(configService.getRegistrationConfiguration(anything())).thenReturn([
       {
         key: 'test',
         type: 'ish-text-input-field',
       },
     ]);
     when(activatedRoute.queryParamMap).thenReturn(of(convertToParamMap({ sso: 'false' })));
+
+    when(accountFacade.userError$).thenReturn(of());
+    when(accountFacade.ssoRegistrationError$).thenReturn(of());
   });
 
   beforeEach(() => {
@@ -75,8 +78,7 @@ describe('Registration Page Component', () => {
 
   it('should set configuration parameters on init', () => {
     fixture.detectChanges();
-    const [args] = capture(configService.setConfiguration).last();
-    expect(args).toMatchInlineSnapshot(`
+    expect(component.registrationConfig).toMatchInlineSnapshot(`
       Object {
         "businessCustomer": false,
         "sso": false,
@@ -90,8 +92,7 @@ describe('Registration Page Component', () => {
     when(featureToggleService.enabled(anyString())).thenReturn(true);
     fixture.detectChanges();
 
-    const [args] = capture(configService.setConfiguration).last();
-    expect(args).toMatchInlineSnapshot(`
+    expect(component.registrationConfig).toMatchInlineSnapshot(`
       Object {
         "businessCustomer": true,
         "sso": true,
@@ -106,7 +107,7 @@ describe('Registration Page Component', () => {
       NodeList [
         <formly-field hide-deprecation=""
         ><ng-component
-          >TextInputFieldComponent: { "label": "", "placeholder": "", "focus": false, "disabled":
+          >TextInputFieldComponent: test { "label": "", "placeholder": "", "focus": false, "disabled":
           false}</ng-component
         ></formly-field
       >,
