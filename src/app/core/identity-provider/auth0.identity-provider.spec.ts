@@ -84,6 +84,7 @@ describe('Auth0 Identity Provider', () => {
   describe('init', () => {
     beforeEach(() => {
       resetCalls(apiService);
+      resetCalls(apiTokenService);
       store$.overrideSelector(getLoggedInCustomer, undefined as Customer);
       store$.overrideSelector(getUserLoading, true);
       store$.overrideSelector(getSsoRegistrationRegistered, false);
@@ -99,10 +100,6 @@ describe('Auth0 Identity Provider', () => {
     }));
 
     it('should navigate to registration page after successful customer creation and user loading', fakeAsync(() => {
-      store$.overrideSelector(getLoggedInCustomer, ({
-        customerNo: '4711',
-        isBusinessCustomer: true,
-      } as Customer) as Customer);
       store$.overrideSelector(getUserLoading, false);
 
       auth0IdentityProvider.init(auth0Config);
@@ -111,19 +108,42 @@ describe('Auth0 Identity Provider', () => {
       verify(apiTokenService.removeApiToken()).never();
     }));
 
+    it('should reload user by api token after registration form was submitted', fakeAsync(() => {
+      store$.overrideSelector(getUserLoading, false);
+      store$.overrideSelector(getSsoRegistrationRegistered, true);
+
+      auth0IdentityProvider.init(auth0Config);
+      tick(500);
+
+      verify(storeSpy$.dispatch(anything())).twice();
+      verify(apiTokenService.removeApiToken()).never();
+    }));
+
     it('should remove apiToken and navigate to account page after successful registration', fakeAsync(() => {
-      store$.overrideSelector(getLoggedInCustomer, ({
-        customerNo: '4711',
-        isBusinessCustomer: true,
-      } as Customer) as Customer);
       store$.overrideSelector(getUserLoading, false);
       store$.overrideSelector(getSsoRegistrationRegistered, true);
       store$.overrideSelector(getUserAuthorized, true);
 
       auth0IdentityProvider.init(auth0Config);
       tick(500);
-
       verify(apiTokenService.removeApiToken()).once();
+      expect(router.url).toContain('/account');
+    }));
+
+    it('should sign in user without rerouting to registration page if customer exists', fakeAsync(() => {
+      store$.overrideSelector(getLoggedInCustomer, ({
+        customerNo: '4711',
+        isBusinessCustomer: true,
+      } as Customer) as Customer);
+      store$.overrideSelector(getUserLoading, false);
+      store$.overrideSelector(getUserAuthorized, true);
+
+      auth0IdentityProvider.init(auth0Config);
+      tick(500);
+
+      verify(storeSpy$.dispatch(anything())).once();
+      verify(apiTokenService.removeApiToken()).once();
+      expect(router.url).not.toContain('/account');
     }));
   });
 });
