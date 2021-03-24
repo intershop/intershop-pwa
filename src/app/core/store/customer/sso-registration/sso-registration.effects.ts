@@ -6,7 +6,6 @@ import { map, mergeMap } from 'rxjs/operators';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { SsoRegistrationType } from 'ish-core/models/customer/customer.model';
 import { UserService } from 'ish-core/services/user/user.service';
-import { log } from 'ish-core/utils/dev/operators';
 import { mapErrorToAction, mapToPayload } from 'ish-core/utils/operators';
 
 import { registerFailure, registerSuccess, setRegistrationInfo } from './sso-registration.actions';
@@ -23,7 +22,6 @@ export class SsoRegistrationEffects {
     this.actions$.pipe(
       ofType(setRegistrationInfo),
       mapToPayload(),
-      log('Effect Start ===>'),
       mergeMap((data: SsoRegistrationType) =>
         this.userService
           .createUser({

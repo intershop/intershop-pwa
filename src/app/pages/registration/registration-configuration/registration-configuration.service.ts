@@ -1,6 +1,6 @@
 // tslint:disable: project-structure
 // tslint:disable-next-line: ish-ordered-imports
-import { Injectable, InjectionToken } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { FormlyFieldConfig } from '@ngx-formly/core';

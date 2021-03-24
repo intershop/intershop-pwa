@@ -1,7 +1,6 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { OAuthService } from 'angular-oauth2-oidc';
@@ -12,17 +11,13 @@ import { ApiService } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 
-import { Auth0IdentityProvider } from './auth0.identity-provider';
-
 @Component({ template: 'dummy' })
 class DummyComponent {}
 
 describe('Auth0 Identity Provider', () => {
-  let auth0IdentityProvider: Auth0IdentityProvider;
   const oAuthService = mock(OAuthService);
   const apiService = mock(ApiService);
   const apiTokenService = mock(ApiTokenService);
-  let router: Router;
   const baseHref = 'baseHref';
 
   beforeEach(() => {
@@ -41,12 +36,7 @@ describe('Auth0 Identity Provider', () => {
         }),
       ],
     }).compileComponents();
-
-    auth0IdentityProvider = TestBed.inject(Auth0IdentityProvider);
-    router = TestBed.inject(Router);
   });
-
-  beforeEach(() => {});
 
   it('should complete dummytest on stupid rule', () => {
     expect(true).toBeTrue();

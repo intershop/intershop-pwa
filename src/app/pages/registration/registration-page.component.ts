@@ -8,7 +8,6 @@ import { map, tap } from 'rxjs/operators';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { log } from 'ish-core/utils/dev/operators';
 
 export const REGISTRATION_CONFIGURATION = new InjectionToken<RegistrationConfiguration>('registrationConfiguration');
 
@@ -60,8 +59,7 @@ export class RegistrationPageComponent implements OnInit {
         businessCustomer: this.featureToggle.enabled('businessCustomerRegistration'),
       })),
       tap(config => (this.registrationConfig = config)),
-      map(config => this.registrationConfigurationProvider.getRegistrationConfiguration(config)),
-      log('fields')
+      map(config => this.registrationConfigurationProvider.getRegistrationConfiguration(config))
     );
   }
 
