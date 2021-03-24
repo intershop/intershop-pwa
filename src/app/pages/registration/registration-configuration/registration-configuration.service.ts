@@ -22,7 +22,7 @@ export class RegistrationConfigurationService {
         type: 'ish-registration-heading-field',
         templateOptions: {
           headingSize: 'h1',
-          heading: 'account.register.heading',
+          heading: this.registrationConfig.sso ? 'account.register.complete_heading' : 'account.register.heading',
           subheading: 'account.register.message',
         },
       },

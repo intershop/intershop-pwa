@@ -302,6 +302,7 @@
   "account.register.email_password.heading": "E-mail & Password",
   "account.register.email_password.message": "You will use your e-mail address and password to access your account on future visits.",
   "account.register.heading": "Create a New Account",
+  "account.register.complete_heading": "Complete your Account",
   "account.register.link": "Register",
   "account.register.message": "To take full advantage of account features & benefits, please provide all the information below.",
   "account.register.password.extrainfo.message": "{{0}} characters minimum, must include numbers and letters, no spaces",
