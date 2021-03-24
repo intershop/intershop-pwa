@@ -107,8 +107,8 @@ describe('Registration Page Component', () => {
       NodeList [
         <formly-field hide-deprecation=""
         ><ng-component
-          >TextInputFieldComponent: test { "label": "", "placeholder": "", "focus": false, "disabled":
-          false}</ng-component
+          >TextInputFieldComponent: test ish-text-input-field { "label": "", "placeholder": "", "focus":
+          false, "disabled": false}</ng-component
         ></formly-field
       >,
       ]
