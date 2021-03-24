@@ -2,7 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
-import { cancelRegistration, registerFailure, registerSuccess, setRegistrationInfo } from './sso-registration.actions';
+import { cancelRegistration, registerFailure, registerSuccess } from './sso-registration.actions';
 
 export interface SsoRegistrationState {
   registered: boolean;
