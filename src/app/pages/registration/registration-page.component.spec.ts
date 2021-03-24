@@ -44,10 +44,11 @@ describe('Registration Page Component', () => {
         { provide: FeatureToggleService, useFactory: () => instance(featureToggleService) },
         { provide: ActivatedRoute, useFactory: () => instance(activatedRoute) },
       ],
-    }).compileComponents();
-    TestBed.overrideComponent(RegistrationPageComponent, {
-      set: { providers: [{ provide: RegistrationConfigurationService, useFactory: () => instance(configService) }] },
-    });
+    })
+      .overrideComponent(RegistrationPageComponent, {
+        set: { providers: [{ provide: RegistrationConfigurationService, useFactory: () => instance(configService) }] },
+      })
+      .compileComponents();
 
     location = TestBed.inject(Location);
     when(featureToggleService.enabled(anyString())).thenReturn(false);
