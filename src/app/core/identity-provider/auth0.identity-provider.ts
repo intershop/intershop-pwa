@@ -9,6 +9,7 @@ import { Observable, from, throwError, timer } from 'rxjs';
 import { catchError, concatMap, first, map, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { UserData } from 'ish-core/models/user/user.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getUserAuthorized, loadUserByAPIToken } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
@@ -23,7 +24,39 @@ export interface Auth0Config {
 }
 
 @Injectable({ providedIn: 'root' })
-export class Auth0IdentityProvider implements IdentityProvider<Auth0Config> {
+export class Auth0IdentityProvider implements IdentityProvider {
+  ADDRESS = {
+    name: 'string',
+    type: 'Address',
+    urn: 'urn:address:customer:1234567890:0987654321',
+    id: 'vagKAB17gg4AAAFGSkFqQASI',
+    addressName: 'customeraddr-ABCDEFGPRMuMCscyXgSRVU',
+    title: 'Mrs.',
+    aristocraticTitle: 'string',
+    jobTitle: 'CEO',
+    honorific: 'string',
+    firstName: 'Wile',
+    lastName: 'Coyote',
+    companyName1: 'Acme Corp',
+    addressLine1: 'Berliner Str. 20',
+    addressLine2: '1st Floor',
+    addressLine3: 'Second door on the right',
+    postBox: 'PO Box 42',
+    mainDivision: 'AL',
+    mainDivisionName: 'Alabama',
+    subDivision: 'GB-PKN',
+    subDivisionName: 'Perth and Kinross',
+    postalCode: '14482',
+    email: 'wcoyote@test.acme.com',
+    phoneMobile: 49364112677,
+    phoneHome: '049364112677',
+    phoneBusiness: '049364112699',
+    phoneBusinessDirect: '049364112659',
+    country: 'Germany',
+    countryCode: 'DE',
+    city: 'Potsdam',
+    fax: '049364112643',
+  };
   constructor(
     private oauthService: OAuthService,
     private apiService: ApiService,
@@ -90,25 +123,23 @@ export class Auth0IdentityProvider implements IdentityProvider<Auth0Config> {
         whenTruthy(),
         switchMap(idToken =>
           this.apiService
-            .post('users/processtoken', {
+            .post<UserData>('users/processtoken', {
               id_token: idToken,
-              options: ['UPDATE'],
+              options: ['CREATE_USER'],
             })
             .pipe(
-              catchError((httpError: HttpError) =>
-                httpError?.status >= 400 && httpError?.status < 500
-                  ? // user does not exist -> create
-                    this.apiService
-                      .post<{ id: string }>('users/processtoken', {
-                        id_token: idToken,
-                        options: ['CREATE_USER'],
-                      })
-                      .pipe(
-                        concatMap(({ id: userId }) =>
-                          this.apiService.post('/privatecustomers', { userId, customerNo: UUID.UUID() })
-                        )
-                      )
-                  : throwError(httpError)
+              concatMap(userData =>
+                this.apiService.get(`customers/-/`).pipe(
+                  catchError((httpError: HttpError) =>
+                    httpError?.status === 404
+                      ? this.apiService.post('customers', {
+                          userId: userData.businessPartnerNo,
+                          customerNo: UUID.UUID(),
+                          address: this.ADDRESS,
+                        })
+                      : throwError(httpError)
+                  )
+                )
               ),
               tap(() => {
                 this.store.dispatch(loadUserByAPIToken());
