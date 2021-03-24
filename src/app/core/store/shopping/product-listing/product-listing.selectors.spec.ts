@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { range } from 'lodash-es';
 
-import { ProductListingView } from 'ish-core/models/product-listing/product-listing.model';
+import { ProductListingID, ProductListingView } from 'ish-core/models/product-listing/product-listing.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
@@ -10,7 +10,7 @@ import { setProductListingPageSize, setProductListingPages } from './product-lis
 import { getProductListingLoading, getProductListingView } from './product-listing.selectors';
 
 describe('Product Listing Selectors', () => {
-  const TEST_ID = { type: 'test', value: 'dummy' };
+  const TEST_ID: ProductListingID = { type: 'category', value: 'dummy' };
   let store$: StoreWithSnapshots;
 
   beforeEach(() => {

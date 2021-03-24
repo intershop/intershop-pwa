@@ -7,7 +7,7 @@ export interface SortableAttributesType {
 }
 
 export interface ProductListingID {
-  type: string;
+  type: 'category' | 'search' | 'master';
   value: string;
   sorting?: string;
   filters?: URLFormParams;

@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 import { deepEqual, instance, mock, when } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { ProductListingView } from 'ish-core/models/product-listing/product-listing.model';
+import { ProductListingID, ProductListingView } from 'ish-core/models/product-listing/product-listing.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ProductListPagingComponent } from 'ish-shared/components/product/product-list-paging/product-list-paging.component';
@@ -17,7 +17,7 @@ import { ProductListComponent } from 'ish-shared/components/product/product-list
 import { ProductListingComponent } from './product-listing.component';
 
 describe('Product Listing Component', () => {
-  const TEST_ID = { type: 'test', value: 'dummy' };
+  const TEST_ID: ProductListingID = { type: 'category', value: 'dummy' };
   let component: ProductListingComponent;
   let fixture: ComponentFixture<ProductListingComponent>;
   let element: HTMLElement;
