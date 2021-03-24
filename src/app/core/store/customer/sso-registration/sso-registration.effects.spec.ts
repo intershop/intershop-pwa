@@ -8,8 +8,6 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Address } from 'ish-core/models/address/address.model';
 import { Customer, CustomerUserType, SsoRegistrationType } from 'ish-core/models/customer/customer.model';
 import { UserService } from 'ish-core/services/user/user.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 
 import { setRegistrationInfo } from './sso-registration.actions';
 import { SsoRegistrationEffects } from './sso-registration.effects';
@@ -37,11 +35,7 @@ describe('Sso Registration Effects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(),
-        CustomerStoreModule.forTesting('ssoRegistration'),
-        FeatureToggleModule.forTesting('businessCustomerRegistration'),
-      ],
+      imports: [FeatureToggleModule.forTesting('businessCustomerRegistration')],
       providers: [
         SsoRegistrationEffects,
         provideMockActions(() => actions$),
