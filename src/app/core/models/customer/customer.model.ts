@@ -25,7 +25,7 @@ type XOR<T, U> = T | U extends object ? (Without<T, U> & U) | (Without<U, T> & T
  */
 export type CustomerUserType = {
   customer: Customer;
-} & XOR<{ user: User }, { userId: string }>;
+} & XOR<{ user?: User }, { userId?: string }>;
 
 /**
  * registration request data type
