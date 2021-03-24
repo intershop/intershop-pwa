@@ -1,7 +1,7 @@
 import { DefaultUrlSerializer, UrlSerializer, UrlTree } from '@angular/router';
 
 /**
- * custom serializer for allowing parentheses in URLs
+ * Custom serializer for allowing parenthesis in URLs
  *
  * taken from: https://github.com/angular/angular/issues/10280#issuecomment-309129784
  */
