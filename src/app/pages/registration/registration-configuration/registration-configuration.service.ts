@@ -1,3 +1,5 @@
+// tslint:disable: project-structure
+// tslint:disable-next-line: ish-ordered-imports
 import { Injectable } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { FormlyConfig, FormlyFieldConfig } from '@ngx-formly/core';
@@ -10,7 +12,6 @@ import { User } from 'ish-core/models/user/user.model';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 @Injectable()
-// tslint:disable: project-structure
 export class RegistrationConfigurationService {
   registrationConfig: { businessCustomer?: boolean; sso?: boolean };
   constructor(private formlyConfig: FormlyConfig, private accountFacade: AccountFacade) {}
