@@ -4,14 +4,18 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { Observable, from, iif, noop, of, timer } from 'rxjs';
-import { delay, first, map, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
+import { EMPTY, Observable, combineLatest, from, iif, of, timer } from 'rxjs';
+import { filter, first, map, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
 
-import { Customer } from 'ish-core/models/customer/customer.model';
 import { UserData } from 'ish-core/models/user/user.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { isSsoRegistrationSuccessfully } from 'ish-core/store/customer/sso-registration';
-import { getLoggedInCustomer, getUserAuthorized, loadUserByAPIToken } from 'ish-core/store/customer/user';
+import {
+  getLoggedInCustomer,
+  getUserAuthorized,
+  getUserLoading,
+  loadUserByAPIToken,
+} from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { log } from 'ish-core/utils/dev/operators';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -132,16 +136,25 @@ export class Auth0IdentityProvider implements IdentityProvider {
               tap(() => {
                 this.store.dispatch(loadUserByAPIToken());
               }),
-              delay(500),
               switchMap((userData: UserData) =>
-                this.store.pipe(select(getLoggedInCustomer)).pipe(
-                  log('customer: '),
-                  switchMap((customer: Customer) =>
+                combineLatest([
+                  this.store.pipe(select(getLoggedInCustomer)),
+                  this.store.pipe(select(getUserLoading)),
+                ]).pipe(
+                  filter(([, loading]) => !loading),
+                  first(),
+                  switchMap(([customer]) =>
                     iif(
                       () => !customer,
-                      this.router.navigate(['/register'], {
-                        queryParams: { sso: true, userid: userData.businessPartnerNo },
-                      })
+                      of(true).pipe(
+                        tap(() => console.log('rerouting')),
+                        tap(() =>
+                          this.router.navigate(['/register'], {
+                            queryParams: { sso: true, userid: userData.businessPartnerNo },
+                          })
+                        )
+                      ),
+                      of(false).pipe(tap(() => console.log('not rerouting')))
                     )
                   ),
                   switchMap((navigated: boolean) =>
@@ -153,7 +166,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
                             this.store.dispatch(loadUserByAPIToken());
                           })
                         )
-                      : noop
+                      : EMPTY
                   ),
                   log('Registered')
                 )

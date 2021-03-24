@@ -212,7 +212,7 @@ export class UserEffects {
   loadUserByAPIToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadUserByAPIToken),
-      concatMap(() => this.userService.signinUserByToken().pipe(map(loginUserSuccess)))
+      concatMap(() => this.userService.signinUserByToken().pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail)))
     )
   );
 

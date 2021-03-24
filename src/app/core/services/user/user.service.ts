@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import b64u from 'b64u';
 import { pick } from 'lodash-es';
-import { EMPTY, Observable, of, throwError } from 'rxjs';
-import { catchError, concatMap, first, map, take, withLatestFrom } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { concatMap, first, map, take, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Address } from 'ish-core/models/address/address.model';
@@ -60,7 +60,7 @@ export class UserService {
   }
 
   signinUserByToken(): Observable<CustomerUserType> {
-    return this.fetchCustomer({ skipApiErrorHandling: true, runExclusively: true }).pipe(catchError(() => EMPTY));
+    return this.fetchCustomer({ skipApiErrorHandling: true, runExclusively: true });
   }
 
   private fetchCustomer(options?: AvailableOptions): Observable<CustomerUserType> {

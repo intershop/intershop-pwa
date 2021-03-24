@@ -16,6 +16,7 @@ import {
   loadCompanyUser,
   loadCompanyUserFail,
   loadCompanyUserSuccess,
+  loadUserByAPIToken,
   loadUserPaymentMethods,
   loadUserPaymentMethodsFail,
   loadUserPaymentMethodsSuccess,
@@ -73,6 +74,7 @@ export const userReducer = createReducer(
   })),
   setLoadingOn(
     loadCompanyUser,
+    loadUserByAPIToken,
     createUser,
     updateUser,
     updateUserPassword,
@@ -123,6 +125,9 @@ export const userReducer = createReducer(
       authorized: true,
       customer,
       user,
+      customerLoading: false,
+      loading: false,
+      error: undefined,
     };
   }),
   on(loadCompanyUserSuccess, (state, action) => {
