@@ -130,7 +130,7 @@ export class RegistrationConfigurationService {
           {
             key: 'password',
             type: 'ish-password-field',
-            wrappers: [...this.formlyConfig.getType('ish-password-field').wrappers, 'description'],
+            wrappers: [...(this.formlyConfig.getType('ish-password-field').wrappers ?? []), 'description'],
             templateOptions: {
               required: true,
               label: 'account.register.password.label',

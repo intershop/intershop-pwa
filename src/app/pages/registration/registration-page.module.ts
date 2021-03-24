@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FormlyModule } from '@ngx-formly/core';
+import { ConfigOption, FormlyModule } from '@ngx-formly/core';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
@@ -11,18 +11,20 @@ import { RegistrationPageComponent } from './registration-page.component';
 
 const registrationPageRoutes: Routes = [{ path: '', component: RegistrationPageComponent }];
 
+const registrationFormlyConfig: ConfigOption = {
+  types: [
+    {
+      name: 'ish-registration-address-field',
+      component: RegistrationAddressFieldComponent,
+    },
+    { name: 'ish-registration-heading-field', component: RegistrationHeadingFieldComponent },
+    { name: 'ish-registration-tac-field', component: RegistrationTacFieldComponent },
+  ],
+};
+
 @NgModule({
   imports: [
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'ish-registration-address-field',
-          component: RegistrationAddressFieldComponent,
-        },
-        { name: 'ish-registration-heading-field', component: RegistrationHeadingFieldComponent },
-        { name: 'ish-registration-tac-field', component: RegistrationTacFieldComponent },
-      ],
-    }),
+    FormlyModule.forChild(registrationFormlyConfig),
     RouterModule.forChild(registrationPageRoutes),
     SharedModule,
   ],

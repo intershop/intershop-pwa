@@ -101,7 +101,6 @@ class DummyWrapperComponent extends FieldWrapper {}
     ReactiveFormsModule,
   ],
   exports: [FormlyForm, ReactiveFormsModule],
-  providers: [],
 })
 // tslint:disable-next-line: project-structure
 export class FormlyTestingModule {}
