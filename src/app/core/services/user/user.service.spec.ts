@@ -105,10 +105,10 @@ describe('User Service', () => {
       });
     });
 
-    it('should not throw errors when logging in a user by token is unsuccessful', done => {
+    it('should throw error when logging in a user by token is unsuccessful', done => {
       when(apiServiceMock.get(anything(), anything())).thenReturn(throwError(new Error()));
 
-      userService.signinUserByToken().subscribe(fail, fail, done);
+      userService.signinUserByToken().subscribe(fail, done(), fail);
     });
   });
 
