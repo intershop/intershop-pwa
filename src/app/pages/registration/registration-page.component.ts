@@ -81,10 +81,8 @@ export class RegistrationPageComponent implements OnInit {
   }
 
   processParamMap(paramMap: ParamMap) {
-    return {
-      ...this.model,
-      firstName: paramMap.get('firstName'),
-      lastName: paramMap.get('lastName'),
-    };
+    return paramMap.keys
+      .filter(key => !['sso', 'userid'].includes(key))
+      .reduce((acc, key) => ({ ...acc, [key]: paramMap.get(key) }), { ...this.model });
   }
 }
