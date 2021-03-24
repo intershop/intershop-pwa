@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { of } from 'rxjs';
+import { Action } from '@ngrx/store';
+import { Observable, of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
@@ -31,7 +32,7 @@ const mockCustomerUserType: CustomerUserType = {
 
 describe('Sso Registration Effects', () => {
   let effects: SsoRegistrationEffects;
-  let actions$;
+  let actions$: Observable<Action>;
   const userServiceMock = mock(UserService);
 
   beforeEach(() => {
