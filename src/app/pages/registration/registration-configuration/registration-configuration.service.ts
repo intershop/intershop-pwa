@@ -32,7 +32,7 @@ export class RegistrationConfigurationService {
         type: 'ish-registration-heading-field',
         templateOptions: {
           headingSize: 'h2',
-          heading: 'Address',
+          heading: 'account.register.address.headding',
           subheading: 'account.register.address.message',
           showRequiredInfo: true,
         },
@@ -219,7 +219,7 @@ export class RegistrationConfigurationService {
         type: 'ish-registration-heading-field',
         templateOptions: {
           headingSize: 'h2',
-          heading: 'Personal Information',
+          heading: 'account.register.personal_information.heading',
           showRequiredInfo: true,
         },
       },
