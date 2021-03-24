@@ -34,12 +34,13 @@ export class RegistrationPageComponent implements OnInit {
   submitted = false;
 
   fields$: Observable<FormlyFieldConfig[]>;
-  model = {};
+  model;
   form = new FormGroup({});
 
   ngOnInit() {
     this.userError$ = this.accountFacade.userError$;
     this.fields$ = this.route.queryParamMap.pipe(
+      tap((paramMap: ParamMap) => (this.model = this.processParamMap(paramMap))),
       map((paramMap: ParamMap) => ({
         sso: paramMap.get('sso') === 'true',
         userId: paramMap.get('userid'),
@@ -65,5 +66,13 @@ export class RegistrationPageComponent implements OnInit {
   /** return boolean to set submit button enabled/disabled */
   get formDisabled(): boolean {
     return this.form.invalid && this.submitted;
+  }
+
+  processParamMap(paramMap: ParamMap) {
+    return {
+      ...this.model,
+      firstName: paramMap.get('firstName'),
+      lastName: paramMap.get('lastName'),
+    };
   }
 }

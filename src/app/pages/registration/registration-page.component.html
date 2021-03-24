@@ -1,5 +1,4 @@
 <ish-error-message [error]="userError$ | async"></ish-error-message>
-
 <div data-testing-id="account-create-full-page">
   <form [formGroup]="form" (ngSubmit)="onCreate()">
     <formly-form [model]="model" [form]="form" [fields]="fields$ | async"></formly-form>

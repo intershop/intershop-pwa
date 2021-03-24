@@ -147,10 +147,14 @@ export class Auth0IdentityProvider implements IdentityProvider {
                     iif(
                       () => !customer,
                       of(true).pipe(
-                        tap(() => console.log('rerouting')),
                         tap(() =>
                           this.router.navigate(['/register'], {
-                            queryParams: { sso: true, userid: userData.businessPartnerNo },
+                            queryParams: {
+                              sso: true,
+                              userid: userData.businessPartnerNo,
+                              firstName: userData.firstName,
+                              lastName: userData.lastName,
+                            },
                           })
                         )
                       ),
