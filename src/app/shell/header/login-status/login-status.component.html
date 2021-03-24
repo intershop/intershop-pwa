@@ -47,11 +47,7 @@
       ><span [ngClass]="getViewClasses()">{{ 'account.register.link' | translate }}</span>
     </a>
     <span class="separator" [ngClass]="getViewClasses()">&#124;</span
-    ><a
-      routerLink="/register"
-      [queryParams]="{ returnUrl: '/account', sso: true }"
-      class="my-account-link my-account-register"
-      rel="nofollow"
+    ><a routerLink="/register" [queryParams]="{ returnUrl: '/account', sso: true }" rel="nofollow"
       ><span [ngClass]="getViewClasses()"> Register SSO Test</span>
     </a>
   </ng-template>

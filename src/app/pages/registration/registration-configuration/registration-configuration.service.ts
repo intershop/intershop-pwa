@@ -117,6 +117,7 @@ export class RegistrationConfigurationService {
       this.accountFacade.createUser(registration);
     }
   }
+
   private getCredentialsConfig(): FormlyFieldConfig[] {
     return [
       {
