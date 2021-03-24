@@ -1,28 +1,19 @@
-import { ChangeDetectionStrategy, Component, Inject, InjectionToken, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { Observable, merge } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import {
+  RegistrationConfigType,
+  RegistrationFormConfigurationService,
+} from 'ish-core/services/registration-form-configuration/registration-form-configuration.service';
 
-export const REGISTRATION_CONFIGURATION = new InjectionToken<RegistrationConfiguration>('registrationConfiguration');
-
-export interface RegistrationConfiguration {
-  getRegistrationConfiguration(registrationConfig: RegistrationConfigType): FormlyFieldConfig[];
-  submitRegistration(form: FormGroup, registrationConfig: RegistrationConfigType): void;
-  cancelRegistration(config: RegistrationConfigType): void;
-}
-
-export interface RegistrationConfigType {
-  businessCustomer?: boolean;
-  sso?: boolean;
-  userId?: string;
-}
-
+// tslint:disable:no-intelligence-in-artifacts
 /**
  * The Registration Page Container renders the customer registration form using the {@link RegistrationFormComponent}
  *
@@ -38,7 +29,7 @@ export class RegistrationPageComponent implements OnInit {
     private accountFacade: AccountFacade,
     private route: ActivatedRoute,
     private featureToggle: FeatureToggleService,
-    @Inject(REGISTRATION_CONFIGURATION) private registrationConfigurationProvider: RegistrationConfiguration
+    private registrationFormConfiguration: RegistrationFormConfigurationService
   ) {}
 
   submitted = false;
@@ -46,7 +37,8 @@ export class RegistrationPageComponent implements OnInit {
   registrationConfig: RegistrationConfigType;
 
   fields$: Observable<FormlyFieldConfig[]>;
-  model: { [key: string]: unknown };
+  model: Record<string, unknown>;
+  options: FormlyFormOptions;
   form = new FormGroup({});
 
   ngOnInit() {
@@ -59,12 +51,19 @@ export class RegistrationPageComponent implements OnInit {
         businessCustomer: this.featureToggle.enabled('businessCustomerRegistration'),
       })),
       tap(config => (this.registrationConfig = config)),
-      map(config => this.registrationConfigurationProvider.getRegistrationConfiguration(config))
+      tap(
+        config =>
+          (this.options = this.registrationFormConfiguration.getRegistrationFormConfigurationOptions(
+            config,
+            this.model
+          ))
+      ),
+      map(config => this.registrationFormConfiguration.getRegistrationFormConfiguration(config))
     );
   }
 
   cancelForm() {
-    this.registrationConfigurationProvider.cancelRegistration(this.registrationConfig);
+    this.registrationFormConfiguration.cancelRegistrationForm(this.registrationConfig);
   }
 
   onCreate() {
@@ -72,11 +71,11 @@ export class RegistrationPageComponent implements OnInit {
       this.submitted = true;
       return;
     }
-    this.registrationConfigurationProvider.submitRegistration(this.form, this.registrationConfig);
+    this.registrationFormConfiguration.submitRegistrationForm(this.form, this.registrationConfig, this.model);
   }
 
   /** return boolean to set submit button enabled/disabled */
-  get formDisabled(): boolean {
+  get submitDisabled(): boolean {
     return this.form.invalid && this.submitted;
   }
 

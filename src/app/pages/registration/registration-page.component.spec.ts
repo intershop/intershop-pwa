@@ -9,17 +9,18 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { RegistrationFormConfigurationService } from 'ish-core/services/registration-form-configuration/registration-form-configuration.service';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
-import { RegistrationConfigurationService } from './registration-configuration/registration-configuration.service';
-import { REGISTRATION_CONFIGURATION, RegistrationPageComponent } from './registration-page.component';
+import { RegistrationPageComponent } from './registration-page.component';
 
+// tslint:disable:no-intelligence-in-artifacts
 describe('Registration Page Component', () => {
   let fixture: ComponentFixture<RegistrationPageComponent>;
   let component: RegistrationPageComponent;
   let element: HTMLElement;
-  let configService: RegistrationConfigurationService;
+  let configService: RegistrationFormConfigurationService;
   let featureToggleService: FeatureToggleService;
   let activatedRoute: ActivatedRoute;
   let accountFacade: AccountFacade;
@@ -28,7 +29,7 @@ describe('Registration Page Component', () => {
   class DummyComponent {}
 
   beforeEach(async () => {
-    configService = mock(RegistrationConfigurationService);
+    configService = mock(RegistrationFormConfigurationService);
     featureToggleService = mock(FeatureToggleService);
     activatedRoute = mock(ActivatedRoute);
     accountFacade = mock(AccountFacade);
@@ -43,12 +44,12 @@ describe('Registration Page Component', () => {
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: FeatureToggleService, useFactory: () => instance(featureToggleService) },
         { provide: ActivatedRoute, useFactory: () => instance(activatedRoute) },
-        { provide: REGISTRATION_CONFIGURATION, useFactory: () => instance(configService) },
+        { provide: RegistrationFormConfigurationService, useFactory: () => instance(configService) },
       ],
     }).compileComponents();
 
     when(featureToggleService.enabled(anyString())).thenReturn(false);
-    when(configService.getRegistrationConfiguration(anything())).thenReturn([
+    when(configService.getRegistrationFormConfiguration(anything())).thenReturn([
       {
         key: 'test',
         type: 'ish-text-input-field',
@@ -117,6 +118,6 @@ describe('Registration Page Component', () => {
 
     tick(500);
 
-    verify(configService.cancelRegistration(anything())).once();
+    verify(configService.cancelRegistrationForm(anything())).once();
   }));
 });

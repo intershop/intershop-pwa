@@ -1,10 +1,8 @@
-// tslint:disable: project-structure
-// tslint:disable-next-line: ish-ordered-imports
 import { Injectable } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { UUID } from 'angular2-uuid';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -14,13 +12,19 @@ import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/cus
 import { User } from 'ish-core/models/user/user.model';
 import { cancelRegistration, setRegistrationInfo } from 'ish-core/store/customer/sso-registration';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
-import { RegistrationConfiguration, RegistrationConfigType } from '../registration-page.component';
 
-@Injectable()
-export class RegistrationConfigurationService implements RegistrationConfiguration {
+export interface RegistrationConfigType {
+  businessCustomer?: boolean;
+  sso?: boolean;
+  userId?: string;
+}
+
+@Injectable({ providedIn: 'root' })
+export class RegistrationFormConfigurationService {
+  // tslint:disable: no-intelligence-in-artifacts
   constructor(private accountFacade: AccountFacade, private store: Store, private router: Router) {}
 
-  getRegistrationConfiguration(registrationConfig: RegistrationConfigType) {
+  getRegistrationFormConfiguration(registrationConfig: RegistrationConfigType) {
     return [
       {
         type: 'ish-registration-heading-field',
@@ -76,8 +80,19 @@ export class RegistrationConfigurationService implements RegistrationConfigurati
     ];
   }
 
-  submitRegistration(form: FormGroup, registrationConfig: RegistrationConfigType) {
-    const formValue = form.value;
+  getRegistrationFormConfigurationOptions(
+    registrationConfig: RegistrationConfigType,
+    model: Record<string, unknown>
+  ): FormlyFormOptions {
+    if (registrationConfig.sso) {
+      return { formState: { disabled: Object.keys(model) } };
+    } else {
+      return {};
+    }
+  }
+
+  submitRegistrationForm(form: FormGroup, registrationConfig: RegistrationConfigType, model?: Record<string, unknown>) {
+    const formValue = { ...form.value, ...model };
 
     const address: Address = {
       firstName: formValue.firstName,
@@ -134,7 +149,7 @@ export class RegistrationConfigurationService implements RegistrationConfigurati
     }
   }
 
-  cancelRegistration(config: RegistrationConfigType): void {
+  cancelRegistrationForm(config: RegistrationConfigType): void {
     config.sso ? this.store.dispatch(cancelRegistration()) : this.router.navigate(['/home']);
   }
 
