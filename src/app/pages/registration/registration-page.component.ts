@@ -8,7 +8,6 @@ import { map, tap } from 'rxjs/operators';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { log } from 'ish-core/utils/dev/operators';
 
 import { RegistrationConfigurationService } from './registration-configuration/registration-configuration.service';
 
@@ -45,7 +44,6 @@ export class RegistrationPageComponent implements OnInit {
         sso: paramMap.get('sso') === 'true',
         businessCustomer: this.featureToggle.enabled('businessCustomerRegistration'),
       })),
-      log(),
       tap(config => this.registrationConfiguration.setConfiguration(config)),
       map(() => this.registrationConfiguration.getRegistrationConfiguration())
     );
