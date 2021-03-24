@@ -20,7 +20,7 @@ describe('Registration Configuration Service', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       providers: [
-        { provide: Router, useFactory: () => instance(mock(Router)) }
+        { provide: Router, useFactory: () => instance(mock(Router)) },
         { provide: Store, useFactory: () => instance(mock(Store)) },
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         RegistrationConfigurationService,
