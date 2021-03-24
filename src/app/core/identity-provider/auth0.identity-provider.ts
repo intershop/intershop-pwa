@@ -182,7 +182,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
       )
       .subscribe(() => {
         this.apiTokenService.removeApiToken();
-        if (this.router.url.startsWith('/loading')) {
+        if (this.router.url.startsWith('/loading') || this.router.url.startsWith('/register')) {
           this.router.navigateByUrl(this.oauthService.state ? decodeURIComponent(this.oauthService.state) : '/account');
         }
       });
