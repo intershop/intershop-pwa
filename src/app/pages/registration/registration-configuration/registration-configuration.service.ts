@@ -3,7 +3,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { FormlyConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { UUID } from 'angular2-uuid';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
