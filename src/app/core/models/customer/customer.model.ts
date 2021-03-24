@@ -15,22 +15,26 @@ export interface Customer {
   description?: string;
 }
 
+type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
+
+type XOR<T, U> = T | U extends object ? (Without<T, U> & U) | (Without<U, T> & T) : T | U;
+
 /**
  * login result response data type, for business customers user data are missing and have to be fetched seperately
  * update user request data type for both, business and private customers
  */
-export interface CustomerUserType {
+export type CustomerUserType = {
   customer: Customer;
-  user?: User;
-}
+} & XOR<{ user: User }, { userId: string }>;
 
 /**
  * registration request data type
  */
-export interface CustomerRegistrationType extends CustomerUserType, Captcha {
-  credentials: Credentials;
+export type CustomerRegistrationType = {
+  credentials?: Credentials;
   address: Address;
-}
+} & CustomerUserType &
+  Captcha;
 
 export interface SsoRegistrationType {
   companyInfo: { companyName1: string; companyName2: string; taxationID: string };

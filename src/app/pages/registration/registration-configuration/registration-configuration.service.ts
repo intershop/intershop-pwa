@@ -13,7 +13,7 @@ import { Customer, CustomerRegistrationType, SsoRegistrationType } from 'ish-cor
 import { User } from 'ish-core/models/user/user.model';
 import { setRegistrationInfo } from 'ish-core/store/customer/sso-registration';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class RegistrationConfigurationService {
@@ -22,15 +22,6 @@ export class RegistrationConfigurationService {
 
   setConfiguration(config: { businessCustomer?: boolean; sso?: boolean }) {
     this.registrationConfig = config;
-  }
-
-  register(data: SsoRegistrationType): Observable<CustomerRegistrationType> {
-    return {
-      credentials: {},
-      customer: {},
-      address: data.address,
-      user: data.userId,
-    };
   }
 
   getRegistrationConfiguration() {

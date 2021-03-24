@@ -79,7 +79,7 @@ export class UserService {
    * @param body  The user data (customer, user, credentials, address) to create a new user.
    */
   createUser(body: CustomerRegistrationType): Observable<CustomerUserType> {
-    if (!body || !body.customer || !body.user || !body.credentials || !body.address) {
+    if (!body || !body.customer || (!body.user && !body.userId) || !body.address) {
       return throwError('createUser() called without required body data');
     }
 
@@ -95,17 +95,32 @@ export class UserService {
           ? {
               type: 'SMBCustomer',
               ...body.customer,
-              user: {
-                ...body.user,
-                preferredLanguage: currentLocale.lang ?? 'en_US',
-              },
+              ...(body.user
+                ? {
+                    user: {
+                      ...body.user,
+                      preferredLanguage: currentLocale.lang ?? 'en_US',
+                    },
+                  }
+                : {
+                    userId: body.userId,
+                  }),
               address: customerAddress,
               credentials: body.credentials,
             }
           : {
               type: 'PrivateCustomer',
               ...body.customer,
-              ...body.user,
+              ...(body.user
+                ? {
+                    user: {
+                      ...body.user,
+                      preferredLanguage: currentLocale.lang ?? 'en_US',
+                    },
+                  }
+                : {
+                    userId: body.userId,
+                  }),
               address: customerAddress,
               credentials: body.credentials,
               preferredLanguage: currentLocale.lang ?? 'en_US',
