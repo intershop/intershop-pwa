@@ -2,6 +2,7 @@
 // tslint:disable-next-line: ish-ordered-imports
 import { Injectable } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { UUID } from 'angular2-uuid';
@@ -11,13 +12,13 @@ import { Address } from 'ish-core/models/address/address.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
-import { setRegistrationInfo } from 'ish-core/store/customer/sso-registration';
+import { cancelRegistration, setRegistrationInfo } from 'ish-core/store/customer/sso-registration';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 import { RegistrationConfiguration, RegistrationConfigType } from '../registration-page.component';
 
 @Injectable()
 export class RegistrationConfigurationService implements RegistrationConfiguration {
-  constructor(private accountFacade: AccountFacade, private store: Store) {}
+  constructor(private accountFacade: AccountFacade, private store: Store, private router: Router) {}
 
   getRegistrationConfiguration(registrationConfig: RegistrationConfigType) {
     return [
@@ -131,6 +132,10 @@ export class RegistrationConfigurationService implements RegistrationConfigurati
 
       this.accountFacade.createUser(registration);
     }
+  }
+
+  cancelRegistration(config: RegistrationConfigType): void {
+    config.sso ? this.store.dispatch(cancelRegistration()) : this.router.navigate(['/home']);
   }
 
   private getCredentialsConfig(): FormlyFieldConfig[] {

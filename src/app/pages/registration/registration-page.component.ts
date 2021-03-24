@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, InjectionToken, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, merge } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -14,6 +14,7 @@ export const REGISTRATION_CONFIGURATION = new InjectionToken<RegistrationConfigu
 export interface RegistrationConfiguration {
   getRegistrationConfiguration(registrationConfig: RegistrationConfigType): FormlyFieldConfig[];
   submitRegistration(form: FormGroup, registrationConfig: RegistrationConfigType): void;
+  cancelRegistration(config: RegistrationConfigType): void;
 }
 
 export interface RegistrationConfigType {
@@ -35,7 +36,6 @@ export class RegistrationPageComponent implements OnInit {
 
   constructor(
     private accountFacade: AccountFacade,
-    private router: Router,
     private route: ActivatedRoute,
     private featureToggle: FeatureToggleService,
     @Inject(REGISTRATION_CONFIGURATION) private registrationConfigurationProvider: RegistrationConfiguration
@@ -64,7 +64,7 @@ export class RegistrationPageComponent implements OnInit {
   }
 
   cancelForm() {
-    this.router.navigate(['/home']);
+    this.registrationConfigurationProvider.cancelRegistration(this.registrationConfig);
   }
 
   onCreate() {

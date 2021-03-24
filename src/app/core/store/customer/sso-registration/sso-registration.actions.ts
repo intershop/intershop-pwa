@@ -14,3 +14,5 @@ export const registerSuccess = createAction(
 );
 
 export const registerFailure = createAction('[SsoRegistration] Register SMB Customer Failure', httpError());
+
+export const cancelRegistration = createAction('[SsoRegistration] Cancel Registration');

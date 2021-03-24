@@ -4,12 +4,12 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { Observable, combineLatest, from, iif, of, timer } from 'rxjs';
-import { filter, first, map, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
+import { Observable, combineLatest, from, iif, of, race, timer } from 'rxjs';
+import { filter, first, map, mapTo, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
 
 import { UserData } from 'ish-core/models/user/user.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { getSsoRegistrationRegistered } from 'ish-core/store/customer/sso-registration';
+import { getSsoRegistrationCancelled, getSsoRegistrationRegistered } from 'ish-core/store/customer/sso-registration';
 import {
   getLoggedInCustomer,
   getUserAuthorized,
@@ -126,12 +126,20 @@ export class Auth0IdentityProvider implements IdentityProvider {
                   ),
                   switchMap((navigated: boolean) =>
                     navigated
-                      ? this.store.pipe(
-                          select(getSsoRegistrationRegistered),
-                          whenTruthy(),
-                          tap(() => {
-                            this.store.dispatch(loadUserByAPIToken());
-                          })
+                      ? race(
+                          this.store.pipe(
+                            select(getSsoRegistrationRegistered),
+                            whenTruthy(),
+                            tap(() => {
+                              this.store.dispatch(loadUserByAPIToken());
+                            })
+                          ),
+                          this.store.pipe(
+                            select(getSsoRegistrationCancelled),
+                            whenTruthy(),
+                            mapTo(false),
+                            tap(() => this.router.navigateByUrl('/logout'))
+                          )
                         )
                       : of(navigated)
                   )

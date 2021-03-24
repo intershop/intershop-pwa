@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
@@ -6,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
-import { anyString, anything, instance, mock, when } from 'ts-mockito';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
@@ -20,7 +19,6 @@ describe('Registration Page Component', () => {
   let fixture: ComponentFixture<RegistrationPageComponent>;
   let component: RegistrationPageComponent;
   let element: HTMLElement;
-  let location: Location;
   let configService: RegistrationConfigurationService;
   let featureToggleService: FeatureToggleService;
   let activatedRoute: ActivatedRoute;
@@ -48,8 +46,6 @@ describe('Registration Page Component', () => {
         { provide: REGISTRATION_CONFIGURATION, useFactory: () => instance(configService) },
       ],
     }).compileComponents();
-
-    location = TestBed.inject(Location);
 
     when(featureToggleService.enabled(anyString())).thenReturn(false);
     when(configService.getRegistrationConfiguration(anything())).thenReturn([
@@ -121,6 +117,6 @@ describe('Registration Page Component', () => {
 
     tick(500);
 
-    expect(location.path()).toEqual('/home');
+    verify(configService.cancelRegistration(anything())).once();
   }));
 });

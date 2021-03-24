@@ -11,7 +11,7 @@ import { anything, capture, instance, mock, resetCalls, spy, verify, when } from
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { UserData } from 'ish-core/models/user/user.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { getSsoRegistrationRegistered } from 'ish-core/store/customer/sso-registration';
+import { getSsoRegistrationCancelled, getSsoRegistrationRegistered } from 'ish-core/store/customer/sso-registration';
 import { getLoggedInCustomer, getUserAuthorized, getUserLoading } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 
@@ -52,6 +52,7 @@ describe('Auth0 Identity Provider', () => {
         RouterTestingModule.withRoutes([
           { path: 'register', component: DummyComponent },
           { path: 'account', component: DummyComponent },
+          { path: 'logout', component: DummyComponent },
         ]),
       ],
       providers: [
@@ -89,6 +90,7 @@ describe('Auth0 Identity Provider', () => {
       store$.overrideSelector(getUserLoading, true);
       store$.overrideSelector(getSsoRegistrationRegistered, false);
       store$.overrideSelector(getUserAuthorized, false);
+      store$.overrideSelector(getSsoRegistrationCancelled, false);
     });
 
     it('should call processtoken api and dispatch user loading action on startup', fakeAsync(() => {
@@ -116,6 +118,18 @@ describe('Auth0 Identity Provider', () => {
       tick(500);
 
       verify(storeSpy$.dispatch(anything())).twice();
+      verify(apiTokenService.removeApiToken()).never();
+    }));
+
+    it('should not reload user and navigate to logout after registration form was cancelled', fakeAsync(() => {
+      store$.overrideSelector(getUserLoading, false);
+      store$.overrideSelector(getSsoRegistrationCancelled, true);
+
+      auth0IdentityProvider.init(auth0Config);
+      tick(500);
+
+      verify(storeSpy$.dispatch(anything())).once();
+      expect(router.url).toContain('/logout');
       verify(apiTokenService.removeApiToken()).never();
     }));
 
