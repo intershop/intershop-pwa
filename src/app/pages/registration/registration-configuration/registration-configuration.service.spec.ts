@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
-import { FormlyFieldConfig } from '@ngx-formly/core';
 import { instance, mock } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { extractKeys } from 'ish-shared/formly/dev/testing/formly-testing-utils';
 
 import { RegistrationConfigType, RegistrationConfigurationService } from './registration-configuration.service';
 
@@ -29,15 +29,92 @@ describe('Registration Configuration Service', () => {
 
       registrationConfigurationService.setConfiguration(registrationConfig);
     });
+
+    it('should return right fields when calling getRegistrationConfig', () => {
+      const fieldConfig = registrationConfigurationService.getRegistrationConfiguration();
+      expect(extractKeys(fieldConfig)).toMatchInlineSnapshot(`
+        Array [
+          Array [
+            "companyName1",
+            "companyName2",
+            "taxationID",
+          ],
+          Array [
+            "firstName",
+            "lastName",
+            "phoneHome",
+          ],
+          Array [
+            "termsAndConditions",
+          ],
+        ]
+      `);
+    });
   });
-  it('should return right fields when calling getRegistrationConfig', () => {
-    const fieldConfig = registrationConfigurationService.getRegistrationConfiguration();
-    expect(extractKeys(fieldConfig)).toMatchInlineSnapshot();
+
+  describe('without sso', () => {
+    describe('business customer', () => {
+      beforeEach(() => {
+        const registrationConfig: RegistrationConfigType = { businessCustomer: true, sso: false };
+
+        registrationConfigurationService.setConfiguration(registrationConfig);
+      });
+
+      it('should return the right fields when calling getRegistrationConfig', () => {
+        const fieldConfig = registrationConfigurationService.getRegistrationConfiguration();
+        expect(extractKeys(fieldConfig)).toMatchInlineSnapshot(`
+          Array [
+            Array [
+              "login",
+              "loginConfirmation",
+              "password",
+              "passwordConfirmation",
+            ],
+            Array [
+              "companyName1",
+              "companyName2",
+              "taxationID",
+            ],
+            Array [
+              "firstName",
+              "lastName",
+              "phoneHome",
+            ],
+            Array [
+              "termsAndConditions",
+            ],
+          ]
+        `);
+      });
+    });
+    describe('non-business customer', () => {
+      beforeEach(() => {
+        const registrationConfig: RegistrationConfigType = { businessCustomer: false, sso: false };
+
+        registrationConfigurationService.setConfiguration(registrationConfig);
+      });
+
+      it('should return the right fields when calling getRegistrationConfig', () => {
+        const fieldConfig = registrationConfigurationService.getRegistrationConfiguration();
+        expect(extractKeys(fieldConfig)).toMatchInlineSnapshot(`
+          Array [
+            Array [
+              "login",
+              "loginConfirmation",
+              "password",
+              "passwordConfirmation",
+            ],
+            Array [
+              "firstName",
+              "lastName",
+              "phoneHome",
+            ],
+            Array [
+              "termsAndConditions",
+            ],
+          ]
+        `);
+      });
+    });
   });
 });
-
-type valueOrArray<T> = T | valueOrArray<T>[];
-
-function extractKeys(fieldConfig: FormlyFieldConfig[]): valueOrArray<string> {
-  return fieldConfig.map(field => (field.key as string) ?? extractKeys(field.fieldGroup));
-}

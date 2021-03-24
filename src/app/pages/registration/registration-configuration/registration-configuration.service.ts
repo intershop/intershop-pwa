@@ -23,7 +23,7 @@ export interface RegistrationConfigType {
 @Injectable()
 export class RegistrationConfigurationService {
   registrationConfig: RegistrationConfigType = {};
-  constructor(private formlyConfig: FormlyConfig, private accountFacade: AccountFacade, private store: Store) {}
+  constructor(private accountFacade: AccountFacade, private store: Store) {}
 
   setConfiguration(config: { businessCustomer?: boolean; sso?: boolean }) {
     this.registrationConfig = config;
@@ -196,8 +196,8 @@ export class RegistrationConfigurationService {
           {
             key: 'password',
             type: 'ish-password-field',
-            wrappers: [...(this.formlyConfig.getType('ish-password-field').wrappers ?? []), 'description'],
             templateOptions: {
+              postWrappers: ['description'],
               required: true,
               label: 'account.register.password.label',
               customDescription: {

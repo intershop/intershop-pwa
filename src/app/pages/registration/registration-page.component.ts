@@ -34,7 +34,7 @@ export class RegistrationPageComponent implements OnInit {
   submitted = false;
 
   fields$: Observable<FormlyFieldConfig[]>;
-  model;
+  model: { [key: string]: unknown };
   form = new FormGroup({});
 
   ngOnInit() {
