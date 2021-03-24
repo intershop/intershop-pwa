@@ -13,8 +13,12 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
 
 @Injectable()
 export class RegistrationConfigurationService {
-  registrationConfig: { businessCustomer?: boolean; sso?: boolean };
+  registrationConfig: { businessCustomer?: boolean; sso?: boolean } = {};
   constructor(private formlyConfig: FormlyConfig, private accountFacade: AccountFacade) {}
+
+  setConfiguration(config: { businessCustomer?: boolean; sso?: boolean }) {
+    this.registrationConfig = config;
+  }
 
   getRegistrationConfiguration() {
     return [
