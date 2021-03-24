@@ -13,7 +13,7 @@ import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/cus
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
 
-import { RegistrationConfigurationService } from './formly/registration-configuration/registration-configuration.service';
+import { RegistrationConfigurationService } from './registration-configuration/registration-configuration.service';
 
 /**
  * The Registration Page Container renders the customer registration form using the {@link RegistrationFormComponent}

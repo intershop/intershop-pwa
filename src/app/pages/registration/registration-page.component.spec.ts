@@ -4,19 +4,21 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { RouterTestingModule } from '@angular/router/testing';
 import { ConfigOption, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-address-form/formly-address-form.component';
+import { ValidationMessageComponent } from 'ish-shared/formly/components/validation-message/validation-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { RegistrationAddressFieldComponent } from './formly/registration-address-field/registration-address-field.component';
-import { RegistrationConfigurationService } from './formly/registration-configuration/registration-configuration.service';
 import { RegistrationHeadingFieldComponent } from './formly/registration-heading-field/registration-heading-field.component';
 import { RegistrationTacFieldComponent } from './formly/registration-tac-field/registration-tac-field.component';
+import { RegistrationConfigurationService } from './registration-configuration/registration-configuration.service';
 import { RegistrationPageComponent } from './registration-page.component';
 
 const registrationFormlyConfig: ConfigOption = {
@@ -44,6 +46,8 @@ describe('Registration Page Component', () => {
         DummyComponent,
         MockComponent(ErrorMessageComponent),
         MockComponent(FormlyAddressFormComponent),
+        MockComponent(ValidationMessageComponent),
+        MockDirective(ServerHtmlDirective),
         RegistrationAddressFieldComponent,
         RegistrationHeadingFieldComponent,
         RegistrationPageComponent,

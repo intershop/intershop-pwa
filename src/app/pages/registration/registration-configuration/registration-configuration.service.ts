@@ -5,9 +5,8 @@ import { FormlyConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 @Injectable()
-// tslint:disable-next-line: project-structure
 export class RegistrationConfigurationService {
-  registrationConfig: { businessCustomer?: boolean; shortAddress?: boolean };
+  registrationConfig: { businessCustomer?: boolean; sso?: boolean };
   constructor(private formlyConfig: FormlyConfig) {}
 
   getRegistrationConfiguration() {
@@ -20,16 +19,14 @@ export class RegistrationConfigurationService {
           subheading: 'account.register.message',
         },
       },
-      ...this.getCredentialsConfig(),
-      ...this.getCompanyInfoConfig(),
+      ...(!this.registrationConfig.sso ? this.getCredentialsConfig() : []),
+      ...(this.registrationConfig.businessCustomer ? this.getCompanyInfoConfig() : []),
       ...this.getPersonalInfoConfig(),
       {
         type: 'ish-registration-heading-field',
         templateOptions: {
           headingSize: 'h2',
-          heading: this.registrationConfig.businessCustomer
-            ? 'account.register.company_information.heading'
-            : 'account.register.address.headding',
+          heading: 'Address',
           subheading: 'account.register.address.message',
           showRequiredInfo: true,
         },
@@ -47,15 +44,6 @@ export class RegistrationConfigurationService {
               businessCustomer: this.registrationConfig.businessCustomer,
             },
           },
-          this.registrationConfig.businessCustomer
-            ? {
-                key: 'taxationID',
-                type: 'ish-text-input-field',
-                templateOptions: {
-                  label: 'account.address.taxation.label',
-                },
-              }
-            : {},
           {
             type: 'ish-registration-tac-field',
             key: 'termsAndConditions',
@@ -182,6 +170,54 @@ export class RegistrationConfigurationService {
           showRequiredInfo: true,
         },
       },
+      {
+        type: 'ish-fieldset-field',
+        templateOptions: {
+          fieldsetClass: 'row',
+          childClass: 'col-md-10 col-lg-8 col-xl-6',
+        },
+        fieldGroup: [
+          {
+            type: 'ish-text-input-field',
+            templateOptions: {
+              label: 'account.default_address.firstname.label',
+              required: true,
+            },
+            validators: {
+              validation: [SpecialValidators.noSpecialChars],
+            },
+            validation: {
+              messages: {
+                required: 'account.address.firstname.missing.error',
+                noSpecialChars: 'account.name.error.forbidden.chars',
+              },
+            },
+          },
+          {
+            type: 'ish-text-input-field',
+            templateOptions: {
+              label: 'account.default_address.lastname.label',
+              required: true,
+            },
+            validators: {
+              validation: [SpecialValidators.noSpecialChars],
+            },
+            validation: {
+              messages: {
+                required: 'account.address.lastname.missing.error',
+                noSpecialChars: 'account.name.error.forbidden.chars',
+              },
+            },
+          },
+          {
+            type: 'ish-text-input-field',
+            templateOptions: {
+              label: 'account.profile.phone.label',
+              required: false,
+            },
+          },
+        ],
+      },
     ];
   }
 
@@ -194,6 +230,41 @@ export class RegistrationConfigurationService {
           heading: 'Company Information',
           showRequiredInfo: true,
         },
+      },
+      {
+        type: 'ish-fieldset-field',
+        templateOptions: {
+          fieldsetClass: 'row',
+          childClass: 'col-md-10 col-lg-8 col-xl-6',
+        },
+        fieldGroup: [
+          {
+            type: 'ish-text-input-field',
+            templateOptions: {
+              label: 'account.address.company_name.label',
+              required: true,
+            },
+            validation: {
+              messages: {
+                required: 'account.address.company_name.error.required',
+              },
+            },
+          },
+          {
+            type: 'ish-text-input-field',
+            templateOptions: {
+              label: 'account.address.company_name_2.label',
+              required: false,
+            },
+          },
+          {
+            key: 'taxationID',
+            type: 'ish-text-input-field',
+            templateOptions: {
+              label: 'account.address.taxation.label',
+            },
+          },
+        ],
       },
     ];
   }
