@@ -32,8 +32,9 @@ export class SsoRegistrationEffects {
             },
             userId: data.userId,
           })
-          .pipe(map(registerSuccess), mapErrorToAction(registerFailure))
-      )
+          .pipe(map(registerSuccess))
+      ),
+      mapErrorToAction(registerFailure)
     )
   );
 }

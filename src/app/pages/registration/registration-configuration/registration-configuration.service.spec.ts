@@ -1,10 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { instance, mock } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 
-import { RegistrationConfigurationService } from './registration-configuration.service';
+import { RegistrationConfigType, RegistrationConfigurationService } from './registration-configuration.service';
 
 describe('Registration Configuration Service', () => {
   let registrationConfigurationService: RegistrationConfigurationService;
@@ -22,7 +23,21 @@ describe('Registration Configuration Service', () => {
     registrationConfigurationService = TestBed.inject(RegistrationConfigurationService);
   });
 
-  it('should be created', () => {
-    expect(registrationConfigurationService).toBeTruthy();
+  describe('with sso', () => {
+    beforeEach(() => {
+      const registrationConfig: RegistrationConfigType = { businessCustomer: true, sso: true, userId: 'uid' };
+
+      registrationConfigurationService.setConfiguration(registrationConfig);
+    });
+  });
+  it('should return right fields when calling getRegistrationConfig', () => {
+    const fieldConfig = registrationConfigurationService.getRegistrationConfiguration();
+    expect(extractKeys(fieldConfig)).toMatchInlineSnapshot();
   });
 });
+
+type valueOrArray<T> = T | valueOrArray<T>[];
+
+function extractKeys(fieldConfig: FormlyFieldConfig[]): valueOrArray<string> {
+  return fieldConfig.map(field => (field.key as string) ?? extractKeys(field.fieldGroup));
+}

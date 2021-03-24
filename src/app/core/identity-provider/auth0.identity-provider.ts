@@ -9,7 +9,7 @@ import { filter, first, map, switchMap, switchMapTo, take, tap } from 'rxjs/oper
 
 import { UserData } from 'ish-core/models/user/user.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { isSsoRegistrationSuccessfully } from 'ish-core/store/customer/sso-registration';
+import { getSsoRegistrationRegistered } from 'ish-core/store/customer/sso-registration';
 import {
   getLoggedInCustomer,
   getUserAuthorized,
@@ -164,7 +164,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
                   switchMap((navigated: boolean) =>
                     navigated
                       ? this.store.pipe(
-                          select(isSsoRegistrationSuccessfully),
+                          select(getSsoRegistrationRegistered),
                           whenTruthy(),
                           tap(() => {
                             this.store.dispatch(loadUserByAPIToken());

@@ -14,9 +14,15 @@ import { User } from 'ish-core/models/user/user.model';
 import { setRegistrationInfo } from 'ish-core/store/customer/sso-registration';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
+export interface RegistrationConfigType {
+  businessCustomer?: boolean;
+  sso?: boolean;
+  userId?: string;
+}
+
 @Injectable()
 export class RegistrationConfigurationService {
-  registrationConfig: { businessCustomer?: boolean; sso?: boolean; userId?: string } = {};
+  registrationConfig: RegistrationConfigType = {};
   constructor(private formlyConfig: FormlyConfig, private accountFacade: AccountFacade, private store: Store) {}
 
   setConfiguration(config: { businessCustomer?: boolean; sso?: boolean }) {

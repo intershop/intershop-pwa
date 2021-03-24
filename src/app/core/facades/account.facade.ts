@@ -22,6 +22,7 @@ import {
 } from 'ish-core/store/customer/addresses';
 import { getUserRoles } from 'ish-core/store/customer/authorization';
 import { getOrders, getOrdersLoading, getSelectedOrder, loadOrders } from 'ish-core/store/customer/orders';
+import { getSsoRegistrationError } from 'ish-core/store/customer/sso-registration';
 import {
   createUser,
   deleteUserPaymentInstrument,
@@ -73,6 +74,7 @@ export class AccountFacade {
   userLoading$ = this.store.pipe(select(getUserLoading));
   isLoggedIn$ = this.store.pipe(select(getUserAuthorized));
   roles$ = this.store.pipe(select(getUserRoles));
+  ssoRegistrationError$ = this.store.pipe(select(getSsoRegistrationError));
 
   loginUser(credentials: Credentials) {
     this.store.dispatch(loginUser({ credentials }));

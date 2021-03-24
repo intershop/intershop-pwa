@@ -37,7 +37,7 @@ export type CustomerRegistrationType = {
   Captcha;
 
 export interface SsoRegistrationType {
-  companyInfo: { companyName1: string; companyName2: string; taxationID: string };
+  companyInfo: { companyName1: string; companyName2?: string; taxationID: string };
   address: Address;
   userId: string;
 }

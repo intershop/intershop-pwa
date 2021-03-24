@@ -58,7 +58,7 @@ describe('Registration Page Component', () => {
         type: 'ish-text-input-field',
       },
     ]);
-    when(activatedRoute.queryParamMap).thenReturn(of(convertToParamMap({ sso: false })));
+    when(activatedRoute.queryParamMap).thenReturn(of(convertToParamMap({ sso: 'false' })));
   });
 
   beforeEach(() => {
@@ -80,12 +80,13 @@ describe('Registration Page Component', () => {
       Object {
         "businessCustomer": false,
         "sso": false,
+        "userId": null,
       }
     `);
   });
 
   it('should set configuration parameters depending on router', () => {
-    when(activatedRoute.queryParamMap).thenReturn(of(convertToParamMap({ sso: true })));
+    when(activatedRoute.queryParamMap).thenReturn(of(convertToParamMap({ sso: 'true', userid: 'uid' })));
     when(featureToggleService.enabled(anyString())).thenReturn(true);
     fixture.detectChanges();
 
@@ -93,7 +94,8 @@ describe('Registration Page Component', () => {
     expect(args).toMatchInlineSnapshot(`
       Object {
         "businessCustomer": true,
-        "sso": false,
+        "sso": true,
+        "userId": "uid",
       }
     `);
   });

@@ -6,4 +6,6 @@ const getSsoRegistrationState = createSelector(getCustomerState, state => state.
 
 export const getSsoRegistrationInfo = createSelector(getSsoRegistrationState, state => state.registrationInfo);
 
-export const isSsoRegistrationSuccessfully = createSelector(getSsoRegistrationState, state => state.registered);
+export const getSsoRegistrationError = createSelector(getSsoRegistrationState, state => state.error);
+
+export const getSsoRegistrationRegistered = createSelector(getSsoRegistrationState, state => state.registered);

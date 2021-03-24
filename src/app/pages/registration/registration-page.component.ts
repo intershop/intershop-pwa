@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable } from 'rxjs';
+import { Observable, merge } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -21,7 +21,7 @@ import { RegistrationConfigurationService } from './registration-configuration/r
   providers: [RegistrationConfigurationService],
 })
 export class RegistrationPageComponent implements OnInit {
-  userError$: Observable<HttpError>;
+  error$: Observable<HttpError>;
 
   constructor(
     private accountFacade: AccountFacade,
@@ -38,7 +38,7 @@ export class RegistrationPageComponent implements OnInit {
   form = new FormGroup({});
 
   ngOnInit() {
-    this.userError$ = this.accountFacade.userError$;
+    this.error$ = merge(this.accountFacade.userError$, this.accountFacade.ssoRegistrationError$);
     this.fields$ = this.route.queryParamMap.pipe(
       tap((paramMap: ParamMap) => (this.model = this.processParamMap(paramMap))),
       map((paramMap: ParamMap) => ({
