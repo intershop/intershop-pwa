@@ -113,10 +113,10 @@ export class UserService {
               ...body.customer,
               ...(body.user
                 ? {
-                    user: {
-                      ...body.user,
-                      preferredLanguage: currentLocale.lang ?? 'en_US',
-                    },
+                    firstName: body.user.firstName,
+                    lastName: body.user.lastName,
+                    email: body.user.email,
+                    preferredLanguage: currentLocale.lang ?? 'en_US',
                   }
                 : {
                     userId: body.userId,
