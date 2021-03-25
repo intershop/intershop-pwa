@@ -77,9 +77,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
 
       sessionChecksEnabled: true,
     });
-
     this.oauthService.setupAutomaticSilentRefresh();
-
     this.apiTokenService
       .restore$(['basket', 'order'])
       .pipe(
@@ -161,14 +159,18 @@ export class Auth0IdentityProvider implements IdentityProvider {
     if (route.queryParamMap.get('userid')) {
       return of(true);
     } else {
-      this.router.navigateByUrl('/loading', { replaceUrl: false, skipLocationChange: true });
-      return this.oauthService.loadDiscoveryDocumentAndLogin({ state: route.queryParams.returnUrl });
+      this.router.navigateByUrl('/loading');
+      return this.oauthService.loadDiscoveryDocumentAndLogin({
+        state: route.queryParams.returnUrl,
+      });
     }
   }
 
   triggerLogin(route: ActivatedRouteSnapshot): TriggerReturnType {
-    this.router.navigateByUrl('/loading', { replaceUrl: false, skipLocationChange: true });
-    return this.oauthService.loadDiscoveryDocumentAndLogin({ state: route.queryParams.returnUrl });
+    this.router.navigateByUrl('/loading');
+    return this.oauthService.loadDiscoveryDocumentAndLogin({
+      state: route.queryParams.returnUrl,
+    });
   }
 
   triggerLogout(): TriggerReturnType {
