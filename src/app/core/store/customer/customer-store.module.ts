@@ -21,6 +21,8 @@ import { OrdersEffects } from './orders/orders.effects';
 import { ordersReducer } from './orders/orders.reducer';
 import { OrganizationManagementEffects } from './organization-management/organization-management.effects';
 import { RequisitionManagementEffects } from './requisition-management/requisition-management.effects';
+import { SsoRegistrationEffects } from './sso-registration/sso-registration.effects';
+import { ssoRegistrationReducer } from './sso-registration/sso-registration.reducer';
 import { UserEffects } from './user/user.effects';
 import { userReducer } from './user/user.reducer';
 
@@ -30,6 +32,7 @@ const customerReducers: ActionReducerMap<CustomerState> = {
   orders: ordersReducer,
   basket: basketReducer,
   authorization: authorizationReducer,
+  ssoRegistration: ssoRegistrationReducer,
 };
 
 const customerEffects = [
@@ -45,6 +48,7 @@ const customerEffects = [
   AuthorizationEffects,
   OrganizationManagementEffects,
   RequisitionManagementEffects,
+  SsoRegistrationEffects,
 ];
 
 const metaReducers = [resetOnLogoutMeta];

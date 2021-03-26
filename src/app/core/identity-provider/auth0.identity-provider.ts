@@ -4,17 +4,23 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { UUID } from 'angular2-uuid';
-import { Observable, from, throwError, timer } from 'rxjs';
-import { catchError, concatMap, first, map, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
+import { Observable, combineLatest, from, iif, of, race, timer } from 'rxjs';
+import { catchError, filter, first, map, mapTo, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { UserData } from 'ish-core/models/user/user.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { getUserAuthorized, loadUserByAPIToken } from 'ish-core/store/customer/user';
+import { getSsoRegistrationCancelled, getSsoRegistrationRegistered } from 'ish-core/store/customer/sso-registration';
+import {
+  getLoggedInCustomer,
+  getUserAuthorized,
+  getUserLoading,
+  loadUserByAPIToken,
+} from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
-import { IdentityProvider } from './identity-provider.interface';
+import { IdentityProvider, TriggerReturnType } from './identity-provider.interface';
 
 export interface Auth0Config {
   type: 'auth0';
@@ -23,7 +29,7 @@ export interface Auth0Config {
 }
 
 @Injectable({ providedIn: 'root' })
-export class Auth0IdentityProvider implements IdentityProvider<Auth0Config> {
+export class Auth0IdentityProvider implements IdentityProvider {
   constructor(
     private oauthService: OAuthService,
     private apiService: ApiService,
@@ -72,9 +78,7 @@ export class Auth0IdentityProvider implements IdentityProvider<Auth0Config> {
 
       sessionChecksEnabled: true,
     });
-
     this.oauthService.setupAutomaticSilentRefresh();
-
     this.apiTokenService
       .restore$(['basket', 'order'])
       .pipe(
@@ -90,47 +94,92 @@ export class Auth0IdentityProvider implements IdentityProvider<Auth0Config> {
         whenTruthy(),
         switchMap(idToken =>
           this.apiService
-            .post('users/processtoken', {
+            .post<UserData>('users/processtoken', {
               id_token: idToken,
-              options: ['UPDATE'],
+              options: ['CREATE_USER'],
             })
             .pipe(
-              catchError((httpError: HttpError) =>
-                httpError?.status >= 400 && httpError?.status < 500
-                  ? // user does not exist -> create
-                    this.apiService
-                      .post<{ id: string }>('users/processtoken', {
-                        id_token: idToken,
-                        options: ['CREATE_USER'],
-                      })
-                      .pipe(
-                        concatMap(({ id: userId }) =>
-                          this.apiService.post('/privatecustomers', { userId, customerNo: UUID.UUID() })
-                        )
-                      )
-                  : throwError(httpError)
-              ),
               tap(() => {
                 this.store.dispatch(loadUserByAPIToken());
               }),
-              switchMapTo(this.store.pipe(select(getUserAuthorized), whenTruthy(), first()))
+              switchMap((userData: UserData) =>
+                combineLatest([
+                  this.store.pipe(select(getLoggedInCustomer)),
+                  this.store.pipe(select(getUserLoading)),
+                ]).pipe(
+                  filter(([, loading]) => !loading),
+                  first(),
+                  switchMap(([customer]) =>
+                    iif(
+                      () => !customer,
+                      this.router.navigate(['/register'], {
+                        queryParams: {
+                          sso: true,
+                          userid: userData.businessPartnerNo,
+                          firstName: userData.firstName,
+                          lastName: userData.lastName,
+                        },
+                      }),
+                      of(false)
+                    )
+                  ),
+                  switchMap((navigated: boolean) =>
+                    navigated
+                      ? race(
+                          this.store.pipe(
+                            select(getSsoRegistrationRegistered),
+                            whenTruthy(),
+                            tap(() => {
+                              this.store.dispatch(loadUserByAPIToken());
+                            })
+                          ),
+                          this.store.pipe(
+                            select(getSsoRegistrationCancelled),
+                            whenTruthy(),
+                            mapTo(false),
+                            tap(() => this.router.navigateByUrl('/logout'))
+                          )
+                        )
+                      : of(navigated)
+                  )
+                )
+              ),
+              switchMapTo(this.store.pipe(select(getUserAuthorized), whenTruthy(), first())),
+              catchError((error: HttpError) => {
+                this.apiTokenService.removeApiToken();
+                this.triggerLogout();
+                return of(error);
+              })
             )
         )
       )
       .subscribe(() => {
         this.apiTokenService.removeApiToken();
-        if (this.router.url.startsWith('/loading')) {
+        if (this.router.url.startsWith('/loading') || this.router.url.startsWith('/register')) {
           this.router.navigateByUrl(this.oauthService.state ? decodeURIComponent(this.oauthService.state) : '/account');
         }
       });
   }
 
-  triggerLogin(route: ActivatedRouteSnapshot) {
-    this.router.navigateByUrl('/loading', { replaceUrl: false, skipLocationChange: true });
-    return this.oauthService.loadDiscoveryDocumentAndLogin({ state: route.queryParams.returnUrl });
+  triggerRegister(route: ActivatedRouteSnapshot): TriggerReturnType {
+    if (route.queryParamMap.get('userid')) {
+      return of(true);
+    } else {
+      this.router.navigateByUrl('/loading');
+      return this.oauthService.loadDiscoveryDocumentAndLogin({
+        state: route.queryParams.returnUrl,
+      });
+    }
   }
 
-  triggerLogout() {
+  triggerLogin(route: ActivatedRouteSnapshot): TriggerReturnType {
+    this.router.navigateByUrl('/loading');
+    return this.oauthService.loadDiscoveryDocumentAndLogin({
+      state: route.queryParams.returnUrl,
+    });
+  }
+
+  triggerLogout(): TriggerReturnType {
     if (this.oauthService.hasValidIdToken()) {
       this.oauthService.revokeTokenAndLogout(
         {

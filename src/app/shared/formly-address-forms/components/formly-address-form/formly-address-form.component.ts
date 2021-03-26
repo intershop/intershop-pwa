@@ -17,6 +17,7 @@ import { SelectOption } from 'ish-shared/forms/components/select/select.componen
 export class FormlyAddressFormComponent implements OnInit, OnChanges {
   @Input() parentForm: FormGroup;
   @Input() businessCustomer: boolean;
+  @Input() shortForm: boolean;
   @Input() prefilledAddress: Partial<Address>;
 
   countryCode = '';
@@ -48,7 +49,7 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
     const prevCountryCode = this.countryCode;
     this.countryCode = model.countryCode;
     if (model.countryCode !== prevCountryCode) {
-      const configuration = this.afcProvider.getConfiguration(model.countryCode, this.businessCustomer);
+      const configuration = this.afcProvider.getConfiguration(model.countryCode, this.businessCustomer, this.shortForm);
       this.addressForm = new FormGroup({});
       this.addressModel = {
         countryCode: model.countryCode,
@@ -90,7 +91,7 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
   }
 
   private initForm() {
-    const configuration = this.afcProvider.getConfiguration('default', this.businessCustomer);
+    const configuration = this.afcProvider.getConfiguration('default', this.businessCustomer, this.shortForm);
     this.addressForm = new FormGroup({});
     this.addressModel = {
       countryCode: '',
