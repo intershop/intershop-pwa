@@ -10,7 +10,7 @@ import { DirectivesModule } from 'ish-core/directives.module';
 import {
   SitekeyProviderService,
   getSynchronizedSiteKey,
-} from '../../services/sitekey-provider/sitekey-provider.service';
+} from '../../exports/sitekey-provider/sitekey-provider.service';
 
 /**
  * The Captcha V3 Component

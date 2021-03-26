@@ -3,7 +3,7 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { Actions, createEffect } from '@ngrx/effects';
 import { Action, Store, select } from '@ngrx/store';
-import * as Sentry from '@sentry/browser';
+import { Severity, addBreadcrumb, captureEvent, configureScope, init } from '@sentry/browser';
 import { iif } from 'rxjs';
 import { distinctUntilChanged, filter, map, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 
@@ -51,7 +51,7 @@ export class SentryConfigEffects {
           whenTruthy(),
           tap(dsn => {
             const release = this.transferState.get<string>(DISPLAY_VERSION, 'development');
-            Sentry.init({ dsn, release });
+            init({ dsn, release });
           })
         )
       ),
@@ -64,7 +64,7 @@ export class SentryConfigEffects {
         select(getLoggedInUser),
         mapToProperty('email'),
         distinctUntilChanged(),
-        tap(email => Sentry.configureScope(scope => scope.setUser(email ? { email } : undefined)))
+        tap(email => configureScope(scope => scope.setUser(email ? { email } : undefined)))
       ),
     { dispatch: false }
   );
@@ -74,7 +74,7 @@ export class SentryConfigEffects {
       this.store.pipe(
         select(selectRouter),
         map(payload => JSON.stringify(payload)),
-        tap(message => Sentry.addBreadcrumb({ category: 'routing', message }))
+        tap(message => addBreadcrumb({ category: 'routing', message }))
       ),
     { dispatch: false }
   );
@@ -87,8 +87,8 @@ export class SentryConfigEffects {
         whenTruthy(),
         distinctUntilChanged(),
         tap(error => {
-          Sentry.captureEvent({
-            level: Sentry.Severity.Error,
+          captureEvent({
+            level: Severity.Error,
             message: typeof error === 'string' ? error : `${error.code} - ${error.message}`,
             extra: { error },
             tags: { origin: 'Error Page' },
@@ -104,8 +104,8 @@ export class SentryConfigEffects {
         filter<{ payload: { error: Error } } & Action>(action => action.type.endsWith('Fail')),
         tap(action => {
           const err = action.payload.error;
-          Sentry.captureEvent({
-            level: Sentry.Severity.Error,
+          captureEvent({
+            level: Severity.Error,
             message: err.message,
             extra: {
               error: err,

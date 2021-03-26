@@ -149,7 +149,7 @@ Each component that handles items of this configuration checks if they are activ
 This functionality can be customized by changing the [`defaultDisplayProperties`][src-product-context-facade].
 
 A more elaborate way would be to provide an [`ExternalDisplayPropertiesProvider`][src-product-context-facade].
-Have a look at [`PunchoutProductContextDisplayPropertiesService`](../../src/app/extensions/punchout/services/punchout-product-context-display-properties/punchout-product-context-display-properties.service.ts) or [`TactonProductContextDisplayPropertiesService`](../../src/app/extensions/tacton/services/tacton-product-context-display-properties/tacton-product-context-display-properties.service.ts) for examples.
+Have a look at [`PunchoutProductContextDisplayPropertiesService`](../../src/app/extensions/punchout/exports/punchout-product-context-display-properties/punchout-product-context-display-properties.service.ts) or [`TactonProductContextDisplayPropertiesService`](../../src/app/extensions/tacton/exports/tacton-product-context-display-properties/tacton-product-context-display-properties.service.ts) for examples.
 
 # Further References
 

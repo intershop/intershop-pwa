@@ -88,6 +88,13 @@ export default (
   log('setting ngrxRuntimeChecks:', ngrxRuntimeChecks);
 
   if (production) {
+    // keep module names for debugging
+    config.optimization.minimizer.forEach(m => {
+      if (m.options && m.options.terserOptions) {
+        m.options.terserOptions.keep_classnames = /.*Module$/;
+      }
+    });
+
     // splitChunks not available for SSR build
     if (config.optimization.splitChunks) {
       log('optimizing chunk splitting');
@@ -113,25 +120,38 @@ export default (
         priority: 25,
         chunks: 'async',
         name(module) {
-          const identifier = module.identifier();
+          const identifier = module.identifier() as string;
 
           // embed sentry library in sentry chunk
-          if (identifier.includes('@sentry')) {
+          if (/[\\/]node_modules[\\/]@sentry[\\/]/.test(identifier)) {
             return 'sentry';
           }
-          // keep exports and routing modules in common
-          if (identifier.includes('routing') || identifier.includes('exports')) {
-            return 'common';
+
+          // embed angulartics2 library in tracking chunk
+          if (/[\\/]node_modules[\\/]angulartics2[\\/]/.test(identifier)) {
+            return 'tracking';
           }
 
-          const match = /[\\/](extensions|projects)[\\/](.*?)[\\/]/.exec(identifier);
+          const match = /[\\/](extensions|projects)[\\/](.*?)[\\/](src[\\/]app[\\/])?(.*)/.exec(identifier);
           const feature = match && match[2];
 
-          // include captcha functionality in common bundle
-          if (feature === 'captcha') {
-            return 'common';
+          if (feature) {
+            // include core functionality in common bundle
+            if (['captcha', 'seo'].some(f => f === feature)) {
+              return 'common';
+            }
+
+            const effectivePath = match[4];
+
+            // send exports and routing modules to the common module
+            if (effectivePath.startsWith('exports') || effectivePath.endsWith('-routing.module.ts')) {
+              return 'common';
+            }
+
+            return feature;
           }
-          return feature || 'common';
+
+          return 'common';
         },
       };
 

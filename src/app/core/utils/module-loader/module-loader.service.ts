@@ -14,7 +14,7 @@ export const LAZY_FEATURE_MODULE = new InjectionToken<LazyModuleType>('lazyModul
 
 @Injectable({ providedIn: 'root' })
 export class ModuleLoaderService {
-  private loadedModules: string[] = [];
+  private loadedModules: Type<unknown>[] = [];
 
   constructor(private compiler: Compiler, private featureToggleService: FeatureToggleService, private store: Store) {}
 
@@ -22,13 +22,16 @@ export class ModuleLoaderService {
     this.store.pipe(select(getFeatures), whenTruthy()).subscribe(() => {
       const lazyModules = injector.get<LazyModuleType[]>(LAZY_FEATURE_MODULE, []);
       lazyModules
-        .filter(mod => !this.loadedModules.includes(mod.feature))
         .filter(mod => this.featureToggleService.enabled(mod.feature))
         .forEach(async mod => {
           const loaded = await mod.location();
-          const moduleFactory = await this.compiler.compileModuleAsync(loaded);
-          moduleFactory.create(injector);
-          this.loadedModules.push(mod.feature);
+          if (!this.loadedModules.includes(loaded)) {
+            const moduleFactory = await this.compiler.compileModuleAsync(loaded);
+            moduleFactory.create(injector);
+            // tslint:disable-next-line: no-console
+            console.debug('ModuleLoaderService loaded', loaded.prototype.constructor.name);
+            this.loadedModules.push(loaded);
+          }
         });
     });
   }
