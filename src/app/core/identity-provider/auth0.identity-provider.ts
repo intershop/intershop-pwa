@@ -5,8 +5,9 @@ import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Observable, combineLatest, from, iif, of, race, timer } from 'rxjs';
-import { filter, first, map, mapTo, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
+import { catchError, filter, first, map, mapTo, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
 
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { UserData } from 'ish-core/models/user/user.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getSsoRegistrationCancelled, getSsoRegistrationRegistered } from 'ish-core/store/customer/sso-registration';
@@ -143,7 +144,12 @@ export class Auth0IdentityProvider implements IdentityProvider {
                   )
                 )
               ),
-              switchMapTo(this.store.pipe(select(getUserAuthorized), whenTruthy(), first()))
+              switchMapTo(this.store.pipe(select(getUserAuthorized), whenTruthy(), first())),
+              catchError((error: HttpError) => {
+                this.apiTokenService.removeApiToken();
+                this.triggerLogout();
+                return of(error);
+              })
             )
         )
       )
