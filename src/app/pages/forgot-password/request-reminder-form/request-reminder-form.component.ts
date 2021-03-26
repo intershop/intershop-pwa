@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 /**
  * The Request Reminder Form Component displays a Forgot Password Request Reminder form and triggers the submit.
@@ -24,28 +24,47 @@ export class RequestReminderFormComponent implements OnInit {
    */
   @Output() submitPasswordReminder = new EventEmitter<PasswordReminder>();
 
-  form: FormGroup;
   submitted = false;
 
+  requestReminderForm = new FormGroup({});
+  fields: FormlyFieldConfig[];
+
   ngOnInit() {
-    this.form = new FormGroup({
-      email: new FormControl('', [Validators.required, SpecialValidators.email]),
-      captcha: new FormControl(''),
-      captchaAction: new FormControl('forgotPassword'),
-    });
+    this.fields = [
+      {
+        key: 'email',
+        type: 'ish-email-field',
+        templateOptions: {
+          label: 'account.forgotdata.email.label',
+          hideRequiredMarker: true,
+          required: true,
+        },
+        validation: {
+          messages: {
+            required: 'account.email.error.required',
+          },
+        },
+      },
+      {
+        type: 'ish-captcha-field',
+        templateOptions: {
+          topic: 'forgotPassword',
+        },
+      },
+    ];
   }
 
   get buttonDisabled() {
-    return this.form.invalid && this.submitted;
+    return this.requestReminderForm.invalid && this.submitted;
   }
 
   submitForm() {
-    if (this.form.invalid) {
+    if (this.requestReminderForm.invalid) {
       this.submitted = true;
-      markAsDirtyRecursive(this.form);
+      markAsDirtyRecursive(this.requestReminderForm);
       return;
     }
 
-    this.submitPasswordReminder.emit(this.form.value);
+    this.submitPasswordReminder.emit(this.requestReminderForm.value);
   }
 }
