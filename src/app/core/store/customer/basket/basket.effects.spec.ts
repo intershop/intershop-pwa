@@ -31,6 +31,7 @@ import {
   loadBasketEligibleShippingMethodsSuccess,
   loadBasketFail,
   loadBasketSuccess,
+  loadBasketWithId,
   resetBasketErrors,
   setBasketAttribute,
   setBasketAttributeFail,
@@ -109,6 +110,42 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadBasket$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadBasketWithId$', () => {
+    const basketId = 'BID';
+    beforeEach(() => {
+      when(basketServiceMock.getBasketWithId(basketId)).thenReturn(of({ id: basketId } as Basket));
+    });
+
+    it('should call the basketService for loadBasketWithId', done => {
+      const action = loadBasketWithId({ basketId });
+      actions$ = of(action);
+
+      effects.loadBasketWithId$.subscribe(() => {
+        verify(basketServiceMock.getBasketWithId(basketId)).once();
+        done();
+      });
+    });
+
+    it('should map to action of type LoadBasketSuccess', () => {
+      const action = loadBasketWithId({ basketId });
+      const completion = loadBasketSuccess({ basket: { id: basketId } as Basket });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadBasketWithId$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type LoadBasketFail', () => {
+      when(basketServiceMock.getBasketWithId(basketId)).thenReturn(throwError(makeHttpError({ message: 'invalid' })));
+      const action = loadBasketWithId({ basketId });
+      const completion = loadBasketFail({ error: makeHttpError({ message: 'invalid' }) });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadBasketWithId$).toBeObservable(expected$);
     });
   });
 

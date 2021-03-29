@@ -1,7 +1,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { provideMockStore } from '@ngrx/store/testing';
-import { of, throwError } from 'rxjs';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { noop, of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { Address } from 'ish-core/models/address/address.model';
@@ -18,6 +18,7 @@ describe('Basket Service', () => {
   let basketService: BasketService;
   let apiService: ApiService;
   let orderService: OrderService;
+  let store$: MockStore;
 
   const basketMockData = {
     data: {
@@ -61,6 +62,7 @@ describe('Basket Service', () => {
       ],
     });
     basketService = TestBed.inject(BasketService);
+    store$ = TestBed.inject(MockStore);
   });
 
   it("should get basket data when 'getBasket' is called", done => {
@@ -71,6 +73,20 @@ describe('Basket Service', () => {
       verify(apiService.get(`baskets/current`, anything())).once();
       done();
     });
+  });
+
+  it('should fetch the basket with the basket id from the state or the given id', done => {
+    const basketId = 'basket123';
+    const basketData = { data: { id: basketId } } as BasketData;
+    when(apiService.get(`baskets/${basketId}`, anything())).thenReturn(of(basketData));
+
+    basketService.getBasket().subscribe(noop);
+    basketService.getBasketWithId(basketId).subscribe(noop);
+    store$.overrideSelector(getBasketIdOrCurrent, basketId);
+    basketService.getBasket().subscribe(noop);
+    verify(apiService.get(`baskets/current`, anything())).once();
+    verify(apiService.get(`baskets/${basketId}`, anything())).twice();
+    done();
   });
 
   it('should load a basket by token when requested and successful', done => {

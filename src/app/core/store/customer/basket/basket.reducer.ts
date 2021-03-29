@@ -44,6 +44,7 @@ import {
   loadBasketEligibleShippingMethodsSuccess,
   loadBasketFail,
   loadBasketSuccess,
+  loadBasketWithId,
   mergeBasketFail,
   mergeBasketSuccess,
   removePromotionCodeFromBasket,
@@ -112,6 +113,7 @@ export const basketReducer = createReducer(
   initialState,
   setLoadingOn(
     loadBasket,
+    loadBasketWithId,
     assignBasketAddress,
     updateBasketShippingMethod,
     updateBasket,

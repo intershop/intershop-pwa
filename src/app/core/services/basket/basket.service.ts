@@ -143,6 +143,27 @@ export class BasketService {
     );
   }
 
+  /**
+   * Gets the basket for the current user with the given basket id if available.
+   * @param basketId  The basket id for the basket to be fetched.
+   * @returns         The basket.
+   */
+  getBasketWithId(basketId: string): Observable<Basket> {
+    const params = new HttpParams().set('include', this.allBasketIncludes.join());
+
+    return this.apiService
+      .get<BasketData>(`baskets/${basketId}`, {
+        headers: this.basketHeaders,
+        params,
+      })
+      .pipe(map(BasketMapper.fromData));
+  }
+
+  /**
+   * Gets the 'current' default basket for the current user authenticated by the given apiToken.
+   * @param apiToken  The authentication token.
+   * @returns         The basket.
+   */
   getBasketByToken(apiToken: string): Observable<Basket> {
     const params = new HttpParams().set('include', this.allBasketIncludes.join());
 

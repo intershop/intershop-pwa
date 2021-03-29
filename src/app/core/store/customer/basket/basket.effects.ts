@@ -38,6 +38,7 @@ import {
   loadBasketEligibleShippingMethodsSuccess,
   loadBasketFail,
   loadBasketSuccess,
+  loadBasketWithId,
   mergeBasketFail,
   mergeBasketSuccess,
   resetBasketErrors,
@@ -78,6 +79,25 @@ export class BasketEffects {
     )
   );
 
+  /**
+   * Loads a basket with the given id.
+   */
+  loadBasketWithId$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadBasketWithId),
+      mapToPayloadProperty('basketId'),
+      mergeMap(basketId =>
+        this.basketService.getBasketWithId(basketId).pipe(
+          map(basket => loadBasketSuccess({ basket })),
+          mapErrorToAction(loadBasketFail)
+        )
+      )
+    )
+  );
+
+  /**
+   * Loads the current basket for a user authenticated by apiToken.
+   */
   loadBasketByAPIToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadBasketByAPIToken),
@@ -211,7 +231,7 @@ export class BasketEffects {
               // anonymous basket exists -> get or create user basket and merge anonymous basket into it
               return iif(
                 () => !!baskets.length,
-                this.basketService.getBasket(),
+                this.basketService.getBasketWithId('current'),
                 this.basketService.createBasket()
               ).pipe(
                 switchMap(newOrCurrentUserBasket =>

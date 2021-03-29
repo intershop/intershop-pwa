@@ -15,6 +15,8 @@ import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 export const loadBasket = createAction('[Basket Internal] Load Basket');
 
+export const loadBasketWithId = createAction('[Basket] Load Basket with ID', payload<{ basketId: string }>());
+
 export const loadBasketByAPIToken = createAction(
   '[Basket Internal] Load Basket by API Token',
   payload<{ apiToken: string }>()
