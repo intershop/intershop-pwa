@@ -163,7 +163,6 @@
   "account.order_template.delete.do_you_really.text": "Wollen Sie diese Bestellvorlage wirklich löschen?",
   "account.order_template.delete_order_template.confirmation": "Ihre Bestellvorlage \"{{0}}\" wurde gelöscht.",
   "account.order_template.edit.heading": "Bestellvorlage bearbeiten",
-  "account.order_template.form.name.error.maxlength": "Der Name der Bestellvorlage darf nicht länger als 35 Zeichen sein. ",
   "account.order_template.form.name.error.required": "Geben Sie einen Namen für die Bestellvorlage an.",
   "account.order_template.form.name.label": "Name der Bestellvorlage",
   "account.order_template.items": {

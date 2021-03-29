@@ -163,7 +163,6 @@
   "account.order_template.delete.do_you_really.text": "Voulez-vous vraiment supprimer ce modèle de commande ?",
   "account.order_template.delete_order_template.confirmation": "Votre modèle de commande \"{{0}}\" a été supprimé.",
   "account.order_template.edit.heading": "Modifier le modèle de commande",
-  "account.order_template.form.name.error.maxlength": "Le nom du modèle de commande ne doit pas dépasser 35 caractères. ",
   "account.order_template.form.name.error.required": "Veuillez entrer un nom pour le modèle de commande.",
   "account.order_template.form.name.label": "Nom du modèle de commande",
   "account.order_template.items": {

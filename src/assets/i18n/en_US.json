@@ -163,7 +163,6 @@
   "account.order_template.delete.do_you_really.text": "Do you really want to delete this order template?",
   "account.order_template.delete_order_template.confirmation": "Your order template \"{{0}}\" has been deleted.",
   "account.order_template.edit.heading": "Edit Order Template",
-  "account.order_template.form.name.error.maxlength": "The order template name must not exceed 35 characters.",
   "account.order_template.form.name.error.required": "Please enter an order template name.",
   "account.order_template.form.name.label": "Order Template Name",
   "account.order_template.items": {
