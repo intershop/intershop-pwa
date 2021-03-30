@@ -130,6 +130,7 @@
     "prettier": "^2.2.1",
     "purgecss-webpack-plugin": "^4.0.3",
     "rxjs-tslint-rules": "^4.34.7",
+    "sort-json": "^2.0.0",
     "stylelint": "^13.12.0",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-recess-order": "^2.3.0",
@@ -173,6 +174,9 @@
     "*.ts": [
       "tslint --project tsconfig.json --fix",
       "jest --ci --bail --findRelatedTests --maxWorkers=50%"
+    ],
+    "src/assets/i18n/*.json": [
+      "sort-json --indent-size=2"
     ]
   },
   "commitlint": {
