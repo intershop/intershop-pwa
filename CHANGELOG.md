@@ -1,3 +1,53 @@
+## [0.29.0](https://github.com/intershop/intershop-pwa/releases/tag/0.29.0) (2021-04-01)
+
+**required Intershop Commerce Management version: 7.10.29.2**
+
+### Features
+
+- support for cXML punchout shopping (login, transfer order) (#550) ([b23d5ef](https://github.com/intershop/intershop-pwa/commit/b23d5ef))
+- check for multiple punchout roles (cXML or OCI) for punchout UI adaptions ([f5a1a2c](https://github.com/intershop/intershop-pwa/commit/f5a1a2c))
+- support for new OCI Punchout REST API v2 including product validation and background search ([a5226f7](https://github.com/intershop/intershop-pwa/commit/a5226f7))
+- extend the role-toggle service and not-role-toggle directive to check against multiple roles if one is included ([4a8f7e3](https://github.com/intershop/intershop-pwa/commit/4a8f7e3))
+- extend basket handling to work with a specific basket id instead of 'current' ([edd1d0a](https://github.com/intershop/intershop-pwa/commit/edd1d0a))
+- login user with given token (e.g. from URL) ([107aff9](https://github.com/intershop/intershop-pwa/commit/107aff9))
+- add support for setting 'responseType' header for REST calls ([e73343e](https://github.com/intershop/intershop-pwa/commit/e73343e))
+- add support for providing options for the 'resolveLink/resolveLinks' functionality ([f8b2be6](https://github.com/intershop/intershop-pwa/commit/f8b2be6))
+- SSO with Auth0 for B2B (#597) ([b8ada93](https://github.com/intershop/intershop-pwa/commit/b8ada93))
+- replace any typescript file by configuration (#616) ([7b39473](https://github.com/intershop/intershop-pwa/commit/7b39473))
+- parameterized user/customer related success messages ([f739c45](https://github.com/intershop/intershop-pwa/commit/f739c45))
+- inquire password for user email/login update (#599) ([9980e21](https://github.com/intershop/intershop-pwa/commit/9980e21))
+- same-site property for cookies service ([adc1ec6](https://github.com/intershop/intershop-pwa/commit/adc1ec6))
+- product context access directive (#605) ([fedbc59](https://github.com/intershop/intershop-pwa/commit/fedbc59))
+- show available stock if available (#598) ([57bf890](https://github.com/intershop/intershop-pwa/commit/57bf890))
+
+### Bug Fixes
+
+- re-apply transferred state for later initialized feature states (#628) ([b2dd286](https://github.com/intershop/intershop-pwa/commit/b2dd286))
+- unnecessary feature module load (#631) ([9baa213](https://github.com/intershop/intershop-pwa/commit/9baa213))
+- allow parentheses in urls (#611) ([15a66f6](https://github.com/intershop/intershop-pwa/commit/15a66f6))
+- adapt nginx Dockerfile to nginx-prometheus-exporter changes and pinned version (#632, #633) ([496753c](https://github.com/intershop/intershop-pwa/commit/496753c))
+- adapt purgecss configuration to prevent purging needed styles (#601) ([87a3135](https://github.com/intershop/intershop-pwa/commit/87a3135))
+- display validation error messages for payment method ISH Demo Credit Card ([f7f7ea1](https://github.com/intershop/intershop-pwa/commit/f7f7ea1))
+- display error message in case the profanity check fails after wishlist/order template creation ([8386523](https://github.com/intershop/intershop-pwa/commit/8386523))
+- map server-config value for null correctly ([fef26d9](https://github.com/intershop/intershop-pwa/commit/fef26d9))
+- run pipeline only on intershop account (#606) ([f0c3255](https://github.com/intershop/intershop-pwa/commit/f0c3255))
+- repair add-destroy schematic (#602) ([bcc0401](https://github.com/intershop/intershop-pwa/commit/bcc0401))
+
+### Performance Improvements
+
+- use lazy properties on product context (#617) ([1126496](https://github.com/intershop/intershop-pwa/commit/1126496))
+- forbid omit from lodash-es as it is not used to its full potential (#604) ([30a43c8](https://github.com/intershop/intershop-pwa/commit/30a43c8))
+
+### Documentation
+
+- describe each formly extension (#621) ([0b38846](https://github.com/intershop/intershop-pwa/commit/0b38846))
+- documentation for product contexts (#608) ([4657432](https://github.com/intershop/intershop-pwa/commit/4657432))
+
+### BREAKING CHANGES
+
+- Introduced registration form configuration via a new registration configuration service.
+- Further form refactorings to use Formly forms.
+
 <!--
 kb_sync_latest_only
 kb_pwa
