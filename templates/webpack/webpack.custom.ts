@@ -186,6 +186,7 @@ export default (
             /\btoast-close-button\b/,
             /\bnav-tabs\b/,
             /\bnav-link\b/,
+            /\bpopover\b/,
           ],
         },
       })
