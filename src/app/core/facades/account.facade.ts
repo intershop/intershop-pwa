@@ -11,6 +11,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update/password-reminder-update.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { User } from 'ish-core/models/user/user.model';
+import { MessagesPayloadType } from 'ish-core/store/core/messages';
 import {
   createCustomerAddress,
   deleteCustomerAddress,
@@ -21,6 +22,7 @@ import {
 } from 'ish-core/store/customer/addresses';
 import { getUserRoles } from 'ish-core/store/customer/authorization';
 import { getOrders, getOrdersLoading, getSelectedOrder, loadOrders } from 'ish-core/store/customer/orders';
+import { getSsoRegistrationError } from 'ish-core/store/customer/sso-registration';
 import {
   createUser,
   deleteUserPaymentInstrument,
@@ -36,6 +38,8 @@ import {
   isBusinessCustomer,
   loadUserPaymentMethods,
   loginUser,
+  loginUserWithToken,
+  logoutUser,
   requestPasswordReminder,
   resetPasswordReminder,
   updateCustomer,
@@ -72,21 +76,36 @@ export class AccountFacade {
   userLoading$ = this.store.pipe(select(getUserLoading));
   isLoggedIn$ = this.store.pipe(select(getUserAuthorized));
   roles$ = this.store.pipe(select(getUserRoles));
+  ssoRegistrationError$ = this.store.pipe(select(getSsoRegistrationError));
 
   loginUser(credentials: Credentials) {
     this.store.dispatch(loginUser({ credentials }));
+  }
+
+  loginUserWithToken(token: string) {
+    this.store.dispatch(loginUserWithToken({ token }));
+  }
+
+  logoutUser() {
+    this.store.dispatch(logoutUser());
   }
 
   createUser(body: CustomerRegistrationType) {
     this.store.dispatch(createUser(body));
   }
 
-  updateUser(user: User, successMessage?: string) {
+  updateUser(user: User, successMessage?: MessagesPayloadType) {
     this.store.dispatch(updateUser({ user, successMessage }));
   }
 
-  updateUserEmail(user: User) {
-    this.store.dispatch(updateUser({ user, successMessage: 'account.profile.update_email.message' }));
+  updateUserEmail(user: User, credentials: Credentials) {
+    this.store.dispatch(
+      updateUser({
+        user,
+        credentials,
+        successMessage: { message: 'account.profile.update_email.message', messageParams: { 0: user.email } },
+      })
+    );
   }
 
   updateUserPassword(data: { password: string; currentPassword: string }) {
@@ -94,7 +113,7 @@ export class AccountFacade {
   }
 
   updateUserProfile(user: User) {
-    this.store.dispatch(updateUser({ user, successMessage: 'account.profile.update_profile.message' }));
+    this.store.dispatch(updateUser({ user, successMessage: { message: 'account.profile.update_profile.message' } }));
   }
 
   // CUSTOMER
@@ -103,9 +122,12 @@ export class AccountFacade {
   isBusinessCustomer$ = this.store.pipe(select(isBusinessCustomer));
   userPriceDisplayType$ = this.store.pipe(select(getPriceDisplayType));
 
-  updateCustomerProfile(customer: Customer, message?: string) {
+  updateCustomerProfile(customer: Customer, message?: MessagesPayloadType) {
     this.store.dispatch(
-      updateCustomer({ customer, successMessage: message ? message : 'account.profile.update_profile.message' })
+      updateCustomer({
+        customer,
+        successMessage: message ? message : { message: 'account.profile.update_profile.message' },
+      })
     );
   }
 

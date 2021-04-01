@@ -36,6 +36,7 @@ import {
   loadProduct,
   loadProductIfNotLoaded,
   loadProductLinks,
+  loadProductParts,
 } from 'ish-core/store/shopping/products';
 import { getPromotion, getPromotions, loadPromotion } from 'ish-core/store/shopping/promotions';
 import {
@@ -105,7 +106,7 @@ export class ShoppingFacade {
 
   productListingView$(id: ProductListingID) {
     this.store.dispatch(loadMoreProducts({ id }));
-    return this.store.pipe(select(getProductListingView, id));
+    return this.store.pipe(select(getProductListingView(id)));
   }
 
   productListingViewType$ = this.store.pipe(select(getProductListingViewType));
@@ -119,6 +120,7 @@ export class ShoppingFacade {
 
   productLinks$(sku: string | Observable<string>) {
     return toObservable(sku).pipe(
+      whenTruthy(),
       tap(plainSKU => {
         this.store.dispatch(loadProductLinks({ sku: plainSKU }));
       }),
@@ -126,10 +128,16 @@ export class ShoppingFacade {
     );
   }
 
-  // PRODUCT RETAILSET / BUNDLES
+  // PRODUCT RETAIL SET / BUNDLES
 
-  productParts$(sku: string) {
-    return this.store.pipe(select(getProductParts(sku)));
+  productParts$(sku: string | Observable<string>) {
+    return toObservable(sku).pipe(
+      whenTruthy(),
+      tap(plainSKU => {
+        this.store.dispatch(loadProductParts({ sku: plainSKU }));
+      }),
+      switchMap(plainSKU => this.store.pipe(select(getProductParts(plainSKU))))
+    );
   }
 
   // SEARCH
@@ -147,7 +155,7 @@ export class ShoppingFacade {
     debounce(() => this.store.pipe(select(getProductListingLoading), whenFalsy())),
     switchMap(term =>
       this.store.pipe(
-        select(getProductListingView, { type: 'search', value: term }),
+        select(getProductListingView({ type: 'search', value: term })),
         map(view => view.itemCount)
       )
     )
@@ -197,13 +205,13 @@ export class ShoppingFacade {
 
   promotion$(promotionId: string) {
     this.store.dispatch(loadPromotion({ promoId: promotionId }));
-    return this.store.pipe(select(getPromotion(), { promoId: promotionId }));
+    return this.store.pipe(select(getPromotion(promotionId)));
   }
 
   promotions$(promotionIds: string[]) {
     promotionIds.forEach(promotionId => {
       this.store.dispatch(loadPromotion({ promoId: promotionId }));
     });
-    return this.store.pipe(select(getPromotions(), { promotionIds }));
+    return this.store.pipe(select(getPromotions(promotionIds)));
   }
 }

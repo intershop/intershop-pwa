@@ -18,14 +18,15 @@ describe('Filter Dropdown Component', () => {
     }).compileComponents();
   });
 
-  const facet = (n, value) => ({
-    name: value,
-    searchParameter: { [n]: value },
-    displayName: value,
-    count: 0,
-    selected: false,
-    level: 0,
-  });
+  const facet = (n: string, value: string) =>
+    ({
+      name: value,
+      searchParameter: { [n]: [value] },
+      displayName: value,
+      count: 0,
+      selected: false,
+      level: 0,
+    } as Facet);
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FilterDropdownComponent);

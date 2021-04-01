@@ -1,5 +1,5 @@
 // tslint:disable:ish-ordered-imports
-require('jest-preset-angular');
+require('jest-preset-angular/setup-jest');
 
 require('jest-extended');
 

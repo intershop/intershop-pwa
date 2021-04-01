@@ -2,7 +2,7 @@ import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { setLoadingOn } from 'ish-core/utils/ngrx-creators';
+import { setErrorOn, setLoadingOn, unsetLoadingOn } from 'ish-core/utils/ngrx-creators';
 
 import { OrderTemplate } from '../../models/order-template/order-template.model';
 
@@ -52,28 +52,36 @@ export const orderTemplateReducer = createReducer(
     deleteOrderTemplate,
     updateOrderTemplate
   ),
+  unsetLoadingOn(
+    loadOrderTemplatesSuccess,
+    addBasketToNewOrderTemplateSuccess,
+    createOrderTemplateSuccess,
+    updateOrderTemplateSuccess,
+    addProductToOrderTemplateSuccess,
+    removeItemFromOrderTemplateSuccess,
+    deleteOrderTemplateSuccess
+  ),
+  setErrorOn(
+    loadOrderTemplatesFail,
+    deleteOrderTemplateFail,
+    createOrderTemplateFail,
+    addBasketToNewOrderTemplateFail,
+    updateOrderTemplateFail
+  ),
   on(
     loadOrderTemplatesFail,
     deleteOrderTemplateFail,
     createOrderTemplateFail,
     addBasketToNewOrderTemplateFail,
     updateOrderTemplateFail,
-    (state: OrderTemplateState, action) => {
-      const { error } = action.payload;
-      return {
-        ...state,
-        loading: false,
-        error,
-        selected: undefined,
-      };
-    }
-  ),
-  on(loadOrderTemplatesSuccess, (state: OrderTemplateState, action) => {
-    const { orderTemplates } = action.payload;
-    return orderTemplateAdapter.setAll(orderTemplates, {
+    (state: OrderTemplateState) => ({
       ...state,
-      loading: false,
-    });
+      selected: undefined as string,
+    })
+  ),
+  on(loadOrderTemplatesSuccess, (state, action) => {
+    const { orderTemplates } = action.payload;
+    return orderTemplateAdapter.setAll(orderTemplates, state);
   }),
   on(
     addBasketToNewOrderTemplateSuccess,
@@ -81,23 +89,17 @@ export const orderTemplateReducer = createReducer(
     updateOrderTemplateSuccess,
     addProductToOrderTemplateSuccess,
     removeItemFromOrderTemplateSuccess,
-    (state: OrderTemplateState, action) => {
+    (state, action) => {
       const { orderTemplate } = action.payload;
 
-      return orderTemplateAdapter.upsertOne(orderTemplate, {
-        ...state,
-        loading: false,
-      });
+      return orderTemplateAdapter.upsertOne(orderTemplate, state);
     }
   ),
-  on(deleteOrderTemplateSuccess, (state: OrderTemplateState, action) => {
+  on(deleteOrderTemplateSuccess, (state, action) => {
     const { orderTemplateId } = action.payload;
-    return orderTemplateAdapter.removeOne(orderTemplateId, {
-      ...state,
-      loading: false,
-    });
+    return orderTemplateAdapter.removeOne(orderTemplateId, state);
   }),
-  on(selectOrderTemplate, (state: OrderTemplateState, action) => {
+  on(selectOrderTemplate, (state, action) => {
     const { id } = action.payload;
     return {
       ...state,

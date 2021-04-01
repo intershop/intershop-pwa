@@ -6,7 +6,13 @@ describe('Server Config Mapper', () => {
     it(`should return the ServerConfig when getting ServerConfigData`, () => {
       const config = ServerConfigMapper.fromData({
         data: {
-          application: { applicationType: 'intershop.B2CResponsive', id: 'application', urlIdentifier: '-' },
+          application: {
+            applicationType: 'intershop.B2CResponsive',
+            id: 'application',
+            urlIdentifier: '-',
+            // tslint:disable-next-line: no-null-keyword
+            displayName: null,
+          },
           basket: { acceleration: true, id: 'basket' },
           general: { id: 'general', locales: ['en_US', 'de_DE'] },
           services: {
@@ -22,6 +28,7 @@ describe('Server Config Mapper', () => {
         Object {
           "application": Object {
             "applicationType": "intershop.B2CResponsive",
+            "displayName": null,
             "urlIdentifier": "-",
           },
           "basket": Object {

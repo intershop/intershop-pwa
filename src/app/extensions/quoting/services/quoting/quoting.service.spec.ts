@@ -1,8 +1,10 @@
 import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
-import { ApiService } from 'ish-core/services/api/api.service';
+import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
+import { getBasketIdOrCurrent } from 'ish-core/store/customer/basket';
 
 import { QuoteData } from '../../models/quoting/quoting.interface';
 import { QuoteStub } from '../../models/quoting/quoting.model';
@@ -18,7 +20,12 @@ describe('Quoting Service', () => {
     when(apiService.b2bUserEndpoint()).thenReturn(instance(apiService));
 
     TestBed.configureTestingModule({
-      providers: [{ provide: ApiService, useFactory: () => instance(apiService) }],
+      providers: [
+        { provide: ApiService, useFactory: () => instance(apiService) },
+        provideMockStore({
+          selectors: [{ selector: getBasketIdOrCurrent, value: 'current' }],
+        }),
+      ],
     });
     quotingService = TestBed.inject(QuotingService);
   });
@@ -133,9 +140,9 @@ describe('Quoting Service', () => {
       quotingService.rejectQuote('ID').subscribe(
         () => {
           verify(apiService.put(anything(), anything())).once();
-          const args = capture(apiService.put).last();
-          expect(args?.[0]).toMatchInlineSnapshot(`"quotes/ID"`);
-          expect(args?.[1]).toMatchInlineSnapshot(`
+          const [path, body] = capture(apiService.put).last();
+          expect(path).toMatchInlineSnapshot(`"quotes/ID"`);
+          expect(body).toMatchInlineSnapshot(`
             Object {
               "rejected": true,
             }
@@ -149,16 +156,16 @@ describe('Quoting Service', () => {
 
   describe('addQuoteToBasket', () => {
     beforeEach(() => {
-      when(apiService.post(anything(), anything())).thenReturn(of({}));
+      when(apiService.post(anything(), anything(), anything())).thenReturn(of({}));
     });
 
     it('should use basket API for adding quotes to basket', done => {
       quotingService.addQuoteToBasket('quoteID').subscribe(
         () => {
-          verify(apiService.post(anything(), anything())).once();
-          const args = capture(apiService.post).last();
-          expect(args?.[0]).toMatchInlineSnapshot(`"baskets/current/items"`);
-          expect(args?.[1]).toMatchInlineSnapshot(`
+          verify(apiService.post(anything(), anything(), anything())).once();
+          const [path, body] = capture(apiService.post).last();
+          expect(path).toMatchInlineSnapshot(`"baskets/current/items"`);
+          expect(body).toMatchInlineSnapshot(`
             Object {
               "quoteID": "quoteID",
             }
@@ -179,11 +186,10 @@ describe('Quoting Service', () => {
       quotingService.createQuoteRequestFromQuote('quoteID').subscribe(
         () => {
           verify(apiService.post(anything(), anything(), anything())).once();
-          const args = capture(apiService.post).last();
-          expect(args?.[0]).toMatchInlineSnapshot(`"quoterequests"`);
-          expect(args?.[1]).toMatchInlineSnapshot(`undefined`);
-          // tslint:disable-next-line: no-string-literal
-          expect(args?.[2]?.['params']?.toString()).toMatchInlineSnapshot(`"quoteID=quoteID"`);
+          const [path, body, options] = capture<string, object, AvailableOptions>(apiService.post).last();
+          expect(path).toMatchInlineSnapshot(`"quoterequests"`);
+          expect(body).toMatchInlineSnapshot(`undefined`);
+          expect(options?.params?.toString()).toMatchInlineSnapshot(`"quoteID=quoteID"`);
         },
         fail,
         done
@@ -200,11 +206,10 @@ describe('Quoting Service', () => {
       quotingService.createQuoteRequestFromQuoteRequest('quoteRequestID').subscribe(
         () => {
           verify(apiService.post(anything(), anything(), anything())).once();
-          const args = capture(apiService.post).last();
-          expect(args?.[0]).toMatchInlineSnapshot(`"quoterequests"`);
-          expect(args?.[1]).toMatchInlineSnapshot(`undefined`);
-          // tslint:disable-next-line: no-string-literal
-          expect(args?.[2]?.['params']?.toString()).toMatchInlineSnapshot(`"quoteRequestID=quoteRequestID"`);
+          const [path, body, options] = capture<string, object, AvailableOptions>(apiService.post).last();
+          expect(path).toMatchInlineSnapshot(`"quoterequests"`);
+          expect(body).toMatchInlineSnapshot(`undefined`);
+          expect(options?.params?.toString()).toMatchInlineSnapshot(`"quoteRequestID=quoteRequestID"`);
         },
         fail,
         done
@@ -221,9 +226,9 @@ describe('Quoting Service', () => {
       quotingService.submitQuoteRequest('quoteRequestID').subscribe(
         () => {
           verify(apiService.post(anything(), anything())).once();
-          const args = capture(apiService.post).last();
-          expect(args?.[0]).toMatchInlineSnapshot(`"quotes"`);
-          expect(args?.[1]).toMatchInlineSnapshot(`
+          const [path, body] = capture(apiService.post).last();
+          expect(path).toMatchInlineSnapshot(`"quotes"`);
+          expect(body).toMatchInlineSnapshot(`
             Object {
               "quoteRequestID": "quoteRequestID",
             }

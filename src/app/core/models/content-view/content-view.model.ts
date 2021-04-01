@@ -41,7 +41,7 @@ export interface ContentPageletView extends ContentConfigurationParameterView {
   slot(qualifiedName: string): ContentSlotView;
 }
 
-const paramMemoize = (key, defaultValue) => JSON.stringify({ key, defaultValue });
+const paramMemoize = <T>(key: string, defaultValue: T) => JSON.stringify({ key, defaultValue });
 
 export const createContentConfigurationParameterView = (
   params: ContentConfigurationParameters
@@ -64,7 +64,8 @@ export const createContentConfigurationParameterView = (
     paramMemoize
   ),
   numberParam: memoize((key, defaultValue = NaN) => Number(params[key]) || defaultValue, paramMemoize),
-  configParam: <T extends object>(key) => params[key] as T,
+  // tslint:disable-next-line: no-unnecessary-type-annotation
+  configParam: <T extends object>(key: string) => params[key] as T,
 });
 
 export const createContentPageletView = (pagelet: ContentPagelet): ContentPageletView =>

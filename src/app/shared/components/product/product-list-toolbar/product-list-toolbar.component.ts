@@ -29,8 +29,7 @@ export class ProductListToolbarComponent implements OnChanges {
   }
 
   changeSortBy(target: EventTarget) {
-    // tslint:disable-next-line: no-string-literal
-    const sorting = target['value'];
+    const sorting = (target as HTMLDataElement).value;
 
     this.router.navigate([], {
       relativeTo: this.activatedRoute,

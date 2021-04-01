@@ -28,11 +28,17 @@ describe('Suggest Service', () => {
   });
 
   it('should return the matched terms when search term is executed', done => {
-    const result = [{ type: undefined, term: 'Goods' }];
-    when(apiService.get(anything(), anything())).thenReturn(of({ elements: result }));
+    when(apiService.get(anything(), anything())).thenReturn(of({ elements: [{ type: undefined, term: 'Goods' }] }));
 
     suggestService.search('g').subscribe(res => {
-      expect(res).toEqual(result);
+      expect(res).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "term": "Goods",
+            "type": undefined,
+          },
+        ]
+      `);
       verify(apiService.get(anything(), anything())).once();
       done();
     });

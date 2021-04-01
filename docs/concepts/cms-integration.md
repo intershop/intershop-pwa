@@ -80,7 +80,7 @@ When using `ng generate` with PWA custom schematics, you can apply all those cha
 For example, the following code block creates a new Angular component named `cms-inventory` and registers it with the `CMSModule`.
 
 ```bash
-$ ng generate cms inventory --definitionQualifiedName app_sf_customer_cm:component.custom.inventory.pagelet2-Component
+$ ng generate cms inventory --definition-qualified-name app_sf_customer_cm:component.custom.inventory.pagelet2-Component
 CREATE src/app/cms/components/cms-inventory/cms-inventory.component.ts (386 bytes)
 CREATE src/app/cms/components/cms-inventory/cms-inventory.component.html (32 bytes)
 CREATE src/app/cms/components/cms-inventory/cms-inventory.component.spec.ts (795 bytes)

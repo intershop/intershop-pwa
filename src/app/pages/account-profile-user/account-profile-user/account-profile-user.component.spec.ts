@@ -1,13 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { anything, spy, verify } from 'ts-mockito';
+import { of } from 'rxjs';
+import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
+import { Locale } from 'ish-core/models/locale/locale.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { InputComponent } from 'ish-shared/forms/components/input/input.component';
-import { SelectTitleComponent } from 'ish-shared/forms/components/select-title/select-title.component';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { AccountProfileUserComponent } from './account-profile-user.component';
 
@@ -15,16 +16,15 @@ describe('Account Profile User Component', () => {
   let component: AccountProfileUserComponent;
   let fixture: ComponentFixture<AccountProfileUserComponent>;
   let element: HTMLElement;
+  let appFacade: AppFacade;
 
   beforeEach(async () => {
+    appFacade = mock(AppFacade);
+
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [
-        AccountProfileUserComponent,
-        MockComponent(ErrorMessageComponent),
-        MockComponent(InputComponent),
-        MockComponent(SelectTitleComponent),
-      ],
+      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      declarations: [AccountProfileUserComponent, MockComponent(ErrorMessageComponent)],
+      providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
     }).compileComponents();
   });
 
@@ -32,6 +32,7 @@ describe('Account Profile User Component', () => {
     fixture = TestBed.createComponent(AccountProfileUserComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+    when(appFacade.currentLocale$).thenReturn(of({ lang: 'en_US' } as Locale));
   });
 
   it('should be created', () => {
@@ -42,12 +43,19 @@ describe('Account Profile User Component', () => {
 
   it('should display 3 input fields for firstName, lastName and phone', () => {
     fixture.detectChanges();
-    expect(element.querySelectorAll('ish-input')).toHaveLength(3);
+
+    expect(element.innerHTML.match(/ish-text-input-field/g)).toHaveLength(3);
+
+    expect(element.innerHTML).toContain('firstName');
+    expect(element.innerHTML).toContain('lastName');
+    expect(element.innerHTML).toContain('phone');
   });
 
   it('should display select box for title', () => {
     fixture.detectChanges();
-    expect(element.querySelectorAll('ish-select-title')).toHaveLength(1);
+
+    expect(element.innerHTML.match('ish-select-field')).toHaveLength(1);
+    expect(element.innerHTML).toContain('title');
   });
 
   it('should emit updateUserProfile event if form is valid', () => {

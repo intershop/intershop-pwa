@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { FORMLY_CONFIG, FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
+import { FORMLY_CONFIG, FormlyConfig, FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
@@ -16,6 +16,7 @@ import { ValidationIconsComponent } from './components/validation-icons/validati
 import { ValidationMessageComponent } from './components/validation-message/validation-message.component';
 import { criticalDefaultValuesExtension } from './extensions/critical-default-values.extension';
 import { hideIfEmptyOptionsExtension } from './extensions/hide-if-empty-options.extension';
+import { registerPostWrappersExtension } from './extensions/post-wrappers-extension';
 import { registerTranslateSelectOptionsExtension } from './extensions/translate-select-options.extension';
 import { CaptchaFieldComponent } from './types/captcha-field/captcha-field.component';
 import { CheckboxFieldComponent } from './types/checkbox-field/checkbox-field.component';
@@ -28,6 +29,7 @@ import { TextareaFieldComponent } from './types/textarea-field/textarea-field.co
 import { DescriptionWrapperComponent } from './wrappers/description-wrapper/description-wrapper.component';
 import { HorizontalCheckboxWrapperComponent } from './wrappers/horizontal-checkbox-wrapper/horizontal-checkbox-wrapper.component';
 import { HorizontalWrapperComponent } from './wrappers/horizontal-wrapper/horizontal-wrapper.component';
+import { InputAddonWrapperComponent } from './wrappers/input-addon-wrapper/input-addon-wrapper.component';
 import { TextareaDescriptionWrapperComponent } from './wrappers/textarea-description-wrapper/textarea-description-wrapper.component';
 import { TooltipWrapperComponent } from './wrappers/tooltip-wrapper/tooltip-wrapper.component';
 import { ValidationWrapperComponent } from './wrappers/validation-wrapper/validation-wrapper.component';
@@ -78,6 +80,7 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
       wrappers: [
         { name: 'form-field-horizontal', component: HorizontalWrapperComponent },
         { name: 'form-field-checkbox-horizontal', component: HorizontalCheckboxWrapperComponent },
+        { name: 'input-addon', component: InputAddonWrapperComponent },
         { name: 'textarea-description', component: TextareaDescriptionWrapperComponent },
         { name: 'tooltip', component: TooltipWrapperComponent },
         { name: 'validation', component: ValidationWrapperComponent },
@@ -112,6 +115,7 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
     FieldsetFieldComponent,
     HorizontalCheckboxWrapperComponent,
     HorizontalWrapperComponent,
+    InputAddonWrapperComponent,
     PasswordFieldComponent,
     SelectFieldComponent,
     TextInputFieldComponent,
@@ -128,6 +132,12 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
       multi: true,
       useFactory: registerTranslateSelectOptionsExtension,
       deps: [TranslateService],
+    },
+    {
+      provide: FORMLY_CONFIG,
+      multi: true,
+      useFactory: registerPostWrappersExtension,
+      deps: [FormlyConfig],
     },
   ],
   exports: [

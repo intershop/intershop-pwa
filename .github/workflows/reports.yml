@@ -17,6 +17,7 @@ jobs:
 
   BuildNDeployReports:
     needs: [CancelPrevious]
+    if: ${{ github.event.repository.owner.login == 'intershop' }}
     runs-on: ubuntu-latest
     environment:
       name: PWA Reports

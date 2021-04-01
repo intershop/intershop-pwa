@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "./node_modules/.out-tsc/app-server",
     "module": "commonjs",
-    "types": ["node"]
+    "types": ["node"],
+    "noImplicitAny": false
   },
   "files": ["src/main.server.ts", "server.ts"],
   "angularCompilerOptions": {

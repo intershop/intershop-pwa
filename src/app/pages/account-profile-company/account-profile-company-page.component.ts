@@ -39,7 +39,7 @@ export class AccountProfileCompanyPageComponent implements OnInit, OnDestroy {
   }
 
   updateCompanyProfile(customer: Customer) {
-    this.accountFacade.updateCustomerProfile(customer, 'account.profile.update_company_profile.message');
+    this.accountFacade.updateCustomerProfile(customer, { message: 'account.profile.update_company_profile.message' });
   }
 
   ngOnDestroy() {

@@ -6,6 +6,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
 export abstract class AddressFormConfiguration {
   countryCode = 'default';
   businessCustomer = false;
+  shortForm = false;
 
   abstract getFieldConfiguration(countryCode?: string): FormlyFieldConfig[];
 

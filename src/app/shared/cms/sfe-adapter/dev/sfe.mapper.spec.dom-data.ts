@@ -17,7 +17,7 @@ const html1 = `
 </ish-root>
 `;
 
-const tree1 = {
+const tree1: object = {
   name: 'ish-root',
   children: [
     {
@@ -45,7 +45,7 @@ const tree1 = {
   ],
 };
 
-const reducedTree1 = {
+const reducedTree1: object = {
   children: [
     {
       id: 'includefoo',
@@ -79,7 +79,7 @@ const html2 = `
 </ish-root>
 `;
 
-const tree2 = {
+const tree2: object = {
   name: 'ish-root',
   children: [
     {
@@ -116,7 +116,7 @@ const tree2 = {
   ],
 };
 
-const reducedTree2 = {
+const reducedTree2: object = {
   children: [
     { id: 'test3', displayType: 'Include', children: [{ id: 'moreinclude', displayType: 'Include', children: [] }] },
   ],
@@ -138,7 +138,7 @@ const html3 = `
 </ish-root>
 `;
 
-const tree3 = {
+const tree3: object = {
   name: 'ish-root',
   children: [
     {
@@ -149,7 +149,7 @@ const tree3 = {
   ],
 };
 
-const reducedTree3 = { children: [{ id: 'test3', displayType: 'Include', children: [] }] };
+const reducedTree3: object = { children: [{ id: 'test3', displayType: 'Include', children: [] }] };
 
 //////////////////////
 
@@ -203,7 +203,7 @@ export const htmlComplex = `
 </div>
 `;
 
-export const reducedTreeComplex = {
+export const reducedTreeComplex: object = {
   children: [
     {
       id: 'xxxx',

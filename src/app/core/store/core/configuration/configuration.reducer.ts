@@ -38,5 +38,5 @@ const initialState: ConfigurationState = {
 
 export const configurationReducer = createReducer(
   initialState,
-  on(applyConfiguration, (state: ConfigurationState, action) => ({ ...state, ...action.payload }))
+  on(applyConfiguration, (state, action) => ({ ...state, ...action.payload }))
 );

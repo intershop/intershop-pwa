@@ -1,10 +1,14 @@
 import { HttpHeaders } from '@angular/common/http';
-import { of, throwError } from 'rxjs';
+import { TestBed } from '@angular/core/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { noop, of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { Address } from 'ish-core/models/address/address.model';
+import { BasketData } from 'ish-core/models/basket/basket.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { OrderService } from 'ish-core/services/order/order.service';
+import { getBasketIdOrCurrent } from 'ish-core/store/customer/basket';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
@@ -14,25 +18,20 @@ describe('Basket Service', () => {
   let basketService: BasketService;
   let apiService: ApiService;
   let orderService: OrderService;
+  let store$: MockStore;
 
   const basketMockData = {
     data: {
       id: 'test',
-      calculationState: 'UNCALCULATED',
-      buckets: [
-        {
-          lineItems: [],
-          shippingMethod: {},
-          shipToAddress: {},
-        },
-      ],
+      calculated: false,
+      buckets: [],
       payment: {
         name: 'testPayment',
         id: 'paymentId',
       },
-      totals: {},
+      totals: undefined,
     },
-  };
+  } as BasketData;
 
   const lineItemData = {
     id: 'test',
@@ -52,7 +51,18 @@ describe('Basket Service', () => {
   beforeEach(() => {
     apiService = mock(ApiService);
     orderService = mock(OrderService);
-    basketService = new BasketService(instance(apiService), instance(orderService));
+
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: ApiService, useFactory: () => instance(apiService) },
+        { provide: OrderService, useFactory: () => instance(orderService) },
+        provideMockStore({
+          selectors: [{ selector: getBasketIdOrCurrent, value: 'current' }],
+        }),
+      ],
+    });
+    basketService = TestBed.inject(BasketService);
+    store$ = TestBed.inject(MockStore);
   });
 
   it("should get basket data when 'getBasket' is called", done => {
@@ -63,6 +73,20 @@ describe('Basket Service', () => {
       verify(apiService.get(`baskets/current`, anything())).once();
       done();
     });
+  });
+
+  it('should fetch the basket with the basket id from the state or the given id', done => {
+    const basketId = 'basket123';
+    const basketData = { data: { id: basketId } } as BasketData;
+    when(apiService.get(`baskets/${basketId}`, anything())).thenReturn(of(basketData));
+
+    basketService.getBasket().subscribe(noop);
+    basketService.getBasketWithId(basketId).subscribe(noop);
+    store$.overrideSelector(getBasketIdOrCurrent, basketId);
+    basketService.getBasket().subscribe(noop);
+    verify(apiService.get(`baskets/current`, anything())).once();
+    verify(apiService.get(`baskets/${basketId}`, anything())).twice();
+    done();
   });
 
   it('should load a basket by token when requested and successful', done => {
@@ -243,6 +267,7 @@ describe('Basket Service', () => {
       done();
     });
   });
+
   it("should create an attribute for a basket when 'createBasketAttribute' is called", done => {
     when(apiService.post(anything(), anything(), anything())).thenReturn(of({}));
 

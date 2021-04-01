@@ -34,8 +34,8 @@ export class CategoryMapper {
       return CategoryTreeHelper.empty();
     }
 
-    let uniqueId;
-    const newCategoryPath = [];
+    let uniqueId: string;
+    const newCategoryPath: string[] = [];
 
     return (
       path

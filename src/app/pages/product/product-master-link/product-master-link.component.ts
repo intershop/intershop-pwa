@@ -16,7 +16,7 @@ export class ProductMasterLinkComponent implements OnInit {
   constructor(@SkipSelf() private parentContext: ProductContextFacade, private context: ProductContextFacade) {}
 
   ngOnInit() {
-    this.context.connect('sku', this.parentContext.select('productAsVariationProduct', 'productMasterSKU'));
+    this.context.connect('sku', this.parentContext.select('product', 'productMasterSKU'));
     this.visible$ = this.parentContext.select('displayProperties', 'variations');
 
     this.masterProductURL$ = this.context.select('productURL');

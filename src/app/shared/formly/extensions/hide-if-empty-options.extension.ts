@@ -2,6 +2,9 @@ import { FormlyExtension } from '@ngx-formly/core';
 import { isObservable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+/**
+ * Extension that automatically hides select fields when their options are empty.
+ */
 export const hideIfEmptyOptionsExtension: FormlyExtension = {
   prePopulate(field): void {
     if (field.type !== 'ish-select-field') {

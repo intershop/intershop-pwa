@@ -1,8 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-
-import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { WishlistsFacade } from '../../../facades/wishlists.facade';
 import { Wishlist, WishlistItem } from '../../../models/wishlist/wishlist.model';
@@ -14,23 +10,12 @@ import { Wishlist, WishlistItem } from '../../../models/wishlist/wishlist.model'
   selector: 'ish-account-wishlist-detail-line-item',
   templateUrl: './account-wishlist-detail-line-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ProductContextFacade],
 })
-export class AccountWishlistDetailLineItemComponent implements OnChanges, OnInit {
-  constructor(private wishlistsFacade: WishlistsFacade, private context: ProductContextFacade) {}
+export class AccountWishlistDetailLineItemComponent {
+  constructor(private wishlistsFacade: WishlistsFacade) {}
 
   @Input() wishlistItemData: WishlistItem;
   @Input() currentWishlist: Wishlist;
-
-  product$: Observable<ProductView>;
-
-  ngOnInit() {
-    this.product$ = this.context.select('product');
-  }
-
-  ngOnChanges() {
-    this.context.set('sku', () => this.wishlistItemData.sku);
-  }
 
   moveItemToOtherWishlist(sku: string, wishlistMoveData: { id: string; title: string }) {
     if (wishlistMoveData.id) {

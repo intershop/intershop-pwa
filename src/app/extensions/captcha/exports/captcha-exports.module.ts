@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { SitekeyProviderService } from '../services/sitekey-provider/sitekey-provider.service';
-
 import { LazyCaptchaComponent } from './lazy-captcha/lazy-captcha.component';
+import { SitekeyProviderService } from './sitekey-provider/sitekey-provider.service';
 
 @NgModule({
   imports: [CommonModule],

@@ -53,7 +53,6 @@ export class AccountOrderTemplateDetailLineItemComponent implements OnInit {
   }
 
   setActive(target: EventTarget) {
-    // tslint:disable-next-line: no-string-literal
-    this.context.set('propagateActive', () => target['checked']);
+    this.context.set('propagateActive', () => (target as HTMLInputElement).checked);
   }
 }

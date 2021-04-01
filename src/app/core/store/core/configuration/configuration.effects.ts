@@ -31,7 +31,7 @@ export class ConfigurationEffects {
   ) {
     appRef.isStable
       .pipe(takeWhile(() => isPlatformBrowser(platformId)))
-      // tslint:disable-next-line:no-any
+      // tslint:disable-next-line:no-any - window can only be used with any here
       .subscribe(stable => ((window as any).angularStable = stable));
 
     store

@@ -11,7 +11,7 @@ import { CustomerData } from 'ish-core/models/customer/customer.interface';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { User } from 'ish-core/models/user/user.model';
-import { ApiService } from 'ish-core/services/api/api.service';
+import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
 import { UserService } from './user.service';
@@ -105,10 +105,19 @@ describe('User Service', () => {
       });
     });
 
-    it('should not throw errors when logging in a user by token is unsuccessful', done => {
-      when(apiServiceMock.get(anything(), anything())).thenReturn(throwError(new Error()));
+    it('should login a user by given token when requested and successful', done => {
+      when(apiServiceMock.get(anything(), anything())).thenReturn(
+        of({ customerNo: '4711', type: 'SMBCustomer', companyName: 'xyz' } as CustomerData)
+      );
 
-      userService.signinUserByToken().subscribe(fail, fail, done);
+      userService.signinUserByToken('12345').subscribe(() => {
+        verify(apiServiceMock.get('customers/-', anything())).once();
+        verify(apiServiceMock.get('privatecustomers/-', anything())).never();
+        const [path, options] = capture<string, AvailableOptions>(apiServiceMock.get).last();
+        expect(options.headers.get(ApiService.TOKEN_HEADER_KEY)).toMatchInlineSnapshot(`"12345"`);
+        expect(path).toEqual('customers/-');
+        done();
+      });
     });
   });
 
@@ -146,41 +155,39 @@ describe('User Service', () => {
   });
 
   describe('Update a user', () => {
-    it('should return an error when called with undefined', done => {
-      when(apiServiceMock.put(anything(), anything())).thenReturn(of({}));
+    beforeEach(() => {
+      when(apiServiceMock.put(anyString(), anything(), anything())).thenReturn(of({}));
+    });
 
+    it('should return an error when called with undefined', done => {
       userService.updateUser(undefined).subscribe(fail, err => {
         expect(err).toMatchInlineSnapshot(`"updateUser() called without required body data"`);
         done();
       });
 
-      verify(apiServiceMock.put(anything(), anything())).never();
+      verify(apiServiceMock.put(anything(), anything(), anything())).never();
     });
 
     it("should update a individual user when 'updateUser' is called", done => {
-      when(apiServiceMock.put(anyString(), anything())).thenReturn(of({}));
-
       const payload = {
         customer: { customerNo: '4711', isBusinessCustomer: false } as Customer,
         user: {} as User,
       } as CustomerUserType;
 
       userService.updateUser(payload).subscribe(() => {
-        verify(apiServiceMock.put('customers/-', anything())).once();
+        verify(apiServiceMock.put('customers/-', anything(), anything())).once();
         done();
       });
     });
 
     it("should update a business user when 'updateUser' is called", done => {
-      when(apiServiceMock.put(anyString(), anything())).thenReturn(of({}));
-
       const payload = {
         customer: { customerNo: '4711', isBusinessCustomer: true } as Customer,
         user: {} as User,
       } as CustomerUserType;
 
       userService.updateUser(payload).subscribe(() => {
-        verify(apiServiceMock.put('customers/-/users/-', anything())).once();
+        verify(apiServiceMock.put('customers/-/users/-', anything(), anything())).once();
         done();
       });
     });

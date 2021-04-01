@@ -1,4 +1,4 @@
-import { createSelector, createSelectorFactory, defaultMemoize } from '@ngrx/store';
+import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 
 import { getCoreState } from 'ish-core/store/core/core-store';
@@ -45,7 +45,13 @@ export const getCurrentLocale = createSelector(
 
 export const getDeviceType = createSelector(getConfigurationState, state => state._deviceType);
 
-export const getIdentityProvider = createSelectorFactory(projector => defaultMemoize(projector, undefined, isEqual))(
+export const getIdentityProvider = createSelectorFactory<
+  object,
+  {
+    [key: string]: unknown;
+    type?: string;
+  }
+>(projector => resultMemoize(projector, isEqual))(
   getConfigurationState,
   (state: ConfigurationState) =>
     state.identityProvider &&

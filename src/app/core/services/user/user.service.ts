@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import b64u from 'b64u';
 import { pick } from 'lodash-es';
-import { EMPTY, Observable, of, throwError } from 'rxjs';
-import { catchError, concatMap, first, map, take, withLatestFrom } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { concatMap, first, map, take, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Address } from 'ish-core/models/address/address.model';
@@ -58,9 +58,21 @@ export class UserService {
 
     return this.fetchCustomer({ headers });
   }
-
-  signinUserByToken(): Observable<CustomerUserType> {
-    return this.fetchCustomer({ skipApiErrorHandling: true, runExclusively: true }).pipe(catchError(() => EMPTY));
+  /**
+   * Sign in an existing user with the given token or if no token is given, using token stored in cookie.
+   * @param token             The token that is used to login user.
+   * @returns                 The logged in customer data.
+   *                          For private customers user data are also returned.
+   *                          For business customers user data are returned by a separate call (getCompanyUserData).
+   */
+  signinUserByToken(token?: string): Observable<CustomerUserType> {
+    if (token) {
+      return this.fetchCustomer({
+        headers: new HttpHeaders().set(ApiService.TOKEN_HEADER_KEY, token),
+      });
+    } else {
+      return this.fetchCustomer({ skipApiErrorHandling: true, runExclusively: true });
+    }
   }
 
   private fetchCustomer(options?: AvailableOptions): Observable<CustomerUserType> {
@@ -79,7 +91,7 @@ export class UserService {
    * @param body  The user data (customer, user, credentials, address) to create a new user.
    */
   createUser(body: CustomerRegistrationType): Observable<CustomerUserType> {
-    if (!body || !body.customer || !body.user || !body.credentials || !body.address) {
+    if (!body || !body.customer || (!body.user && !body.userId) || !body.address) {
       return throwError('createUser() called without required body data');
     }
 
@@ -95,17 +107,32 @@ export class UserService {
           ? {
               type: 'SMBCustomer',
               ...body.customer,
-              user: {
-                ...body.user,
-                preferredLanguage: currentLocale.lang ?? 'en_US',
-              },
+              ...(body.user
+                ? {
+                    user: {
+                      ...body.user,
+                      preferredLanguage: currentLocale.lang ?? 'en_US',
+                    },
+                  }
+                : {
+                    userId: body.userId,
+                  }),
               address: customerAddress,
               credentials: body.credentials,
             }
           : {
               type: 'PrivateCustomer',
               ...body.customer,
-              ...body.user,
+              ...(body.user
+                ? {
+                    firstName: body.user.firstName,
+                    lastName: body.user.lastName,
+                    email: body.user.email,
+                    preferredLanguage: currentLocale.lang ?? 'en_US',
+                  }
+                : {
+                    userId: body.userId,
+                  }),
               address: customerAddress,
               credentials: body.credentials,
               preferredLanguage: currentLocale.lang ?? 'en_US',
@@ -130,12 +157,19 @@ export class UserService {
    * Updates the data of the currently logged in user.
    * @param body  The user data (customer, user ) to update the user.
    */
-  updateUser(body: CustomerUserType): Observable<User> {
+  updateUser(body: CustomerUserType, credentials?: Credentials): Observable<User> {
     if (!body || !body.customer || !body.user) {
       return throwError('updateUser() called without required body data');
     }
 
-    const changedUser = {
+    const headers = credentials
+      ? new HttpHeaders().set(
+          ApiService.AUTHORIZATION_HEADER_KEY,
+          'BASIC ' + b64u.toBase64(b64u.encode(`${credentials.login}:${credentials.password}`))
+        )
+      : undefined;
+
+    const changedUser: object = {
       type: body.customer.isBusinessCustomer ? 'SMBCustomer' : 'PrivateCustomer',
       ...body.customer,
       ...body.user,
@@ -152,8 +186,12 @@ export class UserService {
       first(),
       concatMap(restResource =>
         body.customer.isBusinessCustomer
-          ? this.apiService.put<User>('customers/-/users/-', changedUser).pipe(map(UserMapper.fromData))
-          : this.apiService.put<User>(`${restResource}/-`, changedUser).pipe(map(UserMapper.fromData))
+          ? this.apiService
+              .put<User>('customers/-/users/-', changedUser, { headers })
+              .pipe(map(UserMapper.fromData))
+          : this.apiService
+              .put<User>(`${restResource}/-`, changedUser, { headers })
+              .pipe(map(UserMapper.fromData))
       )
     );
   }

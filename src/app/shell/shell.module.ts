@@ -13,6 +13,9 @@ import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
+import { SentryExportsModule } from '../extensions/sentry/exports/sentry-exports.module';
+import { SeoExportsModule } from '../extensions/seo/exports/seo-exports.module';
+import { TrackingExportsModule } from '../extensions/tracking/exports/tracking-exports.module';
 import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
 
 import { CookiesBannerComponent } from './application/cookies-banner/cookies-banner.component';
@@ -47,6 +50,9 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     QuickorderExportsModule,
     RoleToggleModule,
     RouterModule,
+    SentryExportsModule,
+    SeoExportsModule,
+    TrackingExportsModule,
     TranslateModule,
     WishlistsExportsModule,
   ],

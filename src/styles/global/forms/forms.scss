@@ -20,16 +20,6 @@
   }
 }
 
-.form-horizontal {
-  &.form-horizontal-inline {
-    @media (max-width: $screen-xs-max) {
-      label {
-        padding-top: $space-default / 2;
-      }
-    }
-  }
-}
-
 input[type='file'] {
   padding: 0;
   border: none;
@@ -108,6 +98,7 @@ input.form-check-input {
   }
 }
 
+/* purgecss ignore */
 .grecaptcha-badge {
   visibility: hidden;
 }

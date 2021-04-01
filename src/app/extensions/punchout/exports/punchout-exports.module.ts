@@ -4,16 +4,18 @@ import { EXTERNAL_DISPLAY_PROPERTY_PROVIDER } from 'ish-core/facades/product-con
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
 
-import { PunchoutProductContextDisplayPropertiesService } from '../services/punchout-product-context-display-properties/punchout-product-context-display-properties.service';
-
 import { LazyPunchoutTransferBasketComponent } from './lazy-punchout-transfer-basket/lazy-punchout-transfer-basket.component';
+import { PunchoutProductContextDisplayPropertiesService } from './punchout-product-context-display-properties/punchout-product-context-display-properties.service';
 
 @NgModule({
   imports: [FeatureToggleModule],
   providers: [
     {
       provide: LAZY_FEATURE_MODULE,
-      useValue: { feature: 'punchout', location: () => import('../store/punchout-store.module') },
+      useValue: {
+        feature: 'punchout',
+        location: () => import('../store/punchout-store.module').then(m => m.PunchoutStoreModule),
+      },
       multi: true,
     },
     {

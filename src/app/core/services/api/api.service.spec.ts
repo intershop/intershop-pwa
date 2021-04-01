@@ -346,6 +346,37 @@ describe('Api Service', () => {
 
       httpTestingController.expectNone(`${REST_URL}/dummy`);
     });
+
+    it('should append additional headers when resolveLink is used with header options', () => {
+      const someHeader = { headers: new HttpHeaders({ dummy: 'linkHeaderTest' }) };
+
+      apiService.get('something', someHeader).pipe(apiService.resolveLink(someHeader)).subscribe(fail, fail, fail);
+
+      const req = httpTestingController.expectOne(`${REST_URL}/something`);
+      expect(req.request.headers.get('dummy')).toEqual('linkHeaderTest');
+      req.flush({ type: 'Link', uri: 'site/-/dummy' });
+
+      const req2 = httpTestingController.expectOne(`${REST_URL}/dummy`);
+      expect(req2.request.headers.get('dummy')).toEqual('linkHeaderTest');
+    });
+
+    it('should append additional headers to all link requests when resolveLinks is used with header options', () => {
+      const someHeader = { headers: new HttpHeaders({ dummy: 'linkHeaderTest' }) };
+
+      apiService.get('something', someHeader).pipe(apiService.resolveLinks(someHeader)).subscribe(fail, fail, fail);
+
+      const req = httpTestingController.expectOne(`${REST_URL}/something`);
+      expect(req.request.headers.get('dummy')).toEqual('linkHeaderTest');
+      req.flush([
+        { type: 'Link', uri: 'site/-/dummy1' },
+        { type: 'Link', uri: 'site/-/dummy2' },
+      ] as Link[]);
+
+      const req2 = httpTestingController.expectOne(`${REST_URL}/dummy1`);
+      expect(req2.request.headers.get('dummy')).toEqual('linkHeaderTest');
+      const req3 = httpTestingController.expectOne(`${REST_URL}/dummy2`);
+      expect(req3.request.headers.get('dummy')).toEqual('linkHeaderTest');
+    });
   });
 
   describe('API Service URL construction', () => {
@@ -579,6 +610,20 @@ describe('Api Service', () => {
       const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
       expect(req.request.headers.get(ApiService.AUTHORIZATION_HEADER_KEY)).toBeFalsy();
     });
+
+    it('should have default response type of "json" if no other is provided', () => {
+      apiService.get('dummy').subscribe(fail, fail, fail);
+
+      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
+      expect(req.request.responseType).toEqual('json');
+    });
+
+    it('should append specific response type of "text" if provided', () => {
+      apiService.get('dummy', { responseType: 'text' }).subscribe(fail, fail, fail);
+
+      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
+      expect(req.request.responseType).toEqual('text');
+    });
   });
 
   describe('API Service exclusive runs', () => {
@@ -610,7 +655,7 @@ describe('Api Service', () => {
     });
 
     it('should run call exclusively when asked for it', done => {
-      let syncData;
+      let syncData: unknown;
 
       apiService.get('dummy1', { runExclusively: true }).subscribe(data => {
         expect(data).toBeTruthy();
@@ -650,7 +695,7 @@ describe('Api Service', () => {
     });
 
     it('should run calls in parallel if not explicitly run exclusively', done => {
-      let syncData;
+      let syncData: unknown;
 
       apiService.get('dummy1').subscribe(data => {
         expect(data).toBeTruthy();

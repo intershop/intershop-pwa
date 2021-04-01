@@ -50,7 +50,7 @@ describe('Product Listing Selectors', () => {
     });
 
     it('should be empty when in initial state', () => {
-      const view = getProductListingView(store$.state, TEST_ID);
+      const view = getProductListingView(TEST_ID)(store$.state);
       expect(view).toMatchInlineSnapshot(`
         Object {
           "allPagesAvailable()": false,
@@ -84,7 +84,7 @@ describe('Product Listing Selectors', () => {
     });
 
     it('should construct a view when selecting results', () => {
-      const view = getProductListingView(store$.state, TEST_ID);
+      const view = getProductListingView(TEST_ID)(store$.state);
       expect(view).toMatchInlineSnapshot(`
         Object {
           "allPagesAvailable()": false,
@@ -132,7 +132,7 @@ describe('Product Listing Selectors', () => {
       });
 
       it('should construct a view when selecting results', () => {
-        const view = getProductListingView(store$.state, TEST_ID);
+        const view = getProductListingView(TEST_ID)(store$.state);
         expect(view).toMatchInlineSnapshot(`
           Object {
             "allPagesAvailable()": true,
@@ -188,7 +188,7 @@ describe('Product Listing Selectors', () => {
     });
 
     it('should construct a view when selecting results', () => {
-      const view = getProductListingView(store$.state, TEST_ID);
+      const view = getProductListingView(TEST_ID)(store$.state);
       expect(view).toMatchInlineSnapshot(`
         Object {
           "allPagesAvailable()": false,
@@ -238,7 +238,7 @@ describe('Product Listing Selectors', () => {
           1: [],
         })
       );
-      view = getProductListingView(store$.state, TEST_ID);
+      view = getProductListingView(TEST_ID)(store$.state);
     });
 
     it('should construct page indices implicitely for first page', () => {
@@ -311,7 +311,7 @@ describe('Product Listing Selectors', () => {
           1: [],
         })
       );
-      view = getProductListingView(store$.state, TEST_ID);
+      view = getProductListingView(TEST_ID)(store$.state);
     });
 
     it('should construct page indices for page near start', () => {

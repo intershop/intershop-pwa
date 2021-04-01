@@ -81,9 +81,11 @@ Typical hot-spots where copying is a good idea are header-related or product-det
 
 #### Environment Specific Copies
 
-The [customized webpack build](./optimizations.md) supports replacing HTML templates and component SCSS files with an environment suffix before the file extension.
+The [customized webpack build](./optimizations.md) supports replacing any file with an environment suffix in front of the file extension.
 If you for example want to customize the template `product-detail.component.html`, put your customized content in the parallel file `product-detail.component.brand.html` and run a build with `--configuration=brand`.
 Then this overridden component template will be swapped in.
+
+This also works for multiple configurations: `product-detail.component.foo.bar.baz.html` will be active for configurations `foo`, `bar` and `baz`, but not for `foobar`.
 
 #### Deep Copies with Replacements
 

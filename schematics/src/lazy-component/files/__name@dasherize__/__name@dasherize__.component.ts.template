@@ -1,6 +1,6 @@
 import {
   ChangeDetectionStrategy, Component, OnInit, ViewChild, ViewContainerRef,
-  Compiler, Injector, NgModuleFactory,
+  Compiler, Injector,
   <% if (bindings.length) { %>ComponentRef, Input, OnChanges, <% } %>
   <% if (onChanges === 'complex') { %>SimpleChange, SimpleChanges, <% } %>
 } from '@angular/core';
@@ -29,7 +29,7 @@ export class <%= classify(name) %>Component implements OnInit <% if (bindings.le
   @ViewChild('anchor', { read: ViewContainerRef, static: true }) anchor: ViewContainerRef;
   <% if (bindings.length) { %><%= bindings.map(b => b.declaration).join('\n  ') %><% } %>
 
-  <% if (bindings.length) { %>// tslint:disable-next-line: no-any
+  <% if (bindings.length) { %>// tslint:disable-next-line: no-any - access in on-changes required
   private component: ComponentRef<any>;<% } %>
 
   constructor(
@@ -40,12 +40,11 @@ export class <%= classify(name) %>Component implements OnInit <% if (bindings.le
 
   async ngOnInit() {
     <% if(!isProject && !isShared) { %> if (this.featureToggleService.enabled('<%= camelize(extension) %>')) { <% } %>
-      const moduleObj = await import(`../..<% if(isShared) { %>/../shared<% } %>/<% if(isProject) { %><%= dasherize(projectName) %><% } else { %><%=dasherize(extension)%><% } %>.module`);
-      const module = moduleObj[Object.keys(moduleObj)[0]];
+      const module = await import(`../..<% if(isShared) { %>/../shared<% } %>/<%= dasherize(declaringModule) %>.module`).then(m => m.<%= classify(declaringModule) %>Module);
 
       const { <%= classify(originalName) %>Component } = await import('<%= componentImportPath %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component');
 
-      const moduleFactory = await this.loadModuleFactory(module);
+      const moduleFactory = this.compiler.compileModuleSync(module);
       const moduleRef = moduleFactory.create(this.injector);
       const factory = moduleRef.componentFactoryResolver.resolveComponentFactory(<%= classify(originalName) %>Component);
 
@@ -69,12 +68,4 @@ export class <%= classify(name) %>Component implements OnInit <% if (bindings.le
     }
   }
 <% } %>
-
-  private async loadModuleFactory(t) {
-    if (t instanceof NgModuleFactory) {
-      return t;
-    } else {
-      return await this.compiler.compileModuleAsync(t);
-    }
-  }
 }

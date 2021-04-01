@@ -15,14 +15,15 @@ export const arraySlices = <T>(input: T[], sliceLength: number): T[][] =>
 
 export const toObservable = <T>(input: T | Observable<T>): Observable<T> => (isObservable(input) ? input : of(input));
 
-function isObject(item) {
+function isObject(item: unknown) {
   return item && typeof item === 'object' && !Array.isArray(item);
 }
 
 /**
  * @see https://stackoverflow.com/a/37164538/13001898
  */
-export function mergeDeep(target, source) {
+// tslint:disable-next-line: no-any - utility function
+export function mergeDeep(target: any, source: any) {
   let output = { ...target };
   if (isObject(target) && isObject(source)) {
     Object.keys(source).forEach(key => {
@@ -38,4 +39,19 @@ export function mergeDeep(target, source) {
     });
   }
   return output;
+}
+
+/**
+ * Returns a copy of the object composed of the own and inherited enumerable property paths of the object that are not omitted.
+ */
+export function omit<T>(from: T, ...keys: (keyof T | string)[]) {
+  return !!from && !Array.isArray(from)
+    ? Object.entries(from)
+        .filter(([key]) => !keys.includes(key))
+        .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {})
+    : from;
+}
+
+export function isArrayEqual<T>(a1: T[], a2: T[]): boolean {
+  return (!a1 && !a2) || (a1?.length === a2?.length && a1?.every((el, idx) => a2?.[idx] === el));
 }

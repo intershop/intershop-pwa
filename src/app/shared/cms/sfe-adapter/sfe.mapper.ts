@@ -12,7 +12,7 @@ export class SfeMapper {
   static getDomTree(node: Node): SfeDomNode {
     const attributeName = 'data-sfe';
 
-    let children = [];
+    let children: SfeDomNode[] = [];
 
     if (node.hasChildNodes()) {
       children = Array.from(node.childNodes)

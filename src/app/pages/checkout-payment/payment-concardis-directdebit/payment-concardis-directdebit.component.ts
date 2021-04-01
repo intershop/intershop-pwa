@@ -8,8 +8,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { PaymentConcardisComponent } from '../payment-concardis/payment-concardis.component';
 
-// allows access to concardis js functionality
-// tslint:disable-next-line:no-any
+// tslint:disable:no-any - allows access to concardis js functionality
 declare var PayEngine: any;
 
 /**
@@ -250,6 +249,6 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
       paymentData = { ...paymentData, bic: parameters.find(p => p.name === 'BIC').value };
     }
     // tslint:disable-next-line:no-null-keyword
-    PayEngine.createPaymentInstrument('sepa', paymentData, null, (err, val) => this.submitCallback(err, val));
+    PayEngine.createPaymentInstrument('sepa', paymentData, null, (err: any, val: any) => this.submitCallback(err, val));
   }
 }

@@ -3,17 +3,16 @@ import { intersection } from 'lodash-es';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Image } from 'ish-core/models/image/image.model';
 import { PriceHelper } from 'ish-core/models/price/price.model';
-import {
-  ProductView,
-  VariationProductMasterView,
-  VariationProductView,
-} from 'ish-core/models/product-view/product-view.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
-import { ProductBundle } from './product-bundle.model';
-import { ProductRetailSet } from './product-retail-set.model';
-import { VariationProductMaster } from './product-variation-master.model';
-import { VariationProduct } from './product-variation.model';
-import { Product } from './product.model';
+import {
+  AllProductTypes,
+  Product,
+  ProductBundle,
+  ProductRetailSet,
+  VariationProduct,
+  VariationProductMaster,
+} from './product.model';
 
 export interface SkuQuantityType {
   sku: string;
@@ -24,10 +23,6 @@ export enum ProductCompletenessLevel {
   Detail = 3,
   List = 2,
 }
-
-export type AllProductTypes = Product | VariationProduct | VariationProductMaster | ProductBundle | ProductRetailSet;
-
-export type AnyProductViewType = ProductView | VariationProductView | VariationProductMasterView;
 
 // not-dead-code
 export type ProductPrices = Partial<
@@ -43,7 +38,7 @@ export class ProductHelper {
    * @param imageType The wanted ImageType
    * @returns         The primary product image of the given ImageType
    */
-  static getPrimaryImage(product: Product, imageType: string): Image {
+  static getPrimaryImage(product: ProductView, imageType: string): Image {
     if (!(product && product.images)) {
       return;
     }
@@ -57,7 +52,7 @@ export class ProductHelper {
    * @param imageView The wanted ImageView
    * @returns         The matching product image
    */
-  static getImageByImageTypeAndImageView(product: Product, imageType: string, imageView: string): Image {
+  static getImageByImageTypeAndImageView(product: ProductView, imageType: string, imageView: string): Image {
     if (!(product && product.images)) {
       return;
     }
@@ -70,7 +65,7 @@ export class ProductHelper {
    * @param imageType The wanted ImageType
    * @returns         Array of available ImageView ids
    */
-  static getImageViewIDs(product: Product, imageType: string): string[] {
+  static getImageViewIDs(product: ProductView, imageType: string): string[] {
     if (!(product && product.images)) {
       return [];
     }
@@ -83,15 +78,15 @@ export class ProductHelper {
   /**
    * check if a given product has a sufficient completeness level
    */
-  static isSufficientlyLoaded(product: Product, completenessLevel: ProductCompletenessLevel): boolean {
+  static isSufficientlyLoaded(product: Product | ProductView, completenessLevel: ProductCompletenessLevel): boolean {
     return !!product && product.completenessLevel >= completenessLevel;
   }
 
-  static isFailedLoading(product: Product): boolean {
+  static isFailedLoading(product: Product | ProductView): boolean {
     return !!product && !!product.failed;
   }
 
-  static isReadyForDisplay(product: Product, completenessLevel: ProductCompletenessLevel) {
+  static isReadyForDisplay(product: Product | ProductView, completenessLevel: ProductCompletenessLevel) {
     return ProductHelper.isSufficientlyLoaded(product, completenessLevel) || ProductHelper.isFailedLoading(product);
   }
 
@@ -105,16 +100,14 @@ export class ProductHelper {
   /**
    * Check if product is a master product
    */
-  static isMasterProduct(
-    product: Partial<AllProductTypes>
-  ): product is VariationProductMaster & VariationProductMasterView {
+  static isMasterProduct(product: Partial<AllProductTypes>): product is VariationProductMaster & ProductView {
     return product && product.type === 'VariationProductMaster';
   }
 
   /**
    * Check if product is a variation product
    */
-  static isVariationProduct(product: Partial<AllProductTypes>): product is VariationProduct & VariationProductView {
+  static isVariationProduct(product: Partial<AllProductTypes>): product is VariationProduct & ProductView {
     return product && product.type === 'VariationProduct';
   }
 
@@ -131,7 +124,7 @@ export class ProductHelper {
    * @param attributeGroupId  The attribute group id of the attributes to get
    * @returns                 The product attributes of the attribute group (if any)
    */
-  static getAttributesOfGroup(product: Product, attributeGroupId: string): Attribute[] {
+  static getAttributesOfGroup(product: ProductView, attributeGroupId: string): Attribute[] {
     if (
       product &&
       product.attributeGroups &&
@@ -165,7 +158,7 @@ export class ProductHelper {
    * @param products List of products to be compared
    * @returns        A set of the common attribute names
    */
-  static getCommonAttributeNames(products: Product[]): string[] {
+  static getCommonAttributeNames(products: ProductView[]): string[] {
     if (!products || !products.length) {
       return [];
     }
@@ -179,7 +172,7 @@ export class ProductHelper {
    * @param visibleProducts List of products to be compared
    * @returns               A Product with specific attributes only compared to the common attributes
    */
-  static getProductWithoutCommonAttributes(product: Product, visibleProducts: Product[]): Product {
+  static getProductWithoutCommonAttributes(product: ProductView, visibleProducts: ProductView[]): ProductView {
     if (!product || !product.sku || !visibleProducts || !visibleProducts.length) {
       return;
     }

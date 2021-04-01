@@ -7,10 +7,9 @@ import { ImageMapper } from 'ish-core/models/image/image.mapper';
 import { Link } from 'ish-core/models/link/link.model';
 import { getICMBaseURL } from 'ish-core/store/core/configuration';
 
-import { VariationProductMaster } from './product-variation-master.model';
 import { ProductData, ProductDataStub } from './product.interface';
 import { ProductMapper } from './product.mapper';
-import { Product, ProductHelper } from './product.model';
+import { Product, ProductHelper, VariationProductMaster } from './product.model';
 
 describe('Product Mapper', () => {
   let productMapper: ProductMapper;

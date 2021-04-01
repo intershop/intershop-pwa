@@ -4,6 +4,7 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
+import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
@@ -83,15 +84,16 @@ describe('Checkout Shipping Component', () => {
     expect(element.querySelector('[role="alert"]')).toBeTruthy();
   });
 
-  it('should throw updateShippingMethod event when the user changes payment selection', done => {
+  it('should throw updateShippingMethod event when the user changes payment selection', () => {
     fixture.detectChanges();
 
-    component.updateShippingMethod.subscribe(formValue => {
-      expect(formValue).toBe('testShipping');
-      done();
-    });
+    const emitter = spy(component.updateShippingMethod);
 
     component.shippingForm.get('id').setValue('testShipping');
+
+    verify(emitter.emit(anything())).once();
+    const [arg] = capture(emitter.emit).last();
+    expect(arg).toMatchInlineSnapshot(`"testShipping"`);
   });
 
   it('should set submitted if next button is clicked', () => {

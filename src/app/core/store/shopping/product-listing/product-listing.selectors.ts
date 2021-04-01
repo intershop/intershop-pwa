@@ -1,5 +1,6 @@
-import { createSelector } from '@ngrx/store';
-import { flatten, memoize, once, range } from 'lodash-es';
+import { Dictionary } from '@ngrx/entity';
+import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
+import { flatten, isEqual, memoize, once, range } from 'lodash-es';
 import { identity } from 'rxjs';
 
 import {
@@ -63,7 +64,7 @@ function calculatePageIndices(currentPage: number, itemCount: number, itemsPerPa
   ];
 }
 
-const createView = (data: ProductListingType, itemsPerPage): ProductListingView => {
+const createView = (data: ProductListingType, itemsPerPage: number): ProductListingView => {
   const lastPage = data ? data.pages[data.pages.length - 1] : NaN;
   const firstPage = (data && data.pages && data.pages[0]) || NaN;
   return {
@@ -85,19 +86,22 @@ const createView = (data: ProductListingType, itemsPerPage): ProductListingView 
   };
 };
 
-function calculateLookUpID(id: ProductListingID, settings: Pick<ProductListingID, 'filters' | 'sorting'>) {
+function calculateLookUpID(
+  id: ProductListingID,
+  settings: { [id: string]: Pick<ProductListingID, 'filters' | 'sorting'> }
+) {
   const currentSettings = settings[serializeProductListingID(id)] || {};
   return serializeProductListingID({ ...currentSettings, ...id });
 }
 
-export const getProductListingView = createSelector(
-  getProductListingEntities,
-  getProductListingItemsPerPage,
-  getProductListingSettings,
-  memoize(
-    (entities, itemsPerPage, settings, id) =>
-      entities && createView(entities[calculateLookUpID(id, settings)], itemsPerPage),
-    (entities, _, settings, id: ProductListingID) =>
-      JSON.stringify([entities[calculateLookUpID(id, settings)], settings[serializeProductListingID(id)]])
-  )
-);
+export const getProductListingView = (id: ProductListingID) =>
+  createSelectorFactory<object, ProductListingView>(projector => resultMemoize(projector, isEqual))(
+    getProductListingEntities,
+    getProductListingItemsPerPage,
+    getProductListingSettings,
+    (
+      entities: Dictionary<ProductListingType>,
+      itemsPerPage: number,
+      settings: { [id: string]: Pick<ProductListingID, 'filters' | 'sorting'> }
+    ) => entities && createView(entities[calculateLookUpID(id, settings)], itemsPerPage)
+  );

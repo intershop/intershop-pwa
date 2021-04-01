@@ -1,17 +1,17 @@
-<ng-container *ngIf="product$ | async as product">
+<ng-container *ishProductContextAccess="let product = product">
   <div class="row" data-testing-id="wishlist-product">
     <div class="col-3 col-md-2 list-item">
       <ish-product-image imageType="S" [link]="true"></ish-product-image>
     </div>
     <div class="col-9 col-md-10 list-item column-price">
       <div class="row">
-        <div class="col-md-7 col-xs-12 text-left">
+        <div class="col-md-7 text-left">
           <div class="pli-description">
             <ish-product-name></ish-product-name>
             <ish-product-id></ish-product-id>
             <ish-product-variation-display></ish-product-variation-display>
             <ish-product-bundle-display></ish-product-bundle-display>
-            <div class="hidden-xs">
+            <div class="d-none d-sm-block">
               <label>{{ 'account.wishlist.table.added_on' | translate }}</label>
               {{ wishlistItemData?.creationDate | ishDate: 'shortDate' }}
             </div>

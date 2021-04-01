@@ -3,6 +3,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { isObservable, of } from 'rxjs';
 import { map, startWith, tap } from 'rxjs/operators';
 
+/**
+ * Extension to translate the templateOptions.options and add a placeholder element.
+ * It will use the TranslateService to translate option labels.
+ * Also, if templateOptions.placeholder is set, the extension will add a placeholder element.
+ * These modified options are written to templateOptions.processedOptions.
+ */
 class TranslateSelectOptionsExtension implements FormlyExtension {
   constructor(private translate: TranslateService) {}
 

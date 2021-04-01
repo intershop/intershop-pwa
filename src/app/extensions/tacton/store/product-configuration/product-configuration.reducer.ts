@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 
-import { setLoadingOn } from 'ish-core/utils/ngrx-creators';
+import { setLoadingOn, unsetLoadingOn } from 'ish-core/utils/ngrx-creators';
 
 import { TactonProductConfiguration } from '../../models/tacton-product-configuration/tacton-product-configuration.model';
 
@@ -36,9 +36,9 @@ export const productConfigurationReducer = createReducer(
     changeTactonConfigurationStep,
     submitTactonConfiguration
   ),
+  unsetLoadingOn(setCurrentConfiguration),
   on(setCurrentConfiguration, (state, action) => ({
     ...state,
-    loading: false,
     current: action.payload.configuration,
   })),
   on(clearTactonConfiguration, submitTactonConfigurationSuccess, () => initialState)

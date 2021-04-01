@@ -29,7 +29,7 @@ export class LineItemListComponent {
   @Input() total: Price;
   @Input() lineItemViewType?: 'simple' | 'availability';
 
-  trackByFn(_, item: LineItemView) {
+  trackByFn(_: number, item: LineItemView) {
     return item.productSKU;
   }
 }

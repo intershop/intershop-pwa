@@ -1,14 +1,19 @@
 import { CustomWebpackBrowserSchema, TargetOptions } from '@angular-builders/custom-webpack';
-import { existsSync } from 'fs';
+import * as fs from 'fs';
 import * as glob from 'glob';
-import { join, resolve } from 'path';
+import { join, sep } from 'path';
 import * as webpack from 'webpack';
 
 const purgecssPlugin = require('purgecss-webpack-plugin');
 
-const log = (...txt) => {
+const log = (...txt: unknown[]) => {
   // tslint:disable-next-line: no-console
   console.log('Custom Webpack:', ...txt);
+};
+
+const warn = (...txt: unknown[]) => {
+  // tslint:disable-next-line: no-console
+  console.warn('Custom Webpack:', ...txt);
 };
 
 type AngularPlugin = webpack.Plugin & {
@@ -17,6 +22,19 @@ type AngularPlugin = webpack.Plugin & {
     fileReplacements: { [source: string]: string };
   };
 };
+
+function crawlFiles(folder: string, callback: (files: string[]) => void) {
+  if (fs.statSync(folder).isDirectory() && !['node_modules', '.git'].some(baseName => folder.endsWith(baseName))) {
+    const content = fs.readdirSync(folder).map(file => join(folder, file));
+
+    const files = content.filter(f => fs.statSync(f).isFile());
+    if (files.length) {
+      callback(files);
+    }
+
+    content.filter(f => fs.statSync(f).isDirectory()).forEach(d => crawlFiles(d, callback));
+  }
+}
 
 /*
  * RULES:
@@ -70,6 +88,13 @@ export default (
   log('setting ngrxRuntimeChecks:', ngrxRuntimeChecks);
 
   if (production) {
+    // keep module names for debugging
+    config.optimization.minimizer.forEach(m => {
+      if (m.options && m.options.terserOptions) {
+        m.options.terserOptions.keep_classnames = /.*Module$/;
+      }
+    });
+
     // splitChunks not available for SSR build
     if (config.optimization.splitChunks) {
       log('optimizing chunk splitting');
@@ -95,25 +120,38 @@ export default (
         priority: 25,
         chunks: 'async',
         name(module) {
-          const identifier = module.identifier();
+          const identifier = module.identifier() as string;
 
           // embed sentry library in sentry chunk
-          if (identifier.includes('@sentry')) {
+          if (/[\\/]node_modules[\\/]@sentry[\\/]/.test(identifier)) {
             return 'sentry';
           }
-          // keep exports and routing modules in common
-          if (identifier.includes('routing') || identifier.includes('exports')) {
-            return 'common';
+
+          // embed angulartics2 library in tracking chunk
+          if (/[\\/]node_modules[\\/]angulartics2[\\/]/.test(identifier)) {
+            return 'tracking';
           }
 
-          const match = /[\\/](extensions|projects)[\\/](.*?)[\\/]/.exec(identifier);
+          const match = /[\\/](extensions|projects)[\\/](.*?)[\\/](src[\\/]app[\\/])?(.*)/.exec(identifier);
           const feature = match && match[2];
 
-          // include captcha functionality in common bundle
-          if (feature === 'captcha') {
-            return 'common';
+          if (feature) {
+            // include core functionality in common bundle
+            if (['captcha', 'seo'].some(f => f === feature)) {
+              return 'common';
+            }
+
+            const effectivePath = match[4];
+
+            // send exports and routing modules to the common module
+            if (effectivePath.startsWith('exports') || effectivePath.endsWith('-routing.module.ts')) {
+              return 'common';
+            }
+
+            return feature;
           }
-          return feature || 'common';
+
+          return 'common';
         },
       };
 
@@ -139,34 +177,50 @@ export default (
         paths: glob.sync('./{src,projects}/**/*', { nodir: true }),
         safelist: {
           standard: [/(p|m)(l|r|x|y|t|b)?-[0-5]/],
-          greedy: [/\bfa\b/, /\bmodal\b/, /\bswiper\b/, /\bcarousel\b/, /\bslide\b/],
+          greedy: [
+            /\bfa\b/,
+            /\bmodal\b/,
+            /\bswiper\b/,
+            /\bcarousel\b/,
+            /\bslide\b/,
+            /\btoast-close-button\b/,
+            /\bnav-tabs\b/,
+            /\bnav-link\b/,
+            /\bpopover\b/,
+          ],
         },
       })
     );
   }
 
   if (key) {
-    log(`setting up dynamic Component template and style replacement for files matching "${key}"`);
+    const angularJson = JSON.parse(fs.readFileSync('angular.json', { encoding: 'utf-8' }));
+    const availableConfigurations = Object.keys(
+      angularJson.projects[angularJson.defaultProject].architect.build.configurations
+    );
 
-    // dynamically replace html templates and component styles depending on configuration
-    config.module.rules.push({
-      test: /\.component\.(html|scss)$/,
-      loader: 'file-replace-loader',
-      options: {
-        condition: 'if-replacement-exists',
-        replacement(resourcePath) {
-          return resolve(resourcePath.replace('.component.', `.component.${key}.`));
-        },
-        async: true,
-      },
+    log(`setting up replacements for "${key}"`);
+
+    crawlFiles(join(process.cwd()), files => {
+      const replacements = files
+        .filter(f => f.includes(`.${key}.`) && !f.endsWith('.spec.ts'))
+        .map(replacement => ({
+          replacement,
+          original: availableConfigurations.reduce((acc, k) => acc.replace(`.${k}.`, '.'), replacement),
+        }))
+        .filter(replacement => files.includes(replacement.original));
+
+      replacements.forEach(replacement => {
+        angularCompilerPlugin.options.fileReplacements[replacement.original] = replacement.replacement;
+        warn('using', replacement.replacement.replace(process.cwd() + sep, ''));
+      });
     });
+  }
 
-    const environmentsBase = join(process.cwd(), 'src', 'environments');
-    const specialEnvironmentFile = join(environmentsBase, `environment.${key}.ts`);
-
-    if (existsSync(specialEnvironmentFile)) {
-      log(`setting up environments replacement for "${key}"`);
-      angularCompilerPlugin.options.fileReplacements[join(environmentsBase, 'environment.ts')] = specialEnvironmentFile;
+  if (angularJsonConfig.tsConfig.endsWith('tsconfig.app-no-checks.json')) {
+    warn('using tsconfig without compile checks');
+    if (production) {
+      warn('USING NO COMPILE CHECKS SHOULD NEVER BE DONE IN PRODUCTION MODE!');
     }
   }
 

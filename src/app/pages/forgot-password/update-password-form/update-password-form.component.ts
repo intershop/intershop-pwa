@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
@@ -23,34 +24,67 @@ export class UpdatePasswordFormComponent implements OnInit {
    */
   @Output() submitPassword = new EventEmitter<{ password: string }>();
 
-  password: string;
-
-  form: FormGroup;
+  updatePasswordForm = new FormGroup({});
+  fields: FormlyFieldConfig[];
   submitted = false;
 
   ngOnInit() {
-    this.form = new FormGroup(
+    this.fields = [
       {
-        password: new FormControl('', [Validators.required, SpecialValidators.password]),
-        passwordConfirmation: new FormControl('', [Validators.required, SpecialValidators.password]),
+        key: 'password',
+        type: 'ish-password-field',
+        templateOptions: {
+          postWrappers: ['description'],
+          required: true,
+          hideRequiredMarker: true,
+          label: 'account.register.password.label',
+          customDescription: {
+            class: 'input-help',
+            key: 'account.register.password.extrainfo.message',
+            args: { 0: '7' },
+          },
+        },
+        validation: {
+          messages: {
+            required: 'account.update_password.new_password.error.required',
+            minLength: 'account.update_password.new_password.error.length',
+          },
+        },
       },
-      SpecialValidators.equalTo('passwordConfirmation', 'password')
-    );
+      {
+        key: 'passwordConfirmation',
+        type: 'ish-password-field',
+        templateOptions: {
+          required: true,
+          hideRequiredMarker: true,
+          label: 'account.register.password_confirmation.label',
+        },
+        validators: {
+          validation: [SpecialValidators.equalToControl('password')],
+        },
+        validation: {
+          messages: {
+            required: 'account.register.password_confirmation.error.default',
+            equalTo: 'account.update_password.confirm_password.error.stringcompare',
+          },
+        },
+      },
+    ];
   }
 
   submitPasswordForm() {
-    if (this.form.invalid) {
+    if (this.updatePasswordForm.invalid) {
       this.submitted = true;
-      markAsDirtyRecursive(this.form);
+      markAsDirtyRecursive(this.updatePasswordForm);
       return;
     }
 
     this.submitPassword.emit({
-      password: this.form.get('password').value,
+      password: this.updatePasswordForm.get('password').value,
     });
   }
 
   get buttonDisabled() {
-    return this.form.invalid && this.submitted;
+    return this.updatePasswordForm.invalid && this.submitted;
   }
 }

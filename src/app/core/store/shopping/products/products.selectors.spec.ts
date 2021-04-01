@@ -14,14 +14,13 @@ import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import {
   loadProduct,
-  loadProductBundlesSuccess,
   loadProductFail,
   loadProductLinksSuccess,
+  loadProductPartsSuccess,
   loadProductSuccess,
   loadProductVariationsFail,
   loadProductVariationsIfNotLoaded,
   loadProductVariationsSuccess,
-  loadRetailSetSuccess,
 } from './products.actions';
 import {
   getBreadcrumbForProductPage,
@@ -235,9 +234,9 @@ describe('Products Selectors', () => {
     it('should contain information for the product bundle', () => {
       store$.dispatch(loadProductSuccess({ product: { sku: 'ABC' } as Product }));
       store$.dispatch(
-        loadProductBundlesSuccess({
+        loadProductPartsSuccess({
           sku: 'ABC',
-          bundledProducts: [
+          parts: [
             { sku: 'A', quantity: 1 },
             { sku: 'B', quantity: 2 },
           ],
@@ -263,9 +262,12 @@ describe('Products Selectors', () => {
     it('should contain information for the product retail set', () => {
       store$.dispatch(loadProductSuccess({ product: { sku: 'ABC' } as Product }));
       store$.dispatch(
-        loadRetailSetSuccess({
+        loadProductPartsSuccess({
           sku: 'ABC',
-          parts: ['A', 'B'],
+          parts: [
+            { sku: 'A', quantity: 1 },
+            { sku: 'B', quantity: 1 },
+          ],
         })
       );
 

@@ -6,4 +6,4 @@ RUN ./node_modules/.bin/ngcc
 RUN npm run build:schematics
 RUN npm run synchronize-lazy-components -- --ci
 EXPOSE 8080
-CMD npx ng serve --host 0.0.0.0 --disableHostCheck true --aot --port 8080
+CMD npx ng serve --port 8080

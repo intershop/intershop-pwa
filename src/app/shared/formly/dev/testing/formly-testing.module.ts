@@ -1,40 +1,44 @@
 import { CommonModule } from '@angular/common';
 import { Component, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FieldType, FormlyForm, FormlyModule } from '@ngx-formly/core';
+import { FieldType, FieldWrapper, FormlyForm, FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 
 // tslint:disable: project-structure
 
-@Component({ template: 'CaptchaFieldComponent: {{ to | json }}' })
+@Component({ template: 'CaptchaFieldComponent: {{ field.key }} {{ to | json }}' })
 class CaptchaFieldComponent extends FieldType {}
 
-@Component({ template: 'CheckboxFieldComponent: {{ to | json }}' })
+@Component({ template: 'CheckboxFieldComponent: {{ field.key }} {{ to | json }}' })
 class CheckboxFieldComponent extends FieldType {}
 
 @Component({
   template: `FieldsetFieldComponent:
     <div *ngFor="let f of field.fieldGroup">
+      {{ f.key }}
       {{ f.type }}
       {{ f.templateOptions | json }}
     </div>`,
 })
 class FieldsetFieldComponent extends FieldType {}
 
-@Component({ template: 'TextInputFieldComponent: {{ to | json }}' })
+@Component({ template: 'TextInputFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class TextInputFieldComponent extends FieldType {}
 
-@Component({ template: 'EmailFieldComponent: {{ to | json }}' })
+@Component({ template: 'EmailFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class EmailFieldComponent extends FieldType {}
 
-@Component({ template: 'PasswordFieldComponent: {{ to | json }}' })
+@Component({ template: 'PasswordFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class PasswordFieldComponent extends FieldType {}
 
-@Component({ template: 'SelectFieldComponent: {{ to | json }}' })
+@Component({ template: 'SelectFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class SelectFieldComponent extends FieldType {}
 
-@Component({ template: 'TextareaFieldComponent: {{ to | json }}' })
+@Component({ template: 'TextareaFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class TextareaFieldComponent extends FieldType {}
+
+@Component({ template: `<ng-template #fieldComponent> </ng-template>` })
+class DummyWrapperComponent extends FieldWrapper {}
 
 // tslint:enable: project-structure
 
@@ -42,6 +46,7 @@ class TextareaFieldComponent extends FieldType {}
   declarations: [
     CaptchaFieldComponent,
     CheckboxFieldComponent,
+    DummyWrapperComponent,
     EmailFieldComponent,
     FieldsetFieldComponent,
     PasswordFieldComponent,
@@ -83,12 +88,19 @@ class TextareaFieldComponent extends FieldType {}
         },
         { name: 'ish-captcha-field', component: CaptchaFieldComponent },
       ],
+      wrappers: [
+        { name: 'form-field-horizontal', component: DummyWrapperComponent },
+        { name: 'form-field-checkbox-horizontal', component: DummyWrapperComponent },
+        { name: 'textarea-description', component: DummyWrapperComponent },
+        { name: 'tooltip', component: DummyWrapperComponent },
+        { name: 'validation', component: DummyWrapperComponent },
+        { name: 'description', component: DummyWrapperComponent },
+      ],
     }),
     FormlySelectModule,
     ReactiveFormsModule,
   ],
   exports: [FormlyForm, ReactiveFormsModule],
-  providers: [],
 })
 // tslint:disable-next-line: project-structure
 export class FormlyTestingModule {}

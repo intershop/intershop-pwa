@@ -5,9 +5,12 @@ import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/m
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { User } from 'ish-core/models/user/user.model';
+import { MessagesPayloadType } from 'ish-core/store/core/messages';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 export const loginUser = createAction('[User] Login User', payload<{ credentials: Credentials }>());
+
+export const loginUserWithToken = createAction('[User] Login User With Token', payload<{ token: string }>());
 
 export const loginUserFail = createAction('[User API] Login User Failed', httpError());
 
@@ -25,35 +28,38 @@ export const createUser = createAction('[User] Create User', payload<CustomerReg
 
 export const createUserFail = createAction('[User API] Create User Failed', httpError());
 
-export const updateUser = createAction('[User] Update User', payload<{ user: User; successMessage?: string }>());
+export const updateUser = createAction(
+  '[User] Update User',
+  payload<{ user: User; credentials?: Credentials; successMessage?: MessagesPayloadType }>()
+);
 
 export const updateUserSuccess = createAction(
   '[User API] Update User Succeeded',
-  payload<{ user: User; successMessage?: string }>()
+  payload<{ user: User; successMessage?: MessagesPayloadType }>()
 );
 
 export const updateUserFail = createAction('[User API] Update User Failed', httpError());
 
 export const updateUserPassword = createAction(
   '[User] Update User Password',
-  payload<{ password: string; currentPassword: string; successMessage?: string }>()
+  payload<{ password: string; currentPassword: string; successMessage?: MessagesPayloadType }>()
 );
 
 export const updateUserPasswordSuccess = createAction(
   '[User API] Update User Password Succeeded',
-  payload<{ successMessage?: string }>()
+  payload<{ successMessage?: MessagesPayloadType }>()
 );
 
 export const updateUserPasswordFail = createAction('[User API] Update User Password Failed', httpError());
 
 export const updateCustomer = createAction(
   '[User] Update Customer',
-  payload<{ customer: Customer; successMessage?: string }>()
+  payload<{ customer: Customer; successMessage?: MessagesPayloadType }>()
 );
 
 export const updateCustomerSuccess = createAction(
   '[User API] Update Customer Succeeded',
-  payload<{ customer: Customer; successMessage?: string }>()
+  payload<{ customer: Customer; successMessage?: MessagesPayloadType }>()
 );
 
 export const updateCustomerFail = createAction('[User API] Update Customer Failed', httpError());

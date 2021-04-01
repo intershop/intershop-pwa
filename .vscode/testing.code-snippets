@@ -31,5 +31,16 @@
     "prefix": "ish-provider-ts-mockito",
     "body": ["{ provide: $1, useFactory: () => instance(mock($1)) }"],
     "description": "Insert ts-mockito provider for Testing"
+  },
+  "Test EventEmitter with ts-mockito": {
+    "scope": "typescript",
+    "prefix": "ish-test-eventemitter-ts-mockito",
+    "body": [
+      "const emitter = spy($1);",
+      "",
+      "verify(emitter.emit(anything())).once();",
+      "const [arg] = capture(emitter.emit).last();",
+      "expect(arg).toMatchInlineSnapshot();"
+    ]
   }
 }

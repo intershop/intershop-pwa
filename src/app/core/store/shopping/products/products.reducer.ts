@@ -5,13 +5,12 @@ import { ProductLinksDictionary } from 'ish-core/models/product-links/product-li
 import { AllProductTypes, SkuQuantityType } from 'ish-core/models/product/product.model';
 
 import {
-  loadProductBundlesSuccess,
   loadProductFail,
   loadProductLinksSuccess,
+  loadProductPartsSuccess,
   loadProductSuccess,
   loadProductVariationsFail,
   loadProductVariationsSuccess,
-  loadRetailSetSuccess,
   productSpecialUpdate,
 } from './products.actions';
 
@@ -45,11 +44,11 @@ function removeFailed(failed: string[], sku: string): string[] {
 
 export const productsReducer = createReducer(
   initialState,
-  on(loadProductFail, loadProductVariationsFail, (state: ProductsState, action) => ({
+  on(loadProductFail, loadProductVariationsFail, (state, action) => ({
     ...state,
     failed: addFailed(state.failed, action.payload.sku),
   })),
-  on(loadProductSuccess, (state: ProductsState, action) => {
+  on(loadProductSuccess, (state, action) => {
     const product = action.payload.product;
     const oldProduct = state.entities[product.sku] || { completenessLevel: 0 };
 
@@ -63,24 +62,20 @@ export const productsReducer = createReducer(
       failed: removeFailed(state.failed, product.sku),
     });
   }),
-  on(loadProductVariationsSuccess, (state: ProductsState, action) => ({
+  on(loadProductVariationsSuccess, (state, action) => ({
     ...state,
     variations: { ...state.variations, [action.payload.sku]: action.payload.variations },
     defaultVariation: { ...state.defaultVariation, [action.payload.sku]: action.payload.defaultVariation },
   })),
-  on(loadProductBundlesSuccess, (state: ProductsState, action) => ({
+  on(loadProductPartsSuccess, (state, action) => ({
     ...state,
-    parts: { ...state.parts, [action.payload.sku]: action.payload.bundledProducts },
+    parts: { ...state.parts, [action.payload.sku]: action.payload.parts },
   })),
-  on(loadRetailSetSuccess, (state: ProductsState, action) => ({
-    ...state,
-    parts: { ...state.parts, [action.payload.sku]: action.payload.parts.map(sku => ({ sku, quantity: 1 })) },
-  })),
-  on(loadProductLinksSuccess, (state: ProductsState, action) => ({
+  on(loadProductLinksSuccess, (state, action) => ({
     ...state,
     links: { ...state.links, [action.payload.sku]: action.payload.links },
   })),
-  on(productSpecialUpdate, (state: ProductsState, action) =>
+  on(productSpecialUpdate, (state, action) =>
     productAdapter.updateOne({ id: action.payload.sku, changes: action.payload.update }, state)
   )
 );

@@ -18,8 +18,7 @@ import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-togg
   selector: '[ishFeature]',
 })
 export class FeatureToggleDirective {
-  // tslint:disable-next-line: no-any
-  private otherTemplateRef: TemplateRef<any>;
+  private otherTemplateRef: TemplateRef<unknown>;
   private feature: string;
 
   constructor(
@@ -33,8 +32,7 @@ export class FeatureToggleDirective {
     this.updateView();
   }
 
-  // tslint:disable-next-line: no-any
-  @Input() set ishFeatureElse(otherTemplateRef: TemplateRef<any>) {
+  @Input() set ishFeatureElse(otherTemplateRef: TemplateRef<unknown>) {
     this.otherTemplateRef = otherTemplateRef;
     this.updateView();
   }

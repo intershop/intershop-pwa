@@ -44,6 +44,7 @@ import {
   loginUser,
   loginUserFail,
   loginUserSuccess,
+  loginUserWithToken,
   requestPasswordReminder,
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
@@ -82,6 +83,16 @@ export class UserEffects {
       mapToPayloadProperty('credentials'),
       exhaustMap(credentials =>
         this.userService.signinUser(credentials).pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
+      )
+    )
+  );
+
+  loginUserWithToken$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loginUserWithToken),
+      mapToPayloadProperty('token'),
+      exhaustMap(token =>
+        this.userService.signinUserByToken(token).pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
       )
     )
   );
@@ -128,8 +139,8 @@ export class UserEffects {
       ofType(updateUser),
       mapToPayload(),
       withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
-      concatMap(([{ user, successMessage }, customer]) =>
-        this.userService.updateUser({ user, customer }).pipe(
+      concatMap(([{ user, credentials, successMessage }, customer]) =>
+        this.userService.updateUser({ user, customer }, credentials).pipe(
           map(changedUser => updateUserSuccess({ user: changedUser, successMessage })),
           mapErrorToAction(updateUserFail)
         )
@@ -147,7 +158,7 @@ export class UserEffects {
         this.userService.updateUserPassword(customer, user, payload.password, payload.currentPassword).pipe(
           mapTo(
             updateUserPasswordSuccess({
-              successMessage: payload.successMessage || 'account.profile.update_password.message',
+              successMessage: payload.successMessage || { message: 'account.profile.update_password.message' },
             })
           ),
           mapErrorToAction(updateUserPasswordFail)
@@ -187,11 +198,7 @@ export class UserEffects {
       ofType(updateUserPasswordSuccess, updateUserSuccess, updateCustomerSuccess),
       mapToPayloadProperty('successMessage'),
       filter(successMessage => !!successMessage),
-      map(successMessage =>
-        displaySuccessMessage({
-          message: successMessage,
-        })
-      )
+      map(displaySuccessMessage)
     )
   );
 
@@ -216,7 +223,7 @@ export class UserEffects {
   loadUserByAPIToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadUserByAPIToken),
-      concatMap(() => this.userService.signinUserByToken().pipe(map(loginUserSuccess)))
+      concatMap(() => this.userService.signinUserByToken().pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail)))
     )
   );
 

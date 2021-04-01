@@ -1,5 +1,5 @@
 import { Dictionary } from '@ngrx/entity';
-import { createSelector, createSelectorFactory, defaultMemoize } from '@ngrx/store';
+import { createSelector, createSelectorFactory, defaultMemoize, resultMemoize } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 
 import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.interface';
@@ -34,11 +34,11 @@ export const getCategory = (uniqueId: string) =>
  * Retrieves the currently resolved selected category.
  */
 export const getSelectedCategory = createSelectorFactory<object, CategoryView>(projector =>
-  defaultMemoize(projector, undefined, isEqual)
+  resultMemoize(projector, isEqual)
 )(getCategoryTree, selectRouteParam('categoryUniqueId'), createCategoryView);
 
 export const getBreadcrumbForCategoryPage = createSelectorFactory<object, BreadcrumbItem[]>(projector =>
-  defaultMemoize(projector, undefined, isEqual)
+  resultMemoize(projector, isEqual)
 )(getSelectedCategory, getCategoryEntities, (category: CategoryView, entities: Dictionary<Category>) =>
   CategoryHelper.isCategoryCompletelyLoaded(category)
     ? (category.categoryPath || [])

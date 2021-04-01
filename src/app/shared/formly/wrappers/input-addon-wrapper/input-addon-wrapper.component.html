@@ -1,0 +1,9 @@
+<div [ngClass]="{ 'input-group': to.addonLeft || to.addonRight }">
+  <div *ngIf="to.addonLeft" class="input-group-prepend">
+    <span class="input-group-text">{{ to.addonLeft?.text | translate }}</span>
+  </div>
+  <div class="flex-grow-1"><ng-container #fieldComponent></ng-container></div>
+  <div *ngIf="to.addonRight" class="input-group-append">
+    <span class="input-group-text">{{ to.addonRight?.text | translate }}</span>
+  </div>
+</div>

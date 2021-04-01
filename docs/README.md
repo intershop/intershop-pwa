@@ -17,6 +17,7 @@ kb_sync_latest_only
 - [Concept - Project Structure](./concepts/project-structure.md)
 - [Concept - State Management](./concepts/state-management.md)
   - [Guide - State Management](./guides/state-management.md)
+  - [Guide - Product Context](./guides/product-context.md)
 - [Concept - CMS Integration](./concepts/cms-integration.md)
 - [Concept - Configuration](./concepts/configuration.md)
   - [Guide - Propagating Environment Variables](./guides/propagating-environment-variables.md)

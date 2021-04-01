@@ -7,20 +7,18 @@ import { debounceTime, distinctUntilChanged, filter, first, map, skip, startWith
 
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { Image } from 'ish-core/models/image/image.model';
+import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
-import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
-import {
-  AnyProductViewType,
-  ProductCompletenessLevel,
-  ProductHelper,
-  SkuQuantityType,
-} from 'ish-core/models/product/product.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { ProductCompletenessLevel, ProductHelper, SkuQuantityType } from 'ish-core/models/product/product.model';
+import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { generateProductUrl } from 'ish-core/routing/product/product.route';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { ProductContextDisplayPropertiesService } from 'ish-core/utils/product-context-display-properties/product-context-display-properties.service';
 
 import { ShoppingFacade } from './shopping.facade';
 
-declare type DisplayEval = ((product: AnyProductViewType) => boolean) | boolean;
+declare type DisplayEval = ((product: ProductView) => boolean) | boolean;
 
 export interface ProductContextDisplayProperties<T = boolean> {
   readOnly: T;
@@ -42,53 +40,48 @@ export interface ProductContextDisplayProperties<T = boolean> {
   addToQuote: T;
 }
 
-const defaultDisplayProperties: () => ProductContextDisplayProperties<DisplayEval> = () => {
-  const canBeOrdered = (product: AnyProductViewType) => !ProductHelper.isMasterProduct(product) && product.available;
-
-  const canBeOrderedNotRetail = (product: AnyProductViewType) =>
-    canBeOrdered(product) && !ProductHelper.isRetailSet(product);
-
-  return {
-    readOnly: false,
-    name: true,
-    description: true,
-    sku: true,
-    inventory: product => !ProductHelper.isRetailSet(product) && !ProductHelper.isMasterProduct(product),
-    price: true,
-    promotions: true,
-    quantity: canBeOrderedNotRetail,
-    variations: p => ProductHelper.isVariationProduct(p),
-    bundleParts: ProductHelper.isProductBundle,
-    retailSetParts: ProductHelper.isRetailSet,
-    shipment: p =>
-      canBeOrderedNotRetail(p) && Number.isInteger(p.readyForShipmentMin) && Number.isInteger(p.readyForShipmentMax),
-    addToBasket: canBeOrdered,
-    addToWishlist: product => !ProductHelper.isMasterProduct(product),
-    addToOrderTemplate: canBeOrdered,
-    addToCompare: product => !ProductHelper.isMasterProduct(product),
-    addToQuote: canBeOrdered,
-  };
+const defaultDisplayProperties: ProductContextDisplayProperties<true | undefined> = {
+  readOnly: undefined,
+  name: true,
+  description: true,
+  sku: true,
+  inventory: true,
+  price: true,
+  promotions: true,
+  quantity: true,
+  variations: true,
+  bundleParts: true,
+  retailSetParts: true,
+  shipment: true,
+  addToBasket: true,
+  addToWishlist: true,
+  addToOrderTemplate: true,
+  addToCompare: true,
+  addToQuote: true,
 };
 
 export interface ExternalDisplayPropertiesProvider {
-  setup(product$: Observable<AnyProductViewType>): Observable<Partial<ProductContextDisplayProperties<false>>>;
+  setup(product$: Observable<ProductView>): Observable<Partial<ProductContextDisplayProperties<false>>>;
 }
 
 export const EXTERNAL_DISPLAY_PROPERTY_PROVIDER = new InjectionToken<ExternalDisplayPropertiesProvider>(
   'externalDisplayPropertiesProvider'
 );
 
-interface ProductContext {
+export interface ProductContext {
   sku: string;
   requiredCompletenessLevel: ProductCompletenessLevel | true;
-  product: AnyProductViewType;
-  productAsVariationProduct: VariationProductView;
+  product: ProductView;
   productURL: string;
   loading: boolean;
   label: string;
   categoryId: string;
-
   displayProperties: Partial<ProductContextDisplayProperties>;
+
+  // lazy
+  links: ProductLinksDictionary;
+  promotions: Promotion[];
+  parts: SkuQuantityType[];
 
   // variation handling
   variationCount: number;
@@ -106,7 +99,6 @@ interface ProductContext {
   hasQuantityError: boolean;
 
   // child contexts
-  parts: SkuQuantityType[];
   propagateActive: boolean;
   children: ProductContext[];
 }
@@ -115,6 +107,7 @@ interface ProductContext {
 export class ProductContextFacade extends RxState<ProductContext> {
   private privateConfig$ = new BehaviorSubject<Partial<ProductContextDisplayProperties>>({});
   private loggingActive = false;
+  private lazyFieldsInitialized: string[] = [];
 
   set config(config: Partial<ProductContextDisplayProperties>) {
     this.privateConfig$.next(config);
@@ -151,12 +144,6 @@ export class ProductContextFacade extends RxState<ProductContext> {
 
     this.hold(combineLatest([this.select('product'), this.select('displayProperties')]), args =>
       this.postProductFetch(...args)
-    );
-
-    this.connect(
-      'productAsVariationProduct',
-      // tslint:disable-next-line: no-null-keyword
-      this.select('product').pipe(map(product => (ProductHelper.isVariationProduct(product) ? product : null)))
     );
 
     this.connect(
@@ -244,27 +231,22 @@ export class ProductContextFacade extends RxState<ProductContext> {
       )
     );
 
-    this.connect(
-      'parts',
-      this.select('sku').pipe(
-        whenTruthy(),
-        switchMap(sku => this.shoppingFacade.productParts$(sku))
-      )
-    );
-
-    const externalDisplayPropertyProviders = injector
-      .get<ExternalDisplayPropertiesProvider[]>(EXTERNAL_DISPLAY_PROPERTY_PROVIDER, [])
-      .map(edp => edp.setup(this.select('product')));
+    const externalDisplayPropertyProviders = [
+      injector.get(ProductContextDisplayPropertiesService),
+      ...injector.get<ExternalDisplayPropertiesProvider[]>(EXTERNAL_DISPLAY_PROPERTY_PROVIDER, []),
+    ].map(edp => edp.setup(this.select('product')));
 
     const internalDisplayProperty$ = combineLatest([this.select('product'), this.privateConfig$]).pipe(
-      map(
-        ([product, privateConfig]) =>
-          Object.entries(defaultDisplayProperties())
-            .map(([k, v]) => [k, privateConfig?.[k] ?? v])
-            .reduce((acc, [k, v]) => {
+      map(([product, privateConfig]) =>
+        Object.entries(defaultDisplayProperties)
+          .map(([k, v]: [keyof ProductContextDisplayProperties, DisplayEval]) => [k, privateConfig?.[k] ?? v])
+          .reduce<Partial<ProductContextDisplayProperties>>(
+            (acc, [k, v]: [keyof ProductContextDisplayProperties, DisplayEval]) => {
               acc[k] = typeof v === 'function' ? v(product) : v;
               return acc;
-            }, {}) as ProductContextDisplayProperties
+            },
+            {}
+          )
       )
     );
 
@@ -276,7 +258,7 @@ export class ProductContextFacade extends RxState<ProductContext> {
     );
   }
 
-  private postProductFetch(product: AnyProductViewType, displayProperties: Partial<ProductContextDisplayProperties>) {
+  private postProductFetch(product: ProductView, displayProperties: Partial<ProductContextDisplayProperties>) {
     if (
       (ProductHelper.isRetailSet(product) || ProductHelper.isMasterProduct(product)) &&
       displayProperties.price &&
@@ -284,6 +266,49 @@ export class ProductContextFacade extends RxState<ProductContext> {
     ) {
       this.set('requiredCompletenessLevel', () => ProductCompletenessLevel.Detail);
     }
+  }
+
+  select(): Observable<ProductContext>;
+  select<K1 extends keyof ProductContext>(k1: K1): Observable<ProductContext[K1]>;
+  select<K1 extends keyof ProductContext, K2 extends keyof ProductContext[K1]>(
+    k1: K1,
+    k2: K2
+  ): Observable<ProductContext[K1][K2]>;
+
+  select<K1 extends keyof ProductContext, K2 extends keyof ProductContext[K1]>(k1?: K1, k2?: K2) {
+    const wrap = <K extends keyof ProductContext>(key: K, obs: Observable<ProductContext[K]>) => {
+      if (!this.lazyFieldsInitialized.includes(key)) {
+        this.connect(key, obs);
+        this.lazyFieldsInitialized.push(key);
+      }
+    };
+
+    switch (k1) {
+      case 'links':
+        wrap('links', this.shoppingFacade.productLinks$(this.select('sku')));
+        break;
+      case 'promotions':
+        wrap(
+          'promotions',
+          combineLatest([this.select('displayProperties', 'promotions'), this.select('product', 'promotionIds')]).pipe(
+            filter(([visible]) => !!visible),
+            switchMap(([, ids]) => this.shoppingFacade.promotions$(ids))
+          )
+        );
+        break;
+      case 'parts':
+        wrap(
+          'parts',
+          combineLatest([
+            this.select('displayProperties', 'bundleParts'),
+            this.select('displayProperties', 'retailSetParts'),
+          ]).pipe(
+            filter(([a, b]) => a || b),
+            switchMap(() => this.shoppingFacade.productParts$(this.select('sku')))
+          )
+        );
+    }
+    return k2 ? super.select(k1, k2) : k1 ? super.select(k1) : super.select();
   }
 
   log(val: boolean) {
@@ -296,9 +321,7 @@ export class ProductContextFacade extends RxState<ProductContext> {
   }
 
   changeVariationOption(name: string, value: string) {
-    this.set('sku', () =>
-      ProductVariationHelper.findPossibleVariation(name, value, this.get('productAsVariationProduct'))
-    );
+    this.set('sku', () => ProductVariationHelper.findPossibleVariation(name, value, this.get('product')));
   }
 
   addToBasket() {
@@ -353,13 +376,5 @@ export class ProductContextFacade extends RxState<ProductContext> {
           : ProductHelper.getPrimaryImage(product, imageType)
       )
     );
-  }
-
-  productLinks$() {
-    return this.shoppingFacade.productLinks$(this.select('sku'));
-  }
-
-  productPromotions$() {
-    return this.select('product', 'promotionIds').pipe(switchMap(ids => this.shoppingFacade.promotions$(ids)));
   }
 }

@@ -28,7 +28,7 @@ export class CategoryTreeHelper {
     }
 
     // add edges from categoryPath
-    const edges = {};
+    const edges: { [id: string]: string[] } = {};
     if (category.categoryPath && category.categoryPath.length >= 2) {
       const path = category.categoryPath;
       for (let i = 0; i < path.length - 1; i++) {

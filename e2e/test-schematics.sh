@@ -80,12 +80,12 @@ stat src/app/extensions/awesome/store/super/super.reducer.ts
 stat src/app/extensions/awesome/store/super/super.selectors.ts
 grep "SuperState" src/app/extensions/awesome/store/awesome-store.ts
 
-npx ng g cms --definitionQualifiedName app:component.custom.inventory.pagelet2-Component inventory
+npx ng g cms --definition-qualified-name app:component.custom.inventory.pagelet2-Component inventory
 stat src/app/shared/cms/components/cms-inventory/cms-inventory.component.ts
 grep "CMSInventoryComponent" src/app/shared/cms/cms.module.ts
 grep "CMSInventoryComponent" src/app/shared/shared.module.ts
 
-npx ng g cms --definitionQualifiedName app:component.custom.audio.pagelet2-Component --noCMSPrefixing audio
+npx ng g cms --definition-qualified-name app:component.custom.audio.pagelet2-Component --noCMSPrefixing audio
 stat src/app/shared/cms/components/audio/audio.component.ts
 grep "AudioComponent" src/app/shared/cms/cms.module.ts
 grep "AudioComponent" src/app/shared/shared.module.ts
@@ -139,12 +139,18 @@ npm run clean
 npx lint-staged
 npx tsc --project tsconfig.all.json
 
-npm run build
+npx ng g add-destroy src/app/extensions/awesome/shared/dummy/dummy.component.ts
+grep destroy src/app/extensions/awesome/shared/dummy/dummy.component.ts
+
+echo '<p>COMPONENT_OVERRIDES</p>' > src/app/pages/home/home-page.component.local.html
+
+npm run build --configuration=local
 
 nohup bash -c "npm run serve &"
 wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
 
 wget -O - -q "http://localhost:4200/warehouses" | grep -q "warehouses-page works"
+wget -O - -q "http://localhost:4200/home" | grep -q "COMPONENT_OVERRIDES"
 
 npx ng g kubernetes-deployment
 find charts

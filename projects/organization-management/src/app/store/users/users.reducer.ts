@@ -49,7 +49,14 @@ const initialState: UsersState = usersAdapter.getInitialState({
 export const usersReducer = createReducer(
   initialState,
   setLoadingOn(loadUsers, addUser, updateUser, deleteUser, setUserBudget),
-  unsetLoadingAndErrorOn(loadUsersSuccess, addUserSuccess, updateUserSuccess, deleteUserSuccess, setUserBudgetSuccess),
+  unsetLoadingAndErrorOn(
+    loadUsersSuccess,
+    loadUserSuccess,
+    addUserSuccess,
+    updateUserSuccess,
+    deleteUserSuccess,
+    setUserBudgetSuccess
+  ),
   setErrorOn(
     loadUsersFail,
     loadUserFail,
@@ -59,7 +66,7 @@ export const usersReducer = createReducer(
     setUserRolesFail,
     setUserBudgetFail
   ),
-  on(loadUsersSuccess, (state: UsersState, action) => {
+  on(loadUsersSuccess, (state, action) => {
     const { users } = action.payload;
 
     return {
@@ -68,30 +75,28 @@ export const usersReducer = createReducer(
       ids: users.map(u => u.login),
     };
   }),
-  on(loadUserSuccess, (state: UsersState, action) => {
+  on(loadUserSuccess, (state, action) => {
     const { user } = action.payload;
 
     return {
       ...usersAdapter.upsertOne(user, state),
-      loading: false,
-      error: undefined,
     };
   }),
-  on(addUserSuccess, (state: UsersState, action) => {
+  on(addUserSuccess, (state, action) => {
     const { user } = action.payload;
 
     return {
       ...usersAdapter.addOne(user, state),
     };
   }),
-  on(updateUserSuccess, (state: UsersState, action) => {
+  on(updateUserSuccess, (state, action) => {
     const { user } = action.payload;
 
     return {
       ...usersAdapter.upsertOne(user, state),
     };
   }),
-  on(deleteUserSuccess, (state: UsersState, action) => {
+  on(deleteUserSuccess, (state, action) => {
     const { login } = action.payload;
 
     return {

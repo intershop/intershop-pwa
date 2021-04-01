@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, TransferState } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UrlSerializer } from '@angular/router';
 
 import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
 import { CoreModule } from 'ish-core/core.module';
+import { CustomUrlSerializer } from 'ish-core/utils/custom-url-serializer';
 
 import { environment } from '../environments/environment';
 
@@ -31,6 +33,7 @@ import { ShellModule } from './shell/shell.module';
     AppLastRoutingModule,
   ],
   bootstrap: [AppComponent],
+  providers: [{ provide: UrlSerializer, useClass: CustomUrlSerializer }],
 })
 export class AppModule {
   constructor(transferState: TransferState) {

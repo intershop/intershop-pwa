@@ -1,17 +1,20 @@
-import { ErrorHandler, Injectable, Injector } from '@angular/core';
+import { ErrorHandler, Injectable } from '@angular/core';
 
-import { FeatureToggleService } from './feature-toggle/feature-toggle.service';
+declare type HandlerType = (error: unknown) => void;
 
 @Injectable()
-export class DefaultErrorhandler implements ErrorHandler {
-  constructor(private injector: Injector) {}
+export class DefaultErrorHandler implements ErrorHandler {
+  private handlers: HandlerType[] = [];
 
-  async handleError(error: Error) {
-    if (this.injector.get(FeatureToggleService)?.enabled('sentry')) {
-      await import('@sentry/browser').then(sentry => {
-        sentry.captureException(error);
-      });
-    }
-    console.error(error);
+  constructor() {
+    this.handlers.push(console.error);
+  }
+
+  addHandler(handler: HandlerType) {
+    this.handlers.push(handler);
+  }
+
+  handleError(error: Error) {
+    this.handlers.forEach(handler => handler(error));
   }
 }

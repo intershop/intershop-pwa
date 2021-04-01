@@ -1,19 +1,19 @@
 import { APP_BASE_HREF, DOCUMENT, isPlatformServer } from '@angular/common';
 import { ApplicationRef, Inject, Injectable, Optional, PLATFORM_ID } from '@angular/core';
+import { Meta, MetaDefinition, Title } from '@angular/platform-browser';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction, routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { REQUEST } from '@nguniversal/express-engine/tokens';
-import { MetaService } from '@ngx-meta/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Request } from 'express';
 import { isEqual } from 'lodash-es';
-import { merge, race } from 'rxjs';
+import { Subject, combineLatest, merge, race } from 'rxjs';
 import { distinctUntilChanged, filter, map, mapTo, switchMap, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 
 import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.helper';
+import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { SeoAttributes } from 'ish-core/models/seo-attributes/seo-attributes.model';
 import { generateCategoryUrl, ofCategoryUrl } from 'ish-core/routing/category/category.route';
 import { generateProductUrl, ofProductUrl } from 'ish-core/routing/product/product.route';
@@ -29,7 +29,8 @@ export class SeoEffects {
   constructor(
     private actions$: Actions,
     private store: Store,
-    private meta: MetaService,
+    private metaService: Meta,
+    private titleService: Title,
     private translate: TranslateService,
     @Inject(DOCUMENT) private doc: Document,
     @Optional() @Inject(REQUEST) private request: Request,
@@ -37,6 +38,9 @@ export class SeoEffects {
     private appRef: ApplicationRef,
     @Inject(PLATFORM_ID) private platformId: string
   ) {}
+
+  private pageTitle$ = new Subject<string>();
+  private pageDescription$ = new Subject<string>();
 
   private productPage$ = this.store.pipe(
     ofProductUrl(),
@@ -137,8 +141,40 @@ export class SeoEffects {
         ofType(routerNavigatedAction),
         withLatestFrom(this.store.pipe(select(getCurrentLocale)), this.store.pipe(select(getAvailableLocales))),
         tap(([, current, locales]) => {
-          this.meta.setTag('og:locale', current.lang);
-          this.meta.setTag('og:locale:alternate', locales.map(x => x.lang).join(','));
+          this.metaService.addTag({ property: 'og:locale', content: current.lang });
+
+          this.metaService
+            .getTags('property="og:locale:alternate"')
+            .forEach(el => this.metaService.removeTagElement(el));
+          locales
+            .map(x => x.lang)
+            .filter(lang => lang !== current.lang)
+            .forEach(lang => this.metaService.addTag({ property: 'og:locale:alternate', content: lang }, true));
+        })
+      ),
+    { dispatch: false }
+  );
+
+  seoTitle$ = createEffect(
+    () =>
+      this.pageTitle$.pipe(
+        switchMap(title => combineLatest([this.translate.get(title), this.translate.get('seo.applicationName')])),
+        map(([title, application]) => `${title} | ${application}`),
+        tap(title => {
+          this.titleService.setTitle(title);
+          this.addOrModifyTag({ property: 'og:title', content: title });
+        })
+      ),
+    { dispatch: false }
+  );
+
+  seoDescription$ = createEffect(
+    () =>
+      this.pageDescription$.pipe(
+        switchMap(description => this.translate.get(description)),
+        tap(description => {
+          this.addOrModifyTag({ name: 'description', content: description });
+          this.addOrModifyTag({ property: 'og:description', content: description });
         })
       ),
     { dispatch: false }
@@ -162,7 +198,7 @@ export class SeoEffects {
       this.doc.head.appendChild(canonicalLink);
     }
     canonicalLink.setAttribute('href', url);
-    this.meta.setTag('og:url', url);
+    this.addOrModifyTag({ property: 'og:url', content: url });
   }
 
   private setSeoAttributes(seoAttributes: SeoAttributes) {
@@ -171,13 +207,23 @@ export class SeoEffects {
       .forEach(([key, value]) => {
         switch (key) {
           case 'title':
-            this.meta.setTitle(value);
-            break;
-          default:
-            this.meta.setTag(key, value);
-            break;
+            this.pageTitle$.next(value);
+            return;
+          case 'description':
+            this.pageDescription$.next(value);
+            return;
+          case 'robots':
+            this.addOrModifyTag({ name: key, content: value });
+            return;
         }
+        this.addOrModifyTag({ property: key.startsWith('og:') ? key : 'og:' + key, content: value });
       });
-    this.meta.setTag('pwa-version', PWA_VERSION);
+    this.addOrModifyTag({ property: 'pwa-version', content: PWA_VERSION });
+  }
+
+  private addOrModifyTag(tag: MetaDefinition) {
+    if (!this.metaService.updateTag(tag)) {
+      this.metaService.addTag(tag);
+    }
   }
 }

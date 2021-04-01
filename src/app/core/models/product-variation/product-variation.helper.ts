@@ -1,7 +1,8 @@
-import { flatten, groupBy, omit } from 'lodash-es';
+import { flatten, groupBy } from 'lodash-es';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
-import { VariationProductMasterView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { omit } from 'ish-core/utils/functions';
 
 import { VariationAttribute } from './variation-attribute.model';
 import { VariationOptionGroup } from './variation-option-group.model';
@@ -14,7 +15,7 @@ export class ProductVariationHelper {
    * @returns       Indicates if no perfect match is found.
    * TODO: Refactor this to a more functional style
    */
-  private static alternativeCombinationCheck(option: VariationSelectOption, product: VariationProductView): boolean {
+  private static alternativeCombinationCheck(option: VariationSelectOption, product: ProductView): boolean {
     if (!product.variableVariationAttributes?.length) {
       return;
     }
@@ -60,13 +61,13 @@ export class ProductVariationHelper {
   /**
    * Build select value structure
    */
-  static buildVariationOptionGroups(product: VariationProductView): VariationOptionGroup[] {
+  static buildVariationOptionGroups(product: ProductView): VariationOptionGroup[] {
     if (!product) {
       return [];
     }
 
     // transform currently selected variation attribute list to object with the attributeId as key
-    const currentSettings = (product.variableVariationAttributes || []).reduce(
+    const currentSettings = (product.variableVariationAttributes || []).reduce<{ [id: string]: VariationAttribute }>(
       (acc, attr) => ({
         ...acc,
         [attr.variationAttributeId]: attr,
@@ -103,7 +104,7 @@ export class ProductVariationHelper {
     });
   }
 
-  private static simplifyVariableVariationAttributes(attrs: VariationAttribute[]): object {
+  private static simplifyVariableVariationAttributes(attrs: VariationAttribute[]): { [name: string]: string } {
     return attrs
       .map(attr => ({
         name: attr.variationAttributeId,
@@ -112,7 +113,7 @@ export class ProductVariationHelper {
       .reduce((acc, val) => ({ ...acc, [val.name]: val.value }), {});
   }
 
-  private static difference(obj1: object, obj2: object): number {
+  private static difference(obj1: { [name: string]: string }, obj2: { [name: string]: string }): number {
     const keys = Object.keys(obj1);
     if (keys.length !== Object.keys(obj2).length || keys.some(k => Object.keys(obj2).indexOf(k) < 0)) {
       throw new Error("cannot calculate difference if objects don't have the same keys");
@@ -120,7 +121,7 @@ export class ProductVariationHelper {
     return keys.reduce((sum, key) => (obj1[key] !== obj2[key] ? sum + 1 : sum), 0);
   }
 
-  static findPossibleVariation(name: string, value: string, product: VariationProductView): string {
+  static findPossibleVariation(name: string, value: string, product: ProductView): string {
     const target = omit(
       ProductVariationHelper.simplifyVariableVariationAttributes(product.variableVariationAttributes),
       name
@@ -149,11 +150,11 @@ export class ProductVariationHelper {
     return product.sku;
   }
 
-  static hasDefaultVariation(product: VariationProductMasterView): product is VariationProductMasterView {
+  static hasDefaultVariation(product: ProductView): boolean {
     return product && !!product.defaultVariationSKU;
   }
 
-  static productVariationCount(product: VariationProductMasterView, filters: FilterNavigation): number {
+  static productVariationCount(product: ProductView, filters: FilterNavigation): number {
     if (!product) {
       return 0;
     } else if (!filters?.filter) {

@@ -72,7 +72,7 @@ describe('Ngrx State Transfer', () => {
     });
 
     it('should be able to handle undefined values', () => {
-      const input = {
+      const input: object = {
         a: undefined,
         b: {
           _x: undefined,
@@ -80,7 +80,7 @@ describe('Ngrx State Transfer', () => {
         },
       };
 
-      const output = {
+      const output: object = {
         a: undefined,
         b: {
           y: 'Y',
@@ -91,7 +91,7 @@ describe('Ngrx State Transfer', () => {
     });
 
     it('should be able to handle array values', () => {
-      const input = {
+      const input: object = {
         a: [],
         b: {
           _x: [],
@@ -99,7 +99,7 @@ describe('Ngrx State Transfer', () => {
         },
       };
 
-      const output = {
+      const output: object = {
         a: [],
         b: {
           y: ['Y'],

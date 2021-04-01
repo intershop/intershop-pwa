@@ -3,18 +3,14 @@ import { TranslateModule } from '@ngx-translate/core';
 import { omit, pick } from 'lodash-es';
 import { BehaviorSubject, EMPTY, Observable, Subject, of } from 'rxjs';
 import { map, mapTo, switchMapTo } from 'rxjs/operators';
-import { anyString, anything, instance, mock, when } from 'ts-mockito';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
-import {
-  ProductView,
-  VariationProductMasterView,
-  VariationProductView,
-} from 'ish-core/models/product-view/product-view.model';
-import { AnyProductViewType, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 
 import {
   EXTERNAL_DISPLAY_PROPERTY_PROVIDER,
@@ -37,6 +33,7 @@ describe('Product Context Facade', () => {
 
   beforeEach(() => {
     shoppingFacade = mock(ShoppingFacade);
+    when(shoppingFacade.productLinks$(anything())).thenReturn(of({}));
     when(shoppingFacade.productParts$(anything())).thenReturn(EMPTY);
     when(shoppingFacade.category$(anything())).thenReturn(of(undefined));
 
@@ -58,6 +55,8 @@ describe('Product Context Facade', () => {
         "requiredCompletenessLevel": 2,
       }
     `);
+    verify(shoppingFacade.productLinks$(anything())).never();
+    verify(shoppingFacade.promotions$(anything())).never();
     expect(context.get('loading')).toBeFalsy();
   });
 
@@ -102,7 +101,6 @@ describe('Product Context Facade', () => {
           "loading": false,
           "maxQuantity": 100,
           "minQuantity": 10,
-          "productAsVariationProduct": null,
           "productURL": "/sku123",
           "propagateActive": true,
           "quantity": 10,
@@ -112,10 +110,6 @@ describe('Product Context Facade', () => {
           "stepQuantity": 10,
         }
       `);
-    });
-
-    it('should not set stream for variation product', () => {
-      expect(context.get('productAsVariationProduct')).toBeFalsy();
     });
 
     it('should set correct display properties for out-of-stock product', () => {
@@ -133,7 +127,7 @@ describe('Product Context Facade', () => {
           "price": true,
           "promotions": true,
           "quantity": false,
-          "readOnly": false,
+          "readOnly": undefined,
           "retailSetParts": false,
           "shipment": false,
           "sku": true,
@@ -175,7 +169,6 @@ describe('Product Context Facade', () => {
           "loading": false,
           "maxQuantity": 100,
           "minQuantity": 10,
-          "productAsVariationProduct": null,
           "productURL": "/sku123",
           "propagateActive": true,
           "quantity": 10,
@@ -185,10 +178,6 @@ describe('Product Context Facade', () => {
           "stepQuantity": 10,
         }
       `);
-    });
-
-    it('should not set stream for variation product', () => {
-      expect(context.get('productAsVariationProduct')).toBeFalsy();
     });
 
     it('should not adapt required completeness level for normal product', () => {
@@ -303,28 +292,70 @@ describe('Product Context Facade', () => {
       });
     });
 
-    it('should set correct display properties for product', () => {
-      expect(context.get('displayProperties')).toMatchInlineSnapshot(`
-        Object {
-          "addToBasket": true,
-          "addToCompare": true,
-          "addToOrderTemplate": true,
-          "addToQuote": true,
-          "addToWishlist": true,
-          "bundleParts": false,
-          "description": true,
-          "inventory": true,
-          "name": true,
-          "price": true,
-          "promotions": true,
-          "quantity": true,
-          "readOnly": false,
-          "retailSetParts": false,
-          "shipment": true,
-          "sku": true,
-          "variations": false,
-        }
-      `);
+    describe('lazy property handling', () => {
+      it('should not load product links until subscription', done => {
+        verify(shoppingFacade.productLinks$(anything())).never();
+
+        context.select('links').subscribe(() => {
+          verify(shoppingFacade.productLinks$(anything())).once();
+          done();
+        });
+      });
+    });
+
+    describe('display properties', () => {
+      it('should set correct display properties for product', () => {
+        expect(context.get('displayProperties')).toMatchInlineSnapshot(`
+          Object {
+            "addToBasket": true,
+            "addToCompare": true,
+            "addToOrderTemplate": true,
+            "addToQuote": true,
+            "addToWishlist": true,
+            "bundleParts": false,
+            "description": true,
+            "inventory": true,
+            "name": true,
+            "price": true,
+            "promotions": true,
+            "quantity": true,
+            "readOnly": undefined,
+            "retailSetParts": false,
+            "shipment": true,
+            "sku": true,
+            "variations": false,
+          }
+        `);
+      });
+
+      it('should include external displayProperty overrides when calculating', () => {
+        context.config = {
+          readOnly: true,
+          name: false,
+        };
+
+        expect(context.get('displayProperties')).toMatchInlineSnapshot(`
+          Object {
+            "addToBasket": true,
+            "addToCompare": true,
+            "addToOrderTemplate": true,
+            "addToQuote": true,
+            "addToWishlist": true,
+            "bundleParts": false,
+            "description": true,
+            "inventory": true,
+            "name": false,
+            "price": true,
+            "promotions": true,
+            "quantity": true,
+            "readOnly": true,
+            "retailSetParts": false,
+            "shipment": true,
+            "sku": true,
+            "variations": false,
+          }
+        `);
+      });
     });
   });
 
@@ -439,23 +470,22 @@ describe('Product Context Facade', () => {
       context.set('sku', () => '123');
     });
 
-    it('should set parts property for retail set', () => {
-      expect(context.get('parts')).toMatchInlineSnapshot(`
-        Array [
-          Object {
-            "quantity": 1,
-            "sku": "p1",
-          },
-          Object {
-            "quantity": 1,
-            "sku": "p2",
-          },
-        ]
-      `);
-    });
-
-    it('should not set stream for variation product', () => {
-      expect(context.get('productAsVariationProduct')).toBeFalsy();
+    it('should set parts property for retail set', done => {
+      context.select('parts').subscribe(parts => {
+        expect(parts).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "quantity": 1,
+              "sku": "p1",
+            },
+            Object {
+              "quantity": 1,
+              "sku": "p2",
+            },
+          ]
+        `);
+        done();
+      });
     });
 
     it('should set correct display properties for retail set', () => {
@@ -473,7 +503,7 @@ describe('Product Context Facade', () => {
           "price": true,
           "promotions": true,
           "quantity": false,
-          "readOnly": false,
+          "readOnly": undefined,
           "retailSetParts": true,
           "shipment": false,
           "sku": true,
@@ -510,23 +540,22 @@ describe('Product Context Facade', () => {
       context.set('sku', () => '123');
     });
 
-    it('should set parts property for bundle', () => {
-      expect(context.get('parts')).toMatchInlineSnapshot(`
-        Array [
-          Object {
-            "quantity": 1,
-            "sku": "p1",
-          },
-          Object {
-            "quantity": 2,
-            "sku": "p2",
-          },
-        ]
-      `);
-    });
-
-    it('should not set stream for variation product', () => {
-      expect(context.get('productAsVariationProduct')).toBeFalsy();
+    it('should set parts property for bundle', done => {
+      context.select('parts').subscribe(parts => {
+        expect(parts).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "quantity": 1,
+              "sku": "p1",
+            },
+            Object {
+              "quantity": 2,
+              "sku": "p2",
+            },
+          ]
+        `);
+        done();
+      });
     });
 
     it('should set correct display properties for bundle', () => {
@@ -544,7 +573,7 @@ describe('Product Context Facade', () => {
           "price": true,
           "promotions": true,
           "quantity": true,
-          "readOnly": false,
+          "readOnly": undefined,
           "retailSetParts": false,
           "shipment": true,
           "sku": true,
@@ -555,7 +584,7 @@ describe('Product Context Facade', () => {
   });
 
   describe('with a variation product', () => {
-    let product: VariationProductView;
+    let product: ProductView;
 
     beforeEach(() => {
       product = {
@@ -567,16 +596,10 @@ describe('Product Context Facade', () => {
         available: true,
         readyForShipmentMin: 0,
         readyForShipmentMax: 2,
-      } as VariationProductView;
+      } as ProductView;
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
 
       context.set('sku', () => '123');
-    });
-
-    it('should set stream for variation product', () => {
-      expect(context.get('productAsVariationProduct')).toEqual(product);
-
-      expect(context.get('productAsVariationProduct')).toEqual(context.get('product'));
     });
 
     it('should set correct display properties for variation product', () => {
@@ -594,7 +617,7 @@ describe('Product Context Facade', () => {
           "price": true,
           "promotions": true,
           "quantity": true,
-          "readOnly": false,
+          "readOnly": undefined,
           "retailSetParts": false,
           "shipment": true,
           "sku": true,
@@ -605,7 +628,7 @@ describe('Product Context Facade', () => {
   });
 
   describe('with a master product', () => {
-    let product: VariationProductMasterView;
+    let product: ProductView;
 
     beforeEach(() => {
       product = {
@@ -615,14 +638,10 @@ describe('Product Context Facade', () => {
         maxOrderQuantity: 100,
         available: true,
         type: 'VariationProductMaster',
-      } as VariationProductMasterView;
+      } as ProductView;
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
 
       context.set('sku', () => '123');
-    });
-
-    it('should not set stream for variation product', () => {
-      expect(context.get('productAsVariationProduct')).toBeFalsy();
     });
 
     it('should set correct display properties for master product', () => {
@@ -640,7 +659,7 @@ describe('Product Context Facade', () => {
           "price": true,
           "promotions": true,
           "quantity": false,
-          "readOnly": false,
+          "readOnly": undefined,
           "retailSetParts": false,
           "shipment": false,
           "sku": true,
@@ -660,7 +679,7 @@ describe('Product Context Facade', () => {
     let someOther$: Subject<boolean>;
 
     class ProviderA implements ExternalDisplayPropertiesProvider {
-      setup(product$: Observable<AnyProductViewType>): Observable<Partial<ProductContextDisplayProperties<false>>> {
+      setup(product$: Observable<ProductView>): Observable<Partial<ProductContextDisplayProperties<false>>> {
         return product$.pipe(
           map(p =>
             p?.sku === '456'
@@ -678,7 +697,7 @@ describe('Product Context Facade', () => {
     }
 
     class ProviderB implements ExternalDisplayPropertiesProvider {
-      setup(product$: Observable<AnyProductViewType>): Observable<Partial<ProductContextDisplayProperties<false>>> {
+      setup(product$: Observable<ProductView>): Observable<Partial<ProductContextDisplayProperties<false>>> {
         return product$.pipe(
           mapTo({
             shipment: false,
@@ -689,7 +708,7 @@ describe('Product Context Facade', () => {
     }
 
     class ProviderC implements ExternalDisplayPropertiesProvider {
-      setup(product$: Observable<AnyProductViewType>): Observable<Partial<ProductContextDisplayProperties<false>>> {
+      setup(product$: Observable<ProductView>): Observable<Partial<ProductContextDisplayProperties<false>>> {
         return product$.pipe(
           switchMapTo(someOther$),
           map(prop => (prop ? { price: false } : {}))
@@ -746,7 +765,7 @@ describe('Product Context Facade', () => {
           "price": true,
           "promotions": false,
           "quantity": true,
-          "readOnly": false,
+          "readOnly": undefined,
           "retailSetParts": false,
           "shipment": false,
           "sku": true,
@@ -776,7 +795,7 @@ describe('Product Context Facade', () => {
           "price": true,
           "promotions": false,
           "quantity": true,
-          "readOnly": false,
+          "readOnly": undefined,
           "retailSetParts": false,
           "shipment": false,
           "sku": true,
@@ -787,6 +806,37 @@ describe('Product Context Facade', () => {
       someOther$.next(true);
 
       expect(context.get('displayProperties', 'price')).toMatchInlineSnapshot(`false`);
+    });
+
+    it('should include external displayProperty overrides when calculating', () => {
+      context.set('sku', () => '456');
+
+      context.config = {
+        readOnly: true,
+        name: false,
+      };
+
+      expect(context.get('displayProperties')).toMatchInlineSnapshot(`
+        Object {
+          "addToBasket": false,
+          "addToCompare": false,
+          "addToOrderTemplate": false,
+          "addToQuote": false,
+          "addToWishlist": false,
+          "bundleParts": false,
+          "description": true,
+          "inventory": true,
+          "name": false,
+          "price": true,
+          "promotions": false,
+          "quantity": true,
+          "readOnly": true,
+          "retailSetParts": false,
+          "shipment": false,
+          "sku": true,
+          "variations": false,
+        }
+      `);
     });
   });
 });

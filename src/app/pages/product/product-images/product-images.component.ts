@@ -5,7 +5,8 @@ import { SwiperComponent } from 'swiper/angular';
 import SwiperCore, { Navigation } from 'swiper/core';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { AnyProductViewType, ProductHelper } from 'ish-core/models/product/product.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { ProductHelper } from 'ish-core/models/product/product.model';
 
 SwiperCore.use([Navigation]);
 
@@ -28,7 +29,7 @@ export class ProductImagesComponent implements OnInit {
 
   activeSlide = 0;
 
-  product$: Observable<AnyProductViewType>;
+  product$: Observable<ProductView>;
 
   constructor(private context: ProductContextFacade) {}
 

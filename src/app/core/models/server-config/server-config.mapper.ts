@@ -1,10 +1,10 @@
-import { omit } from 'lodash-es';
+import { omit } from 'ish-core/utils/functions';
 
 import { ServerConfigData, ServerConfigDataEntry } from './server-config.interface';
 import { ServerConfig } from './server-config.model';
 
 export class ServerConfigMapper {
-  private static transformType(val) {
+  private static transformType(val: unknown) {
     if (typeof val === 'string') {
       if (!isNaN(+val)) {
         return +val;
@@ -22,7 +22,7 @@ export class ServerConfigMapper {
       (acc, entry) => ({
         ...acc,
         [entry[0]]:
-          typeof entry[1] === 'object' && !Array.isArray(entry[1])
+          entry[1] !== null && typeof entry[1] === 'object' && !Array.isArray(entry[1])
             ? // do recursion if we find an object
               ServerConfigMapper.mapEntries(
                 // get rid of id

@@ -9,6 +9,7 @@ import { Locale } from 'ish-core/models/locale/locale.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
+import { getBasketIdOrCurrent } from 'ish-core/store/customer/basket';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { PaymentService } from './payment.service';
@@ -17,25 +18,6 @@ describe('Payment Service', () => {
   let paymentService: PaymentService;
   let apiService: ApiService;
   let appFacade: AppFacade;
-
-  const basketMock = {
-    data: {
-      id: 'test',
-      calculationState: 'UNCALCULATED',
-      buckets: [
-        {
-          lineItems: [],
-          shippingMethod: {},
-          shipToAddress: {},
-        },
-      ],
-      payment: {
-        name: 'testPayment',
-        id: 'paymentId',
-      },
-      totals: {},
-    },
-  };
 
   const paymentInstrument = {
     id: '4321',
@@ -65,7 +47,7 @@ describe('Payment Service', () => {
         value: 'DE430859340859340',
       },
     ],
-  };
+  } as PaymentInstrument;
 
   const creditCardPaymentInstrument = {
     id: 'UZUKgzzAppcAAAFzK9FDCMcG',
@@ -96,7 +78,10 @@ describe('Payment Service', () => {
         { provide: ApiService, useFactory: () => instance(apiService) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         provideMockStore({
-          selectors: [{ selector: getCurrentLocale, value: { lang: 'en_US' } as Locale }],
+          selectors: [
+            { selector: getCurrentLocale, value: { lang: 'en_US' } as Locale },
+            { selector: getBasketIdOrCurrent, value: 'current' },
+          ],
         }),
       ],
     });
@@ -120,7 +105,7 @@ describe('Payment Service', () => {
         apiService.put(`baskets/current/payments/open-tender?include=paymentMethod`, anything(), anything())
       ).thenReturn(of([]));
 
-      paymentService.setBasketPayment(basketMock.data.payment.name).subscribe(() => {
+      paymentService.setBasketPayment('testPayment').subscribe(() => {
         verify(
           apiService.put(`baskets/current/payments/open-tender?include=paymentMethod`, anything(), anything())
         ).once();

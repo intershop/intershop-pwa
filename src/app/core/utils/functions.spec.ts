@@ -1,4 +1,4 @@
-import { arraySlices, mergeDeep } from './functions';
+import { arraySlices, isArrayEqual, mergeDeep, omit } from './functions';
 
 describe('Functions', () => {
   describe('arraySlices', () => {
@@ -70,6 +70,74 @@ describe('Functions', () => {
           "d": 11,
         }
       `);
+    });
+  });
+
+  describe('omit', () => {
+    let input: object;
+
+    beforeEach(() => {
+      input = {
+        a: 1,
+        b: '2',
+        c: true,
+        d: false,
+      };
+    });
+
+    it('should remove keys from object on input', () => {
+      expect(omit(input, 'a', 'c')).toMatchInlineSnapshot(`
+        Object {
+          "b": "2",
+          "d": false,
+        }
+      `);
+    });
+
+    it('should not modify original input when used', () => {
+      omit(input, 'a', 'c');
+
+      expect(input).toMatchInlineSnapshot(`
+        Object {
+          "a": 1,
+          "b": "2",
+          "c": true,
+          "d": false,
+        }
+      `);
+    });
+
+    it('should return original object if input was falsy', () => {
+      expect(omit(undefined, 'a')).toBeUndefined();
+    });
+
+    it('should return original object if input was array', () => {
+      expect(omit(['a'], 'a')).toMatchInlineSnapshot(`
+        Array [
+          "a",
+        ]
+      `);
+    });
+  });
+
+  describe('isArrayEqual', () => {
+    const obj = {};
+
+    it.each`
+      array1       | array2       | isEqual
+      ${undefined} | ${undefined} | ${true}
+      ${undefined} | ${[]}        | ${false}
+      ${undefined} | ${[1]}       | ${false}
+      ${[]}        | ${undefined} | ${false}
+      ${[1]}       | ${undefined} | ${false}
+      ${[]}        | ${[]}        | ${true}
+      ${[1]}       | ${[1]}       | ${true}
+      ${[1, 2]}    | ${[2, 1]}    | ${false}
+      ${[1, 2]}    | ${[1, 2]}    | ${true}
+      ${[{}]}      | ${[{}]}      | ${false}
+      ${[obj]}     | ${[obj]}     | ${true}
+    `('should return $isEqual when comparing $array1 and $array2', ({ array1, array2, isEqual }) => {
+      expect(isArrayEqual(array1, array2)).toEqual(isEqual);
     });
   });
 });

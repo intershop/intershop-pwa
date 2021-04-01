@@ -137,7 +137,7 @@ describe('Orders Selectors', () => {
       it('should set loading to false', () => {
         expect(getOrdersLoading(store$.state)).toBeFalse();
 
-        const loadedOrder = getOrder(store$.state, { orderId: orders[0].id });
+        const loadedOrder = getOrder(orders[0].id)(store$.state);
         expect(loadedOrder.documentNo).toEqual(orders[0].documentNo);
         expect(loadedOrder.lineItems).toHaveLength(1);
         expect(loadedOrder.lineItems[0].id).toEqual('test');

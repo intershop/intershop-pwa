@@ -10,7 +10,7 @@ exports[`Cms Carousel Component should be created 1`] = `
         ng-reflect-interval="0"
         ng-reflect-show-navigation-arrows="false"
         style="display: block"
-        aria-activedescendant="ngb-slide-0"
+        aria-activedescendant="slide-ngb-slide-0"
         ><ol class="carousel-indicators sr-only" role="tablist">
           <li
             role="tab"

@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 
+import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
+
 import { WishlistData } from './wishlist.interface';
 import { Wishlist, WishlistItem } from './wishlist.model';
 
@@ -17,25 +20,20 @@ export class WishlistMapper {
   fromData(wishlistData: WishlistData, wishlistId: string): Wishlist {
     if (wishlistData) {
       let items: WishlistItem[];
-      if (wishlistData.items && wishlistData.items.length) {
-        // create items object from attribute array
-        const arrayToObject = attributes =>
-          attributes.reduce((obj, attr) => {
-            obj[attr.name] = attr.value;
-            return obj;
-          }, {});
-        items = wishlistData.items
-          .map(item => arrayToObject(item.attributes))
-          .map(item => ({
-            sku: item.sku,
-            id: item.id,
-            creationDate: Number(item.creationDate),
-            desiredQuantity: {
-              value: item.desiredQuantity.value,
-              // TBD: is the unit necessarry?
-              // unit: item.desiredQuantity.unit,
-            },
-          }));
+      if (wishlistData.items?.length) {
+        items = wishlistData.items.map(item => ({
+          sku: AttributeHelper.getAttributeValueByAttributeName(item.attributes, 'sku'),
+          id: AttributeHelper.getAttributeValueByAttributeName(item.attributes, 'id'),
+          creationDate: Number(AttributeHelper.getAttributeValueByAttributeName(item.attributes, 'creationDate')),
+          desiredQuantity: {
+            value: AttributeHelper.getAttributeValueByAttributeName<Attribute<number>>(
+              item.attributes,
+              'desiredQuantity'
+            ).value,
+            // TBD: is the unit necessary?
+            // unit: item.desiredQuantity.unit,
+          },
+        }));
       } else {
         items = [];
       }

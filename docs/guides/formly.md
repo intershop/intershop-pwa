@@ -187,8 +187,8 @@ To facilitate this, the `formly/dev/testing` folder contains a `FormlyTestingCom
 - `FormlyTestingExampleComponent` is a type that contains an empty input field and can be used as an example field type.
 - `FormlyTestingFieldgroupExampleComponent` is a type that renders all configs in the `fieldGroup` attribute of the field.
 
-In addition, to test components or pages that use Formly, use the `FormlyTestingModule`.
-It defines a FormlyModule with preconfigured sample field types.
+In addition, to test components or pages that use Formly, import the `FormlyTestingModule`.
+It defines and exports a FormlyModule with preconfigured dummy field types and wrappers that match the `FormlyModule`.
 
 ### Testing Custom Types
 
@@ -241,11 +241,13 @@ Refer to the tables below for an overview of these parts.
 | textarea-description           | Adds a description to textarea fields, including the amount of remaining characters.                                                                          | `maxLength`: Specifies the maximum length to be displayed in the message.                                                    |
 | decription                     | Adds a custom description to any field                                                                                                                        | `customDescription`: `string` or `{key: string; args: any}` that will be translated                                          |
 | tooltip                        | Adds a tooltip to a field. Includes `<ish-field-tooltip>` component.                                                                                          | `tooltip`: `{ title?: string; text: string; link: string }` that defines the different tooltip texts.                        |
+| input-addon                    | Adds a prepend or append text to a field, e.g. a currency or unit.                                                                                            | `addonLeft?`: `{ text: string; }, addonRight?: {text: string}` that defines the addon texts.                                 |
 
 ### Extensions
 
-| Name                     | Functionality                                                                   | Relevant templateOptions                                                 |
-| ------------------------ | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| critical-default-values  | Sets required attributes on `FormlyFieldConfigs` that are missing them.         | ----                                                                     |
-| hide-if-empty            | Hides fields of type `ish-select-field` that have an empty `options` attribute. | `options`: Used to determine emptiness.                                  |
-| translate-select-options | Automatically translates option labels and adds a placeholder option.           | `placeholder`: used to determine whether to set placeholder and its text |
+| Name                     | Functionality                                                                   | Relevant templateOptions                                                   |
+| ------------------------ | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| critical-default-values  | Sets required attributes on `FormlyFieldConfigs` that are missing them.         | ----                                                                       |
+| hide-if-empty            | Hides fields of type `ish-select-field` that have an empty `options` attribute. | `options`: Used to determine emptiness.                                    |
+| translate-select-options | Automatically translates option labels and adds a placeholder option.           | `placeholder`: used to determine whether to set placeholder and its text   |
+| post-wrappers            | Appends wrappers to the default ones defined in the `FormlyModule`              | `postWrappers`: `string[]` of extensions to append to the default wrappers |

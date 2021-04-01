@@ -85,7 +85,7 @@ export class WishlistEffects {
     this.actions$.pipe(
       ofType(deleteWishlist),
       mapToPayloadProperty('wishlistId'),
-      mergeMap(wishlistId => this.store.pipe(select(getWishlistDetails, { id: wishlistId }))),
+      mergeMap(wishlistId => this.store.pipe(select(getWishlistDetails(wishlistId)))),
       whenTruthy(),
       map(wishlist => ({ wishlistId: wishlist.id, title: wishlist.title })),
       mergeMap(({ wishlistId, title }) =>

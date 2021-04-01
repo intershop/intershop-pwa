@@ -3,6 +3,7 @@ import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/stor
 import { isEqual } from 'lodash-es';
 import { identity } from 'rxjs';
 
+import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.interface';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
@@ -12,14 +13,13 @@ import {
   createVariationProductMasterView,
   createVariationProductView,
 } from 'ish-core/models/product-view/product-view.model';
-import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
-import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import {
   AllProductTypes,
-  AnyProductViewType,
   Product,
   ProductCompletenessLevel,
   ProductHelper,
+  VariationProduct,
+  VariationProductMaster,
 } from 'ish-core/models/product/product.model';
 import { generateCategoryUrl } from 'ish-core/routing/category/category.route';
 import { selectRouteParam } from 'ish-core/store/core/router';
@@ -99,7 +99,7 @@ export const getProduct = (sku: string) =>
     internalProductDefaultVariationSKU(sku),
     internalProductVariations(sku),
     internalProductMaster(sku),
-    (product, defaultCategory, defaultVariationSKU, variations, productMaster): AnyProductViewType =>
+    (product, defaultCategory, defaultVariationSKU, variations, productMaster): ProductView =>
       ProductHelper.isMasterProduct(product)
         ? createVariationProductMasterView(product, defaultVariationSKU, variations, defaultCategory)
         : ProductHelper.isVariationProduct(product)
@@ -107,7 +107,7 @@ export const getProduct = (sku: string) =>
         : createProductView(product, defaultCategory)
   );
 
-export const getSelectedProduct = createSelectorFactory<object, AnyProductViewType>(projector =>
+export const getSelectedProduct = createSelectorFactory<object, ProductView>(projector =>
   resultMemoize(projector, isEqual)
 )(identity, selectRouteParam('sku'), (state: object, sku: string) => getProduct(sku)(state));
 
@@ -123,11 +123,13 @@ export const getProductLinks = (sku: string) => createSelector(getProductsState,
 
 export const getProductParts = (sku: string) => createSelector(getProductsState, state => state.parts[sku]);
 
-export const getBreadcrumbForProductPage = createSelectorFactory(projector => resultMemoize(projector, isEqual))(
+export const getBreadcrumbForProductPage = createSelectorFactory<object, BreadcrumbItem[]>(projector =>
+  resultMemoize(projector, isEqual)
+)(
   getSelectedProduct,
   getSelectedCategory,
   getCategoryEntities,
-  (product: ProductView, category: CategoryView, entities: Dictionary<Category>) =>
+  (product: ProductView, category: CategoryView, entities: Dictionary<Category>): BreadcrumbItem[] =>
     ProductHelper.isSufficientlyLoaded(product, ProductCompletenessLevel.Detail)
       ? (category?.categoryPath || product.defaultCategory?.categoryPath || [])
           .map(id => entities[id])

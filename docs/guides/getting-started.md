@@ -103,6 +103,22 @@ For development make sure the used IDE or editor follows the [EditorConfig](http
 
 Use `npm run format` to perform a formatting run on the code base with Prettier.
 
+## Type Safety
+
+The Intershop PWA has both TypeScript's [`noImplicitAny`](https://www.typescriptlang.org/tsconfig#noImplicitAny) and Angular's [`strictTemplates`](https://angular.io/guide/template-typecheck) compile options active to ensure everything is typed correctly.
+
+Learning the TypeScript typing system can be quite hard and it can take years to finally master it, but it also helps to avoid bugs by passing around untyped data.
+Typing can be especially tedious when it comes to tests, but there it is as important as in the production code.
+If the tests are running successfully on untyped (and sometimes outdated) data, nobody will be the wiser.
+
+Almost everything can be typed correctly without using `any`.
+If generic typing is not possible, you can use `unknown` or `object` for utility functions.
+In most other cases, the typings can be correctly applied.
+
+We encourage everybody to up their game about strict typing with TypeScript, but as always, there are ways around it.
+We supply a [`tsconfig.app-no-checks.json`](../../tsconfig.app-no-checks.json) in the source root, that can be used for Angular builders in the `angular.json` to disable all safety features.
+However, we don't support doing this for production builds.
+
 ## Pre-Commit Check
 
 `npm run check` is a combination task of `lint`, `format` and `test` that runs some of the checks that will also be performed in continuous integration on the whole code base.

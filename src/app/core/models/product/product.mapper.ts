@@ -10,11 +10,9 @@ import { Link } from 'ish-core/models/link/link.model';
 import { PriceMapper } from 'ish-core/models/price/price.mapper';
 import { SeoAttributesMapper } from 'ish-core/models/seo-attributes/seo-attributes.mapper';
 
-import { VariationProductMaster } from './product-variation-master.model';
-import { VariationProduct } from './product-variation.model';
-import { AllProductTypes, SkuQuantityType } from './product.helper';
+import { SkuQuantityType } from './product.helper';
 import { ProductData, ProductDataStub, ProductVariationLink } from './product.interface';
-import { Product } from './product.model';
+import { AllProductTypes, Product, VariationProduct, VariationProductMaster } from './product.model';
 
 /**
  * check if attribute is available and return value, otherwise undefined
@@ -210,6 +208,7 @@ export class ProductMapper {
       maxOrderQuantity: data.maxOrderQuantity || 100,
       stepOrderQuantity: data.stepOrderQuantity || 1,
       packingUnit: data.packingUnit,
+      availableStock: data.availableStock,
       attributes:
         (data.attributeGroups &&
           data.attributeGroups.PRODUCT_DETAIL_ATTRIBUTES &&

@@ -21,12 +21,12 @@ describe('Punchout Service', () => {
     apiServiceMock = mock(ApiService);
     cookiesServiceMock = mock(CookiesService);
 
-    when(apiServiceMock.get(anything())).thenReturn(of({}));
-    when(apiServiceMock.resolveLinks()).thenReturn(() => of([]));
-    when(apiServiceMock.post(anything(), anything())).thenReturn(of({}));
-    when(apiServiceMock.resolveLink()).thenReturn(() => of({}));
-    when(apiServiceMock.put(anything(), anything())).thenReturn(of({}));
-    when(apiServiceMock.delete(anything())).thenReturn(of({}));
+    when(apiServiceMock.get(anything(), anything())).thenReturn(of({}));
+    when(apiServiceMock.resolveLinks(anything())).thenReturn(() => of([]));
+    when(apiServiceMock.post(anything(), anything(), anything())).thenReturn(of({}));
+    when(apiServiceMock.resolveLink(anything())).thenReturn(() => of({}));
+    when(apiServiceMock.put(anything(), anything(), anything())).thenReturn(of({}));
+    when(apiServiceMock.delete(anything(), anything())).thenReturn(of({}));
 
     TestBed.configureTestingModule({
       providers: [
@@ -46,12 +46,19 @@ describe('Punchout Service', () => {
     expect(punchoutService).toBeTruthy();
   });
 
-  it('should call the getPunchoutOciUsers when fetching punchout users', done => {
+  it('should call the getUsers when fetching punchout users', done => {
     punchoutService.getUsers().subscribe(() => {
-      verify(apiServiceMock.get(anything())).once();
+      verify(apiServiceMock.get(anything(), anything())).once();
       expect(capture(apiServiceMock.get).last()).toMatchInlineSnapshot(`
         Array [
-          "customers/4711/punchouts/oci/users",
+          "customers/4711/punchouts/oci5/users",
+          Object {
+            "headers": HttpHeaders {
+              "lazyInit": [Function],
+              "lazyUpdate": null,
+              "normalizedNames": Map {},
+            },
+          },
         ]
       `);
       done();
@@ -60,17 +67,17 @@ describe('Punchout Service', () => {
 
   it('should call the addUser for creating a new punchout user', done => {
     punchoutService.createUser({ login: 'ociuser' } as PunchoutUser).subscribe(() => {
-      verify(apiServiceMock.post(anything(), anything())).once();
-      expect(capture(apiServiceMock.post).last()[0]).toMatchInlineSnapshot(`"customers/4711/punchouts/oci/users"`);
+      verify(apiServiceMock.post(anything(), anything(), anything())).once();
+      expect(capture(apiServiceMock.post).last()[0]).toMatchInlineSnapshot(`"customers/4711/punchouts/oci5/users"`);
       done();
     });
   });
 
   it('should call the updateUser for updating a punchout user', done => {
     punchoutService.updateUser({ login: 'ociuser' } as PunchoutUser).subscribe(() => {
-      verify(apiServiceMock.put(anything(), anything())).once();
+      verify(apiServiceMock.put(anything(), anything(), anything())).once();
       expect(capture(apiServiceMock.put).last()[0]).toMatchInlineSnapshot(
-        `"customers/4711/punchouts/oci/users/ociuser"`
+        `"customers/4711/punchouts/oci5/users/ociuser"`
       );
       done();
     });
@@ -78,9 +85,9 @@ describe('Punchout Service', () => {
 
   it('should call deleteUser for deleting a punchout user', done => {
     punchoutService.deleteUser('ociuser').subscribe(() => {
-      verify(apiServiceMock.delete(anything())).once();
+      verify(apiServiceMock.delete(anything(), anything())).once();
       expect(capture(apiServiceMock.delete).last()[0]).toMatchInlineSnapshot(
-        `"customers/4711/punchouts/oci/users/ociuser"`
+        `"customers/4711/punchouts/oci5/users/ociuser"`
       );
       done();
     });

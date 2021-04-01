@@ -8,7 +8,8 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
+import { FormlyConfig, FormlyFieldConfig } from '@ngx-formly/core';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
@@ -28,18 +29,70 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
 
   @Output() updatePassword = new EventEmitter<{ password: string; currentPassword: string }>();
 
-  form: FormGroup;
+  accountProfilePasswordForm = new FormGroup({});
+  fields: FormlyFieldConfig[];
   submitted = false;
 
+  constructor(private config: FormlyConfig) {}
+
   ngOnInit() {
-    this.form = new FormGroup(
+    this.fields = [
       {
-        currentPassword: new FormControl('', [Validators.required]),
-        password: new FormControl('', [Validators.required, SpecialValidators.password]),
-        passwordConfirmation: new FormControl('', [Validators.required, SpecialValidators.password]),
+        key: 'currentPassword',
+        type: 'ish-password-field',
+        templateOptions: {
+          required: true,
+          hideRequiredMarker: true,
+          label: 'account.password.label',
+        },
+        validation: {
+          messages: {
+            required: 'account.update_password.old_password.error.required',
+            incorrect: 'account.update_password.old_password.error.incorrect',
+          },
+        },
       },
-      SpecialValidators.equalTo('passwordConfirmation', 'password')
-    );
+      {
+        key: 'password',
+        type: 'ish-password-field',
+        wrappers: [...(this.config.getType('ish-password-field').wrappers ?? []), 'description'],
+        templateOptions: {
+          required: true,
+          hideRequiredMarker: true,
+          label: 'account.update_password.newpassword.label',
+          customDescription: {
+            class: 'input-help',
+            key: 'account.register.password.extrainfo.message',
+            args: { 0: '7' },
+          },
+
+          autocomplete: 'new-password',
+        },
+        validation: {
+          messages: {
+            required: 'account.update_password.new_password.error.required',
+          },
+        },
+      },
+      {
+        key: 'passwordConfirmation',
+        type: 'ish-password-field',
+        templateOptions: {
+          required: true,
+          hideRequiredMarker: true,
+          label: 'account.update_password.newpassword_confirmation.label',
+        },
+        validators: {
+          validation: [SpecialValidators.equalToControl('password')],
+        },
+        validation: {
+          messages: {
+            required: 'account.register.password_confirmation.error.default',
+            equalTo: 'account.update_password.confirm_password.error.stringcompare',
+          },
+        },
+      },
+    ];
   }
 
   ngOnChanges(c: SimpleChanges) {
@@ -48,9 +101,9 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
 
   handleErrors(c: SimpleChanges) {
     if (c.error && c.error.currentValue && c.error.currentValue.error && c.error.currentValue.status === 401) {
-      this.form.controls.currentPassword.setErrors({ incorrect: true });
-      this.form.controls.currentPassword.markAsDirty();
-      this.form.controls.currentPassword.markAsTouched();
+      this.accountProfilePasswordForm.controls.currentPassword.setErrors({ incorrect: true });
+      this.accountProfilePasswordForm.controls.currentPassword.markAsDirty();
+      this.accountProfilePasswordForm.controls.currentPassword.markAsTouched();
     }
   }
 
@@ -58,19 +111,19 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
    * Submits form and throws create event when form is valid
    */
   submit() {
-    if (this.form.invalid) {
+    if (this.accountProfilePasswordForm.invalid) {
       this.submitted = true;
-      markAsDirtyRecursive(this.form);
+      markAsDirtyRecursive(this.accountProfilePasswordForm);
       return;
     }
 
     this.updatePassword.emit({
-      password: this.form.get('password').value,
-      currentPassword: this.form.get('currentPassword').value,
+      password: this.accountProfilePasswordForm.get('password').value,
+      currentPassword: this.accountProfilePasswordForm.get('currentPassword').value,
     });
   }
 
   get buttonDisabled() {
-    return this.form.invalid && this.submitted;
+    return this.accountProfilePasswordForm.invalid && this.submitted;
   }
 }

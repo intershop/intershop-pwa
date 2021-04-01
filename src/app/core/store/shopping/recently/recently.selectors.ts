@@ -1,15 +1,15 @@
-import { createSelector, createSelectorFactory, defaultMemoize } from '@ngrx/store';
-import { isEqual } from 'lodash-es';
+import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
 
 import { getSelectedProduct } from 'ish-core/store/shopping/products';
 import { getShoppingState } from 'ish-core/store/shopping/shopping-store';
+import { isArrayEqual } from 'ish-core/utils/functions';
 
 import { RecentlyState } from './recently.reducer';
 
 const getRecentlyState = createSelector(getShoppingState, state => state.recently);
 
-export const getRecentlyViewedProducts = createSelectorFactory<unknown, string[]>(projector =>
-  defaultMemoize(projector, undefined, isEqual)
+export const getRecentlyViewedProducts = createSelectorFactory<object, string[]>(projector =>
+  resultMemoize(projector, isArrayEqual)
 )(getRecentlyState, (state: RecentlyState): string[] =>
   state.products
     // take only first element of each group
@@ -25,6 +25,6 @@ export const getRecentlyViewedProducts = createSelectorFactory<unknown, string[]
 export const getMostRecentlyViewedProducts = createSelector(
   getRecentlyViewedProducts,
   getSelectedProduct,
-  (skus: string[], selected): string[] =>
+  (skus, selected): string[] =>
     selected ? skus.filter(productSKU => productSKU && productSKU !== selected.sku).slice(0, 4) : skus.slice(0, 4)
 );

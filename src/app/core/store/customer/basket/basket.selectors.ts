@@ -1,7 +1,8 @@
-import { createSelector, createSelectorFactory, defaultMemoize } from '@ngrx/store';
+import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 
 import { AddressHelper } from 'ish-core/models/address/address.helper';
+import { Address } from 'ish-core/models/address/address.model';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { BasketView, createBasketView } from 'ish-core/models/basket/basket.model';
 import { getCustomerState } from 'ish-core/store/customer/customer-store';
@@ -54,6 +55,10 @@ export const getCurrentBasketId = createSelector(getBasketState, basket =>
   basket.basket ? basket.basket.id : undefined
 );
 
+export const getBasketIdOrCurrent = createSelector(getBasketState, basket =>
+  basket.basket ? basket.basket.id : 'current'
+);
+
 export const getBasketLoading = createSelector(getBasketState, basket => basket.loading);
 
 export const getBasketError = createSelector(getBasketState, basket => basket.error);
@@ -76,13 +81,13 @@ export const getBasketEligiblePaymentMethods = createSelector(
     basket.eligiblePaymentMethods.map(pm => (customer ? pm : { ...pm, saveAllowed: false }))
 );
 
-export const getBasketInvoiceAddress = createSelectorFactory(projector =>
-  defaultMemoize(projector, undefined, isEqual)
-)(getCurrentBasket, basket => basket && basket.invoiceToAddress);
+export const getBasketInvoiceAddress = createSelectorFactory<object, Address>(projector =>
+  resultMemoize(projector, isEqual)
+)(getCurrentBasket, (basket: BasketView) => basket?.invoiceToAddress);
 
-export const getBasketShippingAddress = createSelectorFactory(projector =>
-  defaultMemoize(projector, undefined, isEqual)
-)(getCurrentBasket, basket => basket && basket.commonShipToAddress);
+export const getBasketShippingAddress = createSelectorFactory<object, Address>(projector =>
+  resultMemoize(projector, isEqual)
+)(getCurrentBasket, (basket: BasketView) => basket?.commonShipToAddress);
 
 export const isBasketInvoiceAndShippingAddressEqual = createSelector(
   getBasketInvoiceAddress,

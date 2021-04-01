@@ -1,3 +1,4 @@
+import { Action } from '@ngrx/store';
 import { MonoTypeOperatorFunction, Observable, OperatorFunction, of, throwError } from 'rxjs';
 import { catchError, distinctUntilChanged, filter, map, withLatestFrom } from 'rxjs/operators';
 
@@ -34,11 +35,11 @@ export function mapToProperty<T, K extends keyof T>(property: K) {
   return (source$: Observable<T>) => source$.pipe<T[K]>(map(x => (x ? x[property] : undefined)));
 }
 
-export function mapToPayload<T>(): OperatorFunction<{ payload: T; type: unknown }, T> {
+export function mapToPayload<T>(): OperatorFunction<{ payload: T } & Action, T> {
   return (source$: Observable<{ payload: T }>) => source$.pipe(map(action => action.payload));
 }
 
-export function mapToPayloadProperty<T>(key: keyof T): OperatorFunction<{ payload: T; type: unknown }, T[keyof T]> {
+export function mapToPayloadProperty<T, K extends keyof T>(key: K): OperatorFunction<{ payload: T } & Action, T[K]> {
   return (source$: Observable<{ payload: T }>) =>
     source$.pipe(
       map(action => action.payload),

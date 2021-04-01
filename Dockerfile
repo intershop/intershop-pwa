@@ -7,7 +7,7 @@ RUN npm i --ignore-scripts
 COPY projects/organization-management/src/app /workspace/projects/organization-management/src/app/
 COPY projects/requisition-management/src/app /workspace/projects/requisition-management/src/app/
 COPY src /workspace/src/
-COPY tsconfig.app.json tsconfig.json ngsw-config.json .browserslistrc angular.json /workspace/
+COPY tsconfig.app.json tsconfig.app-no-checks.json tsconfig.json ngsw-config.json .browserslistrc angular.json /workspace/
 RUN npm run build:schematics && npm run synchronize-lazy-components -- --ci
 ARG configuration=production
 COPY scripts /workspace/scripts/
@@ -23,7 +23,7 @@ RUN npm run ng -- build -c ${configuration}
 # ^ this part above is copied to Dockerfile_noSSR and should be kept in sync
 
 COPY tsconfig.server.json server.ts /workspace/
-RUN npm run ng -- run intershop-pwa:server -c ${configuration} --bundleDependencies
+RUN npm run ng -- run intershop-pwa:server -c ${configuration}
 # remove cache check for resources (especially index.html)
 # https://github.com/angular/angular/issues/23613#issuecomment-415886919
 RUN test "${serviceWorker}" = "true" && sed -i 's/canonicalHash !== cacheBustedHash/false/g' /workspace/dist/browser/ngsw-worker.js || true

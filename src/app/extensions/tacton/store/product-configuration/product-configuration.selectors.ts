@@ -21,7 +21,9 @@ export const getCurrentProductConfiguration = createSelector(
   (state, url) => url?.startsWith('/configure') && state?.current
 );
 
-function mapMembers(members: (TactonProductConfigurationGroup | TactonProductConfigurationParameter)[] = []) {
+function mapMembers(
+  members: (TactonProductConfigurationGroup | TactonProductConfigurationParameter)[] = []
+): TactonNavigationTree {
   return members
     .filter(TactonProductConfigurationHelper.isGroup)
     .filter(g => g.description)

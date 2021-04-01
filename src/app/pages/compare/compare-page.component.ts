@@ -18,12 +18,4 @@ export class ComparePageComponent implements OnInit {
     this.compareProducts$ = this.shoppingFacade.compareProducts$;
     this.compareProductsCount$ = this.shoppingFacade.compareProductsCount$;
   }
-
-  addToBasket({ sku, quantity }) {
-    this.shoppingFacade.addProductToBasket(sku, quantity);
-  }
-
-  removeFromCompare(sku: string) {
-    this.shoppingFacade.removeProductFromCompare(sku);
-  }
 }

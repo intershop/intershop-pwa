@@ -18,6 +18,7 @@ import {
   mergeMap,
   switchMap,
   switchMapTo,
+  take,
   throttleTime,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -41,12 +42,13 @@ import {
 
 import {
   loadProduct,
-  loadProductBundlesSuccess,
   loadProductFail,
   loadProductIfNotLoaded,
   loadProductLinks,
   loadProductLinksFail,
   loadProductLinksSuccess,
+  loadProductParts,
+  loadProductPartsSuccess,
   loadProductSuccess,
   loadProductVariationsFail,
   loadProductVariationsIfNotLoaded as loadProductVariationsIfNotLoaded,
@@ -55,11 +57,12 @@ import {
   loadProductsForCategoryFail,
   loadProductsForMaster,
   loadProductsForMasterFail,
-  loadRetailSetSuccess,
 } from './products.actions';
 import {
   getBreadcrumbForProductPage,
+  getProduct,
   getProductEntities,
+  getProductParts,
   getProductVariationSKUs,
   getSelectedProduct,
 } from './products.selectors';
@@ -169,18 +172,44 @@ export class ProductsEffects {
     )
   );
 
-  loadProductBundles$ = createEffect(() =>
+  loadProductParts$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadProductSuccess),
-      mapToPayloadProperty('product'),
-      filter(product => ProductHelper.isProductBundle(product)),
-      mergeMap(({ sku }) =>
-        this.productsService.getProductBundles(sku).pipe(
-          mergeMap(({ stubs, bundledProducts }) => [
-            ...stubs.map((product: Product) => loadProductSuccess({ product })),
-            loadProductBundlesSuccess({ sku, bundledProducts }),
-          ]),
-          mapErrorToAction(loadProductFail, { sku })
+      ofType(loadProductParts),
+      mapToPayloadProperty('sku'),
+      groupBy(identity),
+      mergeMap(group$ =>
+        group$.pipe(
+          this.throttleOnBrowser(),
+          mergeMap(sku =>
+            this.store.pipe(
+              select(getProductParts(sku)),
+              first(),
+              filter(parts => !parts?.length),
+              switchMap(() => this.store.pipe(select(getProduct(sku)))),
+              filter(product => ProductHelper.isProductBundle(product) || ProductHelper.isRetailSet(product)),
+              take(1)
+            )
+          ),
+          exhaustMap(product =>
+            ProductHelper.isProductBundle(product)
+              ? this.productsService.getProductBundles(product.sku).pipe(
+                  mergeMap(({ stubs, bundledProducts: parts }) => [
+                    ...stubs.map((stub: Product) => loadProductSuccess({ product: stub })),
+                    loadProductPartsSuccess({ sku: product.sku, parts }),
+                  ]),
+                  mapErrorToAction(loadProductFail, { sku: product.sku })
+                )
+              : this.productsService.getRetailSetParts(product.sku).pipe(
+                  mergeMap(stubs => [
+                    ...stubs.map((stub: Product) => loadProductSuccess({ product: stub })),
+                    loadProductPartsSuccess({
+                      sku: product.sku,
+                      parts: stubs.map(stub => ({ sku: stub.sku, quantity: 1 })),
+                    }),
+                  ]),
+                  mapErrorToAction(loadProductFail, { sku: product.sku })
+                )
+          )
         )
       )
     )
@@ -257,25 +286,6 @@ export class ProductsEffects {
       whenTruthy(),
       distinctUntilChanged(),
       map(categoryId => loadCategory({ categoryId }))
-    )
-  );
-
-  loadPartsOfRetailSet$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loadProductSuccess),
-      mapToPayloadProperty('product'),
-      filter(ProductHelper.isRetailSet),
-      mapToProperty('sku'),
-      mergeMap(sku =>
-        this.productsService
-          .getRetailSetParts(sku)
-          .pipe(
-            mergeMap(stubs => [
-              ...stubs.map((product: Product) => loadProductSuccess({ product })),
-              loadRetailSetSuccess({ sku, parts: stubs.map(p => p.sku) }),
-            ])
-          )
-      )
     )
   );
 

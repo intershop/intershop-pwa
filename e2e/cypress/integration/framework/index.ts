@@ -60,7 +60,7 @@ export function performAddToCart(
 ): Cypress.Chainable<Cypress.WaitXHR> {
   waitLoadingEnd(1000);
   cy.intercept('POST', '**/baskets/*/items').as('basket');
-  cy.intercept('GET', '**/baskets/current*').as('basketCurrent');
+  cy.intercept('GET', '**/baskets/*').as('basketCurrent');
   waitLoadingEnd(1000);
 
   button().click();

@@ -4,11 +4,7 @@
   <ng-container *ngIf="compareProductsCount$ | async as compareProductsCount; else emptyCompareList">
     <p>{{ 'product.compare.selected_product_count.message' | translate: { '0': compareProductsCount } }}</p>
 
-    <ish-product-compare-list
-      [compareProducts]="compareProducts$ | async"
-      (productToBasket)="addToBasket($event)"
-      (removeProductCompare)="removeFromCompare($event)"
-    ></ish-product-compare-list>
+    <ish-product-compare-list [compareProducts]="compareProducts$ | async"></ish-product-compare-list>
   </ng-container>
 
   <ng-template #emptyCompareList>

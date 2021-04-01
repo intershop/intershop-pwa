@@ -225,7 +225,7 @@ describe('Basket Payment Effects', () => {
           value: 'DE430859340859340',
         },
       ],
-    };
+    } as PaymentInstrument;
     const customer = { customerNo: 'patricia' } as Customer;
 
     beforeEach(() => {

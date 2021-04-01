@@ -12,11 +12,11 @@ import { Attribute } from './attribute.model';
 export class AttributeToStringPipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
 
-  private toDate(val): string {
+  private toDate(val: string | number | Date): string {
     return formatISHDate(val, 'shortDate', this.translateService.currentLang);
   }
 
-  private toDecimal(val): string {
+  private toDecimal(val: number): string {
     return formatNumber(val, this.translateService.currentLang);
   }
 
@@ -36,11 +36,11 @@ export class AttributeToStringPipe implements PipeTransform {
       case 'Double':
       case 'Long':
       case 'BigDecimal':
-        return this.toDecimal(data.value);
+        return this.toDecimal(data.value as number);
       case 'Boolean':
         return data.value.toString();
       case 'Date':
-        return this.toDate(data.value);
+        return this.toDate(data.value as string | number | Date);
       case 'MultipleInteger':
       case 'MultipleDouble':
       case 'MultipleLong':
@@ -56,7 +56,7 @@ export class AttributeToStringPipe implements PipeTransform {
         switch (resourceAttribute.value.type) {
           case 'Quantity':
             const quantityAttribute = data as Attribute<{ value: unknown; unit: string }>;
-            return `${this.toDecimal(quantityAttribute.value.value)}\xA0${quantityAttribute.value.unit}`;
+            return `${this.toDecimal(quantityAttribute.value.value as number)}\xA0${quantityAttribute.value.unit}`;
           case 'Money':
             return this.toCurrency(data.value as Price);
           default:

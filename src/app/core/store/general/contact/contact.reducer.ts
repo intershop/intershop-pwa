@@ -1,5 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 
+import { setLoadingOn, unsetLoadingOn } from 'ish-core/utils/ngrx-creators';
+
 import {
   createContact,
   createContactFail,
@@ -23,38 +25,34 @@ const initialState: ContactState = {
 
 export const contactReducer = createReducer(
   initialState,
-  on(loadContact, (state: ContactState) => ({
+  setLoadingOn(loadContact, createContact),
+  unsetLoadingOn(loadContactFail, loadContactSuccess, createContactFail, createContactSuccess),
+  on(loadContact, state => ({
     ...state,
-    loading: true,
     success: undefined,
   })),
-  on(loadContactFail, (state: ContactState) => ({
+  on(loadContactFail, state => ({
     ...state,
-    loading: false,
     success: undefined,
   })),
-  on(loadContactSuccess, (state: ContactState, action) => {
+  on(loadContactSuccess, (state, action) => {
     const { subjects } = action.payload;
     return {
       ...state,
       subjects,
-      loading: false,
       success: undefined,
     };
   }),
-  on(createContact, (state: ContactState) => ({
+  on(createContact, state => ({
     ...state,
-    loading: true,
     success: undefined,
   })),
-  on(createContactFail, (state: ContactState) => ({
+  on(createContactFail, state => ({
     ...state,
-    loading: false,
     success: false,
   })),
-  on(createContactSuccess, (state: ContactState) => ({
+  on(createContactSuccess, state => ({
     ...state,
-    loading: false,
     success: true,
   }))
 );

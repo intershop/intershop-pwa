@@ -49,7 +49,7 @@ export class CheckoutProgressBarComponent {
    * @param step  The checkout step to evaluate.
    * @returns     Returns 'true' if the step number is lover than the current step and if the current step is lower than 5.
    */
-  checkoutStepLink(step): boolean {
+  checkoutStepLink(step: number): boolean {
     return step < this.step && this.step < 5;
   }
 }

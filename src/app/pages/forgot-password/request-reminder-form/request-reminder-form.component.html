@@ -1,17 +1,5 @@
-<form name="LoginUserForm" [formGroup]="form" class="form-horizontal" (ngSubmit)="submitForm()">
-  <ish-input
-    [form]="form"
-    controlName="email"
-    type="email"
-    label="account.forgotdata.email.label"
-    markRequiredLabel="off"
-    [errorMessages]="{
-      required: 'account.email.error.required',
-      email: 'account.email.error.email'
-    }"
-  ></ish-input>
-
-  <ish-lazy-captcha topic="forgotPassword" [form]="form" cssClass="offset-md-4 col-md-8"></ish-lazy-captcha>
+<form name="LoginUserForm" [formGroup]="requestReminderForm" class="form-horizontal" (ngSubmit)="submitForm()">
+  <formly-form [form]="requestReminderForm" [fields]="fields"></formly-form>
 
   <div class="row form-group">
     <div class="offset-md-4 col-md-8">

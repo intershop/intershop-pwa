@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { FormlyConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { pick } from 'lodash-es';
 import { map } from 'rxjs/operators';
 
@@ -15,7 +15,7 @@ import {
 export class AddressFormUSConfiguration extends AddressFormConfiguration {
   countryCode = 'US';
 
-  constructor(private appFacade: AppFacade, private config: FormlyConfig) {
+  constructor(private appFacade: AppFacade) {
     super();
   }
 
@@ -37,15 +37,15 @@ export class AddressFormUSConfiguration extends AddressFormConfiguration {
 
   getFieldConfiguration(): FormlyFieldConfig[] {
     return addressesFieldConfiguration([
-      this.businessCustomer && ['companyName1', 'companyName2'],
-      ['firstName', 'lastName'],
+      this.businessCustomer && !this.shortForm && ['companyName1', 'companyName2'],
+      !this.shortForm && ['firstName', 'lastName'],
       ['addressLine1', 'addressLine2'],
       [
         {
           key: 'city',
           type: 'ish-text-input-field',
-          wrappers: [...this.config.getType('ish-text-input-field').wrappers, 'tooltip'],
           templateOptions: {
+            postWrappers: ['tooltip'],
             label: 'account.default_address.city.label',
             required: true,
             tooltip: {
@@ -95,7 +95,7 @@ export class AddressFormUSConfiguration extends AddressFormConfiguration {
           type: 'ish-text-input-field',
         },
       ],
-      'phoneHome',
+      !this.shortForm ? 'phoneHome' : undefined,
     ]);
   }
 }

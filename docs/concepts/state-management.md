@@ -69,6 +69,7 @@ Context facades are provided using [`ElementInjector`](https://angular.io/guide/
 - Provided via directives on the template
 
 For a more detailed introduction see [here][facades-meetup].
+Extensive documentation for the [Product Context Facade](../guides/product-context.md) is also available.
 
 ## File Structure
 
@@ -169,7 +170,7 @@ export const fooReducer = createReducer(
   initialState,
   setLoadingOn(loadFoo),
   setErrorOn(loadFooFail),
-  on(loadFooSuccess, (state: FooState, action) => {
+  on(loadFooSuccess, (state, action) => {
     // state changes
   }),
   ...

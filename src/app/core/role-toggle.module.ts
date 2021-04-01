@@ -21,7 +21,7 @@ export class RoleToggleModule {
         {
           provide: RoleToggleService,
           useValue: {
-            hasRole: (roleId: string) =>
+            hasRole: (roleId: string | string[]) =>
               RoleToggleModule.roleIds.pipe(
                 whenTruthy(),
                 map(roles => checkRole(roles, roleId))

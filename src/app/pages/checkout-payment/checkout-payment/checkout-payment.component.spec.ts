@@ -6,6 +6,7 @@ import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyForm } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
+import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
@@ -117,15 +118,16 @@ describe('Checkout Payment Component', () => {
     expect(element.querySelector('#payment-accordion')).toBeTruthy();
   });
 
-  it('should throw updatePaymentMethod event when the user changes payment selection', done => {
+  it('should throw updatePaymentMethod event when the user changes payment selection', () => {
     fixture.detectChanges();
 
-    component.updatePaymentMethod.subscribe(formValue => {
-      expect(formValue).toBe('testPayment');
-      done();
-    });
+    const emitter = spy(component.updatePaymentMethod);
 
     component.paymentForm.get('name').setValue('testPayment');
+
+    verify(emitter.emit(anything())).once();
+    const [arg] = capture(emitter.emit).last();
+    expect(arg).toMatchInlineSnapshot(`"testPayment"`);
   });
 
   describe('error display', () => {
@@ -186,40 +188,62 @@ describe('Checkout Payment Component', () => {
       expect(component.formIsOpen(-1)).toBeTruthy();
     });
 
-    it('should throw createPaymentInstrument event when the user submits a valid parameter form and saving is not allowed', done => {
+    it('should throw createPaymentInstrument event when the user submits a valid parameter form and saving is not allowed', () => {
       component.basket.payment = undefined;
       component.ngOnChanges(paymentMethodChange);
       component.openPaymentParameterForm(1);
 
-      component.createPaymentInstrument.subscribe(formValue => {
-        expect(formValue.paymentInstrument).toEqual({
-          paymentMethod: 'Concardis_CreditCard',
-          parameters: [{ name: 'creditCardNumber', value: '123' }],
-        });
-        expect(formValue.saveForLater).toBeFalsy();
-        done();
-      });
+      const emitter = spy(component.createPaymentInstrument);
 
       component.parameterForm.addControl('creditCardNumber', new FormControl('123', Validators.required));
       component.submitParameterForm();
+
+      verify(emitter.emit(anything())).once();
+      const [arg] = capture(emitter.emit).last();
+      expect(arg).toMatchInlineSnapshot(`
+        Object {
+          "paymentInstrument": Object {
+            "id": undefined,
+            "parameters": Array [
+              Object {
+                "name": "creditCardNumber",
+                "value": "123",
+              },
+            ],
+            "paymentMethod": "Concardis_CreditCard",
+          },
+          "saveForLater": false,
+        }
+      `);
     });
 
-    it('should throw createUserPaymentInstrument event when the user submits a valid parameter form and saving is allowed', done => {
+    it('should throw createUserPaymentInstrument event when the user submits a valid parameter form and saving is allowed', () => {
       component.basket.payment = undefined;
       component.ngOnChanges(paymentMethodChange);
       component.openPaymentParameterForm(3);
 
-      component.createPaymentInstrument.subscribe(formValue => {
-        expect(formValue.paymentInstrument).toEqual({
-          paymentMethod: 'ISH_CreditCard',
-          parameters: [{ name: 'creditCardNumber', value: '456' }],
-        });
-        expect(formValue.saveForLater).toBeTruthy();
-        done();
-      });
+      const emitter = spy(component.createPaymentInstrument);
 
       component.parameterForm.addControl('creditCardNumber', new FormControl('456', Validators.required));
       component.submitParameterForm();
+
+      verify(emitter.emit(anything())).once();
+      const [arg] = capture(emitter.emit).last();
+      expect(arg).toMatchInlineSnapshot(`
+        Object {
+          "paymentInstrument": Object {
+            "id": undefined,
+            "parameters": Array [
+              Object {
+                "name": "creditCardNumber",
+                "value": "456",
+              },
+            ],
+            "paymentMethod": "ISH_CreditCard",
+          },
+          "saveForLater": true,
+        }
+      `);
     });
 
     it('should disable submit button when the user submits an invalid parameter form', () => {
@@ -255,7 +279,7 @@ describe('Checkout Payment Component', () => {
       expect(element.querySelector('[data-testing-id=payment-parameter-form-ISH_CreditCard] a')).toBeTruthy();
     });
 
-    it('should throw deletePaymentInstrument event when the user deletes a payment instrument', done => {
+    it('should throw deletePaymentInstrument event when the user deletes a payment instrument', () => {
       const paymentInstrument = {
         id: '4321',
         paymentMethod: 'ISH_DirectDebit',
@@ -272,11 +296,13 @@ describe('Checkout Payment Component', () => {
       };
       fixture.detectChanges();
 
-      component.deletePaymentInstrument.subscribe(instrument => {
-        expect(instrument.id).toEqual(paymentInstrument.id);
-        done();
-      });
+      const emitter = spy(component.deletePaymentInstrument);
+
       component.deleteBasketPayment(paymentInstrument);
+
+      verify(emitter.emit(anything())).once();
+      const [arg] = capture(emitter.emit).last();
+      expect(arg?.id).toMatchInlineSnapshot(`"4321"`);
     });
   });
 });

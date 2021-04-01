@@ -11,9 +11,12 @@ import { PunchoutFacade } from '../../facades/punchout.facade';
 })
 @GenerateLazyComponent()
 export class PunchoutTransferBasketComponent {
+  submitted = false;
+
   constructor(private punchoutFacade: PunchoutFacade) {}
 
   transferBasket() {
+    this.submitted = true;
     this.punchoutFacade.transferBasket();
   }
 }

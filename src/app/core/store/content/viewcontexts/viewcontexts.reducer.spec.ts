@@ -11,19 +11,11 @@ describe('Viewcontexts Reducer', () => {
   });
 
   it('should return the viewContextId if empty callParameters are provided', () => {
-    const viewContextId = 'the_viewcontext';
-    const callParameters = {};
-
-    expect(serializeContextSpecificViewContextId(viewContextId, callParameters)).toMatchInlineSnapshot(
-      `"the_viewcontext"`
-    );
+    expect(serializeContextSpecificViewContextId('the_viewcontext', {})).toMatchInlineSnapshot(`"the_viewcontext"`);
   });
 
   it('should return the viewContextId if if no callParameters are provided', () => {
-    const viewContextId = 'the_viewcontext';
-    const callParameters = undefined;
-
-    expect(serializeContextSpecificViewContextId(viewContextId, callParameters)).toMatchInlineSnapshot(
+    expect(serializeContextSpecificViewContextId('the_viewcontext', undefined)).toMatchInlineSnapshot(
       `"the_viewcontext"`
     );
   });

@@ -38,8 +38,8 @@ export class AddressFormDEConfiguration extends AddressFormConfiguration {
 
   getFieldConfiguration(): FormlyFieldConfig[] {
     return addressesFieldConfiguration([
-      this.businessCustomer && ['companyName1', 'companyName2'],
-      [
+      this.businessCustomer && !this.shortForm && ['companyName1', 'companyName2'],
+      !this.shortForm && [
         {
           key: 'title',
           type: 'ish-select-field',
@@ -89,7 +89,7 @@ export class AddressFormDEConfiguration extends AddressFormConfiguration {
         },
         'city',
       ],
-      'phoneHome',
+      !this.shortForm ? 'phoneHome' : undefined,
     ]);
   }
 }

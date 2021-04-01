@@ -1,39 +1,5 @@
 <div>
   <ish-error-message [error]="error"></ish-error-message>
   <p class="indicates-required"><span class="required">*</span>{{ 'account.required_field.message' | translate }}</p>
-  <fieldset>
-    <ish-select-title [form]="form" controlName="title" [titles]="titles"></ish-select-title>
-    <ish-input
-      [form]="form"
-      controlName="firstName"
-      label="account.address.firstname.label"
-      [errorMessages]="{
-        required: 'account.user.new.firstname.error.required'
-      }"
-    ></ish-input>
-    <ish-input
-      [form]="form"
-      controlName="lastName"
-      label="account.address.lastname.label"
-      [errorMessages]="{
-        required: 'account.user.new.lastname.error.required'
-      }"
-    ></ish-input>
-    <div class="offset-md-4 col-md-8">
-      <ish-checkbox [form]="form" controlName="active" label="account.user.active.label"></ish-checkbox>
-    </div>
-  </fieldset>
-  <fieldset>
-    <ish-input
-      *ngIf="form.value.email !== undefined"
-      [form]="form"
-      controlName="email"
-      label="account.user.email.label"
-      [errorMessages]="{
-        required: 'account.update_email.email.error.notempty',
-        email: 'account.update_email.email.error.email'
-      }"
-    ></ish-input>
-    <ish-input [form]="form" controlName="phone" label="account.profile.phone.label"></ish-input>
-  </fieldset>
+  <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
 </div>
