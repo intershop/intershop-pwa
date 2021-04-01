@@ -307,7 +307,7 @@
   "account.register.message": "To take full advantage of account features & benefits, please provide all the information below.",
   "account.register.password.extrainfo.message": "{{0}} characters minimum, must include numbers and letters, no spaces",
   "account.register.password.label": "Password",
-  "account.register.password_confirmation.error.default": "Please enter a valid Confirm Password.",
+  "account.register.password_confirmation.error.default": "Please enter a valid password to confirm.",
   "account.register.password_confirmation.label": "Confirm Password",
   "account.register.personal_information.heading": "Personal Information",
   "account.registration.email.not_match.error": "The e-mail addresses you entered do not match.",
