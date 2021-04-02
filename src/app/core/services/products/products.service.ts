@@ -63,7 +63,7 @@ export class ProductsService {
    * @param categoryUniqueId  The unique Category ID.
    * @param page              The page to request (1-based numbering)
    * @param sortKey           The sortKey to sort the list, default value is ''.
-   * @returns                 A list of the categories products SKUs [skus], the unique Category ID [categoryUniqueId] and a list of possible sortings [sortKeys].
+   * @returns                 A list of the categories products SKUs [skus], the unique Category ID [categoryUniqueId] and a list of possible sort keys [sortKeys].
    */
   getCategoryProducts(
     categoryUniqueId: string,
@@ -111,7 +111,7 @@ export class ProductsService {
    * @param searchTerm    The search term to look for matching products.
    * @param page          The page to request (1-based numbering)
    * @param sortKey       The sortKey to sort the list, default value is ''.
-   * @returns             A list of matching Product stubs with a list of possible sortings and the total amount of results.
+   * @returns             A list of matching Product stubs with a list of possible sort keys and the total amount of results.
    */
   searchProducts(
     searchTerm: string,
@@ -277,7 +277,7 @@ export class ProductsService {
             [link.linkType]: {
               products: !link.productLinks
                 ? []
-                : link.productLinks.map(pl => pl.uri).map(ProductMapper.parseSKUfromURI),
+                : link.productLinks.map(pl => pl.uri).map(ProductMapper.parseSkuFromURI),
               categories: !link.categoryLinks
                 ? []
                 : link.categoryLinks.map(cl =>

@@ -231,7 +231,7 @@ export class UserService {
   }
 
   /**
-   * Updates the customer data of the (currently loggedin) b2b customer.
+   * Updates the customer data of the (currently logged in) b2b customer.
    * @param customer  The customer data to update the customer.
    */
   updateCustomer(customer: Customer): Observable<Customer> {

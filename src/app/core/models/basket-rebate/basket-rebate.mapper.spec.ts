@@ -16,7 +16,7 @@ describe('Basket Rebate Mapper', () => {
             currency: 'USD',
           },
         },
-        description: 'Dicount description',
+        description: 'Discount description',
         code: 'CODE5433',
         promotion: 'FreeShippingOnLEDTVs',
       });
@@ -30,7 +30,7 @@ describe('Basket Rebate Mapper', () => {
             "type": "PriceItem",
           },
           "code": "CODE5433",
-          "description": "Dicount description",
+          "description": "Discount description",
           "id": "basketDiscountId",
           "promotionId": "FreeShippingOnLEDTVs",
           "rebateType": "Discount",

@@ -30,7 +30,7 @@ export class TextareaComponent extends FormElementComponent implements OnInit, O
   @Input() rows = 3;
   /** the placeholder for the textarea (default: '') */
   @Input() placeholder = '';
-  /** switch spellcheck on/off (deault: false) */
+  /** switch spellcheck on/off (default: false) */
   @Input() spellcheck = false;
   /** the maxlength parameter of the textarea (if provided a remaining characters counter is displayed) */
   @Input() maxlength?: number;

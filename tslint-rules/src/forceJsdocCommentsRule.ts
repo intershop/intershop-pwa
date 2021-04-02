@@ -21,6 +21,7 @@ function checkForValidOrNoJSDoc(node: ts.Node, ctx: Lint.WalkContext) {
         if (
           !commentText.startsWith('/**') &&
           !commentText.startsWith('// tslint:disable') &&
+          !commentText.startsWith('// spell-checker:') &&
           !commentText.startsWith('// not-dead-code')
         ) {
           ctx.addFailureAt(

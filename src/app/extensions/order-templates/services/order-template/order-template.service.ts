@@ -57,7 +57,7 @@ export class OrderTemplateService {
    */
   deleteOrderTemplate(orderTemplateId: string): Observable<void> {
     if (!orderTemplateId) {
-      return throwError('deleteOrderTemplatet() called without orderTemplateId');
+      return throwError('deleteOrderTemplate() called without orderTemplateId');
     }
     return this.apiService.delete(`customers/-/users/-/wishlists/${orderTemplateId}`);
   }

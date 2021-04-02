@@ -28,7 +28,7 @@ describe('Content View Helper', () => {
       ['page://page.aboutus', true],
       ['http://example.com', false],
       ['https://example.com', false],
-    ])(`should evalute %s to %s`, (input, expected) => {
+    ])(`should evaluate %s to %s`, (input, expected) => {
       const pagelet = createContentPageletView({
         definitionQualifiedName: 'fq',
         id: 'id',

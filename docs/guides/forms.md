@@ -95,7 +95,7 @@ If there is a need for special custom validators, use the class _app/shared/form
 
 Formly allows to move almost all logic from the template to the component file.
 
-Most form behaviour like displaying validation messages and status is already defined within the [`FormlyModule`](../../src/app/shared/formly/formly.module.ts).
+Most form behavior like displaying validation messages and status is already defined within the [`FormlyModule`](../../src/app/shared/formly/formly.module.ts).
 Use the available field types and wrappers to construct your form in the component (see [Formly](./formly.md)).
 
 ## The Address Form as an Example of a Reusable Form
@@ -113,7 +113,7 @@ Container template:
 1. Add a `<ish-formly-address-form>` component to your template
 2. Pass your `FormGroup` via the `parentForm` input.
 3. Optional: Define whether you want to display business customer addresses via the `businessCustomer` input.
-4. Optional: Define whether you want to have the address form prefilled via the `prefilledAddress` input.
+4. Optional: Define whether you want to have the address form pre-filled via the `prefilledAddress` input.
 
 ### How to Create a New Country Specific Form
 

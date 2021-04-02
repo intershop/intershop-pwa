@@ -15,10 +15,10 @@
       </div>
 
       <div class="pt-1">
-        <div formArrayName="quickOrderlines">
+        <div formArrayName="quickOrderLines">
           <div
             class="row list-item-row py-2"
-            *ngFor="let item of quickOrderlines.controls; let i = index"
+            *ngFor="let item of quickOrderLines.controls; let i = index"
             [formGroupName]="i"
             [attr.data-testing-id]="'quickorder-line-' + i"
           >

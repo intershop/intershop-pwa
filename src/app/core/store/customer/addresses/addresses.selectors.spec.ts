@@ -13,7 +13,7 @@ describe('Addresses Selectors', () => {
   let store$: StoreWithSnapshots;
 
   const addresses = [
-    { id: '4711', firstname: 'Patricia' },
+    { id: '4711', firstName: 'Patricia' },
     { id: '4712', firstName: 'John' },
   ] as Address[];
 

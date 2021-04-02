@@ -523,7 +523,7 @@ describe('Basket Effects', () => {
       });
     });
 
-    it('should map a valid request to action of type SubmitBasketBuccess', done => {
+    it('should map a valid request to action of type SubmitBasketSuccess', done => {
       when(basketServiceMock.createRequisition(anyString())).thenReturn(of(undefined));
 
       actions$ = of(submitBasket());

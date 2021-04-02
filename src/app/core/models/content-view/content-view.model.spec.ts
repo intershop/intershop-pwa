@@ -295,7 +295,7 @@ describe('Content View Model', () => {
       expect(p2.slot('fq').pageletIDs).toHaveLength(1);
     });
 
-    it('should have deepest level navigateable on tree', () => {
+    it('should have deepest level navigable on tree', () => {
       const p4 = createContentPageletView(pagelets.p4);
 
       expect(p4).toMatchInlineSnapshot(`

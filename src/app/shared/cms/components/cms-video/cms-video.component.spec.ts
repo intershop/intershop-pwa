@@ -52,7 +52,7 @@ describe('Cms Video Component', () => {
 
   it('should only call YouTube processor for YouTube URL', () => {
     fixture.detectChanges();
-    verify(componentSpy.tryProcessYoutubeVideo()).once();
+    verify(componentSpy.tryProcessYouTubeVideo()).once();
     verify(componentSpy.tryProcessVimeoVideo()).never();
     verify(componentSpy.tryProcessDefaultVideo()).never();
   });
@@ -62,7 +62,7 @@ describe('Cms Video Component', () => {
     component.pagelet = createContentPageletView(pagelet);
 
     fixture.detectChanges();
-    verify(componentSpy.tryProcessYoutubeVideo()).once();
+    verify(componentSpy.tryProcessYouTubeVideo()).once();
     verify(componentSpy.tryProcessVimeoVideo()).once();
     verify(componentSpy.tryProcessDefaultVideo()).never();
   });
@@ -72,7 +72,7 @@ describe('Cms Video Component', () => {
     component.pagelet = createContentPageletView(pagelet);
 
     fixture.detectChanges();
-    verify(componentSpy.tryProcessYoutubeVideo()).once();
+    verify(componentSpy.tryProcessYouTubeVideo()).once();
     verify(componentSpy.tryProcessVimeoVideo()).once();
     verify(componentSpy.tryProcessDefaultVideo()).once();
   });

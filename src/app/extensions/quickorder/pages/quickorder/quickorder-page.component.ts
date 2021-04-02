@@ -73,7 +73,7 @@ export class QuickorderPageComponent implements OnInit {
     this.loading$ = this.checkoutFacade.basketLoading$;
 
     this.initForms();
-    // Dummy data to test search suggestion styling, typing 1234 will show the dropwdown with this product
+    // Dummy data to test search suggestion styling, typing 1234 will show the drop down with this product
     this.searchSuggestions.push({
       imgPath:
         'http://jxdemoserver.intershop.de/INTERSHOP/static/WFS/inSPIRED-inTRONICS_Business-Site/-/inSPIRED/en_US/S/4808544-118.jpg',
@@ -84,7 +84,7 @@ export class QuickorderPageComponent implements OnInit {
 
   initForms() {
     this.quickOrderForm = this.qf.group({
-      quickOrderlines: this.qf.array([]),
+      quickOrderLines: this.qf.array([]),
     });
 
     this.csvForm = this.qf.group({
@@ -98,27 +98,27 @@ export class QuickorderPageComponent implements OnInit {
 
   addRows(rowsToAdd: number) {
     for (let i = 0; i < rowsToAdd; i++) {
-      this.quickOrderlines.push(this.createLine());
+      this.quickOrderLines.push(this.createLine());
     }
   }
 
   deleteItem(index: number) {
-    this.quickOrderlines.removeAt(index);
+    this.quickOrderLines.removeAt(index);
   }
 
   resetFields() {
-    this.quickOrderlines.reset([this.createLine()]);
+    this.quickOrderLines.reset([this.createLine()]);
   }
 
-  get quickOrderlines() {
-    return this.quickOrderForm.get('quickOrderlines') as FormArray;
+  get quickOrderLines() {
+    return this.quickOrderForm.get('quickOrderLines') as FormArray;
   }
 
   get quickOrderFormDisabled() {
     return (
       this.quickOrderForm.invalid ||
-      !this.quickOrderlines.value[0].sku ||
-      !parseInt(this.quickOrderlines.value[0].quantity, 10)
+      !this.quickOrderLines.value[0].sku ||
+      !parseInt(this.quickOrderLines.value[0].quantity, 10)
     );
   }
 
@@ -130,7 +130,7 @@ export class QuickorderPageComponent implements OnInit {
   }
 
   onAddProducts() {
-    const filledLines = this.quickOrderlines.value.filter(
+    const filledLines = this.quickOrderLines.value.filter(
       (p: { sku: string; quantity: number }) => !!p.sku && !!p.quantity
     );
     this.addProductsToBasket(filledLines);

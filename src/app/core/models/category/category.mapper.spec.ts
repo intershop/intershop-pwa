@@ -36,7 +36,7 @@ describe('Category Mapper', () => {
   });
 
   describe('categoriesFromCategoryPath()', () => {
-    it('should return empty tree on falsy or empty imput', () => {
+    it('should return empty tree on falsy or empty input', () => {
       expect(categoryMapper.categoriesFromCategoryPath(undefined)).toEqual(categoryTree());
       expect(categoryMapper.categoriesFromCategoryPath([])).toEqual(categoryTree());
     });
@@ -150,7 +150,7 @@ describe('Category Mapper', () => {
       verify(imageMapper.fromImages(anything())).once();
     });
 
-    it(`should return CategoryTree with node and computed uniqueid when raw CategoryData was supplied with categoryPath`, () => {
+    it(`should return CategoryTree with node and computed uniqueId when raw CategoryData was supplied with categoryPath`, () => {
       const tree = categoryMapper.fromData({
         categoryPath: [{ id: '1' }, { id: '2' }],
       } as CategoryData);

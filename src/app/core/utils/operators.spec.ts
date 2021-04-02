@@ -11,18 +11,18 @@ describe('Operators', () => {
   describe('distinctCompareWith', () => {
     it('should fire only when stream value is different than constant compare value and value is changed', () => {
       const compare$ = of('a');
-      const input$ = hot('a-b-b-a-a-a-b-c-a-a');
-      const expt$ = cold('--b-----------c----');
+      const input$ = hot('    a-b-b-a-a-a-b-c-a-a');
+      const expected$ = cold('--b-----------c----');
 
-      expect(input$.pipe(distinctCompareWith(compare$))).toBeObservable(expt$);
+      expect(input$.pipe(distinctCompareWith(compare$))).toBeObservable(expected$);
     });
 
     it('should fire only when stream value is different than flexible compare value and value is changed', () => {
-      const compa$ = hot('--a-b-b-a-a-a-b-c-a');
-      const input$ = hot('a-b-b-a-a-a-b-c-a-a');
-      const expt$ = cold('--b---a-----b-c-a--');
+      const compare$ = hot('  --a-b-b-a-a-a-b-c-a');
+      const input$ = hot('    a-b-b-a-a-a-b-c-a-a');
+      const expected$ = cold('--b---a-----b-c-a--');
 
-      expect(input$.pipe(distinctCompareWith(compa$))).toBeObservable(expt$);
+      expect(input$.pipe(distinctCompareWith(compare$))).toBeObservable(expected$);
     });
   });
 
@@ -35,24 +35,24 @@ describe('Operators', () => {
         message: 'ERROR',
       });
 
-      const input$ = hot('---#', undefined, error);
-      const resu$ = cold('---(a|)', {
+      const input$ = hot('  ---#', undefined, error);
+      const result$ = cold('---(a|)', {
         a: {
           payload: { error },
           type: 'dummy',
         },
       });
 
-      expect(input$.pipe(mapErrorToAction(dummyFail))).toBeObservable(resu$);
+      expect(input$.pipe(mapErrorToAction(dummyFail))).toBeObservable(result$);
     });
 
     it('should rethrow other errors when encountering them', () => {
       const error = new Error('other error');
 
-      const input$ = hot('---#', undefined, error);
-      const resu$ = cold('---#');
+      const input$ = hot('  ---#', undefined, error);
+      const result$ = cold('---#');
 
-      expect(input$.pipe(mapErrorToAction(dummyFail))).toBeObservable(resu$);
+      expect(input$.pipe(mapErrorToAction(dummyFail))).toBeObservable(result$);
     });
   });
 

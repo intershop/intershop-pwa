@@ -17,7 +17,7 @@ The styling integration is configured in the _/src/themes/main.scss_ of the proj
 
 Instead of the Bootstrap 3 Glyphicons, the current styling uses free solid icons of [Font Awesome](https://fontawesome.com/).
 
-The styling itself is integrated into the project as global style via a _style.scss_ that is referenced in the _angular.json_ and is compiled automatically (see also [Chapter Multitheming](#multitheming)).
+The styling itself is integrated into the project as global style via a _style.scss_ that is referenced in the _angular.json_ and is compiled automatically (see also [Guide - Multiple Themes](../guides/multiple-themes.md)).
 Throughout the whole Intershop Progressive Web App, there are almost no component specific `styleUrls` or `styles` properties.
 
 The [Javascript part of Bootstrap](http://getbootstrap.com/javascript/) for the behavior is not directly used from the Bootstrap dependency since this implementation is jQuery based and not really suited to work in an Angular environment.

@@ -51,7 +51,7 @@ describe('Address Service', () => {
 
   it("should create an address when 'createCustomerAddress' is called", done => {
     when(apiService.post(`customers/-/addresses`, anything())).thenReturn(
-      of({ type: 'Link', uri: 'site/-/customers/-/addresses/addressid' })
+      of({ type: 'Link', uri: 'site/-/customers/-/addresses/addressId' })
     );
     when(apiService.resolveLink()).thenReturn(() => of(BasketMockData.getAddress()));
 
@@ -77,10 +77,10 @@ describe('Address Service', () => {
   });
 
   it("should delete an address when 'deleteCustomerAddress' is called", done => {
-    when(apiService.delete(`customers/-/addresses/addressid`)).thenReturn(of({}));
+    when(apiService.delete(`customers/-/addresses/addressId`)).thenReturn(of({}));
 
-    addressService.deleteCustomerAddress('-', 'addressid').subscribe(() => {
-      verify(apiService.delete(`customers/-/addresses/addressid`)).once();
+    addressService.deleteCustomerAddress('-', 'addressId').subscribe(() => {
+      verify(apiService.delete(`customers/-/addresses/addressId`)).once();
       done();
     });
   });

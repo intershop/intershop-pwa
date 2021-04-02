@@ -7,6 +7,8 @@ kb_sync_latest_only
 
 # Unit Testing with Jest
 
+<!-- cSpell: disable -->
+
 - [Unit Testing with Jest](#unit-testing-with-jest)
   - [Stick to General Unit Testing Rules](#stick-to-general-unit-testing-rules)
     - [Single Responsibility](#single-responsibility)
@@ -34,6 +36,8 @@ kb_sync_latest_only
     - [Be Careful When Using `toBeDefined`](#be-careful-when-using-tobedefined)
     - [Be Careful With Variable Initialization](#be-careful-with-variable-initialization)
     - [Use the right way to test EventEmitter](#use-the-right-way-to-test-eventemitter)
+
+<!-- cSpell: enable -->
 
 ## Stick to General Unit Testing Rules
 
@@ -88,13 +92,13 @@ Especially if you test that your action triggers a change: Test for the previous
 it('should call the cache when data is available', () => {
     // precondition
     service.getData();
-    expect(cacheService.getChachedData).not.toHaveBeenCalled();
+    expect(cacheService.getCachedData).not.toHaveBeenCalled();
 
     << change cacheService mock to data available >>
 
     // test again
     service.getData();
-    expect(cacheService.getChachedData).toHaveBeenCalled();
+    expect(cacheService.getCachedData).toHaveBeenCalled();
 });
 ```
 

@@ -58,7 +58,7 @@ describe('Viewcontexts Selectors', () => {
       });
     });
 
-    describe('loadViewcontFail', () => {
+    describe('loadViewContextEntrypointFail', () => {
       const error = makeHttpError({ message: 'ERROR' });
       const failAction = loadViewContextEntrypointFail({ error });
 

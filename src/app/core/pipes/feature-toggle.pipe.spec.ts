@@ -34,7 +34,7 @@ describe('Feature Toggle Pipe', () => {
     fixture.detectChanges();
   });
 
-  it('should always render unreleated content', () => {
+  it('should always render unrelated content', () => {
     expect(element.textContent).toContain('unrelated');
   });
 

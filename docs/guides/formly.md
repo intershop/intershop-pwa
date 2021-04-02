@@ -7,6 +7,8 @@ kb_sync_latest_only
 
 # Formly
 
+<!-- cSpell: disable -->
+
 - [Formly](#formly)
   - [Overview](#overview)
     - [Formly-Form Component](#formly-form-component)
@@ -21,10 +23,12 @@ kb_sync_latest_only
     - [Testing Custom Types](#testing-custom-types)
     - [Testing Wrappers](#testing-wrappers)
   - [How to Configure Formly](#how-to-configure-formly)
-  - [Intershops Custom Formly Parts](#intershops-custom-formly-parts)
+  - [Intershop's Custom Formly Parts](#intershops-custom-formly-parts)
     - [Field Types](#field-types)
     - [Wrappers](#wrappers)
     - [Extensions](#extensions)
+
+<!-- cSpell: enable -->
 
 ## Overview
 
@@ -68,7 +72,7 @@ const fields: FormlyFieldConfig[] = [
 
 ## Customizing Form Logic
 
-There are many ways to change the behaviour of a form and its fields.
+There are many ways to change the behavior of a form and its fields.
 Custom field types, wrappers, extensions and extras are registered in [formly.module.ts](../../src/app/shared/formly/formly.module.ts) using the `forRoot()` function.
 For more information about what can be done in the `forRoot()` function, refer to the official documentation and [`ConfigOption`](https://github.com/ngx-formly/ngx-formly/blob/main/src/core/src/lib/models/config.ts#L49) type definition.
 
@@ -146,7 +150,7 @@ FormlyModule.forRoot({
 
 Formly extensions is an experimental feature to implement cross-cutting logic in your forms.
 A Formly extension is an object of type [`FormlyExtension`](https://github.com/ngx-formly/ngx-formly/blob/main/src/core/src/lib/models/config.ts#L7) that contains one or multiple functions that will automatically be called during the construction of the Formly form, once for each field.
-This way, you can implement certain behaviours that are shared by all fields without repeating yourself.
+This way, you can implement certain behaviors that are shared by all fields without repeating yourself.
 A simple extension that ensures a `label` attribute is always set could look like this:
 
 ```typescript
@@ -171,7 +175,7 @@ FormlyModule.forRoot({
 
 ### Extras
 
-The `extras` argument is passed to the `forRoot()` function to customize additional Formly behaviour.
+The `extras` argument is passed to the `forRoot()` function to customize additional Formly behavior.
 Refer to the [type definition](https://github.com/ngx-formly/ngx-formly/blob/fe2314d5f50ff61d46af01175b158dc3f9fd4e4e/src/core/src/lib/models/config.ts#L55) for more information.
 
 ### Formly Config Service
@@ -188,7 +192,7 @@ To facilitate this, the `formly/dev/testing` folder contains a `FormlyTestingCom
 - `FormlyTestingFieldgroupExampleComponent` is a type that renders all configs in the `fieldGroup` attribute of the field.
 
 In addition, to test components or pages that use Formly, import the `FormlyTestingModule`.
-It defines and exports a FormlyModule with preconfigured dummy field types and wrappers that match the `FormlyModule`.
+It defines and exports a FormlyModule with pre-configured dummy field types and wrappers that match the `FormlyModule`.
 
 ### Testing Custom Types
 
@@ -207,15 +211,15 @@ There are multiple ways to adapt Formly for projects or development on the main 
 
 If you implement widely used functionality that can be used in multiple components and different pages, add your field types, wrappers or extensions to `src/app/shared/formly` and register them in the `formly.module.ts`.
 
-If you need specific fields or behaviour that is not used everywhere, it would not be a good idea to pollute `formly.module.ts`.
+If you need specific fields or behavior that is not used everywhere, it would not be a good idea to pollute `formly.module.ts`.
 Instead, register your logic in the relevant module using `FormlyModule.forChild()`.
 This will first configure Formly according to the standard module and then add your local configuration.
-This way, it is easy to wrap locally used components in field types and program specific behaviours that are not required anywhere else.
+This way, it is easy to wrap locally used components in field types and program specific behaviors that are not required anywhere else.
 Refer to the [`registration.page.module`](../../src/app/pages/registration/registration-page.module.ts) for an example of a local Formly configuration.
 
-## Intershops Custom Formly Parts
+## Intershop's Custom Formly Parts
 
-A lot of functionality is already implemented in the Intershop PWAs `FormlyModule`.
+A lot of functionality is already implemented in the Intershop PWA's `FormlyModule`.
 Refer to the tables below for an overview of these parts.
 
 ### Field Types
@@ -224,7 +228,7 @@ Refer to the tables below for an overview of these parts.
 | -------------------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | ish-text-input-field | Basic input field, supports text type                                                        | ----                                                                                                                          |
 | ish-select-field     | Basic select field                                                                           | `options`: `{ value: any; label: string}[]` or Observable. `placeholder`: Translation key or string for the default selection |
-| ish-textarea-field   | Basic textarea field                                                                         | `cols`& `rows`: Specifies the textareas dimensions                                                                            |
+| ish-textarea-field   | Basic textarea field                                                                         | `cols`& `rows`: Specifies the dimensions of the textarea                                                                      |
 | ish-checkbox-field   | Basic checkbox input                                                                         | ----                                                                                                                          |
 | ish-email-field      | Text input field that automatically adds an e-mail validator and error message               | ----                                                                                                                          |
 | ish-password-field   | Password input field that automatically adds a password validator and error message          | ----                                                                                                                          |
@@ -233,15 +237,15 @@ Refer to the tables below for an overview of these parts.
 
 ### Wrappers
 
-| Name                           | Functionality                                                                                                                                                 | Relevant templateOptions                                                                                                     |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| form-field-horizontal          | Adds a label next to the field and adds red styling for invalid fields.                                                                                       | `labelClass`& `fieldClass`: Classes that will be added to the label or field `<div>`                                         |
-| form-field-checkbox-horizontal | Adds a label for a checkbox field, adds red styling and error messages for invalid fields. Uses `validators.validation` and `validation.messages` properties. | `labelClass`& `fieldClass`: Classes that will be added to the label or the outer field `<div>`                               |
-| validation                     | Adds validation icons and error messages to the field. Uses `validators.validation` and `validation.messages` properties.                                     | `showValidation`: `(field: FormlyFieldConfig) => boolean`: optional, used to determine whether to show validation checkmarks |
-| textarea-description           | Adds a description to textarea fields, including the amount of remaining characters.                                                                          | `maxLength`: Specifies the maximum length to be displayed in the message.                                                    |
-| decription                     | Adds a custom description to any field                                                                                                                        | `customDescription`: `string` or `{key: string; args: any}` that will be translated                                          |
-| tooltip                        | Adds a tooltip to a field. Includes `<ish-field-tooltip>` component.                                                                                          | `tooltip`: `{ title?: string; text: string; link: string }` that defines the different tooltip texts.                        |
-| input-addon                    | Adds a prepend or append text to a field, e.g. a currency or unit.                                                                                            | `addonLeft?`: `{ text: string; }, addonRight?: {text: string}` that defines the addon texts.                                 |
+| Name                           | Functionality                                                                                                                                                 | Relevant templateOptions                                                                                                      |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| form-field-horizontal          | Adds a label next to the field and adds red styling for invalid fields.                                                                                       | `labelClass`& `fieldClass`: Classes that will be added to the label or field `<div>`                                          |
+| form-field-checkbox-horizontal | Adds a label for a checkbox field, adds red styling and error messages for invalid fields. Uses `validators.validation` and `validation.messages` properties. | `labelClass`& `fieldClass`: Classes that will be added to the label or the outer field `<div>`                                |
+| validation                     | Adds validation icons and error messages to the field. Uses `validators.validation` and `validation.messages` properties.                                     | `showValidation`: `(field: FormlyFieldConfig) => boolean`: optional, used to determine whether to show validation check marks |
+| textarea-description           | Adds a description to textarea fields, including the amount of remaining characters.                                                                          | `maxLength`: Specifies the maximum length to be displayed in the message.                                                     |
+| description                    | Adds a custom description to any field                                                                                                                        | `customDescription`: `string` or `{key: string; args: any}` that will be translated                                           |
+| tooltip                        | Adds a tooltip to a field. Includes `<ish-field-tooltip>` component.                                                                                          | `tooltip`: `{ title?: string; text: string; link: string }` that defines the different tooltip texts.                         |
+| input-addon                    | Adds a prepended or appended text to a field, e.g. a currency or unit.                                                                                        | `addonLeft?`: `{ text: string; }, addonRight?: {text: string}` that defines the addon texts.                                  |
 
 ### Extensions
 

@@ -73,7 +73,7 @@ Currently Compodoc supports the following JSDoc tags :
  * @param searchTerm    The search term to look for matching products.
  * @param page          The page to request (1-based numbering)
  * @param sortKey       The sortKey to sort the list, default value is ''.
- * @returns             A list of matching Product stubs with a list of possible sortings and the total amount of results.
+ * @returns             A list of matching Product stubs with a list of possible sorting and the total amount of results.
  */
 searchProducts(
   searchTerm: string,
@@ -132,7 +132,7 @@ searchProducts(
 
 This is not a project with obligatory documentation, so: Do not document the obvious! For example, if behavior and requirements can be implied by a method signature, no additional documentation is needed.
 Instead **pay attention to useful names**.
-If you cannot find a pricise name for your variable or method, maybe this is a sign that too much is done here and it would be better to **refactor instead**.
+If you cannot find a precise name for your variable or method, maybe this is a sign that too much is done here and it would be better to **refactor instead**.
 
 However, there are some cases where documentation is recommended:
 

@@ -10,7 +10,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 /**
  * Service to add the configured/selected theme’s CSS file in the HTML’s head.
  *
- * See: "Angular: Multiple Themes Without Killing Bundle Size (With Material or Not)" by @Kmathy15
+ * See: "Angular: Multiple Themes Without Killing Bundle Size (With Material or Not)"
  * https://medium.com/better-programming/angular-multiple-themes-without-killing-bundle-size-with-material-or-not-5a80849b6b34
  */
 @Injectable({ providedIn: 'root' })

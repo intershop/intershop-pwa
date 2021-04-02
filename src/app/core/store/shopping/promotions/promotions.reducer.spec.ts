@@ -29,13 +29,13 @@ describe('Promotions Reducer', () => {
 
       describe('followed by LoadPromotionSuccess', () => {
         beforeEach(() => {
-          const promotion = { id: 'successfull_promo' } as Promotion;
+          const promotion = { id: 'successful_promo' } as Promotion;
           const action = loadPromotionSuccess({ promotion });
           state = promotionsReducer(initialState, action);
         });
 
         it('should always put the promotion in the entities set', () => {
-          expect(state.entities).toHaveProperty('successfull_promo');
+          expect(state.entities).toHaveProperty('successful_promo');
         });
       });
     });

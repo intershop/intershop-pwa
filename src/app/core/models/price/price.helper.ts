@@ -14,7 +14,7 @@ export class PriceHelper {
       throw new Error('cannot handle undefined currency');
     }
     if (p1.currency !== p2.currency) {
-      throw new Error('currency mispatch');
+      throw new Error('currency mismatch');
     }
   }
 

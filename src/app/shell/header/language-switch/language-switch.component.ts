@@ -13,7 +13,7 @@ import { Locale } from 'ish-core/models/locale/locale.model';
 export class LanguageSwitchComponent implements OnInit {
   @Input() view: '' | 'accordion' = '';
   /**
-   * determines position of dropbox - dropup or dropdown, default is dropdown
+   * determines position of dropbox
    */
   @Input() placement: '' | 'up' = '';
 

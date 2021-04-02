@@ -5,12 +5,12 @@
 <ng-template #categoryTemplate>
   <li
     *ngFor="let category of categories$ | async"
-    #submenu
+    #subMenu
     class="dropdown"
     [ngClass]="{ open: isOpened(category.uniqueId) }"
-    (mouseover)="subMenuShow(submenu)"
-    (mouseleave)="subMenuHide(submenu)"
-    (click)="subMenuHide(submenu)"
+    (mouseover)="subMenuShow(subMenu)"
+    (mouseleave)="subMenuHide(subMenu)"
+    (click)="subMenuHide(subMenu)"
   >
     <a
       [routerLink]="category.url"
