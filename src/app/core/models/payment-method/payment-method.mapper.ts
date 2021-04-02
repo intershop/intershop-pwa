@@ -215,7 +215,7 @@ export class PaymentMethodMapper {
   private static mapSEPAMandateInformation(
     hostedPaymentPageParameters: { name: string; value: string }[]
   ): { name: string; value: string }[] {
-    const mandateEntry = hostedPaymentPageParameters.find(hppp => hppp.name === 'Concardis_SEPA_Mandate');
+    const mandateEntry = hostedPaymentPageParameters.find(p => p.name === 'Concardis_SEPA_Mandate');
 
     if (typeof mandateEntry.value !== 'string') {
       const sepaMandateArray = mandateEntry.value as {

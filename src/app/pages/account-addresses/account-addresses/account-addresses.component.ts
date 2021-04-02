@@ -54,7 +54,7 @@ export class AccountAddressesComponent implements OnInit, OnChanges, OnDestroy {
   constructor(private accountFacade: AccountFacade) {}
 
   ngOnInit() {
-    // create preferred select form (selectboxes)
+    // create preferred select form (select boxes)
     this.preferredAddressForm = new FormGroup({
       preferredInvoiceAddressUrn: new FormControl(''),
       preferredShippingAddressUrn: new FormControl(''),

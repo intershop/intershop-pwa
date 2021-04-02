@@ -1,4 +1,4 @@
-@keyframes tada {
+@keyframes mini-basket-animation {
   0% {
     transform: scale(1);
   }
@@ -73,10 +73,10 @@
   }
 }
 
-.tada {
-  animation: tada 2000ms linear;
+.mini-basket-animation {
+  animation: mini-basket-animation 2000ms linear;
 
   > svg {
-    animation: tada 2000ms linear;
+    animation: mini-basket-animation 2000ms linear;
   }
 }

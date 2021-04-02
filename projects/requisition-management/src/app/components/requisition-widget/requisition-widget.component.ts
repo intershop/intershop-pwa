@@ -17,7 +17,7 @@ import { Requisition } from '../../models/requisition/requisition.model';
 @GenerateLazyComponent()
 export class RequisitionWidgetComponent implements OnInit {
   numPendingRequisitions$: Observable<number>;
-  totalAmountRequisitons$: Observable<Price>;
+  totalAmountRequisitions$: Observable<Price>;
 
   requisitionsLoading$: Observable<boolean>;
 
@@ -28,10 +28,10 @@ export class RequisitionWidgetComponent implements OnInit {
 
     this.numPendingRequisitions$ = pendingRequisitions$.pipe(
       startWith([] as Requisition[]),
-      map(reqs => reqs.length)
+      map(requisitions => requisitions.length)
     );
-    this.totalAmountRequisitons$ = pendingRequisitions$.pipe(
-      map(reqs => reqs?.map(req => PriceItemHelper.selectType(req.totals?.total, 'gross'))),
+    this.totalAmountRequisitions$ = pendingRequisitions$.pipe(
+      map(requisitions => requisitions?.map(req => PriceItemHelper.selectType(req.totals?.total, 'gross'))),
       map(prices => {
         if (prices.length > 0) {
           return prices?.reduce(

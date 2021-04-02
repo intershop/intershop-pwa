@@ -53,7 +53,7 @@ export class MiniBasketComponent implements OnInit, OnDestroy {
 
     this.basketAnimation$ = this.checkoutFacade.basketChange$.pipe(
       filter(() => !this.location.path().startsWith('/basket')),
-      switchMap(() => concat(of('tada'), timer(2500).pipe(mapTo(''))))
+      switchMap(() => concat(of('mini-basket-animation'), timer(2500).pipe(mapTo(''))))
     );
 
     this.basketAnimation$.pipe(takeUntil(this.destroy$)).subscribe(animation => {

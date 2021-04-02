@@ -14,13 +14,13 @@ import { SsoRegistrationEffects } from './sso-registration.effects';
 
 const mockRegistrationInfo: SsoRegistrationType = {
   companyInfo: {
-    companyName1: 'companyname',
+    companyName1: 'company name',
     taxationID: 'taxation',
   },
   address: {
     id: 'address',
   } as Address,
-  userId: 'userid',
+  userId: 'userId',
 };
 
 const mockCustomerUserType: CustomerUserType = {

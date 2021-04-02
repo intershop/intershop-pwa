@@ -7,7 +7,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
 /**
  * The CMS Video Component integrates a CMS managed video either via native video tag
  * or for selected video hosting platforms with the appropriate iframe embedding.
- * Currently supported video hosting: Youtube, Vimeo.
+ * Currently supported video hosting: YouTube, Vimeo.
  */
 @Component({
   selector: 'ish-cms-video',
@@ -62,7 +62,7 @@ export class CMSVideoComponent implements CMSComponent, OnInit {
    * If all fail, fall back to the default processor
    */
   private processVideoUrl() {
-    if (!this.tryProcessYoutubeVideo() && !this.tryProcessVimeoVideo()) {
+    if (!this.tryProcessYouTubeVideo() && !this.tryProcessVimeoVideo()) {
       this.tryProcessDefaultVideo();
     }
   }
@@ -74,10 +74,11 @@ export class CMSVideoComponent implements CMSComponent, OnInit {
   /**
    * process video URL with a YouTube video ID regex (https://github.com/regexhq/youtube-regex)
    */
-  tryProcessYoutubeVideo(): boolean {
-    const youtubeVideoRegex = /(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/i;
-    if (youtubeVideoRegex.test(this.video)) {
-      const videoId = youtubeVideoRegex.exec(this.video)[1];
+  tryProcessYouTubeVideo(): boolean {
+    // spell-checker: disable-next-line
+    const youTubeVideoRegex = /(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/i;
+    if (youTubeVideoRegex.test(this.video)) {
+      const videoId = youTubeVideoRegex.exec(this.video)[1];
       const videoUrl = new URL(`https://www.youtube.com/embed/${videoId}`);
       if (this.autoplay) {
         videoUrl.searchParams.set('autoplay', '1');

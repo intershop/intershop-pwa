@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
 /**
  * The Product Compare Paging Component
  *
- * Handles the pagging within the table of compared products in the {@link ProductCompareListComponent}.
+ * Handles the paging within the table of compared products in the {@link ProductCompareListComponent}.
  *
  * @example
  * <ish-product-compare-paging

@@ -111,8 +111,8 @@ describe('Payment Method Mapper', () => {
       paymentMethodData.data[0].restricted = true;
       paymentMethodData.data[0].restrictions = [
         {
-          message: 'restricition message',
-          code: 'restricition code',
+          message: 'restriction message',
+          code: 'restriction code',
         },
       ];
       const paymentMethod = PaymentMethodMapper.fromData(paymentMethodData)[0];

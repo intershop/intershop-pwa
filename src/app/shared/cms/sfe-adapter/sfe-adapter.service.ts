@@ -26,12 +26,13 @@ import { DesignViewMessage } from './sfe.types';
  * and sends it to the DV.
  * When the layout has been changed in the DV, the Angular app will reload the content.
  */
+// spell-checker: words designchange pwaready pwanavigation pwastable
 @Injectable({ providedIn: 'root' })
 export class SfeAdapterService {
   /** Internal tracking of whether the SFE capabilities are active or not */
   private initialized = false;
 
-  /** Allowlist of all message types that are safe to receive from the host window */
+  /** list of all message types that are safe to receive from the host window */
   private allowedHostMessageTypes = ['dv-designchange'];
 
   /** Set to true enables the SFE capabilities even in top-level windows when no design view is present. For debug purposes only! */
@@ -54,7 +55,7 @@ export class SfeAdapterService {
       return;
     }
 
-    // Prevent multi initilization
+    // Prevent multi init
     if (this.initialized) {
       return;
     }
@@ -118,12 +119,12 @@ export class SfeAdapterService {
   }
 
   /**
-   * Listen to events throughout the applicaton and send message to host when
+   * Listen to events throughout the application and send message to host when
    * (1) route has changed (`dv-pwanavigation`),
    * (2) application is stable, i.e. all async tasks have been completed (`dv-pwastable`) or
    * (3) content include has been reloaded (`dv-pwastable`).
    *
-   * The stable event is the notifier for the design view to rerender the component tree view.
+   * The stable event is the notifier for the design view to re-render the component tree view.
    * The event contains the tree, created by `analyzeTree()`.
    *
    * Should only be called *once* during initialization.

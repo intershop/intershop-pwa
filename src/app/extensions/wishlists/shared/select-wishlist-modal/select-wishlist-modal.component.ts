@@ -36,7 +36,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   @Input() addMoveProduct: 'add' | 'move' = 'add';
 
   /**
-   * submit successfull event
+   * submit successful event
    */
   @Output() submitEmitter = new EventEmitter<{ id: string; title: string }>();
 

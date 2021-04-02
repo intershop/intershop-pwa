@@ -55,12 +55,12 @@ Make sure to use them as written in the table below.
 
 ## Running with https
 
-We deliver a selfsigned x509 certifciate for local development/deployment purposes only.
+We deliver a self-signed x509 certificate for local development/deployment purposes only.
 For obvious reasons (e.g we do not know your hostname) we cannot deliver a certificate that is accepted by web browsers.
 Therefore be prepared for security questions when first accessing the site.
 
 Our image build process is expecting files `server.crt` and `server.key` in folder `dist`.
-Extension `crt` is the certifcate and `key` represents the private key.
+Extension `crt` is the certificate and `key` represents the private key.
 
 # Further References
 
@@ -71,7 +71,7 @@ Extension `crt` is the certifcate and `key` represents the private key.
 - [Guide - Client-Side Error Monitoring with Sentry](./sentry-error-monitoring.md)
 - [Guide - Google Tag Manager](./google-tag-manager.md)
 - [Guide - Monitoring with Prometheus](./prometheus-monitoring.md)
-- [Youtube - Server Side Rendering and Pre Rendering with Angular Universal](https://youtu.be/-VDOAjzLcvQ)
+- [YouTube - Server Side Rendering and Pre Rendering with Angular Universal](https://youtu.be/-VDOAjzLcvQ)
 - [Google Developers - Rendering on the Web](https://developers.google.com/web/updates/2019/02/rendering-on-the-web)
 
 [concept-sso]: ../concepts/sso.md

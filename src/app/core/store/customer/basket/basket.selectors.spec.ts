@@ -118,7 +118,7 @@ describe('Basket Selectors', () => {
       expect(getCurrentBasketId(store$.state)).toEqual('test');
     });
 
-    it('should set validation results to the lineitem if basket is not valid', () => {
+    it('should set validation results to the line item if basket is not valid', () => {
       store$.dispatch(
         loadBasketSuccess({
           basket: { id: 'test', lineItems: [{ id: 'test', productSKU: 'sku' } as LineItem] } as Basket,
@@ -285,7 +285,7 @@ describe('Basket Selectors', () => {
         adjusted: false,
         errors: [
           {
-            message: 'error occured',
+            message: 'error occurred',
             code: '4711',
             parameters: {
               lineItemId: '4712',
@@ -301,7 +301,7 @@ describe('Basket Selectors', () => {
 
     it('should reporting the validation results when called', () => {
       expect(getBasketValidationResults(store$.state).valid).toBeFalse();
-      expect(getBasketValidationResults(store$.state).errors[0].message).toEqual('error occured');
+      expect(getBasketValidationResults(store$.state).errors[0].message).toEqual('error occurred');
       expect(getBasketValidationResults(store$.state).errors[0].lineItem.id).toEqual('4712');
     });
   });

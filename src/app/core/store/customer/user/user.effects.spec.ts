@@ -162,7 +162,7 @@ describe('User Effects', () => {
   });
 
   describe('loadCompanyUser$', () => {
-    it('should call the registationService for LoadCompanyUser', done => {
+    it('should call the registration service for LoadCompanyUser', done => {
       const action = loadCompanyUser();
       actions$ = of(action);
 
@@ -182,7 +182,7 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a LoadCompanyUserFail action on failed for LoadCompanyUser', () => {
-      const error = makeHttpError({ status: 401, code: 'feld' });
+      const error = makeHttpError({ status: 401, code: 'field' });
       when(userServiceMock.getCompanyUserData()).thenReturn(throwError(error));
 
       const action = loadCompanyUser();
@@ -269,7 +269,7 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a CreateUserFail action on failed user creation', () => {
-      const error = makeHttpError({ status: 401, code: 'feld' });
+      const error = makeHttpError({ status: 401, code: 'field' });
       when(userServiceMock.createUser(anything())).thenReturn(throwError(error));
 
       const action = createUser({} as CustomerRegistrationType);
@@ -332,7 +332,7 @@ describe('User Effects', () => {
     });
 
     it('should dispatch an UpdateUserFail action on failed user update', () => {
-      const error = makeHttpError({ status: 401, code: 'feld' });
+      const error = makeHttpError({ status: 401, code: 'field' });
       when(userServiceMock.updateUser(anything(), anything())).thenReturn(throwError(error));
 
       const action = updateUser({ user: {} as User });

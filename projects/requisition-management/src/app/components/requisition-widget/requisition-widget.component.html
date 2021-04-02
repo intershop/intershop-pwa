@@ -12,7 +12,7 @@
           </div>
           {{ 'account.requisitions.widget.pending' | translate }}
         </div>
-        <div class="col text-right" *ngIf="totalAmountRequisitons$ | async as amount">
+        <div class="col text-right" *ngIf="totalAmountRequisitions$ | async as amount">
           <div *ngIf="amount.value > 0">
             <div>
               {{ 'account.requisitions.widget.order_total' | translate }}

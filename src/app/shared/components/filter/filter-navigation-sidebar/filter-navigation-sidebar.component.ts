@@ -13,12 +13,12 @@ export class FilterNavigationSidebarComponent {
   @Output() applyFilter = new EventEmitter<{ searchParameter: URLFormParams }>();
 
   /**
-   * keeps the collapsed state of subcomponents when changing filters
+   * keeps the collapsed state of sub components when changing filters
    */
   collapsedElements: { [id: string]: boolean } = {};
 
   /**
-   * keeps the show all state of subcomponents when changing filters
+   * keeps the show all state of sub components when changing filters
    */
   showAllElements: { [id: string]: boolean } = {};
 }

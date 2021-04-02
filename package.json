@@ -25,6 +25,8 @@
     "compile": "tsc --project tsconfig.all.json",
     "dead-code": "npx ts-node scripts/find-dead-code.ts",
     "clean-localizations": "node scripts/clean-up-localizations",
+    "spell-check": "cspell lint --no-summary --no-progress \"{src,projects,docs}/**/*.{html,ts,md}\"",
+    "spell-check-localizations": "cspell lint --no-summary --no-progress \"src/assets/i18n/{de_DE,en_US,fr_FR}.json\"",
     "clean": "git clean -xdf -e \"*environment.local.ts\" -e \"*node_modules\"",
     "postclean": "npm ci",
     "check": "npm-run-all \"lint -- --fix\" format compile build \"test -- --maxWorkers=50%\" dead-code clean-localizations",
@@ -103,6 +105,8 @@
     "@angular/compiler-cli": "~11.2.7",
     "@angular/language-service": "~11.2.7",
     "@commitlint/cli": "^12.0.1",
+    "@cspell/dict-de-de": "^1.1.31",
+    "@cspell/dict-fr-fr": "^1.2.21",
     "@nguniversal/builders": "^11.2.1",
     "@phenomnomnominal/tsquery": "^4.1.1",
     "@schematics/angular": "^11.2.6",
@@ -116,6 +120,7 @@
     "commitizen": "^4.2.3",
     "commitlint-config-cz": "^0.13.2",
     "conventional-changelog-cli": "2.1.1",
+    "cspell": "^5.3.12",
     "cz-customizable": "^6.3.0",
     "husky": "^4.3.8",
     "intershop-schematics": "file:schematics/src",
@@ -163,7 +168,8 @@
       "node docs/check-kb-labels",
       "node docs/check-dead-links fast",
       "node docs/check-documentation-overview",
-      "node docs/check-sentence-newline"
+      "node docs/check-sentence-newline",
+      "cspell lint --no-summary --no-progress"
     ],
     "*.{scss,css}": [
       "stylelint --fix"

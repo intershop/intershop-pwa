@@ -3,7 +3,7 @@ import { FormlyExtension, FormlyFieldConfig } from '@ngx-formly/core';
 
 /**
  * Extension to enable server-side validation.
- * It accesses the formstate with two properties: errors and changedSinceErrors.
+ * It accesses the form state with two properties: errors and changedSinceErrors.
  * If these are set for a property, it will have an error.
  * To use this extension, set the formState in the relevant component.
  */
