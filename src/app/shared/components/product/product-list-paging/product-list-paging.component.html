@@ -1,37 +1,17 @@
-<ng-container *ngIf="currentPage && pageIndices.length > 1">
+<ng-container *ngIf="view$ | async as view">
   <ul class="product-list-paging">
     <li>
-      <ng-container *ngIf="currentPage > 1; else inactiveFirstLink">
-        <a
-          class="product-list-paging-previous"
-          [routerLink]="[]"
-          queryParamsHandling="merge"
-          [queryParams]="{ page: currentPage - 1 }"
-          [fragment]="fragmentOnRouting"
-          >&laquo;</a
-        >
+      <ng-container *ngIf="view.previousPage(); else inactiveFirstLink">
+        <a class="product-list-paging-previous" (click)="previousPage()">&laquo;</a>
       </ng-container>
       <ng-template #inactiveFirstLink> &laquo; </ng-template>
     </li>
-    <li *ngFor="let p of pageIndices">
-      <a
-        [ngClass]="{ active: p.value === currentPage }"
-        [routerLink]="[]"
-        queryParamsHandling="merge"
-        [queryParams]="{ page: p.value }"
-        [fragment]="fragmentOnRouting"
-        >{{ p.display }}</a
-      >
+    <li *ngFor="let p of view.pageIndices()">
+      <a [ngClass]="{ active: p.value === (page$ | async) }" (click)="setPage(p.value)">{{ p.display }}</a>
     </li>
     <li class="pagination-list-next">
-      <ng-container *ngIf="pageIndices[pageIndices.length - 1].value !== currentPage; else inactiveLastLink">
-        <a
-          [routerLink]="[]"
-          queryParamsHandling="merge"
-          [queryParams]="{ page: currentPage + 1 }"
-          [fragment]="fragmentOnRouting"
-          >&raquo;</a
-        >
+      <ng-container *ngIf="view.nextPage(); else inactiveLastLink">
+        <a (click)="nextPage()">&raquo;</a>
       </ng-container>
       <ng-template #inactiveLastLink> &raquo; </ng-template>
     </li>
