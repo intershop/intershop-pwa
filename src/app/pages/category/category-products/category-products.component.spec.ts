@@ -2,8 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
+import { ProductListingContextDirective } from 'ish-core/directives/product-listing-context.directive';
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
@@ -32,6 +33,7 @@ describe('Category Products Component', () => {
         MockComponent(FilterNavigationComponent),
         MockComponent(NgbCollapse),
         MockComponent(ProductListingComponent),
+        MockDirective(ProductListingContextDirective),
       ],
     }).compileComponents();
   });

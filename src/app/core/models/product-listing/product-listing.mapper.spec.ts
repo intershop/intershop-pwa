@@ -15,14 +15,14 @@ describe('Product Listing Mapper', () => {
   });
 
   it('should map single page data to one page', () => {
-    expect(productListingMapper.createPages(['A', 'B'], 'test', 'dummy')).toMatchInlineSnapshot(`
+    expect(productListingMapper.createPages(['A', 'B'], 'category', 'dummy')).toMatchInlineSnapshot(`
       Object {
         "1": Array [
           "A",
           "B",
         ],
         "id": Object {
-          "type": "test",
+          "type": "category",
           "value": "dummy",
         },
         "itemCount": 2,
@@ -32,7 +32,7 @@ describe('Product Listing Mapper', () => {
   });
 
   it('should map multi page data to multiple pages', () => {
-    expect(productListingMapper.createPages(['A', 'B', 'C', 'D', 'E'], 'test', 'dummy')).toMatchInlineSnapshot(`
+    expect(productListingMapper.createPages(['A', 'B', 'C', 'D', 'E'], 'category', 'dummy')).toMatchInlineSnapshot(`
       Object {
         "1": Array [
           "A",
@@ -46,7 +46,7 @@ describe('Product Listing Mapper', () => {
           "E",
         ],
         "id": Object {
-          "type": "test",
+          "type": "category",
           "value": "dummy",
         },
         "itemCount": 5,
@@ -57,7 +57,7 @@ describe('Product Listing Mapper', () => {
 
   it('should map extra arguments when supplied', () => {
     expect(
-      productListingMapper.createPages(['A', 'B', 'C', 'D'], 'test', 'dummy', {
+      productListingMapper.createPages(['A', 'B', 'C', 'D'], 'category', 'dummy', {
         sortableAttributes: [{ name: 'name-desc' }],
         itemCount: 200,
         sorting: 'name-asc',
@@ -81,7 +81,7 @@ describe('Product Listing Mapper', () => {
             ],
           },
           "sorting": "name-asc",
-          "type": "test",
+          "type": "category",
           "value": "dummy",
         },
         "itemCount": 200,

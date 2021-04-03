@@ -1,10 +1,9 @@
-<a *ngIf="fragmentOnRouting === 'product-list-top'" id="product-list-top"></a>
+<a id="product-list-top"></a>
 <ng-container *ngIf="productListingView$ | async as listing">
   <div
     *ngIf="isEndlessScrolling"
     infiniteScroll
-    (scrolled)="loadMoreProducts('down')"
-    (scrolledUp)="loadMoreProducts('up')"
+    (scrolled)="loadMoreProducts()"
     [alwaysCallback]="true"
     [immediateCheck]="true"
   >

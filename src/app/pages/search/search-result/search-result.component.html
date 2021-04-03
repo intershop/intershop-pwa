@@ -18,7 +18,9 @@
       }}
     </h1>
     <ish-product-listing
-      [id]="{ type: 'search', value: searchTerm }"
+      ishProductListingContext
+      type="search"
+      [value]="searchTerm"
       fragmentOnRouting="search-page-top"
     ></ish-product-listing>
   </div>
