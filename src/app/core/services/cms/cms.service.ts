@@ -7,6 +7,7 @@ import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.
 import { ContentPageletEntryPointData } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.interface';
 import { ContentPageletEntryPointMapper } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.mapper';
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
+import { ContentPageletTreeData } from 'ish-core/models/content-pagelet-tree/content-pagelet-tree.interface';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { SeoAttributesMapper } from 'ish-core/models/seo-attributes/seo-attributes.mapper';
 import { ApiService } from 'ish-core/services/api/api.service';
@@ -53,6 +54,14 @@ export class CMSService {
         map(([page, pagelets]) => this.mapSeoAttributes(page, pagelets)),
         map(([page, pagelets]) => ({ page, pagelets }))
       );
+  }
+
+  getContentPageTree(pageId: string): Observable<ContentPageletTreeData> {
+    if (!pageId) {
+      return throwError('getContentPage() called without an pageId');
+    }
+
+    return this.apiService.get<ContentPageletTreeData>(`cms/pagetree/${pageId}`, { sendPGID: true });
   }
 
   private mapSeoAttributes(
