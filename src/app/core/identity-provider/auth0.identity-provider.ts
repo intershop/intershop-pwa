@@ -124,7 +124,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
                     )
                   ),
                   switchMap((navigated: boolean) =>
-                    navigated
+                    navigated || navigated === null
                       ? race(
                           this.store.pipe(
                             select(getSsoRegistrationRegistered),

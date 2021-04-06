@@ -45,11 +45,7 @@ export class RegistrationPageComponent implements OnInit {
     this.error$ = merge(this.accountFacade.userError$, this.accountFacade.ssoRegistrationError$);
     this.fields$ = this.route.queryParamMap.pipe(
       tap((paramMap: ParamMap) => (this.model = this.processParamMap(paramMap))),
-      map((paramMap: ParamMap) => ({
-        sso: paramMap.get('sso') === 'true',
-        userId: paramMap.get('userid'),
-        businessCustomer: this.featureToggle.enabled('businessCustomerRegistration'),
-      })),
+      map((paramMap: ParamMap) => this.extractConfig(paramMap)),
       tap(config => (this.registrationConfig = config)),
       tap(
         config =>
@@ -83,5 +79,13 @@ export class RegistrationPageComponent implements OnInit {
     return paramMap.keys
       .filter(key => !['sso', 'userid'].includes(key))
       .reduce((acc, key) => ({ ...acc, [key]: paramMap.get(key) }), { ...this.model });
+  }
+
+  extractConfig(paramMap: ParamMap) {
+    return {
+      sso: paramMap.get('sso') === 'true',
+      userId: paramMap.get('userid'),
+      businessCustomer: this.featureToggle.enabled('businessCustomerRegistration'),
+    };
   }
 }

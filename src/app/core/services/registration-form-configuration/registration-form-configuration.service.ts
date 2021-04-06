@@ -1,16 +1,25 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Store, select } from '@ngrx/store';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { UUID } from 'angular2-uuid';
+import { Observable, combineLatest, from, iif, noop, of, race } from 'rxjs';
+import { map, mapTo, switchMap, take, tap } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Address } from 'ish-core/models/address/address.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
-import { cancelRegistration, setRegistrationInfo } from 'ish-core/store/customer/sso-registration';
+import {
+  cancelRegistration,
+  getSsoRegistrationCancelled,
+  getSsoRegistrationRegistered,
+  setRegistrationInfo,
+} from 'ish-core/store/customer/sso-registration';
+import { ConfirmLeaveModalComponent } from 'ish-shared/components/registration/confirm-leave-modal/confirm-leave-modal.component';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 export interface RegistrationConfigType {
@@ -22,7 +31,12 @@ export interface RegistrationConfigType {
 @Injectable({ providedIn: 'root' })
 export class RegistrationFormConfigurationService {
   // tslint:disable: no-intelligence-in-artifacts
-  constructor(private accountFacade: AccountFacade, private store: Store, private router: Router) {}
+  constructor(
+    private accountFacade: AccountFacade,
+    private store: Store,
+    private router: Router,
+    private ngbModal: NgbModal
+  ) {}
 
   getRegistrationFormConfiguration(registrationConfig: RegistrationConfigType) {
     return [
@@ -151,6 +165,30 @@ export class RegistrationFormConfigurationService {
 
   cancelRegistrationForm(config: RegistrationConfigType): void {
     config.sso ? this.store.dispatch(cancelRegistration()) : this.router.navigate(['/home']);
+  }
+
+  canDeactivate(config: RegistrationConfigType): boolean | Observable<boolean> {
+    if (!config.sso) {
+      return true;
+    } else {
+      return combineLatest([
+        this.store.pipe(select(getSsoRegistrationCancelled)),
+        this.store.pipe(select(getSsoRegistrationRegistered)),
+      ]).pipe(
+        take(1),
+        switchMap(([cancelled, registered]) =>
+          iif(
+            () => cancelled || registered,
+            of(true),
+            of({}).pipe(
+              map(() => this.ngbModal.open(ConfirmLeaveModalComponent)),
+              switchMap(modalRef => race(modalRef.dismissed.pipe(mapTo(false)), from(modalRef.result))),
+              tap(result => (result ? this.store.dispatch(cancelRegistration()) : noop))
+            )
+          )
+        )
+      );
+    }
   }
 
   private getCredentialsConfig(): FormlyFieldConfig[] {

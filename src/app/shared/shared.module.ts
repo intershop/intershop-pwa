@@ -120,6 +120,7 @@ import { ProductVariationSelectComponent } from './components/product/product-va
 import { PromotionDetailsComponent } from './components/promotion/promotion-details/promotion-details.component';
 import { PromotionRemoveComponent } from './components/promotion/promotion-remove/promotion-remove.component';
 import { RecentlyViewedComponent } from './components/recently/recently-viewed/recently-viewed.component';
+import { ConfirmLeaveModalComponent } from './components/registration/confirm-leave-modal/confirm-leave-modal.component';
 import { SearchBoxComponent } from './components/search/search-box/search-box.component';
 import { FormlyAddressFormsModule } from './formly-address-forms/formly-address-forms.module';
 import { FormlyModule } from './formly/formly.module';
@@ -172,6 +173,7 @@ const declaredComponents = [
   CMSStaticPageComponent,
   CMSTextComponent,
   CMSVideoComponent,
+  ConfirmLeaveModalComponent,
   ContentSlotComponent,
   FilterCheckboxComponent,
   FilterCollapsableComponent,
@@ -213,6 +215,7 @@ const exportedComponents = [
   BasketShippingAddressWidgetComponent,
   BasketValidationResultsComponent,
   BreadcrumbComponent,
+  ConfirmLeaveModalComponent,
   ContentIncludeComponent,
   ContentPageletComponent,
   ContentViewcontextComponent,

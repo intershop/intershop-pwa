@@ -9,8 +9,11 @@ import { RegistrationAddressFieldComponent } from './formly/registration-address
 import { RegistrationHeadingFieldComponent } from './formly/registration-heading-field/registration-heading-field.component';
 import { RegistrationTacFieldComponent } from './formly/registration-tac-field/registration-tac-field.component';
 import { RegistrationPageComponent } from './registration-page.component';
+import { RegistrationPageGuard } from './registration-page.guard';
 
-const registrationPageRoutes: Routes = [{ path: '', component: RegistrationPageComponent }];
+const registrationPageRoutes: Routes = [
+  { path: '', component: RegistrationPageComponent, canDeactivate: [RegistrationPageGuard] },
+];
 
 const registrationFormlyConfig: ConfigOption = {
   types: [
@@ -36,5 +39,6 @@ const registrationFormlyConfig: ConfigOption = {
     RegistrationPageComponent,
     RegistrationTacFieldComponent,
   ],
+  providers: [RegistrationPageGuard],
 })
 export class RegistrationPageModule {}
