@@ -301,7 +301,7 @@
   "account.register.confirm_leave_modal.body": "You have not completed your account. Are you sure you want to leave this page and abort the registration process?",
   "account.register.confirm_leave_modal.cancel_button": "No, continue registration.",
   "account.register.confirm_leave_modal.confirm_button": "Yes, cancel registration.",
-  "account.register.confirm_leave_modal.title": "Confirmation needed!",
+  "account.register.confirm_leave_modal.title": "Confirmation needed.",
   "account.register.email.label": "E-mail Address",
   "account.register.email_confirmation.label": "Confirm E-mail Address",
   "account.register.email_password.heading": "E-mail & Password",
