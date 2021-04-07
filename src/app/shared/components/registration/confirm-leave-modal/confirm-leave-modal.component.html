@@ -8,10 +8,10 @@
   {{ 'account.register.confirm_leave_modal.body' | translate }}
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn" ngbAutofocus (click)="activeModal.close(false)">
-    {{ 'account.register.confirm_leave_modal.cancel_button' | translate }}
-  </button>
-  <button type="button" class="btn btn-primary" (click)="activeModal.close(true)">
+  <button type="button" ngbAutofocus class="btn btn-primary" (click)="activeModal.close(true)">
     {{ 'account.register.confirm_leave_modal.confirm_button' | translate }}
+  </button>
+  <button type="button" class="btn btn-secondary" (click)="activeModal.close(false)">
+    {{ 'account.register.confirm_leave_modal.cancel_button' | translate }}
   </button>
 </div>
