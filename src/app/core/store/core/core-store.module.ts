@@ -1,7 +1,7 @@
 import { NgModule, Type } from '@angular/core';
 import { Router } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
-import { NavigationActionTiming, StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
+import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
 import { ActionReducerMap, MetaReducer, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
@@ -49,7 +49,6 @@ const coreMetaReducers: MetaReducer<CoreState>[] = [
     }),
     StoreRouterConnectingModule.forRoot({
       serializer: CustomRouterSerializer,
-      navigationActionTiming: NavigationActionTiming.PostActivation,
     }),
     EffectsModule.forRoot(coreEffects),
   ],
