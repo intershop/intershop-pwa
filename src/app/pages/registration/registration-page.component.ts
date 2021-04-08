@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { Observable, merge } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
@@ -36,26 +35,22 @@ export class RegistrationPageComponent implements OnInit {
 
   registrationConfig: RegistrationConfigType;
 
-  fields$: Observable<FormlyFieldConfig[]>;
+  fields: FormlyFieldConfig[];
   model: Record<string, unknown>;
   options: FormlyFormOptions;
   form = new FormGroup({});
 
   ngOnInit() {
     this.error$ = merge(this.accountFacade.userError$, this.accountFacade.ssoRegistrationError$);
-    this.fields$ = this.route.queryParamMap.pipe(
-      tap((paramMap: ParamMap) => (this.model = this.processParamMap(paramMap))),
-      map((paramMap: ParamMap) => this.extractConfig(paramMap)),
-      tap(config => (this.registrationConfig = config)),
-      tap(
-        config =>
-          (this.options = this.registrationFormConfiguration.getRegistrationFormConfigurationOptions(
-            config,
-            this.model
-          ))
-      ),
-      map(config => this.registrationFormConfiguration.getRegistrationFormConfiguration(config))
+
+    const snapshot = this.route.snapshot;
+    this.model = this.extractModel(snapshot);
+    this.registrationConfig = this.extractConfig(snapshot);
+    this.options = this.registrationFormConfiguration.getRegistrationFormConfigurationOptions(
+      this.registrationConfig,
+      this.model
     );
+    this.fields = this.registrationFormConfiguration.getRegistrationFormConfiguration(this.registrationConfig);
   }
 
   cancelForm() {
@@ -75,16 +70,16 @@ export class RegistrationPageComponent implements OnInit {
     return this.form.invalid && this.submitted;
   }
 
-  processParamMap(paramMap: ParamMap) {
-    return paramMap.keys
-      .filter(key => !['sso', 'userid'].includes(key))
-      .reduce((acc, key) => ({ ...acc, [key]: paramMap.get(key) }), { ...this.model });
+  extractModel(route: ActivatedRouteSnapshot) {
+    return Object.keys(route.queryParams)
+      .filter(key => !['userid'].includes(key))
+      .reduce((acc, key) => ({ ...acc, [key]: route.queryParams[key] }), { ...this.model });
   }
 
-  extractConfig(paramMap: ParamMap) {
+  extractConfig(route: ActivatedRouteSnapshot) {
     return {
-      sso: paramMap.get('sso') === 'true',
-      userId: paramMap.get('userid'),
+      sso: !!route.url.find(segment => segment.path.includes('sso')),
+      userId: route.queryParams.userid,
       businessCustomer: this.featureToggle.enabled('businessCustomerRegistration'),
     };
   }

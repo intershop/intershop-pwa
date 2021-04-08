@@ -13,6 +13,11 @@ import { RegistrationPageGuard } from './registration-page.guard';
 
 const registrationPageRoutes: Routes = [
   { path: '', component: RegistrationPageComponent, canDeactivate: [RegistrationPageGuard] },
+  {
+    path: 'sso',
+    component: RegistrationPageComponent,
+    canDeactivate: [RegistrationPageGuard],
+  },
 ];
 
 const registrationFormlyConfig: ConfigOption = {

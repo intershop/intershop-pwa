@@ -14,6 +14,6 @@ export class RegistrationPageGuard implements CanDeactivate<RegistrationPageComp
     component: RegistrationPageComponent,
     currentRoute: ActivatedRouteSnapshot
   ): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    return this.registrationConfigurationService.canDeactivate(component.extractConfig(currentRoute.queryParamMap));
+    return this.registrationConfigurationService.canDeactivate(component.extractConfig(currentRoute));
   }
 }

@@ -112,9 +112,8 @@ export class Auth0IdentityProvider implements IdentityProvider {
                   switchMap(([customer]) =>
                     iif(
                       () => !customer,
-                      this.router.navigate(['/register'], {
+                      this.router.navigate(['/register', 'sso'], {
                         queryParams: {
-                          sso: true,
                           userid: userData.businessPartnerNo,
                           firstName: userData.firstName,
                           lastName: userData.lastName,

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, Params, UrlSegment } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -46,7 +46,10 @@ describe('Registration Page Component', () => {
         type: 'ish-text-input-field',
       },
     ]);
-    when(activatedRoute.queryParamMap).thenReturn(of(convertToParamMap({ sso: 'false' })));
+    when(activatedRoute.snapshot).thenReturn({
+      queryParams: {},
+      url: [{ path: '/register' } as UrlSegment, { path: 'sso' } as UrlSegment],
+    } as ActivatedRouteSnapshot);
 
     when(accountFacade.userError$).thenReturn(of());
     when(accountFacade.ssoRegistrationError$).thenReturn(of());
@@ -69,14 +72,17 @@ describe('Registration Page Component', () => {
     expect(component.registrationConfig).toMatchInlineSnapshot(`
       Object {
         "businessCustomer": false,
-        "sso": false,
-        "userId": null,
+        "sso": true,
+        "userId": undefined,
       }
     `);
   });
 
   it('should set configuration parameters depending on router', () => {
-    when(activatedRoute.queryParamMap).thenReturn(of(convertToParamMap({ sso: 'true', userid: 'uid' })));
+    when(activatedRoute.snapshot).thenReturn({
+      queryParams: { userid: 'uid' } as Params,
+      url: [{ path: '/register' } as UrlSegment, { path: 'sso' } as UrlSegment],
+    } as ActivatedRouteSnapshot);
     when(featureToggleService.enabled(anyString())).thenReturn(true);
     fixture.detectChanges();
 
