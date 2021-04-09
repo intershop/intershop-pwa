@@ -264,7 +264,8 @@
         {
           "import": "^Router$",
           "from": "^express$",
-          "message": "Most likely you would've wanted to import the angular router instead."
+          "message": "Most likely you would've wanted to import the angular router instead.",
+          "fix": "@angular/router"
         },
         {
           "from": "^[\\./]*/core/(.*)$",
