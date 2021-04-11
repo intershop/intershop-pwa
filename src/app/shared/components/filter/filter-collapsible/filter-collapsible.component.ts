@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'ish-filter-collapsable',
-  templateUrl: './filter-collapsable.component.html',
+  selector: 'ish-filter-collapsible',
+  templateUrl: './filter-collapsible.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FilterCollapsableComponent implements OnInit {
+export class FilterCollapsibleComponent implements OnInit {
   @Input() title: string;
   @Input() collapsed: boolean;
   @Output() collapsedChange = new EventEmitter<boolean>();

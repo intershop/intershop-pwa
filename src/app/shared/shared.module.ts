@@ -72,7 +72,7 @@ import { ModalDialogLinkComponent } from './components/common/modal-dialog-link/
 import { ModalDialogComponent } from './components/common/modal-dialog/modal-dialog.component';
 import { SuccessMessageComponent } from './components/common/success-message/success-message.component';
 import { FilterCheckboxComponent } from './components/filter/filter-checkbox/filter-checkbox.component';
-import { FilterCollapsableComponent } from './components/filter/filter-collapsable/filter-collapsable.component';
+import { FilterCollapsibleComponent } from './components/filter/filter-collapsible/filter-collapsible.component';
 import { FilterDropdownComponent } from './components/filter/filter-dropdown/filter-dropdown.component';
 import { FilterNavigationBadgesComponent } from './components/filter/filter-navigation-badges/filter-navigation-badges.component';
 import { FilterNavigationHorizontalComponent } from './components/filter/filter-navigation-horizontal/filter-navigation-horizontal.component';
@@ -174,7 +174,7 @@ const declaredComponents = [
   CMSVideoComponent,
   ContentSlotComponent,
   FilterCheckboxComponent,
-  FilterCollapsableComponent,
+  FilterCollapsibleComponent,
   FilterDropdownComponent,
   FilterNavigationBadgesComponent,
   FilterNavigationHorizontalComponent,
