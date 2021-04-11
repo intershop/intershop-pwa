@@ -82,7 +82,7 @@ export class UserEffects {
       ofType(loginUser),
       mapToPayloadProperty('credentials'),
       exhaustMap(credentials =>
-        this.userService.signinUser(credentials).pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
+        this.userService.signInUser(credentials).pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
       )
     )
   );
@@ -92,7 +92,7 @@ export class UserEffects {
       ofType(loginUserWithToken),
       mapToPayloadProperty('token'),
       exhaustMap(token =>
-        this.userService.signinUserByToken(token).pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
+        this.userService.signInUserByToken(token).pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
       )
     )
   );
@@ -223,7 +223,7 @@ export class UserEffects {
   loadUserByAPIToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadUserByAPIToken),
-      concatMap(() => this.userService.signinUserByToken().pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail)))
+      concatMap(() => this.userService.signInUserByToken().pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail)))
     )
   );
 
