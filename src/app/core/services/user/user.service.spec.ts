@@ -44,7 +44,7 @@ describe('User Service', () => {
       when(apiServiceMock.get('customers/-', anything())).thenReturn(of({ customerNo: 'PC' } as Customer));
       when(apiServiceMock.get('privatecustomers/-')).thenReturn(of({ customerNo: 'PC' } as Customer));
 
-      userService.signinUser(loginDetail).subscribe(data => {
+      userService.signInUser(loginDetail).subscribe(data => {
         const [, options] = capture<{}, { headers: HttpHeaders }>(apiServiceMock.get).beforeLast();
         const headers = options?.headers;
         expect(headers).toBeTruthy();
@@ -60,7 +60,7 @@ describe('User Service', () => {
       when(apiServiceMock.get('customers/-', anything())).thenReturn(of({ customerNo: 'PC' } as Customer));
       when(apiServiceMock.get('privatecustomers/-')).thenReturn(of({ customerNo: 'PC' } as Customer));
 
-      userService.signinUser(loginDetail).subscribe(() => {
+      userService.signInUser(loginDetail).subscribe(() => {
         verify(apiServiceMock.get(`customers/-`, anything())).once();
         verify(apiServiceMock.get(`privatecustomers/-`)).once();
         done();
@@ -73,7 +73,7 @@ describe('User Service', () => {
         of({ customerNo: 'PC', companyName: 'xyz' } as Customer)
       );
 
-      userService.signinUser(loginDetail).subscribe(() => {
+      userService.signInUser(loginDetail).subscribe(() => {
         verify(apiServiceMock.get(`customers/-`, anything())).once();
         verify(apiServiceMock.get(`privatecustomers/-`, anything())).never();
         done();
@@ -84,7 +84,7 @@ describe('User Service', () => {
       const errorMessage = '401 and Unauthorized';
       const userDetails = { login: 'intershop@123.com', password: 'wrong' };
       when(apiServiceMock.get(anything(), anything())).thenReturn(throwError(new Error(errorMessage)));
-      userService.signinUser(userDetails).subscribe(fail, error => {
+      userService.signInUser(userDetails).subscribe(fail, error => {
         expect(error).toBeTruthy();
         expect(error.message).toBe(errorMessage);
         done();
@@ -96,7 +96,7 @@ describe('User Service', () => {
         of({ customerNo: '4711', type: 'SMBCustomer', companyName: 'xyz' } as CustomerData)
       );
 
-      userService.signinUserByToken().subscribe(() => {
+      userService.signInUserByToken().subscribe(() => {
         verify(apiServiceMock.get('customers/-', anything())).once();
         verify(apiServiceMock.get('privatecustomers/-', anything())).never();
         const [path] = capture<string>(apiServiceMock.get).last();
@@ -110,7 +110,7 @@ describe('User Service', () => {
         of({ customerNo: '4711', type: 'SMBCustomer', companyName: 'xyz' } as CustomerData)
       );
 
-      userService.signinUserByToken('12345').subscribe(() => {
+      userService.signInUserByToken('12345').subscribe(() => {
         verify(apiServiceMock.get('customers/-', anything())).once();
         verify(apiServiceMock.get('privatecustomers/-', anything())).never();
         const [path, options] = capture<string, AvailableOptions>(apiServiceMock.get).last();

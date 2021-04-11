@@ -145,7 +145,7 @@ describe('Customer Store', () => {
     when(promotionsServiceMock.getPromotion(anything())).thenReturn(of(promotion));
 
     const userServiceMock = mock(UserService);
-    when(userServiceMock.signinUser(anything())).thenReturn(of({ customer, user }));
+    when(userServiceMock.signInUser(anything())).thenReturn(of({ customer, user }));
 
     const personalizationServiceMock = mock(PersonalizationService);
     when(personalizationServiceMock.getPGID()).thenReturn(EMPTY);

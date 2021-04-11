@@ -84,7 +84,7 @@ import { LineItemEditDialogComponent } from './components/line-item/line-item-ed
 import { LineItemEditComponent } from './components/line-item/line-item-edit/line-item-edit.component';
 import { LineItemListElementComponent } from './components/line-item/line-item-list-element/line-item-list-element.component';
 import { LineItemListComponent } from './components/line-item/line-item-list/line-item-list.component';
-import { Auth0SigninComponent } from './components/login/auth0-signin/auth0-signin.component';
+import { Auth0SignInComponent } from './components/login/auth0-sign-in/auth0-sign-in.component';
 import { IdentityProviderLoginComponent } from './components/login/identity-provider-login/identity-provider-login.component';
 import { LoginFormComponent } from './components/login/login-form/login-form.component';
 import { LoginModalComponent } from './components/login/login-modal/login-modal.component';
@@ -157,7 +157,7 @@ const importExportModules = [
 ];
 
 const declaredComponents = [
-  Auth0SigninComponent,
+  Auth0SignInComponent,
   BasketValidationItemsComponent,
   BasketValidationProductsComponent,
   CMSCarouselComponent,
