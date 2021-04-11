@@ -65,8 +65,8 @@ import { AccordionItemComponent } from './components/common/accordion-item/accor
 import { AccordionComponent } from './components/common/accordion/accordion.component';
 import { BreadcrumbComponent } from './components/common/breadcrumb/breadcrumb.component';
 import { ErrorMessageComponent } from './components/common/error-message/error-message.component';
+import { InPlaceEditComponent } from './components/common/in-place-edit/in-place-edit.component';
 import { InfoBoxComponent } from './components/common/info-box/info-box.component';
-import { InplaceEditComponent } from './components/common/inplace-edit/inplace-edit.component';
 import { LoadingComponent } from './components/common/loading/loading.component';
 import { ModalDialogLinkComponent } from './components/common/modal-dialog-link/modal-dialog-link.component';
 import { ModalDialogComponent } from './components/common/modal-dialog/modal-dialog.component';
@@ -219,8 +219,8 @@ const exportedComponents = [
   ErrorMessageComponent,
   FilterNavigationComponent,
   IdentityProviderLoginComponent,
+  InPlaceEditComponent,
   InfoBoxComponent,
-  InplaceEditComponent,
   LineItemListComponent,
   LoadingComponent,
   LoginFormComponent,

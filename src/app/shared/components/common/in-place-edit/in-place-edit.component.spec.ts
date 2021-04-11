@@ -6,31 +6,31 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { InplaceEditComponent } from './inplace-edit.component';
+import { InPlaceEditComponent } from './in-place-edit.component';
 
 @Component({
   template: `
-    <ish-inplace-edit>
+    <ish-in-place-edit>
       <p class="form-control-plaintext">VIEW</p>
       <input class="form-control" />
-    </ish-inplace-edit>
+    </ish-in-place-edit>
   `,
 })
 class DummyComponent {}
 
-describe('Inplace Edit Component', () => {
+describe('In Place Edit Component', () => {
   let component: DummyComponent;
   let fixture: ComponentFixture<DummyComponent>;
   let element: HTMLElement;
   let document: Document;
   // tslint:disable-next-line: no-suspicious-variable-init-in-tests
   let mousedown: (args: { target: unknown }) => void;
-  let inplaceEdit: () => InplaceEditComponent;
+  let inplaceEdit: () => InPlaceEditComponent;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [DummyComponent, InplaceEditComponent, MockComponent(FaIconComponent)],
+      declarations: [DummyComponent, InPlaceEditComponent, MockComponent(FaIconComponent)],
     }).compileComponents();
   });
 
@@ -44,7 +44,7 @@ describe('Inplace Edit Component', () => {
       mousedown = cb;
     });
     inplaceEdit = () =>
-      fixture.debugElement.query(By.css('ish-inplace-edit')).componentInstance as InplaceEditComponent;
+      fixture.debugElement.query(By.css('ish-in-place-edit')).componentInstance as InPlaceEditComponent;
   });
 
   it('should be created', () => {
@@ -57,10 +57,10 @@ describe('Inplace Edit Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-      <ish-inplace-edit
+      <ish-in-place-edit
         ><div class="d-flex flex-row align-items-baseline" title="inplace_edit.click_to_edit">
           <p class="form-control-plaintext">VIEW</p>
-        </div></ish-inplace-edit
+        </div></ish-in-place-edit
       >
     `);
   });
@@ -70,7 +70,7 @@ describe('Inplace Edit Component', () => {
     mousedown({ target: element.querySelector('p') });
 
     expect(element).toMatchInlineSnapshot(`
-      <ish-inplace-edit
+      <ish-in-place-edit
         ><div class="d-flex flex-row align-items-baseline">
           <input class="form-control" /><button
             class="btn btn-link ml-2"
@@ -81,7 +81,7 @@ describe('Inplace Edit Component', () => {
           ><button class="btn btn-link" data-testing-id="cancel" title="inplace_edit.cancel">
             <fa-icon ng-reflect-icon="fas,times"></fa-icon>
           </button></div
-      ></ish-inplace-edit>
+      ></ish-in-place-edit>
     `);
   });
 
@@ -99,10 +99,10 @@ describe('Inplace Edit Component', () => {
       mousedown({ target: element });
 
       expect(element).toMatchInlineSnapshot(`
-        <ish-inplace-edit
+        <ish-in-place-edit
           ><div class="d-flex flex-row align-items-baseline" title="inplace_edit.click_to_edit">
             <p class="form-control-plaintext">VIEW</p>
-          </div></ish-inplace-edit
+          </div></ish-in-place-edit
         >
       `);
     });
@@ -121,10 +121,10 @@ describe('Inplace Edit Component', () => {
       fixture.detectChanges();
 
       expect(element).toMatchInlineSnapshot(`
-        <ish-inplace-edit
+        <ish-in-place-edit
           ><div class="d-flex flex-row align-items-baseline" title="inplace_edit.click_to_edit">
             <p class="form-control-plaintext">VIEW</p>
-          </div></ish-inplace-edit
+          </div></ish-in-place-edit
         >
       `);
     });
@@ -143,10 +143,10 @@ describe('Inplace Edit Component', () => {
       fixture.detectChanges();
 
       expect(element).toMatchInlineSnapshot(`
-        <ish-inplace-edit
+        <ish-in-place-edit
           ><div class="d-flex flex-row align-items-baseline" title="inplace_edit.click_to_edit">
             <p class="form-control-plaintext">VIEW</p>
-          </div></ish-inplace-edit
+          </div></ish-in-place-edit
         >
       `);
     });

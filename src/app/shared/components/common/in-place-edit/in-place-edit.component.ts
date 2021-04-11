@@ -12,12 +12,12 @@ import { Subject, fromEvent } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'ish-inplace-edit',
-  templateUrl: './inplace-edit.component.html',
+  selector: 'ish-in-place-edit',
+  templateUrl: './in-place-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrls: ['./inplace-edit.component.scss'],
+  styleUrls: ['./in-place-edit.component.scss'],
 })
-export class InplaceEditComponent implements AfterViewInit, OnDestroy {
+export class InPlaceEditComponent implements AfterViewInit, OnDestroy {
   @Output() edited = new EventEmitter<void>();
   @Output() aborted = new EventEmitter<void>();
 
