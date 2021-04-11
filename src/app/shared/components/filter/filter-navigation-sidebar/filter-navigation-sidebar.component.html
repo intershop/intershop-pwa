@@ -1,6 +1,6 @@
 <div *ngIf="filterNavigation" class="filter-panel">
   <div *ngFor="let element of filterNavigation.filter" [ngSwitch]="element.displayType">
-    <ish-filter-collapsable [title]="element.name" [(collapsed)]="collapsedElements[element.name]">
+    <ish-filter-collapsible [title]="element.name" [(collapsed)]="collapsedElements[element.name]">
       <!-- default: text & text_clear -->
       <ish-filter-text
         *ngSwitchDefault
@@ -38,6 +38,6 @@
           </ish-filter-dropdown>
         </div>
       </ng-container>
-    </ish-filter-collapsable>
+    </ish-filter-collapsible>
   </div>
 </div>
