@@ -5,7 +5,7 @@ import { MockComponent } from 'ng-mocks';
 import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { InplaceEditComponent } from 'ish-shared/components/common/inplace-edit/inplace-edit.component';
+import { InPlaceEditComponent } from 'ish-shared/components/common/in-place-edit/in-place-edit.component';
 
 import { QuoteContextFacade } from '../../facades/quote-context.facade';
 import { QuoteLineItemListComponent } from '../quote-line-item-list/quote-line-item-list.component';
@@ -25,7 +25,7 @@ describe('Quote Edit Component', () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
-        MockComponent(InplaceEditComponent),
+        MockComponent(InPlaceEditComponent),
         MockComponent(QuoteLineItemListComponent),
         MockComponent(QuoteStateComponent),
         QuoteEditComponent,
