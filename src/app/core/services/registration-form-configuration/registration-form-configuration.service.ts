@@ -5,8 +5,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store, select } from '@ngrx/store';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { UUID } from 'angular2-uuid';
-import { Observable, combineLatest, from, iif, noop, of, race } from 'rxjs';
-import { map, mapTo, switchMap, take, tap } from 'rxjs/operators';
+import { Observable, combineLatest, from, iif, merge, noop, of, race } from 'rxjs';
+import { filter, map, mapTo, switchMap, take, tap } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Address } from 'ish-core/models/address/address.model';
@@ -189,6 +189,13 @@ export class RegistrationFormConfigurationService {
         )
       );
     }
+  }
+
+  getErrorSources() {
+    return merge(
+      this.accountFacade.userError$.pipe(filter(error => error.status !== 404)),
+      this.accountFacade.ssoRegistrationError$
+    );
   }
 
   private getCredentialsConfig(): FormlyFieldConfig[] {

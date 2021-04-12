@@ -51,8 +51,7 @@ describe('Registration Page Component', () => {
       url: [{ path: '/register' } as UrlSegment, { path: 'sso' } as UrlSegment],
     } as ActivatedRouteSnapshot);
 
-    when(accountFacade.userError$).thenReturn(of());
-    when(accountFacade.ssoRegistrationError$).thenReturn(of());
+    when(configService.getErrorSources()).thenReturn(of());
   });
 
   beforeEach(() => {

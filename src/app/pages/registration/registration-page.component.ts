@@ -2,9 +2,8 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
-import { Observable, merge } from 'rxjs';
+import { Observable } from 'rxjs';
 
-import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import {
@@ -25,7 +24,6 @@ export class RegistrationPageComponent implements OnInit {
   error$: Observable<HttpError>;
 
   constructor(
-    private accountFacade: AccountFacade,
     private route: ActivatedRoute,
     private featureToggle: FeatureToggleService,
     private registrationFormConfiguration: RegistrationFormConfigurationService
@@ -41,7 +39,7 @@ export class RegistrationPageComponent implements OnInit {
   form = new FormGroup({});
 
   ngOnInit() {
-    this.error$ = merge(this.accountFacade.userError$, this.accountFacade.ssoRegistrationError$);
+    this.error$ = this.registrationFormConfiguration.getErrorSources();
 
     const snapshot = this.route.snapshot;
     this.model = this.extractModel(snapshot);
