@@ -1,4 +1,4 @@
-import { Location } from '@angular/common';
+import { LocationStrategy } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 
 import { MakeHrefPipe } from './make-href.pipe';
@@ -28,6 +28,6 @@ describe('Make Href Pipe', () => {
     ['/test?query=q', { foo: 'bar' }, '/test;foo=bar?query=q'],
     ['/test?query=q', { foo: 'bar', marco: 'polo' }, '/test;foo=bar;marco=polo?query=q'],
   ])(`should transform "%s" with %j to "%s"`, (url, params, expected) => {
-    expect(makeHrefPipe.transform({ path: () => url } as Location, params)).toEqual(expected);
+    expect(makeHrefPipe.transform({ path: () => url } as LocationStrategy, params)).toEqual(expected);
   });
 });
