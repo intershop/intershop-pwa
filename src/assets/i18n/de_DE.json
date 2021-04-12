@@ -309,7 +309,7 @@
   "account.register.heading": "Neues Benutzerkonto anlegen",
   "account.register.link": "Registrieren",
   "account.register.message": "Um alle Benutzerfunktionen und -vorteile in vollem Umfang nutzen zu können, geben Sie bitte unten alle nötigen Informationen an.",
-  "account.register.password.extrainfo.message": "mindestens {{0}} Zeichen, muss Buchstaben und Ziffern enthalten, keine Leerzeichen erlaubt",
+  "account.register.password.extrainfo.message": "Mindestens {{0}} Zeichen, muss Buchstaben und Ziffern enthalten, keine Leerzeichen erlaubt",
   "account.register.password.label": "Kennwort",
   "account.register.password_confirmation.error.default": "Bitte geben Sie ein gültiges Kennwort als Bestätigung ein.",
   "account.register.password_confirmation.label": "Kennwort bestätigen",
