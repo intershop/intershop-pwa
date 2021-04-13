@@ -5,7 +5,6 @@ import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { RegistrationFormConfigurationService } from 'ish-core/services/registration-form-configuration/registration-form-configuration.service';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
@@ -21,13 +20,11 @@ describe('Registration Page Component', () => {
   let configService: RegistrationFormConfigurationService;
   let featureToggleService: FeatureToggleService;
   let activatedRoute: ActivatedRoute;
-  let accountFacade: AccountFacade;
 
   beforeEach(async () => {
     configService = mock(RegistrationFormConfigurationService);
     featureToggleService = mock(FeatureToggleService);
     activatedRoute = mock(ActivatedRoute);
-    accountFacade = mock(AccountFacade);
     await TestBed.configureTestingModule({
       declarations: [MockComponent(ErrorMessageComponent), RegistrationPageComponent],
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
