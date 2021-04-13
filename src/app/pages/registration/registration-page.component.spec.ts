@@ -32,7 +32,6 @@ describe('Registration Page Component', () => {
       declarations: [MockComponent(ErrorMessageComponent), RegistrationPageComponent],
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
       providers: [
-        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: FeatureToggleService, useFactory: () => instance(featureToggleService) },
         { provide: ActivatedRoute, useFactory: () => instance(activatedRoute) },
         { provide: RegistrationFormConfigurationService, useFactory: () => instance(configService) },
