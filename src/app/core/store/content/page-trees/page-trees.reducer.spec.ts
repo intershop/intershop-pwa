@@ -44,12 +44,12 @@ describe('Page Trees Reducer', () => {
 
       beforeEach(() => {
         tree = pageTree([
-          { uniqueId: '1', contentPageId: '1', path: ['1'] },
-          { uniqueId: '1.1', contentPageId: '1.1', path: ['1', '1.1'] },
-          { uniqueId: '1.2', contentPageId: '1.2', path: ['1', '1.2'] },
-          { uniqueId: '1.1.1', contentPageId: '1.1.1', path: ['1', '1.1', '1.1.1'] },
-          { uniqueId: '1.1.2', contentPageId: '1.1.2', path: ['1', '1.1', '1.1.2'] },
-          { uniqueId: '1.2.1', contentPageId: '1.2.1', path: ['1', '1.2', '1.2.1'] },
+          { contentPageId: '1', path: ['1'] },
+          { contentPageId: '1.1', path: ['1', '1.1'] },
+          { contentPageId: '1.2', path: ['1', '1.2'] },
+          { contentPageId: '1.1.1', path: ['1', '1.1', '1.1.1'] },
+          { contentPageId: '1.1.2', path: ['1', '1.1', '1.1.2'] },
+          { contentPageId: '1.2.1', path: ['1', '1.2', '1.2.1'] },
         ] as ContentPageletTreeElement[]);
       });
 
@@ -57,8 +57,6 @@ describe('Page Trees Reducer', () => {
         const action = loadContentPageTreeSuccess({ tree });
         const state = pageTreesReducer(initialState, action);
 
-        expect(state.trees.rootIds).toHaveLength(1);
-        expect(state.trees.rootIds).toEqual(['1']);
         expect(Object.keys(state.trees.nodes)).toHaveLength(6);
         expect(Object.keys(state.trees.nodes)).toEqual(['1', '1.1', '1.2', '1.1.1', '1.1.2', '1.2.1']);
       });

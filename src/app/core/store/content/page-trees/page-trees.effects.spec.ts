@@ -62,7 +62,7 @@ describe('Page Trees Effects', () => {
     });
 
     it('should map to action of type CreatePageTreeSuccess when actual tree does contain navigation root', () => {
-      const tree = { rootIds: ['parent'] } as ContentPageletTree;
+      const tree = { edges: {}, nodes: {} } as ContentPageletTree;
       when(cmsServiceMock.getContentPageTree('dummy', '2')).thenReturn(of(tree));
 
       actions$ = hot('a-a-a-a', { a: loadContentPageTree({ contentPageId: 'dummy', depth: '2' }) });

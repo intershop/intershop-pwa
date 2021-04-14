@@ -8,7 +8,6 @@ describe('Content Pagelet Tree Helper', () => {
     it('should create an empty tree instance when called', () => {
       const empty = ContentPageletTreeHelper.empty();
       expect(empty).toBeTruthy();
-      expect(empty.rootIds).toBeEmpty();
       expect(empty.nodes).toBeEmpty();
       expect(empty.edges).toBeEmpty();
     });
@@ -19,39 +18,56 @@ describe('Content Pagelet Tree Helper', () => {
       expect(() => ContentPageletTreeHelper.single(undefined)).toThrowError('falsy input');
     });
 
-    it('should throw if given element has no uniqueId', () => {
+    it('should throw if given element has no contentPageId', () => {
       const element = {} as ContentPageletTreeElement;
-      expect(() => ContentPageletTreeHelper.single(element)).toThrowError('content tree element has no uniqueId');
+      expect(() => ContentPageletTreeHelper.single(element)).toThrowError('content tree element has no contentPageId');
     });
 
     it('should create a tree if a simple root element is put in', () => {
-      const element = { uniqueId: 'A', path: ['A'] } as ContentPageletTreeElement;
+      const element = { contentPageId: 'A', path: ['A'] } as ContentPageletTreeElement;
       const tree = ContentPageletTreeHelper.single(element);
       expect(tree).toBeTruthy();
-      expect(tree.rootIds).toEqual(['A']);
       expect(tree.nodes).toEqual({ A: element });
       expect(tree.edges).toBeEmpty();
     });
 
     it('should not set root ids when element path was emitted', () => {
-      const element = { uniqueId: 'A' } as ContentPageletTreeElement;
+      const element = { contentPageId: 'A' } as ContentPageletTreeElement;
       const tree = ContentPageletTreeHelper.single(element);
       expect(tree).toMatchInlineSnapshot(`
-        └─ dangling
-           └─ A
-
+        Object {
+          "edges": Object {},
+          "nodes": Object {
+            "A": Object {
+              "contentPageId": "A",
+            },
+          },
+        }
       `);
     });
 
     it('should create a tree from subelements with edges for element path and no root id', () => {
-      const element = { uniqueId: 'A.1', path: ['A', 'A.1'] } as ContentPageletTreeElement;
+      const element = { contentPageId: 'A.1', path: ['A', 'A.1'] } as ContentPageletTreeElement;
       const tree = ContentPageletTreeHelper.single(element);
       expect(tree).toBeTruthy();
       expect(tree.edges).toEqual({ A: ['A.1'] });
       expect(tree).toMatchInlineSnapshot(`
-        └─ dangling
-           └─ A.1
-
+        Object {
+          "edges": Object {
+            "A": Array [
+              "A.1",
+            ],
+          },
+          "nodes": Object {
+            "A.1": Object {
+              "contentPageId": "A.1",
+              "path": Array [
+                "A",
+                "A.1",
+              ],
+            },
+          },
+        }
       `);
     });
   });
@@ -59,7 +75,7 @@ describe('Content Pagelet Tree Helper', () => {
   describe('add()', () => {
     it('should fail if one of the mandatory inputs is falsy', () => {
       const tree = ContentPageletTreeHelper.empty();
-      const element = { uniqueId: 'A' } as ContentPageletTreeElement;
+      const element = { contentPageId: 'A' } as ContentPageletTreeElement;
 
       expect(() => ContentPageletTreeHelper.add(undefined, element)).toThrowError('falsy input');
       expect(() => ContentPageletTreeHelper.add(tree, undefined)).toThrowError('falsy input');
@@ -67,50 +83,68 @@ describe('Content Pagelet Tree Helper', () => {
 
     it('should add a node to an empty tree when called', () => {
       const empty = ContentPageletTreeHelper.empty();
-      const tree = ContentPageletTreeHelper.add(empty, { uniqueId: 'A', path: ['A'] } as ContentPageletTreeElement);
+      const tree = ContentPageletTreeHelper.add(empty, {
+        contentPageId: 'A',
+        path: ['A'],
+      } as ContentPageletTreeElement);
 
       expect(tree.edges).toBeEmpty();
       expect(Object.keys(tree.nodes)).toEqual(['A']);
-      expect(tree.rootIds).toEqual(['A']);
     });
 
     it('should deep copy element to the tree', () => {
-      const element = { uniqueId: 'A' } as ContentPageletTreeElement;
+      const element = { contentPageId: 'A' } as ContentPageletTreeElement;
 
       const root = ContentPageletTreeHelper.empty();
       const tree = ContentPageletTreeHelper.add(root, element);
 
-      expect(tree.nodes.A.uniqueId).toEqual('A');
+      expect(tree.nodes.A.contentPageId).toEqual('A');
 
-      element.uniqueId = 'something';
+      element.contentPageId = 'something';
 
-      expect(tree.nodes.A.uniqueId).toEqual('A');
+      expect(tree.nodes.A.contentPageId).toEqual('A');
     });
 
-    it('should fail if the supplied element has no uniqueId', () => {
+    it('should fail if the supplied element has no contentPageId', () => {
       const tree = ContentPageletTreeHelper.empty();
       const element = {} as ContentPageletTreeElement;
-      expect(() => ContentPageletTreeHelper.add(tree, element)).toThrowError('content tree element has no uniqueId');
+      expect(() => ContentPageletTreeHelper.add(tree, element)).toThrowError(
+        'content tree element has no contentPageId'
+      );
     });
 
     it('should add a given category to the tree as additional root when not supplied with optional parameter', () => {
-      const element1 = { uniqueId: 'A', path: ['A'] } as ContentPageletTreeElement;
-      const element2 = { uniqueId: 'B', path: ['B'] } as ContentPageletTreeElement;
+      const element1 = { contentPageId: 'A', path: ['A'] } as ContentPageletTreeElement;
+      const element2 = { contentPageId: 'B', path: ['B'] } as ContentPageletTreeElement;
 
       const empty = ContentPageletTreeHelper.empty();
       const tree1 = ContentPageletTreeHelper.add(empty, element1);
       const tree2 = ContentPageletTreeHelper.add(tree1, element2);
 
       expect(tree2).toMatchInlineSnapshot(`
-        ├─ A
-        └─ B
-
+        Object {
+          "edges": Object {},
+          "nodes": Object {
+            "A": Object {
+              "contentPageId": "A",
+              "path": Array [
+                "A",
+              ],
+            },
+            "B": Object {
+              "contentPageId": "B",
+              "path": Array [
+                "B",
+              ],
+            },
+          },
+        }
       `);
     });
 
     it('should add a given element to the tree under root using element path', () => {
-      const rootElement = { uniqueId: 'A', path: ['A'] } as ContentPageletTreeElement;
-      const child = { uniqueId: 'A.1', path: ['A', 'A.1'] } as ContentPageletTreeElement;
+      const rootElement = { contentPageId: 'A', path: ['A'] } as ContentPageletTreeElement;
+      const child = { contentPageId: 'A.1', path: ['A', 'A.1'] } as ContentPageletTreeElement;
 
       const empty = ContentPageletTreeHelper.empty();
       const root = ContentPageletTreeHelper.add(empty, rootElement);
@@ -118,16 +152,35 @@ describe('Content Pagelet Tree Helper', () => {
       const tree = ContentPageletTreeHelper.add(root, child);
 
       expect(tree).toMatchInlineSnapshot(`
-        └─ A
-           └─ A.1
-
+        Object {
+          "edges": Object {
+            "A": Array [
+              "A.1",
+            ],
+          },
+          "nodes": Object {
+            "A": Object {
+              "contentPageId": "A",
+              "path": Array [
+                "A",
+              ],
+            },
+            "A.1": Object {
+              "contentPageId": "A.1",
+              "path": Array [
+                "A",
+                "A.1",
+              ],
+            },
+          },
+        }
       `);
     });
 
     it('should add two element for the same node to the tree', () => {
-      const rootElement = { uniqueId: 'A', path: ['A'] } as ContentPageletTreeElement;
-      const child1 = { uniqueId: 'A.1', path: ['A', 'A.1'] } as ContentPageletTreeElement;
-      const child2 = { uniqueId: 'A.2', path: ['A', 'A.2'] } as ContentPageletTreeElement;
+      const rootElement = { contentPageId: 'A', path: ['A'] } as ContentPageletTreeElement;
+      const child1 = { contentPageId: 'A.1', path: ['A', 'A.1'] } as ContentPageletTreeElement;
+      const child2 = { contentPageId: 'A.2', path: ['A', 'A.2'] } as ContentPageletTreeElement;
 
       const empty = ContentPageletTreeHelper.empty();
       const tree0 = ContentPageletTreeHelper.add(empty, rootElement);
@@ -135,17 +188,43 @@ describe('Content Pagelet Tree Helper', () => {
       const tree2 = ContentPageletTreeHelper.add(tree1, child2);
 
       expect(tree2).toMatchInlineSnapshot(`
-        └─ A
-           ├─ A.1
-           └─ A.2
-
+        Object {
+          "edges": Object {
+            "A": Array [
+              "A.1",
+              "A.2",
+            ],
+          },
+          "nodes": Object {
+            "A": Object {
+              "contentPageId": "A",
+              "path": Array [
+                "A",
+              ],
+            },
+            "A.1": Object {
+              "contentPageId": "A.1",
+              "path": Array [
+                "A",
+                "A.1",
+              ],
+            },
+            "A.2": Object {
+              "contentPageId": "A.2",
+              "path": Array [
+                "A",
+                "A.2",
+              ],
+            },
+          },
+        }
       `);
     });
 
     it('should add two elements hierarchically to the tree', () => {
-      const rootElement = { uniqueId: 'A', path: ['A'] } as ContentPageletTreeElement;
-      const child1 = { uniqueId: 'A.1', path: ['A', 'A.1'] } as ContentPageletTreeElement;
-      const child2 = { uniqueId: 'A.1.a', path: ['A', 'A.1', 'A.1.a'] } as ContentPageletTreeElement;
+      const rootElement = { contentPageId: 'A', path: ['A'] } as ContentPageletTreeElement;
+      const child1 = { contentPageId: 'A.1', path: ['A', 'A.1'] } as ContentPageletTreeElement;
+      const child2 = { contentPageId: 'A.1.a', path: ['A', 'A.1', 'A.1.a'] } as ContentPageletTreeElement;
 
       const empty = ContentPageletTreeHelper.empty();
       const tree0 = ContentPageletTreeHelper.add(empty, rootElement);
@@ -153,19 +232,48 @@ describe('Content Pagelet Tree Helper', () => {
       const tree2 = ContentPageletTreeHelper.add(tree1, child2);
 
       expect(tree2).toMatchInlineSnapshot(`
-        └─ A
-           └─ A.1
-              └─ A.1.a
-
+        Object {
+          "edges": Object {
+            "A": Array [
+              "A.1",
+            ],
+            "A.1": Array [
+              "A.1.a",
+            ],
+          },
+          "nodes": Object {
+            "A": Object {
+              "contentPageId": "A",
+              "path": Array [
+                "A",
+              ],
+            },
+            "A.1": Object {
+              "contentPageId": "A.1",
+              "path": Array [
+                "A",
+                "A.1",
+              ],
+            },
+            "A.1.a": Object {
+              "contentPageId": "A.1.a",
+              "path": Array [
+                "A",
+                "A.1",
+                "A.1.a",
+              ],
+            },
+          },
+        }
       `);
     });
 
     it('should handle creation for complex scenarios', () => {
-      const rootElement = { uniqueId: 'A', path: ['A'] } as ContentPageletTreeElement;
-      const child1 = { uniqueId: 'A.1', path: ['A', 'A.1'] } as ContentPageletTreeElement;
-      const child2 = { uniqueId: 'A.1.a', path: ['A', 'A.1', 'A.1.a'] } as ContentPageletTreeElement;
-      const child3 = { uniqueId: 'A.2', path: ['A', 'A.2'] } as ContentPageletTreeElement;
-      const child4 = { uniqueId: 'A.1.b', path: ['A', 'A.1', 'A.1.b'] } as ContentPageletTreeElement;
+      const rootElement = { contentPageId: 'A', path: ['A'] } as ContentPageletTreeElement;
+      const child1 = { contentPageId: 'A.1', path: ['A', 'A.1'] } as ContentPageletTreeElement;
+      const child2 = { contentPageId: 'A.1.a', path: ['A', 'A.1', 'A.1.a'] } as ContentPageletTreeElement;
+      const child3 = { contentPageId: 'A.2', path: ['A', 'A.2'] } as ContentPageletTreeElement;
+      const child4 = { contentPageId: 'A.1.b', path: ['A', 'A.1', 'A.1.b'] } as ContentPageletTreeElement;
 
       const empty = ContentPageletTreeHelper.empty();
       const tree0 = ContentPageletTreeHelper.add(empty, rootElement);
@@ -175,12 +283,56 @@ describe('Content Pagelet Tree Helper', () => {
       const tree4 = ContentPageletTreeHelper.add(tree3, child4);
 
       expect(tree4).toMatchInlineSnapshot(`
-        └─ A
-           ├─ A.1
-           │  ├─ A.1.a
-           │  └─ A.1.b
-           └─ A.2
-
+        Object {
+          "edges": Object {
+            "A": Array [
+              "A.1",
+              "A.2",
+            ],
+            "A.1": Array [
+              "A.1.a",
+              "A.1.b",
+            ],
+          },
+          "nodes": Object {
+            "A": Object {
+              "contentPageId": "A",
+              "path": Array [
+                "A",
+              ],
+            },
+            "A.1": Object {
+              "contentPageId": "A.1",
+              "path": Array [
+                "A",
+                "A.1",
+              ],
+            },
+            "A.1.a": Object {
+              "contentPageId": "A.1.a",
+              "path": Array [
+                "A",
+                "A.1",
+                "A.1.a",
+              ],
+            },
+            "A.1.b": Object {
+              "contentPageId": "A.1.b",
+              "path": Array [
+                "A",
+                "A.1",
+                "A.1.b",
+              ],
+            },
+            "A.2": Object {
+              "contentPageId": "A.2",
+              "path": Array [
+                "A",
+                "A.2",
+              ],
+            },
+          },
+        }
       `);
     });
   });
@@ -193,10 +345,13 @@ describe('Content Pagelet Tree Helper', () => {
 
     beforeEach(() => {
       const empty = ContentPageletTreeHelper.empty();
-      treeA = ContentPageletTreeHelper.add(empty, { uniqueId: 'A', path: ['A'] } as ContentPageletTreeElement);
-      treeAB = ContentPageletTreeHelper.add(empty, { uniqueId: 'A.B', path: ['A.B'] } as ContentPageletTreeElement);
+      treeA = ContentPageletTreeHelper.add(empty, { contentPageId: 'A', path: ['A'] } as ContentPageletTreeElement);
+      treeAB = ContentPageletTreeHelper.add(empty, {
+        contentPageId: 'A.B',
+        path: ['A.B'],
+      } as ContentPageletTreeElement);
       treeAAB = ContentPageletTreeHelper.merge(treeA, treeAB);
-      treeB = ContentPageletTreeHelper.add(empty, { uniqueId: 'B', path: ['B'] } as ContentPageletTreeElement);
+      treeB = ContentPageletTreeHelper.add(empty, { contentPageId: 'B', path: ['B'] } as ContentPageletTreeElement);
     });
 
     it('should fail if mandatory falsy arguments are supplied', () => {
@@ -215,9 +370,23 @@ describe('Content Pagelet Tree Helper', () => {
       const result = ContentPageletTreeHelper.merge(treeAAB, empty);
 
       expect(result).toMatchInlineSnapshot(`
-        ├─ A
-        └─ A.B
-
+        Object {
+          "edges": Object {},
+          "nodes": Object {
+            "A": Object {
+              "contentPageId": "A",
+              "path": Array [
+                "A",
+              ],
+            },
+            "A.B": Object {
+              "contentPageId": "A.B",
+              "path": Array [
+                "A.B",
+              ],
+            },
+          },
+        }
       `);
     });
 
@@ -226,9 +395,23 @@ describe('Content Pagelet Tree Helper', () => {
       const result = ContentPageletTreeHelper.merge(empty, treeAAB);
 
       expect(result).toMatchInlineSnapshot(`
-        ├─ A
-        └─ A.B
-
+        Object {
+          "edges": Object {},
+          "nodes": Object {
+            "A": Object {
+              "contentPageId": "A",
+              "path": Array [
+                "A",
+              ],
+            },
+            "A.B": Object {
+              "contentPageId": "A.B",
+              "path": Array [
+                "A.B",
+              ],
+            },
+          },
+        }
       `);
     });
 
@@ -236,9 +419,23 @@ describe('Content Pagelet Tree Helper', () => {
       const combined = ContentPageletTreeHelper.merge(treeA, treeB);
 
       expect(combined).toMatchInlineSnapshot(`
-        ├─ A
-        └─ B
-
+        Object {
+          "edges": Object {},
+          "nodes": Object {
+            "A": Object {
+              "contentPageId": "A",
+              "path": Array [
+                "A",
+              ],
+            },
+            "B": Object {
+              "contentPageId": "B",
+              "path": Array [
+                "B",
+              ],
+            },
+          },
+        }
       `);
     });
 
@@ -252,55 +449,159 @@ describe('Content Pagelet Tree Helper', () => {
       const combined = ContentPageletTreeHelper.merge(treeA, treeAB);
 
       expect(combined).toMatchInlineSnapshot(`
-        ├─ A
-        └─ A.B
-
+        Object {
+          "edges": Object {},
+          "nodes": Object {
+            "A": Object {
+              "contentPageId": "A",
+              "path": Array [
+                "A",
+              ],
+            },
+            "A.B": Object {
+              "contentPageId": "A.B",
+              "path": Array [
+                "A.B",
+              ],
+            },
+          },
+        }
       `);
     });
 
     it('should handle inserting for complex scenarios', () => {
-      treeA = ContentPageletTreeHelper.add(treeA, { uniqueId: 'A.1', path: ['A', 'A.1'] } as ContentPageletTreeElement);
       treeA = ContentPageletTreeHelper.add(treeA, {
-        uniqueId: 'A.1.a',
+        contentPageId: 'A.1',
+        path: ['A', 'A.1'],
+      } as ContentPageletTreeElement);
+      treeA = ContentPageletTreeHelper.add(treeA, {
+        contentPageId: 'A.1.a',
         path: ['A', 'A.1', 'A.1.a'],
       } as ContentPageletTreeElement);
-      treeA = ContentPageletTreeHelper.add(treeA, { uniqueId: 'A.2', path: ['A', 'A.2'] } as ContentPageletTreeElement);
       treeA = ContentPageletTreeHelper.add(treeA, {
-        uniqueId: 'A.1.b',
+        contentPageId: 'A.2',
+        path: ['A', 'A.2'],
+      } as ContentPageletTreeElement);
+      treeA = ContentPageletTreeHelper.add(treeA, {
+        contentPageId: 'A.1.b',
         path: ['A', 'A.1', 'A.1.b'],
       } as ContentPageletTreeElement);
 
-      treeB = ContentPageletTreeHelper.add(treeB, { uniqueId: 'B.1', path: ['B', 'B.1'] } as ContentPageletTreeElement);
       treeB = ContentPageletTreeHelper.add(treeB, {
-        uniqueId: 'B.1.a',
+        contentPageId: 'B.1',
+        path: ['B', 'B.1'],
+      } as ContentPageletTreeElement);
+      treeB = ContentPageletTreeHelper.add(treeB, {
+        contentPageId: 'B.1.a',
         path: ['B', 'B.1', 'B.1.a'],
       } as ContentPageletTreeElement);
-      treeB = ContentPageletTreeHelper.add(treeB, { uniqueId: 'B.2', path: ['B', 'B.2'] } as ContentPageletTreeElement);
+      treeB = ContentPageletTreeHelper.add(treeB, {
+        contentPageId: 'B.2',
+        path: ['B', 'B.2'],
+      } as ContentPageletTreeElement);
 
       const combined = ContentPageletTreeHelper.merge(treeA, treeB);
 
       expect(combined).toMatchInlineSnapshot(`
-        ├─ A
-        │  ├─ A.1
-        │  │  ├─ A.1.a
-        │  │  └─ A.1.b
-        │  └─ A.2
-        └─ B
-           ├─ B.1
-           │  └─ B.1.a
-           └─ B.2
-
+        Object {
+          "edges": Object {
+            "A": Array [
+              "A.1",
+              "A.2",
+            ],
+            "A.1": Array [
+              "A.1.a",
+              "A.1.b",
+            ],
+            "B": Array [
+              "B.1",
+              "B.2",
+            ],
+            "B.1": Array [
+              "B.1.a",
+            ],
+          },
+          "nodes": Object {
+            "A": Object {
+              "contentPageId": "A",
+              "path": Array [
+                "A",
+              ],
+            },
+            "A.1": Object {
+              "contentPageId": "A.1",
+              "path": Array [
+                "A",
+                "A.1",
+              ],
+            },
+            "A.1.a": Object {
+              "contentPageId": "A.1.a",
+              "path": Array [
+                "A",
+                "A.1",
+                "A.1.a",
+              ],
+            },
+            "A.1.b": Object {
+              "contentPageId": "A.1.b",
+              "path": Array [
+                "A",
+                "A.1",
+                "A.1.b",
+              ],
+            },
+            "A.2": Object {
+              "contentPageId": "A.2",
+              "path": Array [
+                "A",
+                "A.2",
+              ],
+            },
+            "B": Object {
+              "contentPageId": "B",
+              "path": Array [
+                "B",
+              ],
+            },
+            "B.1": Object {
+              "contentPageId": "B.1",
+              "path": Array [
+                "B",
+                "B.1",
+              ],
+            },
+            "B.1.a": Object {
+              "contentPageId": "B.1.a",
+              "path": Array [
+                "B",
+                "B.1",
+                "B.1.a",
+              ],
+            },
+            "B.2": Object {
+              "contentPageId": "B.2",
+              "path": Array [
+                "B",
+                "B.2",
+              ],
+            },
+          },
+        }
       `);
     });
 
-    /*  describe('sorting order', () => {
-      const elABRaw = { path: [{ itemId: 'A' }, { itemId: 'b' }] } as ContentPageletTreeData;
+    /**
+
+    describe('sorting order', () => {
+      const elABRaw = { page: { itemId: 'A' }, path: [{ itemId: 'A' }, { itemId: 'b' }] } as ContentPageletTreeData;
       const elARaw = {
+        page: { itemId: 'A' },
         path: [{ itemId: 'A' }],
         elements: [{ path: [{ itemId: 'A' }, { itemId: 'a' }] }, elABRaw, { path: [{ itemId: 'A' }, { itemId: 'c' }] }],
       } as ContentPageletTreeData;
 
-      const elBRaw = { path: [{ itemId: 'B' }] } as ContentPageletTreeData;
+      const elBRaw = { page: { itemId: 'B' }, path: [{ itemId: 'B' }] } as ContentPageletTreeData;
 
       let tree: ContentPageletTree;
       let contentPageletTreeMapper: ContentPageletTreeMapper;

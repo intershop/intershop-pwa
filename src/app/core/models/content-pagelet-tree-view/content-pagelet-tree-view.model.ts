@@ -10,27 +10,13 @@ export interface ContentPageletTreeView extends ContentPageletTreeElement {
   children: string[];
 }
 
-export function createContentPageletTreeView(tree: ContentPageletTree, uniqueId: string): ContentPageletTreeView {
-  if (!tree || !uniqueId) {
+export function createContentPageletTreeView(tree: ContentPageletTree, contentPageId: string): ContentPageletTreeView {
+  if (!tree || !contentPageId || !tree.nodes[contentPageId]) {
     return;
   }
 
-  if (!tree.nodes[uniqueId]) {
-    // given uniqueId could be specified as content page id in nodes
-    const selectedTreeElement = Object.keys(tree.nodes)
-      .map(key => tree.nodes[key])
-      .find(e => e.contentPageId === uniqueId);
-
-    return selectedTreeElement
-      ? {
-          ...selectedTreeElement,
-          children: tree.edges[selectedTreeElement?.uniqueId],
-        }
-      : undefined;
-  }
-
   return {
-    ...tree.nodes[uniqueId],
-    children: tree.edges[uniqueId] || [],
+    ...tree.nodes[contentPageId],
+    children: tree.edges[contentPageId] || [],
   };
 }

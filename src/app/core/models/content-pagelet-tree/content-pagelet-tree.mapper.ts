@@ -31,7 +31,7 @@ export class ContentPageletTreeMapper {
    */
   mapContentPageTreeElementPath(path: ContentPageletTreeLink[]) {
     if (path && path.length) {
-      return path.map(x => x.itemId).reduce((acc, _, idx, arr) => [...acc, arr.slice(0, idx + 1).join('.')], []);
+      return path.map(x => x.itemId);
     }
     throw new Error('input is falsy');
   }
@@ -45,19 +45,15 @@ export class ContentPageletTreeMapper {
       return ContentPageletTreeHelper.empty();
     }
 
-    let uniqueId: string;
     const newTreeElementPath: string[] = [];
 
     return (
       path
         .map(pathElement => {
-          // accumulate and construct uniqueId and page tree path
-          uniqueId = !uniqueId ? pathElement.itemId : `${uniqueId}.${pathElement.itemId}`;
-          newTreeElementPath.push(uniqueId);
+          newTreeElementPath.push(pathElement.itemId);
 
           // yield page tree element
           return {
-            uniqueId,
             name: pathElement.title,
             path: [...newTreeElementPath],
             contentPageId: pathElement.itemId,
@@ -77,9 +73,7 @@ export class ContentPageletTreeMapper {
   fromDataSingle(treeData: ContentPageletTreeData): ContentPageletTreeElement {
     if (treeData) {
       const treePath = this.mapContentPageTreeElementPath(treeData.path);
-      const uniqueId = treePath[treePath.length - 1];
       return {
-        uniqueId,
         contentPageId: treeData.page.itemId,
         path: treePath,
         name: treeData.page.title,

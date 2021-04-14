@@ -28,8 +28,8 @@ describe('Page Trees Selectors', () => {
     @Component({ template: 'dummy' })
     class DummyComponent {}
 
-    tree1 = { uniqueId: '1', contentPageId: '1', path: ['1'] } as ContentPageletTreeElement;
-    tree2 = { uniqueId: '1.1', contentPageId: '1.1', path: ['1', '1.1'] } as ContentPageletTreeElement;
+    tree1 = { contentPageId: '1', path: ['1'] } as ContentPageletTreeElement;
+    tree2 = { contentPageId: '1.1', path: ['1', '1.1'] } as ContentPageletTreeElement;
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -52,7 +52,7 @@ describe('Page Trees Selectors', () => {
 
     it('should not select any selected page tree when used', () => {
       expect(getSelectedContentPageTreeView(store$.state)).toBeUndefined();
-      expect(getContentPageTreeView(tree1.uniqueId)(store$.state)).toBeUndefined();
+      expect(getContentPageTreeView(tree1.contentPageId)(store$.state)).toBeUndefined();
     });
   });
 
@@ -72,7 +72,7 @@ describe('Page Trees Selectors', () => {
 
       it('should set loading to false and save tree', () => {
         expect(getPageTreeLoading(store$.state)).toBeFalse();
-        expect(getPageTreeEntities(store$.state)).toHaveProperty(tree1.uniqueId);
+        expect(getPageTreeEntities(store$.state)).toHaveProperty(tree1.contentPageId);
       });
     });
 
@@ -108,7 +108,6 @@ describe('Page Trees Selectors', () => {
             "path": Array [
               "1",
             ],
-            "uniqueId": "1",
           }
         `);
       });
@@ -116,7 +115,7 @@ describe('Page Trees Selectors', () => {
 
     describe('with no page route', () => {
       it('should select content page tree of given uniqueId', () => {
-        expect(getContentPageTreeView(tree2.contentPageId)(store$.state).uniqueId).toEqual(tree2.uniqueId);
+        expect(getContentPageTreeView(tree2.contentPageId)(store$.state).contentPageId).toEqual(tree2.contentPageId);
         expect(getContentPageTreeView(tree2.contentPageId)(store$.state)).toMatchInlineSnapshot(`
           Object {
             "children": Array [],
@@ -125,7 +124,6 @@ describe('Page Trees Selectors', () => {
               "1",
               "1.1",
             ],
-            "uniqueId": "1.1",
           }
         `);
       });
