@@ -5,7 +5,6 @@ import { filter, first } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { setReturnUrl } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { LoginModalComponent } from 'ish-shared/components/login/login-modal/login-modal.component';
 
