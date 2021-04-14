@@ -1,4 +1,6 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 import { CMSCarouselComponent } from './components/cms-carousel/cms-carousel.component';
 import { CMSContainerComponent } from './components/cms-container/cms-container.component';
@@ -7,6 +9,7 @@ import { CMSFreestyleComponent } from './components/cms-freestyle/cms-freestyle.
 import { CMSImageEnhancedComponent } from './components/cms-image-enhanced/cms-image-enhanced.component';
 import { CMSImageComponent } from './components/cms-image/cms-image.component';
 import { CMSLandingPageComponent } from './components/cms-landing-page/cms-landing-page.component';
+import { CMSNavigationComponent } from './components/cms-navigation/cms-navigation.component';
 import { CMSProductListComponent } from './components/cms-product-list/cms-product-list.component';
 import { CMSStandardPageComponent } from './components/cms-standard-page/cms-standard-page.component';
 import { CMSStaticPageComponent } from './components/cms-static-page/cms-static-page.component';
@@ -16,6 +19,9 @@ import { CMS_COMPONENT } from './configurations/injection-keys';
 import { SfeAdapterService } from './sfe-adapter/sfe-adapter.service';
 
 @NgModule({
+  exports: [CMSNavigationComponent],
+  declarations: [CMSNavigationComponent],
+  imports: [CommonModule, RouterModule],
   providers: [
     {
       provide: CMS_COMPONENT,

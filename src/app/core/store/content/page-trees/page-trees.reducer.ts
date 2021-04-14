@@ -1,32 +1,33 @@
-import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
-import { ContentPageletTreeData } from 'ish-core/models/content-pagelet-tree/content-pagelet-tree.interface';
+import { ContentPageletTreeHelper } from 'ish-core/models/content-pagelet-tree/content-pagelet-tree.helper';
+import { ContentPageletTree } from 'ish-core/models/content-pagelet-tree/content-pagelet-tree.model';
 import { setLoadingOn, unsetLoadingOn } from 'ish-core/utils/ngrx-creators';
 
 import { loadContentPageTree, loadContentPageTreeFail, loadContentPageTreeSuccess } from './page-trees.actions';
 
-export const pageTreesAdapter = createEntityAdapter<ContentPageletTreeData>({
-  selectId: tree => tree.link.itemId,
-});
-
-export interface PageTreesState extends EntityState<ContentPageletTreeData> {
+export interface PageTreesState {
+  trees: ContentPageletTree;
   loading: boolean;
 }
 
-const initialState: PageTreesState = pageTreesAdapter.getInitialState({
+export const initialState: PageTreesState = {
+  trees: ContentPageletTreeHelper.empty(),
   loading: false,
-});
+};
+
+function mergePageletTrees(state: PageTreesState, action: ReturnType<typeof loadContentPageTreeSuccess>) {
+  const loadedTree = action.payload.tree;
+  const trees = ContentPageletTreeHelper.merge(state.trees, loadedTree);
+  return {
+    ...state,
+    trees,
+  };
+}
 
 export const pageTreesReducer = createReducer(
   initialState,
+  on(loadContentPageTreeSuccess, mergePageletTrees),
   setLoadingOn(loadContentPageTree),
-  unsetLoadingOn(loadContentPageTreeFail, loadContentPageTreeSuccess),
-  on(loadContentPageTreeSuccess, (state, action) => {
-    const { tree } = action.payload;
-
-    return {
-      ...pageTreesAdapter.upsertOne(tree, state),
-    };
-  })
+  unsetLoadingOn(loadContentPageTreeFail, loadContentPageTreeSuccess)
 );

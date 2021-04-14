@@ -8,6 +8,8 @@ import { ContentPageletEntryPointData } from 'ish-core/models/content-pagelet-en
 import { ContentPageletEntryPointMapper } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.mapper';
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { ContentPageletTreeData } from 'ish-core/models/content-pagelet-tree/content-pagelet-tree.interface';
+import { ContentPageletTreeMapper } from 'ish-core/models/content-pagelet-tree/content-pagelet-tree.mapper';
+import { ContentPageletTree } from 'ish-core/models/content-pagelet-tree/content-pagelet-tree.model';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { SeoAttributesMapper } from 'ish-core/models/seo-attributes/seo-attributes.mapper';
 import { ApiService } from 'ish-core/services/api/api.service';
@@ -17,7 +19,11 @@ import { ApiService } from 'ish-core/services/api/api.service';
  */
 @Injectable({ providedIn: 'root' })
 export class CMSService {
-  constructor(private apiService: ApiService, private contentPageletEntryPointMapper: ContentPageletEntryPointMapper) {}
+  constructor(
+    private apiService: ApiService,
+    private contentPageletEntryPointMapper: ContentPageletEntryPointMapper,
+    private contentPageletTreeMapper: ContentPageletTreeMapper
+  ) {}
 
   /**
    * Get the content for the given Content Include ID.
@@ -56,12 +62,24 @@ export class CMSService {
       );
   }
 
-  getContentPageTree(pageId: string): Observable<ContentPageletTreeData> {
-    if (!pageId) {
+  /**
+   *
+   * @param contentPageId: The Page Id
+   * @param depth: Depth of returned content pagelet tree
+   * @returns Content pagelet tree
+   */
+  getContentPageTree(contentPageId: string, depth?: string): Observable<ContentPageletTree> {
+    if (!contentPageId) {
       return throwError('getContentPage() called without an pageId');
     }
+    let params = new HttpParams();
+    if (depth) {
+      params = params.set('depth', depth);
+    }
 
-    return this.apiService.get<ContentPageletTreeData>(`cms/pagetree/${pageId}`, { sendPGID: true });
+    return this.apiService
+      .get<ContentPageletTreeData>(`cms/pagetree/${contentPageId}`, { sendPGID: true, params })
+      .pipe(map(data => this.contentPageletTreeMapper.fromData(data)));
   }
 
   private mapSeoAttributes(
