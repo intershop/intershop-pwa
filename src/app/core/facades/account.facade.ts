@@ -42,6 +42,7 @@ import {
   logoutUser,
   requestPasswordReminder,
   resetPasswordReminder,
+  setReturnUrl,
   updateCustomer,
   updateUser,
   updateUserPassword,
@@ -77,6 +78,10 @@ export class AccountFacade {
   isLoggedIn$ = this.store.pipe(select(getUserAuthorized));
   roles$ = this.store.pipe(select(getUserRoles));
   ssoRegistrationError$ = this.store.pipe(select(getSsoRegistrationError));
+
+  setReturnUrl(returnUrl: string) {
+    this.store.dispatch(setReturnUrl({ returnUrl }));
+  }
 
   loginUser(credentials: Credentials) {
     this.store.dispatch(loginUser({ credentials }));

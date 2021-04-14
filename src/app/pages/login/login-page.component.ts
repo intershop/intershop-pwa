@@ -27,6 +27,7 @@ export class LoginPageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.accountFacade.setReturnUrl('/account');
     this.isLoggedIn$ = this.accountFacade.isLoggedIn$;
     if (isPlatformServer(this.platformId)) {
       // SSR response should always display loading animation

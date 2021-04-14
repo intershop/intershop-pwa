@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, NavigationEnd, Router, RouterStateSnapshot } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Store, select } from '@ngrx/store';
 import { filter, first } from 'rxjs/operators';
 
-import { getDeviceType } from 'ish-core/store/core/configuration';
-import { getUserAuthorized, setReturnUrl } from 'ish-core/store/customer/user';
+import { AccountFacade } from 'ish-core/facades/account.facade';
+import { AppFacade } from 'ish-core/facades/app.facade';
+import { setReturnUrl } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { LoginModalComponent } from 'ish-shared/components/login/login-modal/login-modal.component';
 
@@ -14,8 +14,13 @@ export class LoginGuard implements CanActivate {
   private currentDialog: NgbModalRef;
   private isMobile: boolean;
 
-  constructor(private modalService: NgbModal, private router: Router, private store: Store) {
-    store.pipe(select(getDeviceType), first()).subscribe(type => (this.isMobile = type === 'mobile'));
+  constructor(
+    private modalService: NgbModal,
+    private router: Router,
+    private appFacade: AppFacade,
+    private accountFacade: AccountFacade
+  ) {
+    this.appFacade.deviceType$.pipe(first()).subscribe(type => (this.isMobile = type === 'mobile'));
   }
 
   async canActivate(route: ActivatedRouteSnapshot, goal: RouterStateSnapshot) {
@@ -39,7 +44,7 @@ export class LoginGuard implements CanActivate {
     const loginModalComponent = this.currentDialog.componentInstance as LoginModalComponent;
     loginModalComponent.loginMessageKey = route.queryParamMap.get('messageKey');
 
-    this.store.dispatch(setReturnUrl({ returnUrl: goal.root.queryParamMap.get('returnUrl') }));
+    this.accountFacade.setReturnUrl(goal.root.queryParamMap.get('returnUrl'));
     // dialog closed
     loginModalComponent.close.pipe(first()).subscribe(() => {
       this.currentDialog.dismiss();
@@ -56,7 +61,7 @@ export class LoginGuard implements CanActivate {
       });
 
     // login successful
-    this.store.pipe(select(getUserAuthorized), whenTruthy(), first()).subscribe(() => {
+    this.accountFacade.isLoggedIn$.pipe(whenTruthy(), first()).subscribe(() => {
       this.currentDialog.dismiss();
     });
 
