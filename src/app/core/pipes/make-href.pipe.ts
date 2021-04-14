@@ -1,9 +1,9 @@
-import { Location } from '@angular/common';
+import { LocationStrategy } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({ name: 'makeHref', pure: false })
 export class MakeHrefPipe implements PipeTransform {
-  transform(location: Location, urlParams: { [key: string]: string }): string {
+  transform(location: LocationStrategy, urlParams: { [key: string]: string }): string {
     if (!location || !location.path()) {
       return 'undefined';
     }

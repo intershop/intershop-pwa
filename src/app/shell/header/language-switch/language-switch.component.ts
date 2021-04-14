@@ -1,4 +1,4 @@
-import { Location } from '@angular/common';
+import { LocationStrategy } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -20,7 +20,7 @@ export class LanguageSwitchComponent implements OnInit {
   locale$: Observable<Locale>;
   availableLocales$: Observable<Locale[]>;
 
-  constructor(private appFacade: AppFacade, public location: Location) {}
+  constructor(private appFacade: AppFacade, public location: LocationStrategy) {}
 
   ngOnInit() {
     this.locale$ = this.appFacade.currentLocale$;
