@@ -27,6 +27,7 @@ import {
   requestPasswordReminderSuccess,
   resetPasswordReminder,
   setPGID,
+  setReturnUrl,
   updateCustomer,
   updateCustomerFail,
   updateCustomerSuccess,
@@ -50,6 +51,7 @@ export interface UserState {
   loading: boolean;
   error: HttpError;
   pgid: string;
+  returnUrl: string;
   passwordReminderSuccess: boolean;
   passwordReminderError: HttpError;
 }
@@ -62,6 +64,7 @@ export const initialState: UserState = {
   loading: false,
   error: undefined,
   pgid: undefined,
+  returnUrl: undefined,
   passwordReminderSuccess: undefined,
   passwordReminderError: undefined,
 };
@@ -171,6 +174,10 @@ export const userReducer = createReducer(
     ...state,
     passwordReminderSuccess: undefined,
     passwordReminderError: undefined,
+  })),
+  on(setReturnUrl, (state, action) => ({
+    ...state,
+    returnUrl: action.payload.returnUrl,
   })),
   on(updateUserPasswordByPasswordReminderSuccess, requestPasswordReminderSuccess, state => ({
     ...state,

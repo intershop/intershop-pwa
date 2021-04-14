@@ -25,7 +25,7 @@ import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
-import { selectQueryParam, selectUrl } from 'ish-core/store/core/router';
+import { selectUrl } from 'ish-core/store/core/router';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import {
@@ -63,7 +63,7 @@ import {
   updateUserSuccess,
   userErrorReset,
 } from './user.actions';
-import { getLoggedInCustomer, getLoggedInUser, getUserError } from './user.selectors';
+import { getLoggedInCustomer, getLoggedInUser, getReturnUrl, getUserError } from './user.selectors';
 
 @Injectable()
 export class UserEffects {
@@ -115,7 +115,8 @@ export class UserEffects {
    */
   redirectAfterLogin$ = createEffect(
     () =>
-      this.store$.pipe(select(selectQueryParam('returnUrl'))).pipe(
+      this.store$.pipe(
+        select(getReturnUrl),
         takeWhile(() => isPlatformBrowser(this.platformId)),
         whenTruthy(),
         sample(this.actions$.pipe(ofType(loginUserSuccess))),

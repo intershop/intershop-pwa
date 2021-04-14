@@ -5,7 +5,7 @@ import { Store, select } from '@ngrx/store';
 import { filter, first } from 'rxjs/operators';
 
 import { getDeviceType } from 'ish-core/store/core/configuration';
-import { getUserAuthorized } from 'ish-core/store/customer/user';
+import { getUserAuthorized, setReturnUrl } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { LoginModalComponent } from 'ish-shared/components/login/login-modal/login-modal.component';
 
@@ -18,7 +18,7 @@ export class LoginGuard implements CanActivate {
     store.pipe(select(getDeviceType), first()).subscribe(type => (this.isMobile = type === 'mobile'));
   }
 
-  async canActivate(route: ActivatedRouteSnapshot, _: RouterStateSnapshot) {
+  async canActivate(route: ActivatedRouteSnapshot, goal: RouterStateSnapshot) {
     // first request should go to page
     if (!this.router.navigated) {
       return true;
@@ -39,6 +39,7 @@ export class LoginGuard implements CanActivate {
     const loginModalComponent = this.currentDialog.componentInstance as LoginModalComponent;
     loginModalComponent.loginMessageKey = route.queryParamMap.get('messageKey');
 
+    this.store.dispatch(setReturnUrl({ returnUrl: goal.root.queryParamMap.get('returnUrl') }));
     // dialog closed
     loginModalComponent.close.pipe(first()).subscribe(() => {
       this.currentDialog.dismiss();

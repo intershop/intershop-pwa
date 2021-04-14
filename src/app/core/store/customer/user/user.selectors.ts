@@ -24,6 +24,8 @@ export const getUserError = createSelector(getUserState, state => state.error);
 
 export const getPGID = createSelector(getUserState, state => state.pgid);
 
+export const getReturnUrl = createSelector(getUserState, state => state.returnUrl);
+
 export const getPasswordReminderSuccess = createSelector(getUserState, state => state.passwordReminderSuccess);
 
 export const getPasswordReminderError = createSelector(getUserState, state => state.passwordReminderError);

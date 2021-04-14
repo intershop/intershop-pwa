@@ -91,6 +91,8 @@ export const deleteUserPaymentInstrumentFail = createAction(
 
 export const deleteUserPaymentInstrumentSuccess = createAction('[User API] Delete User Payment Instrument Success');
 
+export const setReturnUrl = createAction('[User Internal] Set Return Url', payload<{ returnUrl: string }>());
+
 export const requestPasswordReminder = createAction(
   '[Password Reminder] Request Password Reminder',
   payload<{ data: PasswordReminder }>()
