@@ -22,6 +22,7 @@ import {
   requestPasswordReminder,
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
+  setReturnUrl,
   updateUserPassword,
 } from './user.actions';
 import {
@@ -30,6 +31,7 @@ import {
   getPasswordReminderError,
   getPasswordReminderSuccess,
   getPriceDisplayType,
+  getReturnUrl,
   getUserAuthorized,
   getUserError,
   getUserLoading,
@@ -196,6 +198,13 @@ describe('User Selectors', () => {
     expect(getPasswordReminderError(store$.state)).toMatchObject(error);
     expect(getPasswordReminderSuccess(store$.state)).toBeFalse();
     expect(getUserLoading(store$.state)).toBeFalse();
+  });
+
+  describe('returnUrl', () => {
+    it('should select returnUrl after it was set', () => {
+      store$.dispatch(setReturnUrl({ returnUrl: '/account' }));
+      expect(getReturnUrl(store$.state)).toEqual('/account');
+    });
   });
 
   describe('getPriceDisplayType', () => {

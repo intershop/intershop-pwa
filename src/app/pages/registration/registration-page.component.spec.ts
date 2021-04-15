@@ -43,7 +43,7 @@ describe('Registration Page Component', () => {
       },
     ]);
     when(activatedRoute.snapshot).thenReturn({
-      queryParams: {},
+      queryParams: { returnUrl: '/account' } as Params,
       url: [{ path: '/register' } as UrlSegment, { path: 'sso' } as UrlSegment],
     } as ActivatedRouteSnapshot);
 
@@ -67,6 +67,7 @@ describe('Registration Page Component', () => {
     expect(component.registrationConfig).toMatchInlineSnapshot(`
       Object {
         "businessCustomer": false,
+        "returnUrl": "/account",
         "sso": true,
         "userId": undefined,
       }
@@ -75,7 +76,7 @@ describe('Registration Page Component', () => {
 
   it('should set configuration parameters depending on router', () => {
     when(activatedRoute.snapshot).thenReturn({
-      queryParams: { userid: 'uid' } as Params,
+      queryParams: { userid: 'uid', returnUrl: '/account' } as Params,
       url: [{ path: '/register' } as UrlSegment, { path: 'sso' } as UrlSegment],
     } as ActivatedRouteSnapshot);
     when(featureToggleService.enabled(anyString())).thenReturn(true);
@@ -84,6 +85,7 @@ describe('Registration Page Component', () => {
     expect(component.registrationConfig).toMatchInlineSnapshot(`
       Object {
         "businessCustomer": true,
+        "returnUrl": "/account",
         "sso": true,
         "userId": "uid",
       }

@@ -42,6 +42,7 @@ import {
   requestPasswordReminder,
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
+  setReturnUrl,
   updateCustomer,
   updateCustomerFail,
   updateCustomerSuccess,
@@ -209,9 +210,7 @@ describe('User Effects', () => {
     }));
 
     it('should navigate to returnUrl after LoginUserSuccess when it is set', fakeAsync(() => {
-      router.navigate(['/login'], { queryParams: { returnUrl: '/foobar' } });
-      tick(500);
-      expect(location.path()).toEqual('/login?returnUrl=%2Ffoobar');
+      store$.dispatch(setReturnUrl({ returnUrl: '/foobar' }));
 
       const action = loginUserSuccess(loginResponseData);
 
