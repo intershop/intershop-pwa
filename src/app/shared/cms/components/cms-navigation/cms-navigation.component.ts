@@ -17,7 +17,7 @@ export class CMSNavigationComponent implements OnInit, OnChanges {
   /**
    * Id of current page tree element
    */
-  @Input() uniqueId: string;
+  @Input() contentPageId: string;
   /**
    * Id of page tree root
    */
@@ -41,6 +41,6 @@ export class CMSNavigationComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.contentPageTree$ = this.cmsFacade.getContentPageTreeView$(this.uniqueId);
+    this.contentPageTree$ = this.cmsFacade.getContentPageTreeView$(this.contentPageId);
   }
 }

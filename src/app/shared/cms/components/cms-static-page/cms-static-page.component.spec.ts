@@ -74,7 +74,7 @@ describe('Cms Static Page Component', () => {
       const navigation = fixture.debugElement.query(By.css('ish-cms-navigation'))
         .componentInstance as CMSNavigationComponent;
 
-      expect(navigation.uniqueId).toMatchInlineSnapshot(`"page-1"`);
+      expect(navigation.contentPageId).toMatchInlineSnapshot(`"page-1"`);
       expect(navigation.root).toMatchInlineSnapshot(`"page-1"`);
       expect(navigation.actualDepth).toMatchInlineSnapshot(`0`);
       expect(navigation.maxDepth).toMatchInlineSnapshot(`2`);
