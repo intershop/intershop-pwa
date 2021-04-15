@@ -1,5 +1,5 @@
 import { Params } from '@angular/router';
-import { RouterNavigationPayload, routerNavigationAction } from '@ngrx/router-store';
+import { RouterRequestPayload, routerRequestAction } from '@ngrx/router-store';
 import { ActionReducer } from '@ngrx/store';
 
 import { applyConfiguration } from 'ish-core/store/core/configuration';
@@ -55,14 +55,20 @@ function extractConfigurationParameters(state: ConfigurationState, paramMap: Sim
 export function configurationMeta(reducer: ActionReducer<CoreState>): ActionReducer<CoreState> {
   let first = false;
 
-  return (
-    state: CoreState,
-    action: typeof routerNavigationAction & { payload: RouterNavigationPayload<RouterState> }
-  ) => {
+  return (state: CoreState, action: typeof routerRequestAction & { payload: RouterRequestPayload<RouterState> }) => {
     let newState = state;
-    if (!first && action.type === routerNavigationAction.type) {
+    if (!first && action.type === routerRequestAction.type) {
       const payload = action.payload;
-      const paramMap = new SimpleParamMap(payload.routerState.params);
+      const params = payload.event.url
+        .split('?')[0]
+        .split(';')
+        .filter(s => s.includes('='))
+        .map(param => {
+          const split = param.split('=');
+          return { [split[0]]: split[1] };
+        })
+        .reduce((acc, curr) => ({ ...acc, ...curr }), {});
+      const paramMap = new SimpleParamMap(params ?? []);
       newState = mergeDeep(newState, {
         configuration: extractConfigurationParameters(newState.configuration, paramMap),
       });
