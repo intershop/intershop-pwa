@@ -10,6 +10,7 @@ export class ContentPageletTreeHelper {
     return {
       edges: {},
       nodes: {},
+      rootIds: [],
     };
   }
 
@@ -23,6 +24,9 @@ export class ContentPageletTreeHelper {
     if (!element.contentPageId) {
       throw new Error('content tree element has no contentPageId');
     }
+
+    // set element as root if it has just one element in its path
+    const rootIds = element.path && element.path.length === 1 ? [element.contentPageId] : [];
 
     // add edges from elementPath
     const edges: { [id: string]: string[] } = {};
@@ -38,6 +42,7 @@ export class ContentPageletTreeHelper {
     return {
       edges,
       nodes,
+      rootIds,
     };
   }
 
@@ -84,6 +89,15 @@ export class ContentPageletTreeHelper {
     return nodes;
   }
 
+  private static mergeRootIDs(current: string[], incoming: string[]): string[] {
+    // node with more available rootIDs is trustworthy
+    if (incoming && incoming.length > current.length) {
+      return ContentPageletTreeHelper.removeDuplicates([...incoming, ...current]);
+    } else {
+      return ContentPageletTreeHelper.removeDuplicates([...current, ...incoming]);
+    }
+  }
+
   /**
    * Merge two trees to a new tree.
    * Updates nodes according to updateStrategy.
@@ -96,6 +110,7 @@ export class ContentPageletTreeHelper {
     return {
       edges: ContentPageletTreeHelper.mergeEdges(current.edges, incoming.edges),
       nodes: ContentPageletTreeHelper.mergeNodes(current.nodes, incoming.nodes),
+      rootIds: ContentPageletTreeHelper.mergeRootIDs(current.rootIds, incoming.rootIds),
     };
   }
 
@@ -105,6 +120,10 @@ export class ContentPageletTreeHelper {
   static add(tree: ContentPageletTree, element: ContentPageletTreeElement): ContentPageletTree {
     const singleContentPageletTree = ContentPageletTreeHelper.single(element);
     return ContentPageletTreeHelper.merge(tree, singleContentPageletTree);
+  }
+
+  private static rootIdsEqual(t1: string[], t2: string[]) {
+    return t1.length === t2.length && t1.every(e => t2.includes(e));
   }
 
   private static edgesEqual(t1: { [id: string]: string[] }, t2: { [id: string]: string[] }) {
@@ -131,6 +150,7 @@ export class ContentPageletTreeHelper {
     return (
       tree1 &&
       tree2 &&
+      ContentPageletTreeHelper.rootIdsEqual(tree1.rootIds, tree2.rootIds) &&
       ContentPageletTreeHelper.edgesEqual(tree1.edges, tree2.edges) &&
       ContentPageletTreeHelper.elementsEqual(tree1.nodes, tree2.nodes)
     );

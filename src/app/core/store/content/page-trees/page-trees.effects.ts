@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, switchMap } from 'rxjs/operators';
+import { concatMap, map } from 'rxjs/operators';
 
 import { CMSService } from 'ish-core/services/cms/cms.service';
 import { mapErrorToAction, mapToPayload } from 'ish-core/utils/operators';
@@ -15,7 +15,7 @@ export class PageTreesEffects {
     this.actions$.pipe(
       ofType(loadContentPageTree),
       mapToPayload(),
-      switchMap(({ contentPageId, depth }) =>
+      concatMap(({ contentPageId, depth }) =>
         this.cmsService.getContentPageTree(contentPageId, depth).pipe(
           map(tree => loadContentPageTreeSuccess({ tree })),
           mapErrorToAction(loadContentPageTreeFail)

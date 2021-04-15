@@ -62,7 +62,7 @@ describe('Content Pagelet Tree Mapper', () => {
       ).toEqual(pageTree([el1, el2]));
     });
 
-    it('should return the all elements when mapping path with four elements', () => {
+    it('should return all elements when mapping path with four elements', () => {
       expect(
         contentPageletTreeMapper.treeElementsFromTreeElementPath([
           { itemId: '1', title: 'n1' },
@@ -79,7 +79,7 @@ describe('Content Pagelet Tree Mapper', () => {
       expect(() => contentPageletTreeMapper.fromDataSingle(undefined)).toThrow();
     });
 
-    it('should return Category when supplied with raw CategoryData', () => {
+    it('should return ContentPageTreeElement when supplied with raw ContentPageTreeData', () => {
       const element = contentPageletTreeMapper.fromDataSingle({
         page: { itemId: '1' },
         path: [{ itemId: '1' }],
@@ -87,7 +87,7 @@ describe('Content Pagelet Tree Mapper', () => {
       expect(element).toBeTruthy();
     });
 
-    it('should insert uniqueId of raw CategoryData when categoryPath is supplied', () => {
+    it('should insert contentPageId of raw ContentPageTreeData', () => {
       const element = contentPageletTreeMapper.fromDataSingle({
         page: { itemId: '1' },
         path: [{ itemId: '1' }],
@@ -95,7 +95,7 @@ describe('Content Pagelet Tree Mapper', () => {
       expect(element).toHaveProperty('contentPageId', '1');
     });
 
-    it('should use categoryPath of raw CategoryData when creating uniqueId and categoryPath', () => {
+    it('should use path of raw ContentPageTreeData when creating contentPageId and path', () => {
       const element = contentPageletTreeMapper.fromDataSingle({
         page: { itemId: '2' },
         path: [{ itemId: '1' }, { itemId: '2' }],
@@ -110,7 +110,7 @@ describe('Content Pagelet Tree Mapper', () => {
       expect(() => contentPageletTreeMapper.fromData(undefined)).toThrow();
     });
 
-    it(`should return something truthy when mapping a raw CategoryData`, () => {
+    it(`should return something truthy when mapping a raw ContentPageTreeData`, () => {
       expect(
         contentPageletTreeMapper.fromData({
           page: { itemId: '2' },
@@ -120,30 +120,20 @@ describe('Content Pagelet Tree Mapper', () => {
       ).toBeTruthy();
     });
 
-    it(`should return CategoryTree with one root node when raw CategoryData only has one`, () => {
+    it(`should return ContentPageTree with one root node when raw ContentPageTreeData only has one`, () => {
       const tree = contentPageletTreeMapper.fromData({
         page: { itemId: '1' },
       } as ContentPageletTreeData);
 
       expect(tree).toMatchInlineSnapshot(`
-        Object {
-          "edges": Object {},
-          "nodes": Object {
-            "1": Object {
-              "contentPageId": "1",
-              "name": undefined,
-              "path": Array [
-                "1",
-              ],
-            },
-          },
-        }
+        └─ 1
+
       `);
 
       expect(tree.nodes['1']).toHaveProperty('contentPageId', '1');
     });
 
-    it(`should return CategoryTree with node and computed uniqueid when raw CategoryData was supplied with categoryPath`, () => {
+    it(`should return ContentPageTree with node when raw ContentPageTreeData was supplied with path`, () => {
       const tree = contentPageletTreeMapper.fromData({
         page: { itemId: '2' },
         path: [{ itemId: '1' }],
@@ -151,36 +141,15 @@ describe('Content Pagelet Tree Mapper', () => {
       } as ContentPageletTreeData);
 
       expect(tree).toMatchInlineSnapshot(`
-        Object {
-          "edges": Object {
-            "1": Array [
-              "2",
-            ],
-          },
-          "nodes": Object {
-            "1": Object {
-              "contentPageId": "1",
-              "name": undefined,
-              "path": Array [
-                "1",
-              ],
-            },
-            "2": Object {
-              "contentPageId": "2",
-              "name": undefined,
-              "path": Array [
-                "1",
-                "2",
-              ],
-            },
-          },
-        }
+        └─ 1
+           └─ 2
+
       `);
 
       expect(tree.nodes['2']).toHaveProperty('contentPageId', '2');
     });
 
-    it(`should handle sub element on raw CategoryData`, () => {
+    it(`should handle sub element on raw ContentPageTreeData`, () => {
       const tree = contentPageletTreeMapper.fromData({
         page: { itemId: '1' },
         elements: [
@@ -194,36 +163,15 @@ describe('Content Pagelet Tree Mapper', () => {
       } as ContentPageletTreeData);
 
       expect(tree).toMatchInlineSnapshot(`
-        Object {
-          "edges": Object {
-            "1": Array [
-              "2",
-            ],
-          },
-          "nodes": Object {
-            "1": Object {
-              "contentPageId": "1",
-              "name": undefined,
-              "path": Array [
-                "1",
-              ],
-            },
-            "2": Object {
-              "contentPageId": "2",
-              "name": undefined,
-              "path": Array [
-                "1",
-                "2",
-              ],
-            },
-          },
-        }
+        └─ 1
+           └─ 2
+
       `);
       expect(tree.nodes['1']).toHaveProperty('contentPageId', '1');
       expect(tree.nodes['2']).toHaveProperty('contentPageId', '2');
     });
 
-    it(`should handle sub element page tree links on raw CategoryData`, () => {
+    it(`should handle sub element page tree links on raw ContentPageTreeData`, () => {
       const tree = contentPageletTreeMapper.fromData({
         page: { itemId: '1' },
         elements: [
@@ -239,39 +187,10 @@ describe('Content Pagelet Tree Mapper', () => {
       } as ContentPageletTreeData);
 
       expect(tree).toMatchInlineSnapshot(`
-        Object {
-          "edges": Object {
-            "1": Array [
-              "2",
-              "3",
-            ],
-          },
-          "nodes": Object {
-            "1": Object {
-              "contentPageId": "1",
-              "name": undefined,
-              "path": Array [
-                "1",
-              ],
-            },
-            "2": Object {
-              "contentPageId": "2",
-              "name": undefined,
-              "path": Array [
-                "1",
-                "2",
-              ],
-            },
-            "3": Object {
-              "contentPageId": "3",
-              "name": undefined,
-              "path": Array [
-                "1",
-                "3",
-              ],
-            },
-          },
-        }
+        └─ 1
+           ├─ 2
+           └─ 3
+
       `);
       expect(tree.nodes['1']).toHaveProperty('contentPageId', '1');
       expect(tree.nodes['2']).toHaveProperty('contentPageId', '2');

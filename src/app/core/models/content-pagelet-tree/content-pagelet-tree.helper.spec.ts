@@ -15,6 +15,7 @@ describe('Content Pagelet Tree Helper', () => {
       expect(empty).toBeTruthy();
       expect(empty.nodes).toBeEmpty();
       expect(empty.edges).toBeEmpty();
+      expect(empty.rootIds).toBeEmpty();
     });
   });
 
@@ -34,45 +35,28 @@ describe('Content Pagelet Tree Helper', () => {
       expect(tree).toBeTruthy();
       expect(tree.nodes).toEqual({ A: element });
       expect(tree.edges).toBeEmpty();
+      expect(tree.rootIds).toEqual(['A']);
     });
 
     it('should not set root ids when element path was emitted', () => {
       const element = { contentPageId: 'A' } as ContentPageletTreeElement;
       const tree = ContentPageletTreeHelper.single(element);
       expect(tree).toMatchInlineSnapshot(`
-        Object {
-          "edges": Object {},
-          "nodes": Object {
-            "A": Object {
-              "contentPageId": "A",
-            },
-          },
-        }
+        └─ dangling
+           └─ A
+
       `);
     });
 
-    it('should create a tree from subelements with edges for element path and no root id', () => {
+    it('should create a tree from sub elements with edges for element path and no root id', () => {
       const element = { contentPageId: 'A.1', path: ['A', 'A.1'] } as ContentPageletTreeElement;
       const tree = ContentPageletTreeHelper.single(element);
       expect(tree).toBeTruthy();
       expect(tree.edges).toEqual({ A: ['A.1'] });
       expect(tree).toMatchInlineSnapshot(`
-        Object {
-          "edges": Object {
-            "A": Array [
-              "A.1",
-            ],
-          },
-          "nodes": Object {
-            "A.1": Object {
-              "contentPageId": "A.1",
-              "path": Array [
-                "A",
-                "A.1",
-              ],
-            },
-          },
-        }
+        └─ dangling
+           └─ A.1
+
       `);
     });
   });
@@ -118,7 +102,7 @@ describe('Content Pagelet Tree Helper', () => {
       );
     });
 
-    it('should add a given category to the tree as additional root when not supplied with optional parameter', () => {
+    it('should add a given element to the tree as additional root', () => {
       const element1 = { contentPageId: 'A', path: ['A'] } as ContentPageletTreeElement;
       const element2 = { contentPageId: 'B', path: ['B'] } as ContentPageletTreeElement;
 
@@ -127,23 +111,9 @@ describe('Content Pagelet Tree Helper', () => {
       const tree2 = ContentPageletTreeHelper.add(tree1, element2);
 
       expect(tree2).toMatchInlineSnapshot(`
-        Object {
-          "edges": Object {},
-          "nodes": Object {
-            "A": Object {
-              "contentPageId": "A",
-              "path": Array [
-                "A",
-              ],
-            },
-            "B": Object {
-              "contentPageId": "B",
-              "path": Array [
-                "B",
-              ],
-            },
-          },
-        }
+        ├─ A
+        └─ B
+
       `);
     });
 
@@ -157,28 +127,9 @@ describe('Content Pagelet Tree Helper', () => {
       const tree = ContentPageletTreeHelper.add(root, child);
 
       expect(tree).toMatchInlineSnapshot(`
-        Object {
-          "edges": Object {
-            "A": Array [
-              "A.1",
-            ],
-          },
-          "nodes": Object {
-            "A": Object {
-              "contentPageId": "A",
-              "path": Array [
-                "A",
-              ],
-            },
-            "A.1": Object {
-              "contentPageId": "A.1",
-              "path": Array [
-                "A",
-                "A.1",
-              ],
-            },
-          },
-        }
+        └─ A
+           └─ A.1
+
       `);
     });
 
@@ -193,36 +144,10 @@ describe('Content Pagelet Tree Helper', () => {
       const tree2 = ContentPageletTreeHelper.add(tree1, child2);
 
       expect(tree2).toMatchInlineSnapshot(`
-        Object {
-          "edges": Object {
-            "A": Array [
-              "A.1",
-              "A.2",
-            ],
-          },
-          "nodes": Object {
-            "A": Object {
-              "contentPageId": "A",
-              "path": Array [
-                "A",
-              ],
-            },
-            "A.1": Object {
-              "contentPageId": "A.1",
-              "path": Array [
-                "A",
-                "A.1",
-              ],
-            },
-            "A.2": Object {
-              "contentPageId": "A.2",
-              "path": Array [
-                "A",
-                "A.2",
-              ],
-            },
-          },
-        }
+        └─ A
+           ├─ A.1
+           └─ A.2
+
       `);
     });
 
@@ -237,39 +162,10 @@ describe('Content Pagelet Tree Helper', () => {
       const tree2 = ContentPageletTreeHelper.add(tree1, child2);
 
       expect(tree2).toMatchInlineSnapshot(`
-        Object {
-          "edges": Object {
-            "A": Array [
-              "A.1",
-            ],
-            "A.1": Array [
-              "A.1.a",
-            ],
-          },
-          "nodes": Object {
-            "A": Object {
-              "contentPageId": "A",
-              "path": Array [
-                "A",
-              ],
-            },
-            "A.1": Object {
-              "contentPageId": "A.1",
-              "path": Array [
-                "A",
-                "A.1",
-              ],
-            },
-            "A.1.a": Object {
-              "contentPageId": "A.1.a",
-              "path": Array [
-                "A",
-                "A.1",
-                "A.1.a",
-              ],
-            },
-          },
-        }
+        └─ A
+           └─ A.1
+              └─ A.1.a
+
       `);
     });
 
@@ -288,56 +184,12 @@ describe('Content Pagelet Tree Helper', () => {
       const tree4 = ContentPageletTreeHelper.add(tree3, child4);
 
       expect(tree4).toMatchInlineSnapshot(`
-        Object {
-          "edges": Object {
-            "A": Array [
-              "A.1",
-              "A.2",
-            ],
-            "A.1": Array [
-              "A.1.a",
-              "A.1.b",
-            ],
-          },
-          "nodes": Object {
-            "A": Object {
-              "contentPageId": "A",
-              "path": Array [
-                "A",
-              ],
-            },
-            "A.1": Object {
-              "contentPageId": "A.1",
-              "path": Array [
-                "A",
-                "A.1",
-              ],
-            },
-            "A.1.a": Object {
-              "contentPageId": "A.1.a",
-              "path": Array [
-                "A",
-                "A.1",
-                "A.1.a",
-              ],
-            },
-            "A.1.b": Object {
-              "contentPageId": "A.1.b",
-              "path": Array [
-                "A",
-                "A.1",
-                "A.1.b",
-              ],
-            },
-            "A.2": Object {
-              "contentPageId": "A.2",
-              "path": Array [
-                "A",
-                "A.2",
-              ],
-            },
-          },
-        }
+        └─ A
+           ├─ A.1
+           │  ├─ A.1.a
+           │  └─ A.1.b
+           └─ A.2
+
       `);
     });
   });
@@ -352,8 +204,8 @@ describe('Content Pagelet Tree Helper', () => {
       const empty = ContentPageletTreeHelper.empty();
       treeA = ContentPageletTreeHelper.add(empty, { contentPageId: 'A', path: ['A'] } as ContentPageletTreeElement);
       treeAB = ContentPageletTreeHelper.add(empty, {
-        contentPageId: 'A.B',
-        path: ['A.B'],
+        contentPageId: 'B',
+        path: ['A', 'B'],
       } as ContentPageletTreeElement);
       treeAAB = ContentPageletTreeHelper.merge(treeA, treeAB);
       treeB = ContentPageletTreeHelper.add(empty, { contentPageId: 'B', path: ['B'] } as ContentPageletTreeElement);
@@ -375,23 +227,9 @@ describe('Content Pagelet Tree Helper', () => {
       const result = ContentPageletTreeHelper.merge(treeAAB, empty);
 
       expect(result).toMatchInlineSnapshot(`
-        Object {
-          "edges": Object {},
-          "nodes": Object {
-            "A": Object {
-              "contentPageId": "A",
-              "path": Array [
-                "A",
-              ],
-            },
-            "A.B": Object {
-              "contentPageId": "A.B",
-              "path": Array [
-                "A.B",
-              ],
-            },
-          },
-        }
+        └─ A
+           └─ B
+
       `);
     });
 
@@ -400,23 +238,9 @@ describe('Content Pagelet Tree Helper', () => {
       const result = ContentPageletTreeHelper.merge(empty, treeAAB);
 
       expect(result).toMatchInlineSnapshot(`
-        Object {
-          "edges": Object {},
-          "nodes": Object {
-            "A": Object {
-              "contentPageId": "A",
-              "path": Array [
-                "A",
-              ],
-            },
-            "A.B": Object {
-              "contentPageId": "A.B",
-              "path": Array [
-                "A.B",
-              ],
-            },
-          },
-        }
+        └─ A
+           └─ B
+
       `);
     });
 
@@ -424,23 +248,9 @@ describe('Content Pagelet Tree Helper', () => {
       const combined = ContentPageletTreeHelper.merge(treeA, treeB);
 
       expect(combined).toMatchInlineSnapshot(`
-        Object {
-          "edges": Object {},
-          "nodes": Object {
-            "A": Object {
-              "contentPageId": "A",
-              "path": Array [
-                "A",
-              ],
-            },
-            "B": Object {
-              "contentPageId": "B",
-              "path": Array [
-                "B",
-              ],
-            },
-          },
-        }
+        ├─ A
+        └─ B
+
       `);
     });
 
@@ -454,23 +264,9 @@ describe('Content Pagelet Tree Helper', () => {
       const combined = ContentPageletTreeHelper.merge(treeA, treeAB);
 
       expect(combined).toMatchInlineSnapshot(`
-        Object {
-          "edges": Object {},
-          "nodes": Object {
-            "A": Object {
-              "contentPageId": "A",
-              "path": Array [
-                "A",
-              ],
-            },
-            "A.B": Object {
-              "contentPageId": "A.B",
-              "path": Array [
-                "A.B",
-              ],
-            },
-          },
-        }
+        └─ A
+           └─ B
+
       `);
     });
 
@@ -508,91 +304,16 @@ describe('Content Pagelet Tree Helper', () => {
       const combined = ContentPageletTreeHelper.merge(treeA, treeB);
 
       expect(combined).toMatchInlineSnapshot(`
-        Object {
-          "edges": Object {
-            "A": Array [
-              "A.1",
-              "A.2",
-            ],
-            "A.1": Array [
-              "A.1.a",
-              "A.1.b",
-            ],
-            "B": Array [
-              "B.1",
-              "B.2",
-            ],
-            "B.1": Array [
-              "B.1.a",
-            ],
-          },
-          "nodes": Object {
-            "A": Object {
-              "contentPageId": "A",
-              "path": Array [
-                "A",
-              ],
-            },
-            "A.1": Object {
-              "contentPageId": "A.1",
-              "path": Array [
-                "A",
-                "A.1",
-              ],
-            },
-            "A.1.a": Object {
-              "contentPageId": "A.1.a",
-              "path": Array [
-                "A",
-                "A.1",
-                "A.1.a",
-              ],
-            },
-            "A.1.b": Object {
-              "contentPageId": "A.1.b",
-              "path": Array [
-                "A",
-                "A.1",
-                "A.1.b",
-              ],
-            },
-            "A.2": Object {
-              "contentPageId": "A.2",
-              "path": Array [
-                "A",
-                "A.2",
-              ],
-            },
-            "B": Object {
-              "contentPageId": "B",
-              "path": Array [
-                "B",
-              ],
-            },
-            "B.1": Object {
-              "contentPageId": "B.1",
-              "path": Array [
-                "B",
-                "B.1",
-              ],
-            },
-            "B.1.a": Object {
-              "contentPageId": "B.1.a",
-              "path": Array [
-                "B",
-                "B.1",
-                "B.1.a",
-              ],
-            },
-            "B.2": Object {
-              "contentPageId": "B.2",
-              "path": Array [
-                "B",
-                "B.2",
-              ],
-            },
-          },
-        }
+        ├─ A
+        │  ├─ A.1
+        │  │  ├─ A.1.a
+        │  │  └─ A.1.b
+        │  └─ A.2
+        └─ B
+           ├─ B.1
+           │  └─ B.1.a
+           └─ B.2
+
       `);
     });
 
@@ -643,55 +364,12 @@ describe('Content Pagelet Tree Helper', () => {
 
       it('should be created', () => {
         expect(tree).toMatchInlineSnapshot(`
-          Object {
-            "edges": Object {
-              "A": Array [
-                "a",
-                "b",
-                "c",
-              ],
-            },
-            "nodes": Object {
-              "A": Object {
-                "contentPageId": "A",
-                "name": undefined,
-                "path": Array [
-                  "A",
-                ],
-              },
-              "B": Object {
-                "contentPageId": "B",
-                "name": undefined,
-                "path": Array [
-                  "B",
-                ],
-              },
-              "a": Object {
-                "contentPageId": "a",
-                "name": undefined,
-                "path": Array [
-                  "A",
-                  "a",
-                ],
-              },
-              "b": Object {
-                "contentPageId": "b",
-                "name": undefined,
-                "path": Array [
-                  "A",
-                  "b",
-                ],
-              },
-              "c": Object {
-                "contentPageId": "c",
-                "name": undefined,
-                "path": Array [
-                  "A",
-                  "c",
-                ],
-              },
-            },
-          }
+          ├─ A
+          │  ├─ a
+          │  ├─ b
+          │  └─ c
+          └─ B
+
         `);
         const elAb = tree.nodes.b;
         expect(elAb.path).toEqual(['A', 'b']);

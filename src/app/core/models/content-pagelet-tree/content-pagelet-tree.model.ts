@@ -7,4 +7,5 @@ export interface ContentPageletTreeElement {
 export interface ContentPageletTree {
   nodes: { [id: string]: ContentPageletTreeElement };
   edges: { [id: string]: string[] };
+  rootIds: string[];
 }
