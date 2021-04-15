@@ -15,6 +15,12 @@ export class ContentPageletTreeMapper {
     return (elements as ContentPageletTreeData[])[0].type === 'PageTreeRO';
   }
 
+  /**
+   *
+   * @param tree parent page tree
+   * @param element page tree link
+   * @returns converted page tree
+   */
   convertLinkToTreeData(tree: ContentPageletTreeData, element: ContentPageletTreeLink): ContentPageletTreeData {
     return {
       page: element,
@@ -31,7 +37,7 @@ export class ContentPageletTreeMapper {
    */
   mapContentPageTreeElementPath(path: ContentPageletTreeLink[]) {
     if (path && path.length) {
-      return path.map(x => x.itemId);
+      return path.map(x => x?.itemId);
     }
     throw new Error('input is falsy');
   }
@@ -74,9 +80,9 @@ export class ContentPageletTreeMapper {
     if (treeData) {
       const treePath = this.mapContentPageTreeElementPath(treeData.path);
       return {
-        contentPageId: treeData.page.itemId,
+        contentPageId: treeData.page?.itemId,
         path: treePath,
-        name: treeData.page.title,
+        name: treeData.page?.title,
       };
     } else {
       throw new Error(`'treeData' is required`);
@@ -96,6 +102,7 @@ export class ContentPageletTreeMapper {
       if (treeData.parent && treeData.path?.filter(e => e === treeData.page).length === 0) {
         treeData.path = [...treeData.path, treeData.page];
       }
+
       if (treeData.elements && treeData.elements.length) {
         /**
          * check type of available elements: {@link ContentPageletTreeData} or {@link ContentPageTreeLink}.

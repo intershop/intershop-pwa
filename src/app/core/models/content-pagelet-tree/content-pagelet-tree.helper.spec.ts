@@ -1,6 +1,11 @@
+import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 
+import { pageTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { ContentPageletTreeHelper } from './content-pagelet-tree.helper';
+import { ContentPageletTreeData } from './content-pagelet-tree.interface';
+import { ContentPageletTreeMapper } from './content-pagelet-tree.mapper';
 import { ContentPageletTree, ContentPageletTreeElement } from './content-pagelet-tree.model';
 
 describe('Content Pagelet Tree Helper', () => {
@@ -591,17 +596,35 @@ describe('Content Pagelet Tree Helper', () => {
       `);
     });
 
-    /**
-
     describe('sorting order', () => {
-      const elABRaw = { page: { itemId: 'A' }, path: [{ itemId: 'A' }, { itemId: 'b' }] } as ContentPageletTreeData;
-      const elARaw = {
-        page: { itemId: 'A' },
+      const elABRaw = {
+        parent: { itemId: 'A' },
+        page: { itemId: 'b' },
         path: [{ itemId: 'A' }],
-        elements: [{ path: [{ itemId: 'A' }, { itemId: 'a' }] }, elABRaw, { path: [{ itemId: 'A' }, { itemId: 'c' }] }],
+        type: 'PageTreeRO',
       } as ContentPageletTreeData;
 
-      const elBRaw = { page: { itemId: 'B' }, path: [{ itemId: 'B' }] } as ContentPageletTreeData;
+      const elARaw = {
+        page: { itemId: 'A' },
+        type: 'PageTreeRO',
+        elements: [
+          {
+            page: { itemId: 'a' },
+            parent: { itemId: 'A' },
+            path: [{ itemId: 'A' }],
+            type: 'PageTreeRO',
+          } as ContentPageletTreeData,
+          elABRaw,
+          {
+            parent: { itemId: 'A' },
+            page: { itemId: 'c' },
+            path: [{ itemId: 'A' }],
+            type: 'PageTreeRO',
+          } as ContentPageletTreeData,
+        ],
+      } as ContentPageletTreeData;
+
+      const elBRaw = { page: { itemId: 'B' }, path: [{ itemId: 'B' }], type: 'PageTreeRO' } as ContentPageletTreeData;
 
       let tree: ContentPageletTree;
       let contentPageletTreeMapper: ContentPageletTreeMapper;
@@ -619,9 +642,59 @@ describe('Content Pagelet Tree Helper', () => {
       });
 
       it('should be created', () => {
-        expect(tree).toMatchInlineSnapshot(`undefined`);
-        const elAb = tree.nodes['A.b'];
-        expect(elAb.path).toEqual(['A', 'A.b']);
+        expect(tree).toMatchInlineSnapshot(`
+          Object {
+            "edges": Object {
+              "A": Array [
+                "a",
+                "b",
+                "c",
+              ],
+            },
+            "nodes": Object {
+              "A": Object {
+                "contentPageId": "A",
+                "name": undefined,
+                "path": Array [
+                  "A",
+                ],
+              },
+              "B": Object {
+                "contentPageId": "B",
+                "name": undefined,
+                "path": Array [
+                  "B",
+                ],
+              },
+              "a": Object {
+                "contentPageId": "a",
+                "name": undefined,
+                "path": Array [
+                  "A",
+                  "a",
+                ],
+              },
+              "b": Object {
+                "contentPageId": "b",
+                "name": undefined,
+                "path": Array [
+                  "A",
+                  "b",
+                ],
+              },
+              "c": Object {
+                "contentPageId": "c",
+                "name": undefined,
+                "path": Array [
+                  "A",
+                  "c",
+                ],
+              },
+            },
+          }
+        `);
+        const elAb = tree.nodes.b;
+        expect(elAb.path).toEqual(['A', 'b']);
         expect(elAb.name).toBeUndefined();
       });
 
@@ -629,283 +702,68 @@ describe('Content Pagelet Tree Helper', () => {
         let elAbUpdateTree: ContentPageletTree;
 
         beforeEach(() => {
-          const elAbUpdateRaw = { ...elABRaw, name: 'update' };
+          const elAbUpdateRaw = { ...elABRaw, page: { ...elABRaw.page, title: 'update' } };
           elAbUpdateTree = contentPageletTreeMapper.fromData(elAbUpdateRaw);
         });
 
         it('should be created', () => {
-          const elAbUpdate = elAbUpdateTree.nodes['A.b'];
+          const elAbUpdate = elAbUpdateTree.nodes.b;
           expect(elAbUpdate.name).not.toBeUndefined();
         });
 
         it('should update element when trees are merged to left', () => {
           const mergeResult = ContentPageletTreeHelper.merge(tree, elAbUpdateTree);
-          expect(mergeResult.nodes['A.b'].name).not.toBeUndefined();
+          expect(mergeResult.nodes.b.name).not.toBeUndefined();
         });
 
         it('should update element when trees are merged to right', () => {
           const mergeResult = ContentPageletTreeHelper.merge(elAbUpdateTree, tree);
-          expect(mergeResult.nodes['A.b'].name).not.toBeUndefined();
+          expect(mergeResult.nodes.b.name).toBeUndefined();
         });
 
         it('should not change sorting order when merged to left', () => {
           const mergeResult = ContentPageletTreeHelper.merge(tree, elAbUpdateTree);
-          expect(mergeResult.edges.A).toEqual(['A.a', 'A.b', 'A.c']);
+          expect(mergeResult.edges.A).toEqual(['a', 'b', 'c']);
         });
 
         it('should not change sorting order when merged to right', () => {
           const mergeResult = ContentPageletTreeHelper.merge(elAbUpdateTree, tree);
-          expect(mergeResult.edges.A).toEqual(['A.a', 'A.b', 'A.c']);
+          expect(mergeResult.edges.A).toEqual(['a', 'b', 'c']);
         });
       });
-
-      /* describe('with root element update', () => {
-        let elBUpdateTree: ContentPageletTree;
-
-        beforeEach(() => {
-          const elBUpdateRaw = { ...elBRaw, name: 'update' };
-          catBUpdateTree = categoryMapper.fromData(catBUpdateRaw);
-          // increase completeness level to always perform an update
-          catBUpdateTree.nodes.B.completenessLevel = tree.nodes.B.completenessLevel + 1;
-        });
-
-        it('should be created', () => {
-          const catBUpdate = catBUpdateTree.nodes.B;
-          expect(catBUpdate.name).not.toBeUndefined();
-
-          expect(catBUpdateTree.nodes.B.completenessLevel).toBeGreaterThan(tree.nodes.B.completenessLevel);
-        });
-
-        it('should update category when trees are merged to left', () => {
-          const mergeResult = CategoryTreeHelper.merge(tree, catBUpdateTree);
-          expect(mergeResult.nodes.B.name).not.toBeUndefined();
-        });
-
-        it('should update category when trees are merged to right', () => {
-          const mergeResult = CategoryTreeHelper.merge(catBUpdateTree, tree);
-          expect(mergeResult.nodes.B.name).not.toBeUndefined();
-        });
-
-        it('should not change sorting order when merged to left', () => {
-          const mergeResult = CategoryTreeHelper.merge(tree, catBUpdateTree);
-          expect(mergeResult.rootIds).toEqual(['A', 'B']);
-        });
-
-        it('should not change sorting order when merged to right', () => {
-          const mergeResult = CategoryTreeHelper.merge(catBUpdateTree, tree);
-          expect(mergeResult.rootIds).toEqual(['A', 'B']);
-        });
-      });
-    });
-  });
-
-  describe('updateStrategy()', () => {
-    it.each([
-      ['new', 0, 1],
-      ['new', 0, 2],
-      ['new', 2, 2],
-      ['old', 1, 0],
-      ['old', 2, 0],
-    ])(`should prefer %s one when having completenessLevel %i vs. %i`, (expected, category1CL, category2CL) => {
-      const category1 = {
-        uniqueId: 'A',
-        name: 'old',
-        completenessLevel: category1CL,
-      } as Category;
-      const category2 = {
-        uniqueId: 'A',
-        name: 'new',
-        completenessLevel: category2CL,
-      } as Category;
-
-      const result = CategoryTreeHelper.updateStrategy(category1, category2);
-
-      expect(result.name).toEqual(expected);
-    });
-  });
-
-  describe('subTree', () => {
-    let combined: CategoryTree;
-
-    beforeEach(() => {
-      combined = categoryTree([
-        { uniqueId: 'A', categoryPath: ['A'] },
-        { uniqueId: 'A.1', categoryPath: ['A', 'A.1'] },
-        { uniqueId: 'A.1.a', categoryPath: ['A', 'A.1', 'A.1.a'] },
-        { uniqueId: 'A.2', categoryPath: ['A', 'A.2'] },
-        { uniqueId: 'A.1.b', categoryPath: ['A', 'A.1', 'A.1.b'] },
-        { uniqueId: 'B', categoryPath: ['B'] },
-        { uniqueId: 'B.1', categoryPath: ['B', 'B.1'] },
-        { uniqueId: 'B.1.a', categoryPath: ['B', 'B.1', 'B.1.a'] },
-        { uniqueId: 'B.2', categoryPath: ['B', 'B.2'] },
-      ] as Category[]);
-    });
-
-    it('should be created', () => {
-      expect(combined).toMatchInlineSnapshot(`
-        ├─ A
-        │  ├─ A.1
-        │  │  ├─ A.1.a
-        │  │  └─ A.1.b
-        │  └─ A.2
-        └─ B
-           ├─ B.1
-           │  └─ B.1.a
-           └─ B.2
-
-      `);
-
-      expect(combined.rootIds).toMatchInlineSnapshot(`
-        Array [
-          "A",
-          "B",
-        ]
-      `);
-      expect(Object.keys(combined.nodes)).toMatchInlineSnapshot(`
-        Array [
-          "A",
-          "A.1",
-          "A.1.a",
-          "A.2",
-          "A.1.b",
-          "B",
-          "B.1",
-          "B.1.a",
-          "B.2",
-        ]
-      `);
-      expect(Object.keys(combined.edges)).toMatchInlineSnapshot(`
-        Array [
-          "A",
-          "A.1",
-          "B",
-          "B.1",
-        ]
-      `);
-    });
-
-    it('should return an empty tree if selected uniqueId is not part of the tree', () => {
-      const tree = CategoryTreeHelper.subTree(combined, 'C');
-      expect(tree.rootIds).toBeEmpty();
-      expect(tree.edges).toBeEmpty();
-      expect(tree.nodes).toBeEmpty();
-    });
-
-    it('should return copy of tree if selector is undefined', () => {
-      const tree = CategoryTreeHelper.subTree(combined, undefined);
-      expect(CategoryTreeHelper.equals(tree, combined)).toBeTrue();
-    });
-
-    it('should extract sub tree for A', () => {
-      const tree = CategoryTreeHelper.subTree(combined, 'A');
-
-      expect(tree).toMatchInlineSnapshot(`
-        └─ A
-           ├─ A.1
-           │  ├─ A.1.a
-           │  └─ A.1.b
-           └─ A.2
-
-      `);
-
-      expect(tree.rootIds).toMatchInlineSnapshot(`
-        Array [
-          "A",
-        ]
-      `);
-      expect(Object.keys(tree.nodes)).toMatchInlineSnapshot(`
-        Array [
-          "A",
-          "A.1",
-          "A.1.a",
-          "A.2",
-          "A.1.b",
-        ]
-      `);
-      expect(Object.keys(tree.edges)).toMatchInlineSnapshot(`
-        Array [
-          "A",
-          "A.1",
-        ]
-      `);
-    });
-
-    it('should extract sub tree for A.1', () => {
-      const tree = CategoryTreeHelper.subTree(combined, 'A.1');
-
-      expect(tree).toMatchInlineSnapshot(`
-        └─ dangling
-           └─ A.1
-              ├─ A.1.a
-              └─ A.1.b
-
-      `);
-
-      expect(tree.rootIds).toBeEmpty();
-      expect(Object.keys(tree.nodes)).toMatchInlineSnapshot(`
-        Array [
-          "A.1",
-          "A.1.a",
-          "A.1.b",
-        ]
-      `);
-      expect(Object.keys(tree.edges)).toMatchInlineSnapshot(`
-        Array [
-          "A.1",
-        ]
-      `);
-    });
-
-    it('should extract sub tree for A.1.a', () => {
-      const tree = CategoryTreeHelper.subTree(combined, 'A.1.a');
-
-      expect(tree).toMatchInlineSnapshot(`
-        └─ dangling
-           └─ A.1.a
-
-      `);
-
-      expect(tree.rootIds).toBeEmpty();
-      expect(Object.keys(tree.nodes)).toMatchInlineSnapshot(`
-        Array [
-          "A.1.a",
-        ]
-      `);
-      expect(Object.keys(tree.edges)).toBeEmpty();
     });
   });
 
   describe('equals', () => {
-    const catA = { uniqueId: 'A', categoryPath: ['A'] } as Category;
-    const catB = { uniqueId: 'B', categoryPath: ['B'] } as Category;
+    const elA = { contentPageId: 'A', path: ['A'] } as ContentPageletTreeElement;
+    const elB = { contentPageId: 'B', path: ['B'] } as ContentPageletTreeElement;
 
     it('should return true for simple equal trees', () => {
-      const tree1 = categoryTree([catA]);
-      const tree2 = categoryTree([catA]);
+      const tree1 = pageTree([elA]);
+      const tree2 = pageTree([elA]);
 
-      expect(CategoryTreeHelper.equals(tree1, tree2)).toBeTrue();
+      expect(ContentPageletTreeHelper.equals(tree1, tree2)).toBeTrue();
     });
 
     it('should return true if category was copied', () => {
-      const tree1 = categoryTree([catA]);
-      const tree2 = categoryTree([{ ...catA }]);
+      const tree1 = pageTree([elA]);
+      const tree2 = pageTree([{ ...elA }]);
 
-      expect(CategoryTreeHelper.equals(tree1, tree2)).toBeTrue();
+      expect(ContentPageletTreeHelper.equals(tree1, tree2)).toBeTrue();
     });
 
     it('should return false for simple unequal trees', () => {
-      const tree1 = categoryTree([catA]);
-      const tree2 = categoryTree([catB]);
+      const tree1 = pageTree([elA]);
+      const tree2 = pageTree([elB]);
 
-      expect(CategoryTreeHelper.equals(tree1, tree2)).toBeFalse();
+      expect(ContentPageletTreeHelper.equals(tree1, tree2)).toBeFalse();
     });
 
     it('should return true for simple unordered trees', () => {
-      const tree1 = categoryTree([catA, catB]);
-      const tree2 = categoryTree([catB, catA]);
+      const tree1 = pageTree([elA, elB]);
+      const tree2 = pageTree([elB, elA]);
 
-      expect(CategoryTreeHelper.equals(tree1, tree2)).toBeTrue();
+      expect(ContentPageletTreeHelper.equals(tree1, tree2)).toBeTrue();
     });
-    */
   });
 });

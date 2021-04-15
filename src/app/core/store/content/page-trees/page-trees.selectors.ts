@@ -1,5 +1,5 @@
 import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
 
 import {
   ContentPageletTreeView,

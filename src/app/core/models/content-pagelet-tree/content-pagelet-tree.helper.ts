@@ -107,25 +107,6 @@ export class ContentPageletTreeHelper {
     return ContentPageletTreeHelper.merge(tree, singleContentPageletTree);
   }
 
-  /**
-   * Extract a sub tree.
-   */
-  static subTree(tree: ContentPageletTree, contentPageId: string): ContentPageletTree {
-    if (!contentPageId) {
-      return tree;
-    }
-
-    let splitTree: ContentPageletTree;
-
-    if (tree.edges[contentPageId]) {
-      splitTree = tree.edges[contentPageId]
-        .map(id => ContentPageletTreeHelper.subTree(ContentPageletTreeHelper.single(tree.nodes[id]), id))
-        .reduce((a, b) => ContentPageletTreeHelper.merge(a, b));
-    }
-
-    return splitTree;
-  }
-
   private static edgesEqual(t1: { [id: string]: string[] }, t2: { [id: string]: string[] }) {
     return isEqual(t1, t2);
   }

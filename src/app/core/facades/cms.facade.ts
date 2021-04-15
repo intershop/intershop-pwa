@@ -57,7 +57,6 @@ export class CMSFacade {
     return this.store.pipe(select(getViewContext(viewContextId, callParameters)));
   }
 
-  // CMS Page Tree
   loadPageTree(contentPageId: string, depth: string) {
     this.store.dispatch(loadContentPageTree({ contentPageId, depth }));
   }
