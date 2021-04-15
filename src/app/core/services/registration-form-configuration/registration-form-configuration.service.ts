@@ -26,6 +26,7 @@ export interface RegistrationConfigType {
   businessCustomer?: boolean;
   sso?: boolean;
   userId?: string;
+  returnUrl?: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -106,6 +107,7 @@ export class RegistrationFormConfigurationService {
   }
 
   submitRegistrationForm(form: FormGroup, registrationConfig: RegistrationConfigType, model?: Record<string, unknown>) {
+    this.accountFacade.setReturnUrl(registrationConfig.returnUrl);
     const formValue = { ...form.value, ...model };
 
     const address: Address = {

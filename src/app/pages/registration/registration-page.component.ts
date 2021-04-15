@@ -70,7 +70,7 @@ export class RegistrationPageComponent implements OnInit {
 
   extractModel(route: ActivatedRouteSnapshot) {
     return Object.keys(route.queryParams)
-      .filter(key => !['userid'].includes(key))
+      .filter(key => !['userid', 'returnUrl'].includes(key))
       .reduce((acc, key) => ({ ...acc, [key]: route.queryParams[key] }), { ...this.model });
   }
 
@@ -79,6 +79,7 @@ export class RegistrationPageComponent implements OnInit {
       sso: !!route.url.find(segment => segment.path.includes('sso')),
       userId: route.queryParams.userid,
       businessCustomer: this.featureToggle.enabled('businessCustomerRegistration'),
+      returnUrl: route.queryParams.returnUrl,
     };
   }
 }
