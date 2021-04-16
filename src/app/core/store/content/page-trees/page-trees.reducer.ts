@@ -2,18 +2,15 @@ import { createReducer, on } from '@ngrx/store';
 
 import { ContentPageletTreeHelper } from 'ish-core/models/content-pagelet-tree/content-pagelet-tree.helper';
 import { ContentPageletTree } from 'ish-core/models/content-pagelet-tree/content-pagelet-tree.model';
-import { setLoadingOn, unsetLoadingOn } from 'ish-core/utils/ngrx-creators';
 
-import { loadContentPageTree, loadContentPageTreeFail, loadContentPageTreeSuccess } from './page-trees.actions';
+import { loadContentPageTreeSuccess } from './page-trees.actions';
 
 export interface PageTreesState {
   trees: ContentPageletTree;
-  loading: boolean;
 }
 
 export const initialState: PageTreesState = {
   trees: ContentPageletTreeHelper.empty(),
-  loading: false,
 };
 
 function mergePageletTrees(state: PageTreesState, action: ReturnType<typeof loadContentPageTreeSuccess>) {
@@ -25,9 +22,4 @@ function mergePageletTrees(state: PageTreesState, action: ReturnType<typeof load
   };
 }
 
-export const pageTreesReducer = createReducer(
-  initialState,
-  on(loadContentPageTreeSuccess, mergePageletTrees),
-  setLoadingOn(loadContentPageTree),
-  unsetLoadingOn(loadContentPageTreeFail, loadContentPageTreeSuccess)
-);
+export const pageTreesReducer = createReducer(initialState, on(loadContentPageTreeSuccess, mergePageletTrees));

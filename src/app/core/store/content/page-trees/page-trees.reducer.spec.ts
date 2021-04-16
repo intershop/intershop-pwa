@@ -2,7 +2,6 @@ import {
   ContentPageletTree,
   ContentPageletTreeElement,
 } from 'ish-core/models/content-pagelet-tree/content-pagelet-tree.model';
-import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { pageTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { loadContentPageTree, loadContentPageTreeFail, loadContentPageTreeSuccess } from './page-trees.actions';
@@ -21,24 +20,6 @@ describe('Page Trees Reducer', () => {
   });
 
   describe('Load content page tree actions', () => {
-    describe('LoadContentPageTree action', () => {
-      it('should set loading to true', () => {
-        const action = loadContentPageTree({ contentPageId: '123', depth: '2' });
-        const state = pageTreesReducer(initialState, action);
-
-        expect(state.loading).toBeTrue();
-      });
-    });
-
-    describe('LoadContentPageTreeFail action', () => {
-      it('should set loading to false', () => {
-        const action = loadContentPageTreeFail({ error: makeHttpError({}) });
-        const state = pageTreesReducer(initialState, action);
-
-        expect(state.loading).toBeFalse();
-      });
-    });
-
     describe('LoadContentPageTreeSuccess action', () => {
       let tree: ContentPageletTree;
 
