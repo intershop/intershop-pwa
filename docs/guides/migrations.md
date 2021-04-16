@@ -7,6 +7,10 @@ kb_sync_latest_only
 
 # Migrations
 
+## 0.29 to 0.30
+
+We introduced the feature toggle 'guestCheckout' in the `environment.model.ts`.
+
 ## 0.28 to 0.29
 
 We activated TypeScript's [`noImplicitAny`](https://www.typescriptlang.org/tsconfig#noImplicitAny).

@@ -39,6 +39,7 @@ export interface Environment {
     | 'tracking'
     | 'tacton'
     /* B2C features */
+    | 'guestCheckout'
     | 'wishlists'
   )[];
 
@@ -104,8 +105,8 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
   icmApplication: 'rest',
   identityProvider: 'ICM',
 
-  /* FEATURE TOGGLES */
-  features: ['compare', 'recently', 'rating', 'wishlists'],
+  /* FEATURE TOOGLES */
+  features: ['compare', 'guestCheckout', 'recently', 'rating', 'wishlists'],
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
   smallBreakpointWidth: 576,

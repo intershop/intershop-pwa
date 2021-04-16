@@ -10,7 +10,7 @@
     <ish-identity-provider-login></ish-identity-provider-login>
   </div>
   <!-- checkout as guest -->
-  <div class="col-lg-6">
+  <div *ishFeature="'guestCheckout'" class="col-lg-6">
     <h2>{{ 'checkout.addresses.checkout_as_guest.heading' | translate }}</h2>
     <p>{{ 'checkout.address.anonymous.guestcheckout.text' | translate }}</p>
     <button
