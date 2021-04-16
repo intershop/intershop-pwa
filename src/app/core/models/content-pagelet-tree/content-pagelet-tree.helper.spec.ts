@@ -1,8 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 
-import { pageTree } from 'ish-core/utils/dev/test-data-utils';
-
 import { ContentPageletTreeHelper } from './content-pagelet-tree.helper';
 import { ContentPageletTreeData } from './content-pagelet-tree.interface';
 import { ContentPageletTreeMapper } from './content-pagelet-tree.mapper';
@@ -409,39 +407,6 @@ describe('Content Pagelet Tree Helper', () => {
           expect(mergeResult.edges.A).toEqual(['a', 'b', 'c']);
         });
       });
-    });
-  });
-
-  describe('equals', () => {
-    const elA = { contentPageId: 'A', path: ['A'] } as ContentPageletTreeElement;
-    const elB = { contentPageId: 'B', path: ['B'] } as ContentPageletTreeElement;
-
-    it('should return true for simple equal trees', () => {
-      const tree1 = pageTree([elA]);
-      const tree2 = pageTree([elA]);
-
-      expect(ContentPageletTreeHelper.equals(tree1, tree2)).toBeTrue();
-    });
-
-    it('should return true if category was copied', () => {
-      const tree1 = pageTree([elA]);
-      const tree2 = pageTree([{ ...elA }]);
-
-      expect(ContentPageletTreeHelper.equals(tree1, tree2)).toBeTrue();
-    });
-
-    it('should return false for simple unequal trees', () => {
-      const tree1 = pageTree([elA]);
-      const tree2 = pageTree([elB]);
-
-      expect(ContentPageletTreeHelper.equals(tree1, tree2)).toBeFalse();
-    });
-
-    it('should return true for simple unordered trees', () => {
-      const tree1 = pageTree([elA, elB]);
-      const tree2 = pageTree([elB, elA]);
-
-      expect(ContentPageletTreeHelper.equals(tree1, tree2)).toBeTrue();
     });
   });
 });

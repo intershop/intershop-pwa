@@ -26,7 +26,6 @@ export class CMSFacade {
   contentPage$ = this.store.pipe(select(getSelectedContentPage));
   contentPageLoading$ = this.store.pipe(select(getContentPageLoading));
   selectedContentPageId$ = this.store.pipe(select(selectRouteParam('contentPageId')));
-
   selectedContentPageTreeView$ = this.store.pipe(select(getSelectedContentPageTreeView));
 
   getContentPageTreeView$(uniqueId: string): Observable<ContentPageletTreeView> {

@@ -1,5 +1,3 @@
-import { isEqual } from 'lodash-es';
-
 import { ContentPageletTree, ContentPageletTreeElement } from './content-pagelet-tree.model';
 
 export class ContentPageletTreeHelper {
@@ -120,39 +118,5 @@ export class ContentPageletTreeHelper {
   static add(tree: ContentPageletTree, element: ContentPageletTreeElement): ContentPageletTree {
     const singleContentPageletTree = ContentPageletTreeHelper.single(element);
     return ContentPageletTreeHelper.merge(tree, singleContentPageletTree);
-  }
-
-  private static rootIdsEqual(t1: string[], t2: string[]) {
-    return t1.length === t2.length && t1.every(e => t2.includes(e));
-  }
-
-  private static edgesEqual(t1: { [id: string]: string[] }, t2: { [id: string]: string[] }) {
-    return isEqual(t1, t2);
-  }
-
-  private static elementsEqual(
-    t1: { [id: string]: ContentPageletTreeElement },
-    t2: { [id: string]: ContentPageletTreeElement }
-  ) {
-    const keys1 = Object.keys(t1);
-    const keys2 = Object.keys(t2);
-    return (
-      keys1.length === keys2.length &&
-      keys1.every(id => keys2.includes(id)) &&
-      keys1.every(id => isEqual(t1[id], t2[id]))
-    );
-  }
-
-  /**
-   * Perform check for equality. Order of items is ignored.
-   */
-  static equals(tree1: ContentPageletTree, tree2: ContentPageletTree): boolean {
-    return (
-      tree1 &&
-      tree2 &&
-      ContentPageletTreeHelper.rootIdsEqual(tree1.rootIds, tree2.rootIds) &&
-      ContentPageletTreeHelper.edgesEqual(tree1.edges, tree2.edges) &&
-      ContentPageletTreeHelper.elementsEqual(tree1.nodes, tree2.nodes)
-    );
   }
 }

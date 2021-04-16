@@ -6,17 +6,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ContentPageletTreeElement } from 'ish-core/models/content-pagelet-tree/content-pagelet-tree.model';
 import { ContentStoreModule } from 'ish-core/store/content/content-store.module';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { pageTree } from 'ish-core/utils/dev/test-data-utils';
 
-import { loadContentPageTree, loadContentPageTreeFail, loadContentPageTreeSuccess } from './page-trees.actions';
-import {
-  getContentPageTreeView,
-  getPageTreeEntities,
-  getPageTreeLoading,
-  getSelectedContentPageTreeView,
-} from './page-trees.selectors';
+import { loadContentPageTreeSuccess } from './page-trees.actions';
+import { getContentPageTreeView, getSelectedContentPageTreeView } from './page-trees.selectors';
 
 describe('Page Trees Selectors', () => {
   let store$: StoreWithSnapshots;
@@ -46,45 +40,9 @@ describe('Page Trees Selectors', () => {
   });
 
   describe('with empty state', () => {
-    it('should not select any page trees when used', () => {
-      expect(getPageTreeEntities(store$.state)).toBeEmpty();
-    });
-
     it('should not select any selected page tree when used', () => {
       expect(getSelectedContentPageTreeView(store$.state)).toBeUndefined();
       expect(getContentPageTreeView(tree1.contentPageId)(store$.state)).toBeUndefined();
-    });
-  });
-
-  describe('loading a page tree', () => {
-    beforeEach(() => {
-      store$.dispatch(loadContentPageTree({ contentPageId: '', depth: '' }));
-    });
-
-    it('should set loading to true', () => {
-      expect(getPageTreeLoading(store$.state)).toBeTrue();
-    });
-
-    describe('and reporting success', () => {
-      beforeEach(() => {
-        store$.dispatch(loadContentPageTreeSuccess({ tree: pageTree([tree1]) }));
-      });
-
-      it('should set loading to false and save tree', () => {
-        expect(getPageTreeLoading(store$.state)).toBeFalse();
-        expect(getPageTreeEntities(store$.state)).toHaveProperty(tree1.contentPageId);
-      });
-    });
-
-    describe('and reporting failure', () => {
-      beforeEach(() => {
-        store$.dispatch(loadContentPageTreeFail({ error: makeHttpError({ message: 'error' }) }));
-      });
-
-      it('should not have loaded category on error', () => {
-        expect(getPageTreeLoading(store$.state)).toBeFalse();
-        expect(getPageTreeEntities(store$.state)).toBeEmpty();
-      });
     });
   });
 

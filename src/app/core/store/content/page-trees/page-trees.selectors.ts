@@ -13,10 +13,6 @@ const getPageTreesState = createSelector(getContentState, state => state.trees);
 
 export const getPageTrees = createSelector(getPageTreesState, state => state.trees);
 
-export const getPageTreeLoading = createSelector(getPageTreesState, state => state.loading);
-
-export const getPageTreeEntities = createSelector(getPageTrees, tree => tree.nodes);
-
 /**
  * Retrieves the selected content page tree view
  */
