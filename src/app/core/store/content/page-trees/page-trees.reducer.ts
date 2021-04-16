@@ -14,12 +14,13 @@ export const initialState: PageTreesState = {
 };
 
 function mergePageTrees(state: PageTreesState, action: ReturnType<typeof loadContentPageTreeSuccess>) {
-  const loadedTree = action.payload.tree;
-  const trees = ContentPageTreeHelper.merge(state.trees, loadedTree);
-  return {
-    ...state,
-    trees,
-  };
+  const tree = action.payload.tree;
+  return tree
+    ? {
+        ...state,
+        trees: ContentPageTreeHelper.merge(state.trees, tree),
+      }
+    : { ...state };
 }
 
 export const pageTreesReducer = createReducer(initialState, on(loadContentPageTreeSuccess, mergePageTrees));
