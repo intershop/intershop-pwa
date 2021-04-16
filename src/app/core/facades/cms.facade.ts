@@ -6,11 +6,7 @@ import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.model';
 import { ContentPageletTreeView } from 'ish-core/models/content-pagelet-tree-view/content-pagelet-tree-view.model';
 import { getContentInclude, loadContentInclude } from 'ish-core/store/content/includes';
-import {
-  getContentPageTreeView,
-  getSelectedContentPageTreeView,
-  loadContentPageTree,
-} from 'ish-core/store/content/page-trees';
+import { getContentPageTreeView, loadContentPageTree } from 'ish-core/store/content/page-trees';
 import { getContentPagelet } from 'ish-core/store/content/pagelets';
 import { getContentPageLoading, getSelectedContentPage } from 'ish-core/store/content/pages';
 import { getViewContext, loadViewContextEntrypoint } from 'ish-core/store/content/viewcontexts';
@@ -26,7 +22,6 @@ export class CMSFacade {
   contentPage$ = this.store.pipe(select(getSelectedContentPage));
   contentPageLoading$ = this.store.pipe(select(getContentPageLoading));
   selectedContentPageId$ = this.store.pipe(select(selectRouteParam('contentPageId')));
-  selectedContentPageTreeView$ = this.store.pipe(select(getSelectedContentPageTreeView));
 
   getContentPageTreeView$(uniqueId: string): Observable<ContentPageletTreeView> {
     return this.store.pipe(select(getContentPageTreeView(uniqueId)));

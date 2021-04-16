@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { ContentPageletTreeElement } from 'ish-core/models/content-pagelet-tree/content-pagelet-tree.model';
@@ -10,11 +9,10 @@ import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ng
 import { pageTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { loadContentPageTreeSuccess } from './page-trees.actions';
-import { getContentPageTreeView, getSelectedContentPageTreeView } from './page-trees.selectors';
+import { getContentPageTreeView, getPageTrees } from './page-trees.selectors';
 
 describe('Page Trees Selectors', () => {
   let store$: StoreWithSnapshots;
-  let router: Router;
   let tree1: ContentPageletTreeElement;
   let tree2: ContentPageletTreeElement;
 
@@ -36,12 +34,10 @@ describe('Page Trees Selectors', () => {
     });
 
     store$ = TestBed.inject(StoreWithSnapshots);
-    router = TestBed.inject(Router);
   });
 
   describe('with empty state', () => {
     it('should not select any selected page tree when used', () => {
-      expect(getSelectedContentPageTreeView(store$.state)).toBeUndefined();
       expect(getContentPageTreeView(tree1.contentPageId)(store$.state)).toBeUndefined();
     });
   });
@@ -49,15 +45,18 @@ describe('Page Trees Selectors', () => {
   describe('state contains page tree', () => {
     beforeEach(() => store$.dispatch(loadContentPageTreeSuccess({ tree: pageTree([tree1, tree2]) })));
 
-    describe('with content page route', () => {
-      beforeEach(fakeAsync(() => {
-        router.navigateByUrl(`page/${tree1.contentPageId}`);
-        tick(500);
-      }));
+    it('should get all page trees with getPageTrees() selector', () => {
+      expect(getPageTrees(store$.state)).toMatchInlineSnapshot(`
+        └─ 1
+           └─ 1.1
 
-      it('should select page tree view when used', () => {
-        expect(getSelectedContentPageTreeView(store$.state).contentPageId).toEqual(tree1.contentPageId);
-        expect(getSelectedContentPageTreeView(store$.state)).toMatchInlineSnapshot(`
+      `);
+    });
+
+    describe('with no page route', () => {
+      it('should select content page tree of given uniqueId with children', () => {
+        expect(getContentPageTreeView(tree1.contentPageId)(store$.state).contentPageId).toEqual(tree1.contentPageId);
+        expect(getContentPageTreeView(tree1.contentPageId)(store$.state)).toMatchInlineSnapshot(`
           Object {
             "children": Array [
               "1.1",
@@ -69,10 +68,8 @@ describe('Page Trees Selectors', () => {
           }
         `);
       });
-    });
 
-    describe('with no page route', () => {
-      it('should select content page tree of given uniqueId', () => {
+      it('should select content page tree of given uniqueId with no children', () => {
         expect(getContentPageTreeView(tree2.contentPageId)(store$.state).contentPageId).toEqual(tree2.contentPageId);
         expect(getContentPageTreeView(tree2.contentPageId)(store$.state)).toMatchInlineSnapshot(`
           Object {
