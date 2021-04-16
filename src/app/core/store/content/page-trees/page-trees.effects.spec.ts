@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -19,12 +18,9 @@ describe('Page Trees Effects', () => {
   let cmsServiceMock: CMSService;
 
   beforeEach(() => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
     cmsServiceMock = mock(CMSService);
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       providers: [
         PageTreesEffects,
         provideMockActions(() => actions$),

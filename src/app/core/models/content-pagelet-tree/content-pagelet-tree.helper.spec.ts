@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { provideMockStore } from '@ngrx/store/testing';
 
 import { ContentPageletTreeHelper } from './content-pagelet-tree.helper';
 import { ContentPageletTreeData } from './content-pagelet-tree.interface';
@@ -349,9 +348,7 @@ describe('Content Pagelet Tree Helper', () => {
       let contentPageletTreeMapper: ContentPageletTreeMapper;
 
       beforeEach(() => {
-        TestBed.configureTestingModule({
-          providers: [provideMockStore()],
-        });
+        TestBed.configureTestingModule({});
         contentPageletTreeMapper = TestBed.inject(ContentPageletTreeMapper);
 
         tree = [elARaw, elBRaw].reduce(

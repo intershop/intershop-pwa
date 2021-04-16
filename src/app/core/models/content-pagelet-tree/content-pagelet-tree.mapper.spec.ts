@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { pageTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { ContentPageletTreeData, ContentPageletTreeLink } from './content-pagelet-tree.interface';
@@ -11,7 +10,7 @@ describe('Content Pagelet Tree Mapper', () => {
   let contentPageletTreeMapper: ContentPageletTreeMapper;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [CoreStoreModule.forTesting(['configuration'])] });
+    TestBed.configureTestingModule({});
     contentPageletTreeMapper = TestBed.inject(ContentPageletTreeMapper);
   });
 
