@@ -37,8 +37,11 @@ export class ProductImagesComponent implements OnInit {
     this.product$ = this.context.select('product');
   }
 
-  getImageViewIDs$(imageType: string) {
-    return this.product$.pipe(map(p => ProductHelper.getImageViewIDs(p, imageType)));
+  getImageViewIDs$(imageType: string): Observable<string[]> {
+    return this.product$.pipe(
+      map(p => ProductHelper.getImageViewIDs(p, imageType)),
+      map(ids => (ids?.length ? ids : ['default']))
+    );
   }
 
   /**
