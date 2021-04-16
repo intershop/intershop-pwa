@@ -1,6 +1,6 @@
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 
-export interface ContentPageletTreeLink {
+export interface ContentPageTreeLink {
   type: string;
   uri: string;
   title: string;
@@ -13,13 +13,13 @@ export interface ContentPageletTreeLink {
   attribute?: Attribute;
 }
 
-export interface ContentPageletTreeData {
+export interface ContentPageTreeData {
   name: string;
   type: string;
   attributes?: Attribute[];
-  parent?: ContentPageletTreeLink;
-  path?: ContentPageletTreeLink[];
-  page: ContentPageletTreeLink;
-  link: ContentPageletTreeLink;
-  elements?: ContentPageletTreeData[] | ContentPageletTreeLink[];
+  parent?: ContentPageTreeLink;
+  path?: ContentPageTreeLink[];
+  page: ContentPageTreeLink;
+  link: ContentPageTreeLink;
+  elements?: ContentPageTreeData[] | ContentPageTreeLink[];
 }

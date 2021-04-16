@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@a
 import { Observable } from 'rxjs';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
-import { ContentPageletTreeView } from 'ish-core/models/content-pagelet-tree-view/content-pagelet-tree-view.model';
+import { ContentPageTreeView } from 'ish-core/models/content-page-tree-view/content-page-tree-view.model';
 
 /**
  * The CMS Static Page Component to render CMS managed static content pages.
@@ -31,7 +31,7 @@ export class CMSNavigationComponent implements OnInit, OnChanges {
    */
   @Input() actualDepth: number;
 
-  contentPageTree$: Observable<ContentPageletTreeView>;
+  contentPageTreeView$: Observable<ContentPageTreeView>;
   currentContentPageId$: Observable<string>;
 
   constructor(private cmsFacade: CMSFacade) {}
@@ -41,6 +41,6 @@ export class CMSNavigationComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.contentPageTree$ = this.cmsFacade.getContentPageTreeView$(this.contentPageId);
+    this.contentPageTreeView$ = this.cmsFacade.getContentPageTreeView$(this.contentPageId);
   }
 }

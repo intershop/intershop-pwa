@@ -2,103 +2,101 @@ import { TestBed } from '@angular/core/testing';
 
 import { pageTree } from 'ish-core/utils/dev/test-data-utils';
 
-import { ContentPageletTreeData, ContentPageletTreeLink } from './content-pagelet-tree.interface';
-import { ContentPageletTreeMapper } from './content-pagelet-tree.mapper';
-import { ContentPageletTreeElement } from './content-pagelet-tree.model';
+import { ContentPageTreeData, ContentPageTreeLink } from './content-page-tree.interface';
+import { ContentPageTreeMapper } from './content-page-tree.mapper';
+import { ContentPageTreeElement } from './content-page-tree.model';
 
-describe('Content Pagelet Tree Mapper', () => {
-  let contentPageletTreeMapper: ContentPageletTreeMapper;
+describe('Content Page Tree Mapper', () => {
+  let contentPageTreeMapper: ContentPageTreeMapper;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    contentPageletTreeMapper = TestBed.inject(ContentPageletTreeMapper);
+    contentPageTreeMapper = TestBed.inject(ContentPageTreeMapper);
   });
 
   describe('mapContentPageTreeElementPath()', () => {
     it('should throw on falsy or empty input', () => {
-      expect(() => contentPageletTreeMapper.mapContentPageTreeElementPath(undefined)).toThrowError('input is falsy');
-      expect(() => contentPageletTreeMapper.mapContentPageTreeElementPath(undefined)).toThrow('input is falsy');
-      expect(() => contentPageletTreeMapper.mapContentPageTreeElementPath([])).toThrow('input is falsy');
+      expect(() => contentPageTreeMapper.mapContentPageTreeElementPath(undefined)).toThrowError('input is falsy');
+      expect(() => contentPageTreeMapper.mapContentPageTreeElementPath(undefined)).toThrow('input is falsy');
+      expect(() => contentPageTreeMapper.mapContentPageTreeElementPath([])).toThrow('input is falsy');
     });
 
     it.each([
-      [['1'], [{ itemId: '1' }] as ContentPageletTreeLink[]],
-      [['1', '1.2'], [{ itemId: '1' }, { itemId: '1.2' }] as ContentPageletTreeLink[]],
+      [['1'], [{ itemId: '1' }] as ContentPageTreeLink[]],
+      [['1', '1.2'], [{ itemId: '1' }, { itemId: '1.2' }] as ContentPageTreeLink[]],
       [
         ['1', '1.2', '1.2.3', '1.2.3.4'],
-        [{ itemId: '1' }, { itemId: '1.2' }, { itemId: '1.2.3' }, { itemId: '1.2.3.4' }] as ContentPageletTreeLink[],
+        [{ itemId: '1' }, { itemId: '1.2' }, { itemId: '1.2.3' }, { itemId: '1.2.3.4' }] as ContentPageTreeLink[],
       ],
     ])(`should return %p when mapping path from %j`, (result, path) => {
-      expect(contentPageletTreeMapper.mapContentPageTreeElementPath(path)).toEqual(result);
+      expect(contentPageTreeMapper.mapContentPageTreeElementPath(path)).toEqual(result);
     });
   });
 
   describe('treeElementsFromTreeElementPath()', () => {
     it('should return empty tree on falsy or empty imput', () => {
-      expect(contentPageletTreeMapper.treeElementsFromTreeElementPath(undefined)).toEqual(pageTree());
-      expect(contentPageletTreeMapper.treeElementsFromTreeElementPath([])).toEqual(pageTree());
+      expect(contentPageTreeMapper.treeElementsFromTreeElementPath(undefined)).toEqual(pageTree());
+      expect(contentPageTreeMapper.treeElementsFromTreeElementPath([])).toEqual(pageTree());
     });
 
-    const el1 = { contentPageId: '1', path: ['1'], name: 'n1' } as ContentPageletTreeElement;
-    const el2 = { contentPageId: '2', path: ['1', '2'], name: 'n2' } as ContentPageletTreeElement;
-    const el3 = { contentPageId: '3', path: ['1', '2', '3'], name: 'n3' } as ContentPageletTreeElement;
-    const el4 = { contentPageId: '4', path: ['1', '2', '3', '4'], name: 'n4' } as ContentPageletTreeElement;
+    const el1 = { contentPageId: '1', path: ['1'], name: 'n1' } as ContentPageTreeElement;
+    const el2 = { contentPageId: '2', path: ['1', '2'], name: 'n2' } as ContentPageTreeElement;
+    const el3 = { contentPageId: '3', path: ['1', '2', '3'], name: 'n3' } as ContentPageTreeElement;
+    const el4 = { contentPageId: '4', path: ['1', '2', '3', '4'], name: 'n4' } as ContentPageTreeElement;
 
     it('should return tree when mapping path with one element', () => {
       expect(
-        contentPageletTreeMapper.treeElementsFromTreeElementPath([
-          { itemId: '1', title: 'n1' },
-        ] as ContentPageletTreeLink[])
+        contentPageTreeMapper.treeElementsFromTreeElementPath([{ itemId: '1', title: 'n1' }] as ContentPageTreeLink[])
       ).toEqual(pageTree([el1]));
     });
 
     it('should return both elements when mapping path with two elements', () => {
       expect(
-        contentPageletTreeMapper.treeElementsFromTreeElementPath([
+        contentPageTreeMapper.treeElementsFromTreeElementPath([
           { itemId: '1', title: 'n1' },
           { itemId: '2', title: 'n2' },
-        ] as ContentPageletTreeLink[])
+        ] as ContentPageTreeLink[])
       ).toEqual(pageTree([el1, el2]));
     });
 
     it('should return all elements when mapping path with four elements', () => {
       expect(
-        contentPageletTreeMapper.treeElementsFromTreeElementPath([
+        contentPageTreeMapper.treeElementsFromTreeElementPath([
           { itemId: '1', title: 'n1' },
           { itemId: '2', title: 'n2' },
           { itemId: '3', title: 'n3' },
           { itemId: '4', title: 'n4' },
-        ] as ContentPageletTreeLink[])
+        ] as ContentPageTreeLink[])
       ).toEqual(pageTree([el1, el2, el3, el4]));
     });
   });
 
   describe('fromDataSingle', () => {
     it('should throw an error when input is falsy', () => {
-      expect(() => contentPageletTreeMapper.fromDataSingle(undefined)).toThrow();
+      expect(() => contentPageTreeMapper.fromDataSingle(undefined)).toThrow();
     });
 
     it('should return ContentPageTreeElement when supplied with raw ContentPageTreeData', () => {
-      const element = contentPageletTreeMapper.fromDataSingle({
+      const element = contentPageTreeMapper.fromDataSingle({
         page: { itemId: '1' },
         path: [{ itemId: '1' }],
-      } as ContentPageletTreeData);
+      } as ContentPageTreeData);
       expect(element).toBeTruthy();
     });
 
     it('should insert contentPageId of raw ContentPageTreeData', () => {
-      const element = contentPageletTreeMapper.fromDataSingle({
+      const element = contentPageTreeMapper.fromDataSingle({
         page: { itemId: '1' },
         path: [{ itemId: '1' }],
-      } as ContentPageletTreeData);
+      } as ContentPageTreeData);
       expect(element).toHaveProperty('contentPageId', '1');
     });
 
     it('should use path of raw ContentPageTreeData when creating contentPageId and path', () => {
-      const element = contentPageletTreeMapper.fromDataSingle({
+      const element = contentPageTreeMapper.fromDataSingle({
         page: { itemId: '2' },
         path: [{ itemId: '1' }, { itemId: '2' }],
-      } as ContentPageletTreeData);
+      } as ContentPageTreeData);
       expect(element).toHaveProperty('contentPageId', '2');
       expect(element.path).toEqual(['1', '2']);
     });
@@ -106,23 +104,23 @@ describe('Content Pagelet Tree Mapper', () => {
 
   describe('fromData', () => {
     it(`should throw error when input is falsy`, () => {
-      expect(() => contentPageletTreeMapper.fromData(undefined)).toThrow();
+      expect(() => contentPageTreeMapper.fromData(undefined)).toThrow();
     });
 
     it(`should return something truthy when mapping a raw ContentPageTreeData`, () => {
       expect(
-        contentPageletTreeMapper.fromData({
+        contentPageTreeMapper.fromData({
           page: { itemId: '2' },
           path: [{ itemId: '1' }],
           parent: { itemId: '1' },
-        } as ContentPageletTreeData)
+        } as ContentPageTreeData)
       ).toBeTruthy();
     });
 
     it(`should return ContentPageTree with one root node when raw ContentPageTreeData only has one`, () => {
-      const tree = contentPageletTreeMapper.fromData({
+      const tree = contentPageTreeMapper.fromData({
         page: { itemId: '1' },
-      } as ContentPageletTreeData);
+      } as ContentPageTreeData);
 
       expect(tree).toMatchInlineSnapshot(`
         └─ 1
@@ -133,11 +131,11 @@ describe('Content Pagelet Tree Mapper', () => {
     });
 
     it(`should return ContentPageTree with node when raw ContentPageTreeData was supplied with path`, () => {
-      const tree = contentPageletTreeMapper.fromData({
+      const tree = contentPageTreeMapper.fromData({
         page: { itemId: '2' },
         path: [{ itemId: '1' }],
         parent: { itemId: '1' },
-      } as ContentPageletTreeData);
+      } as ContentPageTreeData);
 
       expect(tree).toMatchInlineSnapshot(`
         └─ 1
@@ -149,7 +147,7 @@ describe('Content Pagelet Tree Mapper', () => {
     });
 
     it(`should handle sub element on raw ContentPageTreeData`, () => {
-      const tree = contentPageletTreeMapper.fromData({
+      const tree = contentPageTreeMapper.fromData({
         page: { itemId: '1' },
         elements: [
           {
@@ -158,8 +156,8 @@ describe('Content Pagelet Tree Mapper', () => {
             parent: { itemId: '1' },
             type: 'PageTreeRO',
           },
-        ] as ContentPageletTreeData[],
-      } as ContentPageletTreeData);
+        ] as ContentPageTreeData[],
+      } as ContentPageTreeData);
 
       expect(tree).toMatchInlineSnapshot(`
         └─ 1
@@ -171,7 +169,7 @@ describe('Content Pagelet Tree Mapper', () => {
     });
 
     it(`should handle sub element page tree links on raw ContentPageTreeData`, () => {
-      const tree = contentPageletTreeMapper.fromData({
+      const tree = contentPageTreeMapper.fromData({
         page: { itemId: '1' },
         elements: [
           {
@@ -182,8 +180,8 @@ describe('Content Pagelet Tree Mapper', () => {
             itemId: '3',
             type: 'PageTreeLink',
           },
-        ] as ContentPageletTreeLink[],
-      } as ContentPageletTreeData);
+        ] as ContentPageTreeLink[],
+      } as ContentPageTreeData);
 
       expect(tree).toMatchInlineSnapshot(`
         └─ 1
@@ -199,20 +197,20 @@ describe('Content Pagelet Tree Mapper', () => {
 
   describe('convertLinkToTreeData', () => {
     it('should convert given page tree link to page tree', () => {
-      const parent = { page: { itemId: '1' } } as ContentPageletTreeData;
-      const link = { itemId: '2' } as ContentPageletTreeLink;
+      const parent = { page: { itemId: '1' } } as ContentPageTreeData;
+      const link = { itemId: '2' } as ContentPageTreeLink;
 
-      const convertedTree = contentPageletTreeMapper.convertLinkToTreeData(parent, link);
+      const convertedTree = contentPageTreeMapper.convertLinkToTreeData(parent, link);
       expect(convertedTree.page).toEqual(link);
       expect(convertedTree.path).toEqual([parent.page, link]);
       expect(convertedTree.type).toEqual('PageTreeRO');
     });
 
     it('should convert given page tree link to page tree with existing parent path', () => {
-      const parent = { path: [{ itemId: '1' }, { itemId: '2' }] } as ContentPageletTreeData;
-      const link = { itemId: '3' } as ContentPageletTreeLink;
+      const parent = { path: [{ itemId: '1' }, { itemId: '2' }] } as ContentPageTreeData;
+      const link = { itemId: '3' } as ContentPageTreeLink;
 
-      const convertedTree = contentPageletTreeMapper.convertLinkToTreeData(parent, link);
+      const convertedTree = contentPageTreeMapper.convertLinkToTreeData(parent, link);
       expect(convertedTree.page).toEqual(link);
       expect(convertedTree.path).toEqual([...parent.path, link]);
       expect(convertedTree.type).toEqual('PageTreeRO');

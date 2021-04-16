@@ -1,7 +1,4 @@
-import {
-  ContentPageletTree,
-  ContentPageletTreeElement,
-} from 'ish-core/models/content-pagelet-tree/content-pagelet-tree.model';
+import { ContentPageTree, ContentPageTreeElement } from 'ish-core/models/content-page-tree/content-page-tree.model';
 import { pageTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { loadContentPageTree, loadContentPageTreeFail, loadContentPageTreeSuccess } from './page-trees.actions';
@@ -21,7 +18,7 @@ describe('Page Trees Reducer', () => {
 
   describe('Load content page tree actions', () => {
     describe('LoadContentPageTreeSuccess action', () => {
-      let tree: ContentPageletTree;
+      let tree: ContentPageTree;
 
       beforeEach(() => {
         tree = pageTree([
@@ -31,7 +28,7 @@ describe('Page Trees Reducer', () => {
           { contentPageId: '1.1.1', path: ['1', '1.1', '1.1.1'] },
           { contentPageId: '1.1.2', path: ['1', '1.1', '1.1.2'] },
           { contentPageId: '1.2.1', path: ['1', '1.2', '1.2.1'] },
-        ] as ContentPageletTreeElement[]);
+        ] as ContentPageTreeElement[]);
       });
 
       it('should insert whole page tree to state', () => {

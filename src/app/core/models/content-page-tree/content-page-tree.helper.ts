@@ -1,10 +1,10 @@
-import { ContentPageletTree, ContentPageletTreeElement } from './content-pagelet-tree.model';
+import { ContentPageTree, ContentPageTreeElement } from './content-page-tree.model';
 
-export class ContentPageletTreeHelper {
+export class ContentPageTreeHelper {
   /**
    * Create a new empty tree with no nodes.
    */
-  static empty(): ContentPageletTree {
+  static empty(): ContentPageTree {
     return {
       edges: {},
       nodes: {},
@@ -15,7 +15,7 @@ export class ContentPageletTreeHelper {
   /**
    * Create a new tree with a single node.
    */
-  static single(element: ContentPageletTreeElement): ContentPageletTree {
+  static single(element: ContentPageTreeElement): ContentPageTree {
     if (!element) {
       throw new Error('falsy input');
     }
@@ -68,7 +68,7 @@ export class ContentPageletTreeHelper {
         }
 
         // add edges from both and remove duplicates
-        edges[key] = ContentPageletTreeHelper.removeDuplicates([...master, ...slave]);
+        edges[key] = ContentPageTreeHelper.removeDuplicates([...master, ...slave]);
       } else {
         edges[key] = [...incoming[key]];
       }
@@ -77,9 +77,9 @@ export class ContentPageletTreeHelper {
   }
 
   private static mergeNodes(
-    current: { [id: string]: ContentPageletTreeElement },
-    incoming: { [id: string]: ContentPageletTreeElement }
-  ): { [id: string]: ContentPageletTreeElement } {
+    current: { [id: string]: ContentPageTreeElement },
+    incoming: { [id: string]: ContentPageTreeElement }
+  ): { [id: string]: ContentPageTreeElement } {
     const nodes = { ...current };
     Object.keys(incoming).forEach(key => {
       nodes[key] = { ...incoming[key] };
@@ -90,9 +90,9 @@ export class ContentPageletTreeHelper {
   private static mergeRootIDs(current: string[], incoming: string[]): string[] {
     // node with more available rootIDs is trustworthy
     if (incoming && incoming.length > current.length) {
-      return ContentPageletTreeHelper.removeDuplicates([...incoming, ...current]);
+      return ContentPageTreeHelper.removeDuplicates([...incoming, ...current]);
     } else {
-      return ContentPageletTreeHelper.removeDuplicates([...current, ...incoming]);
+      return ContentPageTreeHelper.removeDuplicates([...current, ...incoming]);
     }
   }
 
@@ -100,23 +100,23 @@ export class ContentPageletTreeHelper {
    * Merge two trees to a new tree.
    * Updates nodes according to updateStrategy.
    */
-  static merge(current: ContentPageletTree, incoming: ContentPageletTree): ContentPageletTree {
+  static merge(current: ContentPageTree, incoming: ContentPageTree): ContentPageTree {
     if (!current || !incoming) {
       throw new Error('falsy input');
     }
 
     return {
-      edges: ContentPageletTreeHelper.mergeEdges(current.edges, incoming.edges),
-      nodes: ContentPageletTreeHelper.mergeNodes(current.nodes, incoming.nodes),
-      rootIds: ContentPageletTreeHelper.mergeRootIDs(current.rootIds, incoming.rootIds),
+      edges: ContentPageTreeHelper.mergeEdges(current.edges, incoming.edges),
+      nodes: ContentPageTreeHelper.mergeNodes(current.nodes, incoming.nodes),
+      rootIds: ContentPageTreeHelper.mergeRootIDs(current.rootIds, incoming.rootIds),
     };
   }
 
   /**
    * Helper method for adding a single element to a tree.
    */
-  static add(tree: ContentPageletTree, element: ContentPageletTreeElement): ContentPageletTree {
-    const singleContentPageletTree = ContentPageletTreeHelper.single(element);
-    return ContentPageletTreeHelper.merge(tree, singleContentPageletTree);
+  static add(tree: ContentPageTree, element: ContentPageTreeElement): ContentPageTree {
+    const singleContentPageTree = ContentPageTreeHelper.single(element);
+    return ContentPageTreeHelper.merge(tree, singleContentPageTree);
   }
 }

@@ -1,17 +1,17 @@
-<ng-container *ngIf="contentPageTree$ | async as contentPageTree">
+<ng-container *ngIf="contentPageTreeView$ | async as contentPageTreeView">
   <ng-container *ngIf="currentContentPageId$ | async as currentContentPageId">
     <div class="non-parametric-panel">
       <div class="filter-group">
         <ul class="filter-list">
           <a
             class="filter-item-name"
-            [ngClass]="{ 'filter-selected': contentPageTree.contentPageId === currentContentPageId }"
-            [routerLink]="'/page/' + contentPageTree.contentPageId"
+            [ngClass]="{ 'filter-selected': contentPageTreeView.contentPageId === currentContentPageId }"
+            [routerLink]="'/page/' + contentPageTreeView.contentPageId"
           >
-            {{ contentPageTree.name }}
+            {{ contentPageTreeView.name }}
           </a>
           <ng-container *ngIf="actualDepth <= maxDepth">
-            <li *ngFor="let element of contentPageTree.children" class="filter-item">
+            <li *ngFor="let element of contentPageTreeView.children" class="filter-item">
               <ish-cms-navigation
                 [contentPageId]="element"
                 [root]="root"

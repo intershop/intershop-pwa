@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 
-import { ContentPageletTreeHelper } from './content-pagelet-tree.helper';
-import { ContentPageletTreeData, ContentPageletTreeLink } from './content-pagelet-tree.interface';
-import { ContentPageletTree, ContentPageletTreeElement } from './content-pagelet-tree.model';
+import { ContentPageTreeHelper } from './content-page-tree.helper';
+import { ContentPageTreeData, ContentPageTreeLink } from './content-page-tree.interface';
+import { ContentPageTree, ContentPageTreeElement } from './content-page-tree.model';
 
 @Injectable({ providedIn: 'root' })
-export class ContentPageletTreeMapper {
+export class ContentPageTreeMapper {
   /**
    * Check type of elements
    */
-  private areElementsContentPageletTrees(
-    elements: ContentPageletTreeData[] | ContentPageletTreeLink[]
-  ): elements is ContentPageletTreeData[] {
-    return (elements as ContentPageletTreeData[])[0].type === 'PageTreeRO';
+  private areElementsContentPageTrees(
+    elements: ContentPageTreeData[] | ContentPageTreeLink[]
+  ): elements is ContentPageTreeData[] {
+    return (elements as ContentPageTreeData[])[0].type === 'PageTreeRO';
   }
 
   /**
@@ -21,7 +21,7 @@ export class ContentPageletTreeMapper {
    * @param element page tree link
    * @returns converted page tree
    */
-  convertLinkToTreeData(tree: ContentPageletTreeData, element: ContentPageletTreeLink): ContentPageletTreeData {
+  convertLinkToTreeData(tree: ContentPageTreeData, element: ContentPageTreeLink): ContentPageTreeData {
     return {
       page: element,
       name: undefined,
@@ -35,7 +35,7 @@ export class ContentPageletTreeMapper {
    * Utility Method:
    * Maps the incoming raw page tree path to a path with unique IDs.
    */
-  mapContentPageTreeElementPath(path: ContentPageletTreeLink[]) {
+  mapContentPageTreeElementPath(path: ContentPageTreeLink[]) {
     if (path && path.length) {
       return path.map(x => x?.itemId);
     }
@@ -46,9 +46,9 @@ export class ContentPageletTreeMapper {
    * Utility Method:
    * Creates page tree stubs from the page tree path
    */
-  treeElementsFromTreeElementPath(path: ContentPageletTreeLink[]): ContentPageletTree {
+  treeElementsFromTreeElementPath(path: ContentPageTreeLink[]): ContentPageTree {
     if (!path || !path.length) {
-      return ContentPageletTreeHelper.empty();
+      return ContentPageTreeHelper.empty();
     }
 
     const newTreeElementPath: string[] = [];
@@ -67,16 +67,16 @@ export class ContentPageletTreeMapper {
         })
         // construct a tree from it
         .reduce(
-          (tree, element: ContentPageletTreeElement) => ContentPageletTreeHelper.add(tree, element),
-          ContentPageletTreeHelper.empty()
+          (tree, element: ContentPageTreeElement) => ContentPageTreeHelper.add(tree, element),
+          ContentPageTreeHelper.empty()
         )
     );
   }
 
   /**
-   * Maps a raw {@link ContentPageletTreeData } element to a {@link ContentPageletTreeElement} element ignoring sub elements.
+   * Maps a raw {@link ContentPageTreeData } element to a {@link ContentPageTreeElement} element ignoring sub elements.
    */
-  fromDataSingle(treeData: ContentPageletTreeData): ContentPageletTreeElement {
+  fromDataSingle(treeData: ContentPageTreeData): ContentPageTreeElement {
     if (treeData) {
       const treePath = this.mapContentPageTreeElementPath(treeData.path);
       return {
@@ -90,13 +90,13 @@ export class ContentPageletTreeMapper {
   }
 
   /**
-   * Converts the tree of {@link ContentPageletTreeData} to the model entity {@link ContentPageletTree}.
+   * Converts the tree of {@link ContentPageTreeData} to the model entity {@link ContentPageTree}.
    * Inserts all sub categories accordingly.
    */
-  fromData(treeData: ContentPageletTreeData): ContentPageletTree {
+  fromData(treeData: ContentPageTreeData): ContentPageTree {
     if (treeData) {
       // recurse into tree
-      let subTrees: ContentPageletTree;
+      let subTrees: ContentPageTree;
 
       // add page tree element to path, if it does not exists in current path
       if (treeData.parent && treeData.path?.filter(e => e === treeData.page).length === 0) {
@@ -105,22 +105,22 @@ export class ContentPageletTreeMapper {
 
       if (treeData.elements && treeData.elements.length) {
         /**
-         * check type of available elements: {@link ContentPageletTreeData} or {@link ContentPageTreeLink}.
+         * check type of available elements: {@link ContentPageTreeData} or {@link ContentPageTreeLink}.
          */
-        if (this.areElementsContentPageletTrees(treeData.elements)) {
+        if (this.areElementsContentPageTrees(treeData.elements)) {
           subTrees = treeData.elements
             .map(c => {
               c.path = [...c.path, c.page];
-              return this.fromData(c) as ContentPageletTree;
+              return this.fromData(c) as ContentPageTree;
             })
-            .reduce((a, b) => ContentPageletTreeHelper.merge(a, b));
+            .reduce((a, b) => ContentPageTreeHelper.merge(a, b));
         } else {
           subTrees = treeData.elements
-            .map(c => this.fromData(this.convertLinkToTreeData(treeData, c)) as ContentPageletTree)
-            .reduce((a, b) => ContentPageletTreeHelper.merge(a, b));
+            .map(c => this.fromData(this.convertLinkToTreeData(treeData, c)) as ContentPageTree)
+            .reduce((a, b) => ContentPageTreeHelper.merge(a, b));
         }
       } else {
-        subTrees = ContentPageletTreeHelper.empty();
+        subTrees = ContentPageTreeHelper.empty();
       }
 
       if (!treeData.path) {
@@ -128,18 +128,18 @@ export class ContentPageletTreeMapper {
       }
 
       // create tree from current tree
-      const rootPagelet = this.fromDataSingle(treeData);
+      const rootPage = this.fromDataSingle(treeData);
 
-      const tree = ContentPageletTreeHelper.single(rootPagelet);
+      const tree = ContentPageTreeHelper.single(rootPage);
 
       // create tree from current tree path stubs
-      const categoryPathTree = this.treeElementsFromTreeElementPath(treeData.path);
+      const elementPathTree = this.treeElementsFromTreeElementPath(treeData.path);
 
       // merge sub elements onto current tree
-      const treeWithSubElements = ContentPageletTreeHelper.merge(tree, subTrees);
+      const treeWithSubElements = ContentPageTreeHelper.merge(tree, subTrees);
 
       // merge current tree path stubs onto current tree
-      return ContentPageletTreeHelper.merge(treeWithSubElements, categoryPathTree);
+      return ContentPageTreeHelper.merge(treeWithSubElements, elementPathTree);
     } else {
       throw new Error(`'treeData' is required`);
     }

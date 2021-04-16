@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { ContentPageletTreeElement } from 'ish-core/models/content-pagelet-tree/content-pagelet-tree.model';
+import { ContentPageTreeElement } from 'ish-core/models/content-page-tree/content-page-tree.model';
 import { ContentStoreModule } from 'ish-core/store/content/content-store.module';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
@@ -13,15 +13,15 @@ import { getContentPageTreeView, getPageTrees } from './page-trees.selectors';
 
 describe('Page Trees Selectors', () => {
   let store$: StoreWithSnapshots;
-  let tree1: ContentPageletTreeElement;
-  let tree2: ContentPageletTreeElement;
+  let tree1: ContentPageTreeElement;
+  let tree2: ContentPageTreeElement;
 
   beforeEach(() => {
     @Component({ template: 'dummy' })
     class DummyComponent {}
 
-    tree1 = { contentPageId: '1', path: ['1'] } as ContentPageletTreeElement;
-    tree2 = { contentPageId: '1.1', path: ['1', '1.1'] } as ContentPageletTreeElement;
+    tree1 = { contentPageId: '1', path: ['1'] } as ContentPageTreeElement;
+    tree2 = { contentPageId: '1.1', path: ['1', '1.1'] } as ContentPageTreeElement;
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],

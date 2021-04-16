@@ -4,7 +4,7 @@ import { Observable, combineLatest } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.model';
-import { ContentPageletTreeView } from 'ish-core/models/content-pagelet-tree-view/content-pagelet-tree-view.model';
+import { ContentPageTreeView } from 'ish-core/models/content-page-tree-view/content-page-tree-view.model';
 import { getContentInclude, loadContentInclude } from 'ish-core/store/content/includes';
 import { getContentPageTreeView, loadContentPageTree } from 'ish-core/store/content/page-trees';
 import { getContentPagelet } from 'ish-core/store/content/pagelets';
@@ -23,7 +23,7 @@ export class CMSFacade {
   contentPageLoading$ = this.store.pipe(select(getContentPageLoading));
   selectedContentPageId$ = this.store.pipe(select(selectRouteParam('contentPageId')));
 
-  getContentPageTreeView$(uniqueId: string): Observable<ContentPageletTreeView> {
+  getContentPageTreeView$(uniqueId: string): Observable<ContentPageTreeView> {
     return this.store.pipe(select(getContentPageTreeView(uniqueId)));
   }
 

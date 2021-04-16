@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
+import { ContentPageTreeData } from 'ish-core/models/content-page-tree/content-page-tree.interface';
 import { ContentPageletEntryPointMapper } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.mapper';
-import { ContentPageletTreeData } from 'ish-core/models/content-pagelet-tree/content-pagelet-tree.interface';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 
 import { CMSService } from './cms.service';
@@ -67,7 +67,7 @@ describe('Cms Service', () => {
   describe('getContentPageTree', () => {
     beforeEach(() => {
       when(apiService.get(`cms/pagetree/dummyId`, anything())).thenReturn(
-        of({ page: { itemId: 'dummyId' } } as ContentPageletTreeData)
+        of({ page: { itemId: 'dummyId' } } as ContentPageTreeData)
       );
     });
 

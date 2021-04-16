@@ -4,12 +4,12 @@ import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.model';
+import { ContentPageTreeData } from 'ish-core/models/content-page-tree/content-page-tree.interface';
+import { ContentPageTreeMapper } from 'ish-core/models/content-page-tree/content-page-tree.mapper';
+import { ContentPageTree } from 'ish-core/models/content-page-tree/content-page-tree.model';
 import { ContentPageletEntryPointData } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.interface';
 import { ContentPageletEntryPointMapper } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.mapper';
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
-import { ContentPageletTreeData } from 'ish-core/models/content-pagelet-tree/content-pagelet-tree.interface';
-import { ContentPageletTreeMapper } from 'ish-core/models/content-pagelet-tree/content-pagelet-tree.mapper';
-import { ContentPageletTree } from 'ish-core/models/content-pagelet-tree/content-pagelet-tree.model';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { SeoAttributesMapper } from 'ish-core/models/seo-attributes/seo-attributes.mapper';
 import { ApiService } from 'ish-core/services/api/api.service';
@@ -22,7 +22,7 @@ export class CMSService {
   constructor(
     private apiService: ApiService,
     private contentPageletEntryPointMapper: ContentPageletEntryPointMapper,
-    private contentPageletTreeMapper: ContentPageletTreeMapper
+    private contentPageTreeMapper: ContentPageTreeMapper
   ) {}
 
   /**
@@ -65,10 +65,10 @@ export class CMSService {
   /**
    *
    * @param contentPageId: The Page Id
-   * @param depth: Depth of returned content pagelet tree
-   * @returns Content pagelet tree
+   * @param depth: Depth of returned content page tree
+   * @returns Content page tree
    */
-  getContentPageTree(contentPageId: string, depth?: string): Observable<ContentPageletTree> {
+  getContentPageTree(contentPageId: string, depth?: string): Observable<ContentPageTree> {
     if (!contentPageId) {
       return throwError('getContentPage() called without an pageId');
     }
@@ -78,8 +78,8 @@ export class CMSService {
     }
 
     return this.apiService
-      .get<ContentPageletTreeData>(`cms/pagetree/${contentPageId}`, { sendPGID: true, params })
-      .pipe(map(data => this.contentPageletTreeMapper.fromData(data)));
+      .get<ContentPageTreeData>(`cms/pagetree/${contentPageId}`, { sendPGID: true, params })
+      .pipe(map(data => this.contentPageTreeMapper.fromData(data)));
   }
 
   private mapSeoAttributes(

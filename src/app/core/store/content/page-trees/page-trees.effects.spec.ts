@@ -5,7 +5,7 @@ import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
-import { ContentPageletTree } from 'ish-core/models/content-pagelet-tree/content-pagelet-tree.model';
+import { ContentPageTree } from 'ish-core/models/content-page-tree/content-page-tree.model';
 import { CMSService } from 'ish-core/services/cms/cms.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
@@ -58,7 +58,7 @@ describe('Page Trees Effects', () => {
     });
 
     it('should map to action of type CreatePageTreeSuccess when actual tree does contain navigation root', () => {
-      const tree = { edges: {}, nodes: {} } as ContentPageletTree;
+      const tree = { edges: {}, nodes: {} } as ContentPageTree;
       when(cmsServiceMock.getContentPageTree('dummy', '2')).thenReturn(of(tree));
 
       actions$ = hot('a-a-a-a', { a: loadContentPageTree({ contentPageId: 'dummy', depth: '2' }) });

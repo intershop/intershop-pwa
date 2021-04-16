@@ -2,10 +2,10 @@ import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/stor
 import { isEqual } from 'lodash-es';
 
 import {
-  ContentPageletTreeView,
-  createContentPageletTreeView,
-} from 'ish-core/models/content-pagelet-tree-view/content-pagelet-tree-view.model';
-import { ContentPageletTree } from 'ish-core/models/content-pagelet-tree/content-pagelet-tree.model';
+  ContentPageTreeView,
+  createContentPageTreeView,
+} from 'ish-core/models/content-page-tree-view/content-page-tree-view.model';
+import { ContentPageTree } from 'ish-core/models/content-page-tree/content-page-tree.model';
 import { getContentState } from 'ish-core/store/content/content-store';
 
 const getPageTreesState = createSelector(getContentState, state => state.trees);
@@ -18,7 +18,7 @@ export const getPageTrees = createSelector(getPageTreesState, state => state.tre
  * @returns Content page tree view of given page
  */
 export const getContentPageTreeView = (uniqueId: string) =>
-  createSelectorFactory<object, ContentPageletTreeView>(projector => resultMemoize(projector, isEqual))(
+  createSelectorFactory<object, ContentPageTreeView>(projector => resultMemoize(projector, isEqual))(
     getPageTrees,
-    (tree: ContentPageletTree) => createContentPageletTreeView(tree, uniqueId)
+    (tree: ContentPageTree) => createContentPageTreeView(tree, uniqueId)
   );
