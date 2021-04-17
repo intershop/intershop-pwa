@@ -132,6 +132,24 @@ export default (
             return 'tracking';
           }
 
+          // move translation files into own bundles
+          const i18nMatch = /[\\/]assets[\\/]i18n[\\/](.*?)\.json/.exec(identifier);
+          const locale = i18nMatch && i18nMatch[1];
+
+          if (locale) {
+            return locale.replace('_', '-');
+          }
+
+          // move Angular locale data into bundle with translations
+          const localeDataMatch = /[\\/]@angular[\\/]common[\\/]locales[\\/]global[\\/](.*?)\.js/.exec(identifier);
+          let localeData = localeDataMatch && localeDataMatch[1];
+          if (localeData) {
+            if (!localeData.includes('-')) {
+              localeData += '-' + localeData.toUpperCase();
+            }
+            return localeData;
+          }
+
           const match = /[\\/](extensions|projects)[\\/](.*?)[\\/](src[\\/]app[\\/])?(.*)/.exec(identifier);
           const feature = match && match[2];
 

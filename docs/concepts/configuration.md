@@ -219,21 +219,21 @@ To dynamically set the default locale, use the URL parameter `lang` when rewriti
 
 ## Extend Locales
 
-To add other languages except English, German or French, you have to create a new json-mapping-file with all translations, e.g., _./src/assets/i18n/nl_NL.json_).
-Add the locale in the file _./src/environment/environments.ts_.
-Additionally, for Angular's built-in components, e.g., currency-pipe, you have to register locale data similar to `localeDe` and `localeFr` with `registerLocaleData(localeNl)` in _./src/app/core/configuration.module.ts._
+To add other languages except English, German or French:
 
-```typescript
-...
-import localeNl from '@angular/common/locales/nl';
-...
-export class ConfigurationModule {
-  constructor(@Inject(LOCALE_ID) lang: string, translateService: TranslateService) {
-    registerLocaleData(localeNl);
-    ...
-  }
-}
-```
+1. Create a new json-mapping-file with all translations, e.g., `src/assets/i18n/nl_NL.json`.
+
+2. Add the locale to the environments under `src/environments`, e.g.
+
+   ```typescript
+    { lang: 'nl_NL', currency: 'EUR', value: 'nl', displayName: 'Dutch', displayLong: 'Dutch (Netherlands)' }
+   ```
+
+3. Import a [global variant of the locale data](https://angular.io/guide/i18n#import-global-variants-of-the-locale-data) in the [`InternationalizationModule`](../../src/app/core/internationalization.module.ts), e.g.
+   ```typescript
+    case 'nl_NL':
+      return import('@angular/common/locales/global/nl');
+   ```
 
 # Further References
 

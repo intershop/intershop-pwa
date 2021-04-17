@@ -1,13 +1,25 @@
-import { registerLocaleData } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import localeDe from '@angular/common/locales/de';
-import localeFr from '@angular/common/locales/fr';
 import { Inject, LOCALE_ID, NgModule } from '@angular/core';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { Observable, from, of } from 'rxjs';
+import { map, switchMap, switchMapTo } from 'rxjs/operators';
 
-export function translateFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
+class WebpackTranslateLoader implements TranslateLoader {
+  getTranslation(language: string): Observable<unknown> {
+    return of(language).pipe(
+      map(lang => {
+        switch (lang) {
+          case 'de_DE':
+            return import('@angular/common/locales/global/de');
+          case 'fr_FR':
+            return import('@angular/common/locales/global/fr');
+        }
+      }),
+      switchMap(imp => {
+        const translations$ = from(import(`../../assets/i18n/${language}.json`));
+        return imp ? from(imp).pipe(switchMapTo(translations$)) : translations$;
+      })
+    );
+  }
 }
 
 @NgModule({
@@ -15,17 +27,13 @@ export function translateFactory(http: HttpClient) {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: translateFactory,
-        deps: [HttpClient],
+        useClass: WebpackTranslateLoader,
       },
     }),
   ],
 })
 export class InternationalizationModule {
   constructor(@Inject(LOCALE_ID) lang: string, translateService: TranslateService) {
-    registerLocaleData(localeDe);
-    registerLocaleData(localeFr);
-
     translateService.setDefaultLang(lang.replace(/\-/, '_'));
   }
 }
