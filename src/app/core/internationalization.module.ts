@@ -1,17 +1,17 @@
-import { registerLocaleData } from '@angular/common';
+import { isPlatformBrowser, isPlatformServer, registerLocaleData } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
-import { Inject, Injectable, LOCALE_ID, NgModule } from '@angular/core';
+import { Inject, Injectable, LOCALE_ID, NgModule, PLATFORM_ID } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Observable, combineLatest, of } from 'rxjs';
-import { catchError, first, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { Observable, combineLatest, from, of } from 'rxjs';
+import { catchError, first, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { SSR_LOCALE, SSR_TRANSLATIONS } from './configurations/state-keys';
 import { StatePropertiesService } from './utils/state-transfer/state-properties.service';
 
-type Translations = Record<string, string | Record<string, string>>;
+export type Translations = Record<string, string | Record<string, string>>;
 
 function filterAndTransformKeys(translations: Record<string, string>): Translations {
   const filtered: Translations = {};
@@ -35,22 +35,21 @@ class ICMTranslateLoader implements TranslateLoader {
   constructor(
     private httpClient: HttpClient,
     private stateProperties: StatePropertiesService,
-    private transferState: TransferState
+    private transferState: TransferState,
+    @Inject(PLATFORM_ID) private platformId: string
   ) {}
 
   getTranslation(lang: string) {
-    if (this.transferState.hasKey(SSR_TRANSLATIONS)) {
+    if (isPlatformBrowser(this.platformId) && this.transferState.hasKey(SSR_TRANSLATIONS)) {
       return of(this.transferState.get(SSR_TRANSLATIONS, undefined));
     }
-    const local$ = this.httpClient
-      .get(`assets/i18n/${lang}.json`)
-      .pipe(
-        catchError(() =>
-          this.stateProperties
-            .getStateOrEnvOrDefault('DEFAULT_LOCALE', 'defaultLocale')
-            .pipe(switchMap(url => this.httpClient.get(`assets/i18n/${url}.json`)))
-        )
-      );
+    const local$ = from(import(`../../assets/i18n/${lang}.json`)).pipe(
+      catchError(() =>
+        this.stateProperties
+          .getStateOrEnvOrDefault<string>('DEFAULT_LOCALE', 'defaultLocale')
+          .pipe(switchMap(defaultLang => from(import(`../../assets/i18n/${defaultLang}.json`))))
+      )
+    );
     return this.icmURL.pipe(
       switchMap(url =>
         this.httpClient.get(`${url};loc=${lang}/localizations`, {
@@ -65,6 +64,11 @@ class ICMTranslateLoader implements TranslateLoader {
         ...localTranslations,
         ...translations,
       })),
+      tap((translations: Translations) => {
+        if (isPlatformServer(this.platformId)) {
+          this.transferState.set(SSR_TRANSLATIONS, translations);
+        }
+      }),
       catchError(() => local$)
     );
   }
@@ -82,22 +86,10 @@ class ICMTranslateLoader implements TranslateLoader {
   }
 }
 
-export function translateFactory(
-  httpClient: HttpClient,
-  stateProperties: StatePropertiesService,
-  transferState: TransferState
-) {
-  return new ICMTranslateLoader(httpClient, stateProperties, transferState);
-}
-
 @NgModule({
   imports: [
     TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: translateFactory,
-        deps: [HttpClient, StatePropertiesService, TransferState],
-      },
+      loader: { provide: TranslateLoader, useClass: ICMTranslateLoader },
     }),
   ],
 })

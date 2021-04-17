@@ -132,6 +132,14 @@ export default (
             return 'tracking';
           }
 
+          // move translation files into own bundles
+          const i18nMatch = /[\\/]assets[\\/]i18n[\\/](.*?)\.json/.exec(identifier);
+          const locale = i18nMatch && i18nMatch[1];
+
+          if (locale) {
+            return locale.replace('_', '-');
+          }
+
           const match = /[\\/](extensions|projects)[\\/](.*?)[\\/](src[\\/]app[\\/])?(.*)/.exec(identifier);
           const feature = match && match[2];
 
