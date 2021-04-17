@@ -43,6 +43,7 @@ Make sure to use them as written in the table below.
 |                     | ICM_APPLICATION       | string               | Overrides the default application                            |
 |                     | FEATURES              | comma-separated list | Overrides active features                                    |
 |                     | THEME                 | string               | Overrides the default theme                                  |
+|                     | DEPLOY_URL            | string               | Set a [Deploy URL][concept-deploy-url] (default `/`)         |
 | **Debug** :warning: | TRUST_ICM             | any                  | Use this if ICM is deployed with an insecure certificate     |
 |                     | LOGGING               | switch               | Enables extra log output                                     |
 | **Hybrid Approach** | SSR_HYBRID            | any                  | Enables running PWA and ICM in [Hybrid Mode][concept-hybrid] |
@@ -65,6 +66,7 @@ Extension `crt` is the certifcate and `key` represents the private key.
 # Further References
 
 - [Concept - Configuration](../concepts/configuration.md)
+- [Concept - Deploy URL][concept-deploy-url]
 - [Concept - Hybrid Approach][concept-hybrid]
 - [Concept - Logging](../concepts/logging.md)
 - [Concept - Single Sign-On (SSO) for PWA][concept-sso]
@@ -76,3 +78,4 @@ Extension `crt` is the certifcate and `key` represents the private key.
 
 [concept-sso]: ../concepts/sso.md
 [concept-hybrid]: ../concepts/hybrid-approach.md
+[concept-deploy-url]: ../concepts/deploy-url.md
