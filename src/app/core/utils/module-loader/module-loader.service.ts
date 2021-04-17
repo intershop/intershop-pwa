@@ -28,8 +28,6 @@ export class ModuleLoaderService {
           if (!this.loadedModules.includes(loaded)) {
             const moduleFactory = await this.compiler.compileModuleAsync(loaded);
             moduleFactory.create(injector);
-            // tslint:disable-next-line: no-console
-            console.debug('ModuleLoaderService loaded', loaded.prototype.constructor.name);
             this.loadedModules.push(loaded);
           }
         });
