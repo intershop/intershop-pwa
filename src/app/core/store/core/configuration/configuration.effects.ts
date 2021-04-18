@@ -1,14 +1,15 @@
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { Actions, ROOT_EFFECTS_INIT, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { defer, fromEvent, iif, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, take, takeWhile, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, map, take, takeWhile, withLatestFrom } from 'rxjs/operators';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { NGRX_STATE_SK } from 'ish-core/configurations/ngrx-state-transfer';
+import { SSR_LOCALE } from 'ish-core/configurations/state-keys';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { distinctCompareWith, mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
@@ -36,14 +37,16 @@ export class ConfigurationEffects {
 
     store
       .pipe(
+        takeWhile(() => isPlatformServer(this.platformId) || !PRODUCTION_MODE),
         select(getCurrentLocale),
         mapToProperty('lang'),
         distinctUntilChanged(),
-        // https://github.com/ngx-translate/core/issues/1030
-        debounceTime(0),
         whenTruthy()
       )
-      .subscribe(lang => translateService.use(lang));
+      .subscribe(lang => {
+        this.transferState.set(SSR_LOCALE, lang);
+        translateService.use(lang);
+      });
   }
 
   setInitialRestEndpoint$ = createEffect(() =>
