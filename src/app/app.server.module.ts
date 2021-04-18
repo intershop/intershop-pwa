@@ -15,11 +15,13 @@ import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 
 export class UniversalErrorHandler implements ErrorHandler {
-  handleError(error: Error): void {
+  handleError(error: unknown): void {
     if (error instanceof HttpErrorResponse) {
       console.error('ERROR', error.message);
-    } else {
+    } else if (error instanceof Error) {
       console.error('ERROR', error.name, error.message, error.stack?.split('\n')?.[1]?.trim());
+    } else {
+      console.error('ERROR', error?.toString());
     }
   }
 }

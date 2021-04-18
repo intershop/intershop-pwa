@@ -2,15 +2,22 @@ import { isPlatformBrowser, isPlatformServer, registerLocaleData } from '@angula
 import { HttpClient } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
-import { Inject, Injectable, LOCALE_ID, NgModule, PLATFORM_ID } from '@angular/core';
+import { ErrorHandler, Inject, Injectable, InjectionToken, LOCALE_ID, NgModule, PLATFORM_ID } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { Store, select } from '@ngrx/store';
-import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import {
+  MissingTranslationHandler,
+  MissingTranslationHandlerParams,
+  TranslateLoader,
+  TranslateModule,
+  TranslateParser,
+  TranslateService,
+} from '@ngx-translate/core';
 import { from, of } from 'rxjs';
 import { catchError, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { SSR_LOCALE, SSR_TRANSLATIONS } from './configurations/state-keys';
-import { getCurrentLocale, getRestEndpoint } from './store/core/configuration';
+import { getRestEndpoint } from './store/core/configuration';
 import { whenTruthy } from './utils/operators';
 
 export type Translations = Record<string, string | Record<string, string>>;
@@ -46,16 +53,7 @@ class ICMTranslateLoader implements TranslateLoader {
     if (isPlatformBrowser(this.platformId) && this.transferState.hasKey(SSR_TRANSLATIONS)) {
       return of(this.transferState.get(SSR_TRANSLATIONS, undefined));
     }
-    const local$ = from(import(`../../assets/i18n/${lang}.json`)).pipe(
-      catchError(() =>
-        this.store.pipe(
-          select(getCurrentLocale),
-          whenTruthy(),
-          take(1),
-          switchMap(defaultLang => from(import(`../../assets/i18n/${defaultLang}.json`)))
-        )
-      )
-    );
+    const local$ = from(import(`../../assets/i18n/${lang}.json`)).pipe(catchError(() => of({})));
     return this.store.pipe(
       select(getRestEndpoint),
       whenTruthy(),
@@ -83,12 +81,46 @@ class ICMTranslateLoader implements TranslateLoader {
   }
 }
 
+const FALLBACK_LANG = new InjectionToken<string>('fallbackTranslateLanguage');
+
+@Injectable()
+class FallbackMissingTranslationHandler implements MissingTranslationHandler {
+  constructor(
+    private parser: TranslateParser,
+    private translateLoader: TranslateLoader,
+    private errorHandler: ErrorHandler,
+    @Inject(FALLBACK_LANG) private fallback: string
+  ) {}
+
+  handle(params: MissingTranslationHandlerParams) {
+    if (params.interpolateParams || /^\w+(\.[\w-]+)+$/.test(params.key)) {
+      this.errorHandler.handleError(`missing translation in ${params.translateService.currentLang}: ${params.key}`);
+      if (params.translateService.currentLang !== this.fallback) {
+        return this.translateLoader.getTranslation(this.fallback).pipe(
+          map(translations => {
+            if (translations[params.key]) {
+              return this.parser.interpolate(translations[params.key], params.interpolateParams);
+            }
+            this.errorHandler.handleError(`missing translation in ${this.fallback}: ${params.key}`);
+            return params.key;
+          }),
+          map(translation => (PRODUCTION_MODE ? translation : 'TRANSLATE_ME ' + translation))
+        );
+      }
+    }
+    return params.key;
+  }
+}
+
 @NgModule({
   imports: [
     TranslateModule.forRoot({
       loader: { provide: TranslateLoader, useClass: ICMTranslateLoader },
+      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: FallbackMissingTranslationHandler },
+      useDefaultLang: false,
     }),
   ],
+  providers: [{ provide: FALLBACK_LANG, useValue: 'en_US' }],
 })
 export class InternationalizationModule {
   constructor(

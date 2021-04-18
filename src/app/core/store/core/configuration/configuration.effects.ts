@@ -6,7 +6,6 @@ import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { defer, fromEvent, iif, merge } from 'rxjs';
 import {
-  debounceTime,
   distinctUntilChanged,
   map,
   mapTo,
@@ -53,12 +52,10 @@ export class ConfigurationEffects {
         select(getCurrentLocale),
         mapToProperty('lang'),
         distinctUntilChanged(),
-        // https://github.com/ngx-translate/core/issues/1030
-        debounceTime(0),
         whenTruthy(),
         switchMap(lang => languageChanged$.pipe(mapTo(lang), take(1)))
       )
-      .subscribe((lang: string) => {
+      .subscribe(lang => {
         this.transferState.set(SSR_LOCALE, lang);
         translateService.use(lang);
       });
