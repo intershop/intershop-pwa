@@ -22,7 +22,7 @@ describe('Configuration Effects', () => {
     TestBed.configureTestingModule({
       imports: [
         BrowserTransferStateModule,
-        CoreStoreModule.forTesting(['configuration'], [ConfigurationEffects]),
+        CoreStoreModule.forTesting(['configuration', 'serverConfig'], [ConfigurationEffects]),
         TranslateModule.forRoot(),
       ],
       providers: [provideMockActions(() => actions$), { provide: PLATFORM_ID, useValue: 'server' }],

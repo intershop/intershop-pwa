@@ -2,6 +2,7 @@ import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/stor
 import { isEqual } from 'lodash-es';
 
 import { getCoreState } from 'ish-core/store/core/core-store';
+import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 
 import { ConfigurationState } from './configuration.reducer';
 
@@ -33,14 +34,34 @@ export const getFeatures = createSelector(getConfigurationState, state => state.
 
 export const getTheme = createSelector(getConfigurationState, state => state.theme);
 
-export const getAvailableLocales = createSelector(getConfigurationState, state => state.locales);
+/**
+ * locales configured in environment.ts
+ */
+const internalLocales = createSelector(getConfigurationState, state => state.locales);
 
 /**
- * selects the current locale if set. If not returns the first available locale
+ * environment.ts locales filtered by locales configured in ICM
+ */
+export const getAvailableLocales = createSelector(
+  internalLocales,
+  getServerConfigParameter<string[]>('general.locales'),
+  (configured, activated) =>
+    activated?.length ? activated.map(lang => configured?.find(l => l.lang === lang)).filter(x => !!x) : configured
+);
+
+const internalRequestedLocale = createSelector(getConfigurationState, state => state.lang);
+
+/**
+ * tries to find requested locale,
+ * falls back to ICM configured default locale if no match is found,
+ * and finally falls back to first available locale if none is configured
  */
 export const getCurrentLocale = createSelector(
-  getConfigurationState,
-  state => state.locales.find(l => l.lang === state.lang) || state.locales[0]
+  getAvailableLocales,
+  internalRequestedLocale,
+  getServerConfigParameter<string>('general.defaultLocale'),
+  (available, requested, configuredDefault) =>
+    available?.find(l => l.lang === requested) || available?.find(l => l.lang === configuredDefault) || available?.[0]
 );
 
 export const getDeviceType = createSelector(getConfigurationState, state => state._deviceType);
