@@ -16,7 +16,8 @@
 
   "files.associations": {
     "__*.*": "ng-template",
-    "Dockerfile*": "dockerfile"
+    "Dockerfile*": "dockerfile",
+    "nginx/**/*conf*": "properties"
   },
 
   "ngschematics.schematics": ["intershop-schematics"],
