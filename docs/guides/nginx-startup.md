@@ -48,7 +48,7 @@ All other properties are optional:
 - **application**: The ICM application
 - **identityProvider**: The active identity provider for this site
 - **features**: Comma-separated list of activated features
-- **lang**: The default language as defined in the Angular CLI environment
+- **lang**: Override the default language defined in the ICM (also overrides browser language detection).
 - **theme**: The theme used for the channel (format: `<theme-name>(|<icon-color>)?`)
 
 Dynamically directing the PWA to different ICM installations can by done by using:
@@ -96,6 +96,7 @@ Built-in features can be enabled and disabled:
 - `COMPRESSION=off` disables compression (default `on`)
 - `DEVICE_DETECTION=off` disables user-agent detection (default `on`)
 - `PROMETHEUS=on` enables [Prometheus](https://prometheus.io) metrics exports on port `9113` (default `off`)
+- `LOCALE_DETECTION=on` enables browser language detection (default `off`)
 
 ## Features
 

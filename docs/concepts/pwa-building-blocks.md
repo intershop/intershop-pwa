@@ -37,7 +37,8 @@ Nginx enables the following features to be used in an Intershop PWA deployment:
 - Integration of the [PageSpeed Module](https://www.modpagespeed.com/) for access to different browser optimizations.
 - Handling of multiple channels via URL parameters in conjunction with SSR (see [Multi-Site Handling](multi-site-handling.md)).
 - Customizable compression for downstream services
-- Device type detection to ensure a correct pre-render, adapted to the incoming user agent.
+- Device type detection to ensure a correct pre-render, adapted to the incoming [User-Agent](https://developer.mozilla.org/de/docs/Web/HTTP/Headers/User-Agent) header.
+- Browser language detection to ensure a localized pre-render, depending on the [Accept-Language](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Language) headers.
 
 For an overview of the ever-growing list of third party integrations relating to nginx and deployment in general, see [Third-party Integrations](../README.md#third-party-integrations).
 

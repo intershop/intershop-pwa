@@ -140,7 +140,16 @@ describe('Configuration Selectors', () => {
         ${'no_NO'} | ${'no_NO'}
         ${'nl_BE'} | ${'nl_BE'}
         ${'zh_CN'} | ${'zh_CN'}
-        ${'nl_NL'} | ${'de_DE'}
+        ${'nl_NL'} | ${'nl_BE'}
+        ${'de'}    | ${'de_DE'}
+        ${'de-DE'} | ${'de_DE'}
+        ${'no'}    | ${'no_NO'}
+        ${'zh'}    | ${'zh_CN'}
+        ${'fr'}    | ${'fr_BE'}
+        ${'en'}    | ${'en_US'}
+        ${'nl'}    | ${'nl_BE'}
+        ${'nl-BE'} | ${'nl_BE'}
+        ${'nl-NL'} | ${'nl_BE'}
       `('should choose $chosen when $requested is requested', ({ requested, chosen }) => {
         store$.dispatch(applyConfiguration({ lang: requested }));
         expect(getCurrentLocale(store$.state)?.lang).toEqual(chosen);
@@ -186,7 +195,16 @@ describe('Configuration Selectors', () => {
         ${'no_NO'} | ${'en_US'}
         ${'nl_BE'} | ${'nl_BE'}
         ${'zh_CN'} | ${'en_US'}
-        ${'nl_NL'} | ${'en_US'}
+        ${'nl_NL'} | ${'nl_BE'}
+        ${'de'}    | ${'de_DE'}
+        ${'de-DE'} | ${'de_DE'}
+        ${'no'}    | ${'en_US'}
+        ${'zh'}    | ${'en_US'}
+        ${'fr'}    | ${'fr_BE'}
+        ${'en'}    | ${'en_US'}
+        ${'nl'}    | ${'nl_BE'}
+        ${'nl-BE'} | ${'nl_BE'}
+        ${'nl-NL'} | ${'nl_BE'}
       `('should choose $chosen when $requested is requested', ({ requested, chosen }) => {
         store$.dispatch(applyConfiguration({ lang: requested }));
         expect(getCurrentLocale(store$.state)?.lang).toEqual(chosen);

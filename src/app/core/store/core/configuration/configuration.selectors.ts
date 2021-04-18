@@ -1,6 +1,7 @@
 import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 
+import { Locale } from 'ish-core/models/locale/locale.model';
 import { getCoreState } from 'ish-core/store/core/core-store';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 
@@ -51,8 +52,18 @@ export const getAvailableLocales = createSelector(
 
 const internalRequestedLocale = createSelector(getConfigurationState, state => state.lang);
 
+function findBestLocale(available: Locale[], requested: string): Locale {
+  const modified = requested?.replace('-', '_');
+  const perfectMatch = available?.find(l => l.lang === modified);
+  if (perfectMatch) {
+    return perfectMatch;
+  }
+  const justLanguage = modified?.replace(/_.*/, '');
+  return available.find(l => l.lang.startsWith(justLanguage));
+}
+
 /**
- * tries to find requested locale,
+ * tries to find a best match for requested locale,
  * falls back to ICM configured default locale if no match is found,
  * and finally falls back to first available locale if none is configured
  */
@@ -61,7 +72,7 @@ export const getCurrentLocale = createSelector(
   internalRequestedLocale,
   getServerConfigParameter<string>('general.defaultLocale'),
   (available, requested, configuredDefault) =>
-    available?.find(l => l.lang === requested) || available?.find(l => l.lang === configuredDefault) || available?.[0]
+    findBestLocale(available, requested) || findBestLocale(available, configuredDefault) || available[0]
 );
 
 export const getDeviceType = createSelector(getConfigurationState, state => state._deviceType);
