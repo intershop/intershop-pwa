@@ -7,11 +7,11 @@ import { filter, map, mapTo, shareReplay, startWith, withLatestFrom } from 'rxjs
 import { getAvailableLocales, getCurrentLocale, getDeviceType, getICMBaseURL } from 'ish-core/store/core/configuration';
 import { businessError, getGeneralError, getGeneralErrorType } from 'ish-core/store/core/error';
 import { selectPath } from 'ish-core/store/core/router';
+import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } from 'ish-core/store/core/viewconf';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { getAllCountries, loadCountries } from 'ish-core/store/general/countries';
 import { getRegionsByCountryCode, loadRegions } from 'ish-core/store/general/regions';
-import { getServerConfigParameter } from 'ish-core/store/general/server-config';
 
 @Injectable({ providedIn: 'root' })
 export class AppFacade {

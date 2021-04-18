@@ -128,7 +128,7 @@ To access these properties we provide the [`StatePropertiesService`](../../src/a
 ICM provides a Configurations REST resource - `/configurations` - that is supposed to provide all relevant runtime configurations that can be defined in the ICM back office and are required to configure a REST client as well.
 This includes service configurations, locales, basket preferences, etc.
 
-The ICM configurations information can be accessed through the [`getServerConfigParameter`](../../src/app/core/store/general/server-config/server-config.selectors.ts) selector.
+The ICM configurations information can be accessed through the [`getServerConfigParameter`](../../src/app/core/store/core/server-config/server-config.selectors.ts) selector.
 
 ## ICM Endpoint Configuration
 
