@@ -9,7 +9,7 @@ kb_sync_latest_only
 
 For our Intershop Progressive Web App, [Compodoc](https://compodoc.app) is used as documentation package.
 
-For documentation, the _tsconfig.app.json_ file is used as configuration file.
+For documentation, the _tsconfig.doc.json_ file is used as configuration file.
 The output folder for the documentation is set to _<project-home>/docs/compodoc_.
 
 We use an own styling theme based on the theme '_readthedocs_' provided by Compodoc.
