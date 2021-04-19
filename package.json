@@ -33,7 +33,7 @@
     "3rd-party-licenses": "npm ci && npx license-checker --csv --out 3rd-party-licenses.txt --customPath templates/3rd-party-licenses_format.json",
     "3rd-party-licenses:summary": "npx license-checker --summary",
     "docs": "npx markserv docs/README.md",
-    "compodoc": "npx @compodoc/compodoc -p tsconfig.app.json -d docs/compodoc -y docs/theme --hideGenerator",
+    "compodoc": "npx @compodoc/compodoc -p tsconfig.doc.json -d docs/compodoc -y docs/theme --hideGenerator",
     "compodoc:serve": "npm run compodoc -- -s -w",
     "synchronize-lazy-components": "ng g lazy-components",
     "build:watch": "ng build --aot --watch",
