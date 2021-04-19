@@ -20,6 +20,7 @@ export interface RegistrationConfigType {
   businessCustomer?: boolean;
   sso?: boolean;
   userId?: string;
+  cancelUrl?: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -37,6 +38,7 @@ export class RegistrationFormConfigurationService {
       sso: !!route.url.find(segment => segment.path.includes('sso')),
       userId: route.queryParams.userid,
       businessCustomer: this.featureToggle.enabled('businessCustomerRegistration'),
+      cancelUrl: route.queryParams.cancelUrl,
     };
   }
 
@@ -167,7 +169,7 @@ export class RegistrationFormConfigurationService {
   }
 
   cancelRegistrationForm(config: RegistrationConfigType): void {
-    config.sso ? this.accountFacade.cancelRegistration() : this.router.navigate(['/home']);
+    config.sso ? this.accountFacade.cancelRegistration() : this.router.navigate([config.cancelUrl ?? '/home']);
   }
 
   canDeactivate(config: RegistrationConfigType): boolean | Observable<boolean> {

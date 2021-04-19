@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -37,6 +38,7 @@ describe('Checkout Address Anonymous Component', () => {
         FeatureToggleModule.forTesting('guestCheckout'),
         NgbCollapseModule,
         ReactiveFormsModule,
+        RouterTestingModule,
         TranslateModule.forRoot(),
       ],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
@@ -59,6 +61,11 @@ describe('Checkout Address Anonymous Component', () => {
   it('should render login container component on page', () => {
     fixture.detectChanges();
     expect(element.querySelector('ish-identity-provider-login')).toBeTruthy();
+  });
+
+  it('should render registration link on page', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('a[data-testing-id="registration-link"]')).toBeTruthy();
   });
 
   it('should initially have shipping and invoice address forms on page', () => {
