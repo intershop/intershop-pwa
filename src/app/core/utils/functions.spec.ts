@@ -27,12 +27,15 @@ describe('Functions', () => {
       expect(arraySlices(arr, 6)).toEqual([[1, 2, 3, 4, 5, 6]]);
     });
 
-    it('should return truncated result for length 8', () => {
-      expect(arraySlices(arr, 8)).toBeEmpty();
+    it('should return correctly sliced arrays of length 8', () => {
+      expect(arraySlices(arr, 8)).toEqual([[1, 2, 3, 4, 5, 6]]);
     });
 
-    it('should return truncated result for length 4', () => {
-      expect(arraySlices(arr, 4)).toEqual([[1, 2, 3, 4]]);
+    it('should return correctly sliced arrays of length 4', () => {
+      expect(arraySlices(arr, 4)).toEqual([
+        [1, 2, 3, 4],
+        [5, 6],
+      ]);
     });
 
     it('should return undefined when input is undefined or empty', () => {
