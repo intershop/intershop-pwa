@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Store, select } from '@ngrx/store';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { UUID } from 'angular2-uuid';
 import { Observable, combineLatest, from, iif, merge, noop, of, race } from 'rxjs';
@@ -13,12 +12,6 @@ import { Address } from 'ish-core/models/address/address.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
-import {
-  cancelRegistration,
-  getSsoRegistrationCancelled,
-  getSsoRegistrationRegistered,
-  setRegistrationInfo,
-} from 'ish-core/store/customer/sso-registration';
 import { ConfirmLeaveModalComponent } from 'ish-shared/components/registration/confirm-leave-modal/confirm-leave-modal.component';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
@@ -31,12 +24,7 @@ export interface RegistrationConfigType {
 @Injectable({ providedIn: 'root' })
 export class RegistrationFormConfigurationService {
   // tslint:disable: no-intelligence-in-artifacts
-  constructor(
-    private accountFacade: AccountFacade,
-    private store: Store,
-    private router: Router,
-    private ngbModal: NgbModal
-  ) {}
+  constructor(private accountFacade: AccountFacade, private router: Router, private ngbModal: NgbModal) {}
 
   getRegistrationFormConfiguration(registrationConfig: RegistrationConfigType) {
     return [
@@ -116,17 +104,15 @@ export class RegistrationFormConfigurationService {
     };
 
     if (registrationConfig.sso && registrationConfig.userId) {
-      this.store.dispatch(
-        setRegistrationInfo({
-          companyInfo: {
-            companyName1: formValue.companyName1,
-            companyName2: formValue.companyName2,
-            taxationID: formValue.taxationID,
-          },
-          address,
-          userId: registrationConfig.userId,
-        })
-      );
+      this.accountFacade.setRegistrationInfo({
+        companyInfo: {
+          companyName1: formValue.companyName1,
+          companyName2: formValue.companyName2,
+          taxationID: formValue.taxationID,
+        },
+        address,
+        userId: registrationConfig.userId,
+      });
     } else {
       const customer: Customer = {
         isBusinessCustomer: false,
@@ -164,7 +150,7 @@ export class RegistrationFormConfigurationService {
   }
 
   cancelRegistrationForm(config: RegistrationConfigType): void {
-    config.sso ? this.store.dispatch(cancelRegistration()) : this.router.navigate(['/home']);
+    config.sso ? this.accountFacade.cancelRegistration() : this.router.navigate(['/home']);
   }
 
   canDeactivate(config: RegistrationConfigType): boolean | Observable<boolean> {
@@ -172,8 +158,8 @@ export class RegistrationFormConfigurationService {
       return true;
     } else {
       return combineLatest([
-        this.store.pipe(select(getSsoRegistrationCancelled)),
-        this.store.pipe(select(getSsoRegistrationRegistered)),
+        this.accountFacade.ssoRegistrationCancelled$,
+        this.accountFacade.ssoRegistrationRegistered$,
       ]).pipe(
         take(1),
         switchMap(([cancelled, registered]) =>
@@ -183,7 +169,7 @@ export class RegistrationFormConfigurationService {
             of({}).pipe(
               map(() => this.ngbModal.open(ConfirmLeaveModalComponent)),
               switchMap(modalRef => race(modalRef.dismissed.pipe(mapTo(false)), from(modalRef.result))),
-              tap(result => (result ? this.store.dispatch(cancelRegistration()) : noop))
+              tap(result => (result ? this.accountFacade.cancelRegistration() : noop))
             )
           )
         )
