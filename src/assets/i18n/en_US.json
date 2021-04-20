@@ -695,6 +695,7 @@
   "checkout.widget.security_privacy_policy.link": "<a href=\"{{0}}\" target=\"_blank\">Read our Security & Privacy Policy</a>",
   "checkout.widget.shipping-address.heading": "Shipping Address",
   "checkout.widget.shipping_method.heading": "Shipping Method",
+  "common.button.navbarCollapsed.text": "Toggle navigation",
   "common.button.spinning.label": "Adding...",
   "common.home.link": "Home",
   "common.view_all.link": "View All",
