@@ -1,13 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { InputComponent } from 'ish-shared/forms/components/input/input.component';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { PaymentConcardisCreditcardCvcDetailComponent } from './payment-concardis-creditcard-cvc-detail.component';
 
@@ -18,8 +16,8 @@ describe('Payment Concardis Creditcard Cvc Detail Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(InputComponent), PaymentConcardisCreditcardCvcDetailComponent],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      declarations: [PaymentConcardisCreditcardCvcDetailComponent],
+      imports: [FormlyTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) }],
     }).compileComponents();
   });

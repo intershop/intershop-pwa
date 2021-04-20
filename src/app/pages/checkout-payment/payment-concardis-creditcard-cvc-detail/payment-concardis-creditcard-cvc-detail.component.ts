@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { takeUntil } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -22,7 +23,8 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
   @Input() paymentInstrument: PaymentInstrument;
 
   validityTimeInMinutes: string;
-  cvcDetailForm: FormGroup;
+  cvcDetailForm = new FormGroup({});
+  fields: FormlyFieldConfig[];
 
   constructor(
     protected scriptLoader: ScriptLoaderService,
@@ -30,9 +32,25 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
     private checkoutFacade: CheckoutFacade
   ) {
     super(scriptLoader, cd);
-    this.cvcDetailForm = new FormGroup({
-      cvcDetail: new FormControl(undefined, [Validators.required]),
-    });
+  }
+
+  formInit() {
+    this.fields = [
+      {
+        key: 'cvcDetail',
+        type: 'ish-text-input-field',
+        templateOptions: {
+          required: true,
+          label: 'checkout.credit_card.cvc.label',
+          labelClass: 'col-5 col-md-7 pl-4',
+          maxLength: 35,
+          fieldClass: 'col-7 col-md-5',
+        },
+        validation: {
+          messages: { required: 'checkout.credit_card.cvc.error.default' },
+        },
+      },
+    ];
   }
 
   /**
