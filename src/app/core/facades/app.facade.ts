@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { combineLatest, merge, noop } from 'rxjs';
-import { filter, map, mapTo, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
+import { filter, map, mapTo, sample, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
 
 import { getAvailableLocales, getCurrentLocale, getDeviceType, getICMBaseURL } from 'ish-core/store/core/configuration';
 import { businessError, getGeneralError, getGeneralErrorType } from 'ish-core/store/core/error';
@@ -34,7 +34,10 @@ export class AppFacade {
   breadcrumbData$ = this.store.pipe(select(getBreadcrumbData));
 
   appWrapperClasses$ = combineLatest([
-    this.store.pipe(select(getWrapperClass)),
+    this.store.pipe(
+      select(getWrapperClass),
+      sample(this.router.events.pipe(filter(event => event instanceof NavigationEnd)))
+    ),
     this.store.pipe(
       select(isStickyHeader),
       map(isSticky => (isSticky ? 'sticky-header' : ''))
