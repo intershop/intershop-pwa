@@ -7,7 +7,7 @@ kb_sync_latest_only
 
 # Deploy URL
 
-This document describes how to provide the Intershop PWA with a dynamic deploy URL to set up client-side retrieval of static assets and Javascript chunks from a (possibly) different source than the URL from which the pre-rendering is delivered.
+This document describes how to provide the Intershop PWA with a dynamic deploy URL to set up client-side retrieval of static assets and JavaScript chunks from a (possibly) different source than the URL from which the pre-rendering is delivered.
 
 ## Built-in Angular CLI Support
 
