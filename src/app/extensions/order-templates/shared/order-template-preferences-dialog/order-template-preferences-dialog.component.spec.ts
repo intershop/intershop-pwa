@@ -1,10 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
-import { InputComponent } from 'ish-shared/forms/components/input/input.component';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { OrderTemplatePreferencesDialogComponent } from './order-template-preferences-dialog.component';
 
@@ -15,8 +13,8 @@ describe('Order Template Preferences Dialog Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(InputComponent), OrderTemplatePreferencesDialogComponent],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      declarations: [OrderTemplatePreferencesDialogComponent],
+      imports: [FormlyTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
 
@@ -34,9 +32,9 @@ describe('Order Template Preferences Dialog Component', () => {
 
   it('should emit new order template data when submit form was called and the form was valid', () => {
     fixture.detectChanges();
-    component.orderTemplateForm.setValue({
+    component.model = {
       title: 'test order template',
-    });
+    };
 
     const emitter = spy(component.submit);
 
@@ -53,7 +51,6 @@ describe('Order Template Preferences Dialog Component', () => {
   });
 
   it('should not emit new order template data when submit form was called and the form was invalid', () => {
-    component.ngOnChanges();
     fixture.detectChanges();
     const emitter = spy(component.submit);
     component.submitOrderTemplateForm();

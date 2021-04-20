@@ -13,20 +13,9 @@
   </div>
 
   <div class="modal-body">
-    <form [formGroup]="orderTemplateForm" (ngSubmit)="submitOrderTemplateForm(); addModal.close('')">
+    <form [formGroup]="orderTemplateForm" (ngSubmit)="submitOrderTemplateForm()">
       <!-- TODO: Show server error -->
-      <ish-input
-        [form]="orderTemplateForm"
-        controlName="title"
-        label="account.order_template.form.name.label"
-        markRequiredLabel="off"
-        [maxlength]="35"
-        [errorMessages]="{
-          required: 'account.order_template.form.name.error.required',
-          maxlength: 'account.order_template.form.name.error.maxlength'
-        }"
-        data-testing-id="order-template-dialog-name"
-      ></ish-input>
+      <formly-form [form]="orderTemplateForm" [fields]="fields" [model]="model"></formly-form>
     </form>
   </div>
 
@@ -40,7 +29,7 @@
     >
       {{ primaryButton | translate }}
     </button>
-    <button type="button" class="btn btn-secondary" (click)="addModal.close('')">
+    <button type="button" class="btn btn-secondary" (click)="hide()">
       {{ 'account.cancel.button.label' | translate }}
     </button>
   </div>
