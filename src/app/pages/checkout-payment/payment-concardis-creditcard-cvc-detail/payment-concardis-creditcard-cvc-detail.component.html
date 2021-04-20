@@ -1,16 +1,6 @@
 <div *ngIf="isCvcExpired()" [formGroup]="cvcDetailForm" class="row">
   <div class="col-12 col-md-9 col-lg-7">
-    <ish-input
-      [form]="cvcDetailForm"
-      controlName="cvcDetail"
-      inputClass="col-7 col-md-5"
-      label="checkout.credit_card.cvc.label"
-      labelClass="col-5 col-md-7"
-      markRequiredLabel="on"
-      [errorMessages]="{
-        required: 'checkout.credit_card.cvc.error.default'
-      }"
-    ></ish-input>
+    <formly-form [form]="cvcDetailForm" [fields]="fields"></formly-form>
   </div>
 
   <div class="col-md-3 col-lg-5">
