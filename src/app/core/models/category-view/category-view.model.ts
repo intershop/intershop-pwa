@@ -13,13 +13,26 @@ export function createCategoryView(tree: CategoryTree, uniqueId: string): Catego
   if (!tree || !uniqueId) {
     return;
   }
-  if (!tree.nodes[uniqueId]) {
+  if (!tree.nodes[uniqueId] && !tree.nodes[translateRef(tree, uniqueId)]) {
     return;
   }
 
   return {
-    ...tree.nodes[uniqueId],
-    children: tree.edges[uniqueId] || [],
-    hasChildren: !!tree.edges[uniqueId] && !!tree.edges[uniqueId].length,
+    ...tree.nodes[translateRef(tree, uniqueId)],
+    children: tree.edges[translateRef(tree, uniqueId)] || [],
+    hasChildren: !!tree.edges[translateRef(tree, uniqueId)] && !!tree.edges[translateRef(tree, uniqueId)].length,
   };
+}
+
+/**
+ * Translates a given uniqueId into a key value that can be used to retrieve category data from store.
+ * @param tree the category tree structure to lookup `categoryRef` translation value
+ * @param uniqueId the key value, either in category-path or category-ref notation
+ * @returns the key value that can be used to resolve category data
+ */
+export function translateRef(tree: CategoryTree, uniqueId: string): string {
+  if (!tree || !uniqueId) {
+    return;
+  }
+  return tree.categoryRefs[uniqueId] ?? uniqueId;
 }

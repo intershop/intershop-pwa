@@ -1,7 +1,7 @@
 import { Category } from 'ish-core/models/category/category.model';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
-import { createCategoryView } from './category-view.model';
+import { createCategoryView, translateRef } from './category-view.model';
 
 describe('Category View Model', () => {
   it('should return undefined on falsy input', () => {
@@ -71,5 +71,26 @@ describe('Category View Model', () => {
     const view = createCategoryView(tree, '123.456.789');
 
     expect(view.categoryPath).toEqual(['123', '123.456', '123.456.789']);
+  });
+
+  it('should translate uniqueId values of a category tree', () => {
+    const tree = categoryTree([cat1, cat11, cat111]);
+    expect(translateRef(tree, 'cat1')).toEqual('cat1');
+    expect(translateRef(tree, 'test')).toEqual('test');
+    expect(translateRef(tree, 'anyvalue')).toEqual('anyvalue');
+  });
+
+  it('should translate existing category-ref values to uniqueId of a category tree', () => {
+    const tree = categoryTree([cat1, cat11, cat111]);
+    tree.categoryRefs = { ['cat1@catalog-domain']: 'cat1' };
+    expect(translateRef(tree, 'cat1@catalog-domain')).toEqual('cat1');
+    expect(translateRef(tree, 'anyvalue')).toEqual('anyvalue');
+  });
+
+  it('should fail to translate category-ref values to uniqueId on undefined input', () => {
+    const tree = categoryTree([cat1, cat11, cat111]);
+    expect(translateRef(undefined, 'cat1@catalog-domain')).toBeUndefined();
+    expect(translateRef(tree, undefined)).toBeUndefined();
+    expect(translateRef(undefined, undefined)).toBeUndefined();
   });
 });

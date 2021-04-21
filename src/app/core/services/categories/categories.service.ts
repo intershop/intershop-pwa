@@ -29,7 +29,11 @@ export class CategoriesService {
     return this.apiService.get<CategoryData>(`categories/${CategoryHelper.getCategoryPath(categoryUniqueId)}`).pipe(
       map(element => this.categoryMapper.fromData(element)),
       // bump up completeness level as it won't get any better than this
-      tap(tree => (tree.nodes[categoryUniqueId].completenessLevel = CategoryCompletenessLevel.Max))
+      tap(
+        tree =>
+          (tree.nodes[tree.categoryRefs[categoryUniqueId] ?? categoryUniqueId].completenessLevel =
+            CategoryCompletenessLevel.Max)
+      )
     );
   }
 
