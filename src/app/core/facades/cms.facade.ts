@@ -5,9 +5,9 @@ import { filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.model';
 import { getContentInclude, loadContentInclude } from 'ish-core/store/content/includes';
-import { getContentPageTreeView, loadContentPageTree } from 'ish-core/store/content/page-trees';
+import { getContentPageTreeView, getPageTrees, loadContentPageTree } from 'ish-core/store/content/page-trees';
 import { getContentPagelet } from 'ish-core/store/content/pagelets';
-import { getContentPage, getContentPageLoading, getSelectedContentPage, loadContentPage } from 'ish-core/store/content/pages';
+import { getContentPageLoading, getSelectedContentPage } from 'ish-core/store/content/pages';
 import { getViewContext, loadViewContextEntrypoint } from 'ish-core/store/content/viewcontexts';
 import { getPGID } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -35,11 +35,6 @@ export class CMSFacade {
     );
   }
 
-  page$(id: string) {
-    this.store.dispatch(loadContentPage({ contentPageId: id }))
-    return this.store.pipe(select(getContentPage(id)));
-  }
-
   pagelet$(id: string) {
     return this.store.pipe(select(getContentPagelet(id)));
   }
@@ -49,8 +44,12 @@ export class CMSFacade {
     return this.store.pipe(select(getViewContext(viewContextId, callParameters)));
   }
 
-  loadPageTree$(contentPageId: string, depth: number) {
+  loadPageTreeView$(contentPageId: string, depth: number) {
     this.store.dispatch(loadContentPageTree({ contentPageId, depth }));
     return this.store.pipe(select(getContentPageTreeView(contentPageId)));
+  }
+
+  pageTree$(contentPageId: string) {
+    return this.store.pipe(select(getPageTrees)).pipe(map(tree => tree?.nodes[contentPageId]));
   }
 }

@@ -8,34 +8,56 @@ export interface ContentPageTreeView extends ContentPageTreeElement {
   children: ContentPageTreeView[];
 }
 
-function getSubTreeElements(tree: ContentPageTree, elementId: string): ContentPageTreeView[] {
+function getSubTreeElements(
+  tree: ContentPageTree,
+  elementId: string,
+  rootId: string,
+  contentPageId: string
+): ContentPageTreeView[] {
   if (!tree || !elementId || !tree.nodes[elementId]) {
     return;
   }
 
   let treeElements: ContentPageTreeView[] = [];
 
-  if (tree.edges[elementId]) {
+  if (tree.edges[elementId] && (hasPageTreeElement(tree, contentPageId, elementId) || elementId === contentPageId)) {
     treeElements = tree.edges[elementId]
-      .map(child => getSubTreeElements(tree, child))
+      .map(child => getSubTreeElements(tree, child, rootId, contentPageId))
       .reduce((a, b) => {
         b.map(element => a.push(element));
         return a;
       });
   }
-  treeElements.push({
-    ...tree.nodes[elementId],
-    parent: tree.nodes[elementId].path[tree.nodes[elementId].path.length - 2],
-    children: [],
-  });
+
+  if (rootId !== elementId) {
+    const nodeParent = tree.nodes[elementId].path[tree.nodes[elementId].path.length - 2];
+    treeElements.push({
+      ...tree.nodes[elementId],
+      parent: nodeParent === rootId ? undefined : nodeParent,
+      children: [],
+    });
+  }
+
   return treeElements;
 }
 
-function unflattenTree(elements: ContentPageTreeView[], contentPageId: string): ContentPageTreeView {
-  let root: ContentPageTreeView;
+function hasPageTreeElement(tree: ContentPageTree, contentPageId: string, elementId: string): boolean {
+  let result = false;
+  if (tree.edges[elementId]) {
+    if (tree.edges[elementId].find(e => e === contentPageId)) {
+      result = true;
+    } else {
+      result = tree.edges[elementId].map(e => hasPageTreeElement(tree, contentPageId, e)).find(res => res);
+    }
+  }
+  return result;
+}
+
+function unflattenTree(elements: ContentPageTreeView[]): ContentPageTreeView[] {
+  const root: ContentPageTreeView[] = [];
   elements.map(element => {
-    if (element.contentPageId === contentPageId) {
-      root = element;
+    if (!element.parent) {
+      root.push(element);
       return;
     }
 
@@ -46,11 +68,15 @@ function unflattenTree(elements: ContentPageTreeView[], contentPageId: string): 
   return root;
 }
 
-export function createContentPageTreeView(tree: ContentPageTree, root: string): ContentPageTreeView[] {
+export function createContentPageTreeView(
+  tree: ContentPageTree,
+  root: string,
+  contentPageId: string
+): ContentPageTreeView[] {
   if (!tree || !root || !tree.nodes[root]) {
     return;
   }
 
-  const subTree = getSubTreeElements(tree, root);
-  return [unflattenTree(subTree, root)];
+  const subTree = getSubTreeElements(tree, root, root, contentPageId);
+  return unflattenTree(subTree);
 }
