@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { map, mergeMap } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { filter, map, mergeMap } from 'rxjs/operators';
 
 import { CMSService } from 'ish-core/services/cms/cms.service';
+import { getSelectedContentPageBreadcrumbData } from 'ish-core/store/content/page-trees';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
@@ -35,11 +37,18 @@ export class PagesEffects {
     )
   );
 
-  setBreadcrumbForContentPage$ = createEffect(() =>
-    this.store.pipe(
-      select(getSelectedContentPage),
+  setBreadcrumbForContentPage1$ = createEffect(() =>
+    combineLatest([
+      this.store.pipe(select(getSelectedContentPage)),
+      this.store.pipe(select(getSelectedContentPageBreadcrumbData)),
+    ]).pipe(
       whenTruthy(),
-      map(contentPage => setBreadcrumbData({ breadcrumbData: [{ key: contentPage.displayName }] }))
+      filter(([contentPage]) => !!contentPage),
+      map(([contentPage, breadcrumbData]) =>
+        breadcrumbData
+          ? setBreadcrumbData({ breadcrumbData })
+          : setBreadcrumbData({ breadcrumbData: [{ key: contentPage.displayName }] })
+      )
     )
   );
 }
