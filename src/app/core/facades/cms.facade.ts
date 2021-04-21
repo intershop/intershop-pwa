@@ -4,13 +4,11 @@ import { Observable, combineLatest } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.model';
-import { ContentPageTreeView } from 'ish-core/models/content-page-tree-view/content-page-tree-view.model';
 import { getContentInclude, loadContentInclude } from 'ish-core/store/content/includes';
 import { getContentPageTreeView, loadContentPageTree } from 'ish-core/store/content/page-trees';
 import { getContentPagelet } from 'ish-core/store/content/pagelets';
-import { getContentPageLoading, getSelectedContentPage } from 'ish-core/store/content/pages';
+import { getContentPage, getContentPageLoading, getSelectedContentPage, loadContentPage } from 'ish-core/store/content/pages';
 import { getViewContext, loadViewContextEntrypoint } from 'ish-core/store/content/viewcontexts';
-import { selectRouteParam } from 'ish-core/store/core/router';
 import { getPGID } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { SfeAdapterService } from 'ish-shared/cms/sfe-adapter/sfe-adapter.service';
@@ -21,11 +19,6 @@ export class CMSFacade {
   constructor(private store: Store, private sfeAdapter: SfeAdapterService) {}
   contentPage$ = this.store.pipe(select(getSelectedContentPage));
   contentPageLoading$ = this.store.pipe(select(getContentPageLoading));
-  selectedContentPageId$ = this.store.pipe(select(selectRouteParam('contentPageId')));
-
-  getContentPageTreeView$(uniqueId: string): Observable<ContentPageTreeView> {
-    return this.store.pipe(select(getContentPageTreeView(uniqueId)));
-  }
 
   contentInclude$(includeId$: Observable<string>) {
     return combineLatest([includeId$.pipe(whenTruthy()), this.store.pipe(select(getPGID))]).pipe(
@@ -42,6 +35,11 @@ export class CMSFacade {
     );
   }
 
+  page$(id: string) {
+    this.store.dispatch(loadContentPage({ contentPageId: id }))
+    return this.store.pipe(select(getContentPage(id)));
+  }
+
   pagelet$(id: string) {
     return this.store.pipe(select(getContentPagelet(id)));
   }
@@ -51,7 +49,8 @@ export class CMSFacade {
     return this.store.pipe(select(getViewContext(viewContextId, callParameters)));
   }
 
-  loadPageTree(contentPageId: string, depth: string) {
+  loadPageTree$(contentPageId: string, depth: number) {
     this.store.dispatch(loadContentPageTree({ contentPageId, depth }));
+    return this.store.pipe(select(getContentPageTreeView(contentPageId)));
   }
 }

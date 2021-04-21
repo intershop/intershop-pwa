@@ -68,13 +68,13 @@ export class CMSService {
    * @param depth: Depth of returned content page tree
    * @returns Content page tree
    */
-  getContentPageTree(contentPageId: string, depth?: string): Observable<ContentPageTree> {
+  getContentPageTree(contentPageId: string, depth?: number): Observable<ContentPageTree> {
     if (!contentPageId) {
       return throwError('getContentPage() called without an pageId');
     }
     let params = new HttpParams();
     if (depth) {
-      params = params.set('depth', depth);
+      params = params.set('depth', depth.toString());
     }
 
     return this.apiService

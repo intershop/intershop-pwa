@@ -46,11 +46,11 @@ function unflattenTree(elements: ContentPageTreeView[], contentPageId: string): 
   return root;
 }
 
-export function createContentPageTreeView(tree: ContentPageTree, root: string): ContentPageTreeView {
+export function createContentPageTreeView(tree: ContentPageTree, root: string): ContentPageTreeView[] {
   if (!tree || !root || !tree.nodes[root]) {
     return;
   }
 
   const subTree = getSubTreeElements(tree, root);
-  return unflattenTree(subTree, root);
+  return [unflattenTree(subTree, root)];
 }

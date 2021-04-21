@@ -9,10 +9,8 @@
     <div class="page-navigation col-md-3">
       <div *ngIf="pagelet.booleanParam('ShowNavigation')" class="page-navigation-contents">
         <ish-cms-navigation
-          [contentPageId]="pagelet.stringParam('NavigationRoot')"
           [root]="pagelet.stringParam('NavigationRoot')"
-          [maxDepth]="depth ? depth : 2147483647"
-          [actualDepth]="0"
+          [depth]="pagelet.numberParam('NavigationRoot')"
         ></ish-cms-navigation>
       </div>
       <div class="marketing-area">
@@ -35,9 +33,3 @@
     </div>
   </ng-template>
 </div>
-
-<!-- TODO: (CMS Component Configuration)
-  NavigationRoot
-  ShowNavigation
-  NavigationDepth
--->

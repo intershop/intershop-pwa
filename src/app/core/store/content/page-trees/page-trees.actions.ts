@@ -5,7 +5,7 @@ import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 export const loadContentPageTree = createAction(
   '[Content Page] Load Content Page Tree',
-  payload<{ contentPageId: string; depth: string }>()
+  payload<{ contentPageId: string; depth: number }>()
 );
 
 export const loadContentPageTreeFail = createAction('[Content Page API] Load Content Page Tree Fail', httpError());

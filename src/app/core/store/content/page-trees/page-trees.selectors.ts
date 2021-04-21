@@ -18,7 +18,7 @@ export const getPageTrees = createSelector(getPageTreesState, state => state.tre
  * @returns Content page tree view of given page
  */
 export const getContentPageTreeView = (root: string) =>
-  createSelectorFactory<object, ContentPageTreeView>(projector => resultMemoize(projector, isEqual))(
+  createSelectorFactory<object, ContentPageTreeView[]>(projector => resultMemoize(projector, isEqual))(
     getPageTrees,
     (tree: ContentPageTree) => createContentPageTreeView(tree, root)
   );

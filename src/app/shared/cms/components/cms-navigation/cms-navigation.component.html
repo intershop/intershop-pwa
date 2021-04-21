@@ -1,27 +1,30 @@
 <ng-container *ngIf="contentPageTreeView$ | async as contentPageTreeView">
   <ng-container *ngIf="currentContentPageId$ | async as currentContentPageId">
-    <div class="non-parametric-panel">
-      <div class="filter-group">
-        <ul class="filter-list">
+    <ng-container *ngIf="rootDisplayName$ | async as rootDisplayName">
+      <h3>{{rootDisplayName}}</h3>
+      <ul class="page-navigation-0">
+        <ng-container
+          [ngTemplateOutlet]="recursivePageTree"
+          [ngTemplateOutletContext]="{ tree: contentPageTreeView, depth: 1 }"
+        ></ng-container>
+      </ul>
+
+      <ng-template #recursivePageTree let-tree="tree" let-d="depth">
+        <li *ngFor="let item of tree" [ngClass]="{'page-navigation-active': item.contentPageId === currentContentPageId}">
           <a
-            class="filter-item-name"
-            [ngClass]="{ 'filter-selected': contentPageTreeView.contentPageId === currentContentPageId }"
-            [routerLink]="'/page/' + contentPageTreeView.contentPageId"
+            [routerLink]="'/page/' + item.contentPageId"
+            title=""
           >
-            {{ contentPageTreeView.name }}
+            {{ item.name }}
           </a>
-          <ng-container *ngIf="actualDepth <= maxDepth">
-            <li *ngFor="let element of contentPageTreeView.children" class="filter-item">
-              <ish-cms-navigation
-                [contentPageId]="element"
-                [root]="root"
-                [maxDepth]="maxDepth"
-                [actualDepth]="actualDepth + 1"
-              ></ish-cms-navigation>
-            </li>
-          </ng-container>
-        </ul>
-      </div>
-    </div>
+          <ul *ngIf="item.children.length > 0" class="page-navigation-{{d}}">
+            <ng-container
+              [ngTemplateOutlet]="recursivePageTree"
+              [ngTemplateOutletContext]="{ tree: item.children, depth: d + 1 }"
+            ></ng-container>
+          </ul>
+        </li>
+      </ng-template>
+    </ng-container>
   </ng-container>
 </ng-container>

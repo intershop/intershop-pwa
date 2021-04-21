@@ -12,6 +12,10 @@ const { selectEntities: getPageEntities } = pagesAdapter.getSelectors(getPagesSt
 
 export const getContentPageLoading = createSelector(getPagesState, state => state.loading);
 
+export const getContentPage = (id: string) => createSelector(getPageEntities, (pages) =>
+  createContentPageletEntryPointView(pages[id])
+);
+
 export const getSelectedContentPage = createSelector(getPageEntities, selectRouteParam('contentPageId'), (pages, id) =>
   createContentPageletEntryPointView(pages[id])
 );
