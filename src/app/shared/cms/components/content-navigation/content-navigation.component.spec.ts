@@ -6,11 +6,11 @@ import { instance, mock, when } from 'ts-mockito';
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { pageTreeView } from 'ish-core/utils/dev/test-data-utils';
 
-import { CMSNavigationComponent } from './cms-navigation.component';
+import { ContentNavigationComponent } from './content-navigation.component';
 
-describe('Cms Navigation Component', () => {
-  let component: CMSNavigationComponent;
-  let fixture: ComponentFixture<CMSNavigationComponent>;
+describe('Content Navigation Component', () => {
+  let component: ContentNavigationComponent;
+  let fixture: ComponentFixture<ContentNavigationComponent>;
   let element: HTMLElement;
   let cmsFacade: CMSFacade;
 
@@ -19,7 +19,7 @@ describe('Cms Navigation Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [CMSNavigationComponent],
+      declarations: [ContentNavigationComponent],
       providers: [{ provide: CMSFacade, useFactory: () => instance(cmsFacade) }],
     }).compileComponents();
   });
@@ -29,7 +29,7 @@ describe('Cms Navigation Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CMSNavigationComponent);
+    fixture = TestBed.createComponent(ContentNavigationComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });

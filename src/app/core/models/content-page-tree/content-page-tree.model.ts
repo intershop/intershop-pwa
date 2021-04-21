@@ -1,7 +1,7 @@
 export interface ContentPageTreeElement {
   name: string;
   contentPageId: string;
-  path?: string[];
+  path: string[];
 }
 
 export interface ContentPageTree {

@@ -24,8 +24,6 @@ export class ContentPageTreeMapper {
   convertLinkToTreeData(tree: ContentPageTreeData, element: ContentPageTreeLink): ContentPageTreeData {
     return {
       page: element,
-      name: undefined,
-      link: undefined,
       type: 'PageTreeRO',
       path: tree.path ? [...tree.path, element] : [tree.page, element], // add element to path if exists or create a new one
     };

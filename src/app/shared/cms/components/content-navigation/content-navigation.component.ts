@@ -6,15 +6,14 @@ import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageTreeView } from 'ish-core/models/content-page-tree-view/content-page-tree-view.model';
 
 /**
- * The CMS Static Page Component to render CMS managed static content pages.
- * With optional side panel and (TODO: content page hierarchy navigation)
+ * The Content Page Navigation Component to get content page hierarchy navigation.
  */
 @Component({
-  selector: 'ish-cms-navigation',
-  templateUrl: './cms-navigation.component.html',
+  selector: 'ish-content-navigation',
+  templateUrl: './content-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CMSNavigationComponent implements OnInit {
+export class ContentNavigationComponent implements OnInit {
   /**
    * Id of page tree root
    */
