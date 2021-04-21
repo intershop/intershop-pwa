@@ -1,7 +1,7 @@
 <ng-container *ngIf="contentPageTreeView$ | async as contentPageTreeView">
   <ng-container *ngIf="currentContentPageId$ | async as currentContentPageId">
     <ng-container *ngIf="rootDisplayName$ | async as rootDisplayName">
-      <h3>{{rootDisplayName}}</h3>
+      <h3>{{ rootDisplayName }}</h3>
       <ul class="page-navigation-0">
         <ng-container
           [ngTemplateOutlet]="recursivePageTree"
@@ -10,14 +10,17 @@
       </ul>
 
       <ng-template #recursivePageTree let-tree="tree" let-d="d">
-        <li *ngFor="let item of tree" [ngClass]="{'page-navigation-active': item.contentPageId === currentContentPageId}">
-          <a
-            [routerLink]="'/page/' + item.contentPageId"
-            title=""
-          >
+        <li
+          *ngFor="let item of tree"
+          [ngClass]="{ 'page-navigation-active': item.contentPageId === currentContentPageId }"
+        >
+          <a [routerLink]="'/page/' + item.contentPageId" title="">
             {{ item.name }}
           </a>
-          <ul *ngIf="item.children.length > 0 && ( (!depth && depth !== 0) || depth >= d )" class="page-navigation-{{d}}">
+          <ul
+            *ngIf="item.children.length > 0 && ((!depth && depth !== 0) || depth >= d)"
+            class="page-navigation-{{ d }}"
+          >
             <ng-container
               [ngTemplateOutlet]="recursivePageTree"
               [ngTemplateOutletContext]="{ tree: item.children, d: d + 1 }"
