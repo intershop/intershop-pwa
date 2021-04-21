@@ -3,7 +3,7 @@ export class LinkParser {
 
   static parseLink(link: string, baseHref?: string): string {
     if (LinkParser.linkRegexp.test(link)) {
-      const [, , protocol, value] = LinkParser.linkRegexp.exec(link);
+      const [, , protocol, value, unitName] = LinkParser.linkRegexp.exec(link);
 
       const prefix = !baseHref || baseHref === '/' ? '' : baseHref;
 
@@ -15,7 +15,7 @@ export class LinkParser {
         case 'category':
           // TODO: the configuration parameter currently only works for first level categories
           // TODO: use CategoryRoutePipe
-          return `${prefix}/cat${value}`;
+          return `${prefix}/categoryref/${value}${unitName}`;
         case 'page':
           // CMS managed pages link
           return `${prefix}/page/${value}`;

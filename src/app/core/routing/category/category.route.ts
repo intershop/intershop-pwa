@@ -11,11 +11,11 @@ export function generateLocalizedCategorySlug(category: Category) {
   return category?.name?.replace(reservedCharactersRegEx, '-').replace(/-+/g, '-').replace(/-+$/, '') || '';
 }
 
-const categoryRouteFormat = /^\/(?!category\/.*$)(.*-)?cat(.*)$/;
+const categoryRouteFormat = /^\/(?!category|categoryref\/.*$)(.*-)?cat(.*)$/;
 
 export function matchCategoryRoute(segments: UrlSegment[]): UrlMatchResult {
   // compatibility to old routes
-  if (segments && segments.length === 2 && segments[0].path === 'category') {
+  if (segments && segments.length === 2 && (segments[0].path === 'category' || segments[0].path === 'categoryref')) {
     return { consumed: [] };
   }
 

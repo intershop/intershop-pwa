@@ -17,6 +17,11 @@ const categoryPageRoutes: Routes = [
     path: 'category/:categoryUniqueId',
     component: CategoryPageComponent,
   },
+  {
+    // route to handle category links managed by CMS
+    path: 'categoryref/:categoryRefId',
+    component: CategoryPageComponent,
+  },
   { path: '**', component: CategoryPageComponent },
 ];
 

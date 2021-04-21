@@ -10,7 +10,7 @@ describe('Link Parser', () => {
     ['http://google.de', 'http://google.de'],
     ['https://google.de', 'https://google.de'],
     ['page://my-page', '/page/my-page'],
-    ['category://Computers@inSPIRED-Computers', '/catComputers'],
+    ['category://Computers@inSPIRED-Computers', '/categoryref/Computers@inSPIRED-Computers'],
     ['/product/ABC', '/product/ABC'],
     [undefined, undefined],
   ])(`should transform %s to %s without optional baseHref`, (input, output) => {
@@ -24,7 +24,7 @@ describe('Link Parser', () => {
     ['http://google.de', 'http://google.de'],
     ['https://google.de', 'https://google.de'],
     ['page://my-page', '/us/page/my-page'],
-    ['category://Computers@inSPIRED-Computers', '/us/catComputers'],
+    ['category://Computers@inSPIRED-Computers', '/us/categoryref/Computers@inSPIRED-Computers'],
     ['/product/ABC', '/product/ABC'],
     [undefined, undefined],
   ])(`should transform %s to %s with baseHref /us`, (input, output) => {
