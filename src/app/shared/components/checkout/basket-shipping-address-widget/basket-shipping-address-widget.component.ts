@@ -8,7 +8,7 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Address } from 'ish-core/models/address/address.model';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { getAddressOptions } from 'ish-shared/forms/utils/form-utils';
+import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 /**
  * Standalone widget component for selecting and setting the basket shipping address in the checkout.
@@ -43,7 +43,11 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject();
 
-  constructor(private checkoutFacade: CheckoutFacade, private accountFacade: AccountFacade) {
+  constructor(
+    private accountFacade: AccountFacade,
+    private checkoutFacade: CheckoutFacade,
+    private formsService: FormsService
+  ) {
     this.form = new FormGroup({
       id: new FormControl(''),
     });
@@ -82,12 +86,12 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
         type: 'ish-select-field',
         templateOptions: {
           fieldClass: 'col-12',
-          options: getAddressOptions(this.addresses$),
+          options: this.formsService.getAddressOptions(this.addresses$),
           placeholder: this.emptyOptionLabel,
         },
         hooks: {
-          onInit: () => {
-            this.form
+          onInit: field => {
+            field.form
               .get('id')
               .valueChanges.pipe(whenTruthy(), takeUntil(this.destroy$))
               .subscribe(addressId => this.checkoutFacade.assignBasketAddress(addressId, 'shipping'));

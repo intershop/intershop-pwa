@@ -1,14 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { of } from 'rxjs';
-import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
+import { anything, instance, mock, spy, verify } from 'ts-mockito';
 
-import { AppFacade } from 'ish-core/facades/app.facade';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
+import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 import { AccountProfileUserComponent } from './account-profile-user.component';
 
@@ -16,15 +14,15 @@ describe('Account Profile User Component', () => {
   let component: AccountProfileUserComponent;
   let fixture: ComponentFixture<AccountProfileUserComponent>;
   let element: HTMLElement;
-  let appFacade: AppFacade;
+  let formsService: FormsService;
 
   beforeEach(async () => {
-    appFacade = mock(AppFacade);
+    formsService = mock(FormsService);
 
     await TestBed.configureTestingModule({
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
       declarations: [AccountProfileUserComponent, MockComponent(ErrorMessageComponent)],
-      providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
+      providers: [{ provide: FormsService, useFactory: () => instance(formsService) }],
     }).compileComponents();
   });
 
@@ -32,7 +30,6 @@ describe('Account Profile User Component', () => {
     fixture = TestBed.createComponent(AccountProfileUserComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    when(appFacade.currentLocale$).thenReturn(of({ lang: 'en_US' } as Locale));
   });
 
   it('should be created', () => {
@@ -61,7 +58,6 @@ describe('Account Profile User Component', () => {
   it('should emit updateUserProfile event if form is valid', () => {
     const eventEmitter$ = spy(component.updateUserProfile);
 
-    component.countryCode = 'US';
     component.currentUser = { firstName: 'Patricia', lastName: 'Miller' } as User;
     fixture.detectChanges();
 

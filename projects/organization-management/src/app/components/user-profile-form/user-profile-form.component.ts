@@ -1,16 +1,12 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { TranslateService } from '@ngx-translate/core';
 import { pick } from 'lodash-es';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
-import { AppFacade } from 'ish-core/facades/app.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { whenTruthy } from 'ish-core/utils/operators';
 import { SelectOption } from 'ish-shared/forms/components/select/select.component';
-import { determineSalutations } from 'ish-shared/forms/utils/form-utils';
+import { FormsService } from 'ish-shared/forms/utils/forms.service';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
@@ -30,19 +26,11 @@ export class UserProfileFormComponent implements OnInit {
 
   titleOptions$: Observable<SelectOption[]>;
 
-  constructor(private appFacade: AppFacade, private translate: TranslateService) {}
+  constructor(private formsService: FormsService) {}
 
   ngOnInit() {
     // determine default language from session and available locales
-    this.titleOptions$ = this.appFacade.currentLocale$.pipe(
-      whenTruthy(),
-      map(locale =>
-        determineSalutations(locale.lang?.slice(3)).map(title => ({
-          value: this.translate.instant(title),
-          label: title,
-        }))
-      )
-    );
+    this.titleOptions$ = this.formsService.getSalutationOptions();
 
     this.model = this.getModel(this.user);
     this.fields = this.getFields();
