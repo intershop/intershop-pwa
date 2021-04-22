@@ -1,4 +1,10 @@
 import { FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { Address } from 'ish-core/models/address/address.model';
+import { whenTruthy } from 'ish-core/utils/operators';
+import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 
 /**
  * Marks all fields in a form group as dirty recursively (i.e. for nested form groups also)
@@ -49,4 +55,21 @@ export function determineSalutations(countryCode: string): string[] {
     }
   }
   return salutationLabels;
+}
+
+/**
+ * Get address select options for addresses in order to render them in an address select box.
+ * @param addresses
+ * @returns address select options
+ */
+export function getAddressOptions(addresses$: Observable<Address[]>): Observable<SelectOption[]> {
+  return addresses$.pipe(
+    whenTruthy(),
+    map(addresses =>
+      addresses.map(a => ({
+        label: `${a.firstName} ${a.lastName}, ${a.addressLine1}, ${a.city}`,
+        value: a.id,
+      }))
+    )
+  );
 }

@@ -93,4 +93,11 @@ describe('Validation Wrapper Component', () => {
     fixture.detectChanges();
     expect(element.querySelector('ish-validation-message')).toBeTruthy();
   });
+
+  it('should display a validation icon if the field is required', () => {
+    fixture.detectChanges();
+    component.form.get('example').markAsDirty();
+    fixture.detectChanges();
+    expect(element.querySelector('ish-validation-icons')).toBeTruthy();
+  });
 });
