@@ -16,17 +16,15 @@ export const getPageTrees = createSelector(getPageTreesState, state => state.tre
 
 export const getPageTreeNodes = createSelector(getPageTrees, trees => trees.nodes);
 
-export const getSelectedContentPageBreadcrumbData = createSelectorFactory<[], BreadcrumbItem[]>(projector =>
-  resultMemoize(projector, isEqual)
-)(
+export const getSelectedContentPageBreadcrumbData = createSelector(
   getPageTreeNodes,
   selectRouteParam('contentPageId'),
   (nodes: { [id: string]: ContentPageTreeElement }, contentPageId: string) =>
     nodes[contentPageId]
-      ? nodes[contentPageId].path.map((item, i, path) => ({
+      ? (nodes[contentPageId].path.map((item, i, path) => ({
           key: nodes[item].name,
           link: i !== path.length - 1 ? `/page/${item}` : undefined,
-        }))
+        })) as BreadcrumbItem[])
       : undefined
 );
 

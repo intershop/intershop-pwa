@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -13,7 +13,7 @@ import { ContentPageTreeView } from 'ish-core/models/content-page-tree-view/cont
   templateUrl: './content-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContentNavigationComponent implements OnInit {
+export class ContentNavigationComponent implements OnInit, OnChanges {
   /**
    * Id of page tree root
    */
@@ -31,7 +31,12 @@ export class ContentNavigationComponent implements OnInit {
 
   ngOnInit() {
     this.currentContentPageId$ = this.cmsFacade.contentPage$.pipe(map(contentPage => contentPage?.id));
-    this.contentPageTreeView$ = this.cmsFacade.loadPageTreeView$(this.root, this.depth);
-    this.rootDisplayName$ = this.cmsFacade.pageTree$(this.root).pipe(map(tree => tree.name));
+  }
+
+  ngOnChanges() {
+    if (this.root) {
+      this.contentPageTreeView$ = this.cmsFacade.loadPageTreeView$(this.root, this.depth);
+      this.rootDisplayName$ = this.cmsFacade.pageTree$(this.root).pipe(map(tree => tree.name));
+    }
   }
 }

@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { anyNumber, anyString, instance, mock, when } from 'ts-mockito';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
-import { pageTreeView } from 'ish-core/utils/dev/test-data-utils';
+import { ContentPageTreeView } from 'ish-core/models/content-page-tree-view/content-page-tree-view.model';
+import { ContentPageTreeElement } from 'ish-core/models/content-page-tree/content-page-tree.model';
+import { ContentPageletEntryPointView } from 'ish-core/models/content-view/content-view.model';
 
 import { ContentNavigationComponent } from './content-navigation.component';
 
@@ -25,7 +27,7 @@ describe('Content Navigation Component', () => {
   });
 
   beforeEach(() => {
-    when(cmsFacade.selectedContentPageId$).thenReturn(of('page-1'));
+    when(cmsFacade.contentPage$).thenReturn(of({ id: 'page-1' } as ContentPageletEntryPointView));
   });
 
   beforeEach(() => {
@@ -37,105 +39,163 @@ describe('Content Navigation Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    expect(() => component.ngOnChanges()).not.toThrow();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
   describe('Page Tree Links', () => {
     beforeEach(() => {
-      // Depth of tree is 1 (0 is included)
-      when(cmsFacade.getContentPageTreeView$('1')).thenReturn(of(pageTreeView('1', ['1.A', '1.B'])));
-      when(cmsFacade.getContentPageTreeView$('1.A')).thenReturn(of(pageTreeView('1.A', ['1.A.a', '1.A.b'])));
-      when(cmsFacade.getContentPageTreeView$('1.A.a')).thenReturn(of(pageTreeView('1.A.a')));
-      when(cmsFacade.getContentPageTreeView$('1.A.b')).thenReturn(of(pageTreeView('1.A.b')));
-      when(cmsFacade.getContentPageTreeView$('1.B')).thenReturn(of(pageTreeView('1.B')));
+      component.root = '1';
+      component.depth = 10;
+
+      when(cmsFacade.loadPageTreeView$('1', anyNumber())).thenReturn(
+        of([
+          {
+            contentPageId: '1.A',
+            name: 'Page 1.A',
+            parent: '1',
+            children: [
+              {
+                contentPageId: '1.A.a',
+                name: 'Page 1.A.a',
+                parent: '1.A',
+                children: [],
+              },
+              {
+                contentPageId: '1.A.b',
+                name: 'Page 1.A.b',
+                parent: '1.A',
+                children: [],
+              },
+            ],
+          },
+          {
+            contentPageId: '1.B',
+            name: 'Page 1.B',
+            parent: '1',
+            children: [],
+          },
+        ] as ContentPageTreeView[])
+      );
+
+      when(cmsFacade.pageTree$(anyString())).thenReturn(of({ name: 'Page 1' } as ContentPageTreeElement));
     });
 
     it('should get whole page tree, when maxDepth is greater than depth of actual page tree', () => {
-      component.contentPageId = '1';
-      component.actualDepth = 0;
-      component.maxDepth = 5;
-      component.root = '1';
-
       component.ngOnChanges();
       fixture.detectChanges();
 
       expect(element.querySelectorAll('a')).toMatchInlineSnapshot(`
         NodeList [
-          <a class="filter-item-name" ng-reflect-router-link="/page/1" href="/page/1"> Page 1 </a>,
-          <a class="filter-item-name" ng-reflect-router-link="/page/1.A" href="/page/1.A"> Page 1.A </a>,
-          <a class="filter-item-name" ng-reflect-router-link="/page/1.A.a" href="/page/1.A.a"> Page 1.A.a </a>,
-          <a class="filter-item-name" ng-reflect-router-link="/page/1.A.b" href="/page/1.A.b"> Page 1.A.b </a>,
-          <a class="filter-item-name" ng-reflect-router-link="/page/1.B" href="/page/1.B"> Page 1.B </a>,
+          <a ng-reflect-router-link="/page/1.A" title="Page 1.A" href="/page/1.A"> Page 1.A </a>,
+          <a ng-reflect-router-link="/page/1.A.a" title="Page 1.A.a" href="/page/1.A.a"> Page 1.A.a </a>,
+          <a ng-reflect-router-link="/page/1.A.b" title="Page 1.A.b" href="/page/1.A.b"> Page 1.A.b </a>,
+          <a ng-reflect-router-link="/page/1.B" title="Page 1.B" href="/page/1.B"> Page 1.B </a>,
         ]
       `);
     });
 
     it('should split page tree, when given maxDepth is smaller than page tree depth', () => {
-      component.contentPageId = '1';
-      component.actualDepth = 0;
-      component.maxDepth = 0;
-      component.root = '1';
+      component.depth = 0;
 
       component.ngOnChanges();
       fixture.detectChanges();
 
       expect(element.querySelectorAll('a')).toMatchInlineSnapshot(`
         NodeList [
-          <a class="filter-item-name" ng-reflect-router-link="/page/1" href="/page/1"> Page 1 </a>,
-          <a class="filter-item-name" ng-reflect-router-link="/page/1.A" href="/page/1.A"> Page 1.A </a>,
-          <a class="filter-item-name" ng-reflect-router-link="/page/1.B" href="/page/1.B"> Page 1.B </a>,
-        ]
-      `);
-    });
-
-    it('should get sub page tree, when given root is sub element of page tree', () => {
-      component.contentPageId = '1.A';
-      component.actualDepth = 0;
-      component.maxDepth = 5;
-      component.root = '1.A';
-
-      component.ngOnChanges();
-      fixture.detectChanges();
-
-      expect(element.querySelectorAll('a')).toMatchInlineSnapshot(`
-        NodeList [
-          <a class="filter-item-name" ng-reflect-router-link="/page/1.A" href="/page/1.A"> Page 1.A </a>,
-          <a class="filter-item-name" ng-reflect-router-link="/page/1.A.a" href="/page/1.A.a"> Page 1.A.a </a>,
-          <a class="filter-item-name" ng-reflect-router-link="/page/1.A.b" href="/page/1.A.b"> Page 1.A.b </a>,
+          <a ng-reflect-router-link="/page/1.A" title="Page 1.A" href="/page/1.A"> Page 1.A </a>,
+          <a ng-reflect-router-link="/page/1.B" title="Page 1.B" href="/page/1.B"> Page 1.B </a>,
         ]
       `);
     });
 
     describe('filter-selected', () => {
-      beforeEach(() => when(cmsFacade.selectedContentPageId$).thenReturn(of('1')));
-
       it('should set no filter-selected class if no contentPageId equals the currentContentPageId', () => {
-        component.contentPageId = '1.A';
-        component.actualDepth = 0;
-        component.maxDepth = 5;
-        component.root = '1.A';
+        when(cmsFacade.contentPage$).thenReturn(of({ id: '1' } as ContentPageletEntryPointView));
 
         component.ngOnChanges();
         fixture.detectChanges();
 
-        expect(element.querySelectorAll('.filter-selected')).toHaveLength(0);
+        expect(element.querySelectorAll('.page-navigation-active')).toHaveLength(0);
       });
 
       it('should set filter-selected class just for root element', () => {
-        component.contentPageId = '1';
-        component.actualDepth = 0;
-        component.maxDepth = 5;
-        component.root = '1';
+        when(cmsFacade.contentPage$).thenReturn(of({ id: '1.A' } as ContentPageletEntryPointView));
 
         component.ngOnChanges();
         fixture.detectChanges();
 
-        expect(element.querySelectorAll('.filter-selected')).toMatchInlineSnapshot(`
+        expect(element.querySelectorAll('.page-navigation-active')).toMatchInlineSnapshot(`
           NodeList [
-            <a class="filter-item-name filter-selected" ng-reflect-router-link="/page/1" href="/page/1">
-            Page 1
-          </a>,
+            <li class="page-navigation-active">
+            <a ng-reflect-router-link="/page/1.A" title="Page 1.A" href="/page/1.A"> Page 1.A </a>
+            <ul class="page-navigation-1">
+              <li>
+                <a ng-reflect-router-link="/page/1.A.a" title="Page 1.A.a" href="/page/1.A.a"> Page 1.A.a </a>
+              </li>
+              <li>
+                <a ng-reflect-router-link="/page/1.A.b" title="Page 1.A.b" href="/page/1.A.b"> Page 1.A.b </a>
+              </li>
+            </ul>
+          </li>,
+          ]
+        `);
+      });
+    });
+
+    describe('navigation-depth', () => {
+      beforeEach(() => {
+        component.ngOnChanges();
+        fixture.detectChanges();
+      });
+
+      it('should set page-navigation-0 class to first layer', () => {
+        expect(element.querySelectorAll('.page-navigation-0')).toMatchInlineSnapshot(`
+          NodeList [
+            <ul class="page-navigation-0">
+            <li>
+              <a ng-reflect-router-link="/page/1.A" title="Page 1.A" href="/page/1.A"> Page 1.A </a>
+              <ul class="page-navigation-1">
+                <li>
+                  <a ng-reflect-router-link="/page/1.A.a" title="Page 1.A.a" href="/page/1.A.a">
+                    Page 1.A.a
+                  </a>
+                </li>
+                <li>
+                  <a ng-reflect-router-link="/page/1.A.b" title="Page 1.A.b" href="/page/1.A.b">
+                    Page 1.A.b
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li><a ng-reflect-router-link="/page/1.B" title="Page 1.B" href="/page/1.B"> Page 1.B </a></li>
+          </ul>,
+          ]
+        `);
+      });
+
+      it('should set page-navigation-1 class to second layer', () => {
+        expect(element.querySelectorAll('.page-navigation-1')).toMatchInlineSnapshot(`
+          NodeList [
+            <ul class="page-navigation-1">
+            <li>
+              <a ng-reflect-router-link="/page/1.A.a" title="Page 1.A.a" href="/page/1.A.a"> Page 1.A.a </a>
+            </li>
+            <li>
+              <a ng-reflect-router-link="/page/1.A.b" title="Page 1.A.b" href="/page/1.A.b"> Page 1.A.b </a>
+            </li>
+          </ul>,
+          ]
+        `);
+      });
+    });
+
+    describe('Navigation header', () => {
+      it('should set display name of navigation root as header', () => {
+        component.ngOnChanges();
+        fixture.detectChanges();
+        expect(element.querySelectorAll('h3')).toMatchInlineSnapshot(`
+          NodeList [
+            <h3>Page 1</h3>,
           ]
         `);
       });

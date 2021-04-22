@@ -44,9 +44,9 @@ export class CMSFacade {
     return this.store.pipe(select(getViewContext(viewContextId, callParameters)));
   }
 
-  loadPageTreeView$(contentPageId: string, depth: number) {
-    this.store.dispatch(loadContentPageTree({ contentPageId, depth }));
-    return this.store.pipe(select(getContentPageTreeView(contentPageId)));
+  loadPageTreeView$(rootId: string, depth: number) {
+    this.store.dispatch(loadContentPageTree({ rootId, depth }));
+    return this.store.pipe(select(getContentPageTreeView(rootId)));
   }
 
   pageTree$(contentPageId: string) {

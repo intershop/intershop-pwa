@@ -37,7 +37,7 @@ export class PagesEffects {
     )
   );
 
-  setBreadcrumbForContentPage1$ = createEffect(() =>
+  setBreadcrumbForContentPage$ = createEffect(() =>
     combineLatest([
       this.store.pipe(select(getSelectedContentPage)),
       this.store.pipe(select(getSelectedContentPageBreadcrumbData)),

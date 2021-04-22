@@ -15,8 +15,8 @@ export class PageTreesEffects {
     this.actions$.pipe(
       ofType(loadContentPageTree),
       mapToPayload(),
-      concatMap(({ contentPageId, depth }) =>
-        this.cmsService.getContentPageTree(contentPageId, depth).pipe(
+      concatMap(({ rootId, depth }) =>
+        this.cmsService.getContentPageTree(rootId, depth).pipe(
           map(tree => loadContentPageTreeSuccess({ tree })),
           mapErrorToAction(loadContentPageTreeFail)
         )

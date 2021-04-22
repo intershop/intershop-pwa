@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { ContentPageTreeElement } from 'ish-core/models/content-page-tree/content-page-tree.model';
@@ -9,19 +10,31 @@ import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ng
 import { pageTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { loadContentPageTreeSuccess } from './page-trees.actions';
-import { getContentPageTreeView, getPageTrees } from './page-trees.selectors';
+import { getContentPageTreeView, getPageTrees, getSelectedContentPageBreadcrumbData } from './page-trees.selectors';
 
 describe('Page Trees Selectors', () => {
   let store$: StoreWithSnapshots;
+  let router: Router;
+
   let tree1: ContentPageTreeElement;
   let tree2: ContentPageTreeElement;
+  let tree3: ContentPageTreeElement;
+  let tree4: ContentPageTreeElement;
+  let tree5: ContentPageTreeElement;
 
   beforeEach(() => {
     @Component({ template: 'dummy' })
     class DummyComponent {}
 
-    tree1 = { contentPageId: '1', path: ['1'] } as ContentPageTreeElement;
-    tree2 = { contentPageId: '1.1', path: ['1', '1.1'] } as ContentPageTreeElement;
+    tree1 = { contentPageId: '1', path: ['1'], name: '1' } as ContentPageTreeElement;
+    tree2 = { contentPageId: '1.1', path: ['1', '1.1'], name: '1.1' } as ContentPageTreeElement;
+    tree3 = { contentPageId: '1.1.1', path: ['1', '1.1', '1.1.1'], name: '1.1.1' } as ContentPageTreeElement;
+    tree4 = { contentPageId: '1.1.2', path: ['1', '1.1', '1.1.2'], name: '1.1.2' } as ContentPageTreeElement;
+    tree5 = {
+      contentPageId: '1.1.1.1',
+      path: ['1', '1.1', '1.1.1', '1.1.1.1'],
+      name: '1.1.1.1',
+    } as ContentPageTreeElement;
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -34,6 +47,7 @@ describe('Page Trees Selectors', () => {
     });
 
     store$ = TestBed.inject(StoreWithSnapshots);
+    router = TestBed.inject(Router);
   });
 
   describe('with empty state', () => {
@@ -43,45 +57,175 @@ describe('Page Trees Selectors', () => {
   });
 
   describe('state contains page tree', () => {
-    beforeEach(() => store$.dispatch(loadContentPageTreeSuccess({ tree: pageTree([tree1, tree2]) })));
+    beforeEach(() =>
+      store$.dispatch(loadContentPageTreeSuccess({ tree: pageTree([tree1, tree2, tree3, tree4, tree5]) }))
+    );
 
     it('should get all page trees with getPageTrees() selector', () => {
       expect(getPageTrees(store$.state)).toMatchInlineSnapshot(`
         └─ 1
            └─ 1.1
+              ├─ 1.1.1
+              │  └─ 1.1.1.1
+              └─ 1.1.2
 
       `);
     });
 
-    describe('with no page route', () => {
-      it('should select content page tree of given uniqueId with children', () => {
-        expect(getContentPageTreeView(tree1.contentPageId)(store$.state).contentPageId).toEqual(tree1.contentPageId);
+    describe('with page route', () => {
+      it('should select content page tree of given uniqueId with children', fakeAsync(() => {
+        router.navigateByUrl(`page/1`);
+        tick(500);
         expect(getContentPageTreeView(tree1.contentPageId)(store$.state)).toMatchInlineSnapshot(`
-          Object {
-            "children": Array [
-              "1.1",
-            ],
-            "contentPageId": "1",
-            "path": Array [
-              "1",
-            ],
-          }
+          Array [
+            Object {
+              "children": Array [],
+              "contentPageId": "1.1",
+              "name": "1.1",
+              "parent": "1",
+              "path": Array [
+                "1",
+                "1.1",
+              ],
+            },
+          ]
         `);
-      });
+      }));
 
-      it('should select content page tree of given uniqueId with no children', () => {
-        expect(getContentPageTreeView(tree2.contentPageId)(store$.state).contentPageId).toEqual(tree2.contentPageId);
-        expect(getContentPageTreeView(tree2.contentPageId)(store$.state)).toMatchInlineSnapshot(`
-          Object {
-            "children": Array [],
-            "contentPageId": "1.1",
-            "path": Array [
-              "1",
-              "1.1",
-            ],
-          }
+      it('should select content page tree of given uniqueId with no children', fakeAsync(() => {
+        router.navigateByUrl(`page/1.1`);
+        tick(500);
+        expect(getContentPageTreeView(tree1.contentPageId)(store$.state)).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "contentPageId": "1.1.1",
+                  "name": "1.1.1",
+                  "parent": "1.1",
+                  "path": Array [
+                    "1",
+                    "1.1",
+                    "1.1.1",
+                  ],
+                },
+                Object {
+                  "children": Array [],
+                  "contentPageId": "1.1.2",
+                  "name": "1.1.2",
+                  "parent": "1.1",
+                  "path": Array [
+                    "1",
+                    "1.1",
+                    "1.1.2",
+                  ],
+                },
+              ],
+              "contentPageId": "1.1",
+              "name": "1.1",
+              "parent": "1",
+              "path": Array [
+                "1",
+                "1.1",
+              ],
+            },
+          ]
         `);
-      });
+      }));
+
+      it('should select content page tree of given uniqueId with no children', fakeAsync(() => {
+        router.navigateByUrl(`page/1.1.1`);
+        tick(500);
+        expect(getContentPageTreeView(tree1.contentPageId)(store$.state)).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [
+                    Object {
+                      "children": Array [],
+                      "contentPageId": "1.1.1.1",
+                      "name": "1.1.1.1",
+                      "parent": "1.1.1",
+                      "path": Array [
+                        "1",
+                        "1.1",
+                        "1.1.1",
+                        "1.1.1.1",
+                      ],
+                    },
+                  ],
+                  "contentPageId": "1.1.1",
+                  "name": "1.1.1",
+                  "parent": "1.1",
+                  "path": Array [
+                    "1",
+                    "1.1",
+                    "1.1.1",
+                  ],
+                },
+                Object {
+                  "children": Array [],
+                  "contentPageId": "1.1.2",
+                  "name": "1.1.2",
+                  "parent": "1.1",
+                  "path": Array [
+                    "1",
+                    "1.1",
+                    "1.1.2",
+                  ],
+                },
+              ],
+              "contentPageId": "1.1",
+              "name": "1.1",
+              "parent": "1",
+              "path": Array [
+                "1",
+                "1.1",
+              ],
+            },
+          ]
+        `);
+      }));
+    });
+
+    describe('getSelectedContentPageBreadcrumbData', () => {
+      it('should return undefined, if selected content page is not part of a page tree', fakeAsync(() => {
+        router.navigateByUrl(`page/undefined`);
+        tick(500);
+        expect(getSelectedContentPageBreadcrumbData(store$.state)).toBeUndefined();
+      }));
+
+      it('should return BreadcrumbData, if selected content page is part of a page tree', fakeAsync(() => {
+        router.navigateByUrl(`page/1`);
+        tick(500);
+        expect(getSelectedContentPageBreadcrumbData(store$.state)).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "key": "1",
+              "link": undefined,
+            },
+          ]
+        `);
+      }));
+
+      it('should return BreadcrumbData, if selected content page is part of a page tree', fakeAsync(() => {
+        router.navigateByUrl(`page/1.1`);
+        tick(500);
+        expect(getSelectedContentPageBreadcrumbData(store$.state)).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "key": "1",
+              "link": "/page/1",
+            },
+            Object {
+              "key": "1.1",
+              "link": undefined,
+            },
+          ]
+        `);
+      }));
     });
   });
 });

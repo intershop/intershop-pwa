@@ -33,7 +33,7 @@ function getSubTreeElements(
     const nodeParent = tree.nodes[elementId].path[tree.nodes[elementId].path.length - 2];
     treeElements.push({
       ...tree.nodes[elementId],
-      parent: nodeParent === rootId ? undefined : nodeParent,
+      parent: nodeParent,
       children: [],
     });
   }
@@ -53,10 +53,10 @@ function hasPageTreeElement(tree: ContentPageTree, contentPageId: string, elemen
   return result;
 }
 
-function unflattenTree(elements: ContentPageTreeView[]): ContentPageTreeView[] {
+function unflattenTree(elements: ContentPageTreeView[], rootId: string): ContentPageTreeView[] {
   const root: ContentPageTreeView[] = [];
   elements.map(element => {
-    if (!element.parent) {
+    if (element.parent === rootId) {
       root.push(element);
       return;
     }
@@ -70,13 +70,13 @@ function unflattenTree(elements: ContentPageTreeView[]): ContentPageTreeView[] {
 
 export function createContentPageTreeView(
   tree: ContentPageTree,
-  root: string,
+  rootId: string,
   contentPageId: string
 ): ContentPageTreeView[] {
-  if (!tree || !root || !tree.nodes[root]) {
+  if (!tree || !rootId || !tree.nodes[rootId]) {
     return;
   }
 
-  const subTree = getSubTreeElements(tree, root, root, contentPageId);
-  return unflattenTree(subTree);
+  const subTree = getSubTreeElements(tree, rootId, rootId, contentPageId);
+  return unflattenTree(subTree, rootId);
 }

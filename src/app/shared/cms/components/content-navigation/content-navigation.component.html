@@ -5,25 +5,25 @@
       <ul class="page-navigation-0">
         <ng-container
           [ngTemplateOutlet]="recursivePageTree"
-          [ngTemplateOutletContext]="{ tree: contentPageTreeView, d: 1 }"
+          [ngTemplateOutletContext]="{ tree: contentPageTreeView, counter: 1 }"
         ></ng-container>
       </ul>
 
-      <ng-template #recursivePageTree let-tree="tree" let-d="d">
+      <ng-template #recursivePageTree let-tree="tree" let-counter="counter">
         <li
           *ngFor="let item of tree"
           [ngClass]="{ 'page-navigation-active': item.contentPageId === currentContentPageId }"
         >
-          <a [routerLink]="'/page/' + item.contentPageId" title="">
+          <a [routerLink]="'/page/' + item.contentPageId" title="{{ item.name }}">
             {{ item.name }}
           </a>
           <ul
-            *ngIf="item.children.length > 0 && ((!depth && depth !== 0) || depth >= d)"
-            class="page-navigation-{{ d }}"
+            *ngIf="item.children.length > 0 && ((!depth && depth !== 0) || depth >= counter)"
+            class="page-navigation-{{ counter }}"
           >
             <ng-container
               [ngTemplateOutlet]="recursivePageTree"
-              [ngTemplateOutletContext]="{ tree: item.children, d: d + 1 }"
+              [ngTemplateOutletContext]="{ tree: item.children, counter: counter + 1 }"
             ></ng-container>
           </ul>
         </li>

@@ -77,7 +77,7 @@ describe('Cms Service', () => {
     });
 
     it('should set depth when property is set', () => {
-      cmsService.getContentPageTree('dummyId', '2');
+      cmsService.getContentPageTree('dummyId', 2);
       verify(apiService.get(`cms/pagetree/dummyId`, anything())).once();
 
       expect(capture(apiService.get).last()[0].toString()).toMatchInlineSnapshot(`"cms/pagetree/dummyId"`);

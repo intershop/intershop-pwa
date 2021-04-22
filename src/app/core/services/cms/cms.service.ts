@@ -64,12 +64,12 @@ export class CMSService {
 
   /**
    *
-   * @param contentPageId: The Page Id
+   * @param rootId: The Page Id
    * @param depth: Depth of returned content page tree
    * @returns Content page tree
    */
-  getContentPageTree(contentPageId: string, depth?: number): Observable<ContentPageTree> {
-    if (!contentPageId) {
+  getContentPageTree(rootId: string, depth?: number): Observable<ContentPageTree> {
+    if (!rootId) {
       return throwError('getContentPage() called without an pageId');
     }
     let params = new HttpParams();
@@ -78,7 +78,7 @@ export class CMSService {
     }
 
     return this.apiService
-      .get<ContentPageTreeData>(`cms/pagetree/${contentPageId}`, { sendPGID: true, params })
+      .get<ContentPageTreeData>(`cms/pagetree/${rootId}`, { sendPGID: true, params })
       .pipe(map(data => this.contentPageTreeMapper.fromData(data)));
   }
 

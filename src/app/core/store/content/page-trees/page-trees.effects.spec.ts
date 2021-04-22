@@ -33,14 +33,14 @@ describe('Page Trees Effects', () => {
 
   describe('loadContentPageTree$', () => {
     it('should send fail action when loading action via service is unsuccessful', done => {
-      when(cmsServiceMock.getContentPageTree('dummy', '2')).thenReturn(throwError(makeHttpError({ message: 'ERROR' })));
+      when(cmsServiceMock.getContentPageTree('dummy', 2)).thenReturn(throwError(makeHttpError({ message: 'ERROR' })));
 
-      actions$ = of(loadContentPageTree({ contentPageId: 'dummy', depth: '2' }));
+      actions$ = of(loadContentPageTree({ rootId: 'dummy', depth: 2 }));
 
       effects.loadContentPageTree$.subscribe(action => {
-        verify(cmsServiceMock.getContentPageTree('dummy', '2')).once();
+        verify(cmsServiceMock.getContentPageTree('dummy', 2)).once();
         expect(action).toMatchInlineSnapshot(`
-          [Content Page API] Load Content Page Tree Fail:
+          [Content Page Tree API] Load Content Page Tree Fail:
             error: {"name":"HttpErrorResponse","message":"ERROR"}
         `);
         done();
@@ -48,9 +48,9 @@ describe('Page Trees Effects', () => {
     });
 
     it('should not die when encountering an error', () => {
-      when(cmsServiceMock.getContentPageTree('dummy', '2')).thenReturn(throwError(makeHttpError({ message: 'ERROR' })));
+      when(cmsServiceMock.getContentPageTree('dummy', 2)).thenReturn(throwError(makeHttpError({ message: 'ERROR' })));
 
-      actions$ = hot('a-a-a-a', { a: loadContentPageTree({ contentPageId: 'dummy', depth: '2' }) });
+      actions$ = hot('a-a-a-a', { a: loadContentPageTree({ rootId: 'dummy', depth: 2 }) });
 
       expect(effects.loadContentPageTree$).toBeObservable(
         cold('a-a-a-a', { a: loadContentPageTreeFail({ error: makeHttpError({ message: 'ERROR' }) }) })
@@ -59,9 +59,9 @@ describe('Page Trees Effects', () => {
 
     it('should map to action of type CreatePageTreeSuccess when actual tree does contain navigation root', () => {
       const tree = { edges: {}, nodes: {} } as ContentPageTree;
-      when(cmsServiceMock.getContentPageTree('dummy', '2')).thenReturn(of(tree));
+      when(cmsServiceMock.getContentPageTree('dummy', 2)).thenReturn(of(tree));
 
-      actions$ = hot('a-a-a-a', { a: loadContentPageTree({ contentPageId: 'dummy', depth: '2' }) });
+      actions$ = hot('a-a-a-a', { a: loadContentPageTree({ rootId: 'dummy', depth: 2 }) });
       const expected$ = cold('b-b-b-b', { b: loadContentPageTreeSuccess({ tree }) });
 
       expect(effects.loadContentPageTree$).toBeObservable(expected$);

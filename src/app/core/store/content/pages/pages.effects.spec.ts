@@ -1,18 +1,23 @@
 import { Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
+import { ContentPageTreeElement } from 'ish-core/models/content-page-tree/content-page-tree.model';
+import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { CMSService } from 'ish-core/services/cms/cms.service';
+import { ContentStoreModule } from 'ish-core/store/content/content-store.module';
+import { loadContentPageTreeSuccess } from 'ish-core/store/content/page-trees';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
+import { pageTree } from 'ish-core/utils/dev/test-data-utils';
 
-import { loadContentPage, loadContentPageFail } from './pages.actions';
+import { loadContentPage, loadContentPageFail, loadContentPageSuccess } from './pages.actions';
 import { PagesEffects } from './pages.effects';
 
 describe('Pages Effects', () => {
@@ -20,6 +25,7 @@ describe('Pages Effects', () => {
   let effects: PagesEffects;
   let cmsServiceMock: CMSService;
   let router: Router;
+  let store$: Store;
 
   beforeEach(() => {
     @Component({ template: 'dummy' })
@@ -29,6 +35,7 @@ describe('Pages Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
+        ContentStoreModule.forTesting('trees', 'pages'),
         CoreStoreModule.forTesting(['router']),
         RouterTestingModule.withRoutes([{ path: 'page/:contentPageId', component: DummyComponent }]),
       ],
@@ -41,6 +48,7 @@ describe('Pages Effects', () => {
 
     effects = TestBed.inject(PagesEffects);
     router = TestBed.inject(Router);
+    store$ = TestBed.inject(Store);
   });
 
   describe('loadPages$', () => {
@@ -81,6 +89,43 @@ describe('Pages Effects', () => {
       });
 
       router.navigateByUrl('/page/dummy');
+    });
+  });
+
+  describe('setBreadcrumbForContentPage$', () => {
+    const tree1 = { contentPageId: '1', name: 'page 1', path: ['1'] } as ContentPageTreeElement;
+    const tree2 = { contentPageId: '1.1', name: 'page 1.1', path: ['1', '1.1'] } as ContentPageTreeElement;
+
+    beforeEach(fakeAsync(() => {
+      router.navigateByUrl('/page/1.1');
+      tick(500);
+      store$.dispatch(
+        loadContentPageSuccess({
+          page: { id: '1.1', displayName: 'page 1.1' } as ContentPageletEntryPoint,
+          pagelets: [],
+        })
+      );
+    }));
+
+    it('should set default breadcrumb if selected content page is not part of a page tree', done => {
+      effects.setBreadcrumbForContentPage$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Viewconf Internal] Set Breadcrumb Data:
+            breadcrumbData: [{"key":"page 1.1"}]
+        `);
+        done();
+      });
+    });
+
+    it('should set page breadcrumb if selected content page is part of a page tree', done => {
+      store$.dispatch(loadContentPageTreeSuccess({ tree: pageTree([tree1, tree2]) }));
+      effects.setBreadcrumbForContentPage$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Viewconf Internal] Set Breadcrumb Data:
+            breadcrumbData: [{"key":"page 1","link":"/page/1"},{"key":"page 1.1"}]
+        `);
+        done();
+      });
     });
   });
 });

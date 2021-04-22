@@ -34,7 +34,7 @@ describe('Content Page Tree Mapper', () => {
   });
 
   describe('treeElementsFromTreeElementPath()', () => {
-    it('should return empty tree on falsy or empty imput', () => {
+    it('should return empty tree on falsy or empty input', () => {
       expect(contentPageTreeMapper.treeElementsFromTreeElementPath(undefined)).toEqual(pageTree());
       expect(contentPageTreeMapper.treeElementsFromTreeElementPath([])).toEqual(pageTree());
     });
