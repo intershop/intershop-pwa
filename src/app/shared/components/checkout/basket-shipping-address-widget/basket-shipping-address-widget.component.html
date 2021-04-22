@@ -57,13 +57,7 @@
 <!-- shipping address selection -->
 <ng-container *ngIf="addresses$ | async as addresses">
   <form *ngIf="addresses.length" [formGroup]="form">
-    <ish-select-address
-      [form]="form"
-      controlName="id"
-      [addresses]="addresses"
-      [emptyOptionLabel]="emptyOptionLabel$ | async"
-      inputClass="col-12"
-    ></ish-select-address>
+    <formly-form [form]="form" [fields]="fields"></formly-form>
   </form>
 </ng-container>
 
