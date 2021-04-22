@@ -1,7 +1,5 @@
 <ish-account-profile-user
   [currentUser]="currentUser$ | async"
-  [titles]="titles"
-  [countryCode]="currentCountryCode"
   [error]="userError$ | async"
   (updateUserProfile)="updateUserProfile($event)"
 ></ish-account-profile-user>

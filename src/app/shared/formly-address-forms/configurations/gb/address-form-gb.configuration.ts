@@ -9,13 +9,13 @@ import {
   AddressFormConfiguration,
   addressesFieldConfiguration,
 } from 'ish-shared/formly-address-forms/configurations/address-form.configuration';
-import { determineSalutations } from 'ish-shared/forms/utils/form-utils';
+import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 @Injectable()
 export class AddressFormGBConfiguration extends AddressFormConfiguration {
   countryCode = 'GB';
 
-  constructor() {
+  constructor(private formsService: FormsService) {
     super();
   }
 
@@ -45,9 +45,7 @@ export class AddressFormGBConfiguration extends AddressFormConfiguration {
           type: 'ish-select-field',
           templateOptions: {
             label: 'account.default_address.title.label',
-            options: of(
-              determineSalutations(this.countryCode).map(salutation => ({ value: salutation, label: salutation }))
-            ),
+            options: of(this.formsService.getSalutationOptionsForCountryCode(this.countryCode)),
             placeholder: 'account.option.select.text',
           },
         },
