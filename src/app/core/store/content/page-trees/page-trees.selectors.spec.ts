@@ -10,7 +10,7 @@ import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ng
 import { pageTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { loadContentPageTreeSuccess } from './page-trees.actions';
-import { getContentPageTreeView, getPageTrees, getSelectedContentPageBreadcrumbData } from './page-trees.selectors';
+import { getContentPageTreeView, getPageTrees } from './page-trees.selectors';
 
 describe('Page Trees Selectors', () => {
   let store$: StoreWithSnapshots;
@@ -184,44 +184,6 @@ describe('Page Trees Selectors', () => {
                 "1",
                 "1.1",
               ],
-            },
-          ]
-        `);
-      }));
-    });
-
-    describe('getSelectedContentPageBreadcrumbData', () => {
-      it('should return undefined, if selected content page is not part of a page tree', fakeAsync(() => {
-        router.navigateByUrl(`page/undefined`);
-        tick(500);
-        expect(getSelectedContentPageBreadcrumbData(store$.state)).toBeUndefined();
-      }));
-
-      it('should return BreadcrumbData, if selected content page is part of a page tree', fakeAsync(() => {
-        router.navigateByUrl(`page/1`);
-        tick(500);
-        expect(getSelectedContentPageBreadcrumbData(store$.state)).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "key": "1",
-              "link": undefined,
-            },
-          ]
-        `);
-      }));
-
-      it('should return BreadcrumbData, if selected content page is part of a page tree', fakeAsync(() => {
-        router.navigateByUrl(`page/1.1`);
-        tick(500);
-        expect(getSelectedContentPageBreadcrumbData(store$.state)).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "key": "1",
-              "link": "/page/1",
-            },
-            Object {
-              "key": "1.1",
-              "link": undefined,
             },
           ]
         `);
