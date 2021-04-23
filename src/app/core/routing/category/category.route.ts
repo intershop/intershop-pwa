@@ -4,7 +4,7 @@ import { filter } from 'rxjs/operators';
 
 import { Category } from 'ish-core/models/category/category.model';
 import { CoreState } from 'ish-core/store/core/core-store';
-import { selectRouteParam } from 'ish-core/store/core/router';
+import { selectRouteParam, selectRouteParamAorB } from 'ish-core/store/core/router';
 import { reservedCharactersRegEx } from 'ish-core/utils/routing';
 
 export function generateLocalizedCategorySlug(category: Category) {
@@ -54,6 +54,9 @@ export function generateCategoryUrl(category: Category): string {
 export function ofCategoryUrl(): MonoTypeOperatorFunction<{}> {
   return source$ =>
     source$.pipe(
-      filter((state: CoreState) => !selectRouteParam('sku')(state) && !!selectRouteParam('categoryUniqueId')(state))
+      filter(
+        (state: CoreState) =>
+          !selectRouteParam('sku')(state) && !!selectRouteParamAorB('categoryUniqueId', 'categoryRefId')(state)
+      )
     );
 }
