@@ -107,7 +107,7 @@ describe('Pages Effects', () => {
       );
     }));
 
-    it('should set default breadcrumb if selected content page is not part of a page tree', done => {
+    it('should set breadcrumb if selected content page is not part of a page tree', done => {
       effects.setBreadcrumbForContentPage$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
           [Viewconf Internal] Set Breadcrumb Data:

@@ -8,11 +8,18 @@ export interface ContentPageTreeView extends ContentPageTreeElement {
   children: ContentPageTreeView[];
 }
 
-function getSubTreeElements(
+/**
+ * @param tree
+ * @param elementId element of page tree. It will be decided, if element is part of displayed navigation tree.
+ * @param rootId
+ * @param currentContentPageId
+ * @returns Get all displayed navigation tree elements of current content page.
+ */
+function getContentPageTreeElements(
   tree: ContentPageTree,
   elementId: string,
   rootId: string,
-  contentPageId: string
+  currentContentPageId: string
 ): ContentPageTreeView[] {
   if (!tree || !elementId || !tree.nodes[elementId]) {
     return;
@@ -20,15 +27,20 @@ function getSubTreeElements(
 
   let treeElements: ContentPageTreeView[] = [];
 
-  if (tree.edges[elementId] && (hasPageTreeElement(tree, contentPageId, elementId) || elementId === contentPageId)) {
+  // If current content page is part of element subtree or equals the element itself, then all children of elements should be analysed
+  if (
+    tree.edges[elementId] &&
+    (isContentPagePartOfPageTreeElement(tree, currentContentPageId, elementId) || elementId === currentContentPageId)
+  ) {
     treeElements = tree.edges[elementId]
-      .map(child => getSubTreeElements(tree, child, rootId, contentPageId))
+      .map(child => getContentPageTreeElements(tree, child, rootId, currentContentPageId))
       .reduce((a, b) => {
         b.map(element => a.push(element));
         return a;
       });
   }
 
+  // Root should not be part of displayed navigation tree
   if (rootId !== elementId) {
     const nodeParent = tree.nodes[elementId].path[tree.nodes[elementId].path.length - 2];
     treeElements.push({
@@ -41,18 +53,26 @@ function getSubTreeElements(
   return treeElements;
 }
 
-function hasPageTreeElement(tree: ContentPageTree, contentPageId: string, elementId: string): boolean {
+// Analyse if subtree of page tree element contains current content page id
+function isContentPagePartOfPageTreeElement(
+  tree: ContentPageTree,
+  currentContentPageId: string,
+  elementId: string
+): boolean {
   let result = false;
   if (tree.edges[elementId]) {
-    if (tree.edges[elementId].find(e => e === contentPageId)) {
+    if (tree.edges[elementId].find(e => e === currentContentPageId)) {
       result = true;
     } else {
-      result = tree.edges[elementId].map(e => hasPageTreeElement(tree, contentPageId, e)).find(res => res);
+      result = tree.edges[elementId]
+        .map(e => isContentPagePartOfPageTreeElement(tree, currentContentPageId, e))
+        .find(res => res);
     }
   }
   return result;
 }
 
+// build page tree data based on given elements
 function unflattenTree(elements: ContentPageTreeView[], rootId: string): ContentPageTreeView[] {
   const root: ContentPageTreeView[] = [];
   elements.map(element => {
@@ -77,6 +97,6 @@ export function createContentPageTreeView(
     return;
   }
 
-  const subTree = getSubTreeElements(tree, rootId, rootId, contentPageId);
-  return unflattenTree(subTree, rootId);
+  const contentPageTree = getContentPageTreeElements(tree, rootId, rootId, contentPageId);
+  return unflattenTree(contentPageTree, rootId);
 }
