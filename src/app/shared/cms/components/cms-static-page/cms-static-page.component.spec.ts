@@ -62,7 +62,7 @@ describe('Cms Static Page Component', () => {
       expect(findAllCustomElements(element)).toContain('ish-content-navigation');
     });
 
-    it('should set the correct id for the underlying product list', () => {
+    it('should set the correct attributes for underlying content navigation component', () => {
       fixture.detectChanges();
 
       const navigation = fixture.debugElement.query(By.css('ish-content-navigation'))
