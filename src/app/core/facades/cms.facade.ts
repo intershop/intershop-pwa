@@ -49,7 +49,7 @@ export class CMSFacade {
     return this.store.pipe(select(getContentPageTreeView(rootId)));
   }
 
-  pageTree$(contentPageId: string) {
-    return this.store.pipe(select(getPageTrees)).pipe(map(tree => tree?.nodes[contentPageId]));
+  pageTreeElement$(elementId: string) {
+    return this.store.pipe(select(getPageTrees)).pipe(map(tree => tree?.nodes[elementId]));
   }
 }

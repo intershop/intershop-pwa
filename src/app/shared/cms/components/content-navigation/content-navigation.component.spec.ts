@@ -77,7 +77,7 @@ describe('Content Navigation Component', () => {
         ] as ContentPageTreeView[])
       );
 
-      when(cmsFacade.pageTree$(anyString())).thenReturn(of({ name: 'Page 1' } as ContentPageTreeElement));
+      when(cmsFacade.pageTreeElement$(anyString())).thenReturn(of({ name: 'Page 1' } as ContentPageTreeElement));
     });
 
     it('should get whole page tree, when maxDepth is greater than depth of actual page tree', () => {

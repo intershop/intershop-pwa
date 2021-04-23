@@ -36,7 +36,7 @@ export class ContentNavigationComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if (this.root) {
       this.contentPageTreeView$ = this.cmsFacade.loadPageTreeView$(this.root, this.depth);
-      this.rootDisplayName$ = this.cmsFacade.pageTree$(this.root).pipe(map(tree => tree.name));
+      this.rootDisplayName$ = this.cmsFacade.pageTreeElement$(this.root).pipe(map(tree => tree.name));
     }
   }
 }
