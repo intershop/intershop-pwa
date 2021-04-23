@@ -42,10 +42,10 @@ function getContentPageTreeElements(
 
   // Root should not be part of displayed navigation tree
   if (rootId !== elementId) {
-    const nodeParent = tree.nodes[elementId].path[tree.nodes[elementId].path.length - 2];
+    const parent = tree.nodes[elementId].path[tree.nodes[elementId].path.length - 2];
     treeElements.push({
       ...tree.nodes[elementId],
-      parent: nodeParent,
+      parent,
       children: [],
     });
   }

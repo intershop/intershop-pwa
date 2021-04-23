@@ -1,9 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
 
-import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { ContentPageletView, createContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
@@ -18,17 +16,14 @@ describe('Cms Static Page Component', () => {
   let element: HTMLElement;
   let pageletView: ContentPageletView;
   let pagelet: ContentPagelet;
-  let cmsFacade: CMSFacade;
 
   beforeEach(async () => {
-    cmsFacade = mock(CMSFacade);
     await TestBed.configureTestingModule({
       declarations: [
         CMSStaticPageComponent,
         MockComponent(ContentNavigationComponent),
         MockComponent(ContentSlotComponent),
       ],
-      providers: [{ provide: CMSFacade, useFactory: () => instance(cmsFacade) }],
     }).compileComponents();
   });
 
