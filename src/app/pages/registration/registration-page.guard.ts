@@ -11,9 +11,11 @@ export class RegistrationPageGuard implements CanDeactivate<RegistrationPageComp
   constructor(private registrationConfigurationService: RegistrationFormConfigurationService) {}
 
   canDeactivate(
-    component: RegistrationPageComponent,
+    _: RegistrationPageComponent,
     currentRoute: ActivatedRouteSnapshot
   ): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    return this.registrationConfigurationService.canDeactivate(component.extractConfig(currentRoute));
+    return this.registrationConfigurationService.canDeactivate(
+      this.registrationConfigurationService.extractConfig(currentRoute)
+    );
   }
 }

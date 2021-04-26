@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { UUID } from 'angular2-uuid';
@@ -12,6 +12,7 @@ import { Address } from 'ish-core/models/address/address.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
+import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { ConfirmLeaveModalComponent } from 'ish-shared/components/registration/confirm-leave-modal/confirm-leave-modal.component';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
@@ -24,7 +25,26 @@ export interface RegistrationConfigType {
 @Injectable({ providedIn: 'root' })
 export class RegistrationFormConfigurationService {
   // tslint:disable: no-intelligence-in-artifacts
-  constructor(private accountFacade: AccountFacade, private router: Router, private modalService: NgbModal) {}
+  constructor(
+    private accountFacade: AccountFacade,
+    private router: Router,
+    private modalService: NgbModal,
+    private featureToggle: FeatureToggleService
+  ) {}
+
+  extractConfig(route: ActivatedRouteSnapshot) {
+    return {
+      sso: !!route.url.find(segment => segment.path.includes('sso')),
+      userId: route.queryParams.userid,
+      businessCustomer: this.featureToggle.enabled('businessCustomerRegistration'),
+    };
+  }
+
+  extractModel(route: ActivatedRouteSnapshot, model?: Record<string, unknown>) {
+    return Object.keys(route.queryParams)
+      .filter(key => !['userid'].includes(key))
+      .reduce((acc, key) => ({ ...acc, [key]: route.queryParams[key] }), { ...model });
+  }
 
   getRegistrationFormConfiguration(registrationConfig: RegistrationConfigType) {
     return [

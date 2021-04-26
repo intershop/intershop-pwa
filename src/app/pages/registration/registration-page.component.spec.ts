@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { ActivatedRoute, ActivatedRouteSnapshot, Params, UrlSegment } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -29,7 +29,6 @@ describe('Registration Page Component', () => {
       declarations: [MockComponent(ErrorMessageComponent), RegistrationPageComponent],
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
       providers: [
-        { provide: FeatureToggleService, useFactory: () => instance(featureToggleService) },
         { provide: ActivatedRoute, useFactory: () => instance(activatedRoute) },
         { provide: RegistrationFormConfigurationService, useFactory: () => instance(configService) },
       ],
@@ -60,34 +59,6 @@ describe('Registration Page Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-  });
-
-  it('should set configuration parameters on init', () => {
-    fixture.detectChanges();
-    expect(component.registrationConfig).toMatchInlineSnapshot(`
-      Object {
-        "businessCustomer": false,
-        "sso": true,
-        "userId": undefined,
-      }
-    `);
-  });
-
-  it('should set configuration parameters depending on router', () => {
-    when(activatedRoute.snapshot).thenReturn({
-      queryParams: { userid: 'uid' } as Params,
-      url: [{ path: '/register' } as UrlSegment, { path: 'sso' } as UrlSegment],
-    } as ActivatedRouteSnapshot);
-    when(featureToggleService.enabled(anyString())).thenReturn(true);
-    fixture.detectChanges();
-
-    expect(component.registrationConfig).toMatchInlineSnapshot(`
-      Object {
-        "businessCustomer": true,
-        "sso": true,
-        "userId": "uid",
-      }
-    `);
   });
 
   it('should display form with registration configuration', () => {

@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
 
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import {
   RegistrationConfigType,
@@ -25,7 +24,6 @@ export class RegistrationPageComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private featureToggle: FeatureToggleService,
     private registrationFormConfiguration: RegistrationFormConfigurationService
   ) {}
 
@@ -42,8 +40,8 @@ export class RegistrationPageComponent implements OnInit {
     this.error$ = this.registrationFormConfiguration.getErrorSources();
 
     const snapshot = this.route.snapshot;
-    this.model = this.extractModel(snapshot);
-    this.registrationConfig = this.extractConfig(snapshot);
+    this.model = this.registrationFormConfiguration.extractModel(snapshot);
+    this.registrationConfig = this.registrationFormConfiguration.extractConfig(snapshot);
     this.options = this.registrationFormConfiguration.getOptions(this.registrationConfig, this.model);
     this.fields = this.registrationFormConfiguration.getRegistrationFormConfiguration(this.registrationConfig);
   }
@@ -63,19 +61,5 @@ export class RegistrationPageComponent implements OnInit {
   /** return boolean to set submit button enabled/disabled */
   get submitDisabled(): boolean {
     return this.form.invalid && this.submitted;
-  }
-
-  extractModel(route: ActivatedRouteSnapshot) {
-    return Object.keys(route.queryParams)
-      .filter(key => !['userid'].includes(key))
-      .reduce((acc, key) => ({ ...acc, [key]: route.queryParams[key] }), { ...this.model });
-  }
-
-  extractConfig(route: ActivatedRouteSnapshot) {
-    return {
-      sso: !!route.url.find(segment => segment.path.includes('sso')),
-      userId: route.queryParams.userid,
-      businessCustomer: this.featureToggle.enabled('businessCustomerRegistration'),
-    };
   }
 }
