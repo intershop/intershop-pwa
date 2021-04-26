@@ -7,6 +7,7 @@ import { CMSFreestyleComponent } from './components/cms-freestyle/cms-freestyle.
 import { CMSImageEnhancedComponent } from './components/cms-image-enhanced/cms-image-enhanced.component';
 import { CMSImageComponent } from './components/cms-image/cms-image.component';
 import { CMSLandingPageComponent } from './components/cms-landing-page/cms-landing-page.component';
+import { CMSProductListCategoryComponent } from './components/cms-product-list-category/cms-product-list-category.component';
 import { CMSProductListFilterComponent } from './components/cms-product-list-filter/cms-product-list-filter.component';
 import { CMSProductListComponent } from './components/cms-product-list/cms-product-list.component';
 import { CMSStandardPageComponent } from './components/cms-standard-page/cms-standard-page.component';
@@ -79,6 +80,14 @@ import { SfeAdapterService } from './sfe-adapter/sfe-adapter.service';
       useValue: {
         definitionQualifiedName: 'app_sf_base_cm:component.common.productListFilter.pagelet2-Component',
         class: CMSProductListFilterComponent,
+      },
+      multi: true,
+    },
+    {
+      provide: CMS_COMPONENT,
+      useValue: {
+        definitionQualifiedName: 'app_sf_base_cm:component.common.productListCategory.pagelet2-Component',
+        class: CMSProductListCategoryComponent,
       },
       multi: true,
     },

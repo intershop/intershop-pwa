@@ -9,8 +9,10 @@ import { selectRouteParam } from 'ish-core/store/core/router';
 import { addProductToBasket } from 'ish-core/store/customer/basket';
 import {
   getCategory,
+  getCategoryIdByRefId,
   getNavigationCategories,
   getSelectedCategory,
+  loadCategoryByRef,
   loadTopLevelCategories,
 } from 'ish-core/store/shopping/categories';
 import {
@@ -60,6 +62,11 @@ export class ShoppingFacade {
 
   category$(uniqueId: string) {
     return this.store.pipe(select(getCategory(uniqueId)));
+  }
+
+  categoryIdByRefId$(categoryRefId: string) {
+    this.store.dispatch(loadCategoryByRef({ categoryRefId }));
+    return this.store.pipe(select(getCategoryIdByRefId(categoryRefId)));
   }
 
   navigationCategories$(uniqueId?: string) {
