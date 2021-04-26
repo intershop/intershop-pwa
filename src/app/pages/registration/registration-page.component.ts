@@ -44,10 +44,7 @@ export class RegistrationPageComponent implements OnInit {
     const snapshot = this.route.snapshot;
     this.model = this.extractModel(snapshot);
     this.registrationConfig = this.extractConfig(snapshot);
-    this.options = this.registrationFormConfiguration.getRegistrationFormConfigurationOptions(
-      this.registrationConfig,
-      this.model
-    );
+    this.options = this.registrationFormConfiguration.getOptions(this.registrationConfig, this.model);
     this.fields = this.registrationFormConfiguration.getRegistrationFormConfiguration(this.registrationConfig);
   }
 

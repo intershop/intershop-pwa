@@ -6,7 +6,7 @@ import { map, switchMap, take, tap } from 'rxjs/operators';
 import { Address } from 'ish-core/models/address/address.model';
 import { Contact } from 'ish-core/models/contact/contact.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
-import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
+import { Customer, CustomerRegistrationType, SsoRegistrationType } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update/password-reminder-update.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
@@ -223,11 +223,7 @@ export class AccountFacade {
     this.store.dispatch(cancelRegistration());
   }
 
-  setRegistrationInfo(registrationInfo: {
-    companyInfo: { companyName1: string; companyName2?: string; taxationID: string };
-    address: Address;
-    userId: string;
-  }) {
+  setRegistrationInfo(registrationInfo: SsoRegistrationType) {
     this.store.dispatch(setRegistrationInfo(registrationInfo));
   }
 }

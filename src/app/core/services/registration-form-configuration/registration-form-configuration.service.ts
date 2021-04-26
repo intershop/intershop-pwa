@@ -5,7 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { UUID } from 'angular2-uuid';
 import { Observable, combineLatest, from, iif, merge, noop, of, race } from 'rxjs';
-import { filter, map, mapTo, switchMap, take, tap } from 'rxjs/operators';
+import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Address } from 'ish-core/models/address/address.model';
@@ -24,7 +24,7 @@ export interface RegistrationConfigType {
 @Injectable({ providedIn: 'root' })
 export class RegistrationFormConfigurationService {
   // tslint:disable: no-intelligence-in-artifacts
-  constructor(private accountFacade: AccountFacade, private router: Router, private ngbModal: NgbModal) {}
+  constructor(private accountFacade: AccountFacade, private router: Router, private modalService: NgbModal) {}
 
   getRegistrationFormConfiguration(registrationConfig: RegistrationConfigType) {
     return [
@@ -82,10 +82,7 @@ export class RegistrationFormConfigurationService {
     ];
   }
 
-  getRegistrationFormConfigurationOptions(
-    registrationConfig: RegistrationConfigType,
-    model: Record<string, unknown>
-  ): FormlyFormOptions {
+  getOptions(registrationConfig: RegistrationConfigType, model: Record<string, unknown>): FormlyFormOptions {
     if (registrationConfig.sso) {
       return { formState: { disabled: Object.keys(model) } };
     } else {
@@ -167,8 +164,8 @@ export class RegistrationFormConfigurationService {
             () => cancelled || registered,
             of(true),
             of({}).pipe(
-              map(() => this.ngbModal.open(ConfirmLeaveModalComponent)),
-              switchMap(modalRef => race(modalRef.dismissed.pipe(mapTo(false)), from(modalRef.result))),
+              map(() => this.modalService.open(ConfirmLeaveModalComponent)),
+              switchMap(modalRef => race(modalRef.dismissed, from(modalRef.result))),
               tap(result => (result ? this.accountFacade.cancelRegistration() : noop))
             )
           )
