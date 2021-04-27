@@ -35,7 +35,7 @@ describe('Registration Page Component', () => {
     }).compileComponents();
 
     when(featureToggleService.enabled(anyString())).thenReturn(false);
-    when(configService.getRegistrationFormConfiguration(anything())).thenReturn([
+    when(configService.getFields(anything())).thenReturn([
       {
         key: 'test',
         type: 'ish-text-input-field',

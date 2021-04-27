@@ -46,7 +46,7 @@ export class RegistrationFormConfigurationService {
       .reduce((acc, key) => ({ ...acc, [key]: route.queryParams[key] }), { ...model });
   }
 
-  getRegistrationFormConfiguration(registrationConfig: RegistrationConfigType) {
+  getFields(registrationConfig: RegistrationConfigType): FormlyFieldConfig[] {
     return [
       {
         type: 'ish-registration-heading-field',

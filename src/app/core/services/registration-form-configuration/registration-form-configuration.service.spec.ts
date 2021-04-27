@@ -34,7 +34,7 @@ describe('Registration Form Configuration Service', () => {
     const registrationConfig: RegistrationConfigType = { businessCustomer: true, sso: true, userId: 'uid' };
 
     it('should return right fields when calling getRegistrationConfig', () => {
-      const fieldConfig = registrationConfigurationService.getRegistrationFormConfiguration(registrationConfig);
+      const fieldConfig = registrationConfigurationService.getFields(registrationConfig);
       expect(extractKeys(fieldConfig)).toMatchInlineSnapshot(`
         Array [
           Array [
@@ -60,7 +60,7 @@ describe('Registration Form Configuration Service', () => {
       const registrationConfig: RegistrationConfigType = { businessCustomer: true, sso: false };
 
       it('should return the right fields when calling getRegistrationConfig', () => {
-        const fieldConfig = registrationConfigurationService.getRegistrationFormConfiguration(registrationConfig);
+        const fieldConfig = registrationConfigurationService.getFields(registrationConfig);
         expect(extractKeys(fieldConfig)).toMatchInlineSnapshot(`
           Array [
             Array [
@@ -90,7 +90,7 @@ describe('Registration Form Configuration Service', () => {
       const registrationConfig: RegistrationConfigType = { businessCustomer: false, sso: false };
 
       it('should return the right fields when calling getRegistrationConfig', () => {
-        const fieldConfig = registrationConfigurationService.getRegistrationFormConfiguration(registrationConfig);
+        const fieldConfig = registrationConfigurationService.getFields(registrationConfig);
         expect(extractKeys(fieldConfig)).toMatchInlineSnapshot(`
           Array [
             Array [

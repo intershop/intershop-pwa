@@ -43,7 +43,7 @@ export class RegistrationPageComponent implements OnInit {
     this.model = this.registrationFormConfiguration.extractModel(snapshot);
     this.registrationConfig = this.registrationFormConfiguration.extractConfig(snapshot);
     this.options = this.registrationFormConfiguration.getOptions(this.registrationConfig, this.model);
-    this.fields = this.registrationFormConfiguration.getRegistrationFormConfiguration(this.registrationConfig);
+    this.fields = this.registrationFormConfiguration.getFields(this.registrationConfig);
   }
 
   cancelForm() {
