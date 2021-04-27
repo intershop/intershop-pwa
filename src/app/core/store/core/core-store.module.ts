@@ -47,7 +47,9 @@ const coreMetaReducers: MetaReducer<CoreState>[] = [
         strictActionTypeUniqueness: NGRX_RUNTIME_CHECKS,
       },
     }),
-    StoreRouterConnectingModule.forRoot({ serializer: CustomRouterSerializer }),
+    StoreRouterConnectingModule.forRoot({
+      serializer: CustomRouterSerializer,
+    }),
     EffectsModule.forRoot(coreEffects),
   ],
 })

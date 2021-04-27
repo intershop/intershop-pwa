@@ -51,6 +51,7 @@ describe('Auth0 Identity Provider', () => {
       imports: [
         RouterTestingModule.withRoutes([
           { path: 'register', component: DummyComponent },
+          { path: 'register/sso', component: DummyComponent },
           { path: 'account', component: DummyComponent },
           { path: 'logout', component: DummyComponent },
         ]),

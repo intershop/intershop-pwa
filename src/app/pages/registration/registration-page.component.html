@@ -1,7 +1,7 @@
 <ish-error-message [error]="error$ | async"></ish-error-message>
 <div data-testing-id="account-create-full-page">
   <form [formGroup]="form" (ngSubmit)="onCreate()">
-    <formly-form [model]="model" [form]="form" [options]="options" [fields]="fields$ | async"></formly-form>
+    <formly-form [model]="model" [form]="form" [options]="options" [fields]="fields"></formly-form>
     <div class="row">
       <div class="col-md-10 col-lg-8 col-xl-6">
         <div class="row form-group">

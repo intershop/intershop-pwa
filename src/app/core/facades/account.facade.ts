@@ -6,7 +6,7 @@ import { map, switchMap, take, tap } from 'rxjs/operators';
 import { Address } from 'ish-core/models/address/address.model';
 import { Contact } from 'ish-core/models/contact/contact.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
-import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
+import { Customer, CustomerRegistrationType, SsoRegistrationType } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update/password-reminder-update.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
@@ -22,7 +22,13 @@ import {
 } from 'ish-core/store/customer/addresses';
 import { getUserRoles } from 'ish-core/store/customer/authorization';
 import { getOrders, getOrdersLoading, getSelectedOrder, loadOrders } from 'ish-core/store/customer/orders';
-import { getSsoRegistrationError } from 'ish-core/store/customer/sso-registration';
+import {
+  cancelRegistration,
+  getSsoRegistrationCancelled,
+  getSsoRegistrationError,
+  getSsoRegistrationRegistered,
+  setRegistrationInfo,
+} from 'ish-core/store/customer/sso-registration';
 import {
   createUser,
   deleteUserPaymentInstrument,
@@ -76,7 +82,6 @@ export class AccountFacade {
   userLoading$ = this.store.pipe(select(getUserLoading));
   isLoggedIn$ = this.store.pipe(select(getUserAuthorized));
   roles$ = this.store.pipe(select(getUserRoles));
-  ssoRegistrationError$ = this.store.pipe(select(getSsoRegistrationError));
 
   loginUser(credentials: Credentials) {
     this.store.dispatch(loginUser({ credentials }));
@@ -206,5 +211,19 @@ export class AccountFacade {
   }
   createContact(contact: Contact) {
     this.store.dispatch(createContact({ contact }));
+  }
+
+  // SSO
+
+  ssoRegistrationError$ = this.store.pipe(select(getSsoRegistrationError));
+  ssoRegistrationCancelled$ = this.store.pipe(select(getSsoRegistrationCancelled));
+  ssoRegistrationRegistered$ = this.store.pipe(select(getSsoRegistrationRegistered));
+
+  cancelRegistration() {
+    this.store.dispatch(cancelRegistration());
+  }
+
+  setRegistrationInfo(registrationInfo: SsoRegistrationType) {
+    this.store.dispatch(setRegistrationInfo(registrationInfo));
   }
 }

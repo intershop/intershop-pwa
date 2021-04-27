@@ -7,7 +7,7 @@ import { FormlyExtension, FormlyFieldConfig } from '@ngx-formly/core';
 type FieldConfigWithDisabled = Omit<FormlyFieldConfig, 'options'> & { options: { formState: { disabled: string[] } } };
 
 export const disablePrefilledExtension: FormlyExtension = {
-  prePopulate: field => {
+  onPopulate(field) {
     if (hasDisabled(field) && field.key) {
       field.templateOptions = { ...field.templateOptions };
       field.templateOptions.disabled = field.options.formState.disabled.includes(field.key as string);

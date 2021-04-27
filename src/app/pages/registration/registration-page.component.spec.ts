@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { RegistrationFormConfigurationService } from 'ish-core/services/registration-form-configuration/registration-form-configuration.service';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
@@ -21,35 +20,33 @@ describe('Registration Page Component', () => {
   let configService: RegistrationFormConfigurationService;
   let featureToggleService: FeatureToggleService;
   let activatedRoute: ActivatedRoute;
-  let accountFacade: AccountFacade;
 
   beforeEach(async () => {
     configService = mock(RegistrationFormConfigurationService);
     featureToggleService = mock(FeatureToggleService);
     activatedRoute = mock(ActivatedRoute);
-    accountFacade = mock(AccountFacade);
     await TestBed.configureTestingModule({
       declarations: [MockComponent(ErrorMessageComponent), RegistrationPageComponent],
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
       providers: [
-        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
-        { provide: FeatureToggleService, useFactory: () => instance(featureToggleService) },
         { provide: ActivatedRoute, useFactory: () => instance(activatedRoute) },
         { provide: RegistrationFormConfigurationService, useFactory: () => instance(configService) },
       ],
     }).compileComponents();
 
     when(featureToggleService.enabled(anyString())).thenReturn(false);
-    when(configService.getRegistrationFormConfiguration(anything())).thenReturn([
+    when(configService.getFields(anything())).thenReturn([
       {
         key: 'test',
         type: 'ish-text-input-field',
       },
     ]);
-    when(activatedRoute.queryParamMap).thenReturn(of(convertToParamMap({ sso: 'false' })));
+    when(activatedRoute.snapshot).thenReturn({
+      queryParams: {},
+      url: [{ path: '/register' } as UrlSegment, { path: 'sso' } as UrlSegment],
+    } as ActivatedRouteSnapshot);
 
-    when(accountFacade.userError$).thenReturn(of());
-    when(accountFacade.ssoRegistrationError$).thenReturn(of());
+    when(configService.getErrorSources()).thenReturn(of());
   });
 
   beforeEach(() => {
@@ -62,31 +59,6 @@ describe('Registration Page Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-  });
-
-  it('should set configuration parameters on init', () => {
-    fixture.detectChanges();
-    expect(component.registrationConfig).toMatchInlineSnapshot(`
-      Object {
-        "businessCustomer": false,
-        "sso": false,
-        "userId": null,
-      }
-    `);
-  });
-
-  it('should set configuration parameters depending on router', () => {
-    when(activatedRoute.queryParamMap).thenReturn(of(convertToParamMap({ sso: 'true', userid: 'uid' })));
-    when(featureToggleService.enabled(anyString())).thenReturn(true);
-    fixture.detectChanges();
-
-    expect(component.registrationConfig).toMatchInlineSnapshot(`
-      Object {
-        "businessCustomer": true,
-        "sso": true,
-        "userId": "uid",
-      }
-    `);
   });
 
   it('should display form with registration configuration', () => {

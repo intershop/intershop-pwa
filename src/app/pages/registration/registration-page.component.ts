@@ -1,12 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
-import { Observable, merge } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
-import { AccountFacade } from 'ish-core/facades/account.facade';
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import {
   RegistrationConfigType,
@@ -26,9 +23,7 @@ export class RegistrationPageComponent implements OnInit {
   error$: Observable<HttpError>;
 
   constructor(
-    private accountFacade: AccountFacade,
     private route: ActivatedRoute,
-    private featureToggle: FeatureToggleService,
     private registrationFormConfiguration: RegistrationFormConfigurationService
   ) {}
 
@@ -36,30 +31,19 @@ export class RegistrationPageComponent implements OnInit {
 
   registrationConfig: RegistrationConfigType;
 
-  fields$: Observable<FormlyFieldConfig[]>;
+  fields: FormlyFieldConfig[];
   model: Record<string, unknown>;
   options: FormlyFormOptions;
   form = new FormGroup({});
 
   ngOnInit() {
-    this.error$ = merge(this.accountFacade.userError$, this.accountFacade.ssoRegistrationError$);
-    this.fields$ = this.route.queryParamMap.pipe(
-      tap((paramMap: ParamMap) => (this.model = this.processParamMap(paramMap))),
-      map((paramMap: ParamMap) => ({
-        sso: paramMap.get('sso') === 'true',
-        userId: paramMap.get('userid'),
-        businessCustomer: this.featureToggle.enabled('businessCustomerRegistration'),
-      })),
-      tap(config => (this.registrationConfig = config)),
-      tap(
-        config =>
-          (this.options = this.registrationFormConfiguration.getRegistrationFormConfigurationOptions(
-            config,
-            this.model
-          ))
-      ),
-      map(config => this.registrationFormConfiguration.getRegistrationFormConfiguration(config))
-    );
+    this.error$ = this.registrationFormConfiguration.getErrorSources();
+
+    const snapshot = this.route.snapshot;
+    this.model = this.registrationFormConfiguration.extractModel(snapshot);
+    this.registrationConfig = this.registrationFormConfiguration.extractConfig(snapshot);
+    this.options = this.registrationFormConfiguration.getOptions(this.registrationConfig, this.model);
+    this.fields = this.registrationFormConfiguration.getFields(this.registrationConfig);
   }
 
   cancelForm() {
@@ -77,11 +61,5 @@ export class RegistrationPageComponent implements OnInit {
   /** return boolean to set submit button enabled/disabled */
   get submitDisabled(): boolean {
     return this.form.invalid && this.submitted;
-  }
-
-  processParamMap(paramMap: ParamMap) {
-    return paramMap.keys
-      .filter(key => !['sso', 'userid'].includes(key))
-      .reduce((acc, key) => ({ ...acc, [key]: paramMap.get(key) }), { ...this.model });
   }
 }
