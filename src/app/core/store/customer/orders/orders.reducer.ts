@@ -15,6 +15,7 @@ import {
   loadOrders,
   loadOrdersFail,
   loadOrdersSuccess,
+  resetOrderErrors,
   selectOrder,
 } from './orders.actions';
 
@@ -57,5 +58,10 @@ export const ordersReducer = createReducer(
     return {
       ...orderAdapter.setAll(orders, state),
     };
-  })
+  }),
+
+  on(resetOrderErrors, state => ({
+    ...state,
+    error: undefined,
+  }))
 );
