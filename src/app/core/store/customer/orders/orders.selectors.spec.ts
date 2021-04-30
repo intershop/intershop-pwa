@@ -15,6 +15,7 @@ import {
   loadOrders,
   loadOrdersFail,
   loadOrdersSuccess,
+  resetOrderErrors,
   selectOrder,
 } from './orders.actions';
 import {
@@ -142,6 +143,7 @@ describe('Orders Selectors', () => {
         expect(loadedOrder.lineItems).toHaveLength(1);
         expect(loadedOrder.lineItems[0].id).toEqual('test');
         expect(loadedOrder.lineItems[0].productSKU).toEqual('sku');
+        expect(getOrdersError(store$.state)).toBeFalsy();
       });
     });
 
@@ -153,6 +155,16 @@ describe('Orders Selectors', () => {
       it('should not have loaded orders on error', () => {
         expect(getOrdersLoading(store$.state)).toBeFalse();
         expect(getOrders(store$.state)).toBeEmpty();
+      });
+
+      it('should not return the error on error', () => {
+        expect(getOrdersError(store$.state)).toBeTruthy();
+      });
+
+      it('should reset the error on error', () => {
+        store$.dispatch(resetOrderErrors());
+
+        expect(getOrdersError(store$.state)).toBeFalsy();
       });
     });
   });

@@ -20,6 +20,7 @@ import {
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { mapToRouterState } from 'ish-core/store/core/router';
+import { resetOrderErrors } from 'ish-core/store/customer/orders';
 import { createUser, loadUserByAPIToken, loginUser, loginUserSuccess } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
@@ -264,7 +265,7 @@ export class BasketEffects {
       ofType(routerNavigatedAction),
       mapToRouterState(),
       filter(routerState => /^\/(basket|checkout.*)/.test(routerState.url) && !routerState.queryParams?.error),
-      mapTo(resetBasketErrors())
+      concatMapTo([resetBasketErrors(), resetOrderErrors()])
     )
   );
 
