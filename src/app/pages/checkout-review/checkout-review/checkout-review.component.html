@@ -18,6 +18,9 @@
   <!-- Error Message-->
   <div class="col-md-12">
     <ish-error-message [error]="error" [toast]="false"></ish-error-message>
+    <div *ngIf="multipleBuckets" role="alert" class="alert alert-danger">
+      {{ 'checkout.shipping.no_methods.message' | translate }}
+    </div>
     <ish-basket-validation-results></ish-basket-validation-results>
   </div>
 
@@ -62,7 +65,7 @@
         editRouterLink="/checkout/shipping"
         class="infobox-wrapper col-md-6"
       >
-        <p>{{ basket.commonShippingMethod.name }}</p>
+        <p>{{ basket.commonShippingMethod?.name }}</p>
       </ish-info-box>
 
       <!-- Payment Method -->
