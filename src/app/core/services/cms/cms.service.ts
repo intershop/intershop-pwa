@@ -63,17 +63,18 @@ export class CMSService {
   }
 
   /**
-   *
-   * @param rootId: The Page Id
-   * @param depth: Depth of returned content page tree
+   * Get the page tree for the given root page with the given depth.
+   * @param rootId: The page tree root page id
+   * @param depth: Depth of returned page tree
    * @returns Content page tree
    */
   getContentPageTree(rootId: string, depth?: number): Observable<ContentPageTree> {
     if (!rootId) {
-      return throwError('getContentPage() called without an pageId');
+      return throwError('getContentPageTree() called without an rootId');
     }
+
     let params = new HttpParams();
-    if (depth) {
+    if (depth || depth === 0) {
       params = params.set('depth', depth.toString());
     }
 

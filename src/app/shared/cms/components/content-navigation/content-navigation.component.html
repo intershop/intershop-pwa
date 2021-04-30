@@ -1,33 +1,33 @@
 <ng-container *ngIf="contentPageTreeView$ | async as contentPageTreeView">
   <ng-container *ngIf="currentContentPageId$ | async as currentContentPageId">
-    <ng-container *ngIf="rootDisplayName$ | async as rootDisplayName">
-      <h3>{{ rootDisplayName }}</h3>
-      <ul class="page-navigation-0">
-        <ng-container
-          [ngTemplateOutlet]="recursivePageTree"
-          [ngTemplateOutletContext]="{ tree: contentPageTreeView, counter: 1 }"
-        ></ng-container>
-      </ul>
+    <a [routerLink]="['/page', contentPageTreeView.contentPageId]" [title]="contentPageTreeView.name">
+      <h3>{{ contentPageTreeView.name }}</h3>
+    </a>
 
-      <ng-template #recursivePageTree let-tree="tree" let-counter="counter">
-        <li
-          *ngFor="let item of tree"
-          [ngClass]="{ 'page-navigation-active': item.contentPageId === currentContentPageId }"
+    <ul class="page-navigation-0">
+      <ng-container
+        [ngTemplateOutlet]="pageTreeNode"
+        [ngTemplateOutletContext]="{ tree: contentPageTreeView.children, counter: 1 }"
+      ></ng-container>
+    </ul>
+
+    <!-- the recursivly used template to render the tree nodes -->
+    <ng-template #pageTreeNode let-tree="tree" let-counter="counter">
+      <li
+        *ngFor="let item of tree"
+        [ngClass]="{ 'page-navigation-active': item.contentPageId === currentContentPageId }"
+      >
+        <a [routerLink]="['/page', item.contentPageId]" [title]="item.name">{{ item.name }}</a>
+        <ul
+          *ngIf="item.children.length > 0 && ((!depth && depth !== 0) || depth >= counter)"
+          [ngClass]="'page-navigation-' + counter"
         >
-          <a [routerLink]="'/page/' + item.contentPageId" title="{{ item.name }}">
-            {{ item.name }}
-          </a>
-          <ul
-            *ngIf="item.children.length > 0 && ((!depth && depth !== 0) || depth >= counter)"
-            class="page-navigation-{{ counter }}"
-          >
-            <ng-container
-              [ngTemplateOutlet]="recursivePageTree"
-              [ngTemplateOutletContext]="{ tree: item.children, counter: counter + 1 }"
-            ></ng-container>
-          </ul>
-        </li>
-      </ng-template>
-    </ng-container>
+          <ng-container
+            [ngTemplateOutlet]="pageTreeNode"
+            [ngTemplateOutletContext]="{ tree: item.children, counter: counter + 1 }"
+          ></ng-container>
+        </ul>
+      </li>
+    </ng-template>
   </ng-container>
 </ng-container>

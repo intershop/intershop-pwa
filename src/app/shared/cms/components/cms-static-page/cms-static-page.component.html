@@ -10,7 +10,7 @@
       <div *ngIf="pagelet.booleanParam('ShowNavigation')" class="page-navigation-contents">
         <ish-content-navigation
           [root]="pagelet.stringParam('NavigationRoot')"
-          [depth]="this.pagelet.numberParam('NavigationDepth')"
+          [depth]="pagelet.numberParam('NavigationDepth')"
         ></ish-content-navigation>
       </div>
       <div class="marketing-area">

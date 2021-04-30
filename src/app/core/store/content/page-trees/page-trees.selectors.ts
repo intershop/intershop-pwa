@@ -15,12 +15,12 @@ export const getPageTrees = createSelector(getPageTreesState, state => state.tre
 
 /**
  *
- * @param root: The Id of Page
- * @returns Content page tree view of given page
+ * @param rootId: The Id of the root content page of the tree
+ * @returns Content page tree view of for the given root and the currently selected content page
  */
-export const getContentPageTreeView = (root: string) =>
-  createSelectorFactory<object, ContentPageTreeView[]>(projector => resultMemoize(projector, isEqual))(
+export const getContentPageTreeView = (rootId: string) =>
+  createSelectorFactory<object, ContentPageTreeView>(projector => resultMemoize(projector, isEqual))(
     getPageTrees,
     selectRouteParam('contentPageId'),
-    (tree: ContentPageTree, contentPageId: string) => createContentPageTreeView(tree, root, contentPageId)
+    (tree: ContentPageTree, contentPageId: string) => createContentPageTreeView(tree, rootId, contentPageId)
   );

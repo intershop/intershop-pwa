@@ -40,15 +40,12 @@ function getContentPageTreeElements(
       });
   }
 
-  // Root should not be part of displayed navigation tree
-  if (rootId !== elementId) {
-    const parent = tree.nodes[elementId].path[tree.nodes[elementId].path.length - 2];
-    treeElements.push({
-      ...tree.nodes[elementId],
-      parent,
-      children: [],
-    });
-  }
+  const parent = tree.nodes[elementId].path[tree.nodes[elementId].path.length - 2];
+  treeElements.push({
+    ...tree.nodes[elementId],
+    parent,
+    children: [],
+  });
 
   return treeElements;
 }
@@ -73,18 +70,17 @@ function isContentPagePartOfPageTreeElement(
 }
 
 // build page tree data based on given elements
-function unflattenTree(elements: ContentPageTreeView[], rootId: string): ContentPageTreeView[] {
-  const root: ContentPageTreeView[] = [];
+function unflattenTree(elements: ContentPageTreeView[], rootId: string): ContentPageTreeView {
+  let root: ContentPageTreeView;
   elements.map(element => {
-    if (element.parent === rootId) {
-      root.push(element);
+    if (element.contentPageId === rootId) {
+      root = element;
       return;
+    } else {
+      const parentEl = elements.find(el => el.contentPageId === element.parent);
+      parentEl.children = [...(parentEl.children || []), element];
     }
-
-    const parentEl = elements.find(el => el.contentPageId === element.parent);
-    parentEl.children = [...(parentEl.children || []), element];
   });
-
   return root;
 }
 
@@ -92,7 +88,7 @@ export function createContentPageTreeView(
   tree: ContentPageTree,
   rootId: string,
   contentPageId: string
-): ContentPageTreeView[] {
+): ContentPageTreeView {
   if (!tree || !rootId || !tree.nodes[rootId]) {
     return;
   }

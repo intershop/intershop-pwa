@@ -5,7 +5,7 @@ import { filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.model';
 import { getContentInclude, loadContentInclude } from 'ish-core/store/content/includes';
-import { getContentPageTreeView, getPageTrees, loadContentPageTree } from 'ish-core/store/content/page-trees';
+import { getContentPageTreeView, loadContentPageTree } from 'ish-core/store/content/page-trees';
 import { getContentPagelet } from 'ish-core/store/content/pagelets';
 import { getContentPageLoading, getSelectedContentPage } from 'ish-core/store/content/pages';
 import { getViewContext, loadViewContextEntrypoint } from 'ish-core/store/content/viewcontexts';
@@ -17,6 +17,7 @@ import { SfeMapper } from 'ish-shared/cms/sfe-adapter/sfe.mapper';
 @Injectable({ providedIn: 'root' })
 export class CMSFacade {
   constructor(private store: Store, private sfeAdapter: SfeAdapterService) {}
+
   contentPage$ = this.store.pipe(select(getSelectedContentPage));
   contentPageLoading$ = this.store.pipe(select(getContentPageLoading));
 
@@ -47,9 +48,5 @@ export class CMSFacade {
   loadPageTreeView$(rootId: string, depth: number) {
     this.store.dispatch(loadContentPageTree({ rootId, depth }));
     return this.store.pipe(select(getContentPageTreeView(rootId)));
-  }
-
-  pageTreeElement$(elementId: string) {
-    return this.store.pipe(select(getPageTrees)).pipe(map(tree => tree?.nodes[elementId]));
   }
 }

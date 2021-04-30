@@ -23,9 +23,8 @@ export class ContentNavigationComponent implements OnInit, OnChanges {
    */
   @Input() depth: number;
 
-  contentPageTreeView$: Observable<ContentPageTreeView[]>;
+  contentPageTreeView$: Observable<ContentPageTreeView>;
   currentContentPageId$: Observable<string>;
-  rootDisplayName$: Observable<string>;
 
   constructor(private cmsFacade: CMSFacade) {}
 
@@ -36,7 +35,6 @@ export class ContentNavigationComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if (this.root) {
       this.contentPageTreeView$ = this.cmsFacade.loadPageTreeView$(this.root, this.depth);
-      this.rootDisplayName$ = this.cmsFacade.pageTreeElement$(this.root).pipe(map(tree => tree.name));
     }
   }
 }

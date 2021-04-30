@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { anyNumber, anyString, instance, mock, when } from 'ts-mockito';
+import { anyNumber, instance, mock, when } from 'ts-mockito';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageTreeView } from 'ish-core/models/content-page-tree-view/content-page-tree-view.model';
-import { ContentPageTreeElement } from 'ish-core/models/content-page-tree/content-page-tree.model';
 import { ContentPageletEntryPointView } from 'ish-core/models/content-view/content-view.model';
 
 import { ContentNavigationComponent } from './content-navigation.component';
@@ -76,8 +75,6 @@ describe('Content Navigation Component', () => {
           },
         ] as ContentPageTreeView[])
       );
-
-      when(cmsFacade.pageTreeElement$(anyString())).thenReturn(of({ name: 'Page 1' } as ContentPageTreeElement));
     });
 
     it('should get whole page tree, when maxDepth is greater than depth of actual page tree', () => {

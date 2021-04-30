@@ -5,7 +5,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
 
 /**
  * The CMS Static Page Component to render CMS managed static content pages.
- * With optional side panel and content page hierarchy navigation
+ * With optional side panel and content page hierarchy navigation.
  */
 @Component({
   selector: 'ish-cms-static-page',
