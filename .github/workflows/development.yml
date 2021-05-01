@@ -52,7 +52,7 @@ jobs:
         run: git diff --exit-code --raw -p --stat
 
       - name: Compile Angular
-        run: npm run ng -- build --aot
+        run: npm run build client
 
       - name: Compile Unit Tests
         run: npx tsc -p tsconfig.all.json

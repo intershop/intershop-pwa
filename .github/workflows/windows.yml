@@ -55,4 +55,4 @@ jobs:
           node scripts/init-local-environment -f
 
       - name: Build with local environment
-        run: npm run ng -- build -c local
+        run: npm run build client --configuration=local

@@ -68,7 +68,7 @@ Deployments are generated to the _dist_ folder of the project.
 Use `npm run build` to generate an Angular Universal enabled version.
 On the server the _dist/server.js_ script has to be executed with `node`.
 
-Alternatively, you can use `ng build --prod` to get an application using browser rendering.
+Alternatively, you can use `npm run build client` to get an application using browser rendering.
 All the files under `dist/browser` have to be served statically.
 The server has to be configured for fallback routing,
 see [Server Configuration in Angular Docs](https://angular.io/guide/deployment#server-configuration).

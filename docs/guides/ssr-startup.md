@@ -18,6 +18,11 @@ By default the `production` configuration is built.
 
 All `configuration` options can also be multiple configurations like `--configuration=brand,production`, where production should always come last.
 
+If no configuration is supplied, the one defined in the `package.json` under `config.default-build-configuration` is used as a fallback.
+That way you can also override the default for project customizations.
+
+You can also override the default locally via `npm config set intershop-pwa:default-build-configuration <configuration>`.
+
 ## Running
 
 Overwriting configurations of the PWA is entirely done by environment variables.

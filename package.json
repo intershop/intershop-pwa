@@ -36,9 +36,9 @@
     "compodoc": "npx @compodoc/compodoc -p tsconfig.app.json -d docs/compodoc -y docs/theme --hideGenerator",
     "compodoc:serve": "npm run compodoc -- -s -w",
     "synchronize-lazy-components": "ng g lazy-components",
-    "build:watch": "ng build --aot --watch",
+    "build:watch": "npm run build client -- --aot --watch",
     "build": "node scripts/build-pwa",
-    "analyze": "ng build --prod --stats-json && npx webpack-bundle-analyzer --host 0.0.0.0 dist/browser/stats.json dist/browser",
+    "analyze": "npm run build client -- --stats-json && npx webpack-bundle-analyzer --host 0.0.0.0 dist/browser/stats.json dist/browser",
     "serve": "node dist/server/main.js",
     "start": "npm-run-all build serve",
     "start:local": "ng run intershop-pwa:serve-ssr:local"
@@ -187,7 +187,8 @@
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-customizable"
-    }
+    },
+    "default-build-configuration": "production"
   },
   "postinstall": {
     "jest-extended/types": "copy node_modules/@types/jest-extended"

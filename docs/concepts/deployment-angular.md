@@ -10,7 +10,7 @@ kb_sync_latest_only
 ## Simple Browser-Side Rendering
 
 Angular applications are built for a [static deployment][angular-deployment] by default.
-When running `ng build` in any shape or form, the build output is aggregated in the `dist` folder and the resulting files can be statically served using any HTTP server that is capable of doing that (only a [fallback](https://angular.io/guide/deployment#routed-apps-must-fallback-to-indexhtml) for `index.html` has to be configured).
+When running `npm run build client` in any shape or form, the build output is aggregated in the `dist` folder and the resulting files can be statically served using any HTTP server that is capable of doing that (only a [fallback](https://angular.io/guide/deployment#routed-apps-must-fallback-to-indexhtml) for `index.html` has to be configured).
 
 When the application is served this way, the initial page response for the browser is minimal (`index.html` with scripts inserted) and the application gets composed and rendered on the client side.
 
