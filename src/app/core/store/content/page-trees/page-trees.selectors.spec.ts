@@ -21,6 +21,7 @@ describe('Page Trees Selectors', () => {
   let tree3: ContentPageTreeElement;
   let tree4: ContentPageTreeElement;
   let tree5: ContentPageTreeElement;
+  let tree6: ContentPageTreeElement;
 
   beforeEach(() => {
     @Component({ template: 'dummy' })
@@ -35,6 +36,7 @@ describe('Page Trees Selectors', () => {
       path: ['1', '1.1', '1.1.1', '1.1.1.1'],
       name: '1.1.1.1',
     } as ContentPageTreeElement;
+    tree6 = { contentPageId: '2', path: ['2'], name: '2' } as ContentPageTreeElement;
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -213,5 +215,52 @@ describe('Page Trees Selectors', () => {
         `);
       }));
     });
+  });
+
+  it('should merge trees together when tree contains same path', () => {
+    store$.dispatch(loadContentPageTreeSuccess({ pagetree: pageTree([tree1, tree2]) }));
+    expect(Object.keys(getPageTrees(store$.state).nodes)).toMatchInlineSnapshot(`
+      Array [
+        "1",
+        "1.1",
+      ]
+    `);
+    expect(getPageTrees(store$.state).rootIds).toHaveLength(1);
+
+    store$.dispatch(loadContentPageTreeSuccess({ pagetree: pageTree([tree1, tree2, tree3, tree4]) }));
+    expect(Object.keys(getPageTrees(store$.state).nodes)).toMatchInlineSnapshot(`
+      Array [
+        "1",
+        "1.1",
+        "1.1.1",
+        "1.1.2",
+      ]
+    `);
+    expect(getPageTrees(store$.state).rootIds).toHaveLength(1);
+  });
+
+  it('should add new tree when tree contains a new rootId', () => {
+    store$.dispatch(loadContentPageTreeSuccess({ pagetree: pageTree([tree1, tree2]) }));
+    expect(getPageTrees(store$.state).rootIds).toMatchInlineSnapshot(`
+      Array [
+        "1",
+      ]
+    `);
+
+    store$.dispatch(loadContentPageTreeSuccess({ pagetree: pageTree([tree6]) }));
+    expect(getPageTrees(store$.state).rootIds).toMatchInlineSnapshot(`
+      Array [
+        "1",
+        "2",
+      ]
+    `);
+  });
+
+  it('should do nothing when an undefined tree should be added', () => {
+    store$.dispatch(loadContentPageTreeSuccess({ pagetree: pageTree([tree1, tree2]) }));
+    const state1 = store$.state;
+
+    store$.dispatch(loadContentPageTreeSuccess({ pagetree: undefined }));
+    expect(store$.state).toEqual(state1);
   });
 });
