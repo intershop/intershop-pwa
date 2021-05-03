@@ -8,6 +8,8 @@ export class IdentityProviderInviteGuard implements CanActivate {
   constructor(private identityProviderFactory: IdentityProviderFactory) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.identityProviderFactory.getInstance().triggerInvite(route, state);
+    return this.identityProviderFactory.getInstance().triggerInvite
+      ? this.identityProviderFactory.getInstance().triggerInvite(route, state)
+      : false;
   }
 }

@@ -4,7 +4,7 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { Observable, combineLatest, from, iif, of, race, timer } from 'rxjs';
+import { Observable, combineLatest, from, of, race, timer } from 'rxjs';
 import { catchError, filter, first, map, mapTo, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -123,17 +123,15 @@ export class Auth0IdentityProvider implements IdentityProvider {
             filter(([, loading]) => !loading),
             first(),
             switchMap(([customer]) =>
-              iif(
-                () => !customer,
-                this.router.navigate(['/register', 'sso'], {
-                  queryParams: {
-                    userid: userData.businessPartnerNo,
-                    firstName: userData.firstName,
-                    lastName: userData.lastName,
-                  },
-                }),
-                of(false)
-              )
+              !customer
+                ? this.router.navigate(['/register', 'sso'], {
+                    queryParams: {
+                      userid: userData.businessPartnerNo,
+                      firstName: userData.firstName,
+                      lastName: userData.lastName,
+                    },
+                  })
+                : of(false)
             ),
             switchMap((navigated: boolean) =>
               navigated || navigated === null
