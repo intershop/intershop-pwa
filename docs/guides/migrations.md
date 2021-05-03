@@ -11,6 +11,8 @@ kb_sync_latest_only
 
 We introduced the feature toggle 'guestCheckout' in the `environment.model.ts`.
 
+We switched to encoding user logins when used in the api service. This is to enable special characters (like the #) that are sometimes present in user logins but would lead to errors before.
+
 ## 0.28 to 0.29
 
 We activated TypeScript's [`noImplicitAny`](https://www.typescriptlang.org/tsconfig#noImplicitAny).
