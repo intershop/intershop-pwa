@@ -66,7 +66,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
 
       // Scopes ("rights") the Angular application wants get delegated
       // https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims
-      scope: 'openid email profile',
+      scope: 'openid email profile offline_access',
 
       // Using Authorization Code Flow
       // (PKCE is activated by default for authorization code flow)
