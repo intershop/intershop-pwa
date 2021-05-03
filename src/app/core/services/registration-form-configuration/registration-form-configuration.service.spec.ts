@@ -124,6 +124,7 @@ describe('Registration Form Configuration Service', () => {
       expect(registrationConfigurationService.extractConfig(snapshot)).toMatchInlineSnapshot(`
         Object {
           "businessCustomer": false,
+          "cancelUrl": undefined,
           "sso": false,
           "userId": undefined,
         }
@@ -132,7 +133,7 @@ describe('Registration Form Configuration Service', () => {
 
     it('should set configuration parameters depending on router', () => {
       const snapshot = {
-        queryParams: { userid: 'uid' } as Params,
+        queryParams: { userid: 'uid', cancelUrl: '/checkout' } as Params,
         url: [{ path: '/register' } as UrlSegment, { path: 'sso' } as UrlSegment],
       } as ActivatedRouteSnapshot;
       when(featureToggleService.enabled(anyString())).thenReturn(true);
@@ -140,6 +141,7 @@ describe('Registration Form Configuration Service', () => {
       expect(registrationConfigurationService.extractConfig(snapshot)).toMatchInlineSnapshot(`
         Object {
           "businessCustomer": true,
+          "cancelUrl": "/checkout",
           "sso": true,
           "userId": "uid",
         }
