@@ -58,11 +58,11 @@ describe('Page Trees Effects', () => {
     });
 
     it('should map to action of type CreatePageTreeSuccess when actual tree does contain navigation root', () => {
-      const tree = { edges: {}, nodes: {} } as ContentPageTree;
-      when(cmsServiceMock.getContentPageTree('dummy', 2)).thenReturn(of(tree));
+      const pagetree = { edges: {}, nodes: {} } as ContentPageTree;
+      when(cmsServiceMock.getContentPageTree('dummy', 2)).thenReturn(of(pagetree));
 
       actions$ = hot('a-a-a-a', { a: loadContentPageTree({ rootId: 'dummy', depth: 2 }) });
-      const expected$ = cold('b-b-b-b', { b: loadContentPageTreeSuccess({ tree }) });
+      const expected$ = cold('b-b-b-b', { b: loadContentPageTreeSuccess({ pagetree }) });
 
       expect(effects.loadContentPageTree$).toBeObservable(expected$);
     });

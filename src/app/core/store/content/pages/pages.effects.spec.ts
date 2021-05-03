@@ -35,7 +35,7 @@ describe('Pages Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        ContentStoreModule.forTesting('trees', 'pages'),
+        ContentStoreModule.forTesting('pagetrees', 'pages'),
         CoreStoreModule.forTesting(['router']),
         RouterTestingModule.withRoutes([{ path: 'page/:contentPageId', component: DummyComponent }]),
       ],

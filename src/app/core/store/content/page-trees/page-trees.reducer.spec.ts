@@ -47,46 +47,46 @@ describe('Page Trees Reducer', () => {
       });
 
       it('should insert whole page tree to state', () => {
-        const action = loadContentPageTreeSuccess({ tree: tree1 });
+        const action = loadContentPageTreeSuccess({ pagetree: tree1 });
         const state = pageTreesReducer(initialState, action);
 
-        expect(Object.keys(state.trees.nodes)).toHaveLength(6);
-        expect(Object.keys(state.trees.nodes)).toEqual(['1', '1.1', '1.2', '1.1.1', '1.1.2', '1.2.1']);
+        expect(Object.keys(state.pagetrees.nodes)).toHaveLength(6);
+        expect(Object.keys(state.pagetrees.nodes)).toEqual(['1', '1.1', '1.2', '1.1.1', '1.1.2', '1.2.1']);
       });
 
       it('should merge the new tree to state', () => {
-        const action1 = loadContentPageTreeSuccess({ tree: tree11 });
+        const action1 = loadContentPageTreeSuccess({ pagetree: tree11 });
         const state1 = pageTreesReducer(initialState, action1);
 
-        expect(Object.keys(state1.trees.nodes)).toHaveLength(4);
-        expect(Object.keys(state1.trees.nodes)).toEqual(['1', '1.1', '1.1.1', '1.1.2']);
+        expect(Object.keys(state1.pagetrees.nodes)).toHaveLength(4);
+        expect(Object.keys(state1.pagetrees.nodes)).toEqual(['1', '1.1', '1.1.1', '1.1.2']);
 
-        const action2 = loadContentPageTreeSuccess({ tree: tree1 });
+        const action2 = loadContentPageTreeSuccess({ pagetree: tree1 });
         const state2 = pageTreesReducer(state1, action2);
 
-        expect(Object.keys(state2.trees.nodes)).toHaveLength(6);
-        expect(Object.keys(state2.trees.nodes)).toEqual(['1', '1.1', '1.1.1', '1.1.2', '1.2', '1.2.1']);
+        expect(Object.keys(state2.pagetrees.nodes)).toHaveLength(6);
+        expect(Object.keys(state2.pagetrees.nodes)).toEqual(['1', '1.1', '1.1.1', '1.1.2', '1.2', '1.2.1']);
       });
 
       it('should add the new tree to state when rootId does not exists', () => {
-        const action1 = loadContentPageTreeSuccess({ tree: tree1 });
+        const action1 = loadContentPageTreeSuccess({ pagetree: tree1 });
         const state1 = pageTreesReducer(initialState, action1);
 
-        expect(state1.trees.rootIds).toHaveLength(1);
+        expect(state1.pagetrees.rootIds).toHaveLength(1);
 
-        const action2 = loadContentPageTreeSuccess({ tree: tree2 });
+        const action2 = loadContentPageTreeSuccess({ pagetree: tree2 });
         const state2 = pageTreesReducer(state1, action2);
 
-        expect(state2.trees.rootIds).toHaveLength(2);
+        expect(state2.pagetrees.rootIds).toHaveLength(2);
       });
 
       it('should do nothing when action does not have a tree', () => {
-        const action1 = loadContentPageTreeSuccess({ tree: tree1 });
+        const action1 = loadContentPageTreeSuccess({ pagetree: tree1 });
         const state1 = pageTreesReducer(initialState, action1);
-        const action2 = loadContentPageTreeSuccess({ tree: undefined });
+        const action2 = loadContentPageTreeSuccess({ pagetree: undefined });
         const state2 = pageTreesReducer(state1, action2);
 
-        expect(state2.trees).toEqual(state2.trees);
+        expect(state2.pagetrees).toEqual(state2.pagetrees);
       });
     });
   });

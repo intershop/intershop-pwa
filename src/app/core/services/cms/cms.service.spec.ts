@@ -76,13 +76,22 @@ describe('Cms Service', () => {
       verify(apiService.get(`cms/pagetree/dummyId`, anything())).once();
     });
 
-    it('should set depth when property is set', () => {
+    it('should set depth when property is set to 2', () => {
       cmsService.getContentPageTree('dummyId', 2);
       verify(apiService.get(`cms/pagetree/dummyId`, anything())).once();
 
       expect(capture(apiService.get).last()[0].toString()).toMatchInlineSnapshot(`"cms/pagetree/dummyId"`);
       const options: AvailableOptions = capture(apiService.get).last()[1];
       expect(options.params.toString()).toMatchInlineSnapshot(`"depth=2"`);
+    });
+
+    it('should set depth when property is set to 0', () => {
+      cmsService.getContentPageTree('dummyId', 0);
+      verify(apiService.get(`cms/pagetree/dummyId`, anything())).once();
+
+      expect(capture(apiService.get).last()[0].toString()).toMatchInlineSnapshot(`"cms/pagetree/dummyId"`);
+      const options: AvailableOptions = capture(apiService.get).last()[1];
+      expect(options.params.toString()).toMatchInlineSnapshot(`"depth=0"`);
     });
 
     it('should throw error when contentPageId is not set', done => {

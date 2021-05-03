@@ -10,7 +10,7 @@ import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ng
 import { pageTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { loadContentPageTreeSuccess } from './page-trees.actions';
-import { getContentPageTreeView, getPageTrees } from './page-trees.selectors';
+import { getContentPageTree, getPageTrees } from './page-trees.selectors';
 
 describe('Page Trees Selectors', () => {
   let store$: StoreWithSnapshots;
@@ -39,7 +39,7 @@ describe('Page Trees Selectors', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        ContentStoreModule.forTesting('trees'),
+        ContentStoreModule.forTesting('pagetrees'),
         CoreStoreModule.forTesting(['router']),
         RouterTestingModule.withRoutes([{ path: 'page/:contentPageId', component: DummyComponent }]),
       ],
@@ -52,13 +52,13 @@ describe('Page Trees Selectors', () => {
 
   describe('with empty state', () => {
     it('should not select any selected page tree when used', () => {
-      expect(getContentPageTreeView(tree1.contentPageId)(store$.state)).toBeUndefined();
+      expect(getContentPageTree(tree1.contentPageId)(store$.state)).toBeUndefined();
     });
   });
 
   describe('state contains page tree', () => {
     beforeEach(() =>
-      store$.dispatch(loadContentPageTreeSuccess({ tree: pageTree([tree1, tree2, tree3, tree4, tree5]) }))
+      store$.dispatch(loadContentPageTreeSuccess({ pagetree: pageTree([tree1, tree2, tree3, tree4, tree5]) }))
     );
 
     it('should get all page trees with getPageTrees() selector', () => {
@@ -76,116 +76,140 @@ describe('Page Trees Selectors', () => {
       it('should select content page tree of given uniqueId with children', fakeAsync(() => {
         router.navigateByUrl(`page/1`);
         tick(500);
-        expect(getContentPageTreeView(tree1.contentPageId)(store$.state)).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "children": Array [],
-              "contentPageId": "1.1",
-              "name": "1.1",
-              "parent": "1",
-              "path": Array [
-                "1",
-                "1.1",
-              ],
-            },
-          ]
+        expect(getContentPageTree(tree1.contentPageId)(store$.state)).toMatchInlineSnapshot(`
+          Object {
+            "children": Array [
+              Object {
+                "children": Array [],
+                "contentPageId": "1.1",
+                "name": "1.1",
+                "parent": "1",
+                "path": Array [
+                  "1",
+                  "1.1",
+                ],
+              },
+            ],
+            "contentPageId": "1",
+            "name": "1",
+            "parent": undefined,
+            "path": Array [
+              "1",
+            ],
+          }
         `);
       }));
 
       it('should select content page tree of given uniqueId with children', fakeAsync(() => {
         router.navigateByUrl(`page/1.1`);
         tick(500);
-        expect(getContentPageTreeView(tree1.contentPageId)(store$.state)).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "children": Array [
-                Object {
-                  "children": Array [],
-                  "contentPageId": "1.1.1",
-                  "name": "1.1.1",
-                  "parent": "1.1",
-                  "path": Array [
-                    "1",
-                    "1.1",
-                    "1.1.1",
-                  ],
-                },
-                Object {
-                  "children": Array [],
-                  "contentPageId": "1.1.2",
-                  "name": "1.1.2",
-                  "parent": "1.1",
-                  "path": Array [
-                    "1",
-                    "1.1",
-                    "1.1.2",
-                  ],
-                },
-              ],
-              "contentPageId": "1.1",
-              "name": "1.1",
-              "parent": "1",
-              "path": Array [
-                "1",
-                "1.1",
-              ],
-            },
-          ]
+        expect(getContentPageTree(tree1.contentPageId)(store$.state)).toMatchInlineSnapshot(`
+          Object {
+            "children": Array [
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [],
+                    "contentPageId": "1.1.1",
+                    "name": "1.1.1",
+                    "parent": "1.1",
+                    "path": Array [
+                      "1",
+                      "1.1",
+                      "1.1.1",
+                    ],
+                  },
+                  Object {
+                    "children": Array [],
+                    "contentPageId": "1.1.2",
+                    "name": "1.1.2",
+                    "parent": "1.1",
+                    "path": Array [
+                      "1",
+                      "1.1",
+                      "1.1.2",
+                    ],
+                  },
+                ],
+                "contentPageId": "1.1",
+                "name": "1.1",
+                "parent": "1",
+                "path": Array [
+                  "1",
+                  "1.1",
+                ],
+              },
+            ],
+            "contentPageId": "1",
+            "name": "1",
+            "parent": undefined,
+            "path": Array [
+              "1",
+            ],
+          }
         `);
       }));
 
       it('should select content page tree of given uniqueId with children', fakeAsync(() => {
         router.navigateByUrl(`page/1.1.1`);
         tick(500);
-        expect(getContentPageTreeView(tree1.contentPageId)(store$.state)).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "children": Array [
-                Object {
-                  "children": Array [
-                    Object {
-                      "children": Array [],
-                      "contentPageId": "1.1.1.1",
-                      "name": "1.1.1.1",
-                      "parent": "1.1.1",
-                      "path": Array [
-                        "1",
-                        "1.1",
-                        "1.1.1",
-                        "1.1.1.1",
-                      ],
-                    },
-                  ],
-                  "contentPageId": "1.1.1",
-                  "name": "1.1.1",
-                  "parent": "1.1",
-                  "path": Array [
-                    "1",
-                    "1.1",
-                    "1.1.1",
-                  ],
-                },
-                Object {
-                  "children": Array [],
-                  "contentPageId": "1.1.2",
-                  "name": "1.1.2",
-                  "parent": "1.1",
-                  "path": Array [
-                    "1",
-                    "1.1",
-                    "1.1.2",
-                  ],
-                },
-              ],
-              "contentPageId": "1.1",
-              "name": "1.1",
-              "parent": "1",
-              "path": Array [
-                "1",
-                "1.1",
-              ],
-            },
-          ]
+        expect(getContentPageTree(tree1.contentPageId)(store$.state)).toMatchInlineSnapshot(`
+          Object {
+            "children": Array [
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [
+                      Object {
+                        "children": Array [],
+                        "contentPageId": "1.1.1.1",
+                        "name": "1.1.1.1",
+                        "parent": "1.1.1",
+                        "path": Array [
+                          "1",
+                          "1.1",
+                          "1.1.1",
+                          "1.1.1.1",
+                        ],
+                      },
+                    ],
+                    "contentPageId": "1.1.1",
+                    "name": "1.1.1",
+                    "parent": "1.1",
+                    "path": Array [
+                      "1",
+                      "1.1",
+                      "1.1.1",
+                    ],
+                  },
+                  Object {
+                    "children": Array [],
+                    "contentPageId": "1.1.2",
+                    "name": "1.1.2",
+                    "parent": "1.1",
+                    "path": Array [
+                      "1",
+                      "1.1",
+                      "1.1.2",
+                    ],
+                  },
+                ],
+                "contentPageId": "1.1",
+                "name": "1.1",
+                "parent": "1",
+                "path": Array [
+                  "1",
+                  "1.1",
+                ],
+              },
+            ],
+            "contentPageId": "1",
+            "name": "1",
+            "parent": undefined,
+            "path": Array [
+              "1",
+            ],
+          }
         `);
       }));
     });
