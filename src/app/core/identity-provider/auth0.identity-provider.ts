@@ -203,8 +203,8 @@ export class Auth0IdentityProvider implements IdentityProvider {
 
   triggerInvite(route: ActivatedRouteSnapshot): TriggerReturnType {
     this.router.navigateByUrl('/loading');
-    window.sessionStorage.setItem('invite-userid', route.queryParams.userid);
-    window.sessionStorage.setItem('invite-hash', route.queryParams.hash);
+    window.sessionStorage.setItem('invite-userid', route.queryParams.uid);
+    window.sessionStorage.setItem('invite-hash', route.queryParams.Hash);
     return this.oauthService.loadDiscoveryDocumentAndLogin({
       state: route.queryParams.returnUrl,
     });
