@@ -21,7 +21,7 @@ export class AuthorizationService {
     }
 
     return this.apiService
-      .get<AuthorizationData>(`customers/${customer.customerNo}/users/${user.login}/roles`)
+      .get<AuthorizationData>(`customers/${customer.customerNo}/users/${encodeURIComponent(user.login)}/roles`)
       .pipe(map(data => this.authorizationMapper.fromData(data)));
   }
 }

@@ -32,6 +32,11 @@ export interface IdentityProvider<ConfigType = never> {
   triggerRegister?(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): TriggerReturnType;
 
   /**
+   * Route guard for inviting.
+   */
+  triggerInvite?(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): TriggerReturnType;
+
+  /**
    * Route guard for logout
    */
   triggerLogout(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): TriggerReturnType;

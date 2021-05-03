@@ -49,7 +49,9 @@ export class UsersService {
   getUser(login: string): Observable<B2bUser> {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
-        this.apiService.get(`customers/${customer.customerNo}/users/${login}`).pipe(map(B2bUserMapper.fromData))
+        this.apiService
+          .get(`customers/${customer.customerNo}/users/${encodeURIComponent(login)}`)
+          .pipe(map(B2bUserMapper.fromData))
       )
     );
   }
@@ -113,7 +115,7 @@ export class UsersService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .put(`customers/${customer.customerNo}/users/${user.login}`, {
+          .put(`customers/${customer.customerNo}/users/${encodeURIComponent(user.login)}`, {
             ...customer,
             ...user,
             preferredInvoiceToAddress: { urn: user.preferredInvoiceToAddressUrn },
@@ -139,7 +141,9 @@ export class UsersService {
     }
 
     return this.currentCustomer$.pipe(
-      switchMap(customer => this.apiService.delete(`customers/${customer.customerNo}/users/${login}`))
+      switchMap(customer =>
+        this.apiService.delete(`customers/${customer.customerNo}/users/${encodeURIComponent(login)}`)
+      )
     );
   }
 
@@ -162,10 +166,12 @@ export class UsersService {
   setUserRoles(login: string, userRoles: string[]): Observable<string[]> {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
-        this.apiService.put(`customers/${customer.customerNo}/users/${login}/roles`, { userRoles }).pipe(
-          unpackEnvelope<B2bRoleData>('userRoles'),
-          map(data => data.map(r => r.roleID))
-        )
+        this.apiService
+          .put(`customers/${customer.customerNo}/users/${encodeURIComponent(login)}/roles`, { userRoles })
+          .pipe(
+            unpackEnvelope<B2bRoleData>('userRoles'),
+            map(data => data.map(r => r.roleID))
+          )
       )
     );
   }
@@ -183,7 +189,10 @@ export class UsersService {
     }
     return this.currentCustomer$.pipe(
       switchMap(customer =>
-        this.apiService.put<UserBudget>(`customers/${customer.customerNo}/users/${login}/budgets`, budget)
+        this.apiService.put<UserBudget>(
+          `customers/${customer.customerNo}/users/${encodeURIComponent(login)}/budgets`,
+          budget
+        )
       )
     );
   }

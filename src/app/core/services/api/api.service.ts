@@ -285,31 +285,43 @@ export class ApiService {
       get: <T>(path: string, options?: AvailableOptions) =>
         ids$.pipe(
           concatMap(([user, customer]) =>
-            this.get<T>(`customers/${customer.customerNo}/users/${user.login}/${path}`, options)
+            this.get<T>(`customers/${customer.customerNo}/users/${encodeURIComponent(user.login)}/${path}`, options)
           )
         ),
       delete: <T>(path: string, options?: AvailableOptions) =>
         ids$.pipe(
           concatMap(([user, customer]) =>
-            this.delete<T>(`customers/${customer.customerNo}/users/${user.login}/${path}`, options)
+            this.delete<T>(`customers/${customer.customerNo}/users/${encodeURIComponent(user.login)}/${path}`, options)
           )
         ),
       put: <T>(path: string, body = {}, options?: AvailableOptions) =>
         ids$.pipe(
           concatMap(([user, customer]) =>
-            this.put<T>(`customers/${customer.customerNo}/users/${user.login}/${path}`, body, options)
+            this.put<T>(
+              `customers/${customer.customerNo}/users/${encodeURIComponent(user.login)}/${path}`,
+              body,
+              options
+            )
           )
         ),
       patch: <T>(path: string, body = {}, options?: AvailableOptions) =>
         ids$.pipe(
           concatMap(([user, customer]) =>
-            this.patch<T>(`customers/${customer.customerNo}/users/${user.login}/${path}`, body, options)
+            this.patch<T>(
+              `customers/${customer.customerNo}/users/${encodeURIComponent(user.login)}/${path}`,
+              body,
+              options
+            )
           )
         ),
       post: <T>(path: string, body = {}, options?: AvailableOptions) =>
         ids$.pipe(
           concatMap(([user, customer]) =>
-            this.post<T>(`customers/${customer.customerNo}/users/${user.login}/${path}`, body, options)
+            this.post<T>(
+              `customers/${customer.customerNo}/users/${encodeURIComponent(user.login)}/${path}`,
+              body,
+              options
+            )
           )
         ),
     };
