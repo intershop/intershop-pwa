@@ -93,10 +93,8 @@ export class Auth0IdentityProvider implements IdentityProvider {
         ),
         whenTruthy(),
         switchMap(idToken => {
-          console.log('deciding what to do');
           const inviteUserId = window.sessionStorage.getItem('invite-userid');
           const inviteHash = window.sessionStorage.getItem('invite-hash');
-          console.log('userid', inviteUserId);
           return inviteUserId
             ? this.inviteRegistration(idToken, inviteUserId, inviteHash)
             : this.normalSignInRegistration(idToken);
@@ -170,14 +168,21 @@ export class Auth0IdentityProvider implements IdentityProvider {
   private inviteRegistration(idToken: string, userId: string, hash: string) {
     window.sessionStorage.removeItem('invite-userid');
     window.sessionStorage.removeItem('hash');
-    return this.apiService.post<UserData>('users/processtoken', {
-      id_token: idToken,
-      secure_user_ref: {
-        user_id: userId,
-        secure_code: hash,
-      },
-      options: ['UPDATE'],
-    });
+    return this.apiService
+      .post<UserData>('users/processtoken', {
+        id_token: idToken,
+        secure_user_ref: {
+          user_id: userId,
+          secure_code: hash,
+        },
+        options: ['UPDATE'],
+      })
+      .pipe(
+        tap(() => {
+          this.store.dispatch(loadUserByAPIToken());
+        }),
+        switchMapTo(this.store.pipe(select(getUserAuthorized), whenTruthy(), first()))
+      );
   }
 
   triggerRegister(route: ActivatedRouteSnapshot): TriggerReturnType {

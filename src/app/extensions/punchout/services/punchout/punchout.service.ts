@@ -117,7 +117,9 @@ export class PunchoutService {
       switchMap(customer =>
         this.apiService
           .put<PunchoutUser>(
-            `customers/${customer.customerNo}/punchouts/${this.getResourceType(user.punchoutType)}/users/${user.login}`,
+            `customers/${customer.customerNo}/punchouts/${this.getResourceType(
+              user.punchoutType
+            )}/users/${encodeURIComponent(user.login)}`,
             user,
             {
               headers: this.punchoutHeaders,

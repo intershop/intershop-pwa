@@ -64,7 +64,7 @@ describe('Users Service', () => {
       verify(apiService.get(anything())).once();
       expect(capture(apiService.get).last()).toMatchInlineSnapshot(`
         Array [
-          "customers/4711/users/pmiller@test.intershop.de",
+          "customers/4711/users/pmiller%40test.intershop.de",
         ]
       `);
       done();
@@ -76,7 +76,7 @@ describe('Users Service', () => {
       verify(apiService.delete(anything())).once();
       expect(capture(apiService.delete).last()).toMatchInlineSnapshot(`
         Array [
-          "customers/4711/users/pmiller@test.intershop.de",
+          "customers/4711/users/pmiller%40test.intershop.de",
         ]
       `);
       done();
@@ -99,7 +99,7 @@ describe('Users Service', () => {
     usersService.updateUser(user).subscribe(() => {
       verify(apiService.put(anything(), anything())).once();
       expect(capture(apiService.put).last()[0]).toMatchInlineSnapshot(
-        `"customers/4711/users/pmiller@test.intershop.de"`
+        `"customers/4711/users/pmiller%40test.intershop.de"`
       );
       done();
     });
@@ -117,7 +117,7 @@ describe('Users Service', () => {
       verify(apiService.put(anything(), anything())).once();
       expect(capture(apiService.put).last()).toMatchInlineSnapshot(`
         Array [
-          "customers/4711/users/pmiller@test.intershop.de/roles",
+          "customers/4711/users/pmiller%40test.intershop.de/roles",
           Object {
             "userRoles": Array [],
           },
@@ -141,7 +141,7 @@ describe('Users Service', () => {
         verify(apiService.put(anything(), anything())).once();
         expect(capture(apiService.put).last()).toMatchInlineSnapshot(`
           Array [
-            "customers/4711/users/pmiller@test.intershop.de/budgets",
+            "customers/4711/users/pmiller%40test.intershop.de/budgets",
             Object {
               "budget": Object {
                 "currency": "USD",
