@@ -122,8 +122,9 @@ export class Auth0IdentityProvider implements IdentityProvider {
                       of(false)
                     )
                   ),
-                  switchMap((navigated: boolean) =>
-                    navigated || navigated === null
+                  switchMap((navigated: boolean) => {
+                    console.log(navigated);
+                    return navigated || navigated === null
                       ? race(
                           this.store.pipe(
                             select(getSsoRegistrationRegistered),
@@ -139,8 +140,8 @@ export class Auth0IdentityProvider implements IdentityProvider {
                             tap(() => this.router.navigateByUrl('/logout'))
                           )
                         )
-                      : of(navigated)
-                  )
+                      : of(navigated);
+                  })
                 )
               ),
               switchMapTo(this.store.pipe(select(getUserAuthorized), whenTruthy(), first())),
