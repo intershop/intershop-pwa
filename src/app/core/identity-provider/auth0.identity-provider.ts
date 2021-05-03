@@ -165,7 +165,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
 
   private inviteRegistration(idToken: string, userId: string, hash: string) {
     window.sessionStorage.removeItem('invite-userid');
-    window.sessionStorage.removeItem('hash');
+    window.sessionStorage.removeItem('invite-hash');
     return this.apiService
       .post<UserData>('users/processtoken', {
         id_token: idToken,
@@ -179,7 +179,12 @@ export class Auth0IdentityProvider implements IdentityProvider {
         tap(() => {
           this.store.dispatch(loadUserByAPIToken());
         }),
-        switchMapTo(this.store.pipe(select(getUserAuthorized), whenTruthy(), first()))
+        switchMapTo(this.store.pipe(select(getUserAuthorized), whenTruthy(), first())),
+        catchError((error: HttpError) => {
+          this.apiTokenService.removeApiToken();
+          this.triggerLogout();
+          return of(error);
+        })
       );
   }
 

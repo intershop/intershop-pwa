@@ -56,7 +56,7 @@ export class ICMIdentityProvider implements IdentityProvider {
 
   triggerInvite(route: ActivatedRouteSnapshot): TriggerReturnType {
     return this.router.createUrlTree(['forgotPassword', 'updatePassword'], {
-      queryParams: { userid: route.queryParams.userid, hash: route.queryParams.hash },
+      queryParams: { uid: route.queryParams.uid, Hash: route.queryParams.Hash },
     });
   }
 
