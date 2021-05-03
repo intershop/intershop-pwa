@@ -11,7 +11,7 @@ export class ContentPageTreeMapper {
   /**
    * Check type of elements
    */
-  private areElementsContentPageTrees(elements: ContentPageTreeData[] | Link[]): elements is ContentPageTreeData[] {
+  private areElementsContentPageTreeData(elements: ContentPageTreeData[] | Link[]): elements is ContentPageTreeData[] {
     return (elements as ContentPageTreeData[])[0].type === 'PageTreeRO';
   }
 
@@ -105,7 +105,7 @@ export class ContentPageTreeMapper {
         /**
          * check type of available elements: {@link ContentPageTreeData} or {@link Link}.
          */
-        if (this.areElementsContentPageTrees(treeData.elements)) {
+        if (this.areElementsContentPageTreeData(treeData.elements)) {
           subTrees = treeData.elements
             .map(c => {
               c.path = [...c.path, c.page];

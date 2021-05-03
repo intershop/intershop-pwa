@@ -9,10 +9,10 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { pageTree } from 'ish-core/utils/dev/test-data-utils';
 
-import { loadContentPageTreeSuccess } from './page-trees.actions';
-import { getContentPageTree, getPageTrees } from './page-trees.selectors';
+import { loadContentPageTreeSuccess } from './page-tree.actions';
+import { getContentPageTree, getPageTree } from './page-tree.selectors';
 
-describe('Page Trees Selectors', () => {
+describe('Page Tree Selectors', () => {
   let store$: StoreWithSnapshots;
   let router: Router;
 
@@ -41,7 +41,7 @@ describe('Page Trees Selectors', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        ContentStoreModule.forTesting('pagetrees'),
+        ContentStoreModule.forTesting('pagetree'),
         CoreStoreModule.forTesting(['router']),
         RouterTestingModule.withRoutes([{ path: 'page/:contentPageId', component: DummyComponent }]),
       ],
@@ -64,7 +64,7 @@ describe('Page Trees Selectors', () => {
     );
 
     it('should get all page trees with getPageTrees() selector', () => {
-      expect(getPageTrees(store$.state)).toMatchInlineSnapshot(`
+      expect(getPageTree(store$.state)).toMatchInlineSnapshot(`
         └─ 1
            └─ 1.1
               ├─ 1.1.1
@@ -219,16 +219,16 @@ describe('Page Trees Selectors', () => {
 
   it('should merge trees together when tree contains same path', () => {
     store$.dispatch(loadContentPageTreeSuccess({ pagetree: pageTree([tree1, tree2]) }));
-    expect(Object.keys(getPageTrees(store$.state).nodes)).toMatchInlineSnapshot(`
+    expect(Object.keys(getPageTree(store$.state).nodes)).toMatchInlineSnapshot(`
       Array [
         "1",
         "1.1",
       ]
     `);
-    expect(getPageTrees(store$.state).rootIds).toHaveLength(1);
+    expect(getPageTree(store$.state).rootIds).toHaveLength(1);
 
     store$.dispatch(loadContentPageTreeSuccess({ pagetree: pageTree([tree1, tree2, tree3, tree4]) }));
-    expect(Object.keys(getPageTrees(store$.state).nodes)).toMatchInlineSnapshot(`
+    expect(Object.keys(getPageTree(store$.state).nodes)).toMatchInlineSnapshot(`
       Array [
         "1",
         "1.1",
@@ -236,19 +236,19 @@ describe('Page Trees Selectors', () => {
         "1.1.2",
       ]
     `);
-    expect(getPageTrees(store$.state).rootIds).toHaveLength(1);
+    expect(getPageTree(store$.state).rootIds).toHaveLength(1);
   });
 
   it('should add new tree when tree contains a new rootId', () => {
     store$.dispatch(loadContentPageTreeSuccess({ pagetree: pageTree([tree1, tree2]) }));
-    expect(getPageTrees(store$.state).rootIds).toMatchInlineSnapshot(`
+    expect(getPageTree(store$.state).rootIds).toMatchInlineSnapshot(`
       Array [
         "1",
       ]
     `);
 
     store$.dispatch(loadContentPageTreeSuccess({ pagetree: pageTree([tree6]) }));
-    expect(getPageTrees(store$.state).rootIds).toMatchInlineSnapshot(`
+    expect(getPageTree(store$.state).rootIds).toMatchInlineSnapshot(`
       Array [
         "1",
         "2",

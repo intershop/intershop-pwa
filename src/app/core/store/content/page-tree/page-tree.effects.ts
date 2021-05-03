@@ -5,10 +5,10 @@ import { concatMap, map } from 'rxjs/operators';
 import { CMSService } from 'ish-core/services/cms/cms.service';
 import { mapErrorToAction, mapToPayload } from 'ish-core/utils/operators';
 
-import { loadContentPageTree, loadContentPageTreeFail, loadContentPageTreeSuccess } from './page-trees.actions';
+import { loadContentPageTree, loadContentPageTreeFail, loadContentPageTreeSuccess } from './page-tree.actions';
 
 @Injectable()
-export class PageTreesEffects {
+export class PageTreeEffects {
   constructor(private actions$: Actions, private cmsService: CMSService) {}
 
   loadContentPageTree$ = createEffect(() =>

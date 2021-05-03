@@ -8,8 +8,8 @@ import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
 import { ContentState } from './content-store';
 import { IncludesEffects } from './includes/includes.effects';
 import { includesReducer } from './includes/includes.reducer';
-import { PageTreesEffects } from './page-trees/page-trees.effects';
-import { pageTreesReducer } from './page-trees/page-trees.reducer';
+import { PageTreeEffects } from './page-tree/page-tree.effects';
+import { pageTreeReducer } from './page-tree/page-tree.reducer';
 import { pageletsReducer } from './pagelets/pagelets.reducer';
 import { PagesEffects } from './pages/pages.effects';
 import { pagesReducer } from './pages/pages.reducer';
@@ -21,10 +21,10 @@ const contentReducers: ActionReducerMap<ContentState> = {
   pagelets: pageletsReducer,
   pages: pagesReducer,
   viewcontexts: viewcontextsReducer,
-  pagetrees: pageTreesReducer,
+  pagetree: pageTreeReducer,
 };
 
-const contentEffects = [IncludesEffects, PagesEffects, ViewcontextsEffects, PageTreesEffects];
+const contentEffects = [IncludesEffects, PagesEffects, ViewcontextsEffects, PageTreeEffects];
 
 const metaReducers = [resetOnLogoutMeta];
 

@@ -5,7 +5,7 @@ import { filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.model';
 import { getContentInclude, loadContentInclude } from 'ish-core/store/content/includes';
-import { getContentPageTree, loadContentPageTree } from 'ish-core/store/content/page-trees';
+import { getContentPageTree, loadContentPageTree } from 'ish-core/store/content/page-tree';
 import { getContentPagelet } from 'ish-core/store/content/pagelets';
 import { getContentPageLoading, getSelectedContentPage } from 'ish-core/store/content/pages';
 import { getViewContext, loadViewContextEntrypoint } from 'ish-core/store/content/viewcontexts';

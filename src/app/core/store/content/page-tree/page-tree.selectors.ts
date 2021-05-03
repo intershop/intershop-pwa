@@ -9,9 +9,9 @@ import { ContentPageTree } from 'ish-core/models/content-page-tree/content-page-
 import { getContentState } from 'ish-core/store/content/content-store';
 import { selectRouteParam } from 'ish-core/store/core/router';
 
-const getPageTreesState = createSelector(getContentState, state => state.pagetrees);
+const getPageTreeState = createSelector(getContentState, state => state.pagetree);
 
-export const getPageTrees = createSelector(getPageTreesState, state => state.pagetrees);
+export const getPageTree = createSelector(getPageTreeState, state => state.pagetree);
 
 /**
  * Get the content page tree for the given root and the currently selected content page.
@@ -20,7 +20,7 @@ export const getPageTrees = createSelector(getPageTreesState, state => state.pag
  */
 export const getContentPageTree = (rootId: string) =>
   createSelectorFactory<object, ContentPageTreeView>(projector => resultMemoize(projector, isEqual))(
-    getPageTrees,
+    getPageTree,
     selectRouteParam('contentPageId'),
     (pagetree: ContentPageTree, contentPageId: string) => createContentPageTreeView(pagetree, rootId, contentPageId)
   );

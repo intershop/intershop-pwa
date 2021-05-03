@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ContentPageTreeElement } from 'ish-core/models/content-page-tree/content-page-tree.model';
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { ContentStoreModule } from 'ish-core/store/content/content-store.module';
-import { loadContentPageTreeSuccess } from 'ish-core/store/content/page-trees';
+import { loadContentPageTreeSuccess } from 'ish-core/store/content/page-tree';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { pageTree } from 'ish-core/utils/dev/test-data-utils';
@@ -25,7 +25,7 @@ describe('Pages Selectors', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        ContentStoreModule.forTesting('pages', 'pagetrees'),
+        ContentStoreModule.forTesting('pages', 'pagetree'),
         CoreStoreModule.forTesting(['router']),
         RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
       ],

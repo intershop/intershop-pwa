@@ -12,7 +12,7 @@ import { ContentPageTreeElement } from 'ish-core/models/content-page-tree/conten
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { CMSService } from 'ish-core/services/cms/cms.service';
 import { ContentStoreModule } from 'ish-core/store/content/content-store.module';
-import { loadContentPageTreeSuccess } from 'ish-core/store/content/page-trees';
+import { loadContentPageTreeSuccess } from 'ish-core/store/content/page-tree';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { pageTree } from 'ish-core/utils/dev/test-data-utils';
@@ -35,7 +35,7 @@ describe('Pages Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        ContentStoreModule.forTesting('pagetrees', 'pages'),
+        ContentStoreModule.forTesting('pagetree', 'pages'),
         CoreStoreModule.forTesting(['router']),
         RouterTestingModule.withRoutes([{ path: 'page/:contentPageId', component: DummyComponent }]),
       ],

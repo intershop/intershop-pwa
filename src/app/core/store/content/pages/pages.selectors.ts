@@ -8,7 +8,7 @@ import {
   createContentPageletEntryPointView,
 } from 'ish-core/models/content-view/content-view.model';
 import { getContentState } from 'ish-core/store/content/content-store';
-import { getPageTrees } from 'ish-core/store/content/page-trees';
+import { getPageTree } from 'ish-core/store/content/page-tree';
 import { selectRouteParam } from 'ish-core/store/core/router';
 
 import { pagesAdapter } from './pages.reducer';
@@ -25,7 +25,7 @@ export const getSelectedContentPage = createSelector(getPageEntities, selectRout
 
 export const getBreadcrumbForContentPage = createSelectorFactory<object, BreadcrumbItem[]>(projector =>
   resultMemoize(projector, isEqual)
-)(getPageTrees, getSelectedContentPage, (pagetree: ContentPageTree, contentPage: ContentPageletEntryPointView) =>
+)(getPageTree, getSelectedContentPage, (pagetree: ContentPageTree, contentPage: ContentPageletEntryPointView) =>
   pagetree.nodes[contentPage?.id]
     ? (pagetree.nodes[contentPage.id].path.map((item, i, path) => ({
         key: pagetree.nodes[item].name,

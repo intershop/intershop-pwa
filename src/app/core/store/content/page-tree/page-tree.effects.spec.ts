@@ -9,12 +9,12 @@ import { ContentPageTree } from 'ish-core/models/content-page-tree/content-page-
 import { CMSService } from 'ish-core/services/cms/cms.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
-import { loadContentPageTree, loadContentPageTreeFail, loadContentPageTreeSuccess } from './page-trees.actions';
-import { PageTreesEffects } from './page-trees.effects';
+import { loadContentPageTree, loadContentPageTreeFail, loadContentPageTreeSuccess } from './page-tree.actions';
+import { PageTreeEffects } from './page-tree.effects';
 
-describe('Page Trees Effects', () => {
+describe('Page Tree Effects', () => {
   let actions$: Observable<Action>;
-  let effects: PageTreesEffects;
+  let effects: PageTreeEffects;
   let cmsServiceMock: CMSService;
 
   beforeEach(() => {
@@ -22,13 +22,13 @@ describe('Page Trees Effects', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        PageTreesEffects,
+        PageTreeEffects,
         provideMockActions(() => actions$),
         { provide: CMSService, useFactory: () => instance(cmsServiceMock) },
       ],
     });
 
-    effects = TestBed.inject(PageTreesEffects);
+    effects = TestBed.inject(PageTreeEffects);
   });
 
   describe('loadContentPageTree$', () => {
