@@ -1,8 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
+import { Link } from 'ish-core/models/link/link.model';
 import { pageTree } from 'ish-core/utils/dev/test-data-utils';
 
-import { ContentPageTreeData, ContentPageTreeLink } from './content-page-tree.interface';
+import { ContentPageTreeData } from './content-page-tree.interface';
 import { ContentPageTreeMapper } from './content-page-tree.mapper';
 import { ContentPageTreeElement } from './content-page-tree.model';
 
@@ -22,11 +23,11 @@ describe('Content Page Tree Mapper', () => {
     });
 
     it.each([
-      [['1'], [{ itemId: '1' }] as ContentPageTreeLink[]],
-      [['1', '1.2'], [{ itemId: '1' }, { itemId: '1.2' }] as ContentPageTreeLink[]],
+      [['1'], [{ itemId: '1' }] as Link[]],
+      [['1', '1.2'], [{ itemId: '1' }, { itemId: '1.2' }] as Link[]],
       [
         ['1', '1.2', '1.2.3', '1.2.3.4'],
-        [{ itemId: '1' }, { itemId: '1.2' }, { itemId: '1.2.3' }, { itemId: '1.2.3.4' }] as ContentPageTreeLink[],
+        [{ itemId: '1' }, { itemId: '1.2' }, { itemId: '1.2.3' }, { itemId: '1.2.3.4' }] as Link[],
       ],
     ])(`should return %p when mapping path from %j`, (result, path) => {
       expect(contentPageTreeMapper.mapContentPageTreeElementPath(path)).toEqual(result);
@@ -45,9 +46,9 @@ describe('Content Page Tree Mapper', () => {
     const el4 = { contentPageId: '4', path: ['1', '2', '3', '4'], name: 'n4' } as ContentPageTreeElement;
 
     it('should return tree when mapping path with one element', () => {
-      expect(
-        contentPageTreeMapper.treeElementsFromTreeElementPath([{ itemId: '1', title: 'n1' }] as ContentPageTreeLink[])
-      ).toEqual(pageTree([el1]));
+      expect(contentPageTreeMapper.treeElementsFromTreeElementPath([{ itemId: '1', title: 'n1' }] as Link[])).toEqual(
+        pageTree([el1])
+      );
     });
 
     it('should return both elements when mapping path with two elements', () => {
@@ -55,7 +56,7 @@ describe('Content Page Tree Mapper', () => {
         contentPageTreeMapper.treeElementsFromTreeElementPath([
           { itemId: '1', title: 'n1' },
           { itemId: '2', title: 'n2' },
-        ] as ContentPageTreeLink[])
+        ] as Link[])
       ).toEqual(pageTree([el1, el2]));
     });
 
@@ -66,7 +67,7 @@ describe('Content Page Tree Mapper', () => {
           { itemId: '2', title: 'n2' },
           { itemId: '3', title: 'n3' },
           { itemId: '4', title: 'n4' },
-        ] as ContentPageTreeLink[])
+        ] as Link[])
       ).toEqual(pageTree([el1, el2, el3, el4]));
     });
   });
@@ -180,7 +181,7 @@ describe('Content Page Tree Mapper', () => {
             itemId: '3',
             type: 'PageTreeLink',
           },
-        ] as ContentPageTreeLink[],
+        ] as Link[],
       } as ContentPageTreeData);
 
       expect(tree).toMatchInlineSnapshot(`
@@ -198,7 +199,7 @@ describe('Content Page Tree Mapper', () => {
   describe('convertLinkToTreeData', () => {
     it('should convert given page tree link to page tree', () => {
       const parent = { page: { itemId: '1' } } as ContentPageTreeData;
-      const link = { itemId: '2' } as ContentPageTreeLink;
+      const link = { itemId: '2' } as Link;
 
       const convertedTree = contentPageTreeMapper.convertLinkToTreeData(parent, link);
       expect(convertedTree.page).toEqual(link);
@@ -208,7 +209,7 @@ describe('Content Page Tree Mapper', () => {
 
     it('should convert given page tree link to page tree with existing parent path', () => {
       const parent = { path: [{ itemId: '1' }, { itemId: '2' }] } as ContentPageTreeData;
-      const link = { itemId: '3' } as ContentPageTreeLink;
+      const link = { itemId: '3' } as Link;
 
       const convertedTree = contentPageTreeMapper.convertLinkToTreeData(parent, link);
       expect(convertedTree.page).toEqual(link);

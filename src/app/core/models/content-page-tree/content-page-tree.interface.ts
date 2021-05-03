@@ -1,13 +1,9 @@
-export interface ContentPageTreeLink {
-  type: string;
-  title: string;
-  itemId: string;
-}
+import { Link } from 'ish-core/models/link/link.model';
 
 export interface ContentPageTreeData {
   type: string;
-  parent?: ContentPageTreeLink;
-  path?: ContentPageTreeLink[];
-  page: ContentPageTreeLink;
-  elements?: ContentPageTreeData[] | ContentPageTreeLink[];
+  parent?: Link;
+  path?: Link[];
+  page: Link;
+  elements?: ContentPageTreeData[] | Link[];
 }

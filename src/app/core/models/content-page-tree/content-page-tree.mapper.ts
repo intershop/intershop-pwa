@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 
+import { Link } from '../link/link.model';
+
 import { ContentPageTreeHelper } from './content-page-tree.helper';
-import { ContentPageTreeData, ContentPageTreeLink } from './content-page-tree.interface';
+import { ContentPageTreeData } from './content-page-tree.interface';
 import { ContentPageTree, ContentPageTreeElement } from './content-page-tree.model';
 
 @Injectable({ providedIn: 'root' })
@@ -9,9 +11,7 @@ export class ContentPageTreeMapper {
   /**
    * Check type of elements
    */
-  private areElementsContentPageTrees(
-    elements: ContentPageTreeData[] | ContentPageTreeLink[]
-  ): elements is ContentPageTreeData[] {
+  private areElementsContentPageTrees(elements: ContentPageTreeData[] | Link[]): elements is ContentPageTreeData[] {
     return (elements as ContentPageTreeData[])[0].type === 'PageTreeRO';
   }
 
@@ -21,7 +21,7 @@ export class ContentPageTreeMapper {
    * @param element page tree link
    * @returns converted page tree
    */
-  convertLinkToTreeData(tree: ContentPageTreeData, element: ContentPageTreeLink): ContentPageTreeData {
+  convertLinkToTreeData(tree: ContentPageTreeData, element: Link): ContentPageTreeData {
     return {
       page: element,
       type: 'PageTreeRO',
@@ -33,7 +33,7 @@ export class ContentPageTreeMapper {
    * Utility Method:
    * Maps the incoming raw page tree path to a path with unique IDs.
    */
-  mapContentPageTreeElementPath(path: ContentPageTreeLink[]) {
+  mapContentPageTreeElementPath(path: Link[]) {
     if (path && path.length) {
       return path.map(x => x?.itemId);
     }
@@ -44,7 +44,7 @@ export class ContentPageTreeMapper {
    * Utility Method:
    * Creates page tree stubs from the page tree path
    */
-  treeElementsFromTreeElementPath(path: ContentPageTreeLink[]): ContentPageTree {
+  treeElementsFromTreeElementPath(path: Link[]): ContentPageTree {
     if (!path || !path.length) {
       return ContentPageTreeHelper.empty();
     }
@@ -103,7 +103,7 @@ export class ContentPageTreeMapper {
 
       if (treeData.elements && treeData.elements.length) {
         /**
-         * check type of available elements: {@link ContentPageTreeData} or {@link ContentPageTreeLink}.
+         * check type of available elements: {@link ContentPageTreeData} or {@link Link}.
          */
         if (this.areElementsContentPageTrees(treeData.elements)) {
           subTrees = treeData.elements
