@@ -28,10 +28,7 @@ function getContentPageTreeElements(
   let treeElements: ContentPageTreeView[] = [];
 
   // If current content page is part of element subtree or equals the element itself, then all children of elements should be analysed
-  if (
-    tree.edges[elementId] &&
-    (isContentPagePartOfPageTreeElement(tree, currentContentPageId, elementId) || elementId === currentContentPageId)
-  ) {
+  if (tree.edges[elementId] && isContentPagePartOfPageTreeElement(tree, currentContentPageId, elementId)) {
     treeElements = tree.edges[elementId]
       .map(child => getContentPageTreeElements(tree, child, rootId, currentContentPageId))
       .reduce((a, b) => {
@@ -57,7 +54,9 @@ function isContentPagePartOfPageTreeElement(
   elementId: string
 ): boolean {
   let result = false;
-  if (tree.edges[elementId]) {
+  if (elementId === currentContentPageId) {
+    result = true;
+  } else if (tree.edges[elementId]) {
     if (tree.edges[elementId].find(e => e === currentContentPageId)) {
       result = true;
     } else {
@@ -66,6 +65,7 @@ function isContentPagePartOfPageTreeElement(
         .find(res => res);
     }
   }
+
   return result;
 }
 
@@ -89,7 +89,7 @@ export function createContentPageTreeView(
   rootId: string,
   contentPageId: string
 ): ContentPageTreeView {
-  if (!tree || !rootId || !tree.nodes[rootId]) {
+  if (!tree || !rootId || !tree.nodes[rootId] || !isContentPagePartOfPageTreeElement(tree, contentPageId, rootId)) {
     return;
   }
 
