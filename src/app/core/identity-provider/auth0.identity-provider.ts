@@ -92,65 +92,15 @@ export class Auth0IdentityProvider implements IdentityProvider {
           )
         ),
         whenTruthy(),
-        switchMap(idToken =>
-          this.apiService
-            .post<UserData>('users/processtoken', {
-              id_token: idToken,
-              options: ['CREATE_USER'],
-            })
-            .pipe(
-              tap(() => {
-                this.store.dispatch(loadUserByAPIToken());
-              }),
-              switchMap((userData: UserData) =>
-                combineLatest([
-                  this.store.pipe(select(getLoggedInCustomer)),
-                  this.store.pipe(select(getUserLoading)),
-                ]).pipe(
-                  filter(([, loading]) => !loading),
-                  first(),
-                  switchMap(([customer]) =>
-                    iif(
-                      () => !customer,
-                      this.router.navigate(['/register', 'sso'], {
-                        queryParams: {
-                          userid: userData.businessPartnerNo,
-                          firstName: userData.firstName,
-                          lastName: userData.lastName,
-                        },
-                      }),
-                      of(false)
-                    )
-                  ),
-                  switchMap((navigated: boolean) =>
-                    navigated || navigated === null
-                      ? race(
-                          this.store.pipe(
-                            select(getSsoRegistrationRegistered),
-                            whenTruthy(),
-                            tap(() => {
-                              this.store.dispatch(loadUserByAPIToken());
-                            })
-                          ),
-                          this.store.pipe(
-                            select(getSsoRegistrationCancelled),
-                            whenTruthy(),
-                            mapTo(false),
-                            tap(() => this.router.navigateByUrl('/logout'))
-                          )
-                        )
-                      : of(navigated)
-                  )
-                )
-              ),
-              switchMapTo(this.store.pipe(select(getUserAuthorized), whenTruthy(), first())),
-              catchError((error: HttpError) => {
-                this.apiTokenService.removeApiToken();
-                this.triggerLogout();
-                return of(error);
-              })
-            )
-        )
+        switchMap(idToken => {
+          console.log('deciding what to do');
+          const inviteUserId = window.sessionStorage.getItem('invite-userid');
+          const inviteHash = window.sessionStorage.getItem('invite-hash');
+          console.log('userid', inviteUserId);
+          return inviteUserId
+            ? this.inviteRegistration(idToken, inviteUserId, inviteHash)
+            : this.normalSignInRegistration(idToken);
+        })
       )
       .subscribe(() => {
         this.apiTokenService.removeApiToken();
@@ -158,6 +108,76 @@ export class Auth0IdentityProvider implements IdentityProvider {
           this.router.navigateByUrl(this.oauthService.state ? decodeURIComponent(this.oauthService.state) : '/account');
         }
       });
+  }
+
+  private normalSignInRegistration(idToken: string) {
+    return this.apiService
+      .post<UserData>('users/processtoken', {
+        id_token: idToken,
+        options: ['CREATE_USER'],
+      })
+      .pipe(
+        tap(() => {
+          this.store.dispatch(loadUserByAPIToken());
+        }),
+        switchMap((userData: UserData) =>
+          combineLatest([this.store.pipe(select(getLoggedInCustomer)), this.store.pipe(select(getUserLoading))]).pipe(
+            filter(([, loading]) => !loading),
+            first(),
+            switchMap(([customer]) =>
+              iif(
+                () => !customer,
+                this.router.navigate(['/register', 'sso'], {
+                  queryParams: {
+                    userid: userData.businessPartnerNo,
+                    firstName: userData.firstName,
+                    lastName: userData.lastName,
+                  },
+                }),
+                of(false)
+              )
+            ),
+            switchMap((navigated: boolean) =>
+              navigated || navigated === null
+                ? race(
+                    this.store.pipe(
+                      select(getSsoRegistrationRegistered),
+                      whenTruthy(),
+                      tap(() => {
+                        this.store.dispatch(loadUserByAPIToken());
+                      })
+                    ),
+                    this.store.pipe(
+                      select(getSsoRegistrationCancelled),
+                      whenTruthy(),
+                      mapTo(false),
+                      tap(() => this.router.navigateByUrl('/logout'))
+                    )
+                  )
+                : of(navigated)
+            )
+          )
+        ),
+        switchMapTo(this.store.pipe(select(getUserAuthorized), whenTruthy(), first())),
+        catchError((error: HttpError) => {
+          this.apiTokenService.removeApiToken();
+          this.triggerLogout();
+          return of(error);
+        })
+      );
+  }
+
+  private inviteRegistration(idToken: string, userId: string, hash: string) {
+    window.sessionStorage.removeItem('invite-userid');
+    window.sessionStorage.removeItem('hash');
+    return this.apiService.post<UserData>('users/processtoken', {
+      id_token: idToken,
+      secure_user_ref: {
+        user_id: userId,
+        secure_code: hash,
+      },
+      options: ['UPDATE'],
+    });
   }
 
   triggerRegister(route: ActivatedRouteSnapshot): TriggerReturnType {
@@ -173,6 +193,15 @@ export class Auth0IdentityProvider implements IdentityProvider {
 
   triggerLogin(route: ActivatedRouteSnapshot): TriggerReturnType {
     this.router.navigateByUrl('/loading');
+    return this.oauthService.loadDiscoveryDocumentAndLogin({
+      state: route.queryParams.returnUrl,
+    });
+  }
+
+  triggerInvite(route: ActivatedRouteSnapshot): TriggerReturnType {
+    this.router.navigateByUrl('/loading');
+    window.sessionStorage.setItem('invite-userid', route.queryParams.userid);
+    window.sessionStorage.setItem('invite-hash', route.queryParams.hash);
     return this.oauthService.loadDiscoveryDocumentAndLogin({
       state: route.queryParams.returnUrl,
     });

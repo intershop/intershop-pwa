@@ -8,7 +8,7 @@ export const selectRouter = (state: { router?: RouterReducerState<RouterState> }
 export const selectRouteData = <T>(key: string) =>
   createSelector(selectRouter, (state): T => state?.state?.data && state.state.data[key]);
 
-export const selectQueryParams = createSelector(selectRouter, state => state?.state?.queryParams || {});
+export const selectQueryParams = createSelector(selectRouter, state => state?.state?.queryParams ?? {});
 
 export const selectQueryParam = (key: string) =>
   createSelector(selectQueryParams, (queryParams): string => queryParams && queryParams[key]);
