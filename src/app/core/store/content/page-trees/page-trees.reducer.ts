@@ -9,7 +9,7 @@ export interface PageTreesState {
   pagetrees: ContentPageTree;
 }
 
-export const initialState: PageTreesState = {
+const initialState: PageTreesState = {
   pagetrees: ContentPageTreeHelper.empty(),
 };
 
