@@ -1,13 +1,13 @@
-<ng-container *ngIf="contentPageTreeView$ | async as contentPageTreeView">
-  <ng-container *ngIf="currentContentPageId$ | async as currentContentPageId">
-    <a [routerLink]="['/page', contentPageTreeView.contentPageId]" [title]="contentPageTreeView.name">
-      <h3>{{ contentPageTreeView.name }}</h3>
+<ng-container *ngIf="contentPageTree$ | async as contentPageTree">
+  <ng-container *ngIf="currentContentPage$ | async as currentContentPage">
+    <a [routerLink]="['/page', contentPageTree.contentPageId]" [title]="contentPageTree.name">
+      <h3>{{ contentPageTree.name }}</h3>
     </a>
 
     <ul class="page-navigation-0">
       <ng-container
         [ngTemplateOutlet]="pageTreeNode"
-        [ngTemplateOutletContext]="{ tree: contentPageTreeView.children, counter: 1 }"
+        [ngTemplateOutletContext]="{ tree: contentPageTree.children, counter: 1 }"
       ></ng-container>
     </ul>
 
@@ -15,7 +15,7 @@
     <ng-template #pageTreeNode let-tree="tree" let-counter="counter">
       <li
         *ngFor="let item of tree"
-        [ngClass]="{ 'page-navigation-active': item.contentPageId === currentContentPageId }"
+        [ngClass]="{ 'page-navigation-active': item.contentPageId === currentContentPage.id }"
       >
         <a [routerLink]="['/page', item.contentPageId]" [title]="item.name">{{ item.name }}</a>
         <ul

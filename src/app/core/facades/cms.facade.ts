@@ -5,7 +5,7 @@ import { filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.model';
 import { getContentInclude, loadContentInclude } from 'ish-core/store/content/includes';
-import { getContentPageTreeView, loadContentPageTree } from 'ish-core/store/content/page-trees';
+import { getContentPageTree, loadContentPageTree } from 'ish-core/store/content/page-trees';
 import { getContentPagelet } from 'ish-core/store/content/pagelets';
 import { getContentPageLoading, getSelectedContentPage } from 'ish-core/store/content/pages';
 import { getViewContext, loadViewContextEntrypoint } from 'ish-core/store/content/viewcontexts';
@@ -45,8 +45,8 @@ export class CMSFacade {
     return this.store.pipe(select(getViewContext(viewContextId, callParameters)));
   }
 
-  loadPageTreeView$(rootId: string, depth: number) {
+  contentPageTree$(rootId: string, depth: number) {
     this.store.dispatch(loadContentPageTree({ rootId, depth }));
-    return this.store.pipe(select(getContentPageTreeView(rootId)));
+    return this.store.pipe(select(getContentPageTree(rootId)));
   }
 }
