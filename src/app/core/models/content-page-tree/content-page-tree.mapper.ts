@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Link } from '../link/link.model';
+import { Link } from 'ish-core/models/link/link.model';
 
 import { ContentPageTreeHelper } from './content-page-tree.helper';
 import { ContentPageTreeData } from './content-page-tree.interface';
