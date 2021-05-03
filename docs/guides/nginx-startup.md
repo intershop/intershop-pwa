@@ -23,6 +23,27 @@ For HTTP, the server will run on default port 80.
 If HTTPS is chosen as an upstream, it will run on default port 443.
 In the latter case the files `server.key` and `server.crt` have to be supplied in the container folder `/etx/nginx` (either by volume mapping with `docker run` or in the image itself by `docker build`).
 
+### Basic Auth
+
+For deploying to test environments that should not be indexed by search bots or should not be accessible by the public, the nginx container can be set up with basic authentication.
+Just supply a single user-password combination as environment variable, i.e. `BASIC_AUTH=<user>:<password>`.
+You can also whitelist IPs by supplying a YAML list to the environment variable `BASIC_AUTH_IP_WHITELIST`:
+
+```yaml
+nginx:
+  environment:
+    BASIC_AUTH: 'developer:!InterShop00!'
+    BASIC_AUTH_IP_WHITELIST: |
+      - 172.22.0.1
+      - 1.2.3.4
+```
+
+Entries of the IP whitelist are added to the nginx config as [`allow`](http://nginx.org/en/docs/http/ngx_http_access_module.html) statements, which also supports IP ranges.
+Please refer to the linked nginx documentation on how to configure this.
+
+After activating basic authentication for your setup globally you can also selectively deactivate it per site.
+See [Multi-Site Configurations](../guides/multi-site-configurations.md#Examples) for examples on how to do that.
+
 ### Multi-Site
 
 If the nginx container is run without further configuration, the default Angular CLI environment properties are not overridden.

@@ -15,7 +15,7 @@ ADD https://github.com/hairyhenderson/gomplate/releases/download/v3.8.0/gomplate
 
 FROM ubuntu:latest
 RUN apt-get update && \
-  apt-get install -y gettext-base libssl1.1 && \
+  apt-get install -y gettext-base libssl1.1 apache2-utils && \
   apt-get -y autoremove && \
   apt-get clean && \
   rm -r /var/cache/apt /var/lib/apt/lists

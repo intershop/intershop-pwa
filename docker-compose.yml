@@ -31,6 +31,10 @@ services:
       # COMPRESSION: 0
       # DEVICE_DETECTION: 0
       # MULTI_CHANNEL_SOURCE: env:///ASDF?type=application/yaml
+      # BASIC_AUTH: 'developer:!InterShop00!'
+      # BASIC_AUTH_IP_WHITELIST: |
+      #   # - 172.22.0.1
+      #   - 1.2.3.4
       MULTI_CHANNEL: |
         .+:
           - baseHref: /en
@@ -39,6 +43,7 @@ services:
           - baseHref: /de
             channel: default
             lang: de_DE
+            protected: false
           - baseHref: /fr
             channel: default
             lang: fr_FR
