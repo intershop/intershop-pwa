@@ -95,8 +95,13 @@ export class Auth0IdentityProvider implements IdentityProvider {
         switchMap(idToken => {
           const inviteUserId = window.sessionStorage.getItem('invite-userid');
           const inviteHash = window.sessionStorage.getItem('invite-hash');
-          return inviteUserId
-            ? this.inviteRegistration(idToken, inviteUserId, inviteHash)
+          return inviteUserId && inviteHash
+            ? this.inviteRegistration(idToken, inviteUserId, inviteHash).pipe(
+                tap(() => {
+                  window.sessionStorage.removeItem('invite-userid');
+                  window.sessionStorage.removeItem('invite-hash');
+                })
+              )
             : this.normalSignInRegistration(idToken);
         })
       )
@@ -164,8 +169,6 @@ export class Auth0IdentityProvider implements IdentityProvider {
   }
 
   private inviteRegistration(idToken: string, userId: string, hash: string) {
-    window.sessionStorage.removeItem('invite-userid');
-    window.sessionStorage.removeItem('invite-hash');
     return this.apiService
       .post<UserData>('users/processtoken', {
         id_token: idToken,
