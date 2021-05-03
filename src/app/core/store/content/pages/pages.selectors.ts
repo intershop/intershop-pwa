@@ -25,10 +25,10 @@ export const getSelectedContentPage = createSelector(getPageEntities, selectRout
 
 export const getBreadcrumbForContentPage = createSelectorFactory<object, BreadcrumbItem[]>(projector =>
   resultMemoize(projector, isEqual)
-)(getPageTrees, getSelectedContentPage, (trees: ContentPageTree, contentPage: ContentPageletEntryPointView) =>
-  trees.nodes[contentPage?.id]
-    ? (trees.nodes[contentPage.id].path.map((item, i, path) => ({
-        key: trees.nodes[item].name,
+)(getPageTrees, getSelectedContentPage, (pagetree: ContentPageTree, contentPage: ContentPageletEntryPointView) =>
+  pagetree.nodes[contentPage?.id]
+    ? (pagetree.nodes[contentPage.id].path.map((item, i, path) => ({
+        key: pagetree.nodes[item].name,
         link: i !== path.length - 1 ? `/page/${item}` : undefined,
       })) as BreadcrumbItem[])
     : ([{ key: contentPage?.displayName }] as BreadcrumbItem[])

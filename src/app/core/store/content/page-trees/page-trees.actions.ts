@@ -12,5 +12,5 @@ export const loadContentPageTreeFail = createAction('[Content Page Tree API] Loa
 
 export const loadContentPageTreeSuccess = createAction(
   '[Content Page Tree API] Load Content Page Tree Success',
-  payload<{ tree: ContentPageTree }>()
+  payload<{ pagetree: ContentPageTree }>()
 );

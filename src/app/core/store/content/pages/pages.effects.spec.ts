@@ -118,7 +118,7 @@ describe('Pages Effects', () => {
     });
 
     it('should set page breadcrumb if selected content page is part of a page tree', done => {
-      store$.dispatch(loadContentPageTreeSuccess({ tree: pageTree([tree1, tree2]) }));
+      store$.dispatch(loadContentPageTreeSuccess({ pagetree: pageTree([tree1, tree2]) }));
       effects.setBreadcrumbForContentPage$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
           [Viewconf Internal] Set Breadcrumb Data:

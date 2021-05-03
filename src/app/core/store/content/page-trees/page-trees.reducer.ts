@@ -6,19 +6,19 @@ import { ContentPageTree } from 'ish-core/models/content-page-tree/content-page-
 import { loadContentPageTreeSuccess } from './page-trees.actions';
 
 export interface PageTreesState {
-  trees: ContentPageTree;
+  pagetrees: ContentPageTree;
 }
 
 export const initialState: PageTreesState = {
-  trees: ContentPageTreeHelper.empty(),
+  pagetrees: ContentPageTreeHelper.empty(),
 };
 
 function mergePageTrees(state: PageTreesState, action: ReturnType<typeof loadContentPageTreeSuccess>) {
-  const tree = action.payload.tree;
-  return tree
+  const pagetree = action.payload.pagetree;
+  return pagetree
     ? {
         ...state,
-        trees: ContentPageTreeHelper.merge(state.trees, tree),
+        pagetrees: ContentPageTreeHelper.merge(state.pagetrees, pagetree),
       }
     : { ...state };
 }

@@ -21,7 +21,7 @@ const contentReducers: ActionReducerMap<ContentState> = {
   pagelets: pageletsReducer,
   pages: pagesReducer,
   viewcontexts: viewcontextsReducer,
-  trees: pageTreesReducer,
+  pagetrees: pageTreesReducer,
 };
 
 const contentEffects = [IncludesEffects, PagesEffects, ViewcontextsEffects, PageTreesEffects];

@@ -11,7 +11,7 @@ export interface ContentState {
   pagelets: PageletsState;
   pages: PagesState;
   viewcontexts: ViewcontextsState;
-  trees: PageTreesState;
+  pagetrees: PageTreesState;
 }
 
 export const getContentState = createFeatureSelector<ContentState>('content');

@@ -25,7 +25,7 @@ describe('Pages Selectors', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        ContentStoreModule.forTesting('pages', 'trees'),
+        ContentStoreModule.forTesting('pages', 'pagetrees'),
         CoreStoreModule.forTesting(['router']),
         RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
       ],
@@ -85,7 +85,7 @@ describe('Pages Selectors', () => {
     }));
 
     it('should return BreadcrumbData, if selected content page is part of a page tree', fakeAsync(() => {
-      store$.dispatch(loadContentPageTreeSuccess({ tree: pageTree([tree1, tree2]) }));
+      store$.dispatch(loadContentPageTreeSuccess({ pagetree: pageTree([tree1, tree2]) }));
       router.navigateByUrl('/any;contentPageId=1');
       tick(500);
       expect(getBreadcrumbForContentPage(store$.state)).toMatchInlineSnapshot(`
@@ -99,7 +99,7 @@ describe('Pages Selectors', () => {
     }));
 
     it('should return BreadcrumbData, if selected content page is part of a page tree', fakeAsync(() => {
-      store$.dispatch(loadContentPageTreeSuccess({ tree: pageTree([tree1, tree2]) }));
+      store$.dispatch(loadContentPageTreeSuccess({ pagetree: pageTree([tree1, tree2]) }));
       router.navigateByUrl('/any;contentPageId=1.1');
       tick(500);
       expect(getBreadcrumbForContentPage(store$.state)).toMatchInlineSnapshot(`
