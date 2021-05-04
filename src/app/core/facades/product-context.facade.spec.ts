@@ -36,6 +36,8 @@ describe('Product Context Facade', () => {
     when(shoppingFacade.productLinks$(anything())).thenReturn(of({}));
     when(shoppingFacade.productParts$(anything())).thenReturn(EMPTY);
     when(shoppingFacade.category$(anything())).thenReturn(of(undefined));
+    when(shoppingFacade.productVariationCount$(anything())).thenReturn(of(undefined));
+    when(shoppingFacade.inCompareProducts$(anything())).thenReturn(of(false));
 
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
@@ -97,6 +99,7 @@ describe('Product Context Facade', () => {
           "allowZeroQuantity": false,
           "categoryId": null,
           "hasQuantityError": false,
+          "isInCompareList": false,
           "label": undefined,
           "loading": false,
           "maxQuantity": 100,
@@ -108,6 +111,7 @@ describe('Product Context Facade', () => {
           "requiredCompletenessLevel": 2,
           "sku": "123",
           "stepQuantity": 10,
+          "variationCount": undefined,
         }
       `);
     });
@@ -165,6 +169,7 @@ describe('Product Context Facade', () => {
           "allowZeroQuantity": false,
           "categoryId": null,
           "hasQuantityError": false,
+          "isInCompareList": false,
           "label": undefined,
           "loading": false,
           "maxQuantity": 100,
@@ -176,6 +181,7 @@ describe('Product Context Facade', () => {
           "requiredCompletenessLevel": 2,
           "sku": "123",
           "stepQuantity": 10,
+          "variationCount": undefined,
         }
       `);
     });
@@ -721,6 +727,9 @@ describe('Product Context Facade', () => {
 
       shoppingFacade = mock(ShoppingFacade);
       when(shoppingFacade.productParts$(anything())).thenReturn(EMPTY);
+      when(shoppingFacade.category$(anything())).thenReturn(EMPTY);
+      when(shoppingFacade.productVariationCount$(anything())).thenReturn(of(undefined));
+      when(shoppingFacade.inCompareProducts$(anything())).thenReturn(of(undefined));
 
       product = {
         completenessLevel: ProductCompletenessLevel.Detail,

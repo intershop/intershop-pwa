@@ -131,7 +131,7 @@ describe('Component Schematic', () => {
 
     const tree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
     const appModuleContent = tree.readContent('/src/app/app.module.ts');
-    expect(appModuleContent).toMatch(/exports: \[FooComponent\]/);
+    expect(appModuleContent).toMatch(/exports: \[.*FooComponent.*\]/s);
   });
 
   it('should import into a specified module', async () => {
