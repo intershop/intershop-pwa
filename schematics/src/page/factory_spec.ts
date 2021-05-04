@@ -82,7 +82,7 @@ describe('Page Schematic', () => {
       const pageModule = tree.readContent('/src/app/pages/foo/foo-page.module.ts');
       expect(pageModule).toContain("import { FooPageComponent } from './foo-page.component';");
       expect(pageModule).toContain("{ path: '', component: FooPageComponent }");
-      expect(pageModule).toContain('declarations: [FooPageComponent]');
+      expect(pageModule).toMatch(/declarations: \[.*FooPageComponent.*\]/s);
       expect(pageModule).toContain('export class FooPageModule');
       expect(pageModule).toMatch(/imports: .*SharedModule/);
 
@@ -118,7 +118,7 @@ describe('Page Schematic', () => {
       const pageModule = tree.readContent('/src/app/extensions/feature/pages/foo/foo-page.module.ts');
       expect(pageModule).toContain("import { FooPageComponent } from './foo-page.component';");
       expect(pageModule).toContain("{ path: '', component: FooPageComponent }");
-      expect(pageModule).toContain('declarations: [FooPageComponent]');
+      expect(pageModule).toMatch(/declarations: \[.*FooPageComponent.*\]/s);
       expect(pageModule).toContain('export class FooPageModule');
       expect(pageModule).toMatch(/imports: .*FeatureModule/);
 

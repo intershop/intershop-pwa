@@ -83,9 +83,13 @@ describe('Extension Schematic', () => {
       import { FooExportsModule } from '../extensions/foo/exports/foo-exports.module';
 
       @NgModule({
-        imports: [FooExportsModule],
+        imports: [
+          FooExportsModule
+        ],
         declarations: [],
-        exports: [FooExportsModule]
+        exports: [
+          FooExportsModule
+        ]
       })
       export class SharedModule { }
       "

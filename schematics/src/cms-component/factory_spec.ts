@@ -42,14 +42,16 @@ describe('CMS Component Schematic', () => {
         imports: [],
         declarations: [],
         exports: [],
-        providers: [{
-            provide: CMS_COMPONENT,
-            useValue: {
-              definitionQualifiedName: 'app_sf_base_cm:component.common.foo.pagelet2-Component',
-              class: CMSFooComponent,
-            },
-            multi: true,
-          }]
+        providers: [
+          {
+                provide: CMS_COMPONENT,
+                useValue: {
+                  definitionQualifiedName: 'app_sf_base_cm:component.common.foo.pagelet2-Component',
+                  class: CMSFooComponent,
+                },
+                multi: true,
+              }
+        ]
       })
       export class CmsModule { }
       "
@@ -60,7 +62,9 @@ describe('CMS Component Schematic', () => {
 
       @NgModule({
         imports: [],
-        declarations: [CMSFooComponent],
+        declarations: [
+          CMSFooComponent
+        ],
         exports: []
       })
       export class SharedModule { }
@@ -87,14 +91,16 @@ describe('CMS Component Schematic', () => {
         imports: [],
         declarations: [],
         exports: [],
-        providers: [{
-            provide: CMS_COMPONENT,
-            useValue: {
-              definitionQualifiedName: 'app_sf_base_cm:component.common.foo.pagelet2-Component',
-              class: FooComponent,
-            },
-            multi: true,
-          }]
+        providers: [
+          {
+                provide: CMS_COMPONENT,
+                useValue: {
+                  definitionQualifiedName: 'app_sf_base_cm:component.common.foo.pagelet2-Component',
+                  class: FooComponent,
+                },
+                multi: true,
+              }
+        ]
       })
       export class CmsModule { }
       "
@@ -105,7 +111,9 @@ describe('CMS Component Schematic', () => {
 
       @NgModule({
         imports: [],
-        declarations: [FooComponent],
+        declarations: [
+          FooComponent
+        ],
         exports: []
       })
       export class SharedModule { }

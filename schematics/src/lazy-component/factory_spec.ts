@@ -134,11 +134,11 @@ describe('Lazy Component Schematic', () => {
     });
 
     it('should declare lazy component in exports module', async () => {
-      expect(exportsModuleContent).toMatch(/declarations:.*LazyDummyComponent/);
+      expect(exportsModuleContent).toMatch(/declarations:.*LazyDummyComponent/s);
     });
 
     it('should export lazy component in exports module', async () => {
-      expect(exportsModuleContent).toMatch(/exports:.*LazyDummyComponent/);
+      expect(exportsModuleContent).toMatch(/exports:.*LazyDummyComponent/s);
     });
 
     it('should add decorator to original component', () => {

@@ -89,7 +89,9 @@ export class DummyTwoComponent {}
 
       @NgModule({
         imports: [],
-        declarations: [DummyTwoComponent],
+        declarations: [
+          DummyTwoComponent
+        ],
         exports: []
       })
       export class SharedModule { }
@@ -201,7 +203,10 @@ export class DummyTwoComponent {}
 
       @NgModule({
         imports: [],
-        declarations: [CustomDummyTwoComponent, DummyTwoComponent],
+        declarations: [
+          CustomDummyTwoComponent,
+          DummyTwoComponent
+        ],
         exports: []
       })
       export class SharedModule { }
