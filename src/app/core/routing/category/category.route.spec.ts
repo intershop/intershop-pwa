@@ -123,6 +123,16 @@ describe('Category Route', () => {
     });
   });
 
+  describe('category ref route', () => {
+    it('should be created', () => {
+      expect(matchCategoryRoute(wrap('/categoryref/123@catalog'))).toHaveProperty('consumed');
+    });
+
+    it('should not detect category route with product after it', () => {
+      expect(matchCategoryRoute(wrap('/categoryref/123@catalog/product/123'))).toBeUndefined();
+    });
+  });
+
   describe('additional URL params', () => {
     it('should ignore additional URL params when supplied', () => {
       const category = createCategoryView(categoryTree([specials, topSeller, limitedOffer]), limitedOffer.uniqueId);
