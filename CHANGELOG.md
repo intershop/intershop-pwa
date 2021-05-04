@@ -7,6 +7,37 @@ kb_everyone
 
 # Changelog
 
+## [0.30.0](https://github.com/intershop/intershop-pwa/releases/tag/0.30.0) (2021-05-05)
+
+**required Intershop Commerce Management version: 7.10.30.2**
+
+### Features
+
+- full support for categoryRef CMS configuration parameters and additional categoryref routing (#672) ([1d7ea7f](https://github.com/intershop/intershop-pwa/commit/1d7ea7f))
+- support CMS static content pages navigation (#651) ([e038d4d](https://github.com/intershop/intershop-pwa/commit/e038d4d))
+- SSO with invite support for B2B (#670) ([5b819db](https://github.com/intershop/intershop-pwa/commit/5b819db))
+- add feature toggle for guest checkout (#654) ([e5138e4](https://github.com/intershop/intershop-pwa/commit/e5138e4))
+- Punchout User Management for cXML and OCI users (#544) ([553c1a3](https://github.com/intershop/intershop-pwa/commit/553c1a3))
+- modal on SSO registration navigation and refactorings (#647) ([f5452bf](https://github.com/intershop/intershop-pwa/commit/f5452bf))
+
+### Bug Fixes
+
+- reset children when switching sku in context (#680) ([a8cb95a](https://github.com/intershop/intershop-pwa/commit/a8cb95a))
+- reset order creation errors after the user navigated to another checkout page ([057a3f2](https://github.com/intershop/intershop-pwa/commit/057a3f2))
+- in case of multiple buckets display message on checkout review page ([eca7625](https://github.com/intershop/intershop-pwa/commit/eca7625))
+- repair data refresh on product pages (#675) ([8eaac04](https://github.com/intershop/intershop-pwa/commit/8eaac04))
+- auth0 silentRefresh requires offline_acces scope (#644) ([c6850a7](https://github.com/intershop/intershop-pwa/commit/c6850a7))
+- add missing text for navigation toggle (#666) ([03a3770](https://github.com/intershop/intershop-pwa/commit/03a3770))
+- compodoc generation with own tsconfig.doc.json (#664) ([46901e0](https://github.com/intershop/intershop-pwa/commit/46901e0))
+- cms carousel component should handle not completely filled slides (#663) ([baff0c4](https://github.com/intershop/intershop-pwa/commit/baff0c4))
+- display a product unavailable image on product detail page if there are no product images (#653) ([0d1be10](https://github.com/intershop/intershop-pwa/commit/0d1be10))
+- basket acceleration in case the cost center is required but missing (#652) ([6f0200d](https://github.com/intershop/intershop-pwa/commit/6f0200d))
+- multi site not working language switch (#649) ([3c01d7d](https://github.com/intershop/intershop-pwa/commit/3c01d7d))
+
+### BREAKING CHANGES
+
+- Registration page SSO configuration now via '/sso' sub route.
+
 ## [0.29.0](https://github.com/intershop/intershop-pwa/releases/tag/0.29.0) (2021-04-01)
 
 **required Intershop Commerce Management version: 7.10.29.2**
