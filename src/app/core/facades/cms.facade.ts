@@ -5,6 +5,7 @@ import { filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.model';
 import { getContentInclude, loadContentInclude } from 'ish-core/store/content/includes';
+import { getContentPageTree, loadContentPageTree } from 'ish-core/store/content/page-tree';
 import { getContentPagelet } from 'ish-core/store/content/pagelets';
 import { getContentPageLoading, getSelectedContentPage } from 'ish-core/store/content/pages';
 import { getViewContext, loadViewContextEntrypoint } from 'ish-core/store/content/viewcontexts';
@@ -15,10 +16,10 @@ import { SfeMapper } from 'ish-shared/cms/sfe-adapter/sfe.mapper';
 
 @Injectable({ providedIn: 'root' })
 export class CMSFacade {
+  constructor(private store: Store, private sfeAdapter: SfeAdapterService) {}
+
   contentPage$ = this.store.pipe(select(getSelectedContentPage));
   contentPageLoading$ = this.store.pipe(select(getContentPageLoading));
-
-  constructor(private store: Store, private sfeAdapter: SfeAdapterService) {}
 
   contentInclude$(includeId$: Observable<string>) {
     return combineLatest([includeId$.pipe(whenTruthy()), this.store.pipe(select(getPGID))]).pipe(
@@ -42,5 +43,10 @@ export class CMSFacade {
   viewContext$(viewContextId: string, callParameters: CallParameters) {
     this.store.dispatch(loadViewContextEntrypoint({ viewContextId, callParameters }));
     return this.store.pipe(select(getViewContext(viewContextId, callParameters)));
+  }
+
+  contentPageTree$(rootId: string, depth: number) {
+    this.store.dispatch(loadContentPageTree({ rootId, depth }));
+    return this.store.pipe(select(getContentPageTree(rootId)));
   }
 }

@@ -43,6 +43,7 @@ import { CMSStaticPageComponent } from './cms/components/cms-static-page/cms-sta
 import { CMSTextComponent } from './cms/components/cms-text/cms-text.component';
 import { CMSVideoComponent } from './cms/components/cms-video/cms-video.component';
 import { ContentIncludeComponent } from './cms/components/content-include/content-include.component';
+import { ContentNavigationComponent } from './cms/components/content-navigation/content-navigation.component';
 import { ContentPageletComponent } from './cms/components/content-pagelet/content-pagelet.component';
 import { ContentSlotComponent } from './cms/components/content-slot/content-slot.component';
 import { ContentViewcontextComponent } from './cms/components/content-viewcontext/content-viewcontext.component';
@@ -217,6 +218,7 @@ const exportedComponents = [
   BreadcrumbComponent,
   ConfirmLeaveModalComponent,
   ContentIncludeComponent,
+  ContentNavigationComponent,
   ContentPageletComponent,
   ContentViewcontextComponent,
   ErrorMessageComponent,

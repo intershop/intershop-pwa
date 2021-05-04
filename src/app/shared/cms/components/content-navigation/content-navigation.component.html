@@ -1,0 +1,33 @@
+<ng-container *ngIf="contentPageTree$ | async as contentPageTree">
+  <ng-container *ngIf="currentContentPage$ | async as currentContentPage">
+    <a [routerLink]="['/page', contentPageTree.contentPageId]" [title]="contentPageTree.name">
+      <h3>{{ contentPageTree.name }}</h3>
+    </a>
+
+    <ul class="page-navigation-0">
+      <ng-container
+        [ngTemplateOutlet]="pageTreeNode"
+        [ngTemplateOutletContext]="{ tree: contentPageTree.children, counter: 1 }"
+      ></ng-container>
+    </ul>
+
+    <!-- the recursivly used template to render the tree nodes -->
+    <ng-template #pageTreeNode let-tree="tree" let-counter="counter">
+      <li
+        *ngFor="let item of tree"
+        [ngClass]="{ 'page-navigation-active': item.contentPageId === currentContentPage.id }"
+      >
+        <a [routerLink]="['/page', item.contentPageId]" [title]="item.name">{{ item.name }}</a>
+        <ul
+          *ngIf="item.children.length > 0 && ((!depth && depth !== 0) || depth >= counter)"
+          [ngClass]="'page-navigation-' + counter"
+        >
+          <ng-container
+            [ngTemplateOutlet]="pageTreeNode"
+            [ngTemplateOutletContext]="{ tree: item.children, counter: counter + 1 }"
+          ></ng-container>
+        </ul>
+      </li>
+    </ng-template>
+  </ng-container>
+</ng-container>

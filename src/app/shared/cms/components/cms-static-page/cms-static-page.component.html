@@ -8,14 +8,10 @@
   >
     <div class="page-navigation col-md-3">
       <div *ngIf="pagelet.booleanParam('ShowNavigation')" class="page-navigation-contents">
-        <!--
-            <isContentNavigation
-              navigationRoot="#PageletConfigurationParameters:NavigationRoot#"
-              navigationDepth="#PageletConfigurationParameters:NavigationDepth#"
-              currentPageletEntryPointID="#PageletEntryPointID#"
-              locale="#CurrentRequest:Locale#"
-            >
-        -->
+        <ish-content-navigation
+          [root]="pagelet.stringParam('NavigationRoot')"
+          [depth]="pagelet.numberParam('NavigationDepth')"
+        ></ish-content-navigation>
       </div>
       <div class="marketing-area">
         <ish-content-slot
@@ -37,9 +33,3 @@
     </div>
   </ng-template>
 </div>
-
-<!-- TODO: (CMS Component Configuration)
-  NavigationRoot
-  ShowNavigation
-  NavigationDepth
--->
