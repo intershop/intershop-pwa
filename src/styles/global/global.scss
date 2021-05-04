@@ -139,7 +139,7 @@ img {
   .nav-link.active:hover,
   .nav-link.active:focus {
     border-color: transparent;
-    border-bottom: 2px solid $CORPORATE-PRIMARY;
+    border-bottom: 2px solid $CORPORATE-PRIMARY !important;
   }
 }
 
