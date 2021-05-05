@@ -98,6 +98,7 @@ describe('Product Context Facade', () => {
         Object {
           "allowZeroQuantity": false,
           "categoryId": null,
+          "children": undefined,
           "hasQuantityError": false,
           "isInCompareList": false,
           "label": undefined,
@@ -168,6 +169,7 @@ describe('Product Context Facade', () => {
         Object {
           "allowZeroQuantity": false,
           "categoryId": null,
+          "children": undefined,
           "hasQuantityError": false,
           "isInCompareList": false,
           "label": undefined,
