@@ -17,7 +17,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 })
 export class ServerErrorComponent {
   /**
-   * The occured error.
+   * The occurred error.
    */
   @Input() error: HttpError | string;
   @Input() type: string;

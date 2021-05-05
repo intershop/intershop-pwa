@@ -11,8 +11,12 @@ const _ = {
     login: `test${new Date().getTime()}@testcity.de`,
     ...sensibleDefaults,
   },
-  ociUser: {
+  punchoutUser: {
     login: `punchoutuser${new Date().getTime()}@test.intershop.de`,
+    password: 'Intershop00!',
+  },
+  punchoutUser2: {
+    login: `punchoutuser2${new Date().getTime()}@test.intershop.de`,
     password: 'Intershop00!',
   },
 };
@@ -29,25 +33,27 @@ describe('Punchout MyAccount Functionality', () => {
       page.submit().its('response.statusCode').should('equal', 200);
     });
     at(PunchoutOverviewPage, page => {
+      page.page.should('be.visible');
       page.emptyList.should('be.visible');
+      page.headerNavigation.should('be.visible');
     });
   });
 
-  it('admin user creates a punchout user', () => {
+  it('admin user creates a cxml punchout user', () => {
     at(PunchoutOverviewPage, page => page.addUser());
     at(PunchoutCreatePage, page => {
-      page.fillForm({ ..._.ociUser, passwordConfirmation: _.ociUser.password });
+      page.fillForm({ ..._.punchoutUser, passwordConfirmation: _.punchoutUser.password });
       page.submit();
     });
     at(PunchoutOverviewPage, page => {
-      page.userList.should('contain', `${_.ociUser.login}`);
+      page.userList.should('contain', `${_.punchoutUser.login}`);
       page.userList.should('not.contain', `Inactive`);
       page.successMessage.message.should('contain', 'created');
     });
   });
 
   it('admin user sets a punchout user inactive', () => {
-    at(PunchoutOverviewPage, page => page.editUser(_.ociUser.login));
+    at(PunchoutOverviewPage, page => page.editUser(_.punchoutUser.login));
     at(PunchoutEditPage, page => {
       page.editActiveFlag(false);
       page.submit();
@@ -57,9 +63,28 @@ describe('Punchout MyAccount Functionality', () => {
     });
   });
 
+  it('admin user creates an oci punchout user', () => {
+    at(PunchoutOverviewPage, page => {
+      page.selectOciTab();
+      page.emptyList.should('be.visible');
+      page.addUser();
+    });
+    at(PunchoutCreatePage, page => {
+      page.fillForm({ ..._.punchoutUser2, passwordConfirmation: _.punchoutUser2.password });
+      page.submit();
+    });
+    at(PunchoutOverviewPage, page => {
+      page.userList.should('contain', `${_.punchoutUser2.login}`);
+      page.userList.should('not.contain', `Inactive`);
+      page.successMessage.message.should('contain', 'created');
+    });
+  });
+
   it('admin user deletes a punchout user', () => {
     at(PunchoutOverviewPage, page => {
-      page.deleteUser(_.ociUser.login);
+      page.selectcXMLTab();
+      cy.wait(2000);
+      page.deleteUser(_.punchoutUser.login);
       page.userList.should('not.exist');
       page.emptyList.should('be.visible');
     });

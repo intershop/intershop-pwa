@@ -8,7 +8,7 @@ import { Observable, isObservable, of } from 'rxjs';
 export const arraySlices = <T>(input: T[], sliceLength: number): T[][] =>
   input && input.length && sliceLength > 0
     ? // determine slice indexes
-      range(0, Math.floor(input.length / sliceLength))
+      range(0, Math.ceil(input.length / sliceLength))
         // cut array into slices
         .map(n => input.slice(n * sliceLength, (n + 1) * sliceLength))
     : undefined;

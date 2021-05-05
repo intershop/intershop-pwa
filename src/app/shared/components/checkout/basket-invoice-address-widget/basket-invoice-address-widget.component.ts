@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { BehaviorSubject, Observable, Subject, combineLatest } from 'rxjs';
 import { filter, map, switchMapTo, take, takeUntil } from 'rxjs/operators';
 
@@ -7,6 +8,7 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Address } from 'ish-core/models/address/address.model';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 /**
  * Standalone widget component for selecting and setting the basket invoice address in the checkout.
@@ -29,35 +31,34 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit, OnDestroy {
     }
   }
   invoiceAddress$: Observable<Address>;
-  emptyOptionLabel$: Observable<string>;
   addresses$: Observable<Address[]>;
 
-  form: FormGroup;
+  form = new FormGroup({});
+  fields: FormlyFieldConfig[];
   editAddress: Partial<Address>;
+  emptyOptionLabel = 'checkout.addresses.select_invoice_address.button';
 
   private destroy$ = new Subject();
 
-  constructor(private checkoutFacade: CheckoutFacade, private accountFacade: AccountFacade) {
-    this.form = new FormGroup({
-      id: new FormControl(''),
-    });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+  constructor(
+    private checkoutFacade: CheckoutFacade,
+    private accountFacade: AccountFacade,
+    private formsService: FormsService
+  ) {}
 
   ngOnInit() {
     this.invoiceAddress$ = this.checkoutFacade.basketInvoiceAddress$;
 
-    this.emptyOptionLabel$ = this.invoiceAddress$.pipe(
-      map(address =>
-        address
-          ? 'checkout.addresses.select_a_different_address.default'
-          : 'checkout.addresses.select_invoice_address.button'
+    this.invoiceAddress$
+      .pipe(
+        map(address =>
+          address
+            ? 'checkout.addresses.select_a_different_address.default'
+            : 'checkout.addresses.select_invoice_address.button'
+        ),
+        takeUntil(this.destroy$)
       )
-    );
+      .subscribe(label => (this.emptyOptionLabel = label));
 
     // prepare data for invoice select drop down
     this.addresses$ = combineLatest([this.accountFacade.addresses$(), this.invoiceAddress$]).pipe(
@@ -69,6 +70,26 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit, OnDestroy {
             .filter(address => address.id !== (invoiceAddress && invoiceAddress.id))
       )
     );
+
+    this.fields = [
+      {
+        key: 'id',
+        type: 'ish-select-field',
+        templateOptions: {
+          fieldClass: 'col-12',
+          options: this.formsService.getAddressOptions(this.addresses$),
+          placeholder: this.emptyOptionLabel,
+        },
+        hooks: {
+          onInit: field => {
+            field.form
+              .get('id')
+              .valueChanges.pipe(whenTruthy(), takeUntil(this.destroy$))
+              .subscribe(addressId => this.checkoutFacade.assignBasketAddress(addressId, 'invoice'));
+          },
+        },
+      },
+    ];
 
     // preassign an invoice address if the user has only one invoice address
     this.checkoutFacade.basket$
@@ -91,12 +112,12 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.form
-      .get('id')
-      .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(invoiceAddressId => this.checkoutFacade.assignBasketAddress(invoiceAddressId, 'invoice'));
-
     this.invoiceAddress$.pipe(takeUntil(this.destroy$)).subscribe(() => (this.collapse = true));
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   showAddressForm(address?: Address) {

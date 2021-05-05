@@ -45,9 +45,9 @@ export class InputBirthdayComponent extends FormElementComponent implements OnIn
 
     const currentDate = new Date();
     // TODO: move into template?
-    // tslint:disable-next-line:no-assignement-to-inputs
+    // tslint:disable-next-line:no-assignment-to-inputs
     this.minYear = this.minYear || currentDate.getFullYear() - 116;
-    // tslint:disable-next-line:no-assignement-to-inputs
+    // tslint:disable-next-line:no-assignment-to-inputs
     this.maxYear = this.maxYear || currentDate.getFullYear() - 16;
   }
 

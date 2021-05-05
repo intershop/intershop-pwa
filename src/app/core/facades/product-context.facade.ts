@@ -135,6 +135,7 @@ export class ProductContextFacade extends RxState<ProductContext> {
             map(product => ({
               product,
               loading: false,
+              children: undefined,
             })),
             startWith({ loading: true })
           )
@@ -258,11 +259,18 @@ export class ProductContextFacade extends RxState<ProductContext> {
     );
   }
 
+  private get isMaximumLevel(): boolean {
+    return (
+      this.get('requiredCompletenessLevel') === ProductCompletenessLevel.Detail ||
+      this.get('requiredCompletenessLevel') === true
+    );
+  }
+
   private postProductFetch(product: ProductView, displayProperties: Partial<ProductContextDisplayProperties>) {
     if (
       (ProductHelper.isRetailSet(product) || ProductHelper.isMasterProduct(product)) &&
       displayProperties.price &&
-      this.get('requiredCompletenessLevel') !== ProductCompletenessLevel.Detail
+      !this.isMaximumLevel
     ) {
       this.set('requiredCompletenessLevel', () => ProductCompletenessLevel.Detail);
     }

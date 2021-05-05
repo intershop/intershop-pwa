@@ -122,6 +122,7 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
   }
 
   loadScript() {
+    // spell-checker: words flexkey
     // load script only once if component becomes visible
     if (this.activated) {
       const flexkeyId = this.getParamValue('flexkeyId', 'checkout.credit_card.flexkeyId.error.notFound');
@@ -137,10 +138,10 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
           // setup
           const flex = new Flex(captureContext);
           this.microform = flex.microform();
-          const cardnumber = this.microform.createField('number');
+          const cardNumber = this.microform.createField('number');
           const securityCode = this.microform.createField('securityCode');
 
-          cardnumber.load('#number-container');
+          cardNumber.load('#number-container');
           securityCode.load('#securityCode-container');
         });
     }
@@ -177,7 +178,7 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
       }
     } else if (!this.cyberSourceCreditCardForm.invalid) {
       const tokenSplit = token.split('.');
-      const payloadjson: {
+      const payloadJson: {
         data: { number: string; type: string; expirationMonth: string; expirationYear: string };
         iss: string;
         exp: string;
@@ -188,9 +189,9 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
       this.submit.emit({
         parameters: [
           { name: 'token', value: token },
-          { name: 'tokenExpiryTime', value: payloadjson.exp },
-          { name: 'cardType', value: payloadjson.data.type },
-          { name: 'maskedCardNumber', value: payloadjson.data.number },
+          { name: 'tokenExpiryTime', value: payloadJson.exp },
+          { name: 'cardType', value: payloadJson.data.type },
+          { name: 'maskedCardNumber', value: payloadJson.data.number },
           { name: 'expirationDate', value: `${this.expirationMonthVal}/${this.expirationYearVal}` },
         ],
         saveAllowed: false,

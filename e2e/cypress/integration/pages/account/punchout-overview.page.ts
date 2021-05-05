@@ -8,6 +8,14 @@ export class PunchoutOverviewPage {
   readonly header = new HeaderModule();
   readonly breadcrumb = new BreadcrumbModule();
 
+  get page() {
+    return cy.get(this.tag);
+  }
+
+  get headerNavigation() {
+    return cy.get('ish-account-punchout-header').find('ul.nav-tabs');
+  }
+
   get userList() {
     return cy.get('div[data-testing-id="user-list"]');
   }
@@ -22,8 +30,16 @@ export class PunchoutOverviewPage {
     };
   }
 
+  selectcXMLTab() {
+    this.headerNavigation.find('li:first-child a').click();
+  }
+
+  selectOciTab() {
+    this.headerNavigation.find('li:last-child a').click();
+  }
+
   addUser() {
-    cy.get('button[data-testing-id="add-user-button"]').click();
+    cy.get('a[data-testing-id="add-user-button"]').click();
   }
 
   editUser(login: string) {

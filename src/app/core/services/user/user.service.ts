@@ -50,7 +50,7 @@ export class UserService {
    *                          For private customers user data are also returned.
    *                          For business customers user data are returned by a separate call (getCompanyUserData).
    */
-  signinUser(loginCredentials: Credentials): Observable<CustomerUserType> {
+  signInUser(loginCredentials: Credentials): Observable<CustomerUserType> {
     const headers = new HttpHeaders().set(
       ApiService.AUTHORIZATION_HEADER_KEY,
       'BASIC ' + b64u.toBase64(b64u.encode(`${loginCredentials.login}:${loginCredentials.password}`))
@@ -65,7 +65,7 @@ export class UserService {
    *                          For private customers user data are also returned.
    *                          For business customers user data are returned by a separate call (getCompanyUserData).
    */
-  signinUserByToken(token?: string): Observable<CustomerUserType> {
+  signInUserByToken(token?: string): Observable<CustomerUserType> {
     if (token) {
       return this.fetchCustomer({
         headers: new HttpHeaders().set(ApiService.TOKEN_HEADER_KEY, token),
@@ -231,7 +231,7 @@ export class UserService {
   }
 
   /**
-   * Updates the customer data of the (currently loggedin) b2b customer.
+   * Updates the customer data of the (currently logged in) b2b customer.
    * @param customer  The customer data to update the customer.
    */
   updateCustomer(customer: Customer): Observable<Customer> {

@@ -1,7 +1,7 @@
 import { LineItemUpdateHelper } from './line-item-update.helper';
 
 describe('Line Item Update', () => {
-  it('should have deepest level navigateable on tree', () => {
+  it('should have deepest level navigable on tree', () => {
     const updates = [
       // should update because quantity
       {

@@ -24,12 +24,12 @@
           'quote.edit.unsubmitted.name.label' | translate
         }}</label>
         <div class="col-8 col-md-9 col-xl-10">
-          <ish-inplace-edit (edited)="update()" (aborted)="reset()">
+          <ish-in-place-edit (edited)="update()" (aborted)="reset()">
             <p class="form-control-plaintext w-auto" [ngClass]="{ 'font-italic': !form.get('displayName').value }">
               {{ form.get('displayName').value || 'quote.edit.unsubmitted.enter_an_optional_name.text' | translate }}
             </p>
             <input type="text" formControlName="displayName" class="form-control" />
-          </ish-inplace-edit>
+          </ish-in-place-edit>
         </div>
       </div>
 
@@ -38,12 +38,12 @@
           'quote.edit.unsubmitted.comment.label' | translate
         }}</label>
         <div class="col-8 col-md-9 col-xl-10">
-          <ish-inplace-edit (edited)="update()" (aborted)="reset()">
+          <ish-in-place-edit (edited)="update()" (aborted)="reset()">
             <p class="form-control-plaintext w-auto" [ngClass]="{ 'font-italic': !form.get('description').value }">
               {{ form.get('description').value || 'quote.edit.unsubmitted.provide_comment.text' | translate }}
             </p>
             <textarea formControlName="description" class="form-control" id="quote-description"> </textarea>
-          </ish-inplace-edit>
+          </ish-in-place-edit>
         </div>
       </div>
     </div>

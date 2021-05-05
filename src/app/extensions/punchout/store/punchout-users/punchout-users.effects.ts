@@ -3,13 +3,15 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { from } from 'rxjs';
-import { concatMap, concatMapTo, exhaustMap, map } from 'rxjs/operators';
+import { concatMap, concatMapTo, exhaustMap, map, withLatestFrom } from 'rxjs/operators';
 
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
+import { PunchoutType } from '../../models/punchout-user/punchout-user.model';
 import { PunchoutService } from '../../services/punchout/punchout.service';
+import { loadPunchoutTypesSuccess } from '../punchout-types';
 
 import {
   addPunchoutUser,
@@ -35,11 +37,21 @@ export class PunchoutUsersEffects {
     private store: Store
   ) {}
 
+  loadPunchoutUsersOnChange$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadPunchoutTypesSuccess),
+      mapToPayloadProperty('types'),
+      withLatestFrom(this.store.pipe(select(selectRouteParam('format')))),
+      map(([types, selectedType]) => loadPunchoutUsers({ type: (selectedType as PunchoutType) || types[0] }))
+    )
+  );
+
   loadPunchoutUsers$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadPunchoutUsers),
-      concatMap(() =>
-        this.punchoutService.getUsers().pipe(
+      mapToPayloadProperty('type'),
+      concatMap(type =>
+        this.punchoutService.getUsers(type).pipe(
           map(users => loadPunchoutUsersSuccess({ users })),
           mapErrorToAction(loadPunchoutUsersFail)
         )
@@ -51,8 +63,9 @@ export class PunchoutUsersEffects {
     this.store.pipe(
       select(selectRouteParam('PunchoutLogin')),
       whenTruthy(),
-      concatMap(() =>
-        this.punchoutService.getUsers().pipe(
+      withLatestFrom(this.store.pipe(select(selectRouteParam('format')))),
+      concatMap(([, format]) =>
+        this.punchoutService.getUsers(format as PunchoutType).pipe(
           map(users => loadPunchoutUsersSuccess({ users })),
           mapErrorToAction(loadPunchoutUsersFail)
         )
@@ -67,7 +80,7 @@ export class PunchoutUsersEffects {
       concatMap(newUser =>
         this.punchoutService.createUser(newUser).pipe(
           concatMap(user =>
-            from(this.router.navigate([`/account/punchout`])).pipe(
+            from(this.router.navigate([`/account/punchout`, { format: user.punchoutType }])).pipe(
               concatMapTo([
                 addPunchoutUserSuccess({ user }),
                 displaySuccessMessage({
@@ -90,7 +103,7 @@ export class PunchoutUsersEffects {
       concatMap(changedUser =>
         this.punchoutService.updateUser(changedUser).pipe(
           concatMap(user =>
-            from(this.router.navigate([`/account/punchout`])).pipe(
+            from(this.router.navigate([`/account/punchout`, { format: user.punchoutType }])).pipe(
               concatMapTo([
                 updatePunchoutUserSuccess({ user }),
                 displaySuccessMessage({
@@ -109,14 +122,14 @@ export class PunchoutUsersEffects {
   deletePunchoutUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(deletePunchoutUser),
-      mapToPayloadProperty('login'),
-      exhaustMap(login =>
-        this.punchoutService.deleteUser(login).pipe(
+      mapToPayloadProperty('user'),
+      exhaustMap(user =>
+        this.punchoutService.deleteUser(user).pipe(
           concatMapTo([
-            deletePunchoutUserSuccess({ login }),
+            deletePunchoutUserSuccess({ login: user.login }),
             displaySuccessMessage({
               message: 'account.punchout.user.delete.confirmation',
-              messageParams: { 0: login },
+              messageParams: { 0: user.login },
             }),
           ]),
           mapErrorToAction(deletePunchoutUserFail)

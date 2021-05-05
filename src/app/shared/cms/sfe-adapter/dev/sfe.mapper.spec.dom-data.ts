@@ -1,3 +1,5 @@
+// spell-checker: disable
+
 const html1 = `
 <ish-root>
     <div>

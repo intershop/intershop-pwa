@@ -21,6 +21,7 @@ export interface TactonProductConfigurationParameter {
   alwaysCommitted: boolean;
   properties: {
     hidden: 'no' | 'yes';
+    // spell-checker: words guitype imagetext
     guitype: 'text' | 'dropdown' | 'radio' | 'readonly' | 'imagetext_buttons' | 'text_buttons' | 'selected_image';
     tc_info_text: string;
     tc_component_picture?: string;

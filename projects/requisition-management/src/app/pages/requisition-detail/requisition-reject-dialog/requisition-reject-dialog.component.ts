@@ -1,6 +1,15 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output, TemplateRef, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
@@ -17,14 +26,15 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   templateUrl: './requisition-reject-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RequisitionRejectDialogComponent {
+export class RequisitionRejectDialogComponent implements OnInit {
   /**
    * Emits the reject event with the reject comment.
    */
   @Output() submit = new EventEmitter<string>();
 
-  rejectForm: FormGroup;
+  rejectForm = new FormGroup({});
   submitted = false;
+  fields: FormlyFieldConfig[];
 
   /**
    *  A reference to the current modal.
@@ -33,26 +43,45 @@ export class RequisitionRejectDialogComponent {
 
   @ViewChild('modal') modalTemplate: TemplateRef<unknown>;
 
-  constructor(private ngbModal: NgbModal) {
+  constructor(private ngbModal: NgbModal) {}
+
+  ngOnInit() {
     this.initForm();
   }
 
   initForm() {
-    this.rejectForm = new FormGroup({
-      comment: new FormControl('', Validators.required),
-    });
+    this.fields = [
+      {
+        key: 'comment',
+        type: 'ish-textarea-field',
+        templateOptions: {
+          label: 'approval.rejectform.add_a_comment.label',
+          required: true,
+          maxLength: 1000,
+          rows: 4,
+          labelClass: 'col-12',
+          fieldClass: 'col-12',
+          hideRequiredMarker: true,
+        },
+        validation: {
+          messages: {
+            required: 'approval.rejectform.invalid_comment.error',
+          },
+        },
+      },
+    ];
   }
 
   /** Emits the reject comment data, when the form was valid. */
   submitForm() {
-    if (this.rejectForm.valid) {
-      this.submit.emit(this.rejectForm.get('comment').value);
-
-      this.hide();
-    } else {
+    if (this.rejectForm.invalid) {
       this.submitted = true;
       markAsDirtyRecursive(this.rejectForm);
+      return;
     }
+
+    this.submit.emit(this.rejectForm.get('comment').value);
+    this.hide();
   }
 
   /** Opens the modal. */
@@ -62,9 +91,7 @@ export class RequisitionRejectDialogComponent {
 
   /** Close the modal. */
   hide() {
-    this.rejectForm.reset({
-      comment: '',
-    });
+    this.rejectForm.reset();
     this.submitted = false;
     if (this.modal) {
       this.modal.close();

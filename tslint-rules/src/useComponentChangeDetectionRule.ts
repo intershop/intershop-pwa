@@ -2,7 +2,7 @@ import { NgWalker } from 'codelyzer/angular/ngWalker';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 
-const message = 'Component should explicitely declare "changeDetection", preferrably "ChangeDetectionStrategy.OnPush"';
+const message = 'Component should explicitly declare "changeDetection", preferably "ChangeDetectionStrategy.OnPush"';
 
 class UseComponentChangeDetectionWalker extends NgWalker {
   constructor(sourceFile: ts.SourceFile, options: Lint.IOptions) {
@@ -17,7 +17,7 @@ class UseComponentChangeDetectionWalker extends NgWalker {
       const containsChangeDetection =
         propertyList
           .filter(child => child.kind === ts.SyntaxKind.PropertyAssignment)
-          .map((assignement: ts.PropertyAssignment) => assignement.name)
+          .map((assignment: ts.PropertyAssignment) => assignment.name)
           .filter((identifier: ts.Identifier) => identifier.escapedText === 'changeDetection').length === 1;
 
       if (!containsChangeDetection) {

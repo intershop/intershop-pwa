@@ -2,9 +2,9 @@ import { NgWalker } from 'codelyzer/angular/ngWalker';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 
-class NoAssignementToInputsWalker extends NgWalker {
+class NoAssignmentToInputsWalker extends NgWalker {
   private inputs: ts.Identifier[] = [];
-  private assignements: ts.Node[] = [];
+  private assignments: ts.Node[] = [];
 
   constructor(sourceFile: ts.SourceFile, options: Lint.IOptions) {
     super(sourceFile, options);
@@ -27,29 +27,29 @@ class NoAssignementToInputsWalker extends NgWalker {
 
   visitExpressionStatement(node: ts.ExpressionStatement) {
     super.visitExpressionStatement(node);
-    const assignement = node.getChildren().find(n => n.kind === ts.SyntaxKind.BinaryExpression);
-    if (assignement) {
-      this.assignements.push(assignement);
+    const assignment = node.getChildren().find(n => n.kind === ts.SyntaxKind.BinaryExpression);
+    if (assignment) {
+      this.assignments.push(assignment);
     }
   }
 
   private compute() {
-    this.assignements
-      .filter(assignement => {
-        const leftSide = assignement.getChildAt(0).getText();
+    this.assignments
+      .filter(assignment => {
+        const leftSide = assignment.getChildAt(0).getText();
         return this.inputs.find(inp => new RegExp(`^this\.${inp.getText()}$`).test(leftSide));
       })
-      .forEach(assignement =>
-        this.addFailureAtNode(assignement, 'Assigning to @Input decorated properties is forbidden.')
+      .forEach(assignment =>
+        this.addFailureAtNode(assignment, 'Assigning to @Input decorated properties is forbidden.')
       );
   }
 }
 
 /**
- * Implementation of the no-assignement-to-inputs rule.
+ * Implementation of the no-assignment-to-inputs rule.
  */
 export class Rule extends Lint.Rules.AbstractRule {
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(new NoAssignementToInputsWalker(sourceFile, this.getOptions()));
+    return this.applyWithWalker(new NoAssignmentToInputsWalker(sourceFile, this.getOptions()));
   }
 }

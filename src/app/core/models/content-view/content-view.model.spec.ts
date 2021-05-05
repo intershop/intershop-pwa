@@ -17,6 +17,7 @@ describe('Content View Model', () => {
 
   beforeEach(() => {
     configurationParameters = {
+      key0: '0',
       key1: '1',
       key2: 'true',
       key3: ['hello', 'world'],
@@ -139,6 +140,7 @@ describe('Content View Model', () => {
 
     describe('hasParam', () => {
       it('should return true for defined parameters', () => {
+        expect(view.hasParam('key0')).toBeTrue();
         expect(view.hasParam('key1')).toBeTrue();
         expect(view.hasParam('key2')).toBeTrue();
         expect(view.hasParam('key3')).toBeTrue();
@@ -200,6 +202,7 @@ describe('Content View Model', () => {
 
     describe('numberParam', () => {
       it('should return parsed number values for parameters or NaN', () => {
+        expect(view.numberParam('key0')).toBe(0);
         expect(view.numberParam('key1')).toBe(1);
         expect(view.numberParam('key2')).toBeNaN();
         expect(view.numberParam('key3')).toBeNaN();
@@ -207,6 +210,7 @@ describe('Content View Model', () => {
       });
 
       it('should return parsed number values for parameters or default value on parsing error if it was provided', () => {
+        expect(view.numberParam('key0', 5)).toBe(0);
         expect(view.numberParam('key1', 5)).toBe(1);
         expect(view.numberParam('key2', 5)).toBe(5);
         expect(view.numberParam('key3', 5)).toBe(5);
@@ -295,7 +299,7 @@ describe('Content View Model', () => {
       expect(p2.slot('fq').pageletIDs).toHaveLength(1);
     });
 
-    it('should have deepest level navigateable on tree', () => {
+    it('should have deepest level navigable on tree', () => {
       const p4 = createContentPageletView(pagelets.p4);
 
       expect(p4).toMatchInlineSnapshot(`

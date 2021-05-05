@@ -11,10 +11,22 @@ beforeEach(() => {
 
   const logFunction = global.console.log;
   global.console.log = (...args: unknown[]) => {
-    if (args?.some(arg => arg instanceof Error)) {
+    if (
+      args?.some(
+        arg => arg instanceof Error || (typeof arg === 'string' && arg.startsWith('@ngrx/store: The feature name'))
+      )
+    ) {
       fail(...args);
     }
     logFunction(...args);
+  };
+
+  const errorFunction = global.console.error;
+  global.console.error = (...args: unknown[]) => {
+    if (args?.some(arg => arg instanceof Error)) {
+      fail(...args);
+    }
+    errorFunction(...args);
   };
 
   jest.spyOn(global.console, 'warn').mockImplementation(arg => {

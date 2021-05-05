@@ -241,7 +241,7 @@ describe('Product Listing Selectors', () => {
       view = getProductListingView(TEST_ID)(store$.state);
     });
 
-    it('should construct page indices implicitely for first page', () => {
+    it('should construct page indices implicitly for first page', () => {
       expect(view.pageIndices()).toMatchInlineSnapshot(`
         Array [
           1 -> 1,

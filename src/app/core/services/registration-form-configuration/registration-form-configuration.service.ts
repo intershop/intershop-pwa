@@ -1,30 +1,54 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { UUID } from 'angular2-uuid';
+import { Observable, combineLatest, from, iif, merge, noop, of, race } from 'rxjs';
+import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Address } from 'ish-core/models/address/address.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
-import { cancelRegistration, setRegistrationInfo } from 'ish-core/store/customer/sso-registration';
+import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
+import { ConfirmLeaveModalComponent } from 'ish-shared/components/registration/confirm-leave-modal/confirm-leave-modal.component';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 export interface RegistrationConfigType {
   businessCustomer?: boolean;
   sso?: boolean;
   userId?: string;
+  cancelUrl?: string;
 }
 
 @Injectable({ providedIn: 'root' })
 export class RegistrationFormConfigurationService {
   // tslint:disable: no-intelligence-in-artifacts
-  constructor(private accountFacade: AccountFacade, private store: Store, private router: Router) {}
+  constructor(
+    private accountFacade: AccountFacade,
+    private router: Router,
+    private modalService: NgbModal,
+    private featureToggle: FeatureToggleService
+  ) {}
 
-  getRegistrationFormConfiguration(registrationConfig: RegistrationConfigType) {
+  extractConfig(route: ActivatedRouteSnapshot) {
+    return {
+      sso: !!route.url.find(segment => segment.path.includes('sso')),
+      userId: route.queryParams.userid,
+      businessCustomer: this.featureToggle.enabled('businessCustomerRegistration'),
+      cancelUrl: route.queryParams.cancelUrl,
+    };
+  }
+
+  extractModel(route: ActivatedRouteSnapshot, model?: Record<string, unknown>) {
+    return Object.keys(route.queryParams)
+      .filter(key => !['userid'].includes(key))
+      .reduce((acc, key) => ({ ...acc, [key]: route.queryParams[key] }), { ...model });
+  }
+
+  getFields(registrationConfig: RegistrationConfigType): FormlyFieldConfig[] {
     return [
       {
         type: 'ish-registration-heading-field',
@@ -80,10 +104,7 @@ export class RegistrationFormConfigurationService {
     ];
   }
 
-  getRegistrationFormConfigurationOptions(
-    registrationConfig: RegistrationConfigType,
-    model: Record<string, unknown>
-  ): FormlyFormOptions {
+  getOptions(registrationConfig: RegistrationConfigType, model: Record<string, unknown>): FormlyFormOptions {
     if (registrationConfig.sso) {
       return { formState: { disabled: Object.keys(model) } };
     } else {
@@ -102,17 +123,15 @@ export class RegistrationFormConfigurationService {
     };
 
     if (registrationConfig.sso && registrationConfig.userId) {
-      this.store.dispatch(
-        setRegistrationInfo({
-          companyInfo: {
-            companyName1: formValue.companyName1,
-            companyName2: formValue.companyName2,
-            taxationID: formValue.taxationID,
-          },
-          address,
-          userId: registrationConfig.userId,
-        })
-      );
+      this.accountFacade.setRegistrationInfo({
+        companyInfo: {
+          companyName1: formValue.companyName1,
+          companyName2: formValue.companyName2,
+          taxationID: formValue.taxationID,
+        },
+        address,
+        userId: registrationConfig.userId,
+      });
     } else {
       const customer: Customer = {
         isBusinessCustomer: false,
@@ -150,7 +169,38 @@ export class RegistrationFormConfigurationService {
   }
 
   cancelRegistrationForm(config: RegistrationConfigType): void {
-    config.sso ? this.store.dispatch(cancelRegistration()) : this.router.navigate(['/home']);
+    config.sso ? this.accountFacade.cancelRegistration() : this.router.navigate([config.cancelUrl ?? '/home']);
+  }
+
+  canDeactivate(config: RegistrationConfigType): boolean | Observable<boolean> {
+    if (!config.sso) {
+      return true;
+    } else {
+      return combineLatest([
+        this.accountFacade.ssoRegistrationCancelled$,
+        this.accountFacade.ssoRegistrationRegistered$,
+      ]).pipe(
+        take(1),
+        switchMap(([cancelled, registered]) =>
+          iif(
+            () => cancelled || registered,
+            of(true),
+            of({}).pipe(
+              map(() => this.modalService.open(ConfirmLeaveModalComponent)),
+              switchMap(modalRef => race(modalRef.dismissed, from(modalRef.result))),
+              tap(result => (result ? this.accountFacade.cancelRegistration() : noop))
+            )
+          )
+        )
+      );
+    }
+  }
+
+  getErrorSources() {
+    return merge(
+      this.accountFacade.userError$.pipe(filter(error => error.status !== 404)),
+      this.accountFacade.ssoRegistrationError$
+    );
   }
 
   private getCredentialsConfig(): FormlyFieldConfig[] {

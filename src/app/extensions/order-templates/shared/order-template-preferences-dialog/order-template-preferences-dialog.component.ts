@@ -3,13 +3,15 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges,
+  OnInit,
   Output,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { pick } from 'lodash-es';
 
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
@@ -28,7 +30,7 @@ import { OrderTemplate } from '../../models/order-template/order-template.model'
   templateUrl: './order-template-preferences-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OrderTemplatePreferencesDialogComponent implements OnChanges {
+export class OrderTemplatePreferencesDialogComponent implements OnInit {
   /**
    * Predefined order template to fill the form with, if there is no order template a new order template will be created
    */
@@ -40,7 +42,9 @@ export class OrderTemplatePreferencesDialogComponent implements OnChanges {
    */
   @Output() submit = new EventEmitter<OrderTemplate>();
 
-  orderTemplateForm: FormGroup;
+  orderTemplateForm = new FormGroup({});
+  model: Partial<OrderTemplate>;
+  fields: FormlyFieldConfig[];
   submitted = false;
 
   /**
@@ -48,21 +52,36 @@ export class OrderTemplatePreferencesDialogComponent implements OnChanges {
    */
   modal: NgbModalRef;
 
-  // localization keys, default = for new
-
+  /** localization keys, default = for new */
   primaryButton = 'account.order_template.new_from_order.button.create.label';
   orderTemplateTitle = 'account.order_template.new_order_template.text';
   modalHeader = 'account.order_template.list.button.add_template.label';
 
   @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<unknown>;
 
-  constructor(private fb: FormBuilder, private ngbModal: NgbModal) {
-    this.initForm();
-  }
+  constructor(private ngbModal: NgbModal) {}
 
-  ngOnChanges() {
-    this.patchForm();
-    this.modalHeader = this.modalTitle || this.modalHeader;
+  ngOnInit() {
+    this.fields = [
+      {
+        key: 'title',
+        type: 'ish-text-input-field',
+        templateOptions: {
+          required: true,
+          label: 'account.order_template.form.name.label',
+          hideRequiredMarker: true,
+          maxLength: 35,
+        },
+        validation: {
+          messages: {
+            required: 'account.order_template.form.name.error.required',
+          },
+        },
+      },
+    ];
+
+    this.model = pick(this.orderTemplate, 'title');
+
     if (this.orderTemplate) {
       this.primaryButton = 'account.order_templates.edit_form.save_button.text';
       this.orderTemplateTitle = this.orderTemplate.title;
@@ -70,43 +89,33 @@ export class OrderTemplatePreferencesDialogComponent implements OnChanges {
     }
   }
 
-  initForm() {
-    this.orderTemplateForm = this.fb.group({ title: ['', [Validators.required, Validators.maxLength(35)]] });
-  }
-
-  patchForm() {
-    if (this.orderTemplate) {
-      this.orderTemplateForm.setValue({
-        title: this.orderTemplate.title,
-      });
-    }
-  }
-
   /** Emits the order template data, when the form was valid. */
   submitOrderTemplateForm() {
-    if (this.orderTemplateForm.valid) {
-      this.submit.emit({
-        id: !this.orderTemplate ? this.orderTemplateForm.get('title').value : this.orderTemplateTitle,
-        title: this.orderTemplateForm.get('title').value,
-      });
-
-      this.hide();
-    } else {
+    if (this.orderTemplateForm.invalid) {
       this.submitted = true;
       markAsDirtyRecursive(this.orderTemplateForm);
+      return;
     }
+
+    this.submit.emit({
+      id: !this.orderTemplate ? this.model.title : this.orderTemplateTitle,
+      title: this.model.title,
+    });
+
+    this.hide();
   }
 
   /** Opens the modal. */
   show() {
+    if (this.orderTemplate) {
+      this.model = pick(this.orderTemplate, 'title');
+    }
     this.modal = this.ngbModal.open(this.modalTemplate);
   }
 
   /** Close the modal. */
   hide() {
-    this.orderTemplateForm.reset({
-      title: '',
-    });
+    this.orderTemplateForm.reset({});
     this.submitted = false;
     if (this.modal) {
       this.modal.close();

@@ -1,12 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, verify } from 'ts-mockito';
 
-import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { IdentityProviderLoginComponent } from 'ish-shared/components/login/identity-provider-login/identity-provider-login.component';
@@ -32,9 +33,14 @@ describe('Checkout Address Anonymous Component', () => {
         MockComponent(FormlyAddressFormComponent),
         MockComponent(IdentityProviderLoginComponent),
         MockComponent(InputComponent),
-        MockDirective(FeatureToggleDirective),
       ],
-      imports: [NgbCollapseModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [
+        FeatureToggleModule.forTesting('guestCheckout'),
+        NgbCollapseModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        TranslateModule.forRoot(),
+      ],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     }).compileComponents();
   });
@@ -55,6 +61,11 @@ describe('Checkout Address Anonymous Component', () => {
   it('should render login container component on page', () => {
     fixture.detectChanges();
     expect(element.querySelector('ish-identity-provider-login')).toBeTruthy();
+  });
+
+  it('should render registration link on page', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('a[data-testing-id="registration-link"]')).toBeTruthy();
   });
 
   it('should initially have shipping and invoice address forms on page', () => {

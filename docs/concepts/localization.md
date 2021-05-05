@@ -178,7 +178,7 @@ Usage in HTML:
 
 If you want to get the translation for a key within a component file, you have to:
 
-- Inject `TranslationService` in the component
+- Inject `TranslateService` in the component
 - Use the `get` method of the translation service, e.g., `translate.get('ID')`
 - Use `subscribe` to assign the translation to the data array
 

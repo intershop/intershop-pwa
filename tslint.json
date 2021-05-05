@@ -192,7 +192,7 @@
     "directive-selector": [true, "attribute", ["ish"], "camelCase"],
     "component-selector": [true, "element", ["ish"], "kebab-case"],
     "no-inputs-metadata-property": true,
-    "no-assignement-to-inputs": true,
+    "no-assignment-to-inputs": true,
     "no-outputs-metadata-property": true,
     "use-component-change-detection": {
       "severity": "warning"

@@ -20,6 +20,7 @@ import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-stat
 
 import {
   loadCategory,
+  loadCategoryByRef,
   loadCategoryFail,
   loadCategorySuccess,
   loadTopLevelCategories,
@@ -50,6 +51,9 @@ describe('Categories Effects', () => {
     when(categoriesServiceMock.getCategory('123')).thenReturn(
       of(categoryTree([{ uniqueId: '123', categoryPath: ['123'] } as Category]))
     );
+    when(categoriesServiceMock.getCategory('123@domain')).thenReturn(
+      of(categoryTree([{ uniqueId: '123', categoryRef: '123@domain', categoryPath: ['123'] } as Category]))
+    );
     when(categoriesServiceMock.getCategory('invalid')).thenReturn(
       throwError(makeHttpError({ message: 'invalid category' }))
     );
@@ -62,6 +66,7 @@ describe('Categories Effects', () => {
         RouterTestingModule.withRoutes([
           { path: 'category/:categoryUniqueId/product/:sku', component: DummyComponent },
           { path: 'category/:categoryUniqueId', component: DummyComponent },
+          { path: 'categoryref/:categoryRefId', component: DummyComponent },
           { path: '**', component: DummyComponent },
         ]),
         ShoppingStoreModule.forTesting('categories'),
@@ -80,12 +85,45 @@ describe('Categories Effects', () => {
     httpStatusCodeService = spy(TestBed.inject(HttpStatusCodeService));
   });
 
+  describe('selectedCategoryRef$', () => {
+    let category: CategoryView;
+
+    beforeEach(() => {
+      category = {
+        uniqueId: 'dummy',
+        categoryRef: 'dummy@domain',
+      } as CategoryView;
+    });
+    it('should trigger loadCategoryByRef when /categoryref/XXX is visited', done => {
+      router.navigateByUrl('/categoryref/dummy@domain');
+
+      effects.selectedCategoryRef$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Categories Internal] Load Category By Reference:
+            categoryRefId: "dummy@domain"
+        `);
+        done();
+      });
+    });
+
+    it('should do nothing if category is completely loaded', fakeAsync(() => {
+      category.completenessLevel = CategoryCompletenessLevel.Max;
+      store$.dispatch(loadCategorySuccess({ categories: categoryTree([category]) }));
+      router.navigateByUrl('/categoryref/dummy@domain');
+
+      effects.selectedCategoryRef$.subscribe(fail, fail, fail);
+
+      tick(2000);
+    }));
+  });
+
   describe('selectedCategory$', () => {
     let category: CategoryView;
 
     beforeEach(() => {
       category = {
         uniqueId: 'dummy',
+        categoryRef: 'dummy@domain',
       } as CategoryView;
     });
 
@@ -160,6 +198,46 @@ describe('Categories Effects', () => {
 
       tick(2000);
     }));
+  });
+
+  describe('loadCategoryByRef$', () => {
+    it('should call the categoriesService for LoadCategoryByRef action', done => {
+      const categoryRefId = '123@domain';
+      const action = loadCategoryByRef({ categoryRefId });
+      actions$ = of(action);
+
+      effects.loadCategoryByRef$.subscribe(() => {
+        verify(categoriesServiceMock.getCategory(categoryRefId)).once();
+        done();
+      });
+    });
+
+    it('should map to action of type LoadCategorySuccess', () => {
+      const categoryRefId = '123@domain';
+      const action = loadCategoryByRef({ categoryRefId });
+      const response = categoryTree([
+        {
+          uniqueId: '123',
+          categoryRef: categoryRefId,
+          categoryPath: ['123'],
+        } as Category,
+      ]);
+      const completion = loadCategorySuccess({ categories: response });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadCategoryByRef$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type LoadCategoryFail', () => {
+      const categoryRefId = 'invalid';
+      const action = loadCategoryByRef({ categoryRefId });
+      const completion = loadCategoryFail({ error: makeHttpError({ message: 'invalid category' }) });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadCategoryByRef$).toBeObservable(expected$);
+    });
   });
 
   describe('loadCategory$', () => {
@@ -249,10 +327,10 @@ describe('Categories Effects', () => {
         () => {
           verify(httpStatusCodeService.setStatus(anything())).once();
           expect(capture(httpStatusCodeService.setStatus).last()).toMatchInlineSnapshot(`
-          Array [
-            404,
-          ]
-        `);
+                      Array [
+                        404,
+                      ]
+                  `);
           done();
         },
         fail,

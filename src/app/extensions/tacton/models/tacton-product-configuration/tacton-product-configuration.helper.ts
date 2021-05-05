@@ -35,6 +35,7 @@ export class TactonProductConfigurationHelper {
   }
 
   static isImageTextButtons(el: TactonProductConfigurationGroup | TactonProductConfigurationParameter): boolean {
+    // spell-checker: words imagetext
     return TactonProductConfigurationHelper.isParameter(el) && el.properties.guitype === 'imagetext_buttons';
   }
 

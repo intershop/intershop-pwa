@@ -54,7 +54,7 @@ describe('Orders Reducer', () => {
 
     describe('CreateOrderSuccess action', () => {
       it('should add new order to initial state and select it', () => {
-        const order = { id: 'orderid' } as Order;
+        const order = { id: 'orderId' } as Order;
         const action = createOrderSuccess({ order });
         const state = ordersReducer(initialState, action);
 
@@ -165,7 +165,7 @@ describe('Orders Reducer', () => {
 
   describe('SelectOrder action', () => {
     it('should write the selected order to the state', () => {
-      const order = { id: 'orderid' } as Order;
+      const order = { id: 'orderId' } as Order;
       const action = selectOrder({ orderId: order.id });
       const state = ordersReducer(initialState, action);
 

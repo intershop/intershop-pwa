@@ -84,7 +84,7 @@ describe('Product Mapper', () => {
       expect(ProductHelper.isProductBundle(product)).toBeTrue();
     });
 
-    it('should return ProductBundle when getting a ProductData with producttype contains "BUNDLE"', () => {
+    it('should return ProductBundle when getting a ProductData with product type contains "BUNDLE"', () => {
       const product: Product = productMapper.fromData({
         sku: '1',
         productTypes: ['BUNDLE'],
@@ -277,7 +277,7 @@ describe('Product Mapper', () => {
       'site/products;spgid=dfds/123?test=dummy&test2=dummy',
       'products;spgid=dfds/123?test=dummy&test2=dummy',
     ])(`should parse correct sku when given '%s'`, uri => {
-      expect(ProductMapper.parseSKUfromURI(uri)).toEqual('123');
+      expect(ProductMapper.parseSkuFromURI(uri)).toEqual('123');
     });
   });
 

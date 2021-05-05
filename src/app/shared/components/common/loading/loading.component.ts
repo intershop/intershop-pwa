@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 /**
  * The Loading Component
  *
- * Displayes a loading animation overlay by default, but is useable as standalone loading animation too.
+ * Displays a loading animation overlay by default, but is useable as standalone loading animation too.
  *
  * @example
  * <ish-loading></ish-loading>

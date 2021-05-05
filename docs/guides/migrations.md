@@ -7,6 +7,13 @@ kb_sync_latest_only
 
 # Migrations
 
+## 0.29 to 0.30
+
+We introduced the feature toggle 'guestCheckout' in the `environment.model.ts`.
+
+We switched to encode user logins when used in the api service.
+This is to enable special characters (like the #) that are sometimes present in user logins (SSO case!) but would've lead to errors before.
+
 ## 0.28 to 0.29
 
 We activated TypeScript's [`noImplicitAny`](https://www.typescriptlang.org/tsconfig#noImplicitAny).
@@ -160,7 +167,7 @@ This was a major upgrade and comes with some changes:
 
     - Lazy components should no longer be part of the repository as they can be auto-generated on `npm install`. Use the new decorator `@GenerateLazyComponent()` via the `lazy-component` schematic to generate lazy components. We currently do not support creating lazy components for components with `@Output()` decorated fields.
 
-    - Previous work-arounds in `<extension>-store.ts` and `<extension>-store.module.ts` for adding reducers of selecting the feature state are no longer necessary and can be refactored to standard approaches.
+    - Previous workarounds in `<extension>-store.ts` and `<extension>-store.module.ts` for adding reducers of selecting the feature state are no longer necessary and can be refactored to standard approaches.
 
   - We performed a major upgrade to `prettier` which comes with new code formatting for parts of the code.
 

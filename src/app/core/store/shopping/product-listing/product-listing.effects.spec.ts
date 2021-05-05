@@ -119,7 +119,7 @@ describe('Product Listing Effects', () => {
 
   describe('action triggering with filters', () => {
     beforeEach(fakeAsync(() => {
-      router.navigateByUrl('/some?filters=param%3Dblablubb');
+      router.navigateByUrl('/some?filters=param%3Dfoobar');
       tick(500);
       store$.reset();
     }));
@@ -145,7 +145,7 @@ describe('Product Listing Effects', () => {
         [Filter] Apply Filter:
           searchParameter: {"param":[1],"searchTerm":[1]}
       `);
-      expect(store$.actionsArray()[1]).toHaveProperty('payload.filters.param', ['blablubb']);
+      expect(store$.actionsArray()[1]).toHaveProperty('payload.filters.param', ['foobar']);
       expect(store$.actionsArray()[1]).toHaveProperty('payload.filters.searchTerm', ['term']);
     }));
 

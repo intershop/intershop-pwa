@@ -3,7 +3,7 @@ import { CountryMapper } from 'ish-core/models/country/country.mapper';
 
 describe('Country Mapper', () => {
   describe('fromData', () => {
-    it(`should return Country when getting CountryData with name and countrycode`, () => {
+    it(`should return Country when getting CountryData with name and country code`, () => {
       const countryData = {
         id: 'countryId',
         name: 'countryName',

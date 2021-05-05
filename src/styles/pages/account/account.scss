@@ -18,7 +18,8 @@
       margin-top: 0;
     }
 
-    h1 {
+    h1,
+    h2 {
       .btn {
         @media (max-width: $screen-xs-max) {
           display: block;

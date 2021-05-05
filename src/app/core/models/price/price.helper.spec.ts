@@ -34,12 +34,12 @@ describe('Price Helper', () => {
         { type: 'Money', currency: 'USD', value: 8.88888 },
         { type: 'Money', currency: 'USD', value: 3.55555 },
       ],
-    ])(`should return %j when diff'ing '%j' and '%j'`, (diff, p1: Price, p2: Price) => {
+    ])(`should return %j when diffing '%j' and '%j'`, (diff, p1: Price, p2: Price) => {
       expect(PriceHelper.diff(p1, p2)).toEqual(diff);
     });
 
     it.each(dataProviderInvalid)(
-      `should throw something like %s when diff'ing '%j' and '%j'`,
+      `should throw something like %s when diffing '%j' and '%j'`,
       (error: RegExp, p1: Price, p2: Price) => {
         expect(() => PriceHelper.diff(p1, p2)).toThrowError(error);
       }

@@ -10,6 +10,7 @@
           <dt class="col-md-4">{{ 'account.profile.email.label' | translate }}</dt>
           <dd class="col-md-8" data-testing-id="email-field">{{ user.email }}</dd>
           <!-- TODO: implement logic (extend REST response) to present email subscriptions
+          cSpell: disable
           <dt>{{'account.profile.order_confirmation_subscription.text' | translate}}</dt>
           <dd>
 
@@ -20,6 +21,7 @@
                 {{'account.profile.newsletter.text' | translate}}
               </isif>
           </dd>
+          cSpell: enable
           -->
         </dl>
       </div>
@@ -136,7 +138,9 @@
 </div>
 
 <!-- Newsletter Template -->
-<!-- TODO: Newsletter configuration currently not available via REST API, need to get information for <isif condition="#isDefined(ReceiveNewsletters) AND ReceiveNewsletters#"><istext key="account.newsletter.subscribed"/><iselse> <istext key="account.newsletter.unsubscribed"/></isif>
+<!--
+  cSpell: disable-next-line
+  TODO: Newsletter configuration currently not available via REST API, need to get information for <isif condition="#isDefined(ReceiveNewsletters) AND ReceiveNewsletters#"><istext key="account.newsletter.subscribed"/><iselse> <istext key="account.newsletter.unsubscribed"/></isif>
 <div class="row section">
   <div class="col-10 col-lg-8">
     <h3>{{'account.newsletter.label' | translate}}</h3>

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
@@ -14,7 +13,8 @@ import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { findAllCustomElements, findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { FormlyCustomerAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-customer-address-form/formly-customer-address-form.component';
-import { SelectAddressComponent } from 'ish-shared/forms/components/select-address/select-address.component';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
+import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 import { BasketInvoiceAddressWidgetComponent } from './basket-invoice-address-widget.component';
 
@@ -24,6 +24,7 @@ describe('Basket Invoice Address Widget Component', () => {
   let element: HTMLElement;
   let checkoutFacade: CheckoutFacade;
   let accountFacade: AccountFacade;
+  let formsService: FormsService;
 
   beforeEach(async () => {
     checkoutFacade = mock(CheckoutFacade);
@@ -33,19 +34,21 @@ describe('Basket Invoice Address Widget Component', () => {
     accountFacade = mock(AccountFacade);
     when(accountFacade.addresses$()).thenReturn(EMPTY);
 
+    formsService = mock(FormsService);
+
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, TranslateModule.forRoot()],
       declarations: [
         BasketInvoiceAddressWidgetComponent,
         MockComponent(AddressComponent),
         MockComponent(FaIconComponent),
         MockComponent(FormlyCustomerAddressFormComponent),
-        MockComponent(SelectAddressComponent),
         MockDirective(NgbCollapse),
       ],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        { provide: FormsService, useFactory: () => instance(formsService) },
       ],
     }).compileComponents();
   });
@@ -157,17 +160,18 @@ describe('Basket Invoice Address Widget Component', () => {
       when(accountFacade.addresses$()).thenReturn(of(addresses));
     });
 
-    it('should only use valid addresses for selection display', () => {
+    it('should only use valid addresses for selection display', done => {
       fixture.detectChanges();
 
-      const selectAddress = fixture.debugElement.query(By.css('ish-select-address'))
-        .componentInstance as SelectAddressComponent;
-      expect(selectAddress.addresses.map(add => add.id)).toMatchInlineSnapshot(`
-        Array [
-          "3",
-          "4",
-        ]
-      `);
+      component.addresses$.subscribe(addrs => {
+        expect(addrs.map(add => add.id)).toMatchInlineSnapshot(`
+      Array [
+        "3",
+        "4",
+      ]
+    `);
+        done();
+      });
     });
 
     it('should update address after selecting', () => {

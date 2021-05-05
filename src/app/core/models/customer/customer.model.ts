@@ -20,7 +20,7 @@ type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
 type XOR<T, U> = T | U extends object ? (Without<T, U> & U) | (Without<U, T> & T) : T | U;
 
 /**
- * login result response data type, for business customers user data are missing and have to be fetched seperately
+ * login result response data type, for business customers user data are missing and have to be fetched separately
  * update user request data type for both, business and private customers
  */
 export type CustomerUserType = {

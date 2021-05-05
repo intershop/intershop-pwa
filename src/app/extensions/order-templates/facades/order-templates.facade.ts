@@ -54,15 +54,15 @@ export class OrderTemplatesFacade {
   }
 
   moveItemToOrderTemplate(
-    sourceorderTemplateId: string,
-    targetorderTemplateId: string,
+    sourceOrderTemplateId: string,
+    targetOrderTemplateId: string,
     sku: string,
     quantity: number
   ): void {
     this.store.dispatch(
       moveItemToOrderTemplate({
-        source: { id: sourceorderTemplateId },
-        target: { id: targetorderTemplateId, sku, quantity },
+        source: { id: sourceOrderTemplateId },
+        target: { id: targetOrderTemplateId, sku, quantity },
       })
     );
   }

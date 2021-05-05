@@ -95,5 +95,5 @@ UPDATE src/app/cms/cms.module.ts (4956 bytes)
 Since the Intershop PWA can integrate any other REST API in addition to the ICM REST API, it should not be a problem to integrate an external 3rd party CMS that provides an own REST API, instead of using the integrated ICM CMS.
 Even combinations would be possible.
 
-In case an external API has to be integrated, the native Angular `httpClient` must to be used for the REST calls instead of the PWAs `apiService`.
+In case an external API has to be integrated, the native Angular `httpClient` must to be used for the REST calls instead of the PWA's `apiService`.
 In addition, the mapping of content to the according places in the PWA needs to be handled in a way fitting to the external CMS.

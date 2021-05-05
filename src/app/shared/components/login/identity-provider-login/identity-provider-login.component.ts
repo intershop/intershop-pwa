@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 
 import { IdentityProviderFactory } from 'ish-core/identity-provider/identity-provider.factory';
-import { Auth0SigninComponent } from 'ish-shared/components/login/auth0-signin/auth0-signin.component';
+import { Auth0SignInComponent } from 'ish-shared/components/login/auth0-sign-in/auth0-sign-in.component';
 import { LoginFormComponent } from 'ish-shared/components/login/login-form/login-form.component';
 
 @Component({
@@ -39,7 +39,7 @@ export class IdentityProviderLoginComponent implements OnInit {
     switch (this.identityProviderFactory.getType()) {
       case 'auth0':
         componentRef = this.anchor.createComponent(
-          this.componentFactoryResolver.resolveComponentFactory(Auth0SigninComponent)
+          this.componentFactoryResolver.resolveComponentFactory(Auth0SignInComponent)
         );
         break;
 

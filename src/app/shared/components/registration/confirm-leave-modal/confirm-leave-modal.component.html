@@ -1,0 +1,17 @@
+<div class="modal-header">
+  <h2 class="modal-title">{{ 'account.register.confirm_leave_modal.title' | translate }}</h2>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss(false)">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  {{ 'account.register.confirm_leave_modal.body' | translate }}
+</div>
+<div class="modal-footer">
+  <button type="button" ngbAutofocus class="btn btn-primary" (click)="activeModal.close(true)">
+    {{ 'account.register.confirm_leave_modal.confirm_button' | translate }}
+  </button>
+  <button type="button" class="btn btn-secondary" (click)="activeModal.close(false)">
+    {{ 'account.register.confirm_leave_modal.cancel_button' | translate }}
+  </button>
+</div>

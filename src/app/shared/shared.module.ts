@@ -43,6 +43,7 @@ import { CMSStaticPageComponent } from './cms/components/cms-static-page/cms-sta
 import { CMSTextComponent } from './cms/components/cms-text/cms-text.component';
 import { CMSVideoComponent } from './cms/components/cms-video/cms-video.component';
 import { ContentIncludeComponent } from './cms/components/content-include/content-include.component';
+import { ContentNavigationComponent } from './cms/components/content-navigation/content-navigation.component';
 import { ContentPageletComponent } from './cms/components/content-pagelet/content-pagelet.component';
 import { ContentSlotComponent } from './cms/components/content-slot/content-slot.component';
 import { ContentViewcontextComponent } from './cms/components/content-viewcontext/content-viewcontext.component';
@@ -65,14 +66,14 @@ import { AccordionItemComponent } from './components/common/accordion-item/accor
 import { AccordionComponent } from './components/common/accordion/accordion.component';
 import { BreadcrumbComponent } from './components/common/breadcrumb/breadcrumb.component';
 import { ErrorMessageComponent } from './components/common/error-message/error-message.component';
+import { InPlaceEditComponent } from './components/common/in-place-edit/in-place-edit.component';
 import { InfoBoxComponent } from './components/common/info-box/info-box.component';
-import { InplaceEditComponent } from './components/common/inplace-edit/inplace-edit.component';
 import { LoadingComponent } from './components/common/loading/loading.component';
 import { ModalDialogLinkComponent } from './components/common/modal-dialog-link/modal-dialog-link.component';
 import { ModalDialogComponent } from './components/common/modal-dialog/modal-dialog.component';
 import { SuccessMessageComponent } from './components/common/success-message/success-message.component';
 import { FilterCheckboxComponent } from './components/filter/filter-checkbox/filter-checkbox.component';
-import { FilterCollapsableComponent } from './components/filter/filter-collapsable/filter-collapsable.component';
+import { FilterCollapsibleComponent } from './components/filter/filter-collapsible/filter-collapsible.component';
 import { FilterDropdownComponent } from './components/filter/filter-dropdown/filter-dropdown.component';
 import { FilterNavigationBadgesComponent } from './components/filter/filter-navigation-badges/filter-navigation-badges.component';
 import { FilterNavigationHorizontalComponent } from './components/filter/filter-navigation-horizontal/filter-navigation-horizontal.component';
@@ -84,7 +85,7 @@ import { LineItemEditDialogComponent } from './components/line-item/line-item-ed
 import { LineItemEditComponent } from './components/line-item/line-item-edit/line-item-edit.component';
 import { LineItemListElementComponent } from './components/line-item/line-item-list-element/line-item-list-element.component';
 import { LineItemListComponent } from './components/line-item/line-item-list/line-item-list.component';
-import { Auth0SigninComponent } from './components/login/auth0-signin/auth0-signin.component';
+import { Auth0SignInComponent } from './components/login/auth0-sign-in/auth0-sign-in.component';
 import { IdentityProviderLoginComponent } from './components/login/identity-provider-login/identity-provider-login.component';
 import { LoginFormComponent } from './components/login/login-form/login-form.component';
 import { LoginModalComponent } from './components/login/login-modal/login-modal.component';
@@ -120,6 +121,7 @@ import { ProductVariationSelectComponent } from './components/product/product-va
 import { PromotionDetailsComponent } from './components/promotion/promotion-details/promotion-details.component';
 import { PromotionRemoveComponent } from './components/promotion/promotion-remove/promotion-remove.component';
 import { RecentlyViewedComponent } from './components/recently/recently-viewed/recently-viewed.component';
+import { ConfirmLeaveModalComponent } from './components/registration/confirm-leave-modal/confirm-leave-modal.component';
 import { SearchBoxComponent } from './components/search/search-box/search-box.component';
 import { FormlyAddressFormsModule } from './formly-address-forms/formly-address-forms.module';
 import { FormlyModule } from './formly/formly.module';
@@ -157,7 +159,7 @@ const importExportModules = [
 ];
 
 const declaredComponents = [
-  Auth0SigninComponent,
+  Auth0SignInComponent,
   BasketValidationItemsComponent,
   BasketValidationProductsComponent,
   CMSCarouselComponent,
@@ -172,9 +174,10 @@ const declaredComponents = [
   CMSStaticPageComponent,
   CMSTextComponent,
   CMSVideoComponent,
+  ConfirmLeaveModalComponent,
   ContentSlotComponent,
   FilterCheckboxComponent,
-  FilterCollapsableComponent,
+  FilterCollapsibleComponent,
   FilterDropdownComponent,
   FilterNavigationBadgesComponent,
   FilterNavigationHorizontalComponent,
@@ -213,14 +216,16 @@ const exportedComponents = [
   BasketShippingAddressWidgetComponent,
   BasketValidationResultsComponent,
   BreadcrumbComponent,
+  ConfirmLeaveModalComponent,
   ContentIncludeComponent,
+  ContentNavigationComponent,
   ContentPageletComponent,
   ContentViewcontextComponent,
   ErrorMessageComponent,
   FilterNavigationComponent,
   IdentityProviderLoginComponent,
+  InPlaceEditComponent,
   InfoBoxComponent,
-  InplaceEditComponent,
   LineItemListComponent,
   LoadingComponent,
   LoginFormComponent,

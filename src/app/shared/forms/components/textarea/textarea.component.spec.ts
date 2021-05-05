@@ -102,25 +102,25 @@ describe('Textarea Component', () => {
   });
 
   // markAsRequired tests
-  it('should set required asterix for required fields (default)', () => {
+  it('should set required asterisk for required fields (default)', () => {
     fixture.detectChanges();
     expect(element.querySelector('span.required')).toBeTruthy();
   });
 
-  it('should set required asterix if MarkRequiredLabel = on', () => {
+  it('should set required asterisk if MarkRequiredLabel = on', () => {
     component.markRequiredLabel = 'on';
     component.controlName = 'simpleField';
     fixture.detectChanges();
     expect(element.querySelector('span.required')).toBeTruthy();
   });
 
-  it('should not set required asterix if markRequiredLabel = off', () => {
+  it('should not set required asterisk if markRequiredLabel = off', () => {
     component.markRequiredLabel = 'off';
     fixture.detectChanges();
     expect(element.querySelector('span.required')).toBeFalsy();
   });
 
-  it('should not set required asterix if MarkRequiredLabel = auto and the field is not required', () => {
+  it('should not set required asterisk if MarkRequiredLabel = auto and the field is not required', () => {
     component.markRequiredLabel = 'auto';
     component.controlName = 'simpleField';
     fixture.detectChanges();

@@ -12,6 +12,7 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { resetOrderErrors } from 'ish-core/store/customer/orders';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -210,7 +211,7 @@ describe('Basket Effects', () => {
     });
   });
 
-  describe('Basket Effects', () => {
+  describe('loadBasketEligibleShippingMethods$', () => {
     beforeEach(() => {
       when(basketServiceMock.getBasketEligibleShippingMethods(anything())).thenReturn(
         of([BasketMockData.getShippingMethod()])
@@ -262,7 +263,7 @@ describe('Basket Effects', () => {
     });
   });
 
-  describe('Basket Effects', () => {
+  describe('updateBasket$', () => {
     beforeEach(() => {
       when(basketServiceMock.updateBasket(anything())).thenReturn(of(BasketMockData.getBasket()));
 
@@ -311,7 +312,7 @@ describe('Basket Effects', () => {
     });
   });
 
-  describe('Basket Effects', () => {
+  describe('updateBasketShippingMethod$', () => {
     it('should trigger the updateBasket action if called', () => {
       const shippingId = 'shippingId';
       const action = updateBasketShippingMethod({ shippingId });
@@ -325,7 +326,7 @@ describe('Basket Effects', () => {
     });
   });
 
-  describe('Basket Effects', () => {
+  describe('setCustomAttributeToBasket$', () => {
     beforeEach(() => {
       when(basketServiceMock.createBasketAttribute(anything())).thenReturn(of(undefined));
       when(basketServiceMock.updateBasketAttribute(anything())).thenReturn(of(undefined));
@@ -394,7 +395,7 @@ describe('Basket Effects', () => {
     });
   });
 
-  describe('Basket Effects', () => {
+  describe('deleteCustomAttributeFromBasket$', () => {
     beforeEach(() => {
       when(basketServiceMock.deleteBasketAttribute(anyString())).thenReturn(of(undefined));
 
@@ -468,20 +469,21 @@ describe('Basket Effects', () => {
     });
   });
 
-  describe('Basket Effects', () => {
-    it('should fire ResetBasketErrors when route basket or checkout/* is navigated', done => {
+  describe('routeListenerForResettingBasketErrors', () => {
+    it('should fire ResetBasketErrors when route basket or checkout/* is navigated', () => {
       router.navigateByUrl('/checkout/payment');
 
-      actions$ = of(
-        routerTestNavigatedAction({
-          routerState: { url: '/checkout/payment' },
-        })
-      );
-
-      effects.routeListenerForResettingBasketErrors$.subscribe(action => {
-        expect(action).toMatchInlineSnapshot(`[Basket Internal] Reset Basket and Basket Promotion Errors`);
-        done();
+      const action = routerTestNavigatedAction({
+        routerState: { url: '/checkout/payment' },
       });
+      actions$ = of(action);
+
+      const completion1 = resetBasketErrors();
+      const completion2 = resetOrderErrors();
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
+
+      expect(effects.routeListenerForResettingBasketErrors$).toBeObservable(expected$);
     });
 
     it('should not fire ResetBasketErrors when route basket or checkout/* is navigated with query param error=true', () => {
@@ -506,7 +508,7 @@ describe('Basket Effects', () => {
     });
   });
 
-  describe('Basket Effects', () => {
+  describe('createRequisition$', () => {
     beforeEach(() => {
       store$.dispatch(loadBasketSuccess({ basket: { id: 'BID' } as Basket }));
     });
@@ -523,7 +525,7 @@ describe('Basket Effects', () => {
       });
     });
 
-    it('should map a valid request to action of type SubmitBasketBuccess', done => {
+    it('should map a valid request to action of type SubmitBasketSuccess', done => {
       when(basketServiceMock.createRequisition(anyString())).thenReturn(of(undefined));
 
       actions$ = of(submitBasket());

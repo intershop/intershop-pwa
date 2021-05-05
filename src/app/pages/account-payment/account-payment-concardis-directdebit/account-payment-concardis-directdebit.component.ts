@@ -22,9 +22,9 @@ export class AccountPaymentConcardisDirectdebitComponent {
       .find(param => param.name === 'mandateReference')
       .value.toString();
     this.mandateText = this.paymentInstrument.parameters.find(param => param.name === 'mandateText').value.toString();
-    const mandateCreatedDatetimeStr = this.paymentInstrument.parameters
+    const mandateCreatedDateTimeStr = this.paymentInstrument.parameters
       .find(param => param.name === 'mandateCreatedDateTime')
       .value.toString();
-    this.mandateCreatedDateTime = Number(mandateCreatedDatetimeStr) || 0;
+    this.mandateCreatedDateTime = Number(mandateCreatedDateTimeStr) || 0;
   }
 }

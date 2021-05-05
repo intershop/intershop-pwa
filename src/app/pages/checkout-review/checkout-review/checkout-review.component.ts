@@ -18,12 +18,14 @@ export class CheckoutReviewComponent implements OnInit {
 
   form: FormGroup;
   submitted = false;
+  multipleBuckets = false;
 
   ngOnInit() {
     // create t&c form
     this.form = new FormGroup({
       termsAndConditions: new FormControl(false, Validators.pattern('true')),
     });
+    this.multipleBuckets = !this.basket?.commonShippingMethod;
   }
 
   /**
@@ -39,6 +41,6 @@ export class CheckoutReviewComponent implements OnInit {
   }
 
   get formDisabled() {
-    return this.form.invalid && this.submitted;
+    return (this.form.invalid && this.submitted) || this.multipleBuckets;
   }
 }

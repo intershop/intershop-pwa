@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { TranslateService } from '@ngx-translate/core';
 import { pick } from 'lodash-es';
 import { of } from 'rxjs';
 
@@ -10,13 +9,13 @@ import {
   AddressFormConfiguration,
   addressesFieldConfiguration,
 } from 'ish-shared/formly-address-forms/configurations/address-form.configuration';
-import { determineSalutations } from 'ish-shared/forms/utils/form-utils';
+import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 @Injectable()
 export class AddressFormDEConfiguration extends AddressFormConfiguration {
   countryCode = 'DE';
 
-  constructor(private translate: TranslateService) {
+  constructor(private formsService: FormsService) {
     super();
   }
   getModel(model: Partial<Address> = {}): Partial<Address> {
@@ -45,11 +44,7 @@ export class AddressFormDEConfiguration extends AddressFormConfiguration {
           type: 'ish-select-field',
           templateOptions: {
             label: 'account.default_address.title.label',
-            options: of(
-              determineSalutations(this.countryCode)
-                .map(salutation => this.translate.instant(salutation))
-                .map(salutation => ({ value: salutation, label: salutation }))
-            ),
+            options: of(this.formsService.getSalutationOptionsForCountryCode(this.countryCode)),
             placeholder: 'account.option.select.text',
           },
         },

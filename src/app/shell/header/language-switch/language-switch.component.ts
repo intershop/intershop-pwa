@@ -1,4 +1,4 @@
-import { Location } from '@angular/common';
+import { LocationStrategy } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -13,14 +13,14 @@ import { Locale } from 'ish-core/models/locale/locale.model';
 export class LanguageSwitchComponent implements OnInit {
   @Input() view: '' | 'accordion' = '';
   /**
-   * determines position of dropbox - dropup or dropdown, default is dropdown
+   * determines position of dropbox
    */
   @Input() placement: '' | 'up' = '';
 
   locale$: Observable<Locale>;
   availableLocales$: Observable<Locale[]>;
 
-  constructor(private appFacade: AppFacade, public location: Location) {}
+  constructor(private appFacade: AppFacade, public location: LocationStrategy) {}
 
   ngOnInit() {
     this.locale$ = this.appFacade.currentLocale$;

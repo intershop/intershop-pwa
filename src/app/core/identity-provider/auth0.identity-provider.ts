@@ -4,7 +4,7 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { Observable, combineLatest, from, iif, of, race, timer } from 'rxjs';
+import { Observable, combineLatest, from, of, race, timer } from 'rxjs';
 import { catchError, filter, first, map, mapTo, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -66,7 +66,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
 
       // Scopes ("rights") the Angular application wants get delegated
       // https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims
-      scope: 'openid email profile',
+      scope: 'openid email profile offline_access',
 
       // Using Authorization Code Flow
       // (PKCE is activated by default for authorization code flow)
@@ -92,66 +92,18 @@ export class Auth0IdentityProvider implements IdentityProvider {
           )
         ),
         whenTruthy(),
-        switchMap(idToken =>
-          this.apiService
-            .post<UserData>('users/processtoken', {
-              id_token: idToken,
-              options: ['CREATE_USER'],
-            })
-            .pipe(
-              tap(() => {
-                this.store.dispatch(loadUserByAPIToken());
-              }),
-              switchMap((userData: UserData) =>
-                combineLatest([
-                  this.store.pipe(select(getLoggedInCustomer)),
-                  this.store.pipe(select(getUserLoading)),
-                ]).pipe(
-                  filter(([, loading]) => !loading),
-                  first(),
-                  switchMap(([customer]) =>
-                    iif(
-                      () => !customer,
-                      this.router.navigate(['/register'], {
-                        queryParams: {
-                          sso: true,
-                          userid: userData.businessPartnerNo,
-                          firstName: userData.firstName,
-                          lastName: userData.lastName,
-                        },
-                      }),
-                      of(false)
-                    )
-                  ),
-                  switchMap((navigated: boolean) =>
-                    navigated
-                      ? race(
-                          this.store.pipe(
-                            select(getSsoRegistrationRegistered),
-                            whenTruthy(),
-                            tap(() => {
-                              this.store.dispatch(loadUserByAPIToken());
-                            })
-                          ),
-                          this.store.pipe(
-                            select(getSsoRegistrationCancelled),
-                            whenTruthy(),
-                            mapTo(false),
-                            tap(() => this.router.navigateByUrl('/logout'))
-                          )
-                        )
-                      : of(navigated)
-                  )
-                )
-              ),
-              switchMapTo(this.store.pipe(select(getUserAuthorized), whenTruthy(), first())),
-              catchError((error: HttpError) => {
-                this.apiTokenService.removeApiToken();
-                this.triggerLogout();
-                return of(error);
-              })
-            )
-        )
+        switchMap(idToken => {
+          const inviteUserId = window.sessionStorage.getItem('invite-userid');
+          const inviteHash = window.sessionStorage.getItem('invite-hash');
+          return inviteUserId && inviteHash
+            ? this.inviteRegistration(idToken, inviteUserId, inviteHash).pipe(
+                tap(() => {
+                  window.sessionStorage.removeItem('invite-userid');
+                  window.sessionStorage.removeItem('invite-hash');
+                })
+              )
+            : this.normalSignInRegistration(idToken);
+        })
       )
       .subscribe(() => {
         this.apiTokenService.removeApiToken();
@@ -159,6 +111,84 @@ export class Auth0IdentityProvider implements IdentityProvider {
           this.router.navigateByUrl(this.oauthService.state ? decodeURIComponent(this.oauthService.state) : '/account');
         }
       });
+  }
+
+  private normalSignInRegistration(idToken: string) {
+    return this.apiService
+      .post<UserData>('users/processtoken', {
+        id_token: idToken,
+        options: ['CREATE_USER'],
+      })
+      .pipe(
+        tap(() => {
+          this.store.dispatch(loadUserByAPIToken());
+        }),
+        switchMap((userData: UserData) =>
+          combineLatest([this.store.pipe(select(getLoggedInCustomer)), this.store.pipe(select(getUserLoading))]).pipe(
+            filter(([, loading]) => !loading),
+            first(),
+            switchMap(([customer]) =>
+              !customer
+                ? this.router.navigate(['/register', 'sso'], {
+                    queryParams: {
+                      userid: userData.businessPartnerNo,
+                      firstName: userData.firstName,
+                      lastName: userData.lastName,
+                    },
+                  })
+                : of(false)
+            ),
+            switchMap((navigated: boolean) =>
+              navigated || navigated === null
+                ? race(
+                    this.store.pipe(
+                      select(getSsoRegistrationRegistered),
+                      whenTruthy(),
+                      tap(() => {
+                        this.store.dispatch(loadUserByAPIToken());
+                      })
+                    ),
+                    this.store.pipe(
+                      select(getSsoRegistrationCancelled),
+                      whenTruthy(),
+                      mapTo(false),
+                      tap(() => this.router.navigateByUrl('/logout'))
+                    )
+                  )
+                : of(navigated)
+            )
+          )
+        ),
+        switchMapTo(this.store.pipe(select(getUserAuthorized), whenTruthy(), first())),
+        catchError((error: HttpError) => {
+          this.apiTokenService.removeApiToken();
+          this.triggerLogout();
+          return of(error);
+        })
+      );
+  }
+
+  private inviteRegistration(idToken: string, userId: string, hash: string) {
+    return this.apiService
+      .post<UserData>('users/processtoken', {
+        id_token: idToken,
+        secure_user_ref: {
+          user_id: userId,
+          secure_code: hash,
+        },
+        options: ['UPDATE'],
+      })
+      .pipe(
+        tap(() => {
+          this.store.dispatch(loadUserByAPIToken());
+        }),
+        switchMapTo(this.store.pipe(select(getUserAuthorized), whenTruthy(), first())),
+        catchError((error: HttpError) => {
+          this.apiTokenService.removeApiToken();
+          this.triggerLogout();
+          return of(error);
+        })
+      );
   }
 
   triggerRegister(route: ActivatedRouteSnapshot): TriggerReturnType {
@@ -174,6 +204,15 @@ export class Auth0IdentityProvider implements IdentityProvider {
 
   triggerLogin(route: ActivatedRouteSnapshot): TriggerReturnType {
     this.router.navigateByUrl('/loading');
+    return this.oauthService.loadDiscoveryDocumentAndLogin({
+      state: route.queryParams.returnUrl,
+    });
+  }
+
+  triggerInvite(route: ActivatedRouteSnapshot): TriggerReturnType {
+    this.router.navigateByUrl('/loading');
+    window.sessionStorage.setItem('invite-userid', route.queryParams.uid);
+    window.sessionStorage.setItem('invite-hash', route.queryParams.Hash);
     return this.oauthService.loadDiscoveryDocumentAndLogin({
       state: route.queryParams.returnUrl,
     });

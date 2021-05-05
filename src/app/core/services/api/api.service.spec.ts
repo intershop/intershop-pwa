@@ -71,7 +71,7 @@ describe('Api Service', () => {
     });
 
     it('should create Error Action if httpClient.options throws Error.', () => {
-      const statusText = 'ERROAAR';
+      const statusText = 'ERROR';
 
       apiService.options('data').subscribe(fail, fail);
       const req = httpTestingController.expectOne(`${REST_URL}/data`);
@@ -101,7 +101,7 @@ describe('Api Service', () => {
     });
 
     it('should create Error Action if httpClient.get throws Error.', () => {
-      const statusText = 'ERROAAR';
+      const statusText = 'ERROR';
 
       apiService.get('data').subscribe(fail, fail);
       const req = httpTestingController.expectOne(`${REST_URL}/data`);
@@ -424,9 +424,9 @@ describe('Api Service', () => {
     it('should construct a URL based on ICM REST API when supplying a relative URL', () => {
       apiService.get('relative').subscribe(fail, fail, fail);
 
-      const reqs = httpTestingController.match(x => !!x);
-      expect(reqs).toHaveLength(1);
-      expect(reqs[0].request.urlWithParams).toMatchInlineSnapshot(`"http://www.example.org/WFS/site/-/relative"`);
+      const requests = httpTestingController.match(x => !!x);
+      expect(requests).toHaveLength(1);
+      expect(requests[0].request.urlWithParams).toMatchInlineSnapshot(`"http://www.example.org/WFS/site/-/relative"`);
     });
 
     it('should include query params when supplied', () => {
@@ -434,9 +434,9 @@ describe('Api Service', () => {
         .get('relative', { params: new HttpParams().set('view', 'grid').set('depth', '3') })
         .subscribe(fail, fail, fail);
 
-      const reqs = httpTestingController.match(x => !!x);
-      expect(reqs).toHaveLength(1);
-      expect(reqs[0].request.urlWithParams).toMatchInlineSnapshot(
+      const requests = httpTestingController.match(x => !!x);
+      expect(requests).toHaveLength(1);
+      expect(requests[0].request.urlWithParams).toMatchInlineSnapshot(
         `"http://www.example.org/WFS/site/-/relative?view=grid&depth=3"`
       );
     });
@@ -444,9 +444,9 @@ describe('Api Service', () => {
     it('should construct a URL based on ICM REST API when supplying a deep relative URL', () => {
       apiService.get('very/deep/relative/url').subscribe(fail, fail, fail);
 
-      const reqs = httpTestingController.match(x => !!x);
-      expect(reqs).toHaveLength(1);
-      expect(reqs[0].request.urlWithParams).toMatchInlineSnapshot(
+      const requests = httpTestingController.match(x => !!x);
+      expect(requests).toHaveLength(1);
+      expect(requests[0].request.urlWithParams).toMatchInlineSnapshot(
         `"http://www.example.org/WFS/site/-/very/deep/relative/url"`
       );
     });
@@ -456,9 +456,9 @@ describe('Api Service', () => {
 
       apiService.get('relative').subscribe(fail, fail, fail);
 
-      const reqs = httpTestingController.match(x => !!x);
-      expect(reqs).toHaveLength(1);
-      expect(reqs[0].request.urlWithParams).toMatchInlineSnapshot(
+      const requests = httpTestingController.match(x => !!x);
+      expect(requests).toHaveLength(1);
+      expect(requests[0].request.urlWithParams).toMatchInlineSnapshot(
         `"http://www.example.org/WFS/site/-;loc=en_US;cur=USD/relative"`
       );
     });
@@ -468,9 +468,9 @@ describe('Api Service', () => {
 
       apiService.get('relative', { sendPGID: true }).subscribe(fail, fail, fail);
 
-      const reqs = httpTestingController.match(x => !!x);
-      expect(reqs).toHaveLength(1);
-      expect(reqs[0].request.urlWithParams).toMatchInlineSnapshot(
+      const requests = httpTestingController.match(x => !!x);
+      expect(requests).toHaveLength(1);
+      expect(requests[0].request.urlWithParams).toMatchInlineSnapshot(
         `"http://www.example.org/WFS/site/-/relative;pgid=ASDF"`
       );
     });
@@ -480,9 +480,9 @@ describe('Api Service', () => {
 
       apiService.get('relative', { sendSPGID: true }).subscribe(fail, fail, fail);
 
-      const reqs = httpTestingController.match(x => !!x);
-      expect(reqs).toHaveLength(1);
-      expect(reqs[0].request.urlWithParams).toMatchInlineSnapshot(
+      const requests = httpTestingController.match(x => !!x);
+      expect(requests).toHaveLength(1);
+      expect(requests[0].request.urlWithParams).toMatchInlineSnapshot(
         `"http://www.example.org/WFS/site/-/relative;spgid=ASDF"`
       );
     });
@@ -492,9 +492,9 @@ describe('Api Service', () => {
 
       apiService.get('very/deep/relative', { sendPGID: true }).subscribe(fail, fail, fail);
 
-      const reqs = httpTestingController.match(x => !!x);
-      expect(reqs).toHaveLength(1);
-      expect(reqs[0].request.urlWithParams).toMatchInlineSnapshot(
+      const requests = httpTestingController.match(x => !!x);
+      expect(requests).toHaveLength(1);
+      expect(requests[0].request.urlWithParams).toMatchInlineSnapshot(
         `"http://www.example.org/WFS/site/-/very;pgid=ASDF/deep/relative"`
       );
     });
@@ -507,9 +507,9 @@ describe('Api Service', () => {
         .get('very/deep/relative', { sendPGID: true, params: new HttpParams().set('view', 'grid').set('depth', '3') })
         .subscribe(fail, fail, fail);
 
-      const reqs = httpTestingController.match(x => !!x);
-      expect(reqs).toHaveLength(1);
-      expect(reqs[0].request.urlWithParams).toMatchInlineSnapshot(
+      const requests = httpTestingController.match(x => !!x);
+      expect(requests).toHaveLength(1);
+      expect(requests[0].request.urlWithParams).toMatchInlineSnapshot(
         `"http://www.example.org/WFS/site/-;loc=en_US;cur=USD/very;pgid=ASDF/deep/relative?view=grid&depth=3"`
       );
     });
@@ -585,22 +585,22 @@ describe('Api Service', () => {
     });
 
     it('should set Captcha V2 authorization header key when captcha is supplied without captchaAction', () => {
-      apiService.get('dummy', { captcha: { captcha: 'captchatoken' } }).subscribe(fail, fail, fail);
+      apiService.get('dummy', { captcha: { captcha: 'token' } }).subscribe(fail, fail, fail);
 
       const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
       expect(req.request.headers.get(ApiService.AUTHORIZATION_HEADER_KEY)).toMatchInlineSnapshot(
-        `"CAPTCHA g-recaptcha-response=captchatoken foo=bar"`
+        `"CAPTCHA g-recaptcha-response=token foo=bar"`
       );
     });
 
     it('should set Captcha V3 authorization header key when captcha is supplied', () => {
       apiService
-        .get('dummy', { captcha: { captcha: 'captchatoken', captchaAction: 'create_account' } })
+        .get('dummy', { captcha: { captcha: 'token', captchaAction: 'create_account' } })
         .subscribe(fail, fail, fail);
 
       const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
       expect(req.request.headers.get(ApiService.AUTHORIZATION_HEADER_KEY)).toMatchInlineSnapshot(
-        `"CAPTCHA recaptcha_token=captchatoken action=create_account"`
+        `"CAPTCHA recaptcha_token=token action=create_account"`
       );
     });
 

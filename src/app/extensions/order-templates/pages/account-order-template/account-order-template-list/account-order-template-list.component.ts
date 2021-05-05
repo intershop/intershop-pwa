@@ -36,7 +36,7 @@ export class AccountOrderTemplateListComponent {
     modal.show(orderTemplate.id);
   }
 
-  getParts(tmpl: OrderTemplate): SkuQuantityType[] {
-    return tmpl?.items.map(item => ({ sku: item.sku, quantity: item.desiredQuantity.value }));
+  getParts(template: OrderTemplate): SkuQuantityType[] {
+    return template?.items.map(item => ({ sku: item.sku, quantity: item.desiredQuantity.value }));
   }
 }

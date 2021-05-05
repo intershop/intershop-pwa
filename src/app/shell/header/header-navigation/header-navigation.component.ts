@@ -25,19 +25,19 @@ export class HeaderNavigationComponent implements OnInit {
   /**
    * Handle sub menu show.
    * Adds hover class to rendered element.
-   * @param submenu The rendered sub menu element.
+   * @param subMenu The rendered sub menu element.
    */
-  subMenuShow(submenu: HTMLElement) {
-    submenu.classList.add('hover');
+  subMenuShow(subMenu: HTMLElement) {
+    subMenu.classList.add('hover');
   }
 
   /**
    * Handle sub menu hide.
    * Removes hover class from rendered element.
-   * @param submenu The rendered sub menu element.
+   * @param subMenu The rendered sub menu element.
    */
-  subMenuHide(submenu: HTMLElement) {
-    submenu.classList.remove('hover');
+  subMenuHide(subMenu: HTMLElement) {
+    subMenu.classList.remove('hover');
   }
 
   /**

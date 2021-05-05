@@ -3,7 +3,7 @@ import { RegionMapper } from 'ish-core/models/region/region.mapper';
 
 describe('Region Mapper', () => {
   describe('fromData', () => {
-    it(`should return Region when getting RegionData with name, regionCode and countrycode`, () => {
+    it(`should return Region when getting RegionData with name, region code and country code`, () => {
       const countryCode = 'countryID';
       const regionData = {
         id: 'regionCode',

@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
-import { TextareaComponent } from 'ish-shared/forms/components/textarea/textarea.component';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { RequisitionRejectDialogComponent } from './requisition-reject-dialog.component';
 
@@ -15,8 +14,8 @@ describe('Requisition Reject Dialog Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(TextareaComponent), RequisitionRejectDialogComponent],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      declarations: [RequisitionRejectDialogComponent],
+      imports: [FormlyTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
 
@@ -24,6 +23,8 @@ describe('Requisition Reject Dialog Component', () => {
     fixture = TestBed.createComponent(RequisitionRejectDialogComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+
+    component.rejectForm.addControl('comment', new FormControl(undefined, Validators.required));
   });
 
   it('should be created', () => {
@@ -51,6 +52,6 @@ describe('Requisition Reject Dialog Component', () => {
     const emitter = spy(component.submit);
     component.submitForm();
 
-    verify(emitter.emit()).never();
+    verify(emitter.emit(anything())).never();
   });
 });

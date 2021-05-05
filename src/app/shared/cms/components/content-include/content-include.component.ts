@@ -31,9 +31,6 @@ import { SfeMetadataWrapper } from 'ish-shared/cms/sfe-adapter/sfe-metadata-wrap
 })
 @GenerateLazyComponent()
 export class ContentIncludeComponent extends SfeMetadataWrapper implements OnInit, OnDestroy, OnChanges {
-  /**
-   * The ID of the Include whoes content is to be rendered.
-   */
   @Input() includeId: string;
 
   contentInclude$: Observable<ContentPageletEntryPointView>;

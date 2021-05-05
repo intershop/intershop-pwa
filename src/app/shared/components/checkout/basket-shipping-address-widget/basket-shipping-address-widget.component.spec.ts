@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
@@ -15,7 +14,8 @@ import { findAllCustomElements, findAllDataTestingIDs } from 'ish-core/utils/dev
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { FormlyCustomerAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-customer-address-form/formly-customer-address-form.component';
-import { SelectAddressComponent } from 'ish-shared/forms/components/select-address/select-address.component';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
+import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 import { BasketShippingAddressWidgetComponent } from './basket-shipping-address-widget.component';
 
@@ -25,6 +25,7 @@ describe('Basket Shipping Address Widget Component', () => {
   let element: HTMLElement;
   let checkoutFacade: CheckoutFacade;
   let accountFacade: AccountFacade;
+  let formsService: FormsService;
 
   beforeEach(async () => {
     checkoutFacade = mock(CheckoutFacade);
@@ -34,20 +35,22 @@ describe('Basket Shipping Address Widget Component', () => {
     accountFacade = mock(AccountFacade);
     when(accountFacade.addresses$()).thenReturn(EMPTY);
 
+    formsService = mock(FormsService);
+
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, TranslateModule.forRoot()],
       declarations: [
         BasketShippingAddressWidgetComponent,
         MockComponent(AddressComponent),
         MockComponent(FaIconComponent),
         MockComponent(FormlyCustomerAddressFormComponent),
         MockComponent(ModalDialogComponent),
-        MockComponent(SelectAddressComponent),
         MockDirective(NgbCollapse),
       ],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        { provide: FormsService, useFactory: () => instance(formsService) },
       ],
     }).compileComponents();
   });
@@ -89,7 +92,9 @@ describe('Basket Shipping Address Widget Component', () => {
           "fa-icon",
           "ish-modal-dialog",
           "ish-address",
-          "ish-select-address",
+          "formly-form",
+          "formly-field",
+          "ng-component",
           "ish-formly-customer-address-form",
         ]
       `);
@@ -111,7 +116,9 @@ describe('Basket Shipping Address Widget Component', () => {
         Array [
           "ish-modal-dialog",
           "ish-address",
-          "ish-select-address",
+          "formly-form",
+          "formly-field",
+          "ng-component",
           "ish-formly-customer-address-form",
         ]
       `);
@@ -136,7 +143,9 @@ describe('Basket Shipping Address Widget Component', () => {
 
         expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
           Array [
-            "ish-select-address",
+            "formly-form",
+            "formly-field",
+            "ng-component",
             "ish-formly-customer-address-form",
           ]
         `);
@@ -156,7 +165,9 @@ describe('Basket Shipping Address Widget Component', () => {
 
         expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
           Array [
-            "ish-select-address",
+            "formly-form",
+            "formly-field",
+            "ng-component",
             "ish-formly-customer-address-form",
           ]
         `);
@@ -188,17 +199,18 @@ describe('Basket Shipping Address Widget Component', () => {
       when(accountFacade.addresses$()).thenReturn(of(addresses));
     });
 
-    it('should only use valid addresses for selection display', () => {
+    it('should only use valid addresses for selection display', done => {
       fixture.detectChanges();
 
-      const selectAddress = fixture.debugElement.query(By.css('ish-select-address'))
-        .componentInstance as SelectAddressComponent;
-      expect(selectAddress.addresses.map(add => add.id)).toMatchInlineSnapshot(`
-        Array [
-          "3",
-          "4",
-        ]
-      `);
+      component.addresses$.subscribe(addrs => {
+        expect(addrs.map(add => add.id)).toMatchInlineSnapshot(`
+                Array [
+                  "3",
+                  "4",
+                ]
+            `);
+        done();
+      });
     });
 
     it('should update address after selecting', () => {

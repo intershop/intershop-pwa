@@ -32,7 +32,7 @@ export const adapter = createEntityAdapter<ProductListingType>({
  * To get a specific state use the {@link getProductListingView} selector.
  *
  * Each state is identified by an ID which consists of type and value:
- * i.e. { id: 'search', value: 'Asus' }, { id: 'category', value: 'Computers' }
+ * i.e. { id: 'search', value: 'Microsoft' }, { id: 'category', value: 'Computers' }
  *
  * New pages retrieved via {@link SetProductListingPages} actions are merged
  * into the state in the same entity. The view supplied by the selector helps

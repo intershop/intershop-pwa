@@ -120,7 +120,7 @@ export class RequisitionsService {
 
   /**
    *  Gets the order data, if needed and maps the requisition/order data.
-   * @param payload  The requisition row data returnedby the REST interface.
+   * @param payload  The requisition row data returned by the REST interface.
    * @returns        The requisition.
    */
   private processRequisitionData(payload: RequisitionData): Observable<Requisition> {

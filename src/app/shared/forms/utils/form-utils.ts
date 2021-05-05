@@ -14,39 +14,3 @@ export function markAsDirtyRecursive(formGroup: FormGroup) {
     }
   });
 }
-
-/**
- * Gets all possible salutations for a certain country.
- * @param countryCode country code of the country for which the salutations should be determined.
- * @returns translation keys of the salutations
- */
-export function determineSalutations(countryCode: string): string[] {
-  // TODO: should come from configuration?
-  let salutationLabels: string[] = [];
-
-  switch (countryCode) {
-    case 'DE': {
-      salutationLabels = ['account.salutation.ms.text', 'account.salutation.mr.text', 'account.salutation.dr.text'];
-      break;
-    }
-    case 'FR': {
-      salutationLabels = ['account.salutation.ms.text', 'account.salutation.mr.text', 'account.salutation.dr.text'];
-      break;
-    }
-    case 'US': {
-      salutationLabels = ['account.salutation.ms.text', 'account.salutation.mr.text', 'account.salutation.dr.text'];
-      break;
-    }
-    case 'GB': {
-      salutationLabels = [
-        'account.salutation.ms.text',
-        'account.salutation.miss.text',
-        'account.salutation.mrs.text',
-        'account.salutation.mr.text',
-        'account.salutation.dr.text',
-      ];
-      break;
-    }
-  }
-  return salutationLabels;
-}

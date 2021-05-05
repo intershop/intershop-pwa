@@ -9,8 +9,8 @@ describe('Link Parser', () => {
     ['product://201807195@inSPIRED-inTRONICS', '/sku201807195'],
     ['http://google.de', 'http://google.de'],
     ['https://google.de', 'https://google.de'],
-    ['page://mypage', '/page/mypage'],
-    ['category://Computers@inSPIRED-Computers', '/catComputers'],
+    ['page://my-page', '/page/my-page'],
+    ['category://Computers@inSPIRED-Computers', '/categoryref/Computers@inSPIRED-Computers'],
     ['/product/ABC', '/product/ABC'],
     [undefined, undefined],
   ])(`should transform %s to %s without optional baseHref`, (input, output) => {
@@ -23,8 +23,8 @@ describe('Link Parser', () => {
     ['product://201807195@inSPIRED-inTRONICS', '/us/sku201807195'],
     ['http://google.de', 'http://google.de'],
     ['https://google.de', 'https://google.de'],
-    ['page://mypage', '/us/page/mypage'],
-    ['category://Computers@inSPIRED-Computers', '/us/catComputers'],
+    ['page://my-page', '/us/page/my-page'],
+    ['category://Computers@inSPIRED-Computers', '/us/categoryref/Computers@inSPIRED-Computers'],
     ['/product/ABC', '/product/ABC'],
     [undefined, undefined],
   ])(`should transform %s to %s with baseHref /us`, (input, output) => {

@@ -16,9 +16,10 @@ describe('Product Images Component', () => {
   let component: ProductImagesComponent;
   let fixture: ComponentFixture<ProductImagesComponent>;
   let element: HTMLElement;
+  let context: ProductContextFacade;
 
   beforeEach(async () => {
-    const context = mock(ProductContextFacade);
+    context = mock(ProductContextFacade);
     when(context.select('product')).thenReturn(
       of({
         sku: 'sku',
@@ -116,5 +117,18 @@ describe('Product Images Component', () => {
   it('should render product image component on component', () => {
     fixture.detectChanges();
     expect(element.getElementsByTagName('ish-product-image')).toBeTruthy();
+  });
+
+  it('should render product image unavailable on component', () => {
+    when(context.select('product')).thenReturn(
+      of({
+        sku: 'sku',
+        name: 'Lenco',
+        images: [],
+      } as ProductView)
+    );
+
+    fixture.detectChanges();
+    expect(element.getElementsByTagName('ish-product-image')).toHaveLength(2);
   });
 });

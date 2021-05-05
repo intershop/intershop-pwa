@@ -54,6 +54,7 @@ export class BasketMockData {
   }
 
   static getAddress(): Address {
+    // spell-checker: disable
     return {
       urn: 'urn:address:customer:JgEKAE8BA50AAAFgDtAd1LZU:ilMKAE8BlIUAAAFgEdAd1LZU',
       id: 'ilMKAE8BlIUAAAFgEdAd1LZU',
@@ -73,6 +74,7 @@ export class BasketMockData {
       invoiceToAddress: true,
       shipFromAddress: false,
     } as Address;
+    // spell-checker: enable
   }
 
   static getShippingMethod(): ShippingMethod {

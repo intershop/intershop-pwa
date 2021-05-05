@@ -29,7 +29,7 @@ export class UserEditProfilePageComponent implements OnInit {
     this.selectedUser$ = this.organizationManagementFacade.selectedUser$;
   }
 
-  submitForm(b2buser: B2bUser) {
+  submitForm(b2bUser: B2bUser) {
     if (this.profileForm.invalid) {
       this.submitted = true;
       markAsDirtyRecursive(this.profileForm);
@@ -39,7 +39,7 @@ export class UserEditProfilePageComponent implements OnInit {
     const formValue = this.profileForm.value;
 
     const user: B2bUser = {
-      ...b2buser,
+      ...b2bUser,
       title: formValue.title,
       firstName: formValue.firstName,
       lastName: formValue.lastName,

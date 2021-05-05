@@ -7,6 +7,7 @@
 >
   <ng-container *ngIf="iframeVideoUrl; else nativeVideo">
     <div *ngIf="showVideo" class="video-wrapper">
+      <!-- spell-checker: words allowfullscreen -->
       <iframe [src]="iframeVideoUrl" frameborder="0" allowfullscreen></iframe>
     </div>
   </ng-container>

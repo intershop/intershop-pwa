@@ -28,10 +28,10 @@ export class ApprovalWidgetComponent implements OnInit {
 
     this.numPendingApprovals$ = pendingApprovals$.pipe(
       startWith([] as Requisition[]),
-      map(reqs => reqs.length)
+      map(requisitions => requisitions.length)
     );
     this.totalAmountApprovals$ = pendingApprovals$.pipe(
-      map(reqs => reqs?.map(req => PriceItemHelper.selectType(req.totals?.total, 'gross'))),
+      map(requisitions => requisitions?.map(req => PriceItemHelper.selectType(req.totals?.total, 'gross'))),
       map(prices => {
         if (prices.length > 0) {
           return prices?.reduce(

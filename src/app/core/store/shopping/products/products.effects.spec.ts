@@ -241,17 +241,17 @@ describe('Products Effects', () => {
     });
 
     it('should call the products service for retrieving variations', done => {
-      const action = loadProductVariationsIfNotLoaded({ sku: 'MSKU' });
+      const action = loadProductVariationsIfNotLoaded({ sku: 'MasterSKU' });
       actions$ = of(action);
 
       effects.loadProductVariations$.subscribe(() => {
-        verify(productsServiceMock.getProductVariations('MSKU')).once();
+        verify(productsServiceMock.getProductVariations('MasterSKU')).once();
         done();
       });
     });
 
     it('should dispatch success action and product stubs of variations and master', done => {
-      actions$ = of(loadProductVariationsIfNotLoaded({ sku: 'MSKU' }));
+      actions$ = of(loadProductVariationsIfNotLoaded({ sku: 'MasterSKU' }));
 
       effects.loadProductVariations$.pipe(toArray()).subscribe(
         actions => {
@@ -263,7 +263,7 @@ describe('Products Effects', () => {
             [Products API] Load Product Success:
               product: {"sku":"M"}
             [Products API] Load Product Variations Success:
-              sku: "MSKU"
+              sku: "MasterSKU"
               variations: ["V1","V2"]
               defaultVariation: "V2"
           `);
@@ -277,10 +277,10 @@ describe('Products Effects', () => {
       when(productsServiceMock.getProductVariations(anyString())).thenReturn(
         throwError(makeHttpError({ message: 'invalid' }))
       );
-      const action = loadProductVariationsIfNotLoaded({ sku: 'MSKU' });
+      const action = loadProductVariationsIfNotLoaded({ sku: 'MasterSKU' });
       const completion = loadProductVariationsFail({
         error: makeHttpError({ message: 'invalid' }),
-        sku: 'MSKU',
+        sku: 'MasterSKU',
       });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -293,11 +293,11 @@ describe('Products Effects', () => {
     it('should trigger action if product load triggered for master product', () => {
       const action = loadProductSuccess({
         product: {
-          sku: 'MSKU',
+          sku: 'MasterSKU',
           type: 'VariationProductMaster',
         } as VariationProductMaster,
       });
-      const completion = loadProductVariationsIfNotLoaded({ sku: 'MSKU' });
+      const completion = loadProductVariationsIfNotLoaded({ sku: 'MasterSKU' });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
@@ -307,11 +307,11 @@ describe('Products Effects', () => {
     it('should trigger action if product load triggered for variation product', () => {
       const action = loadProductSuccess({
         product: {
-          sku: 'MSKU',
+          sku: 'MasterSKU',
           type: 'VariationProductMaster',
         } as VariationProductMaster,
       });
-      const completion = loadProductVariationsIfNotLoaded({ sku: 'MSKU' });
+      const completion = loadProductVariationsIfNotLoaded({ sku: 'MasterSKU' });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 

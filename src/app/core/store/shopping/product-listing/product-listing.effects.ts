@@ -73,7 +73,7 @@ export class ProductListingEffects {
    * endless scroll: initialPage is resetted after first usage and params.page will be used for endless scroll
    *
    * extra
-   * the result is also the cachekey for caching productlists in loadMoreProducts$
+   * the result is also the cache key for caching product lists in loadMoreProducts$
    */
   determineParams$ = createEffect(() =>
     this.actions$.pipe(

@@ -38,3 +38,5 @@ export const selectOrderAfterRedirectFail = createAction(
   '[Orders API] Select Order Fail After Checkout Redirect',
   httpError()
 );
+
+export const resetOrderErrors = createAction('[Order Internal] Reset Order Errors');

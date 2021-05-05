@@ -13,6 +13,11 @@ export class CheckoutAddressesPage {
     waitLoadingEnd(1000);
   }
 
+  registerBeforeCheckout() {
+    cy.get('a[data-testing-id="registration-link"]').click();
+    waitLoadingEnd(1000);
+  }
+
   fillInvoiceAddressForm(address: AddressDetailsTypes, email: string) {
     Object.keys(address).forEach(key => fillFormField('[data-testing-id="invoiceAddressForm"]', key, address[key]));
     fillFormField(this.tag, 'email', email);
@@ -65,5 +70,9 @@ export class CheckoutAddressesPage {
 
   get infoMessage() {
     return cy.get('ish-basket-validation-results').find('.alert-info');
+  }
+
+  get invoiceToAddress() {
+    return cy.get(`[data-testing-id="invoiceToAddress"]`).find('address');
   }
 }

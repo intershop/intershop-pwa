@@ -13,6 +13,7 @@ export class CategoryTreeHelper {
       edges: {},
       nodes: {},
       rootIds: [],
+      categoryRefs: {},
     };
   }
 
@@ -41,10 +42,13 @@ export class CategoryTreeHelper {
 
     const nodes = { [category.uniqueId]: { ...category } };
 
+    const categoryRefs = { [category.categoryRef]: category.uniqueId };
+
     return {
       edges,
       nodes,
       rootIds,
+      categoryRefs,
     };
   }
 
@@ -110,6 +114,17 @@ export class CategoryTreeHelper {
     return nodes;
   }
 
+  private static mergeCategoryRefs(
+    current: { [id: string]: string },
+    incoming: { [id: string]: Category }
+  ): { [id: string]: string } {
+    const refs = { ...current };
+    Object.keys(incoming).forEach(key => {
+      refs[incoming[key]?.categoryRef] = key;
+    });
+    return refs;
+  }
+
   /**
    * Merge two trees to a new tree.
    * Updates category nodes according to updateStrategy.
@@ -123,6 +138,7 @@ export class CategoryTreeHelper {
       edges: CategoryTreeHelper.mergeEdges(current.edges, incoming.edges),
       nodes: CategoryTreeHelper.mergeNodes(current.nodes, incoming.nodes),
       rootIds: CategoryTreeHelper.mergeRootIDs(current.rootIds, incoming.rootIds),
+      categoryRefs: CategoryTreeHelper.mergeCategoryRefs(current.categoryRefs, incoming.nodes),
     };
   }
 
@@ -147,6 +163,7 @@ export class CategoryTreeHelper {
       rootIds: tree.rootIds.filter(select),
       edges: pick(tree.edges, ...Object.keys(tree.edges).filter(select)),
       nodes: pick(tree.nodes, ...Object.keys(tree.nodes).filter(select)),
+      categoryRefs: {},
     };
   }
 

@@ -232,7 +232,7 @@ describe('Basket Mapper', () => {
       expect(basket.totals.valueRebates[0].amount.gross).toBePositive();
     });
 
-    it('should return estimated as false if invoive address, shipping address and shipping method is set', () => {
+    it('should return estimated as false if invoice address, shipping address and shipping method is set', () => {
       basket = BasketMapper.fromData(basketData);
       expect(basket.totals.isEstimated).toBeFalse();
     });

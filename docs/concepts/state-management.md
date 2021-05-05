@@ -209,7 +209,7 @@ Action dispatcher helpers are represented by methods with verbs. i.e. `addFoo(fo
 [@ngrx/entity](https://ngrx.io/guide/entity) provides an API to manipulate and query entity collections.
 
 - Reduces boilerplate for creating reducers that manage a collection of models.
-- Provides performant CRUD operations for managing entity collections.
+- Provides CRUD operations with high performance for managing entity collections.
 - Extensible type-safe adapters for selecting entity information.
 
 ## Normalized State

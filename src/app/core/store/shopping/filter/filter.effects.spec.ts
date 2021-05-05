@@ -28,7 +28,7 @@ describe('Filter Effects', () => {
   let filterServiceMock: FilterService;
 
   const filterNav = {
-    filter: [{ name: 'blubb', displayType: 'text_clear', facets: [{ name: 'a' }, { name: 'b' }] }],
+    filter: [{ name: 'foobar', displayType: 'text_clear', facets: [{ name: 'a' }, { name: 'b' }] }],
   } as FilterNavigation;
   beforeEach(() => {
     filterServiceMock = mock(FilterService);

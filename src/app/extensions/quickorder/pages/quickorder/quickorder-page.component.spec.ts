@@ -48,18 +48,18 @@ describe('Quickorder Page Component', () => {
   it('should be always initialized with numberOfRows quick order lines', () => {
     fixture.detectChanges();
 
-    expect(component.quickOrderlines).toHaveLength(component.numberOfRows);
+    expect(component.quickOrderLines).toHaveLength(component.numberOfRows);
   });
 
   it('should always delete one line', () => {
     fixture.detectChanges();
     component.deleteItem(0);
-    expect(component.quickOrderlines).toHaveLength(component.numberOfRows - 1);
+    expect(component.quickOrderLines).toHaveLength(component.numberOfRows - 1);
   });
 
   it('should always add one line', () => {
     fixture.detectChanges();
     component.addRows(1);
-    expect(component.quickOrderlines).toHaveLength(component.numberOfRows + 1);
+    expect(component.quickOrderLines).toHaveLength(component.numberOfRows + 1);
   });
 });
