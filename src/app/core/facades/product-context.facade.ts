@@ -135,6 +135,7 @@ export class ProductContextFacade extends RxState<ProductContext> {
             map(product => ({
               product,
               loading: false,
+              children: undefined,
             })),
             startWith({ loading: true })
           )
