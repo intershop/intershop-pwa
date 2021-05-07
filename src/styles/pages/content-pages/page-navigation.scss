@@ -7,10 +7,8 @@
       padding-left: 0;
       list-style: none outside none;
 
-      &.page-navigation-0 {
-        ul {
-          padding-left: $space-default;
-        }
+      ul {
+        padding-left: $space-default;
       }
 
       li {
