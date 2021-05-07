@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, createSelector, select } from '@ngrx/store';
 import { merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, switchMap, take, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, shareReplay, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
@@ -72,7 +72,8 @@ export class CheckoutFacade {
     select(getBasketLastTimeProductAdded),
     whenTruthy(),
     distinctUntilChanged(),
-    switchMap(() => this.basketLoading$.pipe(debounceTime(500), whenFalsy()))
+    switchMap(() => this.basketLoading$.pipe(debounceTime(500), whenFalsy())),
+    shareReplay(1)
   );
   basketError$ = this.store.pipe(select(getBasketError));
   basketInfo$ = this.store.pipe(select(getBasketInfo));
