@@ -3,7 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 
 import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
 
-import { loadGroupsSuccess, selectGroup } from './group.actions';
+import { assignGroup, loadGroupsSuccess } from './group.actions';
 
 export const groupAdapter = createEntityAdapter<OrganizationGroup>({
   selectId: group => group.id,
@@ -22,12 +22,14 @@ const initialState: GroupState = groupAdapter.getInitialState({
 export const groupReducer = createReducer(
   initialState,
   on(loadGroupsSuccess, (state: GroupState, action) => {
-    const { groups } = action.payload;
+    const groups = action.payload.groups as OrganizationGroup[];
+    const newState = groupAdapter.upsertMany(groups, state);
     return {
-      ...groupAdapter.upsertMany(groups, state),
+      ...newState,
+      selected: newState?.ids?.length ? (newState.ids[0] as string) : undefined,
     };
   }),
-  on(selectGroup, (state: GroupState, action) => {
+  on(assignGroup, (state: GroupState, action) => {
     const { id } = action.payload;
     return {
       ...state,

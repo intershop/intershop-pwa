@@ -33,7 +33,7 @@ export class HierarchySwitchComponent implements OnInit {
 
   groupSelected(group: OrganizationGroup): void {
     if (group) {
-      this.facade.selectGroup(group.id);
+      this.facade.assignGroup(group.id);
     }
   }
 

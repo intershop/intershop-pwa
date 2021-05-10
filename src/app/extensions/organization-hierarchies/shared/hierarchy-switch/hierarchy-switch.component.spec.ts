@@ -65,11 +65,11 @@ describe('Hierarchy Switch Component', () => {
 
   it('should invoke select group at facade if a group has been selected', () => {
     fixture.componentInstance.groupSelected(groupA);
-    verify(organizationHierarchiesFacade.selectGroup('root')).once();
+    verify(organizationHierarchiesFacade.assignGroup('root')).once();
   });
 
   it('should not invoke select group at facade if nothing was selected', () => {
     fixture.componentInstance.groupSelected(undefined);
-    verify(organizationHierarchiesFacade.selectGroup('root')).never();
+    verify(organizationHierarchiesFacade.assignGroup('root')).never();
   });
 });

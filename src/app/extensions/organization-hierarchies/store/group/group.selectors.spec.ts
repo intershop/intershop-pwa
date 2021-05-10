@@ -7,7 +7,7 @@ import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ng
 import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
 import { OrganizationHierarchiesStoreModule } from '../organization-hierarchies-store.module';
 
-import { loadGroups, loadGroupsFail, loadGroupsSuccess, selectGroup } from './group.actions';
+import { assignGroup, loadGroups, loadGroupsFail, loadGroupsSuccess } from './group.actions';
 import {
   getGroupDetails,
   getGroupsOfOrganization,
@@ -78,7 +78,7 @@ describe('Group Selectors', () => {
     });
 
     it('should set selected to 1', () => {
-      store$.dispatch(selectGroup({ id: '1' }));
+      store$.dispatch(assignGroup({ id: '1' }));
       expect(getSelectedGroupDetails(store$.state)).toMatchInlineSnapshot(`
         Object {
           "id": "1",
@@ -88,7 +88,7 @@ describe('Group Selectors', () => {
     });
 
     it('should set selected to 2', () => {
-      store$.dispatch(selectGroup({ id: '2' }));
+      store$.dispatch(assignGroup({ id: '2' }));
       expect(getSelectedGroupDetails(store$.state)).toMatchInlineSnapshot(`
         Object {
           "id": "2",
@@ -99,12 +99,12 @@ describe('Group Selectors', () => {
     });
 
     it('should set selected to undefined', () => {
-      store$.dispatch(selectGroup({ id: '3' }));
+      store$.dispatch(assignGroup({ id: '3' }));
       expect(getSelectedGroupDetails(store$.state)).toBeFalsy();
     });
 
     it('should get all groups from selected up to the root', () => {
-      store$.dispatch(selectGroup({ id: '2' }));
+      store$.dispatch(assignGroup({ id: '2' }));
       expect(getSelectedGroupPath(store$.state)).toMatchInlineSnapshot(`
         Array [
           Object {
