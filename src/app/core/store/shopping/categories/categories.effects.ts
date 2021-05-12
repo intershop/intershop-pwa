@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { from } from 'rxjs';
-import { concatMap, filter, map, mergeMap, switchMap, switchMapTo, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, map, mergeMap, switchMap, switchMapTo, take, withLatestFrom } from 'rxjs/operators';
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
@@ -139,7 +139,8 @@ export class CategoriesEffects {
           select(getSelectedCategory),
           whenTruthy(),
           filter(cat => cat.hasOnlineProducts),
-          map(({ uniqueId }) => loadMoreProducts({ id: { type: 'category', value: uniqueId } }))
+          map(({ uniqueId }) => loadMoreProducts({ id: { type: 'category', value: uniqueId } })),
+          take(1)
         )
       )
     )
