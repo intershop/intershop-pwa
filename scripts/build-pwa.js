@@ -18,8 +18,8 @@ if (!configuration) {
 
 const client = process.argv[2] !== 'server';
 const server = process.argv[2] !== 'client';
-const partial = (client && server) || !(client && server);
-const remainingArgs = process.argv.slice(partial ? 3 : 2);
+const full = (client && server) || !(client && server);
+const remainingArgs = process.argv.slice(full ? 2 : 3);
 
 if (client) {
   execSync(`npm run ng -- build -c ${configuration} ${remainingArgs.join(' ')}`, { stdio: 'inherit' });
