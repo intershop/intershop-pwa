@@ -67,7 +67,7 @@
     "@ngrx/router-store": "^12.0.0",
     "@ngrx/store": "^12.0.0",
     "@ngrx/store-devtools": "^12.0.0",
-    "@nguniversal/express-engine": "^11.2.1",
+    "@nguniversal/express-engine": "^12.0.0",
     "@ngx-formly/core": "^5.10.18",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
