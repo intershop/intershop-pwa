@@ -96,6 +96,7 @@
     "typeface-roboto": "1.1.13",
     "typeface-roboto-condensed": "1.1.13",
     "url-polyfill": "^1.1.12",
+    "webpack-dev-middleware": "^3.7.3",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
@@ -114,8 +115,8 @@
     "@types/jest": "^26.0.23",
     "@types/lodash-es": "^4.17.4",
     "@types/node": "^14.14.43",
-    "@types/webpack": "^4.41.27",
-    "codelyzer": "^6.0.1",
+    "@types/webpack": "^5.28.0",
+    "codelyzer": "^6.0.2",
     "comment-json": "^4.1.0",
     "commitizen": "^4.2.3",
     "commitlint-config-cz": "^0.13.2",
@@ -134,7 +135,7 @@
     "postinstall": "^0.7.0",
     "prettier": "^2.2.1",
     "purgecss-webpack-plugin": "^4.0.3",
-    "rxjs-tslint-rules": "^4.34.7",
+    "rxjs-tslint-rules": "^4.34.8",
     "sort-json": "^2.0.0",
     "stylelint": "^13.13.1",
     "stylelint-config-prettier": "^8.0.2",
