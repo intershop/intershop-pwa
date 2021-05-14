@@ -1,5 +1,5 @@
 // tslint:disable: no-console ish-ordered-imports force-jsdoc-comments
-import 'zone.js/dist/zone-node';
+import 'zone.js/node';
 
 import * as express from 'express';
 import { join } from 'path';
