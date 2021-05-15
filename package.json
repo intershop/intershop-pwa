@@ -96,7 +96,6 @@
     "typeface-roboto": "1.1.13",
     "typeface-roboto-condensed": "1.1.13",
     "url-polyfill": "^1.1.12",
-    "webpack-dev-middleware": "^3.7.3",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
