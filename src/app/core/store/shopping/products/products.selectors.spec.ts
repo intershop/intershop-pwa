@@ -80,6 +80,27 @@ describe('Products Selectors', () => {
       it('should add product to state', () => {
         expect(getProductEntities(store$.state)).toEqual({ [prod.sku]: prod });
       });
+
+      it.each([
+        [ProductCompletenessLevel.Detail, ProductCompletenessLevel.Detail - 1],
+        [ProductCompletenessLevel.Detail + 1, ProductCompletenessLevel.Detail + 1],
+      ])(
+        'should merge product updates with "%s" completeness when new info with "%s" completeness is available',
+        (resultCompletenessLevel, completenessLevel) => {
+          const newProd = {
+            ...prod,
+            completenessLevel,
+            manufacturer: 'Microsoft',
+            name: 'Updated product',
+            available: false,
+          } as Product;
+          store$.dispatch(loadProductSuccess({ product: newProd }));
+
+          expect(getProductEntities(store$.state)).toEqual({
+            [prod.sku]: { ...newProd, completenessLevel: resultCompletenessLevel },
+          });
+        }
+      );
     });
 
     describe('and reporting failure', () => {
