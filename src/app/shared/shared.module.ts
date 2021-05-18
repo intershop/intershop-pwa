@@ -24,6 +24,7 @@ import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.
 
 import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
 import { OrderTemplatesExportsModule } from '../extensions/order-templates/exports/order-templates-exports.module';
+import { OrganizationHierarchiesExportsModule } from '../extensions/organization-hierarchies/exports/organization-hierarchies-exports.module';
 import { PunchoutExportsModule } from '../extensions/punchout/exports/punchout-exports.module';
 import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
 import { TactonExportsModule } from '../extensions/tacton/exports/tacton-exports.module';
@@ -150,6 +151,7 @@ const importExportModules = [
   NgbModalModule,
   NgbPopoverModule,
   OrderTemplatesExportsModule,
+  OrganizationHierarchiesExportsModule,
   PipesModule,
   PunchoutExportsModule,
   QuotingExportsModule,
