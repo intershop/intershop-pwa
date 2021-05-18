@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "SchematicsPWAComponent",
+  "$id": "SchematicsPWAComponent",
   "title": "PWA Lazy Components Options Schema",
   "type": "object",
   "description": "Creates Lazy Components for all decorated components.",

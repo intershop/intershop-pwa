@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "decontainerize",
+  "$id": "decontainerize",
   "title": "decontainerize",
   "type": "object",
   "properties": {
