@@ -11,7 +11,7 @@ export const promotionAdapter = createEntityAdapter<Promotion>({
 
 export interface PromotionsState extends EntityState<Promotion> {}
 
-export const initialState: PromotionsState = promotionAdapter.getInitialState({});
+const initialState: PromotionsState = promotionAdapter.getInitialState({});
 
 export const promotionsReducer = createReducer(
   initialState,

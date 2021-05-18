@@ -32,7 +32,7 @@ export interface AddressesState extends EntityState<Address> {
   error: HttpError;
 }
 
-export const initialState: AddressesState = addressAdapter.getInitialState({
+const initialState: AddressesState = addressAdapter.getInitialState({
   loading: false,
   error: undefined,
 });

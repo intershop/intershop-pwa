@@ -96,7 +96,7 @@ const initialValidationResults: BasketValidationResultType = {
   errors: [],
 };
 
-export const initialState: BasketState = {
+const initialState: BasketState = {
   basket: undefined,
   eligibleShippingMethods: undefined,
   eligiblePaymentMethods: undefined,

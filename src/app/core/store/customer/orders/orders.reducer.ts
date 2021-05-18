@@ -29,7 +29,7 @@ export interface OrdersState extends EntityState<Order> {
   error: HttpError;
 }
 
-export const initialState: OrdersState = orderAdapter.getInitialState({
+const initialState: OrdersState = orderAdapter.getInitialState({
   loading: false,
   selected: undefined,
   error: undefined,
