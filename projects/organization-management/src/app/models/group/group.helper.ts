@@ -71,11 +71,12 @@ export class GroupHelper {
     if (!old) {
       return newGroup;
     }
-    const group = { ...old };
-    Object.keys(old).forEach(key => {
-      group[key] = old[key] ?? newGroup[key];
-    });
-    return group;
+    return {
+      id: old.id ?? newGroup.id,
+      name: old.name ?? newGroup.name,
+      description: old.description ?? newGroup.description,
+      organization: old.organization ?? newGroup.organization,
+    };
   }
 
   private static mergeEdges(
