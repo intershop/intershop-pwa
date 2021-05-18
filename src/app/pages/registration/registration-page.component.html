@@ -1,26 +1,36 @@
-<ish-error-message [error]="error$ | async"></ish-error-message>
-<div data-testing-id="account-create-full-page">
-  <form [formGroup]="form" (ngSubmit)="onCreate()">
-    <formly-form [model]="model" [form]="form" [options]="options" [fields]="fields"></formly-form>
-    <div class="row">
-      <div class="col-md-10 col-lg-8 col-xl-6">
-        <div class="row form-group">
-          <div class="offset-md-4 col-md-8">
-            <input
-              type="submit"
-              [disabled]="submitDisabled"
-              class="btn btn-primary"
-              value="{{ 'account.create.button.label' | translate }}"
-            />
-            <input
-              type="button"
-              class="btn btn-secondary"
-              value="{{ 'account.cancel.link' | translate }}"
-              (click)="cancelForm()"
-            />
+<div class="loading-container">
+  <ish-error-message [error]="error$ | async">
+
+  </ish-error-message>
+
+
+  <div data-testing-id="account-create-full-page ">
+
+
+
+    <form [formGroup]="form" (ngSubmit)="onCreate()">
+
+
+      <formly-form [model]="model" [form]="form" [options]="options" [fields]="fields ">
+
+      </formly-form>
+
+      <div class="row">
+        <div class="col-md-10 col-lg-8 col-xl-6">
+          <div class="row form-group d-flex justify-content-center">
+
+
+
+            <div class="offset-md-4 col-md-8">
+              <input type="submit" [disabled]="submitDisabled" class="btn btn-primary"
+                value="{{ 'account.create.button.label' | translate }}" />
+              <input type="button" class="btn btn-secondary" value="{{ 'account.cancel.link' | translate }}"
+                (click)="cancelForm()" />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </form>
+    </form>
+    <ish-loading *ngIf="loading$ | async"></ish-loading>
+  </div>
 </div>

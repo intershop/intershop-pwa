@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ConfigOption, FormlyModule } from '@ngx-formly/core';
-
 import { SharedModule } from 'ish-shared/shared.module';
-
 import { disablePrefilledExtension } from './formly/disable-prefilled.extension';
 import { RegistrationAddressFieldComponent } from './formly/registration-address-field/registration-address-field.component';
 import { RegistrationHeadingFieldComponent } from './formly/registration-heading-field/registration-heading-field.component';

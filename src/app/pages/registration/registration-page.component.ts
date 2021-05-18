@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
-
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import {
   RegistrationConfigType,
@@ -13,7 +13,7 @@ import {
 // tslint:disable:no-intelligence-in-artifacts
 /**
  * The Registration Page Container renders the customer registration form using the {@link RegistrationFormComponent}
- *
+ *s
  */
 @Component({
   templateUrl: './registration-page.component.html',
@@ -24,11 +24,15 @@ export class RegistrationPageComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private registrationFormConfiguration: RegistrationFormConfigurationService
-  ) {}
+    private registrationFormConfiguration: RegistrationFormConfigurationService,
+    private accountFacade: AccountFacade
+
+  ) { }
 
   submitted = false;
 
+  ishttpLoaded = false;
+  loading$: Observable<boolean>;
   registrationConfig: RegistrationConfigType;
 
   fields: FormlyFieldConfig[];
@@ -44,6 +48,10 @@ export class RegistrationPageComponent implements OnInit {
     this.registrationConfig = this.registrationFormConfiguration.extractConfig(snapshot);
     this.options = this.registrationFormConfiguration.getOptions(this.registrationConfig, this.model);
     this.fields = this.registrationFormConfiguration.getFields(this.registrationConfig);
+    this.loading$ = this.accountFacade.userLoading$;
+
+
+
   }
 
   cancelForm() {
@@ -51,6 +59,8 @@ export class RegistrationPageComponent implements OnInit {
   }
 
   onCreate() {
+
+
     if (this.form.invalid) {
       this.submitted = true;
       return;
