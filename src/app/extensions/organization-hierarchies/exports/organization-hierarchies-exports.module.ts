@@ -1,9 +1,11 @@
+// tslint:disable-next-line: ish-ordered-imports
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
 
+// tslint:disable-next-line: ban-specific-imports
 import { TxSelectedGroupInterceptor } from '../interceptors/tx-selected-group.interceptor';
 
 import { LazyHierarchyGroupNameComponent } from './lazy-hierarchy-group-name/lazy-hierarchy-group-name.component';
