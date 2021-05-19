@@ -13,7 +13,6 @@ import {
   getGroupsOfOrganization,
   getGroupsOfOrganizationCount,
   getSelectedGroupDetails,
-  getSelectedGroupPath,
 } from './group.selectors';
 
 describe('Group Selectors', () => {
@@ -101,23 +100,6 @@ describe('Group Selectors', () => {
     it('should set selected to undefined', () => {
       store$.dispatch(selectGroup({ id: '3' }));
       expect(getSelectedGroupDetails(store$.state)).toBeFalsy();
-    });
-
-    it('should get all groups from selected up to the root', () => {
-      store$.dispatch(selectGroup({ id: '2' }));
-      expect(getSelectedGroupPath(store$.state)).toMatchInlineSnapshot(`
-        Array [
-          Object {
-            "id": "2",
-            "name": "Test 2",
-            "parentid": "1",
-          },
-          Object {
-            "id": "1",
-            "name": "Test 1",
-          },
-        ]
-      `);
     });
   });
 });
