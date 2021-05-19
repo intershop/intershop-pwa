@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, createSelector, select } from '@ngrx/store';
-import { merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, shareReplay, switchMap, take, tap } from 'rxjs/operators';
+import { Subject, merge } from 'rxjs';
+import { debounceTime, map, sample, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
@@ -53,7 +53,17 @@ import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
 export class CheckoutFacade {
-  constructor(private store: Store) {}
+  private basketChangeInternal$ = new Subject<void>();
+
+  constructor(private store: Store) {
+    this.store
+      .pipe(
+        select(getBasketLastTimeProductAdded),
+        whenTruthy(),
+        sample(this.basketLoading$.pipe(debounceTime(500), whenFalsy()))
+      )
+      .subscribe(() => this.basketChangeInternal$.next());
+  }
 
   checkoutStep$ = this.store.pipe(select(selectRouteData<number>('checkoutStep')));
 
@@ -68,13 +78,7 @@ export class CheckoutFacade {
   // BASKET
 
   basket$ = this.store.pipe(select(getCurrentBasket));
-  basketChange$ = this.store.pipe(
-    select(getBasketLastTimeProductAdded),
-    whenTruthy(),
-    distinctUntilChanged(),
-    switchMap(() => this.basketLoading$.pipe(debounceTime(500), whenFalsy())),
-    shareReplay(1)
-  );
+  basketChange$ = this.basketChangeInternal$.asObservable();
   basketError$ = this.store.pipe(select(getBasketError));
   basketInfo$ = this.store.pipe(select(getBasketInfo));
   basketLoading$ = this.store.pipe(select(getBasketLoading));
