@@ -86,7 +86,7 @@
     "express-robots-txt": "0.5.0",
     "lodash-es": "^4.17.21",
     "morgan": "^1.10.0",
-    "ng-recaptcha": "^7.0.1",
+    "ng-recaptcha": "^8.0.0",
     "ngx-infinite-scroll": "^10.0.1",
     "ngx-toastr": "^13.2.1",
     "prom-client": "^13.1.0",
