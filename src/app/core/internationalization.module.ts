@@ -1,10 +1,11 @@
 import { registerLocaleData } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { HttpClient } from '@angular/common/http';
+import localeDe from '@angular/common/locales/de';
+import localeFr from '@angular/common/locales/fr';
 import { Inject, LOCALE_ID, NgModule } from '@angular/core';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Observable, OperatorFunction, combineLatest, from, of } from 'rxjs';
-import { catchError, first, map, switchMap, switchMapTo, withLatestFrom } from 'rxjs/operators';
+import { Observable, OperatorFunction, combineLatest } from 'rxjs';
+import { catchError, first, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { StatePropertiesService } from './utils/state-transfer/state-properties.service';
 
@@ -16,20 +17,15 @@ class ICMTranslateLoader implements TranslateLoader {
   constructor(private httpClient: HttpClient, private stateProperties: StatePropertiesService) {}
 
   getTranslation(lang: string) {
-    const local$ = of(lang).pipe(
-      map(l => {
-        switch (l) {
-          case 'de_DE':
-            return import('@angular/common/locales/global/de');
-          case 'fr_FR':
-            return import('@angular/common/locales/global/fr');
-        }
-      }),
-      switchMap(imp => {
-        const translations$ = from(import(`../../assets/i18n/${lang}.json`));
-        return imp ? from(imp).pipe(switchMapTo(translations$)) : translations$;
-      })
-    );
+    const local$ = this.httpClient
+      .get(`assets/i18n/${lang}.json`)
+      .pipe(
+        catchError(() =>
+          this.stateProperties
+            .getStateOrEnvOrDefault('DEFAULT_LOCALE', 'defaultLocale')
+            .pipe(switchMap(url => this.httpClient.get(`assets/i18n/${url}.json`)))
+        )
+      );
     return this.icmURL.pipe(
       switchMap(url =>
         this.httpClient.get(`${url};loc=${lang}/localizations`, {
