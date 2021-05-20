@@ -2,7 +2,7 @@ import { registerLocaleData } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
-import { Inject, Injectable, LOCALE_ID, NgModule, PLATFORM_ID } from '@angular/core';
+import { Inject, Injectable, LOCALE_ID, NgModule } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Observable, OperatorFunction, combineLatest, of } from 'rxjs';
@@ -108,8 +108,7 @@ export class InternationalizationModule {
   constructor(
     @Inject(LOCALE_ID) angularDefaultLocale: string,
     translateService: TranslateService,
-    transferState: TransferState,
-    @Inject(PLATFORM_ID) private platformId: string
+    transferState: TransferState
   ) {
     registerLocaleData(localeDe);
     registerLocaleData(localeFr);
