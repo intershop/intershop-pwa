@@ -126,7 +126,27 @@ describe('Configuration Selectors', () => {
     });
 
     describe('without ICM server configuration', () => {
-      it('should choose the first locale when no ICM configuration is available', () => {
+      it('should choose the internal default Locale when no ICM is available', () => {
+        store$.dispatch(
+          applyConfiguration({
+            ...store$.state.configuration,
+            defaultLocale: 'en_US',
+          })
+        );
+        expect(getCurrentLocale(store$.state)).toMatchInlineSnapshot(`
+          Object {
+            "lang": "en_US",
+          }
+        `);
+      });
+
+      it('should choose the first locale when no ICM or internal configuration is available', () => {
+        store$.dispatch(
+          applyConfiguration({
+            ...store$.state.configuration,
+            defaultLocale: undefined,
+          })
+        );
         expect(getCurrentLocale(store$.state)).toMatchInlineSnapshot(`
           Object {
             "lang": "de_DE",
@@ -142,7 +162,7 @@ describe('Configuration Selectors', () => {
         ${'zh_CN'} | ${'zh_CN'}
         ${'nl_NL'} | ${'de_DE'}
       `('should choose $chosen when $requested is requested', ({ requested, chosen }) => {
-        store$.dispatch(applyConfiguration({ lang: requested }));
+        store$.dispatch(applyConfiguration({ lang: requested, defaultLocale: undefined }));
         expect(getCurrentLocale(store$.state)?.lang).toEqual(chosen);
       });
     });

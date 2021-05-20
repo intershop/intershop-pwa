@@ -34,6 +34,8 @@ export const getFeatures = createSelector(getConfigurationState, state => state.
 
 export const getTheme = createSelector(getConfigurationState, state => state.theme);
 
+const defaultLocale = createSelector(getConfigurationState, state => state.defaultLocale);
+
 /**
  * locales configured in environment.ts
  */
@@ -63,9 +65,13 @@ const internalRequestedLocale = createSelector(getConfigurationState, state => s
 export const getCurrentLocale = createSelector(
   getAvailableLocales,
   internalRequestedLocale,
+  defaultLocale,
   getServerConfigParameter<string>('general.defaultLocale'),
-  (available, requested, configuredDefault) =>
-    available?.find(l => l.lang === requested) || available?.find(l => l.lang === configuredDefault) || available?.[0]
+  (available, requested, internalDefaultLocale, configuredDefault) =>
+    available?.find(l => l.lang === requested) ||
+    available?.find(l => l.lang === configuredDefault) ||
+    available?.find(l => l.lang === internalDefaultLocale) ||
+    available?.[0]
 );
 
 export const getDeviceType = createSelector(getConfigurationState, state => state._deviceType);
