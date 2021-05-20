@@ -68,9 +68,9 @@ export const getCurrentLocale = createSelector(
   defaultLocale,
   getServerConfigParameter<string>('general.defaultLocale'),
   (available, requested, internalDefaultLocale, configuredDefault) =>
-    available?.find(l => l.lang === requested) ||
-    available?.find(l => l.lang === configuredDefault) ||
-    available?.find(l => l.lang === internalDefaultLocale) ||
+    available?.find(l => l.lang === requested) ??
+    available?.find(l => l.lang === configuredDefault) ??
+    available?.find(l => l.lang === internalDefaultLocale) ??
     available?.[0]
 );
 
