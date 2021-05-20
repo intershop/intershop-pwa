@@ -3,18 +3,17 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
-import { loadOrders } from 'ish-core/store/customer/orders';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { OrganizationGroup } from '../models/organization-group/organization-group.model';
 import {
+  assignGroup,
   getGroupDetails,
   getGroupsOfOrganization,
   getGroupsOfOrganizationCount,
   getSelectedGroupDetails,
   loadGroups,
-  selectGroup,
 } from '../store/group';
 
 // tslint:disable:member-ordering
@@ -36,9 +35,8 @@ export class OrganizationHierarchiesFacade {
     );
   }
 
-  selectGroup(id: string): void {
-    this.store.dispatch(selectGroup({ id }));
-    this.store.dispatch(loadOrders());
+  assignGroup(id: string): void {
+    this.store.dispatch(assignGroup({ id }));
   }
 
   getDetailsOfGroup$(id: string): Observable<OrganizationGroup> {

@@ -3,20 +3,17 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 
-import { Customer } from 'ish-core/models/customer/customer.model';
 import { getRestEndpoint } from 'ish-core/store/core/configuration';
-import { getLoggedInCustomer } from 'ish-core/store/customer/user/user.selectors';
 
-import { OrganizationGroup } from '../models/organization-group/organization-group.model';
-import { getSelectedGroupDetails } from '../store/group';
+import { BuyingContextState } from '../store/buying-context/buying-context.reducer';
+import { getBuyingContext } from '../store/buying-context/buying-context.selectors';
 
 import { TxSelectedGroupInterceptor } from './tx-selected-group.interceptor';
 
 describe('Tx Selected Group Interceptor', () => {
   let httpController: HttpTestingController;
   let http: HttpClient;
-  const selectedGroup: OrganizationGroup = { id: 'single', name: 'Single Name' };
-  const customer: Customer = { customerNo: 'TestCompany' };
+  const buyingContext: BuyingContextState = { bctx: 'Testgroup@TestCompany' };
   const BASE_URL = 'http://example.org/WFS/site/REST';
 
   beforeEach(() => {
@@ -28,8 +25,7 @@ describe('Tx Selected Group Interceptor', () => {
           initialState: { organizationHierarchies: {} },
           selectors: [
             { selector: getRestEndpoint, value: BASE_URL },
-            { selector: getLoggedInCustomer, value: customer },
-            { selector: getSelectedGroupDetails, value: selectedGroup },
+            { selector: getBuyingContext, value: buyingContext },
           ],
         }),
       ],
@@ -56,13 +52,7 @@ describe('Tx Selected Group Interceptor', () => {
     const requests = httpController.match({ method: 'get' });
     requests[0].flush('All good');
     expect(requests[0].request.url).toContain(
-      ';'.concat(
-        TxSelectedGroupInterceptor.matrixparam,
-        '=',
-        selectedGroup.id,
-        TxSelectedGroupInterceptor.seperator,
-        customer.customerNo
-      )
+      ';'.concat(TxSelectedGroupInterceptor.matrixparam, '=', buyingContext.bctx)
     );
   });
 
@@ -80,73 +70,5 @@ describe('Tx Selected Group Interceptor', () => {
     const requests = httpController.match({ method: 'get' });
     requests[0].flush('All good');
     expect(requests[0].request.url).toContain(';'.concat(TxSelectedGroupInterceptor.matrixparam, '=existing'));
-  });
-});
-
-describe('Tx Selected Group Interceptor', () => {
-  let httpController: HttpTestingController;
-  let http: HttpClient;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
-
-    httpController = TestBed.inject(HttpTestingController);
-    http = TestBed.inject(HttpClient);
-  });
-
-  afterEach(() => {
-    httpController.verify();
-  });
-
-  it('should include a BuyingGroupID in the url for a singular group', done => {
-    http.get('some').subscribe(
-      response => {
-        expect(response).toBeTruthy();
-      },
-      error => {
-        expect(error).toBeFalsy();
-      },
-      done
-    );
-
-    const request = httpController.expectOne('some');
-    request.flush('All good');
-    expect(request.request.headers.get('BuyingGroupID')).toBeFalsy();
-  });
-});
-
-describe('Tx Selected Group Interceptor', () => {
-  let httpController: HttpTestingController;
-  let http: HttpClient;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
-
-    httpController = TestBed.inject(HttpTestingController);
-    http = TestBed.inject(HttpClient);
-  });
-
-  afterEach(() => {
-    httpController.verify();
-  });
-
-  it('should NOT include a BuyingGroupID in the url if organizationHierarchies store is not yet created', done => {
-    http.get('some').subscribe(
-      response => {
-        expect(response).toBeTruthy();
-      },
-      error => {
-        expect(error).toBeFalsy();
-      },
-      done
-    );
-
-    const request = httpController.expectOne('some');
-    request.flush('All good');
-    expect(request.request.headers.get('BuyingGroupID')).toBeFalsy();
   });
 });

@@ -5,15 +5,18 @@ import { pick } from 'lodash-es';
 
 import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
 
+import { buyingContextReducer } from './buying-context/buying-context.reducer';
 import { GroupEffects } from './group/group.effects';
 import { groupReducer } from './group/group.reducer';
+import { OrderEffects } from './order/order.effects';
 import { OrganizationHierarchiesState } from './organization-hierarchies-store';
 
 const organizationHierarchiesReducers: ActionReducerMap<OrganizationHierarchiesState> = {
   group: groupReducer,
+  buyingContext: buyingContextReducer,
 };
 
-const organizationHierarchiesEffects = [GroupEffects];
+const organizationHierarchiesEffects = [GroupEffects, OrderEffects];
 
 const metaReducers = [resetOnLogoutMeta];
 

@@ -5,15 +5,13 @@ import { Observable, iif } from 'rxjs';
 import { concatMap, first, map, withLatestFrom } from 'rxjs/operators';
 
 import { getRestEndpoint } from 'ish-core/store/core/configuration';
-import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
-import { getSelectedGroupDetails } from '../store/group';
+import { getBuyingContext } from '../store/buying-context/buying-context.selectors';
 
 @Injectable()
 export class TxSelectedGroupInterceptor implements HttpInterceptor {
   constructor(private store: Store) {}
 
-  static seperator = '@';
   static matrixparam = 'bctx';
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -23,10 +21,10 @@ export class TxSelectedGroupInterceptor implements HttpInterceptor {
         iif(
           () => !!store.organizationHierarchies,
           this.store.pipe(
-            select(getSelectedGroupDetails),
-            withLatestFrom(this.store.pipe(select(getRestEndpoint)), this.store.pipe(select(getLoggedInCustomer))),
-            map(([group, baseurl, customer]) =>
-              group && !req?.url.includes(TxSelectedGroupInterceptor.matrixparam)
+            select(getBuyingContext),
+            withLatestFrom(this.store.pipe(select(getRestEndpoint))),
+            map(([buyingcontext, baseurl]) =>
+              buyingcontext.bctx && !req?.url.includes(TxSelectedGroupInterceptor.matrixparam)
                 ? req.clone({
                     url: req.url
                       .substring(0, baseurl.length)
@@ -34,9 +32,7 @@ export class TxSelectedGroupInterceptor implements HttpInterceptor {
                         ';',
                         TxSelectedGroupInterceptor.matrixparam,
                         '=',
-                        group.id,
-                        TxSelectedGroupInterceptor.seperator,
-                        customer.customerNo,
+                        buyingcontext.bctx,
                         req.url.substring(baseurl.length)
                       ),
                   })

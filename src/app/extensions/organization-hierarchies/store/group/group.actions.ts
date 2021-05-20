@@ -13,4 +13,4 @@ export const loadGroupsSuccess = createAction(
   payload<{ groups: OrganizationGroup[] }>()
 );
 
-export const selectGroup = createAction('[Organizational Groups API] Select Group', payload<{ id: string }>());
+export const assignGroup = createAction('[Organizational Groups API] Assign Group', payload<{ id: string }>());
