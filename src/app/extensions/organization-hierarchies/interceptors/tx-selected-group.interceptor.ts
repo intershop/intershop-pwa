@@ -6,7 +6,7 @@ import { concatMap, first, map, withLatestFrom } from 'rxjs/operators';
 
 import { getRestEndpoint } from 'ish-core/store/core/configuration';
 
-import { getBuyingContext } from '../store/buying-context/buying-context.selectors';
+import { getBuyingContext } from '../store/buying-context';
 
 @Injectable()
 export class TxSelectedGroupInterceptor implements HttpInterceptor {

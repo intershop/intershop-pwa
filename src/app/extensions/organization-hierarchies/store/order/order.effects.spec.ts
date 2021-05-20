@@ -7,7 +7,6 @@ import { anyNumber, anyString, instance, mock, verify, when } from 'ts-mockito';
 
 import { Order } from 'ish-core/models/order/order.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loadOrdersFail, loadOrdersSuccess } from 'ish-core/store/customer/orders';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
@@ -33,11 +32,7 @@ describe('Order Effects', () => {
     when(organizationHierarchiesServiceMock.getOrders(anyNumber(), anyString())).thenReturn(of(orders));
 
     TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(),
-        CustomerStoreModule.forTesting('user'),
-        OrganizationHierarchiesStoreModule.forTesting('group', 'buyingContext'),
-      ],
+      imports: [CoreStoreModule.forTesting(), OrganizationHierarchiesStoreModule.forTesting('buyingContext')],
       providers: [
         OrderEffects,
         provideMockActions(() => actions$),

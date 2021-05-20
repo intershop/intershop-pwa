@@ -5,8 +5,8 @@ import { provideMockStore } from '@ngrx/store/testing';
 
 import { getRestEndpoint } from 'ish-core/store/core/configuration';
 
+import { getBuyingContext } from '../store/buying-context';
 import { BuyingContextState } from '../store/buying-context/buying-context.reducer';
-import { getBuyingContext } from '../store/buying-context/buying-context.selectors';
 
 import { TxSelectedGroupInterceptor } from './tx-selected-group.interceptor';
 
