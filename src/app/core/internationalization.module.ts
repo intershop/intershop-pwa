@@ -17,7 +17,7 @@ function appendSlash(): OperatorFunction<string, string> {
 class ICMTranslateLoader implements TranslateLoader {
   constructor(private httpClient: HttpClient, private stateProperties: StatePropertiesService) {}
 
-  getTranslation(lang: string): Observable<any> {
+  getTranslation(lang: string) {
     const local$ = this.httpClient
       .get(`assets/i18n/${lang}.json`)
       .pipe(
@@ -57,8 +57,8 @@ class ICMTranslateLoader implements TranslateLoader {
     );
   }
 
-  filterAndTransformKeys(translations: Record<string, string>): Record<string, string | Record<string, Object>> {
-    const filtered: Record<string, string | Record<string, Object>> = {};
+  filterAndTransformKeys(translations: Record<string, string>): Record<string, string | Record<string, string>> {
+    const filtered: Record<string, string | Record<string, string>> = {};
     for (const key in translations) {
       if (key.startsWith('pwa-')) {
         const value = translations[key];

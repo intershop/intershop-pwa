@@ -23,8 +23,8 @@ import { DefaultErrorHandler } from './utils/default-error-handler';
     HttpClientModule,
     IdentityProviderModule,
     InternationalizationModule,
-    StateManagementModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: SERVICE_WORKER }),
+    StateManagementModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ICMErrorMapperInterceptor, multi: true },
