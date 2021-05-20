@@ -10,17 +10,14 @@ import { countriesReducer } from './countries/countries.reducer';
 import { GeneralState } from './general-store';
 import { RegionsEffects } from './regions/regions.effects';
 import { regionsReducer } from './regions/regions.reducer';
-import { ServerConfigEffects } from './server-config/server-config.effects';
-import { serverConfigReducer } from './server-config/server-config.reducer';
 
 const generalReducers: ActionReducerMap<GeneralState> = {
   countries: countriesReducer,
   regions: regionsReducer,
   contact: contactReducer,
-  serverConfig: serverConfigReducer,
 };
 
-const generalEffects = [ContactEffects, CountriesEffects, RegionsEffects, ServerConfigEffects];
+const generalEffects = [ContactEffects, CountriesEffects, RegionsEffects];
 
 @NgModule({
   imports: [EffectsModule.forFeature(generalEffects), StoreModule.forFeature('general', generalReducers)],

@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 
+import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import { getCustomerState } from 'ish-core/store/customer/customer-store';
-import { getServerConfigParameter } from 'ish-core/store/general/server-config';
 
 const getUserState = createSelector(getCustomerState, state => state.user);
 

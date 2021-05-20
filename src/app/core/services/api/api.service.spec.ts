@@ -525,7 +525,7 @@ describe('Api Service', () => {
       TestBed.configureTestingModule({
         // https://angular.io/guide/http#testing-http-requests
         imports: [
-          CoreStoreModule.forTesting(['configuration']),
+          CoreStoreModule.forTesting(['configuration', 'serverConfig']),
           CustomerStoreModule.forTesting('user'),
           HttpClientTestingModule,
         ],

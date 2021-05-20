@@ -1,8 +1,8 @@
 import { createSelector } from '@ngrx/store';
 
-import { getGeneralState } from 'ish-core/store/general/general-store';
+import { getCoreState } from 'ish-core/store/core/core-store';
 
-const getServerConfigState = createSelector(getGeneralState, state => state.serverConfig);
+const getServerConfigState = createSelector(getCoreState, state => state.serverConfig);
 
 const getServerConfig = createSelector(getServerConfigState, state => state._config);
 

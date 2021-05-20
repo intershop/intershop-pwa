@@ -12,8 +12,8 @@ import {
   BasketValidationScopeType,
 } from 'ish-core/models/basket-validation/basket-validation.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
+import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import { createOrder } from 'ish-core/store/customer/orders';
-import { getServerConfigParameter } from 'ish-core/store/general/server-config';
 import { loadProduct } from 'ish-core/store/shopping/products';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
