@@ -18,7 +18,8 @@ import { LazyHierarchySwitchComponent } from './lazy-hierarchy-switch/lazy-hiera
       provide: LAZY_FEATURE_MODULE,
       useValue: {
         feature: 'organizationHierarchies',
-        location: import('../store/organization-hierarchies-store.module'),
+        location: () =>
+          import('../store/organization-hierarchies-store.module').then(m => m.OrganizationHierarchiesStoreModule),
       },
       multi: true,
     },
