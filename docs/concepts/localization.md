@@ -269,6 +269,16 @@ For this purpose a [Gradle plugin](https://gitlab.intershop.de/ISPWA/ngx-transla
 
 In the current state of the Intershop Progressive Web App, the converted localization properties from _a_responsive_ (without _app_sf_responsive_b2b_ and _app_sf_responsive_costcenter_) were added and should be used within the HTML templates.
 
+## Dynamic Translation Adjustments
+
+In case you want to change specific translations without needing to redeploy the PWA, it is possible to override the local `.json` files via the ICM localization management tools.
+You can generate `.xliff` files with the `npm run xliff` command.
+These can be uploaded and specific translations changed.
+
+:warning: The generated xliff files prefix translation keys with `pwa-`.
+This is to enable easy filtering.
+The prefixes will be removed when the translations are loaded into the PWA.
+
 ## Localization File Clean Up Process
 
 Localization files require constant maintenance to keep them up to date.
