@@ -1,12 +1,13 @@
+import { PLATFORM_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { BrowserTransferStateModule } from '@angular/platform-browser';
 import { ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Observable, Subject, of } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { anything, capture, instance, mock, verify } from 'ts-mockito';
+import { mock } from 'ts-mockito';
 
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 
@@ -16,23 +17,22 @@ import { ConfigurationEffects } from './configuration.effects';
 describe('Configuration Effects', () => {
   let actions$: Observable<Action>;
   let effects: ConfigurationEffects;
-  let translateServiceMock: TranslateService;
+  let translateService: TranslateService;
 
   beforeEach(() => {
-    translateServiceMock = mock(TranslateService);
+    translateService = mock(TranslateService);
 
     TestBed.configureTestingModule({
       imports: [
         BrowserTransferStateModule,
         CoreStoreModule.forTesting(['configuration', 'serverConfig'], [ConfigurationEffects]),
+        TranslateModule.forRoot(),
       ],
-      providers: [
-        { provide: TranslateService, useFactory: () => instance(translateServiceMock) },
-        provideMockActions(() => actions$),
-      ],
+      providers: [{ provide: PLATFORM_ID, useValue: 'server' }, provideMockActions(() => actions$)],
     });
 
     effects = TestBed.inject(ConfigurationEffects);
+    translateService = TestBed.inject(TranslateService);
   });
 
   describe('setInitialRestEndpoint$', () => {
@@ -59,11 +59,10 @@ describe('Configuration Effects', () => {
   describe('setLocale$', () => {
     it('should call TranslateService when locale was initialized', done => {
       setTimeout(() => {
-        verify(translateServiceMock.use(anything())).once();
-        const params = capture(translateServiceMock.use).last();
-        expect(params[0]).toEqual('en_US');
+        expect(translateService.currentLang).toMatchInlineSnapshot(`"en_US"`);
+        expect(translateService.defaultLang).toMatchInlineSnapshot(`"en_US"`);
         done();
-      }, 10);
+      }, 1000);
     });
   });
 });
