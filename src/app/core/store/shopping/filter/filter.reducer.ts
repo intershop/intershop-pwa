@@ -14,7 +14,7 @@ export interface FilterState {
   availableFilter: FilterNavigation;
 }
 
-export const initialState: FilterState = {
+const initialState: FilterState = {
   availableFilter: undefined,
 };
 

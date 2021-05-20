@@ -43,10 +43,10 @@ describe('Viewcontexts Selectors', () => {
 
     describe('loadViewContextEntrypointSuccess', () => {
       const successAction = loadViewContextEntrypointSuccess({
-        entrypoint: { id: 'test' } as ContentPageletEntryPoint,
+        entrypoint: { id: 'the_viewcontext' } as ContentPageletEntryPoint,
         pagelets: [],
-        viewContextId: 'test',
-        callParameters: {},
+        viewContextId: 'the_viewcontext',
+        callParameters: { Product: 'TEST', Category: 'Hello@World', Extra: 'foo', Alternative: 'bar' },
       });
 
       beforeEach(() => {
@@ -69,6 +69,30 @@ describe('Viewcontexts Selectors', () => {
       it('should not have entities when reducing error', () => {
         expect(getViewContextEntities(store$.state)).toBeEmpty();
       });
+    });
+
+    describe('entity ids', () => {
+      it.each([
+        [
+          'the_viewcontext@@Alternative-bar@@Category-Hello@World@@Extra-foo@@Product-TEST',
+          { Product: 'TEST', Category: 'Hello@World', Extra: 'foo', Alternative: 'bar' },
+        ],
+        ['the_viewcontext', {}],
+        ['the_viewcontext', undefined],
+      ])(
+        `should get '%s' as id when view context entrypoint with '%s' callParameters is loaded`,
+        (result, callParameters) => {
+          store$.dispatch(
+            loadViewContextEntrypointSuccess({
+              entrypoint: { id: 'the_viewcontext' } as ContentPageletEntryPoint,
+              pagelets: [],
+              viewContextId: 'the_viewcontext',
+              callParameters,
+            })
+          );
+          expect(Object.keys(getViewContextEntities(store$.state))).toEqual([result]);
+        }
+      );
     });
   });
 });

@@ -14,7 +14,7 @@ export interface RegionsState extends EntityState<Region> {
   loading: boolean;
 }
 
-export const initialState: RegionsState = regionAdapter.getInitialState({
+const initialState: RegionsState = regionAdapter.getInitialState({
   loading: false,
 });
 

@@ -142,6 +142,32 @@ describe('Basket Selectors', () => {
       expect(currentBasket.lineItems[0].validationError.code).toEqual('basket.validation.4711');
     });
 
+    it('should set new basket if validation is valid', () => {
+      const basket = { id: 'test', lineItems: [{ id: 'test', productSKU: 'sku' } as LineItem] } as Basket;
+
+      store$.dispatch(
+        loadBasketSuccess({
+          basket,
+        })
+      );
+
+      store$.dispatch(
+        continueCheckoutSuccess({
+          targetRoute: '/checkout/address',
+          basketValidation: {
+            basket: { ...basket, lineItems: [...basket.lineItems, { id: 'test-2', productSKU: 'sku-2' }] },
+            results: {
+              adjusted: true,
+              valid: true,
+            },
+          } as BasketValidation,
+        })
+      );
+
+      const currentBasket = getCurrentBasket(store$.state);
+      expect(currentBasket.lineItems).toEqual([...basket.lineItems, { id: 'test-2', productSKU: 'sku-2' }]);
+    });
+
     it('should set loading to false and set error state', () => {
       store$.dispatch(loadBasketFail({ error: makeHttpError({ message: 'invalid' }) }));
       expect(getBasketLoading(store$.state)).toBeFalse();

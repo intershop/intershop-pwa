@@ -9,7 +9,7 @@ export interface ErrorState {
   type: string;
 }
 
-export const initialState: ErrorState = {
+const initialState: ErrorState = {
   current: undefined,
   type: undefined,
 };

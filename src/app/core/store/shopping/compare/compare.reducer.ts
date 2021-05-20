@@ -6,7 +6,7 @@ export interface CompareState {
   products: string[];
 }
 
-export const initialState: CompareState = {
+const initialState: CompareState = {
   products: [],
 };
 
