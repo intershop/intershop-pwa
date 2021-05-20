@@ -74,6 +74,8 @@ export interface Environment {
   // default device type used for initial page responses
   defaultDeviceType: DeviceType;
 
+  defaultLocale?: Locale;
+
   // configuration of the available locales - hard coded for now
   locales: Locale[];
 
@@ -117,6 +119,13 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
   productListingItemsPerPage: 9,
   defaultProductListingViewType: 'grid',
   defaultDeviceType: 'mobile',
+  defaultLocale: {
+    lang: 'en_US',
+    currency: 'USD',
+    value: 'en',
+    displayName: 'English',
+    displayLong: 'English (United States)',
+  },
   locales: [
     { lang: 'en_US', currency: 'USD', value: 'en', displayName: 'English', displayLong: 'English (United States)' },
     { lang: 'de_DE', currency: 'EUR', value: 'de', displayName: 'German', displayLong: 'German (Germany)' },
