@@ -2,21 +2,49 @@ import { registerLocaleData } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
-import { Inject, LOCALE_ID, NgModule } from '@angular/core';
+import { Inject, Injectable, LOCALE_ID, NgModule, PLATFORM_ID } from '@angular/core';
+import { TransferState } from '@angular/platform-browser';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Observable, OperatorFunction, combineLatest } from 'rxjs';
+import { Observable, OperatorFunction, combineLatest, of } from 'rxjs';
 import { catchError, first, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
+import { SSR_LOCALE, SSR_TRANSLATIONS } from './configurations/state-keys';
 import { StatePropertiesService } from './utils/state-transfer/state-properties.service';
 
-function appendSlash(): OperatorFunction<string, string> {
+export type Translations = Record<string, string | Record<string, string>>;
+
+export function appendSlash(): OperatorFunction<string, string> {
   return (source$: Observable<string>) => source$.pipe(map(url => `${url}/`));
 }
 
+export function filterAndTransformKeys(translations: Record<string, string>): Translations {
+  const filtered: Translations = {};
+  for (const key in translations) {
+    if (key.startsWith('pwa-')) {
+      const value = translations[key];
+      try {
+        const parsed = JSON.parse(value);
+        filtered[key.replace('pwa-', '')] = parsed;
+      } catch {
+        filtered[key.replace('pwa-', '')] = value;
+      }
+    }
+  }
+  return filtered;
+}
+
+@Injectable()
 class ICMTranslateLoader implements TranslateLoader {
-  constructor(private httpClient: HttpClient, private stateProperties: StatePropertiesService) {}
+  constructor(
+    private httpClient: HttpClient,
+    private stateProperties: StatePropertiesService,
+    private transferState: TransferState
+  ) {}
 
   getTranslation(lang: string) {
+    if (this.transferState.hasKey(SSR_TRANSLATIONS)) {
+      return of(this.transferState.get(SSR_TRANSLATIONS, undefined));
+    }
     const local$ = this.httpClient
       .get(`assets/i18n/${lang}.json`)
       .pipe(
@@ -34,7 +62,7 @@ class ICMTranslateLoader implements TranslateLoader {
           },
         })
       ),
-      map(this.filterAndTransformKeys),
+      map(filterAndTransformKeys),
       withLatestFrom(local$),
       map(([translations, localTranslations]) => ({
         ...localTranslations,
@@ -55,26 +83,14 @@ class ICMTranslateLoader implements TranslateLoader {
       map(arr => arr.join(''))
     );
   }
-
-  filterAndTransformKeys(translations: Record<string, string>): Record<string, string | Record<string, string>> {
-    const filtered: Record<string, string | Record<string, string>> = {};
-    for (const key in translations) {
-      if (key.startsWith('pwa-')) {
-        const value = translations[key];
-        try {
-          const parsed = JSON.parse(value);
-          filtered[key.replace('pwa-', '')] = parsed;
-        } catch {
-          filtered[key.replace('pwa-', '')] = value;
-        }
-      }
-    }
-    return filtered;
-  }
 }
 
-export function translateFactory(httpClient: HttpClient, stateProperties: StatePropertiesService) {
-  return new ICMTranslateLoader(httpClient, stateProperties);
+export function translateFactory(
+  httpClient: HttpClient,
+  stateProperties: StatePropertiesService,
+  transferState: TransferState
+) {
+  return new ICMTranslateLoader(httpClient, stateProperties, transferState);
 }
 
 @NgModule({
@@ -83,16 +99,26 @@ export function translateFactory(httpClient: HttpClient, stateProperties: StateP
       loader: {
         provide: TranslateLoader,
         useFactory: translateFactory,
-        deps: [HttpClient, StatePropertiesService],
+        deps: [HttpClient, StatePropertiesService, TransferState],
       },
     }),
   ],
 })
 export class InternationalizationModule {
-  constructor(@Inject(LOCALE_ID) lang: string, translateService: TranslateService) {
+  constructor(
+    @Inject(LOCALE_ID) angularDefaultLocale: string,
+    translateService: TranslateService,
+    transferState: TransferState,
+    @Inject(PLATFORM_ID) private platformId: string
+  ) {
     registerLocaleData(localeDe);
     registerLocaleData(localeFr);
 
-    translateService.setDefaultLang(lang.replace(/\-/, '_'));
+    let defaultLang = angularDefaultLocale.replace(/\-/, '_');
+    if (transferState.hasKey(SSR_LOCALE)) {
+      defaultLang = transferState.get(SSR_LOCALE, defaultLang);
+    }
+    translateService.setDefaultLang(defaultLang);
+    translateService.use(defaultLang);
   }
 }
