@@ -35,7 +35,11 @@ describe('Configuration Integration', () => {
       declarations: [DummyComponent],
       imports: [
         BrowserTransferStateModule,
-        CoreStoreModule.forTesting(['router', 'configuration'], [ConfigurationEffects], [configurationMeta]),
+        CoreStoreModule.forTesting(
+          ['router', 'configuration', 'serverConfig'],
+          [ConfigurationEffects],
+          [configurationMeta]
+        ),
         RouterTestingModule.withRoutes([
           { path: 'home', component: DummyComponent, canActivate: [ConfigurationGuard] },
         ]),

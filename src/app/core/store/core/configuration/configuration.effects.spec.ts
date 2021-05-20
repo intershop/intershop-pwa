@@ -22,7 +22,10 @@ describe('Configuration Effects', () => {
     translateServiceMock = mock(TranslateService);
 
     TestBed.configureTestingModule({
-      imports: [BrowserTransferStateModule, CoreStoreModule.forTesting(['configuration'], [ConfigurationEffects])],
+      imports: [
+        BrowserTransferStateModule,
+        CoreStoreModule.forTesting(['configuration', 'serverConfig'], [ConfigurationEffects]),
+      ],
       providers: [
         { provide: TranslateService, useFactory: () => instance(translateServiceMock) },
         provideMockActions(() => actions$),

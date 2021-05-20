@@ -8,6 +8,7 @@ import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { selectRouteData } from 'ish-core/store/core/router';
+import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import { getAllAddresses } from 'ish-core/store/customer/addresses';
 import {
   addPromotionCodeToBasket,
@@ -47,7 +48,6 @@ import {
 } from 'ish-core/store/customer/basket';
 import { getOrdersError, getSelectedOrder } from 'ish-core/store/customer/orders';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
-import { getServerConfigParameter } from 'ish-core/store/general/server-config';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 // tslint:disable:member-ordering

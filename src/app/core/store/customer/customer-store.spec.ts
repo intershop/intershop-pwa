@@ -31,7 +31,6 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUser } from 'ish-core/store/customer/user';
 import { UserEffects } from 'ish-core/store/customer/user/user.effects';
-import { GeneralStoreModule } from 'ish-core/store/general/general-store.module';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
@@ -157,9 +156,8 @@ describe('Customer Store', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        CoreStoreModule.forTesting(['configuration'], [UserEffects]),
+        CoreStoreModule.forTesting(['configuration', 'serverConfig'], [UserEffects]),
         CustomerStoreModule,
-        GeneralStoreModule.forTesting('serverConfig'),
         RouterTestingModule.withRoutes([
           {
             path: 'account',
