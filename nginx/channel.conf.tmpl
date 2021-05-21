@@ -100,11 +100,14 @@ server {
         {{- tmpl.Exec "LOCATION_TEMPLATE" . }}
     }
     {{ end }}
+  {{- if (has ($mapping | jsonpath "$..baseHref") "/") }}
+  {{- else }}
     location / {
         {{ $first := index $mapping 0 -}}
         rewrite ^/$ "$scheme://$http_host{{ $first.baseHref }}/home" permanent;
         rewrite ^(.*)$ "$scheme://$http_host{{ $first.baseHref }}$request_uri" permanent;
     }
+  {{- end -}}
   {{- end }}
 
     # redirect server error pages to the static page /50x.html
