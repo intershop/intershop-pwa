@@ -8,6 +8,8 @@ import { PaymentMapper } from 'ish-core/models/payment/payment.mapper';
 import { PriceItemMapper } from 'ish-core/models/price-item/price-item.mapper';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
 
+import { BuyingContextMapper } from '../../../extensions/organization-hierarchies/models/buying-context/buying-context.mapper';
+
 import { Basket } from './basket.model';
 
 export class BasketMapper {
@@ -25,6 +27,7 @@ export class BasketMapper {
       id: data.id,
       bucketId: data.buckets && data.buckets.length === 1 && data.buckets[0],
       purchaseCurrency: data.purchaseCurrency,
+      buyingContext: data.buyingContext,
       dynamicMessages: data.discounts ? data.discounts.dynamicMessages : undefined,
       invoiceToAddress:
         included && included.invoiceToAddress && data.invoiceToAddress
@@ -47,6 +50,10 @@ export class BasketMapper {
             )
           : [],
       totalProductQuantity: data.totalProductQuantity,
+      buyingContextInfo:
+        included && included.buyingContext && data.buyingContext
+          ? BuyingContextMapper.fromData(included.buyingContext[data.buyingContext])
+          : undefined,
       payment:
         included?.payments && data.payments?.length && included.payments[data.payments[0]]
           ? PaymentMapper.fromIncludeData(

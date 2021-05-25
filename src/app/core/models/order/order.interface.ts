@@ -9,6 +9,8 @@ import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-me
 import { PaymentData } from 'ish-core/models/payment/payment.interface';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 
+import { BuyingContext } from '../../../extensions/organization-hierarchies/models/buying-context/buying-context.model';
+
 export interface OrderBaseData extends BasketBaseData {
   documentNumber: string;
   creationDate: number;
@@ -39,6 +41,7 @@ export interface OrderData {
     payments?: { [id: string]: PaymentData };
     payments_paymentMethod?: { [id: string]: PaymentMethodBaseData };
     payments_paymentInstrument?: { [id: string]: PaymentInstrument };
+    buyingContext?: { [id: string]: BuyingContext };
   };
   infos?: BasketInfo[];
 }

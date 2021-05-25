@@ -9,6 +9,7 @@ import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.
 import { TxSelectedGroupInterceptor } from '../interceptors/tx-selected-group.interceptor';
 
 import { LazyHierarchyGroupNameComponent } from './lazy-hierarchy-group-name/lazy-hierarchy-group-name.component';
+import { LazyHierarchyPathComponent } from './lazy-hierarchy-path/lazy-hierarchy-path.component';
 import { LazyHierarchySwitchComponent } from './lazy-hierarchy-switch/lazy-hierarchy-switch.component';
 
 @NgModule({
@@ -26,7 +27,7 @@ import { LazyHierarchySwitchComponent } from './lazy-hierarchy-switch/lazy-hiera
     { provide: HTTP_INTERCEPTORS, useClass: TxSelectedGroupInterceptor, multi: true },
   ],
 
-  declarations: [LazyHierarchyGroupNameComponent, LazyHierarchySwitchComponent],
-  exports: [LazyHierarchyGroupNameComponent, LazyHierarchySwitchComponent],
+  declarations: [LazyHierarchyGroupNameComponent, LazyHierarchyPathComponent, LazyHierarchySwitchComponent],
+  exports: [LazyHierarchyGroupNameComponent, LazyHierarchyPathComponent, LazyHierarchySwitchComponent],
 })
 export class OrganizationHierarchiesExportsModule {}

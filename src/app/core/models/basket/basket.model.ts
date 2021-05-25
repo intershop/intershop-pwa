@@ -8,6 +8,8 @@ import { LineItem, LineItemView } from 'ish-core/models/line-item/line-item.mode
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 
+import { BuyingContext } from '../../../extensions/organization-hierarchies/models/buying-context/buying-context.model';
+
 export interface AbstractBasket<T> {
   id: string;
   purchaseCurrency?: string;
@@ -17,6 +19,7 @@ export interface AbstractBasket<T> {
   commonShippingMethod?: ShippingMethod;
   customerNo?: string;
   buyingContext?: string;
+  buyingContextInfo?: BuyingContext;
   email?: string;
   lineItems?: T[];
   payment?: Payment;

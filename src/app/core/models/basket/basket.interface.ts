@@ -11,6 +11,8 @@ import { PaymentData } from 'ish-core/models/payment/payment.interface';
 import { PriceItemData } from 'ish-core/models/price-item/price-item.interface';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 
+import { BuyingContext } from '../../../extensions/organization-hierarchies/models/buying-context/buying-context.model';
+
 export interface BasketBaseData {
   id: string;
   purchaseCurrency?: string;
@@ -46,6 +48,7 @@ export interface BasketBaseData {
   };
   approval?: BasketApproval;
   attributes?: Attribute[];
+  buyingContextInfo?: BuyingContext;
 }
 
 export interface BasketData {
@@ -60,6 +63,7 @@ export interface BasketData {
     payments?: { [id: string]: PaymentData };
     payments_paymentMethod?: { [id: string]: PaymentMethodBaseData };
     payments_paymentInstrument?: { [id: string]: PaymentInstrument };
+    buyingContext?: { [id: string]: BuyingContext };
   };
   infos?: BasketInfo[];
 }

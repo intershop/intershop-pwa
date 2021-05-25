@@ -8,6 +8,7 @@ import {
   NgbDropdownModule,
   NgbModalModule,
   NgbPopoverModule,
+  NgbTooltipModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { DeferLoadModule } from '@trademe/ng-defer-load';
@@ -150,6 +151,7 @@ const importExportModules = [
   NgbDropdownModule,
   NgbModalModule,
   NgbPopoverModule,
+  NgbTooltipModule,
   OrderTemplatesExportsModule,
   OrganizationHierarchiesExportsModule,
   PipesModule,

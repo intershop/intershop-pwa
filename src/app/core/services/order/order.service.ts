@@ -19,7 +19,8 @@ type OrderIncludeType =
   | 'lineItems'
   | 'payments'
   | 'payments_paymentMethod'
-  | 'payments_paymentInstrument';
+  | 'payments_paymentInstrument'
+  | 'buyingContext';
 
 /**
  * The Order Service handles the interaction with the REST API concerning orders.
@@ -43,6 +44,7 @@ export class OrderService {
     'payments',
     'payments_paymentMethod',
     'payments_paymentInstrument',
+    'buyingContext',
   ];
 
   /**
@@ -183,7 +185,7 @@ export class OrderService {
    * Updates a payment for an order. Used to set redirect query parameters and status after redirect.
    * If cancel/failure is sent back as redirect status, the order doesn't exist any more.
    * @param orderId      The (uuid) of the order.
-     @param queryParams  The payment redirect information (parameters and status).
+   @param queryParams  The payment redirect information (parameters and status).
    * @returns            The orderId
    */
   updateOrderPayment(orderId: string, queryParams: { [key: string]: string }): Observable<string> {

@@ -12,6 +12,7 @@ describe('Order Mapper', () => {
     status: 'New',
     statusCode: 'NEW',
     id: 'order_1234',
+    buyingContext: 'groupIdOrganizationId',
     invoiceToAddress: 'urn_invoiceToAddress_123',
     commonShipToAddress: 'urn_commonShipToAddress_123',
     commonShippingMethod: 'shipping_method_123',
@@ -133,6 +134,21 @@ describe('Order Mapper', () => {
           disableMessages: false,
         },
       },
+      buyingContextInfo: {
+        groupIdOrganizationId: {
+          group: {
+            id: '1',
+            name: 'Bio Tech Engineering Jena',
+          },
+          organizationId: 'BioTech',
+          groupPath: [
+            { id: 'Eng_Jena', name: 'BioTech_Eng_Jena' },
+            { id: 'Jena', name: 'BioTech_Jena' },
+            { id: 'Root', name: 'BioTech_Root' },
+            { id: 'Emea', name: 'BioTech_Emea' },
+          ],
+        },
+      },
     },
     infos: [
       {
@@ -151,7 +167,7 @@ describe('Order Mapper', () => {
       expect(order.documentNo).toEqual(orderBaseData.documentNumber);
       expect(order.status).toEqual(orderBaseData.status);
       expect(order.statusCode).toEqual(orderBaseData.statusCode);
-
+      expect(order.buyingContext).toEqual(orderBaseData.buyingContext);
       expect(order.invoiceToAddress.urn).toBe('urn_invoiceToAddress_123');
       expect(order.commonShipToAddress.urn).toBe('urn_commonShipToAddress_123');
       expect(order.commonShippingMethod.id).toBe('shipping_method_123');

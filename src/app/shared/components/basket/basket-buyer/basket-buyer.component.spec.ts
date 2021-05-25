@@ -12,7 +12,7 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
-import { LazyHierarchyGroupNameComponent } from '../../../../extensions/organization-hierarchies/exports/lazy-hierarchy-group-name/lazy-hierarchy-group-name.component';
+import { LazyHierarchyPathComponent } from '../../../../extensions/organization-hierarchies/exports/lazy-hierarchy-path/lazy-hierarchy-path.component';
 
 import { BasketBuyerComponent } from './basket-buyer.component';
 
@@ -31,6 +31,7 @@ describe('Basket Buyer Component', () => {
         BasketBuyerComponent,
  		MockComponent(FaIconComponent)
         MockComponent(LazyHierarchyGroupNameComponent),
+        MockComponent(LazyHierarchyPathComponent),
         MockDirective(FeatureToggleDirective),
       ],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],

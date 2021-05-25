@@ -10,6 +10,8 @@ import { PriceData } from 'ish-core/models/price/price.interface';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 import { User } from 'ish-core/models/user/user.model';
 
+import { BuyingContext } from '../../../../../../src/app/extensions/organization-hierarchies/models/buying-context/buying-context.model';
+
 import { RequisitionApproval, RequisitionUserBudget } from './requisition.model';
 
 export interface RequisitionBaseData extends BasketBaseData {
@@ -41,6 +43,7 @@ export interface RequisitionData {
     payments?: { [id: string]: PaymentData };
     payments_paymentMethod?: { [id: string]: PaymentMethodBaseData };
     payments_paymentInstrument?: { [id: string]: PaymentInstrument };
+    buyingContext?: { [id: string]: BuyingContext };
   };
   infos?: BasketInfo[];
 }

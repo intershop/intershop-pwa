@@ -5,6 +5,8 @@ import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
 import { PaymentMapper } from 'ish-core/models/payment/payment.mapper';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
 
+import { BuyingContextMapper } from '../../../extensions/organization-hierarchies/models/buying-context/buying-context.mapper';
+
 import { OrderData } from './order.interface';
 import { Order } from './order.model';
 
@@ -59,6 +61,10 @@ export class OrderMapper {
             ? ShippingMethodMapper.fromData(included.commonShippingMethod[data.commonShippingMethod])
             : undefined,
         customerNo: data.customer,
+        buyingContextInfo:
+          included && included.buyingContext && data.buyingContext
+            ? BuyingContextMapper.fromData(included.buyingContext[data.buyingContext])
+            : undefined,
         email: data.user,
         lineItems:
           included && included.lineItems && data.lineItems && data.lineItems.length
