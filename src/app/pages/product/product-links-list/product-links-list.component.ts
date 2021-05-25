@@ -1,6 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { Observable, combineLatest, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
+import { ProductCompletenessLevel } from 'ish-core/models/product/product.helper';
 
 /**
  * The Product Link List Component
@@ -16,7 +20,7 @@ import { ProductLinks } from 'ish-core/models/product-links/product-links.model'
   templateUrl: './product-links-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductLinksListComponent {
+export class ProductLinksListComponent implements OnChanges {
   /**
    * list of products which are assigned to the specific product link type
    */
@@ -25,4 +29,20 @@ export class ProductLinksListComponent {
    * title that should displayed for the specific product link type
    */
   @Input() productLinkTitle: string;
+  /**
+   * if true only in-stock products are displayed
+   */
+  @Input() filterInStock = false;
+
+  productSKUs$: Observable<string[]>;
+
+  constructor(private shoppingFacade: ShoppingFacade) {}
+
+  ngOnChanges() {
+    this.productSKUs$ = this.filterInStock
+      ? combineLatest(
+          this.links.products.map(sku => this.shoppingFacade.product$(sku, ProductCompletenessLevel.List))
+        ).pipe(map(products => products.filter(p => p.available).map(p => p.sku)))
+      : of(this.links.products);
+  }
 }

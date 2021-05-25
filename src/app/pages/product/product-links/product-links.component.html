@@ -2,6 +2,7 @@
   <ng-container *ngIf="links.upselling?.products?.length">
     <ish-product-links-list
       [links]="links.upselling"
+      [filterInStock]="true"
       [productLinkTitle]="'product.product_links.upselling.title' | translate"
     ></ish-product-links-list>
   </ng-container>

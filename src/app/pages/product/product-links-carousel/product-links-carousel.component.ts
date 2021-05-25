@@ -36,7 +36,7 @@ export class ProductLinksCarouselComponent implements OnChanges {
   @Input() productLinkTitle: string;
 
   /**
-   * configuration to filter products which are not inStock
+   * if true only in-stock products are displayed
    */
   @Input() filterInStock = false;
 
