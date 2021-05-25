@@ -265,15 +265,22 @@ showModalDialog(dialog) {
 ## Localization Files Generation
 
 The idea is to use the existing localization properties files of the current Responsive Starter Store cartridges (or the localization files of a project) and convert them into the proper JSON files that can be used by ngx-translate.
-For this purpose a [Gradle plugin](https://gitlab.intershop.de/ISPWA/ngx-translate-plugin) was implemented that can handle this conversion process.
+For this purpose a [Standalone Java application](https://gitlab.intershop.de/ISPWA/ngx-translate-plugin) was implemented that can handle this conversion process.
 
 In the current state of the Intershop Progressive Web App, the converted localization properties from _a_responsive_ (without _app_sf_responsive_b2b_ and _app_sf_responsive_costcenter_) were added and should be used within the HTML templates.
 
-## Dynamic Translation Adjustments
+## ICM localization management
 
-In case you want to change specific translations without needing to redeploy the PWA, it is possible to override the local `.json` files via the ICM localization management tools.
-You can generate `.xliff` files with the `npm run xliff` command.
-These can be uploaded and specific translations changed.
+In case you want to change translation values without the necessity to redeploy the PWA, it is possible to override the local `.json` files via ICM localization backoffice page.
+In order to do that you need to generate `.xliff` files and upload them into ICM for further import processing.
+Here is how:
+
+1. Command `npm run xliff` converts all localization files into separate `.xliff` files. The result is placed under `src/assets/xliff`.
+2. Upload and import each `.xliff` file to ICM. Please mind below warning to select the correct application type and target locale.
+3. Refer to "Localization Management" of ICM backoffice online help for further questions.
+
+:warning: Make sure to select the correct application type for which you are to import generated xliff data.
+This has to fit to your PWA environment.
 
 :warning: The generated xliff files prefix translation keys with `pwa-`.
 This is to enable easy filtering.
