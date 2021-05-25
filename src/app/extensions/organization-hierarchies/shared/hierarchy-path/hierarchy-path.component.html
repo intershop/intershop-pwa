@@ -1,0 +1,19 @@
+<div *ngIf="object">
+  <div>
+    <span *ngIf="object.buyingContextInfo.groupPath; let path">
+      <span *ngFor="let group of path; let i = index">
+        <span *ngIf="i == 1 || i == 2"> &#124; </span>
+        <span *ngIf="i == 0 || path.length - 1 == i"> {{ group.groupName }} </span>
+        <span *ngIf="path.length > 2 && i === 1" class="text-primary" [ngbTooltip]="tipContent"> ... </span>
+      </span>
+    </span>
+  </div>
+  <ng-template #tipContent>
+    <span *ngIf="object.buyingContextInfo.groupPath; let path">
+      <span *ngFor="let group of path; let i = index">
+        <span *ngIf="i > 0 && path.length > 3"> &#124; </span>
+        <span *ngIf="i < path.length - 1 && i != 0"> {{ group.groupName }} </span>
+      </span>
+    </span>
+  </ng-template>
+</div>
