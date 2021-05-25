@@ -3,6 +3,7 @@ import { Injector, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { TreeviewModule } from 'ngx-treeview';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { DirectivesModule } from 'ish-core/directives.module';
@@ -56,6 +57,7 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     SeoExportsModule,
     TrackingExportsModule,
     TranslateModule,
+    TreeviewModule.forRoot(),
     WishlistsExportsModule,
   ],
   declarations: [
