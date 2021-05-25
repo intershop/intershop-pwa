@@ -1,5 +1,5 @@
 # export appropriate ICM_BASE_URL and use with
-# docker-compose up --build
+# docker compose up --build
 
 version: '3'
 services:

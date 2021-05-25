@@ -69,13 +69,29 @@ Multiple channels can also be configured via context paths, which re-configure t
     lang: de_DE
 ```
 
-The domain has to be supplied, to match all domains use `.+`.
+The domain has to be supplied.
+To match all domains use `.+`.
 The parameters `baseHref` and `channel` are mandatory.
 `baseHref` must start with `/`.
 Also note that context path channels have to be supplied as a list.
-The first entry is chosen as default channel, if the website is accessed without supplying a channel.
+The first entry is chosen as default channel, if the website is accessed without supplying a channel, meaning the context path `/`.
+It is also possible to explicitly set a channel configuration for the `/` context path.
+Such a configuration is shown in the following configuration that sets different languages for the according context paths but within the same channel.
 
-This configuration can be supplied simply by setting the environment variable `MULTI_CHANNEL`.
+```yaml
+'domain2':
+  - baseHref: /fr
+    channel: channel
+    lang: fr_FR
+  - baseHref: /de
+    channel: channel
+    lang: de_DE
+  - baseHref: /
+    channel: channel
+    lang: en_US
+```
+
+The configuration can be supplied simply by setting the environment variable `MULTI_CHANNEL`.
 Alternatively, the source can be supplied by setting `MULTI_CHANNEL_SOURCE` in any [supported format by gomplate](https://docs.gomplate.ca/datasources).
 If no environment variables for multi-channel configuration are given, the configuration will fall back to the content of [`nginx/multi-channel.yaml`](../../nginx/multi-channel.yaml), which can also be customized.
 
