@@ -16,7 +16,7 @@ const warn = (...txt: unknown[]) => {
   console.warn('Custom Webpack:', ...txt);
 };
 
-type AngularPlugin = webpack.Plugin & {
+type AngularPlugin = webpack.WebpackPluginInstance & {
   options: {
     directTemplateLoading: boolean;
     fileReplacements: { [source: string]: string };
@@ -89,19 +89,17 @@ export default (
 
   if (production) {
     // keep module names for debugging
-    config.optimization.minimizer.forEach(m => {
+    /*config.optimization.minimizer.forEach(m => {
       if (m.options && m.options.terserOptions) {
         m.options.terserOptions.keep_classnames = /.*Module$/;
       }
-    });
+    });*/
 
     // splitChunks not available for SSR build
     if (config.optimization.splitChunks) {
       log('optimizing chunk splitting');
 
-      const cacheGroups = config.optimization.splitChunks.cacheGroups as {
-        [key: string]: webpack.Options.CacheGroupsOptions;
-      };
+      const cacheGroups = config.optimization.splitChunks.cacheGroups;
 
       // chunk for all core functionality the user usually doesn't use while just browsing the shop
       cacheGroups.customer = {
@@ -119,7 +117,7 @@ export default (
         minChunks: 1,
         priority: 25,
         chunks: 'async',
-        name(module) {
+        name(module: { identifier(): string }) {
           const identifier = module.identifier() as string;
 
           // embed sentry library in sentry chunk
@@ -158,8 +156,8 @@ export default (
       // overriding settings for the common bundle which contains:
       // - all lazy-loadable core functionality
       // - libraries that can be lazy loaded
-      cacheGroups.common.minChunks = 1;
-      cacheGroups.common.priority = 20;
+      // cacheGroups.common.minChunks = 1;
+      // cacheGroups.common.priority = 20;
     }
 
     if (!process.env.TESTING) {
