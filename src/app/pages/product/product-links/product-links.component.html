@@ -2,8 +2,8 @@
   <ng-container *ngIf="links.upselling?.products?.length">
     <ish-product-links-list
       [links]="links.upselling"
-      [filterInStock]="true"
       [productLinkTitle]="'product.product_links.upselling.title' | translate"
+      [displayOnlyAvailableProducts]="true"
     ></ish-product-links-list>
   </ng-container>
   <ng-container *ngIf="links.spareparts?.products?.length">
@@ -16,7 +16,7 @@
     <ish-product-links-carousel
       [links]="links.crossselling"
       [productLinkTitle]="'product.product_links.crossselling.title' | translate"
-      [filterInStock]="true"
+      [displayOnlyAvailableProducts]="true"
     ></ish-product-links-carousel>
   </ng-container>
   <ng-container *ngIf="links.accessory?.products?.length">

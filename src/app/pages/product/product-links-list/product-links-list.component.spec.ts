@@ -48,7 +48,7 @@ describe('Product Links List Component', () => {
   });
 
   it('should render all product slides if stocks filtering is off', () => {
-    component.filterInStock = false;
+    component.displayOnlyAvailableProducts = false;
     component.ngOnChanges();
     fixture.detectChanges();
 
@@ -60,7 +60,7 @@ describe('Product Links List Component', () => {
       of({ sku, available: sku !== 'sku2' } as ProductView)
     );
 
-    component.filterInStock = true;
+    component.displayOnlyAvailableProducts = true;
     component.ngOnChanges();
     fixture.detectChanges();
 

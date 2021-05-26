@@ -34,11 +34,10 @@ export class ProductLinksCarouselComponent implements OnChanges {
    * title that should displayed for the specific product link type
    */
   @Input() productLinkTitle: string;
-
   /**
-   * if true only in-stock products are displayed
+   * display only available products if set to 'true'
    */
-  @Input() filterInStock = false;
+  @Input() displayOnlyAvailableProducts = false;
 
   productSKUs$: Observable<string[]>;
 
@@ -82,7 +81,7 @@ export class ProductLinksCarouselComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    this.productSKUs$ = this.filterInStock
+    this.productSKUs$ = this.displayOnlyAvailableProducts
       ? combineLatest(
           this.links.products.map(sku => this.shoppingFacade.product$(sku, ProductCompletenessLevel.List))
         ).pipe(map(products => products.filter(p => p.available).map(p => p.sku)))
