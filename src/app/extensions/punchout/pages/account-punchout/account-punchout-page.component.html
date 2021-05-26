@@ -18,7 +18,7 @@
 
   <ng-container *ngIf="punchoutUsers$ | async as users; else emptyList">
     <div *ngIf="users.length; else emptyList" class="list-body" data-testing-id="user-list">
-      <ng-container *ngFor="let user of punchoutUsers$ | async">
+      <ng-container *ngFor="let user of users">
         <div *ngIf="user" class="list-item-row row mx-0">
           <div class="col-10 list-item">
             <p>
