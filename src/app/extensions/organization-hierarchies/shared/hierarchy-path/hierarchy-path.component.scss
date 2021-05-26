@@ -1,0 +1,11 @@
+//
+// HIERARCHY PATH TOOLTIP
+//
+.path {
+  ::ng-deep .tooltip-inner {
+    padding: 5%;
+    font-size: 1.15em;
+    color: #000;
+    background-color: #fff;
+  }
+}

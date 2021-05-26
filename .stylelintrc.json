@@ -20,6 +20,12 @@
     "selector-no-vendor-prefix": true,
     "string-quotes": "single",
     "value-keyword-case": "lower",
-    "value-no-vendor-prefix": true
+    "value-no-vendor-prefix": true,
+    "selector-pseudo-element-no-unknown": [
+      true,
+      {
+        "ignorePseudoElements": ["ng-deep"]
+      }
+    ]
   }
 }
