@@ -1,11 +1,10 @@
 const xliff = require('xliff');
 const fs = require('fs');
 const path = require('path');
-
-console.log('converting');
-
 const translationFilesPath = 'src/assets/i18n';
 const targetFilePath = 'src/assets/xliff';
+
+console.log(`Converting to ${targetFilePath}`);
 
 // read default lang file for "source" tags
 const defaultLang = 'en_US';
@@ -43,6 +42,21 @@ for (fileName of fileNames) {
   });
 }
 
-Object.keys(conversions).forEach(key => {
-  fs.writeFileSync(path.join(targetFilePath, key), conversions[key]);
-});
+try {
+  fs.accessSync(targetFilePath, fs.constants.F_OK);
+} catch (error) {
+  if (error?.code === 'EACCES') {
+    console.error(`No access to ${targetFilePath}`);
+  } else {
+    fs.mkdirSync(targetFilePath);
+  }
+}
+
+if (fs.existsSync(targetFilePath)) {
+  Object.keys(conversions).forEach(key => {
+    fs.writeFile(path.join(targetFilePath, key), conversions[key], err => {
+      if (err) throw err;
+      console.log(`Wrote ${key}`);
+    });
+  });
+}
