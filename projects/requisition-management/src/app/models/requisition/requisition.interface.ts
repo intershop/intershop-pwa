@@ -2,6 +2,7 @@ import { AddressData } from 'ish-core/models/address/address.interface';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.interface';
 import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
+import { BuyingContext } from 'ish-core/models/buying-context/buying-context.model';
 import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-method.interface';
@@ -9,8 +10,6 @@ import { PaymentData } from 'ish-core/models/payment/payment.interface';
 import { PriceData } from 'ish-core/models/price/price.interface';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 import { User } from 'ish-core/models/user/user.model';
-
-import { BuyingContext } from '../../../../../../src/app/extensions/organization-hierarchies/models/buying-context/buying-context.model';
 
 import { RequisitionApproval, RequisitionUserBudget } from './requisition.model';
 

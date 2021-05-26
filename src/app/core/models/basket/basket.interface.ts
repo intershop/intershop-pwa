@@ -4,14 +4,13 @@ import { BasketApproval } from 'ish-core/models/basket-approval/basket-approval.
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.interface';
 import { BasketTotalData } from 'ish-core/models/basket-total/basket-total.interface';
+import { BuyingContext } from 'ish-core/models/buying-context/buying-context.model';
 import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-method.interface';
 import { PaymentData } from 'ish-core/models/payment/payment.interface';
 import { PriceItemData } from 'ish-core/models/price-item/price-item.interface';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
-
-import { BuyingContext } from '../../../extensions/organization-hierarchies/models/buying-context/buying-context.model';
 
 export interface BasketBaseData {
   id: string;

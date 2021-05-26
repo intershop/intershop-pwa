@@ -1,11 +1,10 @@
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
+import { BuyingContextMapper } from 'ish-core/models/buying-context/buying-context.mapper';
 import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
 import { PaymentMapper } from 'ish-core/models/payment/payment.mapper';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
-
-import { BuyingContextMapper } from '../../../extensions/organization-hierarchies/models/buying-context/buying-context.mapper';
 
 import { OrderData } from './order.interface';
 import { Order } from './order.model';

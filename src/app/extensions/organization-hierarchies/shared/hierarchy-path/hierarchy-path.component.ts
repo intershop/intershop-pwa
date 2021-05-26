@@ -21,8 +21,13 @@ export class HierarchyPathComponent implements OnInit {
   pathElements: Group[] = [];
 
   ngOnInit(): void {
+    this.preparePath();
+  }
+
+  private preparePath(): void {
     if (this.object) {
       this.path = this.object.buyingContextInfo.groupPath;
+
       if (this.path) {
         this.leaf = this.path[this.path.length - 1].groupName;
         this.root = this.path[0].groupName;

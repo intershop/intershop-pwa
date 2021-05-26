@@ -3,12 +3,11 @@ import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.in
 import { BasketRebateMapper } from 'ish-core/models/basket-rebate/basket-rebate.mapper';
 import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
 import { BasketBaseData, BasketData } from 'ish-core/models/basket/basket.interface';
+import { BuyingContextMapper } from 'ish-core/models/buying-context/buying-context.mapper';
 import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
 import { PaymentMapper } from 'ish-core/models/payment/payment.mapper';
 import { PriceItemMapper } from 'ish-core/models/price-item/price-item.mapper';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
-
-import { BuyingContextMapper } from '../../../extensions/organization-hierarchies/models/buying-context/buying-context.mapper';
 
 import { Basket } from './basket.model';
 
