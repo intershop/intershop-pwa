@@ -33,7 +33,7 @@ describe('Parameters Effects', () => {
 
   describe('loadParameters$', () => {
     it('should dispatch multiple actions when getFilteredProducts service is succesful', () => {
-      when(filterServiceMock.getFilteredProducts(anything(), anything(), anything(), anything())).thenReturn(
+      when(filterServiceMock.getFilteredProducts(anything(), anything())).thenReturn(
         of({ total: 1, products: [{ name: 'test', sku: 'sku' } as Product], sortableAttributes: [] })
       );
       const action = loadParametersProductListFilter({

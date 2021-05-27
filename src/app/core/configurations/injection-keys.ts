@@ -5,6 +5,7 @@ import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
 
 import { environment } from '../../../environments/environment';
+import { Environment } from '../../../environments/environment.model';
 
 /**
  * Array of paths that always use mocked data
@@ -29,9 +30,12 @@ export const MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH = new InjectionToken<numbe
 /**
  * global definition of the product listing page size
  */
-export const PRODUCT_LISTING_ITEMS_PER_PAGE = new InjectionToken<number>('productListingItemsPerPage', {
-  factory: () => environment.productListingItemsPerPage,
-});
+export const PRODUCT_LISTING_ITEMS_PER_PAGE = new InjectionToken<Environment['productListingItemsPerPage']>(
+  'productListingItemsPerPage',
+  {
+    factory: () => environment.productListingItemsPerPage,
+  }
+);
 
 /**
  * default definition of the product listing view type

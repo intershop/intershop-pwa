@@ -67,7 +67,13 @@ export interface Environment {
   mainNavigationMaxSubCategoriesDepth: number;
 
   // global definition of the product listing page size
-  productListingItemsPerPage: number;
+  productListingItemsPerPage:
+    | number
+    | {
+        category: number;
+        search: number;
+        master: number;
+      };
 
   // default viewType used for product listings
   defaultProductListingViewType: ViewType;
@@ -119,7 +125,11 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
   largeBreakpointWidth: 992,
   extralargeBreakpointWidth: 1200,
   mainNavigationMaxSubCategoriesDepth: 2,
-  productListingItemsPerPage: 9,
+  productListingItemsPerPage: {
+    category: 9,
+    search: 12,
+    master: 6,
+  },
   defaultProductListingViewType: 'grid',
   defaultDeviceType: 'mobile',
   defaultLocale: 'en_US',
