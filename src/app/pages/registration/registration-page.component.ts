@@ -14,7 +14,7 @@ import {
 // tslint:disable:no-intelligence-in-artifacts
 /**
  * The Registration Page Container renders the customer registration form using the {@link RegistrationFormComponent}
- *s
+ *
  */
 @Component({
   templateUrl: './registration-page.component.html',
@@ -31,7 +31,6 @@ export class RegistrationPageComponent implements OnInit {
 
   submitted = false;
 
-  ishttpLoaded = false;
   loading$: Observable<boolean>;
   registrationConfig: RegistrationConfigType;
 
