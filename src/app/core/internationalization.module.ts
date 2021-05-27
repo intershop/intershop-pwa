@@ -19,14 +19,15 @@ export function appendSlash(): OperatorFunction<string, string> {
 
 export function filterAndTransformKeys(translations: Record<string, string>): Translations {
   const filtered: Translations = {};
+  const prefix = /^pwa-/;
   for (const key in translations) {
-    if (key.startsWith('pwa-')) {
+    if (prefix.test(key)) {
       const value = translations[key];
       try {
         const parsed = JSON.parse(value);
-        filtered[key.replace('pwa-', '')] = parsed;
+        filtered[key.replace(prefix, '')] = parsed;
       } catch {
-        filtered[key.replace('pwa-', '')] = value;
+        filtered[key.replace(prefix, '')] = value;
       }
     }
   }
