@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
+
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import {
@@ -26,8 +27,7 @@ export class RegistrationPageComponent implements OnInit {
     private route: ActivatedRoute,
     private registrationFormConfiguration: RegistrationFormConfigurationService,
     private accountFacade: AccountFacade
-
-  ) { }
+  ) {}
 
   submitted = false;
 
@@ -49,9 +49,6 @@ export class RegistrationPageComponent implements OnInit {
     this.options = this.registrationFormConfiguration.getOptions(this.registrationConfig, this.model);
     this.fields = this.registrationFormConfiguration.getFields(this.registrationConfig);
     this.loading$ = this.accountFacade.userLoading$;
-
-
-
   }
 
   cancelForm() {
@@ -59,8 +56,6 @@ export class RegistrationPageComponent implements OnInit {
   }
 
   onCreate() {
-
-
     if (this.form.invalid) {
       this.submitted = true;
       return;
