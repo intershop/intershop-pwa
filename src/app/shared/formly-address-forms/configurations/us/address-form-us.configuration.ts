@@ -69,7 +69,7 @@ export class AddressFormUSConfiguration extends AddressFormConfiguration {
             placeholder: 'account.option.select.text',
             options: this.appFacade
               .regions$(this.countryCode)
-              .pipe(map(regions => regions?.map(region => ({ value: region.id, label: region.name })))),
+              .pipe(map(regions => regions?.map(region => ({ value: region.regionCode, label: region.name })))),
           },
           validation: {
             messages: {
