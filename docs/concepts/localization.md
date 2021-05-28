@@ -269,21 +269,21 @@ For this purpose a [Standalone Java application](https://gitlab.intershop.de/ISP
 
 In the current state of the Intershop Progressive Web App, the converted localization properties from _a_responsive_ (without _app_sf_responsive_b2b_ and _app_sf_responsive_costcenter_) were added and should be used within the HTML templates.
 
-## ICM localization management
+## ICM Localization Management
 
-In case you want to change translation values without the necessity to redeploy the PWA, it is possible to override the local `.json` files via ICM localization backoffice page.
-In order to do that you need to generate `.xliff` files and upload them into ICM for further import processing.
+In case you want to change translation values without redeploying the PWA, it is possible to override the local `.json` files via ICM localization backoffice page.
+Therefore generate `.xliff` files and upload them to ICM for further import processing.
 Here is how:
 
-1. Command `npm run xliff` converts all localization files into separate `.xliff` files. The result is placed under `src/assets/xliff`.
+1. Use the `npm run xliff` command to convert all localization files into separate `.xliff` files. The result is placed in `src/assets/xliff`.
 2. Upload and import each `.xliff` file to ICM. Please mind below warning to select the correct application type and target locale.
-3. Refer to "Localization Management" of ICM backoffice online help for further questions.
+3. Refer to [Localization Management](https://docs.intershop.com/icm/7.10/olh/icm/en/operation_maintenance/topic_localization_management.html) in the ICM online help for further details.
 
-:warning: Make sure to select the correct application type for which you are to import generated xliff data.
+:warning: Make sure to select the correct application type for which you want to import generated XLIFF data.
 This has to fit to your PWA environment.
 
-:warning: The generated xliff files prefix translation keys with `pwa-`.
-This is to enable easy filtering.
+:warning: The generated `.xliff` files prefix translation keys with `pwa-`.
+This allows to enable easy filtering.
 The prefixes will be removed when the translations are loaded into the PWA.
 
 ## Localization File Clean Up Process
