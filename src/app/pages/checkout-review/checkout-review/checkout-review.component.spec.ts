@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
@@ -20,7 +21,10 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
+import { ValidationMessageComponent } from 'ish-shared/formly/components/validation-message/validation-message.component';
 import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
+
+import { CheckoutReviewTacFieldComponent } from '../formly/checkout-review-tac-field/checkout-review-tac-field.component';
 
 import { CheckoutReviewComponent } from './checkout-review.component';
 
@@ -33,6 +37,7 @@ describe('Checkout Review Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         CheckoutReviewComponent,
+        CheckoutReviewTacFieldComponent,
         MockComponent(AddressComponent),
         MockComponent(BasketApprovalInfoComponent),
         MockComponent(BasketBuyerComponent),
@@ -45,10 +50,17 @@ describe('Checkout Review Component', () => {
         MockComponent(InfoBoxComponent),
         MockComponent(LineItemListComponent),
         MockComponent(ModalDialogLinkComponent),
+        MockComponent(ValidationMessageComponent),
         MockDirective(FeatureToggleDirective),
         MockDirective(ServerHtmlDirective),
       ],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [
+        FormlyModule.forRoot({
+          types: [{ name: 'ish-checkout-review-tac-field', component: CheckoutReviewTacFieldComponent }],
+        }),
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
+      ],
     }).compileComponents();
   });
 
