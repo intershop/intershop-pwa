@@ -13,6 +13,8 @@ import { pageTreeReducer } from './page-tree/page-tree.reducer';
 import { pageletsReducer } from './pagelets/pagelets.reducer';
 import { PagesEffects } from './pages/pages.effects';
 import { pagesReducer } from './pages/pages.reducer';
+import { ParametersEffects } from './parameters/parameters.effects';
+import { parametersReducer } from './parameters/parameters.reducer';
 import { ViewcontextsEffects } from './viewcontexts/viewcontexts.effects';
 import { viewcontextsReducer } from './viewcontexts/viewcontexts.reducer';
 
@@ -22,9 +24,10 @@ const contentReducers: ActionReducerMap<ContentState> = {
   pages: pagesReducer,
   viewcontexts: viewcontextsReducer,
   pagetree: pageTreeReducer,
+  parameters: parametersReducer,
 };
 
-const contentEffects = [IncludesEffects, PagesEffects, ViewcontextsEffects, PageTreeEffects];
+const contentEffects = [IncludesEffects, PagesEffects, ViewcontextsEffects, PageTreeEffects, ParametersEffects];
 
 const metaReducers = [resetOnLogoutMeta];
 
