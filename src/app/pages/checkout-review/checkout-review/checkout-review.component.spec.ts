@@ -22,7 +22,6 @@ import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 import { ValidationMessageComponent } from 'ish-shared/formly/components/validation-message/validation-message.component';
-import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
 
 import { CheckoutReviewTacFieldComponent } from '../formly/checkout-review-tac-field/checkout-review-tac-field.component';
 
@@ -43,7 +42,6 @@ describe('Checkout Review Component', () => {
         MockComponent(BasketBuyerComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketValidationResultsComponent),
-        MockComponent(CheckboxComponent),
         MockComponent(ContentIncludeComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(FaIconComponent),
