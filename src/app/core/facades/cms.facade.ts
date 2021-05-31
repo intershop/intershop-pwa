@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, combineLatest } from 'rxjs';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { delay, filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.model';
 import { getContentInclude, loadContentInclude } from 'ish-core/store/content/includes';
@@ -23,6 +23,7 @@ export class CMSFacade {
 
   contentInclude$(includeId$: Observable<string>) {
     return combineLatest([includeId$.pipe(whenTruthy()), this.store.pipe(select(getPGID))]).pipe(
+      delay(0), // delay ensures the apiToken cookie is deleted before a cms request without a pgid is triggered
       tap(([includeId]) => this.store.dispatch(loadContentInclude({ includeId }))),
       switchMap(([includeId]) => this.store.pipe(select(getContentInclude(includeId), whenTruthy())))
     );
