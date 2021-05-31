@@ -1,0 +1,65 @@
+<div [formGroup]="payoneCreditCardForm">
+  <p class="text-danger col-sm-offset-4" id="error"></p>
+  <!-- card number -->
+  <div class="row form-group">
+    <label class="col-form-label col-md-4" for="cardpanInput"
+      >{{ 'checkout.credit_card.number.label' | translate }}<span class="required">*</span></label
+    >
+    <div class="col-sm-6">
+      <span id="cardpan" class="inputIframe"></span>
+    </div>
+  </div>
+
+  <!-- card type -->
+  <div class="row form-group">
+    <label class="col-form-label col-md-4" for="cardtype"
+      >{{ 'checkout.credit_card.type.label' | translate }}<span class="required">*</span></label
+    >
+    <div class="col-sm-6">
+      <span id="cardtype" class="inputIframe"></span>
+    </div>
+  </div>
+
+  <!-- expiry date -->
+  <div class="row form-group">
+    <label class="col-form-label col-md-4" for="expireInput"
+      >{{ 'checkout.credit_card.expiration_date.label' | translate }}<span class="required">*</span></label
+    >
+    <div class="col-sm-6">
+      <span id="expireInput" class="inputIframe">
+        <span id="cardexpiremonth"></span> <span id="cardexpireyear"></span>
+      </span>
+    </div>
+  </div>
+
+  <!-- security code CVC -->
+  <div class="row form-group">
+    <label class="col-form-label col-md-4" for="cvcInput"
+      >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required">*</span></label
+    >
+    <div class="col-sm-6">
+      <span id="cardcvc2" class="inputIframe"></span>
+    </div>
+  </div>
+</div>
+
+<div class="offset-md-4 col-md-8">
+  <ish-checkbox
+    *ngIf="paymentMethod && paymentMethod.saveAllowed"
+    [form]="payoneCreditCardForm"
+    controlName="saveForLater"
+    label="checkout.save_edit.checkbox.label"
+    data-testing-id="save-for-later-input"
+  ></ish-checkbox>
+  <div class="form-group">
+    <input
+      type="button"
+      (click)="submitNewPaymentInstrument()"
+      class="btn btn-primary"
+      value="{{ 'checkout.account.submit.button.label' | translate }}"
+    />
+    <button type="button" class="btn btn-secondary" (click)="cancelNewPaymentInstrument()">
+      {{ 'checkout.cancel.button.label' | translate }}
+    </button>
+  </div>
+</div>

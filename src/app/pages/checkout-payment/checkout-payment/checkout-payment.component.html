@@ -147,6 +147,15 @@
                       ></ish-payment-cybersource-creditcard>
                     </ng-template>
 
+                    <ng-template [ngSwitchCase]="'Payone_CreditCard'">
+                      <ish-payment-payone-creditcard
+                        [paymentMethod]="paymentMethod"
+                        [activated]="formIsOpen(i)"
+                        (submit)="createNewPaymentInstrument($event)"
+                        (cancel)="cancelNewPaymentInstrument()"
+                      ></ish-payment-payone-creditcard>
+                    </ng-template>
+
                     <ng-template ngSwitchDefault>
                       <ish-payment-parameter-form
                         [paymentMethod]="paymentMethod"
