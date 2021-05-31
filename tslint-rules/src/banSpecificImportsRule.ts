@@ -62,14 +62,27 @@ export class Rule extends Lint.Rules.AbstractRule {
         }
 
         if (pattern.import) {
-          importList
-            .filter(token => new RegExp(pattern.import).test(token.getText()))
-            .forEach(token =>
-              ctx.addFailureAtNode(
-                token,
-                pattern.message || `Using '${token.getText()}' from '${fromStringText}' is banned.`
-              )
+          if (pattern.fix && importList.every(token => new RegExp(pattern.import).test(token.getText()))) {
+            const fix = new Lint.Replacement(
+              fromStringToken.getStart(),
+              fromStringToken.getWidth(),
+              `'${fromStringText.replace(new RegExp(pattern.from), pattern.fix)}'`
             );
+            ctx.addFailureAtNode(
+              fromStringToken,
+              pattern.message || `Using '${fromStringToken.getText()}' from '${fromStringText}' is banned.`,
+              fix
+            );
+          } else {
+            importList
+              .filter(token => new RegExp(pattern.import).test(token.getText()))
+              .forEach(token =>
+                ctx.addFailureAtNode(
+                  token,
+                  pattern.message || `Using '${token.getText()}' from '${fromStringText}' is banned.`
+                )
+              );
+          }
         } else {
           let fix;
           if (pattern.fix) {
