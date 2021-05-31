@@ -5,7 +5,16 @@ import { Actions, ROOT_EFFECTS_INIT, createEffect, ofType } from '@ngrx/effects'
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { defer, fromEvent, iif, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, take, takeWhile, withLatestFrom } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  sample,
+  shareReplay,
+  take,
+  takeWhile,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { NGRX_STATE_SK } from 'ish-core/configurations/ngrx-state-transfer';
@@ -35,6 +44,11 @@ export class ConfigurationEffects {
       // tslint:disable-next-line:no-any - window can only be used with any here
       .subscribe(stable => ((window as any).angularStable = stable));
 
+    const languageChanged$ = translateService.onLangChange.pipe(
+      map(() => true),
+      shareReplay(1)
+    );
+
     store
       .pipe(
         takeWhile(() => isPlatformServer(this.platformId) || !PRODUCTION_MODE),
@@ -43,7 +57,8 @@ export class ConfigurationEffects {
         distinctUntilChanged(),
         // https://github.com/ngx-translate/core/issues/1030
         debounceTime(0),
-        whenTruthy()
+        whenTruthy(),
+        sample(languageChanged$)
       )
       .subscribe(lang => {
         this.transferState.set(SSR_LOCALE, lang);
