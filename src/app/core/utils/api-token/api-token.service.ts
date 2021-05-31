@@ -85,7 +85,7 @@ export class ApiTokenService {
           if (cookieContent) {
             cookiesService.put('apiToken', cookieContent, {
               expires: new Date(Date.now() + 3600000),
-              secure: (isPlatformBrowser(platformId) && location.protocol === 'https:') || false,
+              secure: true,
               sameSite: 'Strict',
             });
           } else {
