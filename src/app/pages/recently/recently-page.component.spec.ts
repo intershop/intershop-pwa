@@ -3,7 +3,6 @@ import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 
 import { RecentlyPageComponent } from './recently-page.component';
 import { RecentlyViewedAllComponent } from './recently-viewed-all/recently-viewed-all.component';
@@ -15,11 +14,7 @@ describe('Recently Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(BreadcrumbComponent),
-        MockComponent(RecentlyViewedAllComponent),
-        RecentlyPageComponent,
-      ],
+      declarations: [MockComponent(RecentlyViewedAllComponent), RecentlyPageComponent],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) }],
     }).compileComponents();
   });
