@@ -55,7 +55,6 @@ describe('Configuration Effects', () => {
   describe('setLocale$', () => {
     beforeEach(() => {
       translateService.use('en_US');
-      translateService.set('blub', 'blib');
     });
     it('should update TranslateService when locale was initialized', fakeAsync(() => {
       tick(1000);
