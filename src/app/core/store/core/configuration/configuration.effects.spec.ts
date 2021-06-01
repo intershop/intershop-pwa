@@ -7,7 +7,6 @@ import { Action } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Observable, Subject, of } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { mock } from 'ts-mockito';
 
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 
@@ -20,8 +19,6 @@ describe('Configuration Effects', () => {
   let translateService: TranslateService;
 
   beforeEach(() => {
-    translateService = mock(TranslateService);
-
     TestBed.configureTestingModule({
       imports: [
         BrowserTransferStateModule,
@@ -58,35 +55,12 @@ describe('Configuration Effects', () => {
 
   describe('setLocale$', () => {
     beforeEach(() => {
-      translateService.setDefaultLang('en_US');
       translateService.use('en_US');
+      translateService.set('blub', 'blib');
     });
-    it('should update TranslateService when locale was initialized', done => {
-      setTimeout(() => {
-        expect(translateService.currentLang).toMatchInlineSnapshot(`"en_US"`);
-        expect(translateService.defaultLang).toMatchInlineSnapshot(`"en_US"`);
-        done();
-      }, 1000);
-    });
-    it('should update TranslateService when different locale is requested', fakeAsync(() => {
-      actions$ = of(
-        applyConfiguration({
-          lang: 'de_DE',
-          locales: [
-            { lang: 'de_DE', currency: 'EUR', value: 'de', displayName: 'German', displayLong: 'German (Germany)' },
-            {
-              lang: 'en_US',
-              currency: 'USD',
-              value: 'en',
-              displayName: 'English',
-              displayLong: 'English (United States)',
-            },
-          ],
-        })
-      );
+    it('should update TranslateService when locale was initialized', fakeAsync(() => {
       tick(1000);
-      expect(translateService.currentLang).toMatchInlineSnapshot(`"de_DE"`);
-      expect(translateService.defaultLang).toMatchInlineSnapshot(`"de_DE"`);
+      expect(translateService.currentLang).toMatchInlineSnapshot(`"en_US"`);
     }));
   });
 });
