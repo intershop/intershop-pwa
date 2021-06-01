@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -20,8 +23,8 @@ describe('Basket Buyer Component', () => {
     accountFacade = mock(AccountFacade);
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [BasketBuyerComponent],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      declarations: [BasketBuyerComponent, MockComponent(FaIconComponent)],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   });
@@ -49,5 +52,11 @@ describe('Basket Buyer Component', () => {
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id="taxationID"]')).toBeTruthy();
     expect(element.querySelector('[data-testing-id="taxationID"]').innerHTML).toContain('1234');
+  });
+
+  it('should display the order reference id of the customer', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('[data-testing-id="orderReferenceID"]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id="orderReferenceID"]').innerHTML).toContain('111-222-333');
   });
 });

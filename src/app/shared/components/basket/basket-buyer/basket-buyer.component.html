@@ -12,4 +12,17 @@
     {{ userName }}<br />
     {{ object.email || object.invoiceToAddress?.email }}
   </p>
+
+  <div *ngIf="orderReferenceID" data-testing-id="orderReferenceID">
+    <a
+      *ngIf="editRouterLink"
+      class="float-right btn-tool"
+      [routerLink]="editRouterLink"
+      [title]="'checkout.address.update.label' | translate"
+    >
+      <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
+    </a>
+    <strong>{{ 'checkout.widget.buyer.orderReferenceId' | translate }}</strong>
+    <p>{{ orderReferenceID }}</p>
+  </div>
 </div>

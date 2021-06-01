@@ -10,9 +10,10 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
@@ -30,12 +31,18 @@ export class CheckoutShippingComponent implements OnInit, OnChanges, OnDestroy {
   @Output() updateShippingMethod = new EventEmitter<string>();
   @Output() nextStep = new EventEmitter<void>();
 
+  isBusinessCustomer$: Observable<boolean>;
+
   shippingForm: FormGroup;
   submitted = false;
 
   private destroy$ = new Subject();
 
+  constructor(private accountFacade: AccountFacade) {}
+
   ngOnInit() {
+    this.isBusinessCustomer$ = this.accountFacade.isBusinessCustomer$;
+
     this.shippingForm = new FormGroup({
       id: new FormControl(this.getCommonShippingMethod()),
     });

@@ -18,6 +18,7 @@ export class BasketMockData {
       commonShippingMethod: BasketMockData.getShippingMethod(),
       payment: BasketMockData.getPayment(),
       totals: BasketMockData.getTotals(),
+      attributes: [{ name: 'orderReferenceID', value: '111-222-333' }],
     } as BasketView;
   }
 
