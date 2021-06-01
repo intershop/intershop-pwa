@@ -6,9 +6,11 @@ import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { defer, fromEvent, iif, merge } from 'rxjs';
 import {
+  concatMap,
   debounceTime,
   distinctUntilChanged,
   map,
+  mapTo,
   sample,
   shareReplay,
   take,
@@ -20,6 +22,7 @@ import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/config
 import { NGRX_STATE_SK } from 'ish-core/configurations/ngrx-state-transfer';
 import { SSR_LOCALE } from 'ish-core/configurations/state-keys';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
+import { log } from 'ish-core/utils/dev/operators';
 import { distinctCompareWith, mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
@@ -46,7 +49,8 @@ export class ConfigurationEffects {
 
     const languageChanged$ = translateService.onLangChange.pipe(
       map(() => true),
-      shareReplay(1)
+      shareReplay(1),
+      log()
     );
 
     store
@@ -57,10 +61,12 @@ export class ConfigurationEffects {
         distinctUntilChanged(),
         // https://github.com/ngx-translate/core/issues/1030
         debounceTime(0),
+        log('vorher'),
         whenTruthy(),
-        sample(languageChanged$)
+        concatMap(lang => languageChanged$.pipe(mapTo(lang), take(1))),
+        log('nachher')
       )
-      .subscribe(lang => {
+      .subscribe((lang: string) => {
         this.transferState.set(SSR_LOCALE, lang);
         translateService.use(lang);
       });

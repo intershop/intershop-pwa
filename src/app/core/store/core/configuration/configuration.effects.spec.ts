@@ -1,5 +1,5 @@
 import { PLATFORM_ID } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { BrowserTransferStateModule } from '@angular/platform-browser';
 import { ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -57,12 +57,36 @@ describe('Configuration Effects', () => {
   });
 
   describe('setLocale$', () => {
-    it('should call TranslateService when locale was initialized', done => {
+    beforeEach(() => {
+      translateService.setDefaultLang('en_US');
+      translateService.use('en_US');
+    });
+    it('should update TranslateService when locale was initialized', done => {
       setTimeout(() => {
         expect(translateService.currentLang).toMatchInlineSnapshot(`"en_US"`);
         expect(translateService.defaultLang).toMatchInlineSnapshot(`"en_US"`);
         done();
       }, 1000);
     });
+    it('should update TranslateService when different locale is requested', fakeAsync(() => {
+      actions$ = of(
+        applyConfiguration({
+          lang: 'de_DE',
+          locales: [
+            { lang: 'de_DE', currency: 'EUR', value: 'de', displayName: 'German', displayLong: 'German (Germany)' },
+            {
+              lang: 'en_US',
+              currency: 'USD',
+              value: 'en',
+              displayName: 'English',
+              displayLong: 'English (United States)',
+            },
+          ],
+        })
+      );
+      tick(1000);
+      expect(translateService.currentLang).toMatchInlineSnapshot(`"de_DE"`);
+      expect(translateService.defaultLang).toMatchInlineSnapshot(`"de_DE"`);
+    }));
   });
 });
