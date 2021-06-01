@@ -265,9 +265,26 @@ showModalDialog(dialog) {
 ## Localization Files Generation
 
 The idea is to use the existing localization properties files of the current Responsive Starter Store cartridges (or the localization files of a project) and convert them into the proper JSON files that can be used by ngx-translate.
-For this purpose a [Gradle plugin](https://gitlab.intershop.de/ISPWA/ngx-translate-plugin) was implemented that can handle this conversion process.
+For this purpose a [Standalone Java application](https://gitlab.intershop.de/ISPWA/ngx-translate-plugin) was implemented that can handle this conversion process.
 
 In the current state of the Intershop Progressive Web App, the converted localization properties from _a_responsive_ (without _app_sf_responsive_b2b_ and _app_sf_responsive_costcenter_) were added and should be used within the HTML templates.
+
+## ICM Localization Management
+
+In case you want to change translation values without redeploying the PWA, it is possible to override the local `.json` files via ICM localization backoffice page.
+Therefore generate `.xliff` files and upload them to ICM for further import processing.
+Here is how:
+
+1. Use the `npm run xliff` command to convert all localization files into separate `.xliff` files. The result is placed in `src/assets/xliff`.
+2. Upload and import each `.xliff` file to ICM. Please mind below warning to select the correct application type and target locale.
+3. Refer to [Localization Management](https://docs.intershop.com/icm/7.10/olh/icm/en/operation_maintenance/topic_localization_management.html) in the ICM online help for further details.
+
+:warning: Make sure to select the correct application type for which you want to import generated XLIFF data.
+This has to fit to your PWA environment.
+
+:warning: The generated `.xliff` files prefix translation keys with `pwa-`.
+This allows to enable easy filtering.
+The prefixes will be removed when the translations are loaded into the PWA.
 
 ## Localization File Clean Up Process
 

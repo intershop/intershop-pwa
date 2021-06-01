@@ -1,4 +1,4 @@
-import { HTTP_INTERCEPTORS, HttpErrorResponse } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { ServerModule, ServerTransferStateModule } from '@angular/platform-server';
@@ -6,12 +6,15 @@ import { META_REDUCERS } from '@ngrx/store';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
-import { Observable, Observer } from 'rxjs';
+import { Observable, combineLatest, of, throwError } from 'rxjs';
+import { catchError, first, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { configurationMeta } from 'ish-core/configurations/configuration.meta';
-import { COOKIE_CONSENT_VERSION, DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
+import { COOKIE_CONSENT_VERSION, DISPLAY_VERSION, SSR_TRANSLATIONS } from 'ish-core/configurations/state-keys';
 import { UniversalLogInterceptor } from 'ish-core/interceptors/universal-log.interceptor';
 import { UniversalMockInterceptor } from 'ish-core/interceptors/universal-mock.interceptor';
+import { Translations, appendSlash, filterAndTransformKeys } from 'ish-core/internationalization.module';
+import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
 import { environment } from '../environments/environment';
 
@@ -19,28 +22,67 @@ import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 
 class TranslateUniversalLoader implements TranslateLoader {
+  constructor(
+    private stateProperties: StatePropertiesService,
+    private httpClient: HttpClient,
+    private transferState: TransferState
+  ) {}
+
   getTranslation(lang: string): Observable<string> {
-    return new Observable((observer: Observer<string>) => {
-      let rootPath = process.cwd();
-      if (rootPath && rootPath.indexOf('browser') > 0) {
-        rootPath = process.cwd().split('browser')[0];
-      }
-      const file = join(rootPath, 'dist', 'browser', 'assets', 'i18n', `${lang}.json`);
-      if (!existsSync(file)) {
-        const errString = `Localization file '${file}' not found!`;
-        console.error(errString);
-        observer.error(errString);
-      } else {
-        const content = JSON.parse(readFileSync(file, 'utf8'));
-        observer.next(content);
-        observer.complete();
-      }
-    });
+    const local$ = of(lang).pipe(
+      map(() => {
+        let rootPath = process.cwd();
+        if (rootPath && rootPath.indexOf('browser') > 0) {
+          rootPath = process.cwd().split('browser')[0];
+        }
+        const file = join(rootPath, 'dist', 'browser', 'assets', 'i18n', `${lang}.json`);
+        if (!existsSync(file)) {
+          const errString = `Localization file '${file}' not found!`;
+          console.error(errString);
+          return throwError(errString);
+        } else {
+          return JSON.parse(readFileSync(file, 'utf8'));
+        }
+      })
+    );
+    return this.icmURL.pipe(
+      switchMap(url =>
+        this.httpClient.get(`${url};loc=${lang}/localizations`, {
+          params: {
+            searchKeys: 'pwa-',
+          },
+        })
+      ),
+      map(filterAndTransformKeys),
+      withLatestFrom(local$),
+      map(([translations, localTranslations]) => ({
+        ...localTranslations,
+        ...translations,
+      })),
+      tap((translations: Translations) => this.transferState.set(SSR_TRANSLATIONS, translations)),
+      catchError(() => local$)
+    );
+  }
+
+  get icmURL(): Observable<string> {
+    return combineLatest([
+      this.stateProperties.getStateOrEnvOrDefault('ICM_BASE_URL', 'icmBaseURL').pipe(appendSlash()),
+      this.stateProperties.getStateOrEnvOrDefault('ICM_SERVER', 'icmServer').pipe(appendSlash()),
+      this.stateProperties.getStateOrEnvOrDefault('ICM_CHANNEL', 'icmChannel').pipe(appendSlash()),
+      this.stateProperties.getStateOrEnvOrDefault('ICM_APPLICATION', 'icmApplication'),
+    ]).pipe(
+      first(),
+      map(arr => arr.join(''))
+    );
   }
 }
 
-export function translateLoaderFactory() {
-  return new TranslateUniversalLoader();
+export function translateLoaderFactory(
+  stateProperties: StatePropertiesService,
+  httpClient: HttpClient,
+  transferState: TransferState
+) {
+  return new TranslateUniversalLoader(stateProperties, httpClient, transferState);
 }
 
 export class UniversalErrorHandler implements ErrorHandler {
@@ -62,6 +104,7 @@ export class UniversalErrorHandler implements ErrorHandler {
       loader: {
         provide: TranslateLoader,
         useFactory: translateLoaderFactory,
+        deps: [StatePropertiesService, HttpClient, TransferState],
       },
     }),
   ],

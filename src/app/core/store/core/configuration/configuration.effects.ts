@@ -1,14 +1,25 @@
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { Actions, ROOT_EFFECTS_INIT, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { defer, fromEvent, iif, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, take, takeWhile, withLatestFrom } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  mapTo,
+  shareReplay,
+  switchMap,
+  take,
+  takeWhile,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { NGRX_STATE_SK } from 'ish-core/configurations/ngrx-state-transfer';
+import { SSR_LOCALE } from 'ish-core/configurations/state-keys';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { distinctCompareWith, mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
@@ -34,16 +45,23 @@ export class ConfigurationEffects {
       // tslint:disable-next-line:no-any - window can only be used with any here
       .subscribe(stable => ((window as any).angularStable = stable));
 
+    const languageChanged$ = translateService.onLangChange.pipe(shareReplay(1));
+
     store
       .pipe(
+        takeWhile(() => isPlatformServer(this.platformId) || !PRODUCTION_MODE),
         select(getCurrentLocale),
         mapToProperty('lang'),
         distinctUntilChanged(),
         // https://github.com/ngx-translate/core/issues/1030
         debounceTime(0),
-        whenTruthy()
+        whenTruthy(),
+        switchMap(lang => languageChanged$.pipe(mapTo(lang), take(1)))
       )
-      .subscribe(lang => translateService.use(lang));
+      .subscribe((lang: string) => {
+        this.transferState.set(SSR_LOCALE, lang);
+        translateService.use(lang);
+      });
   }
 
   setInitialRestEndpoint$ = createEffect(() =>
