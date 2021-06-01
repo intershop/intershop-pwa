@@ -13,6 +13,7 @@ import {
   mapTo,
   sample,
   shareReplay,
+  switchMap,
   take,
   takeWhile,
   withLatestFrom,
@@ -48,9 +49,7 @@ export class ConfigurationEffects {
       .subscribe(stable => ((window as any).angularStable = stable));
 
     const languageChanged$ = translateService.onLangChange.pipe(
-      map(() => true),
       shareReplay(1),
-      log()
     );
 
     store
@@ -61,10 +60,8 @@ export class ConfigurationEffects {
         distinctUntilChanged(),
         // https://github.com/ngx-translate/core/issues/1030
         debounceTime(0),
-        log('vorher'),
         whenTruthy(),
-        concatMap(lang => languageChanged$.pipe(mapTo(lang), take(1))),
-        log('nachher')
+        switchMap(lang => languageChanged$.pipe(mapTo(lang), take(1))),
       )
       .subscribe((lang: string) => {
         this.transferState.set(SSR_LOCALE, lang);
