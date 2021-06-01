@@ -1,4 +1,3 @@
-import { PLATFORM_ID } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { BrowserTransferStateModule } from '@angular/platform-browser';
 import { ROOT_EFFECTS_INIT } from '@ngrx/effects';
@@ -25,7 +24,7 @@ describe('Configuration Effects', () => {
         CoreStoreModule.forTesting(['configuration', 'serverConfig'], [ConfigurationEffects]),
         TranslateModule.forRoot(),
       ],
-      providers: [{ provide: PLATFORM_ID, useValue: 'server' }, provideMockActions(() => actions$)],
+      providers: [provideMockActions(() => actions$)],
     });
 
     effects = TestBed.inject(ConfigurationEffects);
