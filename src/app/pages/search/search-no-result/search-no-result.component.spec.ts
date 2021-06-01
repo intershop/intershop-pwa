@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
+import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 import { SearchBoxComponent } from 'ish-shared/components/search/search-box/search-box.component';
 
 import { SearchNoResultComponent } from './search-no-result.component';
@@ -15,7 +16,7 @@ describe('Search No Result Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [MockComponent(SearchBoxComponent), SearchNoResultComponent],
+      declarations: [MockComponent(BreadcrumbComponent), MockComponent(SearchBoxComponent), SearchNoResultComponent],
     }).compileComponents();
   });
 

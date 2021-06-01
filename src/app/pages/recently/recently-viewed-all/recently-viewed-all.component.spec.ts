@@ -3,6 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
+import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 import { RecentlyViewedAllComponent } from './recently-viewed-all.component';
@@ -15,6 +16,7 @@ describe('Recently Viewed All Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
+        MockComponent(BreadcrumbComponent),
         MockComponent(ProductItemComponent),
         MockDirective(ProductContextDirective),
         RecentlyViewedAllComponent,
