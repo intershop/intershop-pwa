@@ -32,28 +32,6 @@ services:
       # DEVICE_DETECTION: 0
       # MULTI_CHANNEL_SOURCE: env:///ASDF?type=application/yaml
       MULTI_CHANNEL: |
-        .+\.net:
-            - baseHref: /de
-              lang: de_DE
-              channel: inSPIRED-inTRONICS-Site
-            - baseHref: /us
-              lang: en_US
-              channel: inSPIRED-inTRONICS_Business-Site
-              features: quoting,businessCustomerRegistration,advancedVariationHandling
-              theme: "blue|688dc3"
-        .+\.de:
-            channel: inSPIRED-inTRONICS-Site
-            lang: de_DE
-        .+\.com:
-            channel: inSPIRED-inTRONICS_Business-Site
-            features: quoting,businessCustomerRegistration,advancedVariationHandling
-            theme: "blue|688dc3"
-        .+\.fr:
-            channel: inSPIRED-inTRONICS-Site
-            lang: fr_FR
-            application: smb-responsive
-            features: quoting
-            theme: "blue|688dc3"
         .+:
           - baseHref: /en
             channel: default
