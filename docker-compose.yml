@@ -54,6 +54,16 @@ services:
             application: smb-responsive
             features: quoting
             theme: "blue|688dc3"
+        .+:
+          - baseHref: /en
+            channel: default
+            lang: en_US
+          - baseHref: /de
+            channel: default
+            lang: de_DE
+          - baseHref: /fr
+            channel: default
+            lang: fr_FR
 
     ports:
       - '4200:80'
