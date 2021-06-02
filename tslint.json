@@ -262,6 +262,12 @@
           "message": "Most likely you would've wanted to import the model instead."
         },
         {
+          "import": "^Router$",
+          "from": "^express$",
+          "message": "Most likely you would've wanted to import the angular router instead.",
+          "fix": "@angular/router"
+        },
+        {
           "from": "^[\\./]*/core/(.*)$",
           "message": "Use import alias ish-core",
           "fix": "ish-core/$1"

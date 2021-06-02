@@ -1,35 +1,47 @@
-<div class="marketing-area">
-  <ish-content-slot [slot]="'app_sf_base_cm:slot.marketing.base.pagelet2-Slot'" [pagelet]="pagelet"></ish-content-slot>
-</div>
-
-<div class="row">
-  <ng-container
-    *ngIf="pagelet.booleanParam('ShowSidePanel') || pagelet.booleanParam('ShowNavigation'); else noSidePanel"
-  >
-    <div class="page-navigation col-md-3">
-      <div *ngIf="pagelet.booleanParam('ShowNavigation')" class="page-navigation-contents">
-        <ish-content-navigation
-          [root]="pagelet.stringParam('NavigationRoot')"
-          [depth]="pagelet.numberParam('NavigationDepth')"
-        ></ish-content-navigation>
+<div class="content-page">
+  <div class="row">
+    <ng-container
+      *ngIf="pagelet.booleanParam('ShowSidePanel') || pagelet.booleanParam('ShowNavigation'); else noSidePanel"
+    >
+      <div class="page-navigation col-md-3">
+        <div *ngIf="pagelet.booleanParam('ShowNavigation')" class="page-navigation-contents">
+          <ish-content-navigation
+            [root]="pagelet.stringParam('NavigationRoot')"
+            [depth]="pagelet.numberParam('NavigationDepth')"
+          ></ish-content-navigation>
+        </div>
+        <div class="marketing-area">
+          <ish-content-slot
+            [slot]="'app_sf_base_cm:slot.marketing.sidePanel.pagelet2-Slot'"
+            [pagelet]="pagelet"
+          ></ish-content-slot>
+        </div>
       </div>
-      <div class="marketing-area">
-        <ish-content-slot
-          [slot]="'app_sf_base_cm:slot.marketing.sidePanel.pagelet2-Slot'"
-          [pagelet]="pagelet"
-        ></ish-content-slot>
+      <div class="col-md-9">
+        <ish-breadcrumb></ish-breadcrumb>
+        <div class="marketing-area">
+          <ish-content-slot
+            [slot]="'app_sf_base_cm:slot.marketing.base.pagelet2-Slot'"
+            [pagelet]="pagelet"
+          ></ish-content-slot>
+        </div>
+        <ish-content-slot [slot]="'app_sf_base_cm:slot.staticPage.content.pagelet2-Slot'" [pagelet]="pagelet">
+        </ish-content-slot>
       </div>
-    </div>
-    <div class="col-md-9">
-      <ish-content-slot [slot]="'app_sf_base_cm:slot.staticPage.content.pagelet2-Slot'" [pagelet]="pagelet">
-      </ish-content-slot>
-    </div>
-  </ng-container>
+    </ng-container>
 
-  <ng-template #noSidePanel>
-    <div class="col-md-12">
-      <ish-content-slot [slot]="'app_sf_base_cm:slot.staticPage.content.pagelet2-Slot'" [pagelet]="pagelet">
-      </ish-content-slot>
-    </div>
-  </ng-template>
+    <ng-template #noSidePanel>
+      <div class="col-md-12">
+        <ish-breadcrumb></ish-breadcrumb>
+        <div class="marketing-area">
+          <ish-content-slot
+            [slot]="'app_sf_base_cm:slot.marketing.base.pagelet2-Slot'"
+            [pagelet]="pagelet"
+          ></ish-content-slot>
+        </div>
+        <ish-content-slot [slot]="'app_sf_base_cm:slot.staticPage.content.pagelet2-Slot'" [pagelet]="pagelet">
+        </ish-content-slot>
+      </div>
+    </ng-template>
+  </div>
 </div>

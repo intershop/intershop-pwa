@@ -6,9 +6,8 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { Product } from 'ish-core/models/product/product.model';
 import { User } from 'ish-core/models/user/user.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { GeneralStoreModule } from 'ish-core/store/general/general-store.module';
-import { loadServerConfigSuccess } from 'ish-core/store/general/server-config';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
@@ -42,11 +41,7 @@ describe('User Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(['configuration']),
-        CustomerStoreModule.forTesting('user'),
-        GeneralStoreModule.forTesting('serverConfig'),
-      ],
+      imports: [CoreStoreModule.forTesting(['configuration', 'serverConfig']), CustomerStoreModule.forTesting('user')],
       providers: [provideStoreSnapshots()],
     });
 

@@ -146,7 +146,7 @@ export class CookiesService {
     str += opts.domain ? ';domain=' + opts.domain : '';
     str += expires ? ';expires=' + expires.toUTCString() : '';
     str += opts.sameSite ? ';SameSite=' + opts.sameSite : '';
-    str += opts.secure ? ';secure' : '';
+    str += opts.secure && location.protocol === 'https:' ? ';secure' : '';
     const cookiesLength = str.length + 1;
     if (cookiesLength > 4096) {
       // tslint:disable-next-line: no-console

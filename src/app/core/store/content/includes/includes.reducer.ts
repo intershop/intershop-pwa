@@ -14,7 +14,7 @@ export interface IncludesState extends EntityState<ContentPageletEntryPoint> {
   loading: boolean;
 }
 
-export const initialState: IncludesState = includesAdapter.getInitialState({
+const initialState: IncludesState = includesAdapter.getInitialState({
   loading: false,
 });
 

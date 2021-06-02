@@ -12,10 +12,9 @@ import { BasketValidation } from 'ish-core/models/basket-validation/basket-valid
 import { Product } from 'ish-core/models/product/product.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { createOrder } from 'ish-core/store/customer/orders';
-import { GeneralStoreModule } from 'ish-core/store/general/general-store.module';
-import { loadServerConfigSuccess } from 'ish-core/store/general/server-config';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -50,9 +49,8 @@ describe('Basket Validation Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        CoreStoreModule.forTesting(),
+        CoreStoreModule.forTesting(['serverConfig']),
         CustomerStoreModule.forTesting('user', 'basket'),
-        GeneralStoreModule.forTesting('serverConfig'),
         RouterTestingModule.withRoutes([
           { path: 'checkout', children: [{ path: 'address', component: DummyComponent }] },
           { path: 'checkout', children: [{ path: 'review', component: DummyComponent }] },

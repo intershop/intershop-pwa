@@ -26,7 +26,7 @@ export interface ProductsState extends EntityState<AllProductTypes> {
   defaultVariation: { [sku: string]: string };
 }
 
-export const initialState: ProductsState = productAdapter.getInitialState({
+const initialState: ProductsState = productAdapter.getInitialState({
   failed: [],
   links: {},
   parts: {},

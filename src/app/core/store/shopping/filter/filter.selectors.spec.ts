@@ -6,7 +6,7 @@ import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.modu
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { loadFilterFail, loadFilterSuccess } from './filter.actions';
+import { applyFilterSuccess, loadFilterFail, loadFilterSuccess } from './filter.actions';
 import { getAvailableFilter } from './filter.selectors';
 
 describe('Filter Selectors', () => {
@@ -30,6 +30,17 @@ describe('Filter Selectors', () => {
   describe('with LoadFilterSuccess state', () => {
     beforeEach(() => {
       store$.dispatch(loadFilterSuccess({ filterNavigation: { filter: [{ name: 'a' }] } as FilterNavigation }));
+    });
+    it('should add the filter to the state', () => {
+      expect(getAvailableFilter(store$.state)).toEqual({ filter: [{ name: 'a' }] } as FilterNavigation);
+    });
+  });
+
+  describe('with ApplyFilterSuccess state', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        applyFilterSuccess({ availableFilter: { filter: [{ name: 'a' }] } as FilterNavigation, searchParameter: {} })
+      );
     });
     it('should add the filter to the state', () => {
       expect(getAvailableFilter(store$.state)).toEqual({ filter: [{ name: 'a' }] } as FilterNavigation);

@@ -54,7 +54,7 @@ export interface UserState {
   passwordReminderError: HttpError;
 }
 
-export const initialState: UserState = {
+const initialState: UserState = {
   customer: undefined,
   user: undefined,
   authorized: false,

@@ -11,7 +11,7 @@ export class MetaDataModule {
     'og:image': /.*og-image-default.*/,
     'og:type': 'website',
     'og:locale': 'en_US',
-    'og:locale:alternate': ['de_DE', 'fr_FR'],
+    'og:locale:alternate': ['fr_FR', 'de_DE'],
   };
 
   meta(key: string) {
@@ -29,7 +29,7 @@ export class MetaDataModule {
   }
 
   private checkStrategy(val: string | RegExp | string[]) {
-    return typeof val === 'string' ? 'equal' : Array.isArray(val) ? 'deep.equal' : 'match';
+    return typeof val === 'string' ? 'equal' : Array.isArray(val) ? 'include.members' : 'match';
   }
 
   check(expect: { title?: string; url?: RegExp; description?: string; [key: string]: string | RegExp }) {

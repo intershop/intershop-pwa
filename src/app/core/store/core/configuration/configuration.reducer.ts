@@ -17,6 +17,7 @@ export interface ConfigurationState {
   identityProviders?: { [id: string]: { type?: string; [key: string]: unknown } };
   features?: string[];
   theme?: string;
+  defaultLocale?: string;
   locales?: Locale[];
   lang?: string;
   // not synced via state transfer
@@ -31,6 +32,7 @@ const initialState: ConfigurationState = {
   application: undefined,
   features: undefined,
   theme: undefined,
+  defaultLocale: environment.defaultLocale,
   locales: environment.locales,
   lang: undefined,
   _deviceType: environment.defaultDeviceType,

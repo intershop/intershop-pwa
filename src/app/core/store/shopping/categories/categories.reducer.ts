@@ -8,7 +8,7 @@ export interface CategoriesState {
   categories: CategoryTree;
 }
 
-export const initialState: CategoriesState = {
+const initialState: CategoriesState = {
   categories: CategoryTreeHelper.empty(),
 };
 

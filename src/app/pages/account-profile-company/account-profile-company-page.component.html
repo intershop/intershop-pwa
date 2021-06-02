@@ -1,7 +1,7 @@
 <ng-container *ngIf="currentCustomer$ | async as customer">
   <ish-account-profile-company
     *ngIf="customer.isBusinessCustomer"
-    [currentCustomer]="currentCustomer$ | async"
+    [currentCustomer]="customer"
     [error]="userError$ | async"
     (updateCompanyProfile)="updateCompanyProfile($event)"
   ></ish-account-profile-company>

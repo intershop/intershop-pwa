@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
+import { Locale } from 'ish-core/models/locale/locale.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { applyConfiguration } from './configuration.actions';
@@ -21,7 +23,7 @@ describe('Configuration Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['configuration'])],
+      imports: [CoreStoreModule.forTesting(['configuration', 'serverConfig'])],
       providers: [provideStoreSnapshots()],
     });
 
@@ -104,6 +106,111 @@ describe('Configuration Selectors', () => {
           "type": "id",
         }
       `);
+    });
+  });
+
+  describe('after setting default locales', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        applyConfiguration({
+          locales: [
+            { lang: 'de_DE' },
+            { lang: 'en_US' },
+            { lang: 'fr_BE' },
+            { lang: 'nl_BE' },
+            { lang: 'no_NO' },
+            { lang: 'zh_CN' },
+          ] as Locale[],
+        })
+      );
+    });
+
+    describe('without ICM server configuration', () => {
+      it('should choose the internal default Locale when no ICM is available', () => {
+        store$.dispatch(
+          applyConfiguration({
+            ...store$.state.configuration,
+            defaultLocale: 'en_US',
+          })
+        );
+        expect(getCurrentLocale(store$.state)).toMatchInlineSnapshot(`
+          Object {
+            "lang": "en_US",
+          }
+        `);
+      });
+
+      it('should choose the first locale when no ICM or internal configuration is available', () => {
+        store$.dispatch(
+          applyConfiguration({
+            ...store$.state.configuration,
+            defaultLocale: undefined,
+          })
+        );
+        expect(getCurrentLocale(store$.state)).toMatchInlineSnapshot(`
+          Object {
+            "lang": "de_DE",
+          }
+        `);
+      });
+
+      it.each`
+        requested  | chosen
+        ${'de_DE'} | ${'de_DE'}
+        ${'no_NO'} | ${'no_NO'}
+        ${'nl_BE'} | ${'nl_BE'}
+        ${'zh_CN'} | ${'zh_CN'}
+        ${'nl_NL'} | ${'de_DE'}
+      `('should choose $chosen when $requested is requested', ({ requested, chosen }) => {
+        store$.dispatch(applyConfiguration({ lang: requested, defaultLocale: undefined }));
+        expect(getCurrentLocale(store$.state)?.lang).toEqual(chosen);
+      });
+    });
+
+    describe('with ICM server configuration', () => {
+      beforeEach(() => {
+        store$.dispatch(
+          loadServerConfigSuccess({
+            config: {
+              general: {
+                defaultLocale: 'en_US',
+                locales: ['en_US', 'de_DE', 'fr_BE', 'nl_BE', 'fr_FR'],
+              },
+            },
+          })
+        );
+      });
+
+      it('should filter available locales for matching ICM server locales', () => {
+        expect(getAvailableLocales(store$.state)?.map(l => l.lang)).toMatchInlineSnapshot(`
+          Array [
+            "en_US",
+            "de_DE",
+            "fr_BE",
+            "nl_BE",
+          ]
+        `);
+      });
+
+      it('should choose the ICM configured default locale when ICM configuration is available', () => {
+        expect(getCurrentLocale(store$.state)).toMatchInlineSnapshot(`
+          Object {
+            "lang": "en_US",
+          }
+        `);
+      });
+
+      it.each`
+        requested  | chosen
+        ${'de_DE'} | ${'de_DE'}
+        ${'no_NO'} | ${'en_US'}
+        ${'nl_BE'} | ${'nl_BE'}
+        ${'zh_CN'} | ${'en_US'}
+        ${'nl_NL'} | ${'en_US'}
+      `('should choose $chosen when $requested is requested', ({ requested, chosen }) => {
+        store$.dispatch(applyConfiguration({ lang: requested }));
+        expect(getCurrentLocale(store$.state)?.lang).toEqual(chosen);
+      });
     });
   });
 });

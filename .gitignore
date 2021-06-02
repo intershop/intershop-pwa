@@ -69,3 +69,6 @@ Thumbs.db
 
 # nvm
 .nvmrc
+
+# generated xliff
+*.xliff

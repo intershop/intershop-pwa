@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Store, createSelector, select } from '@ngrx/store';
-import { merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, switchMap, take, tap } from 'rxjs/operators';
+import { Subject, merge } from 'rxjs';
+import { debounceTime, map, sample, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { selectRouteData } from 'ish-core/store/core/router';
+import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import { getAllAddresses } from 'ish-core/store/customer/addresses';
 import {
   addPromotionCodeToBasket,
@@ -47,13 +48,22 @@ import {
 } from 'ish-core/store/customer/basket';
 import { getOrdersError, getSelectedOrder } from 'ish-core/store/customer/orders';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
-import { getServerConfigParameter } from 'ish-core/store/general/server-config';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
 export class CheckoutFacade {
-  constructor(private store: Store) {}
+  private basketChangeInternal$ = new Subject<void>();
+
+  constructor(private store: Store) {
+    this.store
+      .pipe(
+        select(getBasketLastTimeProductAdded),
+        whenTruthy(),
+        sample(this.basketLoading$.pipe(debounceTime(500), whenFalsy()))
+      )
+      .subscribe(() => this.basketChangeInternal$.next());
+  }
 
   checkoutStep$ = this.store.pipe(select(selectRouteData<number>('checkoutStep')));
 
@@ -68,12 +78,7 @@ export class CheckoutFacade {
   // BASKET
 
   basket$ = this.store.pipe(select(getCurrentBasket));
-  basketChange$ = this.store.pipe(
-    select(getBasketLastTimeProductAdded),
-    whenTruthy(),
-    distinctUntilChanged(),
-    switchMap(() => this.basketLoading$.pipe(debounceTime(500), whenFalsy()))
-  );
+  basketChange$ = this.basketChangeInternal$.asObservable();
   basketError$ = this.store.pipe(select(getBasketError));
   basketInfo$ = this.store.pipe(select(getBasketInfo));
   basketLoading$ = this.store.pipe(select(getBasketLoading));

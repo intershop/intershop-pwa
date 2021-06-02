@@ -76,9 +76,18 @@ export class PunchoutPageGuard implements CanActivate {
             return this.punchoutService.getCxmlPunchoutSession(route.queryParamMap.get('sid')).pipe(
               // persist cXML session information (sid, returnURL, basketId) in cookies for later basket transfer
               tap(data => {
-                this.cookiesService.put('punchout_SID', route.queryParamMap.get('sid'), { sameSite: 'Strict' });
-                this.cookiesService.put('punchout_ReturnURL', data.returnURL, { sameSite: 'Strict' });
-                this.cookiesService.put('punchout_BasketID', data.basketId, { sameSite: 'Strict' });
+                this.cookiesService.put('punchout_SID', route.queryParamMap.get('sid'), {
+                  sameSite: 'None',
+                  secure: true,
+                });
+                this.cookiesService.put('punchout_ReturnURL', data.returnURL, {
+                  sameSite: 'None',
+                  secure: true,
+                });
+                this.cookiesService.put('punchout_BasketID', data.basketId, {
+                  sameSite: 'None',
+                  secure: true,
+                });
               }),
               // use the basketId basket for the current PWA session (instead of default current basket)
               // TODO: if load basket error (currently no error page) -> logout and do not use default 'current' basket
@@ -91,7 +100,10 @@ export class PunchoutPageGuard implements CanActivate {
             // handle OCI punchout with HOOK_URL
           } else if (route.queryParamMap.get('HOOK_URL')) {
             // save HOOK_URL to cookie for later basket transfer
-            this.cookiesService.put('punchout_HookURL', route.queryParamMap.get('HOOK_URL'), { sameSite: 'Strict' });
+            this.cookiesService.put('punchout_HookURL', route.queryParamMap.get('HOOK_URL'), {
+              sameSite: 'None',
+              secure: true,
+            });
 
             // create a new basket for every punchout session to avoid basket conflicts for concurrent punchout sessions
             this.checkoutFacade.createBasket();

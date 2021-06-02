@@ -85,7 +85,7 @@ export class ApiTokenService {
           if (cookieContent) {
             cookiesService.put('apiToken', cookieContent, {
               expires: new Date(Date.now() + 3600000),
-              secure: (isPlatformBrowser(platformId) && location.protocol === 'https:') || false,
+              secure: true,
               sameSite: 'Strict',
             });
           } else {
@@ -213,7 +213,7 @@ export class ApiTokenService {
       if (apiToken) {
         if (apiToken.startsWith('AuthenticationTokenOutdated') || apiToken.startsWith('AuthenticationTokenInvalid')) {
           this.invalidateApiToken();
-        } else if (!event.url.endsWith('/configurations')) {
+        } else if (!event.url.endsWith('/configurations') && !event.url.endsWith('/contact')) {
           this.setApiToken(apiToken);
         }
       }

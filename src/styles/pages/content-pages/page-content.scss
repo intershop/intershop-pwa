@@ -1,5 +1,9 @@
 //
 
+.content-page {
+  padding: $space-default 0 $space-default 0;
+}
+
 ul {
   &.collection {
     padding-left: 0;
@@ -20,6 +24,7 @@ ol {
 .helpdesk-info-box {
   width: 100%;
   padding: $space-default/2;
+  margin-bottom: $space-default;
   color: $text-color-inverse;
   background: $color-corporate;
 

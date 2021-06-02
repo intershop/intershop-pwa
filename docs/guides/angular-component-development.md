@@ -83,7 +83,7 @@ This pattern provides the needed flexibility if used together with handling obse
 In this case the condition should look like this:
 
 ```typescript
-<ng-container *ngIf="(observable$ | async) as synchronized; else loading">
+<ng-container *ngIf="observable$ | async as synchronized; else loading">
 ```
 
 ## Do Not Unsubscribe, Use Destroy Observable and takeUntil Instead

@@ -7,6 +7,7 @@ import { ContentPageletView, createContentPageletView } from 'ish-core/models/co
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { ContentNavigationComponent } from 'ish-shared/cms/components/content-navigation/content-navigation.component';
 import { ContentSlotComponent } from 'ish-shared/cms/components/content-slot/content-slot.component';
+import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 
 import { CMSStaticPageComponent } from './cms-static-page.component';
 
@@ -21,6 +22,7 @@ describe('Cms Static Page Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         CMSStaticPageComponent,
+        MockComponent(BreadcrumbComponent),
         MockComponent(ContentNavigationComponent),
         MockComponent(ContentSlotComponent),
       ],
