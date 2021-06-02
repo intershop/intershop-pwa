@@ -7,6 +7,29 @@ kb_everyone
 
 # Changelog
 
+## [0.31.0](https://github.com/intershop/intershop-pwa/releases/tag/0.31.0) (2021-06-02)
+
+**required Intershop Commerce Management version: 7.10.30.2**
+
+### Features
+
+- enable loading translations from ICM (#695) ([7f8ae68](https://github.com/intershop/intershop-pwa/commit/7f8ae68))
+- display only available products in product links carousels and lists (#626) ([386a584](https://github.com/intershop/intershop-pwa/commit/386a584))
+- omit default redirect in multi channel when one base href is root route (#704) ([76c9074](https://github.com/intershop/intershop-pwa/commit/76c9074))
+- use locales from ICM configuration (#685) ([204fd36](https://github.com/intershop/intershop-pwa/commit/204fd36))
+
+### Bug Fixes
+
+- breadcrumb styling harmonization (#713) ([abb2c4e](https://github.com/intershop/intershop-pwa/commit/abb2c4e))
+- set punchout cookies with "SameSite=None; Secure" to work in https iframes (#683) ([f5900eb](https://github.com/intershop/intershop-pwa/commit/f5900eb))
+- timing issue when fetching CMS content include data after logout (#711) ([712c91b](https://github.com/intershop/intershop-pwa/commit/712c91b))
+- adapt static content navigation styling to meet new IAD/VD requirements (#682) ([2fd56b1](https://github.com/intershop/intershop-pwa/commit/2fd56b1))
+- use region code instead of id for US new-address-form (#708) ([06f466c](https://github.com/intershop/intershop-pwa/commit/06f466c))
+- add missing loading spinner when creating an account (registration) (#705) ([8a77c4d](https://github.com/intershop/intershop-pwa/commit/8a77c4d))
+- undesired logout after contact us submission (#686) ([a76d4a6](https://github.com/intershop/intershop-pwa/commit/a76d4a6))
+- track item changes as local state in checkout facade (#702) ([8600213](https://github.com/intershop/intershop-pwa/commit/8600213))
+- mini cart opens if the user navigates from checkout to other pages (#688) ([5a0ed25](https://github.com/intershop/intershop-pwa/commit/5a0ed25))
+
 ## [0.30.0](https://github.com/intershop/intershop-pwa/releases/tag/0.30.0) (2021-05-05)
 
 **required Intershop Commerce Management version: 7.10.30.2**
