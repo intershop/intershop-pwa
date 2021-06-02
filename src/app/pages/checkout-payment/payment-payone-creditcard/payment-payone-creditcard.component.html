@@ -33,7 +33,7 @@
   </div>
 
   <!-- security code CVC -->
-  <div class="row form-group">
+  <div *ngIf="isSecurityCodeCheckRequired()" class="row form-group">
     <label class="col-form-label col-md-4" for="cvcInput"
       >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required">*</span></label
     >
