@@ -49,7 +49,7 @@ for (const file of files) {
 
     if (
       !tsquery(
-        (file.getSourceFile().compilerNode as unknown) as ts.Node,
+        file.getSourceFile().compilerNode as unknown as ts.Node,
         'PropertyAccessExpression[expression.text=TestBed][name.text=configureTestingModule]'
       ).length
     ) {

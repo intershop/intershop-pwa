@@ -109,7 +109,7 @@ describe('Product Mapper', () => {
         sku: '1',
         attributes: [{ name: 'Graphics', type: 'String', value: 'NVIDIA Quadro K2200' }],
       } as ProductData);
-      const p2: Product = productMapper.fromData(({
+      const p2: Product = productMapper.fromData({
         sku: '1',
         attributes: [{ name: 'Graphics', type: 'String', value: 'NVIDIA Quadro K2200' }],
         attributeGroups: {
@@ -117,7 +117,7 @@ describe('Product Mapper', () => {
             attributes: [{ name: 'Grafikkarte', type: 'String', value: 'NVIDIA Quadro K2200' }],
           },
         },
-      } as unknown) as ProductData);
+      } as unknown as ProductData);
       expect(p1).toBeTruthy();
       expect(p1.attributes).toEqual([{ name: 'Graphics', type: 'String', value: 'NVIDIA Quadro K2200' }]);
       expect(p2).toBeTruthy();

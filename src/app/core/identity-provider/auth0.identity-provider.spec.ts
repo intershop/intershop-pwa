@@ -146,10 +146,10 @@ describe('Auth0 Identity Provider', () => {
     }));
 
     it('should sign in user without rerouting to registration page if customer exists', fakeAsync(() => {
-      store$.overrideSelector(getLoggedInCustomer, ({
+      store$.overrideSelector(getLoggedInCustomer, {
         customerNo: '4711',
         isBusinessCustomer: true,
-      } as Customer) as Customer);
+      } as Customer as Customer);
       store$.overrideSelector(getUserLoading, false);
       store$.overrideSelector(getUserAuthorized, true);
 

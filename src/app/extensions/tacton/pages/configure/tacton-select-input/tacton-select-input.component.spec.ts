@@ -25,7 +25,7 @@ describe('Tacton Select Input Component', () => {
     fixture = TestBed.createComponent(TactonSelectInputComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.parameter = ({
+    component.parameter = {
       isGroup: false,
       isParameter: true,
       name: 'paramID',
@@ -97,7 +97,7 @@ describe('Tacton Select Input Component', () => {
           },
         ],
       },
-    } as unknown) as TactonProductConfigurationParameter;
+    } as unknown as TactonProductConfigurationParameter;
   });
 
   it('should be created', () => {

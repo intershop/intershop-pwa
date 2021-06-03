@@ -134,7 +134,7 @@
     "ng-mocks": "^12.0.2",
     "npm-run-all": "^4.1.5",
     "postinstall": "^0.7.0",
-    "prettier": "~2.2.1",
+    "prettier": "^2.3.0",
     "purgecss-webpack-plugin": "^4.0.3",
     "rxjs-tslint-rules": "^4.34.8",
     "sort-json": "^2.0.0",

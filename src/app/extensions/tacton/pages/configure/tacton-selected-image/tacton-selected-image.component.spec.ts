@@ -24,7 +24,7 @@ describe('Tacton Selected Image Component', () => {
     fixture = TestBed.createComponent(TactonSelectedImageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.parameter = ({
+    component.parameter = {
       isGroup: false,
       isParameter: true,
       name: 'ID',
@@ -42,7 +42,7 @@ describe('Tacton Selected Image Component', () => {
       domain: {
         name: 'selectedImage',
       },
-    } as unknown) as TactonProductConfigurationParameter;
+    } as unknown as TactonProductConfigurationParameter;
   });
 
   it('should be created', () => {

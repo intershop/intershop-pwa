@@ -46,7 +46,8 @@ export abstract class QuoteContextFacade
     editable: boolean;
     justSubmitted: boolean;
   }>
-  implements OnDestroy {
+  implements OnDestroy
+{
   constructor(private store: Store) {
     super();
     store.pipe(first()).subscribe(state => {

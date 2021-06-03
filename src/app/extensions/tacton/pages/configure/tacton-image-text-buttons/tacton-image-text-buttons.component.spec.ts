@@ -26,7 +26,7 @@ describe('Tacton Image Text Buttons Component', () => {
     fixture = TestBed.createComponent(TactonImageTextButtonsComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.parameter = ({
+    component.parameter = {
       isGroup: false,
       isParameter: true,
       name: 'ID',
@@ -60,7 +60,7 @@ describe('Tacton Image Text Buttons Component', () => {
           },
         ],
       },
-    } as unknown) as TactonProductConfigurationParameter;
+    } as unknown as TactonProductConfigurationParameter;
 
     when(tactonFacade.getImageUrl$('image1')).thenReturn(of('http://xxximage1_key=xyz'));
     when(tactonFacade.getImageUrl$('image2')).thenReturn(of('http://xxximage2_key=xyz'));
