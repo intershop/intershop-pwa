@@ -61,7 +61,7 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
     const thisComp = this;
 
     // register helper function to call the callback function of this component
-    // tslint:disable-next-line:no-string-literal only-arrow-functions
+    // tslint:disable-next-line:no-string-literal only-arrow-functions no-any
     (window as any)['payoneCreditCardCallback'] = function (response: {
       status: string;
       pseudocardpan: string;
@@ -82,7 +82,7 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
 
   ngOnDestroy() {
     // unregister helper function again
-    // tslint:disable-next-line:no-string-literal
+    // tslint:disable-next-line:no-string-literal no-any
     (window as any)['payoneCreditCardCallback'] = undefined;
 
     this.destroy$.next();
