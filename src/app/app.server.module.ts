@@ -6,20 +6,42 @@ import { META_REDUCERS } from '@ngrx/store';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
-import { Observable, combineLatest, of, throwError } from 'rxjs';
+import { Observable, OperatorFunction, combineLatest, of, throwError } from 'rxjs';
 import { catchError, first, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { configurationMeta } from 'ish-core/configurations/configuration.meta';
 import { COOKIE_CONSENT_VERSION, DISPLAY_VERSION, SSR_TRANSLATIONS } from 'ish-core/configurations/state-keys';
 import { UniversalLogInterceptor } from 'ish-core/interceptors/universal-log.interceptor';
 import { UniversalMockInterceptor } from 'ish-core/interceptors/universal-mock.interceptor';
-import { Translations, appendSlash, filterAndTransformKeys } from 'ish-core/internationalization.module';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
+
+type Translations = Record<string, string | Record<string, string>>;
+
+function appendSlash(): OperatorFunction<string, string> {
+  return (source$: Observable<string>) => source$.pipe(map(url => `${url}/`));
+}
+
+function filterAndTransformKeys(translations: Record<string, string>): Translations {
+  const filtered: Translations = {};
+  const prefix = /^pwa-/;
+  for (const key in translations) {
+    if (prefix.test(key)) {
+      const value = translations[key];
+      try {
+        const parsed = JSON.parse(value);
+        filtered[key.replace(prefix, '')] = parsed;
+      } catch {
+        filtered[key.replace(prefix, '')] = value;
+      }
+    }
+  }
+  return filtered;
+}
 
 class TranslateUniversalLoader implements TranslateLoader {
   constructor(

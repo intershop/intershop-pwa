@@ -5,19 +5,15 @@ import localeFr from '@angular/common/locales/fr';
 import { Inject, Injectable, LOCALE_ID, NgModule } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Observable, OperatorFunction, combineLatest, of } from 'rxjs';
+import { Observable, combineLatest, of } from 'rxjs';
 import { catchError, first, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { SSR_LOCALE, SSR_TRANSLATIONS } from './configurations/state-keys';
 import { StatePropertiesService } from './utils/state-transfer/state-properties.service';
 
-export type Translations = Record<string, string | Record<string, string>>;
+type Translations = Record<string, string | Record<string, string>>;
 
-export function appendSlash(): OperatorFunction<string, string> {
-  return (source$: Observable<string>) => source$.pipe(map(url => `${url}/`));
-}
-
-export function filterAndTransformKeys(translations: Record<string, string>): Translations {
+function filterAndTransformKeys(translations: Record<string, string>): Translations {
   const filtered: Translations = {};
   const prefix = /^pwa-/;
   for (const key in translations) {
@@ -75,13 +71,13 @@ class ICMTranslateLoader implements TranslateLoader {
 
   get icmURL(): Observable<string> {
     return combineLatest([
-      this.stateProperties.getStateOrEnvOrDefault('ICM_BASE_URL', 'icmBaseURL').pipe(appendSlash()),
-      this.stateProperties.getStateOrEnvOrDefault('ICM_SERVER', 'icmServer').pipe(appendSlash()),
-      this.stateProperties.getStateOrEnvOrDefault('ICM_CHANNEL', 'icmChannel').pipe(appendSlash()),
-      this.stateProperties.getStateOrEnvOrDefault('ICM_APPLICATION', 'icmApplication'),
+      this.stateProperties.getStateOrEnvOrDefault<string>('ICM_BASE_URL', 'icmBaseURL'),
+      this.stateProperties.getStateOrEnvOrDefault<string>('ICM_SERVER', 'icmServer'),
+      this.stateProperties.getStateOrEnvOrDefault<string>('ICM_CHANNEL', 'icmChannel'),
+      this.stateProperties.getStateOrEnvOrDefault<string>('ICM_APPLICATION', 'icmApplication'),
     ]).pipe(
       first(),
-      map(arr => arr.join(''))
+      map(arr => arr.join('/'))
     );
   }
 }
