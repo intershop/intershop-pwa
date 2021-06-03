@@ -15,21 +15,22 @@ import { whenTruthy } from './utils/operators';
 
 export type Translations = Record<string, string | Record<string, string>>;
 
-function filterAndTransformKeys(translations: Record<string, string>): Translations {
-  const filtered: Translations = {};
-  const prefix = /^pwa-/;
-  for (const key in translations) {
-    if (prefix.test(key)) {
-      const value = translations[key];
-      try {
-        const parsed = JSON.parse(value);
-        filtered[key.replace(prefix, '')] = parsed;
-      } catch {
-        filtered[key.replace(prefix, '')] = value;
-      }
+function maybeJSON(val: string) {
+  if (val.startsWith('{')) {
+    try {
+      return JSON.parse(val);
+    } catch {
+      // default
     }
   }
-  return filtered;
+  return val;
+}
+
+function filterAndTransformKeys(translations: Record<string, string>): Translations {
+  return Object.entries(translations)
+    .filter(([key]) => key.startsWith('pwa-'))
+    .map(([key, value]) => [key.substring(4), maybeJSON(value)])
+    .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
 }
 
 @Injectable()
