@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "SchematicsPWAComponent",
+  "$id": "SchematicsPWAComponent",
   "title": "PWA Add Destroy Subject To Component Options Schema",
   "type": "object",
   "description": "Adds destroy subject to an existing Angular artifact.",

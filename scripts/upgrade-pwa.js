@@ -3,7 +3,7 @@ const { execSync, spawnSync } = require('child_process');
 const pinned = {
   husky: '4', // 5 has a strange license
   '@types/node': '14', // LTS
-  '@types/webpack': '4', // webpack.custom.js compatible version
+  bootstrap: '4', // pinned
 };
 
 const parseVersion = version => {
