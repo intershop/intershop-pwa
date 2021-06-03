@@ -4,12 +4,14 @@ import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
 import { Inject, Injectable, LOCALE_ID, NgModule, PLATFORM_ID } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
+import { Store, select } from '@ngrx/store';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Observable, combineLatest, from, of } from 'rxjs';
-import { catchError, first, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { from, of } from 'rxjs';
+import { catchError, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { SSR_LOCALE, SSR_TRANSLATIONS } from './configurations/state-keys';
-import { StatePropertiesService } from './utils/state-transfer/state-properties.service';
+import { getCurrentLocale, getRestEndpoint } from './store/core/configuration';
+import { whenTruthy } from './utils/operators';
 
 export type Translations = Record<string, string | Record<string, string>>;
 
@@ -34,9 +36,9 @@ function filterAndTransformKeys(translations: Record<string, string>): Translati
 class ICMTranslateLoader implements TranslateLoader {
   constructor(
     private httpClient: HttpClient,
-    private stateProperties: StatePropertiesService,
     private transferState: TransferState,
-    @Inject(PLATFORM_ID) private platformId: string
+    @Inject(PLATFORM_ID) private platformId: string,
+    private store: Store
   ) {}
 
   getTranslation(lang: string) {
@@ -45,12 +47,18 @@ class ICMTranslateLoader implements TranslateLoader {
     }
     const local$ = from(import(`../../assets/i18n/${lang}.json`)).pipe(
       catchError(() =>
-        this.stateProperties
-          .getStateOrEnvOrDefault<string>('DEFAULT_LOCALE', 'defaultLocale')
-          .pipe(switchMap(defaultLang => from(import(`../../assets/i18n/${defaultLang}.json`))))
+        this.store.pipe(
+          select(getCurrentLocale),
+          whenTruthy(),
+          take(1),
+          switchMap(defaultLang => from(import(`../../assets/i18n/${defaultLang}.json`)))
+        )
       )
     );
-    return this.icmURL.pipe(
+    return this.store.pipe(
+      select(getRestEndpoint),
+      whenTruthy(),
+      take(1),
       switchMap(url =>
         this.httpClient.get(`${url};loc=${lang}/localizations`, {
           params: {
@@ -70,18 +78,6 @@ class ICMTranslateLoader implements TranslateLoader {
         }
       }),
       catchError(() => local$)
-    );
-  }
-
-  get icmURL(): Observable<string> {
-    return combineLatest([
-      this.stateProperties.getStateOrEnvOrDefault<string>('ICM_BASE_URL', 'icmBaseURL'),
-      this.stateProperties.getStateOrEnvOrDefault<string>('ICM_SERVER', 'icmServer'),
-      this.stateProperties.getStateOrEnvOrDefault<string>('ICM_CHANNEL', 'icmChannel'),
-      this.stateProperties.getStateOrEnvOrDefault<string>('ICM_APPLICATION', 'icmApplication'),
-    ]).pipe(
-      first(),
-      map(arr => arr.join('/'))
     );
   }
 }
