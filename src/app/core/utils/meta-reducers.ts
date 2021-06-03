@@ -24,31 +24,32 @@ function saveMeta<S>(
     console.warn('saveMeta:', `store key ${prefix}/${key} is not excluded from universal state transfer.`);
   }
   const item = `${baseHref}-${prefix}-${key}`;
-  return (reducer): ActionReducer<S> => (state: S, action: Action) => {
-    if (typeof window !== 'undefined' && action.type !== '@ngrx/store-devtools/recompute') {
-      let incomingState = state;
-      if (!incomingState?.[key]) {
-        const fromStorage = storage.getItem(item);
-        if (fromStorage) {
-          const fromStorageParsed = JSON.parse(fromStorage);
-          const timeoutCheck =
-            lifeTimeMinutes === undefined ||
-            lifeTimeMinutes * 60 * 1000 + fromStorageParsed.sync > new Date().getTime();
-          if (timeoutCheck) {
-            incomingState = { ...state, [key]: fromStorageParsed.data };
-          } else {
-            storage.setItem(item, undefined);
+  return (reducer): ActionReducer<S> =>
+    (state: S, action: Action) => {
+      if (typeof window !== 'undefined' && action.type !== '@ngrx/store-devtools/recompute') {
+        let incomingState = state;
+        if (!incomingState?.[key]) {
+          const fromStorage = storage.getItem(item);
+          if (fromStorage) {
+            const fromStorageParsed = JSON.parse(fromStorage);
+            const timeoutCheck =
+              lifeTimeMinutes === undefined ||
+              lifeTimeMinutes * 60 * 1000 + fromStorageParsed.sync > new Date().getTime();
+            if (timeoutCheck) {
+              incomingState = { ...state, [key]: fromStorageParsed.data };
+            } else {
+              storage.setItem(item, undefined);
+            }
           }
         }
+        const newState = reducer(incomingState, action);
+        if (newState?.[key] !== state?.[key] && !isEqual(newState?.[key], state?.[key])) {
+          storage.setItem(item, JSON.stringify({ sync: new Date().getTime(), data: newState?.[key] }));
+        }
+        return newState;
       }
-      const newState = reducer(incomingState, action);
-      if (newState?.[key] !== state?.[key] && !isEqual(newState?.[key], state?.[key])) {
-        storage.setItem(item, JSON.stringify({ sync: new Date().getTime(), data: newState?.[key] }));
-      }
-      return newState;
-    }
-    return reducer(state, action);
-  };
+      return reducer(state, action);
+    };
 }
 
 const localStorageSaveMeta = <S>(baseHref: string, prefix: string, key: keyof S & string, lifeTimeMinutes?: number) =>

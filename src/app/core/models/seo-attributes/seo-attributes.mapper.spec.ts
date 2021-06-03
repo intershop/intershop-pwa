@@ -32,13 +32,13 @@ describe('Seo Attributes Mapper', () => {
 
     it('should convert server data to model data', () => {
       expect(
-        SeoAttributesMapper.fromCMSData(({
+        SeoAttributesMapper.fromCMSData({
           configurationParameters: {
             MetaInfo: 'metaTitle=Terms and Conditions;metaDescription=DESC;metaKeywords=terms,conditions',
             RobotsNoFollow: 'true',
             RobotsNoIndex: 'false',
           },
-        } as unknown) as ContentPagelet)
+        } as unknown as ContentPagelet)
       ).toMatchInlineSnapshot(`
         Object {
           "description": "DESC",

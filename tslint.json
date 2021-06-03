@@ -110,13 +110,7 @@
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
     "object-literal-key-quotes": [true, "as-needed"],
-    "one-line": [
-      true,
-      "check-open-brace",
-      "check-catch",
-      "check-else",
-      "check-whitespace"
-    ],
+    "one-line": [true, "check-catch", "check-else", "check-whitespace"],
     "one-variable-per-declaration": true,
     "prefer-const": true,
     "use-shorthand-property-in-object-creation": true,

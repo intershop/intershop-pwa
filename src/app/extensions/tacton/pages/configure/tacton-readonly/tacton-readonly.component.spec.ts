@@ -19,7 +19,7 @@ describe('Tacton Readonly Component', () => {
     fixture = TestBed.createComponent(TactonReadonlyComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.parameter = ({
+    component.parameter = {
       isGroup: false,
       isParameter: true,
       name: 'ID',
@@ -34,7 +34,7 @@ describe('Tacton Readonly Component', () => {
         hasDetailedView: false,
         tc_info_text: 'info',
       },
-    } as unknown) as TactonProductConfigurationParameter;
+    } as unknown as TactonProductConfigurationParameter;
   });
 
   it('should be created', () => {

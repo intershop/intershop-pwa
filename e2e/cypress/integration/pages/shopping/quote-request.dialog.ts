@@ -40,7 +40,7 @@ export class QuoteRequestDialog {
     return cy
       .get('[data-testing-id="quoteId"]')
       .invoke('attr', 'data-quote-id')
-      .then(s => (s as unknown) as string);
+      .then(s => s as unknown as string);
   }
 
   get totalPrice() {

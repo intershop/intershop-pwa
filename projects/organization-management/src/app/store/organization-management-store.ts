@@ -8,6 +8,5 @@ export interface OrganizationManagementState {
   budget: BudgetState;
 }
 
-export const getOrganizationManagementState = createFeatureSelector<OrganizationManagementState>(
-  'organizationManagement'
-);
+export const getOrganizationManagementState =
+  createFeatureSelector<OrganizationManagementState>('organizationManagement');

@@ -201,9 +201,7 @@ export class ProductsService {
   /**
    * Get product variations for the given master product sku.
    */
-  getProductVariations(
-    sku: string
-  ): Observable<{
+  getProductVariations(sku: string): Observable<{
     products: Partial<VariationProduct>[];
     defaultVariation: string;
     masterProduct: Partial<VariationProductMaster>;
