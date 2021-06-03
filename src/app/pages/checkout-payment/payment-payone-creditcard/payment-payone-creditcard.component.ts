@@ -156,7 +156,7 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
       const isSecurityCodeCheckRequired = this.paymentMethod.hostedPaymentPageParameters.find(
         param => param.name === 'isSecurityCheckCodeRequired'
       );
-      if (isSecurityCodeCheckRequired && isSecurityCodeCheckRequired.value) {
+      if (isSecurityCodeCheckRequired && String(isSecurityCodeCheckRequired.value).toLowerCase() === 'true') {
         return true;
       }
     }
