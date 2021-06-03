@@ -28,7 +28,7 @@ export class CMSFacade {
     return combineLatest([includeId$.pipe(whenTruthy()), this.store.pipe(select(getPGID))]).pipe(
       delay(0), // delay ensures the apiToken cookie is deleted before a cms request without a pgid is triggered
       tap(([includeId]) => this.store.dispatch(loadContentInclude({ includeId }))),
-      switchMap(([includeId]) => this.store.pipe(select(getContentInclude(includeId), whenTruthy())))
+      switchMap(([includeId]) => this.store.pipe(select(getContentInclude(includeId)), whenTruthy()))
     );
   }
 

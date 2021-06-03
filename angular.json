@@ -54,6 +54,7 @@
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": true,
+              "commonChunk": false,
               "buildOptimizer": true,
               "budgets": [
                 {
