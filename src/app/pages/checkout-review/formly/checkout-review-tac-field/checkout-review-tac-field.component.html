@@ -7,7 +7,7 @@
         [formlyAttributes]="field"
         [attr.data-testing-id]="field.key"
       />
-      <span [ishServerHtml]="to.label | translate: args"></span>
+      <span [ishServerHtml]="to.label | translate: getArgs"></span>
     </label>
   </div>
   <ng-container *ngIf="showError" class="invalid-feedback d-block">

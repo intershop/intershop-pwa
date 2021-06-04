@@ -10,7 +10,7 @@ import { FieldType } from '@ngx-formly/core';
 export class CheckoutReviewTacFieldComponent extends FieldType {
   formControl: FormControl;
 
-  get args() {
+  getArgs() {
     return this.to.args ? this.to.args : {};
   }
 }

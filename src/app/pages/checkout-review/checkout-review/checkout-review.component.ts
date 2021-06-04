@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -18,8 +18,9 @@ export class CheckoutReviewComponent implements OnInit {
   @Output() createOrder = new EventEmitter<void>();
 
   form = new FormGroup({});
-  model: {};
+  model: { termsAndConditions: false };
   fields: FormlyFieldConfig[];
+  options: FormlyFormOptions = {};
 
   submitted = false;
   multipleBuckets = false;
@@ -51,12 +52,16 @@ export class CheckoutReviewComponent implements OnInit {
           required: true,
           label: 'checkout.tac.text',
           args: { 0: 'page://page.termsAndConditions.pagelet2-Page' },
+          validation: {
+            show: true,
+          },
         },
         validators: {
           validation: [Validators.pattern('true')],
         },
         validation: {
           messages: {
+            required: 'checkout.tac.error.tip',
             pattern: 'checkout.tac.error.tip',
           },
         },

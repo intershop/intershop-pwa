@@ -97,19 +97,15 @@
 
     <div class="cost-summary">
       <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
-      <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-
-      <button
-        class="btn btn-lg btn-block btn-primary"
-        type="button"
-        [disabled]="formDisabled || submitting"
-        (click)="submitOrder()"
-      >
-        <ng-container *ngIf="submitting">
-          <fa-icon [icon]="['fas', 'spinner']" [spin]="true" class="pr-3"></fa-icon>
-        </ng-container>
-        {{ 'checkout.order_review.send.button' | translate }}
-      </button>
+      <form [formGroup]="form" (ngSubmit)="submitOrder()">
+        <formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>
+        <button class="btn btn-lg btn-block btn-primary" type="submit" [disabled]="formDisabled || submitting">
+          <ng-container *ngIf="submitting">
+            <fa-icon [icon]="['fas', 'spinner']" [spin]="true" class="pr-3"></fa-icon>
+          </ng-container>
+          {{ 'checkout.order_review.send.button' | translate }}
+        </button>
+      </form>
     </div>
   </div>
 </div>

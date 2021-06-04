@@ -17,7 +17,7 @@ const checkoutReviewFormlyConfig: ConfigOption = {
 };
 
 @NgModule({
-  imports: [FormlyModule.forRoot(checkoutReviewFormlyConfig), SharedModule],
+  imports: [FormlyModule.forChild(checkoutReviewFormlyConfig), SharedModule],
   declarations: [CheckoutReviewComponent, CheckoutReviewPageComponent, CheckoutReviewTacFieldComponent],
 })
 export class CheckoutReviewPageModule {
