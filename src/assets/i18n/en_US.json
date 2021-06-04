@@ -45,11 +45,7 @@
   "account.addresses.remove_dialog.title": "Delete Address",
   "account.addresses.saved_address.heading": "Addresses",
   "account.addresses.update_address.button.label": "Save Changes",
-  "account.approvallist.items": {
-    "=0": "0 Items",
-    "=1": "1 Item",
-    "other": "# Items"
-  },
+  "account.approvallist.items": "{{0, plural, =1{1 Item} other{# Items}}}",
   "account.approvallist.no_items_message": "Currently no requisitions to display.",
   "account.approvallist.table.approval_date": "Approval Date",
   "account.approvallist.table.approver": "Approver",
@@ -165,11 +161,7 @@
   "account.order_template.edit.heading": "Edit Order Template",
   "account.order_template.form.name.error.required": "Please enter an order template name.",
   "account.order_template.form.name.label": "Order Template Name",
-  "account.order_template.items": {
-    "=0": "0 Items",
-    "=1": "1 Item",
-    "other": "# Items"
-  },
+  "account.order_template.items": "{{0, plural, =1{1 Item} other{# Items}}}",
   "account.order_template.list.button.add_template.label": "Add Order Template",
   "account.order_template.list.link.back": "Back to Order Templates",
   "account.order_template.list.link.remove": "Delete",
@@ -464,11 +456,7 @@
   "account.wishlists.heading.tooltip.content": "You can create one or more personal wish lists to save and organize items. Every list has its own settings:<br><br> <b>Set as Preferred</b> makes a wish list your preferred wish list and sets all other lists (if any) back to normal. All added products will be added by default to this wish list.",
   "account.wishlists.heading.tooltip.headline": "Wish Lists",
   "account.wishlists.heading.tooltip.link": "How do Wish Lists work?",
-  "account.wishlists.items": {
-    "=0": "0 Items",
-    "=1": "1 Item",
-    "other": "# Items"
-  },
+  "account.wishlists.items": "{{0, plural, =1{1 Item} other{# Items}}}",
   "account.wishlists.link": "Wish Lists",
   "account.wishlists.move_wishlist_item.confirmation": "The item {{0}} has been moved to your wish list <a callback=\"callbackHideDialogModal\" href=\"{{1}}\">{{2}}</a>.",
   "account.wishlists.move_wishlist_item.move_button.text": "Move",
@@ -773,18 +761,14 @@
   "product.compare.price.label": "Price",
   "product.compare.ratings.label": "Ratings",
   "product.compare.remove.link": "Remove",
-  "product.compare.selected_product_count.message": "You have selected {{0}} items to compare.",
+  "product.compare.selected_product_count.message": "You have selected {{0}} item{{0, plural, =1{} other{s}}} to compare.",
   "product.description.heading": "Description",
   "product.details.heading": "Details",
   "product.email_a_friend.link": "E-mail a friend",
   "product.image.text.alttext": "product photo",
   "product.instock.text": "In Stock",
   "product.itemNumber.label": "Product ID:",
-  "product.items.label": {
-    "=0": "0 list items",
-    "=1": "1 list item",
-    "other": "# list items"
-  },
+  "product.items.label": "{{0}} list item{{0, plural, =1{} other{s}}}",
   "product.manufacturer_name.label": "Manufacturer Name",
   "product.manufacturer_sku.label": "Manufacturer SKU",
   "product.out_of_stock.text": "Out of Stock",
@@ -924,12 +908,7 @@
   "search.searchbox.button.reset.title": "Remove search term",
   "search.searchbox.button.title": "Start search",
   "search.searchbox.instructional_text": "Search",
-  "search.title.items.text": {
-    "=0": "0 items",
-    "=1": "1 item",
-    "other": "# items"
-  },
-  "search.title.text": "Search Results for \"{{1}}\" - {{2}}",
+  "search.title.text": "Search Results for \"{{1}}\" - {{2}} item{{2, plural, =1{} other{s}}}",
   "seo.applicationName": "Intershop PWA",
   "seo.defaults.description": "Intershop - Progressive Web App - Demo PWA",
   "seo.defaults.title": "Intershop Progressive Web App",
@@ -952,11 +931,7 @@
   "shopping_cart.empty.text": "There are no items in your cart.",
   "shopping_cart.heading": "Your Shopping Cart",
   "shopping_cart.ministatus.empty_cart.text": "Your cart is currently empty.",
-  "shopping_cart.ministatus.items.text": {
-    "=0": "0 items",
-    "=1": "1 item",
-    "other": "# items"
-  },
+  "shopping_cart.ministatus.items.text": "{{0, plural, =1{1 item} other{# items}}}",
   "shopping_cart.ministatus.view_cart.link": "View Cart",
   "shopping_cart.oci.transfer_basket.button": "Transfer Cart",
   "shopping_cart.payment.creditCardExpiryDate.invalid.error": "The credit card expiration date must be 5 characters long and in the format nn/nn, where n is a number.",

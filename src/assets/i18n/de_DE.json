@@ -45,11 +45,7 @@
   "account.addresses.remove_dialog.title": "Adresse löschen",
   "account.addresses.saved_address.heading": "Adressen",
   "account.addresses.update_address.button.label": "Änderungen speichern",
-  "account.approvallist.items": {
-    "=0": "0 Einträge",
-    "=1": "1 Eintrag",
-    "other": "# Einträge"
-  },
+  "account.approvallist.items": "{{0, plural, =1{1 Eintrag} other{# Einträge}}}",
   "account.approvallist.no_items_message": "Sie haben derzeit keine Bestellanforderungen.",
   "account.approvallist.table.approval_date": "Genehmigungsdatum",
   "account.approvallist.table.approver": "Genehmiger",
@@ -165,11 +161,7 @@
   "account.order_template.edit.heading": "Bestellvorlage bearbeiten",
   "account.order_template.form.name.error.required": "Geben Sie einen Namen für die Bestellvorlage an.",
   "account.order_template.form.name.label": "Name der Bestellvorlage",
-  "account.order_template.items": {
-    "=0": "0 Artikel",
-    "=1": "1 Artikel",
-    "other": "# Artikel"
-  },
+  "account.order_template.items": "{{0}} Artikel",
   "account.order_template.list.button.add_template.label": "Bestellvorlage hinzufügen",
   "account.order_template.list.link.back": "Zurück zu Bestellvorlagen",
   "account.order_template.list.link.remove": "Löschen",
@@ -464,9 +456,7 @@
   "account.wishlists.heading.tooltip.content": "Sie können eine oder mehrere persönliche Wunschlisten erstellen, um Artikel zu speichern und zu organisieren. Jede Liste hat andere Einstellungen:<br> <b>Als bevorzugte Liste einstellen</b> markiert eine Wunschliste als bevorzugte Liste und setzt alle anderen (wenn vorhanden) zurück auf Standard. Alle hinzugefügten Produkte werden standardmäßig zu dieser Wunschliste hinzugefügt.",
   "account.wishlists.heading.tooltip.headline": "Wunschlisten",
   "account.wishlists.heading.tooltip.link": "Wie funktionieren Wunschlisten?",
-  "account.wishlists.items": {
-    "other": "# Artikel"
-  },
+  "account.wishlists.items": "{{0}} Artikel",
   "account.wishlists.link": "Wunschlisten",
   "account.wishlists.move_wishlist_item.confirmation": "Der Artikel {{0}} wurde auf Ihre Wunschliste <a callback=\"callbackHideDialogModal\" href=\"{{1}}\">{{2}}</a> verschoben.",
   "account.wishlists.move_wishlist_item.move_button.text": "Verschieben",
@@ -771,18 +761,14 @@
   "product.compare.price.label": "Preis",
   "product.compare.ratings.label": "Bewertungen",
   "product.compare.remove.link": "Entfernen",
-  "product.compare.selected_product_count.message": "Sie haben {{0}} Produkte zum Vergleichen markiert.",
+  "product.compare.selected_product_count.message": "Sie haben {{0}} Produkt{{0, plural, =1{} other{e}}} zum Vergleichen markiert.",
   "product.description.heading": "Beschreibung",
   "product.details.heading": "Details",
   "product.email_a_friend.link": "Per E-Mail an einen Freund",
   "product.image.text.alttext": "Produktbild",
   "product.instock.text": "Verfügbar",
   "product.itemNumber.label": "Produkt-ID:",
-  "product.items.label": {
-    "=0": "0 Elemente",
-    "=1": "1 Element",
-    "other": "# Elemente"
-  },
+  "product.items.label": "{{0}} Element{{0, plural, =1{} other{e}}}",
   "product.manufacturer_name.label": "Herstellername",
   "product.manufacturer_sku.label": "Hersteller-SKU",
   "product.out_of_stock.text": "Nicht verfügbar",
@@ -922,12 +908,7 @@
   "search.searchbox.button.reset.title": "Suchbegriff entfernen",
   "search.searchbox.button.title": "Suche starten",
   "search.searchbox.instructional_text": "Suchen",
-  "search.title.items.text": {
-    "=0": "0 Artikel",
-    "=1": "1 Artikel",
-    "other": "# Artikel"
-  },
-  "search.title.text": "Suchergebnisse für \"{{1}}\" - {{2}}",
+  "search.title.text": "Suchergebnisse für \"{{1}}\" - {{2}} Artikel",
   "seo.applicationName": "Intershop PWA",
   "seo.defaults.description": "Intershop - Progressive Web App - Demo PWA",
   "seo.defaults.title": "Intershop Progressive Web App",
@@ -950,11 +931,7 @@
   "shopping_cart.empty.text": "Es liegen keine Artikel in Ihrem Warenkorb.",
   "shopping_cart.heading": "Ihr Warenkorb",
   "shopping_cart.ministatus.empty_cart.text": "Ihr Warenkorb ist leer.",
-  "shopping_cart.ministatus.items.text": {
-    "=0": "0 Artikel",
-    "=1": "1 Artikel",
-    "other": "# Artikel"
-  },
+  "shopping_cart.ministatus.items.text": "{{0}} Artikel",
   "shopping_cart.ministatus.view_cart.link": "Warenkorb ansehen",
   "shopping_cart.oci.transfer_basket.button": "Warenkorb übertragen",
   "shopping_cart.payment.creditCardExpiryDate.invalid.error": "Das Ablaufdatum der Kreditkarte muss eine Länge von 5 Zeichen und das Format nn/nn haben, wobei n eine Zahl ist.",
