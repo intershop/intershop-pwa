@@ -1,5 +1,6 @@
 import { Action, ActionReducer, MetaReducer } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
+import { identity } from 'rxjs';
 
 import { logoutUser } from 'ish-core/store/customer/user';
 
@@ -12,26 +13,67 @@ export function resetOnLogoutMeta(reducer: ActionReducer<{}>): ActionReducer<{}>
   };
 }
 
-export function localStorageSaveMeta<S>(prefix: string, key: keyof S & string): MetaReducer<S, Action> {
+function saveMeta<S>(
+  storage: Storage,
+  baseHref: string,
+  prefix: string,
+  key: keyof S & string,
+  lifeTimeMinutes?: number
+): MetaReducer<S, Action> {
   if (!key?.startsWith('_')) {
-    console.warn('localStorageSaveMeta:', `store key ${prefix}-${key} is not excluded from universal state transfer.`);
+    console.warn('saveMeta:', `store key ${prefix}/${key} is not excluded from universal state transfer.`);
   }
-  const item = `${prefix}-${key}`;
+  const item = `${baseHref}-${prefix}-${key}`;
   return (reducer): ActionReducer<S> => (state: S, action: Action) => {
     if (typeof window !== 'undefined' && action.type !== '@ngrx/store-devtools/recompute') {
       let incomingState = state;
       if (!incomingState?.[key]) {
-        const fromStorage = localStorage.getItem(item);
+        const fromStorage = storage.getItem(item);
         if (fromStorage) {
-          incomingState = { ...state, [key]: JSON.parse(fromStorage) };
+          const fromStorageParsed = JSON.parse(fromStorage);
+          const timeoutCheck =
+            lifeTimeMinutes === undefined ||
+            lifeTimeMinutes * 60 * 1000 + fromStorageParsed.sync > new Date().getTime();
+          if (timeoutCheck) {
+            incomingState = { ...state, [key]: fromStorageParsed.data };
+          } else {
+            storage.setItem(item, undefined);
+          }
         }
       }
       const newState = reducer(incomingState, action);
       if (newState?.[key] !== state?.[key] && !isEqual(newState?.[key], state?.[key])) {
-        localStorage.setItem(item, JSON.stringify(newState?.[key]));
+        storage.setItem(item, JSON.stringify({ sync: new Date().getTime(), data: newState?.[key] }));
       }
       return newState;
     }
     return reducer(state, action);
   };
+}
+
+const localStorageSaveMeta = <S>(baseHref: string, prefix: string, key: keyof S & string, lifeTimeMinutes?: number) =>
+  saveMeta<S>(localStorage, baseHref, prefix, key, lifeTimeMinutes);
+
+const sessionStorageSaveMeta = <S>(baseHref: string, prefix: string, key: keyof S & string) =>
+  saveMeta<S>(sessionStorage, baseHref, prefix, key);
+
+type DataRetentionPolicyValue = 'session' | number | 'forever';
+
+export type DataRetentionPolicy = Record<string, DataRetentionPolicyValue>;
+
+export function dataRetentionMeta<S>(
+  policy: DataRetentionPolicyValue,
+  baseHref: string,
+  prefix: string,
+  key: keyof S & string
+) {
+  if (policy === 'session') {
+    return sessionStorageSaveMeta<S>(baseHref, prefix, key);
+  } else if (policy === 'forever') {
+    return localStorageSaveMeta<S>(baseHref, prefix, key);
+  } else if (typeof policy === 'number') {
+    return localStorageSaveMeta<S>(baseHref, prefix, key, policy);
+  } else {
+    return identity;
+  }
 }

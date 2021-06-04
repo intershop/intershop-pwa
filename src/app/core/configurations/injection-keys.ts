@@ -2,6 +2,7 @@ import { InjectionToken } from '@angular/core';
 
 import { CookieConsentOptions } from 'ish-core/models/cookies/cookies.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
+import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
 
 import { environment } from '../../../environments/environment';
 
@@ -44,6 +45,13 @@ export const DEFAULT_PRODUCT_LISTING_VIEW_TYPE = new InjectionToken<ViewType>('d
  */
 export const COOKIE_CONSENT_OPTIONS = new InjectionToken<CookieConsentOptions>('cookieConsentOptions', {
   factory: () => environment.cookieConsentOptions,
+});
+
+/**
+ * the configured data retention policy for the application
+ */
+export const DATA_RETENTION_POLICY = new InjectionToken<DataRetentionPolicy>('dataRetentionPolicy', {
+  factory: () => environment.dataRetention,
 });
 
 /*
