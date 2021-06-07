@@ -18,7 +18,6 @@ export class CheckoutReviewComponent implements OnInit {
   @Output() createOrder = new EventEmitter<void>();
 
   form = new FormGroup({});
-  model: { termsAndConditions: false };
   fields: FormlyFieldConfig[];
   options: FormlyFormOptions = {};
 

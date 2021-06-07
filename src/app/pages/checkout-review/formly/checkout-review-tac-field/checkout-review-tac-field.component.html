@@ -10,7 +10,9 @@
       <span [ishServerHtml]="to.label | translate: getArgs"></span>
     </label>
   </div>
-  <ng-container *ngIf="showError" class="invalid-feedback d-block">
-    <ish-validation-message [field]="field" class="validation-message"></ish-validation-message>
+  <ng-container *ngIf="showError">
+    <div class="form-text">
+      <ish-validation-message [field]="field" class="validation-message"></ish-validation-message>
+    </div>
   </ng-container>
 </div>
