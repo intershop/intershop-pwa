@@ -16,7 +16,7 @@ import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
 import { OrganizationHierarchiesService } from '../../services/organization-hierarchies/organization-hierarchies.service';
 import { assignBuyingContext, assignBuyingContextSuccess } from '../buying-context/buying-context.actions';
-import { loadOrderForBuyingContext } from '../order/order.actions';
+import { loadOrdersWithGroupPaths } from '../order-group-path';
 import { OrganizationHierarchiesStoreModule } from '../organization-hierarchies-store.module';
 
 import { assignGroup, loadGroups, loadGroupsSuccess } from './group.actions';
@@ -112,7 +112,7 @@ describe('Group Effects', () => {
       when(basketServiceMock.getBaskets()).thenReturn(of(baskets));
       const action = assignBuyingContextSuccess({ bctx: groups[1].id.concat('@', customer.customerNo) });
       const completion1 = loadBasket();
-      const completion2 = loadOrderForBuyingContext();
+      const completion2 = loadOrdersWithGroupPaths();
       actions$ = hot('-a----a----a', { a: action });
       const expected$ = cold('-(cd)-(cd)-(cd)', { c: completion1, d: completion2 });
 
@@ -122,7 +122,7 @@ describe('Group Effects', () => {
     it('should dispatch only action of type LoadOrders', () => {
       when(basketServiceMock.getBaskets()).thenReturn(of([]));
       const action = assignBuyingContextSuccess({ bctx: groups[1].id.concat('@', customer.customerNo) });
-      const completion = loadOrderForBuyingContext();
+      const completion = loadOrdersWithGroupPaths();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

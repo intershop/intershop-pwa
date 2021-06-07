@@ -6,6 +6,7 @@ import { switchMap, take, tap } from 'rxjs/operators';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 
+import { OrderGroupPath } from '../models/order-group-path/order-group-path.model';
 import { OrganizationGroup } from '../models/organization-group/organization-group.model';
 import {
   assignGroup,
@@ -15,6 +16,7 @@ import {
   getSelectedGroupDetails,
   loadGroups,
 } from '../store/group';
+import { getOrderGroupPathDetails } from '../store/order-group-path';
 
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
@@ -41,5 +43,9 @@ export class OrganizationHierarchiesFacade {
 
   getDetailsOfGroup$(id: string): Observable<OrganizationGroup> {
     return this.store.pipe(select(getGroupDetails(id)));
+  }
+
+  getDetailsOfOrderGroupPath$(orderId: string): Observable<OrderGroupPath> {
+    return this.store.pipe(select(getOrderGroupPathDetails(orderId)));
   }
 }

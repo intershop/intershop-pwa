@@ -1,7 +1,6 @@
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
-import { BuyingContextMapper } from 'ish-core/models/buying-context/buying-context.mapper';
 import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
 import { PaymentMapper } from 'ish-core/models/payment/payment.mapper';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
@@ -60,10 +59,6 @@ export class OrderMapper {
             ? ShippingMethodMapper.fromData(included.commonShippingMethod[data.commonShippingMethod])
             : undefined,
         customerNo: data.customer,
-        buyingContextInfo:
-          included && included.buyingContext && data.buyingContext
-            ? BuyingContextMapper.fromData(included.buyingContext[data.buyingContext])
-            : undefined,
         email: data.user,
         lineItems:
           included && included.lineItems && data.lineItems && data.lineItems.length

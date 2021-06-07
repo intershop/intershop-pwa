@@ -59,7 +59,6 @@ describe('Requisition Mapper', () => {
           "attributes": undefined,
           "bucketId": undefined,
           "buyingContext": undefined,
-          "buyingContextInfo": undefined,
           "commonShipToAddress": undefined,
           "commonShippingMethod": undefined,
           "creationDate": 12345678,

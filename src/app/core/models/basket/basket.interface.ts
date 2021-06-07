@@ -4,7 +4,6 @@ import { BasketApproval } from 'ish-core/models/basket-approval/basket-approval.
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.interface';
 import { BasketTotalData } from 'ish-core/models/basket-total/basket-total.interface';
-import { BuyingContext } from 'ish-core/models/buying-context/buying-context.model';
 import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-method.interface';
@@ -47,7 +46,6 @@ export interface BasketBaseData {
   };
   approval?: BasketApproval;
   attributes?: Attribute[];
-  buyingContextInfo?: BuyingContext;
 }
 
 export interface BasketData {
@@ -62,7 +60,6 @@ export interface BasketData {
     payments?: { [id: string]: PaymentData };
     payments_paymentMethod?: { [id: string]: PaymentMethodBaseData };
     payments_paymentInstrument?: { [id: string]: PaymentInstrument };
-    buyingContext?: { [id: string]: BuyingContext };
   };
   infos?: BasketInfo[];
 }

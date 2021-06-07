@@ -134,21 +134,6 @@ describe('Order Mapper', () => {
           disableMessages: false,
         },
       },
-      buyingContextInfo: {
-        groupIdOrganizationId: {
-          group: {
-            id: '1',
-            name: 'Bio Tech Engineering Jena',
-          },
-          organizationId: 'BioTech',
-          groupPath: [
-            { id: 'Eng_Jena', name: 'BioTech_Eng_Jena' },
-            { id: 'Jena', name: 'BioTech_Jena' },
-            { id: 'Root', name: 'BioTech_Root' },
-            { id: 'Emea', name: 'BioTech_Emea' },
-          ],
-        },
-      },
     },
     infos: [
       {

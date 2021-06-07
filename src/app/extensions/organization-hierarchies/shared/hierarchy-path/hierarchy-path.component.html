@@ -1,14 +1,17 @@
-<div *ngIf="object" class="path">
-  <div *ngIf="object.buyingContextInfo.groupPath; let path">
-    <span>{{ root }}</span>
-    <span *ngIf="path.length > 2"> &#124; </span>
-    <span *ngIf="path.length > 2" [ngbTooltip]="tipContent"> ... </span>
-    <span *ngIf="path.length > 1"> &#124; {{ leaf }}</span>
+<div *ngIf="path$ | async as path">
+  <div *ngIf="path.groupPath.length">
+    <span>{{ path.groupPath[0] }}</span>
+    <span *ngIf="path.groupPath.length > 2"> &#124; </span>
+    <ng-template #PathDescription>
+      <ul class="list-unstyled pl-3">
+        <li class="pt-1 pb-1" *ngFor="let path of path.groupPath">{{ path }}</li>
+      </ul>
+    </ng-template>
+    <a *ngIf="path.groupPath.length > 2" class="details-tooltip" [ngbPopover]="PathDescription" placement="top">
+      ...
+      <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
+    </a>
+    <span *ngIf="path.groupPath.length > 1"> &#124; {{ path.groupPath[path.groupPath.length - 1] }}</span>
   </div>
-  <ng-template class="path-tooltip" #tipContent>
-    <span *ngFor="let group of pathElements; let i = index">
-      <span>{{ group.groupName }}</span>
-      <span *ngIf="i >= 0 && i < pathElements.length - 1"> &#124; </span>
-    </span>
-  </ng-template>
+  <ng-template #anchor></ng-template>
 </div>

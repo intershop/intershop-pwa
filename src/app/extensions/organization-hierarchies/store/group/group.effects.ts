@@ -10,7 +10,7 @@ import { mapErrorToAction } from 'ish-core/utils/operators';
 
 import { OrganizationHierarchiesService } from '../../services/organization-hierarchies/organization-hierarchies.service';
 import { assignBuyingContext, assignBuyingContextSuccess } from '../buying-context/buying-context.actions';
-import { loadOrderForBuyingContext } from '../order/order.actions';
+import { loadOrdersWithGroupPaths } from '../order-group-path';
 
 import { assignGroup, loadGroups, loadGroupsFail, loadGroupsSuccess } from './group.actions';
 import { getSelectedGroupDetails } from './group.selectors';
@@ -52,9 +52,9 @@ export class GroupEffects {
         this.basketService.getBaskets().pipe(
           switchMap(baskets => {
             if (baskets?.length > 0) {
-              return [loadBasket(), loadOrderForBuyingContext()];
+              return [loadBasket(), loadOrdersWithGroupPaths()];
             } else {
-              return [loadOrderForBuyingContext()];
+              return [loadOrdersWithGroupPaths()];
             }
           })
         )

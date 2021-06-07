@@ -19,8 +19,7 @@ type OrderIncludeType =
   | 'lineItems'
   | 'payments'
   | 'payments_paymentMethod'
-  | 'payments_paymentInstrument'
-  | 'buyingContext';
+  | 'payments_paymentInstrument';
 
 /**
  * The Order Service handles the interaction with the REST API concerning orders.
@@ -44,7 +43,6 @@ export class OrderService {
     'payments',
     'payments_paymentMethod',
     'payments_paymentInstrument',
-    'buyingContext',
   ];
 
   /**

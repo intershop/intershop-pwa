@@ -25,6 +25,7 @@ describe('Organization Hierarchies Service', () => {
     'payments_paymentInstrument',
   ];
   const icmBaseURL = 'bla';
+  const buyingContext = 'testGroup';
 
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
@@ -40,10 +41,15 @@ describe('Organization Hierarchies Service', () => {
   });
 
   describe('getOrders', () => {
-    it("should get orders when 'getOrders' is called without amount", done => {
+    it("should get orders when 'getOrders' is called", done => {
       when(apiServiceMock.get(anything(), anything())).thenReturn(of({ data: [] }));
-      const url = `orders?page[limit]=30`.concat('&include=', allOrderIncludes.join());
-      organizationHierarchiesService.getOrders().subscribe(() => {
+      const url = `orders?page[limit]=30`.concat(
+        '&include=',
+        allOrderIncludes.join(),
+        OrganizationHierarchiesService.buyingContextInclude,
+        buyingContext
+      );
+      organizationHierarchiesService.getOrders(30, buyingContext).subscribe(() => {
         verify(apiServiceMock.get(url, anything())).once();
         done();
       });
@@ -53,15 +59,6 @@ describe('Organization Hierarchies Service', () => {
       when(apiServiceMock.get(anything(), anything())).thenReturn(of([]));
       const url = `orders?page[limit]=10`.concat('&include=', allOrderIncludes.join());
       organizationHierarchiesService.getOrders(10).subscribe(() => {
-        verify(apiServiceMock.get(url, anything())).once();
-        done();
-      });
-    });
-    it("should get orders when 'getOrders' is called with additional include", done => {
-      when(apiServiceMock.get(anything(), anything())).thenReturn(of([]));
-      const include = ',testinclude';
-      const url = `orders?page[limit]=20`.concat('&include=', allOrderIncludes.join(), include);
-      organizationHierarchiesService.getOrders(20, include).subscribe(() => {
         verify(apiServiceMock.get(url, anything())).once();
         done();
       });

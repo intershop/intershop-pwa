@@ -60,4 +60,8 @@ export class BasketBuyerComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
+  isOrder(): boolean {
+    return this.object.hasOwnProperty('documentNo');
+  }
 }

@@ -2,7 +2,6 @@ import { AddressData } from 'ish-core/models/address/address.interface';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.interface';
 import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
-import { BuyingContext } from 'ish-core/models/buying-context/buying-context.model';
 import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-method.interface';
@@ -42,7 +41,6 @@ export interface RequisitionData {
     payments?: { [id: string]: PaymentData };
     payments_paymentMethod?: { [id: string]: PaymentMethodBaseData };
     payments_paymentInstrument?: { [id: string]: PaymentInstrument };
-    buyingContext?: { [id: string]: BuyingContext };
   };
   infos?: BasketInfo[];
 }

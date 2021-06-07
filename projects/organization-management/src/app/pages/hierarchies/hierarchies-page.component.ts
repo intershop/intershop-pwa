@@ -20,7 +20,7 @@ export class HierarchiesPageComponent implements OnInit {
   loading$: Observable<boolean>;
   config: TreeviewConfig = TreeviewConfig.create({
     hasAllCheckBox: false,
-    hasFilter: false,
+    hasFilter: true,
     hasCollapseExpand: true,
     decoupleChildFromParent: false,
   });

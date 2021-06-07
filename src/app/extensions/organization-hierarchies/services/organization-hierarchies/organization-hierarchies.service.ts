@@ -5,16 +5,16 @@ import { Observable } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { OrderData } from 'ish-core/models/order/order.interface';
-import { OrderMapper } from 'ish-core/models/order/order.mapper';
 import { Order } from 'ish-core/models/order/order.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getICMBaseURL } from 'ish-core/store/core/configuration';
 import { whenTruthy } from 'ish-core/utils/operators';
 
+import { OrderGroupPath } from '../../models/order-group-path/order-group-path.model';
 import { OrganizationGroupListData } from '../../models/organization-group-list/organization-group-list.interface';
 import { OrganizationGroupMapper } from '../../models/organization-group/organization-group.mapper';
 import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
+import { OrganizationOrderMapper } from '../../models/organization-order/organization-order.mapper';
 
 type OrderIncludeType =
   | 'invoiceToAddress'
@@ -30,6 +30,8 @@ type OrderIncludeType =
 @Injectable({ providedIn: 'root' })
 export class OrganizationHierarchiesService {
   constructor(private apiService: ApiService, private store: Store, private mapper: OrganizationGroupMapper) {}
+
+  static buyingContextInclude = ',buyingContext&filter[buyingContext]=';
 
   private icmBaseURL$ = this.store.pipe(select(getICMBaseURL), whenTruthy(), take(1));
   private contentTypeHeader = {
@@ -66,14 +68,22 @@ export class OrganizationHierarchiesService {
     );
   }
 
-  getOrders(amount: number = 30, include: string = ''): Observable<Order[]> {
+  getOrders(
+    amount: number = 30,
+    buyingContextId: string = ''
+  ): Observable<{ orders: Order[]; paths: OrderGroupPath[] }> {
     return this.apiService
-      .get<OrderData>(
-        `orders?page[limit]=${amount}`.concat('&include=', this.allOrderIncludes.join().concat(include)),
+      .get(
+        `orders?page[limit]=${amount}`.concat(
+          '&include=',
+          buyingContextId.length > 0
+            ? this.allOrderIncludes.join().concat(OrganizationHierarchiesService.buyingContextInclude, buyingContextId)
+            : this.allOrderIncludes.join()
+        ),
         {
           headers: this.orderHeaders,
         }
       )
-      .pipe(map(OrderMapper.fromListData));
+      .pipe(map(OrganizationOrderMapper.fromListData));
   }
 }
