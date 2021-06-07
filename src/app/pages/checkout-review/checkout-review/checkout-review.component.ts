@@ -21,6 +21,8 @@ export class CheckoutReviewComponent implements OnInit {
   fields: FormlyFieldConfig[];
   options: FormlyFormOptions = {};
 
+  model = { termsAndConditions: false };
+
   submitted = false;
   multipleBuckets = false;
 
@@ -48,7 +50,6 @@ export class CheckoutReviewComponent implements OnInit {
         type: 'ish-checkout-review-tac-field',
         key: 'termsAndConditions',
         templateOptions: {
-          required: true,
           label: 'checkout.tac.text',
           args: { 0: 'page://page.termsAndConditions.pagelet2-Page' },
           validation: {
@@ -60,7 +61,6 @@ export class CheckoutReviewComponent implements OnInit {
         },
         validation: {
           messages: {
-            required: 'checkout.tac.error.tip',
             pattern: 'checkout.tac.error.tip',
           },
         },
