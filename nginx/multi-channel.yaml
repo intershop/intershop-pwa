@@ -1,10 +1,2 @@
 .+:
-  - baseHref: /en
-    channel: default
-    lang: en_US
-  - baseHref: /de
-    channel: default
-    lang: de_DE
-  - baseHref: /fr
-    channel: default
-    lang: fr_FR
+  channel: default
