@@ -22,7 +22,7 @@ export class OrderGroupPathEffects {
     private actions$: Actions,
     private organizationHierarchiesService: OrganizationHierarchiesService,
     private store: Store
-  ) { }
+  ) {}
 
   /**
    * The load orders and corresponding order group paths effect.
