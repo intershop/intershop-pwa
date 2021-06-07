@@ -1,61 +1,65 @@
-import { registerLocaleData } from '@angular/common';
+import { isPlatformBrowser, isPlatformServer, registerLocaleData } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
-import { Inject, Injectable, LOCALE_ID, NgModule } from '@angular/core';
+import { Inject, Injectable, LOCALE_ID, NgModule, PLATFORM_ID } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
+import { Store, select } from '@ngrx/store';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Observable, OperatorFunction, combineLatest, of } from 'rxjs';
-import { catchError, first, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { from, of } from 'rxjs';
+import { catchError, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { SSR_LOCALE, SSR_TRANSLATIONS } from './configurations/state-keys';
-import { StatePropertiesService } from './utils/state-transfer/state-properties.service';
+import { getCurrentLocale, getRestEndpoint } from './store/core/configuration';
+import { whenTruthy } from './utils/operators';
 
 export type Translations = Record<string, string | Record<string, string>>;
 
-export function appendSlash(): OperatorFunction<string, string> {
-  return (source$: Observable<string>) => source$.pipe(map(url => `${url}/`));
-}
-
-export function filterAndTransformKeys(translations: Record<string, string>): Translations {
-  const filtered: Translations = {};
-  const prefix = /^pwa-/;
-  for (const key in translations) {
-    if (prefix.test(key)) {
-      const value = translations[key];
-      try {
-        const parsed = JSON.parse(value);
-        filtered[key.replace(prefix, '')] = parsed;
-      } catch {
-        filtered[key.replace(prefix, '')] = value;
-      }
+function maybeJSON(val: string) {
+  if (val.startsWith('{')) {
+    try {
+      return JSON.parse(val);
+    } catch {
+      // default
     }
   }
-  return filtered;
+  return val;
+}
+
+function filterAndTransformKeys(translations: Record<string, string>): Translations {
+  return Object.entries(translations)
+    .filter(([key]) => key.startsWith('pwa-'))
+    .map(([key, value]) => [key.substring(4), maybeJSON(value)])
+    .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
 }
 
 @Injectable()
 class ICMTranslateLoader implements TranslateLoader {
   constructor(
     private httpClient: HttpClient,
-    private stateProperties: StatePropertiesService,
-    private transferState: TransferState
+    private transferState: TransferState,
+    @Inject(PLATFORM_ID) private platformId: string,
+    private store: Store
   ) {}
 
   getTranslation(lang: string) {
-    if (this.transferState.hasKey(SSR_TRANSLATIONS)) {
+    if (isPlatformBrowser(this.platformId) && this.transferState.hasKey(SSR_TRANSLATIONS)) {
       return of(this.transferState.get(SSR_TRANSLATIONS, undefined));
     }
-    const local$ = this.httpClient
-      .get(`assets/i18n/${lang}.json`)
-      .pipe(
-        catchError(() =>
-          this.stateProperties
-            .getStateOrEnvOrDefault('DEFAULT_LOCALE', 'defaultLocale')
-            .pipe(switchMap(url => this.httpClient.get(`assets/i18n/${url}.json`)))
+    const local$ = from(import(`../../assets/i18n/${lang}.json`)).pipe(
+      catchError(() =>
+        this.store.pipe(
+          select(getCurrentLocale),
+          whenTruthy(),
+          take(1),
+          switchMap(defaultLang => from(import(`../../assets/i18n/${defaultLang}.json`)))
         )
-      );
-    return this.icmURL.pipe(
+      )
+    );
+    return this.store.pipe(
+      select(getRestEndpoint),
+      whenTruthy(),
+      take(1),
       switchMap(url =>
         this.httpClient.get(`${url};loc=${lang}/localizations`, {
           params: {
@@ -69,39 +73,20 @@ class ICMTranslateLoader implements TranslateLoader {
         ...localTranslations,
         ...translations,
       })),
+      tap((translations: Translations) => {
+        if (isPlatformServer(this.platformId)) {
+          this.transferState.set(SSR_TRANSLATIONS, translations);
+        }
+      }),
       catchError(() => local$)
     );
   }
-
-  get icmURL(): Observable<string> {
-    return combineLatest([
-      this.stateProperties.getStateOrEnvOrDefault('ICM_BASE_URL', 'icmBaseURL').pipe(appendSlash()),
-      this.stateProperties.getStateOrEnvOrDefault('ICM_SERVER', 'icmServer').pipe(appendSlash()),
-      this.stateProperties.getStateOrEnvOrDefault('ICM_CHANNEL', 'icmChannel').pipe(appendSlash()),
-      this.stateProperties.getStateOrEnvOrDefault('ICM_APPLICATION', 'icmApplication'),
-    ]).pipe(
-      first(),
-      map(arr => arr.join(''))
-    );
-  }
-}
-
-export function translateFactory(
-  httpClient: HttpClient,
-  stateProperties: StatePropertiesService,
-  transferState: TransferState
-) {
-  return new ICMTranslateLoader(httpClient, stateProperties, transferState);
 }
 
 @NgModule({
   imports: [
     TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: translateFactory,
-        deps: [HttpClient, StatePropertiesService, TransferState],
-      },
+      loader: { provide: TranslateLoader, useClass: ICMTranslateLoader },
     }),
   ],
 })
