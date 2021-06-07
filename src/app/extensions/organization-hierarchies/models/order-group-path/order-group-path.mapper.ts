@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 
-
-
 import { OrderGroupPathBaseData } from './order-group-path.interface';
 import { OrderGroupPath } from './order-group-path.model';
 
