@@ -617,7 +617,7 @@
   "checkout.orderReferenceId.label": "Order Reference ID",
   "checkout.orderReferenceId.note": "You can enter an ID for your own book keeping. It will appear on your invoice and packing slip.",
   "checkout.orderReferenceId.success.message": "Your order reference ID has been applied.",
-  "checkout.orderReferenceId.title": "Enter an Order Reference ID",
+  "checkout.orderReferenceId.title": "Enter an order reference ID",
   "checkout.order_details.heading": "Order Summary",
   "checkout.order_review.heading.text": "Review the details of your order below and make any changes if needed. Click \"Submit Order\" to complete your purchase.",
   "checkout.order_review.heading.title": "Review Your Order Information",
