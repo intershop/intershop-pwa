@@ -4,11 +4,11 @@ import { ContentPageletView } from 'ish-core/models/content-view/content-view.mo
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
 
 @Component({
-  selector: 'ish-cms-product-list',
-  templateUrl: './cms-product-list.component.html',
+  selector: 'ish-cms-product-list-manual',
+  templateUrl: './cms-product-list-manual.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CMSProductListComponent implements CMSComponent, OnChanges {
+export class CMSProductListManualComponent implements CMSComponent, OnChanges {
   @Input() pagelet: ContentPageletView;
 
   productSKUs: string[] = [];

@@ -39,7 +39,7 @@ import { CMSImageComponent } from './cms/components/cms-image/cms-image.componen
 import { CMSLandingPageComponent } from './cms/components/cms-landing-page/cms-landing-page.component';
 import { CMSProductListCategoryComponent } from './cms/components/cms-product-list-category/cms-product-list-category.component';
 import { CMSProductListFilterComponent } from './cms/components/cms-product-list-filter/cms-product-list-filter.component';
-import { CMSProductListComponent } from './cms/components/cms-product-list/cms-product-list.component';
+import { CMSProductListManualComponent } from './cms/components/cms-product-list-manual/cms-product-list-manual.component';
 import { CMSStandardPageComponent } from './cms/components/cms-standard-page/cms-standard-page.component';
 import { CMSStaticPageComponent } from './cms/components/cms-static-page/cms-static-page.component';
 import { CMSTextComponent } from './cms/components/cms-text/cms-text.component';
@@ -173,8 +173,8 @@ const declaredComponents = [
   CMSImageEnhancedComponent,
   CMSLandingPageComponent,
   CMSProductListCategoryComponent,
-  CMSProductListComponent,
   CMSProductListFilterComponent,
+  CMSProductListManualComponent,
   CMSStandardPageComponent,
   CMSStaticPageComponent,
   CMSTextComponent,
