@@ -118,6 +118,7 @@ import { ProductShipmentComponent } from './components/product/product-shipment/
 import { ProductTileComponent } from './components/product/product-tile/product-tile.component';
 import { ProductVariationDisplayComponent } from './components/product/product-variation-display/product-variation-display.component';
 import { ProductVariationSelectComponent } from './components/product/product-variation-select/product-variation-select.component';
+import { ProductsListComponent } from './components/product/products-list/products-list.component';
 import { PromotionDetailsComponent } from './components/promotion/promotion-details/promotion-details.component';
 import { PromotionRemoveComponent } from './components/promotion/promotion-remove/promotion-remove.component';
 import { RecentlyViewedComponent } from './components/recently/recently-viewed/recently-viewed.component';
@@ -253,6 +254,7 @@ const exportedComponents = [
   ProductShipmentComponent,
   ProductVariationDisplayComponent,
   ProductVariationSelectComponent,
+  ProductsListComponent,
   PromotionDetailsComponent,
   PromotionRemoveComponent,
   RecentlyViewedComponent,
