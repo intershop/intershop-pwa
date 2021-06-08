@@ -18,10 +18,10 @@ export class HomePage {
   }
 
   get featuredProducts() {
-    return cy.get('ish-cms-product-list').find('div.product-tile');
+    return cy.get('ish-products-list').find('div.product-tile');
   }
 
   gotoFeaturedProduct(sku) {
-    return cy.get('ish-cms-product-list').find(`div.product-tile[data-testing-sku="${sku}"]`).click();
+    return cy.get('ish-products-list').find(`div.product-tile[data-testing-sku="${sku}"]`).click();
   }
 }
