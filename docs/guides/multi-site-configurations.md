@@ -1,5 +1,5 @@
 <!--
-kb_guides
+kb_guide
 kb_pwa
 kb_everyone
 kb_sync_latest_only
@@ -10,8 +10,6 @@ kb_sync_latest_only
 As explained in [multi site handling](../concepts/multi-site-handling.md), the PWA supports dynamic configurations of a single PWA deployment.
 This guide will explain the YAML syntax used to define a configuration as well as show some common configuration examples, mainly focusing on different setups for handling locales and channels.
 For more information about how the YAML configuration is processed, refer to [multi site handling](../concepts/multi-site-handling.md) and [nginx startup](../guides/nginx-startup.md#Multi-Site).
-
-SENTENCE TO DOCKER COMPOSE
 
 ## Syntax
 
