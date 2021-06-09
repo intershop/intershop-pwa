@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { map, switchMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, concatMap, map, take } from 'rxjs/operators';
 
 import { getRestEndpoint } from 'ish-core/store/core/configuration';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -27,11 +28,15 @@ function filterAndTransformKeys(translations: Record<string, string>): Translati
 
 @Injectable({ providedIn: 'root' })
 export class LocalizationsService {
-  constructor(private httpClient: HttpClient, private store: Store) {}
+  private icmEndpoint$: Observable<string>;
+
+  constructor(private httpClient: HttpClient, store: Store) {
+    this.icmEndpoint$ = store.pipe(select(getRestEndpoint), whenTruthy(), take(1));
+  }
 
   getServerTranslations(lang: string) {
-    return this.store.pipe(select(getRestEndpoint), whenTruthy()).pipe(
-      switchMap(url =>
+    return this.icmEndpoint$.pipe(
+      concatMap(url =>
         this.httpClient
           .get(`${url};loc=${lang}/localizations`, {
             params: {
@@ -40,6 +45,13 @@ export class LocalizationsService {
           })
           .pipe(map(filterAndTransformKeys))
       )
+    );
+  }
+
+  getSpecificTranslation(lang: string, key: string) {
+    return this.icmEndpoint$.pipe(
+      concatMap(url => this.httpClient.get(`${url};loc=${lang}/localizations/${key}`, { responseType: 'text' })),
+      catchError(() => of(''))
     );
   }
 }

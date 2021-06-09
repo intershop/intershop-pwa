@@ -91,3 +91,6 @@ export const getIdentityProvider = createSelectorFactory<
 
 export const getServerTranslations = (lang: string) =>
   createSelector(getConfigurationState, state => state.serverTranslations?.[lang]);
+
+export const getSpecificServerTranslation = (lang: string, key: string) =>
+  createSelector(getServerTranslations(lang), translations => translations?.[key]);

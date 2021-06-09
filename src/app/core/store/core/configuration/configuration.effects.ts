@@ -26,6 +26,7 @@ import { LocalizationsService } from 'ish-core/services/localizations/localizati
 import {
   distinctCompareWith,
   mapErrorToAction,
+  mapToPayload,
   mapToPayloadProperty,
   mapToProperty,
   whenTruthy,
@@ -37,6 +38,8 @@ import {
   loadServerTranslations,
   loadServerTranslationsFail,
   loadServerTranslationsSuccess,
+  loadSingleServerTranslation,
+  loadSingleServerTranslationSuccess,
 } from './configuration.actions';
 import { getCurrentLocale, getDeviceType } from './configuration.selectors';
 
@@ -159,6 +162,18 @@ export class ConfigurationEffects {
           map(translations => loadServerTranslationsSuccess({ lang, translations })),
           mapErrorToAction(loadServerTranslationsFail, { lang })
         )
+      )
+    )
+  );
+
+  loadSingleServerTranslation$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadSingleServerTranslation),
+      mapToPayload(),
+      mergeMap(({ lang, key }) =>
+        this.localizationsService
+          .getSpecificTranslation(lang, key)
+          .pipe(map(translation => loadSingleServerTranslationSuccess({ lang, key, translation })))
       )
     )
   );
