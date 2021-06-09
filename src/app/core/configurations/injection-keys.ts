@@ -50,6 +50,10 @@ export const COOKIE_CONSENT_OPTIONS = new InjectionToken<CookieConsentOptions>('
  * global definition of the Bootstrap grid system breakpoint widths
  */
 
+export const SMALL_BREAKPOINT_WIDTH = new InjectionToken<number>('smallBreakpointWidth', {
+  factory: () => environment.smallBreakpointWidth,
+});
+
 export const MEDIUM_BREAKPOINT_WIDTH = new InjectionToken<number>('mediumBreakpointWidth', {
   factory: () => environment.mediumBreakpointWidth,
 });
