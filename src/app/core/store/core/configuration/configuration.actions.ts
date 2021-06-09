@@ -1,7 +1,7 @@
 import { createAction } from '@ngrx/store';
 
-import { Translations } from 'ish-core/internationalization.module';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
+import { Translations } from 'ish-core/utils/translate/translations.type';
 
 import { ConfigurationState } from './configuration.reducer';
 

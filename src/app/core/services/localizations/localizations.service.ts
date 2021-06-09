@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { map, switchMap } from 'rxjs/operators';
 
-import { Translations } from 'ish-core/internationalization.module';
 import { getRestEndpoint } from 'ish-core/store/core/configuration';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { Translations } from 'ish-core/utils/translate/translations.type';
 
 function maybeJSON(val: string) {
   if (val.startsWith('{')) {

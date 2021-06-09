@@ -1,8 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
 
-import { Translations } from 'ish-core/internationalization.module';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
+import { Translations } from 'ish-core/utils/translate/translations.type';
 
 import { environment } from '../../../../../environments/environment';
 
