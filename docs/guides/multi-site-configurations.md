@@ -186,3 +186,8 @@ To see what is possible through multi-site handling, have a look at this extende
   features: quoting
   theme: 'blue|688dc3'
 ```
+
+# Further References
+
+- [Guide - Building and Running nginx Docker Image](../guides/nginx-startup.md)
+- [Concept - Multi-Site Handling](../concepts/multi-site-handling.md)
