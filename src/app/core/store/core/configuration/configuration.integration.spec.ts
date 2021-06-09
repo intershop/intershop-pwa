@@ -6,12 +6,13 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
-import { mock, when } from 'ts-mockito';
+import { instance, mock, when } from 'ts-mockito';
 
 import { configurationMeta } from 'ish-core/configurations/configuration.meta';
 import { ConfigurationGuard } from 'ish-core/guards/configuration.guard';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
+import { LocalizationsService } from 'ish-core/services/localizations/localizations.service';
 import { applyConfiguration, getFeatures, getRestEndpoint } from 'ish-core/store/core/configuration';
 import { ConfigurationEffects } from 'ish-core/store/core/configuration/configuration.effects';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -45,7 +46,10 @@ describe('Configuration Integration', () => {
         ]),
         TranslateModule.forRoot(),
       ],
-      providers: [provideStoreSnapshots()],
+      providers: [
+        provideStoreSnapshots(),
+        { provide: LocalizationsService, useFactory: () => instance(mock(LocalizationsService)) },
+      ],
     });
 
     router = TestBed.inject(Router);

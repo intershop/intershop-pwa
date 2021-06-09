@@ -1,16 +1,17 @@
-import { isPlatformBrowser, isPlatformServer, registerLocaleData } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
-import { Inject, Injectable, LOCALE_ID, NgModule, PLATFORM_ID } from '@angular/core';
+import { Inject, Injectable, LOCALE_ID, NgModule } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
+import { Actions, ROOT_EFFECTS_INIT, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { from, of } from 'rxjs';
-import { catchError, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { ReplaySubject, combineLatest, defer, from, of } from 'rxjs';
+import { catchError, first, map, switchMap, take, tap } from 'rxjs/operators';
 
-import { SSR_LOCALE, SSR_TRANSLATIONS } from './configurations/state-keys';
-import { getRestEndpoint } from './store/core/configuration';
+import { NGRX_STATE_SK, STATE_ACTION_TYPE } from './configurations/ngrx-state-transfer';
+import { SSR_LOCALE } from './configurations/state-keys';
+import { getServerTranslations, loadServerTranslations } from './store/core/configuration';
 import { whenTruthy } from './utils/operators';
 import {
   FALLBACK_LANG,
@@ -19,61 +20,38 @@ import {
 
 export type Translations = Record<string, string | Record<string, string>>;
 
-function maybeJSON(val: string) {
-  if (val.startsWith('{')) {
-    try {
-      return JSON.parse(val);
-    } catch {
-      // default
-    }
-  }
-  return val;
-}
-
-function filterAndTransformKeys(translations: Record<string, string>): Translations {
-  return Object.entries(translations)
-    .filter(([key]) => key.startsWith('pwa-'))
-    .map(([key, value]) => [key.substring(4), maybeJSON(value)])
-    .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
-}
-
 @Injectable()
 class ICMTranslateLoader implements TranslateLoader {
-  constructor(
-    private httpClient: HttpClient,
-    private transferState: TransferState,
-    @Inject(PLATFORM_ID) private platformId: string,
-    private store: Store
-  ) {}
+  private initialized$ = new ReplaySubject(1);
+
+  constructor(private store: Store, actions: Actions, transferState: TransferState) {
+    const actionType = transferState.hasKey(NGRX_STATE_SK) ? STATE_ACTION_TYPE : ROOT_EFFECTS_INIT;
+    actions.pipe(ofType(actionType), first()).subscribe(() => {
+      this.initialized$.next(true);
+    });
+  }
 
   getTranslation(lang: string) {
-    if (isPlatformBrowser(this.platformId) && this.transferState.hasKey(SSR_TRANSLATIONS)) {
-      return of(this.transferState.get(SSR_TRANSLATIONS, undefined));
-    }
-    const local$ = from(import(`../../assets/i18n/${lang}.json`)).pipe(catchError(() => of({})));
-    return this.store.pipe(
-      select(getRestEndpoint),
-      whenTruthy(),
-      take(1),
-      switchMap(url =>
-        this.httpClient.get(`${url};loc=${lang}/localizations`, {
-          params: {
-            searchKeys: 'pwa-',
-          },
-        })
-      ),
-      map(filterAndTransformKeys),
-      withLatestFrom(local$),
-      map(([translations, localTranslations]) => ({
-        ...localTranslations,
-        ...translations,
-      })),
-      tap((translations: Translations) => {
-        if (isPlatformServer(this.platformId)) {
-          this.transferState.set(SSR_TRANSLATIONS, translations);
+    const local$ = defer(() => from(import(`../../assets/i18n/${lang}.json`)).pipe(catchError(() => of({}))));
+    const server$ = this.store.pipe(
+      select(getServerTranslations(lang)),
+      tap(translations => {
+        if (!translations) {
+          this.store.dispatch(loadServerTranslations({ lang }));
         }
       }),
-      catchError(() => local$)
+      whenTruthy(),
+      take(1)
+    );
+    return this.initialized$.pipe(
+      switchMap(() =>
+        combineLatest([local$, server$]).pipe(
+          map(([localTranslations, serverTranslations]) => ({
+            ...localTranslations,
+            ...serverTranslations,
+          }))
+        )
+      )
     );
   }
 }
