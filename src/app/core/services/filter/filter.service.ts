@@ -72,16 +72,19 @@ export class FilterService {
   getFilteredProducts(
     searchParameter: URLFormParams,
     page: number = 1,
-    sortKey?: string
+    sortKey?: string,
+    amount?: number
   ): Observable<{ total: number; products: Partial<Product>[]; sortableAttributes: SortableAttributesType[] }> {
     let params = new HttpParams()
-      .set('amount', this.itemsPerPage.toString())
-      .set('offset', ((page - 1) * this.itemsPerPage).toString())
+      .set('amount', amount || amount === 0 ? amount.toString() : this.itemsPerPage.toString())
       .set('attrs', ProductsService.STUB_ATTRS)
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('returnSortKeys', 'true');
     if (sortKey) {
       params = params.set('sortKey', sortKey);
+    }
+    if (!amount) {
+      params = params.set('offset', ((page - 1) * this.itemsPerPage).toString());
     }
     params = appendFormParamsToHttpParams(omit(searchParameter, 'category'), params);
 
