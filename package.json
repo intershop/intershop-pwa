@@ -92,7 +92,7 @@
     "ngx-toastr": "^13.2.1",
     "prom-client": "^13.1.0",
     "rxjs": "~6.6.7",
-    "swiper": "^6.5.9",
+    "swiper": "^6.7.0",
     "tslib": "^2.2.0",
     "typeface-roboto": "1.1.13",
     "typeface-roboto-condensed": "1.1.13",
