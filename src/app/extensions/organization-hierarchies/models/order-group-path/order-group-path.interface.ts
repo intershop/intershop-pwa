@@ -1,8 +1,8 @@
-import { Group } from 'ish-core/models/group/group.model';
+import { OrderGroupPathEntryData } from '../order-group-path-entry/order-group-path-entry.interface';
 
 export interface OrderGroupPathBaseData {
   organizationId: string;
-  groupPath: Group[];
+  groupPath: [OrderGroupPathEntryData];
   groupId: string;
   groupName: string;
 }

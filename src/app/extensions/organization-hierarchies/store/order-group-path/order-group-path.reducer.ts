@@ -35,6 +35,7 @@ export const orderGroupPathReducer = createReducer(
     const { paths } = action.payload;
     return {
       ...pathAdapter.upsertMany(paths, state),
+      loading: false,
       ids: paths.map(p => p.orderId),
     };
   })

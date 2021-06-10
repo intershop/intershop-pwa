@@ -16,7 +16,7 @@ import {
   getSelectedGroupDetails,
   loadGroups,
 } from '../store/group';
-import { getOrderGroupPathDetails } from '../store/order-group-path';
+import { getOrderGroupPathDetails, getOrderGroupPathError, getOrderGroupPathLoading } from '../store/order-group-path';
 
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
@@ -26,6 +26,9 @@ export class OrganizationHierarchiesFacade {
   groups$ = this.store.pipe(select(getGroupsOfOrganization));
 
   getSelectedGroup$ = this.store.pipe(select(getSelectedGroupDetails));
+
+  orderGroupPathLoading$ = this.store.pipe(select(getOrderGroupPathLoading));
+  orderGroupPathLoadingError$ = this.store.pipe(select(getOrderGroupPathError));
 
   groupsCount$(): Observable<number> {
     const customer$ = this.store.pipe(select(getLoggedInCustomer));

@@ -20,6 +20,6 @@ export class HierarchyGroupNameComponent implements OnInit {
   constructor(private facade: OrganizationHierarchiesFacade) {}
 
   ngOnInit() {
-    this.group$ = this.facade.getDetailsOfGroup$(this.buyingGroupId);
+    this.group$ = this.facade.getDetailsOfGroup$(this.buyingGroupId.split('@')[0]);
   }
 }

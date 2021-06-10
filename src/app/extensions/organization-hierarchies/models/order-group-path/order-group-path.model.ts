@@ -1,9 +1,12 @@
-import { Group } from 'ish-core/models/group/group.model';
-
 export interface OrderGroupPath {
   organizationId: string;
-  groupPath: Group[];
+  groupPath: [GroupPathEntry];
   groupId: string;
   groupName: string;
   orderId: string;
+}
+
+export interface GroupPathEntry {
+  groupId: string;
+  groupName: string;
 }

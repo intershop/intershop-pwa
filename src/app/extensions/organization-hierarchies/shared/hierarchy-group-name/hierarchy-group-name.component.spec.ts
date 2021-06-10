@@ -39,13 +39,14 @@ describe('Hierarchy Group Name Component', () => {
   });
 
   it('should be created', () => {
+    component.buyingGroupId = 'test-group@test-org';
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
   it('should show group name when provided with id', () => {
-    component.buyingGroupId = 'test-group';
+    component.buyingGroupId = 'test-group@test-org';
     const group: OrganizationGroup = { id: 'test-group', name: 'Test Group' };
     when(organizationHierarchiesFacade.getDetailsOfGroup$(strictEqual('test-group'))).thenReturn(of(group));
     fixture.detectChanges();
@@ -53,7 +54,7 @@ describe('Hierarchy Group Name Component', () => {
   });
 
   it('should show group name without label when provided with id', () => {
-    component.buyingGroupId = 'test-group';
+    component.buyingGroupId = 'test-group@test-org';
     component.showLabel = false;
     const group: OrganizationGroup = { id: 'test-group', name: 'Test Group' };
     when(organizationHierarchiesFacade.getDetailsOfGroup$(strictEqual('test-group'))).thenReturn(of(group));

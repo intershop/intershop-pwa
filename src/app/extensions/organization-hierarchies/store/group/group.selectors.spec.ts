@@ -46,7 +46,7 @@ describe('Group Selectors', () => {
         { id: '1', name: 'Test 1' },
         { id: '2', name: 'Test 2' },
       ] as OrganizationGroup[];
-      store$.dispatch(loadGroupsSuccess({ groups }));
+      store$.dispatch(loadGroupsSuccess({ groups, selectedGroupId: undefined }));
       expect(getGroupsOfOrganization(store$.state)).not.toBeEmpty();
       expect(getGroupsOfOrganizationCount(store$.state)).toBe(2);
       expect(getGroupDetails('not-existing')(store$.state)).toBeUndefined();
@@ -73,7 +73,7 @@ describe('Group Selectors', () => {
     ] as OrganizationGroup[];
 
     beforeEach(() => {
-      store$.dispatch(loadGroupsSuccess({ groups }));
+      store$.dispatch(loadGroupsSuccess({ groups, selectedGroupId: undefined }));
     });
 
     it('should set selected to 1', () => {

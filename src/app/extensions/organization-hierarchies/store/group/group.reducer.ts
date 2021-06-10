@@ -26,7 +26,11 @@ export const groupReducer = createReducer(
     const newState = groupAdapter.upsertMany(groups, state);
     return {
       ...newState,
-      selected: newState?.ids?.length ? (newState.ids[0] as string) : undefined,
+      selected: action.payload.selectedGroupId
+        ? action.payload.selectedGroupId
+        : newState?.ids?.length
+        ? (newState.ids[0] as string)
+        : undefined,
     };
   }),
   on(assignGroup, (state: GroupState, action) => {

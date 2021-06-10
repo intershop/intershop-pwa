@@ -1,17 +1,25 @@
-<div *ngIf="path$ | async as path">
-  <div *ngIf="path.groupPath.length">
-    <span>{{ path.groupPath[0] }}</span>
-    <span *ngIf="path.groupPath.length > 2"> &#124; </span>
-    <ng-template #PathDescription>
-      <ul class="list-unstyled pl-3">
-        <li class="pt-1 pb-1" *ngFor="let path of path.groupPath">{{ path }}</li>
-      </ul>
-    </ng-template>
-    <a *ngIf="path.groupPath.length > 2" class="details-tooltip" [ngbPopover]="PathDescription" placement="top">
-      ...
-      <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
-    </a>
-    <span *ngIf="path.groupPath.length > 1"> &#124; {{ path.groupPath[path.groupPath.length - 1] }}</span>
+<ish-error-message [error]="error$ | async"></ish-error-message>
+<div class="loading-container">
+  <div *ngIf="!(pathLoading$ | async); else loading">
+    <div *ngIf="path$ | async as path">
+      <div *ngIf="path.groupPath.length">
+        <span>{{ path.groupPath[0].groupName }}</span>
+        <span *ngIf="path.groupPath.length > 2"> &#124; </span>
+        <ng-template #PathDescription>
+          <ul class="list-unstyled pl-3">
+            <li class="pt-1 pb-1" *ngFor="let path of path.groupPath">{{ path.groupName }}</li>
+          </ul>
+        </ng-template>
+        <a *ngIf="path.groupPath.length > 2" class="details-tooltip" [ngbPopover]="PathDescription" placement="top">
+          ...
+          <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
+        </a>
+        <span *ngIf="path.groupPath.length > 1"> &#124; {{ path.groupPath[path.groupPath.length - 1].groupName }}</span>
+      </div>
+      <ng-template #anchor></ng-template>
+    </div>
   </div>
-  <ng-template #anchor></ng-template>
+  <ng-template #loading>
+    <ish-loading></ish-loading>
+  </ng-template>
 </div>

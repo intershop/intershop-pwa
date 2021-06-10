@@ -9,3 +9,7 @@ const getOrderGroupPathState = createSelector(getOrganizationHierarchiesState, s
 const { selectEntities } = pathAdapter.getSelectors(getOrderGroupPathState);
 
 export const getOrderGroupPathDetails = (id: string) => createSelector(selectEntities, entities => id && entities[id]);
+
+export const getOrderGroupPathLoading = createSelector(getOrderGroupPathState, state => state.loading);
+
+export const getOrderGroupPathError = createSelector(getOrderGroupPathState, state => state.error);

@@ -10,7 +10,7 @@ export const loadGroupsFail = createAction('[Organizational Groups API] Load Gro
 
 export const loadGroupsSuccess = createAction(
   '[Organizational Groups API] Load Groups Success',
-  payload<{ groups: OrganizationGroup[] }>()
+  payload<{ groups: OrganizationGroup[]; selectedGroupId: string }>()
 );
 
 export const assignGroup = createAction('[Organizational Groups API] Assign Group', payload<{ id: string }>());

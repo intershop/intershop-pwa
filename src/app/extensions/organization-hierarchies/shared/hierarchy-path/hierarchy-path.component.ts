@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { Observable } from 'rxjs';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Order } from 'ish-core/models/order/order.model';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
@@ -18,10 +19,14 @@ export class HierarchyPathComponent implements OnInit {
   @Input() object: Basket | Order;
 
   path$: Observable<OrderGroupPath>;
+  pathLoading$: Observable<boolean>;
+  error$: Observable<HttpError>;
 
   constructor(private organizationHierarchiesFacade: OrganizationHierarchiesFacade) {}
 
   ngOnInit() {
     this.path$ = this.organizationHierarchiesFacade.getDetailsOfOrderGroupPath$((this.object as Order).documentNo);
+    this.pathLoading$ = this.organizationHierarchiesFacade.orderGroupPathLoading$;
+    this.error$ = this.organizationHierarchiesFacade.orderGroupPathLoadingError$;
   }
 }

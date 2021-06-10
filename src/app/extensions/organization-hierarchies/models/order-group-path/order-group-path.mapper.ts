@@ -6,7 +6,7 @@ import { OrderGroupPath } from './order-group-path.model';
 @Injectable({ providedIn: 'root' })
 export class OrderGroupPathMapper {
   static fromData(orderGroupPathData: OrderGroupPathBaseData, orderId: string): OrderGroupPath {
-    if (orderGroupPathData) {
+    if (orderGroupPathData && orderId) {
       return {
         groupId: orderGroupPathData.groupId,
         groupName: orderGroupPathData.groupName,
@@ -15,7 +15,7 @@ export class OrderGroupPathMapper {
         orderId,
       };
     } else {
-      throw new Error(`orderGroupPathData is required`);
+      throw new Error(`orderGroupPathData and orderId are required`);
     }
   }
 }

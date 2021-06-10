@@ -29,7 +29,12 @@ type OrderIncludeType =
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationHierarchiesService {
-  constructor(private apiService: ApiService, private store: Store, private mapper: OrganizationGroupMapper) {}
+  constructor(
+    private apiService: ApiService,
+    private store: Store,
+    private organizationGroupMapper: OrganizationGroupMapper,
+    private organizationOrderMapper: OrganizationOrderMapper
+  ) {}
 
   static buyingContextInclude = ',buyingContext&filter[buyingContext]=';
 
@@ -63,7 +68,7 @@ export class OrganizationHierarchiesService {
             `${baseURL}/organizations/${customer.customerNo}/groups`,
             this.contentTypeHeader
           )
-          .pipe(map(list => list.data.map(this.mapper.fromData)))
+          .pipe(map(list => list.data.map(this.organizationGroupMapper.fromData)))
       )
     );
   }
@@ -84,6 +89,6 @@ export class OrganizationHierarchiesService {
           headers: this.orderHeaders,
         }
       )
-      .pipe(map(OrganizationOrderMapper.fromListData));
+      .pipe(map(this.organizationOrderMapper.fromListData));
   }
 }

@@ -9,14 +9,14 @@ import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { loadBasket } from 'ish-core/store/customer/basket';
+import { createBasket, loadBasketWithId } from 'ish-core/store/customer/basket';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 
 import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
 import { OrganizationHierarchiesService } from '../../services/organization-hierarchies/organization-hierarchies.service';
 import { assignBuyingContext, assignBuyingContextSuccess } from '../buying-context/buying-context.actions';
-import { loadOrdersWithGroupPaths } from '../order-group-path';
+import { loadOrdersWithGroupPaths } from '../order-group-path/order-group-path.actions';
 import { OrganizationHierarchiesStoreModule } from '../organization-hierarchies-store.module';
 
 import { assignGroup, loadGroups, loadGroupsSuccess } from './group.actions';
@@ -32,12 +32,13 @@ describe('Group Effects', () => {
   const basket = { id: '1', calculated: true, totals: undefined } as BasketBaseData;
   const baskets = [basket] as BasketBaseData[];
   const customer = { customerNo: 'patricia' } as Customer;
-  const groups = [{ id: 'root' }, { id: 'subgroup', parentid: 'root' }] as OrganizationGroup[];
+  const selectedGroup = { id: 'root' };
+  const groups = [selectedGroup, { id: 'subgroup', parentid: 'root' }] as OrganizationGroup[];
 
   beforeEach(() => {
     orgServiceMock = mock(OrganizationHierarchiesService);
     basketServiceMock = mock(BasketService);
-    when(orgServiceMock.getGroups(anything())).thenReturn(of([]));
+    when(orgServiceMock.getGroups(anything())).thenReturn(of(groups));
 
     TestBed.configureTestingModule({
       imports: [
@@ -60,7 +61,18 @@ describe('Group Effects', () => {
   describe('loadGroups$', () => {
     it('should dispatch loadGroupsSuccess actions when encountering loadGroups actions', () => {
       const action = loadGroups();
-      const completion1 = loadGroupsSuccess({ groups: [] });
+      const completion1 = loadGroupsSuccess({ groups, selectedGroupId: undefined });
+      const completion2 = assignBuyingContext();
+      actions$ = hot('-a----a----a', { a: action });
+      const expected$ = cold('-(cd)-(cd)-(cd)', { c: completion1, d: completion2 });
+
+      expect(effects.loadGroups$).toBeObservable(expected$);
+    });
+    it('should dispatch loadGroupsSuccess actions when loadGroups actions triggered by reloading', () => {
+      store$.dispatch(loadGroupsSuccess({ groups, selectedGroupId: selectedGroup.id }));
+
+      const action = loadGroups();
+      const completion1 = loadGroupsSuccess({ groups, selectedGroupId: selectedGroup.id });
       const completion2 = assignBuyingContext();
       actions$ = hot('-a----a----a', { a: action });
       const expected$ = cold('-(cd)-(cd)-(cd)', { c: completion1, d: completion2 });
@@ -72,7 +84,7 @@ describe('Group Effects', () => {
   describe('assignGroup$', () => {
     beforeEach(() => {
       store$.dispatch(loginUserSuccess({ customer }));
-      store$.dispatch(loadGroupsSuccess({ groups }));
+      store$.dispatch(loadGroupsSuccess({ groups, selectedGroupId: undefined }));
       store$.dispatch(assignGroup({ id: 'subgroup' }));
     });
 
@@ -108,10 +120,10 @@ describe('Group Effects', () => {
       });
     });
 
-    it('should dispatch action of type LoadBasket and LoadOrders', () => {
+    it('should dispatch action of type LoadBasketWithId and LoadOrdersWithGroupPaths when baskets existing', () => {
       when(basketServiceMock.getBaskets()).thenReturn(of(baskets));
       const action = assignBuyingContextSuccess({ bctx: groups[1].id.concat('@', customer.customerNo) });
-      const completion1 = loadBasket();
+      const completion1 = loadBasketWithId({ basketId: basket.id });
       const completion2 = loadOrdersWithGroupPaths();
       actions$ = hot('-a----a----a', { a: action });
       const expected$ = cold('-(cd)-(cd)-(cd)', { c: completion1, d: completion2 });
@@ -119,12 +131,13 @@ describe('Group Effects', () => {
       expect(effects.reloadContext$).toBeObservable(expected$);
     });
 
-    it('should dispatch only action of type LoadOrders', () => {
+    it('should dispatch only action of type CreateBasket and LoadOrdersWithGroupPaths when no baskets existing', () => {
       when(basketServiceMock.getBaskets()).thenReturn(of([]));
       const action = assignBuyingContextSuccess({ bctx: groups[1].id.concat('@', customer.customerNo) });
-      const completion = loadOrdersWithGroupPaths();
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      const completion1 = createBasket();
+      const completion2 = loadOrdersWithGroupPaths();
+      actions$ = hot('-a----a----a', { a: action });
+      const expected$ = cold('-(cd)-(cd)-(cd)', { c: completion1, d: completion2 });
 
       expect(effects.reloadContext$).toBeObservable(expected$);
     });

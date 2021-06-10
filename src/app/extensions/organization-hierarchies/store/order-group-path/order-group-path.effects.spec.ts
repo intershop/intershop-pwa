@@ -2,53 +2,55 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { Observable, of, throwError } from 'rxjs';
-import { anyNumber, anyString, instance, mock, verify, when } from 'ts-mockito';
+import { Observable, of } from 'rxjs';
+import { anything, instance, mock, when } from 'ts-mockito';
 
 import { Order } from 'ish-core/models/order/order.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadOrdersSuccess } from 'ish-core/store/customer/orders';
-import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
+import { GroupPathEntry, OrderGroupPath } from '../../models/order-group-path/order-group-path.model';
 import { OrganizationHierarchiesService } from '../../services/organization-hierarchies/organization-hierarchies.service';
-import { assignBuyingContextSuccess } from '../buying-context/buying-context.actions';
-import {
-  loadOrdersWithGroupPaths,
-  loadOrdersWithGroupPathsFail,
-  loadOrdersWithGroupPathsSuccess,
-} from '../order-group-path';
+import { assignBuyingContextSuccess } from '../buying-context';
 import { OrganizationHierarchiesStoreModule } from '../organization-hierarchies-store.module';
+
+import { loadOrdersWithGroupPaths, loadOrdersWithGroupPathsSuccess } from './order-group-path.actions';
 import { OrderGroupPathEffects } from './order-group-path.effects';
 
-describe('Order Effects', () => {
+describe('Order Group Path Effects', () => {
   let actions$: Observable<Action>;
   let effects: OrderGroupPathEffects;
-  let organizationHierarchiesServiceMock: OrganizationHierarchiesService;
+  let orgServiceMock: OrganizationHierarchiesService;
   let store$: Store;
 
-  const bctx = 'Anna@Aaron';
   const order = { id: '1', documentNo: '00000001', lineItems: [] } as Order;
   const orders = [order, { id: '2', documentNo: '00000002' }] as Order[];
-  const paths = [
-    {
-      organizationId: 'orgID',
-      groupPath: [{ groupId: 'gID', groupName: 'groupName' }],
-      groupId: 'gID',
-      groupName: 'groupName',
-      orderId: '00000001',
-    },
-  ];
+  const rootGroupPathEntry = { groupId: 'rootID', groupName: 'rootName' } as GroupPathEntry;
+  const subGroupGroupPathEntry = { groupId: 'groupID', groupName: 'groupName' } as GroupPathEntry;
+  const leafGroupPathEntry = { groupId: 'leafID', groupName: 'leafName' } as GroupPathEntry;
+  const orderGroupPath = {
+    organizationId: 'orgID',
+    groupPath: [rootGroupPathEntry, subGroupGroupPathEntry, leafGroupPathEntry] as GroupPathEntry[],
+    groupId: leafGroupPathEntry.groupId,
+    groupName: leafGroupPathEntry.groupName,
+    orderId: order.id,
+  } as OrderGroupPath;
+  const orderGroupPaths = [orderGroupPath] as OrderGroupPath[];
+  const buyingContext = orderGroupPath.groupId.concat('@', orderGroupPath.organizationId);
 
   beforeEach(() => {
-    organizationHierarchiesServiceMock = mock(OrganizationHierarchiesService);
-    when(organizationHierarchiesServiceMock.getOrders(anyNumber(), anyString())).thenReturn(of({ orders, paths }));
+    orgServiceMock = mock(OrganizationHierarchiesService);
+    when(orgServiceMock.getOrders(anything(), buyingContext)).thenReturn(of({ orders, paths: orderGroupPaths }));
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), OrganizationHierarchiesStoreModule.forTesting('buyingContext')],
+      imports: [
+        CoreStoreModule.forTesting(),
+        OrganizationHierarchiesStoreModule.forTesting('buyingContext', 'orderGroupPath'),
+      ],
       providers: [
         OrderGroupPathEffects,
         provideMockActions(() => actions$),
-        { provide: OrganizationHierarchiesService, useFactory: () => instance(organizationHierarchiesServiceMock) },
+        { provide: OrganizationHierarchiesService, useFactory: () => instance(orgServiceMock) },
       ],
     });
 
@@ -58,39 +60,15 @@ describe('Order Effects', () => {
 
   describe('loadOrdersWithGroupPaths$', () => {
     beforeEach(() => {
-      store$.dispatch(assignBuyingContextSuccess({ bctx }));
+      store$.dispatch(assignBuyingContextSuccess({ bctx: buyingContext }));
     });
 
-    it('should call the organizationHierarchiesService for loadOrders', done => {
-      const action = loadOrdersWithGroupPaths();
-      actions$ = of(action);
-
-      effects.loadOrdersWithGroupPaths$.subscribe(() => {
-        verify(organizationHierarchiesServiceMock.getOrders(30, OrderGroupPathEffects.include.concat(bctx))).once();
-        done();
-      });
-    });
-
-    it('should load all orders of a buyingContext and dispatch a LoadOrdersSuccess action', () => {
+    it('should dispatch loadGroupsSuccess and loadOrdersWithGroupPathsSuccess actions when encountering LoadOrdersWithGroupPaths actions', () => {
       const action = loadOrdersWithGroupPaths();
       const completion1 = loadOrdersSuccess({ orders });
-      const completion2 = loadOrdersWithGroupPathsSuccess({ paths });
+      const completion2 = loadOrdersWithGroupPathsSuccess({ paths: orderGroupPaths });
       actions$ = hot('-a----a----a', { a: action });
       const expected$ = cold('-(cd)-(cd)-(cd)', { c: completion1, d: completion2 });
-
-      expect(effects.loadOrdersWithGroupPaths$).toBeObservable(expected$);
-    });
-
-    it('should dispatch a LoadOrdersWithGroupPathsFail action if a load order group path error occurs', () => {
-      when(organizationHierarchiesServiceMock.getOrders(anyNumber(), anyString())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
-      );
-
-      const action = loadOrdersWithGroupPaths();
-      const error = makeHttpError({ message: 'invalid' });
-      const completion = loadOrdersWithGroupPathsFail({ error });
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-c', { c: completion });
 
       expect(effects.loadOrdersWithGroupPaths$).toBeObservable(expected$);
     });

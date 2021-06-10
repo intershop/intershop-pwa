@@ -5,6 +5,8 @@ import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { Order } from 'ish-core/models/order/order.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
 
@@ -21,7 +23,13 @@ describe('Hierarchy Path Component', () => {
     organizationHierarchiesFacade = mock(OrganizationHierarchiesFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [HierarchyPathComponent, MockComponent(FaIconComponent), MockComponent(NgbPopover)],
+      declarations: [
+        HierarchyPathComponent,
+        MockComponent(ErrorMessageComponent),
+        MockComponent(FaIconComponent),
+        MockComponent(LoadingComponent),
+        MockComponent(NgbPopover),
+      ],
       providers: [
         { provide: OrganizationHierarchiesFacade, useFactory: () => instance(organizationHierarchiesFacade) },
       ],

@@ -4,13 +4,13 @@ import { Store, select } from '@ngrx/store';
 import { map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { loadBasket } from 'ish-core/store/customer/basket';
+import { createBasket, loadBasketWithId } from 'ish-core/store/customer/basket';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { mapErrorToAction } from 'ish-core/utils/operators';
 
 import { OrganizationHierarchiesService } from '../../services/organization-hierarchies/organization-hierarchies.service';
 import { assignBuyingContext, assignBuyingContextSuccess } from '../buying-context/buying-context.actions';
-import { loadOrdersWithGroupPaths } from '../order-group-path';
+import { loadOrdersWithGroupPaths } from '../order-group-path/order-group-path.actions';
 
 import { assignGroup, loadGroups, loadGroupsFail, loadGroupsSuccess } from './group.actions';
 import { getSelectedGroupDetails } from './group.selectors';
@@ -27,10 +27,13 @@ export class GroupEffects {
   loadGroups$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadGroups),
-      withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
-      switchMap(([, customer]) =>
+      withLatestFrom(this.store.pipe(select(getSelectedGroupDetails)), this.store.pipe(select(getLoggedInCustomer))),
+      switchMap(([, selectedGroup, customer]) =>
         this.organizationService.getGroups(customer).pipe(
-          switchMap(groups => [loadGroupsSuccess({ groups }), assignBuyingContext()]),
+          switchMap(groups => [
+            loadGroupsSuccess({ groups, selectedGroupId: selectedGroup ? selectedGroup.id : undefined }),
+            assignBuyingContext(),
+          ]),
           mapErrorToAction(loadGroupsFail)
         )
       )
@@ -52,9 +55,9 @@ export class GroupEffects {
         this.basketService.getBaskets().pipe(
           switchMap(baskets => {
             if (baskets?.length > 0) {
-              return [loadBasket(), loadOrdersWithGroupPaths()];
+              return [loadBasketWithId({ basketId: baskets[0].id }), loadOrdersWithGroupPaths()];
             } else {
-              return [loadOrdersWithGroupPaths()];
+              return [createBasket(), loadOrdersWithGroupPaths()];
             }
           })
         )
