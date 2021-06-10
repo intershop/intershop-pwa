@@ -6,10 +6,11 @@ import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { defer, fromEvent, iif, merge } from 'rxjs';
 import {
-  debounceTime,
+  distinct,
   distinctUntilChanged,
   map,
   mapTo,
+  mergeMap,
   shareReplay,
   switchMap,
   take,
@@ -21,10 +22,25 @@ import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/config
 import { NGRX_STATE_SK } from 'ish-core/configurations/ngrx-state-transfer';
 import { SSR_LOCALE } from 'ish-core/configurations/state-keys';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
-import { distinctCompareWith, mapToProperty, whenTruthy } from 'ish-core/utils/operators';
+import { LocalizationsService } from 'ish-core/services/localizations/localizations.service';
+import {
+  distinctCompareWith,
+  mapErrorToAction,
+  mapToPayload,
+  mapToPayloadProperty,
+  mapToProperty,
+  whenTruthy,
+} from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
-import { applyConfiguration } from './configuration.actions';
+import {
+  applyConfiguration,
+  loadServerTranslations,
+  loadServerTranslationsFail,
+  loadServerTranslationsSuccess,
+  loadSingleServerTranslation,
+  loadSingleServerTranslationSuccess,
+} from './configuration.actions';
 import { getCurrentLocale, getDeviceType } from './configuration.selectors';
 
 @Injectable()
@@ -38,7 +54,8 @@ export class ConfigurationEffects {
     @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: number,
     @Inject(LARGE_BREAKPOINT_WIDTH) private largeBreakpointWidth: number,
     translateService: TranslateService,
-    appRef: ApplicationRef
+    appRef: ApplicationRef,
+    private localizationsService: LocalizationsService
   ) {
     appRef.isStable
       .pipe(takeWhile(() => isPlatformBrowser(platformId)))
@@ -53,12 +70,10 @@ export class ConfigurationEffects {
         select(getCurrentLocale),
         mapToProperty('lang'),
         distinctUntilChanged(),
-        // https://github.com/ngx-translate/core/issues/1030
-        debounceTime(0),
         whenTruthy(),
         switchMap(lang => languageChanged$.pipe(mapTo(lang), take(1)))
       )
-      .subscribe((lang: string) => {
+      .subscribe(lang => {
         this.transferState.set(SSR_LOCALE, lang);
         translateService.use(lang);
       });
@@ -133,6 +148,32 @@ export class ConfigurationEffects {
           distinctCompareWith(this.store.pipe(select(getDeviceType))),
           map(deviceType => applyConfiguration({ _deviceType: deviceType }))
         )
+      )
+    )
+  );
+
+  loadServerTranslations$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadServerTranslations),
+      mapToPayloadProperty('lang'),
+      distinct(),
+      mergeMap(lang =>
+        this.localizationsService.getServerTranslations(lang).pipe(
+          map(translations => loadServerTranslationsSuccess({ lang, translations })),
+          mapErrorToAction(loadServerTranslationsFail, { lang })
+        )
+      )
+    )
+  );
+
+  loadSingleServerTranslation$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadSingleServerTranslation),
+      mapToPayload(),
+      mergeMap(({ lang, key }) =>
+        this.localizationsService
+          .getSpecificTranslation(lang, key)
+          .pipe(map(translation => loadSingleServerTranslationSuccess({ lang, key, translation })))
       )
     )
   );

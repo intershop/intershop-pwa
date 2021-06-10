@@ -88,3 +88,9 @@ export const getIdentityProvider = createSelectorFactory<
     state.identityProvider &&
     (state.identityProvider === 'ICM' ? { type: 'ICM' } : state.identityProviders?.[state.identityProvider])
 );
+
+export const getServerTranslations = (lang: string) =>
+  createSelector(getConfigurationState, state => state.serverTranslations?.[lang]);
+
+export const getSpecificServerTranslation = (lang: string, key: string) =>
+  createSelector(getServerTranslations(lang), translations => translations?.[key]);
