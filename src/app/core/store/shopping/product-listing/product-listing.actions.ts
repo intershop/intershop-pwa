@@ -12,7 +12,7 @@ export const setProductListingPages = createAction(
 
 export const setProductListingPageSize = createAction(
   '[Product Listing Internal] Set Product Listing Page Size',
-  payload<{ itemsPerPage: number }>()
+  payload<{ itemsPerPage: number | { [id: string]: number } }>()
 );
 
 export const loadMoreProducts = createAction(

@@ -1,6 +1,5 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Store, select } from '@ngrx/store';
 import { Observable, identity } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -15,26 +14,18 @@ import { ProductMapper } from 'ish-core/models/product/product.mapper';
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
-import { getProductListingItemsPerPage } from 'ish-core/store/shopping/product-listing';
 import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { omit } from 'ish-core/utils/functions';
 import { URLFormParams, appendFormParamsToHttpParams } from 'ish-core/utils/url-form-params';
 
 @Injectable({ providedIn: 'root' })
 export class FilterService {
-  private itemsPerPage: number;
-
   constructor(
     private apiService: ApiService,
     private filterNavigationMapper: FilterNavigationMapper,
     private productMapper: ProductMapper,
-    private store: Store,
     private featureToggleService: FeatureToggleService
-  ) {
-    this.store
-      .pipe(select(getProductListingItemsPerPage))
-      .subscribe(itemsPerPage => (this.itemsPerPage = itemsPerPage));
-  }
+  ) {}
 
   getFilterForCategory(categoryUniqueId: string): Observable<FilterNavigation> {
     const category = CategoryHelper.getCategoryPath(categoryUniqueId);
@@ -71,20 +62,18 @@ export class FilterService {
 
   getFilteredProducts(
     searchParameter: URLFormParams,
-    page: number = 1,
+    amount: number,
     sortKey?: string,
-    amount?: number
+    offset = 0
   ): Observable<{ total: number; products: Partial<Product>[]; sortableAttributes: SortableAttributesType[] }> {
     let params = new HttpParams()
-      .set('amount', amount || amount === 0 ? amount.toString() : this.itemsPerPage.toString())
+      .set('amount', amount ? amount.toString() : '')
+      .set('offset', offset.toString())
       .set('attrs', ProductsService.STUB_ATTRS)
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('returnSortKeys', 'true');
     if (sortKey) {
       params = params.set('sortKey', sortKey);
-    }
-    if (!amount) {
-      params = params.set('offset', ((page - 1) * this.itemsPerPage).toString());
     }
     params = appendFormParamsToHttpParams(omit(searchParameter, 'category'), params);
 

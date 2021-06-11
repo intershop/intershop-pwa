@@ -22,7 +22,7 @@ export class ParametersEffects {
       ofType(loadParametersProductListFilter),
       mapToPayload(),
       concatMap(({ id, searchParameter, amount }) =>
-        this.filterService.getFilteredProducts(searchParameter, 1, undefined, amount).pipe(
+        this.filterService.getFilteredProducts(searchParameter, amount).pipe(
           mergeMap(({ products }) => [
             ...products.map((product: Product) => loadProductSuccess({ product })),
             loadParametersProductListFilterSuccess({ id, productList: products.map(p => p.sku) }),

@@ -40,7 +40,7 @@ export const adapter = createEntityAdapter<ProductListingType>({
  */
 export interface ProductListingState extends EntityState<ProductListingType> {
   loading: boolean;
-  itemsPerPage: number;
+  itemsPerPage: number | { [id: string]: number };
   viewType: ViewType;
   currentSettings: { [id: string]: Pick<ProductListingID, 'filters' | 'sorting'> };
 }
