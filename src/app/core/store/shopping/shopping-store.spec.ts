@@ -28,7 +28,7 @@ import { getCategoryTree, getSelectedCategory } from './categories';
 import { getProductEntities, getSelectedProduct } from './products';
 import { getRecentlyViewedProducts } from './recently';
 import { suggestSearch } from './search';
-import { ShoppingStoreModule } from './shopping-store.module';
+import { SHOPPING_STORE_CONFIG, ShoppingStoreModule } from './shopping-store.module';
 
 const getCategoryIds = createSelector(getCategoryTree, tree => Object.keys(tree.nodes));
 
@@ -174,6 +174,7 @@ describe('Shopping Store', () => {
         TranslateModule.forRoot(),
       ],
       providers: [
+        { provide: SHOPPING_STORE_CONFIG, useValue: {} },
         SelectedProductContextFacade,
         provideStoreSnapshots(),
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },

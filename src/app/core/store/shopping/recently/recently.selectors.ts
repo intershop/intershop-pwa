@@ -6,7 +6,7 @@ import { isArrayEqual } from 'ish-core/utils/functions';
 
 import { RecentlyState } from './recently.reducer';
 
-const getRecentlyState = createSelector(getShoppingState, state => state.recently);
+const getRecentlyState = createSelector(getShoppingState, state => state._recently);
 
 export const getRecentlyViewedProducts = createSelectorFactory<object, string[]>(projector =>
   resultMemoize(projector, isArrayEqual)

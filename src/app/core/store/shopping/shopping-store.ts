@@ -12,8 +12,8 @@ import { SearchState } from './search/search.reducer';
 export interface ShoppingState {
   categories: CategoriesState;
   products: ProductsState;
-  compare: CompareState;
-  recently: RecentlyState;
+  _compare: CompareState;
+  _recently: RecentlyState;
   search: SearchState;
   filter: FilterState;
   promotions: PromotionsState;
