@@ -1,4 +1,3 @@
-import { I18nPluralPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
@@ -59,7 +58,6 @@ describe('Account Order Template List Component', () => {
         MockComponent(ProductAddToBasketComponent),
         MockDirective(ProductContextDirective),
         MockPipe(DatePipe),
-        MockPipe(I18nPluralPipe),
       ],
       imports: [RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();

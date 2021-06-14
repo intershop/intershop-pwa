@@ -23,7 +23,7 @@
     </div>
     <div class="col-3 list-item d-none d-md-block">{{ orderTemplate.creationDate | ishDate: 'shortDate' }}</div>
     <div class="col-2 list-item">
-      {{ orderTemplate.itemsCount | i18nPlural: ('account.order_template.items' | translate) || { other: '#' } }}
+      {{ 'account.order_template.items' | translate: { '0': orderTemplate.itemsCount } }}
     </div>
     <div class="col-5 col-md-2 list-item text-right">
       <a *ngIf="orderTemplate.items?.length" class="btn-tool d-inline-flex align-top">
