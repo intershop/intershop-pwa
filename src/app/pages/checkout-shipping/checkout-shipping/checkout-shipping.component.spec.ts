@@ -4,15 +4,17 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
-import { anything, capture, spy, verify } from 'ts-mockito';
+import { anything, capture, instance, mock, spy, verify } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketAddressSummaryComponent } from 'ish-shared/components/basket/basket-address-summary/basket-address-summary.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
 import { BasketItemsSummaryComponent } from 'ish-shared/components/basket/basket-items-summary/basket-items-summary.component';
+import { BasketOrderReferenceComponent } from 'ish-shared/components/basket/basket-order-reference/basket-order-reference.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
@@ -22,14 +24,18 @@ describe('Checkout Shipping Component', () => {
   let component: CheckoutShippingComponent;
   let fixture: ComponentFixture<CheckoutShippingComponent>;
   let element: HTMLElement;
+  let accountFacade: AccountFacade;
 
   beforeEach(async () => {
+    accountFacade = mock(AccountFacade);
+
     await TestBed.configureTestingModule({
       declarations: [
         CheckoutShippingComponent,
         MockComponent(BasketAddressSummaryComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketItemsSummaryComponent),
+        MockComponent(BasketOrderReferenceComponent),
         MockComponent(BasketValidationResultsComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(FaIconComponent),
@@ -38,6 +44,7 @@ describe('Checkout Shipping Component', () => {
         MockPipe(PricePipe),
       ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   });
 
