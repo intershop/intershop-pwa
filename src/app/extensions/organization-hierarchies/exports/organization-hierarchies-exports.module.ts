@@ -11,6 +11,7 @@ import { TxSelectedGroupInterceptor } from '../interceptors/tx-selected-group.in
 import { LazyHierarchyGroupNameComponent } from './lazy-hierarchy-group-name/lazy-hierarchy-group-name.component';
 import { LazyHierarchyPathComponent } from './lazy-hierarchy-path/lazy-hierarchy-path.component';
 import { LazyHierarchySwitchComponent } from './lazy-hierarchy-switch/lazy-hierarchy-switch.component';
+import { LazyHierarchyOrderListComponent } from './lazy-hierarchy-order-list/lazy-hierarchy-order-list.component';
 
 @NgModule({
   imports: [FeatureToggleModule],
@@ -27,7 +28,17 @@ import { LazyHierarchySwitchComponent } from './lazy-hierarchy-switch/lazy-hiera
     { provide: HTTP_INTERCEPTORS, useClass: TxSelectedGroupInterceptor, multi: true },
   ],
 
-  declarations: [LazyHierarchyGroupNameComponent, LazyHierarchyPathComponent, LazyHierarchySwitchComponent],
-  exports: [LazyHierarchyGroupNameComponent, LazyHierarchyPathComponent, LazyHierarchySwitchComponent],
+  declarations: [
+    LazyHierarchyGroupNameComponent,
+    LazyHierarchyOrderListComponent,
+    LazyHierarchyPathComponent,
+    LazyHierarchySwitchComponent,
+  ],
+  exports: [
+    LazyHierarchyGroupNameComponent,
+    LazyHierarchyOrderListComponent,
+    LazyHierarchyPathComponent,
+    LazyHierarchySwitchComponent,
+  ],
 })
 export class OrganizationHierarchiesExportsModule {}

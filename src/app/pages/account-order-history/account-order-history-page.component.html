@@ -1,7 +1,12 @@
 <h1>{{ 'account.order_history.heading' | translate }}</h1>
 <p class="section">{{ 'account.order.subtitle' | translate }}</p>
 
-<ish-order-list></ish-order-list>
+<ng-container *ngIf="isFeatureEnabled('organizationHierarchies'); else default">
+  <ish-lazy-hierarchy-order-list></ish-lazy-hierarchy-order-list>
+</ng-container>
+<ng-template #default>
+  <ish-order-list></ish-order-list>
+</ng-template>
 
 <h4 class="form-text">{{ 'account.order.questions.title' | translate }}</h4>
 <p
