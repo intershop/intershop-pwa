@@ -1,12 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
-import { LazyHierarchyOrderListComponent } from 'src/app/extensions/organization-hierarchies/exports/lazy-hierarchy-order-list/lazy-hierarchy-order-list.component';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { OrderListComponent } from 'ish-shared/components/order/order-list/order-list.component';
+
+import { LazyHierarchyOrderListComponent } from '../../extensions/organization-hierarchies/exports/lazy-hierarchy-order-list/lazy-hierarchy-order-list.component';
 
 import { AccountOrderHistoryPageComponent } from './account-order-history-page.component';
 
