@@ -85,9 +85,9 @@ This setup is used by our demo application.
 It uses a single channel and a static URL, while locales are changed via a context path (`baseHref`) parameter.
 
 This results in URLs like this:
-`www.pwademo.com`,
 `www.pwademo.com/en`,
-`www.pwademo.com/de`
+`www.pwademo.com/de`,
+`www.pwademo.com/fr`
 
 ```yaml
 .+:
