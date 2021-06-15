@@ -51,13 +51,20 @@ export class FallbackMissingTranslationHandler implements MissingTranslationHand
 
   handle(params: MissingTranslationHandlerParams) {
     if (params.interpolateParams || /^\w+(\.[\w-]+)+$/.test(params.key)) {
-      this.reportMissingTranslation(params.translateService.currentLang, params.key);
+      const currentLang = params.translateService.currentLang;
+      /*
+       * when changing languages 'currentLang' from the translate service
+       * is out of sync -- double check before reporting
+       */
+      if (!params.translateService.translations?.[currentLang]?.[params.key]) {
+        this.reportMissingTranslation(currentLang, params.key);
+      }
 
       const doSingleCheck = isPlatformBrowser(this.platformId) && /\berror\b/.test(params.key);
-      const isFallbackAvailable = params.translateService.currentLang !== this.fallback;
+      const isFallbackAvailable = currentLang !== this.fallback;
       return concat(
         // try API call with specific key
-        iif(() => doSingleCheck, this.retrieveSpecificTranslation(params.translateService.currentLang, params.key)),
+        iif(() => doSingleCheck, this.retrieveSpecificTranslation(currentLang, params.key)),
         // try fallback translations
         iif(
           () => isFallbackAvailable,
