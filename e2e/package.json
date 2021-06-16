@@ -13,7 +13,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "cypress": "^6.0.0",
+    "cypress": "^7.0.0",
     "cypress-failed-log": "^2.0.0",
     "cypress-log-to-output": "^1.1.2",
     "typescript": "*"
