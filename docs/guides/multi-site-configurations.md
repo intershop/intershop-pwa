@@ -35,6 +35,7 @@ All other properties are optional:
 - **features**: Comma-separated list of activated features
 - **lang**: The default language as defined in the Angular CLI environment
 - **theme**: The theme used for the channel (format: `<theme-name>(|<icon-color>)?`)
+- **protected**: Selectively unprotect a given domain and/or baseHref. Only applies in combination with globally activated nginx basic authentication.
 
 Dynamically directing the PWA to different ICM installations can be done by using:
 
@@ -185,6 +186,23 @@ To see what is possible through multi-site handling, have a look at this extende
   application: smb-responsive
   features: quoting
   theme: 'blue|688dc3'
+```
+
+### Extended Example with two domains, one with basic auth (except /fr), the other without
+
+```yaml
+de.+\.com:
+  lang: de_DE
+  channel: inspired-inTRONICS-DE
+  protected: false
+ca.+\.com:
+  - baseHref: /fr
+    channel: inspired-inTRONICS-CA
+    lang: fr_FR
+    protected: false
+  - baseHref: /en
+    channel: inspired-inTRONICS-CA
+    lang: en_US
 ```
 
 # Further References
