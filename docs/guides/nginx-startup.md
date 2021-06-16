@@ -5,7 +5,7 @@ kb_everyone
 kb_sync_latest_only
 -->
 
-# Building and Running nginx Docker Image
+# Building and Running NGINX Docker Image
 
 We provide a docker image based on [nginx](https://www.nginx.com/) for the [PWA deployment](../concepts/pwa-building-blocks.md#pwa---nginx).
 
@@ -23,73 +23,12 @@ For HTTP, the server will run on default port 80.
 If HTTPS is chosen as an upstream, it will run on default port 443.
 In the latter case the files `server.key` and `server.crt` have to be supplied in the container folder `/etx/nginx` (either by volume mapping with `docker run` or in the image itself by `docker build`).
 
-### Multi-Channel
+### Multi-Site
 
 If the nginx container is run without further configuration, the default Angular CLI environment properties are not overridden.
 Multiple PWA channels can be set up by supplying a [YAML](https://yaml.org) configuration listing all domains the PWA should work for.
 
-The first way of supplying a configuration for domains is to add multiple domain configuration nodes and specify properties:
-
-```yaml
-'domain1':
-  channel: channel1
-  application: app1
-  features: f1,f2,f3
-  lang: la_CO
-  theme: name|color
-```
-
-The domain is interpreted as a regular expression.
-Subdomains (`b2b\..+`) as well as top level domains (`.+\.com`) can be supplied.
-The `channel` property is also mandatory.
-
-All other properties are optional:
-
-- **application**: The ICM application
-- **identityProvider**: The active identity provider for this site
-- **features**: Comma-separated list of activated features
-- **lang**: The default language as defined in the Angular CLI environment
-- **theme**: The theme used for the channel (format: `<theme-name>(|<icon-color>)?`)
-
-Dynamically directing the PWA to different ICM installations can by done by using:
-
-- **icmHost**: the domain where the ICM instance is running (without protocol and port)
-- **icmPort**: (optional) if the port differs from 443
-- **icmScheme**: (optional) if the protocol differs from 'https'
-
-Multiple channels can also be configured via context paths, which re-configure the PWA upstream to use a different `baseHref` for each channel.
-
-```yaml
-'domain2':
-  - baseHref: /us
-    channel: channelUS
-    lang: en_US
-  - baseHref: /de
-    channel: channelDE
-    lang: de_DE
-```
-
-The domain has to be supplied.
-To match all domains use `.+`.
-The parameters `baseHref` and `channel` are mandatory.
-`baseHref` must start with `/`.
-Also note that context path channels have to be supplied as a list.
-The first entry is chosen as default channel, if the website is accessed without supplying a channel, meaning the context path `/`.
-It is also possible to explicitly set a channel configuration for the `/` context path.
-Such a configuration is shown in the following configuration that sets different languages for the according context paths but within the same channel.
-
-```yaml
-'domain2':
-  - baseHref: /fr
-    channel: channel
-    lang: fr_FR
-  - baseHref: /de
-    channel: channel
-    lang: de_DE
-  - baseHref: /
-    channel: channel
-    lang: en_US
-```
+For more information on the multi-site syntax, refer to [Multi-Site Configurations](../guides/multi-site-configurations.md#Syntax)
 
 The configuration can be supplied simply by setting the environment variable `MULTI_CHANNEL`.
 Alternatively, the source can be supplied by setting `MULTI_CHANNEL_SOURCE` in any [supported format by gomplate](https://docs.gomplate.ca/datasources).
@@ -97,7 +36,7 @@ If no environment variables for multi-channel configuration are given, the confi
 
 > :warning: Multi-Channel configuration with context paths does not work in conjunction with [service workers](../concepts/progressive-web-app.md#service-worker)
 
-An extended example can be found in the `docker-compose.yml` in the project root.
+An extended list of examples can be found in the [Multi-Site Configurations](../guides/multi-site-configurations.md#Syntax) guide.
 
 ### Other
 
