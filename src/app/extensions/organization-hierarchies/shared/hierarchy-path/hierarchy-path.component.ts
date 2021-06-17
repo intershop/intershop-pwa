@@ -22,11 +22,21 @@ export class HierarchyPathComponent implements OnInit {
   pathLoading$: Observable<boolean>;
   error$: Observable<HttpError>;
 
+  isCollapsed = false;
+
   constructor(private organizationHierarchiesFacade: OrganizationHierarchiesFacade) {}
 
   ngOnInit() {
-    this.path$ = this.organizationHierarchiesFacade.getDetailsOfOrderGroupPath$((this.object as Order).documentNo);
+    if (this.object.hasOwnProperty('documentNo')) {
+      this.path$ = this.organizationHierarchiesFacade.getDetailsOfOrderGroupPath$((this.object as Order).documentNo);
+    } else {
+      this.path$ = this.organizationHierarchiesFacade.getDetailsOfBasketGroupPath$();
+    }
     this.pathLoading$ = this.organizationHierarchiesFacade.orderGroupPathLoading$;
     this.error$ = this.organizationHierarchiesFacade.orderGroupPathLoadingError$;
+  }
+
+  toggle() {
+    this.isCollapsed = !this.isCollapsed;
   }
 }

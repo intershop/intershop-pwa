@@ -2,9 +2,7 @@
   <ng-container *ngIf="customer$ | async as customer; else companyFromInvoice">
     {{ customer.companyName }}
     <span *ngIf="customer.companyName2">{{ customer.companyName2 }}</span>
-    <ng-container *ngIf="isOrder">
-      <ish-lazy-hierarchy-path *ishFeature="'organizationHierarchies'" [object]="object"> </ish-lazy-hierarchy-path>
-    </ng-container>
+    <ish-lazy-hierarchy-path *ishFeature="'organizationHierarchies'" [object]="object"> </ish-lazy-hierarchy-path>
   </ng-container>
   <ng-template #companyFromInvoice>
     {{ object.invoiceToAddress.companyName1 }} {{ object.invoiceToAddress.companyName2 }}

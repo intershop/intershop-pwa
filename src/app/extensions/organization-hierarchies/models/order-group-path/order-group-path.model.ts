@@ -1,9 +1,9 @@
 export interface OrderGroupPath {
   organizationId: string;
-  groupPath: [GroupPathEntry];
+  groupPath: GroupPathEntry[];
   groupId: string;
   groupName: string;
-  orderId: string;
+  orderId?: string;
 }
 
 export interface GroupPathEntry {

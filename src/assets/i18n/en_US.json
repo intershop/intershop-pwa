@@ -219,6 +219,8 @@
   "account.ordertemplates.widget.view_all.link": "View All Order Templates",
   "account.organization.hierarchies": "Company Structure",
   "account.organization.hierarchies.description": "Manage the structure of \"{{0}}\".",
+  "account.organization.hierarchies.grouppath.tooltip.close": "Collapse",
+  "account.organization.hierarchies.grouppath.tooltip.open": "Show All Groups",
   "account.organization.hierarchies.groups.add": "Add Group",
   "account.organization.hierarchies.groups.new.button.label": "Create",
   "account.organization.hierarchies.groups.new.confirmation": "The group \"{{0}}\" has been created.",

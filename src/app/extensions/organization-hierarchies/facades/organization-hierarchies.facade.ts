@@ -11,6 +11,7 @@ import { OrderGroupPath } from '../models/order-group-path/order-group-path.mode
 import { OrganizationGroup } from '../models/organization-group/organization-group.model';
 import {
   assignGroup,
+  getCurrentGroupPath,
   getGroupDetails,
   getGroupsOfOrganization,
   getGroupsOfOrganizationCount,
@@ -56,6 +57,10 @@ export class OrganizationHierarchiesFacade {
 
   getDetailsOfOrderGroupPath$(orderId: string): Observable<OrderGroupPath> {
     return this.store.pipe(select(getOrderGroupPathDetails(orderId)));
+  }
+
+  getDetailsOfBasketGroupPath$(): Observable<OrderGroupPath> {
+    return this.store.pipe(select(getCurrentGroupPath));
   }
 
   // ORDERS

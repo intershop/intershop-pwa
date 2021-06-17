@@ -2,7 +2,7 @@ import { OrderGroupPathEntryData } from '../order-group-path-entry/order-group-p
 
 export interface OrderGroupPathBaseData {
   organizationId: string;
-  groupPath: [OrderGroupPathEntryData];
+  groupPath: OrderGroupPathEntryData[];
   groupId: string;
   groupName: string;
 }

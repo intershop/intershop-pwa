@@ -9,6 +9,7 @@ import { OrganizationHierarchiesStoreModule } from '../organization-hierarchies-
 
 import { assignGroup, loadGroups, loadGroupsFail, loadGroupsSuccess } from './group.actions';
 import {
+  getCurrentGroupPath,
   getGroupDetails,
   getGroupsOfOrganization,
   getGroupsOfOrganizationCount,
@@ -100,6 +101,43 @@ describe('Group Selectors', () => {
     it('should set selected to undefined', () => {
       store$.dispatch(assignGroup({ id: '3' }));
       expect(getSelectedGroupDetails(store$.state)).toBeFalsy();
+    });
+  });
+
+  describe('get group path', () => {
+    const groups = [
+      { id: '1', name: 'Test 1' },
+      { id: '2', name: 'Test 2', parentid: '1' },
+      { id: '3', name: 'Test 3', parentid: '2' },
+    ] as OrganizationGroup[];
+
+    beforeEach(() => {
+      store$.dispatch(loadGroupsSuccess({ groups, selectedGroupId: undefined }));
+    });
+
+    it('should get group path of selected group', () => {
+      store$.dispatch(assignGroup({ id: '3' }));
+      expect(getCurrentGroupPath(store$.state)).toMatchInlineSnapshot(`
+        Object {
+          "groupId": "3",
+          "groupName": "Test 3",
+          "groupPath": Array [
+            Object {
+              "groupId": "1",
+              "groupName": "Test 1",
+            },
+            Object {
+              "groupId": "2",
+              "groupName": "Test 2",
+            },
+            Object {
+              "groupId": "3",
+              "groupName": "Test 3",
+            },
+          ],
+          "organizationId": undefined,
+        }
+      `);
     });
   });
 });

@@ -1,5 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
+import { GroupPathEntry, OrderGroupPath } from '../../models/order-group-path/order-group-path.model';
 import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
 import { getOrganizationHierarchiesState } from '../organization-hierarchies-store';
 
@@ -22,3 +23,31 @@ export const getSelectedGroupDetails = createSelector(
 );
 
 export const getGroupDetails = (id: string) => createSelector(selectEntities, entities => id && entities[id]);
+
+export const getCurrentGroupPath = createSelector(
+  getSelectedGroupDetails,
+  getGroupsOfOrganization,
+  (selectedGroup, groups): OrderGroupPath => ({
+    organizationId: undefined,
+    groupPath: getGroupPathEntries([], selectedGroup, groups),
+    groupId: selectedGroup.id,
+    groupName: selectedGroup.name,
+  })
+);
+
+function getGroupPathEntries(
+  array: GroupPathEntry[],
+  group: OrganizationGroup,
+  groups: OrganizationGroup[]
+): GroupPathEntry[] {
+  const newArray = array?.length > 0 ? array : [];
+  newArray.unshift({ groupId: group.id, groupName: group.name });
+  if (group.parentid) {
+    getGroupPathEntries(
+      newArray,
+      groups.find(element => element.id === group.parentid),
+      groups
+    );
+  }
+  return newArray;
+}

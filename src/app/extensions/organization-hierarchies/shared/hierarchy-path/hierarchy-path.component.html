@@ -1,25 +1,34 @@
 <ish-error-message [error]="error$ | async"></ish-error-message>
-<div class="loading-container">
-  <div *ngIf="!(pathLoading$ | async); else loading">
-    <div *ngIf="path$ | async as path">
-      <div *ngIf="path.groupPath.length">
-        <span>{{ path.groupPath[0].groupName }}</span>
-        <span *ngIf="path.groupPath.length > 2"> &#124; </span>
-        <ng-template #PathDescription>
-          <ul class="list-unstyled pl-3">
-            <li class="pt-1 pb-1" *ngFor="let path of path.groupPath">{{ path.groupName }}</li>
-          </ul>
-        </ng-template>
-        <a *ngIf="path.groupPath.length > 2" class="details-tooltip" [ngbPopover]="PathDescription" placement="top">
-          ...
-          <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
-        </a>
-        <span *ngIf="path.groupPath.length > 1"> &#124; {{ path.groupPath[path.groupPath.length - 1].groupName }}</span>
-      </div>
-      <ng-template #anchor></ng-template>
+<div *ngIf="!(pathLoading$ | async); else loading">
+  <div *ngIf="path$ | async as path">
+    <div *ngIf="path.groupPath.length">
+      <span>{{ path.groupPath[1].groupName }}</span>
+      <span *ngIf="path.groupPath.length > 3">&nbsp;&#124;&nbsp;</span>
+      <a
+        *ngIf="path.groupPath.length > 3 && !isCollapsed"
+        (click)="toggle()"
+        title="{{ 'account.organization.hierarchies.grouppath.tooltip.open' | translate }}"
+      >
+        <fa-icon [icon]="['fas', 'ellipsis-h']"></fa-icon>
+      </a>
+      <span [ngbCollapse]="!isCollapsed">
+        <ng-container *ngFor="let group of path.groupPath; let i = index">
+          <span *ngIf="i > 1 && i < path.groupPath.length - 2">{{ group.groupName }} &#124; </span>
+        </ng-container>
+        <span>{{ path.groupPath[path.groupPath.length - 2].groupName }}</span>
+      </span>
+      <span *ngIf="path.groupPath.length > 2"> &#124; {{ path.groupPath[path.groupPath.length - 1].groupName }}</span>
+      <a
+        *ngIf="path.groupPath.length > 3 && isCollapsed"
+        (click)="toggle()"
+        title="{{ 'account.organization.hierarchies.grouppath.tooltip.close' | translate }}"
+        >&nbsp;
+        <fa-icon [icon]="['fas', 'arrow-left']"></fa-icon>
+      </a>
     </div>
+    <ng-template #anchor></ng-template>
   </div>
-  <ng-template #loading>
-    <ish-loading></ish-loading>
-  </ng-template>
 </div>
+<ng-template #loading>
+  <ish-loading></ish-loading>
+</ng-template>
