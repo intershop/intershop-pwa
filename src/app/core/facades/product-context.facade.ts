@@ -182,7 +182,7 @@ export class ProductContextFacade extends RxState<ProductContext> {
         this.select('quantity').pipe(distinctUntilChanged()),
       ]).pipe(
         map(([product, minOrderQuantity, quantity]) => {
-          if (product) {
+          if (product && !product.failed) {
             if (Number.isNaN(quantity)) {
               return this.translate.instant('product.quantity.integer.text');
             } else if (quantity < minOrderQuantity) {
