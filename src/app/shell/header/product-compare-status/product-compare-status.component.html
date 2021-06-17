@@ -1,7 +1,7 @@
 <a class="compare-status item-count-container" routerLink="/compare" rel="nofollow">
   <fa-icon class="header-icon" [icon]="['fas', 'columns']"></fa-icon>
   <span class="badge badge-pill" data-testing-id="product-compare-count">{{ productCompareCount$ | async }}</span>
-  <span [ngClass]="{ 'd-none': view === 'auto' || view === 'small', 'd-md-inline': view === 'auto' }">{{
+  <span [ngClass]="{ 'd-none': view === 'auto' || view === 'small', 'd-lg-inline': view === 'auto' }">{{
     'product.compare.link' | translate
   }}</span>
 </a>

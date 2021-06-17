@@ -1,8 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { FeatureToggleGuard } from 'ish-core/feature-toggle.module';
+
 import { FetchUsersGuard } from '../guards/fetch-users.guard';
 import { RedirectFirstToParentGuard } from '../guards/redirect-first-to-parent.guard';
+
+import { HierarchiesCreateGroupPageComponent } from './hierarchies-create-group/hierarchies-create-group-page.component';
+import { HierarchiesPageComponent } from './hierarchies/hierarchies-page.component';
 
 /**
  * routes for the organization management
@@ -44,6 +49,18 @@ export const routes: Routes = [
     path: 'users/:B2BCustomerLogin/budget',
     loadChildren: () => import('./user-edit-budget/user-edit-budget-page.module').then(m => m.UserEditBudgetPageModule),
     canActivate: [RedirectFirstToParentGuard],
+  },
+  {
+    path: 'hierarchies',
+    component: HierarchiesPageComponent,
+    canActivate: [FeatureToggleGuard],
+    data: { feature: 'organizationHierarchies' },
+  },
+  {
+    path: 'hierarchies/create-group',
+    component: HierarchiesCreateGroupPageComponent,
+    canActivate: [FeatureToggleGuard],
+    data: { feature: 'organizationHierarchies' },
   },
 ];
 

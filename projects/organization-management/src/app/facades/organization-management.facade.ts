@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { switchMap, take } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 
+import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { toObservable } from 'ish-core/utils/functions';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { B2bUser } from '../models/b2b-user/b2b-user.model';
+import { Group, GroupTree } from '../models/group/group.model';
 import { UserBudget } from '../models/user-budget/user-budget.model';
 import {
   getCurrentUserBudget,
@@ -14,6 +16,13 @@ import {
   getCurrentUserBudgetLoading,
   loadBudget,
 } from '../store/budget';
+import {
+  createGroup,
+  getOrganizationGroups,
+  getOrganizationGroupsError,
+  getOrganizationGroupsLoading,
+  loadGroups,
+} from '../store/organization-hierarchies';
 import {
   addUser,
   deleteUser,
@@ -46,6 +55,9 @@ export class OrganizationManagementFacade {
 
   loggedInUserBudgetLoading$ = this.store.pipe(select(getCurrentUserBudgetLoading));
   loggedInUserBudgetError$ = this.store.pipe(select(getCurrentUserBudgetError));
+
+  groupsLoading$ = this.store.pipe(select(getOrganizationGroupsLoading));
+  groupsError$ = this.store.pipe(select(getOrganizationGroupsError));
 
   addUser(user: B2bUser) {
     this.store.dispatch(
@@ -87,5 +99,19 @@ export class OrganizationManagementFacade {
     this.selectedUser$
       .pipe(take(1), whenTruthy(), mapToProperty('login'))
       .subscribe(login => this.store.dispatch(setUserBudget({ login, budget })));
+  }
+
+  groups$(): Observable<GroupTree> {
+    const customer$ = this.store.pipe(select(getLoggedInCustomer));
+    return customer$.pipe(
+      whenTruthy(),
+      take(1),
+      tap(() => this.store.dispatch(loadGroups())),
+      switchMap(() => this.store.pipe(select(getOrganizationGroups)))
+    );
+  }
+
+  createAndAddGroup(parent: Group, child: Group) {
+    this.store.dispatch(createGroup({ parent, child }));
   }
 }

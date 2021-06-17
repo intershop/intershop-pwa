@@ -3,6 +3,7 @@ import { Injector, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { TreeviewModule } from 'ngx-treeview';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { DirectivesModule } from 'ish-core/directives.module';
@@ -12,6 +13,7 @@ import { PipesModule } from 'ish-core/pipes.module';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 
+import { OrganizationHierarchiesExportsModule } from '../extensions/organization-hierarchies/exports/organization-hierarchies-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
 import { SentryExportsModule } from '../extensions/sentry/exports/sentry-exports.module';
 import { SeoExportsModule } from '../extensions/seo/exports/seo-exports.module';
@@ -46,6 +48,7 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     IconModule,
     NgbCollapseModule,
     NgbDropdownModule,
+    OrganizationHierarchiesExportsModule,
     PipesModule,
     QuickorderExportsModule,
     RoleToggleModule,
@@ -54,6 +57,7 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     SeoExportsModule,
     TrackingExportsModule,
     TranslateModule,
+    TreeviewModule.forRoot(),
     WishlistsExportsModule,
   ],
   declarations: [

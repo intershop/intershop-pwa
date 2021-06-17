@@ -33,7 +33,7 @@ export class OrderListComponent implements OnInit {
   orders$: Observable<Order[]>;
   loading$: Observable<boolean>;
 
-  constructor(private accountFacade: AccountFacade) {}
+  constructor(protected accountFacade: AccountFacade) {}
 
   ngOnInit() {
     this.orders$ = this.accountFacade.orders$();

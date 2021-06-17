@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { User } from 'ish-core/models/user/user.model';
 
 @Component({
@@ -13,12 +14,14 @@ export class LoginStatusComponent implements OnInit {
   @Input() logoutOnly = false;
   @Input() view: 'auto' | 'small' | 'full' = 'auto';
 
+  isSticky$: Observable<boolean>;
   user$: Observable<User>;
 
-  constructor(private accountFacade: AccountFacade) {}
+  constructor(private accountFacade: AccountFacade, private appFacade: AppFacade) {}
 
   ngOnInit() {
     this.user$ = this.accountFacade.user$;
+    this.isSticky$ = this.appFacade.stickyHeader$;
   }
 
   getViewClasses(): string {
