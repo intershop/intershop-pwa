@@ -24,6 +24,7 @@
     <ng-template ngSwitchDefault>
       <div class="counter-input">
         <button
+          type="button"
           class="btn btn-link decrease-button"
           (click)="decrease()"
           [disabled]="cannotDecrease$ | async"
@@ -33,6 +34,7 @@
           product.quantity.decrease.text
         </button>
         <button
+          type="button"
           class="btn btn-link increase-button"
           (click)="increase()"
           [disabled]="cannotIncrease$ | async"

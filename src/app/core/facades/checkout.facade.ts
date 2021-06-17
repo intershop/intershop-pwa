@@ -89,6 +89,10 @@ export class CheckoutFacade {
     map(basket => (basket && basket.lineItems && basket.lineItems.length ? basket.lineItems : undefined))
   );
   submittedBasket$ = this.store.pipe(select(getSubmittedBasket));
+  basketMaxItemQuantity$ = this.store.pipe(
+    select(getServerConfigParameter<number>('basket.maxItemQuantity')),
+    map(qty => qty || 100)
+  );
 
   loadBasketWithId(basketId: string) {
     this.store.dispatch(loadBasketWithId({ basketId }));

@@ -49,6 +49,17 @@ export class CartPage {
     this.addBasketToOrderTemplateButton().click();
   }
 
+  validateDirectOrderSku(sku: string) {
+    cy.get('[data-testing-id="direct-order-form"] input').first().clear().type(sku).wait(1000);
+    cy.get('[data-testing-id="direct-order-form"] small').first().contains(`The product ID ${sku} is not valid.`);
+  }
+
+  addProductToBasketWithDirectOrder(sku: string) {
+    cy.get('[data-testing-id="direct-order-form"] input').first().clear().type(sku).wait(1000);
+    cy.get('[data-testing-id="direct-order-form"] button').last().click();
+    waitLoadingEnd();
+  }
+
   collapsePromotionForm() {
     return cy.get('[data-testing-id="promo-collapse-link"]').click();
   }
