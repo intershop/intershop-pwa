@@ -1,6 +1,7 @@
 FROM node:14 as reporting
 WORKDIR /workspace
 ENV CI=true
+ENV NODE_OPTIONS="--max_old_space_size=8192"
 COPY . /workspace/
 RUN npm i --ignore-scripts
 RUN npm run postinstall
