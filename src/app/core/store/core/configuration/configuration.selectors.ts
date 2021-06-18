@@ -1,6 +1,7 @@
 import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 
+import { Locale } from 'ish-core/models/locale/locale.model';
 import { getCoreState } from 'ish-core/store/core/core-store';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 
@@ -72,6 +73,10 @@ export const getCurrentLocale = createSelector(
     available?.find(l => l.lang === configuredDefault) ??
     available?.find(l => l.lang === internalDefaultLocale) ??
     available?.[0]
+);
+
+export const getCurrentCurrency = createSelector(getCurrentLocale, (lang: Locale): string =>
+  Array.isArray(lang?.currency) ? lang?.currency[0] : lang?.currency
 );
 
 export const getDeviceType = createSelector(getConfigurationState, state => state._deviceType);
