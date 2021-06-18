@@ -53,6 +53,8 @@ jobs:
 
       - name: Compile Angular
         run: npm run ng -- build --aot
+        env:
+          NODE_OPTIONS: --max_old_space_size=8192
 
       - name: Compile Unit Tests
         run: npx tsc -p tsconfig.all.json
