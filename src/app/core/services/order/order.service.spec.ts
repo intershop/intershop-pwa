@@ -4,7 +4,6 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { OrderBaseData } from 'ish-core/models/order/order.interface';
 import { Order } from 'ish-core/models/order/order.model';
 import { ApiService } from 'ish-core/services/api/api.service';
@@ -32,7 +31,7 @@ describe('Order Service', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiService, useFactory: () => instance(apiService) },
-        provideMockStore({ selectors: [{ selector: getCurrentLocale, value: { lang: 'en_US' } as Locale }] }),
+        provideMockStore({ selectors: [{ selector: getCurrentLocale, value: 'en_US' }] }),
       ],
     });
 

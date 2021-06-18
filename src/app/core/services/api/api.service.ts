@@ -130,7 +130,7 @@ export class ApiService {
       // locale
       this.store.pipe(
         select(getCurrentLocale),
-        map(l => (l ? `;loc=${l.lang}` : ''))
+        map(l => (l ? `;loc=${l}` : ''))
       ),
       // currency
       this.store.pipe(

@@ -8,7 +8,7 @@
   <a ngbDropdownToggle class="language-switch-link">
     <fa-icon [icon]="['fas', 'globe-americas']" class="header-icon"></fa-icon>
     <span class="language-switch-current-selection d-inline"
-      >{{ 'locale.' + locale.lang + (view === 'accordion' ? '.long' : '.short') | translate
+      >{{ 'locale.' + locale + (view === 'accordion' ? '.long' : '.short') | translate
       }}<span class="switch_arrow"></span
     ></span>
   </a>
@@ -17,9 +17,9 @@
       <ng-container *ngIf="availableLocales$ | async as availableLocales">
         <ul *ngIf="availableLocales.length">
           <ng-container *ngFor="let l of availableLocales">
-            <li *ngIf="l.lang !== locale.lang">
-              <a [href]="location | makeHref: { redirect: '1', lang: l.lang }">
-                {{ 'locale.' + l.lang + '.long' | translate }}
+            <li *ngIf="l !== locale">
+              <a [href]="location | makeHref: { redirect: '1', lang: l }">
+                {{ 'locale.' + l + '.long' | translate }}
               </a>
             </li>
           </ng-container>

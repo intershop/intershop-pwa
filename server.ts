@@ -198,18 +198,21 @@ export function app() {
         break;
       } else if (pwaUrlRegex.exec(url) && entry.handledBy === 'icm') {
         const config: { [is: string]: string } = {};
-        let locale;
         if (/;lang=[\w_]+/.test(url)) {
           const [, lang] = /;lang=([\w_]+)/.exec(url);
-          if (lang !== 'default') {
-            locale = environment.locales.find(loc => loc.lang === lang);
-          }
+          config.lang = lang;
         }
-        if (!locale) {
-          locale = environment.locales[0];
+        if (!config.lang) {
+          config.lang = environment.defaultLocale;
         }
-        config.lang = locale.lang;
-        config.currency = locale.currency;
+
+        if (/;currency=[\w_]+/.test(url)) {
+          const [, currency] = /;currency=([\w_]+)/.exec(url);
+          config.currency = currency;
+        }
+        if (!config.currency) {
+          config.currency = environment.defaultCurrency;
+        }
 
         if (/;channel=[^;]*/.test(url)) {
           config.channel = /;channel=([^;]*)/.exec(url)[1];

@@ -1,6 +1,5 @@
 import { Auth0Config } from 'ish-core/identity-provider/auth0.identity-provider';
 import { CookieConsentOptions } from 'ish-core/models/cookies/cookies.model';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
 
@@ -82,9 +81,10 @@ export interface Environment {
   defaultDeviceType: DeviceType;
 
   defaultLocale?: string;
+  defaultCurrency?: string;
 
-  // configuration of the available locales - hard coded for now
-  locales: Locale[];
+  // configuration filtering available locales and their active currencies
+  localeCurrencyOverride?: { [locale: string]: string | string[] };
 
   // configuration of the styling theme ('default' if not configured)
   // format: 'themeName|themeColor' e.g. theme: 'blue|688dc3',
@@ -133,11 +133,8 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
   defaultProductListingViewType: 'grid',
   defaultDeviceType: 'mobile',
   defaultLocale: 'en_US',
-  locales: [
-    { lang: 'en_US', currency: ['EUR', 'USD'] },
-    { lang: 'de_DE', currency: 'EUR' },
-    { lang: 'fr_FR', currency: 'EUR' },
-  ],
+  defaultCurrency: 'EUR',
+  localeCurrencyOverride: { de_DE: 'EUR', fr_FR: 'EUR' },
   cookieConsentOptions: {
     options: {
       required: {

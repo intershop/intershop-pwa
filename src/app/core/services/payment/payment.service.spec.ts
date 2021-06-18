@@ -5,7 +5,6 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
@@ -79,7 +78,7 @@ describe('Payment Service', () => {
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         provideMockStore({
           selectors: [
-            { selector: getCurrentLocale, value: { lang: 'en_US' } as Locale },
+            { selector: getCurrentLocale, value: 'en_US' },
             { selector: getBasketIdOrCurrent, value: 'current' },
           ],
         }),

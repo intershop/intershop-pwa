@@ -111,7 +111,7 @@ export class UserService {
                 ? {
                     user: {
                       ...body.user,
-                      preferredLanguage: currentLocale.lang ?? 'en_US',
+                      preferredLanguage: currentLocale,
                     },
                   }
                 : {
@@ -128,14 +128,14 @@ export class UserService {
                     firstName: body.user.firstName,
                     lastName: body.user.lastName,
                     email: body.user.email,
-                    preferredLanguage: currentLocale.lang ?? 'en_US',
+                    preferredLanguage: currentLocale,
                   }
                 : {
                     userId: body.userId,
                   }),
               address: customerAddress,
               credentials: body.credentials,
-              preferredLanguage: currentLocale.lang ?? 'en_US',
+              preferredLanguage: currentLocale,
             }
       )
     );

@@ -7,7 +7,6 @@ import { noop } from 'rxjs';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { Link } from 'ish-core/models/link/link.model';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import {
   applyConfiguration,
   getCurrentCurrency,
@@ -396,6 +395,7 @@ describe('Api Service', () => {
               { selector: getRestEndpoint, value: 'http://www.example.org/WFS/site/-' },
               { selector: getICMServerURL, value: undefined },
               { selector: getCurrentLocale, value: undefined },
+              { selector: getCurrentCurrency, value: undefined },
               { selector: getPGID, value: undefined },
             ],
           }),
@@ -455,7 +455,8 @@ describe('Api Service', () => {
     });
 
     it('should include locale and currency when available in store', () => {
-      store$.overrideSelector(getCurrentLocale, { currency: 'USD', lang: 'en_US' } as Locale);
+      store$.overrideSelector(getCurrentLocale, 'en_US');
+      store$.overrideSelector(getCurrentCurrency, 'USD');
 
       apiService.get('relative').subscribe(fail, fail, fail);
 
@@ -504,7 +505,8 @@ describe('Api Service', () => {
 
     it('should include params, pgid and locale for complex example', () => {
       store$.overrideSelector(getPGID, 'ASDF');
-      store$.overrideSelector(getCurrentLocale, { currency: 'USD', lang: 'en_US' } as Locale);
+      store$.overrideSelector(getCurrentLocale, 'en_US');
+      store$.overrideSelector(getCurrentCurrency, 'USD');
 
       apiService
         .get('very/deep/relative', { sendPGID: true, params: new HttpParams().set('view', 'grid').set('depth', '3') })
@@ -543,7 +545,8 @@ describe('Api Service', () => {
           baseURL: 'http://www.example.org',
           server: 'WFS',
           channel: 'site',
-          locales: [{ lang: 'en_US', currency: 'USD' } as Locale],
+          defaultLocale: 'en_US',
+          defaultCurrency: 'USD',
         })
       );
     });
@@ -649,6 +652,7 @@ describe('Api Service', () => {
               { selector: getICMServerURL, value: undefined },
               { selector: getRestEndpoint, value: 'http://www.example.org' },
               { selector: getCurrentLocale, value: undefined },
+              { selector: getCurrentCurrency, value: undefined },
               { selector: getPGID, value: undefined },
             ],
           }),
