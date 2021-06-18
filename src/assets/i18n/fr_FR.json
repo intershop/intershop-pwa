@@ -749,6 +749,8 @@
   "inplace_edit.cancel": "Annuler",
   "inplace_edit.click_to_edit": "Cliquez pour modifier",
   "inplace_edit.save": "Enregistrer",
+  "locale.currency.EUR": "Euro",
+  "locale.currency.USD": "Dollars Américain",
   "locale.de_DE.long": "Allemande",
   "locale.de_DE.short": "de",
   "locale.en_US.long": "Anglaise",
