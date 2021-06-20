@@ -81,7 +81,6 @@ export interface Environment {
   defaultDeviceType: DeviceType;
 
   defaultLocale?: string;
-  defaultCurrency?: string;
 
   // configuration filtering available locales and their active currencies
   localeCurrencyOverride?: { [locale: string]: string | string[] };
@@ -133,7 +132,6 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
   defaultProductListingViewType: 'grid',
   defaultDeviceType: 'mobile',
   defaultLocale: 'en_US',
-  defaultCurrency: 'EUR',
   localeCurrencyOverride: { de_DE: 'EUR', fr_FR: 'EUR' },
   cookieConsentOptions: {
     options: {

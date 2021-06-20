@@ -114,29 +114,23 @@ describe('Configuration Selectors', () => {
         store$.dispatch(
           applyConfiguration({
             defaultLocale: 'en_US',
-            defaultCurrency: 'USD',
             localeCurrencyOverride: undefined,
           })
         );
         expect(getCurrentLocale(store$.state)).toMatchInlineSnapshot(`"en_US"`);
-        expect(getCurrentCurrency(store$.state)).toMatchInlineSnapshot(`"USD"`);
+        expect(getCurrentCurrency(store$.state)).toBeUndefined();
         expect(getAvailableLocales(store$.state)).toMatchInlineSnapshot(`
           Array [
             "en_US",
           ]
         `);
-        expect(getAvailableCurrencies(store$.state)).toMatchInlineSnapshot(`
-          Array [
-            "USD",
-          ]
-        `);
+        expect(getAvailableCurrencies(store$.state)).toBeUndefined();
       });
 
       it('should not choose a locale when no ICM or internal configuration is available', () => {
         store$.dispatch(
           applyConfiguration({
             defaultLocale: undefined,
-            defaultCurrency: undefined,
           })
         );
         expect(getCurrentLocale(store$.state)).toBeUndefined();

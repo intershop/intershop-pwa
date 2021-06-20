@@ -38,8 +38,6 @@ const internalDefaultLocale = createSelector(getConfigurationState, state => sta
 
 const internalCurrencyFilter = createSelector(getConfigurationState, state => state.localeCurrencyOverride);
 
-const internalDefaultCurrency = createSelector(getConfigurationState, state => state.defaultCurrency);
-
 /**
  * locales configured in ICM
  *
@@ -75,10 +73,9 @@ export const getCurrentLocale = createSelector(
 
 export const getAvailableCurrencies = createSelector(
   getCurrentLocale,
-  internalDefaultCurrency,
   internalCurrencyFilter,
   getServerConfigParameter<string[]>('general.currencies'),
-  (currentLocale, defaultCurrency, filter, activated): string[] => {
+  (currentLocale, filter, activated): string[] => {
     const curFilter = filter?.[currentLocale];
     if (curFilter) {
       if (Array.isArray(curFilter)) {
@@ -93,23 +90,15 @@ export const getAvailableCurrencies = createSelector(
     if (activated?.length) {
       return activated;
     }
-
-    if (defaultCurrency) {
-      return [defaultCurrency];
-    }
   }
 );
 
 export const getCurrentCurrency = createSelector(
   getAvailableCurrencies,
   internalRequestedCurrency,
-  internalDefaultCurrency,
   getServerConfigParameter<string>('general.defaultCurrency'),
-  (available, requested, defaultCurrency, configuredDefault) =>
-    available?.find(l => l === requested) ??
-    available?.find(l => l === configuredDefault) ??
-    available?.find(l => l === defaultCurrency) ??
-    available?.[0]
+  (available, requested, configuredDefault) =>
+    available?.find(l => l === requested) ?? available?.find(l => l === configuredDefault) ?? available?.[0]
 );
 
 export const getDeviceType = createSelector(getConfigurationState, state => state._deviceType);
