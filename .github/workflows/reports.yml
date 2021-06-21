@@ -5,6 +5,11 @@ on:
     branches:
       - 'reports/**'
       - 'develop'
+  pull_request:
+    types: [opened, synchronize]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
 
 jobs:
   CancelPrevious:
