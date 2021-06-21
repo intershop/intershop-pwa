@@ -102,7 +102,8 @@ export class ProductListingEffects {
               page: p > 1 ? p : undefined, // same content for 0, 1 & undefined
               filters,
             };
-          })
+          }),
+          take(1)
         );
       }),
       distinctUntilChanged(isEqual),
