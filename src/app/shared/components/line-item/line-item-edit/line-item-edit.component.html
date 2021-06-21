@@ -1,5 +1,6 @@
 <ng-container *ngIf="product$ | async as product">
   <a
+    *ngIf="product.type === 'VariationProduct'"
     (click)="show()"
     class="line-item-edit-link"
     rel="nofollow"
