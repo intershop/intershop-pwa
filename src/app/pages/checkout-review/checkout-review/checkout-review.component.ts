@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 
@@ -11,7 +20,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   templateUrl: './checkout-review.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckoutReviewComponent implements OnInit {
+export class CheckoutReviewComponent implements OnInit, OnChanges {
   @Input() basket: Basket;
   @Input() error: HttpError;
   @Input() submitting: boolean;
@@ -27,9 +36,13 @@ export class CheckoutReviewComponent implements OnInit {
   multipleBuckets = false;
 
   ngOnInit() {
-    this.multipleBuckets = !this.basket?.commonShippingMethod;
-
     this.fields = this.setFields();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.basket) {
+      this.multipleBuckets = !this.basket?.commonShippingMethod || !this.basket?.commonShipToAddress;
+    }
   }
 
   /**
