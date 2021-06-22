@@ -1,3 +1,4 @@
+import { CdkTableModule } from '@angular/cdk/table';
 import { CommonModule } from '@angular/common';
 import { Injector, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -135,6 +136,7 @@ const importExportModules = [
   AuthorizationToggleModule,
   CMSModule,
   CaptchaExportsModule,
+  CdkTableModule,
   CommonModule,
   DeferLoadModule,
   DirectivesModule,
