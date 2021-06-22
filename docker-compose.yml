@@ -18,13 +18,14 @@ services:
       # - PROXY_ICM=true
       - TRUST_ICM=true
       # - PROMETHEUS=on
+      - IDENTITY_PROVIDERS={"Auth0":{"type":"auth0","domain":"dev-9pqwi8uh.eu.auth0.com","clientID":"V2xvLUo3YSfGdCmJz7u381dSevoVkOso"}}
   nginx:
     build: nginx
     depends_on:
       - pwa
     environment:
       UPSTREAM_PWA: 'http://pwa:4200'
-      # DEBUG: 1
+      DEBUG: 1
       CACHE: 0
       PAGESPEED: 0
       # PROMETHEUS: 1
