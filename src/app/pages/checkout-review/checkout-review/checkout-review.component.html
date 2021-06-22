@@ -97,30 +97,15 @@
 
     <div class="cost-summary">
       <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
-
-      <form [formGroup]="form">
-        <ish-checkbox
-          [form]="form"
-          controlName="termsAndConditions"
-          [errorMessages]="{ pattern: 'checkout.tac.error.tip' }"
-        >
-          <span
-            [ishServerHtml]="'checkout.tac.text' | translate: { '0': 'page://page.termsAndConditions.pagelet2-Page' }"
-          ></span>
-        </ish-checkbox>
+      <form [formGroup]="form" (ngSubmit)="submitOrder()">
+        <formly-form [form]="form" [model]="model" [fields]="fields" [options]="options"></formly-form>
+        <button class="btn btn-lg btn-block btn-primary" type="submit" [disabled]="formDisabled || submitting">
+          <ng-container *ngIf="submitting">
+            <fa-icon [icon]="['fas', 'spinner']" [spin]="true" class="pr-3"></fa-icon>
+          </ng-container>
+          {{ 'checkout.order_review.send.button' | translate }}
+        </button>
       </form>
-
-      <button
-        class="btn btn-lg btn-block btn-primary"
-        type="button"
-        [disabled]="formDisabled || submitting"
-        (click)="submitOrder()"
-      >
-        <ng-container *ngIf="submitting">
-          <fa-icon [icon]="['fas', 'spinner']" [spin]="true" class="pr-3"></fa-icon>
-        </ng-container>
-        {{ 'checkout.order_review.send.button' | translate }}
-      </button>
     </div>
   </div>
 </div>

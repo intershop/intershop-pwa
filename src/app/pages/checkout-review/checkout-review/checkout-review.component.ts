@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
+import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -16,16 +17,19 @@ export class CheckoutReviewComponent implements OnInit {
   @Input() submitting: boolean;
   @Output() createOrder = new EventEmitter<void>();
 
-  form: FormGroup;
+  form = new FormGroup({});
+  fields: FormlyFieldConfig[];
+  options: FormlyFormOptions = {};
+
+  model = { termsAndConditions: false };
+
   submitted = false;
   multipleBuckets = false;
 
   ngOnInit() {
-    // create t&c form
-    this.form = new FormGroup({
-      termsAndConditions: new FormControl(false, Validators.pattern('true')),
-    });
     this.multipleBuckets = !this.basket?.commonShippingMethod;
+
+    this.fields = this.setFields();
   }
 
   /**
@@ -38,6 +42,30 @@ export class CheckoutReviewComponent implements OnInit {
       return;
     }
     this.createOrder.emit();
+  }
+
+  private setFields() {
+    return [
+      {
+        type: 'ish-checkout-review-tac-field',
+        key: 'termsAndConditions',
+        templateOptions: {
+          label: 'checkout.tac.text',
+          args: { 0: 'page://page.termsAndConditions.pagelet2-Page' },
+          validation: {
+            show: true,
+          },
+        },
+        validators: {
+          validation: [Validators.pattern('true')],
+        },
+        validation: {
+          messages: {
+            pattern: 'checkout.tac.error.tip',
+          },
+        },
+      },
+    ];
   }
 
   get formDisabled() {
