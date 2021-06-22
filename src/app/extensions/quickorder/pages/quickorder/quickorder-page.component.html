@@ -137,7 +137,7 @@
             </div>
           </div>
           <div>
-            <button type="submit" class="btn btn-primary" name="addToCartCSV" disabled="csvForm.invalid">
+            <button type="submit" class="btn btn-primary" name="addToCartCSV" [disabled]="isCsvDisabled">
               {{ 'quickorder.page.add.cart' | translate }}
             </button>
             <button type="reset" class="btn btn-link" name="reset" (click)="resetCsvProductArray()">

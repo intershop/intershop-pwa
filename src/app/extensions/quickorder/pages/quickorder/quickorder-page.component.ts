@@ -191,6 +191,10 @@ export class QuickorderPageComponent implements OnInit {
     return file.name.endsWith('.csv');
   }
 
+  get isCsvDisabled() {
+    return this.status !== 'ValidFormat';
+  }
+
   addCsvToCart() {
     if (this.status === 'ValidFormat') {
       this.addProductsToBasket(this.productsFromCsv);
