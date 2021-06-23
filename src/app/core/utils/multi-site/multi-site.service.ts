@@ -25,7 +25,7 @@ export class MultiSiteService {
      */
     if (
       this.multiSiteLocaleMap &&
-      Object.keys(this.multiSiteLocaleMap).includes(location.getBaseHref()) &&
+      Object.values(this.multiSiteLocaleMap).includes(location.getBaseHref()) &&
       localeMapHasLangString(locale, this.multiSiteLocaleMap)
     ) {
       newUrl = newUrl.replace(location.getBaseHref(), this.multiSiteLocaleMap[locale]);

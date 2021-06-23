@@ -1,16 +1,24 @@
 import { LocationStrategy } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
+import { anything, instance, mock, when } from 'ts-mockito';
+
+import { MultiSiteService } from 'ish-core/utils/multi-site/multi-site.service';
 
 import { MakeHrefPipe } from './make-href.pipe';
 
 describe('Make Href Pipe', () => {
   let makeHrefPipe: MakeHrefPipe;
+  let multiSiteService: MultiSiteService;
 
   beforeEach(() => {
+    multiSiteService = mock(MultiSiteService);
     TestBed.configureTestingModule({
-      providers: [MakeHrefPipe],
+      providers: [MakeHrefPipe, { provide: MultiSiteService, useFactory: () => instance(multiSiteService) }],
     });
     makeHrefPipe = TestBed.inject(MakeHrefPipe);
+    when(multiSiteService.getLangUpdatedUrl(anything(), anything())).thenCall((_: string, location: LocationStrategy) =>
+      location.path()
+    );
   });
 
   it('should be created', () => {

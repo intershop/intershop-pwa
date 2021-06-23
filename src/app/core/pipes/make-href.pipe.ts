@@ -11,14 +11,16 @@ export class MakeHrefPipe implements PipeTransform {
       return 'undefined';
     }
 
-    const url = this.multiSiteService.getLangUpdatedUrl(urlParams.lang, location);
-    const split = url.split('?');
+    const split = location.path().split('?');
 
     // url without query params
     let newUrl = split[0];
 
     // add supplied url params
     if (urlParams) {
+      if (urlParams.lang) {
+        newUrl = this.multiSiteService.getLangUpdatedUrl(urlParams.lang, location);
+      }
       newUrl += Object.keys(urlParams)
         .map(k => `;${k}=${urlParams[k]}`)
         .join('');
