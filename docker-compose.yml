@@ -43,7 +43,6 @@ services:
           - baseHref: /de
             channel: default
             lang: de_DE
-            protected: false
           - baseHref: /fr
             channel: default
             lang: fr_FR

@@ -85,6 +85,7 @@ export interface Environment {
 
   // configuration of the available locales - hard coded for now
   locales: Locale[];
+  multiSiteLocaleMap: Record<string, unknown> | undefined;
 
   // configuration of the styling theme ('default' if not configured)
   // format: 'themeName|themeColor' e.g. theme: 'blue|688dc3',
@@ -138,6 +139,13 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
     { lang: 'de_DE', currency: 'EUR', value: 'de', displayName: 'German', displayLong: 'German (Germany)' },
     { lang: 'fr_FR', currency: 'EUR', value: 'fr', displayName: 'French', displayLong: 'French (France)' },
   ],
+  // tslint:disable: use-camel-case-environment-properties
+  multiSiteLocaleMap: {
+    en_US: '/en',
+    de_DE: '/de',
+    fr_FR: '/fr',
+  },
+  // tslint:enable: use-camel-case-environment-properties
   cookieConsentOptions: {
     options: {
       required: {

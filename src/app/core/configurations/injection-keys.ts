@@ -58,6 +58,13 @@ export const DATA_RETENTION_POLICY = new InjectionToken<DataRetentionPolicy>('da
   factory: () => environment.dataRetention,
 });
 
+/**
+ * the locale to multi site configuration map
+ */
+export const MULTI_SITE_LOCALE_MAP = new InjectionToken<Record<string, unknown> | undefined>('multiSiteLocaleMap', {
+  factory: () => environment.multiSiteLocaleMap,
+});
+
 /*
  * global definition of the Bootstrap grid system breakpoint widths
  */
