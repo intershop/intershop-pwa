@@ -30,6 +30,8 @@ export class MakeHrefPipe implements PipeTransform {
           } else {
             return of(newUrl).pipe(map(url => appendUrlParams(url, urlParams, split?.[1])));
           }
+        } else {
+          return of(appendUrlParams(newUrl, undefined, split?.[1]));
         }
       })
     );
@@ -37,9 +39,11 @@ export class MakeHrefPipe implements PipeTransform {
 }
 
 function appendUrlParams(url: string, urlParams: Record<string, string>, queryParams: string | undefined): string {
-  return `
-    ${url}${Object.keys(urlParams)
-    .map(k => `;${k}=${urlParams[k]}`)
-    .join('')}${queryParams ? `?${queryParams}` : ''}
-  `;
+  return `${url}${
+    urlParams
+      ? Object.keys(urlParams)
+          .map(k => `;${k}=${urlParams[k]}`)
+          .join('')
+      : ''
+  }${queryParams ? `?${queryParams}` : ''}`;
 }
