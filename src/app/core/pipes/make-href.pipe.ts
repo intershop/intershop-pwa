@@ -3,7 +3,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({ name: 'makeHref', pure: false })
 export class MakeHrefPipe implements PipeTransform {
-  transform(location: LocationStrategy, urlParams: { [key: string]: string }): string {
+  mappings: Record<string, string> = {
+    de_DE: '/de',
+    en_US: '/en',
+    fr_FR: '/fr',
+  };
+  transform(location: LocationStrategy, urlParams: Record<string, string>): string {
     if (!location || !location.path()) {
       return 'undefined';
     }
@@ -25,6 +30,9 @@ export class MakeHrefPipe implements PipeTransform {
       newUrl += `?${split[1]}`;
     }
 
+    if (urlParams.lang && this.mappings[urlParams.lang]) {
+      newUrl = newUrl.replace(location.getBaseHref(), this.mappings[urlParams.lang]);
+    }
     return newUrl;
   }
 }
