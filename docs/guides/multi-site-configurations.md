@@ -224,7 +224,7 @@ From this it constructs a new URL, conforming to our multi-site setup (see [One 
 
 In case you want to disable this functionality, simply override the default environment variable `multiSiteLocaleMap` with `undefined`.
 
-In case you want to extend this functionality to work with more locales, extend the default environment variable `multiSiteLocaleSetup` with your additional locales.
+In case you want to extend this functionality to work with more locales, extend the default environment variable `multiSiteLocaleMap` with your additional locales.
 
 In case you want to transfer this functionality to work with your specific multi-site setup, override the `multi-site.service.ts` and provide an implementation that conforms to your setup.
 

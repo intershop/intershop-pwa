@@ -140,7 +140,6 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
     { lang: 'de_DE', currency: 'EUR', value: 'de', displayName: 'German', displayLong: 'German (Germany)' },
     { lang: 'fr_FR', currency: 'EUR', value: 'fr', displayName: 'French', displayLong: 'French (France)' },
   ],
-  // tslint:disable: use-camel-case-environment-properties
   multiSiteLocaleMap: {
     en_US: '/en',
     de_DE: '/de',

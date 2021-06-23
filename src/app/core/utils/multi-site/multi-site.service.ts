@@ -1,35 +1,51 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { map, take, takeUntil } from 'rxjs/operators';
 
-import { MULTI_SITE_LOCALE_MAP } from 'ish-core/configurations/injection-keys';
+import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
 export type MultiSiteLocaleMap = Record<string, unknown> | undefined;
 
 @Injectable({ providedIn: 'root' })
-export class MultiSiteService {
-  constructor(@Inject(MULTI_SITE_LOCALE_MAP) private multiSiteLocaleMap: MultiSiteLocaleMap) {}
+export class MultiSiteService implements OnDestroy {
+  private destroy$ = new Subject();
+  constructor(private stateProperties: StatePropertiesService) {}
 
   /**
    * returns the current url, modified to fit the locale parameter if the environment parameter "multiSiteLocaleMap" is set
    * @param locale the locale which the new url should fit
-   * @param location the current loation
-   * @returns
+   * @param location the current location
+   * @returns the current url, modified to fit the locale parameter
    */
-  getLangUpdatedUrl(locale: string, url: string, baseHref: string): string {
-    let newUrl = url;
-    /**
-     * only replace lang parameter if:
-     * - multiSiteLocaleMap environment var is declared (set to undefined to skip this behaviour)
-     * - current baseHref is part of the map (so the empty "/" baseHref would not be replaced)
-     * - multiSiteLocaleMap contains target locale
-     */
-    if (
-      this.multiSiteLocaleMap &&
-      Object.values(this.multiSiteLocaleMap).includes(baseHref) &&
-      localeMapHasLangString(locale, this.multiSiteLocaleMap)
-    ) {
-      newUrl = newUrl.replace(baseHref, this.multiSiteLocaleMap[locale]);
-    }
-    return newUrl;
+  getLangUpdatedUrl(locale: string, url: string, baseHref: string): Observable<string> {
+    return this.stateProperties
+      .getStateOrEnvOrDefault<Record<string, unknown>>('MULTI_SITE_LOCALE_MAP', 'multiSiteLocaleMap')
+      .pipe(
+        take(1),
+        map(multiSiteLocaleMap => {
+          let newUrl = url;
+          /**
+           * only replace lang parameter if:
+           * - multiSiteLocaleMap environment var is declared (set to undefined to skip this behaviour)
+           * - current baseHref is part of the map (so the empty "/" baseHref would not be replaced)
+           * - multiSiteLocaleMap contains target locale
+           */
+          if (
+            multiSiteLocaleMap &&
+            Object.values(multiSiteLocaleMap).includes(baseHref) &&
+            localeMapHasLangString(locale, multiSiteLocaleMap)
+          ) {
+            newUrl = newUrl.replace(baseHref, multiSiteLocaleMap[locale]);
+          }
+          return newUrl;
+        }),
+        takeUntil(this.destroy$)
+      );
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
 
