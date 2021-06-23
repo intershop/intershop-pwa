@@ -219,7 +219,7 @@ ca.+\.com:
 ## Integrate your multi-site configuration with the language switch
 
 To construct new multi-site URLs when switching between languages, the PWA uses the `multi-site.service.ts`.
-The `getLangUpdatedUrl` is called with the desired locale string and the current location.
+The `getLangUpdatedUrl` is called with the desired locale string, current url and current baseHref.
 From this it constructs a new URL, conforming to our multi-site setup (see [One domain, one channel, multiple locales](#one-domain-one-channel-multiple-locales)).
 
 In case you want to disable this functionality, simply override the default environment variable `multiSiteLocaleMap` with `undefined`.

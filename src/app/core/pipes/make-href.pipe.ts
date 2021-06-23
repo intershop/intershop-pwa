@@ -19,7 +19,7 @@ export class MakeHrefPipe implements PipeTransform {
     // add supplied url params
     if (urlParams) {
       if (urlParams.lang) {
-        newUrl = this.multiSiteService.getLangUpdatedUrl(urlParams.lang, location);
+        newUrl = this.multiSiteService.getLangUpdatedUrl(urlParams.lang, newUrl, location.getBaseHref());
       }
       newUrl += Object.keys(urlParams)
         .map(k => `;${k}=${urlParams[k]}`)

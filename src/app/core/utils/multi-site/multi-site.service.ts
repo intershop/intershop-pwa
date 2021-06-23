@@ -1,4 +1,3 @@
-import { LocationStrategy } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 
 import { MULTI_SITE_LOCALE_MAP } from 'ish-core/configurations/injection-keys';
@@ -15,8 +14,8 @@ export class MultiSiteService {
    * @param location the current loation
    * @returns
    */
-  getLangUpdatedUrl(locale: string, location: LocationStrategy): string {
-    let newUrl = location.path();
+  getLangUpdatedUrl(locale: string, url: string, baseHref: string): string {
+    let newUrl = url;
     /**
      * only replace lang parameter if:
      * - multiSiteLocaleMap environment var is declared (set to undefined to skip this behaviour)
@@ -25,10 +24,10 @@ export class MultiSiteService {
      */
     if (
       this.multiSiteLocaleMap &&
-      Object.values(this.multiSiteLocaleMap).includes(location.getBaseHref()) &&
+      Object.values(this.multiSiteLocaleMap).includes(baseHref) &&
       localeMapHasLangString(locale, this.multiSiteLocaleMap)
     ) {
-      newUrl = newUrl.replace(location.getBaseHref(), this.multiSiteLocaleMap[locale]);
+      newUrl = newUrl.replace(baseHref, this.multiSiteLocaleMap[locale]);
     }
     return newUrl;
   }

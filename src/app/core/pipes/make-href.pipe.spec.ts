@@ -16,8 +16,8 @@ describe('Make Href Pipe', () => {
       providers: [MakeHrefPipe, { provide: MultiSiteService, useFactory: () => instance(multiSiteService) }],
     });
     makeHrefPipe = TestBed.inject(MakeHrefPipe);
-    when(multiSiteService.getLangUpdatedUrl(anything(), anything())).thenCall((_: string, location: LocationStrategy) =>
-      location.path()
+    when(multiSiteService.getLangUpdatedUrl(anything(), anything(), anything())).thenCall(
+      (url: string, _: LocationStrategy) => url
     );
   });
 
@@ -36,11 +36,13 @@ describe('Make Href Pipe', () => {
     ['/test?query=q', { foo: 'bar' }, '/test;foo=bar?query=q'],
     ['/test?query=q', { foo: 'bar', marco: 'polo' }, '/test;foo=bar;marco=polo?query=q'],
   ])(`should transform "%s" with %j to "%s"`, (url, params, expected) => {
-    expect(makeHrefPipe.transform({ path: () => url } as LocationStrategy, params)).toEqual(expected);
+    expect(makeHrefPipe.transform({ path: () => url, getBaseHref: () => '/' } as LocationStrategy, params)).toEqual(
+      expected
+    );
   });
 
   it('should call the multiSiteService if lang parameter exists', () => {
-    makeHrefPipe.transform({ path: () => '/de/test' } as LocationStrategy, { lang: 'en_US' });
-    verify(multiSiteService.getLangUpdatedUrl(anything(), anything())).once();
+    makeHrefPipe.transform({ path: () => '/de/test', getBaseHref: () => '/de' } as LocationStrategy, { lang: 'en_US' });
+    verify(multiSiteService.getLangUpdatedUrl(anything(), anything(), anything())).once();
   });
 });
