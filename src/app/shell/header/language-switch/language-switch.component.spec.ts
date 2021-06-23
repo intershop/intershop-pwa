@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -18,6 +18,7 @@ describe('Language Switch Component', () => {
   let fixture: ComponentFixture<LanguageSwitchComponent>;
   let element: HTMLElement;
   let appFacade: AppFacade;
+
   const locales = [
     { lang: 'en_US', value: 'en', displayName: 'English' },
     { lang: 'de_DE', value: 'de', displayName: 'Deutsch' },
@@ -28,7 +29,11 @@ describe('Language Switch Component', () => {
     appFacade = mock(AppFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [LanguageSwitchComponent, MakeHrefPipe, MockComponent(FaIconComponent)],
+      declarations: [
+        LanguageSwitchComponent,
+        MockComponent(FaIconComponent),
+        MockPipe(MakeHrefPipe, (_, urlParams) => of(urlParams.lang)),
+      ],
       imports: [NgbDropdownModule, RouterTestingModule],
       providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
     }).compileComponents();
@@ -57,8 +62,8 @@ describe('Language Switch Component', () => {
     expect(element.querySelectorAll('li')).toHaveLength(2);
     expect(element.querySelectorAll('[href]')).toMatchInlineSnapshot(`
       NodeList [
-        <a href="/;redirect=1;lang=en_US"> English </a>,
-        <a href="/;redirect=1;lang=fr_FR"> Fran¢aise </a>,
+        <a href="en_US"> English </a>,
+        <a href="fr_FR"> Fran¢aise </a>,
       ]
     `);
     expect(element.querySelector('.language-switch-current-selection').textContent).toMatchInlineSnapshot(`"de"`);
