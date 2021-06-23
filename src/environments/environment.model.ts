@@ -3,6 +3,7 @@ import { CookieConsentOptions } from 'ish-core/models/cookies/cookies.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
+import { MultiSiteLocaleMap } from 'ish-core/utils/multi-site/multi-site.service';
 
 import { TactonConfig } from '../app/extensions/tacton/models/tacton-config/tacton-config.model';
 
@@ -85,7 +86,7 @@ export interface Environment {
 
   // configuration of the available locales - hard coded for now
   locales: Locale[];
-  multiSiteLocaleMap: Record<string, unknown> | undefined;
+  multiSiteLocaleMap: MultiSiteLocaleMap;
 
   // configuration of the styling theme ('default' if not configured)
   // format: 'themeName|themeColor' e.g. theme: 'blue|688dc3',
