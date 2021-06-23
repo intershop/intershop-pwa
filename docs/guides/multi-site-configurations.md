@@ -7,6 +7,17 @@ kb_sync_latest_only
 
 # Multi Site Configurations
 
+- [Multi Site Configurations](#multi-site-configurations)
+  - [Syntax](#syntax)
+  - [Examples](#examples)
+    - [One domain, One Channel, Multiple Locales](#one-domain-one-channel-multiple-locales)
+    - [Multiple Domains, Multiple Channels, Multiple Locales](#multiple-domains-multiple-channels-multiple-locales)
+    - [Multiple Subdomains, Multiple channels, Multiple Locales](#multiple-subdomains-multiple-channels-multiple-locales)
+    - [Extended Example with Many Different Configurations](#extended-example-with-many-different-configurations)
+    - [Extended Example with two domains, one with basic auth (except /fr), the other without](#extended-example-with-two-domains-one-with-basic-auth-except-fr-the-other-without)
+  - [Integrate your multi-site configuration with the language switch](#integrate-your-multi-site-configuration-with-the-language-switch)
+- [Further References](#further-references)
+
 As explained in [Multi-Site Handling](../concepts/multi-site-handling.md), the PWA supports dynamic configurations of a single PWA deployment.
 This guide explains the YAML syntax used to define a configuration and provides some common configuration examples, mainly focusing on different setups for handling locales and channels.
 For more information about how the YAML configuration is processed, refer to [Multi-Site Handling](../concepts/multi-site-handling.md) and [Building and Running NGINX Docker Image | Multi-Site](../guides/nginx-startup.md#Multi-Site).
@@ -204,6 +215,16 @@ ca.+\.com:
     channel: inspired-inTRONICS-CA
     lang: en_US
 ```
+
+## Integrate your multi-site configuration with the language switch
+
+To construct new multi-site URLs when switching between languages, the PWA uses the `multi-site.service.ts`. The `getLangUpdatedUrl` is called with the desired locale string and the current location. From this it constructs a new URL, conforming to our multi-site setup (see [One domain, one channel, multiple locales](#one-domain-one-channel-multiple-locales)).
+
+In case you want to disable this functionality, simply override the default environment variable `multiSiteLocaleMap` with `undefined`.
+
+In case you want to extend this functionality to work with more locales, extend the default environment variable `multiSiteLocaleSetup` with your additional locales.
+
+In case you want to transfer this functionality to work with your specific multi-site setup, override the `multi-site.service.ts` and provide an implementation that conforms to your setup.
 
 # Further References
 
