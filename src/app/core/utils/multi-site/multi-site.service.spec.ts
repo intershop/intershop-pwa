@@ -2,14 +2,7 @@ import { LocationStrategy } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { instance, mock, when } from 'ts-mockito';
 
-import { MULTI_SITE_LOCALE_MAP } from 'ish-core/configurations/injection-keys';
-
 import { MultiSiteService } from './multi-site.service';
-
-const testLocaleMap = {
-  de_DE: '/de',
-  en_US: '/en',
-};
 
 describe('Multi Site Service', () => {
   let mockLocation: LocationStrategy;
@@ -17,9 +10,7 @@ describe('Multi Site Service', () => {
   let multiSiteService: MultiSiteService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [{ provide: MULTI_SITE_LOCALE_MAP, useFactory: () => testLocaleMap }],
-    });
+    TestBed.configureTestingModule({});
     multiSiteService = TestBed.inject(MultiSiteService);
     mockLocation = mock(LocationStrategy);
     location = instance(mockLocation);
