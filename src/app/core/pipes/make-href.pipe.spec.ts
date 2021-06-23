@@ -1,6 +1,6 @@
 import { LocationStrategy } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
-import { anything, instance, mock, when } from 'ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { MultiSiteService } from 'ish-core/utils/multi-site/multi-site.service';
 
@@ -37,5 +37,10 @@ describe('Make Href Pipe', () => {
     ['/test?query=q', { foo: 'bar', marco: 'polo' }, '/test;foo=bar;marco=polo?query=q'],
   ])(`should transform "%s" with %j to "%s"`, (url, params, expected) => {
     expect(makeHrefPipe.transform({ path: () => url } as LocationStrategy, params)).toEqual(expected);
+  });
+
+  it('should call the multiSiteService if lang parameter exists', () => {
+    makeHrefPipe.transform({ path: () => '/de/test' } as LocationStrategy, { lang: 'en_US' });
+    verify(multiSiteService.getLangUpdatedUrl(anything(), anything())).once();
   });
 });
