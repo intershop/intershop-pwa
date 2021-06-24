@@ -7,6 +7,10 @@ kb_sync_latest_only
 
 # Migrations
 
+## 0.31 to 0.32
+
+Locale definitions in `environment.ts` models are no longer supported, only ICM channel configurations are now used for switching locales.
+
 ## 0.29 to 0.30
 
 We introduced the feature toggle 'guestCheckout' in the `environment.model.ts`.
