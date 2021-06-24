@@ -145,7 +145,6 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
     de_DE: '/de',
     fr_FR: '/fr',
   },
-  // tslint:enable: use-camel-case-environment-properties
   cookieConsentOptions: {
     options: {
       required: {

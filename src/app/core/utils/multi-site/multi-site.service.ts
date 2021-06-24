@@ -13,8 +13,9 @@ export class MultiSiteService {
   /**
    * returns the current url, modified to fit the locale parameter if the environment parameter "multiSiteLocaleMap" is set
    * @param locale the locale which the new url should fit
-   * @param location the current location
-   * @returns the current url, modified to fit the locale parameter
+   * @param url the current url
+   * @param baseHref the current baseHref which needs to be replaced
+   * @returns the modified url
    */
   getLangUpdatedUrl(locale: string, url: string, baseHref: string): Observable<string> {
     return this.stateProperties
