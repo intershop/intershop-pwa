@@ -1,14 +1,13 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { map, take, takeUntil } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
 export type MultiSiteLocaleMap = Record<string, unknown> | undefined;
 
 @Injectable({ providedIn: 'root' })
-export class MultiSiteService implements OnDestroy {
-  private destroy$ = new Subject();
+export class MultiSiteService {
   constructor(private stateProperties: StatePropertiesService) {}
 
   /**
@@ -38,14 +37,8 @@ export class MultiSiteService implements OnDestroy {
             newUrl = newUrl.replace(baseHref, multiSiteLocaleMap[locale]);
           }
           return newUrl;
-        }),
-        takeUntil(this.destroy$)
+        })
       );
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
 
