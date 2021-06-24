@@ -34,8 +34,9 @@ All other properties are optional:
 - **identityProvider**: The active identity provider for this site
 - **features**: Comma-separated list of activated features
 - **lang**: The default language as defined in the Angular CLI environment
+- **currency**: The default currency for this channel
 - **theme**: The theme used for the channel (format: `<theme-name>(|<icon-color>)?`)
-- **protected**: Selectively unprotect a given domain and/or baseHref. Only applies in combination with globally activated nginx basic authentication.
+- **protected**: Selectively disable basic auth for a given domain and/or baseHref. Only applies in combination with globally activated nginx basic authentication.
 
 Dynamically directing the PWA to different ICM installations can be done by using:
 
