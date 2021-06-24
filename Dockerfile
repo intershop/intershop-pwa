@@ -38,5 +38,4 @@ ARG configuration=production
 LABEL configuration="${configuration}"
 EXPOSE 4200
 USER nobody
-HEALTHCHECK --interval=60s --timeout=20s --start-period=2s CMD node /dist/healthcheck.js
 ENTRYPOINT ["sh","/dist/entrypoint.sh"]

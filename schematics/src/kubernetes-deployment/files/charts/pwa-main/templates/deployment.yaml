@@ -19,6 +19,10 @@ spec:
         app.kubernetes.io/name: {{ include "pwa-main.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -26,18 +30,37 @@ spec:
           env:
           - name: ICM_BASE_URL
             value: "{{ .Values.upstream.icm }}"
+        {{- with .Values.environment }}
+            {{- toYaml . | nindent 10 }}
+        {{- end }}
           ports:
             - name: http
               containerPort: 4200
               protocol: TCP
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: 4200
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: 4200
+          livenessProbe:
+            {{- if empty .Values.livenessProbe }}
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - netstat -an | egrep 4200.*LISTEN | grep 4200
+            {{- else }}
+              {{- with .Values.livenessProbe }}
+              {{- toYaml . | nindent 12 }}
+              {{- end }}
+            {{- end }}
+          readinessProbe:
+            {{- if empty .Values.readinessProbe }}
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - netstat -an | egrep 4200.*LISTEN | grep 4200
+            {{- else }}
+              {{- with .Values.readinessProbe }}
+              {{- toYaml . | nindent 12 }}
+              {{- end }}
+            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

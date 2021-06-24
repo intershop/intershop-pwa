@@ -1,7 +1,6 @@
 # Default values for pwa-main.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
 replicaCount: 1
 
 image:
@@ -9,32 +8,19 @@ image:
   tag: stable
   pullPolicy: Always
 
+imagePullSecrets: []
 nameOverride: ''
 fullnameOverride: ''
 
 upstream:
   icm: https://www.example.com
+  icmBaseURL: https://www.example.com
 
 service:
   type: ClusterIP
   port: 4200
 
-ingress:
-  enabled: true
-  annotations:
-    nginx.ingress.kubernetes.io/proxy-body-size: '0'
-    # traefik.ingress.kubernetes.io/frontend-entry-points: https,http
-    # kubernetes.io/tls-acme: "true"
-  paths: ['/']
-  hosts:
-    - pwa-main.example.com
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
-
-resources:
-  {}
+resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -46,8 +32,91 @@ resources:
   #  cpu: 100m
   #  memory: 128Mi
 
+
 nodeSelector: {}
 
 tolerations: []
 
 affinity: {}
+
+environment: []
+  # enable environment property, if you use the livenessProbe with given healthcheck
+  # - name: 'MAX_RESPONSE_TIME'
+  #   value: '1500'
+
+livenessProbe: {}
+  # exec:
+  #  command:
+  #     - node
+  #     - /dist/healthcheck.js
+  # initialDelaySeconds: 10
+  # timeoutSeconds: 20
+  # periodSeconds: 30
+  # failureThreshold: 2
+
+readinessProbe: {}
+  # exec:
+  #   command:
+  #   - /bin/sh
+  #   - -c
+  #   - netstat -an | egrep 4200.*LISTEN | grep 4200
+  # initialDelaySeconds: 10
+  # periodSeconds: 30
+
+nginx:
+  enabled: false
+
+  channels: {}
+    # at least one channel has to be configured
+    # configuration details could be found in multi-site-configurations guide
+    # MULTI_CHANNEL: |
+    #   .+:
+    #     - baseHref: /en
+    #       channel: default
+    #       lang: en_US
+    #     - baseHref: /de
+    #       channel: default
+    #       lang: de_DE
+    #     - baseHref: /fr
+    #       channel: default
+    #       lang: fr_FR
+
+  replicaCount: 1
+
+  image:
+    repository: pwa-nginx
+    tag: stable
+    pullPolicy: Always
+
+  nameOverride: ''
+  fullnameOverride: ''
+
+  service:
+    type: ClusterIP
+    port: 4200
+
+  resources: {}
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  livenessProbe: {}
+
+  readinessProbe: {}
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/tls-acme: 'true'
+    kubernetes.io/ingress.class: nginx
+    # traefik.ingress.kubernetes.io/frontend-entry-points: https,http
+  paths: ['/']
+  hosts:
+    - pwa-main.example.com
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
