@@ -13,7 +13,7 @@
   "private": true,
   "scripts": {
     "init-local-environment": "node scripts/init-local-environment",
-    "postinstall": "postinstall",
+    "postinstall": "postinstall && npm-run-all --silent build:tslint-rules build:schematics synchronize-lazy-components init-local-environment",
     "build:tslint-rules": "cd tslint-rules && npm run build",
     "build:schematics": "cd schematics && npm run build",
     "ng": "ng",
