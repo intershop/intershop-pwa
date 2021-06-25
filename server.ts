@@ -5,6 +5,7 @@ import * as express from 'express';
 import { join } from 'path';
 import * as robots from 'express-robots-txt';
 import * as fs from 'fs';
+import { tmpdir } from 'os';
 import * as proxy from 'express-http-proxy';
 // tslint:disable-next-line: ban-specific-imports
 import { AppServerModule, ICM_WEB_URL, HYBRID_MAPPING_TABLE, environment, APP_BASE_HREF } from './src/main.server';
@@ -38,6 +39,13 @@ export function app() {
     console.error('ICM_BASE_URL not set');
     process.exit(1);
   }
+
+  fs.writeFile(join(tmpdir(), 'pwa-ssr.pid'), process.pid.toString(), err => {
+    if (err) {
+      return console.error(err);
+    }
+    console.log(`Started at PID=${process.pid.toString()}`);
+  });
 
   if (process.env.TRUST_ICM) {
     // trust https certificate if self-signed

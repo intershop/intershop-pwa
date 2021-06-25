@@ -39,3 +39,4 @@ LABEL configuration="${configuration}"
 EXPOSE 4200
 USER nobody
 ENTRYPOINT ["sh","/dist/entrypoint.sh"]
+CMD ["node", "dist/server/main.js"]
