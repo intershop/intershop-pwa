@@ -18,7 +18,7 @@ git clone https://github.com/intershop/intershop-pwa.git
 
 After having cloned the project from the Git repository, open a command line in the project folder and run `npm install` to download all required dependencies into your development environment.
 
-The project uses [Angular CLI](https://cli.angular.io) - a command line interface for Angular - that has to be installed globally.
+The project uses [Angular CLI](https://angular.io/cli) - a command line interface for Angular - that has to be installed globally.
 Run `npm install -g @angular/cli` once to globally install Angular CLI on your development machine.
 
 Use `ng serve --open` to start up the development server and open the Progressive Web app in your browser.

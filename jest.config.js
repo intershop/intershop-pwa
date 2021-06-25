@@ -14,6 +14,7 @@ module.exports = {
     },
   },
   preset: 'jest-preset-angular',
+  testRunner: 'jest-jasmine2',
   roots: ['src', 'projects'],
   setupFilesAfterEnv: ['<rootDir>/src/setupJest.ts'],
   transformIgnorePatterns: [`node_modules/(?!${esModules.join('|')})`],
