@@ -84,8 +84,10 @@ export interface Environment {
 
   defaultLocale?: string;
 
-  // configuration of the available locales - hard coded for now
+  // configuration of the possible locales (filtered by the locales activated by the server)
   locales: Locale[];
+
+  // multi-site URLs to locales mapping ('undefined' if mapping should not be used)
   multiSiteLocaleMap: MultiSiteLocaleMap;
 
   // configuration of the styling theme ('default' if not configured)
