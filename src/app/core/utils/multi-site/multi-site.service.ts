@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
-import { select, Store } from '@ngrx/store';
 import { getMultiSiteLocaleMap } from 'ish-core/store/core/configuration';
 
 export type MultiSiteLocaleMap = Record<string, unknown> | undefined;
