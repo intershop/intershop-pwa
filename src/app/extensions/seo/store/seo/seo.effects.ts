@@ -62,9 +62,9 @@ export class SeoEffects {
         switchMap(() =>
           race([
             // PRODUCT PAGE
-            this.productPage$.pipe(map(product => this.baseURL(true) + generateProductUrl(product).substr(1))),
+            this.productPage$.pipe(map(product => this.baseURL + generateProductUrl(product).substr(1))),
             // CATEGORY / FAMILY PAGE
-            this.categoryPage$.pipe(map(category => this.baseURL(true) + generateCategoryUrl(category).substr(1))),
+            this.categoryPage$.pipe(map(category => this.baseURL + generateCategoryUrl(category).substr(1))),
             // DEFAULT
             this.appRef.isStable.pipe(whenTruthy(), mapTo(this.doc.URL.replace(/[;?].*/g, ''))),
           ])
@@ -123,7 +123,7 @@ export class SeoEffects {
           description: 'seo.defaults.description',
           robots: 'index, follow',
           'og:type': 'website',
-          'og:image': `${this.baseURL(false)}assets/img/og-image-default.jpg`.replace('http:', 'https:'),
+          'og:image': '/assets/img/og-image-default.jpg',
           ...attributes,
         })),
         distinctUntilChanged(isEqual),
@@ -180,12 +180,12 @@ export class SeoEffects {
     { dispatch: false }
   );
 
-  private baseURL(includeBaseHref: boolean) {
+  private get baseURL() {
     let url: string;
     if (this.request) {
-      url = `${this.request.protocol}://${this.request.get('host')}${includeBaseHref ? this.baseHref : ''}`;
+      url = `${this.request.protocol}://${this.request.get('host')}${this.baseHref}`;
     } else {
-      url = includeBaseHref ? this.doc.baseURI : this.doc.baseURI.replace(new RegExp(`${this.baseHref}$`), '');
+      url = this.doc.baseURI;
     }
     return url.endsWith('/') ? url : url + '/';
   }
