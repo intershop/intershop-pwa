@@ -222,11 +222,13 @@ To construct new multi-site URLs when switching between languages, the PWA uses 
 The `getLangUpdatedUrl` is called with the desired locale string, current url and current baseHref.
 From this it constructs a new URL, conforming to our multi-site setup (see [One domain, one channel, multiple locales](#one-domain-one-channel-multiple-locales)).
 
-In case you want to disable this functionality, simply override the default environment variable `multiSiteLocaleMap` with `undefined`.
+To control the transformation of urls, the `multiSiteLocaleMap` environment variable is used. Depending on your needs, `multiSiteLocaleMap` can be set in either the `environment.ts` or as an environment variable (`MULTI_SITE_LOCALE_MAP`). See [`docker-compose.yml`](../../docker-compose.yml) for a commented out example or [`environment.model.ts`](../../src/environments/environment.model.ts) for the default value.
+
+In case you want to disable this functionality, simply override the default environment variable `multiSiteLocaleMap` with `undefined` or `MULTI_SITE_LOCALE_MAP` with `false`.
 
 In case you want to extend this functionality to work with more locales, extend the default environment variable `multiSiteLocaleMap` with your additional locales.
 
-In case you want to transfer this functionality to work with your specific multi-site setup, override the `multi-site.service.ts` and provide an implementation that conforms to your setup.
+In case you want to transfer this functionality to work with your specific multi-site setup, override the `multi-site.service.ts` and provide an implementation that conforms to your setup (as well as configuring the environment variable for your specific use case).
 
 # Further References
 

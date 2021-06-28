@@ -177,4 +177,27 @@ export class ConfigurationEffects {
       )
     )
   );
+
+  transferMultiSiteLocaleMap$ = createEffect(() =>
+    iif(
+      () => isPlatformServer(this.platformId),
+      defer(() =>
+        this.actions$.pipe(
+          ofType(ROOT_EFFECTS_INIT),
+          withLatestFrom(
+            this.stateProperties.getStateOrEnvOrDefault<Record<string, unknown> | string | false>(
+              'MULTI_SITE_LOCALE_MAP',
+              'multiSiteLocaleMap'
+            )
+          ),
+          take(1),
+          map(([, multiSiteLocaleMap]) => (multiSiteLocaleMap === false ? undefined : multiSiteLocaleMap)),
+          map(multiSiteLocaleMap =>
+            typeof multiSiteLocaleMap === 'string' ? JSON.parse(multiSiteLocaleMap) : multiSiteLocaleMap
+          ),
+          map(multiSiteLocaleMap => applyConfiguration({ multiSiteLocaleMap }))
+        )
+      )
+    )
+  );
 }

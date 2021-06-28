@@ -27,6 +27,7 @@ export interface ConfigurationState {
   locales?: Locale[];
   lang?: string;
   serverTranslations: { [lang: string]: Translations };
+  multiSiteLocaleMap: Record<string, unknown>;
   // not synced via state transfer
   _deviceType?: DeviceType;
 }
@@ -43,6 +44,7 @@ const initialState: ConfigurationState = {
   locales: environment.locales,
   lang: undefined,
   serverTranslations: {},
+  multiSiteLocaleMap: {},
   _deviceType: environment.defaultDeviceType,
 };
 

@@ -94,3 +94,8 @@ export const getServerTranslations = (lang: string) =>
 
 export const getSpecificServerTranslation = (lang: string, key: string) =>
   createSelector(getServerTranslations(lang), translations => translations?.[key]);
+
+export const getMultiSiteLocaleMap = createSelector(
+  getConfigurationState,
+  (state: ConfigurationState) => state.multiSiteLocaleMap
+);
