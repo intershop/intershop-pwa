@@ -1,9 +1,11 @@
 //
 // ACCOUNT NAVIGATION
 
+@use 'sass:math';
+
 .account-navigation {
   li {
-    padding: $space-default * 2/3 $space-default * 2/3 ($space-default / 2);
+    padding: math.div($space-default * 2, 3) math.div($space-default * 2, 3) ($space-default * 0.5);
     background: $color-tertiary;
     border: $border-width-default solid $border-color-lighter;
     border-width: 0 1px 1px 1px;
@@ -25,7 +27,7 @@
     }
 
     .ng-fa-icon {
-      margin-right: ($space-default / 2);
+      margin-right: ($space-default * 0.5);
       font-size: 14px;
       color: $text-color-quarternary;
     }
@@ -73,7 +75,7 @@
     padding-top: $space-default;
     padding-bottom: $space-default;
     margin-top: -15px;
-    margin-bottom: ($space-default + ($space-default / 2));
+    margin-bottom: ($space-default * 1.5);
     background: $color-tertiary;
     border-top: $border-width-default solid lighten($border-color-default, 100%);
   }
@@ -82,7 +84,7 @@
     padding-top: $space-default;
     padding-bottom: $space-default;
     margin-top: -25px;
-    margin-bottom: ($space-default + ($space-default / 2));
+    margin-bottom: ($space-default * 1.5);
     background: $color-tertiary;
     border-top: $border-width-default solid lighten($border-color-default, 100%);
   }
