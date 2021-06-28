@@ -43,7 +43,7 @@ Make sure to use them as written in the table below.
 |                     | ICM_APPLICATION       | string               | Overrides the default application                                                            |
 |                     | FEATURES              | comma-separated list | Overrides active features                                                                    |
 |                     | THEME                 | string               | Overrides the default theme                                                                  |
-|                     | MULTI_SITE_LOCALE_MAP | JSON                 | Used to map locales to [url modification parameters](../guides/multi-site-configurations.md) |
+|                     | MULTI_SITE_LOCALE_MAP | JSON \| false        | Used to map locales to [url modification parameters](../guides/multi-site-configurations.md) |
 | **Debug** :warning: | TRUST_ICM             | any                  | Use this if ICM is deployed with an insecure certificate                                     |
 |                     | LOGGING               | switch               | Enables extra log output                                                                     |
 | **Hybrid Approach** | SSR_HYBRID            | any                  | Enables running PWA and ICM in [Hybrid Mode][concept-hybrid]                                 |
