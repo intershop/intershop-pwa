@@ -51,11 +51,12 @@ spec:
             {{- end }}
           readinessProbe:
             {{- if empty .Values.readinessProbe }}
-            exec:
-              command:
-              - /bin/sh
-              - -c
-              - netstat -an | egrep 4200.*LISTEN | grep 4200
+            httpGet:
+              path: /home
+              port: 4200
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 2
             {{- else }}
               {{- with .Values.readinessProbe }}
               {{- toYaml . | nindent 12 }}

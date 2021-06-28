@@ -55,13 +55,12 @@ livenessProbe: {}
   # failureThreshold: 2
 
 readinessProbe: {}
-  # exec:
-  #   command:
-  #   - /bin/sh
-  #   - -c
-  #   - netstat -an | egrep 4200.*LISTEN | grep 4200
+  # httpGet:
+  #   path: /home
+  #   port: 4200
   # initialDelaySeconds: 10
-  # periodSeconds: 30
+  # periodSeconds: 5
+  # timeoutSeconds: 2
 
 nginx:
   enabled: false
@@ -106,6 +105,12 @@ nginx:
   livenessProbe: {}
 
   readinessProbe: {}
+    # httpGet:
+    #   path: /en/home
+    #   port: 80
+    # initialDelaySeconds: 10
+    # periodSeconds: 5
+    # timeoutSeconds: 2
 
 ingress:
   enabled: true

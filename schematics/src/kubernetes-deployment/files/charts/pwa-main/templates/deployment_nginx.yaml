@@ -52,6 +52,12 @@ spec:
             {{- end }}
           readinessProbe:
             {{- if empty .Values.nginx.readinessProbe }}
+            httpGet:
+              path: /en/home # base en must be configured as channel
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 2
             {{- else }}
               {{- with .Values.nginx.readinessProbe }}
               {{- toYaml . | nindent 12 }}
