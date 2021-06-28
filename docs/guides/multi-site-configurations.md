@@ -46,7 +46,7 @@ All other properties are optional:
 - **features**: Comma-separated list of activated features
 - **lang**: The default language as defined in the Angular CLI environment
 - **theme**: The theme used for the channel (format: `<theme-name>(|<icon-color>)?`)
-- **protected**: Selectively unprotect a given domain and/or baseHref. Only applies in combination with globally activated nginx basic authentication.
+- **protected**: Selectively disable protection of a given domain and/or baseHref. Only applies in combination with globally activated nginx basic authentication.
 
 Dynamically directing the PWA to different ICM installations can be done by using:
 
@@ -222,7 +222,9 @@ To construct new multi-site URLs when switching between languages, the PWA uses 
 The `getLangUpdatedUrl` is called with the desired locale string, current url and current baseHref.
 From this it constructs a new URL, conforming to our multi-site setup (see [One domain, one channel, multiple locales](#one-domain-one-channel-multiple-locales)).
 
-To control the transformation of urls, the `multiSiteLocaleMap` environment variable is used. Depending on your needs, `multiSiteLocaleMap` can be set in either the `environment.ts` or as an environment variable (`MULTI_SITE_LOCALE_MAP`). See [`docker-compose.yml`](../../docker-compose.yml) for a commented out example or [`environment.model.ts`](../../src/environments/environment.model.ts) for the default value.
+To control the transformation of urls, the `multiSiteLocaleMap` environment variable is used.
+Depending on your needs, `multiSiteLocaleMap` can be set in either the `environment.ts` or as an environment variable (`MULTI_SITE_LOCALE_MAP`).
+See [`docker-compose.yml`](../../docker-compose.yml) for a commented out example or [`environment.model.ts`](../../src/environments/environment.model.ts) for the default value.
 
 In case you want to disable this functionality, simply override the default environment variable `multiSiteLocaleMap` with `undefined` or `MULTI_SITE_LOCALE_MAP` with `false`.
 
