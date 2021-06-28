@@ -27,5 +27,8 @@
       "language": "fr-fr",
       "filename": "src/assets/i18n/fr_FR.json"
     }
+  ],
+  "words": [
+	  "payone"
   ]
 }
