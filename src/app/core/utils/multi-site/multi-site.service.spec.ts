@@ -1,29 +1,24 @@
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
-import { anything, instance, mock, when } from 'ts-mockito';
+import { provideMockStore } from '@ngrx/store/testing';
 
-import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
+import { getMultiSiteLocaleMap } from 'ish-core/store/core/configuration';
 
 import { MultiSiteService } from './multi-site.service';
 
+const multiSiteLocaleMap = {
+  en_US: '/en',
+  de_DE: '/de',
+  fr_FR: '/fr',
+};
+
 describe('Multi Site Service', () => {
   let multiSiteService: MultiSiteService;
-  let statePropertiesService: StatePropertiesService;
 
   beforeEach(() => {
-    statePropertiesService = mock(StatePropertiesService);
     TestBed.configureTestingModule({
-      providers: [{ provide: StatePropertiesService, useFactory: () => instance(statePropertiesService) }],
+      providers: [provideMockStore({ selectors: [{ selector: getMultiSiteLocaleMap, value: multiSiteLocaleMap }] })],
     });
     multiSiteService = TestBed.inject(MultiSiteService);
-
-    when(statePropertiesService.getStateOrEnvOrDefault(anything(), anything())).thenReturn(
-      of({
-        en_US: '/en',
-        de_DE: '/de',
-        fr_FR: '/fr',
-      })
-    );
   });
 
   it('should be created', () => {
