@@ -6,11 +6,13 @@ import { join } from 'path';
 import * as robots from 'express-robots-txt';
 import * as fs from 'fs';
 import * as proxy from 'express-http-proxy';
-// tslint:disable-next-line: ban-specific-imports
 import { AppServerModule, ICM_WEB_URL, HYBRID_MAPPING_TABLE, environment, APP_BASE_HREF } from './src/main.server';
 import { ngExpressEngine } from '@nguniversal/express-engine';
+import { getDeployURLFromEnv, setDeployUrlInFile } from './src/ssr/deploy-url';
 
 const PORT = process.env.PORT || 4200;
+
+const DEPLOY_URL = getDeployURLFromEnv();
 
 const DIST_FOLDER = join(process.cwd(), 'dist');
 
@@ -28,8 +30,8 @@ global['HTMLElement'] = win.HTMLElement;
 global['navigator'] = win.navigator;
 // tslint:enable:no-string-literal
 */
-
 // The Express app is exported so that it can be used by serverless Functions.
+// not-dead-code
 export function app() {
   const logging = /on|1|true|yes/.test(process.env.LOGGING?.toLowerCase());
 
@@ -61,7 +63,7 @@ export function app() {
         path: '/',
       };
 
-      const req = https.request(options, res => {
+      const req = https.request(options, (res: { socket: { authorized: boolean } }) => {
         console.log('Certificate for', ICM_BASE_URL, 'authorized:', res.socket.authorized);
       });
 
@@ -84,7 +86,7 @@ export function app() {
         'HOSTNAME_MISMATCH',
       ];
 
-      req.on('error', e => {
+      req.on('error', (e: { code: string }) => {
         if (certErrorCodes.includes(e.code)) {
           console.log(
             e.code,
@@ -119,7 +121,7 @@ export function app() {
   if (logging) {
     server.use(
       require('morgan')('tiny', {
-        skip: req => req.originalUrl.startsWith('/INTERSHOP/static'),
+        skip: (req: express.Request) => req.originalUrl.startsWith('/INTERSHOP/static'),
       })
     );
   }
@@ -149,7 +151,18 @@ export function app() {
     );
   }
 
-  // Serve static files from /browser
+  // Serve static files from browser folder
+  server.get(/\/.*\.(js|css)$/, (req, res) => {
+    const path = req.originalUrl.substring(1);
+    fs.readFile(join(DIST_FOLDER, 'browser', path), { encoding: 'utf-8' }, (err, data) => {
+      if (err) {
+        res.sendStatus(404);
+      } else {
+        res.set('Content-Type', (path.endsWith('css') ? 'text/css' : 'application/javascript') + '; charset=UTF-8');
+        res.send(setDeployUrlInFile(DEPLOY_URL, path, data));
+      }
+    });
+  });
   server.get(
     '*.*',
     express.static(join(DIST_FOLDER, 'browser'), {
@@ -161,14 +174,22 @@ export function app() {
           // file should be re-checked more frequently -> 5m
           res.set('Cache-Control', 'public, max-age=300');
         }
+        // add cors headers for required resources
+        if (
+          DEPLOY_URL.startsWith('http') &&
+          ['manifest.webmanifest', 'woff2', 'woff', 'json'].some(match => path.endsWith(match))
+        ) {
+          res.set('access-control-allow-origin', '*');
+        }
       },
     })
   );
 
   const icmProxy = proxy(ICM_BASE_URL, {
     // preserve original path
-    proxyReqPathResolver: req => req.originalUrl,
-    proxyReqOptDecorator: options => {
+    proxyReqPathResolver: (req: express.Request) => req.originalUrl,
+    // tslint:disable-next-line: no-any
+    proxyReqOptDecorator: (options: any) => {
       if (process.env.TRUST_ICM) {
         // https://github.com/villadora/express-http-proxy#q-how-to-ignore-self-signed-certificates-
         options.rejectUnauthorized = false;
@@ -227,7 +248,9 @@ export function app() {
           }
           newHtml = newHtml.replace(/<base href="[^>]*>/, `<base href="${baseHref}" />`);
 
-          res.status(res.statusCode).send(newHtml || html);
+          newHtml = setDeployUrlInFile(DEPLOY_URL, req.originalUrl, newHtml);
+
+          res.status(res.statusCode).send(newHtml);
         } else {
           res.status(500).send(err.message);
         }
