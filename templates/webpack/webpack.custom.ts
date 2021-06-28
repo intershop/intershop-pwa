@@ -2,7 +2,7 @@ import { CustomWebpackBrowserSchema, TargetOptions } from '@angular-builders/cus
 import * as fs from 'fs';
 import * as glob from 'glob';
 import { join, sep } from 'path';
-import * as webpack from 'webpack';
+import { Configuration, DefinePlugin, WebpackPluginInstance } from 'webpack';
 
 const purgecssPlugin = require('purgecss-webpack-plugin');
 
@@ -16,7 +16,7 @@ const warn = (...txt: unknown[]) => {
   console.warn('Custom Webpack:', ...txt);
 };
 
-type AngularPlugin = webpack.Plugin & {
+type AngularPlugin = WebpackPluginInstance & {
   options: {
     directTemplateLoading: boolean;
     fileReplacements: { [source: string]: string };
@@ -41,11 +41,7 @@ function crawlFiles(folder: string, callback: (files: string[]) => void) {
  * - no elvis operators
  * - no instanceof checks
  */
-export default (
-  config: webpack.Configuration,
-  angularJsonConfig: CustomWebpackBrowserSchema,
-  targetOptions: TargetOptions
-) => {
+export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSchema, targetOptions: TargetOptions) => {
   const configurations = targetOptions.configuration.split(',');
   const specificConfigurations = configurations.filter(x => x !== 'production');
   if (specificConfigurations.length > 1) {
@@ -72,7 +68,7 @@ export default (
   const serviceWorker = !!angularJsonConfig.serviceWorker;
   const ngrxRuntimeChecks = !!process.env.TESTING || !production;
   config.plugins.push(
-    new webpack.DefinePlugin({
+    new DefinePlugin({
       PWA_VERSION: JSON.stringify(
         `${require('../../package.json').version} built ${new Date()} - configuration:${
           targetOptions.configuration
@@ -89,19 +85,20 @@ export default (
 
   if (production) {
     // keep module names for debugging
-    config.optimization.minimizer.forEach(m => {
+    config.optimization.minimizer.forEach((m: WebpackPluginInstance) => {
       if (m.options && m.options.terserOptions) {
         m.options.terserOptions.keep_classnames = /.*Module$/;
       }
     });
 
+    // set chunk file names with name instead of id
+    config.output.chunkFilename = '[name].[chunkhash:20].js';
+
     // splitChunks not available for SSR build
     if (config.optimization.splitChunks) {
       log('optimizing chunk splitting');
 
-      const cacheGroups = config.optimization.splitChunks.cacheGroups as {
-        [key: string]: webpack.Options.CacheGroupsOptions;
-      };
+      const cacheGroups = config.optimization.splitChunks.cacheGroups;
 
       // chunk for all core functionality the user usually doesn't use while just browsing the shop
       cacheGroups.customer = {
@@ -119,7 +116,7 @@ export default (
         minChunks: 1,
         priority: 25,
         chunks: 'async',
-        name(module) {
+        name(module: { identifier(): string }) {
           const identifier = module.identifier() as string;
 
           // embed sentry library in sentry chunk
@@ -127,9 +124,12 @@ export default (
             return 'sentry';
           }
 
-          // embed angulartics2 library in tracking chunk
-          if (/[\\/]node_modules[\\/]angulartics2[\\/]/.test(identifier)) {
-            return 'tracking';
+          // move translation files into own bundles
+          const i18nMatch = /[\\/]assets[\\/]i18n[\\/](.*?)\.json/.exec(identifier);
+          const locale = i18nMatch && i18nMatch[1];
+
+          if (locale) {
+            return locale.replace('_', '-');
           }
 
           const match = /[\\/](extensions|projects)[\\/](.*?)[\\/](src[\\/]app[\\/])?(.*)/.exec(identifier);
@@ -137,7 +137,7 @@ export default (
 
           if (feature) {
             // include core functionality in common bundle
-            if (['captcha', 'seo'].some(f => f === feature)) {
+            if (['captcha', 'seo', 'tracking'].some(f => f === feature)) {
               return 'common';
             }
 
@@ -154,12 +154,6 @@ export default (
           return 'common';
         },
       };
-
-      // overriding settings for the common bundle which contains:
-      // - all lazy-loadable core functionality
-      // - libraries that can be lazy loaded
-      cacheGroups.common.minChunks = 1;
-      cacheGroups.common.priority = 20;
     }
 
     if (!process.env.TESTING) {

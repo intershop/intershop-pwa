@@ -139,7 +139,7 @@
   </table>
 
   <div data-testing-id="list-counter">
-    {{ requisitions?.length | i18nPlural: ('account.approvallist.items' | translate) || { other: '#' } }}
+    {{ 'account.approvallist.items' | translate: { '0': requisitions?.length } }}
   </div>
 </ng-container>
 

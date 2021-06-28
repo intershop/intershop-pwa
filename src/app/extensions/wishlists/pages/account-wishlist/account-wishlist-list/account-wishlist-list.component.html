@@ -20,7 +20,7 @@
       }}</span>
     </div>
     <div class="col-2 list-item">
-      {{ wishlist.itemsCount | i18nPlural: ('account.wishlists.items' | translate) || { other: '#' } }}
+      {{ 'account.wishlists.items' | translate: { '0': wishlist.itemsCount } }}
     </div>
     <div class="col-3 list-item text-right">
       <a

@@ -1,9 +1,11 @@
-import { NgModule } from '@angular/core';
+import { APP_BASE_HREF } from '@angular/common';
+import { Inject, Injectable, InjectionToken, NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreModule } from '@ngrx/store';
+import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
-import { localStorageSaveMeta } from 'ish-core/utils/meta-reducers';
+import { DATA_RETENTION_POLICY } from 'ish-core/configurations/injection-keys';
+import { DataRetentionPolicy, dataRetentionMeta } from 'ish-core/utils/meta-reducers';
 
 import { ProductConfigurationEffects } from './product-configuration/product-configuration.effects';
 import { productConfigurationReducer } from './product-configuration/product-configuration.reducer';
@@ -21,14 +23,27 @@ const tactonReducers: ActionReducerMap<TactonState> = {
 
 const tactonEffects = [ProductConfigurationEffects, TactonConfigEffects, SavedTactonConfigurationEffects];
 
-const metaReducers = [localStorageSaveMeta<TactonState>('tacton', '_savedTactonConfiguration')];
+@Injectable()
+export class DefaultTactonStoreConfig implements StoreConfig<TactonState> {
+  metaReducers = [
+    dataRetentionMeta<TactonState>(this.dataRetention.tacton, this.appBaseHref, 'tacton', '_savedTactonConfiguration'),
+  ];
+
+  constructor(
+    @Inject(APP_BASE_HREF) private appBaseHref: string,
+    @Inject(DATA_RETENTION_POLICY) private dataRetention: DataRetentionPolicy
+  ) {}
+}
+
+export const TACTON_STORE_CONFIG = new InjectionToken<StoreConfig<TactonState>>('tactonStoreConfig');
 
 // not-dead-code
 @NgModule({
   imports: [
     EffectsModule.forFeature(tactonEffects),
-    StoreModule.forFeature('tacton', tactonReducers, { metaReducers }),
+    StoreModule.forFeature('tacton', tactonReducers, TACTON_STORE_CONFIG),
   ],
+  providers: [{ provide: TACTON_STORE_CONFIG, useClass: DefaultTactonStoreConfig }],
 })
 export class TactonStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<TactonState>)[]) {

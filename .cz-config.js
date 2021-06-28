@@ -9,8 +9,7 @@ module.exports = {
     { value: 'docs', name: 'docs:     Documentation changes (-> changelog)' },
     {
       value: 'style',
-      name:
-        'style:    Changes that do not affect the meaning of the code\n            (white-space, formatting, missing semi-colons, etc)',
+      name: 'style:    Changes that do not affect the meaning of the code\n            (white-space, formatting, missing semi-colons, etc)',
     },
     { value: 'i18n', name: 'i18n:     Localization changes' },
     {

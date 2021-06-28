@@ -144,7 +144,9 @@ grep destroy src/app/extensions/awesome/shared/dummy/dummy.component.ts
 
 echo '<p>COMPONENT_OVERRIDES</p>' > src/app/pages/home/home-page.component.local.html
 
-npm run build --configuration=local
+export NODE_OPTIONS=--max_old_space_size=8192
+
+npm run build --configuration=local,production
 
 nohup bash -c "npm run serve &"
 wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200

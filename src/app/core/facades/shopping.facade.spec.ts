@@ -30,7 +30,7 @@ describe('Shopping Facade', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), ShoppingStoreModule.forTesting('compare')],
+      imports: [CoreStoreModule.forTesting(), ShoppingStoreModule.forTesting('_compare')],
     });
 
     facade = TestBed.inject(ShoppingFacade);

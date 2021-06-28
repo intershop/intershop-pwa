@@ -6,7 +6,9 @@ import { Action } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Observable, Subject, of } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { instance, mock } from 'ts-mockito';
 
+import { LocalizationsService } from 'ish-core/services/localizations/localizations.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 
 import { applyConfiguration } from './configuration.actions';
@@ -24,7 +26,10 @@ describe('Configuration Effects', () => {
         CoreStoreModule.forTesting(['configuration', 'serverConfig'], [ConfigurationEffects]),
         TranslateModule.forRoot(),
       ],
-      providers: [provideMockActions(() => actions$)],
+      providers: [
+        provideMockActions(() => actions$),
+        { provide: LocalizationsService, useFactory: () => instance(mock(LocalizationsService)) },
+      ],
     });
 
     effects = TestBed.inject(ConfigurationEffects);

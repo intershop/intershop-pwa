@@ -2,6 +2,7 @@ import { Auth0Config } from 'ish-core/identity-provider/auth0.identity-provider'
 import { CookieConsentOptions } from 'ish-core/models/cookies/cookies.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
+import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
 
 import { TactonConfig } from '../app/extensions/tacton/models/tacton-config/tacton-config.model';
 
@@ -66,7 +67,13 @@ export interface Environment {
   mainNavigationMaxSubCategoriesDepth: number;
 
   // global definition of the product listing page size
-  productListingItemsPerPage: number;
+  productListingItemsPerPage:
+    | number
+    | {
+        category: number;
+        search: number;
+        master: number;
+      };
 
   // default viewType used for product listings
   defaultProductListingViewType: ViewType;
@@ -96,6 +103,8 @@ export interface Environment {
         }
       | Auth0Config;
   };
+
+  dataRetention: DataRetentionPolicy;
 }
 
 export const ENVIRONMENT_DEFAULTS: Environment = {
@@ -116,7 +125,11 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
   largeBreakpointWidth: 992,
   extralargeBreakpointWidth: 1200,
   mainNavigationMaxSubCategoriesDepth: 2,
-  productListingItemsPerPage: 9,
+  productListingItemsPerPage: {
+    category: 9,
+    search: 12,
+    master: 6,
+  },
   defaultProductListingViewType: 'grid',
   defaultDeviceType: 'mobile',
   defaultLocale: 'en_US',
@@ -144,4 +157,10 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
     allowedCookies: ['cookieConsent', 'apiToken'],
   },
   cookieConsentVersion: 1,
+
+  dataRetention: {
+    compare: 'session',
+    recently: 60 * 24 * 7, // 1 week
+    tacton: 'forever',
+  },
 };

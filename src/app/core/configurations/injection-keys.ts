@@ -2,8 +2,10 @@ import { InjectionToken } from '@angular/core';
 
 import { CookieConsentOptions } from 'ish-core/models/cookies/cookies.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
+import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
 
 import { environment } from '../../../environments/environment';
+import { Environment } from '../../../environments/environment.model';
 
 /**
  * Array of paths that always use mocked data
@@ -28,9 +30,12 @@ export const MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH = new InjectionToken<numbe
 /**
  * global definition of the product listing page size
  */
-export const PRODUCT_LISTING_ITEMS_PER_PAGE = new InjectionToken<number>('productListingItemsPerPage', {
-  factory: () => environment.productListingItemsPerPage,
-});
+export const PRODUCT_LISTING_ITEMS_PER_PAGE = new InjectionToken<Environment['productListingItemsPerPage']>(
+  'productListingItemsPerPage',
+  {
+    factory: () => environment.productListingItemsPerPage,
+  }
+);
 
 /**
  * default definition of the product listing view type
@@ -46,9 +51,20 @@ export const COOKIE_CONSENT_OPTIONS = new InjectionToken<CookieConsentOptions>('
   factory: () => environment.cookieConsentOptions,
 });
 
+/**
+ * the configured data retention policy for the application
+ */
+export const DATA_RETENTION_POLICY = new InjectionToken<DataRetentionPolicy>('dataRetentionPolicy', {
+  factory: () => environment.dataRetention,
+});
+
 /*
  * global definition of the Bootstrap grid system breakpoint widths
  */
+
+export const SMALL_BREAKPOINT_WIDTH = new InjectionToken<number>('smallBreakpointWidth', {
+  factory: () => environment.smallBreakpointWidth,
+});
 
 export const MEDIUM_BREAKPOINT_WIDTH = new InjectionToken<number>('mediumBreakpointWidth', {
   factory: () => environment.mediumBreakpointWidth,

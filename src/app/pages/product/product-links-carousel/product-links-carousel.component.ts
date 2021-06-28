@@ -43,7 +43,7 @@ export class ProductLinksCarouselComponent implements OnChanges {
 
   /**
    * configuration of swiper carousel
-   * find possible parameters here: http://idangero.us/swiper/api/#parameters
+   * https://swiperjs.com/swiper-api
    */
   swiperConfig: SwiperOptions;
 
@@ -54,10 +54,10 @@ export class ProductLinksCarouselComponent implements OnChanges {
   ) {
     this.swiperConfig = {
       direction: 'horizontal',
-      keyboard: true,
-      mousewheel: false,
       navigation: true,
-      scrollbar: false,
+      pagination: {
+        clickable: true,
+      },
       breakpoints: {
         0: {
           slidesPerView: 2,
@@ -71,11 +71,6 @@ export class ProductLinksCarouselComponent implements OnChanges {
           slidesPerView: 4,
           slidesPerGroup: 4,
         },
-      },
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-        clickableClass: 'swiper-pagination-clickable',
       },
     };
   }

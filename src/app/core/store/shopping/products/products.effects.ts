@@ -30,7 +30,7 @@ import { ProductsService } from 'ish-core/services/products/products.service';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { loadCategory } from 'ish-core/store/shopping/categories';
-import { setProductListingPages } from 'ish-core/store/shopping/product-listing';
+import { getProductListingItemsPerPage, setProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import {
   mapErrorToAction,
@@ -116,8 +116,10 @@ export class ProductsEffects {
       ofType(loadProductsForCategory),
       mapToPayload(),
       map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
-      concatMap(({ categoryId, page, sorting }) =>
-        this.productsService.getCategoryProducts(categoryId, page, sorting).pipe(
+      withLatestFrom(this.store.pipe(select(getProductListingItemsPerPage('category')))),
+      map(([payload, pageSize]) => ({ ...payload, amount: pageSize, offset: (payload.page - 1) * pageSize })),
+      concatMap(({ categoryId, amount, sorting, offset, page }) =>
+        this.productsService.getCategoryProducts(categoryId, amount, sorting, offset).pipe(
           concatMap(({ total, products, sortableAttributes }) => [
             ...products.map(product => loadProductSuccess({ product })),
             setProductListingPages(
@@ -125,6 +127,7 @@ export class ProductsEffects {
                 products.map(p => p.sku),
                 'category',
                 categoryId,
+                amount,
                 {
                   startPage: page,
                   sortableAttributes,
@@ -148,8 +151,11 @@ export class ProductsEffects {
       ofType(loadProductsForMaster),
       mapToPayload(),
       map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
-      concatMap(({ masterSKU, page, sorting }) =>
-        this.productsService.getProductsForMaster(masterSKU, page, sorting).pipe(
+      withLatestFrom(this.store.pipe(select(getProductListingItemsPerPage('master')))),
+      map(([payload, pageSize]) => ({ ...payload, amount: pageSize, offset: (payload.page - 1) * pageSize })),
+
+      concatMap(({ masterSKU, amount, sorting, offset, page }) =>
+        this.productsService.getProductsForMaster(masterSKU, amount, sorting, offset).pipe(
           concatMap(({ total, products, sortableAttributes }) => [
             ...products.map(product => loadProductSuccess({ product })),
             setProductListingPages(
@@ -157,6 +163,7 @@ export class ProductsEffects {
                 products.map(p => p.sku),
                 'master',
                 masterSKU,
+                amount,
                 {
                   startPage: page,
                   sortableAttributes,

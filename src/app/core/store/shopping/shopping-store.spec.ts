@@ -28,7 +28,7 @@ import { getCategoryTree, getSelectedCategory } from './categories';
 import { getProductEntities, getSelectedProduct } from './products';
 import { getRecentlyViewedProducts } from './recently';
 import { suggestSearch } from './search';
-import { ShoppingStoreModule } from './shopping-store.module';
+import { SHOPPING_STORE_CONFIG, ShoppingStoreModule } from './shopping-store.module';
 
 const getCategoryIds = createSelector(getCategoryTree, tree => Object.keys(tree.nodes));
 
@@ -114,14 +114,14 @@ describe('Shopping Store', () => {
         return throwError(makeHttpError({ message: `error loading product ${sku}` }));
       }
     });
-    when(productsServiceMock.getCategoryProducts('A.123.456', anyNumber(), anything())).thenReturn(
+    when(productsServiceMock.getCategoryProducts('A.123.456', anyNumber(), anything(), anyNumber())).thenReturn(
       of({
         sortableAttributes: [],
         products: [{ sku: 'P1' }, { sku: 'P2' }] as Product[],
         total: 2,
       })
     );
-    when(productsServiceMock.searchProducts('something', anyNumber(), anything())).thenReturn(
+    when(productsServiceMock.searchProducts('something', anyNumber(), anything(), anyNumber())).thenReturn(
       of({ products: [{ sku: 'P2' } as Product], sortableAttributes: [], total: 1 })
     );
 
@@ -174,6 +174,7 @@ describe('Shopping Store', () => {
         TranslateModule.forRoot(),
       ],
       providers: [
+        { provide: SHOPPING_STORE_CONFIG, useValue: {} },
         SelectedProductContextFacade,
         provideStoreSnapshots(),
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
@@ -977,7 +978,7 @@ describe('Shopping Store', () => {
           categories: tree(A.123,A.123.456)
         @ngrx/router-store/cancel:
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}
-          storeState: {"configuration":{"defaultLocale":"en_US","locales":[3],"_de...
+          storeState: {"configuration":{"defaultLocale":"en_US","locales":[3],"ser...
           event: {"id":1,"url":"/category/A.123.456/product/P3"}
         @ngrx/router-store/request:
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}
@@ -1026,7 +1027,7 @@ describe('Shopping Store', () => {
           error: {"name":"HttpErrorResponse","message":"error loading categor...
         @ngrx/router-store/cancel:
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}
-          storeState: {"configuration":{"defaultLocale":"en_US","locales":[3],"_de...
+          storeState: {"configuration":{"defaultLocale":"en_US","locales":[3],"ser...
           event: {"id":1,"url":"/category/A.123.XXX"}
         @ngrx/router-store/request:
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}

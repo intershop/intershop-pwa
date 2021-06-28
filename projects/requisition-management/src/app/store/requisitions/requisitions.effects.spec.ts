@@ -30,14 +30,14 @@ const requisitions = [
     user: { firstName: 'Patricia', lastName: 'Miller' },
     approval: { status: 'pending', statusCode: 'PENDING' },
     lineItems: [
-      ({
+      {
         id: 'BIID',
         name: 'NAME',
         position: 1,
         quantity: { value: 1 },
         price: undefined,
         productSKU: 'SKU',
-      } as unknown) as LineItem,
+      } as unknown as LineItem,
     ],
   },
   {

@@ -7,7 +7,9 @@ import { CMSFreestyleComponent } from './components/cms-freestyle/cms-freestyle.
 import { CMSImageEnhancedComponent } from './components/cms-image-enhanced/cms-image-enhanced.component';
 import { CMSImageComponent } from './components/cms-image/cms-image.component';
 import { CMSLandingPageComponent } from './components/cms-landing-page/cms-landing-page.component';
-import { CMSProductListComponent } from './components/cms-product-list/cms-product-list.component';
+import { CMSProductListCategoryComponent } from './components/cms-product-list-category/cms-product-list-category.component';
+import { CMSProductListFilterComponent } from './components/cms-product-list-filter/cms-product-list-filter.component';
+import { CMSProductListManualComponent } from './components/cms-product-list-manual/cms-product-list-manual.component';
 import { CMSStandardPageComponent } from './components/cms-standard-page/cms-standard-page.component';
 import { CMSStaticPageComponent } from './components/cms-static-page/cms-static-page.component';
 import { CMSTextComponent } from './components/cms-text/cms-text.component';
@@ -69,7 +71,23 @@ import { SfeAdapterService } from './sfe-adapter/sfe-adapter.service';
       provide: CMS_COMPONENT,
       useValue: {
         definitionQualifiedName: 'app_sf_base_cm:component.common.productListManual.pagelet2-Component',
-        class: CMSProductListComponent,
+        class: CMSProductListManualComponent,
+      },
+      multi: true,
+    },
+    {
+      provide: CMS_COMPONENT,
+      useValue: {
+        definitionQualifiedName: 'app_sf_base_cm:component.common.productListFilter.pagelet2-Component',
+        class: CMSProductListFilterComponent,
+      },
+      multi: true,
+    },
+    {
+      provide: CMS_COMPONENT,
+      useValue: {
+        definitionQualifiedName: 'app_sf_base_cm:component.common.productListCategory.pagelet2-Component',
+        class: CMSProductListCategoryComponent,
       },
       multi: true,
     },

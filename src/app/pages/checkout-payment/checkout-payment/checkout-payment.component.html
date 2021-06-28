@@ -37,7 +37,7 @@
                 </p>
                 <ng-template #displayPaymentCosts>
                   <div *ngIf="!paymentMethod.isRestricted; else displayRestrictions">
-                    <p *ngIf="paymentMethod.paymentCosts">
+                    <p *ngIf="paymentMethod.paymentCosts && paymentMethod.paymentCosts[priceType]">
                       {{ 'checkout.payment.method.charges.text' | translate }}&nbsp;{{
                         paymentMethod.paymentCosts | ishPrice
                       }}&nbsp;

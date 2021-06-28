@@ -10,29 +10,26 @@ import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
 const getBasketState = createSelector(getCustomerState, state => state && state.basket);
 
-export const getBasketValidationResults = createSelector(
-  getBasketState,
-  (basket): BasketValidationResultType => {
-    if (!basket || !basket.validationResults) {
-      return;
-    }
-
-    const basketResults = basket.validationResults;
-    return {
-      ...basketResults,
-      infos: basketResults.infos || [],
-      errors: basketResults.errors
-        ? basketResults.errors.map(error => ({
-            ...error,
-            lineItem: error.parameters &&
-              error.parameters.lineItemId && {
-                ...basket.basket.lineItems.find(item => item.id === error.parameters.lineItemId),
-              },
-          }))
-        : [],
-    };
+export const getBasketValidationResults = createSelector(getBasketState, (basket): BasketValidationResultType => {
+  if (!basket || !basket.validationResults) {
+    return;
   }
-);
+
+  const basketResults = basket.validationResults;
+  return {
+    ...basketResults,
+    infos: basketResults.infos || [],
+    errors: basketResults.errors
+      ? basketResults.errors.map(error => ({
+          ...error,
+          lineItem: error.parameters &&
+            error.parameters.lineItemId && {
+              ...basket.basket.lineItems.find(item => item.id === error.parameters.lineItemId),
+            },
+        }))
+      : [],
+  };
+});
 
 export const getBasketInfo = createSelector(getBasketState, basket => basket.info);
 

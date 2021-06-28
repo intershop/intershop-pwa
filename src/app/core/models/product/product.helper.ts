@@ -159,10 +159,10 @@ export class ProductHelper {
    * @returns        A set of the common attribute names
    */
   static getCommonAttributeNames(products: ProductView[]): string[] {
-    if (!products || !products.length) {
+    if (!products?.length) {
       return [];
     }
-    const result = products.filter(x => !!x).map(product => product.attributes.map(x => x.name));
+    const result = products.filter(x => !!x).map(product => product.attributes?.map(x => x.name));
     return intersection(...result);
   }
 
@@ -177,7 +177,7 @@ export class ProductHelper {
       return;
     }
     const common = ProductHelper.getCommonAttributeNames(visibleProducts);
-    const attributes = product.attributes.filter(att => !common.includes(att.name));
+    const attributes = product.attributes?.filter(att => !common.includes(att.name));
     return { ...product, attributes };
   }
 }

@@ -1,0 +1,19 @@
+<ng-container *ngIf="listStyle === 'carousel'; else plainList">
+  <div class="product-list">
+    <swiper [config]="swiperConfig">
+      <ng-template *ngFor="let sku of productSKUs" swiperSlide>
+        <div [ngClass]="listItemCSSClass">
+          <ish-product-item ishProductContext [sku]="sku" [displayType]="listItemStyle"></ish-product-item>
+        </div>
+      </ng-template>
+    </swiper>
+  </div>
+</ng-container>
+
+<ng-template #plainList>
+  <div class="product-list row">
+    <div *ngFor="let sku of productSKUs" class="product-list-item" [ngClass]="listItemCSSClass">
+      <ish-product-item ishProductContext [sku]="sku" [displayType]="listItemStyle"></ish-product-item>
+    </div>
+  </div>
+</ng-template>

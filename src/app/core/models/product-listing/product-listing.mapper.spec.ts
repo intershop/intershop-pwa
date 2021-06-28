@@ -1,21 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
-
 import { ProductListingMapper } from './product-listing.mapper';
 
 describe('Product Listing Mapper', () => {
   let productListingMapper: ProductListingMapper;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [{ provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 2 }],
-    });
+    TestBed.configureTestingModule({});
     productListingMapper = TestBed.inject(ProductListingMapper);
   });
 
   it('should map single page data to one page', () => {
-    expect(productListingMapper.createPages(['A', 'B'], 'test', 'dummy')).toMatchInlineSnapshot(`
+    expect(productListingMapper.createPages(['A', 'B'], 'test', 'dummy', 2)).toMatchInlineSnapshot(`
       Object {
         "1": Array [
           "A",
@@ -32,7 +28,7 @@ describe('Product Listing Mapper', () => {
   });
 
   it('should map multi page data to multiple pages', () => {
-    expect(productListingMapper.createPages(['A', 'B', 'C', 'D', 'E'], 'test', 'dummy')).toMatchInlineSnapshot(`
+    expect(productListingMapper.createPages(['A', 'B', 'C', 'D', 'E'], 'test', 'dummy', 2)).toMatchInlineSnapshot(`
       Object {
         "1": Array [
           "A",
@@ -57,7 +53,7 @@ describe('Product Listing Mapper', () => {
 
   it('should map extra arguments when supplied', () => {
     expect(
-      productListingMapper.createPages(['A', 'B', 'C', 'D'], 'test', 'dummy', {
+      productListingMapper.createPages(['A', 'B', 'C', 'D'], 'test', 'dummy', 2, {
         sortableAttributes: [{ name: 'name-desc' }],
         itemCount: 200,
         sorting: 'name-asc',

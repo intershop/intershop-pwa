@@ -21,7 +21,11 @@ import { ProductsService } from 'ish-core/services/products/products.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
-import { loadMoreProducts, setProductListingPages } from 'ish-core/store/shopping/product-listing';
+import {
+  getProductListingItemsPerPage,
+  loadMoreProducts,
+  setProductListingPages,
+} from 'ish-core/store/shopping/product-listing';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
@@ -59,8 +63,10 @@ export class SearchEffects {
       ofType(searchProducts),
       mapToPayload(),
       map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
-      concatMap(({ searchTerm, page, sorting }) =>
-        this.productsService.searchProducts(searchTerm, page, sorting).pipe(
+      withLatestFrom(this.store.pipe(select(getProductListingItemsPerPage('search')))),
+      map(([payload, pageSize]) => ({ ...payload, amount: pageSize, offset: (payload.page - 1) * pageSize })),
+      concatMap(({ searchTerm, amount, sorting, offset, page }) =>
+        this.productsService.searchProducts(searchTerm, amount, sorting, offset).pipe(
           concatMap(({ total, products, sortableAttributes }) => [
             ...products.map(product => loadProductSuccess({ product })),
             setProductListingPages(
@@ -68,6 +74,7 @@ export class SearchEffects {
                 products.map(p => p.sku),
                 'search',
                 searchTerm,
+                amount,
                 {
                   startPage: page,
                   sorting,

@@ -3,7 +3,7 @@
     <div class="row align-items-center">
       <div class="col-sm-3 col-4">
         <div *ngIf="itemCount >= 0" class="pagination-total text-nowrap">
-          {{ itemCount | i18nPlural: ('product.items.label' | translate) || { other: '#' } }}
+          {{ 'product.items.label' | translate: { '0': itemCount } }}
         </div>
       </div>
       <div class="col-sm-9 col-8">

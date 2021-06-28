@@ -51,7 +51,7 @@ describe('Mini Basket Component', () => {
     translate.setDefaultLang('en');
     translate.use('en');
     translate.setTranslation('en', {
-      'shopping_cart.ministatus.items.text': { other: '# items' },
+      'shopping_cart.ministatus.items.text': '{{0}} items',
       'shopping_cart.pli.qty.label': 'x',
       'shopping_cart.ministatus.view_cart.link': 'VIEW CART',
     });

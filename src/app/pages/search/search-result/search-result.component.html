@@ -12,10 +12,7 @@
   <div class="col-md-9">
     <ish-breadcrumb></ish-breadcrumb>
     <h1>
-      {{
-        'search.title.text'
-          | translate: { '1': searchTerm, '2': totalItems | i18nPlural: ('search.title.items.text' | translate) }
-      }}
+      {{ 'search.title.text' | translate: { '1': searchTerm, '2': totalItems } }}
     </h1>
     <ish-product-listing
       [id]="{ type: 'search', value: searchTerm }"

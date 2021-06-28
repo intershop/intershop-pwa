@@ -126,10 +126,7 @@ export class QuotingService {
   }
 
   submitQuoteRequest(quoteRequestID: string) {
-    return this.apiService
-      .b2bUserEndpoint()
-      .post<Link>('quotes', { quoteRequestID })
-      .pipe(mapTo(quoteRequestID));
+    return this.apiService.b2bUserEndpoint().post<Link>('quotes', { quoteRequestID }).pipe(mapTo(quoteRequestID));
   }
 
   private createQuoteRequest(): Observable<QuoteStub> {

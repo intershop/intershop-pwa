@@ -1,13 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { FilterNavigationData } from 'ish-core/models/filter-navigation/filter-navigation.interface';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 import { FilterService } from './filter.service';
@@ -41,10 +38,9 @@ describe('Filter Service', () => {
     apiService = mock(ApiService);
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['configuration']), ShoppingStoreModule.forTesting('productListing')],
+      imports: [CoreStoreModule.forTesting(['configuration'])],
       providers: [{ provide: ApiService, useFactory: () => instance(apiService) }],
     });
-    TestBed.inject(Store).dispatch(setProductListingPageSize({ itemsPerPage: 2 }));
     filterService = TestBed.inject(FilterService);
   });
 
@@ -91,7 +87,7 @@ describe('Filter Service', () => {
   it("should get Product SKUs when 'getFilteredProducts' is called", done => {
     when(apiService.get(anything(), anything())).thenReturn(of(productsMock));
 
-    filterService.getFilteredProducts({ SearchParameter: ['b'] } as URLFormParams, 1).subscribe(data => {
+    filterService.getFilteredProducts({ SearchParameter: ['b'] } as URLFormParams, 2).subscribe(data => {
       expect(data?.products?.map(p => p.sku)).toMatchInlineSnapshot(`
         Array [
           "123",

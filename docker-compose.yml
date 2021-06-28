@@ -31,29 +31,22 @@ services:
       # COMPRESSION: 0
       # DEVICE_DETECTION: 0
       # MULTI_CHANNEL_SOURCE: env:///ASDF?type=application/yaml
+      # BASIC_AUTH: 'developer:!InterShop00!'
+      # BASIC_AUTH_IP_WHITELIST: |
+      #   # - 172.22.0.1
+      #   - 1.2.3.4
       MULTI_CHANNEL: |
-        .+\.net:
-            - baseHref: /de
-              lang: de_DE
-              channel: inSPIRED-inTRONICS-Site
-            - baseHref: /us
-              lang: en_US
-              channel: inSPIRED-inTRONICS_Business-Site
-              features: quoting,businessCustomerRegistration,advancedVariationHandling
-              theme: "blue|688dc3"
-        .+\.de:
-            channel: inSPIRED-inTRONICS-Site
+        .+:
+          - baseHref: /en
+            channel: default
+            lang: en_US
+          - baseHref: /de
+            channel: default
             lang: de_DE
-        .+\.com:
-            channel: inSPIRED-inTRONICS_Business-Site
-            features: quoting,businessCustomerRegistration,advancedVariationHandling
-            theme: "blue|688dc3"
-        .+\.fr:
-            channel: inSPIRED-inTRONICS-Site
+            protected: false
+          - baseHref: /fr
+            channel: default
             lang: fr_FR
-            application: smb-responsive
-            features: quoting
-            theme: "blue|688dc3"
 
     ports:
       - '4200:80'

@@ -186,12 +186,8 @@ export class UserService {
       first(),
       concatMap(restResource =>
         body.customer.isBusinessCustomer
-          ? this.apiService
-              .put<User>('customers/-/users/-', changedUser, { headers })
-              .pipe(map(UserMapper.fromData))
-          : this.apiService
-              .put<User>(`${restResource}/-`, changedUser, { headers })
-              .pipe(map(UserMapper.fromData))
+          ? this.apiService.put<User>('customers/-/users/-', changedUser, { headers }).pipe(map(UserMapper.fromData))
+          : this.apiService.put<User>(`${restResource}/-`, changedUser, { headers }).pipe(map(UserMapper.fromData))
       )
     );
   }
