@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 .product-title {
   font-family: $font-family-condensedbold;
   font-size: 16px;
@@ -14,7 +16,7 @@ a.product-title {
   color: $text-color-quarternary;
 
   label {
-    padding-right: ($space-default / 3);
+    padding-right: math.div($space-default, 3);
   }
 }
 
@@ -81,7 +83,7 @@ a.product-title {
 
     &.read-only {
       label {
-        padding-right: $space-default / 3;
+        padding-right: math.div($space-default, 3);
       }
     }
 
@@ -93,7 +95,7 @@ a.product-title {
 
   .product-variation {
     .form-group {
-      margin-bottom: $space-default / 3;
+      margin-bottom: math.div($space-default, 3);
 
       label {
         padding-top: 0;
@@ -115,7 +117,7 @@ a.product-title {
   }
 
   .btn.btn-block {
-    margin-bottom: $space-default / 2;
+    margin-bottom: $space-default * 0.5;
   }
 
   .secondary-actions {
@@ -148,7 +150,7 @@ a.product-title {
   a {
     &.product-title {
       display: block;
-      padding-top: ($space-default / 2);
+      padding-top: ($space-default * 0.5);
       font-family: $font-family-condensedregular;
       font-size: 14px;
       color: $text-color-secondary;
@@ -179,7 +181,7 @@ a.product-title {
   a {
     &.product-title {
       display: block;
-      padding-top: ($space-default / 2);
+      padding-top: ($space-default * 0.5);
       font-family: $font-family-condensedregular;
       font-size: 14px;
       color: $text-color-secondary;
@@ -190,11 +192,11 @@ a.product-title {
 }
 
 .product-end-of-live-status {
-  padding-bottom: ($space-default / 3);
+  padding-bottom: math.div($space-default, 3);
 }
 
 .product-lifecycle-status {
-  padding-bottom: ($space-default / 3);
+  padding-bottom: math.div($space-default, 3);
   color: $text-color-special;
 
   span {

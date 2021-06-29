@@ -16,18 +16,18 @@
 
   .promotion-short-title {
     display: inline;
-    padding-right: $space-default/2;
+    padding-right: $space-default * 0.5;
   }
 
   .promotion-long-title {
     display: inline;
-    padding-right: $space-default/2;
+    padding-right: $space-default * 0.5;
   }
 }
 
 .promotion-title {
   display: inline;
-  padding-right: $space-default/2;
+  padding-right: $space-default * 0.5;
 }
 
 .promotion-details-and-remove-links {
