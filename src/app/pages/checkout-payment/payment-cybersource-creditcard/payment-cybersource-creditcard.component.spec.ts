@@ -8,6 +8,7 @@ import { MockComponent, MockDirective } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
 import { FormControlFeedbackComponent } from 'ish-shared/forms/components/form-control-feedback/form-control-feedback.component';
 import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form-feedback.directive';
 
@@ -21,6 +22,7 @@ describe('Payment Cybersource Creditcard Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
+        MockComponent(CheckboxComponent),
         MockComponent(FaIconComponent),
         MockComponent(FormControlFeedbackComponent),
         MockComponent(NgbPopover),
