@@ -106,15 +106,9 @@ describe('Router Integration', () => {
       expect(selectUrl(store$.state)).toMatchInlineSnapshot(`"/"`);
       expect(selectPath(store$.state)).toMatchInlineSnapshot(`"**"`);
       expect(store$.actionsArray()).toMatchInlineSnapshot(`
-        @ngrx/router-store/request:
-          routerState: {"url":"","params":{},"queryParams":{},"data":{}}
-          event: {"id":1,"url":"/"}
-        @ngrx/router-store/navigation:
-          routerState: {"url":"/","params":{},"queryParams":{},"data":{},"path":"**"}
-          event: {"id":1,"url":"/","urlAfterRedirects":"/"}
-        @ngrx/router-store/navigated:
-          routerState: {"url":"/","params":{},"queryParams":{},"data":{},"path":"**"}
-          event: {"id":1,"url":"/","urlAfterRedirects":"/"}
+        @ngrx/router-store/request: /
+        @ngrx/router-store/navigation: /
+        @ngrx/router-store/navigated: /
       `);
     }));
 
@@ -152,15 +146,9 @@ describe('Router Integration', () => {
       expect(selectUrl(store$.state)).toMatchInlineSnapshot(`"/any;foo=urlParam;bar=bar?bar=bar&foo=queryParam"`);
       expect(selectPath(store$.state)).toMatchInlineSnapshot(`"**"`);
       expect(store$.actionsArray()).toMatchInlineSnapshot(`
-        @ngrx/router-store/request:
-          routerState: {"url":"","params":{},"queryParams":{},"data":{}}
-          event: {"id":1,"url":"/any;foo=urlParam;bar=bar?bar=bar&foo=queryPa...
-        @ngrx/router-store/navigation:
-          routerState: {"url":"/any;foo=urlParam;bar=bar?bar=bar&foo=queryParam","p...
-          event: {"id":1,"url":"/any;foo=urlParam;bar=bar?bar=bar&foo=queryPa...
-        @ngrx/router-store/navigated:
-          routerState: {"url":"/any;foo=urlParam;bar=bar?bar=bar&foo=queryParam","p...
-          event: {"id":1,"url":"/any;foo=urlParam;bar=bar?bar=bar&foo=queryPa...
+        @ngrx/router-store/request: /any;foo=urlParam;bar=bar?bar=bar&foo=queryParam
+        @ngrx/router-store/navigation: /any;foo=urlParam;bar=bar?bar=bar&foo=queryParam
+        @ngrx/router-store/navigated: /any;foo=urlParam;bar=bar?bar=bar&foo=queryParam
       `);
     }));
 
@@ -206,15 +194,9 @@ describe('Router Integration', () => {
       expect(selectUrl(store$.state)).toMatchInlineSnapshot(`"/test/very/deep/routes;bar=bar?bar=bar&foo=queryParam"`);
       expect(selectPath(store$.state)).toMatchInlineSnapshot(`"test/:foo/deep/routes"`);
       expect(store$.actionsArray()).toMatchInlineSnapshot(`
-        @ngrx/router-store/request:
-          routerState: {"url":"","params":{},"queryParams":{},"data":{}}
-          event: {"id":1,"url":"/test/very/deep/routes;bar=bar?bar=bar&foo=qu...
-        @ngrx/router-store/navigation:
-          routerState: {"url":"/test/very/deep/routes;bar=bar?bar=bar&foo=queryPara...
-          event: {"id":1,"url":"/test/very/deep/routes;bar=bar?bar=bar&foo=qu...
-        @ngrx/router-store/navigated:
-          routerState: {"url":"/test/very/deep/routes;bar=bar?bar=bar&foo=queryPara...
-          event: {"id":1,"url":"/test/very/deep/routes;bar=bar?bar=bar&foo=qu...
+        @ngrx/router-store/request: /test/very/deep/routes;bar=bar?bar=bar&foo=queryParam
+        @ngrx/router-store/navigation: /test/very/deep/routes;bar=bar?bar=bar&foo=queryParam
+        @ngrx/router-store/navigated: /test/very/deep/routes;bar=bar?bar=bar&foo=queryParam
       `);
     }));
   });
