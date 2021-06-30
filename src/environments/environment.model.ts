@@ -132,7 +132,7 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
   defaultProductListingViewType: 'grid',
   defaultDeviceType: 'mobile',
   defaultLocale: 'en_US',
-  localeCurrencyOverride: { de_DE: 'EUR', fr_FR: 'EUR' },
+  // localeCurrencyOverride: { de_DE: 'EUR', fr_FR: 'EUR' },
   cookieConsentOptions: {
     options: {
       required: {
