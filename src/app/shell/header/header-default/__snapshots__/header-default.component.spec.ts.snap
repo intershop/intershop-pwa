@@ -15,6 +15,9 @@ exports[`Header Default Component should render normal header adequately for des
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
     </div>
+    <div class="currency-switch-container d-none d-md-block">
+      <ish-currency-switch data-testing-id="currency-switch-desktop"></ish-currency-switch>
+    </div>
     <ish-mini-basket
       class="d-none d-md-block"
       data-testing-id="mini-basket-desktop"
@@ -80,6 +83,9 @@ exports[`Header Default Component should render normal header adequately for mob
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
     </div>
+    <div class="currency-switch-container d-none d-md-block">
+      <ish-currency-switch data-testing-id="currency-switch-desktop"></ish-currency-switch>
+    </div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
     ><ish-mini-basket
       class="d-none d-md-block"
@@ -140,6 +146,9 @@ exports[`Header Default Component should render normal header adequately for tab
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
     </div>
+    <div class="currency-switch-container d-none d-md-block">
+      <ish-currency-switch data-testing-id="currency-switch-desktop"></ish-currency-switch>
+    </div>
     <ish-mini-basket
       class="d-none d-md-block"
       data-testing-id="mini-basket-desktop"
@@ -197,6 +206,7 @@ exports[`Header Default Component should render sticky header adequately for des
         <ish-lazy-search-box data-testing-id="search-box-desktop"></ish-lazy-search-box></div
     ></a>
     <div class="language-switch-container d-none d-md-block"></div>
+    <div class="currency-switch-container d-none d-md-block"></div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
     ><ish-mini-basket
       class="d-none d-lg-block"
@@ -251,6 +261,7 @@ exports[`Header Default Component should render sticky header adequately for mob
         <ish-lazy-search-box data-testing-id="search-box-desktop"></ish-lazy-search-box></div
     ></a>
     <div class="language-switch-container d-none d-md-block"></div>
+    <div class="currency-switch-container d-none d-md-block"></div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
     ><ish-mini-basket
       class="d-none d-lg-block"
@@ -305,6 +316,7 @@ exports[`Header Default Component should render sticky header adequately for tab
         <ish-lazy-search-box data-testing-id="search-box-desktop"></ish-lazy-search-box></div
     ></a>
     <div class="language-switch-container d-none d-md-block"></div>
+    <div class="currency-switch-container d-none d-md-block"></div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
     ><ish-mini-basket
       class="d-none d-lg-block"

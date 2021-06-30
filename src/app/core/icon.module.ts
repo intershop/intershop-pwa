@@ -22,6 +22,7 @@ import {
   faList,
   faListAlt,
   faMinus,
+  faMoneyBillWave,
   faPaperPlane,
   faPencilAlt,
   faPhone,
@@ -89,7 +90,8 @@ export class IconModule {
       faStar,
       faStarHalf,
       faHeart,
-      faFastForward
+      faFastForward,
+      faMoneyBillWave
     );
   }
 }

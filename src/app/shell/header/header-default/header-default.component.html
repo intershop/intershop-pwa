@@ -39,6 +39,9 @@
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch *ngIf="!isSticky" data-testing-id="language-switch-desktop"> </ish-language-switch>
     </div>
+    <div class="currency-switch-container d-none d-md-block">
+      <ish-currency-switch *ngIf="!isSticky" data-testing-id="currency-switch-desktop"> </ish-currency-switch>
+    </div>
     <ish-login-status *ngIf="isSticky || deviceType === 'mobile'" view="small"></ish-login-status>
 
     <ish-mini-basket

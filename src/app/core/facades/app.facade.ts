@@ -5,6 +5,7 @@ import { combineLatest, merge, noop } from 'rxjs';
 import { filter, map, mapTo, sample, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
 
 import {
+  getAvailableCurrencies,
   getAvailableLocales,
   getCurrentCurrency,
   getCurrentLocale,
@@ -36,6 +37,7 @@ export class AppFacade {
   currentLocale$ = this.store.pipe(select(getCurrentLocale));
   availableLocales$ = this.store.pipe(select(getAvailableLocales));
   currentCurrency$ = this.store.pipe(select(getCurrentCurrency));
+  availableCurrencies$ = this.store.pipe(select(getAvailableCurrencies));
 
   generalError$ = this.store.pipe(select(getGeneralError));
   generalErrorType$ = this.store.pipe(select(getGeneralErrorType));

@@ -1,0 +1,29 @@
+<div
+  *ngIf="visible$ | async"
+  class="language-switch"
+  [ngClass]="view"
+  ngbDropdown
+  placement="{{ placement === 'up' ? 'top-right' : 'bottom-right' }}"
+>
+  <ng-container *ngIf="currency$ | async as currency">
+    <a ngbDropdownToggle class="language-switch-link">
+      <fa-icon [icon]="['fas', 'money-bill-wave']" class="header-icon"></fa-icon>
+      <span class="language-switch-current-selection d-inline"
+        >{{ getSymbol$(currency) | async }}<span class="switch_arrow"></span
+      ></span>
+    </a>
+    <div ngbDropdownMenu class="language-switch-container dropdown-menu" style="left: 0 !important">
+      <div class="language-switch-menu-container">
+        <ul>
+          <ng-container *ngFor="let c of availableCurrencies$ | async">
+            <li *ngIf="c !== currency">
+              <a [href]="location | makeHref: { redirect: '1', lang: locale$ | async, currency: c }">
+                {{ 'locale.currency.' + c | translate }}
+              </a>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+    </div>
+  </ng-container>
+</div>

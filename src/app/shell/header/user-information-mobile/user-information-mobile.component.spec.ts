@@ -3,6 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
+import { CurrencySwitchComponent } from 'ish-shell/header/currency-switch/currency-switch.component';
 import { LanguageSwitchComponent } from 'ish-shell/header/language-switch/language-switch.component';
 import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status.component';
 import { ProductCompareStatusComponent } from 'ish-shell/header/product-compare-status/product-compare-status.component';
@@ -20,6 +21,7 @@ describe('User Information Mobile Component', () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [
+        MockComponent(CurrencySwitchComponent),
         MockComponent(LanguageSwitchComponent),
         MockComponent(LazyWishlistsLinkComponent),
         MockComponent(LoginStatusComponent),
