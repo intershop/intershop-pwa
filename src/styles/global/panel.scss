@@ -1,6 +1,8 @@
 //
 // PANEL
 // TODO: reimplement as cards? https://getbootstrap.com/docs/4.0/migration/#components
+@use 'sass:math';
+
 .panel {
   margin-bottom: ($space-default * 2);
   background-color: $color-inverse;
@@ -29,11 +31,11 @@
 }
 
 .panel-body {
-  padding: ($space-default + ($space-default / 2)) 0;
+  padding: ($space-default * 1.5) 0;
 }
 
 .panel-heading {
-  padding: ($space-default / 2) 0;
+  padding: ($space-default * 0.5) 0;
   border-bottom: $border-width-default solid transparent;
 
   a:hover {
@@ -73,7 +75,7 @@
 }
 
 .panel-footer {
-  padding: $space-default ($space-default + ($space-default / 2));
+  padding: $space-default ($space-default * 1.5);
   background-color: $color-tertiary;
   border-top: $border-width-default solid $border-color-light;
 }
@@ -86,7 +88,7 @@
     overflow: hidden;
 
     + .panel {
-      margin-top: ($space-default / 2);
+      margin-top: ($space-default * 0.5);
     }
   }
 
@@ -165,7 +167,7 @@
       padding: 0;
 
       h4 {
-        padding: $grid-gutter-width / 3 $grid-gutter-width / 2;
+        padding: math.div($grid-gutter-width, 3) $grid-gutter-width * 0.5;
       }
 
       a {
@@ -179,7 +181,7 @@
 
       + .panel-collapse {
         .panel-body {
-          padding: $grid-gutter-width / 2;
+          padding: $grid-gutter-width * 0.5;
           border-top: 1px solid $border-color-light;
         }
       }

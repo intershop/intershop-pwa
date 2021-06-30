@@ -21,7 +21,7 @@
 
     @media (max-width: $screen-xs-max) {
       padding-top: $space-default;
-      padding-left: $space-default/4;
+      padding-left: $space-default * 0.25;
       line-height: 25px;
       text-align: center;
 
@@ -57,7 +57,7 @@
   color: $text-color-inverse;
   text-align: center;
   background: $border-color-light;
-  border-radius: (($space-default * 3) / 2);
+  border-radius: (($space-default * 3) * 0.5);
 }
 
 .progress-complete {

@@ -1,13 +1,15 @@
 //
 // LAYOUT
 // contains layout and presentation classes for the global page structure (header, footer, global navigation, ...)
+@use 'sass:math';
+
 .main-container {
   background: $color-inverse;
 }
 
 .container {
-  padding-right: ($grid-gutter-width / 2);
-  padding-left: ($grid-gutter-width / 2);
+  padding-right: ($grid-gutter-width * 0.5);
+  padding-left: ($grid-gutter-width * 0.5);
   margin-right: auto;
   margin-left: auto;
 }
@@ -41,7 +43,7 @@ h4,
 .h4 h5,
 .h5 h6,
 .h6 {
-  margin-top: ($space-default * 2/3);
+  margin-top: math.div($space-default * 2, 3);
   margin-bottom: $space-default;
   font-family: $font-family-regular;
 }
@@ -115,7 +117,7 @@ img {
 //
 // Global Panels
 .grey-panel {
-  padding: ($space-default + ($space-default / 2)) 0;
+  padding: ($space-default * 1.5) 0;
   background: $color-tertiary;
 }
 
@@ -145,7 +147,7 @@ img {
 
 // Help Text
 .form-text {
-  margin: $space-default / 3 0 $space-default / 2;
+  margin: math.div($space-default, 3) 0 $space-default * 0.5;
   color: $text-color-quarternary;
 }
 
@@ -172,7 +174,7 @@ img.marketing {
 // Detail links and tooltips
 [data-toggle='popover'] {
   .ng-fa-icon {
-    padding-left: $space-default/4;
+    padding-left: $space-default * 0.25;
     font-size: 120%;
   }
 }
@@ -184,7 +186,7 @@ img.marketing {
 .details-link,
 .details-tooltip {
   display: inline-block;
-  padding-left: $space-default/2;
+  padding-left: $space-default * 0.5;
   font-family: $font-family-regular;
   font-size: 90%;
   text-transform: none;

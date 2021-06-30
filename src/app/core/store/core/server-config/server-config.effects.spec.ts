@@ -42,8 +42,7 @@ describe('Server Config Effects', () => {
     store$.dispatch(routerTestNavigationAction({ routerState: { url: '/any' } }));
 
     expect(store$.actionsArray()).toMatchInlineSnapshot(`
-      @ngrx/router-store/navigation:
-        routerState: {"url":"/any"}
+      @ngrx/router-store/navigation: /any
       [Configuration Internal] Get the ICM configuration
       [Configuration API] Get the ICM configuration Success:
         config: {}

@@ -20,7 +20,7 @@ import { LinkParser } from 'ish-core/utils/link-parser';
 })
 export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnChanges {
   @Input() callbacks: {
-    [key: string]: () => void;
+    [key: string]: (event?: MouseEvent) => void;
   };
 
   constructor(
@@ -84,7 +84,7 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnC
 
         // handle links with callback functions, e.g. <a callback="availableCallbackFunction">
         if (cb && this.callbacks && typeof this.callbacks[cb] === 'function') {
-          this.callbacks[cb]();
+          this.callbacks[cb](event);
         }
 
         if (

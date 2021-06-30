@@ -52,13 +52,13 @@ ul {
 
     .ng-fa-icon {
       padding: 0;
-      margin-right: ($space-default / 2);
+      margin-right: ($space-default * 0.5);
       font-size: 17px;
     }
   }
 
   > a {
-    padding: 0 ($space-default / 2);
+    padding: 0 ($space-default * 0.5);
     white-space: nowrap;
   }
 
@@ -172,8 +172,8 @@ ul {
 
     a {
       display: block;
-      padding-top: ($space-default / 2);
-      padding-bottom: ($space-default / 4);
+      padding-top: ($space-default * 0.5);
+      padding-bottom: ($space-default * 0.25);
       margin: 0;
       overflow: hidden;
       font-family: $font-family-condensedregular;
@@ -186,7 +186,7 @@ ul {
     }
 
     .product-price {
-      padding-bottom: ($space-default / 4);
+      padding-bottom: ($space-default * 0.25);
       font-family: $font-family-condensedbold;
       font-size: $font-size-lg;
       color: $text-color-primary;

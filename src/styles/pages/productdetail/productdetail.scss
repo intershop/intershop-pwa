@@ -1,6 +1,8 @@
 //
 // PRODUCT DETAILS
 
+@use 'sass:math';
+
 .product-page {
   padding: $space-default 0 $space-default 0;
 }
@@ -44,7 +46,7 @@
   margin-bottom: ($space-default * 3);
 
   @media (max-width: $screen-sm-max) {
-    margin-top: ($space-default / 3);
+    margin-top: math.div($space-default, 3);
     margin-bottom: ($space-default);
   }
 
@@ -81,7 +83,7 @@
   margin: $space-default 0;
 
   .panel-heading {
-    padding: ($space-default / 3) 0;
+    padding: math.div($space-default, 3) 0;
 
     a {
       color: $text-color-quarternary;
@@ -104,7 +106,7 @@
 
     .product-attachments-list-item {
       .ng-fa-icon {
-        margin-left: $space-default * 2/3;
+        margin-left: math.div($space-default * 2, 3);
         font-size: 22px;
       }
     }
@@ -121,7 +123,7 @@
   }
 
   .product-warranty-list {
-    margin-top: $space-default / 3;
+    margin-top: math.div($space-default, 3);
   }
 }
 

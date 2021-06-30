@@ -1,5 +1,7 @@
 //
 
+@use 'sass:math';
+
 .content-page {
   padding: $space-default 0 $space-default 0;
 }
@@ -23,7 +25,7 @@ ol {
 /* purgecss start ignore */
 .helpdesk-info-box {
   width: 100%;
-  padding: $space-default/2;
+  padding: $space-default * 0.5;
   margin-bottom: $space-default;
   color: $text-color-inverse;
   background: $color-corporate;
@@ -70,13 +72,13 @@ ol {
 
     li {
       padding-top: 0;
-      padding-bottom: $space-default / 3;
+      padding-bottom: math.div($space-default, 3);
       font-family: $font-family-regular;
       font-size: $font-size-lg;
       text-decoration: none;
 
       a {
-        font-size: ($grid-gutter-width / 2);
+        font-size: ($grid-gutter-width * 0.5);
       }
     }
   }

@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 .language-switch {
   margin-left: ($space-default * 2);
   font-family: $font-family-bold;
@@ -19,7 +21,7 @@
     .language-switch-link {
       display: block;
       padding-right: $space-default;
-      padding-left: $space-default / 2;
+      padding-left: $space-default * 0.5;
       color: $text-color-quinary !important;
 
       //language selector when dropdown is shown
@@ -44,7 +46,7 @@
 
     .language-switch-container {
       z-index: 9999;
-      padding: ($space-default * 2/3) $space-default;
+      padding: math.div($space-default * 2, 3) $space-default;
       background: $color-inverse;
       box-shadow: 0 4px 3px 0 rgba(0, 0, 0, 0.2);
 
