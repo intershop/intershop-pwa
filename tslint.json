@@ -787,6 +787,7 @@
         ],
         "ignoredFiles": [
           "server.ts$",
+          "src/ssr/.*.ts",
           "src/[^/]*.ts$",
           ".*.spec.ts$",
           "tslint-rules/",

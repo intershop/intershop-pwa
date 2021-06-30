@@ -1,9 +1,11 @@
 /* SystemJS module definition */
 declare var module: NodeModule;
 
-interface NodeModule {
-  id: string;
-}
+declare module 'express-http-proxy';
+
+declare module 'express-robots-txt';
+
+interface NodeModule {}
 
 declare var PRODUCTION_MODE: boolean;
 
