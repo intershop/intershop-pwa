@@ -138,15 +138,9 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
   defaultDeviceType: 'mobile',
   defaultLocale: 'en_US',
   locales: [
-    {
-      lang: 'en_US',
-      currency: ['EUR', 'USD'],
-      value: 'en',
-      displayName: 'English',
-      displayLong: 'English (United States)',
-    },
-    { lang: 'de_DE', currency: 'EUR', value: 'de', displayName: 'German', displayLong: 'German (Germany)' },
-    { lang: 'fr_FR', currency: 'EUR', value: 'fr', displayName: 'French', displayLong: 'French (France)' },
+    { lang: 'en_US', currency: ['EUR', 'USD'] },
+    { lang: 'de_DE', currency: 'EUR' },
+    { lang: 'fr_FR', currency: 'EUR' },
   ],
   multiSiteLocaleMap: {
     en_US: '/en',

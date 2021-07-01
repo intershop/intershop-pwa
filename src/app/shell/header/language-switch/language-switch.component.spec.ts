@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -18,12 +19,7 @@ describe('Language Switch Component', () => {
   let fixture: ComponentFixture<LanguageSwitchComponent>;
   let element: HTMLElement;
   let appFacade: AppFacade;
-
-  const locales = [
-    { lang: 'en_US', value: 'en', displayName: 'English' },
-    { lang: 'de_DE', value: 'de', displayName: 'Deutsch' },
-    { lang: 'fr_FR', value: 'fr', displayName: 'Fran¢aise' },
-  ] as Locale[];
+  const locales = [{ lang: 'en_US' }, { lang: 'de_DE' }, { lang: 'fr_FR' }] as Locale[];
 
   beforeEach(async () => {
     appFacade = mock(AppFacade);
@@ -34,7 +30,7 @@ describe('Language Switch Component', () => {
         MockComponent(FaIconComponent),
         MockPipe(MakeHrefPipe, (_, urlParams) => of(urlParams.lang)),
       ],
-      imports: [NgbDropdownModule, RouterTestingModule],
+      imports: [NgbDropdownModule, RouterTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
     }).compileComponents();
   });
@@ -45,6 +41,13 @@ describe('Language Switch Component', () => {
     element = fixture.nativeElement;
     const router = TestBed.inject(Router);
     router.initialNavigation();
+
+    const translate = TestBed.inject(TranslateService);
+    translate.setDefaultLang('en');
+    translate.use('en');
+    translate.set('locale.en_US.long', 'English (United States)');
+    translate.set('locale.fr_FR.long', 'Français (France)');
+    translate.set('locale.de_DE.short', 'Deutsch');
   });
 
   it('should be created', () => {
@@ -66,6 +69,6 @@ describe('Language Switch Component', () => {
         <a href="fr_FR"> Fran¢aise </a>,
       ]
     `);
-    expect(element.querySelector('.language-switch-current-selection').textContent).toMatchInlineSnapshot(`"de"`);
+    expect(element.querySelector('.language-switch-current-selection').textContent).toMatchInlineSnapshot(`"Deutsch"`);
   });
 });
