@@ -201,17 +201,17 @@ describe('Configuration Selectors', () => {
           store$.dispatch(
             applyConfiguration({
               localeCurrencyOverride: {
-                de_DE: 'YEN',
+                de_DE: 'JPY',
               },
             })
           );
         });
 
         it('should use the locale currency filter override for currencies', () => {
-          expect(getCurrentCurrency(store$.state)).toMatchInlineSnapshot(`"YEN"`);
+          expect(getCurrentCurrency(store$.state)).toMatchInlineSnapshot(`"JPY"`);
           expect(getAvailableCurrencies(store$.state)).toMatchInlineSnapshot(`
             Array [
-              "YEN",
+              "JPY",
             ]
           `);
         });
