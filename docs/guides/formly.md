@@ -234,6 +234,7 @@ Refer to the tables below for an overview of these parts.
 | ish-password-field   | Password input field that automatically adds a password validator and error message          | ----                                                                                                                          |
 | ish-fieldset-field   | Wraps fields in a `<fieldset>` tag for styling                                               | `fieldsetClass`: Class that will be added to the fieldset tag. `childClass`: Class that will be added to the child div.       |
 | ish-captcha-field    | Includes the `<ish-lazy-captcha>` component and adds the relevant `formControls` to the form | `topic`: Topic that will be passed to the Captcha component.                                                                  |
+| ish-radio-field      | Basic radio input                                                                            | ----                                                                                                                          |
 
 ### Wrappers
 
@@ -246,6 +247,7 @@ Refer to the tables below for an overview of these parts.
 | description                    | Adds a custom description to any field                                                                                                                                                                                  | `customDescription`: `string` or `{key: string; args: any}` that will be translated                                           |
 | tooltip                        | Adds a tooltip to a field. Includes `<ish-field-tooltip>` component.                                                                                                                                                    | `tooltip`: `{ title?: string; text: string; link: string }` that defines the different tooltip texts.                         |
 | input-addon                    | Adds a prepended or appended text to a field, e.g. a currency or unit.                                                                                                                                                  | `addonLeft?`: `{ text: string; }, addonRight?: {text: string}` that defines the addon texts.                                  |
+| form-field-radio-horizontal    | Adds a label next to the radio field and adds red styling for invalid fields.                                                                                                                                           | `labelClass`: Classes that will be added to the label `<div>`                                                                 |
 
 ### Extensions
 
