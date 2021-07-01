@@ -6,7 +6,9 @@ import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { combineLatest, from, identity } from 'rxjs';
 import {
+  bufferCount,
   concatMap,
+  debounceTime,
   distinct,
   distinctUntilChanged,
   exhaustMap,
@@ -20,6 +22,7 @@ import {
   switchMapTo,
   take,
   throttleTime,
+  window,
   withLatestFrom,
 } from 'rxjs/operators';
 
@@ -92,6 +95,30 @@ export class ProductsEffects {
               map(product => loadProductSuccess({ product })),
               mapErrorToAction(loadProductFail, { sku })
             )
+          )
+        )
+      )
+    )
+  );
+
+  loadProducts$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadProduct),
+      // accumulate all actions to windows
+      window(this.actions$.pipe(ofType(loadProduct), debounceTime(200))),
+      mergeMap(window$ =>
+        window$.pipe(
+          mapToPayloadProperty('sku'),
+          // take slices
+          bufferCount(5),
+          // filter out duplicates
+          map(skus => skus.filter((v, i, a) => a.indexOf(v) === i)),
+          filter(skus => !!skus.length),
+          // make call
+          mergeMap(skus =>
+            this.productsService
+              .getProducts(skus)
+              .pipe(mergeMap(products => products.map(product => loadProductSuccess({ product }))))
           )
         )
       )
