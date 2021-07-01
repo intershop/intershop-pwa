@@ -227,7 +227,9 @@ export class ProductContextFacade extends RxState<ProductContext> {
       'label',
       this.select('product').pipe(
         map(
-          product => ProductHelper.getAttributesOfGroup(product, AttributeGroupTypes.ProductLabelAttributes)?.[0]?.name
+          product =>
+            // tslint:disable-next-line: no-null-keyword
+            ProductHelper.getAttributesOfGroup(product, AttributeGroupTypes.ProductLabelAttributes)?.[0]?.name || null
         )
       )
     );
