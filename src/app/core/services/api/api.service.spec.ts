@@ -10,6 +10,7 @@ import { Link } from 'ish-core/models/link/link.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import {
   applyConfiguration,
+  getCurrentCurrency,
   getCurrentLocale,
   getICMServerURL,
   getRestEndpoint,
@@ -40,6 +41,7 @@ describe('Api Service', () => {
             selectors: [
               { selector: getRestEndpoint, value: 'http://www.example.org/WFS/site/-' },
               { selector: getICMServerURL, value: undefined },
+              { selector: getCurrentCurrency, value: undefined },
               { selector: getCurrentLocale, value: undefined },
               { selector: getPGID, value: undefined },
             ],
@@ -199,6 +201,7 @@ describe('Api Service', () => {
             selectors: [
               { selector: getRestEndpoint, value: 'http://www.example.org/WFS/site/-' },
               { selector: getICMServerURL, value: 'http://www.example.org/WFS' },
+              { selector: getCurrentCurrency, value: undefined },
               { selector: getCurrentLocale, value: undefined },
               { selector: getPGID, value: undefined },
             ],
@@ -535,7 +538,14 @@ describe('Api Service', () => {
       httpTestingController = TestBed.inject(HttpTestingController);
       store$ = TestBed.inject(Store);
 
-      store$.dispatch(applyConfiguration({ baseURL: 'http://www.example.org', server: 'WFS', channel: 'site' }));
+      store$.dispatch(
+        applyConfiguration({
+          baseURL: 'http://www.example.org',
+          server: 'WFS',
+          channel: 'site',
+          locales: [{ lang: 'en_US', currency: 'USD' } as Locale],
+        })
+      );
     });
 
     afterEach(() => {

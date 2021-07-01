@@ -32,6 +32,7 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
   model: UserBudgetModel;
 
   currentLocale: Locale;
+  currentCurrency: string;
 
   periods = ['weekly', 'monthly', 'quarterly'];
 
@@ -49,6 +50,11 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
       this.currentLocale = locale;
     });
 
+    // determine current currency
+    this.appFacade.currentCurrency$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(currency => {
+      this.currentCurrency = currency;
+    });
+
     this.model = this.getModel(this.budget);
     this.fields = this.getFields();
   }
@@ -61,7 +67,7 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
       model.budgetValue = budget.budget?.value;
     }
 
-    model.currency = budget?.remainingBudget?.currency || this.currentLocale.currency;
+    model.currency = budget?.remainingBudget?.currency || this.currentCurrency;
     model.budgetPeriod =
       !budget?.budgetPeriod || budget?.budgetPeriod === 'none' ? this.periods[0] : budget.budgetPeriod;
 
