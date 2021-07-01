@@ -3,6 +3,7 @@ import { CookieConsentOptions } from 'ish-core/models/cookies/cookies.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
+import { MultiSiteLocaleMap } from 'ish-core/utils/multi-site/multi-site.service';
 
 import { TactonConfig } from '../app/extensions/tacton/models/tacton-config/tacton-config.model';
 
@@ -83,8 +84,11 @@ export interface Environment {
 
   defaultLocale?: string;
 
-  // configuration of the available locales - hard coded for now
+  // configuration of the possible locales (filtered by the locales activated by the server)
   locales: Locale[];
+
+  // multi-site URLs to locales mapping ('undefined' if mapping should not be used)
+  multiSiteLocaleMap: MultiSiteLocaleMap;
 
   // configuration of the styling theme ('default' if not configured)
   // format: 'themeName|themeColor' e.g. theme: 'blue|688dc3',
@@ -138,6 +142,11 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
     { lang: 'de_DE', currency: 'EUR', value: 'de', displayName: 'German', displayLong: 'German (Germany)' },
     { lang: 'fr_FR', currency: 'EUR', value: 'fr', displayName: 'French', displayLong: 'French (France)' },
   ],
+  multiSiteLocaleMap: {
+    en_US: '/en',
+    de_DE: '/de',
+    fr_FR: '/fr',
+  },
   cookieConsentOptions: {
     options: {
       required: {

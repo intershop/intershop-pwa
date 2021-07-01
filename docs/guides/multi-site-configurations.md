@@ -7,6 +7,17 @@ kb_sync_latest_only
 
 # Multi Site Configurations
 
+- [Multi Site Configurations](#multi-site-configurations)
+  - [Syntax](#syntax)
+  - [Examples](#examples)
+    - [One domain, One Channel, Multiple Locales](#one-domain-one-channel-multiple-locales)
+    - [Multiple Domains, Multiple Channels, Multiple Locales](#multiple-domains-multiple-channels-multiple-locales)
+    - [Multiple Subdomains, Multiple channels, Multiple Locales](#multiple-subdomains-multiple-channels-multiple-locales)
+    - [Extended Example with Many Different Configurations](#extended-example-with-many-different-configurations)
+    - [Extended Example with two domains, one with basic auth (except /fr), the other without](#extended-example-with-two-domains-one-with-basic-auth-except-fr-the-other-without)
+  - [Integrate your multi-site configuration with the language switch](#integrate-your-multi-site-configuration-with-the-language-switch)
+- [Further References](#further-references)
+
 As explained in [Multi-Site Handling](../concepts/multi-site-handling.md), the PWA supports dynamic configurations of a single PWA deployment.
 This guide explains the YAML syntax used to define a configuration and provides some common configuration examples, mainly focusing on different setups for handling locales and channels.
 For more information about how the YAML configuration is processed, refer to [Multi-Site Handling](../concepts/multi-site-handling.md) and [Building and Running NGINX Docker Image | Multi-Site](../guides/nginx-startup.md#Multi-Site).
@@ -35,7 +46,7 @@ All other properties are optional:
 - **features**: Comma-separated list of activated features
 - **lang**: The default language as defined in the Angular CLI environment
 - **theme**: The theme used for the channel (format: `<theme-name>(|<icon-color>)?`)
-- **protected**: Selectively unprotect a given domain and/or baseHref. Only applies in combination with globally activated nginx basic authentication.
+- **protected**: Selectively disable protection of a given domain and/or baseHref. Only applies in combination with globally activated nginx basic authentication.
 
 Dynamically directing the PWA to different ICM installations can be done by using:
 
@@ -204,6 +215,22 @@ ca.+\.com:
     channel: inspired-inTRONICS-CA
     lang: en_US
 ```
+
+## Integrate your multi-site configuration with the language switch
+
+To construct new multi-site URLs when switching between languages, the PWA uses the `multi-site.service.ts`.
+The `getLangUpdatedUrl` is called with the desired locale string, current url and current baseHref.
+From this it constructs a new URL, conforming to our multi-site setup (see [One domain, one channel, multiple locales](#one-domain-one-channel-multiple-locales)).
+
+To control the transformation of urls, the `multiSiteLocaleMap` environment variable is used.
+Depending on your needs, `multiSiteLocaleMap` can be set in either the `environment.ts` or as an environment variable (`MULTI_SITE_LOCALE_MAP`).
+See [`docker-compose.yml`](../../docker-compose.yml) for a commented out example or [`environment.model.ts`](../../src/environments/environment.model.ts) for the default value.
+
+In case you want to disable this functionality, simply override the default environment variable `multiSiteLocaleMap` with `undefined` or `MULTI_SITE_LOCALE_MAP` with `false`.
+
+In case you want to extend this functionality to work with more locales, extend the default environment variable `multiSiteLocaleMap` with your additional locales.
+
+In case you want to transfer this functionality to work with your specific multi-site setup, override the `multi-site.service.ts` and provide an implementation that conforms to your setup (as well as configuring the environment variable for your specific use case).
 
 # Further References
 

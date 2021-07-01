@@ -45,7 +45,7 @@ describe('Configuration Effects', () => {
 
       testComplete$.pipe(take(2)).subscribe({ complete: done });
 
-      effects.setInitialRestEndpoint$.subscribe(
+      effects.transferEnvironmentProperties$.subscribe(
         data => {
           expect(data.type).toEqual(applyConfiguration.type);
           testComplete$.next();

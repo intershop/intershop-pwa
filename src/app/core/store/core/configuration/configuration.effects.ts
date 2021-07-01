@@ -79,7 +79,7 @@ export class ConfigurationEffects {
       });
   }
 
-  setInitialRestEndpoint$ = createEffect(() =>
+  transferEnvironmentProperties$ = createEffect(() =>
     iif(
       () => !this.transferState.hasKey(NGRX_STATE_SK),
       this.actions$.pipe(
@@ -100,7 +100,18 @@ export class ConfigurationEffects {
             .pipe(map(x => x || 'ICM')),
           this.stateProperties
             .getStateOrEnvOrDefault<string | object>('IDENTITY_PROVIDERS', 'identityProviders')
-            .pipe(map(config => (typeof config === 'string' ? JSON.parse(config) : config)))
+            .pipe(map(config => (typeof config === 'string' ? JSON.parse(config) : config))),
+          this.stateProperties
+            .getStateOrEnvOrDefault<Record<string, unknown> | string | false>(
+              'MULTI_SITE_LOCALE_MAP',
+              'multiSiteLocaleMap'
+            )
+            .pipe(
+              map(multiSiteLocaleMap => (multiSiteLocaleMap === false ? undefined : multiSiteLocaleMap)),
+              map(multiSiteLocaleMap =>
+                typeof multiSiteLocaleMap === 'string' ? JSON.parse(multiSiteLocaleMap) : multiSiteLocaleMap
+              )
+            )
         ),
         map(
           ([
@@ -114,6 +125,7 @@ export class ConfigurationEffects {
             theme,
             identityProvider,
             identityProviders,
+            multiSiteLocaleMap,
           ]) =>
             applyConfiguration({
               baseURL,
@@ -125,6 +137,7 @@ export class ConfigurationEffects {
               theme,
               identityProvider,
               identityProviders,
+              multiSiteLocaleMap,
             })
         )
       )
