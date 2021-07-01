@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { SelectOption } from 'ish-shared/forms/components/select/select.component';
@@ -36,7 +35,7 @@ export class FormsService {
   getSalutationOptions(): Observable<SelectOption[]> {
     return this.store.pipe(select(getCurrentLocale)).pipe(
       whenTruthy(),
-      map((locale: Locale) => this.getSalutationOptionsForCountryCode(locale.lang?.slice(3)))
+      map(locale => this.getSalutationOptionsForCountryCode(locale?.substring(3)))
     );
   }
 

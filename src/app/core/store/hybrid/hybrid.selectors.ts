@@ -16,7 +16,7 @@ export const getICMWebURL = createSelector(
   getICMApplication,
   (state, locale, currency, application) =>
     ICM_WEB_URL.replace('$<channel>', state.channel)
-      .replace('$<lang>', locale.lang)
+      .replace('$<lang>', locale)
       .replace('$<application>', application)
       .replace('$<currency>', currency)
 );

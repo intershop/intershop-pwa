@@ -9,7 +9,6 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { MakeHrefPipe } from 'ish-core/pipes/make-href.pipe';
 
 import { LanguageSwitchComponent } from './language-switch.component';
@@ -19,7 +18,7 @@ describe('Language Switch Component', () => {
   let fixture: ComponentFixture<LanguageSwitchComponent>;
   let element: HTMLElement;
   let appFacade: AppFacade;
-  const locales = [{ lang: 'en_US' }, { lang: 'de_DE' }, { lang: 'fr_FR' }] as Locale[];
+  const locales = ['en_US', 'de_DE', 'fr_FR'];
 
   beforeEach(async () => {
     appFacade = mock(AppFacade);

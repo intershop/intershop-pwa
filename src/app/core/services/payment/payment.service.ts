@@ -78,9 +78,7 @@ export class PaymentService {
           data && data.paymentMethod && included ? included.paymentMethod[data.paymentMethod] : undefined
         ),
         withLatestFrom(this.store.pipe(select(getCurrentLocale))),
-        concatMap(([pm, currentLocale]) =>
-          this.sendRedirectUrlsIfRequired(pm, paymentInstrument, currentLocale && currentLocale.lang)
-        )
+        concatMap(([pm, currentLocale]) => this.sendRedirectUrlsIfRequired(pm, paymentInstrument, currentLocale))
       );
   }
 

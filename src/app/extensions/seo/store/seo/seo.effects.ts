@@ -141,14 +141,13 @@ export class SeoEffects {
         ofType(routerNavigatedAction),
         withLatestFrom(this.store.pipe(select(getCurrentLocale)), this.store.pipe(select(getAvailableLocales))),
         tap(([, current, locales]) => {
-          this.metaService.addTag({ property: 'og:locale', content: current.lang });
+          this.metaService.addTag({ property: 'og:locale', content: current });
 
           this.metaService
             .getTags('property="og:locale:alternate"')
             .forEach(el => this.metaService.removeTagElement(el));
           locales
-            .map(x => x.lang)
-            .filter(lang => lang !== current.lang)
+            .filter(lang => lang !== current)
             .forEach(lang => this.metaService.addTag({ property: 'og:locale:alternate', content: lang }, true));
         })
       ),

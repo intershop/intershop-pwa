@@ -9,7 +9,6 @@ import { Address } from 'ish-core/models/address/address.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { CustomerData } from 'ish-core/models/customer/customer.interface';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
@@ -34,7 +33,7 @@ describe('User Service', () => {
     });
     userService = TestBed.inject(UserService);
     when(appFacade.isAppTypeREST$).thenReturn(of(true));
-    when(appFacade.currentLocale$).thenReturn(of({ lang: 'en_US' } as Locale));
+    when(appFacade.currentLocale$).thenReturn(of('en_US'));
     when(appFacade.customerRestResource$).thenReturn(of('customers'));
   });
 

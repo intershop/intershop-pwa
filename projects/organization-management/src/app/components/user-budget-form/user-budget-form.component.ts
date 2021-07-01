@@ -6,7 +6,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
@@ -31,7 +30,7 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
   fields: FormlyFieldConfig[];
   model: UserBudgetModel;
 
-  currentLocale: Locale;
+  currentLocale: string;
   currentCurrency: string;
 
   periods = ['weekly', 'monthly', 'quarterly'];
@@ -94,7 +93,7 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
               postWrappers: ['input-addon'],
               label: 'account.user.new.order_spend_limit.label',
               addonLeft: {
-                text: getCurrencySymbol(this.model.currency, 'wide', this.currentLocale.lang),
+                text: getCurrencySymbol(this.model.currency, 'wide', this.currentLocale),
               },
             },
             validators: {
@@ -119,7 +118,7 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
                   fieldClass: 'col-md-6 pr-0',
                   label: 'account.user.budget.label',
                   addonLeft: {
-                    text: getCurrencySymbol(this.model.currency, 'wide', this.currentLocale.lang),
+                    text: getCurrencySymbol(this.model.currency, 'wide', this.currentLocale),
                   },
                 },
                 validators: {
