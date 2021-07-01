@@ -107,6 +107,7 @@ describe('Shopping Store', () => {
     when(countryServiceMock.getCountries()).thenReturn(EMPTY);
 
     productsServiceMock = mock(ProductsService);
+    when(productsServiceMock.getProducts(anything())).thenReturn(EMPTY);
     when(productsServiceMock.getProduct(anyString())).thenCall(sku => {
       if (['P1', 'P2'].find(x => x === sku)) {
         return of({ sku, name: 'n' + sku });
