@@ -61,64 +61,7 @@
           class="form-horizontal"
           novalidate="novalidate"
         >
-          <h3 class="subheading">{{ 'checkout.addresses.billing_address.heading' | translate }}</h3>
-          <p class="indicates-required">
-            <span class="required">*</span>{{ 'account.required_field.message' | translate }}
-          </p>
-          <!-- Invoice Address -->
-          <ish-formly-address-form
-            #invoiceAddress
-            data-testing-id="invoiceAddressForm"
-            [parentForm]="invoiceAddressForm"
-          >
-          </ish-formly-address-form>
-          <!-- Taxation ID input field -->
-          <ish-input
-            *ishFeature="'businessCustomerRegistration'"
-            [form]="form"
-            controlName="taxationID"
-            label="account.address.taxation.label"
-          ></ish-input>
-          <!-- Email address input field-->
-          <ish-input
-            [form]="form"
-            controlName="email"
-            type="email"
-            label="checkout.addresses.email.label"
-            [errorMessages]="{
-              required: 'account.email.error.email',
-              email: 'checkout.addresses.email.invalid.error'
-            }"
-          ></ish-input>
-          <div class="offset-md-4 col-md-8">
-            <small class="form-text">{{ 'account.address.email.hint' | translate }}</small>
-          </div>
-
-          <!-- Shipping Address Selection Radio boxes-->
-          <div class="section">
-            <h3>{{ 'checkout.addresses.shipping_address.heading' | translate }}</h3>
-            <div class="radio">
-              <label for="shipOption1">
-                <input type="radio" formControlName="shipOption" value="shipToInvoiceAddress" id="shipOption1" />
-                {{ 'checkout.addresses.shipping_address.option1.text' | translate }}
-              </label>
-            </div>
-            <div class="radio">
-              <label for="shipOption2">
-                <input type="radio" formControlName="shipOption" value="shipToDifferentAddress" id="shipOption2" />
-                {{ 'checkout.addresses.shipping_address.option2.text' | translate }}
-              </label>
-            </div>
-          </div>
-          <div [ngbCollapse]="!isShippingAddressFormExpanded" data-testing-id="shipping-address-form">
-            <!-- Shipping Address -->
-            <ish-formly-address-form
-              #shippingAddress
-              data-testing-id="shippingAddressForm"
-              [parentForm]="shippingAddressForm"
-            >
-            </ish-formly-address-form>
-          </div>
+          <ish-checkout-address-anonymous-form [parentForm]="form"></ish-checkout-address-anonymous-form>
           <div [ngClass]="{ 'row form-group': isShippingAddressFormExpanded }">
             <div [ngClass]="{ 'offset-md-4 col-md-8': isShippingAddressFormExpanded }">
               <button class="btn btn-primary" type="submit" [disabled]="nextDisabled">
