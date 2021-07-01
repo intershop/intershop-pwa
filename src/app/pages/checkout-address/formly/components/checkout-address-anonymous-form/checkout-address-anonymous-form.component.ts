@@ -51,7 +51,7 @@ export class CheckoutAddressAnonymousFormComponent implements OnInit, OnDestroy 
                 class: 'form-text',
                 key: 'account.address.email.hint',
               },
-              postWrappers: ['description'],
+              postWrappers: [{ wrapper: 'description', index: -1 }],
             },
             validation: {
               messages: {
