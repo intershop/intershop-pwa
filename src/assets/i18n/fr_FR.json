@@ -820,6 +820,7 @@
   "punchout.login_already_exists.error": "Un utilisateur avec ce nom d’utilisateur existe déjà. Veuillez vérifier l’exactitude des informations ou entrer un nom d’utilisateur différent.",
   "quickorder.page.add.cart": "Ajouter au panier",
   "quickorder.page.add.row": "Ajouter lignes supplémentaires",
+  "quickorder.link.text": "Ajouter 5 lignes supplémentaires",
   "quickorder.page.breadcrumb": "Commande rapide",
   "quickorder.page.csv.file.invalid.format": "Le format de fichier n’est pas valide. Veuillez utiliser un fichier CSV.",
   "quickorder.page.csv.file.invalid.input": "L’entrée n’est pas valide. Veuillez confirmer si la structure de votre fichier CSV est correcte.",

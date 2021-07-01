@@ -820,6 +820,7 @@
   "punchout.login_already_exists.error": "Der angegebene Anmeldename wird bereits verwendet. Prüfen Sie bitte die Richtigkeit der Eingabe oder geben Sie einen anderen Anmeldenamen an.",
   "quickorder.page.add.cart": "In den Warenkorb",
   "quickorder.page.add.row": "Weitere Zeilen hinzufügen",
+  "quickorder.link.text": "5 weitere Zeilen",
   "quickorder.page.breadcrumb": "Schnellbestellung",
   "quickorder.page.csv.file.invalid.format": "Das Dateiformat ist ungültig. Bitte verwenden Sie eine CSV-Datei.",
   "quickorder.page.csv.file.invalid.input": "Die Eingabe ist ungültig. Bitte bestätigen Sie, ob Ihre CSV-Datei die richtige Struktur hat.",

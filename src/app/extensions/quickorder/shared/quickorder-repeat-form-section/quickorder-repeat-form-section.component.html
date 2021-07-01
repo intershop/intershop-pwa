@@ -1,0 +1,14 @@
+<div *ngFor="let field of field.fieldGroup; let i = index" class="row">
+  <formly-field class="col-sm-8" [field]="field"></formly-field>
+  <div class="col-sm-2 d-flex align-items-center">
+    <a class="btn btn-link remove-row" title="remove-current-row" (click)="remove(i)">{{
+      to.removeText | translate
+    }}</a>
+  </div>
+</div>
+<div class="add-more-rows section list-item-row section-seperator row">
+  <a class="d-block col" (click)="add()" data-testing-id="add-quickorder-line">{{ to.addText | translate }}</a>
+  <a class="d-block col" (click)="addMultipleRows(5)" data-testing-id="add-quickorder-5-lines">{{
+    to.add5Text | translate
+  }}</a>
+</div>

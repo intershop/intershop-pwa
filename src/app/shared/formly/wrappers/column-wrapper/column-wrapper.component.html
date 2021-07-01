@@ -1,0 +1,8 @@
+<div
+  class="form-group"
+  [ngClass]="to.fieldClass ? to.fieldClass : ''"
+  [class.formly-has-error]="showError"
+  [attr.data-testing-id]="keyString + '-wrapper'"
+>
+  <ng-template #fieldComponent></ng-template>
+</div>
