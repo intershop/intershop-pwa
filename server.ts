@@ -210,9 +210,6 @@ export function app() {
           const [, currency] = /;currency=([\w_]+)/.exec(url);
           config.currency = currency;
         }
-        if (!config.currency) {
-          config.currency = environment.defaultCurrency;
-        }
 
         if (/;channel=[^;]*/.test(url)) {
           config.channel = /;channel=([^;]*)/.exec(url)[1];

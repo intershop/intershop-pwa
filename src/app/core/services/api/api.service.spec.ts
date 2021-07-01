@@ -521,7 +521,7 @@ describe('Api Service', () => {
   });
 
   describe('API Service Headers', () => {
-    const REST_URL = 'http://www.example.org/WFS/site/-;loc=en_US;cur=USD';
+    const REST_URL = 'http://www.example.org/WFS/site/-;loc=en_US';
     let apiService: ApiService;
     let store$: Store;
     let httpTestingController: HttpTestingController;
@@ -546,7 +546,6 @@ describe('Api Service', () => {
           server: 'WFS',
           channel: 'site',
           defaultLocale: 'en_US',
-          defaultCurrency: 'USD',
         })
       );
     });
