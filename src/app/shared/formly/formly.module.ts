@@ -66,7 +66,7 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
         {
           name: 'ish-textarea-field',
           component: TextareaFieldComponent,
-          wrappers: ['form-field-horizontal', 'validation', 'textarea-description'],
+          wrappers: ['form-field-horizontal', 'textarea-description', 'validation'],
         },
         {
           name: 'ish-checkbox-field',
