@@ -48,7 +48,6 @@ export class CheckoutAddressAnonymousFormComponent implements OnInit, OnDestroy 
               label: 'checkout.addresses.email.label',
               forceRequiredStar: true,
               customDescription: {
-                class: 'form-text',
                 key: 'account.address.email.hint',
               },
               postWrappers: [{ wrapper: 'description', index: -1 }],

@@ -34,12 +34,11 @@ export class UpdatePasswordFormComponent implements OnInit {
         key: 'password',
         type: 'ish-password-field',
         templateOptions: {
-          postWrappers: [{ wrappers: 'description', index: -1 }],
+          postWrappers: [{ wrapper: 'description', index: -1 }],
           required: true,
           hideRequiredMarker: true,
           label: 'account.register.password.label',
           customDescription: {
-            class: 'input-help',
             key: 'account.register.password.extrainfo.message',
             args: { 0: '7' },
           },
