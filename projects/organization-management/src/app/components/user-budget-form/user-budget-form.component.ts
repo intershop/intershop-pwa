@@ -90,7 +90,7 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
             key: 'orderSpentLimitValue',
             type: 'ish-text-input-field',
             templateOptions: {
-              postWrappers: ['input-addon'],
+              postWrappers: [{ wrapper: 'input-addon', index: -1 }],
               label: 'account.user.new.order_spend_limit.label',
               addonLeft: {
                 text: getCurrencySymbol(this.model.currency, 'wide', this.currentLocale),
@@ -113,7 +113,7 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
                 key: 'budgetValue',
                 type: 'ish-text-input-field',
                 templateOptions: {
-                  postWrappers: ['input-addon'],
+                  postWrappers: [{ wrapper: 'input-addon', index: -1 }],
                   labelClass: 'col-md-6',
                   fieldClass: 'col-md-6 pr-0',
                   label: 'account.user.budget.label',
