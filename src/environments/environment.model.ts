@@ -1,6 +1,5 @@
 import { Auth0Config } from 'ish-core/identity-provider/auth0.identity-provider';
 import { CookieConsentOptions } from 'ish-core/models/cookies/cookies.model';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
 import { MultiSiteLocaleMap } from 'ish-core/utils/multi-site/multi-site.service';
@@ -84,8 +83,8 @@ export interface Environment {
 
   defaultLocale?: string;
 
-  // configuration of the possible locales (filtered by the locales activated by the server)
-  locales: Locale[];
+  // configuration filtering available locales and their active currencies
+  localeCurrencyOverride?: { [locale: string]: string | string[] };
 
   // multi-site URLs to locales mapping ('undefined' if mapping should not be used)
   multiSiteLocaleMap: MultiSiteLocaleMap;
@@ -137,16 +136,12 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
   defaultProductListingViewType: 'grid',
   defaultDeviceType: 'mobile',
   defaultLocale: 'en_US',
-  locales: [
-    { lang: 'en_US', currency: 'USD', value: 'en', displayName: 'English', displayLong: 'English (United States)' },
-    { lang: 'de_DE', currency: 'EUR', value: 'de', displayName: 'German', displayLong: 'German (Germany)' },
-    { lang: 'fr_FR', currency: 'EUR', value: 'fr', displayName: 'French', displayLong: 'French (France)' },
-  ],
   multiSiteLocaleMap: {
     en_US: '/en',
     de_DE: '/de',
     fr_FR: '/fr',
   },
+  localeCurrencyOverride: { de_DE: 'EUR', fr_FR: 'EUR' },
   cookieConsentOptions: {
     options: {
       required: {

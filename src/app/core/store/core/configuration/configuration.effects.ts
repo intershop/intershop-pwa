@@ -28,7 +28,6 @@ import {
   mapErrorToAction,
   mapToPayload,
   mapToPayloadProperty,
-  mapToProperty,
   whenTruthy,
 } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
@@ -68,7 +67,6 @@ export class ConfigurationEffects {
       .pipe(
         takeWhile(() => isPlatformServer(this.platformId) || !PRODUCTION_MODE),
         select(getCurrentLocale),
-        mapToProperty('lang'),
         distinctUntilChanged(),
         whenTruthy(),
         switchMap(lang => languageChanged$.pipe(mapTo(lang), take(1)))

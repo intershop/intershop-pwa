@@ -1,6 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
 
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { Translations } from 'ish-core/utils/translate/translations.type';
 
@@ -24,8 +23,9 @@ export interface ConfigurationState {
   features?: string[];
   theme?: string;
   defaultLocale?: string;
-  locales?: Locale[];
+  localeCurrencyOverride?: { [locale: string]: string | string[] };
   lang?: string;
+  currency?: string;
   serverTranslations: { [lang: string]: Translations };
   multiSiteLocaleMap: Record<string, unknown>;
   // not synced via state transfer
@@ -41,8 +41,9 @@ const initialState: ConfigurationState = {
   features: undefined,
   theme: undefined,
   defaultLocale: environment.defaultLocale,
-  locales: environment.locales,
+  localeCurrencyOverride: environment.localeCurrencyOverride,
   lang: undefined,
+  currency: undefined,
   serverTranslations: {},
   multiSiteLocaleMap: {},
   _deviceType: environment.defaultDeviceType,

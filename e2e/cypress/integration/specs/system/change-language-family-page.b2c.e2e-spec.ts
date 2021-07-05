@@ -33,7 +33,7 @@ describe('Language Changing User', () => {
 
     it('when switching to german', () => {
       at(FamilyPage, page => {
-        page.header.switchLanguage('German');
+        page.header.switchLanguage('Deutsch');
       });
     });
 

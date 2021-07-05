@@ -81,7 +81,7 @@ export class UsersService {
                 preferredInvoiceToAddressUrn: undefined,
                 preferredShipToAddressUrn: undefined,
                 preferredPaymentInstrumentId: undefined,
-                preferredLanguage: currentLocale.lang ?? 'en_US',
+                preferredLanguage: currentLocale,
                 userBudgets: undefined,
                 roleIds: undefined,
               },
