@@ -77,6 +77,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
       logoutUrl: `https://${config.domain}/v2/logout`,
 
       sessionChecksEnabled: true,
+      strictDiscoveryDocumentValidation: false,
     });
     this.oauthService.setupAutomaticSilentRefresh();
     this.apiTokenService
