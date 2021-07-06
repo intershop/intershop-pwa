@@ -64,7 +64,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
   }
 
   // set production mode, service-worker, ngrx runtime checks
-  const production = configurations.includes('production');
+  const production = configurations.includes('production') || angularJsonConfig.buildOptimizer;
   const serviceWorker = !!angularJsonConfig.serviceWorker;
   const ngrxRuntimeChecks = !!process.env.TESTING || !production;
   config.plugins.push(

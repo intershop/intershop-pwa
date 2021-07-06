@@ -1,4 +1,4 @@
-<div [ngClass]="{ 'input-group': to.addonLeft || to.addonRight }">
+<div class="align-items-start" [ngClass]="{ 'input-group': to.addonLeft || to.addonRight }">
   <div *ngIf="to.addonLeft" class="input-group-prepend">
     <span class="input-group-text">{{ to.addonLeft?.text | translate }}</span>
   </div>

@@ -37,11 +37,10 @@ export class BasketOrderReferenceComponent implements OnInit, OnChanges {
         key: 'orderReferenceId',
         type: 'ish-text-input-field',
         templateOptions: {
-          postWrappers: ['description'],
+          postWrappers: [{ wrapper: 'description', index: -1 }],
           label: 'checkout.orderReferenceId.label',
           maxLength: 35,
           customDescription: {
-            class: 'input-help',
             key: 'checkout.orderReferenceId.note',
           },
         },

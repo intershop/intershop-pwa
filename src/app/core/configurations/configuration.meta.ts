@@ -19,7 +19,14 @@ class SimpleParamMap {
 }
 
 function extractConfigurationParameters(state: ConfigurationState, paramMap: SimpleParamMap) {
-  const keys: (keyof ConfigurationState)[] = ['channel', 'application', 'theme', 'lang', 'identityProvider'];
+  const keys: (keyof ConfigurationState)[] = [
+    'channel',
+    'application',
+    'theme',
+    'lang',
+    'currency',
+    'identityProvider',
+  ];
   const properties: Partial<ConfigurationState> = keys
     .filter(key => paramMap.has(key) && paramMap.get(key) !== 'default')
     .map(key => ({ [key]: paramMap.get(key) }))

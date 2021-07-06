@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import { getCurrentLocale, getICMStaticURL } from 'ish-core/store/core/configuration';
-import { mapToProperty } from 'ish-core/utils/operators';
 
 import { ContentConfigurationParameterData } from './content-configuration-parameter.interface';
 
@@ -17,7 +16,7 @@ export class ContentConfigurationParameterMapper {
 
   constructor(store: Store) {
     store.pipe(select(getICMStaticURL)).subscribe(url => (this.staticURL = url));
-    store.pipe(select(getCurrentLocale), mapToProperty('lang')).subscribe(lang => (this.lang = lang || '-'));
+    store.pipe(select(getCurrentLocale)).subscribe(lang => (this.lang = lang || '-'));
   }
 
   fromData(data: { [name: string]: ContentConfigurationParameterData }): ContentConfigurationParameters {

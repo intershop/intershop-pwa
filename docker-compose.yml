@@ -18,6 +18,7 @@ services:
       # - PROXY_ICM=true
       - TRUST_ICM=true
       # - PROMETHEUS=on
+      # - MULTI_SITE_LOCALE_MAP={"en_US":"/en","de_DE":"/de","fr_FR":"/fr"}
   nginx:
     build: nginx
     depends_on:
@@ -43,7 +44,6 @@ services:
           - baseHref: /de
             channel: default
             lang: de_DE
-            protected: false
           - baseHref: /fr
             channel: default
             lang: fr_FR

@@ -45,7 +45,7 @@ export class AddressFormUSConfiguration extends AddressFormConfiguration {
           key: 'city',
           type: 'ish-text-input-field',
           templateOptions: {
-            postWrappers: ['tooltip'],
+            postWrappers: [{ wrapper: 'tooltip', index: -1 }],
             label: 'account.default_address.city.label',
             required: true,
             tooltip: {

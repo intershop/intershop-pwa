@@ -7,9 +7,9 @@ import { noop } from 'rxjs';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { Link } from 'ish-core/models/link/link.model';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import {
   applyConfiguration,
+  getCurrentCurrency,
   getCurrentLocale,
   getICMServerURL,
   getRestEndpoint,
@@ -40,6 +40,7 @@ describe('Api Service', () => {
             selectors: [
               { selector: getRestEndpoint, value: 'http://www.example.org/WFS/site/-' },
               { selector: getICMServerURL, value: undefined },
+              { selector: getCurrentCurrency, value: undefined },
               { selector: getCurrentLocale, value: undefined },
               { selector: getPGID, value: undefined },
             ],
@@ -199,6 +200,7 @@ describe('Api Service', () => {
             selectors: [
               { selector: getRestEndpoint, value: 'http://www.example.org/WFS/site/-' },
               { selector: getICMServerURL, value: 'http://www.example.org/WFS' },
+              { selector: getCurrentCurrency, value: undefined },
               { selector: getCurrentLocale, value: undefined },
               { selector: getPGID, value: undefined },
             ],
@@ -393,6 +395,7 @@ describe('Api Service', () => {
               { selector: getRestEndpoint, value: 'http://www.example.org/WFS/site/-' },
               { selector: getICMServerURL, value: undefined },
               { selector: getCurrentLocale, value: undefined },
+              { selector: getCurrentCurrency, value: undefined },
               { selector: getPGID, value: undefined },
             ],
           }),
@@ -452,7 +455,8 @@ describe('Api Service', () => {
     });
 
     it('should include locale and currency when available in store', () => {
-      store$.overrideSelector(getCurrentLocale, { currency: 'USD', lang: 'en_US' } as Locale);
+      store$.overrideSelector(getCurrentLocale, 'en_US');
+      store$.overrideSelector(getCurrentCurrency, 'USD');
 
       apiService.get('relative').subscribe(fail, fail, fail);
 
@@ -501,7 +505,8 @@ describe('Api Service', () => {
 
     it('should include params, pgid and locale for complex example', () => {
       store$.overrideSelector(getPGID, 'ASDF');
-      store$.overrideSelector(getCurrentLocale, { currency: 'USD', lang: 'en_US' } as Locale);
+      store$.overrideSelector(getCurrentLocale, 'en_US');
+      store$.overrideSelector(getCurrentCurrency, 'USD');
 
       apiService
         .get('very/deep/relative', { sendPGID: true, params: new HttpParams().set('view', 'grid').set('depth', '3') })
@@ -516,7 +521,7 @@ describe('Api Service', () => {
   });
 
   describe('API Service Headers', () => {
-    const REST_URL = 'http://www.example.org/WFS/site/-;loc=en_US;cur=USD';
+    const REST_URL = 'http://www.example.org/WFS/site/-;loc=en_US';
     let apiService: ApiService;
     let store$: Store;
     let httpTestingController: HttpTestingController;
@@ -535,7 +540,14 @@ describe('Api Service', () => {
       httpTestingController = TestBed.inject(HttpTestingController);
       store$ = TestBed.inject(Store);
 
-      store$.dispatch(applyConfiguration({ baseURL: 'http://www.example.org', server: 'WFS', channel: 'site' }));
+      store$.dispatch(
+        applyConfiguration({
+          baseURL: 'http://www.example.org',
+          server: 'WFS',
+          channel: 'site',
+          defaultLocale: 'en_US',
+        })
+      );
     });
 
     afterEach(() => {
@@ -639,6 +651,7 @@ describe('Api Service', () => {
               { selector: getICMServerURL, value: undefined },
               { selector: getRestEndpoint, value: 'http://www.example.org' },
               { selector: getCurrentLocale, value: undefined },
+              { selector: getCurrentCurrency, value: undefined },
               { selector: getPGID, value: undefined },
             ],
           }),

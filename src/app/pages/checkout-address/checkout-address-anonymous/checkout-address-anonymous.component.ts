@@ -1,23 +1,10 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
-import { FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
+import { FormGroup, FormGroupDirective } from '@angular/forms';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 /**
  * The Checkout Address Anonymous Component renders the initial checkout address page of an anonymous user. On this page the user can either login or checkout as guest by entering an invoice and (optionally) shipping address.
@@ -35,7 +22,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
   templateUrl: './checkout-address-anonymous.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckoutAddressAnonymousComponent implements OnChanges, OnInit, OnDestroy {
+export class CheckoutAddressAnonymousComponent implements OnChanges {
   @Input() basket: Basket;
   @Input() error: HttpError;
 
@@ -43,43 +30,12 @@ export class CheckoutAddressAnonymousComponent implements OnChanges, OnInit, OnD
 
   @ViewChild('addressForm') addressForm: FormGroupDirective;
 
-  form: FormGroup;
-  invoiceAddressForm: FormGroup;
-  shippingAddressForm: FormGroup;
+  form = new FormGroup({});
 
   submitted = false;
   isAddressFormCollapsed = true;
 
-  private destroy$ = new Subject();
-
-  constructor(private checkoutFacade: CheckoutFacade, private fb: FormBuilder) {}
-
-  ngOnInit() {
-    // create address form for basket addresses
-    this.form = this.fb.group({
-      taxationID: [''],
-      email: ['', [Validators.required, SpecialValidators.email]],
-      shipOption: ['shipToInvoiceAddress', [Validators.required]],
-    });
-    this.invoiceAddressForm = this.fb.group({
-      address: new FormGroup({}),
-    });
-    this.shippingAddressForm = this.fb.group({
-      address: new FormGroup({}),
-    });
-    this.form.addControl('invoiceAddress', this.invoiceAddressForm);
-
-    // add / remove shipping form if shipTo address option changes
-    this.form
-      .get('shipOption')
-      .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(option => {
-        option === 'shipToInvoiceAddress'
-          ? this.form.removeControl('shippingAddress')
-          : this.form.addControl('shippingAddress', this.shippingAddressForm);
-      });
-  }
-
+  constructor(private checkoutFacade: CheckoutFacade) {}
   /**
     jumps to nextPage as soon as basket invoice and shipping addresses are set.
   */
@@ -103,8 +59,15 @@ export class CheckoutAddressAnonymousComponent implements OnChanges, OnInit, OnD
 
   cancelAddressForm() {
     this.isAddressFormCollapsed = true;
+
     this.addressForm.resetForm();
-    this.form.controls.shipOption.setValue('shipToInvoiceAddress');
+
+    this.addressForm.control.get('additionalAddressAttributes').setValue({
+      taxationID: '',
+      shipOption: 'shipToInvoiceAddress',
+      email: '',
+    });
+
     this.submitted = false;
   }
 
@@ -119,15 +82,21 @@ export class CheckoutAddressAnonymousComponent implements OnChanges, OnInit, OnD
     }
 
     // submit address form
-    const invoiceAddress = { ...this.invoiceAddressForm.get('address').value, email: this.form.controls.email.value };
+    const invoiceAddress = {
+      ...this.form.get('invoiceAddress').value.address,
+      email: this.form.get('additionalAddressAttributes').value.email,
+    };
 
     const shippingAddress =
-      this.form.controls.shipOption.value === 'shipToInvoiceAddress'
+      this.form.get('additionalAddressAttributes').value.shipOption === 'shipToInvoiceAddress'
         ? undefined
-        : this.shippingAddressForm.get('address').value;
+        : this.form.get('shippingAddress').value.address;
 
-    if (this.form.get('taxationID').value) {
-      this.checkoutFacade.setBasketCustomAttribute({ name: 'taxationID', value: this.form.get('taxationID').value });
+    if (this.form.get('additionalAddressAttributes').value.taxationID) {
+      this.checkoutFacade.setBasketCustomAttribute({
+        name: 'taxationID',
+        value: this.form.get('additionalAddressAttributes').value.taxationID,
+      });
     } else {
       this.checkoutFacade.deleteBasketCustomAttribute('taxationID');
     }
@@ -145,11 +114,6 @@ export class CheckoutAddressAnonymousComponent implements OnChanges, OnInit, OnD
   }
 
   get isShippingAddressFormExpanded() {
-    return this.form && this.form.get('shipOption').value === 'shipToDifferentAddress';
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+    return this.form && this.form.get('additionalAddressAttributes').value.shipOption === 'shipToDifferentAddress';
   }
 }

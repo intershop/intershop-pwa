@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { User } from 'ish-core/models/user/user.model';
 
 /**
@@ -18,7 +17,6 @@ export class AccountProfileUserPageComponent implements OnInit {
   currentUser$: Observable<User>;
   userError$: Observable<HttpError>;
   userLoading$: Observable<boolean>;
-  currentLocale$: Observable<Locale>;
 
   constructor(private accountFacade: AccountFacade) {}
 

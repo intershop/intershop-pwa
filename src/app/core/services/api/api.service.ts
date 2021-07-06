@@ -18,7 +18,12 @@ import { concatMap, filter, first, map, take, tap, withLatestFrom } from 'rxjs/o
 
 import { Captcha } from 'ish-core/models/captcha/captcha.model';
 import { Link } from 'ish-core/models/link/link.model';
-import { getCurrentLocale, getICMServerURL, getRestEndpoint } from 'ish-core/store/core/configuration';
+import {
+  getCurrentCurrency,
+  getCurrentLocale,
+  getICMServerURL,
+  getRestEndpoint,
+} from 'ish-core/store/core/configuration';
 import { getLoggedInCustomer, getLoggedInUser, getPGID } from 'ish-core/store/customer/user';
 
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
@@ -122,10 +127,15 @@ export class ApiService {
     return combineLatest([
       // base url
       this.store.pipe(select(getRestEndpoint)),
-      // locale and currency
+      // locale
       this.store.pipe(
         select(getCurrentLocale),
-        map(l => (l ? `;loc=${l.lang};cur=${l.currency}` : ''))
+        map(l => (l ? `;loc=${l}` : ''))
+      ),
+      // currency
+      this.store.pipe(
+        select(getCurrentCurrency),
+        map(c => (c ? `;cur=${c}` : ''))
       ),
       // first path segment
       of('/'),

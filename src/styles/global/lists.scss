@@ -1,14 +1,14 @@
 //
 // DL - List
 .dl-horizontal {
-  margin-bottom: ($space-default / 2);
+  margin-bottom: ($space-default * 0.5);
 
   dt {
     font-weight: normal;
   }
 
   dt + dd {
-    margin-bottom: ($space-default / 4);
+    margin-bottom: ($space-default * 0.25);
   }
 
   // displays a separator (e.g. colon) after the definition type field

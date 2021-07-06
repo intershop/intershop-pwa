@@ -257,11 +257,10 @@ export class RegistrationFormConfigurationService {
             key: 'password',
             type: 'ish-password-field',
             templateOptions: {
-              postWrappers: ['description'],
+              postWrappers: [{ wrapper: 'description', index: -1 }],
               required: true,
               label: 'account.register.password.label',
               customDescription: {
-                class: 'input-help',
                 key: 'account.register.password.extrainfo.message',
                 args: { 0: '7' },
               },

@@ -221,21 +221,36 @@ To dynamically set the default locale, use the URL parameter `lang` when rewriti
 
 To add other languages except English, German or French:
 
-1. Create a new json-mapping-file with all translations, e.g., `src/assets/i18n/nl_NL.json`.
+1. Add the locale to the ICM channel configuration.
 
-2. Add the locale to the environments under `src/environments`, e.g.
+2. Create a new json-mapping-file with all translations, e.g., `src/assets/i18n/nl_NL.json`.
 
-   ```typescript
-    { lang: 'nl_NL', currency: 'EUR', value: 'nl', displayName: 'Dutch', displayLong: 'Dutch (Netherlands)' }
+<!-- spell-checker: words Niederländisch -->
+
+3. (optional) Add the new language switch translation keys to other locales:
+   _example de_DE.json_
+
+   ```
+     "locale.nl_NL.long": "Niederländisch",
+     "locale.nl_NL.short": "nl",
    ```
 
-3. Import the Angular locale data in the [`InternationalizationModule`](../../src/app/core/internationalization.module.ts):
+4. (optional) Add the locale specific currency filter to the environments under `src/environments`, e.g.
+
+   ```typescript
+    localeCurrencyOverride: {
+      ...
+      nl_NL: 'EUR',
+    },
+   ```
+
+5. Import the Angular locale data in the [`InternationalizationModule`](../../src/app/core/internationalization.module.ts):
 
    ```typescript
    import localeNl from '@angular/common/locales/nl';
    ```
 
-4. Register the locale using `registerLocaleData` in the constructor:
+6. Register the locale using `registerLocaleData` in the constructor:
 
    ```typescript
    registerLocaleData(localeNl);

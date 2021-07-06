@@ -80,7 +80,7 @@ export class CMSFacade {
     id = scope ? `${id}@${scope}` : id;
     id = amount ? `${id}@${amount}` : id;
 
-    if (categoryId && scope !== 'Global') {
+    if (categoryId && scope !== 'GlobalScope') {
       searchParameter.category = [CategoryHelper.getCategoryPath(categoryId)];
     }
 

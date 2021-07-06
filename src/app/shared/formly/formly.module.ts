@@ -23,6 +23,7 @@ import { CheckboxFieldComponent } from './types/checkbox-field/checkbox-field.co
 import { EmailFieldComponent } from './types/email-field/email-field.component';
 import { FieldsetFieldComponent } from './types/fieldset-field/fieldset-field.component';
 import { PasswordFieldComponent } from './types/password-field/password-field.component';
+import { RadioFieldComponent } from './types/radio-field/radio-field.component';
 import { SelectFieldComponent } from './types/select-field/select-field.component';
 import { TextInputFieldComponent } from './types/text-input-field/text-input-field.component';
 import { TextareaFieldComponent } from './types/textarea-field/textarea-field.component';
@@ -30,6 +31,7 @@ import { DescriptionWrapperComponent } from './wrappers/description-wrapper/desc
 import { HorizontalCheckboxWrapperComponent } from './wrappers/horizontal-checkbox-wrapper/horizontal-checkbox-wrapper.component';
 import { HorizontalWrapperComponent } from './wrappers/horizontal-wrapper/horizontal-wrapper.component';
 import { InputAddonWrapperComponent } from './wrappers/input-addon-wrapper/input-addon-wrapper.component';
+import { RadioHorizontalWrapperComponent } from './wrappers/radio-horizontal-wrapper/radio-horizontal-wrapper.component';
 import { TextareaDescriptionWrapperComponent } from './wrappers/textarea-description-wrapper/textarea-description-wrapper.component';
 import { TooltipWrapperComponent } from './wrappers/tooltip-wrapper/tooltip-wrapper.component';
 import { ValidationWrapperComponent } from './wrappers/validation-wrapper/validation-wrapper.component';
@@ -64,7 +66,7 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
         {
           name: 'ish-textarea-field',
           component: TextareaFieldComponent,
-          wrappers: ['form-field-horizontal', 'validation', 'textarea-description'],
+          wrappers: ['form-field-horizontal', 'textarea-description', 'validation'],
         },
         {
           name: 'ish-checkbox-field',
@@ -76,6 +78,11 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
           name: 'ish-fieldset-field',
           component: FieldsetFieldComponent,
         },
+        {
+          name: 'ish-radio-field',
+          component: RadioFieldComponent,
+          wrappers: ['form-field-radio-horizontal'],
+        },
       ],
       wrappers: [
         { name: 'form-field-horizontal', component: HorizontalWrapperComponent },
@@ -85,6 +92,7 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
         { name: 'tooltip', component: TooltipWrapperComponent },
         { name: 'validation', component: ValidationWrapperComponent },
         { name: 'description', component: DescriptionWrapperComponent },
+        { name: 'form-field-radio-horizontal', component: RadioHorizontalWrapperComponent },
       ],
       extras: {
         lazyRender: true,
@@ -117,6 +125,8 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
     HorizontalWrapperComponent,
     InputAddonWrapperComponent,
     PasswordFieldComponent,
+    RadioFieldComponent,
+    RadioHorizontalWrapperComponent,
     SelectFieldComponent,
     TextInputFieldComponent,
     TextareaDescriptionWrapperComponent,
