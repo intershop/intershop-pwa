@@ -174,6 +174,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
           greedy: [
             /\bfa\b/,
             /\bmodal\b/,
+            /\bdrop/,
             /\bswiper\b/,
             /\bcarousel\b/,
             /\bslide\b/,
