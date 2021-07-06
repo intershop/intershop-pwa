@@ -7,7 +7,7 @@ on:
       - 'docs/**'
 
 env:
-  ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
+  ICM_BASE_URL: https://cxmldemo-7-10-33-0.test.intershop.com
   B2C_APP_SUFFIX: universal-b2c
   B2B_APP_SUFFIX: universal-b2b
 
