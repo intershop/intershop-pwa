@@ -5,6 +5,7 @@ import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
+import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { NavigationCategory } from 'ish-core/models/navigation-category/navigation-category.model';
 
@@ -36,7 +37,10 @@ describe('Sub Category Navigation Component', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [MockComponent(FaIconComponent), SubCategoryNavigationComponent],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
+      providers: [
+        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
+        { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 2 },
+      ],
     }).compileComponents();
   });
 

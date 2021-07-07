@@ -38,7 +38,7 @@ describe('Configuration Selectors', () => {
       expect(getICMServerURL(store$.state)).toBeUndefined();
       expect(getICMStaticURL(store$.state)).toBeUndefined();
       expect(getFeatures(store$.state)).toBeUndefined();
-      expect(getDeviceType(store$.state)).not.toBeEmpty();
+      expect(getDeviceType(store$.state)).toBeUndefined();
       expect(getIdentityProvider(store$.state)).toBeUndefined();
     });
   });
@@ -170,6 +170,7 @@ describe('Configuration Selectors', () => {
       it('should return ICM server currencies for available currencies', () => {
         expect(getAvailableCurrencies(store$.state)).toMatchInlineSnapshot(`
           Array [
+            "USD",
             "EUR",
           ]
         `);
