@@ -8,9 +8,6 @@ services:
       context: .
       # dockerfile: Dockerfile_noSSR
       args:
-        # configuration: local
-        configuration: production
-        # configuration: local,production
         serviceWorker: 'false'
     environment:
       - LOGGING=on

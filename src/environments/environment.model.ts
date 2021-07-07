@@ -110,10 +110,9 @@ export interface Environment {
   dataRetention: DataRetentionPolicy;
 }
 
-export const ENVIRONMENT_DEFAULTS: Environment = {
+export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
-  icmBaseURL: 'NOT SET',
-  icmChannel: 'inSPIRED-inTRONICS-Site',
+  icmBaseURL: 'https://pwa-ish-demo.test.intershop.com',
   icmServer: 'INTERSHOP/rest/WFS',
   icmServerStatic: 'INTERSHOP/static/WFS',
   icmApplication: 'rest',

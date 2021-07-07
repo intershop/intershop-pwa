@@ -44,7 +44,7 @@
     "analyze": "ng build --configuration production --stats-json && npx webpack-bundle-analyzer --host 0.0.0.0 dist/browser/stats.json dist/browser",
     "serve": "node dist/server/main.js",
     "start": "npm-run-all build serve",
-    "start:local": "ng run intershop-pwa:serve-ssr:local",
+    "start:local": "ng run intershop-pwa:serve-ssr",
     "xliff": "node scripts/convert-to-xliff.js"
   },
   "dependencies": {

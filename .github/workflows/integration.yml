@@ -47,9 +47,7 @@ jobs:
         run: node schematics/customization/service-worker false
 
       - name: Build SSR
-        run: |
-          node scripts/init-local-environment -f
-          npm run build
+        run: npm run build
 
       - name: Upload Build Output
         uses: actions/upload-artifact@v2

@@ -129,8 +129,6 @@ stat src/app/extensions/quoting/shared/custom-quote-widget/custom-quote-widget.c
 
 sed -i -e "s%icmBaseURL.*%icmBaseURL: 'http://localhost:4200',%g" src/environments/environment.ts
 
-node scripts/init-local-environment -f
-
 node schematics/customization/service-worker false
 grep '"serviceWorker": false' angular.json
 
@@ -146,7 +144,7 @@ echo '<p>COMPONENT_OVERRIDES</p>' > src/app/pages/home/home-page.component.local
 
 export NODE_OPTIONS=--max_old_space_size=8192
 
-npm run build --configuration=local
+npm run build
 
 nohup bash -c "npm run serve &"
 wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200

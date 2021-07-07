@@ -9,11 +9,11 @@ if (configuration === 'true') {
   process.exit(1);
 }
 
-if (!configuration) {
-  console.log('falling back to configuration "production"');
-  configuration = 'production';
-  console.log('you can run other configuration(s) with npm using the form "--configuration=<config1>,production"');
+let configString = '';
+
+if (configuration) {
+  configString = '-c ' + configuration;
 }
 
-execSync('npm run ng -- build -c ' + configuration, { stdio: [0, 1, 2] });
-execSync('npm run ng -- run intershop-pwa:server -c ' + configuration, { stdio: [0, 1, 2] });
+execSync('npm run ng -- build ' + configString, { stdio: [0, 1, 2] });
+execSync('npm run ng -- run intershop-pwa:server ' + configString, { stdio: [0, 1, 2] });

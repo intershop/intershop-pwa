@@ -36,18 +36,60 @@ function crawlFiles(folder: string, callback: (files: string[]) => void) {
   }
 }
 
+// tslint:disable-next-line: no-any
+function traverse(obj: object, test: (value: unknown) => boolean, func: (obj: any, key: string) => void) {
+  Object.entries(obj).forEach(([k, v]) => {
+    if (test(v)) {
+      func(obj, k);
+    }
+  });
+  Object.values(obj).forEach(v => {
+    if (v && typeof v === 'object') {
+      traverse(v, test, func);
+    }
+  });
+}
+
 /*
  * RULES:
  * - no elvis operators
  * - no instanceof checks
  */
 export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSchema, targetOptions: TargetOptions) => {
-  const configurations = targetOptions.configuration.split(',');
-  const specificConfigurations = configurations.filter(x => x !== 'production');
-  if (specificConfigurations.length > 1) {
-    console.warn('cannot handle multiple configurations, ignoring', specificConfigurations.slice(1));
+  const angularJson = JSON.parse(fs.readFileSync('angular.json', { encoding: 'utf-8' }));
+
+  // use angular.json 'defaultConfiguration' if no explicit configuration was set
+  if (!targetOptions.configuration) {
+    targetOptions.configuration =
+      angularJson.projects[targetOptions.project].architect[targetOptions.target].defaultConfiguration ||
+      'default,production';
   }
-  const key = specificConfigurations.length && specificConfigurations[0];
+
+  if (targetOptions.configuration === 'local' || targetOptions.configuration === 'production') {
+    console.error(
+      `configuration cannot just be ${targetOptions.configuration}, it has to be used with a theme (--configuration=<theme>,${targetOptions.configuration})`
+    );
+    process.exit(1);
+  }
+
+  const availableConfigurations = Object.keys(
+    angularJson.projects[angularJson.defaultProject].architect.build.configurations
+  );
+
+  const normalConfigTest = (x: string) => x !== 'local' && x !== 'production';
+
+  const configRegex = `^(${availableConfigurations.filter(normalConfigTest).join('|')}),(local|production)$`;
+  if (!new RegExp(configRegex).test(targetOptions.configuration)) {
+    console.error(`requested configuration does not match pattern '${configRegex}'`);
+    process.exit(1);
+  }
+
+  // tslint:disable-next-line: no-console
+  console.log('\n');
+  log('using configuration:', targetOptions.configuration);
+
+  const configurations = targetOptions.configuration.split(',');
+  const firstConfiguration = configurations.filter(normalConfigTest)[0];
 
   const angularCompilerPlugin = config.plugins.find(
     (pl: AngularPlugin) => pl.options && pl.options.directTemplateLoading !== undefined
@@ -64,7 +106,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
   }
 
   // set production mode, service-worker, ngrx runtime checks
-  const production = configurations.includes('production') || angularJsonConfig.buildOptimizer;
+  const production = !!(configurations.includes('production') || angularJsonConfig.buildOptimizer);
   const serviceWorker = !!angularJsonConfig.serviceWorker;
   const ngrxRuntimeChecks = !!process.env.TESTING || !production;
   config.plugins.push(
@@ -189,28 +231,34 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     );
   }
 
-  if (key) {
-    const angularJson = JSON.parse(fs.readFileSync('angular.json', { encoding: 'utf-8' }));
-    const availableConfigurations = Object.keys(
-      angularJson.projects[angularJson.defaultProject].architect.build.configurations
-    );
+  log(`setting up replacements for "${firstConfiguration}"`);
 
-    log(`setting up replacements for "${key}"`);
+  crawlFiles(join(process.cwd()), files => {
+    const replacements = files
+      .filter(f => f.includes(`.${firstConfiguration}.`) && !f.endsWith('.spec.ts'))
+      .map(replacement => ({
+        replacement,
+        original: availableConfigurations.reduce((acc, k) => acc.replace(`.${k}.`, '.'), replacement),
+      }))
+      .filter(replacement => files.includes(replacement.original));
 
-    crawlFiles(join(process.cwd()), files => {
-      const replacements = files
-        .filter(f => f.includes(`.${key}.`) && !f.endsWith('.spec.ts'))
-        .map(replacement => ({
-          replacement,
-          original: availableConfigurations.reduce((acc, k) => acc.replace(`.${k}.`, '.'), replacement),
-        }))
-        .filter(replacement => files.includes(replacement.original));
-
-      replacements.forEach(replacement => {
-        angularCompilerPlugin.options.fileReplacements[replacement.original] = replacement.replacement;
-        warn('using', replacement.replacement.replace(process.cwd() + sep, ''));
-      });
+    replacements.forEach(replacement => {
+      angularCompilerPlugin.options.fileReplacements[replacement.original] = replacement.replacement;
+      warn('using', replacement.replacement.replace(process.cwd() + sep, ''));
     });
+  });
+
+  if (firstConfiguration !== 'default') {
+    const defaultThemePath = join('src', 'styles', 'themes', 'default');
+    const newThemePath = join('src', 'styles', 'themes', firstConfiguration);
+
+    traverse(
+      config,
+      v => typeof v === 'string' && v.includes(defaultThemePath),
+      (obj, key) => {
+        obj[key] = (obj[key] as string).replace(defaultThemePath, newThemePath);
+      }
+    );
   }
 
   if (angularJsonConfig.tsConfig.endsWith('tsconfig.app-no-checks.json')) {
@@ -219,6 +267,9 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
       warn('USING NO COMPILE CHECKS SHOULD NEVER BE DONE IN PRODUCTION MODE!');
     }
   }
+
+  // tslint:disable-next-line: no-commented-out-code
+  // fs.writeFileSync('effective.config.json', JSON.stringify(config, undefined, 2), { encoding: 'utf-8' });
 
   return config;
 };
