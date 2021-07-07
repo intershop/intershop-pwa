@@ -80,7 +80,13 @@
                 }
               ],
               "serviceWorker": false,
-              "ngswConfigPath": "ngsw-config.json"
+              "ngswConfigPath": "ngsw-config.json",
+              "fileReplacements": [
+                {
+                  "replace": "src/app/core/store/store-devtools.module.ts",
+                  "with": "src/app/core/store/store-devtools.module.prod.ts"
+                }
+              ]
             },
             "local": {
               "optimization": false,
@@ -133,7 +139,6 @@
               "path": "./templates/webpack/webpack.custom.ts",
               "replaceDuplicatePlugins": true
             },
-            "showCircularDependencies": false,
             "outputPath": "dist/server",
             "main": "server.ts",
             "optimization": true,
