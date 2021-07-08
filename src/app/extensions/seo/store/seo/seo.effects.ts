@@ -123,7 +123,7 @@ export class SeoEffects {
           description: 'seo.defaults.description',
           robots: 'index, follow',
           'og:type': 'website',
-          'og:image': `${this.baseURL(false)}assets/img/og-image-default.jpg`,
+          'og:image': `${this.baseURL(false)}assets/img/og-image-default.jpg`.replace('http:', 'https:'),
           ...attributes,
         })),
         distinctUntilChanged(isEqual),
@@ -191,14 +191,17 @@ export class SeoEffects {
   }
 
   private setCanonicalLink(url: string) {
+    // the canonical URL of a production system should always be with 'https:'
+    // even though the PWA SSR container itself is usually not deployed in an SSL environment so the URLs need manual adaption
+    const canonicalUrl = url.replace('http:', 'https:');
     let canonicalLink = this.doc.querySelector('link[rel="canonical"]');
     if (!canonicalLink) {
       canonicalLink = this.doc.createElement('link');
       canonicalLink.setAttribute('rel', 'canonical');
       this.doc.head.appendChild(canonicalLink);
     }
-    canonicalLink.setAttribute('href', url);
-    this.addOrModifyTag({ property: 'og:url', content: url });
+    canonicalLink.setAttribute('href', canonicalUrl);
+    this.addOrModifyTag({ property: 'og:url', content: canonicalUrl });
   }
 
   private setSeoAttributes(seoAttributes: SeoAttributes) {
