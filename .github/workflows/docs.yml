@@ -20,9 +20,10 @@ jobs:
           fetch-depth: 0
 
       - name: Use Node.js 14
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 14
+          cache: npm
 
       - name: Install root dependencies
         run: npm ci
