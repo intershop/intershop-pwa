@@ -56,11 +56,10 @@ livenessProbe: {}
 
 readinessProbe: {}
   # httpGet:
-  #   path: /home
+  #   path: /health-check
   #   port: 4200
   # initialDelaySeconds: 10
   # periodSeconds: 5
-  # timeoutSeconds: 2
 
 nginx:
   enabled: false
@@ -105,12 +104,6 @@ nginx:
   livenessProbe: {}
 
   readinessProbe: {}
-    # httpGet:
-    #   path: /en/home
-    #   port: 80
-    # initialDelaySeconds: 10
-    # periodSeconds: 5
-    # timeoutSeconds: 2
 
 ingress:
   enabled: true

@@ -39,11 +39,6 @@ spec:
               protocol: TCP
           livenessProbe:
             {{- if empty .Values.livenessProbe }}
-            exec:
-              command:
-              - /bin/sh
-              - -c
-              - netstat -an | egrep 4200.*LISTEN | grep 4200
             {{- else }}
               {{- with .Values.livenessProbe }}
               {{- toYaml . | nindent 12 }}
@@ -51,12 +46,6 @@ spec:
             {{- end }}
           readinessProbe:
             {{- if empty .Values.readinessProbe }}
-            httpGet:
-              path: /home
-              port: 4200
-            initialDelaySeconds: 10
-            periodSeconds: 5
-            timeoutSeconds: 2
             {{- else }}
               {{- with .Values.readinessProbe }}
               {{- toYaml . | nindent 12 }}

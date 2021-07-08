@@ -108,6 +108,7 @@ export function app() {
     '*.*',
     express.static(join(DIST_FOLDER, 'browser'), {
       setHeaders: (res, path) => {
+        console.log('server', res, path);
         if (/\.[0-9a-f]{20,}\./.test(path)) {
           // file was output-hashed -> 1y
           res.set('Cache-Control', 'public, max-age=31557600');
@@ -118,6 +119,13 @@ export function app() {
       },
     })
   );
+
+  // Healthcheck
+  /* tslint:disable:no-unused */
+  // @ts-ignore
+  server.get('/health-check', (req, res) => {
+    res.send('app is working!');
+  });
 
   const icmProxy = proxy(ICM_BASE_URL, {
     // preserve original path
