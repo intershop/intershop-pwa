@@ -28,6 +28,9 @@ class TextInputFieldComponent extends FieldType {}
 @Component({ template: 'EmailFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class EmailFieldComponent extends FieldType {}
 
+@Component({ template: 'PhoneFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
+class PhoneFieldComponent extends FieldType {}
+
 @Component({ template: 'PasswordFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class PasswordFieldComponent extends FieldType {}
 
@@ -53,6 +56,7 @@ class DummyWrapperComponent extends FieldWrapper {}
     EmailFieldComponent,
     FieldsetFieldComponent,
     PasswordFieldComponent,
+    PhoneFieldComponent,
     RadioFieldComponent,
     SelectFieldComponent,
     TextInputFieldComponent,
@@ -81,6 +85,10 @@ class DummyWrapperComponent extends FieldWrapper {}
         {
           name: 'ish-password-field',
           component: PasswordFieldComponent,
+        },
+        {
+          name: 'ish-phone-field',
+          component: PhoneFieldComponent,
         },
         {
           name: 'ish-select-field',
