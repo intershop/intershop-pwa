@@ -38,6 +38,7 @@ services:
           - baseHref: /en
             channel: default
             lang: en_US
+            theme: blue
           - baseHref: /de
             channel: default
             lang: de_DE

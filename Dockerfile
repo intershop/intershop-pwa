@@ -17,27 +17,26 @@ RUN node schematics/customization/service-worker ${serviceWorker} || true
 COPY templates/webpack/* /workspace/templates/webpack/
 ARG testing=false
 ENV TESTING=${testing}
-ARG configuration=
-RUN npm run build client --configuration=${configuration}
 # synchronize-marker:pwa-docker-build:end
 
 # ^ this part above is copied to Dockerfile_noSSR and should be kept in sync
 
+RUN npm run build:multi client
 COPY tsconfig.server.json server.ts /workspace/
-RUN npm run build server --configuration=${configuration}
+RUN npm run build:multi server
 # remove cache check for resources (especially index.html)
 # https://github.com/angular/angular/issues/23613#issuecomment-415886919
 RUN test "${serviceWorker}" = "true" && sed -i 's/canonicalHash !== cacheBustedHash/false/g' /workspace/dist/browser/ngsw-worker.js || true
-COPY dist/entrypoint.sh dist/healthcheck.js dist/server.crt dist/server.key dist/robots.txt* /workspace/dist/
+COPY dist/entrypoint.sh dist/healthcheck.js dist/server.crt dist/server.key dist/server.js dist/robots.txt* /workspace/dist/
 
 FROM node:14-alpine
+RUN npm i -g express express-http-proxy pm2
 COPY --from=buildstep /workspace/dist /dist
 ARG displayVersion=
 LABEL displayVersion="${displayVersion}"
-ENV DISPLAY_VERSION=${displayVersion}
-ARG configuration=production
-LABEL configuration="${configuration}"
+ENV DISPLAY_VERSION=${displayVersion} NODE_PATH=/usr/local/lib/node_modules
 EXPOSE 4200
+RUN mkdir /.pm2 && chmod 777 -Rf /.pm2
 USER nobody
 HEALTHCHECK --interval=60s --timeout=20s --start-period=2s CMD node /dist/healthcheck.js
 ENTRYPOINT ["sh","/dist/entrypoint.sh"]

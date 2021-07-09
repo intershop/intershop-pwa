@@ -30,7 +30,7 @@
     "spell-check-localizations": "cspell lint --no-summary --no-progress \"src/assets/i18n/{de_DE,en_US,fr_FR}.json\"",
     "clean": "git clean -xdf -e \"*environment.local.ts\" -e \"*node_modules\"",
     "postclean": "npm ci",
-    "check": "npm-run-all \"lint -- --fix\" format compile build \"test -- --maxWorkers=50%\" dead-code clean-localizations",
+    "check": "npm-run-all \"lint -- --fix\" format compile build:multi \"test -- --maxWorkers=50%\" dead-code clean-localizations",
     "clean-check": "npm-run-all clean check",
     "changelog": "npx -p conventional-changelog-cli conventional-changelog -n intershop-changelog.js -i CHANGELOG.md -s",
     "3rd-party-licenses": "npm ci && npx license-checker --csv --out 3rd-party-licenses.txt --customPath templates/3rd-party-licenses_format.json",
@@ -41,9 +41,12 @@
     "synchronize-lazy-components": "ng g lazy-components",
     "build:watch": "npm run build client -- --watch",
     "build": "node scripts/build-pwa",
+    "build:multi": "node scripts/build-multi-pwa",
     "analyze": "npm run build client -- --stats-json && npx webpack-bundle-analyzer --host 0.0.0.0 dist/browser/stats.json dist/browser",
     "serve": "node dist/server/main.js",
+    "serve:multi": "npx -p pm2 pm2-runtime dist/ecosystem.yml",
     "start": "npm-run-all build serve",
+    "start:multi": "npm-run-all build:multi serve:multi",
     "start:local": "ng run intershop-pwa:serve-ssr",
     "xliff": "node scripts/convert-to-xliff.js"
   },
@@ -196,7 +199,8 @@
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-customizable"
-    }
+    },
+    "active-themes": "default,blue"
   },
   "postinstall": {
     "jest-extended/types": "copy node_modules/@types/jest-extended"
