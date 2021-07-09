@@ -13,10 +13,11 @@
   "private": true,
   "scripts": {
     "init-local-environment": "node scripts/init-local-environment",
-    "postinstall": "postinstall && npm-run-all --silent build:tslint-rules build:schematics synchronize-lazy-components init-local-environment",
+    "postinstall": "postinstall && npm-run-all --silent build:tslint-rules build:schematics synchronize-lazy-components init-local-environment ngcc",
     "build:tslint-rules": "cd tslint-rules && npm run build",
     "build:schematics": "cd schematics && npm run build",
     "ng": "ng",
+    "ngcc": "ngcc --first-only",
     "test": "jest --ci",
     "test:watch": "jest --watch -i",
     "e2e": "cd e2e && npm install && node open-cypress",
