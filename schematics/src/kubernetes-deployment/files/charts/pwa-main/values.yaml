@@ -44,40 +44,39 @@ environment: []
   # - name: 'MAX_RESPONSE_TIME'
   #   value: '1500'
 
-livenessProbe: {}
-  # exec:
-  #  command:
-  #     - node
-  #     - /dist/healthcheck.js
-  # initialDelaySeconds: 10
-  # timeoutSeconds: 20
-  # periodSeconds: 30
-  # failureThreshold: 2
+livenessProbe:
+  exec:
+    command:
+      - /bin/sh
+      - -c
+      - '[ -f /tmp/pwa-ssr.pid ] && ps -A | grep pwa-ssr'
+  initialDelaySeconds: 10
+  periodSeconds: 5
 
-readinessProbe: {}
-  # httpGet:
-  #   path: /health-check
-  #   port: 4200
-  # initialDelaySeconds: 10
-  # periodSeconds: 5
+readinessProbe:
+  httpGet:
+    path: /health-check
+    port: 4200
+  initialDelaySeconds: 10
+  periodSeconds: 5
 
 nginx:
-  enabled: false
+  enabled: true
 
-  channels: {}
+  channels:
     # at least one channel has to be configured
     # configuration details could be found in multi-site-configurations guide
-    # MULTI_CHANNEL: |
-    #   .+:
-    #     - baseHref: /en
-    #       channel: default
-    #       lang: en_US
-    #     - baseHref: /de
-    #       channel: default
-    #       lang: de_DE
-    #     - baseHref: /fr
-    #       channel: default
-    #       lang: fr_FR
+    MULTI_CHANNEL: |
+      .+:
+        - baseHref: /en
+          channel: default
+          lang: en_US
+        - baseHref: /de
+          channel: default
+          lang: de_DE
+        - baseHref: /fr
+          channel: default
+          lang: fr_FR
 
   replicaCount: 1
 
