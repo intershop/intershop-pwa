@@ -1,0 +1,15 @@
+{{- if .Values.nginx.enabled -}}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "pwa-channels.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "pwa-channels.name" . }}
+    helm.sh/chart: {{ include "pwa-main.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- with .Values.nginx.channels }}
+data:
+    {{- toYaml . | nindent 2 }}
+{{- end }}
+{{- end -}}

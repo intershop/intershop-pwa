@@ -1,10 +1,10 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "pwa-main.fullname" . -}}
+{{- $serviceName := (include "pwa-ingress.service" .)  }}
 {{- $ingressPaths := .Values.ingress.paths -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: {{ include "pwa-main.fullname" . }}
   labels:
     app.kubernetes.io/name: {{ include "pwa-main.name" . }}
     helm.sh/chart: {{ include "pwa-main.chart" . }}
@@ -33,7 +33,7 @@ spec:
 	{{- range $ingressPaths }}
           - path: {{ . }}
             backend:
-              serviceName: {{ $fullName }}
+              serviceName: {{ $serviceName }}
               servicePort: http
 	{{- end }}
   {{- end }}

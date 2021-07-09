@@ -1,7 +1,9 @@
 // https://docs.docker.com/engine/reference/builder/#healthcheck
 
-if (!process.env['ICM_BASE_URL']) {
-  console.log(`no explicit ICM_BASE_URL set -- skipping healthcheck`);
+const { performance } = require('perf_hooks');
+
+if (!process.env['MAX_RESPONSE_TIME']) {
+  console.log(`no explicit MAX_RESPONSE_TIME set -- skipping healthcheck`);
   process.exit(0);
 }
 
@@ -9,19 +11,7 @@ if (process.env.TRUST_ICM) {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 }
 
-const [icmProtocol, icmBase] = process.env['ICM_BASE_URL'].split('://');
-let [, icmHost, icmPort] = /^(.*?):?([0-9]+)?$/.exec(icmBase);
-icmPort = icmPort || (icmProtocol === 'http' ? '80' : '443');
-
-const icmClient = require(icmProtocol);
 const pwaClient = process.env.SSL ? require('https') : require('http')
-
-const optionsICMRest = {
-  host: icmHost,
-  port: icmPort,
-  path: '/INTERSHOP',
-  timeout: 10000,
-};
 
 const optionsAngularUniversal = {
   host: 'localhost',
@@ -34,26 +24,17 @@ const errFunc = function(err) {
   process.exit(1);
 };
 
-console.log(`checking for ICM on ${icmProtocol}://${icmHost}:${icmPort}`);
-const requestICMRest = icmClient.request(optionsICMRest, res => {
-  console.log(`STATUS ICM REST: ${res.statusCode === 404 ? 'OK' : res.statusMessage}`);
-  if (res.statusCode == 404) {
-    const requestAngularUniversal = pwaClient.request(optionsAngularUniversal, res => {
-      console.log(`STATUS STOREFRONT: ${res.statusCode} ${res.statusMessage}`);
-      if (res.statusCode == 200) {
-        process.exit(0);
-      } else {
-        process.exit(1);
-      }
-    });
-    requestAngularUniversal.on('error', errFunc);
-
-    requestAngularUniversal.end();
+const startTime = performance.now();
+const requestAngularUniversal = pwaClient.request(optionsAngularUniversal, res => {
+  const endTime = performance.now();
+  const responseTime = endTime - startTime
+  console.log(`STATUS STOREFRONT: ${res.statusCode} RESPONSE TIME: ${responseTime}`);
+  if (res.statusCode == 200 && responseTime < process.env['MAX_RESPONSE_TIME']) {
+    process.exit(0);
   } else {
     process.exit(1);
   }
 });
+requestAngularUniversal.on('error', errFunc);
 
-requestICMRest.on('error', errFunc);
-
-requestICMRest.end();
+requestAngularUniversal.end();
