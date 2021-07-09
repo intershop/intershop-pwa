@@ -33,7 +33,6 @@ jobs:
         uses: elgohr/Publish-Docker-Github-Action@master
         env:
           serviceWorker: false
-          configuration: production
           displayVersion: ${{ github.event.after }}
           testing: true
         with:

@@ -15,5 +15,19 @@ if (configuration) {
   configString = '-c ' + configuration;
 }
 
-execSync('npm run ng -- build ' + configString, { stdio: [0, 1, 2] });
-execSync('npm run ng -- run intershop-pwa:server ' + configString, { stdio: [0, 1, 2] });
+const client = process.argv[2] !== 'server';
+const server = process.argv[2] !== 'client';
+const partial = (!client && server) || (client && !server);
+const remainingArgs = process.argv.slice(partial ? 3 : 2);
+
+if (client) {
+  execSync(`npm run ng -- build ${configString} ${remainingArgs.join(' ')}`, {
+    stdio: 'inherit',
+  });
+}
+
+if (server) {
+  execSync(`npm run ng -- run intershop-pwa:server ${configString} ${remainingArgs.join(' ')}`, {
+    stdio: 'inherit',
+  });
+}

@@ -17,14 +17,14 @@ RUN node schematics/customization/service-worker ${serviceWorker} || true
 COPY templates/webpack/* /workspace/templates/webpack/
 ARG testing=false
 ENV TESTING=${testing}
-ARG configuration=production
-RUN npm run ng -- build -c ${configuration}
+ARG configuration=
+RUN npm run build client --configuration=${configuration}
 # synchronize-marker:pwa-docker-build:end
 
 # ^ this part above is copied to Dockerfile_noSSR and should be kept in sync
 
 COPY tsconfig.server.json server.ts /workspace/
-RUN npm run ng -- run intershop-pwa:server -c ${configuration}
+RUN npm run build server --configuration=${configuration}
 # remove cache check for resources (especially index.html)
 # https://github.com/angular/angular/issues/23613#issuecomment-415886919
 RUN test "${serviceWorker}" = "true" && sed -i 's/canonicalHash !== cacheBustedHash/false/g' /workspace/dist/browser/ngsw-worker.js || true
