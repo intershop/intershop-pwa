@@ -40,6 +40,21 @@ export class SpecialValidators {
       : { email: true };
   }
 
+  static phone(control: FormControl) {
+    /*
+     * simplified phone matching
+     * - phone number must start with + or digit
+     * - number blocks can be separated with hyphens or spaces
+     * - number blocks can stand in brackets
+     * - phone number must have 7 to 15 digits
+     */
+    return control.value
+      ? /^((?:\+?\d{7,15})$)|^((\(?\d{3}\)?(?: |-)?){2}\(?\d{3,4}\)?)$/.test(control.value)
+        ? undefined
+        : { phone: true }
+      : undefined;
+  }
+
   /**
    * Compare two form controls for equality.
    *

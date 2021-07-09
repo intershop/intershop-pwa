@@ -350,7 +350,7 @@ export class RegistrationFormConfigurationService {
           },
           {
             key: 'phoneHome',
-            type: 'ish-text-input-field',
+            type: 'ish-phone-field',
             templateOptions: {
               label: 'account.profile.phone.label',
               required: false,

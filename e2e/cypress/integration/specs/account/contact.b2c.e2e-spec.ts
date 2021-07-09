@@ -8,7 +8,7 @@ const _ = {
   password: '!InterShop00!',
   fullName: 'Patricia Miller',
   formContent: {
-    phone: '12345',
+    phone: '12345678',
     subject: 'Returns',
     comment: "Don't fit.",
   },

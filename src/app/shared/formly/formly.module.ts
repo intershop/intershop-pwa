@@ -23,6 +23,7 @@ import { CheckboxFieldComponent } from './types/checkbox-field/checkbox-field.co
 import { EmailFieldComponent } from './types/email-field/email-field.component';
 import { FieldsetFieldComponent } from './types/fieldset-field/fieldset-field.component';
 import { PasswordFieldComponent } from './types/password-field/password-field.component';
+import { PhoneFieldComponent } from './types/phone-field/phone-field.component';
 import { RadioFieldComponent } from './types/radio-field/radio-field.component';
 import { SelectFieldComponent } from './types/select-field/select-field.component';
 import { TextInputFieldComponent } from './types/text-input-field/text-input-field.component';
@@ -51,6 +52,11 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
         {
           name: 'ish-email-field',
           component: EmailFieldComponent,
+          wrappers: ['form-field-horizontal', 'validation'],
+        },
+        {
+          name: 'ish-phone-field',
+          component: PhoneFieldComponent,
           wrappers: ['form-field-horizontal', 'validation'],
         },
         {
@@ -125,6 +131,7 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
     HorizontalWrapperComponent,
     InputAddonWrapperComponent,
     PasswordFieldComponent,
+    PhoneFieldComponent,
     RadioFieldComponent,
     RadioHorizontalWrapperComponent,
     SelectFieldComponent,
