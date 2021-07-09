@@ -6,15 +6,26 @@ import { Configuration, DefinePlugin, WebpackPluginInstance } from 'webpack';
 
 const purgecssPlugin = require('purgecss-webpack-plugin');
 
-const log = (...txt: unknown[]) => {
-  // tslint:disable-next-line: no-console
-  console.log('Custom Webpack:', ...txt);
-};
+class Logger {
+  constructor(private target: string, private config: string, progressActive: boolean) {
+    if (progressActive) {
+      // tslint:disable-next-line: no-console
+      console.log('\n');
+    }
+  }
 
-const warn = (...txt: unknown[]) => {
-  // tslint:disable-next-line: no-console
-  console.warn('Custom Webpack:', ...txt);
-};
+  log(...txt: unknown[]) {
+    // tslint:disable-next-line: no-console
+    console.log(`${this.target}@${this.config}:`, ...txt);
+  }
+
+  warn(...txt: unknown[]) {
+    // tslint:disable-next-line: no-console
+    console.warn(`${this.target}@${this.config}:`, ...txt);
+  }
+}
+
+let logger: Logger;
 
 type AngularPlugin = WebpackPluginInstance & {
   options: {
@@ -50,12 +61,7 @@ function traverse(obj: object, test: (value: unknown) => boolean, func: (obj: an
   });
 }
 
-/*
- * RULES:
- * - no elvis operators
- * - no instanceof checks
- */
-export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSchema, targetOptions: TargetOptions) => {
+function determineConfiguration(angularJsonConfig: CustomWebpackBrowserSchema, targetOptions: TargetOptions) {
   const angularJson = JSON.parse(fs.readFileSync('angular.json', { encoding: 'utf-8' }));
 
   // use angular.json 'defaultConfiguration' if no explicit configuration was set
@@ -72,24 +78,36 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     process.exit(1);
   }
 
-  const availableConfigurations = Object.keys(
-    angularJson.projects[angularJson.defaultProject].architect.build.configurations
-  );
+  const availableThemes = Object.keys(angularJson.projects[angularJson.defaultProject].architect.build.configurations);
 
   const normalConfigTest = (x: string) => x !== 'local' && x !== 'production';
 
-  const configRegex = `^(${availableConfigurations.filter(normalConfigTest).join('|')}),(local|production)$`;
+  const configRegex = `^(${availableThemes.filter(normalConfigTest).join('|')}),(local|production)$`;
   if (!new RegExp(configRegex).test(targetOptions.configuration)) {
     console.error(`requested configuration does not match pattern '${configRegex}'`);
     process.exit(1);
   }
 
-  // tslint:disable-next-line: no-console
-  console.log('\n');
-  log('using configuration:', targetOptions.configuration);
+  logger = new Logger(targetOptions.target, targetOptions.configuration, angularJsonConfig.progress);
 
   const configurations = targetOptions.configuration.split(',');
-  const firstConfiguration = configurations.filter(normalConfigTest)[0];
+  const theme = configurations.filter(normalConfigTest)[0];
+  const production = !!(configurations.includes('production') || angularJsonConfig.buildOptimizer);
+
+  return {
+    theme,
+    production,
+    availableThemes,
+  };
+}
+
+/*
+ * RULES:
+ * - no elvis operators
+ * - no instanceof checks
+ */
+export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSchema, targetOptions: TargetOptions) => {
+  const { theme, production, availableThemes } = determineConfiguration(angularJsonConfig, targetOptions);
 
   const angularCompilerPlugin = config.plugins.find(
     (pl: AngularPlugin) => pl.options && pl.options.directTemplateLoading !== undefined
@@ -102,11 +120,10 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     // needed after deactivating directTemplateLoading
     config.module.rules.push({ test: /\.html$/, loader: 'raw-loader' });
 
-    log('deactivated directTemplateLoading');
+    logger.log('deactivated directTemplateLoading');
   }
 
   // set production mode, service-worker, ngrx runtime checks
-  const production = !!(configurations.includes('production') || angularJsonConfig.buildOptimizer);
   const serviceWorker = !!angularJsonConfig.serviceWorker;
   const ngrxRuntimeChecks = !!process.env.TESTING || !production;
   config.plugins.push(
@@ -121,9 +138,9 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
       NGRX_RUNTIME_CHECKS: ngrxRuntimeChecks,
     })
   );
-  log('setting production:', production);
-  log('setting serviceWorker:', serviceWorker);
-  log('setting ngrxRuntimeChecks:', ngrxRuntimeChecks);
+  logger.log('setting production:', production);
+  logger.log('setting serviceWorker:', serviceWorker);
+  logger.log('setting ngrxRuntimeChecks:', ngrxRuntimeChecks);
 
   if (production) {
     // keep module names for debugging
@@ -138,7 +155,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
 
     // splitChunks not available for SSR build
     if (config.optimization.splitChunks) {
-      log('optimizing chunk splitting');
+      logger.log('optimizing chunk splitting');
 
       const cacheGroups = config.optimization.splitChunks.cacheGroups;
 
@@ -199,7 +216,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     }
 
     if (!process.env.TESTING) {
-      log('setting up data-testing-id removal');
+      logger.log('setting up data-testing-id removal');
       // remove testing ids when loading html files
       config.module.rules.push({
         test: /\.html$/,
@@ -207,7 +224,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
       });
     }
 
-    log('setting up purgecss CSS minification');
+    logger.log('setting up purgecss CSS minification');
     config.plugins.push(
       new purgecssPlugin({
         paths: glob.sync('./{src,projects}/**/*', { nodir: true }),
@@ -231,26 +248,26 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     );
   }
 
-  log(`setting up replacements for "${firstConfiguration}"`);
+  logger.log(`setting up replacements for "${theme}"`);
 
   crawlFiles(join(process.cwd()), files => {
     const replacements = files
-      .filter(f => f.includes(`.${firstConfiguration}.`) && !f.endsWith('.spec.ts'))
+      .filter(f => f.includes(`.${theme}.`) && !f.endsWith('.spec.ts'))
       .map(replacement => ({
         replacement,
-        original: availableConfigurations.reduce((acc, k) => acc.replace(`.${k}.`, '.'), replacement),
+        original: availableThemes.reduce((acc, k) => acc.replace(`.${k}.`, '.'), replacement),
       }))
       .filter(replacement => files.includes(replacement.original));
 
     replacements.forEach(replacement => {
       angularCompilerPlugin.options.fileReplacements[replacement.original] = replacement.replacement;
-      warn('using', replacement.replacement.replace(process.cwd() + sep, ''));
+      logger.warn('using', replacement.replacement.replace(process.cwd() + sep, ''));
     });
   });
 
-  if (firstConfiguration !== 'default') {
+  if (theme !== 'default') {
     const defaultThemePath = join('src', 'styles', 'themes', 'default');
-    const newThemePath = join('src', 'styles', 'themes', firstConfiguration);
+    const newThemePath = join('src', 'styles', 'themes', theme);
 
     traverse(
       config,
@@ -262,9 +279,9 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
   }
 
   if (angularJsonConfig.tsConfig.endsWith('tsconfig.app-no-checks.json')) {
-    warn('using tsconfig without compile checks');
+    logger.warn('using tsconfig without compile checks');
     if (production) {
-      warn('USING NO COMPILE CHECKS SHOULD NEVER BE DONE IN PRODUCTION MODE!');
+      logger.warn('USING NO COMPILE CHECKS SHOULD NEVER BE DONE IN PRODUCTION MODE!');
     }
   }
 
