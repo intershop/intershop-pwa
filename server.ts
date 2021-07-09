@@ -275,7 +275,7 @@ function run() {
     };
 
     const req = https.request(options, res => {
-        console.log('Certificate for', ICM_BASE_URL, 'authorized:', res.socket.authorized);
+      console.log('Certificate for', ICM_BASE_URL, 'authorized:', res.socket.authorized);
     });
 
     const certErrorCodes = [
@@ -294,7 +294,7 @@ function run() {
       'INVALID_PURPOSE',
       'CERT_UNTRUSTED',
       'CERT_REJECTED',
-      'HOSTNAME_MISMATCH'
+      'HOSTNAME_MISMATCH',
     ];
 
     req.on('error', e => {
@@ -303,7 +303,7 @@ function run() {
           'The given ICM_BASE_URL',
           ICM_BASE_URL,
           "has a certificate problem. Please set 'TRUST_ICM' variable to avoid further errors for all requests to the ICM_BASE_URL - never use this in production!"
-        )
+        );
       }
     });
 
