@@ -6,8 +6,6 @@ export const environment: Environment = {
 
   icmChannel: 'inSPIRED-inTRONICS-Site',
 
-  theme: 'default',
-
   features: ['compare', 'recently', 'rating', 'guestCheckout', 'wishlists'],
 
   ...overrides,

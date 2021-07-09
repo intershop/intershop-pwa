@@ -6,7 +6,7 @@ export const environment: Environment = {
 
   icmChannel: 'inSPIRED-inTRONICS_Business-Site',
 
-  theme: 'blue',
+  themeColor: '#688dc3',
 
   features: [
     'compare',
