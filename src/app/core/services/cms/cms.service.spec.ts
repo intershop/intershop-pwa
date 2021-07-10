@@ -34,8 +34,7 @@ describe('Cms Service', () => {
   describe('getContentInclude', () => {
     it('should call api service to retrieve content include', done => {
       when(apiService.get(anything(), anything())).thenReturn(of('My Data'));
-      // tslint:disable-next-line: no-any
-      when(cpepMapper.fromData(anything())).thenReturn({} as any);
+      when(cpepMapper.fromData(anything())).thenReturn([undefined, undefined]);
 
       cmsService.getContentInclude('ID').subscribe(
         data => {

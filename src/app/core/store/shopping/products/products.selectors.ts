@@ -15,7 +15,6 @@ import {
 } from 'ish-core/models/product-view/product-view.model';
 import {
   AllProductTypes,
-  Product,
   ProductCompletenessLevel,
   ProductHelper,
   VariationProduct,
@@ -34,8 +33,7 @@ const getProductsState = createSelector(getShoppingState, state => state.product
 export const { selectEntities: getProductEntities } = productAdapter.getSelectors(getProductsState);
 
 function productOrFailedStub(state: ProductsState, sku: string) {
-  // tslint:disable-next-line: ish-no-object-literal-type-assertion
-  return state.failed.includes(sku) ? ({ sku, failed: true } as Product) : state.entities[sku];
+  return state.failed.includes(sku) ? { sku, failed: true } : state.entities[sku];
 }
 
 const internalRawProduct = (sku: string) =>
