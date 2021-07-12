@@ -14,8 +14,6 @@ const PORT = process.env.PORT || 4200;
 
 const DIST_FOLDER = join(process.cwd(), 'dist');
 
-const ICM_BASE_URL = process.env.ICM_BASE_URL || environment.icmBaseURL;
-
 // uncomment this block to prevent ssr issues with third-party libraries regarding window, document, HTMLElement and navigator
 // tslint:disable-next-line: no-commented-out-code
 /*
@@ -35,6 +33,8 @@ global['navigator'] = win.navigator;
 export function app() {
   const logging = /on|1|true|yes/.test(process.env.LOGGING?.toLowerCase());
 
+  const ICM_BASE_URL = process.env.ICM_BASE_URL || environment.icmBaseURL;
+
   if (!ICM_BASE_URL) {
     console.error('ICM_BASE_URL not set');
     process.exit(1);
@@ -46,6 +46,53 @@ export function app() {
     // and https://github.com/angular/universal/issues/856#issuecomment-436364729
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     console.warn("ignoring all TLS verification as 'TRUST_ICM' variable is set - never use this in production!");
+  } else {
+    const [icmProtocol, icmBase] = ICM_BASE_URL.split('://');
+    // check for ssl certificate should be done, if https is used
+    if (icmProtocol === 'https') {
+      const https = require('https');
+
+      const options = {
+        host: icmBase,
+        method: 'get',
+        path: '/',
+      };
+
+      const req = https.request(options, res => {
+        console.log('Certificate for', ICM_BASE_URL, 'authorized:', res.socket.authorized);
+      });
+
+      const certErrorCodes = [
+        'CERT_SIGNATURE_FAILURE',
+        'CERT_NOT_YET_VALID',
+        'CERT_HAS_EXPIRED',
+        'ERROR_IN_CERT_NOT_BEFORE_FIELD',
+        'ERROR_IN_CERT_NOT_AFTER_FIELD',
+        'DEPTH_ZERO_SELF_SIGNED_CERT',
+        'SELF_SIGNED_CERT_IN_CHAIN',
+        'UNABLE_TO_GET_ISSUER_CERT_LOCALLY',
+        'UNABLE_TO_VERIFY_LEAF_SIGNATURE',
+        'CERT_CHAIN_TOO_LONG',
+        'CERT_REVOKED',
+        'INVALID_CA',
+        'INVALID_PURPOSE',
+        'CERT_UNTRUSTED',
+        'CERT_REJECTED',
+        'HOSTNAME_MISMATCH',
+      ];
+
+      req.on('error', e => {
+        if (certErrorCodes.includes(e.code)) {
+          console.log(
+            'The given ICM_BASE_URL',
+            ICM_BASE_URL,
+            "has a certificate problem. Please set 'TRUST_ICM' variable to avoid further errors for all requests to the ICM_BASE_URL - never use this in production!"
+          );
+        }
+      });
+
+      req.end();
+    }
   }
 
   // Express server
@@ -264,53 +311,8 @@ export function app() {
 }
 
 function run() {
-  const https = require('https');
-
-  if (!process.env.TRUST_ICM) {
-    // check ssl certificate for given ICM_BASE_URL
-    const options = {
-      host: ICM_BASE_URL.split('://')[1],
-      method: 'get',
-      path: '/',
-    };
-
-    const req = https.request(options, res => {
-      console.log('Certificate for', ICM_BASE_URL, 'authorized:', res.socket.authorized);
-    });
-
-    const certErrorCodes = [
-      'CERT_SIGNATURE_FAILURE',
-      'CERT_NOT_YET_VALID',
-      'CERT_HAS_EXPIRED',
-      'ERROR_IN_CERT_NOT_BEFORE_FIELD',
-      'ERROR_IN_CERT_NOT_AFTER_FIELD',
-      'DEPTH_ZERO_SELF_SIGNED_CERT',
-      'SELF_SIGNED_CERT_IN_CHAIN',
-      'UNABLE_TO_GET_ISSUER_CERT_LOCALLY',
-      'UNABLE_TO_VERIFY_LEAF_SIGNATURE',
-      'CERT_CHAIN_TOO_LONG',
-      'CERT_REVOKED',
-      'INVALID_CA',
-      'INVALID_PURPOSE',
-      'CERT_UNTRUSTED',
-      'CERT_REJECTED',
-      'HOSTNAME_MISMATCH',
-    ];
-
-    req.on('error', e => {
-      if (certErrorCodes.indexOf(e.code) > -1) {
-        console.log(
-          'The given ICM_BASE_URL',
-          ICM_BASE_URL,
-          "has a certificate problem. Please set 'TRUST_ICM' variable to avoid further errors for all requests to the ICM_BASE_URL - never use this in production!"
-        );
-      }
-    });
-
-    req.end();
-  }
-
   if (process.env.SSL) {
+    const https = require('https');
     const privateKey = fs.readFileSync(join(DIST_FOLDER, 'server.key'), 'utf8');
     const certificate = fs.readFileSync(join(DIST_FOLDER, 'server.crt'), 'utf8');
     const credentials = { key: privateKey, cert: certificate };
