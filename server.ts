@@ -52,12 +52,11 @@ export function app() {
     if (icmProtocol === 'https') {
       const https = require('https');
 
-      let [, icmHost, icmPort] = /^(.*?):?([0-9]+)?$/.exec(icmBase);
-      icmPort = icmPort || '443';
+      const [, icmHost, icmPort] = /^(.*?):?([0-9]+)?$/.exec(icmBase);
 
       const options = {
         host: icmHost,
-        port: icmPort,
+        port: icmPort || '443',
         method: 'get',
         path: '/',
       };
