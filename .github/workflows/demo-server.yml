@@ -10,7 +10,6 @@ env:
   ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
   B2C_APP_SUFFIX: universal-b2c
   B2B_APP_SUFFIX: universal-b2b
-  NODE_OPTIONS: --max_old_space_size=8192
 
 jobs:
   CancelPrevious:
@@ -37,6 +36,7 @@ jobs:
           configuration: production
           displayVersion: ${{ github.event.after }}
           testing: true
+          NODE_OPTIONS: --max_old_space_size=8192
         with:
           name: universal
           username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
