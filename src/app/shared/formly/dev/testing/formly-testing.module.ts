@@ -3,6 +3,7 @@ import { Component, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FieldType, FieldWrapper, FormlyForm, FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
+import { TranslateModule } from '@ngx-translate/core';
 
 // tslint:disable: project-structure
 
@@ -99,6 +100,7 @@ class DummyWrapperComponent extends FieldWrapper {}
     }),
     FormlySelectModule,
     ReactiveFormsModule,
+    TranslateModule.forRoot(),
   ],
   exports: [FormlyForm, ReactiveFormsModule],
 })

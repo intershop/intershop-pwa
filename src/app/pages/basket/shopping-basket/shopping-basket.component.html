@@ -29,19 +29,25 @@
   <div class="form-horizontal">
     <div class="row">
       <div class="col-md-12 col-lg-8">
-        <ish-line-item-list *ngIf="basket" [lineItems]="basket.lineItems"></ish-line-item-list>
+        <div class="section">
+          <ish-line-item-list *ngIf="basket" [lineItems]="basket.lineItems"></ish-line-item-list>
 
-        <div class="button-group">
-          <ish-lazy-basket-add-to-quote></ish-lazy-basket-add-to-quote>
-          <ish-lazy-basket-create-order-template
-            *ngIf="basket"
-            [class]="'btn btn-secondary'"
-            [products]="basket.lineItems"
-          ></ish-lazy-basket-create-order-template>
+          <div class="button-group">
+            <ish-lazy-basket-add-to-quote></ish-lazy-basket-add-to-quote>
+            <ish-lazy-basket-create-order-template
+              *ngIf="basket"
+              [class]="'btn btn-secondary'"
+              [products]="basket.lineItems"
+            ></ish-lazy-basket-create-order-template>
+          </div>
         </div>
-        <a routerLink="/home" class="text-nowrap btn btn-link">{{
-          'shopping_cart.detailed.continue_shopping.link' | translate
-        }}</a>
+        <ish-lazy-direct-order ishProductContext></ish-lazy-direct-order>
+
+        <p>
+          <a routerLink="/home" class="text-nowrap">{{
+            'shopping_cart.detailed.continue_shopping.link' | translate
+          }}</a>
+        </p>
       </div>
 
       <div class="col-md-12 col-lg-4 order-summary">
