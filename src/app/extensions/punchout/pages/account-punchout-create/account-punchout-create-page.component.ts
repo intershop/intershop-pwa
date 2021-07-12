@@ -17,8 +17,6 @@ export class AccountPunchoutCreatePageComponent implements OnInit {
   error$: Observable<HttpError>;
   selectedType$: Observable<PunchoutType>;
 
-  punchoutTypeText: string;
-
   constructor(private punchoutFacade: PunchoutFacade) {}
 
   ngOnInit() {

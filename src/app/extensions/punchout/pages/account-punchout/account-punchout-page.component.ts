@@ -21,8 +21,6 @@ export class AccountPunchoutPageComponent implements OnInit {
   loading$: Observable<boolean>;
   error$: Observable<HttpError>;
 
-  punchoutTypeText: string;
-
   ociPunchoutUrl = `${window.location.origin}/punchout?USERNAME=<USERNAME>&PASSWORD=<PASSWORD>&HOOK_URL=<HOOK_URL>`;
   cxmlPunchoutUrl$: Observable<string>;
 
