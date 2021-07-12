@@ -20,8 +20,6 @@ describe('Product Quantity Component', () => {
     when(context.select('minQuantity')).thenReturn(of(2));
     when(context.select('maxQuantity')).thenReturn(of(6));
     when(context.select('stepQuantity')).thenReturn(of(2));
-    when(context.select('hasQuantityError')).thenReturn(of(false));
-    when(context.select('product')).thenReturn(of({ sku: 'xyz', failed: false }));
 
     await TestBed.configureTestingModule({
       declarations: [ProductQuantityComponent],
