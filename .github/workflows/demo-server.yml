@@ -36,6 +36,7 @@ jobs:
           configuration: production
           displayVersion: ${{ github.event.after }}
           testing: true
+          NODE_OPTIONS: --max_old_space_size=8192
         with:
           name: universal
           username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
