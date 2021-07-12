@@ -3,11 +3,12 @@ require('jest-preset-angular/setup-jest');
 
 require('jest-extended');
 
+import { CompilerOptions } from '@angular/core';
 import { getTestBed } from '@angular/core/testing';
 
 beforeEach(() => {
-  // tslint:disable-next-line: no-any
-  getTestBed().configureCompiler({ preserveWhitespaces: false } as any);
+  const compilerOptions: CompilerOptions = { preserveWhitespaces: false };
+  getTestBed().configureCompiler(compilerOptions);
 
   const logFunction = global.console.log;
   global.console.log = (...args: unknown[]) => {
