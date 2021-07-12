@@ -94,7 +94,7 @@ export function app() {
             "has a certificate problem. Please set 'TRUST_ICM' variable to avoid further errors for all requests to the ICM_BASE_URL - never use this in production!"
           );
         } else {
-          console.log(e);
+          console.error(e);
         }
       });
 
