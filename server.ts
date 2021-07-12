@@ -84,7 +84,8 @@ export function app() {
       req.on('error', e => {
         if (certErrorCodes.includes(e.code)) {
           console.log(
-            'The given ICM_BASE_URL',
+            e.code,
+            ': The given ICM_BASE_URL',
             ICM_BASE_URL,
             "has a certificate problem. Please set 'TRUST_ICM' variable to avoid further errors for all requests to the ICM_BASE_URL - never use this in production!"
           );
