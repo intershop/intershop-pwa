@@ -10,6 +10,7 @@ env:
   ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
   B2C_APP_SUFFIX: universal-b2c
   B2B_APP_SUFFIX: universal-b2b
+  NODE_OPTIONS: --max_old_space_size=8192
 
 jobs:
   CancelPrevious:
