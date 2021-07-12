@@ -3,7 +3,7 @@
 set -x
 set -e
 
-node schematics/customization/add custom
+node schematics/customization/add brand
 # format without source folder prefix from project root
 npx ng g customized-copy shell/footer/footer
 
@@ -35,13 +35,14 @@ npm run clean
 npx lint-staged
 npx tsc --project tsconfig.all.json
 
-echo '<p>COMPONENT_OVERRIDES</p>' > src/app/pages/home/home-page.component.local.html
+echo '<p>COMPONENT_OVERRIDES</p>' > src/app/pages/home/home-page.component.brand.html
 
 export NODE_OPTIONS=--max_old_space_size=8192
 
-npm run build
+npm run build --configuration=brand,production
 
 nohup bash -c "npm run serve &"
 wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
 
 wget -O - -q "http://localhost:4200/home" | grep -q "COMPONENT_OVERRIDES"
+wget -O - -q "http://localhost:4200/home" | grep -q "<custom-footer"
