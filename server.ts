@@ -52,8 +52,12 @@ export function app() {
     if (icmProtocol === 'https') {
       const https = require('https');
 
+      let [, icmHost, icmPort] = /^(.*?):?([0-9]+)?$/.exec(icmBase);
+      icmPort = icmPort || '443';
+
       const options = {
-        host: icmBase,
+        host: icmHost,
+        port: icmPort,
         method: 'get',
         path: '/',
       };
@@ -89,6 +93,8 @@ export function app() {
             ICM_BASE_URL,
             "has a certificate problem. Please set 'TRUST_ICM' variable to avoid further errors for all requests to the ICM_BASE_URL - never use this in production!"
           );
+        } else {
+          console.log(e);
         }
       });
 
