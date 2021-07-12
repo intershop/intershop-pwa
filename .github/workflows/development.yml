@@ -123,6 +123,11 @@ jobs:
     needs: [Quality, Jest]
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        test: ['normal', 'customization']
+
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 14
@@ -135,7 +140,7 @@ jobs:
 
       - name: Test Schematics
         run: |
-          bash e2e/test-schematics.sh
+          bash e2e/test-schematics-${{ matrix.test }}.sh
           node scripts/tslint-hard
           npm run lint
 
