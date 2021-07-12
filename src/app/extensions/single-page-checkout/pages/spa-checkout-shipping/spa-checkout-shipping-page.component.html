@@ -1,0 +1,9 @@
+<div data-testing-id="checkout-shipping-page">
+
+  <ish-spa-checkout-shipping
+    [basket]="basket$ | async"
+    [shippingMethods]="shippingMethods$ | async"
+    (updateShippingMethod)="updateBasketShippingMethod($event)"
+    (nextStep)="nextStep()"
+  ></ish-spa-checkout-shipping>
+</div>
