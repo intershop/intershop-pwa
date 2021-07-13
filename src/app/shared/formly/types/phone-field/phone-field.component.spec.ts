@@ -48,4 +48,16 @@ describe('Phone Field Component', () => {
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
+
+  it('should be rendered after creation', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('ish-phone-field')).toBeTruthy();
+  });
+
+  it('should be invalid if an incorrect phone is entered', () => {
+    fixture.detectChanges();
+    component.form.get('phone').setValue('123456a');
+    fixture.detectChanges();
+    expect(component.form.get('phone').valid).toBeFalsy();
+  });
 });

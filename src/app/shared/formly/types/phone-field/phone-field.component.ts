@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { FieldType } from '@ngx-formly/core';
+import { FieldType, FormlyFieldConfig } from '@ngx-formly/core';
+
+import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 @Component({
   selector: 'ish-phone-field',
@@ -8,6 +10,16 @@ import { FieldType } from '@ngx-formly/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhoneFieldComponent extends FieldType {
-  pattern: RegExp = /^(?:\+|00)[1-9]\d{0,2}(?: |\-)|((?: |-)[0-9]{3}(?: |-)[0-9]{4})|([0-9]{7,14})$/;
   formControl: FormControl;
+
+  prePopulate(field: FormlyFieldConfig) {
+    field.validators = field.validators ?? {};
+    field.validators.validation = [...(field.validators.validation ?? []), SpecialValidators.phone];
+
+    field.validation = field.validation ?? {};
+    field.validation.messages = {
+      ...field.validation?.messages,
+      phone: 'helpdesk.contactus.phone.error',
+    };
+  }
 }

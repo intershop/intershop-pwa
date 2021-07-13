@@ -69,7 +69,7 @@ export class ContactFormComponent implements OnInit {
       },
       {
         key: 'phone',
-        type: 'ish-text-input-field',
+        type: 'ish-phone-field',
         templateOptions: {
           label: 'helpdesk.contactus.phone.label',
           required: true,
