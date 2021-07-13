@@ -22,7 +22,7 @@ jobs:
 
   BuildNDeployDemoServer:
     needs: [CancelPrevious]
-    if: github.event.pull_request.head.repo.owner.login == 'intershop'
+    # if: github.event.pull_request.head.repo.owner.login == 'intershop'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
