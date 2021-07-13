@@ -63,8 +63,8 @@ export class DummyTwoComponent {}
     expect(appTree.files.filter(x => x.includes('/src/app/')).sort()).toMatchInlineSnapshot(`
       Array [
         "/src/app/app-routing.module.ts",
-        "/src/app/app.component.css",
         "/src/app/app.component.html",
+        "/src/app/app.component.scss",
         "/src/app/app.component.spec.ts",
         "/src/app/app.component.ts",
         "/src/app/app.module.ts",

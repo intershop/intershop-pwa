@@ -25,6 +25,16 @@ stat src/app/extensions/quoting/shared/custom-quote-widget/custom-quote-widget.c
 # TODO
 # grep 'custom-lazy-quote-widget' src/app/pages/account-overview/account-overview/account-overview.component.html
 
+npx ng g override --theme brand --html --ts --scss src/app/pages/home/home-page.component.ts
+stat src/app/pages/home/home-page.component.brand.html
+stat src/app/pages/home/home-page.component.brand.scss
+stat src/app/pages/home/home-page.component.brand.ts
+stat src/app/pages/home/home-page.component.scss
+grep './home-page.component.scss' src/app/pages/home/home-page.component.brand.ts
+grep './home-page.component.scss' src/app/pages/home/home-page.component.ts
+
+echo '<p>COMPONENT_OVERRIDES</p>' > src/app/pages/home/home-page.component.brand.html
+
 sed -i -e "s%icmBaseURL.*%icmBaseURL: 'http://localhost:4200',%g" src/environments/environment.ts
 
 node schematics/customization/service-worker false
@@ -34,8 +44,6 @@ git add -A
 npm run clean
 npx lint-staged
 npx tsc --project tsconfig.all.json
-
-echo '<p>COMPONENT_OVERRIDES</p>' > src/app/pages/home/home-page.component.brand.html
 
 export NODE_OPTIONS=--max_old_space_size=8192
 
