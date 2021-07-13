@@ -12,7 +12,7 @@ let [, icmHost, icmPort] = /^(.*?):?([0-9]+)?$/.exec(icmBase);
 icmPort = icmPort || (icmProtocol === 'http' ? '80' : '443');
 
 const icmClient = require(icmProtocol);
-const pwaClient = process.env.SSL ? require('https') : require('http')
+const pwaClient = require('https');
 
 const icmBasePath = '/INTERSHOP/rest/WFS/';
 
@@ -24,12 +24,35 @@ const optionsICMRest = {
 };
 
 const optionsAngularUniversal = {
-  host: 'localhost',
-  port: process.env.PORT || '4200',
-  timeout: 2000,
+  host: 'intershoppwa-b2b.azurewebsites.net',
 };
 
-function icmProductsCall(categoryPath) {
+function pwaCategoryPageCall(categoryName, categoryRef) {
+  const encodedUri = encodeURIComponent(`${categoryName}-cat${categoryRef}`)
+  optionsAngularUniversal.path = `/${encodedUri}`;
+  console.log('category', optionsAngularUniversal.path);
+  const categoryPageRequest = pwaClient.request(optionsAngularUniversal, (response) => {
+    console.log(response.statusCode)
+
+    response.on('error', console.error)
+  });
+  categoryPageRequest.end();
+}
+
+function pwaProductDetailPageCall(categoryName, productName, sku) {
+  const encodedCategory = encodeURIComponent(`${categoryName}`)
+  const encodedProduct = encodeURIComponent(`${productName}-sku${sku}`)
+  optionsAngularUniversal.path = `/${encodedCategory}/${encodedProduct}`;
+  console.log('productDetail', optionsAngularUniversal.path)
+  const categoryPageRequest = pwaClient.request(optionsAngularUniversal, (response) => {
+    console.log(response.statusCode)
+
+    response.on('error', console.error)
+  });
+  categoryPageRequest.end();
+}
+
+function icmProductsCall(categoryName, categoryPath) {
   optionsICMRest.path = icmBasePath + categoryPath + '/products?attrs=sku';
 
   const categoryRequest = icmClient.request(optionsICMRest, (response) => {
@@ -43,6 +66,7 @@ function icmProductsCall(categoryPath) {
     response.on('end', () => {
       body = Buffer.concat(body).toString();
       const products = JSON.parse(body);
+      products.elements.forEach(element => pwaProductDetailPageCall(categoryName, element.title, element.attributes[0].value))
     });
     response.on('error', console.error)
   });
@@ -63,12 +87,13 @@ function icmCategoryCall(categoryPath) {
     response.on('end', () => {
       body = Buffer.concat(body).toString();
       const category = JSON.parse(body);
+      pwaCategoryPageCall(category.name, category.categoryRef);
       if (category.hasOnlineSubCategories) {
         category.subCategories.forEach(subCategory => {
           icmCategoryCall(subCategory.uri)
         })
       } else {
-        icmProductsCall(category.uri);
+        icmProductsCall(category.name, category.uri);
       }
     });
     response.on('error', console.error)
@@ -76,6 +101,6 @@ function icmCategoryCall(categoryPath) {
   categoryRequest.end();
 }
 
-let categoryPath = 'inSPIRED-inTRONICS-Site/rest;loc=en_US;cur=USD/categories/Computers';
+const categoryPath = 'inSPIRED-inTRONICS-Site/rest;loc=en_US;cur=USD/categories/Computers';
 icmCategoryCall(categoryPath);
 
