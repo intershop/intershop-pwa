@@ -16,7 +16,7 @@ import { storeDevtoolsModule } from './store/store-devtools.module';
   imports: [
     BrowserTransferStateModule,
     CoreStoreModule,
-    storeDevtoolsModule, // disable the Store Devtools In Production (https://ngrx.io/guide/store-devtools/recipes/exclude)
+    storeDevtoolsModule, // disable the Store Devtools in production (https://ngrx.io/guide/store-devtools/recipes/exclude)
     GeneralStoreModule,
     CustomerStoreModule,
     ContentStoreModule,
