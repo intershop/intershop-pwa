@@ -3,7 +3,10 @@
 set -x
 set -e
 
-node schematics/customization/add brand
+node schematics/customization/add --default brand
+grep brand angular.json
+grep brand package.json
+
 # format without source folder prefix from project root
 npx ng g customized-copy shell/footer/footer
 
@@ -47,7 +50,7 @@ npx tsc --project tsconfig.all.json
 
 export NODE_OPTIONS=--max_old_space_size=8192
 
-npm run build --configuration=brand,production
+npm run build
 
 nohup bash -c "npm run serve &"
 wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200

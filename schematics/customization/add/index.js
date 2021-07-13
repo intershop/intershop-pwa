@@ -2,12 +2,18 @@ const fs = require('fs');
 const { parse, stringify } = require('comment-json');
 const { execSync } = require('child_process');
 
-if (process.argv.length < 3) {
+const theme = process.argv.slice(2).filter(a => !a.startsWith('-'))?.[0];
+const setDefault = process.argv.slice(2).includes('--default');
+
+if (!theme) {
   console.warn('required theme argument missing');
   process.exit(1);
 }
 
-const theme = process.argv[2];
+// add style definition files
+if (!fs.existsSync(`src/styles/themes/${theme}`)) {
+  execSync(`npx ncp src/styles/themes/default src/styles/themes/${theme} --stopOnErr`);
+}
 
 // replace in angular.json
 const angularJson = parse(fs.readFileSync('./angular.json', { encoding: 'UTF-8' }));
@@ -15,23 +21,36 @@ const project = angularJson.defaultProject;
 console.log('setting prefix for new components to "custom"');
 angularJson.projects[project].prefix = 'custom';
 
-// add style definition files
-if (!fs.existsSync(`src/styles/themes/${theme}`)) {
-  execSync(`npx ncp src/styles/themes/default src/styles/themes/${theme} --stopOnErr`);
-}
-
-angularJson.projects[project].architect.build.configurations[theme] = {};
-angularJson.projects[project].architect.serve.configurations[theme] = {
+const architect = angularJson.projects[project].architect;
+architect.build.configurations[theme] = {};
+architect.serve.configurations[theme] = {
   browserTarget: 'intershop-pwa:build:' + theme,
 };
-angularJson.projects[project].architect.server.configurations[theme] = {};
-angularJson.projects[project].architect['serve-ssr'].configurations[theme] = {
+architect.server.configurations[theme] = {};
+architect['serve-ssr'].configurations[theme] = {
   browserTarget: `intershop-pwa:build:${theme},local`,
   serverTarget: `intershop-pwa:server:${theme},local`,
 };
 
+if (setDefault) {
+  console.log('setting', theme, 'as default for targets');
+  architect.build.defaultConfiguration = theme + ',production';
+  architect.serve.defaultConfiguration = theme + ',local';
+  architect.server.defaultConfiguration = theme + ',production';
+  architect['serve-ssr'].defaultConfiguration = theme;
+}
+
 fs.writeFileSync('./angular.json', stringify(angularJson, null, 2));
 execSync('npx prettier --write angular.json');
+
+// replace in package.json
+const packageJson = parse(fs.readFileSync('./package.json', { encoding: 'UTF-8' }));
+if (setDefault) {
+  packageJson.config['active-themes'] = theme;
+} else {
+  packageJson.config['active-themes'] = `${theme},${packageJson.config['active-themes']}`;
+}
+fs.writeFileSync('./package.json', stringify(packageJson, null, 2));
 
 // replace in tslint.json
 // "directive-selector": [true, "attribute", "ish", "camelCase"],
