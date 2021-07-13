@@ -37,6 +37,9 @@ class SelectFieldComponent extends FieldType {}
 @Component({ template: 'TextareaFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class TextareaFieldComponent extends FieldType {}
 
+@Component({ template: 'RadioFieldComponent: {{field.key }} {{ to | json }}' })
+class RadioFieldComponent extends FieldType {}
+
 @Component({ template: `<ng-template #fieldComponent> </ng-template>` })
 class DummyWrapperComponent extends FieldWrapper {}
 
@@ -50,6 +53,7 @@ class DummyWrapperComponent extends FieldWrapper {}
     EmailFieldComponent,
     FieldsetFieldComponent,
     PasswordFieldComponent,
+    RadioFieldComponent,
     SelectFieldComponent,
     TextInputFieldComponent,
     TextareaFieldComponent,
@@ -86,6 +90,7 @@ class DummyWrapperComponent extends FieldWrapper {}
           name: 'ish-textarea-field',
           component: TextareaFieldComponent,
         },
+        { name: 'ish-radio-field', component: RadioFieldComponent },
         { name: 'ish-captcha-field', component: CaptchaFieldComponent },
       ],
       wrappers: [
@@ -95,6 +100,7 @@ class DummyWrapperComponent extends FieldWrapper {}
         { name: 'tooltip', component: DummyWrapperComponent },
         { name: 'validation', component: DummyWrapperComponent },
         { name: 'description', component: DummyWrapperComponent },
+        { name: 'form-field-radio-horizontal', component: DummyWrapperComponent },
       ],
     }),
     FormlySelectModule,
