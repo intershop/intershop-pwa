@@ -35,8 +35,13 @@ stat src/app/pages/home/home-page.component.brand.ts
 stat src/app/pages/home/home-page.component.scss
 grep './home-page.component.scss' src/app/pages/home/home-page.component.brand.ts
 grep './home-page.component.scss' src/app/pages/home/home-page.component.ts
-
 echo '<p>COMPONENT_OVERRIDES</p>' > src/app/pages/home/home-page.component.brand.html
+
+npx ng g override --theme brand --ts src/app/core/routing/product/product.route.ts
+stat src/app/core/routing/product/product.route.brand.ts
+
+npx ng g override --theme brand --ts src/app/core/services/cms/cms.service.ts
+stat src/app/core/services/cms/cms.service.brand.ts
 
 sed -i -e "s%icmBaseURL.*%icmBaseURL: 'http://localhost:4200',%g" src/environments/environment.ts
 
