@@ -14,11 +14,13 @@ const PORT = process.env.PORT || 4200;
 
 const DIST_FOLDER = join(process.cwd(), 'dist');
 
+const BROWSER_FOLDER = process.env.BROWSER_FOLDER || join(process.cwd(), 'dist', 'browser');
+
 // uncomment this block to prevent ssr issues with third-party libraries regarding window, document, HTMLElement and navigator
 // tslint:disable-next-line: no-commented-out-code
 /*
 const domino = require('domino');
-const template = fs.readFileSync(join(DIST_FOLDER, 'browser', 'index.html')).toString();
+const template = fs.readFileSync(join(BROWSER_FOLDER, 'index.html')).toString();
 const win = domino.createWindow(template);
 
 // tslint:disable:no-string-literal
@@ -114,7 +116,7 @@ export function app() {
   );
 
   server.set('view engine', 'html');
-  server.set('views', join(DIST_FOLDER, 'browser'));
+  server.set('views', BROWSER_FOLDER);
 
   if (logging) {
     server.use(
@@ -149,10 +151,10 @@ export function app() {
     );
   }
 
-  // Serve static files from /browser
+  // Serve static files from browser folder
   server.get(
     '*.*',
-    express.static(join(DIST_FOLDER, 'browser'), {
+    express.static(BROWSER_FOLDER, {
       setHeaders: (res, path) => {
         if (/\.[0-9a-f]{20,}\./.test(path)) {
           // file was output-hashed -> 1y
@@ -333,6 +335,7 @@ function run() {
 
     console.log(`Node Express server listening on http://${require('os').hostname()}:${PORT}`);
   }
+  console.log('serving static files from', BROWSER_FOLDER);
 }
 
 // Webpack will replace 'require' with '__webpack_require__'

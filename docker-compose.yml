@@ -8,9 +8,6 @@ services:
       context: .
       # dockerfile: Dockerfile_noSSR
       args:
-        # configuration: local
-        configuration: production
-        # configuration: local,production
         serviceWorker: 'false'
     environment:
       - LOGGING=on
@@ -41,6 +38,7 @@ services:
           - baseHref: /en
             channel: default
             lang: en_US
+            theme: blue
           - baseHref: /de
             channel: default
             lang: de_DE

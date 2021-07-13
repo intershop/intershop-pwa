@@ -25,7 +25,7 @@ export function createApplication(schematicRunner: SchematicTestRunner): Observa
             inlineStyle: false,
             inlineTemplate: false,
             routing: true,
-            style: 'css',
+            style: 'scss',
             skipTests: false,
             skipPackageJson: false,
             prefix: 'ish',
@@ -71,4 +71,9 @@ export function createAppLastRoutingModule(schematicRunner: SchematicTestRunner)
         )
       )
     );
+}
+
+export function componentDecorator(input: string, omitChangeDetection = true) {
+  const decorator = input.match(/@Component.*}\)/s)?.[0]?.replace(/\s+/g, ' ');
+  return omitChangeDetection ? decorator?.replace(' changeDetection: ChangeDetectionStrategy.OnPush,', '') : decorator;
 }

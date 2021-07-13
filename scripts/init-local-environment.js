@@ -1,15 +1,21 @@
-const force = process.argv.length > 2 && process.argv[2] === '-f';
-
-if (process.env.CI && !force) {
-  console.log('skipping creation of environment.local.ts');
-  process.exit(0);
-}
+const force = process.argv.length > 2 && process.argv.slice(2).find(arg => arg === '-f' || arg === '--force');
+const empty = process.argv.length > 2 && process.argv.slice(2).find(arg => arg === '--empty');
 
 const environmentLocalPath = 'src/environments/environment.local.ts';
 
 const fs = require('fs');
 
-if (!fs.existsSync(environmentLocalPath) || force) {
+if (empty) {
+  console.log('writing empty ' + environmentLocalPath);
+
+  fs.writeFileSync(
+    environmentLocalPath,
+    `import { Environment } from "./environment.model";
+
+export const overrides: Partial<Environment> = {};
+`
+  );
+} else if (!fs.existsSync(environmentLocalPath) || force) {
   if (fs.existsSync(environmentLocalPath)) {
     const environmentLocalBackupPath = environmentLocalPath + '.bak';
     console.log('creating backup ' + environmentLocalBackupPath);
@@ -20,38 +26,22 @@ if (!fs.existsSync(environmentLocalPath) || force) {
 
   fs.writeFileSync(
     environmentLocalPath,
-    `import { ENVIRONMENT_DEFAULTS, Environment } from './environment.model';
+    `import { Environment } from "./environment.model";
 
 // tslint:disable
 
 // running out of memory?
 // NODE_OPTIONS=--max_old_space_size=8192
 
-const b2b = 0;
+export const overrides: Partial<Environment> = {
+  // icmBaseURL: 'http://localhost:8081'
 
-const extraFeatures: typeof environment.features =
-  // default
-  b2b ? ['advancedVariationHandling', 'businessCustomerRegistration', 'quoting', 'quickorder', 'orderTemplates', 'punchout'] : ['guestCheckout', 'wishlists'];
-  // none
-  // [];
+  // defaultDeviceType: 'desktop',
 
-export const environment: Environment = {
-  ...ENVIRONMENT_DEFAULTS,
-
-  defaultDeviceType: 'desktop',
-
-  icmBaseURL: 'https://pwa-ish-demo.test.intershop.com',
-  icmChannel: b2b ? 'inSPIRED-inTRONICS_Business-Site' : 'inSPIRED-inTRONICS-Site',
-
-  theme: b2b ? 'blue' : 'default',
-
-  features: [
-    'compare',
-    'recently',
-    'rating',
-    ...extraFeatures
-  ],
+  // features: ['compare'],
 };
 `
   );
+} else {
+  console.log('not overwriting existing ' + environmentLocalPath);
 }

@@ -22,6 +22,10 @@ export function customize(options: Options): Rule {
       throw new SchematicsException('Option (from) is required.');
     }
 
+    console.warn(
+      "DEPRECATION:\nUsing 'customized-copy' is deprecated and only still available for compatibility with older projects.\nNewer projects should use the 'override' schematic."
+    );
+
     const workspace = await getWorkspace(host);
     const project = workspace.projects.get(options.project);
     const sourceRoot = project.sourceRoot;

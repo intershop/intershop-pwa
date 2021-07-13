@@ -9,6 +9,7 @@ import {
 } from '@schematics/angular/utility/ast-utils';
 import { InsertChange } from '@schematics/angular/utility/change';
 import { buildRelativePath, findModule } from '@schematics/angular/utility/find-module';
+import * as path from 'path';
 import { ObjectLiteralExpression, SyntaxKind } from 'ts-morph';
 import { ImportKind, findImports, forEachToken } from 'tsutils';
 import * as ts from 'typescript';
@@ -275,5 +276,31 @@ export function updateModule(options): Rule {
   return host => {
     options.module = findModule(host, options.path);
     return host;
+  };
+}
+
+export function setStyleUrls(componentFile: string, styleUrls: string[]): Rule {
+  const normalizedStyleUrls = styleUrls.map(f => path.basename(f)).map(f => './' + f);
+  const updateString = `[${normalizedStyleUrls.map(f => `'${f}'`).join(', ')}]`;
+
+  return host => {
+    const source = readIntoSourceFile(host, componentFile);
+    tsquery(source, 'Decorator:has(Identifier[name=Component])').forEach((component: ts.Decorator) => {
+      const callExpression = component.expression as ts.CallExpression;
+      const config = callExpression.arguments[0] as ts.ObjectLiteralExpression;
+      const existingStyleUrls = config.properties.find(p => p.name.getText() === 'styleUrls') as ts.PropertyAssignment;
+      const recorder = host.beginUpdate(componentFile);
+      if (existingStyleUrls) {
+        recorder.remove(
+          existingStyleUrls.initializer.getStart(),
+          existingStyleUrls.initializer.getEnd() - existingStyleUrls.initializer.getStart()
+        );
+        recorder.insertLeft(existingStyleUrls.initializer.getStart(), updateString);
+      } else {
+        const position = config.properties.reduce((max, curr) => (curr.getEnd() > max ? curr.getEnd() : max), 0);
+        recorder.insertLeft(position, `, styleUrls: ${updateString}`);
+      }
+      host.commitUpdate(recorder);
+    });
   };
 }

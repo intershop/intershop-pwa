@@ -89,9 +89,9 @@ export interface Environment {
   // multi-site URLs to locales mapping ('undefined' if mapping should not be used)
   multiSiteLocaleMap: MultiSiteLocaleMap;
 
-  // configuration of the styling theme ('default' if not configured)
-  // format: 'themeName|themeColor' e.g. theme: 'blue|688dc3',
-  theme?: string;
+  // configuration of the styling theme color used for theme-color meta
+  // format: hex color e.g. themeColor: '#688dc3',
+  themeColor?: string;
 
   // cookie consent options
   cookieConsentOptions?: CookieConsentOptions;
@@ -110,10 +110,9 @@ export interface Environment {
   dataRetention: DataRetentionPolicy;
 }
 
-export const ENVIRONMENT_DEFAULTS: Environment = {
+export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
-  icmBaseURL: 'NOT SET',
-  icmChannel: 'inSPIRED-inTRONICS-Site',
+  icmBaseURL: 'https://pwa-ish-demo.test.intershop.com',
   icmServer: 'INTERSHOP/rest/WFS',
   icmServerStatic: 'INTERSHOP/static/WFS',
   icmApplication: 'rest',
