@@ -80,7 +80,13 @@
                 }
               ],
               "serviceWorker": false,
-              "ngswConfigPath": "ngsw-config.json"
+              "ngswConfigPath": "ngsw-config.json",
+              "fileReplacements": [
+                {
+                  "replace": "src/app/core/store/store-devtools.module.ts",
+                  "with": "src/app/core/store/store-devtools.module.production.ts"
+                }
+              ]
             },
             "local": {
               "optimization": false,
