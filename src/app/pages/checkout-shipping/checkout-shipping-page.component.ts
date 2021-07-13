@@ -35,7 +35,7 @@ export class CheckoutShippingPageComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * leads to next checkout page (checkout payment)
+   * Validates the basket and jumps to the next checkout step (Payment)
    */
   goToNextStep() {
     combineLatest([this.shippingMethods$, this.basket$])
