@@ -26,7 +26,7 @@ describe('User Edit Budget Page Component', () => {
       of({
         firstName: 'John',
         lastName: 'Doe',
-        login: 'j.d@test.de',
+        login: 'j.d@test.intershop.de',
         roleIDs: ['APP_B2B_BUYER'],
         userBudget: {
           budget: { value: 500, currency: 'USD' },
