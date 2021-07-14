@@ -53,7 +53,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
     this.oauthService.configure({
       // Your Auth0 app's domain
       // Important: Don't forget to start with https:// AND the trailing slash!
-      issuer: `https://${config.domain}/`,
+      issuer: `https://${config.domain}`,
 
       // The app's clientId configured in Auth0
       clientId: config.clientID,
