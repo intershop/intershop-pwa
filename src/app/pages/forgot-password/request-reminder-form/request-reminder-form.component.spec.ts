@@ -42,7 +42,7 @@ describe('Request Reminder Form Component', () => {
     });
 
     it('should not detect error if email is well formed', () => {
-      component.requestReminderForm.controls.email.setValue('test@test.com');
+      component.requestReminderForm.controls.email.setValue('test@test.intershop.com');
       expect(component.requestReminderForm.controls.email.valid).toBeTruthy();
     });
 

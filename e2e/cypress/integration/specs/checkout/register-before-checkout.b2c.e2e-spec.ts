@@ -22,7 +22,7 @@ const _ = {
     city: 'Stuttgart',
     postalCode: '12345',
   } as AddressDetailsTypes,
-  email: 'p.parkes@test.com',
+  email: 'p.parkes@test.intershop.de',
   user: {
     login: `testuser${new Date().getTime()}@test.intershop.de`,
     ...sensibleDefaults,

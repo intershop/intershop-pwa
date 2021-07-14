@@ -68,14 +68,14 @@ describe('Account User Info Component', () => {
 
   it('should display email when user has no name', () => {
     when(accountFacade.customer$).thenReturn(of({ isBusinessCustomer: true, companyName: 'Foods Inc.' } as Customer));
-    when(accountFacade.user$).thenReturn(of({ login: 'max.mustermann@test.de' } as User));
+    when(accountFacade.user$).thenReturn(of({ login: 'max.mustermann@test.intershop.de' } as User));
     when(accountFacade.roles$).thenReturn(EMPTY);
 
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
       <li class="account-welcome">
-        <h4 class="ellipsis">max.mustermann@test.de</h4>
+        <h4 class="ellipsis">max.mustermann@test.intershop.de</h4>
         <p><small>Foods Inc.</small></p>
       </li>
     `);
