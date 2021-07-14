@@ -114,7 +114,7 @@ const standardFields: { [key: string]: Omit<FormlyFieldConfig, 'key'> } = {
     },
   },
   phoneHome: {
-    type: 'ish-text-input-field',
+    type: 'ish-phone-field',
     templateOptions: {
       label: 'account.profile.phone.label',
       required: false,
