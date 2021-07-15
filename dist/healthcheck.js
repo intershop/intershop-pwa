@@ -19,13 +19,12 @@ const pwaClient = process.env.SSL ? require('https') : require('http');
 const optionsICMRest = {
   host: icmHost,
   port: icmPort,
-  path: '/INTERSHOP',
+  path: '/INTERSHOP/rest/WFS',
   timeout: 10000,
 };
 
 const optionsAngularUniversal = {
   host: 'localhost',
-  port: process.env.PORT || '4200',
   timeout: 2000,
 };
 
@@ -38,17 +37,31 @@ console.log(`checking for ICM on ${icmProtocol}://${icmHost}:${icmPort}`);
 const requestICMRest = icmClient.request(optionsICMRest, res => {
   console.log(`STATUS ICM REST: ${res.statusCode === 404 ? 'OK' : res.statusMessage}`);
   if (res.statusCode == 404) {
-    const requestAngularUniversal = pwaClient.request(optionsAngularUniversal, res => {
-      console.log(`STATUS STOREFRONT: ${res.statusCode} ${res.statusMessage}`);
-      if (res.statusCode == 200) {
-        process.exit(0);
-      } else {
-        process.exit(1);
-      }
-    });
-    requestAngularUniversal.on('error', errFunc);
+    let ports = require('./ecosystem-ports').ports;
 
-    requestAngularUniversal.end();
+    if (process.env.ACTIVE_THEMES) {
+      const active = process.env.ACTIVE_THEMES.split(',');
+      ports = Object.entries(ports)
+        .filter(([theme]) => active.includes(theme))
+        .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {});
+    }
+
+    const portsToCheck = [process.env.PORT || 4200];
+    if (Object.keys(ports).length > 1) {
+      portsToCheck.push(...Object.values(ports));
+    }
+
+    portsToCheck.forEach(port => {
+      const requestAngularUniversal = pwaClient.request({ ...optionsAngularUniversal, port }, res => {
+        console.log(`STATUS STOREFRONT (${port}): ${res.statusCode} ${res.statusMessage}`);
+        if (res.statusCode !== 200) {
+          process.exit(1);
+        }
+      });
+      requestAngularUniversal.on('error', errFunc);
+
+      requestAngularUniversal.end();
+    });
   } else {
     process.exit(1);
   }

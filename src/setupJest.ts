@@ -54,6 +54,10 @@ Object.defineProperty(global, 'NGRX_RUNTIME_CHECKS', {
   value: () => true,
 });
 
+Object.defineProperty(global, 'THEME', {
+  value: () => 'default',
+});
+
 Object.defineProperty(document.body.style, 'transform', {
   value: () => ({
     enumerable: true,

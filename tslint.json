@@ -131,7 +131,9 @@
     "rxjs-no-ignored-replay-buffer": true,
     "rxjs-no-ignored-subscribe": true,
     "rxjs-no-internal": true,
-    "rxjs-no-nested-subscribe": { "severity": "warning" },
+    "rxjs-no-nested-subscribe": {
+      "severity": "warning"
+    },
     "rxjs-no-subclass": true,
     "rxjs-no-subject-unsubscribe": true,
     "rxjs-no-subject-value": true,
@@ -146,14 +148,30 @@
         "checkDecorators": ["Component", "Pipe", "Directive"]
       }
     },
-    "rxjs-no-explicit-generics": { "severity": "off" },
-    "rxjs-no-ignored-observable": { "severity": "off" },
-    "rxjs-no-exposed-subjects": { "severity": "off" },
-    "rxjs-no-ignored-subscription": { "severity": "off" },
-    "rxjs-no-unsafe-first": { "severity": "off" },
-    "rxjs-no-unsafe-scope": { "severity": "off" },
-    "rxjs-prefer-angular-async-pipe": { "severity": "off" },
-    "rxjs-throw-error": { "severity": "off" },
+    "rxjs-no-explicit-generics": {
+      "severity": "off"
+    },
+    "rxjs-no-ignored-observable": {
+      "severity": "off"
+    },
+    "rxjs-no-exposed-subjects": {
+      "severity": "off"
+    },
+    "rxjs-no-ignored-subscription": {
+      "severity": "off"
+    },
+    "rxjs-no-unsafe-first": {
+      "severity": "off"
+    },
+    "rxjs-no-unsafe-scope": {
+      "severity": "off"
+    },
+    "rxjs-prefer-angular-async-pipe": {
+      "severity": "off"
+    },
+    "rxjs-throw-error": {
+      "severity": "off"
+    },
     "private-destroy-field": true,
     "ngrx-use-empty-store-type": true,
     "semicolon": [true, "always"],
@@ -213,7 +231,9 @@
     },
     "ish-ordered-imports": true,
     "ish-useful-imports": true,
-    "force-jsdoc-comments": { "severity": "warning" },
+    "force-jsdoc-comments": {
+      "severity": "warning"
+    },
     "newline-before-root-members": true,
     "no-duplicate-imports": true,
     "ban": [
@@ -336,7 +356,7 @@
         {
           "import": "CookiesService",
           "from": "ngx-utils-cookies-port",
-          "filePattern": "^((?!src/app/core/utils/cookies/cookies\\.service(\\.spec|)\\.ts).)*$",
+          "filePattern": "^((?!src/app/core/utils/cookies/cookies\\.service(\\.spec)?\\.ts).)*$",
           "message": "Use CookiesService from ish-core instead."
         },
         {
@@ -542,111 +562,117 @@
         }
       }
     },
-    "no-star-imports-in-store": { "severity": "warning" },
+    "no-star-imports-in-store": {
+      "severity": "warning"
+    },
     "initialize-observables-in-ngoninit": true,
     "project-structure": {
       "severity": "warning",
       "options": {
         "warnUnmatched": false,
+        "reusePatterns": {
+          "name": "[a-z][a-z0-9]*(?:-[a-z][a-z0-9]*)*",
+          "theme": "(?:\\.(?:default|blue))*"
+        },
         "pathPatterns": [
-          "^.*/src/environments/environment(\\.\\w+|)\\.ts$",
+          "^.*/src/environments/environment(\\.\\w+)?\\.ts$",
           "^.*/src/hybrid/default-url-mapping-table.ts$",
           // core
-          "^.*/src/app/core/[a-z][a-z0-9-]+\\.module\\.ts",
+          "^.*/src/app/core/<name>\\.module(<theme>)?\\.ts",
           "^.*/src/app/core/configurations/.*",
           // custom routes
-          "^.*/src/app/core/routing/([a-z0-9-]+)/\\1\\.route\\.ts",
-          "^.*/src/app/core/routing/([a-z0-9-]+)/\\1\\-route\\.pipe\\.ts",
+          "^.*/src/app/core/routing/(<name>)/\\1\\.route(<theme>)?\\.ts",
+          "^.*/src/app/core/routing/(<name>)/\\1\\-route\\.pipe(<theme>)?\\.ts",
           // extra artifacts
-          "^.*(/src/app/core|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/(service)s/([a-z][a-z0-9-]+)/\\3(\\-[a-z0-9-]+|)\\.\\2[a-z0-9-\\.]*\\.ts",
-          "^.*(/src/app/core|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/(interceptor|guard|directive|pipe|animation)s/[a-z][a-z0-9-]+.\\2\\.ts",
-          "^.*projects/[a-z][a-z0-9-]+/src/app/exports/index.ts",
+          "^.*(/src/app/core|/src/app/extensions/<name>|projects/<name>/src/app)/(service)s/(<name>)/\\3(\\-<name>)?\\.\\2(<theme>)?\\.ts",
+          "^.*(/src/app/core|/src/app/extensions/<name>|projects/<name>/src/app)/(interceptor|guard|directive|pipe|animation)s/<name>.\\2(<theme>)?\\.ts",
+          "^.*projects/<name>/src/app/exports/index.ts",
           // models
-          "^.*(/src/app/core|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/models/([a-z][a-z0-9-]+)/\\2\\.(pipe|helper|interface|mapper|types)\\.ts$",
+          "^.*(/src/app/core|/src/app/extensions/<name>|projects/<name>/src/app)/models/(<name>)/\\2\\.(pipe|helper|interface|mapper|types)(<theme>)?\\.ts$",
           // facades
-          "^.*(/src/app/core|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/facades/(index|[a-z][a-z0-9-]+\\.facade)\\.ts$",
+          "^.*(/src/app/core|/src/app/extensions/<name>|projects/<name>/src/app)/facades/(index|<name>\\.facade)(<theme>)?\\.ts$",
           // ngrx
-          "^.*/store/([a-z][a-z0-9-]+/|)([a-z][a-z0-9-]+)/\\2(\\-[a-z][a-z0-9-]+|)\\.(actions|effects|reducer|selectors)\\.ts",
-          "^.*/store/([a-z][a-z0-9-]+/|)([a-z][a-z0-9-]+)/index\\.ts",
-          "^.*/store/([a-z][a-z0-9-]+)/\\1-store(\\.module|)\\.ts",
-          "^.*/([a-z][a-z0-9-]+)(/src/app|)/store/\\1-store(\\.module|)\\.ts",
+          "^.*/store/(<name>/)?(<name>)/\\2(\\-<name>)?\\.(actions|effects|reducer|selectors)(<theme>)?\\.ts",
+          "^.*/store/(<name>/)?<name>/index\\.ts",
+          "^.*/store/(<name>)/\\1-store(\\.module)?(<theme>)?\\.ts",
+          "^.*/(<name>)(/src/app)?/store/\\1-store(\\.module)?(<theme>)?\\.ts",
           // ngrx router-store
-          "^.*/src/app/core/store/core/router/router\\.(operators|serializer)\\.ts",
+          "^.*/src/app/core/store/core/router/router\\.(operators|serializer)(<theme>)?\\.ts",
           // allow only app related content directly in src/app
           "^.*/src/app/app[\\w\\.\\-]+\\.ts$",
           // application shell
-          "^.*/src/app/shell/(header|footer|application)/([a-z][a-z0-9-]+)/\\2\\.component\\.ts$",
-          "^.*/src/app/shell/[a-z][a-z0-9-]+/configurations/.*\\.ts$",
+          "^.*/src/app/shell/(header|footer|application)/(<name>)/\\2\\.component(<theme>)?\\.ts$",
+          "^.*/src/app/shell/<name>/configurations/.*\\.ts$",
           // specific (lazy loaded) page modules
-          "^.*(/src/app|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/pages/([a-z][a-z0-9-]+)/\\2-page\\.(module|component|guard)\\.ts$",
-          "^.*(/src/app|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/pages/[a-z][a-z0-9-]+/([a-z][a-z0-9-]+)/\\2\\.component\\.ts$",
-          "^.*/src/app/extensions/([a-z][a-z0-9-]+)/pages/\\1(.*)-routing\\.module\\.ts$",
-          "^.*/projects/([a-z][a-z0-9-]+)/src/app/pages/\\1-routing\\.module\\.ts$",
-          "^.*/src/app/pages/app[a-z0-9-]*-routing\\.module\\.ts$",
+          "^.*(/src/app|/src/app/extensions/<name>|projects/<name>/src/app)/pages/(<name>)/\\2-page\\.(module|component|guard)(<theme>)?\\.ts$",
+          "^.*(/src/app|/src/app/extensions/<name>|projects/<name>/src/app)/pages/<name>/(<name>)/\\2\\.component(<theme>)?\\.ts$",
+          "^.*/src/app/extensions/(<name>)/pages/\\1(.*)-routing\\.module(<theme>)?\\.ts$",
+          "^.*/projects/(<name>)/src/app/pages/\\1-routing\\.module(<theme>)?\\.ts$",
+          "^.*/src/app/pages/app(-<name>)*-routing\\.module(<theme>)?\\.ts$",
           // enforce folder structure for shared components
-          "^.*/src/app/extensions/[a-z][a-z0-9-]+/shared/([a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
-          "^.*/src/app/shared/components/[a-z][a-z0-9-]+/([a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
-          "^.*/src/app/shared/([a-z][a-z0-9-]+)/\\1\\.module\\.ts$",
-          "^.*/src/app/shared/[a-z][a-z0-9-]+/(configurations|pipes|utils|validators|directives)/.*$",
-          "^.*/src/app/shared/[a-z][a-z0-9-]+/components/([a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
-          "^.*/projects/[a-z][a-z0-9-]+/src/app/components/([a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
-          "^.*/src/app/shared/address-forms/components/([a-z][a-z0-9-]+)/\\1\\.factory\\.ts$",
+          "^.*/src/app/extensions/<name>/shared/(<name>)/\\1\\.component(<theme>)?\\.ts$",
+          "^.*/src/app/shared/components/<name>/(<name>)/\\1\\.component(<theme>)?\\.ts$",
+          "^.*/src/app/shared/(<name>)/\\1\\.module(<theme>)?\\.ts$",
+          "^.*/src/app/shared/<name>/(configurations|pipes|utils|validators|directives)/.*$",
+          "^.*/src/app/shared/<name>/components/(<name>)/\\1\\.component(<theme>)?\\.ts$",
+          "^.*/projects/<name>/src/app/components/(<name>)/\\1\\.component(<theme>)?\\.ts$",
+          "^.*/src/app/shared/address-forms/components/(<name>)/\\1\\.factory(<theme>)?\\.ts$",
           // formly
           "^.*/src/app/shared/formly/(components|wrappers|types|extensions|utils|dev)/.*$",
-          "^.*/src/app/pages/([a-z][a-z0-9-]+)/formly/.*$",
+          "^.*/src/app/pages/<name>/formly/.*$",
           // identity providers
           "^.*/src/app/core/identity-provider/.*$",
           // aggregation modules
-          "^.*/src/app/(shell|shared)/\\1\\.module\\.ts$",
-          "^.*/src/app/extensions/([a-z][a-z0-9-]+)/\\1\\.module\\.ts$",
-          "^.*/projects/([a-z][a-z0-9-]+)/src/app/\\1\\.module\\.ts$",
+          "^.*/src/app/(shell|shared)/\\1\\.module(<theme>)?\\.ts$",
+          "^.*/src/app/extensions/(<name>)/\\1\\.module(<theme>)?\\.ts$",
+          "^.*/projects/(<name>)/src/app/\\1\\.module(<theme>)?\\.ts$",
           // extension/projects exports
-          "^.*(src/app/extensions/[a-z][a-z0-9-]+/exports|projects/[a-z][a-z0-9-]+/src/app/exports|src/app/shell/shared)/(lazy-[a-z][a-z0-9-]+)/\\2\\.component\\.ts$",
-          "^.*/src/app/extensions/([a-z][a-z0-9-]+)/exports/\\1-product-context-display-properties/\\1-product-context-display-properties\\.service\\.ts$",
-          "^.*/src/app/extensions/([a-z][a-z0-9-]+)/exports/\\1-exports\\.module\\.ts$",
-          "^.*/src/app/extensions/([a-z][a-z0-9-]+)/exports/([a-z][a-z0-9-]+)/\\2\\.service\\.ts$",
-          "^.*/projects/([a-z][a-z0-9-]+)/src/app/exports/\\1-exports\\.module\\.ts$"
+          "^.*(src/app/extensions/<name>/exports|projects/<name>/src/app/exports|src/app/shell/shared)/(lazy-<name>)/\\2\\.component(<theme>)?\\.ts$",
+          "^.*/src/app/extensions/(<name>)/exports/\\1-product-context-display-properties/\\1-product-context-display-properties\\.service(<theme>)?\\.ts$",
+          "^.*/src/app/extensions/(<name>)/exports/\\1-exports\\.module(<theme>)?\\.ts$",
+          "^.*/src/app/extensions/<name>/exports/(<name>)/\\1\\.service(<theme>)?\\.ts$",
+          "^.*/projects/(<name>)/src/app/exports/\\1-exports\\.module(<theme>)?\\.ts$"
         ],
         "patterns": [
           // root components
           {
             "name": "^(AppComponent)$",
-            "file": "src/app/app\\.component\\.ts$"
+            "file": "src/app/app\\.component(<theme>)?\\.ts$"
           },
           {
             "name": "^(AppServerModule)$",
-            "file": "src/app/app\\.server\\.module\\.ts$"
+            "file": "src/app/app\\.server\\.module(<theme>)?\\.ts$"
           },
           {
             "name": "^(App.*Routing)Module$",
-            "file": "src/app/pages/<kebab>\\.module\\.ts$"
+            "file": "src/app/pages/<kebab>\\.module(<theme>)?\\.ts$"
           },
           // cms
           {
             "name": "^(CMS[A-Z].*Page)Component$",
-            "file": ".*/<kebab>/<kebab>\\.component\\.ts$"
+            "file": ".*/<kebab>/<kebab>\\.component(<theme>)?\\.ts$"
           },
           // custom routing
           {
             "name": "^([A-Z].*)RoutePipe$",
-            "file": ".*/core/routing/<kebab>/<kebab>-route\\.pipe\\.ts$"
+            "file": ".*/core/routing/<kebab>/<kebab>-route\\.pipe(<theme>)?\\.ts$"
           },
           {
             "name": "^generate([A-Z].*)Url$",
-            "file": ".*/core/routing/<kebab>/<kebab>.route\\.ts$"
+            "file": ".*/core/routing/<kebab>/<kebab>.route(<theme>)?\\.ts$"
           },
           {
             "name": "^match([A-Z].*)Route$",
-            "file": ".*/core/routing/<kebab>/<kebab>.route\\.ts$"
+            "file": ".*/core/routing/<kebab>/<kebab>.route(<theme>)?\\.ts$"
           },
           {
             "name": "^of([A-Z].*)Route$",
-            "file": ".*/core/routing/<kebab>/<kebab>.route\\.ts$"
+            "file": ".*/core/routing/<kebab>/<kebab>.route(<theme>)?\\.ts$"
           },
           // angular components
           {
             "name": "^([A-Z].*)PageComponent$",
-            "file": ".*/pages/<kebab>/<kebab>-page\\.component\\.ts$"
+            "file": ".*/pages/<kebab>/<kebab>-page\\.component(<theme>)?\\.ts$"
           },
           {
             "name": "^(Test|Dummy)Component$",
@@ -654,49 +680,49 @@
           },
           {
             "name": "^([A-Z].*)Component$",
-            "file": ".*/<kebab>/<kebab>\\.component\\.ts$"
+            "file": ".*/<kebab>/<kebab>\\.component(<theme>)?\\.ts$"
           },
           {
             "name": "^([A-Z].*)Directive$",
-            "file": ".*/directives/<kebab>\\.directive\\.ts$"
+            "file": ".*/directives/<kebab>\\.directive(<theme>)?\\.ts$"
           },
           {
             "name": "^([A-Z].*)PageGuard$",
-            "file": ".*/pages/<kebab>/<kebab>-page\\.guard\\.ts$"
+            "file": ".*/pages/<kebab>/<kebab>-page\\.guard(<theme>)?\\.ts$"
           },
           {
             "name": "^([A-Z].*)Guard$",
-            "file": ".*/guards/<kebab>\\.guard\\.ts$"
+            "file": ".*/guards/<kebab>\\.guard(<theme>)?\\.ts$"
           },
           {
             "name": "^([A-Z].*)Interceptor$",
-            "file": ".*/interceptors/<kebab>\\.interceptor\\.ts$"
+            "file": ".*/interceptors/<kebab>\\.interceptor(<theme>)?\\.ts$"
           },
           // services
           {
             "name": "^([A-Z].*)ProductContextDisplayPropertiesService",
-            "file": ".*/extensions/<kebab>/exports/<kebab>-product-context-display-properties/<kebab>-product-context-display-properties\\.service\\.ts$"
+            "file": ".*/extensions/<kebab>/exports/<kebab>-product-context-display-properties/<kebab>-product-context-display-properties\\.service(<theme>)?\\.ts$"
           },
           {
             "name": "^([A-Z].*)Service$",
-            "file": "(/utils.*|/services/<kebab>|/exports/<kebab>)/<kebab>\\.service\\.ts$"
+            "file": "(/utils.*|/services/<kebab>|/exports/<kebab>)/<kebab>\\.service(<theme>)?\\.ts$"
           },
           // modules and routing
           {
             "name": "^([A-Z].+)ExportsModule$",
-            "file": ".*(/extensions/<kebab>|/projects/<kebab>/src/app)/exports/<kebab>-exports\\.module\\.ts$"
+            "file": ".*(/extensions/<kebab>|/projects/<kebab>/src/app)/exports/<kebab>-exports\\.module(<theme>)?\\.ts$"
           },
           {
             "name": "^([A-Z].+)SharedModule$",
-            "file": ".*/shared/[a-z][a-z0-9-]+/<kebab>\\.module\\.ts$"
+            "file": ".*/shared/<name>/<kebab>\\.module(<theme>)?\\.ts$"
           },
           {
             "name": "^([A-Z].*)PageModule$",
-            "file": ".*/<kebab>/<kebab>-page\\.module\\.ts$"
+            "file": ".*/<kebab>/<kebab>-page\\.module(<theme>)?\\.ts$"
           },
           {
             "name": "^([A-Z].*)RoutingModule$",
-            "file": ".*/pages/<kebab>-routing\\.module\\.ts$"
+            "file": ".*/pages/<kebab>-routing\\.module(<theme>)?\\.ts$"
           },
           {
             "name": "^CoreStoreModule$",
@@ -704,28 +730,28 @@
           },
           {
             "name": "^([A-Z].*)StoreModule$",
-            "file": ".*/(<kebab>|store)/<kebab>-store\\.module\\.ts$"
+            "file": ".*/(<kebab>|store)/<kebab>-store\\.module(<theme>)?\\.ts$"
           },
           {
             "name": "^([A-Z].*)ComponentModule$",
-            "file": ".*/<kebab>\\.component\\.ts$"
+            "file": ".*/<kebab>\\.component(<theme>)?\\.ts$"
           },
           {
             "name": "^(.*)Module$",
-            "file": ".*(/<kebab>/<kebab>|/projects/<kebab>/src/app/<kebab>|/core/[a-z][a-z0-9-]+)\\.module\\.ts$"
+            "file": ".*(/<kebab>/<kebab>|/projects/<kebab>/src/app/<kebab>|/core/<name>)\\.module(<theme>)?\\.ts$"
           },
           {
             "name": "^(.*)Routes$",
-            "file": ".*/<kebab>\\.module\\.ts$"
+            "file": ".*/<kebab>\\.module(<theme>)?\\.ts$"
           },
           // factory pattern
           {
             "name": "^([A-Z].*)Helper$",
-            "file": ".*/models/<kebab>/<kebab>\\.helper\\.ts$"
+            "file": ".*/models/<kebab>/<kebab>\\.helper(<theme>)?\\.ts$"
           },
           {
             "name": "^([A-Z].*)Mapper$",
-            "file": ".*/models/<kebab>/<kebab>\\.mapper\\.ts$"
+            "file": ".*/models/<kebab>/<kebab>\\.mapper(<theme>)?\\.ts$"
           },
           {
             "name": "^([A-Z].*)BaseData$",
@@ -738,45 +764,45 @@
           // facades
           {
             "name": "^([A-Z].*)Facade$",
-            "file": ".*(/src/app/core|/src/app/extensions/[a-z][a-z0-9-]+|/projects/[a-z][a-z0-9-]+/src/app)/facades/<kebab>\\.facade\\.ts$"
+            "file": ".*(/src/app/core|/src/app/extensions/<name>|/projects/<name>/src/app)/facades/<kebab>\\.facade(<theme>)?\\.ts$"
           },
           // ngrx
           {
             "name": "^([A-Z].*)Effects$",
-            "file": ".*/store/([a-z][a-z0-9-]+/|)[a-z][a-z0-9-]+/<kebab>\\.effects\\.ts$"
+            "file": ".*/store/(<name>/)?<name>/<kebab>\\.effects(<theme>)?\\.ts$"
           },
           {
             "name": "^([a-z].*)Effects$",
-            "file": ".*/store/(<kebab>/|)<kebab>-store\\.module\\.ts$"
+            "file": ".*/store/(<kebab>/)?<kebab>-store\\.module(<theme>)?\\.ts$"
           },
           {
             "name": "^get(.*?)(Internal)?State$",
-            "file": ".*/store/([a-z][a-z0-9-]+/|)(<kebab>/<kebab>\\.selectors|<kebab>-store)\\.ts$"
+            "file": ".*/store/(<name>/)?(<kebab>/<kebab>\\.selectors|<kebab>-store)(<theme>)?\\.ts$"
           },
           {
             "name": "^([A-Z].*?)(Internal)?State$",
-            "file": ".*/store/([a-z][a-z0-9-]+/|)(<kebab>/<kebab>\\.reducer|(<kebab>/|)<kebab>-store)\\.ts$"
+            "file": ".*/store/(<name>/)?(<kebab>/<kebab>\\.reducer|(<kebab>/)?<kebab>-store)(<theme>)?\\.ts$"
           },
           {
             "name": "^(initialState)$",
-            "file": ".*/store/.*\\.reducer\\.ts$"
+            "file": ".*/store/.*\\.reducer(<theme>)?\\.ts$"
           },
           {
             "name": "^([a-z].*)Reducer$",
-            "file": ".*/store/([a-z][a-z0-9-]+/|)<kebab>/<kebab>\\.reducer\\.ts$"
+            "file": ".*/store/(<name>/)?<kebab>/<kebab>\\.reducer(<theme>)?\\.ts$"
           },
           {
             "name": "^(metaReducers|[a-z]+MetaReducers)$",
-            "file": ".*\\.module\\.ts$"
+            "file": ".*\\.module(<theme>)?\\.ts$"
           },
           {
             "name": "^([a-z].*)Reducers$",
-            "file": ".*/store/(<kebab>/|)<kebab>-store\\.module\\.ts$"
+            "file": ".*/store/(<kebab>/)?<kebab>-store\\.module(<theme>)?\\.ts$"
           },
           // environments
           {
             "name": "^(environment)$",
-            "file": "src/environments/environment(\\.[a-z]+|)\\.ts$"
+            "file": "src/environments/environment(\\.[a-z]+)?\\.ts$"
           }
         ],
         "ignoredFiles": [

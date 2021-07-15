@@ -12,11 +12,12 @@
   },
   "private": true,
   "scripts": {
-    "init-local-environment": "node scripts/init-local-environment",
-    "postinstall": "postinstall && npm-run-all --silent build:tslint-rules build:schematics synchronize-lazy-components init-local-environment",
+    "init-development-environment": "node scripts/init-development-environment",
+    "postinstall": "postinstall && npm-run-all --silent build:tslint-rules build:schematics synchronize-lazy-components init-development-environment ngcc",
     "build:tslint-rules": "cd tslint-rules && npm run build",
     "build:schematics": "cd schematics && npm run build",
     "ng": "ng",
+    "ngcc": "ngcc --first-only",
     "test": "jest --ci",
     "test:watch": "jest --watch -i",
     "e2e": "cd e2e && npm install && node open-cypress",
@@ -27,23 +28,24 @@
     "clean-localizations": "node scripts/clean-up-localizations",
     "spell-check": "cspell lint --no-summary --no-progress \"{src,projects,docs}/**/*.{html,ts,md}\"",
     "spell-check-localizations": "cspell lint --no-summary --no-progress \"src/assets/i18n/{de_DE,en_US,fr_FR}.json\"",
-    "clean": "git clean -xdf -e \"*environment.local.ts\" -e \"*node_modules\"",
+    "clean": "git clean -xdf -e \"*environment.local.ts\" -e \"*environment.development.ts\" -e \"*node_modules\"",
     "postclean": "npm ci",
-    "check": "npm-run-all \"lint -- --fix\" format compile build \"test -- --maxWorkers=50%\" dead-code clean-localizations",
+    "check": "npm-run-all \"lint -- --fix\" format compile build:multi \"test -- --maxWorkers=50%\" dead-code clean-localizations",
     "clean-check": "npm-run-all clean check",
     "changelog": "npx -p conventional-changelog-cli conventional-changelog -n intershop-changelog.js -i CHANGELOG.md -s",
     "3rd-party-licenses": "npm ci && npx license-checker --csv --out 3rd-party-licenses.txt --customPath templates/3rd-party-licenses_format.json",
     "3rd-party-licenses:summary": "npx license-checker --summary",
-    "docs": "npx markserv docs/README.md",
+    "docs": "npx markserv -a 0.0.0.0 docs/README.md",
     "compodoc": "npx compodoc -p tsconfig.doc.json -d docs/compodoc -y docs/theme --hideGenerator",
     "compodoc:serve": "npm run compodoc -- -s -w",
     "synchronize-lazy-components": "ng g lazy-components",
-    "build:watch": "ng build --aot --watch",
+    "build:watch": "npm run build client -- --watch",
     "build": "node scripts/build-pwa",
-    "analyze": "ng build --configuration production --stats-json && npx webpack-bundle-analyzer --host 0.0.0.0 dist/browser/stats.json dist/browser",
+    "build:multi": "node scripts/build-multi-pwa",
+    "analyze": "npm run build client -- --stats-json && npx webpack-bundle-analyzer --host 0.0.0.0 dist/browser/stats.json dist/browser",
     "serve": "node dist/server/main.js",
     "start": "npm-run-all build serve",
-    "start:local": "ng run intershop-pwa:serve-ssr:local",
+    "start:ssr-dev": "ng run intershop-pwa:serve-ssr",
     "xliff": "node scripts/convert-to-xliff.js"
   },
   "dependencies": {
@@ -83,14 +85,12 @@
     "core-js": "^3.15.2",
     "express": "^4.17.1",
     "express-http-proxy": "^1.6.2",
-    "express-prom-bundle": "^6.3.6",
     "express-robots-txt": "0.5.0",
     "lodash-es": "^4.17.21",
     "morgan": "^1.10.0",
     "ng-recaptcha": "^8.0.0",
     "ngx-infinite-scroll": "^10.0.1",
     "ngx-toastr": "^14.0.0",
-    "prom-client": "^13.1.0",
     "rxjs": "~6.6.7",
     "swiper": "^6.8.0",
     "tslib": "^2.3.0",
@@ -136,6 +136,7 @@
     "npm-run-all": "^4.1.5",
     "postinstall": "^0.7.0",
     "prettier": "^2.3.2",
+    "prom-client": "^13.1.0",
     "purgecss-webpack-plugin": "^4.0.3",
     "rxjs-tslint-rules": "^4.34.8",
     "sort-json": "^2.0.0",
@@ -196,7 +197,8 @@
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-customizable"
-    }
+    },
+    "active-themes": "default,blue"
   },
   "postinstall": {
     "jest-extended/types": "copy node_modules/@types/jest-extended"

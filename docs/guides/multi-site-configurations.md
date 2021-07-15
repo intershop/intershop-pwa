@@ -18,7 +18,7 @@ kb_sync_latest_only
   - [Integrate your multi-site configuration with the language switch](#integrate-your-multi-site-configuration-with-the-language-switch)
 - [Further References](#further-references)
 
-As explained in [Multi-Site Handling](../concepts/multi-site-handling.md), the PWA supports dynamic configurations of a single PWA deployment.
+As explained in [Multi-Site Handling](../concepts/multi-site-handling.md), the PWA supports dynamic configurations of a single PWA container deployment.
 This guide explains the YAML syntax used to define a configuration and provides some common configuration examples, mainly focusing on different setups for handling locales and channels.
 For more information about how the YAML configuration is processed, refer to [Multi-Site Handling](../concepts/multi-site-handling.md) and [Building and Running NGINX Docker Image | Multi-Site](../guides/nginx-startup.md#Multi-Site).
 
@@ -32,7 +32,7 @@ The following snippet describes the syntax used when defining a multi-site confi
   application: app1
   features: f1,f2,f3
   lang: la_CO
-  theme: name|color
+  theme: name
 ```
 
 The domain is interpreted as a regular expression.
@@ -46,7 +46,7 @@ All other properties are optional:
 - **features**: Comma-separated list of activated features
 - **lang**: The default language as defined in the Angular CLI environment
 - **currency**: The default currency for this channel
-- **theme**: The theme used for the channel (format: `<theme-name>(|<icon-color>)?`)
+- **theme**: The theme used for the channel (see [Guide - Multiple Themes](./multiple-themes.md))
 - **protected**: Selectively disable basic auth for a given domain and/or baseHref. Only applies in combination with globally activated nginx basic authentication.
 
 Dynamically directing the PWA to different ICM installations can be done by using:
@@ -184,20 +184,20 @@ To see what is possible through multi-site handling, have a look at this extende
     lang: en_US
     channel: inSPIRED-inTRONICS_Business-Site
     features: quoting,businessCustomerRegistration,advancedVariationHandling
-    theme: 'blue|688dc3'
+    theme: blue
 .+\.de:
   channel: inSPIRED-inTRONICS-Site
   lang: de_DE
 .+\.com:
   channel: inSPIRED-inTRONICS_Business-Site
   features: quoting,businessCustomerRegistration,advancedVariationHandling
-  theme: 'blue|688dc3'
+  theme: blue
 .+\.fr:
   channel: inSPIRED-inTRONICS-Site
   lang: fr_FR
   application: smb-responsive
   features: quoting
-  theme: 'blue|688dc3'
+  theme: blue
 ```
 
 ### Extended Example with two domains, one with basic auth (except /fr), the other without

@@ -16,11 +16,13 @@ const DEPLOY_URL = getDeployURLFromEnv();
 
 const DIST_FOLDER = join(process.cwd(), 'dist');
 
+const BROWSER_FOLDER = process.env.BROWSER_FOLDER || join(process.cwd(), 'dist', 'browser');
+
 // uncomment this block to prevent ssr issues with third-party libraries regarding window, document, HTMLElement and navigator
 // tslint:disable-next-line: no-commented-out-code
 /*
 const domino = require('domino');
-const template = fs.readFileSync(join(DIST_FOLDER, 'browser', 'index.html')).toString();
+const template = fs.readFileSync(join(BROWSER_FOLDER, 'index.html')).toString();
 const win = domino.createWindow(template);
 
 // tslint:disable:no-string-literal
@@ -116,7 +118,7 @@ export function app() {
   );
 
   server.set('view engine', 'html');
-  server.set('views', join(DIST_FOLDER, 'browser'));
+  server.set('views', BROWSER_FOLDER);
 
   if (logging) {
     server.use(
@@ -154,7 +156,7 @@ export function app() {
   // Serve static files from browser folder
   server.get(/\/.*\.(js|css)$/, (req, res) => {
     const path = req.originalUrl.substring(1);
-    fs.readFile(join(DIST_FOLDER, 'browser', path), { encoding: 'utf-8' }, (err, data) => {
+    fs.readFile(join(BROWSER_FOLDER, path), { encoding: 'utf-8' }, (err, data) => {
       if (err) {
         res.sendStatus(404);
       } else {
@@ -165,7 +167,7 @@ export function app() {
   });
   server.get(
     '*.*',
-    express.static(join(DIST_FOLDER, 'browser'), {
+    express.static(BROWSER_FOLDER, {
       setHeaders: (res, path) => {
         if (/\.[0-9a-f]{20,}\./.test(path)) {
           // file was output-hashed -> 1y
@@ -327,8 +329,37 @@ export function app() {
   }
 
   if (/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
-    const promBundle = require('express-prom-bundle');
-    server.use('*', promBundle({ buckets: [0.1, 0.3, 0.5, 0.7, 0.9, 1.1, 1.3, 1.5, 2, 3, 4, 5] }));
+    const axios = require('axios');
+    const onFinished = require('on-finished');
+
+    server.use((req, res, next) => {
+      const start = Date.now();
+      onFinished(res, () => {
+        const duration = Date.now() - start;
+        axios
+          .post('http://localhost:9113/report', {
+            theme: THEME,
+            method: req.method,
+            status: res.statusCode,
+            duration,
+            url: req.originalUrl,
+          })
+          .then((reportRes: { status: number; statusText: string; data: unknown }) => {
+            if (reportRes.status !== 204) {
+              console.error(
+                'ERROR unexpected return from Prometheus:',
+                reportRes.status,
+                reportRes.statusText,
+                reportRes.data
+              );
+            }
+          })
+          .catch((error: Error) => {
+            console.error('ERROR reporting to Prometheus:', error.message);
+          });
+      });
+      next();
+    });
   }
 
   // All regular routes use the Universal engine
@@ -356,6 +387,7 @@ function run() {
 
     console.log(`Node Express server listening on http://${require('os').hostname()}:${PORT}`);
   }
+  console.log('serving static files from', BROWSER_FOLDER);
 }
 
 // Webpack will replace 'require' with '__webpack_require__'

@@ -8,8 +8,12 @@ trap 'echo recieved KILL; exit 1' SIGKILL
 
 if [ -z "$*" ]
 then
-  node dist/server/main.js &
-  wait
+  # use 'node dist/<theme>/run-standalone'
+  # instead of pm2 to fallback to running
+  # a single theme only
+
+  node dist/build-ecosystem.js
+  pm2-runtime dist/ecosystem.yml
 else
   exec "$@"
 fi

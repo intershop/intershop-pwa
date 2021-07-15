@@ -2,11 +2,6 @@ import { tsquery } from '@phenomnomnominal/tsquery';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 
-interface RuleDeclaration {
-  name: string;
-  file: string;
-}
-
 export const kebabCaseFromPascalCase = (input: string): string =>
   input
     .replace(/[A-Z]{2,}$/, m => `${m.substr(0, 1)}${m.substr(1, m.length - 1).toLowerCase()}`)
@@ -22,28 +17,38 @@ const camelCaseFromPascalCase = (input: string): string =>
 
 export class Rule extends Lint.Rules.AbstractRule {
   warnUnmatched = false;
-  patterns: RuleDeclaration[] = [];
-  ignoredFiles: string[];
-  pathPatterns: string[];
+  patterns: { name: RegExp; file: string }[] = [];
+  ignoredFiles: RegExp[];
+  pathPatterns: RegExp[];
 
   constructor(options: Lint.IOptions) {
     super(options);
-    if (options.ruleArguments[0]) {
-      this.warnUnmatched = !!options.ruleArguments[0].warnUnmatched;
-      this.patterns = options.ruleArguments[0].patterns || [];
-      this.ignoredFiles = options.ruleArguments[0].ignoredFiles || [];
-      this.pathPatterns = options.ruleArguments[0].pathPatterns || [];
+    const config = options.ruleArguments[0];
+    if (config) {
+      this.warnUnmatched = !!config.warnUnmatched;
+      const reusePatterns = config.reusePatterns || {};
+      this.patterns = (config.patterns || []).map(p => ({
+        name: this.makeRegex(p.name, reusePatterns),
+        file: this.makeRegex(p.file, reusePatterns, false),
+      }));
+      this.ignoredFiles = (config.ignoredFiles || []).map(p => this.makeRegex(p, reusePatterns));
+      this.pathPatterns = (config.pathPatterns || []).map(p => this.makeRegex(p, reusePatterns));
     }
   }
 
+  private makeRegex(pattern: string, reusePatterns: { [name: string]: string }, asRegex = true): RegExp | string {
+    const newPattern = pattern.replace(/<(.*?)>/g, (original, reuse) => reusePatterns[reuse] ?? original);
+    return asRegex ? new RegExp(newPattern) : newPattern;
+  }
+
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    const isIgnored = this.ignoredFiles.some(ignoredPattern => new RegExp(ignoredPattern).test(sourceFile.fileName));
+    const isIgnored = this.ignoredFiles.some(ignoredPattern => ignoredPattern.test(sourceFile.fileName));
 
     if (isIgnored) {
       return [];
     }
 
-    const matchesPathPattern = this.pathPatterns.some(pattern => new RegExp(pattern).test(sourceFile.fileName));
+    const matchesPathPattern = this.pathPatterns.some(pattern => pattern.test(sourceFile.fileName));
     if (!matchesPathPattern) {
       return [
         new Lint.RuleFailure(sourceFile, 0, 1, `this file path does not match any defined patterns`, this.ruleName),
@@ -66,7 +71,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   visitDeclaration(ctx: Lint.WalkContext<void>, node: { name?: ts.Node } & ts.Node) {
     const name = node.name.getText();
     const matchingPatterns = this.patterns
-      .map(pattern => ({ pattern, match: new RegExp(pattern.name).exec(name) }))
+      .map(pattern => ({ pattern, match: pattern.name.exec(name) }))
       .filter(x => !!x.match);
 
     if (matchingPatterns.length >= 1 && matchingPatterns[0].match[1]) {

@@ -58,6 +58,9 @@ describe('Configuration Integration', () => {
     store$.dispatch(
       applyConfiguration({
         baseURL: 'http://example.org',
+        server: 'INTERSHOP/rest/WFS',
+        channel: 'site',
+        application: 'rest',
       })
     );
     store$.dispatch(

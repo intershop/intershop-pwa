@@ -20,17 +20,24 @@ So if you want to upgrade to new PWA versions later, stick to the following reco
 
 ## Start Customization
 
-To start customizing, **set a prefix** for your custom components with the script `node schematics/customization/add <prefix>`.
-After that we recommend to additionally use the prefix in every component to further help identifying customized components.
+To start customizing, **set a theme** for your customization with the script `node schematics/customization/add --default <prefix>`.
+This will:
+
+- Add an Angular theme configuration, that is used to configure your individual brand. (see [Guide - Multiple Themes](./multiple-themes.md))
+- Add style files for customization under `src/styles/themes/<prefix>`
+- Add the theme as an active theme in `package.json`. (It will replace all active themes if `--default` is used.)
+- Add a prefix `custom` for new Angular artifacts.
+- Customize TSLint to support your new theme files.
+
+After that we recommend to additionally use the prefix `custom` in every component to further help identifying customized components.
 
 ```bash
 $ node schematics/customization/add brand
-$ ng g c shared/components/basket/brand-basket-display
-CREATE src/app/shared/components/basket/brand-basket-display/brand-basket-display.component.ts (275 bytes)
+
+$ ng g c shared/components/basket/custom-basket-display
+CREATE src/app/shared/components/basket/custom-basket-display/custom-basket-display.component.ts (275 bytes)
 ...
 ```
-
-The script also creates an **additional theme**, see [Guide - Multiple Themes](../guides/multiple-themes.md).
 
 ## Import Changes from New Release
 
@@ -79,7 +86,7 @@ If 20 % of the component has to be changed, it is already a good idea to duplica
 That way incoming changes will not affect your customizations.
 Typical hot-spots where copying is a good idea are header-related or product-detail-page related customizations.
 
-#### Environment Specific Copies
+#### Theme Specific Overrides
 
 The [customized webpack build](./optimizations.md) supports replacing any file with an environment suffix in front of the file extension.
 If you for example want to customize the template `product-detail.component.html`, put your customized content in the parallel file `product-detail.component.brand.html` and run a build with `--configuration=brand`.
@@ -87,10 +94,15 @@ Then this overridden component template will be swapped in.
 
 This also works for multiple configurations: `product-detail.component.foo.bar.baz.html` will be active for configurations `foo`, `bar` and `baz`, but not for `foobar`.
 
-#### Deep Copies with Replacements
+You can use the `override` schematic to introduce custom theme overrides:
 
-If you also want to replace component logic in the TypeScript file, you will have to work with a deep copy.
+![override](./customizations-ng-g-override-schematic.gif)
+
+#### Deep Copies with Replacements (DEPRECATED)
+
 We supply a schematic `customized-copy` for copying components and replacing all usages.
+This schematic should only be used in rare cases.
+Prefer using theme overrides
 
 ```bash
 $ node schematics/customization/add brand

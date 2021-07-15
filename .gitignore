@@ -43,6 +43,7 @@
 *.log
 /typings
 /src/environments/environment.local.ts
+/src/environments/environment.development.ts
 
 # System Files
 .DS_Store
@@ -72,3 +73,15 @@ Thumbs.db
 
 # generated xliff
 *.xliff
+
+# synchronize-marker:dist-scripts:begin
+/dist
+!/dist/build-ecosystem.js
+!/dist/entrypoint.sh
+!/dist/healthcheck.js
+!/dist/prometheus.js
+!/dist/robots.txt
+!/dist/server.crt
+!/dist/server.js
+!/dist/server.key
+# synchronize-marker:dist-scripts:end

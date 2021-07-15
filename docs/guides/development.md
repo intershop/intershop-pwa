@@ -27,19 +27,16 @@ Use `ng serve --open` to start up the development server and open the Progressiv
 
 ## Development Server
 
-Run `ng serve` or `ng s` for a development server that is configured by default via `environment.ts` to use mocked responses instead of actual REST calls.
+Run `ng serve` or `ng s` for a development server.
 
-Running `ng serve --configuration=production` or `ng s -c production` starts a development server that will communicate by default with the Intershop Commerce Management server of our public demo via REST API.
-
-The project is also configured to support the usage of an own local environment file `environment.local.ts` that can be configured according to your local development environment needs, e.g. with a different icmBaseURL or different configuration options (see the `environment.model.ts` for the available configuration options).
-This file will be ignored by Git so the developer specific settings will not be committed and accidentally shared.
+The project is also configured to support the usage of an own local environment file `environment.development.ts` that can be configured according to your local development environment needs, e.g. with a different icmBaseURL or different configuration options (see the `environment.model.ts` for the available configuration options).
+Overrides in this file will be included in the theme environments and override parts of it.
+For production builds, no overrides should be used.
+The docker build automatically creates this file as an empty file.
+The `environment.development.ts` will be ignored by Git so the developer specific settings will not be committed and accidentally shared.
 It is initially created when running `npm install`.
 
-To use this local environment configuration, the server should be started with
-
-```bash
-ng s -c local
-```
+This local environment configuration will automatically be used if you start the PWA with `ng serve`.
 
 Once the server is running, navigate to http://localhost:4200 in your browser to see the application.
 The app will automatically reload if you change any of the source files.
@@ -90,7 +87,7 @@ It is possible to bypass the verification on commit with the Git option `--no-ve
 ### Clean Working Copy
 
 You can use `npm run clean` to remove all unversioned files and folders from your local git checkout.
-This command uses `git clean` but preserves your `environment.local.ts`.
+This command uses `git clean` but preserves your `environment.development.ts`.
 Afterwards a clean `npm install` is performed.
 
 :warning: All unstaged files will be deleted!

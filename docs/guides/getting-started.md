@@ -39,27 +39,11 @@ Before customizing the PWA for your specific needs, have a look at our [Customiz
 
 ## Development Server
 
-Run `ng serve` or `ng s` for a development server that is configured by default via _environment.ts_ to use mocked responses instead of actual REST calls.
+Run `ng serve` or `ng s` for a development server.
 
-Running `ng serve --configuration=production` or `ng s -c production` starts a server that will communicate by default with the Intershop Commerce Management of our public demo via REST API.
-
-The project is also configured to support the usage of an own local environment file _environment.local.ts_ that can be configured according to the development environment, e.g. with a different icmBaseURL or different configuration options (see the _environment.model.ts_).
-This file will be ignored by Git so the developer-specific setting will not be committed.
-To use this local environment configuration, the server should be started with `ng s -c local`.
-
-Multiple configurations can also be combined, where `production` should be the last in the list: `ng serve -c local,production`.
-
-Once the server is running, navigate to _http://localhost:4200/_ in your browser to see the application.
-The application will automatically reload if you change any of the source files.
-
-Running `ng serve --port 4300` will start the server on a different port than the default 4200 port, e.g., if one wants to run multiple instances in parallel for comparison.
-
-Running `ng serve --open` will automatically open a new browser tab with the started application.
-The different start options can be combined.
+For more information consult the chapter in the [Development Guide](./development.md#development-server).
 
 > **Warning**: Do not use _webpack-dev-server_ in production!
-
-Also have a look at further information in the [Development Guide](./development.md)
 
 ## Deployment
 
@@ -68,7 +52,7 @@ Deployments are generated to the _dist_ folder of the project.
 Use `npm run build` to generate an Angular Universal enabled version.
 On the server the _dist/server.js_ script has to be executed with `node`.
 
-Alternatively, you can use `ng build --prod` to get an application using browser rendering.
+Alternatively, you can use `npm run build client` to get an application using browser rendering.
 All the files under `dist/browser` have to be served statically.
 The server has to be configured for fallback routing,
 see [Server Configuration in Angular Docs](https://angular.io/guide/deployment#server-configuration).

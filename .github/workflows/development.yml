@@ -53,7 +53,7 @@ jobs:
         run: git diff --exit-code --raw -p --stat
 
       - name: Compile Angular
-        run: npm run ng -- build --aot
+        run: npm run build client
         env:
           NODE_OPTIONS: --max_old_space_size=8192
 
@@ -126,6 +126,11 @@ jobs:
     needs: [Quality, Jest]
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        test: ['normal', 'customization']
+
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 14
@@ -139,7 +144,7 @@ jobs:
 
       - name: Test Schematics
         run: |
-          bash e2e/test-schematics.sh
+          bash e2e/test-schematics-${{ matrix.test }}.sh
           node scripts/tslint-hard
           npm run lint
 
@@ -151,7 +156,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Production Build PWA Image
-        run: docker-compose build --build-arg configuration=production pwa
+        run: docker-compose build pwa
 
   Nginx:
     needs: [Quality, Jest]

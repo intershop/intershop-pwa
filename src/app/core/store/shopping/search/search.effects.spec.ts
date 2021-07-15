@@ -6,7 +6,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
-import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
 import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
@@ -77,7 +76,7 @@ describe('Search Effects', () => {
     router = TestBed.inject(Router);
     httpStatusCodeService = spy(TestBed.inject(HttpStatusCodeService));
 
-    store$.dispatch(setProductListingPageSize({ itemsPerPage: TestBed.inject(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
+    store$.dispatch(setProductListingPageSize({ itemsPerPage: 12 }));
   });
 
   describe('triggerSearch$', () => {
