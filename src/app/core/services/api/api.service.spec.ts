@@ -1,4 +1,4 @@
-import { HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Action, Store } from '@ngrx/store';
@@ -741,6 +741,92 @@ describe('Api Service', () => {
       setTimeout(() => {
         req3.flush('TEST3');
       }, 300);
+    });
+  });
+
+  describe('API Service general error handling', () => {
+    let apiService: ApiService;
+    let httpTestingController: HttpTestingController;
+    let storeSpy$: Store;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule],
+        providers: [
+          provideMockStore({
+            selectors: [
+              { selector: getICMServerURL, value: undefined },
+              { selector: getRestEndpoint, value: 'http://www.example.org' },
+              { selector: getCurrentLocale, value: undefined },
+              { selector: getCurrentCurrency, value: undefined },
+              { selector: getPGID, value: undefined },
+            ],
+          }),
+        ],
+      });
+
+      apiService = TestBed.inject(ApiService);
+      httpTestingController = TestBed.inject(HttpTestingController);
+      storeSpy$ = spy(TestBed.inject(Store));
+    });
+
+    afterEach(() => {
+      // After every test, assert that there are no more pending requests.
+      httpTestingController.verify();
+    });
+
+    it('should dispatch communication timeout errors when getting status 0', done => {
+      apiService.get('route').subscribe(fail, fail, done);
+
+      httpTestingController
+        .expectOne(() => true)
+        .flush('', {
+          status: 0,
+          statusText: 'Error',
+        });
+
+      verify(storeSpy$.dispatch(anything())).once();
+      expect(capture(storeSpy$.dispatch).last()?.[0]).toMatchInlineSnapshot(`
+        [Error] Communication Timeout Error:
+          error: {"headers":{"normalizedNames":{},"lazyUpdate":null,"headers"...
+      `);
+    });
+
+    it('should dispatch general errors when getting status 500', done => {
+      apiService.get('route').subscribe(fail, fail, done);
+
+      httpTestingController
+        .expectOne(() => true)
+        .flush('', {
+          status: 500,
+          statusText: 'Error',
+        });
+
+      verify(storeSpy$.dispatch(anything())).once();
+      expect(capture(storeSpy$.dispatch).last()?.[0]).toMatchInlineSnapshot(`
+        [Error] Server Error (5xx):
+          error: {"headers":{"normalizedNames":{},"lazyUpdate":null,"headers"...
+      `);
+    });
+
+    it('should not dispatch errors when getting status 404', done => {
+      apiService.get('route').subscribe(
+        fail,
+        err => {
+          expect(err).toBeInstanceOf(HttpErrorResponse);
+          done();
+        },
+        fail
+      );
+
+      httpTestingController
+        .expectOne(() => true)
+        .flush('', {
+          status: 404,
+          statusText: 'Error',
+        });
+
+      verify(storeSpy$.dispatch(anything())).never();
     });
   });
 });
