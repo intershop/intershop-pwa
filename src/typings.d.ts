@@ -14,3 +14,5 @@ declare var SERVICE_WORKER: boolean;
 declare var NGRX_RUNTIME_CHECKS: boolean;
 
 declare var PWA_VERSION: string;
+
+declare var THEME: boolean;

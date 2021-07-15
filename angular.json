@@ -31,21 +31,13 @@
             "tsConfig": "tsconfig.app.json",
             "aot": true,
             "assets": ["src/assets"],
-            "styles": [
-              {
-                "inject": false,
-                "input": "src/styles/themes/default/style.scss",
-                "bundleName": "default"
-              },
-              {
-                "inject": false,
-                "input": "src/styles/themes/blue/style.scss",
-                "bundleName": "blue"
-              }
-            ],
             "scripts": [],
-            "sourceMap": true
+            "styles": ["src/styles/themes/default/style.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/styles/themes/default"]
+            }
           },
+          "defaultConfiguration": "default,production",
           "configurations": {
             "production": {
               "outputHashing": "all",
@@ -88,7 +80,7 @@
                 }
               ]
             },
-            "local": {
+            "development": {
               "optimization": false,
               "sourceMap": true,
               "buildOptimizer": false,
@@ -99,7 +91,9 @@
                   "maximumWarning": "6kb"
                 }
               ]
-            }
+            },
+            "default": {},
+            "blue": {}
           }
         },
         "serve": {
@@ -109,12 +103,19 @@
             "disableHostCheck": true,
             "host": "0.0.0.0"
           },
+          "defaultConfiguration": "default,development",
           "configurations": {
             "production": {
               "browserTarget": "intershop-pwa:build:production"
             },
-            "local": {
-              "browserTarget": "intershop-pwa:build:local"
+            "development": {
+              "browserTarget": "intershop-pwa:build:development"
+            },
+            "default": {
+              "browserTarget": "intershop-pwa:build:default"
+            },
+            "blue": {
+              "browserTarget": "intershop-pwa:build:blue"
             }
           }
         },
@@ -144,14 +145,17 @@
             "optimization": true,
             "tsConfig": "tsconfig.server.json"
           },
+          "defaultConfiguration": "default,production",
           "configurations": {
             "production": {
               "outputHashing": "media",
               "sourceMap": false
             },
-            "local": {
+            "development": {
               "sourceMap": true
-            }
+            },
+            "default": {},
+            "blue": {}
           }
         },
         "serve-ssr": {
@@ -160,10 +164,15 @@
             "browserTarget": "intershop-pwa:build",
             "serverTarget": "intershop-pwa:server"
           },
+          "defaultConfiguration": "default",
           "configurations": {
-            "local": {
-              "browserTarget": "intershop-pwa:build:local",
-              "serverTarget": "intershop-pwa:server:local"
+            "default": {
+              "browserTarget": "intershop-pwa:build:default,development",
+              "serverTarget": "intershop-pwa:server:default,development"
+            },
+            "blue": {
+              "browserTarget": "intershop-pwa:build:blue,development",
+              "serverTarget": "intershop-pwa:server:blue,development"
             }
           }
         }
@@ -203,7 +212,7 @@
             "fileReplacements": [
               {
                 "replace": "src/environments/environment.ts",
-                "with": "src/environments/environment.local.ts"
+                "with": "src/environments/environment.development.ts"
               }
             ]
           }
@@ -252,7 +261,7 @@
             "fileReplacements": [
               {
                 "replace": "src/environments/environment.ts",
-                "with": "src/environments/environment.local.ts"
+                "with": "src/environments/environment.development.ts"
               }
             ]
           }

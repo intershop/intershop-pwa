@@ -25,6 +25,7 @@ import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ng
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { getCategoryTree, getSelectedCategory } from './categories';
+import { setProductListingPageSize } from './product-listing';
 import { getProductEntities, getSelectedProduct } from './products';
 import { getRecentlyViewedProducts } from './recently';
 import { suggestSearch } from './search';
@@ -186,6 +187,7 @@ describe('Shopping Store', () => {
     });
 
     store = TestBed.inject(StoreWithSnapshots);
+    store.dispatch(setProductListingPageSize({ itemsPerPage: 9 }));
     router = TestBed.inject(Router);
     TestBed.inject(SelectedProductContextFacade);
     store.reset();

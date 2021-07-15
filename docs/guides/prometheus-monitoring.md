@@ -9,9 +9,7 @@ kb_sync_latest_only
 
 The PWA can be monitored using [Prometheus](https://prometheus.io).
 
-Activating the feature Prometheus for NGINX exposes metrics on port 9113 on the `/metrics` URL.
-
-Activating the Prometheus feature for the express.js server exposes metrics on the `/metrics` URL on the same port it is running.
+Activating the feature Prometheus for the nginx or SSR container exposes metrics on port 9113 on the `/metrics` URL.
 
 After activating the features on both containers, add tasks to prometheus:
 
@@ -31,7 +29,7 @@ scrape_configs:
       - names:
           - 'tasks.pwa-ssr'
         type: 'A'
-        port: 4200
+        port: 9113
 ```
 
 To get started, you can import our example [Grafana Dashboard][grafana-pwa-dashboard]:

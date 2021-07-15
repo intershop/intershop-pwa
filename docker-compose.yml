@@ -8,9 +8,6 @@ services:
       context: .
       # dockerfile: Dockerfile_noSSR
       args:
-        # configuration: local
-        configuration: production
-        # configuration: local,production
         serviceWorker: 'false'
     environment:
       - LOGGING=on
@@ -70,6 +67,5 @@ services:
             channel: default
             lang: fr_FR
           - baseHref: /b2b
-            channel: inSPIRED-inTRONICS_Business-Site
-            features: quoting,businessCustomerRegistration,advancedVariationHandling,quickorder,orderTemplates,punchout,recently
-            theme: 'blue|688dc3'
+            channel: default
+            theme: blue

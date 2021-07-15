@@ -47,7 +47,7 @@ These steps should give an overview of the internal workings:
 
 1. The browser requests the page by URL from the reverse proxy. Nginx appends URL parameters to the incoming request URL for channel, application, etc depending on the incoming domain.
 
-2. The node _express.js_ server runs Angular Universal pre-rendering for the requested URL. Angular Universal dynamically configures itself with the incoming parameters.
+2. PM2 runs Angular Universal pre-rendering for the requested URL (and theme). Angular Universal dynamically configures itself with the incoming parameters.
 
 3. The requested page is filled with content retrieved via ICM REST API for this dynamically configured channel.
 

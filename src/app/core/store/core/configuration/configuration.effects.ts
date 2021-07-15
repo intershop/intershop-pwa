@@ -92,7 +92,6 @@ export class ConfigurationEffects {
           this.stateProperties
             .getStateOrEnvOrDefault<string | string[]>('FEATURES', 'features')
             .pipe(map(x => (typeof x === 'string' ? x.split(/,/g) : x))),
-          this.stateProperties.getStateOrEnvOrDefault<string>('THEME', 'theme').pipe(map(x => x || 'default')),
           this.stateProperties
             .getStateOrEnvOrDefault<string>('ICM_IDENTITY_PROVIDER', 'identityProvider')
             .pipe(map(x => x || 'ICM')),
@@ -120,7 +119,6 @@ export class ConfigurationEffects {
             channel,
             application,
             features,
-            theme,
             identityProvider,
             identityProviders,
             multiSiteLocaleMap,
@@ -132,7 +130,6 @@ export class ConfigurationEffects {
               channel,
               application,
               features,
-              theme,
               identityProvider,
               identityProviders,
               multiSiteLocaleMap,

@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "Override",
+  "title": "Override Options Schema",
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "string",
+      "$default": {
+        "$source": "projectName"
+      },
+      "visible": false
+    },
+    "path": {
+      "type": "string",
+      "format": "path",
+      "visible": false
+    },
+    "from": {
+      "type": "string",
+      "description": "The source file.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What source should be overridden?"
+    },
+    "theme": {
+      "type": "string",
+      "enum": ["default", "blue"],
+      "x-prompt": "For which theme?"
+    },
+    "ts": {
+      "type": "boolean",
+      "default": false,
+      "description": "Override TypeScript file",
+      "x-prompt": "Override TS file?"
+    },
+    "html": {
+      "type": "boolean",
+      "default": false,
+      "description": "Override template",
+      "x-prompt": "Override template?"
+    },
+    "scss": {
+      "type": "boolean",
+      "default": false,
+      "description": "Override styling",
+      "x-prompt": "Override style file?"
+    }
+  }
+}

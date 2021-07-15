@@ -1,15 +1,29 @@
 .gradle
 build
-cypress
+
+docs
+e2e
 nginx
+
 node_modules
-templates
 .dockerignore
+Dockerfile*
 .git
 .gitattributes
 .gitignore
-.gitlab-ci.yml
-Dockerfile*
+
 templates
 !templates/webpack
 !templates/nginx.conf
+
+# synchronize-marker:dist-scripts:begin
+/dist
+!/dist/build-ecosystem.js
+!/dist/entrypoint.sh
+!/dist/healthcheck.js
+!/dist/prometheus.js
+!/dist/robots.txt
+!/dist/server.crt
+!/dist/server.js
+!/dist/server.key
+# synchronize-marker:dist-scripts:end

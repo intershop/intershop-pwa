@@ -46,3 +46,4 @@ nginx.conf
 /charts/**/templates/*
 *~
 /src/environments/environment.local.ts
+/src/environments/environment.development.ts

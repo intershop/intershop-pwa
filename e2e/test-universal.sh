@@ -15,6 +15,10 @@ universalTest() {
   [ "$res" -ne "0" ] && exit 1
 }
 
+waitOn="$(echo "$PWA_BASE_URL" | sed -e 's/^.*:\/\//tcp:/')"
+echo "Waiting for $waitOn"
+npx wait-on "$waitOn"
+
 universalTest 1 "${PWA_BASE_URL}/" "router-outlet><ish-home-page"
 universalTest 2 "${PWA_BASE_URL}/catComputers.1835.151" "router-outlet><ish-category-page"
 universalTest 3 "${PWA_BASE_URL}/login" "<ish-loading"

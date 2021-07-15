@@ -58,6 +58,13 @@ export const DATA_RETENTION_POLICY = new InjectionToken<DataRetentionPolicy>('da
   factory: () => environment.dataRetention,
 });
 
+/**
+ * the configured theme color
+ */
+export const THEME_COLOR = new InjectionToken<string>('themeColor', {
+  factory: () => environment.themeColor,
+});
+
 /*
  * global definition of the Bootstrap grid system breakpoint widths
  */

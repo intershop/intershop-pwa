@@ -32,8 +32,6 @@ export const getICMBaseURL = createSelector(getConfigurationState, state => stat
 
 export const getFeatures = createSelector(getConfigurationState, state => state.features);
 
-export const getTheme = createSelector(getConfigurationState, state => state.theme);
-
 const internalDefaultLocale = createSelector(getConfigurationState, state => state.defaultLocale);
 
 const internalCurrencyFilter = createSelector(getConfigurationState, state => state.localeCurrencyOverride);

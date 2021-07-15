@@ -11,6 +11,10 @@ kb_sync_latest_only
 
 Locale definitions in `environment.ts` models are no longer supported, only ICM channel configurations are now used for switching locales.
 
+The Angular configuration mechanism of the Intershop PWA was refactored to support running multiple configurations in one docker image (see [Guide - Multiple Themes](./multiple-themes.md)).
+This now means that the former `environment.local.ts` which had a standalone configuration can no longer be supported.
+Instead theme-specific environments exist for `default` and `blue` and development settings can be overridden in `environment.development.ts`, which are imported into the theme-specific configurations (see [Guide - Development](./development.md#development-server)).
+
 ## 0.29 to 0.30
 
 We introduced the feature toggle 'guestCheckout' in the `environment.model.ts`.
