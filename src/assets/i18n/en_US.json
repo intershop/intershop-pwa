@@ -326,6 +326,7 @@
   "account.send_password.heading": "Forgot your password?",
   "account.send_password.message": "An e-mail with a link has been sent to your e-mail address. Please follow this link to change your password.",
   "account.signin.auth0.button.label": "Sign In With Auth0",
+  "account.signin.azureAD.button.label": "Sign In With AzureAD",
   "account.signin.button.label": "Sign In",
   "account.submit.button.label": "OK",
   "account.update.button.label": "Save Changes",
