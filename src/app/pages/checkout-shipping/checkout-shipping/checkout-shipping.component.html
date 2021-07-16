@@ -24,35 +24,14 @@
                 type="radio"
               />
 
-              <span>{{ shippingMethod.name }}:</span>&nbsp;
-              <strong *ngIf="shippingMethod.shippingCosts">{{ shippingMethod.shippingCosts | ishPrice }}&nbsp;</strong>
-              <span
-                *ngIf="shippingMethod.shippingTimeMin && shippingMethod.shippingTimeMax"
-                class="form-text form-text-inline"
-              >
-                {{ 'checkout.shipping.delivery_time.description' | translate }}
-                <span *ngIf="shippingMethod.shippingTimeMin === 0 && shippingMethod.shippingTimeMax === 1">
-                  {{ 'checkout.shipping.delivery_time.within24' | translate }}
-                </span>
-                <span *ngIf="shippingMethod.shippingTimeMin === 0 && shippingMethod.shippingTimeMax > 1">
-                  {{ 'checkout.shipping.delivery_time.within' | translate: { '0': shippingMethod.shippingTimeMax } }}
-                </span>
-                <span *ngIf="shippingMethod.shippingTimeMin > 0">
-                  {{
-                    'checkout.shipping.delivery_time'
-                      | translate: { '0': shippingMethod.shippingTimeMin, '1': shippingMethod.shippingTimeMax }
-                  }}
-                </span>
-              </span>
-              <ng-template #ShippingMethodDescription>
-                <span [innerHTML]="shippingMethod.description"></span>
-              </ng-template>
-              <a class="details-tooltip" [ngbPopover]="ShippingMethodDescription" placement="top">
-                {{ 'checkout.detail.text' | translate }}
-                <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
-              </a>
-            </label>
-          </div>
+            <ng-template #ShippingMethodDescription>
+              <span [innerHTML]="shippingMethod.description"></span>
+            </ng-template>
+            <a class="details-tooltip" [ngbPopover]="ShippingMethodDescription" placement="top">
+              {{ 'checkout.detail.text' | translate }}
+              <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
+            </a>
+          </label>
         </div>
         <!--- Message because multiple shipment is not supported yet-->
         <ng-template #noShippingMethods>
@@ -62,10 +41,9 @@
         </ng-template>
       </form>
     </div>
-
-    <ng-container *ngIf="isBusinessCustomer$ | async">
-      <ish-basket-order-reference [basket]="basket"></ish-basket-order-reference>
-    </ng-container>
+    <form [formGroup]="shippingForm" class="form-horizontal">
+      <formly-form [form]="shippingForm" [fields]="shippingConfig$ | async"> </formly-form>
+    </form>
   </div>
 
   <!-- basket summary -->

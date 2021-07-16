@@ -9,11 +9,12 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 
-import { AccountFacade } from 'ish-core/facades/account.facade';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
@@ -33,23 +34,31 @@ export class CheckoutShippingComponent implements OnInit, OnChanges, OnDestroy {
 
   isBusinessCustomer$: Observable<boolean>;
 
-  shippingForm: FormGroup;
+  shippingForm: FormGroup = new FormGroup({});
+  shippingConfig$: Observable<FormlyFieldConfig[]>;
   submitted = false;
 
   private destroy$ = new Subject();
 
-  constructor(private accountFacade: AccountFacade) {}
-
+  constructor(private checkoutFacade: CheckoutFacade) {}
   ngOnInit() {
-    this.isBusinessCustomer$ = this.accountFacade.isBusinessCustomer$;
-
-    this.shippingForm = new FormGroup({
-      id: new FormControl(this.getCommonShippingMethod()),
-    });
+    this.shippingConfig$ = this.checkoutFacade.eligibleShippingMethods$().pipe(
+      map(methods =>
+        methods.map(method => ({
+          type: 'ish-radio-field',
+          key: 'shippingMethod',
+          templateOptions: {
+            shippingMethod: method,
+            id: 'shipping_method' + method.id,
+            value: method.id,
+          },
+        }))
+      )
+    );
 
     // trigger update shipping method if selection changes
     this.shippingForm
-      .get('id')
+      .get('shippingMethod')
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(shippingId => this.updateShippingMethod.emit(shippingId));
   }
