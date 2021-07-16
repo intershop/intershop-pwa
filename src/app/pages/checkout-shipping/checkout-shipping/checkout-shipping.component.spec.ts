@@ -65,18 +65,6 @@ describe('Checkout Shipping Component', () => {
     const [arg] = capture(checkoutFacade.updateBasketShippingMethod).last();
     expect(arg).toMatchInlineSnapshot(`"testShipping"`);
   });
-  it('should not disable next button if basket shipping method is set and next button is clicked', () => {
-    expect(component.nextDisabled).toBeFalse();
-    component.goToNextStep();
-    expect(component.nextDisabled).toBeFalse();
-  });
-
-  it('should disable next button if basket shipping method is missing and next button is clicked', () => {
-    when(checkoutFacade.basket$).thenReturn(of({ ...BasketMockData.getBasket(), commonShippingMethod: undefined }));
-
-    component.goToNextStep();
-    expect(component.nextDisabled).toBeTrue();
-  });
 });
 
 @Component({ template: '<ng-template #fieldComponent></ng-template>' })
