@@ -134,12 +134,12 @@ export class CheckoutFacade {
       switchMap(() => this.store.pipe(select(getBasketEligibleShippingMethods)))
     );
   }
-  eligibleShippingMethodsNoDispatch$ = this.store.pipe(select(getBasketEligibleShippingMethods));
+  eligibleShippingMethodsNoFetch$ = this.store.pipe(select(getBasketEligibleShippingMethods));
 
-  validShippingMethod$() {
+  getValidShippingMethod$() {
     return combineLatest([
       this.basket$.pipe(whenTruthy()),
-      this.eligibleShippingMethodsNoDispatch$.pipe(whenTruthy()),
+      this.eligibleShippingMethodsNoFetch$.pipe(whenTruthy()),
     ]).pipe(
       // compare baskets only by shippingMethod
       distinctUntilChanged(
@@ -157,7 +157,6 @@ export class CheckoutFacade {
           (!basket?.commonShippingMethod?.id ||
             !shippingMethods.find(method => method.id === basket.commonShippingMethod?.id ?? ''))
         ) {
-          this.updateBasketShippingMethod(shippingMethods[0].id);
           return shippingMethods[0].id;
         }
       }),

@@ -36,8 +36,8 @@ describe('Checkout Shipping Component', () => {
     element = fixture.nativeElement;
 
     when(checkoutFacade.basket$).thenReturn(of(BasketMockData.getBasket()));
-    when(checkoutFacade.eligibleShippingMethodsNoDispatch$).thenReturn(of([BasketMockData.getShippingMethod()]));
-    when(checkoutFacade.validShippingMethod$()).thenReturn(of(BasketMockData.getBasket().commonShippingMethod.id));
+    when(checkoutFacade.eligibleShippingMethodsNoFetch$).thenReturn(of([BasketMockData.getShippingMethod()]));
+    when(checkoutFacade.getValidShippingMethod$()).thenReturn(of(BasketMockData.getBasket().commonShippingMethod.id));
   });
 
   it('should be created', () => {
@@ -59,6 +59,14 @@ describe('Checkout Shipping Component', () => {
     verify(checkoutFacade.updateBasketShippingMethod(anything())).once();
     const [arg] = capture(checkoutFacade.updateBasketShippingMethod).last();
     expect(arg).toMatchInlineSnapshot(`"testShipping"`);
+  });
+
+  it('should update basket if current shippingMethod is invalid', () => {
+    when(checkoutFacade.getValidShippingMethod$()).thenReturn(of('other'));
+    fixture.detectChanges();
+    verify(checkoutFacade.updateBasketShippingMethod(anything())).once();
+    const [arg] = capture(checkoutFacade.updateBasketShippingMethod).last();
+    expect(arg).toMatchInlineSnapshot(`"other"`);
   });
 });
 

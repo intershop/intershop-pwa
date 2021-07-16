@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, Subject } from 'rxjs';
-import { distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
@@ -28,7 +28,7 @@ export class CheckoutShippingComponent implements OnInit, OnDestroy {
 
   constructor(private checkoutFacade: CheckoutFacade) {}
   ngOnInit() {
-    this.shippingMethods$ = this.checkoutFacade.eligibleShippingMethodsNoDispatch$;
+    this.shippingMethods$ = this.checkoutFacade.eligibleShippingMethodsNoFetch$;
     this.basket$ = this.checkoutFacade.basket$;
 
     this.setupFormConfigConstruction();
@@ -74,9 +74,12 @@ export class CheckoutShippingComponent implements OnInit, OnDestroy {
    */
   private setupShippingMethodPreselection() {
     this.checkoutFacade
-      .validShippingMethod$()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(shippingMethod => {
+      .getValidShippingMethod$()
+      .pipe(withLatestFrom(this.basket$), takeUntil(this.destroy$))
+      .subscribe(([shippingMethod, basket]) => {
+        if (basket.commonShippingMethod?.id !== shippingMethod) {
+          this.checkoutFacade.updateBasketShippingMethod(shippingMethod);
+        }
         this.shippingForm.get('shippingMethod').setValue(shippingMethod, { emitEvent: false });
         this.model = {
           ...this.model,
