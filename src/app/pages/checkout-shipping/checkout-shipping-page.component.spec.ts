@@ -3,7 +3,7 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
-import { first, skip } from 'rxjs/operators';
+import { scan } from 'rxjs/operators';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -98,12 +98,13 @@ describe('Checkout Shipping Page Component', () => {
 
   it('should set submitted if next button is clicked', done => {
     fixture.detectChanges();
-    component.submittedSubject$.pipe(first()).subscribe(s => {
-      expect(s).toBeFalse();
-    });
-    component.submittedSubject$.pipe(skip(1)).subscribe(s => {
-      expect(s).toBeTrue();
-      done();
+    component.submittedSubject$.pipe(scan((_, curr, index) => [index, curr], [])).subscribe(([idx, s]) => {
+      if (idx === 0) {
+        expect(s).toBeFalse();
+      } else if (idx === 1) {
+        expect(s).toBeTrue();
+        done();
+      }
     });
     component.goToNextStep();
   });
