@@ -47,6 +47,10 @@ services:
           - baseHref: /fr
             channel: default
             lang: fr_FR
+          - baseHref: /b2b
+            channel: inSPIRED-inTRONICS_Business-Site
+            features: quoting,businessCustomerRegistration,advancedVariationHandling,quickorder,orderTemplates,punchout,recently
+            theme: 'blue|688dc3'
 
     ports:
       - '4200:80'
