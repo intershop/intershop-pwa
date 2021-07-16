@@ -80,6 +80,7 @@ export class BasketMockData {
 
   static getShippingMethod(): ShippingMethod {
     return {
+      id: 'STD_GRD',
       name: 'Standard Ground',
       shippingTimeMin: 3,
       shippingTimeMax: 7,

@@ -2,7 +2,12 @@ import { TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
-import { getBasketEligibleShippingMethods, getCurrentBasket } from 'ish-core/store/customer/basket';
+import {
+  getBasketEligibleShippingMethods,
+  getBasketLastTimeProductAdded,
+  getBasketLoading,
+  getCurrentBasket,
+} from 'ish-core/store/customer/basket';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { CheckoutFacade } from './checkout.facade';
@@ -13,7 +18,24 @@ describe('Checkout Facade', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideMockStore()],
+      providers: [
+        provideMockStore({
+          selectors: [
+            {
+              selector: getCurrentBasket,
+              value: BasketMockData.getBasket(),
+            },
+            {
+              selector: getBasketLastTimeProductAdded,
+              value: undefined,
+            },
+            {
+              selector: getBasketLoading,
+              value: false,
+            },
+          ],
+        }),
+      ],
     });
 
     store$ = TestBed.inject(MockStore);
@@ -22,7 +44,6 @@ describe('Checkout Facade', () => {
 
   describe('getValidShippingMethod$()', () => {
     beforeEach(() => {
-      store$.overrideSelector(getCurrentBasket, BasketMockData.getBasket());
       store$.overrideSelector(getBasketEligibleShippingMethods, [BasketMockData.getBasket().commonShippingMethod]);
     });
 

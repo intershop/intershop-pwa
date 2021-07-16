@@ -160,6 +160,7 @@ export class CheckoutFacade {
           return shippingMethods[0].id;
         }
       }),
+      whenTruthy(),
       distinctUntilChanged()
     );
   }
