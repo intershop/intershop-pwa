@@ -29,7 +29,8 @@ Dockerfile*
 .browserslistrc
 node_modules
 /cache
-/dist
+/dist/**/browser/**
+/dist/**/server/**
 /out-tsc
 /coverage
 /docs/compodoc
