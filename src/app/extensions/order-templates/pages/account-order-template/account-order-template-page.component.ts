@@ -33,11 +33,6 @@ export class AccountOrderTemplatePageComponent implements OnInit {
     this.orderTemplateError$ = this.orderTemplatesFacade.orderTemplateError$;
   }
 
-  /** dispatch delete request */
-  deleteOrderTemplate(id: string) {
-    this.orderTemplatesFacade.deleteOrderTemplate(id);
-  }
-
   /** dispatch creation request */
   addOrderTemplate(orderTemplate: OrderTemplate) {
     this.orderTemplatesFacade.addOrderTemplate(orderTemplate);

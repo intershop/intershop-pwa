@@ -17,7 +17,7 @@ export class OrderTemplatesOverviewPage {
     this.orderTemplatesArray
       .find('a')
       .contains(id)
-      .closest('[data-testing-id="order-template-list-item-container"]')
+      .closest('[data-testing-id="order-template-list-item"]')
       .find('[data-testing-id="addToCartButton"]')
       .click();
   }
@@ -26,7 +26,7 @@ export class OrderTemplatesOverviewPage {
     this.orderTemplatesArray
       .find('a')
       .contains(id)
-      .closest('[data-testing-id="order-template-list-item-container"]')
+      .closest('[data-testing-id="order-template-list-item"]')
       .find('[data-testing-id="delete-order-template"]')
       .click();
     cy.get('[data-testing-id="confirm"]').click();

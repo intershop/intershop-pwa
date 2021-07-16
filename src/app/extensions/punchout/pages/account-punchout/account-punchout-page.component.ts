@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
 
@@ -22,16 +21,13 @@ export class AccountPunchoutPageComponent implements OnInit {
   loading$: Observable<boolean>;
   error$: Observable<HttpError>;
 
-  punchoutTypeText: string;
-
   ociPunchoutUrl = `${window.location.origin}/punchout?USERNAME=<USERNAME>&PASSWORD=<PASSWORD>&HOOK_URL=<HOOK_URL>`;
   cxmlPunchoutUrl$: Observable<string>;
 
   constructor(
     private accountFacade: AccountFacade,
     private appFacade: AppFacade,
-    private punchoutFacade: PunchoutFacade,
-    private translateService: TranslateService
+    private punchoutFacade: PunchoutFacade
   ) {}
 
   ngOnInit() {
@@ -46,10 +42,6 @@ export class AccountPunchoutPageComponent implements OnInit {
       withLatestFrom(this.accountFacade.customer$),
       map(([url, customer]) => `${url}/customers/${customer?.customerNo}/punchouts/cxml1.2/setuprequest`)
     );
-  }
-
-  getPunchoutTypeText(punchoutType: PunchoutType): string {
-    return (this.punchoutTypeText = this.translateService.instant(`account.punchout.${punchoutType}.text`));
   }
 
   deleteUser(user: PunchoutUser) {

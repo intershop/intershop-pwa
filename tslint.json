@@ -208,7 +208,7 @@
     "ng-module-sorted-fields": {
       "severity": "error",
       "options": {
-        "ignore-tokens": ["AppRouting", "StoreDevtoolsModule"]
+        "ignore-tokens": ["AppRouting", "storeDevtoolsModule"]
       }
     },
     "ish-ordered-imports": true,
@@ -795,7 +795,8 @@
           "utils/dev/",
           "core/utils/",
           ".*.actions.ts$",
-          ".*.model.ts$"
+          ".*.model.ts$",
+          "store-devtools.module"
         ]
       }
     }

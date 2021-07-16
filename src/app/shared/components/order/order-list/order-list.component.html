@@ -1,71 +1,76 @@
 <div class="loading-container">
   <ng-container *ngIf="orders$ | async as orders">
     <ng-container *ngIf="orders && orders.length > 0; else emptyList">
-      <div class="list-header d-md-flex">
-        <div class="list-header-item col-sm-2 list-header-item-descr">
-          {{ 'account.orderlist.table.date_of_order' | translate }}
-        </div>
-        <div class="list-header-item col-sm-2 list-header-item-descr">
-          {{ 'account.orderlist.table.order_number' | translate }}
-        </div>
-        <div class="list-header-item col-sm-1 list-header-item-descr">
-          {{ 'account.orderlist.table.items' | translate }}
-        </div>
-        <div class="list-header-item col-sm-2 list-header-item-descr">
-          {{ 'account.orderlist.table.order_status' | translate }}
-        </div>
-        <div *ngIf="!compact" class="list-header-item col-sm-2 list-header-item-descr">
-          {{ 'account.orderlist.table.destination' | translate }}
-        </div>
-        <div class="list-header-item col-sm-2 list-header-item-descr text-right">
-          {{ 'account.orderlist.table.order_total' | translate }}
-        </div>
-        <div class="list-header-item col-sm-1">&nbsp;</div>
-      </div>
-      <div class="list-body">
-        <ng-container *ngFor="let order of orders; index as i">
-          <div
-            *ngIf="!maxListItems || i < maxListItems"
-            class="list-item-row-big list-item-row d-flex flex-row flex-wrap"
-          >
-            <!-- Creation Date -->
-            <div class="col-7 col-md-2 order-md-1 list-item">{{ order.creationDate | ishDate }}</div>
-
-            <!-- Order Total -->
-            <div class="col-3 col-md-2 order-md-10 list-item text-md-right">
-              {{ order.totals.total | ishPrice: 'gross' }}
-            </div>
-
-            <!-- Details -->
-            <div class="col-2 col-md-1 order-md-12 list-item text-right">
-              <a [routerLink]="'/account/orders/' + order.id">{{ 'account.order.view_this_order.link' | translate }}</a>
-            </div>
-
-            <!-- Order No -->
-            <div class="col-12 col-md-2 order-md-4 list-item">
-              <label class="d-md-none"> {{ 'account.orderlist.orderDetails.orderNo.label' | translate }}</label>
-              <a [routerLink]="'/account/orders/' + order.id">{{ order.documentNo }}</a>
-            </div>
-
-            <!-- Order items count -->
-            <div class="col-12 col-md-1 order-md-5 list-item">
-              <label class="d-md-none"> {{ 'account.orderlist.orderDetails.items.label' | translate }}</label>
-              {{ order.totalProductQuantity }}
-            </div>
-
-            <!-- Order status -->
-            <div class="col-12 col-md-2 order-md-6 list-item">
-              <label class="d-md-none"> {{ 'account.orderlist.orderDetails.status.label' | translate }}</label>
-              <span class="badge badge-info">{{ order.status }}</span>
-            </div>
-
-            <!-- Destination -->
-            <div *ngIf="!compact" class="col-12 col-md-2 order-md-7 list-item">
-              <ish-address [address]="order.commonShipToAddress"></ish-address>
-            </div>
-          </div>
+      <table cdk-table [dataSource]="orders" class="table table-lg mobile-optimized" data-testing-id="requisition-list">
+        <!-- Order creation date -->
+        <ng-container cdkColumnDef="creationDate">
+          <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-creation-date">
+            {{ 'account.orderlist.table.date_of_order' | translate }}
+          </th>
+          <td cdk-cell *cdkCellDef="let order" [attr.data-label]="'account.orderlist.table.date_of_order' | translate">
+            {{ order.creationDate | ishDate }}
+          </td>
         </ng-container>
-      </div>
+
+        <!-- Order number -->
+        <ng-container cdkColumnDef="orderNo">
+          <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-number">
+            {{ 'account.orderlist.table.order_number' | translate }}
+          </th>
+          <td cdk-cell *cdkCellDef="let order" [attr.data-label]="'account.orderlist.table.order_number' | translate">
+            <a [routerLink]="'/account/orders/' + order.id">{{ order.documentNo }}</a>
+          </td>
+        </ng-container>
+
+        <!-- Number of Items  -->
+        <ng-container cdkColumnDef="lineItems">
+          <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-items">
+            {{ 'account.orderlist.table.items' | translate }}
+          </th>
+          <td cdk-cell *cdkCellDef="let order" [attr.data-label]="'account.orderlist.table.items' | translate">
+            {{ order.totalProductQuantity }}
+          </td>
+        </ng-container>
+
+        <!-- Status  -->
+        <ng-container cdkColumnDef="status">
+          <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-status">
+            {{ 'account.orderlist.table.order_status' | translate }}
+          </th>
+          <td cdk-cell *cdkCellDef="let order" [attr.data-label]="'account.orderlist.table.order_status' | translate">
+            <span class="badge badge-info">{{ order.status }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Destination  -->
+        <ng-container cdkColumnDef="destination">
+          <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-destination">
+            {{ 'account.orderlist.table.destination' | translate }}
+          </th>
+          <td cdk-cell *cdkCellDef="let order" [attr.data-label]="'account.orderlist.table.destination' | translate">
+            <ish-address [address]="order.commonShipToAddress"></ish-address>
+          </td>
+        </ng-container>
+
+        <!-- Order total  -->
+        <ng-container cdkColumnDef="orderTotal">
+          <th cdk-header-cell *cdkHeaderCellDef class="text-right" data-testing-id="th-order-total">
+            {{ 'account.orderlist.table.order_total' | translate }}
+          </th>
+          <td
+            cdk-cell
+            *cdkCellDef="let order"
+            [attr.data-label]="'account.orderlist.table.order_total' | translate"
+            class="column-price"
+          >
+            {{ order.totals.total | ishPrice: 'gross' }}
+          </td>
+        </ng-container>
+
+        <!-- Header and Row Declarations -->
+        <tr cdk-header-row *cdkHeaderRowDef="columnsToDisplay"></tr>
+        <tr cdk-row *cdkRowDef="let row; columns: columnsToDisplay"></tr>
+      </table>
     </ng-container>
 
     <ng-template #emptyList>

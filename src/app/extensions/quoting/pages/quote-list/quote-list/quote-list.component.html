@@ -1,54 +1,98 @@
 <ng-container *ngIf="quotes.length > 0; else emptyBlock">
-  <div class="table-responsive">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>{{ 'quote.list.table.quote_no' | translate }}</th>
-          <th>{{ 'quote.list.table.name' | translate }}</th>
-          <th>{{ 'quote.list.table.line_items' | translate }}</th>
-          <th>{{ 'quote.list.table.creation_date' | translate }}</th>
-          <th>{{ 'quote.list.table.expiration_date' | translate }}</th>
-          <th>{{ 'quote.list.table.status' | translate }}</th>
-          <th></th>
-        </tr>
-      </thead>
+  <table cdk-table [dataSource]="quotes" class="table table-lg mobile-optimized" data-testing-id="quote-list">
+    <!-- Quote Number -->
+    <ng-container cdkColumnDef="quoteNo">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-number">
+        {{ 'quote.list.table.quote_no' | translate }}
+      </th>
+      <td cdk-cell *cdkCellDef="let quote" [attr.data-label]="'quote.list.table.quote_no' | translate">
+        <a [routerLink]="[quote.id]">{{ quote.number }}</a>
+      </td>
+    </ng-container>
 
-      <tr *ngFor="let quote of quotes">
-        <td class="px-0">
-          <a [routerLink]="[quote.id]">{{ quote.number }}</a>
-        </td>
-        <td class="px-0">
-          <a [routerLink]="[quote.id]">{{ quote.displayName }}</a>
-        </td>
-        <td class="px-0">{{ itemCount(quote) }}</td>
-        <td class="px-0">{{ quote.creationDate | ishDate: 'shortDate' }}</td>
-        <td class="px-0"><ish-quote-expiration-date [quote]="quote"></ish-quote-expiration-date></td>
-        <td class="px-0" align="left" nowrap="nowrap"><ish-quote-state [quoteId]="quote.id"></ish-quote-state></td>
-        <td class="px-0" class="text-right">
-          <a
-            class="btn-tool"
-            [title]="'quote.list.delete.button.delete.label' | translate"
-            (click)="modalDialog.show(quote)"
-          >
-            <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
-          </a>
-        </td>
-      </tr>
+    <!-- Display name -->
+    <ng-container cdkColumnDef="displayName">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-name">
+        {{ 'quote.list.table.name' | translate }}
+      </th>
+      <td cdk-cell *cdkCellDef="let quote" [attr.data-label]="'quote.list.table.name' | translate">
+        <a [routerLink]="[quote.id]">{{ quote.displayName }}</a>
+      </td>
+    </ng-container>
 
-      <ish-modal-dialog
-        #modalDialog
-        [options]="{
-          titleText: 'quote.list.modaldialog.title' | translate,
-          confirmText: 'quote.list.delete.button.yes.label' | translate,
-          rejectText: 'quote.list.delete.button.no.label' | translate
-        }"
-        (confirmed)="onDeleteItem($event)"
-      >
-        <p>{{ 'quote.list.delete.heading' | translate: { '0': asQuote(modalDialog.data)?.displayName } }}</p>
-        <p>{{ 'quote.list.delete.do_you_really_want_to_delete.text' | translate }}</p>
-      </ish-modal-dialog>
-    </table>
-  </div>
+    <!-- Number of line items -->
+    <ng-container cdkColumnDef="lineItems">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-line-items">
+        {{ 'quote.list.table.line_items' | translate }}
+      </th>
+      <td cdk-cell *cdkCellDef="let quote" [attr.data-label]="'quote.list.table.line_items' | translate">
+        {{ itemCount(quote) }}
+      </td>
+    </ng-container>
+
+    <!-- Creation date -->
+    <ng-container cdkColumnDef="creationDate">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-creation-date">
+        {{ 'quote.list.table.creation_date' | translate }}
+      </th>
+      <td cdk-cell *cdkCellDef="let quote" [attr.data-label]="'quote.list.table.creation_date' | translate">
+        {{ quote.creationDate | ishDate: 'shortDate' }}
+      </td>
+    </ng-container>
+
+    <!-- Expiration date -->
+    <ng-container cdkColumnDef="expirationDate">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-expiration-date">
+        {{ 'quote.list.table.expiration_date' | translate }}
+      </th>
+      <td cdk-cell *cdkCellDef="let quote" [attr.data-label]="'quote.list.table.expiration_date' | translate">
+        <ish-quote-expiration-date [quote]="quote"></ish-quote-expiration-date>
+      </td>
+    </ng-container>
+
+    <!-- Status -->
+    <ng-container cdkColumnDef="status">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-status">
+        {{ 'quote.list.table.status' | translate }}
+      </th>
+      <td cdk-cell *cdkCellDef="let quote" [attr.data-label]="'quote.list.table.status' | translate">
+        <ish-quote-state [quoteId]="quote.id"></ish-quote-state>
+      </td>
+    </ng-container>
+
+    <!-- Actions -->
+    <ng-container cdkColumnDef="actions">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-actions"></th>
+      <td cdk-cell *cdkCellDef="let quote" class="column-price">
+        <a
+          class="btn-tool"
+          [title]="'quote.list.delete.button.delete.label' | translate"
+          (click)="modalDialog.show(quote)"
+        >
+          <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+        </a>
+      </td>
+    </ng-container>
+
+    <!-- Header and Row Declarations -->
+    <tr cdk-header-row *cdkHeaderRowDef="columnsToDisplay"></tr>
+    <tr cdk-row *cdkRowDef="let row; columns: columnsToDisplay" data-testing-id="quotes-list-item"></tr>
+  </table>
+
+  <ish-modal-dialog
+    #modalDialog
+    [options]="{
+      titleText: 'quote.list.modaldialog.title' | translate,
+      confirmText: 'quote.list.delete.button.yes.label' | translate,
+      rejectText: 'quote.list.delete.button.no.label' | translate
+    }"
+    (confirmed)="onDeleteItem($event)"
+  >
+    <p>{{ 'quote.list.delete.heading' | translate: { '0': asQuote(modalDialog.data)?.displayName } }}</p>
+    <p>{{ 'quote.list.delete.do_you_really_want_to_delete.text' | translate }}</p>
+  </ish-modal-dialog>
 </ng-container>
 
-<ng-template #emptyBlock>{{ 'quote.list.empty' | translate }}</ng-template>
+<ng-template #emptyBlock
+  ><p data-testing-id="emptyList">{{ 'quote.list.empty' | translate }}</p></ng-template
+>

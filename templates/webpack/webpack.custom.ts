@@ -174,6 +174,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
           greedy: [
             /\bfa\b/,
             /\bmodal\b/,
+            /\bdrop/,
             /\bswiper\b/,
             /\bcarousel\b/,
             /\bslide\b/,
@@ -181,6 +182,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
             /\bnav-tabs\b/,
             /\bnav-link\b/,
             /\bpopover\b/,
+            /\btable\b/,
           ],
         },
       })

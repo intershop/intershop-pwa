@@ -301,17 +301,17 @@ table.mobile-optimized.table-lg {
       border-bottom: 1px solid $border-color-lighter;
 
       td {
-        display: block;
+        display: flex;
+        align-items: flex-start;
         float: left;
         width: 100%;
         padding: 0;
+        margin-bottom: $space-default/3;
         clear: both;
         border: none;
 
         &::before {
-          float: left;
           width: 40%;
-          margin-bottom: math.div($space-default, 3);
           content: '';
         }
         &[data-label]::before {

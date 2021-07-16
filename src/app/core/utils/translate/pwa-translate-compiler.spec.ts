@@ -163,4 +163,47 @@ describe('Pwa Translate Compiler', () => {
       expect(translate.instant('nesting', { items })).toEqual(expected);
     });
   });
+
+  describe('with simple translate functionality', () => {
+    beforeEach(() => {
+      translate.set('reuse', 'reusing');
+      translate.set('message', 'We are {{ translate, reuse }} this.');
+    });
+
+    it('should translate when reusing', () => {
+      expect(translate.instant('message')).toMatchInlineSnapshot(`"We are reusing this."`);
+    });
+  });
+
+  describe('with translate functionality and variable', () => {
+    beforeEach(() => {
+      translate.set('key.type', '{{ type, select, =a{A} =b{B} other{something else} }}');
+      translate.set('message', 'You chose {{ type, translate, key.type }}.');
+    });
+
+    it.each`
+      type   | expected
+      ${'a'} | ${'You chose A.'}
+      ${'b'} | ${'You chose B.'}
+      ${'c'} | ${'You chose something else.'}
+    `('should translate when $type was given as argument', ({ type, expected }) => {
+      expect(translate.instant('message', { type })).toEqual(expected);
+    });
+  });
+
+  describe('with translate functionality using variable rename', () => {
+    beforeEach(() => {
+      translate.set('key.type', '{{ t, select, =a{A} =b{B} other{something else} }}');
+      translate.set('message', 'You chose {{ type, translate, key.type, t }}.');
+    });
+
+    it.each`
+      type   | expected
+      ${'a'} | ${'You chose A.'}
+      ${'b'} | ${'You chose B.'}
+      ${'c'} | ${'You chose something else.'}
+    `('should translate when $type was given as argument', ({ type, expected }) => {
+      expect(translate.instant('message', { type })).toEqual(expected);
+    });
+  });
 });

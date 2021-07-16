@@ -128,7 +128,7 @@ function checkNode(node: Node) {
     return;
   }
 
-  if (/\/src\/environments\//.test(node.getSourceFile().getFilePath())) {
+  if (/\/src\/environments\/|.*.production.ts$/.test(node.getSourceFile().getFilePath())) {
     return;
   }
 
