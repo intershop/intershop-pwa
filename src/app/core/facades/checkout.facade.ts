@@ -134,6 +134,7 @@ export class CheckoutFacade {
       switchMap(() => this.store.pipe(select(getBasketEligibleShippingMethods)))
     );
   }
+  eligibleShippingMethodsNoDispatch$ = this.store.pipe(select(getBasketEligibleShippingMethods));
 
   // PAYMENT
 

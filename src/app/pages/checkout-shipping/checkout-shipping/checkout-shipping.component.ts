@@ -28,7 +28,7 @@ export class CheckoutShippingComponent implements OnInit, OnDestroy {
 
   constructor(private checkoutFacade: CheckoutFacade) {}
   ngOnInit() {
-    this.shippingMethods$ = this.checkoutFacade.eligibleShippingMethods$();
+    this.shippingMethods$ = this.checkoutFacade.eligibleShippingMethodsNoDispatch$;
     this.basket$ = this.checkoutFacade.basket$;
 
     this.setupFormConfigConstruction();
