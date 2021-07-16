@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable, Subject, combineLatest } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -73,31 +73,14 @@ export class CheckoutShippingComponent implements OnInit, OnDestroy {
    * track selected method in form and model to ensure correct initialization after formly form generation
    */
   private setupShippingMethodPreselection() {
-    combineLatest([this.shippingMethods$, this.basket$])
+    this.checkoutFacade
+      .validShippingMethod$()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(([shippingMethods, basket]) => {
-        // if a shipping method is selected and it's valid, do nothing
-        const currentVal = this.shippingForm.get('shippingMethod').value;
-        if (currentVal && shippingMethods.find(method => method.id === currentVal)) {
-          return;
-        }
-        // if there is a basket, set shipping method accordingly
-        if (basket) {
-          this.shippingForm
-            .get('shippingMethod')
-            .setValue(basket?.commonShippingMethod?.id ?? '', { emitEvent: false });
-        }
-        // if there is no shipping method at basket or this basket shipping method is not valid anymore select automatically the 1st valid shipping method
-        if (
-          shippingMethods?.length &&
-          (!basket?.commonShippingMethod?.id ||
-            !shippingMethods.find(method => method.id === basket?.commonShippingMethod?.id ?? ''))
-        ) {
-          this.shippingForm.get('shippingMethod').setValue(shippingMethods[0].id);
-        }
+      .subscribe(shippingMethod => {
+        this.shippingForm.get('shippingMethod').setValue(shippingMethod, { emitEvent: false });
         this.model = {
           ...this.model,
-          shippingMethod: this.shippingForm.get('shippingMethod').value,
+          shippingMethod,
         };
       });
   }

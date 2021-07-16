@@ -36,7 +36,8 @@ describe('Checkout Shipping Component', () => {
     element = fixture.nativeElement;
 
     when(checkoutFacade.basket$).thenReturn(of(BasketMockData.getBasket()));
-    when(checkoutFacade.eligibleShippingMethods$()).thenReturn(of([BasketMockData.getShippingMethod()]));
+    when(checkoutFacade.eligibleShippingMethodsNoDispatch$).thenReturn(of([BasketMockData.getShippingMethod()]));
+    when(checkoutFacade.validShippingMethod$()).thenReturn(of(BasketMockData.getBasket().commonShippingMethod.id));
   });
 
   it('should be created', () => {
