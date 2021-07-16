@@ -1,4 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MockPipe } from 'ng-mocks';
+
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 
 import { ShippingInfoComponent } from './shipping-info.component';
 
@@ -9,7 +13,7 @@ describe('Shipping Info Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ShippingInfoComponent],
+      declarations: [MockPipe(PricePipe), MockPipe(TranslatePipe), ShippingInfoComponent],
     }).compileComponents();
   });
 
