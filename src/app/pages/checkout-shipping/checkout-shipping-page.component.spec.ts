@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -40,7 +39,6 @@ describe('Checkout Shipping Page Component', () => {
         MockComponent(BasketValidationResultsComponent),
         MockComponent(CheckoutShippingComponent),
         MockComponent(ErrorMessageComponent),
-        MockComponent(FaIconComponent),
         MockComponent(LoadingComponent),
         MockDirective(ServerHtmlDirective),
       ],

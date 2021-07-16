@@ -1,14 +1,10 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { FieldWrapper, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
-import { MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
@@ -23,14 +19,12 @@ describe('Checkout Shipping Component', () => {
   beforeEach(async () => {
     checkoutFacade = mock(CheckoutFacade);
     await TestBed.configureTestingModule({
-      declarations: [CheckoutShippingComponent, DummyWrapperComponent, MockPipe(PricePipe)],
+      declarations: [CheckoutShippingComponent, DummyWrapperComponent],
       imports: [
         FormlyModule.forChild({
           wrappers: [{ name: 'shipping-radio-wrapper', component: DummyWrapperComponent }],
         }),
         FormlyTestingModule,
-        ReactiveFormsModule,
-        TranslateModule.forRoot(),
       ],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     }).compileComponents();
