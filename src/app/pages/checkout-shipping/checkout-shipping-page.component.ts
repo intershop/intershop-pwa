@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { BehaviorSubject, Observable, Subject, combineLatest } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -11,29 +13,49 @@ import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.
   templateUrl: './checkout-shipping-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckoutShippingPageComponent implements OnInit {
-  basket$: Observable<BasketView>;
+export class CheckoutShippingPageComponent implements OnInit, OnDestroy {
   loading$: Observable<boolean>;
-  shippingMethods$: Observable<ShippingMethod[]>;
   basketError$: Observable<HttpError>;
+  basket$: Observable<BasketView>;
+  shippingMethods$: Observable<ShippingMethod[]>;
+  isBusinessCustomer$: Observable<boolean>;
 
-  constructor(private checkoutFacade: CheckoutFacade) {}
+  private destroy$ = new Subject();
+
+  submittedSubject$ = new BehaviorSubject(false);
+  nextDisabled = false;
+
+  constructor(private checkoutFacade: CheckoutFacade, private accountFacade: AccountFacade) {}
 
   ngOnInit() {
     this.basket$ = this.checkoutFacade.basket$;
     this.loading$ = this.checkoutFacade.basketLoading$;
-    this.shippingMethods$ = this.checkoutFacade.eligibleShippingMethods$();
     this.basketError$ = this.checkoutFacade.basketError$;
+    this.shippingMethods$ = this.checkoutFacade.eligibleShippingMethods$();
+    this.isBusinessCustomer$ = this.accountFacade.isBusinessCustomer$;
+    this.setupNextStepHandling();
   }
 
-  updateBasketShippingMethod(shippingId: string) {
-    this.checkoutFacade.updateBasketShippingMethod(shippingId);
+  private setupNextStepHandling() {
+    combineLatest([this.shippingMethods$, this.basket$, this.submittedSubject$])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([shippingMethods, basket, submitted]) => {
+        this.nextDisabled =
+          !basket || !shippingMethods || !shippingMethods.length || (!basket.commonShippingMethod && submitted);
+        if (submitted && !this.nextDisabled) {
+          this.checkoutFacade.continue(3);
+        }
+      });
   }
-
   /**
-   * Validates the basket and jumps to the next checkout step (Payment)
+   * leads to next checkout page (checkout payment)
    */
-  nextStep() {
-    this.checkoutFacade.continue(3);
+  goToNextStep() {
+    this.submittedSubject$.next(true);
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
