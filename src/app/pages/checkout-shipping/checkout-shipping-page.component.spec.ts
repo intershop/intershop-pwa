@@ -2,8 +2,7 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
-import { skip } from 'rxjs/operators';
-import { instance, mock, when } from 'ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -95,22 +94,13 @@ describe('Checkout Shipping Page Component', () => {
     expect(element.querySelector('[role="alert"]')).toBeTruthy();
   }));
 
-  it('should not be submitted on startup', done => {
+  it('should continue checkout if selection is valid', fakeAsync(() => {
     fixture.detectChanges();
-    component.submittedSubject$.subscribe(s => {
-      expect(s).toBeFalse();
-      done();
-    });
-  });
-  it('should set submitted if next button is clicked', done => {
-    fixture.detectChanges();
-    component.submittedSubject$.pipe(skip(1)).subscribe(s => {
-      expect(s).toBeTrue();
-      done();
-    });
 
     component.goToNextStep();
-  });
+    tick(100);
+    verify(checkoutFacade.continue(anything())).once();
+  }));
 
   it('should not disable next button if basket shipping method is set and next button is clicked', fakeAsync(() => {
     fixture.detectChanges();

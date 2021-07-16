@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, combineLatest } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable, Subject, combineLatest } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -22,7 +22,6 @@ export class CheckoutShippingPageComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject();
 
-  submittedSubject$ = new BehaviorSubject(false);
   nextDisabled = false;
 
   constructor(private checkoutFacade: CheckoutFacade, private accountFacade: AccountFacade) {}
@@ -33,25 +32,20 @@ export class CheckoutShippingPageComponent implements OnInit, OnDestroy {
     this.basketError$ = this.checkoutFacade.basketError$;
     this.shippingMethods$ = this.checkoutFacade.eligibleShippingMethods$();
     this.isBusinessCustomer$ = this.accountFacade.isBusinessCustomer$;
-    this.setupNextStepHandling();
   }
 
-  private setupNextStepHandling() {
-    combineLatest([this.shippingMethods$, this.basket$, this.submittedSubject$])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(([shippingMethods, basket, submitted]) => {
-        this.nextDisabled =
-          !basket || !shippingMethods || !shippingMethods.length || (!basket.commonShippingMethod && submitted);
-        if (submitted && !this.nextDisabled) {
-          this.checkoutFacade.continue(3);
-        }
-      });
-  }
   /**
    * leads to next checkout page (checkout payment)
    */
   goToNextStep() {
-    this.submittedSubject$.next(true);
+    combineLatest([this.shippingMethods$, this.basket$])
+      .pipe(take(1), takeUntil(this.destroy$))
+      .subscribe(([shippingMethods, basket]) => {
+        this.nextDisabled = !basket || !shippingMethods || !shippingMethods.length || !basket.commonShippingMethod;
+        if (!this.nextDisabled) {
+          this.checkoutFacade.continue(3);
+        }
+      });
   }
 
   ngOnDestroy() {
