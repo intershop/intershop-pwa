@@ -3,7 +3,6 @@ import { Component, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FieldType, FieldWrapper, FormlyForm, FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
-import { isObservable } from 'rxjs';
 
 // tslint:disable: project-structure
 
@@ -24,27 +23,9 @@ class CheckboxFieldComponent extends FieldType {}
 class FieldsetFieldComponent extends FieldType {}
 
 @Component({
-  template: `RadioButtonsComponent:
-    <div
-      *ngFor="
-        let o of isObservable(field.templateOptions?.options)
-          ? (field.templateOptions.options | async)
-          : field.templateOptions?.options
-      "
-    >
-      {{ o.value }}
-    </div>
-    <div *ngFor="let f of field.templateOptions?.newInput?.config">
-      {{ f.key }}
-      {{ f.type }}
-      {{ f.templateOptions | json }}
-    </div> `,
+  template: `RadioFielComponent: {{ field.key }} {{ to | json }} `,
 })
-class RadioButtonsComponent extends FieldType {
-  isObservable(obj: unknown) {
-    return isObservable(obj);
-  }
-}
+class RadioFieldComponent extends FieldType {}
 
 @Component({ template: 'TextInputFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class TextInputFieldComponent extends FieldType {}
@@ -95,8 +76,8 @@ class DummyWrapperComponent extends FieldWrapper {}
           component: FieldsetFieldComponent,
         },
         {
-          name: 'ish-radio-buttons-field',
-          component: RadioButtonsComponent,
+          name: 'ish-radio-field',
+          component: RadioFieldComponent,
         },
         {
           name: 'ish-checkbox-field',

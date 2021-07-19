@@ -15,7 +15,6 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, Subject, of } from 'rxjs';
 import { filter, map, startWith, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 
-import { log } from 'ish-core/utils/dev/operators';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
@@ -44,8 +43,8 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
 
   wishlistOptions$: Observable<SelectOption[]>;
 
-  radioButtonsFormGroup: FormGroup = new FormGroup({});
-
+  formGroup: FormGroup = new FormGroup({});
+  model: { wishlist?: string; newList?: string } = {};
   multipleFieldConfig$: Observable<FormlyFieldConfig[]>;
   singleFieldConfig: FormlyFieldConfig[];
 
@@ -143,24 +142,19 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   /** emit results when the form is valid */
   submitForm() {
-    const radioButtons = this.radioButtonsFormGroup.value;
+    const radioButtons = { ...this.model, ...this.formGroup.value };
     if (radioButtons?.wishlist && radioButtons.wishlist !== 'new') {
-      if (this.radioButtonsFormGroup.valid) {
+      if (this.formGroup.valid) {
         this.submitExisting(radioButtons.wishlist);
       } else {
-        markAsDirtyRecursive(this.radioButtonsFormGroup);
+        markAsDirtyRecursive(this.formGroup);
       }
-    } else if (radioButtons.newList && this.radioButtonsFormGroup.valid) {
+    } else if (radioButtons.newList && this.formGroup.valid) {
       this.submitNew(radioButtons.newList);
     } else {
-      markAsDirtyRecursive(this.radioButtonsFormGroup);
+      markAsDirtyRecursive(this.formGroup);
     }
   }
 
@@ -192,7 +186,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   /** close modal */
   hide() {
     this.modal.close();
-    this.radioButtonsFormGroup.reset();
+    this.formGroup.reset();
   }
 
   /** open modal */
@@ -205,15 +199,19 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
       .subscribe(preferredWishlist => {
         // don't show wishlist selection form but add a product immediately if there is a preferred wishlist
         if (this.addMoveProduct === 'add') {
-          this.radioButtonsFormGroup.get('wishlist').setValue(preferredWishlist.id);
+          this.model = {
+            ...this.model,
+            wishlist: preferredWishlist.id,
+          };
           this.submitForm();
         } else {
-          console.log('setting pref');
           // set default form value  preferred wishlist
-          this.radioButtonsFormGroup.get('wishlist').setValue(preferredWishlist.id);
+          this.model = {
+            ...this.model,
+            wishlist: preferredWishlist.id,
+          };
         }
       });
-    // this.newListFormControl.updateValueAndValidity();
   }
 
   /**
@@ -226,9 +224,9 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   }
 
   get selectedWishlistTitle$(): Observable<string> {
-    const selectedValue = this.radioButtonsFormGroup.get('wishlist')?.value;
+    const selectedValue = this.formGroup.get('wishlist')?.value ?? this.model.wishlist;
     if (selectedValue === 'new' || !selectedValue) {
-      return of(this.radioButtonsFormGroup.value.newList);
+      return of(this.formGroup.value.newList);
     } else {
       return this.wishlistOptions$.pipe(
         filter(options => options.length > 0),
@@ -240,7 +238,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
 
   /** returns the route to the selected wishlist */
   get selectedWishlistRoute$(): Observable<string> {
-    const selectedValue = this.radioButtonsFormGroup.get('wishlist')?.value;
+    const selectedValue = this.formGroup.get('wishlist')?.value ?? this.model.wishlist;
     if (selectedValue === 'new' || !selectedValue) {
       return this.wishlistsFacade.currentWishlist$.pipe(
         map(currentWishlist => `route://account/wishlists/${currentWishlist && currentWishlist.id}`),
@@ -270,5 +268,10 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
     return this.addMoveProduct === 'add'
       ? 'account.wishlists.add_to_wishlist.confirmation'
       : 'account.wishlists.move_wishlist_item.confirmation';
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
