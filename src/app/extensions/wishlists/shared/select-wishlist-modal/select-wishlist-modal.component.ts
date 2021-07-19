@@ -112,6 +112,11 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
                   placeholder: 'account.wishlists.choose_wishlist.new_wishlist_name.initial_value',
                 },
                 formControl: this.newListFormControl,
+                validation: {
+                  messages: {
+                    required: 'account.wishlist.name.error.required',
+                  },
+                },
               },
             ],
           },
