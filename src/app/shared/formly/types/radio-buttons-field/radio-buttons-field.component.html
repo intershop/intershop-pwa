@@ -1,0 +1,14 @@
+<ng-container *ngFor="let entry of entries">
+  <ng-container *ngIf="isFormlyFieldConfig(entry); else keyValue">
+    <label>
+      <input type="radio" [value]="entry.id" />
+      <formly-field [field]="entry"></formly-field>
+    </label>
+  </ng-container>
+  <ng-template #keyValue>
+    <label>
+      <input type="radio" [value]="asKeyValuePair(entry).value" />
+      {{ asKeyValuePair(entry).label }}
+    </label>
+  </ng-template>
+</ng-container>

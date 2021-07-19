@@ -125,6 +125,7 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
     HorizontalWrapperComponent,
     InputAddonWrapperComponent,
     PasswordFieldComponent,
+    RadioButtonsFieldComponent,
     RadioFieldComponent,
     RadioHorizontalWrapperComponent,
     SelectFieldComponent,
