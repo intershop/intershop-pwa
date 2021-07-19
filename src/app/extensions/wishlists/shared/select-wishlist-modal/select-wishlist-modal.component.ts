@@ -104,7 +104,23 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
           },
         }))
       ),
-      map(formlyConfig => [...formlyConfig, {}])
+      map(formlyConfig => [
+        ...formlyConfig,
+        {
+          key: 'new',
+          wrappers: ['radio-fieldgroup'],
+          fieldGroup: [
+            {
+              type: 'ish-text-input-field',
+              key: 'wishlist',
+              templateOption: {
+                required: true,
+                placeholder: 'account.wishlists.choose_wishlist.new_wishlist_name.initial_value',
+              },
+            },
+          ],
+        },
+      ])
     );
     // [
     //   {
