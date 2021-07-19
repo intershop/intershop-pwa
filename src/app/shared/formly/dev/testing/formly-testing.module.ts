@@ -23,7 +23,7 @@ class CheckboxFieldComponent extends FieldType {}
 class FieldsetFieldComponent extends FieldType {}
 
 @Component({
-  template: `RadioFielComponent: {{ field.key }} {{ to | json }} `,
+  template: `RadioFielComponent: {{ field.key }} {{ field.type }} {{ to | json }} `,
 })
 class RadioFieldComponent extends FieldType {}
 
