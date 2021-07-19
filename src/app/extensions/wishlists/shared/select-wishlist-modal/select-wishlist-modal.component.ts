@@ -94,6 +94,8 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
       })
     );
 
+    // TEST : SEPERATE NEW RADIO BUTTON AND TEXT INPUT FIELD (LIKE ORIGINAL) FIELD GROUP WITHOUT KEY FOR BOTH TO GROUP THEM TOGETHER VISUALLY
+
     this.multipleFieldConfig$ = this.wishlistOptions$.pipe(
       map(wishlistOptions =>
         wishlistOptions.map(option => ({
