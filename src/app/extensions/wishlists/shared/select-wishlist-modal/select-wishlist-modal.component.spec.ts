@@ -10,6 +10,7 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
+import { Wishlist } from '../../models/wishlist/wishlist.model';
 
 import { SelectWishlistModalComponent } from './select-wishlist-modal.component';
 
@@ -19,12 +20,33 @@ describe('Select Wishlist Modal Component', () => {
   let element: HTMLElement;
   let wishlistFacadeMock: WishlistsFacade;
 
+  /**
+   * A fixture.detectChanges() is necessary to make sure the newList
+   * formControl is not disabled from its expressionProperty
+   */
+  function updateWishlistAndNewList(newList: string = 'New Wishlist Title') {
+    component.formGroup.patchValue({ wishlist: 'new' });
+    fixture.detectChanges();
+    component.formGroup.patchValue({ newList });
+  }
+
+  /**
+   * emulates a realistic startup scenario:
+   * the component is initialized before the show() function is called and
+   * real functionality begins
+   */
+  function startup() {
+    fixture.detectChanges();
+    component.show();
+    fixture.detectChanges();
+  }
+
   const wishlistDetails = {
     title: 'testing wishlist',
     type: 'WishList',
     id: '.SKsEQAE4FIAAAFuNiUBWx0d',
     itemsCount: 0,
-    preferred: true,
+    preferred: false,
     public: false,
   };
 
@@ -49,8 +71,8 @@ describe('Select Wishlist Modal Component', () => {
   });
 
   beforeEach(() => {
-    fixture.detectChanges();
-    component.show();
+    // fixture.detectChanges();
+    // component.show();
   });
 
   it('should be created', () => {
@@ -60,8 +82,7 @@ describe('Select Wishlist Modal Component', () => {
   });
 
   it('should emit correct object on form submit with known wishlist', fakeAsync(() => {
-    fixture.detectChanges();
-
+    startup();
     const emitter = spy(component.submitEmitter);
     component.formGroup.patchValue({ wishlist: '.SKsEQAE4FIAAAFuNiUBWx0d' });
 
@@ -69,29 +90,35 @@ describe('Select Wishlist Modal Component', () => {
     tick(1000);
     verify(emitter.emit(anything())).once();
     const [arg] = capture(emitter.emit).last();
-    expect(arg).toEqual({
-      id: '.SKsEQAE4FIAAAFuNiUBWx0d',
-      title: 'testing wishlist',
-    });
+    expect(arg).toMatchInlineSnapshot(`
+Object {
+  "id": ".SKsEQAE4FIAAAFuNiUBWx0d",
+  "title": "testing wishlist",
+}
+`);
   }));
 
   it('should emit correct object on radio button form submit with new wishlist', fakeAsync(() => {
-    fixture.detectChanges();
+    startup();
 
     const emitter = spy(component.submitEmitter);
-    component.formGroup.patchValue({ wishlist: 'new', newList: 'New Wishlist Title' });
+    updateWishlistAndNewList();
 
     component.submitForm();
-    tick(100);
+    tick(1000);
     verify(emitter.emit(anything())).once();
     const [arg] = capture(emitter.emit).last();
-    expect(arg).toEqual({
-      id: undefined,
-      title: 'New Wishlist Title',
-    });
+    expect(arg).toMatchInlineSnapshot(`
+Object {
+  "id": undefined,
+  "title": "New Wishlist Title",
+}
+`);
   }));
+
   it('should emit correct object on single field form submit with new wishlist', fakeAsync(() => {
-    fixture.detectChanges();
+    when(wishlistFacadeMock.wishlists$).thenReturn(of([]));
+    startup();
 
     const emitter = spy(component.submitEmitter);
     component.formGroup.patchValue({ newList: 'New Wishlist Title' });
@@ -100,24 +127,27 @@ describe('Select Wishlist Modal Component', () => {
     tick(1000);
     verify(emitter.emit(anything())).once();
     const [arg] = capture(emitter.emit).last();
-    expect(arg).toEqual({
-      id: undefined,
-      title: 'New Wishlist Title',
-    });
+    expect(arg).toMatchInlineSnapshot(`
+Object {
+  "id": undefined,
+  "title": "New Wishlist Title",
+}
+`);
   }));
 
   it('should not emit on radio button form submit with no new wishlist name', () => {
-    fixture.detectChanges();
+    startup();
 
     const emitter = spy(component.submitEmitter);
-    component.formGroup.patchValue({ wishlist: 'new', newList: '' });
+    updateWishlistAndNewList('');
 
     component.submitForm();
     verify(emitter.emit(anything())).never();
   });
 
   it('should not emit on single field form submit with no wishlist name', fakeAsync(() => {
-    fixture.detectChanges();
+    when(wishlistFacadeMock.wishlists$).thenReturn(of([]));
+    startup();
 
     const emitter = spy(component.submitEmitter);
     component.formGroup.patchValue({ newList: '' });
@@ -128,7 +158,7 @@ describe('Select Wishlist Modal Component', () => {
   }));
 
   it('should switch modal contents after successful submit', fakeAsync(() => {
-    fixture.detectChanges();
+    startup();
 
     component.formGroup.patchValue({ wishlist: '.SKsEQAE4FIAAAFuNiUBWx0d' });
 
@@ -139,7 +169,7 @@ describe('Select Wishlist Modal Component', () => {
 
   describe('selectedWishlistTitle', () => {
     it('should return correct title of known wishlist', done => {
-      fixture.detectChanges();
+      startup();
 
       component.formGroup.patchValue({ wishlist: '.SKsEQAE4FIAAAFuNiUBWx0d' });
       component.selectedWishlistTitle$.subscribe(t => {
@@ -149,7 +179,17 @@ describe('Select Wishlist Modal Component', () => {
     });
 
     it('should return correct title of new wishlist', done => {
-      fixture.detectChanges();
+      startup();
+      updateWishlistAndNewList();
+
+      component.selectedWishlistTitle$.subscribe(t => {
+        expect(t).toBe('New Wishlist Title');
+        done();
+      });
+    });
+    it('should return correct title of new wishlist at single field form', done => {
+      when(wishlistFacadeMock.wishlists$).thenReturn(of([]));
+      startup();
 
       component.formGroup.patchValue({ newList: 'New Wishlist Title' });
       component.selectedWishlistTitle$.subscribe(t => {
@@ -161,7 +201,7 @@ describe('Select Wishlist Modal Component', () => {
 
   describe('selectedWishlistRoute', () => {
     it('should return correct route of known wishlist', done => {
-      fixture.detectChanges();
+      startup();
 
       component.formGroup.patchValue({ wishlist: '.SKsEQAE4FIAAAFuNiUBWx0d' });
       component.selectedWishlistRoute$.subscribe(r => {
@@ -171,11 +211,33 @@ describe('Select Wishlist Modal Component', () => {
     });
 
     it('should return correct route of new wishlist', done => {
-      fixture.detectChanges();
+      startup();
 
-      component.formGroup.patchValue({ newList: 'New Wishlist Title' });
+      updateWishlistAndNewList();
+
+      when(wishlistFacadeMock.currentWishlist$).thenReturn(
+        of({
+          id: 'newList',
+        } as Wishlist)
+      );
       component.selectedWishlistRoute$.subscribe(r => {
-        expect(r).toBe('route://account/wishlists/.SKsEQAE4FIAAAFuNiUBWx0d');
+        expect(r).toBe('route://account/wishlists/newList');
+        done();
+      });
+    });
+    it('should return correct route of new wishlist at single field form', done => {
+      when(wishlistFacadeMock.wishlists$).thenReturn(of([]));
+      startup();
+
+      updateWishlistAndNewList();
+      when(wishlistFacadeMock.currentWishlist$).thenReturn(
+        of({
+          id: 'newList',
+        } as Wishlist)
+      );
+
+      component.selectedWishlistRoute$.subscribe(r => {
+        expect(r).toBe('route://account/wishlists/newList');
         done();
       });
     });

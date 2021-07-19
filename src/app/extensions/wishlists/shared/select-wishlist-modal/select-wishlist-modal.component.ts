@@ -224,7 +224,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   }
 
   get selectedWishlistTitle$(): Observable<string> {
-    const selectedValue = this.formGroup.get('wishlist')?.value ?? this.model.wishlist;
+    const selectedValue = this.formGroup.value.wishlist ?? this.model.wishlist;
     if (selectedValue === 'new' || !selectedValue) {
       return of(this.formGroup.value.newList);
     } else {
