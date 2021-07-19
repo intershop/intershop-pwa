@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
@@ -55,7 +54,7 @@ describe('Select Wishlist Modal Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [MockDirective(ServerHtmlDirective), SelectWishlistModalComponent],
-      imports: [FormlyTestingModule, NgbModalModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, NgbModalModule, TranslateModule.forRoot()],
       providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) }],
     }).compileComponents();
   });
