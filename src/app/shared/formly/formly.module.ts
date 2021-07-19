@@ -23,9 +23,7 @@ import { CheckboxFieldComponent } from './types/checkbox-field/checkbox-field.co
 import { EmailFieldComponent } from './types/email-field/email-field.component';
 import { FieldsetFieldComponent } from './types/fieldset-field/fieldset-field.component';
 import { PasswordFieldComponent } from './types/password-field/password-field.component';
-import { RadioButtonsFieldComponent } from './types/radio-buttons-field/radio-buttons-field.component';
 import { RadioFieldComponent } from './types/radio-field/radio-field.component';
-import { RadioTextinputFieldComponent } from './types/radio-textinput-field/radio-textinput-field.component';
 import { SelectFieldComponent } from './types/select-field/select-field.component';
 import { TextInputFieldComponent } from './types/text-input-field/text-input-field.component';
 import { TextareaFieldComponent } from './types/textarea-field/textarea-field.component';
@@ -33,7 +31,6 @@ import { DescriptionWrapperComponent } from './wrappers/description-wrapper/desc
 import { HorizontalCheckboxWrapperComponent } from './wrappers/horizontal-checkbox-wrapper/horizontal-checkbox-wrapper.component';
 import { HorizontalWrapperComponent } from './wrappers/horizontal-wrapper/horizontal-wrapper.component';
 import { InputAddonWrapperComponent } from './wrappers/input-addon-wrapper/input-addon-wrapper.component';
-import { RadioButtonFieldgroupWrapperComponent } from './wrappers/radio-button-fieldgroup-wrapper/radio-button-fieldgroup-wrapper.component';
 import { RadioHorizontalWrapperComponent } from './wrappers/radio-horizontal-wrapper/radio-horizontal-wrapper.component';
 import { TextareaDescriptionWrapperComponent } from './wrappers/textarea-description-wrapper/textarea-description-wrapper.component';
 import { TooltipWrapperComponent } from './wrappers/tooltip-wrapper/tooltip-wrapper.component';
@@ -86,10 +83,6 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
           component: RadioFieldComponent,
           wrappers: ['form-field-radio-horizontal'],
         },
-        {
-          name: 'ish-radio-textinput-field',
-          component: RadioTextinputFieldComponent,
-        },
       ],
       wrappers: [
         { name: 'form-field-horizontal', component: HorizontalWrapperComponent },
@@ -100,7 +93,6 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
         { name: 'validation', component: ValidationWrapperComponent },
         { name: 'description', component: DescriptionWrapperComponent },
         { name: 'form-field-radio-horizontal', component: RadioHorizontalWrapperComponent },
-        { name: 'radio-button-fieldgroup', component: RadioButtonFieldgroupWrapperComponent },
       ],
       extras: {
         lazyRender: true,
@@ -133,11 +125,8 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
     HorizontalWrapperComponent,
     InputAddonWrapperComponent,
     PasswordFieldComponent,
-    RadioButtonFieldgroupWrapperComponent,
-    RadioButtonsFieldComponent,
     RadioFieldComponent,
     RadioHorizontalWrapperComponent,
-    RadioTextinputFieldComponent,
     SelectFieldComponent,
     TextInputFieldComponent,
     TextareaDescriptionWrapperComponent,
