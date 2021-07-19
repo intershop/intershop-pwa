@@ -1,10 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FieldType, FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable, Subject, config, isObservable, of } from 'rxjs';
-import { map, startWith, takeUntil, tap } from 'rxjs/operators';
-
-import { log } from 'ish-core/utils/dev/operators';
+import { Observable, Subject, isObservable, of } from 'rxjs';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 
 interface TemplateOptions {
   options: Observable<{ value: string; label: string }[]> | { value: string; label: string }[];
@@ -26,7 +24,8 @@ export class RadioButtonsFieldComponent extends FieldType implements OnInit, OnD
 
   ngOnInit() {
     const templOpts = this.to as TemplateOptions;
-    this.newInputConfig = templOpts.newInput.config.map(fieldConfig => ({
+
+    this.newInputConfig = templOpts.newInput?.config.map(fieldConfig => ({
       ...fieldConfig,
       expressionProperties: {
         ...fieldConfig.expressionProperties,
