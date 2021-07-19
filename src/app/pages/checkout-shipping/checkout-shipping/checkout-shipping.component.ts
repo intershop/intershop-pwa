@@ -1,103 +1,91 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
-import { AccountFacade } from 'ish-core/facades/account.facade';
-import { Basket } from 'ish-core/models/basket/basket.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { BasketView } from 'ish-core/models/basket/basket.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
   selector: 'ish-checkout-shipping',
   templateUrl: './checkout-shipping.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckoutShippingComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() basket: Basket;
-  @Input() shippingMethods: ShippingMethod[];
-  @Input() error: HttpError;
-
-  @Output() updateShippingMethod = new EventEmitter<string>();
-  @Output() nextStep = new EventEmitter<void>();
-
+export class CheckoutShippingComponent implements OnInit, OnDestroy {
   isBusinessCustomer$: Observable<boolean>;
 
-  shippingForm: FormGroup;
-  submitted = false;
+  shippingMethods$: Observable<ShippingMethod[]>;
+  basket$: Observable<BasketView>;
+
+  shippingForm: FormGroup = new FormGroup({ shippingMethod: new FormControl() });
+  model: { shippingMethod: string };
+  shippingConfig$: Observable<FormlyFieldConfig[]>;
 
   private destroy$ = new Subject();
 
-  constructor(private accountFacade: AccountFacade) {}
-
+  constructor(private checkoutFacade: CheckoutFacade) {}
   ngOnInit() {
-    this.isBusinessCustomer$ = this.accountFacade.isBusinessCustomer$;
+    this.shippingMethods$ = this.checkoutFacade.eligibleShippingMethodsNoFetch$;
+    this.basket$ = this.checkoutFacade.basket$;
 
-    this.shippingForm = new FormGroup({
-      id: new FormControl(this.getCommonShippingMethod()),
-    });
+    this.setupFormConfigConstruction();
 
-    // trigger update shipping method if selection changes
-    this.shippingForm
-      .get('id')
-      .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(shippingId => this.updateShippingMethod.emit(shippingId));
+    this.setupBasketShippingMethodUpdates();
+
+    this.setupShippingMethodPreselection();
   }
 
-  private getCommonShippingMethod(): string {
-    return this.basket && this.basket.commonShippingMethod ? this.basket.commonShippingMethod.id : '';
+  private setupFormConfigConstruction() {
+    this.shippingConfig$ = this.shippingMethods$.pipe(
+      map(methods =>
+        methods.map(method => ({
+          type: 'ish-radio-field',
+          key: 'shippingMethod',
+          wrappers: ['shipping-radio-wrapper'],
+          templateOptions: {
+            shippingMethod: method,
+            id: 'shipping_method' + method.id,
+            value: method.id,
+          },
+        }))
+      )
+    );
   }
-  ngOnChanges(c: SimpleChanges) {
-    if (this.shippingForm) {
-      this.preSelectShippingMethod(c);
-    }
+
+  private setupBasketShippingMethodUpdates() {
+    this.shippingForm.valueChanges
+      .pipe(
+        map(vc => vc.shippingMethod),
+        whenTruthy(),
+        distinctUntilChanged(),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(shippingId => {
+        this.checkoutFacade.updateBasketShippingMethod(shippingId);
+      });
   }
+
   /**
    * set shipping selection to the corresponding basket value (important in case of an error)
+   * track selected method in form and model to ensure correct initialization after formly form generation
    */
-  private preSelectShippingMethod(c: SimpleChanges) {
-    if (c.basket) {
-      this.shippingForm.get('id').setValue(this.getCommonShippingMethod(), { emitEvent: false });
-    }
-
-    // if there is no shipping method at basket or this basket shipping method is not valid anymore select automatically the 1st valid shipping method
-    if (
-      this.shippingMethods &&
-      this.shippingMethods.length &&
-      (!this.getCommonShippingMethod() ||
-        !this.shippingMethods.find(method => method.id === this.getCommonShippingMethod()))
-    ) {
-      this.shippingForm.get('id').setValue(this.shippingMethods[0].id);
-    }
-  }
-
-  /**
-   * leads to next checkout page (checkout payment)
-   */
-  goToNextStep() {
-    this.submitted = true;
-    if (!this.nextDisabled) {
-      this.nextStep.emit();
-    }
-  }
-
-  get nextDisabled() {
-    return (
-      !this.basket ||
-      !this.shippingMethods ||
-      !this.shippingMethods.length ||
-      (!this.basket.commonShippingMethod && this.submitted)
-    );
+  private setupShippingMethodPreselection() {
+    this.checkoutFacade
+      .getValidShippingMethod$()
+      .pipe(withLatestFrom(this.basket$), takeUntil(this.destroy$))
+      .subscribe(([shippingMethod, basket]) => {
+        if (basket.commonShippingMethod?.id !== shippingMethod) {
+          this.checkoutFacade.updateBasketShippingMethod(shippingMethod);
+        }
+        this.shippingForm.get('shippingMethod').setValue(shippingMethod, { emitEvent: false });
+        this.model = {
+          ...this.model,
+          shippingMethod,
+        };
+      });
   }
 
   ngOnDestroy() {
