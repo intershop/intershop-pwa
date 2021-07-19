@@ -24,15 +24,28 @@ const optionsICMRest = {
 };
 
 const optionsAngularUniversal = {
-  host: 'intershoppwa-b2b.azurewebsites.net',
+  host: 'pwa-rngrx-int.pwa.intershop.de',
 };
+
+const icmAgent = new icmClient.Agent({
+  keepAlive: true,
+});
+
+optionsICMRest.agent = icmAgent;
+
+const pwaAgent = new pwaClient.Agent({
+  keepAlive: true,
+  maxSockets: 20
+});
+
+optionsAngularUniversal.agent = pwaAgent;
 
 function pwaCategoryPageCall(categoryName, categoryRef) {
   const encodedUri = encodeURIComponent(`${categoryName}-cat${categoryRef}`)
   optionsAngularUniversal.path = `/${encodedUri}`;
   console.log('category', optionsAngularUniversal.path);
   const categoryPageRequest = pwaClient.request(optionsAngularUniversal, (response) => {
-    console.log(response.statusCode)
+    console.log('category page', response.statusCode)
 
     response.on('error', console.error)
   });
@@ -45,7 +58,7 @@ function pwaProductDetailPageCall(categoryName, productName, sku) {
   optionsAngularUniversal.path = `/${encodedCategory}/${encodedProduct}`;
   console.log('productDetail', optionsAngularUniversal.path)
   const categoryPageRequest = pwaClient.request(optionsAngularUniversal, (response) => {
-    console.log(response.statusCode)
+    console.log('productDetail', response.statusCode)
 
     response.on('error', console.error)
   });
@@ -64,9 +77,11 @@ function icmProductsCall(categoryName, categoryPath) {
     });
 
     response.on('end', () => {
-      body = Buffer.concat(body).toString();
-      const products = JSON.parse(body);
-      products.elements.forEach(element => pwaProductDetailPageCall(categoryName, element.title, element.attributes[0].value))
+      if (response.statusCode === 200) {
+        body = Buffer.concat(body).toString();
+        const products = JSON.parse(body);
+        products.elements.forEach(element => pwaProductDetailPageCall(categoryName, element.title, element.attributes[0].value))
+      }
     });
     response.on('error', console.error)
   });
@@ -85,15 +100,17 @@ function icmCategoryCall(categoryPath) {
     });
 
     response.on('end', () => {
-      body = Buffer.concat(body).toString();
-      const category = JSON.parse(body);
-      pwaCategoryPageCall(category.name, category.categoryRef);
-      if (category.hasOnlineSubCategories) {
-        category.subCategories.forEach(subCategory => {
-          icmCategoryCall(subCategory.uri)
-        })
-      } else {
-        icmProductsCall(category.name, category.uri);
+      if (response.statusCode === 200) {
+        body = Buffer.concat(body).toString();
+        const category = JSON.parse(body);
+        pwaCategoryPageCall(category.name, category.categoryRef);
+        if (category.hasOnlineSubCategories) {
+          category.subCategories.forEach(subCategory => {
+            icmCategoryCall(subCategory.uri)
+          })
+        } else {
+          icmProductsCall(category.name, category.uri);
+        }
       }
     });
     response.on('error', console.error)
