@@ -100,6 +100,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
           id: 'wishlist',
           defaultValue: wishlistOptions[0].value,
           templateOptions: {
+            fieldClass: ' ',
             value: option.value,
             label: option.label,
           },
@@ -108,20 +109,21 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
       map(formlyConfig => [
         ...formlyConfig,
         {
-          fieldGroupClassName: 'radio',
+          fieldGroupClassName: 'form-check d-flex',
           fieldGroup: [
             {
               type: 'ish-radio-field',
-              wrappers: [],
               key: 'wishlist',
               id: 'wishlist',
               templateOptions: {
+                fieldClass: ' ',
                 value: 'new',
               },
             },
             {
               type: 'ish-text-input-field',
               key: 'newList',
+              className: 'w-75 position-relative validation-offset-0',
               wrappers: ['validation'],
               templateOptions: {
                 required: true,

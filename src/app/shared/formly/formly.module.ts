@@ -31,7 +31,6 @@ import { DescriptionWrapperComponent } from './wrappers/description-wrapper/desc
 import { HorizontalCheckboxWrapperComponent } from './wrappers/horizontal-checkbox-wrapper/horizontal-checkbox-wrapper.component';
 import { HorizontalWrapperComponent } from './wrappers/horizontal-wrapper/horizontal-wrapper.component';
 import { InputAddonWrapperComponent } from './wrappers/input-addon-wrapper/input-addon-wrapper.component';
-import { RadioHorizontalWrapperComponent } from './wrappers/radio-horizontal-wrapper/radio-horizontal-wrapper.component';
 import { TextareaDescriptionWrapperComponent } from './wrappers/textarea-description-wrapper/textarea-description-wrapper.component';
 import { TooltipWrapperComponent } from './wrappers/tooltip-wrapper/tooltip-wrapper.component';
 import { ValidationWrapperComponent } from './wrappers/validation-wrapper/validation-wrapper.component';
@@ -81,7 +80,7 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
         {
           name: 'ish-radio-field',
           component: RadioFieldComponent,
-          wrappers: ['form-field-radio-horizontal'],
+          wrappers: ['form-field-checkbox-horizontal'],
         },
       ],
       wrappers: [
@@ -92,7 +91,6 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
         { name: 'tooltip', component: TooltipWrapperComponent },
         { name: 'validation', component: ValidationWrapperComponent },
         { name: 'description', component: DescriptionWrapperComponent },
-        { name: 'form-field-radio-horizontal', component: RadioHorizontalWrapperComponent },
       ],
       extras: {
         lazyRender: true,
@@ -126,7 +124,6 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
     InputAddonWrapperComponent,
     PasswordFieldComponent,
     RadioFieldComponent,
-    RadioHorizontalWrapperComponent,
     SelectFieldComponent,
     TextInputFieldComponent,
     TextareaDescriptionWrapperComponent,
