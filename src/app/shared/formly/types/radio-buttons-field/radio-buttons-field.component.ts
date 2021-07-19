@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { FieldType } from '@ngx-formly/core';
-import { TranslateService } from '@ngx-translate/core';
-import { Observable, Subject, isObservable, of } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { FormControl, FormGroup } from '@angular/forms';
+import { FieldType, FormlyFieldConfig } from '@ngx-formly/core';
+import { Observable, Subject, config, isObservable, of } from 'rxjs';
+import { map, startWith, takeUntil, tap } from 'rxjs/operators';
+
+import { log } from 'ish-core/utils/dev/operators';
 
 interface TemplateOptions {
   options: Observable<{ value: string; label: string }[]> | { value: string; label: string }[];
-  newInput?: { formControl: FormControl; label: string };
+  newInput?: { formGroup: FormGroup; config: FormlyFieldConfig[] };
 }
 
 @Component({
@@ -17,28 +18,25 @@ interface TemplateOptions {
 })
 export class RadioButtonsFieldComponent extends FieldType implements OnInit, OnDestroy {
   private destroy$ = new Subject();
+  newInputConfig: FormlyFieldConfig[];
 
-  constructor(private translate: TranslateService) {
+  constructor() {
     super();
   }
 
   ngOnInit() {
     const templOpts = this.to as TemplateOptions;
-    templOpts.newInput?.formControl.setValue(this.translate.instant(templOpts.newInput.label));
-
-    // pre-select first value and make sure new field is disabled from the start
-    this.entries.pipe(take(1), takeUntil(this.destroy$)).subscribe(() => {
-      templOpts.newInput?.formControl.disable({ emitEvent: false });
-    });
-
-    // disable new field if not selected
-    this.formControl.valueChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(_ =>
-        this.formControl.value === 'new'
-          ? templOpts.newInput?.formControl.enable({ emitEvent: false })
-          : templOpts.newInput?.formControl.disable({ emitEvent: false })
-      );
+    this.newInputConfig = templOpts.newInput.config.map(fieldConfig => ({
+      ...fieldConfig,
+      expressionProperties: {
+        ...fieldConfig.expressionProperties,
+        'templateOptions.disabled': this.formControl.valueChanges.pipe(
+          startWith(''),
+          map(value => value !== 'new'),
+          takeUntil(this.destroy$)
+        ),
+      },
+    }));
   }
 
   // helpers for type safety in the template

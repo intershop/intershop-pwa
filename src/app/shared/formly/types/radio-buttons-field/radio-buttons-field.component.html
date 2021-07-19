@@ -29,13 +29,7 @@
   <div class="radio">
     <label class="d-flex align-items-center">
       <input type="radio" name="radio" [formGroup]="field.form" value="new" [formControl]="fc" />
-      <input
-        type="text"
-        [formControl]="to.newInput.formControl"
-        [value]="to.newInput.label"
-        class="form-control"
-        [disabled]="true"
-      />
+      <formly-form [fields]="newInputConfig"></formly-form>
     </label>
   </div>
 </ng-container>
