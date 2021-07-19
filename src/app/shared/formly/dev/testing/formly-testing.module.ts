@@ -42,9 +42,6 @@ class SelectFieldComponent extends FieldType {}
 @Component({ template: 'TextareaFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class TextareaFieldComponent extends FieldType {}
 
-@Component({ template: 'RadioFieldComponent: {{field.key }} {{ to | json }}' })
-class RadioFieldComponent extends FieldType {}
-
 @Component({ template: `<ng-template #fieldComponent> </ng-template>` })
 class DummyWrapperComponent extends FieldWrapper {}
 
