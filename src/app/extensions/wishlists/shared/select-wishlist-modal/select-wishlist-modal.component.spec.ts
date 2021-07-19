@@ -70,11 +70,6 @@ describe('Select Wishlist Modal Component', () => {
     when(wishlistFacadeMock.wishlists$).thenReturn(of([wishlistDetails]));
   });
 
-  beforeEach(() => {
-    // fixture.detectChanges();
-    // component.show();
-  });
-
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
