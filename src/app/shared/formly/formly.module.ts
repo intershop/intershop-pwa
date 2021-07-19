@@ -86,6 +86,10 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
           component: RadioFieldComponent,
           wrappers: ['form-field-radio-horizontal'],
         },
+        {
+          name: 'ish-radio-textinput-field',
+          component: RadioTextinputFieldComponent,
+        },
       ],
       wrappers: [
         { name: 'form-field-horizontal', component: HorizontalWrapperComponent },
@@ -96,7 +100,7 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
         { name: 'validation', component: ValidationWrapperComponent },
         { name: 'description', component: DescriptionWrapperComponent },
         { name: 'form-field-radio-horizontal', component: RadioHorizontalWrapperComponent },
-        { name: 'radio-fieldgroup', component: RadioButtonFieldgroupWrapperComponent },
+        { name: 'radio-button-fieldgroup', component: RadioButtonFieldgroupWrapperComponent },
       ],
       extras: {
         lazyRender: true,

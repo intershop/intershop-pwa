@@ -15,6 +15,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, Subject, of } from 'rxjs';
 import { filter, map, startWith, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 
+import { log } from 'ish-core/utils/dev/operators';
 import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
@@ -98,8 +99,9 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
         wishlistOptions.map(option => ({
           type: 'ish-radio-field',
           key: 'wishlist',
-          value: option.value,
+          id: 'wishlist',
           templateOptions: {
+            value: option.value,
             label: option.label,
           },
         }))
@@ -107,12 +109,14 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
       map(formlyConfig => [
         ...formlyConfig,
         {
-          key: 'new',
-          wrappers: ['radio-fieldgroup'],
+          wrappers: ['radio-button-fieldgroup'],
+          key: 'newList',
+          id: 'wishlist',
           fieldGroup: [
             {
               type: 'ish-text-input-field',
               key: 'wishlist',
+              wrappers: ['validation'],
               templateOption: {
                 required: true,
                 placeholder: 'account.wishlists.choose_wishlist.new_wishlist_name.initial_value',
@@ -172,6 +176,8 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
           }
         }
       });
+
+    // this.radioButtonsFormGroup.valueChanges.pipe(log('radioValue')).subscribe();
   }
 
   ngOnDestroy() {
@@ -183,6 +189,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   submitForm() {
     const radioButtons = this.radioButtonsFormGroup.value;
     const newList = this.newListFormControl.value;
+    console.log(radioButtons);
     if (
       radioButtons &&
       Object.keys(radioButtons).filter(k => !!radioButtons[k]).length > 0 &&
