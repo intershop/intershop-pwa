@@ -58,6 +58,9 @@
               </label>
             </div>
           </div>
+          {{ model | json }}
+          <formly-form [fields]="fieldConfig" [form]="formGroup" [options]="formlyOptions" [model]="model">
+          </formly-form>
         </ng-template>
       </form>
     </div>

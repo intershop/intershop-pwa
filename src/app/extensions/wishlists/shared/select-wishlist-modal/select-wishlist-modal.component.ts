@@ -9,8 +9,9 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
@@ -44,6 +45,27 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   updateWishlistForm: FormGroup;
   wishlistOptions: SelectOption[];
 
+  formGroup: FormGroup = new FormGroup({});
+  formlyOptions: {};
+  model: {};
+  newWishlistFC = new FormControl('newList');
+  fieldConfig: FormlyFieldConfig[] = [
+    {
+      type: 'radio-buttons-field',
+      key: 'wishlist',
+      templateOptions: {
+        options: [
+          { value: 'test', label: 'test fieldd' },
+          { value: 'test2', label: 'test field 2' },
+        ],
+        newInput: {
+          label: 'New Wish List',
+          formControl: this.newWishlistFC,
+        },
+      },
+    },
+  ];
+
   showForm: boolean;
   newWishlistInitValue = '';
 
@@ -62,6 +84,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.newWishlistFC.valueChanges.subscribe(vc => console.log(this.formGroup.value));
     this.wishlistsFacade.preferredWishlist$
       .pipe(take(1), takeUntil(this.destroy$))
       .subscribe(wishlist => (this.preferredWishlist = wishlist));

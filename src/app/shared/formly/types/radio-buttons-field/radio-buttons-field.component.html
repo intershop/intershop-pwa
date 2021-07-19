@@ -1,14 +1,41 @@
-<ng-container *ngFor="let entry of entries">
+<!-- <ng-container *ngFor="let entry of entries |">
   <ng-container *ngIf="isFormlyFieldConfig(entry); else keyValue">
-    <label>
-      <input type="radio" [value]="entry.id" />
-      <formly-field [field]="entry"></formly-field>
-    </label>
+    <div class="radio">
+      <label class="d-flex align-items-center">
+        <input type="radio" name="radio" [formGroup]="field.form" [value]="entry.key" />
+        <formly-field [field]="entry"></formly-field>
+      </label>
+    </div>
   </ng-container>
   <ng-template #keyValue>
-    <label>
-      <input type="radio" [value]="asKeyValuePair(entry).value" />
-      {{ asKeyValuePair(entry).label }}
-    </label>
+    <div class="radio">
+      <label>
+        <input type="radio" name="radio" [value]="entry.value" />
+        {{ asKeyValuePair(entry).label }}
+      </label>
+    </div>
   </ng-template>
+</ng-container> -->
+
+<ng-container *ngFor="let entry of entries | async">
+  <div class="radio">
+    <label>
+      <input type="radio" name="radio" [value]="entry.value" [formControl]="fc" />
+      {{ entry.label }}
+    </label>
+  </div>
+</ng-container>
+<ng-container *ngIf="to.newInput">
+  <div class="radio">
+    <label class="d-flex align-items-center">
+      <input type="radio" name="radio" [formGroup]="field.form" value="new" [formControl]="fc" />
+      <input
+        type="text"
+        [formControl]="to.newInput.formControl"
+        [value]="to.newInput.label"
+        class="form-control"
+        [disabled]="true"
+      />
+    </label>
+  </div>
 </ng-container>
