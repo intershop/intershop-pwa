@@ -9,12 +9,12 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, startWith, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
@@ -41,30 +41,14 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
    */
   @Output() submitEmitter = new EventEmitter<{ id: string; title: string }>();
 
-  preferredWishlist: Wishlist;
-  updateWishlistForm: FormGroup;
-  wishlistOptions: SelectOption[];
+  wishlistOptions$: Observable<SelectOption[]>;
 
-  formGroup: FormGroup = new FormGroup({});
-  formlyOptions: {};
-  model: {};
-  newWishlistFC = new FormControl('newList');
-  fieldConfig: FormlyFieldConfig[] = [
-    {
-      type: 'radio-buttons-field',
-      key: 'wishlist',
-      templateOptions: {
-        options: [
-          { value: 'test', label: 'test fieldd' },
-          { value: 'test2', label: 'test field 2' },
-        ],
-        newInput: {
-          label: 'New Wish List',
-          formControl: this.newWishlistFC,
-        },
-      },
-    },
-  ];
+  multipleFormGroup: FormGroup = new FormGroup({});
+  singleFormGroup: FormGroup = new FormGroup({});
+  // model: { wishlist: string };
+  newWishlistFC = new FormControl('newList', Validators.required);
+  multipleFieldConfig: FormlyFieldConfig[];
+  singleFieldConfig: FormlyFieldConfig[];
 
   showForm: boolean;
   newWishlistInitValue = '';
@@ -76,39 +60,79 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
 
   @ViewChild('modal') modalTemplate: TemplateRef<unknown>;
 
-  constructor(
-    private ngbModal: NgbModal,
-    private fb: FormBuilder,
-    private translate: TranslateService,
-    private wishlistsFacade: WishlistsFacade
-  ) {}
+  constructor(private ngbModal: NgbModal, private wishlistsFacade: WishlistsFacade) {}
 
   ngOnInit() {
-    this.newWishlistFC.valueChanges.subscribe(vc => console.log(this.formGroup.value));
+    this.singleFieldConfig = [
+      {
+        type: 'ish-text-input-field',
+        key: 'new',
+        templateOptions: {
+          required: true,
+        },
+        validation: {
+          messages: {
+            required: 'account.wishlist.name.error.required',
+          },
+        },
+      },
+    ];
+    this.wishlistOptions$ = this.wishlistsFacade.wishlists$.pipe(
+      startWith([] as Wishlist[]),
+      map(wishlists =>
+        wishlists.map(wishlist => ({
+          value: wishlist.id,
+          label: wishlist.title,
+        }))
+      ),
+      withLatestFrom(this.wishlistsFacade.currentWishlist$),
+      map(([wishlistOptions, currentWishlist]) => {
+        if (this.addMoveProduct === 'move' && currentWishlist) {
+          return wishlistOptions.filter(option => option.value !== currentWishlist.id);
+        }
+        return wishlistOptions;
+      })
+    );
+
+    this.multipleFieldConfig = [
+      {
+        type: 'radio-buttons-field',
+        key: 'wishlist',
+        templateOptions: {
+          required: true,
+          options: this.wishlistOptions$,
+          newInput: {
+            label: 'account.wishlists.choose_wishlist.new_wishlist_name.initial_value',
+            formControl: this.newWishlistFC,
+          },
+        },
+      },
+    ];
+
     this.wishlistsFacade.preferredWishlist$
-      .pipe(take(1), takeUntil(this.destroy$))
-      .subscribe(wishlist => (this.preferredWishlist = wishlist));
-    this.determineSelectOptions();
-    this.formInit();
+      .pipe(withLatestFrom(this.wishlistOptions$), take(1), takeUntil(this.destroy$))
+      .subscribe(([preferredWishlist, wishlistOptions]) => {
+        // don't show wishlist selection form but add a product immediately if there is a preferred wishlist
+        if (this.showForm && preferredWishlist && this.addMoveProduct === 'add') {
+          this.multipleFormGroup.get('wishlist').setValue(preferredWishlist.id);
+          this.submitForm();
+        } else if (this.showForm) {
+          // set default form value
+          if (wishlistOptions && wishlistOptions.length > 0) {
+            if (preferredWishlist) {
+              this.multipleFormGroup.get('wishlist').setValue(preferredWishlist.id);
+            } else {
+              this.multipleFormGroup.get('wishlist').setValue(wishlistOptions[0].value);
+            }
+          } else {
+            this.multipleFormGroup.get('wishlist').setValue('new');
+          }
+        }
+      });
+
     this.wishlistsFacade.currentWishlist$
       .pipe(takeUntil(this.destroy$))
       .subscribe(wishlist => (this.idAfterCreate = wishlist && wishlist.id));
-
-    this.translate
-      .get('account.wishlists.choose_wishlist.new_wishlist_name.initial_value')
-      .pipe(take(1), takeUntil(this.destroy$))
-      .subscribe(res => {
-        this.newWishlistInitValue = res;
-        this.setDefaultFormValues();
-      });
-    this.updateWishlistForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(changes => {
-      if (changes.wishlist !== 'newList') {
-        this.updateWishlistForm.get('newWishlist').clearValidators();
-      } else {
-        this.updateWishlistForm.get('newWishlist').setValidators(Validators.required);
-      }
-      this.updateWishlistForm.get('newWishlist').updateValueAndValidity({ emitEvent: false });
-    });
   }
 
   ngOnDestroy() {
@@ -116,75 +140,28 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  private formInit() {
-    this.updateWishlistForm = this.fb.group({
-      wishlist: [
-        this.wishlistOptions && this.wishlistOptions.length > 0 ? this.wishlistOptions[0].value : 'newList',
-        Validators.required,
-      ],
-      newWishlist: [this.newWishlistInitValue, Validators.required],
-    });
-  }
-
-  private determineSelectOptions() {
-    let currentWishlist: Wishlist;
-    this.wishlistsFacade.currentWishlist$.pipe(take(1), takeUntil(this.destroy$)).subscribe(w => (currentWishlist = w));
-    this.wishlistsFacade.wishlists$.pipe(takeUntil(this.destroy$)).subscribe(wishlists => {
-      if (wishlists && wishlists.length > 0) {
-        this.wishlistOptions = wishlists.map(wishlist => ({
-          value: wishlist.id,
-          label: wishlist.title,
-        }));
-        if (this.addMoveProduct === 'move' && currentWishlist) {
-          this.wishlistOptions = this.wishlistOptions.filter(option => option.value !== currentWishlist.id);
-        }
-      } else {
-        this.wishlistOptions = [];
-      }
-      this.setDefaultFormValues();
-      this.addProductToPreferredWishlist();
-    });
-  }
-
-  private setDefaultFormValues() {
-    if (this.showForm && !this.addProductToPreferredWishlist()) {
-      if (this.wishlistOptions && this.wishlistOptions.length > 0) {
-        if (this.preferredWishlist) {
-          this.updateWishlistForm.get('wishlist').setValue(this.preferredWishlist.id);
-        } else {
-          this.updateWishlistForm.get('wishlist').setValue(this.wishlistOptions[0].value);
-        }
-      } else {
-        this.updateWishlistForm.get('wishlist').setValue('newList');
-      }
-      this.updateWishlistForm.get('newWishlist').setValue(this.newWishlistInitValue);
-    }
-  }
-
-  /** don't show wishlist selection form but add a product immediately if there is a preferred wishlist */
-  private addProductToPreferredWishlist(): boolean {
-    if (this.showForm && this.preferredWishlist && this.addMoveProduct === 'add') {
-      this.updateWishlistForm.get('wishlist').setValue(this.preferredWishlist.id);
-      this.submitForm();
-      return true;
-    }
-    return false;
-  }
-
   /** emit results when the form is valid */
   submitForm() {
-    if (this.updateWishlistForm.valid) {
-      const wishlistId = this.updateWishlistForm.get('wishlist').value;
+    console.log(this.multipleFormGroup.value);
+    if (this.multipleFormGroup.valid) {
+      const newWishlist = this.multipleFormGroup.get('new')?.value ?? this.newWishlistFC.value;
+      console.log(newWishlist);
+      if (newWishlist) {
+        this.multipleFormGroup.get('wishlist')?.setValue('new');
+      }
+      const wishlistId = this.multipleFormGroup.get('wishlist')?.value;
+
       this.submitEmitter.emit({
-        id: wishlistId !== 'newList' ? wishlistId : undefined,
+        id: wishlistId !== 'new' ? wishlistId : undefined,
         title:
-          wishlistId !== 'newList'
-            ? this.wishlistOptions.find(option => option.value === wishlistId).label
-            : this.updateWishlistForm.get('newWishlist').value,
+          wishlistId !== 'new'
+            ? wishlistId // this.wishlistOptions.find(option => option.value === wishlistId).label
+            : newWishlist,
       });
       this.showForm = false;
     } else {
-      markAsDirtyRecursive(this.updateWishlistForm);
+      console.log(';invalid');
+      markAsDirtyRecursive(this.multipleFormGroup);
     }
   }
 
@@ -196,7 +173,6 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   /** open modal */
   show() {
     this.showForm = true;
-    this.setDefaultFormValues();
     this.modal = this.ngbModal.open(this.modalTemplate);
   }
 
@@ -210,28 +186,22 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   }
 
   get selectedWishlistTitle(): string {
-    const selectedValue = this.updateWishlistForm.get('wishlist').value;
+    const selectedValue = this.multipleFormGroup.get('wishlist').value;
     if (selectedValue === 'newList') {
-      return this.updateWishlistForm.get('newWishlist').value;
+      return this.newWishlistFC.value;
     } else {
-      return this.wishlistOptions.find(wishlist => wishlist.value === selectedValue).label;
+      return selectedValue; // this.wishlistOptions.find(wishlist => wishlist.value === selectedValue).label;
     }
   }
 
   /** returns the route to the selected wishlist */
   get selectedWishlistRoute(): string {
-    const selectedValue = this.updateWishlistForm.get('wishlist').value;
+    const selectedValue = this.multipleFormGroup.get('wishlist').value;
     if (selectedValue === 'newList') {
       return `route://account/wishlists/${this.idAfterCreate}`;
     } else {
       return `route://account/wishlists/${selectedValue}`;
     }
-  }
-
-  /** activates the input field to create a new wishlist */
-  get newWishlistDisabled() {
-    const selectedWishlist = this.updateWishlistForm.get('wishlist').value;
-    return selectedWishlist !== 'newList';
   }
 
   /** translation key for the modal header */

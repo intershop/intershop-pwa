@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FieldType } from '@ngx-formly/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subject, isObservable, of } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 
@@ -17,13 +18,16 @@ interface TemplateOptions {
 export class RadioButtonsFieldComponent extends FieldType implements OnInit, OnDestroy {
   private destroy$ = new Subject();
 
+  constructor(private translate: TranslateService) {
+    super();
+  }
+
   ngOnInit() {
     const templOpts = this.to as TemplateOptions;
-    templOpts.newInput?.formControl.setValue(templOpts.newInput.label);
+    templOpts.newInput?.formControl.setValue(this.translate.instant(templOpts.newInput.label));
 
     // pre-select first value and make sure new field is disabled from the start
-    this.entries.pipe(take(1), takeUntil(this.destroy$)).subscribe(entries => {
-      this.formControl.setValue(entries[0].value);
+    this.entries.pipe(take(1), takeUntil(this.destroy$)).subscribe(() => {
       templOpts.newInput?.formControl.disable({ emitEvent: false });
     });
 

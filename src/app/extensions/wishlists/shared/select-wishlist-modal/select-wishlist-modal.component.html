@@ -14,17 +14,12 @@
 
   <ng-container *ngIf="showForm; else showSuccess">
     <div class="modal-body">
-      <form [formGroup]="updateWishlistForm" (ngSubmit)="submitForm()">
-        <ng-container *ngIf="wishlistOptions === undefined || wishlistOptions.length === 0; else radioButtonForm">
-          <ish-input
-            controlName="newWishlist"
-            [errorMessages]="{ required: 'account.wishlist.name.error.required' }"
-            [form]="updateWishlistForm"
-          ></ish-input>
-        </ng-container>
+      <ng-container *ngIf="(wishlistOptions$ | async).length === 0; else radioButtonForm">
+        <formly-form [fields]="singleFieldConfig" [form]="singleFormGroup"></formly-form>
+      </ng-container>
 
-        <ng-template #radioButtonForm>
-          <div class="form-group">
+      <ng-template #radioButtonForm>
+        <!-- <div class="form-group">
             <div class="radio" *ngFor="let option of wishlistOptions; let i = index">
               <label>
                 <input
@@ -57,12 +52,9 @@
                 ></ish-input>
               </label>
             </div>
-          </div>
-          {{ model | json }}
-          <formly-form [fields]="fieldConfig" [form]="formGroup" [options]="formlyOptions" [model]="model">
-          </formly-form>
-        </ng-template>
-      </form>
+          </div> -->
+        <formly-form [fields]="multipleFieldConfig" [form]="multipleFormGroup"> </formly-form>
+      </ng-template>
     </div>
 
     <div class="modal-footer">
