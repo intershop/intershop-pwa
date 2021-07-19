@@ -9,7 +9,7 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, Subject, of } from 'rxjs';
@@ -27,7 +27,7 @@ import { Wishlist } from '../../models/wishlist/wishlist.model';
 @Component({
   selector: 'ish-select-wishlist-modal',
   templateUrl: './select-wishlist-modal.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   /**
@@ -43,7 +43,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   wishlistOptions$: Observable<SelectOption[]>;
 
   radioButtonsFormGroup: FormGroup = new FormGroup({});
-  newListFormControl: FormControl = new FormControl('', Validators.required);
+  newListFormControl: FormControl = new FormControl();
 
   multipleFieldConfig: FormlyFieldConfig[];
   singleFieldConfig: FormlyFieldConfig[];
@@ -52,7 +52,6 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
 
   modal: NgbModalRef;
 
-  idAfterCreate = '';
   private destroy$ = new Subject<void>();
 
   @ViewChild('modal') modalTemplate: TemplateRef<unknown>;
@@ -155,7 +154,11 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   submitForm() {
     const radioButtons = this.radioButtonsFormGroup.value;
     const newList = this.newListFormControl.value;
-    if (radioButtons && Object.keys(radioButtons).length > 0 && radioButtons.wishlist !== 'new') {
+    if (
+      radioButtons &&
+      Object.keys(radioButtons).filter(k => !!radioButtons[k]).length > 0 &&
+      radioButtons.wishlist !== 'new'
+    ) {
       if (this.radioButtonsFormGroup.valid) {
         this.submitExisting(radioButtons.wishlist);
       } else {
@@ -215,7 +218,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
     };
   }
 
-  get selectedWishlistTitle(): Observable<string> {
+  get selectedWishlistTitle$(): Observable<string> {
     const selectedValue = this.radioButtonsFormGroup.get('wishlist')?.value;
     if (selectedValue === 'new' || !selectedValue) {
       return of(this.newListFormControl.value);
@@ -229,7 +232,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   }
 
   /** returns the route to the selected wishlist */
-  get selectedWishlistRoute(): Observable<string> {
+  get selectedWishlistRoute$(): Observable<string> {
     const selectedValue = this.radioButtonsFormGroup.get('wishlist')?.value;
     if (selectedValue === 'new' || !selectedValue) {
       return this.wishlistsFacade.currentWishlist$.pipe(

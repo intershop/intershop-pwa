@@ -39,7 +39,7 @@
         [ishServerHtml]="
           successTranslationKey
             | translate
-              : { '0': product.name, '1': (selectedWishlistRoute | async), '2': (selectedWishlistTitle | async) }
+              : { '0': product.name, '1': (selectedWishlistRoute$ | async), '2': (selectedWishlistTitle$ | async) }
         "
         [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
         data-testing-id="wishlist-success-link"

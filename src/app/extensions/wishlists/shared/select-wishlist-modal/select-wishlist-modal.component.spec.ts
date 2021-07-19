@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
@@ -7,6 +7,7 @@ import { of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
@@ -18,6 +19,7 @@ describe('Select Wishlist Modal Component', () => {
   let fixture: ComponentFixture<SelectWishlistModalComponent>;
   let element: HTMLElement;
   let wishlistFacadeMock: WishlistsFacade;
+
   const wishlistDetails = {
     title: 'testing wishlist',
     type: 'WishList',
@@ -32,7 +34,7 @@ describe('Select Wishlist Modal Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [MockComponent(InputComponent), MockDirective(ServerHtmlDirective), SelectWishlistModalComponent],
-      imports: [NgbModalModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, NgbModalModule, ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) }],
     }).compileComponents();
   });
@@ -45,11 +47,11 @@ describe('Select Wishlist Modal Component', () => {
     when(wishlistFacadeMock.currentWishlist$).thenReturn(of(wishlistDetails));
     when(wishlistFacadeMock.preferredWishlist$).thenReturn(of());
     when(wishlistFacadeMock.wishlists$).thenReturn(of([wishlistDetails]));
+  });
 
+  beforeEach(() => {
     fixture.detectChanges();
     component.show();
-
-    component.wishlistOptions = [{ value: 'wishlist', label: 'Wishlist' }];
   });
 
   it('should be created', () => {
@@ -58,70 +60,127 @@ describe('Select Wishlist Modal Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should emit correct object on form submit with known wishlist', () => {
+  it('should emit correct object on form submit with known wishlist', fakeAsync(() => {
+    fixture.detectChanges();
+
     const emitter = spy(component.submitEmitter);
-    component.updateWishlistForm.patchValue({ wishlist: 'wishlist' });
+    component.radioButtonsFormGroup.patchValue({ wishlist: '.SKsEQAE4FIAAAFuNiUBWx0d' });
 
     component.submitForm();
+    tick(1000);
     verify(emitter.emit(anything())).once();
     const [arg] = capture(emitter.emit).last();
     expect(arg).toEqual({
-      id: 'wishlist',
-      title: 'Wishlist',
+      id: '.SKsEQAE4FIAAAFuNiUBWx0d',
+      title: 'testing wishlist',
     });
-  });
+  }));
 
-  it('should emit correct object on form submit with new wishlist', () => {
+  it('should emit correct object on radio button form submit with new wishlist', fakeAsync(() => {
+    fixture.detectChanges();
+
     const emitter = spy(component.submitEmitter);
-    component.updateWishlistForm.patchValue({ wishlist: 'newList', newWishlist: 'New Wishlist Title' });
+    component.radioButtonsFormGroup.patchValue({ wishlist: 'new' });
+    component.newListFormControl.patchValue('New Wishlist Title');
 
     component.submitForm();
+    tick(100);
     verify(emitter.emit(anything())).once();
     const [arg] = capture(emitter.emit).last();
     expect(arg).toEqual({
       id: undefined,
       title: 'New Wishlist Title',
     });
-  });
+  }));
+  it('should emit correct object on single field form submit with new wishlist', fakeAsync(() => {
+    fixture.detectChanges();
 
-  it('should switch modal contents after successful submit', () => {
-    component.updateWishlistForm.patchValue({ wishlist: 'wishlist' });
+    const emitter = spy(component.submitEmitter);
+    component.newListFormControl.patchValue('New Wishlist Title');
 
     component.submitForm();
-    expect(element.querySelector('form')).toBeFalsy();
+    tick(1000);
+    verify(emitter.emit(anything())).once();
+    const [arg] = capture(emitter.emit).last();
+    expect(arg).toEqual({
+      id: undefined,
+      title: 'New Wishlist Title',
+    });
+  }));
+
+  it('should not emit on radio button form submit with no new wishlist name', () => {
+    fixture.detectChanges();
+
+    const emitter = spy(component.submitEmitter);
+    component.radioButtonsFormGroup.patchValue({ wishlist: 'new' });
+    component.newListFormControl.patchValue('');
+
+    component.submitForm();
+    verify(emitter.emit(anything())).never();
   });
 
-  it('should ensure that newWishlist remove Validator after being deselected', () => {
-    component.updateWishlistForm.patchValue({ wishlist: 'wishlist', newWishlist: '' });
-    expect(component.updateWishlistForm.get('newWishlist').validator).toBeNull();
-  });
+  fit('should not emit on single field form submit with no wishlist name', fakeAsync(() => {
+    fixture.detectChanges();
+
+    const emitter = spy(component.submitEmitter);
+    component.newListFormControl.patchValue('');
+
+    component.submitForm();
+    tick(100);
+    verify(emitter.emit(anything())).never();
+  }));
+
+  it('should switch modal contents after successful submit', fakeAsync(() => {
+    fixture.detectChanges();
+
+    component.radioButtonsFormGroup.patchValue({ wishlist: '.SKsEQAE4FIAAAFuNiUBWx0d' });
+
+    component.submitForm();
+    tick(100);
+    expect(element.querySelector('form')).toBeFalsy();
+  }));
 
   describe('selectedWishlistTitle', () => {
-    it('should return correct title of known wishlist', () => {
-      component.updateWishlistForm.patchValue({ wishlist: 'wishlist' });
-      const title = component.selectedWishlistTitle;
-      expect(title).toBe('Wishlist');
+    it('should return correct title of known wishlist', done => {
+      fixture.detectChanges();
+
+      component.radioButtonsFormGroup.patchValue({ wishlist: '.SKsEQAE4FIAAAFuNiUBWx0d' });
+      component.selectedWishlistTitle$.subscribe(t => {
+        expect(t).toBe('testing wishlist');
+        done();
+      });
     });
 
-    it('should return correct title of new wishlist', () => {
-      component.updateWishlistForm.patchValue({ wishlist: 'newList', newWishlist: 'New Wishlist Title' });
-      const title = component.selectedWishlistTitle;
-      expect(title).toBe('New Wishlist Title');
+    it('should return correct title of new wishlist', done => {
+      fixture.detectChanges();
+
+      component.newListFormControl.patchValue('New Wishlist Title');
+      component.selectedWishlistTitle$.subscribe(t => {
+        expect(t).toBe('New Wishlist Title');
+        done();
+      });
     });
   });
 
   describe('selectedWishlistRoute', () => {
-    it('should return correct route of known wishlist', () => {
-      component.updateWishlistForm.patchValue({ wishlist: 'wishlist' });
-      const route = component.selectedWishlistRoute;
-      expect(route).toBe('route://account/wishlists/wishlist');
+    it('should return correct route of known wishlist', done => {
+      fixture.detectChanges();
+
+      component.radioButtonsFormGroup.patchValue({ wishlist: '.SKsEQAE4FIAAAFuNiUBWx0d' });
+      component.selectedWishlistRoute$.subscribe(r => {
+        expect(r).toBe('route://account/wishlists/.SKsEQAE4FIAAAFuNiUBWx0d');
+        done();
+      });
     });
 
-    it('should return correct route of new wishlist', () => {
-      component.updateWishlistForm.patchValue({ wishlist: 'newList', newWishlist: 'New Wishlist Title' });
-      component.idAfterCreate = 'idAfterCreate';
-      const route = component.selectedWishlistRoute;
-      expect(route).toBe('route://account/wishlists/idAfterCreate');
+    it('should return correct route of new wishlist', done => {
+      fixture.detectChanges();
+
+      component.newListFormControl.patchValue('New Wishlist Title');
+      component.selectedWishlistRoute$.subscribe(r => {
+        expect(r).toBe('route://account/wishlists/.SKsEQAE4FIAAAFuNiUBWx0d');
+        done();
+      });
     });
   });
 });
