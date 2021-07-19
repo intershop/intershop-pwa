@@ -9,13 +9,14 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, Subject, of } from 'rxjs';
 import { filter, map, startWith, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { log } from 'ish-core/utils/dev/operators';
+import { whenTruthy } from 'ish-core/utils/operators';
 import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
@@ -44,7 +45,6 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   wishlistOptions$: Observable<SelectOption[]>;
 
   radioButtonsFormGroup: FormGroup = new FormGroup({});
-  newListFormControl: FormControl = new FormControl();
 
   multipleFieldConfig$: Observable<FormlyFieldConfig[]>;
   singleFieldConfig: FormlyFieldConfig[];
@@ -63,12 +63,11 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
     this.singleFieldConfig = [
       {
         type: 'ish-text-input-field',
-        key: 'new',
+        key: 'newList',
         templateOptions: {
           required: true,
           placeholder: 'account.wishlists.choose_wishlist.new_wishlist_name.initial_value',
         },
-        formControl: this.newListFormControl,
         validation: {
           messages: {
             required: 'account.wishlist.name.error.required',
@@ -94,14 +93,13 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
       })
     );
 
-    // TEST : SEPERATE NEW RADIO BUTTON AND TEXT INPUT FIELD (LIKE ORIGINAL) FIELD GROUP WITHOUT KEY FOR BOTH TO GROUP THEM TOGETHER VISUALLY
-
     this.multipleFieldConfig$ = this.wishlistOptions$.pipe(
       map(wishlistOptions =>
         wishlistOptions.map(option => ({
           type: 'ish-radio-field',
           key: 'wishlist',
           id: 'wishlist',
+          defaultValue: wishlistOptions[0].value,
           templateOptions: {
             value: option.value,
             label: option.label,
@@ -111,75 +109,38 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
       map(formlyConfig => [
         ...formlyConfig,
         {
-          wrappers: ['radio-button-fieldgroup'],
-          key: 'newList',
-          id: 'wishlist',
+          fieldGroupClassName: 'radio',
           fieldGroup: [
             {
-              type: 'ish-text-input-field',
+              type: 'ish-radio-field',
+              wrappers: [],
               key: 'wishlist',
+              id: 'wishlist',
+              templateOptions: {
+                value: 'new',
+              },
+            },
+            {
+              type: 'ish-text-input-field',
+              key: 'newList',
               wrappers: ['validation'],
-              templateOption: {
+              templateOptions: {
                 required: true,
                 placeholder: 'account.wishlists.choose_wishlist.new_wishlist_name.initial_value',
+              },
+              validation: {
+                messages: {
+                  required: 'account.wishlist.name.error.required',
+                },
+              },
+              expressionProperties: {
+                'templateOptions.disabled': model => model.wishlist !== 'new',
               },
             },
           ],
         },
       ])
     );
-    // [
-    //   {
-    //     type: 'ish-radio-buttons-field',
-    //     key: 'wishlist',
-    //     templateOptions: {
-    //       required: true,
-    //       options: this.wishlistOptions$,
-    //       newInput: {
-    //         config: [
-    //           {
-    //             type: 'ish-text-input-field',
-    //             key: 'newList',
-    //             wrappers: ['validation'],
-    //             templateOptions: {
-    //               required: true,
-    //               placeholder: 'account.wishlists.choose_wishlist.new_wishlist_name.initial_value',
-    //             },
-    //             formControl: this.newListFormControl,
-    //             validation: {
-    //               messages: {
-    //                 required: 'account.wishlist.name.error.required',
-    //               },
-    //             },
-    //           },
-    //         ],
-    //       },
-    //     },
-    //   },
-    // ];
-
-    this.wishlistsFacade.preferredWishlist$
-      .pipe(withLatestFrom(this.wishlistOptions$), take(1), takeUntil(this.destroy$))
-      .subscribe(([preferredWishlist, wishlistOptions]) => {
-        // don't show wishlist selection form but add a product immediately if there is a preferred wishlist
-        if (this.showForm && preferredWishlist && this.addMoveProduct === 'add') {
-          this.radioButtonsFormGroup.get('wishlist').setValue(preferredWishlist.id);
-          this.submitForm();
-        } else if (this.showForm) {
-          // set default form value
-          if (wishlistOptions && wishlistOptions.length > 0) {
-            if (preferredWishlist) {
-              this.radioButtonsFormGroup.get('wishlist').setValue(preferredWishlist.id);
-            } else {
-              this.radioButtonsFormGroup.get('wishlist').setValue(wishlistOptions[0].value);
-            }
-          } else {
-            this.radioButtonsFormGroup.get('wishlist').setValue('new');
-          }
-        }
-      });
-
-    // this.radioButtonsFormGroup.valueChanges.pipe(log('radioValue')).subscribe();
   }
 
   ngOnDestroy() {
@@ -190,22 +151,16 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   /** emit results when the form is valid */
   submitForm() {
     const radioButtons = this.radioButtonsFormGroup.value;
-    const newList = this.newListFormControl.value;
-    console.log(radioButtons);
-    if (
-      radioButtons &&
-      Object.keys(radioButtons).filter(k => !!radioButtons[k]).length > 0 &&
-      radioButtons.wishlist !== 'new'
-    ) {
+    if (radioButtons?.wishlist && radioButtons.wishlist !== 'new') {
       if (this.radioButtonsFormGroup.valid) {
         this.submitExisting(radioButtons.wishlist);
       } else {
         markAsDirtyRecursive(this.radioButtonsFormGroup);
       }
-    } else if (!this.newListFormControl.invalid) {
-      this.submitNew(newList);
+    } else if (radioButtons.newList && this.radioButtonsFormGroup.valid) {
+      this.submitNew(radioButtons.newList);
     } else {
-      this.newListFormControl.markAsDirty();
+      markAsDirtyRecursive(this.radioButtonsFormGroup);
     }
   }
 
@@ -237,14 +192,28 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   /** close modal */
   hide() {
     this.modal.close();
-    this.newListFormControl?.reset();
+    this.radioButtonsFormGroup.reset();
   }
 
   /** open modal */
   show() {
     this.showForm = true;
     this.modal = this.ngbModal.open(this.modalTemplate);
-    this.newListFormControl.updateValueAndValidity();
+
+    this.wishlistsFacade.preferredWishlist$
+      .pipe(whenTruthy(), take(1), takeUntil(this.destroy$))
+      .subscribe(preferredWishlist => {
+        // don't show wishlist selection form but add a product immediately if there is a preferred wishlist
+        if (this.addMoveProduct === 'add') {
+          this.radioButtonsFormGroup.get('wishlist').setValue(preferredWishlist.id);
+          this.submitForm();
+        } else {
+          console.log('setting pref');
+          // set default form value  preferred wishlist
+          this.radioButtonsFormGroup.get('wishlist').setValue(preferredWishlist.id);
+        }
+      });
+    // this.newListFormControl.updateValueAndValidity();
   }
 
   /**
@@ -259,7 +228,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   get selectedWishlistTitle$(): Observable<string> {
     const selectedValue = this.radioButtonsFormGroup.get('wishlist')?.value;
     if (selectedValue === 'new' || !selectedValue) {
-      return of(this.newListFormControl.value);
+      return of(this.radioButtonsFormGroup.value.newList);
     } else {
       return this.wishlistOptions$.pipe(
         filter(options => options.length > 0),

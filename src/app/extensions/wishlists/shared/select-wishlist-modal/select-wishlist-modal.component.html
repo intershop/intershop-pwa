@@ -15,7 +15,7 @@
   <ng-container *ngIf="showForm; else showSuccess">
     <div class="modal-body">
       <ng-container *ngIf="(wishlistOptions$ | async).length === 0; else radioButtonForm">
-        <formly-form [fields]="singleFieldConfig"></formly-form>
+        <formly-form [fields]="singleFieldConfig" [form]="radioButtonsFormGroup"></formly-form>
       </ng-container>
 
       <ng-template #radioButtonForm>
