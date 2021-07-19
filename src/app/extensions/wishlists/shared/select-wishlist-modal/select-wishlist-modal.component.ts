@@ -97,7 +97,6 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
         wishlistOptions.map(option => ({
           type: 'ish-radio-field',
           key: 'wishlist',
-          id: 'wishlist',
           defaultValue: wishlistOptions[0].value,
           templateOptions: {
             fieldClass: ' ',
@@ -114,7 +113,6 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
             {
               type: 'ish-radio-field',
               key: 'wishlist',
-              id: 'wishlist',
               templateOptions: {
                 fieldClass: ' ',
                 value: 'new',
