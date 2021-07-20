@@ -37,8 +37,9 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
     this.fields = [
       {
         key: 'currentPassword',
-        type: 'ish-password-field',
+        type: 'ish-text-input-field',
         templateOptions: {
+          type: 'password',
           required: true,
           hideRequiredMarker: true,
           label: 'account.password.label',
