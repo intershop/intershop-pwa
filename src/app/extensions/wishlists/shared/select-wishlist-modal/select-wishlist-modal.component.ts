@@ -12,6 +12,7 @@ import {
 import { FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subject, of } from 'rxjs';
 import { filter, map, startWith, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 
@@ -56,16 +57,20 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
 
   @ViewChild('modal') modalTemplate: TemplateRef<unknown>;
 
-  constructor(private ngbModal: NgbModal, private wishlistsFacade: WishlistsFacade) {}
+  constructor(
+    private ngbModal: NgbModal,
+    private wishlistsFacade: WishlistsFacade,
+    private translate: TranslateService
+  ) {}
 
   ngOnInit() {
     this.singleFieldConfig = [
       {
         type: 'ish-text-input-field',
         key: 'newList',
+        defaultValue: this.translate.instant('account.wishlists.choose_wishlist.new_wishlist_name.initial_value'),
         templateOptions: {
           required: true,
-          placeholder: 'account.wishlists.choose_wishlist.new_wishlist_name.initial_value',
         },
         validation: {
           messages: {
@@ -123,9 +128,9 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
               key: 'newList',
               className: 'w-75 position-relative validation-offset-0',
               wrappers: ['validation'],
+              defaultValue: this.translate.instant('account.wishlists.choose_wishlist.new_wishlist_name.initial_value'),
               templateOptions: {
                 required: true,
-                placeholder: 'account.wishlists.choose_wishlist.new_wishlist_name.initial_value',
               },
               validation: {
                 messages: {

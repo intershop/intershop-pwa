@@ -14,15 +14,15 @@
 
   <ng-container *ngIf="showForm; else showSuccess">
     <div class="modal-body">
-      <div class="col-md-12">
-        <ng-container *ngIf="(wishlistOptions$ | async).length === 0; else radioButtonForm">
-          <formly-form [fields]="singleFieldConfig" [form]="formGroup" [model]="model"></formly-form>
-        </ng-container>
+      <ng-container *ngIf="(wishlistOptions$ | async).length === 0; else radioButtonForm">
+        <formly-form [fields]="singleFieldConfig" [form]="formGroup" [model]="model"></formly-form>
+      </ng-container>
 
-        <ng-template #radioButtonForm>
+      <ng-template #radioButtonForm>
+        <div class="col-md-12">
           <formly-form [fields]="multipleFieldConfig$ | async" [form]="formGroup"></formly-form>
-        </ng-template>
-      </div>
+        </div>
+      </ng-template>
     </div>
 
     <div class="modal-footer">
