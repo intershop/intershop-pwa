@@ -9,11 +9,11 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { Observable, Subject, of } from 'rxjs';
+import { filter, map, startWith, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
@@ -40,48 +40,100 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
    */
   @Output() submitEmitter = new EventEmitter<{ id: string; title: string }>();
 
-  updateOrderTemplateForm: FormGroup;
-  orderTemplateOptions: SelectOption[];
+  orderTemplateOptions$: Observable<SelectOption[]>;
+
+  formGroup: FormGroup = new FormGroup({});
+  model: { orderTemplate?: string; newOrderTemplate?: string } = {};
+  singleFieldConfig: FormlyFieldConfig[];
+  multipleFieldConfig$: Observable<FormlyFieldConfig[]>;
 
   showForm: boolean;
-  newOrderTemplateInitValue = '';
-
   modal: NgbModalRef;
 
-  idAfterCreate = '';
   private destroy$ = new Subject<void>();
 
   @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<unknown>;
 
-  constructor(
-    private ngbModal: NgbModal,
-    private fb: FormBuilder,
-    private translate: TranslateService,
-    private orderTemplatesFacade: OrderTemplatesFacade
-  ) {}
+  constructor(private ngbModal: NgbModal, private orderTemplatesFacade: OrderTemplatesFacade) {}
 
   ngOnInit() {
-    this.determineSelectOptions();
-    this.formInit();
-    this.orderTemplatesFacade.currentOrderTemplate$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(orderTemplate => (this.idAfterCreate = orderTemplate && orderTemplate.id));
+    this.singleFieldConfig = [
+      {
+        type: 'ish-text-input-field',
+        key: 'newOrderTemplate',
+        templateOptions: {
+          required: true,
+          placeholder: 'account.order_template.new_order_template.text',
+        },
+        validation: {
+          messages: { required: 'account.order_template.name.error.required' },
+        },
+      },
+    ];
 
-    this.translate
-      .get('account.order_template.new_order_template.text')
-      .pipe(take(1), takeUntil(this.destroy$))
-      .subscribe(res => {
-        this.newOrderTemplateInitValue = res;
-        this.setDefaultFormValues();
-      });
-    this.updateOrderTemplateForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(changes => {
-      if (changes.orderTemplate !== 'newTemplate') {
-        this.updateOrderTemplateForm.get('newOrderTemplate').clearValidators();
-      } else {
-        this.updateOrderTemplateForm.get('newOrderTemplate').setValidators(Validators.required);
-      }
-      this.updateOrderTemplateForm.get('newOrderTemplate').updateValueAndValidity({ emitEvent: false });
-    });
+    this.orderTemplateOptions$ = this.orderTemplatesFacade.orderTemplates$.pipe(
+      startWith([] as OrderTemplate[]),
+      map(orderTemplates =>
+        orderTemplates.map(orderTemplate => ({
+          value: orderTemplate.id,
+          label: orderTemplate.title,
+        }))
+      ),
+      withLatestFrom(this.orderTemplatesFacade.currentOrderTemplate$),
+      map(([orderTemplateOptions, currentOrderTemplate]) => {
+        if (this.addMoveProduct === 'move' && currentOrderTemplate) {
+          return orderTemplateOptions.filter(option => option.value !== currentOrderTemplate.id);
+        }
+        return orderTemplateOptions;
+      })
+    );
+
+    this.multipleFieldConfig$ = this.orderTemplateOptions$.pipe(
+      map(orderTemplateOptions =>
+        orderTemplateOptions.map(option => ({
+          type: 'ish-radio-field',
+          key: 'orderTemplate',
+          defaultValue: orderTemplateOptions[0].value,
+          templateOptions: {
+            fieldClass: ' ',
+            value: option.value,
+            label: option.label,
+          },
+        }))
+      ),
+      map(formlyConfig => [
+        ...formlyConfig,
+        {
+          fieldGroupClassName: 'form-check d-flex',
+          fieldGroup: [
+            {
+              type: 'ish-radio-field',
+              key: 'orderTemplate',
+              templateOptions: {
+                fieldClass: ' ',
+                value: 'new',
+              },
+            },
+            {
+              type: 'ish-text-input-field',
+              key: 'newOrderTemplate',
+              className: 'w-75 position-relative validation-offset-0',
+              wrappers: ['validation'],
+              templateOptions: {
+                required: true,
+                placeholder: 'account.order_template.name.error.required',
+              },
+              validation: {
+                messages: { required: 'account.order_template.name.error.required' },
+              },
+              expressionProperties: {
+                'templateOptions.disabled': model => model.orderTemplate !== 'new',
+              },
+            },
+          ],
+        },
+      ])
+    );
   }
 
   ngOnDestroy() {
@@ -89,78 +141,54 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  private formInit() {
-    this.updateOrderTemplateForm = this.fb.group({
-      orderTemplate: [
-        this.orderTemplateOptions && this.orderTemplateOptions.length > 0
-          ? this.orderTemplateOptions[0].value
-          : 'newTemplate',
-        Validators.required,
-      ],
-      newOrderTemplate: [this.newOrderTemplateInitValue, Validators.required],
-    });
-  }
-
-  private determineSelectOptions() {
-    let currentOrderTemplate: OrderTemplate;
-    this.orderTemplatesFacade.currentOrderTemplate$
-      .pipe(take(1), takeUntil(this.destroy$))
-      .subscribe(w => (currentOrderTemplate = w));
-    this.orderTemplatesFacade.orderTemplates$.pipe(takeUntil(this.destroy$)).subscribe(orderTemplates => {
-      if (orderTemplates && orderTemplates.length > 0) {
-        this.orderTemplateOptions = orderTemplates.map(orderTemplate => ({
-          value: orderTemplate.id,
-          label: orderTemplate.title,
-        }));
-        if (this.addMoveProduct === 'move' && currentOrderTemplate) {
-          this.orderTemplateOptions = this.orderTemplateOptions.filter(
-            option => option.value !== currentOrderTemplate.id
-          );
-        }
-      } else {
-        this.orderTemplateOptions = [];
-      }
-      this.setDefaultFormValues();
-    });
-  }
-
-  private setDefaultFormValues() {
-    if (this.showForm) {
-      if (this.orderTemplateOptions && this.orderTemplateOptions.length > 0) {
-        this.updateOrderTemplateForm.get('orderTemplate').setValue(this.orderTemplateOptions[0].value);
-      } else {
-        this.updateOrderTemplateForm.get('orderTemplate').setValue('newTemplate');
-      }
-      this.updateOrderTemplateForm.get('newOrderTemplate').setValue(this.newOrderTemplateInitValue);
-    }
-  }
-
   /** emit results when the form is valid */
   submitForm() {
-    if (this.updateOrderTemplateForm.valid) {
-      const orderTemplateId = this.updateOrderTemplateForm.get('orderTemplate').value;
-      this.submitEmitter.emit({
-        id: orderTemplateId !== 'newTemplate' ? orderTemplateId : undefined,
-        title:
-          orderTemplateId !== 'newTemplate'
-            ? this.orderTemplateOptions.find(option => option.value === orderTemplateId).label
-            : this.updateOrderTemplateForm.get('newOrderTemplate').value,
-      });
-      this.showForm = false;
+    const radioButtons = { ...this.model, ...this.formGroup.value };
+    if (radioButtons?.orderTemplate && radioButtons.orderTemplate !== 'new') {
+      if (this.formGroup.valid) {
+        this.submitExisting(radioButtons.orderTemplate);
+      } else {
+        markAsDirtyRecursive(this.formGroup);
+      }
+    } else if (radioButtons.newOrderTemplate && this.formGroup.valid) {
+      this.submitNew(radioButtons.newOrderTemplate);
     } else {
-      markAsDirtyRecursive(this.updateOrderTemplateForm);
+      markAsDirtyRecursive(this.formGroup);
     }
+  }
+  submitExisting(orderTemplateId: string) {
+    this.orderTemplateOptions$
+      .pipe(
+        filter(options => options.length > 0),
+        map(options => options.find(option => option.value === orderTemplateId).label),
+        take(1),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(label => {
+        this.submitEmitter.emit({
+          id: orderTemplateId,
+          title: label,
+        });
+        this.showForm = false;
+      });
+  }
+  submitNew(newOrderTemplate: string) {
+    this.submitEmitter.emit({
+      id: undefined,
+      title: newOrderTemplate,
+    });
+    this.showForm = false;
   }
 
   /** close modal */
   hide() {
     this.modal.close();
+    this.formGroup.reset();
   }
 
   /** open modal */
   show() {
     this.showForm = true;
-    this.setDefaultFormValues();
     this.modal = this.ngbModal.open(this.modalTemplate);
   }
 
@@ -173,29 +201,33 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
     };
   }
 
-  get selectedOrderTemplateTitle(): string {
-    const selectedValue = this.updateOrderTemplateForm.get('orderTemplate').value;
-    if (selectedValue === 'newTemplate') {
-      return this.updateOrderTemplateForm.get('newOrderTemplate').value;
+  get selectedOrderTemplateTitle$(): Observable<string> {
+    const selectedValue = this.formGroup.value.orderTemplate ?? this.model.orderTemplate;
+    if (selectedValue === 'new' || !selectedValue) {
+      return of(this.formGroup.value.newOrderTemplate);
     } else {
-      return this.orderTemplateOptions.find(orderTemplate => orderTemplate.value === selectedValue).label;
+      return this.orderTemplateOptions$.pipe(
+        filter(options => options.length > 0),
+        map(options => options.find(opt => opt.value === selectedValue).label),
+        take(1)
+      );
     }
   }
 
   /** returns the route to the selected order template */
-  get selectedOrderTemplateRoute(): string {
-    const selectedValue = this.updateOrderTemplateForm.get('orderTemplate').value;
-    if (selectedValue === 'newTemplate') {
-      return `route://account/order-templates/${this.idAfterCreate}`;
-    } else {
-      return `route://account/order-templates/${selectedValue}`;
-    }
-  }
+  get selectedOrderTemplateRoute$(): Observable<string> {
+    const selectedValue = this.formGroup.value.orderTemplate ?? this.model.orderTemplate;
 
-  /** activates the input field to create a new order template */
-  get newOrderTemplateDisabled() {
-    const selectedOrderTemplate = this.updateOrderTemplateForm.get('orderTemplate').value;
-    return selectedOrderTemplate !== 'newTemplate';
+    if (selectedValue === 'new' || !selectedValue) {
+      return this.orderTemplatesFacade.currentOrderTemplate$.pipe(
+        map(
+          currentOrderTemplate => `route://account/order-templates/${currentOrderTemplate && currentOrderTemplate.id}`
+        ),
+        take(1)
+      );
+    } else {
+      return of(`route://account/order-templates/${selectedValue}`);
+    }
   }
 
   /** translation key for the modal header */
