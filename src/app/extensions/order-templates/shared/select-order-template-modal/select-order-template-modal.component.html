@@ -14,17 +14,17 @@
 
   <ng-container *ngIf="showForm; else showSuccess">
     <div class="modal-body">
-      <div class="col-md-12">
-        <form [formGroup]="formGroup" (ngSubmit)="submitForm()">
-          <ng-container *ngIf="(orderTemplateOptions$ | async).length === 0; else radioButtonForm">
-            <formly-form [form]="formGroup" [fields]="singleFieldConfig" [model]="model"></formly-form>
-          </ng-container>
+      <form [formGroup]="formGroup" (ngSubmit)="submitForm()">
+        <ng-container *ngIf="(orderTemplateOptions$ | async).length === 0; else radioButtonForm">
+          <formly-form [form]="formGroup" [fields]="singleFieldConfig" [model]="model"></formly-form>
+        </ng-container>
 
-          <ng-template #radioButtonForm>
+        <ng-template #radioButtonForm>
+          <div class="col-md-12">
             <formly-form [form]="formGroup" [fields]="multipleFieldConfig$ | async" [model]="model"></formly-form>
-          </ng-template>
-        </form>
-      </div>
+          </div>
+        </ng-template>
+      </form>
     </div>
 
     <div class="modal-footer">

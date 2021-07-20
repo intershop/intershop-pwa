@@ -145,7 +145,7 @@ Object {
     startup();
 
     const emitter = spy(component.submitEmitter);
-    component.formGroup.patchValue({ newList: '' });
+    component.formGroup.patchValue({ newOrderTemplate: '' });
 
     component.submitForm();
     tick(100);

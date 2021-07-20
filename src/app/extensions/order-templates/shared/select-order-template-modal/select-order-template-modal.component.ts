@@ -12,6 +12,7 @@ import {
 import { FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subject, of } from 'rxjs';
 import { filter, map, startWith, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 
@@ -54,16 +55,20 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
 
   @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<unknown>;
 
-  constructor(private ngbModal: NgbModal, private orderTemplatesFacade: OrderTemplatesFacade) {}
+  constructor(
+    private ngbModal: NgbModal,
+    private orderTemplatesFacade: OrderTemplatesFacade,
+    private translate: TranslateService
+  ) {}
 
   ngOnInit() {
     this.singleFieldConfig = [
       {
         type: 'ish-text-input-field',
         key: 'newOrderTemplate',
+        defaultValue: this.translate.instant('account.order_template.new_order_template.text'),
         templateOptions: {
           required: true,
-          placeholder: 'account.order_template.new_order_template.text',
         },
         validation: {
           messages: { required: 'account.order_template.name.error.required' },
@@ -119,9 +124,9 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
               key: 'newOrderTemplate',
               className: 'w-75 position-relative validation-offset-0',
               wrappers: ['validation'],
+              defaultValue: this.translate.instant('account.order_template.new_order_template.text'),
               templateOptions: {
                 required: true,
-                placeholder: 'account.order_template.name.error.required',
               },
               validation: {
                 messages: { required: 'account.order_template.name.error.required' },
