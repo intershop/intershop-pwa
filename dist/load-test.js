@@ -3,6 +3,17 @@ if (!process.env['ICM_BASE_URL']) {
   process.exit(0);
 }
 
+const args = process.argv?.slice(2);
+switch(args[0]) {
+  case '-url':
+    pwaUrl = args[1] || 'https://pwa-rngrx-int.pwa.intershop.de';
+    break;
+  default:
+    console.log('Use -url to specify the pwa base url.')
+    pwaUrl = 'https://pwa-rngrx-int.pwa.intershop.de'
+}
+console.log(`Using ${pwaUrl}`)
+
 if (process.env.TRUST_ICM) {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 }
@@ -27,15 +38,15 @@ fs.writeFileSync('dist/load-test.txt', '');
 
 function pwaCategoryPageCall(categoryName, categoryRef) {
   const encodedUri = encodeURIComponent(`${categoryName}-cat${categoryRef}`)
-  console.log('Requesting CLP or PLP', `/${encodedUri}`);
-  fs.appendFileSync('dist/load-test.txt', `https://pwa-rngrx-int.pwa.intershop.de/${encodedUri}\n`);
+  console.log('Requesting CLP or PLP', `${pwaUrl}/${encodedUri}`);
+  fs.appendFileSync('dist/load-test.txt', `${pwaUrl}/${encodedUri}\n`);
 }
 
 function pwaProductDetailPageCall(categoryName, productName, sku) {
   const encodedCategory = encodeURIComponent(`${categoryName}`)
   const encodedProduct = encodeURIComponent(`${productName}-sku${sku}`)
-  console.log('Requesting CLP or PLP', `/${encodedCategory}/${encodedProduct}`);
-  fs.appendFileSync('dist/load-test.txt', `https://pwa-rngrx-int.pwa.intershop.de/${encodedCategory}/${encodedProduct}\n`);
+  console.log('Requesting PDP', `${pwaUrl}/${encodedCategory}/${encodedProduct}`);
+  fs.appendFileSync('dist/load-test.txt', `${pwaUrl}/${encodedCategory}/${encodedProduct}\n`);
 }
 
 function icmProductsCall(categoryName, categoryPath) {
