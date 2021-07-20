@@ -195,6 +195,26 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
   show() {
     this.showForm = true;
     this.modal = this.ngbModal.open(this.modalTemplate);
+
+    // set default values after init (for example after closing and reopening the modal)
+    this.orderTemplateOptions$
+      .pipe(
+        filter(opts => opts.length > 0),
+        map(options => options[0]),
+        take(1),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(option => {
+        this.formGroup.get('orderTemplate')?.setValue(option.value);
+
+        const defaultValue = this.translate.instant('account.order_template.new_order_template.text');
+        this.formGroup.get('newOrderTemplate')?.setValue(defaultValue);
+        this.model = {
+          ...this.model,
+          orderTemplate: option.value,
+          newOrderTemplate: defaultValue,
+        };
+      });
   }
 
   /**
