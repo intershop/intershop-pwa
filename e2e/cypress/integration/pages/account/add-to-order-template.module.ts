@@ -9,7 +9,7 @@ export class AddToOrderTemplateModule {
 
   addProductToOrderTemplateFromPage(title: string = '', modal: boolean = false) {
     if (modal) {
-      cy.get(`[data-testing-id="${title}"]`).click();
+      cy.get(`[data-testing-id="radio-${title}"]`).click();
       cy.get('.modal-footer button.btn-primary').click();
     }
     this.closeAddProductToOrderTemplateModal('link');
@@ -21,7 +21,7 @@ export class AddToOrderTemplateModule {
         .find(`ish-product-item div[data-testing-sku="${product}"] ish-product-add-to-order-template button`)
         .click();
       if (title) {
-        cy.get(`[data-testing-id="${title}"]`).click();
+        cy.get(`[data-testing-id="radio-${title}"]`).click();
       }
       cy.get('.modal-footer button.btn-primary').click();
       this.closeAddProductToOrderTemplateModal('link');

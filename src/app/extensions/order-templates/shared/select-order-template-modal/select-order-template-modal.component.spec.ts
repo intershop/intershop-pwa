@@ -1,13 +1,12 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
-import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 
@@ -50,11 +49,7 @@ describe('Select Order Template Modal Component', () => {
     orderTemplateFacadeMock = mock(OrderTemplatesFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(InputComponent),
-        MockDirective(ServerHtmlDirective),
-        SelectOrderTemplateModalComponent,
-      ],
+      declarations: [MockDirective(ServerHtmlDirective), SelectOrderTemplateModalComponent],
       imports: [FormlyTestingModule, NgbModalModule, TranslateModule.forRoot()],
       providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacadeMock) }],
     }).compileComponents();
