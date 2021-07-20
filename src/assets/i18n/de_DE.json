@@ -115,7 +115,6 @@
   "account.login.email.label": "E-Mail",
   "account.login.email_password.error.invalid": "Ihre E-Mail-Kennwort-Kombination ist nicht korrekt. Bitte versuchen Sie es erneut.",
   "account.login.link": "Anmelden",
-  "account.login.message": "Geben Sie für die Anmeldung E-Mail-Adresse und Kennwort ein.",
   "account.login.non_approved_customer.error": "Ihr Benutzerkonto ist nicht genehmigt.",
   "account.login.notifications.message": "Melden Sie sich mit Ihrem Benutzernamen an, um unseren Benachrichtigungsservice zu nutzen.",
   "account.login.orders.message": "Melden Sie sich mit Ihrem Benutzernamen an, um Bestellungen anzuzeigen.",

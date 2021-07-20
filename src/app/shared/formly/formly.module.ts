@@ -42,7 +42,7 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
     CaptchaExportsModule,
     CommonModule,
     DirectivesModule,
-    FormlyBaseModule.forRoot({
+    FormlyBaseModule.forChild({
       types: [
         {
           name: 'ish-text-input-field',

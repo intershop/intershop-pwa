@@ -115,7 +115,6 @@
   "account.login.email.label": "Courriel",
   "account.login.email_password.error.invalid": "Votre combinaison Courriel/Mot de passe est incorrecte. Veuillez réessayer.",
   "account.login.link": "Se connecter",
-  "account.login.message": "Pour vous connecter à votre compte, veuillez entrer votre adresse courriel et votre mot de passe.",
   "account.login.non_approved_customer.error": "Votre compte client n’est pas approuvé.",
   "account.login.notifications.message": "Veuillez vous connecter à votre compte pour utiliser l’outil de notification.",
   "account.login.orders.message": "Veuillez vous connecter à votre compte pour voir les commandes.",
