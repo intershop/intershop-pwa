@@ -115,7 +115,6 @@
   "account.login.email.label": "E-mail",
   "account.login.email_password.error.invalid": "Your E-mail/Password combination is incorrect. Please try again.",
   "account.login.link": "Sign In",
-  "account.login.message": "To sign in to your account, please enter your e-mail address and password.",
   "account.login.non_approved_customer.error": "Your customer account is not approved.",
   "account.login.notifications.message": "Please login to your account to use our notification tool.",
   "account.login.orders.message": "Please login to your account to see orders.",
