@@ -12,7 +12,6 @@ let [, icmHost, icmPort] = /^(.*?):?([0-9]+)?$/.exec(icmBase);
 icmPort = icmPort || (icmProtocol === 'http' ? '80' : '443');
 
 const icmClient = require(icmProtocol);
-const pwaClient = require('https');
 
 const icmBasePath = '/INTERSHOP/rest/WFS/';
 
@@ -23,54 +22,22 @@ const optionsICMRest = {
   timeout: 10000,
 };
 
-const optionsAngularUniversal = {
-  host: 'pwa-rngrx-int.pwa.intershop.de',
-};
-
-const icmAgent = new icmClient.Agent({
-  keepAlive: true,
-});
-
-optionsICMRest.agent = icmAgent;
-
-const pwaAgent = new pwaClient.Agent({
-  keepAlive: true,
-  maxSockets: 20,
-  timeout: 300,
-});
-
-optionsAngularUniversal.agent = pwaAgent;
+const fs = require('fs');
+fs.writeFileSync('dist/load-test.txt', '');
 
 function pwaCategoryPageCall(categoryName, categoryRef) {
   const encodedUri = encodeURIComponent(`${categoryName}-cat${categoryRef}`)
-  optionsAngularUniversal.path = `/${encodedUri}`;
-  console.log('Requesting CLP or PLP', optionsAngularUniversal.path);
-  const categoryPageRequest = pwaClient.request(optionsAngularUniversal, (response) => {
-    console.log('category page', response.statusCode)
-
-    response.on('error', console.error)
-  });
-  categoryPageRequest.end();
-  categoryPageRequest.on('socket', close);
+  console.log('Requesting CLP or PLP', `/${encodedUri}`);
+  fs.appendFileSync('dist/load-test.txt', `https://pwa-rngrx-int.pwa.intershop.de/${encodedUri}\n`);
 }
 
 function pwaProductDetailPageCall(categoryName, productName, sku) {
   const encodedCategory = encodeURIComponent(`${categoryName}`)
   const encodedProduct = encodeURIComponent(`${productName}-sku${sku}`)
-  optionsAngularUniversal.path = `/${encodedCategory}/${encodedProduct}`;
-  console.log('Requesting PDP', optionsAngularUniversal.path)
-  const categoryPageRequest = pwaClient.request(optionsAngularUniversal, (response) => {
-    console.log('productDetail', response.statusCode)
-
-    response.on('error', console.error)
-  });
-  categoryPageRequest.end();
-  categoryPageRequest.on('socket', close);
+  console.log('Requesting CLP or PLP', `/${encodedCategory}/${encodedProduct}`);
+  fs.appendFileSync('dist/load-test.txt', `https://pwa-rngrx-int.pwa.intershop.de/${encodedCategory}/${encodedProduct}\n`);
 }
 
-function close(socket) {
-  socket.emit('agentRemove');
-}
 function icmProductsCall(categoryName, categoryPath) {
   optionsICMRest.path = icmBasePath + categoryPath + '/products?attrs=sku';
 
