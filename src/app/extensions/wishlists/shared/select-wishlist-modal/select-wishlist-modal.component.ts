@@ -45,7 +45,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   radioButtonsFormGroup: FormGroup = new FormGroup({});
   newListFormControl: FormControl = new FormControl();
 
-  multipleFieldConfig: FormlyFieldConfig[];
+  multipleFieldConfig$: Observable<FormlyFieldConfig[]>;
   singleFieldConfig: FormlyFieldConfig[];
 
   showForm: boolean;
@@ -93,35 +93,48 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.multipleFieldConfig = [
-      {
-        type: 'ish-radio-buttons-field',
-        key: 'wishlist',
-        templateOptions: {
-          required: true,
-          options: this.wishlistOptions$,
-          newInput: {
-            config: [
-              {
-                type: 'ish-text-input-field',
-                key: 'newList',
-                wrappers: ['validation'],
-                templateOptions: {
-                  required: true,
-                  placeholder: 'account.wishlists.choose_wishlist.new_wishlist_name.initial_value',
-                },
-                formControl: this.newListFormControl,
-                validation: {
-                  messages: {
-                    required: 'account.wishlist.name.error.required',
-                  },
-                },
-              },
-            ],
+    this.multipleFieldConfig$ = this.wishlistOptions$.pipe(
+      map(wishlistOptions =>
+        wishlistOptions.map(option => ({
+          type: 'ish-radio-field',
+          key: 'wishlist',
+          value: option.value,
+          templateOptions: {
+            label: option.label,
           },
-        },
-      },
-    ];
+        }))
+      ),
+      map(formlyConfig => [...formlyConfig, {}])
+    );
+    // [
+    //   {
+    //     type: 'ish-radio-buttons-field',
+    //     key: 'wishlist',
+    //     templateOptions: {
+    //       required: true,
+    //       options: this.wishlistOptions$,
+    //       newInput: {
+    //         config: [
+    //           {
+    //             type: 'ish-text-input-field',
+    //             key: 'newList',
+    //             wrappers: ['validation'],
+    //             templateOptions: {
+    //               required: true,
+    //               placeholder: 'account.wishlists.choose_wishlist.new_wishlist_name.initial_value',
+    //             },
+    //             formControl: this.newListFormControl,
+    //             validation: {
+    //               messages: {
+    //                 required: 'account.wishlist.name.error.required',
+    //               },
+    //             },
+    //           },
+    //         ],
+    //       },
+    //     },
+    //   },
+    // ];
 
     this.wishlistsFacade.preferredWishlist$
       .pipe(withLatestFrom(this.wishlistOptions$), take(1), takeUntil(this.destroy$))
