@@ -14,14 +14,13 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subject, of } from 'rxjs';
-import { filter, map, startWith, take, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { filter, map, take, takeUntil } from 'rxjs/operators';
 
 import { whenTruthy } from 'ish-core/utils/operators';
 import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
-import { Wishlist } from '../../models/wishlist/wishlist.model';
 
 /**
  * The wishlist select modal displays a list of wishlists. The user can select one wishlist or enter a name for a new wishlist in order to add or move an item to a the selected wishlist.
@@ -29,7 +28,7 @@ import { Wishlist } from '../../models/wishlist/wishlist.model';
 @Component({
   selector: 'ish-select-wishlist-modal',
   templateUrl: './select-wishlist-modal.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   /**
@@ -64,6 +63,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    // formly config for the single input field form (no or no other wishlists exist)
     this.singleFieldConfig = [
       {
         type: 'ish-text-input-field',
@@ -80,23 +80,9 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
       },
     ];
 
-    this.wishlistOptions$ = this.wishlistsFacade.wishlists$.pipe(
-      startWith([] as Wishlist[]),
-      map(wishlists =>
-        wishlists.map(wishlist => ({
-          value: wishlist.id,
-          label: wishlist.title,
-        }))
-      ),
-      withLatestFrom(this.wishlistsFacade.currentWishlist$),
-      map(([wishlistOptions, currentWishlist]) => {
-        if (this.addMoveProduct === 'move' && currentWishlist) {
-          return wishlistOptions.filter(option => option.value !== currentWishlist.id);
-        }
-        return wishlistOptions;
-      })
-    );
+    this.wishlistOptions$ = this.wishlistsFacade.wishlistSelectOptions$(this.addMoveProduct === 'move');
 
+    // formly config for the radio button form (one or more other wishlists exist)
     this.multipleFieldConfig$ = this.wishlistOptions$.pipe(
       map(wishlistOptions =>
         wishlistOptions.map(option => ({
