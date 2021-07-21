@@ -12,7 +12,6 @@ import {
 import { FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subject, of } from 'rxjs';
 import { filter, map, take, takeUntil } from 'rxjs/operators';
 
@@ -44,7 +43,6 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   wishlistOptions$: Observable<SelectOption[]>;
 
   formGroup: FormGroup = new FormGroup({});
-  model: { wishlist?: string; newList?: string } = {};
   multipleFieldConfig$: Observable<FormlyFieldConfig[]>;
   singleFieldConfig: FormlyFieldConfig[];
 
@@ -56,86 +54,15 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
 
   @ViewChild('modal') modalTemplate: TemplateRef<unknown>;
 
-  constructor(
-    private ngbModal: NgbModal,
-    private wishlistsFacade: WishlistsFacade,
-    private translate: TranslateService
-  ) {}
+  constructor(private ngbModal: NgbModal, private wishlistsFacade: WishlistsFacade) {}
 
   ngOnInit() {
-    // formly config for the single input field form (no or no other wishlists exist)
-    this.singleFieldConfig = [
-      {
-        type: 'ish-text-input-field',
-        key: 'newList',
-        defaultValue: this.translate.instant('account.wishlists.choose_wishlist.new_wishlist_name.initial_value'),
-        templateOptions: {
-          required: true,
-        },
-        validation: {
-          messages: {
-            required: 'account.wishlist.name.error.required',
-          },
-        },
-      },
-    ];
-
     this.wishlistOptions$ = this.wishlistsFacade.wishlistSelectOptions$(this.addMoveProduct === 'move');
-
-    // formly config for the radio button form (one or more other wishlists exist)
-    this.multipleFieldConfig$ = this.wishlistOptions$.pipe(
-      map(wishlistOptions =>
-        wishlistOptions.map(option => ({
-          type: 'ish-radio-field',
-          key: 'wishlist',
-          defaultValue: wishlistOptions[0].value,
-          templateOptions: {
-            fieldClass: ' ',
-            value: option.value,
-            label: option.label,
-          },
-        }))
-      ),
-      map(formlyConfig => [
-        ...formlyConfig,
-        {
-          fieldGroupClassName: 'form-check d-flex',
-          fieldGroup: [
-            {
-              type: 'ish-radio-field',
-              key: 'wishlist',
-              templateOptions: {
-                fieldClass: ' ',
-                value: 'new',
-              },
-            },
-            {
-              type: 'ish-text-input-field',
-              key: 'newList',
-              className: 'w-75 position-relative validation-offset-0',
-              wrappers: ['validation'],
-              defaultValue: this.translate.instant('account.wishlists.choose_wishlist.new_wishlist_name.initial_value'),
-              templateOptions: {
-                required: true,
-              },
-              validation: {
-                messages: {
-                  required: 'account.wishlist.name.error.required',
-                },
-              },
-              expressionProperties: {
-                'templateOptions.disabled': model => model.wishlist !== 'new',
-              },
-            },
-          ],
-        },
-      ])
-    );
   }
 
   /** emit results when the form is valid */
   submitForm() {
-    const radioButtons = { ...this.model, ...this.formGroup.value };
+    const radioButtons = this.formGroup.value;
     if (radioButtons?.wishlist && radioButtons.wishlist !== 'new') {
       if (this.formGroup.valid) {
         this.submitExisting(radioButtons.wishlist);
@@ -190,17 +117,11 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
       .subscribe(preferredWishlist => {
         // don't show wishlist selection form but add a product immediately if there is a preferred wishlist
         if (this.addMoveProduct === 'add') {
-          this.model = {
-            ...this.model,
-            wishlist: preferredWishlist.id,
-          };
+          this.formGroup.patchValue({ wishlist: preferredWishlist.id });
           this.submitForm();
         } else {
           // set default form value  preferred wishlist
-          this.model = {
-            ...this.model,
-            wishlist: preferredWishlist.id,
-          };
+          this.formGroup.patchValue({ wishlist: preferredWishlist.id });
         }
       });
   }
@@ -215,7 +136,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   }
 
   get selectedWishlistTitle$(): Observable<string> {
-    const selectedValue = this.formGroup.value.wishlist ?? this.model.wishlist;
+    const selectedValue = this.formGroup.value.wishlist;
     if (selectedValue === 'new' || !selectedValue) {
       return of(this.formGroup.value.newList);
     } else {
@@ -229,7 +150,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
 
   /** returns the route to the selected wishlist */
   get selectedWishlistRoute$(): Observable<string> {
-    const selectedValue = this.formGroup.get('wishlist')?.value ?? this.model.wishlist;
+    const selectedValue = this.formGroup.get('wishlist')?.value;
     if (selectedValue === 'new' || !selectedValue) {
       return this.wishlistsFacade.currentWishlist$.pipe(
         map(currentWishlist => `route://account/wishlists/${currentWishlist && currentWishlist.id}`),

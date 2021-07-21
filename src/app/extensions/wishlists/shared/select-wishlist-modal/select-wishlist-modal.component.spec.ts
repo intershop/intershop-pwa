@@ -10,6 +10,7 @@ import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testin
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
 import { Wishlist } from '../../models/wishlist/wishlist.model';
+import { SelectWishlistFormComponent } from '../select-wishlist-form/select-wishlist-form.component';
 
 import { SelectWishlistModalComponent } from './select-wishlist-modal.component';
 
@@ -53,7 +54,7 @@ describe('Select Wishlist Modal Component', () => {
     wishlistFacadeMock = mock(WishlistsFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [MockDirective(ServerHtmlDirective), SelectWishlistModalComponent],
+      declarations: [MockDirective(ServerHtmlDirective), SelectWishlistFormComponent, SelectWishlistModalComponent],
       imports: [FormlyTestingModule, NgbModalModule, TranslateModule.forRoot()],
       providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) }],
     }).compileComponents();
