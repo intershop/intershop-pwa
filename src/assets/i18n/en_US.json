@@ -622,6 +622,7 @@
   "checkout.payment.debit.transfer.account.number.maxlength.error": "The International Bank Account Number (IBAN) must not exceed 35 characters.",
   "checkout.payment.debit.transfer.account.number.missing.error": "Please enter a valid International Bank Account Number (IBAN).",
   "checkout.payment.failed.text": "Your payment could not be authorized. Please select another payment method.",
+  "checkout.payment.form.incomplete": "The form is incomplete. Please fill in all fields marked as required and submit the form to continue.",
   "checkout.payment.global.message.error": "Please correct the error(s) indicated below.",
   "checkout.payment.method.charges.text": "Charges:",
   "checkout.payment.method.delete.link": "Delete",

@@ -1,6 +1,9 @@
 <div [formGroup]="payoneCreditCardForm">
   <!-- This element is used by Payone scripts for error handling. -->
   <p class="text-danger col-sm-offset-4" id="error"></p>
+  <p *ngIf="generalErrorMessage" class="text-danger col-sm-offset-4">
+    {{ generalErrorMessage | translate }}
+  </p>
   <!-- card number -->
   <div class="row form-group">
     <label class="col-form-label col-md-4" for="cardpanInput"

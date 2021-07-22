@@ -53,6 +53,11 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
   // tslint:disable-next-line: no-any
   iframes: any;
 
+  /**
+   *  field for generic error message
+   * */
+  generalErrorMessage: string;
+
   ngOnInit() {
     this.payoneCreditCardForm = new FormGroup({
       saveForLater: new FormControl(true),
@@ -131,9 +136,15 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
    * submit payone payment form
    */
   submitNewPaymentInstrument() {
+    // reset error message
+    this.generalErrorMessage = undefined;
+    document.getElementById('error').innerHTML = '';
     if (this.iframes.isComplete()) {
       // Perform "CreditCardCheck" to create and get a PseudoCardPan; then call your function "payCallback"
       this.iframes.creditCardCheck('payoneCreditCardCallback');
+    } else {
+      // set general error message for incomplete form
+      this.generalErrorMessage = 'checkout.payment.form.incomplete';
     }
   }
 
