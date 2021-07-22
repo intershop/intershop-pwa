@@ -30,7 +30,7 @@ exports[`Header Default Component should render normal header adequately for des
       ng-reflect-view="small"
     ></ish-mini-basket>
   </div>
-  <div class="row align-items-center">
+  <div class="mid-header row align-items-center">
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
@@ -96,7 +96,7 @@ exports[`Header Default Component should render normal header adequately for mob
       ng-reflect-view="small"
     ></ish-mini-basket>
   </div>
-  <div class="row align-items-center">
+  <div class="mid-header row align-items-center">
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
@@ -155,7 +155,7 @@ exports[`Header Default Component should render normal header adequately for tab
       ng-reflect-view="small"
     ></ish-mini-basket>
   </div>
-  <div class="row align-items-center">
+  <div class="mid-header row align-items-center">
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
@@ -213,7 +213,7 @@ exports[`Header Default Component should render sticky header adequately for des
       ng-reflect-view="small"
     ></ish-mini-basket>
   </div>
-  <div class="row align-items-center">
+  <div class="mid-header row align-items-center">
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
@@ -267,7 +267,7 @@ exports[`Header Default Component should render sticky header adequately for mob
       ng-reflect-view="small"
     ></ish-mini-basket>
   </div>
-  <div class="row align-items-center">
+  <div class="mid-header row align-items-center">
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
@@ -321,7 +321,7 @@ exports[`Header Default Component should render sticky header adequately for tab
       ng-reflect-view="small"
     ></ish-mini-basket>
   </div>
-  <div class="row align-items-center">
+  <div class="mid-header row align-items-center">
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
