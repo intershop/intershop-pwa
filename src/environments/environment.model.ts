@@ -8,20 +8,17 @@ import { TactonConfig } from '../app/extensions/tacton/models/tacton-config/tact
 
 export interface Environment {
   /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
-
   icmBaseURL: string;
   icmServer: string;
   icmServerStatic: string;
-
-  // temporarily hard-coded identity provider ID, later supplied by configurations call
-  identityProvider: 'ICM' | string;
-
-  // application specific
   icmChannel: string;
   icmApplication?: string;
 
   // array of REST path expressions that should always be mocked
   apiMockPaths?: string[];
+
+  // temporarily hard-coded identity provider ID, later supplied by configurations call
+  identityProvider: 'ICM' | string;
 
   /* FEATURE TOGGLES */
   features: (
@@ -81,6 +78,7 @@ export interface Environment {
   // default device type used for initial page responses
   defaultDeviceType: DeviceType;
 
+  // default locale that is used as fallback if no default locale from the ICM REST call is available
   defaultLocale?: string;
 
   // configuration filtering available locales and their active currencies
@@ -107,6 +105,7 @@ export interface Environment {
       | Auth0Config;
   };
 
+  // enable and configure data persistence for specific stores (compare, recently, tacton)
   dataRetention: DataRetentionPolicy;
 }
 
