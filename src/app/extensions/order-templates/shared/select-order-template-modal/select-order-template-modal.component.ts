@@ -14,13 +14,12 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subject, of } from 'rxjs';
-import { filter, map, startWith, take, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { filter, map, take, takeUntil } from 'rxjs/operators';
 
 import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
-import { OrderTemplate } from '../../models/order-template/order-template.model';
 
 /**
  * The order template select modal displays a list of order templates. The user can select one order template  or enter a name for a new order template  in order to add or move an item to the selected order template .
@@ -62,6 +61,9 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.orderTemplateOptions$ = this.orderTemplatesFacade.orderTemplatesSelectOptions$(this.addMoveProduct === 'add');
+
+    // formly config for the single input field form (no or no other order templates exist)
     this.singleFieldConfig = [
       {
         type: 'ish-text-input-field',
@@ -76,23 +78,7 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
       },
     ];
 
-    this.orderTemplateOptions$ = this.orderTemplatesFacade.orderTemplates$.pipe(
-      startWith([] as OrderTemplate[]),
-      map(orderTemplates =>
-        orderTemplates.map(orderTemplate => ({
-          value: orderTemplate.id,
-          label: orderTemplate.title,
-        }))
-      ),
-      withLatestFrom(this.orderTemplatesFacade.currentOrderTemplate$),
-      map(([orderTemplateOptions, currentOrderTemplate]) => {
-        if (this.addMoveProduct === 'move' && currentOrderTemplate) {
-          return orderTemplateOptions.filter(option => option.value !== currentOrderTemplate.id);
-        }
-        return orderTemplateOptions;
-      })
-    );
-
+    // formly config for the radio button form (one or more other order templates exist)
     this.multipleFieldConfig$ = this.orderTemplateOptions$.pipe(
       map(orderTemplateOptions =>
         orderTemplateOptions.map(option => ({

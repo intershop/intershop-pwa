@@ -74,7 +74,7 @@ describe('Select Order Template Modal Component', () => {
     startup();
 
     const emitter = spy(component.submitEmitter);
-    component.formGroup.patchValue({ orderTemplate: '.SKsEQAE4FIAAAFuNiUBWx0d' });
+    component.formGroup.patchValue({ orderTemplate: orderTemplateDetails.id });
 
     component.submitForm();
     tick(1000);
@@ -150,7 +150,7 @@ Object {
   it('should switch modal contents after successful submit', fakeAsync(() => {
     startup();
 
-    component.formGroup.patchValue({ orderTemplate: '.SKsEQAE4FIAAAFuNiUBWx0d' });
+    component.formGroup.patchValue({ orderTemplate: orderTemplateDetails.id });
 
     component.submitForm();
     tick(1000);
@@ -160,7 +160,7 @@ Object {
   describe('selectedOrderTemplateTitle$', () => {
     it('should return correct title of known order template', done => {
       startup();
-      component.formGroup.patchValue({ orderTemplate: '.SKsEQAE4FIAAAFuNiUBWx0d' });
+      component.formGroup.patchValue({ orderTemplate: orderTemplateDetails.id });
       component.selectedOrderTemplateTitle$.subscribe(t => {
         expect(t).toBe('testing order template');
         done();
@@ -181,7 +181,7 @@ Object {
   describe('selectedOrderTemplateRoute$', () => {
     it('should return correct route of known order template', done => {
       startup();
-      component.formGroup.patchValue({ orderTemplate: '.SKsEQAE4FIAAAFuNiUBWx0d' });
+      component.formGroup.patchValue({ orderTemplate: orderTemplateDetails.id });
 
       component.selectedOrderTemplateRoute$.subscribe(r => {
         expect(r).toBe('route://account/order-templates/.SKsEQAE4FIAAAFuNiUBWx0d');
