@@ -9,7 +9,7 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, Subject, of } from 'rxjs';
@@ -42,7 +42,10 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
 
   wishlistOptions$: Observable<SelectOption[]>;
 
-  formGroup: FormGroup = new FormGroup({});
+  formGroup: FormGroup = new FormGroup({
+    wishlist: new FormControl(''),
+    newList: new FormControl(''),
+  });
   multipleFieldConfig$: Observable<FormlyFieldConfig[]>;
   singleFieldConfig: FormlyFieldConfig[];
 
