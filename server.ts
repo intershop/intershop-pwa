@@ -34,6 +34,7 @@ export function app() {
   const logging = /on|1|true|yes/.test(process.env.LOGGING?.toLowerCase());
 
   const ICM_BASE_URL = process.env.ICM_BASE_URL || environment.icmBaseURL;
+
   if (!ICM_BASE_URL) {
     console.error('ICM_BASE_URL not set');
     process.exit(1);
@@ -45,6 +46,59 @@ export function app() {
     // and https://github.com/angular/universal/issues/856#issuecomment-436364729
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     console.warn("ignoring all TLS verification as 'TRUST_ICM' variable is set - never use this in production!");
+  } else {
+    const [icmProtocol, icmBase] = ICM_BASE_URL.split('://');
+    // check for ssl certificate should be done, if https is used
+    if (icmProtocol === 'https') {
+      const https = require('https');
+
+      const [, icmHost, icmPort] = /^(.*?):?([0-9]+)?$/.exec(icmBase);
+
+      const options = {
+        host: icmHost,
+        port: icmPort || '443',
+        method: 'get',
+        path: '/',
+      };
+
+      const req = https.request(options, res => {
+        console.log('Certificate for', ICM_BASE_URL, 'authorized:', res.socket.authorized);
+      });
+
+      const certErrorCodes = [
+        'CERT_SIGNATURE_FAILURE',
+        'CERT_NOT_YET_VALID',
+        'CERT_HAS_EXPIRED',
+        'ERROR_IN_CERT_NOT_BEFORE_FIELD',
+        'ERROR_IN_CERT_NOT_AFTER_FIELD',
+        'DEPTH_ZERO_SELF_SIGNED_CERT',
+        'SELF_SIGNED_CERT_IN_CHAIN',
+        'UNABLE_TO_GET_ISSUER_CERT_LOCALLY',
+        'UNABLE_TO_VERIFY_LEAF_SIGNATURE',
+        'CERT_CHAIN_TOO_LONG',
+        'CERT_REVOKED',
+        'INVALID_CA',
+        'INVALID_PURPOSE',
+        'CERT_UNTRUSTED',
+        'CERT_REJECTED',
+        'HOSTNAME_MISMATCH',
+      ];
+
+      req.on('error', e => {
+        if (certErrorCodes.includes(e.code)) {
+          console.log(
+            e.code,
+            ': The given ICM_BASE_URL',
+            ICM_BASE_URL,
+            "has a certificate problem. Please set 'TRUST_ICM' variable to avoid further errors for all requests to the ICM_BASE_URL - never use this in production!"
+          );
+        } else {
+          console.error(e);
+        }
+      });
+
+      req.end();
+    }
   }
 
   // Express server

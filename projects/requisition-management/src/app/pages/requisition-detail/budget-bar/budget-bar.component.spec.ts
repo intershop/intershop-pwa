@@ -1,3 +1,4 @@
+import { CompilerOptions } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -21,8 +22,8 @@ describe('Budget Bar Component', () => {
       imports: [TranslateModule.forRoot()],
       declarations: [BudgetBarComponent, PricePipe],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
-    }) // tslint:disable-next-line: no-any
-      .configureCompiler({ preserveWhitespaces: true } as any)
+    })
+      .configureCompiler({ preserveWhitespaces: true } as CompilerOptions)
       .compileComponents();
   });
 

@@ -1,5 +1,5 @@
 <h1>{{ 'quote.list.heading' | translate }}</h1>
 
-<ish-quote-list *ngIf="quotes$ | async as quotes" [quotes]="quotes" (deleteItem)="deleteItem($event)"></ish-quote-list>
+<ish-quote-list *ngIf="quotes$ | async as quotes" [quotes]="quotes"></ish-quote-list>
 
 <ish-loading *ngIf="loading$ | async"></ish-loading>

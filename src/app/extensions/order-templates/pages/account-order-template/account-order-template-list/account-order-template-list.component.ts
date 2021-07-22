@@ -1,10 +1,13 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 import { SkuQuantityType } from 'ish-core/models/product/product.model';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
+import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 import { OrderTemplate } from '../../../models/order-template/order-template.model';
+
+type OrderTemplateColumnsType = 'title' | 'creationDate' | 'lineItems' | 'actions';
 
 @Component({
   selector: 'ish-account-order-template-list',
@@ -16,16 +19,13 @@ export class AccountOrderTemplateListComponent {
    * The list of order templates of the customer.
    */
   @Input() orderTemplates: OrderTemplate[];
-  /**
-   * Emits the id of the order template, which is to be deleted.
-   */
-  @Output() deleteOrderTemplate = new EventEmitter<string>();
+  @Input() columnsToDisplay?: OrderTemplateColumnsType[] = ['title', 'creationDate', 'lineItems', 'actions'];
 
-  constructor(private translate: TranslateService) {}
+  constructor(private orderTemplatesFacade: OrderTemplatesFacade, private translate: TranslateService) {}
 
   /** Emits the id of the order template to delete. */
   delete(orderTemplateId: string) {
-    this.deleteOrderTemplate.emit(orderTemplateId);
+    this.orderTemplatesFacade.deleteOrderTemplate(orderTemplateId);
   }
 
   /** Determine the heading of the delete modal and opens the modal. */

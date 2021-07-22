@@ -1,4 +1,3 @@
-import { CdkTableModule } from '@angular/cdk/table';
 import { NgModule } from '@angular/core';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -22,6 +21,6 @@ const importExportModules = [NgbNavModule];
     RequisitionWidgetComponent,
   ],
   exports: [...exportedComponents, ...importExportModules],
-  imports: [...importExportModules, CdkTableModule, RequisitionManagementStoreModule, SharedModule],
+  imports: [...importExportModules, RequisitionManagementStoreModule, SharedModule],
 })
 export class RequisitionManagementModule {}

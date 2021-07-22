@@ -1,11 +1,12 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Store } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { noop } from 'rxjs';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Link } from 'ish-core/models/link/link.model';
 import {
   applyConfiguration,
@@ -82,8 +83,7 @@ describe('Api Service', () => {
       consoleSpy.mockRestore();
 
       verify(storeSpy$.dispatch(anything())).once();
-      // tslint:disable-next-line: no-any
-      const [action] = capture(storeSpy$.dispatch).last() as any;
+      const [action] = capture<Action & { payload: { error: HttpError } }>(storeSpy$.dispatch).last();
       expect(action.type).toEqual(serverError.type);
       expect(action.payload.error).toHaveProperty('statusText', statusText);
     });
@@ -112,8 +112,7 @@ describe('Api Service', () => {
       consoleSpy.mockRestore();
 
       verify(storeSpy$.dispatch(anything())).once();
-      // tslint:disable-next-line: no-any
-      const [action] = capture(storeSpy$.dispatch).last() as any;
+      const [action] = capture<Action & { payload: { error: HttpError } }>(storeSpy$.dispatch).last();
       expect(action.type).toEqual(serverError.type);
       expect(action.payload.error).toHaveProperty('statusText', statusText);
     });
