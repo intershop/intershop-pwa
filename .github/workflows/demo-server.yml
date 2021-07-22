@@ -75,7 +75,7 @@ jobs:
           GROUP: ${{ secrets.AZURE_DEMO_RESOURCEGROUP }}
         run: |
           az webapp config container set --resource-group $GROUP --name $APP --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --docker-custom-image-name $DOCKER_IMAGE_UNIVERSAL || az webapp create --resource-group $GROUP --plan ${{ secrets.AZURE_DEMO_APPSERVICEPLAN }} --name $APP --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --deployment-container-image-name $DOCKER_IMAGE_UNIVERSAL
-          az webapp config appsettings set -g $GROUP -n $APP --settings LOGGING=true ICM_BASE_URL=$ICM_BASE_URL ICM_IDENTITY_PROVIDER=AzureAD IDENTITY_PROVIDERS='{ "AzureAD": { "type": "azureAD", "domain": "login.microsoftonline.com/13a9f4be-a9d5-4987-bdf2-f31cc074034f/v2.0", "clientID": "f9d2c39f-5b23-4deb-9d48-8c226a323cea" } }'
+          az webapp config appsettings set -g $GROUP -n $APP --settings LOGGING=true ICM_BASE_URL=$ICM_BASE_URL ICM_IDENTITY_PROVIDER=AzureAD IDENTITY_PROVIDERS='{ "AzureAD": { "type": "azureAD", "domain": "login.microsoftonline.com/13a9f4be-a9d5-4987-bdf2-f31cc074034f/v2.0", "clientID": "f9d2c39f-5b23-4deb-9d48-8c226a323cea", "clientSecret": "XLMuY97SD_mG1-Yue8GSfIE36U2Lh_N9~W" } }'
           az webapp deployment container config -g $GROUP -n $APP --enable-cd true
           echo "B2C channel: http://$APP.azurewebsites.net"
 
@@ -85,7 +85,7 @@ jobs:
           GROUP: ${{ secrets.AZURE_DEMO_RESOURCEGROUP }}
         run: |
           az webapp config container set --resource-group $GROUP --name $APP --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --docker-custom-image-name $DOCKER_IMAGE_UNIVERSAL || az webapp create --resource-group $GROUP --plan ${{ secrets.AZURE_DEMO_APPSERVICEPLAN }} --name $APP --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --deployment-container-image-name $DOCKER_IMAGE_UNIVERSAL
-          az webapp config appsettings set -g $GROUP -n $APP --settings LOGGING=true ICM_BASE_URL=$ICM_BASE_URL ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site THEME=blue\|688dc3 FEATURES=compare,recently,advancedVariationHandling,businessCustomerRegistration,quoting,quickorder,punchout,orderTemplates TACTON='${{ secrets.TACTON }}' ICM_IDENTITY_PROVIDER=AzureAD IDENTITY_PROVIDERS='{ "AzureAD": { "type": "azureAD", "domain": "login.microsoftonline.com/13a9f4be-a9d5-4987-bdf2-f31cc074034f/v2.0", "clientID": "f9d2c39f-5b23-4deb-9d48-8c226a323cea" } }'
+          az webapp config appsettings set -g $GROUP -n $APP --settings LOGGING=true ICM_BASE_URL=$ICM_BASE_URL ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site THEME=blue\|688dc3 FEATURES=compare,recently,advancedVariationHandling,businessCustomerRegistration,quoting,quickorder,punchout,orderTemplates TACTON='${{ secrets.TACTON }}' ICM_IDENTITY_PROVIDER=AzureAD IDENTITY_PROVIDERS='{ "AzureAD": { "type": "azureAD", "domain": "login.microsoftonline.com/13a9f4be-a9d5-4987-bdf2-f31cc074034f/v2.0", "clientID": "f9d2c39f-5b23-4deb-9d48-8c226a323cea", "clientSecret": "XLMuY97SD_mG1-Yue8GSfIE36U2Lh_N9~W" } }'
           az webapp deployment container config -g $GROUP -n $APP --enable-cd true
           echo "B2B channel: http://$APP.azurewebsites.net"
 
