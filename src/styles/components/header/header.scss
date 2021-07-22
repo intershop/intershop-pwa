@@ -69,6 +69,16 @@ header {
     }
   }
 
+  .mid-header {
+    .quickorder-link {
+      .header-icon {
+        font-size: $font-size-corporate;
+        color: $CORPORATE-PRIMARY;
+        vertical-align: middle;
+      }
+    }
+  }
+
   &.homepage {
     margin-bottom: 0;
   }

@@ -45,7 +45,7 @@ export class HeaderModule {
   }
 
   gotoQuickorder(wait: () => unknown = waitLoadingEnd) {
-    cy.get('a[rel="quick-order"]').click();
+    cy.get('a[rel="quick-order"]:visible').click();
     wait();
   }
 

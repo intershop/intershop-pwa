@@ -47,8 +47,10 @@
         }
       }
 
-      .quick-order-links {
-        display: none !important;
+      .mid-header {
+        .quickorder-link {
+          display: none !important;
+        }
       }
 
       .navbar-toggler {
