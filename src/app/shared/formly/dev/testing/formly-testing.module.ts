@@ -28,6 +28,9 @@ class TextInputFieldComponent extends FieldType {}
 @Component({ template: 'EmailFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class EmailFieldComponent extends FieldType {}
 
+@Component({ template: 'PhoneFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
+class PhoneFieldComponent extends FieldType {}
+
 @Component({ template: 'PasswordFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class PasswordFieldComponent extends FieldType {}
 
@@ -36,6 +39,9 @@ class SelectFieldComponent extends FieldType {}
 
 @Component({ template: 'TextareaFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class TextareaFieldComponent extends FieldType {}
+
+@Component({ template: 'RadioFieldComponent: {{field.key }} {{ to | json }}' })
+class RadioFieldComponent extends FieldType {}
 
 @Component({ template: `<ng-template #fieldComponent> </ng-template>` })
 class DummyWrapperComponent extends FieldWrapper {}
@@ -50,6 +56,8 @@ class DummyWrapperComponent extends FieldWrapper {}
     EmailFieldComponent,
     FieldsetFieldComponent,
     PasswordFieldComponent,
+    PhoneFieldComponent,
+    RadioFieldComponent,
     SelectFieldComponent,
     TextInputFieldComponent,
     TextareaFieldComponent,
@@ -79,6 +87,10 @@ class DummyWrapperComponent extends FieldWrapper {}
           component: PasswordFieldComponent,
         },
         {
+          name: 'ish-phone-field',
+          component: PhoneFieldComponent,
+        },
+        {
           name: 'ish-select-field',
           component: SelectFieldComponent,
         },
@@ -86,6 +98,7 @@ class DummyWrapperComponent extends FieldWrapper {}
           name: 'ish-textarea-field',
           component: TextareaFieldComponent,
         },
+        { name: 'ish-radio-field', component: RadioFieldComponent },
         { name: 'ish-captcha-field', component: CaptchaFieldComponent },
       ],
       wrappers: [
@@ -95,6 +108,7 @@ class DummyWrapperComponent extends FieldWrapper {}
         { name: 'tooltip', component: DummyWrapperComponent },
         { name: 'validation', component: DummyWrapperComponent },
         { name: 'description', component: DummyWrapperComponent },
+        { name: 'form-field-radio-horizontal', component: DummyWrapperComponent },
       ],
     }),
     FormlySelectModule,

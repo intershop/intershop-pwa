@@ -14,7 +14,7 @@ let [, icmHost, icmPort] = /^(.*?):?([0-9]+)?$/.exec(icmBase);
 icmPort = icmPort || (icmProtocol === 'http' ? '80' : '443');
 
 const icmClient = require(icmProtocol);
-const pwaClient = process.env.SSL ? require('https') : require('http')
+const pwaClient = process.env.SSL ? require('https') : require('http');
 
 const optionsICMRest = {
   host: icmHost,
@@ -29,7 +29,7 @@ const optionsAngularUniversal = {
   timeout: 2000,
 };
 
-const errFunc = function(err) {
+const errFunc = function (err) {
   console.log(`ERROR ${JSON.stringify(err)}`);
   process.exit(1);
 };

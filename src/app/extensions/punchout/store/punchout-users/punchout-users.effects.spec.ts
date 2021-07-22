@@ -42,7 +42,7 @@ describe('Punchout Users Effects', () => {
   let router: Router;
 
   const users = [
-    { id: 'ociUser', login: 'ociuser@test.de', email: 'ociuser@test.de', punchoutType: 'oci' },
+    { id: 'ociUser', login: 'ociuser@test.intershop.de', email: 'ociuser@test.intershop.de', punchoutType: 'oci' },
   ] as PunchoutUser[];
 
   beforeEach(() => {
@@ -108,7 +108,7 @@ describe('Punchout Users Effects', () => {
 
   describe('loadDetailedUser$', () => {
     it('should call the service for retrieving user', done => {
-      router.navigate(['/account/punchout/ociuser@test.de', { format: 'oci' }]);
+      router.navigate(['/account/punchout/ociuser@test.intershop.de', { format: 'oci' }]);
 
       effects.loadDetailedUser$.subscribe(() => {
         verify(punchoutService.getUsers('oci')).once();
@@ -117,12 +117,12 @@ describe('Punchout Users Effects', () => {
     });
 
     it('should retrieve the user when triggered', done => {
-      router.navigate(['/account/punchout', 'ociuser@test.de']);
+      router.navigate(['/account/punchout', 'ociuser@test.intershop.de']);
 
       effects.loadDetailedUser$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
           [Punchout API] Load Punchout Users Success:
-            users: [{"id":"ociUser","login":"ociuser@test.de","email":"ociuser@...
+            users: [{"id":"ociUser","login":"ociuser@test.intershop.de","email"...
         `);
         done();
       });
@@ -147,10 +147,10 @@ describe('Punchout Users Effects', () => {
         actions => {
           expect(actions).toMatchInlineSnapshot(`
             [Punchout API] Add Punchout User Success:
-              user: {"id":"ociUser","login":"ociuser@test.de","email":"ociuser@t...
+              user: {"id":"ociUser","login":"ociuser@test.intershop.de","email":...
             [Message] Success Toast:
               message: "account.punchout.user.created.message"
-              messageParams: {"0":"ociuser@test.de"}
+              messageParams: {"0":"ociuser@test.intershop.de"}
           `);
           expect(location.path()).toMatchInlineSnapshot(`"/account/punchout;format=oci"`);
         },
@@ -191,10 +191,10 @@ describe('Punchout Users Effects', () => {
         actions => {
           expect(actions).toMatchInlineSnapshot(`
             [Punchout API] Update Punchout User Success:
-              user: {"id":"ociUser","login":"ociuser@test.de","email":"ociuser@t...
+              user: {"id":"ociUser","login":"ociuser@test.intershop.de","email":...
             [Message] Success Toast:
               message: "account.punchout.user.updated.message"
-              messageParams: {"0":"ociuser@test.de"}
+              messageParams: {"0":"ociuser@test.intershop.de"}
           `);
           expect(location.path()).toMatchInlineSnapshot(`"/account/punchout;format=oci"`);
         },

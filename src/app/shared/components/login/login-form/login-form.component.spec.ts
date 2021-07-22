@@ -58,7 +58,7 @@ describe('Login Form Component', () => {
     });
 
     it('should not detect error if email is well formed', () => {
-      component.form.controls.login.setValue('test@test.com');
+      component.form.controls.login.setValue('test@test.intershop.com');
       expect(component.form.controls.login.valid).toBeTruthy();
     });
 

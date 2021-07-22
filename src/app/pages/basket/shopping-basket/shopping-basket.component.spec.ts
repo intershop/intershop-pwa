@@ -17,6 +17,7 @@ import { LineItemListComponent } from 'ish-shared/components/line-item/line-item
 
 import { LazyBasketCreateOrderTemplateComponent } from '../../../extensions/order-templates/exports/lazy-basket-create-order-template/lazy-basket-create-order-template.component';
 import { LazyPunchoutTransferBasketComponent } from '../../../extensions/punchout/exports/lazy-punchout-transfer-basket/lazy-punchout-transfer-basket.component';
+import { LazyDirectOrderComponent } from '../../../extensions/quickorder/exports/lazy-direct-order/lazy-direct-order.component';
 import { LazyBasketAddToQuoteComponent } from '../../../extensions/quoting/exports/lazy-basket-add-to-quote/lazy-basket-add-to-quote.component';
 
 import { ShoppingBasketComponent } from './shopping-basket.component';
@@ -37,6 +38,7 @@ describe('Shopping Basket Component', () => {
         MockComponent(ErrorMessageComponent),
         MockComponent(LazyBasketAddToQuoteComponent),
         MockComponent(LazyBasketCreateOrderTemplateComponent),
+        MockComponent(LazyDirectOrderComponent),
         MockComponent(LazyPunchoutTransferBasketComponent),
         MockComponent(LineItemListComponent),
         MockComponent(ModalDialogLinkComponent),

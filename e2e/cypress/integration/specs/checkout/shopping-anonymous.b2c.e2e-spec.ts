@@ -28,7 +28,7 @@ const _ = {
     city: 'Stuttgart',
     postalCode: '12345',
   } as AddressDetailsTypes,
-  email: 'p.parkes@test.com',
+  email: 'p.parkes@test.intershop.de',
 };
 
 describe('Anonymous Checkout', () => {
