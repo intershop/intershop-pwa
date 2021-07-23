@@ -705,6 +705,7 @@
   "cookies.modal.accept_all": "Alle akzeptieren",
   "cookies.modal.cancel": "Abbrechen",
   "cookies.modal.save": "Einstellungen speichern",
+  "customer.creation_failed.error": "Bitte versuchen Sie es später noch einmal oder kontaktieren Sie unseren Kundensupport.",
   "customer.credentials.login.not_unique.error": "Die angegebene E-Mail-Adresse wird bereits verwendet. Prüfen Sie die Richtigkeit der Eingabe oder geben Sie eine andere E-Mail-Adresse an.",
   "customer.credentials.passwordreset.invalid_password.error.PasswordExpressionViolation": "Das Kennwort muss mindestens 7 Zeichen enthalten, bestehend aus Zahlen und Buchstaben, ohne Leerzeichen.",
   "customer.missing_fields.error": "Fehlende Felder",

@@ -705,6 +705,7 @@
   "cookies.modal.accept_all": "Autoriser tous",
   "cookies.modal.cancel": "Annuler",
   "cookies.modal.save": "Enregistrer les paramètres",
+  "customer.creation_failed.error": "Malheureusement quelque chose s'est mal passé lors de la création de votre compte client. Veuillez réessayer plus tard ou contacter notre service client.",
   "customer.credentials.login.not_unique.error": "Un utilisateur avec cette adresse courriel existe déjà. Veuillez vérifier l’exactitude des informations ou entrer une adresse courriel différente.",
   "customer.credentials.passwordreset.invalid_password.error.PasswordExpressionViolation": "Le mot de passe doit comporter un minimum de 7 caractères, comprenant des chiffres et des lettres, sans espaces.",
   "customer.missing_fields.error": "Champs manquants",
