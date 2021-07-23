@@ -9,7 +9,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { Subject } from 'rxjs';
 
@@ -85,9 +85,7 @@ export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   formInit() {
-    this.parameterForm = new FormGroup({
-      saveForLater: new FormControl(true),
-    });
+    this.parameterForm = new FormGroup({});
   }
 
   /**

@@ -18,8 +18,8 @@ import { BasketItemsSummaryComponent } from 'ish-shared/components/basket/basket
 import { BasketPromotionCodeComponent } from 'ish-shared/components/basket/basket-promotion-code/basket-promotion-code.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
 
+import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/payment-save-checkbox.component';
 import { PaymentConcardisCreditcardCvcDetailComponent } from '../payment-concardis-creditcard-cvc-detail/payment-concardis-creditcard-cvc-detail.component';
 import { PaymentConcardisCreditcardComponent } from '../payment-concardis-creditcard/payment-concardis-creditcard.component';
 import { PaymentConcardisDirectdebitComponent } from '../payment-concardis-directdebit/payment-concardis-directdebit.component';
@@ -47,7 +47,6 @@ describe('Checkout Payment Component', () => {
         MockComponent(BasketItemsSummaryComponent),
         MockComponent(BasketPromotionCodeComponent),
         MockComponent(BasketValidationResultsComponent),
-        MockComponent(CheckboxComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(FormlyForm),
         MockComponent(NgbCollapse),
@@ -55,6 +54,7 @@ describe('Checkout Payment Component', () => {
         MockComponent(PaymentConcardisCreditcardCvcDetailComponent),
         MockComponent(PaymentConcardisDirectdebitComponent),
         MockComponent(PaymentCybersourceCreditcardComponent),
+        MockComponent(PaymentSaveCheckboxComponent),
         MockDirective(ServerHtmlDirective),
         MockPipe(PricePipe),
         PaymentParameterFormComponent,
@@ -219,11 +219,13 @@ describe('Checkout Payment Component', () => {
 
     it('should throw createUserPaymentInstrument event when the user submits a valid parameter form and saving is allowed', () => {
       component.basket.payment = undefined;
+
       component.ngOnChanges(paymentMethodChange);
       component.openPaymentParameterForm(3);
 
       const emitter = spy(component.createPaymentInstrument);
 
+      component.paymentForm.addControl('saveForLater', new FormControl(true));
       component.parameterForm.addControl('creditCardNumber', new FormControl('456', Validators.required));
       component.submitParameterForm();
 
