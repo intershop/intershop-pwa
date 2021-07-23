@@ -16,7 +16,8 @@ export class EmailFieldComponent extends FieldType {
     field.validation = field.validation ?? {};
     field.validation.messages = {
       ...field.validation?.messages,
-      email: 'helpdesk.contactus.email.error',
+      email: 'form.email.error.invalid',
+      required: 'form.email.error.required',
     };
   }
 }
