@@ -6,7 +6,6 @@ import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 /**
  * The Account Profile Email Page Component displays a form for changing the user's email address
@@ -44,11 +43,6 @@ export class AccountProfileEmailComponent implements OnInit {
           hideRequiredMarker: true,
           required: true,
         },
-        validation: {
-          messages: {
-            required: 'account.update_email.email.error.notempty',
-          },
-        },
       },
 
       {
@@ -59,15 +53,6 @@ export class AccountProfileEmailComponent implements OnInit {
           hideRequiredMarker: true,
           required: true,
           label: 'account.update_email.email_confirmation.label',
-        },
-        validators: {
-          validation: [SpecialValidators.equalToControl('email')],
-        },
-        validation: {
-          messages: {
-            required: 'account.update_email.email.error.notempty',
-            equalTo: 'account.update_email.email_confirmation.error.stringcompare',
-          },
         },
       },
       {

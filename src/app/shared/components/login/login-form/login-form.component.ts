@@ -62,9 +62,7 @@ export class LoginFormComponent implements OnInit {
         validation: {
           messages: {
             required:
-              this.loginType === 'email'
-                ? 'account.login.email.error.required'
-                : 'account.login.username.error.required',
+              this.loginType === 'email' ? 'form.email.error.required' : 'account.login.username.error.required',
           },
         },
       },

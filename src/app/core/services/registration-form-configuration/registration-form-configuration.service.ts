@@ -229,11 +229,6 @@ export class RegistrationFormConfigurationService {
               label: 'account.register.email.label',
               required: true,
             },
-            validation: {
-              messages: {
-                required: 'account.update_email.email.error.notempty',
-              },
-            },
           },
           {
             key: 'loginConfirmation',
@@ -241,15 +236,6 @@ export class RegistrationFormConfigurationService {
             templateOptions: {
               label: 'account.register.email_confirmation.label',
               required: true,
-            },
-            validators: {
-              validation: [SpecialValidators.equalToControl('login')],
-            },
-            validation: {
-              messages: {
-                required: 'account.update_email.email.error.notempty',
-                equalTo: 'account.registration.email.not_match.error',
-              },
             },
           },
 

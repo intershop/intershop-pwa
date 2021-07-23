@@ -61,11 +61,6 @@ export class ContactFormComponent implements OnInit {
           label: 'helpdesk.contactus.email.label',
           required: true,
         },
-        validation: {
-          messages: {
-            required: 'helpdesk.contactus.email.error',
-          },
-        },
       },
       {
         key: 'phone',
