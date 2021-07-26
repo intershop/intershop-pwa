@@ -15,15 +15,10 @@
   <ng-container *ngIf="showForm; else showSuccess">
     <div class="modal-body">
       <form [formGroup]="formGroup" (ngSubmit)="submitForm()">
-        <ng-container *ngIf="(orderTemplateOptions$ | async).length === 0; else radioButtonForm">
-          <formly-form [form]="formGroup" [fields]="singleFieldConfig" [model]="model"></formly-form>
-        </ng-container>
-
-        <ng-template #radioButtonForm>
-          <div class="col-md-12">
-            <formly-form [form]="formGroup" [fields]="multipleFieldConfig$ | async" [model]="model"></formly-form>
-          </div>
-        </ng-template>
+        <ish-select-order-template-form
+          [formGroup]="formGroup"
+          [addMoveProduct]="addMoveProduct"
+        ></ish-select-order-template-form>
       </form>
     </div>
 

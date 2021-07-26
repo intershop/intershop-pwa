@@ -9,7 +9,7 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -42,8 +42,10 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
 
   orderTemplateOptions$: Observable<SelectOption[]>;
 
-  formGroup: FormGroup = new FormGroup({});
-  model: { orderTemplate?: string; newOrderTemplate?: string } = {};
+  formGroup: FormGroup = new FormGroup({
+    orderTemplate: new FormControl(''),
+    newOrderTemplate: new FormControl(''),
+  });
   singleFieldConfig: FormlyFieldConfig[];
   multipleFieldConfig$: Observable<FormlyFieldConfig[]>;
 
@@ -61,70 +63,7 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.orderTemplateOptions$ = this.orderTemplatesFacade.orderTemplatesSelectOptions$(this.addMoveProduct === 'add');
-
-    // formly config for the single input field form (no or no other order templates exist)
-    this.singleFieldConfig = [
-      {
-        type: 'ish-text-input-field',
-        key: 'newOrderTemplate',
-        defaultValue: this.translate.instant('account.order_template.new_order_template.text'),
-        templateOptions: {
-          required: true,
-        },
-        validation: {
-          messages: { required: 'account.order_template.name.error.required' },
-        },
-      },
-    ];
-
-    // formly config for the radio button form (one or more other order templates exist)
-    this.multipleFieldConfig$ = this.orderTemplateOptions$.pipe(
-      map(orderTemplateOptions =>
-        orderTemplateOptions.map(option => ({
-          type: 'ish-radio-field',
-          key: 'orderTemplate',
-          defaultValue: orderTemplateOptions[0].value,
-          templateOptions: {
-            fieldClass: ' ',
-            value: option.value,
-            label: option.label,
-          },
-        }))
-      ),
-      map(formlyConfig => [
-        ...formlyConfig,
-        {
-          fieldGroupClassName: 'form-check d-flex',
-          fieldGroup: [
-            {
-              type: 'ish-radio-field',
-              key: 'orderTemplate',
-              templateOptions: {
-                fieldClass: ' ',
-                value: 'new',
-              },
-            },
-            {
-              type: 'ish-text-input-field',
-              key: 'newOrderTemplate',
-              className: 'w-75 position-relative validation-offset-0',
-              wrappers: ['validation'],
-              defaultValue: this.translate.instant('account.order_template.new_order_template.text'),
-              templateOptions: {
-                required: true,
-              },
-              validation: {
-                messages: { required: 'account.order_template.name.error.required' },
-              },
-              expressionProperties: {
-                'templateOptions.disabled': model => model.orderTemplate !== 'new',
-              },
-            },
-          ],
-        },
-      ])
-    );
+    this.orderTemplateOptions$ = this.orderTemplatesFacade.orderTemplatesSelectOptions$(this.addMoveProduct === 'move');
   }
 
   ngOnDestroy() {
@@ -134,7 +73,7 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
 
   /** emit results when the form is valid */
   submitForm() {
-    const radioButtons = { ...this.model, ...this.formGroup.value };
+    const radioButtons = this.formGroup.value;
     if (radioButtons?.orderTemplate && radioButtons.orderTemplate !== 'new') {
       if (this.formGroup.valid) {
         this.submitExisting(radioButtons.orderTemplate);
@@ -191,15 +130,8 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe(option => {
-        this.formGroup.get('orderTemplate')?.setValue(option.value);
-
         const defaultValue = this.translate.instant('account.order_template.new_order_template.text');
-        this.formGroup.get('newOrderTemplate')?.setValue(defaultValue);
-        this.model = {
-          ...this.model,
-          orderTemplate: option.value,
-          newOrderTemplate: defaultValue,
-        };
+        this.formGroup.patchValue({ orderTemplate: option.value, newOrderTemplate: defaultValue });
       });
   }
 
@@ -213,7 +145,7 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
   }
 
   get selectedOrderTemplateTitle$(): Observable<string> {
-    const selectedValue = this.formGroup.value.orderTemplate ?? this.model.orderTemplate;
+    const selectedValue = this.formGroup.value.orderTemplate;
     if (selectedValue === 'new' || !selectedValue) {
       return of(this.formGroup.value.newOrderTemplate);
     } else {
@@ -227,7 +159,7 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
 
   /** returns the route to the selected order template */
   get selectedOrderTemplateRoute$(): Observable<string> {
-    const selectedValue = this.formGroup.value.orderTemplate ?? this.model.orderTemplate;
+    const selectedValue = this.formGroup.value.orderTemplate;
 
     if (selectedValue === 'new' || !selectedValue) {
       return this.orderTemplatesFacade.currentOrderTemplate$.pipe(

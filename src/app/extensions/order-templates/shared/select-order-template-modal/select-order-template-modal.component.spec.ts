@@ -9,6 +9,7 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
+import { SelectOrderTemplateFormComponent } from '../select-order-template-form/select-order-template-form.component';
 
 import { SelectOrderTemplateModalComponent } from './select-order-template-modal.component';
 
@@ -49,7 +50,11 @@ describe('Select Order Template Modal Component', () => {
     orderTemplateFacadeMock = mock(OrderTemplatesFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [MockDirective(ServerHtmlDirective), SelectOrderTemplateModalComponent],
+      declarations: [
+        MockDirective(ServerHtmlDirective),
+        SelectOrderTemplateFormComponent,
+        SelectOrderTemplateModalComponent,
+      ],
       imports: [FormlyTestingModule, NgbModalModule, TranslateModule.forRoot()],
       providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacadeMock) }],
     }).compileComponents();
@@ -61,7 +66,9 @@ describe('Select Order Template Modal Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     when(orderTemplateFacadeMock.currentOrderTemplate$).thenReturn(of(orderTemplateDetails));
-    when(orderTemplateFacadeMock.orderTemplates$).thenReturn(of([orderTemplateDetails]));
+    when(orderTemplateFacadeMock.orderTemplatesSelectOptions$(anything())).thenReturn(
+      of([{ value: orderTemplateDetails.id, label: orderTemplateDetails.title }])
+    );
   });
 
   it('should be created', () => {
@@ -107,7 +114,7 @@ Object {
   }));
 
   it('should emit correct object on single field form submit with new orderTemplate', fakeAsync(() => {
-    when(orderTemplateFacadeMock.orderTemplates$).thenReturn(of([]));
+    when(orderTemplateFacadeMock.orderTemplatesSelectOptions$(anything())).thenReturn(of([]));
     startup();
 
     const emitter = spy(component.submitEmitter);
@@ -136,7 +143,7 @@ Object {
   });
 
   it('should not emit on single field form submit with no orderTemplate name', fakeAsync(() => {
-    when(orderTemplateFacadeMock.orderTemplates$).thenReturn(of([]));
+    when(orderTemplateFacadeMock.orderTemplatesSelectOptions$(anything())).thenReturn(of([]));
     startup();
 
     const emitter = spy(component.submitEmitter);
