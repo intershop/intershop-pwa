@@ -81,7 +81,7 @@ describe('Checkout Shipping Page Component', () => {
     expect(element.querySelector('[role="alert"]')).toBeFalsy();
   });
 
-  it('should render an error if the user clicks next and has currently no shipping method selected', fakeAsync(() => {
+  it('should render an error if the user clicks next and has currently no shipping method selected', () => {
     when(checkoutFacade.basket$).thenReturn(of({ ...BasketMockData.getBasket(), commonShippingMethod: undefined }));
 
     fixture.detectChanges();
@@ -92,7 +92,7 @@ describe('Checkout Shipping Page Component', () => {
     fixture.detectChanges();
 
     expect(element.querySelector('[role="alert"]')).toBeTruthy();
-  }));
+  });
 
   it('should continue checkout if selection is valid', fakeAsync(() => {
     fixture.detectChanges();
