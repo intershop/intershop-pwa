@@ -22,6 +22,11 @@ class CheckboxFieldComponent extends FieldType {}
 })
 class FieldsetFieldComponent extends FieldType {}
 
+@Component({
+  template: `RadioFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }} `,
+})
+class RadioFieldComponent extends FieldType {}
+
 @Component({ template: 'TextInputFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class TextInputFieldComponent extends FieldType {}
 
@@ -39,9 +44,6 @@ class SelectFieldComponent extends FieldType {}
 
 @Component({ template: 'TextareaFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class TextareaFieldComponent extends FieldType {}
-
-@Component({ template: 'RadioFieldComponent: {{field.key }} {{ to | json }}' })
-class RadioFieldComponent extends FieldType {}
 
 @Component({ template: `<ng-template #fieldComponent> </ng-template>` })
 class DummyWrapperComponent extends FieldWrapper {}
@@ -73,6 +75,10 @@ class DummyWrapperComponent extends FieldWrapper {}
         {
           name: 'ish-fieldset-field',
           component: FieldsetFieldComponent,
+        },
+        {
+          name: 'ish-radio-field',
+          component: RadioFieldComponent,
         },
         {
           name: 'ish-checkbox-field',

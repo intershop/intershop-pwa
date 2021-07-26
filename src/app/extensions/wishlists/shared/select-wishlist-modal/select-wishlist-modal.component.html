@@ -14,51 +14,8 @@
 
   <ng-container *ngIf="showForm; else showSuccess">
     <div class="modal-body">
-      <form [formGroup]="updateWishlistForm" (ngSubmit)="submitForm()">
-        <ng-container *ngIf="wishlistOptions === undefined || wishlistOptions.length === 0; else radioButtonForm">
-          <ish-input
-            controlName="newWishlist"
-            [errorMessages]="{ required: 'account.wishlist.name.error.required' }"
-            [form]="updateWishlistForm"
-          ></ish-input>
-        </ng-container>
-
-        <ng-template #radioButtonForm>
-          <div class="form-group">
-            <div class="radio" *ngFor="let option of wishlistOptions; let i = index">
-              <label>
-                <input
-                  type="radio"
-                  name="wishlist"
-                  formControlName="wishlist"
-                  [value]="option.value"
-                  id="wishlist_{{ i }}"
-                  [attr.data-testing-id]="option.label"
-                />
-                {{ option.label }}
-              </label>
-            </div>
-            <div class="radio">
-              <label class="d-flex align-items-center">
-                <input
-                  type="radio"
-                  name="wishlist"
-                  formControlName="wishlist"
-                  value="newList"
-                  class="mb-3"
-                  id="wishlist"
-                />
-                <ish-input
-                  controlName="newWishlist"
-                  [disabled]="newWishlistDisabled ? true : null"
-                  [errorMessages]="{ required: 'account.wishlist.name.error.required' }"
-                  [form]="updateWishlistForm"
-                  inputClass="col-md-12"
-                ></ish-input>
-              </label>
-            </div>
-          </div>
-        </ng-template>
+      <form [formGroup]="formGroup" (ngSubmit)="submitForm()">
+        <ish-select-wishlist-form [formGroup]="formGroup" [addMoveProduct]="addMoveProduct"></ish-select-wishlist-form>
       </form>
     </div>
 
@@ -77,7 +34,8 @@
       <span
         [ishServerHtml]="
           successTranslationKey
-            | translate: { '0': product.name, '1': selectedWishlistRoute, '2': selectedWishlistTitle }
+            | translate
+              : { '0': product.name, '1': (selectedWishlistRoute$ | async), '2': (selectedWishlistTitle$ | async) }
         "
         [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
         data-testing-id="wishlist-success-link"
