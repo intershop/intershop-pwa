@@ -1,25 +1,14 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { combineLatest, Observable, Subject } from 'rxjs';
-import { distinct, distinctUntilChanged, filter, map, shareReplay, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { Observable, Subject, combineLatest } from 'rxjs';
+import { distinctUntilChanged, filter, map, shareReplay, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AddressHelper } from 'ish-core/models/address/address.helper';
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
-import { FormlyFieldConfig } from '@ngx-formly/core';
-import { log } from 'ish-core/utils/dev/operators';
 import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 
 /**
@@ -56,7 +45,7 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
   constructor(private accountFacade: AccountFacade) {}
 
   ngOnInit() {
-    this.addresses$ = this.accountFacade.addresses$().pipe(shareReplay());
+    this.addresses$ = this.accountFacade.addresses$().pipe(shareReplay(1));
     this.user$ = this.accountFacade.user$;
 
     // trigger set preferred invoice address if it changes
@@ -69,7 +58,6 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe(([urn, user]) => {
-        console.log('valueChange invoice');
         if (urn) {
           this.accountFacade.updateUser(
             { ...user, preferredInvoiceToAddressUrn: urn },
@@ -89,8 +77,6 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe(([urn, user]) => {
-        console.log('valueChange shipping');
-
         if (urn) {
           this.accountFacade.updateUser(
             { ...user, preferredShipToAddressUrn: urn },
@@ -180,7 +166,8 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
     this.accountFacade.deleteCustomerAddress(address.id);
   }
 
-  // helpers
+  // helper methods
+
   private transformAddressToSelectOption(address: Address): SelectOption {
     return {
       label: `${address.firstName} ${address.lastName}, ${address.addressLine1}, ${address.city}`,

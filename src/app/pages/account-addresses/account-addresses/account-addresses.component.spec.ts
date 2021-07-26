@@ -1,24 +1,21 @@
-import { SimpleChange, SimpleChanges } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
+import { of } from 'rxjs';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Address } from 'ish-core/models/address/address.model';
-import { User } from 'ish-core/models/user/user.model';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { FormlyCustomerAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-customer-address-form/formly-customer-address-form.component';
-import { SelectAddressComponent } from 'ish-shared/forms/components/select-address/select-address.component';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { AccountAddressesComponent } from './account-addresses.component';
-import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
-import { of } from 'rxjs';
 
 const mockAddresses = [
   {
@@ -90,7 +87,11 @@ describe('Account Addresses Component', () => {
       ],
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountAddressesComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -244,10 +245,12 @@ describe('Account Addresses Component', () => {
     expect(element.querySelector('[data-testing-id=create-address-form]')).toBeFalsy();
   });
 
-  it('should render create address form if showCreateAddressForm is called', () => {
+  it('should render create address form if showCreateAddressForm is called', async () => {
     fixture.detectChanges();
     component.showCreateAddressForm();
     fixture.detectChanges();
+
+    await fixture.whenStable();
 
     expect(component.isCreateAddressFormCollapsed).toBeFalse();
     expect(element.querySelector('[data-testing-id=create-address-form]')).toBeTruthy();
