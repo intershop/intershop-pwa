@@ -253,11 +253,6 @@ export class RegistrationFormConfigurationService {
 
               autocomplete: 'new-password',
             },
-            validation: {
-              messages: {
-                required: 'account.update_password.new_password.error.required',
-              },
-            },
           },
           {
             key: 'passwordConfirmation',
@@ -274,7 +269,6 @@ export class RegistrationFormConfigurationService {
             validation: {
               messages: {
                 required: 'account.register.password_confirmation.error.default',
-                equalTo: 'account.update_password.confirm_password.error.stringcompare',
               },
             },
           },
