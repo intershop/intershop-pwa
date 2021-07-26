@@ -1,11 +1,5 @@
 <div class="loading-container">
-  <ish-account-addresses
-    [user]="user$ | async"
-    [addresses]="addresses$ | async"
-    [error]="(errorAddresses$ | async) || (errorUser$ | async)"
-    (createCustomerAddress)="createCustomerAddress($event)"
-    (deleteCustomerAddress)="deleteCustomerAddress($event)"
-  ></ish-account-addresses>
+  <ish-account-addresses [error]="(errorAddresses$ | async) || (errorUser$ | async)"></ish-account-addresses>
 
   <ish-loading *ngIf="loading$ | async"></ish-loading>
 </div>

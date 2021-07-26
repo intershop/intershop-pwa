@@ -15,27 +15,15 @@ import { User } from 'ish-core/models/user/user.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountAddressesPageComponent implements OnInit {
-  addresses$: Observable<Address[]>;
   loading$: Observable<boolean>;
   errorAddresses$: Observable<HttpError>;
-  user$: Observable<User>;
   errorUser$: Observable<HttpError>;
 
   constructor(private accountFacade: AccountFacade) {}
 
   ngOnInit() {
-    this.addresses$ = this.accountFacade.addresses$();
     this.loading$ = this.accountFacade.addressesLoading$;
     this.errorAddresses$ = this.accountFacade.addressesError$;
-    this.user$ = this.accountFacade.user$;
     this.errorUser$ = this.accountFacade.userError$;
-  }
-
-  createCustomerAddress(address: Address) {
-    this.accountFacade.createCustomerAddress(address);
-  }
-
-  deleteCustomerAddress(addressId: string) {
-    this.accountFacade.deleteCustomerAddress(addressId);
   }
 }
