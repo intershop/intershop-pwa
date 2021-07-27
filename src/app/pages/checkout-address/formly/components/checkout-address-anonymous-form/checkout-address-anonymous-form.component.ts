@@ -52,12 +52,6 @@ export class CheckoutAddressAnonymousFormComponent implements OnInit, OnDestroy 
               },
               postWrappers: [{ wrapper: 'description', index: -1 }],
             },
-            validation: {
-              messages: {
-                required: 'account.email.error.email',
-                email: 'checkout.addresses.email.invalid.error',
-              },
-            },
           },
         ],
       },

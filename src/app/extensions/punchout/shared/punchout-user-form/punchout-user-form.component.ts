@@ -93,11 +93,6 @@ export class PunchoutUserFormComponent implements OnInit {
               },
               hideRequiredMarker: true,
             },
-            validation: {
-              messages: {
-                required: 'account.punchout.password.error.required',
-              },
-            },
           },
           {
             key: 'passwordConfirmation',
@@ -116,7 +111,6 @@ export class PunchoutUserFormComponent implements OnInit {
             validation: {
               messages: {
                 required: 'account.punchout.password.confirmation.error.required',
-                equalTo: 'account.update_password.confirm_password.error.stringcompare',
               },
             },
           },
