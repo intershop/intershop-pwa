@@ -14,7 +14,6 @@ import { findAllCustomElements, findAllDataTestingIDs } from 'ish-core/utils/dev
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { FormlyCustomerAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-customer-address-form/formly-customer-address-form.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
-import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 import { BasketInvoiceAddressWidgetComponent } from './basket-invoice-address-widget.component';
 
@@ -24,7 +23,6 @@ describe('Basket Invoice Address Widget Component', () => {
   let element: HTMLElement;
   let checkoutFacade: CheckoutFacade;
   let accountFacade: AccountFacade;
-  let formsService: FormsService;
 
   beforeEach(async () => {
     checkoutFacade = mock(CheckoutFacade);
@@ -33,8 +31,6 @@ describe('Basket Invoice Address Widget Component', () => {
 
     accountFacade = mock(AccountFacade);
     when(accountFacade.addresses$()).thenReturn(EMPTY);
-
-    formsService = mock(FormsService);
 
     await TestBed.configureTestingModule({
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
@@ -48,7 +44,6 @@ describe('Basket Invoice Address Widget Component', () => {
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
-        { provide: FormsService, useFactory: () => instance(formsService) },
       ],
     }).compileComponents();
   });
