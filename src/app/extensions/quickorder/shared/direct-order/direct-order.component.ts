@@ -63,7 +63,7 @@ export class DirectOrderComponent implements OnInit, OnDestroy {
         type: 'ish-text-input-field',
         templateOptions: {
           fieldClass: 'col-12',
-          placeholder: this.translate.instant('shopping_cart.direct_order.item_placeholder'),
+          placeholder: 'shopping_cart.direct_order.item_placeholder',
           autocomplete: true,
         },
         hooks: {
