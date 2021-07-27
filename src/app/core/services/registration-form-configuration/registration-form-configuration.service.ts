@@ -237,6 +237,14 @@ export class RegistrationFormConfigurationService {
               label: 'account.register.email_confirmation.label',
               required: true,
             },
+            validators: {
+              validation: [SpecialValidators.equalToControl('login')],
+            },
+            validation: {
+              messages: {
+                equalTo: 'account.registration.email.not_match.error',
+              },
+            },
           },
 
           {
