@@ -5,11 +5,14 @@ import { Customer } from './customer.model';
 
 export type CustomerType = 'PrivateCustomer' | 'SMBCustomer';
 
+type CustomerDataType = 'PRIVATE' | 'SMBCustomer';
+
 /**
  * response data type for signIn user
  */
 export interface CustomerData extends Customer {
-  type: CustomerType;
+  type: CustomerType; // REST resource
+  customerType?: CustomerDataType; // type to differentiate between private/SMC customers after first customer get request
   title?: string;
   firstName?: string;
   lastName?: string;
