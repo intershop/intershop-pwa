@@ -40,11 +40,7 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject();
 
-  constructor(
-    private checkoutFacade: CheckoutFacade,
-    private accountFacade: AccountFacade,
-    private formsService: FormsService
-  ) {}
+  constructor(private checkoutFacade: CheckoutFacade, private accountFacade: AccountFacade) {}
 
   ngOnInit() {
     this.invoiceAddress$ = this.checkoutFacade.basketInvoiceAddress$;
@@ -77,7 +73,7 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit, OnDestroy {
         type: 'ish-select-field',
         templateOptions: {
           fieldClass: 'col-12',
-          options: this.formsService.getAddressOptions(this.addresses$),
+          options: FormsService.getAddressOptions(this.addresses$),
           placeholder: this.emptyOptionLabel,
         },
         hooks: {

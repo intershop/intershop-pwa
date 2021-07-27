@@ -9,7 +9,7 @@ import { AddressHelper } from 'ish-core/models/address/address.helper';
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
-import { SelectOption } from 'ish-shared/forms/components/select/select.component';
+import { mapToAddressOptions } from 'ish-shared/forms/utils/forms.service';
 
 /**
  * The Account Address Page Component displays the preferred InvoiceTo and ShipTo addresses of the user
@@ -95,17 +95,15 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
       templateOptions: {
         fieldClass: ' ',
         options: addressesAndUser$.pipe(
-          // distinctUntilChanged(([paddresses, puser], [caddresses, cuser]) => paddresses === caddresses),
           map(([addresses, user]) =>
-            addresses
-              .filter(
-                (address: Address) =>
-                  ((user.preferredInvoiceToAddressUrn && address.urn !== user.preferredInvoiceToAddressUrn) ||
-                    !user.preferredInvoiceToAddressUrn) &&
-                  address.invoiceToAddress
-              )
-              .map(this.transformAddressToSelectOption)
-          )
+            addresses.filter(
+              (address: Address) =>
+                ((user.preferredInvoiceToAddressUrn && address.urn !== user.preferredInvoiceToAddressUrn) ||
+                  !user.preferredInvoiceToAddressUrn) &&
+                address.invoiceToAddress
+            )
+          ),
+          mapToAddressOptions()
         ),
         placeholder: 'account.addresses.preferredinvoice.button.label',
       },
@@ -118,15 +116,14 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
         fieldClass: ' ',
         options: addressesAndUser$.pipe(
           map(([addresses, user]) =>
-            addresses
-              .filter(
-                (address: Address) =>
-                  ((user.preferredShipToAddressUrn && address.urn !== user.preferredShipToAddressUrn) ||
-                    !user.preferredShipToAddressUrn) &&
-                  address.shipToAddress
-              )
-              .map(this.transformAddressToSelectOption)
-          )
+            addresses.filter(
+              (address: Address) =>
+                ((user.preferredShipToAddressUrn && address.urn !== user.preferredShipToAddressUrn) ||
+                  !user.preferredShipToAddressUrn) &&
+                address.shipToAddress
+            )
+          ),
+          mapToAddressOptions()
         ),
         placeholder: 'account.addresses.preferredshipping.button.label',
       },
@@ -167,13 +164,6 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
   }
 
   // helper methods
-
-  private transformAddressToSelectOption(address: Address): SelectOption {
-    return {
-      label: `${address.firstName} ${address.lastName}, ${address.addressLine1}, ${address.city}`,
-      value: address.urn,
-    };
-  }
 
   private getAddress(addresses: Address[], urn: string) {
     return addresses && !!urn ? addresses.find(address => address.urn === urn) : undefined;

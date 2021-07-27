@@ -43,11 +43,7 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject();
 
-  constructor(
-    private accountFacade: AccountFacade,
-    private checkoutFacade: CheckoutFacade,
-    private formsService: FormsService
-  ) {
+  constructor(private accountFacade: AccountFacade, private checkoutFacade: CheckoutFacade) {
     this.form = new FormGroup({
       id: new FormControl(''),
     });
@@ -86,7 +82,7 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
         type: 'ish-select-field',
         templateOptions: {
           fieldClass: 'col-12',
-          options: this.formsService.getAddressOptions(this.addresses$),
+          options: FormsService.getAddressOptions(this.addresses$),
           placeholder: this.emptyOptionLabel,
         },
         hooks: {
