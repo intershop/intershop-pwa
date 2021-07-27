@@ -9,6 +9,7 @@ import { AddressHelper } from 'ish-core/models/address/address.helper';
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
+import { whenTruthy } from 'ish-core/utils/operators';
 import { mapToAddressOptions } from 'ish-shared/forms/utils/forms.service';
 
 /**
@@ -86,7 +87,7 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
         }
       });
 
-    const addressesAndUser$ = combineLatest([this.addresses$, this.user$]);
+    const addressesAndUser$ = combineLatest([this.addresses$.pipe(whenTruthy()), this.user$.pipe(whenTruthy())]);
 
     // Selectbox formly configurations
     this.selectInvoiceConfig = {
