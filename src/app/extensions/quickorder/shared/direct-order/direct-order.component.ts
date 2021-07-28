@@ -64,7 +64,7 @@ export class DirectOrderComponent implements OnInit, OnDestroy {
         templateOptions: {
           fieldClass: 'col-12',
           placeholder: 'shopping_cart.direct_order.item_placeholder',
-          autocomplete: true,
+          autocomplete: 'on',
         },
         hooks: {
           onInit: field => {
