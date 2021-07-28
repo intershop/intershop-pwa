@@ -11,6 +11,8 @@ export class ValidationIconsComponent {
   @Input() showError: boolean;
 
   defaultShowValidation() {
-    return this.field.formControl?.valid && (this.field.formControl?.dirty || this.field.options?.parentForm.submitted);
+    return (
+      this.field.formControl?.valid && (this.field.formControl?.dirty || this.field.options?.parentForm?.submitted)
+    );
   }
 }

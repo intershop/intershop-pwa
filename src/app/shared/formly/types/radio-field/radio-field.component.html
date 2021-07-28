@@ -1,8 +1,9 @@
 <input
   class="form-check-input"
+  [ngClass]="{ 'position-static': !to.label }"
   type="radio"
   [formControl]="formControl"
   [value]="to.value"
-  [id]="to.id"
-  [attr.data-testing-id]="'radio-' + to.id"
+  [id]="id"
+  [attr.data-testing-id]="'radio-' + to.label"
 />

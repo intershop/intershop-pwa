@@ -37,15 +37,15 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
     this.fields = [
       {
         key: 'currentPassword',
-        type: 'ish-password-field',
+        type: 'ish-text-input-field',
         templateOptions: {
+          type: 'password',
           required: true,
           hideRequiredMarker: true,
           label: 'account.password.label',
         },
         validation: {
           messages: {
-            required: 'account.update_password.old_password.error.required',
             incorrect: 'account.update_password.old_password.error.incorrect',
           },
         },
@@ -65,11 +65,6 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
 
           autocomplete: 'new-password',
         },
-        validation: {
-          messages: {
-            required: 'account.update_password.new_password.error.required',
-          },
-        },
       },
       {
         key: 'passwordConfirmation',
@@ -85,7 +80,6 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
         validation: {
           messages: {
             required: 'account.register.password_confirmation.error.default',
-            equalTo: 'account.update_password.confirm_password.error.stringcompare',
           },
         },
       },

@@ -53,7 +53,6 @@ export class CustomerMapper {
   }
 
   private static isBusinessCustomer(data: CustomerData): boolean {
-    // ToDo: #IS-30018 use the customer type for this decision
     if (data.type === 'PrivateCustomer') {
       return false;
     }

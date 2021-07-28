@@ -7,9 +7,10 @@ import { MockComponent, MockDirective } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
 import { FormControlFeedbackComponent } from 'ish-shared/forms/components/form-control-feedback/form-control-feedback.component';
 import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form-feedback.directive';
+
+import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/payment-save-checkbox.component';
 
 import { PaymentConcardisCreditcardComponent } from './payment-concardis-creditcard.component';
 
@@ -21,10 +22,10 @@ describe('Payment Concardis Creditcard Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
-        MockComponent(CheckboxComponent),
         MockComponent(FaIconComponent),
         MockComponent(FormControlFeedbackComponent),
         MockComponent(NgbPopover),
+        MockComponent(PaymentSaveCheckboxComponent),
         MockDirective(ShowFormFeedbackDirective),
         PaymentConcardisCreditcardComponent,
       ],
@@ -58,18 +59,6 @@ describe('Payment Concardis Creditcard Component', () => {
     };
     component.initCallback(undefined, iFramesReference);
     expect(component.iframesReference).toBe(iFramesReference);
-  });
-
-  it('should not show a saveForLater checkbox if payment method does not allow it', () => {
-    fixture.detectChanges();
-    expect(element.querySelector('[data-testing-id=save-for-later-input]')).toBeFalsy();
-  });
-
-  it('should show a saveForLater checkbox if payment method allows it', () => {
-    component.paymentMethod.saveAllowed = true;
-
-    fixture.detectChanges();
-    expect(element.querySelector('[data-testing-id=save-for-later-input]')).toBeTruthy();
   });
 
   it('should show a general error if init callback returns with an error', () => {

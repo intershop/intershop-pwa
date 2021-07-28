@@ -18,8 +18,10 @@ export class PasswordFieldComponent extends FieldType {
 
     field.validation = field.validation ?? {};
     field.validation.messages = {
+      password: 'form.password.error.invalid',
+      required: 'form.password.error.required',
+      equalTo: 'form.password.error.equalTo',
       ...field.validation.messages,
-      password: 'account.update_password.new_password.error.regexp',
     };
   }
 }

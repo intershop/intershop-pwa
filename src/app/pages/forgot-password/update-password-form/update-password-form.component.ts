@@ -45,7 +45,6 @@ export class UpdatePasswordFormComponent implements OnInit {
         },
         validation: {
           messages: {
-            required: 'account.update_password.new_password.error.required',
             minLength: 'account.update_password.new_password.error.length',
           },
         },
@@ -64,7 +63,6 @@ export class UpdatePasswordFormComponent implements OnInit {
         validation: {
           messages: {
             required: 'account.register.password_confirmation.error.default',
-            equalTo: 'account.update_password.confirm_password.error.stringcompare',
           },
         },
       },

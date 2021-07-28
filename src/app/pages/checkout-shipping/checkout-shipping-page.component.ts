@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject, combineLatest } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 
@@ -24,7 +24,11 @@ export class CheckoutShippingPageComponent implements OnInit, OnDestroy {
 
   nextDisabled = false;
 
-  constructor(private checkoutFacade: CheckoutFacade, private accountFacade: AccountFacade) {}
+  constructor(
+    private checkoutFacade: CheckoutFacade,
+    private accountFacade: AccountFacade,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.basket$ = this.checkoutFacade.basket$;
@@ -42,6 +46,7 @@ export class CheckoutShippingPageComponent implements OnInit, OnDestroy {
       .pipe(take(1), takeUntil(this.destroy$))
       .subscribe(([shippingMethods, basket]) => {
         this.nextDisabled = !basket || !shippingMethods || !shippingMethods.length || !basket.commonShippingMethod;
+        this.cd.markForCheck();
         if (!this.nextDisabled) {
           this.checkoutFacade.continue(3);
         }

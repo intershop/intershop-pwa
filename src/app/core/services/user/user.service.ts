@@ -79,8 +79,9 @@ export class UserService {
     return this.apiService.get<CustomerData>('customers/-', options).pipe(
       withLatestFrom(this.appFacade.isAppTypeREST$),
       concatMap(([data, isAppTypeRest]) =>
-        // ToDo: #IS-30018 use the customer type for this decision
-        isAppTypeRest && !data.companyName ? this.apiService.get<CustomerData>('privatecustomers/-') : of(data)
+        isAppTypeRest && data.customerType === 'PRIVATE'
+          ? this.apiService.get<CustomerData>('privatecustomers/-')
+          : of(data)
       ),
       map(CustomerMapper.mapLoginData)
     );

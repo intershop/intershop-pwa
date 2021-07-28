@@ -5,7 +5,8 @@ import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
+
+import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/payment-save-checkbox.component';
 
 import { PaymentConcardisDirectdebitComponent } from './payment-concardis-directdebit.component';
 
@@ -16,7 +17,11 @@ describe('Payment Concardis Directdebit Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(CheckboxComponent), MockComponent(FormlyForm), PaymentConcardisDirectdebitComponent],
+      declarations: [
+        MockComponent(FormlyForm),
+        MockComponent(PaymentSaveCheckboxComponent),
+        PaymentConcardisDirectdebitComponent,
+      ],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();
   });

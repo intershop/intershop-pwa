@@ -18,9 +18,9 @@ export class PhoneFieldComponent extends FieldType {
 
     field.validation = field.validation ?? {};
     field.validation.messages = {
-      ...field.validation?.messages,
       phone: 'form.phone.error.invalid',
       required: 'form.phone.error.required',
+      ...field.validation?.messages,
     };
   }
 }

@@ -17,6 +17,7 @@ import { ValidationMessageComponent } from './components/validation-message/vali
 import { criticalDefaultValuesExtension } from './extensions/critical-default-values.extension';
 import { hideIfEmptyOptionsExtension } from './extensions/hide-if-empty-options.extension';
 import { registerPostWrappersExtension } from './extensions/post-wrappers-extension';
+import { registerTranslatePlaceholderExtension } from './extensions/translate-placeholder.extension';
 import { registerTranslateSelectOptionsExtension } from './extensions/translate-select-options.extension';
 import { CaptchaFieldComponent } from './types/captcha-field/captcha-field.component';
 import { CheckboxFieldComponent } from './types/checkbox-field/checkbox-field.component';
@@ -32,7 +33,6 @@ import { DescriptionWrapperComponent } from './wrappers/description-wrapper/desc
 import { HorizontalCheckboxWrapperComponent } from './wrappers/horizontal-checkbox-wrapper/horizontal-checkbox-wrapper.component';
 import { HorizontalWrapperComponent } from './wrappers/horizontal-wrapper/horizontal-wrapper.component';
 import { InputAddonWrapperComponent } from './wrappers/input-addon-wrapper/input-addon-wrapper.component';
-import { RadioHorizontalWrapperComponent } from './wrappers/radio-horizontal-wrapper/radio-horizontal-wrapper.component';
 import { TextareaDescriptionWrapperComponent } from './wrappers/textarea-description-wrapper/textarea-description-wrapper.component';
 import { TooltipWrapperComponent } from './wrappers/tooltip-wrapper/tooltip-wrapper.component';
 import { ValidationWrapperComponent } from './wrappers/validation-wrapper/validation-wrapper.component';
@@ -42,7 +42,7 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
     CaptchaExportsModule,
     CommonModule,
     DirectivesModule,
-    FormlyBaseModule.forRoot({
+    FormlyBaseModule.forChild({
       types: [
         {
           name: 'ish-text-input-field',
@@ -87,7 +87,7 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
         {
           name: 'ish-radio-field',
           component: RadioFieldComponent,
-          wrappers: ['form-field-radio-horizontal'],
+          wrappers: ['form-field-checkbox-horizontal'],
         },
       ],
       wrappers: [
@@ -98,7 +98,6 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
         { name: 'tooltip', component: TooltipWrapperComponent },
         { name: 'validation', component: ValidationWrapperComponent },
         { name: 'description', component: DescriptionWrapperComponent },
-        { name: 'form-field-radio-horizontal', component: RadioHorizontalWrapperComponent },
       ],
       extras: {
         lazyRender: true,
@@ -133,7 +132,6 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
     PasswordFieldComponent,
     PhoneFieldComponent,
     RadioFieldComponent,
-    RadioHorizontalWrapperComponent,
     SelectFieldComponent,
     TextInputFieldComponent,
     TextareaDescriptionWrapperComponent,
@@ -148,6 +146,12 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
       provide: FORMLY_CONFIG,
       multi: true,
       useFactory: registerTranslateSelectOptionsExtension,
+      deps: [TranslateService],
+    },
+    {
+      provide: FORMLY_CONFIG,
+      multi: true,
+      useFactory: registerTranslatePlaceholderExtension,
       deps: [TranslateService],
     },
     {

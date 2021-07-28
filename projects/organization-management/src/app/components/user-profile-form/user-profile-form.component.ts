@@ -101,11 +101,6 @@ export class UserProfileFormComponent implements OnInit {
                   label: 'account.user.email.label',
                   required: true,
                 },
-                validation: {
-                  messages: {
-                    required: 'account.update_email.email.error.notempty',
-                  },
-                },
               }
             : {},
           {

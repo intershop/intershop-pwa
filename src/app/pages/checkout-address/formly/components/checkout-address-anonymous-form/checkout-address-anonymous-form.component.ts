@@ -52,12 +52,6 @@ export class CheckoutAddressAnonymousFormComponent implements OnInit, OnDestroy 
               },
               postWrappers: [{ wrapper: 'description', index: -1 }],
             },
-            validation: {
-              messages: {
-                required: 'account.email.error.email',
-                email: 'checkout.addresses.email.invalid.error',
-              },
-            },
           },
         ],
       },
@@ -75,7 +69,6 @@ export class CheckoutAddressAnonymousFormComponent implements OnInit, OnDestroy 
         defaultValue: 'shipToInvoiceAddress',
         templateOptions: {
           label: 'checkout.addresses.shipping_address.option1.text',
-          id: 'shipOption1',
           value: 'shipToInvoiceAddress',
         },
       },
@@ -85,7 +78,6 @@ export class CheckoutAddressAnonymousFormComponent implements OnInit, OnDestroy 
         defaultValue: 'shipToInvoiceAddress',
         templateOptions: {
           label: 'checkout.addresses.shipping_address.option2.text',
-          id: 'shipOption2',
           value: 'shipToDifferentAddress',
         },
       },

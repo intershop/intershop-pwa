@@ -1,10 +1,12 @@
-<ng-template #fieldComponent></ng-template>
-<ish-validation-icons
-  *ngIf="to.required || field.validators?.validation?.length"
-  [field]="field"
-  [showError]="showError"
-  [ngClass]="field.type === 'ish-select-field' ? 'validation-offset' : ''"
-></ish-validation-icons>
-<ng-container *ngIf="showError" class="invalid-feedback d-block">
-  <ish-validation-message [field]="field" class="validation-message"></ish-validation-message>
-</ng-container>
+<div [class.formly-has-error]="showError">
+  <ng-template #fieldComponent></ng-template>
+  <ish-validation-icons
+    *ngIf="to.required || field.validators?.validation?.length"
+    [field]="field"
+    [showError]="showError"
+    [ngClass]="{ 'validation-offset': field.type === 'ish-select-field' }"
+  ></ish-validation-icons>
+  <ng-container *ngIf="showError" class="invalid-feedback d-block">
+    <ish-validation-message [field]="field" class="validation-message"></ish-validation-message>
+  </ng-container>
+</div>

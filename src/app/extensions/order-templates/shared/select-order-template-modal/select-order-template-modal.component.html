@@ -14,54 +14,11 @@
 
   <ng-container *ngIf="showForm; else showSuccess">
     <div class="modal-body">
-      <form [formGroup]="updateOrderTemplateForm" (ngSubmit)="submitForm()">
-        <ng-container
-          *ngIf="orderTemplateOptions === undefined || orderTemplateOptions.length === 0; else radioButtonForm"
-        >
-          <ish-input
-            controlName="newOrderTemplate"
-            [errorMessages]="{ required: 'account.order_template.name.error.required' }"
-            [form]="updateOrderTemplateForm"
-          ></ish-input>
-        </ng-container>
-
-        <ng-template #radioButtonForm>
-          <div class="form-group">
-            <div class="radio" *ngFor="let option of orderTemplateOptions; let i = index">
-              <label>
-                <input
-                  type="radio"
-                  name="orderTemplate"
-                  formControlName="orderTemplate"
-                  [value]="option.value"
-                  id="orderTemplate_{{ i }}"
-                  [attr.data-testing-id]="option.label"
-                />
-                {{ option.label }}
-              </label>
-            </div>
-            <div class="radio">
-              <label class="d-flex align-items-center">
-                <input
-                  type="radio"
-                  name="orderTemplate"
-                  formControlName="orderTemplate"
-                  value="newTemplate"
-                  class="mb-3"
-                  id="orderTemplate"
-                />
-                <ish-input
-                  class="w-75"
-                  controlName="newOrderTemplate"
-                  [disabled]="newOrderTemplateDisabled ? true : null"
-                  [errorMessages]="{ required: 'account.order_template.name.error.required' }"
-                  [form]="updateOrderTemplateForm"
-                  inputClass="col-md-12"
-                ></ish-input>
-              </label>
-            </div>
-          </div>
-        </ng-template>
+      <form [formGroup]="formGroup" (ngSubmit)="submitForm()">
+        <ish-select-order-template-form
+          [formGroup]="formGroup"
+          [addMoveProduct]="addMoveProduct"
+        ></ish-select-order-template-form>
       </form>
     </div>
 
@@ -80,7 +37,12 @@
       <span
         [ishServerHtml]="
           successTranslationKey
-            | translate: { '0': product.name, '1': selectedOrderTemplateTitle, '2': selectedOrderTemplateRoute }
+            | translate
+              : {
+                  '0': product.name,
+                  '1': selectedOrderTemplateTitle$ | async,
+                  '2': selectedOrderTemplateRoute$ | async
+                }
         "
         [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
         data-testing-id="order-template-success-link"

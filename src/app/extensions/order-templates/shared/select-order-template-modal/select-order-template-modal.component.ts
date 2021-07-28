@@ -9,17 +9,17 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { Observable, Subject, of } from 'rxjs';
+import { filter, map, take, takeUntil } from 'rxjs/operators';
 
 import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
-import { OrderTemplate } from '../../models/order-template/order-template.model';
 
 /**
  * The order template select modal displays a list of order templates. The user can select one order template  or enter a name for a new order template  in order to add or move an item to the selected order template .
@@ -40,48 +40,30 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
    */
   @Output() submitEmitter = new EventEmitter<{ id: string; title: string }>();
 
-  updateOrderTemplateForm: FormGroup;
-  orderTemplateOptions: SelectOption[];
+  orderTemplateOptions$: Observable<SelectOption[]>;
+
+  formGroup: FormGroup = new FormGroup({
+    orderTemplate: new FormControl(''),
+    newOrderTemplate: new FormControl(''),
+  });
+  singleFieldConfig: FormlyFieldConfig[];
+  multipleFieldConfig$: Observable<FormlyFieldConfig[]>;
 
   showForm: boolean;
-  newOrderTemplateInitValue = '';
-
   modal: NgbModalRef;
 
-  idAfterCreate = '';
   private destroy$ = new Subject<void>();
 
   @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<unknown>;
 
   constructor(
     private ngbModal: NgbModal,
-    private fb: FormBuilder,
-    private translate: TranslateService,
-    private orderTemplatesFacade: OrderTemplatesFacade
+    private orderTemplatesFacade: OrderTemplatesFacade,
+    private translate: TranslateService
   ) {}
 
   ngOnInit() {
-    this.determineSelectOptions();
-    this.formInit();
-    this.orderTemplatesFacade.currentOrderTemplate$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(orderTemplate => (this.idAfterCreate = orderTemplate && orderTemplate.id));
-
-    this.translate
-      .get('account.order_template.new_order_template.text')
-      .pipe(take(1), takeUntil(this.destroy$))
-      .subscribe(res => {
-        this.newOrderTemplateInitValue = res;
-        this.setDefaultFormValues();
-      });
-    this.updateOrderTemplateForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(changes => {
-      if (changes.orderTemplate !== 'newTemplate') {
-        this.updateOrderTemplateForm.get('newOrderTemplate').clearValidators();
-      } else {
-        this.updateOrderTemplateForm.get('newOrderTemplate').setValidators(Validators.required);
-      }
-      this.updateOrderTemplateForm.get('newOrderTemplate').updateValueAndValidity({ emitEvent: false });
-    });
+    this.orderTemplateOptions$ = this.orderTemplatesFacade.orderTemplatesSelectOptions$(this.addMoveProduct === 'move');
   }
 
   ngOnDestroy() {
@@ -89,79 +71,68 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  private formInit() {
-    this.updateOrderTemplateForm = this.fb.group({
-      orderTemplate: [
-        this.orderTemplateOptions && this.orderTemplateOptions.length > 0
-          ? this.orderTemplateOptions[0].value
-          : 'newTemplate',
-        Validators.required,
-      ],
-      newOrderTemplate: [this.newOrderTemplateInitValue, Validators.required],
-    });
-  }
-
-  private determineSelectOptions() {
-    let currentOrderTemplate: OrderTemplate;
-    this.orderTemplatesFacade.currentOrderTemplate$
-      .pipe(take(1), takeUntil(this.destroy$))
-      .subscribe(w => (currentOrderTemplate = w));
-    this.orderTemplatesFacade.orderTemplates$.pipe(takeUntil(this.destroy$)).subscribe(orderTemplates => {
-      if (orderTemplates && orderTemplates.length > 0) {
-        this.orderTemplateOptions = orderTemplates.map(orderTemplate => ({
-          value: orderTemplate.id,
-          label: orderTemplate.title,
-        }));
-        if (this.addMoveProduct === 'move' && currentOrderTemplate) {
-          this.orderTemplateOptions = this.orderTemplateOptions.filter(
-            option => option.value !== currentOrderTemplate.id
-          );
-        }
-      } else {
-        this.orderTemplateOptions = [];
-      }
-      this.setDefaultFormValues();
-    });
-  }
-
-  private setDefaultFormValues() {
-    if (this.showForm) {
-      if (this.orderTemplateOptions && this.orderTemplateOptions.length > 0) {
-        this.updateOrderTemplateForm.get('orderTemplate').setValue(this.orderTemplateOptions[0].value);
-      } else {
-        this.updateOrderTemplateForm.get('orderTemplate').setValue('newTemplate');
-      }
-      this.updateOrderTemplateForm.get('newOrderTemplate').setValue(this.newOrderTemplateInitValue);
-    }
-  }
-
   /** emit results when the form is valid */
   submitForm() {
-    if (this.updateOrderTemplateForm.valid) {
-      const orderTemplateId = this.updateOrderTemplateForm.get('orderTemplate').value;
-      this.submitEmitter.emit({
-        id: orderTemplateId !== 'newTemplate' ? orderTemplateId : undefined,
-        title:
-          orderTemplateId !== 'newTemplate'
-            ? this.orderTemplateOptions.find(option => option.value === orderTemplateId).label
-            : this.updateOrderTemplateForm.get('newOrderTemplate').value,
-      });
-      this.showForm = false;
+    const radioButtons = this.formGroup.value;
+    if (radioButtons?.orderTemplate && radioButtons.orderTemplate !== 'new') {
+      if (this.formGroup.valid) {
+        this.submitExisting(radioButtons.orderTemplate);
+      } else {
+        markAsDirtyRecursive(this.formGroup);
+      }
+    } else if (radioButtons.newOrderTemplate && this.formGroup.valid) {
+      this.submitNew(radioButtons.newOrderTemplate);
     } else {
-      markAsDirtyRecursive(this.updateOrderTemplateForm);
+      markAsDirtyRecursive(this.formGroup);
     }
+  }
+  submitExisting(orderTemplateId: string) {
+    this.orderTemplateOptions$
+      .pipe(
+        filter(options => options.length > 0),
+        map(options => options.find(option => option.value === orderTemplateId).label),
+        take(1),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(label => {
+        this.submitEmitter.emit({
+          id: orderTemplateId,
+          title: label,
+        });
+        this.showForm = false;
+      });
+  }
+  submitNew(newOrderTemplate: string) {
+    this.submitEmitter.emit({
+      id: undefined,
+      title: newOrderTemplate,
+    });
+    this.showForm = false;
   }
 
   /** close modal */
   hide() {
     this.modal.close();
+    this.formGroup.reset();
   }
 
   /** open modal */
   show() {
     this.showForm = true;
-    this.setDefaultFormValues();
     this.modal = this.ngbModal.open(this.modalTemplate);
+
+    // set default values after init (for example after closing and reopening the modal)
+    this.orderTemplateOptions$
+      .pipe(
+        filter(opts => opts.length > 0),
+        map(options => options[0]),
+        take(1),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(option => {
+        const defaultValue = this.translate.instant('account.order_template.new_order_template.text');
+        this.formGroup.patchValue({ orderTemplate: option.value, newOrderTemplate: defaultValue });
+      });
   }
 
   /**
@@ -173,29 +144,33 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
     };
   }
 
-  get selectedOrderTemplateTitle(): string {
-    const selectedValue = this.updateOrderTemplateForm.get('orderTemplate').value;
-    if (selectedValue === 'newTemplate') {
-      return this.updateOrderTemplateForm.get('newOrderTemplate').value;
+  get selectedOrderTemplateTitle$(): Observable<string> {
+    const selectedValue = this.formGroup.value.orderTemplate;
+    if (selectedValue === 'new' || !selectedValue) {
+      return of(this.formGroup.value.newOrderTemplate);
     } else {
-      return this.orderTemplateOptions.find(orderTemplate => orderTemplate.value === selectedValue).label;
+      return this.orderTemplateOptions$.pipe(
+        filter(options => options.length > 0),
+        map(options => options.find(opt => opt.value === selectedValue).label),
+        take(1)
+      );
     }
   }
 
   /** returns the route to the selected order template */
-  get selectedOrderTemplateRoute(): string {
-    const selectedValue = this.updateOrderTemplateForm.get('orderTemplate').value;
-    if (selectedValue === 'newTemplate') {
-      return `route://account/order-templates/${this.idAfterCreate}`;
-    } else {
-      return `route://account/order-templates/${selectedValue}`;
-    }
-  }
+  get selectedOrderTemplateRoute$(): Observable<string> {
+    const selectedValue = this.formGroup.value.orderTemplate;
 
-  /** activates the input field to create a new order template */
-  get newOrderTemplateDisabled() {
-    const selectedOrderTemplate = this.updateOrderTemplateForm.get('orderTemplate').value;
-    return selectedOrderTemplate !== 'newTemplate';
+    if (selectedValue === 'new' || !selectedValue) {
+      return this.orderTemplatesFacade.currentOrderTemplate$.pipe(
+        map(
+          currentOrderTemplate => `route://account/order-templates/${currentOrderTemplate && currentOrderTemplate.id}`
+        ),
+        take(1)
+      );
+    } else {
+      return of(`route://account/order-templates/${selectedValue}`);
+    }
   }
 
   /** translation key for the modal header */

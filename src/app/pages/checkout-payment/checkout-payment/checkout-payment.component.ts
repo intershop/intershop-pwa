@@ -66,7 +66,6 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     this.paymentForm = new FormGroup({
       name: new FormControl(this.getBasketPayment()),
-      saveForLater: new FormControl(true),
       parameters: new FormGroup({}),
     });
 
