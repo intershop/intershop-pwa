@@ -99,8 +99,11 @@ header {
     background: $color-inverse;
   }
 
-  a span:hover {
-    color: $text-color-quarternary;
+  .user-links,
+  .header-utility {
+    a span:hover {
+      color: $text-color-quarternary;
+    }
   }
 
   .navbar-toggler {
