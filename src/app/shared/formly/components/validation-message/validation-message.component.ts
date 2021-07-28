@@ -3,6 +3,9 @@ import { FormlyConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, isObservable, of } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
 
+/**
+ * Component that reads a fields validity status and displays active error messages.
+ */
 @Component({
   selector: 'ish-validation-message',
   template: '<small class="mt-1">{{ errorMessage$ | async | translate }} </small>',

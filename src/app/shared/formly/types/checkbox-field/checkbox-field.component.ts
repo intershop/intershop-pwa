@@ -2,6 +2,14 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FieldType } from '@ngx-formly/core';
 
+/**
+ * Type for a basic checkbox field.
+ *
+ * @defaultWrappers form-field-checkbox-horizontal
+ *
+ * @usageNotes
+ * Refer to the form-field-checkbox-horizontal wrapper for more info on relevant templateOptions.
+ */
 @Component({
   selector: 'ish-checkbox-field',
   templateUrl: './checkbox-field.component.html',

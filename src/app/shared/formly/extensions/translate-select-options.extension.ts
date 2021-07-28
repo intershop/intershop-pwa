@@ -5,9 +5,15 @@ import { map, startWith, tap } from 'rxjs/operators';
 
 /**
  * Extension to translate the templateOptions.options and add a placeholder element.
+ *
+ * @templateOption  **options**  defines options to be shown as key value pairs. Accepts two types:
+ * * `` { value: any; label: string}[]``
+ * * `` Observable<{ value: any; label: string}[]>``
+ * @templateOption **placeholder** - is used to add a placeholder element. This will also be translated.
+ *
+ * @usageNotes
  * It will use the TranslateService to translate option labels.
- * Also, if templateOptions.placeholder is set, the extension will add a placeholder element.
- * These modified options are written to templateOptions.processedOptions.
+ * These modified options are written to ``templateOptions.processedOptions``.
  */
 class TranslateSelectOptionsExtension implements FormlyExtension {
   constructor(private translate: TranslateService) {}

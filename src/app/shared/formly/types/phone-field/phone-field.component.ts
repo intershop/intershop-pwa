@@ -4,6 +4,15 @@ import { FieldType, FormlyFieldConfig } from '@ngx-formly/core';
 
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
+/**
+ * Type for an input field of type 'tel'.
+ * @templateOption **maxLength** - defines the maximum length of the field
+ *
+ * @defaultWrappers form-field-horizontal & validation
+ *  @usageNotes
+ * Defines some default validators and messages. These can be overriden but if you just want an input
+ * field of type 'tel', consider using ``text-input-field``.
+ */
 @Component({
   selector: 'ish-phone-field',
   templateUrl: './phone-field.component.html',

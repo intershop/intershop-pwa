@@ -2,6 +2,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FieldType, FormlyFieldConfig } from '@ngx-formly/core';
 
+/**
+ * Type for a basic input field
+ * @templateOption type supports all text types; 'text' (default), 'email', 'password', 'tel'
+ *
+ * @defaultWrappers form-field-horizontal & validation
+ */
 @Component({
   selector: 'ish-text-input-field',
   templateUrl: './text-input-field.component.html',
