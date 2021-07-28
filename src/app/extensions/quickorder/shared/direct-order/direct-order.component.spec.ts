@@ -53,8 +53,8 @@ NodeList [
   <formly-field hide-deprecation=""
   ><ng-component
     >TextInputFieldComponent: sku ish-text-input-field { "fieldClass": "col-12", "placeholder":
-    "shopping_cart.direct_order.item_placeholder", "autocomplete": "on", "label": "", "focus":
-    false, "disabled": false}</ng-component
+    "shopping_cart.direct_order.item_placeholder", "attributes": { "autocomplete": "on" }, "label":
+    "", "focus": false, "disabled": false}</ng-component
   ></formly-field
 >,
 ]
