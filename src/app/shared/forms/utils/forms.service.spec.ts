@@ -53,15 +53,13 @@ describe('Forms Service', () => {
 
   describe('getAddressOptions', () => {
     it('should return address options if addresses are given', done => {
-      formsService
-        .getAddressOptions(
-          of([
-            { id: '12345', firstName: 'Patricia', lastName: 'Miller', addressLine1: 'Potsdamer Str.', city: 'Berlin' },
-            { id: '67890', firstName: 'Bernhard', lastName: 'Boldner', addressLine1: 'Berliner Str.', city: 'Hamburg' },
-          ] as Address[])
-        )
-        .subscribe(options => {
-          expect(options).toMatchInlineSnapshot(`
+      FormsService.getAddressOptions(
+        of([
+          { id: '12345', firstName: 'Patricia', lastName: 'Miller', addressLine1: 'Potsdamer Str.', city: 'Berlin' },
+          { id: '67890', firstName: 'Bernhard', lastName: 'Boldner', addressLine1: 'Berliner Str.', city: 'Hamburg' },
+        ] as Address[])
+      ).subscribe(options => {
+        expect(options).toMatchInlineSnapshot(`
           Array [
             Object {
               "label": "Patricia Miller, Potsdamer Str., Berlin",
@@ -73,8 +71,8 @@ describe('Forms Service', () => {
             },
           ]
         `);
-          done();
-        });
+        done();
+      });
     });
   });
 });

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
+import { Observable, OperatorFunction } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
@@ -9,10 +9,34 @@ import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 
+/**
+ * FormsService.getAddressOptions as a pipeable operator
+ * @returns the input addresses, mapped to select options
+ */
+export function mapToAddressOptions(): OperatorFunction<Address[], SelectOption[]> {
+  return (source$: Observable<Address[]>) => FormsService.getAddressOptions(source$);
+}
+
 @Injectable({ providedIn: 'root' })
 export class FormsService {
   constructor(private translate: TranslateService, private store: Store) {}
 
+  /**
+   * Get address select options for addresses in order to render them in an address select box.
+   * @param addresses
+   * @returns address select options observable
+   */
+  static getAddressOptions(addresses$: Observable<Address[]>): Observable<SelectOption[]> {
+    return addresses$.pipe(
+      whenTruthy(),
+      map(addresses =>
+        addresses.map(a => ({
+          label: `${a.firstName} ${a.lastName}, ${a.addressLine1}, ${a.city}`,
+          value: a.id,
+        }))
+      )
+    );
+  }
   /**
    * Gets all possible salutation options for a certain country.
    * @param translate instance of a translation service
@@ -36,23 +60,6 @@ export class FormsService {
     return this.store.pipe(select(getCurrentLocale)).pipe(
       whenTruthy(),
       map(locale => this.getSalutationOptionsForCountryCode(locale?.substring(3)))
-    );
-  }
-
-  /**
-   * Get address select options for addresses in order to render them in an address select box.
-   * @param addresses
-   * @returns address select options
-   */
-  getAddressOptions(addresses$: Observable<Address[]>): Observable<SelectOption[]> {
-    return addresses$.pipe(
-      whenTruthy(),
-      map(addresses =>
-        addresses.map(a => ({
-          label: `${a.firstName} ${a.lastName}, ${a.addressLine1}, ${a.city}`,
-          value: a.id,
-        }))
-      )
     );
   }
 
