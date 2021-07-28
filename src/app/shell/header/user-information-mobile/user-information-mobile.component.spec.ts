@@ -7,7 +7,7 @@ import { LanguageSwitchComponent } from 'ish-shell/header/language-switch/langua
 import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status.component';
 import { ProductCompareStatusComponent } from 'ish-shell/header/product-compare-status/product-compare-status.component';
 
-import { LazyHeaderQuickorderComponent } from '../../../extensions/quickorder/exports/lazy-header-quickorder/lazy-header-quickorder.component';
+import { LazyQuickorderLinkComponent } from '../../../extensions/quickorder/exports/lazy-quickorder-link/lazy-quickorder-link.component';
 import { LazyWishlistsLinkComponent } from '../../../extensions/wishlists/exports/lazy-wishlists-link/lazy-wishlists-link.component';
 
 import { UserInformationMobileComponent } from './user-information-mobile.component';
@@ -22,7 +22,7 @@ describe('User Information Mobile Component', () => {
       imports: [TranslateModule.forRoot()],
       declarations: [
         MockComponent(LanguageSwitchComponent),
-        MockComponent(LazyHeaderQuickorderComponent),
+        MockComponent(LazyQuickorderLinkComponent),
         MockComponent(LazyWishlistsLinkComponent),
         MockComponent(LoginStatusComponent),
         MockComponent(ProductCompareStatusComponent),

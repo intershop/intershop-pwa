@@ -14,7 +14,7 @@ import { ProductCompareStatusComponent } from 'ish-shell/header/product-compare-
 import { UserInformationMobileComponent } from 'ish-shell/header/user-information-mobile/user-information-mobile.component';
 import { LazySearchBoxComponent } from 'ish-shell/shared/lazy-search-box/lazy-search-box.component';
 
-import { LazyHeaderQuickorderComponent } from '../../../extensions/quickorder/exports/lazy-header-quickorder/lazy-header-quickorder.component';
+import { LazyQuickorderLinkComponent } from '../../../extensions/quickorder/exports/lazy-quickorder-link/lazy-quickorder-link.component';
 import { LazyWishlistsLinkComponent } from '../../../extensions/wishlists/exports/lazy-wishlists-link/lazy-wishlists-link.component';
 
 import { HeaderDefaultComponent } from './header-default.component';
@@ -32,7 +32,7 @@ describe('Header Default Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(HeaderNavigationComponent),
         MockComponent(LanguageSwitchComponent),
-        MockComponent(LazyHeaderQuickorderComponent),
+        MockComponent(LazyQuickorderLinkComponent),
         MockComponent(LazySearchBoxComponent),
         MockComponent(LazyWishlistsLinkComponent),
         MockComponent(LoginStatusComponent),

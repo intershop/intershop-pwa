@@ -3,22 +3,22 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { HeaderQuickorderComponent } from './header-quickorder.component';
+import { QuickorderLinkComponent } from './quickorder-link.component';
 
-describe('Header Quickorder Component', () => {
-  let component: HeaderQuickorderComponent;
-  let fixture: ComponentFixture<HeaderQuickorderComponent>;
+describe('Quickorder Link Component', () => {
+  let component: QuickorderLinkComponent;
+  let fixture: ComponentFixture<QuickorderLinkComponent>;
   let element: HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [HeaderQuickorderComponent, MockComponent(FaIconComponent)],
+      declarations: [MockComponent(FaIconComponent), QuickorderLinkComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HeaderQuickorderComponent);
+    fixture = TestBed.createComponent(QuickorderLinkComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });
