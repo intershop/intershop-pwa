@@ -23,20 +23,6 @@
       padding-right: $space-default;
       padding-left: $space-default * 0.5;
       color: $text-color-quinary !important;
-
-      //language selector when dropdown is shown
-      &.show .language-switch-link {
-        span:hover {
-          color: darken($text-color-quinary, 10%);
-        }
-      }
-
-      //language selector when dropdown is hidden
-      &:not(.show) .language-switch-link {
-        span:hover {
-          color: darken($text-color-quinary, 10%);
-        }
-      }
     }
 
     .language-switch-menu-container {
@@ -71,11 +57,6 @@
   //language selector as accordion
   &.accordion {
     margin-left: 0;
-
-    .language-switch-link {
-      padding-left: 0;
-      color: $CORPORATE-PRIMARY !important;
-    }
 
     .language-switch-container {
       position: relative;
