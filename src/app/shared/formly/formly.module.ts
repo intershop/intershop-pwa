@@ -14,7 +14,6 @@ import { CaptchaExportsModule } from '../../extensions/captcha/exports/captcha-e
 import { FieldTooltipComponent } from './components/field-tooltip/field-tooltip.component';
 import { ValidationIconsComponent } from './components/validation-icons/validation-icons.component';
 import { ValidationMessageComponent } from './components/validation-message/validation-message.component';
-import { autocompleteExtension } from './extensions/autocomplete.extension';
 import { criticalDefaultValuesExtension } from './extensions/critical-default-values.extension';
 import { hideIfEmptyOptionsExtension } from './extensions/hide-if-empty-options.extension';
 import { registerPostWrappersExtension } from './extensions/post-wrappers-extension';
@@ -110,7 +109,6 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
             !!(field.field.validation && field.field.validation.show)),
       },
       extensions: [
-        { name: 'autocomplete-extension', extension: autocompleteExtension },
         { name: 'critical-default-values-extension', extension: criticalDefaultValuesExtension },
         { name: 'hide-if-empty-options-extension', extension: hideIfEmptyOptionsExtension },
       ],
