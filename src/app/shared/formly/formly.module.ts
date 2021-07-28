@@ -17,6 +17,7 @@ import { ValidationMessageComponent } from './components/validation-message/vali
 import { criticalDefaultValuesExtension } from './extensions/critical-default-values.extension';
 import { hideIfEmptyOptionsExtension } from './extensions/hide-if-empty-options.extension';
 import { registerPostWrappersExtension } from './extensions/post-wrappers-extension';
+import { registerTranslatePlaceholderExtension } from './extensions/translate-placeholder.extension';
 import { registerTranslateSelectOptionsExtension } from './extensions/translate-select-options.extension';
 import { CaptchaFieldComponent } from './types/captcha-field/captcha-field.component';
 import { CheckboxFieldComponent } from './types/checkbox-field/checkbox-field.component';
@@ -145,6 +146,12 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
       provide: FORMLY_CONFIG,
       multi: true,
       useFactory: registerTranslateSelectOptionsExtension,
+      deps: [TranslateService],
+    },
+    {
+      provide: FORMLY_CONFIG,
+      multi: true,
+      useFactory: registerTranslatePlaceholderExtension,
       deps: [TranslateService],
     },
     {
