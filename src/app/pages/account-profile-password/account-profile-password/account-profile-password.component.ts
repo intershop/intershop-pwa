@@ -63,7 +63,7 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
             args: { 0: '7' },
           },
 
-          autocomplete: 'new-password',
+          attributes: { autocomplete: 'new-password' },
         },
       },
       {

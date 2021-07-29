@@ -86,7 +86,7 @@ export class PunchoutUserFormComponent implements OnInit {
               postWrappers: [{ wrapper: 'description', index: -1 }],
               label: this.punchoutUser ? 'account.punchout.password.new.label' : 'account.punchout.password.label',
               required: this.punchoutUser ? false : true,
-              autocomplete: 'new-password',
+              attributes: { autocomplete: 'new-password' },
               customDescription: {
                 key: 'account.register.password.extrainfo.message',
                 args: { 0: '7' },
@@ -102,7 +102,7 @@ export class PunchoutUserFormComponent implements OnInit {
               label: this.punchoutUser
                 ? 'account.punchout.password.new.confirmation.label'
                 : 'account.punchout.password.confirmation.label',
-              autocomplete: 'new-password',
+              attributes: { autocomplete: 'new-password' },
               hideRequiredMarker: true,
             },
             validators: {

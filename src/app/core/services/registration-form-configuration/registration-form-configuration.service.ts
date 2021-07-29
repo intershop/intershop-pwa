@@ -258,8 +258,7 @@ export class RegistrationFormConfigurationService {
                 key: 'account.register.password.extrainfo.message',
                 args: { 0: '7' },
               },
-
-              autocomplete: 'new-password',
+              attributes: { autocomplete: 'new-password' },
             },
           },
           {
@@ -269,7 +268,7 @@ export class RegistrationFormConfigurationService {
               required: true,
               label: 'account.register.password_confirmation.label',
 
-              autocomplete: 'new-password',
+              attributes: { autocomplete: 'new-password' },
             },
             validators: {
               validation: [SpecialValidators.equalToControl('password')],
