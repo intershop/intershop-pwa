@@ -1,19 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Action } from '@ngrx/store';
-import { EMPTY, Observable } from 'rxjs';
-import { concatMap } from 'rxjs/operators';
-
-import { loadCostCenter } from './cost-center.actions';
+import { CostCenterService } from 'ish-core/services/cost-center/cost-center.service';
+import { mapErrorToAction } from 'ish-core/utils/operators';
+import { map, mergeMap } from 'rxjs/operators';
+import { loadUserCostCenter, loadUserCostCenterFail, loadUserCostCenterSuccess } from './cost-center.actions';
 
 @Injectable()
 export class CostCenterEffects {
-  constructor(private actions$: Actions) {}
+  constructor(private actions$: Actions, private costCenterService: CostCenterService) {}
 
   loadCostCenter$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadCostCenter),
-      concatMap(() => EMPTY as Observable<Action>)
+      ofType(loadUserCostCenter),
+      mergeMap(() =>
+        this.costCenterService.getCostCenterForBusinessUser().pipe(
+          map(userCostCenter => loadUserCostCenterSuccess({ userCostCenter })),
+          mapErrorToAction(loadUserCostCenterFail)
+        )
+      )
     )
   );
 }
