@@ -1,13 +1,13 @@
 import { createAction } from '@ngrx/store';
+import { UserCostCenter } from 'ish-core/models/cost-center/cost-center.model';
 
-import { User } from 'ish-core/models/user/user.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
-export const loadCostCenter = createAction('[CostCenter] Load CostCenter');
+export const loadUserCostCenter = createAction('[CostCenter] Load User Cost Center');
 
-export const loadCostCenterFail = createAction('[CostCenter API] Load CostCenter Fail', httpError());
+export const loadUserCostCenterFail = createAction('[CostCenter API] Load User Cost Center Fail', httpError());
 
-export const loadCostCenterSuccess = createAction(
-  '[CostCenter API] Load CostCenter Success',
-  payload<{ costCenter: User[] }>()
+export const loadUserCostCenterSuccess = createAction(
+  '[CostCenter API] Load User Cost Center Success',
+  payload<{ userCostCenter: UserCostCenter }>()
 );
