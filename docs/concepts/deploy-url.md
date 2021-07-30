@@ -11,17 +11,17 @@ This document describes how to provide the Intershop PWA with a dynamic deploy U
 
 ## Built-in Angular CLI Support
 
-By default, the Angular CLI supports setting the deploy URL of the application with the [`build`](https://angular.io/cli/build) command parameter `--deploy-url`.
+By default, Angular CLI supports setting the deploy URL of the application with the [`build`](https://angular.io/cli/build) command parameter `--deploy-url`.
 As this is only supplied as a build-time setting, the required flexibility for the Intershop PWA cannot be achieved.
 
-For example, if the Intershop PWA Docker image is deployed in multiple environments in an [Intershop CaaS](https://support.intershop.com/kb/index.php?c=Search&qoff=0&qtext=Guide+What+is+CaaS) context, every environment would have to build a new PWA.
+For example, if the Intershop PWA Docker image is deployed in multiple environments in an [Intershop CaaS](https://support.intershop.com/kb/index.php/Display/29S118) context, every environment would have to build a new PWA.
 
 Therefore this functionality is not used out of the box.
 However, it is possible to dynamically configure the deploy URL as a runtime setting for the [SSR container][guide-ssr-container].
 
 ## Setting Deploy URL Dynamically
 
-### Problem Analysis
+### Problem
 
 To solve this problem, individual problems had to be solved:
 
@@ -33,7 +33,7 @@ To solve this problem, individual problems had to be solved:
 
 4. The PWA code itself contains relative and absolute references to the `assets` folder (i.e. images).
 
-### Solution Concept
+### Solution
 
 The solution can be schemed as follows:
 
@@ -42,13 +42,13 @@ The solution can be schemed as follows:
   - Placeholders are replaced with absolute deployment URLs.
   - References to the `assets` folder are transformed into absolute URLs pointing to the deployment URLs.
 
-This way, the setting of the deployment URL becomes a runtime setting and can be changed without rebuilding the Intershop PWA.
+This way, setting the deployment URL becomes a runtime setting and can be changed without rebuilding the Intershop PWA.
 
 ### Building with Dynamic Deploy URL
 
-The PWA client-side application has to be built using `ng build ... --deploy-url=DEPLOY_URL_PLACEHOLDER`, which will introduce a placeholder for all deployment-dependent functionality.
+The PWA client-side application has to be built using `ng build ... --deploy-url=DEPLOY_URL_PLACEHOLDER`, which introduces a placeholder for all deployment-dependent functionality.
 
-This placeholder is then dynamically replaced by the SSR process using the environment variable `DEPLOY_URL` (i.e. by setting it on the [SSR container][guide-ssr-container]).
+This placeholder is then dynamically replaced by the SSR process using the environment variable `DEPLOY_URL` (i.e. by setting it at the [SSR container][guide-ssr-container]).
 If no `DEPLOY_URL` is supplied, the fallback `/` is applied.
 
 This placeholder can also be replaced statically when no SSR process is used in the deployment by running the script `npx ts-node scripts/set-deploy-url <deploy-url>`.
