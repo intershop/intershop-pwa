@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
@@ -15,12 +16,13 @@ export class BasketPageComponent implements OnInit {
   basketLoading$: Observable<boolean>;
   basketError$: Observable<HttpError>;
 
-  constructor(private checkoutFacade: CheckoutFacade) {}
+  constructor(private checkoutFacade: CheckoutFacade, private shoppingFacade: ShoppingFacade) {}
 
   ngOnInit() {
     this.basket$ = this.checkoutFacade.basket$;
     this.basketLoading$ = this.checkoutFacade.basketLoading$;
     this.basketError$ = this.checkoutFacade.basketError$;
+    const a$ = this.shoppingFacade.foo();
   }
 
   nextStep() {
