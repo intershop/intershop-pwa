@@ -1,30 +1,30 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { UserCostCenter } from 'ish-core/models/cost-center/cost-center.model';
 
+import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
-import { loadUserCostCenter, loadUserCostCenterFail, loadUserCostCenterSuccess } from './cost-center.actions';
+import { loadCostCenter, loadCostCenterFail, loadCostCenterSuccess } from './cost-center.actions';
 
-export const costCenterAdapter = createEntityAdapter<UserCostCenter>();
+export const costCenterAdapter = createEntityAdapter<CostCenter>();
 
-export interface CostCenterState extends EntityState<UserCostCenter> {
+export interface CostCenterState extends EntityState<CostCenter> {
   loading: boolean;
   error: HttpError;
-  userCostCenter: UserCostCenter;
+  costCenter: CostCenter;
 }
 
 const initialState: CostCenterState = costCenterAdapter.getInitialState({
   loading: false,
   error: undefined,
-  userCostCenter: undefined,
+  costCenter: undefined,
 });
 
 export const costCenterReducer = createReducer(
   initialState,
-  setLoadingOn(loadUserCostCenter),
-  setErrorOn(loadUserCostCenterFail),
-  unsetLoadingAndErrorOn(loadUserCostCenterSuccess),
-  on(loadUserCostCenterSuccess, (state, action) => costCenterAdapter.addOne(action.payload.userCostCenter, state))
+  setLoadingOn(loadCostCenter),
+  setErrorOn(loadCostCenterFail),
+  unsetLoadingAndErrorOn(loadCostCenterSuccess),
+  on(loadCostCenterSuccess, (state, action) => costCenterAdapter.addOne(action.payload.costCenter, state))
 );

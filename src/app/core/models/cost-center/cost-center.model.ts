@@ -1,10 +1,10 @@
-export interface UserCostCenter {
-  elements: UserCostCenterItem[];
+export interface CostCenter {
+  elements: CostCenterItem[];
   name: string;
   total: number;
 }
 
-export interface UserCostCenterItem {
+export interface CostCenterItem {
   id: string;
   name: string;
   roles: string[];
