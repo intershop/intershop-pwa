@@ -12,11 +12,13 @@ export const costCenterAdapter = createEntityAdapter<UserCostCenter>();
 export interface CostCenterState extends EntityState<UserCostCenter> {
   loading: boolean;
   error: HttpError;
+  userCostCenter: UserCostCenter;
 }
 
 const initialState: CostCenterState = costCenterAdapter.getInitialState({
   loading: false,
   error: undefined,
+  userCostCenter: undefined,
 });
 
 export const costCenterReducer = createReducer(
@@ -24,5 +26,5 @@ export const costCenterReducer = createReducer(
   setLoadingOn(loadUserCostCenter),
   setErrorOn(loadUserCostCenterFail),
   unsetLoadingAndErrorOn(loadUserCostCenterSuccess),
-  on(loadUserCostCenterSuccess, (state, action) => costCenterAdapter.upsertMany(action.payload.userCostCenter, state))
+  on(loadUserCostCenterSuccess, (state, action) => costCenterAdapter.addOne(action.payload.userCostCenter, state))
 );
