@@ -1,0 +1,7 @@
+<div *ngIf="product.attachments && product.attachments.length">
+  <ng-container *ngFor="let attachment of product.attachments">
+    <strong>{{ attachment.name }}</strong>
+    <a class="download-link" [href]="">{{ 'product.attachments.download.link' | translate }}</a>
+    <p class="product-attachments-list-item-description">{{ attachment.description }}</p>
+  </ng-container>
+</div>

@@ -215,6 +215,7 @@ export class ProductMapper {
           data.attributeGroups.PRODUCT_DETAIL_ATTRIBUTES.attributes) ||
         data.attributes,
       attributeGroups: data.attributeGroups,
+      attachments: data.attachments,
       images: this.imageMapper.fromImages(data.images),
       listPrice: PriceMapper.fromData(data.listPrice),
       salePrice: PriceMapper.fromData(data.salePrice),

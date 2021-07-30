@@ -1,3 +1,4 @@
+import { Attachment } from 'ish-core/models/attachment/attachment.model';
 import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Image } from 'ish-core/models/image/image.model';
@@ -16,6 +17,7 @@ export interface Product {
   stepOrderQuantity: number;
   attributes: Attribute[];
   attributeGroups?: { [id: string]: AttributeGroup };
+  attachments?: Attachment[];
   images: Image[];
   listPrice: Price;
   salePrice: Price;

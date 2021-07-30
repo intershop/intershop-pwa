@@ -753,6 +753,8 @@
   "product.add_to_cart.link": "Add to Cart",
   "product.add_to_cart.retailset.link": "Add item(s) to Cart",
   "product.add_to_wishlist.link": "Add to Wish List",
+  "product.attachments.download.link": "Download",
+  "product.attachments.heading": "Documents",
   "product.available_in_different_configuration": "Not Available",
   "product.choose_another_variation.link": "Choose Another Variation",
   "product.choose_variation.link": "Choose Variation",
