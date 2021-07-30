@@ -12,6 +12,7 @@ export class QuickorderPage {
     fillFormField(`[data-testing-id="quickorder-line-${idx}"]`, 'sku', sku);
     if (quantity !== undefined) {
       fillFormField(`[data-testing-id="quickorder-line-${idx}"]`, 'quantity', quantity);
+      return this;
     }
   }
 

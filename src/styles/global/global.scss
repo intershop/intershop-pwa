@@ -76,6 +76,14 @@ a {
   }
 }
 
+.link-separator {
+  &::before {
+    margin-right: 7.5px;
+    margin-left: 7.5px;
+    content: '|';
+  }
+}
+
 .ng-fa-icon {
   &.footer-icon::before {
     font-size: 50px;

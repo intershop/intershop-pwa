@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subject } from 'rxjs';
-import { debounceTime, mapTo, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -92,7 +92,7 @@ export class DirectOrderComponent implements OnInit, OnDestroy {
                   control.setErrors(ProductHelper.isFailedLoading(product) ? { validProduct: false } : undefined);
                   this.loading = false;
                 }),
-                mapTo(undefined)
+                takeUntil(this.destroy$)
               ),
             message: () => this.translate.get('quickorder.page.error.invalid.product', { 0: this.model.sku }),
           },

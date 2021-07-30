@@ -30,6 +30,7 @@
           [disabled]="cannotDecrease$ | async"
           [attr.data-testing-id]="'decrease-quantity-' + id"
           translate
+          tabindex="-1"
         >
           product.quantity.decrease.text
         </button>
@@ -40,6 +41,7 @@
           [disabled]="cannotIncrease$ | async"
           [attr.data-testing-id]="'increase-quantity-' + id"
           translate
+          tabindex="-1"
         >
           product.quantity.increase.text
         </button>
