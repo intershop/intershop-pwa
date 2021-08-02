@@ -536,7 +536,7 @@
         "effects.ts$": {
           "facade": "Effects should not use facades."
         },
-        "^(?!.*/(utils|sfe-adapter)/.*$).*service.ts$": {
+        "^(?!.*/(utils)/.*$).*service.ts$": {
           // "ngrx": "Services should not use NgRx.",
           "router": "Services should not use the Angular Router."
         }
@@ -563,8 +563,6 @@
           "^.*projects/[a-z][a-z0-9-]+/src/app/exports/index.ts",
           // models
           "^.*(/src/app/core|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/models/([a-z][a-z0-9-]+)/\\2\\.(pipe|helper|interface|mapper|types)\\.ts$",
-          // cms
-          "^.*/src/app/shared/cms/sfe-adapter/.*\\.ts$",
           // facades
           "^.*(/src/app/core|/src/app/extensions/[a-z][a-z0-9-]+|projects/[a-z][a-z0-9-]+/src/app)/facades/(index|[a-z][a-z0-9-]+\\.facade)\\.ts$",
           // ngrx
@@ -624,10 +622,6 @@
             "file": "src/app/pages/<kebab>\\.module\\.ts$"
           },
           // cms
-          {
-            "name": "^Sfe.*$",
-            "file": ".*/shared/cms/sfe-adapter/.*\\.ts$"
-          },
           {
             "name": "^(CMS[A-Z].*Page)Component$",
             "file": ".*/<kebab>/<kebab>\\.component\\.ts$"

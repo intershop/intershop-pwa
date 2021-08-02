@@ -15,7 +15,6 @@ import { CMSStaticPageComponent } from './components/cms-static-page/cms-static-
 import { CMSTextComponent } from './components/cms-text/cms-text.component';
 import { CMSVideoComponent } from './components/cms-video/cms-video.component';
 import { CMS_COMPONENT } from './configurations/injection-keys';
-import { SfeAdapterService } from './sfe-adapter/sfe-adapter.service';
 
 @NgModule({
   providers: [
@@ -133,8 +132,4 @@ import { SfeAdapterService } from './sfe-adapter/sfe-adapter.service';
     },
   ],
 })
-export class CMSModule {
-  constructor(sfeAdapter: SfeAdapterService) {
-    sfeAdapter.init();
-  }
-}
+export class CMSModule {}

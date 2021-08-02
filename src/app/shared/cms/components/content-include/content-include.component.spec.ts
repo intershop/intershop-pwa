@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
-import { EMPTY, of } from 'rxjs';
+import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
@@ -33,7 +33,6 @@ describe('Content Include Component', () => {
 
     cmsFacade = mock(CMSFacade);
     when(cmsFacade.contentInclude$(anything())).thenReturn(of(include));
-    when(cmsFacade.contentIncludeSfeMetadata$(anything())).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
       declarations: [ContentIncludeComponent, MockComponent(ContentPageletComponent)],

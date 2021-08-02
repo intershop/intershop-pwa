@@ -12,7 +12,6 @@ import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.
 import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { CMSTextComponent } from 'ish-shared/cms/components/cms-text/cms-text.component';
 import { CMS_COMPONENT } from 'ish-shared/cms/configurations/injection-keys';
-import { SfeAdapterService } from 'ish-shared/cms/sfe-adapter/sfe-adapter.service';
 
 import { ContentPageletComponent } from './content-pagelet.component';
 
@@ -21,11 +20,9 @@ describe('Content Pagelet Component', () => {
   let fixture: ComponentFixture<ContentPageletComponent>;
   let element: HTMLElement;
   let pagelet: ContentPagelet;
-  let sfeAdapterService: SfeAdapterService;
   let cmsFacade: CMSFacade;
 
   beforeEach(async () => {
-    sfeAdapterService = mock(SfeAdapterService);
     cmsFacade = mock(CMSFacade);
 
     const appFacade = mock(AppFacade);
@@ -40,7 +37,6 @@ describe('Content Pagelet Component', () => {
           useValue: { definitionQualifiedName: 'fq-defined', class: CMSTextComponent },
           multi: true,
         },
-        { provide: SfeAdapterService, useValue: instance(sfeAdapterService) },
         { provide: CMSFacade, useFactory: () => instance(cmsFacade) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: APP_BASE_HREF, useValue: '/' },
@@ -82,36 +78,10 @@ describe('Content Pagelet Component', () => {
   it('should render assigned template if name matches', () => {
     pagelet.definitionQualifiedName = 'fq-defined';
     when(cmsFacade.pagelet$(anything())).thenReturn(of(createContentPageletView(pagelet)));
-    when(sfeAdapterService.isInitialized()).thenReturn(false);
 
     expect(() => component.ngOnChanges()).not.toThrow();
     expect(() => fixture.detectChanges()).not.toThrow();
 
     expect(element).toMatchInlineSnapshot(`<ish-cms-text><span>foo</span></ish-cms-text>`);
-    expect(element.getAttribute('data-sfe')).toBeFalsy();
-  });
-
-  it('should assign sfe metadata if service is initialized', () => {
-    pagelet.definitionQualifiedName = 'fq-defined';
-    when(cmsFacade.pagelet$(anything())).thenReturn(of(createContentPageletView(pagelet)));
-    when(sfeAdapterService.isInitialized()).thenReturn(true);
-
-    expect(() => component.ngOnChanges()).not.toThrow();
-    expect(() => fixture.detectChanges()).not.toThrow();
-
-    expect(element).toMatchInlineSnapshot(`<ish-cms-text><span>foo</span></ish-cms-text>`);
-    expect(element.getAttribute('data-sfe')).toBeTruthy();
-    expect(JSON.parse(element.getAttribute('data-sfe'))).toMatchInlineSnapshot(`
-      Object {
-        "displayName": "pagelet",
-        "displayType": "defined",
-        "id": "pagelet:domain:id",
-        "renderObject": Object {
-          "domainId": "domain",
-          "id": "id",
-          "type": "Pagelet",
-        },
-      }
-    `);
   });
 });

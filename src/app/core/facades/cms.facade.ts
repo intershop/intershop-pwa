@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, combineLatest } from 'rxjs';
-import { delay, filter, map, switchMap, tap } from 'rxjs/operators';
+import { delay, switchMap, tap } from 'rxjs/operators';
 
 import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.model';
 import { CategoryHelper } from 'ish-core/models/category/category.helper';
@@ -14,12 +14,10 @@ import { getViewContext, loadViewContextEntrypoint } from 'ish-core/store/conten
 import { getPGID } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
-import { SfeAdapterService } from 'ish-shared/cms/sfe-adapter/sfe-adapter.service';
-import { SfeMapper } from 'ish-shared/cms/sfe-adapter/sfe.mapper';
 
 @Injectable({ providedIn: 'root' })
 export class CMSFacade {
-  constructor(private store: Store, private sfeAdapter: SfeAdapterService) {}
+  constructor(private store: Store) {}
 
   contentPage$ = this.store.pipe(select(getSelectedContentPage));
   contentPageLoading$ = this.store.pipe(select(getContentPageLoading));
@@ -29,14 +27,6 @@ export class CMSFacade {
       delay(0), // delay ensures the apiToken cookie is deleted before a cms request without a pgid is triggered
       tap(([includeId]) => this.store.dispatch(loadContentInclude({ includeId }))),
       switchMap(([includeId]) => this.store.pipe(select(getContentInclude(includeId)), whenTruthy()))
-    );
-  }
-
-  contentIncludeSfeMetadata$(includeId: string) {
-    return this.store.pipe(select(getContentInclude(includeId))).pipe(
-      filter(() => this.sfeAdapter.isInitialized()),
-      whenTruthy(),
-      map(include => SfeMapper.mapIncludeViewToSfeMetadata(include))
     );
   }
 
