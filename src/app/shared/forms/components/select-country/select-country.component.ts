@@ -3,6 +3,9 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } f
 import { Country } from 'ish-core/models/country/country.model';
 import { SelectComponent, SelectOption } from 'ish-shared/forms/components/select/select.component';
 
+/**
+ * @deprecated use formly instead
+ */
 @Component({
   selector: 'ish-select-country',
   templateUrl: '../select/select.component.html',

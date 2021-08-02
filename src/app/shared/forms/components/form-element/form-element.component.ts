@@ -3,6 +3,9 @@ import { AbstractControl, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { UUID } from 'angular2-uuid';
 
+/**
+ * @deprecated use formly instead
+ */
 // tslint:disable-next-line: use-component-change-detection
 @Component({ template: '' })
 // tslint:disable-next-line: component-creation-test

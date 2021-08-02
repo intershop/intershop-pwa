@@ -8,6 +8,9 @@ export interface SelectOption {
   label: string;
 }
 
+/**
+ * @deprecated use formly instead
+ */
 @Component({
   selector: 'ish-select',
   templateUrl: './select.component.html',
