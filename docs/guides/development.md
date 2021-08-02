@@ -59,8 +59,8 @@ For usage instructions check the comments in that file.
 ## Development Tools
 
 The used IDE or editor should support the [Prettier - Code formatter](https://prettier.io) that is configured to apply a common formatting style on all TypeScript, Javascript, JSON, HTML, SCSS and other files.
-In addition, especially for the file types that are not handled by Prettier, the editor needs to follow the [EditorConfig](http://editorconfig.org) configuration of the project to help maintain consistent coding styles.
-Besides that the project has [TSLint](https://palantir.github.io/tslint) and [Stylelint](https://stylelint.io) rules configured to unify the coding style even further.
+In addition, especially for the file types that are not handled by Prettier, the editor needs to follow the [EditorConfig](https://editorconfig.org) configuration of the project to help maintain consistent coding styles.
+Besides that the project has [TSLint](https://palantir.github.io/tslint/) and [Stylelint](https://stylelint.io) rules configured to unify the coding style even further.
 
 The recommended IDE for the Intershop PWA development is
 
@@ -100,8 +100,8 @@ As Angular runs in the browser, all the development tool functionality provided 
 ### Browser Extensions
 
 - [Redux DevTools](https://github.com/reduxjs/redux-devtools) for debugging application state changes
-
-- [Angular Augury](https://augury.angular.io) for debugging and profiling Angular applications
+- [Angular DevTools](https://angular.io/guide/devtools) for debugging and profiling Angular applications in Chrome
+- [Angular Augury](https://augury.rangle.io/) for debugging and profiling Angular applications in Firefox (no longer maintained)
 
 ### Tackling Memory Problems
 
@@ -110,18 +110,18 @@ THis can be done by setting the environment variable `NODE_OPTIONS=--max_old_spa
 
 ### Recommend Articles
 
-[Debugging Angular CLI Applications in Visual Studio Code](https://scotch.io/tutorials/debugging-angular-cli-applications-in-visual-studio-code)
+[Debugging Angular CLI Applications in Visual Studio Code](https://www.digitalocean.com/community/tutorials/how-to-debug-angular-cli-applications-in-visual-studio-code)
 
 - How to configure Visual Studio Code for debugging an Angular application.
 
-[A Guide To Debugging Angular Applications](https://medium.com/front-end-weekly/a-guide-to-debugging-angular-applications-5a36bd88b4cf)
+[A Guide To Debugging Angular Applications](https://medium.com/@vamsivempati/a-guide-to-debugging-angular-applications-5a36bd88b4cf)
 
 - Use `tap` to log output in RxJS streams. We introduced an operator called `log` for easier use.
 - When inspecting an element in the browser development tools, you can then use `ng.probe($0).componentInstance` to get access to the Angular component.
 - Use `ng.profiler.timeChangeDetection({record:true})` to profile a change detection cycle of the current page.
 - Use the `json` pipe in Angular to print out data on templates. Easy-to-use snippets are available with `ng-debug` and `ng-debug-async` .
 
-[Everything you need to know about debugging Angular applications](https://indepth.dev/everything-you-need-to-know-about-debugging-angular-applications)
+[Everything you need to know about debugging Angular applications](https://indepth.dev/posts/1138/everything-you-need-to-know-about-debugging-angular-applications)
 
 - Provides a more in-depth view about internals.
 

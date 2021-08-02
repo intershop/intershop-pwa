@@ -1,7 +1,6 @@
 .gradle
 build
 
-docs
 e2e
 nginx
 

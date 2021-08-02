@@ -91,7 +91,6 @@ glob('**/*.md')
     }
 
     const filtered = externalLinks
-      .map(link => link.replace(/\/$/, ''))
       .filter((val, idx, arr) => arr.indexOf(val) === idx)
       .filter(
         link =>

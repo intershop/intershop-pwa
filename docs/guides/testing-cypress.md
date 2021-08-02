@@ -52,4 +52,4 @@ As a rule of thumb, whenever the user triggers an action, it should be represent
 [concept-testing]: ../concepts/testing.md
 [concept-testing-pageobject]: ../concepts/testing.md#pageobject-pattern
 [guide-unit-tests]: ./testing-jest.md
-[cypress]: https://cypress.io
+[cypress]: https://www.cypress.io
