@@ -5,7 +5,8 @@ import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
+
+import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/payment-save-checkbox.component';
 
 import { PaymentPayoneCreditcardComponent } from './payment-payone-creditcard.component';
 
@@ -16,7 +17,7 @@ describe('Payment Payone Creditcard Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(CheckboxComponent), PaymentPayoneCreditcardComponent],
+      declarations: [MockComponent(PaymentSaveCheckboxComponent), PaymentPayoneCreditcardComponent],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
@@ -77,25 +78,13 @@ describe('Payment Payone Creditcard Component', () => {
     verify(emitter.emit(anything())).never();
   });
 
-  it('should return true when security code check required is enabeled', () => {
+  it('should return true when security code check required is enabled', () => {
     component.paymentMethod.hostedPaymentPageParameters = [{ name: 'isSecurityCheckCodeRequired', value: 'true' }];
     expect(component.isSecurityCodeCheckRequired()).toBeTruthy();
   });
 
-  it('should return false when security code check required is disabeled', () => {
+  it('should return false when security code check required is disabled', () => {
     component.paymentMethod.hostedPaymentPageParameters = [{ name: 'isSecurityCheckCodeRequired', value: 'false' }];
     expect(component.isSecurityCodeCheckRequired()).toBeFalsy();
-  });
-
-  it('should not show a saveForLater checkbox if payment method does not allow it', () => {
-    fixture.detectChanges();
-    expect(element.querySelector('[data-testing-id=save-for-later-input]')).toBeFalsy();
-  });
-
-  it('should show a saveForLater checkbox if payment method allows it', () => {
-    component.paymentMethod.saveAllowed = true;
-
-    fixture.detectChanges();
-    expect(element.querySelector('[data-testing-id=save-for-later-input]')).toBeTruthy();
   });
 });

@@ -9,7 +9,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -27,7 +27,8 @@ declare var Payone: any;
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, OnInit {
-  payoneCreditCardForm: FormGroup;
+  payoneCreditCardForm = new FormGroup({});
+
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {}
 
   /**
@@ -59,9 +60,6 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
   generalErrorMessage: string;
 
   ngOnInit() {
-    this.payoneCreditCardForm = new FormGroup({
-      saveForLater: new FormControl(true),
-    });
     // keep reference for payone cc component
     const thisComp = this;
 
@@ -97,7 +95,7 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
   protected getParamValue(name: string, errorMessage: string): string {
     const parameter = this.paymentMethod.hostedPaymentPageParameters.find(param => param.name === name);
     if (!parameter || !parameter.value) {
-      this.payoneCreditCardForm.controls.error.setValue(errorMessage);
+      this.generalErrorMessage = errorMessage;
       return;
     }
     return parameter.value;
@@ -106,8 +104,8 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
   loadScript() {
     // load script only once if component becomes visible
     if (this.activated && !this.scriptLoaded) {
-      const request = JSON.parse(this.getParamValue('request', 'checkout.credit_card.param.error.notFound'));
-      const config = JSON.parse(this.getParamValue('config', 'checkout.credit_card.param.error.notFound'));
+      const request = JSON.parse(this.getParamValue('request', 'checkout.credit_card.config.error.notFound'));
+      const config = JSON.parse(this.getParamValue('config', 'checkout.credit_card.config.error.notFound'));
 
       this.scriptLoaded = true;
       this.scriptLoader
@@ -125,10 +123,9 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
   }
 
   /**
-   * cancel new payment instrument, hides and resets the parameter form
+   * cancel new payment instrument and hides the form
    */
   cancelNewPaymentInstrument() {
-    this.payoneCreditCardForm.reset();
     this.cancel.emit();
   }
 
