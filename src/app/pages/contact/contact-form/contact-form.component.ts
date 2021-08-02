@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { map, shareReplay, startWith } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Contact } from 'ish-core/models/contact/contact.model';
@@ -85,7 +85,8 @@ export class ContactFormComponent implements OnInit {
           required: true,
           options: this.accountFacade.contactSubjects$().pipe(
             startWith([] as string[]),
-            map(subjects => subjects.map(subject => ({ value: subject, label: subject })))
+            map(subjects => subjects.map(subject => ({ value: subject, label: subject }))),
+            shareReplay(1)
           ),
           placeholder: 'account.option.select.text',
         },
