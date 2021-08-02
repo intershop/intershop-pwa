@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, Output } 
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core/lib/core';
 import { BehaviorSubject, Observable, Subject, combineLatest } from 'rxjs';
-import { filter, map, switchMapTo, take, takeUntil } from 'rxjs/operators';
+import { filter, map, shareReplay, take, takeUntil } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -33,6 +33,8 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
 
   shippingAddress$: Observable<Address>;
   addresses$: Observable<Address[]>;
+  customerAddresses$: Observable<Address[]>;
+
   basketInvoiceAndShippingAddressEqual$: Observable<boolean>;
   basketShippingAddressDeletable$: Observable<boolean>;
 
@@ -50,6 +52,7 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.customerAddresses$ = this.accountFacade.addresses$().pipe(shareReplay(1));
     this.shippingAddress$ = this.checkoutFacade.basketShippingAddress$;
     this.basketInvoiceAndShippingAddressEqual$ = this.checkoutFacade.basketInvoiceAndShippingAddressEqual$;
     this.basketShippingAddressDeletable$ = this.checkoutFacade.basketShippingAddressDeletable$;
@@ -66,13 +69,11 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
       .subscribe(label => (this.emptyOptionLabel = label));
 
     // prepare data for shipping select drop down
-    this.addresses$ = combineLatest([this.accountFacade.addresses$(), this.shippingAddress$]).pipe(
+    this.addresses$ = combineLatest([this.customerAddresses$, this.shippingAddress$]).pipe(
       map(
         ([addresses, shippingAddress]) =>
           addresses &&
-          addresses
-            .filter(address => address.shipToAddress)
-            .filter(address => address.id !== (shippingAddress && shippingAddress.id))
+          addresses.filter(address => address.shipToAddress).filter(address => address.id !== shippingAddress?.id)
       )
     );
 
@@ -97,22 +98,15 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
     ];
 
     // preassign a shipping address if the user has only one shipping address
-    this.checkoutFacade.basket$
+    combineLatest([this.addresses$, this.checkoutFacade.basket$])
       .pipe(
-        whenTruthy(),
         // prevent assigning the address at an anonymous basket after login
-        filter(basket => !!basket.customerNo),
+        filter(([addresses, basket]) => !!basket?.customerNo && !!addresses?.length),
         take(1),
-        switchMapTo(
-          combineLatest([this.addresses$, this.shippingAddress$]).pipe(
-            filter(([addresses]) => addresses && !!addresses.length),
-            take(1)
-          )
-        ),
         takeUntil(this.destroy$)
       )
-      .subscribe(([addresses, shippingAddress]) => {
-        if (!shippingAddress && addresses.length === 1) {
+      .subscribe(([addresses, basket]) => {
+        if (!basket.commonShipToAddress && addresses.length === 1) {
           this.checkoutFacade.assignBasketAddress(addresses[0].id, 'shipping');
         }
       });
