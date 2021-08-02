@@ -73,8 +73,13 @@ const fields: FormlyFieldConfig[] = [
 ## Customizing Form Logic
 
 There are many ways to change the behavior of a form and its fields.
-Custom field types, wrappers, extensions and extras are registered in [formly.module.ts](../../src/app/shared/formly/formly.module.ts) using the `forRoot()` function.
-For more information about what can be done in the `forRoot()` function, refer to the official documentation and [`ConfigOption`](https://github.com/ngx-formly/ngx-formly/blob/main/src/core/src/lib/models/config.ts#L49) type definition.
+Custom field types, wrappers, extensions and extras are registered in [formly.module.ts](../../src/app/shared/formly/formly.module.ts) using the `forChild()` function.
+For more information about what can be done in the `forChild()` function, refer to the official documentation and [`ConfigOption`](https://github.com/ngx-formly/ngx-formly/blob/main/src/core/src/lib/models/config.ts#L49) type definition.
+Note that we use the `forChild` method here instead of the normal `forRoot` approach.
+This is because the only difference between the two approaches is that `forRoot` additionally provides the `FormlyConfig` service which is provided in root anyways.
+Using `forChild` allows us to solve some injection issues in lazy loaded modules.
+
+If you need to - for some reason - completely override the Formly configuration in a module lower in the injection tree, feel free to use the `forRoot` method and thus provide a fresh instance of the `FormlyConfig` service.
 
 ### Custom Field Types
 
@@ -100,10 +105,10 @@ export class ExampleInputFieldComponent extends FieldType {
 <input [type]="to.type" [formControl]="formControl" [formlyAttributes]="field" />
 ```
 
-Register the custom type in the `forRoot()` function:
+Register the custom type in the `formly.module.ts` `forChild()` function:
 
 ```typescript
-FormlyModule.forRoot({
+FormlyModule.forChild({
   types: [{ name: 'example-input-field', component: ExampleInputFieldComponent }],
   // ...
 });
@@ -129,11 +134,11 @@ A simple example wrapper that adds a label to the field could look like this:
 export class ExampleLabelWrapperComponent extends FieldWrapper {}
 ```
 
-Register the custom wrapper in the `forRoot()` function.
+Register the custom wrapper in the `forChild()` function.
 It is possible to supply field types with default wrappers that will always be applied, even if the corresponding `FormlyFieldConfig` does not contain any wrappers:
 
 ```typescript
-FormlyModule.forRoot({
+FormlyModule.forChild({
   wrappers: [{ name: 'example-label-wrapper', component: ExampleLabelWrapperComponent }],
   types: [
     {
@@ -164,10 +169,10 @@ export const labelDefaultValueExtension: FormlyExtension = {
 };
 ```
 
-Register the custom extension in the `forRoot()` function:
+Register the custom extension in the `forChild()` function:
 
 ```typescript
-FormlyModule.forRoot({
+FormlyModule.forChild({
   extensions: [{ name: 'labelDefaultValueExtension', extension: labelDefaultValueExtension }],
   // ...
 });
@@ -175,7 +180,7 @@ FormlyModule.forRoot({
 
 ### Extras
 
-The `extras` argument is passed to the `forRoot()` function to customize additional Formly behavior.
+The `extras` argument is passed to the `forChild()` function to customize additional Formly behavior.
 Refer to the [type definition](https://github.com/ngx-formly/ngx-formly/blob/fe2314d5f50ff61d46af01175b158dc3f9fd4e4e/src/core/src/lib/models/config.ts#L55) for more information.
 
 ### Formly Config Service
@@ -191,7 +196,7 @@ To facilitate this, the `formly/dev/testing` folder contains a `FormlyTestingCom
 - `FormlyTestingExampleComponent` is a type that contains an empty input field and can be used as an example field type.
 - `FormlyTestingFieldgroupExampleComponent` is a type that renders all configs in the `fieldGroup` attribute of the field.
 
-In addition, to test components or pages that use Formly, import the `FormlyTestingModule`.
+In addition, **to test components or pages that use Formly, import the `FormlyTestingModule`**.
 It defines and exports a FormlyModule with pre-configured dummy field types and wrappers that match the `FormlyModule`.
 
 ### Testing Custom Types

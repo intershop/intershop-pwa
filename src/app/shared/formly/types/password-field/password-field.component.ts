@@ -4,6 +4,15 @@ import { FieldType, FormlyFieldConfig } from '@ngx-formly/core';
 
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
+/**
+ * Type for an input field of type 'password'.
+ *
+ * @defaultWrappers form-field-horizontal & validation
+ *
+ * @usageNotes
+ * Defines some default validators and messages. These can be overriden but if you just want an input
+ * field of type 'password', consider using ``text-input-field``.
+ */
 @Component({
   selector: 'ish-password-field',
   templateUrl: './password-field.component.html',

@@ -2,6 +2,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { FieldType, FormlyFieldConfig } from '@ngx-formly/core';
 
+/**
+ * Type for an input field with predefined validators.
+ *
+ * @defaultWrappers form-field-horizontal & validation
+ *
+ */
 @Component({
   selector: 'ish-email-field',
   templateUrl: './email-field.component.html',
