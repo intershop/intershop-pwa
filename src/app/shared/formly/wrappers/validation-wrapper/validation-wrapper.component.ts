@@ -16,4 +16,12 @@ import { FieldWrapper } from '@ngx-formly/core';
   templateUrl: './validation-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class ValidationWrapperComponent extends FieldWrapper {}
+export class ValidationWrapperComponent extends FieldWrapper {
+  showValidationIcons() {
+    return (
+      Object.keys(this.field.validators ?? {}).length ||
+      Object.keys(this.field.asyncValidators ?? {}).length ||
+      this.field.templateOptions?.required
+    );
+  }
+}

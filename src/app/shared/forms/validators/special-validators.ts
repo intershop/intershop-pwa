@@ -1,5 +1,18 @@
 import { FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 
+export function formlyValidation<T extends (control: FormControl) => { [error: string]: { valid: boolean } }>(
+  name: string,
+  validator: T
+): (control: FormControl) => boolean {
+  return c => {
+    const validationResult = validator(c);
+    if (!c) {
+      return;
+    }
+    return validationResult?.[name]?.valid ?? true;
+  };
+}
+
 export class SpecialValidators {
   /**
    * password validator: char + numbers, min length 7
@@ -27,7 +40,7 @@ export class SpecialValidators {
     return integerPattern.test(control.value) ? undefined : { integer: { valid: false } };
   }
 
-  static email(control: FormControl) {
+  static email(control: FormControl): { [error: string]: { valid: boolean } } {
     /*
      * very simplified email matching
      * - local part mustn't start or end with dot
@@ -37,10 +50,10 @@ export class SpecialValidators {
      */
     return /^([\w\-\~]+\.)*[\w\-\~]+@(([\w][\w\-]*)?[\w]\.)+[a-zA-Z]{2,}$/.test(control.value)
       ? undefined
-      : { email: true };
+      : { email: { valid: false } };
   }
 
-  static phone(control: FormControl) {
+  static phone(control: FormControl): { [error: string]: { valid: boolean } } {
     /*
      * simplified phone matching
      * - phone number must start with + or digit
@@ -51,7 +64,7 @@ export class SpecialValidators {
     return control.value
       ? /^((?:\+?\d{7,15})$)|^((\(?\d{3}\)?(?: |-)?){2}\(?\d{3,4}\)?)$/.test(control.value)
         ? undefined
-        : { phone: true }
+        : { phone: { valid: false } }
       : undefined;
   }
 
