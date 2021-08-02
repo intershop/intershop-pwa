@@ -20,9 +20,10 @@ import { SelectComponent } from './components/select/select.component';
 import { TextareaComponent } from './components/textarea/textarea.component';
 import { ShowFormFeedbackDirective } from './directives/show-form-feedback.directive';
 
-const exportedComponents = [
+const exportedComponents = [FormControlFeedbackComponent, ShowFormFeedbackDirective];
+
+const deprecatedExportedComponents = [
   CheckboxComponent,
-  FormControlFeedbackComponent,
   InputBirthdayComponent,
   InputComponent,
   SelectAddressComponent,
@@ -30,7 +31,6 @@ const exportedComponents = [
   SelectCountryComponent,
   SelectRegionComponent,
   SelectTitleComponent,
-  ShowFormFeedbackDirective,
   TextareaComponent,
 ];
 
@@ -44,7 +44,7 @@ const exportedComponents = [
     RouterModule,
     TranslateModule,
   ],
-  declarations: [...exportedComponents],
-  exports: [...exportedComponents],
+  declarations: [...deprecatedExportedComponents, ...exportedComponents],
+  exports: [...deprecatedExportedComponents, ...exportedComponents],
 })
 export class FormsSharedModule {}
