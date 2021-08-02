@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject, combineLatest } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { shareReplay, take, takeUntil } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -34,7 +34,7 @@ export class CheckoutShippingPageComponent implements OnInit, OnDestroy {
     this.basket$ = this.checkoutFacade.basket$;
     this.loading$ = this.checkoutFacade.basketLoading$;
     this.basketError$ = this.checkoutFacade.basketError$;
-    this.shippingMethods$ = this.checkoutFacade.eligibleShippingMethods$();
+    this.shippingMethods$ = this.checkoutFacade.eligibleShippingMethods$().pipe(shareReplay(1));
     this.isBusinessCustomer$ = this.accountFacade.isBusinessCustomer$;
   }
 
