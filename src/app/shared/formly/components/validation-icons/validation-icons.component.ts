@@ -4,7 +4,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 /**
  * Component that displays either a cross or a checkmark to indicate validity.
  *
- * @templateOption **showValidity** - a function of type ``(field: FormlyFieldConfig) => boolean``
+ * @templateOption **showValidation** - a function of type ``(field: FormlyFieldConfig) => boolean``
  * that can be used to override the checkmark display condition.
  *
  */
