@@ -13,6 +13,7 @@ import { PaymentConcardisDirectdebitComponent } from './payment-concardis-direct
 import { PaymentConcardisComponent } from './payment-concardis/payment-concardis.component';
 import { PaymentCybersourceCreditcardComponent } from './payment-cybersource-creditcard/payment-cybersource-creditcard.component';
 import { PaymentParameterFormComponent } from './payment-parameter-form/payment-parameter-form.component';
+import { PaymentPayoneCreditcardComponent } from './payment-payone-creditcard/payment-payone-creditcard.component';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { PaymentParameterFormComponent } from './payment-parameter-form/payment-
     PaymentConcardisDirectdebitComponent,
     PaymentCybersourceCreditcardComponent,
     PaymentParameterFormComponent,
+    PaymentPayoneCreditcardComponent,
     PaymentSaveCheckboxComponent,
   ],
 })

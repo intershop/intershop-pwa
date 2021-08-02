@@ -25,6 +25,7 @@ import { PaymentConcardisCreditcardComponent } from '../payment-concardis-credit
 import { PaymentConcardisDirectdebitComponent } from '../payment-concardis-directdebit/payment-concardis-directdebit.component';
 import { PaymentCybersourceCreditcardComponent } from '../payment-cybersource-creditcard/payment-cybersource-creditcard.component';
 import { PaymentParameterFormComponent } from '../payment-parameter-form/payment-parameter-form.component';
+import { PaymentPayoneCreditcardComponent } from '../payment-payone-creditcard/payment-payone-creditcard.component';
 
 import { CheckoutPaymentComponent } from './checkout-payment.component';
 
@@ -54,6 +55,7 @@ describe('Checkout Payment Component', () => {
         MockComponent(PaymentConcardisCreditcardCvcDetailComponent),
         MockComponent(PaymentConcardisDirectdebitComponent),
         MockComponent(PaymentCybersourceCreditcardComponent),
+        MockComponent(PaymentPayoneCreditcardComponent),
         MockComponent(PaymentSaveCheckboxComponent),
         MockDirective(ServerHtmlDirective),
         MockPipe(PricePipe),
