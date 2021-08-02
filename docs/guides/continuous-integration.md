@@ -37,7 +37,7 @@ To ensure that contributed code is properly formatted, run the formatter on the 
 
 ## Unit Testing
 
-[Jest](https://facebook.github.io/jest/) is used as a test runner.
+[Jest](https://jestjs.io/) is used as a test runner.
 All tests can and should be run on the CI server with `npm test`.
 
 Since jest is very flexible in accepting code with compile errors, the code integrity should be checked separately.

@@ -413,7 +413,7 @@ See [Three Ways to Test Angular Components](https://vsavkin.com/three-ways-to-te
 
 ### Be Careful When Using `toBeDefined`
 
-Be careful when using `toBeDefined`, because a dynamic language like JavaScript has another meaning of defined (see: [Is It Defined? toBeDefined, toBeUndefined](http://www.safaribooksonline.com/library/view/javascript-testing-with/9781449356729/ch04.html)).
+Be careful when using `toBeDefined`, because a dynamic language like JavaScript has another meaning of defined (see: [Is It Defined? toBeDefined, toBeUndefined](https://www.oreilly.com/library/view/javascript-testing-with/9781449356729/ch04.html)).
 
 > :warning: **Warning**  
 > Do not use `toBeDefined` if you really want to check for not null because technically 'null' is defined. Use `toBeTruthy` instead.

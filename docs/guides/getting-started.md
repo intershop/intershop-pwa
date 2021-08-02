@@ -24,7 +24,7 @@ The project can alternatively be run in production mode with `npm start`.
 
 An alternative development setup for the PWA is provided when using Visual Studio Code Remote - Containers to work in an isolated pre-configured project development environment.
 
-As prerequisite [Docker](https://docs.docker.com/get-docker) has to be installed on your development machine.
+As prerequisite [Docker](https://docs.docker.com/get-docker/) has to be installed on your development machine.
 Furthermore, [Visual Studio Code](https://code.visualstudio.com) with the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension has to be used as IDE.
 
 After cloning your local working copy (e.g. with VS Code), VSCode will ask you if you want to reopen the folder in a container.
@@ -71,7 +71,7 @@ Currently only _localhost_ or _127.0.0.1_ will work with the service worker sinc
 
 ## Running Tests
 
-Run `npm test` to start an on the fly test running environment to execute the unit tests via [Jest](https://facebook.github.io/jest/) once.
+Run `npm test` to start an on the fly test running environment to execute the unit tests via [Jest](https://jestjs.io/) once.
 To run Jest in watch mode with interactive interface, run `npm run test:watch`.
 
 Run `npm run e2e` to execute the end-to-end tests via [cypress](https://www.cypress.io/).
@@ -83,7 +83,7 @@ Head over to the [Testing Concept](../concepts/testing.md) documentation for mor
 
 Use `npm run lint` to run a static code analysis.
 
-For development make sure the used IDE or editor follows the [EditorConfig](http://editorconfig.org/) configuration of the project and uses [Prettier](https://prettier.io/) to help maintain consistent coding styles (see `.editorconfig` and `.prettierrc.json`).
+For development make sure the used IDE or editor follows the [EditorConfig](https://editorconfig.org/) configuration of the project and uses [Prettier](https://prettier.io/) to help maintain consistent coding styles (see `.editorconfig` and `.prettierrc.json`).
 
 Use `npm run format` to perform a formatting run on the code base with Prettier.
 

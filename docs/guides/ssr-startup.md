@@ -87,7 +87,7 @@ Extension `crt` is the certificate and `key` represents the private key.
 - [Guide - Google Tag Manager](./google-tag-manager.md)
 - [Guide - Monitoring with Prometheus](./prometheus-monitoring.md)
 - [PM2][pm2]
-- [YouTube - Server Side Rendering and Pre Rendering with Angular Universal](https://youtu.be/-VDOAjzLcvQ)
+- [YouTube - Server Side Rendering and Pre Rendering with Angular Universal](https://www.youtube.com/watch?v=-VDOAjzLcvQ)
 - [Google Developers - Rendering on the Web](https://developers.google.com/web/updates/2019/02/rendering-on-the-web)
 
 [concept-sso]: ../concepts/sso.md
