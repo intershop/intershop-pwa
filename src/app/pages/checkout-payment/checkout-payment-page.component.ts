@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { filter, first, map, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { filter, first, map, shareReplay, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
@@ -29,7 +29,7 @@ export class CheckoutPaymentPageComponent implements OnInit, OnDestroy {
     this.basketError$ = this.checkoutFacade.basketError$;
     this.loading$ = this.checkoutFacade.basketLoading$;
     this.priceType$ = this.checkoutFacade.priceType$;
-    this.paymentMethods$ = this.checkoutFacade.eligiblePaymentMethods$();
+    this.paymentMethods$ = this.checkoutFacade.eligiblePaymentMethods$().pipe(shareReplay(1));
 
     // if there is only one eligible payment method without parameters, assign it automatically to the basket
     this.paymentMethods$
