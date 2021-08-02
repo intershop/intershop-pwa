@@ -17,6 +17,7 @@ kb_sync_latest_only
     - [Custom Field Types](#custom-field-types)
     - [Custom Wrappers](#custom-wrappers)
     - [Custom Extensions](#custom-extensions)
+    - [Validation](#validation)
     - [Extras](#extras)
     - [Formly Config Service](#formly-config-service)
   - [Testing Formly](#testing-formly)
@@ -177,6 +178,28 @@ FormlyModule.forChild({
   // ...
 });
 ```
+
+### Validation
+
+There are many options when it comes to [adding custom validation to formly forms](https://formly.dev/guide/validation).
+
+The PWA comes with some predefined custom validators which can be found in [special-validators.ts](../../src/app/shared/forms/validators/special-validators.ts).
+These can be added directly to the `validators.validation` property of a `FormlyFieldConfig`.
+Don't forget to also add the corresponding error message to the `validation` property.
+
+Alternatively, validation can be defined as a key-value pair directly in the `validation` property.
+However, adding validators here requires a different format:
+
+```typescript
+(control: AbstractControl, field: FormlyFieldConfig) => boolean) |
+  {
+    expression: (control: AbstractControl, field: FormlyFieldConfig) => boolean,
+    message: ValidationMessageOption['message'],
+  };
+```
+
+To automatically convert the special validators to this format, you can import and use the [`formlyValidation`](../../src/app/shared/forms/validators/special-validators.ts) helper function.
+It is a higher order function that takes an error name and a validator function and returns a formly-usable function.
 
 ### Extras
 
