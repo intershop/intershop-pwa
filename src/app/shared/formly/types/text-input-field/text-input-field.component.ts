@@ -18,7 +18,7 @@ export class TextInputFieldComponent extends FieldType {
 
   textInputFieldTypes = ['text', 'email', 'password', 'tel'];
 
-  prePopulate(field: FormlyFieldConfig) {
+  onPopulate(field: FormlyFieldConfig) {
     if (!field.templateOptions?.type) {
       field.templateOptions.type = 'text';
       return;
@@ -26,7 +26,7 @@ export class TextInputFieldComponent extends FieldType {
 
     if (!this.textInputFieldTypes.includes(field.templateOptions.type)) {
       throw new Error(
-        'parameter <templateOptions.type> is not valid for TextInputFieldComponent, only text, email, password or number are possible values'
+        'parameter <templateOptions.type> is not valid for TextInputFieldComponent, only text, email, password and tel are possible values'
       );
     }
   }
