@@ -90,7 +90,9 @@ export class SpecialValidators {
 
       if (errorReceivingControl && !otherErrorKeys.length) {
         errorReceivingControl.setErrors(
-          errorReceivingControl.value === group.get(compareControlName)?.value ? undefined : { equalTo: true }
+          errorReceivingControl.value === group.get(compareControlName)?.value
+            ? undefined
+            : { equalTo: { valid: false } }
         );
       }
       return [];
