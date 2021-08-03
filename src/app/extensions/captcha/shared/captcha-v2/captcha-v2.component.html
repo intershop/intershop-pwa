@@ -2,7 +2,7 @@
   <div [ngClass]="cssClass">
     <div [ngClass]="{ 'has-error': hasError }">
       <re-captcha [siteKey]="captchaSiteKey" (resolved)="resolved($event)" class="captcha"></re-captcha>
-      <small *ngIf="hasError" class="form-text">{{ 'recaptcha.v2.incorrect.error' | translate }}</small>
+      <small *ngIf="hasError" class="validation-message">{{ 'recaptcha.v2.incorrect.error' | translate }}</small>
     </div>
   </div>
 </div>

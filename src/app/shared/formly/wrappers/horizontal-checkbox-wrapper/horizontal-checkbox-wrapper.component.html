@@ -1,5 +1,5 @@
 <div class="row" [ngClass]="field.type === 'ish-checkbox-field' ? 'form-group' : 'mb-2'">
-  <div [class.formly-has-error]="showError" [ngClass]="to.fieldClass ? to.fieldClass : dto.fieldClass">
+  <div [class.has-error]="showError" [ngClass]="to.fieldClass ? to.fieldClass : dto.fieldClass">
     <div class="form-check" [attr.data-testing-id]="keyString + '-wrapper'">
       <ng-template #fieldComponent></ng-template>
       <label [attr.for]="id" class="form-check-label" [ngClass]="to.labelClass ? to.labelClass : dto.labelClass">

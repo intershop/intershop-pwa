@@ -74,14 +74,15 @@ input.form-check-input {
 
 .has-error {
   .col-form-label,
-  .form-text,
   .ng-fa-icon,
+  .validation-message,
   .form-check {
     color: $error-color;
   }
 
-  .form-check a {
-    color: $error-color;
+  .form-check a,
+  label a {
+    color: inherit;
     text-decoration: underline;
   }
 
@@ -94,6 +95,10 @@ input.form-check-input {
       border-color: $error-color;
       box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px lighten($error-color, 20%);
     }
+  }
+
+  .validation-message small {
+    display: block;
   }
 
   .captcha > div {
@@ -152,5 +157,22 @@ input.form-check-input {
         right: $space-default * 0.5;
       }
     }
+  }
+}
+
+.validation-offset {
+  .form-control-feedback {
+    right: 40px;
+  }
+}
+.validation-offset-0 {
+  .form-control-feedback {
+    right: 10px;
+  }
+}
+
+.label-empty {
+  @media (max-width: $screen-xs-max) {
+    margin-top: 2.2rem;
   }
 }

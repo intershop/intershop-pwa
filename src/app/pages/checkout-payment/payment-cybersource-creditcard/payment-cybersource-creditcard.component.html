@@ -11,7 +11,7 @@
     >
     <div class="col-sm-6">
       <div id="number-container" class="iframe-container"></div>
-      <small *ngIf="errorMessage.number?.message" class="form-text">{{
+      <small *ngIf="errorMessage.number?.message" class="validation-message">{{
         errorMessage.number.message | translate
       }}</small>
     </div>
@@ -71,7 +71,7 @@
     >
     <div class="col-sm-6">
       <div id="securityCode-container" class="iframe-container"></div>
-      <small *ngIf="errorMessage.securityCode?.message" class="form-text">{{
+      <small *ngIf="errorMessage.securityCode?.message" class="validation-message">{{
         errorMessage.securityCode.message | translate
       }}</small>
     </div>

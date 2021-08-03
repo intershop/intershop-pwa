@@ -61,5 +61,5 @@
     </ng-template>
   </ng-container>
 
-  <small *ngIf="hasQuantityError$ | async" class="form-text">{{ quantityError$ | async }}</small>
+  <small *ngIf="hasQuantityError$ | async" class="validation-message">{{ quantityError$ | async }}</small>
 </div>

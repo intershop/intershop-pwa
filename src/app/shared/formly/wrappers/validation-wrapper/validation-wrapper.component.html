@@ -1,4 +1,4 @@
-<div [class.formly-has-error]="showError">
+<div [class.has-error]="showError">
   <ng-template #fieldComponent></ng-template>
   <ish-validation-icons
     *ngIf="to.required || field.validators?.validation?.length"

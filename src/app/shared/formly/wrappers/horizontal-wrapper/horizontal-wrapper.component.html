@@ -1,12 +1,10 @@
-<div class="form-group row" [class.formly-has-error]="showError" [attr.data-testing-id]="keyString + '-wrapper'">
+<div class="form-group row" [class.has-error]="showError" [attr.data-testing-id]="keyString + '-wrapper'">
   <label
     [attr.for]="id"
     class="col-form-label"
     [ngClass]="to.labelClass ? to.labelClass : dto.labelClass"
     *ngIf="to.label"
-  >
-    {{ to.label | translate }}
-    <span class="formly-required-star" *ngIf="to.required && !to.hideRequiredMarker">*</span>
+    >{{ to.label | translate }}<span class="required" *ngIf="to.required && !to.hideRequiredMarker">*</span>
   </label>
   <div [ngClass]="to.fieldClass ? to.fieldClass : dto.fieldClass">
     <ng-template #fieldComponent></ng-template>
