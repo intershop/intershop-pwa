@@ -25,4 +25,6 @@ templates
 !/dist/server.crt
 !/dist/server.js
 !/dist/server.key
+!/dist/readinessprobe.js
+!/dist/livenessprobe.js
 # synchronize-marker:dist-scripts:end
