@@ -146,10 +146,7 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
             (field.options.parentForm && field.options.parentForm.submitted) ||
             !!(field.field.validation && field.field.validation.show)),
       },
-      extensions: [
-        // { name: 'critical-default-values-extension', extension: criticalDefaultValuesExtension },
-        { name: 'hide-if-empty-options-extension', extension: hideIfEmptyOptionsExtension },
-      ],
+      extensions: [{ name: 'hide-if-empty-options-extension', extension: hideIfEmptyOptionsExtension }],
     }),
     FormlySelectModule,
     IconModule,
