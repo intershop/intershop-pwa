@@ -251,6 +251,7 @@ export class RegistrationFormConfigurationService {
             key: 'password',
             type: 'ish-password-field',
             templateOptions: {
+              type: 'text',
               postWrappers: [{ wrapper: 'description', index: -1 }],
               required: true,
               label: 'account.register.password.label',
@@ -265,6 +266,7 @@ export class RegistrationFormConfigurationService {
             key: 'passwordConfirmation',
             type: 'ish-password-field',
             templateOptions: {
+              type: 'text',
               required: true,
               label: 'account.register.password_confirmation.label',
 
