@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { flatten } from 'lodash-es';
 
+import { AttachmentMapper } from 'ish-core/models/attachment/attachment.mapper';
 import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { CategoryData } from 'ish-core/models/category/category.interface';
@@ -40,7 +41,11 @@ function mapAttributeGroups(data: ProductDataStub): { [id: string]: AttributeGro
  */
 @Injectable({ providedIn: 'root' })
 export class ProductMapper {
-  constructor(private imageMapper: ImageMapper, private categoryMapper: CategoryMapper) {}
+  constructor(
+    private imageMapper: ImageMapper,
+    private attachmentMapper: AttachmentMapper,
+    private categoryMapper: CategoryMapper
+  ) {}
 
   static parseSkuFromURI(uri: string): string {
     const match = /products[^\/]*\/([^\?]*)/.exec(uri);
@@ -215,7 +220,7 @@ export class ProductMapper {
           data.attributeGroups.PRODUCT_DETAIL_ATTRIBUTES.attributes) ||
         data.attributes,
       attributeGroups: data.attributeGroups,
-      attachments: data.attachments,
+      attachments: this.attachmentMapper.fromAttachments(data.attachments),
       images: this.imageMapper.fromImages(data.images),
       listPrice: PriceMapper.fromData(data.listPrice),
       salePrice: PriceMapper.fromData(data.salePrice),

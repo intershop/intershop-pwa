@@ -2,10 +2,11 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { anything, spy, verify } from 'ts-mockito';
 
+import { AttachmentMapper } from 'ish-core/models/attachment/attachment.mapper';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { ImageMapper } from 'ish-core/models/image/image.mapper';
 import { Link } from 'ish-core/models/link/link.model';
-import { getICMBaseURL } from 'ish-core/store/core/configuration';
+import { getICMBaseURL, getICMServerURL } from 'ish-core/store/core/configuration';
 
 import { ProductData, ProductDataStub } from './product.interface';
 import { ProductMapper } from './product.mapper';
@@ -14,13 +15,22 @@ import { Product, ProductHelper, VariationProductMaster } from './product.model'
 describe('Product Mapper', () => {
   let productMapper: ProductMapper;
   let imageMapper: ImageMapper;
+  let attachmentMapper: AttachmentMapper;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideMockStore({ selectors: [{ selector: getICMBaseURL, value: 'http://www.example.org' }] })],
+      providers: [
+        provideMockStore({
+          selectors: [
+            { selector: getICMBaseURL, value: 'http://www.example.org' },
+            { selector: getICMServerURL, value: 'http://www.example.org' },
+          ],
+        }),
+      ],
     });
     productMapper = TestBed.inject(ProductMapper);
     imageMapper = spy(TestBed.inject(ImageMapper));
+    attachmentMapper = spy(TestBed.inject(AttachmentMapper));
   });
 
   describe('fromData', () => {
@@ -29,6 +39,7 @@ describe('Product Mapper', () => {
       expect(product).toBeTruthy();
       expect(product.type).toEqual('Product');
       verify(imageMapper.fromImages(anything())).once();
+      verify(attachmentMapper.fromAttachments(anything())).once();
     });
 
     it(`should return VariationProduct when getting a ProductData with mastered = true`, () => {
@@ -41,6 +52,7 @@ describe('Product Mapper', () => {
       expect(product.type).toEqual('VariationProduct');
       expect(ProductHelper.isMasterProduct(product)).toBeFalsy();
       verify(imageMapper.fromImages(anything())).once();
+      verify(attachmentMapper.fromAttachments(anything())).once();
     });
 
     it(`should return VariationProductMaster when getting a ProductData with productMaster = true`, () => {
@@ -168,6 +180,7 @@ describe('Product Mapper', () => {
       expect(stub.shortDescription).toEqual('productDescription');
       expect(stub.sku).toEqual('productSKU');
       verify(imageMapper.fromImages(anything())).once();
+      verify(attachmentMapper.fromAttachments(anything())).never();
     });
 
     it('should construct a stub when supplied with a complex API response', () => {

@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { instance, mock } from 'ts-mockito';
 
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { Product } from 'ish-core/models/product/product.model';
 
 import { ProductAttachmentsComponent } from './product-attachments.component';
@@ -17,19 +19,15 @@ describe('Product Attachments Component', () => {
       {
         name: 'A',
         type: 'typeA',
-        value: 'valueA',
         key: 'keyA',
         description: 'descriptionA',
-        link: {
-          title: 'titleA',
-          type: 'typeA',
-          uri: 'uriA',
-        },
+        url: 'urlA',
       },
     ];
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [ProductAttachmentsComponent],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(mock(ProductContextFacade)) }],
     }).compileComponents();
   });
 
@@ -37,7 +35,6 @@ describe('Product Attachments Component', () => {
     fixture = TestBed.createComponent(ProductAttachmentsComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.product = product;
   });
 
   it('should be created', () => {

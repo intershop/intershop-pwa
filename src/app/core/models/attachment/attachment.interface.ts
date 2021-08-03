@@ -4,7 +4,6 @@ export interface AttachmentData {
   name: string;
   type: string;
   key: string;
-  value: string;
-  description: string;
+  description?: string;
   link: Link;
 }
