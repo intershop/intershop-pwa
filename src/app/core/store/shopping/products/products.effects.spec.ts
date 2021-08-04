@@ -9,7 +9,6 @@ import { BehaviorSubject, Observable, merge, noop, of, throwError } from 'rxjs';
 import { delay, toArray } from 'rxjs/operators';
 import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
-import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
 import { Product, VariationProductMaster } from 'ish-core/models/product/product.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -55,7 +54,7 @@ describe('Products Effects', () => {
       }
     });
 
-    when(productsServiceMock.getCategoryProducts('123', anyNumber(), anything())).thenReturn(
+    when(productsServiceMock.getCategoryProducts('123', anyNumber(), anything(), anyNumber())).thenReturn(
       of({
         sortableAttributes: [{ name: 'name-asc' }, { name: 'name-desc' }],
         products: [{ sku: 'P222' }, { sku: 'P333' }] as Product[],
@@ -72,7 +71,7 @@ describe('Products Effects', () => {
           { path: 'product/:sku', component: DummyComponent },
           { path: '**', component: DummyComponent },
         ]),
-        ShoppingStoreModule.forTesting('products', 'categories'),
+        ShoppingStoreModule.forTesting('products', 'categories', 'productListing'),
       ],
       providers: [
         ProductsEffects,
@@ -86,7 +85,7 @@ describe('Products Effects', () => {
     router = TestBed.inject(Router);
     httpStatusCodeService = spy(TestBed.inject(HttpStatusCodeService));
 
-    store$.dispatch(setProductListingPageSize({ itemsPerPage: TestBed.inject(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
+    store$.dispatch(setProductListingPageSize({ itemsPerPage: 9 }));
   });
 
   describe('loadProduct$', () => {
@@ -191,7 +190,7 @@ describe('Products Effects', () => {
       actions$ = of(loadProductsForCategory({ categoryId: '123', sorting: 'name-asc' }));
 
       effects.loadProductsForCategory$.subscribe(() => {
-        verify(productsServiceMock.getCategoryProducts('123', anyNumber(), 'name-asc')).once();
+        verify(productsServiceMock.getCategoryProducts('123', anyNumber(), 'name-asc', anyNumber())).once();
         done();
       });
     });
@@ -216,7 +215,7 @@ describe('Products Effects', () => {
     });
 
     it('should not die if repeating errors are encountered', () => {
-      when(productsServiceMock.getCategoryProducts(anything(), anyNumber(), anything())).thenReturn(
+      when(productsServiceMock.getCategoryProducts(anything(), anyNumber(), anything(), anyNumber())).thenReturn(
         throwError(makeHttpError({ message: 'ERROR' }))
       );
       actions$ = hot('-a-a-a', {

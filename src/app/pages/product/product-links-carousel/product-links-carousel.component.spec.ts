@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
-import { SwiperComponent } from 'swiper/angular';
+import { SwiperComponent, SwiperSlideDirective } from 'swiper/angular';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
@@ -24,9 +24,10 @@ describe('Product Links Carousel Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         MockComponent(ProductItemComponent),
-        MockComponent(SwiperComponent),
         MockDirective(ProductContextDirective),
         ProductLinksCarouselComponent,
+        SwiperComponent,
+        SwiperSlideDirective,
       ],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();

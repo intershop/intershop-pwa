@@ -1,5 +1,27 @@
 import { FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 
+/**
+ * A helper function that transforms the special validators to a formly-usable function.
+ * @param name the error to be extracted from the validator
+ * @param validator the validator that should be transformed
+ * @returns a function that conforms the type signature formly expects.
+ *
+ * @usageNotes
+ * Refer to the [`FormlyFieldConfig.validators`](https://github.com/ngx-formly/ngx-formly/blob/main/src/core/src/lib/models/fieldconfig.ts#L60) type definition for an explanation of the necessary validator format.
+ */
+export function formlyValidation<T extends (control: FormControl) => { [error: string]: { valid: boolean } }>(
+  name: string,
+  validator: T
+): (control: FormControl) => boolean {
+  return c => {
+    const validationResult = validator(c);
+    if (!c) {
+      return;
+    }
+    return validationResult?.[name]?.valid ?? true;
+  };
+}
+
 export class SpecialValidators {
   /**
    * password validator: char + numbers, min length 7
@@ -27,7 +49,7 @@ export class SpecialValidators {
     return integerPattern.test(control.value) ? undefined : { integer: { valid: false } };
   }
 
-  static email(control: FormControl) {
+  static email(control: FormControl): { [error: string]: { valid: boolean } } {
     /*
      * very simplified email matching
      * - local part mustn't start or end with dot
@@ -37,7 +59,22 @@ export class SpecialValidators {
      */
     return /^([\w\-\~]+\.)*[\w\-\~]+@(([\w][\w\-]*)?[\w]\.)+[a-zA-Z]{2,}$/.test(control.value)
       ? undefined
-      : { email: true };
+      : { email: { valid: false } };
+  }
+
+  static phone(control: FormControl): { [error: string]: { valid: boolean } } {
+    /*
+     * simplified phone matching
+     * - phone number must start with + or digit
+     * - number blocks can be separated with hyphens or spaces
+     * - number blocks can stand in brackets
+     * - phone number must have 7 to 15 digits
+     */
+    return control.value
+      ? /^((?:\+?\d{7,15})$)|^((\(?\d{3}\)?(?: |-)?){2}\(?\d{3,4}\)?)$/.test(control.value)
+        ? undefined
+        : { phone: { valid: false } }
+      : undefined;
   }
 
   /**
@@ -53,7 +90,9 @@ export class SpecialValidators {
 
       if (errorReceivingControl && !otherErrorKeys.length) {
         errorReceivingControl.setErrors(
-          errorReceivingControl.value === group.get(compareControlName)?.value ? undefined : { equalTo: true }
+          errorReceivingControl.value === group.get(compareControlName)?.value
+            ? undefined
+            : { equalTo: { valid: false } }
         );
       }
       return [];

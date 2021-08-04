@@ -73,9 +73,8 @@ describe('Payment Concardis Creditcard Cvc Detail Component', () => {
 
   it('should return false when cvc is valid', () => {
     component.validityTimeInMinutes = '20';
-    component.paymentInstrument.parameters.find(
-      attribute => attribute.name === 'cvcLastUpdated'
-    ).value = new Date().toISOString();
+    component.paymentInstrument.parameters.find(attribute => attribute.name === 'cvcLastUpdated').value =
+      new Date().toISOString();
     expect(component.isCvcExpired()).toBeFalsy();
   });
 

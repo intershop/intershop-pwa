@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Request } from 'express';
 import { isEqual } from 'lodash-es';
 import { Subject, combineLatest, merge, race } from 'rxjs';
-import { distinctUntilChanged, filter, map, mapTo, switchMap, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, mapTo, switchMap, takeWhile, tap } from 'rxjs/operators';
 
 import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
@@ -62,9 +62,9 @@ export class SeoEffects {
         switchMap(() =>
           race([
             // PRODUCT PAGE
-            this.productPage$.pipe(map(product => this.baseURL(true) + generateProductUrl(product).substr(1))),
+            this.productPage$.pipe(map(product => this.baseURL + generateProductUrl(product).substr(1))),
             // CATEGORY / FAMILY PAGE
-            this.categoryPage$.pipe(map(category => this.baseURL(true) + generateCategoryUrl(category).substr(1))),
+            this.categoryPage$.pipe(map(category => this.baseURL + generateCategoryUrl(category).substr(1))),
             // DEFAULT
             this.appRef.isStable.pipe(whenTruthy(), mapTo(this.doc.URL.replace(/[;?].*/g, ''))),
           ])
@@ -123,7 +123,7 @@ export class SeoEffects {
           description: 'seo.defaults.description',
           robots: 'index, follow',
           'og:type': 'website',
-          'og:image': `${this.baseURL(false)}assets/img/og-image-default.jpg`,
+          'og:image': '/assets/img/og-image-default.jpg',
           ...attributes,
         })),
         distinctUntilChanged(isEqual),
@@ -136,19 +136,19 @@ export class SeoEffects {
 
   seoLanguages$ = createEffect(
     () =>
-      this.actions$.pipe(
+      combineLatest([
+        this.store.pipe(select(getCurrentLocale)),
+        this.store.pipe(select(getAvailableLocales), whenTruthy()),
+      ]).pipe(
         takeWhile(() => isPlatformServer(this.platformId)),
-        ofType(routerNavigatedAction),
-        withLatestFrom(this.store.pipe(select(getCurrentLocale)), this.store.pipe(select(getAvailableLocales))),
-        tap(([, current, locales]) => {
-          this.metaService.addTag({ property: 'og:locale', content: current.lang });
+        tap(([current, locales]) => {
+          this.metaService.addTag({ property: 'og:locale', content: current });
 
           this.metaService
             .getTags('property="og:locale:alternate"')
             .forEach(el => this.metaService.removeTagElement(el));
           locales
-            .map(x => x.lang)
-            .filter(lang => lang !== current.lang)
+            .filter(lang => lang !== current)
             .forEach(lang => this.metaService.addTag({ property: 'og:locale:alternate', content: lang }, true));
         })
       ),
@@ -180,25 +180,28 @@ export class SeoEffects {
     { dispatch: false }
   );
 
-  private baseURL(includeBaseHref: boolean) {
+  private get baseURL() {
     let url: string;
     if (this.request) {
-      url = `${this.request.protocol}://${this.request.get('host')}${includeBaseHref ? this.baseHref : ''}`;
+      url = `${this.request.protocol}://${this.request.get('host')}${this.baseHref}`;
     } else {
-      url = includeBaseHref ? this.doc.baseURI : this.doc.baseURI.replace(new RegExp(`${this.baseHref}$`), '');
+      url = this.doc.baseURI;
     }
     return url.endsWith('/') ? url : url + '/';
   }
 
   private setCanonicalLink(url: string) {
+    // the canonical URL of a production system should always be with 'https:'
+    // even though the PWA SSR container itself is usually not deployed in an SSL environment so the URLs need manual adaption
+    const canonicalUrl = url.replace('http:', 'https:');
     let canonicalLink = this.doc.querySelector('link[rel="canonical"]');
     if (!canonicalLink) {
       canonicalLink = this.doc.createElement('link');
       canonicalLink.setAttribute('rel', 'canonical');
       this.doc.head.appendChild(canonicalLink);
     }
-    canonicalLink.setAttribute('href', url);
-    this.addOrModifyTag({ property: 'og:url', content: url });
+    canonicalLink.setAttribute('href', canonicalUrl);
+    this.addOrModifyTag({ property: 'og:url', content: canonicalUrl });
   }
 
   private setSeoAttributes(seoAttributes: SeoAttributes) {

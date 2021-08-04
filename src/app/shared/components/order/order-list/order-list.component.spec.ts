@@ -1,3 +1,4 @@
+import { CdkTableModule } from '@angular/cdk/table';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -28,6 +29,7 @@ describe('Order List Component', () => {
     accountFacade = mock(AccountFacade);
 
     await TestBed.configureTestingModule({
+      imports: [CdkTableModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(AddressComponent),
         MockComponent(LoadingComponent),
@@ -36,7 +38,6 @@ describe('Order List Component', () => {
         OrderListComponent,
       ],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
 
@@ -44,6 +45,8 @@ describe('Order List Component', () => {
     fixture = TestBed.createComponent(OrderListComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+
+    when(accountFacade.orders$()).thenReturn(of(orders));
   });
 
   it('should be created', () => {
@@ -68,22 +71,21 @@ describe('Order List Component', () => {
     when(accountFacade.orders$()).thenReturn(of(orders));
     fixture.detectChanges();
 
-    expect(element.querySelector('div.list-body')).toBeTruthy();
-    expect(element.querySelectorAll('div.list-item-row')).toHaveLength(2);
+    expect(element.querySelector('table.cdk-table')).toBeTruthy();
+    expect(element.querySelectorAll('table tr.cdk-row')).toHaveLength(2);
     expect(element.querySelector('ish-address')).toBeTruthy();
   });
 
   it('should display a certain number of items if maxItemsCount is set', () => {
-    when(accountFacade.orders$()).thenReturn(of(orders));
     component.maxListItems = 1;
     fixture.detectChanges();
 
-    expect(element.querySelectorAll('div.list-item-row')).toHaveLength(1);
+    expect(element.querySelectorAll('table tr.cdk-row')).toHaveLength(1);
   });
 
   it('should not display addresses if compact is set to true', () => {
     when(accountFacade.orders$()).thenReturn(of(orders));
-    component.compact = true;
+    component.columnsToDisplay = ['creationDate'];
     fixture.detectChanges();
 
     expect(element.querySelector('ish-address')).toBeFalsy();

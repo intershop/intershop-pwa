@@ -22,7 +22,7 @@
     <h5>{{ 'checkout.address.shipping.label' | translate }}</h5>
   </div>
   <div data-testing-id="address-summary-ship-to-address">
-    <address *ngIf="basket.invoiceToAddress.id === basket.commonShipToAddress.id; else shippingAddress">
+    <address *ngIf="basket.invoiceToAddress.id === basket.commonShipToAddress?.id; else shippingAddress">
       {{ 'checkout.same_as_billing_address.text' | translate }}
     </address>
     <ng-template #shippingAddress> <ish-address [address]="basket.commonShipToAddress"></ish-address> </ng-template>

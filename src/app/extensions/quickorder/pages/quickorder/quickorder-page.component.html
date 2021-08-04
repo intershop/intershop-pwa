@@ -1,153 +1,17 @@
 <div class="content-page">
-  <form [formGroup]="quickOrderForm" (ngSubmit)="onAddProducts()">
-    <ish-breadcrumb></ish-breadcrumb>
-    <div class="row">
-      <div class="col-md-12">
-        <h1>{{ 'quickorder.page.title' | translate }}</h1>
-      </div>
+  <ish-breadcrumb></ish-breadcrumb>
+  <div class="row">
+    <div class="col-md-12">
+      <h1>{{ 'quickorder.page.title' | translate }}</h1>
     </div>
-    <div class="row">
-      <div class="col-md-8">
-        <h3>{{ 'quickorder.page.subtitle' | translate }}</h3>
-        <p>{{ 'quickorder.page.subtitle.description' | translate }}</p>
-        <div class="list-header d-sm-flex">
-          <div class="col-md-6 list-header-item no-seperator">{{ 'quickorder.page.product.id' | translate }}</div>
-          <div class="col-md-2 list-header-item no-seperator">{{ 'quickorder.page.product.quantity' | translate }}</div>
-        </div>
-
-        <div class="pt-1">
-          <div formArrayName="quickOrderLines">
-            <div
-              class="row list-item-row py-2"
-              *ngFor="let item of quickOrderLines.controls; let i = index"
-              [formGroupName]="i"
-              [attr.data-testing-id]="'quickorder-line-' + i"
-            >
-              <div class="col-sm-6 list-item search-container">
-                <div class="d-sm-none">{{ 'quickorder.page.product.id' | translate }}</div>
-                <div class="quickorder-search-container position-relative">
-                  <ish-input
-                    type="text"
-                    controlName="sku"
-                    inputClass="w-100 col-12"
-                    [form]="item"
-                    [errorMessages]="{
-                      not_exists: 'quickorder.page.error.invalid.product' | translate: { '0': item.value.sku }
-                    }"
-                  ></ish-input>
-                  <ul class="search-suggest-results w-100" *ngIf="item.value.sku === searchSuggestions[0].sku">
-                    <li>
-                      <button type="button" class="search-result">
-                        <div class="row">
-                          <div class="col-sm-3">
-                            <img [src]="searchSuggestions[0].imgPath" class="product-image" height="110" width="110" />
-                          </div>
-                          <div class="col-sm-9">
-                            <span [innerHtml]="searchSuggestions[0].sku"></span>
-                            <span><br />{{ searchSuggestions[0].name }}</span>
-                          </div>
-                        </div>
-                      </button>
-                    </li>
-                    <li>
-                      <button type="button" class="search-result">
-                        <div class="row">
-                          <div class="col-sm-3">
-                            <img [src]="searchSuggestions[0].imgPath" class="product-image" height="110" width="110" />
-                          </div>
-                          <div class="col-sm-9">
-                            <span [innerHtml]="searchSuggestions[0].sku"></span>
-                            <span><br />{{ searchSuggestions[0].name }}</span>
-                          </div>
-                        </div>
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="col-sm-2 list-item">
-                <div class="d-sm-none">{{ 'quickorder.page.product.quantity' | translate }}</div>
-                <ish-input
-                  type="number"
-                  [form]="item"
-                  controlName="quantity"
-                  inputClass="w-100"
-                  [min]="1"
-                  [errorMessages]="{
-                    required: 'product.quantity.notempty.text',
-                    integer: 'product.quantity.integer.text',
-                    min: 'product.quantity.greaterthan.text' | translate: { '0': item.value.product.minOrderQuantity },
-                    max: 'product.quantity.lessthan.text' | translate: { '0': item.value.product.maxOrderQuantity }
-                  }"
-                ></ish-input>
-              </div>
-              <div class="col-sm-2 list-item">
-                <a class="btn btn-link remove-row" title="remove-current-row" (click)="deleteItem(i)">{{
-                  'quickorder.page.remove.row' | translate
-                }}</a>
-              </div>
-            </div>
-            <a class="d-block" (click)="addRows(1)" data-testing-id="add-quickorder-line">{{
-              'quickorder.page.add.row' | translate
-            }}</a>
-            <hr class="mt-2 mb-4" />
-          </div>
-        </div>
-      </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      <h3>{{ 'quickorder.page.subtitle' | translate }}</h3>
+      <p>{{ 'quickorder.page.subtitle.description' | translate }}</p>
+      <ish-quickorder-add-products-form></ish-quickorder-add-products-form>
+      <ish-quickorder-csv-form></ish-quickorder-csv-form>
     </div>
-    <div>
-      <button
-        type="submit"
-        class="btn btn-primary"
-        [disabled]="quickOrderFormDisabled"
-        data-testing-id="add-form-to-cart"
-      >
-        {{ 'quickorder.page.add.cart' | translate }}
-      </button>
-      <button type="reset" class="btn btn-link" (click)="resetFields()">
-        {{ 'quickorder.page.reset.form' | translate }}
-      </button>
-    </div>
-    <div class="row mt-4">
-      <div class="col-md-6">
-        <h3>{{ 'quickorder.page.csv.title' | translate }}</h3>
-        <p>{{ 'quickorder.page.csv.subtitle' | translate }}</p>
-        <form [formGroup]="csvForm" (ngSubmit)="addCsvToCart()">
-          <div class="form-group section section-seperator">
-            <input
-              type="file"
-              name="csvFile"
-              id="CSVFile"
-              size="35"
-              class="form-control"
-              accept=".csv"
-              (change)="uploadListener($event.target)"
-            />
-            <div [ngSwitch]="status" class="position-absolute">
-              <small *ngSwitchCase="'IncorrectInput'" class="has-error"
-                ><span class="form-text">{{ 'quickorder.page.csv.file.invalid.input' | translate }}</span></small
-              >
-              <small *ngSwitchCase="'InvalidFormat'" class="has-error"
-                ><span class="form-text">{{ 'quickorder.page.csv.file.invalid.format' | translate }}</span></small
-              >
-              <small *ngSwitchCase="'ValidFormat'" class="has-success"
-                ><span class="form-text">{{ 'quickorder.page.csv.file.uploaded' | translate }}</span></small
-              >
-              <small *ngSwitchDefault></small>
-            </div>
-          </div>
-          <div>
-            <button type="submit" class="btn btn-primary" name="addToCartCSV" disabled="csvForm.invalid">
-              {{ 'quickorder.page.add.cart' | translate }}
-            </button>
-            <button type="reset" class="btn btn-link" name="reset" (click)="resetCsvProductArray()">
-              {{ 'quickorder.page.csv.reset.form' | translate }}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </form>
-
+  </div>
   <ish-loading *ngIf="loading$ | async"></ish-loading>
 </div>

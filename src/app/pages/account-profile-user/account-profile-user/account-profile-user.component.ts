@@ -88,7 +88,7 @@ export class AccountProfileUserComponent implements OnInit {
       },
       {
         key: 'phoneHome',
-        type: 'ish-text-input-field',
+        type: 'ish-phone-field',
         templateOptions: {
           label: 'account.update_profile.phone.label',
         },

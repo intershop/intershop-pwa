@@ -1,26 +1,24 @@
 import { Auth0Config } from 'ish-core/identity-provider/auth0.identity-provider';
 import { CookieConsentOptions } from 'ish-core/models/cookies/cookies.model';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
+import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
+import { MultiSiteLocaleMap } from 'ish-core/utils/multi-site/multi-site.service';
 
 import { TactonConfig } from '../app/extensions/tacton/models/tacton-config/tacton-config.model';
 
 export interface Environment {
   /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
-
   icmBaseURL: string;
   icmServer: string;
   icmServerStatic: string;
-
-  // temporarily hard-coded identity provider ID, later supplied by configurations call
-  identityProvider: 'ICM' | string;
-
-  // application specific
   icmChannel: string;
   icmApplication?: string;
 
   // array of REST path expressions that should always be mocked
   apiMockPaths?: string[];
+
+  // temporarily hard-coded identity provider ID, later supplied by configurations call
+  identityProvider: 'ICM' | string;
 
   /* FEATURE TOGGLES */
   features: (
@@ -66,7 +64,13 @@ export interface Environment {
   mainNavigationMaxSubCategoriesDepth: number;
 
   // global definition of the product listing page size
-  productListingItemsPerPage: number;
+  productListingItemsPerPage:
+    | number
+    | {
+        category: number;
+        search: number;
+        master: number;
+      };
 
   // default viewType used for product listings
   defaultProductListingViewType: ViewType;
@@ -74,14 +78,18 @@ export interface Environment {
   // default device type used for initial page responses
   defaultDeviceType: DeviceType;
 
+  // default locale that is used as fallback if no default locale from the ICM REST call is available
   defaultLocale?: string;
 
-  // configuration of the available locales - hard coded for now
-  locales: Locale[];
+  // configuration filtering available locales and their active currencies
+  localeCurrencyOverride?: { [locale: string]: string | string[] };
 
-  // configuration of the styling theme ('default' if not configured)
-  // format: 'themeName|themeColor' e.g. theme: 'blue|688dc3',
-  theme?: string;
+  // multi-site URLs to locales mapping ('undefined' if mapping should not be used)
+  multiSiteLocaleMap: MultiSiteLocaleMap;
+
+  // configuration of the styling theme color used for theme-color meta
+  // format: hex color e.g. themeColor: '#688dc3',
+  themeColor?: string;
 
   // cookie consent options
   cookieConsentOptions?: CookieConsentOptions;
@@ -96,12 +104,14 @@ export interface Environment {
         }
       | Auth0Config;
   };
+
+  // enable and configure data persistence for specific stores (compare, recently, tacton)
+  dataRetention: DataRetentionPolicy;
 }
 
-export const ENVIRONMENT_DEFAULTS: Environment = {
+export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
-  icmBaseURL: 'NOT SET',
-  icmChannel: 'inSPIRED-inTRONICS-Site',
+  icmBaseURL: 'https://pwa-ish-demo.test.intershop.com',
   icmServer: 'INTERSHOP/rest/WFS',
   icmServerStatic: 'INTERSHOP/static/WFS',
   icmApplication: 'rest',
@@ -116,15 +126,20 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
   largeBreakpointWidth: 992,
   extralargeBreakpointWidth: 1200,
   mainNavigationMaxSubCategoriesDepth: 2,
-  productListingItemsPerPage: 9,
+  productListingItemsPerPage: {
+    category: 9,
+    search: 12,
+    master: 6,
+  },
   defaultProductListingViewType: 'grid',
   defaultDeviceType: 'mobile',
   defaultLocale: 'en_US',
-  locales: [
-    { lang: 'en_US', currency: 'USD', value: 'en', displayName: 'English', displayLong: 'English (United States)' },
-    { lang: 'de_DE', currency: 'EUR', value: 'de', displayName: 'German', displayLong: 'German (Germany)' },
-    { lang: 'fr_FR', currency: 'EUR', value: 'fr', displayName: 'French', displayLong: 'French (France)' },
-  ],
+  multiSiteLocaleMap: {
+    en_US: '/en',
+    de_DE: '/de',
+    fr_FR: '/fr',
+  },
+  localeCurrencyOverride: { de_DE: 'EUR', fr_FR: 'EUR' },
   cookieConsentOptions: {
     options: {
       required: {
@@ -144,4 +159,10 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
     allowedCookies: ['cookieConsent', 'apiToken'],
   },
   cookieConsentVersion: 1,
+
+  dataRetention: {
+    compare: 'session',
+    recently: 60 * 24 * 7, // 1 week
+    tacton: 'forever',
+  },
 };

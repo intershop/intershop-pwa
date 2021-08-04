@@ -3,7 +3,7 @@ export class AddToWishlistModule {
 
   addProductToWishlistFromPage(title: string = '', modal: boolean = false) {
     if (modal) {
-      cy.get(`[data-testing-id="${title}"]`).click();
+      cy.get(`[data-testing-id="radio-${title}"]`).click();
       cy.get('.modal-footer button.btn-primary').click();
     }
     this.closeAddProductToWishlistModal('link');
@@ -14,7 +14,7 @@ export class AddToWishlistModule {
       cy.get(this.contextSelector)
         .find(`ish-product-item div[data-testing-sku="${product}"] button.add-to-wishlist`)
         .click();
-      cy.get(`[data-testing-id="${title}"]`).click();
+      cy.get(`[data-testing-id="radio-${title}"]`).click();
       cy.get('.modal-footer button.btn-primary').click();
       this.closeAddProductToWishlistModal('link');
     } else {

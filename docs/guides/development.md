@@ -18,7 +18,7 @@ git clone https://github.com/intershop/intershop-pwa.git
 
 After having cloned the project from the Git repository, open a command line in the project folder and run `npm install` to download all required dependencies into your development environment.
 
-The project uses [Angular CLI](https://cli.angular.io) - a command line interface for Angular - that has to be installed globally.
+The project uses [Angular CLI](https://angular.io/cli) - a command line interface for Angular - that has to be installed globally.
 Run `npm install -g @angular/cli` once to globally install Angular CLI on your development machine.
 
 Use `ng serve --open` to start up the development server and open the Progressive Web app in your browser.
@@ -27,19 +27,16 @@ Use `ng serve --open` to start up the development server and open the Progressiv
 
 ## Development Server
 
-Run `ng serve` or `ng s` for a development server that is configured by default via `environment.ts` to use mocked responses instead of actual REST calls.
+Run `ng serve` or `ng s` for a development server.
 
-Running `ng serve --configuration=production` or `ng s -c production` starts a development server that will communicate by default with the Intershop Commerce Management server of our public demo via REST API.
-
-The project is also configured to support the usage of an own local environment file `environment.local.ts` that can be configured according to your local development environment needs, e.g. with a different icmBaseURL or different configuration options (see the `environment.model.ts` for the available configuration options).
-This file will be ignored by Git so the developer specific settings will not be committed and accidentally shared.
+The project is also configured to support the usage of an own local environment file `environment.development.ts` that can be configured according to your local development environment needs, e.g. with a different icmBaseURL or different configuration options (see the `environment.model.ts` for the available configuration options).
+Overrides in this file will be included in the theme environments and override parts of it.
+For production builds, no overrides should be used.
+The docker build automatically creates this file as an empty file.
+The `environment.development.ts` will be ignored by Git so the developer specific settings will not be committed and accidentally shared.
 It is initially created when running `npm install`.
 
-To use this local environment configuration, the server should be started with
-
-```bash
-ng s -c local
-```
+This local environment configuration will automatically be used if you start the PWA with `ng serve`.
 
 Once the server is running, navigate to http://localhost:4200 in your browser to see the application.
 The app will automatically reload if you change any of the source files.
@@ -62,8 +59,8 @@ For usage instructions check the comments in that file.
 ## Development Tools
 
 The used IDE or editor should support the [Prettier - Code formatter](https://prettier.io) that is configured to apply a common formatting style on all TypeScript, Javascript, JSON, HTML, SCSS and other files.
-In addition, especially for the file types that are not handled by Prettier, the editor needs to follow the [EditorConfig](http://editorconfig.org) configuration of the project to help maintain consistent coding styles.
-Besides that the project has [TSLint](https://palantir.github.io/tslint) and [Stylelint](https://stylelint.io) rules configured to unify the coding style even further.
+In addition, especially for the file types that are not handled by Prettier, the editor needs to follow the [EditorConfig](https://editorconfig.org) configuration of the project to help maintain consistent coding styles.
+Besides that the project has [TSLint](https://palantir.github.io/tslint/) and [Stylelint](https://stylelint.io) rules configured to unify the coding style even further.
 
 The recommended IDE for the Intershop PWA development is
 
@@ -90,7 +87,7 @@ It is possible to bypass the verification on commit with the Git option `--no-ve
 ### Clean Working Copy
 
 You can use `npm run clean` to remove all unversioned files and folders from your local git checkout.
-This command uses `git clean` but preserves your `environment.local.ts`.
+This command uses `git clean` but preserves your `environment.development.ts`.
 Afterwards a clean `npm install` is performed.
 
 :warning: All unstaged files will be deleted!
@@ -103,8 +100,8 @@ As Angular runs in the browser, all the development tool functionality provided 
 ### Browser Extensions
 
 - [Redux DevTools](https://github.com/reduxjs/redux-devtools) for debugging application state changes
-
-- [Angular Augury](https://augury.angular.io) for debugging and profiling Angular applications
+- [Angular DevTools](https://angular.io/guide/devtools) for debugging and profiling Angular applications in Chrome
+- [Angular Augury](https://augury.rangle.io/) for debugging and profiling Angular applications in Firefox (no longer maintained)
 
 ### Tackling Memory Problems
 
@@ -113,18 +110,18 @@ THis can be done by setting the environment variable `NODE_OPTIONS=--max_old_spa
 
 ### Recommend Articles
 
-[Debugging Angular CLI Applications in Visual Studio Code](https://scotch.io/tutorials/debugging-angular-cli-applications-in-visual-studio-code)
+[Debugging Angular CLI Applications in Visual Studio Code](https://www.digitalocean.com/community/tutorials/how-to-debug-angular-cli-applications-in-visual-studio-code)
 
 - How to configure Visual Studio Code for debugging an Angular application.
 
-[A Guide To Debugging Angular Applications](https://medium.com/front-end-weekly/a-guide-to-debugging-angular-applications-5a36bd88b4cf)
+[A Guide To Debugging Angular Applications](https://medium.com/@vamsivempati/a-guide-to-debugging-angular-applications-5a36bd88b4cf)
 
 - Use `tap` to log output in RxJS streams. We introduced an operator called `log` for easier use.
 - When inspecting an element in the browser development tools, you can then use `ng.probe($0).componentInstance` to get access to the Angular component.
 - Use `ng.profiler.timeChangeDetection({record:true})` to profile a change detection cycle of the current page.
 - Use the `json` pipe in Angular to print out data on templates. Easy-to-use snippets are available with `ng-debug` and `ng-debug-async` .
 
-[Everything you need to know about debugging Angular applications](https://indepth.dev/everything-you-need-to-know-about-debugging-angular-applications)
+[Everything you need to know about debugging Angular applications](https://indepth.dev/posts/1138/everything-you-need-to-know-about-debugging-angular-applications)
 
 - Provides a more in-depth view about internals.
 

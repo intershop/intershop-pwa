@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "CustomizedCopy",
+  "$id": "CustomizedCopy",
   "title": "Customized Copy Options Schema",
   "type": "object",
   "properties": {

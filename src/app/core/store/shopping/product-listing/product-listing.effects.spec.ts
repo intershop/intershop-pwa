@@ -43,7 +43,7 @@ describe('Product Listing Effects', () => {
 
   describe('initializePageSize$', () => {
     it('should set page size once and only for the first incoming action', () => {
-      expect(getProductListingItemsPerPage(store$.state)).toEqual(7);
+      expect(getProductListingItemsPerPage('dummy')(store$.state)).toEqual(7);
     });
   });
 

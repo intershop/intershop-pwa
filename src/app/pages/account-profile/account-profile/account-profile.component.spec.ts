@@ -3,6 +3,7 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
+import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { IdentityProviderCapabilityDirective } from 'ish-core/directives/identity-provider-capability.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { IdentityProviderModule } from 'ish-core/identity-provider.module';
@@ -27,7 +28,11 @@ describe('Account Profile Component', () => {
         MockComponent(FaIconComponent),
         MockDirective(ServerHtmlDirective),
       ],
-      imports: [IdentityProviderModule.forTesting(), TranslateModule.forRoot()],
+      imports: [
+        AuthorizationToggleModule.forTesting('APP_B2B_MANAGE_USERS'),
+        IdentityProviderModule.forTesting(),
+        TranslateModule.forRoot(),
+      ],
     }).compileComponents();
   });
 

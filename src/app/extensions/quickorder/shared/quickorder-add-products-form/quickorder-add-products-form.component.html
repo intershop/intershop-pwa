@@ -1,0 +1,16 @@
+<form [formGroup]="quickOrderForm" (ngSubmit)="onAddProducts()">
+  <div class="list-header d-sm-flex">
+    <div class="col-md-6 list-header-item no-seperator">{{ 'quickorder.page.product.id' | translate }}</div>
+    <div class="col-md-2 list-header-item no-seperator">{{ 'quickorder.page.product.quantity' | translate }}</div>
+  </div>
+
+  <formly-form [model]="model" [fields]="fields" [options]="options" [form]="quickOrderForm" class="pt-1"></formly-form>
+
+  <button type="submit" class="btn btn-primary" [disabled]="quickOrderForm.pristine" data-testing-id="add-form-to-cart">
+    {{ 'quickorder.page.add.cart' | translate }}
+  </button>
+
+  <button type="button" class="btn btn-link" (click)="reset()">
+    {{ 'quickorder.page.reset.form' | translate }}
+  </button>
+</form>

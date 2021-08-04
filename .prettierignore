@@ -29,7 +29,8 @@ Dockerfile*
 .browserslistrc
 node_modules
 /cache
-/dist
+/dist/**/browser/**
+/dist/**/server/**
 /out-tsc
 /coverage
 /docs/compodoc
@@ -45,3 +46,4 @@ nginx.conf
 /charts/**/templates/*
 *~
 /src/environments/environment.local.ts
+/src/environments/environment.development.ts

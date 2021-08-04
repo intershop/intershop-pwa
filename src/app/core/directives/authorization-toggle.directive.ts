@@ -1,4 +1,4 @@
-import { Directive, Input, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
+import { ChangeDetectorRef, Directive, Input, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
 import { ReplaySubject, Subject, Subscription } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
@@ -14,6 +14,7 @@ export class AuthorizationToggleDirective implements OnDestroy {
   private destroy$ = new Subject();
 
   constructor(
+    private cdRef: ChangeDetectorRef,
     private templateRef: TemplateRef<unknown>,
     private viewContainer: ViewContainerRef,
     private authorizationToggle: AuthorizationToggleService
@@ -24,6 +25,7 @@ export class AuthorizationToggleDirective implements OnDestroy {
       } else {
         this.viewContainer.clear();
       }
+      this.cdRef.markForCheck();
     });
   }
 

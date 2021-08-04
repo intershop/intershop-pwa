@@ -79,51 +79,9 @@ export class Component {
 
 ### Localization with Pluralization
 
-For more information refer to:
+The PWA uses an [ICU Message Format](http://userguide.icu-project.org/formatparse/messages) inspired way of supporting pluralization in translation keys.
 
-- [Feature: Pluralization](https://github.com/ngx-translate/core/issues/150)
-- [Angular - I18nPluralPipe](https://angular.io/api/common/I18nPluralPipe)
-
-Localization file:
-
-**en.json**
-
-```json
-{ ...
-  "product.items.label": {
-    "=0":"0 items",
-    "=1": "1 item",
-    "other": "# items"},
-  ...
-}
-```
-
-Parameter setting in HTML:
-
-**\*.component.html**
-
-```html
-<div>{{ 8 | i18nPlural: ( 'product.items.label' | translate ) }}</div>
-```
-
-Parameter setting in component and usage in HTML:
-
-**\*component.ts**
-
-```typescript
-export class Component {
-  products = ['product1','product2','product3'];
-  ...
-```
-
-**\*.component.html**
-
-```html
-<div>
-  {{ products.length | i18nPlural: {'=0': 'product.items.label.none','=1': 'product.items.label.singular','other':
-  'product.items.label.plural'} | translate:{'0': products.length} }}
-</div>
-```
+Have a look at the spec for [PWATranslateCompiler](../../src/app/core/utils/translate/pwa-translate-compiler.spec.ts) for an overview of supported methods.
 
 ### Localization with Formatted Dates
 

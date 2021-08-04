@@ -21,7 +21,9 @@ const serializePayload = v => {
 
 const print = (val, _, indent) => {
   let ret = val.type;
-  if (val.payload) {
+  if (val.type.startsWith('@ngrx/router-store/')) {
+    ret += ': ' + (val.payload?.event?.url || val.payload?.routerState?.url);
+  } else if (val.payload) {
     const stringified = serializePayload(val.payload);
     ret += ':\n' + indent(stringified);
   }

@@ -14,7 +14,7 @@ fieldset {
 }
 
 input[type='radio'] ~ input[type='text'] {
-  margin-left: $space-default / 2;
+  margin-left: $space-default * 0.5;
 
   @media (max-width: $screen-xs-max) {
     display: inline-block;

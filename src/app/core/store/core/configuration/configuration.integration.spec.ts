@@ -6,15 +6,16 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
-import { mock, when } from 'ts-mockito';
+import { instance, mock, when } from 'ts-mockito';
 
 import { configurationMeta } from 'ish-core/configurations/configuration.meta';
 import { ConfigurationGuard } from 'ish-core/guards/configuration.guard';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
+import { LocalizationsService } from 'ish-core/services/localizations/localizations.service';
 import { applyConfiguration, getFeatures, getRestEndpoint } from 'ish-core/store/core/configuration';
 import { ConfigurationEffects } from 'ish-core/store/core/configuration/configuration.effects';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { getAvailableLocales, getCurrentLocale } from './configuration.selectors';
@@ -45,7 +46,10 @@ describe('Configuration Integration', () => {
         ]),
         TranslateModule.forRoot(),
       ],
-      providers: [provideStoreSnapshots()],
+      providers: [
+        provideStoreSnapshots(),
+        { provide: LocalizationsService, useFactory: () => instance(mock(LocalizationsService)) },
+      ],
     });
 
     router = TestBed.inject(Router);
@@ -54,7 +58,19 @@ describe('Configuration Integration', () => {
     store$.dispatch(
       applyConfiguration({
         baseURL: 'http://example.org',
-        locales: [{ lang: 'en_US' }, { lang: 'de_DE' }] as Locale[],
+        server: 'INTERSHOP/rest/WFS',
+        channel: 'site',
+        application: 'rest',
+      })
+    );
+    store$.dispatch(
+      loadServerConfigSuccess({
+        config: {
+          general: {
+            locales: ['en_US', 'de_DE'],
+            defaultLocale: 'en_US',
+          },
+        },
       })
     );
   });
@@ -126,27 +142,15 @@ describe('Configuration Integration', () => {
     router.navigateByUrl('/home;redirect=1;lang=de_DE');
     tick(500);
     expect(location.path()).toMatchInlineSnapshot(`"/home"`);
-    expect(getCurrentLocale(store$.state)).toMatchInlineSnapshot(`
-      Object {
-        "lang": "de_DE",
-      }
-    `);
+    expect(getCurrentLocale(store$.state)).toMatchInlineSnapshot(`"de_DE"`);
   }));
 
   it('should have a default locale on startup in state', fakeAsync(() => {
-    expect(getCurrentLocale(store$.state)).toMatchInlineSnapshot(`
-      Object {
-        "lang": "en_US",
-      }
-    `);
+    expect(getCurrentLocale(store$.state)).toMatchInlineSnapshot(`"en_US"`);
     expect(getAvailableLocales(store$.state)).toMatchInlineSnapshot(`
       Array [
-        Object {
-          "lang": "en_US",
-        },
-        Object {
-          "lang": "de_DE",
-        },
+        "en_US",
+        "de_DE",
       ]
     `);
   }));

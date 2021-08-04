@@ -4,6 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
+import { RequisitionColumnsType } from '../../components/requisitions-list/requisitions-list.component';
 import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
 import { Requisition, RequisitionStatus } from '../../models/requisition/requisition.model';
 
@@ -19,7 +20,7 @@ export class BuyerPageComponent implements OnInit, OnDestroy {
   status$: Observable<RequisitionStatus>;
 
   status: RequisitionStatus;
-  columnsToDisplay: string[];
+  columnsToDisplay: RequisitionColumnsType[];
   private destroy$ = new Subject();
 
   constructor(private requisitionManagementFacade: RequisitionManagementFacade) {}

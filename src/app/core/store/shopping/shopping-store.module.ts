@@ -1,7 +1,11 @@
-import { NgModule } from '@angular/core';
+import { APP_BASE_HREF } from '@angular/common';
+import { Inject, Injectable, InjectionToken, NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreModule } from '@ngrx/store';
+import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
+
+import { DATA_RETENTION_POLICY } from 'ish-core/configurations/injection-keys';
+import { DataRetentionPolicy, dataRetentionMeta } from 'ish-core/utils/meta-reducers';
 
 import { CategoriesEffects } from './categories/categories.effects';
 import { categoriesReducer } from './categories/categories.reducer';
@@ -24,8 +28,8 @@ import { ShoppingState } from './shopping-store';
 const shoppingReducers: ActionReducerMap<ShoppingState> = {
   categories: categoriesReducer,
   products: productsReducer,
-  compare: compareReducer,
-  recently: recentlyReducer,
+  _compare: compareReducer,
+  _recently: recentlyReducer,
   search: searchReducer,
   filter: filterReducer,
   promotions: promotionsReducer,
@@ -43,8 +47,27 @@ const shoppingEffects = [
   ProductListingEffects,
 ];
 
+@Injectable()
+export class DefaultShoppingStoreConfig implements StoreConfig<ShoppingState> {
+  metaReducers = [
+    dataRetentionMeta<ShoppingState>(this.dataRetention.compare, this.appBaseHref, 'shopping', '_compare'),
+    dataRetentionMeta<ShoppingState>(this.dataRetention.recently, this.appBaseHref, 'shopping', '_recently'),
+  ];
+
+  constructor(
+    @Inject(APP_BASE_HREF) private appBaseHref: string,
+    @Inject(DATA_RETENTION_POLICY) private dataRetention: DataRetentionPolicy
+  ) {}
+}
+
+export const SHOPPING_STORE_CONFIG = new InjectionToken<StoreConfig<ShoppingState>>('shoppingStoreConfig');
+
 @NgModule({
-  imports: [EffectsModule.forFeature(shoppingEffects), StoreModule.forFeature('shopping', shoppingReducers)],
+  imports: [
+    EffectsModule.forFeature(shoppingEffects),
+    StoreModule.forFeature('shopping', shoppingReducers, SHOPPING_STORE_CONFIG),
+  ],
+  providers: [{ provide: SHOPPING_STORE_CONFIG, useClass: DefaultShoppingStoreConfig }],
 })
 export class ShoppingStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<ShoppingState>)[]) {

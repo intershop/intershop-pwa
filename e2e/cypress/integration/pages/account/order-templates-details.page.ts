@@ -45,7 +45,7 @@ export class OrderTemplatesDetailsPage {
 
   moveProductToOrderTemplate(productId: string, listName: string) {
     this.getOrderTemplateItemById(productId).find('[data-testing-id="move-order-template"]').click();
-    cy.get(`[data-testing-id="${listName}"]`).check();
+    cy.get(`[data-testing-id="radio-${listName}"]`).check();
     cy.get('ngb-modal-window').find('button[class="btn btn-primary"]').click();
     cy.get('[data-testing-id="order-template-success-link"] a').click();
   }

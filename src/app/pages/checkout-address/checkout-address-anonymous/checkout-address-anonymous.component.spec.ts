@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
@@ -11,8 +11,8 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { IdentityProviderLoginComponent } from 'ish-shared/components/login/identity-provider-login/identity-provider-login.component';
-import { FormlyAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-address-form/formly-address-form.component';
-import { InputComponent } from 'ish-shared/forms/components/input/input.component';
+
+import { CheckoutAddressAnonymousFormComponent } from '../formly/components/checkout-address-anonymous-form/checkout-address-anonymous-form.component';
 
 import { CheckoutAddressAnonymousComponent } from './checkout-address-anonymous.component';
 
@@ -29,10 +29,9 @@ describe('Checkout Address Anonymous Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         CheckoutAddressAnonymousComponent,
+        MockComponent(CheckoutAddressAnonymousFormComponent),
         MockComponent(ErrorMessageComponent),
-        MockComponent(FormlyAddressFormComponent),
         MockComponent(IdentityProviderLoginComponent),
-        MockComponent(InputComponent),
       ],
       imports: [
         FeatureToggleModule.forTesting('guestCheckout'),
@@ -50,6 +49,17 @@ describe('Checkout Address Anonymous Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     fb = TestBed.inject(FormBuilder);
+
+    component.form = fb.group({
+      additionalAddressAttributes: fb.group({
+        email: new FormControl('', Validators.required),
+        taxationID: new FormControl(''),
+        shipOption: new FormControl('shipToInvoiceAddress'),
+      }),
+      invoiceAddress: fb.group({
+        address: new FormControl({}),
+      }),
+    });
   });
 
   it('should be created', () => {
@@ -68,26 +78,17 @@ describe('Checkout Address Anonymous Component', () => {
     expect(element.querySelector('a[data-testing-id="registration-link"]')).toBeTruthy();
   });
 
-  it('should initially have shipping and invoice address forms on page', () => {
-    fixture.detectChanges();
-    expect(element.querySelectorAll('ish-formly-address-form')).toHaveLength(2);
-  });
-
   it('should initially not show invoice address form on page', () => {
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id=guest-checkout-button]')).toBeTruthy();
-    expect(element.querySelector('div.collapse.show ish-formly-address-form')).toBeFalsy();
+    expect(element.querySelector('div.collapse.show ish-checkout-address-anonymous-form')).toBeFalsy();
   });
 
-  it('should show invoice address form if checkout as guest button is clicked', () => {
+  it('should show checkout-address-anonymous form if checkout as guest button is clicked', () => {
     component.isAddressFormCollapsed = false;
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id=guest-checkout-button]')).toBeFalsy();
-    expect(element.querySelector('div.collapse.show ish-formly-address-form')).toBeTruthy();
-    expect(component.form.controls.shipOption.value).toEqual('shipToInvoiceAddress');
-    expect(
-      element.querySelector('div.collapse.show[data-testing-id=shipping-address-form] ish-formly-address-form')
-    ).toBeFalsy();
+    expect(element.querySelector('div.collapse.show ish-checkout-address-anonymous-form')).toBeTruthy();
   });
 
   it('should collapse address form when cancel is clicked', () => {
@@ -107,9 +108,6 @@ describe('Checkout Address Anonymous Component', () => {
   });
 
   it('should set submitted flag if submit is clicked and form is not valid', async () => {
-    component.form = new FormGroup({
-      email: new FormControl('', Validators.required),
-    });
     expect(component.submitted).toBeFalsy();
     component.submitAddressForm();
     await fixture.whenStable();
@@ -118,10 +116,6 @@ describe('Checkout Address Anonymous Component', () => {
   });
 
   it('should NOT create address for invalid form', () => {
-    component.form = new FormGroup({
-      email: new FormControl('', Validators.required),
-    });
-
     component.submitAddressForm();
     fixture.detectChanges();
 
@@ -129,13 +123,10 @@ describe('Checkout Address Anonymous Component', () => {
   });
 
   it('should create address for valid invoice address form', () => {
-    component.form = fb.group({
-      email: new FormControl(''),
-      taxationID: new FormControl(''),
-      shipOption: new FormControl('shipToInvoiceAddress'),
-    });
-    component.invoiceAddressForm = fb.group({
-      address: new FormControl({}),
+    component.form.get('additionalAddressAttributes').setValue({
+      taxationID: '',
+      shipOption: 'shipToInvoiceAddress',
+      email: 'test@intershop.de',
     });
 
     component.submitAddressForm();

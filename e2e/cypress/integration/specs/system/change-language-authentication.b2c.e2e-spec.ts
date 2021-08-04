@@ -33,7 +33,7 @@ describe('Language Changing User', () => {
 
     it('when switching to german', () => {
       at(MyAccountPage, page => {
-        page.header.switchLanguage('German');
+        page.header.switchLanguage('Deutsch');
       });
     });
 
@@ -55,7 +55,7 @@ describe('Language Changing User', () => {
     });
 
     it('when switching to german', () => {
-      at(LoginPage, page => page.header.switchLanguage('German'));
+      at(LoginPage, page => page.header.switchLanguage('Deutsch'));
     });
 
     it('should see german content on login page', () => {

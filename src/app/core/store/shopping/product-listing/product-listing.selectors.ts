@@ -16,7 +16,10 @@ const getProductListingState = createSelector(getShoppingState, state => state.p
 
 export const getProductListingLoading = createSelector(getProductListingState, state => state.loading);
 
-export const getProductListingItemsPerPage = createSelector(getProductListingState, state => state.itemsPerPage);
+export const getProductListingItemsPerPage = (key: string) =>
+  createSelector(getProductListingState, state =>
+    typeof state.itemsPerPage === 'object' ? state.itemsPerPage[key] : state.itemsPerPage
+  );
 
 export const getProductListingViewType = createSelector(getProductListingState, state => state.viewType);
 
@@ -97,7 +100,7 @@ function calculateLookUpID(
 export const getProductListingView = (id: ProductListingID) =>
   createSelectorFactory<object, ProductListingView>(projector => resultMemoize(projector, isEqual))(
     getProductListingEntities,
-    getProductListingItemsPerPage,
+    getProductListingItemsPerPage(id.type),
     getProductListingSettings,
     (
       entities: Dictionary<ProductListingType>,

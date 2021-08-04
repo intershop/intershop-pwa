@@ -79,8 +79,9 @@ export class UserService {
     return this.apiService.get<CustomerData>('customers/-', options).pipe(
       withLatestFrom(this.appFacade.isAppTypeREST$),
       concatMap(([data, isAppTypeRest]) =>
-        // ToDo: #IS-30018 use the customer type for this decision
-        isAppTypeRest && !data.companyName ? this.apiService.get<CustomerData>('privatecustomers/-') : of(data)
+        isAppTypeRest && data.customerType === 'PRIVATE'
+          ? this.apiService.get<CustomerData>('privatecustomers/-')
+          : of(data)
       ),
       map(CustomerMapper.mapLoginData)
     );
@@ -111,7 +112,7 @@ export class UserService {
                 ? {
                     user: {
                       ...body.user,
-                      preferredLanguage: currentLocale.lang ?? 'en_US',
+                      preferredLanguage: currentLocale,
                     },
                   }
                 : {
@@ -128,14 +129,14 @@ export class UserService {
                     firstName: body.user.firstName,
                     lastName: body.user.lastName,
                     email: body.user.email,
-                    preferredLanguage: currentLocale.lang ?? 'en_US',
+                    preferredLanguage: currentLocale,
                   }
                 : {
                     userId: body.userId,
                   }),
               address: customerAddress,
               credentials: body.credentials,
-              preferredLanguage: currentLocale.lang ?? 'en_US',
+              preferredLanguage: currentLocale,
             }
       )
     );
@@ -186,12 +187,8 @@ export class UserService {
       first(),
       concatMap(restResource =>
         body.customer.isBusinessCustomer
-          ? this.apiService
-              .put<User>('customers/-/users/-', changedUser, { headers })
-              .pipe(map(UserMapper.fromData))
-          : this.apiService
-              .put<User>(`${restResource}/-`, changedUser, { headers })
-              .pipe(map(UserMapper.fromData))
+          ? this.apiService.put<User>('customers/-/users/-', changedUser, { headers }).pipe(map(UserMapper.fromData))
+          : this.apiService.put<User>(`${restResource}/-`, changedUser, { headers }).pipe(map(UserMapper.fromData))
       )
     );
   }

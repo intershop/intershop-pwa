@@ -182,7 +182,7 @@ export class ProductContextFacade extends RxState<ProductContext> {
         this.select('quantity').pipe(distinctUntilChanged()),
       ]).pipe(
         map(([product, minOrderQuantity, quantity]) => {
-          if (product) {
+          if (product && !product.failed) {
             if (Number.isNaN(quantity)) {
               return this.translate.instant('product.quantity.integer.text');
             } else if (quantity < minOrderQuantity) {
@@ -227,7 +227,9 @@ export class ProductContextFacade extends RxState<ProductContext> {
       'label',
       this.select('product').pipe(
         map(
-          product => ProductHelper.getAttributesOfGroup(product, AttributeGroupTypes.ProductLabelAttributes)?.[0]?.name
+          product =>
+            // tslint:disable-next-line: no-null-keyword
+            ProductHelper.getAttributesOfGroup(product, AttributeGroupTypes.ProductLabelAttributes)?.[0]?.name || null
         )
       )
     );

@@ -50,7 +50,7 @@ export class WishlistsDetailsPage {
 
   moveProductToWishlist(productId: string, listName: string) {
     this.getWishlistItemById(productId).find('[data-testing-id="move-wishlist"]').click();
-    cy.get(`[data-testing-id="${listName}"]`).check();
+    cy.get(`[data-testing-id="radio-${listName}"]`).check();
     cy.get('ngb-modal-window').find('button[class="btn btn-primary"]').click();
     cy.get('[data-testing-id="wishlist-success-link"] a').click();
     waitLoadingEnd(2000);

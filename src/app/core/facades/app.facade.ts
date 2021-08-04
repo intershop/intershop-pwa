@@ -6,6 +6,7 @@ import { filter, map, mapTo, sample, shareReplay, startWith, withLatestFrom } fr
 
 import {
   getAvailableLocales,
+  getCurrentCurrency,
   getCurrentLocale,
   getDeviceType,
   getICMBaseURL,
@@ -34,6 +35,7 @@ export class AppFacade {
 
   currentLocale$ = this.store.pipe(select(getCurrentLocale));
   availableLocales$ = this.store.pipe(select(getAvailableLocales));
+  currentCurrency$ = this.store.pipe(select(getCurrentCurrency));
 
   generalError$ = this.store.pipe(select(getGeneralError));
   generalErrorType$ = this.store.pipe(select(getGeneralErrorType));

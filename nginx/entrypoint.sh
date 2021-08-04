@@ -7,7 +7,12 @@ set -e
 
 [ -f "/etc/nginx/conf.d/default.conf" ] && rm /etc/nginx/conf.d/default.conf
 
-find /etc/nginx/features/*.conf | xargs -I{} echo {} | sed -e "s%.*\/\(\w*\).conf%\1%" | grep -E '^\w+$' | while read feature; do echo "# $feature" ; env | grep -iqE "^$feature=(on|1|true|yes)$" && echo "include /etc/nginx/features/${feature}.conf;" || echo "include /etc/nginx/features/${feature}-off[.]conf;" ; done >/etc/nginx/conf.d/features.conf
+if [ -n "$BASIC_AUTH" ]
+then
+  htpasswd -bc /etc/nginx/.htpasswd $(echo "$BASIC_AUTH" | sed 's/:/ /')
+fi
+
+find /etc/nginx/features/*.conf -print0 | xargs -0 -I{} echo {} | sed -e "s%.*\/\(\w*\).conf%\1%" | grep -E '^\w+$' | while read feature; do echo "# $feature" ; env | grep -iqE "^$feature=(on|1|true|yes)$" && echo "include /etc/nginx/features/${feature}.conf;" || echo "include /etc/nginx/features/${feature}-off[.]conf;" ; done >/etc/nginx/conf.d/features.conf
 
 if [ -z "$MULTI_CHANNEL_SOURCE" ]
 then
@@ -19,7 +24,7 @@ then
   fi
 fi
 
-/gomplate -d "domains=$MULTI_CHANNEL_SOURCE" </etc/nginx/conf.d/channel.conf.tmpl >/etc/nginx/conf.d/multi-channel.conf
+/gomplate -d "domains=$MULTI_CHANNEL_SOURCE" -d 'ipwhitelist=env:///BASIC_AUTH_IP_WHITELIST?type=application/yaml' </etc/nginx/conf.d/channel.conf.tmpl >/etc/nginx/conf.d/multi-channel.conf
 
 # Generate Pagespeed config based on environment variables
 env | grep NPSC_ | sed -e 's/^NPSC_//g' -e "s/\([A-Z_]*\)=/\L\1=/g" -e "s/_\([a-zA-Z]\)/\u\1/g" -e "s/^\([a-zA-Z]\)/\u\1/g" -e 's/=.*$//' -e 's/\=/ /' -e 's/^/\pagespeed /' > /tmp/pagespeed-prefix.txt

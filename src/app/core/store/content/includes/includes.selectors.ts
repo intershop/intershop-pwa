@@ -12,8 +12,6 @@ const getIncludesState = createSelector(getContentState, state => state.includes
 
 const { selectEntities: getContentIncludeEntities } = includesAdapter.getSelectors(getIncludesState);
 
-export const getContentIncludeLoading = createSelector(getIncludesState, includes => includes.loading);
-
 const getContentIncludeMemoized = (includeId: string) =>
   createSelectorFactory<object, ContentPageletEntryPoint>(projector => resultMemoize(projector, isEqual))(
     getContentIncludeEntities,

@@ -3,6 +3,9 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { FormElementComponent } from 'ish-shared/forms/components/form-element/form-element.component';
 
+/**
+ * @deprecated use formly instead
+ */
 @Component({
   selector: 'ish-input',
   templateUrl: './input.component.html',

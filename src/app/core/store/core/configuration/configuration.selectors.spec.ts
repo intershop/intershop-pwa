@@ -1,13 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { applyConfiguration } from './configuration.actions';
 import {
+  getAvailableCurrencies,
   getAvailableLocales,
+  getCurrentCurrency,
   getCurrentLocale,
   getDeviceType,
   getFeatures,
@@ -37,9 +38,7 @@ describe('Configuration Selectors', () => {
       expect(getICMServerURL(store$.state)).toBeUndefined();
       expect(getICMStaticURL(store$.state)).toBeUndefined();
       expect(getFeatures(store$.state)).toBeUndefined();
-      expect(getAvailableLocales(store$.state)).not.toBeEmpty();
-      expect(getCurrentLocale(store$.state)).not.toBeEmpty();
-      expect(getDeviceType(store$.state)).not.toBeEmpty();
+      expect(getDeviceType(store$.state)).toBeUndefined();
       expect(getIdentityProvider(store$.state)).toBeUndefined();
     });
   });
@@ -109,61 +108,35 @@ describe('Configuration Selectors', () => {
     });
   });
 
-  describe('after setting default locales', () => {
-    beforeEach(() => {
-      store$.dispatch(
-        applyConfiguration({
-          locales: [
-            { lang: 'de_DE' },
-            { lang: 'en_US' },
-            { lang: 'fr_BE' },
-            { lang: 'nl_BE' },
-            { lang: 'no_NO' },
-            { lang: 'zh_CN' },
-          ] as Locale[],
-        })
-      );
-    });
-
+  describe('after initialization', () => {
     describe('without ICM server configuration', () => {
-      it('should choose the internal default Locale when no ICM is available', () => {
+      it('should choose the internal default locale and currency when no ICM is available', () => {
         store$.dispatch(
           applyConfiguration({
-            ...store$.state.configuration,
             defaultLocale: 'en_US',
+            localeCurrencyOverride: undefined,
           })
         );
-        expect(getCurrentLocale(store$.state)).toMatchInlineSnapshot(`
-          Object {
-            "lang": "en_US",
-          }
+        expect(getCurrentLocale(store$.state)).toMatchInlineSnapshot(`"en_US"`);
+        expect(getCurrentCurrency(store$.state)).toBeUndefined();
+        expect(getAvailableLocales(store$.state)).toMatchInlineSnapshot(`
+          Array [
+            "en_US",
+          ]
         `);
+        expect(getAvailableCurrencies(store$.state)).toBeUndefined();
       });
 
-      it('should choose the first locale when no ICM or internal configuration is available', () => {
+      it('should not choose a locale when no ICM or internal configuration is available', () => {
         store$.dispatch(
           applyConfiguration({
-            ...store$.state.configuration,
             defaultLocale: undefined,
           })
         );
-        expect(getCurrentLocale(store$.state)).toMatchInlineSnapshot(`
-          Object {
-            "lang": "de_DE",
-          }
-        `);
-      });
-
-      it.each`
-        requested  | chosen
-        ${'de_DE'} | ${'de_DE'}
-        ${'no_NO'} | ${'no_NO'}
-        ${'nl_BE'} | ${'nl_BE'}
-        ${'zh_CN'} | ${'zh_CN'}
-        ${'nl_NL'} | ${'de_DE'}
-      `('should choose $chosen when $requested is requested', ({ requested, chosen }) => {
-        store$.dispatch(applyConfiguration({ lang: requested, defaultLocale: undefined }));
-        expect(getCurrentLocale(store$.state)?.lang).toEqual(chosen);
+        expect(getCurrentLocale(store$.state)).toBeUndefined();
+        expect(getCurrentCurrency(store$.state)).toBeUndefined();
+        expect(getAvailableLocales(store$.state)).toBeUndefined();
+        expect(getAvailableCurrencies(store$.state)).toBeUndefined();
       });
     });
 
@@ -173,16 +146,18 @@ describe('Configuration Selectors', () => {
           loadServerConfigSuccess({
             config: {
               general: {
-                defaultLocale: 'en_US',
-                locales: ['en_US', 'de_DE', 'fr_BE', 'nl_BE', 'fr_FR'],
+                defaultLocale: 'de_DE',
+                defaultCurrency: 'EUR',
+                locales: ['en_US', 'de_DE', 'fr_BE', 'nl_BE'],
+                currencies: ['USD', 'EUR'],
               },
             },
           })
         );
       });
 
-      it('should filter available locales for matching ICM server locales', () => {
-        expect(getAvailableLocales(store$.state)?.map(l => l.lang)).toMatchInlineSnapshot(`
+      it('should return ICM server locales for available locales', () => {
+        expect(getAvailableLocales(store$.state)).toMatchInlineSnapshot(`
           Array [
             "en_US",
             "de_DE",
@@ -192,24 +167,55 @@ describe('Configuration Selectors', () => {
         `);
       });
 
-      it('should choose the ICM configured default locale when ICM configuration is available', () => {
-        expect(getCurrentLocale(store$.state)).toMatchInlineSnapshot(`
-          Object {
-            "lang": "en_US",
-          }
+      it('should return ICM server currencies for available currencies', () => {
+        expect(getAvailableCurrencies(store$.state)).toMatchInlineSnapshot(`
+          Array [
+            "USD",
+            "EUR",
+          ]
         `);
+      });
+
+      it('should choose the ICM configured default locale when ICM configuration is available', () => {
+        expect(getCurrentLocale(store$.state)).toMatchInlineSnapshot(`"de_DE"`);
+      });
+
+      it('should choose the ICM configured default currency when ICM configuration is available', () => {
+        expect(getCurrentCurrency(store$.state)).toMatchInlineSnapshot(`"EUR"`);
       });
 
       it.each`
         requested  | chosen
         ${'de_DE'} | ${'de_DE'}
-        ${'no_NO'} | ${'en_US'}
+        ${'no_NO'} | ${'de_DE'}
         ${'nl_BE'} | ${'nl_BE'}
-        ${'zh_CN'} | ${'en_US'}
-        ${'nl_NL'} | ${'en_US'}
+        ${'zh_CN'} | ${'de_DE'}
+        ${'nl_NL'} | ${'de_DE'}
+        ${'en_US'} | ${'en_US'}
       `('should choose $chosen when $requested is requested', ({ requested, chosen }) => {
         store$.dispatch(applyConfiguration({ lang: requested }));
-        expect(getCurrentLocale(store$.state)?.lang).toEqual(chosen);
+        expect(getCurrentLocale(store$.state)).toEqual(chosen);
+      });
+
+      describe('with configured currency filter active', () => {
+        beforeEach(() => {
+          store$.dispatch(
+            applyConfiguration({
+              localeCurrencyOverride: {
+                de_DE: 'JPY',
+              },
+            })
+          );
+        });
+
+        it('should use the locale currency filter override for currencies', () => {
+          expect(getCurrentCurrency(store$.state)).toMatchInlineSnapshot(`"JPY"`);
+          expect(getAvailableCurrencies(store$.state)).toMatchInlineSnapshot(`
+            Array [
+              "JPY",
+            ]
+          `);
+        });
       });
     });
   });

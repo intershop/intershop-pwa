@@ -32,29 +32,24 @@ export const getICMBaseURL = createSelector(getConfigurationState, state => stat
 
 export const getFeatures = createSelector(getConfigurationState, state => state.features);
 
-export const getTheme = createSelector(getConfigurationState, state => state.theme);
+const internalDefaultLocale = createSelector(getConfigurationState, state => state.defaultLocale);
 
-const defaultLocale = createSelector(getConfigurationState, state => state.defaultLocale);
-
-/**
- * locales configured in environment.ts
- */
-const internalLocales = createSelector(getConfigurationState, state => state.locales);
+const internalCurrencyFilter = createSelector(getConfigurationState, state => state.localeCurrencyOverride);
 
 /**
- * environment.ts locales filtered by locales configured in ICM
+ * locales configured in ICM
  *
- * TODO: available locales should not be filtered by local environment,
- * if no locale is available, then a default configured locale from environment.ts should be loaded as fallback
+ * if no locale is available, then a default configured locale from environment.ts is loaded as fallback
  */
 export const getAvailableLocales = createSelector(
-  internalLocales,
+  internalDefaultLocale,
   getServerConfigParameter<string[]>('general.locales'),
-  (configured, activated) =>
-    activated?.length ? activated.map(lang => configured?.find(l => l.lang === lang)).filter(x => !!x) : configured
+  (defaultLocale, activated) => (activated?.length ? activated : defaultLocale ? [defaultLocale] : undefined)
 );
 
 const internalRequestedLocale = createSelector(getConfigurationState, state => state.lang);
+
+const internalRequestedCurrency = createSelector(getConfigurationState, state => state.currency);
 
 /**
  * selects the current locale if set. If not returns the first available locale
@@ -65,13 +60,43 @@ const internalRequestedLocale = createSelector(getConfigurationState, state => s
 export const getCurrentLocale = createSelector(
   getAvailableLocales,
   internalRequestedLocale,
-  defaultLocale,
+  internalDefaultLocale,
   getServerConfigParameter<string>('general.defaultLocale'),
-  (available, requested, internalDefaultLocale, configuredDefault) =>
-    available?.find(l => l.lang === requested) ??
-    available?.find(l => l.lang === configuredDefault) ??
-    available?.find(l => l.lang === internalDefaultLocale) ??
+  (available, requested, defaultLocale, configuredDefault) =>
+    available?.find(l => l === requested) ??
+    available?.find(l => l === configuredDefault) ??
+    available?.find(l => l === defaultLocale) ??
     available?.[0]
+);
+
+export const getAvailableCurrencies = createSelector(
+  getCurrentLocale,
+  internalCurrencyFilter,
+  getServerConfigParameter<string[]>('general.currencies'),
+  (currentLocale, filter, activated): string[] => {
+    const curFilter = filter?.[currentLocale];
+    if (curFilter) {
+      if (Array.isArray(curFilter)) {
+        if (curFilter.length) {
+          return curFilter;
+        }
+      } else {
+        return [curFilter];
+      }
+    }
+
+    if (activated?.length) {
+      return activated;
+    }
+  }
+);
+
+export const getCurrentCurrency = createSelector(
+  getAvailableCurrencies,
+  internalRequestedCurrency,
+  getServerConfigParameter<string>('general.defaultCurrency'),
+  (available, requested, configuredDefault) =>
+    available?.find(l => l === requested) ?? available?.find(l => l === configuredDefault) ?? available?.[0]
 );
 
 export const getDeviceType = createSelector(getConfigurationState, state => state._deviceType);
@@ -87,4 +112,15 @@ export const getIdentityProvider = createSelectorFactory<
   (state: ConfigurationState) =>
     state.identityProvider &&
     (state.identityProvider === 'ICM' ? { type: 'ICM' } : state.identityProviders?.[state.identityProvider])
+);
+
+export const getServerTranslations = (lang: string) =>
+  createSelector(getConfigurationState, state => state.serverTranslations?.[lang]);
+
+export const getSpecificServerTranslation = (lang: string, key: string) =>
+  createSelector(getServerTranslations(lang), translations => translations?.[key]);
+
+export const getMultiSiteLocaleMap = createSelector(
+  getConfigurationState,
+  (state: ConfigurationState) => state.multiSiteLocaleMap
 );

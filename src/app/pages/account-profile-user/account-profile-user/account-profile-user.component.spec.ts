@@ -41,7 +41,8 @@ describe('Account Profile User Component', () => {
   it('should display 3 input fields for firstName, lastName and phone', () => {
     fixture.detectChanges();
 
-    expect(element.innerHTML.match(/ish-text-input-field/g)).toHaveLength(3);
+    expect(element.innerHTML.match(/ish-text-input-field/g)).toHaveLength(2);
+    expect(element.innerHTML.match(/ish-phone-field/g)).toHaveLength(1);
 
     expect(element.innerHTML).toContain('firstName');
     expect(element.innerHTML).toContain('lastName');

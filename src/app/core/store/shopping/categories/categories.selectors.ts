@@ -32,6 +32,12 @@ export const getCategory = (uniqueId: string) =>
     defaultMemoize(projector, CategoryTreeHelper.equals, isEqual)
   )(getCategorySubTree(uniqueId), (tree: CategoryTree) => createCategoryView(tree, uniqueId));
 
+export const getCategoryIdByRefId = (categoryRefId: string) =>
+  createSelectorFactory<object, string>(projector => defaultMemoize(projector, isEqual))(
+    getCategoryRefs,
+    (refs: { [id: string]: string }) => refs[categoryRefId]
+  );
+
 /**
  * Retrieves the currently resolved selected category.
  */

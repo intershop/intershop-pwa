@@ -54,7 +54,7 @@ describe('Requisitions List Component', () => {
     translate.setDefaultLang('en');
     translate.use('en');
     translate.setTranslation('en', {
-      'account.approvallist.items': { other: '# items' },
+      'account.approvallist.items': '{{0}} items',
     });
   });
 

@@ -1,56 +1,91 @@
 <div *ngIf="orderTemplates && orderTemplates.length > 0; else noOrderTemplate" class="section">
-  <div class="list-header d-md-flex">
-    <div class="list-header-item col-5">{{ 'account.order_template.list.table.template' | translate }}</div>
-    <div class="list-header-item col-3">{{ 'account.order_template.list.table.created' | translate }}</div>
-    <div class="list-header-item col-2">{{ 'account.order_template.list.table.item' | translate }}</div>
-  </div>
-  <div class="list-body">
-    <ng-container *ngTemplateOutlet="orderTemplateRow"></ng-container>
-    <ng-container *ngFor="let orderTemplate of orderTemplates">
-      <ng-container *ngTemplateOutlet="orderTemplateRow; context: { orderTemplate: orderTemplate }"></ng-container>
+  <table
+    cdk-table
+    [dataSource]="orderTemplates"
+    class="table table-lg mobile-optimized"
+    data-testing-id="order-template-list"
+  >
+    <!-- Order template name -->
+    <ng-container cdkColumnDef="title">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-template-title">
+        {{ 'account.order_template.list.table.template' | translate }}
+      </th>
+      <td
+        cdk-cell
+        *cdkCellDef="let orderTemplate"
+        [attr.data-label]="'account.order_template.list.table.template' | translate"
+      >
+        <a [routerLink]="'/account/order-templates/' + orderTemplate.id" data-testing-id="order-template-list-title">
+          {{ orderTemplate.title }}
+        </a>
+      </td>
     </ng-container>
-  </div>
+
+    <!-- Creation date -->
+    <ng-container cdkColumnDef="creationDate">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-template-creation-date">
+        {{ 'account.order_template.list.table.created' | translate }}
+      </th>
+      <td
+        cdk-cell
+        *cdkCellDef="let orderTemplate"
+        [attr.data-label]="'account.order_template.list.table.created' | translate"
+      >
+        {{ orderTemplate.creationDate | ishDate: 'shortDate' }}
+      </td>
+    </ng-container>
+
+    <!-- Number of line items -->
+    <ng-container cdkColumnDef="lineItems">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-template-line-items">
+        {{ 'account.order_template.list.table.item' | translate }}
+      </th>
+      <td
+        cdk-cell
+        *cdkCellDef="let orderTemplate"
+        [attr.data-label]="'account.order_template.list.table.item' | translate"
+      >
+        {{ 'account.order_template.items' | translate: { '0': orderTemplate.itemsCount } }}
+      </td>
+    </ng-container>
+
+    <!-- Actions -->
+    <ng-container cdkColumnDef="actions">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-template-actions"></th>
+      <td cdk-cell *cdkCellDef="let orderTemplate" class="column-price">
+        <a *ngIf="orderTemplate.items?.length" class="btn-tool d-inline-flex align-top">
+          <ish-product-add-to-basket
+            ishProductContext
+            [parts]="getParts(orderTemplate)"
+            displayType="icon"
+            class="text-primary p-0"
+          ></ish-product-add-to-basket>
+        </a>
+        <a
+          class="btn-tool"
+          [title]="'account.order_template.edit.heading' | translate"
+          [routerLink]="'/account/order-templates/' + orderTemplate.id"
+          data-testing-id="order-template-details-edit"
+          ><fa-icon icon="pencil-alt"></fa-icon
+        ></a>
+        <a
+          class="btn-tool"
+          title="{{ 'account.order_template.list.link.remove' | translate }}"
+          (click)="openDeleteConfirmationDialog(orderTemplate, deleteDialog)"
+          data-testing-id="delete-order-template"
+          ><fa-icon [icon]="['fas', 'trash-alt']"></fa-icon
+        ></a>
+      </td>
+    </ng-container>
+
+    <!-- Header and Row Declarations -->
+    <tr cdk-header-row *cdkHeaderRowDef="columnsToDisplay"></tr>
+    <tr cdk-row *cdkRowDef="let row; columns: columnsToDisplay" data-testing-id="order-template-list-item"></tr>
+  </table>
 </div>
+
 <ng-template #noOrderTemplate>
-  <p>{{ 'account.order_template.list.no_templates.text' | translate }}</p>
-</ng-template>
-<ng-template #orderTemplateRow let-orderTemplate="orderTemplate">
-  <div *ngIf="orderTemplate" class="list-item-row row mx-0" data-testing-id="order-template-list-item-container">
-    <div class="col-5 list-item" data-testing-id="order-template-list-item">
-      <a [routerLink]="'/account/order-templates/' + orderTemplate.id" data-testing-id="order-template-list-title">{{
-        orderTemplate.title
-      }}</a>
-    </div>
-    <div class="col-3 list-item d-none d-md-block">{{ orderTemplate.creationDate | ishDate: 'shortDate' }}</div>
-    <div class="col-2 list-item">
-      {{ orderTemplate.itemsCount | i18nPlural: ('account.order_template.items' | translate) || { other: '#' } }}
-    </div>
-    <div class="col-5 col-md-2 list-item text-right">
-      <a *ngIf="orderTemplate.items?.length" class="btn-tool d-inline-flex align-top">
-        <ish-product-add-to-basket
-          ishProductContext
-          [parts]="getParts(orderTemplate)"
-          displayType="icon"
-          class="text-primary p-0"
-        ></ish-product-add-to-basket>
-      </a>
-      <a
-        class="btn-tool"
-        [title]="'account.order_template.edit.heading' | translate"
-        data-testing-id="order-template-details-edit"
-        [routerLink]="'/account/order-templates/' + orderTemplate.id"
-        data-testing-id="order-template-list-title"
-        ><fa-icon icon="pencil-alt"></fa-icon
-      ></a>
-      <a
-        class="btn-tool"
-        title="{{ 'account.order_template.list.link.remove' | translate }}"
-        (click)="openDeleteConfirmationDialog(orderTemplate, deleteDialog)"
-        data-testing-id="delete-order-template"
-        ><fa-icon [icon]="['fas', 'trash-alt']"></fa-icon
-      ></a>
-    </div>
-  </div>
+  <p data-testing-id="emptyList">{{ 'account.order_template.list.no_templates.text' | translate }}</p>
 </ng-template>
 
 <!-- the title will be set dynamically -->

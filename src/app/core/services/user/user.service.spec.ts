@@ -9,7 +9,6 @@ import { Address } from 'ish-core/models/address/address.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { CustomerData } from 'ish-core/models/customer/customer.interface';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
@@ -34,15 +33,19 @@ describe('User Service', () => {
     });
     userService = TestBed.inject(UserService);
     when(appFacade.isAppTypeREST$).thenReturn(of(true));
-    when(appFacade.currentLocale$).thenReturn(of({ lang: 'en_US' } as Locale));
+    when(appFacade.currentLocale$).thenReturn(of('en_US'));
     when(appFacade.customerRestResource$).thenReturn(of('customers'));
   });
 
   describe('SignIn a user', () => {
     it('should login a user when correct credentials are entered', done => {
       const loginDetail = { login: 'patricia@test.intershop.de', password: '!InterShop00!' };
-      when(apiServiceMock.get('customers/-', anything())).thenReturn(of({ customerNo: 'PC' } as Customer));
-      when(apiServiceMock.get('privatecustomers/-')).thenReturn(of({ customerNo: 'PC' } as Customer));
+      when(apiServiceMock.get('customers/-', anything())).thenReturn(
+        of({ customerNo: 'PC', customerType: 'PRIVATE' } as CustomerData)
+      );
+      when(apiServiceMock.get('privatecustomers/-')).thenReturn(
+        of({ customerNo: 'PC', customerType: 'PRIVATE' } as CustomerData)
+      );
 
       userService.signInUser(loginDetail).subscribe(data => {
         const [, options] = capture<{}, { headers: HttpHeaders }>(apiServiceMock.get).beforeLast();
@@ -57,8 +60,10 @@ describe('User Service', () => {
 
     it('should login a private user when correct credentials are entered', done => {
       const loginDetail = { login: 'patricia@test.intershop.de', password: '!InterShop00!' };
-      when(apiServiceMock.get('customers/-', anything())).thenReturn(of({ customerNo: 'PC' } as Customer));
-      when(apiServiceMock.get('privatecustomers/-')).thenReturn(of({ customerNo: 'PC' } as Customer));
+      when(apiServiceMock.get('customers/-', anything())).thenReturn(
+        of({ customerNo: 'PC', customerType: 'PRIVATE' } as CustomerData)
+      );
+      when(apiServiceMock.get('privatecustomers/-')).thenReturn(of({ customerNo: 'PC' } as CustomerData));
 
       userService.signInUser(loginDetail).subscribe(() => {
         verify(apiServiceMock.get(`customers/-`, anything())).once();
@@ -70,7 +75,7 @@ describe('User Service', () => {
     it('should login a business user when correct credentials are entered', done => {
       const loginDetail = { login: 'patricia@test.intershop.de', password: '!InterShop00!' };
       when(apiServiceMock.get(anything(), anything())).thenReturn(
-        of({ customerNo: 'PC', companyName: 'xyz' } as Customer)
+        of({ customerNo: 'PC', customerType: 'SMBCustomer' } as CustomerData)
       );
 
       userService.signInUser(loginDetail).subscribe(() => {
@@ -93,7 +98,7 @@ describe('User Service', () => {
 
     it('should login a user by token when requested and successful', done => {
       when(apiServiceMock.get(anything(), anything())).thenReturn(
-        of({ customerNo: '4711', type: 'SMBCustomer', companyName: 'xyz' } as CustomerData)
+        of({ customerNo: '4711', type: 'SMBCustomer', customerType: 'SMBCustomer' } as CustomerData)
       );
 
       userService.signInUserByToken().subscribe(() => {
@@ -107,7 +112,7 @@ describe('User Service', () => {
 
     it('should login a user by given token when requested and successful', done => {
       when(apiServiceMock.get(anything(), anything())).thenReturn(
-        of({ customerNo: '4711', type: 'SMBCustomer', companyName: 'xyz' } as CustomerData)
+        of({ customerNo: '4711', type: 'SMBCustomer', customerType: 'SMBCustomer' } as CustomerData)
       );
 
       userService.signInUserByToken('12345').subscribe(() => {
@@ -135,8 +140,12 @@ describe('User Service', () => {
 
     it("should create a new individual user when 'createUser' is called", done => {
       when(apiServiceMock.post(anyString(), anything(), anything())).thenReturn(of({}));
-      when(apiServiceMock.get(anything(), anything())).thenReturn(of({ customerNo: 'PC' } as Customer));
-      when(apiServiceMock.get(anything())).thenReturn(of({ customerNo: 'PC' } as Customer));
+      when(apiServiceMock.get(anything(), anything())).thenReturn(
+        of({ customerNo: 'PC', customerType: 'PRIVATE' } as CustomerData)
+      );
+      when(apiServiceMock.get(anything())).thenReturn(
+        of({ customerNo: 'PC', customerType: 'PRIVATE' } as CustomerData)
+      );
 
       const payload = {
         customer: { customerNo: '4711', isBusinessCustomer: false } as Customer,

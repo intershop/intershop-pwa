@@ -10,7 +10,7 @@
     margin-top: $space-default;
   }
   .panel {
-    margin-top: $space-default / 2;
+    margin-top: $space-default * 0.5;
     margin-bottom: 0;
     background-color: #f7f7f7;
 
@@ -18,11 +18,6 @@
 
     .panel-collapse {
       padding-left: 20px; // like radio buttons
-    }
-
-    .form-check > label {
-      display: inline-block;
-      margin-bottom: $space-default / 2;
     }
   }
 

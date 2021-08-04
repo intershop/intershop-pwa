@@ -3,6 +3,9 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { SelectComponent, SelectOption } from 'ish-shared/forms/components/select/select.component';
 
+/**
+ * @deprecated use formly instead
+ */
 @Component({
   selector: 'ish-select-title',
   templateUrl: '../select/select.component.html',

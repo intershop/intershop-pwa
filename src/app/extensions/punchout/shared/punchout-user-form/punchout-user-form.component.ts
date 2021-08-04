@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormlyConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
@@ -23,8 +23,6 @@ export class PunchoutUserFormComponent implements OnInit {
   form = new FormGroup({});
   fields: FormlyFieldConfig[];
   model = {};
-
-  constructor(private config: FormlyConfig) {}
 
   ngOnInit() {
     this.checkInput();
@@ -84,22 +82,16 @@ export class PunchoutUserFormComponent implements OnInit {
           {
             key: 'password',
             type: 'ish-password-field',
-            wrappers: [...this.config.getType('ish-password-field').wrappers, 'description'],
             templateOptions: {
+              postWrappers: [{ wrapper: 'description', index: -1 }],
               label: this.punchoutUser ? 'account.punchout.password.new.label' : 'account.punchout.password.label',
               required: this.punchoutUser ? false : true,
-              autocomplete: 'new-password',
+              attributes: { autocomplete: 'new-password' },
               customDescription: {
-                class: 'input-help',
                 key: 'account.register.password.extrainfo.message',
                 args: { 0: '7' },
               },
               hideRequiredMarker: true,
-            },
-            validation: {
-              messages: {
-                required: 'account.punchout.password.error.required',
-              },
             },
           },
           {
@@ -110,7 +102,7 @@ export class PunchoutUserFormComponent implements OnInit {
               label: this.punchoutUser
                 ? 'account.punchout.password.new.confirmation.label'
                 : 'account.punchout.password.confirmation.label',
-              autocomplete: 'new-password',
+              attributes: { autocomplete: 'new-password' },
               hideRequiredMarker: true,
             },
             validators: {
@@ -119,7 +111,6 @@ export class PunchoutUserFormComponent implements OnInit {
             validation: {
               messages: {
                 required: 'account.punchout.password.confirmation.error.required',
-                equalTo: 'account.update_password.confirm_password.error.stringcompare',
               },
             },
           },

@@ -229,11 +229,6 @@ export class RegistrationFormConfigurationService {
               label: 'account.register.email.label',
               required: true,
             },
-            validation: {
-              messages: {
-                required: 'account.update_email.email.error.notempty',
-              },
-            },
           },
           {
             key: 'loginConfirmation',
@@ -247,7 +242,6 @@ export class RegistrationFormConfigurationService {
             },
             validation: {
               messages: {
-                required: 'account.update_email.email.error.notempty',
                 equalTo: 'account.registration.email.not_match.error',
               },
             },
@@ -257,21 +251,14 @@ export class RegistrationFormConfigurationService {
             key: 'password',
             type: 'ish-password-field',
             templateOptions: {
-              postWrappers: ['description'],
+              postWrappers: [{ wrapper: 'description', index: -1 }],
               required: true,
               label: 'account.register.password.label',
               customDescription: {
-                class: 'input-help',
                 key: 'account.register.password.extrainfo.message',
                 args: { 0: '7' },
               },
-
-              autocomplete: 'new-password',
-            },
-            validation: {
-              messages: {
-                required: 'account.update_password.new_password.error.required',
-              },
+              attributes: { autocomplete: 'new-password' },
             },
           },
           {
@@ -281,7 +268,7 @@ export class RegistrationFormConfigurationService {
               required: true,
               label: 'account.register.password_confirmation.label',
 
-              autocomplete: 'new-password',
+              attributes: { autocomplete: 'new-password' },
             },
             validators: {
               validation: [SpecialValidators.equalToControl('password')],
@@ -289,7 +276,6 @@ export class RegistrationFormConfigurationService {
             validation: {
               messages: {
                 required: 'account.register.password_confirmation.error.default',
-                equalTo: 'account.update_password.confirm_password.error.stringcompare',
               },
             },
           },
@@ -351,7 +337,7 @@ export class RegistrationFormConfigurationService {
           },
           {
             key: 'phoneHome',
-            type: 'ish-text-input-field',
+            type: 'ish-phone-field',
             templateOptions: {
               label: 'account.profile.phone.label',
               required: false,

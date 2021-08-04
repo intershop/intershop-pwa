@@ -1,7 +1,17 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
+import { QuotingFacade } from '../../../facades/quoting.facade';
 import { QuotingHelper } from '../../../models/quoting/quoting.helper';
 import { Quote, QuoteRequest, QuoteStubFromAttributes } from '../../../models/quoting/quoting.model';
+
+type QuoteColumnsType =
+  | 'quoteNo'
+  | 'displayName'
+  | 'lineItems'
+  | 'creationDate'
+  | 'expirationDate'
+  | 'status'
+  | 'actions';
 
 /**
  * The Quote List Component displays a list of quotes.
@@ -16,17 +26,26 @@ import { Quote, QuoteRequest, QuoteStubFromAttributes } from '../../../models/qu
 })
 export class QuoteListComponent {
   @Input() quotes: (Quote | QuoteRequest | QuoteStubFromAttributes)[] = [];
-
-  @Output() deleteItem = new EventEmitter<Quote | QuoteRequest>();
+  @Input() columnsToDisplay?: QuoteColumnsType[] = [
+    'quoteNo',
+    'displayName',
+    'lineItems',
+    'creationDate',
+    'expirationDate',
+    'status',
+    'actions',
+  ];
 
   asQuote = QuotingHelper.asQuote;
   itemCount = QuotingHelper.itemCount;
 
+  constructor(private quotingFacade: QuotingFacade) {}
+
   /**
-   * Throws deleteItem event.
+   * Deletes an item.
    * @param item  The Quote item that should be deleted
    */
   onDeleteItem(item: Quote | QuoteRequest): void {
-    this.deleteItem.emit(item);
+    this.quotingFacade.delete(item);
   }
 }

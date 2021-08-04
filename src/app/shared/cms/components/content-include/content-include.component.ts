@@ -1,19 +1,9 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Observable, ReplaySubject } from 'rxjs';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageletEntryPointView } from 'ish-core/models/content-view/content-view.model';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
-import { SfeMetadataWrapper } from 'ish-shared/cms/sfe-adapter/sfe-metadata-wrapper';
 
 /**
  * The Content Include Container Component renders the content of the include with the given 'includeId'.
@@ -30,36 +20,20 @@ import { SfeMetadataWrapper } from 'ish-shared/cms/sfe-adapter/sfe-metadata-wrap
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 @GenerateLazyComponent()
-export class ContentIncludeComponent extends SfeMetadataWrapper implements OnInit, OnDestroy, OnChanges {
+export class ContentIncludeComponent implements OnInit, OnChanges {
   @Input() includeId: string;
 
   contentInclude$: Observable<ContentPageletEntryPointView>;
 
-  private destroy$ = new Subject();
   private includeIdChange = new ReplaySubject<string>(1);
 
-  constructor(private cmsFacade: CMSFacade, private cd: ChangeDetectorRef) {
-    super();
-  }
+  constructor(private cmsFacade: CMSFacade) {}
 
   ngOnInit() {
     this.contentInclude$ = this.cmsFacade.contentInclude$(this.includeIdChange);
-
-    this.cmsFacade
-      .contentIncludeSfeMetadata$(this.includeId)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(metadata => {
-        this.setSfeMetadata(metadata);
-        this.cd.markForCheck();
-      });
   }
 
   ngOnChanges() {
     this.includeIdChange.next(this.includeId);
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

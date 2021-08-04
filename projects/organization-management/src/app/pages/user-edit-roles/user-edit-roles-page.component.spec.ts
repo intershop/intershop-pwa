@@ -27,13 +27,13 @@ describe('User Edit Roles Page Component', () => {
       of({
         firstName: 'John',
         lastName: 'Doe',
-        login: 'j.d@test.de',
+        login: 'j.d@test.intershop.de',
         roleIDs: ['APP_B2B_BUYER'],
       } as B2bUser)
     );
 
     const accountFacade = mock(AccountFacade);
-    when(accountFacade.user$).thenReturn(of({ login: 'boss@test.de' } as User));
+    when(accountFacade.user$).thenReturn(of({ login: 'boss@test.intershop.de' } as User));
 
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],

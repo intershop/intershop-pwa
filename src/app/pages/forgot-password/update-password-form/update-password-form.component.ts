@@ -34,19 +34,17 @@ export class UpdatePasswordFormComponent implements OnInit {
         key: 'password',
         type: 'ish-password-field',
         templateOptions: {
-          postWrappers: ['description'],
+          postWrappers: [{ wrapper: 'description', index: -1 }],
           required: true,
           hideRequiredMarker: true,
           label: 'account.register.password.label',
           customDescription: {
-            class: 'input-help',
             key: 'account.register.password.extrainfo.message',
             args: { 0: '7' },
           },
         },
         validation: {
           messages: {
-            required: 'account.update_password.new_password.error.required',
             minLength: 'account.update_password.new_password.error.length',
           },
         },
@@ -65,7 +63,6 @@ export class UpdatePasswordFormComponent implements OnInit {
         validation: {
           messages: {
             required: 'account.register.password_confirmation.error.default',
-            equalTo: 'account.update_password.confirm_password.error.stringcompare',
           },
         },
       },

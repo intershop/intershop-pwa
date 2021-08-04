@@ -5,7 +5,6 @@ import { anyString, anything, capture, instance, mock, verify, when } from 'ts-m
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
@@ -27,7 +26,7 @@ describe('Users Service', () => {
     when(apiService.delete(anything())).thenReturn(of({}));
     when(apiService.post(anyString(), anything())).thenReturn(of({}));
     when(apiService.put(anyString(), anything())).thenReturn(of({}));
-    when(appFacade.currentLocale$).thenReturn(of({ lang: 'en_US' } as Locale));
+    when(appFacade.currentLocale$).thenReturn(of('en_US'));
 
     TestBed.configureTestingModule({
       providers: [

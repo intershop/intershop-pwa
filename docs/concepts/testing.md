@@ -18,7 +18,7 @@ Testing the PWA follows the basic principle of the test pyramid ([https://martin
 Most of the testing should be done in low-level unit tests if possible.
 These tests concern themselves with the behavior of a single unit of code, be it a function, a class or even an Angular component with HTML rendering.
 All dependencies of that unit shall be mocked out to keep the scope as small as possible.
-These tests are written in a [Jasmine](https://jasmine.github.io/)\-like style and executed with [Jest](https://facebook.github.io/jest/).
+These tests are written in a [Jasmine](https://jasmine.github.io/)\-like style and executed with [Jest](https://jestjs.io/).
 Running these tests can be very time-efficient and they serve as the primal short-circuit response to developers.
 
 ### Module
@@ -26,7 +26,7 @@ Running these tests can be very time-efficient and they serve as the primal shor
 Following unit tests we also run module tests which serve as the first layer of integration tests.
 With these tests more dependencies are instantiated in every single test to check the behavior when interconnecting more components.
 Examples for these are testing a slice of the ngrx store or checking form validation with multiple Angular components.
-They are also implemented using [Jest](https://facebook.github.io/jest/).
+They are also implemented using [Jest](https://jestjs.io/).
 
 ### Integration
 
@@ -61,12 +61,12 @@ If it (additionally) contains `b2c` or `b2b` the test also should run on the PWA
 By default Angular projects are setup with [Jasmine](https://jasmine.github.io/) and Karma Runner for unit and module tests, as well as [Protractor](https://www.protractortest.org) for end-to-end testing.
 We decided to deviate from these frameworks, because there are better alternatives available.
 
-[Jest](https://facebook.github.io/jest/) provides a better and faster experience when testing.
+[Jest](https://jestjs.io/) provides a better and faster experience when testing.
 Jest uses a JavaScript engine comparable to a virtual browser.
 There is no need to start up a real browser like it is standard with Jasmine and Karma.
 Jest also provides an interactive command line interface with many options.
 Integrations for VSCode are available that will ease developing and running tests.
-Another big advantage of Jest is the functionality for [Snapshot Testing](https://jestjs.io/docs/en/snapshot-testing).
+Another big advantage of Jest is the functionality for [Snapshot Testing](https://jestjs.io/docs/snapshot-testing).
 
 We also do not use Protractor for end-to-end testing.
 Like all Selenium-based testing frameworks, Protractor deals with the same problems.

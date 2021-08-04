@@ -19,8 +19,4 @@ export class QuoteListPageComponent implements OnInit {
     this.quotes$ = this.quotingFacade.quotingEntities$();
     this.loading$ = this.quotingFacade.loading$;
   }
-
-  deleteItem(item: Quote | QuoteRequest) {
-    this.quotingFacade.delete(item);
-  }
 }

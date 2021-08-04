@@ -1,20 +1,12 @@
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
-import { anything, capture, spy, verify } from 'ts-mockito';
+import { FieldWrapper, FormlyModule } from '@ngx-formly/core';
+import { of } from 'rxjs';
+import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
-import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { PricePipe } from 'ish-core/models/price/price.pipe';
-import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { BasketAddressSummaryComponent } from 'ish-shared/components/basket/basket-address-summary/basket-address-summary.component';
-import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
-import { BasketItemsSummaryComponent } from 'ish-shared/components/basket/basket-items-summary/basket-items-summary.component';
-import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { CheckoutShippingComponent } from './checkout-shipping.component';
 
@@ -22,22 +14,19 @@ describe('Checkout Shipping Component', () => {
   let component: CheckoutShippingComponent;
   let fixture: ComponentFixture<CheckoutShippingComponent>;
   let element: HTMLElement;
+  let checkoutFacade: CheckoutFacade;
 
   beforeEach(async () => {
+    checkoutFacade = mock(CheckoutFacade);
     await TestBed.configureTestingModule({
-      declarations: [
-        CheckoutShippingComponent,
-        MockComponent(BasketAddressSummaryComponent),
-        MockComponent(BasketCostSummaryComponent),
-        MockComponent(BasketItemsSummaryComponent),
-        MockComponent(BasketValidationResultsComponent),
-        MockComponent(ErrorMessageComponent),
-        MockComponent(FaIconComponent),
-        MockComponent(NgbPopover),
-        MockDirective(ServerHtmlDirective),
-        MockPipe(PricePipe),
+      declarations: [CheckoutShippingComponent, DummyWrapperComponent],
+      imports: [
+        FormlyModule.forChild({
+          wrappers: [{ name: 'shipping-radio-wrapper', component: DummyWrapperComponent }],
+        }),
+        FormlyTestingModule,
       ],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     }).compileComponents();
   });
 
@@ -45,8 +34,10 @@ describe('Checkout Shipping Component', () => {
     fixture = TestBed.createComponent(CheckoutShippingComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.basket = BasketMockData.getBasket();
-    component.shippingMethods = [BasketMockData.getShippingMethod()];
+
+    when(checkoutFacade.basket$).thenReturn(of(BasketMockData.getBasket()));
+    when(checkoutFacade.eligibleShippingMethodsNoFetch$).thenReturn(of([BasketMockData.getShippingMethod()]));
+    when(checkoutFacade.getValidShippingMethod$()).thenReturn(of(BasketMockData.getBasket().commonShippingMethod.id));
   });
 
   it('should be created', () => {
@@ -57,61 +48,27 @@ describe('Checkout Shipping Component', () => {
 
   it('should render available shipping methods on page', () => {
     fixture.detectChanges();
-    expect(element.querySelectorAll('div.radio')).toHaveLength(1);
-  });
-
-  it('should not render an error if no error occurs', () => {
-    fixture.detectChanges();
-    expect(element.querySelector('[role="alert"]')).toBeFalsy();
-  });
-
-  it('should render an error if an error occurs', () => {
-    component.error = makeHttpError({ status: 404 });
-    fixture.detectChanges();
-    expect(element.querySelector('ish-error-message')).toBeTruthy();
-  });
-
-  it('should not render an error if the user has currently no shipping method selected', () => {
-    component.basket.commonShippingMethod = undefined;
-    fixture.detectChanges();
-    expect(element.querySelector('[role="alert"]')).toBeFalsy();
-  });
-
-  it('should render an error if the user clicks next and has currently no shipping method selected', () => {
-    component.basket.commonShippingMethod = undefined;
-    component.goToNextStep();
-    fixture.detectChanges();
-    expect(element.querySelector('[role="alert"]')).toBeTruthy();
+    expect(element.querySelectorAll('formly-field')).toHaveLength(1);
   });
 
   it('should throw updateShippingMethod event when the user changes payment selection', () => {
     fixture.detectChanges();
 
-    const emitter = spy(component.updateShippingMethod);
+    component.shippingForm.get('shippingMethod').setValue('testShipping');
 
-    component.shippingForm.get('id').setValue('testShipping');
-
-    verify(emitter.emit(anything())).once();
-    const [arg] = capture(emitter.emit).last();
+    verify(checkoutFacade.updateBasketShippingMethod(anything())).once();
+    const [arg] = capture(checkoutFacade.updateBasketShippingMethod).last();
     expect(arg).toMatchInlineSnapshot(`"testShipping"`);
   });
 
-  it('should set submitted if next button is clicked', () => {
-    expect(component.submitted).toBeFalse();
-    component.goToNextStep();
-    expect(component.submitted).toBeTrue();
-  });
-
-  it('should not disable next button if basket shipping method is set and next button is clicked', () => {
-    expect(component.nextDisabled).toBeFalse();
-    component.goToNextStep();
-    expect(component.nextDisabled).toBeFalse();
-  });
-
-  it('should disable next button if basket shipping method is missing and next button is clicked', () => {
-    component.basket.commonShippingMethod = undefined;
-
-    component.goToNextStep();
-    expect(component.nextDisabled).toBeTrue();
+  it('should update basket if current shippingMethod is invalid', () => {
+    when(checkoutFacade.getValidShippingMethod$()).thenReturn(of('other'));
+    fixture.detectChanges();
+    verify(checkoutFacade.updateBasketShippingMethod(anything())).once();
+    const [arg] = capture(checkoutFacade.updateBasketShippingMethod).last();
+    expect(arg).toMatchInlineSnapshot(`"other"`);
   });
 });
+
+@Component({ template: '<ng-template #fieldComponent></ng-template>' })
+class DummyWrapperComponent extends FieldWrapper {}

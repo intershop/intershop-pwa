@@ -69,6 +69,16 @@ header {
     }
   }
 
+  .mid-header {
+    .quickorder-link {
+      .header-icon {
+        font-size: $font-size-corporate;
+        color: $CORPORATE-PRIMARY;
+        vertical-align: middle;
+      }
+    }
+  }
+
   &.homepage {
     margin-bottom: 0;
   }
@@ -89,8 +99,11 @@ header {
     background: $color-inverse;
   }
 
-  a span:hover {
-    color: $text-color-quarternary;
+  .user-links,
+  .header-utility {
+    a span:hover {
+      color: $text-color-quarternary;
+    }
   }
 
   .navbar-toggler {
@@ -122,7 +135,7 @@ header {
 
   li {
     float: left;
-    padding-right: ($space-default * 3 / 2);
+    padding-right: ($space-default * 1.5);
     font-family: $font-family-bold;
     font-size: 12px;
     color: $text-color-quarternary;
@@ -149,8 +162,8 @@ header {
 }
 
 .separator {
-  padding-right: ($space-default / 2);
-  padding-left: ($space-default / 2);
+  padding-right: ($space-default * 0.5);
+  padding-left: ($space-default * 0.5);
 }
 
 .ng-fa-icon.header-icon {

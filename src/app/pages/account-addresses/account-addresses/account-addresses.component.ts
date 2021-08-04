@@ -1,23 +1,16 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { Observable, Subject, combineLatest } from 'rxjs';
+import { distinctUntilChanged, filter, map, shareReplay, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AddressHelper } from 'ish-core/models/address/address.helper';
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
+import { whenTruthy } from 'ish-core/utils/operators';
+import { mapToAddressOptions } from 'ish-shared/forms/utils/forms.service';
 
 /**
  * The Account Address Page Component displays the preferred InvoiceTo and ShipTo addresses of the user
@@ -29,24 +22,23 @@ import { User } from 'ish-core/models/user/user.model';
   templateUrl: './account-addresses.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountAddressesComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() addresses: Address[];
-  @Input() user: User;
+export class AccountAddressesComponent implements OnInit, OnDestroy {
   @Input() error: HttpError;
 
-  @Output() createCustomerAddress = new EventEmitter<Address>();
-  @Output() deleteCustomerAddress = new EventEmitter<string>();
+  addresses$: Observable<Address[]>;
+  user$: Observable<User>;
 
   hasPreferredAddresses = false;
   preferredAddressesEqual: boolean;
   preferredInvoiceToAddress: Address;
   preferredShipToAddress: Address;
 
+  selectInvoiceConfig: FormlyFieldConfig;
+  selectShippingConfig: FormlyFieldConfig;
+
   isCreateAddressFormCollapsed = true;
 
-  preferredAddressForm: FormGroup;
-  invoiceAddresses: Address[] = [];
-  shippingAddresses: Address[] = [];
+  preferredAddressForm: FormGroup = new FormGroup({});
   furtherAddresses: Address[] = [];
 
   private destroy$ = new Subject();
@@ -54,112 +46,110 @@ export class AccountAddressesComponent implements OnInit, OnChanges, OnDestroy {
   constructor(private accountFacade: AccountFacade) {}
 
   ngOnInit() {
-    // create preferred select form (select boxes)
-    this.preferredAddressForm = new FormGroup({
-      preferredInvoiceAddressUrn: new FormControl(''),
-      preferredShippingAddressUrn: new FormControl(''),
-    });
+    this.addresses$ = this.accountFacade.addresses$().pipe(shareReplay(1));
+    this.user$ = this.accountFacade.user$;
 
     // trigger set preferred invoice address if it changes
-    this.preferredAddressForm
-      .get('preferredInvoiceAddressUrn')
-      .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(urn => {
+    this.preferredAddressForm.valueChanges
+      .pipe(
+        filter(value => value.preferredInvoiceAddressUrn),
+        map(value => value.preferredInvoiceAddressUrn),
+        distinctUntilChanged(),
+        withLatestFrom(this.user$),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(([urn, user]) => {
         if (urn) {
           this.accountFacade.updateUser(
-            { ...this.user, preferredInvoiceToAddressUrn: urn },
+            { ...user, preferredInvoiceToAddressUrn: urn },
             { message: 'account.addresses.preferredinvoice.change.message' }
           );
-          this.preferredAddressForm.get('preferredInvoiceAddressUrn').setValue('');
+          this.preferredAddressForm.get('preferredInvoiceAddressUrn').setValue('', { emitEvent: false });
         }
       });
 
     // trigger set preferred shipping address if it changes
-    this.preferredAddressForm
-      .get('preferredShippingAddressUrn')
-      .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(urn => {
+    this.preferredAddressForm.valueChanges
+      .pipe(
+        filter(value => value.preferredShippingAddressUrn),
+        map(value => value.preferredShippingAddressUrn),
+        distinctUntilChanged(),
+        withLatestFrom(this.user$),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(([urn, user]) => {
         if (urn) {
           this.accountFacade.updateUser(
-            { ...this.user, preferredShipToAddressUrn: urn },
+            { ...user, preferredShipToAddressUrn: urn },
             { message: 'account.addresses.preferredshipping.change.message' }
           );
-          this.preferredAddressForm.get('preferredShippingAddressUrn').setValue('');
+          this.preferredAddressForm.get('preferredShippingAddressUrn').setValue('', { emitEvent: false });
         }
       });
-  }
 
-  /**
-   * on changes - update the shown further addresses
-   */
-  ngOnChanges(c: SimpleChanges) {
-    if (this.hasAddressOrUserChanged(c)) {
-      // prepare select box label and content
-      this.preparePreferredInvoiceAddressSelectBox();
-      this.preparePreferredShippingAddressSelectBox();
+    const addressesAndUser$ = combineLatest([this.addresses$.pipe(whenTruthy()), this.user$.pipe(whenTruthy())]);
 
-      this.calculateFurtherAddresses();
+    // Selectbox formly configurations
+    this.selectInvoiceConfig = {
+      key: 'preferredInvoiceAddressUrn',
+      type: 'ish-select-field',
+      templateOptions: {
+        fieldClass: 'w-100',
+        options: addressesAndUser$.pipe(
+          map(([addresses, user]) =>
+            addresses.filter(
+              (address: Address) =>
+                ((user.preferredInvoiceToAddressUrn && address.urn !== user.preferredInvoiceToAddressUrn) ||
+                  !user.preferredInvoiceToAddressUrn) &&
+                address.invoiceToAddress
+            )
+          ),
+          mapToAddressOptions()
+        ),
+        placeholder: 'account.addresses.preferredinvoice.button.label',
+      },
+    };
 
-      this.hasPreferredAddresses = !!this.user.preferredInvoiceToAddressUrn || !!this.user.preferredShipToAddressUrn;
+    this.selectShippingConfig = {
+      key: 'preferredShippingAddressUrn',
+      type: 'ish-select-field',
+      templateOptions: {
+        fieldClass: 'w-100',
+        options: addressesAndUser$.pipe(
+          map(([addresses, user]) =>
+            addresses.filter(
+              (address: Address) =>
+                ((user.preferredShipToAddressUrn && address.urn !== user.preferredShipToAddressUrn) ||
+                  !user.preferredShipToAddressUrn) &&
+                address.shipToAddress
+            )
+          ),
+          mapToAddressOptions()
+        ),
+        placeholder: 'account.addresses.preferredshipping.button.label',
+      },
+    };
+
+    addressesAndUser$.pipe(takeUntil(this.destroy$)).subscribe(([addresses, user]) => {
+      this.calculateFurtherAddresses(addresses, user);
+
+      this.hasPreferredAddresses = !!user.preferredInvoiceToAddressUrn || !!user.preferredShipToAddressUrn;
 
       // determine preferred addresses
-      this.preferredInvoiceToAddress = this.getAddress(this.user.preferredInvoiceToAddressUrn);
-      this.preferredShipToAddress = this.getAddress(this.user.preferredShipToAddressUrn);
+      this.preferredInvoiceToAddress = this.getAddress(addresses, user.preferredInvoiceToAddressUrn);
+      this.preferredShipToAddress = this.getAddress(addresses, user.preferredShipToAddressUrn);
 
       this.preferredAddressesEqual = AddressHelper.equal(this.preferredInvoiceToAddress, this.preferredShipToAddress);
 
       // close possibly open address forms
-      this.hideCreateAddressForm();
-    }
-  }
-
-  /**
-   * for b2b, the user data are loaded later than the customer addresses
-   */
-  private hasAddressOrUserChanged(c: SimpleChanges) {
-    return (c.addresses || c.user) && this.user;
-  }
-
-  private getAddress(urn: string) {
-    return this.addresses && !!urn ? this.addresses.find(address => address.urn === urn) : undefined;
-  }
-
-  /**
-   * Determines addresses of the select box: all invoice addresses are shown except the address which is currently assigned as preferred address to the user
-   */
-  private preparePreferredInvoiceAddressSelectBox() {
-    this.invoiceAddresses = this.addresses.filter(
-      (address: Address) =>
-        ((this.user.preferredInvoiceToAddressUrn && address.urn !== this.user.preferredInvoiceToAddressUrn) ||
-          !this.user.preferredInvoiceToAddressUrn) &&
-        address.invoiceToAddress
-    );
-  }
-
-  /**
-   * Determines addresses of the select box: all shipping addresses are shown except the address which is currently assigned as preferred address to the user
-   */
-  private preparePreferredShippingAddressSelectBox() {
-    this.shippingAddresses = this.addresses.filter(
-      (address: Address) =>
-        ((this.user.preferredShipToAddressUrn && address.urn !== this.user.preferredShipToAddressUrn) ||
-          !this.user.preferredShipToAddressUrn) &&
-        address.shipToAddress
-    );
-  }
-
-  private calculateFurtherAddresses() {
-    // all addresses of the user except the preferred invoiceTo and shipTo addresses
-    this.furtherAddresses = this.addresses.filter(
-      (address: Address) =>
-        (!this.user.preferredInvoiceToAddressUrn || address.urn !== this.user.preferredInvoiceToAddressUrn) &&
-        (!this.user.preferredShipToAddressUrn || address.urn !== this.user.preferredShipToAddressUrn)
-    );
+      if (!this.isCreateAddressFormCollapsed) {
+        this.hideCreateAddressForm();
+      }
+    });
   }
 
   showCreateAddressForm() {
     this.isCreateAddressFormCollapsed = false;
-    // do not close address form immediately to show possible server errors
   }
 
   hideCreateAddressForm() {
@@ -167,11 +157,26 @@ export class AccountAddressesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   createAddress(address: Address) {
-    this.createCustomerAddress.emit(address);
+    this.accountFacade.createCustomerAddress(address);
   }
 
   deleteAddress(address: Address) {
-    this.deleteCustomerAddress.emit(address.id);
+    this.accountFacade.deleteCustomerAddress(address.id);
+  }
+
+  // helper methods
+
+  private getAddress(addresses: Address[], urn: string) {
+    return addresses && !!urn ? addresses.find(address => address.urn === urn) : undefined;
+  }
+
+  private calculateFurtherAddresses(addresses: Address[], user: User) {
+    // all addresses of the user except the preferred invoiceTo and shipTo addresses
+    this.furtherAddresses = addresses.filter(
+      (address: Address) =>
+        (!user.preferredInvoiceToAddressUrn || address.urn !== user.preferredInvoiceToAddressUrn) &&
+        (!user.preferredShipToAddressUrn || address.urn !== user.preferredShipToAddressUrn)
+    );
   }
 
   ngOnDestroy() {

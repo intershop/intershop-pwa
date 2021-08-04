@@ -4,6 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
+import { RequisitionColumnsType } from '../../components/requisitions-list/requisitions-list.component';
 import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
 import { Requisition, RequisitionStatus } from '../../models/requisition/requisition.model';
 
@@ -21,7 +22,7 @@ export class ApproverPageComponent implements OnInit, OnDestroy {
   constructor(private requisitionManagementFacade: RequisitionManagementFacade) {}
 
   status: RequisitionStatus;
-  columnsToDisplay: string[];
+  columnsToDisplay: RequisitionColumnsType[];
   private destroy$ = new Subject();
 
   ngOnInit() {

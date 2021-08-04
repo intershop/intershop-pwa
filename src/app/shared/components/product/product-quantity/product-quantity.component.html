@@ -24,20 +24,24 @@
     <ng-template ngSwitchDefault>
       <div class="counter-input">
         <button
+          type="button"
           class="btn btn-link decrease-button"
           (click)="decrease()"
           [disabled]="cannotDecrease$ | async"
           [attr.data-testing-id]="'decrease-quantity-' + id"
           translate
+          tabindex="-1"
         >
           product.quantity.decrease.text
         </button>
         <button
+          type="button"
           class="btn btn-link increase-button"
           (click)="increase()"
           [disabled]="cannotIncrease$ | async"
           [attr.data-testing-id]="'increase-quantity-' + id"
           translate
+          tabindex="-1"
         >
           product.quantity.increase.text
         </button>
@@ -57,5 +61,5 @@
     </ng-template>
   </ng-container>
 
-  <small *ngIf="hasQuantityError$ | async" class="form-text">{{ quantityError$ | async }}</small>
+  <small *ngIf="hasQuantityError$ | async" class="validation-message">{{ quantityError$ | async }}</small>
 </div>

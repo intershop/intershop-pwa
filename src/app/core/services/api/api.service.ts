@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import {
+  EMPTY,
   MonoTypeOperatorFunction,
   Observable,
   OperatorFunction,
@@ -14,14 +15,18 @@ import {
   of,
   throwError,
 } from 'rxjs';
-import { concatMap, filter, first, map, take, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatMap, filter, first, map, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { Captcha } from 'ish-core/models/captcha/captcha.model';
 import { Link } from 'ish-core/models/link/link.model';
-import { getCurrentLocale, getICMServerURL, getRestEndpoint } from 'ish-core/store/core/configuration';
+import {
+  getCurrentCurrency,
+  getCurrentLocale,
+  getICMServerURL,
+  getRestEndpoint,
+} from 'ish-core/store/core/configuration';
+import { communicationTimeoutError, serverError } from 'ish-core/store/core/error';
 import { getLoggedInCustomer, getLoggedInUser, getPGID } from 'ish-core/store/customer/user';
-
-import { ApiServiceErrorHandler } from './api.service.errorhandler';
 
 /**
  * Pipeable operator for elements translation (removing the envelope).
@@ -51,11 +56,7 @@ export class ApiService {
 
   private executionBarrier$: Observable<void> | Subject<void> = of(undefined);
 
-  constructor(
-    private httpClient: HttpClient,
-    private apiServiceErrorHandler: ApiServiceErrorHandler,
-    private store: Store
-  ) {}
+  constructor(private httpClient: HttpClient, private store: Store) {}
 
   /**
 -  * sets the request header for the appropriate captcha service
@@ -95,8 +96,23 @@ export class ApiService {
     );
   }
 
+  private handleErrors<T>(dispatch: boolean): MonoTypeOperatorFunction<T> {
+    return catchError(error => {
+      if (dispatch) {
+        if (error.status === 0) {
+          this.store.dispatch(communicationTimeoutError({ error }));
+          return EMPTY;
+        } else if (error.status >= 500 && error.status < 600) {
+          this.store.dispatch(serverError({ error }));
+          return EMPTY;
+        }
+      }
+      return throwError(error);
+    });
+  }
+
   private execute<T>(options: AvailableOptions, httpCall$: Observable<T>): Observable<T> {
-    const wrappedCall$ = httpCall$.pipe(this.apiServiceErrorHandler.handleErrors(!options?.skipApiErrorHandling));
+    const wrappedCall$ = httpCall$.pipe(this.handleErrors(!options?.skipApiErrorHandling));
 
     if (options?.runExclusively) {
       // setup a barrier for other calls
@@ -122,10 +138,15 @@ export class ApiService {
     return combineLatest([
       // base url
       this.store.pipe(select(getRestEndpoint)),
-      // locale and currency
+      // locale
       this.store.pipe(
         select(getCurrentLocale),
-        map(l => (l ? `;loc=${l.lang};cur=${l.currency}` : ''))
+        map(l => (l ? `;loc=${l}` : ''))
+      ),
+      // currency
+      this.store.pipe(
+        select(getCurrentCurrency),
+        map(c => (c ? `;cur=${c}` : ''))
       ),
       // first path segment
       of('/'),

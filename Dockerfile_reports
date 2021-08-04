@@ -1,6 +1,7 @@
 FROM node:14 as reporting
 WORKDIR /workspace
 ENV CI=true
+ENV NODE_OPTIONS="--max_old_space_size=8192"
 COPY . /workspace/
 RUN npm i --ignore-scripts
 RUN npm run postinstall
@@ -9,8 +10,7 @@ RUN npx license-checker --csv --out reports/licenses/licenses.csv --customPath t
 RUN npm run compodoc
 RUN npm i --no-save jscpd-html-reporter && node reports/jscpd-report
 RUN npm i -g webpack-bundle-analyzer
-RUN rm -Rf dist && npx ng build --progress false --aot --stats-json && webpack-bundle-analyzer dist/browser/stats.json dist/browser -r reports/bundle_aot/index.html -m static
-RUN rm -Rf dist && npx ng build --progress false --prod --stats-json && webpack-bundle-analyzer dist/browser/stats.json dist/browser -r reports/bundle_prod/index.html -m static
+RUN rm -Rf dist && npm run build client -- --progress false --stats-json && webpack-bundle-analyzer dist/browser/stats.json dist/browser -r reports/bundle_prod/index.html -m static
 
 FROM danjellz/http-server
 COPY --from=reporting /workspace/reports /public

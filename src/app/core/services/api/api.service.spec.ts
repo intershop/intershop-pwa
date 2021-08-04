@@ -1,15 +1,16 @@
-import { HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Store } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { noop } from 'rxjs';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Link } from 'ish-core/models/link/link.model';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import {
   applyConfiguration,
+  getCurrentCurrency,
   getCurrentLocale,
   getICMServerURL,
   getRestEndpoint,
@@ -40,6 +41,7 @@ describe('Api Service', () => {
             selectors: [
               { selector: getRestEndpoint, value: 'http://www.example.org/WFS/site/-' },
               { selector: getICMServerURL, value: undefined },
+              { selector: getCurrentCurrency, value: undefined },
               { selector: getCurrentLocale, value: undefined },
               { selector: getPGID, value: undefined },
             ],
@@ -81,8 +83,7 @@ describe('Api Service', () => {
       consoleSpy.mockRestore();
 
       verify(storeSpy$.dispatch(anything())).once();
-      // tslint:disable-next-line: no-any
-      const [action] = capture(storeSpy$.dispatch).last() as any;
+      const [action] = capture<Action & { payload: { error: HttpError } }>(storeSpy$.dispatch).last();
       expect(action.type).toEqual(serverError.type);
       expect(action.payload.error).toHaveProperty('statusText', statusText);
     });
@@ -111,8 +112,7 @@ describe('Api Service', () => {
       consoleSpy.mockRestore();
 
       verify(storeSpy$.dispatch(anything())).once();
-      // tslint:disable-next-line: no-any
-      const [action] = capture(storeSpy$.dispatch).last() as any;
+      const [action] = capture<Action & { payload: { error: HttpError } }>(storeSpy$.dispatch).last();
       expect(action.type).toEqual(serverError.type);
       expect(action.payload.error).toHaveProperty('statusText', statusText);
     });
@@ -199,6 +199,7 @@ describe('Api Service', () => {
             selectors: [
               { selector: getRestEndpoint, value: 'http://www.example.org/WFS/site/-' },
               { selector: getICMServerURL, value: 'http://www.example.org/WFS' },
+              { selector: getCurrentCurrency, value: undefined },
               { selector: getCurrentLocale, value: undefined },
               { selector: getPGID, value: undefined },
             ],
@@ -393,6 +394,7 @@ describe('Api Service', () => {
               { selector: getRestEndpoint, value: 'http://www.example.org/WFS/site/-' },
               { selector: getICMServerURL, value: undefined },
               { selector: getCurrentLocale, value: undefined },
+              { selector: getCurrentCurrency, value: undefined },
               { selector: getPGID, value: undefined },
             ],
           }),
@@ -452,7 +454,8 @@ describe('Api Service', () => {
     });
 
     it('should include locale and currency when available in store', () => {
-      store$.overrideSelector(getCurrentLocale, { currency: 'USD', lang: 'en_US' } as Locale);
+      store$.overrideSelector(getCurrentLocale, 'en_US');
+      store$.overrideSelector(getCurrentCurrency, 'USD');
 
       apiService.get('relative').subscribe(fail, fail, fail);
 
@@ -501,7 +504,8 @@ describe('Api Service', () => {
 
     it('should include params, pgid and locale for complex example', () => {
       store$.overrideSelector(getPGID, 'ASDF');
-      store$.overrideSelector(getCurrentLocale, { currency: 'USD', lang: 'en_US' } as Locale);
+      store$.overrideSelector(getCurrentLocale, 'en_US');
+      store$.overrideSelector(getCurrentCurrency, 'USD');
 
       apiService
         .get('very/deep/relative', { sendPGID: true, params: new HttpParams().set('view', 'grid').set('depth', '3') })
@@ -516,7 +520,7 @@ describe('Api Service', () => {
   });
 
   describe('API Service Headers', () => {
-    const REST_URL = 'http://www.example.org/WFS/site/-;loc=en_US;cur=USD';
+    const REST_URL = 'http://www.example.org/WFS/site/-;loc=en_US';
     let apiService: ApiService;
     let store$: Store;
     let httpTestingController: HttpTestingController;
@@ -535,7 +539,14 @@ describe('Api Service', () => {
       httpTestingController = TestBed.inject(HttpTestingController);
       store$ = TestBed.inject(Store);
 
-      store$.dispatch(applyConfiguration({ baseURL: 'http://www.example.org', server: 'WFS', channel: 'site' }));
+      store$.dispatch(
+        applyConfiguration({
+          baseURL: 'http://www.example.org',
+          server: 'WFS',
+          channel: 'site',
+          defaultLocale: 'en_US',
+        })
+      );
     });
 
     afterEach(() => {
@@ -639,6 +650,7 @@ describe('Api Service', () => {
               { selector: getICMServerURL, value: undefined },
               { selector: getRestEndpoint, value: 'http://www.example.org' },
               { selector: getCurrentLocale, value: undefined },
+              { selector: getCurrentCurrency, value: undefined },
               { selector: getPGID, value: undefined },
             ],
           }),
@@ -729,6 +741,92 @@ describe('Api Service', () => {
       setTimeout(() => {
         req3.flush('TEST3');
       }, 300);
+    });
+  });
+
+  describe('API Service general error handling', () => {
+    let apiService: ApiService;
+    let httpTestingController: HttpTestingController;
+    let storeSpy$: Store;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule],
+        providers: [
+          provideMockStore({
+            selectors: [
+              { selector: getICMServerURL, value: undefined },
+              { selector: getRestEndpoint, value: 'http://www.example.org' },
+              { selector: getCurrentLocale, value: undefined },
+              { selector: getCurrentCurrency, value: undefined },
+              { selector: getPGID, value: undefined },
+            ],
+          }),
+        ],
+      });
+
+      apiService = TestBed.inject(ApiService);
+      httpTestingController = TestBed.inject(HttpTestingController);
+      storeSpy$ = spy(TestBed.inject(Store));
+    });
+
+    afterEach(() => {
+      // After every test, assert that there are no more pending requests.
+      httpTestingController.verify();
+    });
+
+    it('should dispatch communication timeout errors when getting status 0', done => {
+      apiService.get('route').subscribe(fail, fail, done);
+
+      httpTestingController
+        .expectOne(() => true)
+        .flush('', {
+          status: 0,
+          statusText: 'Error',
+        });
+
+      verify(storeSpy$.dispatch(anything())).once();
+      expect(capture(storeSpy$.dispatch).last()?.[0]).toMatchInlineSnapshot(`
+        [Error] Communication Timeout Error:
+          error: {"headers":{"normalizedNames":{},"lazyUpdate":null,"headers"...
+      `);
+    });
+
+    it('should dispatch general errors when getting status 500', done => {
+      apiService.get('route').subscribe(fail, fail, done);
+
+      httpTestingController
+        .expectOne(() => true)
+        .flush('', {
+          status: 500,
+          statusText: 'Error',
+        });
+
+      verify(storeSpy$.dispatch(anything())).once();
+      expect(capture(storeSpy$.dispatch).last()?.[0]).toMatchInlineSnapshot(`
+        [Error] Server Error (5xx):
+          error: {"headers":{"normalizedNames":{},"lazyUpdate":null,"headers"...
+      `);
+    });
+
+    it('should not dispatch errors when getting status 404', done => {
+      apiService.get('route').subscribe(
+        fail,
+        err => {
+          expect(err).toBeInstanceOf(HttpErrorResponse);
+          done();
+        },
+        fail
+      );
+
+      httpTestingController
+        .expectOne(() => true)
+        .flush('', {
+          status: 404,
+          statusText: 'Error',
+        });
+
+      verify(storeSpy$.dispatch(anything())).never();
     });
   });
 });

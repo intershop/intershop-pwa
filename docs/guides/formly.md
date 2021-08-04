@@ -17,6 +17,7 @@ kb_sync_latest_only
     - [Custom Field Types](#custom-field-types)
     - [Custom Wrappers](#custom-wrappers)
     - [Custom Extensions](#custom-extensions)
+    - [Validation](#validation)
     - [Extras](#extras)
     - [Formly Config Service](#formly-config-service)
   - [Testing Formly](#testing-formly)
@@ -73,8 +74,13 @@ const fields: FormlyFieldConfig[] = [
 ## Customizing Form Logic
 
 There are many ways to change the behavior of a form and its fields.
-Custom field types, wrappers, extensions and extras are registered in [formly.module.ts](../../src/app/shared/formly/formly.module.ts) using the `forRoot()` function.
-For more information about what can be done in the `forRoot()` function, refer to the official documentation and [`ConfigOption`](https://github.com/ngx-formly/ngx-formly/blob/main/src/core/src/lib/models/config.ts#L49) type definition.
+Custom field types, wrappers, extensions and extras are registered in [formly.module.ts](../../src/app/shared/formly/formly.module.ts) using the `forChild()` function.
+For more information about what can be done in the `forChild()` function, refer to the official documentation and [`ConfigOption`](https://github.com/ngx-formly/ngx-formly/blob/main/src/core/src/lib/models/config.ts#L49) type definition.
+Note that we use the `forChild` method here instead of the normal `forRoot` approach.
+This is because the only difference between the two approaches is that `forRoot` additionally provides the `FormlyConfig` service which is provided in root anyways.
+Using `forChild` allows us to solve some injection issues in lazy loaded modules.
+
+If you need to - for some reason - completely override the Formly configuration in a module lower in the injection tree, feel free to use the `forRoot` method and thus provide a fresh instance of the `FormlyConfig` service.
 
 ### Custom Field Types
 
@@ -100,10 +106,10 @@ export class ExampleInputFieldComponent extends FieldType {
 <input [type]="to.type" [formControl]="formControl" [formlyAttributes]="field" />
 ```
 
-Register the custom type in the `forRoot()` function:
+Register the custom type in the `formly.module.ts` `forChild()` function:
 
 ```typescript
-FormlyModule.forRoot({
+FormlyModule.forChild({
   types: [{ name: 'example-input-field', component: ExampleInputFieldComponent }],
   // ...
 });
@@ -129,11 +135,11 @@ A simple example wrapper that adds a label to the field could look like this:
 export class ExampleLabelWrapperComponent extends FieldWrapper {}
 ```
 
-Register the custom wrapper in the `forRoot()` function.
+Register the custom wrapper in the `forChild()` function.
 It is possible to supply field types with default wrappers that will always be applied, even if the corresponding `FormlyFieldConfig` does not contain any wrappers:
 
 ```typescript
-FormlyModule.forRoot({
+FormlyModule.forChild({
   wrappers: [{ name: 'example-label-wrapper', component: ExampleLabelWrapperComponent }],
   types: [
     {
@@ -164,18 +170,40 @@ export const labelDefaultValueExtension: FormlyExtension = {
 };
 ```
 
-Register the custom extension in the `forRoot()` function:
+Register the custom extension in the `forChild()` function:
 
 ```typescript
-FormlyModule.forRoot({
+FormlyModule.forChild({
   extensions: [{ name: 'labelDefaultValueExtension', extension: labelDefaultValueExtension }],
   // ...
 });
 ```
 
+### Validation
+
+There are many options when it comes to [adding custom validation to formly forms](https://formly.dev/guide/validation).
+
+The PWA comes with some predefined custom validators which can be found in [special-validators.ts](../../src/app/shared/forms/validators/special-validators.ts).
+These can be added directly to the `validators.validation` property of a `FormlyFieldConfig`.
+Don't forget to also add the corresponding error message to the `validation` property.
+
+Alternatively, validation can be defined as a key-value pair directly in the `validation` property.
+However, adding validators here requires a different format:
+
+```typescript
+(control: AbstractControl, field: FormlyFieldConfig) => boolean) |
+  {
+    expression: (control: AbstractControl, field: FormlyFieldConfig) => boolean,
+    message: ValidationMessageOption['message'],
+  };
+```
+
+To automatically convert the special validators to this format, you can import and use the [`formlyValidation`](../../src/app/shared/forms/validators/special-validators.ts) helper function.
+It is a higher order function that takes an error name and a validator function and returns a formly-usable function.
+
 ### Extras
 
-The `extras` argument is passed to the `forRoot()` function to customize additional Formly behavior.
+The `extras` argument is passed to the `forChild()` function to customize additional Formly behavior.
 Refer to the [type definition](https://github.com/ngx-formly/ngx-formly/blob/fe2314d5f50ff61d46af01175b158dc3f9fd4e4e/src/core/src/lib/models/config.ts#L55) for more information.
 
 ### Formly Config Service
@@ -191,7 +219,7 @@ To facilitate this, the `formly/dev/testing` folder contains a `FormlyTestingCom
 - `FormlyTestingExampleComponent` is a type that contains an empty input field and can be used as an example field type.
 - `FormlyTestingFieldgroupExampleComponent` is a type that renders all configs in the `fieldGroup` attribute of the field.
 
-In addition, to test components or pages that use Formly, import the `FormlyTestingModule`.
+In addition, **to test components or pages that use Formly, import the `FormlyTestingModule`**.
 It defines and exports a FormlyModule with pre-configured dummy field types and wrappers that match the `FormlyModule`.
 
 ### Testing Custom Types
@@ -226,32 +254,34 @@ Refer to the tables below for an overview of these parts.
 
 | Name                 | Description                                                                                  | Relevant templateOptions                                                                                                      |
 | -------------------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| ish-text-input-field | Basic input field, supports text type                                                        | ----                                                                                                                          |
+| ish-text-input-field | Basic input field, supports all text types                                                   | type: 'text' (default),'email','tel','password'                                                                               |
 | ish-select-field     | Basic select field                                                                           | `options`: `{ value: any; label: string}[]` or Observable. `placeholder`: Translation key or string for the default selection |
 | ish-textarea-field   | Basic textarea field                                                                         | `cols`& `rows`: Specifies the dimensions of the textarea                                                                      |
 | ish-checkbox-field   | Basic checkbox input                                                                         | ----                                                                                                                          |
-| ish-email-field      | Text input field that automatically adds an e-mail validator and error message               | ----                                                                                                                          |
-| ish-password-field   | Password input field that automatically adds a password validator and error message          | ----                                                                                                                          |
+| ish-email-field      | Email input field that automatically adds an e-mail validator and error messages             | ----                                                                                                                          |
+| ish-password-field   | Password input field that automatically adds a password validator and error messages         | ----                                                                                                                          |
+| ish-phone-field      | Phone number input field that automatically adds a phone number validator and error messages | ----                                                                                                                          |
 | ish-fieldset-field   | Wraps fields in a `<fieldset>` tag for styling                                               | `fieldsetClass`: Class that will be added to the fieldset tag. `childClass`: Class that will be added to the child div.       |
 | ish-captcha-field    | Includes the `<ish-lazy-captcha>` component and adds the relevant `formControls` to the form | `topic`: Topic that will be passed to the Captcha component.                                                                  |
+| ish-radio-field      | Basic radio input                                                                            | ----                                                                                                                          |
 
 ### Wrappers
 
-| Name                           | Functionality                                                                                                                                                                                                           | Relevant templateOptions                                                                                                      |
-| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| form-field-horizontal          | Adds a label next to the field and adds red styling for invalid fields.                                                                                                                                                 | `labelClass`& `fieldClass`: Classes that will be added to the label or field `<div>`                                          |
-| form-field-checkbox-horizontal | Adds a label for a checkbox field, adds red styling and error messages for invalid fields. Uses `validators.validation` and `validation.messages` properties. Adds a tooltip behind the label, see also tooltip-wrapper | `labelClass`& `fieldClass`: Classes that will be added to the label or the outer field `<div>`                                |
-| validation                     | Adds validation icons and error messages to the field. Uses `validators.validation` and `validation.messages` properties.                                                                                               | `showValidation`: `(field: FormlyFieldConfig) => boolean`: optional, used to determine whether to show validation check marks |
-| textarea-description           | Adds a description to textarea fields, including the amount of remaining characters.                                                                                                                                    | `maxLength`: Specifies the maximum length to be displayed in the message.                                                     |
-| description                    | Adds a custom description to any field                                                                                                                                                                                  | `customDescription`: `string` or `{key: string; args: any}` that will be translated                                           |
-| tooltip                        | Adds a tooltip to a field. Includes `<ish-field-tooltip>` component.                                                                                                                                                    | `tooltip`: `{ title?: string; text: string; link: string }` that defines the different tooltip texts.                         |
-| input-addon                    | Adds a prepended or appended text to a field, e.g. a currency or unit.                                                                                                                                                  | `addonLeft?`: `{ text: string; }, addonRight?: {text: string}` that defines the addon texts.                                  |
+| Name                           | Functionality                                                                                                                                                                                                                    | Relevant templateOptions                                                                                                      |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| form-field-horizontal          | Adds a label next to the field and adds red styling for invalid fields.                                                                                                                                                          | `labelClass`& `fieldClass`: Classes that will be added to the label or field `<div>`                                          |
+| form-field-checkbox-horizontal | Adds a label for a checkbox or radio field, adds red styling and error messages for invalid fields. Uses `validators.validation` and `validation.messages` properties. Adds a tooltip behind the label, see also tooltip-wrapper | `labelClass`& `fieldClass`: Classes that will be added to the label or the outer field `<div>`                                |
+| validation                     | Adds validation icons and error messages to the field. Uses `validators.validation` and `validation.messages` properties.                                                                                                        | `showValidation`: `(field: FormlyFieldConfig) => boolean`: optional, used to determine whether to show validation check marks |
+| textarea-description           | Adds a description to textarea fields, including the amount of remaining characters.                                                                                                                                             | `maxLength`: Specifies the maximum length to be displayed in the message.                                                     |
+| description                    | Adds a custom description to any field                                                                                                                                                                                           | `customDescription`: `string` or `{key: string; args: any}` that will be translated                                           |
+| tooltip                        | Adds a tooltip to a field. Includes `<ish-field-tooltip>` component.                                                                                                                                                             | `tooltip`: `{ title?: string; text: string; link: string }` that defines the different tooltip texts.                         |
+| input-addon                    | Adds a prepended or appended text to a field, e.g. a currency or unit.                                                                                                                                                           | `addonLeft?`: `{ text: string; }, addonRight?: {text: string}` that defines the addon texts.                                  |
 
 ### Extensions
 
-| Name                     | Functionality                                                                   | Relevant templateOptions                                                   |
-| ------------------------ | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| critical-default-values  | Sets required attributes on `FormlyFieldConfigs` that are missing them.         | ----                                                                       |
-| hide-if-empty            | Hides fields of type `ish-select-field` that have an empty `options` attribute. | `options`: Used to determine emptiness.                                    |
-| translate-select-options | Automatically translates option labels and adds a placeholder option.           | `placeholder`: used to determine whether to set placeholder and its text   |
-| post-wrappers            | Appends wrappers to the default ones defined in the `FormlyModule`              | `postWrappers`: `string[]` of extensions to append to the default wrappers |
+| Name                     | Functionality                                                                   | Relevant templateOptions                                                                                                                                                                       |
+| ------------------------ | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| hide-if-empty            | Hides fields of type `ish-select-field` that have an empty `options` attribute. | `options`: used to determine emptiness.                                                                                                                                                        |
+| translate-select-options | Automatically translates option labels and adds a placeholder option.           | `options`: options whose labels will be translated. `placeholder`: used to determine whether to set placeholder and its text.                                                                  |
+| translate-placeholder    | Automatically translates the placeholder value                                  | `placeholder`: value to be translated.                                                                                                                                                         |
+| post-wrappers            | Appends wrappers to the default ones defined in the `FormlyModule`              | `postWrappers`: `<string \| { wrapper: string, index: number}>[]` of extensions to append to the default wrappers, optional index to specify at which position the wrapper should be inserted. |

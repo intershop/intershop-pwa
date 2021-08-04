@@ -2,6 +2,8 @@
 
 /* FILTER PANEL */
 
+@use 'sass:math';
+
 .category-panel h3 {
   text-transform: uppercase;
 }
@@ -101,13 +103,13 @@
           display: inline-block;
           width: 15px;
           height: 15px;
-          margin-right: ($space-default / 3);
+          margin-right: math.div($space-default, 3);
           background-color: $color-tertiary;
           border: 1px solid $border-color-light;
         }
 
         &.filter-count {
-          margin-left: ($space-default / 3);
+          margin-left: math.div($space-default, 3);
         }
       }
     }
@@ -137,7 +139,7 @@
           display: inline-block;
           width: 15px;
           height: 15px;
-          margin-right: ($space-default / 3);
+          margin-right: math.div($space-default, 3);
           background-color: $color-corporate;
           border: 1px solid $border-color-default;
         }

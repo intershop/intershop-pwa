@@ -11,7 +11,7 @@
     >
     <div class="col-sm-6">
       <div id="a_credit_card_number_container" class="iframe-container"></div>
-      <small *ngIf="errorMessage.cardNumber?.messageKey" class="form-text">{{
+      <small *ngIf="errorMessage.cardNumber?.messageKey" class="validation-message">{{
         errorMessage.cardNumber.messageKey | translate
       }}</small>
     </div>
@@ -61,7 +61,7 @@
       </div>
     </div>
     <div class="col-sm-6 offset-sm-4">
-      <small *ngIf="errorMessage.expiryMonth?.messageKey" class="form-text">{{
+      <small *ngIf="errorMessage.expiryMonth?.messageKey" class="validation-message">{{
         errorMessage.expiryMonth.messageKey | translate
       }}</small>
     </div>
@@ -72,9 +72,11 @@
     <label class="col-form-label col-md-4" for="cvcInput"
       >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required">*</span></label
     >
-    <div class="col-sm-3 col-md-2">
+    <div class="col-3 col-md-2">
       <div id="a_verification_container" class="iframe-container"></div>
-      <small *ngIf="errorMessage.cvc?.message" class="form-text">{{ errorMessage.cvc.messageKey | translate }}</small>
+      <small *ngIf="errorMessage.cvc?.message" class="validation-message">{{
+        errorMessage.cvc.messageKey | translate
+      }}</small>
     </div>
     <div>
       <ng-template #CVCHelp>
@@ -87,17 +89,11 @@
   </div>
 </div>
 
-<div class="offset-md-4 col-md-8">
-  <div class="form-group">
-    <ish-checkbox
-      *ngIf="paymentMethod && paymentMethod.saveAllowed"
-      [form]="parameterForm"
-      controlName="saveForLater"
-      label="checkout.save_edit.checkbox.label"
-      data-testing-id="save-for-later-input"
-    ></ish-checkbox>
-  </div>
-  <div class="form-group">
+<ish-payment-save-checkbox *ngIf="paymentMethod" [paymentMethod]="paymentMethod" [form]="parameterForm">
+</ish-payment-save-checkbox>
+
+<div class="row">
+  <div class="offset-md-4 col-md-8">
     <input
       type="button"
       (click)="submitNewPaymentInstrument()"

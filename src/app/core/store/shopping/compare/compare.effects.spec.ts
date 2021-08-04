@@ -17,7 +17,7 @@ describe('Compare Effects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), ShoppingStoreModule.forTesting('compare')],
+      imports: [CoreStoreModule.forTesting(), ShoppingStoreModule.forTesting('_compare')],
       providers: [CompareEffects, provideMockActions(() => actions$)],
     });
 

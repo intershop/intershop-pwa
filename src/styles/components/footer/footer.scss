@@ -66,14 +66,14 @@ footer {
     border-bottom: $border-width-default solid $border-color-default;
 
     ul {
-      padding: $space-default ($space-default + ($space-default/2)) ($space-default * 2);
+      padding: $space-default ($space-default * 1.5) ($space-default * 2);
       margin: 0;
       list-style: none;
     }
   }
 
   .link-group-title {
-    padding: $space-default ($space-default + ($space-default/2));
+    padding: $space-default ($space-default * 1.5);
     margin: 0 (-$space-default);
     cursor: pointer;
     border-bottom: $border-width-default solid $border-color-default;
@@ -139,7 +139,7 @@ footer {
   @media (max-width: $screen-sm-max) {
     float: none;
     width: 100%;
-    padding: ($space-default + ($space-default / 2));
+    padding: ($space-default * 1.5);
   }
 
   .newsletter-form {

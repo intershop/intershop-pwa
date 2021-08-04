@@ -6,6 +6,9 @@ import { takeUntil } from 'rxjs/operators';
 
 import { FormElementComponent } from 'ish-shared/forms/components/form-element/form-element.component';
 
+/**
+ * @deprecated use formly instead
+ */
 @Component({
   selector: 'ish-input-birthday',
   templateUrl: './input-birthday.component.html',

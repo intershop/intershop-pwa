@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, Inject, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
 
 import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-keys';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 /**
  * The Login Form Page Container displays a login form using the {@link LoginFormComponent} and signs the user in
@@ -34,20 +34,56 @@ export class LoginFormComponent implements OnInit {
 
   loginError$: Observable<HttpError>;
 
-  form: FormGroup;
+  form = new FormGroup({});
   submitted = false;
+
+  fields: FormlyFieldConfig[];
 
   constructor(@Inject(USER_REGISTRATION_LOGIN_TYPE) public loginType: string, private accountFacade: AccountFacade) {}
 
   ngOnInit() {
     this.loginError$ = this.accountFacade.userError$;
 
-    const loginValidator = this.loginType === 'email' ? SpecialValidators.email : Validators.nullValidator;
+    this.fields = this.getFields();
+  }
 
-    this.form = new FormGroup({
-      login: new FormControl('', [Validators.required, loginValidator]),
-      password: new FormControl('', Validators.required),
-    });
+  private getFields() {
+    return [
+      {
+        key: 'login',
+        type: this.loginType === 'email' ? 'ish-email-field' : 'ish-text-input-field',
+        templateOptions: {
+          label: this.loginType === 'email' ? 'account.login.email.label' : 'account.login.username.label',
+          labelClass: this.labelClass || 'col-md-3',
+          fieldClass: this.inputClass || 'col-md-6',
+          required: true,
+          hideRequiredMarker: true,
+        },
+        validation: {
+          messages: {
+            required:
+              this.loginType === 'email' ? 'form.email.error.required' : 'account.login.username.error.required',
+          },
+        },
+      },
+      {
+        key: 'password',
+        type: 'ish-text-input-field',
+        templateOptions: {
+          type: 'password',
+          label: 'account.login.password.label',
+          labelClass: this.labelClass || 'col-md-3',
+          fieldClass: this.inputClass || 'col-md-6',
+          required: true,
+          hideRequiredMarker: true,
+        },
+        validation: {
+          messages: {
+            required: 'account.login.password.error.required',
+          },
+        },
+      },
+    ];
   }
 
   loginUser() {

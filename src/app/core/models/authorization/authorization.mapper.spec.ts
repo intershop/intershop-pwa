@@ -26,7 +26,7 @@ describe('Authorization Mapper', () => {
     });
 
     it('should map empty response to empty authorization data', () => {
-      expect(authorizationMapper.fromData(({} as unknown) as AuthorizationData)).toMatchInlineSnapshot(`
+      expect(authorizationMapper.fromData({} as unknown as AuthorizationData)).toMatchInlineSnapshot(`
         Object {
           "permissionIDs": Array [],
           "roles": Array [],
@@ -35,7 +35,7 @@ describe('Authorization Mapper', () => {
     });
 
     it('should map incoming data to model data', () => {
-      const data = ({
+      const data = {
         type: 'UserRoles',
         userRoles: [
           {
@@ -102,7 +102,7 @@ describe('Authorization Mapper', () => {
             ],
           },
         ],
-      } as unknown) as AuthorizationData;
+      } as unknown as AuthorizationData;
       const mapped = authorizationMapper.fromData(data);
       expect(mapped.roles).toMatchInlineSnapshot(`
         Array [

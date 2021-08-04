@@ -21,6 +21,8 @@ The aforementioned scenario can now be run with just one PWA instance and a reve
 
 ## Configuration
 
+:warning: Refer to [Multi-Site Configurations](../guides/multi-site-configurations.md) for an explanation of what is possible with multi-site configurations and how to define them.
+
 To set ICM channels and applications dynamically, you have to use URL rewriting in a reverse proxy running in front of the PWA instances.
 The values have to be provided as URL parameters (not to be confused with query parameters).
 
@@ -45,7 +47,7 @@ These steps should give an overview of the internal workings:
 
 1. The browser requests the page by URL from the reverse proxy. Nginx appends URL parameters to the incoming request URL for channel, application, etc depending on the incoming domain.
 
-2. The node _express.js_ server runs Angular Universal pre-rendering for the requested URL. Angular Universal dynamically configures itself with the incoming parameters.
+2. PM2 runs Angular Universal pre-rendering for the requested URL (and theme). Angular Universal dynamically configures itself with the incoming parameters.
 
 3. The requested page is filled with content retrieved via ICM REST API for this dynamically configured channel.
 
@@ -56,3 +58,8 @@ These steps should give an overview of the internal workings:
 6. The initial page response is displayed to the user and the Angular Client application is booting up in the browser, configuring itself with the transferred parameters for channel, application, etc.
 
 7. Once booted up, additional REST calls are directed to the matching ICM endpoint for the configured channel.
+
+# Further References
+
+- [Guide - Building and Running nginx Docker Image](../guides/nginx-startup.md)
+- [Guide - Multi-Site Configurations](../guides/multi-site-configurations.md)

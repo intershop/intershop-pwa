@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { UUID } from 'angular2-uuid';
 import { Observable } from 'rxjs';
 
@@ -18,9 +17,7 @@ export class AccountPunchoutCreatePageComponent implements OnInit {
   error$: Observable<HttpError>;
   selectedType$: Observable<PunchoutType>;
 
-  punchoutTypeText: string;
-
-  constructor(private punchoutFacade: PunchoutFacade, private translateService: TranslateService) {}
+  constructor(private punchoutFacade: PunchoutFacade) {}
 
   ngOnInit() {
     this.loading$ = this.punchoutFacade.punchoutLoading$;
@@ -31,9 +28,5 @@ export class AccountPunchoutCreatePageComponent implements OnInit {
   submitForm(user: PunchoutUser) {
     const email = user.login + UUID.UUID();
     this.punchoutFacade.addPunchoutUser({ ...user, email });
-  }
-
-  getPunchoutTypeText(punchoutType: PunchoutType): string {
-    return (this.punchoutTypeText = this.translateService.instant(`account.punchout.${punchoutType}.text`));
   }
 }
