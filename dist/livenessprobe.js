@@ -12,16 +12,14 @@ pm2.connect(err1 => {
   if (!err1) {
     pm2.list((err2, list) => {
       if (!err2) {
-        Object.entries(ports).forEach(([theme]) => {
-          if (
+        const allUp = Object.entries(ports)
+          .map(([theme]) =>
             list
               .filter(el => el.name === theme)
               .find(el => el.pm2_env.status === 'online' || el.pm2_env.status === 'launching')
-          ) {
-            process.exit(0);
-          }
-        });
-        process.exit(1);
+          )
+          .reduce((acc, val) => acc && !!val, true);
+        process.exit(allUp ? 0 : 1);
       } else {
         console.log('pm2 list error:', err2);
         process.exit(1);
