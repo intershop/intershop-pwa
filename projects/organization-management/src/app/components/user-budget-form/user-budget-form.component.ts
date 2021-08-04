@@ -135,7 +135,7 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
                 type: 'ish-select-field',
                 key: 'budgetPeriod',
                 templateOptions: {
-                  fieldClass: 'col-12 formly-empty-label',
+                  fieldClass: 'col-12 label-empty',
                   options: this.periods.map(period => ({
                     value: period,
                     label: `account.user.new.budget.period.value.${period}`,

@@ -1,4 +1,4 @@
-<div class="form-control-checkbox" [class.formly-has-error]="showError">
+<div class="form-control-checkbox" [class.has-error]="showError">
   <div class="form-check form-control" [attr.data-testing-id]="'checkout-review-wrapper'">
     <label [attr.for]="id">
       <input
@@ -11,7 +11,7 @@
     </label>
   </div>
   <ng-container *ngIf="showError">
-    <div class="form-text">
+    <div class="validation-message">
       <ish-validation-message [field]="field" class="validation-message"></ish-validation-message>
     </div>
   </ng-container>

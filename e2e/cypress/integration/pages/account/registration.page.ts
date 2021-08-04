@@ -65,9 +65,9 @@ export class RegistrationPage {
       should: (t: 'be.valid' | 'be.invalid' | string, arg?) => {
         switch (t) {
           case 'be.valid':
-            return wrapper.should('not.have.class', 'formly-has-error');
+            return wrapper.should('not.have.class', 'has-error');
           case 'be.invalid':
-            return wrapper.should('have.class', 'formly-has-error');
+            return wrapper.should('have.class', 'has-error');
           default:
             return wrapper.should(t, arg);
         }

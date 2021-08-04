@@ -11,7 +11,7 @@
     >
     <div class="col-sm-6">
       <div id="a_credit_card_number_container" class="iframe-container"></div>
-      <small *ngIf="errorMessage.cardNumber?.messageKey" class="form-text">{{
+      <small *ngIf="errorMessage.cardNumber?.messageKey" class="validation-message">{{
         errorMessage.cardNumber.messageKey | translate
       }}</small>
     </div>
@@ -61,7 +61,7 @@
       </div>
     </div>
     <div class="col-sm-6 offset-sm-4">
-      <small *ngIf="errorMessage.expiryMonth?.messageKey" class="form-text">{{
+      <small *ngIf="errorMessage.expiryMonth?.messageKey" class="validation-message">{{
         errorMessage.expiryMonth.messageKey | translate
       }}</small>
     </div>
@@ -74,7 +74,9 @@
     >
     <div class="col-3 col-md-2">
       <div id="a_verification_container" class="iframe-container"></div>
-      <small *ngIf="errorMessage.cvc?.message" class="form-text">{{ errorMessage.cvc.messageKey | translate }}</small>
+      <small *ngIf="errorMessage.cvc?.message" class="validation-message">{{
+        errorMessage.cvc.messageKey | translate
+      }}</small>
     </div>
     <div>
       <ng-template #CVCHelp>
