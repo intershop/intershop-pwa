@@ -28,7 +28,6 @@ export class AddressFormUSConfiguration extends AddressFormConfiguration {
       'lastName',
       'addressLine1',
       'addressLine2',
-      'mainDivisionCode',
       'postalCode',
       'city',
       'phoneHome'

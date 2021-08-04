@@ -30,7 +30,6 @@ export class AddressFormDefaultConfiguration extends AddressFormConfiguration {
       'addressLine2',
       'postalCode',
       'city',
-      'mainDivisionCode',
       'phoneHome'
     );
   }
