@@ -1,10 +1,12 @@
 import { createReducer, on } from '@ngrx/store';
 
+import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { User } from 'ish-core/models/user/user.model';
 import { loadRolesAndPermissionsFail } from 'ish-core/store/customer/authorization';
+import { loadCostCenter, loadCostCenterFail, loadCostCenterSuccess } from 'ish-core/store/customer/cost-center';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn, unsetLoadingOn } from 'ish-core/utils/ngrx-creators';
 
 import {
@@ -45,6 +47,7 @@ import {
 export interface UserState {
   customer: Customer;
   user: User;
+  costCenter: CostCenter;
   authorized: boolean;
   paymentMethods: PaymentMethod[];
   loading: boolean;
@@ -57,6 +60,7 @@ export interface UserState {
 const initialState: UserState = {
   customer: undefined,
   user: undefined,
+  costCenter: undefined,
   authorized: false,
   paymentMethods: undefined,
   loading: false,
@@ -75,6 +79,7 @@ export const userReducer = createReducer(
   setLoadingOn(
     loadCompanyUser,
     loadUserByAPIToken,
+    loadCostCenter,
     createUser,
     updateUser,
     updateUserPassword,
@@ -94,6 +99,7 @@ export const userReducer = createReducer(
     updateUserFail,
     updateUserPasswordFail,
     updateCustomerFail,
+    loadCostCenterFail,
     loadUserPaymentMethodsFail,
     deleteUserPaymentInstrumentFail,
     loadRolesAndPermissionsFail
@@ -159,6 +165,10 @@ export const userReducer = createReducer(
   on(setPGID, (state, action) => ({
     ...state,
     pgid: action.payload.pgid,
+  })),
+  on(loadCostCenterSuccess, (state, action) => ({
+    ...state,
+    costCenter: action.payload.costCenter,
   })),
   on(loadUserPaymentMethodsSuccess, (state, action) => ({
     ...state,
