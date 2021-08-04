@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -46,11 +46,17 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
   }
 
   handleCountryChange(model: { countryCode: string }) {
+    // extract old and new countryCode
     const prevCountryCode = this.countryCode;
     this.countryCode = model.countryCode;
+
     if (model.countryCode !== prevCountryCode) {
       const configuration = this.afcProvider.getConfiguration(model.countryCode, this.businessCustomer, this.shortForm);
-      this.addressForm = new FormGroup({});
+
+      // assign new form, model and fields
+      this.addressForm = new FormGroup({
+        countryCode: new FormControl(''),
+      });
       this.addressModel = {
         countryCode: model.countryCode,
         ...configuration.getModel(this.addressModel),
@@ -61,6 +67,7 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
 
       this.addressModel.countryCode = model.countryCode;
       this.addressForm.updateValueAndValidity();
+      this.addressForm.get('countryCode').markAsDirty();
 
       this.parentForm?.setControl('address', this.addressForm);
     }
