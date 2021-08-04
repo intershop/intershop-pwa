@@ -67,7 +67,6 @@ export class AccountProfileEmailComponent implements OnInit {
       {
         key: 'currentPassword',
         type: 'ish-password-field',
-
         templateOptions: {
           hideRequiredMarker: true,
           required: true,
