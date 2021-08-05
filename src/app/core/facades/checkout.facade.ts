@@ -46,6 +46,7 @@ import {
   updateBasketShippingMethod,
   updateConcardisCvcLastUpdated,
 } from 'ish-core/store/customer/basket';
+import { loadCostCenter } from 'ish-core/store/customer/cost-center';
 import { getOrdersError, getSelectedOrder } from 'ish-core/store/customer/orders';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
@@ -167,6 +168,12 @@ export class CheckoutFacade {
       whenTruthy(),
       distinctUntilChanged()
     );
+  }
+
+  // COST CENTER
+
+  getCostCentersForBusinessUser$() {
+    this.store.dispatch(loadCostCenter());
   }
 
   // PAYMENT

@@ -7,7 +7,6 @@ import { ProductListingID } from 'ish-core/models/product-listing/product-listin
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { addProductToBasket } from 'ish-core/store/customer/basket';
-import { loadCostCenter } from 'ish-core/store/customer/cost-center';
 import {
   getCategory,
   getCategoryIdByRefId,
@@ -108,12 +107,6 @@ export class ShoppingFacade {
 
   addProductToBasket(sku: string, quantity: number) {
     this.store.dispatch(addProductToBasket({ sku, quantity }));
-  }
-
-  // COST CENTER
-
-  foo() {
-    this.store.dispatch(loadCostCenter());
   }
 
   // PRODUCT LISTING

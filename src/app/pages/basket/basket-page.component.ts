@@ -22,7 +22,6 @@ export class BasketPageComponent implements OnInit {
     this.basket$ = this.checkoutFacade.basket$;
     this.basketLoading$ = this.checkoutFacade.basketLoading$;
     this.basketError$ = this.checkoutFacade.basketError$;
-    const a$ = this.shoppingFacade.foo();
   }
 
   nextStep() {
