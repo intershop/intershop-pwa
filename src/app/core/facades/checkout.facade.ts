@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, createSelector, select } from '@ngrx/store';
-import { Subject, combineLatest, merge } from 'rxjs';
+import { Subject, combineLatest, merge, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, sample, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
@@ -46,10 +46,11 @@ import {
   updateBasketShippingMethod,
   updateConcardisCvcLastUpdated,
 } from 'ish-core/store/customer/basket';
-import { loadCostCenter } from 'ish-core/store/customer/cost-center';
+import { getCostCenter, loadCostCenter } from 'ish-core/store/customer/cost-center';
 import { getOrdersError, getSelectedOrder } from 'ish-core/store/customer/orders';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
+import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
@@ -172,8 +173,9 @@ export class CheckoutFacade {
 
   // COST CENTER
 
-  getCostCentersForBusinessUser$() {
+  getCostCentersForBusinessUser$(): Observable<CostCenter[]> {
     this.store.dispatch(loadCostCenter());
+    return this.store.pipe(select(getCostCenter));
   }
 
   // PAYMENT
