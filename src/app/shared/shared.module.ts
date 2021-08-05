@@ -67,6 +67,7 @@ import { BasketValidationResultsComponent } from './components/basket/basket-val
 import { MiniBasketContentComponent } from './components/basket/mini-basket-content/mini-basket-content.component';
 import { BasketInvoiceAddressWidgetComponent } from './components/checkout/basket-invoice-address-widget/basket-invoice-address-widget.component';
 import { BasketShippingAddressWidgetComponent } from './components/checkout/basket-shipping-address-widget/basket-shipping-address-widget.component';
+import { CostCenterSelectionComponent } from './components/checkout/cost-center-selection/cost-center-selection.component';
 import { AccordionItemComponent } from './components/common/accordion-item/accordion-item.component';
 import { AccordionComponent } from './components/common/accordion/accordion.component';
 import { BreadcrumbComponent } from './components/common/breadcrumb/breadcrumb.component';
@@ -233,6 +234,7 @@ const exportedComponents = [
   ContentNavigationComponent,
   ContentPageletComponent,
   ContentViewcontextComponent,
+  CostCenterSelectionComponent,
   ErrorMessageComponent,
   FilterNavigationComponent,
   IdentityProviderLoginComponent,
