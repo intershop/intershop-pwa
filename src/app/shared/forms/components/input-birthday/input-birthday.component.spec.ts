@@ -8,6 +8,8 @@ import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form
 
 import { InputBirthdayComponent } from './input-birthday.component';
 
+// tslint:disable ish-deprecation
+
 describe('Input Birthday Component', () => {
   let component: InputBirthdayComponent;
   let fixture: ComponentFixture<InputBirthdayComponent>;
