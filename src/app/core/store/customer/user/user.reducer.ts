@@ -6,7 +6,6 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { User } from 'ish-core/models/user/user.model';
 import { loadRolesAndPermissionsFail } from 'ish-core/store/customer/authorization';
-import { loadCostCenter, loadCostCenterFail, loadCostCenterSuccess } from 'ish-core/store/customer/cost-center';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn, unsetLoadingOn } from 'ish-core/utils/ngrx-creators';
 
 import {
@@ -19,6 +18,9 @@ import {
   loadCompanyUserFail,
   loadCompanyUserSuccess,
   loadUserByAPIToken,
+  loadUserCostCenters,
+  loadUserCostCentersFail,
+  loadUserCostCentersSuccess,
   loadUserPaymentMethods,
   loadUserPaymentMethodsFail,
   loadUserPaymentMethodsSuccess,
@@ -47,7 +49,7 @@ import {
 export interface UserState {
   customer: Customer;
   user: User;
-  costCenter: CostCenter[];
+  costCenters: CostCenter[];
   authorized: boolean;
   paymentMethods: PaymentMethod[];
   loading: boolean;
@@ -60,7 +62,7 @@ export interface UserState {
 const initialState: UserState = {
   customer: undefined,
   user: undefined,
-  costCenter: undefined,
+  costCenters: undefined,
   authorized: false,
   paymentMethods: undefined,
   loading: false,
@@ -79,7 +81,7 @@ export const userReducer = createReducer(
   setLoadingOn(
     loadCompanyUser,
     loadUserByAPIToken,
-    loadCostCenter,
+    loadUserCostCenters,
     createUser,
     updateUser,
     updateUserPassword,
@@ -99,7 +101,7 @@ export const userReducer = createReducer(
     updateUserFail,
     updateUserPasswordFail,
     updateCustomerFail,
-    loadCostCenterFail,
+    loadUserCostCentersFail,
     loadUserPaymentMethodsFail,
     deleteUserPaymentInstrumentFail,
     loadRolesAndPermissionsFail
@@ -166,9 +168,9 @@ export const userReducer = createReducer(
     ...state,
     pgid: action.payload.pgid,
   })),
-  on(loadCostCenterSuccess, (state, action) => ({
+  on(loadUserCostCentersSuccess, (state, action) => ({
     ...state,
-    costCenter: action.payload.costCenter,
+    costCenters: action.payload.costCenters,
   })),
   on(loadUserPaymentMethodsSuccess, (state, action) => ({
     ...state,

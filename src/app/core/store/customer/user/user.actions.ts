@@ -1,5 +1,6 @@
 import { createAction } from '@ngrx/store';
 
+import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
@@ -69,6 +70,15 @@ export const userErrorReset = createAction('[User Internal] Reset User Error');
 export const loadUserByAPIToken = createAction('[User] Load User by API Token');
 
 export const setPGID = createAction('[User Internal] Set PGID', payload<{ pgid: string }>());
+
+export const loadUserCostCenters = createAction('[User] Load User Cost Centers');
+
+export const loadUserCostCentersFail = createAction('[User API] Load User Cost Centers Fail', httpError());
+
+export const loadUserCostCentersSuccess = createAction(
+  '[User API] Load User Cost Centers Success',
+  payload<{ costCenters: CostCenter[] }>()
+);
 
 export const loadUserPaymentMethods = createAction('[User] Load User Payment Methods');
 

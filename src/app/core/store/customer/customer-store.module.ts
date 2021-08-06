@@ -16,8 +16,6 @@ import { BasketPromotionCodeEffects } from './basket/basket-promotion-code.effec
 import { BasketValidationEffects } from './basket/basket-validation.effects';
 import { BasketEffects } from './basket/basket.effects';
 import { basketReducer } from './basket/basket.reducer';
-import { CostCenterEffects } from './cost-center/cost-center.effects';
-import { costCenterReducer } from './cost-center/cost-center.reducer';
 import { CustomerState } from './customer-store';
 import { OrdersEffects } from './orders/orders.effects';
 import { ordersReducer } from './orders/orders.reducer';
@@ -35,7 +33,6 @@ const customerReducers: ActionReducerMap<CustomerState> = {
   basket: basketReducer,
   authorization: authorizationReducer,
   ssoRegistration: ssoRegistrationReducer,
-  costCenter: costCenterReducer,
 };
 
 const customerEffects = [
@@ -52,7 +49,6 @@ const customerEffects = [
   OrganizationManagementEffects,
   RequisitionManagementEffects,
   SsoRegistrationEffects,
-  CostCenterEffects,
 ];
 
 const metaReducers = [resetOnLogoutMeta];

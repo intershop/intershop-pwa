@@ -3,11 +3,12 @@ import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import b64u from 'b64u';
 import { pick } from 'lodash-es';
-import { Observable, of, throwError } from 'rxjs';
-import { concatMap, first, map, take, withLatestFrom } from 'rxjs/operators';
+import { Observable, combineLatest, of, throwError } from 'rxjs';
+import { concatMap, first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Address } from 'ish-core/models/address/address.model';
+import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { CustomerData, CustomerType } from 'ish-core/models/customer/customer.interface';
 import { CustomerMapper } from 'ish-core/models/customer/customer.mapper';
@@ -16,8 +17,9 @@ import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { User } from 'ish-core/models/user/user.model';
-import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
-import { getLoggedInCustomer } from 'ish-core/store/customer/user';
+import { ApiService, AvailableOptions, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
  * The User Service handles the registration related interaction with the 'customers' REST API.
@@ -278,5 +280,21 @@ export class UserService {
       skipApiErrorHandling: true,
     };
     return this.apiService.post('security/password', data, options);
+  }
+
+  getCostCenters(): Observable<CostCenter[]> {
+    return combineLatest([
+      this.store.pipe(select(getLoggedInCustomer), whenTruthy()),
+      this.store.pipe(select(getLoggedInUser), whenTruthy()),
+    ]).pipe(
+      switchMap(([customer, user]) =>
+        this.apiService
+          .get(`customers/${customer.customerNo}/users/${encodeURIComponent(user.login)}/costcenters`)
+          .pipe(
+            unpackEnvelope(),
+            map((costCenters: CostCenter[]) => costCenters)
+          )
+      )
+    );
   }
 }

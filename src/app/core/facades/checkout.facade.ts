@@ -47,9 +47,8 @@ import {
   updateBasketShippingMethod,
   updateConcardisCvcLastUpdated,
 } from 'ish-core/store/customer/basket';
-import { getCostCenter, loadCostCenter } from 'ish-core/store/customer/cost-center';
 import { getOrdersError, getSelectedOrder } from 'ish-core/store/customer/orders';
-import { getLoggedInUser } from 'ish-core/store/customer/user';
+import { getLoggedInUser, getUserCostCenters, loadUserCostCenters } from 'ish-core/store/customer/user';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 // tslint:disable:member-ordering
@@ -173,9 +172,9 @@ export class CheckoutFacade {
 
   // COST CENTER
 
-  getCostCentersForBusinessUser$(): Observable<CostCenter[]> {
-    this.store.dispatch(loadCostCenter());
-    return this.store.pipe(select(getCostCenter));
+  getCostCenters$(): Observable<CostCenter[]> {
+    this.store.dispatch(loadUserCostCenters());
+    return this.store.pipe(select(getUserCostCenters));
   }
 
   // PAYMENT

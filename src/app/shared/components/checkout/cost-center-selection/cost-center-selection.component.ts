@@ -8,6 +8,7 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 
+// nur für BusinessCustomer anzeigen
 @Component({
   selector: 'ish-cost-center-selection',
   templateUrl: './cost-center-selection.component.html',
@@ -28,7 +29,7 @@ export class CostCenterSelectionComponent implements OnInit, OnDestroy {
   constructor(private checkoutFacade: CheckoutFacade) {}
 
   ngOnInit() {
-    this.costCenters$ = this.checkoutFacade.getCostCentersForBusinessUser$();
+    this.costCenters$ = this.checkoutFacade.getCostCenters$();
     this.fields = this.getFields();
   }
 
@@ -55,7 +56,6 @@ export class CostCenterSelectionComponent implements OnInit, OnDestroy {
             break;
           case 1:
             this.costCenterSelectForm.get('costCenter').setValue(selectOptions[0].value);
-            console.log(this.fields);
             this.fields[0].templateOptions.placeholder = undefined;
             break;
         }
