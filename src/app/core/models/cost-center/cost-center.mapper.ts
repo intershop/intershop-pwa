@@ -5,13 +5,9 @@ import { CostCenter } from './cost-center.model';
 
 @Injectable({ providedIn: 'root' })
 export class CostCenterMapper {
-  fromData(costCenterData: CostCenterData): CostCenter {
-    if (costCenterData) {
-      return {
-        id: costCenterData.incomingField,
-      };
-    } else {
-      throw new Error(`costCenterData is required`);
-    }
+  static fromData(costCenterData: CostCenterData[]): CostCenter[] {
+    console.log('123');
+    console.log(costCenterData);
+    return costCenterData;
   }
 }

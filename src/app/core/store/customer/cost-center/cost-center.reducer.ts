@@ -7,18 +7,18 @@ import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils
 
 import { loadCostCenter, loadCostCenterFail, loadCostCenterSuccess } from './cost-center.actions';
 
-export const costCenterAdapter = createEntityAdapter<CostCenter>();
+export const costCenterAdapter = createEntityAdapter<CostCenter[]>();
 
-export interface CostCenterState extends EntityState<CostCenter> {
+export interface CostCenterState extends EntityState<CostCenter[]> {
   loading: boolean;
   error: HttpError;
-  costCenter: CostCenter;
+  costCenters: CostCenter[];
 }
 
 const initialState: CostCenterState = costCenterAdapter.getInitialState({
   loading: false,
   error: undefined,
-  costCenter: undefined,
+  costCenters: [],
 });
 
 export const costCenterReducer = createReducer(

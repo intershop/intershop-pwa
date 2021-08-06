@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Store, createSelector, select } from '@ngrx/store';
-import { Subject, combineLatest, merge, Observable } from 'rxjs';
+import { Observable, Subject, combineLatest, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, sample, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
+import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { selectRouteData } from 'ish-core/store/core/router';
@@ -50,7 +51,6 @@ import { getCostCenter, loadCostCenter } from 'ish-core/store/customer/cost-cent
 import { getOrdersError, getSelectedOrder } from 'ish-core/store/customer/orders';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
-import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })

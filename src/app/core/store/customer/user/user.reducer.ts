@@ -47,7 +47,7 @@ import {
 export interface UserState {
   customer: Customer;
   user: User;
-  costCenter: CostCenter;
+  costCenter: CostCenter[];
   authorized: boolean;
   paymentMethods: PaymentMethod[];
   loading: boolean;

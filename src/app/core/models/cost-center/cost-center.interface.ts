@@ -1,4 +1,5 @@
 export interface CostCenterData {
-  incomingField: string;
-  otherField: boolean;
+  name: string;
+  id: string;
+  roles: string[];
 }

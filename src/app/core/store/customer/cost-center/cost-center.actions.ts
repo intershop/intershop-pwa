@@ -9,5 +9,5 @@ export const loadCostCenterFail = createAction('[CostCenter API] Load Cost Cente
 
 export const loadCostCenterSuccess = createAction(
   '[CostCenter API] Load Cost Center Success',
-  payload<{ costCenter: CostCenter }>()
+  payload<{ costCenter: CostCenter[] }>()
 );
