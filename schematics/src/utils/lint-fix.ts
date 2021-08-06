@@ -28,7 +28,7 @@ export function applyLintFix(): Rule {
     };
 
     context.addTask(
-      // tslint:disable-next-line: deprecation
+      // tslint:disable-next-line: ish-deprecation
       new TslintFixTask({
         ignoreErrors: true,
         silent: true,
