@@ -51,7 +51,7 @@ const packageJson = parse(fs.readFileSync('./package.json', { encoding: 'UTF-8' 
 if (setDefault) {
   packageJson.config['active-themes'] = theme;
 } else {
-  packageJson.config['active-themes'] = `${theme},${packageJson.config['active-themes']}`;
+  packageJson.config['active-themes'] = `${packageJson.config['active-themes']},${theme}`;
 }
 fs.writeFileSync('./package.json', stringify(packageJson, null, 2));
 execSync('npx prettier --write package.json');
