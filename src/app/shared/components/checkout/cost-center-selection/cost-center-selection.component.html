@@ -1,4 +1,6 @@
-<p *ngIf="costCenters$ | async as costCenters">
-  {{ costCenters | json }}
-  cost-center-selection works!
-</p>
+<ng-container *ngIf="showSelection">
+  <h3>{{ 'checkout.cost_center.select.heading' | translate }}</h3>
+  <form [formGroup]="costCenterSelectForm">
+    <formly-form [form]="costCenterSelectForm" [fields]="fields"></formly-form>
+  </form>
+</ng-container>
