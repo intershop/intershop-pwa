@@ -139,7 +139,7 @@ describe('Basket Items Effects', () => {
 
       const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
       const action = addItemsToBasket({ items });
-      const completion = addItemsToBasketSuccess({ info: undefined });
+      const completion = addItemsToBasketSuccess({ info: undefined, items });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -187,7 +187,7 @@ describe('Basket Items Effects', () => {
 
   describe('loadBasketAfterAddItemsToBasket$', () => {
     it('should map to action of type LoadBasket if AddItemsToBasketSuccess action triggered', () => {
-      const action = addItemsToBasketSuccess({ info: undefined });
+      const action = addItemsToBasketSuccess({ info: undefined, items: [] });
       const completion = loadBasket();
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });

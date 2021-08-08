@@ -272,14 +272,14 @@ describe('Basket Selectors', () => {
 
   describe('loading last time and info when a product has been added to basket', () => {
     beforeEach(() => {
-      store$.dispatch(addItemsToBasketSuccess({ info: [{ message: 'info' } as BasketInfo] }));
+      store$.dispatch(addItemsToBasketSuccess({ info: [{ message: 'info' } as BasketInfo], items: [] }));
     });
 
     it('should get the last time when a product was added', () => {
       const firstTimeAdded = new Date(getBasketLastTimeProductAdded(store$.state));
 
       expect(firstTimeAdded).toBeDate();
-      store$.dispatch(addItemsToBasketSuccess({ info: undefined }));
+      store$.dispatch(addItemsToBasketSuccess({ info: undefined, items: [] }));
       expect(getBasketLastTimeProductAdded(store$.state)).not.toEqual(firstTimeAdded);
     });
 
