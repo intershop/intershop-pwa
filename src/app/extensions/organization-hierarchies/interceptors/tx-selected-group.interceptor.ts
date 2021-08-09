@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable, iif } from 'rxjs';
 import { concatMap, first, map, withLatestFrom } from 'rxjs/operators';
 
-import { getRestEndpoint } from 'ish-core/store/core/configuration';
+import { getConfigurationState, getRestEndpoint } from 'ish-core/store/core/configuration';
 
 import { getBuyingContext } from '../store/buying-context';
 
@@ -22,9 +22,11 @@ export class TxSelectedGroupInterceptor implements HttpInterceptor {
           () => !!store.organizationHierarchies,
           this.store.pipe(
             select(getBuyingContext),
-            withLatestFrom(this.store.pipe(select(getRestEndpoint))),
-            map(([buyingcontext, baseurl]) =>
-              buyingcontext.bctx && !req?.url.includes(TxSelectedGroupInterceptor.matrixparam)
+            withLatestFrom(this.store.pipe(select(getRestEndpoint)), this.store.pipe(select(getConfigurationState))),
+            map(([buyingcontext, baseurl, configuration]) =>
+              buyingcontext.bctx &&
+              !req?.url.includes(TxSelectedGroupInterceptor.matrixparam) &&
+              req?.url.includes(configuration.channel)
                 ? req.clone({
                     url: req.url
                       .substring(0, baseurl.length)

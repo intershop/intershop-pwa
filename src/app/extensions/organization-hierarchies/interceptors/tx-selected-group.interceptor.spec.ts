@@ -3,7 +3,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 
-import { getRestEndpoint } from 'ish-core/store/core/configuration';
+import { getConfigurationState, getRestEndpoint } from 'ish-core/store/core/configuration';
+import { ConfigurationState } from 'ish-core/store/core/configuration/configuration.reducer';
 
 import { getBuyingContext } from '../store/buying-context';
 import { BuyingContextState } from '../store/buying-context/buying-context.reducer';
@@ -14,7 +15,10 @@ describe('Tx Selected Group Interceptor', () => {
   let httpController: HttpTestingController;
   let http: HttpClient;
   const buyingContext: BuyingContextState = { bctx: 'Testgroup@TestCompany' };
-  const BASE_URL = 'http://example.org/WFS/site/REST';
+  const SITE = 'site';
+  const BASE_URL = 'http://example.org/WFS/'.concat(SITE, '/rest');
+
+  const CONFIGURATION: ConfigurationState = { serverTranslations: undefined, channel: SITE };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -25,6 +29,7 @@ describe('Tx Selected Group Interceptor', () => {
           initialState: { organizationHierarchies: {} },
           selectors: [
             { selector: getRestEndpoint, value: BASE_URL },
+            { selector: getConfigurationState, value: CONFIGURATION },
             { selector: getBuyingContext, value: buyingContext },
           ],
         }),
