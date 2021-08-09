@@ -1,5 +1,5 @@
 <div
-  *ngIf="count$ | async"
+  *ngIf="(count$ | async) > 1"
   class="hierarchy-switch"
   ngbDropdown
   placement="{{ placement === 'up' ? 'top-left' : 'bottom-left' }}"
