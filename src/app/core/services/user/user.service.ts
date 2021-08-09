@@ -282,6 +282,10 @@ export class UserService {
     return this.apiService.post('security/password', data, options);
   }
 
+  /**
+   * Get cost center data for the logged in Business Customer.
+   * @returns The related cost center
+   */
   getCostCenters(): Observable<CostCenter[]> {
     return combineLatest([
       this.store.pipe(select(getLoggedInCustomer), whenTruthy()),
