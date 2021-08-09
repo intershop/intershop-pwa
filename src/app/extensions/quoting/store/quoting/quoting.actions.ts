@@ -1,5 +1,6 @@
 import { createAction } from '@ngrx/store';
 
+import { SkuQuantityType } from 'ish-core/models/product/product.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 import { QuoteRequestUpdate } from '../../models/quote-request-update/quote-request-update.model';
@@ -95,7 +96,7 @@ export const createQuoteRequestFromBasketSuccess = createAction(
 
 export const addProductToQuoteRequest = createAction(
   '[Quoting] Add Product To Quote Request',
-  payload<{ sku: string; quantity: number }>()
+  payload<SkuQuantityType>()
 );
 
 export const addProductToQuoteRequestSuccess = createAction(

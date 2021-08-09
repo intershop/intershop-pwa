@@ -67,11 +67,11 @@ export const deleteBasketShippingAddress = createAction(
   payload<{ addressId: string }>()
 );
 
-export const addProductToBasket = createAction('[Basket] Add Product', payload<{ sku: string; quantity: number }>());
+export const addProductToBasket = createAction('[Basket] Add Product', payload<SkuQuantityType>());
 
 export const addItemsToBasket = createAction(
   '[Basket Internal] Add Items To Basket',
-  payload<{ items: { sku: string; quantity: number; unit: string }[] }>()
+  payload<{ items: SkuQuantityType[] }>()
 );
 
 export const addItemsToBasketFail = createAction('[Basket API] Add Items To Basket Fail', httpError());
