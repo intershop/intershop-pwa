@@ -48,7 +48,7 @@ export class OrganizationHierarchiesEffects {
       concatMap(newGroup =>
         this.organizationService.createGroup(newGroup.parent, newGroup.child).pipe(
           mergeMap(groupTree => [
-            createGroupSuccess({ groupTree }),
+            createGroupSuccess({ groupTree, group: newGroup.child }),
             displaySuccessMessage({
               message: 'account.organization.hierarchies.groups.new.confirmation',
               messageParams: { 0: newGroup.child.name },

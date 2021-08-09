@@ -20,7 +20,7 @@ export const createGroup = createAction(
 
 export const createGroupSuccess = createAction(
   '[Organization Hierarchies API] Create Group Success',
-  payload<{ groupTree: GroupTree }>()
+  payload<{ groupTree: GroupTree; group: Group }>()
 );
 
 export const createGroupFail = createAction('[Organization Hierarchies API] Create Group Fail', httpError());

@@ -110,7 +110,7 @@ describe('Organization Hierarchies Effects', () => {
     it('should create a user when triggered', () => {
       const action = createGroup({ parent: parentGroup, child: childGroup });
 
-      const completion = createGroupSuccess({ groupTree: GroupHelper.empty() });
+      const completion = createGroupSuccess({ groupTree: GroupHelper.empty(), group: childGroup });
       const completion2 = displaySuccessMessage({
         message: 'account.organization.hierarchies.groups.new.confirmation',
         messageParams: { 0: childGroup.name },
@@ -141,7 +141,7 @@ describe('Organization Hierarchies Effects', () => {
       router.navigateByUrl('/hierarchies/create-group');
       tick(500);
 
-      const action = createGroupSuccess({ groupTree: GroupHelper.empty() });
+      const action = createGroupSuccess({ groupTree: GroupHelper.empty(), group: childGroup });
 
       actions$ = of(action);
 
