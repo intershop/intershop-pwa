@@ -92,6 +92,7 @@ export const userReducer = createReducer(
     requestPasswordReminder
   ),
   unsetLoadingOn(
+    loadUserCostCentersFail,
     updateUserPasswordByPasswordReminderSuccess,
     requestPasswordReminderSuccess,
     updateUserPasswordByPasswordReminderFail,
@@ -101,7 +102,6 @@ export const userReducer = createReducer(
     updateUserFail,
     updateUserPasswordFail,
     updateCustomerFail,
-    loadUserCostCentersFail,
     loadUserPaymentMethodsFail,
     deleteUserPaymentInstrumentFail,
     loadRolesAndPermissionsFail
