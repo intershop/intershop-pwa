@@ -9,6 +9,7 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { SkuQuantityType } from 'ish-core/models/product/product.helper';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 import { BasketUpdateType } from 'ish-core/services/basket/basket.service';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
@@ -77,7 +78,7 @@ export const addItemsToBasketFail = createAction('[Basket API] Add Items To Bask
 
 export const addItemsToBasketSuccess = createAction(
   '[Basket API] Add Items To Basket Success',
-  payload<{ info: BasketInfo[] }>()
+  payload<{ info: BasketInfo[]; items: SkuQuantityType[] }>()
 );
 
 export const mergeBasketFail = createAction('[Basket API] Merge two baskets Fail', httpError());

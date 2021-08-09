@@ -85,17 +85,17 @@ export class BasketItemsEffects {
       ofType(addItemsToBasket),
       mapToPayload(),
       withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-      concatMap(([payload, basketId]) => {
+      concatMap(([{ items }, basketId]) => {
         if (basketId) {
-          return this.basketService.addItemsToBasket(payload.items).pipe(
-            map(info => addItemsToBasketSuccess({ info })),
+          return this.basketService.addItemsToBasket(items).pipe(
+            map(info => addItemsToBasketSuccess({ info, items })),
             mapErrorToAction(addItemsToBasketFail)
           );
         } else {
           return this.basketService.createBasket().pipe(
             switchMap(() =>
-              this.basketService.addItemsToBasket(payload.items).pipe(
-                map(info => addItemsToBasketSuccess({ info })),
+              this.basketService.addItemsToBasket(items).pipe(
+                map(info => addItemsToBasketSuccess({ info, items })),
                 mapErrorToAction(addItemsToBasketFail)
               )
             )

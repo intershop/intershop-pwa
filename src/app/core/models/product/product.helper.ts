@@ -17,6 +17,7 @@ import {
 export interface SkuQuantityType {
   sku: string;
   quantity: number;
+  unit?: string;
 }
 
 export enum ProductCompletenessLevel {

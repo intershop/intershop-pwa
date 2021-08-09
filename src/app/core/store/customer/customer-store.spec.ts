@@ -220,6 +220,7 @@ describe('Customer Store', () => {
               items: [{"sku":"test","quantity":1,"unit":"pcs."}]
             [Basket API] Add Items To Basket Success:
               info: undefined
+              items: [{"sku":"test","quantity":1,"unit":"pcs."}]
             [Products Internal] Load Product:
               sku: "test"
             [Basket Internal] Load Basket
