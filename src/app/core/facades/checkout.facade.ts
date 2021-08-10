@@ -40,6 +40,7 @@ import {
   loadBasketWithId,
   removePromotionCodeFromBasket,
   setBasketAttribute,
+  setBasketCostCenter,
   setBasketPayment,
   startCheckout,
   updateBasketAddress,
@@ -187,6 +188,10 @@ export class CheckoutFacade {
           .map(c => ({ label: c.name, value: c.id }))
       )
     );
+  }
+
+  setBasketCostCenter(costCenterid: string) {
+    this.store.dispatch(setBasketCostCenter({ id: costCenterid }));
   }
 
   // PAYMENT

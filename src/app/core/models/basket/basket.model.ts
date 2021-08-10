@@ -19,6 +19,7 @@ export interface AbstractBasket<T> {
   email?: string;
   lineItems?: T[];
   payment?: Payment;
+  costCenter?: string;
   promotionCodes?: string[];
   totals: BasketTotal;
   totalProductQuantity?: number;

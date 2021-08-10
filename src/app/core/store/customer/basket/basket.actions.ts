@@ -195,6 +195,12 @@ export const loadBasketEligibleShippingMethodsSuccess = createAction(
   payload<{ shippingMethods: ShippingMethod[] }>()
 );
 
+export const setBasketCostCenter = createAction('[Basket] Set a Cost Center at Basket ', payload<{ id: string }>());
+
+export const setBasketCostCenterFail = createAction('[Basket API] Set a Cost Center at Basket Fail', httpError());
+
+export const setBasketCostCenterSuccess = createAction('[Basket API] Set a Cost Center at Basket Success');
+
 export const loadBasketEligiblePaymentMethods = createAction('[Basket Internal] Load Basket Eligible Payment Methods');
 
 export const loadBasketEligiblePaymentMethodsFail = createAction(

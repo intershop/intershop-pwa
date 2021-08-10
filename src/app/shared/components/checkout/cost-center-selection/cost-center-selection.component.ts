@@ -51,7 +51,7 @@ export class CostCenterSelectionComponent implements OnInit, OnDestroy {
 
   private submit(costCenterId: string) {
     console.log(costCenterId);
-    // this.checkoutFacade.assignCostCenterId(costCenterId);
+    this.checkoutFacade.setBasketCostCenter(costCenterId);
   }
 
   private getFields(options: { label: string; value: string }[]): FormlyFieldConfig[] {
