@@ -7,7 +7,6 @@ import { take, takeUntil, tap } from 'rxjs/operators';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
-import { log } from 'ish-core/utils/dev/operators';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 // nur für BusinessCustomer anzeigen
@@ -50,7 +49,6 @@ export class CostCenterSelectionComponent implements OnInit, OnDestroy {
   }
 
   private submit(costCenterId: string) {
-    console.log(costCenterId);
     this.checkoutFacade.setBasketCostCenter(costCenterId);
   }
 
