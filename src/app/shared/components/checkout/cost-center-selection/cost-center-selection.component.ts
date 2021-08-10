@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, Subject } from 'rxjs';
@@ -9,14 +18,17 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 
-// nur für BusinessCustomer anzeigen
+/**
+ * Section for Business Customer to Select a Cost Center on Checkout
+ */
 @Component({
   selector: 'ish-cost-center-selection',
   templateUrl: './cost-center-selection.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CostCenterSelectionComponent implements OnInit, OnDestroy {
-  isBusinessCustomer: Observable<any>;
+  @Input() goNext$: Observable<any>;
+  isBusinessCustomer: Observable<boolean>;
   costCenters$: Observable<CostCenter[]>;
 
   costCenterSelectForm = new FormGroup({});
@@ -26,19 +38,31 @@ export class CostCenterSelectionComponent implements OnInit, OnDestroy {
   showSelection = true;
   costCenterOptions$: Observable<{ label: string; value: string }[]>;
 
+  @Output() costCenterSubmitted = new EventEmitter<boolean>();
+
   private destroy$ = new Subject();
 
-  constructor(private checkoutFacade: CheckoutFacade, private accountFacade: AccountFacade) {}
+  constructor(
+    private checkoutFacade: CheckoutFacade,
+    private accountFacade: AccountFacade,
+    private cdRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.isBusinessCustomer = this.accountFacade.isBusinessCustomer$.pipe(
-      whenTruthy(),
       take(1),
-      tap(() => {
-        this.costCenterOptions$ = this.checkoutFacade.eligibleCostCenterOptions$();
-        this.costCenterOptions$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(options => {
-          this.fields = this.getFields(options);
-        });
+      tap(isBusinessCustomer => {
+        if (isBusinessCustomer) {
+          this.costCenterOptions$ = this.checkoutFacade.eligibleCostCenterOptions$();
+          this.costCenterOptions$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(options => {
+            this.fields = this.getFields(options);
+          });
+          this.goNext$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+            this.updateValidity();
+          });
+        } else {
+          this.emitCostCenterSubmitted();
+        }
       })
     );
   }
@@ -50,6 +74,19 @@ export class CostCenterSelectionComponent implements OnInit, OnDestroy {
 
   private submit(costCenterId: string) {
     this.checkoutFacade.setBasketCostCenter(costCenterId);
+    this.emitCostCenterSubmitted();
+  }
+
+  private emitCostCenterSubmitted() {
+    this.costCenterSubmitted.emit(true);
+  }
+
+  private updateValidity() {
+    if (this.model.costCenter === '') {
+      this.costCenterSelectForm.get('costCenter').markAsDirty();
+      this.costCenterSelectForm.get('costCenter').setErrors({ required: false });
+      this.cdRef.detectChanges();
+    }
   }
 
   private getFields(options: { label: string; value: string }[]): FormlyFieldConfig[] {
@@ -59,6 +96,7 @@ export class CostCenterSelectionComponent implements OnInit, OnDestroy {
         type: 'ish-select-field',
         templateOptions: {
           label: 'checkout.cost_center.select.label',
+          required: true,
           options,
           placeholder: options.length > 1 ? 'account.option.select.text' : undefined,
         },

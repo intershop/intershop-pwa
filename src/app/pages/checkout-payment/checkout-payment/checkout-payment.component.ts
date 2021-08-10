@@ -51,6 +51,9 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
   nextSubmitted = false;
   formSubmitted = false;
+  costCenterSubmitted = false;
+
+  goNext$ = new Subject();
 
   redirectStatus: string;
 
@@ -225,6 +228,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   goToNextStep() {
     this.nextSubmitted = true;
     this.nextStep.emit();
+
     if (this.paymentRedirectRequired) {
       // do a hard redirect to payment redirect URL
       location.assign(this.basket.payment.redirectUrl);
@@ -243,7 +247,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get nextDisabled() {
-    return (!this.basket || !this.basket.payment) && this.nextSubmitted;
+    return (!this.basket || !this.basket.payment || !this.costCenterSubmitted) && this.nextSubmitted;
   }
 
   get submitDisabled() {
@@ -251,6 +255,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.goNext$.complete();
     this.destroy$.next();
     this.destroy$.complete();
   }
