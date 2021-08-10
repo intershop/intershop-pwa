@@ -91,7 +91,10 @@ describe('Group Effects', () => {
     it('should dispatch action of type AssignBuyingContextSuccess when triggered by AssignGroup', () => {
       const action = assignGroup({ id: 'subgroup' });
       actions$ = of(action);
-      const completion = assignBuyingContextSuccess({ bctx: groups[1].id.concat('@', customer.customerNo) });
+      const completion = assignBuyingContextSuccess({
+        group: groups[1],
+        bctx: groups[1].id.concat('@', customer.customerNo),
+      });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
       expect(effects.assignGroup$).toBeObservable(expected$);
@@ -100,7 +103,10 @@ describe('Group Effects', () => {
     it('should dispatch action of type AssignBuyingContextSuccess when triggered by AssignBuyingContext', () => {
       const action = assignBuyingContext();
       actions$ = of(action);
-      const completion = assignBuyingContextSuccess({ bctx: groups[1].id.concat('@', customer.customerNo) });
+      const completion = assignBuyingContextSuccess({
+        group: groups[1],
+        bctx: groups[1].id.concat('@', customer.customerNo),
+      });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
       expect(effects.assignGroup$).toBeObservable(expected$);
@@ -111,7 +117,10 @@ describe('Group Effects', () => {
     it('should call the basketService for getBaskets', done => {
       when(basketServiceMock.getBaskets()).thenReturn(of(undefined));
 
-      const action = assignBuyingContextSuccess({ bctx: groups[1].id.concat('@', customer.customerNo) });
+      const action = assignBuyingContextSuccess({
+        group: groups[1],
+        bctx: groups[1].id.concat('@', customer.customerNo),
+      });
       actions$ = of(action);
 
       effects.reloadContext$.subscribe(() => {
@@ -122,7 +131,10 @@ describe('Group Effects', () => {
 
     it('should dispatch action of type LoadBasketWithId and LoadOrdersWithGroupPaths when baskets existing', () => {
       when(basketServiceMock.getBaskets()).thenReturn(of(baskets));
-      const action = assignBuyingContextSuccess({ bctx: groups[1].id.concat('@', customer.customerNo) });
+      const action = assignBuyingContextSuccess({
+        group: groups[1],
+        bctx: groups[1].id.concat('@', customer.customerNo),
+      });
       const completion1 = loadBasketWithId({ basketId: basket.id });
       const completion2 = loadOrdersWithGroupPaths();
       actions$ = hot('-a----a----a', { a: action });
@@ -133,7 +145,10 @@ describe('Group Effects', () => {
 
     it('should dispatch only action of type CreateBasket and LoadOrdersWithGroupPaths when no baskets existing', () => {
       when(basketServiceMock.getBaskets()).thenReturn(of([]));
-      const action = assignBuyingContextSuccess({ bctx: groups[1].id.concat('@', customer.customerNo) });
+      const action = assignBuyingContextSuccess({
+        group: groups[1],
+        bctx: groups[1].id.concat('@', customer.customerNo),
+      });
       const completion1 = createBasket();
       const completion2 = loadOrdersWithGroupPaths();
       actions$ = hot('-a----a----a', { a: action });

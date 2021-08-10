@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
+import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
 import { OrganizationHierarchiesStoreModule } from '../organization-hierarchies-store.module';
 
 import { assignBuyingContextSuccess } from './buying-context.actions';
@@ -28,13 +29,19 @@ describe('Buying Context Selectors', () => {
 
   describe('get BuyingContext', () => {
     beforeEach(() => {
-      store$.dispatch(assignBuyingContextSuccess({ bctx: 'Anna@Aaron' }));
+      store$.dispatch(
+        assignBuyingContextSuccess({ group: { name: 'Anna', id: 'Aaron' } as OrganizationGroup, bctx: 'Anna@Aaron' })
+      );
     });
 
     it('should always return the assigned buying context', () => {
       expect(getBuyingContext(store$.state)).toMatchInlineSnapshot(`
         Object {
           "bctx": "Anna@Aaron",
+          "group": Object {
+            "id": "Aaron",
+            "name": "Anna",
+          },
         }
       `);
     });

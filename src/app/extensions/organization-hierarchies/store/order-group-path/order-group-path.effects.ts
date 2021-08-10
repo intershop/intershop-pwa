@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concatMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
+import { OrderService } from 'ish-core/services/order/order.service';
 import { loadOrdersSuccess } from 'ish-core/store/customer/orders';
 import { mapErrorToAction } from 'ish-core/utils/operators';
 
@@ -20,6 +21,7 @@ export class OrderGroupPathEffects {
   constructor(
     private actions$: Actions,
     private organizationHierarchiesService: OrganizationHierarchiesService,
+    private orderService: OrderService,
     private store: Store
   ) {}
 
@@ -30,15 +32,22 @@ export class OrderGroupPathEffects {
     this.actions$.pipe(
       ofType(loadOrdersWithGroupPaths),
       withLatestFrom(this.store.pipe(select(getBuyingContext))),
-      concatMap(([, buyingContext]) =>
-        this.organizationHierarchiesService.getOrders(30, buyingContext.bctx).pipe(
-          switchMap(data => [
-            loadOrdersSuccess({ orders: data.orders }),
-            loadOrdersWithGroupPathsSuccess({ paths: data.paths }),
-          ]),
-          mapErrorToAction(loadOrdersWithGroupPathsFail)
-        )
-      )
+      concatMap(([, buyingContext]) => {
+        if (buyingContext.group?.parentid) {
+          return this.organizationHierarchiesService.getOrders(30, buyingContext.bctx).pipe(
+            switchMap(data => [
+              loadOrdersSuccess({ orders: data.orders }),
+              loadOrdersWithGroupPathsSuccess({ paths: data.paths }),
+            ]),
+            mapErrorToAction(loadOrdersWithGroupPathsFail)
+          );
+        } else {
+          return this.orderService.getOrders().pipe(
+            map(data => loadOrdersSuccess({ orders: data })),
+            mapErrorToAction(loadOrdersWithGroupPathsFail)
+          );
+        }
+      })
     )
   );
 }

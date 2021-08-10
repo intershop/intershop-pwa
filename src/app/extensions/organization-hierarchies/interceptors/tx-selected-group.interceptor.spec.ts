@@ -6,6 +6,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { getConfigurationState, getRestEndpoint } from 'ish-core/store/core/configuration';
 import { ConfigurationState } from 'ish-core/store/core/configuration/configuration.reducer';
 
+import { OrganizationGroup } from '../models/organization-group/organization-group.model';
 import { getBuyingContext } from '../store/buying-context';
 import { BuyingContextState } from '../store/buying-context/buying-context.reducer';
 
@@ -14,7 +15,7 @@ import { TxSelectedGroupInterceptor } from './tx-selected-group.interceptor';
 describe('Tx Selected Group Interceptor', () => {
   let httpController: HttpTestingController;
   let http: HttpClient;
-  const buyingContext: BuyingContextState = { bctx: 'Testgroup@TestCompany' };
+  const buyingContext: BuyingContextState = { group: {} as OrganizationGroup, bctx: 'Testgroup@TestCompany' };
   const SITE = 'site';
   const BASE_URL = 'http://example.org/WFS/'.concat(SITE, '/rest');
 

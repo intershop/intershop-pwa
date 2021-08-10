@@ -6,10 +6,12 @@ import { Observable, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { Order } from 'ish-core/models/order/order.model';
+import { OrderService } from 'ish-core/services/order/order.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadOrdersSuccess } from 'ish-core/store/customer/orders';
 
 import { GroupPathEntry, OrderGroupPath } from '../../models/order-group-path/order-group-path.model';
+import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
 import { OrganizationHierarchiesService } from '../../services/organization-hierarchies/organization-hierarchies.service';
 import { assignBuyingContextSuccess } from '../buying-context';
 import { OrganizationHierarchiesStoreModule } from '../organization-hierarchies-store.module';
@@ -21,26 +23,34 @@ describe('Order Group Path Effects', () => {
   let actions$: Observable<Action>;
   let effects: OrderGroupPathEffects;
   let orgServiceMock: OrganizationHierarchiesService;
+  let orderServiceMock: OrderService;
   let store$: Store;
 
-  const order = { id: '1', documentNo: '00000001', lineItems: [] } as Order;
-  const orders = [order, { id: '2', documentNo: '00000002' }] as Order[];
-  const rootGroupPathEntry = { groupId: 'rootID', groupName: 'rootName' } as GroupPathEntry;
+  const orderWithBuyingContent = { id: '1', documentNo: '00000001', lineItems: [] } as Order;
+  const orderWithoutBuyingContent = { id: '2', documentNo: '00000002', lineItems: [] } as Order;
+  const orders = [orderWithBuyingContent, orderWithoutBuyingContent];
+  const rootGroup = { id: 'rootID', name: 'rootName' } as OrganizationGroup;
+  const leafGroupGroup = { id: 'leafID', name: 'leafName', parentid: 'groupID' } as OrganizationGroup;
+  const rootGroupPathEntry = { groupId: rootGroup.id, groupName: rootGroup.name } as GroupPathEntry;
   const subGroupGroupPathEntry = { groupId: 'groupID', groupName: 'groupName' } as GroupPathEntry;
-  const leafGroupPathEntry = { groupId: 'leafID', groupName: 'leafName' } as GroupPathEntry;
+  const leafGroupPathEntry = { groupId: leafGroupGroup.id, groupName: leafGroupGroup.name } as GroupPathEntry;
   const orderGroupPath = {
     organizationId: 'orgID',
     groupPath: [rootGroupPathEntry, subGroupGroupPathEntry, leafGroupPathEntry] as GroupPathEntry[],
     groupId: leafGroupPathEntry.groupId,
     groupName: leafGroupPathEntry.groupName,
-    orderId: order.id,
+    orderId: orderWithBuyingContent.id,
   } as OrderGroupPath;
   const orderGroupPaths = [orderGroupPath] as OrderGroupPath[];
   const buyingContext = orderGroupPath.groupId.concat('@', orderGroupPath.organizationId);
 
   beforeEach(() => {
     orgServiceMock = mock(OrganizationHierarchiesService);
-    when(orgServiceMock.getOrders(anything(), buyingContext)).thenReturn(of({ orders, paths: orderGroupPaths }));
+    orderServiceMock = mock(OrderService);
+    when(orgServiceMock.getOrders(anything(), buyingContext)).thenReturn(
+      of({ orders: [orderWithBuyingContent] as Order[], paths: orderGroupPaths })
+    );
+    when(orderServiceMock.getOrders()).thenReturn(of(orders));
 
     TestBed.configureTestingModule({
       imports: [
@@ -50,7 +60,10 @@ describe('Order Group Path Effects', () => {
       providers: [
         OrderGroupPathEffects,
         provideMockActions(() => actions$),
-        { provide: OrganizationHierarchiesService, useFactory: () => instance(orgServiceMock) },
+        [
+          { provide: OrganizationHierarchiesService, useFactory: () => instance(orgServiceMock) },
+          { provide: OrderService, useFactory: () => instance(orderServiceMock) },
+        ],
       ],
     });
 
@@ -60,15 +73,27 @@ describe('Order Group Path Effects', () => {
 
   describe('loadOrdersWithGroupPaths$', () => {
     beforeEach(() => {
-      store$.dispatch(assignBuyingContextSuccess({ bctx: buyingContext }));
+      store$.dispatch(assignBuyingContextSuccess({ group: leafGroupGroup, bctx: buyingContext }));
     });
 
-    it('should dispatch loadGroupsSuccess and loadOrdersWithGroupPathsSuccess actions when encountering LoadOrdersWithGroupPaths actions', () => {
+    it('should dispatch loadGroupsSuccess and loadOrdersWithGroupPathsSuccess actions when encountering LoadOrdersWithGroupPaths actions with non root group', () => {
       const action = loadOrdersWithGroupPaths();
-      const completion1 = loadOrdersSuccess({ orders });
+      const completion1 = loadOrdersSuccess({ orders: [orderWithBuyingContent] as Order[] });
       const completion2 = loadOrdersWithGroupPathsSuccess({ paths: orderGroupPaths });
       actions$ = hot('-a----a----a', { a: action });
       const expected$ = cold('-(cd)-(cd)-(cd)', { c: completion1, d: completion2 });
+
+      expect(effects.loadOrdersWithGroupPaths$).toBeObservable(expected$);
+    });
+
+    it('should dispatch loadGroupsSuccess actions when encountering LoadOrdersWithGroupPaths actions with root group', () => {
+      store$.dispatch(
+        assignBuyingContextSuccess({ group: rootGroup, bctx: rootGroup.id.concat('@', orderGroupPath.organizationId) })
+      );
+      const action = loadOrdersWithGroupPaths();
+      const completion = loadOrdersSuccess({ orders });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadOrdersWithGroupPaths$).toBeObservable(expected$);
     });

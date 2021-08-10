@@ -44,7 +44,9 @@ export class GroupEffects {
     this.actions$.pipe(
       ofType(assignGroup, assignBuyingContext),
       withLatestFrom(this.store.pipe(select(getSelectedGroupDetails)), this.store.pipe(select(getLoggedInCustomer))),
-      map(([, group, customer]) => assignBuyingContextSuccess({ bctx: group.id.concat('@', customer.customerNo) }))
+      map(([, group, customer]) =>
+        assignBuyingContextSuccess({ group, bctx: group.id.concat('@', customer.customerNo) })
+      )
     )
   );
 
