@@ -1,4 +1,4 @@
-<ng-container *ngIf="showSelection">
+<ng-container *ngIf="(isBusinessCustomer | async) && (costCenterOptions$ | async)?.length">
   <h3>{{ 'checkout.cost_center.select.heading' | translate }}</h3>
   <form [formGroup]="costCenterSelectForm">
     <formly-form [form]="costCenterSelectForm" [fields]="fields"></formly-form>

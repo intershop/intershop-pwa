@@ -172,9 +172,21 @@ export class CheckoutFacade {
 
   // COST CENTER
 
-  getCostCenters$(): Observable<CostCenter[]> {
+  eligibleCostCenters$(): Observable<CostCenter[]> {
     this.store.dispatch(loadUserCostCenters());
     return this.store.pipe(select(getUserCostCenters));
+  }
+
+  eligibleCostCenterOptions$(selectRole?: string) {
+    return this.eligibleCostCenters$().pipe(
+      whenTruthy(),
+      take(1),
+      map(costCenters =>
+        costCenters
+          .filter(costCenter => costCenter.roles.find(r => (r === selectRole ? selectRole : 'Buyer')))
+          .map(c => ({ label: c.name, value: c.id }))
+      )
+    );
   }
 
   // PAYMENT
