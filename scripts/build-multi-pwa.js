@@ -32,7 +32,7 @@ if (parallel) {
 
 const result = cp.spawnSync(
   path.join('node_modules', '.bin', 'npm-run-all' + (process.platform === 'win32' ? '.cmd' : '')),
-  ['ngcc', ...parallel, ...builds],
+  [...parallel, ...builds],
   {
     stdio: 'inherit',
   }
