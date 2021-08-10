@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { SkuQuantityType } from 'ish-core/models/product/product.model';
 
 declare type CsvStatusType = 'Default' | 'ValidFormat' | 'InvalidFormat' | 'IncorrectInput';
 
@@ -12,7 +13,7 @@ declare type CsvStatusType = 'Default' | 'ValidFormat' | 'InvalidFormat' | 'Inco
 })
 export class QuickorderCsvFormComponent implements OnInit {
   csvForm: FormGroup;
-  productsFromCsv: { sku: string; quantity: number }[] = [];
+  productsFromCsv: SkuQuantityType[] = [];
   status: CsvStatusType;
 
   constructor(private qf: FormBuilder, private cdRef: ChangeDetectorRef, private shoppingFacade: ShoppingFacade) {}
@@ -56,7 +57,7 @@ export class QuickorderCsvFormComponent implements OnInit {
     return file.name.endsWith('.csv');
   }
 
-  getDataRecordsArrayFromCSVFile(csvRecordsArray: string[]): { sku: string; quantity: number }[] {
+  getDataRecordsArrayFromCSVFile(csvRecordsArray: string[]): SkuQuantityType[] {
     try {
       return csvRecordsArray
         .filter(r => !!r)

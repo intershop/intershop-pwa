@@ -6,12 +6,7 @@ import { Subject } from 'rxjs';
 import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.helper';
-
-declare interface AddProducts {
-  sku: string;
-  quantity: number;
-}
+import { ProductCompletenessLevel, ProductHelper, SkuQuantityType } from 'ish-core/models/product/product.helper';
 
 @Component({
   selector: 'ish-quickorder-add-products-form',
@@ -20,7 +15,7 @@ declare interface AddProducts {
 })
 export class QuickorderAddProductsFormComponent implements OnInit, OnDestroy {
   quickOrderForm: FormGroup = new FormGroup({});
-  model: { addProducts: AddProducts[] } = { addProducts: [] };
+  model: { addProducts: SkuQuantityType[] } = { addProducts: [] };
   options: FormlyFormOptions = {};
   fields: FormlyFieldConfig[];
 
@@ -41,7 +36,7 @@ export class QuickorderAddProductsFormComponent implements OnInit, OnDestroy {
   }
 
   onAddProducts() {
-    const products = this.model.addProducts.filter((p: AddProducts) => !!p.sku && !!p.quantity);
+    const products = this.model.addProducts.filter((p: SkuQuantityType) => !!p.sku && !!p.quantity);
     if (products.length > 0) {
       products.forEach(product => {
         this.shoppingFacade.addProductToBasket(product.sku, product.quantity);
@@ -107,7 +102,7 @@ export class QuickorderAddProductsFormComponent implements OnInit, OnDestroy {
                 },
               },
               expressionProperties: {
-                'templateOptions.required': (control: { sku: string; quantity: number }) => !!control.quantity,
+                'templateOptions.required': (control: SkuQuantityType) => !!control.quantity,
               },
               validation: {
                 messages: {

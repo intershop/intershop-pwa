@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { SkuQuantityType } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-quickorder-repeat-form-quantity',
@@ -11,7 +12,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuickorderRepeatFormQuantityComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() model: { sku: string; quantity: number };
+  @Input() model: SkuQuantityType;
   @Input() skuControl: AbstractControl;
 
   private destroy$ = new Subject();
