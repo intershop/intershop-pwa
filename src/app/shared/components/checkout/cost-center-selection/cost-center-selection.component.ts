@@ -49,24 +49,6 @@ export class CostCenterSelectionComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  private getOptions(): Observable<{ label: string; value: string }[]> {
-    const costCenterOptions$ = this.checkoutFacade.eligibleCostCenterOptions$();
-    return costCenterOptions$.pipe(
-      log(),
-      take(1)
-      // tap(options => {
-      //   if (options.length === 1) {
-      //     console.log(options);
-      //     this.costCenterSelectForm.get('costCenter').setValue(options[0].value);
-      //   }
-      //   // if (options.length > 1) {
-      //   //   this.placeholder = 'account.option.select.text';
-      //   // }
-      //   return options;
-      // })
-    );
-  }
-
   private submit(costCenterId: string) {
     console.log(costCenterId);
     // this.checkoutFacade.assignCostCenterId(costCenterId);
