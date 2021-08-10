@@ -1,7 +1,7 @@
 <ish-error-message [error]="error$ | async"></ish-error-message>
 <div *ngIf="!(pathLoading$ | async); else loading">
   <div *ngIf="path$ | async as path">
-    <div *ngIf="path.groupPath.length">
+    <div *ngIf="path.groupPath.length > 1">
       <span>{{ path.groupPath[1].groupName }}</span>
       <span *ngIf="path.groupPath.length > 3">&nbsp;&#124;&nbsp;</span>
       <a

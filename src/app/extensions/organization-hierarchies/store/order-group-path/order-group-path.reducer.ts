@@ -2,6 +2,7 @@ import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { loadOrdersSuccess } from 'ish-core/store/customer/orders';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
 import { OrderGroupPath } from '../../models/order-group-path/order-group-path.model';
@@ -38,5 +39,9 @@ export const orderGroupPathReducer = createReducer(
       loading: false,
       ids: paths.map(p => p.orderId),
     };
-  })
+  }),
+  on(loadOrdersSuccess, (state: OrderGroupPathState) => ({
+    ...state,
+    loading: false,
+  }))
 );
