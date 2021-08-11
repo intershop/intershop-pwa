@@ -6,11 +6,11 @@
 >
   <formly-field class="col-6" [field]="field"></formly-field>
   <ish-quickorder-repeat-form-quantity
-    class="col-3 col-sm-2 py-2"
+    class="col-3 col-sm-2 quickorder-line-item"
     [model]="model[i]"
     [skuControl]="field.formControl"
   ></ish-quickorder-repeat-form-quantity>
-  <div class="col-3 col-sm-2 d-flex pt-2">
+  <div class="col-3 col-sm-2 d-flex quickorder-line-item">
     <a class="btn btn-tool" (click)="remove(i)" title="{{ 'quickorder.page.remove.row' | translate }}">
       <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
     </a>
