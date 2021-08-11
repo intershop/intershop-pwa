@@ -72,7 +72,7 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
       notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
     },
     '/account/profile': { localizationKey: 'account.profile.link', notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'] },
-    '/account/organization': {
+    '/account/organization/users': {
       localizationKey: 'account.organization.user_management',
       permission: 'APP_B2B_MANAGE_USERS',
     },
