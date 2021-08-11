@@ -9,6 +9,8 @@ import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form
 
 import { SelectRegionComponent } from './select-region.component';
 
+// tslint:disable ish-deprecation
+
 describe('Select Region Component', () => {
   let component: SelectRegionComponent;
   let fixture: ComponentFixture<SelectRegionComponent>;

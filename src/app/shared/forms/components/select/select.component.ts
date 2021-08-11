@@ -8,6 +8,8 @@ export interface SelectOption {
   label: string;
 }
 
+// tslint:disable ish-deprecation
+
 /**
  * @deprecated use formly instead
  */
