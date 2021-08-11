@@ -53,8 +53,6 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   formSubmitted = false;
   costCenterSubmitted = false;
 
-  goNext$ = new Subject();
-
   redirectStatus: string;
 
   private openFormIndex = -1; // index of the open parameter form
@@ -255,7 +253,6 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.goNext$.complete();
     this.destroy$.next();
     this.destroy$.complete();
   }

@@ -1,13 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, Subject } from 'rxjs';
@@ -27,7 +18,6 @@ import { whenTruthy } from 'ish-core/utils/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CostCenterSelectionComponent implements OnInit, OnDestroy {
-  @Input() goNext$: Observable<any>;
   isBusinessCustomer: Observable<boolean>;
   costCenters$: Observable<CostCenter[]>;
 
@@ -35,18 +25,11 @@ export class CostCenterSelectionComponent implements OnInit, OnDestroy {
   fields: FormlyFieldConfig[];
   placeholder: string;
   model = { costCenter: '' };
-  showSelection = true;
   costCenterOptions$: Observable<{ label: string; value: string }[]>;
-
-  @Output() costCenterSubmitted = new EventEmitter<boolean>();
 
   private destroy$ = new Subject();
 
-  constructor(
-    private checkoutFacade: CheckoutFacade,
-    private accountFacade: AccountFacade,
-    private cdRef: ChangeDetectorRef
-  ) {}
+  constructor(private checkoutFacade: CheckoutFacade, private accountFacade: AccountFacade) {}
 
   ngOnInit() {
     this.isBusinessCustomer = this.accountFacade.isBusinessCustomer$.pipe(
@@ -57,11 +40,6 @@ export class CostCenterSelectionComponent implements OnInit, OnDestroy {
           this.costCenterOptions$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(options => {
             this.fields = this.getFields(options);
           });
-          this.goNext$.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.updateValidity();
-          });
-        } else {
-          this.emitCostCenterSubmitted();
         }
       })
     );
@@ -74,19 +52,6 @@ export class CostCenterSelectionComponent implements OnInit, OnDestroy {
 
   private submit(costCenterId: string) {
     this.checkoutFacade.setBasketCostCenter(costCenterId);
-    this.emitCostCenterSubmitted();
-  }
-
-  private emitCostCenterSubmitted() {
-    this.costCenterSubmitted.emit(true);
-  }
-
-  private updateValidity() {
-    if (this.model.costCenter === '') {
-      this.costCenterSelectForm.get('costCenter').markAsDirty();
-      this.costCenterSelectForm.get('costCenter').setErrors({ required: false });
-      this.cdRef.detectChanges();
-    }
   }
 
   private getFields(options: { label: string; value: string }[]): FormlyFieldConfig[] {

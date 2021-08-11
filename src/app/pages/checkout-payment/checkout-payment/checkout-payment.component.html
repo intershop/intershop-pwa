@@ -1,10 +1,6 @@
 <div class="row" *ngIf="basket">
   <div class="col-md-12">
     <!-- Messages -->
-    <div *ngIf="nextDisabled && !error && !costCenterSubmitted" role="alert" class="alert alert-danger">
-      {{ 'checkout.cost_center.multiple.error' | translate }}
-    </div>
-
     <ish-error-message [error]="error" [toast]="false"></ish-error-message>
     <ish-basket-validation-results></ish-basket-validation-results>
 
@@ -17,10 +13,7 @@
     </div>
   </div>
   <div class="col-md-12 col-lg-6">
-    <ish-cost-center-selection
-      (costCenterSubmitted)="costCenterSubmitted = $event"
-      [goNext$]="goNext$"
-    ></ish-cost-center-selection>
+    <ish-cost-center-selection></ish-cost-center-selection>
   </div>
   <div class="col-md-12 col-lg-8">
     <h3>{{ 'checkout.payment.method.select.heading' | translate }}</h3>
