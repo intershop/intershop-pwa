@@ -61,7 +61,10 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
               .filter(
                 error =>
                   !this.isLineItemMessage(error) &&
-                  error.code !== 'basket.validation.line_item_shipping_restrictions.error'
+                  ![
+                    'basket.validation.line_item_shipping_restrictions.error',
+                    'basket.validation.basket_not_covered.error',
+                  ].includes(error.code)
               )
               .map(error =>
                 error.parameters && error.parameters.shippingRestriction

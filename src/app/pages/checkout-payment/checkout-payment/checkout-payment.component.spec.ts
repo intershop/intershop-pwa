@@ -150,11 +150,11 @@ describe('Checkout Payment Component', () => {
       expect(element.querySelector('[role="alert"]')).toBeFalsy();
     });
 
-    it('should render an error if the user clicks next and has currently no payment method selected', () => {
+    it('should disable continue button if the user clicks next and has currently no payment method selected', () => {
       component.basket.payment = undefined;
       component.goToNextStep();
       fixture.detectChanges();
-      expect(element.querySelector('[role="alert"]')).toBeTruthy();
+      expect(element.querySelector('button').hasAttribute('disabled')).toBeTruthy();
     });
   });
 
