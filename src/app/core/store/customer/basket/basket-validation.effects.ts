@@ -45,7 +45,7 @@ export class BasketValidationEffects {
     { scopes: ['Products', 'Value'], route: '/basket' },
     { scopes: ['InvoiceAddress', 'ShippingAddress', 'Addresses'], route: '/checkout/address' },
     { scopes: ['Shipping'], route: '/checkout/shipping' },
-    { scopes: ['Payment'], route: '/checkout/payment' },
+    { scopes: ['Payment', 'CostCenter'], route: '/checkout/payment' },
     { scopes: ['All', 'CostCenter'], route: '/checkout/review' }, // ToDo: has to be changed if the cost center approval has been implemented
     { scopes: ['All'], route: 'auto' }, // targetRoute will be calculated in dependence of the validation result
   ];
