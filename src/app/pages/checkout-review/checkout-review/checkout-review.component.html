@@ -80,6 +80,9 @@
             basket.payment.paymentInstrument
           }}</ng-container>
         </p>
+        <p *ngIf="basket.costCenter">
+          {{ basket.costCenter }}
+        </p>
       </ish-info-box>
     </div>
 
