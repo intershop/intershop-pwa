@@ -51,7 +51,6 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
   nextSubmitted = false;
   formSubmitted = false;
-  costCenterSubmitted = false;
 
   redirectStatus: string;
 
@@ -245,7 +244,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get nextDisabled() {
-    return (!this.basket || !this.basket.payment || !this.costCenterSubmitted) && this.nextSubmitted;
+    return (!this.basket || !this.basket.payment) && this.nextSubmitted;
   }
 
   get submitDisabled() {
