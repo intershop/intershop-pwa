@@ -1,6 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
@@ -11,7 +11,8 @@ import { CustomerData } from 'ish-core/models/customer/customer.interface';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
-import { getLoggedInCustomer } from 'ish-core/store/customer/user';
+import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
+import { UserState } from 'ish-core/store/customer/user/user.reducer';
 
 import { UserService } from './user.service';
 
@@ -19,6 +20,7 @@ describe('User Service', () => {
   let userService: UserService;
   let apiServiceMock: ApiService;
   let appFacade: AppFacade;
+  let store$: MockStore;
 
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
@@ -35,6 +37,7 @@ describe('User Service', () => {
     when(appFacade.isAppTypeREST$).thenReturn(of(true));
     when(appFacade.currentLocale$).thenReturn(of('en_US'));
     when(appFacade.customerRestResource$).thenReturn(of('customers'));
+    store$ = TestBed.inject(MockStore);
   });
 
   describe('SignIn a user', () => {
@@ -296,6 +299,42 @@ describe('User Service', () => {
       expect(data.firstName).toEqual(userData.firstName);
       verify(apiServiceMock.get('customers/-/users/-')).once();
       done();
+    });
+  });
+
+  describe('Cost Centers', () => {
+    const customer: Customer = { customerNo: '123' };
+    const user: User = {
+      email: 'patricia@test.intershop.de',
+      firstName: 'Patricia',
+      lastName: 'Miller',
+      login: 'patricia',
+    };
+    const state: UserState = {
+      user,
+      customer: undefined,
+      costCenters: undefined,
+      authorized: false,
+      paymentMethods: undefined,
+      loading: false,
+      error: undefined,
+      pgid: undefined,
+      passwordReminderSuccess: undefined,
+      passwordReminderError: undefined,
+    };
+
+    beforeEach(() => {
+      store$.overrideSelector(getLoggedInUser, user);
+      store$.overrideSelector(getLoggedInCustomer, customer);
+
+      when(apiServiceMock.get(anything())).thenReturn(of({}));
+    });
+
+    it("should get eligible cost centers for business user when 'getEligibleCostCenters' is called", done => {
+      userService.getEligibleCostCenters().subscribe(() => {
+        verify(apiServiceMock.get(`customers/${customer.customerNo}/users/${user.login}/costcenters`)).once();
+        done();
+      });
     });
   });
 });
