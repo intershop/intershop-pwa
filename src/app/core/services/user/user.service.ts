@@ -283,10 +283,10 @@ export class UserService {
   }
 
   /**
-   * Get cost center data for the logged in Business Customer.
+   * Get cost center data for the logged in User of a Business Customer.
    * @returns The related cost center
    */
-  getCostCenters(): Observable<CostCenter[]> {
+  getEligibleCostCenters(): Observable<CostCenter[]> {
     return combineLatest([
       this.store.pipe(select(getLoggedInCustomer), whenTruthy()),
       this.store.pipe(select(getLoggedInUser), whenTruthy()),

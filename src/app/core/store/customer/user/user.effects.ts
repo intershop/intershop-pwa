@@ -246,7 +246,7 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(loadUserCostCenters),
       mergeMap(() =>
-        this.userService.getCostCenters().pipe(
+        this.userService.getEligibleCostCenters().pipe(
           map(costCenters => loadUserCostCentersSuccess({ costCenters })),
           mapErrorToAction(loadUserCostCentersFail)
         )
