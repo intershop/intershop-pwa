@@ -15,10 +15,10 @@ if (configuration) {
   configString = '-c ' + configuration;
 }
 
-const client = process.argv[2] !== 'server';
-const server = process.argv[2] !== 'client';
-const partial = (!client && server) || (client && !server);
-const remainingArgs = process.argv.slice(partial ? 3 : 2);
+const processArgs = process.argv.slice(2);
+const client = processArgs.includes('client') || !processArgs.includes('server');
+const server = processArgs.includes('server') || !processArgs.includes('client');
+const remainingArgs = processArgs.filter(a => a !== 'client' && a !== 'server');
 
 if (client) {
   execSync(`npm run ng -- build ${configString} ${remainingArgs.join(' ')}`, {
