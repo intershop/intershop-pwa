@@ -245,6 +245,8 @@ export class UserEffects {
   loadCostCenters$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadUserCostCenters),
+      withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
+      filter(([, loggedInCustomer]) => !!loggedInCustomer && loggedInCustomer.isBusinessCustomer),
       mergeMap(() =>
         this.userService.getEligibleCostCenters().pipe(
           map(costCenters => loadUserCostCentersSuccess({ costCenters })),
