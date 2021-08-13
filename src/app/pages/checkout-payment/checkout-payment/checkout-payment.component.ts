@@ -225,6 +225,21 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   goToNextStep() {
     this.nextSubmitted = true;
     this.nextStep.emit();
+    if (this.paymentRedirectRequired) {
+      // do a hard redirect to payment redirect URL
+      location.assign(this.basket.payment.redirectUrl);
+    }
+  }
+
+  get paymentRedirectRequired() {
+    if (this.basket.payment) {
+      return (
+        this.basket.payment.capabilities &&
+        this.basket.payment.capabilities.includes('RedirectBeforeCheckout') &&
+        this.basket.payment.redirectUrl &&
+        this.basket.payment.redirectRequired
+      );
+    }
   }
 
   get nextDisabled() {
