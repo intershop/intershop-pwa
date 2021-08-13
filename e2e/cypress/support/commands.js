@@ -45,6 +45,7 @@ Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
 // reset cookies for each spec
 before(() => {
   cy.clearCookie('apiToken');
+  cy.setCookie('cookieConsent', JSON.stringify({ enabledOptions: ['required', 'functional', 'tracking'], version: 1 }));
 });
 
 beforeEach(() => {
