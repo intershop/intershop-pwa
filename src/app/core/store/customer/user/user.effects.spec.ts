@@ -32,6 +32,9 @@ import {
   loadCompanyUserFail,
   loadCompanyUserSuccess,
   loadUserByAPIToken,
+  loadUserCostCenters,
+  loadUserCostCentersFail,
+  loadUserCostCentersSuccess,
   loadUserPaymentMethods,
   loadUserPaymentMethodsFail,
   loadUserPaymentMethodsSuccess,
@@ -89,6 +92,7 @@ describe('User Effects', () => {
     when(userServiceMock.updateCustomer(anything())).thenReturn(of(customer));
     when(userServiceMock.getCompanyUserData()).thenReturn(of({ firstName: 'Patricia' } as User));
     when(userServiceMock.requestPasswordReminder(anything())).thenReturn(of({}));
+    when(userServiceMock.getEligibleCostCenters()).thenReturn(of([]));
     when(paymentServiceMock.getUserPaymentMethods(anything())).thenReturn(of([]));
     when(paymentServiceMock.deleteUserPaymentInstrument(anyString(), anyString())).thenReturn(of(undefined));
 
@@ -529,6 +533,53 @@ describe('User Effects', () => {
     });
   });
 
+  describe('loadUserCostCenters$', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        loginUserSuccess({
+          customer: {
+            isBusinessCustomer: true,
+            customerNo: 'pmiller',
+          },
+          user: {login: 'patricia'} as User,
+        })
+      );
+    });
+
+    it('should call the api service when loadUserCostCenters event is called', done => {
+      const action = loadUserCostCenters();
+      actions$ = of(action);
+      effects.loadUserCostCenters$.subscribe(() => {
+        verify(userServiceMock.getEligibleCostCenters()).once();
+        done();
+      });
+    });
+
+    it('should dispatch a loadUserCostCentersSuccess action on successful', () => {
+      const action = loadUserCostCenters();
+      const completion = loadUserCostCentersSuccess({ costCenters: [] });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-b-b-b', { b: completion });
+
+      expect(effects.loadUserCostCenters$).toBeObservable(expected$);
+    });
+
+    it('should dispatch a loadUserCostCentersFail action on failed', () => {
+      const error = makeHttpError({ status: 401, code: 'error' });
+      when(userServiceMock.getEligibleCostCenters()).thenReturn(throwError(error));
+
+      const action = loadUserCostCenters();
+      const completion = loadUserCostCentersFail({
+        error,
+      });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+      expect(effects.loadUserCostCenters$).toBeObservable(expected$);
+    });
+  });
+
   describe('loadUserPaymentMethods$', () => {
     beforeEach(() => {
       store$.dispatch(
@@ -696,4 +747,6 @@ describe('User Effects', () => {
       );
     });
   });
+
+  
 });
