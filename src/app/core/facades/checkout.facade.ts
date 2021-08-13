@@ -184,14 +184,14 @@ export class CheckoutFacade {
       take(1),
       map(costCenters =>
         costCenters
-          .filter(costCenter => costCenter.roles.find(r => (r === selectRole ? selectRole : 'Buyer')))
+          .filter(costCenter => costCenter.roles.includes(selectRole ? selectRole : 'Buyer'))
           .map(c => ({ label: c.name, value: c.id }))
       )
     );
   }
 
-  setBasketCostCenter(costCenterid: string) {
-    this.store.dispatch(setBasketCostCenter({ id: costCenterid }));
+  setBasketCostCenter(costCenterId: string) {
+    this.store.dispatch(setBasketCostCenter({ id: costCenterId }));
   }
 
   // PAYMENT
