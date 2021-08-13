@@ -242,7 +242,7 @@ export class UserEffects {
     )
   );
 
-  loadCostCenters$ = createEffect(() =>
+  loadUserCostCenters$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadUserCostCenters),
       withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
