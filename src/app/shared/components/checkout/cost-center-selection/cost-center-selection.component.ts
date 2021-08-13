@@ -1,14 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { uniq } from 'lodash-es';
 import { Observable, Subject } from 'rxjs';
-import { map, take, takeUntil, tap } from 'rxjs/operators';
+import { take, takeUntil, tap } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
-import { log } from 'ish-core/utils/dev/operators';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
@@ -68,28 +66,28 @@ export class CostCenterSelectionComponent implements OnInit, OnDestroy {
           placeholder: options.length > 1 ? 'account.option.select.text' : undefined,
         },
         // TODO: validator not working
-        asyncValidators: {
-          validRequired: {
-            expression: (control: FormControl) => {
-              this.checkoutFacade.basketValidationResults$.pipe(
-                log(),
-                map(results =>
-                  uniq(
-                    results &&
-                      results.errors &&
-                      results.errors.map(error => {
-                        control.setErrors(
-                          error.code === 'basket.validation.cost_center_missing.error'
-                            ? { validRequired: false }
-                            : undefined
-                        );
-                      })
-                  )
-                )
-              );
-            },
-          },
-        },
+        // asyncValidators: {
+        //   validRequired: {
+        //     expression: (control: FormControl) => {
+        //       this.checkoutFacade.basketValidationResults$.pipe(
+        //         log(),
+        //         map(results =>
+        //           uniq(
+        //             results &&
+        //               results.errors &&
+        //               results.errors.map(error => {
+        //                 control.setErrors(
+        //                   error.code === 'basket.validation.cost_center_missing.error'
+        //                     ? { validRequired: false }
+        //                     : undefined
+        //                 );
+        //               })
+        //           )
+        //         )
+        //       );
+        //     },
+        //   },
+        // },
         hooks: {
           onInit: field => {
             if (options.length === 1 && options[0].value) {
