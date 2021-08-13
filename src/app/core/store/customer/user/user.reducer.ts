@@ -121,6 +121,7 @@ export const userReducer = createReducer(
     updateUserSuccess,
     updateUserPasswordSuccess,
     updateCustomerSuccess,
+    loadUserCostCentersSuccess,
     loadUserPaymentMethodsSuccess,
     deleteUserPaymentInstrumentSuccess
   ),

@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
+import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { Customer, CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
@@ -14,6 +15,7 @@ import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ng
 
 import {
   loadCompanyUserSuccess,
+  loadUserCostCentersSuccess,
   loadUserPaymentMethods,
   loadUserPaymentMethodsSuccess,
   loginUserFail,
@@ -30,6 +32,7 @@ import {
   getPasswordReminderSuccess,
   getPriceDisplayType,
   getUserAuthorized,
+  getUserCostCenters,
   getUserError,
   getUserLoading,
   getUserPaymentMethods,
@@ -53,6 +56,7 @@ describe('User Selectors', () => {
     expect(getLoggedInCustomer(store$.state)).toBeUndefined();
     expect(isBusinessCustomer(store$.state)).toBeFalse();
     expect(getLoggedInUser(store$.state)).toBeUndefined();
+    expect(getUserCostCenters(store$.state)).toBeUndefined();
     expect(getUserPaymentMethods(store$.state)).toBeUndefined();
     expect(getUserAuthorized(store$.state)).toBeFalse();
     expect(getUserError(store$.state)).toBeFalsy();
@@ -147,6 +151,12 @@ describe('User Selectors', () => {
     });
     it('should set the state to loading', () => {
       expect(getUserLoading(store$.state)).toBeTrue();
+    });
+    it('should select  cost centers when the user has cost centers', () => {
+      store$.dispatch(loadUserCostCentersSuccess({ costCenters: [{ id: '12345' } as CostCenter] }));
+
+      expect(getUserCostCenters(store$.state)).toHaveLength(1);
+      expect(getUserLoading(store$.state)).toBeFalse();
     });
     it('should select  payment methods when the user has saved payment instruments', () => {
       store$.dispatch(loadUserPaymentMethodsSuccess({ paymentMethods: [{ id: 'ISH_CREDITCARD' } as PaymentMethod] }));
