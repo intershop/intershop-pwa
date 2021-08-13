@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
+
+import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 
 import { CostCenterSelectionComponent } from './cost-center-selection.component';
 
@@ -10,6 +13,7 @@ describe('Cost Center Selection Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CostCenterSelectionComponent],
+      imports: [FormlyTestingComponentsModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
 
