@@ -6,6 +6,10 @@ import { filter, map } from 'rxjs/operators';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
+/**
+ * The Product Quantity Input Component enables the user to enter/select a product quantity. The quantity will be validated according to the product attributes like min/max order quantity, steps etc.. If the product quantity should be rendered without product, the product context should be initialized with sku=`_`.
+ *
+ */
 @Component({
   selector: 'ish-product-quantity',
   templateUrl: './product-quantity.component.html',

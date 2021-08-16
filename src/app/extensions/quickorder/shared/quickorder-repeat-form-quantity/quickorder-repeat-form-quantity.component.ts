@@ -29,7 +29,7 @@ export class QuickorderRepeatFormQuantityComponent implements OnInit, OnChanges,
         }
       });
     this.skuControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(control => {
-      this.context.set('sku', () => (control.sku ? control.sku : ' '));
+      this.context.set('sku', () => (control.sku ? control.sku : ''));
       if (control.sku === '') {
         this.setContext();
       }
@@ -52,7 +52,7 @@ export class QuickorderRepeatFormQuantityComponent implements OnInit, OnChanges,
   }
 
   private setContext() {
-    this.context.set('sku', () => ' ');
+    this.context.set('sku', () => '_');
     this.context.set('minQuantity', () => 1);
     this.context.set('maxQuantity', () => 100);
     this.context.set('stepQuantity', () => 1);

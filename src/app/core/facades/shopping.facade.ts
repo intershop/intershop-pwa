@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { debounce, filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { ProductListingID } from 'ish-core/models/product-listing/product-listing.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { addProductToBasket } from 'ish-core/store/customer/basket';
@@ -82,6 +83,10 @@ export class ShoppingFacade {
 
   product$(sku: string | Observable<string>, level: ProductCompletenessLevel | true) {
     const completenessLevel = level === true ? ProductCompletenessLevel.Detail : level;
+    // product sku `_` is used to initialize the product context with an unknown product, don`t try to request this pseudo product from server
+    if (sku === '_') {
+      return of<ProductView>({ sku, failed: true });
+    }
     return toObservable(sku).pipe(
       tap(plainSKU => {
         if (level === true) {

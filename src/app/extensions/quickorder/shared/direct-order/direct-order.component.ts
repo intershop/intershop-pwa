@@ -102,7 +102,7 @@ export class DirectOrderComponent implements OnInit, OnDestroy {
   }
 
   private setContext() {
-    this.context.set('sku', () => ' ');
+    this.context.set('sku', () => '_');
     this.context.set('quantity', () => 1);
     this.context.set('minQuantity', () => 1);
     this.context.set('maxQuantity', () => this.maxItemQuantity);
