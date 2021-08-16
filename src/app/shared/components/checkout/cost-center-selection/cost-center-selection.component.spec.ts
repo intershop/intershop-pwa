@@ -67,7 +67,7 @@ describe('Cost Center Selection Component', () => {
 
   it('should be rendered with correct option and no placeholder, when isBusinessCustomer is true and cost center options with one option are receiving', () => {
     when(accountFacade.isBusinessCustomer$).thenReturn(of(true));
-    when(checkoutFacade.eligibleCostCenterOptions$()).thenReturn(of([mockCostCenterOptions[0]]));
+    when(checkoutFacade.eligibleCostCenterSelectOptions$()).thenReturn(of([mockCostCenterOptions[0]]));
     fixture.detectChanges();
     expect(element.innerHTML).toMatchInlineSnapshot(`
 "<!--bindings={
@@ -92,7 +92,7 @@ describe('Cost Center Selection Component', () => {
 
   it('should be rendered with correct options and placeholder, when isBusinessCustomer is true and cost center options with multiple options are receiving', () => {
     when(accountFacade.isBusinessCustomer$).thenReturn(of(true));
-    when(checkoutFacade.eligibleCostCenterOptions$()).thenReturn(of(mockCostCenterOptions));
+    when(checkoutFacade.eligibleCostCenterSelectOptions$()).thenReturn(of(mockCostCenterOptions));
     fixture.detectChanges();
     expect(element.innerHTML).toMatchInlineSnapshot(`
 "<!--bindings={

@@ -58,6 +58,11 @@ export const updateBasketShippingMethod = createAction(
   payload<{ shippingId: string }>()
 );
 
+export const updateBasketCostCenter = createAction(
+  '[Basket] Assign a Cost Center at Basket ',
+  payload<{ costCenter: string }>()
+);
+
 export const updateBasket = createAction('[Basket Internal] Update Basket', payload<{ update: BasketUpdateType }>());
 
 export const updateBasketFail = createAction('[Basket API] Update Basket Fail', httpError());
@@ -194,12 +199,6 @@ export const loadBasketEligibleShippingMethodsSuccess = createAction(
   '[Basket API] Load Basket Eligible Shipping Methods Success',
   payload<{ shippingMethods: ShippingMethod[] }>()
 );
-
-export const setBasketCostCenter = createAction('[Basket] Set a Cost Center at Basket ', payload<{ id: string }>());
-
-export const setBasketCostCenterFail = createAction('[Basket API] Set a Cost Center at Basket Fail', httpError());
-
-export const setBasketCostCenterSuccess = createAction('[Basket API] Set a Cost Center at Basket Success');
 
 export const loadBasketEligiblePaymentMethods = createAction('[Basket Internal] Load Basket Eligible Payment Methods');
 

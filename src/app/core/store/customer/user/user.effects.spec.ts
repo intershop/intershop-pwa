@@ -541,7 +541,7 @@ describe('User Effects', () => {
             isBusinessCustomer: true,
             customerNo: 'pmiller',
           },
-          user: {login: 'patricia'} as User,
+          user: { login: 'patricia' } as User,
         })
       );
     });
@@ -747,6 +747,4 @@ describe('User Effects', () => {
       );
     });
   });
-
-  
 });

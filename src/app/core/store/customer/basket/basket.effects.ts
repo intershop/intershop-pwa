@@ -46,13 +46,11 @@ import {
   setBasketAttribute,
   setBasketAttributeFail,
   setBasketAttributeSuccess,
-  setBasketCostCenter,
-  setBasketCostCenterFail,
-  setBasketCostCenterSuccess,
   submitBasket,
   submitBasketFail,
   submitBasketSuccess,
   updateBasket,
+  updateBasketCostCenter,
   updateBasketFail,
   updateBasketShippingMethod,
 } from './basket.actions';
@@ -174,15 +172,11 @@ export class BasketEffects {
   /**
    * Sets a cost center at the current basket.
    */
-  setCostCenterAtBasket$ = createEffect(() =>
+  updateBasketCostCenter$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(setBasketCostCenter),
-      mapToPayloadProperty('id'),
-      concatMap(costCenterId =>
-        this.basketService
-          .updateBasket({ costCenter: costCenterId })
-          .pipe(mapTo(setBasketCostCenterSuccess()), mapErrorToAction(setBasketCostCenterFail))
-      )
+      ofType(updateBasketCostCenter),
+      mapToPayloadProperty('costCenter'),
+      map(costCenter => updateBasket({ update: { costCenter } }))
     )
   );
 

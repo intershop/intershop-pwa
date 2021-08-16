@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Store, createSelector, select } from '@ngrx/store';
-import { Observable, Subject, combineLatest, merge } from 'rxjs';
+import { Subject, combineLatest, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, sample, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
-import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { selectRouteData } from 'ish-core/store/core/router';
@@ -40,10 +39,10 @@ import {
   loadBasketWithId,
   removePromotionCodeFromBasket,
   setBasketAttribute,
-  setBasketCostCenter,
   setBasketPayment,
   startCheckout,
   updateBasketAddress,
+  updateBasketCostCenter,
   updateBasketItems,
   updateBasketShippingMethod,
   updateConcardisCvcLastUpdated,
@@ -116,6 +115,10 @@ export class CheckoutFacade {
     this.store.dispatch(updateBasketShippingMethod({ shippingId }));
   }
 
+  updateBasketCostCenter(costCenter: string) {
+    this.store.dispatch(updateBasketCostCenter({ costCenter }));
+  }
+
   setBasketCustomAttribute(attribute: Attribute): void {
     this.store.dispatch(setBasketAttribute({ attribute }));
   }
@@ -173,13 +176,9 @@ export class CheckoutFacade {
 
   // COST CENTER
 
-  eligibleCostCenters$(): Observable<CostCenter[]> {
+  eligibleCostCenterSelectOptions$(selectRole?: string) {
     this.store.dispatch(loadUserCostCenters());
-    return this.store.pipe(select(getUserCostCenters));
-  }
-
-  eligibleCostCenterOptions$(selectRole?: string) {
-    return this.eligibleCostCenters$().pipe(
+    return this.store.pipe(select(getUserCostCenters)).pipe(
       whenTruthy(),
       take(1),
       map(costCenters =>
@@ -188,10 +187,6 @@ export class CheckoutFacade {
           .map(c => ({ label: c.name, value: c.id }))
       )
     );
-  }
-
-  setBasketCostCenter(costCenterId: string) {
-    this.store.dispatch(setBasketCostCenter({ id: costCenterId }));
   }
 
   // PAYMENT

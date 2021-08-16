@@ -96,7 +96,7 @@ describe('Checkout Facade', () => {
         { label: mockCostCenters[2].name, value: mockCostCenters[2].id },
       ];
 
-      facade.eligibleCostCenterOptions$('Buyer').subscribe(costCenterOptions => {
+      facade.eligibleCostCenterSelectOptions$('Buyer').subscribe(costCenterOptions => {
         expect(costCenterOptions).toEqual(expectedSelectboxOptions);
         done();
       });

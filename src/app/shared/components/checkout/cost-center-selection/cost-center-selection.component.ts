@@ -36,7 +36,7 @@ export class CostCenterSelectionComponent implements OnInit, OnDestroy {
       take(1),
       tap(isBusinessCustomer => {
         if (isBusinessCustomer) {
-          this.costCenterOptions$ = this.checkoutFacade.eligibleCostCenterOptions$();
+          this.costCenterOptions$ = this.checkoutFacade.eligibleCostCenterSelectOptions$();
           this.costCenterOptions$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(options => {
             this.fields = this.getFields(options);
           });
@@ -51,7 +51,7 @@ export class CostCenterSelectionComponent implements OnInit, OnDestroy {
   }
 
   private submit(costCenterId: string) {
-    this.checkoutFacade.setBasketCostCenter(costCenterId);
+    this.checkoutFacade.updateBasketCostCenter(costCenterId);
   }
 
   private getFields(options: { label: string; value: string }[]): FormlyFieldConfig[] {
@@ -65,29 +65,6 @@ export class CostCenterSelectionComponent implements OnInit, OnDestroy {
           options,
           placeholder: options.length > 1 ? 'account.option.select.text' : undefined,
         },
-        // TODO: validator not working
-        // asyncValidators: {
-        //   validRequired: {
-        //     expression: (control: FormControl) => {
-        //       this.checkoutFacade.basketValidationResults$.pipe(
-        //         log(),
-        //         map(results =>
-        //           uniq(
-        //             results &&
-        //               results.errors &&
-        //               results.errors.map(error => {
-        //                 control.setErrors(
-        //                   error.code === 'basket.validation.cost_center_missing.error'
-        //                     ? { validRequired: false }
-        //                     : undefined
-        //                 );
-        //               })
-        //           )
-        //         )
-        //       );
-        //     },
-        //   },
-        // },
         hooks: {
           onInit: field => {
             if (options.length === 1 && options[0].value) {

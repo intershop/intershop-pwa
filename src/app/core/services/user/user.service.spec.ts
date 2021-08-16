@@ -12,7 +12,6 @@ import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/m
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
-import { UserState } from 'ish-core/store/customer/user/user.reducer';
 
 import { UserService } from './user.service';
 
@@ -309,18 +308,6 @@ describe('User Service', () => {
       firstName: 'Patricia',
       lastName: 'Miller',
       login: 'patricia',
-    };
-    const state: UserState = {
-      user,
-      customer: undefined,
-      costCenters: undefined,
-      authorized: false,
-      paymentMethods: undefined,
-      loading: false,
-      error: undefined,
-      pgid: undefined,
-      passwordReminderSuccess: undefined,
-      passwordReminderError: undefined,
     };
 
     beforeEach(() => {
