@@ -6,10 +6,16 @@ on:
       - '**.md'
       - 'docs/**'
 
+# CONFIGURATION
+# For help, go to https://github.com/Azure/Actions
+#
+# 1. Set up the following secrets in your repository:
+#   AZURE_WEBAPP_PUBLISH_PROFILE
+#
+# 2. Change these variables for your configuration:
 env:
+  AZURE_WEBAPP_NAME: '${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.number }}'
   ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
-  B2C_APP_SUFFIX: universal-b2c
-  B2B_APP_SUFFIX: universal-b2b
 
 jobs:
   CancelPrevious:
@@ -20,14 +26,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  BuildNDeployDemoServer:
+  build-and-deploy:
     needs: [CancelPrevious]
     if: github.event.pull_request.head.repo.owner.login == 'intershop'
+    name: Build and Deploy
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
       - name: Publish Universal Image to Registry
         id: universal
         uses: elgohr/Publish-Docker-Github-Action@master
@@ -42,51 +48,24 @@ jobs:
           password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
           registry: ${{ secrets.DOCKER_REGISTRY }}
           buildargs: serviceWorker,configuration,displayVersion,testing
-
-      # - name: Publish Nginx Image to Registry
-      #   id: nginx
-      #   uses: elgohr/Publish-Docker-Github-Action@master
-      #   with:
-      #     name: nginx
-      #     username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
-      #     password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
-      #     registry: ${{ secrets.DOCKER_REGISTRY }}
-      #     workdir: nginx
-
       - name: Set Environment
         run: |
           echo "DOCKER_IMAGE_UNIVERSAL=${{ steps.universal.outputs.digest }}"  >> $GITHUB_ENV
-          echo "DOCKER_IMAGE_NGINX=${{ steps.nginx.outputs.digest }}" >> $GITHUB_ENV
-
-      - name: Login to Azure
+      - name: Login via Azure CLI
         run: az login --service-principal --username ${{ secrets.AZURE_SP_USERNAME }} --password ${{ secrets.AZURE_SP_PASSWORD }} --tenant ${{ secrets.AZURE_SP_TENANT }}
-
-      - name: Create or Update B2C App Service
+      - name: Create or Update containerized WebApp
         env:
-          APP: '${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.number }}-${{ env.B2C_APP_SUFFIX }}'
+          APP: ${{ env.AZURE_WEBAPP_NAME }}
           GROUP: ${{ secrets.AZURE_DEMO_RESOURCEGROUP }}
         run: |
           az webapp config container set --resource-group $GROUP --name $APP --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --docker-custom-image-name $DOCKER_IMAGE_UNIVERSAL || az webapp create --resource-group $GROUP --plan ${{ secrets.AZURE_DEMO_APPSERVICEPLAN }} --name $APP --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --deployment-container-image-name $DOCKER_IMAGE_UNIVERSAL
-          az webapp config appsettings set -g $GROUP -n $APP --settings LOGGING=true ICM_BASE_URL=$ICM_BASE_URL THEME=default
+          az webapp config appsettings set -g $GROUP -n $APP --settings LOGGING=true ICM_BASE_URL=$ICM_BASE_URL
           az webapp deployment container config -g $GROUP -n $APP --enable-cd true
-          echo "B2C channel: http://$APP.azurewebsites.net"
-
-      - name: Create or Update B2B App Service
-        env:
-          APP: '${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.number }}-${{ env.B2B_APP_SUFFIX }}'
-          GROUP: ${{ secrets.AZURE_DEMO_RESOURCEGROUP }}
-        run: |
-          az webapp config container set --resource-group $GROUP --name $APP --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --docker-custom-image-name $DOCKER_IMAGE_UNIVERSAL || az webapp create --resource-group $GROUP --plan ${{ secrets.AZURE_DEMO_APPSERVICEPLAN }} --name $APP --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --deployment-container-image-name $DOCKER_IMAGE_UNIVERSAL
-          az webapp config appsettings set -g $GROUP -n $APP --settings LOGGING=true ICM_BASE_URL=$ICM_BASE_URL THEME=blue TACTON='${{ secrets.TACTON }}'
-          az webapp deployment container config -g $GROUP -n $APP --enable-cd true
-          echo "B2B channel: http://$APP.azurewebsites.net"
 
       - name: Create Commit Comment
-        env:
-          APP: '${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.number }}'
         uses: peter-evans/commit-comment@v1
         with:
           body: |
             Azure Demo Servers are available:
-            - [Universal B2C](http://${{ env.APP }}-${{ env.B2C_APP_SUFFIX }}.azurewebsites.net)
-            - [Universal B2B](http://${{ env.APP }}-${{ env.B2B_APP_SUFFIX }}.azurewebsites.net)
+            - [Universal B2C](http://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/home)
+            - [Universal B2B](http://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/home;theme=blue)
