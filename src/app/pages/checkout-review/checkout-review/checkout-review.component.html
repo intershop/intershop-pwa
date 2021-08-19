@@ -80,9 +80,7 @@
             basket.payment.paymentInstrument
           }}</ng-container>
         </p>
-        <p *ngIf="basket.costCenter">
-          {{ basket.costCenter }}
-        </p>
+        <p *ngIf="basket.costCenter">{{ 'checkout.cost_center.label' | translate }} {{ basket.costCenter }}</p>
       </ish-info-box>
     </div>
 

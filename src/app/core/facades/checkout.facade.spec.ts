@@ -91,13 +91,19 @@ describe('Checkout Facade', () => {
     });
 
     it('should retrun select box options when eligibleCostCenterOptions is called', done => {
-      const expectedSelectboxOptions = [
-        { label: mockCostCenters[0].name, value: mockCostCenters[0].id },
-        { label: mockCostCenters[2].name, value: mockCostCenters[2].id },
-      ];
-
       facade.eligibleCostCenterSelectOptions$('Buyer').subscribe(costCenterOptions => {
-        expect(costCenterOptions).toEqual(expectedSelectboxOptions);
+        expect(costCenterOptions).toMatchInlineSnapshot(`
+Array [
+  Object {
+    "label": "1 - Cost Center 1",
+    "value": "1",
+  },
+  Object {
+    "label": "3 - Cost Center 3",
+    "value": "3",
+  },
+]
+`);
         done();
       });
     });

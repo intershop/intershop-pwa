@@ -291,6 +291,7 @@ export class UserService {
       this.store.pipe(select(getLoggedInCustomer), whenTruthy()),
       this.store.pipe(select(getLoggedInUser), whenTruthy()),
     ]).pipe(
+      take(1),
       switchMap(([customer, user]) =>
         this.apiService
           .get(`customers/${customer.customerNo}/users/${encodeURIComponent(user.login)}/costcenters`)

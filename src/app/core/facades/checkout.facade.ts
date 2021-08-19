@@ -178,13 +178,13 @@ export class CheckoutFacade {
 
   eligibleCostCenterSelectOptions$(selectRole?: string) {
     this.store.dispatch(loadUserCostCenters());
-    return this.store.pipe(select(getUserCostCenters)).pipe(
+    return this.store.pipe(
+      select(getUserCostCenters),
       whenTruthy(),
-      take(1),
       map(costCenters =>
         costCenters
           .filter(costCenter => costCenter.roles.includes(selectRole ? selectRole : 'Buyer'))
-          .map(c => ({ label: c.name, value: c.id }))
+          .map(c => ({ label: `${c.id} - ${c.name}`, value: c.id }))
       )
     );
   }

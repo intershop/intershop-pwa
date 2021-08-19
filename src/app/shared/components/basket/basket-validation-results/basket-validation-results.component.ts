@@ -95,7 +95,7 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
             .map(info => ({
               message: info.message,
               productSKU: info.parameters?.productSku,
-              price: info.lineItem.price,
+              price: info.lineItem?.price,
             }))
             .filter(info => !!info.productSKU)
       )

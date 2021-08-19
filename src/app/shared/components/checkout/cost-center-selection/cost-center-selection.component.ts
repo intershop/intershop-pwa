@@ -2,15 +2,16 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, Subject } from 'rxjs';
-import { take, takeUntil, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, take, takeUntil } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { SelectOption } from 'ish-shared/forms/components/select/select.component';
+import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
- * Section for Business Customer to Select a Cost Center on Checkout
+ * Assign a cost center for to the basket for business customers
  */
 @Component({
   selector: 'ish-cost-center-selection',
@@ -18,31 +19,42 @@ import { whenTruthy } from 'ish-core/utils/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CostCenterSelectionComponent implements OnInit, OnDestroy {
-  isBusinessCustomer: Observable<boolean>;
-  costCenters$: Observable<CostCenter[]>;
-
-  costCenterSelectForm = new FormGroup({});
+  form = new FormGroup({});
   fields: FormlyFieldConfig[];
-  placeholder: string;
-  model = { costCenter: '' };
-  costCenterOptions$: Observable<{ label: string; value: string }[]>;
+  model: { costCenter: string };
+
+  costCenterOptions$: Observable<SelectOption[]>;
 
   private destroy$ = new Subject();
 
   constructor(private checkoutFacade: CheckoutFacade, private accountFacade: AccountFacade) {}
 
   ngOnInit() {
-    this.isBusinessCustomer = this.accountFacade.isBusinessCustomer$.pipe(
+    // mark form as dirty to display validation errors
+    this.checkoutFacade.basketValidationResults$.pipe(takeUntil(this.destroy$)).subscribe(results => {
+      if (results?.errors?.find(error => error.code === 'basket.validation.cost_center_missing.error')) {
+        markAsDirtyRecursive(this.form);
+      }
+    });
+
+    // determine cost center options
+    this.costCenterOptions$ = this.accountFacade.isBusinessCustomer$.pipe(
+      whenTruthy(),
       take(1),
-      tap(isBusinessCustomer => {
-        if (isBusinessCustomer) {
-          this.costCenterOptions$ = this.checkoutFacade.eligibleCostCenterSelectOptions$();
-          this.costCenterOptions$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(options => {
-            this.fields = this.getFields(options);
-          });
-        }
-      })
+      switchMap(() => this.checkoutFacade.eligibleCostCenterSelectOptions$())
     );
+
+    // initialize form
+    this.costCenterOptions$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(options => {
+      if (options.length) {
+        this.fields = this.getFields(options);
+      }
+    });
+
+    // initialize model with the basket costCenter
+    this.checkoutFacade.basket$
+      .pipe(whenTruthy(), take(1), takeUntil(this.destroy$))
+      .subscribe(basket => (this.model = { costCenter: basket.costCenter }));
   }
 
   ngOnDestroy() {
@@ -50,11 +62,7 @@ export class CostCenterSelectionComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  private submit(costCenterId: string) {
-    this.checkoutFacade.updateBasketCostCenter(costCenterId);
-  }
-
-  private getFields(options: { label: string; value: string }[]): FormlyFieldConfig[] {
+  private getFields(options: SelectOption[]): FormlyFieldConfig[] {
     return [
       {
         key: 'costCenter',
@@ -68,14 +76,17 @@ export class CostCenterSelectionComponent implements OnInit, OnDestroy {
         hooks: {
           onInit: field => {
             if (options.length === 1 && options[0].value) {
-              this.costCenterSelectForm.get('costCenter').setValue(options[0].value);
-              this.submit(options[0].value);
+              this.form.get('costCenter').setValue(options[0].value);
             }
-            field.form
-              .get('costCenter')
-              .valueChanges.pipe(whenTruthy(), takeUntil(this.destroy$))
-              .subscribe(costCenterId => {
-                this.submit(costCenterId);
+            field.form.valueChanges
+              .pipe(
+                map(vc => vc.costCenter),
+                whenTruthy(),
+                distinctUntilChanged(),
+                takeUntil(this.destroy$)
+              )
+              .subscribe(costCenter => {
+                this.checkoutFacade.updateBasketCostCenter(costCenter);
               });
           },
         },

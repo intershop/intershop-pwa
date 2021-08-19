@@ -1,6 +1,6 @@
-<ng-container *ngIf="(isBusinessCustomer | async) && (costCenterOptions$ | async)?.length">
+<ng-container *ngIf="(costCenterOptions$ | async)?.length" data-testing-id="cost-center-select">
   <h3>{{ 'checkout.cost_center.select.heading' | translate }}</h3>
-  <form [formGroup]="costCenterSelectForm">
-    <formly-form [form]="costCenterSelectForm" [fields]="fields"></formly-form>
+  <form [formGroup]="form">
+    <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
   </form>
 </ng-container>
