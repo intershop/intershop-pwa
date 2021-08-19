@@ -27,3 +27,7 @@ This configures the `<brand>` theme as the only active theme in the `package.jso
 Besides that, all necessary configurations in `angular.json`, `tslint.json` and `override/schema.json` are made and a new `src/styles/themes/<brand>` folder and `environment.<brand>.ts` is created that should be used for further project development.
 
 > **NOTE:** If only one theme is active, PM2 will run the theme-specific SSR process in cluster mode on the default port (see [Building Multiple Themes](../guides/ssr-startup.md#building-multiple-themes)).
+
+# Further References
+
+- [Guide - Customization - Theme Specific Overrides](./customizations.md#theme-specific-overrides)

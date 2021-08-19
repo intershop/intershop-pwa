@@ -94,6 +94,26 @@ Then this overridden component template will be swapped in.
 
 This also works for multiple configurations: `product-detail.component.foo.bar.baz.html` will be active for configurations `foo`, `bar` and `baz`, but not for `foobar`.
 
+There is also a virtual theme `all` that can be used to always override a specific file.
+However, the `all` theme cannot be used in combination with other themes.
+If a theme specific override is available next to an override for `all`, the specific override will be chosen.
+
+As an example, imagine the following files/overrides exist:
+
+```txt
+  my.component.html
+  my.component.all.html
+  my.component.foo.html
+  my.component.bar.baz.html
+```
+
+- In a build for theme `foo`, the file `my.component.foo.html` will be swapped in.
+- In a build for theme `bar`, the file `my.component.bar.baz.html` will be swapped in.
+- In a build for theme `foobar`, the file `my.component.all.html` will be swapped in.
+- The file `my.component.html` won't be used for any builds.
+
+##### Schematic Support
+
 You can use the `override` schematic to introduce custom theme overrides:
 
 ![override](./customizations-ng-g-override-schematic.gif)
