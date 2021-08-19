@@ -3,12 +3,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subject } from 'rxjs';
-import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, takeUntil, tap } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.helper';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -30,7 +28,6 @@ export class DirectOrderComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject();
 
   constructor(
-    private shoppingFacade: ShoppingFacade,
     private checkoutFacade: CheckoutFacade,
     private translate: TranslateService,
     private context: ProductContextFacade
@@ -68,16 +65,9 @@ export class DirectOrderComponent implements OnInit, OnDestroy {
         },
         hooks: {
           onInit: field => {
-            field.form
-              .get('sku')
-              .valueChanges.pipe(whenTruthy(), takeUntil(this.destroy$))
-              .subscribe(sku => this.context.set('sku', () => sku));
-          },
-        },
-        asyncValidators: {
-          validProduct: {
-            expression: (control: FormControl) =>
-              control.valueChanges.pipe(
+            const control = field.form.get('sku');
+            control.valueChanges
+              .pipe(
                 tap(sku => {
                   if (!sku) {
                     control.setErrors(undefined);
@@ -87,9 +77,18 @@ export class DirectOrderComponent implements OnInit, OnDestroy {
                 }),
                 whenTruthy(),
                 debounceTime(500),
-                switchMap(() => this.shoppingFacade.product$(control.value, ProductCompletenessLevel.List)),
+                takeUntil(this.destroy$)
+              )
+              .subscribe(sku => this.context.set('sku', () => sku));
+          },
+        },
+        asyncValidators: {
+          validProduct: {
+            expression: (control: FormControl) =>
+              this.context.select('product').pipe(
+                whenTruthy(),
                 tap(product => {
-                  control.setErrors(ProductHelper.isFailedLoading(product) ? { validProduct: false } : undefined);
+                  control.setErrors(product.failed && product.sku !== '_' ? { validProduct: false } : undefined);
                   this.loading = false;
                 }),
                 takeUntil(this.destroy$)

@@ -6,7 +6,6 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
@@ -25,13 +24,13 @@ describe('Direct Order Component', () => {
       declarations: [DirectOrderComponent, MockComponent(ProductQuantityComponent)],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
-        { provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
       ],
     }).compileComponents();
 
     when(checkoutFacade.basketMaxItemQuantity$).thenReturn(of(100));
     when(context.select('quantity')).thenReturn(of());
+    when(context.select('product')).thenReturn(of());
   });
 
   beforeEach(() => {
