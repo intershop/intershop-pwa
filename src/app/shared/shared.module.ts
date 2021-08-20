@@ -55,6 +55,7 @@ import { AddressComponent } from './components/address/address/address.component
 import { BasketAddressSummaryComponent } from './components/basket/basket-address-summary/basket-address-summary.component';
 import { BasketApprovalInfoComponent } from './components/basket/basket-approval-info/basket-approval-info.component';
 import { BasketBuyerComponent } from './components/basket/basket-buyer/basket-buyer.component';
+import { BasketCostCenterSelectionComponent } from './components/basket/basket-cost-center-selection/basket-cost-center-selection.component';
 import { BasketCostSummaryComponent } from './components/basket/basket-cost-summary/basket-cost-summary.component';
 import { BasketInfoComponent } from './components/basket/basket-info/basket-info.component';
 import { BasketItemsSummaryComponent } from './components/basket/basket-items-summary/basket-items-summary.component';
@@ -67,7 +68,6 @@ import { BasketValidationResultsComponent } from './components/basket/basket-val
 import { MiniBasketContentComponent } from './components/basket/mini-basket-content/mini-basket-content.component';
 import { BasketInvoiceAddressWidgetComponent } from './components/checkout/basket-invoice-address-widget/basket-invoice-address-widget.component';
 import { BasketShippingAddressWidgetComponent } from './components/checkout/basket-shipping-address-widget/basket-shipping-address-widget.component';
-import { CostCenterSelectionComponent } from './components/checkout/cost-center-selection/cost-center-selection.component';
 import { AccordionItemComponent } from './components/common/accordion-item/accordion-item.component';
 import { AccordionComponent } from './components/common/accordion/accordion.component';
 import { BreadcrumbComponent } from './components/common/breadcrumb/breadcrumb.component';
@@ -219,6 +219,7 @@ const exportedComponents = [
   BasketAddressSummaryComponent,
   BasketApprovalInfoComponent,
   BasketBuyerComponent,
+  BasketCostCenterSelectionComponent,
   BasketCostSummaryComponent,
   BasketInfoComponent,
   BasketInvoiceAddressWidgetComponent,
@@ -234,7 +235,6 @@ const exportedComponents = [
   ContentNavigationComponent,
   ContentPageletComponent,
   ContentViewcontextComponent,
-  CostCenterSelectionComponent,
   ErrorMessageComponent,
   FilterNavigationComponent,
   IdentityProviderLoginComponent,

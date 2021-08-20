@@ -8,11 +8,11 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
-import { CostCenterSelectionComponent } from './cost-center-selection.component';
+import { BasketCostCenterSelectionComponent } from './basket-cost-center-selection.component';
 
-describe('Cost Center Selection Component', () => {
-  let component: CostCenterSelectionComponent;
-  let fixture: ComponentFixture<CostCenterSelectionComponent>;
+describe('Basket Cost Center Selection Component', () => {
+  let component: BasketCostCenterSelectionComponent;
+  let fixture: ComponentFixture<BasketCostCenterSelectionComponent>;
   let element: HTMLElement;
   let checkoutFacade: CheckoutFacade;
   let accountFacade: AccountFacade;
@@ -36,7 +36,7 @@ describe('Cost Center Selection Component', () => {
     when(checkoutFacade.basket$).thenReturn(of(BasketMockData.getBasket()));
 
     await TestBed.configureTestingModule({
-      declarations: [CostCenterSelectionComponent],
+      declarations: [BasketCostCenterSelectionComponent],
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
@@ -46,7 +46,7 @@ describe('Cost Center Selection Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CostCenterSelectionComponent);
+    fixture = TestBed.createComponent(BasketCostCenterSelectionComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });

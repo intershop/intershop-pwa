@@ -14,11 +14,11 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
  * Assign a cost center for to the basket for business customers
  */
 @Component({
-  selector: 'ish-cost-center-selection',
-  templateUrl: './cost-center-selection.component.html',
+  selector: 'ish-basket-cost-center-selection',
+  templateUrl: './basket-cost-center-selection.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CostCenterSelectionComponent implements OnInit, OnDestroy {
+export class BasketCostCenterSelectionComponent implements OnInit, OnDestroy {
   form = new FormGroup({});
   fields: FormlyFieldConfig[];
   model: { costCenter: string };
@@ -63,6 +63,18 @@ export class CostCenterSelectionComponent implements OnInit, OnDestroy {
     this.checkoutFacade.basket$
       .pipe(whenTruthy(), take(1), takeUntil(this.destroy$))
       .subscribe(basket => (this.model = { costCenter: basket.costCenter }));
+
+    // save changes after form value changed
+    this.form.valueChanges
+      .pipe(
+        whenTruthy(),
+        map(val => val.costCenter),
+        distinctUntilChanged(),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(costCenter => {
+        this.checkoutFacade.updateBasketCostCenter(costCenter);
+      });
   }
 
   ngOnDestroy() {
@@ -83,20 +95,10 @@ export class CostCenterSelectionComponent implements OnInit, OnDestroy {
           placeholder: options.length > 1 ? 'account.option.select.text' : undefined,
         },
         hooks: {
-          onInit: field => {
+          onInit: () => {
             if (options.length === 1 && options[0].value) {
               this.form.get('costCenter').setValue(options[0].value);
             }
-            field.form.valueChanges
-              .pipe(
-                map(vc => vc.costCenter),
-                whenTruthy(),
-                distinctUntilChanged(),
-                takeUntil(this.destroy$)
-              )
-              .subscribe(costCenter => {
-                this.checkoutFacade.updateBasketCostCenter(costCenter);
-              });
           },
         },
       },
