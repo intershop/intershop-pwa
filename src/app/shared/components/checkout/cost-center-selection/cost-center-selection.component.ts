@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, Subject } from 'rxjs';
@@ -27,13 +27,21 @@ export class CostCenterSelectionComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject();
 
-  constructor(private checkoutFacade: CheckoutFacade, private accountFacade: AccountFacade) {}
+  constructor(
+    private checkoutFacade: CheckoutFacade,
+    private accountFacade: AccountFacade,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     // mark form as dirty to display validation errors
     this.checkoutFacade.basketValidationResults$.pipe(takeUntil(this.destroy$)).subscribe(results => {
-      if (results?.errors?.find(error => error.code === 'basket.validation.cost_center_missing.error')) {
+      if (
+        !results?.valid &&
+        results?.errors?.find(error => error.code === 'basket.validation.cost_center_missing.error')
+      ) {
         markAsDirtyRecursive(this.form);
+        this.cd.markForCheck();
       }
     });
 
@@ -70,6 +78,7 @@ export class CostCenterSelectionComponent implements OnInit, OnDestroy {
         templateOptions: {
           label: 'checkout.cost_center.select.label',
           required: true,
+          hideRequiredMarker: true,
           options,
           placeholder: options.length > 1 ? 'account.option.select.text' : undefined,
         },

@@ -67,11 +67,13 @@ describe('Cost Center Selection Component', () => {
     when(accountFacade.isBusinessCustomer$).thenReturn(of(true));
     when(checkoutFacade.eligibleCostCenterSelectOptions$()).thenReturn(of([mockCostCenterOptions[0]]));
     fixture.detectChanges();
+
     expect(element.querySelectorAll('formly-field')).toHaveLength(1);
     expect(element.querySelector('formly-field').textContent).toMatchInlineSnapshot(`
 "SelectFieldComponent: costCenter ish-select-field {
   \\"label\\": \\"checkout.cost_center.select.label\\",
   \\"required\\": true,
+  \\"hideRequiredMarker\\": true,
   \\"options\\": [
     {
       \\"label\\": \\"Cost Center 1\\",
@@ -94,6 +96,7 @@ describe('Cost Center Selection Component', () => {
 "SelectFieldComponent: costCenter ish-select-field {
   \\"label\\": \\"checkout.cost_center.select.label\\",
   \\"required\\": true,
+  \\"hideRequiredMarker\\": true,
   \\"options\\": [
     {
       \\"label\\": \\"Cost Center 1\\",
