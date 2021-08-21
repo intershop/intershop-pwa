@@ -46,7 +46,3 @@ portsToCheck.forEach(port => {
 
   requestAngularUniversal.end();
 });
-
-requestICMRest.on('error', errFunc);
-
-requestICMRest.end();
