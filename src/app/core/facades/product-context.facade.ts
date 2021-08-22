@@ -253,6 +253,8 @@ export class ProductContextFacade extends RxState<ProductContext> {
       )
     );
 
+    this.connect('displayProperties', this.privateConfig$);
+
     this.connect(
       'displayProperties',
       combineLatest([internalDisplayProperty$, ...externalDisplayPropertyProviders]).pipe(

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -16,16 +16,16 @@ import { whenTruthy } from 'ish-core/utils/operators';
   selector: 'ish-direct-order',
   templateUrl: './direct-order.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [ProductContextFacade],
 })
 @GenerateLazyComponent()
-export class DirectOrderComponent implements OnInit, OnDestroy {
+export class DirectOrderComponent implements OnInit, OnDestroy, AfterViewInit {
   directOrderForm = new FormGroup({});
   fields: FormlyFieldConfig[];
   model = { sku: '' };
 
   hasQuantityError$: Observable<boolean>;
   loading = false;
-  maxItemQuantity = 100;
 
   private destroy$ = new Subject();
 
@@ -39,10 +39,13 @@ export class DirectOrderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.fields = this.getFields();
     this.hasQuantityError$ = this.context.select('hasQuantityError');
-    this.checkoutFacade.basketMaxItemQuantity$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(qty => (this.maxItemQuantity = qty));
-    this.setContext();
+    this.context.set('quantity', () => 1);
+    this.context.config = { quantity: true };
+  }
+
+  ngAfterViewInit() {
+    this.context.connect('sku', this.directOrderForm.get('sku').valueChanges);
+    this.context.connect('maxQuantity', this.checkoutFacade.basketMaxItemQuantity$);
   }
 
   ngOnDestroy() {
@@ -53,7 +56,7 @@ export class DirectOrderComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.context.addToBasket();
     this.directOrderForm.reset();
-    this.setContext();
+    this.context.set('quantity', () => 1);
   }
 
   private getFields(): FormlyFieldConfig[] {
@@ -65,14 +68,6 @@ export class DirectOrderComponent implements OnInit, OnDestroy {
           fieldClass: 'col-12',
           placeholder: 'shopping_cart.direct_order.item_placeholder',
           attributes: { autocomplete: 'on' },
-        },
-        hooks: {
-          onInit: field => {
-            field.form
-              .get('sku')
-              .valueChanges.pipe(whenTruthy(), takeUntil(this.destroy$))
-              .subscribe(sku => this.context.set('sku', () => sku));
-          },
         },
         asyncValidators: {
           validProduct: {
@@ -99,14 +94,5 @@ export class DirectOrderComponent implements OnInit, OnDestroy {
         },
       },
     ];
-  }
-
-  private setContext() {
-    this.context.set('sku', () => ' ');
-    this.context.set('quantity', () => 1);
-    this.context.set('minQuantity', () => 1);
-    this.context.set('maxQuantity', () => this.maxItemQuantity);
-    this.context.set('stepQuantity', () => 1);
-    this.context.set('hasQuantityError', () => false);
   }
 }

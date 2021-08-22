@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -16,22 +16,28 @@ describe('Direct Order Component', () => {
   let component: DirectOrderComponent;
   let fixture: ComponentFixture<DirectOrderComponent>;
   let element: HTMLElement;
-  const context = mock(ProductContextFacade);
-  const checkoutFacade = mock(CheckoutFacade);
+  let context: ProductContextFacade;
+  let checkoutFacade: CheckoutFacade;
 
   beforeEach(async () => {
+    context = mock(ProductContextFacade);
+    when(context.select('quantity')).thenReturn(EMPTY);
+
+    checkoutFacade = mock(CheckoutFacade);
+    when(checkoutFacade.basketMaxItemQuantity$).thenReturn(of(100));
+
     await TestBed.configureTestingModule({
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
       declarations: [DirectOrderComponent, MockComponent(ProductQuantityComponent)],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) },
-        { provide: ProductContextFacade, useFactory: () => instance(context) },
       ],
-    }).compileComponents();
-
-    when(checkoutFacade.basketMaxItemQuantity$).thenReturn(of(100));
-    when(context.select('quantity')).thenReturn(of());
+    })
+      .overrideComponent(DirectOrderComponent, {
+        set: { providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

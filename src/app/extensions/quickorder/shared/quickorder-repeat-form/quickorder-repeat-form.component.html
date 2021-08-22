@@ -3,13 +3,12 @@
   class="row"
   [attr.data-testing-id]="'quickorder-line-' + i"
   ishProductContext
+  [(sku)]="model[i].sku"
+  [(quantity)]="model[i].quantity"
+  [configuration]="{ quantity: true }"
 >
   <formly-field class="col-6" [field]="field"></formly-field>
-  <ish-quickorder-repeat-form-quantity
-    class="col-3 col-sm-2 quickorder-line-item"
-    [model]="model[i]"
-    [skuControl]="field.formControl"
-  ></ish-quickorder-repeat-form-quantity>
+  <ish-product-quantity class="col-3 col-sm-2 quickorder-line-item"></ish-product-quantity>
   <div class="col-3 col-sm-2 d-flex quickorder-line-item">
     <a class="btn btn-tool" (click)="remove(i)" title="{{ 'quickorder.page.remove.row' | translate }}">
       <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>

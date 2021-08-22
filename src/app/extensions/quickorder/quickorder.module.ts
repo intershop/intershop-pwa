@@ -7,7 +7,6 @@ import { DirectOrderComponent } from './shared/direct-order/direct-order.compone
 import { QuickorderAddProductsFormComponent } from './shared/quickorder-add-products-form/quickorder-add-products-form.component';
 import { QuickorderCsvFormComponent } from './shared/quickorder-csv-form/quickorder-csv-form.component';
 import { QuickorderLinkComponent } from './shared/quickorder-link/quickorder-link.component';
-import { QuickorderRepeatFormQuantityComponent } from './shared/quickorder-repeat-form-quantity/quickorder-repeat-form-quantity.component';
 import { QuickorderRepeatFormComponent } from './shared/quickorder-repeat-form/quickorder-repeat-form.component';
 
 const quickOrderFormlyConfig: ConfigOption = {
@@ -27,7 +26,6 @@ const quickOrderFormlyConfig: ConfigOption = {
     QuickorderCsvFormComponent,
     QuickorderLinkComponent,
     QuickorderRepeatFormComponent,
-    QuickorderRepeatFormQuantityComponent,
   ],
   exports: [QuickorderAddProductsFormComponent, QuickorderCsvFormComponent, SharedModule],
 })
