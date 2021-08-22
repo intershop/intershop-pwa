@@ -3,12 +3,12 @@ import { FormGroup } from '@angular/forms';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
+import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
-
-import { QuickorderRepeatFormQuantityComponent } from '../quickorder-repeat-form-quantity/quickorder-repeat-form-quantity.component';
 
 import { QuickorderRepeatFormComponent } from './quickorder-repeat-form.component';
 
@@ -21,7 +21,8 @@ describe('Quickorder Repeat Form Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         MockComponent(FaIconComponent),
-        MockComponent(QuickorderRepeatFormQuantityComponent),
+        MockComponent(ProductQuantityComponent),
+        MockDirective(ProductContextDirective),
         QuickorderRepeatFormComponent,
       ],
       imports: [

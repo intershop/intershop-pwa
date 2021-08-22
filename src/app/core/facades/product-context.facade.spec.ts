@@ -53,6 +53,7 @@ describe('Product Context Facade', () => {
       Object {
         "allowZeroQuantity": false,
         "categoryId": null,
+        "displayProperties": Object {},
         "propagateActive": true,
         "requiredCompletenessLevel": 2,
       }
