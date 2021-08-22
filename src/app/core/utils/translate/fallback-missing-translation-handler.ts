@@ -4,6 +4,7 @@ import { Store, select } from '@ngrx/store';
 import {
   MissingTranslationHandler,
   MissingTranslationHandlerParams,
+  TranslateCompiler,
   TranslateLoader,
   TranslateParser,
 } from '@ngx-translate/core';
@@ -19,8 +20,9 @@ export const FALLBACK_LANG = new InjectionToken<string>('fallbackTranslateLangua
 @Injectable()
 export class FallbackMissingTranslationHandler implements MissingTranslationHandler {
   constructor(
-    private parser: TranslateParser,
     private translateLoader: TranslateLoader,
+    private translateCompiler: TranslateCompiler,
+    private translateParser: TranslateParser,
     private errorHandler: ErrorHandler,
     @Inject(FALLBACK_LANG) private fallback: string,
     @Inject(PLATFORM_ID) private platformId: string,
@@ -34,7 +36,7 @@ export class FallbackMissingTranslationHandler implements MissingTranslationHand
     (lang, key) => lang + key
   );
 
-  private retrieveSpecificTranslation(lang: string, key: string) {
+  private retrieveICMSpecificTranslation(lang: string, key: string) {
     return defer(() =>
       this.store.pipe(
         select(getSpecificServerTranslation(lang, key)),
@@ -44,8 +46,22 @@ export class FallbackMissingTranslationHandler implements MissingTranslationHand
           }
         }),
         filter(translation => translation !== undefined),
+        map((translation: string) => this.translateCompiler.compile(translation, lang)),
         first()
       )
+    );
+  }
+
+  private retrieveOtherSpecificTranslation(lang: string, key: string) {
+    return this.translateLoader.getTranslation(lang).pipe(
+      map(translations => translations?.[key]),
+      map(translation => this.translateCompiler.compile(translation, lang)),
+      tap(translation => {
+        if (!translation) {
+          this.reportMissingTranslation(lang, key);
+        }
+      }),
+      first()
     );
   }
 
@@ -64,29 +80,18 @@ export class FallbackMissingTranslationHandler implements MissingTranslationHand
       const isFallbackAvailable = currentLang !== this.fallback;
       return concat(
         // try API call with specific key
-        iif(() => doSingleCheck, this.retrieveSpecificTranslation(currentLang, params.key)),
+        iif(() => doSingleCheck, this.retrieveICMSpecificTranslation(currentLang, params.key)),
         // try fallback translations
-        iif(
-          () => isFallbackAvailable,
-          this.translateLoader.getTranslation(this.fallback).pipe(
-            map(translations => translations?.[params.key]),
-            tap(translation => {
-              if (!translation) {
-                this.reportMissingTranslation(this.fallback, params.key);
-              }
-            }),
-            first()
-          )
-        ),
+        iif(() => isFallbackAvailable, this.retrieveOtherSpecificTranslation(this.fallback, params.key)),
         // try API call with fallback translation
-        iif(() => isFallbackAvailable && doSingleCheck, this.retrieveSpecificTranslation(this.fallback, params.key)),
+        iif(() => isFallbackAvailable && doSingleCheck, this.retrieveICMSpecificTranslation(this.fallback, params.key)),
         // give up
         of(params.key)
       ).pipe(
         // stop after first emission
         whenTruthy(),
         first(),
-        map(translation => this.parser.interpolate(translation, params.interpolateParams)),
+        map(translation => this.translateParser.interpolate(translation, params.interpolateParams)),
         map(translation => (PRODUCTION_MODE ? translation : 'TRANSLATE_ME ' + translation))
       );
     }
