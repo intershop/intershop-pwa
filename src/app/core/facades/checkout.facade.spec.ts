@@ -95,11 +95,11 @@ describe('Checkout Facade', () => {
         expect(costCenterOptions).toMatchInlineSnapshot(`
 Array [
   Object {
-    "label": "1 - Cost Center 1",
+    "label": "1 Cost Center 1",
     "value": "1",
   },
   Object {
-    "label": "3 - Cost Center 3",
+    "label": "3 Cost Center 3",
     "value": "3",
   },
 ]

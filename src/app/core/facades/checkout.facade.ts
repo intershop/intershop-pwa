@@ -184,7 +184,7 @@ export class CheckoutFacade {
       map(costCenters =>
         costCenters
           .filter(costCenter => costCenter.roles.includes(selectRole ? selectRole : 'Buyer'))
-          .map(c => ({ label: `${c.id} - ${c.name}`, value: c.id }))
+          .map(c => ({ label: `${c.id} ${c.name}`, value: c.id }))
       )
     );
   }
