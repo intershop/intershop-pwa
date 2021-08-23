@@ -1,17 +1,17 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, Subject } from 'rxjs';
-import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { debounceTime, map, tap } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.helper';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
-import { whenTruthy } from 'ish-core/utils/operators';
 
+/**
+ * The Direct Order Component displays a form to insert a product sku and quantity to add it to the cart.
+ */
 @Component({
   selector: 'ish-direct-order',
   templateUrl: './direct-order.component.html',
@@ -19,18 +19,15 @@ import { whenTruthy } from 'ish-core/utils/operators';
   providers: [ProductContextFacade],
 })
 @GenerateLazyComponent()
-export class DirectOrderComponent implements OnInit, OnDestroy, AfterViewInit {
+export class DirectOrderComponent implements OnInit, AfterViewInit {
   directOrderForm = new FormGroup({});
   fields: FormlyFieldConfig[];
   model = { sku: '' };
 
   hasQuantityError$: Observable<boolean>;
-  loading = false;
-
-  private destroy$ = new Subject();
+  loading$: Observable<boolean>;
 
   constructor(
-    private shoppingFacade: ShoppingFacade,
     private checkoutFacade: CheckoutFacade,
     private translate: TranslateService,
     private context: ProductContextFacade
@@ -43,14 +40,26 @@ export class DirectOrderComponent implements OnInit, OnDestroy, AfterViewInit {
     this.context.config = { quantity: true };
   }
 
+  /**
+   * Set the form control field to the product context and handle its behavior.
+   */
   ngAfterViewInit() {
-    this.context.connect('sku', this.directOrderForm.get('sku').valueChanges);
-    this.context.connect('maxQuantity', this.checkoutFacade.basketMaxItemQuantity$);
-  }
+    this.context.connect(
+      'sku',
+      this.directOrderForm.get('sku').valueChanges.pipe(
+        tap(() => this.context.set('loading', () => true)),
+        debounceTime(500)
+      )
+    );
+    const skuControl = this.directOrderForm.get('sku');
+    skuControl.setAsyncValidators(() =>
+      this.context
+        .select('product')
+        .pipe(map(product => (product.failed && skuControl.value.trim !== '' ? { validProduct: false } : undefined)))
+    );
 
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this.context.connect('maxQuantity', this.checkoutFacade.basketMaxItemQuantity$);
+    this.loading$ = this.context.select('loading');
   }
 
   onSubmit() {
@@ -69,27 +78,9 @@ export class DirectOrderComponent implements OnInit, OnDestroy, AfterViewInit {
           placeholder: 'shopping_cart.direct_order.item_placeholder',
           attributes: { autocomplete: 'on' },
         },
-        asyncValidators: {
-          validProduct: {
-            expression: (control: FormControl) =>
-              control.valueChanges.pipe(
-                tap(sku => {
-                  if (!sku) {
-                    control.setErrors(undefined);
-                  } else {
-                    this.loading = true;
-                  }
-                }),
-                whenTruthy(),
-                debounceTime(500),
-                switchMap(() => this.shoppingFacade.product$(control.value, ProductCompletenessLevel.List)),
-                tap(product => {
-                  control.setErrors(ProductHelper.isFailedLoading(product) ? { validProduct: false } : undefined);
-                  this.loading = false;
-                }),
-                takeUntil(this.destroy$)
-              ),
-            message: () => this.translate.get('quickorder.page.error.invalid.product', { 0: this.model.sku }),
+        validation: {
+          messages: {
+            validProduct: () => this.translate.get('quickorder.page.error.invalid.product', { 0: this.model.sku }),
           },
         },
       },

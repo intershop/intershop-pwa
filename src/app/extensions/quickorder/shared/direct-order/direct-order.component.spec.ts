@@ -6,7 +6,6 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
@@ -22,6 +21,7 @@ describe('Direct Order Component', () => {
   beforeEach(async () => {
     context = mock(ProductContextFacade);
     when(context.select('quantity')).thenReturn(EMPTY);
+    when(context.select('product')).thenReturn(EMPTY);
 
     checkoutFacade = mock(CheckoutFacade);
     when(checkoutFacade.basketMaxItemQuantity$).thenReturn(of(100));
@@ -29,10 +29,7 @@ describe('Direct Order Component', () => {
     await TestBed.configureTestingModule({
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
       declarations: [DirectOrderComponent, MockComponent(ProductQuantityComponent)],
-      providers: [
-        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
-        { provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) },
-      ],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     })
       .overrideComponent(DirectOrderComponent, {
         set: { providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }] },
