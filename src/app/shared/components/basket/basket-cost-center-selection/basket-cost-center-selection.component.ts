@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, Subject } from 'rxjs';
-import { distinctUntilChanged, map, switchMap, take, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, map, shareReplay, switchMap, take, takeUntil } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -49,7 +49,8 @@ export class BasketCostCenterSelectionComponent implements OnInit, OnDestroy {
     this.costCenterOptions$ = this.accountFacade.isBusinessCustomer$.pipe(
       whenTruthy(),
       take(1),
-      switchMap(() => this.checkoutFacade.eligibleCostCenterSelectOptions$())
+      switchMap(() => this.checkoutFacade.eligibleCostCenterSelectOptions$()),
+      shareReplay(1)
     );
 
     // initialize form
@@ -95,8 +96,9 @@ export class BasketCostCenterSelectionComponent implements OnInit, OnDestroy {
           placeholder: options.length > 1 ? 'account.option.select.text' : undefined,
         },
         hooks: {
+          // set automatically a cost center at basket if there is only 1 cost center assigned to this user
           onInit: () => {
-            if (options.length === 1 && options[0].value) {
+            if (options.length === 1 && options[0].value && !this.model?.costCenter) {
               this.form.get('costCenter').setValue(options[0].value);
             }
           },
