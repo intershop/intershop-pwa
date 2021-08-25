@@ -8,22 +8,22 @@
     class="main-navigation-level{{ subCategoriesDepth }}-item"
     [ngClass]="{ open: isOpened(subcategory.uniqueId) }"
   >
-    <a [routerLink]="subcategory.url" [ngStyle]="{ width: !subcategory.hasChildren ? '100%' : '' }">{{
-      subcategory.name
-    }}</a>
     <a
-      *ngIf="subcategory.hasChildren"
-      class="dropdown-toggle"
-      [ngClass]="{ 'd-none': view === 'full' }"
-      (click)="toggleOpen(subcategory.uniqueId)"
+      [routerLink]="subcategory.url"
+      [ngStyle]="{
+        width: !(subCategoriesDepth < mainNavigationMaxSubCategoriesDepth && subcategory.hasChildren) ? '100%' : ''
+      }"
+      >{{ subcategory.name }}</a
     >
-      <fa-icon *ngIf="isOpened(subcategory.uniqueId); else closed" [icon]="['fas', 'minus']"></fa-icon>
-      <ng-template #closed> <fa-icon [icon]="['fas', 'plus']"></fa-icon> </ng-template>
-    </a>
-    <ish-sub-category-navigation
-      *ngIf="subCategoriesDepth < mainNavigationMaxSubCategoriesDepth && subcategory.hasChildren"
-      [categoryUniqueId]="subcategory.uniqueId"
-      [subCategoriesDepth]="subCategoriesDepth + 1"
-    ></ish-sub-category-navigation>
+    <ng-container *ngIf="subCategoriesDepth < mainNavigationMaxSubCategoriesDepth && subcategory.hasChildren">
+      <a class="dropdown-toggle" [ngClass]="{ 'd-none': view === 'full' }" (click)="toggleOpen(subcategory.uniqueId)">
+        <fa-icon *ngIf="isOpened(subcategory.uniqueId); else closed" [icon]="['fas', 'minus']"></fa-icon>
+        <ng-template #closed> <fa-icon [icon]="['fas', 'plus']"></fa-icon> </ng-template>
+      </a>
+      <ish-sub-category-navigation
+        [categoryUniqueId]="subcategory.uniqueId"
+        [subCategoriesDepth]="subCategoriesDepth + 1"
+      ></ish-sub-category-navigation>
+    </ng-container>
   </li>
 </ul>

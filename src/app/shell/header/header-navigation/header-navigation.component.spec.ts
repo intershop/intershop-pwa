@@ -51,13 +51,9 @@ describe('Header Navigation Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul class="navbar-nav main-navigation-list">
         <li class="dropdown">
-          <a ng-reflect-router-link="/cat/A" data-testing-id="A-link" href="/cat/A"> CAT_A </a
-          ><a class="dropdown-toggle"><fa-icon ng-reflect-icon="fas,plus"></fa-icon></a
-          ><ish-sub-category-navigation
-            ng-reflect-view="auto"
-            ng-reflect-category-unique-id="A"
-            ng-reflect-sub-categories-depth="1"
-          ></ish-sub-category-navigation>
+          <a style="width: 100%" ng-reflect-router-link="/cat/A" data-testing-id="A-link" href="/cat/A">
+            CAT_A
+          </a>
         </li>
         <li class="dropdown">
           <a style="width: 100%" ng-reflect-router-link="/cat/B" data-testing-id="B-link" href="/cat/B">
