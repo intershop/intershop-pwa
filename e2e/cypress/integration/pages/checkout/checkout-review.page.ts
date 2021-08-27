@@ -8,6 +8,10 @@ export class CheckoutReviewPage {
     waitLoadingEnd(1000);
   }
 
+  get costCenterInformation() {
+    return cy.get('div[data-testing-id="buyer-cost-center"');
+  }
+
   submitOrder() {
     waitLoadingEnd(1000);
     cy.get('button').contains('Submit Order').click();

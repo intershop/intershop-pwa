@@ -37,6 +37,14 @@ export class CartPage {
     return cy.get(this.tag).find('div.pli-description');
   }
 
+  get costCenterSelection() {
+    return cy.get('select[data-testing-id="costCenter"]');
+  }
+
+  selectCostCenter(id: string) {
+    this.costCenterSelection.select(id);
+  }
+
   addProductToWishlist() {
     this.addToWishlistButton().click();
   }
