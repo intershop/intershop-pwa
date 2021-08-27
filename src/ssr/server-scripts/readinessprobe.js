@@ -1,5 +1,5 @@
 const pm2 = require('pm2');
-let ports = require('./ecosystem-ports').ports;
+let ports = require('./ecosystem-ports.json');
 
 if (process.env.ACTIVE_THEMES) {
   const active = process.env.ACTIVE_THEMES.split(',');

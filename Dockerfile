@@ -28,10 +28,11 @@ RUN npm run build:multi server
 # remove cache check for resources (especially index.html)
 # https://github.com/angular/angular/issues/23613#issuecomment-415886919
 RUN test "${serviceWorker}" = "true" && sed -i 's/canonicalHash !== cacheBustedHash/false/g' /workspace/dist/browser/ngsw-worker.js || true
+RUN node scripts/compile-docker-scripts
 COPY dist/* /workspace/dist/
 
 FROM node:14-alpine
-RUN npm i -g express express-http-proxy pm2 prom-client
+RUN npm i -g pm2
 COPY --from=buildstep /workspace/dist /dist
 ARG displayVersion=
 LABEL displayVersion="${displayVersion}"

@@ -32,16 +32,11 @@
 # from dist/.gitignore
 /dist/**/*
 !/dist/.gitignore
-!/dist/build-ecosystem.js
 !/dist/entrypoint.sh
 !/dist/healthcheck.js
-!/dist/prometheus.js
 !/dist/robots.txt
 !/dist/server.crt
-!/dist/server.js
 !/dist/server.key
-!/dist/readinessprobe.js
-!/dist/livenessprobe.js
 
 # from docs/.gitignore
 /docs/compodoc
@@ -76,6 +71,9 @@
 /e2e/cypress/videos
 /e2e/cypress/screenshots
 /e2e/cypress/logs
+
+# from src/ssr/server-scripts/.gitignore
+/src/ssr/server-scripts/ecosystem-ports.json
 
 # from src/app/shell/shared/.gitignore
 /src/app/shell/shared/lazy**
@@ -146,3 +144,4 @@ templates
 scripts
 !scripts/build*pwa.js
 !scripts/init-development-environment.js
+!scripts/compile-docker-scripts.js

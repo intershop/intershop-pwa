@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const ports = require('./ecosystem-ports').ports;
+const ports = require('./ecosystem-ports.json');
 
 const express = require('express');
 const proxy = require('express-http-proxy');
