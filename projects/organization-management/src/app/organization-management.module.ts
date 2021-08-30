@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { TreeviewModule } from 'ngx-treeview';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
@@ -10,7 +9,6 @@ import { UserBudgetComponent } from './components/user-budget/user-budget.compon
 import { UserProfileFormComponent } from './components/user-profile-form/user-profile-form.component';
 import { UserRolesSelectionComponent } from './components/user-roles-selection/user-roles-selection.component';
 import { HierarchiesCreateGroupPageComponent } from './pages/hierarchies-create-group/hierarchies-create-group-page.component';
-import { HierarchiesPageComponent } from './pages/hierarchies/hierarchies-page.component';
 import { OrganizationManagementStoreModule } from './store/organization-management-store.module';
 
 const exportedComponents = [
@@ -26,9 +24,8 @@ const exportedComponents = [
     BudgetWidgetComponent,
     GroupFormComponent,
     HierarchiesCreateGroupPageComponent,
-    HierarchiesPageComponent,
   ],
   exports: [...exportedComponents],
-  imports: [OrganizationManagementStoreModule, SharedModule, TreeviewModule.forRoot()],
+  imports: [OrganizationManagementStoreModule, SharedModule],
 })
-export class OrganizationManagementModule {}
+export class OrganizationManagementModule { }

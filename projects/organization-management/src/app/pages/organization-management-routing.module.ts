@@ -7,7 +7,6 @@ import { FetchUsersGuard } from '../guards/fetch-users.guard';
 import { RedirectFirstToParentGuard } from '../guards/redirect-first-to-parent.guard';
 
 import { HierarchiesCreateGroupPageComponent } from './hierarchies-create-group/hierarchies-create-group-page.component';
-import { HierarchiesPageComponent } from './hierarchies/hierarchies-page.component';
 
 /**
  * routes for the organization management
@@ -52,7 +51,7 @@ export const routes: Routes = [
   },
   {
     path: 'hierarchies',
-    component: HierarchiesPageComponent,
+    loadChildren: () => import('./hierarchies/hierarchies-page.module').then(m => m.HierarchiesPageModule),
     canActivate: [FeatureToggleGuard],
     data: { feature: 'organizationHierarchies' },
   },
@@ -68,4 +67,4 @@ export const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class OrganizationManagementRoutingModule {}
+export class OrganizationManagementRoutingModule { }
