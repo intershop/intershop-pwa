@@ -19,11 +19,11 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
  * The component controls the product contexts for a proper behavior between entered product sku and its quantity field.
  */
 @Component({
-  selector: 'ish-quickorder-repeat-form',
-  templateUrl: './quickorder-repeat-form.component.html',
+  selector: 'ish-quickorder-repeat-field',
+  templateUrl: './quickorder-repeat-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class QuickorderRepeatFormComponent extends FieldArrayType implements AfterViewInit {
+export class QuickorderRepeatFieldComponent extends FieldArrayType implements AfterViewInit {
   @ViewChildren(ProductContextDirective) contexts: QueryList<{ context: ProductContextFacade }>;
 
   constructor(private cdRef: ChangeDetectorRef) {

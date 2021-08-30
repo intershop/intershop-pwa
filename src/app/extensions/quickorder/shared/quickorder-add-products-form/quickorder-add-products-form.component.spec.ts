@@ -7,7 +7,7 @@ import { anyNumber, anyString, instance, mock, verify, when } from 'ts-mockito';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
-import { QuickorderRepeatFormComponent } from '../quickorder-repeat-form/quickorder-repeat-form.component';
+import { QuickorderRepeatFieldComponent } from '../formly/quickorder-repeat-field/quickorder-repeat-field.component';
 
 import { QuickorderAddProductsFormComponent } from './quickorder-add-products-form.component';
 
@@ -21,14 +21,14 @@ describe('Quickorder Add Products Form Component', () => {
     types: [
       {
         name: 'repeat',
-        component: MockComponent(QuickorderRepeatFormComponent),
+        component: MockComponent(QuickorderRepeatFieldComponent),
       },
     ],
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(QuickorderRepeatFormComponent), QuickorderAddProductsFormComponent],
+      declarations: [MockComponent(QuickorderRepeatFieldComponent), QuickorderAddProductsFormComponent],
       imports: [FormlyModule.forChild(quickOrderFormlyConfig), FormlyTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
@@ -51,7 +51,7 @@ describe('Quickorder Add Products Form Component', () => {
     expect(element.querySelectorAll('formly-field')).toMatchInlineSnapshot(`
     NodeList [
       <formly-field hide-deprecation=""
-      ><ish-quickorder-repeat-form></ish-quickorder-repeat-form
+      ><ish-quickorder-repeat-field></ish-quickorder-repeat-field
     ></formly-field>,
     ]
     `);
