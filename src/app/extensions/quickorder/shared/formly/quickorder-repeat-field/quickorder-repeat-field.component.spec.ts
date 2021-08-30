@@ -10,9 +10,9 @@ import { ProductQuantityComponent } from 'ish-shared/components/product/product-
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 
-import { QuickorderRepeatFormComponent } from './quickorder-repeat-form.component';
+import { QuickorderRepeatFieldComponent } from './quickorder-repeat-field.component';
 
-describe('Quickorder Repeat Form Component', () => {
+describe('Quickorder Repeat Field Component', () => {
   let component: FormlyTestingContainerComponent;
   let fixture: ComponentFixture<FormlyTestingContainerComponent>;
   let element: HTMLElement;
@@ -23,11 +23,11 @@ describe('Quickorder Repeat Form Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(ProductQuantityComponent),
         MockDirective(ProductContextDirective),
-        QuickorderRepeatFormComponent,
+        QuickorderRepeatFieldComponent,
       ],
       imports: [
         FormlyModule.forChild({
-          types: [{ name: 'repeat', component: QuickorderRepeatFormComponent }],
+          types: [{ name: 'repeat', component: QuickorderRepeatFieldComponent }],
         }),
         FormlyTestingComponentsModule,
         TranslateModule.forRoot(),
@@ -61,6 +61,6 @@ describe('Quickorder Repeat Form Component', () => {
 
   it('should be rendered after creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-quickorder-repeat-form')).toBeTruthy();
+    expect(element.querySelector('ish-quickorder-repeat-field')).toBeTruthy();
   });
 });

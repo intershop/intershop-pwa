@@ -611,6 +611,8 @@
           "^.*/src/app/pages/app(-<name>)*-routing\\.module(<theme>)?\\.ts$",
           // enforce folder structure for shared components
           "^.*/src/app/extensions/<name>/shared/(<name>)/\\1\\.component(<theme>)?\\.ts$",
+          "^.*/src/app/extensions/<name>/shared/formly/(<name>)/\\1\\.component(<theme>)?\\.ts$",
+          "^.*/src/app/shared/components/<name>/(<name>)/\\1\\.component(<theme>)?\\.ts$",
           "^.*/src/app/shared/components/<name>/(<name>)/\\1\\.component(<theme>)?\\.ts$",
           "^.*/src/app/shared/(<name>)/\\1\\.module(<theme>)?\\.ts$",
           "^.*/src/app/shared/<name>/(configurations|pipes|utils|validators|directives)/.*$",
