@@ -6,6 +6,7 @@ import { instance, mock } from 'ts-mockito';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { AccordionItemComponent } from 'ish-shared/components/common/accordion-item/accordion-item.component';
 import { AccordionComponent } from 'ish-shared/components/common/accordion/accordion.component';
+import { ProductAttachmentsComponent } from 'ish-shared/components/product/product-attachments/product-attachments.component';
 import { ProductAttributesComponent } from 'ish-shared/components/product/product-attributes/product-attributes.component';
 import { ProductShipmentComponent } from 'ish-shared/components/product/product-shipment/product-shipment.component';
 
@@ -22,6 +23,7 @@ describe('Product Detail Info Accordion Component', () => {
       declarations: [
         MockComponent(AccordionComponent),
         MockComponent(AccordionItemComponent),
+        MockComponent(ProductAttachmentsComponent),
         MockComponent(ProductAttributesComponent),
         MockComponent(ProductShipmentComponent),
         ProductDetailInfoAccordionComponent,
