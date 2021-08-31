@@ -67,10 +67,12 @@ describe('Sub Category Navigation Component', () => {
             ng-reflect-sub-categories-depth="2"
             ><ul class="category-level2">
               <li class="main-navigation-level2-item">
-                <a ng-reflect-router-link="/CAT_A1a-catA.1.a" href="/CAT_A1a-catA.1.a">CAT_A1a</a
-                ><a class="dropdown-toggle"><fa-icon ng-reflect-icon="fas,plus"></fa-icon></a>
-              </li></ul
-          ></ish-sub-category-navigation>
+                <a style="width: 100%" ng-reflect-router-link="/CAT_A1a-catA.1.a" href="/CAT_A1a-catA.1.a"
+                  >CAT_A1a</a
+                >
+              </li>
+            </ul></ish-sub-category-navigation
+          >
         </li>
         <li class="main-navigation-level1-item">
           <a style="width: 100%" ng-reflect-router-link="/CAT_A2-catA.2" href="/CAT_A2-catA.2">CAT_A2</a>
