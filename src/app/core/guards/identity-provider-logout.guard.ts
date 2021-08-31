@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
-import { AccountFacade } from 'ish-core/facades/account.facade';
-
-import { IdentityProviderFactory } from 'ish-core/identity-provider/identity-provider.factory';
-import { RoleToggleService } from 'ish-core/utils/role-toggle/role-toggle.service';
 import { isObservable, of } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
+
+import { AccountFacade } from 'ish-core/facades/account.facade';
+import { IdentityProviderFactory } from 'ish-core/identity-provider/identity-provider.factory';
+import { RoleToggleService } from 'ish-core/utils/role-toggle/role-toggle.service';
 
 @Injectable({ providedIn: 'root' })
 export class IdentityProviderLogoutGuard implements CanActivate {
@@ -23,13 +23,14 @@ export class IdentityProviderLogoutGuard implements CanActivate {
           this.accountFacade.logoutUser();
           return of(false);
         }
-        const logoutReturn = this.identityProviderFactory.getInstance().triggerLogout(route, state);
-        return isObservable(logoutReturn) || isPromise(logoutReturn) ? logoutReturn : of(logoutReturn);
+        const logoutReturn$ = this.identityProviderFactory.getInstance().triggerLogout(route, state);
+        return isObservable(logoutReturn$) || isPromise(logoutReturn$) ? logoutReturn$ : of(logoutReturn$);
       })
     );
   }
 }
 
+// tslint:disable-next-line: no-any
 function isPromise(obj: any): obj is Promise<any> {
   return !!obj && typeof obj.then === 'function';
 }
