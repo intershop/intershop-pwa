@@ -7,18 +7,13 @@ import { PriceItemMapper } from 'ish-core/models/price-item/price-item.mapper';
 import { Price } from 'ish-core/models/price/price.model';
 
 import { RequisitionData } from './requisition.interface';
-import { Requisition } from './requisition.model';
+import { Requisition, RequisitionUserBudget } from './requisition.model';
 
 @Injectable({ providedIn: 'root' })
 export class RequisitionMapper {
   fromData(payload: RequisitionData, orderPayload?: OrderData): Requisition {
     if (!Array.isArray(payload.data)) {
       const { data } = payload;
-      const emptyPrice: Price = {
-        type: 'Money',
-        value: 0,
-        currency: data.userBudgets?.budget?.currency,
-      };
 
       if (data) {
         const payloadData = (orderPayload ? orderPayload : payload) as BasketData;
@@ -30,7 +25,7 @@ export class RequisitionMapper {
           requisitionNo: data.requisitionNo,
           orderNo: data.orderNo,
           creationDate: data.creationDate,
-          userBudget: { ...data.userBudgets, spentBudget: data.userBudgets?.spentBudget || emptyPrice },
+          userBudget: this.fromUserBudgets(data.userBudgets, data.purchaseCurrency),
           lineItemCount: data.lineItemCount,
           user: data.userInformation,
           approval: {
@@ -67,5 +62,17 @@ export class RequisitionMapper {
           }))
       );
     }
+  }
+
+  private fromUserBudgets(userBudgets: RequisitionUserBudget, purchaseCurrency: string): RequisitionUserBudget {
+    if (!(userBudgets && userBudgets.budgetPeriod)) {
+      return;
+    }
+    const emptyPrice: Price = {
+      type: 'Money',
+      value: 0,
+      currency: purchaseCurrency,
+    };
+    return { ...userBudgets, spentBudget: userBudgets.spentBudget || emptyPrice };
   }
 }

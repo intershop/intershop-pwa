@@ -21,6 +21,7 @@ describe('Requisition Mapper', () => {
         id: 'testUUDI',
         requisitionNo: '0001',
         orderNo: '10001',
+        purchaseCurrency: 'USD',
         invoiceToAddress: 'urn_invoiceToAddress_123',
         commonShipToAddress: 'urn_commonShipToAddress_123',
         commonShippingMethod: 'shipping_method_123',
@@ -72,7 +73,7 @@ describe('Requisition Mapper', () => {
           "orderNo": "10001",
           "payment": undefined,
           "promotionCodes": undefined,
-          "purchaseCurrency": undefined,
+          "purchaseCurrency": "USD",
           "requisitionNo": "0001",
           "totalProductQuantity": undefined,
           "totals": Object {
