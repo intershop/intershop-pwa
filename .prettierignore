@@ -39,6 +39,7 @@ node_modules
 /tslint-rules/test
 /schematics/src/**/files/**
 /schematics/src/**/*.js
+/templates/jmeter-testplan.jmx
 nginx.conf
 /nginx/**/*.conf
 /nginx/**/*.tmpl
