@@ -93,17 +93,17 @@ describe('Checkout Facade', () => {
     it('should retrun select box options when eligibleCostCenterOptions is called', done => {
       facade.eligibleCostCenterSelectOptions$('Buyer').subscribe(costCenterOptions => {
         expect(costCenterOptions).toMatchInlineSnapshot(`
-Array [
-  Object {
-    "label": "1 Cost Center 1",
-    "value": "1",
-  },
-  Object {
-    "label": "3 Cost Center 3",
-    "value": "3",
-  },
-]
-`);
+          Array [
+            Object {
+              "label": "1 Cost Center 1",
+              "value": "1",
+            },
+            Object {
+              "label": "3 Cost Center 3",
+              "value": "3",
+            },
+          ]
+        `);
         done();
       });
     });

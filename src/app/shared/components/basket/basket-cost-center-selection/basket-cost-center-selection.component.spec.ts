@@ -70,21 +70,21 @@ describe('Basket Cost Center Selection Component', () => {
 
     expect(element.querySelectorAll('formly-field')).toHaveLength(1);
     expect(element.querySelector('formly-field').textContent).toMatchInlineSnapshot(`
-"SelectFieldComponent: costCenter ish-select-field {
-  \\"label\\": \\"checkout.cost_center.select.label\\",
-  \\"required\\": true,
-  \\"hideRequiredMarker\\": true,
-  \\"options\\": [
-    {
-      \\"label\\": \\"Cost Center 1\\",
-      \\"value\\": \\"1\\"
-    }
-  ],
-  \\"placeholder\\": \\"\\",
-  \\"focus\\": false,
-  \\"disabled\\": false
-}"
-`);
+      "SelectFieldComponent: costCenter ish-select-field {
+        \\"label\\": \\"checkout.cost_center.select.label\\",
+        \\"required\\": true,
+        \\"hideRequiredMarker\\": true,
+        \\"options\\": [
+          {
+            \\"label\\": \\"Cost Center 1\\",
+            \\"value\\": \\"1\\"
+          }
+        ],
+        \\"placeholder\\": \\"\\",
+        \\"focus\\": false,
+        \\"disabled\\": false
+      }"
+    `);
   });
 
   it('should be rendered with correct options and placeholder, when isBusinessCustomer is true and cost center options with multiple options are receiving', () => {
@@ -93,24 +93,24 @@ describe('Basket Cost Center Selection Component', () => {
     fixture.detectChanges();
     expect(element.querySelectorAll('formly-field')).toHaveLength(1);
     expect(element.querySelector('formly-field').textContent).toMatchInlineSnapshot(`
-"SelectFieldComponent: costCenter ish-select-field {
-  \\"label\\": \\"checkout.cost_center.select.label\\",
-  \\"required\\": true,
-  \\"hideRequiredMarker\\": true,
-  \\"options\\": [
-    {
-      \\"label\\": \\"Cost Center 1\\",
-      \\"value\\": \\"1\\"
-    },
-    {
-      \\"label\\": \\"Cost Center 2\\",
-      \\"value\\": \\"2\\"
-    }
-  ],
-  \\"placeholder\\": \\"account.option.select.text\\",
-  \\"focus\\": false,
-  \\"disabled\\": false
-}"
-`);
+      "SelectFieldComponent: costCenter ish-select-field {
+        \\"label\\": \\"checkout.cost_center.select.label\\",
+        \\"required\\": true,
+        \\"hideRequiredMarker\\": true,
+        \\"options\\": [
+          {
+            \\"label\\": \\"Cost Center 1\\",
+            \\"value\\": \\"1\\"
+          },
+          {
+            \\"label\\": \\"Cost Center 2\\",
+            \\"value\\": \\"2\\"
+          }
+        ],
+        \\"placeholder\\": \\"account.option.select.text\\",
+        \\"focus\\": false,
+        \\"disabled\\": false
+      }"
+    `);
   });
 });
