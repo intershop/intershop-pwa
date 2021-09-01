@@ -29,6 +29,7 @@ export type BasketUpdateType =
   | { invoiceToAddress: string }
   | { commonShipToAddress: string }
   | { commonShippingMethod: string }
+  | { costCenter: string }
   | { calculated: boolean };
 
 export type BasketItemUpdateType =

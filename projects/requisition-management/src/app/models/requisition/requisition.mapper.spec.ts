@@ -26,6 +26,7 @@ describe('Requisition Mapper', () => {
         commonShippingMethod: 'shipping_method_123',
         customer: 'OilCorp',
         user: 'bboldner@test.intershop.de',
+        costCenter: 'CostCenter123',
         creationDate: 12345678,
         lineItemCount: 2,
         approvalStatus: {
@@ -60,6 +61,7 @@ describe('Requisition Mapper', () => {
           "bucketId": undefined,
           "commonShipToAddress": undefined,
           "commonShippingMethod": undefined,
+          "costCenter": "CostCenter123",
           "creationDate": 12345678,
           "customerNo": "OilCorp",
           "dynamicMessages": undefined,

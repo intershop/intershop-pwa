@@ -7,6 +7,7 @@ import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
+import { BasketCostCenterSelectionComponent } from 'ish-shared/components/basket/basket-cost-center-selection/basket-cost-center-selection.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
 import { BasketInfoComponent } from 'ish-shared/components/basket/basket-info/basket-info.component';
 import { BasketPromotionCodeComponent } from 'ish-shared/components/basket/basket-promotion-code/basket-promotion-code.component';
@@ -30,6 +31,7 @@ describe('Shopping Basket Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
+        MockComponent(BasketCostCenterSelectionComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketInfoComponent),
         MockComponent(BasketPromotionCodeComponent),
