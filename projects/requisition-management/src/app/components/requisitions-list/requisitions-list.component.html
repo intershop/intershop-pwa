@@ -77,7 +77,7 @@
         {{ 'account.approvallist.table.buyer' | translate }}
       </th>
       <td cdk-cell *cdkCellDef="let requisition" [attr.data-label]="'account.approvallist.table.buyer' | translate">
-        {{ requisition.user.firstName }} {{ requisition.user.lastName }}
+        {{ requisition.user?.firstName }} {{ requisition.user?.lastName }}
       </td>
     </ng-container>
 
