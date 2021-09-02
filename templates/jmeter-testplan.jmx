@@ -283,9 +283,9 @@ JMeterUtils.setProperty(&quot;CategoriesSitemapProperty&quot;, fileContents);
               <stringProp name="RegexExtractor.useHeaders">unescaped</stringProp>
               <stringProp name="RegexExtractor.refname">urls</stringProp>
               <stringProp name="RegexExtractor.regex">(?:https:\/\/)(.*?)(?=&lt;\/loc&gt;)</stringProp>
-              <stringProp name="RegexExtractor.template">$1$</stringProp>
+              <stringProp name="RegexExtractor.template">$0$</stringProp>
               <stringProp name="RegexExtractor.default">NOT_FOUND</stringProp>
-              <stringProp name="RegexExtractor.match_number">0</stringProp>
+              <stringProp name="RegexExtractor.match_number">-1</stringProp>
             </RegexExtractor>
             <hashTree/>
             <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
