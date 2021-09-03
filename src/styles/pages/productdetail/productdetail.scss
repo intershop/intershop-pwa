@@ -104,10 +104,10 @@
     padding: $space-default 0;
     color: $text-color-primary;
 
-    .product-attachments-list-item {
-      .ng-fa-icon {
-        margin-left: math.div($space-default * 2, 3);
-        font-size: 22px;
+    .product-attachment {
+      margin-bottom: $space-default;
+      .product-attachment-description {
+        margin-bottom: 0;
       }
     }
   }

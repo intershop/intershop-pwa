@@ -29,6 +29,8 @@
   <div class="form-horizontal">
     <div class="row">
       <div class="col-md-12 col-lg-8">
+        <ish-basket-cost-center-selection></ish-basket-cost-center-selection>
+
         <div class="section">
           <ish-line-item-list *ngIf="basket" [lineItems]="basket.lineItems"></ish-line-item-list>
 
@@ -41,7 +43,7 @@
             ></ish-lazy-basket-create-order-template>
           </div>
         </div>
-        <ish-lazy-direct-order ishProductContext></ish-lazy-direct-order>
+        <ish-lazy-direct-order></ish-lazy-direct-order>
 
         <p>
           <a routerLink="/home" class="text-nowrap">{{

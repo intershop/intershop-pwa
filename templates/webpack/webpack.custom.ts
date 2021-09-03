@@ -228,7 +228,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     logger.log('setting up purgecss CSS minification');
     config.plugins.push(
       new purgecssPlugin({
-        paths: glob.sync('./{src,projects}/**/*', { nodir: true }),
+        paths: glob.sync('./**/src/app/**/*', { nodir: true }),
         safelist: {
           standard: [/(p|m)(l|r|x|y|t|b)?-[0-5]/],
           greedy: [

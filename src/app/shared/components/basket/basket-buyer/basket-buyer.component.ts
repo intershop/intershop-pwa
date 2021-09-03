@@ -26,6 +26,7 @@ export class BasketBuyerComponent implements OnInit, OnDestroy {
 
   taxationID: string;
   orderReferenceID: string;
+  costCenterName: string;
   userName: string;
 
   private destroy$ = new Subject();
@@ -35,6 +36,7 @@ export class BasketBuyerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.taxationID = this.getAttributeValue('taxationID');
     this.orderReferenceID = this.getAttributeValue('orderReferenceID');
+    this.costCenterName = this.getAttributeValue('BusinessObjectAttributes#Order_CostCenter_Name');
 
     // default values for anonymous users
     this.userName = `${this.object.invoiceToAddress?.firstName} ${this.object.invoiceToAddress?.lastName}`;

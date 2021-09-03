@@ -42,7 +42,7 @@ export class BasketValidationEffects {
   ) {}
 
   private validationSteps: { scopes: BasketValidationScopeType[]; route: string }[] = [
-    { scopes: ['Products', 'Value'], route: '/basket' },
+    { scopes: ['Products', 'Value', 'CostCenter'], route: '/basket' },
     { scopes: ['InvoiceAddress', 'ShippingAddress', 'Addresses'], route: '/checkout/address' },
     { scopes: ['Shipping'], route: '/checkout/shipping' },
     { scopes: ['Payment'], route: '/checkout/payment' },

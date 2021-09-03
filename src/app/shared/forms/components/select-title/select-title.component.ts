@@ -3,6 +3,8 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { SelectComponent, SelectOption } from 'ish-shared/forms/components/select/select.component';
 
+// tslint:disable ish-deprecation
+
 /**
  * @deprecated use formly instead
  */

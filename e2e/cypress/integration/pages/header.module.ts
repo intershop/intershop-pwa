@@ -50,7 +50,7 @@ export class HeaderModule {
   }
 
   logout() {
-    cy.get('[data-testing-id="user-status-desktop"] .my-account-logout').click();
+    cy.get('[data-testing-id="link-logout"]').first().click();
   }
 
   get myAccountLink() {

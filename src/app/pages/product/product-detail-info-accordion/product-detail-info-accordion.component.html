@@ -8,7 +8,9 @@
   >
     <ish-product-attributes [product]="product"></ish-product-attributes>
   </ish-accordion-item>
-
+  <ish-accordion-item *ngIf="product.attachments?.length" [heading]="'product.attachments.heading' | translate">
+    <ish-product-attachments></ish-product-attachments>
+  </ish-accordion-item>
   <ish-accordion-item
     *ngIf="configuration$('shipment') | async"
     [heading]="'product.shipping.heading' | translate"

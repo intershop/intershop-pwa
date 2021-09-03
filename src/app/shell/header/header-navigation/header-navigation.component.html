@@ -1,8 +1,4 @@
 <ul class="navbar-nav main-navigation-list">
-  <ng-container *ngTemplateOutlet="categoryTemplate"></ng-container>
-</ul>
-<!--- Category Template -->
-<ng-template #categoryTemplate>
   <li
     *ngFor="let category of categories$ | async"
     #subMenu
@@ -15,11 +11,11 @@
     <a
       [routerLink]="category.url"
       [attr.data-testing-id]="category.uniqueId + '-link'"
-      [ngStyle]="{ width: !category.hasChildren ? '100%' : '' }"
+      [ngStyle]="{ width: !(0 < mainNavigationMaxSubCategoriesDepth && category.hasChildren) ? '100%' : '' }"
     >
       {{ category.name }}
     </a>
-    <ng-container *ngIf="category.hasChildren">
+    <ng-container *ngIf="0 < mainNavigationMaxSubCategoriesDepth && category.hasChildren">
       <a class="dropdown-toggle" (click)="toggleOpen(category.uniqueId)">
         <fa-icon *ngIf="isOpened(category.uniqueId); else closed" [icon]="['fas', 'minus']"></fa-icon>
         <ng-template #closed> <fa-icon [icon]="['fas', 'plus']"></fa-icon> </ng-template>
@@ -31,4 +27,4 @@
       ></ish-sub-category-navigation>
     </ng-container>
   </li>
-</ng-template>
+</ul>

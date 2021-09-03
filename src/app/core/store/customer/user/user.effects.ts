@@ -38,6 +38,9 @@ import {
   loadCompanyUserFail,
   loadCompanyUserSuccess,
   loadUserByAPIToken,
+  loadUserCostCenters,
+  loadUserCostCentersFail,
+  loadUserCostCentersSuccess,
   loadUserPaymentMethods,
   loadUserPaymentMethodsFail,
   loadUserPaymentMethodsSuccess,
@@ -234,6 +237,20 @@ export class UserEffects {
         this.personalizationService.getPGID().pipe(
           map(pgid => setPGID({ pgid })),
           catchError(() => EMPTY)
+        )
+      )
+    )
+  );
+
+  loadUserCostCenters$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadUserCostCenters),
+      withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
+      filter(([, loggedInCustomer]) => !!loggedInCustomer && loggedInCustomer.isBusinessCustomer),
+      mergeMap(() =>
+        this.userService.getEligibleCostCenters().pipe(
+          map(costCenters => loadUserCostCentersSuccess({ costCenters })),
+          mapErrorToAction(loadUserCostCentersFail)
         )
       )
     )

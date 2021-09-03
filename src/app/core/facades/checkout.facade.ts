@@ -42,12 +42,13 @@ import {
   setBasketPayment,
   startCheckout,
   updateBasketAddress,
+  updateBasketCostCenter,
   updateBasketItems,
   updateBasketShippingMethod,
   updateConcardisCvcLastUpdated,
 } from 'ish-core/store/customer/basket';
 import { getOrdersError, getSelectedOrder } from 'ish-core/store/customer/orders';
-import { getLoggedInUser } from 'ish-core/store/customer/user';
+import { getLoggedInUser, getUserCostCenters, loadUserCostCenters } from 'ish-core/store/customer/user';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 // tslint:disable:member-ordering
@@ -114,6 +115,10 @@ export class CheckoutFacade {
     this.store.dispatch(updateBasketShippingMethod({ shippingId }));
   }
 
+  updateBasketCostCenter(costCenter: string) {
+    this.store.dispatch(updateBasketCostCenter({ costCenter }));
+  }
+
   setBasketCustomAttribute(attribute: Attribute): void {
     this.store.dispatch(setBasketAttribute({ attribute }));
   }
@@ -166,6 +171,21 @@ export class CheckoutFacade {
       }),
       whenTruthy(),
       distinctUntilChanged()
+    );
+  }
+
+  // COST CENTER
+
+  eligibleCostCenterSelectOptions$(selectRole?: string) {
+    this.store.dispatch(loadUserCostCenters());
+    return this.store.pipe(
+      select(getUserCostCenters),
+      whenTruthy(),
+      map(costCenters =>
+        costCenters
+          .filter(costCenter => costCenter.roles.includes(selectRole ? selectRole : 'Buyer'))
+          .map(c => ({ label: `${c.id} ${c.name}`, value: c.id }))
+      )
     );
   }
 

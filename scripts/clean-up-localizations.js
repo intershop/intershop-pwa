@@ -7,7 +7,13 @@ const localizationFile_default = 'src/assets/i18n/en_US.json';
 
 // regular expression for patterns of not explicitly used localization keys (dynamic created keys, error keys from REST calls)
 // ADDITIONAL PATTERNS HAVE TO BE ADDED HERE
-const regEx = /account\.login\..*\.message|.*budget.period..*|account\.budget\.type\..*|.*\.error.*|locale\..*/i;
+const regExps = [
+  /^account\.login\..*\.message/i,
+  /.*budget.period..*/i,
+  /^account\.budget\.type\..*/i,
+  /.*\.error.*/i,
+  /^locale\..*/i,
+];
 
 // store localizations from default localization file in an object
 const localizations_default = JSON.parse(fs.readFileSync(localizationFile_default, 'utf8'));
@@ -16,7 +22,7 @@ console.log('Clean up file', localizationFile_default, 'as default localization 
 // add not explicitly used localization keys with their localization values
 const localizationsFound = {};
 Object.keys(localizations_default)
-  .filter(localization => regEx.test(localization))
+  .filter(localization => regExps.some(regEx => regEx.test(localization)))
   .map(localizationKey => {
     localizationsFound[localizationKey] = localizations_default[localizationKey];
     delete localizations_default[localizationKey];

@@ -9,6 +9,7 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { SkuQuantityType } from 'ish-core/models/product/product.helper';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 import { BasketUpdateType } from 'ish-core/services/basket/basket.service';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
@@ -57,6 +58,11 @@ export const updateBasketShippingMethod = createAction(
   payload<{ shippingId: string }>()
 );
 
+export const updateBasketCostCenter = createAction(
+  '[Basket] Assign a Cost Center at Basket ',
+  payload<{ costCenter: string }>()
+);
+
 export const updateBasket = createAction('[Basket Internal] Update Basket', payload<{ update: BasketUpdateType }>());
 
 export const updateBasketFail = createAction('[Basket API] Update Basket Fail', httpError());
@@ -66,18 +72,18 @@ export const deleteBasketShippingAddress = createAction(
   payload<{ addressId: string }>()
 );
 
-export const addProductToBasket = createAction('[Basket] Add Product', payload<{ sku: string; quantity: number }>());
+export const addProductToBasket = createAction('[Basket] Add Product', payload<SkuQuantityType>());
 
 export const addItemsToBasket = createAction(
   '[Basket Internal] Add Items To Basket',
-  payload<{ items: { sku: string; quantity: number; unit: string }[] }>()
+  payload<{ items: SkuQuantityType[] }>()
 );
 
 export const addItemsToBasketFail = createAction('[Basket API] Add Items To Basket Fail', httpError());
 
 export const addItemsToBasketSuccess = createAction(
   '[Basket API] Add Items To Basket Success',
-  payload<{ info: BasketInfo[] }>()
+  payload<{ info: BasketInfo[]; items: SkuQuantityType[] }>()
 );
 
 export const mergeBasketFail = createAction('[Basket API] Merge two baskets Fail', httpError());

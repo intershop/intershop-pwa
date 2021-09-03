@@ -253,6 +253,8 @@ export class ProductContextFacade extends RxState<ProductContext> {
       )
     );
 
+    this.connect('displayProperties', this.privateConfig$);
+
     this.connect(
       'displayProperties',
       combineLatest([internalDisplayProperty$, ...externalDisplayPropertyProviders]).pipe(
@@ -335,9 +337,9 @@ export class ProductContextFacade extends RxState<ProductContext> {
   }
 
   addToBasket() {
-    const childContexts = this.get('children') || this.get('parts');
-    if (childContexts && !ProductHelper.isProductBundle(this.get('product'))) {
-      childContexts
+    const items: SkuQuantityType[] = this.get('children') || this.get('parts');
+    if (items && !ProductHelper.isProductBundle(this.get('product'))) {
+      items
         .filter(x => !!x && !!x.quantity)
         .forEach(child => {
           this.shoppingFacade.addProductToBasket(child.sku, child.quantity);

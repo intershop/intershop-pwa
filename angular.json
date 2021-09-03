@@ -143,7 +143,10 @@
             "outputPath": "dist/server",
             "main": "server.ts",
             "optimization": true,
-            "tsConfig": "tsconfig.server.json"
+            "tsConfig": "tsconfig.server.json",
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/styles/themes/default"]
+            }
           },
           "defaultConfiguration": "default,production",
           "configurations": {

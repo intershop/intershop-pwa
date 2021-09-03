@@ -22,6 +22,7 @@ import { ShowFormFeedbackDirective } from './directives/show-form-feedback.direc
 
 const exportedComponents = [FormControlFeedbackComponent, ShowFormFeedbackDirective];
 
+// tslint:disable ish-deprecation
 const deprecatedExportedComponents = [
   CheckboxComponent,
   InputBirthdayComponent,
@@ -33,6 +34,8 @@ const deprecatedExportedComponents = [
   SelectTitleComponent,
   TextareaComponent,
 ];
+
+// tslint:enable ish-deprecation
 
 @NgModule({
   imports: [

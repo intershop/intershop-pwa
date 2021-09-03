@@ -16,6 +16,8 @@ export const getLoggedInUser = createSelector(getUserState, state => state.user)
 
 export const getUserAuthorized = createSelector(getUserState, state => state.authorized);
 
+export const getUserCostCenters = createSelector(getUserState, state => state.costCenters);
+
 export const getUserPaymentMethods = createSelector(getUserState, state => state.paymentMethods);
 
 export const getUserLoading = createSelector(getUserState, state => state.loading);

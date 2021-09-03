@@ -1,7 +1,7 @@
 {
   "name": "intershop-pwa",
   "description": "Intershop Progressive Web App",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "Intershop Standard Software End User License Agreement Intershop 7",
   "keywords": [
     "intershop"
@@ -30,7 +30,7 @@
     "spell-check-localizations": "cspell lint --no-summary --no-progress \"src/assets/i18n/{de_DE,en_US,fr_FR}.json\"",
     "clean": "git clean -xdf -e \"*environment.local.ts\" -e \"*environment.development.ts\" -e \"*node_modules\"",
     "postclean": "npm ci",
-    "check": "npm-run-all \"lint -- --fix\" format compile build:multi \"test -- --maxWorkers=50%\" dead-code clean-localizations",
+    "check": "npm-run-all \"lint -- --fix\" format compile build:multi test dead-code clean-localizations",
     "clean-check": "npm-run-all clean check",
     "changelog": "npx -p conventional-changelog-cli conventional-changelog -n intershop-changelog.js -i CHANGELOG.md -s",
     "3rd-party-licenses": "npm ci && npx license-checker --csv --out 3rd-party-licenses.txt --customPath templates/3rd-party-licenses_format.json",
@@ -183,7 +183,7 @@
     ],
     "*.ts": [
       "tslint --project tsconfig.json --fix",
-      "jest --ci --bail --findRelatedTests --maxWorkers=50%"
+      "jest --ci --bail --findRelatedTests"
     ],
     "src/assets/i18n/*.json": [
       "sort-json --indent-size=2"

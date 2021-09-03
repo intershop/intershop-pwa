@@ -7,6 +7,31 @@ kb_everyone
 
 # Changelog
 
+## [1.1.0](https://github.com/intershop/intershop-pwa/releases/tag/1.1.0) (2021-09-03)
+
+**required Intershop Commerce Management version: 7.10.32.0-LTS**
+
+### Features
+
+- add version method for inspecting version information (#858) ([4b9294f](https://github.com/intershop/intershop-pwa/commit/4b9294f))
+- Cost Center selection for checkout (#807) ([72a439f](https://github.com/intershop/intershop-pwa/commit/72a439f))
+- display product attachments at the product detail page (#840) ([d275b95](https://github.com/intershop/intershop-pwa/commit/d275b95))
+
+### Bug Fixes
+
+- enable logout of punchout user in combination with SSO (#852) ([eb4f222](https://github.com/intershop/intershop-pwa/commit/eb4f222))
+- let purgecss only search app sources ([8db741a](https://github.com/intershop/intershop-pwa/commit/8db741a))
+- stylePreprocessorOptions missing on server build (#834) ([2069f47](https://github.com/intershop/intershop-pwa/commit/2069f47))
+- broken page on missing requisition data like user and budget (#859) ([0f3f847](https://github.com/intershop/intershop-pwa/commit/0f3f847))
+- prevent double requests after inserting a SKU on direct order and quickorder form including validation ([fb2e192](https://github.com/intershop/intershop-pwa/commit/fb2e192))
+- prevent call for empty product on quickorder and direct order (#844) ([385a855](https://github.com/intershop/intershop-pwa/commit/385a855))
+- propagate extra arguments in build:multi script ([5ece62e](https://github.com/intershop/intershop-pwa/commit/5ece62e))
+- mainNavigationMaxSubCategoriesDepth configuration with '0' fails to disable main navigation hover menu (#850) ([725cfb8](https://github.com/intershop/intershop-pwa/commit/725cfb8))
+- use translate compiler for fallback translations (#843) ([69af5ff](https://github.com/intershop/intershop-pwa/commit/69af5ff))
+- THEME variable should be string ([fc519bc](https://github.com/intershop/intershop-pwa/commit/fc519bc))
+- align table heading with associated content in quickorder form (#832) ([64c0e1d](https://github.com/intershop/intershop-pwa/commit/64c0e1d))
+- insert none default theme at the end ([e2d7639](https://github.com/intershop/intershop-pwa/commit/e2d7639))
+
 ## [1.0.0](https://github.com/intershop/intershop-pwa/releases/tag/1.0.0) (2021-08-04)
 
 **required Intershop Commerce Management version: 7.10.32.0-LTS**

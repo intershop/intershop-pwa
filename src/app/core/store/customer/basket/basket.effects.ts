@@ -50,6 +50,7 @@ import {
   submitBasketFail,
   submitBasketSuccess,
   updateBasket,
+  updateBasketCostCenter,
   updateBasketFail,
   updateBasketShippingMethod,
 } from './basket.actions';
@@ -165,6 +166,17 @@ export class BasketEffects {
       ofType(updateBasketShippingMethod),
       mapToPayloadProperty('shippingId'),
       map(commonShippingMethod => updateBasket({ update: { commonShippingMethod } }))
+    )
+  );
+
+  /**
+   * Sets a cost center at the current basket.
+   */
+  updateBasketCostCenter$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateBasketCostCenter),
+      mapToPayloadProperty('costCenter'),
+      map(costCenter => updateBasket({ update: { costCenter } }))
     )
   );
 

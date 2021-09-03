@@ -13,7 +13,10 @@
           type="submit"
           class="btn btn-primary"
           [disabled]="
-            directOrderForm.pristine || this.directOrderForm.invalid || (hasQuantityError$ | async) || loading
+            directOrderForm.pristine ||
+            this.directOrderForm.invalid ||
+            (hasQuantityError$ | async) ||
+            (loading$ | async)
           "
         >
           {{ 'quickorder.page.add.cart' | translate }}

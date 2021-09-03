@@ -9,6 +9,8 @@ import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form
 
 import { SelectTitleComponent } from './select-title.component';
 
+// tslint:disable ish-deprecation
+
 describe('Select Title Component', () => {
   let component: SelectTitleComponent;
   let fixture: ComponentFixture<SelectTitleComponent>;
