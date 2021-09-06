@@ -7,6 +7,7 @@ import { catchError, concatMap, delay, first, mapTo, switchMap, take, tap } from
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { IdentityProviderFactory } from 'ish-core/identity-provider/identity-provider.factory';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -23,6 +24,7 @@ export class PunchoutPageGuard implements CanActivate {
     private apiTokenService: ApiTokenService,
     private cookiesService: CookiesService,
     private punchoutService: PunchoutService,
+    private identityProvider: IdentityProviderFactory,
     @Inject(PLATFORM_ID) private platformId: string
   ) {}
 
@@ -48,6 +50,7 @@ export class PunchoutPageGuard implements CanActivate {
 
     // initiate the punchout user login with the access-token (cXML) or the given credentials (OCI)
     if (route.queryParamMap.has('access-token')) {
+      this.identityProvider.getInstance().triggerLogout();
       this.accountFacade.loginUserWithToken(route.queryParamMap.get('access-token'));
     } else {
       this.accountFacade.loginUser({

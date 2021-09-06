@@ -39,7 +39,7 @@ export interface IdentityProvider<ConfigType = never> {
   /**
    * Route guard for logout
    */
-  triggerLogout(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): TriggerReturnType;
+  triggerLogout(route?: ActivatedRouteSnapshot, state?: RouterStateSnapshot): TriggerReturnType;
 
   /**
    * Interceptor for all API requests directed to the ICM
