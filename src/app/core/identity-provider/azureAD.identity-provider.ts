@@ -38,7 +38,7 @@ export class AzureADIdentityProvider implements IdentityProvider {
     private router: Router,
     private apiTokenService: ApiTokenService,
     @Inject(APP_BASE_HREF) private baseHref: string
-  ) {}
+  ) { }
 
   getCapabilities() {
     return {
@@ -101,11 +101,11 @@ export class AzureADIdentityProvider implements IdentityProvider {
           const inviteHash = window.sessionStorage.getItem('invite-hash');
           return inviteUserId && inviteHash
             ? this.inviteRegistration(idToken, inviteUserId, inviteHash).pipe(
-                tap(() => {
-                  window.sessionStorage.removeItem('invite-userid');
-                  window.sessionStorage.removeItem('invite-hash');
-                })
-              )
+              tap(() => {
+                window.sessionStorage.removeItem('invite-userid');
+                window.sessionStorage.removeItem('invite-hash');
+              })
+            )
             : this.normalSignInRegistration(idToken);
         })
       )
@@ -134,31 +134,31 @@ export class AzureADIdentityProvider implements IdentityProvider {
             switchMap(([customer]) =>
               !customer
                 ? this.router.navigate(['/register', 'sso'], {
-                    queryParams: {
-                      userid: userData.businessPartnerNo,
-                      firstName: userData.firstName,
-                      lastName: userData.lastName,
-                    },
-                  })
+                  queryParams: {
+                    userid: userData.businessPartnerNo,
+                    firstName: userData.firstName,
+                    lastName: userData.lastName,
+                  },
+                })
                 : of(false)
             ),
             switchMap((navigated: boolean) =>
               navigated || navigated === null
                 ? race(
-                    this.store.pipe(
-                      select(getSsoRegistrationRegistered),
-                      whenTruthy(),
-                      tap(() => {
-                        this.store.dispatch(loadUserByAPIToken());
-                      })
-                    ),
-                    this.store.pipe(
-                      select(getSsoRegistrationCancelled),
-                      whenTruthy(),
-                      mapTo(false),
-                      tap(() => this.router.navigateByUrl('/logout'))
-                    )
+                  this.store.pipe(
+                    select(getSsoRegistrationRegistered),
+                    whenTruthy(),
+                    tap(() => {
+                      this.store.dispatch(loadUserByAPIToken());
+                    })
+                  ),
+                  this.store.pipe(
+                    select(getSsoRegistrationCancelled),
+                    whenTruthy(),
+                    mapTo(false),
+                    tap(() => this.router.navigateByUrl('/logout'))
                   )
+                )
                 : of(navigated)
             )
           )
@@ -245,11 +245,11 @@ export class AzureADIdentityProvider implements IdentityProvider {
 
     const newRequest =
       this.oauthService.getIdToken() &&
-      !req.url.endsWith('users/processtoken') &&
-      !req.headers.has(ApiService.TOKEN_HEADER_KEY)
+        !req.url.endsWith('users/processtoken') &&
+        !req.headers.has(ApiService.TOKEN_HEADER_KEY)
         ? req.clone({
-            headers: req.headers.set(ApiService.AUTHORIZATION_HEADER_KEY, 'Bearer ' + this.oauthService.getIdToken()),
-          })
+          headers: req.headers.set(ApiService.AUTHORIZATION_HEADER_KEY, 'Bearer ' + this.oauthService.getIdToken()),
+        })
         : req;
     return next.handle(newRequest);
   }
