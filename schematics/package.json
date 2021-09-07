@@ -38,7 +38,7 @@
       "js"
     ],
     "setupFilesAfterEnv": [
-      "<rootDir>/test.js"
+      "<rootDir>/setupJest.js"
     ]
   }
 }
