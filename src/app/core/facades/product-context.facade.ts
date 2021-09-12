@@ -13,7 +13,7 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel, ProductHelper, SkuQuantityType } from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { generateProductUrl } from 'ish-core/routing/product/product.route';
-import { whenTruthy } from 'ish-core/utils/operators';
+import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 import { ProductContextDisplayPropertiesService } from 'ish-core/utils/product-context-display-properties/product-context-display-properties.service';
 
 import { ShoppingFacade } from './shopping.facade';
@@ -112,6 +112,11 @@ export class ProductContextFacade extends RxState<ProductContext> {
   set config(config: Partial<ProductContextDisplayProperties>) {
     this.privateConfig$.next(config);
   }
+
+  private validProductSKU$ = this.select('product').pipe(
+    filter(p => !!p && !p.failed),
+    mapToProperty('sku')
+  );
 
   constructor(private shoppingFacade: ShoppingFacade, private translate: TranslateService, injector: Injector) {
     super();
@@ -297,7 +302,7 @@ export class ProductContextFacade extends RxState<ProductContext> {
 
     switch (k1) {
       case 'links':
-        wrap('links', this.shoppingFacade.productLinks$(this.select('sku')));
+        wrap('links', this.shoppingFacade.productLinks$(this.validProductSKU$));
         break;
       case 'promotions':
         wrap(
@@ -316,7 +321,7 @@ export class ProductContextFacade extends RxState<ProductContext> {
             this.select('displayProperties', 'retailSetParts'),
           ]).pipe(
             filter(([a, b]) => a || b),
-            switchMap(() => this.shoppingFacade.productParts$(this.select('sku')))
+            switchMap(() => this.shoppingFacade.productParts$(this.validProductSKU$))
           )
         );
     }
