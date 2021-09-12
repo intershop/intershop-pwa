@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { NotFoundStatusGuard } from 'ish-core/guards/not-found-status.guard';
 import { matchCategoryRoute } from 'ish-core/routing/category/category.route';
 import { matchProductRoute } from 'ish-core/routing/product/product.route';
+import { ErrorPageComponent } from 'ish-shell/error/error-page/error-page.component';
 
 const routes: Routes = [
   {
@@ -17,12 +18,14 @@ const routes: Routes = [
   {
     path: '**',
     canActivate: [NotFoundStatusGuard],
-    loadChildren: () => import('./error/error-page.module').then(m => m.ErrorPageModule),
+    component: ErrorPageComponent,
     data: {
       meta: {
         title: 'seo.title.error',
         robots: 'noindex, nofollow',
       },
+      wrapperClass: 'errorpage',
+      headerType: 'simple',
     },
   },
 ];

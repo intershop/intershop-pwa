@@ -3,10 +3,10 @@ import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
+import { ErrorComponent } from 'ish-shell/error/error/error.component';
+import { ServerErrorComponent } from 'ish-shell/error/server-error/server-error.component';
 
 import { ErrorPageComponent } from './error-page.component';
-import { ErrorComponent } from './error/error.component';
-import { ServerErrorComponent } from './server-error/server-error.component';
 
 describe('Error Page Component', () => {
   let component: ErrorPageComponent;

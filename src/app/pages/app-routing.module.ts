@@ -7,6 +7,7 @@ import { IdentityProviderInviteGuard } from 'ish-core/guards/identity-provider-i
 import { IdentityProviderLoginGuard } from 'ish-core/guards/identity-provider-login.guard';
 import { IdentityProviderLogoutGuard } from 'ish-core/guards/identity-provider-logout.guard';
 import { IdentityProviderRegisterGuard } from 'ish-core/guards/identity-provider-register.guard';
+import { ErrorPageComponent } from 'ish-shell/error/error-page/error-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -23,12 +24,14 @@ const routes: Routes = [
   },
   {
     path: 'error',
-    loadChildren: () => import('./error/error-page.module').then(m => m.ErrorPageModule),
+    component: ErrorPageComponent,
     data: {
       meta: {
         title: 'seo.title.error',
         robots: 'noindex, nofollow',
       },
+      wrapperClass: 'errorpage',
+      headerType: 'simple',
     },
   },
   {

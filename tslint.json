@@ -601,7 +601,7 @@
           // allow only app related content directly in src/app
           "^.*/src/app/app[\\w\\.\\-]+\\.ts$",
           // application shell
-          "^.*/src/app/shell/(header|footer|application)/(<name>)/\\2\\.component(<theme>)?\\.ts$",
+          "^.*/src/app/shell/(header|footer|application|error)/(<name>)/\\2\\.component(<theme>)?\\.ts$",
           "^.*/src/app/shell/<name>/configurations/.*\\.ts$",
           // specific (lazy loaded) page modules
           "^.*(/src/app|/src/app/extensions/<name>|projects/<name>/src/app)/pages/(<name>)/\\2-page\\.(module|component|guard)(<theme>)?\\.ts$",
@@ -648,6 +648,10 @@
           {
             "name": "^(App.*Routing)Module$",
             "file": "src/app/pages/<kebab>\\.module(<theme>)?\\.ts$"
+          },
+          {
+            "name": "^ErrorPageComponent$",
+            "file": ".*/src/app/shell/error/error-page/error-page\\.component(<theme>)?\\.ts$"
           },
           // cms
           {

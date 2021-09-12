@@ -2,12 +2,12 @@
   <h1>{{ 'error.page.title' | translate }}</h1>
   <div class="error-text" [ishServerHtml]="'error.page.text' | translate"></div>
   <div class="search-container error-search-container">
-    <ish-search-box
+    <ish-lazy-search-box
       [configuration]="{
         placeholder: 'search.searchbox.instructional_text' | translate,
         autoSuggest: true,
         maxAutoSuggests: 10
       }"
-    ></ish-search-box>
+    ></ish-lazy-search-box>
   </div>
 </div>
