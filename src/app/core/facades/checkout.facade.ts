@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Store, createSelector, select } from '@ngrx/store';
 import { Subject, combineLatest, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, sample, switchMap, take, tap } from 'rxjs/operators';
@@ -56,14 +57,16 @@ import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 export class CheckoutFacade {
   private basketChangeInternal$ = new Subject<void>();
 
-  constructor(private store: Store) {
-    this.store
-      .pipe(
-        select(getBasketLastTimeProductAdded),
-        whenTruthy(),
-        sample(this.basketLoading$.pipe(debounceTime(500), whenFalsy()))
-      )
-      .subscribe(() => this.basketChangeInternal$.next());
+  constructor(private store: Store, @Inject(PLATFORM_ID) platformId: string) {
+    if (isPlatformBrowser(platformId)) {
+      this.store
+        .pipe(
+          select(getBasketLastTimeProductAdded),
+          whenTruthy(),
+          sample(this.basketLoading$.pipe(debounceTime(500), whenFalsy()))
+        )
+        .subscribe(() => this.basketChangeInternal$.next());
+    }
   }
 
   checkoutStep$ = this.store.pipe(select(selectRouteData<number>('checkoutStep')));
