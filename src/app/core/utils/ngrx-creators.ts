@@ -1,4 +1,5 @@
-import { on } from '@ngrx/store';
+import { ActionCreator, createAction, on } from '@ngrx/store';
+import { TypedAction } from '@ngrx/store/src/models';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
@@ -51,4 +52,22 @@ export function setErrorOn<S = any>(...actionCreators: any) {
     loading: calculateLoading(state),
   });
   return on<S, any>(...actionCreators, stateFnc);
+}
+
+/**
+ * @example const [ loadData, loadDataSuccess, loadDataError ] = createHTTPActions<Parameters, ResponseData, ResponseError>('[Some Component] Load Data');
+ * @param actionType
+ */
+export function createHTTPActions<RequestPayload = void, ResponsePayload = void, ErrorPayload = HttpError>(
+  actionType: string
+): [
+  ActionCreator<string, (props?: RequestPayload) => { requestPayload: RequestPayload } & TypedAction<string>>,
+  ActionCreator<string, (props?: ResponsePayload) => { responsePayload: ResponsePayload } & TypedAction<string>>,
+  ActionCreator<string, (props?: ErrorPayload) => { errorPayload: ErrorPayload } & TypedAction<string>>
+] {
+  return [
+    createAction(actionType, (requestPayload: RequestPayload) => ({ requestPayload })),
+    createAction(`${actionType} Success`, (responsePayload?: ResponsePayload) => ({ responsePayload })),
+    createAction(`${actionType} Error`, (errorPayload: ErrorPayload) => ({ errorPayload })),
+  ];
 }
