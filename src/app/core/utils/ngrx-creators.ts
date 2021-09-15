@@ -55,19 +55,19 @@ export function setErrorOn<S = any>(...actionCreators: any) {
 }
 
 /**
- * @example const [ loadData, loadDataSuccess, loadDataError ] = createHTTPActions<Parameters, ResponseData, ResponseError>('[Some Component] Load Data');
+ * @example const [ loadData, loadDataSuccess, loadDataFail ] = createHTTPActions<Parameters, ResponseData, HttpError>('[Some Component] Load Data');
  * @param actionType
  */
 export function createHTTPActions<RequestPayload = void, ResponsePayload = void, ErrorPayload = HttpError>(
   actionType: string
 ): [
-  ActionCreator<string, (props?: RequestPayload) => { requestPayload: RequestPayload } & TypedAction<string>>,
-  ActionCreator<string, (props?: ResponsePayload) => { responsePayload: ResponsePayload } & TypedAction<string>>,
-  ActionCreator<string, (props?: ErrorPayload) => { errorPayload: ErrorPayload } & TypedAction<string>>
+  ActionCreator<string, (props?: RequestPayload) => { payload: RequestPayload } & TypedAction<string>>,
+  ActionCreator<string, (props?: ResponsePayload) => { payload: ResponsePayload } & TypedAction<string>>,
+  ActionCreator<string, (props?: ErrorPayload) => { payload: ErrorPayload } & TypedAction<string>>
 ] {
   return [
-    createAction(actionType, (requestPayload: RequestPayload) => ({ requestPayload })),
-    createAction(`${actionType} Success`, (responsePayload?: ResponsePayload) => ({ responsePayload })),
-    createAction(`${actionType} Error`, (errorPayload: ErrorPayload) => ({ errorPayload })),
+    createAction(actionType, (requestPayload: RequestPayload) => ({ payload: requestPayload })),
+    createAction(`${actionType} Success`, (responsePayload: ResponsePayload) => ({ payload: responsePayload })),
+    createAction(`${actionType} Fail`, (errorPayload: ErrorPayload) => ({ payload: errorPayload })),
   ];
 }
