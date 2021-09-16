@@ -26,8 +26,8 @@
 
         add_header X-Cache-Status $upstream_cache_status;
         proxy_ignore_headers Cache-Control;
-        proxy_cache_valid 200 302 10m;
-        proxy_cache_valid 404     60m;
+        proxy_cache_valid 200 302 {{ getenv "CACHE_DURATION_NGINX_OK" }};
+        proxy_cache_valid 404     {{ getenv "CACHE_DURATION_NGINX_NF" }};
 
         add_header X-icm-channel {{ $channel }} always;
         add_header X-icm-default-lang {{ $lang }} always;

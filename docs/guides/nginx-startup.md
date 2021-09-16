@@ -80,10 +80,13 @@ A file named `<feature>.conf` is included if the environment variable `<feature>
 The feature is disabled otherwise and an optional file `<feature>-off.conf` is included in the configuration.
 The feature name must be all word-characters (letters, numbers and underscore).
 
-### Disabling Cache
+### Cache
 
 If the cache feature is switched off, all caching for pre-rendered pages is disabled.
 If the cache should also be disabled for static resources, the page speed feature has to be switched off as well as it caches optimized images individually.
+
+The cache duration for pre-rendered pages can be customized using `CACHE_DURATION_NGINX_OK` (for successful responses) and `CACHE_DURATION_NGINX_NF` (for 404 responses).
+The value supplied must be in the `time` format that is supported by [nginx proxy_cache_valid](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_valid)
 
 # Further References
 

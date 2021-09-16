@@ -23,7 +23,16 @@ COPY --from=buildstep /usr/local/nginx /usr/local/nginx
 COPY --from=nginx/nginx-prometheus-exporter:0.9.0 /usr/bin/nginx-prometheus-exporter /nginx-prometheus-exporter
 COPY --from=configstep / /
 RUN chmod 777 /gomplate
-ENV NPSC_ENABLE_FILTERS=in_place_optimize_for_browser,prioritize_critical_css,inline_preview_images,lazyload_images,rewrite_images,rewrite_css,remove_comments,move_css_to_head,move_css_above_scripts,collapse_whitespace,combine_javascript,extend_cache NPSC_JsPreserveURLs=off NPSC_ImagePreserveURLs=on NPSC_ForceCaching=off CACHE=on COMPRESSION=on PAGESPEED=on DEVICE_DETECTION=on
+ENV NPSC_ENABLE_FILTERS=in_place_optimize_for_browser,prioritize_critical_css,inline_preview_images,lazyload_images,rewrite_images,rewrite_css,remove_comments,move_css_to_head,move_css_above_scripts,collapse_whitespace,combine_javascript,extend_cache
+ENV NPSC_JsPreserveURLs=off
+ENV NPSC_ImagePreserveURLs=on
+ENV NPSC_ForceCaching=off
+ENV CACHE=on
+ENV COMPRESSION=on
+ENV PAGESPEED=on
+ENV DEVICE_DETECTION=on
+ENV CACHE_DURATION_NGINX_OK=10m
+ENV CACHE_DURATION_NGINX_NF=60m
 
 EXPOSE 80 443 9113
 
