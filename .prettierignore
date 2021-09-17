@@ -21,6 +21,7 @@
 *.crt
 *.key
 .*ignore
+.husky
 .gitattributes
 .editorconfig
 .createMockdata.table
