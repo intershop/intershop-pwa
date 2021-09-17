@@ -1,0 +1,8 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+if git diff-tree -r --name-only --no-commit-id $1 $2 | grep -q package.json
+then
+  git clean -xdf src/**/lazy-* projects/**/lazy-*
+  npm install
+fi
