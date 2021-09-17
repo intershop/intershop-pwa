@@ -2,7 +2,6 @@ const { execSync, spawnSync } = require('child_process');
 
 const pinned = {
   bootstrap: '4', // pinned
-  husky: '4', // 5 has a strange license
   '@types/node': '14', // LTS
   '@rx-angular/state': '1.4.3', // peer dependency to rxjs 7 currently not working
   '@compodoc/compodoc': '1.1.13', // 1.1.14 results in errors
