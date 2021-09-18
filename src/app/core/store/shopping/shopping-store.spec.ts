@@ -73,9 +73,6 @@ describe('Shopping Store', () => {
     } as Promotion;
 
     categoriesServiceMock = mock(CategoriesService);
-    when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(
-      of(categoryTree([catA, catA123, catB].map(c => ({ ...c, completenessLevel: 0 }))))
-    );
     when(categoriesServiceMock.getCategory(anything())).thenCall(uniqueId => {
       switch (uniqueId) {
         case 'A':
@@ -90,12 +87,19 @@ describe('Shopping Store', () => {
         case 'A.123':
           return of(
             categoryTree([
+              { ...catA, completenessLevel: 0 },
               { ...catA123, completenessLevel: CategoryCompletenessLevel.Max },
               { ...catA123456, completenessLevel: 1 },
             ])
           );
         case 'A.123.456':
-          return of(categoryTree([{ ...catA123456, completenessLevel: CategoryCompletenessLevel.Max }]));
+          return of(
+            categoryTree([
+              { ...catA, completenessLevel: 0 },
+              { ...catA123, completenessLevel: 0 },
+              { ...catA123456, completenessLevel: CategoryCompletenessLevel.Max },
+            ])
+          );
         default:
           return throwError(makeHttpError({ message: `error loading category ${uniqueId}` }));
       }
@@ -224,9 +228,9 @@ describe('Shopping Store', () => {
       it('should load necessary data when going to a category page', fakeAsync(() => {
         expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
           Array [
+            "A",
             "A.123",
             "A.123.456",
-            "A",
           ]
         `);
         expect(getProductIds(store.state)).toBeEmpty();
@@ -239,13 +243,7 @@ describe('Shopping Store', () => {
           [Categories Internal] Load Category:
             categoryId: "A.123"
           [Categories API] Load Category Success:
-            categories: tree(A.123,A.123.456)
-          [Categories Internal] Load Category:
-            categoryId: "A"
-          [Viewconf Internal] Set Breadcrumb Data:
-            breadcrumbData: [{"text":"nA123"}]
-          [Categories API] Load Category Success:
-            categories: tree(A,A.123)
+            categories: tree(A,A.123,A.123.456)
           [Viewconf Internal] Set Breadcrumb Data:
             breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123"}]
           @ngrx/router-store/navigated: /category/A.123
@@ -352,9 +350,9 @@ describe('Shopping Store', () => {
     it('should load necessary data when going to a category page', fakeAsync(() => {
       expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
         Array [
+          "A",
           "A.123",
           "A.123.456",
-          "A",
         ]
       `);
       expect(getProductIds(store.state)).toBeEmpty();
@@ -367,11 +365,7 @@ describe('Shopping Store', () => {
         [Categories Internal] Load Category:
           categoryId: "A.123"
         [Categories API] Load Category Success:
-          categories: tree(A.123,A.123.456)
-        [Categories Internal] Load Category:
-          categoryId: "A"
-        [Categories API] Load Category Success:
-          categories: tree(A,A.123)
+          categories: tree(A,A.123,A.123.456)
         @ngrx/router-store/navigated: /category/A.123
         [Viewconf Internal] Set Breadcrumb Data:
           breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123"}]
@@ -388,9 +382,9 @@ describe('Shopping Store', () => {
       it('should not load anything additionally when going to compare page', fakeAsync(() => {
         expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
           Array [
+            "A",
             "A.123",
             "A.123.456",
-            "A",
           ]
         `);
         expect(getProductIds(store.state)).toBeEmpty();
@@ -420,9 +414,9 @@ describe('Shopping Store', () => {
     it('should load all products and required categories when going to a family page', fakeAsync(() => {
       expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
           Array [
-            "A.123.456",
             "A",
             "A.123",
+            "A.123.456",
           ]
         `);
       expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
@@ -435,15 +429,7 @@ describe('Shopping Store', () => {
         [Categories Internal] Load Category:
           categoryId: "A.123.456"
         [Categories API] Load Category Success:
-          categories: tree(A.123.456)
-        [Categories Internal] Load Category:
-          categoryId: "A"
-        [Categories Internal] Load Category:
-          categoryId: "A.123"
-        [Categories API] Load Category Success:
-          categories: tree(A,A.123)
-        [Categories API] Load Category Success:
-          categories: tree(A.123,A.123.456)
+          categories: tree(A,A.123,A.123.456)
         @ngrx/router-store/navigated: /category/A.123.456
         [Product Listing] Load More Products:
           id: {"type":"category","value":"A.123.456"}
@@ -616,9 +602,9 @@ describe('Shopping Store', () => {
       it('should not load anything additionally when going to compare page', fakeAsync(() => {
         expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
           Array [
-            "A.123.456",
             "A",
             "A.123",
+            "A.123.456",
           ]
         `);
         expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
@@ -648,9 +634,9 @@ describe('Shopping Store', () => {
     it('should load the product and its required categories when going to a product page', fakeAsync(() => {
       expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
           Array [
-            "A.123.456",
             "A",
             "A.123",
+            "A.123.456",
           ]
         `);
       expect(getProductIds(store.state)).toEqual(['P1']);
@@ -663,19 +649,11 @@ describe('Shopping Store', () => {
         [Categories Internal] Load Category:
           categoryId: "A.123.456"
         [Categories API] Load Category Success:
-          categories: tree(A.123.456)
+          categories: tree(A,A.123,A.123.456)
         [Products Internal] Load Product:
           sku: "P1"
-        [Categories Internal] Load Category:
-          categoryId: "A"
-        [Categories Internal] Load Category:
-          categoryId: "A.123"
         [Products API] Load Product Success:
           product: {"sku":"P1","name":"nP1"}
-        [Categories API] Load Category Success:
-          categories: tree(A,A.123)
-        [Categories API] Load Category Success:
-          categories: tree(A.123,A.123.456)
         [Recently Viewed Internal] Add Product to Recently:
           sku: "P1"
           group: undefined
@@ -697,9 +675,9 @@ describe('Shopping Store', () => {
       it('should load the sibling products when they are not yet loaded', fakeAsync(() => {
         expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
           Array [
-            "A.123.456",
             "A",
             "A.123",
+            "A.123.456",
           ]
         `);
         expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
@@ -758,9 +736,9 @@ describe('Shopping Store', () => {
       it('should not load anything additionally when going to compare page', fakeAsync(() => {
         expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
           Array [
-            "A.123.456",
             "A",
             "A.123",
+            "A.123.456",
           ]
         `);
         expect(getProductIds(store.state)).toEqual(['P1']);
@@ -843,9 +821,9 @@ describe('Shopping Store', () => {
     it('should load only family page content and redirect to error when product was not found', fakeAsync(() => {
       expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
         Array [
-          "A.123.456",
           "A",
           "A.123",
+          "A.123.456",
         ]
       `);
       expect(getProductIds(store.state)).toBeEmpty();
@@ -858,20 +836,12 @@ describe('Shopping Store', () => {
         [Categories Internal] Load Category:
           categoryId: "A.123.456"
         [Categories API] Load Category Success:
-          categories: tree(A.123.456)
+          categories: tree(A,A.123,A.123.456)
         [Products Internal] Load Product:
           sku: "P3"
-        [Categories Internal] Load Category:
-          categoryId: "A"
-        [Categories Internal] Load Category:
-          categoryId: "A.123"
         [Products API] Load Product Fail:
           error: {"name":"HttpErrorResponse","message":"error loading product...
           sku: "P3"
-        [Categories API] Load Category Success:
-          categories: tree(A,A.123)
-        [Categories API] Load Category Success:
-          categories: tree(A.123,A.123.456)
         @ngrx/router-store/cancel: /category/A.123.456/product/P3
         @ngrx/router-store/request: /error
         @ngrx/router-store/navigation: /error
