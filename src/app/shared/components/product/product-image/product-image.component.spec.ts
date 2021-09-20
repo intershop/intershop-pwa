@@ -55,7 +55,7 @@ describe('Product Image Component', () => {
     fixture.detectChanges();
     expect(element.querySelector('img')?.attributes).toMatchInlineSnapshot(`
       NamedNodeMap {
-        "alt": " product photo",
+        "alt": "product photo",
         "class": "product-image",
         "itemprop": "image",
         "src": "/assets/img/not_available.png",
@@ -80,7 +80,7 @@ describe('Product Image Component', () => {
     fixture.detectChanges();
     expect(element.querySelector('img')?.attributes).toMatchInlineSnapshot(`
       NamedNodeMap {
-        "alt": " product photo",
+        "alt": "product photo",
         "class": "product-image",
         "data-type": "S",
         "data-view": "front",
@@ -107,41 +107,41 @@ describe('Product Image Component', () => {
     );
 
     fixture.detectChanges();
-    expect(element.querySelector('img').getAttribute('src')).toBe('/assets/img/not_available.png');
+    expect(element.querySelector('img').getAttribute('src')).toMatchInlineSnapshot(`"/assets/img/not_available.png"`);
   });
 
   describe('image alt attribute', () => {
     it('should render if altText set as input parameter', () => {
       component.altText = 'test';
       fixture.detectChanges();
-      expect(element.querySelector('img').getAttribute('alt')).toBe('test');
+      expect(element.querySelector('img').getAttribute('alt')).toMatchInlineSnapshot(`"test"`);
     });
 
     it('should render default text if product information is still undefined', () => {
       when(context.select('product')).thenReturn(of(undefined));
       fixture.detectChanges();
-      expect(element.querySelector('img').getAttribute('alt')).toBe(' product photo');
+      expect(element.querySelector('img').getAttribute('alt')).toMatchInlineSnapshot(`"product photo"`);
     });
 
     it('should show product name when product name available', () => {
       when(context.select('product')).thenReturn(of({ name: 'Lenco', sku: '1234' } as ProductView));
 
       fixture.detectChanges();
-      expect(element.querySelector('img').getAttribute('alt')).toBe('Lenco product photo');
+      expect(element.querySelector('img').getAttribute('alt')).toMatchInlineSnapshot(`"Lenco product photo"`);
     });
 
     it('should show product sku when product name not available', () => {
       when(context.select('product')).thenReturn(of({ sku: '1234' } as ProductView));
 
       fixture.detectChanges();
-      expect(element.querySelector('img').getAttribute('alt')).toBe('1234 product photo');
+      expect(element.querySelector('img').getAttribute('alt')).toMatchInlineSnapshot(`"1234 product photo"`);
     });
 
     it('should append imageView when image view is available and altText parameter not set', () => {
       component.imageView = 'front';
 
       fixture.detectChanges();
-      expect(element.querySelector('img').getAttribute('alt')).toContain('front S');
+      expect(element.querySelector('img').getAttribute('alt')).toMatchInlineSnapshot(`"product photo front S"`);
     });
   });
 
