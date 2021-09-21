@@ -21,7 +21,7 @@ export function appendFormParamsToHttpParams(
   return object
     ? Object.entries(object)
         .filter(([, value]) => Array.isArray(value) && value.length)
-        .reduce((p, [key, val]) => p.set(decodeURI(key), val.map(decodeURI).join(separator)), params)
+        .reduce((p, [key, val]) => p.set(decodeURIComponent(key), val.map(decodeURIComponent).join(separator)), params)
     : params;
 }
 
