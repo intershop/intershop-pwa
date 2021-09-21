@@ -49,7 +49,7 @@ export class ProductQuantityComponent implements OnInit {
   }
 
   private setValue(value: number) {
-    this.context.set('quantity', () => value);
+    this.context.set('quantity', () => Math.abs(value));
   }
 
   private setNextValue(value: number) {
