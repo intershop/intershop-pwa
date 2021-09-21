@@ -28,6 +28,10 @@
         proxy_ignore_headers Cache-Control;
         proxy_cache_valid 200 302 {{ getenv "CACHE_DURATION_NGINX_OK" }};
         proxy_cache_valid 404     {{ getenv "CACHE_DURATION_NGINX_NF" }};
+        # for debugging, just to ensure that $c_uri is correct
+        add_header X-CACHE-KEY $c_uri;
+        # set $c_uri as cache_key
+        proxy_cache_key $c_uri;
 
         add_header X-icm-channel {{ $channel }} always;
         add_header X-icm-default-lang {{ $lang }} always;
@@ -65,6 +69,26 @@ server {
   {{ else }}
     listen 80;
   {{- end }}
+
+    set $c_uri $args;
+
+  {{ range (datasource "cachingIgnoreParams").params }}
+    if ($c_uri ~ (.*)(?:&|^){{ . }}=[^&]*(.*)) { set $c_uri $1$2 ; }
+  {{ end }}
+
+  if ($c_uri ~ ^&(.*)) {
+    set $c_uri $1;
+  }
+
+  set $c_uri $is_args$c_uri;
+
+  if ($c_uri ~ ^\?$) {
+      set $c_uri "";
+  }
+
+  # finally we have stripped out utms and has nice cache key
+  set $c_uri $scheme://$host$uri$c_uri;
+
   {{ if getenv "DEBUG" | strings.ToLower | regexp.Match "on|1|true|yes" }}
     error_log /dev/stdout notice;
     rewrite_log on;

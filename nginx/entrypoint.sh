@@ -24,7 +24,7 @@ then
   fi
 fi
 
-/gomplate -d "domains=$MULTI_CHANNEL_SOURCE" -d 'ipwhitelist=env:///BASIC_AUTH_IP_WHITELIST?type=application/yaml' </etc/nginx/conf.d/channel.conf.tmpl >/etc/nginx/conf.d/multi-channel.conf
+/gomplate -d "domains=$MULTI_CHANNEL_SOURCE" -d "cachingIgnoreParams=./caching-ignore-params.yaml" -d 'ipwhitelist=env:///BASIC_AUTH_IP_WHITELIST?type=application/yaml' </etc/nginx/conf.d/channel.conf.tmpl >/etc/nginx/conf.d/multi-channel.conf
 
 # Generate Pagespeed config based on environment variables
 env | grep NPSC_ | sed -e 's/^NPSC_//g' -e "s/\([A-Z_]*\)=/\L\1=/g" -e "s/_\([a-zA-Z]\)/\u\1/g" -e "s/^\([a-zA-Z]\)/\u\1/g" -e 's/=.*$//' -e 's/\=/ /' -e 's/^/\pagespeed /' > /tmp/pagespeed-prefix.txt
