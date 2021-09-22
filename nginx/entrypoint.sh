@@ -26,21 +26,15 @@ fi
 
 if [ -z "$CACHING_IGNORE_PARAMS_SOURCE"]
 then
-  echo "no cip source"
   if [ -z "$CACHING_IGNORE_PARAMS"]
   then
-    echo "no cip"
     CACHING_IGNORE_PARAMS_SOURCE="./caching-ignore-params.yaml"
   else
-    echo "yes cip"
     CACHING_IGNORE_PARAMS_SOURCE="env:///CACHING_IGNORE_PARAMS?type=application/yaml"
   fi
 fi
 
 /gomplate -d "domains=$MULTI_CHANNEL_SOURCE" -d "cachingIgnoreParams=$CACHING_IGNORE_PARAMS_SOURCE" -d 'ipwhitelist=env:///BASIC_AUTH_IP_WHITELIST?type=application/yaml' --input-dir="/etc/nginx/templates" --output-map='/etc/nginx/conf.d/{{ .in | strings.ReplaceAll ".conf.tmpl" ".conf" }}'
-ls etc/nginx/templates
-echo "--"
-ls etc/nginx/conf.d
 
 # Generate Pagespeed config based on environment variables
 env | grep NPSC_ | sed -e 's/^NPSC_//g' -e "s/\([A-Z_]*\)=/\L\1=/g" -e "s/_\([a-zA-Z]\)/\u\1/g" -e "s/^\([a-zA-Z]\)/\u\1/g" -e 's/=.*$//' -e 's/\=/ /' -e 's/^/\pagespeed /' > /tmp/pagespeed-prefix.txt
