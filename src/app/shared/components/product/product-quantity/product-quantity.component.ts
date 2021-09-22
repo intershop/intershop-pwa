@@ -49,7 +49,7 @@ export class ProductQuantityComponent implements OnInit {
   }
 
   private setValue(value: number) {
-    this.context.set('quantity', () => Math.abs(value));
+    this.context.set('quantity', () => value);
   }
 
   private setNextValue(value: number) {
@@ -69,5 +69,21 @@ export class ProductQuantityComponent implements OnInit {
 
   change(target: EventTarget) {
     this.setValue(Number.parseInt((target as HTMLDataElement).value, 10));
+  }
+
+  input(event: Event) {
+    const inputEvent = event as InputEvent;
+    const inputData = inputEvent.data;
+    const inputField = inputEvent.target as HTMLInputElement;
+    const allowed = /^[^0-9]*$/;
+    if (inputData !== null && allowed.test(inputData)) {
+      inputField.value = `${this.context.get('quantity')}`;
+    }
+  }
+
+  paste(event: Event) {
+    const clipboardData = (event as ClipboardEvent).clipboardData.getData('text');
+    const allowed = /^[0-9]*$/;
+    return allowed.test(clipboardData);
   }
 }

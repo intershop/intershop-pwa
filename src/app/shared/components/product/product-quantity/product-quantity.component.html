@@ -13,12 +13,15 @@
         [id]="id"
         data-testing-id="quantity"
         type="number"
+        pattern="[0-9]*"
         [value]="quantity$ | async"
         [min]="min$ | async"
         [max]="max$ | async"
         [step]="step$ | async"
         (change)="change($event.target)"
         (keyup)="change($event.target)"
+        (input)="input($event)"
+        (paste)="paste($event)"
       />
     </ng-template>
     <ng-template ngSwitchDefault>
@@ -50,12 +53,15 @@
           [id]="id"
           data-testing-id="quantity"
           type="number"
+          pattern="[0-9]*"
           [value]="quantity$ | async"
           [min]="min$ | async"
           [max]="max$ | async"
           [step]="step$ | async"
           (change)="change($event.target)"
           (keyup)="change($event.target)"
+          (input)="input($event)"
+          (paste)="paste($event)"
         />
       </div>
     </ng-template>
