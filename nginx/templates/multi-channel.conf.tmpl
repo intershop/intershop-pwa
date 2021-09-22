@@ -70,24 +70,7 @@ server {
     listen 80;
   {{- end }}
 
-    set $c_uri $args;
-
-  {{ range (datasource "cachingIgnoreParams").params }}
-    if ($c_uri ~ (.*)(?:&|^){{ . }}=[^&]*(.*)) { set $c_uri $1$2 ; }
-  {{ end }}
-
-  if ($c_uri ~ ^&(.*)) {
-    set $c_uri $1;
-  }
-
-  set $c_uri $is_args$c_uri;
-
-  if ($c_uri ~ ^\?$) {
-      set $c_uri "";
-  }
-
-  # finally we have stripped out utms and has nice cache key
-  set $c_uri $scheme://$host$uri$c_uri;
+   include /etc/nginx/conf.d/cache-blacklist.conf;
 
   {{ if getenv "DEBUG" | strings.ToLower | regexp.Match "on|1|true|yes" }}
     error_log /dev/stdout notice;

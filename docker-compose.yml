@@ -69,3 +69,7 @@ services:
           - baseHref: /b2b
             channel: default
             theme: blue
+      CACHING_IGNORE_PARAMS: |
+        params:
+          - aaa
+          - bbb
