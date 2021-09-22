@@ -28,8 +28,6 @@
         proxy_ignore_headers Cache-Control;
         proxy_cache_valid 200 302 {{ getenv "CACHE_DURATION_NGINX_OK" }};
         proxy_cache_valid 404     {{ getenv "CACHE_DURATION_NGINX_NF" }};
-        # for debugging, just to ensure that $c_uri is correct
-        add_header X-CACHE-KEY $c_uri;
         # set $c_uri as cache_key
         proxy_cache_key $c_uri;
 
@@ -69,6 +67,9 @@ server {
   {{ else }}
     listen 80;
   {{- end }}
+
+   # ensure $c_uri is set
+   set $c_uri $args;
 
    include /etc/nginx/conf.d/cache-blacklist.conf;
 
