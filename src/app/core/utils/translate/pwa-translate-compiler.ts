@@ -7,6 +7,8 @@ import { Translations } from './translations.type';
 export class PWATranslateCompiler implements TranslateCompiler {
   constructor(private injector: Injector) {}
 
+  private static MAX_COMPILATION_LENGTH = 1000;
+
   /**
    * regular expression for grabbing everything in the form:
    * {{<variable>, plural/select, <case>...<case>}}
@@ -114,7 +116,7 @@ export class PWATranslateCompiler implements TranslateCompiler {
   }
 
   private sanityCheck(key: string, value: string | Function): boolean {
-    const sane = typeof value !== 'string' || value.length <= 1000;
+    const sane = typeof value !== 'string' || value.length <= PWATranslateCompiler.MAX_COMPILATION_LENGTH;
     if (isDevMode() && !sane) {
       console.warn(
         'Not compiling translation with key',
