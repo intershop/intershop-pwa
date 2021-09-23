@@ -67,7 +67,8 @@ These parameters can lead to inefficient caching because even if the same URL is
 To prevent this, you can define any number of blacklisted parameters that will be ignored by nginx during caching.
 
 As with multi-site handling above, the configuration can be supplied simply by setting the environment variable `CACHING_IGNORE_PARAMS`. <br>
-Alternatively, the source can be supplied by setting `CACHING_IGNORE_PARAMS_SOURCE` in any [supported format by gomplate](https://docs.gomplate.ca/datasources/). Be aware that the supplied list of parameters must be declared under a `params` property.
+Alternatively, the source can be supplied by setting `CACHING_IGNORE_PARAMS_SOURCE` in any [supported format by gomplate](https://docs.gomplate.ca/datasources/).
+Be aware that the supplied list of parameters must be declared under a `params` property.
 
 If no environment variables for ignoring parameters are given, the configuration will fall back to the content of [`nginx/caching-ignore-params.yaml`](../../nginx/caching-ignore-params.yaml), which can also be customized.
 
