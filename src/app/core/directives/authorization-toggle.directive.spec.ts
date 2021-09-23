@@ -9,6 +9,8 @@ import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module'
     <div *ishIsAuthorizedTo="'DO_THIS'">content1</div>
     <div *ishIsAuthorizedTo="'DO_THAT'">content2</div>
     <div *ishIsAuthorizedTo="dynamicPermission">content3</div>
+    <div *ishIsAuthorizedTo="['DO_THIS', 'DO_NOTHING']">content4</div>
+    <div *ishIsAuthorizedTo="['DO_THAT', 'DO_NOTHING']">content5</div>
   `,
   // Default change detection for dynamic permission test
   changeDetection: ChangeDetectionStrategy.Default,
@@ -40,10 +42,12 @@ describe('Authorization Toggle Directive', () => {
 
   it('should render content if permission is granted', () => {
     expect(element.textContent).toContain('content1');
+    expect(element.textContent).toContain('content4');
   });
 
   it('should not render content if not permitted', () => {
     expect(element.textContent).not.toContain('content2');
+    expect(element.textContent).not.toContain('content5');
   });
 
   it('should react on changing permissions in store', () => {

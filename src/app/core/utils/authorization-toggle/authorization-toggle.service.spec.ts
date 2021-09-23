@@ -24,12 +24,22 @@ describe('Authorization Toggle Service', () => {
   });
 
   describe('isAuthorizedTo', () => {
-    it('should return true if user has permission', () => {
+    it('should return true if user has a given permission', () => {
       expect(authorizationToggleService.isAuthorizedTo('DO_THIS')).toBeObservable(cold('a', { a: true }));
     });
 
-    it("should return false if user doesn't have permission", () => {
+    it('should return true if user has one of the given permissions', () => {
+      expect(authorizationToggleService.isAuthorizedTo(['DO_THAT', 'DO_THIS'])).toBeObservable(cold('a', { a: true }));
+    });
+
+    it("should return false if user doesn't have the given permission", () => {
       expect(authorizationToggleService.isAuthorizedTo('DO_THAT')).toBeObservable(cold('a', { a: false }));
+    });
+
+    it("should return false if user doesn't have any of the given permissions", () => {
+      expect(authorizationToggleService.isAuthorizedTo(['DO_THAT', 'DO_NOTHING'])).toBeObservable(
+        cold('a', { a: false })
+      );
     });
 
     it('should return shortcut true for permission "always"', () => {
