@@ -127,6 +127,7 @@ reports
 **/*spec.ts
 **/setupJest.*
 **/jest*
+**/__snapshots__
 
 .dockerignore
 Dockerfile*
