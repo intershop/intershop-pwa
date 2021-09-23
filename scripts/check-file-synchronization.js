@@ -1,6 +1,5 @@
 const synchronizations = {
   'pwa-docker-build': ['Dockerfile', 'Dockerfile_noSSR'],
-  'dist-scripts': ['.gitignore', '.dockerignore'],
 };
 
 const fs = require('fs');

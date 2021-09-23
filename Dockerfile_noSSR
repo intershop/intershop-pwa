@@ -1,18 +1,16 @@
 # synchronize-marker:pwa-docker-build:begin
 FROM node:14-alpine as buildstep
 WORKDIR /workspace
-COPY schematics /workspace/schematics/
 COPY package.json package-lock.json /workspace/
 RUN npm i --ignore-scripts
 RUN npm run ngcc
-RUN node node_modules/esbuild/install.js
-COPY projects/organization-management/src/app /workspace/projects/organization-management/src/app/
-COPY projects/requisition-management/src/app /workspace/projects/requisition-management/src/app/
-COPY src /workspace/src/
-COPY tsconfig.app.json tsconfig.app-no-checks.json tsconfig.json ngsw-config.json .browserslistrc angular.json /workspace/
-RUN npm run build:schematics && npm run synchronize-lazy-components -- --ci
+COPY tsconfig.app.json tsconfig.json ngsw-config.json .browserslistrc angular.json tslint.json /workspace/
+COPY tslint-rules /workspace/tslint-rules
+COPY schematics /workspace/schematics
+COPY projects /workspace/projects
+COPY src /workspace/src
 COPY scripts /workspace/scripts/
-RUN npm run init-development-environment -- --empty
+RUN npm run postinstall
 ARG serviceWorker
 RUN node schematics/customization/service-worker ${serviceWorker} || true
 COPY templates/webpack/* /workspace/templates/webpack/
