@@ -1,4 +1,4 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable, Injector, isDevMode } from '@angular/core';
 import { TranslateCompiler, TranslateService } from '@ngx-translate/core';
 
 import { Translations } from './translations.type';
@@ -8,6 +8,8 @@ const cache: Record<string, Function> = {};
 @Injectable()
 export class PWATranslateCompiler implements TranslateCompiler {
   constructor(private injector: Injector) {}
+
+  private static MAX_COMPILATION_LENGTH = 1000;
 
   /**
    * regular expression for grabbing everything in the form:
@@ -124,10 +126,22 @@ export class PWATranslateCompiler implements TranslateCompiler {
     return template;
   }
 
+  private sanityCheck(key: string, value: string | Function): boolean {
+    const sane = typeof value !== 'string' || value.length <= PWATranslateCompiler.MAX_COMPILATION_LENGTH;
+    if (isDevMode() && !sane) {
+      console.warn(
+        'Not compiling translation with key',
+        key,
+        'as it is too big! - Use CMS! - This is a development mode only warning and can be ignored if the behavior is intended.'
+      );
+    }
+    return sane;
+  }
+
   compileTranslations(translations: Translations): Translations {
     return Object.entries(translations)
       .map<[string, string | Function]>(([key, value]) => {
-        if (this.checkIfCompileNeeded(value)) {
+        if (this.sanityCheck(key, value) && this.checkIfCompileNeeded(value)) {
           return [key, this.compile(value as string)];
         }
         return [key, value];
