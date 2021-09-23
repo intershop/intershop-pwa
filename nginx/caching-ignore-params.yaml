@@ -1,34 +1,17 @@
 params:
-  - pd
-  - mid
-  - ml
-  - contact_eid
-  - utm_id
-  - opt
-  - utm_adgroup
-  - dclid
-  - utm_term
-  - gbraid
-  - tagId
-  - sponsor
-  - gclsrc
-  - mtime
-  - u
-  - _gac
-  - nomobile
-  - epik
-  - PageSpeed
-  - q
-  - sort
-  - tags
-  - page
-  - cmd
-  - userid
-  - token
   - utm_source
   - utm_campaign
   - utm_medium
   - utm_content
+  - utm_term
+  - utm_adgroup
+  - utm_id
   - gclid
-  - clickid
-  - n
+  - gclsrc
+  - dclid
+  - fbclid
+  - gbraid
+  - wbraid
+  - _gac
+  - _gcl
+  - epik

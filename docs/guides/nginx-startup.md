@@ -61,7 +61,7 @@ An extended list of examples can be found in the [Multi-Site Configurations](../
 
 ### Ignore parameters during caching
 
-Often, nginx receives requests from bots or various user agents that append unused query parameters when making a request, for example `gclid` from google's web crawlers. <br>
+Often, nginx receives requests from advertising networks or various user agents that append unused query parameters when making a request, for example `gclid` or `utm_source`. <br>
 These parameters can lead to inefficient caching because even if the same URL is requested multiple times, if it is accessed with different query parameters, the cached version will not be used.
 
 To prevent this, you can define any number of blacklisted parameters that will be ignored by nginx during caching.
