@@ -59,6 +59,7 @@ describe('Product Quantity Component', () => {
       <input
         class="form-control text-center"
         data-testing-id="quantity"
+        pattern="[0-9]*"
         type="number"
         id="ASDF"
         min="2"
@@ -81,6 +82,7 @@ describe('Product Quantity Component', () => {
       <input
         class="form-control"
         data-testing-id="quantity"
+        pattern="[0-9]*"
         type="number"
         id="ASDF"
         min="2"
