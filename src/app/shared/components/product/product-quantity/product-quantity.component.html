@@ -20,8 +20,6 @@
         [step]="step$ | async"
         (change)="change($event.target)"
         (keyup)="change($event.target)"
-        (input)="input($event)"
-        (paste)="paste($event)"
       />
     </ng-template>
     <ng-template ngSwitchDefault>
@@ -60,8 +58,6 @@
           [step]="step$ | async"
           (change)="change($event.target)"
           (keyup)="change($event.target)"
-          (input)="input($event)"
-          (paste)="paste($event)"
         />
       </div>
     </ng-template>
