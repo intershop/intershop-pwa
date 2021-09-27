@@ -7,13 +7,13 @@ import { concatMap, first, map, switchMap, take, withLatestFrom } from 'rxjs/ope
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Address } from 'ish-core/models/address/address.model';
-import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { CustomerData, CustomerType } from 'ish-core/models/customer/customer.interface';
 import { CustomerMapper } from 'ish-core/models/customer/customer.mapper';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update/password-reminder-update.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
+import { UserCostCenter } from 'ish-core/models/user-cost-center/user-cost-center.model';
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService, AvailableOptions, unpackEnvelope } from 'ish-core/services/api/api.service';
@@ -285,7 +285,7 @@ export class UserService {
    * Get cost center data for the logged in User of a Business Customer.
    * @returns The related cost center
    */
-  getEligibleCostCenters(): Observable<CostCenter[]> {
+  getEligibleCostCenters(): Observable<UserCostCenter[]> {
     return combineLatest([
       this.store.pipe(select(getLoggedInCustomer), whenTruthy()),
       this.store.pipe(select(getLoggedInUser), whenTruthy()),
@@ -296,7 +296,7 @@ export class UserService {
           .get(`customers/${customer.customerNo}/users/${encodeURIComponent(user.login)}/costcenters`)
           .pipe(
             unpackEnvelope(),
-            map((costCenters: CostCenter[]) => costCenters)
+            map((costCenters: UserCostCenter[]) => costCenters)
           )
       )
     );
