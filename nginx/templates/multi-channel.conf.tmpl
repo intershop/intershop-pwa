@@ -28,6 +28,8 @@
         proxy_ignore_headers Cache-Control;
         proxy_cache_valid 200 302 {{ getenv "CACHE_DURATION_NGINX_OK" }};
         proxy_cache_valid 404     {{ getenv "CACHE_DURATION_NGINX_NF" }};
+        # set $c_uri as cache_key
+        proxy_cache_key $c_uri;
 
         add_header X-icm-channel {{ $channel }} always;
         add_header X-icm-default-lang {{ $lang }} always;
@@ -65,6 +67,12 @@ server {
   {{ else }}
     listen 80;
   {{- end }}
+
+   # ensure $c_uri is set
+   set $c_uri $args;
+
+   include /etc/nginx/conf.d/cache-blacklist.conf;
+
   {{ if getenv "DEBUG" | strings.ToLower | regexp.Match "on|1|true|yes" }}
     error_log /dev/stdout notice;
     rewrite_log on;

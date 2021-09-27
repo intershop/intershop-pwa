@@ -59,6 +59,19 @@ If no environment variables for multi-channel configuration are given, the confi
 
 An extended list of examples can be found in the [Multi-Site Configurations](../guides/multi-site-configurations.md#Syntax) guide.
 
+### Ignore parameters during caching
+
+Often, nginx receives requests from advertising networks or various user agents that append unused query parameters when making a request, for example `gclid` or `utm_source`. <br>
+These parameters can lead to inefficient caching because even if the same URL is requested multiple times, if it is accessed with different query parameters, the cached version will not be used.
+
+To prevent this, you can define any number of blacklisted parameters that will be ignored by nginx during caching.
+
+As with multi-site handling above, the configuration can be supplied simply by setting the environment variable `CACHING_IGNORE_PARAMS`. <br>
+Alternatively, the source can be supplied by setting `CACHING_IGNORE_PARAMS_SOURCE` in any [supported format by gomplate](https://docs.gomplate.ca/datasources/).
+Be aware that the supplied list of parameters must be declared under a `params` property.
+
+If no environment variables for ignoring parameters are given, the configuration will fall back to the content of [`nginx/caching-ignore-params.yaml`](../../nginx/caching-ignore-params.yaml), which can also be customized.
+
 ### Other
 
 The page speed configuration can also be overridden:
