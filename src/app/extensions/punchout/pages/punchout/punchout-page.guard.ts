@@ -48,9 +48,9 @@ export class PunchoutPageGuard implements CanActivate {
       return this.router.parseUrl('/loading');
     }
 
+    this.identityProvider.getInstance().triggerLogout();
     // initiate the punchout user login with the access-token (cXML) or the given credentials (OCI)
     if (route.queryParamMap.has('access-token')) {
-      this.identityProvider.getInstance().triggerLogout();
       this.accountFacade.loginUserWithToken(route.queryParamMap.get('access-token'));
     } else {
       this.accountFacade.loginUser({
