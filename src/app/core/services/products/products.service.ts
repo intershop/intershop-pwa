@@ -1,7 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { defaultIfEmpty, map, switchMap } from 'rxjs/operators';
+import { catchError, defaultIfEmpty, map, switchMap } from 'rxjs/operators';
 
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
@@ -49,6 +49,17 @@ export class ProductsService {
     return this.apiService
       .get<ProductData>(`products/${sku}`, { params })
       .pipe(map(element => this.productMapper.fromData(element)));
+  }
+
+  getProducts(skus: string[]): Observable<Product[]> {
+    return this.apiService
+      .get(`products`, { params: new HttpParams().set('skus', skus.join(',')), skipApiErrorHandling: true })
+      .pipe(
+        unpackEnvelope<ProductData>(),
+        map(elements => elements.map(element => this.productMapper.fromData(element))),
+        // the API doesn't exist
+        catchError(() => of([]))
+      );
   }
 
   /**
