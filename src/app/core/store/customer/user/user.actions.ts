@@ -1,10 +1,10 @@
 import { createAction } from '@ngrx/store';
 
-import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { UserCostCenter } from 'ish-core/models/user-cost-center/user-cost-center.model';
 import { User } from 'ish-core/models/user/user.model';
 import { MessagesPayloadType } from 'ish-core/store/core/messages';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
@@ -77,7 +77,7 @@ export const loadUserCostCentersFail = createAction('[User API] Load User Cost C
 
 export const loadUserCostCentersSuccess = createAction(
   '[User API] Load User Cost Centers Success',
-  payload<{ costCenters: CostCenter[] }>()
+  payload<{ costCenters: UserCostCenter[] }>()
 );
 
 export const loadUserPaymentMethods = createAction('[User] Load User Payment Methods');

@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
-import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
+import { UserCostCenter } from 'ish-core/models/user-cost-center/user-cost-center.model';
 import {
   getBasketEligibleShippingMethods,
   getBasketLastTimeProductAdded,
@@ -68,7 +68,7 @@ describe('Checkout Facade', () => {
   });
 
   describe('Cost Centers', () => {
-    const mockCostCenters: CostCenter[] = [
+    const mockCostCenters: UserCostCenter[] = [
       {
         id: '1',
         name: 'Cost Center 1',
