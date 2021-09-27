@@ -50,6 +50,8 @@ services:
       # PROMETHEUS: 1
       # COMPRESSION: 0
       # DEVICE_DETECTION: 0
+      # CACHING_IGNORE_PARAMS: |
+      #   params:
       # MULTI_CHANNEL_SOURCE: env:///ASDF?type=application/yaml
       # BASIC_AUTH: 'developer:!InterShop00!'
       # BASIC_AUTH_IP_WHITELIST: |
@@ -69,5 +71,3 @@ services:
           - baseHref: /b2b
             channel: default
             theme: blue
-      # CACHING_IGNORE_PARAMS: |
-      #   params:

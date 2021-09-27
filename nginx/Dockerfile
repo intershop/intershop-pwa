@@ -9,7 +9,7 @@ COPY --from=nginx:mainline /etc/nginx /etc/nginx
 COPY nginx.conf /etc/nginx/
 COPY features /etc/nginx/features/
 COPY templates /etc/nginx/templates/
-COPY entrypoint.sh multi-channel.yaml caching-ignore-params.yaml /
+COPY entrypoint.sh *.yaml /
 COPY 50x.html /usr/share/nginx/html/
 ADD https://github.com/hairyhenderson/gomplate/releases/download/v3.8.0/gomplate_linux-amd64-slim /gomplate
 
