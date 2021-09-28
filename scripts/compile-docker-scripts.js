@@ -2,6 +2,23 @@ const webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
 const glob = require('glob');
+const fs = require('fs');
+
+const lockFile = JSON.parse(fs.readFileSync('./package-lock.json', { encoding: 'utf-8' }));
+fs.writeFileSync(
+  'dist/package.json',
+  JSON.stringify(
+    {
+      dependencies: {
+        pm2: lockFile.dependencies.pm2.version,
+        express: lockFile.dependencies.express.version,
+      },
+    },
+    undefined,
+    2
+  ),
+  { encoding: 'utf-8' }
+);
 
 glob.sync('./src/ssr/server-scripts/*.js').forEach(file => {
   console.log('compiling', file);
@@ -12,6 +29,7 @@ glob.sync('./src/ssr/server-scripts/*.js').forEach(file => {
       mode: 'production',
       externals: {
         pm2: 'commonjs pm2',
+        express: 'commonjs express',
       },
       optimization: {
         minimize: true,
