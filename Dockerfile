@@ -20,6 +20,8 @@ ENV TESTING=${testing}
 
 # ^ this part above is copied to Dockerfile_noSSR and should be kept in sync
 
+ARG activeThemes=
+RUN if [ ! -z "${activeThemes}" ]; then npm config set intershop-pwa:active-themes="${activeThemes}"; fi
 RUN npm run build:multi client -- --deploy-url=DEPLOY_URL_PLACEHOLDER
 COPY tsconfig.server.json server.ts /workspace/
 RUN npm run build:multi server

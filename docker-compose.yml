@@ -9,6 +9,8 @@ services:
       # dockerfile: Dockerfile_noSSR
       args:
         serviceWorker: 'false'
+        # activeThemes: default
+        # activeThemes: blue
     environment:
       - LOGGING=on
       - ICM_BASE_URL
