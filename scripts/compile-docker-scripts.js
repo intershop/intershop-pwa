@@ -4,6 +4,11 @@ const path = require('path');
 const glob = require('glob');
 const fs = require('fs');
 
+if (!fs.existsSync('src/ssr/server-scripts/ecosystem-ports.json')) {
+  console.error('ecosystem-ports.json not found. You have to execute "npm run build:multi" before.');
+  process.exit(1);
+}
+
 const lockFile = JSON.parse(fs.readFileSync('./package-lock.json', { encoding: 'utf-8' }));
 fs.writeFileSync(
   'dist/package.json',
