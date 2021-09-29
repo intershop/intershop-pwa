@@ -15,7 +15,7 @@ export class IdentityProviderLogoutGuard implements CanActivate {
     private accountFacade: AccountFacade
   ) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  canActivate() {
     return this.roleToggleService.hasRole(['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']).pipe(
       take(1),
       switchMap(isPunchout => {
