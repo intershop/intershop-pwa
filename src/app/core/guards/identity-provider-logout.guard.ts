@@ -23,7 +23,7 @@ export class IdentityProviderLogoutGuard implements CanActivate {
           this.accountFacade.logoutUser();
           return of(false);
         }
-        const logoutReturn$ = this.identityProviderFactory.getInstance().triggerLogout(route, state);
+        const logoutReturn$ = this.identityProviderFactory.getInstance().triggerLogout();
         return isObservable(logoutReturn$) || isPromise(logoutReturn$) ? logoutReturn$ : of(logoutReturn$);
       })
     );
