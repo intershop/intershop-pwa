@@ -1,7 +1,7 @@
 import { CustomWebpackBrowserSchema, TargetOptions } from '@angular-builders/custom-webpack';
 import * as fs from 'fs';
 import * as glob from 'glob';
-import { join, sep } from 'path';
+import { basename, join, sep } from 'path';
 import { Configuration, DefinePlugin, WebpackPluginInstance } from 'webpack';
 
 const purgecssPlugin = require('purgecss-webpack-plugin');
@@ -252,11 +252,44 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
   logger.log(`setting up replacements for "${theme}"`);
 
   crawlFiles(join(process.cwd()), files => {
-    const replacements = files
-      .filter(f => f.includes(`.${theme}.`) && !f.endsWith('.spec.ts'))
-      .map(replacement => ({
-        replacement,
-        original: availableThemes.reduce((acc, k) => acc.replace(`.${k}.`, '.'), replacement),
+    const themes = [...availableThemes, 'all'];
+
+    // sanity check preventing to use 'all' with other themes
+    files.forEach(f => {
+      const used = themes.filter(t => basename(f).includes(`.${t}.`));
+      if (used.length > 1 && used.includes('all')) {
+        throw new Error(`override for 'all' cannot be used next to other themes:\n  ${f}`);
+      }
+    });
+
+    // find original files and their possible replacements
+    const replacers = files
+      // filter for replaceable files
+      .filter(f => ['html', 'scss', 'ts'].some(ext => f.endsWith(ext)) && !f.endsWith('.spec.ts'))
+      .reduce<Record<string, string[]>>((acc, file) => {
+        // deduce original name
+        const original = themes.reduce((a, k) => a.replace(`.${k}.`, '.'), file);
+
+        // add possible replacements (current theme or 'all')
+        if (original !== file && [`.${theme}`, '.all.'].some(t => file.includes(t))) {
+          acc[original] = [...(acc[original] || []), file]
+            // sort replacements (theme should be prioritized, 'all' should come last)
+            .sort((a, b) => {
+              if (a.includes(`'${theme}.`) || b.includes('.all.')) {
+                return -1;
+              } else if (b.includes(`'${theme}.`) || a.includes('.all.')) {
+                return 1;
+              }
+              return 0;
+            });
+        }
+        return acc;
+      }, {});
+
+    const replacements = Object.entries(replacers)
+      .map(([original, overrides]) => ({
+        replacement: overrides[0],
+        original,
       }))
       .filter(replacement => files.includes(replacement.original));
 
