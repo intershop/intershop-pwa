@@ -9,7 +9,7 @@ import { mergeDeep } from 'ish-core/utils/functions';
 
 export const NGRX_STATE_SK = makeStateKey<object>('ngrxState');
 
-export const STATE_ACTION_TYPE = '[Internal] Import NgRx State';
+const STATE_ACTION_TYPE = '[Internal] Import NgRx State';
 
 let transferredState: object;
 

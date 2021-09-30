@@ -6,7 +6,6 @@ import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { defer, fromEvent, iif, merge } from 'rxjs';
 import {
-  distinct,
   distinctUntilChanged,
   map,
   mapTo,
@@ -23,20 +22,11 @@ import { NGRX_STATE_SK } from 'ish-core/configurations/ngrx-state-transfer';
 import { SSR_LOCALE } from 'ish-core/configurations/state-keys';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { LocalizationsService } from 'ish-core/services/localizations/localizations.service';
-import {
-  distinctCompareWith,
-  mapErrorToAction,
-  mapToPayload,
-  mapToPayloadProperty,
-  whenTruthy,
-} from 'ish-core/utils/operators';
+import { distinctCompareWith, mapToPayload, whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
 import {
   applyConfiguration,
-  loadServerTranslations,
-  loadServerTranslationsFail,
-  loadServerTranslationsSuccess,
   loadSingleServerTranslation,
   loadSingleServerTranslationSuccess,
 } from './configuration.actions';
@@ -155,20 +145,6 @@ export class ConfigurationEffects {
           }),
           distinctCompareWith(this.store.pipe(select(getDeviceType))),
           map(deviceType => applyConfiguration({ _deviceType: deviceType }))
-        )
-      )
-    )
-  );
-
-  loadServerTranslations$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loadServerTranslations),
-      mapToPayloadProperty('lang'),
-      distinct(),
-      mergeMap(lang =>
-        this.localizationsService.getServerTranslations(lang).pipe(
-          map(translations => loadServerTranslationsSuccess({ lang, translations })),
-          mapErrorToAction(loadServerTranslationsFail, { lang })
         )
       )
     )
