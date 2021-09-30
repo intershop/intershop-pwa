@@ -7,9 +7,55 @@ kb_everyone
 
 # Changelog
 
+## [1.2.0](https://github.com/releases/tag/1.2.0) (2021-09-30)
+
+**required Intershop Commerce Management version: 7.10.32.3-LTS**
+
+### Features
+
+- helper for never forgetting npm install on branch change (#875) ([7c0b11a](https://github.com/intershop/intershop-pwa/commit/7c0b11a))
+- add option for only building specific themes in docker build (#856) ([ad3fb75](https://github.com/intershop/intershop-pwa/commit/ad3fb75))
+- add virtual theme "all" for always overriding files (#841) ([9b595d1](https://github.com/intershop/intershop-pwa/commit/9b595d1))
+- customizable nginx cache duration (#873) ([b33dc3e](https://github.com/intershop/intershop-pwa/commit/b33dc3e))
+
+### Bug Fixes
+
+- enable cXML punchout with unclean user state (#861) ([5f2e4de](https://github.com/intershop/intershop-pwa/commit/5f2e4de))
+- restrict product-quantity input to numbers (browser dependend) (#884) ([ecef9e4](https://github.com/intershop/intershop-pwa/commit/ecef9e4))
+- no search results displayed when filter name contains special characters (#885) ([5f628d6](https://github.com/intershop/intershop-pwa/commit/5f628d6))
+- use translate get instead of instant for product-image component (#876) ([d4ba64c](https://github.com/intershop/intershop-pwa/commit/d4ba64c))
+- noSSR PWA Docker container does not support deep links (#871) ([0df009e](https://github.com/intershop/intershop-pwa/commit/0df009e))
+- use get instead of value for global variables in Jest tests (#866) ([bc2517c](https://github.com/intershop/intershop-pwa/commit/bc2517c))
+
+### Performance Improvements
+
+- restrict NgRx state transfer filtering to two levels (#889) ([a1e4efd](https://github.com/intershop/intershop-pwa/commit/a1e4efd))
+- prevent unnecessary individual loading of path categories (#877) ([dc820a7](https://github.com/intershop/intershop-pwa/commit/dc820a7))
+- prevent compiling translations with very large values (#880) ([36aebad](https://github.com/intershop/intershop-pwa/commit/36aebad))
+- cache compiled translations in PWA process (#881) ([82de3a4](https://github.com/intershop/intershop-pwa/commit/82de3a4))
+- reduce breadcrumb set delay as it also blocks SSR (#870) ([a0eafd7](https://github.com/intershop/intershop-pwa/commit/a0eafd7))
+- prevent api token restore on SSR (#870) ([c9425f5](https://github.com/intershop/intershop-pwa/commit/c9425f5))
+- prevent basket loading subscription for SSR (#870) ([cffd192](https://github.com/intershop/intershop-pwa/commit/cffd192))
+- prevent suggest search trigger on SSR (#870) ([25624e3](https://github.com/intershop/intershop-pwa/commit/25624e3))
+- retrieve links and child products only on successful products call (#870) ([9b7ab1a](https://github.com/intershop/intershop-pwa/commit/9b7ab1a))
+- cache 404 longer in nginx (#870) ([bdab77a](https://github.com/intershop/intershop-pwa/commit/bdab77a))
+
+### Documentation
+
+- update hybrid approach SSL documentation (#882) ([da1b1aa](https://github.com/intershop/intershop-pwa/commit/da1b1aa))
+
+### Code Refactoring
+
+- build and bundle docker scripts with webpack (#853) ([94e7fb9](https://github.com/intershop/intershop-pwa/commit/94e7fb9))
+
+### BREAKING CHANGES
+
+- JavaScript files from `dist` folder have been moved. See [Migrations / 1.1 to 1.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#11-to-12) for more details.
+- The identity provider's `triggerLogout` method now takes 0 instead of 2 arguments.
+
 ## [1.1.0](https://github.com/intershop/intershop-pwa/releases/tag/1.1.0) (2021-09-03)
 
-**required Intershop Commerce Management version: 7.10.32.0-LTS**
+**required Intershop Commerce Management version: 7.10.32.3-LTS**
 
 ### Features
 
