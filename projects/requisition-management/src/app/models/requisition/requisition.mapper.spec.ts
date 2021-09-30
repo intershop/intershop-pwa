@@ -30,6 +30,11 @@ describe('Requisition Mapper', () => {
         costCenter: 'CostCenter123',
         creationDate: 12345678,
         lineItemCount: 2,
+        approval: {
+          costCenterApproval: {
+            approvers: [{ email: 'jlink@test.intershop.de' }],
+          },
+        },
         approvalStatus: {
           status: 'APPROVED',
           approver: { firstName: 'Bernhard', lastName: 'Boldner' },
@@ -54,6 +59,13 @@ describe('Requisition Mapper', () => {
             "approver": Object {
               "firstName": "Bernhard",
               "lastName": "Boldner",
+            },
+            "costCenterApproval": Object {
+              "approvers": Array [
+                Object {
+                  "email": "jlink@test.intershop.de",
+                },
+              ],
             },
             "customerApprovers": undefined,
             "status": "APPROVED",

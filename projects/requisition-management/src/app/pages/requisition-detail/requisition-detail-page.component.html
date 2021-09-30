@@ -27,6 +27,8 @@
 
     <ish-requisition-buyer-approval [requisition]="requisition"></ish-requisition-buyer-approval>
 
+    <ish-requisition-cost-center-approval [requisition]="requisition"></ish-requisition-cost-center-approval>
+
     <ng-container *ngTemplateOutlet="approvalButtonBar; context: { requisition: requisition }"></ng-container>
 
     <h2>{{ 'approval.detailspage.order_details.heading' | translate }}</h2>

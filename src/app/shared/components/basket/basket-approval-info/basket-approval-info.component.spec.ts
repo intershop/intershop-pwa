@@ -72,7 +72,7 @@ describe('Basket Approval Info Component', () => {
       approvalRequired: true,
       costCenterApproval: {
         approvers: [{ email: 'pmiller@test.intershop.de', firstName: 'Patricia', lastName: 'Miller' }],
-        costCenterId: '4711',
+        costCenterID: '4711',
       },
     };
 

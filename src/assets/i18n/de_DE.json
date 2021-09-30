@@ -487,6 +487,8 @@
   "approval.detailspage.buyer.label": "Einkäufer",
   "approval.detailspage.buyer_budget.heading": "Einkäufer-Genehmigung",
   "approval.detailspage.comment.label": "Kommentar",
+  "approval.detailspage.cost_center.label": "Kostenstelle",
+  "approval.detailspage.costcenter.approval.heading": "Kostenstellen-Genehmigung",
   "approval.detailspage.links.return_to_approvals": "Zurück zu Genehmigungen",
   "approval.detailspage.links.return_to_requisitions": "Return to Bestellanfragen",
   "approval.detailspage.order.request_id": "Bestellanfrage-Nr.",

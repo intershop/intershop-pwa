@@ -9,7 +9,7 @@ interface NavigationItems {
     dataTestingId?: string;
     feature?: string;
     serverSetting?: string;
-    permission?: string;
+    permission?: string | string[];
     notRole?: string | string[];
     children?: NavigationItems;
   };
@@ -39,7 +39,7 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
     '/account/requisitions/approver': {
       localizationKey: 'account.requisitions.approvals',
       serverSetting: 'services.OrderApprovalServiceDefinition.runnable',
-      permission: 'APP_B2B_ORDER_APPROVAL',
+      permission: ['APP_B2B_ORDER_APPROVAL', 'APP_B2B_MANAGE_COSTCENTER'],
     },
     '/account/quotes': {
       localizationKey: 'account.navigation.quotes.link',

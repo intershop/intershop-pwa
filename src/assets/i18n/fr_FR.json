@@ -487,6 +487,8 @@
   "approval.detailspage.buyer.label": "Acheteur",
   "approval.detailspage.buyer_budget.heading": "Approbation du client",
   "approval.detailspage.comment.label": "Commentaire",
+  "approval.detailspage.cost_center.label": "Centre de coûts",
+  "approval.detailspage.costcenter.approval.heading": "Approbation du centre de coûts",
   "approval.detailspage.links.return_to_approvals": "Retour aux approbations",
   "approval.detailspage.links.return_to_requisitions": "Retour aux réquisitions",
   "approval.detailspage.order.request_id": "ID de la demande d’achat",

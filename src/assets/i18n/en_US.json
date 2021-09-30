@@ -487,6 +487,8 @@
   "approval.detailspage.buyer.label": "Buyer",
   "approval.detailspage.buyer_budget.heading": "Buyer approval",
   "approval.detailspage.comment.label": "Comment",
+  "approval.detailspage.cost_center.label": "Cost Center",
+  "approval.detailspage.costcenter.approval.heading": "Cost Center Approval",
   "approval.detailspage.links.return_to_approvals": "Back to Approvals",
   "approval.detailspage.links.return_to_requisitions": "Back to Requisitions",
   "approval.detailspage.order.request_id": "Requisition No.",
