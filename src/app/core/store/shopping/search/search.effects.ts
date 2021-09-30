@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
@@ -13,6 +14,7 @@ import {
   sample,
   switchMap,
   switchMapTo,
+  takeWhile,
   withLatestFrom,
 } from 'rxjs/operators';
 
@@ -41,7 +43,8 @@ export class SearchEffects {
     private suggestService: SuggestService,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    @Inject(PLATFORM_ID) private platformId: string
   ) {}
 
   /**
@@ -92,6 +95,7 @@ export class SearchEffects {
 
   suggestSearch$ = createEffect(() =>
     this.actions$.pipe(
+      takeWhile(() => isPlatformBrowser(this.platformId)),
       ofType(suggestSearch),
       mapToPayloadProperty('searchTerm'),
       debounceTime(400),

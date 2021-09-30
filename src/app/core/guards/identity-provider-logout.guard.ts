@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
+import { CanActivate } from '@angular/router';
 import { isObservable, of } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
 
@@ -15,7 +15,7 @@ export class IdentityProviderLogoutGuard implements CanActivate {
     private accountFacade: AccountFacade
   ) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  canActivate() {
     return this.roleToggleService.hasRole(['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']).pipe(
       take(1),
       switchMap(isPunchout => {
@@ -23,7 +23,7 @@ export class IdentityProviderLogoutGuard implements CanActivate {
           this.accountFacade.logoutUser();
           return of(false);
         }
-        const logoutReturn$ = this.identityProviderFactory.getInstance().triggerLogout(route, state);
+        const logoutReturn$ = this.identityProviderFactory.getInstance().triggerLogout();
         return isObservable(logoutReturn$) || isPromise(logoutReturn$) ? logoutReturn$ : of(logoutReturn$);
       })
     );

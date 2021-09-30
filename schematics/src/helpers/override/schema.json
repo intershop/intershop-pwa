@@ -27,7 +27,7 @@
     },
     "theme": {
       "type": "string",
-      "enum": ["default", "blue"],
+      "enum": ["default", "blue", "all"],
       "x-prompt": "For which theme?"
     },
     "ts": {

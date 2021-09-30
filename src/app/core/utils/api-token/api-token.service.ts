@@ -1,4 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
 import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
@@ -47,7 +47,7 @@ export class ApiTokenService {
 
   constructor(
     private cookiesService: CookiesService,
-    @Inject(PLATFORM_ID) platformId: string,
+    @Inject(PLATFORM_ID) private platformId: string,
     private router: Router,
     private store: Store,
     appRef: ApplicationRef
@@ -132,6 +132,9 @@ export class ApiTokenService {
   }
 
   restore$(types: ApiTokenCookieType[] = ['user', 'basket', 'order']): Observable<boolean> {
+    if (isPlatformServer(this.platformId)) {
+      return of(true);
+    }
     return timer(500, 200).pipe(
       filter(() => this.router.navigated),
       first(),

@@ -1,9 +1,11 @@
 const { execSync, spawnSync } = require('child_process');
 
 const pinned = {
-  husky: '4', // 5 has a strange license
-  '@types/node': '14', // LTS
   bootstrap: '4', // pinned
+  '@types/node': '14', // LTS
+  '@rx-angular/state': '1.4.3', // peer dependency to rxjs 7 currently not working
+  '@compodoc/compodoc': '1.1.13', // 1.1.14 results in errors
+  swiper: 6, // 7 needs migration changes
 };
 
 const parseVersion = version => {
@@ -39,10 +41,10 @@ console.log('upgrade @schematics/angular to find compatible versions');
 execSync('npx ng update @schematics/angular', { stdio: 'inherit' });
 
 const { latestVersions } = require('@schematics/angular/utility/latest-versions');
-pinned['zone.js'] = parseVersion(latestVersions.ZoneJs);
-pinned.typescript = parseVersion(latestVersions.TypeScript);
-pinned.rxjs = parseVersion(latestVersions.RxJs);
-pinned.tslib = parseVersion(latestVersions.TsLib);
+pinned['zone.js'] = parseVersion(latestVersions['zone.js']);
+pinned.typescript = parseVersion(latestVersions.typescript);
+pinned.tslib = parseVersion(latestVersions.tslib);
+pinned.rxjs = parseVersion(latestVersions.rxjs);
 
 coreLibs = [
   '@schematics/angular',

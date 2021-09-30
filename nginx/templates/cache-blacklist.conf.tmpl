@@ -1,0 +1,24 @@
+# inspired by https://gist.github.com/a-vasyliev/de8ffc6c6aa74cdeadfe
+
+{{ $params := (datasource "cachingIgnoreParams").params -}}
+{{ if $params }}
+  {{ range  $params -}}
+    if ($c_uri ~ (.*)(?:&|^){{ . }}=[^&]*(.*)) { set $c_uri $1$2 ; }
+  {{ end -}}
+
+  # remove dangling &
+  if ($c_uri ~ ^&(.*)) {
+    set $c_uri $1;
+  }
+
+  set $c_uri $is_args$c_uri;
+
+  # remove lonely ?
+  if ($c_uri ~ ^\?$) {
+      set $c_uri "";
+  }
+
+  # make a nice cache key without parameters
+  set $c_uri $scheme://$host$uri$c_uri;
+
+{{ end }}

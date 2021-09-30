@@ -220,17 +220,20 @@ export class Auth0IdentityProvider implements IdentityProvider {
 
   triggerLogout(): TriggerReturnType {
     if (this.oauthService.hasValidIdToken()) {
-      this.oauthService.revokeTokenAndLogout(
-        {
-          client_id: this.oauthService.clientId,
-          returnTo: this.oauthService.postLogoutRedirectUri,
-        },
-        true
-      );
-      return this.router.parseUrl('/loading');
-    } else {
+      if (this.oauthService.discoveryDocumentLoaded) {
+        this.oauthService.revokeTokenAndLogout(
+          {
+            client_id: this.oauthService.clientId,
+            returnTo: this.oauthService.postLogoutRedirectUri,
+          },
+          true
+        );
+        return this.router.parseUrl('/loading');
+      }
+      this.oauthService.logOut(true);
       return false;
     }
+    return false;
   }
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {

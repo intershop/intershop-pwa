@@ -572,7 +572,7 @@
         "warnUnmatched": false,
         "reusePatterns": {
           "name": "[a-z][a-z0-9]*(?:-[a-z][a-z0-9]*)*",
-          "theme": "(?:\\.(?:default|blue))*"
+          "theme": "(?:(?:\\.(?:default|blue))*|\\.all)"
         },
         "pathPatterns": [
           "^.*/src/environments/environment(\\.\\w+)?\\.ts$",

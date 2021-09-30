@@ -1,30 +1,147 @@
-.gradle
-build
+# dockerignore-update:start
+
+# The content between these markers is generated.
+# It can be synchronized using 'node scripts/update-dockerignore'
+
+# from .gitignore
+/tslint*hard*
+**/*.xliff
+**/*.ut.spec.ts
+**/node_modules
+/.idea
+/.project
+/.classpath
+/.c9/
+**/*.launch
+/.settings/
+/*.sublime-workspace
+/.nb-gradle
+/nbproject/
+/.nvmrc
+**/*.log
+/src/environments/environment.local.ts
+/src/environments/environment.development.ts
+**/.DS_Store
+**/Thumbs.db
+**/**~
+**/*.bak
+**/*.rej
+**/*.orig
+/dev.bat
+
+# from dist/.gitignore
+/dist/**/*
+!/dist/.gitignore
+!/dist/entrypoint.sh
+!/dist/healthcheck.js
+!/dist/robots.txt
+!/dist/server.crt
+!/dist/server.key
+
+# from docs/.gitignore
+/docs/compodoc
+
+# from e2e/.gitignore
+/e2e/node_modules
+/e2e/out-tsc
+/e2e/reports
+/e2e/package-lock.json
+
+# from reports/.gitignore
+/reports/junit.xml
+/reports/unit-tests.html
+/reports/coverage
+/reports/e2e
+/reports/tslint
+/reports/bundle
+/reports/jscpd
+/reports/licenses
+/reports/e2e-*.xml
+
+# from schematics/.gitignore
+/schematics/src/**/*.js
+/schematics/src/**/*.d.ts
+/schematics/package-lock.json
+
+# from tslint-rules/.gitignore
+/tslint-rules/test
+/tslint-rules/package-lock.json
+
+# from e2e/cypress/.gitignore
+/e2e/cypress/videos
+/e2e/cypress/screenshots
+/e2e/cypress/logs
+
+# from src/ssr/server-scripts/.gitignore
+/src/ssr/server-scripts/ecosystem-ports.json
+
+# from src/app/shell/shared/.gitignore
+/src/app/shell/shared/lazy**
+
+# from projects/organization-management/src/app/exports/.gitignore
+/projects/organization-management/src/app/exports/lazy**
+
+# from projects/requisition-management/src/app/exports/.gitignore
+/projects/requisition-management/src/app/exports/lazy**
+
+# from src/app/extensions/order-templates/exports/.gitignore
+/src/app/extensions/order-templates/exports/*/**/*.*
+
+# from src/app/extensions/punchout/exports/.gitignore
+/src/app/extensions/punchout/exports/*/**/lazy*.*
+
+# from src/app/extensions/quickorder/exports/.gitignore
+/src/app/extensions/quickorder/exports/*/**/*.*
+
+# from src/app/extensions/quoting/exports/.gitignore
+/src/app/extensions/quoting/exports/*/**/*.*
+
+# from src/app/extensions/tacton/exports/.gitignore
+/src/app/extensions/tacton/exports/*/**/lazy*.*
+
+# from src/app/extensions/wishlists/exports/.gitignore
+/src/app/extensions/wishlists/exports/*/**/*.*
+
+# from schematics/src/extension/files/__name@dasherize__/exports/.gitignore
+/schematics/src/extension/files/__name@dasherize__/exports/*/**/*.*
+
+# The content between these markers is generated.
+# It can be synchronized using 'node scripts/update-dockerignore'
+
+# dockerignore-update:end
 
 e2e
 nginx
+docs
+reports
+*.md
+*.txt
 
-node_modules
+/projects/*/*.*
+/projects/*/src/*.*
+
+**/dev
+
+**/*spec.ts
+**/setupJest.*
+**/jest*
+**/__snapshots__
+
 .dockerignore
 Dockerfile*
+docker-compose*
 .git
 .gitattributes
-.gitignore
+**/.gitignore
+azure-pipelines*
+
+src/assets/mock-data
 
 templates
 !templates/webpack
 !templates/nginx.conf
 
-# synchronize-marker:dist-scripts:begin
-/dist
-!/dist/build-ecosystem.js
-!/dist/entrypoint.sh
-!/dist/healthcheck.js
-!/dist/prometheus.js
-!/dist/robots.txt
-!/dist/server.crt
-!/dist/server.js
-!/dist/server.key
-!/dist/readinessprobe.js
-!/dist/livenessprobe.js
-# synchronize-marker:dist-scripts:end
+scripts
+!scripts/build*pwa.js
+!scripts/init-development-environment.js
+!scripts/compile-docker-scripts.js

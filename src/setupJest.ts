@@ -47,15 +47,15 @@ beforeEach(() => {
 afterEach(() => jest.clearAllTimers());
 
 Object.defineProperty(global, 'PRODUCTION_MODE', {
-  value: () => false,
+  get: () => false,
 });
 
 Object.defineProperty(global, 'NGRX_RUNTIME_CHECKS', {
-  value: () => true,
+  get: () => true,
 });
 
 Object.defineProperty(global, 'THEME', {
-  value: () => 'default',
+  get: () => 'default',
 });
 
 Object.defineProperty(document.body.style, 'transform', {

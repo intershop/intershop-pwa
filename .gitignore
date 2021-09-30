@@ -1,47 +1,27 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled or cached output
-/tmp
-/out-tsc
-/bin
-/cache
 /tslint*hard*
-/gl-code-quality-report.json
-
-# unsupported yarn files
-/yarn.lock
+*.xliff
+*.ut.spec.ts
 
 # dependencies
-/node_modules
+node_modules
 
 # IDEs and editors
 /.idea
-.project
-.classpath
-.c9/
+/.project
+/.classpath
+/.c9/
 *.launch
-.settings/
-*.sublime-workspace
+/.settings/
+/*.sublime-workspace
 /.nb-gradle
 /nbproject/
-/tsfmt.json
-
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/*.code-snippets
-!.vscode/intershop.txt
+/.nvmrc
 
 # misc
-/.sass-cache
-/connect.lock
-/coverage
-/junit.xml
 *.log
-/typings
 /src/environments/environment.local.ts
 /src/environments/environment.development.ts
 
@@ -52,38 +32,10 @@ Thumbs.db
 # backup and compiled files
 **~
 *.bak
-*.class
-*.pyc
-*.ut.spec.ts
 
-# Gradle Files
-**/build/
-**/target/
-**/.gradle
-
-# gitlab-runner
-/builds
+# git
+*.rej
+*.orig
 
 # batch file for personal development purposes
 /dev.bat
-.angulardoc.json
-
-# nvm
-.nvmrc
-
-# generated xliff
-*.xliff
-
-# synchronize-marker:dist-scripts:begin
-/dist
-!/dist/build-ecosystem.js
-!/dist/entrypoint.sh
-!/dist/healthcheck.js
-!/dist/prometheus.js
-!/dist/robots.txt
-!/dist/server.crt
-!/dist/server.js
-!/dist/server.key
-!/dist/readinessprobe.js
-!/dist/livenessprobe.js
-# synchronize-marker:dist-scripts:end

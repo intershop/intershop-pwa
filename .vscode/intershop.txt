@@ -130,6 +130,7 @@ overridable
 installable
 proxied
 dockerized
+dockerignore
 parallelization
 subfolder
 subfolders

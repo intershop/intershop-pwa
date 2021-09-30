@@ -59,6 +59,19 @@ If no environment variables for multi-channel configuration are given, the confi
 
 An extended list of examples can be found in the [Multi-Site Configurations](../guides/multi-site-configurations.md#Syntax) guide.
 
+### Ignore parameters during caching
+
+Often, nginx receives requests from advertising networks or various user agents that append unused query parameters when making a request, for example `gclid` or `utm_source`. <br>
+These parameters can lead to inefficient caching because even if the same URL is requested multiple times, if it is accessed with different query parameters, the cached version will not be used.
+
+To prevent this, you can define any number of blacklisted parameters that will be ignored by nginx during caching.
+
+As with multi-site handling above, the configuration can be supplied simply by setting the environment variable `CACHING_IGNORE_PARAMS`. <br>
+Alternatively, the source can be supplied by setting `CACHING_IGNORE_PARAMS_SOURCE` in any [supported format by gomplate](https://docs.gomplate.ca/datasources/).
+Be aware that the supplied list of parameters must be declared under a `params` property.
+
+If no environment variables for ignoring parameters are given, the configuration will fall back to the content of [`nginx/caching-ignore-params.yaml`](../../nginx/caching-ignore-params.yaml), which can also be customized.
+
 ### Other
 
 The page speed configuration can also be overridden:
@@ -80,10 +93,13 @@ A file named `<feature>.conf` is included if the environment variable `<feature>
 The feature is disabled otherwise and an optional file `<feature>-off.conf` is included in the configuration.
 The feature name must be all word-characters (letters, numbers and underscore).
 
-### Disabling Cache
+### Cache
 
 If the cache feature is switched off, all caching for pre-rendered pages is disabled.
 If the cache should also be disabled for static resources, the page speed feature has to be switched off as well as it caches optimized images individually.
+
+The cache duration for pre-rendered pages can be customized using `CACHE_DURATION_NGINX_OK` (for successful responses) and `CACHE_DURATION_NGINX_NF` (for 404 responses).
+The value supplied must be in the `time` format that is supported by [nginx proxy_cache_valid](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_valid)
 
 # Further References
 
