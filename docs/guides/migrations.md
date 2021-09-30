@@ -9,7 +9,9 @@ kb_sync_latest_only
 
 ## 1.1 to 1.2
 
-The `dist` folder now only contains results of the build process (except for `healthcheck.js`). You must **not** edit any file inside that `dist` folder. Since that would include not being able to change Kubernetes liveness or readiness probes we included SSR container related source code under `src/ssr/server-scripts/`
+The `dist` folder now only contains results of the build process (except for `healthcheck.js`).
+You must **not** edit any file inside that `dist` folder.
+Since that would include not being able to change Kubernetes liveness or readiness probes we included SSR container related source code under `src/ssr/server-scripts/`
 
 ## 0.31 to 1.0
 
