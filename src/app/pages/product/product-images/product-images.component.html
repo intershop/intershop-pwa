@@ -13,7 +13,7 @@
   </div>
   <div *ngIf="getImageViewIDs$('L') | async as largeImages" class="col-12 col-lg-9 product-detail-img clearfix">
     <div class="product-image-container">
-      <swiper #carousel [navigation]="true" [(index)]="activeSlide">
+      <swiper #carousel [navigation]="true">
         <ng-container *ngFor="let imageView of largeImages">
           <ng-template swiperSlide>
             <ish-product-image imageType="L" [imageView]="imageView"></ish-product-image>
