@@ -2,8 +2,15 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Launch localhost (Chrome)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:4200/",
+      "webRoot": "${workspaceRoot}"
+    },
+    {
+      "name": "Jest Tests",
       "type": "node",
-      "name": "vscode-jest-tests",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/jest/bin/jest",
       "args": ["--runInBand"],
@@ -12,28 +19,14 @@
       "internalConsoleOptions": "neverOpen"
     },
     {
+      "name": "Clean up Localizations",
       "type": "node",
-      "name": "clean-up-localizations",
       "request": "launch",
       "program": "${workspaceFolder}/scripts/clean-up-localizations",
       "args": [],
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Launch Chrome with ng serve",
-      "url": "http://localhost:4200/#",
-      "webRoot": "${workspaceRoot}"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Launch Chrome with debug",
-      "url": "http://localhost:9876/debug.html",
-      "webRoot": "${workspaceRoot}"
     }
   ]
 }
