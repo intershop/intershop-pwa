@@ -14,7 +14,7 @@
   "scripts": {
     "prepare": "husky install",
     "init-development-environment": "node scripts/init-development-environment",
-    "postinstall": "postinstall && node node_modules/esbuild/install.js && npm-run-all --silent build:tslint-rules build:schematics synchronize-lazy-components init-development-environment ngcc",
+    "postinstall": "postinstall && npm-run-all --silent build:tslint-rules build:schematics synchronize-lazy-components init-development-environment ngcc",
     "build:tslint-rules": "cd tslint-rules && npm run build",
     "build:schematics": "cd schematics && npm run build",
     "ng": "ng",

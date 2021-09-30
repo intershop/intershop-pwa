@@ -4,6 +4,7 @@ FROM node:14-alpine as reporting
 WORKDIR /workspace
 COPY package.json package-lock.json /workspace/
 RUN npm i --ignore-scripts
+RUN find node_modules -path '*/esbuild/install.js' | xargs -rt -n 1 node
 ENV CI=true
 ENV NODE_OPTIONS="--max_old_space_size=8192"
 COPY . /workspace/

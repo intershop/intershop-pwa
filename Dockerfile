@@ -3,6 +3,7 @@ FROM node:14-alpine as buildstep
 WORKDIR /workspace
 COPY package.json package-lock.json /workspace/
 RUN npm i --ignore-scripts
+RUN find node_modules -path '*/esbuild/install.js' | xargs -rt -n 1 node
 RUN npm run ngcc
 COPY tsconfig.app.json tsconfig.json ngsw-config.json .browserslistrc angular.json tslint.json /workspace/
 COPY tslint-rules /workspace/tslint-rules
