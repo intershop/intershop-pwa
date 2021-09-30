@@ -17,8 +17,8 @@
 @import '~ngx-toastr/toastr-bs4-alert';
 
 // import Swiper default theme
-@import '~swiper/swiper';
-@import '~swiper/components/pagination/pagination.scss';
+@import '~swiper/scss';
+@import '~swiper/scss/pagination';
 
 //
 // STYLING COMPATIBILITY LAYER
