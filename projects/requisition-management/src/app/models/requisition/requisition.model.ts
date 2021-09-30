@@ -1,6 +1,8 @@
 import { UserBudget } from 'organization-management';
 
+import { BasketApprover } from 'ish-core/models/basket-approval/basket-approval.model';
 import { AbstractBasket } from 'ish-core/models/basket/basket.model';
+import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { User } from 'ish-core/models/user/user.model';
@@ -15,7 +17,13 @@ export interface RequisitionApproval {
   approvalDate?: number;
   approver?: { firstName: string; lastName: string };
   approvalComment?: string;
-  customerApprovers?: { firstName: string; lastName: string; email: string }[];
+  customerApprovers?: BasketApprover[];
+  costCenterApproval?: {
+    approvers?: BasketApprover[];
+    costCenterName?: string;
+    costCenterID?: string;
+    costCenter?: CostCenter;
+  };
 }
 
 export interface RequisitionUserBudget extends UserBudget {

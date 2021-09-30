@@ -11,6 +11,7 @@ import { CustomerData } from 'ish-core/models/customer/customer.interface';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
+import { getUserPermissions } from 'ish-core/store/customer/authorization';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
 
 import { UserService } from './user.service';
@@ -313,6 +314,7 @@ describe('User Service', () => {
     beforeEach(() => {
       store$.overrideSelector(getLoggedInUser, user);
       store$.overrideSelector(getLoggedInCustomer, customer);
+      store$.overrideSelector(getUserPermissions, ['APP_B2B_VIEW_COSTCENTER']);
 
       when(apiServiceMock.get(anything())).thenReturn(of({}));
     });
@@ -320,6 +322,13 @@ describe('User Service', () => {
     it("should get eligible cost centers for business user when 'getEligibleCostCenters' is called", done => {
       userService.getEligibleCostCenters().subscribe(() => {
         verify(apiServiceMock.get(`customers/${customer.customerNo}/users/${user.login}/costcenters`)).once();
+        done();
+      });
+    });
+
+    it("should get a cost center when 'getCostCenter' is called by a cost center admin", done => {
+      userService.getCostCenter('12345').subscribe(() => {
+        verify(apiServiceMock.get(`customers/${customer.customerNo}/costcenters/12345`)).once();
         done();
       });
     });

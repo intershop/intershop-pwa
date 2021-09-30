@@ -16,6 +16,7 @@ import { LineItemListComponent } from 'ish-shared/components/line-item/line-item
 import { RequisitionContextFacade } from '../../facades/requisition-context.facade';
 
 import { RequisitionBuyerApprovalComponent } from './requisition-buyer-approval/requisition-buyer-approval.component';
+import { RequisitionCostCenterApprovalComponent } from './requisition-cost-center-approval/requisition-cost-center-approval.component';
 import { RequisitionDetailPageComponent } from './requisition-detail-page.component';
 import { RequisitionRejectDialogComponent } from './requisition-reject-dialog/requisition-reject-dialog.component';
 import { RequisitionSummaryComponent } from './requisition-summary/requisition-summary.component';
@@ -40,6 +41,7 @@ describe('Requisition Detail Page Component', () => {
         MockComponent(LineItemListComponent),
         MockComponent(LoadingComponent),
         MockComponent(RequisitionBuyerApprovalComponent),
+        MockComponent(RequisitionCostCenterApprovalComponent),
         MockComponent(RequisitionRejectDialogComponent),
         MockComponent(RequisitionSummaryComponent),
         RequisitionDetailPageComponent,

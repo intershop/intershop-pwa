@@ -1,4 +1,4 @@
-interface BasketApprover {
+export interface BasketApprover {
   email: string;
   firstName: string;
   lastName: string;
@@ -12,7 +12,7 @@ export interface BasketApproval {
   };
   costCenterApproval?: {
     approvers?: BasketApprover[];
-    costCenterId: string;
+    costCenterID: string;
     costCenterName?: string;
   };
 }

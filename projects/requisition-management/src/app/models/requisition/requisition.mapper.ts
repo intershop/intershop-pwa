@@ -31,6 +31,7 @@ export class RequisitionMapper {
           approval: {
             ...data.approvalStatus,
             customerApprovers: data.approval?.customerApproval?.approvers,
+            costCenterApproval: data.approval?.costCenterApproval,
           },
         };
       } else {
