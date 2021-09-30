@@ -1,12 +1,7 @@
 /**/*
 !.gitignore
-!/build-ecosystem.js
 !/entrypoint.sh
 !/healthcheck.js
-!/prometheus.js
 !/robots.txt
 !/server.crt
-!/server.js
 !/server.key
-!/readinessprobe.js
-!/livenessprobe.js

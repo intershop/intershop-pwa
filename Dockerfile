@@ -28,14 +28,15 @@ RUN npm run build:multi server
 # remove cache check for resources (especially index.html)
 # https://github.com/angular/angular/issues/23613#issuecomment-415886919
 RUN test "${serviceWorker}" = "true" && sed -i 's/canonicalHash !== cacheBustedHash/false/g' /workspace/dist/browser/ngsw-worker.js || true
+RUN node scripts/compile-docker-scripts
 COPY dist/* /workspace/dist/
 
 FROM node:14-alpine
-RUN npm i -g express express-http-proxy pm2 prom-client
 COPY --from=buildstep /workspace/dist /dist
+RUN cd dist && npm install
 ARG displayVersion=
 LABEL displayVersion="${displayVersion}"
-ENV DISPLAY_VERSION=${displayVersion} NODE_PATH=/usr/local/lib/node_modules
+ENV DISPLAY_VERSION=${displayVersion} NODE_PATH=/dist/node_modules PATH=$PATH:/dist/node_modules/.bin
 EXPOSE 4200
 RUN mkdir /.pm2 && chmod 777 -Rf /.pm2 && touch /dist/ecosystem.yml && chmod 777 -f /dist/ecosystem.yml
 USER nobody
