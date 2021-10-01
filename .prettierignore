@@ -13,6 +13,7 @@
 *.ttf
 *.ico
 *.txt
+*.csv
 *.jar
 *.snap
 *.hbs

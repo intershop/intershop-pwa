@@ -25,6 +25,13 @@
           >
           <small *ngSwitchDefault></small>
         </div>
+        <p>
+          {{ 'quickorder.page.csv.sample.before' | translate }}
+          <a href="assets/quickorder-sample/quickorder.csv" download rel="nofollow">
+            {{ 'quickorder.page.csv.sample.link' | translate }}
+          </a>
+          {{ 'quickorder.page.csv.sample.after' | translate }}
+        </p>
       </div>
       <div>
         <button type="submit" class="btn btn-primary" name="addToCartCSV" [disabled]="isCsvDisabled">
