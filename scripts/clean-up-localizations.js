@@ -13,6 +13,7 @@ const regExps = [
   /^account\.budget\.type\..*/i,
   /.*\.error.*/i,
   /^locale\..*/i,
+  /^approval\.order_.*\.text/i,
 ];
 
 // store localizations from default localization file in an object

@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
+import { toArray } from 'rxjs/operators';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
@@ -152,10 +153,12 @@ describe('Requisitions Effects', () => {
     });
 
     it('should retrieve the requisition after updating the status', done => {
-      effects.updateRequisitionStatus$.subscribe(action => {
+      effects.updateRequisitionStatus$.pipe(toArray()).subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
           [Requisitions API] Update Requisition Status Success:
             requisition: {"id":"testUUID","requisitionNo":"0001","user":{"firstName":...
+          [Message] Info Toast:
+            message: "approval.order_partially_approved.text"
         `);
         done();
       });
@@ -163,7 +166,7 @@ describe('Requisitions Effects', () => {
 
     it('should redirect to listing', done => {
       effects.updateRequisitionStatus$.subscribe(() => {
-        expect(location.path()).toMatchInlineSnapshot(`"/account/requisitions/approver/testUUID;status=PENDING"`);
+        expect(location.path()).toEqual(`/account/requisitions/approver/testUUID;status=PENDING`);
         done();
       });
     });
