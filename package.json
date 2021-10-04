@@ -81,7 +81,6 @@
     "angular-oauth2-oidc": "^12.1.0",
     "angular2-uuid": "^1.1.1",
     "angulartics2": "^10.0.0",
-    "b64u": "^3.0.0",
     "bootstrap": "^4.6.0",
     "core-js": "^3.17.3",
     "express": "^4.17.1",

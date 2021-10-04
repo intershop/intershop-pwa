@@ -10,7 +10,6 @@ import {
   Output,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import b64u from 'b64u';
 import { range } from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -184,7 +183,7 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
         exp: string;
         iat: string;
         jti: string;
-      } = JSON.parse(b64u.decode(tokenSplit[1]));
+      } = JSON.parse(window.atob(tokenSplit[1]));
 
       this.submit.emit({
         parameters: [

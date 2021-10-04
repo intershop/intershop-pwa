@@ -1,7 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import b64u from 'b64u';
 import { pick } from 'lodash-es';
 import { Observable, combineLatest, of, throwError } from 'rxjs';
 import { concatMap, first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
@@ -55,7 +54,7 @@ export class UserService {
   signInUser(loginCredentials: Credentials): Observable<CustomerUserType> {
     const headers = new HttpHeaders().set(
       ApiService.AUTHORIZATION_HEADER_KEY,
-      'BASIC ' + b64u.toBase64(b64u.encode(`${loginCredentials.login}:${loginCredentials.password}`))
+      'BASIC ' + window.btoa(`${loginCredentials.login}:${loginCredentials.password}`)
     );
 
     return this.fetchCustomer({ headers });
@@ -168,7 +167,7 @@ export class UserService {
     const headers = credentials
       ? new HttpHeaders().set(
           ApiService.AUTHORIZATION_HEADER_KEY,
-          'BASIC ' + b64u.toBase64(b64u.encode(`${credentials.login}:${credentials.password}`))
+          'BASIC ' + window.btoa(`${credentials.login}:${credentials.password}`)
         )
       : undefined;
 
