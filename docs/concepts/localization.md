@@ -260,6 +260,12 @@ This has to fit to your PWA environment.
 This allows to enable easy filtering.
 The prefixes will be removed when the translations are loaded into the PWA.
 
+## External Localization Sources
+
+The Intershop PWA can be configured to use an external source for loading translations in JSON format.
+This configuration can be done via environment variables `TRANSLATE_LOADER_URL` and `TRANSLATE_LOADER_FORMAT` or via Angular CLI environment files with properties `translateLoaderUrl` and `translateLoaderFormat`.
+Please refer to the documentation in [`environment.model.ts`](../../src/environments/environment.model.ts) for format replacement options.
+
 ## Localization File Clean Up Process
 
 Localization files require constant maintenance to keep them up to date.

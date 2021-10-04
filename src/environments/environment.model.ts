@@ -112,6 +112,25 @@ export interface Environment {
       | Auth0Config;
   };
 
+  /**
+   * URL for loading translations from an external resource
+   */
+  translateLoaderUrl?: string;
+
+  /**
+   * format for requesting translations from the external resource
+   * default is `$language_$COUNTRY.json`
+   *
+   * possible replacements in this format:
+   * - `$language`: language code in lower case
+   * - `$LANGUAGE`: language code in upper case
+   * - `$country`: country code in lower case
+   * - `$COUNTRY`: country code in upper case
+   * - `$theme`: theme in lower case
+   * - `$THEME`: theme in upper case
+   */
+  translateLoaderFormat?: string;
+
   // enable and configure data persistence for specific stores (compare, recently, tacton)
   dataRetention: DataRetentionPolicy;
 

@@ -73,6 +73,14 @@ export const THEME_COLOR = new InjectionToken<string>('themeColor', {
   factory: () => environment.themeColor,
 });
 
+export const TRANSLATE_LOADER_URL = new InjectionToken<string>('translateLoaderUrl', {
+  factory: () => environment.translateLoaderUrl,
+});
+
+export const TRANSLATE_LOADER_FORMAT = new InjectionToken<string>('translateLoaderFormat', {
+  factory: () => environment.translateLoaderFormat,
+});
+
 /*
  * global definition of the Bootstrap grid system breakpoint widths
  */

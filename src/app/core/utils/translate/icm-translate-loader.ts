@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Inject, PLATFORM_ID } from '@angular/core';
 import { TransferState, makeStateKey } from '@angular/platform-browser';
 import { TranslateLoader } from '@ngx-translate/core';
 import { memoize } from 'lodash-es';
@@ -10,7 +10,6 @@ import { LocalizationsService } from 'ish-core/services/localizations/localizati
 
 import { Translations } from './translations.type';
 
-@Injectable()
 export class ICMTranslateLoader implements TranslateLoader {
   constructor(
     private transferState: TransferState,
