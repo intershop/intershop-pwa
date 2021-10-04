@@ -35,7 +35,7 @@
 
         if ($render_ssr = 0) {
           rewrite ^.*$ /index.html;
-          set $c_uri '';
+          set $args '';
         }
 
         rewrite ^.*/index.html$ {{ $baseHref }}/loading;
@@ -50,7 +50,6 @@
         rewrite '^(.*)$' '$1$default_rewrite_params' break;
 
         include /etc/nginx/conf.d/cache-blacklist.conf;
-        proxy_cache_key $c_uri;
 
         proxy_pass {{ getenv "UPSTREAM_PWA" }};
         proxy_buffer_size 128k;
@@ -73,9 +72,6 @@ server {
   {{ else }}
     listen 80;
   {{- end }}
-
-   # ensure $c_uri is set
-   set $c_uri $args;
 
   {{ if getenv "DEBUG" | strings.ToLower | regexp.Match "on|1|true|yes" }}
     error_log /dev/stdout notice;
