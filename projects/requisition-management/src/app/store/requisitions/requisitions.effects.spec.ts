@@ -166,7 +166,7 @@ describe('Requisitions Effects', () => {
 
     it('should redirect to listing', done => {
       effects.updateRequisitionStatus$.subscribe(() => {
-        expect(location.path()).toEqual(`/account/requisitions/approver/testUUID;status=PENDING`);
+        expect(location.path()).toEqual(`/account/requisitions/approver`);
         done();
       });
     });

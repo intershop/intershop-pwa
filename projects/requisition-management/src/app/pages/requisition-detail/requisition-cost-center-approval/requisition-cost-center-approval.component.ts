@@ -8,7 +8,6 @@ import { Price, PriceHelper } from 'ish-core/models/price/price.model';
 import { Requisition } from '../../../models/requisition/requisition.model';
 
 interface BudgetValues {
-  budgetLabel: string;
   spentPercentage: number;
   spentBudgetIncludingThisRequisition: Price;
   spentPercentageIncludingThisRequisition: number;
@@ -23,7 +22,6 @@ export class RequisitionCostCenterApprovalComponent implements OnInit, OnChanges
   @Input() requisition: Requisition;
 
   costCenter: CostCenter;
-  approverEmail: string;
   orderTotal: Price;
   buyer: CostCenterBuyer;
 
@@ -41,10 +39,6 @@ export class RequisitionCostCenterApprovalComponent implements OnInit, OnChanges
   ngOnChanges() {
     this.costCenter = this.requisition?.approval?.costCenterApproval?.costCenter;
 
-    this.approverEmail = this.requisition?.approval?.costCenterApproval?.approvers?.length
-      ? this.requisition.approval.costCenterApproval.approvers[0].email
-      : undefined;
-
     this.orderTotal = {
       type: 'Money',
       value: this.requisition?.totals?.total?.gross,
@@ -54,7 +48,9 @@ export class RequisitionCostCenterApprovalComponent implements OnInit, OnChanges
     if (this.costCenter) {
       this.ccVal = this.determineBudgetValues(this.costCenter);
 
-      this.buyer = this.costCenter.buyers?.find(buyer => buyer.email === this.requisition?.user.email);
+      this.buyer =
+        this.costCenter.buyers?.length &&
+        this.costCenter.buyers?.find(buyer => buyer.email === this.requisition?.user.email);
       this.bVal = this.determineBudgetValues(this.buyer);
     }
   }
@@ -68,7 +64,6 @@ export class RequisitionCostCenterApprovalComponent implements OnInit, OnChanges
     const spentBudgetIncludingThisRequisition = PriceHelper.sum(data?.spentBudget, this.orderTotal);
 
     return {
-      budgetLabel: `account.budget.type.${data.budgetPeriod}.label`,
       spentPercentage: data?.spentBudget?.value ? data.spentBudget?.value / data.budget.value : 0,
       spentBudgetIncludingThisRequisition,
       spentPercentageIncludingThisRequisition:

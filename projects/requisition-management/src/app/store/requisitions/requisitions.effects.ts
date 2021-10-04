@@ -79,12 +79,7 @@ export class RequisitionsEffects {
           .pipe(
             concatMap(requisition =>
               /* ToDo: use only relative routes */
-              from(
-                this.router.navigate([
-                  `/account/requisitions/approver/${requisition.id}`,
-                  { status: requisition.approval?.statusCode },
-                ])
-              ).pipe(
+              from(this.router.navigate([`/account/requisitions/approver`])).pipe(
                 concatMap(() => {
                   let messageAction;
                   switch (requisition.approval?.statusCode) {

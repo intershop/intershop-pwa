@@ -13,7 +13,7 @@
             <dd class="col-md-8">{{ 'account.budget.unlimited' | translate }}</dd>
           </ng-template>
           <ng-container *ngIf="budget.budget; else noBudget">
-            <dt class="col-md-4">{{ 'account.budget.type.' + budget.budgetPeriod + '.label' | translate }}</dt>
+            <dt class="col-md-4">{{ 'account.budget.label' | translate: { '0': budget.budgetPeriod } }}</dt>
             <dd class="col-md-8" data-testing-id="budget-field">
               {{ budget.budget | ishPrice }}
             </dd>

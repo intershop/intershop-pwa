@@ -28,10 +28,12 @@ describe('Requisition Widget Component', () => {
       approval: {
         status: 'Approval Pending',
         statusCode: 'pending',
-        customerApprovers: [
-          { firstName: 'Jack', lastName: 'Link' },
-          { firstName: 'Bernhhard', lastName: 'Boldner' },
-        ],
+        customerApproval: {
+          approvers: [
+            { firstName: 'Jack', lastName: 'Link' },
+            { firstName: 'Bernhhard', lastName: 'Boldner' },
+          ],
+        },
       },
       user: { firstName: 'Patricia', lastName: 'Miller' },
       totals: {
@@ -52,10 +54,12 @@ describe('Requisition Widget Component', () => {
       approval: {
         status: 'Approval Pending',
         statusCode: 'pending',
-        customerApprovers: [
-          { firstName: 'Jack', lastName: 'Link' },
-          { firstName: 'Bernhhard', lastName: 'Boldner' },
-        ],
+        customerApproval: {
+          approvers: [
+            { firstName: 'Jack', lastName: 'Link' },
+            { firstName: 'Bernhhard', lastName: 'Boldner' },
+          ],
+        },
       },
       user: { firstName: 'Patricia', lastName: 'Miller' },
       totals: {

@@ -25,7 +25,17 @@
   >
     <ish-requisition-summary [requisition]="requisition" [view]="view"></ish-requisition-summary>
 
-    <ish-requisition-buyer-approval [requisition]="requisition"></ish-requisition-buyer-approval>
+    <!-- display approval box in buyer view or for customer approvers only -->
+    <ish-requisition-buyer-approval
+      *ngIf="view === 'buyer'; else customerApprover"
+      [requisition]="requisition"
+    ></ish-requisition-buyer-approval>
+    <ng-template #customerApprover>
+      <ish-requisition-buyer-approval
+        *ishIsAuthorizedTo="'APP_B2B_ORDER_APPROVAL'"
+        [requisition]="requisition"
+      ></ish-requisition-buyer-approval>
+    </ng-template>
 
     <ish-requisition-cost-center-approval [requisition]="requisition"></ish-requisition-cost-center-approval>
 

@@ -169,7 +169,7 @@ export class RequisitionsService {
       'BusinessObjectAttributes#Order_CostCenter'
     ) as string;
 
-    if (!requisition.approval?.costCenterApproval || !costCenterUuid) {
+    if (!costCenterUuid) {
       return of(requisition);
     } else {
       return this.userService.getCostCenter(costCenterUuid).pipe(

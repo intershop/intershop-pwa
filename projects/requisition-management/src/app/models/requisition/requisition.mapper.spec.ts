@@ -34,12 +34,20 @@ describe('Requisition Mapper', () => {
           costCenterApproval: {
             approvers: [{ email: 'jlink@test.intershop.de' }],
           },
+          customerApproval: {
+            approvers: [{ email: 'bboldner@test.intershop.de' }],
+          },
         },
         approvalStatus: {
-          status: 'APPROVED',
-          approver: { firstName: 'Bernhard', lastName: 'Boldner' },
-          approvalDate: 76543627,
+          statusCode: 'PENDING',
         },
+        approvalStatuses: [
+          {
+            statusCode: 'APPROVED',
+            approver: { firstName: 'Bernhard', lastName: 'Boldner', email: 'bboldner@test.intershop.de' },
+            approvalDate: 76543627,
+          },
+        ],
         userInformation: { firstName: 'Patricia', lastName: 'Miller', email: 'pmiller@test.intershop.de' },
         userBudgets: {
           budgetPeriod: 'weekly',
@@ -55,20 +63,30 @@ describe('Requisition Mapper', () => {
       expect(mapped).toMatchInlineSnapshot(`
         Object {
           "approval": Object {
-            "approvalDate": 76543627,
-            "approver": Object {
-              "firstName": "Bernhard",
-              "lastName": "Boldner",
-            },
+            "approvers": Array [
+              Object {
+                "email": "bboldner@test.intershop.de",
+                "firstName": "Bernhard",
+                "lastName": "Boldner",
+              },
+            ],
             "costCenterApproval": Object {
               "approvers": Array [
                 Object {
                   "email": "jlink@test.intershop.de",
                 },
               ],
+              "statusCode": "PENDING",
             },
-            "customerApprovers": undefined,
-            "status": "APPROVED",
+            "customerApproval": Object {
+              "approvers": Array [
+                Object {
+                  "email": "bboldner@test.intershop.de",
+                },
+              ],
+              "statusCode": "APPROVED",
+            },
+            "statusCode": "PENDING",
           },
           "attributes": undefined,
           "bucketId": undefined,

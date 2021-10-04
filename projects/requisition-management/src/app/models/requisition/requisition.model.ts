@@ -15,11 +15,15 @@ export interface RequisitionApproval {
   status: string;
   statusCode: string;
   approvalDate?: number;
-  approver?: { firstName: string; lastName: string };
+  approvers?: BasketApprover[];
   approvalComment?: string;
-  customerApprovers?: BasketApprover[];
+  customerApproval?: {
+    approvers?: BasketApprover[];
+    statusCode?: string;
+  };
   costCenterApproval?: {
     approvers?: BasketApprover[];
+    statusCode?: string;
     costCenterName?: string;
     costCenterID?: string;
     costCenter?: CostCenter;
