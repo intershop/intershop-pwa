@@ -56,11 +56,12 @@ describe('Requisition Cost Center Approval Component', () => {
       orderNo: '10001',
       approval: {
         statusCode: 'APPROVED',
-        approver: { firstName: 'Bernhard', lastName: 'Boldner' },
+        approvers: [{ firstName: 'Bernhard', lastName: 'Boldner', email: 'bboldner@test.intershop.de' }],
         approvalDate: 76543627,
         costCenterApproval: {
           approvers: [{ email: 'jlink@test.intershop.de' }],
           costCenter: {
+            costCenterOwner: { email: 'jlink@test.intershop.de' },
             costCenterId: '100450',
             name: 'Headquarter',
             budgetPeriod: 'weekly',
@@ -108,14 +109,14 @@ describe('Requisition Cost Center Approval Component', () => {
     fixture.detectChanges();
 
     expect(element.textContent.replace(/^\s*[\r\n]*/gm, '')).toMatchInlineSnapshot(`
-"approval.detailspage.cost_center.label
-100450 Headquarter
-approval.detailspage.cost_center.label account.budget.type.weekly.label
-$3,000.00
-account.budget.already_spent.label
-$300.00 (10%)
-"
-`);
+      "approval.detailspage.cost_center.label
+      100450 Headquarter
+      approval.detailspage.costcenter.budget.label
+      $3,000.00
+      account.budget.already_spent.label
+      $300.00 (10%)
+      "
+    `);
   });
 
   it('should display cost center buyer budget information if there are buyer data', () => {
@@ -134,7 +135,7 @@ $300.00 (10%)
     expect(
       element.querySelector('[data-testing-id="cost-center-buyer-budget"]').textContent.replace(/^\s*[\r\n]*/gm, '')
     ).toMatchInlineSnapshot(`
-      "approval.detailspage.buyer.label account.budget.type.monthly.label
+      "approval.detailspage.buyer.budget.label
       $4,000.00
       account.budget.already_spent.label
       $200.00 (5%)

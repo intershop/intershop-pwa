@@ -1,5 +1,5 @@
-<ng-container *ngIf="approverEmail === (userEmail$ | async)">
-  <div *ngIf="costCenter" class="row">
+<ng-container *ngIf="costCenter">
+  <div *ngIf="costCenter?.costCenterOwner.email === (userEmail$ | async)" class="row">
     <ish-info-box heading="approval.detailspage.costcenter.approval.heading" class="infobox-wrapper col-12">
       <div class="row">
         <div class="col-md-6">
@@ -13,9 +13,8 @@
       <div class="row section">
         <div class="col-md-6 pt-1">
           <dl class="row dl-horizontal dl-separator">
-            <dt class="col-6">
-              {{ 'approval.detailspage.cost_center.label' | translate }} {{ ccVal.budgetLabel | translate }}
-            </dt>
+            <!-- prettier-ignore -->
+            <dt class="col-6">{{ 'approval.detailspage.costcenter.budget.label' | translate: { '0': costCenter.budgetPeriod } }}</dt>
             <dd class="col-6">
               <strong>
                 <ng-container *ngIf="costCenter?.budget; else noLimit">
@@ -54,9 +53,8 @@
       <div *ngIf="buyer" class="row" data-testing-id="cost-center-buyer-budget">
         <div class="col-md-6">
           <dl class="row dl-horizontal dl-separator">
-            <dt class="col-6">
-              {{ 'approval.detailspage.buyer.label' | translate }} {{ bVal.budgetLabel | translate }}
-            </dt>
+            <!-- prettier-ignore -->
+            <dt class="col-6">{{ 'approval.detailspage.buyer.budget.label' | translate: { '0': buyer.budgetPeriod } }}</dt>
             <dd class="col-6">
               <strong>
                 <ng-container *ngIf="buyer?.budget; else noLimit">

@@ -10,7 +10,6 @@ const localizationFile_default = 'src/assets/i18n/en_US.json';
 const regExps = [
   /^account\.login\..*\.message/i,
   /.*budget.period..*/i,
-  /^account\.budget\.type\..*/i,
   /.*\.error.*/i,
   /^locale\..*/i,
   /^approval\.order_.*\.text/i,

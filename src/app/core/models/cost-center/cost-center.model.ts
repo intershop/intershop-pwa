@@ -11,6 +11,7 @@ export interface CostCenter {
   id: string; // uuid
   costCenterId: string;
   name: string;
+  costCenterOwner: BasketApprover;
   budget: Price;
   budgetPeriod: string;
   spentBudget?: Price;

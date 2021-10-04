@@ -68,7 +68,7 @@ describe('User Budget Component', () => {
           <dd class="col-5 column-price font-weight-bold text-right">USD 100</dd>
         </dl>
         <dl class="row dl-horizontal dl-separator">
-          <dt class="col-7">account.budget.type.monthly.label</dt>
+          <dt class="col-7">account.budget.label</dt>
           <dd class="col-5 column-price font-weight-bold text-right">USD 5000</dd>
         </dl>
         <dl class="row dl-horizontal dl-separator">
