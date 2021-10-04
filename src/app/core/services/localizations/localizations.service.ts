@@ -8,22 +8,15 @@ import { getRestEndpoint } from 'ish-core/store/core/configuration';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { Translations } from 'ish-core/utils/translate/translations.type';
 
-function maybeJSON(val: string) {
-  if (val.startsWith('{')) {
-    try {
-      return JSON.parse(val);
-    } catch {
-      // default
+function filterAndTransformKeys(translations: Record<string, string>): Translations {
+  // this implementation is mutable by intention, as it can lead to performance issues when using Object.entries and reduce
+  const filtered: Record<string, string> = {};
+  for (const key in translations) {
+    if (key.startsWith('pwa-')) {
+      filtered[key.substring(4)] = translations[key];
     }
   }
-  return val;
-}
-
-function filterAndTransformKeys(translations: Record<string, string>): Translations {
-  return Object.entries(translations)
-    .filter(([key]) => key.startsWith('pwa-'))
-    .map(([key, value]) => [key.substring(4), maybeJSON(value)])
-    .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+  return filtered;
 }
 
 @Injectable({ providedIn: 'root' })
