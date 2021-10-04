@@ -1,6 +1,4 @@
-const synchronizations = {
-  'pwa-docker-build': ['Dockerfile', 'Dockerfile_noSSR'],
-};
+const synchronizations = {};
 
 const fs = require('fs');
 

@@ -37,6 +37,10 @@
 
         rewrite ^.*/index.html$ {{ $baseHref }}/loading;
 
+        if ($render_ssr = 0) {
+          rewrite ^.*$ {{ $baseHref }}/loading;
+        }
+
         rewrite ^{{ $baseHref }}/?$ {{ $baseHref }}/home;
 
         rewrite '^(?!.*;lang=.*)(.*)$' '$1;lang={{ $lang }}';
