@@ -3,7 +3,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import b64u from 'b64u';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
@@ -68,7 +67,7 @@ describe('Payment Cybersource Creditcard Component', () => {
       iat: 'test',
       jti: 'test',
     };
-    const payload = b64u.encode(JSON.stringify(payloadjson));
+    const payload = window.btoa(JSON.stringify(payloadjson));
 
     component.cyberSourceCreditCardForm.controls.expirationMonth.setValue('11');
     component.cyberSourceCreditCardForm.controls.expirationYear.setValue('2022');
@@ -90,7 +89,7 @@ describe('Payment Cybersource Creditcard Component', () => {
       iat: 'test',
       jti: 'test',
     };
-    const payload = b64u.encode(JSON.stringify(payloadjson));
+    const payload = window.btoa(JSON.stringify(payloadjson));
 
     component.expirationMonthVal = '11';
     component.expirationYearVal = '2022';
