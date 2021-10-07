@@ -151,9 +151,6 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
       }
     });
 
-    // set chunk file names with name instead of id
-    config.output.chunkFilename = '[name].[chunkhash:20].js';
-
     // splitChunks not available for SSR build
     if (config.optimization.splitChunks) {
       logger.log('optimizing chunk splitting');
