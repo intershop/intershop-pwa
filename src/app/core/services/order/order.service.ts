@@ -169,7 +169,6 @@ export class OrderService {
         headers: this.orderHeaders.set(ApiService.TOKEN_HEADER_KEY, apiToken),
         params,
         skipApiErrorHandling: true,
-        runExclusively: true,
       })
       .pipe(
         map(OrderMapper.fromData),
