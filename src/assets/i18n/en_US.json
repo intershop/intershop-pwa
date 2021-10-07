@@ -826,6 +826,7 @@
   "quickorder.page.csv.file.invalid.input": "The input is invalid. Please confirm if your CSV file has the correct structure.",
   "quickorder.page.csv.file.uploaded": "The file has been uploaded.",
   "quickorder.page.csv.reset.form": "Reset field",
+  "quickorder.page.csv.sample": "You can download our <a href=\"{{0}}\" download rel=\"nofollow\">sample CSV file</a>. It shows how to structure your CSV file and what information we need. You can easily customize the sample data with your own.",
   "quickorder.page.csv.subtitle": "Upload a valid CSV file to place an order by file.",
   "quickorder.page.csv.title": "Or by uploading a CSV file",
   "quickorder.page.error.invalid.product": "The product ID {{0}} is not valid.",

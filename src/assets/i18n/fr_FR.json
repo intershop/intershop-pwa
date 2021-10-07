@@ -826,6 +826,7 @@
   "quickorder.page.csv.file.invalid.input": "L’entrée n’est pas valide. Veuillez confirmer si la structure de votre fichier CSV est correcte.",
   "quickorder.page.csv.file.uploaded": "Le fichier a été téléchargé.",
   "quickorder.page.csv.reset.form": "Réinitialiser le champ",
+  "quickorder.page.csv.sample": "Vous pouvez télécharger notre <a href=\"{{0}}\" download rel=\"nofollow\">exemple de fichier CSV</a>. Il montre comment structurer votre fichier CSV et de quelles informations nous avons besoin. Vous pouvez facilement personnaliser les exemples de données avec les vôtres.",
   "quickorder.page.csv.subtitle": "Pour effectuer une commande par fichier, téléversez un fichier CSV valide.",
   "quickorder.page.csv.title": "Ou en téléchargeant un fichier CSV",
   "quickorder.page.error.invalid.product": "L’ID du produit {{0}} n’est pas valide.",
