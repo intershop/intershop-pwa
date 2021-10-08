@@ -23,7 +23,11 @@ Run `npm install -g @angular/cli` once to globally install Angular CLI on your d
 
 Use `ng serve --open` to start up the development server and open the Progressive Web app in your browser.
 
-> **Note:** With the default `environment.ts` configuration the application works with mock data and as a result of that with limited functionality. To experience and work with the full feature set of the Intershop PWA access to an Intershop Commerce Management server is required.
+> **Note:** The project is configured to work by default against a publicly available Intershop Commerce Management server (see `environment.model.ts`).
+> ```
+> icmBaseURL: 'https://pwa-ish-demo.test.intershop.com',
+> ```
+>
 
 ## Development Server
 
@@ -52,7 +56,7 @@ Further options of the development server can be found running `ng serve --help`
 
 ## Testing Production Setups
 
-Sometimes it is necessary to boot up a production chain for development to test modifications in the [nginx](./nginx-startup.md) or test the interaction with it.
+Sometimes it is necessary to boot up a production chain for development to test modifications in [nginx](./nginx-startup.md) or test the interaction with it.
 The easiest way to do this is using [Docker Compose](https://docs.docker.com/compose/) with the `docker-compose.yml` in the project root.
 For usage instructions check the comments in that file.
 
@@ -106,7 +110,7 @@ As Angular runs in the browser, all the development tool functionality provided 
 ### Tackling Memory Problems
 
 If you encounter problems with `JavaScript heap out of memory`, you will have to increase the heap space size.
-THis can be done by setting the environment variable `NODE_OPTIONS=--max_old_space_size=8192`.
+This can be done by setting the environment variable `NODE_OPTIONS=--max_old_space_size=8192`.
 
 ### Recommend Articles
 
