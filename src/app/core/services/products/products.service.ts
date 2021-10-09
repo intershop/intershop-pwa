@@ -1,7 +1,8 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
-import { defaultIfEmpty, map, switchMap } from 'rxjs/operators';
+import { flatten, range } from 'lodash-es';
+import { Observable, from, identity, of, throwError } from 'rxjs';
+import { defaultIfEmpty, map, mergeMap, switchMap, toArray } from 'rxjs/operators';
 
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
@@ -19,6 +20,7 @@ import {
 } from 'ish-core/models/product/product.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
+import { mapToProperty } from 'ish-core/utils/operators';
 
 /**
  * The Products Service handles the interaction with the 'products' REST API.
@@ -214,11 +216,26 @@ export class ProductsService {
       switchMap(resp =>
         !resp.total
           ? of(resp.elements)
-          : this.apiService
-              .get<{ elements: Link[] }>(`products/${sku}/variations`, {
-                params: new HttpParams().set('amount', `${resp.total - resp.amount}`).set('offset', `${resp.amount}`),
-              })
-              .pipe(map(resp2 => [...resp.elements, ...resp2.elements]))
+          : of(resp).pipe(
+              mergeMap(res => {
+                const amount = res.amount;
+                const chunks = Math.ceil((res.total - amount) / amount);
+                return from(
+                  range(1, chunks + 1)
+                    .map(i => [i * amount, Math.min(amount, res.total - amount * i)])
+                    .map(([offset, length]) =>
+                      this.apiService
+                        .get<{ elements: Link[] }>(`products/${sku}/variations`, {
+                          params: new HttpParams().set('amount', length).set('offset', offset),
+                        })
+                        .pipe(mapToProperty('elements'))
+                    )
+                );
+              }),
+              mergeMap(identity, 2),
+              toArray(),
+              map(resp2 => [...resp.elements, ...flatten(resp2)])
+            )
       ),
       map((links: ProductVariationLink[]) => ({
         products: links.map(link => this.productMapper.fromVariationLink(link, sku)),
