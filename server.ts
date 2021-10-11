@@ -114,6 +114,7 @@ export function app() {
     ngExpressEngine({
       bootstrap: AppServerModule,
       providers: [{ provide: 'SSR_HYBRID', useValue: !!process.env.SSR_HYBRID }],
+      inlineCriticalCss: false,
     })
   );
 
