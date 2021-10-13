@@ -314,6 +314,7 @@ table.mobile-optimized.table-lg {
           width: 40%;
           content: '';
         }
+
         &[data-label]::before {
           content: attr(data-label) ':';
         }
