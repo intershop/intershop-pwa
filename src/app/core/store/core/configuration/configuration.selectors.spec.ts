@@ -110,20 +110,16 @@ describe('Configuration Selectors', () => {
 
   describe('after initialization', () => {
     describe('without ICM server configuration', () => {
-      it('should choose the internal default locale and currency when no ICM is available', () => {
+      it('should not provide any locale or currency when no ICM is available', () => {
         store$.dispatch(
           applyConfiguration({
             defaultLocale: 'en_US',
             localeCurrencyOverride: undefined,
           })
         );
-        expect(getCurrentLocale(store$.state)).toMatchInlineSnapshot(`"en_US"`);
+        expect(getCurrentLocale(store$.state)).toBeUndefined();
         expect(getCurrentCurrency(store$.state)).toBeUndefined();
-        expect(getAvailableLocales(store$.state)).toMatchInlineSnapshot(`
-          Array [
-            "en_US",
-          ]
-        `);
+        expect(getAvailableLocales(store$.state)).toBeUndefined();
         expect(getAvailableCurrencies(store$.state)).toBeUndefined();
       });
 

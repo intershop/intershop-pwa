@@ -72,7 +72,7 @@ export class UserService {
         headers: new HttpHeaders().set(ApiService.TOKEN_HEADER_KEY, token),
       });
     } else {
-      return this.fetchCustomer({ skipApiErrorHandling: true, runExclusively: true });
+      return this.fetchCustomer({ skipApiErrorHandling: true });
     }
   }
 

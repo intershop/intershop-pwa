@@ -1,21 +1,11 @@
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { ApplicationRef, Inject, Injectable, PLATFORM_ID, isDevMode } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { Actions, ROOT_EFFECTS_INIT, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { defer, fromEvent, iif, merge } from 'rxjs';
-import {
-  distinctUntilChanged,
-  map,
-  mapTo,
-  mergeMap,
-  shareReplay,
-  switchMap,
-  take,
-  takeWhile,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { distinctUntilChanged, map, mergeMap, take, takeWhile, withLatestFrom } from 'rxjs/operators';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { NGRX_STATE_SK } from 'ish-core/configurations/ngrx-state-transfer';
@@ -51,15 +41,12 @@ export class ConfigurationEffects {
       // tslint:disable-next-line:no-any - window can only be used with any here
       .subscribe(stable => ((window as any).angularStable = stable));
 
-    const languageChanged$ = translateService.onLangChange.pipe(shareReplay(1));
-
     store
       .pipe(
-        takeWhile(() => isPlatformServer(this.platformId) || !PRODUCTION_MODE),
+        takeWhile(() => isPlatformServer(this.platformId) || isDevMode()),
         select(getCurrentLocale),
-        distinctUntilChanged(),
         whenTruthy(),
-        switchMap(lang => languageChanged$.pipe(mapTo(lang), take(1)))
+        distinctUntilChanged()
       )
       .subscribe(lang => {
         this.transferState.set(SSR_LOCALE, lang);
