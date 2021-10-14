@@ -128,7 +128,7 @@
     "husky": "^7.0.2",
     "intershop-schematics": "file:schematics/src",
     "jest": "^27.2.5",
-    "jest-extended": "^0.11.5",
+    "jest-extended": "^1.0.0",
     "jest-marbles": "^2.5.1",
     "jest-preset-angular": "^10.0.1",
     "lint-staged": "^11.2.3",

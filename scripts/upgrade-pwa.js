@@ -6,7 +6,6 @@ const pinned = {
   '@types/node': '14', // LTS
   '@rx-angular/state': '1.4.3', // peer dependency to rxjs 7 currently not working
   'jest-marbles': '2', // peer dependency to rxjs 7 in version 3 currently not working
-  'jest-extended': '0.11.5', // version 1.0.0 results in test errors
   swiper: '6', // 7 needs migration changes
 };
 
