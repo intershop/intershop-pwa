@@ -1,10 +1,11 @@
 // tslint:disable:ish-ordered-imports
 require('jest-preset-angular/setup-jest');
 
-require('jest-extended');
-
 import { CompilerOptions } from '@angular/core';
 import { getTestBed } from '@angular/core/testing';
+import * as matchers from 'jest-extended';
+
+expect.extend(matchers);
 
 beforeEach(() => {
   const compilerOptions: CompilerOptions = { preserveWhitespaces: false };

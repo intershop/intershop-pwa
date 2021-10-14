@@ -37,8 +37,6 @@
       "ts",
       "js"
     ],
-    "setupFilesAfterEnv": [
-      "<rootDir>/setupJest.js"
-    ]
+    "setupFilesAfterEnv": ["jest-extended/all"]
   }
 }
