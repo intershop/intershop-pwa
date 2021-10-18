@@ -93,7 +93,7 @@ export class BasketCostCenterSelectionComponent implements OnInit, OnDestroy {
           required: true,
           hideRequiredMarker: true,
           options,
-          placeholder: options.length > 1 ? 'account.option.select.text' : undefined,
+          placeholder: options.length > 1 && !this.model?.costCenter ? 'account.option.select.text' : undefined,
         },
         hooks: {
           // set automatically a cost center at basket if there is only 1 cost center assigned to this user
