@@ -48,9 +48,15 @@ export interface AvailableOptions {
   sendCurrency?: boolean;
   /** opt-out of sending locale matrix parameter by setting it to false */
   sendLocale?: boolean;
-  /** opt-in to sending pgid matrix parameter by setting it to true */
+  /**
+   * opt-in to sending pgid matrix parameter by setting it to true. As per Intershop Commerce REST api documentation ´pgid´ is the standard means
+   * to get and cache personalized content of supported REST resources (e.g. cms).
+   */
   sendPGID?: boolean;
-  /** opt-in to sending spgid matrix parameter by setting it to true */
+  /**
+   * opt-in to sending spgid matrix parameter by setting it to true. As per Intershop Commerce REST api documentation this is the special means
+   * to get and cache personalized content of the product and category API (1.x).
+   */
   sendSPGID?: boolean;
 }
 
