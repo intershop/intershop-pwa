@@ -2,11 +2,12 @@
 .toast-container {
   z-index: 1030; // appears on top of the page but below the modal windows
 
-  .toast .toast-close-button {
-    top: 0;
-    background-color: inherit;
-    border: none;
-    opacity: 1;
+  .ngx-toastr {
+    background-size: 20px;
+
+    .toast-close-button {
+      height: 21px;
+    }
   }
 
   &.toast-top-full-width {
@@ -41,6 +42,7 @@
 
       & + div {
         margin-top: $space-default * 0.5;
+        margin-bottom: $space-default * 0.5;
       }
     }
   }
@@ -71,6 +73,12 @@
   width: 100%;
   background-color: theme-color-level('success', $alert-border-level);
   background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="#{$toastViewBox}" fill="#{$toast-success-color}">#{$toast-success-icon}</svg>');
+}
+
+.toast-info {
+  width: 100%;
+  background-color: theme-color-level('info', $alert-border-level);
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="#{$toastViewBox}" fill="#{$toast-info-color}">#{$toast-info-icon}</svg>');
 }
 
 /* purgecss end ignore */
