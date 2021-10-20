@@ -20,7 +20,4 @@ set $c_uri $args;
       set $c_uri "";
   }
 
-  # make a nice cache key without parameters
-  proxy_cache_key $scheme://$host$uri$c_uri;
-
 {{ end }}
