@@ -18,6 +18,7 @@ import { BasketItemsSummaryComponent } from 'ish-shared/components/basket/basket
 import { BasketPromotionCodeComponent } from 'ish-shared/components/basket/basket-promotion-code/basket-promotion-code.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { InfoMessageComponent } from 'ish-shared/components/common/info-message/info-message.component';
 
 import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/payment-save-checkbox.component';
 import { PaymentConcardisCreditcardCvcDetailComponent } from '../payment-concardis-creditcard-cvc-detail/payment-concardis-creditcard-cvc-detail.component';
@@ -50,6 +51,7 @@ describe('Checkout Payment Component', () => {
         MockComponent(BasketValidationResultsComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(FormlyForm),
+        MockComponent(InfoMessageComponent),
         MockComponent(NgbCollapse),
         MockComponent(PaymentConcardisCreditcardComponent),
         MockComponent(PaymentConcardisCreditcardCvcDetailComponent),
@@ -130,6 +132,13 @@ describe('Checkout Payment Component', () => {
     verify(emitter.emit(anything())).once();
     const [arg] = capture(emitter.emit).last();
     expect(arg).toMatchInlineSnapshot(`"testPayment"`);
+  });
+
+  it('should display an info message if the basket total is 0', () => {
+    component.basket.totals.total.net = 0;
+    fixture.detectChanges();
+
+    expect(element.querySelector('ish-info-message')).toBeTruthy();
   });
 
   describe('error display', () => {
