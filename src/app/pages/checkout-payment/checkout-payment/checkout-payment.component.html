@@ -170,9 +170,12 @@
       </form>
     </ng-container>
     <ng-template #zeroTotalInfo>
-      <p class="alert alert-info">
-        {{ 'checkout.payment.no_selection_required.info' | translate: { '0': basket.totals?.total | ishPrice } }}
-      </p>
+      <ish-info-message
+        message="{{
+          'checkout.payment.no_selection_required.info' | translate: { '0': basket.totals?.total | ishPrice }
+        }}"
+        [toast]="false"
+      ></ish-info-message>
     </ng-template>
   </div>
   <!-- basket summary -->

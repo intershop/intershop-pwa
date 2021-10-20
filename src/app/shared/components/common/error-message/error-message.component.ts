@@ -18,7 +18,7 @@ export class ErrorMessageComponent implements OnChanges {
   @Input() error: HttpError;
   @Input() toast = true;
 
-  constructor(private messagesFacade: MessageFacade) {}
+  constructor(private messageFacade: MessageFacade) {}
 
   ngOnChanges() {
     if (this.toast) {
@@ -28,7 +28,7 @@ export class ErrorMessageComponent implements OnChanges {
 
   private displayToast() {
     if (this.error) {
-      this.messagesFacade.error({
+      this.messageFacade.error({
         message: this.error.message || this.error.code,
       });
     }

@@ -2,13 +2,18 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/c
 
 import { MessageFacade } from 'ish-core/facades/message.facade';
 
+/**
+ * The Info Message Component displays an info message as inline message or as toast.
+ *
+ * @example
+ * <ish-info-message message="quote.error.not_started" [toast]="false"></ish-info-message>
+ */
 @Component({
-  selector: 'ish-success-message',
-  templateUrl: './success-message.component.html',
+  selector: 'ish-info-message',
+  templateUrl: './info-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SuccessMessageComponent implements OnChanges {
-  /**  key or message is accepted */
+export class InfoMessageComponent implements OnChanges {
   @Input() message: string;
   @Input() toast = true;
 
@@ -22,7 +27,7 @@ export class SuccessMessageComponent implements OnChanges {
 
   private displayToast() {
     if (this.message) {
-      this.messageFacade.success({
+      this.messageFacade.info({
         message: this.message,
       });
     }
