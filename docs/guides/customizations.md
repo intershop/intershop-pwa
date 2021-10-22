@@ -18,9 +18,9 @@ It can be tempting to always modify existing templates, component and style file
 However, when merging incoming upgrades the number of merge conflicts can possibly be large.
 So if you want to upgrade to new PWA versions later, stick to the following recommendations.
 
-## Setup an Intershop PWA based Project
+## Setup an Intershop PWA-based Project
 
-When initially setting up an Intershop PWA based project it is not advisable to clone the complete GitHub repository of the Intershop PWA.
+When initially setting up an Intershop PWA-based project it is not advisable to clone the complete GitHub repository of the Intershop PWA.
 All that is initially needed is the `master` branch that includes the released versions of the PWA.
 This can be achieved with the following Git command.
 
@@ -30,7 +30,7 @@ git clone --single-branch --branch master --origin intershop https://github.com/
 
 This command clones only the `master` branch from the GitHub repository of the Intershop PWA with the remote name `intershop` (not `origin` that will be needed later on for the projects own remote Git repository) into a folder `project-pwa` (instead of `intershop-pwa`).
 
-Based on this initial version of the Intershop PWA (the latest release) any project customizations can be started.
+Based on this initial version of the Intershop PWA (the latest release), any project customizations can be started.
 
 ## Start Customization
 
@@ -159,7 +159,7 @@ Changing the styling of **existing components** should be done by adding overrid
 For this you could copy only the `*.scss` files you need to adapt and fit the reference in your themes `style.scss`.
 Or you can start your styling changes by copying the complete set of standard styles to your themes folder right from the start and do all the changes there.
 Or you can come up with your own preferred way for styling adaptions.
-Just putting an brand override file next to the original file in the `src/styles` folder will not lead to the expected results.
+Just putting a brand override file next to the original file in the `src/styles` folder will not lead to the expected results.
 You should not change relevant information in the global style files under `src/styles`.
 
 When styling is done on component level, all styling is encapsulated to exactly this component (default behavior).
