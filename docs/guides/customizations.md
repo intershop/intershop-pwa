@@ -213,7 +213,8 @@ If there are any problems with the tags, using the specific commit SHAs should a
 git cherry-pick 1.0.0..1.1.0
 ```
 
-Now each commit of the new Intershop PWA release is applied to the custom project context. Thus, if any merge conflicts arise, this will be within the specific Intershop PWA commit context and should be mergeable with the information and diff provided for this commit in the GitHub repository.
+Now each commit of the new Intershop PWA release is applied to the custom project context. 
+Thus, if any merge conflicts arise, this will be within the specific Intershop PWA commit context and should be mergeable with the information and diff provided for this commit in the GitHub repository.
 
 After successfully going through the range cherry pick (with `git commit` and `git cherry-pick --continue` after each resolved merge conflict), an `npm install` will probably be required and one needs to check whether the project code still works as expected.
 Starting the server or `npm run check` are good basic tests for that.
@@ -236,7 +237,8 @@ If there are any problems with the tag, using the specific commit SHAs should al
 git rebase --onto develop 1.0.0
 ```
 
-Now each commit of the new Intershop PWA release is applied to the custom project context. Thus, if any merge conflicts arise, this will be within the specific Intershop PWA commit context and should be mergeable with the information and diff provided for this commit in the GitHub repository.
+Now each commit of the new Intershop PWA release is applied to the custom project context. 
+Thus, if any merge conflicts arise, this will be within the specific Intershop PWA commit context and should be mergeable with the information and diff provided for this commit in the GitHub repository.
 
 After successfully going through the "rebase onto" (with `git rebase --continue` after each resolved merge conflict), an `npm install` will probably be required and one needs to check whether the project code still works as expected.
 Starting the server or `npm run check` are good basic tests for that.
