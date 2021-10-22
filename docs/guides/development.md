@@ -24,10 +24,10 @@ Run `npm install -g @angular/cli` once to globally install Angular CLI on your d
 Use `ng serve --open` to start up the development server and open the Progressive Web app in your browser.
 
 > **Note:** The project is configured to work by default against a publicly available Intershop Commerce Management server (see `environment.model.ts`).
+>
 > ```
 > icmBaseURL: 'https://pwa-ish-demo.test.intershop.com',
 > ```
->
 
 ## Development Server
 
