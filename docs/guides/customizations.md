@@ -213,7 +213,7 @@ If there are any problems with the tags, using the specific commit SHAs should a
 git cherry-pick 1.0.0..1.1.0
 ```
 
-Now each commit of the new Intershop PWA release is applied to the custom project context. 
+Now each commit of the new Intershop PWA release is applied to the custom project context.
 Thus, if any merge conflicts arise, this will be within the specific Intershop PWA commit context and should be mergeable with the information and diff provided for this commit in the GitHub repository.
 
 After successfully going through the range cherry pick (with `git commit` and `git cherry-pick --continue` after each resolved merge conflict), an `npm install` will probably be required and one needs to check whether the project code still works as expected.
@@ -237,7 +237,7 @@ If there are any problems with the tag, using the specific commit SHAs should al
 git rebase --onto develop 1.0.0
 ```
 
-Now each commit of the new Intershop PWA release is applied to the custom project context. 
+Now each commit of the new Intershop PWA release is applied to the custom project context.
 Thus, if any merge conflicts arise, this will be within the specific Intershop PWA commit context and should be mergeable with the information and diff provided for this commit in the GitHub repository.
 
 After successfully going through the rebase onto (with `git rebase --continue` after each resolved merge conflict), an `npm install` will probably be required and one needs to check whether the project code still works as expected.
@@ -249,8 +249,8 @@ This is also a possible way to migrate your custom project to the latest version
 
 Just add the Intershop PWA GitHub repository as a second remote in your project and `git merge` the release branch.
 
-> Prior to 0.16.1 the entire git history changed completely. 
-Please see [Merging 0.16.1 as 2nd upstream repository: "refusing to merge unrelated histories](https://github.com/intershop/intershop-pwa/issues/62) for suggestions on importing the new history.
+> Prior to 0.16.1 the entire git history changed completely.
+> Please see [Merging 0.16.1 as 2nd upstream repository: "refusing to merge unrelated histories](https://github.com/intershop/intershop-pwa/issues/62) for suggestions on importing the new history.
 
 ## Hints
 
