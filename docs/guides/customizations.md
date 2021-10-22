@@ -184,10 +184,10 @@ The same system can be adopted for customization projects.
 ## Import Changes from New PWA Release (Migration)
 
 Importing changes of new releases is done with Git tooling.
-If you stick to the guidelines in this chapter, the problems arising in the process of updating will not be as impacting as you might fear.
+If you stick to the guidelines in this chapter, the process of updating should run without major problems.
 Also remember to use `npm install` after importing a change that modified the `package.json` and `package-lock.json` and run tests and linting in the process.
 
-Reading through the [migrations.md](./migrations.md) and the [CHANGELOG.md](../../CHANGELOG.md) - here especially the 'Breaking Changes' section - should be the first steps before any migration.
+Reading through the [migrations.md](./migrations.md) and the [CHANGELOG.md](../../CHANGELOG.md) - here especially the 'Breaking Changes' section - should be the first step before any migration.
 
 The first step for any migration is to add the Intershop PWA GitHub repository as an additional remote.
 
@@ -195,55 +195,55 @@ The first step for any migration is to add the Intershop PWA GitHub repository a
 git remote add intershop https://github.com/intershop/intershop-pwa.git
 ```
 
-For importing changes from the current release you can use different approaches:
+For importing changes from the current release, you can use different approaches:
 
 ### 1. Range Cherry Pick of New Release Commits
 
-For the range `git cherry-pick` approach one needs to create a new branch based of the current projects main development branch naming it for example `migration_to_1.1`.
+For the range `git cherry-pick` approach one needs to create a new branch based on the current project's main development branch, naming it, for example, `migration_to_1.1`.
 
 ```
 git checkout -b migration_to_1.1
 ```
 
 Now the Git commits of the new Intershop PWA release will be cherry picked into this migration branch.
-For this one needs to provide the wanted commit range which should be possible by using the Intershop PWA version tags, e.g. `1.0.0` to `1.1.0`.
-If there are any problems with the tags using the specific commit SHAs should always work.
+For this, one needs to provide the wanted commit range which should be possible by using the Intershop PWA version tags, e.g. `1.0.0` to `1.1.0`.
+If there are any problems with the tags, using the specific commit SHAs should always work.
 
 ```
 git cherry-pick 1.0.0..1.1.0
 ```
 
-Now each commit of the new Intershop PWA release is applied to the custom project context and possible merge conflicts will arise within the specific Intershop PWA commit context and should be mergeable with the information and diff provided for this commit in the GitHub repository.
+Now each commit of the new Intershop PWA release is applied to the custom project context. Thus, if any merge conflicts arise, this will be within the specific Intershop PWA commit context and should be mergeable with the information and diff provided for this commit in the GitHub repository.
 
-After successfully going through the range cherry pick (with `git commit` and `git cherry-pick --continue` after each resolved merge conflict) an `npm install` will probably be required and one needs to check whether the project code still works as expected.
+After successfully going through the range cherry pick (with `git commit` and `git cherry-pick --continue` after each resolved merge conflict), an `npm install` will probably be required and one needs to check whether the project code still works as expected.
 Starting the server or `npm run check` are good basic tests for that.
 
 ### 2. Rebase Commits of New Release
 
-For the `git rebase --onto` approach one needs to create a new branch based of the release tag of the Intershop PWA one wants to migrate to naming it for example `migration_to_1.1`.
+For the `git rebase --onto` approach one needs to create a new branch based on the release tag of the Intershop PWA one wants to migrate to, naming it, for example, `migration_to_1.1`.
 
 ```
 git checkout -b migration_to_1.1 1.1.0
 ```
 
-Now the branch with the Git commits of the new Intershop PWA release will be rebased onto the current projects main development branch.
-For this one needs to provide the branch name of the target branch to rebase onto.
-In addition the a commit is needed where the current migration branch should be "cut off".
+Now the branch with the Git commits of the new Intershop PWA release will be rebased onto the current project's main development branch.
+For this, one needs to provide the branch name of the target branch to rebase onto.
+In addition, a commit is needed where the current migration branch should be "cut off".
 This is usually the current version tag of the Intershop PWA used in the custom project, e.g. `1.0.0`.
-If there are any problems with the tag using the specific commit SHAs should always work.
+If there are any problems with the tag, using the specific commit SHAs should always work.
 
 ```
 git rebase --onto develop 1.0.0
 ```
 
-Now each commit of the new Intershop PWA release is applied to the custom project context and possible merge conflicts will arise within the specific Intershop PWA commit context and should be mergeable with the information and diff provided for this commit in the GitHub repository.
+Now each commit of the new Intershop PWA release is applied to the custom project context. Thus, if any merge conflicts arise, this will be within the specific Intershop PWA commit context and should be mergeable with the information and diff provided for this commit in the GitHub repository.
 
-After successfully going through the rebase onto (with `git rebase --continue` after each resolved merge conflict) an `npm install` will probably be required and one needs to check whether the project code still works as expected.
+After successfully going through the "rebase onto" (with `git rebase --continue` after each resolved merge conflict), an `npm install` will probably be required and one needs to check whether the project code still works as expected.
 Starting the server or `npm run check` are good basic tests for that.
 
 ### 3. Merge the New Release in its Entirety
 
-Also this way you can migrate your custom project to the latest version of the Intershop PWA, but you will have to resolve all appearing conflicts at once and without the specific commit context.
+This is also a possible way to migrate your custom project to the latest version of the Intershop PWA, but you will have to resolve all potentially appearing conflicts at once and without the specific commit context.
 
 Just add the Intershop PWA GitHub repository as a second remote in your project and `git merge` the release branch.
 
@@ -252,15 +252,15 @@ Just add the Intershop PWA GitHub repository as a second remote in your project 
 ## Hints
 
 - The Intershop PWA project is configured to follow consistent formatting rules.
-  For the better overview over relevant changes and less merge efforts it is advised to use these rules during project development as well.
-  For this one needs to configure ones IDE accordingly.
+  For a better overview of relevant changes and less merge efforts it is advised to adhere to these rules during project development as well.
+  For this, one needs to configure one's IDE accordingly.
   The fitting Visual Studio Code configuration is part of the project.
-- The Intershop PWA project configures and contains a set of linting rules that also aim to ensure a consistent code style and are intended to prevent coding patterns that are considered problematic.
-  It is advised to keep these rules satisfied in customer projects as well.
-  If some rules are actually unwanted in a project it is best to disable these configurations but keeping all other checks intact and address any violations.
+- The Intershop PWA project configures and contains a set of linting rules that also aim to ensure a consistent code style and are intended to prevent any coding patterns that are considered problematic.
+  It is advised to follow these rules in customer projects as well.
+  If some rules are actually unwanted in a project, it is best to disable these configurations but to keep all other checks intact and to address any violations.
 - Keep the unit tests running and write new ones.
-  This will also help with ensuring not to break any existing functionality after a migration.
-- `npm run check` should run through successfully on local development environments after a feature or bugfix or migration is finished.
+  This will also help ensuring not to break any existing functionality after a migration.
+- `npm run check` should run through successfully on local development environments after a feature or bugfix or migration has finished.
   This check can be left to a CI pipeline as well but the task should be configured in a way that fits the requirements of the project.
 
 # Further References
