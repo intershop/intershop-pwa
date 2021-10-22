@@ -37,7 +37,7 @@ The project is also configured to support the usage of an own local environment 
 Overrides in this file will be included in the theme environments and override parts of it.
 For production builds, no overrides should be used.
 The docker build automatically creates this file as an empty file.
-The `environment.development.ts` will be ignored by Git so the developer specific settings will not be committed and accidentally shared.
+The `environment.development.ts` will be ignored by Git so the developer-specific settings will not be committed and accidentally shared.
 It is initially created when running `npm install`.
 
 This local environment configuration will automatically be used if you start the PWA with `ng serve`.
@@ -56,15 +56,15 @@ Further options of the development server can be found running `ng serve --help`
 
 ## Testing Production Setups
 
-Sometimes it is necessary to boot up a production chain for development to test modifications in [nginx](./nginx-startup.md) or test the interaction with it.
+Sometimes it is necessary to boot up a production chain for development to test modifications in [nginx](./nginx-startup.md) or to test the interaction with it.
 The easiest way to do this is using [Docker Compose](https://docs.docker.com/compose/) with the `docker-compose.yml` in the project root.
-For usage instructions check the comments in that file.
+For usage instructions, check the comments in that file.
 
 ## Development Tools
 
 The used IDE or editor should support the [Prettier - Code formatter](https://prettier.io) that is configured to apply a common formatting style on all TypeScript, Javascript, JSON, HTML, SCSS and other files.
 In addition, especially for the file types that are not handled by Prettier, the editor needs to follow the [EditorConfig](https://editorconfig.org) configuration of the project to help maintain consistent coding styles.
-Besides that the project has [TSLint](https://palantir.github.io/tslint/) and [Stylelint](https://stylelint.io) rules configured to unify the coding style even further.
+Besides that, the project has [TSLint](https://palantir.github.io/tslint/) and [Stylelint](https://stylelint.io) rules configured to unify the coding style even further.
 
 The recommended IDE for the Intershop PWA development is
 
