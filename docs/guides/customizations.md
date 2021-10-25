@@ -189,7 +189,7 @@ Also remember to use `npm install` after importing a change that modified the `p
 
 Reading through the [migrations.md](./migrations.md) and the [CHANGELOG.md](../../CHANGELOG.md) - here especially the 'Breaking Changes' section - should be the first step before any migration.
 
-The first step for any migration is to add the Intershop PWA GitHub repository as an additional remote.
+The first step for any migration is to add the Intershop PWA GitHub repository as an additional remote if this is not already the case.
 
 ```
 git remote add intershop https://github.com/intershop/intershop-pwa.git
