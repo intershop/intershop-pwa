@@ -56,7 +56,7 @@ export function app() {
     if (icmProtocol === 'https') {
       const https = require('https');
 
-      const [, icmHost, icmPort] = /^(.*?):?([0-9]+)?$/.exec(icmBase);
+      const [, icmHost, icmPort] = /^(.*?):?([0-9]+)?[\/]*$/.exec(icmBase);
 
       const options = {
         host: icmHost,
