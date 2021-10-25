@@ -230,7 +230,7 @@ git checkout -b migration_to_1.1 1.1.0
 Now the branch with the Git commits of the new Intershop PWA release will be rebased onto the current project's main development branch.
 For this, one needs to provide the branch name of the target branch to rebase onto.
 In addition, a commit is needed where the current migration branch should be "cut off".
-This is usually the current version tag of the Intershop PWA used in the custom project, e.g. `1.0.0`.
+This is usually the current version tag of the Intershop PWA used currently in the custom project, e.g. `1.0.0`.
 If there are any problems with the tag, using the specific commit SHAs should always work.
 
 ```

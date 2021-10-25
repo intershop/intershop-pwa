@@ -29,6 +29,8 @@ Use `ng serve --open` to start up the development server and open the Progressiv
 > icmBaseURL: 'https://pwa-ish-demo.test.intershop.com',
 > ```
 
+For actually setting up a customer project based on the Intershop PWA read the [Customization Guide](customizations.md).
+
 ## Development Server
 
 Run `ng serve` or `ng s` for a development server.
