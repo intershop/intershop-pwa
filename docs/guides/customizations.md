@@ -268,4 +268,4 @@ Just add the Intershop PWA GitHub repository as a second remote in your project 
 
 # Further References
 
-- [How to do projects with Intershop PWA 1.0 and Themes](https://www.youtube.com/watch?v=)
+- [How to do projects with Intershop PWA 1.0 and Themes](https://www.youtube.com/watch?v=qz-ONgd9qdY)
