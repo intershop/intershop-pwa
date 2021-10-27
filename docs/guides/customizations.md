@@ -163,7 +163,13 @@ Just putting a brand override file next to the original file in the `src/styles`
 You should not change relevant information in the global style files under `src/styles`.
 
 When styling is done on component level, all styling is encapsulated to exactly this component (default behavior).
-You can re-use variables from global styling on component level by adding imports like `@import 'variables.scss';`.
+You can re-use variables from the global styling on component level by importing only the styling file that defines the theme variables, e.g.
+
+```
+@import 'variables';
+```
+
+Be aware that Visual Studio Code will not resolve the import reference correctly but it works in the build PWA version anyways.
 
 ### Dependencies
 
