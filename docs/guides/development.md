@@ -23,7 +23,13 @@ Run `npm install -g @angular/cli` once to globally install Angular CLI on your d
 
 Use `ng serve --open` to start up the development server and open the Progressive Web app in your browser.
 
-> **Note:** With the default `environment.ts` configuration the application works with mock data and as a result of that with limited functionality. To experience and work with the full feature set of the Intershop PWA access to an Intershop Commerce Management server is required.
+> **Note:** The project is configured to work by default against a publicly available Intershop Commerce Management server (see `environment.model.ts`).
+>
+> ```
+> icmBaseURL: 'https://pwa-ish-demo.test.intershop.com',
+> ```
+
+For actually setting up a customer project based on the Intershop PWA read the [Customization Guide](customizations.md).
 
 ## Development Server
 
@@ -33,7 +39,7 @@ The project is also configured to support the usage of an own local environment 
 Overrides in this file will be included in the theme environments and override parts of it.
 For production builds, no overrides should be used.
 The docker build automatically creates this file as an empty file.
-The `environment.development.ts` will be ignored by Git so the developer specific settings will not be committed and accidentally shared.
+The `environment.development.ts` will be ignored by Git so the developer-specific settings will not be committed and accidentally shared.
 It is initially created when running `npm install`.
 
 This local environment configuration will automatically be used if you start the PWA with `ng serve`.
@@ -52,15 +58,15 @@ Further options of the development server can be found running `ng serve --help`
 
 ## Testing Production Setups
 
-Sometimes it is necessary to boot up a production chain for development to test modifications in the [nginx](./nginx-startup.md) or test the interaction with it.
+Sometimes it is necessary to boot up a production chain for development to test modifications in [nginx](./nginx-startup.md) or to test the interaction with it.
 The easiest way to do this is using [Docker Compose](https://docs.docker.com/compose/) with the `docker-compose.yml` in the project root.
-For usage instructions check the comments in that file.
+For usage instructions, check the comments in that file.
 
 ## Development Tools
 
 The used IDE or editor should support the [Prettier - Code formatter](https://prettier.io) that is configured to apply a common formatting style on all TypeScript, Javascript, JSON, HTML, SCSS and other files.
 In addition, especially for the file types that are not handled by Prettier, the editor needs to follow the [EditorConfig](https://editorconfig.org) configuration of the project to help maintain consistent coding styles.
-Besides that the project has [TSLint](https://palantir.github.io/tslint/) and [Stylelint](https://stylelint.io) rules configured to unify the coding style even further.
+Besides that, the project has [TSLint](https://palantir.github.io/tslint/) and [Stylelint](https://stylelint.io) rules configured to unify the coding style even further.
 
 The recommended IDE for the Intershop PWA development is
 
@@ -106,7 +112,7 @@ As Angular runs in the browser, all the development tool functionality provided 
 ### Tackling Memory Problems
 
 If you encounter problems with `JavaScript heap out of memory`, you will have to increase the heap space size.
-THis can be done by setting the environment variable `NODE_OPTIONS=--max_old_space_size=8192`.
+This can be done by setting the environment variable `NODE_OPTIONS=--max_old_space_size=8192`.
 
 ### Recommend Articles
 

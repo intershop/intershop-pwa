@@ -154,6 +154,7 @@ resetted
 blocklist
 safelisting
 walkthrough
+mergeable
 
 foo
 foos
