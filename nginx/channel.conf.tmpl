@@ -1,5 +1,17 @@
 {{ $UPSTREAM_PWA := getenv "UPSTREAM_PWA" }}
 
+{{ define "LOCATION_TEMPLATE_FOR_SITEMAP" }}
+        {{- $icmBaseUrl := getenv "ICM_BASE_URL" }}
+        {{- $baseHref := ""}}{{ if (has . "baseHref")}}{{ $baseHref = .baseHref }}{{end}}
+        {{- $channel := .channel }}
+        {{- $application := "rest" }}{{ if (has . "application") }}{{ $application = .application }}{{ end }}
+        {{- $lang := "en_US" }}{{ if (has . "lang") }}{{ $lang = .lang }}{{ end }}
+      {{- if $icmBaseUrl }}
+      proxy_pass {{ $icmBaseUrl }}/INTERSHOP/static/WFS/{{ $channel }}/{{ $application }}/{{ $channel | strings.ReplaceAll "-Site" "" }}/{{ $lang }}/sitemaps/pwa/sitemap_;
+      {{- else }}
+      rewrite ^{{ $baseHref }}/sitemap.*$ {{ $baseHref }}/;
+      {{- end -}}
+{{- end }}
 {{ define "LOCATION_TEMPLATE" }}
         {{- $channel := .channel }}
         {{- $application := "default" }}{{ if (has . "application") }}{{ $application = .application }}{{ end }}
@@ -93,10 +105,16 @@ server {
     location / {
         {{- tmpl.Exec "LOCATION_TEMPLATE" $mapping }}
     }
+    location ^~ /sitemap_ {
+        {{- tmpl.Exec "LOCATION_TEMPLATE_FOR_SITEMAP" $mapping }}
+    }
   {{- else -}}
     {{ range $mapping }}
     location {{ .baseHref }} {
         {{- tmpl.Exec "LOCATION_TEMPLATE" . }}
+    }
+    location ^~ {{ .baseHref }}{{if not ( .baseHref | strings.HasSuffix "/")}}/{{end}}sitemap_ {
+        {{- tmpl.Exec "LOCATION_TEMPLATE_FOR_SITEMAP" . }}
     }
     {{ end }}
     location / {
@@ -104,7 +122,14 @@ server {
         rewrite ^/$ "$scheme://$http_host{{ $first.baseHref }}/home" permanent;
         rewrite ^(.*)$ "$scheme://$http_host{{ $first.baseHref }}$request_uri" permanent;
     }
-  {{- end }}
+  {{- if (has ($mapping | jsonpath "$..baseHref") "/") }}
+  {{- else }}
+    {{ $first := index $mapping 0 -}}
+    location ^~ /sitemap_ {
+        {{- tmpl.Exec "LOCATION_TEMPLATE_FOR_SITEMAP" $first }}
+    }
+  {{- end -}}
+{{- end }}
 
     # redirect server error pages to the static page /50x.html
     #

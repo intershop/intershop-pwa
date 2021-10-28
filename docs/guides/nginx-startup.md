@@ -75,6 +75,27 @@ If no environment variables for multi-channel configuration are given, the confi
 
 > :warning: Multi-Channel configuration with context paths does not work in conjunction with [service workers](../concepts/progressive-web-app.md#service-worker)
 
+### Access ICM sitemap
+
+Please refer to [this](https://support.intershop.com/kb/index.php/Display/23D962#ConceptXMLSitemaps-XMLSitemapsandIntershopPWAxml_sitemap_pwa) Intershop knowledge base article on how to configure ICM to generate PWA sitemap files.
+
+```
+http://pwa/sitemap_pwa.xml
+```
+
+To make above sitemap index file available under your deployment you need to add environment variable `ICM_BASE_URL` in your nginx container.
+Let `ICM_BASE_URL` point to your ICM backend installation, e.g. `https://pwa-ish-demo.test.intershop.com`.
+When the container is started it'll process channel template as well as sitemap proxy rules like this:
+
+```yaml
+location /sitemap_ {
+proxy_pass https://pwa-ish-demo.test.intershop.com/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/rest/inSPIRED-inTRONICS/en_US/sitemaps/pwa/sitemap_;
+}
+```
+
+The process will utilize your Multi-Channel Configuration (described above)).
+Be sure to include `application` if you deviate from standard `rest` application.
+
 ### Other
 
 The page speed configuration can also be overridden:
