@@ -4,16 +4,14 @@
     <ng-container *ngIf="itemSku.length > 0; else noItems" class="section">
       <div class="product-list">
         <swiper [config]="swiperConfig">
-          <ng-container *ngFor="let sku of itemSku">
-            <ng-template swiperSlide>
-              <ish-product-item
-                displayType="tile"
-                ishProductContext
-                [sku]="sku"
-                [configuration]="tileConfiguration"
-              ></ish-product-item>
-            </ng-template>
-          </ng-container>
+          <ng-template *ngFor="let sku of itemSku" swiperSlide>
+            <ish-product-item
+              displayType="tile"
+              ishProductContext
+              [sku]="sku"
+              [configuration]="tileConfiguration"
+            ></ish-product-item>
+          </ng-template>
         </swiper>
       </div>
     </ng-container>
