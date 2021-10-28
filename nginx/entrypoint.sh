@@ -5,6 +5,8 @@ set -e
 
 [ -z "$UPSTREAM_PWA" ] && echo "UPSTREAM_PWA is not set" && exit 1
 
+[ -z "$ICM_BASE_URL" ] && echo "ICM_BASE_URL is not set. Cannot use sitemap proxy feature."
+
 [ -f "/etc/nginx/conf.d/default.conf" ] && rm /etc/nginx/conf.d/default.conf
 
 if [ -n "$BASIC_AUTH" ]

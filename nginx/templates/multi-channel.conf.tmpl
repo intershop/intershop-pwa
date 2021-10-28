@@ -146,6 +146,11 @@ server {
   {{- end -}}
   {{- end }}
 
+{{- if (getenv "ICM_BASE_URL") }}
+    # we have the ICM_BASE_URL so we can include sitemap locations
+    #
+    include /etc/nginx/conf.d/sitemap.conf;
+{{- end }}
     # redirect server error pages to the static page /50x.html
     #
     error_page 500 502 503 504 /50x.html;
