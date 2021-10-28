@@ -1,0 +1,26 @@
+{{ define "LOCATION_TEMPLATE_SITEMAP" }}
+        {{- $channel := .channel }}
+        {{- $application := "rest" }}{{ if (has . "application") }}{{ $application = .application }}{{ end }}
+        {{- $lang := "en_US" }}{{ if (has . "lang") }}{{ $lang = .lang }}{{ end }}
+       proxy_pass {{ getenv "ICM_BASE_URL" }}/INTERSHOP/static/WFS/{{ $channel }}/{{ $application }}/{{ $channel | strings.ReplaceAll "-Site" "" }}/{{ $lang }}/sitemaps/pwa/sitemap_;
+{{- end }}
+{{- range $domain, $mapping := (ds "domains") }}
+{{ if (has $mapping "channel") }}
+    location /sitemap_ {
+        {{- tmpl.Exec "LOCATION_TEMPLATE_SITEMAP" $mapping }}
+    }
+  {{- else -}}
+    {{ range $mapping }}
+    location {{ .baseHref }}{{if not ( .baseHref | strings.HasSuffix "/")}}/{{end}}sitemap_ {
+        {{- tmpl.Exec "LOCATION_TEMPLATE_SITEMAP" . }}
+    }
+{{ end }}
+  {{- if (has ($mapping | jsonpath "$..baseHref") "/") }}
+  {{- else }}
+    {{ $first := index $mapping 0 -}}
+    location /sitemap_ {
+        {{- tmpl.Exec "LOCATION_TEMPLATE_SITEMAP" $first }}
+    }
+  {{- end -}}
+{{- end }}
+{{ end }}
